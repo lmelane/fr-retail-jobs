@@ -58,3 +58,8 @@ Undiz (Groupe Etam),career.undiz.com,teamtailor,https://career.undiz.com/sitemap
 Natalys (Groupe GPE),carrieres.natalys.com,teamtailor,https://carrieres.natalys.com/sitemap.xml,https://carrieres.natalys.com/jobs/{id}-{slug},ALLOWED (User-agent: * ; Disallow only /app/ /messages/ /jobs/internal/),3,yes
 Goyard,careers.goyard.com,phenom,https://careers.goyard.com/job-sitemap.xml,https://careers.goyard.com/job/{Title}/{id}/,ALLOWED (no matching Disallow for User-agent: *),49,yes
 L'Occitane Group,joinus.loccitane.com,pinpoint,https://joinus.loccitane.com/sitemap.xml,https://joinus.loccitane.com/jobs/{id},ALLOWED (User-agent: * / Disallow: <empty> ; Sitemap declared),91,yes
+Action France,apply.action.com,phenom,https://apply.action.com/sitemap.xml,https://apply.action.com/job/{Title}/{id}/,ALLOWED (User-agent: * ; Disallow only /applybutton/ /talentcommunity/ /emailsubscribe/ /services/),3702,yes
+IKEA France,jobs.ikea.com,ikea-custom,https://jobs.ikea.com/sitemap.xml,https://jobs.ikea.com/{lang}/job/{city}/{slug}/{id}/{reqid},ALLOWED (User-agent: * ; Disallow only /search-jobs/ - detail pages not covered),1255,yes
+Rituals France,careers.rituals.com,rituals-custom,https://careers.rituals.com/sitemap.xml,https://careers.rituals.com/{locale}/jobs/{slug}/{R-id}/,ALLOWED (User-agent: * / Disallow: <empty> ; Sitemap declared),1050,yes
+Castorama France,emploi.castorama.fr,wordpress-custom,https://emploi.castorama.fr/job-sitemap.xml,https://emploi.castorama.fr/job/{ref}-{slug}/,ALLOWED (User-agent: * / Disallow: <empty> ; Sitemap declared),372,yes
+BUT,recrute.but.fr,wordpress-custom,https://recrute.but.fr/offres-sitemap.xml,https://recrute.but.fr/offres/{slug}/,ALLOWED (User-agent: * ; Disallow only /wp-admin/),215,yes
