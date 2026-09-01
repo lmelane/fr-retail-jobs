@@ -22,10 +22,34 @@ export type SourceKind =
   /** Reachable only by executing page JS (Cloudflare, or a client-side listing). */
   | 'BROWSER_REQUIRED';
 
+/**
+ * Which of the two parallel flows a source belongs to.
+ *
+ * They are independent and of equal rank. A jobboard is NOT an upstream directory
+ * feeding employer discovery — it is a source of offers in its own right. Scoping
+ * the pipeline to one board's roster would cap it at that board's employers, while
+ * the target scope is the SECTOR.
+ */
+export type SourceFlow =
+  /** A: the sector's brands, read from their own ATS / careers pages. */
+  | 'EMPLOYER'
+  /** B: jobboards, read for their offers directly. */
+  | 'JOBBOARD';
+
+/** Ranking used to pick the canonical apply URL when postings are merged. */
+export type SourceTier =
+  | 'EMPLOYER_DIRECT'
+  | 'GROUP_OFFICIAL'
+  | 'ATS_OFFICIAL'
+  | 'SPECIALIST_JOBBOARD'
+  | 'AGGREGATOR';
+
 export type JobSource = {
   key: string;
-  /** Employer or group as displayed. */
+  /** Employer or group as displayed; the board's name for a jobboard. */
   company: string;
+  flow: SourceFlow;
+  tier: SourceTier;
   kind: SourceKind;
   /** The URL that enumerates jobs. */
   entryUrl: string;
@@ -44,6 +68,8 @@ export type JobSource = {
 export const JOB_SOURCES: readonly JobSource[] = [
   {
     key: 'richemont',
+    flow: 'EMPLOYER',
+    tier: 'GROUP_OFFICIAL',
     company: 'Richemont (Cartier, Van Cleef & Arpels, …)',
     kind: 'XML_FEED',
     entryUrl: 'https://careers.richemont.com/fr/offres-demploi/xml/?rss=true',
@@ -60,6 +86,8 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'decathlon',
+    flow: 'EMPLOYER',
+    tier: 'EMPLOYER_DIRECT',
     company: 'Decathlon',
     kind: 'SITEMAP_JSONLD',
     entryUrl: 'https://joinus.decathlon.fr/sitemap.xml',
@@ -72,6 +100,8 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'sephora',
+    flow: 'EMPLOYER',
+    tier: 'EMPLOYER_DIRECT',
     company: 'Sephora',
     kind: 'XML_FEED',
     entryUrl: 'https://jobs.sephora.com/sitemap.xml',
@@ -86,6 +116,8 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'courir',
+    flow: 'EMPLOYER',
+    tier: 'EMPLOYER_DIRECT',
     company: 'Groupe Courir',
     kind: 'SITEMAP_JSONLD',
     entryUrl: 'https://jobs.courir.com/job-sitemap.xml',
@@ -98,6 +130,8 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'lacoste',
+    flow: 'EMPLOYER',
+    tier: 'EMPLOYER_DIRECT',
     company: 'Lacoste',
     kind: 'SITEMAP_JSONLD',
     entryUrl: 'https://careers.lacoste.com/sitemap.xml',
@@ -110,6 +144,8 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'loreal',
+    flow: 'EMPLOYER',
+    tier: 'EMPLOYER_DIRECT',
     company: "L'Oréal",
     kind: 'SITEMAP_JSONLD',
     entryUrl: 'https://careers.loreal.com/fr_FR/jobs/sitemap.xml',
@@ -120,6 +156,8 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'kering',
+    flow: 'EMPLOYER',
+    tier: 'GROUP_OFFICIAL',
     company: 'Kering (Gucci, Saint Laurent, Balenciaga, …)',
     kind: 'SITEMAP_JSONLD',
     entryUrl: 'https://www.kering.com/fr/sitemap.xml',
@@ -136,6 +174,8 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'galeries-lafayette',
+    flow: 'EMPLOYER',
+    tier: 'EMPLOYER_DIRECT',
     company: 'Galeries Lafayette',
     kind: 'SITEMAP_JSONLD',
     entryUrl: 'https://carrieres.groupegalerieslafayette.com/sitemap.xml',
@@ -148,6 +188,8 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'hermes',
+    flow: 'EMPLOYER',
+    tier: 'EMPLOYER_DIRECT',
     company: 'Hermès',
     kind: 'PUBLIC_API',
     entryUrl: 'https://talents.hermes.com/',
@@ -160,6 +202,8 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'puig',
+    flow: 'EMPLOYER',
+    tier: 'EMPLOYER_DIRECT',
     company: 'Puig',
     kind: 'SITEMAP_JSONLD',
     entryUrl: 'https://jobs.puig.com/job-sitemap.xml',
@@ -171,6 +215,8 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'lvmh',
+    flow: 'EMPLOYER',
+    tier: 'GROUP_OFFICIAL',
     company: 'LVMH (76 Maisons: Dior, Louis Vuitton, Sephora, Bon Marché, …)',
     kind: 'BROWSER_REQUIRED',
     entryUrl: 'https://www.lvmh.com/fr/nous-rejoindre/nos-offres',
@@ -184,15 +230,75 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'fashionjobs',
-    company: 'FashionJobs (employer directory, 668 companies)',
+    flow: 'JOBBOARD',
+    tier: 'SPECIALIST_JOBBOARD',
+    company: 'FashionJobs',
     kind: 'BROWSER_REQUIRED',
     entryUrl: 'https://fr.fashionjobs.com/societesrecrutent/',
     robotsVerdict: 'Allows /societesrecrutent/; only /societesRecrutent/ajax/ disallowed',
     verifiedTotal: 668,
     verifiedOn: '2026-09-01',
-    notes: 'Cloudflare: every curl gets 403, Chromium gets 200. Used for employer discovery, not offers.',
+    notes:
+      'A source of OFFERS in its own right, not an upstream directory. The company page also ' +
+      'yields 668 employers, useful as a discovery signal — but the scope is never capped to it. ' +
+      'Cloudflare: every curl gets 403, Chromium gets 200.',
+  },
+  {
+    key: 'wttj',
+    flow: 'JOBBOARD',
+    tier: 'SPECIALIST_JOBBOARD',
+    company: 'Welcome to the Jungle',
+    kind: 'SITEMAP_JSONLD',
+    entryUrl: 'https://www.welcometothejungle.com/sitemaps/index.xml.gz',
+    robotsVerdict:
+      'Disallow: /me/*, /settings/*, /users/*, */jobs?query=*, and /*? — job detail paths carry ' +
+      'no query string, so they are allowed. Sitemap self-declared.',
+    verifiedTotal: 88222,
+    verifiedFrance: 59947,
+    verifiedOn: '2026-09-01',
+    notes:
+      'Highest volume of any source: 9 gzipped sitemap shards, 59,947 French job URLs, and every ' +
+      'detail page carries full JobPosting JSON-LD (datePosted, employmentType, hiringOrganization, ' +
+      'jobLocation, industry). Sector filtering is mandatory — it covers every industry, not just ours.',
+  },
+  {
+    key: 'apec',
+    flow: 'JOBBOARD',
+    tier: 'SPECIALIST_JOBBOARD',
+    company: 'APEC (cadres)',
+    kind: 'PUBLIC_API',
+    entryUrl: 'https://www.apec.fr/cms/webservices/rechercheOffre',
+    robotsVerdict: 'User-agent: * with NO Disallow line at all — nothing is forbidden. Sitemap declared.',
+    verifiedOn: '2026-09-01',
+    notes:
+      'POST, no auth, clean JSON (intitule, nomCommercial, lieuTexte, salaireTexte, datePublication, ' +
+      'numeroOffre). Strong for cadre-level roles. Undocumented, so version defensively.',
+  },
+  {
+    key: 'france-travail',
+    flow: 'JOBBOARD',
+    tier: 'AGGREGATOR',
+    company: 'France Travail (API officielle)',
+    kind: 'PUBLIC_API',
+    entryUrl: 'https://api.francetravail.io/partenaire/offresdemploi/v2/offres/search',
+    robotsVerdict: 'Governed by API terms, not robots: an authorised API client, not a crawler.',
+    verifiedOn: '2026-09-01',
+    notes:
+      'The only officially sanctioned source of the set. Free self-serve registration on ' +
+      'francetravail.io, OAuth2 client_credentials, scope api_offresdemploiv2. Endpoint confirmed ' +
+      'live (401 + WWW-Authenticate: Bearer without a token). Needs credentials before use.',
   },
 ] as const;
+
+/** Sources for flow A: the sector's brands, read from their own systems. */
+export function employerSources(): readonly JobSource[] {
+  return JOB_SOURCES.filter((source) => source.flow === 'EMPLOYER');
+}
+
+/** Sources for flow B: jobboards, read for their offers directly. */
+export function jobboardSources(): readonly JobSource[] {
+  return JOB_SOURCES.filter((source) => source.flow === 'JOBBOARD');
+}
 
 /** Sources reachable over plain HTTP, i.e. everything but the browser-gated ones. */
 export function plainHttpSources(): readonly JobSource[] {

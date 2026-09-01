@@ -19,16 +19,18 @@ import type { NormalizedJob } from '../types.js';
  * "Sales Advisor"), and only inside an already-identical company+city bucket.
  */
 
+import type { SourceTier } from '../connectors/registry.js';
+
 /** Source ranking: the highest-priority source owns the canonical apply URL. */
-export const SOURCE_PRIORITY = [
+export const SOURCE_PRIORITY: readonly SourceTier[] = [
   'EMPLOYER_DIRECT',
   'GROUP_OFFICIAL',
   'ATS_OFFICIAL',
   'SPECIALIST_JOBBOARD',
   'AGGREGATOR',
-] as const;
+];
 
-export type SourceTier = (typeof SOURCE_PRIORITY)[number];
+export type { SourceTier };
 
 export type CandidateJob = NormalizedJob & {
   company: string;
