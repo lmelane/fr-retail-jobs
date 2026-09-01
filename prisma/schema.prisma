@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CompanyKind {
+  UNKNOWN
+  MAISON
+  GROUP
+  RETAILER
+  AGENCY
+  RECRUITER
+  MEDIA
+  SUPPLIER
+  OTHER
+}
+
+enum DiscoveryStatus {
+  PENDING
+  FOUND
+  NEEDS_REVIEW
+  UNSUPPORTED
+  ERROR
+}
+
+enum AtsType {
+  GREENHOUSE
+  LEVER
+  SMARTRECRUITERS
+  RECRUITEE
+  PERSONIO
+  WORKDAY
+  GENERIC_JSONLD
+  UNKNOWN
+}
+
+model Company {
+  id                   String          @id @default(cuid())
+  name                 String
+  canonicalKey         String
+  kind                 CompanyKind     @default(UNKNOWN)
+  fashionjobsUrl       String          @unique
+  fashionjobsSlug      String?
+  fashionjobsOfferCount Int?
+  careersUrl           String?
+  atsType               AtsType         @default(UNKNOWN)
+  atsConfig             Json?
+  discoveryStatus       DiscoveryStatus @default(PENDING)
+  discoveryNote         String?
+  firstSeenAt           DateTime        @default(now())
+  lastSeenAt            DateTime        @default(now())
+  lastAtsDiscoveryAt    DateTime?
+  lastJobSyncAt         DateTime?
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  jobs                  Job[]
+  aliases               CompanyAlias[]
+
+  @@index([canonicalKey])
+  @@index([discoveryStatus])
+  @@index([atsType])
+}
+
+model CompanyAlias {
+  id          String   @id @default(cuid())
+  aliasKey    String   @unique
+  displayName String
+  companyId   String
+  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+}
+
+model Job {
+  id            String   @id @default(cuid())
+  companyId     String
+  company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  externalId    String
+  source        AtsType
+  title         String
+  location      String?
+  country       String?
+  isFrance      Boolean  @default(false)
+  contract      String?
+  description   String?
+  url           String
+  postedAt      DateTime?
+  firstSeenAt   DateTime @default(now())
+  lastSeenAt    DateTime @default(now())
+  isActive      Boolean  @default(true)
+  fingerprint   String
+  raw           Json?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([companyId, source, externalId])
+  @@index([isFrance, isActive])
+  @@index([fingerprint])
+  @@index([companyId, isActive])
+}

@@ -1,0 +1,30 @@
+node_modules/
+dist/
+build/
+
+# Secrets — never commit. .env.example documents the shape instead.
+.env
+.env.*
+!.env.example
+
+# Local Claude Code state
+.claude/
+
+# Scratch data and one-off probes
+*.csv
+*.html
+*.xml
+*-test.ts
+probe-*.ts
+scratchpad/
+
+# Logs and OS noise
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/
+*.swp
