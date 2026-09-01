@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion } from 'motion/react';
 import {
-  ArrowUpRight,
   Building2,
   Check,
   Clock,
@@ -21,6 +20,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { JobDetail } from '@/components/job-detail';
 import { relativeDate } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import type { JobRow, JobsResult } from '@/lib/jobs';
@@ -100,6 +101,7 @@ const EMPTY_FILTERS: Filters = {
 export function JobsView({ data }: { data: JobsResult }) {
   const [query, setQuery] = useState('');
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const set = <K extends keyof Filters>(key: K, value: Filters[K]) =>
     setFilters((current) => ({ ...current, [key]: value }));
@@ -125,6 +127,8 @@ export function JobsView({ data }: { data: JobsResult }) {
       return true;
     });
   }, [data.jobs, query, filters]);
+
+  const selected = jobs.find((job) => job.id === selectedId) ?? jobs[0] ?? null;
 
   const activeCount =
     Object.values(filters).filter((value) => value !== null && value !== false).length +
@@ -199,7 +203,9 @@ export function JobsView({ data }: { data: JobsResult }) {
         </div>
       </header>
 
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-cols-2">
+      {/* Indeed shape: list on the left, the offer itself on the right. Reading
+          a posting must not cost the list, since candidates compare. */}
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         <div className="bg-surface-low shadow-m3-1 min-h-0 overflow-hidden rounded-[28px]">
           <ScrollArea className="h-full">
             {jobs.length === 0 ? (
@@ -216,7 +222,9 @@ export function JobsView({ data }: { data: JobsResult }) {
                   >
                     <JobCard
                       job={job}
-                      onSelectCity={(city) => toggle('city', city)}
+                      onSelect={() => setSelectedId(job.id)}
+                      isSelected={selected?.id === job.id}
+                      onSelectCity={(value) => toggle('city', value)}
                       isCityActive={filters.city === job.city}
                     />
                   </motion.li>
@@ -226,29 +234,47 @@ export function JobsView({ data }: { data: JobsResult }) {
           </ScrollArea>
         </div>
 
-        <div className="bg-surface-low shadow-m3-1 relative min-h-72 overflow-hidden rounded-[28px] lg:min-h-0">
-          <JobMap
-            jobs={jobs}
-            selectedCity={filters.city}
-            onSelectCity={(city) => set('city', city)}
-          />
-          {filters.city && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.94 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={SPRING_EFFECT}
-              className="absolute top-4 left-4 z-[1000]"
-            >
-              <Button
-                onClick={() => set('city', null)}
-                className="shadow-m3-2 h-10 rounded-full px-4 text-sm font-medium"
-              >
-                <MapPin className="size-4" />
-                {filters.city}
-                <X className="size-4 opacity-70" />
-              </Button>
-            </motion.div>
-          )}
+        <div className="bg-surface-low shadow-m3-1 min-h-72 overflow-hidden rounded-[28px] lg:min-h-0">
+          <Tabs defaultValue="detail" className="flex h-full flex-col gap-0">
+            <TabsList className="bg-surface m-3 h-10 w-fit shrink-0 rounded-full p-1">
+              <TabsTrigger value="detail" className="rounded-full px-4 text-sm">
+                Offre
+              </TabsTrigger>
+              <TabsTrigger value="map" className="rounded-full px-4 text-sm">
+                Carte
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="detail" className="min-h-0 flex-1">
+              {selected ? (
+                <JobDetail job={selected} />
+              ) : (
+                <div className="text-muted-foreground grid h-full place-items-center px-6 text-center text-sm tracking-[0.25px]">
+                  Sélectionnez une offre pour lire le détail.
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="map" className="relative min-h-0 flex-1">
+              <JobMap
+                jobs={jobs}
+                selectedCity={filters.city}
+                onSelectCity={(value) => set('city', value)}
+              />
+              {filters.city && (
+                <div className="absolute top-4 left-4 z-[1000]">
+                  <Button
+                    onClick={() => set('city', null)}
+                    className="shadow-m3-2 h-10 rounded-full px-4 text-sm font-medium"
+                  >
+                    <MapPin className="size-4" />
+                    {filters.city}
+                    <X className="size-4 opacity-70" />
+                  </Button>
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>
@@ -425,24 +451,32 @@ function Chip({
 
 function JobCard({
   job,
+  onSelect,
+  isSelected,
   onSelectCity,
   isCityActive,
 }: {
   job: JobRow;
+  onSelect: () => void;
+  isSelected: boolean;
   onSelectCity: (city: string) => void;
   isCityActive: boolean;
 }) {
   return (
-    <article className="hover:bg-surface group rounded-2xl px-4 py-4 transition-colors">
-      <a
-        href={job.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="focus-visible:ring-ring inline-flex items-center gap-1.5 rounded-lg focus-visible:ring-2 focus-visible:outline-none"
+    <article
+      onClick={onSelect}
+      className={cn(
+        'group cursor-pointer rounded-2xl px-4 py-4 transition-colors',
+        isSelected ? 'bg-accent' : 'hover:bg-surface',
+      )}
+    >
+      <button
+        type="button"
+        onClick={onSelect}
+        className="focus-visible:ring-ring inline-flex items-start gap-1.5 rounded-lg text-left focus-visible:ring-2 focus-visible:outline-none"
       >
         <span className="text-base leading-6 font-medium tracking-[0.15px]">{job.title}</span>
-        <ArrowUpRight className="text-muted-foreground size-4 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
-      </a>
+      </button>
 
       <div className="mt-1 flex items-center gap-1.5 text-sm leading-5 font-medium tracking-[0.1px]">
         <Building2 className="text-muted-foreground size-4 shrink-0" />

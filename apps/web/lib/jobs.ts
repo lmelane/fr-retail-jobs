@@ -48,6 +48,10 @@ export type JobRow = {
   sourceCount: number;
   /** Registry keys of every source that reported this job. */
   sources: string[];
+  /** Full posting text: ATS APIs return it with the listing, no extra fetch. */
+  description: string | null;
+  /** Employer-side apply URL of the highest-ranked source. */
+  applyUrl: string;
 };
 
 export type JobsResult = {
@@ -80,6 +84,9 @@ const DEMO_JOBS: JobRow[] = [
     longitude: 2.347,
     sourceCount: 3,
     sources: ['dior', 'lvmh', 'fashionjobs'],
+    description:
+      'Description complète de l’offre. En production ce texte vient de l’API de l’ATS, renvoyé avec la liste — aucune requête supplémentaire par offre.',
+    applyUrl: 'https://www.lvmh.com/fr/nous-rejoindre/nos-offres',
   },
   {
     id: 'demo-2',
@@ -96,6 +103,9 @@ const DEMO_JOBS: JobRow[] = [
     longitude: 2.1112,
     sourceCount: 1,
     sources: ['courir'],
+    description:
+      'Description complète de l’offre. En production ce texte vient de l’API de l’ATS, renvoyé avec la liste — aucune requête supplémentaire par offre.',
+    applyUrl: 'https://jobs.courir.com/',
   },
   {
     id: 'demo-3',
@@ -112,6 +122,9 @@ const DEMO_JOBS: JobRow[] = [
     longitude: 2.347,
     sourceCount: 2,
     sources: ['lvmh', 'fashionjobs'],
+    description:
+      'Description complète de l’offre. En production ce texte vient de l’API de l’ATS, renvoyé avec la liste — aucune requête supplémentaire par offre.',
+    applyUrl: 'https://www.lvmh.com/fr/nous-rejoindre/nos-offres/REPO00097',
   },
   {
     id: 'demo-4',
@@ -128,6 +141,9 @@ const DEMO_JOBS: JobRow[] = [
     longitude: 7.0046,
     sourceCount: 1,
     sources: ['richemont'],
+    description:
+      'Description complète de l’offre. En production ce texte vient de l’API de l’ATS, renvoyé avec la liste — aucune requête supplémentaire par offre.',
+    applyUrl: 'https://careers.richemont.com/',
   },
   {
     id: 'demo-5',
@@ -144,6 +160,9 @@ const DEMO_JOBS: JobRow[] = [
     longitude: 2.3,
     sourceCount: 2,
     sources: ['lvmh', 'wttj'],
+    description:
+      'Description complète de l’offre. En production ce texte vient de l’API de l’ATS, renvoyé avec la liste — aucune requête supplémentaire par offre.',
+    applyUrl: 'https://www.lvmh.com/fr/nous-rejoindre/nos-offres',
   },
   {
     id: 'demo-6',
@@ -160,6 +179,9 @@ const DEMO_JOBS: JobRow[] = [
     longitude: 4.835,
     sourceCount: 1,
     sources: ['richemont'],
+    description:
+      'Description complète de l’offre. En production ce texte vient de l’API de l’ATS, renvoyé avec la liste — aucune requête supplémentaire par offre.',
+    applyUrl: 'https://careers.richemont.com/',
   },
 ];
 
@@ -247,6 +269,8 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
       longitude: row.longitude,
       sourceCount: row.sources.length,
       sources: row.sources.map((source) => source.sourceKey),
+      description: row.description,
+      applyUrl: row.url,
     }));
 
     const filtered = applyFilters(jobs, filters);

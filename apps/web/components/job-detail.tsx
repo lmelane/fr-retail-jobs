@@ -1,0 +1,116 @@
+'use client';
+
+import { motion } from 'motion/react';
+import { Building2, Clock, ExternalLink, Layers, MapPin, Briefcase } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { relativeDate } from '@/lib/format';
+import type { JobRow } from '@/lib/jobs';
+
+/**
+ * Offer detail, read in place.
+ *
+ * The description costs nothing extra: ATS APIs return it alongside the listing
+ * (Greenhouse 6.7k characters, Ashby 20k, FashionJobs 4.9k), so the candidate
+ * reads the full posting without leaving the page — and without us fetching it
+ * per offer.
+ */
+
+const SOURCE_LABELS: Record<string, string> = {
+  richemont: 'Richemont',
+  kering: 'Kering',
+  loreal: "L'Oréal",
+  courir: 'Courir',
+  lacoste: 'Lacoste',
+  sephora: 'Sephora',
+  puig: 'Puig',
+  chanel: 'Chanel',
+  lvmh: 'LVMH',
+  wttj: 'Welcome to the Jungle',
+  fashionjobs: 'FashionJobs',
+  dior: 'Dior',
+};
+
+export function JobDetail({ job }: { job: JobRow }) {
+  return (
+    <motion.div
+      key={job.id}
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 34 }}
+      className="flex h-full flex-col"
+    >
+      <div className="shrink-0 px-6 pt-6 pb-4">
+        <h2 className="text-2xl leading-8 font-normal">{job.title}</h2>
+
+        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm tracking-[0.1px]">
+          <span className="inline-flex items-center gap-1.5 font-medium">
+            <Building2 className="text-muted-foreground size-4" />
+            {job.company}
+          </span>
+          {job.group && <span className="text-muted-foreground">{job.group}</span>}
+        </div>
+
+        <div className="text-muted-foreground mt-3 flex flex-wrap items-center gap-2 text-xs font-medium tracking-[0.5px]">
+          {job.city && (
+            <span className="bg-surface inline-flex items-center gap-1 rounded-full px-3 py-1.5">
+              <MapPin className="size-3.5" />
+              {job.city}
+            </span>
+          )}
+          {job.contract && (
+            <span className="bg-surface inline-flex items-center gap-1 rounded-full px-3 py-1.5">
+              <Briefcase className="size-3.5" />
+              {job.contract}
+            </span>
+          )}
+          {job.postedAt && (
+            <span className="bg-surface inline-flex items-center gap-1 rounded-full px-3 py-1.5">
+              <Clock className="size-3.5" />
+              {relativeDate(job.postedAt)}
+            </span>
+          )}
+        </div>
+
+        <Button asChild className="mt-4 h-11 rounded-full px-6 text-sm font-medium tracking-[0.1px]">
+          <a href={job.applyUrl} target="_blank" rel="noopener noreferrer">
+            Postuler
+            <ExternalLink className="size-4" />
+          </a>
+        </Button>
+
+        {/* The differentiator, stated plainly: several sources agree on this one
+            opening, and the link goes to the employer rather than a reposting. */}
+        {job.sourceCount > 1 && (
+          <p className="text-muted-foreground mt-3 flex items-center gap-1.5 text-xs tracking-[0.4px]">
+            <Layers className="size-3.5 shrink-0" />
+            Vue sur {job.sourceCount} sources
+            <span className="opacity-70">
+              ({job.sources.map((source) => SOURCE_LABELS[source] ?? source).join(' · ')})
+            </span>
+          </p>
+        )}
+      </div>
+
+      <Separator className="bg-border/60" />
+
+      <ScrollArea className="min-h-0 flex-1">
+        <div className="px-6 py-5">
+          {job.description ? (
+            // Descriptions arrive as plain text with the source's own line breaks;
+            // whitespace-pre-line keeps them without trusting third-party HTML.
+            <p className="text-[15px] leading-6 tracking-[0.25px] whitespace-pre-line">
+              {job.description}
+            </p>
+          ) : (
+            <p className="text-muted-foreground text-sm tracking-[0.25px]">
+              Cette source ne fournit pas le texte de l’offre. Le bouton Postuler mène à
+              l’annonce complète chez l’employeur.
+            </p>
+          )}
+        </div>
+      </ScrollArea>
+    </motion.div>
+  );
+}
