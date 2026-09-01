@@ -18,6 +18,10 @@ import type { JobRow } from '@/lib/jobs';
 const FRANCE_CENTER: L.LatLngExpression = [46.6, 2.4];
 const FRANCE_ZOOM = 6;
 
+/** One accent hue for every pin; volume is carried by radius, not by colour. */
+const MARKER_STROKE = 'oklch(55% 0.21 264)';
+const MARKER_FILL = 'oklch(72% 0.15 264)';
+
 type JobMapProps = {
   jobs: JobRow[];
   onSelectCity?: (city: string | null) => void;
@@ -72,9 +76,12 @@ export default function JobMap({ jobs, onSelectCity, selectedCity }: JobMapProps
       attributionControl: true,
     });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap',
-      maxZoom: 18,
+    // CARTO Voyager: full colour, but low-contrast roads and labels, so the
+    // accent pins stay readable on top. Free for this usage, attribution kept.
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap &copy; CARTO',
+      subdomains: 'abcd',
+      maxZoom: 19,
     }).addTo(map);
 
     layerRef.current = L.layerGroup().addTo(map);
@@ -98,11 +105,12 @@ export default function JobMap({ jobs, onSelectCity, selectedCity }: JobMapProps
       const isSelected = selectedCity === group.city;
       const marker = L.circleMarker([group.latitude, group.longitude], {
         radius: markerRadius(group.jobs.length),
-        // Monochrome to match the design system; selection is shown by fill.
-        color: 'oklch(14% 0 0)',
-        weight: isSelected ? 3 : 1.5,
-        fillColor: isSelected ? 'oklch(14% 0 0)' : 'oklch(99% 0 0)',
-        fillOpacity: isSelected ? 0.9 : 0.82,
+        // A single accent hue over the full-colour basemap: pins read as data,
+        // and selection is shown by a solid fill rather than a second colour.
+        color: MARKER_STROKE,
+        weight: isSelected ? 3 : 2,
+        fillColor: isSelected ? MARKER_STROKE : MARKER_FILL,
+        fillOpacity: isSelected ? 0.95 : 0.75,
       });
 
       marker.bindTooltip(`${group.city} · ${group.jobs.length} offre${group.jobs.length > 1 ? 's' : ''}`, {
