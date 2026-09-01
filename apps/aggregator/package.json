@@ -8,6 +8,7 @@
     "refresh": "tsx src/cli.ts refresh",
     "reconcile": "tsx src/cli.ts reconcile",
     "geocode": "tsx src/cli.ts geocode",
+    "stats": "tsx src/cli.ts stats",
     "export:companies": "tsx src/cli.ts export-companies",
     "typecheck": "tsc --noEmit"
   },

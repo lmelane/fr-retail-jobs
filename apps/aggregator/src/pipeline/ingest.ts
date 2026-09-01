@@ -27,8 +27,13 @@ import type { NormalizedJob } from '../types.js';
  * logging: a silent pipeline is indistinguishable from a broken one.
  */
 const CONCURRENCY = Number(process.env.INGEST_CONCURRENCY ?? 12);
-/** Cap per source per run; the rest is picked up by the next cron tick. */
-const MAX_JOBS_PER_SOURCE = Number(process.env.INGEST_MAX_PER_SOURCE ?? 250);
+
+/**
+ * No cap by default: a ceiling silently truncates the market, and which offers
+ * survive depends on sitemap order rather than on anything meaningful. Set
+ * INGEST_MAX_PER_SOURCE only to bound an exceptional run.
+ */
+const MAX_JOBS_PER_SOURCE = Number(process.env.INGEST_MAX_PER_SOURCE ?? 0);
 
 export type IngestStats = {
   source: string;
@@ -71,8 +76,12 @@ async function ingestSitemapSource(
     errors: 0,
   };
 
-  const urls = (await fetchSitemapUrls(source.entryUrl)).slice(0, MAX_JOBS_PER_SOURCE);
-  console.log(`[ingest] ${source.key}: ${urls.length} URLs`);
+  const all = await fetchSitemapUrls(source.entryUrl);
+  // Keep only real job pages: sitemaps mix in listings, utility routes and
+  // editorial pages that carry no JobPosting and would burn the whole run.
+  const jobUrls = source.jobUrlPattern ? all.filter((url) => source.jobUrlPattern!.test(url)) : all;
+  const urls = MAX_JOBS_PER_SOURCE > 0 ? jobUrls.slice(0, MAX_JOBS_PER_SOURCE) : jobUrls;
+  console.log(`[ingest] ${source.key}: ${urls.length} job URLs (of ${all.length} in sitemap)`);
 
   // A declared crawl-delay forces serial fetching; otherwise run in parallel.
   const limit = pLimit(source.crawlDelaySeconds ? 1 : CONCURRENCY);

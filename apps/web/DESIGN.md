@@ -140,3 +140,52 @@ change par rapport au défaut shadcn :
 - [ ] Ombres teintées bleu, jamais noires
 - [ ] Tous les composants issus du CLI shadcn
 - [ ] `prefers-reduced-motion` respecté
+
+---
+
+## 10. Modèle d'interface : Indeed, langage Gemini
+
+**Liste à gauche (~40 %), détail de l'offre à droite (~60 %).** Cliquer une offre
+ouvre son détail dans le panneau, sans quitter la page ni perdre les filtres.
+C'est le modèle des jobboards parce qu'il fonctionne : comparer plusieurs offres
+demande de garder la liste sous les yeux.
+
+La carte n'occupe pas la moitié de l'écran en permanence — elle devient un
+onglet du panneau de droite (Détail · Carte · Analytics). Une carte est un mode
+d'exploration, pas la vue par défaut d'un candidat qui lit des annonces.
+
+Le détail contient : titre, Maison, localisation, contrat, date, description
+complète, sources ayant vu l'offre, et un bouton **Postuler** qui pointe vers
+l'URL canonique employeur.
+
+---
+
+## 11. Analytics — palette validée
+
+Palette catégorielle, **validée par `scripts/validate_palette.js`** (5/5 en mode
+clair). Ne pas modifier sans revalider : deux teintes voisines mal choisies
+deviennent indiscernables en deutéranopie.
+
+```
+#1a73e8  bleu     (série 1)
+#c5221f  rouge    (série 2)
+#00897b  turquoise(série 3)
+#b06000  ambre    (série 4)
+#9334e6  violet   (série 5)
+#3f7d20  vert     (série 6)
+```
+
+L'ordre est **fixe** : une teinte appartient à une entité, jamais à un rang. Un
+filtre qui change le nombre de séries ne doit pas repeindre les survivantes.
+
+Séquentiel (volumes sur carte, densité) : une seule teinte `#1a73e8`, du clair
+au foncé. Jamais d'arc-en-ciel.
+
+Formes retenues :
+- **Répartition géographique** → carte à cercles proportionnels (déjà en place)
+- **Publications dans le temps** → aire empilée par secteur
+- **Contrats / secteurs** → barres horizontales triées
+- **Top employeurs** → barres horizontales, 10 max puis « Autres »
+
+Règles non négociables : un seul axe Y (jamais de double échelle), légende dès
+2 séries, libellés directs quand ≤ 4 séries, survol avec infobulle partout.

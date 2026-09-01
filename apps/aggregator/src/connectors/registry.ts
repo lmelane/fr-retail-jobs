@@ -68,6 +68,15 @@ export type JobSource = {
   verifiedOn: string;
   /** Seconds to wait between requests when the host asks for it. */
   crawlDelaySeconds?: number;
+  /**
+   * Which sitemap URLs are actual job pages.
+   *
+   * Most sitemaps mix listings, utility routes and editorial pages with the
+   * offers. Kering's holds 2587 entries whose first is the listing page itself,
+   * and L'Oréal's leads with /jobs/AgentCreate — so a naive "take the first 250"
+   * spends the whole budget on pages that carry no JobPosting at all.
+   */
+  jobUrlPattern?: RegExp;
   notes?: string;
 };
 
@@ -122,6 +131,7 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'courir',
+    jobUrlPattern: /\/j\//,
     flow: 'EMPLOYER',
     tier: 'EMPLOYER_DIRECT',
     company: 'Groupe Courir',
@@ -136,6 +146,8 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'lacoste',
+    // Only the French locale: /ja/, /en/ etc. are the same jobs in another language.
+    jobUrlPattern: /\/fr\/annonce\//,
     flow: 'EMPLOYER',
     tier: 'EMPLOYER_DIRECT',
     company: 'Lacoste',
@@ -150,6 +162,7 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'loreal',
+    jobUrlPattern: /\/jobs\/JobDetail/,
     flow: 'EMPLOYER',
     tier: 'EMPLOYER_DIRECT',
     company: "L'Oréal",
@@ -162,6 +175,8 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'kering',
+    // Excludes the listing page and the continent index pages above it.
+    jobUrlPattern: /\/offres-d-emploi\/[^/]+\/[^/]+/,
     flow: 'EMPLOYER',
     tier: 'GROUP_OFFICIAL',
     company: 'Kering (Gucci, Saint Laurent, Balenciaga, …)',
@@ -180,6 +195,7 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'galeries-lafayette',
+    jobUrlPattern: /\/jobs\/\d/,
     flow: 'EMPLOYER',
     tier: 'EMPLOYER_DIRECT',
     company: 'Galeries Lafayette',
@@ -208,6 +224,7 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'puig',
+    jobUrlPattern: /\/job\//,
     flow: 'EMPLOYER',
     tier: 'EMPLOYER_DIRECT',
     company: 'Puig',
@@ -251,10 +268,14 @@ export const JOB_SOURCES: readonly JobSource[] = [
   },
   {
     key: 'wttj',
+    jobUrlPattern: /\/fr\/companies\/[^/]+\/jobs\//,
     flow: 'JOBBOARD',
     tier: 'SPECIALIST_JOBBOARD',
     company: 'Welcome to the Jungle',
-    kind: 'SITEMAP_JSONLD',
+    // Its entry URL is a GZIPPED sitemap INDEX pointing at 9 shards, so the
+    // generic reader finds zero job URLs. Needs index expansion + gunzip before
+    // it can be ingested; left out of the run rather than silently yielding 0.
+    kind: 'BROWSER_REQUIRED',
     entryUrl: 'https://www.welcometothejungle.com/sitemaps/index.xml.gz',
     robotsVerdict:
       'Disallow: /me/*, /settings/*, /users/*, */jobs?query=*, and /*? — job detail paths carry ' +

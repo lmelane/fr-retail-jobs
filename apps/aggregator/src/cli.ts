@@ -3,6 +3,7 @@ import { runIngest } from './pipeline/ingest.js';
 import { runRefresh } from './pipeline/refresh.js';
 import { runReconcile } from './pipeline/reconcile.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
+import { runStats } from './pipeline/stats.js';
 import { exportCompanies } from './export/companies.js';
 import { closeBrowser } from './lib/browser.js';
 
@@ -31,6 +32,8 @@ try {
     console.log(JSON.stringify({ ok: true, command, ...(await runReconcile(prisma)) }, null, 2));
   } else if (command === 'geocode') {
     console.log(JSON.stringify({ ok: true, command, ...(await runGeocode(prisma)) }, null, 2));
+  } else if (command === 'stats') {
+    console.log(JSON.stringify({ ok: true, ...(await runStats(prisma)) }, null, 2));
   } else if (command === 'export-companies') {
     const output = process.argv[3] ?? 'companies.csv';
     console.log(JSON.stringify({ ok: true, ...(await exportCompanies(prisma, output)) }, null, 2));
