@@ -80,8 +80,26 @@ async function ingestSitemapSource(
   // Keep only real job pages: sitemaps mix in listings, utility routes and
   // editorial pages that carry no JobPosting and would burn the whole run.
   const jobUrls = source.jobUrlPattern ? all.filter((url) => source.jobUrlPattern!.test(url)) : all;
-  const urls = MAX_JOBS_PER_SOURCE > 0 ? jobUrls.slice(0, MAX_JOBS_PER_SOURCE) : jobUrls;
-  console.log(`[ingest] ${source.key}: ${urls.length} job URLs (of ${all.length} in sitemap)`);
+
+  /**
+   * On a generalist board, classify from the URL before downloading anything.
+   *
+   * Welcome to the Jungle exposes 59,466 French jobs and only ~4% are in our
+   * vertical. At ~260ms a page that is four hours of fetching to discard
+   * nineteen pages in twenty — while the employer slug sits right there in the
+   * URL and answers the question for free.
+   */
+  const inScopeUrls = source.employerSlugPattern
+    ? jobUrls.filter((url) => {
+        const slug = url.match(source.employerSlugPattern!)?.[1];
+        return slug ? classifySector({ company: slug.replace(/-/g, ' ') }).inScope : false;
+      })
+    : jobUrls;
+
+  const urls = MAX_JOBS_PER_SOURCE > 0 ? inScopeUrls.slice(0, MAX_JOBS_PER_SOURCE) : inScopeUrls;
+  console.log(
+    `[ingest] ${source.key}: ${urls.length} job URLs (of ${jobUrls.length} jobs / ${all.length} sitemap entries)`,
+  );
 
   // A declared crawl-delay forces serial fetching; otherwise run in parallel.
   const limit = pLimit(source.crawlDelaySeconds ? 1 : CONCURRENCY);

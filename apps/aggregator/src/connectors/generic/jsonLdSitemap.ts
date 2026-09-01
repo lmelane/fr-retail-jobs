@@ -1,4 +1,5 @@
-import { fetchText } from '../../lib/http.js';
+import { gunzipSync } from 'node:zlib';
+import { fetchText, fetchWithRetry } from '../../lib/http.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -29,9 +30,45 @@ export function parseSitemapLocations(xml: string): string[] {
   return [...xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/gi)].map((m) => m[1]);
 }
 
+/** Gzipped sitemaps are common at scale; fetchText would hand back binary. */
+async function fetchSitemapXml(sitemapUrl: string): Promise<string> {
+  if (!/\.gz(\?|$)/i.test(sitemapUrl)) {
+    return fetchText(sitemapUrl, { headers: REQUEST_HEADERS });
+  }
+  const response = await fetchWithRetry(sitemapUrl, { headers: REQUEST_HEADERS });
+  const buffer = Buffer.from(await response.arrayBuffer());
+  // Some hosts pre-decompress .gz on the wire; only gunzip a real gzip header.
+  const isGzip = buffer[0] === 0x1f && buffer[1] === 0x8b;
+  return (isGzip ? gunzipSync(buffer) : buffer).toString('utf8');
+}
+
+/**
+ * Reads a sitemap, expanding a sitemap INDEX one level down.
+ *
+ * Large boards do not publish a flat list: Welcome to the Jungle's entry URL is a
+ * gzipped INDEX pointing at 9 shards, so a naive read returns 24 `.xml.gz` paths
+ * and zero jobs. One level of expansion is enough for every source seen so far,
+ * and it bounds the work — an index of indexes would otherwise fan out
+ * unpredictably.
+ */
 export async function fetchSitemapUrls(sitemapUrl: string): Promise<string[]> {
-  const xml = await fetchText(sitemapUrl, { headers: REQUEST_HEADERS });
-  return parseSitemapLocations(xml);
+  const xml = await fetchSitemapXml(sitemapUrl);
+  const locations = parseSitemapLocations(xml);
+
+  const isIndex = /<sitemapindex[\s>]/i.test(xml);
+  if (!isIndex) return locations;
+
+  const shards = await Promise.all(
+    locations.map(async (shard) => {
+      try {
+        return parseSitemapLocations(await fetchSitemapXml(shard));
+      } catch {
+        // One unreachable shard must not lose the others.
+        return [];
+      }
+    }),
+  );
+  return shards.flat();
 }
 
 type JsonLdNode = Record<string, any>;

@@ -77,6 +77,14 @@ export type JobSource = {
    * spends the whole budget on pages that carry no JobPosting at all.
    */
   jobUrlPattern?: RegExp;
+  /**
+   * Capture group 1 = the employer slug inside a job URL.
+   *
+   * Only meaningful on generalist boards, where most offers are out of sector:
+   * it lets the run classify the employer from the URL and skip the download
+   * entirely, instead of fetching a page just to discard it.
+   */
+  employerSlugPattern?: RegExp;
   notes?: string;
 };
 
@@ -269,13 +277,11 @@ export const JOB_SOURCES: readonly JobSource[] = [
   {
     key: 'wttj',
     jobUrlPattern: /\/fr\/companies\/[^/]+\/jobs\//,
+    employerSlugPattern: /\/companies\/([^/]+)\//,
     flow: 'JOBBOARD',
     tier: 'SPECIALIST_JOBBOARD',
     company: 'Welcome to the Jungle',
-    // Its entry URL is a GZIPPED sitemap INDEX pointing at 9 shards, so the
-    // generic reader finds zero job URLs. Needs index expansion + gunzip before
-    // it can be ingested; left out of the run rather than silently yielding 0.
-    kind: 'BROWSER_REQUIRED',
+    kind: 'SITEMAP_JSONLD',
     entryUrl: 'https://www.welcometothejungle.com/sitemaps/index.xml.gz',
     robotsVerdict:
       'Disallow: /me/*, /settings/*, /users/*, */jobs?query=*, and /*? — job detail paths carry ' +
