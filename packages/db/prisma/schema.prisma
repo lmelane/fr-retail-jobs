@@ -49,6 +49,7 @@ enum DiscoveryStatus {
 }
 
 enum AtsType {
+  DIGITALRECRUITERS
   PHENOM
   SUCCESSFACTORS
   WTTJ
