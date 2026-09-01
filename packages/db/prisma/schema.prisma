@@ -49,6 +49,8 @@ enum DiscoveryStatus {
 }
 
 enum AtsType {
+  ASHBY
+  WORKABLE
   GREENHOUSE
   LEVER
   SMARTRECRUITERS
