@@ -15,6 +15,10 @@ build/
 # 713-house source of truth the sector filter reads at runtime.
 *.csv
 !apps/aggregator/data/*.csv
+# Discovery output lives one level deeper; the negation above stops at data/,
+# so it needs its own. These CSVs are hours of agent work and were briefly
+# living only in /tmp, which the OS clears on reboot.
+!apps/aggregator/data/discovery/*.csv
 *.html
 *.xml
 *-test.ts

@@ -1,0 +1,91 @@
+maison,ats,config_json,job_count,evidence
+Gucci Beauty,SuccessFactors,"{""origin"": ""https://careers.coty.com""}",117,"GET https://careers.coty.com/search/?startrow=0 -> 200, 50 /job/{City-Title}/{id}/ links on page, 'of 117' total; robots allows /search (Disallow only /applybutton/,/talentcommunity/,...)"
+Guerlain,LVMH-jobhub,"{""origin"": ""https://www.lvmh.com"", ""offerApi"": ""/proxyApi/v1/jobhub/offer?reference={REF}&lang=fr""}",,"criteria?lang=fr -> 200, 76 maisons incl. this one; offer?reference=REPO00097 -> 200 (jobTitle/maison/city/contract). NO enumerable listing: offers/search/offer-list routes all 404, listing is client-side Algolia and page dies ERR_HTTP2_PROTOCOL_ERROR / timeout under Playwright; sitemap has no per-offer URLs. job_count NOT verifiable"
+Guinot,NONE,,,
+Guy Laroche,NONE,,,
+Haspolo,NONE,,,
+Hays France,NONE,,,
+Helena Rubinstein,WTTJ,"{""slug"": ""l-oreal""}",66,"Covered by the verified L'Oreal group feed: POST algolia filters=organization.slug:l-oreal -> nbHits=66 (org=""L'Oréal Groupe""). Brand-level roles present but NOT a facet (keyword nbHits within the org: Lancome=3, Kerastase=2, La Roche-Posay=1, IT Cosmetics=3, L'Oreal Paris=29, Kiehl's=0, Helena Rubinstein=0, Jacquemus=0). careers.loreal.com is Avature and caps at 'Showing 1-20 of 999+ results' with no brand facet and Cloudflare challenge, so no exact per-brand count is verifiable"
+Henrik Vibskov,NONE,,,
+Herend,NONE,,,
+Hermès,WTTJ,"{""slug"": ""hermes""}",586,POST algolia wttj_jobs_production_fr filters=organization.slug:hermes -> nbHits=586; hits org='Hermès' (Inventory Control Specialist Ventura; Fondeur Magny-le-Hongre)
+Hublot,LVMH-jobhub,"{""origin"": ""https://www.lvmh.com"", ""offerApi"": ""/proxyApi/v1/jobhub/offer?reference={REF}&lang=fr""}",,"criteria?lang=fr -> 200, 76 maisons incl. this one; offer?reference=REPO00097 -> 200 (jobTitle/maison/city/contract). NO enumerable listing: offers/search/offer-list routes all 404, listing is client-side Algolia and page dies ERR_HTTP2_PROTOCOL_ERROR / timeout under Playwright; sitemap has no per-offer URLs. job_count NOT verifiable"
+Hugo Boss Fragrances,SuccessFactors,"{""origin"": ""https://careers.coty.com""}",117,"GET https://careers.coty.com/search/?startrow=0 -> 200, 50 /job/{City-Title}/{id}/ links on page, 'of 117' total; robots allows /search (Disallow only /applybutton/,/talentcommunity/,...)"
+Ice-Watch,NONE,,,
+Icicle,NONE,,,
+IKKS,NONE,,,
+Imane Ayissi,NONE,,,
+IMKI,NONE,,,
+Ines de la Fressange Paris,NONE,,,
+Infiniment Coty Paris,SuccessFactors,"{""origin"": ""https://careers.coty.com""}",117,"GET https://careers.coty.com/search/?startrow=0 -> 200, 50 /job/{City-Title}/{id}/ links on page, 'of 117' total; robots allows /search (Disallow only /applybutton/,/talentcommunity/,...)"
+IPSA,SuccessFactors,"{""origin"": ""https://careers.shiseido.com""}",135,"GET https://careers.shiseido.com/search/?startrow=0 -> 200, 50 /job/ links, 'of 135'; careers.shiseido.com HTML references career5.successfactors.eu + rmkcdn; robots allows /search"
+Iris van Herpen,Recruitee,"{""subdomain"": ""irisvanherpen""}",6,"GET https://irisvanherpen.recruitee.com/api/offers/ -> 6 offers, company_name='Iris van Herpen BV' (Head of Atelier Haute Couture, Amsterdam)"
+Isabel Marant,NONE,,,
+Issey Miyake,NONE,,,
+IT Cosmetics,WTTJ,"{""slug"": ""l-oreal""}",66,"Covered by the verified L'Oreal group feed: POST algolia filters=organization.slug:l-oreal -> nbHits=66 (org=""L'Oréal Groupe""). Brand-level roles present but NOT a facet (keyword nbHits within the org: Lancome=3, Kerastase=2, La Roche-Posay=1, IT Cosmetics=3, L'Oreal Paris=29, Kiehl's=0, Helena Rubinstein=0, Jacquemus=0). careers.loreal.com is Avature and caps at 'Showing 1-20 of 999+ results' with no brand facet and Cloudflare challenge, so no exact per-brand count is verifiable"
+IWC Schaffhausen,Workday,"{""tenant"": ""richemont"", ""site"": ""broadbean_external"", ""origin"": ""https://richemont.wd3.myworkdayjobs.com""}",422,POST /wday/cxs/richemont/broadbean_external/jobs -> total=422 (Sales Associate TORONTO; Chef de Projet CRM PARIS). robots.txt: 'Allow: /broadbean_external/' and 'Disallow: /richemont/' so the richemont site (total=1306) is NOT used
+J.M. Weston,NONE,,,
+Jacquemus Beauty,WTTJ,"{""slug"": ""l-oreal""}",66,"Covered by the verified L'Oreal group feed: POST algolia filters=organization.slug:l-oreal -> nbHits=66 (org=""L'Oréal Groupe""). Brand-level roles present but NOT a facet (keyword nbHits within the org: Lancome=3, Kerastase=2, La Roche-Posay=1, IT Cosmetics=3, L'Oreal Paris=29, Kiehl's=0, Helena Rubinstein=0, Jacquemus=0). careers.loreal.com is Avature and caps at 'Showing 1-20 of 999+ results' with no brand facet and Cloudflare challenge, so no exact per-brand count is verifiable"
+Jaeger-LeCoultre,Workday,"{""tenant"": ""richemont"", ""site"": ""broadbean_external"", ""origin"": ""https://richemont.wd3.myworkdayjobs.com""}",422,POST /wday/cxs/richemont/broadbean_external/jobs -> total=422 (Sales Associate TORONTO; Chef de Projet CRM PARIS). robots.txt: 'Allow: /broadbean_external/' and 'Disallow: /richemont/' so the richemont site (total=1306) is NOT used
+Jalou Gallery,NONE,,,
+JD Sports France,Voyse,"{""origin"": ""https://careers.jdplc.com"", ""locale"": ""fr""}",693,"GET https://careers.jdplc.com/fr/jobs (rendered) -> '693 jobs trouvé(s)', 10 /fr/jobs/{id}-{slug} links/page. robots 'Disallow: /*?*' so only unparameterised /fr/jobs used"
+Jean Luc Francois,NONE,,,
+Jean Paul Gaultier,SuccessFactors,"{""origin"": ""https://jobs.puig.com""}",228,"GET https://jobs.puig.com/search/?startrow=0 -> 200, 25 /job/ links, 'of 228' total; robots allows /search"
+JFG Clinic,NONE,,,
+Jil Sander Parfums,SuccessFactors,"{""origin"": ""https://careers.coty.com""}",117,"GET https://careers.coty.com/search/?startrow=0 -> 200, 50 /job/{City-Title}/{id}/ links on page, 'of 117' total; robots allows /search (Disallow only /applybutton/,/talentcommunity/,...)"
+Jimmy Choo Parfums,NONE,,,
+Jitrois,NONE,,,
+Jo Malone London,Eightfold,"{""origin"": ""https://careers.elcompanies.com"", ""domain"": ""elcompanies.com""}",1400,GET /api/pcsx/search?domain=elcompanies.com&start=0&num=10 (cookie primed from /careers) -> data.count=1400; first record 'Key Holder - Le Labo - Seattle'. robots: 'Allow: /api/pcsx'
+John Galliano,NONE,,,
+John Lobb,NONE,,,
+Jonak,WTTJ,"{""slug"": ""jonak""}",17,POST algolia filters=organization.slug:jonak -> nbHits=17; org='Jonak' (Conseiller de vente CDI Le Marais)
+Joop!,SuccessFactors,"{""origin"": ""https://careers.coty.com""}",117,"GET https://careers.coty.com/search/?startrow=0 -> 200, 50 /job/{City-Title}/{id}/ links on page, 'of 117' total; robots allows /search (Disallow only /applybutton/,/talentcommunity/,...)"
+Journal du Textile,NONE,,,
+Jules,TalentView,"{""slug"": ""jules-recrutement""}",74,GET api.talentview.io/funnel/v2/companies/jules-recrutement -> id=575 name=Jules; campaigns?company_website_id=1668&display_mode=list&offset_start=N paged 10+10+10+10+10+10+10+4=74; job_types sum=74
+Julie de Libran,NONE,,,
+Julien Fournié,NONE,,,
+Juliette Has a Gun,NONE,,,
+Junko Shimada,NONE,,,
+Junya Watanabe,NONE,,,
+JUUN.J,NONE,,,
+K.Jacques,NONE,,,
+Kama Ayurveda,SuccessFactors,"{""origin"": ""https://jobs.puig.com""}",228,"GET https://jobs.puig.com/search/?startrow=0 -> 200, 25 /job/ links, 'of 228' total; robots allows /search"
+Karla Otto,Teamtailor,"{""origin"": ""https://careers.karlaotto.com""}",13,"GET https://careers.karlaotto.com/jobs.json?per_page=100 -> 200, items=13 with _jobposting (Account Director Lifestyle & Design, New York; Director Fashion Communications, New York). Parent board careers.the-independents.com has 47. robots only disallows /app/ and /messages/"
+Kate Spade Parfums,NONE,,,
+Kendo,LVMH-jobhub,"{""origin"": ""https://www.lvmh.com"", ""offerApi"": ""/proxyApi/v1/jobhub/offer?reference={REF}&lang=fr""}",,"criteria?lang=fr -> 200, 76 maisons incl. this one; offer?reference=REPO00097 -> 200 (jobTitle/maison/city/contract). NO enumerable listing: offers/search/offer-list routes all 404, listing is client-side Algolia and page dies ERR_HTTP2_PROTOCOL_ERROR / timeout under Playwright; sitemap has no per-offer URLs. job_count NOT verifiable"
+Kenzo,LVMH-jobhub,"{""origin"": ""https://www.lvmh.com"", ""offerApi"": ""/proxyApi/v1/jobhub/offer?reference={REF}&lang=fr""}",,"criteria?lang=fr -> 200, 76 maisons incl. this one; offer?reference=REPO00097 -> 200 (jobTitle/maison/city/contract). NO enumerable listing: offers/search/offer-list routes all 404, listing is client-side Algolia and page dies ERR_HTTP2_PROTOCOL_ERROR / timeout under Playwright; sitemap has no per-offer URLs. job_count NOT verifiable"
+Kenzo Parfums,LVMH-jobhub,"{""origin"": ""https://www.lvmh.com"", ""offerApi"": ""/proxyApi/v1/jobhub/offer?reference={REF}&lang=fr""}",,"criteria?lang=fr -> 200, 76 maisons incl. this one; offer?reference=REPO00097 -> 200 (jobTitle/maison/city/contract). NO enumerable listing: offers/search/offer-list routes all 404, listing is client-side Algolia and page dies ERR_HTTP2_PROTOCOL_ERROR / timeout under Playwright; sitemap has no per-offer URLs. job_count NOT verifiable"
+Kérastase,WTTJ,"{""slug"": ""l-oreal""}",66,"Covered by the verified L'Oreal group feed: POST algolia filters=organization.slug:l-oreal -> nbHits=66 (org=""L'Oréal Groupe""). Brand-level roles present but NOT a facet (keyword nbHits within the org: Lancome=3, Kerastase=2, La Roche-Posay=1, IT Cosmetics=3, L'Oreal Paris=29, Kiehl's=0, Helena Rubinstein=0, Jacquemus=0). careers.loreal.com is Avature and caps at 'Showing 1-20 of 999+ results' with no brand facet and Cloudflare challenge, so no exact per-brand count is verifiable"
+Kering,Eightfold,"{""origin"": ""https://careers.kering.com"", ""domain"": ""kering.com""}",1007,"GET /api/pcsx/search?domain=kering.com&start=0&num=10 (cookie primed) -> data.count=1007 (BOTTEGA VENETA Store Manager Vienna; GUCCI Store Manager). robots 'Allow: /api/pcsx'. NB kering.wd3 Workday site /Kering/ is robots-Disallowed, not used"
+Kering Eyewear,Eightfold,"{""origin"": ""https://careers.kering.com"", ""domain"": ""kering.com"", ""filter_house"": ""Kering Eyewear""}",67,"GET /api/pcsx/search?domain=kering.com&filter_house=Kering%20Eyewear -> data.count=67, all records prefixed 'KERING EYEWEAR' (Assistant Product Marketing Manager; Junior Demand Planner)"
+Kickers,NONE,,,
+Kiehl's,WTTJ,"{""slug"": ""l-oreal""}",66,"Covered by the verified L'Oreal group feed: POST algolia filters=organization.slug:l-oreal -> nbHits=66 (org=""L'Oréal Groupe""). Brand-level roles present but NOT a facet (keyword nbHits within the org: Lancome=3, Kerastase=2, La Roche-Posay=1, IT Cosmetics=3, L'Oreal Paris=29, Kiehl's=0, Helena Rubinstein=0, Jacquemus=0). careers.loreal.com is Avature and caps at 'Showing 1-20 of 999+ results' with no brand facet and Cloudflare challenge, so no exact per-brand count is verifiable"
+Kiko Kostadinov,NONE,,,
+KILIAN PARIS,Eightfold,"{""origin"": ""https://careers.elcompanies.com"", ""domain"": ""elcompanies.com""}",1400,GET /api/pcsx/search?domain=elcompanies.com&start=0&num=10 (cookie primed from /careers) -> data.count=1400; first record 'Key Holder - Le Labo - Seattle'. robots: 'Allow: /api/pcsx'
+Klorane,Workday,"{""tenant"": ""pierrefabre"", ""site"": ""External_Career_Site"", ""origin"": ""https://pierrefabre.wd3.myworkdayjobs.com""}",210,POST /wday/cxs/pierrefabre/External_Career_Site/jobs -> total=210 (Coordinateur projets cliniques CDD; Chef de projet BtoB Tarn). robots 'Allow: /External_Career_Site/'
+Koché,NONE,,,
+Kwaidan Editions,NONE,,,
+Kylie Cosmetics,SuccessFactors,"{""origin"": ""https://careers.coty.com""}",117,"GET https://careers.coty.com/search/?startrow=0 -> 200, 50 /job/{City-Title}/{id}/ links on page, 'of 117' total; robots allows /search (Disallow only /applybutton/,/talentcommunity/,...)"
+L'Artisan Parfumeur,SuccessFactors,"{""origin"": ""https://jobs.puig.com""}",228,"GET https://jobs.puig.com/search/?startrow=0 -> 200, 25 /job/ links, 'of 228' total; robots allows /search"
+L'Atelier du Sourcil,NONE,,,
+L’Occitane en Provence,SuccessFactors,"{""origin"": ""https://careers-group.loccitane.com""}",22,"GET https://careers-group.loccitane.com/search/?startrow=0 -> 200 <title>L'Occitane Jobs</title>, 15 /job/{slug}/{id}/ links, 'of 22' total; linked from careers.loccitane.com. robots allows /search"
+L'Officiel,NONE,,,
+L'Oréal,WTTJ,"{""slug"": ""l-oreal""}",66,"POST algolia filters=organization.slug:l-oreal -> nbHits=66; org=""L'Oréal Groupe"" (Product Design Lead)"
+L'Oréal Paris,WTTJ,"{""slug"": ""l-oreal""}",66,"Covered by the verified L'Oreal group feed: POST algolia filters=organization.slug:l-oreal -> nbHits=66 (org=""L'Oréal Groupe""). Brand-level roles present but NOT a facet (keyword nbHits within the org: Lancome=3, Kerastase=2, La Roche-Posay=1, IT Cosmetics=3, L'Oreal Paris=29, Kiehl's=0, Helena Rubinstein=0, Jacquemus=0). careers.loreal.com is Avature and caps at 'Showing 1-20 of 999+ results' with no brand facet and Cloudflare challenge, so no exact per-brand count is verifiable"
+La Halle,Gestmax,"{""origin"": ""https://groupe-beaumanoir.gestmax.fr"", ""enseigne"": ""la-halle""}",62,GET https://groupe-beaumanoir.gestmax.fr/ -> facet link /search/set-vacsearchfront_enseigne-64/enseigne-la-halle-62 (=62 offers). Board total 316 across 32 pages; contrats cdi221+cdd85+alt10=316. No robots.txt (404)
+La Mer,Eightfold,"{""origin"": ""https://careers.elcompanies.com"", ""domain"": ""elcompanies.com""}",1400,GET /api/pcsx/search?domain=elcompanies.com&start=0&num=10 (cookie primed from /careers) -> data.count=1400; first record 'Key Holder - Le Labo - Seattle'. robots: 'Allow: /api/pcsx'
+La Prairie,SelfHosted-Beiersdorf,"{""origin"": ""https://www.beiersdorf.com"", ""path"": ""/career/your-application/job-search""}",127,"GET /career/your-application/job-search (rendered, consent accepted) -> JOB LEVEL facets Manager19+Professional74+Entry4+TraineeLawyer2+Traineeship1+WorkingStudent9+Internship12+Apprentices6=127; /career/jobs/{hash} detail links"
+La Roche-Posay,WTTJ,"{""slug"": ""l-oreal""}",66,"Covered by the verified L'Oreal group feed: POST algolia filters=organization.slug:l-oreal -> nbHits=66 (org=""L'Oréal Groupe""). Brand-level roles present but NOT a facet (keyword nbHits within the org: Lancome=3, Kerastase=2, La Roche-Posay=1, IT Cosmetics=3, L'Oreal Paris=29, Kiehl's=0, Helena Rubinstein=0, Jacquemus=0). careers.loreal.com is Avature and caps at 'Showing 1-20 of 999+ results' with no brand facet and Cloudflare challenge, so no exact per-brand count is verifiable"
+La Rosee,WTTJ,"{""slug"": ""la-rosee""}",15,POST algolia filters=organization.slug:la-rosee -> nbHits=15; org='La Rosée' (Commercial Lorient CDD)
+Lab Series,Eightfold,"{""origin"": ""https://careers.elcompanies.com"", ""domain"": ""elcompanies.com""}",1400,GET /api/pcsx/search?domain=elcompanies.com&start=0&num=10 (cookie primed from /careers) -> data.count=1400; first record 'Key Holder - Le Labo - Seattle'. robots: 'Allow: /api/pcsx'
+Labello,SelfHosted-Beiersdorf,"{""origin"": ""https://www.beiersdorf.com"", ""path"": ""/career/your-application/job-search""}",127,same Beiersdorf group board: JOB LEVEL facet sum=127 verified on rendered page; /career/jobs/{hash} links
+Lacoste Parfums,NONE,,,
+Lagardère Travel Retail,TalentSoft,"{""origin"": ""https://lagardere-recrute.talent-soft.com""}",109,"GET /offre-de-emploi/liste-offres.aspx -> 200; <title>LAGARDERE - Resultat de votre recherche (109 offres, page 1)</title> and span id=..._Pagination_TotalOffers '109 offre(s)'; 20 /offre-de-emploi/emploi-*_ID.aspx links. robots.txt empty (no restrictions)"
+Lancaster,SuccessFactors,"{""origin"": ""https://careers.coty.com""}",117,"GET https://careers.coty.com/search/?startrow=0 -> 200, 50 /job/{City-Title}/{id}/ links on page, 'of 117' total; robots allows /search (Disallow only /applybutton/,/talentcommunity/,...)"
+Lancôme,WTTJ,"{""slug"": ""l-oreal""}",66,"Covered by the verified L'Oreal group feed: POST algolia filters=organization.slug:l-oreal -> nbHits=66 (org=""L'Oréal Groupe""). Brand-level roles present but NOT a facet (keyword nbHits within the org: Lancome=3, Kerastase=2, La Roche-Posay=1, IT Cosmetics=3, L'Oreal Paris=29, Kiehl's=0, Helena Rubinstein=0, Jacquemus=0). careers.loreal.com is Avature and caps at 'Showing 1-20 of 999+ results' with no brand facet and Cloudflare challenge, so no exact per-brand count is verifiable"
+Lanvin,NONE,,,
+Lanvin Parfums,NONE,,,
+Le Bon Marché,LVMH-jobhub,"{""origin"": ""https://www.lvmh.com"", ""offerApi"": ""/proxyApi/v1/jobhub/offer?reference={REF}&lang=fr""}",,"criteria?lang=fr -> 200, 76 maisons incl. this one; offer?reference=REPO00097 -> 200 (jobTitle/maison/city/contract). NO enumerable listing: offers/search/offer-list routes all 404, listing is client-side Algolia and page dies ERR_HTTP2_PROTOCOL_ERROR / timeout under Playwright; sitemap has no per-offer URLs. job_count NOT verifiable"
+Le Coq Sportif,NONE,,,
+Le Labo,Eightfold,"{""origin"": ""https://careers.elcompanies.com"", ""domain"": ""elcompanies.com""}",1400,GET /api/pcsx/search?domain=elcompanies.com&start=0&num=10 (cookie primed from /careers) -> data.count=1400; first record 'Key Holder - Le Labo - Seattle'. robots: 'Allow: /api/pcsx'
+Le Slip Francais,WTTJ,"{""slug"": ""le-slip-francais""}",1,POST algolia filters=organization.slug:le-slip-francais -> nbHits=1; org='Le Slip Français' (CDI Responsable Chef.fe de Produit)
