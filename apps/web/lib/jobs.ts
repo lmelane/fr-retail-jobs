@@ -263,8 +263,13 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
         sources: countBySource(jobs),
       },
     };
-  } catch {
-    // No database yet: serve the demo set, clearly flagged as such.
+  } catch (error) {
+    // Log before falling back: a silent demo fallback hides real failures, and
+    // the page then looks "fine" while showing six fictional rows.
+    console.error(
+      '[jobs] database unavailable, serving demo data:',
+      error instanceof Error ? error.message : String(error),
+    );
     const filtered = applyFilters(DEMO_JOBS, filters);
     return {
       jobs: filtered,
