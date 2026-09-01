@@ -1,31 +1,20 @@
 {
-  "name": "catwalks-job-aggregator",
-  "version": "0.1.0",
+  "name": "fr-retail-jobs",
   "private": true,
-  "type": "module",
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "tsx src/cli.ts",
-    "discover:fashionjobs": "tsx src/cli.ts discover-fashionjobs",
-    "discover:ats": "tsx src/cli.ts discover-ats",
-    "sync:jobs": "tsx src/cli.ts sync-jobs",
-    "export:companies": "tsx src/cli.ts export-companies",
-    "sync:all": "tsx src/cli.ts sync-all",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev"
-  },
-  "dependencies": {
-    "@prisma/client": "^6.15.0",
-    "cheerio": "^1.1.2",
-    "fast-xml-parser": "^5.2.5",
-    "p-limit": "^7.1.1",
-    "playwright": "^1.62.1"
-  },
-  "devDependencies": {
-    "@types/node": "^24.3.0",
-    "prisma": "^6.15.0",
-    "tsx": "^4.20.5",
-    "typescript": "^5.9.2"
+    "db:generate": "npm run db:generate -w @catwalks/db",
+    "db:push": "npm run db:push -w @catwalks/db",
+    "ingest": "npm run ingest -w @catwalks/aggregator",
+    "refresh": "npm run refresh -w @catwalks/aggregator",
+    "reconcile": "npm run reconcile -w @catwalks/aggregator",
+    "web:dev": "npm run dev -w @catwalks/web",
+    "web:build": "npm run build -w @catwalks/web",
+    "typecheck": "npm run typecheck -w @catwalks/aggregator && npm run typecheck -w @catwalks/web"
   },
   "allowScripts": {
     "prisma@6.19.3": true,
