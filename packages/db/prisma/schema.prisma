@@ -49,6 +49,8 @@ enum DiscoveryStatus {
 }
 
 enum AtsType {
+  AVATURE
+  TEAMTAILOR
   DIGITALRECRUITERS
   PHENOM
   SUCCESSFACTORS
