@@ -240,7 +240,7 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
       city: row.city,
       location: row.location,
       contract: row.contract,
-      sector: row.company.kind,
+      sector: row.company.sector,
       url: row.url,
       postedAt: row.postedAt,
       latitude: row.latitude,

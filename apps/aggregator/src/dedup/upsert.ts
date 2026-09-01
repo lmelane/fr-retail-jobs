@@ -1,5 +1,19 @@
 import type { PrismaClient } from '@prisma/client';
 import { blockingKey, isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } from './match.js';
+import { classifySector, type Sector } from '../normalize/sector.js';
+
+/** Classifier sectors map 1:1 onto the CompanySector enum. */
+const SECTOR_TO_COMPANY_SECTOR: Record<Sector, string> = {
+  FASHION: 'FASHION',
+  LUXURY: 'LUXURY',
+  BEAUTY: 'BEAUTY',
+  JEWELRY_WATCHES: 'JEWELRY_WATCHES',
+  RETAIL: 'RETAIL',
+  SUPPLIER: 'SUPPLIER',
+  MEDIA_AGENCY: 'MEDIA_AGENCY',
+  RECRUITER: 'RECRUITER',
+  OTHER: 'OTHER',
+};
 
 /**
  * Write-time deduplication — the guarantee that the database NEVER holds the same
@@ -50,17 +64,24 @@ export async function upsertDeduplicated(
   // Job.companyId is a foreign key, so the Company row has to exist first —
   // otherwise every single write fails on a constraint violation and the run
   // ends with an empty database.
+  // Classify once, at write time: the front end reads Company.kind, which
+  // otherwise stays at its UNKNOWN default and every sector facet reads
+  // "UNKNOWN" no matter how well the classifier works.
+  const verdict = classifySector({ company: candidate.company, title: candidate.title });
+  const sector = (SECTOR_TO_COMPANY_SECTOR[verdict.sector] ?? 'OTHER') as never;
+
   const company = await prisma.company.upsert({
     where: { fashionjobsUrl: `resolved:${candidate.companyId}` },
     create: {
       name: candidate.company,
       canonicalKey: candidate.companyId,
+      sector,
       // The unique key is the employer identity, not a FashionJobs URL: employers
       // reach us from their own sites too, and most never appear on that board.
       fashionjobsUrl: `resolved:${candidate.companyId}`,
       lastSeenAt: now,
     },
-    update: { lastSeenAt: now },
+    update: { sector, lastSeenAt: now },
     select: { id: true },
   });
 

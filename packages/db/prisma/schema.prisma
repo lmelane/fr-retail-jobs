@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/** What kind of actor this is (a Maison, a group, an agency…). */
 enum CompanyKind {
   UNKNOWN
   MAISON
@@ -16,6 +17,26 @@ enum CompanyKind {
   RECRUITER
   MEDIA
   SUPPLIER
+  OTHER
+}
+
+/**
+ * Which segment of the vertical the employer belongs to.
+ *
+ * Distinct from CompanyKind on purpose: Cartier is a MAISON *and*
+ * JEWELRY_WATCHES, and the front end filters on the segment. Reusing `kind` for
+ * both would force one to be wrong.
+ */
+enum CompanySector {
+  UNKNOWN
+  FASHION
+  LUXURY
+  BEAUTY
+  JEWELRY_WATCHES
+  RETAIL
+  SUPPLIER
+  MEDIA_AGENCY
+  RECRUITER
   OTHER
 }
 
@@ -43,6 +64,7 @@ model Company {
   name                 String
   canonicalKey         String
   kind                 CompanyKind     @default(UNKNOWN)
+  sector               CompanySector   @default(UNKNOWN)
   fashionjobsUrl       String          @unique
   fashionjobsSlug      String?
   fashionjobsOfferCount Int?
@@ -60,6 +82,7 @@ model Company {
   jobs                  Job[]
   aliases               CompanyAlias[]
 
+  @@index([sector])
   @@index([canonicalKey])
   @@index([discoveryStatus])
   @@index([atsType])

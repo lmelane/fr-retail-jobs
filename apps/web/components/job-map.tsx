@@ -71,7 +71,9 @@ export default function JobMap({ jobs, onSelectCity, selectedCity }: JobMapProps
     const map = L.map(containerRef.current, {
       center: FRANCE_CENTER,
       zoom: FRANCE_ZOOM,
-      scrollWheelZoom: false,
+      // Wheel zoom on: this map is the primary way to explore by location, and
+      // blocking the wheel makes it feel broken. Leaflet needs no API key.
+      scrollWheelZoom: true,
       zoomControl: true,
       attributionControl: true,
     });

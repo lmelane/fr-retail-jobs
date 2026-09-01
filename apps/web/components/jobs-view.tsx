@@ -137,39 +137,22 @@ export function JobsView({ data }: { data: JobsResult }) {
 
   return (
     <div className="bg-background flex h-dvh flex-col gap-3 overflow-hidden p-3">
-      <header className="bg-surface-low shadow-m3-1 shrink-0 rounded-[28px] px-6 py-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-baseline gap-3">
-            <h1 className="text-2xl leading-8 font-normal">Catwalks</h1>
-            <p className="text-muted-foreground hidden text-sm tracking-[0.25px] sm:block">
-              Mode · Luxe · Beauté · Joaillerie · Retail — France
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            {data.isDemo && (
-              <Badge className="bg-accent text-accent-foreground rounded-full border-0 px-3 py-1 text-xs font-medium">
-                Démo
-              </Badge>
-            )}
-            <span className="text-muted-foreground text-xs font-medium tracking-[0.5px] tabular-nums">
-              {jobs.length.toLocaleString('fr-FR')} offre{jobs.length > 1 ? 's' : ''}
-            </span>
-          </div>
+      {/* One compact command bar. No marketing title inside a product surface:
+          the tab already says Catwalks, and the row buys back vertical space
+          for offers, which is what the page is for. */}
+      <header className="bg-surface-low shadow-m3-1 flex shrink-0 flex-wrap items-center gap-2 rounded-[28px] px-4 py-3">
+        <div className="relative min-w-0 flex-1 sm:max-w-sm">
+          <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-4 size-[18px] -translate-y-1/2" />
+          <Input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Rechercher un poste, une Maison…"
+            className="bg-surface h-12 rounded-full border-0 pl-12 text-sm tracking-[0.25px] shadow-none focus-visible:ring-2"
+          />
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <div className="relative w-full sm:w-72">
-            <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2" />
-            <Input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Poste ou Maison…"
-              className="bg-surface h-12 rounded-full border-0 pl-11 text-sm tracking-[0.25px] shadow-none"
-            />
-          </div>
-
-          {data.facets.sectors.slice(0, 5).map((facet) => (
+        <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {data.facets.sectors.slice(0, 4).map((facet) => (
             <Chip
               key={facet.value}
               active={filters.sector === facet.value}
@@ -181,10 +164,20 @@ export function JobsView({ data }: { data: JobsResult }) {
           ))}
 
           <Chip active={filters.multiSource} onClick={() => set('multiSource', !filters.multiSource)}>
-            <Layers className="size-4" />
+            <Layers className="size-[18px]" />
             Confirmées
           </Chip>
+        </div>
 
+        <div className="ml-auto flex shrink-0 items-center gap-2">
+          <span className="text-muted-foreground text-xs font-medium tracking-[0.5px] tabular-nums">
+            {jobs.length.toLocaleString('fr-FR')}
+          </span>
+          {data.isDemo && (
+            <Badge className="bg-accent text-accent-foreground rounded-full border-0 px-3 py-1 text-xs font-medium">
+              Démo
+            </Badge>
+          )}
           <AllFilters
             data={data}
             filters={filters}
@@ -192,15 +185,15 @@ export function JobsView({ data }: { data: JobsResult }) {
             set={set}
             activeCount={activeCount}
           />
-
           {activeCount > 0 && (
             <Button
               variant="ghost"
+              size="icon"
               onClick={reset}
-              className="text-muted-foreground hover:bg-surface h-10 rounded-full px-4 text-sm font-medium"
+              aria-label="Effacer les filtres"
+              className="hover:bg-surface size-10 shrink-0 rounded-full"
             >
-              <X className="size-4" />
-              Effacer
+              <X className="size-[18px]" />
             </Button>
           )}
         </div>
