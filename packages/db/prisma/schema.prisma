@@ -49,6 +49,7 @@ enum DiscoveryStatus {
 }
 
 enum AtsType {
+  PINPOINT
   MAGNET
   TALENTVIEW
   EIGHTFOLD
