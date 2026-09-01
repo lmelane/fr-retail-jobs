@@ -3,20 +3,36 @@
 import { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion } from 'motion/react';
-import { ArrowUpRight, Building2, Layers, MapPin, Search, X } from 'lucide-react';
+import {
+  ArrowUpRight,
+  Building2,
+  Check,
+  Clock,
+  Layers,
+  MapPin,
+  Search,
+  SlidersHorizontal,
+  X,
+} from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { relativeDate } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import type { JobRow, JobsResult } from '@/lib/jobs';
 
 /**
  * Material 3 Expressive — see DESIGN.md.
- * Hierarchy comes from stacked tinted surfaces, shapes are generous, and motion
- * is spring-based so it feels like it has mass.
+ *
+ * The filters expose the aggregator's real model, not a subset of it: sector,
+ * Maison and group come from the 713-house reference list, contract from the
+ * normalized vocabulary, city from collapsed locations, and source / multi-source
+ * from the dedup layer. "Confirmées" in particular is the product's own
+ * differentiator surfaced as a control — a job several sources agree on.
  */
 
 const JobMap = dynamic(() => import('@/components/job-map'), {
@@ -35,44 +51,95 @@ const SECTOR_LABELS: Record<string, string> = {
   RECRUITER: 'Cabinets',
 };
 
-/** Material spatial spring: a light overshoot, so movement reads as physical. */
+const SOURCE_LABELS: Record<string, string> = {
+  richemont: 'Richemont',
+  kering: 'Kering',
+  loreal: "L'Oréal",
+  courir: 'Courir',
+  lacoste: 'Lacoste',
+  sephora: 'Sephora',
+  puig: 'Puig',
+  'galeries-lafayette': 'Galeries Lafayette',
+  lvmh: 'LVMH',
+  wttj: 'Welcome to the Jungle',
+  fashionjobs: 'FashionJobs',
+};
+
+const RECENCY_OPTIONS = [
+  { value: 3, label: '3 jours' },
+  { value: 7, label: '7 jours' },
+  { value: 30, label: '30 jours' },
+];
+
+/** Material springs: spatial overshoots slightly, effects do not. */
 const SPRING_SPATIAL = { type: 'spring' as const, stiffness: 380, damping: 30 };
-/** Effects spring: no overshoot for opacity and colour. */
 const SPRING_EFFECT = { type: 'spring' as const, stiffness: 400, damping: 40 };
+
+type Filters = {
+  sector: string | null;
+  contract: string | null;
+  city: string | null;
+  group: string | null;
+  maison: string | null;
+  source: string | null;
+  multiSource: boolean;
+  maxAgeDays: number | null;
+};
+
+const EMPTY_FILTERS: Filters = {
+  sector: null,
+  contract: null,
+  city: null,
+  group: null,
+  maison: null,
+  source: null,
+  multiSource: false,
+  maxAgeDays: null,
+};
 
 export function JobsView({ data }: { data: JobsResult }) {
   const [query, setQuery] = useState('');
-  const [sector, setSector] = useState<string | null>(null);
-  const [contract, setContract] = useState<string | null>(null);
-  const [city, setCity] = useState<string | null>(null);
+  const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
+
+  const set = <K extends keyof Filters>(key: K, value: Filters[K]) =>
+    setFilters((current) => ({ ...current, [key]: value }));
+
+  /** Clicking an active value clears it, so every chip is its own toggle. */
+  const toggle = <K extends keyof Filters>(key: K, value: Filters[K]) =>
+    setFilters((current) => ({ ...current, [key]: current[key] === value ? null : value }));
 
   const jobs = useMemo(() => {
     const needle = query.trim().toLowerCase();
+    const cutoff = filters.maxAgeDays ? Date.now() - filters.maxAgeDays * 86_400_000 : null;
+
     return data.jobs.filter((job) => {
-      if (sector && job.sector !== sector) return false;
-      if (contract && job.contract !== contract) return false;
-      if (city && job.city !== city) return false;
+      if (filters.sector && job.sector !== filters.sector) return false;
+      if (filters.contract && job.contract !== filters.contract) return false;
+      if (filters.city && job.city !== filters.city) return false;
+      if (filters.group && job.group !== filters.group) return false;
+      if (filters.maison && job.company !== filters.maison) return false;
+      if (filters.source && !job.sources.includes(filters.source)) return false;
+      if (filters.multiSource && job.sourceCount < 2) return false;
+      if (cutoff && (!job.postedAt || new Date(job.postedAt).getTime() < cutoff)) return false;
       if (needle && !`${job.title} ${job.company}`.toLowerCase().includes(needle)) return false;
       return true;
     });
-  }, [data.jobs, query, sector, contract, city]);
+  }, [data.jobs, query, filters]);
 
-  const activeFilters = [sector, contract, city].filter(Boolean).length + (query ? 1 : 0);
+  const activeCount =
+    Object.values(filters).filter((value) => value !== null && value !== false).length +
+    (query ? 1 : 0);
 
-  function reset() {
+  const reset = () => {
+    setFilters(EMPTY_FILTERS);
     setQuery('');
-    setSector(null);
-    setContract(null);
-    setCity(null);
-  }
+  };
 
   return (
     <div className="bg-background flex h-dvh flex-col gap-3 overflow-hidden p-3">
-      {/* Level 2 surface: the toolbar sits above the page plane. */}
       <header className="bg-surface-low shadow-m3-1 shrink-0 rounded-[28px] px-6 py-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-baseline gap-3">
-            {/* headline-small */}
             <h1 className="text-2xl leading-8 font-normal">Catwalks</h1>
             <p className="text-muted-foreground hidden text-sm tracking-[0.25px] sm:block">
               Mode · Luxe · Beauté · Joaillerie · Retail — France
@@ -94,7 +161,6 @@ export function JobsView({ data }: { data: JobsResult }) {
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <div className="relative w-full sm:w-72">
             <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2" />
-            {/* corner-extra-large: a pill search field is core Material shape. */}
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
@@ -103,32 +169,35 @@ export function JobsView({ data }: { data: JobsResult }) {
             />
           </div>
 
-          {data.facets.sectors.map((facet) => (
-            <FilterChip
+          {data.facets.sectors.slice(0, 5).map((facet) => (
+            <Chip
               key={facet.value}
-              active={sector === facet.value}
-              onClick={() => setSector(sector === facet.value ? null : facet.value)}
+              active={filters.sector === facet.value}
+              onClick={() => toggle('sector', facet.value)}
               count={facet.count}
             >
               {SECTOR_LABELS[facet.value] ?? facet.value}
-            </FilterChip>
+            </Chip>
           ))}
 
-          {data.facets.contracts.slice(0, 3).map((facet) => (
-            <FilterChip
-              key={facet.value}
-              active={contract === facet.value}
-              onClick={() => setContract(contract === facet.value ? null : facet.value)}
-            >
-              {facet.value}
-            </FilterChip>
-          ))}
+          <Chip active={filters.multiSource} onClick={() => set('multiSource', !filters.multiSource)}>
+            <Layers className="size-4" />
+            Confirmées
+          </Chip>
 
-          {activeFilters > 0 && (
+          <AllFilters
+            data={data}
+            filters={filters}
+            toggle={toggle}
+            set={set}
+            activeCount={activeCount}
+          />
+
+          {activeCount > 0 && (
             <Button
               variant="ghost"
               onClick={reset}
-              className="text-muted-foreground hover:bg-surface ml-auto h-10 rounded-full px-4 text-sm font-medium tracking-[0.1px]"
+              className="text-muted-foreground hover:bg-surface h-10 rounded-full px-4 text-sm font-medium"
             >
               <X className="size-4" />
               Effacer
@@ -141,7 +210,7 @@ export function JobsView({ data }: { data: JobsResult }) {
         <div className="bg-surface-low shadow-m3-1 min-h-0 overflow-hidden rounded-[28px]">
           <ScrollArea className="h-full">
             {jobs.length === 0 ? (
-              <EmptyState hasFilters={activeFilters > 0} onReset={reset} />
+              <EmptyState hasFilters={activeCount > 0} onReset={reset} />
             ) : (
               <ul className="p-2">
                 {jobs.map((job, index) => (
@@ -152,7 +221,11 @@ export function JobsView({ data }: { data: JobsResult }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ ...SPRING_SPATIAL, delay: Math.min(index, 14) * 0.02 }}
                   >
-                    <JobCard job={job} onSelectCity={setCity} isCityActive={city === job.city} />
+                    <JobCard
+                      job={job}
+                      onSelectCity={(city) => toggle('city', city)}
+                      isCityActive={filters.city === job.city}
+                    />
                   </motion.li>
                 ))}
               </ul>
@@ -161,8 +234,12 @@ export function JobsView({ data }: { data: JobsResult }) {
         </div>
 
         <div className="bg-surface-low shadow-m3-1 relative min-h-72 overflow-hidden rounded-[28px] lg:min-h-0">
-          <JobMap jobs={jobs} selectedCity={city} onSelectCity={setCity} />
-          {city && (
+          <JobMap
+            jobs={jobs}
+            selectedCity={filters.city}
+            onSelectCity={(city) => set('city', city)}
+          />
+          {filters.city && (
             <motion.div
               initial={{ opacity: 0, scale: 0.94 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -170,11 +247,11 @@ export function JobsView({ data }: { data: JobsResult }) {
               className="absolute top-4 left-4 z-[1000]"
             >
               <Button
-                onClick={() => setCity(null)}
-                className="shadow-m3-2 h-10 rounded-full px-4 text-sm font-medium tracking-[0.1px]"
+                onClick={() => set('city', null)}
+                className="shadow-m3-2 h-10 rounded-full px-4 text-sm font-medium"
               >
                 <MapPin className="size-4" />
-                {city}
+                {filters.city}
                 <X className="size-4 opacity-70" />
               </Button>
             </motion.div>
@@ -185,12 +262,146 @@ export function JobsView({ data }: { data: JobsResult }) {
   );
 }
 
+/** Everything that does not fit the toolbar: Maison, group, city, source, recency. */
+function AllFilters({
+  data,
+  filters,
+  toggle,
+  set,
+  activeCount,
+}: {
+  data: JobsResult;
+  filters: Filters;
+  toggle: <K extends keyof Filters>(key: K, value: Filters[K]) => void;
+  set: <K extends keyof Filters>(key: K, value: Filters[K]) => void;
+  activeCount: number;
+}) {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button
+          variant="ghost"
+          className="hover:bg-surface h-10 rounded-full px-4 text-sm font-medium"
+        >
+          <SlidersHorizontal className="size-4" />
+          Filtres
+          {activeCount > 0 && (
+            <span className="bg-primary text-primary-foreground ml-1 flex size-5 items-center justify-center rounded-full text-[11px] tabular-nums">
+              {activeCount}
+            </span>
+          )}
+        </Button>
+      </SheetTrigger>
+
+      <SheetContent className="bg-surface-low w-full gap-0 border-0 p-0 sm:max-w-md">
+        <SheetHeader className="px-6 pt-6 pb-2">
+          <SheetTitle className="text-2xl leading-8 font-normal">Filtres</SheetTitle>
+        </SheetHeader>
+
+        <ScrollArea className="h-[calc(100dvh-6rem)] px-6 pb-6">
+          <FacetGroup
+            title="Contrat"
+            items={data.facets.contracts}
+            active={filters.contract}
+            onToggle={(value) => toggle('contract', value)}
+          />
+          <FacetGroup
+            title="Groupe"
+            items={data.facets.groups}
+            active={filters.group}
+            onToggle={(value) => toggle('group', value)}
+          />
+          <FacetGroup
+            title="Maison"
+            items={data.facets.maisons.slice(0, 24)}
+            active={filters.maison}
+            onToggle={(value) => toggle('maison', value)}
+          />
+          <FacetGroup
+            title="Ville"
+            items={data.facets.cities.slice(0, 24)}
+            active={filters.city}
+            onToggle={(value) => toggle('city', value)}
+          />
+          <FacetGroup
+            title="Source"
+            items={data.facets.sources}
+            active={filters.source}
+            onToggle={(value) => toggle('source', value)}
+            label={(value) => SOURCE_LABELS[value] ?? value}
+          />
+
+          <section className="py-4">
+            <h3 className="text-muted-foreground mb-3 text-xs font-medium tracking-[0.5px] uppercase">
+              Publiée depuis
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {RECENCY_OPTIONS.map((option) => (
+                <Chip
+                  key={option.value}
+                  active={filters.maxAgeDays === option.value}
+                  onClick={() =>
+                    set('maxAgeDays', filters.maxAgeDays === option.value ? null : option.value)
+                  }
+                >
+                  <Clock className="size-4" />
+                  {option.label}
+                </Chip>
+              ))}
+            </div>
+          </section>
+        </ScrollArea>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+function FacetGroup({
+  title,
+  items,
+  active,
+  onToggle,
+  label,
+}: {
+  title: string;
+  items: { value: string; count: number }[];
+  active: string | null;
+  onToggle: (value: string) => void;
+  label?: (value: string) => string;
+}) {
+  if (items.length === 0) return null;
+
+  return (
+    <>
+      <section className="py-4">
+        <h3 className="text-muted-foreground mb-3 text-xs font-medium tracking-[0.5px] uppercase">
+          {title}
+        </h3>
+        <div className="flex flex-wrap gap-2">
+          {items.map((item) => (
+            <Chip
+              key={item.value}
+              active={active === item.value}
+              onClick={() => onToggle(item.value)}
+              count={item.count}
+            >
+              {active === item.value && <Check className="size-4" />}
+              {label ? label(item.value) : item.value}
+            </Chip>
+          ))}
+        </div>
+      </section>
+      <Separator className="bg-border/60" />
+    </>
+  );
+}
+
 /**
- * Material filter chip: fully rounded, tinted when selected. shadcn's Button
- * cannot express the chip's selected-container state without being overridden
- * into something else entirely, so the primitive stays untouched.
+ * Material filter chip. shadcn's Button cannot express the selected-container
+ * state without being overridden into something else, so the primitive is left
+ * untouched rather than fought with.
  */
-function FilterChip({
+function Chip({
   children,
   active,
   onClick,
@@ -236,12 +447,10 @@ function JobCard({
         rel="noopener noreferrer"
         className="focus-visible:ring-ring inline-flex items-center gap-1.5 rounded-lg focus-visible:ring-2 focus-visible:outline-none"
       >
-        {/* title-medium */}
         <span className="text-base leading-6 font-medium tracking-[0.15px]">{job.title}</span>
         <ArrowUpRight className="text-muted-foreground size-4 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
       </a>
 
-      {/* title-small */}
       <div className="mt-1 flex items-center gap-1.5 text-sm leading-5 font-medium tracking-[0.1px]">
         <Building2 className="text-muted-foreground size-4 shrink-0" />
         <span className="truncate">{job.company}</span>
@@ -250,7 +459,6 @@ function JobCard({
         )}
       </div>
 
-      {/* label-medium */}
       <div className="text-muted-foreground mt-2 flex flex-wrap items-center gap-2 text-xs font-medium tracking-[0.5px]">
         {job.city && (
           <button
@@ -258,9 +466,7 @@ function JobCard({
             onClick={() => onSelectCity(job.city!)}
             className={cn(
               'focus-visible:ring-ring inline-flex items-center gap-1 rounded-full px-2 py-1 transition-colors focus-visible:ring-2 focus-visible:outline-none',
-              isCityActive
-                ? 'bg-accent text-accent-foreground'
-                : 'bg-surface hover:bg-surface-high',
+              isCityActive ? 'bg-accent text-accent-foreground' : 'bg-surface hover:bg-surface-high',
             )}
           >
             <MapPin className="size-3" />
@@ -269,12 +475,13 @@ function JobCard({
         )}
 
         {job.contract && <span className="bg-surface rounded-full px-2 py-1">{job.contract}</span>}
-
         {job.postedAt && <span className="tabular-nums">{relativeDate(job.postedAt)}</span>}
 
-        {/* The product's differentiator: one canonical job, N sources. */}
         {job.sourceCount > 1 && (
-          <span className="inline-flex items-center gap-1">
+          <span
+            className="inline-flex items-center gap-1"
+            title={`Confirmée par ${job.sourceCount} sources — lien employeur retenu`}
+          >
             <Layers className="size-3" />
             <span className="tabular-nums">{job.sourceCount}</span> sources
           </span>
@@ -299,10 +506,7 @@ function EmptyState({ hasFilters, onReset }: { hasFilters: boolean; onReset: () 
         </p>
       </div>
       {hasFilters && (
-        <Button
-          onClick={onReset}
-          className="h-10 rounded-full px-6 text-sm font-medium tracking-[0.1px]"
-        >
+        <Button onClick={onReset} className="h-10 rounded-full px-6 text-sm font-medium">
           Effacer les filtres
         </Button>
       )}
