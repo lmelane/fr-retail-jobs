@@ -136,7 +136,22 @@ async function ingestSitemapSource(
  * handled by their own connectors, not here.
  */
 export async function runIngest(prisma: PrismaClient): Promise<IngestStats[]> {
-  const sources = plainHttpSources().filter((source) => source.kind === 'SITEMAP_JSONLD');
+  const sources = plainHttpSources()
+    .filter((source) => source.kind === 'SITEMAP_JSONLD')
+    // Skip EMPLOYER sources the sector filter would reject anyway: Decathlon
+    // alone declares a 10s crawl-delay, so 250 offers cost 42 minutes entirely
+    // spent fetching pages that get discarded at classification.
+    //
+    // Jobboards are never skipped here — their employer varies per offer, so
+    // filtering on the board's own name would drop the whole board.
+    .filter(
+      (source) => source.flow === 'JOBBOARD' || classifySector({ company: source.company }).inScope,
+    )
+    // Cheapest sources first: a run that gets cut short should still have
+    // written the offers that cost the least to obtain.
+    .sort((a, b) => (a.crawlDelaySeconds ?? 0) - (b.crawlDelaySeconds ?? 0));
+
+  console.log(`[ingest] ${sources.length} sources: ${sources.map((s) => s.key).join(', ')}`);
   const results: IngestStats[] = [];
 
   for (const source of sources) {

@@ -9,12 +9,27 @@ import { prisma } from '@catwalks/db';
  * sample data off as real listings.
  */
 
+/**
+ * Filters mirror the aggregator's own model, so the UI exposes the whole
+ * pipeline rather than a subset of it:
+ *  - sector / maison / group  -> the 713-house reference list
+ *  - contract                 -> the normalized contract vocabulary
+ *  - city                     -> the collapsed location (Paris 8 -> PARIS)
+ *  - source                   -> which connector saw the offer
+ *  - multiSource              -> jobs confirmed by several sources
+ *  - recency                  -> lifecycle freshness
+ */
 export type JobFilters = {
   q?: string;
   sector?: string;
   contract?: string;
   city?: string;
   group?: string;
+  maison?: string;
+  source?: string;
+  multiSource?: boolean;
+  /** Days since posting; undefined means no limit. */
+  maxAgeDays?: number;
 };
 
 export type JobRow = {
@@ -31,6 +46,8 @@ export type JobRow = {
   latitude: number | null;
   longitude: number | null;
   sourceCount: number;
+  /** Registry keys of every source that reported this job. */
+  sources: string[];
 };
 
 export type JobsResult = {
@@ -41,6 +58,9 @@ export type JobsResult = {
     sectors: { value: string; count: number }[];
     contracts: { value: string; count: number }[];
     cities: { value: string; count: number }[];
+    groups: { value: string; count: number }[];
+    maisons: { value: string; count: number }[];
+    sources: { value: string; count: number }[];
   };
 };
 
@@ -59,6 +79,7 @@ const DEMO_JOBS: JobRow[] = [
     latitude: 48.859,
     longitude: 2.347,
     sourceCount: 3,
+    sources: ['dior', 'lvmh', 'fashionjobs'],
   },
   {
     id: 'demo-2',
@@ -74,6 +95,7 @@ const DEMO_JOBS: JobRow[] = [
     latitude: 48.9239,
     longitude: 2.1112,
     sourceCount: 1,
+    sources: ['courir'],
   },
   {
     id: 'demo-3',
@@ -89,6 +111,7 @@ const DEMO_JOBS: JobRow[] = [
     latitude: 48.859,
     longitude: 2.347,
     sourceCount: 2,
+    sources: ['lvmh', 'fashionjobs'],
   },
   {
     id: 'demo-4',
@@ -104,6 +127,7 @@ const DEMO_JOBS: JobRow[] = [
     latitude: 43.5555,
     longitude: 7.0046,
     sourceCount: 1,
+    sources: ['richemont'],
   },
   {
     id: 'demo-5',
@@ -119,6 +143,7 @@ const DEMO_JOBS: JobRow[] = [
     latitude: 48.872,
     longitude: 2.3,
     sourceCount: 2,
+    sources: ['lvmh', 'wttj'],
   },
   {
     id: 'demo-6',
@@ -134,6 +159,7 @@ const DEMO_JOBS: JobRow[] = [
     latitude: 45.758,
     longitude: 4.835,
     sourceCount: 1,
+    sources: ['richemont'],
   },
 ];
 
@@ -148,13 +174,32 @@ function countBy(rows: JobRow[], pick: (row: JobRow) => string | null) {
     .sort((a, b) => b.count - a.count);
 }
 
+/** A job carries several sources, so it counts once per source it was seen in. */
+function countBySource(rows: JobRow[]) {
+  const counts = new Map<string, number>();
+  for (const row of rows) {
+    for (const source of row.sources) counts.set(source, (counts.get(source) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .map(([value, count]) => ({ value, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
 function applyFilters(rows: JobRow[], filters: JobFilters): JobRow[] {
   const needle = filters.q?.trim().toLowerCase();
+  const cutoff = filters.maxAgeDays
+    ? Date.now() - filters.maxAgeDays * 86_400_000
+    : null;
+
   return rows.filter((row) => {
     if (filters.sector && row.sector !== filters.sector) return false;
     if (filters.contract && row.contract !== filters.contract) return false;
     if (filters.city && row.city !== filters.city) return false;
     if (filters.group && row.group !== filters.group) return false;
+    if (filters.maison && row.company !== filters.maison) return false;
+    if (filters.source && !row.sources.includes(filters.source)) return false;
+    if (filters.multiSource && row.sourceCount < 2) return false;
+    if (cutoff && (!row.postedAt || new Date(row.postedAt).getTime() < cutoff)) return false;
     if (needle && !`${row.title} ${row.company}`.toLowerCase().includes(needle)) return false;
     return true;
   });
@@ -179,7 +224,10 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
             }
           : {}),
       },
-      include: { company: true, _count: { select: { sources: true } } },
+      include: {
+        company: true,
+        sources: { select: { sourceKey: true }, where: { isActive: true } },
+      },
       orderBy: [{ postedAt: 'desc' }, { firstSeenAt: 'desc' }],
       take: 500,
     });
@@ -197,7 +245,8 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
       postedAt: row.postedAt,
       latitude: row.latitude,
       longitude: row.longitude,
-      sourceCount: row._count.sources,
+      sourceCount: row.sources.length,
+      sources: row.sources.map((source) => source.sourceKey),
     }));
 
     const filtered = applyFilters(jobs, filters);
@@ -209,6 +258,9 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
         sectors: countBy(jobs, (job) => job.sector),
         contracts: countBy(jobs, (job) => job.contract),
         cities: countBy(jobs, (job) => job.city),
+        groups: countBy(jobs, (job) => job.group),
+        maisons: countBy(jobs, (job) => job.company),
+        sources: countBySource(jobs),
       },
     };
   } catch {
@@ -222,6 +274,9 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
         sectors: countBy(DEMO_JOBS, (job) => job.sector),
         contracts: countBy(DEMO_JOBS, (job) => job.contract),
         cities: countBy(DEMO_JOBS, (job) => job.city),
+        groups: countBy(DEMO_JOBS, (job) => job.group),
+        maisons: countBy(DEMO_JOBS, (job) => job.company),
+        sources: countBySource(DEMO_JOBS),
       },
     };
   }
