@@ -71,9 +71,10 @@ body {
 }
 
 body {
-  background: var(--color-paper);
-  color: var(--color-ink);
+  /* Colours come from the @layer base rule below (bg-background/text-foreground);
+     setting them here too would just be a second source of truth. */
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 /* Leaflet ships its own chrome; only the typography is aligned with the app. */
