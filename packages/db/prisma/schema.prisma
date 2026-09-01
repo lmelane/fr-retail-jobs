@@ -49,6 +49,7 @@ enum DiscoveryStatus {
 }
 
 enum AtsType {
+  EIGHTFOLD
   AVATURE
   TEAMTAILOR
   DIGITALRECRUITERS
