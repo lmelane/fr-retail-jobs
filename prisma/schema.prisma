@@ -74,6 +74,40 @@ model CompanyAlias {
   createdAt   DateTime @default(now())
 }
 
+/**
+ * Where a canonical Job was seen. One row per (job, source).
+ *
+ * This is the whole point of the aggregator: the same opening reaches us from the
+ * Maison's careers site, the group portal and a jobboard, and Catwalks keeps ONE
+ * Job carrying N JobSource rows — never three listings.
+ *
+ * A lower-priority source stays attached even when it is not canonical: it is what
+ * detects an edit or a closure when the canonical source is slow to update.
+ */
+model JobSource {
+  id          String   @id @default(cuid())
+  jobId       String
+  job         Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  /** Registry key: 'richemont', 'wttj', 'fashionjobs'… */
+  sourceKey   String
+  /** EMPLOYER_DIRECT | GROUP_OFFICIAL | ATS_OFFICIAL | SPECIALIST_JOBBOARD | AGGREGATOR */
+  sourceTier  String
+  /** Identifier as this source knows it. */
+  externalId  String
+  /** Apply URL at THIS source; the canonical one lives on Job.url. */
+  url         String
+  title       String?
+  postedAt    DateTime?
+  firstSeenAt DateTime @default(now())
+  lastSeenAt  DateTime @default(now())
+  isActive    Boolean  @default(true)
+  raw         Json?
+
+  @@unique([sourceKey, externalId])
+  @@index([jobId])
+  @@index([sourceKey, isActive])
+}
+
 model Job {
   id            String   @id @default(cuid())
   companyId     String
@@ -103,11 +137,25 @@ model Job {
   lastSeenAt    DateTime @default(now())
   isActive      Boolean  @default(true)
   fingerprint   String
+
+  /**
+   * Blocking key of the dedup cluster: resolvedCompanyId|CITY.
+   * Indexed because every write does a cluster lookup before inserting — that
+   * lookup is what keeps duplicates out of the database in the first place,
+   * rather than cleaning them up afterwards.
+   */
+  clusterKey    String?
+  /** Tier of the source that owns Job.url, so a better source can take over. */
+  canonicalTier String?
+
+  sources       JobSource[]
+
   raw           Json?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   @@unique([companyId, source, externalId])
+  @@index([clusterKey])
   @@index([isFrance, isActive])
   @@index([fingerprint])
   @@index([companyId, isActive])
