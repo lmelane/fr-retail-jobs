@@ -49,6 +49,7 @@ enum DiscoveryStatus {
 }
 
 enum AtsType {
+  PHENOM
   SUCCESSFACTORS
   WTTJ
   ASHBY
