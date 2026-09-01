@@ -49,6 +49,7 @@ enum DiscoveryStatus {
 }
 
 enum AtsType {
+  SUCCESSFACTORS
   WTTJ
   ASHBY
   WORKABLE
