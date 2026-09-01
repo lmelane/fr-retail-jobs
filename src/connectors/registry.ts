@@ -29,11 +29,17 @@ export type SourceKind =
  * feeding employer discovery — it is a source of offers in its own right. Scoping
  * the pipeline to one board's roster would cap it at that board's employers, while
  * the target scope is the SECTOR.
+ *
+ * Crucially, flow B is not merely a duplicate of flow A. A jobboard or a search
+ * firm often holds offers that exist NOWHERE else: exclusive mandates, employers
+ * with no public ATS, confidential searches. For those, flow B IS the canonical
+ * source — there is no employer-side posting to prefer over it. Treating flow B as
+ * "just republished flow A" would silently drop real, exclusive jobs.
  */
 export type SourceFlow =
   /** A: the sector's brands, read from their own ATS / careers pages. */
   | 'EMPLOYER'
-  /** B: jobboards, read for their offers directly. */
+  /** B: jobboards, aggregators and search firms, read for their offers directly. */
   | 'JOBBOARD';
 
 /** Ranking used to pick the canonical apply URL when postings are merged. */
@@ -287,6 +293,42 @@ export const JOB_SOURCES: readonly JobSource[] = [
       'The only officially sanctioned source of the set. Free self-serve registration on ' +
       'francetravail.io, OAuth2 client_credentials, scope api_offresdemploiv2. Endpoint confirmed ' +
       'live (401 + WWW-Authenticate: Bearer without a token). Needs credentials before use.',
+  },
+] as const;
+
+/**
+ * Sources deliberately NOT used, with the reason. Recorded so the question does
+ * not get re-litigated from memory in six months — each verdict was verified.
+ */
+export const EXCLUDED_SOURCES = [
+  {
+    key: 'linkedin',
+    reason:
+      'robots.txt sends `User-agent: * / Disallow: /` and its header states in plain words: ' +
+      '"The use of robots or other automated means to access LinkedIn without the express ' +
+      'permission of LinkedIn is strictly prohibited." Access requires their written permission ' +
+      '(whitelist-crawl@linkedin.com). Verified 2026-09-01.',
+  },
+  {
+    key: 'google-jobs',
+    reason:
+      'No public API exists — Cloud Talent Solution is deprecated and never served aggregated ' +
+      'results anyway. The only programmatic access is paid third-party scrapers. Moot in practice: ' +
+      'Google for Jobs does not hold data of its own, it indexes the schema.org JobPosting JSON-LD ' +
+      'that employers publish — the exact source our generic connector already reads, one hop earlier ' +
+      'and for free. Verified 2026-09-01.',
+  },
+  {
+    key: 'indeed',
+    reason:
+      'robots.txt disallows every French job path (/emplois/FR/, /emploi/, /viewjob?, /voir-emploi?). ' +
+      'An official Indeed connector is the sanctioned route if that data is ever needed.',
+  },
+  {
+    key: 'monster-fr',
+    reason:
+      'DataDome-walled: robots.txt itself is unreadable, so the legal posture cannot be established. ' +
+      'Off-limits by default rather than by assumption.',
   },
 ] as const;
 

@@ -37,15 +37,71 @@ const LVMH_BUSINESS_GROUP_SECTORS: Record<string, Sector> = {
 
 /** Employer-name signals, checked against the canonical (accent-free) name. */
 const COMPANY_SIGNALS: ReadonlyArray<readonly [Sector, RegExp]> = [
-  ['BEAUTY', /SEPHORA|NOCIBE|MARIONNAUD|YVES ROCHER|CLARINS|LOREAL|L OREAL|ESTEE LAUDER|GUERLAIN|KIKO|RITUALS|OCCITANE|PARFUM|COSMETIC|BEAUTY/],
-  ['JEWELRY_WATCHES', /CARTIER|VAN CLEEF|CHAUMET|BOUCHERON|MESSIKA|SWAROVSKI|PANDORA|HISTOIRE D OR|TAG HEUER|HUBLOT|ZENITH|ROLEX|JOAILLERIE|HORLOGERIE/],
+  // \b around OCCITANE: without it "Banque Populaire Occitane" and "Cerfrance
+  // Gascogne Occitane" match L'OCCITANE — measured on real WTTJ data.
+  ['BEAUTY', /SEPHORA|NOCIBE|MARIONNAUD|YVES ROCHER|CLARINS|LOREAL|L OREAL|ESTEE LAUDER|GUERLAIN|KIKO|RITUALS|\bL ?OCCITANE\b|PARFUM|COSMETIC|BEAUTY/],
+  // Watchmaking is a first-class Catwalks segment, not a footnote to jewellery:
+  // Swiss houses (Rolex, Patek, Omega…) and the French chains that retail them.
+  [
+    'JEWELRY_WATCHES',
+    new RegExp(
+      [
+        /CARTIER|VAN CLEEF|CHAUMET|BOUCHERON|MESSIKA|MAUBOUSSIN|\bFRED\b|REPOSSI|POIRAY|DINH VAN|SWAROVSKI|PANDORA/,
+        /HISTOIRE D OR|JULIEN D ORCEL|MARC ORIAN|CLEOR|OCARAT|\bTRESOR\b/,
+        /TAG HEUER|HUBLOT|ZENITH|ROLEX|PATEK|\bOMEGA\b|BREITLING|\bIWC\b|JAEGER|LONGINES|TISSOT|SWATCH/,
+        /BELL AND ROSS|BREGUET|BLANCPAIN|VACHERON|AUDEMARS|PIAGET|PANERAI|\bTUDOR\b|SEIKO|CITIZEN|FESTINA/,
+        /ICE WATCH|BUCHERER|WEMPE|JOAILL|HORLOG|BIJOUTERIE|WATCHMAK/,
+      ]
+        .map((part) => part.source)
+        .join('|'),
+    ),
+  ],
   ['LUXURY', /LOUIS VUITTON|DIOR|CHANEL|HERMES|GUCCI|PRADA|BALENCIAGA|SAINT LAURENT|CELINE|GIVENCHY|FENDI|LOEWE|LORO PIANA|BERLUTI|KENZO|CHLOE|LANVIN|BALMAIN|JACQUEMUS|RICHEMONT|KERING|LVMH/],
   ['FASHION', /ZARA|H ?ET ?M|H&M|UNIQLO|MANGO|PRIMARK|KIABI|CELIO|JULES|SANDRO|MAJE|CLAUDIE PIERLOT|SMCP|LACOSTE|SEZANE|BA ?SH|AMI PARIS|ISABEL MARANT|VEJA|PATOU|ETAM|PIMKIE|MODE|FASHION|COUTURE|APPAREL|TEXTILE|PRET A PORTER/],
   ['RETAIL', /GALERIES LAFAYETTE|PRINTEMPS|BON MARCHE|BHV|COURIR|FOOT ?LOCKER|INTERSPORT|DECATHLON|GO SPORT|SNEAKER|BOUTIQUE|RETAIL|DEPARTMENT STORE/],
 ];
 
-/** Employers that are clearly outside the vertical, whatever the job title. */
-const OUT_OF_SECTOR = /CARREFOUR|LECLERC|INTERMARCHE|AUCHAN|LIDL|CASINO|MONOPRIX|FRANPRIX|MCDONALD|BURGER KING|KFC|TOTAL ?ENERGIES|ORANGE|SFR|BOUYGUES|SNCF|RATP|AIR FRANCE|BNP|SOCIETE GENERALE|CREDIT AGRICOLE|AXA|CAPGEMINI|ATOS|SOPRA/;
+/**
+ * Employers clearly outside the vertical, whatever the job title.
+ *
+ * Seeded from what actually showed up in the data: on one Welcome to the Jungle
+ * shard, 95.8% of French offers were out of sector, led by Intermarché (839),
+ * Carrefour (240), Ministère des Armées (223), Vinci, Thales and EDF. A generalist
+ * jobboard is mostly noise for us, so this list earns its keep.
+ */
+const OUT_OF_SECTOR_RE = new RegExp(
+  [
+    // Food retail and fast food. Monoprix and Carrefour do sell clothing, but
+    // general-purpose distribution is not the Catwalks vertical.
+    /CARREFOUR|LECLERC|INTERMARCHE|MOUSQUETAIRES|AUCHAN|LIDL|\bALDI\b|\bCASINO\b|MONOPRIX|FRANPRIX|\bCORA\b|SYSTEME U/,
+    /MCDONALD|BURGER KING|\bKFC\b|\bQUICK\b|SUBWAY|DOMINO/,
+    // Sports equipment. Deliberate call: a Decathlon sales role is a different job
+    // and a different candidate from a Dior client advisor. Fashion footwear stays
+    // in scope (Courir, Foot Locker) — sporting goods do not.
+    /DECATHLON|INTERSPORT|GO ?SPORT|SPORT ?2000|\bALLTRICKS\b|COURIR ?SPORT|SPORTS? DIRECT|\bDDECATHLON\b/,
+    // Energy, transport, industry.
+    /TOTAL ?ENERGIES|ENGIE|\bEDF\b|VEOLIA|\bSUEZ\b|ORANGE|\bSFR\b|BOUYGUES|\bFREE\b|\bSNCF\b|\bRATP\b|AIR FRANCE/,
+    /VINCI|EIFFAGE|COLAS|SAFRAN|THALES|DASSAULT|FRAMATOME|ALSTOM|RENAULT|STELLANTIS|MICHELIN/,
+    // Banking, insurance, accountancy.
+    /\bBNP\b|SOCIETE GENERALE|CREDIT AGRICOLE|BANQUE|CAISSE D EPARGNE|\bAXA\b|ALLIANZ|\bMAIF\b|MACIF|GENERALI|MUTUELLE|CERFRANCE/,
+    // IT services, public sector, healthcare, real estate.
+    /CAPGEMINI|\bATOS\b|SOPRA|ACCENTURE|MINISTERE|ARMEES|GENDARMERIE|POLICE NATIONALE/,
+    /HOPITAL|\bCHU\b|CLINIQUE|EHPAD|\bORPI\b|CENTURY 21|FONCIA|EFFICITY/,
+  ]
+    .map((part) => part.source)
+    .join('|'),
+);
+
+/**
+ * Industry words in the employer name. Weaker than a known-employer match, but it
+ * catches the long tail of brands no hand-written list will ever contain.
+ */
+const SECTOR_KEYWORDS: ReadonlyArray<readonly [Sector, RegExp]> = [
+  ['BEAUTY', /\b(PARFUM|COSMETIQUE|COSMETIC|BEAUTE|BEAUTY|SKINCARE|MAQUILLAGE)\b/],
+  ['JEWELRY_WATCHES', /\b(JOAILL|BIJOU|HORLOG|WATCH|JEWEL)\w*/],
+  ['FASHION', /\b(MODE|FASHION|COUTURE|PRET A PORTER|TEXTILE|MAROQUINERIE|CHAUSSURE|LINGERIE|APPAREL|LUXE|LUXURY)\b/],
+  ['RETAIL', /\b(BOUTIQUE|RETAIL|CONCEPT STORE|GRANDS MAGASINS|DEPARTMENT STORE)\b/],
+];
 
 function canonical(value: string): string {
   return value
@@ -72,16 +128,26 @@ export function classifySector(input: {
 
   const company = canonical(input.company);
 
-  if (OUT_OF_SECTOR.test(company)) {
+  // Exclusions win over everything: a known out-of-sector employer is out even if
+  // its name happens to contain an industry word.
+  if (OUT_OF_SECTOR_RE.test(company)) {
     return { sector: 'OTHER', inScope: false, reason: 'employer outside the vertical' };
   }
 
   for (const [sector, pattern] of COMPANY_SIGNALS) {
     if (pattern.test(company)) {
-      return { sector, inScope: true, reason: `employer matches ${sector}` };
+      return { sector, inScope: true, reason: `known ${sector} employer` };
     }
   }
 
-  // Unknown employer: needs a human decision rather than a silent guess.
+  // Long tail: an industry word in the name, for brands no list will ever hold.
+  for (const [sector, pattern] of SECTOR_KEYWORDS) {
+    if (pattern.test(company)) {
+      return { sector, inScope: true, reason: `sector keyword in employer name (${sector})` };
+    }
+  }
+
+  // Unknown employer: excluded, but flagged so a human can promote it to the
+  // reference list. Silence here is what lets a real Maison go missing.
   return { sector: 'OTHER', inScope: false, reason: 'employer not recognised; needs review' };
 }
