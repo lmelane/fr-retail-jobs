@@ -50,6 +50,11 @@ const SECTOR_LABELS: Record<string, string> = {
   SUPPLIER: 'Fournisseurs',
   MEDIA_AGENCY: 'Médias',
   RECRUITER: 'Cabinets',
+  // Employers the 728-house reference list does not name — enseignes reached
+  // through a jobboard rather than their own ATS. "UNKNOWN" read as a bug; the
+  // offers are real, they simply sit outside the reference list.
+  OTHER: 'Hors référentiel',
+  UNKNOWN: 'Hors référentiel',
 };
 
 const SOURCE_LABELS: Record<string, string> = {
@@ -174,8 +179,14 @@ export function JobsView({ data }: { data: JobsResult }) {
         </div>
 
         <div className="ml-auto flex shrink-0 items-center gap-2">
+          {/* Two numbers, because they answer different questions: what you are
+              looking at now, and how many offers exist. Printing only the first
+              made a capped page read as the whole database. */}
           <span className="text-muted-foreground text-xs font-medium tracking-[0.5px] tabular-nums">
             {jobs.length.toLocaleString('fr-FR')}
+            {data.totalInDatabase > jobs.length && (
+              <span className="opacity-60"> / {data.totalInDatabase.toLocaleString('fr-FR')}</span>
+            )}
           </span>
           {data.isDemo && (
             <Badge className="bg-accent text-accent-foreground rounded-full border-0 px-3 py-1 text-xs font-medium">
@@ -206,56 +217,52 @@ export function JobsView({ data }: { data: JobsResult }) {
       {/* Indeed shape: list on the left, the offer itself on the right. Reading
           a posting must not cost the list, since candidates compare. */}
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+        {/* Liste and Carte are two views of the SAME result set, so they belong
+            to the same pane. They used to sit above the detail, which meant
+            opening the map hid the offer you were reading — the map answers
+            "where are these jobs", never "what is this job". */}
         <div className="bg-surface-low shadow-m3-1 min-h-0 overflow-hidden rounded-[28px]">
-          <ScrollArea className="h-full">
-            {jobs.length === 0 ? (
-              <EmptyState hasFilters={activeCount > 0} onReset={reset} />
-            ) : (
-              <ul className="p-2">
-                {jobs.map((job, index) => (
-                  <motion.li
-                    key={job.id}
-                    layout="position"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ ...SPRING_SPATIAL, delay: Math.min(index, 14) * 0.02 }}
-                  >
-                    <JobCard
-                      job={job}
-                      onSelect={() => setSelectedId(job.id)}
-                      isSelected={selected?.id === job.id}
-                      onSelectCity={(value) => toggle('city', value)}
-                      isCityActive={filters.city === job.city}
-                    />
-                  </motion.li>
-                ))}
-              </ul>
-            )}
-          </ScrollArea>
-        </div>
-
-        <div className="bg-surface-low shadow-m3-1 min-h-72 overflow-hidden rounded-[28px] lg:min-h-0">
-          <Tabs defaultValue="detail" className="flex h-full flex-col gap-0">
+          <Tabs defaultValue="list" className="flex h-full flex-col gap-0">
             <TabsList className="bg-surface m-3 h-10 w-fit shrink-0 rounded-full p-1">
-              <TabsTrigger value="detail" className="rounded-full px-4 text-sm">
-                Offre
+              <TabsTrigger value="list" className="rounded-full px-4 text-sm">
+                Liste
               </TabsTrigger>
               <TabsTrigger value="map" className="rounded-full px-4 text-sm">
                 Carte
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="detail" className="min-h-0 flex-1">
-              {selected ? (
-                <JobDetail job={selected} />
-              ) : (
-                <div className="text-muted-foreground grid h-full place-items-center px-6 text-center text-sm tracking-[0.25px]">
-                  Sélectionnez une offre pour lire le détail.
-                </div>
-              )}
+            <TabsContent value="list" className="min-h-0 flex-1">
+              <ScrollArea className="h-full">
+                {jobs.length === 0 ? (
+                  <EmptyState hasFilters={activeCount > 0} onReset={reset} />
+                ) : (
+                  <ul className="p-2">
+                    {jobs.map((job, index) => (
+                      <motion.li
+                        key={job.id}
+                        layout="position"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ ...SPRING_SPATIAL, delay: Math.min(index, 14) * 0.02 }}
+                      >
+                        <JobCard
+                          job={job}
+                          onSelect={() => setSelectedId(job.id)}
+                          isSelected={selected?.id === job.id}
+                          onSelectCity={(value) => toggle('city', value)}
+                          isCityActive={filters.city === job.city}
+                        />
+                      </motion.li>
+                    ))}
+                  </ul>
+                )}
+              </ScrollArea>
             </TabsContent>
 
             <TabsContent value="map" className="relative min-h-0 flex-1">
+              {/* The map clusters by city, so clicking a marker filters the
+                  list by that city — it does not select a single offer. */}
               <JobMap
                 jobs={jobs}
                 selectedCity={filters.city}
@@ -275,6 +282,18 @@ export function JobsView({ data }: { data: JobsResult }) {
               )}
             </TabsContent>
           </Tabs>
+        </div>
+
+        {/* The offer stays put. Switching the left pane to the map no longer
+            costs the posting being read. */}
+        <div className="bg-surface-low shadow-m3-1 min-h-72 overflow-hidden rounded-[28px] lg:min-h-0">
+          {selected ? (
+            <JobDetail job={selected} />
+          ) : (
+            <div className="text-muted-foreground grid h-full place-items-center px-6 text-center text-sm tracking-[0.25px]">
+              Sélectionnez une offre pour lire le détail.
+            </div>
+          )}
         </div>
       </div>
     </div>

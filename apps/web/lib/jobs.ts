@@ -1,4 +1,5 @@
 import { prisma } from '@catwalks/db';
+import { matchesQuery, searchIndex } from './search';
 
 /**
  * Job queries for the list and the map.
@@ -56,7 +57,10 @@ export type JobRow = {
 
 export type JobsResult = {
   jobs: JobRow[];
+  /** Rows matching the current filters, within the page cap. */
   total: number;
+  /** Every live French offer stored, ignoring filters and the cap. */
+  totalInDatabase: number;
   isDemo: boolean;
   facets: {
     sectors: { value: string; count: number }[];
@@ -208,7 +212,8 @@ function countBySource(rows: JobRow[]) {
 }
 
 function applyFilters(rows: JobRow[], filters: JobFilters): JobRow[] {
-  const needle = filters.q?.trim().toLowerCase();
+  // matchesQuery does its own normalization; keep the raw string.
+  const needle = filters.q?.trim();
   const cutoff = filters.maxAgeDays
     ? Date.now() - filters.maxAgeDays * 86_400_000
     : null;
@@ -222,7 +227,7 @@ function applyFilters(rows: JobRow[], filters: JobFilters): JobRow[] {
     if (filters.source && !row.sources.includes(filters.source)) return false;
     if (filters.multiSource && row.sourceCount < 2) return false;
     if (cutoff && (!row.postedAt || new Date(row.postedAt).getTime() < cutoff)) return false;
-    if (needle && !`${row.title} ${row.company}`.toLowerCase().includes(needle)) return false;
+    if (needle && !matchesQuery(searchIndex(row), needle)) return false;
     return true;
   });
 }
@@ -237,14 +242,9 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
         isFrance: true,
         ...(filters.city ? { city: filters.city } : {}),
         ...(filters.contract ? { contract: filters.contract } : {}),
-        ...(filters.q
-          ? {
-              OR: [
-                { title: { contains: filters.q, mode: 'insensitive' } },
-                { company: { name: { contains: filters.q, mode: 'insensitive' } } },
-              ],
-            }
-          : {}),
+        // Free text is NOT narrowed here: a SQL `contains` on title+company
+        // would drop the rows whose match lives in the description or city
+        // before applyFilters ever sees them.
       },
       include: {
         company: true,
@@ -274,9 +274,17 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
     }));
 
     const filtered = applyFilters(jobs, filters);
+    // How many live French offers the database actually holds, which is NOT
+    // `filtered.length` — that is capped by the `take` above. The header used to
+    // print the capped number, so a growing database still read "500".
+    const totalInDatabase = await prisma.job.count({
+      where: { isActive: true, isFrance: true },
+    });
+
     return {
       jobs: filtered,
       total: filtered.length,
+      totalInDatabase,
       isDemo: false,
       facets: {
         sectors: countBy(jobs, (job) => job.sector),
@@ -298,6 +306,8 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
     return {
       jobs: filtered,
       total: filtered.length,
+      // No database answered, so the demo set is all there is.
+      totalInDatabase: DEMO_JOBS.length,
       isDemo: true,
       facets: {
         sectors: countBy(DEMO_JOBS, (job) => job.sector),
