@@ -1,6 +1,7 @@
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
 import { fetchSitemapUrls } from '../../connectors/generic/jsonLdSitemap.js';
+import { parseMicrodataDescription } from './successfactors.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -162,7 +163,31 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
       }
       if (fresh.length === 0) break;
     }
-    return jobs;
+
+    if (config.withDescriptions === false) return jobs;
+
+    /**
+     * The listing snippet is ~290 characters — an excerpt, not the posting. The
+     * full text lives on the detail page as MICRODATA (itemprop="description"),
+     * the same shape SuccessFactors uses, since its JSON-LD is empty.
+     */
+    const detailLimit = pLimit(Number(config.detailConcurrency ?? 8));
+    return Promise.all(
+      jobs.map((job) =>
+        detailLimit(async () => {
+          try {
+            const html = await fetchText(job.url, { headers: HEADERS });
+            const full = parseMicrodataDescription(html);
+            return full && full.length > (job.description?.length ?? 0)
+              ? { ...job, description: full }
+              : job;
+          } catch {
+            // A failed detail fetch must not lose the listing entry.
+            return job;
+          }
+        }),
+      ),
+    );
   }
 
   const sitemapUrl = String(config.sitemapUrl ?? '');

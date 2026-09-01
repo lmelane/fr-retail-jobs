@@ -1,3 +1,4 @@
+import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
 import type { NormalizedJob } from '../../types.js';
 
@@ -16,10 +17,13 @@ import type { NormalizedJob } from '../../types.js';
  * Verified 2026-09-01 on t-a-o: company record { id: 572, name: "Tape à l'oeil" }
  * and 10 campaigns carrying name, job_type and address.
  *
- * KNOWN LIMIT: no public description. /campaigns/{id} and /campaigns/{slug} both
- * 404, and the public job page is a 2KB SPA shell with no JSON-LD. So these rows
- * carry title, location and contract only, and the detail pane sends the
- * candidate to the employer's page. Low volume, so not worth a browser.
+ * The description lives at /campaigns/{slug} — by SLUG, not by id, and only with
+ * a Referer on the tenant's own host. Without it the endpoint answers 404, which
+ * reads like "no such route" rather than "wrong headers"; I first concluded the
+ * platform published no descriptions at all, which was wrong.
+ *
+ * That payload also carries salary_min/max, remote_level, experience_level and
+ * education_level — fields most of the other adapters never see.
  */
 
 const API = 'https://api.talentview.io/funnel/v2';
@@ -28,6 +32,37 @@ const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
 
 const HEADERS = { 'user-agent': USER_AGENT, accept: 'application/json' };
+
+/** The detail endpoint requires a Referer on the tenant's own host. */
+function detailHeaders(slug: string) {
+  return {
+    ...HEADERS,
+    referer: `https://${slug}.talentview.io/`,
+    origin: `https://${slug}.talentview.io`,
+  };
+}
+
+type CampaignDetail = {
+  description?: string;
+  profile?: string;
+  salary_min?: number;
+  salary_max?: number;
+  salary_currency?: string;
+  remote_level?: string;
+  experience_level?: string;
+};
+
+function stripHtml(value?: string): string | undefined {
+  if (!value) return undefined;
+  const text = value
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&(?:lt|gt|quot|#39);/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text || undefined;
+}
 
 type Website = { id?: number; locale?: string; website_type?: string };
 
@@ -95,5 +130,30 @@ export async function fetchTalentViewJobs(
     .map((campaign) => toNormalized(campaign, slug))
     .filter((job): job is NormalizedJob => job !== null);
 
-  return jobs;
+  if (config.withDescriptions === false) return jobs;
+
+  // The listing carries no text; /campaigns/{slug} does. Keyed by SLUG — the id
+  // 404s — and the campaign slug lives on the raw listing entry.
+  const limit = pLimit(Number(config.detailConcurrency ?? 6));
+  return Promise.all(
+    jobs.map((job) =>
+      limit(async () => {
+        const campaignSlug = (job.raw as Campaign | undefined)?.slug;
+        if (!campaignSlug) return job;
+        try {
+          const detail = await fetchJson<CampaignDetail>(
+            `${API}/companies/${encodeURIComponent(slug)}/campaigns/${encodeURIComponent(campaignSlug)}`,
+            { headers: detailHeaders(slug) },
+          );
+          const description = [stripHtml(detail.description), stripHtml(detail.profile)]
+            .filter(Boolean)
+            .join('\n\n');
+          return description ? { ...job, description, raw: { ...(job.raw as object), detail } } : job;
+        } catch {
+          // A failed detail fetch must not lose the listing entry.
+          return job;
+        }
+      }),
+    ),
+  );
 }

@@ -1,3 +1,4 @@
+import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
 import type { NormalizedJob } from '../../types.js';
 
@@ -12,8 +13,10 @@ import type { NormalizedJob } from '../../types.js';
  * page with `startrow=` pagination, so the whole board is reachable over plain
  * HTTP without a browser.
  *
- * Job detail pages are fetched separately for their description; the listing
- * alone carries title, location and id.
+ * Detail pages carry the posting as MICRODATA, not JSON-LD — schema.org/JobPosting
+ * on a div with itemprop="description" inside. Verified by capturing every XHR on
+ * a Puig job page: nothing but analytics, so the content is server-rendered and a
+ * JSON-LD-only parser silently finds nothing.
  */
 
 const PAGE_SIZE = 25;
@@ -104,5 +107,61 @@ export async function fetchSuccessFactorsJobs(
     }
   }
 
-  return jobs;
+  if (config.withDescriptions === false) return jobs;
+  return attachSuccessFactorsDescriptions(jobs, Number(config.detailConcurrency ?? 8));
+}
+
+/**
+ * Microdata, not JSON-LD: the text sits in itemprop="description".
+ *
+ * The block contains nested divs, so a lazy match up to the first </div> stops
+ * after ~13 characters. The end is found by walking div depth instead.
+ */
+export function parseMicrodataDescription(html: string): string | undefined {
+  const start = html.search(/itemprop="description"[^>]*>/i);
+  if (start === -1) return undefined;
+
+  const openTag = html.slice(start).match(/itemprop="description"[^>]*>/i)?.[0] ?? '';
+  let cursor = start + openTag.length;
+  let depth = 1;
+
+  while (depth > 0 && cursor < html.length) {
+    const next = html.slice(cursor).match(/<(\/?)div\b/i);
+    if (!next || next.index === undefined) break;
+    depth += next[1] ? -1 : 1;
+    cursor += next.index + next[0].length;
+  }
+
+  const match = [undefined, html.slice(start + openTag.length, cursor)] as const;
+  const text = match[1]
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&(?:lt|gt|quot|#39);/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text || undefined;
+}
+
+/** Fills in descriptions from each posting's detail page. */
+export async function attachSuccessFactorsDescriptions(
+  jobs: NormalizedJob[],
+  concurrency = 8,
+): Promise<NormalizedJob[]> {
+  const limit = pLimit(concurrency);
+
+  return Promise.all(
+    jobs.map((job) =>
+      limit(async () => {
+        try {
+          const html = await fetchText(job.url, { headers: HEADERS });
+          const description = parseMicrodataDescription(html);
+          return description ? { ...job, description } : job;
+        } catch {
+          // A failed detail fetch must not lose the listing entry.
+          return job;
+        }
+      }),
+    ),
+  );
 }
