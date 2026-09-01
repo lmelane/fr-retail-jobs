@@ -8,13 +8,34 @@
  * as a weak signal when the employer is unknown.
  */
 
+import { findMaison, type MaisonEntry } from './maisons.js';
+
 export type Sector =
   | 'FASHION'
   | 'LUXURY'
   | 'BEAUTY'
   | 'JEWELRY_WATCHES'
   | 'RETAIL'
+  /** Façonniers, tanneries, métiers d'art — the luxury supply chain. */
+  | 'SUPPLIER'
+  /** Fashion media and PR agencies. */
+  | 'MEDIA_AGENCY'
+  /** Fashion-specialised search firms; they post real Maison roles. */
+  | 'RECRUITER'
   | 'OTHER';
+
+/** Reference-list segments map straight onto sectors; both vocabularies match. */
+const MAISON_SEGMENT_SECTORS: Record<MaisonEntry['segment'], Sector> = {
+  FASHION: 'FASHION',
+  LUXURY: 'LUXURY',
+  BEAUTY: 'BEAUTY',
+  JEWELRY_WATCHES: 'JEWELRY_WATCHES',
+  RETAIL: 'RETAIL',
+  SUPPLIER: 'SUPPLIER',
+  MEDIA_AGENCY: 'MEDIA_AGENCY',
+  RECRUITER: 'RECRUITER',
+  OTHER: 'OTHER',
+};
 
 export type SectorVerdict = {
   sector: Sector;
@@ -128,8 +149,25 @@ export function classifySector(input: {
 
   const company = canonical(input.company);
 
-  // Exclusions win over everything: a known out-of-sector employer is out even if
-  // its name happens to contain an industry word.
+  // The reference list is the authority, and it is checked BEFORE the exclusions:
+  // a verified house always wins over a pattern. Otherwise Clinique matched
+  // /CLINIQUE/ (healthcare) and Vanity Fair matched /BANQUE/ — real Maisons
+  // dropped by a substring collision.
+  //
+  // Regexes alone recognised only 20.9% of the 713 verified houses: Alaïa, Acne
+  // Studios, agnès b. and Alexander McQueen all slipped through. With the list in
+  // front, coverage is 99.6% — the data decides, patterns are the fallback.
+  const maison = findMaison(input.company);
+  if (maison) {
+    const sector = MAISON_SEGMENT_SECTORS[maison.segment] ?? 'OTHER';
+    return {
+      sector,
+      inScope: true,
+      reason: `reference list: ${maison.name}${maison.group ? ` (${maison.group})` : ''}`,
+    };
+  }
+
+  // Not a listed house: exclusions now apply, ahead of the looser patterns.
   if (OUT_OF_SECTOR_RE.test(company)) {
     return { sector: 'OTHER', inScope: false, reason: 'employer outside the vertical' };
   }
