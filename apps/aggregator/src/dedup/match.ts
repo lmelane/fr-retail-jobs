@@ -122,8 +122,40 @@ function daysApart(a?: Date, b?: Date): number {
   return Math.abs(a.getTime() - b.getTime()) / 86_400_000;
 }
 
+/**
+ * Weekly hours written into the title: "30H", "25h", "12,5hrs", "37.5hrs/wk".
+ * Retail part-time contracts differ ONLY by this number, so it decides identity.
+ */
+const WEEKLY_HOURS = /\b(\d{1,2}(?:[.,]\d)?)\s*H(?:RS?|EURES?)?\b(?:\/?(?:WK|W|SEM))?/gi;
+
+function weeklyHours(title: string): string | undefined {
+  const found = [...title.matchAll(WEEKLY_HOURS)].map((m) => m[1].replace(',', '.'));
+  // Several numbers means the hours are not the distinguishing feature.
+  return found.length === 1 ? found[0] : undefined;
+}
+
+/**
+ * True when two postings cannot be the same opening, whatever their titles score.
+ *
+ * Found on a real board, not in a fabricated test: Beaumanoir publishes ten
+ * distinct part-time roles — 24H, 25H, 30H, 35H, a 7H student contract — that
+ * every title metric rates 0.80 to 1.00 because the hours are the only
+ * difference. Clustering them lost 122 of 408 offers, and someone searching for
+ * a 35H post would have seen a single "30H" listing.
+ */
+function cannotBeSameOpening(a: CandidateJob, b: CandidateJob): boolean {
+  // One source never publishes one opening twice. Two rows from the same feed
+  // with different ids are two jobs — this alone would have caught Beaumanoir.
+  if (a.sourceKey === b.sourceKey && a.externalId !== b.externalId) return true;
+
+  const hoursA = weeklyHours(a.title);
+  const hoursB = weeklyHours(b.title);
+  return hoursA !== undefined && hoursB !== undefined && hoursA !== hoursB;
+}
+
 export function isProbableDuplicate(a: CandidateJob, b: CandidateJob): boolean {
   if (blockingKey(a) !== blockingKey(b)) return false;
+  if (cannotBeSameOpening(a, b)) return false;
   if (normalizeJobTitle(a.title) === normalizeJobTitle(b.title)) return true;
   if (daysApart(a.postedAt, b.postedAt) > MAX_DAYS_APART) return false;
   return titleSimilarity(a.title, b.title) >= TITLE_SIMILARITY_THRESHOLD;
