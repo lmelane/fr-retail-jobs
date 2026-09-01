@@ -20,9 +20,15 @@ import type { NormalizedJob } from '../types.js';
  * everything would drown the base in noise.
  */
 
-const CONCURRENCY = Number(process.env.INGEST_CONCURRENCY ?? 4);
-/** Cap per source per run, so one huge sitemap cannot monopolise a cron slot. */
-const MAX_JOBS_PER_SOURCE = Number(process.env.INGEST_MAX_PER_SOURCE ?? 500);
+/**
+ * One HTTP request per offer at ~260ms measured means 500 offers take 2.2 min for
+ * a single source, and eight sources 17 minutes — with no output until the very
+ * end, so the container just looks hung. Hence real parallelism plus progress
+ * logging: a silent pipeline is indistinguishable from a broken one.
+ */
+const CONCURRENCY = Number(process.env.INGEST_CONCURRENCY ?? 12);
+/** Cap per source per run; the rest is picked up by the next cron tick. */
+const MAX_JOBS_PER_SOURCE = Number(process.env.INGEST_MAX_PER_SOURCE ?? 250);
 
 export type IngestStats = {
   source: string;
@@ -66,51 +72,62 @@ async function ingestSitemapSource(
   };
 
   const urls = (await fetchSitemapUrls(source.entryUrl)).slice(0, MAX_JOBS_PER_SOURCE);
-  // Respect a host's declared crawl-delay rather than hammering it.
+  console.log(`[ingest] ${source.key}: ${urls.length} URLs`);
+
+  // A declared crawl-delay forces serial fetching; otherwise run in parallel.
   const limit = pLimit(source.crawlDelaySeconds ? 1 : CONCURRENCY);
   const delayMs = (source.crawlDelaySeconds ?? 0) * 1000;
 
-  const jobs = await Promise.all(
+  // Write as results arrive instead of buffering the whole source: a crash
+  // partway through then keeps everything already ingested.
+  await Promise.all(
     urls.map((url) =>
       limit(async () => {
+        let job;
         try {
-          const job = await fetchJobFromPage(url);
+          job = await fetchJobFromPage(url);
           if (delayMs) await new Promise((resolve) => setTimeout(resolve, delayMs));
-          return job;
         } catch {
           stats.errors++;
-          return null;
+          return;
+        }
+        if (!job) return;
+        stats.fetched++;
+
+        // The employer name comes from the posting when present; the registry
+        // name is the fallback for feeds that omit it.
+        const rawCompany =
+          (job.raw as { hiringOrganization?: { name?: string } } | undefined)?.hiringOrganization
+            ?.name ?? source.company;
+
+        if (!classifySector({ company: rawCompany, title: job.title }).inScope) return;
+        stats.inSector++;
+
+        if (!isFranceJob(job.country, job.location)) return;
+        stats.france++;
+
+        try {
+          const result = await upsertDeduplicated(prisma, toCandidate(job, source, rawCompany));
+          if (result.outcome === 'CREATED') stats.created++;
+          else if (result.outcome === 'MERGED') stats.merged++;
+          else stats.updated++;
+        } catch (error) {
+          stats.errors++;
+          if (stats.errors <= 3) {
+            console.error(
+              `[ingest] ${source.key} write failed:`,
+              error instanceof Error ? error.message : String(error),
+            );
+          }
         }
       }),
     ),
   );
 
-  for (const job of jobs) {
-    if (!job) continue;
-    stats.fetched++;
-
-    // The employer name comes from the posting itself when present; the registry
-    // name is the fallback for feeds that omit it.
-    const rawCompany =
-      (job.raw as { hiringOrganization?: { name?: string } } | undefined)?.hiringOrganization?.name ??
-      source.company;
-
-    if (!classifySector({ company: rawCompany, title: job.title }).inScope) continue;
-    stats.inSector++;
-
-    if (!isFranceJob(job.country, job.location)) continue;
-    stats.france++;
-
-    try {
-      const result = await upsertDeduplicated(prisma, toCandidate(job, source, rawCompany));
-      if (result.outcome === 'CREATED') stats.created++;
-      else if (result.outcome === 'MERGED') stats.merged++;
-      else stats.updated++;
-    } catch {
-      stats.errors++;
-    }
-  }
-
+  console.log(
+    `[ingest] ${source.key}: ${stats.france} FR / ${stats.inSector} in-sector / ${stats.fetched} fetched -> ` +
+      `${stats.created} created, ${stats.merged} merged, ${stats.errors} errors`,
+  );
   return stats;
 }
 

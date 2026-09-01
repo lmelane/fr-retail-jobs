@@ -47,6 +47,23 @@ export async function upsertDeduplicated(
   const clusterKey = blockingKey(candidate);
   const now = new Date();
 
+  // Job.companyId is a foreign key, so the Company row has to exist first —
+  // otherwise every single write fails on a constraint violation and the run
+  // ends with an empty database.
+  const company = await prisma.company.upsert({
+    where: { fashionjobsUrl: `resolved:${candidate.companyId}` },
+    create: {
+      name: candidate.company,
+      canonicalKey: candidate.companyId,
+      // The unique key is the employer identity, not a FashionJobs URL: employers
+      // reach us from their own sites too, and most never appear on that board.
+      fashionjobsUrl: `resolved:${candidate.companyId}`,
+      lastSeenAt: now,
+    },
+    update: { lastSeenAt: now },
+    select: { id: true },
+  });
+
   // Only live jobs in the same cluster can absorb this posting. The cluster key
   // is indexed, so this stays a narrow lookup rather than a scan.
   const clusterJobs = await prisma.job.findMany({
@@ -66,7 +83,7 @@ export async function upsertDeduplicated(
   if (!existing) {
     const created = await prisma.job.create({
       data: {
-        companyId: candidate.companyId,
+        companyId: company.id,
         externalId: candidate.externalId,
         source: 'GENERIC_JSONLD',
         title: candidate.title,

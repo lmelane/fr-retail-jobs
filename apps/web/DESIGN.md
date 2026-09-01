@@ -1,139 +1,142 @@
 # Catwalks — Direction artistique
 
-Ce document décide à l'avance ce qui est autorisé. Sans lui, chaque composant
-ajouté retombe sur les valeurs par défaut de shadcn et l'interface dérive vers le
-« SaaS générique ». shadcn fournit des primitives **volontairement neutres** :
-les utiliser telles quelles, c'est livrer du shadcn, pas un produit.
+**Direction : Material 3 Expressive — le langage de Gemini.**
+
+Implémentée avec notre stack (shadcn/ui + Tailwind + Lucide + Motion). Les
+primitives shadcn sont retokenisées en Material 3 : on garde les composants,
+on remplace le langage visuel. Aucun composant écrit à la main.
 
 ---
 
-## 1. Positionnement
+## 1. Le principe Material 3
 
-**Outil de précision dense** — la famille Linear / Raycast / Vercel.
-Ce n'est pas un site marketing : c'est un poste de travail. Un candidat parcourt
-des centaines d'offres pour en trouver une ; tout doit servir la vitesse de
-balayage.
+Trois piliers, qui expliquent chaque décision plus bas :
 
-**Ce que l'utilisateur doit retenir :** « je vois tout le marché d'un coup d'œil,
-et chaque offre pointe vers la Maison elle-même. »
-
-**Ton :** sobre, éditorial, précis. Jamais festif, jamais corporate.
-
----
-
-## 2. Typographie — l'outil de hiérarchie principal
-
-Poppins, en trois niveaux stricts. **Aucun quatrième niveau** ne doit apparaître.
-
-| Rôle | Taille | Graisse | Couleur | Usage |
-|---|---|---|---|---|
-| Titre d'offre | `text-[15px]` | 500 | `foreground` | Le seul élément vraiment lisible de loin |
-| Maison | `text-[13px]` | 500 | `foreground/80` | Deuxième信息 recherchée |
-| Métadonnées | `text-[12px]` | 400 | `muted-foreground` | Ville, contrat, date, sources |
-
-Règles :
-- **Interlettrage négatif** sur les titres (`tracking-[-0.011em]`) : à 15px, Poppins
-  respire trop et perd en densité.
-- **Chiffres tabulaires** (`tabular-nums`) sur tous les compteurs, sinon les
-  colonnes dansent quand les nombres changent.
-- Aucune typographie marketing dans le produit : pas de titre géant, pas de
-  `text-4xl` hors de l'en-tête.
+1. **Surfaces teintées, pas de bordures.** La hiérarchie vient de plans colorés
+   superposés (`surface`, `surface-container`, `surface-container-high`), jamais
+   d'un filet gris. Une bordure est un aveu d'échec de la hiérarchie.
+2. **Formes généreuses.** Rayons larges (12–28px) et pilules complètes sur les
+   contrôles. C'est la signature visuelle la plus reconnaissable de Gemini.
+3. **Motion physique.** Ressorts, pas des courbes linéaires. Le mouvement doit
+   sembler avoir une masse.
 
 ---
 
-## 3. Couleur — signal, jamais décoration
+## 2. Couleur — palette Material 3 (source : `#0b57d0`)
 
-Fond neutre très légèrement froid (teinte 264), une seule couleur d'accent.
+Rôles Material appliqués aux variables shadcn, pour que les composants suivent
+sans être modifiés.
 
-- **Accent indigo** (`oklch(52% 0.19 264)`) : réservé aux pins de carte, à l'état
-  actif d'un filtre, au focus. Rien d'autre.
-- **Neutres** : tout le reste — structure, texte, bordures.
-- **Interdits** : dégradés décoratifs, palette multicolore, couleur « parce que
-  c'est joli ». Si une couleur n'encode pas une information, elle sort.
+| Rôle Material | Valeur | Usage |
+|---|---|---|
+| `primary` | `oklch(48% 0.19 264)` — le bleu Google `#0b57d0` | Actions, état actif, pins |
+| `on-primary` | `oklch(100% 0 0)` | Texte sur primary |
+| `primary-container` | `oklch(92% 0.05 264)` | Fonds d'accent doux, chips actives |
+| `on-primary-container` | `oklch(28% 0.11 264)` | Texte sur container |
+| `surface` | `oklch(99% 0.004 264)` | Fond de page |
+| `surface-container-low` | `oklch(97% 0.006 264)` | Zones surélevées |
+| `surface-container` | `oklch(95.5% 0.008 264)` | Barres, panneaux |
+| `surface-container-high` | `oklch(93% 0.01 264)` | Survol, sélection |
+| `on-surface` | `oklch(20% 0.015 264)` | Texte principal |
+| `on-surface-variant` | `oklch(45% 0.02 264)` | Texte secondaire |
+| `outline-variant` | `oklch(88% 0.008 264)` | Séparateurs, en dernier recours |
 
-Une couleur qui apparaît partout ne signifie plus rien.
-
----
-
-## 4. Profondeur et surfaces
-
-La hiérarchie passe par la **densité et l'alignement**, pas par des boîtes.
-
-- **Pas de cartes** dans la liste : des lignes séparées par un filet 1px.
-  Une pile de cartes ajoute 16px de padding par offre sans ajouter d'information.
-- **Ombres** : une seule, très basse (`shadow-[0_1px_2px_rgba(0,0,0,0.04)]`), et
-  uniquement sur les éléments réellement flottants (barre de filtres collante,
-  overlay de carte).
-- **Rayons** : `0.5rem` maximum. Les grands arrondis lisent « consumer », pas
-  « outil professionnel ».
-- **Bordures** : uniquement pour séparer des zones fonctionnelles. Jamais pour
-  décorer un bloc.
+**Règle :** toute surface est teintée sur la teinte 264. Un gris pur (chroma 0)
+casse le système — c'est ce qui fait qu'une interface « ressemble à Bootstrap »
+plutôt qu'à Material.
 
 ---
 
-## 5. Densité et rythme
+## 3. Typographie — échelle Material 3
 
-- Ligne d'offre : `py-3 px-5`. Assez compact pour voir ~12 offres sans défiler,
-  assez aéré pour rester cliquable au doigt.
-- Espacement vertical dans une ligne : `gap-1` maximum. Les blocs de texte d'une
-  même offre appartiennent ensemble.
-- L'en-tête reste **collant** : les filtres doivent survivre au défilement, sinon
-  l'utilisateur remonte constamment.
+Poppins (Google Sans n'est pas distribuée publiquement ; Poppins en est la
+géométrique la plus proche).
 
----
+| Rôle Material | Taille | Interligne | Graisse | Interlettrage | Usage |
+|---|---|---|---|---|---|
+| `headline-small` | 24px | 32px | 400 | 0 | Titre de page |
+| `title-medium` | 16px | 24px | 500 | +0.15px | Titre d'offre |
+| `title-small` | 14px | 20px | 500 | +0.1px | Nom de Maison |
+| `body-medium` | 14px | 20px | 400 | +0.25px | Corps |
+| `label-large` | 14px | 20px | 500 | +0.1px | Boutons, chips |
+| `label-medium` | 12px | 16px | 500 | +0.5px | Métadonnées |
 
-## 6. Motion — une intention, pas des effets
-
-Motion (`motion/react`) sert à **révéler la hiérarchie**, pas à animer.
-
-Autorisé :
-- Une cascade d'entrée sur la liste (`delay: index * 12ms`, plafonnée à ~200ms).
-- Transition d'opacité/position sur filtrage (`120ms`), pour que l'œil suive le
-  changement au lieu de re-scanner.
-- `layout` sur les lignes, pour que la réorganisation soit lisible.
-
-Interdit :
-- Effets au survol qui ne signalent rien.
-- Animations d'entrée sur des éléments statiques (en-tête, carte).
-- Toute animation dépassant 200ms dans le produit.
-
-`prefers-reduced-motion` doit rester respecté.
+**Interlettrage positif** — c'est l'inverse d'un système Linear-like, et c'est
+volontaire : Material privilégie la lisibilité posée sur la densité.
 
 ---
 
-## 7. États — c'est là que se joue le « fini »
+## 4. Formes
 
-Ce que l'on néglige d'habitude et qui distingue une interface soignée :
+| Élément | Rayon | Token Material |
+|---|---|---|
+| Chips, boutons | `9999px` (pilule) | `corner-full` |
+| Cartes, lignes | `16px` | `corner-large` |
+| Conteneurs, carte | `28px` | `corner-extra-large` |
+| Champs de saisie | `28px` (pilule) | `corner-extra-large` |
 
-- **Survol de ligne** : fond `muted/60` + le lien externe apparaît. Rien d'autre.
-- **Focus clavier** : anneau visible, jamais supprimé. La navigation au clavier
-  est un cas d'usage réel sur une liste longue.
-- **État vide** : jamais « aucun résultat » seul. Toujours dire pourquoi et
-  proposer l'action (retirer un filtre).
-- **Chargement** : squelettes aux dimensions réelles, jamais un spinner centré
-  qui fait sauter la mise en page.
-- **Actif** : un filtre sélectionné doit être évident sans relire son libellé.
+Le rayon large **est** la signature. Sous 12px, l'interface cesse de ressembler
+à Gemini.
 
 ---
 
-## 8. Carte
+## 5. Élévation — teinte, pas ombre
 
-- Fond de carte **en couleur** (CARTO Voyager) : une carte désaturée perd sa
-  lisibilité géographique, qui est sa seule raison d'être.
-- Pins groupés **par ville**, jamais par offre : les offres d'une même adresse
-  partagent les coordonnées et s'empileraient invisiblement sur Paris.
-- Rayon proportionnel au volume ; la couleur reste constante. Le volume est une
-  quantité, il se lit en taille.
+Material 3 remplace les ombres portées par des **surfaces teintées**. Une carte
+n'est pas « au-dessus », elle est « plus dense en couleur ».
+
+- Niveau 0 : `surface`
+- Niveau 1 : `surface-container-low`
+- Niveau 2 : `surface-container` + ombre très douce `0 1px 2px rgba(11,87,208,0.06)`
+- Niveau 3 : `surface-container-high`
+
+L'ombre reste teintée bleu, jamais noire.
+
+---
+
+## 6. Espacement
+
+Incréments de **4px** (`gap-1` = 4px, `gap-2` = 8px…). Material est plus aéré
+qu'un outil dense : une ligne d'offre respire à `p-4` (16px), pas `py-3`.
+
+---
+
+## 7. Motion — ressorts, pas des courbes
+
+Material 3 Expressive utilise un motion **physique**. Avec Motion :
+
+```ts
+// Spatial (position, taille) — rebond léger
+{ type: 'spring', stiffness: 380, damping: 30 }
+// Effets (opacité, couleur) — sans rebond
+{ type: 'spring', stiffness: 400, damping: 40 }
+```
+
+- Entrée de liste : cascade 20ms/ligne, spring spatial
+- Filtrage : `layout` sur les lignes, spring
+- Pas de `duration` fixe : c'est le ressort qui décide
+
+---
+
+## 8. Composants
+
+Tout vient de `npx shadcn add`, **retokenisé** via les variables CSS. Ce qui
+change par rapport au défaut shadcn :
+
+- `--radius: 1rem` (16px) au lieu de 0.5rem
+- Chips et boutons forcés en `rounded-full`
+- Fonds `surface-container` au lieu de bordures
+- Ondulation Material approximée par une transition de fond au survol
 
 ---
 
 ## 9. Contrôle avant livraison
 
-- [ ] Aucun composant écrit à la main : tout vient de `npx shadcn add`
-- [ ] Trois niveaux typographiques, pas quatre
-- [ ] L'accent n'apparaît que sur pins, état actif et focus
-- [ ] Aucune carte dans la liste
-- [ ] Survol, focus, actif et vide sont tous traités
-- [ ] Une seule séquence de motion, sous 200ms
-- [ ] Lisible et utilisable au clavier
-- [ ] Ne ressemble pas à du shadcn par défaut
+- [ ] Aucun gris pur : toute surface est teintée 264
+- [ ] Rayons ≥ 16px, pilules sur les contrôles
+- [ ] Hiérarchie par surfaces superposées, pas par bordures
+- [ ] Interlettrage positif conforme à l'échelle Material
+- [ ] Motion par ressorts, sans durées fixes
+- [ ] Ombres teintées bleu, jamais noires
+- [ ] Tous les composants issus du CLI shadcn
+- [ ] `prefers-reduced-motion` respecté
