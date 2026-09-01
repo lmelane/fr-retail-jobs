@@ -84,6 +84,17 @@ model Job {
   location      String?
   country       String?
   isFrance      Boolean  @default(false)
+
+  // Geo, for the Leaflet map. Sources give a city and usually a postcode but
+  // never coordinates, so these are resolved via the French government's
+  // Adresse API (api-adresse.data.gouv.fr — free, no key, 50 req/s/IP).
+  city          String?
+  postalCode    String?
+  /** INSEE commune code: a stable join key, unlike a city name. */
+  inseeCode     String?
+  latitude      Float?
+  longitude     Float?
+
   contract      String?
   description   String?
   url           String
@@ -100,4 +111,30 @@ model Job {
   @@index([isFrance, isActive])
   @@index([fingerprint])
   @@index([companyId, isActive])
+  // Serves the map: only located, live French jobs are ever plotted.
+  @@index([isFrance, isActive, latitude, longitude])
+}
+
+/**
+ * Geocoding cache, keyed by the raw location string as a source wrote it.
+ *
+ * Cities repeat constantly across offers — Courir alone posts dozens of roles in
+ * the same towns — so resolving per offer would waste tens of thousands of calls
+ * on a handful of distinct places. `resolved = false` records a lookup that found
+ * nothing, so a bad string is not retried on every run.
+ */
+model GeoCache {
+  id          String   @id @default(cuid())
+  /** Normalized lookup key (uppercase city, plus postcode when available). */
+  queryKey    String   @unique
+  city        String?
+  postalCode  String?
+  inseeCode   String?
+  latitude    Float?
+  longitude   Float?
+  resolved    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([resolved])
 }
