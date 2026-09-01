@@ -1,6 +1,7 @@
 import type { PrismaClient } from '@prisma/client';
 import pLimit from 'p-limit';
 import { plainHttpSources, type JobSource as SourceDef } from '../connectors/registry.js';
+import { loadSourceCatalog, isApiSource, tierFor, sourceKeyFor } from '../connectors/sourceCatalog.js';
 import { fetchSitemapUrls, fetchJobFromPage } from '../connectors/generic/jsonLdSitemap.js';
 import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
@@ -162,20 +163,54 @@ async function ingestSitemapSource(
  * Runs every plain-HTTP source. Browser-gated sources (FashionJobs, LVMH) are
  * handled by their own connectors, not here.
  */
+/**
+ * Catalogue rows that the sitemap connector can read: the ones with a job URL
+ * pattern and no API. API-backed rows go through the ATS pipeline instead — one
+ * request per employer rather than one per offer.
+ */
+function catalogSitemapSources(): SourceDef[] {
+  return loadSourceCatalog()
+    .filter((source) => !isApiSource(source) && source.jobUrlPattern)
+    .map((source) => ({
+      key: sourceKeyFor(source),
+      company: source.maison.split('(')[0].trim(),
+      flow: 'EMPLOYER' as const,
+      tier: tierFor(source),
+      kind: 'SITEMAP_JSONLD' as const,
+      entryUrl: source.entryUrl,
+      robotsVerdict: source.robotsVerdict,
+      verifiedTotal: source.jobCount,
+      verifiedOn: '2026-09-01',
+      // The catalogue records a URL shape like ".../j/{slug}-{hex24}"; keep the
+      // literal path segment before the first placeholder as the filter.
+      jobUrlPattern: new RegExp(
+        source.jobUrlPattern
+          .replace(/^https?:\/\/[^/]+/, '')
+          .split('{')[0]
+          .replace(/[.*+?^$()|[\]\\]/g, '\\$&') || '/',
+      ),
+    }));
+}
+
 export async function runIngest(prisma: PrismaClient): Promise<IngestStats[]> {
-  const sources = plainHttpSources()
-    .filter((source) => source.kind === 'SITEMAP_JSONLD')
-    // Skip EMPLOYER sources the sector filter would reject anyway: Decathlon
-    // alone declares a 10s crawl-delay, so 250 offers cost 42 minutes entirely
-    // spent fetching pages that get discarded at classification.
-    //
-    // Jobboards are never skipped here — their employer varies per offer, so
-    // filtering on the board's own name would drop the whole board.
-    .filter(
-      (source) => source.flow === 'JOBBOARD' || classifySector({ company: source.company }).inScope,
-    )
-    // Cheapest sources first: a run that gets cut short should still have
-    // written the offers that cost the least to obtain.
+  const all = [...plainHttpSources(), ...catalogSitemapSources()].filter(
+    (source) => source.kind === 'SITEMAP_JSONLD',
+  );
+
+  // The catalogue and the hand-written registry overlap; keep one entry per key.
+  const byKey = new Map(all.map((source) => [source.key, source]));
+
+  /**
+   * No sector filter on the SOURCE any more.
+   *
+   * Filtering employers up front was losing real houses: Goyard (leather goods)
+   * and Natalys (childrenswear) were both dropped because the reference list did
+   * not hold their name. A false positive is visible and fixable; a missing
+   * Maison is invisible. Offers are still classified individually at write time.
+   */
+  const sources = [...byKey.values()]
+    // Cheapest sources first: a run cut short should still have written the
+    // offers that cost least to obtain.
     .sort((a, b) => (a.crawlDelaySeconds ?? 0) - (b.crawlDelaySeconds ?? 0));
 
   console.log(`[ingest] ${sources.length} sources: ${sources.map((s) => s.key).join(', ')}`);
