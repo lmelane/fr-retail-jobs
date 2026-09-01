@@ -148,7 +148,17 @@ export async function fetchTalentViewJobs(
           const description = [stripHtml(detail.description), stripHtml(detail.profile)]
             .filter(Boolean)
             .join('\n\n');
-          return description ? { ...job, description, raw: { ...(job.raw as object), detail } } : job;
+          // The detail payload also carries salary, remote and experience —
+          // fields the listing omits entirely.
+          return {
+            ...job,
+            ...(description ? { description } : {}),
+            salaryMin: detail.salary_min,
+            salaryMax: detail.salary_max,
+            salaryCurrency: detail.salary_currency,
+            remote: detail.remote_level,
+            raw: { ...(job.raw as object), detail },
+          };
         } catch {
           // A failed detail fetch must not lose the listing entry.
           return job;

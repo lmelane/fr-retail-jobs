@@ -82,6 +82,12 @@ function toNormalized(data: PhenomJobData, origin: string): NormalizedJob | null
     // country_code is ISO-2 ("FR"); country is the display name ("France").
     country: data.country_code ?? data.country,
     contract: data.employment_type,
+    city: data.city,
+    region: data.state,
+    postalCode: data.postal_code,
+    // Phenom ships coordinates, so these rows skip geocoding.
+    latitude: Number.isFinite(Number(data.latitude)) ? Number(data.latitude) : undefined,
+    longitude: Number.isFinite(Number(data.longitude)) ? Number(data.longitude) : undefined,
     description: stripHtml(data.description),
     url: data.applyUrl ?? data.apply_url ?? `${origin}/job/${id ?? ''}`,
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,

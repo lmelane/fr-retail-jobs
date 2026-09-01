@@ -111,6 +111,22 @@ export async function upsertDeduplicated(
         location: candidate.location,
         country: candidate.country,
         contract: candidate.contract,
+        // Rich fields the richer vendors publish. Absent means "this source does
+        // not expose it", so they are written through rather than dropped.
+        city: candidate.city,
+        postalCode: candidate.postalCode,
+        latitude: candidate.latitude,
+        longitude: candidate.longitude,
+        workingTime: candidate.workingTime,
+        remote: candidate.remote,
+        experienceYears: candidate.experienceYears,
+        educationLevel: candidate.educationLevel,
+        salaryMin: candidate.salaryMin,
+        salaryMax: candidate.salaryMax,
+        salaryCurrency: candidate.salaryCurrency,
+        salaryPeriod: candidate.salaryPeriod,
+        department: candidate.department,
+        validThrough: candidate.validThrough,
         description: candidate.description,
         url: candidate.url,
         postedAt: candidate.postedAt,
@@ -118,6 +134,13 @@ export async function upsertDeduplicated(
         canonicalTier: candidate.sourceTier,
         fingerprint: `${clusterKey}|${candidate.title}`,
         lastSeenAt: now,
+        /**
+         * The untouched source payload. Nothing is discarded: the normalized
+         * columns are the standard view, and this keeps every field a vendor
+         * publishes — including ones no column exists for yet, which can then be
+         * promoted later without re-fetching the whole market.
+         */
+        raw: candidate.raw as never,
         sources: {
           create: {
             sourceKey: candidate.sourceKey,
@@ -127,6 +150,8 @@ export async function upsertDeduplicated(
             title: candidate.title,
             postedAt: candidate.postedAt,
             lastSeenAt: now,
+            // Per-source payload too: each source sees the posting differently.
+            raw: candidate.raw as never,
           },
         },
       },

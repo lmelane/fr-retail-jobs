@@ -165,6 +165,25 @@ model Job {
   longitude     Float?
 
   contract      String?
+  /** Full-time / part-time, when stated separately from the contract. */
+  workingTime   String?
+  /** Remote policy as the source words it. */
+  remote        String?
+  experienceYears Int?
+  educationLevel  String?
+
+  // Compensation, when the source publishes it (Pinpoint, WTTJ, TalentView,
+  // Teamtailor). Stored as a band because that is how postings state it.
+  salaryMin     Int?
+  salaryMax     Int?
+  salaryCurrency String?
+  salaryPeriod  String?
+
+  /** Function or department: "Retail", "Marketing"… */
+  department    String?
+  /** Expiry when published; drives the refresh pass. */
+  validThrough  DateTime?
+
   description   String?
   url           String
   postedAt      DateTime?
@@ -191,6 +210,8 @@ model Job {
 
   @@unique([companyId, source, externalId])
   @@index([clusterKey])
+  @@index([department])
+  @@index([contract])
   @@index([isFrance, isActive])
   @@index([fingerprint])
   @@index([companyId, isActive])

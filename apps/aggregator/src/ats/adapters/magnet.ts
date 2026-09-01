@@ -85,6 +85,13 @@ function stripHtml(value?: string): string | undefined {
   return text || undefined;
 }
 
+/** Magnet writes coordinates as a single "lat,lon" string. */
+function parseCoordinates(value?: string): { latitude?: number; longitude?: number } {
+  const [lat, lon] = (value ?? '').split(',').map(Number);
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) return {};
+  return { latitude: lat, longitude: lon };
+}
+
 function nameOf(value: { name?: string } | string | undefined): string | undefined {
   if (!value) return undefined;
   return typeof value === 'string' ? value : value.name;
@@ -133,6 +140,10 @@ function toNormalized(offer: MagnetOffer, origin: string): NormalizedJob | null 
     location:
       [locality?.city_label, locality?.department_label].filter(Boolean).join(', ') || undefined,
     country: locality?.country,
+    city: locality?.city_label,
+    region: locality?.department_label,
+    // Magnet ships "lat,lon" — these rows skip geocoding.
+    ...parseCoordinates(locality?.coordinates),
     contract: nameOf(offer.contract),
     description: description || undefined,
     url: offer.url ?? `${origin}/offre/${offer.id ?? ''}`,
