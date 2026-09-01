@@ -49,6 +49,7 @@ enum DiscoveryStatus {
 }
 
 enum AtsType {
+  WTTJ
   ASHBY
   WORKABLE
   GREENHOUSE

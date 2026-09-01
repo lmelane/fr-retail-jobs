@@ -9,6 +9,7 @@ import { fetchWorkdayJobs } from './adapters/workday.js';
 import { fetchGenericJsonLdJobs } from './adapters/genericJsonLd.js';
 import { fetchAshbyJobs } from './adapters/ashby.js';
 import { fetchWorkableJobs } from './adapters/workable.js';
+import { fetchWttjJobs } from './adapters/wttj.js';
 
 export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown>): Promise<NormalizedJob[]> {
   switch (type) {
@@ -20,6 +21,7 @@ export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown
     case 'WORKDAY': return fetchWorkdayJobs(config);
     case 'ASHBY': return fetchAshbyJobs(config);
     case 'WORKABLE': return fetchWorkableJobs(config);
+    case 'WTTJ': return fetchWttjJobs(config);
     case 'GENERIC_JSONLD': return fetchGenericJsonLdJobs(config);
     default: throw new Error(`Unsupported ATS type: ${type}`);
   }
