@@ -49,6 +49,7 @@ enum DiscoveryStatus {
 }
 
 enum AtsType {
+  TALENTVIEW
   EIGHTFOLD
   AVATURE
   TEAMTAILOR
