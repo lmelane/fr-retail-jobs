@@ -120,13 +120,16 @@ export function normalizeJobPosting(
         ? rawCountry.name
         : undefined;
 
-  const identifier = node.identifier as JsonLdNode | string | undefined;
-  const externalId =
-    (typeof identifier === 'object' && typeof identifier?.value === 'string'
-      ? identifier.value
-      : typeof identifier === 'string'
-        ? identifier
-        : undefined) ?? pageUrl;
+  /**
+   * The page URL is the identifier, not schema.org `identifier`.
+   *
+   * Publishers routinely put the EMPLOYER's id there rather than the posting's:
+   * every Courir offer reports identifier.value "67fe4b37…", so eight postings
+   * collapse to one id and every insert after the first violates the
+   * (source, externalId) uniqueness constraint. A job page URL is unique by
+   * construction.
+   */
+  const externalId = pageUrl;
 
   const postedAt = node.datePosted ? new Date(String(node.datePosted)) : undefined;
 

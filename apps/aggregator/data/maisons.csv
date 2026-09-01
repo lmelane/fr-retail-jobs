@@ -1,0 +1,715 @@
+name,canonical_slug,segment,group,source,confidence
+24S.com,24s-com,RETAIL,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+2e Bureau,2e-bureau,MEDIA_AGENCY,,https://www.2e-bureau.com/,LOW
+3.Paradis,3-paradis,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]] | https://andam.fr/laureats-andam/",HIGH
+3CE,3ce,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+A-Derma,a-derma,BEAUTY,Pierre Fabre,https://www.pierre-fabre.com/fr-fr/notre-entreprise/nos-marques,HIGH
+A. Lange & Söhne,a-lange-sohne,JEWELRY_WATCHES,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Acne Studios,acne-studios,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Acqua Di Parma,acqua-di-parma,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://catwalks.io/sitemap-maisons.xml,HIGH
+AD Confection,ad-confection,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Adeline André,adeline-andre,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Adolfo Dominguez,adolfo-dominguez,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+Aelis,aelis,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+AERIN Beauty,aerin-beauty,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Aesop,aesop,BEAUTY,L'Oreal,https://catwalks.io/sitemap-maisons.xml | https://www.loreal.com/en/brands/,HIGH
+Agatha,agatha,JEWELRY_WATCHES,THOM Group,https://thomgroup.com/,HIGH
+agnès b.,agnes-b,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Aigle,aigle,FASHION,,https://www.aigle.com/fr/fr,HIGH
+Aime,aime,BEAUTY,,https://aime.co/,HIGH
+Akris,akris,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Alaïa,alaia,FASHION,Richemont,https://www.maison-alaia.com/ | https://www.richemont.com/en/home/brands/,HIGH
+Alainpaul,alainpaul,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]] | https://andam.fr/laureats-andam/ | https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons",HIGH
+Alexander Hughes,alexander-hughes,RECRUITER,,https://www.alexanderhughes.com/industry/consumer/,LOW
+Alexander McQueen,alexander-mcqueen,FASHION,Kering,https://fhcm.paris/fr/maisons?status=1 | https://www.kering.com/fr/maisons/,HIGH
+Alexandra Golovanoff,alexandra-golovanoff,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Alexis Mabille,alexis-mabille,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Alled-Martinez,alled-martinez,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Alran,alran,SUPPLIER,,https://www.alran.fr,HIGH
+Altuzarra,altuzarra,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+American Vintage,american-vintage,FASHION,,https://catwalks.io/sitemap-maisons.xml,HIGH
+AMI Paris,ami-paris,FASHION,,https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1,HIGH
+AMIRI,amiri,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Ann Demeulemeester,ann-demeulemeester,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Anrealage,anrealage,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Antik Batik,antik-batik,FASHION,,https://www.antikbatik.com/,LOW
+Apivita,apivita,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+APM Monaco,apm-monaco,JEWELRY_WATCHES,,https://www.apm.mc,HIGH
+Approach People Recruitment,approach-people-recruitment,RECRUITER,,https://www.approachpeople.com/,LOW
+Aptar Beauty,aptar-beauty,SUPPLIER,,https://www.aptar.com,MEDIUM
+Aramis,aramis,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Arbonne,arbonne,BEAUTY,Groupe Rocher,https://www.groupe-rocher.com/marques,HIGH
+Ardazaei,ardazaei,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Armand Thiery,armand-thiery,FASHION,,https://www.armandthiery.fr/,HIGH
+Armani Beauty,armani-beauty,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Armor-lux,armor-lux,FASHION,,https://www.armorlux.com/,HIGH
+Asphalte,asphalte,FASHION,,https://www.asphalte.com/,HIGH
+Atelier Cologne,atelier-cologne,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Atelier d'Ariane,atelier-d-ariane,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Atelier Leopoldine,atelier-leopoldine,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Atelier Made in Romans,atelier-made-in-romans,SUPPLIER,Groupe ARCHER,https://www.atelier-madeinromans.fr/nos-marques.html,HIGH
+Atelier Manoukian,atelier-manoukian,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Atlein,atlein,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]] | https://fhcm.paris/fr/maisons?status=1",HIGH
+Atto,atto,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Aubade,aubade,FASHION,,https://aubade.com/,HIGH
+Audemars Piguet,audemars-piguet,JEWELRY_WATCHES,,https://www.audemarspiguet.com/fr,HIGH
+August Barron,august-barron,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Aveda,aveda,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Avril,avril,BEAUTY,,https://www.avril-beaute.fr/,HIGH
+Azzaro,azzaro,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+ba&sh,ba-sh,FASHION,,https://ba-sh.com/fr/en/,HIGH
+Baccarat,baccarat,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Balenciaga,balenciaga,FASHION,Kering,https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1 | https://www.kering.com/fr/maisons/,HIGH
+Balmain,balmain,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Balmain Beauty,balmain-beauty,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Baltic Watches,baltic-watches,JEWELRY_WATCHES,,https://www.baltic-watches.com,HIGH
+Banderas Perfumes,banderas-perfumes,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+Barbara Bui,barbara-bui,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Be Maad,be-maad,JEWELRY_WATCHES,THOM Group,https://thomgroup.com/,HIGH
+Beauty Success,beauty-success,RETAIL,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Bell & Ross,bell-ross,JEWELRY_WATCHES,,https://bellross.com/fr,HIGH
+Bellerose,bellerose,FASHION,,https://bellerose.com/,LOW
+BeneFit Cosmetics,benefit-cosmetics,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://catwalks.io/sitemap-maisons.xml,HIGH
+Berluti,berluti,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Bernardaud,bernardaud,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Bexley,bexley,FASHION,,https://www.bexley.fr/,HIGH
+Billabong,billabong,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+Biolage,biolage,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Biologique Recherche,biologique-recherche,BEAUTY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Biotherm,biotherm,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Bleu Oceane,bleu-oceane,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Bluemarble,bluemarble,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Bobbi Brown,bobbi-brown,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Bocage,bocage,RETAIL,Groupe Eram,https://www.groupe-eram.com/marques,HIGH
+Bodin-Joyeux,bodin-joyeux,SUPPLIER,,https://bodinjoyeux.com,HIGH
+Bofilon,bofilon,FASHION,Groupe Eram,https://www.groupe-eram.com/marques,HIGH
+Bon Parfumeur,bon-parfumeur,BEAUTY,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Bonobo,bonobo,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+Bonpoint,bonpoint,FASHION,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Boramy Viguier,boramy-viguier,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Bottega Veneta,bottega-veneta,FASHION,Kering,https://www.kering.com/fr/maisons/,HIGH
+Botter,botter,FASHION,,https://botter.world/,LOW
+Boucheron,boucheron,JEWELRY_WATCHES,Kering,https://www.comitecolbert.com/member-sitemap.xml | https://www.kering.com/fr/maisons/,HIGH
+Boucheron Parfums,boucheron-parfums,BEAUTY,Interparfums SA,https://www.interparfums.fr/,HIGH
+Bourjois,bourjois,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Boyarovskaya,boyarovskaya,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Breal,breal,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+Breguet,breguet,JEWELRY_WATCHES,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Breitling,breitling,JEWELRY_WATCHES,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Brioni,brioni,FASHION,Kering,https://www.kering.com/fr/maisons/,HIGH
+Bruno Banani,bruno-banani,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Buccellati,buccellati,JEWELRY_WATCHES,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Bulgari,bulgari,JEWELRY_WATCHES,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Bumble and bumble,bumble-and-bumble,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Burberry Beauty,burberry-beauty,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Burc Akyol,burc-akyol,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]] | https://andam.fr/laureats-andam/",HIGH
+Byredo,byredo,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+BZB,bzb,FASHION,,https://www.b-z-b.com/,HIGH
+Cacharel,cacharel,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Cache Cache,cache-cache,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+Calvin Klein Fragrances,calvin-klein-fragrances,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Canada Goose,canada-goose,FASHION,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Carel Paris,carel-paris,FASHION,,https://www.carel-paris.com/,LOW
+Carita,carita,BEAUTY,L'Oreal,https://www.comitecolbert.com/member-sitemap.xml | https://www.loreal.com/en/brands/,HIGH
+Carolina Herrera,carolina-herrera,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+Caroll,caroll,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+Cartier,cartier,JEWELRY_WATCHES,Richemont,https://catwalks.io/sitemap-maisons.xml | https://www.comitecolbert.com/member-sitemap.xml | https://www.richemont.com/en/home/brands/,HIGH
+Carven,carven,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Casablanca,casablanca,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Casablanca Paris,casablanca-paris,FASHION,,https://casablancaparis.com/,LOW
+Caudalie,caudalie,BEAUTY,,https://fr.caudalie.com/,HIGH
+Cecilie Bahnsen,cecilie-bahnsen,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Celine,celine,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+CeraVe,cerave,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Cerruti 1881,cerruti-1881,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+CFCL,cfcl,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Chanel,chanel,FASHION,Chanel,https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Chantecaille,chantecaille,BEAUTY,Beiersdorf,https://www.beiersdorf.com/brands,HIGH
+Chantelle,chantelle,FASHION,Groupe Chantelle,https://chantelle.com/groupe/fr/marques,HIGH
+Chantelle X,chantelle-x,FASHION,Groupe Chantelle,https://chantelle.com/groupe/fr/marques,HIGH
+Chargeurs,chargeurs,SUPPLIER,,https://www.chargeurs.com,HIGH
+Charles de Vilmorin,charles-de-vilmorin,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Charlotte Tilbury,charlotte-tilbury,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+Chaumet,chaumet,JEWELRY_WATCHES,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Chevignon,chevignon,FASHION,,https://chevignon.com/,HIGH
+Chic et Style,chic-et-style,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Chloé,chloe,FASHION,Richemont,https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml | https://www.richemont.com/en/home/brands/,HIGH
+Chloe Parfums,chloe-parfums,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Chopard,chopard,JEWELRY_WATCHES,,https://www.chopard.fr,HIGH
+Christian Dior Couture,christian-dior-couture,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Christian Louboutin,christian-louboutin,FASHION,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Christian Louboutin Beauty,christian-louboutin-beauty,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+Christian Wijnants,christian-wijnants,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Christofle,christofle,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Christopher Esber,christopher-esber,FASHION,,https://andam.fr/laureats-andam/ | https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Citadium,citadium,RETAIL,Groupe Printemps,https://www.groupe-printemps.com/enseignes,HIGH
+Clarins,clarins,BEAUTY,Clarins Group,https://www.groupeclarins.com/brand-sitemap.xml,HIGH
+Claudie Pierlot,claudie-pierlot,FASHION,SMCP,https://www.smcp.com/fr/marques/,HIGH
+Cle de Peau Beaute,cle-de-peau-beaute,BEAUTY,Shiseido Group,https://corp.shiseido.com/en/brands/,HIGH
+CLEOR,cleor,JEWELRY_WATCHES,,https://www.cleor.com,HIGH
+Clinique,clinique,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Clyda,clyda,JEWELRY_WATCHES,THOM Group,https://thomgroup.com/,HIGH
+Coach Parfums,coach-parfums,BEAUTY,Interparfums SA,https://www.interparfums.fr/,HIGH
+Color Wow,color-wow,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Comme des Garçons,comme-des-garcons,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Conde Nast France,conde-nast-france,MEDIA_AGENCY,Conde Nast,https://www.condenast.com/fr,LOW
+Confection de Sully,confection-de-sully,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Coperni,coperni,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]] | https://coperni.com/",HIGH
+Cosmogen,cosmogen,SUPPLIER,,https://www.cosmogen.fr,HIGH
+Courrèges,courreges,FASHION,,https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1,HIGH
+Coutumes,coutumes,JEWELRY_WATCHES,THOM Group,https://thomgroup.com/,HIGH
+CoverGirl,covergirl,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Crivelli,crivelli,JEWELRY_WATCHES,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Damart,damart,RETAIL,,https://www.damart.fr/,HIGH
+Darjeeling,darjeeling,FASHION,Groupe Chantelle,https://chantelle.com/groupe/fr/marques,HIGH
+Dark and Lovely,dark-and-lovely,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Darphin,darphin,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Darrow,darrow,BEAUTY,Pierre Fabre,https://www.pierre-fabre.com/fr-fr/notre-entreprise/nos-marques,HIGH
+Davidoff Parfums,davidoff-parfums,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+DC Shoes,dc-shoes,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+De Beers London,de-beers-london,JEWELRY_WATCHES,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+De Pino,de-pino,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+DECIEM,deciem,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Decoux,decoux,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Deloison,deloison,JEWELRY_WATCHES,THOM Group,https://thomgroup.com/,HIGH
+Delsey Paris,delsey-paris,FASHION,,https://www.delsey.com/en-fr,HIGH
+Delvaux,delvaux,FASHION,Richemont,https://www.comitecolbert.com/member-sitemap.xml | https://www.richemont.com/en/home/brands/,HIGH
+Des Petits Hauts,des-petits-hauts,FASHION,,https://despetitshauts.com/,LOW
+Devred 1902,devred-1902,FASHION,,https://devred.com/,HIGH
+DFS,dfs,RETAIL,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Dice Kayek,dice-kayek,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Didu,didu,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Diesel (fragrance),diesel-fragrance,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+dinh van,dinh-van,JEWELRY_WATCHES,,https://www.dinhvan.com/fr,HIGH
+Dior Joaillerie,dior-joaillerie,JEWELRY_WATCHES,LVMH,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Diptyque,diptyque,BEAUTY,,https://catwalks.io/sitemap-maisons.xml | https://diptyqueparis.com/fr-fr | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Dodo,dodo,JEWELRY_WATCHES,Kering,https://www.kering.com/fr/maisons/,HIGH
+Domcia Production,domcia-production,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+DPL Hervier,dpl-hervier,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Dr. Barbara Sturm,dr-barbara-sturm,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+Dr.G,dr-g,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Dr Irena Eris,dr-irena-eris,BEAUTY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Dr. Jart+,dr-jart,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Dr Pierre Ricaud,dr-pierre-ricaud,BEAUTY,Groupe Rocher,https://www.groupe-rocher.com/marques,HIGH
+Dr. Vranjes Firenze,dr-vranjes-firenze,BEAUTY,L'Occitane Group,https://group.loccitane.com/group/our-brands,HIGH
+Dries Van Noten,dries-van-noten,FASHION,Puig,https://careers.puig.com/love-brands | https://fhcm.paris/fr/maisons?status=1,HIGH
+Drunk Elephant,drunk-elephant,BEAUTY,Shiseido Group,https://corp.shiseido.com/en/brands/,HIGH
+dsm-firmenich,dsm-firmenich,SUPPLIER,,https://www.dsm-firmenich.com,HIGH
+Du Pareil Au Meme,du-pareil-au-meme,FASHION,,https://www.dpam.com/,HIGH
+Ducray,ducray,BEAUTY,Pierre Fabre,https://www.pierre-fabre.com/fr-fr/notre-entreprise/nos-marques,HIGH
+Dunhill,dunhill,FASHION,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Eau Thermale Avene,eau-thermale-avene,BEAUTY,Pierre Fabre,https://www.pierre-fabre.com/fr-fr/notre-entreprise/nos-marques,HIGH
+Editions de Parfums Frédéric Malle,editions-de-parfums-frederic-malle,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+EENK,eenk,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Egon Zehnder,egon-zehnder,RECRUITER,,https://www.egonzehnder.com/,LOW
+EgonLab,egonlab,FASHION,,https://egonlab.com/,LOW
+Element,element,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+ELEMIS,elemis,BEAUTY,L'Occitane Group,https://group.loccitane.com/group/our-brands,HIGH
+Elie Saab,elie-saab,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Emanuel Ungaro,emanuel-ungaro,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Embryolisse,embryolisse,BEAUTY,,https://embryolisse.com/,HIGH
+Emilio Pucci,emilio-pucci,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Empreinte,empreinte,FASHION,,https://www.empreinte.eu/in/,HIGH
+Eram,eram,RETAIL,Groupe Eram,https://www.groupe-eram.com/marques,HIGH
+Erborian,erborian,BEAUTY,L'Occitane Group,https://group.loccitane.com/group/our-brands | https://www.erborian.com/,HIGH
+Ercuis,ercuis,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Eres,eres,FASHION,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Escada Parfums,escada-parfums,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Essential Parfums,essential-parfums,BEAUTY,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Essie,essie,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Estée Lauder,estee-lauder,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Ester Manas,ester-manas,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Etam,etam,FASHION,Groupe Etam,https://www.etam.com/,HIGH
+Etro Parfums,etro-parfums,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Études Studio,etudes-studio,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Eucerin,eucerin,BEAUTY,Beiersdorf,https://www.beiersdorf.com/brands,HIGH
+Ex Nihilo,ex-nihilo,BEAUTY,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Extime Duty Free Paris,extime-duty-free-paris,RETAIL,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Faïencerie de Gien,faiencerie-de-gien,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Fareva,fareva,SUPPLIER,,https://www.fareva.com,HIGH
+Fashion Group,fashion-group,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+FashionNetwork France,fashionnetwork-france,MEDIA_AGENCY,,https://fr.fashionnetwork.com/,LOW
+Father & Sons,father-sons,FASHION,,https://www.fatherandsons.fr/,HIGH
+Fendi,fendi,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://fhcm.paris/fr/maisons?status=1,HIGH
+Fenty,fenty,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Fil Rouge,fil-rouge,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Filorga,filorga,BEAUTY,,https://int.filorga.com/,HIGH
+Florentina Leitner,florentina-leitner,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+FLS,fls,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Foot Locker France,foot-locker-france,RETAIL,Foot Locker Inc.,https://www.footlocker.fr/,HIGH
+Fragonard,fragonard,BEAUTY,,https://www.fragonard.com/,HIGH
+FRAME,frame,FASHION,,https://catwalks.io/sitemap-maisons.xml,HIGH
+France Inter Mode,france-inter-mode,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Francesco Smalto,francesco-smalto,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Franck Muller,franck-muller,JEWELRY_WATCHES,,https://franckmuller.com,HIGH
+Franck Sorbier,franck-sorbier,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Franco Gioielli,franco-gioielli,JEWELRY_WATCHES,THOM Group,https://thomgroup.com/,HIGH
+Fred,fred,JEWELRY_WATCHES,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Fresh,fresh,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Fringuant,fringuant,SUPPLIER,,https://www.defimode.org/directory-defimode_startups-innovantes/,HIGH
+Fursac,fursac,FASHION,SMCP,https://www.smcp.com/fr/marques/,HIGH
+G/FORE,g-fore,FASHION,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Galeries Lafayette,galeries-lafayette,RETAIL,Galeries Lafayette Group,http://www.groupegalerieslafayette.com/brands,HIGH
+Galeries Lafayette Group,galeries-lafayette-group,RETAIL,,http://www.groupegalerieslafayette.com/brands,HIGH
+Galimard,galimard,BEAUTY,,https://www.galimard.com/,HIGH
+Garnier,garnier,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Gas Bijoux,gas-bijoux,JEWELRY_WATCHES,,https://www.gasbijoux.com/fr,HIGH
+Gauchere,gauchere,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Gemo,gemo,RETAIL,Groupe Eram,https://www.groupe-eram.com/marques,HIGH
+Georges Hobeika,georges-hobeika,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Gerard Darel,gerard-darel,FASHION,,https://gerarddarel.com/fr-fr,LOW
+Germanier,germanier,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]] | https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons",HIGH
+Getex,getex,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Giambattista Valli,giambattista-valli,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Gianvito Rossi,gianvito-rossi,FASHION,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Ginori 1735,ginori-1735,LUXURY,Kering,https://www.kering.com/fr/maisons/,HIGH
+Giorgio Armani Privé,giorgio-armani-prive,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Girard-Perregaux,girard-perregaux,JEWELRY_WATCHES,Sowind Group,https://www.girard-perregaux.com/fr,HIGH
+Givaudan,givaudan,SUPPLIER,,https://www.givaudan.com,HIGH
+Givenchy,givenchy,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+GLAMGLOW,glamglow,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Goossens Paris,goossens-paris,SUPPLIER,Chanel,https://www.goossens-paris.com,HIGH
+Goutal Paris,goutal-paris,BEAUTY,Interparfums SA,https://www.annickgoutal.com/,HIGH
+GQ France,gq-france,MEDIA_AGENCY,Conde Nast,https://www.gqmagazine.fr/,LOW
+Grès,gres,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Groupe Beaumanoir,groupe-beaumanoir,RETAIL,,https://www.groupe-beaumanoir.com/,HIGH
+Groupe Bon Marché,groupe-bon-marche,RETAIL,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Groupe Chantelle,groupe-chantelle,FASHION,,https://chantelle.com/groupe/fr/marques,HIGH
+Groupe Eram,groupe-eram,RETAIL,,https://www.groupe-eram.com/marques,HIGH
+Groupe Novi,groupe-novi,RETAIL,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Groupe Printemps,groupe-printemps,RETAIL,,https://www.groupe-printemps.com/enseignes,HIGH
+Gucci,gucci,FASHION,Kering,https://www.kering.com/fr/maisons/,HIGH
+Gucci Beauty,gucci-beauty,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Guerlain,guerlain,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://catwalks.io/sitemap-maisons.xml | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Guinot,guinot,BEAUTY,,https://www.guinot.com/fr/fr/,HIGH
+Guy Laroche,guy-laroche,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Haspolo,haspolo,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Hays France,hays-france,RECRUITER,Hays plc,https://www.hays.fr/recrutement/expertises,LOW
+Helena Rubinstein,helena-rubinstein,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Henrik Vibskov,henrik-vibskov,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Herend,herend,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Hermès,hermes,FASHION,Hermes,https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Histoire d'Or,histoire-d-or,JEWELRY_WATCHES,THOM Group,https://thomgroup.com/,HIGH
+Hublot,hublot,JEWELRY_WATCHES,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Hugo Boss Fragrances,hugo-boss-fragrances,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Ice-Watch,ice-watch,JEWELRY_WATCHES,,https://www.ice-watch.com/fr,HIGH
+Icicle,icicle,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+IKKS,ikks,FASHION,,https://www.ikks.com/,HIGH
+Imane Ayissi,imane-ayissi,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+IMKI,imki,SUPPLIER,,https://www.defimode.org/directory-defimode_startups-innovantes/,HIGH
+Ines de la Fressange Paris,ines-de-la-fressange-paris,FASHION,,https://inesdelafressange.fr/,LOW
+Infiniment Coty Paris,infiniment-coty-paris,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+IPSA,ipsa,BEAUTY,Shiseido Group,https://corp.shiseido.com/en/brands/,HIGH
+Iris van Herpen,iris-van-herpen,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Isabel Marant,isabel-marant,FASHION,,https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1,HIGH
+Issey Miyake,issey-miyake,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+IT Cosmetics,it-cosmetics,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+IWC Schaffhausen,iwc-schaffhausen,JEWELRY_WATCHES,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+J.M. Weston,j-m-weston,FASHION,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Jacquemus,jacquemus,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]] | https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1",HIGH
+Jacquemus Beauty,jacquemus-beauty,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Jaeger-LeCoultre,jaeger-lecoultre,JEWELRY_WATCHES,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Jalou Gallery,jalou-gallery,MEDIA_AGENCY,Editions Jalou,https://www.jalougallery.com/,LOW
+JD Sports France,jd-sports-france,RETAIL,JD Sports,https://www.jdsports.fr/,HIGH
+Jean Luc Francois,jean-luc-francois,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Jean Paul Gaultier,jean-paul-gaultier,FASHION,Puig,https://careers.puig.com/love-brands | https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+JFG Clinic,jfg-clinic,BEAUTY,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Jil Sander Parfums,jil-sander-parfums,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Jimmy Choo Parfums,jimmy-choo-parfums,BEAUTY,Interparfums SA,https://www.interparfums.fr/,HIGH
+Jitrois,jitrois,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Jo Malone London,jo-malone-london,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+John Galliano,john-galliano,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+John Lobb,john-lobb,FASHION,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Jonak,jonak,FASHION,,https://www.jonak.fr/,HIGH
+Joop!,joop,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Journal du Textile,journal-du-textile,MEDIA_AGENCY,,https://www.journaldutextile.com/,LOW
+Jules,jules,FASHION,AFM/Mulliez,https://www.jules.com/,HIGH
+Julie de Libran,julie-de-libran,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Julien Fournié,julien-fournie,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Juliette Has a Gun,juliette-has-a-gun,BEAUTY,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Junko Shimada,junko-shimada,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Junya Watanabe,junya-watanabe,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+JUUN.J,juun-j,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+K.Jacques,k-jacques,FASHION,,https://www.kjacques.fr/,LOW
+Kama Ayurveda,kama-ayurveda,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+Karl Lagerfeld,karl-lagerfeld,BEAUTY,Interparfums SA,https://www.interparfums.fr/,HIGH
+Karla Otto,karla-otto,MEDIA_AGENCY,The Independents,https://karlaotto.com/,LOW
+Kate Spade Parfums,kate-spade-parfums,BEAUTY,Interparfums SA,https://www.interparfums.fr/,HIGH
+Kendo,kendo,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Kenzo,kenzo,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://fhcm.paris/fr/maisons?status=1,HIGH
+Kenzo Parfums,kenzo-parfums,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Kérastase,kerastase,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Kering,kering,LUXURY,Kering,https://catwalks.io/sitemap-maisons.xml,HIGH
+Kering Eyewear,kering-eyewear,LUXURY,Kering,https://www.kering.com/fr/maisons/,HIGH
+Kickers,kickers,FASHION,,https://kickers.com/,MEDIUM
+Kiehl's,kiehl-s,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Kiko Kostadinov,kiko-kostadinov,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+KILIAN PARIS,kilian-paris,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Klorane,klorane,BEAUTY,Pierre Fabre,https://www.pierre-fabre.com/fr-fr/notre-entreprise/nos-marques,HIGH
+Koché,koche,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]] | https://fhcm.paris/fr/maisons?status=1",HIGH
+Kwaidan Editions,kwaidan-editions,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Kylie Cosmetics,kylie-cosmetics,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+L'Artisan Parfumeur,l-artisan-parfumeur,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+L'Atelier du Sourcil,l-atelier-du-sourcil,BEAUTY,,https://catwalks.io/sitemap-maisons.xml,HIGH
+L’Occitane en Provence,l-occitane-en-provence,BEAUTY,L'Occitane,https://catwalks.io/sitemap-maisons.xml | https://group.loccitane.com/group/our-brands,HIGH
+L'Officiel,l-officiel,MEDIA_AGENCY,Editions Jalou,https://www.lofficiel.com/,LOW
+L'Oréal,l-oreal,BEAUTY,L'Oreal,https://catwalks.io/sitemap-maisons.xml,HIGH
+L'Oréal Paris,l-oreal-paris,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+La Halle,la-halle,RETAIL,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+La Mer,la-mer,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+La Prairie,la-prairie,BEAUTY,Beiersdorf,https://www.beiersdorf.com/brands,HIGH
+La Redoute,la-redoute,RETAIL,Galeries Lafayette Group,http://www.groupegalerieslafayette.com/brands,HIGH
+La Roche-Posay,la-roche-posay,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+La Rosee,la-rosee,BEAUTY,,https://www.larosee-cosmetiques.com/,HIGH
+Lab Series,lab-series,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Labello,labello,BEAUTY,Beiersdorf,https://www.beiersdorf.com/brands,HIGH
+Lacoste,lacoste,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Lacoste Parfums,lacoste-parfums,BEAUTY,Interparfums SA,https://www.interparfums.fr/,HIGH
+Lagardère Travel Retail,lagardere-travel-retail,RETAIL,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Lancaster,lancaster,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Lancel,lancel,FASHION,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Lancôme,lancome,BEAUTY,L'Oreal,https://www.comitecolbert.com/member-sitemap.xml | https://www.loreal.com/en/brands/,HIGH
+Lanvin,lanvin,FASHION,,https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Lanvin Parfums,lanvin-parfums,BEAUTY,Interparfums SA,https://www.interparfums.fr/,HIGH
+Le Bon Marché,le-bon-marche,RETAIL,LVMH,https://catwalks.io/sitemap-maisons.xml,HIGH
+Le Coq Sportif,le-coq-sportif,FASHION,,https://www.lecoqsportif.com/,HIGH
+Le Labo,le-labo,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Le Slip Francais,le-slip-francais,FASHION,,https://www.leslipfrancais.fr/,HIGH
+Le Tanneur,le-tanneur,FASHION,,https://www.letanneur.com/,HIGH
+Lecarpentier SAS,lecarpentier-sas,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Lectra,lectra,SUPPLIER,,https://www.lectra.com/fr,HIGH
+Lelièvre Paris,lelievre-paris,SUPPLIER,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Lemaire,lemaire,FASHION,,https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1,HIGH
+Lemarie,lemarie,SUPPLIER,Chanel,https://www.lemarie-paris.fr,HIGH
+Leonard Paris,leonard-paris,FASHION,,https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Les Ateliers Grandis,les-ateliers-grandis,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Les Etablissements Thierry,les-etablissements-thierry,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Les Georgettes,les-georgettes,JEWELRY_WATCHES,Altesse Group,https://www.lesgeorgettes.com/fr,HIGH
+Les Mouettes Vertes,les-mouettes-vertes,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Les Productions Fonlupt,les-productions-fonlupt,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+LG Couture,lg-couture,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+LGN Louis-Gabriel Nouchi,lgn-louis-gabriel-nouchi,FASHION,,https://andam.fr/laureats-andam/,HIGH
+Liaigre,liaigre,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+LIP,lip,JEWELRY_WATCHES,,https://www.lip.fr,HIGH
+Lise Charmel,lise-charmel,FASHION,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Litkovska,litkovska,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Livera,livera,FASHION,Groupe Chantelle,https://chantelle.com/groupe/fr/marques,HIGH
+Loewe,loewe,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://fhcm.paris/fr/maisons?status=1,HIGH
+Loewe Perfumes,loewe-perfumes,BEAUTY,LVMH,https://catwalks.io/sitemap-maisons.xml,HIGH
+Longchamp,longchamp,FASHION,Longchamp,https://catwalks.io/sitemap-maisons.xml | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Loom,loom,FASHION,,https://www.loom.fr/fr-fr,HIGH
+L’Oréal Professionnel,loreal-professionnel,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Lorenz Bäumer,lorenz-baumer,JEWELRY_WATCHES,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Loro Piana,loro-piana,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Losanje,losanje,FASHION,,https://andam.fr/laureats-andam/ | https://www.defimode.org/directory-defimode_startups-innovantes/,HIGH
+Loto del Sur,loto-del-sur,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+Louis Pion,louis-pion,JEWELRY_WATCHES,Galeries Lafayette Group,http://www.groupegalerieslafayette.com/brands,HIGH
+Louis Vuitton,louis-vuitton,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Louis Vuitton Joaillerie,louis-vuitton-joaillerie,JEWELRY_WATCHES,LVMH,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Lucien Pages Communication,lucien-pages-communication,MEDIA_AGENCY,,https://www.lucienpages.com/,LOW
+Ludovic de Saint Sernin,ludovic-de-saint-sernin,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Lutz Huelle,lutz-huelle,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Luxe Talent,luxe-talent,RECRUITER,,https://www.luxetalent.fr/,LOW
+LVMH,lvmh,LUXURY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://catwalks.io/sitemap-maisons.xml,HIGH
+LVMH Client services,lvmh-client-services,LUXURY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+LVMH Fragrance Brands,lvmh-fragrance-brands,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+LVMH Métiers d'Art,lvmh-metiers-d-art,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+LVMH Perfumes & Cosmetics,lvmh-perfumes-cosmetics,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+LVMH Watches & Jewelry,lvmh-watches-jewelry,JEWELRY_WATCHES,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+MAC Cosmetics,mac-cosmetics,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Macosa SAS,macosa-sas,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Madame Figaro,madame-figaro,MEDIA_AGENCY,Groupe Figaro,https://madame.lefigaro.fr/,LOW
+Made In Design,made-in-design,RETAIL,Groupe Printemps,https://www.groupe-printemps.com/enseignes,HIGH
+Maeden,maeden,FASHION,,https://andam.fr/laureats-andam/,HIGH
+Maison 123,maison-123,FASHION,Groupe Etam,https://www.maison123.com/,HIGH
+Maison Francis Kurkdjian,maison-francis-kurkdjian,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://catwalks.io/sitemap-maisons.xml | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Maison Kitsune,maison-kitsune,FASHION,,https://maisonkitsune.com/fr_en/,HIGH
+Maison Lesage,maison-lesage,SUPPLIER,Chanel,https://www.lesage-paris.com,HIGH
+Maison Margiela,maison-margiela,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Maison Margiela Fragrances,maison-margiela-fragrances,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Maison Michel,maison-michel,SUPPLIER,Chanel,https://www.maisonmichel.com,MEDIUM
+Maison Mihara Yasuhiro,maison-mihara-yasuhiro,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Maison Rabih Kayrouz,maison-rabih-kayrouz,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Maitrepierre,maitrepierre,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Maje,maje,FASHION,SMCP,https://catwalks.io/sitemap-maisons.xml | https://www.smcp.com/fr/marques/,HIGH
+Make Up For Ever,make-up-for-ever,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Mame Kurogouchi,mame-kurogouchi,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+MANE,mane,SUPPLIER,,https://www.mane.com,HIGH
+Manhattan Cosmetics,manhattan-cosmetics,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Manish Malhotra,manish-malhotra,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Marc Jacobs,marc-jacobs,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Marc Jacobs Fragrances,marc-jacobs-fragrances,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Marc Orian,marc-orian,JEWELRY_WATCHES,THOM Group,https://thomgroup.com/,HIGH
+Marc Rozier,marc-rozier,SUPPLIER,,https://www.marcrozier.com,HIGH
+Marella,marella,FASHION,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Margaret Howell,margaret-howell,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Marie Adam-Leenaerdt,marie-adam-leenaerdt,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Marie Claire,marie-claire,MEDIA_AGENCY,Groupe Marie Claire,https://www.marieclaire.fr/,LOW
+Marine Serre,marine-serre,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]] | https://fhcm.paris/fr/maisons?status=1",HIGH
+Marionnaud,marionnaud,BEAUTY,A.S. Watson,https://marionnaud.com/,HIGH
+Marni Parfums,marni-parfums,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Marque & Mod,marque-mod,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Matières Fécales,matieres-fecales,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Matrix,matrix,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+MATY,maty,JEWELRY_WATCHES,,https://www.maty.com,HIGH
+Mauboussin,mauboussin,JEWELRY_WATCHES,Galeries Lafayette Group,http://www.groupegalerieslafayette.com/brands,HIGH
+Maurice Lacroix,maurice-lacroix,JEWELRY_WATCHES,,https://www.mauricelacroix.com,HIGH
+Max Factor,max-factor,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Maybelline New York,maybelline-new-york,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Medik8,medik8,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Meilleur Moment,meilleur-moment,BEAUTY,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Mellerio,mellerio,JEWELRY_WATCHES,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Mellerio dits Meller,mellerio-dits-meller,JEWELRY_WATCHES,,https://www.mellerio.fr,HIGH
+Mellow Yellow,mellow-yellow,FASHION,Groupe Eram,https://www.groupe-eram.com/marques,HIGH
+Melvita,melvita,BEAUTY,L'Occitane Group,https://group.loccitane.com/group/our-brands,HIGH
+Meme,meme,BEAUTY,Pierre Fabre,https://www.pierre-fabre.com/fr-fr/notre-entreprise/nos-marques,HIGH
+Merci Handy,merci-handy,BEAUTY,,https://www.mercihandy.com/,HIGH
+Meryll Rogge,meryll-rogge,FASHION,,https://andam.fr/laureats-andam/,HIGH
+Messika,messika,JEWELRY_WATCHES,,https://catwalks.io/sitemap-maisons.xml | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Michael Page France,michael-page-france,RECRUITER,PageGroup,https://www.michaelpage.fr/nos-expertises/distribution-commerce,LOW
+Michel Herbelin,michel-herbelin,JEWELRY_WATCHES,,https://www.michelherbelin.com,MEDIUM
+Minelli,minelli,FASHION,,https://minelli.fr/,HIGH
+Miss Sporty,miss-sporty,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Miu Miu,miu-miu,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Miu Miu Beauty,miu-miu-beauty,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Mixa,mixa,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Mizani,mizani,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Modem Online,modem-online,MEDIA_AGENCY,,https://www.modemonline.com/,LOW
+Molinard,molinard,BEAUTY,,https://molinard.com/,HIGH
+Moncler Parfums,moncler-parfums,BEAUTY,Interparfums SA,https://www.interparfums.fr/,HIGH
+Monneau Confection,monneau-confection,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Montblanc,montblanc,LUXURY,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Montblanc Parfums,montblanc-parfums,BEAUTY,Interparfums SA,https://www.interparfums.fr/,HIGH
+Montlimart,montlimart,FASHION,Groupe Eram,https://www.groupe-eram.com/marques,HIGH
+Morgan,morgan,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+Moser,moser,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Mossi,mossi,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Moynat,moynat,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Mugler,mugler,BEAUTY,L'Oreal,https://fhcm.paris/fr/maisons?status=1 | https://www.loreal.com/en/brands/,HIGH
+My Blend,my-blend,BEAUTY,Clarins Group,https://www.groupeclarins.com/brand-sitemap.xml,HIGH
+Naf Naf,naf-naf,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/naf-naf/,HIGH
+NARS,nars,BEAUTY,Shiseido Group,https://corp.shiseido.com/en/brands/,HIGH
+Nehera,nehera,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Niccolò Pasqualetti,niccolo-pasqualetti,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Niely,niely,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Nina Ricci,nina-ricci,FASHION,Puig,https://careers.puig.com/love-brands | https://fhcm.paris/fr/maisons?status=1,HIGH
+NIOD,niod,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+NIVEA,nivea,BEAUTY,Beiersdorf,https://www.beiersdorf.com/brands,HIGH
+Noir Kei Ninomiya,noir-kei-ninomiya,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Numero,numero,MEDIA_AGENCY,,https://numero.com/,LOW
+Nuxe,nuxe,BEAUTY,,https://www.nuxe.com/,HIGH
+NYX Professional Makeup,nyx-professional-makeup,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Off-White,off-white,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Officine Générale,officine-generale,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Officine Universelle Buly,officine-universelle-buly,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://catwalks.io/sitemap-maisons.xml,HIGH
+Oh My Cream,oh-my-cream,RETAIL,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Origins,origins,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Oris,oris,JEWELRY_WATCHES,,https://www.oris.ch/fr,HIGH
+OROVIVO,orovivo,JEWELRY_WATCHES,THOM Group,https://thomgroup.com/,HIGH
+Ottolinger,ottolinger,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Palladium,palladium,FASHION,,https://palladiumboots.com/,HIGH
+Paloma Wool,paloma-wool,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Panerai,panerai,JEWELRY_WATCHES,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Paraboot,paraboot,FASHION,,https://www.paraboot.com/,HIGH
+Parade,parade,FASHION,Groupe Eram,https://www.groupe-eram.com/marques,HIGH
+Parfums Caron,parfums-caron,BEAUTY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Parfums Chanel,parfums-chanel,BEAUTY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Parfums Christian Dior,parfums-christian-dior,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Parfums Givenchy,parfums-givenchy,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Parfums Hermès,parfums-hermes,BEAUTY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Paris Aéroport,paris-aeroport,RETAIL,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Passage du Desir,passage-du-desir,BEAUTY,,https://www.passagedudesir.com/,MEDIUM
+Passionata,passionata,FASHION,Groupe Chantelle,https://passionata.com/,MEDIUM
+Patek Philippe,patek-philippe,JEWELRY_WATCHES,,https://www.patek.com/fr,HIGH
+Patou,patou,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Paul Smith,paul-smith,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Paule Ka,paule-ka,FASHION,,https://www.pauleka.com/,LOW
+Payot,payot,BEAUTY,,https://www.payot.com/,HIGH
+Peet Dullaert,peet-dullaert,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Penhaligon's,penhaligon-s,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+Perfumes Loewe,perfumes-loewe,BEAUTY,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Peter Millar,peter-millar,FASHION,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Petit Bateau,petit-bateau,FASHION,,https://www.petit-bateau.fr/,HIGH
+Philosophy,philosophy,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Phipps,phipps,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Piaget,piaget,JEWELRY_WATCHES,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Pierre Cardin,pierre-cardin,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Pierre Frey,pierre-frey,SUPPLIER,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Pierre Hardy,pierre-hardy,FASHION,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Pimkie,pimkie,FASHION,,https://www.pimkie.fr/,HIGH
+Place des Tendances,place-des-tendances,RETAIL,Groupe Printemps,https://www.groupe-printemps.com/enseignes,HIGH
+Plateforme Emode,plateforme-emode,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Pochet du Courval,pochet-du-courval,SUPPLIER,Groupe Pochet,https://www.pochet-du-courval.com,HIGH
+Poiray,poiray,JEWELRY_WATCHES,,https://www.poiray.com,HIGH
+Polène,polene,FASHION,,https://catwalks.io/sitemap-maisons.xml | https://www.polene-paris.com/,HIGH
+Pomellato,pomellato,JEWELRY_WATCHES,Kering,https://www.kering.com/fr/maisons/,HIGH
+PR3,pr3,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Prada Beauty,prada-beauty,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Pressiat,pressiat,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Printemps,printemps,RETAIL,Groupe Printemps,https://catwalks.io/sitemap-maisons.xml | https://www.groupe-printemps.com/enseignes,HIGH
+Prisma Media,prisma-media,MEDIA_AGENCY,Vivendi,https://www.prismamedia.com/,LOW
+Promod,promod,FASHION,,https://www.promod.fr/fr-fr/,HIGH
+Puiforcat,puiforcat,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Pulp Riot,pulp-riot,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Purdey,purdey,LUXURY,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Pureology,pureology,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Purple Magazine,purple-magazine,MEDIA_AGENCY,,https://purple.fr/,LOW
+Qeelin,qeelin,JEWELRY_WATCHES,Kering,https://www.kering.com/fr/maisons/,HIGH
+Qualipac,qualipac,SUPPLIER,Groupe Pochet,https://www.qualipac.com,MEDIUM
+Quiksilver,quiksilver,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+Rabanne,rabanne,FASHION,Puig,https://careers.puig.com/love-brands | https://fhcm.paris/fr/maisons?status=1,HIGH
+Rahul Mishra,rahul-mishra,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Ralph Lauren Fragrances,ralph-lauren-fragrances,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Rami Al Ali,rami-al-ali,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Raymond Weil,raymond-weil,JEWELRY_WATCHES,,https://www.raymond-weil.com/fr,HIGH
+Redken,redken,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Redonner,redonner,SUPPLIER,,https://www.defimode.org/directory-defimode_startups-innovantes/,HIGH
+Rene Furterer,rene-furterer,BEAUTY,Pierre Fabre,https://www.pierre-fabre.com/fr-fr/notre-entreprise/nos-marques,HIGH
+Repetto,repetto,FASHION,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Repossi,repossi,JEWELRY_WATCHES,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Respire,respire,BEAUTY,,https://respire.co/,HIGH
+Rick Owens,rick-owens,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Riedel,riedel,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Rier,rier,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Rimmel,rimmel,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Rimowa,rimowa,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Robert Haviland & C. Parlon,robert-haviland-c-parlon,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Robert Wun,robert-wun,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Robertet,robertet,SUPPLIER,,https://www.robertet.com,HIGH
+Rochas,rochas,FASHION,,https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Rochas Parfums,rochas-parfums,BEAUTY,Interparfums SA,https://www.interparfums.fr/,HIGH
+Roger Dubuis,roger-dubuis,JEWELRY_WATCHES,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Roger & Gallet,roger-gallet,BEAUTY,,https://www.roger-gallet.com/,HIGH
+Rokh,rokh,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Rondini,rondini,FASHION,,https://www.rondini.fr/fr/,LOW
+Rossimoda,rossimoda,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Rouje,rouje,FASHION,,https://www.rouje.com/,HIGH
+Roxy,roxy,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+Royal Quartz Paris,royal-quartz-paris,JEWELRY_WATCHES,Galeries Lafayette Group,http://www.groupegalerieslafayette.com/brands,HIGH
+Ruohan,ruohan,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+RVCA,rvca,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+RVDK Ronald van der Kemp,rvdk-ronald-van-der-kemp,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+S.T. Dupont,s-t-dupont,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Sabon,sabon,BEAUTY,Groupe Rocher,https://catwalks.io/sitemap-maisons.xml | https://www.groupe-rocher.com/marques,HIGH
+sacai,sacai,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Saint James,saint-james,FASHION,,https://fr.saint-james.com/,HIGH
+Saint Laurent,saint-laurent,FASHION,Kering,https://catwalks.io/sitemap-maisons.xml | https://fhcm.paris/fr/maisons?status=1 | https://www.comitecolbert.com/member-sitemap.xml | https://www.kering.com/fr/maisons/,HIGH
+Saint-Louis,saint-louis,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Sally Hansen,sally-hansen,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Sandro,sandro,FASHION,SMCP,https://catwalks.io/sitemap-maisons.xml | https://www.smcp.com/fr/marques/,HIGH
+Sarahlevy,sarahlevy,FASHION,,https://andam.fr/laureats-andam/,HIGH
+Sarenza,sarenza,RETAIL,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+SBC,sbc,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Schiaparelli,schiaparelli,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Scooter,scooter,JEWELRY_WATCHES,THOM Group,https://thomgroup.com/,HIGH
+SCT,sct,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Seiko,seiko,JEWELRY_WATCHES,Seiko Group,https://www.seiko.fr,HIGH
+Sephora,sephora,RETAIL,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr | https://catwalks.io/sitemap-maisons.xml,HIGH
+Serapian,serapian,FASHION,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Sergent Major,sergent-major,FASHION,,https://www.sergent-major.com/,HIGH
+Serica,serica,JEWELRY_WATCHES,,https://www.serica-watches.com,HIGH
+Sessile,sessile,FASHION,Groupe Eram,https://www.groupe-eram.com/marques,HIGH
+Sessun,sessun,FASHION,,https://en.sessun.com/,LOW
+Sézane,sezane,FASHION,,https://catwalks.io/sitemap-maisons.xml,HIGH
+Shiatzy Chen,shiatzy-chen,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Shiseido,shiseido,BEAUTY,Shiseido Group,https://corp.shiseido.com/en/brands/,HIGH
+Showroomprive,showroomprive,RETAIL,,https://www.showroomprive.com/,HIGH
+Shu Uemura,shu-uemura,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Shu Uemura Art of Hair,shu-uemura-art-of-hair,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Simone Perele,simone-perele,FASHION,,https://simone-perele.com/,HIGH
+Sisley Paris,sisley-paris,BEAUTY,,https://catwalks.io/sitemap-maisons.xml | https://www.sisley-paris.com/fr-FR/,HIGH
+Situationist,situationist,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+SkinBetter Science,skinbetter-science,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+SkinCeuticals,skinceuticals,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Smashbox,smashbox,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+SNIPES,snipes,RETAIL,,https://www.snipes.com/,HIGH
+So France Is Co,so-france-is-co,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Soeur,soeur,FASHION,,https://www.soeur.fr/,LOW
+Sol de Janeiro,sol-de-janeiro,BEAUTY,L'Occitane Group,https://group.loccitane.com/group/our-brands,HIGH
+Solferino,solferino,BEAUTY,Interparfums SA,https://www.interparfums.fr/,HIGH
+Solstiss,solstiss,SUPPLIER,,https://www.solstiss.com,MEDIUM
+Sophie Hallette,sophie-hallette,SUPPLIER,,https://www.sophiehallette.com,HIGH
+Spartoo,spartoo,RETAIL,,https://www.spartoo.com/,HIGH
+Stella McCartney,stella-mccartney,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Stéphane Rolland,stephane-rolland,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Stroili,stroili,JEWELRY_WATCHES,THOM Group,https://thomgroup.com/,HIGH
+Symrise,symrise,SUPPLIER,,https://www.symrise.com,HIGH
+System Magazine,system-magazine,MEDIA_AGENCY,,https://system-magazine.com/,LOW
+TAG Heuer,tag-heuer,JEWELRY_WATCHES,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Takami,takami,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Tannerie Remy Carriat,tannerie-remy-carriat,SUPPLIER,,https://www.remycarriat.com,HIGH
+Tanneries Haas,tanneries-haas,SUPPLIER,,https://www.tanneries-haas.com,HIGH
+Tara Jarmon,tara-jarmon,FASHION,,https://www.tarajarmon.com/,LOW
+TBS,tbs,FASHION,Groupe Eram,https://www.groupe-eram.com/marques,HIGH
+Textile du Maine,textile-du-maine,SUPPLIER,,https://www.gff-groupement.fr/les-ateliers-engages/,HIGH
+Thalgo,thalgo,BEAUTY,,https://www.thalgo.fr/,HIGH
+Thayers,thayers,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+The Kooples,the-kooples,FASHION,,https://www.thekooples.com/fr/fr/,HIGH
+The Ordinary,the-ordinary,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+The Row,the-row,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Thélios,thelios,FASHION,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Thom Browne,thom-browne,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+THOM Group,thom-group,JEWELRY_WATCHES,,https://thomgroup.com/,HIGH
+Tiffany & Co.,tiffany-co,JEWELRY_WATCHES,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+TimeVallée,timevallee,RETAIL,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Tissot,tissot,JEWELRY_WATCHES,Swatch Group,https://www.tissotwatches.com/fr-fr/,HIGH
+TOM FORD,tom-ford,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+TOM FORD Beauty,tom-ford-beauty,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Too Faced,too-faced,BEAUTY,Estee Lauder,https://www.elcompanies.com/en/our-brands,HIGH
+Totem Fashion,totem-fashion,MEDIA_AGENCY,,https://www.totemfashion.com/,LOW
+Tresor,tresor,JEWELRY_WATCHES,THOM Group,https://thomgroup.com/,HIGH
+Typology,typology,BEAUTY,,https://catwalks.io/sitemap-maisons.xml | https://www.typology.com/,HIGH
+Ujoh,ujoh,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Ulysse Nardin,ulysse-nardin,JEWELRY_WATCHES,,https://www.ulysse-nardin.com/fr-fr,HIGH
+Uma Wang,uma-wang,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Undercover,undercover,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Undiz,undiz,FASHION,Groupe Etam,https://www.undiz.com/,HIGH
+Ungaro,ungaro,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Urban Decay,urban-decay,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Uriage,uriage,BEAUTY,Puig,https://careers.puig.com/love-brands,HIGH
+Vacheron Constantin,vacheron-constantin,JEWELRY_WATCHES,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Vaillant,vaillant,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Valentino,valentino,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Valentino Beauty,valentino-beauty,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Van Cleef & Arpels,van-cleef-arpels,JEWELRY_WATCHES,Richemont,https://www.comitecolbert.com/member-sitemap.xml | https://www.richemont.com/en/home/brands/,HIGH
+Vanessa Bruno,vanessa-bruno,FASHION,,https://www.vanessabruno.com/,HIGH
+Vanity Fair France,vanity-fair-france,MEDIA_AGENCY,Conde Nast,https://www.vanityfair.fr/,LOW
+Vaquera,vaquera,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Veepee,veepee,RETAIL,,https://www.veepee.fr/gr/home/default,HIGH
+Vera Wang Parfums,vera-wang-parfums,BEAUTY,Coty,https://www.coty.com/our-brands/all-brands,HIGH
+Verescence,verescence,SUPPLIER,,https://www.verescence.com,HIGH
+Véronique Leroy,veronique-leroy,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Versace,versace,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Vetements,vetements,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Vhernier,vhernier,JEWELRY_WATCHES,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Vib's,vib-s,FASHION,Groupe Beaumanoir,https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml,HIGH
+Vichy,vichy,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Victoria Beckham,victoria-beckham,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Viktor&Rolf,viktor-rolf,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Viktor&Rolf Fragrances,viktor-rolf-fragrances,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Vivienne Westwood,vivienne-westwood,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Vogue France,vogue-france,MEDIA_AGENCY,Conde Nast,https://www.vogue.fr/,LOW
+Vogue (haircare),vogue-haircare,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Wales Bonner,wales-bonner,FASHION,,https://walesbonner.com/,LOW
+Wanda Nylon,wanda-nylon,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Watchfinder & Co.,watchfinder-co,RETAIL,Richemont,https://www.richemont.com/en/home/brands/,HIGH
+Weinsanto,weinsanto,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]] | https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons",HIGH
+Wooyoungmi,wooyoungmi,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+WWD,wwd,MEDIA_AGENCY,Penske Media,https://wwd.com/,LOW
+Xuly Bët,xuly-bet,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Y/Project,y-project,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+YEMA,yema,JEWELRY_WATCHES,,https://www.yema.com,HIGH
+Yohji Yamamoto,yohji-yamamoto,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Youth To The People,youth-to-the-people,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Yue Sai,yue-sai,BEAUTY,L'Oreal,https://www.loreal.com/en/brands/,HIGH
+Yuima Nakazato,yuima-nakazato,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Yves Delorme,yves-delorme,LUXURY,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Yves Rocher,yves-rocher,BEAUTY,Groupe Rocher,https://www.groupe-rocher.com/marques,HIGH
+Yves Saint Laurent Beauté,yves-saint-laurent-beaute,BEAUTY,L'Oreal,https://www.comitecolbert.com/member-sitemap.xml | https://www.loreal.com/en/brands/,HIGH
+Zadig & Voltaire,zadig-voltaire,FASHION,,https://zadig-et-voltaire.com/,HIGH
+Zenith,zenith,JEWELRY_WATCHES,LVMH,api:https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr,HIGH
+Zimmermann,zimmermann,FASHION,,https://fhcm.paris/fr/maisons?status=1,HIGH
+Zolotas,zolotas,JEWELRY_WATCHES,,https://www.comitecolbert.com/member-sitemap.xml,HIGH
+Zomer,zomer,FASHION,,"api:https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,""designer_profile"")]]",HIGH
+Zuhair Murad,zuhair-murad,FASHION,,https://fhcm.paris/fr/paris-fashion-week/maisons | https://fhcm.paris/fr/haute-couture-week/maisons | https://fhcm.paris/fr/haute-joaillerie/maisons,HIGH
+Puig,puig,BEAUTY,Puig,https://jobs.puig.com/,HIGH

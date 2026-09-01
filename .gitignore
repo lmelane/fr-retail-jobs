@@ -11,7 +11,10 @@ build/
 .claude/
 
 # Scratch data and one-off probes
+# Scratch CSV exports, but NOT the reference list: data/maisons.csv is the
+# 713-house source of truth the sector filter reads at runtime.
 *.csv
+!apps/aggregator/data/*.csv
 *.html
 *.xml
 *-test.ts
