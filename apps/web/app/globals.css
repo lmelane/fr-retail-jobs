@@ -7,17 +7,32 @@
 @custom-variant dark (&:is(.dark *));
 
 /**
- * Typography only. Colour comes entirely from shadcn's neutral palette below —
- * no parallel token set to drift out of sync with the components.
+ * Direction: dense precision tool — Linear / Raycast, not a marketing page.
+ *
+ * A candidate scans hundreds of listings looking for one, so density is the
+ * feature: tight rows, a three-level type hierarchy (title > Maison > metadata),
+ * and colour reserved for signal. Everything structural is neutral; the accent
+ * appears only on map pins and active state, so it always means something.
  */
 @theme {
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+
+  /* One accent, used sparingly. */
+  --color-accent-solid: oklch(52% 0.19 264);
+  --color-accent-soft: oklch(96% 0.02 264);
+
+  /* Spacing rhythm for list rows: compact, but never cramped. */
+  --spacing-row: 0.875rem;
+
+  /* Motion: one entrance cadence, fast enough to feel instant. */
+  --duration-quick: 120ms;
+  --ease-out-quart: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :root {
   color-scheme: light;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.995 0.002 264);
+  --foreground: oklch(0.16 0.01 264);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -26,12 +41,12 @@
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted: oklch(0.975 0.003 264);
+  --muted-foreground: oklch(0.53 0.012 264);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
+  --border: oklch(0.925 0.004 264);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.87 0 0);
@@ -39,7 +54,7 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  --radius: 0.5rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
