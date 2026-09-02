@@ -28,8 +28,15 @@ try {
   if (command === 'ingest') {
     // `ingest --source=<key>` runs one source as a short, independent job (D6).
     const only = process.argv.find((arg) => arg.startsWith('--source='))?.slice('--source='.length);
+    // The orchestrator geocodes ONCE at the end, so it passes --no-geocode to
+    // each child: otherwise every source re-geocodes the whole backlog of
+    // un-located offers, turning a quick per-source run into minutes of API
+    // calls repeated 102 times.
+    const skipGeocode = process.argv.includes('--no-geocode');
     const stats = await runIngest(prisma, only ? { only } : {});
-    const geo = await runGeocode(prisma);
+    const geo = skipGeocode
+      ? { pending: 0, lookedUp: 0, jobsLocated: 0, remaining: 0 }
+      : await runGeocode(prisma);
 
     /**
      * A source that stopped producing is an incident, not a quiet zero.
@@ -63,7 +70,7 @@ try {
       console.log(JSON.stringify({ ok: true, command, skipped: 'another ingest run is in progress' }));
     } else {
       try {
-        const orchestration = await ingestAllBySource();
+        const orchestration = await ingestAllBySource(prisma);
         const geo = await runGeocode(prisma);
         console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo }, null, 2));
         if (orchestration.failed > 0 || orchestration.timedOut > 0) {

@@ -1,25 +1,28 @@
-import { spawn } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import type { PrismaClient } from '@prisma/client';
 import { plainHttpSources } from '../connectors/registry.js';
 import { loadSourceCatalog, sourceKeyFor } from '../connectors/sourceCatalog.js';
-import { KIND_TO_ATS } from './ingest.js';
+import { runIngest, KIND_TO_ATS } from './ingest.js';
+import { checkSourceHealth } from './health.js';
 
 /**
- * Runs every source as its OWN short child process (decision D6).
+ * Runs every source under its OWN time budget (decision D6), in series.
  *
- * A single in-process run of all sources took 21 minutes and was killed by the
- * platform before it reached a single API feed — the reason production held a
- * handful of employers. Here each source is `ingest --source=<key>` in a fresh
- * child process with its own time budget, run in series. A source that hangs,
- * crashes or is killed takes ONLY its own child down; the orchestrator logs it
- * and moves to the next. No source can starve the others, whatever the volume.
+ * A single run of all 102 sources took 21 minutes and was killed by the platform
+ * before it reached one API feed — the reason production held a handful of
+ * employers. Here each source is ingested in-process but bounded by a timeout:
+ * a feed that hangs is abandoned and the next one starts, so no single source
+ * can starve the run, whatever the volume.
+ *
+ * In-process rather than a child process per source: spawning `tsx` 102 times
+ * pays a TypeScript recompile (~10s) on every source — minutes of pure overhead.
+ * A per-source timeout gives the same isolation for a hung feed without it. A
+ * source that throws is caught; geocoding runs ONCE, after the loop, in the CLI.
  *
  * API feeds run first (cheap, the bulk of the market), sitemap sources last.
  */
 
-/** Kill a single source's run after this long — a stuck feed must not block the rest. */
-const PER_SOURCE_TIMEOUT_MS = Number(process.env.INGEST_SOURCE_TIMEOUT_MS ?? 8 * 60_000);
+/** Abandon a single source after this long — a stuck feed must not block the rest. */
+const PER_SOURCE_TIMEOUT_MS = Number(process.env.INGEST_SOURCE_TIMEOUT_MS ?? 6 * 60_000);
 
 export type OrchestratorResult = {
   total: number;
@@ -37,55 +40,46 @@ export function allSourceKeys(): string[] {
   const sitemapKeys = plainHttpSources()
     .filter((source) => source.kind === 'SITEMAP_JSONLD')
     .map((source) => source.key);
-  // De-dupe while preserving order (API first).
   return [...new Set([...apiKeys, ...sitemapKeys])];
 }
 
-/** Spawns `ingest --source=<key>` and resolves with its outcome. */
-function runOneSource(key: string): Promise<'ok' | 'failed' | 'timedOut'> {
-  return new Promise((resolve) => {
-    const here = dirname(fileURLToPath(import.meta.url));
-    const cliPath = join(here, '..', 'cli.ts');
-    // tsx runs the TypeScript CLI directly, same entrypoint as `npm run ingest`.
-    const child = spawn('npx', ['tsx', cliPath, 'ingest', `--source=${key}`], {
-      stdio: 'inherit',
-      env: process.env,
-    });
-
-    let settled = false;
-    const done = (outcome: 'ok' | 'failed' | 'timedOut') => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      resolve(outcome);
-    };
-
-    const timer = setTimeout(() => {
-      console.error(`[orchestrator] ${key}: timed out after ${PER_SOURCE_TIMEOUT_MS / 1000}s, killing`);
-      child.kill('SIGKILL');
-      done('timedOut');
-    }, PER_SOURCE_TIMEOUT_MS);
-
-    child.on('exit', (code) => done(code === 0 ? 'ok' : 'failed'));
-    child.on('error', (error) => {
-      console.error(`[orchestrator] ${key}: failed to spawn — ${error.message}`);
-      done('failed');
-    });
+/** Rejects if the work does not settle within the budget. */
+function withTimeout<T>(work: Promise<T>, ms: number, label: string): Promise<T> {
+  let timer: ReturnType<typeof setTimeout>;
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`__TIMEOUT__ ${label}`)), ms);
   });
+  return Promise.race([work, timeout]).finally(() => clearTimeout(timer)) as Promise<T>;
 }
 
-export async function ingestAllBySource(): Promise<OrchestratorResult> {
+export async function ingestAllBySource(prisma: PrismaClient): Promise<OrchestratorResult> {
   const keys = allSourceKeys();
-  console.log(`[orchestrator] ${keys.length} sources, one child process each: ${keys.join(', ')}`);
+  console.log(`[orchestrator] ${keys.length} sources, each time-bounded: ${keys.join(', ')}`);
 
   const result: OrchestratorResult = { total: keys.length, ok: 0, failed: 0, timedOut: 0, failures: [] };
 
   for (const key of keys) {
-    const outcome = await runOneSource(key);
-    if (outcome === 'ok') result.ok++;
-    else {
-      result[outcome === 'timedOut' ? 'timedOut' : 'failed']++;
-      result.failures.push(`${key} (${outcome})`);
+    try {
+      // One source at a time, bounded. runIngest with {only} does the source's
+      // own purge; geocoding is skipped here and run once after the loop.
+      const stats = await withTimeout(runIngest(prisma, { only: key }), PER_SOURCE_TIMEOUT_MS, key);
+      // Record this source's health so a source that stops producing becomes a
+      // detectable incident (BROKEN) on its next run — one SourceRun per source.
+      await checkSourceHealth(prisma, stats).catch((e) =>
+        console.error(`[orchestrator] ${key}: health record failed — ${e instanceof Error ? e.message : e}`),
+      );
+      result.ok++;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (message.startsWith('__TIMEOUT__')) {
+        result.timedOut++;
+        result.failures.push(`${key} (timedOut)`);
+        console.error(`[orchestrator] ${key}: timed out after ${PER_SOURCE_TIMEOUT_MS / 1000}s, moving on`);
+      } else {
+        result.failed++;
+        result.failures.push(`${key} (failed)`);
+        console.error(`[orchestrator] ${key}: failed — ${message}`);
+      }
     }
   }
 
