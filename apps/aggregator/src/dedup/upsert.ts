@@ -1,6 +1,7 @@
 import type { PrismaClient } from '@prisma/client';
 import { blockingKey, isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } from './match.js';
 import { classifySector, type Sector } from '../normalize/sector.js';
+import { findMaison } from '../normalize/maisons.js';
 
 /** Classifier sectors map 1:1 onto the CompanySector enum. */
 const SECTOR_TO_COMPANY_SECTOR: Record<Sector, string> = {

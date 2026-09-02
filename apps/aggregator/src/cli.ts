@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { runIngest } from './pipeline/ingest.js';
+import { checkSourceHealth } from './pipeline/health.js';
 import { runRefresh } from './pipeline/refresh.js';
 import { runReconcile } from './pipeline/reconcile.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
@@ -25,7 +26,25 @@ try {
   if (command === 'ingest') {
     const stats = await runIngest(prisma);
     const geo = await runGeocode(prisma);
-    console.log(JSON.stringify({ ok: true, command, sources: stats, geo }, null, 2));
+
+    /**
+     * A source that stopped producing is an incident, not a quiet zero.
+     *
+     * Vendors rotate public search keys and move listing paths without notice,
+     * and the failure always looks the same: the adapter returns an empty
+     * array, the cron exits 0, and a Maison appears to have stopped hiring.
+     * Exiting non-zero is what makes the scheduler show it.
+     */
+    const health = await checkSourceHealth(prisma, stats);
+    console.log(JSON.stringify({ ok: health.broken === 0, command, sources: stats, geo, health }, null, 2));
+
+    if (health.broken > 0) {
+      for (const incident of health.incidents) {
+        console.error(`[health] ${incident.source}: ${incident.status} — ${incident.note}`);
+      }
+      // The data already written is kept; the run is flagged so someone looks.
+      process.exitCode = 1;
+    }
   } else if (command === 'refresh') {
     console.log(JSON.stringify({ ok: true, command, ...(await runRefresh(prisma)) }, null, 2));
   } else if (command === 'reconcile') {

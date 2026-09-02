@@ -252,3 +252,26 @@ model GeoCache {
 
   @@index([resolved])
 }
+
+/**
+ * One row per source per ingest run.
+ *
+ * Exists so a source that silently stops producing is an incident rather than a
+ * quiet zero. Vendors rotate public keys and move listing paths without notice,
+ * and the failure mode is always the same: the adapter returns an empty array,
+ * the cron exits 0, and a Maison simply appears to have stopped hiring.
+ */
+model SourceRun {
+  id           String   @id @default(cuid())
+  sourceKey    String
+  /** OK | DEGRADED | BROKEN | NEW */
+  status       String
+  jobs         Int
+  /** What the source held before this run; null on its first. */
+  previousJobs Int?
+  note         String?
+  ranAt        DateTime @default(now())
+
+  @@index([sourceKey, ranAt])
+  @@index([status, ranAt])
+}
