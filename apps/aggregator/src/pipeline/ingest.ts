@@ -105,7 +105,9 @@ async function ingestSitemapSource(
     errors: 0,
   };
 
-  const all = await fetchSitemapUrls(source.entryUrl);
+  // Sitemaps repeat themselves (shards overlap, alternates duplicate); a URL
+  // fetched twice is wasted time and a guaranteed write race with itself.
+  const all = [...new Set(await fetchSitemapUrls(source.entryUrl))];
   // Keep only real job pages: sitemaps mix in listings, utility routes and
   // editorial pages that carry no JobPosting and would burn the whole run.
   const jobUrls = source.jobUrlPattern ? all.filter((url) => source.jobUrlPattern!.test(url)) : all;

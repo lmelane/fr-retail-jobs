@@ -112,9 +112,53 @@ export async function upsertDeduplicated(
   );
 
   if (!existing) {
-    const created = await prisma.job.create({
-      data: {
-        companyId: company.id,
+    try {
+      return await createJob(prisma, candidate, company.id, clusterKey, now);
+    } catch (error) {
+      /**
+       * The race this catches, seen live: six workers, two copies of the same
+       * offer, both pass the cluster lookup before either has written, the
+       * second create violates (companyId, source, externalId) — 123 write
+       * errors on one Kering run. The violation IS the answer: the job exists
+       * now, so fall through and attach to it like any other duplicate.
+       */
+      const isUniqueViolation =
+        error instanceof Error && 'code' in error && (error as { code?: string }).code === 'P2002';
+      if (!isUniqueViolation) throw error;
+
+      const winner = await prisma.job.findUnique({
+        where: {
+          companyId_source_externalId: {
+            companyId: company.id,
+            source: 'GENERIC_JSONLD',
+            externalId: candidate.externalId,
+          },
+        },
+        select: { id: true },
+      });
+      if (!winner) throw error;
+
+      await prisma.job.update({
+        where: { id: winner.id },
+        data: { lastSeenAt: now, isActive: true },
+      });
+      return { jobId: winner.id, outcome: 'UPDATED', promoted: false };
+    }
+  }
+
+  return attachToExisting(prisma, candidate, existing, now);
+}
+
+async function createJob(
+  prisma: PrismaClient,
+  candidate: CandidateJob & { companyId: string },
+  companyId: string,
+  clusterKey: string,
+  now: Date,
+): Promise<UpsertResult> {
+  const created = await prisma.job.create({
+    data: {
+        companyId,
         externalId: candidate.externalId,
         source: 'GENERIC_JSONLD',
         title: candidate.title,
@@ -171,10 +215,23 @@ export async function upsertDeduplicated(
           },
         },
       },
-    });
-    return { jobId: created.id, outcome: 'CREATED', promoted: true };
-  }
+  });
+  return { jobId: created.id, outcome: 'CREATED', promoted: true };
+}
 
+type ExistingJob = {
+  id: string;
+  canonicalTier: string | null;
+  description: string | null;
+  sources: { sourceKey: string; externalId: string }[];
+};
+
+async function attachToExisting(
+  prisma: PrismaClient,
+  candidate: CandidateJob,
+  existing: ExistingJob,
+  now: Date,
+): Promise<UpsertResult> {
   const alreadyKnown = existing.sources.some(
     (source) => source.sourceKey === candidate.sourceKey && source.externalId === candidate.externalId,
   );
