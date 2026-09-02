@@ -48,11 +48,31 @@ export function briefError(error: unknown, maxLength = 200): string {
   const message = (error instanceof Error ? error.message : String(error)).trim();
   const lines = message.split('\n').map((line) => line.trim()).filter(Boolean);
   if (lines.length === 0) return message.slice(0, maxLength);
-  // The reason (e.g. "Unique constraint failed on…") sits AFTER the first line
-  // in a Prisma dump, so search the rest, not line 0 (which is the invocation).
-  const reason = lines.slice(1).find((line) => /constraint|failed|invalid|missing|required|violat|duplicate/i.test(line));
+  // The reason sits AFTER the first line in a Prisma dump, so search the rest.
+  // A dumped payload line is `key: value,` — never the real error — and matched
+  // "required" in a field name like `is_required`, hiding the true message
+  // ("Argument salaryCurrency: … Expected String, provided Int"). So skip
+  // payload lines, and prefer Prisma's own error phrasing.
+  const rest = lines.slice(1).filter((line) => !/^[\w$]+:\s.*,?$/.test(line));
+  const reason =
+    rest.find((line) => /^(Argument|Unique constraint|Foreign key|Null constraint)\b|Invalid value|Expected .* provided/i.test(line)) ??
+    rest.find((line) => /constraint|failed|invalid|missing|required|violat|duplicate/i.test(line));
   const summary = reason ? `${lines[0]} — ${reason}` : lines[0];
   return summary.length > maxLength ? `${summary.slice(0, maxLength - 1)}…` : summary;
+}
+
+/**
+ * A value coerced to a non-empty string, or undefined.
+ *
+ * A String? column (salaryCurrency, salaryPeriod) must never receive the number
+ * an adapter sometimes sends — TalentView's numeric currency id crashed every
+ * write. A string passes through, a number becomes its text, everything else is
+ * dropped.
+ */
+export function coerceText(value: unknown): string | undefined {
+  if (typeof value === 'string') return value.trim() || undefined;
+  if (typeof value === 'number' && Number.isFinite(value)) return String(value);
+  return undefined;
 }
 
 export function slugFromFashionJobsUrl(url: string): string | undefined {

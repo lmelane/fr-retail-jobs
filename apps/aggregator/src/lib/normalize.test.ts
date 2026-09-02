@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { coerceAmount, briefError } from './normalize.js';
+import { coerceAmount, coerceText, briefError } from './normalize.js';
 
 /**
  * A salary column is Int?, but a schema.org feed (Teamtailor, medik8) hands the
@@ -34,6 +34,26 @@ describe('coerceAmount', () => {
   });
 });
 
+describe('coerceText', () => {
+  it('keeps a non-empty string', () => {
+    expect(coerceText('EUR')).toBe('EUR');
+    expect(coerceText('  GBP ')).toBe('GBP');
+  });
+
+  it('turns a number into its text (TalentView currency id)', () => {
+    expect(coerceText(1)).toBe('1');
+  });
+
+  it('drops empty, null and non-scalar values', () => {
+    expect(coerceText('')).toBeUndefined();
+    expect(coerceText('   ')).toBeUndefined();
+    expect(coerceText(undefined)).toBeUndefined();
+    expect(coerceText(null)).toBeUndefined();
+    expect(coerceText({})).toBeUndefined();
+    expect(coerceText(NaN)).toBeUndefined();
+  });
+});
+
 describe('briefError', () => {
   it('keeps a short message as-is', () => {
     expect(briefError(new Error('Teamtailor origin missing'))).toBe('Teamtailor origin missing');
@@ -63,5 +83,21 @@ describe('briefError', () => {
 
   it('handles a non-Error value', () => {
     expect(briefError('plain string failure')).toBe('plain string failure');
+  });
+
+  it('picks the real argument error over a payload field named like an error', () => {
+    // The live TalentView failure: the dump carried `is_required: true` payload
+    // lines that hid the true reason further down.
+    const err = new Error(
+      'Invalid `prisma.job.create()` invocation in\n' +
+        '            is_required: true,\n' +
+        '            is_required: true,\n' +
+        '            title: "Vendeur",\n' +
+        'Argument `salaryCurrency`: Invalid value provided. Expected String or Null, provided Int.',
+    );
+    const brief = briefError(err);
+    expect(brief).toContain('salaryCurrency');
+    expect(brief).toContain('Expected String');
+    expect(brief).not.toContain('is_required');
   });
 });

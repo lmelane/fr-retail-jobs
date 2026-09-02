@@ -8,7 +8,7 @@ import { resolveCompany } from '../normalize/company.js';
 import { normalizeContract, normalizeWorkingTime, isWorkingTimeValue, extractContract, extractSalaryBand } from '../normalize/contract.js';
 import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
-import { coerceAmount, briefError } from '../lib/normalize.js';
+import { coerceAmount, coerceText, briefError } from '../lib/normalize.js';
 import { normalizeSourceConfig } from '../connectors/sourceConfig.js';
 import { isRotatingSource, nextPageFor, advanceCursor } from './sourceCursor.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
@@ -106,6 +106,14 @@ function toCandidate(
     description,
     salaryMin,
     salaryMax,
+    // String columns, coerced at the boundary: TalentView sends NUMERIC ids for
+    // the currency ("1") and remote level, which crashed every write ("Expected
+    // String, provided Int"). Coercing here means no adapter can ever leak the
+    // wrong type into these columns again — the adapter's own mapping is the
+    // readable value, this is the guardrail.
+    salaryCurrency: coerceText(job.salaryCurrency),
+    salaryPeriod: coerceText(job.salaryPeriod),
+    remote: coerceText(job.remote),
     // "UNKNOWN" is the normalizer's non-answer, not a value — stored as such
     // it is truthy, and the UI printed "Contrat : UNKNOWN" on every offer.
     contract: contract === 'UNKNOWN' ? undefined : contract,
