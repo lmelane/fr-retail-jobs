@@ -248,7 +248,10 @@ export function canonicalCity(raw: string): string {
 }
 
 /** One grouped count per facet, over every row the filters match. */
-async function countFacets(where: WhereClause): Promise<JobsResult['facets']> {
+async function countFacets(
+  where: WhereClause,
+  whereForCountry: WhereClause = where,
+): Promise<JobsResult['facets']> {
   const asFacets = (rows: { _count: number }[], key: string) =>
     rows
       .map((row) => ({
@@ -285,10 +288,11 @@ async function countFacets(where: WhereClause): Promise<JobsResult['facets']> {
       orderBy: { _count: { sourceKey: 'desc' } },
       take: 40,
     }),
-    // Country facet: group the raw spellings, normalize them below.
-    prisma.job.groupBy({ by: ['country'], where, _count: true }),
+    // Country facet: group the raw spellings, normalize them below. Uses the
+    // country-free where so every country stays offered, not just the selected one.
+    prisma.job.groupBy({ by: ['country'], where: whereForCountry, _count: true }),
     // France is counted on the reliable flag, not its three raw spellings.
-    prisma.job.count({ where: { ...where, isFrance: true } }),
+    prisma.job.count({ where: { ...whereForCountry, isFrance: true } }),
   ]);
 
   const companies = await prisma.company.findMany({
@@ -410,6 +414,12 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
 
   const where = whereClause(filters);
+  // The Pays facet must ignore the CURRENT country filter: with France selected
+  // by default, counting countries inside the France-filtered set left only
+  // "France" in the dropdown, so a candidate could never switch country. Built
+  // from every other filter but not the country one, so all reachable countries
+  // stay switchable.
+  const whereForCountryFacet = whereClause({ ...filters, country: undefined });
   const page = Math.max(1, filters.page ?? 1);
 
   try {
@@ -434,8 +444,9 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
       totalInDatabase,
       page,
       pageCount: Math.max(1, Math.ceil(total / PAGE_SIZE)),
-      // Facets counted across the WHOLE match set, in the database.
-      facets: await countFacets(where),
+      // Facets counted across the WHOLE match set, in the database. The Pays
+      // facet uses the country-free where so every country stays switchable.
+      facets: await countFacets(where, whereForCountryFacet),
     };
   } catch (error) {
     throw new DatabaseUnavailableError(error);
