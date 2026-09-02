@@ -30,7 +30,9 @@ import type { CatalogSource } from '../connectors/sourceCatalog.js';
  * end, so the container just looks hung. Hence real parallelism plus progress
  * logging: a silent pipeline is indistinguishable from a broken one.
  */
-const CONCURRENCY = Number(process.env.INGEST_CONCURRENCY ?? 12);
+// Six, not twelve: every worker hits the same host, and twelve in parallel is
+// what kept Courir's rate limiter tripped for a whole run (245 of 395 pages).
+const CONCURRENCY = Number(process.env.INGEST_CONCURRENCY ?? 6);
 
 /**
  * No cap by default: a ceiling silently truncates the market, and which offers
@@ -250,6 +252,8 @@ const KIND_TO_ATS: Record<string, string> = {
   digitalrecruiters: 'DIGITALRECRUITERS',
   personio: 'PERSONIO',
   eightfold_kering: 'EIGHTFOLD',
+  wordpress: 'WORDPRESS',
+  'generic-listing': 'GENERIC_JSONLD',
 };
 
 /**

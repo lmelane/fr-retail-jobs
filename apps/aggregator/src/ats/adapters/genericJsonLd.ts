@@ -2,7 +2,7 @@ import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
 import { createHash } from 'node:crypto';
 import { fetchText } from '../../lib/http.js';
-import { fetchSitemapUrls } from '../../connectors/generic/jsonLdSitemap.js';
+import { fetchSitemapUrls, extractJobPostings, normalizeJobPosting } from '../../connectors/generic/jsonLdSitemap.js';
 import { collapseWhitespace } from '../../lib/normalize.js';
 import type { NormalizedJob } from '../../types.js';
 
@@ -12,46 +12,24 @@ function flattenJsonLd(value: unknown): any[] {
   return value && typeof value === 'object' ? [value] : [];
 }
 
-/** Exported so the identity rule can be tested without fetching a live board. */
+/**
+ * Exported so the identity rule can be tested without fetching a live board.
+ *
+ * A thin wrapper over the shared JSON-LD reader. This file used to carry its
+ * own copy of the parser, and the two drifted: the shared one learned to
+ * decode numeric entities and to retry JSON containing raw control characters
+ * (Michael Page embeds literal newlines in every description), while this copy
+ * silently parsed nothing on those pages. One parser, one set of lessons.
+ */
 export function parseJobPostings(html: string, pageUrl: string): NormalizedJob[] {
-  const $ = cheerio.load(html);
-  const jobs: NormalizedJob[] = [];
-  $('script[type="application/ld+json"]').each((_, el) => {
-    const raw = $(el).text().trim();
-    if (!raw) return;
-    try {
-      const json = JSON.parse(raw);
-      for (const node of flattenJsonLd(json)) {
-        const type = node['@type'];
-        const isJob = type === 'JobPosting' || (Array.isArray(type) && type.includes('JobPosting'));
-        if (!isJob || !node.title) continue;
-        const address = node.jobLocation?.address ?? node.jobLocation?.[0]?.address ?? {};
-        const location = [address.addressLocality, address.addressRegion, address.addressCountry].filter(Boolean).join(', ');
-        const url = node.url ? new URL(node.url, pageUrl).toString() : pageUrl;
-        /**
-         * The page URL is the identity, not schema.org `identifier`.
-         *
-         * That field is supposed to identify the posting, but boards routinely
-         * put the EMPLOYER's id there: all 397 Courir offers carry the same
-         * `identifier.value`, so keying on it collapsed the whole board to one
-         * job. The URL is unique per posting by construction.
-         */
-        const externalId = createHash('sha1').update(url).digest('hex');
-        jobs.push({
-          externalId,
-          title: collapseWhitespace(String(node.title)),
-          location: location || undefined,
-          country: typeof address.addressCountry === 'string' ? address.addressCountry : address.addressCountry?.name,
-          contract: node.employmentType ? String(Array.isArray(node.employmentType) ? node.employmentType.join(', ') : node.employmentType) : undefined,
-          description: node.description ? String(node.description) : undefined,
-          url,
-          postedAt: node.datePosted ? new Date(node.datePosted) : undefined,
-          raw: node,
-        });
-      }
-    } catch { /* malformed JSON-LD */ }
-  });
-  return jobs;
+  return extractJobPostings(html)
+    .map((node) => normalizeJobPosting(node, pageUrl))
+    .filter((job): job is NormalizedJob => job !== null)
+    .map((job) => ({
+      ...job,
+      // Stable, compact identity for the (source, externalId) unique key.
+      externalId: createHash('sha1').update(pageUrl).digest('hex'),
+    }));
 }
 
 export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
@@ -67,6 +45,62 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
    * Sitemaps do go stale (one vendor's listed 65 job URLs, all dead), so a page
    * that no longer parses is skipped rather than failing the run.
    */
+  /**
+   * A server-rendered, paginated listing whose cards link to detail pages.
+   *
+   * Michael Page's shape: /jobs?page=N (0-based) serves 20 links per page and
+   * the detail pages carry a complete JobPosting. No sitemap of offers exists
+   * there, so the listing IS the enumeration. Pages are read until one repeats
+   * or comes back short — a pager that answers every page number with page 1
+   * is a documented trap (Radancy), so repetition is the stop signal, not the
+   * page count.
+   */
+  const listingPagedUrl = String(config.listingUrl ?? '');
+  const linkPattern = String(config.linkPattern ?? '');
+  if (listingPagedUrl && linkPattern) {
+    const pageParam = String(config.pageParam ?? 'page');
+    const linkRe = new RegExp(`href="([^"]*${linkPattern}[^"]*)"`, 'g');
+    const seen = new Set<string>();
+    const origin = new URL(listingPagedUrl).origin;
+
+    for (let page = 0; page < Number(config.maxPages ?? 400); page++) {
+      const sep = listingPagedUrl.includes('?') ? '&' : '?';
+      const html = await fetchText(`${listingPagedUrl}${sep}${pageParam}=${page}`, {
+        headers: {
+          'user-agent':
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        },
+      });
+      const links = [...html.matchAll(linkRe)]
+        .map((m) => new URL(m[1], origin).toString().split('#')[0])
+        .filter((u) => !seen.has(u));
+      if (links.length === 0) break;
+      for (const u of links) seen.add(u);
+    }
+
+    const limit = pLimit(Number(config.concurrency ?? 6));
+    const pages = await Promise.all(
+      [...seen].map((url) =>
+        limit(async () => {
+          try {
+            return parseJobPostings(
+              await fetchText(url, {
+                headers: {
+                  'user-agent':
+                    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+                },
+              }),
+              url,
+            );
+          } catch {
+            return [];
+          }
+        }),
+      ),
+    );
+    return pages.flat();
+  }
+
   const sitemapUrl = String(config.sitemapUrl ?? '');
   if (sitemapUrl) {
     const urls = await fetchSitemapUrls(sitemapUrl);

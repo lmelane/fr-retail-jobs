@@ -103,8 +103,16 @@ export function extractJobPostings(html: string): JsonLdNode[] {
     try {
       parsed = JSON.parse(block[1].trim());
     } catch {
-      // A single malformed block must not discard the rest of the page.
-      continue;
+      // Some CMSs emit raw control characters inside JSON strings — Michael
+      // Page's Drupal puts literal newlines in every description — which is
+      // invalid JSON that still carries a complete JobPosting. Space the
+      // control characters out and retry before giving up on the block.
+      try {
+        parsed = JSON.parse(block[1].trim().replace(/[\u0000-\u001f]+/g, ' '));
+      } catch {
+        // A single malformed block must not discard the rest of the page.
+        continue;
+      }
     }
     const nodes: JsonLdNode[] = [];
     collectNodes(parsed, nodes);
@@ -189,17 +197,39 @@ export function normalizeJobPosting(
   const externalId = pageUrl;
 
   const postedAt = node.datePosted ? new Date(String(node.datePosted)) : undefined;
+  const validThrough = node.validThrough ? new Date(String(node.validThrough)) : undefined;
+
+  /**
+   * baseSalary, when the publisher fills it. schema.org nests the band as
+   * MonetaryAmount -> QuantitativeValue, and many publishers ship the skeleton
+   * with empty strings — Michael Page emits the structure on every offer and
+   * values on some — so blanks must read as absent, not as zero.
+   */
+  const salary = (node.baseSalary ?? {}) as JsonLdNode;
+  const band = (salary.value ?? {}) as JsonLdNode;
+  const toAmount = (value: unknown): number | undefined => {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
+  };
 
   return {
     externalId,
     title,
     location: [city, region, postalCode].filter(Boolean).join(', ') || undefined,
+    city,
+    region,
+    postalCode,
     country,
     contract: readEmploymentType(node.employmentType),
+    salaryMin: toAmount(band.minValue ?? band.value),
+    salaryMax: toAmount(band.maxValue),
+    salaryCurrency: typeof salary.currency === 'string' && salary.currency ? salary.currency : undefined,
+    salaryPeriod: typeof band.unitText === 'string' && band.unitText ? band.unitText : undefined,
     description: stripHtml(node.description),
     // The employer's own page: the canonical apply URL under source priority.
     url: typeof node.url === 'string' ? node.url : pageUrl,
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
+    validThrough: validThrough && !Number.isNaN(validThrough.getTime()) ? validThrough : undefined,
     raw: node,
   };
 }

@@ -117,8 +117,16 @@ export function isApiSource(source: CatalogSource): boolean {
   return API_KINDS.has(source.kind);
 }
 
+/**
+ * Flow-B sources: agencies and boards whose offers are client mandates, not
+ * their own hiring. They may be the ONLY source for an exclusive mandate, but
+ * must never outrank an employer's own posting of the same job.
+ */
+const RECRUITER_MAISONS = new Set(['Luxe Talent', 'Michael Page France', 'Michael Page']);
+
 /** Tier for dedup: a jobboard never outranks an employer's own site. */
 export function tierFor(source: CatalogSource): SourceTier {
+  if (RECRUITER_MAISONS.has(source.maison)) return 'SPECIALIST_JOBBOARD';
   if (source.kind === 'wttj') return 'SPECIALIST_JOBBOARD';
   if (API_KINDS.has(source.kind)) return 'ATS_OFFICIAL';
   return 'EMPLOYER_DIRECT';
