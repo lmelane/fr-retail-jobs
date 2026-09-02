@@ -2,6 +2,7 @@ import type { PrismaClient } from '@prisma/client';
 import { blockingKey, isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } from './match.js';
 import { classifySector, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
+import { isFranceJob } from '../lib/france.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
 
 
@@ -119,6 +120,11 @@ export async function upsertDeduplicated(
         title: candidate.title,
         location: candidate.location,
         country: candidate.country,
+        // Stored as a FLAG, never used as a discard: the site defaults to the
+        // French view and can widen later. This line was missing — every job
+        // sat at the schema default `false`, and a front end filtering on
+        // isFrance:true would have shown an empty board over a full database.
+        isFrance: isFranceJob(candidate.country, candidate.location),
         contract: candidate.contract,
         // Rich fields the richer vendors publish. Absent means "this source does
         // not expose it", so they are written through rather than dropped.

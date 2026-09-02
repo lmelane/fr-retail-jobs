@@ -13,5 +13,9 @@
  *      Company.sector), "Full-time" stored as a contract.
  *   1  2026-09-02 — full descriptions, write-time sector classification,
  *      working time split from contract, parentGroup on Company.
+ *   2  2026-09-02 — isFrance actually written (v1 rows all sat at the schema
+ *      default false, which an isFrance:true front end renders as an empty
+ *      board), and nothing is discarded at ingest any more: France and sector
+ *      are stored, filtering happens on the web.
  */
-export const PIPELINE_VERSION = 1;
+export const PIPELINE_VERSION = 2;

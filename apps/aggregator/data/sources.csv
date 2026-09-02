@@ -81,7 +81,7 @@ Embryolisse,,wttj,"{""slug"": ""embryolisse""}",,ALLOWED,3,yes
 Eres,,wttj,"{""slug"": ""maison-eres""}",,ALLOWED,3,yes
 Le Slip Francais,,wttj,"{""slug"": ""le-slip-francais""}",,ALLOWED,1,yes
 Payot,,wttj,"{""vendor"": ""welcometothejungle"", ""slug"": ""payot"", ""org_reference"": ""OHpXMF"", ""org_api"": ""https://api.welcometothejungle.com/api/v1/organizations/payot"", ""jobs_url"": ""https://www.welcometothejungle.com/fr/companies/payot/jobs"", ""embed_on_brand_site"": ""https://www.welcometothejungle.com/fr/companies/payot/embed?c=3&l=2"", ""algolia"": {""app_id"": ""CSEKHVMS53"", ""index"": ""wttj_jobs_production_fr"", ""filter"": ""organization.slug:payot""}}",,ALLOWED,1,yes
-LVMH (toutes Maisons),www.lvmh.com,lvmh_algolia,"{""country"": ""France""}",,ALLOWED,1200,yes
+LVMH (toutes Maisons),www.lvmh.com,lvmh_algolia,"{""country"": null}",,ALLOWED,5222,yes
 Kering (toutes Maisons),careers.kering.com,eightfold,"{""origin"": ""https://careers.kering.com"", ""domain"": ""kering.com""}",,ALLOWED (Allow: /api/pcsx),1008,yes
 Parfums Chanel,cc.wd3.myworkdayjobs.com,workday,"{""tenant"": ""cc"", ""site"": ""ChanelCareers"", ""origin"": ""https://cc.wd3.myworkdayjobs.com""}",,ALLOWED,1086,yes
 Normal,jobs.normal.eu,teamtailor,"{""origin"": ""https://jobs.normal.eu""}",,ALLOWED,440,yes

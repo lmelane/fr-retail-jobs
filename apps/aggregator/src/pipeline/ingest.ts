@@ -276,11 +276,19 @@ async function ingestApiSource(prisma: PrismaClient, source: CatalogSource): Pro
     // single-house feed falls back to the catalogue label.
     const employer = job.company || sourceDef.company;
 
-    if (!classifySector({ company: employer, title: job.title }).inScope) continue;
+    /**
+     * NO sector filter and NO France filter here — keep everything, filter on
+     * the web.
+     *
+     * A catalogue feed IS in the vertical by construction, and re-classifying
+     * each offer against the reference list silently dropped Maisons the list
+     * does not name — Cheval Blanc's 117 offers would have gone to the bin for
+     * not being a CSV row. France likewise becomes a stored flag the site
+     * filters on, not a reason to discard: an offer thrown away here cannot be
+     * un-thrown when the product wants an international view.
+     */
     stats.inSector++;
-
-    if (!isFranceJob(job.country, job.location)) continue;
-    stats.france++;
+    if (isFranceJob(job.country, job.location)) stats.france++;
 
     try {
       const result = await upsertDeduplicated(prisma, toCandidate(job, sourceDef, employer));
