@@ -24,7 +24,7 @@ les pièges techniques par vendeur dans [`DISCOVERY.md`](DISCOVERY.md).
                           ▼
               CLASSIFICATION SECTEUR      référentiel 728 maisons, offre par offre
                           ▼
-                  FILTRAGE FRANCE
+                  DRAPEAU FRANCE          stocké, jamais un rejet — le web filtre
                           ▼
                     BASE UNIQUE           1 Job canonique + N JobSources
                           ▼
