@@ -10,12 +10,12 @@ import {
   Layers,
   Loader2,
   MapPin,
-  Search,
   X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { JobDetail } from '@/components/job-detail';
+import { SearchPill } from '@/components/search-pill';
 import { contractLabel, relativeDate } from '@/lib/format';
 import { countryLabel } from '@/lib/countries';
 import { cn } from '@/lib/utils';
@@ -189,7 +189,9 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
       else next.set(key, value);
     }
     if (!('page' in changes)) next.delete('page');
-    startTransition(() => router.push(next.toString() ? `/?${next}` : '/', { scroll: false }));
+    startTransition(() =>
+      router.push(next.toString() ? `/emplois?${next}` : '/emplois', { scroll: false }),
+    );
   };
 
   /** Clicking an active value clears it, so each control is its own toggle. */
@@ -210,7 +212,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
         <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
           <nav className="flex shrink-0 items-center gap-5">
             <Link
-              href="/"
+              href="/emplois"
               aria-current="page"
               className="text-foreground border-primary -mb-[13px] border-b-2 pb-3 text-[15px] font-semibold"
             >
@@ -232,7 +234,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => startTransition(() => router.push('/', { scroll: false }))}
+                onClick={() => startTransition(() => router.push('/emplois', { scroll: false }))}
                 className="hover:bg-surface h-8 rounded-full px-3 text-xs"
               >
                 <X className="size-4" />
@@ -241,49 +243,18 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
             )}
           </div>
 
-          {/* The pill: Poste | Lieu | Rechercher, Indeed §3.2 proportions.
-              Full width and its own row below lg; fields stack below sm with
-              a full-width button, matching Indeed's own mobile SearchBar. */}
-          <form
-            className="border-border order-3 mx-auto flex h-auto w-full max-w-[900px] flex-col items-stretch rounded-[20px] border bg-white shadow-[0_0_2px_0_rgba(45,45,45,.16),0_4px_8px_0_rgba(45,45,45,.08),0_8px_16px_0_rgba(45,45,45,.04)] focus-within:ring-2 focus-within:ring-primary/40 sm:h-[60px] sm:flex-row sm:items-center lg:order-2"
-            onSubmit={(event) => {
-              event.preventDefault();
-              navigate({ q: draft.trim() || null, ville: locationDraft.trim() || null });
-            }}
-          >
-            <div className="flex min-w-0 flex-1 items-center gap-3 px-4 pt-2 sm:pt-0">
-              <Search className="text-foreground/70 size-5 shrink-0" aria-hidden />
-              <input
-                value={draft}
-                onChange={(event) => setDraft(event.target.value)}
-                placeholder="Poste, Maison, mot-clé…"
-                aria-label="Poste ou mot-clé"
-                className="text-foreground placeholder:text-muted-foreground h-11 min-w-0 flex-1 bg-transparent text-[15px] outline-none sm:h-full"
-              />
-            </div>
-
-            <span className="bg-border mx-4 h-px w-auto shrink-0 sm:mx-1 sm:h-9 sm:w-px" aria-hidden />
-
-            <div className="flex min-w-0 flex-1 items-center gap-3 px-4 sm:flex-[0.7] sm:pl-2">
-              <MapPin className="text-foreground/70 size-5 shrink-0" aria-hidden />
-              <input
-                value={locationDraft}
-                onChange={(event) => setLocationDraft(event.target.value)}
-                placeholder="Ville"
-                aria-label="Lieu"
-                className="text-foreground placeholder:text-muted-foreground h-11 min-w-0 flex-1 bg-transparent text-[15px] outline-none sm:h-full"
-              />
-            </div>
-
-            <div className="p-2">
-              <Button
-                type="submit"
-                className="h-11 w-full rounded-xl px-6 text-[15px] font-semibold sm:w-auto"
-              >
-                Rechercher
-              </Button>
-            </div>
-          </form>
+          {/* The pill: Poste | Lieu | Rechercher, Indeed §3.2 proportions,
+              with live autocomplete on both fields — shared with the landing
+              page's own pill so the two never diverge (see SearchPill). */}
+          <div className="order-3 w-full lg:order-2">
+            <SearchPill
+              query={draft}
+              onQueryChange={setDraft}
+              city={locationDraft}
+              onCityChange={setLocationDraft}
+              onSubmit={({ query, city }) => navigate({ q: query || null, ville: city || null })}
+            />
+          </div>
         </div>
 
         {/* ============ Filters: real dropdowns, click-driven, not <details> ============ */}
@@ -353,7 +324,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
             {jobs.length === 0 ? (
               <EmptyState
                 hasFilters={activeCount > 0}
-                onReset={() => startTransition(() => router.push('/', { scroll: false }))}
+                onReset={() => startTransition(() => router.push('/emplois', { scroll: false }))}
               />
             ) : (
               <ul className={cn('flex flex-col gap-2 pr-2 pb-2 transition-opacity', pending && 'opacity-50')}>

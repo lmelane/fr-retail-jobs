@@ -1,15 +1,19 @@
 import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
+import { Noto_Sans } from 'next/font/google';
 import './globals.css';
 
 /**
- * Poppins, self-hosted by next/font: no render-blocking request to Google and no
- * layout shift, since the fallback metrics are matched at build time.
+ * Noto Sans, self-hosted by next/font: no render-blocking request to Google and
+ * no layout shift, since the fallback metrics are matched at build time.
+ *
+ * Indeed's own stack is "Indeed Sans", "Noto Sans", … — Noto Sans is its public
+ * fallback, so using it directly gets the closest neutral, humanist reading to
+ * Indeed without licensing its proprietary face.
  */
-const poppins = Poppins({
+const notoSans = Noto_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
-  variable: '--font-poppins',
+  variable: '--font-noto-sans',
   display: 'swap',
 });
 
@@ -21,7 +25,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={poppins.variable} suppressHydrationWarning>
+    <html lang="fr" className={notoSans.variable} suppressHydrationWarning>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );

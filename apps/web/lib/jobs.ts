@@ -411,3 +411,57 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
     throw new DatabaseUnavailableError(error);
   }
 }
+
+/**
+ * Autocomplete for the search bar, from OUR data — the suggestions are real
+ * cities and real job titles the board actually holds, so a click always leads
+ * to results, unlike a generic canned list.
+ *
+ * France-scoped like the board's default (decision D12): a candidate typing in
+ * the FR view is offered FR cities and FR postings.
+ */
+const SUGGEST_LIMIT = 8;
+
+export async function suggestCities(query: string): Promise<string[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const q = query.trim();
+  if (q.length < 2) return [];
+  try {
+    const rows = await prisma.job.groupBy({
+      by: ['city'],
+      where: {
+        isActive: true,
+        isFrance: true,
+        city: { startsWith: q, mode: 'insensitive' },
+      },
+      _count: { _all: true },
+      orderBy: { _count: { city: 'desc' } },
+      take: SUGGEST_LIMIT,
+    });
+    return rows.map((r) => r.city).filter((c): c is string => Boolean(c));
+  } catch {
+    return [];
+  }
+}
+
+export async function suggestTitles(query: string): Promise<string[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const q = query.trim();
+  if (q.length < 2) return [];
+  try {
+    const rows = await prisma.job.groupBy({
+      by: ['title'],
+      where: {
+        isActive: true,
+        isFrance: true,
+        title: { contains: q, mode: 'insensitive' },
+      },
+      _count: { _all: true },
+      orderBy: { _count: { title: 'desc' } },
+      take: SUGGEST_LIMIT,
+    });
+    return rows.map((r) => r.title).filter((t): t is string => Boolean(t));
+  } catch {
+    return [];
+  }
+}
