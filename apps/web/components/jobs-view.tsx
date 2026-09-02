@@ -13,7 +13,6 @@ import {
   X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { JobDetail } from '@/components/job-detail';
 import { SearchPill } from '@/components/search-pill';
 import { contractLabel, relativeDate } from '@/lib/format';
@@ -116,6 +115,27 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
   const [loadError, setLoadError] = useState<string | null>(null);
   const sentinelRef = useRef<HTMLLIElement>(null);
 
+  /**
+   * The header (nav + search pill + filter row) is `sticky top-0`, Indeed's
+   * fixed filter bar equivalent. Its height varies (it wraps to two rows
+   * below lg), so the sticky detail column measures it live rather than
+   * hardcoding a magic offset — that offset is what keeps the detail's `top`
+   * and internal scroll cutoff honest as the header reflows.
+   */
+  const headerRef = useRef<HTMLElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
+
+  useEffect(() => {
+    const node = headerRef.current;
+    if (!node) return;
+    const observer = new ResizeObserver((entries) => {
+      const height = entries[0]?.contentRect.height;
+      if (height !== undefined) setHeaderHeight(height);
+    });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   // A new server render — a new search or filter — replaces the accumulated
   // list rather than appending to it: `data.jobs` changing IS "start over".
   useEffect(() => {
@@ -203,9 +223,16 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
   ).length;
 
   return (
-    <div className="bg-background flex h-dvh flex-col overflow-hidden">
-      {/* ============ Header: brand + the big Indeed-style search pill ============ */}
-      <header className="border-border/70 shrink-0 border-b bg-white">
+    <div className="bg-background">
+      {/* ============ Header: brand + the big Indeed-style search pill ============
+          `sticky top-0`: the whole search+filter header stays pinned while the
+          page scrolls under it — Indeed itself pins only the filter bar (its
+          header scrolls away), but pinning the pill along with it is the clean
+          equivalent: the candidate can always search or refine a filter without
+          scrolling back up. A solid background + bottom border keeps the list
+          from visually running through it. */}
+      <header ref={headerRef} className="border-border/70 sticky top-0 z-40 border-b bg-white">
+
         {/* Wraps to two rows below lg (logo/nav, then the full-width search
             pill) rather than forcing everything onto one row and pushing the
             pill off-screen — Indeed itself stacks the same way, §6. */}
@@ -308,67 +335,74 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
       </header>
 
       {/* ============ Body: list left, selected offer's detail fills the right column — Indeed layout ============
-          No permanent map: the right pane IS the detail, always, the way
-          Indeed itself lays out a search result page. Below lg there is no
-          room for two columns, so the list and the detail take turns —
-          selecting a card swaps the list out for the detail, and a back
-          button (also below lg) swaps it back. */}
-      <div className="mx-auto grid min-h-0 w-full max-w-[1280px] flex-1 grid-cols-1 gap-4 overflow-hidden p-4 lg:grid-cols-[minmax(0,470px)_minmax(0,1fr)]">
-        <div
-          className={cn(
-            'min-h-0 flex-col overflow-hidden',
-            selected ? 'hidden lg:flex' : 'flex',
+          The page itself scrolls (no fixed-height app shell): the list is a
+          normal-flow column, and the detail column is `sticky` under the
+          pinned header so it stays in view while the list scrolls past it —
+          exactly how fr.indeed.com/jobs behaves. Below lg there is no room for
+          two columns, so the list and the detail take turns — selecting a
+          card swaps the list out for the detail, and a back button (also
+          below lg) swaps it back. */}
+      <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-4 p-4 lg:grid-cols-[minmax(0,470px)_minmax(0,1fr)] lg:items-start">
+        <div className={cn(selected ? 'hidden lg:block' : 'block')}>
+          {jobs.length === 0 ? (
+            <EmptyState
+              hasFilters={activeCount > 0}
+              onReset={() => startTransition(() => router.push('/emplois', { scroll: false }))}
+            />
+          ) : (
+            <ul className={cn('flex flex-col gap-2 pb-2 transition-opacity', pending && 'opacity-50')}>
+              {jobs.map((job) => (
+                <li key={job.id}>
+                  <JobCard
+                    job={job}
+                    onSelect={() => setSelectedId(job.id)}
+                    isSelected={selected?.id === job.id}
+                  />
+                </li>
+              ))}
+
+              {/* Infinite scroll, Indeed-style: this sentinel triggers the
+                  next page 400px before it would actually be reached, so
+                  the next cards are usually ready before the candidate
+                  scrolls into the gap. Rendered inside the same <ul> so it
+                  never desyncs from the list it is the tail of — and it
+                  still works with page scroll, the IntersectionObserver
+                  only needs the sentinel to enter the viewport. */}
+              {loadedPage < pageCount && (
+                <li ref={sentinelRef} aria-hidden={!loadingMore} className="grid place-items-center py-4">
+                  {loadingMore && (
+                    <span className="text-muted-foreground flex items-center gap-2 text-sm">
+                      <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
+                      Chargement…
+                    </span>
+                  )}
+                </li>
+              )}
+
+              {loadError && (
+                <li className="grid place-items-center gap-2 py-4 text-center">
+                  <p className="text-muted-foreground text-sm">{loadError}</p>
+                  <Button variant="ghost" size="sm" onClick={() => void loadMore()} className="rounded-full">
+                    Réessayer
+                  </Button>
+                </li>
+              )}
+            </ul>
           )}
-        >
-          <ScrollArea className="min-h-0 flex-1">
-            {jobs.length === 0 ? (
-              <EmptyState
-                hasFilters={activeCount > 0}
-                onReset={() => startTransition(() => router.push('/emplois', { scroll: false }))}
-              />
-            ) : (
-              <ul className={cn('flex flex-col gap-2 pr-2 pb-2 transition-opacity', pending && 'opacity-50')}>
-                {jobs.map((job) => (
-                  <li key={job.id}>
-                    <JobCard
-                      job={job}
-                      onSelect={() => setSelectedId(job.id)}
-                      isSelected={selected?.id === job.id}
-                    />
-                  </li>
-                ))}
-
-                {/* Infinite scroll, Indeed-style: this sentinel triggers the
-                    next page 400px before it would actually be reached, so
-                    the next cards are usually ready before the candidate
-                    scrolls into the gap. Rendered inside the same <ul> so it
-                    never desyncs from the list it is the tail of. */}
-                {loadedPage < pageCount && (
-                  <li ref={sentinelRef} aria-hidden={!loadingMore} className="grid place-items-center py-4">
-                    {loadingMore && (
-                      <span className="text-muted-foreground flex items-center gap-2 text-sm">
-                        <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
-                        Chargement…
-                      </span>
-                    )}
-                  </li>
-                )}
-
-                {loadError && (
-                  <li className="grid place-items-center gap-2 py-4 text-center">
-                    <p className="text-muted-foreground text-sm">{loadError}</p>
-                    <Button variant="ghost" size="sm" onClick={() => void loadMore()} className="rounded-full">
-                      Réessayer
-                    </Button>
-                  </li>
-                )}
-              </ul>
-            )}
-          </ScrollArea>
         </div>
 
         {selected && (
-          <div className="border-border bg-card relative flex min-h-0 flex-col overflow-hidden rounded-[20px] border">
+          <div
+            className="border-border bg-card relative flex flex-col overflow-hidden rounded-[20px] border lg:sticky lg:top-(--detail-top) lg:max-h-(--detail-max-height)"
+            style={
+              headerHeight
+                ? ({
+                    '--detail-top': `${headerHeight + 16}px`,
+                    '--detail-max-height': `calc(100vh - ${headerHeight + 32}px)`,
+                  } as React.CSSProperties)
+                : undefined
+            }
+          >
             {/* Back to the list — only meaningful below lg, where the detail
                 covers the whole column; at lg+ both panes are always visible
                 so there is nothing to go "back" from. */}
@@ -608,7 +642,7 @@ function shortSalary(job: JobRow): string | null {
 
 function EmptyState({ hasFilters, onReset }: { hasFilters: boolean; onReset: () => void }) {
   return (
-    <div className="grid h-full place-items-center px-6 py-16 text-center">
+    <div className="grid place-items-center px-6 py-16 text-center">
       <div>
         <p className="text-foreground text-sm font-medium">Aucune offre ne correspond.</p>
         {hasFilters && (

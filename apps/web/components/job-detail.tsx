@@ -2,7 +2,6 @@
 
 import { Building2, ExternalLink, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { contractLabel } from '@/lib/format';
 import type { JobRow } from '@/lib/jobs';
@@ -123,7 +122,7 @@ export function JobDetail({ job }: { job: JobRow }) {
   const salary = salaryLabel(job);
 
   return (
-    <div key={job.id} className="flex h-full flex-col">
+    <div key={job.id} className="flex h-full min-h-0 flex-col">
       {/* Indeed §3.10: 24/700 title, entreprise + lieu, salaire/type on one
           line (salary bold), action row, then bordered sections below. */}
       <div className="shrink-0 px-6 pt-6 pb-5">
@@ -185,7 +184,11 @@ export function JobDetail({ job }: { job: JobRow }) {
 
       <Separator className="bg-border" />
 
-      <ScrollArea className="min-h-0 flex-1">
+      {/* Sticky detail: this offer's own content scrolls internally ONLY when
+          it overflows the sticky container's max-height (a long description) —
+          the container itself no longer owns a fixed height, so `overflow-y-auto`
+          is a no-op until content actually exceeds it, exactly like Indeed. */}
+      <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="px-6 py-5">
           {/* "Détails de l'emploi" — a bordered section, Indeed §3.10. */}
           <JobFactsSection job={job} contract={contract} salary={salary} />
@@ -207,7 +210,7 @@ export function JobDetail({ job }: { job: JobRow }) {
             )}
           </div>
         </div>
-      </ScrollArea>
+      </div>
     </div>
   );
 }
