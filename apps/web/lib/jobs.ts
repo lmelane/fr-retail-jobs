@@ -543,3 +543,29 @@ export async function suggestTitles(query: string): Promise<string[]> {
     return [];
   }
 }
+
+/**
+ * Every indexable URL's data for the sitemap — active FR offers by id, and the
+ * Maisons that have at least one, by slug. Kept lean (id + updatedAt only) so
+ * generating a ~10k-entry sitemap stays a single cheap query per type.
+ */
+export async function sitemapData(): Promise<{
+  offers: { id: string; updatedAt: Date }[];
+  companies: { name: string; updatedAt: Date }[];
+}> {
+  if (!process.env.DATABASE_URL) return { offers: [], companies: [] };
+  const [offers, companyRows] = await Promise.all([
+    prisma.job.findMany({
+      where: { isActive: true, isFrance: true },
+      select: { id: true, lastSeenAt: true },
+    }),
+    prisma.company.findMany({
+      where: { jobs: { some: { isActive: true, isFrance: true } } },
+      select: { name: true, lastSeenAt: true },
+    }),
+  ]);
+  return {
+    offers: offers.map((o) => ({ id: o.id, updatedAt: o.lastSeenAt ?? new Date() })),
+    companies: companyRows.map((c) => ({ name: c.name, updatedAt: c.lastSeenAt ?? new Date() })),
+  };
+}
