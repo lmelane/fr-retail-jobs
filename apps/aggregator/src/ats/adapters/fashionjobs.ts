@@ -59,21 +59,41 @@ async function renderPatiently(url: string): Promise<string | null> {
 }
 
 /**
+ * A rotating crawl reports back where it got to, so the ingest layer can move
+ * the cursor: `reachedEnd` is true when the board ran out of pages before the
+ * window filled (wrap to page 1 next run).
+ */
+export type CrawlProgress = { reachedEnd?: boolean };
+
+/**
  * Reads FashionJobs offers, newest first.
  *
  * `config.maxPages` bounds the listing sweep (default 40); pass ~300 for a
- * one-off full harvest. `config.maxJobs` caps detail fetches.
+ * one-off full harvest. `config.maxJobs` caps detail fetches. `config.startPage`
+ * (1-based) resumes a rotating crawl partway through the listing, and
+ * `config.progress` (a mutable object) receives `reachedEnd`.
  */
 export async function fetchFashionjobsJobs(
   config: Record<string, unknown> = {},
 ): Promise<NormalizedJob[]> {
   const maxPages = Number(config.maxPages ?? DEFAULT_MAX_PAGES);
   const maxJobs = Number(config.maxJobs ?? 0);
+  const startPage = Math.max(1, Number(config.startPage) || 1);
+  const progress = (config.progress ?? {}) as CrawlProgress;
+  // A soft wall-clock budget: Cloudflare forces this crawl to be slow (a pause
+  // between every page and every detail), so even the newest 40 pages overrun a
+  // 20-minute window. Rather than be cut mid-flight and lose the run, it stops
+  // itself before the deadline with what it fetched — the listing is date-sorted
+  // and the database keeps prior runs, so coverage accumulates across the day.
+  const deadlineMs = Number(config.deadlineMs) || 0;
+  const pastDeadline = () => deadlineMs > 0 && Date.now() >= deadlineMs;
 
   const detailUrls: string[] = [];
   const seen = new Set<string>();
 
-  for (let page = 1; page <= maxPages; page++) {
+  // Crawl a window [startPage, startPage + maxPages) of the listing.
+  for (let page = startPage; page < startPage + maxPages; page++) {
+    if (pastDeadline()) break;
     const url = page === 1 ? `${ORIGIN}/s/` : `${ORIGIN}/s/${page}.html`;
     const html = await renderPatiently(url);
     if (html === null) {
@@ -86,7 +106,11 @@ export async function fetchFashionjobsJobs(
     const links = [...html.matchAll(CARD_LINK)]
       .map((match) => match[1])
       .filter((link) => !seen.has(link));
-    if (links.length === 0) break;
+    // An empty page is the end of the board: mark it so the cursor wraps to 1.
+    if (links.length === 0) {
+      progress.reachedEnd = true;
+      break;
+    }
     for (const link of links) {
       seen.add(link);
       detailUrls.push(link);
@@ -101,6 +125,7 @@ export async function fetchFashionjobsJobs(
   // Sequential on purpose: this host blocks bursts, and one browser tab
   // working calmly through the list is what it tolerates.
   for (const url of targets) {
+    if (pastDeadline()) break;
     await sleep(DETAIL_DELAY_MS);
     let html: string | null;
     try {

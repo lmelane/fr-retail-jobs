@@ -82,4 +82,34 @@ describe('fetchGenericJsonLdJobs — paginated listing that 404s past the last p
     // The page-0 offer still ingests rather than the source failing outright.
     expect(jobs).toHaveLength(1);
   });
+
+  it('stops paginating immediately when the deadline is already past', async () => {
+    let listingFetches = 0;
+    mockFetch.mockImplementation(async (url) => {
+      const u = String(url ?? '');
+      if (u.includes('page=')) listingFetches++;
+      if (u.includes('page=0')) return listingPage(1);
+      if (u.includes('page=1')) return listingPage(2);
+      return '<p></p>';
+    });
+
+    // A deadline in the past: not a single listing page should be fetched, and
+    // the source returns cleanly rather than failing.
+    const jobs = await fetchGenericJsonLdJobs({ ...config, deadlineMs: Date.now() - 1000 });
+    expect(listingFetches).toBe(0);
+    expect(jobs).toHaveLength(0);
+  });
+
+  it('ignores the deadline guard entirely when no deadline is set', async () => {
+    mockFetch.mockImplementation(async (url) => {
+      const u = String(url ?? '');
+      if (u.includes('page=0')) return listingPage(1);
+      if (u.includes('page=1')) return '<p></p>';
+      if (u.endsWith('offer-1')) return detailPage(1);
+      return '<p></p>';
+    });
+    // No deadlineMs → normal full behaviour.
+    const jobs = await fetchGenericJsonLdJobs(config);
+    expect(jobs).toHaveLength(1);
+  });
 });

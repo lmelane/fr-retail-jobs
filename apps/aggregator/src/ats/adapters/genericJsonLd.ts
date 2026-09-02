@@ -57,6 +57,11 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
    */
   const listingPagedUrl = String(config.listingUrl ?? '');
   const linkPattern = String(config.linkPattern ?? '');
+  // A soft wall-clock budget, honoured by both phases below: a big listing
+  // (Michael Page ~3800 offers) can overrun the run's timeout, so it stops
+  // gracefully with what it has rather than being cut mid-flight.
+  const deadlineMs = Number(config.deadlineMs) || 0;
+  const pastDeadline = () => deadlineMs > 0 && Date.now() >= deadlineMs;
   if (listingPagedUrl && linkPattern) {
     const pageParam = String(config.pageParam ?? 'page');
     const linkRe = new RegExp(`href="([^"]*${linkPattern}[^"]*)"`, 'g');
@@ -64,6 +69,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     const origin = new URL(listingPagedUrl).origin;
 
     for (let page = 0; page < Number(config.maxPages ?? 400); page++) {
+      if (pastDeadline()) break;
       const sep = listingPagedUrl.includes('?') ? '&' : '?';
       // The end of a paginated listing is signalled one of two ways, and both
       // mean "stop here with what we have", not "fail the source": Michael Page
@@ -98,6 +104,9 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     const pages = await Promise.all(
       [...seen].map((url) =>
         limit(async () => {
+          // Stop starting new detail fetches past the budget; what was already
+          // fetched stays, the rest is picked up next run.
+          if (pastDeadline()) return [];
           try {
             return parseJobPostings(
               await fetchText(url, {

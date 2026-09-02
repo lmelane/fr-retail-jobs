@@ -10,6 +10,7 @@ import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
 import { coerceAmount, briefError } from '../lib/normalize.js';
 import { normalizeSourceConfig } from '../connectors/sourceConfig.js';
+import { isRotatingSource, nextPageFor, advanceCursor } from './sourceCursor.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
 import type { NormalizedJob } from '../types.js';
@@ -135,6 +136,7 @@ function toCandidate(
 async function ingestSitemapSource(
   prisma: PrismaClient,
   source: SourceDef,
+  deadlineMs?: number,
 ): Promise<IngestStats> {
   const stats: IngestStats = {
     source: source.key,
@@ -180,9 +182,18 @@ async function ingestSitemapSource(
 
   // Write as results arrive instead of buffering the whole source: a crash
   // partway through then keeps everything already ingested.
+  let stoppedAtDeadline = false;
   await Promise.all(
     urls.map((url) =>
       limit(async () => {
+        // Past the soft deadline, stop starting new fetches: Decathlon's
+        // crawl-delay of 10s makes its 1225 pages a multi-hour sweep, so a run
+        // covers what it can and the next continues. Everything already written
+        // stays; only the unfetched tail is deferred.
+        if (deadlineMs && Date.now() >= deadlineMs) {
+          stoppedAtDeadline = true;
+          return;
+        }
         let job;
         try {
           job = await fetchJobFromPage(url);
@@ -233,7 +244,10 @@ async function ingestSitemapSource(
 
   console.log(
     `[ingest] ${source.key}: ${stats.france} FR / ${stats.inSector} in-sector / ${stats.fetched} fetched -> ` +
-      `${stats.created} created, ${stats.merged} merged, ${stats.errors} errors`,
+      `${stats.created} created, ${stats.merged} merged, ${stats.errors} errors` +
+      // A graceful stop is progress, not an error: say so plainly so a healthy
+      // "continue next run" never reads as a failure in the logs.
+      (stoppedAtDeadline ? ` (stopped at time budget, ${urls.length - stats.fetched - stats.errors} deferred to next run)` : ''),
   );
   return stats;
 }
@@ -309,7 +323,11 @@ export const KIND_TO_ATS: Record<string, string> = {
  * were tested, validated, and then called by nothing. The catalogue said
  * 20,378 offers; the pipeline could reach a fraction of them.
  */
-async function ingestApiSource(prisma: PrismaClient, source: CatalogSource): Promise<IngestStats> {
+async function ingestApiSource(
+  prisma: PrismaClient,
+  source: CatalogSource,
+  deadlineMs?: number,
+): Promise<IngestStats> {
   const stats: IngestStats = {
     source: sourceKeyFor(source),
     fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 0,
@@ -334,9 +352,27 @@ async function ingestApiSource(prisma: PrismaClient, source: CatalogSource): Pro
   // may have written `careers_url` where the Teamtailor adapter expects
   // `origin`, and the unrecognised key fetched nothing — the live "origin
   // missing" failures. validateSources already did this; now the ingest agrees.
-  config = normalizeSourceConfig(config);
+  // The deadline rides along so a slow crawler (FashionJobs) stops gracefully.
+  config = { ...normalizeSourceConfig(config), deadlineMs };
+
+  // A rotating source resumes partway through its listing so it re-sees every
+  // offer within the lifecycle window instead of only ever the newest pages.
+  const rotating = isRotatingSource(stats.source);
+  const progress: { reachedEnd?: boolean } = {};
+  let startPage = 1;
+  if (rotating) {
+    startPage = await nextPageFor(prisma, stats.source);
+    config = { ...config, startPage, progress };
+  }
 
   const jobs = await fetchAtsJobs(type as never, config);
+
+  // Move the cursor forward for next run — after a successful fetch only, so a
+  // failed crawl retries the same window rather than skipping it.
+  if (rotating) {
+    const next = await advanceCursor(prisma, stats.source, startPage, progress.reachedEnd === true);
+    console.log(`[ingest] ${stats.source}: rotating crawl page ${startPage} → next run resumes at ${next}`);
+  }
   stats.fetched = jobs.length;
 
   const sourceDef: SourceDef = {
@@ -415,6 +451,16 @@ export type IngestOptions = {
    * always finishes before the platform kills it. Absent = run every source.
    */
   only?: string;
+  /**
+   * A soft wall-clock deadline (epoch ms) for a slow crawl. The giants —
+   * FashionJobs behind Cloudflare, Decathlon at crawl-delay 10s — cannot finish
+   * inside the orchestrator's hard timeout AND cannot be sped up without
+   * breaking robots.txt. So they stop THEMSELVES a little before it, keeping
+   * every page already fetched (the listing is date-sorted and the database
+   * accumulates across runs) — a graceful "continue next run" instead of the
+   * hard timeout that discards the in-flight work.
+   */
+  deadlineMs?: number;
 };
 
 export async function runIngest(
@@ -513,7 +559,7 @@ export async function runIngest(
 
   for (const source of apiSources) {
     try {
-      const stats = await ingestApiSource(prisma, source);
+      const stats = await ingestApiSource(prisma, source, options.deadlineMs);
       results.push(stats);
       await purgeQuietly(stats);
       await geocodeQuietly();
@@ -530,7 +576,7 @@ export async function runIngest(
   // the API feeds above have already produced.
   for (const source of sources) {
     try {
-      const stats = await ingestSitemapSource(prisma, source);
+      const stats = await ingestSitemapSource(prisma, source, options.deadlineMs);
       results.push(stats);
       await purgeQuietly(stats);
       await geocodeQuietly();
