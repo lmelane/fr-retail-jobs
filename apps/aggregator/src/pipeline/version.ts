@@ -28,5 +28,14 @@
  *      en CDI" in its closing lines, past any head-window), salary extracted
  *      from prose when the structured field is empty, and Teamtailor's
  *      baseSalary band finally read instead of dropped.
+ *   6  2026-09-02 — a wave of correctness fixes the earlier rows cannot carry:
+ *      contract no longer lets the role word win ("Consultant … CDI" was
+ *      FREELANCE, "Chef de Mission" INTERIM, "qualité de vie" a V.I.E); salary
+ *      requires a pay context (a turnover was read as pay); isFrance matches on
+ *      word boundaries with foreign-place signals ("Venice", "Varennes" were
+ *      French); location no longer yields "ARRONDISSEMENT"/"REMOTE -" as a city;
+ *      sector rejects ambiguous tokens; Job.source stores the real ATS; HTML is
+ *      cleaned once at ingest for every source. Older rows re-fetch cleanly as
+ *      each source's next run stamps generation 6.
  */
-export const PIPELINE_VERSION = 5;
+export const PIPELINE_VERSION = 6;
