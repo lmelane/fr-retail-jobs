@@ -203,6 +203,18 @@ model Job {
   fingerprint   String
 
   /**
+   * Generation of the pipeline that wrote this row.
+   *
+   * Rows written by an older pipeline cannot be repaired in place — offers
+   * ingested before the adapters fetched descriptions have none to restore,
+   * and sectors written before classification all read UNKNOWN. Each ingest
+   * deletes rows below the current generation and refetches them from source,
+   * so a schema-level fix ships as a version bump instead of a manual purge
+   * someone must remember to run.
+   */
+  pipelineVersion Int    @default(0)
+
+  /**
    * Blocking key of the dedup cluster: resolvedCompanyId|CITY.
    * Indexed because every write does a cluster lookup before inserting — that
    * lookup is what keeps duplicates out of the database in the first place,

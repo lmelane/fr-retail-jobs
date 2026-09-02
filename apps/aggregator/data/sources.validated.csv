@@ -1,0 +1,143 @@
+maison,kind,config_json,jobs,with_description
+"Foot Locker France",phenom,"{""origin"":""https://careers.footlocker.com""}",2794,2794
+"L’Oréal Professionnel",avature,"{""listingUrl"":""https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0"",""origin"":""https://careers.loreal.com""}",1722,1715
+"Dr. Jart+",eightfold,"{""origin"":""https://careers.elcompanies.com"",""domain"":""elcompanies.com""}",1386,0
+"Editions de Parfums Frédéric Malle",eightfold,"{""origin"":""https://careers.elcompanies.com"",""domain"":""elcompanies.com""}",1386,0
+"Estée Lauder",eightfold,"{""origin"":""https://careers.elcompanies.com"",""domain"":""elcompanies.com""}",1386,0
+"GLAMGLOW",eightfold,"{""origin"":""https://careers.elcompanies.com"",""domain"":""elcompanies.com""}",1386,0
+"Jo Malone London",eightfold,"{""origin"":""https://careers.elcompanies.com"",""domain"":""elcompanies.com""}",1386,0
+"LVMH (toutes Maisons)",lvmh_algolia,"{""country"":""France""}",1200,1200
+"Hermès",wttj,"{""slug"":""hermes""}",581,0
+"IWC Schaffhausen",workday,"{""tenant"":""richemont"",""site"":""broadbean_external"",""origin"":""https://richemont.wd3.myworkdayjobs.com""}",423,423
+"Jaeger-LeCoultre",workday,"{""tenant"":""richemont"",""site"":""broadbean_external"",""origin"":""https://richemont.wd3.myworkdayjobs.com""}",423,399
+"Element",magnet,"{""siteKey"":""9550007d348362827f2534be59208f28"",""origin"":""https://recrutement.groupe-beaumanoir.com""}",408,408
+"Jean Paul Gaultier",successfactors,"{""origin"":""https://jobs.puig.com""}",226,226
+"Kama Ayurveda",successfactors,"{""origin"":""https://jobs.puig.com""}",226,226
+"L'Artisan Parfumeur",successfactors,"{""origin"":""https://jobs.puig.com""}",226,226
+"Maje",smartrecruiters-whitelabel,"{""company"":""SMCP"",""account"":""SMCP""}",534,534
+"A-Derma",workday,"{""tenant"":""pierrefabre"",""site"":""External_Career_Site"",""origin"":""https://pierrefabre.wd3.myworkdayjobs.com""}",210,210
+"Ducray",workday,"{""tenant"":""pierrefabre"",""site"":""External_Career_Site"",""origin"":""https://pierrefabre.wd3.myworkdayjobs.com""}",210,206
+"Eau Thermale Avene",workday,"{""tenant"":""pierrefabre"",""site"":""External_Career_Site"",""origin"":""https://pierrefabre.wd3.myworkdayjobs.com""}",210,204
+"Klorane",workday,"{""tenant"":""pierrefabre"",""site"":""External_Career_Site"",""origin"":""https://pierrefabre.wd3.myworkdayjobs.com""}",210,203
+"Aptar Beauty",successfactors,"{""origin"":""https://jobs.aptar.com""}",208,206
+"Etam",teamtailor,"{""origin"":""https://career.groupeetam.com""}",188,188
+"Galeries Lafayette",teamtailor,"{""origin"":""https://carrieres.groupegalerieslafayette.com""}",157,157
+"GQ France",workday,"{""tenant"":""condenast"",""site"":""CondeCareers"",""origin"":""https://condenast.wd115.myworkdayjobs.com""}",139,139
+"Drunk Elephant",successfactors,"{""origin"":""https://careers.shiseido.com""}",134,134
+"IPSA",successfactors,"{""origin"":""https://careers.shiseido.com""}",134,134
+"Sandro",smartrecruiters-whitelabel,"{""vendor"":""SmartRecruiters"",""company"":""SMCP"",""api"":""https://api.smartrecruiters.com/v1/companies/SMCP/postings?limit=100"",""brandFacet"":""customField fieldLabel=Brands"",""account"":""SMCP""}",534,534
+"Escada Parfums",successfactors,"{""origin"":""https://careers.coty.com""}",116,115
+"Gucci Beauty",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Hugo Boss Fragrances",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Infiniment Coty Paris",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Jil Sander Parfums",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Joop!",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Kylie Cosmetics",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Lancaster",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Claudie Pierlot",smartrecruiters-whitelabel,"{""company"":""SMCP"",""account"":""SMCP""}",534,534
+"Canada Goose",workday,"{""tenant"":""canadagoose"",""site"":""CanadaGooseCareers"",""origin"":""https://canadagoose.wd3.myworkdayjobs.com""}",104,103
+"De Beers London",smartrecruiters-whitelabel,"{""company"":""AngloAmericanDeBeersGroup"",""account"":""AngloAmericanDeBeersGroup""}",96,96
+"APM Monaco",workable,"{""account"":""apm-monaco""}",97,97
+"Clarins",successfactors,"{""origin"":""https://careers.groupeclarins.com""}",40,40
+"Eram",magnet,"{""siteKey"":""61ffe84ad14ba0fdbb448d2d388ac4e3"",""origin"":""https://recrutement.groupe-eram.com""}",89,89
+"Polène",ashby,"{""vendor"":""ashby"",""slug"":""polene-paris"",""board_url"":""https://jobs.ashbyhq.com/polene-paris"",""api_url"":""https://api.ashbyhq.com/posting-api/job-board/polene-paris"",""method"":""GET"",""response_path"":""jobs[]"",""id_field"":""id"",""discovered_via"":""https://www.polene-paris.com/blogs/rh/careers"",""origin"":""https://jobs.ashbyhq.com/polene-paris""}",81,81
+"Jules",talentview,"{""slug"":""jules-recrutement""}",10,10
+"Dr Pierre Ricaud",successfactors,"{""origin"":""https://careers.groupe-rocher.com""}",30,30
+"Helena Rubinstein",wttj,"{""slug"":""l-oreal""}",62,40
+"IT Cosmetics",wttj,"{""slug"":""l-oreal""}",62,40
+"Jacquemus Beauty",wttj,"{""slug"":""l-oreal""}",62,40
+"Kérastase",wttj,"{""slug"":""l-oreal""}",62,40
+"Kiehl's",wttj,"{""slug"":""l-oreal""}",62,40
+"L'Oréal",wttj,"{""slug"":""l-oreal""}",62,40
+"L'Oréal Paris",wttj,"{""slug"":""l-oreal""}",62,40
+"La Roche-Posay",wttj,"{""slug"":""l-oreal""}",62,40
+"Lancôme",wttj,"{""slug"":""l-oreal""}",62,40
+"Cache Cache",magnet,"{""siteKey"":""9550007d348362827f2534be59208f28"",""origin"":""https://recrutement.groupe-beaumanoir.com""}",408,408
+"Valentino",successfactors,"{""vendor"":""successfactors_rmk"",""origin"":""https://jobs.valentino.com"",""path"":""/search/"",""pagination"":""startrow"",""page_size"":10,""job_url"":""/job/{slug}/{id}/""}",29,29
+"Egon Zehnder",workable,"{""account"":""ezrecruiting""}",55,55
+"Promod",talentview,"{""vendor"":""talentview"",""slug"":""promodjob"",""company_website_id"":2498,""career_site"":""https://promodjob.talentview.io/"",""api_url"":""https://api.talentview.io/funnel/v2/companies/promodjob/campaigns"",""query"":{""company_website_id"":2498,""display_mode"":""list"",""offset_start"":1},""pagination"":{""param"":""offset_start"",""type"":""page_number"",""start"":1,""page_size"":10},""id_field"":""id"",""detail_url_template"":""https://promodjob.talentview.io/fr/campaigns/{slug}"",""origin"":""https://promodjob.talentview.io/""}",10,10
+"Maison 123",teamtailor,"{""origin"":""https://career.maison123.com""}",52,52
+"Soeur",teamtailor,"{""vendor"":""teamtailor"",""subdomain"":""soeur-1711354805"",""careers_url"":""https://soeur-1711354805.teamtailor.com/"",""jobs_url"":""https://soeur-1711354805.teamtailor.com/jobs"",""origin"":""https://soeur-1711354805.teamtailor.com/"",""account"":""soeur-1711354805"",""listingUrl"":""https://soeur-1711354805.teamtailor.com/jobs""}",52,52
+"Bonobo",magnet,"{""siteKey"":""9550007d348362827f2534be59208f28"",""origin"":""https://recrutement.groupe-beaumanoir.com""}",408,408
+"Maison Margiela",successfactors,"{""origin"":""https://careers.otb.net""}",60,60
+"Gemo",magnet,"{""siteKey"":""61ffe84ad14ba0fdbb448d2d388ac4e3"",""origin"":""https://recrutement.groupe-eram.com""}",89,89
+"AMIRI",lever,"{""site"":""AMIRI""}",42,38
+"Morgan",magnet,"{""siteKey"":""9550007d348362827f2534be59208f28"",""origin"":""https://recrutement.groupe-beaumanoir.com"",""api"":""https://api.magnet.work/v2/job-offers""}",408,408
+"Caroll",magnet,"{""siteKey"":""9550007d348362827f2534be59208f28"",""origin"":""https://recrutement.groupe-beaumanoir.com""}",408,408
+"Petit Bateau",smartrecruiters-whitelabel,"{""vendor"":""smartrecruiters"",""company"":""PetitBateau"",""public_careers_url"":""https://careers.smartrecruiters.com/PetitBateau"",""pagination"":{""param"":""page"",""page_size"":""~10-16 variable""},""api_note"":""api.smartrecruiters.com is robots-DISALLOWED for non-LinkedInBot agents; do not use"",""parent"":""Groupe Rocher"",""origin"":""https://careers.smartrecruiters.com/PetitBateau"",""account"":""PetitBateau""}",50,50
+"Delvaux",workday,"{""tenant"":""richemont"",""site"":""richemont"",""origin"":""https://richemont.wd3.myworkdayjobs.com"",""brandMatch"":""logoImage.alt on job detail""}",1303,1000
+"Buccellati",workday,"{""tenant"":""richemont"",""site"":""richemont"",""origin"":""https://richemont.wd3.myworkdayjobs.com"",""brandMatch"":""logoImage.alt on job detail""}",1303,1005
+"Showroomprive",teamtailor,"{""vendor"":""teamtailor"",""careers_url"":""https://talents.showroomprivegroup.com/"",""jobs_url"":""https://talents.showroomprivegroup.com/jobs"",""rss"":""https://talents.showroomprivegroup.com/jobs.rss"",""origin"":""https://talents.showroomprivegroup.com/"",""listingUrl"":""https://talents.showroomprivegroup.com/jobs""}",30,30
+"Diptyque",wttj,"{""slug"":""diptyque-paris""}",28,0
+"Aubade",wttj,"{""slug"":""aubade""}",26,26
+"American Vintage",wttj,"{""slug"":""american-vintage""}",25,25
+"Marella",smartrecruiters-whitelabel,"{""company"":""MaxMaraFashionGroup"",""account"":""MaxMaraFashionGroup""}",182,182
+"AMI Paris",recruitee,"{""subdomain"":""amiparis"",""account"":""amiparis""}",22,22
+"L’Occitane en Provence",successfactors,"{""origin"":""https://careers-group.loccitane.com""}",15,15
+"Lectra",wttj,"{""slug"":""lectra""}",22,22
+"Rabanne",successfactors,"{""origin"":""https://jobs.puig.com"",""listingUrl"":""https://jobs.puig.com/search/?q=&startrow={N}"",""brandMatch"":""job slug""}",226,226
+"Prada Beauty",avature,"{""vendor"":""avature"",""origin"":""https://careers.loreal.com"",""sitemap"":""https://careers.loreal.com/en_US/jobs/sitemap.xml"",""searchUrl"":""https://careers.loreal.com/en_US/jobs/SearchJobs/?search={TERM}&jobOffset={N}"",""brandMatch"":""job-title slug + keyword search union"",""sitemapUrl"":""https://careers.loreal.com/en_US/jobs/sitemap.xml""}",416,0
+"Medik8",teamtailor,"{""origin"":""https://careers.medik8.com""}",19,19
+"Prisma Media",teamtailor,"{""origin"":""https://emploi.prismamedia.com"",""listingUrl"":""https://emploi.prismamedia.com/jobs""}",19,19
+"Byredo",successfactors,"{""origin"":""https://jobs.puig.com""}",226,226
+"Charlotte Tilbury",wttj,"{""slug"":""charlotte-tilbury""}",17,17
+"Jonak",wttj,"{""slug"":""jonak""}",17,17
+"Quiksilver",magnet,"{""siteKey"":""9550007d348362827f2534be59208f28"",""origin"":""https://recrutement.groupe-beaumanoir.com"",""api"":""https://api.magnet.work/v2/job-offers""}",408,408
+"Carolina Herrera",successfactors,"{""origin"":""https://jobs.puig.com""}",226,226
+"DC Shoes",magnet,"{""siteKey"":""9550007d348362827f2534be59208f28"",""origin"":""https://recrutement.groupe-beaumanoir.com""}",408,408
+"La Rosee",wttj,"{""slug"":""la-rosee""}",16,0
+"Conde Nast France",workday,"{""tenant"":""condenast"",""site"":""CondeCareers"",""origin"":""https://condenast.wd115.myworkdayjobs.com"",""appliedFacets"":{""locationCountry"":[""54c5b6971ffb4bf0b116fe7651ec789a""]}}",139,139
+"Karla Otto",teamtailor,"{""origin"":""https://careers.karlaotto.com""}",13,13
+"Madame Figaro",wttj,"{""slug"":""groupe-figaro""}",12,12
+"NYX Professional Makeup",avature,"{""vendor"":""avature"",""origin"":""https://careers.loreal.com"",""sitemap"":""https://careers.loreal.com/en_US/jobs/sitemap.xml"",""searchUrl"":""https://careers.loreal.com/en_US/jobs/SearchJobs/?search={TERM}&jobOffset={N}"",""brandMatch"":""job-title slug + keyword search union"",""sitemapUrl"":""https://careers.loreal.com/en_US/jobs/sitemap.xml""}",325,0
+"Apivita",workable,"{""account"":""apivita""}",11,11
+"Asphalte",wttj,"{""slug"":""asphalte""}",11,11
+"Breal",magnet,"{""siteKey"":""9550007d348362827f2534be59208f28"",""origin"":""https://recrutement.groupe-beaumanoir.com""}",408,408
+"Penhaligon's",successfactors,"{""origin"":""https://jobs.puig.com"",""listingUrl"":""https://jobs.puig.com/search/?q=&startrow={N}"",""brandMatch"":""job slug""}",226,226
+"Alaïa",workday,"{""tenant"":""richemont"",""site"":""broadbean_external"",""origin"":""https://richemont.wd3.myworkdayjobs.com""}",423,273
+"Baccarat",talentview,"{""slug"":""baccarat"",""websiteId"":3038}",10,10
+"Bocage",magnet,"{""siteKey"":""61ffe84ad14ba0fdbb448d2d388ac4e3"",""origin"":""https://recrutement.groupe-eram.com""}",89,89
+"Erborian",successfactors,"{""origin"":""https://careers-group.loccitane.com""}",15,15
+"Armand Thiery",wttj,"{""slug"":""armand-thiery""}",8,8
+"Maison Kitsune",wttj,"{""slug"":""kitsune-fr""}",8,8
+"Aime",wttj,"{""slug"":""aime""}",7,7
+"Iris van Herpen",recruitee,"{""subdomain"":""irisvanherpen"",""account"":""irisvanherpen""}",6,6
+"Typology",teamtailor,"{""vendor"":""teamtailor"",""slug"":""typology-1732032895"",""origin"":""https://typology-1732032895.teamtailor.com"",""path"":""/jobs"",""careers_page"":""https://www.typology.com/rejoindre-lequipe""}",6,6
+"Simone Perele",wttj,"{""vendor"":""welcometothejungle"",""org_slug"":""simone-perele"",""org_name"":""Simone Pérèle"",""index"":""wttj_jobs_production_fr"",""slug"":""simone-perele""}",5,5
+"Cle de Peau Beaute",successfactors,"{""origin"":""https://careers.shiseido.com""}",134,134
+"DFS",successfactors,"{""origin"":""https://careers.dfs.com""}",4,4
+"Dr. Vranjes Firenze",successfactors,"{""origin"":""https://careers-group.loccitane.com""}",15,15
+"Margaret Howell",teamtailor,"{""origin"":""https://careers.margarethowell.co.uk""}",4,4
+"Mellow Yellow",magnet,"{""siteKey"":""61ffe84ad14ba0fdbb448d2d388ac4e3"",""origin"":""https://recrutement.groupe-eram.com"",""apiBase"":""https://api.magnet.work"",""companyFilter"":""Mellow Yellow magasin""}",89,89
+"CoverGirl",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Embryolisse",wttj,"{""slug"":""embryolisse""}",3,3
+"Eres",wttj,"{""slug"":""maison-eres""}",3,3
+"Vogue France",workday,"{""tenant"":""condenast"",""site"":""CondeCareers"",""origin"":""https://condenast.wd115.myworkdayjobs.com"",""appliedFacets"":{""locationCountry"":[""54c5b6971ffb4bf0b116fe7651ec789a""]},""brandMatch"":""title matches /vogue/i""}",139,139
+"NARS",radancy,"{""origin"":""https://jobs.shiseidoamericas.com"",""sitemap"":""https://jobs.shiseidoamericas.com/sitemap.xml"",""scope"":""Americas only"",""sitemapUrl"":""https://jobs.shiseidoamericas.com/sitemap.xml""}",46,46
+"Parade",magnet,"{""siteKey"":""61ffe84ad14ba0fdbb448d2d388ac4e3"",""origin"":""https://recrutement.groupe-eram.com"",""api"":""https://api.magnet.work/v2/job-offers""}",89,89
+"Vanity Fair France",workday,"{""tenant"":""condenast"",""site"":""CondeCareers"",""origin"":""https://condenast.wd115.myworkdayjobs.com"",""appliedFacets"":{""locationCountry"":[""54c5b6971ffb4bf0b116fe7651ec789a""]},""brandMatch"":""title matches /vanity\\s*fair/i""}",139,139
+"Bruno Banani",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Christian Louboutin Beauty",successfactors,"{""origin"":""https://jobs.puig.com""}",226,226
+"Le Slip Francais",wttj,"{""slug"":""le-slip-francais""}",1,1
+"Marc Jacobs Fragrances",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Max Factor",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Melvita",successfactors,"{""origin"":""https://careers-group.loccitane.com"",""listingUrl"":""https://careers-group.loccitane.com/search/?startrow=0""}",15,15
+"Payot",wttj,"{""vendor"":""welcometothejungle"",""slug"":""payot"",""org_reference"":""OHpXMF"",""org_api"":""https://api.welcometothejungle.com/api/v1/organizations/payot"",""jobs_url"":""https://www.welcometothejungle.com/fr/companies/payot/jobs"",""embed_on_brand_site"":""https://www.welcometothejungle.com/fr/companies/payot/embed?c=3&l=2"",""algolia"":{""app_id"":""CSEKHVMS53"",""index"":""wttj_jobs_production_fr"",""filter"":""organization.slug:payot""},""listingUrl"":""https://www.welcometothejungle.com/fr/companies/payot/jobs""}",1,1
+"Philosophy",successfactors,"{""origin"":""https://careers.coty.com"",""listingUrl"":""https://careers.coty.com/search/?q=&startrow={N}"",""brandMatch"":""job slug""}",116,116
+"Rimmel",successfactors,"{""origin"":""https://careers.coty.com"",""vendor"":""SuccessFactors"",""listingUrl"":""https://careers.coty.com/search/?startrow={N}"",""pageSize"":25,""brandMatch"":""title matches /rimmel/i""}",116,116
+"Sally Hansen",successfactors,"{""origin"":""https://careers.coty.com"",""vendor"":""SuccessFactors"",""listingUrl"":""https://careers.coty.com/search/?startrow={N}"",""pageSize"":25,""brandMatch"":""title matches /sally.hansen/i""}",116,116
+"Audemars Piguet",smartrecruiters-whitelabel,"{""company"":""audemarspiguet"",""account"":""audemarspiguet""}",86,86
+"Billabong",magnet,"{""siteKey"":""9550007d348362827f2534be59208f28"",""origin"":""https://recrutement.groupe-beaumanoir.com""}",408,408
+"Bofilon",magnet,"{""siteKey"":""61ffe84ad14ba0fdbb448d2d388ac4e3"",""origin"":""https://recrutement.groupe-eram.com""}",89,89
+"Bourjois",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Burberry Beauty",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Calvin Klein Fragrances",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Chloe Parfums",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Davidoff Parfums",successfactors,"{""origin"":""https://careers.coty.com""}",116,116
+"Miss Sporty",successfactors,"{""origin"":""https://careers.coty.com"",""listingUrl"":""https://careers.coty.com/search/?q=&startrow={N}"",""brandMatch"":""job slug""}",116,116
+"Montlimart",magnet,"{""siteKey"":""61ffe84ad14ba0fdbb448d2d388ac4e3"",""origin"":""https://recrutement.groupe-eram.com"",""api"":""https://api.magnet.work/v2/job-offers""}",89,89
+"My Blend",successfactors,"{""origin"":""https://careers.groupeclarins.com"",""listingUrl"":""https://careers.groupeclarins.com/search/?q=&startrow={N}""}",40,40
+"Naf Naf",magnet,"{""siteKey"":""9550007d348362827f2534be59208f28"",""origin"":""https://recrutement.groupe-beaumanoir.com"",""api"":""https://api.magnet.work/v2/job-offers""}",408,408
+"Origins",eightfold,"{""origin"":""https://careers.elcompanies.com"",""domain"":""elcompanies.com"",""brandMatch"":""title:Origins""}",1386,0
+"Uriage",successfactors,"{""origin"":""https://jobs.puig.com"",""path"":""/search/"",""brandMatch"":""none - no Uriage-labelled posting""}",226,226
+"Vera Wang Parfums",successfactors,"{""origin"":""https://careers.coty.com"",""path"":""/search/"",""brandMatch"":""none - no Vera Wang-labelled posting""}",116,116

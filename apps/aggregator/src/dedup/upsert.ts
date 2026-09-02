@@ -2,6 +2,8 @@ import type { PrismaClient } from '@prisma/client';
 import { blockingKey, isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } from './match.js';
 import { classifySector, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
+import { PIPELINE_VERSION } from '../pipeline/version.js';
+
 
 /** Classifier sectors map 1:1 onto the CompanySector enum. */
 const SECTOR_TO_COMPANY_SECTOR: Record<Sector, string> = {
@@ -140,6 +142,7 @@ export async function upsertDeduplicated(
         clusterKey,
         canonicalTier: candidate.sourceTier,
         fingerprint: `${clusterKey}|${candidate.title}`,
+        pipelineVersion: PIPELINE_VERSION,
         lastSeenAt: now,
         /**
          * The untouched source payload. Nothing is discarded: the normalized

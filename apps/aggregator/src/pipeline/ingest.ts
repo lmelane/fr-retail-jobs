@@ -10,6 +10,7 @@ import { isFranceJob } from '../lib/france.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
 import type { NormalizedJob } from '../types.js';
+import { PIPELINE_VERSION } from './version.js';
 
 /**
  * INGEST — picks up new and updated offers.
@@ -199,6 +200,29 @@ function catalogSitemapSources(): SourceDef[] {
 }
 
 export async function runIngest(prisma: PrismaClient): Promise<IngestStats[]> {
+  /**
+   * Generation purge, before anything is fetched.
+   *
+   * Rows written by an older pipeline cannot be repaired in place: offers
+   * ingested before the adapters fetched descriptions have none to restore,
+   * and sectors written before classification all read UNKNOWN. Deleting them
+   * here means a schema-level fix ships as a PIPELINE_VERSION bump and the
+   * next scheduled run rebuilds cleanly — no manual purge to remember, no
+   * half-stale base when someone forgets it.
+   */
+  const stale = await prisma.job.deleteMany({
+    where: { pipelineVersion: { lt: PIPELINE_VERSION } },
+  });
+  if (stale.count > 0) {
+    // Companies whose every job was just deleted are older-generation rows too
+    // (UNKNOWN sectors, no parentGroup); the re-ingest recreates them properly.
+    const orphans = await prisma.company.deleteMany({ where: { jobs: { none: {} } } });
+    console.log(
+      `[ingest] generation purge: ${stale.count} jobs and ${orphans.count} companies ` +
+        `from before pipeline v${PIPELINE_VERSION} removed; refetching from source`,
+    );
+  }
+
   const all = [...plainHttpSources(), ...catalogSitemapSources()].filter(
     (source) => source.kind === 'SITEMAP_JSONLD',
   );
