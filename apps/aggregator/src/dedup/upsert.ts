@@ -91,7 +91,14 @@ export async function upsertDeduplicated(
       parentGroup,
       lastSeenAt: now,
     },
-    update: { sector, parentGroup, lastSeenAt: now },
+    // Re-write the name on every update, not only on create: a Company created
+    // before the "+N" strip (decision D11) shipped keeps its polluted name
+    // forever otherwise ("Cartier +3", "IWC Schaffhausen +3"…), because the old
+    // update left `name` untouched. candidate.company is already the resolved,
+    // stripped display name, and it is identical for every offer of the same
+    // companyId, so this is a stable self-heal — the 40 legacy rows clean up on
+    // their next ingest.
+    update: { name: candidate.company, sector, parentGroup, lastSeenAt: now },
     select: { id: true },
   });
 
