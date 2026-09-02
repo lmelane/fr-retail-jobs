@@ -441,41 +441,86 @@ function JobCard({
   onSelect: () => void;
   isSelected: boolean;
 }) {
+  const contract = contractLabel(job.contract);
+  const salary = shortSalary(job);
+  const remote = job.remote?.toLowerCase().includes('télé') || job.remote?.toLowerCase().includes('remote')
+    ? 'Télétravail'
+    : null;
+
   return (
     <button
       type="button"
       onClick={onSelect}
       aria-current={isSelected ? 'true' : undefined}
       className={cn(
-        'w-full rounded-[20px] px-4 py-3 text-left transition-colors',
-        isSelected ? 'bg-secondary-container' : 'hover:bg-surface',
+        // Indeed-style card: a real bordered surface, denser, selected state in
+        // the brand tint. Weight carries the hierarchy, not size.
+        'w-full rounded-[16px] border px-4 py-3.5 text-left transition-colors',
+        isSelected
+          ? 'border-primary/40 bg-secondary-container'
+          : 'border-transparent hover:border-border hover:bg-surface',
       )}
     >
-      <h3 className="text-foreground truncate text-[15px] leading-6 font-medium tracking-[0.15px]">
+      <h3 className="text-foreground truncate text-[15px] leading-snug font-semibold tracking-[0.1px]">
         {job.title}
       </h3>
-      <p className="text-muted-foreground mt-0.5 flex items-center gap-1.5 truncate text-sm">
-        <Building2 className="size-[15px] shrink-0 opacity-70" />
+      <p className="text-muted-foreground mt-1 flex items-center gap-1.5 truncate text-sm">
+        <Building2 className="size-[14px] shrink-0 opacity-70" />
         {job.company}
       </p>
-      <p className="text-muted-foreground mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs tracking-[0.4px]">
-        {job.city && (
-          <span className="flex items-center gap-1">
-            <MapPin className="size-[13px] opacity-70" />
-            {job.city}
-          </span>
-        )}
-        {contractLabel(job.contract) && <span>{contractLabel(job.contract)}</span>}
+      {job.city && (
+        <p className="text-muted-foreground mt-0.5 flex items-center gap-1.5 truncate text-[13px]">
+          <MapPin className="size-[13px] shrink-0 opacity-70" />
+          {job.city}
+        </p>
+      )}
+
+      {/* Attribute chips, Indeed order: salary, contract, remote. */}
+      {(salary || contract || remote) && (
+        <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+          {salary && <Attr>{salary}</Attr>}
+          {contract && <Attr tone={contract === 'CDI' ? 'success' : 'neutral'}>{contract}</Attr>}
+          {remote && <Attr>{remote}</Attr>}
+        </div>
+      )}
+
+      <p className="text-muted-foreground mt-2 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] tracking-[0.3px]">
         {job.postedAt && <span>{relativeDate(job.postedAt)}</span>}
         {job.sourceCount > 1 && (
           <span className="flex items-center gap-1">
-            <Layers className="size-[13px] opacity-70" />
+            <Layers className="size-[12px] opacity-70" />
             {job.sourceCount} sources
           </span>
         )}
       </p>
     </button>
   );
+}
+
+/** A small attribute chip, Indeed-style: 12px, radius 8, tinted by tone. */
+function Attr({ children, tone = 'neutral' }: { children: React.ReactNode; tone?: 'neutral' | 'success' }) {
+  return (
+    <span
+      className={cn(
+        'rounded-lg px-2 py-1 text-[12px] font-semibold leading-none',
+        tone === 'success'
+          ? 'bg-success-surface text-success'
+          : 'bg-surface-high text-foreground/75',
+      )}
+    >
+      {children}
+    </span>
+  );
+}
+
+/** Compact salary for a card chip: "35 k€ – 42 k€", or a single figure. */
+function shortSalary(job: JobRow): string | null {
+  if (job.salaryMin === null && job.salaryMax === null) return null;
+  const k = (v: number) => (v >= 1000 ? `${Math.round(v / 1000)} k€` : `${v} €`);
+  const min = job.salaryMin;
+  const max = job.salaryMax;
+  if (min !== null && max !== null && min !== max) return `${k(min)} – ${k(max)}`;
+  return k((min ?? max) as number);
 }
 
 function EmptyState({ hasFilters, onReset }: { hasFilters: boolean; onReset: () => void }) {
