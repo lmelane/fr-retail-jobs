@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { runIngest } from './pipeline/ingest.js';
 import { ingestAllBySource } from './pipeline/ingestOrchestrator.js';
-import { tryAcquireIngestLock, releaseIngestLock } from './lib/lock.js';
 import { checkSourceHealth } from './pipeline/health.js';
 import { runRefresh } from './pipeline/refresh.js';
 import { runReconcile } from './pipeline/reconcile.js';
@@ -58,30 +57,24 @@ try {
     }
   } else if (command === 'ingest-all') {
     /**
-     * The production ingest entry point (decision D6): each source runs as its
-     * own short child process, in series, so no single feed can starve the run.
+     * The production ingest entry point (decision D6): each source runs
+     * in-process under its own timeout, so no single feed can starve the run.
      * A geocode + health pass follows once every source has had its turn.
      *
-     * Guarded by an advisory lock so two ingest runs never overlap — a slow run
-     * still going when the next cron fires would otherwise race it.
+     * No cross-run lock: the cron runs ~once a day and a run finishes well
+     * within that, so overlap is unlikely; and if two ever overlap, the
+     * per-source purge and the unique constraints make it merely duplicated
+     * work, never corruption. A session advisory lock, by contrast, could stay
+     * stuck after a killed container and block every later run — which it did.
      */
-    const gotLock = await tryAcquireIngestLock(prisma);
-    if (!gotLock) {
-      console.log(JSON.stringify({ ok: true, command, skipped: 'another ingest run is in progress' }));
-    } else {
-      try {
-        const orchestration = await ingestAllBySource(prisma);
-        const geo = await runGeocode(prisma);
-        console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo }, null, 2));
-        if (orchestration.failed > 0 || orchestration.timedOut > 0) {
-          console.error(
-            `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`,
-          );
-          process.exitCode = 1;
-        }
-      } finally {
-        await releaseIngestLock(prisma);
-      }
+    const orchestration = await ingestAllBySource(prisma);
+    const geo = await runGeocode(prisma);
+    console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo }, null, 2));
+    if (orchestration.failed > 0 || orchestration.timedOut > 0) {
+      console.error(
+        `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`,
+      );
+      process.exitCode = 1;
     }
   } else if (command === 'refresh') {
     const refresh = await runRefresh(prisma);
