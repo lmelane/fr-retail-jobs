@@ -81,6 +81,33 @@ export async function getCompanies(filters: CompanyFilters = {}): Promise<Compan
   }
 }
 
+/**
+ * Autocomplete for the Entreprises search box — real Maison names, most active
+ * first (like Indeed's directory, which surfaces the biggest employers). A
+ * suggestion always leads to a Maison that exists and is hiring.
+ */
+export async function suggestCompanies(query: string): Promise<string[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const q = query.trim();
+  if (q.length < 2) return [];
+  try {
+    const rows = await prisma.company.findMany({
+      where: {
+        name: { contains: q, mode: 'insensitive' },
+        jobs: { some: { isActive: true } },
+      },
+      select: { name: true, _count: { select: { jobs: { where: { isActive: true } } } } },
+      take: 40,
+    });
+    return rows
+      .sort((a, b) => b._count.jobs - a._count.jobs)
+      .slice(0, 8)
+      .map((r) => r.name);
+  } catch {
+    return [];
+  }
+}
+
 async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult> {
   const page = Math.max(1, filters.page ?? 1);
 

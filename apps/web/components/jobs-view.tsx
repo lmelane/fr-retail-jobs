@@ -545,7 +545,7 @@ function JobCard({
       )}
     >
       {/* Title leads (Indeed puts no logo on list cards), then employer + city. */}
-      <h3 className="text-foreground line-clamp-2 text-[17px] leading-[22px] font-semibold tracking-[-0.01em]">
+      <h3 className="text-foreground line-clamp-2 text-[18px] leading-[24px] font-bold tracking-[-0.01em]">
         {job.title}
       </h3>
       <p className="text-muted-foreground mt-1 truncate text-[13px]">{job.company}</p>

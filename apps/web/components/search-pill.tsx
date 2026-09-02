@@ -91,7 +91,7 @@ export function SearchPill({
             is not Indeed's shape; the brand magenta replaces Indeed's blue. */}
         <button
           type="submit"
-          className="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-primary/40 h-11 w-full rounded-[12px] px-6 text-[16px] font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none sm:w-auto"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-primary/40 h-11 w-full rounded-[12px] px-6 text-[16px] font-bold transition-colors focus-visible:ring-2 focus-visible:outline-none sm:w-auto"
         >
           Rechercher
         </button>
@@ -111,7 +111,7 @@ export function SearchPill({
  * FilterMenu already uses in jobs-view.tsx — a real button/panel, not a
  * native <details>.
  */
-function AutocompleteField({
+export function AutocompleteField({
   type,
   value,
   onChange,
@@ -122,7 +122,7 @@ function AutocompleteField({
   hero,
   flexClassName,
 }: {
-  type: 'title' | 'city';
+  type: 'title' | 'city' | 'company';
   value: string;
   onChange: (value: string) => void;
   onCommit: (value: string) => void;

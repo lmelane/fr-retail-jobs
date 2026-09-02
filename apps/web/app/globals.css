@@ -16,7 +16,10 @@
  * One accent, everywhere; the rest is warm grey.
  */
 @theme {
-  --font-sans: var(--font-noto-sans), "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  /* --font-sans is declared ONLY in `@theme inline` below: a next/font variable
+     (--font-noto-sans) is injected on <html> at runtime, and a plain @theme bakes
+     its value at build time — when that variable is still empty, so the body fell
+     back to Times. `@theme inline` keeps the var() a live reference instead. */
 
   /* Warm-grey surface ladder, exposed as bg-surface-* utilities. */
   --color-surface-low: oklch(0.985 0.003 340);

@@ -7,6 +7,7 @@ import { Building2, Loader2, MapPin, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { CompanyLogo } from '@/components/company-logo';
+import { AutocompleteField } from '@/components/search-pill';
 import { cn } from '@/lib/utils';
 import type { CompaniesResult, CompanyFilters, CompanyRow } from '@/lib/companies';
 
@@ -134,19 +135,24 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
           </nav>
 
           <form
-            className="border-border relative mx-auto flex h-11 w-full max-w-sm items-center rounded-full border bg-white pl-4 shadow-sm focus-within:ring-2 focus-within:ring-primary/40"
+            className="border-border relative mx-auto flex h-11 w-full max-w-sm items-center rounded-[12px] border bg-white shadow-sm focus-within:ring-2 focus-within:ring-primary/40"
             onSubmit={(event) => {
               event.preventDefault();
               navigate({ q: draft.trim() || null });
             }}
           >
-            <Search className="text-muted-foreground size-[18px] shrink-0" aria-hidden />
-            <input
+            <AutocompleteField
+              type="company"
               value={draft}
-              onChange={(event) => setDraft(event.target.value)}
+              onChange={setDraft}
+              onCommit={(value) => {
+                setDraft(value);
+                navigate({ q: value.trim() || null });
+              }}
+              icon={<Search className="text-muted-foreground size-[18px] shrink-0" aria-hidden />}
               placeholder="Rechercher une Maison…"
-              aria-label="Rechercher une entreprise"
-              className="text-foreground placeholder:text-muted-foreground h-full min-w-0 flex-1 bg-transparent px-3 text-sm outline-none"
+              ariaLabel="Rechercher une entreprise"
+              hero={false}
             />
           </form>
 
