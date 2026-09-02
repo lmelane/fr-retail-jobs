@@ -21,8 +21,16 @@ import { checkSourceHealth } from './health.js';
  * API feeds run first (cheap, the bulk of the market), sitemap sources last.
  */
 
-/** Abandon a single source after this long — a stuck feed must not block the rest. */
-const PER_SOURCE_TIMEOUT_MS = Number(process.env.INGEST_SOURCE_TIMEOUT_MS ?? 6 * 60_000);
+/**
+ * Abandon a single source after this long — a stuck feed must not block the rest.
+ *
+ * 20 minutes, not 6: the giants (Kering's 14 Maisons, L'Oréal, FashionJobs'
+ * 7611 offers via a browser) legitimately need well over six minutes to fetch
+ * and dedup, and cutting them short lost exactly the feeds that expose the most
+ * houses. They run LAST (smallest-first ordering), so the long budget only
+ * applies once the quick feeds are already in.
+ */
+const PER_SOURCE_TIMEOUT_MS = Number(process.env.INGEST_SOURCE_TIMEOUT_MS ?? 20 * 60_000);
 
 export type OrchestratorResult = {
   total: number;
