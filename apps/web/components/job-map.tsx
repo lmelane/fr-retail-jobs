@@ -78,11 +78,18 @@ export default function JobMap({ jobs, onSelectCity, selectedCity }: JobMapProps
       attributionControl: true,
     });
 
-    // CARTO Voyager: full colour, but low-contrast roads and labels, so the
-    // accent pins stay readable on top. Free for this usage, attribution kept.
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap &copy; CARTO',
-      subdomains: 'abcd',
+    /**
+     * OpenStreetMap's own tiles: full colour, no key, no account, and no
+     * origin restriction.
+     *
+     * CARTO's Voyager style was prettier for pin contrast, but its CDN can
+     * refuse a browser request on grounds a server-side check never sees — a
+     * refusal that surfaces to the user as an error over the map rather than as
+     * a missing tile. OSM has no such gate, so the map cannot fail that way.
+     * Leaflet itself has never required a key.
+     */
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap',
       maxZoom: 19,
     }).addTo(map);
 

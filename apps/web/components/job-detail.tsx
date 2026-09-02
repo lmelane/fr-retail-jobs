@@ -126,12 +126,23 @@ export function JobDetail({ job }: { job: JobRow }) {
           )}
         </div>
 
-        <Button asChild className="mt-4 h-11 rounded-full px-6 text-sm font-medium tracking-[0.1px]">
-          <a href={job.applyUrl} target="_blank" rel="noopener noreferrer">
-            Postuler
-            <ExternalLink className="size-4" />
-          </a>
-        </Button>
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <Button asChild className="h-11 rounded-full px-6 text-sm font-medium tracking-[0.1px]">
+            <a href={job.applyUrl} target="_blank" rel="noopener noreferrer">
+              Postuler
+              <ExternalLink className="size-4" />
+            </a>
+          </Button>
+
+          {/* The posting's own URL, so it can be sent to someone. */}
+          <Button
+            asChild
+            variant="ghost"
+            className="hover:bg-surface h-11 rounded-full px-4 text-sm font-medium"
+          >
+            <a href={`/offre/${job.id}`}>Lien de l’offre</a>
+          </Button>
+        </div>
 
         {/* The differentiator, stated plainly: several sources agree on this one
             opening, and the link goes to the employer rather than a reposting. */}

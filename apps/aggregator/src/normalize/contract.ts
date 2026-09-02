@@ -31,15 +31,55 @@ const PATTERNS: ReadonlyArray<readonly [ContractType, RegExp]> = [
   ['CDI', /\bCDI\b|IND[ÉE]TERMIN[ÉE]E|PERMANENT|\bREGULAR\b|FULL[ -]TIME EMPLOYEE/],
 ];
 
-export function normalizeContract(raw?: string | null): ContractType {
-  if (!raw) return 'UNKNOWN';
-  const value = raw
+function upper(raw: string): string {
+  return raw
     .normalize('NFKD')
     .replace(/[̀-ͯ]/g, '')
     .toUpperCase();
+}
+
+export function normalizeContract(raw?: string | null): ContractType {
+  if (!raw) return 'UNKNOWN';
+  const value = upper(raw);
 
   for (const [type, pattern] of PATTERNS) {
     if (pattern.test(value)) return type;
   }
   return 'UNKNOWN';
+}
+
+/**
+ * Working time — a different question from the contract, and the schema keeps
+ * them apart.
+ *
+ * Several ATS put "Full-time" or "Plein Temps" in their contract field, which
+ * is not a contract type at all. Left unmapped it fell through to UNKNOWN and
+ * the UI printed the source's raw English, so a French jobboard showed
+ * "Full-time" next to "CDI".
+ */
+export type WorkingTime = 'TEMPS_PLEIN' | 'TEMPS_PARTIEL' | 'UNKNOWN';
+
+const WORKING_TIME: ReadonlyArray<readonly [WorkingTime, RegExp]> = [
+  ['TEMPS_PARTIEL', /PART[ -]TIME|TEMPS[ -]PARTIEL|MI[ -]TEMPS|\d{1,2}\s?H\b/],
+  ['TEMPS_PLEIN', /FULL[ -]TIME|TEMPS[ -]PLEIN|PLEIN[ -]TEMPS|35H|39H/],
+];
+
+export function normalizeWorkingTime(raw?: string | null): WorkingTime {
+  if (!raw) return 'UNKNOWN';
+  const value = upper(raw);
+
+  for (const [type, pattern] of WORKING_TIME) {
+    if (pattern.test(value)) return type;
+  }
+  return 'UNKNOWN';
+}
+
+/**
+ * True when a value names a working time rather than a contract.
+ *
+ * Lets the pipeline move a misfiled "Full-time" out of the contract column
+ * instead of storing it as an unknown contract.
+ */
+export function isWorkingTimeValue(raw?: string | null): boolean {
+  return normalizeWorkingTime(raw) !== 'UNKNOWN' && normalizeContract(raw) === 'UNKNOWN';
 }

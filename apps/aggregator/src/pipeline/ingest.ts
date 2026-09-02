@@ -5,7 +5,7 @@ import { loadSourceCatalog, isApiSource, tierFor, sourceKeyFor } from '../connec
 import { fetchSitemapUrls, fetchJobFromPage } from '../connectors/generic/jsonLdSitemap.js';
 import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
-import { normalizeContract } from '../normalize/contract.js';
+import { normalizeContract, normalizeWorkingTime, isWorkingTimeValue } from '../normalize/contract.js';
 import { isFranceJob } from '../lib/france.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
@@ -52,9 +52,15 @@ function toCandidate(
   source: SourceDef,
   companyName: string,
 ): CandidateJob & { companyId: string } {
+  // Several ATS file "Full-time" / "Plein Temps" under contract, which is a
+  // working time, not a contract type. Moved rather than dropped: the UI was
+  // printing the source's raw English next to French contract labels.
+  const misfiled = isWorkingTimeValue(job.contract);
+
   return {
     ...job,
-    contract: normalizeContract(job.contract),
+    contract: misfiled ? 'UNKNOWN' : normalizeContract(job.contract),
+    workingTime: normalizeWorkingTime(misfiled ? job.contract : job.workingTime),
     company: companyName,
     companyId: resolveCompany(companyName).companyId,
     sourceKey: source.key,

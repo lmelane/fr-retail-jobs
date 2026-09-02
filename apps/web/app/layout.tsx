@@ -14,7 +14,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Catwalks — Offres Mode, Luxe, Beauté & Horlogerie en France',
+  title: "Offres d'emploi Mode, Luxe, Beauté & Horlogerie en France",
   description:
     "Toutes les offres d'emploi du secteur mode, luxe, beauté, horlogerie et retail en France, agrégées depuis les sites carrière des Maisons et les jobboards spécialisés.",
 };

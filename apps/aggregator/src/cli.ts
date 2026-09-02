@@ -34,6 +34,34 @@ try {
     console.log(JSON.stringify({ ok: true, command, ...(await runGeocode(prisma)) }, null, 2));
   } else if (command === 'stats') {
     console.log(JSON.stringify({ ok: true, ...(await runStats(prisma)) }, null, 2));
+  } else if (command === 'purge') {
+    /**
+     * Deletes every job and every company, so the next ingest rebuilds from
+     * scratch.
+     *
+     * Needed because rows written by earlier code cannot be repaired in place:
+     * offers ingested before the adapters fetched descriptions have none, and
+     * offers written before Company.sector existed all read "UNKNOWN". Both
+     * were visible in the UI as empty postings and a wall of UNKNOWN, and
+     * neither is a display bug — the data itself is from an older pipeline.
+     *
+     * Guarded by an explicit argument: this is not something to run by
+     * accident, and there is no undo.
+     */
+    if (process.argv[3] !== '--yes') {
+      throw new Error('purge deletes ALL jobs and companies. Re-run with: purge --yes');
+    }
+    // JobSource cascades from Job; GeoCache is kept, since geocoding a city
+    // again would re-ask the government API for answers we already have.
+    const jobs = await prisma.job.deleteMany({});
+    const companies = await prisma.company.deleteMany({});
+    console.log(
+      JSON.stringify(
+        { ok: true, command, deletedJobs: jobs.count, deletedCompanies: companies.count },
+        null,
+        2,
+      ),
+    );
   } else if (command === 'export-companies') {
     const output = process.argv[3] ?? 'companies.csv';
     console.log(JSON.stringify({ ok: true, ...(await exportCompanies(prisma, output)) }, null, 2));

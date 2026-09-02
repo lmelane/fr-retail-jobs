@@ -345,6 +345,10 @@ function whereClause(filters: JobFilters) {
       ? { postedAt: { gte: new Date(Date.now() - filters.maxAgeDays * 86_400_000) } }
       : {}),
     ...(filters.source ? { sources: { some: { sourceKey: filters.source, isActive: true } } } : {}),
+    // "Confirmées" is applied separately: see multiSourceJobIds. Prisma has no
+    // way to say "this relation has at least two rows" in a where clause, and
+    // JobSource carries no flag that distinguishes the second source from the
+    // first, so it needs its own grouped query.
     // Each term must appear in SOME field, so "vendeuse paris" needs both words
     // but not in the same column.
     ...(terms.length
@@ -413,6 +417,60 @@ async function countFacets(where: WhereClause): Promise<JobsResult['facets']> {
     maisons: fromMap(maisonCounts),
     sources: [],
   };
+}
+
+/**
+ * One offer by id, for its own URL.
+ *
+ * A jobboard's postings have to be linkable: a candidate sends a colleague an
+ * offer, not a search. It also lets each posting carry its own title and
+ * JobPosting metadata, which a single client-rendered page never can.
+ */
+export async function getJob(id: string): Promise<JobRow | null> {
+  try {
+    if (!process.env.DATABASE_URL) return null;
+
+    const row = await prisma.job.findUnique({
+      where: { id },
+      include: {
+        company: true,
+        sources: { select: { sourceKey: true }, where: { isActive: true } },
+      },
+    });
+    if (!row || !row.isActive) return null;
+
+    return {
+      id: row.id,
+      title: row.title,
+      company: row.company.name,
+      group: null,
+      city: row.city,
+      location: row.location,
+      contract: row.contract,
+      sector: row.company.sector,
+      url: row.url,
+      postedAt: row.postedAt,
+      latitude: row.latitude,
+      longitude: row.longitude,
+      sourceCount: row.sources.length,
+      sources: row.sources.map((source) => source.sourceKey),
+      description: row.description,
+      applyUrl: row.url,
+      postalCode: row.postalCode,
+      department: row.department,
+      workingTime: row.workingTime,
+      remote: row.remote,
+      experienceYears: row.experienceYears,
+      educationLevel: row.educationLevel,
+      salaryMin: row.salaryMin,
+      salaryMax: row.salaryMax,
+      salaryCurrency: row.salaryCurrency,
+      salaryPeriod: row.salaryPeriod,
+      validThrough: row.validThrough,
+    };
+  } catch {
+    return null;
+  }
 }
 
 export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
