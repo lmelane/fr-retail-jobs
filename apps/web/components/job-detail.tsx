@@ -152,28 +152,41 @@ export function JobDetail({ job }: { job: JobRow }) {
           </p>
         )}
 
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          {/* Catwalks DA primary button: black pill, weight 400, hover to grey-600. */}
+        {/* Two honest actions (decision D18), with the strategic one leading.
+            The STRONG black button pushes the Catwalks profile — matching is the
+            business goal — and never promises to forward the application. The
+            direct link to the employer's own posting stays available, just as a
+            quieter outline button: honest, but not the emphasis. */}
+        <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
           <Button
             asChild
             className="bg-primary text-primary-foreground hover:bg-grey-600 h-11 rounded-full px-6 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
           >
-            <a href={job.applyUrl} target="_blank" rel="noopener noreferrer">
-              Postuler
-              <ExternalLink className="size-4" />
+            <a
+              href="https://catwalks.io/inscription?utm_source=fashion-atlas&utm_medium=aggregator"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Matcher mon profil avec Catwalks
             </a>
           </Button>
 
-          {/* The posting's own URL, so it can be sent to someone — DA secondary
-              button: transparent, black border, fills black on hover. */}
           <Button
             asChild
             variant="outline"
             className="border-foreground text-foreground hover:bg-foreground hover:text-primary-foreground h-11 rounded-full bg-transparent px-6 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
           >
-            <a href={`/offre/${job.id}`}>Lien de l’offre</a>
+            <a href={job.applyUrl} target="_blank" rel="noopener noreferrer">
+              Voir l’offre chez {job.company}
+              <ExternalLink className="size-4" />
+            </a>
           </Button>
         </div>
+
+        {/* The promise, stated plainly under the buttons — no false transmission. */}
+        <p className="text-grey-400 mt-2 text-[13px] tracking-[0.4px]">
+          Un profil Catwalks vous fait matcher avec les Maisons qui recrutent votre profil.
+        </p>
 
       </div>
 
