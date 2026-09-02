@@ -2,7 +2,9 @@ import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
 import type { NormalizedJob } from '../../types.js';
 
-type WorkdayPosting = { title: string; externalPath: string; locationsText?: string; postedOn?: string; bulletFields?: string[] };
+// externalPath is optional in practice: some tenants (Richemont) return rows
+// without it, and treating it as always-present crashed the whole source.
+type WorkdayPosting = { title: string; externalPath?: string; locationsText?: string; postedOn?: string; bulletFields?: string[] };
 type WorkdayPage = { total?: number; jobPostings?: WorkdayPosting[] };
 
 export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
@@ -28,6 +30,11 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
     const postings = page.jobPostings ?? [];
     if (page.total) total = page.total;
     for (const job of postings) {
+      // A posting without an externalPath has neither a stable id nor a URL to
+      // send a candidate to — skip it rather than crash the whole source on
+      // `undefined.split`. Richemont's tenant returned such rows, and the throw
+      // lost all ~1300 of its offers ("cartier-3 failed: reading 'split'").
+      if (!job.externalPath) continue;
       const externalId = job.externalPath.split('/').filter(Boolean).pop() ?? job.externalPath;
       out.push({
         externalId,

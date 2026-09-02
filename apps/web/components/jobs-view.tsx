@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import {
   Check,
   ChevronDown,
@@ -16,8 +15,6 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Skeleton } from '@/components/ui/skeleton';
-import { CompanyLogo } from '@/components/company-logo';
 import { JobDetail } from '@/components/job-detail';
 import { contractLabel, relativeDate } from '@/lib/format';
 import { countryLabel } from '@/lib/countries';
@@ -35,15 +32,12 @@ import type { JobFilters, JobRow, JobsResult } from '@/lib/jobs';
  *  - Filters sit in the open as real dropdowns, not a native <details> that
  *    hijacks text selection. A filter you cannot see is a filter you forget is
  *    applied.
- *  - The list and the map are two views of the same results, shown together —
- *    Airbnb-style — rather than behind a tab. The offer detail opens as a panel
- *    over the map on click, so reading a posting never costs the map its place.
+ *  - The list and the selected offer's detail are the two panes of a single
+ *    result page, Indeed-style — not a list beside a permanent map. The right
+ *    pane always shows a detail when there are results (the first offer by
+ *    default), and a small location map lives INSIDE that detail, scoped to
+ *    the one offer being read.
  */
-
-const JobMap = dynamic(() => import('@/components/job-map'), {
-  ssr: false,
-  loading: () => <Skeleton className="h-full w-full rounded-[20px]" />,
-});
 
 const SECTOR_LABELS: Record<string, string> = {
   FASHION: 'Mode',
@@ -104,8 +98,9 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
   const [pending, startTransition] = useTransition();
   const [draft, setDraft] = useState(filters.q ?? '');
   const [locationDraft, setLocationDraft] = useState(filters.city ?? '');
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  // Indeed always shows a detail when there are results: default to the
+  // first offer rather than an empty right pane on first paint.
+  const [selectedId, setSelectedId] = useState<string | null>(data.jobs[0]?.id ?? null);
 
   /**
    * Infinite scroll, Indeed-style: page 1 arrives server-rendered in `data`
@@ -131,8 +126,10 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
   }, [data.jobs, data.page, data.pageCount]);
 
   // A fresh search invalidates the selection: the previously selected offer
-  // may no longer be in the list.
-  useEffect(() => setSelectedId(null), [data.jobs]);
+  // may no longer be in the list. Indeed always shows a detail when there are
+  // results, so the first offer is selected by default rather than leaving
+  // the right pane empty until a candidate clicks something.
+  useEffect(() => setSelectedId(data.jobs[0]?.id ?? null), [data.jobs]);
   useEffect(() => setDraft(filters.q ?? ''), [filters.q]);
   useEffect(() => setLocationDraft(filters.city ?? ''), [filters.city]);
 
@@ -211,21 +208,20 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
             pill) rather than forcing everything onto one row and pushing the
             pill off-screen — Indeed itself stacks the same way, §6. */}
         <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
-          <nav className="flex shrink-0 items-center gap-6">
-            <Link href="/" className="text-primary text-xl font-bold tracking-tight">
-              Catwalks
+          <nav className="flex shrink-0 items-center gap-5">
+            <Link
+              href="/"
+              aria-current="page"
+              className="text-foreground border-primary -mb-[13px] border-b-2 pb-3 text-[15px] font-semibold"
+            >
+              Offres
             </Link>
-            <div className="hidden items-center gap-5 sm:flex">
-              <span className="text-foreground border-primary -mb-[13px] border-b-2 pb-3 text-sm font-semibold">
-                Offres
-              </span>
-              <Link
-                href="/entreprises"
-                className="text-foreground/80 hover:text-foreground pb-3 text-sm font-medium transition-colors"
-              >
-                Entreprises
-              </Link>
-            </div>
+            <Link
+              href="/entreprises"
+              className="text-foreground/70 hover:text-foreground pb-3 text-[15px] font-medium transition-colors"
+            >
+              Entreprises
+            </Link>
           </nav>
 
           <div className="text-muted-foreground order-2 ml-auto flex shrink-0 items-center gap-3 text-xs font-medium tabular-nums lg:order-3">
@@ -340,9 +336,19 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
         </div>
       </header>
 
-      {/* ============ Body: list on the left, map + overlay detail on the right — Airbnb layout ============ */}
+      {/* ============ Body: list left, selected offer's detail fills the right column — Indeed layout ============
+          No permanent map: the right pane IS the detail, always, the way
+          Indeed itself lays out a search result page. Below lg there is no
+          room for two columns, so the list and the detail take turns —
+          selecting a card swaps the list out for the detail, and a back
+          button (also below lg) swaps it back. */}
       <div className="mx-auto grid min-h-0 w-full max-w-[1280px] flex-1 grid-cols-1 gap-4 overflow-hidden p-4 lg:grid-cols-[minmax(0,470px)_minmax(0,1fr)]">
-        <div className="flex min-h-0 flex-col overflow-hidden">
+        <div
+          className={cn(
+            'min-h-0 flex-col overflow-hidden',
+            selected ? 'hidden lg:flex' : 'flex',
+          )}
+        >
           <ScrollArea className="min-h-0 flex-1">
             {jobs.length === 0 ? (
               <EmptyState
@@ -350,13 +356,12 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
                 onReset={() => startTransition(() => router.push('/', { scroll: false }))}
               />
             ) : (
-              <ul className={cn('flex flex-col gap-3 pr-2 pb-2 transition-opacity', pending && 'opacity-50')}>
+              <ul className={cn('flex flex-col gap-2 pr-2 pb-2 transition-opacity', pending && 'opacity-50')}>
                 {jobs.map((job) => (
                   <li key={job.id}>
                     <JobCard
                       job={job}
                       onSelect={() => setSelectedId(job.id)}
-                      onHover={(hovering) => setHoveredId(hovering ? job.id : null)}
                       isSelected={selected?.id === job.id}
                     />
                   </li>
@@ -391,38 +396,23 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
           </ScrollArea>
         </div>
 
-        <div className="border-border relative min-h-72 overflow-hidden rounded-[20px] border lg:min-h-0">
-          {/* The map is permanent — Airbnb layout, not a tab. It reflects
-              everything loaded so far (not just the first page), and hovering
-              a card highlights its marker; a marker click selects that offer,
-              same as clicking its card. */}
-          <JobMap
-            jobs={jobs}
-            highlightedId={hoveredId ?? selected?.id ?? null}
-            onSelectJob={(id) => setSelectedId(id)}
-          />
-
-          {/* The detail opens as a panel over the map on click — never a tab
-              swap, so the map's position and zoom survive reading an offer. */}
-          {selected && (
-            <div
-              role="dialog"
-              aria-label="Détail de l'offre"
-              className="animate-in slide-in-from-right-4 fade-in bg-card absolute inset-y-3 right-3 z-[1000] flex w-full max-w-[440px] flex-col overflow-hidden rounded-[20px] border border-black/5 shadow-[0_0_2px_0_rgba(45,45,45,.16),0_8px_16px_0_rgba(45,45,45,.08),0_16px_24px_0_rgba(45,45,45,.04)] duration-200 motion-reduce:animate-none"
+        {selected && (
+          <div className="border-border bg-card relative flex min-h-0 flex-col overflow-hidden rounded-[20px] border">
+            {/* Back to the list — only meaningful below lg, where the detail
+                covers the whole column; at lg+ both panes are always visible
+                so there is nothing to go "back" from. */}
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => setSelectedId(null)}
+              aria-label="Retour à la liste des offres"
+              className="hover:bg-surface absolute top-3 right-3 z-10 rounded-full lg:hidden"
             >
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                onClick={() => setSelectedId(null)}
-                aria-label="Fermer le détail"
-                className="hover:bg-surface absolute top-3 right-3 z-10 rounded-full"
-              >
-                <X className="size-4" />
-              </Button>
-              <JobDetail job={selected} />
-            </div>
-          )}
-        </div>
+              <X className="size-4" />
+            </Button>
+            <JobDetail job={selected} />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -556,12 +546,10 @@ function FilterMenu({
 function JobCard({
   job,
   onSelect,
-  onHover,
   isSelected,
 }: {
   job: JobRow;
   onSelect: () => void;
-  onHover: (hovering: boolean) => void;
   isSelected: boolean;
 }) {
   const contract = contractLabel(job.contract);
@@ -574,59 +562,49 @@ function JobCard({
     <button
       type="button"
       onClick={onSelect}
-      onMouseEnter={() => onHover(true)}
-      onMouseLeave={() => onHover(false)}
-      onFocus={() => onHover(true)}
-      onBlur={() => onHover(false)}
       aria-current={isSelected ? 'true' : undefined}
       className={cn(
-        // Indeed JobCard, §3.4: bordered surface, 20px radius, denser padding,
-        // selected state takes the legacy-blue-equivalent brand tint + shadow.
-        'w-full rounded-[20px] border bg-white px-4 py-3.5 text-left transition-colors',
+        // Indeed JobCard: a thin-bordered card with a small radius, tight
+        // padding and NO employer logo — the title leads the scan. Selection is
+        // a thin brand border over a faint tint, not a heavy border + shadow.
+        'w-full rounded-xl border px-4 py-3 text-left transition-colors',
         isSelected
-          ? 'border-primary shadow-[0_2px_4px_rgba(0,0,0,.08)]'
-          : 'border-border hover:border-foreground/20',
+          ? 'border-primary bg-secondary-container/40'
+          : 'border-border bg-white hover:bg-surface',
       )}
     >
-      {/* Logo left of the title block, Indeed-style — the employer's mark is
-          how a candidate scans a list, so the offer cards carry it too, not just
-          the Entreprises page. */}
-      <div className="flex items-start gap-3">
-        <CompanyLogo name={job.company} size={44} className="mt-0.5 shrink-0" />
-        <div className="min-w-0 flex-1">
-          <h3 className="text-foreground line-clamp-2 text-[18px] leading-6 font-bold tracking-[-0.01em]">
-            {job.title}
-          </h3>
-          <p className="text-muted-foreground mt-1.5 flex items-center gap-1.5 truncate text-sm">
-            {job.company}
-          </p>
-          {job.city && (
-            <p className="text-muted-foreground mt-0.5 flex items-center gap-1.5 truncate text-sm">
-              <MapPin className="size-[13px] shrink-0 opacity-70" />
-              {job.city}
-            </p>
-          )}
-        </div>
-      </div>
+      {/* Title leads (Indeed puts no logo on list cards), then employer + city. */}
+      <h3 className="text-foreground line-clamp-2 text-[17px] leading-[22px] font-semibold tracking-[-0.01em]">
+        {job.title}
+      </h3>
+      <p className="text-muted-foreground mt-1 truncate text-[13px]">{job.company}</p>
+      {job.city && (
+        <p className="text-muted-foreground mt-0.5 flex items-center gap-1 truncate text-[13px]">
+          <MapPin className="size-3 shrink-0 opacity-70" />
+          {job.city}
+        </p>
+      )}
 
       {/* Attribute chips, Indeed order: salary, contract, remote. */}
       {(salary || contract || remote) && (
-        <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+        <div className="mt-2 flex flex-wrap items-center gap-1.5">
           {salary && <Attr>{salary}</Attr>}
           {contract && <Attr tone={contract === 'CDI' ? 'success' : 'neutral'}>{contract}</Attr>}
           {remote && <Attr>{remote}</Attr>}
         </div>
       )}
 
-      <p className="text-muted-foreground mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs">
-        {job.postedAt && <span>{relativeDate(job.postedAt)}</span>}
-        {job.sourceCount > 1 && (
-          <span className="flex items-center gap-1">
-            <Layers className="size-[12px] opacity-70" />
-            {job.sourceCount} sources
-          </span>
-        )}
-      </p>
+      {(job.postedAt || job.sourceCount > 1) && (
+        <p className="text-muted-foreground mt-2 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[12px]">
+          {job.postedAt && <span>{relativeDate(job.postedAt)}</span>}
+          {job.sourceCount > 1 && (
+            <span className="flex items-center gap-1">
+              <Layers className="size-3 opacity-70" />
+              {job.sourceCount} sources
+            </span>
+          )}
+        </p>
+      )}
     </button>
   );
 }
