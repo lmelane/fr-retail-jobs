@@ -3,10 +3,8 @@
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { SiteNav } from '@/components/site-nav';
 import {
-  Briefcase,
-  Building2,
   Check,
   ChevronDown,
   Layers,
@@ -242,28 +240,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
             Offres/Entreprises nav centered, actions at the right. Below lg it
             wraps and the full-width search pill drops to its own row. */}
         <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
-          <Link href="/" className="shrink-0" aria-label="Fashion Atlas — accueil">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/fashion-atlas-logo.svg" alt="Fashion Atlas" className="h-[22px] w-auto" />
-          </Link>
-
-          <nav className="order-3 flex w-full items-center justify-center gap-8 lg:order-none lg:w-auto lg:flex-1">
-            <Link
-              href="/emplois"
-              aria-current="page"
-              className="text-foreground border-foreground -mb-[13px] flex items-center gap-2 border-b-2 pb-3 text-[15px] font-normal tracking-[0.4px]"
-            >
-              <Briefcase className="size-[18px]" aria-hidden />
-              Offres
-            </Link>
-            <Link
-              href="/entreprises"
-              className="text-foreground/60 hover:text-foreground flex items-center gap-2 pb-3 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
-            >
-              <Building2 className="size-[18px]" aria-hidden />
-              Entreprises
-            </Link>
-          </nav>
+          <SiteNav active="offres" />
 
           {/* The pill: Poste | Lieu | Rechercher, with live autocomplete on both
               fields — shared with the landing page's own pill so the two never
