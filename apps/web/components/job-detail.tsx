@@ -102,13 +102,27 @@ function JobFacts({ job }: { job: JobRow }) {
  * readable until the next generation replaces them.
  */
 function readableDescription(text: string): string {
-  return text
-    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
-    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
-    .replace(/&nbsp;/g, ' ')
-    .replace(/\s+•\s*/g, '\n• ')
-    .replace(/[ \t]{2,}/g, ' ')
-    .trim();
+  return (
+    text
+      .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+      .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&nbsp;/g, ' ')
+      // Rows written before the entities-before-tags fix hold literal markup —
+      // Teamtailor escapes its JSON-LD, and stripping tags before decoding
+      // recreated them. Remove tags here too so those rows stay readable until
+      // the next generation rewrites them; inline base64 figures go with them.
+      .replace(/<li[^>]*>/gi, '\n• ')
+      .replace(/<\/(p|div|li|ul|ol|h[1-6])>/gi, '\n')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/\s+•\s*/g, '\n• ')
+      .replace(/[ \t]{2,}/g, ' ')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim()
+  );
 }
 
 export function JobDetail({ job }: { job: JobRow }) {

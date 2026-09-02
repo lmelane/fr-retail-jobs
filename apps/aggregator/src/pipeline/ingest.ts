@@ -11,6 +11,7 @@ import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
 import type { NormalizedJob } from '../types.js';
 import { PIPELINE_VERSION } from './version.js';
+import { runGeocode } from './geocodeJobs.js';
 import { fetchAtsJobs } from '../ats/index.js';
 import type { CatalogSource } from '../connectors/sourceCatalog.js';
 
@@ -390,9 +391,27 @@ export async function runIngest(prisma: PrismaClient): Promise<IngestStats[]> {
   console.log(`[ingest] ${sources.length} sources: ${sources.map((s) => s.key).join(', ')}`);
   const results: IngestStats[] = [];
 
+  /**
+   * Geocode incrementally, not only at the very end of the run.
+   *
+   * The map plots nothing without coordinates, and geocoding used to run
+   * after ALL sources — on a multi-hour run that was killed by a redeploy,
+   * it never ran at all, so production showed OSM tiles with zero markers.
+   * A pass after each source keeps the map filling as offers land; the
+   * GeoCache makes repeat passes nearly free.
+   */
+  const geocodeQuietly = async () => {
+    try {
+      await runGeocode(prisma);
+    } catch (error) {
+      console.error('[ingest] geocode pass failed:', error instanceof Error ? error.message : String(error));
+    }
+  };
+
   for (const source of sources) {
     try {
       results.push(await ingestSitemapSource(prisma, source));
+      await geocodeQuietly();
     } catch (error) {
       results.push({
         source: source.key,
@@ -425,6 +444,7 @@ export async function runIngest(prisma: PrismaClient): Promise<IngestStats[]> {
   for (const source of apiSources) {
     try {
       results.push(await ingestApiSource(prisma, source));
+      await geocodeQuietly();
     } catch (error) {
       results.push({
         source: sourceKeyFor(source),

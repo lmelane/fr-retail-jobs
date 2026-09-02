@@ -133,18 +133,27 @@ export function extractJobPostings(html: string): JsonLdNode[] {
 function stripHtml(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined;
   const text = value
+    /**
+     * ENTITIES FIRST, TAGS SECOND — the order is the whole bug this fixes.
+     *
+     * Teamtailor ships its JSON-LD description HTML-ESCAPED: the string starts
+     * "&lt;p&gt;&lt;em&gt;…". Stripping tags before decoding finds no tags,
+     * and the decode that follows then RECREATES them — which is how every
+     * Galeries Lafayette offer reached the screen as literal markup, base64
+     * emoji images included. Decode first and the markup becomes real tags in
+     * time for the tag pass to remove them.
+     */
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&(?:quot|rsquo|lsquo)/g, "'")
     .replace(/<li[^>]*>/gi, '\n• ')
     .replace(/<\/(p|div|li|ul|ol|h[1-6])>/gi, '\n')
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/<[^>]*>/g, ' ')
-    // Numeric entities, hex and decimal, before the named ones.
-    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
-    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&(?:quot|#39|rsquo|lsquo);/g, "'")
     // Inline bullets from sources that never used <li>: give each its line.
     .replace(/\s+•\s*/g, '\n• ')
     .replace(/[ \t]+/g, ' ')

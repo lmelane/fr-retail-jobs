@@ -20,5 +20,9 @@
  *   3  2026-09-02 — descriptions decode numeric entities and keep bullet/line
  *      structure; contract falls back to title/description; the UNKNOWN
  *      non-answer is stored as null instead of a truthy string the UI printed.
+ *   4  2026-09-02 — entities decoded BEFORE tags are stripped: Teamtailor
+ *      escapes its JSON-LD, and the old order recreated the markup after the
+ *      strip, storing literal HTML (base64 figures included) on every
+ *      Galeries Lafayette offer.
  */
-export const PIPELINE_VERSION = 3;
+export const PIPELINE_VERSION = 4;
