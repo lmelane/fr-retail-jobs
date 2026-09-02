@@ -1,10 +1,10 @@
 'use client';
 
-import { Building2, Clock, ExternalLink, Layers, MapPin, Briefcase } from 'lucide-react';
+import { Building2, ExternalLink, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { contractLabel, relativeDate } from '@/lib/format';
+import { contractLabel } from '@/lib/format';
 import type { JobRow } from '@/lib/jobs';
 
 /**
@@ -63,12 +63,22 @@ function salaryLabel(job: JobRow): string | null {
  * Coverage genuinely varies — Pinpoint and WTTJ give salary bands, TalentView
  * gives remote policy and experience — so each row appears only when it has a
  * value. Printing "Salaire : non précisé" would fill the panel with absences.
+ *
+ * Rendered as a bordered "Détails de l'emploi" section (Indeed §3.10) rather
+ * than a plain fact grid — contract and salary are passed in so the header
+ * summary line and this section never disagree on how they're formatted.
  */
-function JobFacts({ job }: { job: JobRow }) {
+function JobFactsSection({
+  job,
+  contract,
+  salary,
+}: {
+  job: JobRow;
+  contract: string | null;
+  salary: string | null;
+}) {
   const facts: [string, string][] = [];
-  const salary = salaryLabel(job);
 
-  const contract = contractLabel(job.contract);
   if (contract) facts.push(['Contrat', contract]);
   if (salary) facts.push(['Salaire', salary]);
   const workingTime = contractLabel(job.workingTime);
@@ -94,54 +104,56 @@ function JobFacts({ job }: { job: JobRow }) {
   if (facts.length === 0) return null;
 
   return (
-    <dl className="bg-surface mb-5 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 rounded-2xl px-4 py-3.5 text-sm">
-      {facts.map(([label, value]) => (
-        <div key={label} className="contents">
-          <dt className="text-muted-foreground tracking-[0.25px]">{label}</dt>
-          <dd className="text-foreground font-medium">{value}</dd>
-        </div>
-      ))}
-    </dl>
+    <section className="border-border mb-5 border-b pb-5">
+      <h3 className="text-foreground mb-3 text-xl font-bold">Détails de l’emploi</h3>
+      <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 text-sm">
+        {facts.map(([label, value]) => (
+          <div key={label} className="contents">
+            <dt className="text-muted-foreground">{label}</dt>
+            <dd className="text-foreground font-medium">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
   );
 }
 
 export function JobDetail({ job }: { job: JobRow }) {
+  const contract = contractLabel(job.contract);
+  const salary = salaryLabel(job);
+
   return (
     <div key={job.id} className="flex h-full flex-col">
-      <div className="shrink-0 px-6 pt-6 pb-4">
-        <h2 className="text-2xl leading-8 font-normal">{job.title}</h2>
+      {/* Indeed §3.10: 24/700 title, entreprise + lieu, salaire/type on one
+          line (salary bold), action row, then bordered sections below. */}
+      <div className="shrink-0 px-6 pt-6 pb-5">
+        <h2 className="text-foreground text-2xl leading-8 font-bold">{job.title}</h2>
 
-        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm tracking-[0.1px]">
-          <span className="inline-flex items-center gap-1.5 font-medium">
+        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px]">
+          <span className="text-foreground inline-flex items-center gap-1.5 font-medium">
             <Building2 className="text-muted-foreground size-4" />
             {job.company}
           </span>
-          {job.group && <span className="text-muted-foreground">{job.group}</span>}
+          {job.group && (
+            <>
+              <span className="text-border">•</span>
+              <span className="text-muted-foreground">{job.group}</span>
+            </>
+          )}
         </div>
 
-        <div className="text-muted-foreground mt-3 flex flex-wrap items-center gap-2 text-xs font-medium tracking-[0.5px]">
-          {job.city && (
-            <span className="bg-surface inline-flex items-center gap-1 rounded-full px-3 py-1.5">
-              <MapPin className="size-3.5" />
-              {job.city}
-            </span>
-          )}
-          {contractLabel(job.contract) && (
-            <span className="bg-surface inline-flex items-center gap-1 rounded-full px-3 py-1.5">
-              <Briefcase className="size-3.5" />
-              {contractLabel(job.contract)}
-            </span>
-          )}
-          {job.postedAt && (
-            <span className="bg-surface inline-flex items-center gap-1 rounded-full px-3 py-1.5">
-              <Clock className="size-3.5" />
-              {relativeDate(job.postedAt)}
-            </span>
-          )}
-        </div>
+        {job.city && <p className="text-foreground mt-1 text-[15px]">{job.city}</p>}
+
+        {(salary || contract) && (
+          <p className="mt-1 text-[15px]">
+            {salary && <span className="text-foreground font-bold">{salary}</span>}
+            {salary && contract && <span className="text-foreground"> - </span>}
+            {contract && <span className="text-foreground">{contract}</span>}
+          </p>
+        )}
 
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <Button asChild className="h-11 rounded-full px-6 text-sm font-medium tracking-[0.1px]">
+          <Button asChild className="h-11 rounded-xl px-6 text-[15px] font-bold">
             <a href={job.applyUrl} target="_blank" rel="noopener noreferrer">
               Postuler
               <ExternalLink className="size-4" />
@@ -152,7 +164,7 @@ export function JobDetail({ job }: { job: JobRow }) {
           <Button
             asChild
             variant="ghost"
-            className="hover:bg-surface h-11 rounded-full px-4 text-sm font-medium"
+            className="hover:bg-surface h-11 rounded-xl px-4 text-[15px] font-medium"
           >
             <a href={`/offre/${job.id}`}>Lien de l’offre</a>
           </Button>
@@ -171,24 +183,29 @@ export function JobDetail({ job }: { job: JobRow }) {
         )}
       </div>
 
-      <Separator className="bg-border/60" />
+      <Separator className="bg-border" />
 
       <ScrollArea className="min-h-0 flex-1">
         <div className="px-6 py-5">
-          <JobFacts job={job} />
-          {job.description ? (
-            // Descriptions are stored as clean plain text (the pipeline strips
-            // HTML at ingest); whitespace-pre-line keeps the source's line breaks
-            // and never trusts third-party HTML.
-            <p className="max-w-[70ch] text-[15px] leading-7 tracking-[0.25px] whitespace-pre-line">
-              {job.description}
-            </p>
-          ) : (
-            <p className="text-muted-foreground text-sm tracking-[0.25px]">
-              Cette source ne fournit pas le texte de l’offre. Le bouton Postuler mène à
-              l’annonce complète chez l’employeur.
-            </p>
-          )}
+          {/* "Détails de l'emploi" — a bordered section, Indeed §3.10. */}
+          <JobFactsSection job={job} contract={contract} salary={salary} />
+
+          <div>
+            <h3 className="text-foreground mb-3 text-xl font-bold">Description</h3>
+            {job.description ? (
+              // Descriptions are stored as clean plain text (the pipeline strips
+              // HTML at ingest); whitespace-pre-line keeps the source's line
+              // breaks and never trusts third-party HTML.
+              <p className="max-w-[70ch] text-[15px] leading-7 whitespace-pre-line">
+                {job.description}
+              </p>
+            ) : (
+              <p className="text-muted-foreground text-sm">
+                Cette source ne fournit pas le texte de l’offre. Le bouton Postuler mène à
+                l’annonce complète chez l’employeur.
+              </p>
+            )}
+          </div>
         </div>
       </ScrollArea>
     </div>

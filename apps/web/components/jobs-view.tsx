@@ -1,15 +1,23 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
+import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
+import { createPortal } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { Building2, ChevronLeft, ChevronRight, Layers, MapPin, Search, X } from 'lucide-react';
+import {
+  Check,
+  ChevronDown,
+  Layers,
+  Loader2,
+  MapPin,
+  Search,
+  X,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CompanyLogo } from '@/components/company-logo';
 import { JobDetail } from '@/components/job-detail';
 import { contractLabel, relativeDate } from '@/lib/format';
 import { countryLabel } from '@/lib/countries';
@@ -17,25 +25,24 @@ import { cn } from '@/lib/utils';
 import type { JobFilters, JobRow, JobsResult } from '@/lib/jobs';
 
 /**
- * A jobboard, shaped like the ones candidates already know.
+ * A jobboard, shaped like Indeed with the Catwalks brand.
  *
  * Three rules the layout follows, each of them a fix for something that was
  * wrong before:
  *
  *  - Search state lives in the URL. Filtering, paging and searching are server
  *    round-trips, so a result set can be linked and Back walks through searches.
- *  - Filters sit in the open, not behind a drawer. A filter you cannot see is a
- *    filter you forget is applied.
- *  - The list and the map are two views of the same results and share the left
- *    pane; the offer stays put on the right, so opening the map never costs the
- *    posting being read.
- *
- * There is no product name anywhere in here. The page is the offers.
+ *  - Filters sit in the open as real dropdowns, not a native <details> that
+ *    hijacks text selection. A filter you cannot see is a filter you forget is
+ *    applied.
+ *  - The list and the map are two views of the same results, shown together —
+ *    Airbnb-style — rather than behind a tab. The offer detail opens as a panel
+ *    over the map on click, so reading a posting never costs the map its place.
  */
 
 const JobMap = dynamic(() => import('@/components/job-map'), {
   ssr: false,
-  loading: () => <Skeleton className="h-full w-full rounded-[28px]" />,
+  loading: () => <Skeleton className="h-full w-full rounded-[20px]" />,
 });
 
 const SECTOR_LABELS: Record<string, string> = {
@@ -96,14 +103,83 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
   const params = useSearchParams();
   const [pending, startTransition] = useTransition();
   const [draft, setDraft] = useState(filters.q ?? '');
+  const [locationDraft, setLocationDraft] = useState(filters.city ?? '');
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-  // A new page of results invalidates the selection: the previously selected
-  // offer is no longer in the list.
+  /**
+   * Infinite scroll, Indeed-style: page 1 arrives server-rendered in `data`
+   * (SEO, first paint); scrolling near the bottom fetches page 2+ from
+   * /api/jobs and appends it here. `jobs` is the list actually shown — the
+   * one thing that must stay in lockstep with it is `page`/`pageCount`, so
+   * "stop when exhausted" and "resume after a new search" both stay correct.
+   */
+  const [jobs, setJobs] = useState<JobRow[]>(data.jobs);
+  const [loadedPage, setLoadedPage] = useState(data.page);
+  const [pageCount, setPageCount] = useState(data.pageCount);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const sentinelRef = useRef<HTMLLIElement>(null);
+
+  // A new server render — a new search or filter — replaces the accumulated
+  // list rather than appending to it: `data.jobs` changing IS "start over".
+  useEffect(() => {
+    setJobs(data.jobs);
+    setLoadedPage(data.page);
+    setPageCount(data.pageCount);
+    setLoadError(null);
+  }, [data.jobs, data.page, data.pageCount]);
+
+  // A fresh search invalidates the selection: the previously selected offer
+  // may no longer be in the list.
   useEffect(() => setSelectedId(null), [data.jobs]);
   useEffect(() => setDraft(filters.q ?? ''), [filters.q]);
+  useEffect(() => setLocationDraft(filters.city ?? ''), [filters.city]);
 
-  const selected = data.jobs.find((job) => job.id === selectedId) ?? data.jobs[0] ?? null;
+  const selected = jobs.find((job) => job.id === selectedId) ?? null;
+
+  /**
+   * Fetches the next page from /api/jobs and appends it. Reads the CURRENT
+   * URL's filters (not `filters` from props, which only reflects the initial
+   * server render) so a filter applied without a full navigation — there is
+   * none today, but this keeps the fetch honest about the live URL either way.
+   */
+  const loadMore = useCallback(async () => {
+    if (loadingMore || loadedPage >= pageCount) return;
+    setLoadingMore(true);
+    setLoadError(null);
+    try {
+      const next = new URLSearchParams(params.toString());
+      next.set('page', String(loadedPage + 1));
+      const response = await fetch(`/api/jobs?${next.toString()}`);
+      if (!response.ok) throw new Error(`Le serveur a répondu ${response.status}.`);
+      const result = (await response.json()) as JobsResult;
+      setJobs((current) => [...current, ...result.jobs]);
+      setLoadedPage(result.page);
+      setPageCount(result.pageCount);
+    } catch {
+      // Never fail silently: the sentinel stays in view, so without this the
+      // candidate would see the list simply stop growing with no explanation.
+      setLoadError('Le chargement des offres suivantes a échoué.');
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [loadingMore, loadedPage, pageCount, params]);
+
+  // The sentinel sits after the last card; once it enters the viewport (or
+  // comes within 400px of it) the next page loads — no click, Indeed-style.
+  useEffect(() => {
+    const node = sentinelRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) void loadMore();
+      },
+      { rootMargin: '400px' },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [loadMore]);
 
   /**
    * Writes one filter to the URL. Any change but paging returns to page 1 —
@@ -128,47 +204,33 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
   ).length;
 
   return (
-    <div className="bg-background flex h-dvh flex-col gap-3 overflow-hidden p-3">
-      <header className="bg-surface-low shadow-m3-1 flex shrink-0 flex-col gap-3 rounded-[28px] px-4 py-3">
-        <div className="flex flex-wrap items-center gap-2">
-          <nav className="bg-surface flex shrink-0 items-center gap-1 rounded-full p-1">
-            <span className="bg-secondary-container text-on-secondary-container rounded-full px-4 py-1.5 text-sm font-medium">
-              Offres
-            </span>
-            <Link
-              href="/entreprises"
-              className="hover:bg-surface-high rounded-full px-4 py-1.5 text-sm font-medium transition-colors"
-            >
-              Entreprises
+    <div className="bg-background flex h-dvh flex-col overflow-hidden">
+      {/* ============ Header: brand + the big Indeed-style search pill ============ */}
+      <header className="border-border/70 shrink-0 border-b bg-white">
+        {/* Wraps to two rows below lg (logo/nav, then the full-width search
+            pill) rather than forcing everything onto one row and pushing the
+            pill off-screen — Indeed itself stacks the same way, §6. */}
+        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
+          <nav className="flex shrink-0 items-center gap-6">
+            <Link href="/" className="text-primary text-xl font-bold tracking-tight">
+              Catwalks
             </Link>
+            <div className="hidden items-center gap-5 sm:flex">
+              <span className="text-foreground border-primary -mb-[13px] border-b-2 pb-3 text-sm font-semibold">
+                Offres
+              </span>
+              <Link
+                href="/entreprises"
+                className="text-foreground/80 hover:text-foreground pb-3 text-sm font-medium transition-colors"
+              >
+                Entreprises
+              </Link>
+            </div>
           </nav>
 
-          <form
-            className="relative min-w-0 flex-1 sm:max-w-md"
-            onSubmit={(event) => {
-              event.preventDefault();
-              navigate({ q: draft.trim() || null });
-            }}
-          >
-            <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-4 size-[18px] -translate-y-1/2" />
-            <Input
-              value={draft}
-              onChange={(event) => setDraft(event.target.value)}
-              placeholder="Poste, Maison, ville, mot-clé…"
-              aria-label="Rechercher une offre"
-              className="bg-surface h-12 rounded-full border-0 pl-12 text-sm tracking-[0.25px] shadow-none focus-visible:ring-2"
-            />
-          </form>
-
-          <div className="text-muted-foreground ml-auto flex shrink-0 items-center gap-3 text-xs font-medium tracking-[0.5px] tabular-nums">
+          <div className="text-muted-foreground order-2 ml-auto flex shrink-0 items-center gap-3 text-xs font-medium tabular-nums lg:order-3">
             <span aria-live="polite">
               {pending ? 'Recherche…' : `${data.total.toLocaleString('fr-FR')} offres`}
-              {data.total < data.totalInDatabase && (
-                <span className="opacity-60">
-                  {' '}
-                  sur {data.totalInDatabase.toLocaleString('fr-FR')}
-                </span>
-              )}
             </span>
             {activeCount > 0 && (
               <Button
@@ -182,11 +244,54 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
               </Button>
             )}
           </div>
+
+          {/* The pill: Poste | Lieu | Rechercher, Indeed §3.2 proportions.
+              Full width and its own row below lg; fields stack below sm with
+              a full-width button, matching Indeed's own mobile SearchBar. */}
+          <form
+            className="border-border order-3 mx-auto flex h-auto w-full max-w-[900px] flex-col items-stretch rounded-[20px] border bg-white shadow-[0_0_2px_0_rgba(45,45,45,.16),0_4px_8px_0_rgba(45,45,45,.08),0_8px_16px_0_rgba(45,45,45,.04)] focus-within:ring-2 focus-within:ring-primary/40 sm:h-[60px] sm:flex-row sm:items-center lg:order-2"
+            onSubmit={(event) => {
+              event.preventDefault();
+              navigate({ q: draft.trim() || null, ville: locationDraft.trim() || null });
+            }}
+          >
+            <div className="flex min-w-0 flex-1 items-center gap-3 px-4 pt-2 sm:pt-0">
+              <Search className="text-foreground/70 size-5 shrink-0" aria-hidden />
+              <input
+                value={draft}
+                onChange={(event) => setDraft(event.target.value)}
+                placeholder="Poste, Maison, mot-clé…"
+                aria-label="Poste ou mot-clé"
+                className="text-foreground placeholder:text-muted-foreground h-11 min-w-0 flex-1 bg-transparent text-[15px] outline-none sm:h-full"
+              />
+            </div>
+
+            <span className="bg-border mx-4 h-px w-auto shrink-0 sm:mx-1 sm:h-9 sm:w-px" aria-hidden />
+
+            <div className="flex min-w-0 flex-1 items-center gap-3 px-4 sm:flex-[0.7] sm:pl-2">
+              <MapPin className="text-foreground/70 size-5 shrink-0" aria-hidden />
+              <input
+                value={locationDraft}
+                onChange={(event) => setLocationDraft(event.target.value)}
+                placeholder="Ville"
+                aria-label="Lieu"
+                className="text-foreground placeholder:text-muted-foreground h-11 min-w-0 flex-1 bg-transparent text-[15px] outline-none sm:h-full"
+              />
+            </div>
+
+            <div className="p-2">
+              <Button
+                type="submit"
+                className="h-11 w-full rounded-xl px-6 text-[15px] font-semibold sm:w-auto"
+              >
+                Rechercher
+              </Button>
+            </div>
+          </form>
         </div>
 
-        {/* Filters in the open. Counts come from the whole match set, not the
-            current page, so a chip saying 300 means 300. */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* ============ Filters: real dropdowns, click-driven, not <details> ============ */}
+        <div className="mx-auto flex max-w-[1280px] items-center gap-2 overflow-x-auto px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <FilterMenu
             label="Pays"
             active={params.get('pays')}
@@ -235,85 +340,88 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
         </div>
       </header>
 
-      {/* The list NEVER moves: it stays on the left in both modes, because it
-          is what the candidate is working through. The right pane switches
-          between the offer being read and the map — so opening the map costs
-          the detail (which the map replaces on purpose), never the list. */}
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-        <div className="bg-surface-low shadow-m3-1 flex min-h-0 flex-col overflow-hidden rounded-[28px]">
+      {/* ============ Body: list on the left, map + overlay detail on the right — Airbnb layout ============ */}
+      <div className="mx-auto grid min-h-0 w-full max-w-[1280px] flex-1 grid-cols-1 gap-4 overflow-hidden p-4 lg:grid-cols-[minmax(0,470px)_minmax(0,1fr)]">
+        <div className="flex min-h-0 flex-col overflow-hidden">
           <ScrollArea className="min-h-0 flex-1">
-            {data.jobs.length === 0 ? (
+            {jobs.length === 0 ? (
               <EmptyState
                 hasFilters={activeCount > 0}
                 onReset={() => startTransition(() => router.push('/', { scroll: false }))}
               />
             ) : (
-              <ul className={cn('p-2 transition-opacity', pending && 'opacity-50')}>
-                {data.jobs.map((job) => (
+              <ul className={cn('flex flex-col gap-3 pr-2 pb-2 transition-opacity', pending && 'opacity-50')}>
+                {jobs.map((job) => (
                   <li key={job.id}>
                     <JobCard
                       job={job}
                       onSelect={() => setSelectedId(job.id)}
+                      onHover={(hovering) => setHoveredId(hovering ? job.id : null)}
                       isSelected={selected?.id === job.id}
                     />
                   </li>
                 ))}
+
+                {/* Infinite scroll, Indeed-style: this sentinel triggers the
+                    next page 400px before it would actually be reached, so
+                    the next cards are usually ready before the candidate
+                    scrolls into the gap. Rendered inside the same <ul> so it
+                    never desyncs from the list it is the tail of. */}
+                {loadedPage < pageCount && (
+                  <li ref={sentinelRef} aria-hidden={!loadingMore} className="grid place-items-center py-4">
+                    {loadingMore && (
+                      <span className="text-muted-foreground flex items-center gap-2 text-sm">
+                        <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
+                        Chargement…
+                      </span>
+                    )}
+                  </li>
+                )}
+
+                {loadError && (
+                  <li className="grid place-items-center gap-2 py-4 text-center">
+                    <p className="text-muted-foreground text-sm">{loadError}</p>
+                    <Button variant="ghost" size="sm" onClick={() => void loadMore()} className="rounded-full">
+                      Réessayer
+                    </Button>
+                  </li>
+                )}
               </ul>
             )}
           </ScrollArea>
-
-          {data.pageCount > 1 && (
-            <Pagination
-              page={data.page}
-              pageCount={data.pageCount}
-              onGo={(page) => navigate({ page: String(page) })}
-            />
-          )}
         </div>
 
-        <div className="bg-surface-low shadow-m3-1 min-h-72 overflow-hidden rounded-[28px] lg:min-h-0">
-          <Tabs defaultValue="detail" className="flex h-full flex-col gap-0">
-            <TabsList className="bg-surface m-3 h-10 w-fit shrink-0 rounded-full p-1">
-              <TabsTrigger value="detail" className="rounded-full px-4 text-sm">
-                Offre
-              </TabsTrigger>
-              <TabsTrigger value="map" className="rounded-full px-4 text-sm">
-                Carte
-              </TabsTrigger>
-            </TabsList>
+        <div className="border-border relative min-h-72 overflow-hidden rounded-[20px] border lg:min-h-0">
+          {/* The map is permanent — Airbnb layout, not a tab. It reflects
+              everything loaded so far (not just the first page), and hovering
+              a card highlights its marker; a marker click selects that offer,
+              same as clicking its card. */}
+          <JobMap
+            jobs={jobs}
+            highlightedId={hoveredId ?? selected?.id ?? null}
+            onSelectJob={(id) => setSelectedId(id)}
+          />
 
-            <TabsContent value="detail" className="min-h-0 flex-1">
-              {selected ? (
-                <JobDetail job={selected} />
-              ) : (
-                <div className="text-muted-foreground grid h-full place-items-center px-6 text-center text-sm tracking-[0.25px]">
-                  Sélectionnez une offre pour lire le détail.
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="map" className="relative min-h-0 flex-1">
-              {/* The map clusters by city, so a marker filters the list by that
-                  city — it does not select one offer. */}
-              <JobMap
-                jobs={data.jobs}
-                selectedCity={params.get('ville')}
-                onSelectCity={(value) => navigate({ ville: value })}
-              />
-              {params.get('ville') && (
-                <div className="absolute top-4 left-4 z-[1000]">
-                  <Button
-                    onClick={() => navigate({ ville: null })}
-                    className="shadow-m3-2 h-10 rounded-full px-4 text-sm font-medium"
-                  >
-                    <MapPin className="size-4" />
-                    {params.get('ville')}
-                    <X className="size-4 opacity-70" />
-                  </Button>
-                </div>
-              )}
-            </TabsContent>
-          </Tabs>
+          {/* The detail opens as a panel over the map on click — never a tab
+              swap, so the map's position and zoom survive reading an offer. */}
+          {selected && (
+            <div
+              role="dialog"
+              aria-label="Détail de l'offre"
+              className="animate-in slide-in-from-right-4 fade-in bg-card absolute inset-y-3 right-3 z-[1000] flex w-full max-w-[440px] flex-col overflow-hidden rounded-[20px] border border-black/5 shadow-[0_0_2px_0_rgba(45,45,45,.16),0_8px_16px_0_rgba(45,45,45,.08),0_16px_24px_0_rgba(45,45,45,.04)] duration-200 motion-reduce:animate-none"
+            >
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => setSelectedId(null)}
+                aria-label="Fermer le détail"
+                className="hover:bg-surface absolute top-3 right-3 z-10 rounded-full"
+              >
+                <X className="size-4" />
+              </Button>
+              <JobDetail job={selected} />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -323,9 +431,13 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
 /**
  * A dropdown of facet values with their counts.
  *
- * Native <details> rather than a popover library: it closes on Escape and on
- * outside click for free, and keeps the filter row honest about how much
- * machinery a select really needs.
+ * A real button + panel: it closes on outside click and on Escape, and it
+ * never hijacks a click as a text selection the way a native <details>/
+ * <summary> can. The panel renders through a portal at a measured, fixed
+ * position rather than as an absolutely-positioned child — the filter row it
+ * lives in scrolls horizontally (`overflow-x-auto`), and CSS has no way to
+ * clip one axis of a container while leaving the other open, so a plain
+ * `absolute` panel was clipped by that same scroll box.
  */
 function FilterMenu({
   label,
@@ -340,120 +452,116 @@ function FilterMenu({
   labels?: Record<string, string>;
   onSelect: (value: string) => void;
 }) {
+  const [open, setOpen] = useState(false);
+  const [rect, setRect] = useState<{ top: number; left: number } | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const place = () => {
+      const box = buttonRef.current?.getBoundingClientRect();
+      if (box) setRect({ top: box.bottom + 4, left: box.left });
+    };
+    place();
+
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (!buttonRef.current?.contains(target) && !panelRef.current?.contains(target)) setOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    // The trigger sits in a horizontally scrolling row: reposition on scroll
+    // and resize so the panel tracks it instead of drifting away.
+    window.addEventListener('scroll', place, true);
+    window.addEventListener('resize', place);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('scroll', place, true);
+      window.removeEventListener('resize', place);
+    };
+  }, [open]);
+
   if (options.length === 0) return null;
   const display = (value: string) => labels?.[value] ?? value;
 
   return (
-    <details className="group relative shrink-0">
-      <summary
+    <>
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="listbox"
+        onClick={() => setOpen((value) => !value)}
         className={cn(
-          'flex h-9 cursor-pointer list-none items-center gap-1.5 rounded-full px-4 text-sm font-medium tracking-[0.1px] transition-colors',
+          'flex h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-4 text-[13px] font-medium transition-colors',
           active
-            ? 'bg-secondary-container text-on-secondary-container'
-            : 'bg-surface text-foreground hover:bg-surface-high',
+            ? 'border-primary/30 bg-secondary-container text-on-secondary-container font-semibold'
+            : 'border-border bg-white text-foreground hover:bg-surface',
         )}
       >
         {active ? display(active) : label}
-        <ChevronRight className="size-4 rotate-90 opacity-60" />
-      </summary>
-      <div className="bg-surface shadow-m3-2 absolute top-11 left-0 z-50 max-h-80 w-64 overflow-y-auto rounded-2xl p-1.5">
-        {options.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            onClick={(event) => {
-              // Close the menu on pick: a <details> stays open on its own, and
-              // an open panel over a refreshing list reads as "nothing
-              // happened" even while the filter is applying.
-              event.currentTarget.closest('details')?.removeAttribute('open');
-              onSelect(option.value);
-            }}
-            className={cn(
-              'flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2 text-left text-sm transition-colors',
-              option.value === active
-                ? 'bg-secondary-container text-on-secondary-container'
-                : 'hover:bg-surface-high',
-            )}
+        <ChevronDown className={cn('size-4 opacity-60 transition-transform', open && 'rotate-180')} />
+      </button>
+
+      {open && rect && typeof document !== 'undefined' &&
+        createPortal(
+          <div
+            ref={panelRef}
+            role="listbox"
+            aria-label={label}
+            style={{ top: rect.top, left: rect.left }}
+            className="border-border/60 fixed z-50 max-h-80 w-64 overflow-y-auto rounded-xl border bg-white p-1.5 shadow-[0_0_2px_0_rgba(45,45,45,.16),0_4px_8px_0_rgba(45,45,45,.08),0_8px_16px_0_rgba(45,45,45,.04)]"
           >
-            <span className="truncate">{display(option.value)}</span>
-            <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
-              {option.count.toLocaleString('fr-FR')}
-            </span>
-          </button>
-        ))}
-      </div>
-    </details>
-  );
-}
-
-function Pagination({
-  page,
-  pageCount,
-  onGo,
-}: {
-  page: number;
-  pageCount: number;
-  onGo: (page: number) => void;
-}) {
-  // A window around the current page: 32,000 offers is 1,280 pages, and no one
-  // needs 1,280 buttons.
-  const from = Math.max(1, Math.min(page - 2, pageCount - 4));
-  const pages = Array.from({ length: Math.min(5, pageCount) }, (_, index) => from + index);
-
-  return (
-    <nav
-      aria-label="Pagination"
-      className="flex shrink-0 items-center justify-center gap-1 border-t border-black/5 p-3"
-    >
-      <Button
-        variant="ghost"
-        size="icon"
-        disabled={page <= 1}
-        onClick={() => onGo(page - 1)}
-        aria-label="Page précédente"
-        className="hover:bg-surface size-9 rounded-full"
-      >
-        <ChevronLeft className="size-[18px]" />
-      </Button>
-
-      {pages.map((value) => (
-        <button
-          key={value}
-          type="button"
-          onClick={() => onGo(value)}
-          aria-current={value === page ? 'page' : undefined}
-          className={cn(
-            'size-9 rounded-full text-sm font-medium tabular-nums transition-colors',
-            value === page
-              ? 'bg-secondary-container text-on-secondary-container'
-              : 'hover:bg-surface',
-          )}
-        >
-          {value}
-        </button>
-      ))}
-
-      <Button
-        variant="ghost"
-        size="icon"
-        disabled={page >= pageCount}
-        onClick={() => onGo(page + 1)}
-        aria-label="Page suivante"
-        className="hover:bg-surface size-9 rounded-full"
-      >
-        <ChevronRight className="size-[18px]" />
-      </Button>
-    </nav>
+            {options.map((option) => {
+              const isActive = option.value === active;
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  role="option"
+                  aria-selected={isActive}
+                  onClick={() => {
+                    setOpen(false);
+                    onSelect(option.value);
+                  }}
+                  className={cn(
+                    'flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors',
+                    isActive ? 'bg-secondary-container text-on-secondary-container font-semibold' : 'hover:bg-surface',
+                  )}
+                >
+                  <span className="flex min-w-0 items-center gap-2 truncate">
+                    {isActive && <Check className="size-3.5 shrink-0" />}
+                    <span className="truncate">{display(option.value)}</span>
+                  </span>
+                  <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
+                    {option.count.toLocaleString('fr-FR')}
+                  </span>
+                </button>
+              );
+            })}
+          </div>,
+          document.body,
+        )}
+    </>
   );
 }
 
 function JobCard({
   job,
   onSelect,
+  onHover,
   isSelected,
 }: {
   job: JobRow;
   onSelect: () => void;
+  onHover: (hovering: boolean) => void;
   isSelected: boolean;
 }) {
   const contract = contractLabel(job.contract);
@@ -466,29 +574,40 @@ function JobCard({
     <button
       type="button"
       onClick={onSelect}
+      onMouseEnter={() => onHover(true)}
+      onMouseLeave={() => onHover(false)}
+      onFocus={() => onHover(true)}
+      onBlur={() => onHover(false)}
       aria-current={isSelected ? 'true' : undefined}
       className={cn(
-        // Indeed-style card: a real bordered surface, denser, selected state in
-        // the brand tint. Weight carries the hierarchy, not size.
-        'w-full rounded-[16px] border px-4 py-3.5 text-left transition-colors',
+        // Indeed JobCard, §3.4: bordered surface, 20px radius, denser padding,
+        // selected state takes the legacy-blue-equivalent brand tint + shadow.
+        'w-full rounded-[20px] border bg-white px-4 py-3.5 text-left transition-colors',
         isSelected
-          ? 'border-primary/40 bg-secondary-container'
-          : 'border-transparent hover:border-border hover:bg-surface',
+          ? 'border-primary shadow-[0_2px_4px_rgba(0,0,0,.08)]'
+          : 'border-border hover:border-foreground/20',
       )}
     >
-      <h3 className="text-foreground truncate text-[15px] leading-snug font-semibold tracking-[0.1px]">
-        {job.title}
-      </h3>
-      <p className="text-muted-foreground mt-1 flex items-center gap-1.5 truncate text-sm">
-        <Building2 className="size-[14px] shrink-0 opacity-70" />
-        {job.company}
-      </p>
-      {job.city && (
-        <p className="text-muted-foreground mt-0.5 flex items-center gap-1.5 truncate text-[13px]">
-          <MapPin className="size-[13px] shrink-0 opacity-70" />
-          {job.city}
-        </p>
-      )}
+      {/* Logo left of the title block, Indeed-style — the employer's mark is
+          how a candidate scans a list, so the offer cards carry it too, not just
+          the Entreprises page. */}
+      <div className="flex items-start gap-3">
+        <CompanyLogo name={job.company} size={44} className="mt-0.5 shrink-0" />
+        <div className="min-w-0 flex-1">
+          <h3 className="text-foreground line-clamp-2 text-[18px] leading-6 font-bold tracking-[-0.01em]">
+            {job.title}
+          </h3>
+          <p className="text-muted-foreground mt-1.5 flex items-center gap-1.5 truncate text-sm">
+            {job.company}
+          </p>
+          {job.city && (
+            <p className="text-muted-foreground mt-0.5 flex items-center gap-1.5 truncate text-sm">
+              <MapPin className="size-[13px] shrink-0 opacity-70" />
+              {job.city}
+            </p>
+          )}
+        </div>
+      </div>
 
       {/* Attribute chips, Indeed order: salary, contract, remote. */}
       {(salary || contract || remote) && (
@@ -499,7 +618,7 @@ function JobCard({
         </div>
       )}
 
-      <p className="text-muted-foreground mt-2 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] tracking-[0.3px]">
+      <p className="text-muted-foreground mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs">
         {job.postedAt && <span>{relativeDate(job.postedAt)}</span>}
         {job.sourceCount > 1 && (
           <span className="flex items-center gap-1">
@@ -517,7 +636,7 @@ function Attr({ children, tone = 'neutral' }: { children: React.ReactNode; tone?
   return (
     <span
       className={cn(
-        'rounded-lg px-2 py-1 text-[12px] font-semibold leading-none',
+        'rounded-lg px-2 py-1 text-[12px] font-bold leading-none',
         tone === 'success'
           ? 'bg-success-surface text-success'
           : 'bg-surface-high text-foreground/75',

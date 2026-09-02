@@ -3,6 +3,7 @@ import { plainHttpSources } from '../connectors/registry.js';
 import { loadSourceCatalog, sourceKeyFor } from '../connectors/sourceCatalog.js';
 import { runIngest, KIND_TO_ATS } from './ingest.js';
 import { checkSourceHealth } from './health.js';
+import { briefError } from '../lib/normalize.js';
 
 /**
  * Runs every source under its OWN time budget (decision D6), in series.
@@ -31,6 +32,13 @@ import { checkSourceHealth } from './health.js';
  * applies once the quick feeds are already in.
  */
 const PER_SOURCE_TIMEOUT_MS = Number(process.env.INGEST_SOURCE_TIMEOUT_MS ?? 20 * 60_000);
+
+/**
+ * How long before the hard timeout a slow crawl should stop itself. The margin
+ * lets the adapter finish the page it is on and return cleanly — the graceful
+ * stop that keeps its work — rather than being cut mid-flight by withTimeout.
+ */
+const SOFT_DEADLINE_MARGIN_MS = 90_000;
 
 export type OrchestratorResult = {
   total: number;
@@ -80,8 +88,11 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
   for (const key of keys) {
     try {
       // One source at a time, bounded. runIngest with {only} does the source's
-      // own purge; geocoding is skipped here and run once after the loop.
-      const stats = await withTimeout(runIngest(prisma, { only: key }), PER_SOURCE_TIMEOUT_MS, key);
+      // own purge; geocoding is skipped here and run once after the loop. The
+      // soft deadline lets a slow crawl stop gracefully just before the hard
+      // timeout, keeping what it fetched.
+      const deadlineMs = Date.now() + PER_SOURCE_TIMEOUT_MS - SOFT_DEADLINE_MARGIN_MS;
+      const stats = await withTimeout(runIngest(prisma, { only: key, deadlineMs }), PER_SOURCE_TIMEOUT_MS, key);
       // Record this source's health so a source that stops producing becomes a
       // detectable incident (BROKEN) on its next run — one SourceRun per source.
       await checkSourceHealth(prisma, stats).catch((e) =>
@@ -97,7 +108,7 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
       } else {
         result.failed++;
         result.failures.push(`${key} (failed)`);
-        console.error(`[orchestrator] ${key}: failed — ${message}`);
+        console.error(`[orchestrator] ${key}: failed — ${briefError(error)}`);
       }
     }
   }

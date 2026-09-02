@@ -1,28 +1,19 @@
 import { CompaniesView } from '@/components/companies-view';
-import { getCompanies, type CompanyFilters } from '@/lib/companies';
+import { getCompanies, parseCompanyFilters } from '@/lib/companies';
 
 export const dynamic = 'force-dynamic';
 
-function parseFilters(params: Record<string, string | string[] | undefined>): CompanyFilters {
-  const one = (key: string) => {
-    const value = params[key];
-    return (Array.isArray(value) ? value[0] : value)?.trim() || undefined;
-  };
-  const page = Number(one('page'));
-
-  return {
-    q: one('q'),
-    sector: one('secteur'),
-    country: one('pays'),
-    page: Number.isFinite(page) && page > 0 ? page : 1,
-  };
-}
-
+/**
+ * Only page 1 is rendered here — for first paint. Page 2+ loads via
+ * /api/companies as the visitor scrolls (see CompaniesView), reusing this exact
+ * same parseCompanyFilters so the infinite-scroll fetch and the server render
+ * can never disagree on what a filter means.
+ */
 export default async function Page({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const filters = parseFilters(await searchParams);
-  return <CompaniesView data={await getCompanies(filters)} />;
+  const filters = parseCompanyFilters(await searchParams);
+  return <CompaniesView data={await getCompanies(filters)} filters={filters} />;
 }

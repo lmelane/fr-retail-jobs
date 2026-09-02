@@ -73,6 +73,36 @@ export type JobFilters = {
   page?: number;
 };
 
+/**
+ * URL query params -> JobFilters, the one mapping both the server-rendered
+ * page and the infinite-scroll API route parse against.
+ *
+ * Shared here rather than duplicated: the two callers read the same URL keys
+ * (French, because the URL is user-visible — `ville`, `contrat`, `secteur`…),
+ * and a mapping that drifts between them would make page 1 (server-rendered)
+ * and page 2+ (fetched client-side) silently disagree on what a filter means.
+ */
+export function parseFilters(params: Record<string, string | string[] | undefined>): JobFilters {
+  const one = (key: string) => {
+    const value = params[key];
+    return (Array.isArray(value) ? value[0] : value)?.trim() || undefined;
+  };
+
+  const page = Number(one('page'));
+
+  return {
+    q: one('q'),
+    city: one('ville'),
+    contract: one('contrat'),
+    sector: one('secteur'),
+    maison: one('maison'),
+    group: one('groupe'),
+    source: one('source'),
+    country: one('pays'),
+    page: Number.isFinite(page) && page > 0 ? page : 1,
+  };
+}
+
 /** Offers per page. */
 export const PAGE_SIZE = 25;
 

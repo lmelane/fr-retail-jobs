@@ -118,36 +118,58 @@ export async function upsertDeduplicated(
       /**
        * The race this catches, seen live: six workers, two copies of the same
        * offer, both pass the cluster lookup before either has written, the
-       * second create violates (companyId, source, externalId) — 123 write
-       * errors on one Kering run. The violation IS the answer: the job exists
-       * now, so fall through and attach to it like any other duplicate.
+       * second create violates a unique key — 123 write errors on one Kering
+       * run. The violation IS the answer: the job exists now, so fall through
+       * and attach to it like any other duplicate.
+       *
+       * TWO unique keys can trip here, and the recovery must survive both:
+       *   - Job(companyId, source, externalId): the same opening, same ATS.
+       *   - JobSource(sourceKey, externalId): the same feed entry reached this
+       *     job through a different cluster, and its source row already exists —
+       *     possibly on a Job written with a DIFFERENT `source` (atsType), so the
+       *     Job-key lookup below misses it. Looking up by the Job key alone then
+       *     found no winner and re-threw, losing the offer (the real Kering bug).
        */
       const isUniqueViolation =
         error instanceof Error && 'code' in error && (error as { code?: string }).code === 'P2002';
       if (!isUniqueViolation) throw error;
 
-      const winner = await prisma.job.findUnique({
+      // Try the Job unique key first (same opening, same ATS); if that misses,
+      // the collision was on the JobSource key, so find the job that already
+      // owns this (sourceKey, externalId). Either way we resolve a winning job
+      // id — the offer attaches instead of being thrown away.
+      const byJobKey = await prisma.job.findUnique({
         where: {
           companyId_source_externalId: {
             companyId: company.id,
-            // Must match what createJob wrote, or the winner is not found and
-            // the offer is lost — the same real ATS, not a hard-coded default.
             source: candidate.atsType ?? 'GENERIC_JSONLD',
             externalId: candidate.externalId,
           },
         },
         select: { id: true },
       });
-      if (!winner) throw error;
+      const bySourceKey = byJobKey
+        ? null
+        : await prisma.jobSource.findUnique({
+            where: {
+              sourceKey_externalId: {
+                sourceKey: candidate.sourceKey,
+                externalId: candidate.externalId,
+              },
+            },
+            select: { jobId: true },
+          });
+      const winnerId = byJobKey?.id ?? bySourceKey?.jobId;
+      if (!winnerId) throw error;
 
       await prisma.job.update({
-        where: { id: winner.id },
+        where: { id: winnerId },
         // Stamp the current generation on every touch, not just on create:
         // a row left at an older version is deleted by the next generation
         // purge, then recreated — churning its id and firstSeenAt on every run.
         data: { lastSeenAt: now, isActive: true, pipelineVersion: PIPELINE_VERSION },
       });
-      return { jobId: winner.id, outcome: 'UPDATED', promoted: false };
+      return { jobId: winnerId, outcome: 'UPDATED', promoted: false };
     }
   }
 

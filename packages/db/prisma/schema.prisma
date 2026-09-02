@@ -57,6 +57,7 @@ enum AtsType {
   AVATURE
   TEAMTAILOR
   DIGITALRECRUITERS
+  TALENTSOFT
   PHENOM
   SUCCESSFACTORS
   WTTJ
@@ -288,4 +289,24 @@ model SourceRun {
 
   @@index([sourceKey, ranAt])
   @@index([status, ranAt])
+}
+
+/**
+ * Where a rotating crawl should resume next run.
+ *
+ * A source too large and too slow to sweep inside one run (FashionJobs behind
+ * Cloudflare, ~282 listing pages) advances through its listing across runs
+ * instead of always re-reading the first pages: each run crawls a window from
+ * `nextPage`, then stores where it stopped, wrapping back to page 1 at the end.
+ * The cron fires several times a day, so a full rotation completes well within
+ * the 48h lifecycle window — every offer is re-seen in time, and none is closed
+ * as stale while it is still listed.
+ */
+model SourceCursor {
+  sourceKey String   @id
+  /** The listing page the next run should start from (1-based). */
+  nextPage  Int      @default(1)
+  updatedAt DateTime @updatedAt
+
+  @@map("SourceCursor")
 }
