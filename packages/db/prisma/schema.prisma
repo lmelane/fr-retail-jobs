@@ -50,6 +50,7 @@ enum DiscoveryStatus {
 
 enum AtsType {
   PINPOINT
+  LVMH_ALGOLIA
   MAGNET
   TALENTVIEW
   EIGHTFOLD

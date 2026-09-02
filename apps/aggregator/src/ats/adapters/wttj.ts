@@ -1,4 +1,4 @@
-import { fetchJson } from '../../lib/http.js';
+import { fetchJson, fetchText } from '../../lib/http.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -19,22 +19,62 @@ import type { NormalizedJob } from '../../types.js';
  */
 
 const APP_ID = 'CSEKHVMS53';
-/** Public, client-side search key — the one the website itself ships. */
-const SEARCH_KEY = '4bd8f6215d0cc52b26430765769e65a0';
+/**
+ * Public, client-side search key — the one the website itself ships.
+ *
+ * WTTJ rotates it on deploy, so this is a starting point, not a constant. When
+ * it is refused, refreshSearchKey() reads the current one out of any company
+ * page, where it appears as ALGOLIA_API_KEY_CLIENT in the embedded config.
+ *
+ * This matters more than it looks: a rotated key makes Algolia answer 403, and
+ * a caller that reads that as `nbHits: null` sees "this Maison has no
+ * openings". That silent failure produced false NONE verdicts across three
+ * discovery batches before anyone noticed the key had changed.
+ */
+let searchKey = '4bd8f6215d0cc52b26430765769e65a0';
 const INDEX = 'wttj_jobs_production_fr';
+
+/** Any company page carries the current credentials in its inlined config. */
+const KEY_SOURCE = 'https://www.welcometothejungle.com/fr/companies/lacoste/jobs';
 
 /** Algolia caps a single page; 100 is its maximum hitsPerPage. */
 const PAGE_SIZE = 100;
 
-const HEADERS = {
-  'x-algolia-application-id': APP_ID,
-  'x-algolia-api-key': SEARCH_KEY,
-  'content-type': 'application/json',
-  // The key is referer-restricted; this is not spoofing a browser, it is the
-  // scope the key was issued for.
-  referer: 'https://www.welcometothejungle.com/',
-  origin: 'https://www.welcometothejungle.com',
-};
+function headers() {
+  return {
+    'x-algolia-application-id': APP_ID,
+    'x-algolia-api-key': searchKey,
+    'content-type': 'application/json',
+    // The key is referer-restricted; this is not spoofing a browser, it is the
+    // scope the key was issued for.
+    referer: 'https://www.welcometothejungle.com/',
+    origin: 'https://www.welcometothejungle.com',
+  };
+}
+
+/**
+ * Re-reads the current search key from a WTTJ page.
+ *
+ * Called only after a refusal, so the normal path costs no extra request.
+ * Returns false when no key can be found, which the caller must treat as a
+ * failure rather than as an empty result.
+ */
+async function refreshSearchKey(): Promise<boolean> {
+  try {
+    const html = await fetchText(KEY_SOURCE, {
+      headers: {
+        'user-agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+      },
+    });
+    const found = html.match(/"ALGOLIA_API_KEY_CLIENT"\s*:\s*"([0-9a-f]{32})"/)?.[1];
+    if (!found || found === searchKey) return false;
+    searchKey = found;
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 type WttjOffice = { city?: string; country?: string; zip_code?: string };
 
@@ -56,7 +96,7 @@ type WttjHit = {
   profile?: string;
 };
 
-type WttjResponse = { nbHits?: number; hits?: WttjHit[] };
+type WttjResponse = { nbHits?: number; hits?: WttjHit[]; message?: string; status?: number };
 
 function stripHtml(value?: string): string | undefined {
   if (!value) return undefined;
@@ -110,20 +150,38 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<No
 
   const jobs: NormalizedJob[] = [];
 
+  const ask = (page: number) =>
+    fetchJson<WttjResponse>(`https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`, {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify({
+        // The slug must be QUOTED: unquoted, Algolia silently returns nbHits 0
+        // for every organization, which reads as "no jobs" rather than as a
+        // malformed filter.
+        query: '',
+        filters: `organization.slug:"${slug}"`,
+        hitsPerPage: PAGE_SIZE,
+        page,
+      }),
+    });
+
   for (let page = 0; ; page++) {
-    const response = await fetchJson<WttjResponse>(
-      `https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`,
-      {
-        method: 'POST',
-        headers: HEADERS,
-        body: JSON.stringify({
-          query: '',
-          filters: `organization.slug:${slug}`,
-          hitsPerPage: PAGE_SIZE,
-          page,
-        }),
-      },
-    );
+    let response = await ask(page);
+
+    // A rotated key. Refresh once, then retry — and if that fails, throw. An
+    // empty array here is indistinguishable from "this employer is not hiring".
+    if (response.status === 403 || response.message) {
+      if (page === 0 && (await refreshSearchKey())) {
+        response = await ask(page);
+      }
+      if (response.status === 403 || response.message) {
+        throw new Error(
+          `WTTJ refused the query (${response.message ?? 'status 403'}). The public search ` +
+            'key has rotated and could not be refreshed from the site — re-extract ' +
+            'ALGOLIA_API_KEY_CLIENT rather than recording this employer as having no jobs.',
+        );
+      }
+    }
 
     const hits = response.hits ?? [];
     for (const hit of hits) {

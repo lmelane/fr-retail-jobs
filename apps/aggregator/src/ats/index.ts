@@ -19,6 +19,7 @@ import { fetchEightfoldJobs } from './adapters/eightfold.js';
 import { fetchTalentViewJobs } from './adapters/talentview.js';
 import { fetchMagnetJobs } from './adapters/magnet.js';
 import { fetchPinpointJobs } from './adapters/pinpoint.js';
+import { fetchLvmhJobs } from './adapters/lvmhAlgolia.js';
 
 export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown>): Promise<NormalizedJob[]> {
   switch (type) {
@@ -40,6 +41,7 @@ export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown
     case 'TALENTVIEW': return fetchTalentViewJobs(config);
     case 'MAGNET': return fetchMagnetJobs(config);
     case 'PINPOINT': return fetchPinpointJobs(config);
+    case 'LVMH_ALGOLIA': return fetchLvmhJobs(config);
     case 'GENERIC_JSONLD': return fetchGenericJsonLdJobs(config);
     default: throw new Error(`Unsupported ATS type: ${type}`);
   }
