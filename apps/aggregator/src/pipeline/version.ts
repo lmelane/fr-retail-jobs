@@ -24,5 +24,9 @@
  *      escapes its JSON-LD, and the old order recreated the markup after the
  *      strip, storing literal HTML (base64 figures included) on every
  *      Galeries Lafayette offer.
+ *   5  2026-09-02 — contract read from the whole posting (GL announces "contrat
+ *      en CDI" in its closing lines, past any head-window), salary extracted
+ *      from prose when the structured field is empty, and Teamtailor's
+ *      baseSalary band finally read instead of dropped.
  */
-export const PIPELINE_VERSION = 4;
+export const PIPELINE_VERSION = 5;

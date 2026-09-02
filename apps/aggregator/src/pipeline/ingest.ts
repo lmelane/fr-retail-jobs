@@ -5,7 +5,7 @@ import { loadSourceCatalog, isApiSource, tierFor, sourceKeyFor } from '../connec
 import { fetchSitemapUrls, fetchJobFromPage } from '../connectors/generic/jsonLdSitemap.js';
 import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
-import { normalizeContract, normalizeWorkingTime, isWorkingTimeValue } from '../normalize/contract.js';
+import { normalizeContract, normalizeWorkingTime, isWorkingTimeValue, extractContract, extractSalaryBand } from '../normalize/contract.js';
 import { isFranceJob } from '../lib/france.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
@@ -73,10 +73,16 @@ function toCandidate(
    * réussi…"), and the opening lines are where the real one is announced.
    */
   let contract = misfiled ? 'UNKNOWN' : normalizeContract(job.contract);
-  if (contract === 'UNKNOWN') contract = normalizeContract(job.title);
-  if (contract === 'UNKNOWN') contract = normalizeContract(job.description?.slice(0, 400));
+  if (contract === 'UNKNOWN') contract = extractContract(job.title, job.description);
 
   const workingTime = normalizeWorkingTime(misfiled ? job.contract : job.workingTime);
+
+  // Salary from prose when the structured field is empty: Galeries Lafayette
+  // writes the band in the text, and a fiche without it reads half-finished.
+  const salaryFromText =
+    job.salaryMin === undefined && job.salaryMax === undefined
+      ? extractSalaryBand(job.description)
+      : null;
 
   return {
     ...job,
@@ -84,6 +90,14 @@ function toCandidate(
     // it is truthy, and the UI printed "Contrat : UNKNOWN" on every offer.
     contract: contract === 'UNKNOWN' ? undefined : contract,
     workingTime: workingTime === 'UNKNOWN' ? undefined : workingTime,
+    ...(salaryFromText
+      ? {
+          salaryMin: salaryFromText.min,
+          salaryMax: salaryFromText.max,
+          salaryCurrency: 'EUR',
+          salaryPeriod: salaryFromText.period,
+        }
+      : {}),
     company: companyName,
     companyId: resolveCompany(companyName).companyId,
     sourceKey: source.key,

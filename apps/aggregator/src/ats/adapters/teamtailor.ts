@@ -31,6 +31,7 @@ type JobPostingNode = {
   identifier?: { value?: string } | string;
   datePosted?: string;
   employmentType?: string;
+  baseSalary?: { currency?: string; value?: { minValue?: number; maxValue?: number; unitText?: string } };
   jobLocation?: Array<{
     address?: {
       addressLocality?: string;
@@ -82,6 +83,12 @@ function toNormalized(item: FeedItem): NormalizedJob | null {
         .join(', ') || undefined,
     country: address?.addressCountry,
     contract: posting?.employmentType,
+    // GL publishes a real EUR/YEAR band here; dropping it made every fiche
+    // read half-empty while the vendor was handing us the number.
+    salaryMin: posting?.baseSalary?.value?.minValue,
+    salaryMax: posting?.baseSalary?.value?.maxValue,
+    salaryCurrency: posting?.baseSalary?.currency,
+    salaryPeriod: posting?.baseSalary?.value?.unitText,
     // The feed carries the whole posting; content_html is the same text.
     description: stripHtml(posting?.description ?? item.content_html),
     url: item.url ?? '',
