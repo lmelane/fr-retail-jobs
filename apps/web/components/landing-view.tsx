@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { SearchPill } from '@/components/search-pill';
+import { SiteFooter } from '@/components/site-footer';
 
 /**
  * The landing page — Indeed's home, step one of the two-step funnel.
@@ -70,21 +71,30 @@ export function LandingView() {
           />
         </div>
 
-        <div className="mt-16 flex flex-col items-center gap-3 text-center">
-          {/* The one exception to "weight is always 400": the CATWALKS
-              wordmark is the brand logo, and bold 700 is reserved
-              exclusively for it (decision D17). */}
-          <span className="text-foreground font-heading text-[40px] leading-none font-bold tracking-[0.4px] uppercase sm:text-[52px]">
-            Catwalks
-          </span>
+        <div className="mt-16 flex flex-col items-center gap-4 text-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/fashion-atlas-logo.svg" alt="Fashion Atlas" className="h-8 w-auto sm:h-9" />
           <h1 className="text-foreground max-w-[560px] text-xl font-normal tracking-[0.4px] text-balance sm:text-2xl">
             Trouvez votre poste dans la mode, le luxe & la beauté
           </h1>
           <p className="text-grey-400 max-w-[480px] text-[15px] tracking-[0.4px] text-balance">
             Toutes les offres publiques des Maisons et des jobboards spécialisés, réunies sans doublon.
           </p>
+
+          {/* The strategic CTA also on the home, mirroring Indeed's "Commencer"
+              (decision D18): a Catwalks profile for real matching. */}
+          <a
+            href="https://catwalks.io/inscription?utm_source=fashion-atlas&utm_medium=aggregator"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-primary text-primary-foreground hover:bg-grey-600 mt-2 inline-flex h-11 items-center gap-2 rounded-full px-7 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
+          >
+            Matcher mon profil avec Catwalks
+          </a>
         </div>
       </main>
+
+      <SiteFooter />
     </div>
   );
 }
