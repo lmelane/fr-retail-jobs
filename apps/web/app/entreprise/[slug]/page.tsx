@@ -62,7 +62,9 @@ export default async function Page({
   const profile = await getCompanyBySlug(slug);
   if (!profile) notFound();
 
-  const jobs = await getJobs({ maison: profile.name, page: 1 });
+  // World-scoped (a Maison recruits across countries), matching the board's
+  // world-by-default scope and the page's in-view filter refetch.
+  const jobs = await getJobs({ maison: profile.name, country: undefined, page: 1 });
 
   return <CompanyProfileView profile={profile} jobs={jobs} />;
 }

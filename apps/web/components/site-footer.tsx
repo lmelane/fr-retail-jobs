@@ -5,7 +5,7 @@ import Link from 'next/link';
  *
  * Fashion Atlas is the aggregator brand that belongs to Catwalks (decision
  * D14): the footer states that plainly and links the two, and carries the legal
- * pages (CGU/CGV/confidentialité) a real product needs. Its link columns are
+ * pages (CGU, confidentialité, mentions légales) a real product needs. Its link columns are
  * also SEO surface — the internal mesh toward the offer and company pages.
  */
 export function SiteFooter() {
@@ -47,8 +47,10 @@ export function SiteFooter() {
         </FooterColumn>
 
         <FooterColumn title="Informations">
+          {/* Only the legal pages Catwalks actually serves (verified live):
+              /cgu, /confidentialite, /mentions-legales are 200 — /cgv is 404,
+              so it is not linked. */}
           <FooterExternal href="https://catwalks.io/cgu">Conditions d’utilisation</FooterExternal>
-          <FooterExternal href="https://catwalks.io/cgv">CGV</FooterExternal>
           <FooterExternal href="https://catwalks.io/confidentialite">Confidentialité</FooterExternal>
           <FooterExternal href="https://catwalks.io/mentions-legales">Mentions légales</FooterExternal>
         </FooterColumn>

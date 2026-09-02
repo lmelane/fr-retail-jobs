@@ -59,10 +59,11 @@ export function parseCompanyFilters(
   };
   const page = Number(one('page'));
 
-  // France by default (decision D12), same as the offer list: no `pays` means
-  // France, `pays=monde` opens every country.
+  // World by default (revises D12), same as the offer list: no `pays` means every
+  // country, `pays=<code>` narrows to one. `pays=monde` is still accepted as an
+  // explicit "all countries" for shared/legacy links.
   const rawCountry = one('pays');
-  const country = rawCountry === undefined ? 'FR' : rawCountry === 'monde' ? undefined : rawCountry;
+  const country = rawCountry === undefined || rawCountry === 'monde' ? undefined : rawCountry;
 
   return {
     q: one('q'),
@@ -279,7 +280,10 @@ export async function getCompanyBySlug(slug: string): Promise<CompanyProfile | n
       .sort((a, b) => a.name.localeCompare(b.name))[0];
     if (!match) return null;
 
-    const where = { companyId: match.id, isActive: true, isFrance: true } as const;
+    // World-scoped (revises D12): a Maison recruits across countries, and the
+    // board now defaults to every country, so the header count and city/contract
+    // facets must match the world set the offer list shows.
+    const where = { companyId: match.id, isActive: true } as const;
     const [jobCount, cityGroups, contractGroups] = await Promise.all([
       prisma.job.count({ where }),
       prisma.job.groupBy({

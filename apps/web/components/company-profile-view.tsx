@@ -1,15 +1,27 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { Building2, ExternalLink, Loader2, MapPin, X } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Building2, ExternalLink, Loader2, MapPin, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CompanyLogo } from '@/components/company-logo';
 import { JobDetail } from '@/components/job-detail';
 import { JobCard } from '@/components/jobs-view';
+import { AutocompleteField } from '@/components/search-pill';
+import { SiteNav } from '@/components/site-nav';
 import { cn } from '@/lib/utils';
 import type { CompanyProfile } from '@/lib/companies';
 import type { JobRow, JobsResult } from '@/lib/jobs';
+
+const CONTRACT_LABELS: Record<string, string> = {
+  CDI: 'CDI',
+  CDD: 'CDD',
+  STAGE: 'Stage',
+  ALTERNANCE: 'Alternance',
+  INTERIM: 'Intérim',
+  FREELANCE: 'Freelance',
+  APPRENTICESHIP: 'Apprentissage',
+  GRADUATE: 'Graduate',
+};
 
 /**
  * One Maison's page, Indeed's `/cmp/<company>` shape (decision D15) — minus
@@ -50,11 +62,27 @@ export function CompanyProfileView({
    * /api/jobs?maison=<name> and appends it.
    */
   const [jobs, setJobs] = useState<JobRow[]>(initialResult.jobs);
+  const [total, setTotal] = useState(initialResult.total);
   const [loadedPage, setLoadedPage] = useState(initialResult.page);
   const [pageCount, setPageCount] = useState(initialResult.pageCount);
   const [loadingMore, setLoadingMore] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const sentinelRef = useRef<HTMLLIElement>(null);
+
+  /**
+   * A light in-page filter (decision, 2026-09-02): a Maison with hundreds of
+   * offers is an unnavigable wall without it. Just ville + contrat — enough to
+   * cut down 800 offers, without carrying the full /emplois filter bar onto a
+   * page already scoped to one company. Both narrow WITHIN this Maison, server-
+   * side (via /api/jobs?maison=<name>&ville=&contrat=), so every match is seen,
+   * not only the loaded slice.
+   */
+  const [ville, setVille] = useState('');
+  const [contrat, setContrat] = useState<string | null>(null);
+  const contractFacets = useMemo(
+    () => initialResult.facets.contracts.filter((c) => c.value),
+    [initialResult.facets.contracts],
+  );
 
   const headerRef = useRef<HTMLElement>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -72,13 +100,25 @@ export function CompanyProfileView({
 
   const selected = jobs.find((job) => job.id === selectedId) ?? null;
 
+  // The query for this Maison at the current filter values. `pays=monde` keeps
+  // the page world-scoped (a Maison recruits across countries), matching the
+  // board's world-by-default scope.
+  const buildQuery = useCallback(
+    (page: number) => {
+      const params = new URLSearchParams({ maison: profile.name, pays: 'monde', page: String(page) });
+      if (ville.trim()) params.set('ville', ville.trim());
+      if (contrat) params.set('contrat', contrat);
+      return params;
+    },
+    [profile.name, ville, contrat],
+  );
+
   const loadMore = useCallback(async () => {
     if (loadingMore || loadedPage >= pageCount) return;
     setLoadingMore(true);
     setLoadError(null);
     try {
-      const next = new URLSearchParams({ maison: profile.name, page: String(loadedPage + 1) });
-      const response = await fetch(`/api/jobs?${next.toString()}`);
+      const response = await fetch(`/api/jobs?${buildQuery(loadedPage + 1).toString()}`);
       if (!response.ok) throw new Error(`Le serveur a répondu ${response.status}.`);
       const result = (await response.json()) as JobsResult;
       setJobs((current) => [...current, ...result.jobs]);
@@ -89,7 +129,42 @@ export function CompanyProfileView({
     } finally {
       setLoadingMore(false);
     }
-  }, [loadingMore, loadedPage, pageCount, profile.name]);
+  }, [loadingMore, loadedPage, pageCount, buildQuery]);
+
+  /**
+   * Reload page 1 whenever the filter changes. The initial (unfiltered) values
+   * already came from the server, so this only fires on a real filter change —
+   * guarded by `filtersTouched` so the server-rendered first page is not
+   * re-fetched on mount.
+   */
+  const filtersTouched = useRef(false);
+  useEffect(() => {
+    if (!filtersTouched.current) {
+      filtersTouched.current = true;
+      return;
+    }
+    let cancelled = false;
+    const handle = setTimeout(async () => {
+      try {
+        const response = await fetch(`/api/jobs?${buildQuery(1).toString()}`);
+        if (!response.ok) throw new Error(String(response.status));
+        const result = (await response.json()) as JobsResult;
+        if (cancelled) return;
+        setJobs(result.jobs);
+        setTotal(result.total);
+        setLoadedPage(result.page);
+        setPageCount(result.pageCount);
+        setSelectedId(result.jobs[0]?.id ?? null);
+        setLoadError(null);
+      } catch {
+        if (!cancelled) setLoadError('La recherche a échoué.');
+      }
+    }, 250);
+    return () => {
+      cancelled = true;
+      clearTimeout(handle);
+    };
+  }, [buildQuery]);
 
   useEffect(() => {
     const node = sentinelRef.current;
@@ -106,23 +181,10 @@ export function CompanyProfileView({
 
   return (
     <div className="bg-background">
-      {/* ============ Nav — same tabs as /emplois and /entreprises ============ */}
+      {/* ============ Nav — the shared header, consistent across every page ============ */}
       <header ref={headerRef} className="border-border/70 sticky top-0 z-40 border-b bg-white">
-        <div className="mx-auto flex max-w-[1280px] items-center gap-5 px-4 py-3 sm:px-6">
-          <nav className="flex shrink-0 items-center gap-5">
-            <Link
-              href="/emplois"
-              className="text-foreground/60 hover:text-foreground pb-3 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
-            >
-              Offres
-            </Link>
-            <Link
-              href="/entreprises"
-              className="text-foreground/60 hover:text-foreground pb-3 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
-            >
-              Entreprises
-            </Link>
-          </nav>
+        <div className="mx-auto flex max-w-[1280px] items-center px-4 py-3 sm:px-6">
+          <SiteNav active="entreprises" />
         </div>
       </header>
 
@@ -154,6 +216,76 @@ export function CompanyProfileView({
                 {profile.jobCount > 1 ? 'emplois ouverts' : 'emploi ouvert'}
               </p>
             </div>
+          </div>
+
+          {/* Light filter bar (ville + contrat), scoped to this Maison — enough
+              to navigate a company with hundreds of offers. */}
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <form
+              className="border-border relative flex h-11 w-full max-w-xs items-center rounded-full border bg-white focus-within:ring-2 focus-within:ring-black/20"
+              onSubmit={(event) => event.preventDefault()}
+            >
+              <AutocompleteField
+                type="city"
+                value={ville}
+                onChange={setVille}
+                onCommit={setVille}
+                icon={<Search className="text-muted-foreground size-[18px] shrink-0" aria-hidden />}
+                placeholder="Ville, région ou pays"
+                ariaLabel={`Filtrer les offres ${profile.name} par lieu`}
+                hero={false}
+              />
+              {ville && (
+                <button
+                  type="button"
+                  onClick={() => setVille('')}
+                  aria-label="Effacer le lieu"
+                  className="text-muted-foreground hover:text-foreground mr-3 shrink-0"
+                >
+                  <X className="size-4" />
+                </button>
+              )}
+            </form>
+
+            {contractFacets.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2">
+                {contractFacets.map((facet) => {
+                  const active = contrat === facet.value;
+                  return (
+                    <button
+                      key={facet.value}
+                      type="button"
+                      aria-pressed={active}
+                      onClick={() => setContrat(active ? null : facet.value)}
+                      className={cn(
+                        'flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-4 text-[13px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks',
+                        active
+                          ? 'border-foreground bg-secondary-container text-on-secondary-container'
+                          : 'border-border bg-white hover:bg-surface',
+                      )}
+                    >
+                      {CONTRACT_LABELS[facet.value] ?? facet.value}
+                      <span className="text-muted-foreground text-xs tabular-nums">
+                        {facet.count.toLocaleString('fr-FR')}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {(ville || contrat) && (
+              <button
+                type="button"
+                onClick={() => {
+                  setVille('');
+                  setContrat(null);
+                }}
+                className="text-grey-400 hover:text-foreground ml-1 text-[13px] tracking-[0.4px] underline-offset-2 hover:underline"
+              >
+                Effacer · {total.toLocaleString('fr-FR')} offre{total > 1 ? 's' : ''}
+              </button>
+            )}
           </div>
 
           {/* "À propos" facts row — the honest subset we hold. */}

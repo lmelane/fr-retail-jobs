@@ -90,11 +90,13 @@ export function parseFilters(params: Record<string, string | string[] | undefine
 
   const page = Number(one('page'));
 
-  // France by default (decision D12): with no `pays` in the URL the board shows
-  // France. An explicit `pays=monde` opens it to every country; any other value
-  // is a specific country code. The world data stays in the database either way.
+  // World by default (revises D12, decided 2026-09-02): with no `pays` in the URL
+  // the board shows every country, so the ~26k world offers a candidate expects
+  // are reachable from the search box, not hidden behind a filter they never
+  // open. `pays=<code>` (e.g. FR, IT) narrows to that country; `pays=monde` is
+  // still accepted as an explicit "all countries" for shared/legacy links.
   const rawCountry = one('pays');
-  const country = rawCountry === undefined ? 'FR' : rawCountry === 'monde' ? undefined : rawCountry;
+  const country = rawCountry === undefined || rawCountry === 'monde' ? undefined : rawCountry;
 
   return {
     q: one('q'),
@@ -154,7 +156,7 @@ export type JobsResult = {
   jobs: JobRow[];
   /** Every row matching the filters, across all pages. */
   total: number;
-  /** Every live French offer stored, ignoring filters. */
+  /** Every live offer stored (world), ignoring filters. */
   totalInDatabase: number;
   /** 1-based page these jobs come from. */
   page: number;
@@ -472,7 +474,10 @@ export async function suggestCities(query: string): Promise<string[]> {
       by: ['city'],
       where: {
         isActive: true,
-        isFrance: true,
+        // World, not FR-only (revises D12): the board defaults to every country,
+        // so typing "Milan" must surface Milan — otherwise the world offers are
+        // unreachable from the search box. Ordered by frequency, so the busiest
+        // cities (Paris, London…) still lead.
         city: { startsWith: q, mode: 'insensitive' },
       },
       _count: { _all: true },
@@ -518,7 +523,8 @@ export async function suggestTitles(query: string): Promise<string[]> {
       by: ['title'],
       where: {
         isActive: true,
-        isFrance: true,
+        // World, not FR-only (revises D12): titles are suggested from the whole
+        // active catalogue, matching the board's world-by-default scope.
         title: { contains: q, mode: 'insensitive' },
       },
       _count: { _all: true },
@@ -545,9 +551,11 @@ export async function suggestTitles(query: string): Promise<string[]> {
 }
 
 /**
- * Every indexable URL's data for the sitemap — active FR offers by id, and the
- * Maisons that have at least one, by slug. Kept lean (id + updatedAt only) so
- * generating a ~10k-entry sitemap stays a single cheap query per type.
+ * Every indexable URL's data for the sitemap — every active offer by id
+ * (world, revises D12: the board defaults to all countries, so the sitemap
+ * exposes the same set), and the Maisons that have at least one, by slug. Kept
+ * lean (id + updatedAt only) so the ~26k-entry sitemap stays a single cheap
+ * query per type.
  */
 export async function sitemapData(): Promise<{
   offers: { id: string; updatedAt: Date }[];
@@ -556,11 +564,11 @@ export async function sitemapData(): Promise<{
   if (!process.env.DATABASE_URL) return { offers: [], companies: [] };
   const [offers, companyRows] = await Promise.all([
     prisma.job.findMany({
-      where: { isActive: true, isFrance: true },
+      where: { isActive: true },
       select: { id: true, lastSeenAt: true },
     }),
     prisma.company.findMany({
-      where: { jobs: { some: { isActive: true, isFrance: true } } },
+      where: { jobs: { some: { isActive: true } } },
       select: { name: true, lastSeenAt: true },
     }),
   ]);
@@ -568,4 +576,30 @@ export async function sitemapData(): Promise<{
     offers: offers.map((o) => ({ id: o.id, updatedAt: o.lastSeenAt ?? new Date() })),
     companies: companyRows.map((c) => ({ name: c.name, updatedAt: c.lastSeenAt ?? new Date() })),
   };
+}
+
+/**
+ * Headline counts for the landing — the aggregator's proof (real numbers, not
+ * invented copy): live offers, Maisons, and distinct countries covered. Returns
+ * zeros when the database is unavailable, so the landing renders without them
+ * rather than failing (the landing has value without a count).
+ */
+export async function landingStats(): Promise<{ offers: number; companies: number; countries: number }> {
+  if (!process.env.DATABASE_URL) return { offers: 0, companies: 0, countries: 0 };
+  try {
+    const [offers, companies, countryRows] = await Promise.all([
+      prisma.job.count({ where: { isActive: true } }),
+      prisma.company.count({ where: { jobs: { some: { isActive: true } } } }),
+      prisma.job.findMany({
+        where: { isActive: true, country: { not: null } },
+        select: { country: true },
+        distinct: ['country'],
+      }),
+    ]);
+    // Raw country spellings collapse to canonical codes (IT/Italy/it -> IT).
+    const codes = new Set(countryRows.map((r) => countryCode(r.country)).filter(Boolean));
+    return { offers, companies, countries: codes.size };
+  } catch {
+    return { offers: 0, companies: 0, countries: 0 };
+  }
 }

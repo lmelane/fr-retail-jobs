@@ -283,3 +283,33 @@ body {
     cursor: pointer;
   }
 }
+
+/* Hero rotating word (see components/rotating-word.tsx): the incoming word rises
+   into place, the outgoing one lifts away, both over 0.3s. Compositor-friendly
+   (transform + opacity only); the pill's width is animated separately in JS. */
+@keyframes rotating-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes rotating-word-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-0.6em);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [class*='rotating-word-in'],
+  [class*='rotating-word-out'] {
+    animation: none !important;
+  }
+}

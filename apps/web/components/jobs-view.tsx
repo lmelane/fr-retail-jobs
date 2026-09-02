@@ -96,10 +96,10 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
   const params = useSearchParams();
   const [pending, startTransition] = useTransition();
   const [draft, setDraft] = useState(filters.q ?? '');
-  // The location field shows "France" (the country, D12's default scope) when no
-  // city is filtered, and the real city otherwise — the same field persisting
-  // from the landing, Indeed-style.
-  const [locationDraft, setLocationDraft] = useState(filters.city ?? 'France');
+  // The location field is empty when no city is filtered (its placeholder reads
+  // "Ville, région ou pays"), and the real city otherwise. World by default now
+  // (revises D12), so pre-filling "France" would misstate the scope.
+  const [locationDraft, setLocationDraft] = useState(filters.city ?? '');
   // Indeed always shows a detail when there are results: default to the
   // first offer rather than an empty right pane on first paint.
   const [selectedId, setSelectedId] = useState<string | null>(data.jobs[0]?.id ?? null);
@@ -154,7 +154,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
   // the right pane empty until a candidate clicks something.
   useEffect(() => setSelectedId(data.jobs[0]?.id ?? null), [data.jobs]);
   useEffect(() => setDraft(filters.q ?? ''), [filters.q]);
-  useEffect(() => setLocationDraft(filters.city ?? 'France'), [filters.city]);
+  useEffect(() => setLocationDraft(filters.city ?? ''), [filters.city]);
 
   const selected = jobs.find((job) => job.id === selectedId) ?? null;
 
@@ -252,10 +252,9 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
               city={locationDraft}
               onCityChange={setLocationDraft}
               onSubmit={({ query, city }) =>
-                // "France" (the default scope) is not a city filter — clear it.
                 navigate({
                   q: query || null,
-                  ville: city && city.trim().toLowerCase() !== 'france' ? city.trim() : null,
+                  ville: city?.trim() || null,
                 })
               }
             />
