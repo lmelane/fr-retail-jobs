@@ -220,4 +220,11 @@ body {
   html {
     @apply font-sans;
   }
+  /* Tailwind v4 dropped the default cursor:pointer on buttons; a clickable
+     control must show the hand, like Indeed's does. Not for disabled ones. */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  a[href] {
+    cursor: pointer;
+  }
 }
