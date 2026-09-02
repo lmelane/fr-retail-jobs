@@ -94,3 +94,45 @@ describe('upsertDeduplicated — unique-constraint recovery', () => {
     expect(await prisma.job.count()).toBe(1);
   });
 });
+
+/**
+ * Regression for the dead-link fix not reaching stored rows: an adapter URL
+ * correction must propagate to offers ALREADY in the base on the next ingest,
+ * not only to newly-created ones. Before this, a re-ingest of the same source
+ * left the old (404) URL untouched, so fixing the adapter changed nothing live.
+ */
+describe('upsertDeduplicated — URL refresh on re-ingest', () => {
+  it('rewrites Job.url when the same source re-reports the offer with a corrected URL', async () => {
+    const created = await upsertDeduplicated(
+      prisma,
+      candidate({
+        sourceKey: 'richemont',
+        externalId: 'JR1',
+        company: 'Cartier',
+        title: 'Vendeur',
+        location: 'Paris',
+        url: 'https://richemont.wd3.myworkdayjobs.com/job/PARIS/Vendeur_JR1', // old, 404
+      }),
+    );
+    expect(created.outcome).toBe('CREATED');
+
+    // Same offer, same source, corrected URL (the adapter fix).
+    await upsertDeduplicated(
+      prisma,
+      candidate({
+        sourceKey: 'richemont',
+        externalId: 'JR1',
+        company: 'Cartier',
+        title: 'Vendeur',
+        location: 'Paris',
+        url: 'https://richemont.wd3.myworkdayjobs.com/broadbean_external/job/PARIS/Vendeur_JR1', // fixed, 200
+      }),
+    );
+
+    const job = await prisma.job.findFirstOrThrow({ where: { externalId: 'JR1' } });
+    expect(job.url).toBe(
+      'https://richemont.wd3.myworkdayjobs.com/broadbean_external/job/PARIS/Vendeur_JR1',
+    );
+    expect(await prisma.job.count()).toBe(1);
+  });
+});

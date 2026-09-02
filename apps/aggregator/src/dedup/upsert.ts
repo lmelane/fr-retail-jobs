@@ -174,7 +174,14 @@ export async function upsertDeduplicated(
         // Stamp the current generation on every touch, not just on create:
         // a row left at an older version is deleted by the next generation
         // purge, then recreated — churning its id and firstSeenAt on every run.
-        data: { lastSeenAt: now, isActive: true, pipelineVersion: PIPELINE_VERSION },
+        // Refresh the url too, so an adapter URL fix reaches rows already stored
+        // (same source -> same canonical URL, so this only corrects).
+        data: {
+          lastSeenAt: now,
+          isActive: true,
+          pipelineVersion: PIPELINE_VERSION,
+          url: candidate.url,
+        },
       });
       return { jobId: winnerId, outcome: 'UPDATED', promoted: false };
     }
@@ -258,6 +265,7 @@ async function createJob(
 
 type ExistingJob = {
   id: string;
+  url: string | null;
   canonicalTier: string | null;
   description: string | null;
   sources: { sourceKey: string; externalId: string }[];
@@ -297,6 +305,14 @@ async function attachToExisting(
   // always be sent to the employer when the employer is publishing the role.
   const promoted = tierRank(candidate.sourceTier) < tierRank(existing.canonicalTier ?? '');
 
+  // The canonical URL follows the highest-ranked source (promotion). But even
+  // WITHOUT promotion, refresh it from the current candidate when it actually
+  // changed: an adapter fix (a corrected URL format) must reach the rows already
+  // in the base, not only newly-created ones — otherwise a 404 link lives
+  // forever. Same source re-reporting the same offer yields the same canonical
+  // URL, so this only ever corrects, never churns.
+  const urlChanged = candidate.url && candidate.url !== existing.url;
+
   await prisma.job.update({
     where: { id: existing.id },
     data: {
@@ -315,7 +331,9 @@ async function attachToExisting(
               ? { description: candidate.description }
               : {}),
           }
-        : {}),
+        : urlChanged
+          ? { url: candidate.url }
+          : {}),
     },
   });
 
