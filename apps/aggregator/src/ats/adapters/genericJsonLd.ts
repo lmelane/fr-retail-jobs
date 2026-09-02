@@ -3,7 +3,7 @@ import pLimit from 'p-limit';
 import { createHash } from 'node:crypto';
 import { fetchText } from '../../lib/http.js';
 import { fetchSitemapUrls, extractJobPostings, normalizeJobPosting } from '../../connectors/generic/jsonLdSitemap.js';
-import { collapseWhitespace } from '../../lib/normalize.js';
+import { collapseWhitespace, briefError } from '../../lib/normalize.js';
 import type { NormalizedJob } from '../../types.js';
 
 function flattenJsonLd(value: unknown): any[] {
@@ -65,12 +65,28 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
 
     for (let page = 0; page < Number(config.maxPages ?? 400); page++) {
       const sep = listingPagedUrl.includes('?') ? '&' : '?';
-      const html = await fetchText(`${listingPagedUrl}${sep}${pageParam}=${page}`, {
-        headers: {
-          'user-agent':
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-        },
-      });
+      // The end of a paginated listing is signalled one of two ways, and both
+      // mean "stop here with what we have", not "fail the source": Michael Page
+      // 404s the page after the last (…/jobs?page=191), others just return a page
+      // with no offer links. A 404 thrown here used to propagate and discard
+      // every offer already collected — the live "michael-page-france failed".
+      // A non-404 error (an exhausted-retry blip) also stops the sweep rather
+      // than losing the whole source; the pages already collected still ingest.
+      let html: string;
+      try {
+        html = await fetchText(`${listingPagedUrl}${sep}${pageParam}=${page}`, {
+          headers: {
+            'user-agent':
+              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+          },
+        });
+      } catch (error) {
+        const is404 = error instanceof Error && / 404 /.test(` ${error.message} `);
+        if (!is404) {
+          console.error(`[generic-listing] ${listingPagedUrl} stopped at page ${page}: ${briefError(error)}`);
+        }
+        break;
+      }
       const links = [...html.matchAll(linkRe)]
         .map((m) => new URL(m[1], origin).toString().split('#')[0])
         .filter((u) => !seen.has(u));
