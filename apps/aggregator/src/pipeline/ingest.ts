@@ -253,6 +253,7 @@ const KIND_TO_ATS: Record<string, string> = {
   personio: 'PERSONIO',
   eightfold_kering: 'EIGHTFOLD',
   wordpress: 'WORDPRESS',
+  fashionjobs: 'FASHIONJOBS',
   'generic-listing': 'GENERIC_JSONLD',
 };
 

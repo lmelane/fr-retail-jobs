@@ -21,6 +21,7 @@ import { fetchMagnetJobs } from './adapters/magnet.js';
 import { fetchPinpointJobs } from './adapters/pinpoint.js';
 import { fetchLvmhJobs } from './adapters/lvmhAlgolia.js';
 import { fetchWordpressJobs } from './adapters/wordpress.js';
+import { fetchFashionjobsJobs } from './adapters/fashionjobs.js';
 
 export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown>): Promise<NormalizedJob[]> {
   switch (type) {
@@ -44,6 +45,7 @@ export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown
     case 'PINPOINT': return fetchPinpointJobs(config);
     case 'LVMH_ALGOLIA': return fetchLvmhJobs(config);
     case 'WORDPRESS': return fetchWordpressJobs(config);
+    case 'FASHIONJOBS': return fetchFashionjobsJobs(config);
     case 'GENERIC_JSONLD': return fetchGenericJsonLdJobs(config);
     default: throw new Error(`Unsupported ATS type: ${type}`);
   }
