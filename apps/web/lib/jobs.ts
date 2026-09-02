@@ -199,7 +199,9 @@ export function whereClause(filters: JobFilters) {
     // Pays filter narrows it. France uses the reliable isFrance flag; other
     // countries match the raw `country` spellings that map to their code.
     ...countryCondition(filters.country),
-    ...(filters.city ? { city: filters.city } : {}),
+    // Case-insensitive: the facet value is canonical ("Paris") but the column
+    // holds mixed spellings ("PARIS", "Paris"), so an exact match dropped half.
+    ...(filters.city ? { city: { equals: filters.city, mode: 'insensitive' as const } } : {}),
     ...(filters.contract ? { contract: filters.contract } : {}),
     ...(Object.keys(company).length ? { company } : {}),
     ...(filters.source ? { sources: { some: { sourceKey: filters.source, isActive: true } } } : {}),
@@ -231,6 +233,20 @@ export function whereClause(filters: JobFilters) {
 
 type WhereClause = ReturnType<typeof whereClause>;
 
+/**
+ * A city name canonicalized for display and matching: trimmed, and Title Cased
+ * so "PARIS", "paris" and "Paris" collapse to one "Paris". The raw column still
+ * holds the source spelling (some are ALL CAPS, some not); grouping on the raw
+ * value split one city into several facet rows and a filter click missed half
+ * the offers. This merges them.
+ */
+export function canonicalCity(raw: string): string {
+  return raw
+    .trim()
+    .toLocaleLowerCase('fr-FR')
+    .replace(/(^|[\s'’-])([a-zà-ÿ])/g, (_, sep, ch) => sep + ch.toLocaleUpperCase('fr-FR'));
+}
+
 /** One grouped count per facet, over every row the filters match. */
 async function countFacets(where: WhereClause): Promise<JobsResult['facets']> {
   const asFacets = (rows: { _count: number }[], key: string) =>
@@ -241,6 +257,20 @@ async function countFacets(where: WhereClause): Promise<JobsResult['facets']> {
       }))
       .filter((facet) => facet.value !== '')
       .sort((a, b) => b.count - a.count);
+
+  /** Merge raw city rows case-insensitively into one canonical entry each. */
+  const cityFacets = (rows: { city: string | null; _count: number }[]) => {
+    const merged = new Map<string, number>();
+    for (const row of rows) {
+      if (!row.city) continue;
+      const key = canonicalCity(row.city);
+      if (!key) continue;
+      merged.set(key, (merged.get(key) ?? 0) + row._count);
+    }
+    return [...merged.entries()]
+      .map(([value, count]) => ({ value, count }))
+      .sort((a, b) => b.count - a.count);
+  };
 
   const [contracts, cities, sectors, sources, rawCountries, franceCount] = await Promise.all([
     prisma.job.groupBy({ by: ['contract'], where, _count: true }),
@@ -303,7 +333,7 @@ async function countFacets(where: WhereClause): Promise<JobsResult['facets']> {
   return {
     sectors: fromMap(sectorCounts),
     contracts: asFacets(contracts, 'contract'),
-    cities: asFacets(cities, 'city'),
+    cities: cityFacets(cities),
     groups: fromMap(groupCounts),
     maisons: fromMap(maisonCounts),
     sources: asFacets(sources as { _count: number }[], 'sourceKey'),

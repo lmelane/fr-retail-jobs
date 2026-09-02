@@ -61,6 +61,17 @@ Le site n'est plus limité à la France par défaut : il affiche **toutes** les 
 ### D9 — Logos d'entreprises via DuckDuckGo, fallback initiale
 Page Entreprises **et cartes d'offres** : logo via `https://icons.duckduckgo.com/ip3/{domaine}.ico` (gratuit, sans clé, respectueux de la vie privée). Clearbit, initialement retenu, est **mort** (racheté par HubSpot, endpoint fermé, HTTP 000) — remplacé par DuckDuckGo qui répond 200. Le domaine est deviné depuis le nom de la maison. Fallback **pastille avec initiale** si pas de domaine (`onError`). Le logo ne casse jamais l'affichage. (Décidé 2026-09-02, révisé.)
 
+### D17 — L'UI est la DA Catwalks (noir/blanc, 400 UPPERCASE, pills), pas l'habillage Indeed
+Lu à la source (skill DA Catwalks : `catwalks-backend/docs/dev-skill/references/design-tokens.md` + `components.md`). Le clone Indeed reste le modèle de **STRUCTURE/UX** (funnel, scroll page, master-detail, infinite scroll) — mais l'**HABILLAGE visuel** est la DA Catwalks, radicalement différente de ce qui a été fait (Indeed : magenta, bold, ombres, radius 12px, transition 0.2s). Règles Catwalks, non négociables :
+- **Couleurs : NOIR / BLANC / GRIS uniquement — AUCUNE couleur d'accent.** Le magenta (#C622AB) mis partout est **retiré**. `--color-black #000`, `--color-white #FFF`, `--color-grey-400 #767676` (texte secondaire), `--color-bg #FAFAFA`, `--color-listing-bg #F8F8F8`, `--color-border #E1E1E1`.
+- **Typo : TOUJOURS weight 400.** *« c'est la règle fondamentale »*. Le bold (700) est réservé EXCLUSIVEMENT au logo brand. Les **titres de poste sont en MAJUSCULES** (`text-transform: uppercase`), 32px sur la fiche, weight 400, letter-spacing 0.4px. Le nom de maison : 12px uppercase #767676 letter-spacing 1px. Overlines/eyebrows : 11px uppercase #767676.
+- **Cartes** : radius 16px, **aucune ombre au repos**, ombre au hover seulement (`0 8px 30px rgba(0,0,0,.08)`). Hero card 32px.
+- **Boutons/search/inputs** : `border-radius: 100vmax` (pill), pas 12px.
+- **Transitions** : uniquement **0.3s** et 0.6s, easing `cubic-bezier(0.39,0.575,0.565,1)` (ease-lv). Pas de 0.2s (invention Indeed).
+- Font `catwalks_font`, letter-spacing 0.4px, header 70px, container 1280px.
+
+La font de marque était déjà mise (D16) ; D17 aligne **couleurs, graisses, casse, radii, ombres, transitions** sur la même DA. *Fashion Atlas porte la DA Catwalks.* (Décidé par Loïc, 2026-09-02, après lecture du skill DA à la source.)
+
 ### D16 — Typo = la font de marque Catwalks (`catwalks_font`)
 Vu D14 (Fashion Atlas est une marque Catwalks, pas un clone Indeed pixel-perfect), la typo passe de Noto Sans à **`catwalks_font`** — la police propriétaire déjà utilisée par la plateforme Catwalks (`catwalks-website`), self-hébergée via `@font-face` (5 graisses : light/regular/medium/bold/oblique, woff2 dans `/public/fonts`). Le clone Indeed reste le modèle de **structure/UX** (scroll, master-detail, funnel, radii), l'**identité visuelle** est Catwalks. Noto Sans + next/font retirés. (Décidé par Loïc, 2026-09-02.)
 
