@@ -548,7 +548,12 @@ function FilterMenu({
   );
 }
 
-function JobCard({
+/**
+ * Exported so the company profile page (/entreprise/[slug]) can reuse the
+ * exact same card rather than duplicating its markup — one visual language
+ * for an offer, everywhere it is listed.
+ */
+export function JobCard({
   job,
   onSelect,
   isSelected,

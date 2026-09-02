@@ -2,6 +2,9 @@ import { prisma } from '@catwalks/db';
 import { DatabaseUnavailableError, validSector } from './jobs';
 import { expandCompanyTerm } from './groups';
 import { countryCode, rawValuesForCode } from './countries';
+import { companySlug } from './company-slug';
+
+export { companySlug } from './company-slug';
 
 /**
  * Employers, ranked by how many live offers they hold.
@@ -245,4 +248,66 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
       .sort((a, b) => b.count - a.count),
     countries,
   };
+}
+
+export type CompanyProfile = {
+  name: string;
+  sector: string | null;
+  parentGroup: string | null;
+  careersUrl: string | null;
+  jobCount: number;
+  cities: { city: string; count: number }[];
+  contracts: { value: string; count: number }[];
+};
+
+/**
+ * One Maison's profile for its dedicated page (decision D15) — what we actually
+ * hold: sector, parent group, live-offer count, the cities and contract types
+ * it hires in. No reviews/salaries/executives (Indeed's proprietary data we do
+ * not have). The offer list itself is fetched separately by the page.
+ */
+export async function getCompanyBySlug(slug: string): Promise<CompanyProfile | null> {
+  if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
+  try {
+    // Match by slug over the display name — several rows can share a name only
+    // after a bad ingest, so take the one with the most live offers.
+    const candidates = await prisma.company.findMany({
+      select: { id: true, name: true, sector: true, parentGroup: true, careersUrl: true },
+    });
+    const match = candidates
+      .filter((c) => companySlug(c.name) === slug)
+      .sort((a, b) => a.name.localeCompare(b.name))[0];
+    if (!match) return null;
+
+    const where = { companyId: match.id, isActive: true, isFrance: true } as const;
+    const [jobCount, cityGroups, contractGroups] = await Promise.all([
+      prisma.job.count({ where }),
+      prisma.job.groupBy({
+        by: ['city'],
+        where: { ...where, city: { not: null } },
+        _count: true,
+        orderBy: { _count: { city: 'desc' } },
+        take: 12,
+      }),
+      prisma.job.groupBy({
+        by: ['contract'],
+        where: { ...where, contract: { not: null } },
+        _count: true,
+        orderBy: { _count: { contract: 'desc' } },
+      }),
+    ]);
+
+    return {
+      name: match.name,
+      sector: match.sector,
+      parentGroup: match.parentGroup,
+      careersUrl: match.careersUrl,
+      jobCount,
+      cities: cityGroups.map((g) => ({ city: g.city as string, count: g._count })),
+      contracts: contractGroups.map((g) => ({ value: g.contract as string, count: g._count })),
+    };
+  } catch (error) {
+    if (error instanceof DatabaseUnavailableError) throw error;
+    throw new DatabaseUnavailableError(error);
+  }
 }

@@ -9,6 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { CompanyLogo } from '@/components/company-logo';
 import { AutocompleteField } from '@/components/search-pill';
 import { cn } from '@/lib/utils';
+import { companySlug } from '@/lib/company-slug';
 import type { CompaniesResult, CompanyFilters, CompanyRow } from '@/lib/companies';
 
 /**
@@ -247,7 +248,7 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
 function CompanyCard({ company }: { company: CompanyRow }) {
   return (
     <Link
-      href={`/?maison=${encodeURIComponent(company.name)}`}
+      href={`/entreprise/${companySlug(company.name)}`}
       className="border-border hover:border-foreground/30 hover:bg-surface block h-full rounded-xl border bg-white px-4 py-3 transition-colors"
     >
       <div className="flex items-start gap-3">
