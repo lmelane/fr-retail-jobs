@@ -14,3 +14,29 @@ export function relativeDate(date: Date | string | null): string {
   if (days > -31) return RELATIVE.format(days, 'day');
   return RELATIVE.format(Math.round(days / 30), 'month');
 }
+
+/**
+ * French display labels for the normalized vocabularies.
+ *
+ * The normalizers answer "UNKNOWN" when a source states nothing — that is a
+ * non-answer, not a value, and it reached the screen as a literal chip reading
+ * "UNKNOWN" on every offer whose source omits the field. contractLabel returns
+ * null for it so callers render nothing instead.
+ */
+const CONTRACT_LABELS: Record<string, string> = {
+  CDI: 'CDI',
+  CDD: 'CDD',
+  STAGE: 'Stage',
+  ALTERNANCE: 'Alternance',
+  VIE: 'V.I.E',
+  INTERIM: 'Intérim',
+  FREELANCE: 'Freelance',
+  GRADUATE: 'Graduate program',
+  TEMPS_PLEIN: 'Temps plein',
+  TEMPS_PARTIEL: 'Temps partiel',
+};
+
+export function contractLabel(value: string | null | undefined): string | null {
+  if (!value || value === 'UNKNOWN') return null;
+  return CONTRACT_LABELS[value] ?? value;
+}

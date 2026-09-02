@@ -11,7 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { JobDetail } from '@/components/job-detail';
-import { relativeDate } from '@/lib/format';
+import { contractLabel, relativeDate } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import type { JobFilters, JobRow, JobsResult } from '@/lib/jobs';
 
@@ -464,7 +464,7 @@ function JobCard({
             {job.city}
           </span>
         )}
-        {job.contract && <span>{job.contract}</span>}
+        {contractLabel(job.contract) && <span>{contractLabel(job.contract)}</span>}
         {job.postedAt && <span>{relativeDate(job.postedAt)}</span>}
         {job.sourceCount > 1 && (
           <span className="flex items-center gap-1">

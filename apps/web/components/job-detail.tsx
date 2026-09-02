@@ -5,7 +5,7 @@ import { Building2, Clock, ExternalLink, Layers, MapPin, Briefcase } from 'lucid
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { relativeDate } from '@/lib/format';
+import { contractLabel, relativeDate } from '@/lib/format';
 import type { JobRow } from '@/lib/jobs';
 
 /**
@@ -61,7 +61,8 @@ function JobFacts({ job }: { job: JobRow }) {
   const salary = salaryLabel(job);
 
   if (salary) facts.push(['Salaire', salary]);
-  if (job.workingTime) facts.push(['Temps de travail', job.workingTime]);
+  const workingTime = contractLabel(job.workingTime);
+  if (workingTime) facts.push(['Temps de travail', workingTime]);
   if (job.remote) facts.push(['Télétravail', job.remote]);
   if (job.experienceYears !== null)
     facts.push(['Expérience', `${job.experienceYears} an${job.experienceYears > 1 ? 's' : ''}`]);
@@ -83,6 +84,22 @@ function JobFacts({ job }: { job: JobRow }) {
       ))}
     </dl>
   );
+}
+
+/**
+ * Display-side cleanup for descriptions already stored by earlier ingests:
+ * literal numeric entities (&#xa0;) and bullet runs crammed onto one line.
+ * New ingests store clean text; this keeps the rows written before that fix
+ * readable until the next generation replaces them.
+ */
+function readableDescription(text: string): string {
+  return text
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+•\s*/g, '\n• ')
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim();
 }
 
 export function JobDetail({ job }: { job: JobRow }) {
@@ -112,10 +129,10 @@ export function JobDetail({ job }: { job: JobRow }) {
               {job.city}
             </span>
           )}
-          {job.contract && (
+          {contractLabel(job.contract) && (
             <span className="bg-surface inline-flex items-center gap-1 rounded-full px-3 py-1.5">
               <Briefcase className="size-3.5" />
-              {job.contract}
+              {contractLabel(job.contract)}
             </span>
           )}
           {job.postedAt && (
@@ -165,8 +182,8 @@ export function JobDetail({ job }: { job: JobRow }) {
           {job.description ? (
             // Descriptions arrive as plain text with the source's own line breaks;
             // whitespace-pre-line keeps them without trusting third-party HTML.
-            <p className="text-[15px] leading-6 tracking-[0.25px] whitespace-pre-line">
-              {job.description}
+            <p className="max-w-[70ch] text-[15px] leading-7 tracking-[0.25px] whitespace-pre-line">
+              {readableDescription(job.description)}
             </p>
           ) : (
             <p className="text-muted-foreground text-sm tracking-[0.25px]">

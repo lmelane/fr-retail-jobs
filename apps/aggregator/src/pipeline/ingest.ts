@@ -60,10 +60,27 @@ function toCandidate(
   // printing the source's raw English next to French contract labels.
   const misfiled = isWorkingTimeValue(job.contract);
 
+  /**
+   * The contract, from wherever the posting states it.
+   *
+   * Sources often leave the field empty while the title says "CDI 18H -
+   * Vendeur" or the text opens with "CDI à pourvoir". Falling back to title
+   * then description recovers most of them; the description is capped because
+   * a long posting can name other contract types in passing ("après un stage
+   * réussi…"), and the opening lines are where the real one is announced.
+   */
+  let contract = misfiled ? 'UNKNOWN' : normalizeContract(job.contract);
+  if (contract === 'UNKNOWN') contract = normalizeContract(job.title);
+  if (contract === 'UNKNOWN') contract = normalizeContract(job.description?.slice(0, 400));
+
+  const workingTime = normalizeWorkingTime(misfiled ? job.contract : job.workingTime);
+
   return {
     ...job,
-    contract: misfiled ? 'UNKNOWN' : normalizeContract(job.contract),
-    workingTime: normalizeWorkingTime(misfiled ? job.contract : job.workingTime),
+    // "UNKNOWN" is the normalizer's non-answer, not a value — stored as such
+    // it is truthy, and the UI printed "Contrat : UNKNOWN" on every offer.
+    contract: contract === 'UNKNOWN' ? undefined : contract,
+    workingTime: workingTime === 'UNKNOWN' ? undefined : workingTime,
     company: companyName,
     companyId: resolveCompany(companyName).companyId,
     sourceKey: source.key,

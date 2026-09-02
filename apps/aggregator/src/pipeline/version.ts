@@ -17,5 +17,8 @@
  *      default false, which an isFrance:true front end renders as an empty
  *      board), and nothing is discarded at ingest any more: France and sector
  *      are stored, filtering happens on the web.
+ *   3  2026-09-02 — descriptions decode numeric entities and keep bullet/line
+ *      structure; contract falls back to title/description; the UNKNOWN
+ *      non-answer is stored as null instead of a truthy string the UI printed.
  */
-export const PIPELINE_VERSION = 2;
+export const PIPELINE_VERSION = 3;

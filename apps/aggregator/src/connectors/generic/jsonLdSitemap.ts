@@ -113,14 +113,34 @@ export function extractJobPostings(html: string): JsonLdNode[] {
   return found;
 }
 
+/**
+ * HTML to readable plain text.
+ *
+ * Two lessons are baked in. Numeric entities must be decoded — Courir's
+ * postings are full of `&#xa0;`, which the old named-entities-only pass left
+ * as literal text on every offer page. And structure must survive: collapsing
+ * ALL whitespace turned a posting with bullet lists into one wall of text, so
+ * list items and paragraph breaks become line breaks instead.
+ */
 function stripHtml(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined;
   const text = value
+    .replace(/<li[^>]*>/gi, '\n• ')
+    .replace(/<\/(p|div|li|ul|ol|h[1-6])>/gi, '\n')
+    .replace(/<br\s*\/?>/gi, '\n')
     .replace(/<[^>]*>/g, ' ')
+    // Numeric entities, hex and decimal, before the named ones.
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
-    .replace(/&(?:lt|gt|quot|#39);/g, ' ')
-    .replace(/\s+/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&(?:quot|#39|rsquo|lsquo);/g, "'")
+    // Inline bullets from sources that never used <li>: give each its line.
+    .replace(/\s+•\s*/g, '\n• ')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
     .trim();
   return text || undefined;
 }
