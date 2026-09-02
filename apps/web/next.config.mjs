@@ -17,9 +17,17 @@
  *    per-request nonce (via middleware, dropping 'unsafe-inline' on scripts) is
  *    a follow-up.
  */
+// Next's dev server (HMR) evaluates strings as JavaScript, which a strict CSP
+// blocks — breaking Tabs and other client interactivity in `next dev`. Allow
+// 'unsafe-eval' in development ONLY; production keeps it out.
+const scriptSrc =
+  process.env.NODE_ENV === 'development'
+    ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+    : "script-src 'self' 'unsafe-inline'";
+
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  scriptSrc,
   "style-src 'self' 'unsafe-inline'",
   // Map tiles (OSM — both the bare host and any subdomain form), company
   // favicons (DuckDuckGo), and data/blob for inline assets.

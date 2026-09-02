@@ -1,6 +1,7 @@
 import { prisma } from '@catwalks/db';
 import { DatabaseUnavailableError, validSector } from './jobs';
 import { expandCompanyTerm } from './groups';
+import { countryCode } from './countries';
 
 /**
  * Employers, ranked by how many live offers they hold.
@@ -26,6 +27,8 @@ export type CompaniesResult = {
   page: number;
   pageCount: number;
   sectors: { value: string; count: number }[];
+  /** Offers per country code (FR, US, IT…), for the world map. */
+  countries: { code: string; count: number }[];
 };
 
 export const COMPANY_PAGE_SIZE = 40;
@@ -148,6 +151,26 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
     sectorCounts.set(sector, (sectorCounts.get(sector) ?? 0) + row._count);
   }
 
+  // Offers per country, WORLD-WIDE (not France-only), for the world map. France
+  // is counted on its reliable flag; other countries fold their raw spellings
+  // into one code.
+  const [rawCountries, franceJobs] = await Promise.all([
+    prisma.job.groupBy({ by: ['country'], where: { isActive: true }, _count: true }),
+    prisma.job.count({ where: { isActive: true, isFrance: true } }),
+  ]);
+  const countryCounts = new Map<string, number>();
+  for (const row of rawCountries) {
+    const code = countryCode(row.country);
+    if (!code || code === 'FR') continue;
+    countryCounts.set(code, (countryCounts.get(code) ?? 0) + row._count);
+  }
+  const countries = [
+    ...(franceJobs > 0 ? [{ code: 'FR', count: franceJobs }] : []),
+    ...[...countryCounts.entries()]
+      .map(([code, count]) => ({ code, count }))
+      .sort((a, b) => b.count - a.count),
+  ];
+
   return {
     companies: rows,
     total: grouped.length,
@@ -156,5 +179,6 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
     sectors: [...sectorCounts.entries()]
       .map(([value, count]) => ({ value, count }))
       .sort((a, b) => b.count - a.count),
+    countries,
   };
 }

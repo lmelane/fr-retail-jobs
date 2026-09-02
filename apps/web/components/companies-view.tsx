@@ -28,6 +28,11 @@ const JobMap = dynamic(() => import('@/components/job-map'), {
   loading: () => <Skeleton className="h-full w-full rounded-[28px]" />,
 });
 
+const WorldMap = dynamic(() => import('@/components/world-map'), {
+  ssr: false,
+  loading: () => <Skeleton className="h-full w-full rounded-[28px]" />,
+});
+
 const SECTOR_LABELS: Record<string, string> = {
   FASHION: 'Mode',
   LUXURY: 'Luxe',
@@ -173,7 +178,10 @@ export function CompaniesView({ data }: { data: CompaniesResult }) {
               Liste
             </TabsTrigger>
             <TabsTrigger value="map" className="rounded-full px-4 text-sm">
-              Carte
+              Carte France
+            </TabsTrigger>
+            <TabsTrigger value="world" className="rounded-full px-4 text-sm">
+              Monde
             </TabsTrigger>
           </TabsList>
 
@@ -268,6 +276,12 @@ export function CompaniesView({ data }: { data: CompaniesResult }) {
             {/* One point per company-city pair, so a Maison present in twelve
                 towns reads as twelve markers rather than one. */}
             <JobMap jobs={toMapPoints(data.companies)} />
+          </TabsContent>
+
+          <TabsContent value="world" className="min-h-0 flex-1">
+            {/* Employer footprint across the world: one bubble per country,
+                sized by how many offers sit there. */}
+            <WorldMap countries={data.countries} />
           </TabsContent>
         </Tabs>
       </div>
