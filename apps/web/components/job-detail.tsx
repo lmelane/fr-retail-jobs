@@ -94,11 +94,8 @@ function JobFactsSection({
     facts.push(['Publiée le', new Date(job.postedAt).toLocaleDateString('fr-FR')]);
   if (job.validThrough)
     facts.push(['Candidature avant le', new Date(job.validThrough).toLocaleDateString('fr-FR')]);
-  if (job.sources.length > 0)
-    facts.push([
-      job.sources.length > 1 ? 'Sources' : 'Source',
-      job.sources.map((source) => SOURCE_LABELS[source] ?? source).join(' · '),
-    ]);
+  // No "Source" fact: which ATS/board a posting came from is internal plumbing,
+  // not for the candidate's eyes.
 
   if (facts.length === 0) return null;
 
@@ -178,17 +175,6 @@ export function JobDetail({ job }: { job: JobRow }) {
           </Button>
         </div>
 
-        {/* The differentiator, stated plainly: several sources agree on this one
-            opening, and the link goes to the employer rather than a reposting. */}
-        {job.sourceCount > 1 && (
-          <p className="text-grey-400 mt-3 flex items-center gap-1.5 text-xs tracking-[0.4px]">
-            <Layers className="size-3.5 shrink-0" />
-            Vue sur {job.sourceCount} sources
-            <span className="opacity-70">
-              ({job.sources.map((source) => SOURCE_LABELS[source] ?? source).join(' · ')})
-            </span>
-          </p>
-        )}
       </div>
 
       <Separator className="bg-border" />

@@ -5,6 +5,8 @@ import { createPortal } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
+  Briefcase,
+  Building2,
   Check,
   ChevronDown,
   Layers,
@@ -236,47 +238,37 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
           from visually running through it. */}
       <header ref={headerRef} className="border-border/70 sticky top-0 z-40 border-b bg-white">
 
-        {/* Wraps to two rows below lg (logo/nav, then the full-width search
-            pill) rather than forcing everything onto one row and pushing the
-            pill off-screen — Indeed itself stacks the same way, §6. */}
+        {/* Three-zone top bar: the CATWALKS wordmark at the left, the
+            Offres/Entreprises nav centered, actions at the right. Below lg it
+            wraps and the full-width search pill drops to its own row. */}
         <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
-          <nav className="flex shrink-0 items-center gap-5">
+          <Link href="/" className="shrink-0" aria-label="Fashion Atlas — accueil">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/fashion-atlas-logo.svg" alt="Fashion Atlas" className="h-[22px] w-auto" />
+          </Link>
+
+          <nav className="order-3 flex w-full items-center justify-center gap-8 lg:order-none lg:w-auto lg:flex-1">
             <Link
               href="/emplois"
               aria-current="page"
-              className="text-foreground border-foreground -mb-[13px] border-b-2 pb-3 text-[15px] font-normal tracking-[0.4px]"
+              className="text-foreground border-foreground -mb-[13px] flex items-center gap-2 border-b-2 pb-3 text-[15px] font-normal tracking-[0.4px]"
             >
+              <Briefcase className="size-[18px]" aria-hidden />
               Offres
             </Link>
             <Link
               href="/entreprises"
-              className="text-foreground/60 hover:text-foreground pb-3 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
+              className="text-foreground/60 hover:text-foreground flex items-center gap-2 pb-3 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
             >
+              <Building2 className="size-[18px]" aria-hidden />
               Entreprises
             </Link>
           </nav>
 
-          <div className="text-muted-foreground order-2 ml-auto flex shrink-0 items-center gap-3 text-xs font-normal tracking-[0.4px] tabular-nums lg:order-3">
-            <span aria-live="polite">
-              {pending ? 'Recherche…' : `${data.total.toLocaleString('fr-FR')} offres`}
-            </span>
-            {activeCount > 0 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => startTransition(() => router.push('/emplois', { scroll: false }))}
-                className="hover:bg-surface h-8 rounded-full px-3 text-xs font-normal"
-              >
-                <X className="size-4" />
-                Effacer
-              </Button>
-            )}
-          </div>
-
-          {/* The pill: Poste | Lieu | Rechercher, Indeed §3.2 proportions,
-              with live autocomplete on both fields — shared with the landing
-              page's own pill so the two never diverge (see SearchPill). */}
-          <div className="order-3 w-full lg:order-2">
+          {/* The pill: Poste | Lieu | Rechercher, with live autocomplete on both
+              fields — shared with the landing page's own pill so the two never
+              diverge (see SearchPill). */}
+          <div className="order-4 w-full lg:order-none">
             <SearchPill
               query={draft}
               onQueryChange={setDraft}
@@ -333,13 +325,9 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
             options={data.facets.groups}
             onSelect={(value) => toggle('groupe', value)}
           />
-          <FilterMenu
-            label="Source"
-            active={params.get('source')}
-            options={data.facets.sources}
-            labels={SOURCE_LABELS}
-            onSelect={(value) => toggle('source', value)}
-          />
+          {/* No "Source" filter in the front: our aggregation sources are
+              internal plumbing (which ATS a posting came from), not something a
+              candidate should see or filter on. */}
         </div>
       </header>
 
@@ -353,6 +341,29 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
           below lg) swaps it back. */}
       <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-4 p-4 lg:grid-cols-[minmax(0,470px)_minmax(0,1fr)] lg:items-start">
         <div className={cn(selected ? 'hidden lg:block' : 'block')}>
+          {/* List head, Indeed-style: a left-aligned context line above the
+              list — "Emplois <query> · N offres" — with the reset here rather
+              than floating orphaned at the top-right of the page. */}
+          {jobs.length > 0 && (
+            <div className="mb-3 flex items-baseline justify-between gap-3 px-1">
+              <p className="text-foreground text-[15px] font-normal tracking-[0.4px]">
+                {filters.q ? `Emplois ${filters.q}` : 'Toutes les offres'}
+                <span className="text-muted-foreground ml-2 text-[13px] tabular-nums" aria-live="polite">
+                  {pending ? 'Recherche…' : `· ${data.total.toLocaleString('fr-FR')} offres`}
+                </span>
+              </p>
+              {activeCount > 0 && (
+                <button
+                  type="button"
+                  onClick={() => startTransition(() => router.push('/emplois', { scroll: false }))}
+                  className="text-muted-foreground hover:text-foreground flex shrink-0 items-center gap-1 text-[13px] tracking-[0.4px] transition-colors duration-300 ease-catwalks"
+                >
+                  <X className="size-3.5" />
+                  Effacer
+                </button>
+              )}
+            </div>
+          )}
           {jobs.length === 0 ? (
             <EmptyState
               hasFilters={activeCount > 0}
@@ -614,7 +625,7 @@ export function JobCard({
       {(salary || contract || remote) && (
         <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
           {salary && <Attr>{salary}</Attr>}
-          {contract && <Attr tone={contract === 'CDI' ? 'success' : 'neutral'}>{contract}</Attr>}
+          {contract && <Attr>{contract}</Attr>}
           {remote && <Attr>{remote}</Attr>}
         </div>
       )}
@@ -635,16 +646,11 @@ export function JobCard({
 }
 
 /** A small attribute chip: 12px, weight 400, radius 8, tinted by tone. */
-function Attr({ children, tone = 'neutral' }: { children: React.ReactNode; tone?: 'neutral' | 'success' }) {
+function Attr({ children }: { children: React.ReactNode }) {
+  // One neutral chip, no colour: the Catwalks DA is black/white/grey, so a CDI
+  // no longer reads green — the accent colour was an Indeed carry-over.
   return (
-    <span
-      className={cn(
-        'rounded-lg px-2 py-1 text-[12px] font-normal tracking-[0.4px] leading-none',
-        tone === 'success'
-          ? 'bg-success-surface text-success'
-          : 'bg-surface-high text-foreground/75',
-      )}
-    >
+    <span className="bg-surface-high text-foreground/75 rounded-lg px-2 py-1 text-[11px] font-normal uppercase leading-none tracking-[0.5px]">
       {children}
     </span>
   );

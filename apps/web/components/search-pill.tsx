@@ -134,6 +134,7 @@ export function AutocompleteField({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(-1);
+  const [focused, setFocused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const requestId = useRef(0);
@@ -144,6 +145,10 @@ export function AutocompleteField({
   // request counter below additionally guards against an in-flight fetch
   // resolving out of order and overwriting a newer, still-typed query.
   useEffect(() => {
+    // Only fetch + open while the field is actually focused: without this, the
+    // pre-filled "France" default (or any programmatic value) tripped the
+    // dropdown open on page load, with no candidate interaction.
+    if (!focused) return;
     const q = value.trim();
     if (q.length < 2) {
       setSuggestions([]);
@@ -166,7 +171,7 @@ export function AutocompleteField({
         });
     }, 150);
     return () => clearTimeout(timer);
-  }, [value, type]);
+  }, [value, type, focused]);
 
   // Close on outside click.
   useEffect(() => {
@@ -211,7 +216,11 @@ export function AutocompleteField({
         ref={inputRef}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        onFocus={() => suggestions.length > 0 && setOpen(true)}
+        onFocus={() => {
+          setFocused(true);
+          if (suggestions.length > 0) setOpen(true);
+        }}
+        onBlur={() => setFocused(false)}
         onKeyDown={onKeyDown}
         placeholder={placeholder}
         aria-label={ariaLabel}

@@ -485,11 +485,35 @@ export async function suggestCities(query: string): Promise<string[]> {
   }
 }
 
+/**
+ * Reduces a raw offer title to a searchable role keyword. Raw titles carry the
+ * whole posting — "Conseiller de vente 35h - Paris - CDI H/F" — and clicking
+ * one dropped that entire string into the search box, so the next search matched
+ * almost nothing. This keeps the ROLE and drops the noise a candidate would
+ * never type: reference codes, the contract, hours, the city, the H/F marker.
+ */
+export function roleKeyword(title: string): string {
+  let role = title
+    // Cut everything after the first " - " / " – " / " | " / " / " separator:
+    // the role leads, the qualifiers (city, contract, hours) follow it.
+    .split(/\s[-–|/]\s/)[0]
+    // Drop a leading contract/reference prefix ("CDI - …", "2026-2825 - …").
+    .replace(/^(CDI|CDD|STAGE|ALTERNANCE|INTERIM|VIE|FREELANCE|\d[\d-]*)\s*[-–]\s*/i, '')
+    // Strip trailing H/F, F/H, (H/F), hours like "35h", and stray separators.
+    .replace(/\(?\b[hf](?:\s*\/\s*[hf])?\b\)?/gi, '')
+    .replace(/\b\d{2,}\s*h\b/gi, '')
+    .replace(/[\s,–-]+$/g, '')
+    .trim();
+  return role;
+}
+
 export async function suggestTitles(query: string): Promise<string[]> {
   if (!process.env.DATABASE_URL) return [];
   const q = query.trim();
   if (q.length < 2) return [];
   try {
+    // Pull more raw titles than we need, reduce each to its role keyword, then
+    // dedupe — several postings collapse to the same clean role.
     const rows = await prisma.job.groupBy({
       by: ['title'],
       where: {
@@ -499,9 +523,22 @@ export async function suggestTitles(query: string): Promise<string[]> {
       },
       _count: { _all: true },
       orderBy: { _count: { title: 'desc' } },
-      take: SUGGEST_LIMIT,
+      take: 40,
     });
-    return rows.map((r) => r.title).filter((t): t is string => Boolean(t));
+    const seen = new Set<string>();
+    const roles: string[] = [];
+    for (const row of rows) {
+      if (!row.title) continue;
+      const role = roleKeyword(row.title);
+      const key = role.toLowerCase();
+      // Keep only roles that still contain what the candidate typed, so a title
+      // matched on a trailing city does not surface an unrelated-looking role.
+      if (role.length < 2 || seen.has(key) || !key.includes(q.toLowerCase())) continue;
+      seen.add(key);
+      roles.push(role);
+      if (roles.length >= SUGGEST_LIMIT) break;
+    }
+    return roles;
   } catch {
     return [];
   }
