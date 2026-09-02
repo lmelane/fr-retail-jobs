@@ -1,4 +1,5 @@
 import { fetchJson } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -53,17 +54,6 @@ type FeedItem = {
 
 type Feed = { items?: FeedItem[]; next_url?: string };
 
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&(?:lt|gt|quot|#39);/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text || undefined;
-}
 
 function toNormalized(item: FeedItem): NormalizedJob | null {
   const posting = item._jobposting;
@@ -90,7 +80,7 @@ function toNormalized(item: FeedItem): NormalizedJob | null {
     salaryCurrency: posting?.baseSalary?.currency,
     salaryPeriod: posting?.baseSalary?.value?.unitText,
     // The feed carries the whole posting; content_html is the same text.
-    description: stripHtml(posting?.description ?? item.content_html),
+    description: htmlToPlainText(posting?.description ?? item.content_html),
     url: item.url ?? '',
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
     raw: item,

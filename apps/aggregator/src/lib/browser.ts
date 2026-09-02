@@ -1,4 +1,5 @@
 import type { Browser } from 'playwright';
+import { assertPublicUrl, isPublicHttpUrl } from './ssrf.js';
 
 /**
  * FashionJobs sits behind Cloudflare: plain `fetch` gets HTTP 403 on every path,
@@ -44,6 +45,11 @@ export async function closeBrowser(): Promise<void> {
  * surfaces as a hard failure instead of being parsed as an empty directory.
  */
 export async function fetchRenderedHtml(url: string): Promise<string> {
+  // Same SSRF guard as the plain-HTTP path: the browser must not be pointed at
+  // an internal target either. Chromium follows redirects itself, so we also
+  // check the URL it actually landed on after navigation.
+  assertPublicUrl(url);
+
   const browser = await getBrowser();
   const context = await browser.newContext({
     locale: 'fr-FR',
@@ -57,6 +63,12 @@ export async function fetchRenderedHtml(url: string): Promise<string> {
       waitUntil: 'domcontentloaded',
       timeout: navigationTimeoutMs,
     });
+
+    // A redirect chain may have landed on an internal host; refuse its content.
+    const finalUrl = response?.url() ?? page.url();
+    if (!isPublicHttpUrl(finalUrl)) {
+      throw new Error(`Refusing rendered content from non-public URL: ${finalUrl}`);
+    }
 
     const status = response?.status();
     if (status === undefined) throw new Error(`No response received for ${url}`);

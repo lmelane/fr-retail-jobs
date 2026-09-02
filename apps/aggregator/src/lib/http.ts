@@ -1,8 +1,43 @@
+import { assertPublicUrl, isPublicHttpUrl, BlockedUrlError } from './ssrf.js';
+
 const timeoutMs = Number(process.env.HTTP_TIMEOUT_MS ?? 20_000);
 const userAgent = process.env.USER_AGENT ?? 'CatwalksJobsBot/0.1';
 
+/** Redirect hops to follow before giving up — enough for http→https→www chains. */
+const MAX_REDIRECTS = 5;
+
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * One fetch that follows redirects MANUALLY, validating every hop against the
+ * SSRF guard. `redirect: 'follow'` would let a public URL redirect to an
+ * internal target (169.254.169.254, localhost) unchecked; validating each
+ * Location closes that.
+ */
+async function fetchFollowingSafely(
+  url: string,
+  init: RequestInit,
+  signal: AbortSignal,
+): Promise<Response> {
+  let current = url;
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+    assertPublicUrl(current);
+    const response = await fetch(current, { ...init, signal, redirect: 'manual' });
+
+    // 3xx with a Location -> validate and follow it ourselves.
+    if (response.status >= 300 && response.status < 400) {
+      const location = response.headers.get('location');
+      if (!location) return response;
+      const next = new URL(location, current).toString();
+      if (!isPublicHttpUrl(next)) throw new BlockedUrlError(next);
+      current = next;
+      continue;
+    }
+    return response;
+  }
+  throw new Error(`Too many redirects (>${MAX_REDIRECTS}) for ${url}`);
 }
 
 export async function fetchWithRetry(url: string, init: RequestInit = {}, attempts = 3): Promise<Response> {
@@ -11,16 +46,18 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
-      const response = await fetch(url, {
-        ...init,
-        signal: controller.signal,
-        redirect: 'follow',
-        headers: {
-          'user-agent': userAgent,
-          'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7',
-          ...(init.headers ?? {}),
+      const response = await fetchFollowingSafely(
+        url,
+        {
+          ...init,
+          headers: {
+            'user-agent': userAgent,
+            'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7',
+            ...(init.headers ?? {}),
+          },
         },
-      });
+        controller.signal,
+      );
       if (response.ok) return response;
       if (![429, 500, 502, 503, 504].includes(response.status)) {
         throw new Error(`HTTP ${response.status} for ${url}`);
@@ -43,6 +80,11 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         continue;
       }
     } catch (error) {
+      // A blocked URL will never become fetchable — do not waste retries on it.
+      if (error instanceof BlockedUrlError) {
+        clearTimeout(timer);
+        throw error;
+      }
       lastError = error;
     } finally {
       clearTimeout(timer);

@@ -1,5 +1,6 @@
 import { gunzipSync } from 'node:zlib';
 import { fetchText, fetchWithRetry } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -121,46 +122,6 @@ export function extractJobPostings(html: string): JsonLdNode[] {
   return found;
 }
 
-/**
- * HTML to readable plain text.
- *
- * Two lessons are baked in. Numeric entities must be decoded — Courir's
- * postings are full of `&#xa0;`, which the old named-entities-only pass left
- * as literal text on every offer page. And structure must survive: collapsing
- * ALL whitespace turned a posting with bullet lists into one wall of text, so
- * list items and paragraph breaks become line breaks instead.
- */
-function stripHtml(value: unknown): string | undefined {
-  if (typeof value !== 'string') return undefined;
-  const text = value
-    /**
-     * ENTITIES FIRST, TAGS SECOND — the order is the whole bug this fixes.
-     *
-     * Teamtailor ships its JSON-LD description HTML-ESCAPED: the string starts
-     * "&lt;p&gt;&lt;em&gt;…". Stripping tags before decoding finds no tags,
-     * and the decode that follows then RECREATES them — which is how every
-     * Galeries Lafayette offer reached the screen as literal markup, base64
-     * emoji images included. Decode first and the markup becomes real tags in
-     * time for the tag pass to remove them.
-     */
-    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
-    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&(?:quot|rsquo|lsquo)/g, "'")
-    .replace(/<li[^>]*>/gi, '\n• ')
-    .replace(/<\/(p|div|li|ul|ol|h[1-6])>/gi, '\n')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<[^>]*>/g, ' ')
-    // Inline bullets from sources that never used <li>: give each its line.
-    .replace(/\s+•\s*/g, '\n• ')
-    .replace(/[ \t]+/g, ' ')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-  return text || undefined;
-}
 
 function firstOf<T>(value: T | T[] | undefined): T | undefined {
   return Array.isArray(value) ? value[0] : value;
@@ -234,7 +195,7 @@ export function normalizeJobPosting(
     salaryMax: toAmount(band.maxValue),
     salaryCurrency: typeof salary.currency === 'string' && salary.currency ? salary.currency : undefined,
     salaryPeriod: typeof band.unitText === 'string' && band.unitText ? band.unitText : undefined,
-    description: stripHtml(node.description),
+    description: htmlToPlainText(node.description),
     // The employer's own page: the canonical apply URL under source priority.
     url: typeof node.url === 'string' ? node.url : pageUrl,
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
