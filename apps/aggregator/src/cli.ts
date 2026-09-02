@@ -24,7 +24,9 @@ const command = process.argv[2] ?? 'ingest';
 
 try {
   if (command === 'ingest') {
-    const stats = await runIngest(prisma);
+    // `ingest --source=<key>` runs one source as a short, independent job (D6).
+    const only = process.argv.find((arg) => arg.startsWith('--source='))?.slice('--source='.length);
+    const stats = await runIngest(prisma, only ? { only } : {});
     const geo = await runGeocode(prisma);
 
     /**
@@ -46,7 +48,19 @@ try {
       process.exitCode = 1;
     }
   } else if (command === 'refresh') {
-    console.log(JSON.stringify({ ok: true, command, ...(await runRefresh(prisma)) }, null, 2));
+    const refresh = await runRefresh(prisma);
+    // Report honestly: a refused mass-closure or a skipped broken source is an
+    // incident the scheduler must show, not a silent ok:true.
+    console.log(JSON.stringify({ ok: !refresh.refused, command, ...refresh }, null, 2));
+    if (refresh.refused) {
+      console.error('[refresh] mass-closure guard refused the run — a source is likely broken');
+      process.exitCode = 1;
+    }
+    if (refresh.skippedBrokenSources.length > 0) {
+      console.error(
+        `[refresh] left offers of broken sources open: ${refresh.skippedBrokenSources.join(', ')}`,
+      );
+    }
   } else if (command === 'reconcile') {
     console.log(JSON.stringify({ ok: true, command, ...(await runReconcile(prisma)) }, null, 2));
   } else if (command === 'geocode') {

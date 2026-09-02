@@ -19,6 +19,7 @@ import type { NormalizedJob } from '../types.js';
  * "Sales Advisor"), and only inside an already-identical company+city bucket.
  */
 
+import type { AtsType } from '@prisma/client';
 import type { SourceTier } from '../connectors/registry.js';
 
 /** Source ranking: the highest-priority source owns the canonical apply URL. */
@@ -36,6 +37,13 @@ export type CandidateJob = NormalizedJob & {
   company: string;
   sourceKey: string;
   sourceTier: SourceTier;
+  /**
+   * The real ATS this posting came from, stored on Job.source. A sitemap/JSON-LD
+   * source genuinely is GENERIC_JSONLD; an API feed carries its true vendor
+   * (WORKDAY, GREENHOUSE…), so the unique key (companyId, source, externalId)
+   * separates two different sources that happen to share an externalId.
+   */
+  atsType?: AtsType;
 };
 
 /** Postings more than this far apart are treated as separate openings. */

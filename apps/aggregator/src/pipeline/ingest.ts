@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient, AtsType } from '@prisma/client';
 import pLimit from 'p-limit';
 import { plainHttpSources, type JobSource as SourceDef } from '../connectors/registry.js';
 import { loadSourceCatalog, isApiSource, tierFor, sourceKeyFor } from '../connectors/sourceCatalog.js';
@@ -7,11 +7,13 @@ import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
 import { normalizeContract, normalizeWorkingTime, isWorkingTimeValue, extractContract, extractSalaryBand } from '../normalize/contract.js';
 import { isFranceJob } from '../lib/france.js';
+import { htmlToPlainText } from '../lib/html.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
 import type { NormalizedJob } from '../types.js';
 import { PIPELINE_VERSION } from './version.js';
 import { runGeocode } from './geocodeJobs.js';
+import { purgeStaleForSource } from './purge.js';
 import { fetchAtsJobs } from '../ats/index.js';
 import type { CatalogSource } from '../connectors/sourceCatalog.js';
 
@@ -57,11 +59,18 @@ function toCandidate(
   job: NormalizedJob,
   source: SourceDef,
   companyName: string,
+  atsType: AtsType,
 ): CandidateJob & { companyId: string } {
   // Several ATS file "Full-time" / "Plein Temps" under contract, which is a
   // working time, not a contract type. Moved rather than dropped: the UI was
   // printing the source's raw English next to French contract labels.
   const misfiled = isWorkingTimeValue(job.contract);
+
+  // Clean the description to plain text ONCE, at ingest, for every source: some
+  // ship raw HTML (Greenhouse), some HTML-escaped HTML (Teamtailor). Done first
+  // so the contract/salary extraction below reads clean text too, and so the
+  // database holds only clean text and the web renders it directly.
+  const description = htmlToPlainText(job.description);
 
   /**
    * The contract, from wherever the posting states it.
@@ -73,7 +82,7 @@ function toCandidate(
    * réussi…"), and the opening lines are where the real one is announced.
    */
   let contract = misfiled ? 'UNKNOWN' : normalizeContract(job.contract);
-  if (contract === 'UNKNOWN') contract = extractContract(job.title, job.description);
+  if (contract === 'UNKNOWN') contract = extractContract(job.title, description);
 
   const workingTime = normalizeWorkingTime(misfiled ? job.contract : job.workingTime);
 
@@ -81,11 +90,12 @@ function toCandidate(
   // writes the band in the text, and a fiche without it reads half-finished.
   const salaryFromText =
     job.salaryMin === undefined && job.salaryMax === undefined
-      ? extractSalaryBand(job.description)
+      ? extractSalaryBand(description)
       : null;
 
   return {
     ...job,
+    description,
     // "UNKNOWN" is the normalizer's non-answer, not a value — stored as such
     // it is truthy, and the UI printed "Contrat : UNKNOWN" on every offer.
     contract: contract === 'UNKNOWN' ? undefined : contract,
@@ -102,6 +112,7 @@ function toCandidate(
     companyId: resolveCompany(companyName).companyId,
     sourceKey: source.key,
     sourceTier: source.tier,
+    atsType,
   };
 }
 
@@ -188,7 +199,11 @@ async function ingestSitemapSource(
         if (isFranceJob(job.country, job.location)) stats.france++;
 
         try {
-          const result = await upsertDeduplicated(prisma, toCandidate(job, source, rawCompany));
+          // A sitemap/JSON-LD source genuinely is GENERIC_JSONLD.
+          const result = await upsertDeduplicated(
+            prisma,
+            toCandidate(job, source, rawCompany, 'GENERIC_JSONLD'),
+          );
           if (result.outcome === 'CREATED') stats.created++;
           else if (result.outcome === 'MERGED') stats.merged++;
           else stats.updated++;
@@ -338,7 +353,11 @@ async function ingestApiSource(prisma: PrismaClient, source: CatalogSource): Pro
     if (isFranceJob(job.country, job.location)) stats.france++;
 
     try {
-      const result = await upsertDeduplicated(prisma, toCandidate(job, sourceDef, employer));
+      // The catalogue feed carries its real vendor ATS (WORKDAY, GREENHOUSE…).
+      const result = await upsertDeduplicated(
+        prisma,
+        toCandidate(job, sourceDef, employer, type as AtsType),
+      );
       if (result.outcome === 'CREATED') stats.created++;
       else if (result.outcome === 'MERGED') stats.merged++;
       else stats.updated++;
@@ -358,30 +377,32 @@ async function ingestApiSource(prisma: PrismaClient, source: CatalogSource): Pro
   return stats;
 }
 
-export async function runIngest(prisma: PrismaClient): Promise<IngestStats[]> {
-  /**
-   * Generation purge, before anything is fetched.
-   *
-   * Rows written by an older pipeline cannot be repaired in place: offers
-   * ingested before the adapters fetched descriptions have none to restore,
-   * and sectors written before classification all read UNKNOWN. Deleting them
-   * here means a schema-level fix ships as a PIPELINE_VERSION bump and the
-   * next scheduled run rebuilds cleanly — no manual purge to remember, no
-   * half-stale base when someone forgets it.
-   */
-  const stale = await prisma.job.deleteMany({
-    where: { pipelineVersion: { lt: PIPELINE_VERSION } },
-  });
-  if (stale.count > 0) {
-    // Companies whose every job was just deleted are older-generation rows too
-    // (UNKNOWN sectors, no parentGroup); the re-ingest recreates them properly.
-    const orphans = await prisma.company.deleteMany({ where: { jobs: { none: {} } } });
-    console.log(
-      `[ingest] generation purge: ${stale.count} jobs and ${orphans.count} companies ` +
-        `from before pipeline v${PIPELINE_VERSION} removed; refetching from source`,
-    );
-  }
+/**
+ * Did this source produce enough to justify purging its older-generation rows?
+ *
+ * A source that wrote nothing (returned an empty array, or every write failed)
+ * must NOT trigger a purge: that is exactly the silent-zero failure mode, and
+ * purging on it would delete the source's whole footprint. Only a source that
+ * actually wrote offers this run has re-stamped them at the current version, so
+ * only then is it safe to remove what it no longer lists.
+ */
+function producedOutput(stats: IngestStats): boolean {
+  return stats.created + stats.merged + stats.updated > 0;
+}
 
+export type IngestOptions = {
+  /**
+   * Run a single source by its key (decision D6): each source becomes a short,
+   * independent run, so one broken feed never takes the others down and a run
+   * always finishes before the platform kills it. Absent = run every source.
+   */
+  only?: string;
+};
+
+export async function runIngest(
+  prisma: PrismaClient,
+  options: IngestOptions = {},
+): Promise<IngestStats[]> {
   const all = [...plainHttpSources(), ...catalogSitemapSources()].filter(
     (source) => source.kind === 'SITEMAP_JSONLD',
   );
@@ -398,11 +419,12 @@ export async function runIngest(prisma: PrismaClient): Promise<IngestStats[]> {
    * Maison is invisible. Offers are still classified individually at write time.
    */
   const sources = [...byKey.values()]
+    .filter((source) => !options.only || source.key === options.only)
     // Cheapest sources first: a run cut short should still have written the
     // offers that cost least to obtain.
     .sort((a, b) => (a.crawlDelaySeconds ?? 0) - (b.crawlDelaySeconds ?? 0));
 
-  console.log(`[ingest] ${sources.length} sources: ${sources.map((s) => s.key).join(', ')}`);
+  console.log(`[ingest] ${sources.length} sitemap sources: ${sources.map((s) => s.key).join(', ')}`);
   const results: IngestStats[] = [];
 
   /**
@@ -422,9 +444,76 @@ export async function runIngest(prisma: PrismaClient): Promise<IngestStats[]> {
     }
   };
 
+  /**
+   * Purge this source's older-generation rows — but only after it produced.
+   *
+   * A source that wrote nothing this run must not purge: that would delete its
+   * whole footprint on the exact failure (silent zero) the purge must survive.
+   * Runs per source, right after its success, so a later source that breaks
+   * cannot undo it and can never empty the base.
+   */
+  const purgeQuietly = async (stats: IngestStats) => {
+    if (!producedOutput(stats)) return;
+    try {
+      const purged = await purgeStaleForSource(prisma, stats.source, PIPELINE_VERSION);
+      if (purged.jobsDeleted > 0 || purged.sourcesDetached > 0) {
+        console.log(
+          `[ingest] ${stats.source}: generation purge removed ${purged.jobsDeleted} stale jobs, ` +
+            `detached ${purged.sourcesDetached} stale sources`,
+        );
+      }
+    } catch (error) {
+      console.error(
+        `[ingest] ${stats.source} purge failed:`,
+        error instanceof Error ? error.message : String(error),
+      );
+    }
+  };
+
+  /**
+   * API-backed catalogue feeds run FIRST — they are the bulk of the market and
+   * the cheapest to obtain (one request per employer, not one per offer).
+   *
+   * Ordering matters: a full run of the heavy sitemap sources (L'Oréal 1725
+   * pages, Decathlon 1240, Kering 1408, all fetched one page at a time) can
+   * exceed the cron's time budget and be killed by the platform BEFORE the API
+   * phase is ever reached — which is exactly why production held only a handful
+   * of employers. Doing the API feeds first means the hundreds of Maisons they
+   * expose are ingested even if the slow sitemap tail is cut short.
+   *
+   * Sequential on purpose: several portals serve many Maisons from one WAF, and
+   * hammering one with parallel calls is what got the validation pass rate-limited.
+   */
+  const apiSources = loadSourceCatalog()
+    .filter((source) => KIND_TO_ATS[source.kind])
+    .filter((source) => !options.only || sourceKeyFor(source) === options.only);
+  console.log(`[ingest] ${apiSources.length} API feeds: ${apiSources.map((s) => sourceKeyFor(s)).join(', ')}`);
+
+  for (const source of apiSources) {
+    try {
+      const stats = await ingestApiSource(prisma, source);
+      results.push(stats);
+      await purgeQuietly(stats);
+      await geocodeQuietly();
+    } catch (error) {
+      results.push({
+        source: sourceKeyFor(source),
+        fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 1,
+      });
+      console.error(
+        `[ingest] ${sourceKeyFor(source)} failed:`,
+        error instanceof Error ? error.message : String(error),
+      );
+    }
+  }
+
+  // Sitemap sources LAST: heaviest and slowest, so if the run is cut short here
+  // the API feeds above have already produced.
   for (const source of sources) {
     try {
-      results.push(await ingestSitemapSource(prisma, source));
+      const stats = await ingestSitemapSource(prisma, source);
+      results.push(stats);
+      await purgeQuietly(stats);
       await geocodeQuietly();
     } catch (error) {
       results.push({
@@ -439,33 +528,6 @@ export async function runIngest(prisma: PrismaClient): Promise<IngestStats[]> {
       });
       console.error(
         `[ingest] ${source.key} failed:`,
-        error instanceof Error ? error.message : String(error),
-      );
-    }
-  }
-
-  /**
-   * API-backed catalogue feeds — the bulk of the market.
-   *
-   * Sequential on purpose: several portals serve many Maisons from one WAF, and
-   * hammering one with parallel calls is exactly what got the validation pass
-   * rate-limited (Estée Lauder cut us off after its portal was called fourteen
-   * times in a row).
-   */
-  const apiSources = loadSourceCatalog().filter((source) => KIND_TO_ATS[source.kind]);
-  console.log(`[ingest] ${apiSources.length} API feeds: ${apiSources.map((s) => sourceKeyFor(s)).join(', ')}`);
-
-  for (const source of apiSources) {
-    try {
-      results.push(await ingestApiSource(prisma, source));
-      await geocodeQuietly();
-    } catch (error) {
-      results.push({
-        source: sourceKeyFor(source),
-        fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 1,
-      });
-      console.error(
-        `[ingest] ${sourceKeyFor(source)} failed:`,
         error instanceof Error ? error.message : String(error),
       );
     }

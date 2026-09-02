@@ -42,11 +42,13 @@ export type HealthReport = {
 };
 
 /**
- * Compares this run's per-source counts with the previous run's.
+ * Compares this run's per-source counts with the PREVIOUS run's.
  *
- * Reads the counts back from JobSource rather than from a separate metrics
- * table: the database already knows how many live offers each source carries,
- * and a second store would be one more thing to drift.
+ * The baseline is the last SourceRun recorded for each source — not the live
+ * JobSource state. Reading live state compared a run to itself: checkSourceHealth
+ * runs right after the ingest has already written this run's rows, so "before"
+ * included "now" and a source that returned zero still looked healthy until the
+ * refresh pass emptied it 48h later — exactly when the alert was needed.
  */
 export async function checkSourceHealth(
   prisma: PrismaClient,
@@ -103,14 +105,24 @@ export async function checkSourceHealth(
   };
 }
 
-/** Live offers per source, as the database holds them right now. */
+/**
+ * What each source produced on its LAST recorded run.
+ *
+ * Read from SourceRun (the run-by-run history), taken before this run records
+ * itself, so the baseline is genuinely the previous run — not this one. A source
+ * with no history returns nothing and is treated as NEW.
+ */
 async function previousCounts(prisma: PrismaClient): Promise<Map<string, number>> {
-  const rows = await prisma.jobSource.groupBy({
-    by: ['sourceKey'],
-    where: { isActive: true },
-    _count: true,
+  // Most recent first; the first row seen per source is its last run.
+  const rows = await prisma.sourceRun.findMany({
+    orderBy: { ranAt: 'desc' },
+    select: { sourceKey: true, jobs: true },
   });
-  return new Map(rows.map((row) => [row.sourceKey, row._count]));
+  const latest = new Map<string, number>();
+  for (const row of rows) {
+    if (!latest.has(row.sourceKey)) latest.set(row.sourceKey, row.jobs);
+  }
+  return latest;
 }
 
 async function recordRun(prisma: PrismaClient, results: SourceHealth[]): Promise<void> {

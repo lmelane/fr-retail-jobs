@@ -130,7 +130,9 @@ export async function upsertDeduplicated(
         where: {
           companyId_source_externalId: {
             companyId: company.id,
-            source: 'GENERIC_JSONLD',
+            // Must match what createJob wrote, or the winner is not found and
+            // the offer is lost — the same real ATS, not a hard-coded default.
+            source: candidate.atsType ?? 'GENERIC_JSONLD',
             externalId: candidate.externalId,
           },
         },
@@ -140,7 +142,10 @@ export async function upsertDeduplicated(
 
       await prisma.job.update({
         where: { id: winner.id },
-        data: { lastSeenAt: now, isActive: true },
+        // Stamp the current generation on every touch, not just on create:
+        // a row left at an older version is deleted by the next generation
+        // purge, then recreated — churning its id and firstSeenAt on every run.
+        data: { lastSeenAt: now, isActive: true, pipelineVersion: PIPELINE_VERSION },
       });
       return { jobId: winner.id, outcome: 'UPDATED', promoted: false };
     }
@@ -160,7 +165,10 @@ async function createJob(
     data: {
         companyId,
         externalId: candidate.externalId,
-        source: 'GENERIC_JSONLD',
+        // The real ATS, not a hard-coded default: the unique key
+        // (companyId, source, externalId) must separate two different sources
+        // that happen to share an externalId for the same employer.
+        source: candidate.atsType ?? 'GENERIC_JSONLD',
         title: candidate.title,
         location: candidate.location,
         country: candidate.country,
@@ -265,6 +273,9 @@ async function attachToExisting(
     data: {
       lastSeenAt: now,
       isActive: true,
+      // Every touch carries the current generation, so a merged offer is never
+      // left below the version line and re-purged on the next run.
+      pipelineVersion: PIPELINE_VERSION,
       ...(promoted
         ? {
             url: candidate.url,
