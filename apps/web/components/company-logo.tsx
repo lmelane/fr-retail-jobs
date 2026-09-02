@@ -59,17 +59,18 @@ export function CompanyLogo({ name, size = 40 }: { name: string; size?: number }
   }
 
   return (
-    // Plain <img>: the logo host is external and per-company, which next/image
-    // would require whitelisting. eslint-disable is intentional here.
+    // DuckDuckGo's icon service: free, no key, privacy-respecting (unlike
+    // Clearbit, which is dead), and answers 200 directly. Plain <img> because
+    // the host is external and per-company; next/image would need whitelisting.
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={`https://logo.clearbit.com/${domain}?size=${size * 2}`}
+      src={`https://icons.duckduckgo.com/ip3/${domain}.ico`}
       alt=""
       width={size}
       height={size}
       loading="lazy"
       onError={() => setFailed(true)}
-      className="shrink-0 rounded-xl bg-white object-contain"
+      className="shrink-0 rounded-xl bg-white object-contain p-1 ring-1 ring-border"
       style={{ width: size, height: size }}
     />
   );

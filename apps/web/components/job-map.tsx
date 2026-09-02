@@ -18,9 +18,9 @@ import type { JobRow } from '@/lib/jobs';
 const FRANCE_CENTER: L.LatLngExpression = [46.6, 2.4];
 const FRANCE_ZOOM = 6;
 
-/** One accent hue for every pin; volume is carried by radius, not by colour. */
-const MARKER_STROKE = 'oklch(55% 0.21 264)';
-const MARKER_FILL = 'oklch(72% 0.15 264)';
+/** The brand magenta for every pin; volume is carried by radius, not by colour. */
+const MARKER_STROKE = 'oklch(0.575 0.235 336)';
+const MARKER_FILL = 'oklch(0.72 0.16 336)';
 
 type JobMapProps = {
   jobs: JobRow[];

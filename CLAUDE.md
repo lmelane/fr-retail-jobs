@@ -55,8 +55,8 @@ Toutes les corrections et la reconstruction de base se font **en local** (Postgr
 ### D8 — Retirer les filtres « 7 jours » et « Confirmées »
 Ces deux boutons de la barre n'apportent pas de valeur candidat (« Confirmées » expose un concept interne multi-sources ; « 7 jours » isolé est bancal). Barre finale : Secteur · Contrat · Ville · Maison · Groupe · Source. (Décidé 2026-09-02.)
 
-### D9 — Logos d'entreprises via Clearbit, fallback initiale
-Page Entreprises : afficher le logo via `https://logo.clearbit.com/{domaine}` (gratuit, sans clé), le domaine venant du catalogue (`careers_domain`). Fallback **pastille avec initiale** si pas de domaine ou logo indisponible (`onError`). Le logo ne doit jamais casser l'affichage. (Décidé 2026-09-02.)
+### D9 — Logos d'entreprises via DuckDuckGo, fallback initiale
+Page Entreprises : logo via `https://icons.duckduckgo.com/ip3/{domaine}.ico` (gratuit, sans clé, respectueux de la vie privée). Clearbit, initialement retenu, est **mort** (racheté par HubSpot, endpoint fermé, HTTP 000) — remplacé par DuckDuckGo qui répond 200. Le domaine est deviné depuis le nom de la maison. Fallback **pastille avec initiale** si pas de domaine (`onError`). Le logo ne casse jamais l'affichage. (Décidé 2026-09-02, révisé.)
 
 ## État vérifié de la prod (2026-09-02) — ce qui NE va pas
 

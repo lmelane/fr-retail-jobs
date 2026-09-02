@@ -21,9 +21,9 @@ const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
-  // Map tiles (OSM — both the bare host and any subdomain form), company logos
-  // (Clearbit), and data/blob for inline assets.
-  "img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://logo.clearbit.com",
+  // Map tiles (OSM — both the bare host and any subdomain form), company
+  // favicons (DuckDuckGo), and data/blob for inline assets.
+  "img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://icons.duckduckgo.com",
   "font-src 'self' data:",
   // The French government geocoder is called server-side, so the browser only
   // talks to our own origin; keep connect-src tight.
