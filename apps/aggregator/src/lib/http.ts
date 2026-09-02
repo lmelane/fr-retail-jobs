@@ -26,6 +26,22 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         throw new Error(`HTTP ${response.status} for ${url}`);
       }
       lastError = new Error(`HTTP ${response.status} for ${url}`);
+
+      /**
+       * 429 is the host telling us to slow down, and a half-second retry is
+       * the opposite of listening. Courir rate-limited a run and 245 of 395
+       * pages failed — each worker retried fast, twelve workers in parallel,
+       * which kept the limiter tripped for the whole source. A long pause here
+       * throttles the entire pool naturally, since every worker that hits the
+       * limiter parks itself. Retry-After is honoured when the host names it.
+       */
+      if (response.status === 429) {
+        const asked = Number(response.headers.get('retry-after'));
+        const waitMs = Number.isFinite(asked) && asked > 0 ? asked * 1000 : 20_000 * (i + 1);
+        clearTimeout(timer);
+        await sleep(Math.min(waitMs, 90_000));
+        continue;
+      }
     } catch (error) {
       lastError = error;
     } finally {

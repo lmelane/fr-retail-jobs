@@ -154,11 +154,19 @@ async function ingestSitemapSource(
           (job.raw as { hiringOrganization?: { name?: string } } | undefined)?.hiringOrganization
             ?.name ?? source.company;
 
-        if (!classifySector({ company: rawCompany, title: job.title }).inScope) return;
-        stats.inSector++;
+        /**
+         * Same rule as the API path: nothing is discarded, the web filters.
+         *
+         * The sector check stays a DISCARD only for generalist boards (flow
+         * JOBBOARD, e.g. a WTTJ shard where 96% of offers are other
+         * industries); an employer source is in the vertical by construction.
+         * France is always just a stored flag.
+         */
+        const inSector = classifySector({ company: rawCompany, title: job.title }).inScope;
+        if (source.flow === 'JOBBOARD' && !inSector) return;
+        if (inSector) stats.inSector++;
 
-        if (!isFranceJob(job.country, job.location)) return;
-        stats.france++;
+        if (isFranceJob(job.country, job.location)) stats.france++;
 
         try {
           const result = await upsertDeduplicated(prisma, toCandidate(job, source, rawCompany));
