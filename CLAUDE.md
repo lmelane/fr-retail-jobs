@@ -52,6 +52,18 @@ Chaque source (ou petit lot) devient un **run court et indépendant**. La purge 
 ### D7 — Chantier en local d'abord, prod à la fin
 Toutes les corrections et la reconstruction de base se font **en local** (Postgres Docker isolé). On ne déploie/relance les crons de prod qu'une fois la plateforme **validée de bout en bout**. Aucune écriture en prod pendant le chantier. (Décidé 2026-09-02.)
 
+### D19 — MONDE par défaut partout (révise D12), et le monde doit être ATTEIGNABLE
+Le site affiche **toutes les offres (monde) par défaut** ; le filtre **Pays** restreint (FR, IT…). Révise D12 (« FR par défaut ») : le candidat voyait « France » figé, l'autocomplete ville/titre était câblé `isFrance:true`, et taper « Milan » ne renvoyait rien → les ~26k offres monde étaient **invisibles depuis la barre**. Corrigé : `parseFilters`/`parseCompanyFilters` défaut `country=undefined` ; `suggestCities`/`suggestTitles` sans filtre FR ; champ Lieu vide (placeholder « Ville, région ou pays ») ; sitemap élargi au monde. `isFrance` reste stocké et sert le filtre France. Vérifié : New York → 22, London → 9 (avant : injoignable). (Décidé et validé par Loïc via AskUserQuestion, 2026-09-02.)
+
+### D20 — Page entreprise : barre de filtre légère (ville + contrat)
+Une Maison à plusieurs centaines d'offres (Cartier : 1 173) était un mur infini sans filtre. Ajout d'une **barre légère scopée à la Maison** : recherche **ville** + pills **contrat** (facettes réelles), refetch serveur `/api/jobs?maison=…&ville=…&contrat=…` (chaque match vu, pas seulement le slice chargé). Pas la barre complète de `/emplois` (page déjà scopée à une société). Compteur d'offres et facettes de la fiche passés en **monde** pour coller à la liste. (Décidé et validé par Loïc via AskUserQuestion, 2026-09-02.)
+
+### D21 — Attribution UTM : déjà bout-en-bout côté Catwalks, rien à construire
+Le tracking « candidat inscrit via Fashion Atlas » est **déjà complet côté Catwalks** (vérifié à la source) : `capturerPremierContact()` (`premier-contact.ts`, monté globalement via `CapturePremierContact.tsx`) lit `utm_source/medium/campaign` à la **première** visite, stocke en `localStorage` sans jamais écraser (premier contact ≠ dernier), et le **backend + PostHog** l'attribuent à l'inscription. Les 3 CTA Atlas (footer, job-detail, landing) portent déjà `?utm_source=fashion-atlas&utm_medium=aggregator` (+ `utm_campaign` par surface). **Aucun dev côté Atlas** au-delà de porter les UTM. _Le code de l'état technique est la source : ne pas re-construire un tracking qui existe._ (Vérifié 2026-09-02.)
+
+### D22 — Le catalogue doit VIVRE : datePosted stable, auto-index Google, expiration → 410/redirect
+Constat gravé (vérifié en base 2026-09-02) : **0 offre n'a un `firstSeenAt` > 24h** → la base est wipe+rebuild à chaque run (churn), ce qui réinitialise `datePosted` (lu par Google Jobs) et déstabilise les IDs/URLs. Le correctif code existe déjà (`upsert.ts` estampille `pipelineVersion` à chaque touche, pas qu'au create) — **à vérifier en exécution** run après run que `firstSeenAt` se stabilise. Décisions Loïc à implémenter : (a) **soumission automatique à l'Indexing API Google** des nouvelles offres à chaque passe ; (b) **offre périmée supprimée automatiquement** et son URL rendue **410 Gone** (ou 301 redirect si pertinent) pour purger l'index Google. (Décidé par Loïc, 2026-09-03 ; grave, à implémenter.)
+
 ### D8 — Retirer les filtres « 7 jours » et « Confirmées »
 Ces deux boutons de la barre n'apportent pas de valeur candidat (« Confirmées » expose un concept interne multi-sources ; « 7 jours » isolé est bancal). Barre finale : Secteur · Contrat · Ville · Maison · Groupe · Source. (Décidé 2026-09-02.)
 
