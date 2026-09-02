@@ -35,10 +35,23 @@ describe('whereClause — combined company filters do not collide', () => {
     expect(where.company).toBeUndefined();
   });
 
-  it('applies isActive and isFrance always', () => {
+  it('applies isActive always, but not isFrance by default (D10: every country)', () => {
     const where = whereClause({});
     expect(where.isActive).toBe(true);
-    expect(where.isFrance).toBe(true);
+    // No forced isFrance — the board shows every country now.
+    expect((where as { isFrance?: boolean }).isFrance).toBeUndefined();
+  });
+
+  it('country=FR narrows to France via the reliable flag', () => {
+    const where = whereClause({ country: 'FR' });
+    expect((where as { isFrance?: boolean }).isFrance).toBe(true);
+  });
+
+  it('a non-FR country matches its raw spellings case-insensitively', () => {
+    const where = whereClause({ country: 'IT' });
+    const or = (where as { OR?: { country?: { equals?: string } }[] }).OR;
+    expect(Array.isArray(or)).toBe(true);
+    expect(or!.some((c) => c.country?.equals?.toLowerCase() === 'italie')).toBe(true);
   });
 
   it('search terms go under AND, not company (so q + maison coexist)', () => {

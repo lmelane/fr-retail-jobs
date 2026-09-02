@@ -55,6 +55,9 @@ Toutes les corrections et la reconstruction de base se font **en local** (Postgr
 ### D8 — Retirer les filtres « 7 jours » et « Confirmées »
 Ces deux boutons de la barre n'apportent pas de valeur candidat (« Confirmées » expose un concept interne multi-sources ; « 7 jours » isolé est bancal). Barre finale : Secteur · Contrat · Ville · Maison · Groupe · Source. (Décidé 2026-09-02.)
 
+### D10 — Le site affiche toutes les offres (monde), avec un filtre Pays
+Le site n'est plus limité à la France par défaut : il affiche **toutes** les offres actives (10 235 : monde entier), et un **filtre Pays** permet d'affiner (France, Italie, Espagne, Portugal…). `isFrance` reste stocké et sert le filtre « France » ; les autres pays viennent de `country` normalisé. Le mode « zéro filtre France » (rien jeté à l'ingestion) est conservé. (Décidé 2026-09-02.)
+
 ### D9 — Logos d'entreprises via DuckDuckGo, fallback initiale
 Page Entreprises : logo via `https://icons.duckduckgo.com/ip3/{domaine}.ico` (gratuit, sans clé, respectueux de la vie privée). Clearbit, initialement retenu, est **mort** (racheté par HubSpot, endpoint fermé, HTTP 000) — remplacé par DuckDuckGo qui répond 200. Le domaine est deviné depuis le nom de la maison. Fallback **pastille avec initiale** si pas de domaine (`onError`). Le logo ne casse jamais l'affichage. (Décidé 2026-09-02, révisé.)
 

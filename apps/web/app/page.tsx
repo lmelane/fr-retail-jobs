@@ -33,6 +33,7 @@ function parseFilters(params: Record<string, string | string[] | undefined>): Jo
     maison: one('maison'),
     group: one('groupe'),
     source: one('source'),
+    country: one('pays'),
     page: Number.isFinite(page) && page > 0 ? page : 1,
   };
 }

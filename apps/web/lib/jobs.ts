@@ -1,5 +1,22 @@
 import { prisma, CompanySector } from '@catwalks/db';
 import { expandCompanyTerm } from './groups';
+import { countryCode, rawValuesForCode } from './countries';
+
+/**
+ * Prisma condition for a Pays filter code.
+ *
+ * France is matched on the isFrance flag (reliable, unlike the raw `country`
+ * which appears as "France"/"FR"/"fr"). Any other code matches the raw
+ * spellings that normalize to it, case-insensitively.
+ */
+function countryCondition(code: string | undefined) {
+  if (!code) return {};
+  if (code === 'FR') return { isFrance: true };
+  // `in` has no case-insensitive mode in Prisma, and the stored values vary in
+  // case ("Italie"/"IT"/"it"), so match each spelling with equals-insensitive.
+  const spellings = rawValuesForCode(code);
+  return { OR: spellings.map((value) => ({ country: { equals: value, mode: 'insensitive' as const } })) };
+}
 
 /**
  * A sector filter value that is a real CompanySector, or undefined.
@@ -50,6 +67,8 @@ export type JobFilters = {
   group?: string;
   maison?: string;
   source?: string;
+  /** Canonical country code (FR, IT, US…); undefined means every country. */
+  country?: string;
   /** 1-based, like the URL the user can share. */
   page?: number;
 };
@@ -111,6 +130,8 @@ export type JobsResult = {
     groups: { value: string; count: number }[];
     maisons: { value: string; count: number }[];
     sources: { value: string; count: number }[];
+    /** Country facet values are canonical codes (FR, IT…); the UI labels them. */
+    countries: { value: string; count: number }[];
   };
 };
 
@@ -138,7 +159,10 @@ export function whereClause(filters: JobFilters) {
 
   return {
     isActive: true,
-    isFrance: true,
+    // No forced isFrance (decision D10): the board shows every country, and the
+    // Pays filter narrows it. France uses the reliable isFrance flag; other
+    // countries match the raw `country` spellings that map to their code.
+    ...countryCondition(filters.country),
     ...(filters.city ? { city: filters.city } : {}),
     ...(filters.contract ? { contract: filters.contract } : {}),
     ...(Object.keys(company).length ? { company } : {}),
@@ -182,7 +206,7 @@ async function countFacets(where: WhereClause): Promise<JobsResult['facets']> {
       .filter((facet) => facet.value !== '')
       .sort((a, b) => b.count - a.count);
 
-  const [contracts, cities, sectors, sources] = await Promise.all([
+  const [contracts, cities, sectors, sources, rawCountries, franceCount] = await Promise.all([
     prisma.job.groupBy({ by: ['contract'], where, _count: true }),
     prisma.job.groupBy({ by: ['city'], where, _count: true, orderBy: { _count: { city: 'desc' } }, take: 60 }),
     // Sector, Maison and Group live on Company, so they are grouped through the join.
@@ -195,6 +219,10 @@ async function countFacets(where: WhereClause): Promise<JobsResult['facets']> {
       orderBy: { _count: { sourceKey: 'desc' } },
       take: 40,
     }),
+    // Country facet: group the raw spellings, normalize them below.
+    prisma.job.groupBy({ by: ['country'], where, _count: true }),
+    // France is counted on the reliable flag, not its three raw spellings.
+    prisma.job.count({ where: { ...where, isFrance: true } }),
   ]);
 
   const companies = await prisma.company.findMany({
@@ -223,6 +251,19 @@ async function countFacets(where: WhereClause): Promise<JobsResult['facets']> {
       .filter((facet) => facet.value !== '')
       .sort((a, b) => b.count - a.count);
 
+  // Country facet: normalize raw spellings to a code, drop FR (counted on the
+  // flag), and prepend France so it leads the list when present.
+  const countryCounts = new Map<string, number>();
+  for (const row of rawCountries) {
+    const code = countryCode(row.country);
+    if (!code || code === 'FR') continue;
+    countryCounts.set(code, (countryCounts.get(code) ?? 0) + row._count);
+  }
+  const countries = [
+    ...(franceCount > 0 ? [{ value: 'FR', count: franceCount }] : []),
+    ...fromMap(countryCounts),
+  ];
+
   return {
     sectors: fromMap(sectorCounts),
     contracts: asFacets(contracts, 'contract'),
@@ -230,6 +271,7 @@ async function countFacets(where: WhereClause): Promise<JobsResult['facets']> {
     groups: fromMap(groupCounts),
     maisons: fromMap(maisonCounts),
     sources: asFacets(sources as { _count: number }[], 'sourceKey'),
+    countries,
   };
 }
 
@@ -317,7 +359,7 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
         take: PAGE_SIZE,
       }),
       prisma.job.count({ where }),
-      prisma.job.count({ where: { isActive: true, isFrance: true } }),
+      prisma.job.count({ where: { isActive: true } }),
     ]);
 
     return {

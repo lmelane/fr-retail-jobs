@@ -12,6 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { JobDetail } from '@/components/job-detail';
 import { contractLabel, relativeDate } from '@/lib/format';
+import { countryLabel } from '@/lib/countries';
 import { cn } from '@/lib/utils';
 import type { JobFilters, JobRow, JobsResult } from '@/lib/jobs';
 
@@ -62,8 +63,15 @@ const PARAM: Record<string, string> = {
   maison: 'maison',
   group: 'groupe',
   source: 'source',
+  country: 'pays',
   page: 'page',
 };
+
+/** Country codes -> French labels for the Pays filter, built from countries.ts. */
+const COUNTRY_LABELS: Record<string, string> = Object.fromEntries(
+  ['FR', 'US', 'GB', 'IT', 'ES', 'DE', 'NL', 'BE', 'PT', 'CA', 'CH', 'CN', 'AU',
+   'DK', 'NO', 'SE', 'KR', 'JP', 'MX', 'MY', 'AE', 'HK', 'SG'].map((c) => [c, countryLabel(c)]),
+);
 
 /** Registry keys are lowercase slugs; show the employer-facing label instead. */
 const SOURCE_LABELS: Record<string, string> = {
@@ -179,6 +187,13 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
         {/* Filters in the open. Counts come from the whole match set, not the
             current page, so a chip saying 300 means 300. */}
         <div className="flex items-center gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <FilterMenu
+            label="Pays"
+            active={params.get('pays')}
+            options={data.facets.countries}
+            labels={COUNTRY_LABELS}
+            onSelect={(value) => toggle('pays', value)}
+          />
           <FilterMenu
             label="Secteur"
             active={params.get('secteur')}
