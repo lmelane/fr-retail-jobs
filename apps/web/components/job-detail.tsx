@@ -31,6 +31,15 @@ const SOURCE_LABELS: Record<string, string> = {
   dior: 'Dior',
 };
 
+/** Source remote wording -> a clean French label. */
+function remoteLabel(raw: string): string {
+  const v = raw.trim().toLowerCase();
+  if (/hybrid|hybride|partiel/.test(v)) return 'Hybride';
+  if (/full|complet|100|remote|télétravail|teletravail/.test(v)) return 'Télétravail';
+  if (/no|non|onsite|sur site|présentiel|presentiel/.test(v)) return 'Sur site';
+  return raw;
+}
+
 /** "35 000 – 42 000 € par an", from whichever half the source published. */
 function salaryLabel(job: JobRow): string | null {
   if (job.salaryMin === null && job.salaryMax === null) return null;
@@ -64,7 +73,9 @@ function JobFacts({ job }: { job: JobRow }) {
   if (salary) facts.push(['Salaire', salary]);
   const workingTime = contractLabel(job.workingTime);
   if (workingTime) facts.push(['Temps de travail', workingTime]);
-  if (job.remote) facts.push(['Télétravail', job.remote]);
+  // "unknown"/"non précisé" is a non-answer some ATS emit; don't print it.
+  if (job.remote && !/^(unknown|non pr[ée]cis[ée]|n\/?a|none|unspecified)$/i.test(job.remote.trim()))
+    facts.push(['Télétravail', remoteLabel(job.remote)]);
   if (job.experienceYears !== null)
     facts.push(['Expérience', `${job.experienceYears} an${job.experienceYears > 1 ? 's' : ''}`]);
   if (job.educationLevel) facts.push(['Formation', job.educationLevel]);

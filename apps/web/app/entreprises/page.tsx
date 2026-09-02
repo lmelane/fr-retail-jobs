@@ -13,6 +13,7 @@ function parseFilters(params: Record<string, string | string[] | undefined>): Co
   return {
     q: one('q'),
     sector: one('secteur'),
+    country: one('pays'),
     page: Number.isFinite(page) && page > 0 ? page : 1,
   };
 }

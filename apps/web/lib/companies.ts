@@ -1,7 +1,7 @@
 import { prisma } from '@catwalks/db';
 import { DatabaseUnavailableError, validSector } from './jobs';
 import { expandCompanyTerm } from './groups';
-import { countryCode } from './countries';
+import { countryCode, rawValuesForCode } from './countries';
 
 /**
  * Employers, ranked by how many live offers they hold.
@@ -36,6 +36,8 @@ export const COMPANY_PAGE_SIZE = 40;
 export type CompanyFilters = {
   q?: string;
   sector?: string;
+  /** Canonical country code (FR, IT…); undefined means every country. */
+  country?: string;
   page?: number;
 };
 
@@ -74,9 +76,16 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
         }
       : {}),
   };
+  // D10: employers from every country, not France-only. A Pays filter narrows
+  // it; France uses the reliable flag, other countries their raw spellings.
+  const countryWhere = !filters.country
+    ? {}
+    : filters.country === 'FR'
+      ? { isFrance: true }
+      : { OR: rawValuesForCode(filters.country).map((v) => ({ country: { equals: v, mode: 'insensitive' as const } })) };
   const jobWhere = {
     isActive: true,
-    isFrance: true,
+    ...countryWhere,
     ...(Object.keys(company).length ? { company } : {}),
   };
 
@@ -136,7 +145,7 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
 
   const sectorRows = await prisma.job.groupBy({
     by: ['companyId'],
-    where: { isActive: true, isFrance: true },
+    where: { isActive: true },
     _count: true,
   });
   const sectorCompanies = await prisma.company.findMany({
