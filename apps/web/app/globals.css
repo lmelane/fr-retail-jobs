@@ -7,70 +7,79 @@
 @custom-variant dark (&:is(.dark *));
 
 /**
- * Direction: Material 3 Expressive — the Gemini language, built on our stack.
- * See DESIGN.md. shadcn primitives are retokenised into Material rather than
- * rewritten: same components, different visual language.
+ * Direction: Indeed's utility ergonomics, Catwalks' identity.
  *
- * Three pillars: tinted surfaces instead of borders, generous radii, and
- * spring-based motion.
+ * The STRUCTURE is Indeed's — warm neutrals, hierarchy by weight not size,
+ * three radii (8/12/20), soft layered shadows, a dense master-detail layout.
+ * The SOUL is ours — one action colour, the brand magenta #C622AB (hue 336),
+ * and neutrals warmed toward it rather than the cold greys of a generic SaaS.
+ * One accent, everywhere; the rest is warm grey.
  */
 @theme {
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 
-  /* Surface-container ladder, exposed to Tailwind as bg-surface-* utilities. */
-  --color-surface-low: oklch(0.97 0.006 336);
-  --color-surface: oklch(0.955 0.008 336);
-  --color-surface-high: oklch(0.93 0.01 336);
+  /* Warm-grey surface ladder, exposed as bg-surface-* utilities. */
+  --color-surface-low: oklch(0.985 0.003 340);
+  --color-surface: oklch(0.975 0.004 340);
+  --color-surface-high: oklch(0.955 0.006 340);
 
-  /* Material elevation is tint plus a blue-tinted shadow — never a black one. */
-  --shadow-m3-1: 0 1px 2px oklch(0.48 0.19 264 / 0.08);
-  --shadow-m3-2: 0 2px 6px oklch(0.48 0.19 264 / 0.10);
+  /* Soft, layered elevation — warm, never a hard black shadow. */
+  --shadow-m3-1: 0 0 0.09rem oklch(0.30 0.02 340 / 0.14), 0 0.06rem 0.18rem oklch(0.30 0.02 340 / 0.07), 0 0.12rem 0.25rem oklch(0.30 0.02 340 / 0.04);
+  --shadow-m3-2: 0 0 0.09rem oklch(0.30 0.02 340 / 0.14), 0 0.25rem 0.5rem oklch(0.30 0.02 340 / 0.08), 0 0.5rem 1rem oklch(0.30 0.02 340 / 0.04);
 }
 
 :root {
   color-scheme: light;
-  /* Material 3 palette, source colour #C622AB. Every surface carries hue 336 —
-     a pure grey (chroma 0) is what makes an interface read as Bootstrap rather
-     than Material. */
-  --background: oklch(0.99 0.004 336);
-  --foreground: oklch(0.20 0.015 336);
-  --card: oklch(0.97 0.006 336);
-  --card-foreground: oklch(0.20 0.015 336);
-  --popover: oklch(0.97 0.006 336);
-  --popover-foreground: oklch(0.20 0.015 336);
+  /* Warm neutrals biased toward the brand hue 336, and one magenta accent. */
+  --background: oklch(0.982 0.004 340);
+  --foreground: oklch(0.24 0.02 340);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.02 340);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.02 340);
+  /* The brand magenta #C622AB, the single action colour. */
   --primary: oklch(0.575 0.235 336);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.955 0.008 336);
-  --secondary-foreground: oklch(0.28 0.11 336);
-  --muted: oklch(0.955 0.008 336);
-  --muted-foreground: oklch(0.45 0.02 336);
-  --accent: oklch(0.92 0.05 336);
-  --accent-foreground: oklch(0.28 0.11 336);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.008 336);
-  --input: oklch(0.88 0.008 336);
+  /* Secondary = a soft magenta tint, for the selected/active surfaces. */
+  --secondary: oklch(0.955 0.028 340);
+  --secondary-foreground: oklch(0.42 0.18 336);
+  --muted: oklch(0.965 0.006 340);
+  --muted-foreground: oklch(0.52 0.02 340);
+  --accent: oklch(0.955 0.028 340);
+  --accent-foreground: oklch(0.42 0.18 336);
+  --destructive: oklch(0.55 0.20 22);
+  /* Warm hairline borders. */
+  --border: oklch(0.915 0.008 340);
+  --input: oklch(0.88 0.01 340);
   --ring: oklch(0.575 0.235 336);
   --chart-1: oklch(0.575 0.235 336);
-  --chart-2: oklch(0.60 0.14 336);
-  --chart-3: oklch(0.70 0.10 336);
-  --chart-4: oklch(0.80 0.07 336);
-  --chart-5: oklch(0.88 0.04 336);
-  /* corner-large: the generous radius IS the Material signature. Below 12px the
-     interface stops looking like Gemini. */
-  --radius: 1rem;
-  --sidebar: oklch(0.955 0.008 336);
-  --sidebar-foreground: oklch(0.20 0.015 336);
+  --chart-2: oklch(0.62 0.16 340);
+  --chart-3: oklch(0.72 0.11 340);
+  --chart-4: oklch(0.81 0.07 340);
+  --chart-5: oklch(0.89 0.04 340);
+  /* Three radii, Indeed-style: 8 / 12 / 20 built off a 12px base. */
+  --radius: 0.75rem;
+  --sidebar: oklch(0.975 0.004 340);
+  --sidebar-foreground: oklch(0.24 0.02 340);
   --sidebar-primary: oklch(0.575 0.235 336);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.92 0.05 336);
-  --sidebar-accent-foreground: oklch(0.28 0.11 336);
-  --sidebar-border: oklch(0.88 0.008 336);
+  --sidebar-accent: oklch(0.955 0.028 340);
+  --sidebar-accent-foreground: oklch(0.42 0.18 336);
+  --sidebar-border: oklch(0.915 0.008 340);
   --sidebar-ring: oklch(0.575 0.235 336);
 
-  /* Material surface-container ladder: elevation is tint, not shadow. */
-  --surface-low: oklch(0.97 0.006 336);
-  --surface: oklch(0.955 0.008 336);
-  --surface-high: oklch(0.93 0.01 336);
+  --surface-low: oklch(0.985 0.003 340);
+  --surface: oklch(0.975 0.004 340);
+  --surface-high: oklch(0.955 0.006 340);
+
+  /* Semantic colours, separate from the accent: a CDI chip reads green. */
+  --success: oklch(0.52 0.13 152);
+  --success-surface: oklch(0.95 0.05 152);
+
+  /* Selected/active surface: a soft magenta tint with legible text on it —
+     used for active filter pills and the selected job card. */
+  --secondary-container: oklch(0.93 0.045 340);
+  --on-secondary-container: oklch(0.40 0.19 336);
 }
 
 html,
@@ -79,13 +88,10 @@ body {
 }
 
 body {
-  /* Colours come from the @layer base rule below (bg-background/text-foreground);
-     setting them here too would just be a second source of truth. */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Leaflet ships its own chrome; only the typography is aligned with the app. */
 .leaflet-container {
   font: inherit;
 }
@@ -107,7 +113,6 @@ body {
  */
 
 @theme inline {
-  /* Both resolve to Poppins, injected as --font-poppins by next/font. */
   --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -141,50 +146,62 @@ body {
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --color-success: var(--success);
+  --color-success-surface: var(--success-surface);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+  /* Indeed's three radii: sm 8px, md 12px, lg 20px (base is 12px). */
+  --radius-sm: calc(var(--radius) * 0.667);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) * 1.667);
+  --radius-xl: calc(var(--radius) * 2);
+  --radius-2xl: calc(var(--radius) * 2.33);
+  --radius-3xl: calc(var(--radius) * 2.67);
+  --radius-4xl: calc(var(--radius) * 3);
 }
 
 /*---break---
  */
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: oklch(0.17 0.012 340);
+  --foreground: oklch(0.96 0.006 340);
+  --card: oklch(0.215 0.014 340);
+  --card-foreground: oklch(0.96 0.006 340);
+  --popover: oklch(0.215 0.014 340);
+  --popover-foreground: oklch(0.96 0.006 340);
+  --primary: oklch(0.72 0.19 336);
+  --primary-foreground: oklch(0.16 0.02 340);
+  --secondary: oklch(0.30 0.05 340);
+  --secondary-foreground: oklch(0.92 0.06 340);
+  --muted: oklch(0.26 0.012 340);
+  --muted-foreground: oklch(0.70 0.02 340);
+  --accent: oklch(0.30 0.05 340);
+  --accent-foreground: oklch(0.92 0.06 340);
+  --destructive: oklch(0.70 0.17 22);
+  --border: oklch(0.32 0.014 340);
+  --input: oklch(0.36 0.016 340);
+  --ring: oklch(0.72 0.19 336);
+  --chart-1: oklch(0.72 0.19 336);
+  --chart-2: oklch(0.64 0.14 340);
+  --chart-3: oklch(0.54 0.10 340);
+  --chart-4: oklch(0.44 0.07 340);
+  --chart-5: oklch(0.34 0.05 340);
+  --sidebar: oklch(0.215 0.014 340);
+  --sidebar-foreground: oklch(0.96 0.006 340);
+  --sidebar-primary: oklch(0.72 0.19 336);
+  --sidebar-primary-foreground: oklch(0.16 0.02 340);
+  --sidebar-accent: oklch(0.30 0.05 340);
+  --sidebar-accent-foreground: oklch(0.92 0.06 340);
+  --sidebar-border: oklch(0.32 0.014 340);
+  --sidebar-ring: oklch(0.72 0.19 336);
+  --surface-low: oklch(0.20 0.013 340);
+  --surface: oklch(0.235 0.014 340);
+  --surface-high: oklch(0.27 0.016 340);
+  --success: oklch(0.70 0.14 152);
+  --success-surface: oklch(0.28 0.06 152);
+  --secondary-container: oklch(0.34 0.07 340);
+  --on-secondary-container: oklch(0.90 0.06 340);
 }
 
 /*---break---

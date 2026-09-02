@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'motion/react';
 import { Building2, Clock, ExternalLink, Layers, MapPin, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -97,13 +96,7 @@ function JobFacts({ job }: { job: JobRow }) {
 
 export function JobDetail({ job }: { job: JobRow }) {
   return (
-    <motion.div
-      key={job.id}
-      initial={{ opacity: 0, y: 6 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 34 }}
-      className="flex h-full flex-col"
-    >
+    <div key={job.id} className="flex h-full flex-col">
       <div className="shrink-0 px-6 pt-6 pb-4">
         <h2 className="text-2xl leading-8 font-normal">{job.title}</h2>
 
@@ -187,6 +180,6 @@ export function JobDetail({ job }: { job: JobRow }) {
           )}
         </div>
       </ScrollArea>
-    </motion.div>
+    </div>
   );
 }
