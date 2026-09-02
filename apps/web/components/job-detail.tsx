@@ -32,6 +32,59 @@ const SOURCE_LABELS: Record<string, string> = {
   dior: 'Dior',
 };
 
+/** "35 000 – 42 000 € par an", from whichever half the source published. */
+function salaryLabel(job: JobRow): string | null {
+  if (job.salaryMin === null && job.salaryMax === null) return null;
+
+  const currency = job.salaryCurrency === 'EUR' ? '€' : (job.salaryCurrency ?? '');
+  const amount = (value: number) => value.toLocaleString('fr-FR');
+  const period =
+    { YEAR: 'par an', MONTH: 'par mois', HOUR: 'de l’heure' }[job.salaryPeriod ?? ''] ?? '';
+
+  const band =
+    job.salaryMin !== null && job.salaryMax !== null && job.salaryMin !== job.salaryMax
+      ? `${amount(job.salaryMin)} – ${amount(job.salaryMax)}`
+      : amount((job.salaryMin ?? job.salaryMax) as number);
+
+  return [band, currency, period].filter(Boolean).join(' ');
+}
+
+/**
+ * The structured fields, when the source published them.
+ *
+ * Coverage genuinely varies — Pinpoint and WTTJ give salary bands, TalentView
+ * gives remote policy and experience — so each row appears only when it has a
+ * value. Printing "Salaire : non précisé" would fill the panel with absences.
+ */
+function JobFacts({ job }: { job: JobRow }) {
+  const facts: [string, string][] = [];
+  const salary = salaryLabel(job);
+
+  if (salary) facts.push(['Salaire', salary]);
+  if (job.workingTime) facts.push(['Temps de travail', job.workingTime]);
+  if (job.remote) facts.push(['Télétravail', job.remote]);
+  if (job.experienceYears !== null)
+    facts.push(['Expérience', `${job.experienceYears} an${job.experienceYears > 1 ? 's' : ''}`]);
+  if (job.educationLevel) facts.push(['Formation', job.educationLevel]);
+  if (job.department) facts.push(['Département', job.department]);
+  if (job.location) facts.push(['Lieu', job.location]);
+  if (job.validThrough)
+    facts.push(['Candidature avant le', new Date(job.validThrough).toLocaleDateString('fr-FR')]);
+
+  if (facts.length === 0) return null;
+
+  return (
+    <dl className="bg-surface mb-5 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 rounded-2xl px-4 py-3.5 text-sm">
+      {facts.map(([label, value]) => (
+        <div key={label} className="contents">
+          <dt className="text-muted-foreground tracking-[0.25px]">{label}</dt>
+          <dd className="text-foreground font-medium">{value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 export function JobDetail({ job }: { job: JobRow }) {
   return (
     <motion.div
@@ -97,6 +150,7 @@ export function JobDetail({ job }: { job: JobRow }) {
 
       <ScrollArea className="min-h-0 flex-1">
         <div className="px-6 py-5">
+          <JobFacts job={job} />
           {job.description ? (
             // Descriptions arrive as plain text with the source's own line breaks;
             // whitespace-pre-line keeps them without trusting third-party HTML.

@@ -1,5 +1,5 @@
 import { JobsView } from '@/components/jobs-view';
-import { getJobs } from '@/lib/jobs';
+import { getJobs, type JobFilters } from '@/lib/jobs';
 
 /**
  * Rendered per request, not prerendered.
@@ -12,6 +12,38 @@ import { getJobs } from '@/lib/jobs';
  */
 export const dynamic = 'force-dynamic';
 
-export default async function Page() {
-  return <JobsView data={await getJobs()} />;
+/**
+ * Search state lives in the URL, the way a jobboard's does: a filtered result
+ * set can be linked, bookmarked and reloaded, and Back steps through searches
+ * instead of leaving the page.
+ */
+function parseFilters(params: Record<string, string | string[] | undefined>): JobFilters {
+  const one = (key: string) => {
+    const value = params[key];
+    return (Array.isArray(value) ? value[0] : value)?.trim() || undefined;
+  };
+
+  const page = Number(one('page'));
+  const maxAgeDays = Number(one('age'));
+
+  return {
+    q: one('q'),
+    city: one('ville'),
+    contract: one('contrat'),
+    sector: one('secteur'),
+    maison: one('maison'),
+    source: one('source'),
+    multiSource: one('confirmees') === '1',
+    maxAgeDays: Number.isFinite(maxAgeDays) && maxAgeDays > 0 ? maxAgeDays : undefined,
+    page: Number.isFinite(page) && page > 0 ? page : 1,
+  };
+}
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const filters = parseFilters(await searchParams);
+  return <JobsView data={await getJobs(filters)} filters={filters} />;
 }
