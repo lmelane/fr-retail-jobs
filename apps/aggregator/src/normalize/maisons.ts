@@ -60,7 +60,9 @@ let cache: MaisonEntry[] | null = null;
 export function loadMaisons(): MaisonEntry[] {
   if (cache) return cache;
 
-  const lines = readFileSync(CSV_PATH, 'utf8').trim().split('\n');
+  // Split on \r?\n: the file ships CRLF, and a bare '\n' split would leave a
+  // trailing '\r' on the last field of every non-final row (confidence -> "HIGH\r").
+  const lines = readFileSync(CSV_PATH, 'utf8').trim().split(/\r?\n/);
   const entries: MaisonEntry[] = [];
 
   // Skip the header row.

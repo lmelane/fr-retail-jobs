@@ -1,5 +1,5 @@
 import { fetchJson } from '../lib/http.js';
-import { normalizeLocationString } from '../normalize/location.js';
+import { isArrondissementCity, normalizeLocationString } from '../normalize/location.js';
 
 /**
  * Geocoding against the French government's Adresse API.
@@ -55,6 +55,9 @@ type AdresseFeature = {
   properties?: {
     label?: string;
     city?: string;
+    /** Town-level names the API also returns; either is a real commune name. */
+    municipality?: string;
+    name?: string;
     postcode?: string;
     citycode?: string;
     score?: number;
@@ -66,16 +69,22 @@ type AdresseResponse = { features?: AdresseFeature[] };
 /**
  * Stable cache key for a raw location string.
  *
- * Keyed on the city plus the DEPARTMENT (the postcode's first two digits), not
- * the full postcode: "PARIS 75008" and "PARIS" are one commune and must share a
- * cache entry, while the department still separates true homonyms such as
- * Saint-Germain in 78 from another in 86.
+ * City plus DEPARTMENT (the postcode's first two digits), not the full postcode:
+ * "PARIS 75008" and "PARIS" are one commune and must share a cache entry, while
+ * the department still separates true homonyms such as Saint-Germain in 78 from
+ * another in 86.
+ *
+ * Both the city AND the department come from normalizeLocationString, so a
+ * commune keys the same however a source spelled it — the key would otherwise
+ * split when one string carried the postcode ("75008 Paris") and another did not
+ * ("Paris 08"). Paris/Lyon/Marseille collapse to a unique parent name, so their
+ * department is dropped: it only re-splits what the city already pins.
  */
 export function geoCacheKey(rawLocation: string): string {
-  const { city } = normalizeLocationString(rawLocation);
-  const department = rawLocation.match(/\b(\d{5})\b/)?.[1]?.slice(0, 2);
+  const { city, department } = normalizeLocationString(rawLocation);
   const base = city ?? rawLocation.trim().toUpperCase();
   if (!base) return '';
+  if (isArrondissementCity(city)) return base;
   return department ? `${department}|${base}` : base;
 }
 
@@ -119,7 +128,9 @@ export async function geocodeLocation(rawLocation: string): Promise<GeoPoint | n
   // GeoJSON orders coordinates [lon, lat]; Leaflet expects [lat, lon].
   const [longitude, latitude] = coordinates;
   return {
-    city: feature.properties?.city ?? feature.properties?.label,
+    // Never fall back to `label`: it is the full postal address ("12 Rue X 75008
+    // Paris"), and storing it as the city pollutes the map and the dedup key.
+    city: feature.properties?.city ?? feature.properties?.municipality ?? feature.properties?.name,
     postalCode: feature.properties?.postcode ?? postcode,
     inseeCode: feature.properties?.citycode,
     latitude,

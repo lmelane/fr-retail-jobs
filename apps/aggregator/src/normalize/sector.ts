@@ -78,7 +78,9 @@ const COMPANY_SIGNALS: ReadonlyArray<readonly [Sector, RegExp]> = [
     ),
   ],
   ['LUXURY', /LOUIS VUITTON|DIOR|CHANEL|HERMES|GUCCI|PRADA|BALENCIAGA|SAINT LAURENT|CELINE|GIVENCHY|FENDI|LOEWE|LORO PIANA|BERLUTI|KENZO|CHLOE|LANVIN|BALMAIN|JACQUEMUS|RICHEMONT|KERING|LVMH/],
-  ['FASHION', /ZARA|H ?ET ?M|H&M|UNIQLO|MANGO|PRIMARK|KIABI|CELIO|JULES|SANDRO|MAJE|CLAUDIE PIERLOT|SMCP|LACOSTE|SEZANE|BA ?SH|AMI PARIS|ISABEL MARANT|VEJA|PATOU|ETAM|PIMKIE|MODE|FASHION|COUTURE|APPAREL|TEXTILE|PRET A PORTER/],
+  // \bMODE\b, not bare MODE: without the boundary it matches inside MODERN — a
+  // real false positive ("MODErn Solutions") measured on live data.
+  ['FASHION', /ZARA|H ?ET ?M|H&M|UNIQLO|\bMANGO\b|PRIMARK|KIABI|CELIO|JULES|SANDRO|MAJE|CLAUDIE PIERLOT|SMCP|LACOSTE|SEZANE|BA ?SH|AMI PARIS|ISABEL MARANT|VEJA|PATOU|ETAM|PIMKIE|\bMODE\b|FASHION|COUTURE|APPAREL|TEXTILE|PRET A PORTER/],
   ['RETAIL', /GALERIES LAFAYETTE|PRINTEMPS|BON MARCHE|BHV|COURIR|FOOT ?LOCKER|INTERSPORT|DECATHLON|GO SPORT|SNEAKER|BOUTIQUE|RETAIL|DEPARTMENT STORE/],
 ];
 
@@ -108,6 +110,14 @@ const OUT_OF_SECTOR_RE = new RegExp(
     // IT services, public sector, healthcare, real estate.
     /CAPGEMINI|\bATOS\b|SOPRA|ACCENTURE|MINISTERE|ARMEES|GENDARMERIE|POLICE NATIONALE/,
     /HOPITAL|\bCHU\b|CLINIQUE|EHPAD|\bORPI\b|CENTURY 21|FONCIA|EFFICITY/,
+    // Industry markers that disqualify an otherwise-ambiguous brand token: OMEGA,
+    // ZENITH, MANGO, TRESOR, BOUTIQUE also name a watch/fashion house, so their
+    // signal fires on "Omega Pharma", "Zenith Aircraft", "Mango Airlines" and the
+    // "Trésor Public". A verified house is matched earlier by the reference list,
+    // so these can be excluded here without touching a real Maison.
+    /\bPHARMA|\bAIRCRAFT\b|\bAIRLINES?\b|\bAEROSPACE\b|ENGINEERING|\bTELECOM|TRESOR\s+PUBLIC/,
+    // Hospitality (hotels, resorts): a "Boutique Hotel" is not the retail word.
+    /\bHOTELS?\b|\bHOSTEL\b|\bRESORT\b|\bSPA RESORT\b/,
   ]
     .map((part) => part.source)
     .join('|'),
