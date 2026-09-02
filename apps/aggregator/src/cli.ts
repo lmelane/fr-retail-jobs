@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { runIngest } from './pipeline/ingest.js';
 import { ingestAllBySource } from './pipeline/ingestOrchestrator.js';
+import { tryAcquireIngestLock, releaseIngestLock } from './lib/lock.js';
 import { checkSourceHealth } from './pipeline/health.js';
 import { runRefresh } from './pipeline/refresh.js';
 import { runReconcile } from './pipeline/reconcile.js';
@@ -53,15 +54,27 @@ try {
      * The production ingest entry point (decision D6): each source runs as its
      * own short child process, in series, so no single feed can starve the run.
      * A geocode + health pass follows once every source has had its turn.
+     *
+     * Guarded by an advisory lock so two ingest runs never overlap — a slow run
+     * still going when the next cron fires would otherwise race it.
      */
-    const orchestration = await ingestAllBySource();
-    const geo = await runGeocode(prisma);
-    console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo }, null, 2));
-    if (orchestration.failed > 0 || orchestration.timedOut > 0) {
-      console.error(
-        `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`,
-      );
-      process.exitCode = 1;
+    const gotLock = await tryAcquireIngestLock(prisma);
+    if (!gotLock) {
+      console.log(JSON.stringify({ ok: true, command, skipped: 'another ingest run is in progress' }));
+    } else {
+      try {
+        const orchestration = await ingestAllBySource();
+        const geo = await runGeocode(prisma);
+        console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo }, null, 2));
+        if (orchestration.failed > 0 || orchestration.timedOut > 0) {
+          console.error(
+            `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`,
+          );
+          process.exitCode = 1;
+        }
+      } finally {
+        await releaseIngestLock(prisma);
+      }
     }
   } else if (command === 'refresh') {
     const refresh = await runRefresh(prisma);

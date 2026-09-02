@@ -62,28 +62,36 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
           url: job.url,
           postedAt: job.postedAt ?? undefined,
           company: job.clusterKey ?? '',
-          sourceKey: '',
+          // The job's own source key, not an empty string: an empty key on both
+          // sides made cannotBeSameOpening fire (same source, different ids) and
+          // blocked EVERY merge. A real key still guards the true case — two
+          // offers from the SAME source never merge — while letting two jobs from
+          // different sources be recognised as one opening.
+          sourceKey: job.sources[0]?.sourceKey ?? job.id,
           sourceTier: (job.canonicalTier as CandidateJob['sourceTier']) ?? 'AGGREGATOR',
         });
 
         if (!isProbableDuplicate(asCandidate(keeper), asCandidate(other))) continue;
 
-        // Move the loser's sources onto the keeper, then retire the loser.
-        const moved = await prisma.jobSource.updateMany({
-          where: { jobId: other.id },
-          data: { jobId: keeper.id },
-        });
+        // Merge in ONE transaction: move the loser's sources onto the keeper,
+        // promote the URL if the loser ranks higher, then retire the loser.
+        // Atomic on purpose — a crash between moving the sources and retiring the
+        // loser would otherwise leave two active jobs sharing the same sources,
+        // re-introducing the very duplicate reconcile exists to remove.
+        const promote = tierRank(other.canonicalTier) < tierRank(keeper.canonicalTier);
+        const [moved] = await prisma.$transaction([
+          prisma.jobSource.updateMany({ where: { jobId: other.id }, data: { jobId: keeper.id } }),
+          ...(promote
+            ? [
+                prisma.job.update({
+                  where: { id: keeper.id },
+                  data: { url: other.url, canonicalTier: other.canonicalTier, title: other.title },
+                }),
+              ]
+            : []),
+          prisma.job.update({ where: { id: other.id }, data: { isActive: false } }),
+        ]);
         stats.sourcesMoved += moved.count;
-
-        // The best tier across the pair keeps the canonical apply URL.
-        if (tierRank(other.canonicalTier) < tierRank(keeper.canonicalTier)) {
-          await prisma.job.update({
-            where: { id: keeper.id },
-            data: { url: other.url, canonicalTier: other.canonicalTier, title: other.title },
-          });
-        }
-
-        await prisma.job.update({ where: { id: other.id }, data: { isActive: false } });
         absorbed.add(other.id);
         stats.jobsMerged++;
       }
