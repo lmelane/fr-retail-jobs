@@ -60,6 +60,8 @@ function JobFacts({ job }: { job: JobRow }) {
   const facts: [string, string][] = [];
   const salary = salaryLabel(job);
 
+  const contract = contractLabel(job.contract);
+  if (contract) facts.push(['Contrat', contract]);
   if (salary) facts.push(['Salaire', salary]);
   const workingTime = contractLabel(job.workingTime);
   if (workingTime) facts.push(['Temps de travail', workingTime]);
@@ -69,8 +71,15 @@ function JobFacts({ job }: { job: JobRow }) {
   if (job.educationLevel) facts.push(['Formation', job.educationLevel]);
   if (job.department) facts.push(['Département', job.department]);
   if (job.location) facts.push(['Lieu', job.location]);
+  if (job.postedAt)
+    facts.push(['Publiée le', new Date(job.postedAt).toLocaleDateString('fr-FR')]);
   if (job.validThrough)
     facts.push(['Candidature avant le', new Date(job.validThrough).toLocaleDateString('fr-FR')]);
+  if (job.sources.length > 0)
+    facts.push([
+      job.sources.length > 1 ? 'Sources' : 'Source',
+      job.sources.map((source) => SOURCE_LABELS[source] ?? source).join(' · '),
+    ]);
 
   if (facts.length === 0) return null;
 

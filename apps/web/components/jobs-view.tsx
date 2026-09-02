@@ -203,46 +203,60 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
         </div>
       </header>
 
+      {/* The list NEVER moves: it stays on the left in both modes, because it
+          is what the candidate is working through. The right pane switches
+          between the offer being read and the map — so opening the map costs
+          the detail (which the map replaces on purpose), never the list. */}
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-        <div className="bg-surface-low shadow-m3-1 min-h-0 overflow-hidden rounded-[28px]">
-          <Tabs defaultValue="list" className="flex h-full flex-col gap-0">
+        <div className="bg-surface-low shadow-m3-1 flex min-h-0 flex-col overflow-hidden rounded-[28px]">
+          <ScrollArea className="min-h-0 flex-1">
+            {data.jobs.length === 0 ? (
+              <EmptyState
+                hasFilters={activeCount > 0}
+                onReset={() => startTransition(() => router.push('/', { scroll: false }))}
+              />
+            ) : (
+              <ul className={cn('p-2 transition-opacity', pending && 'opacity-50')}>
+                {data.jobs.map((job) => (
+                  <li key={job.id}>
+                    <JobCard
+                      job={job}
+                      onSelect={() => setSelectedId(job.id)}
+                      isSelected={selected?.id === job.id}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </ScrollArea>
+
+          {data.pageCount > 1 && (
+            <Pagination
+              page={data.page}
+              pageCount={data.pageCount}
+              onGo={(page) => navigate({ page: String(page) })}
+            />
+          )}
+        </div>
+
+        <div className="bg-surface-low shadow-m3-1 min-h-72 overflow-hidden rounded-[28px] lg:min-h-0">
+          <Tabs defaultValue="detail" className="flex h-full flex-col gap-0">
             <TabsList className="bg-surface m-3 h-10 w-fit shrink-0 rounded-full p-1">
-              <TabsTrigger value="list" className="rounded-full px-4 text-sm">
-                Liste
+              <TabsTrigger value="detail" className="rounded-full px-4 text-sm">
+                Offre
               </TabsTrigger>
               <TabsTrigger value="map" className="rounded-full px-4 text-sm">
                 Carte
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="list" className="flex min-h-0 flex-1 flex-col">
-              <ScrollArea className="min-h-0 flex-1">
-                {data.jobs.length === 0 ? (
-                  <EmptyState
-                    hasFilters={activeCount > 0}
-                    onReset={() => startTransition(() => router.push('/', { scroll: false }))}
-                  />
-                ) : (
-                  <ul className={cn('p-2 transition-opacity', pending && 'opacity-50')}>
-                    {data.jobs.map((job) => (
-                      <li key={job.id}>
-                        <JobCard
-                          job={job}
-                          onSelect={() => setSelectedId(job.id)}
-                          isSelected={selected?.id === job.id}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </ScrollArea>
-
-              {data.pageCount > 1 && (
-                <Pagination
-                  page={data.page}
-                  pageCount={data.pageCount}
-                  onGo={(page) => navigate({ page: String(page) })}
-                />
+            <TabsContent value="detail" className="min-h-0 flex-1">
+              {selected ? (
+                <JobDetail job={selected} />
+              ) : (
+                <div className="text-muted-foreground grid h-full place-items-center px-6 text-center text-sm tracking-[0.25px]">
+                  Sélectionnez une offre pour lire le détail.
+                </div>
               )}
             </TabsContent>
 
@@ -268,16 +282,6 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
               )}
             </TabsContent>
           </Tabs>
-        </div>
-
-        <div className="bg-surface-low shadow-m3-1 min-h-72 overflow-hidden rounded-[28px] lg:min-h-0">
-          {selected ? (
-            <JobDetail job={selected} />
-          ) : (
-            <div className="text-muted-foreground grid h-full place-items-center px-6 text-center text-sm tracking-[0.25px]">
-              Sélectionnez une offre pour lire le détail.
-            </div>
-          )}
         </div>
       </div>
     </div>
@@ -351,7 +355,13 @@ function FilterMenu({
           <button
             key={option.value}
             type="button"
-            onClick={onSelect.bind(null, option.value)}
+            onClick={(event) => {
+              // Close the menu on pick: a <details> stays open on its own, and
+              // an open panel over a refreshing list reads as "nothing
+              // happened" even while the filter is applying.
+              event.currentTarget.closest('details')?.removeAttribute('open');
+              onSelect(option.value);
+            }}
             className={cn(
               'flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2 text-left text-sm transition-colors',
               option.value === active
