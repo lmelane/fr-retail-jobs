@@ -122,21 +122,21 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
           <nav className="flex shrink-0 items-center gap-5">
             <Link
               href="/"
-              className="text-foreground/70 hover:text-foreground pb-3 text-[15px] font-medium transition-colors"
+              className="text-foreground/60 hover:text-foreground pb-3 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
             >
               Offres
             </Link>
             <Link
               href="/entreprises"
               aria-current="page"
-              className="text-foreground border-primary -mb-[13px] border-b-2 pb-3 text-[15px] font-semibold"
+              className="text-foreground border-foreground -mb-[13px] border-b-2 pb-3 text-[15px] font-normal tracking-[0.4px]"
             >
               Entreprises
             </Link>
           </nav>
 
           <form
-            className="border-border relative mx-auto flex h-11 w-full max-w-sm items-center rounded-[12px] border bg-white shadow-sm focus-within:ring-2 focus-within:ring-primary/40"
+            className="border-border relative mx-auto flex h-11 w-full max-w-sm items-center rounded-full border bg-white focus-within:ring-2 focus-within:ring-black/20"
             onSubmit={(event) => {
               event.preventDefault();
               navigate({ q: draft.trim() || null });
@@ -157,7 +157,7 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
             />
           </form>
 
-          <span className="text-muted-foreground ml-auto shrink-0 text-xs font-medium tabular-nums">
+          <span className="text-muted-foreground ml-auto shrink-0 text-xs font-normal tracking-[0.4px] tabular-nums">
             {pending ? 'Recherche…' : `${data.total.toLocaleString('fr-FR')} entreprises`}
           </span>
         </div>
@@ -172,9 +172,9 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
               }
               aria-pressed={activeSector === facet.value}
               className={cn(
-                'flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-4 text-[13px] font-medium transition-colors',
+                'flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-4 text-[13px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks',
                 activeSector === facet.value
-                  ? 'border-primary/30 bg-secondary-container text-on-secondary-container font-semibold'
+                  ? 'border-foreground bg-secondary-container text-on-secondary-container'
                   : 'border-border bg-white hover:bg-surface',
               )}
             >
@@ -249,28 +249,28 @@ function CompanyCard({ company }: { company: CompanyRow }) {
   return (
     <Link
       href={`/entreprise/${companySlug(company.name)}`}
-      className="border-border hover:border-foreground/30 hover:bg-surface block h-full rounded-xl border bg-white px-4 py-3 transition-colors"
+      className="border-border block h-full rounded-[16px] border bg-white px-5 py-4 shadow-none transition-shadow duration-300 ease-catwalks hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
     >
       <div className="flex items-start gap-3">
         <CompanyLogo name={company.name} size={40} />
         <div className="min-w-0 flex-1">
-          <h3 className="text-foreground truncate text-[15px] leading-6 font-bold">
+          <h3 className="text-foreground truncate text-[16px] leading-6 font-normal tracking-[0.4px] uppercase">
             {company.name}
           </h3>
-          <p className="text-muted-foreground mt-0.5 flex items-center gap-1.5 text-[13px]">
+          <p className="text-grey-400 mt-0.5 flex items-center gap-1.5 text-[13px] tracking-[0.4px]">
             <Building2 className="size-3.5 shrink-0 opacity-70" />
             {SECTOR_LABELS[company.sector ?? ''] ?? 'Hors référentiel'}
           </p>
         </div>
       </div>
 
-      <p className="text-primary mt-2.5 text-[13px] font-semibold tabular-nums">
+      <p className="text-foreground mt-2.5 text-[13px] font-normal tracking-[0.4px] tabular-nums">
         {company.jobCount.toLocaleString('fr-FR')}{' '}
         {company.jobCount > 1 ? 'emplois ouverts' : 'emploi ouvert'}
       </p>
 
       {company.cities.length > 0 && (
-        <p className="text-muted-foreground mt-1.5 flex items-start gap-1.5 text-[12px]">
+        <p className="text-grey-400 mt-1.5 flex items-start gap-1.5 text-[12px] tracking-[0.4px]">
           <MapPin className="mt-0.5 size-3.5 shrink-0 opacity-70" />
           <span className="line-clamp-2">
             {company.cities

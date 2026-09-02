@@ -13,12 +13,16 @@ import { cn } from '@/lib/utils';
  * render the initial instead.
  */
 
-/** A stable colour per name, so a Maison always gets the same tile. */
+/**
+ * A stable grey per name, so a Maison always gets the same tile. Catwalks'
+ * DA is strictly black/white/grey (decision D17) — no accent colour, so the
+ * fallback initial varies in shade, never hue.
+ */
 function colorFor(name: string): string {
   let hash = 0;
   for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
-  const hue = hash % 360;
-  return `hsl(${hue} 45% 42%)`;
+  const lightness = 30 + (hash % 20); // 30-50% — dark enough for white text
+  return `hsl(0 0% ${lightness}%)`;
 }
 
 /**
@@ -59,7 +63,7 @@ export function CompanyLogo({
     return (
       <span
         aria-hidden
-        className={cn('grid shrink-0 place-items-center rounded-xl font-semibold text-white', className)}
+        className={cn('grid shrink-0 place-items-center rounded-xl font-normal tracking-[0.4px] text-white', className)}
         style={{ width: size, height: size, background: colorFor(name), fontSize: size * 0.42 }}
       >
         {initial}

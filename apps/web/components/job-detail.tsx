@@ -104,12 +104,12 @@ function JobFactsSection({
 
   return (
     <section className="border-border mb-5 border-b pb-5">
-      <h3 className="text-foreground mb-3 text-xl font-bold">Détails de l’emploi</h3>
+      <h3 className="text-foreground mb-3 text-xl font-normal tracking-[0.4px]">Détails de l’emploi</h3>
       <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 text-sm">
         {facts.map(([label, value]) => (
           <div key={label} className="contents">
-            <dt className="text-muted-foreground">{label}</dt>
-            <dd className="text-foreground font-medium">{value}</dd>
+            <dt className="text-grey-400 tracking-[0.4px]">{label}</dt>
+            <dd className="text-foreground font-normal tracking-[0.4px]">{value}</dd>
           </div>
         ))}
       </dl>
@@ -126,44 +126,53 @@ export function JobDetail({ job }: { job: JobRow }) {
       {/* Indeed §3.10: 24/700 title, entreprise + lieu, salaire/type on one
           line (salary bold), action row, then bordered sections below. */}
       <div className="shrink-0 px-6 pt-6 pb-5">
-        <h2 className="text-foreground text-2xl leading-8 font-bold">{job.title}</h2>
+        {/* Detail title: uppercase, weight 400 — larger than the list card
+            (24-32px per the DA) since this is the focal point of the pane. */}
+        <h2 className="text-foreground text-[28px] leading-9 font-normal tracking-[0.4px] uppercase">
+          {job.title}
+        </h2>
 
         <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px]">
-          <span className="text-foreground inline-flex items-center gap-1.5 font-medium">
-            <Building2 className="text-muted-foreground size-4" />
+          <span className="text-grey-400 inline-flex items-center gap-1.5 text-[12px] tracking-[1px] uppercase">
+            <Building2 className="text-grey-400 size-4" />
             {job.company}
           </span>
           {job.group && (
             <>
               <span className="text-border">•</span>
-              <span className="text-muted-foreground">{job.group}</span>
+              <span className="text-grey-400 text-[12px] tracking-[1px] uppercase">{job.group}</span>
             </>
           )}
         </div>
 
-        {job.city && <p className="text-foreground mt-1 text-[15px]">{job.city}</p>}
+        {job.city && <p className="text-foreground mt-1 text-[15px] tracking-[0.4px]">{job.city}</p>}
 
         {(salary || contract) && (
-          <p className="mt-1 text-[15px]">
-            {salary && <span className="text-foreground font-bold">{salary}</span>}
+          <p className="mt-1 text-[15px] tracking-[0.4px]">
+            {salary && <span className="text-foreground font-normal">{salary}</span>}
             {salary && contract && <span className="text-foreground"> - </span>}
             {contract && <span className="text-foreground">{contract}</span>}
           </p>
         )}
 
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <Button asChild className="h-11 rounded-xl px-6 text-[15px] font-bold">
+          {/* Catwalks DA primary button: black pill, weight 400, hover to grey-600. */}
+          <Button
+            asChild
+            className="bg-primary text-primary-foreground hover:bg-grey-600 h-11 rounded-full px-6 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
+          >
             <a href={job.applyUrl} target="_blank" rel="noopener noreferrer">
               Postuler
               <ExternalLink className="size-4" />
             </a>
           </Button>
 
-          {/* The posting's own URL, so it can be sent to someone. */}
+          {/* The posting's own URL, so it can be sent to someone — DA secondary
+              button: transparent, black border, fills black on hover. */}
           <Button
             asChild
-            variant="ghost"
-            className="hover:bg-surface h-11 rounded-xl px-4 text-[15px] font-medium"
+            variant="outline"
+            className="border-foreground text-foreground hover:bg-foreground hover:text-primary-foreground h-11 rounded-full bg-transparent px-6 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
           >
             <a href={`/offre/${job.id}`}>Lien de l’offre</a>
           </Button>
@@ -172,7 +181,7 @@ export function JobDetail({ job }: { job: JobRow }) {
         {/* The differentiator, stated plainly: several sources agree on this one
             opening, and the link goes to the employer rather than a reposting. */}
         {job.sourceCount > 1 && (
-          <p className="text-muted-foreground mt-3 flex items-center gap-1.5 text-xs tracking-[0.4px]">
+          <p className="text-grey-400 mt-3 flex items-center gap-1.5 text-xs tracking-[0.4px]">
             <Layers className="size-3.5 shrink-0" />
             Vue sur {job.sourceCount} sources
             <span className="opacity-70">
@@ -194,16 +203,16 @@ export function JobDetail({ job }: { job: JobRow }) {
           <JobFactsSection job={job} contract={contract} salary={salary} />
 
           <div>
-            <h3 className="text-foreground mb-3 text-xl font-bold">Description</h3>
+            <h3 className="text-foreground mb-3 text-xl font-normal tracking-[0.4px]">Description</h3>
             {job.description ? (
               // Descriptions are stored as clean plain text (the pipeline strips
               // HTML at ingest); whitespace-pre-line keeps the source's line
               // breaks and never trusts third-party HTML.
-              <p className="max-w-[70ch] text-[15px] leading-7 whitespace-pre-line">
+              <p className="max-w-[70ch] text-[15px] leading-7 tracking-[0.4px] whitespace-pre-line">
                 {job.description}
               </p>
             ) : (
-              <p className="text-muted-foreground text-sm">
+              <p className="text-grey-400 text-sm tracking-[0.4px]">
                 Cette source ne fournit pas le texte de l’offre. Le bouton Postuler mène à
                 l’annonce complète chez l’employeur.
               </p>

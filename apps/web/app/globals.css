@@ -46,13 +46,11 @@
 @custom-variant dark (&:is(.dark *));
 
 /**
- * Direction: Indeed's utility ergonomics, Catwalks' identity.
- *
- * The STRUCTURE is Indeed's — warm neutrals, hierarchy by weight not size,
- * three radii (8/12/20), soft layered shadows, a dense master-detail layout.
- * The SOUL is ours — one action colour, the brand magenta #C622AB (hue 336),
- * and neutrals warmed toward it rather than the cold greys of a generic SaaS.
- * One accent, everywhere; the rest is warm grey.
+ * Direction: the Catwalks DA (decision D17) — black, white, grey. No accent
+ * colour anywhere. Indeed only ever supplied the STRUCTURE (dense
+ * master-detail layout, hierarchy, a search pill) — the SOUL is Catwalks'
+ * own: pure black actions, pill-shaped controls, weight always 400 except
+ * the brand wordmark, and shadows that appear only on hover.
  */
 @theme {
   /* --font-sans is declared ONLY in `@theme inline` below: a next/font variable
@@ -60,72 +58,86 @@
      its value at build time — when that variable is still empty, so the body fell
      back to Times. `@theme inline` keeps the var() a live reference instead. */
 
-  /* Indeed's hover/focus transitions run 200ms; Tailwind's default is 150. One
-     value here matches the whole site's feel to Indeed's softer response. */
-  --default-transition-duration: 200ms;
+  /* Catwalks DA: every transition runs 300ms on the same calm easing curve —
+     see --ease-catwalks below. Tailwind's default is 150ms and Indeed's was
+     200ms; neither matches the DA's deliberately slower, calmer response. */
+  --default-transition-duration: 300ms;
+  --default-transition-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+  --ease-catwalks: cubic-bezier(0.39, 0.575, 0.565, 1);
 
-  /* Warm-grey surface ladder, exposed as bg-surface-* utilities. */
-  --color-surface-low: oklch(0.985 0.003 340);
-  --color-surface: oklch(0.975 0.004 340);
-  --color-surface-high: oklch(0.955 0.006 340);
+  /* Neutral grey ladder, exposed as bg-surface-* utilities. No warmth, no hue
+     bias — the DA is strictly black/white/grey. */
+  --color-surface-low: #FAFAFA;
+  --color-surface: #F5F5F5;
+  --color-surface-high: #EEEEEE;
 
-  /* Soft, layered elevation — warm, never a hard black shadow. */
-  --shadow-m3-1: 0 0 0.09rem oklch(0.30 0.02 340 / 0.14), 0 0.06rem 0.18rem oklch(0.30 0.02 340 / 0.07), 0 0.12rem 0.25rem oklch(0.30 0.02 340 / 0.04);
-  --shadow-m3-2: 0 0 0.09rem oklch(0.30 0.02 340 / 0.14), 0 0.25rem 0.5rem oklch(0.30 0.02 340 / 0.08), 0 0.5rem 1rem oklch(0.30 0.02 340 / 0.04);
+  /* DA tokens, exposed directly as color-* utilities (bg-grey-400, text-grey-400…). */
+  --color-grey-100: #F5F5F5;
+  --color-grey-200: #EEEEEE;
+  --color-grey-400: #767676;
+  --color-grey-600: #4A4A4A;
+  --color-listing-bg: #F8F8F8;
+
+  /* Cards carry NO shadow at rest; this is the one shadow the DA defines,
+     shown only on :hover. */
+  --shadow-m3-1: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-m3-2: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
 :root {
   color-scheme: light;
-  /* Warm neutrals biased toward the brand hue 336, and one magenta accent. */
-  --background: oklch(0.982 0.004 340);
-  --foreground: oklch(0.24 0.02 340);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.24 0.02 340);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.24 0.02 340);
-  /* The brand magenta #C622AB, the single action colour. */
-  --primary: oklch(0.575 0.235 336);
-  --primary-foreground: oklch(1 0 0);
-  /* Secondary = a soft magenta tint, for the selected/active surfaces. */
-  --secondary: oklch(0.955 0.028 340);
-  --secondary-foreground: oklch(0.42 0.18 336);
-  --muted: oklch(0.965 0.006 340);
-  --muted-foreground: oklch(0.52 0.02 340);
-  --accent: oklch(0.955 0.028 340);
-  --accent-foreground: oklch(0.42 0.18 336);
+  /* Catwalks DA: black / white / grey only (decision D17). */
+  --background: #FAFAFA;
+  --foreground: #000000;
+  --card: #FFFFFF;
+  --card-foreground: #000000;
+  --popover: #FFFFFF;
+  --popover-foreground: #000000;
+  /* Primary = black. Every bg-primary/text-primary usage in the app becomes
+     the DA's single action colour instead of the old brand magenta. */
+  --primary: #000000;
+  --primary-foreground: #FFFFFF;
+  /* Secondary = a light grey fill, for selected/active surfaces — no tint. */
+  --secondary: #F5F5F5;
+  --secondary-foreground: #000000;
+  --muted: #F5F5F5;
+  --muted-foreground: #767676;
+  --accent: #F5F5F5;
+  --accent-foreground: #000000;
   --destructive: oklch(0.55 0.20 22);
-  /* Warm hairline borders. */
-  --border: oklch(0.915 0.008 340);
-  --input: oklch(0.88 0.01 340);
-  --ring: oklch(0.575 0.235 336);
-  --chart-1: oklch(0.575 0.235 336);
-  --chart-2: oklch(0.62 0.16 340);
-  --chart-3: oklch(0.72 0.11 340);
-  --chart-4: oklch(0.81 0.07 340);
-  --chart-5: oklch(0.89 0.04 340);
-  /* Three radii, Indeed-style: 8 / 12 / 20 built off a 12px base. */
+  --border: #E1E1E1;
+  --input: #E1E1E1;
+  --ring: #000000;
+  --chart-1: #000000;
+  --chart-2: #4A4A4A;
+  --chart-3: #767676;
+  --chart-4: #AFAFAF;
+  --chart-5: #EEEEEE;
+  /* Three radii built off a 12px base — still used for inputs/menus; job
+     cards and hero cards override to the DA's 16px/32px directly. */
   --radius: 0.75rem;
-  --sidebar: oklch(0.975 0.004 340);
-  --sidebar-foreground: oklch(0.24 0.02 340);
-  --sidebar-primary: oklch(0.575 0.235 336);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.955 0.028 340);
-  --sidebar-accent-foreground: oklch(0.42 0.18 336);
-  --sidebar-border: oklch(0.915 0.008 340);
-  --sidebar-ring: oklch(0.575 0.235 336);
+  --sidebar: #F5F5F5;
+  --sidebar-foreground: #000000;
+  --sidebar-primary: #000000;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F5F5F5;
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: #E1E1E1;
+  --sidebar-ring: #000000;
 
-  --surface-low: oklch(0.985 0.003 340);
-  --surface: oklch(0.975 0.004 340);
-  --surface-high: oklch(0.955 0.006 340);
+  --surface-low: #FAFAFA;
+  --surface: #F5F5F5;
+  --surface-high: #EEEEEE;
 
-  /* Semantic colours, separate from the accent: a CDI chip reads green. */
+  /* Semantic colours, separate from the (now absent) accent: a CDI chip
+     still reads green — the DA doesn't forbid semantic colour, only decorative accent colour. */
   --success: oklch(0.52 0.13 152);
   --success-surface: oklch(0.95 0.05 152);
 
-  /* Selected/active surface: a soft magenta tint with legible text on it —
-     used for active filter pills and the selected job card. */
-  --secondary-container: oklch(0.93 0.045 340);
-  --on-secondary-container: oklch(0.40 0.19 336);
+  /* Selected/active surface: a light grey fill with black text — used for
+     active filter pills and the selected job card. Replaces the old magenta tint. */
+  --secondary-container: #F5F5F5;
+  --on-secondary-container: #000000;
 }
 
 html,
@@ -210,44 +222,44 @@ body {
  */
 
 .dark {
-  --background: oklch(0.17 0.012 340);
-  --foreground: oklch(0.96 0.006 340);
-  --card: oklch(0.215 0.014 340);
-  --card-foreground: oklch(0.96 0.006 340);
-  --popover: oklch(0.215 0.014 340);
-  --popover-foreground: oklch(0.96 0.006 340);
-  --primary: oklch(0.72 0.19 336);
-  --primary-foreground: oklch(0.16 0.02 340);
-  --secondary: oklch(0.30 0.05 340);
-  --secondary-foreground: oklch(0.92 0.06 340);
-  --muted: oklch(0.26 0.012 340);
-  --muted-foreground: oklch(0.70 0.02 340);
-  --accent: oklch(0.30 0.05 340);
-  --accent-foreground: oklch(0.92 0.06 340);
+  --background: #171717;
+  --foreground: #F5F5F5;
+  --card: #212121;
+  --card-foreground: #F5F5F5;
+  --popover: #212121;
+  --popover-foreground: #F5F5F5;
+  --primary: #FFFFFF;
+  --primary-foreground: #000000;
+  --secondary: #333333;
+  --secondary-foreground: #F5F5F5;
+  --muted: #262626;
+  --muted-foreground: #AFAFAF;
+  --accent: #333333;
+  --accent-foreground: #F5F5F5;
   --destructive: oklch(0.70 0.17 22);
-  --border: oklch(0.32 0.014 340);
-  --input: oklch(0.36 0.016 340);
-  --ring: oklch(0.72 0.19 336);
-  --chart-1: oklch(0.72 0.19 336);
-  --chart-2: oklch(0.64 0.14 340);
-  --chart-3: oklch(0.54 0.10 340);
-  --chart-4: oklch(0.44 0.07 340);
-  --chart-5: oklch(0.34 0.05 340);
-  --sidebar: oklch(0.215 0.014 340);
-  --sidebar-foreground: oklch(0.96 0.006 340);
-  --sidebar-primary: oklch(0.72 0.19 336);
-  --sidebar-primary-foreground: oklch(0.16 0.02 340);
-  --sidebar-accent: oklch(0.30 0.05 340);
-  --sidebar-accent-foreground: oklch(0.92 0.06 340);
-  --sidebar-border: oklch(0.32 0.014 340);
-  --sidebar-ring: oklch(0.72 0.19 336);
-  --surface-low: oklch(0.20 0.013 340);
-  --surface: oklch(0.235 0.014 340);
-  --surface-high: oklch(0.27 0.016 340);
+  --border: #333333;
+  --input: #3D3D3D;
+  --ring: #FFFFFF;
+  --chart-1: #FFFFFF;
+  --chart-2: #C7C7C7;
+  --chart-3: #AFAFAF;
+  --chart-4: #767676;
+  --chart-5: #4A4A4A;
+  --sidebar: #212121;
+  --sidebar-foreground: #F5F5F5;
+  --sidebar-primary: #FFFFFF;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #333333;
+  --sidebar-accent-foreground: #F5F5F5;
+  --sidebar-border: #333333;
+  --sidebar-ring: #FFFFFF;
+  --surface-low: #1F1F1F;
+  --surface: #262626;
+  --surface-high: #303030;
   --success: oklch(0.70 0.14 152);
   --success-surface: oklch(0.28 0.06 152);
-  --secondary-container: oklch(0.34 0.07 340);
-  --on-secondary-container: oklch(0.90 0.06 340);
+  --secondary-container: #333333;
+  --on-secondary-container: #F5F5F5;
 }
 
 /*---break---

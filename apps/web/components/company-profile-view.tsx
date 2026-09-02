@@ -112,13 +112,13 @@ export function CompanyProfileView({
           <nav className="flex shrink-0 items-center gap-5">
             <Link
               href="/emplois"
-              className="text-foreground/70 hover:text-foreground pb-3 text-[15px] font-medium transition-colors"
+              className="text-foreground/60 hover:text-foreground pb-3 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
             >
               Offres
             </Link>
             <Link
               href="/entreprises"
-              className="text-foreground/70 hover:text-foreground pb-3 text-[15px] font-medium transition-colors"
+              className="text-foreground/60 hover:text-foreground pb-3 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
             >
               Entreprises
             </Link>
@@ -132,10 +132,10 @@ export function CompanyProfileView({
           <div className="flex items-start gap-4">
             <CompanyLogo name={profile.name} size={64} />
             <div className="min-w-0 flex-1">
-              <h1 className="text-foreground text-2xl leading-8 font-bold tracking-[-0.01em] sm:text-[28px]">
+              <h1 className="text-foreground text-2xl leading-8 font-normal tracking-[0.4px] uppercase sm:text-[28px]">
                 {profile.name}
               </h1>
-              <p className="text-muted-foreground mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px]">
+              <p className="text-grey-400 mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px] tracking-[0.4px]">
                 {sectorLabel && (
                   <span className="inline-flex items-center gap-1.5">
                     <Building2 className="size-4 shrink-0 opacity-70" />
@@ -149,37 +149,37 @@ export function CompanyProfileView({
                   </>
                 )}
               </p>
-              <p className="text-primary mt-2 text-[15px] font-semibold tabular-nums">
+              <p className="text-foreground mt-2 text-[15px] font-normal tracking-[0.4px] tabular-nums">
                 {profile.jobCount.toLocaleString('fr-FR')}{' '}
                 {profile.jobCount > 1 ? 'emplois ouverts' : 'emploi ouvert'}
               </p>
             </div>
           </div>
 
-          {/* "À propos" facts row — Indeed's grid, the honest subset we hold. */}
+          {/* "À propos" facts row — the honest subset we hold. */}
           <dl className="border-border mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-t pt-6 sm:grid-cols-4">
             {sectorLabel && (
               <div>
-                <dt className="text-muted-foreground text-xs font-medium">Secteur</dt>
-                <dd className="text-foreground mt-1 text-sm font-semibold">{sectorLabel}</dd>
+                <dt className="text-grey-400 text-xs tracking-[1px] uppercase">Secteur</dt>
+                <dd className="text-foreground mt-1 text-sm font-normal tracking-[0.4px]">{sectorLabel}</dd>
               </div>
             )}
             {profile.parentGroup && (
               <div>
-                <dt className="text-muted-foreground text-xs font-medium">Groupe</dt>
-                <dd className="text-foreground mt-1 text-sm font-semibold">{profile.parentGroup}</dd>
+                <dt className="text-grey-400 text-xs tracking-[1px] uppercase">Groupe</dt>
+                <dd className="text-foreground mt-1 text-sm font-normal tracking-[0.4px]">{profile.parentGroup}</dd>
               </div>
             )}
             <div>
-              <dt className="text-muted-foreground text-xs font-medium">Nombre d’offres</dt>
-              <dd className="text-foreground mt-1 text-sm font-semibold tabular-nums">
+              <dt className="text-grey-400 text-xs tracking-[1px] uppercase">Nombre d’offres</dt>
+              <dd className="text-foreground mt-1 text-sm font-normal tracking-[0.4px] tabular-nums">
                 {profile.jobCount.toLocaleString('fr-FR')}
               </dd>
             </div>
             {profile.cities.length > 0 && (
               <div className="col-span-2 sm:col-span-2">
-                <dt className="text-muted-foreground text-xs font-medium">Villes</dt>
-                <dd className="text-foreground mt-1 flex items-start gap-1.5 text-sm font-semibold">
+                <dt className="text-grey-400 text-xs tracking-[1px] uppercase">Villes</dt>
+                <dd className="text-foreground mt-1 flex items-start gap-1.5 text-sm font-normal tracking-[0.4px]">
                   <MapPin className="mt-0.5 size-3.5 shrink-0 opacity-70" />
                   <span>
                     {profile.cities
@@ -193,13 +193,13 @@ export function CompanyProfileView({
             )}
             {profile.careersUrl && (
               <div>
-                <dt className="text-muted-foreground text-xs font-medium">Site carrière</dt>
-                <dd className="mt-1 text-sm font-semibold">
+                <dt className="text-grey-400 text-xs tracking-[1px] uppercase">Site carrière</dt>
+                <dd className="mt-1 text-sm font-normal tracking-[0.4px]">
                   <a
                     href={profile.careersUrl}
                     target="_blank"
                     rel="noopener"
-                    className="text-primary inline-flex items-center gap-1 hover:underline"
+                    className="text-foreground inline-flex items-center gap-1 hover:underline"
                   >
                     Voir le site
                     <ExternalLink className="size-3.5" />
@@ -216,7 +216,7 @@ export function CompanyProfileView({
         <div className={cn(selected ? 'hidden lg:block' : 'block')}>
           {jobs.length === 0 ? (
             <div className="grid place-items-center px-6 py-16 text-center">
-              <p className="text-foreground text-sm font-medium">
+              <p className="text-foreground text-sm font-normal tracking-[0.4px]">
                 Aucune offre ouverte chez {profile.name} pour l’instant.
               </p>
             </div>
@@ -257,7 +257,7 @@ export function CompanyProfileView({
 
         {selected && (
           <div
-            className="border-border bg-card relative flex flex-col overflow-hidden rounded-[20px] border lg:sticky lg:top-(--detail-top) lg:max-h-(--detail-max-height)"
+            className="border-border bg-card relative flex flex-col overflow-hidden rounded-[16px] border lg:sticky lg:top-(--detail-top) lg:max-h-(--detail-max-height)"
             style={
               headerHeight
                 ? ({

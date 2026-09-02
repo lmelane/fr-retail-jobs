@@ -96,7 +96,10 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
   const params = useSearchParams();
   const [pending, startTransition] = useTransition();
   const [draft, setDraft] = useState(filters.q ?? '');
-  const [locationDraft, setLocationDraft] = useState(filters.city ?? '');
+  // The location field shows "France" (the country, D12's default scope) when no
+  // city is filtered, and the real city otherwise — the same field persisting
+  // from the landing, Indeed-style.
+  const [locationDraft, setLocationDraft] = useState(filters.city ?? 'France');
   // Indeed always shows a detail when there are results: default to the
   // first offer rather than an empty right pane on first paint.
   const [selectedId, setSelectedId] = useState<string | null>(data.jobs[0]?.id ?? null);
@@ -151,7 +154,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
   // the right pane empty until a candidate clicks something.
   useEffect(() => setSelectedId(data.jobs[0]?.id ?? null), [data.jobs]);
   useEffect(() => setDraft(filters.q ?? ''), [filters.q]);
-  useEffect(() => setLocationDraft(filters.city ?? ''), [filters.city]);
+  useEffect(() => setLocationDraft(filters.city ?? 'France'), [filters.city]);
 
   const selected = jobs.find((job) => job.id === selectedId) ?? null;
 
@@ -241,19 +244,19 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
             <Link
               href="/emplois"
               aria-current="page"
-              className="text-foreground border-primary -mb-[13px] border-b-2 pb-3 text-[15px] font-semibold"
+              className="text-foreground border-foreground -mb-[13px] border-b-2 pb-3 text-[15px] font-normal tracking-[0.4px]"
             >
               Offres
             </Link>
             <Link
               href="/entreprises"
-              className="text-foreground/70 hover:text-foreground pb-3 text-[15px] font-medium transition-colors"
+              className="text-foreground/60 hover:text-foreground pb-3 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
             >
               Entreprises
             </Link>
           </nav>
 
-          <div className="text-muted-foreground order-2 ml-auto flex shrink-0 items-center gap-3 text-xs font-medium tabular-nums lg:order-3">
+          <div className="text-muted-foreground order-2 ml-auto flex shrink-0 items-center gap-3 text-xs font-normal tracking-[0.4px] tabular-nums lg:order-3">
             <span aria-live="polite">
               {pending ? 'Recherche…' : `${data.total.toLocaleString('fr-FR')} offres`}
             </span>
@@ -262,7 +265,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
                 variant="ghost"
                 size="sm"
                 onClick={() => startTransition(() => router.push('/emplois', { scroll: false }))}
-                className="hover:bg-surface h-8 rounded-full px-3 text-xs"
+                className="hover:bg-surface h-8 rounded-full px-3 text-xs font-normal"
               >
                 <X className="size-4" />
                 Effacer
@@ -279,7 +282,13 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
               onQueryChange={setDraft}
               city={locationDraft}
               onCityChange={setLocationDraft}
-              onSubmit={({ query, city }) => navigate({ q: query || null, ville: city || null })}
+              onSubmit={({ query, city }) =>
+                // "France" (the default scope) is not a city filter — clear it.
+                navigate({
+                  q: query || null,
+                  ville: city && city.trim().toLowerCase() !== 'france' ? city.trim() : null,
+                })
+              }
             />
           </div>
         </div>
@@ -393,7 +402,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
 
         {selected && (
           <div
-            className="border-border bg-card relative flex flex-col overflow-hidden rounded-[20px] border lg:sticky lg:top-(--detail-top) lg:max-h-(--detail-max-height)"
+            className="border-border bg-card relative flex flex-col overflow-hidden rounded-[16px] border lg:sticky lg:top-(--detail-top) lg:max-h-(--detail-max-height)"
             style={
               headerHeight
                 ? ({
@@ -495,14 +504,14 @@ function FilterMenu({
         aria-haspopup="listbox"
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          'flex h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-4 text-[13px] font-medium transition-colors',
+          'flex h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-4 text-[13px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks',
           active
-            ? 'border-primary/30 bg-secondary-container text-on-secondary-container font-semibold'
+            ? 'border-foreground bg-secondary-container text-on-secondary-container'
             : 'border-border bg-white text-foreground hover:bg-surface',
         )}
       >
         {active ? display(active) : label}
-        <ChevronDown className={cn('size-4 opacity-60 transition-transform', open && 'rotate-180')} />
+        <ChevronDown className={cn('size-4 opacity-60 transition-transform duration-300', open && 'rotate-180')} />
       </button>
 
       {open && rect && typeof document !== 'undefined' &&
@@ -512,7 +521,7 @@ function FilterMenu({
             role="listbox"
             aria-label={label}
             style={{ top: rect.top, left: rect.left }}
-            className="border-border/60 fixed z-50 max-h-80 w-64 overflow-y-auto rounded-xl border bg-white p-1.5 shadow-[0_0_2px_0_rgba(45,45,45,.16),0_4px_8px_0_rgba(45,45,45,.08),0_8px_16px_0_rgba(45,45,45,.04)]"
+            className="border-border/60 fixed z-50 max-h-80 w-64 overflow-y-auto rounded-xl border bg-white p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
           >
             {options.map((option) => {
               const isActive = option.value === active;
@@ -527,8 +536,8 @@ function FilterMenu({
                     onSelect(option.value);
                   }}
                   className={cn(
-                    'flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors',
-                    isActive ? 'bg-secondary-container text-on-secondary-container font-semibold' : 'hover:bg-surface',
+                    'flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks',
+                    isActive ? 'bg-secondary-container text-on-secondary-container' : 'hover:bg-surface',
                   )}
                 >
                   <span className="flex min-w-0 items-center gap-2 truncate">
@@ -574,22 +583,28 @@ export function JobCard({
       onClick={onSelect}
       aria-current={isSelected ? 'true' : undefined}
       className={cn(
-        // Indeed JobCard: a thin-bordered card with a small radius, tight
-        // padding and NO employer logo — the title leads the scan. Selection is
-        // a thin brand border over a faint tint, not a heavy border + shadow.
-        'w-full rounded-xl border px-4 py-3 text-left transition-colors',
+        // Catwalks DA JobCard: 16px radius, no shadow at rest, a shadow only
+        // on hover — no employer logo, the title leads the scan. Selection is
+        // a black border over a light grey fill, never a colour tint.
+        'w-full rounded-[16px] border px-5 py-4 text-left shadow-none transition-shadow duration-300 ease-catwalks hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]',
         isSelected
-          ? 'border-primary bg-secondary-container/40'
-          : 'border-border bg-white hover:bg-surface',
+          ? 'border-foreground bg-secondary-container'
+          : 'border-border bg-white',
       )}
     >
-      {/* Title leads (Indeed puts no logo on list cards), then employer + city. */}
-      <h3 className="text-foreground line-clamp-2 text-[18px] leading-[24px] font-bold tracking-[-0.01em]">
+      {/* Employer name: overline treatment — 12px, uppercase, letter-spaced,
+          grey-400 — leads the title per the DA's __maison spec. */}
+      <p className="text-grey-400 truncate text-[12px] tracking-[1px] uppercase">{job.company}</p>
+
+      {/* Title: uppercase, weight 400 (never bold) — the DA's non-negotiable
+          rule for __position-title, sized down from the 32px standalone spec
+          to stay scannable in this dense list. */}
+      <h3 className="text-foreground mt-1 line-clamp-2 text-[17px] leading-[22px] font-normal tracking-[0.4px] uppercase">
         {job.title}
       </h3>
-      <p className="text-muted-foreground mt-1 truncate text-[13px]">{job.company}</p>
+
       {job.city && (
-        <p className="text-muted-foreground mt-0.5 flex items-center gap-1 truncate text-[13px]">
+        <p className="text-grey-400 mt-1.5 flex items-center gap-1 truncate text-[13px] tracking-[0.4px]">
           <MapPin className="size-3 shrink-0 opacity-70" />
           {job.city}
         </p>
@@ -597,7 +612,7 @@ export function JobCard({
 
       {/* Attribute chips, Indeed order: salary, contract, remote. */}
       {(salary || contract || remote) && (
-        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+        <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
           {salary && <Attr>{salary}</Attr>}
           {contract && <Attr tone={contract === 'CDI' ? 'success' : 'neutral'}>{contract}</Attr>}
           {remote && <Attr>{remote}</Attr>}
@@ -605,7 +620,7 @@ export function JobCard({
       )}
 
       {(job.postedAt || job.sourceCount > 1) && (
-        <p className="text-muted-foreground mt-2 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[12px]">
+        <p className="text-grey-400 mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[12px] tracking-[0.4px]">
           {job.postedAt && <span>{relativeDate(job.postedAt)}</span>}
           {job.sourceCount > 1 && (
             <span className="flex items-center gap-1">
@@ -619,12 +634,12 @@ export function JobCard({
   );
 }
 
-/** A small attribute chip, Indeed-style: 12px, radius 8, tinted by tone. */
+/** A small attribute chip: 12px, weight 400, radius 8, tinted by tone. */
 function Attr({ children, tone = 'neutral' }: { children: React.ReactNode; tone?: 'neutral' | 'success' }) {
   return (
     <span
       className={cn(
-        'rounded-lg px-2 py-1 text-[12px] font-bold leading-none',
+        'rounded-lg px-2 py-1 text-[12px] font-normal tracking-[0.4px] leading-none',
         tone === 'success'
           ? 'bg-success-surface text-success'
           : 'bg-surface-high text-foreground/75',
@@ -649,7 +664,7 @@ function EmptyState({ hasFilters, onReset }: { hasFilters: boolean; onReset: () 
   return (
     <div className="grid place-items-center px-6 py-16 text-center">
       <div>
-        <p className="text-foreground text-sm font-medium">Aucune offre ne correspond.</p>
+        <p className="text-foreground text-sm font-normal tracking-[0.4px]">Aucune offre ne correspond.</p>
         {hasFilters && (
           <Button onClick={onReset} variant="ghost" className="mt-3 rounded-full">
             Effacer les filtres

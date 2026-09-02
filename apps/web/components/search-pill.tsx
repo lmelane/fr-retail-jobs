@@ -9,16 +9,16 @@ import { cn } from '@/lib/utils';
  * on both fields, shared between the landing page and the results header so
  * the two can never drift apart.
  *
- * Every value below was MEASURED against the live fr.indeed.com pill with
- * Playwright (getComputedStyle), not eyeballed:
- *  - field: height 60px, radius 12px, font 16px, text rgb(45,45,45)
- *  - submit button: height 44px, radius 12px, font 16px — Indeed's is
- *    rgb(0,79,203); ours is the brand magenta (--primary) instead
- *  - suggestion panel (#combobox-what-list): white, radius 12px, box-shadow
- *    `0 0 2px rgba(45,45,45,.16), 0 8px 16px rgba(45,45,45,.08), 0 16px 24px
- *    rgba(45,45,45,.04)`, absolutely positioned 4px below the field
+ * Field proportions were measured against the live fr.indeed.com pill with
+ * Playwright (getComputedStyle) — Indeed only ever supplied the STRUCTURE:
+ *  - field: height 60px, font 16px
  *  - suggestion row: 42px tall, 14px text, a 20px icon (search-with-clock for
  *    Poste, a pin for Ville), flex, icon + label with gap
+ *
+ * The SKIN is the Catwalks DA (decision D17) instead: the pill and its submit
+ * button are fully rounded (100vmax), the submit button is black (not
+ * Indeed's blue, not the old brand magenta), and there is no shadow at rest —
+ * only a hairline border.
  *
  * `size="hero"` is the landing page's own big centered pill; `size="compact"`
  * is the smaller pill that sits in the results header. Both share the exact
@@ -51,7 +51,7 @@ export function SearchPill({
   return (
     <form
       className={cn(
-        'border-border mx-auto flex h-auto w-full flex-col items-stretch rounded-[16px] border bg-white shadow-[0_0_2px_0_rgba(45,45,45,.16),0_4px_8px_0_rgba(45,45,45,.08),0_8px_16px_0_rgba(45,45,45,.04)] focus-within:ring-2 focus-within:ring-primary/40 sm:flex-row sm:items-center',
+        'border-border mx-auto flex h-auto w-full flex-col items-stretch rounded-full border bg-white focus-within:ring-2 focus-within:ring-black/20 sm:flex-row sm:items-center',
         hero ? 'max-w-[900px] sm:h-[62px]' : 'max-w-[900px] sm:h-[60px]',
         className,
       )}
@@ -79,19 +79,18 @@ export function SearchPill({
         onChange={onCityChange}
         onCommit={(value) => onCityChange(value)}
         icon={<MapPin className="text-foreground/70 size-5 shrink-0" aria-hidden />}
-        placeholder="Ville"
+        placeholder="Ville, région ou pays"
         ariaLabel="Lieu"
         hero={hero}
         flexClassName="sm:flex-[0.7] sm:pl-2"
       />
 
       <div className="p-2">
-        {/* Native button at Indeed's measured spec — 44px tall, radius 12px,
-            font 16px. The shared Button component rounds to a pill (24px), which
-            is not Indeed's shape; the brand magenta replaces Indeed's blue. */}
+        {/* Catwalks DA primary button: black pill, weight 400, hover to
+            grey-600 — not Indeed's blue, not the old brand magenta. */}
         <button
           type="submit"
-          className="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-primary/40 h-11 w-full rounded-[12px] px-6 text-[16px] font-bold transition-colors focus-visible:ring-2 focus-visible:outline-none sm:w-auto"
+          className="bg-primary text-primary-foreground hover:bg-grey-600 focus-visible:ring-black/30 h-11 w-full rounded-full px-6 text-[16px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks focus-visible:ring-2 focus-visible:outline-none sm:w-auto"
         >
           Rechercher
         </button>
@@ -237,7 +236,7 @@ export function AutocompleteField({
           id={listboxId}
           role="listbox"
           aria-label="Suggestions de recherche"
-          className="border-border/60 absolute top-full left-0 z-20 mt-1 max-h-80 w-full min-w-[280px] overflow-y-auto rounded-[12px] border bg-white py-1.5 shadow-[0_0_2px_0_rgba(45,45,45,.16),0_8px_16px_0_rgba(45,45,45,.08),0_16px_24px_0_rgba(45,45,45,.04)]"
+          className="border-border/60 absolute top-full left-0 z-20 mt-1 max-h-80 w-full min-w-[280px] overflow-y-auto rounded-[12px] border bg-white py-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
         >
           {suggestions.map((suggestion, index) => (
             <button

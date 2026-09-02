@@ -20,12 +20,18 @@ import { SearchPill } from '@/components/search-pill';
 export function LandingView() {
   const router = useRouter();
   const [query, setQuery] = useState('');
-  const [city, setCity] = useState('');
+  // The location field opens on "France" — the country, not a city. The board
+  // is France-first (D12), so "France" is the default scope; typing a real city
+  // narrows it. The field is a LIEU (pays/région/ville), not a strict city.
+  const [city, setCity] = useState('France');
 
   const handleSubmit = ({ query: q, city: c }: { query: string; city: string }) => {
     const params = new URLSearchParams();
     if (q) params.set('q', q);
-    if (c) params.set('ville', c);
+    // "France" (or empty) means the whole country — no city filter; the board is
+    // already FR by default. Only a real city becomes a `ville` filter.
+    const location = c.trim();
+    if (location && location.toLowerCase() !== 'france') params.set('ville', location);
     router.push(params.toString() ? `/emplois?${params}` : '/emplois');
   };
 
@@ -36,13 +42,13 @@ export function LandingView() {
           <nav className="flex items-center gap-5">
             <Link
               href="/emplois"
-              className="text-foreground/70 hover:text-foreground pb-3 text-[15px] font-medium transition-colors"
+              className="text-foreground/60 hover:text-foreground pb-3 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
             >
               Offres
             </Link>
             <Link
               href="/entreprises"
-              className="text-foreground/70 hover:text-foreground pb-3 text-[15px] font-medium transition-colors"
+              className="text-foreground/60 hover:text-foreground pb-3 text-[15px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks"
             >
               Entreprises
             </Link>
@@ -65,13 +71,16 @@ export function LandingView() {
         </div>
 
         <div className="mt-16 flex flex-col items-center gap-3 text-center">
-          <span className="text-primary font-heading text-[40px] leading-none font-bold tracking-[-0.02em] sm:text-[52px]">
+          {/* The one exception to "weight is always 400": the CATWALKS
+              wordmark is the brand logo, and bold 700 is reserved
+              exclusively for it (decision D17). */}
+          <span className="text-foreground font-heading text-[40px] leading-none font-bold tracking-[0.4px] uppercase sm:text-[52px]">
             Catwalks
           </span>
-          <h1 className="text-foreground max-w-[560px] text-xl font-semibold text-balance sm:text-2xl">
+          <h1 className="text-foreground max-w-[560px] text-xl font-normal tracking-[0.4px] text-balance sm:text-2xl">
             Trouvez votre poste dans la mode, le luxe & la beauté
           </h1>
-          <p className="text-muted-foreground max-w-[480px] text-[15px] text-balance">
+          <p className="text-grey-400 max-w-[480px] text-[15px] tracking-[0.4px] text-balance">
             Toutes les offres publiques des Maisons et des jobboards spécialisés, réunies sans doublon.
           </p>
         </div>
