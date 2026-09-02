@@ -1,7 +1,46 @@
 @import 'tailwindcss';
-@import 'leaflet/dist/leaflet.css';
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+
+/* ============================================================
+   Catwalks brand typeface — "catwalks_font" (decision D14).
+   The same proprietary face Catwalks uses, self-hosted from
+   /public/fonts. Fashion Atlas is a Catwalks brand, so it wears the
+   brand type — Indeed's Noto Sans was only the structural clone, not
+   the identity. 5 weights: light 300 / regular 400 / medium 500 /
+   bold 700 / oblique italic.
+   ============================================================ */
+@font-face {
+  font-family: "catwalks_font";
+  font-weight: 300;
+  font-display: swap;
+  src: url("/fonts/catwalks_font-light.woff2") format("woff2");
+}
+@font-face {
+  font-family: "catwalks_font";
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/catwalks_font-regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "catwalks_font";
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/catwalks_font-medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "catwalks_font";
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/catwalks_font-bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "catwalks_font";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/catwalks_font-oblique.woff2") format("woff2");
+}
 /*---break---
  */
 @custom-variant dark (&:is(.dark *));
@@ -120,8 +159,8 @@ body {
  */
 
 @theme inline {
-  --font-heading: var(--font-noto-sans), "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-noto-sans), "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "catwalks_font", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "catwalks_font", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);

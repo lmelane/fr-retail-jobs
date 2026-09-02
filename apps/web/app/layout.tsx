@@ -1,21 +1,10 @@
 import type { Metadata } from 'next';
-import { Noto_Sans } from 'next/font/google';
 import './globals.css';
 
 /**
- * Noto Sans, self-hosted by next/font: no render-blocking request to Google and
- * no layout shift, since the fallback metrics are matched at build time.
- *
- * Indeed's own stack is "Indeed Sans", "Noto Sans", … — Noto Sans is its public
- * fallback, so using it directly gets the closest neutral, humanist reading to
- * Indeed without licensing its proprietary face.
+ * Typography is the Catwalks brand face "catwalks_font" (decision D14),
+ * self-hosted via @font-face in globals.css — no next/font, no Google request.
  */
-const notoSans = Noto_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-noto-sans',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: "Offres d'emploi Mode, Luxe, Beauté & Horlogerie en France",
@@ -25,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={notoSans.variable} suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );
