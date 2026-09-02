@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CompanyLogo } from '@/components/company-logo';
 import { cn } from '@/lib/utils';
 import type { CompaniesResult, CompanyRow } from '@/lib/companies';
 import type { JobRow } from '@/lib/jobs';
@@ -190,18 +191,23 @@ export function CompaniesView({ data }: { data: CompaniesResult }) {
                       href={`/?maison=${encodeURIComponent(company.name)}`}
                       className="bg-surface hover:bg-surface-high block h-full rounded-[20px] px-4 py-3.5 transition-colors"
                     >
-                      <div className="flex items-start justify-between gap-3">
-                        <h3 className="text-foreground text-[15px] leading-6 font-medium">
-                          {company.name}
-                        </h3>
-                        <span className="bg-secondary-container text-on-secondary-container shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium tabular-nums">
-                          {company.jobCount.toLocaleString('fr-FR')}
-                        </span>
+                      <div className="flex items-start gap-3">
+                        <CompanyLogo name={company.name} size={40} />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-start justify-between gap-3">
+                            <h3 className="text-foreground truncate text-[15px] leading-6 font-medium">
+                              {company.name}
+                            </h3>
+                            <span className="bg-secondary-container text-on-secondary-container shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium tabular-nums">
+                              {company.jobCount.toLocaleString('fr-FR')}
+                            </span>
+                          </div>
+                          <p className="text-muted-foreground mt-1 flex items-center gap-1.5 text-xs">
+                            <Building2 className="size-3.5 opacity-70" />
+                            {SECTOR_LABELS[company.sector ?? ''] ?? 'Hors référentiel'}
+                          </p>
+                        </div>
                       </div>
-                      <p className="text-muted-foreground mt-1 flex items-center gap-1.5 text-xs">
-                        <Building2 className="size-3.5 opacity-70" />
-                        {SECTOR_LABELS[company.sector ?? ''] ?? 'Hors référentiel'}
-                      </p>
                       {company.cities.length > 0 && (
                         <p className="text-muted-foreground mt-2 flex items-start gap-1.5 text-xs">
                           <MapPin className="mt-0.5 size-3.5 shrink-0 opacity-70" />

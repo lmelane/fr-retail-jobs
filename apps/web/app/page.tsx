@@ -24,7 +24,6 @@ function parseFilters(params: Record<string, string | string[] | undefined>): Jo
   };
 
   const page = Number(one('page'));
-  const maxAgeDays = Number(one('age'));
 
   return {
     q: one('q'),
@@ -32,9 +31,8 @@ function parseFilters(params: Record<string, string | string[] | undefined>): Jo
     contract: one('contrat'),
     sector: one('secteur'),
     maison: one('maison'),
+    group: one('groupe'),
     source: one('source'),
-    multiSource: one('confirmees') === '1',
-    maxAgeDays: Number.isFinite(maxAgeDays) && maxAgeDays > 0 ? maxAgeDays : undefined,
     page: Number.isFinite(page) && page > 0 ? page : 1,
   };
 }

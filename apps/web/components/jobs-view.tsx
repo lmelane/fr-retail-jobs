@@ -60,10 +60,27 @@ const PARAM: Record<string, string> = {
   contract: 'contrat',
   sector: 'secteur',
   maison: 'maison',
+  group: 'groupe',
   source: 'source',
-  multiSource: 'confirmees',
-  maxAgeDays: 'age',
   page: 'page',
+};
+
+/** Registry keys are lowercase slugs; show the employer-facing label instead. */
+const SOURCE_LABELS: Record<string, string> = {
+  richemont: 'Richemont',
+  kering: 'Kering',
+  loreal: "L'Oréal",
+  courir: 'Courir',
+  lvmh: 'LVMH',
+  wttj: 'Welcome to the Jungle',
+  fashionjobs: 'FashionJobs',
+  puig: 'Puig',
+  chanel: 'Chanel',
+  dior: 'Dior',
+  sephora: 'Sephora',
+  lacoste: 'Lacoste',
+  'galeries-lafayette': 'Galeries Lafayette',
+  decathlon: 'Decathlon',
 };
 
 export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilters }) {
@@ -187,19 +204,19 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
             options={data.facets.maisons}
             onSelect={(value) => toggle('maison', value)}
           />
-          <Chip
-            active={params.get('age') === '7'}
-            onClick={() => toggle('age', '7')}
-          >
-            7 jours
-          </Chip>
-          <Chip
-            active={params.get('confirmees') === '1'}
-            onClick={() => toggle('confirmees', '1')}
-          >
-            <Layers className="size-[18px]" />
-            Confirmées
-          </Chip>
+          <FilterMenu
+            label="Groupe"
+            active={params.get('groupe')}
+            options={data.facets.groups}
+            onSelect={(value) => toggle('groupe', value)}
+          />
+          <FilterMenu
+            label="Source"
+            active={params.get('source')}
+            options={data.facets.sources}
+            labels={SOURCE_LABELS}
+            onSelect={(value) => toggle('source', value)}
+          />
         </div>
       </header>
 
@@ -285,32 +302,6 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
         </div>
       </div>
     </div>
-  );
-}
-
-function Chip({
-  active,
-  onClick,
-  children,
-}: {
-  active?: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={cn(
-        'flex h-9 shrink-0 items-center gap-1.5 rounded-full px-4 text-sm font-medium tracking-[0.1px] transition-colors',
-        active
-          ? 'bg-secondary-container text-on-secondary-container'
-          : 'bg-surface text-foreground hover:bg-surface-high',
-      )}
-    >
-      {children}
-    </button>
   );
 }
 

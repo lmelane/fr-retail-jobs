@@ -8,6 +8,25 @@ import type { Metadata } from 'next';
 export const dynamic = 'force-dynamic';
 
 /**
+ * Serialize JSON-LD safely for inline injection.
+ *
+ * JSON.stringify escapes quotes but NOT "<" (so "</script>" would end the tag)
+ * nor the JS line separators U+2028/U+2029 (valid in JSON, fatal in a script).
+ * The values come from untrusted third-party ATS feeds, so a title or
+ * description containing "</script>" could otherwise inject markup (stored XSS).
+ * Escapes are written with \u so this source stays ASCII.
+ */
+function safeJsonLd(data: unknown): string {
+  // Built from a string so this source carries no literal U+2028/U+2029
+  // (those are line terminators and would break the file itself).
+  const dangerous = new RegExp('[<\\u2028\\u2029]', 'g');
+  return JSON.stringify(data).replace(
+    dangerous,
+    (ch) => '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0'),
+  );
+}
+
+/**
  * One offer, on its own URL.
  *
  * A jobboard's postings have to be shareable — a candidate sends a colleague an
@@ -76,7 +95,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     <div className="bg-background flex h-dvh flex-col gap-3 p-3">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(structuredData) }}
       />
 
       <header className="bg-surface-low shadow-m3-1 flex shrink-0 items-center gap-2 rounded-[28px] px-4 py-3">

@@ -1,4 +1,6 @@
 import { prisma } from '@catwalks/db';
+import { DatabaseUnavailableError, validSector } from './jobs';
+import { expandCompanyTerm } from './groups';
 
 /**
  * Employers, ranked by how many live offers they hold.
@@ -35,15 +37,44 @@ export type CompanyFilters = {
 };
 
 export async function getCompanies(filters: CompanyFilters = {}): Promise<CompaniesResult> {
+  // Same contract as getJobs (decision D1): no database, no invented data — the
+  // page renders the error state rather than crashing unhandled.
+  if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
+  try {
+    return await queryCompanies(filters);
+  } catch (error) {
+    if (error instanceof DatabaseUnavailableError) throw error;
+    throw new DatabaseUnavailableError(error);
+  }
+}
+
+async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult> {
   const page = Math.max(1, filters.page ?? 1);
 
   // Only employers with a live French offer: a company row with nothing open
   // answers no question a candidate is asking.
+  //
+  // Sector and search both constrain the joined Company, so they share ONE
+  // `company` object — two separate spreads collided and dropped the sector.
+  // Search matches the employer name OR its parent group (and group synonyms),
+  // so "SMCP" on /entreprises reaches Sandro and Maje like it does on /.
+  const sector = validSector(filters.sector);
+  const query = filters.q?.trim();
+  const company = {
+    ...(sector ? { sector } : {}),
+    ...(query
+      ? {
+          OR: expandCompanyTerm(query).flatMap((name) => [
+            { name: { contains: name, mode: 'insensitive' as const } },
+            { parentGroup: { contains: name, mode: 'insensitive' as const } },
+          ]),
+        }
+      : {}),
+  };
   const jobWhere = {
     isActive: true,
     isFrance: true,
-    ...(filters.sector ? { company: { sector: filters.sector as never } } : {}),
-    ...(filters.q ? { company: { name: { contains: filters.q, mode: 'insensitive' as const } } } : {}),
+    ...(Object.keys(company).length ? { company } : {}),
   };
 
   const grouped = await prisma.job.groupBy({
