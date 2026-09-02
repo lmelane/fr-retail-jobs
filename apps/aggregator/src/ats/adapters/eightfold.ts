@@ -76,12 +76,19 @@ function toNormalized(position: EightfoldPosition, origin: string): NormalizedJo
   const standardized = position.standardizedLocations?.[0];
   const postedAt = position.postedTs ? new Date(position.postedTs * 1000) : undefined;
 
+  // positionUrl is RELATIVE ("/careers/job/123"): stored as-is it is not a
+  // fetchable URL, so every Eightfold apply link (Estée Lauder, Dr. Jart+…) was
+  // a dead relative path. Resolve it against the origin; verified 200.
+  const positionUrl = position.positionUrl
+    ? new URL(position.positionUrl, `${origin}/`).toString()
+    : `${origin}/careers?pid=${position.id ?? ''}`;
+
   return {
     externalId: String(position.id ?? position.displayJobId ?? position.name),
     title: position.name,
     location: standardized?.city ?? position.locations?.[0],
     country: standardized?.country,
-    url: position.positionUrl ?? `${origin}/careers?pid=${position.id ?? ''}`,
+    url: positionUrl,
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
     raw: position,
   };
