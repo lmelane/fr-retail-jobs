@@ -21,6 +21,10 @@
      its value at build time — when that variable is still empty, so the body fell
      back to Times. `@theme inline` keeps the var() a live reference instead. */
 
+  /* Indeed's hover/focus transitions run 200ms; Tailwind's default is 150. One
+     value here matches the whole site's feel to Indeed's softer response. */
+  --default-transition-duration: 200ms;
+
   /* Warm-grey surface ladder, exposed as bg-surface-* utilities. */
   --color-surface-low: oklch(0.985 0.003 340);
   --color-surface: oklch(0.975 0.004 340);
