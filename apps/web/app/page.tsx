@@ -1,5 +1,5 @@
 import { JobsView } from '@/components/jobs-view';
-import { getJobs, type JobFilters } from '@/lib/jobs';
+import { getJobs, parseFilters } from '@/lib/jobs';
 
 /**
  * Rendered per request, not prerendered.
@@ -16,28 +16,12 @@ export const dynamic = 'force-dynamic';
  * Search state lives in the URL, the way a jobboard's does: a filtered result
  * set can be linked, bookmarked and reloaded, and Back steps through searches
  * instead of leaving the page.
+ *
+ * Only page 1 is rendered here — for SEO and first paint. Page 2+ loads via
+ * /api/jobs as the candidate scrolls (see JobsView), reusing this exact same
+ * parseFilters so the infinite-scroll fetch and the server render can never
+ * disagree on what a filter means.
  */
-function parseFilters(params: Record<string, string | string[] | undefined>): JobFilters {
-  const one = (key: string) => {
-    const value = params[key];
-    return (Array.isArray(value) ? value[0] : value)?.trim() || undefined;
-  };
-
-  const page = Number(one('page'));
-
-  return {
-    q: one('q'),
-    city: one('ville'),
-    contract: one('contrat'),
-    sector: one('secteur'),
-    maison: one('maison'),
-    group: one('groupe'),
-    source: one('source'),
-    country: one('pays'),
-    page: Number.isFinite(page) && page > 0 ? page : 1,
-  };
-}
-
 export default async function Page({
   searchParams,
 }: {

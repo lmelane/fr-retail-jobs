@@ -88,8 +88,24 @@ const ALIAS_INDEX = new Map<string, CompanyIdentity>(
 /** Group prefixes that carry no identity of their own ("GROUPE X" -> "X"). */
 const GROUP_PREFIX = /^(GROUPE|GROUP|MAISON|LES BOUTIQUES)\s+/;
 
+/**
+ * A group ATS feed publishes its whole portfolio under one endpoint and labels
+ * every posting "<lead brand> +N" — "Cartier +3", "Helena Rubinstein +8" — where
+ * N counts the other maisons on that feed. That counter is not part of any
+ * company's name; kept, it forges a phantom employer ("Cartier +3") a candidate
+ * sees on thousands of offers, distinct from the real one.
+ *
+ * The counter is always a space, a plus and digits at the very end, so the plus
+ * inside a real name ("Dr. Jart+") is safe: only " +13" is removed, leaving
+ * "Dr. Jart+". A trailing "+" with no digits is left alone.
+ */
+export function stripMultiBrandSuffix(rawName: string): string {
+  return rawName.replace(/\s+\+\d+\s*$/, '').trim();
+}
+
 export function resolveCompany(rawName: string): CompanyIdentity {
-  const key = canonicalCompanyKey(rawName);
+  const name = stripMultiBrandSuffix(rawName);
+  const key = canonicalCompanyKey(name);
 
   const direct = ALIAS_INDEX.get(key);
   if (direct) return direct;
@@ -101,6 +117,6 @@ export function resolveCompany(rawName: string): CompanyIdentity {
   // Unknown employer: keep it distinct rather than risk a wrong merge.
   return {
     companyId: withoutPrefix.replace(/\s+/g, '_') || key.replace(/\s+/g, '_'),
-    displayName: rawName.trim(),
+    displayName: name,
   };
 }

@@ -108,8 +108,15 @@ function toCandidate(
           salaryPeriod: salaryFromText.period,
         }
       : {}),
-    company: companyName,
-    companyId: resolveCompany(companyName).companyId,
+    // The resolved display name, not the raw source string: group ATS feeds
+    // label every posting "<lead brand> +N", and that counter would otherwise
+    // become the stored company name a candidate reads. resolveCompany strips it
+    // and maps known brands to their canonical spelling, so the Company row, the
+    // dedup key and the card all agree on one name.
+    ...(() => {
+      const identity = resolveCompany(companyName);
+      return { company: identity.displayName, companyId: identity.companyId };
+    })(),
     sourceKey: source.key,
     sourceTier: source.tier,
     atsType,

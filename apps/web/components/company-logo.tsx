@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 /**
  * A company logo, best-effort (decision D9).
  *
- * The brand domain is derived from the company name and handed to Clearbit's
- * free logo endpoint. It works well for well-known houses (dior.com, chanel.com)
+ * The brand domain is derived from the company name and handed to DuckDuckGo's
+ * free icon endpoint. It works well for well-known houses (dior.com, chanel.com)
  * and simply fails for the long tail — so a failed load falls back to a coloured
  * initial. The tile is NEVER broken: no domain, no logo, or a dead endpoint all
  * render the initial instead.
@@ -41,7 +42,15 @@ function guessDomain(name: string): string | null {
   return `${cleaned}.com`;
 }
 
-export function CompanyLogo({ name, size = 40 }: { name: string; size?: number }) {
+export function CompanyLogo({
+  name,
+  size = 40,
+  className,
+}: {
+  name: string;
+  size?: number;
+  className?: string;
+}) {
   const domain = guessDomain(name);
   const [failed, setFailed] = useState(false);
   const initial = name.trim().charAt(0).toUpperCase() || '?';
@@ -50,7 +59,7 @@ export function CompanyLogo({ name, size = 40 }: { name: string; size?: number }
     return (
       <span
         aria-hidden
-        className="grid shrink-0 place-items-center rounded-xl font-semibold text-white"
+        className={cn('grid shrink-0 place-items-center rounded-xl font-semibold text-white', className)}
         style={{ width: size, height: size, background: colorFor(name), fontSize: size * 0.42 }}
       >
         {initial}
@@ -70,7 +79,7 @@ export function CompanyLogo({ name, size = 40 }: { name: string; size?: number }
       height={size}
       loading="lazy"
       onError={() => setFailed(true)}
-      className="shrink-0 rounded-xl bg-white object-contain p-1 ring-1 ring-border"
+      className={cn('shrink-0 rounded-xl bg-white object-contain p-1 ring-1 ring-border', className)}
       style={{ width: size, height: size }}
     />
   );

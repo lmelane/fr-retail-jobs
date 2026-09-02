@@ -41,6 +41,29 @@ export type CompanyFilters = {
   page?: number;
 };
 
+/**
+ * The URL keys are French because the URL is user-visible. Shared by the
+ * server-rendered page and the /api/companies route so infinite scroll and the
+ * first render can never disagree on what a filter means — the same fix the
+ * offer list needed.
+ */
+export function parseCompanyFilters(
+  params: Record<string, string | string[] | undefined>,
+): CompanyFilters {
+  const one = (key: string) => {
+    const value = params[key];
+    return (Array.isArray(value) ? value[0] : value)?.trim() || undefined;
+  };
+  const page = Number(one('page'));
+
+  return {
+    q: one('q'),
+    sector: one('secteur'),
+    country: one('pays'),
+    page: Number.isFinite(page) && page > 0 ? page : 1,
+  };
+}
+
 export async function getCompanies(filters: CompanyFilters = {}): Promise<CompaniesResult> {
   // Same contract as getJobs (decision D1): no database, no invented data — the
   // page renders the error state rather than crashing unhandled.

@@ -26,6 +26,10 @@ type JobMapProps = {
   jobs: JobRow[];
   onSelectCity?: (city: string | null) => void;
   selectedCity?: string | null;
+  /** The job currently hovered or selected in the list — its city marker is highlighted. */
+  highlightedId?: string | null;
+  /** Marker click picks a job to open in the detail panel (Airbnb-style list+map). */
+  onSelectJob?: (id: string) => void;
 };
 
 type CityGroup = {
@@ -58,7 +62,13 @@ function markerRadius(count: number): number {
   return Math.min(30, 11 + Math.sqrt(count) * 3.2);
 }
 
-export default function JobMap({ jobs, onSelectCity, selectedCity }: JobMapProps) {
+export default function JobMap({
+  jobs,
+  onSelectCity,
+  selectedCity,
+  highlightedId,
+  onSelectJob,
+}: JobMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const layerRef = useRef<L.LayerGroup | null>(null);
@@ -111,15 +121,18 @@ export default function JobMap({ jobs, onSelectCity, selectedCity }: JobMapProps
     layer.clearLayers();
 
     for (const group of groups) {
-      const isSelected = selectedCity === group.city;
+      const isSelectedCity = selectedCity === group.city;
+      // A hovered/selected job (list row) highlights its city's marker too —
+      // this is what makes hovering a card "light up" the map, Airbnb-style.
+      const isHighlighted = isSelectedCity || group.jobs.some((job) => job.id === highlightedId);
       const marker = L.circleMarker([group.latitude, group.longitude], {
         radius: markerRadius(group.jobs.length),
         // A single accent hue over the full-colour basemap: pins read as data,
         // and selection is shown by a solid fill rather than a second colour.
         color: MARKER_STROKE,
-        weight: isSelected ? 3 : 2,
-        fillColor: isSelected ? MARKER_STROKE : MARKER_FILL,
-        fillOpacity: isSelected ? 0.95 : 0.75,
+        weight: isHighlighted ? 3 : 2,
+        fillColor: isHighlighted ? MARKER_STROKE : MARKER_FILL,
+        fillOpacity: isHighlighted ? 0.95 : 0.75,
       });
 
       marker.bindTooltip(`${group.city} · ${group.jobs.length} offre${group.jobs.length > 1 ? 's' : ''}`, {
@@ -127,7 +140,12 @@ export default function JobMap({ jobs, onSelectCity, selectedCity }: JobMapProps
         offset: [0, -6],
       });
 
-      marker.on('click', () => onSelectCity?.(isSelected ? null : group.city));
+      marker.on('click', () => {
+        // Prefer picking a single offer (Airbnb: marker click opens a listing);
+        // fall back to the city-filter behaviour the companies map still uses.
+        if (onSelectJob) onSelectJob(group.jobs[0].id);
+        else onSelectCity?.(isSelectedCity ? null : group.city);
+      });
       marker.addTo(layer);
     }
 
@@ -140,7 +158,7 @@ export default function JobMap({ jobs, onSelectCity, selectedCity }: JobMapProps
     } else if (groups.length === 1) {
       map.setView([groups[0].latitude, groups[0].longitude], 10);
     }
-  }, [groups, onSelectCity, selectedCity]);
+  }, [groups, onSelectCity, selectedCity, highlightedId, onSelectJob]);
 
   return (
     <div className="relative h-full w-full">
