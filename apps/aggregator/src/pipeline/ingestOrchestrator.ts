@@ -32,10 +32,21 @@ export type OrchestratorResult = {
   failures: string[];
 };
 
-/** Every source key, API feeds first then sitemap sources. */
+/**
+ * Every source key, API feeds first then sitemap sources — and within the API
+ * feeds, SMALLEST FIRST.
+ *
+ * The volume is wildly uneven: Foot Locker (2794) and L'Oréal Pro re-fetch
+ * thousands of offers and eat minutes each, while most Maisons have well under a
+ * hundred. Ordering the small feeds first means a run that is cut short has
+ * still covered the maximum number of distinct Maisons — dozens of houses on the
+ * board — instead of stalling on two giants and reaching no one else. The few
+ * large feeds run last, where a cut costs the fewest employers.
+ */
 export function allSourceKeys(): string[] {
   const apiKeys = loadSourceCatalog()
     .filter((source) => KIND_TO_ATS[source.kind])
+    .sort((a, b) => (a.jobCount || 0) - (b.jobCount || 0))
     .map((source) => sourceKeyFor(source));
   const sitemapKeys = plainHttpSources()
     .filter((source) => source.kind === 'SITEMAP_JSONLD')
