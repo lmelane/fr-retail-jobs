@@ -1,5 +1,6 @@
 import { prisma } from '@catwalks/db';
 import { matchesQuery, searchIndex } from './search';
+import { expandCompanyTerm } from './groups';
 
 /**
  * Job queries for the list and the map.
@@ -359,7 +360,15 @@ function whereClause(filters: JobFilters) {
               { description: { contains: term, mode: 'insensitive' as const } },
               { city: { contains: term, mode: 'insensitive' as const } },
               { location: { contains: term, mode: 'insensitive' as const } },
-              { company: { name: { contains: term, mode: 'insensitive' as const } } },
+              { department: { contains: term, mode: 'insensitive' as const } },
+              { contract: { contains: term, mode: 'insensitive' as const } },
+              // A brand and its parent are the same search. "sandro" has to
+              // reach offers a group portal filed under "SMCP", and "smcp" has
+              // to reach every brand beneath it.
+              ...expandCompanyTerm(term).flatMap((name) => [
+                { company: { name: { contains: name, mode: 'insensitive' as const } } },
+                { company: { parentGroup: { contains: name, mode: 'insensitive' as const } } },
+              ]),
             ],
           })),
         }

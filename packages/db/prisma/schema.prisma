@@ -78,6 +78,15 @@ model Company {
   canonicalKey         String
   kind                 CompanyKind     @default(UNKNOWN)
   sector               CompanySector   @default(UNKNOWN)
+  /**
+   * Parent group, from the 728-house reference list: Sandro and Maje both sit
+   * under SMCP, Dior under LVMH.
+   *
+   * Stored so a search for "sandro" reaches offers a group portal published
+   * under "SMCP", and so the group is a filter of its own. The reference list
+   * held this from the start and nothing was reading it.
+   */
+  parentGroup          String?
   fashionjobsUrl       String          @unique
   fashionjobsSlug      String?
   fashionjobsOfferCount Int?

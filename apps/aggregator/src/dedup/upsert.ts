@@ -70,6 +70,11 @@ export async function upsertDeduplicated(
   const verdict = classifySector({ company: candidate.company, title: candidate.title });
   const sector = (SECTOR_TO_COMPANY_SECTOR[verdict.sector] ?? 'OTHER') as never;
 
+  // The reference list knows Sandro belongs to SMCP and Dior to LVMH. Storing
+  // it lets a search for one brand reach offers a group portal published under
+  // the parent's name — and gives the group its own filter.
+  const parentGroup = findMaison(candidate.company)?.group || null;
+
   const company = await prisma.company.upsert({
     where: { fashionjobsUrl: `resolved:${candidate.companyId}` },
     create: {
@@ -79,9 +84,10 @@ export async function upsertDeduplicated(
       // The unique key is the employer identity, not a FashionJobs URL: employers
       // reach us from their own sites too, and most never appear on that board.
       fashionjobsUrl: `resolved:${candidate.companyId}`,
+      parentGroup,
       lastSeenAt: now,
     },
-    update: { sector, lastSeenAt: now },
+    update: { sector, parentGroup, lastSeenAt: now },
     select: { id: true },
   });
 
