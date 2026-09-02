@@ -11,6 +11,8 @@ import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
 import type { NormalizedJob } from '../types.js';
 import { PIPELINE_VERSION } from './version.js';
+import { fetchAtsJobs } from '../ats/index.js';
+import type { CatalogSource } from '../connectors/sourceCatalog.js';
 
 /**
  * INGEST — picks up new and updated offers.
@@ -199,6 +201,108 @@ function catalogSitemapSources(): SourceDef[] {
     }));
 }
 
+/** Catalogue `kind` -> the dispatcher's AtsType. */
+const KIND_TO_ATS: Record<string, string> = {
+  successfactors: 'SUCCESSFACTORS',
+  avature: 'AVATURE',
+  eightfold: 'EIGHTFOLD',
+  wttj: 'WTTJ',
+  workday: 'WORKDAY',
+  magnet: 'MAGNET',
+  teamtailor: 'TEAMTAILOR',
+  'smartrecruiters-whitelabel': 'SMARTRECRUITERS',
+  workable: 'WORKABLE',
+  talentview: 'TALENTVIEW',
+  phenom: 'PHENOM',
+  recruitee: 'RECRUITEE',
+  lvmh_algolia: 'LVMH_ALGOLIA',
+  ashby: 'ASHBY',
+  lever: 'LEVER',
+  pinpoint: 'PINPOINT',
+  greenhouse: 'GREENHOUSE',
+  gestmax: 'GENERIC_JSONLD',
+  radancy: 'GENERIC_JSONLD',
+  digitalrecruiters: 'DIGITALRECRUITERS',
+  personio: 'PERSONIO',
+  eightfold_kering: 'EIGHTFOLD',
+};
+
+/**
+ * One API-backed catalogue feed: one listing call, then the write-time dedup.
+ *
+ * This path was MISSING: runIngest only ever consumed sitemap sources, so the
+ * nineteen adapters — LVMH's 1200, Parfums Chanel's 1086, Kering's 1008 —
+ * were tested, validated, and then called by nothing. The catalogue said
+ * 20,378 offers; the pipeline could reach a fraction of them.
+ */
+async function ingestApiSource(prisma: PrismaClient, source: CatalogSource): Promise<IngestStats> {
+  const stats: IngestStats = {
+    source: sourceKeyFor(source),
+    fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 0,
+  };
+
+  const type = KIND_TO_ATS[source.kind];
+  if (!type) {
+    console.error(`[ingest] ${source.maison}: no adapter for kind "${source.kind}"`);
+    stats.errors = 1;
+    return stats;
+  }
+
+  let config: Record<string, unknown> = {};
+  try {
+    config = JSON.parse(source.entryUrl || '{}');
+  } catch {
+    // Legacy rows keep a plain URL there; adapters that need one read origin.
+    config = { origin: source.entryUrl };
+  }
+
+  const jobs = await fetchAtsJobs(type as never, config);
+  stats.fetched = jobs.length;
+
+  const sourceDef: SourceDef = {
+    key: stats.source,
+    company: source.maison.split('(')[0].trim(),
+    flow: 'EMPLOYER',
+    tier: tierFor(source),
+    kind: 'SITEMAP_JSONLD',
+    entryUrl: source.entryUrl,
+    robotsVerdict: source.robotsVerdict,
+    verifiedTotal: source.jobCount,
+    verifiedOn: '2026-09-02',
+  };
+
+  for (const job of jobs) {
+    // Group feeds carry the Maison per offer (LVMH: Sephora, Dior…); a
+    // single-house feed falls back to the catalogue label.
+    const employer = job.company || sourceDef.company;
+
+    if (!classifySector({ company: employer, title: job.title }).inScope) continue;
+    stats.inSector++;
+
+    if (!isFranceJob(job.country, job.location)) continue;
+    stats.france++;
+
+    try {
+      const result = await upsertDeduplicated(prisma, toCandidate(job, sourceDef, employer));
+      if (result.outcome === 'CREATED') stats.created++;
+      else if (result.outcome === 'MERGED') stats.merged++;
+      else stats.updated++;
+    } catch (error) {
+      stats.errors++;
+      if (stats.errors <= 3) {
+        console.error(`[ingest] ${stats.source} write failed:`,
+          error instanceof Error ? error.message : String(error));
+      }
+    }
+  }
+
+  console.log(
+    `[ingest] ${stats.source}: ${stats.france} FR / ${stats.inSector} in-sector / ${stats.fetched} fetched -> ` +
+      `${stats.created} created, ${stats.merged} merged, ${stats.errors} errors`,
+  );
+  return stats;
+}
+
 export async function runIngest(prisma: PrismaClient): Promise<IngestStats[]> {
   /**
    * Generation purge, before anything is fetched.
@@ -262,6 +366,32 @@ export async function runIngest(prisma: PrismaClient): Promise<IngestStats[]> {
       });
       console.error(
         `[ingest] ${source.key} failed:`,
+        error instanceof Error ? error.message : String(error),
+      );
+    }
+  }
+
+  /**
+   * API-backed catalogue feeds — the bulk of the market.
+   *
+   * Sequential on purpose: several portals serve many Maisons from one WAF, and
+   * hammering one with parallel calls is exactly what got the validation pass
+   * rate-limited (Estée Lauder cut us off after its portal was called fourteen
+   * times in a row).
+   */
+  const apiSources = loadSourceCatalog().filter((source) => KIND_TO_ATS[source.kind]);
+  console.log(`[ingest] ${apiSources.length} API feeds: ${apiSources.map((s) => sourceKeyFor(s)).join(', ')}`);
+
+  for (const source of apiSources) {
+    try {
+      results.push(await ingestApiSource(prisma, source));
+    } catch (error) {
+      results.push({
+        source: sourceKeyFor(source),
+        fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 1,
+      });
+      console.error(
+        `[ingest] ${sourceKeyFor(source)} failed:`,
         error instanceof Error ? error.message : String(error),
       );
     }
