@@ -90,6 +90,12 @@ export function parseFilters(params: Record<string, string | string[] | undefine
 
   const page = Number(one('page'));
 
+  // France by default (decision D12): with no `pays` in the URL the board shows
+  // France. An explicit `pays=monde` opens it to every country; any other value
+  // is a specific country code. The world data stays in the database either way.
+  const rawCountry = one('pays');
+  const country = rawCountry === undefined ? 'FR' : rawCountry === 'monde' ? undefined : rawCountry;
+
   return {
     q: one('q'),
     city: one('ville'),
@@ -98,7 +104,7 @@ export function parseFilters(params: Record<string, string | string[] | undefine
     maison: one('maison'),
     group: one('groupe'),
     source: one('source'),
-    country: one('pays'),
+    country,
     page: Number.isFinite(page) && page > 0 ? page : 1,
   };
 }

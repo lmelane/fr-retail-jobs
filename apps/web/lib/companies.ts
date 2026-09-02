@@ -56,10 +56,15 @@ export function parseCompanyFilters(
   };
   const page = Number(one('page'));
 
+  // France by default (decision D12), same as the offer list: no `pays` means
+  // France, `pays=monde` opens every country.
+  const rawCountry = one('pays');
+  const country = rawCountry === undefined ? 'FR' : rawCountry === 'monde' ? undefined : rawCountry;
+
   return {
     q: one('q'),
     sector: one('secteur'),
-    country: one('pays'),
+    country,
     page: Number.isFinite(page) && page > 0 ? page : 1,
   };
 }

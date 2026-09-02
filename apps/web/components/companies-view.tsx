@@ -3,33 +3,25 @@
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { Building2, Loader2, MapPin, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Skeleton } from '@/components/ui/skeleton';
 import { CompanyLogo } from '@/components/company-logo';
 import { cn } from '@/lib/utils';
 import type { CompaniesResult, CompanyFilters, CompanyRow } from '@/lib/companies';
 
 /**
- * Employers, ranked by open positions.
+ * Employers, ranked by open positions — Indeed's company directory shape
+ * (big title, search pill, a GRID of cards), not a list-plus-map.
  *
  * Answers "who is hiring" rather than "what can I apply to". Clicking a Maison
  * hands off to the offer list already filtered to it, so the two pages are one
  * flow rather than two destinations.
  *
- * One map, permanently in view next to the list — no tab to choose between a
- * France map and a world map. The world map is the right single view here: a
- * company list spans every country these Maisons hire in, and a footprint
- * bubble per country answers "where" at a glance the way a France-only city
- * map cannot for employers hiring from Tokyo to New York.
+ * No map: decision D12 drops maps everywhere on the site. A grid of cards
+ * fills the width Indeed's directory does, instead of a narrow list sitting
+ * beside empty space.
  */
-
-const WorldMap = dynamic(() => import('@/components/world-map'), {
-  ssr: false,
-  loading: () => <Skeleton className="h-full w-full rounded-[20px]" />,
-});
 
 const SECTOR_LABELS: Record<string, string> = {
   FASHION: 'Mode',
@@ -49,7 +41,6 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
   const params = useSearchParams();
   const [pending, startTransition] = useTransition();
   const [draft, setDraft] = useState(params.get('q') ?? '');
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 
   /**
    * Infinite scroll, the same shape as the offer list: page 1 arrives
@@ -126,21 +117,20 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
     <div className="bg-background flex h-dvh flex-col overflow-hidden">
       <header className="border-border/70 shrink-0 border-b bg-white">
         <div className="mx-auto flex max-w-[1280px] items-center gap-6 px-6 py-3">
-          <nav className="flex shrink-0 items-center gap-6">
-            <Link href="/" className="text-primary text-xl font-bold tracking-tight">
-              Catwalks
+          <nav className="flex shrink-0 items-center gap-5">
+            <Link
+              href="/"
+              className="text-foreground/70 hover:text-foreground pb-3 text-[15px] font-medium transition-colors"
+            >
+              Offres
             </Link>
-            <div className="hidden items-center gap-5 sm:flex">
-              <Link
-                href="/"
-                className="text-foreground/80 hover:text-foreground pb-3 text-sm font-medium transition-colors"
-              >
-                Offres
-              </Link>
-              <span className="text-foreground border-primary -mb-[13px] border-b-2 pb-3 text-sm font-semibold">
-                Entreprises
-              </span>
-            </div>
+            <Link
+              href="/entreprises"
+              aria-current="page"
+              className="text-foreground border-primary -mb-[13px] border-b-2 pb-3 text-[15px] font-semibold"
+            >
+              Entreprises
+            </Link>
           </nav>
 
           <form
@@ -190,54 +180,36 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
         </div>
       </header>
 
-      {/* List on the left, one world map on the right — permanently, no tab. */}
-      <div className="mx-auto grid min-h-0 w-full max-w-[1280px] flex-1 grid-cols-1 gap-4 overflow-hidden p-4 lg:grid-cols-[minmax(0,470px)_minmax(0,1fr)]">
-        <div className="flex min-h-0 flex-col overflow-hidden">
-          <ScrollArea className="min-h-0 flex-1">
-            <ul className={cn('flex flex-col gap-2.5 pr-2 pb-2 transition-opacity', pending && 'opacity-50')}>
+      {/* A responsive grid filling the width, Indeed's directory shape —
+          no permanent map beside a narrow list. */}
+      <ScrollArea className="min-h-0 flex-1">
+        <div className="mx-auto w-full max-w-[1280px] p-4">
+          {companies.length === 0 ? (
+            <div className="text-muted-foreground grid place-items-center px-6 py-16 text-center text-sm">
+              Aucune entreprise ne correspond.
+            </div>
+          ) : (
+            <ul
+              className={cn(
+                'grid grid-cols-1 gap-3 transition-opacity md:grid-cols-2 lg:grid-cols-3',
+                pending && 'opacity-50',
+              )}
+            >
               {companies.map((company) => (
                 <li key={company.id}>
-                  <Link
-                    href={`/?maison=${encodeURIComponent(company.name)}`}
-                    className="border-border hover:border-foreground/20 block h-full rounded-[20px] border bg-white px-4 py-3.5 transition-colors"
-                  >
-                    <div className="flex items-start gap-3">
-                      <CompanyLogo name={company.name} size={40} />
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between gap-3">
-                          <h3 className="text-foreground truncate text-[15px] leading-6 font-bold">
-                            {company.name}
-                          </h3>
-                          <span className="bg-secondary-container text-on-secondary-container shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold tabular-nums">
-                            {company.jobCount.toLocaleString('fr-FR')}
-                          </span>
-                        </div>
-                        <p className="text-muted-foreground mt-1 flex items-center gap-1.5 text-xs">
-                          <Building2 className="size-3.5 opacity-70" />
-                          {SECTOR_LABELS[company.sector ?? ''] ?? 'Hors référentiel'}
-                        </p>
-                      </div>
-                    </div>
-                    {company.cities.length > 0 && (
-                      <p className="text-muted-foreground mt-2 flex items-start gap-1.5 text-xs">
-                        <MapPin className="mt-0.5 size-3.5 shrink-0 opacity-70" />
-                        <span className="line-clamp-2">
-                          {company.cities
-                            .slice(0, 4)
-                            .map((city) => `${city.city} (${city.count})`)
-                            .join(' · ')}
-                          {company.cities.length > 4 && ` +${company.cities.length - 4}`}
-                        </span>
-                      </p>
-                    )}
-                  </Link>
+                  <CompanyCard company={company} />
                 </li>
               ))}
 
               {/* Infinite scroll: this sentinel triggers the next page as it
-                  nears the viewport, mirroring the offer list. */}
+                  nears the viewport, mirroring the offer list. Spans every
+                  column so it doesn't distort the grid. */}
               {loadedPage < pageCount && (
-                <li ref={sentinelRef} aria-hidden={!loadingMore} className="grid place-items-center py-4">
+                <li
+                  ref={sentinelRef}
+                  aria-hidden={!loadingMore}
+                  className="col-span-full grid place-items-center py-4"
+                >
                   {loadingMore && (
                     <Loader2 className="text-muted-foreground size-5 animate-spin" aria-label="Chargement…" />
                   )}
@@ -245,7 +217,7 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
               )}
 
               {loadError && (
-                <li className="flex flex-col items-center gap-2 py-4">
+                <li className="col-span-full flex flex-col items-center gap-2 py-4">
                   <p className="text-muted-foreground text-sm">{loadError}</p>
                   <Button variant="ghost" size="sm" onClick={() => void loadMore()} className="rounded-full">
                     Réessayer
@@ -253,25 +225,55 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
                 </li>
               )}
             </ul>
-
-            {companies.length === 0 && (
-              <div className="text-muted-foreground grid place-items-center px-6 py-16 text-center text-sm">
-                Aucune entreprise ne correspond.
-              </div>
-            )}
-          </ScrollArea>
+          )}
         </div>
+      </ScrollArea>
+    </div>
+  );
+}
 
-        <div className="border-border min-h-72 overflow-hidden rounded-[20px] border lg:min-h-0">
-          {/* Employer footprint across the world: one bubble per country, sized
-              by how many offers sit there. */}
-          <WorldMap
-            countries={data.countries}
-            selected={selectedCountry}
-            onSelect={setSelectedCountry}
-          />
+/**
+ * One employer, Indeed's directory card minus reviews (we have none): logo,
+ * name, sector, open-position count. Thin border, small radius, tight
+ * padding — the same dense visual language as the offer list's JobCard,
+ * not the old heavy rounded-[20px] card.
+ */
+function CompanyCard({ company }: { company: CompanyRow }) {
+  return (
+    <Link
+      href={`/?maison=${encodeURIComponent(company.name)}`}
+      className="border-border hover:border-foreground/30 hover:bg-surface block h-full rounded-xl border bg-white px-4 py-3 transition-colors"
+    >
+      <div className="flex items-start gap-3">
+        <CompanyLogo name={company.name} size={40} />
+        <div className="min-w-0 flex-1">
+          <h3 className="text-foreground truncate text-[15px] leading-6 font-bold">
+            {company.name}
+          </h3>
+          <p className="text-muted-foreground mt-0.5 flex items-center gap-1.5 text-[13px]">
+            <Building2 className="size-3.5 shrink-0 opacity-70" />
+            {SECTOR_LABELS[company.sector ?? ''] ?? 'Hors référentiel'}
+          </p>
         </div>
       </div>
-    </div>
+
+      <p className="text-primary mt-2.5 text-[13px] font-semibold tabular-nums">
+        {company.jobCount.toLocaleString('fr-FR')}{' '}
+        {company.jobCount > 1 ? 'emplois ouverts' : 'emploi ouvert'}
+      </p>
+
+      {company.cities.length > 0 && (
+        <p className="text-muted-foreground mt-1.5 flex items-start gap-1.5 text-[12px]">
+          <MapPin className="mt-0.5 size-3.5 shrink-0 opacity-70" />
+          <span className="line-clamp-2">
+            {company.cities
+              .slice(0, 4)
+              .map((city) => `${city.city} (${city.count})`)
+              .join(' · ')}
+            {company.cities.length > 4 && ` +${company.cities.length - 4}`}
+          </span>
+        </p>
+      )}
+    </Link>
   );
 }
