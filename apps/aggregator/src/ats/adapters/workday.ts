@@ -40,7 +40,13 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
         externalId,
         title: job.title,
         location: job.locationsText,
-        url: new URL(job.externalPath, `${origin}/${site}/`).toString(),
+        // The public career URL is {origin}/{site}{externalPath}, joined by
+        // string — NOT new URL(externalPath, `${origin}/${site}/`), which
+        // silently DROPS the /{site}/ segment because externalPath is an
+        // absolute path ("/job/…") that overrides the base path. That produced
+        // `${origin}/job/…` on every Richemont/Cartier offer → a 404 on every
+        // apply link. Verified: `${origin}/${site}${externalPath}` → 200.
+        url: `${origin.replace(/\/$/, '')}/${site}${job.externalPath}`,
         raw: job,
       });
     }

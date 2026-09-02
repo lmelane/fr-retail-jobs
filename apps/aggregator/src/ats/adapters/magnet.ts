@@ -64,6 +64,15 @@ type MagnetOffer = {
   contract?: { name?: string } | string;
   published_at?: string;
   url?: string;
+  /**
+   * The real, working links the API ships. `apply_link`/`link` are canonical
+   * redirect URLs (api.magnet.work/v2/redirect/... -> the live offer), verified
+   * 200. There is NO `url` field: building `/offre/{id}` from the internal id
+   * instead produced a 404 on every Magnet offer (the id is `10955-<base64>`,
+   * not a path segment). Prefer these over any constructed URL.
+   */
+  link?: string;
+  apply_link?: string;
   mission_description?: string;
   profile_description?: string;
   company_description?: string;
@@ -125,6 +134,12 @@ async function login(siteKey: string, origin: string): Promise<string> {
 function toNormalized(offer: MagnetOffer, origin: string): NormalizedJob | null {
   if (!offer.title) return null;
 
+  // A working apply link is mandatory — an offer a candidate cannot open is
+  // worse than a missing row. The API always ships apply_link/link, so this
+  // only drops a genuinely malformed offer, never a healthy one.
+  const applyUrl = offer.apply_link || offer.link || offer.url;
+  if (!applyUrl) return null;
+
   const locality = offer.localities?.[0];
   const posted = offer.published_at ? new Date(offer.published_at) : undefined;
 
@@ -146,7 +161,10 @@ function toNormalized(offer: MagnetOffer, origin: string): NormalizedJob | null 
     ...parseCoordinates(locality?.coordinates),
     contract: nameOf(offer.contract),
     description: description || undefined,
-    url: offer.url ?? `${origin}/offre/${offer.id ?? ''}`,
+    // The API's own links, in preference order — all verified to resolve. NEVER
+    // fall back to `/offre/{id}`: the id is `10955-<base64>`, not a URL path, so
+    // that produced a 404 on every Magnet offer (Groupe Eram, ETAM, Beaumanoir…).
+    url: applyUrl,
     postedAt: posted && !Number.isNaN(posted.getTime()) ? posted : undefined,
     raw: offer,
   };

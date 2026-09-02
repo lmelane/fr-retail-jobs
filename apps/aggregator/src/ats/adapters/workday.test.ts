@@ -37,3 +37,30 @@ describe('fetchWorkdayJobs with a posting missing externalPath', () => {
     expect(jobs[0].externalId).toBe('Vendeur_R-123');
   });
 });
+
+/**
+ * Regression for the live 404 on every Richemont/Cartier apply link: the URL was
+ * built with `new URL(externalPath, `${origin}/${site}/`)`, which DROPS the
+ * `/{site}/` segment because externalPath is an absolute path ("/job/…") that
+ * overrides the base path — producing `${origin}/job/…` (404) instead of
+ * `${origin}/${site}/job/…` (200, verified live).
+ */
+describe('fetchWorkdayJobs apply URL', () => {
+  it('keeps the /{site}/ path segment (absolute externalPath must not drop it)', async () => {
+    mockJson.mockResolvedValueOnce({
+      total: 1,
+      jobPostings: [{ title: 'Vendeur', externalPath: '/job/Paris/Vendeur_R-123' }],
+    } as never);
+
+    const jobs = await fetchWorkdayJobs({
+      tenant: 'richemont',
+      site: 'broadbean_external',
+      origin: 'https://richemont.wd3.myworkdayjobs.com',
+      withDescriptions: false,
+    });
+
+    expect(jobs[0].url).toBe(
+      'https://richemont.wd3.myworkdayjobs.com/broadbean_external/job/Paris/Vendeur_R-123',
+    );
+  });
+});
