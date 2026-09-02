@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import pLimit from 'p-limit';
 import { fetchAtsJobs } from '../ats/index.js';
+import { normalizeSourceConfig } from '../connectors/sourceConfig.js';
 import type { NormalizedJob } from '../types.js';
 
 /**
@@ -22,32 +23,6 @@ import type { NormalizedJob } from '../types.js';
 const CSV_PATH = fileURLToPath(new URL('../../data/sources.csv', import.meta.url));
 const OUT_PATH = fileURLToPath(new URL('../../data/sources.validated.csv', import.meta.url));
 const REJECTS_PATH = fileURLToPath(new URL('../../data/sources.rejected.csv', import.meta.url));
-
-/** Config key aliases, so one agent's wording does not lose a working source. */
-const ALIASES: Record<string, string[]> = {
-  slug: ['slug', 'org_slug', 'organization', 'organisation', 'company_slug', 'board_token'],
-  origin: ['origin', 'careers_url', 'career_site', 'board_url', 'public_careers_url', 'domain'],
-  account: ['account', 'account_slug', 'company', 'subdomain', 'enseigne'],
-  tenant: ['tenant'],
-  site: ['site'],
-  siteKey: ['siteKey', 'site_key'],
-  listingUrl: ['listingUrl', 'listing_url', 'jobs_url'],
-  sitemapUrl: ['sitemapUrl', 'sitemap', 'sitemap_url'],
-};
-
-/**
- * Fills in the key an adapter expects from whatever synonym the agent wrote.
- * Non-destructive: the original keys stay, so an adapter reading either wins.
- */
-function normalizeConfig(config: Record<string, unknown>): Record<string, unknown> {
-  const filled = { ...config };
-  for (const [canonical, synonyms] of Object.entries(ALIASES)) {
-    if (filled[canonical] !== undefined) continue;
-    const hit = synonyms.find((key) => config[key] !== undefined && config[key] !== '');
-    if (hit) filled[canonical] = config[hit];
-  }
-  return filled;
-}
 
 /** kind (as written in the catalogue) -> the AtsType the dispatcher knows. */
 const ATS_TYPE: Record<string, string> = {
@@ -71,6 +46,7 @@ const ATS_TYPE: Record<string, string> = {
   gestmax: 'GENERIC_JSONLD',
   radancy: 'GENERIC_JSONLD',
   digitalrecruiters: 'DIGITALRECRUITERS',
+  talentsoft: 'TALENTSOFT',
   personio: 'PERSONIO',
 };
 
@@ -126,7 +102,7 @@ async function validateOne(row: Row): Promise<ValidationResult> {
   if (!type) return { row, jobs: 0, withDescription: 0, error: `no adapter for kind "${row.kind}"` };
 
   try {
-    const jobs: NormalizedJob[] = await fetchAtsJobs(type as never, normalizeConfig(row.config));
+    const jobs: NormalizedJob[] = await fetchAtsJobs(type as never, normalizeSourceConfig(row.config));
     return {
       row,
       jobs: jobs.length,
@@ -175,7 +151,7 @@ export async function validateSources(): Promise<void> {
           [
             escape(r.row.maison),
             r.row.kind,
-            escape(JSON.stringify(normalizeConfig(r.row.config))),
+            escape(JSON.stringify(normalizeSourceConfig(r.row.config))),
             r.jobs,
             r.withDescription,
           ].join(','),

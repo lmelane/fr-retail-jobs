@@ -59,7 +59,16 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         controller.signal,
       );
       if (response.ok) return response;
-      if (![429, 500, 502, 503, 504].includes(response.status)) {
+      /**
+       * Transient statuses worth another attempt after a backoff. 403 and 405
+       * are here because an anti-bot WAF returns them as a SOFT block, not a
+       * real rejection: Estée Lauder's Eightfold portal answered 405 to
+       * /api/pcsx/search during a heavy run and lost all 1374 offers, yet the
+       * identical GET returns 200 once the throttle lifts. A genuine 403/405
+       * still fails cleanly after the (capped) retries — the cost is a few
+       * seconds, the gain is a whole group's offers not dropped to a blip.
+       */
+      if (![403, 405, 429, 500, 502, 503, 504].includes(response.status)) {
         throw new Error(`HTTP ${response.status} for ${url}`);
       }
       lastError = new Error(`HTTP ${response.status} for ${url}`);

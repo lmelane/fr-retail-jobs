@@ -13,6 +13,7 @@ import { fetchWttjJobs } from './adapters/wttj.js';
 import { fetchSuccessFactorsJobs } from './adapters/successfactors.js';
 import { fetchPhenomJobs } from './adapters/phenom.js';
 import { fetchDigitalRecruitersJobs } from './adapters/digitalrecruiters.js';
+import { fetchTalentsoftJobs } from './adapters/talentsoft.js';
 import { fetchTeamtailorJobs } from './adapters/teamtailor.js';
 import { fetchAvatureJobs } from './adapters/avature.js';
 import { fetchEightfoldJobs } from './adapters/eightfold.js';
@@ -37,6 +38,7 @@ export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown
     case 'SUCCESSFACTORS': return fetchSuccessFactorsJobs(config);
     case 'PHENOM': return fetchPhenomJobs(config);
     case 'DIGITALRECRUITERS': return fetchDigitalRecruitersJobs(config);
+    case 'TALENTSOFT': return fetchTalentsoftJobs(config);
     case 'TEAMTAILOR': return fetchTeamtailorJobs(config);
     case 'AVATURE': return fetchAvatureJobs(config);
     case 'EIGHTFOLD': return fetchEightfoldJobs(config);

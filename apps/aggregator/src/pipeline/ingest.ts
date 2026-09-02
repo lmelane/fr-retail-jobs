@@ -8,6 +8,8 @@ import { resolveCompany } from '../normalize/company.js';
 import { normalizeContract, normalizeWorkingTime, isWorkingTimeValue, extractContract, extractSalaryBand } from '../normalize/contract.js';
 import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
+import { coerceAmount, briefError } from '../lib/normalize.js';
+import { normalizeSourceConfig } from '../connectors/sourceConfig.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
 import type { NormalizedJob } from '../types.js';
@@ -86,16 +88,23 @@ function toCandidate(
 
   const workingTime = normalizeWorkingTime(misfiled ? job.contract : job.workingTime);
 
+  // Coerce the structured salary at the boundary: a schema.org feed (Teamtailor)
+  // hands minValue/maxValue over as strings ("75000"), and written through to an
+  // Int? column that crashed job.create and lost the offer. A non-number becomes
+  // undefined, which then lets the text extraction below recover a band.
+  const salaryMin = coerceAmount(job.salaryMin);
+  const salaryMax = coerceAmount(job.salaryMax);
+
   // Salary from prose when the structured field is empty: Galeries Lafayette
   // writes the band in the text, and a fiche without it reads half-finished.
   const salaryFromText =
-    job.salaryMin === undefined && job.salaryMax === undefined
-      ? extractSalaryBand(description)
-      : null;
+    salaryMin === undefined && salaryMax === undefined ? extractSalaryBand(description) : null;
 
   return {
     ...job,
     description,
+    salaryMin,
+    salaryMax,
     // "UNKNOWN" is the normalizer's non-answer, not a value — stored as such
     // it is truthy, and the UI printed "Contrat : UNKNOWN" on every offer.
     contract: contract === 'UNKNOWN' ? undefined : contract,
@@ -216,12 +225,7 @@ async function ingestSitemapSource(
           else stats.updated++;
         } catch (error) {
           stats.errors++;
-          if (stats.errors <= 3) {
-            console.error(
-              `[ingest] ${source.key} write failed:`,
-              error instanceof Error ? error.message : String(error),
-            );
-          }
+          if (stats.errors <= 3) console.error(`[ingest] ${source.key} write failed: ${briefError(error)}`);
         }
       }),
     ),
@@ -289,6 +293,7 @@ export const KIND_TO_ATS: Record<string, string> = {
   gestmax: 'GENERIC_JSONLD',
   radancy: 'GENERIC_JSONLD',
   digitalrecruiters: 'DIGITALRECRUITERS',
+  talentsoft: 'TALENTSOFT',
   personio: 'PERSONIO',
   eightfold_kering: 'EIGHTFOLD',
   wordpress: 'WORDPRESS',
@@ -324,6 +329,12 @@ async function ingestApiSource(prisma: PrismaClient, source: CatalogSource): Pro
     // Legacy rows keep a plain URL there; adapters that need one read origin.
     config = { origin: source.entryUrl };
   }
+
+  // Resolve config-key synonyms before the adapter reads it: a discovery batch
+  // may have written `careers_url` where the Teamtailor adapter expects
+  // `origin`, and the unrecognised key fetched nothing — the live "origin
+  // missing" failures. validateSources already did this; now the ingest agrees.
+  config = normalizeSourceConfig(config);
 
   const jobs = await fetchAtsJobs(type as never, config);
   stats.fetched = jobs.length;
@@ -370,10 +381,10 @@ async function ingestApiSource(prisma: PrismaClient, source: CatalogSource): Pro
       else stats.updated++;
     } catch (error) {
       stats.errors++;
-      if (stats.errors <= 3) {
-        console.error(`[ingest] ${stats.source} write failed:`,
-          error instanceof Error ? error.message : String(error));
-      }
+      // briefError, not the raw message: a Prisma failure prints the whole
+      // job.create payload (~90 lines), which flooded the log stream past its
+      // rate cap and dropped other errors we then never saw.
+      if (stats.errors <= 3) console.error(`[ingest] ${stats.source} write failed: ${briefError(error)}`);
     }
   }
 
@@ -431,7 +442,12 @@ export async function runIngest(
     // offers that cost least to obtain.
     .sort((a, b) => (a.crawlDelaySeconds ?? 0) - (b.crawlDelaySeconds ?? 0));
 
-  console.log(`[ingest] ${sources.length} sitemap sources: ${sources.map((s) => s.key).join(', ')}`);
+  // Only when there are any: the per-source orchestrator calls this with a
+  // single source in one list and none in the other, so an unconditional line
+  // printed "0 sitemap sources:" on every call — half the log stream was noise.
+  if (sources.length > 0) {
+    console.log(`[ingest] ${sources.length} sitemap sources: ${sources.map((s) => s.key).join(', ')}`);
+  }
   const results: IngestStats[] = [];
 
   /**
@@ -470,10 +486,7 @@ export async function runIngest(
         );
       }
     } catch (error) {
-      console.error(
-        `[ingest] ${stats.source} purge failed:`,
-        error instanceof Error ? error.message : String(error),
-      );
+      console.error(`[ingest] ${stats.source} purge failed: ${briefError(error)}`);
     }
   };
 
@@ -494,7 +507,9 @@ export async function runIngest(
   const apiSources = loadSourceCatalog()
     .filter((source) => KIND_TO_ATS[source.kind])
     .filter((source) => !options.only || sourceKeyFor(source) === options.only);
-  console.log(`[ingest] ${apiSources.length} API feeds: ${apiSources.map((s) => sourceKeyFor(s)).join(', ')}`);
+  if (apiSources.length > 0) {
+    console.log(`[ingest] ${apiSources.length} API feeds: ${apiSources.map((s) => sourceKeyFor(s)).join(', ')}`);
+  }
 
   for (const source of apiSources) {
     try {
@@ -507,10 +522,7 @@ export async function runIngest(
         source: sourceKeyFor(source),
         fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 1,
       });
-      console.error(
-        `[ingest] ${sourceKeyFor(source)} failed:`,
-        error instanceof Error ? error.message : String(error),
-      );
+      console.error(`[ingest] ${sourceKeyFor(source)} failed: ${briefError(error)}`);
     }
   }
 

@@ -95,3 +95,8 @@ Vivienne Westwood,viviennewestwood.teamtailor.com,teamtailor,"{""origin"": ""htt
 Luxe Talent,www.luxetalent.net,wordpress,"{""origin"": ""https://www.luxetalent.net"", ""categoryId"": 14}",,"ALLOWED (Disallow /wp-admin/ only) — standard WP REST, x-wp-total 478",478,yes
 Michael Page France,www.michaelpage.fr,generic-listing,"{""listingUrl"": ""https://www.michaelpage.fr/jobs"", ""linkPattern"": ""/job-detail/"", ""pageParam"": ""page""}",,"ALLOWED (Disallow covers /job-apply/, salary-param URLs and deep facets — not /jobs?page= nor /job-detail/)",3800,yes
 FashionJobs,fr.fashionjobs.com,fashionjobs,"{""maxPages"": 40}",,"ALLOWED (/emploi/ and /s/ not disallowed) — Cloudflare WAF, browser route",7611,yes
+Balmain,balmain-career.talent-soft.com,talentsoft,"{""origin"": ""https://balmain-career.talent-soft.com""}",,ALLOWED,20,yes
+Longchamp,longchamp-career.talent-soft.com,talentsoft,"{""origin"": ""https://longchamp-career.talent-soft.com""}",,ALLOWED,20,yes
+Groupe Printemps,printemps-career.talent-soft.com,talentsoft,"{""origin"": ""https://printemps-career.talent-soft.com""}",,ALLOWED,20,yes
+Groupe Chantelle,groupechantelle-recrute.talent-soft.com,talentsoft,"{""origin"": ""https://groupechantelle-recrute.talent-soft.com""}",,ALLOWED,20,yes
+Lagardère Travel Retail,lagardere-recrute.talent-soft.com,talentsoft,"{""origin"": ""https://lagardere-recrute.talent-soft.com""}",,ALLOWED,20,yes

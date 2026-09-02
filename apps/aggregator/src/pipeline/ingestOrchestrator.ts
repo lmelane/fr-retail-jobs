@@ -3,6 +3,7 @@ import { plainHttpSources } from '../connectors/registry.js';
 import { loadSourceCatalog, sourceKeyFor } from '../connectors/sourceCatalog.js';
 import { runIngest, KIND_TO_ATS } from './ingest.js';
 import { checkSourceHealth } from './health.js';
+import { briefError } from '../lib/normalize.js';
 
 /**
  * Runs every source under its OWN time budget (decision D6), in series.
@@ -97,7 +98,7 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
       } else {
         result.failed++;
         result.failures.push(`${key} (failed)`);
-        console.error(`[orchestrator] ${key}: failed — ${message}`);
+        console.error(`[orchestrator] ${key}: failed — ${briefError(error)}`);
       }
     }
   }
