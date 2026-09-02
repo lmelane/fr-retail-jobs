@@ -261,7 +261,7 @@ function catalogSitemapSources(): SourceDef[] {
 }
 
 /** Catalogue `kind` -> the dispatcher's AtsType. */
-const KIND_TO_ATS: Record<string, string> = {
+export const KIND_TO_ATS: Record<string, string> = {
   successfactors: 'SUCCESSFACTORS',
   avature: 'AVATURE',
   eightfold: 'EIGHTFOLD',

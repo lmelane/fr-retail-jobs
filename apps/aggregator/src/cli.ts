@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { runIngest } from './pipeline/ingest.js';
+import { ingestAllBySource } from './pipeline/ingestOrchestrator.js';
 import { checkSourceHealth } from './pipeline/health.js';
 import { runRefresh } from './pipeline/refresh.js';
 import { runReconcile } from './pipeline/reconcile.js';
@@ -45,6 +46,21 @@ try {
         console.error(`[health] ${incident.source}: ${incident.status} — ${incident.note}`);
       }
       // The data already written is kept; the run is flagged so someone looks.
+      process.exitCode = 1;
+    }
+  } else if (command === 'ingest-all') {
+    /**
+     * The production ingest entry point (decision D6): each source runs as its
+     * own short child process, in series, so no single feed can starve the run.
+     * A geocode + health pass follows once every source has had its turn.
+     */
+    const orchestration = await ingestAllBySource();
+    const geo = await runGeocode(prisma);
+    console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo }, null, 2));
+    if (orchestration.failed > 0 || orchestration.timedOut > 0) {
+      console.error(
+        `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`,
+      );
       process.exitCode = 1;
     }
   } else if (command === 'refresh') {

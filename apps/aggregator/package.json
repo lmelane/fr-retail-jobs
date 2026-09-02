@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "ingest": "tsx src/cli.ts ingest",
+    "ingest-all": "tsx src/cli.ts ingest-all",
     "refresh": "tsx src/cli.ts refresh",
     "reconcile": "tsx src/cli.ts reconcile",
     "geocode": "tsx src/cli.ts geocode",
