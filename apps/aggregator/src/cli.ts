@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { runIngest } from './pipeline/ingest.js';
 import { ingestAllBySource } from './pipeline/ingestOrchestrator.js';
 import { checkSourceHealth } from './pipeline/health.js';
+import { sendHealthAlert } from './pipeline/alert.js';
 import { runRefresh } from './pipeline/refresh.js';
 import { runReconcile } from './pipeline/reconcile.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
@@ -47,7 +48,8 @@ try {
      * Exiting non-zero is what makes the scheduler show it.
      */
     const health = await checkSourceHealth(prisma, stats);
-    console.log(JSON.stringify({ ok: health.broken === 0, command, sources: stats, geo, health }, null, 2));
+    const alerted = await sendHealthAlert(health);
+    console.log(JSON.stringify({ ok: health.broken === 0, command, sources: stats, geo, health, alerted }, null, 2));
 
     if (health.broken > 0) {
       for (const incident of health.incidents) {
@@ -70,7 +72,14 @@ try {
      */
     const orchestration = await ingestAllBySource(prisma);
     const geo = await runGeocode(prisma);
-    console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo }, null, 2));
+    // One health digest per run: email the operator every degraded/broken source
+    // so the catalogue stays clean (a source dying silently is the enemy).
+    const alerted = await sendHealthAlert({
+      degraded: orchestration.incidents.filter((i) => i.status === 'DEGRADED').length,
+      broken: orchestration.incidents.filter((i) => i.status === 'BROKEN').length,
+      incidents: orchestration.incidents,
+    });
+    console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo, alerted }, null, 2));
     if (orchestration.failed > 0 || orchestration.timedOut > 0) {
       console.error(
         `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`,

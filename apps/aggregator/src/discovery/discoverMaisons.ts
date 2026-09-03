@@ -61,7 +61,10 @@ const PROGRESS_PATH = dataUrl('discovery.progress.tsv');
 const UNRESOLVED_PATH = dataUrl('sources.unresolved.csv');
 
 function csvCell(value: string): string {
-  return `"${value.replace(/"/g, '""')}"`;
+  // Defang spreadsheet formula injection: a company name starting with = + - @
+  // would execute as a formula if a reviewer opens the CSV in Excel/Sheets.
+  const safe = /^[=+\-@]/.test(value) ? `'${value}` : value;
+  return `"${safe.replace(/"/g, '""')}"`;
 }
 
 /** Parse a `nom,url` CSV (header optional). Splits on the first comma only. */

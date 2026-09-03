@@ -135,4 +135,38 @@ describe('upsertDeduplicated — URL refresh on re-ingest', () => {
     );
     expect(await prisma.job.count()).toBe(1);
   });
+
+  it('does NOT let a lower-tier jobboard overwrite the employer canonical URL (D18)', async () => {
+    // Employer-direct source owns the canonical link.
+    await upsertDeduplicated(
+      prisma,
+      candidate({
+        sourceKey: 'gucci',
+        externalId: 'G9',
+        company: 'Gucci',
+        title: 'Conseiller de vente',
+        location: 'Paris',
+        sourceTier: 'EMPLOYER_DIRECT',
+        url: 'https://employer.example/apply/G9',
+      }),
+    );
+
+    // A jobboard (lower tier) lists the same opening with its own URL. It must
+    // attach as a source but must NOT hijack the canonical apply URL.
+    await upsertDeduplicated(
+      prisma,
+      candidate({
+        sourceKey: 'wttj',
+        externalId: 'W9',
+        company: 'Gucci',
+        title: 'Conseiller de vente',
+        location: 'Paris',
+        sourceTier: 'SPECIALIST_JOBBOARD',
+        url: 'https://jobboard.example/job/W9',
+      }),
+    );
+
+    const job = await prisma.job.findFirstOrThrow({ where: { externalId: 'G9' } });
+    expect(job.url).toBe('https://employer.example/apply/G9'); // still the employer
+  });
 });

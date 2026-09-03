@@ -305,13 +305,15 @@ async function attachToExisting(
   // always be sent to the employer when the employer is publishing the role.
   const promoted = tierRank(candidate.sourceTier) < tierRank(existing.canonicalTier ?? '');
 
-  // The canonical URL follows the highest-ranked source (promotion). But even
-  // WITHOUT promotion, refresh it from the current candidate when it actually
-  // changed: an adapter fix (a corrected URL format) must reach the rows already
-  // in the base, not only newly-created ones — otherwise a 404 link lives
-  // forever. Same source re-reporting the same offer yields the same canonical
-  // URL, so this only ever corrects, never churns.
-  const urlChanged = candidate.url && candidate.url !== existing.url;
+  // Refresh the canonical URL WITHOUT promotion only when the writer is the SAME
+  // OR HIGHER tier as the current owner AND the URL actually changed. This lets
+  // an adapter fix (a corrected URL format from the same/higher-tier source)
+  // reach rows already in the base, without letting a LOWER-tier source (a
+  // jobboard) hijack the employer's canonical link — which would churn "Postuler
+  // chez [Maison]" between the real employer and a jobboard copy on every cycle
+  // (breaks D18). tierRank: lower number = higher priority.
+  const sameOrHigherTier = tierRank(candidate.sourceTier) <= tierRank(existing.canonicalTier ?? '');
+  const urlRefresh = !promoted && sameOrHigherTier && candidate.url && candidate.url !== existing.url;
 
   await prisma.job.update({
     where: { id: existing.id },
@@ -331,7 +333,7 @@ async function attachToExisting(
               ? { description: candidate.description }
               : {}),
           }
-        : urlChanged
+        : urlRefresh
           ? { url: candidate.url }
           : {}),
     },

@@ -2,7 +2,7 @@ import type { PrismaClient } from '@prisma/client';
 import { plainHttpSources } from '../connectors/registry.js';
 import { loadSourceCatalog, sourceKeyFor } from '../connectors/sourceCatalog.js';
 import { runIngest, KIND_TO_ATS } from './ingest.js';
-import { checkSourceHealth } from './health.js';
+import { checkSourceHealth, type SourceHealth } from './health.js';
 import { briefError } from '../lib/normalize.js';
 
 /**
@@ -46,6 +46,8 @@ export type OrchestratorResult = {
   failed: number;
   timedOut: number;
   failures: string[];
+  /** Sources that returned degraded/broken health this run — feeds the alert. */
+  incidents: SourceHealth[];
 };
 
 /**
@@ -83,7 +85,7 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
   const keys = allSourceKeys();
   console.log(`[orchestrator] ${keys.length} sources, each time-bounded: ${keys.join(', ')}`);
 
-  const result: OrchestratorResult = { total: keys.length, ok: 0, failed: 0, timedOut: 0, failures: [] };
+  const result: OrchestratorResult = { total: keys.length, ok: 0, failed: 0, timedOut: 0, failures: [], incidents: [] };
 
   for (const key of keys) {
     try {
@@ -95,9 +97,12 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
       const stats = await withTimeout(runIngest(prisma, { only: key, deadlineMs }), PER_SOURCE_TIMEOUT_MS, key);
       // Record this source's health so a source that stops producing becomes a
       // detectable incident (BROKEN) on its next run — one SourceRun per source.
-      await checkSourceHealth(prisma, stats).catch((e) =>
-        console.error(`[orchestrator] ${key}: health record failed — ${e instanceof Error ? e.message : e}`),
-      );
+      // Collect any incident so the run can send ONE digest at the end.
+      const health = await checkSourceHealth(prisma, stats).catch((e) => {
+        console.error(`[orchestrator] ${key}: health record failed — ${e instanceof Error ? e.message : e}`);
+        return null;
+      });
+      if (health) result.incidents.push(...health.incidents);
       result.ok++;
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);

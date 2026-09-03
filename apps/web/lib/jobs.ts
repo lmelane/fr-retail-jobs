@@ -395,7 +395,17 @@ function toRow(row: {
  * DatabaseUnavailableError when the database itself cannot answer — the two are
  * different: a missing offer is a 404, an unreachable database is a 503.
  */
-export async function getJob(id: string): Promise<JobRow | null> {
+/**
+ * An offer lookup that distinguishes the three cases the offer page needs:
+ *   - 'active'  -> render it,
+ *   - 'closed'  -> the offer existed and was closed (expired/filled): the page
+ *                  returns 410 Gone so Google de-indexes it fast (D22 — a 404 is
+ *                  retried for weeks, a 410 is dropped),
+ *   - 'missing' -> the id never existed: a plain 404.
+ */
+export async function getJobStatus(
+  id: string,
+): Promise<{ status: 'active'; job: JobRow } | { status: 'closed' | 'missing' }> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
     const row = await prisma.job.findUnique({
@@ -405,8 +415,30 @@ export async function getJob(id: string): Promise<JobRow | null> {
         sources: { select: { sourceKey: true }, where: { isActive: true } },
       },
     });
-    if (!row || !row.isActive) return null;
-    return toRow(row);
+    if (!row) return { status: 'missing' };
+    if (!row.isActive) return { status: 'closed' };
+    return { status: 'active', job: toRow(row) };
+  } catch (error) {
+    throw new DatabaseUnavailableError(error);
+  }
+}
+
+export async function getJob(id: string): Promise<JobRow | null> {
+  const result = await getJobStatus(id);
+  return result.status === 'active' ? result.job : null;
+}
+
+/**
+ * The lightweight status the middleware probe needs — existence + isActive only,
+ * no joins. The page's own render does the full fetch; this must not repeat the
+ * expensive company/sources join just to decide 200 vs 410 vs 404.
+ */
+export async function getOfferState(id: string): Promise<'active' | 'closed' | 'missing'> {
+  if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
+  try {
+    const row = await prisma.job.findUnique({ where: { id }, select: { isActive: true } });
+    if (!row) return 'missing';
+    return row.isActive ? 'active' : 'closed';
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }
