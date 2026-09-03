@@ -405,7 +405,9 @@
 /* ——————————————————————————— Moteur /emplois (§5.2, réf emplois.html) ——————————————————————————— */
 
 /* Barre de recherche + filtres, sticky sous le header fixe. */
-.searchbar { position: sticky; top: var(--header-h); z-index: var(--fa-z-search, 90); background: var(--fa-paper); padding: 16px 0 12px; }
+/* padding-bottom porté par le container intérieur (pb-3) pour que son filet
+   rule-b tombe au vrai bas du bloc sticky, à largeur container (maquette). */
+.searchbar { position: sticky; top: var(--header-h); z-index: var(--fa-z-search, 90); background: var(--fa-paper); padding: 16px 0 0; }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
 .filters .spacer { flex: 1; }
 .has-dd { position: relative; }

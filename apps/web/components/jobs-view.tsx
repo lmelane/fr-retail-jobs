@@ -222,8 +222,10 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
           emplois.html). Le pt du parent = hauteur du header global fixe, pour
           que la barre sticky (top:var(--header-h)) ne recouvre pas la liste.
           Filet pointillé bas via .rule-b. */}
-      <header ref={headerRef} className="searchbar rule-b">
-        <div className="container-wide">
+      <header ref={headerRef} className="searchbar">
+        {/* rule-b sur le container (pas full-bleed) : même largeur que les filets
+            du header, fidèle à emplois.html. */}
+        <div className="container-wide rule-b pb-3">
           <SearchPill
             query={draft}
             onQueryChange={setDraft}
