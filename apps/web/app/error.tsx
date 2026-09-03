@@ -3,11 +3,11 @@
 import { useEffect } from 'react';
 
 /**
- * Error boundary for the offers pages.
+ * Error boundary (design_2.md §4.13, même langage que le 404).
  *
- * Decision D1: when the database is unavailable the site shows THIS — a clean,
- * honest error state — never invented offers. A jobboard that shows six fake
- * listings during an outage is worse than one that says it is briefly down.
+ * Décision D1 : base indisponible → CETTE page d'erreur propre et honnête,
+ * jamais d'offres inventées. Un jobboard qui affiche six offres fictives pendant
+ * une panne est pire qu'un qui dit être brièvement indisponible.
  */
 export default function Error({
   error,
@@ -16,29 +16,37 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  // Log the cause so an outage is diagnosable — without it, a real DB failure
-  // and a stray bad request would look identical in production.
+  // Log la cause : sans ça, une vraie panne DB et une requête invalide se
+  // ressembleraient en prod.
   useEffect(() => {
     console.error('[error-boundary]', error.digest ?? '', error.message);
   }, [error]);
 
   return (
-    <div className="bg-background flex h-dvh flex-col items-center justify-center gap-4 p-6 text-center">
-      <div className="bg-surface-low shadow-m3-1 max-w-md rounded-[28px] px-8 py-10">
-        <h1 className="text-foreground text-xl font-medium">Service momentanément indisponible</h1>
-        <p className="text-muted-foreground mt-3 text-sm leading-6 tracking-[0.25px]">
-          Les offres ne sont pas accessibles pour l’instant. Réessayez dans un
-          instant — aucune offre affichée ici ne serait fiable tant que le
-          service n’est pas rétabli.
-        </p>
-        <button
-          type="button"
-          onClick={reset}
-          className="bg-secondary-container text-on-secondary-container mt-6 h-11 rounded-full px-6 text-sm font-medium transition-colors hover:opacity-90"
-        >
-          Réessayer
-        </button>
-      </div>
-    </div>
+    <main className="page bg-paper">
+      <section className="container notfound rule-b" aria-labelledby="error-title">
+        <div className="g12 items-center">
+          <div className="c6" aria-hidden />
+          <div className="c6">
+            <h1 className="t-hero" id="error-title">
+              Service momentanément indisponible.
+            </h1>
+            <p className="t-body soft mt-4 max-w-[560px]">
+              Les offres ne sont pas accessibles pour l’instant. Réessayez dans un
+              instant — aucune offre affichée ici ne serait fiable tant que le
+              service n’est pas rétabli.
+            </p>
+            <div className="mt-6">
+              <button type="button" onClick={reset} className="btn btn--green">
+                Réessayer
+                <svg viewBox="0 0 24 24" aria-hidden width="16" height="16" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }

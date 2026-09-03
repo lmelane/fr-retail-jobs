@@ -405,7 +405,13 @@ function toRow(row: {
  */
 export async function getJobStatus(
   id: string,
-): Promise<{ status: 'active'; job: JobRow } | { status: 'closed' | 'missing' }> {
+): Promise<
+  | { status: 'active'; job: JobRow }
+  // A closed offer still carries its content: the page shows it with an
+  // "expirée" banner (§4.13) while the middleware serves 410 for SEO (D22).
+  | { status: 'closed'; job: JobRow }
+  | { status: 'missing' }
+> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
     const row = await prisma.job.findUnique({
@@ -416,7 +422,7 @@ export async function getJobStatus(
       },
     });
     if (!row) return { status: 'missing' };
-    if (!row.isActive) return { status: 'closed' };
+    if (!row.isActive) return { status: 'closed', job: toRow(row) };
     return { status: 'active', job: toRow(row) };
   } catch (error) {
     throw new DatabaseUnavailableError(error);

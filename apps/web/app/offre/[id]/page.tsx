@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
-import { getJob } from '@/lib/jobs';
+import { getJobStatus } from '@/lib/jobs';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -38,18 +38,31 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const job = await getJob((await params).id);
-  if (!job) return { title: 'Offre introuvable' };
+  // Une offre fermée rend désormais sa vraie page (avec bandeau + 410) : ses
+  // métadonnées doivent décrire l'offre, pas « introuvable ». Seul 'missing'
+  // reste introuvable.
+  const state = await getJobStatus((await params).id);
+  if (state.status === 'missing') return { title: 'Offre introuvable' };
+  const { job } = state;
+  const closedPrefix = state.status === 'closed' ? 'Offre expirée — ' : '';
 
   return {
-    title: `${job.title} — ${job.company}${job.city ? ` · ${job.city}` : ''}`,
+    title: `${closedPrefix}${job.title} — ${job.company}${job.city ? ` · ${job.city}` : ''}`,
     description: job.description?.slice(0, 200) ?? undefined,
+    // Une offre fermée est servie en 410 + x-robots noindex par le middleware ;
+    // on double la consigne au niveau métadonnées pour être sûr.
+    ...(state.status === 'closed' ? { robots: { index: false, follow: false } } : {}),
   };
 }
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-  const job = await getJob((await params).id);
-  if (!job) notFound();
+  // 'missing' → 404 ; 'closed' → on rend l'offre AVEC un bandeau « expirée »
+  // (§4.13), pendant que le middleware sert un 410 pour le SEO (D22) ; 'active'
+  // → rendu normal.
+  const state = await getJobStatus((await params).id);
+  if (state.status === 'missing') notFound();
+  const job = state.job;
+  const isClosed = state.status === 'closed';
 
   /**
    * schema.org JobPosting, so search engines index the posting rather than the
@@ -92,25 +105,66 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   };
 
   return (
-    <div className="bg-background flex h-dvh flex-col gap-3 p-3">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: safeJsonLd(structuredData) }}
-      />
+    <main className="page bg-paper">
+      {/* JSON-LD JobPosting seulement pour une offre active : sur une offre
+          fermée (410 + noindex), annoncer un poste ouvert serait contradictoire. */}
+      {!isClosed && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(structuredData) }}
+        />
+      )}
 
-      <header className="bg-surface-low shadow-m3-1 flex shrink-0 items-center gap-2 rounded-[28px] px-4 py-3">
+      <div className="container py-8">
+        {/* Fil d'Ariane : retour à la liste (§5.3). */}
         <Link
-          href="/"
-          className="hover:bg-surface flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors"
+          href="/emplois"
+          className="mb-6 inline-flex items-center gap-2 text-ink-muted hover:text-ink"
         >
-          <ArrowLeft className="size-[18px]" />
-          Toutes les offres
+          <ArrowLeft className="size-4" /> <span className="t-ui-small">Toutes les offres</span>
         </Link>
-      </header>
 
-      <main className="bg-surface-low shadow-m3-1 min-h-0 flex-1 overflow-hidden rounded-[28px]">
-        <JobDetail job={job} />
-      </main>
-    </div>
+        {/* Offre expirée (§4.13) : bandeau paper-alt à filets, chip « Expirée »,
+            lien vers les offres de la Maison. Rendu seulement pour une offre
+            fermée (le middleware sert le 410 en parallèle). */}
+        {isClosed && (
+          <div className="banner rule rule-b mb-6 max-w-[720px]">
+            <span className="t-body">
+              <span className="chip chip--warn">Expirée</span>&nbsp; Cette offre n’est plus
+              publiée par {job.company}.
+            </span>
+            <Link className="btn" href={`/emplois?maison=${encodeURIComponent(job.company)}`}>
+              Voir les offres similaires
+              <svg viewBox="0 0 24 24" aria-hidden width="16" height="16" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </Link>
+          </div>
+        )}
+
+        {/* Fiche autonome : la page scrolle, pas de sticky ni de scroll interne
+            (le panneau détail /emplois, lui, garde son scroll). Même composant
+            JobDetail : une seule identité visuelle pour une offre.
+            `has-apply-bar` : sur mobile, les CTA inline sont masqués au profit
+            de la barre sticky ci-dessous. */}
+        <div className="has-apply-bar max-w-[720px]">
+          <JobDetail job={job} />
+
+          {/* Barre CTA sticky (mobile only, cf. globals .apply-bar). Reprend les
+              2 actions honnêtes D18. Cachée à lg+. */}
+          <div className="apply-bar">
+            <a
+              className="btn btn--primary btn--lg"
+              href="https://catwalks.io/inscription?utm_source=fashion-atlas&utm_medium=aggregator&utm_campaign=job-detail"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Matcher mon profil avec Catwalks
+            </a>
+            <a className="btn btn--lg" href={job.applyUrl} target="_blank" rel="noopener noreferrer">
+              Voir l’offre chez {job.company}
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }

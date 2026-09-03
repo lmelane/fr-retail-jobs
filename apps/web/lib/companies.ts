@@ -19,6 +19,9 @@ export type CompanyRow = {
   id: string;
   name: string;
   sector: string | null;
+  /** Parent group (LVMH, Kering…), when the Maison belongs to one — for the
+      "Secteur · Groupe" caption. Null for standalone Maisons and cabinets. */
+  group: string | null;
   jobCount: number;
   /** Cities where this employer currently has openings, busiest first. */
   cities: { city: string; count: number; latitude: number | null; longitude: number | null }[];
@@ -162,7 +165,7 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
   const [companies, cityRows] = await Promise.all([
     prisma.company.findMany({
       where: { id: { in: pageIds } },
-      select: { id: true, name: true, sector: true },
+      select: { id: true, name: true, sector: true, parentGroup: true },
     }),
     // One grouped query for every city of every company on this page, rather
     // than a query per company.
@@ -195,6 +198,7 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
         id: row.companyId,
         name: company?.name ?? '—',
         sector: company?.sector ?? null,
+        group: company?.parentGroup ?? null,
         jobCount: row._count,
         cities: (citiesByCompany.get(row.companyId) ?? []).sort((a, b) => b.count - a.count),
       };
