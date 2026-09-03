@@ -121,6 +121,11 @@ export type JobRow = {
   group: string | null;
   city: string | null;
   location: string | null;
+  /** Raw country as the source wrote it ("France", "US", "Italia"…) — never a
+      guaranteed ISO code. Normalized to ISO by countryCode() at display/SEO. */
+  country: string | null;
+  /** Reliable France flag set at ingest (D19) — survives a missing raw country. */
+  isFrance: boolean;
   contract: string | null;
   sector: string | null;
   url: string;
@@ -349,7 +354,8 @@ async function countFacets(
 
 function toRow(row: {
   id: string; title: string; company: { name: string; sector: string | null; parentGroup: string | null };
-  city: string | null; location: string | null; contract: string | null; url: string;
+  city: string | null; location: string | null; country: string | null; isFrance: boolean;
+  contract: string | null; url: string;
   postedAt: Date | null; latitude: number | null; longitude: number | null;
   sources: { sourceKey: string }[]; description: string | null; postalCode: string | null;
   department: string | null; workingTime: string | null; remote: string | null;
@@ -364,6 +370,8 @@ function toRow(row: {
     group: row.company.parentGroup,
     city: row.city,
     location: row.location,
+    country: row.country,
+    isFrance: row.isFrance,
     contract: row.contract,
     sector: row.company.sector,
     url: row.url,
