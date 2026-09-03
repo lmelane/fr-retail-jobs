@@ -17,11 +17,20 @@ export default async function Page() {
     getCompanies({ page: 1 }).catch(() => null),
   ]);
 
+  // The home showcases MAISONS — not recruitment agencies or out-of-sector
+  // enseignes. Filter (display only, no API change) on the sector CompanyRow
+  // already carries, then take the top 6 by volume (getCompanies is already
+  // sorted by jobCount desc).
+  const EXCLUDED_FROM_HOME = new Set(['RECRUITER', 'OTHER', 'UNKNOWN']);
+  const maisons = (companies?.companies ?? [])
+    .filter((c) => !EXCLUDED_FROM_HOME.has(c.sector ?? 'UNKNOWN'))
+    .slice(0, 6);
+
   return (
     <LandingView
       stats={stats}
       sectors={latest?.facets.sectors ?? []}
-      maisons={(companies?.companies ?? []).slice(0, 6)}
+      maisons={maisons}
       latestOffers={(latest?.jobs ?? []).slice(0, 6)}
     />
   );
