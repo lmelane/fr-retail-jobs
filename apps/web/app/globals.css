@@ -6,7 +6,10 @@
  * Serif display (contenu) + sans humaniste (usage), blanc pur, un seul accent
  * vert #105A33, filets pointillés, radius unique 5px, aucune ombre. Les maquettes
  * `fashion-atlas-maquettes/*.html` sont la référence de rendu ; ce fichier porte
- * leurs tokens `--fa-*` et classes `.t-*/.rule/.btn/.pill/…` dans le projet.
+ * leurs tokens `--fa-…` et classes `.t-…`, `.rule`, `.btn`, `.pill`… dans le projet.
+ * ATTENTION : jamais de séquence « étoile-slash » dans un commentaire (même entre
+ * backticks) — elle ferme le commentaire et le parseur avale la règle suivante
+ * (c'est ce qui a supprimé le premier @font-face en prod : rendu 100% italique).
  */
 
 /* ————————————————————————————————— Fonts ————————————————————————————————— */
