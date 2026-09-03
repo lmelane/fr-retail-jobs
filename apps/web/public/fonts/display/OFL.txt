@@ -1,4 +1,0 @@
-Instrument Serif — SIL Open Font License 1.1
-Copyright (c) Instrument.
-Full license: https://openfontlicense.org/
-Source: Google Fonts (Instrument Serif), self-hosted per OFL.

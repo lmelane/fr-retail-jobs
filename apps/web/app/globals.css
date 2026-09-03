@@ -6,22 +6,20 @@
  * Serif display (contenu) + sans humaniste (usage), blanc pur, un seul accent
  * vert #105A33, filets pointillés, radius unique 5px, aucune ombre. Les maquettes
  * `fashion-atlas-maquettes/*.html` sont la référence de rendu ; ce fichier porte
- * leurs tokens `--fa-*` et classes `.t-*/.rule/.btn/.pill/…` dans le projet.
+ * leurs tokens `--fa-…` et classes `.t-…`, `.rule`, `.btn`, `.pill`… dans le projet.
+ * ATTENTION : jamais de séquence « étoile-slash » dans un commentaire (même entre
+ * backticks) — elle ferme le commentaire et le parseur avale la règle suivante
+ * (c'est ce qui a supprimé le premier @font-face en prod : rendu 100% italique).
  */
 
 /* ————————————————————————————————— Fonts ————————————————————————————————— */
 /* Self-hosted only — aucune font chargée depuis un CDN en production. */
 
-/* FA Display = Instrument Serif (OFL, voir public/fonts/display/OFL.txt). */
+/* FA Display = FF Modern (fichier fourni par Loïc — une seule graisse, pas d'italique). */
 @font-face {
   font-family: "FA Display";
-  src: url("/fonts/display/FADisplay-Regular.woff2") format("woff2");
+  src: url("/fonts/display/FFModern-Regular.woff2") format("woff2");
   font-weight: 400; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: "FA Display";
-  src: url("/fonts/display/FADisplay-Italic.woff2") format("woff2");
-  font-weight: 400; font-style: italic; font-display: swap;
 }
 
 /* FA Sans = Mona Sans (400 / 500 ; PAS de 600 — tout « 600 sans » -> 500). */
@@ -493,10 +491,31 @@
   .search .btn { height: 48px; justify-content: center; border-radius: 0 0 calc(var(--fa-radius) - 1px) calc(var(--fa-radius) - 1px); }
 }
 
+/* Reveal au scroll (système Lacoste) : un élément portant data-stagger-index
+   part masqué et remonte quand il entre dans le viewport (.revealed posé par
+   RevealOnScroll via IntersectionObserver). Le masquage n'existe que sous
+   html.anim-ready (posé par le JS) : sans JS, tout reste visible. */
+.anim-ready [data-stagger-index] {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity var(--fa-dur-slow) var(--fa-ease-out), transform var(--fa-dur-slow) var(--fa-ease-out);
+}
+.anim-ready [data-stagger-index].revealed { opacity: 1; transform: translateY(0); }
+[data-stagger-index="0"] { transition-delay: 0s; }
+[data-stagger-index="1"] { transition-delay: .075s; }
+[data-stagger-index="2"] { transition-delay: .15s; }
+[data-stagger-index="3"] { transition-delay: .225s; }
+[data-stagger-index="4"] { transition-delay: .3s; }
+[data-stagger-index="5"] { transition-delay: .375s; }
+[data-stagger-index="6"] { transition-delay: .45s; }
+[data-stagger-index="7"] { transition-delay: .525s; }
+[data-stagger-index="8"] { transition-delay: .6s; }
+[data-stagger-index="9"] { transition-delay: .675s; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 1ms !important;
     transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
     animation: none !important;
   }
 }
