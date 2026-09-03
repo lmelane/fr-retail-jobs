@@ -172,8 +172,8 @@ Détail exhaustif des findings (3 audits défensifs, chaque regex exécutée) : 
   fichiers racine partagés (CLAUDE.md…) : prévenir l'autre session d'abord.
 - **Push à chaque fin d'étape.** Jamais de travail local non poussé de plus
   d'une heure.
-- **`main` = prod (Railway auto-déploie chaque push).** Tout passe par une
-  branche + PR ; merge par Loïc uniquement.
+- **`main` = prod (Railway auto-déploie chaque push).** Pousser sur main =
+  déployer : on le fait en le sachant, jamais par accident.
 
 ## Méthode de travail
 
