@@ -217,7 +217,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
   ).length;
 
   return (
-    <div className="bg-paper pt-(--header-h)">
+    <main className="bg-paper pt-(--header-h)">
       {/* Barre de recherche + filtres, sticky sous le header fixe (§5.2, réf
           emplois.html). Le pt du parent = hauteur du header global fixe, pour
           que la barre sticky (top:var(--header-h)) ne recouvre pas la liste.
@@ -390,7 +390,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
         )}
       </div>
       )}
-    </div>
+    </main>
   );
 }
 
@@ -588,8 +588,9 @@ export function JobCard({
         }
         onSelect();
       }}
+      // `aria-current` (valide sur un bouton) porte la sélection ; `aria-selected`
+      // n'est autorisé que dans un listbox/grid, pas sur un bouton simple.
       aria-current={isSelected ? 'true' : undefined}
-      aria-selected={isSelected}
       className={cn('offer', isSelected && 'is-selected', visited && 'is-visited')}
     >
       <div className="offer__top">

@@ -57,7 +57,7 @@ export function LandingView({
   const sectorCount = (v: string) => sectors.find((s) => s.value === v)?.count ?? 0;
 
   return (
-    <>
+    <main>
       {/* ————— Hero (vert-nuit + grain, réf home.html) ————— */}
       <section
         aria-labelledby="hero-title"
@@ -196,7 +196,7 @@ export function LandingView({
           </div>
         </div>
       </section>
-    </>
+    </main>
   );
 }
 
