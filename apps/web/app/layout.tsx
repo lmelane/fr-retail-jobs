@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import './globals.css';
 import { SiteNav } from '@/components/site-nav';
+import { landingStats } from '@/lib/jobs';
 import { SiteFooter } from '@/components/site-footer';
 import { NavProgress } from '@/components/nav-progress';
 import { RevealOnScroll } from '@/components/reveal-on-scroll';
@@ -14,11 +15,19 @@ import { RevealOnScroll } from '@/components/reveal-on-scroll';
  * Les deux Regular sont préchargées ci-dessous.
  */
 
-export const metadata: Metadata = {
-  title: "Offres d'emploi Mode, Luxe, Beauté & Horlogerie en France",
-  description:
-    "Toutes les offres d'emploi du secteur mode, luxe, beauté, horlogerie et retail en France, agrégées depuis les sites carrière des Maisons et les jobboards spécialisés.",
-};
+/**
+ * DEC-1 : la promesse est un COMPTEUR calculé en base, jamais « toutes » ni
+ * « en France » (le site est monde, et la couverture Top-200 n'est pas encore
+ * à 80 %). Base indisponible -> titre sans chiffre, sans surpromesse.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const stats = await landingStats();
+  const scope = stats.companies > 0 ? `de ${stats.companies} Maisons ` : '';
+  return {
+    title: `Offres d'emploi ${scope}— Mode, Luxe, Beauté & Horlogerie`,
+    description: `Les offres d'emploi ${scope}du secteur mode, luxe, beauté, horlogerie et retail, agrégées sans doublon depuis les sites carrière et les jobboards spécialisés, avec le lien de candidature direct.`,
+  };
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

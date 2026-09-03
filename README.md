@@ -1,8 +1,10 @@
 # Fashion Atlas by Catwalks — l'agrégateur d'offres Mode · Luxe · Beauté · Horlogerie · Retail
 
-Le moteur de recherche gratuit et exhaustif des offres publiques **Mode, Luxe, Beauté,
-Horlogerie et Retail dans le monde** — sans doublon, avec le texte complet et le lien
-de candidature direct chez l'employeur.
+Le moteur de recherche gratuit des offres publiques **Mode, Luxe, Beauté, Horlogerie
+et Retail dans le monde** — sans doublon, avec le texte complet et le lien de
+candidature direct chez l'employeur. La promesse est un **compteur calculé en base**
+(« Les offres de N Maisons, +X cette semaine »), jamais « toutes les Maisons » ni
+« exhaustif » tant que la couverture Top-200 n'atteint pas 80 % (DEC-1).
 
 > **Deux marques (décision D14).** *Fashion Atlas* possède la recherche (SEO, acquisition,
 > longue traîne) ; *Catwalks* (catwalks.io, plateforme distincte et existante) possède le

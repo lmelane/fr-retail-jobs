@@ -31,7 +31,7 @@ export function LandingView({
   maisons,
   latestOffers,
 }: {
-  stats: { offers: number; companies: number; countries: number };
+  stats: { offers: number; companies: number; countries: number; newCompaniesThisWeek: number };
   sectors: { value: string; count: number }[];
   maisons: CompanyRow[];
   latestOffers: JobRow[];
@@ -62,7 +62,15 @@ export function LandingView({
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'rgba(0,10,5,.42)' }} />
         <div className="relative z-[1] grid justify-items-center gap-6 px-6" style={{ paddingTop: 'var(--header-h)', maxWidth: 1040 }}>
           <p className="t-caption opacity-90" data-stagger-index="0">Mode · Luxe · Beauté · Horlogerie · Retail</p>
-          <h1 id="hero-title" className="t-hero" data-stagger-index="1">Toutes les offres<br />du luxe, réunies.</h1>
+          {/* DEC-1 : la promesse est le compteur réel, jamais « toutes ».
+              Base indisponible (0) -> formulation sans chiffre ni absolu. */}
+          <h1 id="hero-title" className="t-hero" data-stagger-index="1">
+            {stats.companies > 0 ? (
+              <>Les offres de {nf.format(stats.companies)} Maisons,<br />réunies.</>
+            ) : (
+              <>Les offres du luxe,<br />réunies.</>
+            )}
+          </h1>
         </div>
       </section>
 
@@ -104,7 +112,15 @@ export function LandingView({
         <section className="container section" aria-label="Chiffres clés">
           <div className="g12">
             <Stat value={nf.format(stats.offers)} label="offres actives" staggerIndex={0} />
-            <Stat value={nf.format(stats.companies)} label="Maisons" staggerIndex={1} />
+            <Stat
+              value={nf.format(stats.companies)}
+              label={
+                stats.newCompaniesThisWeek > 0
+                  ? `Maisons, +${nf.format(stats.newCompaniesThisWeek)} cette semaine`
+                  : 'Maisons'
+              }
+              staggerIndex={1}
+            />
             {stats.countries > 1 && <Stat value={nf.format(stats.countries)} label="pays" staggerIndex={2} />}
           </div>
         </section>
@@ -130,7 +146,7 @@ export function LandingView({
         <section className="container section" aria-labelledby="maisons-title">
           <div className="section-head">
             <h2 id="maisons-title" className="t-d1" data-stagger-index="0">Maisons qui recrutent.</h2>
-            <Link href="/entreprises" className="btn btn--green">Toutes les Maisons <Arrow /></Link>
+            <Link href="/entreprises" className="btn btn--green">Voir les Maisons <Arrow /></Link>
           </div>
           <div className="grid grid-cols-1 gap-x-10 md:grid-cols-3">
             {maisons.map((m, i) => (

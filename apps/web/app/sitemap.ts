@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { sitemapData } from '@/lib/jobs';
 import { companySlug } from '@/lib/company-slug';
+import { offerPath } from '@/lib/offer-url';
 import { siteUrl } from '@/lib/site-url';
 
 /**
@@ -31,7 +32,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const seenCompany = new Set<string>();
     dynamicPages = [
       ...offers.map((o) => ({
-        url: `${base}/offre/${o.id}`,
+        // URL canonique /offre/[slug]-[id] (S-01) — la même que le 301 impose.
+        url: `${base}${offerPath(o)}`,
         lastModified: o.updatedAt,
         changeFrequency: 'weekly' as const,
         priority: 0.7,

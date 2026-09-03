@@ -1,6 +1,7 @@
 import { prisma, CompanySector } from '@catwalks/db';
 import { expandCompanyTerm } from './groups';
 import { countryCode, rawValuesForCode } from './countries';
+import { offerIdCandidates } from './offer-url';
 
 /**
  * Prisma condition for a Pays filter code.
@@ -149,6 +150,12 @@ export type JobRow = {
   salaryCurrency: string | null;
   salaryPeriod: string | null;
   validThrough: Date | null;
+  /** Raw country as the source wrote it; canonicalized via lib/countries. */
+  country: string | null;
+  /** ISO-639-1 language of the posting text, when detected at ingest. */
+  language: string | null;
+  /** First sighting — the honest datePosted fallback when the source ships none. */
+  firstSeenAt: Date;
 };
 
 export type JobsResult = {
@@ -355,7 +362,7 @@ function toRow(row: {
   department: string | null; workingTime: string | null; remote: string | null;
   experienceYears: number | null; educationLevel: string | null; salaryMin: number | null;
   salaryMax: number | null; salaryCurrency: string | null; salaryPeriod: string | null;
-  validThrough: Date | null;
+  validThrough: Date | null; country: string | null; language: string | null; firstSeenAt: Date;
 }): JobRow {
   return {
     id: row.id,
@@ -385,6 +392,9 @@ function toRow(row: {
     salaryCurrency: row.salaryCurrency,
     salaryPeriod: row.salaryPeriod,
     validThrough: row.validThrough,
+    country: row.country,
+    language: row.language,
+    firstSeenAt: row.firstSeenAt,
   };
 }
 
@@ -439,12 +449,78 @@ export async function getJob(id: string): Promise<JobRow | null> {
  * no joins. The page's own render does the full fetch; this must not repeat the
  * expensive company/sources join just to decide 200 vs 410 vs 404.
  */
-export async function getOfferState(id: string): Promise<'active' | 'closed' | 'missing'> {
+export async function getOfferState(param: string): Promise<'active' | 'closed' | 'missing'> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
-    const row = await prisma.job.findUnique({ where: { id }, select: { isActive: true } });
-    if (!row) return 'missing';
-    return row.isActive ? 'active' : 'closed';
+    // The param may be a bare id or slug-id (S-01) — try each candidate, so
+    // the middleware's 410 decision works on both URL shapes.
+    for (const id of offerIdCandidates(param)) {
+      const row = await prisma.job.findUnique({ where: { id }, select: { isActive: true } });
+      if (row) return row.isActive ? 'active' : 'closed';
+    }
+    return 'missing';
+  } catch (error) {
+    throw new DatabaseUnavailableError(error);
+  }
+}
+
+/**
+ * Resolves a /offre/[param] value (bare id or slug-id) to the offer.
+ * Returns the state plus the id that matched, so the page can 301 a stale or
+ * missing slug to the canonical URL.
+ */
+export async function resolveOfferParam(
+  param: string,
+): Promise<
+  | { status: 'active' | 'closed'; job: JobRow; matchedId: string }
+  | { status: 'missing' }
+> {
+  for (const id of offerIdCandidates(param)) {
+    const state = await getJobStatus(id);
+    if (state.status !== 'missing') return { ...state, matchedId: id };
+  }
+  return { status: 'missing' };
+}
+
+/**
+ * Offers a candidate reading THIS offer would plausibly want next (S-01):
+ * the same Maison first, then the same sector — active only, never itself.
+ * Server-rendered as links on the offer page, they are also real crawl paths
+ * between offers, which the sitemap-less crawl requirement leans on.
+ */
+export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> {
+  if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
+  try {
+    const base = {
+      isActive: true,
+      id: { not: job.id },
+    };
+    const include = {
+      company: true,
+      sources: { select: { sourceKey: true as const }, where: { isActive: true } },
+    };
+    const sameMaison = await prisma.job.findMany({
+      where: { ...base, company: { name: job.company } },
+      include,
+      orderBy: { postedAt: 'desc' },
+      take: limit,
+    });
+    if (sameMaison.length >= limit) return sameMaison.map(toRow);
+
+    const sector = validSector(job.sector ?? undefined);
+    const fill = sector
+      ? await prisma.job.findMany({
+          where: {
+            ...base,
+            company: { sector, name: { not: job.company } },
+            ...(job.city ? { city: { equals: job.city, mode: 'insensitive' as const } } : {}),
+          },
+          include,
+          orderBy: { postedAt: 'desc' },
+          take: limit - sameMaison.length,
+        })
+      : [];
+    return [...sameMaison, ...fill].map(toRow);
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }
@@ -612,14 +688,15 @@ export async function suggestTitles(query: string): Promise<string[]> {
  * query per type.
  */
 export async function sitemapData(): Promise<{
-  offers: { id: string; updatedAt: Date }[];
+  offers: { id: string; title: string; updatedAt: Date }[];
   companies: { name: string; updatedAt: Date }[];
 }> {
   if (!process.env.DATABASE_URL) return { offers: [], companies: [] };
   const [offers, companyRows] = await Promise.all([
     prisma.job.findMany({
       where: { isActive: true },
-      select: { id: true, lastSeenAt: true },
+      // title rides along so the sitemap lists the canonical slug URLs (S-01).
+      select: { id: true, title: true, lastSeenAt: true },
     }),
     prisma.company.findMany({
       where: { jobs: { some: { isActive: true } } },
@@ -627,7 +704,7 @@ export async function sitemapData(): Promise<{
     }),
   ]);
   return {
-    offers: offers.map((o) => ({ id: o.id, updatedAt: o.lastSeenAt ?? new Date() })),
+    offers: offers.map((o) => ({ id: o.id, title: o.title, updatedAt: o.lastSeenAt ?? new Date() })),
     companies: companyRows.map((c) => ({ name: c.name, updatedAt: c.lastSeenAt ?? new Date() })),
   };
 }
@@ -638,10 +715,17 @@ export async function sitemapData(): Promise<{
  * zeros when the database is unavailable, so the landing renders without them
  * rather than failing (the landing has value without a count).
  */
-export async function landingStats(): Promise<{ offers: number; companies: number; countries: number }> {
-  if (!process.env.DATABASE_URL) return { offers: 0, companies: 0, countries: 0 };
+export async function landingStats(): Promise<{
+  offers: number;
+  companies: number;
+  countries: number;
+  /** Maisons whose FIRST live offer appeared within 7 days — the "+X cette semaine" (DEC-1). */
+  newCompaniesThisWeek: number;
+}> {
+  if (!process.env.DATABASE_URL) return { offers: 0, companies: 0, countries: 0, newCompaniesThisWeek: 0 };
   try {
-    const [offers, companies, countryRows] = await Promise.all([
+    const weekAgo = new Date(Date.now() - 7 * 86_400_000);
+    const [offers, companies, countryRows, newRows] = await Promise.all([
       prisma.job.count({ where: { isActive: true } }),
       prisma.company.count({ where: { jobs: { some: { isActive: true } } } }),
       prisma.job.findMany({
@@ -649,11 +733,20 @@ export async function landingStats(): Promise<{ offers: number; companies: numbe
         select: { country: true },
         distinct: ['country'],
       }),
+      // A Maison is "new this week" when it has live offers now and had NONE
+      // older than a week — its first sighting is recent, not just one more
+      // posting from a long-covered house.
+      prisma.company.count({
+        where: {
+          jobs: { some: { isActive: true } },
+          NOT: { jobs: { some: { firstSeenAt: { lt: weekAgo } } } },
+        },
+      }),
     ]);
     // Raw country spellings collapse to canonical codes (IT/Italy/it -> IT).
     const codes = new Set(countryRows.map((r) => countryCode(r.country)).filter(Boolean));
-    return { offers, companies, countries: codes.size };
+    return { offers, companies, countries: codes.size, newCompaniesThisWeek: newRows };
   } catch {
-    return { offers: 0, companies: 0, countries: 0 };
+    return { offers: 0, companies: 0, countries: 0, newCompaniesThisWeek: 0 };
   }
 }

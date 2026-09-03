@@ -272,7 +272,7 @@ function EmptyMaisons({ query, onReset }: { query: string | null; onReset: () =>
         {query && <p className="t-body soft mt-3">Aucune Maison ne correspond à « {query} ».</p>}
         <div className="mt-6 flex flex-wrap items-center gap-4">
           <button type="button" onClick={onReset} className="btn btn--green">
-            Voir toutes les Maisons <ArrowGlyph />
+            Voir les Maisons <ArrowGlyph />
           </button>
         </div>
       </div>

@@ -71,9 +71,12 @@ test.describe('offer hygiene — HTTP status (D22/D23)', () => {
     expect(response?.status()).toBe(404);
   });
 
-  test('an active offer returns 200', async ({ page, baseURL }) => {
-    const response = await page.goto(`/offre/${await firstOfferId(page, baseURL)}`);
+  test('an active offer returns 200 and 301s the bare id to the slug URL (S-01)', async ({ page, baseURL }) => {
+    const id = await firstOfferId(page, baseURL);
+    const response = await page.goto(`/offre/${id}`);
     expect(response?.status()).toBe(200);
+    // The old id-only URL permanently redirects to /offre/[slug]-[id].
+    expect(page.url()).toMatch(new RegExp(`/offre/[a-z0-9-]+-${id}$`));
   });
 
   test('an expired offer returns 410, noindex, and still renders the page', async ({ page }) => {

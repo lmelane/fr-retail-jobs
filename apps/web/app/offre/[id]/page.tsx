@@ -1,8 +1,12 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
-import { getJobStatus } from '@/lib/jobs';
+import { resolveOfferParam, getSimilarJobs } from '@/lib/jobs';
+import { offerPath } from '@/lib/offer-url';
+import { companySlug } from '@/lib/company-slug';
+import { jobPostingSchema } from '@/lib/job-posting-schema';
+import { siteUrl } from '@/lib/site-url';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -40,8 +44,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   // Une offre fermée rend désormais sa vraie page (avec bandeau + 410) : ses
   // métadonnées doivent décrire l'offre, pas « introuvable ». Seul 'missing'
-  // reste introuvable.
-  const state = await getJobStatus((await params).id);
+  // reste introuvable. Le param accepte id nu ou slug-id (S-01).
+  const state = await resolveOfferParam(decodeURIComponent((await params).id));
   if (state.status === 'missing') return { title: 'Offre introuvable' };
   const { job } = state;
   const closedPrefix = state.status === 'closed' ? 'Offre expirée — ' : '';
@@ -49,6 +53,8 @@ export async function generateMetadata({
   return {
     title: `${closedPrefix}${job.title} — ${job.company}${job.city ? ` · ${job.city}` : ''}`,
     description: job.description?.slice(0, 200) ?? undefined,
+    // Une seule URL canonique par offre, quel que soit le chemin d'arrivée.
+    alternates: { canonical: `${siteUrl()}${offerPath(job)}` },
     // Une offre fermée est servie en 410 + x-robots noindex par le middleware ;
     // on double la consigne au niveau métadonnées pour être sûr.
     ...(state.status === 'closed' ? { robots: { index: false, follow: false } } : {}),
@@ -58,51 +64,25 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   // 'missing' → 404 ; 'closed' → on rend l'offre AVEC un bandeau « expirée »
   // (§4.13), pendant que le middleware sert un 410 pour le SEO (D22) ; 'active'
-  // → rendu normal.
-  const state = await getJobStatus((await params).id);
+  // → rendu normal. Le param accepte l'ancien id nu ET slug-id (S-01).
+  const raw = decodeURIComponent((await params).id);
+  const state = await resolveOfferParam(raw);
   if (state.status === 'missing') notFound();
   const job = state.job;
   const isClosed = state.status === 'closed';
 
-  /**
-   * schema.org JobPosting, so search engines index the posting rather than the
-   * page around it. Built from stored fields only — nothing is invented, and an
-   * absent field is simply omitted.
-   */
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'JobPosting',
-    title: job.title,
-    description: job.description ?? undefined,
-    datePosted: job.postedAt?.toISOString(),
-    validThrough: job.validThrough?.toISOString(),
-    employmentType: job.contract ?? undefined,
-    hiringOrganization: { '@type': 'Organization', name: job.company },
-    jobLocation: job.city
-      ? {
-          '@type': 'Place',
-          address: {
-            '@type': 'PostalAddress',
-            addressLocality: job.city,
-            postalCode: job.postalCode ?? undefined,
-            addressCountry: 'FR',
-          },
-        }
-      : undefined,
-    baseSalary:
-      job.salaryMin !== null || job.salaryMax !== null
-        ? {
-            '@type': 'MonetaryAmount',
-            currency: job.salaryCurrency ?? 'EUR',
-            value: {
-              '@type': 'QuantitativeValue',
-              minValue: job.salaryMin ?? undefined,
-              maxValue: job.salaryMax ?? undefined,
-              unitText: job.salaryPeriod ?? undefined,
-            },
-          }
-        : undefined,
-  };
+  // 301 vers l'URL canonique /offre/[slug]-[id] : ancien id nu, slug périmé
+  // (titre modifié à la source) ou slug forgé. Jamais sur une offre fermée —
+  // le middleware sert son 410 sur l'URL demandée, une redirection le
+  // remplacerait par un 308 et Google ne déréférencerait plus.
+  const canonical = offerPath(job);
+  if (!isClosed && `/offre/${raw}` !== canonical) permanentRedirect(canonical);
+
+  // S-02a/S-02b : JSON-LD complet, construit et testé dans lib/job-posting-schema.
+  const structuredData = jobPostingSchema(job);
+
+  // S-01 : offres similaires — vraies ancres crawlables entre offres.
+  const similar = await getSimilarJobs(job, 6);
 
   return (
     <main className="page bg-paper">
@@ -116,13 +96,22 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
       )}
 
       <div className="container py-8">
-        {/* Fil d'Ariane : retour à la liste (§5.3). */}
-        <Link
-          href="/emplois"
-          className="mb-6 inline-flex items-center gap-2 text-ink-muted hover:text-ink"
-        >
-          <ArrowLeft className="size-4" /> <span className="t-ui-small">Toutes les offres</span>
-        </Link>
+        {/* Fil d'Ariane : retour à la liste + la Maison (S-01) — deux vraies
+            ancres, le crawl circule entre offres, Maisons et listes. */}
+        <nav aria-label="Fil d'Ariane" className="mb-6 flex items-center gap-4">
+          <Link
+            href="/emplois"
+            className="inline-flex items-center gap-2 text-ink-muted hover:text-ink"
+          >
+            <ArrowLeft className="size-4" /> <span className="t-ui-small">Toutes les offres</span>
+          </Link>
+          <Link
+            href={`/entreprise/${companySlug(job.company)}`}
+            className="t-ui-small text-ink-muted hover:text-ink"
+          >
+            Toutes les offres {job.company}
+          </Link>
+        </nav>
 
         {/* Offre expirée (§4.13) : bandeau paper-alt à filets, chip « Expirée »,
             lien vers les offres de la Maison. Rendu seulement pour une offre
@@ -145,7 +134,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             JobDetail : une seule identité visuelle pour une offre.
             `has-apply-bar` : sur mobile, les CTA inline sont masqués au profit
             de la barre sticky ci-dessous. */}
-        <div className="has-apply-bar max-w-[720px]">
+        {/* `lang` sur le CONTENU : le layout racine garde <html lang="fr"> (le
+            chrome du site est français), mais le texte de l'offre porte sa
+            vraie langue pour les lecteurs d'écran et les crawlers (S-02a,
+            adaptation par délégation : App Router ne permet pas un <html lang>
+            par route). */}
+        <div className="has-apply-bar max-w-[720px]" lang={job.language ?? undefined}>
           <JobDetail job={job} />
 
           {/* Barre CTA sticky (mobile only, cf. globals .apply-bar). Reprend les
@@ -164,6 +158,31 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             </a>
           </div>
         </div>
+
+        {/* Offres similaires (S-01) : même Maison d'abord, puis même secteur.
+            Rendues serveur — chaque carte est une ancre réelle, le maillage
+            interne dont dépend le crawl sans sitemap. */}
+        {similar.length > 0 && (
+          <section aria-labelledby="similaires-titre" className="mt-12 max-w-[720px]">
+            <p className="t-caption text-ink-muted" id="similaires-titre">
+              Offres similaires
+            </p>
+            <ul className="mt-4">
+              {similar.map((s) => (
+                <li key={s.id} className="rule rule-t">
+                  <Link href={offerPath(s)} className="block py-4 hover:bg-paper-alt">
+                    <span className="t-body block">{s.title}</span>
+                    <span className="t-caption-soft block">
+                      {s.company}
+                      {s.city ? ` · ${s.city}` : ''}
+                      {s.contract ? ` · ${s.contract}` : ''}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
     </main>
   );
