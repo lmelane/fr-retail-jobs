@@ -59,6 +59,23 @@ const OUT_PATH = dataUrl('sources.discovered.csv');
 const PROGRESS_PATH = dataUrl('discovery.progress.tsv');
 /** Maisons auto-discovery could NOT resolve — the queue for the manual pass. */
 const UNRESOLVED_PATH = dataUrl('sources.unresolved.csv');
+/**
+ * Domains proven dead by the reachability sweep (DNS gone, TLS broken, 4xx/5xx
+ * root). Excluded from every discovery run (decision Loïc, 2026-09-03): a dead
+ * domain never resolves an ATS, and re-probing 6 700 of them is pure waste. A
+ * quarterly re-check of THIS file is the only path back in.
+ */
+const DEAD_PATH = dataUrl('unresolved.dead.tsv');
+
+function loadDeadNames(): Set<string> {
+  if (!existsSync(DEAD_PATH)) return new Set();
+  const dead = new Set<string>();
+  for (const line of readFileSync(DEAD_PATH, 'utf8').split(/\r?\n/).slice(1)) {
+    const name = line.split('\t')[0];
+    if (name) dead.add(name.toLowerCase());
+  }
+  return dead;
+}
 
 function csvCell(value: string): string {
   // Defang spreadsheet formula injection: a company name starting with = + - @
@@ -148,8 +165,12 @@ export async function discoverMaisons(options: {
   if (options.fresh) writeFileSync(PROGRESS_PATH, '', 'utf8');
 
   const roster = parseRosterCsv(readFileSync(options.inputFile, 'utf8'));
+  const dead = loadDeadNames();
   let queue = roster.filter(
-    (c) => !processed.has(c.name) && !known.has(resolveCompany(c.name).companyId),
+    (c) =>
+      !processed.has(c.name) &&
+      !known.has(resolveCompany(c.name).companyId) &&
+      !dead.has(c.name.toLowerCase()),
   );
   const skippedKnownOrDone = roster.length - queue.length;
   if (options.limit && options.limit > 0) queue = queue.slice(0, options.limit);

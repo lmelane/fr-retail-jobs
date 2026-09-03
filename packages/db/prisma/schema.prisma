@@ -198,6 +198,13 @@ model Job {
   validThrough  DateTime?
 
   description   String?
+  /**
+   * ISO-639-1 language of the posting text ("fr", "en", "de"…), declared by the
+   * source when it says so, else detected from the text. Nothing filters on it
+   * at ingest — every language is kept (decision, 2026-09-03); it exists for
+   * display, filtering and translation on the jobboard side.
+   */
+  language      String?
   url           String
   postedAt      DateTime?
   firstSeenAt   DateTime @default(now())

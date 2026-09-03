@@ -3,6 +3,7 @@ import { blockingKey, isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } 
 import { classifySector, sectorForSource, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
 import { isFranceJob } from '../lib/france.js';
+import { detectLanguage } from '../lib/language.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
 
 
@@ -239,6 +240,9 @@ async function createJob(
         department: candidate.department,
         validThrough: candidate.validThrough,
         description: candidate.description,
+        // Stored, never filtered on (decision, 2026-09-03): the catalogue is
+        // worldwide and the language serves display/translation later.
+        language: candidate.language ?? detectLanguage(candidate.description ?? candidate.title),
         url: candidate.url,
         postedAt: candidate.postedAt,
         clusterKey,
@@ -336,9 +340,13 @@ async function attachToExisting(
             url: candidate.url,
             canonicalTier: candidate.sourceTier,
             title: candidate.title,
-            // Keep the richest description available across sources.
+            // Keep the richest description available across sources — and the
+            // language of the text now shown.
             ...(candidate.description && candidate.description.length > (existing.description?.length ?? 0)
-              ? { description: candidate.description }
+              ? {
+                  description: candidate.description,
+                  language: candidate.language ?? detectLanguage(candidate.description),
+                }
               : {}),
           }
         : urlRefresh

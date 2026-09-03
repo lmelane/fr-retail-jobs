@@ -71,6 +71,11 @@ export type NormalizedJob = {
   // --- Content ------------------------------------------------------------
   /** Full posting text, plain. Every adapter fills this. */
   description?: string;
+  /**
+   * ISO-639-1 language of the posting, when the SOURCE declares it. Left unset
+   * otherwise — the pipeline detects it at write time. Never used to filter.
+   */
+  language?: string;
   /** Employer as named by the source; overrides the registry name when present. */
   company?: string;
   /** Parent group, when the source distinguishes it. */

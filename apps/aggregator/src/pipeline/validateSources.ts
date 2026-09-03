@@ -25,7 +25,7 @@ const OUT_PATH = fileURLToPath(new URL('../../data/sources.validated.csv', impor
 const REJECTS_PATH = fileURLToPath(new URL('../../data/sources.rejected.csv', import.meta.url));
 
 /** kind (as written in the catalogue) -> the AtsType the dispatcher knows. */
-const ATS_TYPE: Record<string, string> = {
+export const ATS_TYPE: Record<string, string> = {
   successfactors: 'SUCCESSFACTORS',
   avature: 'AVATURE',
   eightfold: 'EIGHTFOLD',
