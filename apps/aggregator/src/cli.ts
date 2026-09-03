@@ -4,6 +4,7 @@ import { ingestAllBySource } from './pipeline/ingestOrchestrator.js';
 import { checkSourceHealth } from './pipeline/health.js';
 import { sendHealthAlert } from './pipeline/alert.js';
 import { submitOfferChanges } from './pipeline/googleIndexing.js';
+import { pingHeartbeat } from './pipeline/heartbeat.js';
 
 /**
  * How far back to look for offers created/closed by THIS run, when notifying
@@ -106,7 +107,12 @@ try {
       closedRows.map((r) => r.id),
     );
 
-    console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo, alerted, indexing }, null, 2));
+    // DEC-4: tell the external pinger this run happened (no-op unconfigured).
+    // Success = the run completed, even with per-source failures — the pinger
+    // watches for the PIPELINE dying, the Brevo digest covers sick sources.
+    const heartbeat = await pingHeartbeat(orchestration.failed === 0);
+
+    console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo, alerted, indexing, heartbeat }, null, 2));
     if (orchestration.failed > 0 || orchestration.timedOut > 0) {
       console.error(
         `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`,

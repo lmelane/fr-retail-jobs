@@ -359,7 +359,7 @@ model GeoCache {
 model SourceRun {
   id           String   @id @default(cuid())
   sourceKey    String
-  /** OK | DEGRADED | BROKEN | NEW */
+  /** OK | DEGRADED | BROKEN | NEW | TIMEOUT | ERROR (L-01: unfinished runs are recorded too). */
   status       String
   jobs         Int
   /** What the source held before this run; null on its first. */

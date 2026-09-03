@@ -54,7 +54,15 @@ export type RefreshStats = {
   refused: boolean;
 };
 
-/** Sources whose most recent health run was BROKEN. */
+/**
+ * Sources whose most recent run did not complete healthily: BROKEN (returned
+ * nothing), TIMEOUT (cut before finishing) or ERROR (threw). All three mean
+ * the same thing for lifecycle purposes (L-01): the source did NOT re-attest
+ * its offers this run, so their silence proves nothing — closing on it would
+ * manufacture the "Maison stopped hiring" illusion.
+ */
+const UNFINISHED_STATUSES = new Set(['BROKEN', 'TIMEOUT', 'ERROR']);
+
 async function brokenSourceKeys(prisma: PrismaClient): Promise<Set<string>> {
   const rows = await prisma.sourceRun.findMany({
     orderBy: { ranAt: 'desc' },
@@ -65,7 +73,7 @@ async function brokenSourceKeys(prisma: PrismaClient): Promise<Set<string>> {
   for (const row of rows) {
     if (seen.has(row.sourceKey)) continue; // only the latest run per source
     seen.add(row.sourceKey);
-    if (row.status === 'BROKEN') broken.add(row.sourceKey);
+    if (UNFINISHED_STATUSES.has(row.status)) broken.add(row.sourceKey);
   }
   return broken;
 }

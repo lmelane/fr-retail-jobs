@@ -93,6 +93,22 @@ describe('runRefresh', () => {
     expect(result.skippedBrokenSources).toContain('kering');
   });
 
+  it('does NOT close offers of a source whose last run TIMED OUT or ERRORED (L-01)', async () => {
+    const c = await company();
+    await job(c.id, 'fashionjobs', 'f1', 72);
+    await job(c.id, 'hermes', 'h1', 72);
+    // Neither source finished its last run: their offers were not re-attested,
+    // so their silence proves nothing — the refresh must leave them open.
+    await recordHealth('fashionjobs', 'TIMEOUT', 0);
+    await recordHealth('hermes', 'ERROR', 0);
+
+    const result = await runRefresh(prisma);
+
+    expect(result.closedJobs).toBe(0);
+    expect(await prisma.job.count({ where: { isActive: true } })).toBe(2);
+    expect(result.skippedBrokenSources).toEqual(expect.arrayContaining(['fashionjobs', 'hermes']));
+  });
+
   it('keeps a multi-source offer while any source still reports it', async () => {
     const c = await company();
     // One job, two sources: kering stale, but loreal seen recently.
