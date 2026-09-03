@@ -1,144 +1,142 @@
-# Catwalks Job Aggregator
+# Fashion Atlas by Catwalks — l'agrégateur d'offres Mode · Luxe · Beauté · Horlogerie · Retail
 
-Objectif : **toutes les offres publiques Mode / Luxe / Beauté / Retail disponibles en France**, quelle que soit leur infrastructure.
+Le moteur de recherche gratuit et exhaustif des offres publiques **Mode, Luxe, Beauté,
+Horlogerie et Retail dans le monde** — sans doublon, avec le texte complet et le lien
+de candidature direct chez l'employeur.
+
+> **Deux marques (décision D14).** *Fashion Atlas* possède la recherche (SEO, acquisition,
+> longue traîne) ; *Catwalks* (catwalks.io, plateforme distincte et existante) possède le
+> candidat (compte, CV, matching, monétisation B2B). Fashion Atlas alimente Catwalks en
+> candidats à grande échelle. *Fashion Atlas owns the search, Catwalks owns the candidate.*
+
+## Monorepo
+
+```text
+apps/aggregator   Pipeline d'ingestion (crons : ingest, refresh, reconcile, discover)
+apps/web          Le site Next.js (recherche, fiches offre/entreprise, SEO)
+packages/db       Schéma Prisma + client Postgres partagé
+```
 
 ## Le modèle : deux flux parallèles, pas une cascade
 
 ```text
 A) MARQUES DU SECTEUR ──────► ATS / pages carrière officielles ──┐
-   (liste sectorielle, indépendante de tout jobboard)            │
+   (liste sectorielle, Flux A, source canonique)                 │
                                                                  ├──► NORMALISATION
-B) JOBBOARDS ───────────────► leurs offres, directement ─────────┘         │
-   FashionJobs · WTTJ · APEC · France Travail                              ▼
+B) JOBBOARDS & CABINETS ────► leurs offres, directement ─────────┘         │
+   FashionJobs · WTTJ · cabinets spécialisés                               ▼
                                                                      DÉDUPLICATION
+                                                        (1 offre canonique + N JobSource)
                                                                            │
                                                                            ▼
                                                               CLASSIFICATION SECTEUR
                                                                            │
                                                                            ▼
-                                                                    FILTRAGE FRANCE
-                                                                           │
-                                                                           ▼
-                                                                        CATWALKS
+                                                         STOCKAGE MONDE (flag isFrance)
 ```
 
-Les deux flux sont **indépendants et de même rang**. Une offre Dior peut arriver par
-Dior Careers, par LVMH et par FashionJobs : la déduplication n'en garde qu'**une**,
-avec N `JobSource` attachées, l'URL canonique venant de la source la mieux classée
-(`employeur direct > groupe officiel > ATS officiel > jobboard spécialisé > agrégateur`).
+Les deux flux sont **indépendants et de même rang**. Une offre Dior peut arriver par Dior
+Careers, par LVMH et par un jobboard : la déduplication n'en garde qu'**une**, avec N
+`JobSource` attachées. L'**URL canonique** vient toujours de la source la mieux classée
+(`employeur direct > groupe officiel > ATS officiel > jobboard spécialisé > agrégateur`) —
+un jobboard ne peut jamais écraser le lien direct de l'employeur (décision D18).
 
-**FashionJobs n'est pas un annuaire amont.** C'est une source d'offres au même titre
-que les autres, doublée d'un signal de découverte d'employeurs. Faire dépendre le
-périmètre de son annuaire l'enfermerait dans les 668 sociétés qui y publient — alors
-que le périmètre visé est **sectoriel**, pas issu d'un jobboard.
+### Périmètre : MONDE par défaut (décision D19)
 
-## Pipeline
+Le site affiche **toutes les offres (monde) par défaut** ; un filtre **Pays** restreint
+(France, Italie…). `isFrance` reste stocké et sert le filtre France. La recherche, les
+suggestions de villes/titres et le sitemap sont mondiaux — taper « Milan » ou « New York »
+remonte bien les offres.
 
-1. `discover-fashionjobs`
-   - lit `https://fr.fashionjobs.com/societesrecrutent/`
-   - récupère toutes les sociétés exposées par FashionJobs
-   - enregistre nom, URL FashionJobs, slug et volume d'offres affiché
+## Le pipeline (`apps/aggregator`)
 
-   > **Transport navigateur obligatoire.** Le domaine est protégé par Cloudflare :
-   > toutes les requêtes `fetch`/curl reçoivent un HTTP 403, y compris la page
-   > d'accueil et le sitemap. Cette étape passe donc par Chromium (Playwright).
-   > `robots.txt` autorise bien `/societesrecrutent/` (seul `/societesRecrutent/ajax/`
-   > est interdit). Mesuré le 2026-09-01 : **668 sociétés, une seule page, pas de
-   > pagination**, dont 665 avec un compteur d'offres (3 sociétés n'en affichent
-   > aucun côté source).
+| Commande | Rôle |
+|---|---|
+| `ingest` | Une source (`--source=<clé>`) ou le run complet — fetch + dédup à l'écriture |
+| `ingest-all` | Entrée de prod : chaque source sous son propre timeout, puis geocode + santé + alerte |
+| `refresh` | Cycle de vie — ferme les offres qu'aucune source ne rapporte plus (garde anti-purge massive) |
+| `reconcile` | Fusions rétroactives après ajout d'un alias / synonyme |
+| `discover` | Découverte d'ATS sur un roster de Maisons (`--input=<nom,url.csv>`) → fichier de review |
 
-2. `discover-ats`
-   - cherche la page carrière officielle (Serper, si configuré)
-   - détecte automatiquement l'ATS
-   - support MVP : Greenhouse, Lever, SmartRecruiters, Recruitee, Personio, Workday
-   - fallback : crawler JSON-LD `JobPosting`
-   - les cas non résolus passent en `NEEDS_REVIEW`
-
-3. `export-companies`
-   - exporte à tout moment le roster FashionJobs + ATS en CSV (`npm run export:companies`)
-
-4. `sync-jobs`
-   - appelle directement l'ATS
-   - normalise les offres
-   - conserve les offres monde mais calcule `isFrance`
-   - upsert par `(companyId, ATS, externalId)`
-   - marque les offres disparues comme inactives après un sync réussi
-
-## Pourquoi ce modèle
-
-Aucune source ne voit tout le marché — pas même pour ses propres inscrits. Mesuré le
-2026-09-01 : Courir affiche **198 offres sur FashionJobs contre 396 dans son ATS**.
-S'appuyer sur un seul jobboard reviendrait à ne voir que la moitié du marché.
-
-À l'inverse, l'ATS officiel publie souvent une annonce **avant** sa republication sur
-un jobboard, tandis qu'un jobboard couvre des employeurs sans ATS exploitable. Les deux
-flux sont donc complémentaires, et c'est la déduplication — pas le choix d'une source —
-qui garantit une liste propre.
-
-## Priorité des sources
-
-L'URL de candidature conservée est toujours la mieux classée :
-
-```text
-employeur direct  >  groupe officiel  >  ATS officiel  >  jobboard spécialisé  >  agrégateur
+```bash
+npm run ingest -w @catwalks/aggregator -- --source=cartier-3   # une source
+npm run ingest -w @catwalks/aggregator                          # run complet local
+npx tsx apps/aggregator/src/cli.ts ingest-all                   # entrée de prod
+npx tsx apps/aggregator/src/cli.ts discover --input=data/maisons.csv --concurrency=5
 ```
 
-Une source moins prioritaire reste **attachée** à l'offre : elle sert à détecter les
-modifications et les fermetures, même quand la source canonique tarde à se mettre à jour.
+### La chaîne d'hygiène (décisions D22–D24)
 
-Cette priorité a aussi une portée légale. `api.smartrecruiters.com/robots.txt` réserve
-`/v1/companies/` à LinkedInBot et renvoie `Disallow: /` à tous les autres, alors que le
-domaine employeur vers lequel il redirige (`jobs.courir.com`) publie `Allow: /` et
-déclare son sitemap — **mêmes offres, route propre, URL canonique côté employeur**.
+Un agrégateur ne montre que des offres réelles avec des liens vivants.
+
+1. **Bonnes URLs à l'ingestion** — chaque adaptateur produit l'URL de candidature réelle
+   (l'API/le feed de l'ATS fait foi), et une URL corrigée se propage aux offres déjà en base.
+2. **Validation = la source, pas un HTTP HEAD massif** — une offre reste vivante tant qu'une
+   de ses sources la re-liste ; elle n'est fermée que quand toutes ses sources sont périmées
+   (`refresh`), et ré-ouverte si une source revient. À 14k+ sources, sonder chaque lien par
+   HEAD mentirait (beaucoup de sites renvoient 403 en étant vivants) — le feed ne ment pas.
+3. **Offre périmée → 410 Gone** — `apps/web/middleware.ts` + `/api/offre-status/[id]`
+   renvoient 410 (+ `noindex`) pour une offre fermée, 404 pour un id inexistant, 200 pour une
+   offre active. Google dé-indexe vite un 410, retente un 404 pendant des semaines.
+4. **Alerte email (Brevo)** — un digest par run liste chaque source DEGRADED/BROKEN
+   (`sendHealthAlert`), pour garder le catalogue propre. No-op sans `BREVO_API_KEY`.
+
+## Le site (`apps/web`)
+
+Next.js 15 (App Router). Recherche master-detail, fiches `/offre/[id]` et
+`/entreprise/[slug]` (SEO), `sitemap.xml` + `robots.txt`, JobPosting JSON-LD (le
+`hiringOrganization` est la **vraie Maison**, pas Fashion Atlas — modèle agrégateur).
+DA Catwalks : noir/blanc/gris, graisse 400, titres en MAJUSCULES, pills.
+
+```bash
+npm run web:dev      # dev local (http://localhost:3009)
+npm run web:build    # build de prod
+```
 
 ## Installation
 
 ```bash
-cp .env.example .env
+cp .env.example .env         # renseigner DATABASE_URL
 npm install
-npx playwright install chromium   # requis pour l'étape FashionJobs
+npx playwright install chromium   # requis pour FashionJobs + la découverte ATS
 npm run db:generate
 npm run db:push
-npm run sync:all
 ```
 
-`SERPER_API_KEY` est **requise** pour `discover-ats`. Sans elle, la commande échoue immédiatement avec un message explicite, au lieu de basculer silencieusement les 668 sociétés en `NEEDS_REVIEW`. `discover-fashionjobs` fonctionne sans clé.
+### Variables d'environnement
 
-## Cron recommandé
+| Variable | Usage |
+|---|---|
+| `DATABASE_URL` | Postgres (requis) |
+| `NEXT_PUBLIC_SITE_URL` | URL publique du site, pour sitemap/robots/JSON-LD (le vrai domaine une fois branché) |
+| `BREVO_API_KEY`, `BREVO_SENDER_EMAIL`, `BREVO_SENDER_NAME` | Alerte email santé des sources |
+| `ALERT_EMAIL` | Destinataire du digest (défaut : loic.melane@catwalks.io) |
+| `SERPER_API_KEY` | Optionnel — recherche web pour la découverte ATS quand une URL carrière manque |
 
-- Annuaire FashionJobs : 1 fois/jour
-- Découverte ATS : nouvelles sociétés uniquement, 1 fois/jour
-- Sync ATS : toutes les 4 heures
+## Tests
 
-Exemples :
-
-```cron
-15 3 * * * npm run discover:fashionjobs
-45 3 * * * npm run discover:ats
-0 */4 * * * npm run sync:jobs
+```bash
+npm run test:unit -w @catwalks/aggregator          # normalizers, secteur, france, ssrf…
+DATABASE_URL=…/catwalks_test npm run test:integration -w @catwalks/aggregator
 ```
 
-## Requête Catwalks
+> ⚠️ **Les tests d'intégration VIDENT la base.** Ils ne tournent que sur une base dont le
+> nom contient « test » (garde `src/test/setup-integration.ts`). Ne jamais les lancer sur la
+> base de démo/prod.
 
-Les offres françaises publiables :
+## Requête publiable (côté site)
 
 ```sql
 SELECT j.*
 FROM "Job" j
 JOIN "Company" c ON c.id = j."companyId"
-WHERE j."isFrance" = true
-  AND j."isActive" = true
+WHERE j."isActive" = true            -- ajouter j."isFrance" = true pour la France seule
 ORDER BY COALESCE(j."postedAt", j."firstSeenAt") DESC;
 ```
 
-## À durcir avant production massive
+## État & décisions
 
-- CGU FashionJobs / rate limits par domaine. (`robots.txt` vérifié le 2026-09-01 :
-  `/societesrecrutent/` autorisé ; `/societesRecrutent/ajax/`, `/s/?...` et les
-  espaces candidat/compte interdits — ne pas y toucher.)
-- Alias de sociétés (`BVLGARI` ↔ `BULGARI`, etc.) avec validation humaine.
-- Classification de l'employeur (`MAISON`, `RETAILER`, `CABINET`, etc.).
-- Géocodage robuste pour `isFrance` au lieu des heuristiques de localisation.
-- Déduplication cross-ATS si une même offre est publiée par plusieurs entités du groupe.
-- Adaptateurs complémentaires : SuccessFactors, Teamtailor, Workable, Taleo et pages carrière propriétaires.
-- Monitoring : taux de succès, nombre d'offres par source, alertes de chute brutale.
+L'état vérifié de la prod et les **décisions métier gravées** (D1–D24) vivent dans
+[`CLAUDE.md`](./CLAUDE.md) — la source de vérité du produit. Règle : le **code + la base +
+les logs de prod** priment sur tout résumé ; toute décision métier structurante se prend
+avec le propriétaire (Loïc).
