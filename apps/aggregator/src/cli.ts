@@ -3,6 +3,15 @@ import { runIngest } from './pipeline/ingest.js';
 import { ingestAllBySource } from './pipeline/ingestOrchestrator.js';
 import { checkSourceHealth } from './pipeline/health.js';
 import { sendHealthAlert } from './pipeline/alert.js';
+import { submitOfferChanges } from './pipeline/googleIndexing.js';
+
+/**
+ * How far back to look for offers created/closed by THIS run, when notifying
+ * Google (D22). Wider than a run's duration, tighter than a day — a run cut short
+ * still catches its changes, and a fresh-start rebuild does not dump the whole
+ * catalogue at Google at once (the per-run cap in googleIndexing also guards it).
+ */
+const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 * 1000);
 import { runRefresh } from './pipeline/refresh.js';
 import { runReconcile } from './pipeline/reconcile.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
@@ -79,7 +88,22 @@ try {
       broken: orchestration.incidents.filter((i) => i.status === 'BROKEN').length,
       incidents: orchestration.incidents,
     });
-    console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo, alerted }, null, 2));
+
+    // D22 — tell Google about the offers this run added (URL_UPDATED) and closed
+    // (URL_DELETED), so new pages get crawled fast and expired ones dropped. A
+    // no-op until the domain + service account are configured. Bounded windows so
+    // a first run after a fresh start does not submit the whole catalogue.
+    const since = new Date(Date.now() - INDEXING_WINDOW_MS);
+    const [createdRows, closedRows] = await Promise.all([
+      prisma.job.findMany({ where: { isActive: true, firstSeenAt: { gte: since } }, select: { id: true }, take: 500 }),
+      prisma.job.findMany({ where: { isActive: false, lastSeenAt: { gte: since } }, select: { id: true }, take: 500 }),
+    ]);
+    const indexing = await submitOfferChanges(
+      createdRows.map((r) => r.id),
+      closedRows.map((r) => r.id),
+    );
+
+    console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo, alerted, indexing }, null, 2));
     if (orchestration.failed > 0 || orchestration.timedOut > 0) {
       console.error(
         `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`,
