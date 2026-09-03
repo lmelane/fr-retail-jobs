@@ -687,26 +687,41 @@ export async function suggestTitles(query: string): Promise<string[]> {
  * lean (id + updatedAt only) so the ~26k-entry sitemap stays a single cheap
  * query per type.
  */
-export async function sitemapData(): Promise<{
-  offers: { id: string; title: string; updatedAt: Date }[];
-  companies: { name: string; updatedAt: Date }[];
-}> {
-  if (!process.env.DATABASE_URL) return { offers: [], companies: [] };
-  const [offers, companyRows] = await Promise.all([
-    prisma.job.findMany({
-      where: { isActive: true },
-      // title rides along so the sitemap lists the canonical slug URLs (S-01).
-      select: { id: true, title: true, lastSeenAt: true },
-    }),
-    prisma.company.findMany({
-      where: { jobs: { some: { isActive: true } } },
-      select: { name: true, lastSeenAt: true },
-    }),
-  ]);
-  return {
-    offers: offers.map((o) => ({ id: o.id, title: o.title, updatedAt: o.lastSeenAt ?? new Date() })),
-    companies: companyRows.map((c) => ({ name: c.name, updatedAt: c.lastSeenAt ?? new Date() })),
-  };
+/**
+ * Sitemap chunké (S-03, remonté au lot 2) : le monofichier à 34 k lignes en
+ * force-dynamic répondait en timeout depuis l'extérieur — Google ne voyait
+ * RIEN. L'index liste des chunks de 5 000 URLs, chacun paginé en base par
+ * curseur d'id (stable), lastmod = updatedAt.
+ */
+export const SITEMAP_CHUNK_SIZE = 5000;
+
+export async function sitemapOfferCount(): Promise<number> {
+  if (!process.env.DATABASE_URL) return 0;
+  return prisma.job.count({ where: { isActive: true } });
+}
+
+export async function sitemapOffersChunk(
+  chunk: number,
+): Promise<{ id: string; title: string; updatedAt: Date }[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const offers = await prisma.job.findMany({
+    where: { isActive: true },
+    // title rides along so the sitemap lists the canonical slug URLs (S-01).
+    select: { id: true, title: true, updatedAt: true },
+    orderBy: { id: 'asc' },
+    skip: chunk * SITEMAP_CHUNK_SIZE,
+    take: SITEMAP_CHUNK_SIZE,
+  });
+  return offers;
+}
+
+export async function sitemapCompanies(): Promise<{ name: string; updatedAt: Date }[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const rows = await prisma.company.findMany({
+    where: { jobs: { some: { isActive: true } } },
+    select: { name: true, lastSeenAt: true },
+  });
+  return rows.map((c) => ({ name: c.name, updatedAt: c.lastSeenAt ?? new Date() }));
 }
 
 /**
@@ -725,7 +740,7 @@ export async function landingStats(): Promise<{
   if (!process.env.DATABASE_URL) return { offers: 0, companies: 0, countries: 0, newCompaniesThisWeek: 0 };
   try {
     const weekAgo = new Date(Date.now() - 7 * 86_400_000);
-    const [offers, companies, countryRows, newRows] = await Promise.all([
+    const [offers, companies, countryRows, newRows, oldest] = await Promise.all([
       prisma.job.count({ where: { isActive: true } }),
       prisma.company.count({ where: { jobs: { some: { isActive: true } } } }),
       prisma.job.findMany({
@@ -742,10 +757,20 @@ export async function landingStats(): Promise<{
           NOT: { jobs: { some: { firstSeenAt: { lt: weekAgo } } } },
         },
       }),
+      prisma.job.findFirst({ orderBy: { firstSeenAt: 'asc' }, select: { firstSeenAt: true } }),
     ]);
     // Raw country spellings collapse to canonical codes (IT/Italy/it -> IT).
     const codes = new Set(countryRows.map((r) => countryCode(r.country)).filter(Boolean));
-    return { offers, companies, countries: codes.size, newCompaniesThisWeek: newRows };
+    // « +810 cette semaine » sur 810 Maisons après un fresh start se lit comme
+    // un bug : tant que la base n'a pas 7 jours d'historique, le delta est un
+    // artefact — masqué (0), il réapparaît de lui-même à J+7.
+    const hasWeekOfHistory = oldest !== null && oldest.firstSeenAt < weekAgo;
+    return {
+      offers,
+      companies,
+      countries: codes.size,
+      newCompaniesThisWeek: hasWeekOfHistory ? newRows : 0,
+    };
   } catch {
     return { offers: 0, companies: 0, countries: 0, newCompaniesThisWeek: 0 };
   }
