@@ -328,6 +328,30 @@
 /* Pages intérieures : réserve la hauteur du header global fixe. */
 .page { padding-top: var(--header-h); }
 
+/* Fiche offre autonome (/offre) : barre CTA sticky en bas sur mobile — fond
+   blanc, filet pointillé haut, les 2 boutons D18. Écart assumé à offre.html
+   (validé par Loïc) pour la conversion mobile. Cachée à lg+ (les CTA inline du
+   détail suffisent). Quand la barre est présente, on masque les CTA inline sur
+   mobile pour ne pas les dupliquer (`.has-apply-bar`). */
+.apply-bar { display: none; }
+@media (max-width: 767px) {
+  /* Fixée au bas du viewport (pas sticky : sticky se décroche en fin de page).
+     Filet pointillé haut, fond blanc. Le contenu reçoit un padding-bottom pour
+     ne pas passer sous la barre. */
+  .apply-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--fa-z-header, 100);
+    display: grid; gap: 8px;
+    padding: 16px 24px calc(16px + env(safe-area-inset-bottom, 0px));
+    background: var(--fa-paper);
+    background-image: linear-gradient(to right, var(--fa-ink) 25%, transparent 0);
+    background-size: 4px 1px; background-repeat: repeat-x; background-position: 50% 0;
+  }
+  .apply-bar .btn { justify-content: center; }
+  /* Réserve la place de la barre fixe (2 boutons 48px + gaps + paddings). */
+  .has-apply-bar { padding-bottom: 148px; }
+  .has-apply-bar .detail__actions, .has-apply-bar .detail__note { display: none; }
+}
+
 /* ——————————————————————————— Moteur /emplois (§5.2, réf emplois.html) ——————————————————————————— */
 
 /* Barre de recherche + filtres, sticky sous le header fixe. */

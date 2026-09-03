@@ -109,9 +109,27 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
         {/* Fiche autonome : la page scrolle, pas de sticky ni de scroll interne
             (le panneau détail /emplois, lui, garde son scroll). Même composant
-            JobDetail : une seule identité visuelle pour une offre. */}
-        <div className="max-w-[720px]">
+            JobDetail : une seule identité visuelle pour une offre.
+            `has-apply-bar` : sur mobile, les CTA inline sont masqués au profit
+            de la barre sticky ci-dessous. */}
+        <div className="has-apply-bar max-w-[720px]">
           <JobDetail job={job} />
+
+          {/* Barre CTA sticky (mobile only, cf. globals .apply-bar). Reprend les
+              2 actions honnêtes D18. Cachée à lg+. */}
+          <div className="apply-bar">
+            <a
+              className="btn btn--primary btn--lg"
+              href="https://catwalks.io/inscription?utm_source=fashion-atlas&utm_medium=aggregator&utm_campaign=job-detail"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Matcher mon profil avec Catwalks
+            </a>
+            <a className="btn btn--lg" href={job.applyUrl} target="_blank" rel="noopener noreferrer">
+              Voir l’offre chez {job.company}
+            </a>
+          </div>
         </div>
       </div>
     </main>
