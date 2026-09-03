@@ -139,3 +139,52 @@
   - **États** : résultat vide /emplois & /entreprises (caption verte « Résultat vide » + titre serif + termes cherchés + « Voir toutes les offres » — **pas de bouton alerte** : le compte vit sur Catwalks, pas de fausse affordance) ; **offre expirée** = bandeau `.banner` (chip `--warn` « Expirée » + « Voir les offres similaires ») — voir décision D22-révisé ci-dessous ; **toast** `.toast` défini comme primitive (non câblé : aucun flux ne le déclenche encore) ; **barre de progression** `.progress` 2px verte en haut sur navigation (`NavProgress`, Suspense, remplace tout spinner).
   - **D22 révisé (validé Loïc 2026-09-03)** : une offre fermée renvoie toujours le **statut 410 + noindex** (SEO tenu) MAIS le middleware `rewrite` vers la vraie page (au lieu d'une page-stub codée en dur) → le candidat voit l'offre + le bandeau « Expirée » + un pont vers les offres vivantes. `getJobStatus` renvoie désormais l'offre aussi en `closed` (aucune requête en plus). JSON-LD JobPosting supprimé sur une offre fermée.
   - Parité vérifiée en live : no-hscroll, 7 cartes Maison, logo monogramme (fallback OK), chip catégorie ↔ URL secteur (écrit/effacé), recherche Maison ↔ URL q, navigation → fiche, cellule ville → /emplois filtré ; offre fermée = HTTP **410** + `x-robots-tag: noindex` + page rendue avec bandeau, puis réactivée (200). tsc + build OK. Captures : entreprises-1440, fiche-1440-top, fiche-1440-offers, etat-404, etat-empty, expired-1440.
+- **Étape 7 ✓** QA finale + purge legacy.
+  - **Purge legacy (D5)** : les 13 primitifs shadcn `components/ui/*` + `company-logo.tsx` + `rotating-word.tsx` sont orphelins (0 import, vérifié) après la refonte → supprimés ; `@import "tw-animate-css"` retiré (aucune classe utilisée) ; `error.tsx` (état D1) restylé DA.
+
+## H. QA finale (étape 7)
+
+Serveur : dev Docker Postgres local (`catwalks`, 1 996 offres, 7 Maisons). Perf mesurée aussi sur **build de prod** (`next start`) car le dev n'est pas représentatif.
+
+### 1. Greps interdits — tous 0 en source (`app/ components/`)
+```
+grep -rniE 'text-\[#000\b|color:\s*#000\b|text-black\b' app components   → 0
+grep -rniE '#fafafa' app components                                      → 0
+grep -rniE 'rounded-(full|xl|lg|md)\b' app components                    → 0
+grep -rniE 'shadow-(sm|md|lg|xl)\b' (className) app components            → 0
+grep -rniE 'font-(semibold|bold)\b' app components                       → 0  (1 match = commentaire dans globals.css)
+grep -rniE 'catwalks_font' app components public                         → 0
+grep -rniE 'googleapis|gstatic' app components lib                       → 0  (fonts self-hosted)
+grep -rniE 'lacoste' app components public                               → 0
+```
+Restes légitimes dans `globals.css` : neutralisations (`--shadow-*: none`, `--radius-*: var(--fa-radius)`) et remaps de tokens (§13) — ce sont les définitions qui NEUTRALISENT, pas des usages.
+
+### 2. Fonts (inspecteur + réseau)
+- Titre d'offre → `font-family: "FA Display", …serif` ; caption → `"FA Sans", …` **weight 500** (le 600 demandé est mappé sur Medium 500 — `document.fonts` : `FA Sans 500 600 loaded`).
+- Réseau : **4 woff2** chargées (`FADisplay-Regular`, `FADisplay-Italic`, `FASans-Regular`, `FASans-Medium`), **0 × 404**, preload OK (2 dans `<head>`).
+
+### 3. Captures côte à côte (scratchpad) vs maquettes
+home (top transparent / scrolled), /emplois (offre sélectionnée + dropdown), /offre, /entreprises, /entreprise/[slug] (hero + offres), 404, état vide, offre expirée — à 1440 ; /emplois & /entreprises à 1024 ; mobile 390 : /emplois, /offre (barre CTA sticky), menu ouvert.
+
+### 4. Scroll horizontal — **0 débordement** sur 6 pages × 3 largeurs (1440/1024/390) : `scrollWidth ≤ innerWidth` partout (18/18 OK).
+
+### 5. Lighthouse (mobile, navigation)
+| Page | a11y | SEO | best-pract. | perf (dev) | perf (**prod**) |
+|---|---|---|---|---|---|
+| home | 100 | 100 | 96 | 53 | **97** |
+| /emplois | 100 | 100 | 96 | 65 | **96** |
+| /offre/[id] | 100 | 100 | 96 | 70 | **97** |
+| /entreprise/[slug] | 100 | 100 | 96 | 70 | **96** |
+
+Accessibilité **100/100 partout** (seuil ≥95 tenu). Corrections apportées pour y arriver : retrait de `aria-selected` (invalide sur un `<button>` hors listbox — `aria-current` porte la sélection) et ajout d'un `<main>` unique sur home et /emplois. La perf dev (53–70) est un artefact du serveur de dev ; le build de prod donne **96–97**. Pas de baseline Lighthouse de la version Indeed-clone → comparaison avant/après non disponible (à établir sur un déploiement témoin si besoin).
+
+### 6. Clavier — Tab parcourt header → recherche → pills → liste → détail avec **focus vert 2px visible partout** ; sur une pill : Entrée ouvre le dropdown (3 options), Échap le ferme (0 option), flèches naviguent dedans.
+
+### 7. `prefers-reduced-motion: reduce` — toutes les transitions à `0.001s` (header, .searchbar, .offer) ; aucune animation.
+
+### 8. Contraste (WCAG AA, seuil 4.5:1)
+- Blanc sur vert-nuit `#000A05` = **20.08:1** ; blanc sur le point le plus clair réel du dégradé hero = **9.75:1** ; pire cas absolu (couleur radiale brute `#487056`, jamais atteinte car voilée) = **5.63:1** → tous ≥ 4.5.
+- ink-muted `#6B6B6B` sur paper-alt `#F7F7F5` = **4.97:1** → ≥ 4.5.
+
+### 9. Parité fonctionnelle — **14/14 OK** (live, serveur hydraté)
+recherche + autocomplete · filtres Secteur/Contrat/Ville/Maison (chacun écrit puis efface son paramètre) · sélection ↔ détail · lien employeur externe · lien Matcher → catwalks.io · infinite-scroll (25→50) · chips catégorie (écrit/efface) · recherche de Maison → URL q · navigation → fiche Maison · cellule ville → /emplois filtré · offre fermée = HTTP 410 + bandeau · 404 rend `.notfound` · retour arrière Cartier↔Hermès cohérent.
