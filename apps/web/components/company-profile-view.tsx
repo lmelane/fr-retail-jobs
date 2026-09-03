@@ -231,7 +231,6 @@ export function CompanyProfileView({
                 icon={<Search className="text-muted-foreground size-[18px] shrink-0" aria-hidden />}
                 placeholder="Ville, région ou pays"
                 ariaLabel={`Filtrer les offres ${profile.name} par lieu`}
-                hero={false}
               />
               {ville && (
                 <button

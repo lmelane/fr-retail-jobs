@@ -325,6 +325,93 @@
   }
 }
 
+/* Pages intérieures : réserve la hauteur du header global fixe. */
+.page { padding-top: var(--header-h); }
+
+/* ——————————————————————————— Moteur /emplois (§5.2, réf emplois.html) ——————————————————————————— */
+
+/* Barre de recherche + filtres, sticky sous le header fixe. */
+.searchbar { position: sticky; top: var(--header-h); z-index: var(--fa-z-search, 90); background: var(--fa-paper); padding: 16px 0 12px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+.filters .spacer { flex: 1; }
+.has-dd { position: relative; }
+.link-ghost { font: 500 .875rem/1 var(--fa-font-sans); color: var(--fa-ink); text-decoration: underline; text-underline-offset: 4px; background: transparent; border: 0; cursor: pointer; }
+.link-ghost:hover { color: var(--fa-green); }
+
+/* Search : Poste | Ville | Rechercher — 48px, filet vertical entre champs. */
+.search { display: grid; grid-template-columns: 1fr 1fr auto; height: 48px; border: 1px solid var(--fa-ink); border-radius: var(--fa-radius); background: var(--fa-paper); overflow: hidden; }
+.search:focus-within { border-color: var(--fa-green); }
+.search .field { display: flex; align-items: center; gap: 10px; padding: 0 16px; min-width: 0; }
+.search .field + .field { background-image: linear-gradient(to bottom, var(--fa-line) 25%, transparent 0); background-size: 1px 4px; background-repeat: repeat-y; background-position: 0 50%; }
+.search .field svg { width: 18px; height: 18px; stroke: var(--fa-ink-muted); stroke-width: 1.25; fill: none; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.search .field input { border: 0; outline: 0; background: transparent; font: 400 .9375rem/1 var(--fa-font-sans); color: var(--fa-ink); width: 100%; min-width: 0; }
+.search .field input::placeholder { color: var(--fa-ink-muted); }
+.search .btn { height: 48px; border-radius: 0; border: 0; }
+
+/* Split-view : liste 480 | filet pointillé | détail. */
+.split { display: grid; grid-template-columns: 480px 1px minmax(0, 1fr); column-gap: 20px; align-items: start; }
+.split > .rule-v { align-self: stretch; width: 1px; }
+.list-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; }
+
+/* Carte offre : pas de boîte, filet du <li> parent, titre serif. */
+.offer { display: block; width: 100%; text-align: left; padding: 20px 24px; background: transparent; border: 0; cursor: pointer; transition: background-color var(--fa-dur-fast) var(--fa-ease); }
+.offer:hover { background: var(--fa-paper-alt); }
+.offer.is-selected { background: var(--fa-paper-alt); box-shadow: inset 2px 0 0 0 var(--fa-green); }
+.offer.is-visited .offer__title { color: var(--fa-ink-soft); }
+.offer__top { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+.offer__title { margin: 6px 0 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 9999px; background: var(--fa-green); margin-right: 8px; vertical-align: 1px; }
+.load-more { padding: 32px 24px 64px; }
+
+/* Panneau détail : sticky, scroll interne (prod, cf. §4.7). */
+.detail { position: sticky; top: calc(var(--header-h) + 118px); max-height: calc(100vh - var(--header-h) - 118px); overflow-y: auto; padding: 24px 8px 64px 32px; }
+.detail__head { display: grid; grid-template-columns: 48px 1fr auto; column-gap: 16px; row-gap: 8px; align-items: start; }
+.logo { width: 56px; height: 56px; border: 1px solid var(--fa-line); display: grid; place-items: center; background: var(--fa-paper); font: 400 20px/1 var(--fa-font-display); color: var(--fa-ink); flex: none; }
+.logo--48 { width: 48px; height: 48px; font-size: 18px; }
+.detail__title { grid-column: 2 / 3; margin-top: 2px; }
+.detail__meta { grid-column: 2 / 3; }
+.detail__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.detail__note { margin-top: 12px; }
+.block { margin-top: 32px; }
+.block > .t-caption { display: block; margin-bottom: 8px; }
+.kv { display: grid; grid-template-columns: 160px 1fr; }
+.kv > * { padding: 10px 0; }
+.kv dt { color: var(--fa-ink-muted); font: 400 .875rem/1.4 var(--fa-font-sans); }
+.kv dd { margin: 0; font: 400 .9375rem/1.4 var(--fa-font-sans); }
+.kv > dt:nth-of-type(n+2), .kv > dd:nth-of-type(n+2) { background-image: linear-gradient(to right, var(--fa-ink-disabled) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; background-position: 50% 0; }
+
+/* Description longue : prose serif, largeur de lecture bornée. */
+.prose { max-width: 560px; color: var(--fa-ink-soft); }
+.prose p + p, .prose ul + p, .prose p + ul { margin-top: 16px; }
+.prose ul { padding-left: 16px; list-style: disc; }
+.prose li + li { margin-top: 6px; }
+.prose h4 { font: 500 1rem/1.3125 var(--fa-font-sans); color: var(--fa-ink); margin: 24px 0 8px; }
+.prose a { color: var(--fa-green); }
+.prose a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Offres similaires : liste de liens serif dans le détail. */
+.similar { display: grid; gap: 20px; }
+.similar a { display: grid; gap: 4px; }
+.similar a:hover .t-d3 { text-decoration: underline; text-underline-offset: 4px; }
+
+.source { margin-top: 32px; padding-top: 16px; }
+
+@media (max-width: 1023px) {
+  .split { grid-template-columns: 1fr; }
+  .split > .rule-v, .split > .detail { display: none; }
+  .detail { position: static; max-height: none; overflow: visible; padding: 24px 0; }
+  .kv { grid-template-columns: 1fr; }
+  .kv > dt { padding-bottom: 2px; }
+  .kv > dd { padding-top: 0; }
+  .kv > dd:nth-of-type(n+2) { background: none; }
+}
+@media (max-width: 767px) {
+  .search { grid-template-columns: 1fr; height: auto; }
+  .search .field { height: 48px; }
+  .search .field + .field { background-image: linear-gradient(to right, var(--fa-line) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; background-position: 50% 0; }
+  .search .btn { height: 48px; justify-content: center; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 1ms !important;

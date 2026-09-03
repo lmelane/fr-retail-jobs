@@ -138,7 +138,6 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
               icon={<Search className="text-muted-foreground size-[18px] shrink-0" aria-hidden />}
               placeholder="Rechercher une Maison…"
               ariaLabel="Rechercher une entreprise"
-              hero={false}
             />
           </form>
 

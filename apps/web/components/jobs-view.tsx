@@ -3,18 +3,10 @@
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
-import {
-  Check,
-  ChevronDown,
-  Layers,
-  Loader2,
-  MapPin,
-  X,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Check, ChevronDown, Loader2, X } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
 import { SearchPill } from '@/components/search-pill';
-import { contractLabel, relativeDate } from '@/lib/format';
+import { contractLabel, displayTitle, relativeDate } from '@/lib/format';
 import { countryLabel } from '@/lib/countries';
 import { cn } from '@/lib/utils';
 import type { JobFilters, JobRow, JobsResult } from '@/lib/jobs';
@@ -225,117 +217,101 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
   ).length;
 
   return (
-    <div className="bg-background">
-      {/* ============ Header: brand + the big Indeed-style search pill ============
-          `sticky top-0`: the whole search+filter header stays pinned while the
-          page scrolls under it — Indeed itself pins only the filter bar (its
-          header scrolls away), but pinning the pill along with it is the clean
-          equivalent: the candidate can always search or refine a filter without
-          scrolling back up. A solid background + bottom border keeps the list
-          from visually running through it. */}
-      <header ref={headerRef} className="border-border/70 sticky top-0 z-40 border-b bg-white">
+    <div className="bg-paper pt-(--header-h)">
+      {/* Barre de recherche + filtres, sticky sous le header fixe (§5.2, réf
+          emplois.html). Le pt du parent = hauteur du header global fixe, pour
+          que la barre sticky (top:var(--header-h)) ne recouvre pas la liste.
+          Filet pointillé bas via .rule-b. */}
+      <header ref={headerRef} className="searchbar rule-b">
+        <div className="container-wide">
+          <SearchPill
+            query={draft}
+            onQueryChange={setDraft}
+            city={locationDraft}
+            onCityChange={setLocationDraft}
+            onSubmit={({ query, city }) =>
+              navigate({
+                q: query || null,
+                ville: city?.trim() || null,
+              })
+            }
+          />
 
-        {/* Three-zone top bar: the CATWALKS wordmark at the left, the
-            Offres/Entreprises nav centered, actions at the right. Below lg it
-            wraps and the full-width search pill drops to its own row. */}
-        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
-
-          {/* The pill: Poste | Lieu | Rechercher, with live autocomplete on both
-              fields — shared with the landing page's own pill so the two never
-              diverge (see SearchPill). */}
-          <div className="order-4 w-full lg:order-none">
-            <SearchPill
-              query={draft}
-              onQueryChange={setDraft}
-              city={locationDraft}
-              onCityChange={setLocationDraft}
-              onSubmit={({ query, city }) =>
-                navigate({
-                  q: query || null,
-                  ville: city?.trim() || null,
-                })
-              }
+          {/* ============ Filtres : pills DA (§4.3), dropdowns click-driven ============ */}
+          <div className="filters">
+            <FilterMenu
+              label="Pays"
+              active={params.get('pays')}
+              options={data.facets.countries}
+              labels={COUNTRY_LABELS}
+              onSelect={(value) => toggle('pays', value)}
             />
+            <FilterMenu
+              label="Secteur"
+              active={params.get('secteur')}
+              options={data.facets.sectors}
+              labels={SECTOR_LABELS}
+              onSelect={(value) => toggle('secteur', value)}
+            />
+            <FilterMenu
+              label="Contrat"
+              active={params.get('contrat')}
+              options={data.facets.contracts}
+              onSelect={(value) => toggle('contrat', value)}
+            />
+            <FilterMenu
+              label="Ville"
+              active={params.get('ville')}
+              options={data.facets.cities}
+              onSelect={(value) => toggle('ville', value)}
+            />
+            <FilterMenu
+              label="Maison"
+              active={params.get('maison')}
+              options={data.facets.maisons}
+              onSelect={(value) => toggle('maison', value)}
+            />
+            <FilterMenu
+              label="Groupe"
+              active={params.get('groupe')}
+              options={data.facets.groups}
+              onSelect={(value) => toggle('groupe', value)}
+            />
+            {/* No "Source" filter in the front: our aggregation sources are
+                internal plumbing (which ATS a posting came from), not something
+                a candidate should see or filter on. */}
+            {activeCount > 0 && (
+              <button
+                type="button"
+                onClick={() => startTransition(() => router.push('/emplois', { scroll: false }))}
+                className="link-ghost"
+              >
+                Réinitialiser
+              </button>
+            )}
+            <span className="spacer" aria-hidden />
+            <span className="t-caption-soft tabular-nums" aria-live="polite">
+              {pending ? 'Recherche…' : `${data.total.toLocaleString('fr-FR')} offres`}
+            </span>
           </div>
-        </div>
-
-        {/* ============ Filters: real dropdowns, click-driven, not <details> ============ */}
-        <div className="mx-auto flex max-w-[1280px] items-center gap-2 overflow-x-auto px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <FilterMenu
-            label="Pays"
-            active={params.get('pays')}
-            options={data.facets.countries}
-            labels={COUNTRY_LABELS}
-            onSelect={(value) => toggle('pays', value)}
-          />
-          <FilterMenu
-            label="Secteur"
-            active={params.get('secteur')}
-            options={data.facets.sectors}
-            labels={SECTOR_LABELS}
-            onSelect={(value) => toggle('secteur', value)}
-          />
-          <FilterMenu
-            label="Contrat"
-            active={params.get('contrat')}
-            options={data.facets.contracts}
-            onSelect={(value) => toggle('contrat', value)}
-          />
-          <FilterMenu
-            label="Ville"
-            active={params.get('ville')}
-            options={data.facets.cities}
-            onSelect={(value) => toggle('ville', value)}
-          />
-          <FilterMenu
-            label="Maison"
-            active={params.get('maison')}
-            options={data.facets.maisons}
-            onSelect={(value) => toggle('maison', value)}
-          />
-          <FilterMenu
-            label="Groupe"
-            active={params.get('groupe')}
-            options={data.facets.groups}
-            onSelect={(value) => toggle('groupe', value)}
-          />
-          {/* No "Source" filter in the front: our aggregation sources are
-              internal plumbing (which ATS a posting came from), not something a
-              candidate should see or filter on. */}
         </div>
       </header>
 
-      {/* ============ Body: list left, selected offer's detail fills the right column — Indeed layout ============
-          The page itself scrolls (no fixed-height app shell): the list is a
-          normal-flow column, and the detail column is `sticky` under the
-          pinned header so it stays in view while the list scrolls past it —
-          exactly how fr.indeed.com/jobs behaves. Below lg there is no room for
-          two columns, so the list and the detail take turns — selecting a
-          card swaps the list out for the detail, and a back button (also
-          below lg) swaps it back. */}
-      <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-4 p-4 lg:grid-cols-[minmax(0,470px)_minmax(0,1fr)] lg:items-start">
-        <div className={cn(selected ? 'hidden lg:block' : 'block')}>
-          {/* List head, Indeed-style: a left-aligned context line above the
-              list — "Emplois <query> · N offres" — with the reset here rather
-              than floating orphaned at the top-right of the page. */}
+      {/* ============ Split-view : liste 480 | filet pointillé | détail (§5.2) ============
+          La page scrolle (pas d'app à hauteur fixe) : la liste est une colonne
+          en flux normal ; le détail est `sticky` sous le header avec un scroll
+          interne (cf. .detail dans globals.css). Sous lg, une seule colonne :
+          sélectionner une carte route vers /offre/[id] (voir JobCard). */}
+      <div className="container-wide split">
+        <section aria-label="Résultats">
           {jobs.length > 0 && (
-            <div className="mb-3 flex items-baseline justify-between gap-3 px-1">
-              <p className="text-foreground text-[15px] font-normal tracking-[0.4px]">
-                {filters.q ? `Emplois ${filters.q}` : 'Toutes les offres'}
-                <span className="text-muted-foreground ml-2 text-[13px] tabular-nums" aria-live="polite">
-                  {pending ? 'Recherche…' : `· ${data.total.toLocaleString('fr-FR')} offres`}
+            <div className="list-head">
+              <span className="t-caption">
+                {filters.q ? `Offres · ${filters.q}` : 'Toutes les offres'}
+                <span className="t-caption-soft ml-2 tabular-nums">
+                  · {data.total.toLocaleString('fr-FR')}
                 </span>
-              </p>
-              {activeCount > 0 && (
-                <button
-                  type="button"
-                  onClick={() => startTransition(() => router.push('/emplois', { scroll: false }))}
-                  className="text-muted-foreground hover:text-foreground flex shrink-0 items-center gap-1 text-[13px] tracking-[0.4px] transition-colors duration-300 ease-catwalks"
-                >
-                  <X className="size-3.5" />
-                  Effacer
-                </button>
-              )}
+              </span>
             </div>
           )}
           {jobs.length === 0 ? (
@@ -344,9 +320,9 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
               onReset={() => startTransition(() => router.push('/emplois', { scroll: false }))}
             />
           ) : (
-            <ul className={cn('flex flex-col gap-2 pb-2 transition-opacity', pending && 'opacity-50')}>
+            <ul className={cn('transition-opacity', pending && 'opacity-50')}>
               {jobs.map((job) => (
-                <li key={job.id}>
+                <li key={job.id} className="rule">
                   <JobCard
                     job={job}
                     onSelect={() => setSelectedId(job.id)}
@@ -355,17 +331,13 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
                 </li>
               ))}
 
-              {/* Infinite scroll, Indeed-style: this sentinel triggers the
-                  next page 400px before it would actually be reached, so
-                  the next cards are usually ready before the candidate
-                  scrolls into the gap. Rendered inside the same <ul> so it
-                  never desyncs from the list it is the tail of — and it
-                  still works with page scroll, the IntersectionObserver
-                  only needs the sentinel to enter the viewport. */}
+              {/* Infinite scroll : la sentinelle déclenche la page suivante
+                  400px avant d'être atteinte. Dans le même <ul> pour ne jamais
+                  se désynchroniser de la liste dont elle est la queue. */}
               {loadedPage < pageCount && (
-                <li ref={sentinelRef} aria-hidden={!loadingMore} className="grid place-items-center py-4">
+                <li ref={sentinelRef} aria-hidden={!loadingMore} className="load-more grid place-items-center">
                   {loadingMore && (
-                    <span className="text-muted-foreground flex items-center gap-2 text-sm">
+                    <span className="t-caption-soft flex items-center gap-2">
                       <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
                       Chargement…
                     </span>
@@ -374,41 +346,43 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
               )}
 
               {loadError && (
-                <li className="grid place-items-center gap-2 py-4 text-center">
-                  <p className="text-muted-foreground text-sm">{loadError}</p>
-                  <Button variant="ghost" size="sm" onClick={() => void loadMore()} className="rounded-full">
+                <li className="load-more grid place-items-center gap-2 text-center">
+                  <p className="t-caption-soft">{loadError}</p>
+                  <button type="button" onClick={() => void loadMore()} className="link-ghost">
                     Réessayer
-                  </Button>
+                  </button>
                 </li>
               )}
             </ul>
           )}
-        </div>
+        </section>
+
+        {selected && <span className="rule-v hidden lg:block" aria-hidden />}
 
         {selected && (
           <div
-            className="border-border bg-card relative flex flex-col overflow-hidden rounded-[16px] border lg:sticky lg:top-(--detail-top) lg:max-h-(--detail-max-height)"
+            className="detail"
             style={
               headerHeight
                 ? ({
-                    '--detail-top': `${headerHeight + 16}px`,
-                    '--detail-max-height': `calc(100vh - ${headerHeight + 32}px)`,
+                    // La barre sticky elle-même est ancrée à var(--header-h) : le
+                    // détail se pose sous elle → header global + hauteur barre.
+                    top: `calc(var(--header-h) + ${headerHeight}px + 16px)`,
+                    maxHeight: `calc(100vh - var(--header-h) - ${headerHeight}px - 32px)`,
                   } as React.CSSProperties)
                 : undefined
             }
           >
-            {/* Back to the list — only meaningful below lg, where the detail
-                covers the whole column; at lg+ both panes are always visible
-                so there is nothing to go "back" from. */}
-            <Button
-              variant="ghost"
-              size="icon-sm"
+            {/* Retour à la liste — utile seulement sous lg, où le détail occupe
+                toute la colonne. À lg+ les deux volets sont visibles. */}
+            <button
+              type="button"
               onClick={() => setSelectedId(null)}
               aria-label="Retour à la liste des offres"
-              className="hover:bg-surface absolute top-3 right-3 z-10 rounded-full lg:hidden"
+              className="mb-4 inline-flex items-center gap-2 text-ink-muted hover:text-ink lg:hidden"
             >
-              <X className="size-4" />
-            </Button>
+              <X className="size-4" /> <span className="t-ui-small">Retour</span>
+            </button>
             <JobDetail job={selected} />
           </div>
         )}
@@ -482,31 +456,36 @@ function FilterMenu({
 
   return (
     <>
+      {/* Pill DA (§4.3) : trois états — repos (filet), ouverte (bord ink),
+          active (fond vert-tint, bord+texte vert, croix pour retirer). */}
       <button
         ref={buttonRef}
         type="button"
         aria-expanded={open}
         aria-haspopup="listbox"
-        onClick={() => setOpen((value) => !value)}
-        className={cn(
-          'flex h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-4 text-[13px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks',
-          active
-            ? 'border-foreground bg-secondary-container text-on-secondary-container'
-            : 'border-border bg-white text-foreground hover:bg-surface',
-        )}
+        onClick={() => {
+          // Une pill active se vide au clic (toggle) sans ouvrir le menu.
+          if (active) onSelect(active);
+          else setOpen((value) => !value);
+        }}
+        className={cn('pill', active && 'is-active', open && 'is-open')}
       >
-        {active ? display(active) : label}
-        <ChevronDown className={cn('size-4 opacity-60 transition-transform duration-300', open && 'rotate-180')} />
+        {active ? `${label} · ${display(active)}` : label}
+        {active ? (
+          <svg viewBox="0 0 24 24" aria-label="Retirer"><path d="M6 6l12 12M18 6 6 18" /></svg>
+        ) : (
+          <ChevronDown className={cn('chev', open && 'rotate-180')} />
+        )}
       </button>
 
-      {open && rect && typeof document !== 'undefined' &&
+      {open && !active && rect && typeof document !== 'undefined' &&
         createPortal(
           <div
             ref={panelRef}
             role="listbox"
             aria-label={label}
             style={{ top: rect.top, left: rect.left }}
-            className="border-border/60 fixed z-50 max-h-80 w-64 overflow-y-auto rounded-xl border bg-white p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
+            className="dd fixed max-h-80 w-64 overflow-y-auto"
           >
             {options.map((option) => {
               const isActive = option.value === active;
@@ -520,16 +499,13 @@ function FilterMenu({
                     setOpen(false);
                     onSelect(option.value);
                   }}
-                  className={cn(
-                    'flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks',
-                    isActive ? 'bg-secondary-container text-on-secondary-container' : 'hover:bg-surface',
-                  )}
+                  className={cn(isActive && 'is-checked')}
                 >
                   <span className="flex min-w-0 items-center gap-2 truncate">
-                    {isActive && <Check className="size-3.5 shrink-0" />}
+                    {isActive && <Check className="size-4 shrink-0" />}
                     <span className="truncate">{display(option.value)}</span>
                   </span>
-                  <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
+                  <span className="count tabular-nums">
                     {option.count.toLocaleString('fr-FR')}
                   </span>
                 </button>
@@ -547,6 +523,8 @@ function FilterMenu({
  * exact same card rather than duplicating its markup — one visual language
  * for an offer, everywhere it is listed.
  */
+const FRESH_MS = 48 * 60 * 60 * 1000; // 48 h : point vert « nouvelle offre »
+
 export function JobCard({
   job,
   onSelect,
@@ -556,99 +534,90 @@ export function JobCard({
   onSelect: () => void;
   isSelected: boolean;
 }) {
+  const router = useRouter();
   const contract = contractLabel(job.contract);
-  const salary = shortSalary(job);
-  const remote = job.remote?.toLowerCase().includes('télé') || job.remote?.toLowerCase().includes('remote')
-    ? 'Télétravail'
-    : null;
+  const isFresh = job.postedAt
+    ? Date.now() - new Date(job.postedAt).getTime() < FRESH_MS
+    : false;
+
+  // Offre « visitée » : grisée après lecture, mémorisée par session (per-viewer,
+  // jamais partagé). Une lecture échouée ne casse jamais l'affichage.
+  const [visited, setVisited] = useState(false);
+  useEffect(() => {
+    try {
+      const seen = sessionStorage.getItem('fa:visited');
+      if (seen && new Set(JSON.parse(seen) as string[]).has(job.id)) setVisited(true);
+    } catch {
+      /* storage indisponible : on affiche l'offre comme non visitée */
+    }
+  }, [job.id]);
+
+  const markVisited = () => {
+    setVisited(true);
+    try {
+      const seen = sessionStorage.getItem('fa:visited');
+      const set = new Set(seen ? (JSON.parse(seen) as string[]) : []);
+      set.add(job.id);
+      sessionStorage.setItem('fa:visited', JSON.stringify([...set]));
+    } catch {
+      /* storage indisponible : le grisé reste local à la session en cours */
+    }
+  };
+
+  // Meta : ville · contrat · télétravail — texte, sans icône (DA §4.6).
+  const remote =
+    job.remote?.toLowerCase().includes('télé') || job.remote?.toLowerCase().includes('remote')
+      ? 'Télétravail'
+      : null;
+  const meta = [job.city, contract, remote].filter(Boolean).join(' · ');
 
   return (
     <button
       type="button"
-      onClick={onSelect}
+      onClick={() => {
+        markVisited();
+        // Sous lg le panneau détail est masqué (une seule colonne) : la carte
+        // route vers la fiche autonome /offre/[id]. À lg+ elle sélectionne
+        // l'offre dans le volet de droite (§6, réf emplois.html).
+        if (typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches) {
+          router.push(`/offre/${job.id}`);
+          return;
+        }
+        onSelect();
+      }}
       aria-current={isSelected ? 'true' : undefined}
-      className={cn(
-        // Catwalks DA JobCard: 16px radius, no shadow at rest, a shadow only
-        // on hover — no employer logo, the title leads the scan. Selection is
-        // a black border over a light grey fill, never a colour tint.
-        'w-full rounded-[16px] border px-5 py-4 text-left shadow-none transition-shadow duration-300 ease-catwalks hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]',
-        isSelected
-          ? 'border-foreground bg-secondary-container'
-          : 'border-border bg-white',
-      )}
+      aria-selected={isSelected}
+      className={cn('offer', isSelected && 'is-selected', visited && 'is-visited')}
     >
-      {/* Employer name: overline treatment — 12px, uppercase, letter-spaced,
-          grey-400 — leads the title per the DA's __maison spec. */}
-      <p className="text-grey-400 truncate text-[12px] tracking-[1px] uppercase">{job.company}</p>
+      <div className="offer__top">
+        <span className="t-caption truncate">
+          {job.company}
+          {job.group ? <span className="muted"> · {job.group}</span> : null}
+        </span>
+        {job.postedAt && <span className="t-caption-soft shrink-0">{relativeDate(job.postedAt)}</span>}
+      </div>
 
-      {/* Title: uppercase, weight 400 (never bold) — the DA's non-negotiable
-          rule for __position-title, sized down from the 32px standalone spec
-          to stay scannable in this dense list. */}
-      <h3 className="text-foreground mt-1 line-clamp-2 text-[17px] leading-[22px] font-normal tracking-[0.4px] uppercase">
-        {job.title}
-      </h3>
+      {/* Titre : FA Display (serif), casse normalisée à l'affichage. Point vert
+          si l'offre a moins de 48 h. */}
+      <p className="offer__title t-d2">
+        {isFresh && <span className="dot" aria-label="Nouvelle offre" />}
+        {displayTitle(job.title)}
+      </p>
 
-      {job.city && (
-        <p className="text-grey-400 mt-1.5 flex items-center gap-1 truncate text-[13px] tracking-[0.4px]">
-          <MapPin className="size-3 shrink-0 opacity-70" />
-          {job.city}
-        </p>
-      )}
-
-      {/* Attribute chips, Indeed order: salary, contract, remote. */}
-      {(salary || contract || remote) && (
-        <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
-          {salary && <Attr>{salary}</Attr>}
-          {contract && <Attr>{contract}</Attr>}
-          {remote && <Attr>{remote}</Attr>}
-        </div>
-      )}
-
-      {(job.postedAt || job.sourceCount > 1) && (
-        <p className="text-grey-400 mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[12px] tracking-[0.4px]">
-          {job.postedAt && <span>{relativeDate(job.postedAt)}</span>}
-          {job.sourceCount > 1 && (
-            <span className="flex items-center gap-1">
-              <Layers className="size-3 opacity-70" />
-              {job.sourceCount} sources
-            </span>
-          )}
-        </p>
-      )}
+      {meta && <p className="t-body2 muted">{meta}</p>}
     </button>
   );
-}
-
-/** A small attribute chip: 12px, weight 400, radius 8, tinted by tone. */
-function Attr({ children }: { children: React.ReactNode }) {
-  // One neutral chip, no colour: the Catwalks DA is black/white/grey, so a CDI
-  // no longer reads green — the accent colour was an Indeed carry-over.
-  return (
-    <span className="bg-surface-high text-foreground/75 rounded-lg px-2 py-1 text-[11px] font-normal uppercase leading-none tracking-[0.5px]">
-      {children}
-    </span>
-  );
-}
-
-/** Compact salary for a card chip: "35 k€ – 42 k€", or a single figure. */
-function shortSalary(job: JobRow): string | null {
-  if (job.salaryMin === null && job.salaryMax === null) return null;
-  const k = (v: number) => (v >= 1000 ? `${Math.round(v / 1000)} k€` : `${v} €`);
-  const min = job.salaryMin;
-  const max = job.salaryMax;
-  if (min !== null && max !== null && min !== max) return `${k(min)} – ${k(max)}`;
-  return k((min ?? max) as number);
 }
 
 function EmptyState({ hasFilters, onReset }: { hasFilters: boolean; onReset: () => void }) {
   return (
     <div className="grid place-items-center px-6 py-16 text-center">
       <div>
-        <p className="text-foreground text-sm font-normal tracking-[0.4px]">Aucune offre ne correspond.</p>
+        <p className="t-d2">Aucune offre ne correspond.</p>
         {hasFilters && (
-          <Button onClick={onReset} variant="ghost" className="mt-3 rounded-full">
+          <button type="button" onClick={onReset} className="btn btn--green mt-4">
             Effacer les filtres
-          </Button>
+          </button>
         )}
       </div>
     </div>

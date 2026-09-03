@@ -92,25 +92,28 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   };
 
   return (
-    <div className="bg-background flex h-dvh flex-col gap-3 p-3">
+    <main className="page bg-paper">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(structuredData) }}
       />
 
-      <header className="bg-surface-low shadow-m3-1 flex shrink-0 items-center gap-2 rounded-[28px] px-4 py-3">
+      <div className="container py-8">
+        {/* Fil d'Ariane : retour à la liste (§5.3). */}
         <Link
-          href="/"
-          className="hover:bg-surface flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors"
+          href="/emplois"
+          className="mb-6 inline-flex items-center gap-2 text-ink-muted hover:text-ink"
         >
-          <ArrowLeft className="size-[18px]" />
-          Toutes les offres
+          <ArrowLeft className="size-4" /> <span className="t-ui-small">Toutes les offres</span>
         </Link>
-      </header>
 
-      <main className="bg-surface-low shadow-m3-1 min-h-0 flex-1 overflow-hidden rounded-[28px]">
-        <JobDetail job={job} />
-      </main>
-    </div>
+        {/* Fiche autonome : la page scrolle, pas de sticky ni de scroll interne
+            (le panneau détail /emplois, lui, garde son scroll). Même composant
+            JobDetail : une seule identité visuelle pour une offre. */}
+        <div className="max-w-[720px]">
+          <JobDetail job={job} />
+        </div>
+      </div>
+    </main>
   );
 }
