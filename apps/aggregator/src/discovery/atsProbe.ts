@@ -1,4 +1,5 @@
-import { fetchWithRetry } from '../lib/http.js';
+import { withHostGate } from '../lib/hostGate.js';
+import { assertPublicUrl } from '../lib/ssrf.js';
 import type { AtsDetection } from '../types.js';
 
 /**
@@ -15,7 +16,10 @@ import type { AtsDetection } from '../types.js';
  * `totalFound: 0` for unknown companies, so each probe must confirm real postings.
  */
 
-const PROBE_TIMEOUT_MS = Number(process.env.ATS_PROBE_TIMEOUT_MS ?? 12_000);
+// Short on purpose: an ATS API answers fast or not at all. A long timeout makes a
+// NON-match (a brand with no ATS, or a non-existent careers domain whose DNS
+// stalls) dominate the run — the whole 14k throughput hinges on failing fast.
+const PROBE_TIMEOUT_MS = Number(process.env.ATS_PROBE_TIMEOUT_MS ?? 5_000);
 
 /** Slug candidates derived from a display name, most likely first. */
 export function slugCandidates(companyName: string, fashionjobsSlug?: string): string[] {
@@ -44,13 +48,39 @@ export function slugCandidates(companyName: string, fashionjobsSlug?: string): s
   return [...new Set(variants.filter((v): v is string => Boolean(v) && v!.length >= 3))];
 }
 
-async function probeBody(url: string, asText: boolean): Promise<unknown | null> {
+/**
+ * A single probe fetch with a HARD short timeout and NO retry — a probe must fail
+ * fast on a non-match. Goes through the host gate for politeness, but not through
+ * fetchWithRetry (whose 20s timeout + retries would make non-matches dominate the
+ * run). SSRF-guarded, no redirects followed (a probe wants the direct answer).
+ */
+async function probeFetch(
+  url: string,
+  init: RequestInit,
+  asText: boolean,
+): Promise<unknown | null> {
   try {
-    const response = await fetchWithRetry(url, { signal: AbortSignal.timeout(PROBE_TIMEOUT_MS) }, 1);
-    return asText ? await response.text() : await response.json();
+    assertPublicUrl(url);
   } catch {
     return null;
   }
+  return withHostGate(url, async () => {
+    try {
+      const response = await fetch(url, {
+        ...init,
+        redirect: 'manual',
+        signal: AbortSignal.timeout(PROBE_TIMEOUT_MS),
+      });
+      if (!response.ok) return null;
+      return asText ? await response.text() : await response.json();
+    } catch {
+      return null;
+    }
+  });
+}
+
+function probeBody(url: string, asText: boolean): Promise<unknown | null> {
+  return probeFetch(url, {}, asText);
 }
 
 type Probe = {
@@ -153,28 +183,27 @@ export function careersDomainCandidates(companyName: string, siteUrl?: string): 
   const core = slugCandidates(companyName)[0];
   if (core) roots.add(`${core}.com`);
 
-  const prefixes = ['careers', 'career', 'carriere', 'talents', 'talent', 'jobs', 'recrutement', 'emploi'];
+  // The most likely careers hosts only — every extra candidate is another probe
+  // against the SAME DigitalRecruiters host (serialised by the host gate), so a
+  // long list is the main throughput cost at 14k brands. careers./talents. cover
+  // the overwhelming majority.
+  const prefixes = ['careers', 'talents', 'carriere'];
   const domains = new Set<string>();
   for (const root of roots) {
     for (const p of prefixes) domains.add(`${p}.${root}`);
   }
-  return [...domains].slice(0, 12);
+  return [...domains].slice(0, 6);
 }
 
-/** Does this careers domain serve a DigitalRecruiters board? Returns its count. */
+/** Does this careers domain serve a DigitalRecruiters board? */
 async function probeDigitalRecruiters(domainName: string): Promise<boolean> {
   const url = `https://api.digitalrecruiters.com/public/v1/careers-site/job-ads?domainName=${encodeURIComponent(domainName)}&limit=1&page=1&locale=fr_FR`;
-  try {
-    const response = await fetchWithRetry(
-      url,
-      { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}', signal: AbortSignal.timeout(PROBE_TIMEOUT_MS) },
-      1,
-    );
-    const body = (await response.json()) as { items?: unknown[] };
-    return Array.isArray(body.items) && body.items.length > 0;
-  } catch {
-    return false;
-  }
+  const body = (await probeFetch(url, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: '{}',
+  }, false)) as { items?: unknown[] } | null;
+  return Array.isArray(body?.items) && body.items.length > 0;
 }
 
 /**
