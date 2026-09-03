@@ -61,15 +61,15 @@ export function LandingView({
         }} />
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'rgba(0,10,5,.42)' }} />
         <div className="relative z-[1] grid justify-items-center gap-6 px-6" style={{ paddingTop: 'var(--header-h)', maxWidth: 1040 }}>
-          <p className="t-caption opacity-90">Mode · Luxe · Beauté · Horlogerie · Retail</p>
-          <h1 id="hero-title" className="t-hero">Toutes les offres<br />du luxe, réunies.</h1>
+          <p className="t-caption opacity-90" data-stagger-index="0">Mode · Luxe · Beauté · Horlogerie · Retail</p>
+          <h1 id="hero-title" className="t-hero" data-stagger-index="1">Toutes les offres<br />du luxe, réunies.</h1>
         </div>
       </section>
 
       {/* ————— Barre de recherche posée sur le bas du hero — SearchPill pour
           retrouver l'autocomplete (régression corrigée : les inputs nus de la
           refonte avaient perdu les suggestions que l'ancienne home avait). ————— */}
-      <div className="container relative z-[2] -mt-7 text-ink">
+      <div className="container relative z-[2] -mt-7 text-ink" data-stagger-index="2">
         <SearchPill
           size="hero"
           query={query}
@@ -88,8 +88,8 @@ export function LandingView({
       {/* ————— Intro éditoriale (4+6) ————— */}
       <section className="container section" aria-labelledby="intro-title">
         <div className="g12">
-          <h2 id="intro-title" className="t-d1 c4">Un seul moteur.</h2>
-          <div className="s5 t-body soft space-y-4">
+          <h2 id="intro-title" className="t-d1 c4" data-stagger-index="0">Un seul moteur.</h2>
+          <div className="s5 t-body soft space-y-4" data-stagger-index="1">
             <p>Les offres publiques des Maisons et des jobboards spécialisés, agrégées sans doublon, avec le lien de candidature direct.</p>
             <p>Chaque offre est rattachée à sa Maison, à son groupe et à sa ville. Rien n’est réécrit : vous lisez l’annonce telle que la Maison l’a publiée.</p>
             {/* Pas de bouton « Comment ça marche » : /a-propos n'existe pas et
@@ -103,9 +103,9 @@ export function LandingView({
       {stats.offers > 0 && (
         <section className="container section" aria-label="Chiffres clés">
           <div className="g12">
-            <Stat value={nf.format(stats.offers)} label="offres actives" />
-            <Stat value={nf.format(stats.companies)} label="Maisons" />
-            {stats.countries > 1 && <Stat value={nf.format(stats.countries)} label="pays" />}
+            <Stat value={nf.format(stats.offers)} label="offres actives" staggerIndex={0} />
+            <Stat value={nf.format(stats.companies)} label="Maisons" staggerIndex={1} />
+            {stats.countries > 1 && <Stat value={nf.format(stats.countries)} label="pays" staggerIndex={2} />}
           </div>
         </section>
       )}
@@ -113,11 +113,11 @@ export function LandingView({
       {/* ————— Explorer par secteur ————— */}
       <section className="container section" aria-labelledby="sectors-title">
         <div className="section-head">
-          <h2 id="sectors-title" className="t-d1">Explorer par secteur.</h2>
+          <h2 id="sectors-title" className="t-d1" data-stagger-index="0">Explorer par secteur.</h2>
         </div>
         <div className="grid grid-cols-2 gap-x-10 gap-y-6 md:grid-cols-5">
           {HERO_SECTORS.map((s) => (
-            <Link key={s} href={`/emplois?secteur=${s}`} className="rule block pt-6 group">
+            <Link key={s} href={`/emplois?secteur=${s}`} className="rule block pt-6 group" data-stagger-index={HERO_SECTORS.indexOf(s) % 5}>
               <span className="t-d2 block group-hover:underline group-hover:underline-offset-4">{SECTOR_LABELS[s]}</span>
               <span className="t-caption-soft mt-2 block">{nf.format(sectorCount(s))} offres</span>
             </Link>
@@ -129,12 +129,12 @@ export function LandingView({
       {maisons.length > 0 && (
         <section className="container section" aria-labelledby="maisons-title">
           <div className="section-head">
-            <h2 id="maisons-title" className="t-d1">Maisons qui recrutent.</h2>
+            <h2 id="maisons-title" className="t-d1" data-stagger-index="0">Maisons qui recrutent.</h2>
             <Link href="/entreprises" className="btn btn--green">Toutes les Maisons <Arrow /></Link>
           </div>
           <div className="grid grid-cols-1 gap-x-10 md:grid-cols-3">
-            {maisons.map((m) => (
-              <Link key={m.id} href={`/entreprise/${companySlug(m.name)}`} className="rule block py-6 group">
+            {maisons.map((m, i) => (
+              <Link key={m.id} href={`/entreprise/${companySlug(m.name)}`} className="rule block py-6 group" data-stagger-index={i % 3}>
                 <span className="t-d2 block group-hover:underline group-hover:underline-offset-4">{m.name}</span>
                 {m.sector && <span className="t-caption-soft mt-1 block">{SECTOR_LABELS[m.sector] ?? m.sector}</span>}
                 <span className="t-body2 muted mt-2 block tabular-nums">{nf.format(m.jobCount)} {m.jobCount > 1 ? 'emplois ouverts' : 'emploi ouvert'}</span>
@@ -148,7 +148,7 @@ export function LandingView({
       {latestOffers.length > 0 && (
         <section className="container section" aria-labelledby="latest-title">
           <div className="section-head">
-            <h2 id="latest-title" className="t-d1">Dernières offres.</h2>
+            <h2 id="latest-title" className="t-d1" data-stagger-index="0">Dernières offres.</h2>
           </div>
           <ul>
             {latestOffers.map((o) => (
@@ -190,9 +190,9 @@ export function LandingView({
   );
 }
 
-function Stat({ value, label }: { value: string; label: string }) {
+function Stat({ value, label, staggerIndex }: { value: string; label: string; staggerIndex?: number }) {
   return (
-    <div className="c4 rule pt-6">
+    <div className="c4 rule pt-6" data-stagger-index={staggerIndex}>
       <span className="t-number block">{value}</span>
       <span className="t-caption mt-3 block">{label}</span>
     </div>

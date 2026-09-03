@@ -117,7 +117,7 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
       {/* En-tête 4+6 + chips de catégorie + recherche (§5.4). */}
       <div className="container page-head">
         <div className="g12">
-          <h1 className="t-page c4">Maisons</h1>
+          <h1 className="t-page c4" data-stagger-index="0">Maisons</h1>
           <p className="s5 t-body soft">
             {nf.format(data.total)} Maisons et cabinets, du studio de création à la boutique.
             Chaque fiche regroupe les offres publiques de la Maison, ses villes et son groupe.
