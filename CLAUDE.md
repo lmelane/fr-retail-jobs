@@ -154,6 +154,27 @@ Détail exhaustif des findings (3 audits défensifs, chaque regex exécutée) : 
 - **Intégration** (base dédiée) : `DATABASE_URL=…/catwalks_test npm run test:integration -w @catwalks/aggregator` — purge, santé, refresh.
 - ⚠️ **Les tests d'intégration VIDENT la base.** Ils ne tournent QUE sur une base dont le nom contient « test » (garde `src/test/setup-integration.ts` qui refuse sinon). **Ne jamais** les lancer sur la base de démo/prod. Base de démo locale = `catwalks`, base de test = `catwalks_test` (même conteneur Docker `catwalks-audit-pg`, port 55440).
 
+## Règles git — toutes les sessions, sans exception (décidé par Loïc, 2026-09-03)
+
+> Contexte : plusieurs sessions Claude travaillent en parallèle dans le MÊME
+> working tree. Un `git reset --hard` d'une session a effacé le travail non
+> commité d'une autre. Et Railway auto-déploie `origin/main` à chaque push.
+
+- **Interdits** : `git reset --hard`, `git checkout -- .`, `git clean`,
+  `git stash drop`, `git push --force` sur toute branche partagée. En cas de
+  besoin réel : `git stash push -m "<session> <raison>"` et on en parle.
+- **`git status` obligatoire avant tout changement de branche.** Si des
+  fichiers modifiés ne sont pas à toi, tu ne bouges pas (préférer
+  `git worktree add` pour travailler sur une autre branche sans toucher le
+  tree partagé).
+- **Une session = un périmètre de fichiers.** Web : `apps/web`. Pipeline :
+  `apps/aggregator`, `packages/db`, `data/`. Aucun commit hors périmètre ;
+  fichiers racine partagés (CLAUDE.md…) : prévenir l'autre session d'abord.
+- **Push à chaque fin d'étape.** Jamais de travail local non poussé de plus
+  d'une heure.
+- **`main` = prod (Railway auto-déploie chaque push).** Tout passe par une
+  branche + PR ; merge par Loïc uniquement.
+
 ## Méthode de travail
 
 1. **Audit défensif** (fait, 3 passes parallèles + vérif prod).
