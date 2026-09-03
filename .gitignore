@@ -40,3 +40,7 @@ Thumbs.db
 .next/
 next-env.d.ts
 *.tsbuildinfo
+
+# Playwright
+apps/web/playwright-report/
+apps/web/test-results/
