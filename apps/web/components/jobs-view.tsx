@@ -7,6 +7,7 @@ import { Check, ChevronDown, Loader2, X } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
 import { SearchPill } from '@/components/search-pill';
 import { contractLabel, displayTitle, relativeDate } from '@/lib/format';
+import { offerPath } from '@/lib/offer-url';
 import { countryLabel } from '@/lib/countries';
 import { cn } from '@/lib/utils';
 import type { JobFilters, JobRow, JobsResult } from '@/lib/jobs';
@@ -539,7 +540,6 @@ export function JobCard({
   onSelect: () => void;
   isSelected: boolean;
 }) {
-  const router = useRouter();
   const contract = contractLabel(job.contract);
   const isFresh = job.postedAt
     ? Date.now() - new Date(job.postedAt).getTime() < FRESH_MS
@@ -577,21 +577,20 @@ export function JobCard({
   const meta = [job.city, contract, remote].filter(Boolean).join(' · ');
 
   return (
-    <button
-      type="button"
-      onClick={() => {
+    // Une VRAIE ancre (S-01) : le href est le maillage que les crawlers
+    // suivent — un <button> rendait chaque offre invisible au crawl. À lg+ le
+    // clic est intercepté (master-detail, volet de droite) ; sous lg la
+    // navigation par défaut mène à la fiche /offre/[slug]-[id].
+    <a
+      href={offerPath(job)}
+      onClick={(event) => {
         markVisited();
-        // Sous lg le panneau détail est masqué (une seule colonne) : la carte
-        // route vers la fiche autonome /offre/[id]. À lg+ elle sélectionne
-        // l'offre dans le volet de droite (§6, réf emplois.html).
         if (typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches) {
-          router.push(`/offre/${job.id}`);
-          return;
+          return; // navigation native vers la fiche autonome
         }
+        event.preventDefault();
         onSelect();
       }}
-      // `aria-current` (valide sur un bouton) porte la sélection ; `aria-selected`
-      // n'est autorisé que dans un listbox/grid, pas sur un bouton simple.
       aria-current={isSelected ? 'true' : undefined}
       className={cn('offer', isSelected && 'is-selected', visited && 'is-visited')}
     >
@@ -611,7 +610,7 @@ export function JobCard({
       </p>
 
       {meta && <p className="t-body2 muted">{meta}</p>}
-    </button>
+    </a>
   );
 }
 

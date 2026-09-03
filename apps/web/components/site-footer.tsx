@@ -40,7 +40,7 @@ export async function SiteFooter() {
           <p className="t-caption mb-5 text-ink">Rechercher</p>
           <ul className="space-y-[14px]">
             <FooterLink href="/emplois">Toutes les offres</FooterLink>
-            <FooterLink href="/entreprises">Toutes les Maisons</FooterLink>
+            <FooterLink href="/entreprises">Les Maisons</FooterLink>
             <FooterLink href="/emplois?secteur=FASHION">Par secteur</FooterLink>
             <FooterLink href="/emplois?pays=FR">Par pays</FooterLink>
           </ul>

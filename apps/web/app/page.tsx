@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function Page() {
   const [stats, latest, companies] = await Promise.all([
-    landingStats().catch(() => ({ offers: 0, companies: 0, countries: 0 })),
+    landingStats().catch(() => ({ offers: 0, companies: 0, countries: 0, newCompaniesThisWeek: 0 })),
     getJobs({ page: 1 }).catch(() => null),
     getCompanies({ page: 1 }).catch(() => null),
   ]);
