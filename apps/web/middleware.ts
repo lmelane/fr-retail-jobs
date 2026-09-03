@@ -17,7 +17,24 @@ import { NextResponse, type NextRequest } from 'next/server';
  * 'missing' falls through to the page's own notFound() (404), 'active' renders
  * normally. A probe failure falls through too — never 410 an offer by accident.
  */
+/**
+ * Hôte canonique (D30 — domaine modecareers.com) : le sous-domaine Railway et
+ * www redirigent en 301 vers l'apex, même chemin — un seul hôte accumule
+ * l'autorité SEO, et les URLs Railway déjà vues par Google migrent proprement.
+ */
+const CANONICAL_HOST = 'modecareers.com';
+const LEGACY_HOSTS = new Set(['catwalks-web-production.up.railway.app', `www.${CANONICAL_HOST}`]);
+
 export async function middleware(request: NextRequest) {
+  const host = request.headers.get('host')?.toLowerCase() ?? '';
+  if (LEGACY_HOSTS.has(host)) {
+    const target = request.nextUrl.clone();
+    target.protocol = 'https:';
+    target.host = CANONICAL_HOST;
+    target.port = '';
+    return NextResponse.redirect(target, 301);
+  }
+
   const match = request.nextUrl.pathname.match(/^\/offre\/([^/]+)\/?$/);
   if (!match) return NextResponse.next();
   const id = decodeURIComponent(match[1]);
@@ -42,6 +59,8 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Only offer pages need the status check; everything else skips middleware.
-  matcher: ['/offre/:id'],
+  // Every path: the canonical-host 301 must cover the whole site. The offer
+  // status probe still only triggers on /offre/:id inside the handler.
+  // Assets/_next are excluded — a 301 sur un chunk hashé n'apporte rien.
+  matcher: ['/((?!_next/|favicon|fonts/).*)'],
 };
