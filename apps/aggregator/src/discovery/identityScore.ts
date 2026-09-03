@@ -145,7 +145,16 @@ export async function scoreRow(row: ManualRow, officialSite: string | undefined)
     signals.push('site-inconnu(0)');
   }
 
-  const verdict = score >= 0.5 ? 'AUTO-VALIDE' : score <= 0 ? 'AUTO-REJETE' : 'HUMAIN';
+  // Un rejet exige que la preuve ait été COLLECTABLE : si le site officiel n'a
+  // pas pu être lu (bot-wall, timeout) et qu'aucun signal négatif n'existe,
+  // l'absence de preuve n'est pas une preuve — la ligne reste humaine.
+  const evidenceMissing = signals.some((s) => s.startsWith('site-injoignable') || s.startsWith('site-inconnu'));
+  const verdict =
+    score >= 0.5
+      ? 'AUTO-VALIDE'
+      : score <= 0 && !(evidenceMissing && score === 0)
+        ? 'AUTO-REJETE'
+        : 'HUMAIN';
   return { ...row, score: Math.round(score * 100) / 100, signals: signals.join(' '), verdict };
 }
 
