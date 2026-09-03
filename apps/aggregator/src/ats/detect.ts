@@ -149,6 +149,33 @@ function findCareersLinks($: cheerio.CheerioAPI, baseUrl: string): string[] {
 }
 
 /**
+ * Careers URLs on a careers SUBDOMAIN found by scanning the raw HTML, not just
+ * <a href>. Modern sites put the "nous rejoindre" URL in a JS payload, a button
+ * data-attribute or a <link> — cheerio's anchor scan misses it, but the URL is
+ * right there in the markup (carriere.faguo-store.com, talents.brand.com…).
+ */
+function careersSubdomainUrlsInHtml(html: string, baseUrl: string): string[] {
+  let baseDomain = '';
+  try {
+    baseDomain = registrableDomain(new URL(baseUrl).hostname);
+  } catch {
+    return [];
+  }
+  const found = new Set<string>();
+  for (const raw of html.match(/https?:\/\/[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s"'<>]*)?/gi) ?? []) {
+    try {
+      const u = new URL(raw);
+      if (registrableDomain(u.hostname) !== baseDomain) continue; // stay on the brand
+      // Only a careers-looking subdomain, so this stays targeted.
+      if (/^(talents?|careers?|carriere|carrieres|jobs|recrut|emploi|hr|rh)\./i.test(u.hostname)) {
+        found.add(`${u.origin}/`);
+      }
+    } catch { /* ignore */ }
+  }
+  return [...found].slice(0, 3);
+}
+
+/**
  * Detect the ATS behind a page. `depth` bounds the careers-link follow: a
  * company HOMEPAGE rarely embeds its ATS, but links to a /careers page that
  * does — so when the given page yields nothing, follow up to a couple of its
@@ -226,9 +253,15 @@ export function detectFromHtml(html: string, rawUrl: string): AtsDetection | nul
   return null;
 }
 
-/** Careers-page links found in HTML (delegates to findCareersLinks). */
+/**
+ * Careers-page links found in HTML: anchor-based links first (ranked), then any
+ * careers-subdomain URLs found by scanning the raw markup (which cheerio's
+ * anchor scan misses). Deduped, anchor hits first.
+ */
 export function careersLinksInHtml(html: string, baseUrl: string): string[] {
-  return findCareersLinks(cheerio.load(html), baseUrl);
+  const anchors = findCareersLinks(cheerio.load(html), baseUrl);
+  const raw = careersSubdomainUrlsInHtml(html, baseUrl);
+  return [...new Set([...anchors, ...raw])].slice(0, 4);
 }
 
 /**
@@ -258,10 +291,35 @@ export async function inspectCareerPage(
         const detected = await inspectCareerPage(careersUrl, depth - 1, fetcher);
         if (detected) return detected;
       }
+      // Homepage linked no careers page: many brands host one at a predictable
+      // URL that simply is not linked from the homepage (careers.brand.com,
+      // brand.com/careers…). Probe a few, cheaply — bounded and deduped.
+      for (const guess of guessCareerUrls(rawUrl)) {
+        const detected = await inspectCareerPage(guess, 0, fetcher);
+        if (detected) return detected;
+      }
     }
     return onThisPage; // generic fallback, if any
   } catch {
     return null;
+  }
+}
+
+/** Predictable careers URLs for a brand domain, most-likely first. */
+function guessCareerUrls(rawUrl: string): string[] {
+  try {
+    const u = new URL(rawUrl);
+    const root = registrableDomain(u.hostname);
+    const subs = ['careers', 'career', 'jobs', 'talents', 'talent', 'recrutement', 'emploi'];
+    const paths = ['careers', 'carrieres', 'carrière', 'jobs', 'recrutement', 'nous-rejoindre', 'join-us'];
+    const urls = [
+      ...subs.map((s) => `https://${s}.${root}/`),
+      ...paths.map((p) => `https://www.${root}/${p}`),
+      ...paths.map((p) => `https://www.${root}/fr/${p}`),
+    ];
+    return [...new Set(urls)].slice(0, 8);
+  } catch {
+    return [];
   }
 }
 
