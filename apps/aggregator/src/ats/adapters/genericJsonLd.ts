@@ -114,6 +114,13 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       for (const u of links) seen.add(u);
     }
 
+    // F-06: a paginated listing that yields ZERO offer links is a broken
+    // linkPattern or a moved listing — not an employer with no openings. The
+    // silent [] passed for health until the refresh emptied the source 48h on.
+    if (seen.size === 0 && !pastDeadline()) {
+      throw new Error(`generic-listing ${listingPagedUrl}: no offer link matched "${linkPattern}" — pattern or listing broken`);
+    }
+
     const limit = pLimit(Number(config.concurrency ?? 6));
     const pages = await Promise.all(
       [...seen].map((url) =>
@@ -143,6 +150,11 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
   const sitemapUrl = String(config.sitemapUrl ?? '');
   if (sitemapUrl) {
     const urls = await fetchSitemapUrls(sitemapUrl);
+    // F-06: an empty sitemap on a catalogued source is the sitemap moving or
+    // dying, not zero openings — say so instead of a quiet [].
+    if (urls.length === 0) {
+      throw new Error(`generic sitemap ${sitemapUrl}: 0 URLs — sitemap moved or empty`);
+    }
     const limit = pLimit(Number(config.concurrency ?? 8));
     const pages = await Promise.all(
       urls.map((url) =>

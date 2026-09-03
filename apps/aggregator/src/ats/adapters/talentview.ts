@@ -147,7 +147,12 @@ export async function fetchTalentViewJobs(
   );
 
   const websiteId = websites.find((site) => site.id)?.id;
-  if (!websiteId) return [];
+  // F-06: no public website for the slug is a BROKEN config, not an employer
+  // with zero openings — the silent [] here is exactly the quiet-zero the
+  // health pass cannot tell apart from "stopped hiring".
+  if (!websiteId) {
+    throw new Error(`TalentView "${slug}": no public website behind the slug — config or tenant broken`);
+  }
 
   const campaigns = await fetchJson<Campaign[]>(
     `${API}/companies/${encodeURIComponent(slug)}/campaigns?company_website_id=${websiteId}`,

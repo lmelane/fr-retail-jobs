@@ -86,6 +86,13 @@ function toCandidate(
   companyName: string,
   atsType: AtsType,
 ): CandidateJob & { companyId: string } {
+  // F-06: the apply link is the product promise — a candidate clicking
+  // "Voir l'offre" must land somewhere. A relative path, an empty string or a
+  // javascript: pseudo-URL is refused AT THE BOUNDARY (counted as an error on
+  // the source), never stored for the web layer to render as a dead button.
+  if (!/^https?:\/\//.test(job.url ?? '')) {
+    throw new Error(`invalid apply URL "${(job.url ?? '').slice(0, 80)}" (${job.externalId})`);
+  }
   // Several ATS file "Full-time" / "Plein Temps" under contract, which is a
   // working time, not a contract type. Moved rather than dropped: the UI was
   // printing the source's raw English next to French contract labels.
