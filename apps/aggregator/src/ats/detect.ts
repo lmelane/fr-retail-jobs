@@ -204,6 +204,38 @@ function careersSubdomainUrlsInHtml(html: string, baseUrl: string): string[] {
  * careers links once (depth 1) and inspect those. Without this, a homepage-only
  * roster (the 14k world list) detects almost nothing.
  */
+/**
+ * An RSS/Atom careers feed the page declares or links — via a
+ * <link type="application/rss+xml">, an <a href> ending in .rss/.atom, or a
+ * jobs.rss / offerRss / feed path. Resolved against the page URL.
+ */
+function findFeedUrl(html: string, baseUrl: string): string | undefined {
+  const candidates: string[] = [];
+  // <link rel="alternate" type="application/rss+xml" href="…">
+  for (const m of html.matchAll(/<link[^>]*type="application\/(?:rss|atom)\+xml"[^>]*href="([^"]+)"[^>]*>/gi)) {
+    candidates.push(m[1]);
+  }
+  for (const m of html.matchAll(/<link[^>]*href="([^"]+)"[^>]*type="application\/(?:rss|atom)\+xml"[^>]*>/gi)) {
+    candidates.push(m[1]);
+  }
+  // href="…jobs.rss" / "…offerRss…" / "…/feed" style links.
+  for (const m of html.matchAll(/href="([^"]*(?:\.rss|\.atom|offerrss|jobs\.rss|\/feed\/?)[^"]*)"/gi)) {
+    candidates.push(m[1]);
+  }
+  for (const raw of candidates) {
+    try {
+      const abs = new URL(raw, baseUrl);
+      // A careers/jobs feed, not a blog/news feed.
+      if (/rss|atom|feed|offre|offer|job|emploi|career|carriere|recrut/i.test(abs.href)) {
+        return abs.toString();
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+  return undefined;
+}
+
 /** Every ATS link referenced anywhere in a page's HTML. */
 function atsLinksInHtml(html: string, baseUrl: string): string[] {
   const $ = cheerio.load(html);
@@ -243,6 +275,19 @@ export function detectFromHtml(html: string, rawUrl: string): AtsDetection | nul
     if (widget) return widget;
   } catch {
     /* bad URL — skip */
+  }
+
+  // 3. An RSS/Atom careers feed the page links — the cheapest generic ingestion
+  //    path (no page crawl). Parsed by the generic adapter via config.feedUrl.
+  const feedUrl = findFeedUrl(html, rawUrl);
+  if (feedUrl) {
+    return {
+      type: 'GENERIC_JSONLD',
+      careersUrl: rawUrl,
+      config: { feedUrl },
+      confidence: 0.75,
+      note: `RSS/Atom careers feed found: ${feedUrl}`,
+    };
   }
 
   // 2. A real careers page on a custom/white-label ATS we don't have a dedicated

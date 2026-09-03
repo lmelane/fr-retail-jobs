@@ -3,6 +3,7 @@ import pLimit from 'p-limit';
 import { createHash } from 'node:crypto';
 import { fetchText } from '../../lib/http.js';
 import { fetchSitemapUrls, extractJobPostings, normalizeJobPosting } from '../../connectors/generic/jsonLdSitemap.js';
+import { fetchRssJobs } from '../../connectors/generic/rssFeed.js';
 import { collapseWhitespace, briefError } from '../../lib/normalize.js';
 import type { NormalizedJob } from '../../types.js';
 
@@ -33,6 +34,15 @@ export function parseJobPostings(html: string, pageUrl: string): NormalizedJob[]
 }
 
 export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+  /**
+   * An RSS/Atom careers feed, when the site publishes one — the cheapest generic
+   * path (no page crawl at all). Many small brands and TalentSoft/WordPress sites
+   * expose a feed of openings; parsing it needs no per-vendor code.
+   */
+  if (config.feedUrl) {
+    return fetchRssJobs(config);
+  }
+
   /**
    * A sitemap of job URLs, when the board publishes one.
    *

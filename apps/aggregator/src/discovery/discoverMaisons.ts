@@ -3,6 +3,7 @@ import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pLimit from 'p-limit';
 import { inspectCareerPage } from '../ats/detect.js';
+import { probeAtsBySlug } from './atsProbe.js';
 import { fetchRenderedHtml } from '../lib/browser.js';
 import { loadSourceCatalog } from '../connectors/sourceCatalog.js';
 import { resolveCompany } from '../normalize/company.js';
@@ -185,27 +186,29 @@ export async function discoverMaisons(options: {
         let status = 'unresolved';
         let kind = '';
         try {
-          if (company.url) {
-            // Depth 2: homepage -> "join us"/careers landing -> the actual ATS
-            // (many brands put an HR landing page between the two, e.g. Zadig's
-            // /content/join-us links on to the real listing).
-            const detection = await inspectCareerPage(company.url, 2, fetchRenderedHtml);
-            if (detection) {
-              kind = KIND_FOR_TYPE[detection.type] ?? detection.type.toLowerCase();
-              appendFileSync(OUT_PATH, toCsvLine({ maison: company.name, kind, detection }) + '\n');
-              discovered++;
-              status = detection.type === 'GENERIC_JSONLD' ? 'generic' : 'ats';
-            } else {
-              unresolved++;
-              appendFileSync(
-                UNRESOLVED_PATH,
-                `${csvCell(company.name)},${csvCell(company.url)},${csvCell('no ATS/careers found')}\n`,
-              );
-            }
+          // API-FIRST (the key path, Loïc 2026-09-03): probe the public ATS APIs
+          // directly from the brand name + site URL. This BYPASSES a bot-blocked
+          // marketing homepage entirely — the ATS API is public even when the
+          // site 403s (verified: Lacoste homepage 403 -> careers.lacoste.com API
+          // 461 offers). Cheap, no browser, and it resolves the Cloudflare brands
+          // the homepage crawl never could. The browser is only the fallback.
+          let detection = await probeAtsBySlug(company.name, undefined, company.url);
+          if (!detection && company.url) {
+            // Fallback: read the homepage in a browser (depth 2: homepage ->
+            // careers landing -> ATS) for brands whose ATS the probes missed.
+            detection = await inspectCareerPage(company.url, 2, fetchRenderedHtml);
+          }
+          if (detection) {
+            kind = KIND_FOR_TYPE[detection.type] ?? detection.type.toLowerCase();
+            appendFileSync(OUT_PATH, toCsvLine({ maison: company.name, kind, detection }) + '\n');
+            discovered++;
+            status = detection.type === 'GENERIC_JSONLD' ? 'generic' : 'ats';
           } else {
             unresolved++;
-            status = 'no-url';
-            appendFileSync(UNRESOLVED_PATH, `${csvCell(company.name)},${csvCell('')},${csvCell('no url in roster')}\n`);
+            appendFileSync(
+              UNRESOLVED_PATH,
+              `${csvCell(company.name)},${csvCell(company.url ?? '')},${csvCell('no ATS/careers found')}\n`,
+            );
           }
         } catch {
           unresolved++;
