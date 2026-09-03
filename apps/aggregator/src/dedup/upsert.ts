@@ -1,6 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
 import { blockingKey, isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } from './match.js';
-import { classifySector, type Sector } from '../normalize/sector.js';
+import { classifySector, sectorForSource, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
 import { isFranceJob } from '../lib/france.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
@@ -71,7 +71,15 @@ export async function upsertDeduplicated(
   // Classify once, at write time: the front end reads Company.kind, which
   // otherwise stays at its UNKNOWN default and every sector facet reads
   // "UNKNOWN" no matter how well the classifier works.
-  const verdict = classifySector({ company: candidate.company, title: candidate.title });
+  // Pass the source's sector so an unrecognised employer from a sector-scoped
+  // source (FashionJobs -> FASHION, LVMH -> LUXURY) inherits it instead of
+  // falling to OTHER — this is what rescues the ~300 real Maisons the reference
+  // list has never heard of.
+  const verdict = classifySector({
+    company: candidate.company,
+    title: candidate.title,
+    sourceSector: sectorForSource(candidate.sourceKey),
+  });
   const sector = (SECTOR_TO_COMPANY_SECTOR[verdict.sector] ?? 'OTHER') as never;
 
   // The reference list knows Sandro belongs to SMCP and Dior to LVMH. Storing

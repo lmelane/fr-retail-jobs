@@ -70,7 +70,33 @@ describe('classifySector — real fashion / luxury houses stay in scope', () => 
 describe('classifySector — genuinely out-of-vertical employers stay excluded (non-regression)', () => {
   it('keeps generalist retailers and services out', () => {
     expect(verdict('Carrefour').inScope).toBe(false);
-    expect(verdict('Decathlon').inScope).toBe(false);
     expect(verdict('Capgemini').inScope).toBe(false);
+    // Sporting-goods stay out; fashion footwear (Courir, Foot Locker) stays in.
+    expect(verdict('Intersport').inScope).toBe(false);
+  });
+});
+
+describe('classifySector — Decathlon is RETAIL (decision 2026-09-03)', () => {
+  it('classifies Decathlon as an in-scope RETAIL employer, not excluded', () => {
+    const v = verdict('Decathlon');
+    expect(v.inScope).toBe(true);
+    expect(v.sector).toBe('RETAIL');
+  });
+});
+
+describe('classifySector — unrecognised employer inherits its source sector', () => {
+  it('an unknown brand from a FashionJobs source is FASHION, not OTHER', () => {
+    const v = classifySector({ company: 'Some Unlisted Label', sourceSector: 'FASHION' });
+    expect(v.inScope).toBe(true);
+    expect(v.sector).toBe('FASHION');
+  });
+
+  it('a source sector never overrides a positive name match', () => {
+    // Sephora is a recognised employer (classified by name); a FASHION source
+    // hint must NOT flip it to the fallback FASHION — the name match wins.
+    const withHint = classifySector({ company: 'Sephora', sourceSector: 'FASHION' });
+    const withoutHint = classifySector({ company: 'Sephora' });
+    expect(withHint.sector).toBe(withoutHint.sector);
+    expect(withHint.reason).not.toContain('inherited');
   });
 });

@@ -24,6 +24,27 @@ export type Sector =
   | 'RECRUITER'
   | 'OTHER';
 
+/**
+ * Sector-scoped SOURCES: a source key whose whole catalogue is in one sector, so
+ * an unrecognised employer from it inherits this sector rather than OTHER.
+ * FashionJobs is a fashion-only jobboard; the LVMH portal is luxury. Matched by a
+ * prefix so per-brand LVMH feed keys ("lvmh", "lvmh-dior"…) all resolve.
+ */
+const SOURCE_SECTOR_PREFIXES: ReadonlyArray<readonly [string, Sector]> = [
+  ['fashionjobs', 'FASHION'],
+  ['lvmh', 'LUXURY'],
+];
+
+/** The sector a source's catalogue belongs to, or undefined for a generalist. */
+export function sectorForSource(sourceKey: string | undefined): Sector | undefined {
+  if (!sourceKey) return undefined;
+  const key = sourceKey.toLowerCase();
+  for (const [prefix, sector] of SOURCE_SECTOR_PREFIXES) {
+    if (key === prefix || key.startsWith(prefix + '-')) return sector;
+  }
+  return undefined;
+}
+
 /** Reference-list segments map straight onto sectors; both vocabularies match. */
 const MAISON_SEGMENT_SECTORS: Record<MaisonEntry['segment'], Sector> = {
   FASHION: 'FASHION',
@@ -81,7 +102,10 @@ const COMPANY_SIGNALS: ReadonlyArray<readonly [Sector, RegExp]> = [
   // \bMODE\b, not bare MODE: without the boundary it matches inside MODERN — a
   // real false positive ("MODErn Solutions") measured on live data.
   ['FASHION', /ZARA|H ?ET ?M|H&M|UNIQLO|\bMANGO\b|PRIMARK|KIABI|CELIO|JULES|SANDRO|MAJE|CLAUDIE PIERLOT|SMCP|LACOSTE|SEZANE|BA ?SH|AMI PARIS|ISABEL MARANT|VEJA|PATOU|ETAM|PIMKIE|\bMODE\b|FASHION|COUTURE|APPAREL|TEXTILE|PRET A PORTER/],
-  ['RETAIL', /GALERIES LAFAYETTE|PRINTEMPS|BON MARCHE|BHV|COURIR|FOOT ?LOCKER|INTERSPORT|DECATHLON|GO SPORT|SNEAKER|BOUTIQUE|RETAIL|DEPARTMENT STORE/],
+  // Decathlon is RETAIL by decision (2026-09-03): it sells apparel/footwear and
+  // is a deliberately-configured high-volume source. INTERSPORT/GO SPORT are NOT
+  // here — they remain out-of-sector sporting-goods.
+  ['RETAIL', /GALERIES LAFAYETTE|PRINTEMPS|BON MARCHE|BHV|COURIR|FOOT ?LOCKER|DECATHLON|SNEAKER|BOUTIQUE|RETAIL|DEPARTMENT STORE/],
 ];
 
 /**
@@ -98,10 +122,12 @@ const OUT_OF_SECTOR_RE = new RegExp(
     // general-purpose distribution is not the Catwalks vertical.
     /CARREFOUR|LECLERC|INTERMARCHE|MOUSQUETAIRES|AUCHAN|LIDL|\bALDI\b|\bCASINO\b|MONOPRIX|FRANPRIX|\bCORA\b|SYSTEME U/,
     /MCDONALD|BURGER KING|\bKFC\b|\bQUICK\b|SUBWAY|DOMINO/,
-    // Sports equipment. Deliberate call: a Decathlon sales role is a different job
-    // and a different candidate from a Dior client advisor. Fashion footwear stays
-    // in scope (Courir, Foot Locker) — sporting goods do not.
-    /DECATHLON|INTERSPORT|GO ?SPORT|SPORT ?2000|\bALLTRICKS\b|COURIR ?SPORT|SPORTS? DIRECT|\bDDECATHLON\b/,
+    // Sports equipment. Fashion footwear stays in scope (Courir, Foot Locker) —
+    // pure sporting-goods do not. Decathlon is DELIBERATELY NOT here: Loïc's call
+    // (2026-09-03) is that Decathlon is RETAIL (it sells apparel/footwear, like
+    // Galeries Lafayette/Courir), and it is a high-volume source we configured on
+    // purpose — so it is classified RETAIL below, not excluded.
+    /INTERSPORT|GO ?SPORT|SPORT ?2000|\bALLTRICKS\b|COURIR ?SPORT|SPORTS? DIRECT/,
     // Energy, transport, industry.
     /TOTAL ?ENERGIES|ENGIE|\bEDF\b|VEOLIA|\bSUEZ\b|ORANGE|\bSFR\b|BOUYGUES|\bFREE\b|\bSNCF\b|\bRATP\b|AIR FRANCE/,
     /VINCI|EIFFAGE|COLAS|SAFRAN|THALES|DASSAULT|FRAMATOME|ALSTOM|RENAULT|STELLANTIS|MICHELIN/,
@@ -146,11 +172,21 @@ function canonical(value: string): string {
 /**
  * Classifies a posting. `businessGroup` is an authoritative sector label when the
  * source provides one (LVMH does); it wins over name matching.
+ *
+ * `sourceSector` is the sector of the SOURCE this posting came from — set for a
+ * sector-scoped source (a fashion-only jobboard like FashionJobs, or a luxury
+ * group portal). When the employer name is unrecognised, the offer inherits its
+ * source's sector instead of falling to OTHER: a brand on FashionJobs IS a
+ * fashion employer even if our reference list has never heard of it. This is
+ * what rescued ~300 real Maisons (Amina Muaddi, A.P.C., Azzedine Alaïa…) that
+ * were being mislabelled OTHER. It never OVERRIDES a positive name match — those
+ * are more specific — it only replaces the OTHER fallback.
  */
 export function classifySector(input: {
   company: string;
   businessGroup?: string;
   title?: string;
+  sourceSector?: Sector;
 }): SectorVerdict {
   const group = input.businessGroup && LVMH_BUSINESS_GROUP_SECTORS[input.businessGroup];
   if (group) {
@@ -195,7 +231,18 @@ export function classifySector(input: {
     }
   }
 
-  // Unknown employer: excluded, but flagged so a human can promote it to the
-  // reference list. Silence here is what lets a real Maison go missing.
+  // Unknown employer, but it came from a sector-scoped source: inherit that
+  // sector rather than dropping the brand to OTHER (a FashionJobs employer is a
+  // fashion employer). Only in-sector source hints reach here.
+  if (input.sourceSector && input.sourceSector !== 'OTHER') {
+    return {
+      sector: input.sourceSector,
+      inScope: true,
+      reason: `unrecognised employer, inherited from ${input.sourceSector} source`,
+    };
+  }
+
+  // Unknown employer with no sector hint: excluded, but flagged so a human can
+  // promote it to the reference list. Silence here is what lets a Maison go missing.
   return { sector: 'OTHER', inScope: false, reason: 'employer not recognised; needs review' };
 }
