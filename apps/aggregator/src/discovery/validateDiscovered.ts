@@ -235,11 +235,13 @@ async function main(): Promise<void> {
   // discovery output; --out keeps its report separate.
   const inputPath = arg('input');
   const rows = loadRows(inputPath ? fileURLToPath(new URL(`../../${inputPath}`, import.meta.url)) : undefined);
-  const targets = onlyKind
+  const excluded = new Set((arg('exclude') ?? '').split(',').filter(Boolean));
+  const targets = (onlyKind
     ? rows.filter((row) => row.kind === onlyKind)
     : all
       ? rows.filter((row) => ATS_TYPE[row.kind] ?? EXTRA_KINDS[row.kind])
-      : sample(rows, seed);
+      : sample(rows, seed)
+  ).filter((row) => !excluded.has(row.kind));
 
   console.log(`validating ${targets.length} of ${rows.length} discovered sources…`);
 
