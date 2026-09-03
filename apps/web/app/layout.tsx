@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import './globals.css';
 import { SiteNav } from '@/components/site-nav';
 import { landingStats } from '@/lib/jobs';
+import { siteUrl } from '@/lib/site-url';
 import { SiteFooter } from '@/components/site-footer';
 import { NavProgress } from '@/components/nav-progress';
 import { RevealOnScroll } from '@/components/reveal-on-scroll';
@@ -23,9 +24,23 @@ import { RevealOnScroll } from '@/components/reveal-on-scroll';
 export async function generateMetadata(): Promise<Metadata> {
   const stats = await landingStats();
   const scope = stats.companies > 0 ? `de ${stats.companies} Maisons ` : '';
+  const title = `Offres d'emploi ${scope}— Mode, Luxe, Beauté & Horlogerie`;
+  const description = `Les offres d'emploi ${scope}du secteur mode, luxe, beauté, horlogerie et retail, agrégées sans doublon depuis les sites carrière et les jobboards spécialisés, avec le lien de candidature direct.`;
   return {
-    title: `Offres d'emploi ${scope}— Mode, Luxe, Beauté & Horlogerie`,
-    description: `Les offres d'emploi ${scope}du secteur mode, luxe, beauté, horlogerie et retail, agrégées sans doublon depuis les sites carrière et les jobboards spécialisés, avec le lien de candidature direct.`,
+    metadataBase: new URL(siteUrl()),
+    title,
+    description,
+    // Picto officiel Mode Careers (OFMC) : favicon, icône Apple et image OG.
+    icons: { icon: '/brand/ofmc.png', apple: '/brand/ofmc.png' },
+    openGraph: {
+      siteName: 'Mode Careers',
+      title,
+      description,
+      images: ['/brand/ofmc.png'],
+      type: 'website',
+      locale: 'fr_FR',
+    },
+    twitter: { card: 'summary', title, description, images: ['/brand/ofmc.png'] },
   };
 }
 

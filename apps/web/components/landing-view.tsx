@@ -54,8 +54,8 @@ export function LandingView({
         aria-labelledby="hero-title"
         className="relative grid place-items-center overflow-hidden text-center text-white"
         style={{
-          height: 680,
-          background: '#06140D url(/brand/hero-poster.jpg) center / cover no-repeat',
+          height: '47.5rem',
+          background: '#011317 url(/brand/hero-poster.jpg) center / cover no-repeat',
         }}
       >
         <video
@@ -93,7 +93,7 @@ export function LandingView({
               <>Les offres du luxe,<br />réunies.</>
             )}
           </h1>
-          <p className="t-body soft max-w-[52ch] opacity-90" data-stagger-index="2">
+          <p className="t-body max-w-[52ch] text-white/85" data-stagger-index="2">
             Sans doublon, avec le texte complet et le lien de candidature direct chez la Maison.
           </p>
           <div className="w-full text-ink" data-stagger-index="3">

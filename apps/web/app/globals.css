@@ -4,7 +4,7 @@
 /**
  * Fashion Atlas — Direction artistique « Corporate Elegance » (design_2.md v1.0).
  * Serif display (contenu) + sans humaniste (usage), blanc pur, un seul accent
- * vert #105A33, filets pointillés, radius unique 5px, aucune ombre. Les maquettes
+ * brand #022026 (petrol), filets pointillés, radius unique 5px, aucune ombre. Les maquettes
  * `fashion-atlas-maquettes/*.html` sont la référence de rendu ; ce fichier porte
  * leurs tokens `--fa-…` et classes `.t-…`, `.rule`, `.btn`, `.pill`… dans le projet.
  * ATTENTION : jamais de séquence « étoile-slash » dans un commentaire (même entre
@@ -53,9 +53,9 @@
   --fa-paper: #FFFFFF; --fa-paper-alt: #F7F7F5; --fa-paper-deep: #EFEFEC; --fa-line: #D9D9D6;
   --fa-line-strong: #1C1C1C;
   /* Accent */
-  --fa-green: #105A33; --fa-green-hover: #0C4728; --fa-green-tint: #E7EFEA; --fa-green-night: #000A05;
+  --fa-green: #022026; --fa-green-hover: #011519; --fa-green-tint: #E4EDEE; --fa-green-night: #010D10;
   /* Sémantique */
-  --fa-success: #105A33; --fa-warning: #8A5A00; --fa-danger: #A61E2B;
+  --fa-success: #022026; --fa-warning: #8A5A00; --fa-danger: #A61E2B;
   /* Sur photo */
   --fa-on-photo: #FFFFFF; --fa-veil: rgba(0, 10, 5, .42);
   --fa-photo-veil-card: linear-gradient(180deg, rgba(0,10,5,0) 45%, rgba(0,10,5,.72) 100%);
@@ -113,7 +113,7 @@
 .t-hero { font: 400 clamp(2.75rem, 6.5vw, 6.25rem)/1 var(--fa-font-display); text-transform: uppercase; letter-spacing: 0; text-wrap: balance; }
 /* Hero de la home (review 2026-09-04) : H1 redimensionné pour une hiérarchie
    maîtrisée — la recherche vit DANS le hero, plus posée à cheval dessous. */
-.t-hero--home { font-size: clamp(2.25rem, 4.6vw, 4.25rem); line-height: 1.04; }
+.t-hero--home { font-size: clamp(2.5rem, 6vw, 5.75rem); line-height: 1.04; color: #fff; }
 .t-number { font: 400 clamp(3.5rem, 8vw, 7.5rem)/1 var(--fa-font-display); letter-spacing: -.025em; color: var(--fa-green); font-variant-numeric: tabular-nums; }
 .t-d1 { font: 400 2rem/1.125 var(--fa-font-display); text-wrap: balance; }
 .t-d2 { font: 400 1.5rem/1.333 var(--fa-font-display); }
@@ -472,7 +472,7 @@
 /* PAS d'overflow:hidden ici : le panneau de suggestions (.dd, absolu) serait
    clippé — bug vu en prod. Les coins droits sont arrondis par le bouton. */
 .search { display: grid; grid-template-columns: 1fr 1fr auto; height: 48px; border: 1px solid var(--fa-ink); border-radius: var(--fa-radius); background: var(--fa-paper); }
-.search--hero { height: 56px; }
+.search--hero { height: 56px; border-color: transparent; }
 .search:focus-within { border-color: var(--fa-green); }
 /* .field : un champ (icône + input) réutilisable — barre de recherche /emplois
    ET champ « Rechercher une Maison » de l'annuaire (bordé, 34px). */

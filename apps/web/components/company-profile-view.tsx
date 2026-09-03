@@ -48,7 +48,7 @@ const SECTOR_LABELS: Record<string, string> = {
 
 // Fond vert-nuit + grain, identique au hero de la home (réf home.html).
 const HERO_BG =
-  'radial-gradient(1200px 520px at 68% 18%,rgba(72,112,86,.55),transparent 60%),radial-gradient(800px 600px at 18% 85%,rgba(28,60,42,.7),transparent 65%),radial-gradient(500px 300px at 50% 110%,rgba(120,140,110,.35),transparent 70%),linear-gradient(180deg,#0E2A1C 0%,#0A1F15 55%,#06140D 100%)';
+  'radial-gradient(1200px 520px at 68% 18%,rgba(14,84,96,.5),transparent 60%),radial-gradient(800px 600px at 18% 85%,rgba(4,51,59,.7),transparent 65%),radial-gradient(500px 300px at 50% 110%,rgba(90,130,138,.3),transparent 70%),linear-gradient(180deg,#04333B 0%,#022026 55%,#011317 100%)';
 const GRAIN_URL =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")";
 
