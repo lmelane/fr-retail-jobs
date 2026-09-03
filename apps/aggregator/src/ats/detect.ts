@@ -86,12 +86,17 @@ function findCareersLinks($: cheerio.CheerioAPI, baseUrl: string): string[] {
       const clean = abs.toString();
       if (seen.has(clean)) return;
       seen.add(clean);
-      // Prefer a careers subdomain (talents./careers./jobs.) and a jobs-y path.
+      // Prefer a careers subdomain (talents./careers./jobs.) and a careers-y
+      // path. A strong anchor text ("nous rejoindre", "careers") also counts.
       let score = 0;
-      if (/^(talents?|careers?|jobs|recrut|emploi|hr|rh)\./i.test(abs.hostname)) score += 3;
-      if (/(offre|offres|jobs|careers|emploi|recrut|vacanc|opening)/i.test(abs.pathname)) score += 2;
-      if (CAREERS_LINK_RE.test(anchorText)) score += 1;
-      scored.push({ url: clean, score });
+      if (/^(talents?|careers?|jobs|recrut|emploi|hr|rh)\./i.test(abs.hostname)) score += 4;
+      if (/\b(career|carriere|carrière|join-us|join us|nous-rejoindre|nous rejoindre|work-with-us|recrut|hiring)\b/i.test(abs.pathname.replace(/[-_/]/g, ' '))) score += 3;
+      if (/\b(jobs?|emplois?|offres?|vacanc|opening|positions?)\b/i.test(abs.pathname.replace(/[-_/]/g, ' '))) score += 2;
+      const t = anchorText.replace(/[-_]/g, ' ');
+      if (/\b(carriere|carrière|career|careers|recrut|rejoindre|rejoins|join us|work with us|nos offres|emploi|talent)\b/i.test(t)) score += 2;
+      // A loose keyword match ALONE (score 0) is a false positive
+      // ("flash-price-drops" matching "drop") — drop it.
+      if (score > 0) scored.push({ url: clean, score });
     } catch { /* ignore */ }
   });
   return scored.sort((a, b) => b.score - a.score).slice(0, 3).map((s) => s.url);

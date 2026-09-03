@@ -57,6 +57,8 @@ const dataUrl = (name: string) => fileURLToPath(new URL(`../../data/${name}`, im
 const OUT_PATH = dataUrl('sources.discovered.csv');
 /** One line per Maison already processed (name<TAB>status<TAB>kind), for resume. */
 const PROGRESS_PATH = dataUrl('discovery.progress.tsv');
+/** Maisons auto-discovery could NOT resolve — the queue for the manual pass. */
+const UNRESOLVED_PATH = dataUrl('sources.unresolved.csv');
 
 function csvCell(value: string): string {
   return `"${value.replace(/"/g, '""')}"`;
@@ -135,6 +137,11 @@ export async function discoverMaisons(options: {
       'utf8',
     );
   }
+  if (options.fresh || !existsSync(UNRESOLVED_PATH)) {
+    // The manual-pass queue: name + homepage, so a human can find the careers/ATS
+    // URL the crawler could not (Loïc: some will only be found by hand).
+    writeFileSync(UNRESOLVED_PATH, 'nom,site,raison\n', 'utf8');
+  }
   if (options.fresh) writeFileSync(PROGRESS_PATH, '', 'utf8');
 
   const roster = parseRosterCsv(readFileSync(options.inputFile, 'utf8'));
@@ -155,7 +162,10 @@ export async function discoverMaisons(options: {
         let kind = '';
         try {
           if (company.url) {
-            const detection = await inspectCareerPage(company.url, 1, fetchRenderedHtml);
+            // Depth 2: homepage -> "join us"/careers landing -> the actual ATS
+            // (many brands put an HR landing page between the two, e.g. Zadig's
+            // /content/join-us links on to the real listing).
+            const detection = await inspectCareerPage(company.url, 2, fetchRenderedHtml);
             if (detection) {
               kind = KIND_FOR_TYPE[detection.type] ?? detection.type.toLowerCase();
               appendFileSync(OUT_PATH, toCsvLine({ maison: company.name, kind, detection }) + '\n');
@@ -163,14 +173,23 @@ export async function discoverMaisons(options: {
               status = detection.type === 'GENERIC_JSONLD' ? 'generic' : 'ats';
             } else {
               unresolved++;
+              appendFileSync(
+                UNRESOLVED_PATH,
+                `${csvCell(company.name)},${csvCell(company.url)},${csvCell('no ATS/careers found')}\n`,
+              );
             }
           } else {
             unresolved++;
             status = 'no-url';
+            appendFileSync(UNRESOLVED_PATH, `${csvCell(company.name)},${csvCell('')},${csvCell('no url in roster')}\n`);
           }
         } catch {
           unresolved++;
           status = 'error';
+          appendFileSync(
+            UNRESOLVED_PATH,
+            `${csvCell(company.name)},${csvCell(company.url ?? '')},${csvCell('fetch/timeout/403 error')}\n`,
+          );
         }
         // Record progress LAST, so an interrupted Maison re-runs next time.
         appendFileSync(PROGRESS_PATH, `${company.name}\t${status}\t${kind}\n`);
