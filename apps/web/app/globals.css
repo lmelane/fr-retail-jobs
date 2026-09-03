@@ -155,6 +155,57 @@
 .btn:focus-visible { outline: 2px solid var(--fa-green); outline-offset: 2px; }
 .btn svg { width: 16px; height: 16px; stroke-width: 1.25; }
 
+/* ——————————————————————————— Pills de filtre (§4.3, réf emplois.html) ——————————————————————————— */
+.pill { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 10px 0 12px; border: 1px solid var(--fa-line); border-radius: var(--fa-radius); background: var(--fa-paper); font: 500 .875rem/1 var(--fa-font-sans); color: var(--fa-ink); white-space: nowrap; cursor: pointer; transition: border-color var(--fa-dur-fast) var(--fa-ease), background-color var(--fa-dur-fast) var(--fa-ease); }
+.pill:hover { border-color: var(--fa-ink); }
+.pill svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.25; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.pill.is-active { background: var(--fa-green-tint); border-color: var(--fa-green); color: var(--fa-green); }
+.pill.is-open { border-color: var(--fa-ink); }
+.pill.is-open svg.chev { transform: rotate(180deg); }
+.pill .count { font-weight: 400; color: var(--fa-ink-muted); font-size: .75rem; letter-spacing: .03em; }
+.pill:focus-visible { outline: 2px solid var(--fa-green); outline-offset: 2px; }
+
+/* ——————————————————————————— Dropdown (§4.3) ——————————————————————————— */
+.dd { position: absolute; left: 0; top: calc(100% + 6px); z-index: var(--fa-z-dropdown); min-width: 260px; background: var(--fa-paper); border: 1px solid var(--fa-line); border-radius: var(--fa-radius); box-shadow: var(--fa-shadow-menu); padding: 8px 0; }
+.dd__search { display: flex; align-items: center; gap: 8px; margin: 4px 16px 8px; height: 36px; background-image: linear-gradient(to right, var(--fa-ink) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; background-position: 50% 100%; }
+.dd__search svg { width: 16px; height: 16px; stroke: var(--fa-ink-muted); stroke-width: 1.25; fill: none; }
+.dd__search input { border: 0; outline: 0; background: transparent; font: 400 .9375rem/1 var(--fa-font-sans); flex: 1; color: var(--fa-ink); }
+.dd a, .dd button { display: flex; justify-content: space-between; align-items: center; gap: 16px; width: 100%; padding: 10px 16px; font: 400 1rem/1.25 var(--fa-font-sans); color: var(--fa-ink); background: transparent; border: 0; text-align: left; cursor: pointer; }
+.dd a:hover, .dd button:hover { background: var(--fa-paper-alt); }
+.dd a .count, .dd button .count { font: 400 .75rem/1 var(--fa-font-sans); letter-spacing: .03em; color: var(--fa-ink-muted); }
+.dd a.is-checked, .dd button.is-checked { color: var(--fa-green); }
+
+/* ——————————————————————————— Chips & badges (§4.5, réf etats.html) ——————————————————————————— */
+.chip { display: inline-block; padding: 3px 8px; border-radius: var(--fa-radius); font: 500 .75rem/1.333 var(--fa-font-sans); letter-spacing: .0625rem; text-transform: uppercase; background: var(--fa-green-tint); color: var(--fa-green); vertical-align: 2px; }
+.chip--neutral { background: transparent; color: var(--fa-ink); border: 1px solid var(--fa-line); }
+.chip--warn { background: transparent; color: var(--fa-warning); border: 1px solid rgba(138, 90, 0, .4); }
+/* Point d'état 8px = offre publiée < 48h. */
+.dot-new { width: 8px; height: 8px; border-radius: 9999px; background: var(--fa-green); display: inline-block; flex: none; }
+
+/* ——————————————————————————— Champs de formulaire (§4.11) ——————————————————————————— */
+.f-label { display: block; margin-bottom: 8px; }
+.f-input { display: flex; align-items: center; height: 48px; padding: 0 16px; background: var(--fa-paper-alt); border: 0; border-radius: 5px 5px 0 0; font: 400 1rem/1.25 var(--fa-font-sans); color: var(--fa-ink); width: 100%; outline: 0;
+  background-image: linear-gradient(to right, var(--fa-ink) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; background-position: 50% 100%; }
+.f-input::placeholder { color: var(--fa-ink-muted); }
+.f-input:focus { background-color: var(--fa-paper); background-image: linear-gradient(to right, var(--fa-green) 100%, transparent 0); background-size: 100% 1px; }
+.f-input.is-error { background-image: linear-gradient(to right, var(--fa-danger) 100%, transparent 0); background-size: 100% 1px; }
+.upload { height: 160px; border: 1px dotted var(--fa-ink); border-radius: 5px; display: grid; place-items: center; text-align: center; gap: 8px; padding: 24px; }
+.check { display: flex; gap: 10px; align-items: center; font: 400 .9375rem/1.4 var(--fa-font-sans); }
+.check i { width: 18px; height: 18px; border: 1px solid var(--fa-ink); border-radius: 3px; display: grid; place-items: center; flex: none; }
+.check i.on { background: var(--fa-green); border-color: var(--fa-green); }
+.check i svg { width: 12px; height: 12px; stroke: #fff; stroke-width: 1.5; fill: none; }
+.toggle { width: 36px; height: 20px; border-radius: 9999px; background: var(--fa-line); position: relative; flex: none; cursor: pointer; transition: background-color var(--fa-dur-fast) var(--fa-ease); }
+.toggle.on { background: var(--fa-green); }
+.toggle::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 9999px; background: #fff; transition: left var(--fa-dur-fast) var(--fa-ease); }
+.toggle.on::after { left: 18px; }
+
+/* ——————————————————————————— Toast & barre de progression (§4.12/§4.13) ——————————————————————————— */
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--fa-ink); color: #fff; padding: 12px 20px; border-radius: 5px; font: 400 .9375rem/1.4 var(--fa-font-sans); z-index: var(--fa-z-toast); }
+.progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--fa-green); z-index: var(--fa-z-modal); }
+/* Skeleton : bloc paper-alt sans arrondi, pulsation 1.2s. */
+.sk { background: var(--fa-paper-alt); border-radius: 0; animation: fa-pulse 1.2s linear infinite; }
+@keyframes fa-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+
 @theme inline {
   --font-heading: var(--fa-font-display);
   --font-sans: var(--fa-font-sans);
