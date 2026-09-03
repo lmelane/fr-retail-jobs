@@ -3,6 +3,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import pLimit from 'p-limit';
 import { inspectCareerPage } from '../ats/detect.js';
 import { fetchText } from '../lib/http.js';
+import { configureExternalDnsFromEnv } from '../lib/externalDns.js';
 import type { AtsDetection } from '../types.js';
 
 /**
@@ -190,6 +191,7 @@ async function probeSite({ nom, site }: Site): Promise<{ status: string; detail:
 }
 
 async function main(): Promise<void> {
+  configureExternalDnsFromEnv();
   const processed = new Set(
     existsSync(PROGRESS)
       ? readFileSync(PROGRESS, 'utf8')
