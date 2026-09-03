@@ -11,6 +11,52 @@ const ATS_HOSTS = [
   'personio.com', 'myworkdayjobs.com', 'teamtailor.com', 'workable.com', 'successfactors.com'
 ];
 
+/**
+ * Widget/white-label ATS that a brand embeds on ITS OWN careers domain — the
+ * backend host (app.digitalrecruiters.com, …) appears in the page's scripts/XHR,
+ * but the adapter needs the BRAND's careers hostname, not the widget host. So a
+ * match here maps to the AtsType with config derived from the current page.
+ * Each listed backend has a real adapter (verified against src/ats/adapters).
+ */
+const WIDGET_BACKENDS: ReadonlyArray<{
+  re: RegExp;
+  type: AtsType;
+  config: (pageUrl: URL) => Record<string, unknown>;
+}> = [
+  {
+    re: /digitalrecruiters\.com/i,
+    type: 'DIGITALRECRUITERS',
+    config: (u) => ({ domainName: u.hostname }),
+  },
+  {
+    // A Teamtailor career site embeds its jobs.json on the brand's own host.
+    re: /teamtailor\.com|career-microsite/i,
+    type: 'TEAMTAILOR',
+    config: (u) => ({ origin: u.origin }),
+  },
+  {
+    re: /talent-soft\.com|talentsoft\.com/i,
+    type: 'TALENTSOFT',
+    config: (u) => ({ origin: u.origin }),
+  },
+];
+
+/** Detect a widget/white-label ATS embedded on a brand's careers page. */
+function detectWidgetBackend(html: string, pageUrl: URL): AtsDetection | null {
+  for (const backend of WIDGET_BACKENDS) {
+    if (backend.re.test(html)) {
+      return {
+        type: backend.type,
+        careersUrl: pageUrl.toString(),
+        config: backend.config(pageUrl),
+        confidence: 0.85,
+        note: `${backend.type} widget detected on ${pageUrl.hostname}`,
+      };
+    }
+  }
+  return null;
+}
+
 function detectionFromUrl(rawUrl: string): AtsDetection | null {
   let url: URL;
   try { url = new URL(rawUrl); } catch { return null; }
@@ -138,6 +184,16 @@ export function detectFromHtml(html: string, rawUrl: string): AtsDetection | nul
   for (const candidate of atsLinksInHtml(html, rawUrl)) {
     const detected = detectionFromUrl(candidate);
     if (detected) return { ...detected, careersUrl: rawUrl, confidence: 0.95, note: `ATS link discovered on ${rawUrl}` };
+  }
+
+  // 2. A widget/white-label ATS embedded on the brand's own careers domain
+  //    (DigitalRecruiters, Teamtailor, TalentSoft…) — real adapter, config from
+  //    the current page's host.
+  try {
+    const widget = detectWidgetBackend(html, new URL(rawUrl));
+    if (widget) return widget;
+  } catch {
+    /* bad URL — skip */
   }
 
   // 2. A real careers page on a custom/white-label ATS we don't have a dedicated
