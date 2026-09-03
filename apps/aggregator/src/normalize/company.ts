@@ -37,6 +37,10 @@ const ALIASES: ReadonlyArray<readonly [string, CompanyIdentity]> = [
   ['PARFUMS CHRISTIAN DIOR', { companyId: 'PARFUMS_DIOR', displayName: 'Parfums Christian Dior', group: 'LVMH' }],
   ['LOUIS VUITTON', { companyId: 'LOUIS_VUITTON', displayName: 'Louis Vuitton', group: 'LVMH' }],
   ['LV', { companyId: 'LOUIS_VUITTON', displayName: 'Louis Vuitton', group: 'LVMH' }],
+  // The legal employer name group feeds use; without it, "Louis Vuitton
+  // Malletier" and "Louis Vuitton" split into two companies and the same
+  // opening is stored twice (the group-vs-brand collision, J2).
+  ['LOUIS VUITTON MALLETIER', { companyId: 'LOUIS_VUITTON', displayName: 'Louis Vuitton', group: 'LVMH' }],
   ['SEPHORA', { companyId: 'SEPHORA', displayName: 'Sephora', group: 'LVMH' }],
   ['CELINE', { companyId: 'CELINE', displayName: 'Celine', group: 'LVMH' }],
   ['GIVENCHY', { companyId: 'GIVENCHY', displayName: 'Givenchy', group: 'LVMH' }],
