@@ -17,14 +17,23 @@ import { cn } from '@/lib/utils';
  * to it (top: var(--header-h)).
  */
 
-const HERO_ROUTES = [/^\/$/, /^\/maisons\/[^/]+$/, /^\/entreprise\/[^/]+$/, /^\/matching$/];
+const HERO_ROUTES = [/^\/$/, /^\/maisons\/[^/]+$/, /^\/entreprise\/[^/]+$/];
 
-/** Nav entries — real routes; « Maisons » is /entreprises (renamed in UI only). */
-const NAV = [
-  { label: 'Offres', href: '/emplois', match: (p: string) => p.startsWith('/emplois') || p.startsWith('/offre') },
-  { label: 'Maisons', href: '/entreprises', match: (p: string) => p.startsWith('/entreprises') || p.startsWith('/maisons') || p.startsWith('/entreprise') },
-  { label: 'Matching', href: '/matching', match: (p: string) => p.startsWith('/matching') },
-  { label: 'À propos', href: '/a-propos', match: (p: string) => p.startsWith('/a-propos') },
+/**
+ * Nav entries. « Offres » et « Maisons » sont des routes internes (Maisons =
+ * /entreprises, renommée en UI seulement). « Matching » et « À propos » sont
+ * des liens EXTERNES vers catwalks.io (↗, nouvel onglet) : le compte, le CV et
+ * le matching vivent sur Catwalks, pas sur Fashion Atlas (D14/D18) — pas de
+ * page interne qui promettrait un service qu'on ne rend pas. Décidé par Loïc.
+ */
+type NavItem =
+  | { label: string; href: string; external?: false; match: (p: string) => boolean }
+  | { label: string; href: string; external: true };
+const NAV: NavItem[] = [
+  { label: 'Offres', href: '/emplois', match: (p) => p.startsWith('/emplois') || p.startsWith('/offre') },
+  { label: 'Maisons', href: '/entreprises', match: (p) => p.startsWith('/entreprises') || p.startsWith('/maisons') || p.startsWith('/entreprise') },
+  { label: 'Matching', href: 'https://catwalks.io/inscription?utm_source=fashion-atlas&utm_medium=aggregator&utm_campaign=nav-matching', external: true },
+  { label: 'À propos', href: 'https://catwalks.io', external: true },
 ];
 
 const ArrowUpRight = () => (
@@ -98,16 +107,28 @@ export function SiteNav() {
         {/* Nav 42px (desktop only) */}
         <nav className="rule-b mx-auto hidden h-[42px] max-w-[var(--fa-container)] items-center justify-center gap-11 px-6 lg:flex [--fa-ink:currentColor]" aria-label="Navigation principale">
           {NAV.map((item) => {
+            const base =
+              't-caption relative inline-flex h-[42px] items-center gap-1 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:transition-opacity';
+            if (item.external) {
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(base, 'after:opacity-0 hover:after:opacity-50')}
+                >
+                  {item.label} <ArrowUpRight />
+                </a>
+              );
+            }
             const active = item.match(pathname);
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
-                className={cn(
-                  't-caption relative inline-flex h-[42px] items-center after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:transition-opacity',
-                  active ? 'after:opacity-100' : 'after:opacity-0 hover:after:opacity-50',
-                )}
+                className={cn(base, active ? 'after:opacity-100' : 'after:opacity-0 hover:after:opacity-50')}
               >
                 {item.label}
               </Link>
@@ -124,11 +145,19 @@ export function SiteNav() {
             <button type="button" onClick={() => setMenuOpen(false)} aria-label="Fermer" className="grid size-11 place-items-center text-ink"><Close /></button>
           </div>
           <ul className="px-6">
-            {NAV.map((item) => (
-              <li key={item.href} className="rule-b">
-                <Link href={item.href} className="t-d2 block py-5 text-ink">{item.label}</Link>
-              </li>
-            ))}
+            {NAV.map((item) =>
+              item.external ? (
+                <li key={item.href} className="rule-b">
+                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="t-d2 flex items-center gap-1.5 py-5 text-ink">
+                    {item.label} <ArrowUpRight />
+                  </a>
+                </li>
+              ) : (
+                <li key={item.href} className="rule-b">
+                  <Link href={item.href} className="t-d2 block py-5 text-ink">{item.label}</Link>
+                </li>
+              ),
+            )}
           </ul>
           <div className="mt-6 px-6">
             <button type="button" className="t-caption text-ink-muted">FR</button>

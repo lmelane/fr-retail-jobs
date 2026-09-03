@@ -102,7 +102,9 @@ export function LandingView({
           <div className="s5 t-body soft space-y-4">
             <p>Les offres publiques des Maisons et des jobboards spécialisés, agrégées sans doublon, avec le lien de candidature direct.</p>
             <p>Chaque offre est rattachée à sa Maison, à son groupe et à sa ville. Rien n’est réécrit : vous lisez l’annonce telle que la Maison l’a publiée.</p>
-            <Link href="/a-propos" className="btn btn--green mt-2">Comment ça marche <Arrow /></Link>
+            {/* Pas de bouton « Comment ça marche » : /a-propos n'existe pas et
+                les deux paragraphes ci-dessus expliquent déjà le moteur. On ne
+                pointe pas vers un 404 ni vers catwalks.io (autre produit). */}
           </div>
         </div>
       </section>

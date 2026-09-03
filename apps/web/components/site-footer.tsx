@@ -53,7 +53,9 @@ export async function SiteFooter() {
             <ul className="space-y-[14px]">
               <FooterExternal href="https://catwalks.io/inscription?utm_source=fashion-atlas&utm_medium=aggregator&utm_campaign=footer">Créer mon profil</FooterExternal>
               <FooterExternal href="https://catwalks.io">Matching Catwalks</FooterExternal>
-              <FooterLink href="/matching">Créer une alerte</FooterLink>
+              {/* L'alerte vit sur Catwalks (D18) : lien externe, jamais une page
+                  /matching interne qui promettrait un service qu'on ne rend pas. */}
+              <FooterExternal href="https://catwalks.io/inscription?utm_source=fashion-atlas&utm_medium=aggregator&utm_campaign=footer-alerte">Créer une alerte</FooterExternal>
             </ul>
           </nav>
           <nav aria-label="Informations">
