@@ -51,7 +51,7 @@ function buildHtml(report: AlertReport): string {
 
   return `<div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#000;max-width:640px">
     <h2 style="font-weight:400">Ingestion — ${report.broken} source(s) en panne, ${report.degraded} dégradée(s)</h2>
-    <p style="color:#767676">Digest automatique d'un run d'ingestion Fashion Atlas. Chaque ligne est une source à investiguer.</p>
+    <p style="color:#767676">Digest automatique d'un run d'ingestion Mode Careers. Chaque ligne est une source à investiguer.</p>
     <table style="border-collapse:collapse;width:100%;font-size:14px">
       <thead><tr style="text-align:left;color:#767676">
         <th style="padding:6px 12px">Source</th><th style="padding:6px 12px">État</th>
@@ -86,7 +86,7 @@ export async function sendHealthAlert(report: AlertReport): Promise<boolean> {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'api-key': apiKey },
       body: JSON.stringify({
-        sender: { email: sender, name: process.env.BREVO_SENDER_NAME || 'Fashion Atlas' },
+        sender: { email: sender, name: process.env.BREVO_SENDER_NAME || 'Mode Careers' },
         to: [{ email: alertRecipient() }],
         subject: `[Atlas] ${report.broken} source(s) en panne, ${report.degraded} dégradée(s)`,
         htmlContent: buildHtml(report),

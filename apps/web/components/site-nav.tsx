@@ -90,8 +90,8 @@ export function SiteNav() {
               Catwalks <ArrowUpRight />
             </a>
           </div>
-          <Link href="/" className="wordmark flex-1 text-center lg:flex-none" aria-label="Fashion Atlas — accueil">
-            Fashion Atlas
+          <Link href="/" className="flex flex-1 justify-center lg:flex-none" aria-label="Mode Careers — accueil">
+            <span className="brand-logo" role="img" aria-hidden="true" />
           </Link>
           <div className="flex flex-1 items-center justify-end">
             <button type="button" className="t-caption hidden items-center gap-1 lg:inline-flex" aria-label="Langue">
@@ -140,7 +140,7 @@ export function SiteNav() {
       {menuOpen && (
         <div className="fixed inset-0 z-[120] bg-paper lg:hidden">
           <div className="mx-auto flex h-16 max-w-[var(--fa-container)] items-center justify-between px-6">
-            <span className="wordmark text-ink">Fashion Atlas</span>
+            <span className="brand-logo text-ink" role="img" aria-label="Mode Careers" />
             <button type="button" onClick={() => setMenuOpen(false)} aria-label="Fermer" className="grid size-11 place-items-center text-ink"><Close /></button>
           </div>
           <ul className="px-6">

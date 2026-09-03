@@ -31,7 +31,7 @@ async function check(): Promise<void> {
       ? `${Math.round(ageMs / 3_600_000)} h (dernier run : ${last.ranAt.toISOString()})`
       : 'jamais (table SourceRun vide)';
     const sent = await sendBrevoAlert(
-      `[Fashion Atlas] Pipeline muet depuis ${ageText}`,
+      `[Mode Careers] Pipeline muet depuis ${ageText}`,
       `Aucun SourceRun enregistré depuis ${ageText}.\n\n` +
         `Causes probables : migration en échec au démarrage des crons (la commande tombe avant le pipeline), ` +
         `cron déplanifié, orchestrateur pendu. Vérifier les déploiements Railway du service catwalks-aggregator.\n\n` +
@@ -57,7 +57,7 @@ async function sendBrevoAlert(subject: string, text: string): Promise<boolean> {
     body: JSON.stringify({
       sender: {
         email: process.env.BREVO_SENDER_EMAIL ?? 'alerts@catwalks.io',
-        name: process.env.BREVO_SENDER_NAME ?? 'Fashion Atlas',
+        name: process.env.BREVO_SENDER_NAME ?? 'Mode Careers',
       },
       to: [{ email: to }],
       subject,

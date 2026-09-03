@@ -16,7 +16,7 @@ const ArrowUpRight = () => (
 );
 
 export async function SiteFooter() {
-  const stats = await landingStats().catch(() => ({ offers: 0, companies: 0, countries: 0 }));
+  const stats = await landingStats().catch(() => ({ offers: 0, companies: 0, countries: 0, newCompaniesThisWeek: 0 }));
   const nf = new Intl.NumberFormat('fr-FR');
 
   return (
@@ -24,9 +24,7 @@ export async function SiteFooter() {
       <div className="mx-auto grid max-w-[var(--fa-container)] grid-cols-1 gap-x-10 gap-y-12 px-6 pt-16 pb-10 md:grid-cols-3">
         {/* Marque */}
         <div>
-          <span className="wordmark text-ink">
-            Fashion Atlas
-          </span>
+          <span className="brand-logo text-ink" role="img" aria-label="Mode Careers" />
           <p className="t-body2 muted mt-4 max-w-[34ch]">
             Le moteur de recherche des offres Mode, Luxe, Beauté &amp; Retail.
           </p>

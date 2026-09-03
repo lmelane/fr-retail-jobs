@@ -154,6 +154,19 @@
 
 /* ——————————————————————————— Grille & conteneurs (§2.5, réf maquettes) ——————————————————————————— */
 .wordmark { font: 400 22px/1 var(--fa-font-display); letter-spacing: 2px; text-transform: uppercase; }
+
+/* Logo Mode Careers (D31) : le SVG officiel en masque, teinté par currentColor
+   — le header inverse ses couleurs sur le hero, le logo suit sans variante.
+   Ratio du viewBox 78:9. */
+.brand-logo {
+  display: inline-block;
+  width: 156px;
+  height: 18px;
+  background-color: currentColor;
+  -webkit-mask: url('/brand/mode-careers.svg') no-repeat center / contain;
+  mask: url('/brand/mode-careers.svg') no-repeat center / contain;
+}
+.brand-logo--sm { width: 121px; height: 14px; }
 .container { max-width: var(--fa-container); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
 .container-wide { max-width: var(--fa-container-wide); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
 .g12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--fa-gutter); row-gap: 16px; }
