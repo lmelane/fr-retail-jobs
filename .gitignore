@@ -44,3 +44,18 @@ next-env.d.ts
 # Playwright
 apps/web/playwright-report/
 apps/web/test-results/
+
+# Artefacts locaux de session (jamais dans le dépôt)
+backups/
+*.woff2
+*.xlsx
+*.tgz
+prod.css
+design_2.md
+catwalks-build.code-workspace
+mode careers.svg
+fashion-atlas.svg
+fashionatlas.svg
+index_1.html
+Capture*.png
+apps/aggregator/checkelc.ts

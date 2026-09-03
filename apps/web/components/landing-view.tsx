@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { SearchPill } from '@/components/search-pill';
 import { companySlug } from '@/lib/company-slug';
+import { offerPath } from '@/lib/offer-url';
 import { displayTitle, relativeDate, contractLabel } from '@/lib/format';
 import type { CompanyRow } from '@/lib/companies';
 import type { JobRow } from '@/lib/jobs';
@@ -169,7 +170,7 @@ export function LandingView({
           <ul>
             {latestOffers.map((o) => (
               <li key={o.id} className="rule-b">
-                <Link href={`/offre/${o.id}`} className="block py-5 hover:bg-paper-alt">
+                <Link href={offerPath(o)} className="block py-5 hover:bg-paper-alt">
                   <div className="flex items-baseline justify-between gap-4">
                     <span className="t-caption">{o.company}{o.group ? <span className="t-caption-soft"> · {o.group}</span> : null}</span>
                     <span className="t-caption-soft shrink-0">{relativeDate(o.postedAt)}</span>
