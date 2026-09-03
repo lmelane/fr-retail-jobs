@@ -492,8 +492,9 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
  * cities and real job titles the board actually holds, so a click always leads
  * to results, unlike a generic canned list.
  *
- * France-scoped like the board's default (decision D12): a candidate typing in
- * the FR view is offered FR cities and FR postings.
+ * WORLD-scoped like the board's default (decision D19, which revises D12):
+ * typing "Milan" or "London" must suggest those cities — the ~26k world offers
+ * are reachable from the bar. No isFrance filter here, on purpose.
  */
 const SUGGEST_LIMIT = 8;
 
