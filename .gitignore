@@ -21,6 +21,10 @@ build/
 !apps/aggregator/data/discovery/*.csv
 *.html
 *.xml
+# …mais jamais les ROUTES Next nommées sitemap.xml (leçon : la route index a
+# été silencieusement exclue — 404 en prod pendant que le local marchait)
+!apps/web/app/sitemap.xml/
+!apps/web/app/sitemap.xml/**
 *-test.ts
 probe-*.ts
 scratchpad/
