@@ -40,6 +40,7 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
         externalId,
         title: job.title,
         location: job.locationsText,
+        postedAt: postedAtFromWorkday(job.postedOn),
         // The public career URL is {origin}/{site}{externalPath}, joined by
         // string — NOT new URL(externalPath, `${origin}/${site}/`), which
         // silently DROPS the /{site}/ segment because externalPath is an
@@ -97,6 +98,24 @@ export function brandFromWorkdayDetail(detail: WorkdayDetail): string | undefine
   return legal.replace(/^[A-Z]{0,2}\d+\s+/, '').trim() || undefined;
 }
 
+/**
+ * Workday's listing states the date RELATIVELY ("Posted Today", "Posted 3 Days
+ * Ago") — F-05. "30+ Days Ago" is a floor, not a date: left undefined rather
+ * than invented; the detail's `startDate` (a real ISO date) overrides when the
+ * descriptions pass fetches it, and firstSeenAt covers the rest honestly.
+ */
+export function postedAtFromWorkday(postedOn?: string): Date | undefined {
+  if (!postedOn) return undefined;
+  const text = postedOn.toLowerCase();
+  const day = 86_400_000;
+  if (/\btoday\b/.test(text)) return new Date();
+  if (/\byesterday\b/.test(text)) return new Date(Date.now() - day);
+  const match = text.match(/(\d+)\+?\s+days?\s+ago/);
+  if (!match) return undefined;
+  if (text.includes('+')) return undefined; // "30+" = at least, not equals
+  return new Date(Date.now() - Number(match[1]) * day);
+}
+
 function stripHtml(value?: string): string {
   return (value ?? '')
     .replace(/<[^>]*>/g, ' ')
@@ -132,6 +151,9 @@ export async function attachWorkdayDescriptions(
             description: stripHtml(info.jobDescription) || job.description,
             country: info.country?.descriptor ?? job.country,
             location: info.location ?? job.location,
+            // F-05: the detail's startDate is a REAL date; the listing only
+            // had "Posted N Days Ago".
+            postedAt: info.startDate ? new Date(info.startDate) : job.postedAt,
             // Group tenants: credit the offer to its Maison, not the feed label.
             company: brandFromWorkdayDetail(detail) ?? job.company,
           };

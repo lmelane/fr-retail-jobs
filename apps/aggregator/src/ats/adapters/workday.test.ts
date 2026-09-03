@@ -91,3 +91,20 @@ describe('brandFromWorkdayDetail', () => {
     expect(brandFromWorkdayDetail({ jobPostingInfo: { jobDescription: 'x' } })).toBeUndefined();
   });
 });
+
+// ——— F-05 : la date relative du listing devient un postedAt honnête ———
+import { postedAtFromWorkday } from './workday.js';
+
+describe('postedAtFromWorkday', () => {
+  it('parses today / yesterday / N days ago', () => {
+    const now = Date.now();
+    expect(postedAtFromWorkday('Posted Today')!.getTime()).toBeGreaterThan(now - 5_000);
+    expect(Math.round((now - postedAtFromWorkday('Posted Yesterday')!.getTime()) / 86_400_000)).toBe(1);
+    expect(Math.round((now - postedAtFromWorkday('Posted 12 Days Ago')!.getTime()) / 86_400_000)).toBe(12);
+  });
+  it('refuses to invent a date for "30+ Days Ago" or garbage', () => {
+    expect(postedAtFromWorkday('Posted 30+ Days Ago')).toBeUndefined();
+    expect(postedAtFromWorkday('whenever')).toBeUndefined();
+    expect(postedAtFromWorkday(undefined)).toBeUndefined();
+  });
+});

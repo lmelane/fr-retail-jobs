@@ -61,6 +61,8 @@ type LvmhHit = {
   jobResponsabilities?: string;
   profile?: string;
   additionalInformation?: string;
+  /** Epoch SECONDS of publication (probed live 2026-09-03) — F-05. */
+  publicationTimestamp?: number;
 };
 
 type AlgoliaResponse = {
@@ -151,6 +153,8 @@ function toNormalized(hit: LvmhHit): NormalizedJob | null {
     // Straight to the Maison's own ATS — the canonical apply URL, which is why
     // this source outranks any jobboard reposting it.
     url: hit.link ?? `${LISTING_URL}?ref=${hit.objectID ?? ''}`,
+    // F-05: the feed DOES carry a date — epoch seconds, not ms.
+    postedAt: hit.publicationTimestamp ? new Date(hit.publicationTimestamp * 1000) : undefined,
     raw: hit,
   };
 }

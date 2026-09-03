@@ -1,7 +1,7 @@
 import { fetchJson } from '../../lib/http.js';
 import type { NormalizedJob } from '../../types.js';
 
-type GreenhouseResponse = { jobs: Array<{ id: number; title: string; absolute_url: string; location?: { name?: string }; content?: string; updated_at?: string }> };
+type GreenhouseResponse = { jobs: Array<{ id: number; title: string; absolute_url: string; location?: { name?: string }; content?: string; first_published?: string; updated_at?: string }> };
 
 export async function fetchGreenhouseJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
   const board = String(config.board ?? '');
@@ -13,7 +13,13 @@ export async function fetchGreenhouseJobs(config: Record<string, unknown>): Prom
     location: job.location?.name,
     description: job.content,
     url: job.absolute_url,
-    postedAt: job.updated_at ? new Date(job.updated_at) : undefined,
+    // F-05: first_published IS the posting date; updated_at moves on every
+    // edit and made offers look perpetually fresh.
+    postedAt: job.first_published
+      ? new Date(job.first_published)
+      : job.updated_at
+        ? new Date(job.updated_at)
+        : undefined,
     raw: job,
   }));
 }
