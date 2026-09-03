@@ -1,5 +1,6 @@
 import type { Browser } from 'playwright';
 import { assertPublicUrl, isPublicHttpUrl } from './ssrf.js';
+import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 
 /**
  * FashionJobs sits behind Cloudflare: plain `fetch` gets HTTP 403 on every path,
@@ -50,34 +51,42 @@ export async function fetchRenderedHtml(url: string): Promise<string> {
   // check the URL it actually landed on after navigation.
   assertPublicUrl(url);
 
-  const browser = await getBrowser();
-  const context = await browser.newContext({
-    locale: 'fr-FR',
-    userAgent: BROWSER_USER_AGENT,
-    extraHTTPHeaders: { 'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7' },
-  });
-
-  try {
-    const page = await context.newPage();
-    const response = await page.goto(url, {
-      waitUntil: 'domcontentloaded',
-      timeout: navigationTimeoutMs,
+  // Same per-host politeness as the plain-HTTP path: a shared host (or the 14k
+  // discovery run) must not be hammered by parallel page loads.
+  return withHostGate(url, async () => {
+    const browser = await getBrowser();
+    const context = await browser.newContext({
+      locale: 'fr-FR',
+      userAgent: BROWSER_USER_AGENT,
+      extraHTTPHeaders: { 'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7' },
     });
 
-    // A redirect chain may have landed on an internal host; refuse its content.
-    const finalUrl = response?.url() ?? page.url();
-    if (!isPublicHttpUrl(finalUrl)) {
-      throw new Error(`Refusing rendered content from non-public URL: ${finalUrl}`);
+    try {
+      const page = await context.newPage();
+      const response = await page.goto(url, {
+        waitUntil: 'domcontentloaded',
+        timeout: navigationTimeoutMs,
+      });
+
+      // A redirect chain may have landed on an internal host; refuse its content.
+      const finalUrl = response?.url() ?? page.url();
+      if (!isPublicHttpUrl(finalUrl)) {
+        throw new Error(`Refusing rendered content from non-public URL: ${finalUrl}`);
+      }
+
+      const status = response?.status();
+      if (status === undefined) throw new Error(`No response received for ${url}`);
+      if (status < 200 || status >= 300) {
+        if ([403, 405, 429, 500, 502, 503, 504].includes(status)) reportThrottle(url);
+        throw new Error(`HTTP ${status} for ${url}`);
+      }
+
+      reportSuccess(url);
+      // Let lazy-rendered list items attach before snapshotting the DOM.
+      await page.waitForTimeout(settleMs);
+      return await page.content();
+    } finally {
+      await context.close();
     }
-
-    const status = response?.status();
-    if (status === undefined) throw new Error(`No response received for ${url}`);
-    if (status < 200 || status >= 300) throw new Error(`HTTP ${status} for ${url}`);
-
-    // Let lazy-rendered list items attach before snapshotting the DOM.
-    await page.waitForTimeout(settleMs);
-    return await page.content();
-  } finally {
-    await context.close();
-  }
+  });
 }

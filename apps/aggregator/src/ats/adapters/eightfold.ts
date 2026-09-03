@@ -61,13 +61,27 @@ function stripHtml(value?: string): string | undefined {
   return text || undefined;
 }
 
-/** The search endpoint needs a session cookie issued by the careers page. */
+/**
+ * Best-effort session cookie from the careers page. It is NOT required — the
+ * /api/pcsx/search endpoint answers 200 without a cookie (verified). So a failure
+ * here (a 405/throttle, common when several brands share one tenant like ELC's
+ * careers.elcompanies.com hit 6×/run) must NOT sink the whole source: return an
+ * empty cookie and let the search run. Before this, one throttled brand (origins)
+ * failed the entire feed while its siblings succeeded.
+ */
 async function openSession(origin: string): Promise<string> {
-  const response = await fetchWithRetry(`${origin}/careers`, {
-    headers: { 'user-agent': USER_AGENT },
-  });
-  const cookies = response.headers.getSetCookie?.() ?? [];
-  return cookies.map((cookie) => cookie.split(';')[0]).join('; ');
+  try {
+    const response = await fetchWithRetry(`${origin}/careers`, {
+      headers: { 'user-agent': USER_AGENT },
+    });
+    const cookies = response.headers.getSetCookie?.() ?? [];
+    return cookies.map((cookie) => cookie.split(';')[0]).join('; ');
+  } catch (error) {
+    console.warn(
+      `[eightfold] session cookie unavailable for ${origin} (${error instanceof Error ? error.message : error}); continuing without it`,
+    );
+    return '';
+  }
 }
 
 function toNormalized(position: EightfoldPosition, origin: string): NormalizedJob | null {

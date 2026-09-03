@@ -1,4 +1,5 @@
 import { assertPublicUrl, isPublicHttpUrl, BlockedUrlError } from './ssrf.js';
+import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 
 const timeoutMs = Number(process.env.HTTP_TIMEOUT_MS ?? 20_000);
 const userAgent = process.env.USER_AGENT ?? 'CatwalksJobsBot/0.1';
@@ -46,19 +47,27 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
-      const response = await fetchFollowingSafely(
-        url,
-        {
-          ...init,
-          headers: {
-            'user-agent': userAgent,
-            'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7',
-            ...(init.headers ?? {}),
+      // Every request passes through the per-host gate — the global politeness
+      // that stops us throttling a shared host (ELC, Richemont, Beaumanoir…) in
+      // the first place, instead of only reacting after it blocks us.
+      const response = await withHostGate(url, () =>
+        fetchFollowingSafely(
+          url,
+          {
+            ...init,
+            headers: {
+              'user-agent': userAgent,
+              'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7',
+              ...(init.headers ?? {}),
+            },
           },
-        },
-        controller.signal,
+          controller.signal,
+        ),
       );
-      if (response.ok) return response;
+      if (response.ok) {
+        reportSuccess(url);
+        return response;
+      }
       /**
        * Transient statuses worth another attempt after a backoff. 403 and 405
        * are here because an anti-bot WAF returns them as a SOFT block, not a
@@ -71,6 +80,9 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       if (![403, 405, 429, 500, 502, 503, 504].includes(response.status)) {
         throw new Error(`HTTP ${response.status} for ${url}`);
       }
+      // A soft block means we are being rude to this host — grow its gap so the
+      // whole pool naturally slows down for it (and only it), not just this retry.
+      reportThrottle(url);
       lastError = new Error(`HTTP ${response.status} for ${url}`);
 
       /**
