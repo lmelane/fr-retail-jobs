@@ -3,26 +3,21 @@
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Building2, Loader2, MapPin, Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { CompanyLogo } from '@/components/company-logo';
+import { Loader2 } from 'lucide-react';
 import { AutocompleteField } from '@/components/search-pill';
 import { cn } from '@/lib/utils';
 import { companySlug } from '@/lib/company-slug';
 import type { CompaniesResult, CompanyFilters, CompanyRow } from '@/lib/companies';
 
 /**
- * Employers, ranked by open positions — Indeed's company directory shape
- * (big title, search pill, a GRID of cards), not a list-plus-map.
+ * Annuaire des Maisons (design_2.md §5.4, réf maisons.html).
  *
- * Answers "who is hiring" rather than "what can I apply to". Clicking a Maison
- * hands off to the offer list already filtered to it, so the two pages are one
- * flow rather than two destinations.
+ * Répond à « qui recrute » plutôt qu'à « à quoi postuler ». Cliquer une Maison
+ * mène à sa fiche `/entreprise/[slug]` (ses offres, ses villes, son groupe).
  *
- * No map: decision D12 drops maps everywhere on the site. A grid of cards
- * fills the width Indeed's directory does, instead of a narrow list sitting
- * beside empty space.
+ * Éditorial : en-tête 4+6, chips de catégorie à compteurs réels, champ de
+ * recherche, grille 3/2/1 sans boîte (chaque Maison = filet pointillé haut).
+ * Pas de carte (D12).
  */
 
 const SECTOR_LABELS: Record<string, string> = {
@@ -38,6 +33,13 @@ const SECTOR_LABELS: Record<string, string> = {
   UNKNOWN: 'Hors référentiel',
 };
 
+const SearchGlyph = () => (
+  <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+);
+const ArrowGlyph = () => (
+  <svg viewBox="0 0 24 24" aria-hidden width="16" height="16" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+);
+
 export function CompaniesView({ data }: { data: CompaniesResult; filters: CompanyFilters }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -45,20 +47,16 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
   const [draft, setDraft] = useState(params.get('q') ?? '');
 
   /**
-   * Infinite scroll, the same shape as the offer list: page 1 arrives
-   * server-rendered in `data`; scrolling near the bottom fetches page 2+ from
-   * /api/companies and appends it. Both lists on the site scroll, rather than
-   * one paging with buttons and the other by scrolling.
+   * Infinite scroll, même forme que la liste d'offres : page 1 rendue serveur,
+   * pages suivantes via /api/companies au scroll.
    */
   const [companies, setCompanies] = useState<CompanyRow[]>(data.companies);
   const [loadedPage, setLoadedPage] = useState(data.page);
   const [pageCount, setPageCount] = useState(data.pageCount);
   const [loadingMore, setLoadingMore] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const sentinelRef = useRef<HTMLLIElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
-  // A new server render — a new search or sector — replaces the accumulated
-  // list rather than appending to it.
   useEffect(() => {
     setCompanies(data.companies);
     setLoadedPage(data.page);
@@ -80,14 +78,12 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
       setLoadedPage(result.page);
       setPageCount(result.pageCount);
     } catch {
-      setLoadError('Le chargement des entreprises suivantes a échoué.');
+      setLoadError('Le chargement des Maisons suivantes a échoué.');
     } finally {
       setLoadingMore(false);
     }
   }, [loadingMore, loadedPage, pageCount, params]);
 
-  // The sentinel sits after the last card; entering the viewport (or within
-  // 400px of it) loads the next page — no click, same as the offer list.
   useEffect(() => {
     const node = sentinelRef.current;
     if (!node) return;
@@ -114,14 +110,45 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
   };
 
   const activeSector = params.get('secteur');
+  const nf = new Intl.NumberFormat('fr-FR');
 
   return (
-    <div className="bg-background flex h-dvh flex-col overflow-hidden">
-      <header className="border-border/70 shrink-0 border-b bg-white">
-        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
+    <main className="page bg-paper">
+      {/* En-tête 4+6 + chips de catégorie + recherche (§5.4). */}
+      <div className="container page-head">
+        <div className="g12">
+          <h1 className="t-page c4">Maisons</h1>
+          <p className="s5 t-body soft">
+            {nf.format(data.total)} Maisons et cabinets, du studio de création à la boutique.
+            Chaque fiche regroupe les offres publiques de la Maison, ses villes et son groupe.
+          </p>
+        </div>
 
+        {/* Chips catégorie : « Toutes » active par défaut, filet pointillé au-
+            dessus. À droite, le champ Rechercher (AutocompleteField dans son
+            wrapper .field bordé). */}
+        <div className="cats rule" style={{ paddingTop: 24 }}>
+          <button
+            type="button"
+            onClick={() => navigate({ secteur: null })}
+            className={cn('pill', !activeSector && 'is-active')}
+          >
+            Toutes <span className="count tabular-nums">{nf.format(data.total)}</span>
+          </button>
+          {data.sectors.map((facet) => (
+            <button
+              key={facet.value}
+              type="button"
+              onClick={() => navigate({ secteur: activeSector === facet.value ? null : facet.value })}
+              className={cn('pill', activeSector === facet.value && 'is-active')}
+            >
+              {SECTOR_LABELS[facet.value] ?? facet.value}{' '}
+              <span className="count tabular-nums">{nf.format(facet.count)}</span>
+            </button>
+          ))}
+          <span className="spacer" aria-hidden />
           <form
-            className="border-border relative mx-auto flex h-11 w-full max-w-sm items-center rounded-full border bg-white focus-within:ring-2 focus-within:ring-black/20"
+            className="w-[280px] max-w-full"
             onSubmit={(event) => {
               event.preventDefault();
               navigate({ q: draft.trim() || null });
@@ -135,136 +162,120 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
                 setDraft(value);
                 navigate({ q: value.trim() || null });
               }}
-              icon={<Search className="text-muted-foreground size-[18px] shrink-0" aria-hidden />}
-              placeholder="Rechercher une Maison…"
-              ariaLabel="Rechercher une entreprise"
+              icon={<SearchGlyph />}
+              placeholder="Rechercher une Maison"
+              ariaLabel="Rechercher une Maison"
+              className="h-[34px] rounded-(--fa-radius) border border-line"
             />
           </form>
-
-          <span className="text-muted-foreground ml-auto shrink-0 text-xs font-normal tracking-[0.4px] tabular-nums">
-            {pending ? 'Recherche…' : `${data.total.toLocaleString('fr-FR')} entreprises`}
-          </span>
         </div>
+      </div>
 
-        <div className="mx-auto flex max-w-[1280px] items-center gap-2 overflow-x-auto px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {data.sectors.map((facet) => (
-            <button
-              key={facet.value}
-              type="button"
-              onClick={() =>
-                navigate({ secteur: activeSector === facet.value ? null : facet.value })
-              }
-              aria-pressed={activeSector === facet.value}
-              className={cn(
-                'flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-4 text-[13px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks',
-                activeSector === facet.value
-                  ? 'border-foreground bg-secondary-container text-on-secondary-container'
-                  : 'border-border bg-white hover:bg-surface',
-              )}
-            >
-              {SECTOR_LABELS[facet.value] ?? facet.value}
-              <span className="text-muted-foreground text-xs tabular-nums">
-                {facet.count.toLocaleString('fr-FR')}
-              </span>
-            </button>
-          ))}
-        </div>
-      </header>
-
-      {/* A responsive grid filling the width, Indeed's directory shape —
-          no permanent map beside a narrow list. */}
-      <ScrollArea className="min-h-0 flex-1">
-        <div className="mx-auto w-full max-w-[1280px] p-4">
-          {companies.length === 0 ? (
-            <div className="text-muted-foreground grid place-items-center px-6 py-16 text-center text-sm">
-              Aucune entreprise ne correspond.
-            </div>
-          ) : (
-            <ul
-              className={cn(
-                'grid grid-cols-1 gap-3 transition-opacity md:grid-cols-2 lg:grid-cols-3',
-                pending && 'opacity-50',
-              )}
-            >
+      {/* Grille 3/2/1 sans boîte. */}
+      <div className="container">
+        {companies.length === 0 ? (
+          <EmptyMaisons
+            query={params.get('q')}
+            onReset={() => startTransition(() => router.push('/entreprises', { scroll: false }))}
+          />
+        ) : (
+          <>
+            <div className={cn('maisons maisons--page', pending && 'opacity-50')}>
               {companies.map((company) => (
-                <li key={company.id}>
-                  <CompanyCard company={company} />
-                </li>
+                <MaisonCard key={company.id} company={company} />
               ))}
+            </div>
 
-              {/* Infinite scroll: this sentinel triggers the next page as it
-                  nears the viewport, mirroring the offer list. Spans every
-                  column so it doesn't distort the grid. */}
-              {loadedPage < pageCount && (
-                <li
-                  ref={sentinelRef}
-                  aria-hidden={!loadingMore}
-                  className="col-span-full grid place-items-center py-4"
-                >
-                  {loadingMore && (
-                    <Loader2 className="text-muted-foreground size-5 animate-spin" aria-label="Chargement…" />
-                  )}
-                </li>
-              )}
+            {/* Sentinelle infinite-scroll + bouton « Charger plus » (les deux,
+                comme la maquette). La sentinelle déclenche la page suivante au
+                scroll ; le bouton reste un fallback explicite. */}
+            {loadedPage < pageCount && (
+              <div ref={sentinelRef} className="load-more pl-0">
+                {loadingMore ? (
+                  <span className="t-caption-soft flex items-center gap-2">
+                    <Loader2 className="size-5 animate-spin motion-reduce:animate-none" /> Chargement…
+                  </span>
+                ) : (
+                  <button type="button" onClick={() => void loadMore()} className="btn">
+                    Charger plus de Maisons <ArrowGlyph />
+                  </button>
+                )}
+              </div>
+            )}
 
-              {loadError && (
-                <li className="col-span-full flex flex-col items-center gap-2 py-4">
-                  <p className="text-muted-foreground text-sm">{loadError}</p>
-                  <Button variant="ghost" size="sm" onClick={() => void loadMore()} className="rounded-full">
-                    Réessayer
-                  </Button>
-                </li>
-              )}
-            </ul>
-          )}
-        </div>
-      </ScrollArea>
-    </div>
+            {loadError && (
+              <div className="load-more pl-0 flex flex-col items-start gap-2">
+                <p className="t-caption-soft">{loadError}</p>
+                <button type="button" onClick={() => void loadMore()} className="link-ghost">
+                  Réessayer
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </main>
   );
 }
 
 /**
- * One employer, Indeed's directory card minus reviews (we have none): logo,
- * name, sector, open-position count. Thin border, small radius, tight
- * padding — the same dense visual language as the offer list's JobCard,
- * not the old heavy rounded-[20px] card.
+ * Une Maison (§4.8) : logo 56px bordé (monogramme si absent — jamais de logo
+ * cassé), nom FA Display 24, « Secteur · Groupe » caption-soft, compteur FA
+ * Display + « emplois ouverts », villes body-2 muted sur une ligne. Sans boîte,
+ * le filet vient du <a>. Exporté pour réutilisation éventuelle.
  */
-function CompanyCard({ company }: { company: CompanyRow }) {
+export function MaisonCard({ company }: { company: CompanyRow }) {
+  const nf = new Intl.NumberFormat('fr-FR');
+  const sector = SECTOR_LABELS[company.sector ?? ''] ?? 'Hors référentiel';
+  const sectorLine = company.group ? `${sector} · ${company.group}` : sector;
+  const monogram = monogramOf(company.name);
+
+  const shownCities = company.cities.slice(0, 4);
+  const rest = company.cities.length - shownCities.length;
+  const citiesLine =
+    shownCities.map((c) => `${c.city} (${c.count})`).join(' · ') + (rest > 0 ? ` +${rest}` : '');
+
   return (
-    <Link
-      href={`/entreprise/${companySlug(company.name)}`}
-      className="border-border block h-full rounded-[16px] border bg-white px-5 py-4 shadow-none transition-shadow duration-300 ease-catwalks hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
-    >
-      <div className="flex items-start gap-3">
-        <CompanyLogo name={company.name} size={40} />
-        <div className="min-w-0 flex-1">
-          <h3 className="text-foreground truncate text-[16px] leading-6 font-normal tracking-[0.4px] uppercase">
-            {company.name}
-          </h3>
-          <p className="text-grey-400 mt-0.5 flex items-center gap-1.5 text-[13px] tracking-[0.4px]">
-            <Building2 className="size-3.5 shrink-0 opacity-70" />
-            {SECTOR_LABELS[company.sector ?? ''] ?? 'Hors référentiel'}
-          </p>
+    <Link className="maison rule" href={`/entreprise/${companySlug(company.name)}`}>
+      <span className="logo" aria-hidden>{monogram}</span>
+      <span>
+        <span className="maison__name t-d2">{company.name}</span>
+        <span className="maison__meta">
+          <span className="t-caption-soft">{sectorLine}</span>
+          <span className="maison__count">
+            <span className="t-d2 tabular-nums">{nf.format(company.jobCount)}</span>
+            <span className="t-body2">
+              {company.jobCount > 1 ? 'emplois ouverts' : 'emploi ouvert'}
+            </span>
+          </span>
+          {citiesLine && <span className="t-body2 muted">{citiesLine}</span>}
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+/** Monogramme : 1 ou 2 lettres tirées du nom (« Louis Vuitton » → « LV »). */
+function monogramOf(name: string): string {
+  const words = name.trim().split(/\s+/).filter(Boolean);
+  if (words.length === 0) return '·';
+  if (words.length === 1) return words[0]!.charAt(0).toUpperCase();
+  return (words[0]!.charAt(0) + words[1]!.charAt(0)).toUpperCase();
+}
+
+function EmptyMaisons({ query, onReset }: { query: string | null; onReset: () => void }) {
+  return (
+    <div className="g12 py-[120px]">
+      <span className="t-caption green c4">Résultat vide</span>
+      <div className="s5">
+        <h2 className="t-d1">Aucune Maison ne correspond.</h2>
+        {query && <p className="t-body soft mt-3">Aucune Maison ne correspond à « {query} ».</p>}
+        <div className="mt-6 flex flex-wrap items-center gap-4">
+          <button type="button" onClick={onReset} className="btn btn--green">
+            Voir toutes les Maisons <ArrowGlyph />
+          </button>
         </div>
       </div>
-
-      <p className="text-foreground mt-2.5 text-[13px] font-normal tracking-[0.4px] tabular-nums">
-        {company.jobCount.toLocaleString('fr-FR')}{' '}
-        {company.jobCount > 1 ? 'emplois ouverts' : 'emploi ouvert'}
-      </p>
-
-      {company.cities.length > 0 && (
-        <p className="text-grey-400 mt-1.5 flex items-start gap-1.5 text-[12px] tracking-[0.4px]">
-          <MapPin className="mt-0.5 size-3.5 shrink-0 opacity-70" />
-          <span className="line-clamp-2">
-            {company.cities
-              .slice(0, 4)
-              .map((city) => `${city.city} (${city.count})`)
-              .join(' · ')}
-            {company.cities.length > 4 && ` +${company.cities.length - 4}`}
-          </span>
-        </p>
-      )}
-    </Link>
+    </div>
   );
 }

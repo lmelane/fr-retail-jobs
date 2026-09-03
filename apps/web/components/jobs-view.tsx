@@ -297,29 +297,31 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
         </div>
       </header>
 
-      {/* ============ Split-view : liste 480 | filet pointillé | détail (§5.2) ============
+      {jobs.length === 0 ? (
+        // Résultat vide (§4.13) : pleine largeur (pas de split, pas de détail),
+        // caption verte + titre serif + termes cherchés + reset.
+        <EmptyState
+          query={filters.q ?? null}
+          hasFilters={activeCount > 0}
+          onReset={() => startTransition(() => router.push('/emplois', { scroll: false }))}
+        />
+      ) : (
+      /* ============ Split-view : liste 480 | filet pointillé | détail (§5.2) ============
           La page scrolle (pas d'app à hauteur fixe) : la liste est une colonne
           en flux normal ; le détail est `sticky` sous le header avec un scroll
           interne (cf. .detail dans globals.css). Sous lg, une seule colonne :
-          sélectionner une carte route vers /offre/[id] (voir JobCard). */}
+          sélectionner une carte route vers /offre/[id] (voir JobCard). */
       <div className="container-wide split">
         <section aria-label="Résultats">
-          {jobs.length > 0 && (
-            <div className="list-head">
-              <span className="t-caption">
-                {filters.q ? `Offres · ${filters.q}` : 'Toutes les offres'}
-                <span className="t-caption-soft ml-2 tabular-nums">
-                  · {data.total.toLocaleString('fr-FR')}
-                </span>
+          <div className="list-head">
+            <span className="t-caption">
+              {filters.q ? `Offres · ${filters.q}` : 'Toutes les offres'}
+              <span className="t-caption-soft ml-2 tabular-nums">
+                · {data.total.toLocaleString('fr-FR')}
               </span>
-            </div>
-          )}
-          {jobs.length === 0 ? (
-            <EmptyState
-              hasFilters={activeCount > 0}
-              onReset={() => startTransition(() => router.push('/emplois', { scroll: false }))}
-            />
-          ) : (
+            </span>
+          </div>
+          {
             <ul className={cn('transition-opacity', pending && 'opacity-50')}>
               {jobs.map((job) => (
                 <li key={job.id} className="rule">
@@ -354,7 +356,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
                 </li>
               )}
             </ul>
-          )}
+          }
         </section>
 
         {selected && <span className="rule-v hidden lg:block" aria-hidden />}
@@ -387,6 +389,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
           </div>
         )}
       </div>
+      )}
     </div>
   );
 }
@@ -609,17 +612,48 @@ export function JobCard({
   );
 }
 
-function EmptyState({ hasFilters, onReset }: { hasFilters: boolean; onReset: () => void }) {
+/**
+ * Résultat vide (§4.13, réf etats.html) : pleine largeur, caption verte
+ * « Résultat vide » (col 1-4), titre serif + phrase reprenant les termes
+ * cherchés (col 5-10), CTA « Voir toutes les offres » + lien « Réinitialiser ».
+ * Pas d'illustration.
+ */
+function EmptyState({
+  query,
+  hasFilters,
+  onReset,
+}: {
+  query: string | null;
+  hasFilters: boolean;
+  onReset: () => void;
+}) {
   return (
-    <div className="grid place-items-center px-6 py-16 text-center">
-      <div>
-        <p className="t-d2">Aucune offre ne correspond.</p>
-        {hasFilters && (
-          <button type="button" onClick={onReset} className="btn btn--green mt-4">
-            Effacer les filtres
-          </button>
-        )}
+    <section className="container empty rule-b" aria-labelledby="empty-title">
+      <div className="g12">
+        <span className="t-caption green c4">Résultat vide</span>
+        <div className="s5">
+          <h2 className="t-d1" id="empty-title">Aucune offre ne correspond, pour l’instant.</h2>
+          <p className="t-body soft mt-4">
+            {query
+              ? `« ${query} » n’a pas de résultat aujourd’hui. Les Maisons publient chaque jour — élargissez la recherche ou revenez bientôt.`
+              : 'Aucune offre ne correspond à ces filtres. Élargissez la recherche pour voir plus de Maisons.'}
+          </p>
+          <div className="actions mt-6 flex flex-wrap items-center gap-4">
+            {/* Pas d'alerte côté Fashion Atlas (le compte vit sur Catwalks) :
+                on propose « Voir toutes les offres », jamais un bouton d'alerte
+                qui ne mène nulle part. */}
+            <button type="button" onClick={onReset} className="btn btn--green">
+              Voir toutes les offres
+              <svg viewBox="0 0 24 24" aria-hidden width="16" height="16" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </button>
+            {hasFilters && (
+              <button type="button" onClick={onReset} className="link-ghost">
+                Réinitialiser les filtres
+              </button>
+            )}
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

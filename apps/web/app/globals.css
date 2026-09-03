@@ -327,6 +327,55 @@
 
 /* Pages intérieures : réserve la hauteur du header global fixe. */
 .page { padding-top: var(--header-h); }
+.page-head { padding: 40px 0 0; }
+.page-head .g12 { row-gap: 24px; align-items: end; }
+.t-page { font: 400 clamp(2.25rem, 4vw, 2.75rem)/1.05 var(--fa-font-display); text-wrap: balance; }
+.crumbs { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+.crumbs span + span::before { content: "·"; margin-right: 8px; color: var(--fa-ink-muted); }
+
+/* ——————————————————————————— Annuaire Maisons (§5.4, réf maisons.html) ——————————————————————————— */
+.cats { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 24px; }
+.cats .spacer { flex: 1; }
+.maisons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; }
+.maisons--page { margin-top: 40px; }
+.maison { display: grid; grid-template-columns: 56px 1fr; column-gap: 16px; padding: 24px 0 28px; }
+.maison > span { min-width: 0; }
+.maison:hover .maison__name { text-decoration: underline; text-underline-offset: 4px; }
+.maison__name { display: block; }
+.maison__meta { display: grid; gap: 8px; margin-top: 4px; }
+.maison__count { display: flex; align-items: baseline; gap: 8px; }
+
+@media (max-width: 1023px) {
+  .maisons { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+}
+@media (max-width: 767px) {
+  .maisons { grid-template-columns: 1fr; }
+}
+
+/* ——————————————————————————— États : 404, vide, expirée (§4.13, réf etats.html) ——————————————————————————— */
+.notfound { min-height: calc(100vh - var(--header-h)); display: grid; align-items: center; padding: 64px 0; }
+.notfound .t-hero { font-size: clamp(2rem, 3.5vw, 2.75rem); text-align: left; color: var(--fa-green); text-transform: uppercase; }
+.empty { padding: 120px 0; text-align: left; }
+.empty .t-d1 { color: var(--fa-green); }
+.empty .actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; align-items: center; }
+.banner { background: var(--fa-paper-alt); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+
+/* ——————————————————————————— Fiche Maison (§5.5, réf maison.html) ——————————————————————————— */
+/* Hero pleine largeur, contenu aligné en bas à gauche (logo + nom). */
+.hero--maison { height: 480px; }
+.hero--maison .container { position: relative; z-index: 1; height: 100%; }
+.hero--maison .logo { width: 96px; height: 96px; font-size: 36px; border-color: rgba(255, 255, 255, .35); background: #fff; color: var(--fa-ink); }
+
+/* Chiffres clés : colonnes FA Display vert, filet pointillé haut. */
+.stats { padding-top: 120px; }
+.stat { padding-top: 24px; }
+.stat .t-caption { display: block; margin-top: 12px; }
+.stats--inline .t-number { font-size: clamp(2.5rem, 4vw, 3.5rem); }
+
+@media (max-width: 1023px) {
+  .hero--maison { height: 360px; }
+  .hero--maison .container { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
 
 /* Fiche offre autonome (/offre) : barre CTA sticky en bas sur mobile — fond
    blanc, filet pointillé haut, les 2 boutons D18. Écart assumé à offre.html
@@ -365,11 +414,13 @@
 /* Search : Poste | Ville | Rechercher — 48px, filet vertical entre champs. */
 .search { display: grid; grid-template-columns: 1fr 1fr auto; height: 48px; border: 1px solid var(--fa-ink); border-radius: var(--fa-radius); background: var(--fa-paper); overflow: hidden; }
 .search:focus-within { border-color: var(--fa-green); }
-.search .field { display: flex; align-items: center; gap: 10px; padding: 0 16px; min-width: 0; }
+/* .field : un champ (icône + input) réutilisable — barre de recherche /emplois
+   ET champ « Rechercher une Maison » de l'annuaire (bordé, 34px). */
+.field { display: flex; align-items: center; gap: 10px; padding: 0 16px; min-width: 0; }
 .search .field + .field { background-image: linear-gradient(to bottom, var(--fa-line) 25%, transparent 0); background-size: 1px 4px; background-repeat: repeat-y; background-position: 0 50%; }
-.search .field svg { width: 18px; height: 18px; stroke: var(--fa-ink-muted); stroke-width: 1.25; fill: none; stroke-linecap: round; stroke-linejoin: round; flex: none; }
-.search .field input { border: 0; outline: 0; background: transparent; font: 400 .9375rem/1 var(--fa-font-sans); color: var(--fa-ink); width: 100%; min-width: 0; }
-.search .field input::placeholder { color: var(--fa-ink-muted); }
+.field svg { width: 18px; height: 18px; stroke: var(--fa-ink-muted); stroke-width: 1.25; fill: none; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.field input { border: 0; outline: 0; background: transparent; font: 400 .9375rem/1 var(--fa-font-sans); color: var(--fa-ink); width: 100%; min-width: 0; }
+.field input::placeholder { color: var(--fa-ink-muted); }
 .search .btn { height: 48px; border-radius: 0; border: 0; }
 
 /* Split-view : liste 480 | filet pointillé | détail. */

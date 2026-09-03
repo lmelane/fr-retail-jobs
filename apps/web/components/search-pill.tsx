@@ -111,6 +111,7 @@ export function AutocompleteField({
   icon,
   placeholder,
   ariaLabel,
+  className,
 }: {
   type: 'title' | 'city' | 'company';
   value: string;
@@ -119,6 +120,9 @@ export function AutocompleteField({
   icon: React.ReactNode;
   placeholder: string;
   ariaLabel: string;
+  /** Extra classes on the `.field` root — used by the Maison directory to add
+      the bordered 34px box the search bar's own fields don't need. */
+  className?: string;
 }) {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
@@ -199,7 +203,7 @@ export function AutocompleteField({
   };
 
   return (
-    <div ref={containerRef} className="field relative">
+    <div ref={containerRef} className={cn('field relative', className)}>
       {icon}
       <input
         ref={inputRef}

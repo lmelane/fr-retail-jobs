@@ -1,15 +1,25 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Building2, ExternalLink, Loader2, MapPin, Search, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { CompanyLogo } from '@/components/company-logo';
+import Link from 'next/link';
+import { Loader2, X } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
 import { JobCard } from '@/components/jobs-view';
 import { AutocompleteField } from '@/components/search-pill';
 import { cn } from '@/lib/utils';
 import type { CompanyProfile } from '@/lib/companies';
 import type { JobRow, JobsResult } from '@/lib/jobs';
+
+/**
+ * Fiche Maison `/entreprise/[slug]` (design_2.md §5.5, réf maison.html).
+ *
+ * Ce qu'on a réellement (D15) : logo, nom, secteur, groupe, nombre d'offres,
+ * villes, lien carrières — pas d'avis, de salaires agrégés ni de dirigeants
+ * (on ne les invente pas). Hero vert-nuit + grain (comme la home, tant qu'il
+ * n'y a pas de photo Maison), chiffres clés, barre légère (ville + contrat,
+ * D20), la même liste de cartes offre que /emplois (composant partagé), et une
+ * grille « Par ville » vers /emplois filtré.
+ */
 
 const CONTRACT_LABELS: Record<string, string> = {
   CDI: 'CDI',
@@ -21,13 +31,6 @@ const CONTRACT_LABELS: Record<string, string> = {
   APPRENTICESHIP: 'Apprentissage',
   GRADUATE: 'Graduate',
 };
-
-/**
- * One Maison's page, Indeed's `/cmp/<company>` shape (decision D15) — minus
- * the data we do not have (reviews, salaries, executives). What's real: logo,
- * name, sector, open-position count, an "À propos" facts row, and the
- * Maison's offers in the same master-detail layout as /emplois.
- */
 
 const SECTOR_LABELS: Record<string, string> = {
   FASHION: 'Mode',
@@ -42,6 +45,26 @@ const SECTOR_LABELS: Record<string, string> = {
   UNKNOWN: 'Hors référentiel',
 };
 
+// Fond vert-nuit + grain, identique au hero de la home (réf home.html).
+const HERO_BG =
+  'radial-gradient(1200px 520px at 68% 18%,rgba(72,112,86,.55),transparent 60%),radial-gradient(800px 600px at 18% 85%,rgba(28,60,42,.7),transparent 65%),radial-gradient(500px 300px at 50% 110%,rgba(120,140,110,.35),transparent 70%),linear-gradient(180deg,#0E2A1C 0%,#0A1F15 55%,#06140D 100%)';
+const GRAIN_URL =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")";
+
+const SearchGlyph = () => (
+  <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+);
+const OutGlyph = () => (
+  <svg viewBox="0 0 24 24" aria-hidden width="16" height="16" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
+);
+
+function monogramOf(name: string): string {
+  const words = name.trim().split(/\s+/).filter(Boolean);
+  if (words.length === 0) return '·';
+  if (words.length === 1) return words[0]!.charAt(0).toUpperCase();
+  return (words[0]!.charAt(0) + words[1]!.charAt(0)).toUpperCase();
+}
+
 export function CompanyProfileView({
   profile,
   jobs: initialResult,
@@ -50,16 +73,11 @@ export function CompanyProfileView({
   jobs: JobsResult;
 }) {
   const sectorLabel = profile.sector ? SECTOR_LABELS[profile.sector] ?? profile.sector : null;
+  const heroCaption = [sectorLabel, profile.parentGroup].filter(Boolean).join(' · ');
+  const nf = new Intl.NumberFormat('fr-FR');
 
-  // Indeed always shows a detail when there are results: default to the
-  // first offer rather than an empty right pane on first paint.
   const [selectedId, setSelectedId] = useState<string | null>(initialResult.jobs[0]?.id ?? null);
 
-  /**
-   * Infinite scroll, same shape as /emplois: page 1 arrives server-rendered
-   * in `initialResult`; scrolling near the bottom fetches page 2+ from
-   * /api/jobs?maison=<name> and appends it.
-   */
   const [jobs, setJobs] = useState<JobRow[]>(initialResult.jobs);
   const [total, setTotal] = useState(initialResult.total);
   const [loadedPage, setLoadedPage] = useState(initialResult.page);
@@ -68,14 +86,7 @@ export function CompanyProfileView({
   const [loadError, setLoadError] = useState<string | null>(null);
   const sentinelRef = useRef<HTMLLIElement>(null);
 
-  /**
-   * A light in-page filter (decision, 2026-09-02): a Maison with hundreds of
-   * offers is an unnavigable wall without it. Just ville + contrat — enough to
-   * cut down 800 offers, without carrying the full /emplois filter bar onto a
-   * page already scoped to one company. Both narrow WITHIN this Maison, server-
-   * side (via /api/jobs?maison=<name>&ville=&contrat=), so every match is seen,
-   * not only the loaded slice.
-   */
+  // Barre légère (D20) : ville + contrat, scopée à cette Maison, côté serveur.
   const [ville, setVille] = useState('');
   const [contrat, setContrat] = useState<string | null>(null);
   const contractFacets = useMemo(
@@ -83,25 +94,42 @@ export function CompanyProfileView({
     [initialResult.facets.contracts],
   );
 
-  const headerRef = useRef<HTMLElement>(null);
-  const [headerHeight, setHeaderHeight] = useState(0);
-
+  // Naviguer d'une Maison à une autre côté client (Link, sans key) réutilise
+  // cette instance : sans re-sync, la liste d'offres, le total et le détail
+  // resteraient ceux de la Maison précédente pendant que le hero/les stats,
+  // qui lisent `profile` directement, se mettent à jour. On re-sème donc l'état
+  // dérivé du serveur quand `initialResult` change (même garde que jobs-view /
+  // companies-view). Les filtres légers (ville/contrat) sont aussi remis à zéro :
+  // ils étaient scopés à la Maison précédente.
   useEffect(() => {
-    const node = headerRef.current;
-    if (!node) return;
-    const observer = new ResizeObserver((entries) => {
-      const height = entries[0]?.contentRect.height;
-      if (height !== undefined) setHeaderHeight(height);
-    });
-    observer.observe(node);
-    return () => observer.disconnect();
+    setJobs(initialResult.jobs);
+    setTotal(initialResult.total);
+    setLoadedPage(initialResult.page);
+    setPageCount(initialResult.pageCount);
+    setSelectedId(initialResult.jobs[0]?.id ?? null);
+    setLoadError(null);
+    setVille('');
+    setContrat(null);
+    // La page 1 de la nouvelle Maison vient déjà du serveur (initialResult) :
+    // on désarme la garde pour que le re-set de ville/contrat ci-dessus ne
+    // déclenche pas un re-fetch redondant de cette même page 1.
+    filtersTouched.current = false;
+  }, [initialResult]);
+
+  // Mesure de l'offset sticky du détail (§5.2) : hauteur du header global fixe.
+  const [detailTop, setDetailTop] = useState(0);
+  useEffect(() => {
+    const read = () => {
+      const h = getComputedStyle(document.documentElement).getPropertyValue('--header-h');
+      setDetailTop(parseInt(h) || 114);
+    };
+    read();
+    window.addEventListener('resize', read);
+    return () => window.removeEventListener('resize', read);
   }, []);
 
   const selected = jobs.find((job) => job.id === selectedId) ?? null;
 
-  // The query for this Maison at the current filter values. `pays=monde` keeps
-  // the page world-scoped (a Maison recruits across countries), matching the
-  // board's world-by-default scope.
   const buildQuery = useCallback(
     (page: number) => {
       const params = new URLSearchParams({ maison: profile.name, pays: 'monde', page: String(page) });
@@ -130,12 +158,6 @@ export function CompanyProfileView({
     }
   }, [loadingMore, loadedPage, pageCount, buildQuery]);
 
-  /**
-   * Reload page 1 whenever the filter changes. The initial (unfiltered) values
-   * already came from the server, so this only fires on a real filter change —
-   * guarded by `filtersTouched` so the server-rendered first page is not
-   * re-fetched on mount.
-   */
   const filtersTouched = useRef(false);
   useEffect(() => {
     if (!filtersTouched.current) {
@@ -178,237 +200,197 @@ export function CompanyProfileView({
     return () => observer.disconnect();
   }, [loadMore]);
 
+  const filtered = ville.trim() !== '' || contrat !== null;
+
   return (
-    <div className="bg-background">
-      {/* ============ Nav — the shared header, consistent across every page ============ */}
-      <header ref={headerRef} className="border-border/70 sticky top-0 z-40 border-b bg-white">
-        <div className="mx-auto flex max-w-[1280px] items-center px-4 py-3 sm:px-6">
-        </div>
-      </header>
-
-      {/* ============ Company header ============ */}
-      <section className="border-border/70 border-b bg-white">
-        <div className="mx-auto max-w-[1280px] px-4 py-6 sm:px-6">
-          <div className="flex items-start gap-4">
-            <CompanyLogo name={profile.name} size={64} />
-            <div className="min-w-0 flex-1">
-              <h1 className="text-foreground text-2xl leading-8 font-normal tracking-[0.4px] uppercase sm:text-[28px]">
-                {profile.name}
-              </h1>
-              <p className="text-grey-400 mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px] tracking-[0.4px]">
-                {sectorLabel && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Building2 className="size-4 shrink-0 opacity-70" />
-                    {sectorLabel}
-                  </span>
-                )}
-                {profile.parentGroup && (
-                  <>
-                    {sectorLabel && <span className="text-border">•</span>}
-                    <span>Groupe · {profile.parentGroup}</span>
-                  </>
-                )}
-              </p>
-              <p className="text-foreground mt-2 text-[15px] font-normal tracking-[0.4px] tabular-nums">
-                {profile.jobCount.toLocaleString('fr-FR')}{' '}
-                {profile.jobCount > 1 ? 'emplois ouverts' : 'emploi ouvert'}
-              </p>
-            </div>
+    <main className="bg-paper">
+      {/* ————— Hero Maison (vert-nuit + grain tant qu'il n'y a pas de photo) ————— */}
+      <section className="hero--maison relative overflow-hidden text-white" style={{ background: HERO_BG }} aria-labelledby="maison-title">
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ backgroundImage: GRAIN_URL, opacity: 0.9 }} />
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'rgba(0,10,5,.42)' }} />
+        <div className="container relative z-[1] flex h-full items-end gap-6 pb-12">
+          {/* Logo 96px blanc bordé — monogramme (jamais de visuel ajouté à la main). */}
+          <span className="logo" aria-hidden>{monogramOf(profile.name)}</span>
+          <div>
+            {heroCaption && <p className="t-caption mb-2" style={{ opacity: 0.85 }}>{heroCaption}</p>}
+            <h1 className="t-hero" id="maison-title" style={{ fontSize: 'clamp(2.75rem,5.5vw,5rem)', textAlign: 'left' }}>
+              {profile.name}
+            </h1>
           </div>
-
-          {/* Light filter bar (ville + contrat), scoped to this Maison — enough
-              to navigate a company with hundreds of offers. */}
-          <div className="mt-5 flex flex-wrap items-center gap-2">
-            <form
-              className="border-border relative flex h-11 w-full max-w-xs items-center rounded-full border bg-white focus-within:ring-2 focus-within:ring-black/20"
-              onSubmit={(event) => event.preventDefault()}
-            >
-              <AutocompleteField
-                type="city"
-                value={ville}
-                onChange={setVille}
-                onCommit={setVille}
-                icon={<Search className="text-muted-foreground size-[18px] shrink-0" aria-hidden />}
-                placeholder="Ville, région ou pays"
-                ariaLabel={`Filtrer les offres ${profile.name} par lieu`}
-              />
-              {ville && (
-                <button
-                  type="button"
-                  onClick={() => setVille('')}
-                  aria-label="Effacer le lieu"
-                  className="text-muted-foreground hover:text-foreground mr-3 shrink-0"
-                >
-                  <X className="size-4" />
-                </button>
-              )}
-            </form>
-
-            {contractFacets.length > 0 && (
-              <div className="flex flex-wrap items-center gap-2">
-                {contractFacets.map((facet) => {
-                  const active = contrat === facet.value;
-                  return (
-                    <button
-                      key={facet.value}
-                      type="button"
-                      aria-pressed={active}
-                      onClick={() => setContrat(active ? null : facet.value)}
-                      className={cn(
-                        'flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-4 text-[13px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks',
-                        active
-                          ? 'border-foreground bg-secondary-container text-on-secondary-container'
-                          : 'border-border bg-white hover:bg-surface',
-                      )}
-                    >
-                      {CONTRACT_LABELS[facet.value] ?? facet.value}
-                      <span className="text-muted-foreground text-xs tabular-nums">
-                        {facet.count.toLocaleString('fr-FR')}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-
-            {(ville || contrat) && (
-              <button
-                type="button"
-                onClick={() => {
-                  setVille('');
-                  setContrat(null);
-                }}
-                className="text-grey-400 hover:text-foreground ml-1 text-[13px] tracking-[0.4px] underline-offset-2 hover:underline"
-              >
-                Effacer · {total.toLocaleString('fr-FR')} offre{total > 1 ? 's' : ''}
-              </button>
-            )}
-          </div>
-
-          {/* "À propos" facts row — the honest subset we hold. */}
-          <dl className="border-border mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-t pt-6 sm:grid-cols-4">
-            {sectorLabel && (
-              <div>
-                <dt className="text-grey-400 text-xs tracking-[1px] uppercase">Secteur</dt>
-                <dd className="text-foreground mt-1 text-sm font-normal tracking-[0.4px]">{sectorLabel}</dd>
-              </div>
-            )}
-            {profile.parentGroup && (
-              <div>
-                <dt className="text-grey-400 text-xs tracking-[1px] uppercase">Groupe</dt>
-                <dd className="text-foreground mt-1 text-sm font-normal tracking-[0.4px]">{profile.parentGroup}</dd>
-              </div>
-            )}
-            <div>
-              <dt className="text-grey-400 text-xs tracking-[1px] uppercase">Nombre d’offres</dt>
-              <dd className="text-foreground mt-1 text-sm font-normal tracking-[0.4px] tabular-nums">
-                {profile.jobCount.toLocaleString('fr-FR')}
-              </dd>
-            </div>
-            {profile.cities.length > 0 && (
-              <div className="col-span-2 sm:col-span-2">
-                <dt className="text-grey-400 text-xs tracking-[1px] uppercase">Villes</dt>
-                <dd className="text-foreground mt-1 flex items-start gap-1.5 text-sm font-normal tracking-[0.4px]">
-                  <MapPin className="mt-0.5 size-3.5 shrink-0 opacity-70" />
-                  <span>
-                    {profile.cities
-                      .slice(0, 6)
-                      .map((c) => `${c.city} (${c.count})`)
-                      .join(' · ')}
-                    {profile.cities.length > 6 && ` +${profile.cities.length - 6}`}
-                  </span>
-                </dd>
-              </div>
-            )}
-            {profile.careersUrl && (
-              <div>
-                <dt className="text-grey-400 text-xs tracking-[1px] uppercase">Site carrière</dt>
-                <dd className="mt-1 text-sm font-normal tracking-[0.4px]">
-                  <a
-                    href={profile.careersUrl}
-                    target="_blank"
-                    rel="noopener"
-                    className="text-foreground inline-flex items-center gap-1 hover:underline"
-                  >
-                    Voir le site
-                    <ExternalLink className="size-3.5" />
-                  </a>
-                </dd>
-              </div>
-            )}
-          </dl>
         </div>
       </section>
 
-      {/* ============ Offers, same master-detail shape as /emplois ============ */}
-      <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-4 p-4 lg:grid-cols-[minmax(0,470px)_minmax(0,1fr)] lg:items-start">
-        <div className={cn(selected ? 'hidden lg:block' : 'block')}>
-          {jobs.length === 0 ? (
-            <div className="grid place-items-center px-6 py-16 text-center">
-              <p className="text-foreground text-sm font-normal tracking-[0.4px]">
-                Aucune offre ouverte chez {profile.name} pour l’instant.
-              </p>
+      {/* Lien carrières (l'intro éditoriale est masquée : aucune description
+          ingérée — on n'invente pas de texte). Affiché seulement si l'URL existe. */}
+      {profile.careersUrl && (
+        <section className="container" style={{ paddingTop: 40 }}>
+          <a className="btn btn--green" href={profile.careersUrl} target="_blank" rel="noopener noreferrer">
+            Site carrières {profile.name} <OutGlyph />
+          </a>
+        </section>
+      )}
+
+      {/* ————— Chiffres clés (offres · villes ; pas de « pays » : non exposé) ————— */}
+      <section className="container stats stats--inline" style={{ paddingTop: 80 }} aria-label={`Chiffres clés ${profile.name}`}>
+        <div className="g12">
+          <div className="c4 stat rule">
+            <span className="t-number tabular-nums">{nf.format(profile.jobCount)}</span>
+            <span className="t-caption">offres ouvertes</span>
+          </div>
+          {profile.cities.length > 0 && (
+            <div className="c4 stat rule">
+              <span className="t-number tabular-nums">{nf.format(profile.cities.length)}</span>
+              <span className="t-caption">{profile.cities.length > 1 ? 'villes' : 'ville'}</span>
             </div>
-          ) : (
-            <ul className="flex flex-col gap-2 pb-2">
-              {jobs.map((job) => (
-                <li key={job.id}>
-                  <JobCard
-                    job={job}
-                    onSelect={() => setSelectedId(job.id)}
-                    isSelected={selected?.id === job.id}
-                  />
-                </li>
-              ))}
-
-              {loadedPage < pageCount && (
-                <li ref={sentinelRef} aria-hidden={!loadingMore} className="grid place-items-center py-4">
-                  {loadingMore && (
-                    <span className="text-muted-foreground flex items-center gap-2 text-sm">
-                      <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
-                      Chargement…
-                    </span>
-                  )}
-                </li>
-              )}
-
-              {loadError && (
-                <li className="grid place-items-center gap-2 py-4 text-center">
-                  <p className="text-muted-foreground text-sm">{loadError}</p>
-                  <Button variant="ghost" size="sm" onClick={() => void loadMore()} className="rounded-full">
-                    Réessayer
-                  </Button>
-                </li>
-              )}
-            </ul>
           )}
         </div>
+      </section>
 
-        {selected && (
-          <div
-            className="border-border bg-card relative flex flex-col overflow-hidden rounded-[16px] border lg:sticky lg:top-(--detail-top) lg:max-h-(--detail-max-height)"
-            style={
-              headerHeight
-                ? ({
-                    '--detail-top': `${headerHeight + 16}px`,
-                    '--detail-max-height': `calc(100vh - ${headerHeight + 32}px)`,
-                  } as React.CSSProperties)
-                : undefined
-            }
-          >
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => setSelectedId(null)}
-              aria-label="Retour à la liste des offres"
-              className="hover:bg-surface absolute top-3 right-3 z-10 rounded-full lg:hidden"
+      {/* ————— Offres chez la Maison : barre légère + liste partagée ————— */}
+      <section className="container section" style={{ paddingTop: 96 }} aria-labelledby="offres-title">
+        <div className="section-head">
+          <h2 className="t-d1" id="offres-title">Offres chez {profile.name}</h2>
+        </div>
+
+        {/* Barre légère D20 : ville (autocomplete) + pills contrat, scopée. */}
+        <div className="filters" style={{ margin: '0 0 12px' }}>
+          <form className="w-[240px] max-w-full" onSubmit={(e) => e.preventDefault()}>
+            <AutocompleteField
+              type="city"
+              value={ville}
+              onChange={setVille}
+              onCommit={setVille}
+              icon={<SearchGlyph />}
+              placeholder="Ville, région ou pays"
+              ariaLabel={`Filtrer les offres ${profile.name} par lieu`}
+              className="h-[34px] rounded-(--fa-radius) border border-line"
+            />
+          </form>
+          {contractFacets.map((facet) => {
+            const active = contrat === facet.value;
+            return (
+              <button
+                key={facet.value}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setContrat(active ? null : facet.value)}
+                className={cn('pill', active && 'is-active')}
+              >
+                {CONTRACT_LABELS[facet.value] ?? facet.value}{' '}
+                <span className="count tabular-nums">{nf.format(facet.count)}</span>
+              </button>
+            );
+          })}
+          {filtered && (
+            <button
+              type="button"
+              onClick={() => {
+                setVille('');
+                setContrat(null);
+              }}
+              className="link-ghost"
             >
-              <X className="size-4" />
-            </Button>
-            <JobDetail job={selected} />
+              Réinitialiser
+            </button>
+          )}
+          <span className="spacer" aria-hidden />
+          <span className="t-caption-soft tabular-nums">{nf.format(total)} offres</span>
+        </div>
+
+        {/* Split-view identique à /emplois (composant JobCard/JobDetail partagé). */}
+        <div className="split">
+          <section aria-label="Résultats">
+            {jobs.length === 0 ? (
+              <div className="py-16 text-center">
+                <p className="t-d2">Aucune offre ouverte chez {profile.name}{filtered ? ' pour ces filtres' : ''}.</p>
+              </div>
+            ) : (
+              <ul>
+                {jobs.map((job) => (
+                  <li key={job.id} className="rule">
+                    <JobCard
+                      job={job}
+                      onSelect={() => setSelectedId(job.id)}
+                      isSelected={selected?.id === job.id}
+                    />
+                  </li>
+                ))}
+
+                {loadedPage < pageCount && (
+                  <li ref={sentinelRef} aria-hidden={!loadingMore} className="load-more grid place-items-center">
+                    {loadingMore && (
+                      <span className="t-caption-soft flex items-center gap-2">
+                        <Loader2 className="size-4 animate-spin motion-reduce:animate-none" /> Chargement…
+                      </span>
+                    )}
+                  </li>
+                )}
+
+                {loadError && (
+                  <li className="load-more grid place-items-center gap-2 text-center">
+                    <p className="t-caption-soft">{loadError}</p>
+                    <button type="button" onClick={() => void loadMore()} className="link-ghost">
+                      Réessayer
+                    </button>
+                  </li>
+                )}
+              </ul>
+            )}
+          </section>
+
+          {selected && <span className="rule-v hidden lg:block" aria-hidden />}
+
+          {selected && (
+            <div
+              className="detail"
+              style={
+                detailTop
+                  ? ({ top: `calc(${detailTop}px + 16px)`, maxHeight: `calc(100vh - ${detailTop}px - 32px)` } as React.CSSProperties)
+                  : undefined
+              }
+            >
+              <button
+                type="button"
+                onClick={() => setSelectedId(null)}
+                aria-label="Retour à la liste des offres"
+                className="mb-4 inline-flex items-center gap-2 text-ink-muted hover:text-ink lg:hidden"
+              >
+                <X className="size-4" /> <span className="t-ui-small">Retour</span>
+              </button>
+              <JobDetail job={selected} />
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ————— Par ville : cellules → /emplois filtré ————— */}
+      {profile.cities.length > 0 && (
+        <section className="container section" style={{ paddingTop: 96, paddingBottom: 120 }} aria-labelledby="villes-title">
+          <div className="section-head">
+            <h2 className="t-d1" id="villes-title">Par ville</h2>
           </div>
-        )}
-      </div>
-    </div>
+          <div className="maisons">
+            {profile.cities.slice(0, 12).map((c) => (
+              <Link
+                key={c.city}
+                className="maison rule"
+                style={{ gridTemplateColumns: '1fr' }}
+                href={`/emplois?maison=${encodeURIComponent(profile.name)}&ville=${encodeURIComponent(c.city)}`}
+              >
+                <span>
+                  <span className="maison__name t-d2">{c.city}</span>
+                  <span className="maison__meta">
+                    <span className="maison__count">
+                      <span className="t-d2 tabular-nums">{nf.format(c.count)}</span>
+                      <span className="t-body2">{c.count > 1 ? 'offres' : 'offre'}</span>
+                    </span>
+                  </span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+    </main>
   );
 }

@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import './globals.css';
 import { SiteNav } from '@/components/site-nav';
 import { SiteFooter } from '@/components/site-footer';
+import { NavProgress } from '@/components/nav-progress';
 
 /**
  * Typography — DA « Corporate Elegance » (design_2.md) : deux familles
@@ -25,6 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preload" href="/fonts/sans/FASans-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       <body className="font-sans antialiased">
+        <Suspense fallback={null}>
+          <NavProgress />
+        </Suspense>
         <SiteNav />
         {children}
         <SiteFooter />
