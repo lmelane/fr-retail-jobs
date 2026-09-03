@@ -2,177 +2,178 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* ============================================================
-   Catwalks brand typeface — "catwalks_font" (decision D14).
-   The same proprietary face Catwalks uses, self-hosted from
-   /public/fonts. Fashion Atlas is a Catwalks brand, so it wears the
-   brand type — Indeed's Noto Sans was only the structural clone, not
-   the identity. 5 weights: light 300 / regular 400 / medium 500 /
-   bold 700 / oblique italic.
-   ============================================================ */
-@font-face {
-  font-family: "catwalks_font";
-  font-weight: 300;
-  font-display: swap;
-  src: url("/fonts/catwalks_font-light.woff2") format("woff2");
-}
-@font-face {
-  font-family: "catwalks_font";
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/catwalks_font-regular.woff2") format("woff2");
-}
-@font-face {
-  font-family: "catwalks_font";
-  font-weight: 500;
-  font-display: swap;
-  src: url("/fonts/catwalks_font-medium.woff2") format("woff2");
-}
-@font-face {
-  font-family: "catwalks_font";
-  font-weight: 700;
-  font-display: swap;
-  src: url("/fonts/catwalks_font-bold.woff2") format("woff2");
-}
-@font-face {
-  font-family: "catwalks_font";
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/catwalks_font-oblique.woff2") format("woff2");
-}
-/*---break---
+/**
+ * Fashion Atlas — Direction artistique « Corporate Elegance » (design_2.md v1.0).
+ * Serif display (contenu) + sans humaniste (usage), blanc pur, un seul accent
+ * vert #105A33, filets pointillés, radius unique 5px, aucune ombre. Les maquettes
+ * `fashion-atlas-maquettes/*.html` sont la référence de rendu ; ce fichier porte
+ * leurs tokens `--fa-*` et classes `.t-*/.rule/.btn/.pill/…` dans le projet.
  */
+
+/* ————————————————————————————————— Fonts ————————————————————————————————— */
+/* Self-hosted only — aucune font chargée depuis un CDN en production. */
+
+/* FA Display = Instrument Serif (OFL, voir public/fonts/display/OFL.txt). */
+@font-face {
+  font-family: "FA Display";
+  src: url("/fonts/display/FADisplay-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "FA Display";
+  src: url("/fonts/display/FADisplay-Italic.woff2") format("woff2");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+
+/* FA Sans = Mona Sans (400 / 500 ; PAS de 600 — tout « 600 sans » -> 500). */
+@font-face {
+  font-family: "FA Sans";
+  src: url("/fonts/sans/FASans-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "FA Sans";
+  src: url("/fonts/sans/FASans-Italic.woff2") format("woff2");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "FA Sans";
+  /* Medium (500) sert aussi les usages « 600 » de la maquette : caption,
+     t-title, chips, pills. */
+  src: url("/fonts/sans/FASans-Medium.woff2") format("woff2");
+  font-weight: 500 600; font-style: normal; font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
-/**
- * Direction: the Catwalks DA (decision D17) — black, white, grey. No accent
- * colour anywhere. Indeed only ever supplied the STRUCTURE (dense
- * master-detail layout, hierarchy, a search pill) — the SOUL is Catwalks'
- * own: pure black actions, pill-shaped controls, weight always 400 except
- * the brand wordmark, and shadows that appear only on hover.
- */
-@theme {
-  /* --font-sans is declared ONLY in `@theme inline` below: a next/font variable
-     (--font-noto-sans) is injected on <html> at runtime, and a plain @theme bakes
-     its value at build time — when that variable is still empty, so the body fell
-     back to Times. `@theme inline` keeps the var() a live reference instead. */
-
-  /* Catwalks DA: every transition runs 300ms on the same calm easing curve —
-     see --ease-catwalks below. Tailwind's default is 150ms and Indeed's was
-     200ms; neither matches the DA's deliberately slower, calmer response. */
-  --default-transition-duration: 300ms;
-  --default-transition-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
-  --ease-catwalks: cubic-bezier(0.39, 0.575, 0.565, 1);
-
-  /* Neutral grey ladder, exposed as bg-surface-* utilities. No warmth, no hue
-     bias — the DA is strictly black/white/grey. */
-  --color-surface-low: #FAFAFA;
-  --color-surface: #F5F5F5;
-  --color-surface-high: #EEEEEE;
-
-  /* DA tokens, exposed directly as color-* utilities (bg-grey-400, text-grey-400…). */
-  --color-grey-100: #F5F5F5;
-  --color-grey-200: #EEEEEE;
-  --color-grey-400: #767676;
-  --color-grey-600: #4A4A4A;
-  --color-listing-bg: #F8F8F8;
-
-  /* Cards carry NO shadow at rest; this is the one shadow the DA defines,
-     shown only on :hover. */
-  --shadow-m3-1: 0 8px 30px rgba(0, 0, 0, 0.08);
-  --shadow-m3-2: 0 8px 30px rgba(0, 0, 0, 0.08);
-}
-
+/* ——————————————————————————— Tokens --fa-* (design_2 §2) ——————————————————————————— */
 :root {
   color-scheme: light;
-  /* Catwalks DA: black / white / grey only (decision D17). */
-  --background: #FAFAFA;
-  --foreground: #000000;
-  --card: #FFFFFF;
-  --card-foreground: #000000;
-  --popover: #FFFFFF;
-  --popover-foreground: #000000;
-  /* Primary = black. Every bg-primary/text-primary usage in the app becomes
-     the DA's single action colour instead of the old brand magenta. */
-  --primary: #000000;
+
+  /* Encres */
+  --fa-ink: #1C1C1C; --fa-ink-soft: #4A4A4A; --fa-ink-muted: #6B6B6B; --fa-ink-disabled: #A3A3A3;
+  /* Fonds */
+  --fa-paper: #FFFFFF; --fa-paper-alt: #F7F7F5; --fa-paper-deep: #EFEFEC; --fa-line: #D9D9D6;
+  --fa-line-strong: #1C1C1C;
+  /* Accent */
+  --fa-green: #105A33; --fa-green-hover: #0C4728; --fa-green-tint: #E7EFEA; --fa-green-night: #000A05;
+  /* Sémantique */
+  --fa-success: #105A33; --fa-warning: #8A5A00; --fa-danger: #A61E2B;
+  /* Sur photo */
+  --fa-on-photo: #FFFFFF; --fa-veil: rgba(0, 10, 5, .42);
+  --fa-photo-veil-card: linear-gradient(180deg, rgba(0,10,5,0) 45%, rgba(0,10,5,.72) 100%);
+
+  /* Familles */
+  --fa-font-display: "FA Display", "Times New Roman", Times, Georgia, serif;
+  --fa-font-sans: "FA Sans", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --fa-font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Formes / grille / motion */
+  --fa-radius: 5px; --fa-container: 1160px; --fa-container-wide: 1280px; --fa-gutter: 40px;
+  --fa-shadow-menu: 0 1px 0 0 var(--fa-line);
+  --fa-ease: cubic-bezier(.645,.045,.355,1); --fa-ease-out: cubic-bezier(.215,.61,.355,1);
+  --fa-dur-fast: 150ms; --fa-dur-base: 250ms; --fa-dur-slow: 450ms;
+  --header-h: 114px;
+  --fa-z-header: 100; --fa-z-megamenu: 110; --fa-z-dropdown: 120;
+  --fa-z-sticky-search: 90; --fa-z-toast: 200; --fa-z-modal: 300;
+
+  /* ——— Pont shadcn (§13) : les composants ui/ lisent ces variables ——— */
+  --background: var(--fa-paper);
+  --foreground: var(--fa-ink);
+  --card: var(--fa-paper);
+  --card-foreground: var(--fa-ink);
+  --popover: var(--fa-paper);
+  --popover-foreground: var(--fa-ink);
+  --primary: var(--fa-green);
   --primary-foreground: #FFFFFF;
-  /* Secondary = a light grey fill, for selected/active surfaces — no tint. */
-  --secondary: #F5F5F5;
-  --secondary-foreground: #000000;
-  --muted: #F5F5F5;
-  --muted-foreground: #767676;
-  --accent: #F5F5F5;
-  --accent-foreground: #000000;
-  --destructive: oklch(0.55 0.20 22);
-  --border: #E1E1E1;
-  --input: #E1E1E1;
-  --ring: #000000;
-  --chart-1: #000000;
-  --chart-2: #4A4A4A;
-  --chart-3: #767676;
-  --chart-4: #AFAFAF;
-  --chart-5: #EEEEEE;
-  /* Three radii built off a 12px base — still used for inputs/menus; job
-     cards and hero cards override to the DA's 16px/32px directly. */
-  --radius: 0.75rem;
-  --sidebar: #F5F5F5;
-  --sidebar-foreground: #000000;
-  --sidebar-primary: #000000;
+  --secondary: var(--fa-paper-alt);
+  --secondary-foreground: var(--fa-ink);
+  --muted: var(--fa-paper-alt);
+  --muted-foreground: var(--fa-ink-muted);
+  --accent: var(--fa-green-tint);
+  --accent-foreground: var(--fa-green);
+  --destructive: var(--fa-danger);
+  --border: var(--fa-line);
+  --input: var(--fa-line);
+  --ring: var(--fa-green);
+  --success: var(--fa-success);
+  --success-surface: var(--fa-green-tint);
+  --secondary-container: var(--fa-green-tint);
+  --on-secondary-container: var(--fa-green);
+  --surface-low: var(--fa-paper);
+  --surface: var(--fa-paper-alt);
+  --surface-high: var(--fa-paper-deep);
+  --radius: var(--fa-radius);
+  --chart-1: var(--fa-green); --chart-2: var(--fa-ink); --chart-3: var(--fa-ink-muted);
+  --chart-4: var(--fa-line); --chart-5: var(--fa-green-tint);
+  --sidebar: var(--fa-paper); --sidebar-foreground: var(--fa-ink); --sidebar-border: var(--fa-line);
+  --sidebar-ring: var(--fa-green); --sidebar-accent: var(--fa-green-tint);
+  --sidebar-accent-foreground: var(--fa-green); --sidebar-primary: var(--fa-green);
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F5F5F5;
-  --sidebar-accent-foreground: #000000;
-  --sidebar-border: #E1E1E1;
-  --sidebar-ring: #000000;
-
-  --surface-low: #FAFAFA;
-  --surface: #F5F5F5;
-  --surface-high: #EEEEEE;
-
-  /* Semantic colours, separate from the (now absent) accent: a CDI chip
-     still reads green — the DA doesn't forbid semantic colour, only decorative accent colour. */
-  --success: oklch(0.52 0.13 152);
-  --success-surface: oklch(0.95 0.05 152);
-
-  /* Selected/active surface: a light grey fill with black text — used for
-     active filter pills and the selected job card. Replaces the old magenta tint. */
-  --secondary-container: #F5F5F5;
-  --on-secondary-container: #000000;
 }
 
-html,
-body {
-  height: 100%;
-}
+/* ——————————————————————————— Échelle typo (design_2 §11) ——————————————————————————— */
+.t-hero { font: 400 clamp(2.75rem, 6.5vw, 6.25rem)/1 var(--fa-font-display); text-transform: uppercase; letter-spacing: 0; text-wrap: balance; }
+.t-number { font: 400 clamp(3.5rem, 8vw, 7.5rem)/1 var(--fa-font-display); letter-spacing: -.025em; color: var(--fa-green); font-variant-numeric: tabular-nums; }
+.t-d1 { font: 400 2rem/1.125 var(--fa-font-display); text-wrap: balance; }
+.t-d2 { font: 400 1.5rem/1.333 var(--fa-font-display); }
+.t-d3 { font: 400 1.125rem/1.2 var(--fa-font-display); }
+.t-title { font: 500 1rem/1.3125 var(--fa-font-sans); }
+.t-body { font: 400 .9375rem/1.4 var(--fa-font-sans); }
+.t-body2 { font: 400 .875rem/1.285 var(--fa-font-sans); }
+.t-caption { font: 500 .75rem/1.333 var(--fa-font-sans); letter-spacing: .0625rem; text-transform: uppercase; }
+.t-caption-soft { font: 400 .75rem/1.333 var(--fa-font-sans); letter-spacing: .03125rem; text-transform: uppercase; color: var(--fa-ink-muted); }
+.t-ui { font: 400 1rem/1.25 var(--fa-font-sans); }
+.t-ui-small { font: 500 .875rem/1.285 var(--fa-font-sans); }
 
-body {
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
+.muted { color: var(--fa-ink-muted); } .soft { color: var(--fa-ink-soft); } .green { color: var(--fa-green); }
 
-.leaflet-container {
-  font: inherit;
-}
+/* ——————————————————————————— Filets pointillés (design_2 §2.6) ——————————————————————————— */
+.rule, .rule-b { background-image: linear-gradient(to right, var(--fa-ink) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; }
+.rule { background-position: 50% 0; padding-top: 1px; }
+.rule-b { background-position: 50% 100%; padding-bottom: 1px; }
+.rule-soft { background-image: linear-gradient(to right, var(--fa-ink-disabled) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; }
+.rule-v { background-image: linear-gradient(to bottom, var(--fa-ink) 25%, transparent 0); background-size: 1px 4px; background-repeat: repeat-y; width: 1px; }
 
-.leaflet-control-attribution {
-  font-size: 10px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/*---break---
- */
+/* ——————————————————————————— Boutons (design_2 §12) ——————————————————————————— */
+.btn { display: inline-flex; align-items: center; gap: 10px; height: 36px; padding: 0 16px;
+  font: 400 1rem/1 var(--fa-font-sans); color: var(--fa-ink); background: transparent;
+  border: 1px solid var(--fa-ink); border-radius: var(--fa-radius); cursor: pointer; text-decoration: none;
+  transition: background-color var(--fa-dur-fast) var(--fa-ease), color var(--fa-dur-fast) var(--fa-ease), border-color var(--fa-dur-fast) var(--fa-ease); }
+.btn:hover { background: var(--fa-ink); color: #fff; }
+.btn--lg { height: 48px; padding: 0 24px; }
+.btn--primary { background: var(--fa-green); border-color: var(--fa-green); color: #fff; }
+.btn--primary:hover { background: var(--fa-green-hover); border-color: var(--fa-green-hover); }
+.btn--green { border-color: var(--fa-green); color: var(--fa-green); }
+.btn--green:hover { background: var(--fa-green); color: #fff; }
+.btn--ghost { border-color: transparent; padding: 0 4px; }
+.btn--ghost:hover { background: transparent; color: var(--fa-ink); text-decoration: underline; text-underline-offset: 4px; }
+.btn--inverse { border-color: #fff; color: #fff; }
+.btn--inverse:hover { background: #fff; color: var(--fa-green); }
+.btn--icon { width: 44px; padding: 0; justify-content: center; }
+.btn:disabled, .btn[aria-disabled="true"] { border-color: var(--fa-ink-disabled); color: var(--fa-ink-disabled); background: transparent; cursor: not-allowed; }
+.btn:focus-visible { outline: 2px solid var(--fa-green); outline-offset: 2px; }
+.btn svg { width: 16px; height: 16px; stroke-width: 1.25; }
 
 @theme inline {
-  --font-heading: "catwalks_font", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "catwalks_font", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--fa-font-display);
+  --font-sans: var(--fa-font-sans);
+  --font-display: var(--fa-font-display);
+  --font-mono: var(--fa-font-mono);
+  --color-ink: var(--fa-ink);
+  --color-ink-soft: var(--fa-ink-soft);
+  --color-ink-muted: var(--fa-ink-muted);
+  --color-ink-disabled: var(--fa-ink-disabled);
+  --color-paper: var(--fa-paper);
+  --color-paper-alt: var(--fa-paper-alt);
+  --color-paper-deep: var(--fa-paper-deep);
+  --color-line: var(--fa-line);
+  --color-green: var(--fa-green);
+  --color-green-hover: var(--fa-green-hover);
+  --color-green-tint: var(--fa-green-tint);
+  --color-green-night: var(--fa-green-night);
+  --color-warning: var(--fa-warning);
+  --color-danger: var(--fa-danger);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -208,108 +209,59 @@ body {
   --color-success-surface: var(--success-surface);
   --color-secondary-container: var(--secondary-container);
   --color-on-secondary-container: var(--on-secondary-container);
-  /* Indeed's three radii: sm 8px, md 12px, lg 20px (base is 12px). */
-  --radius-sm: calc(var(--radius) * 0.667);
-  --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) * 1.667);
-  --radius-xl: calc(var(--radius) * 2);
-  --radius-2xl: calc(var(--radius) * 2.33);
-  --radius-3xl: calc(var(--radius) * 2.67);
-  --radius-4xl: calc(var(--radius) * 3);
+  --color-surface-low: var(--surface-low);
+  --color-surface: var(--surface);
+  --color-surface-high: var(--surface-high);
+  /* Un seul rayon (5px) ; le reste des échelons pointe dessus pour neutraliser
+     tout arrondi hérité de shadcn. */
+  --radius-sm: var(--fa-radius);
+  --radius-md: var(--fa-radius);
+  --radius-lg: var(--fa-radius);
+  --radius-xl: var(--fa-radius);
+  --radius-2xl: var(--fa-radius);
+  --radius-3xl: var(--fa-radius);
+  --radius-4xl: var(--fa-radius);
+  /* Aucune ombre : les utilitaires shadow-* deviennent inertes, seul le filet
+     de menu subsiste. */
+  --shadow-2xs: none; --shadow-xs: none; --shadow-sm: none; --shadow: none;
+  --shadow-md: none; --shadow-lg: none; --shadow-xl: none; --shadow-2xl: none;
+  --shadow-menu: var(--fa-shadow-menu);
+  --default-transition-duration: var(--fa-dur-base);
+  --default-transition-timing-function: var(--fa-ease);
+  --ease-fa: var(--fa-ease);
 }
-
-/*---break---
- */
-
-.dark {
-  --background: #171717;
-  --foreground: #F5F5F5;
-  --card: #212121;
-  --card-foreground: #F5F5F5;
-  --popover: #212121;
-  --popover-foreground: #F5F5F5;
-  --primary: #FFFFFF;
-  --primary-foreground: #000000;
-  --secondary: #333333;
-  --secondary-foreground: #F5F5F5;
-  --muted: #262626;
-  --muted-foreground: #AFAFAF;
-  --accent: #333333;
-  --accent-foreground: #F5F5F5;
-  --destructive: oklch(0.70 0.17 22);
-  --border: #333333;
-  --input: #3D3D3D;
-  --ring: #FFFFFF;
-  --chart-1: #FFFFFF;
-  --chart-2: #C7C7C7;
-  --chart-3: #AFAFAF;
-  --chart-4: #767676;
-  --chart-5: #4A4A4A;
-  --sidebar: #212121;
-  --sidebar-foreground: #F5F5F5;
-  --sidebar-primary: #FFFFFF;
-  --sidebar-primary-foreground: #000000;
-  --sidebar-accent: #333333;
-  --sidebar-accent-foreground: #F5F5F5;
-  --sidebar-border: #333333;
-  --sidebar-ring: #FFFFFF;
-  --surface-low: #1F1F1F;
-  --surface: #262626;
-  --surface-high: #303030;
-  --success: oklch(0.70 0.14 152);
-  --success-surface: oklch(0.28 0.06 152);
-  --secondary-container: #333333;
-  --on-secondary-container: #F5F5F5;
-}
-
-/*---break---
- */
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    font-family: var(--fa-font-sans);
+    color: var(--fa-ink);
+    background: var(--fa-paper);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
   body {
     @apply bg-background text-foreground;
+    font: 400 .9375rem/1.4 var(--fa-font-sans);
   }
-  html {
-    @apply font-sans;
-  }
-  /* Tailwind v4 dropped the default cursor:pointer on buttons; a clickable
-     control must show the hand, like Indeed's does. Not for disabled ones. */
+  /* Un contrôle cliquable montre la main. */
   button:not(:disabled),
   [role='button']:not([aria-disabled='true']),
   a[href] {
     cursor: pointer;
   }
+  :focus-visible {
+    outline: 2px solid var(--fa-green);
+    outline-offset: 2px;
+  }
 }
 
-/* Hero rotating word (see components/rotating-word.tsx): the incoming word rises
-   into place, the outgoing one lifts away, both over 0.3s. Compositor-friendly
-   (transform + opacity only); the pill's width is animated separately in JS. */
-@keyframes rotating-word-in {
-  from {
-    opacity: 0;
-    transform: translateY(0.6em);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes rotating-word-out {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-0.6em);
-  }
-}
 @media (prefers-reduced-motion: reduce) {
-  [class*='rotating-word-in'],
-  [class*='rotating-word-out'] {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
     animation: none !important;
   }
 }
