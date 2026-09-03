@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { CompanyLogo } from '@/components/company-logo';
 import { AutocompleteField } from '@/components/search-pill';
-import { SiteNav } from '@/components/site-nav';
 import { cn } from '@/lib/utils';
 import { companySlug } from '@/lib/company-slug';
 import type { CompaniesResult, CompanyFilters, CompanyRow } from '@/lib/companies';
@@ -120,7 +119,6 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
     <div className="bg-background flex h-dvh flex-col overflow-hidden">
       <header className="border-border/70 shrink-0 border-b bg-white">
         <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
-          <SiteNav active="entreprises" />
 
           <form
             className="border-border relative mx-auto flex h-11 w-full max-w-sm items-center rounded-full border bg-white focus-within:ring-2 focus-within:ring-black/20"

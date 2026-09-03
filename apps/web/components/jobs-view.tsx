@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { SiteNav } from '@/components/site-nav';
 import {
   Check,
   ChevronDown,
@@ -240,7 +239,6 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
             Offres/Entreprises nav centered, actions at the right. Below lg it
             wraps and the full-width search pill drops to its own row. */}
         <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
-          <SiteNav active="offres" />
 
           {/* The pill: Poste | Lieu | Rechercher, with live autocomplete on both
               fields — shared with the landing page's own pill so the two never

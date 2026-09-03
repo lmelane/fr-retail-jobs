@@ -120,3 +120,11 @@
 ---
 
 **→ En attente de ta validation (F1–F5 + le plan global) avant de commencer l'étape 1.**
+
+---
+
+## G. Journal des étapes
+
+- **Étape 1 ✓** tokens --fa-* + fonts (FA Sans Mona, FA Display Instrument Serif OFL), font-synthesis:none, catwalks_font purgée.
+- **Étape 2 ✓** primitives (.pill/.dd/.chip/.f-input/.toggle/.toast/.sk) + shadcn ui/ (button vert, badge chips, input, card/tabs/sheet/select/skeleton) — 0 pill/ombre/gros rayon dans ui/. Portals Radix (Select/Sheet) : z-120, bordure line, shadow-menu, pas d'overlay flou.
+- **Étape 3 ✓** Header 2 étages fixe (SiteNav client, mode+actif déduits du pathname, transparent→blanc home, méga-menu, burger mobile, « Maisons ») + Footer 3 col (Candidats vert, horodatage), tous deux dans le layout global. Captures : r3-home-top (transparent), r3-home-scrolled (blanc), r3-emplois (blanc), r3-footer. Le header rend FASHION ATLAS serif, filets pointillés, nav caption, CTA vert — vérifié sur /emplois. (Le hero vert-nuit de la home et la refonte des vues métier viennent aux étapes 4-6.)

@@ -7,7 +7,6 @@ import { CompanyLogo } from '@/components/company-logo';
 import { JobDetail } from '@/components/job-detail';
 import { JobCard } from '@/components/jobs-view';
 import { AutocompleteField } from '@/components/search-pill';
-import { SiteNav } from '@/components/site-nav';
 import { cn } from '@/lib/utils';
 import type { CompanyProfile } from '@/lib/companies';
 import type { JobRow, JobsResult } from '@/lib/jobs';
@@ -184,7 +183,6 @@ export function CompanyProfileView({
       {/* ============ Nav — the shared header, consistent across every page ============ */}
       <header ref={headerRef} className="border-border/70 sticky top-0 z-40 border-b bg-white">
         <div className="mx-auto flex max-w-[1280px] items-center px-4 py-3 sm:px-6">
-          <SiteNav active="entreprises" />
         </div>
       </header>
 

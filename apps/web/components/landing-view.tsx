@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SearchPill } from '@/components/search-pill';
-import { SiteFooter } from '@/components/site-footer';
-import { SiteNav } from '@/components/site-nav';
 import { RotatingWord } from '@/components/rotating-word';
 
 /**
@@ -58,7 +56,6 @@ export function LandingView({
     <div className="bg-background flex min-h-dvh flex-col">
       <header className="border-border/70 shrink-0 border-b bg-white">
         <div className="mx-auto flex max-w-[1280px] items-center px-4 py-3 sm:px-6">
-          <SiteNav active="offres" />
         </div>
       </header>
 
@@ -123,7 +120,6 @@ export function LandingView({
         </a>
       </main>
 
-      <SiteFooter />
     </div>
   );
 }
