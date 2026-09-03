@@ -1,0 +1,81 @@
+# CI (audit O-02) : typecheck + unitaires + intégration (Postgres de service)
+# + web. Le merge vers main est bloqué si rouge — la « boucle obligatoire par
+# correctif » de CLAUDE.md, enfin outillée.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  aggregator:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: catwalks
+          POSTGRES_PASSWORD: catwalks
+          # Le garde de setup-integration refuse toute base dont le nom ne
+          # contient pas « test » — les tests d'intégration VIDENT la base.
+          POSTGRES_DB: catwalks_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U catwalks"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://catwalks:catwalks@localhost:5432/catwalks_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --workspaces --include-workspace-root
+      - run: npx prisma generate --schema packages/db/prisma/schema.prisma
+      - run: npx prisma migrate deploy --schema packages/db/prisma/schema.prisma
+      - name: Typecheck
+        run: npx tsc --noEmit
+        working-directory: apps/aggregator
+      - name: Tests unitaires
+        run: npm run test:unit -w @catwalks/aggregator
+      - name: Tests d'intégration
+        run: npm run test:integration -w @catwalks/aggregator
+
+  web:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: catwalks
+          POSTGRES_PASSWORD: catwalks
+          POSTGRES_DB: catwalks_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U catwalks"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://catwalks:catwalks@localhost:5432/catwalks_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --workspaces --include-workspace-root
+      - run: npx prisma generate --schema packages/db/prisma/schema.prisma
+      - run: npx prisma migrate deploy --schema packages/db/prisma/schema.prisma
+      - name: Typecheck
+        run: npx tsc --noEmit
+        working-directory: apps/web
+      - name: Tests unitaires web
+        run: npx vitest run lib
+        working-directory: apps/web
+      - name: Build
+        run: npm run build -w @catwalks/web

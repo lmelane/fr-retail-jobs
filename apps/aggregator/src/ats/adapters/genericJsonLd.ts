@@ -74,7 +74,11 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
   const pastDeadline = () => deadlineMs > 0 && Date.now() >= deadlineMs;
   if (listingPagedUrl && linkPattern) {
     const pageParam = String(config.pageParam ?? 'page');
-    const linkRe = new RegExp(`href="([^"]*${linkPattern}[^"]*)"`, 'g');
+    // The pattern comes from a CSV column — data, not code. Escaped so a
+    // crafted catalogue value can never become an arbitrary regex (audit R-02);
+    // every existing pattern is a literal path fragment anyway.
+    const escaped = linkPattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const linkRe = new RegExp(`href="([^"]*${escaped}[^"]*)"`, 'g');
     const seen = new Set<string>();
     const origin = new URL(listingPagedUrl).origin;
 

@@ -58,3 +58,20 @@ describe('isPublicHttpUrl — refuses internal and non-HTTP targets', () => {
     expect(() => assertPublicUrl('https://jobs.courir.com/')).not.toThrow();
   });
 });
+
+/**
+ * Audit R-02: WHATWG serializes an IPv4-mapped address in HEX
+ * (::ffff:a9fe:a9fe = 169.254.169.254) — the dotted-form check missed it.
+ */
+describe('IPv6 hex-mapped private addresses', () => {
+  it('refuses the metadata endpoint in hex-mapped form', () => {
+    expect(isPublicHttpUrl('http://[::ffff:a9fe:a9fe]/latest/meta-data')).toBe(false);
+  });
+  it('refuses hex-mapped RFC1918', () => {
+    expect(isPublicHttpUrl('http://[::ffff:a00:1]/')).toBe(false); // 10.0.0.1
+    expect(isPublicHttpUrl('http://[::ffff:c0a8:101]/')).toBe(false); // 192.168.1.1
+  });
+  it('still allows a public hex-mapped address', () => {
+    expect(isPublicHttpUrl('http://[::ffff:101:101]/')).toBe(true); // 1.1.1.1
+  });
+});

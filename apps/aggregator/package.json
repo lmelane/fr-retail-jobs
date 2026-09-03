@@ -12,7 +12,7 @@
     "stats": "tsx src/cli.ts stats",
     "export:companies": "tsx src/cli.ts export-companies",
     "typecheck": "tsc --noEmit",
-    "test:unit": "vitest run src/normalize src/ats src/connectors/generic src/lib/france.test.ts src/lib/html.test.ts src/lib/ssrf.test.ts src/lib/language.test.ts src/geo",
+    "test:unit": "vitest run src/normalize src/ats src/connectors/generic src/lib/france.test.ts src/lib/html.test.ts src/lib/ssrf.test.ts src/lib/language.test.ts src/discovery/discoverMaisons.test.ts src/geo",
     "test:integration": "vitest run src/pipeline",
     "test": "npm run test:unit && npm run test:integration"
   },

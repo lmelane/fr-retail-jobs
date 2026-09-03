@@ -61,19 +61,28 @@ const PROGRESS_PATH = dataUrl('discovery.progress.tsv');
 /** Maisons auto-discovery could NOT resolve — the queue for the manual pass. */
 const UNRESOLVED_PATH = dataUrl('sources.unresolved.csv');
 /**
- * Domains proven dead by the reachability sweep (DNS gone, TLS broken, 4xx/5xx
- * root). Excluded from every discovery run (decision Loïc, 2026-09-03): a dead
- * domain never resolves an ATS, and re-probing 6 700 of them is pure waste. A
- * quarterly re-check of THIS file is the only path back in.
+ * Domains proven dead by the reachability sweep — each line carries its
+ * evidence (cause, the resolvers that confirmed a DNS death: 1.1.1.1+8.8.8.8,
+ * never the system resolver alone — see the poisoned-cache incident) and its
+ * check date. Excluded from discovery runs (decision Loïc, 2026-09-03), but a
+ * dead domain is not dead forever: past DEAD_RECHECK_DAYS the entry expires
+ * and the Maison re-enters the queue, so a resurrected brand is found again
+ * without anyone remembering to run anything.
  */
 const DEAD_PATH = dataUrl('unresolved.dead.tsv');
+const DEAD_RECHECK_DAYS = Number(process.env.DEAD_RECHECK_DAYS ?? 30);
 
-function loadDeadNames(): Set<string> {
+export function loadDeadNames(now = new Date()): Set<string> {
   if (!existsSync(DEAD_PATH)) return new Set();
+  const cutoff = now.getTime() - DEAD_RECHECK_DAYS * 86_400_000;
   const dead = new Set<string>();
   for (const line of readFileSync(DEAD_PATH, 'utf8').split(/\r?\n/).slice(1)) {
-    const name = line.split('\t')[0];
-    if (name) dead.add(name.toLowerCase());
+    const [name, , , , , checkedAt] = line.split('\t');
+    if (!name) continue;
+    // No date (legacy line) or a stale check: the verdict has expired.
+    const checked = checkedAt ? Date.parse(checkedAt) : NaN;
+    if (Number.isNaN(checked) || checked < cutoff) continue;
+    dead.add(name.toLowerCase());
   }
   return dead;
 }
