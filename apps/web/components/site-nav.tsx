@@ -90,8 +90,7 @@ export function SiteNav() {
               Catwalks <ArrowUpRight />
             </a>
           </div>
-          <Link href="/" className="wordmark flex-1 text-center lg:flex-none" aria-label="Fashion Atlas — accueil"
-            style={{ font: '400 22px/1 var(--fa-font-display)', letterSpacing: '2px', textTransform: 'uppercase' }}>
+          <Link href="/" className="wordmark flex-1 text-center lg:flex-none" aria-label="Fashion Atlas — accueil">
             Fashion Atlas
           </Link>
           <div className="flex flex-1 items-center justify-end">
@@ -141,7 +140,7 @@ export function SiteNav() {
       {menuOpen && (
         <div className="fixed inset-0 z-[120] bg-paper lg:hidden">
           <div className="mx-auto flex h-16 max-w-[var(--fa-container)] items-center justify-between px-6">
-            <span className="wordmark text-ink" style={{ font: '400 22px/1 var(--fa-font-display)', letterSpacing: '2px', textTransform: 'uppercase' }}>Fashion Atlas</span>
+            <span className="wordmark text-ink">Fashion Atlas</span>
             <button type="button" onClick={() => setMenuOpen(false)} aria-label="Fermer" className="grid size-11 place-items-center text-ink"><Close /></button>
           </div>
           <ul className="px-6">

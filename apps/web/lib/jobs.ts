@@ -521,9 +521,24 @@ export async function suggestCities(query: string): Promise<string[]> {
       },
       _count: { _all: true },
       orderBy: { _count: { city: 'desc' } },
-      take: SUGGEST_LIMIT,
+      // Plus large que la limite : la colonne mélange les casses (« Paris » /
+      // « PARIS » sont des groupes distincts) — on déduplique ensuite.
+      take: SUGGEST_LIMIT * 3,
     });
-    return rows.map((r) => r.city).filter((c): c is string => Boolean(c));
+    // Dédup insensible à la casse : on garde la graphie du groupe le plus
+    // fréquent (les lignes arrivent triées par volume desc). Sans ça le
+    // panneau montrait « Paris » ET « PARIS » — vu en prod.
+    const seen = new Set<string>();
+    const cities: string[] = [];
+    for (const row of rows) {
+      if (!row.city) continue;
+      const key = row.city.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      cities.push(row.city);
+      if (cities.length >= SUGGEST_LIMIT) break;
+    }
+    return cities;
   } catch {
     return [];
   }

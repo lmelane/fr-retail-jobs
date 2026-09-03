@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { SearchPill } from '@/components/search-pill';
 import { companySlug } from '@/lib/company-slug';
 import { displayTitle, relativeDate, contractLabel } from '@/lib/format';
 import type { CompanyRow } from '@/lib/companies';
@@ -23,12 +24,6 @@ const HERO_SECTORS = ['FASHION', 'LUXURY', 'BEAUTY', 'JEWELRY_WATCHES', 'RETAIL'
 const Arrow = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden width="16" height="16"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
 );
-const SearchIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" aria-hidden width="18" height="18"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
-);
-const PinIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden width="18" height="18"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11Z" /><circle cx="12" cy="10" r="2.5" /></svg>
-);
 
 export function LandingView({
   stats,
@@ -45,14 +40,6 @@ export function LandingView({
   const [query, setQuery] = useState('');
   const [city, setCity] = useState('');
   const nf = new Intl.NumberFormat('fr-FR');
-
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const p = new URLSearchParams();
-    if (query.trim()) p.set('q', query.trim());
-    if (city.trim()) p.set('ville', city.trim());
-    router.push(p.toString() ? `/emplois?${p}` : '/emplois');
-  };
 
   const sectorCount = (v: string) => sectors.find((s) => s.value === v)?.count ?? 0;
 
@@ -79,20 +66,23 @@ export function LandingView({
         </div>
       </section>
 
-      {/* ————— Barre de recherche posée sur le bas du hero ————— */}
-      <div className="container relative z-[2] -mt-7">
-        <form role="search" onSubmit={submit}
-          className="mx-auto grid h-14 max-w-[760px] grid-cols-[55fr_30fr_auto] rounded border border-ink bg-paper text-ink focus-within:border-green">
-          <label className="flex items-center gap-2 px-4">
-            <span className="text-ink-muted"><SearchIcon /></span>
-            <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Poste, Maison, mot-clé…" aria-label="Poste, Maison ou mot-clé" className="t-ui w-full bg-transparent outline-none placeholder:text-ink-muted" />
-          </label>
-          <label className="flex items-center gap-2 border-l border-ink/15 px-4">
-            <span className="text-ink-muted"><PinIcon /></span>
-            <input type="search" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Ville, région ou pays" aria-label="Ville, région ou pays" className="t-ui w-full bg-transparent outline-none placeholder:text-ink-muted" />
-          </label>
-          <button type="submit" className="btn btn--primary rounded-l-none border-0 px-6">Rechercher <Arrow /></button>
-        </form>
+      {/* ————— Barre de recherche posée sur le bas du hero — SearchPill pour
+          retrouver l'autocomplete (régression corrigée : les inputs nus de la
+          refonte avaient perdu les suggestions que l'ancienne home avait). ————— */}
+      <div className="container relative z-[2] -mt-7 text-ink">
+        <SearchPill
+          size="hero"
+          query={query}
+          onQueryChange={setQuery}
+          city={city}
+          onCityChange={setCity}
+          onSubmit={({ query: q, city: c }) => {
+            const p = new URLSearchParams();
+            if (q) p.set('q', q);
+            if (c) p.set('ville', c);
+            router.push(p.toString() ? `/emplois?${p}` : '/emplois');
+          }}
+        />
       </div>
 
       {/* ————— Intro éditoriale (4+6) ————— */}

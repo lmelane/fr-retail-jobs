@@ -24,7 +24,7 @@ export async function SiteFooter() {
       <div className="mx-auto grid max-w-[var(--fa-container)] grid-cols-1 gap-x-10 gap-y-12 px-6 pt-16 pb-10 md:grid-cols-3">
         {/* Marque */}
         <div>
-          <span className="text-ink" style={{ font: '400 22px/1 var(--fa-font-display)', letterSpacing: '2px', textTransform: 'uppercase' }}>
+          <span className="wordmark text-ink">
             Fashion Atlas
           </span>
           <p className="t-body2 muted mt-4 max-w-[34ch]">

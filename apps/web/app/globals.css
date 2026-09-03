@@ -155,7 +155,9 @@
 .btn svg { width: 16px; height: 16px; stroke-width: 1.25; }
 
 /* ——————————————————————————— Grille & conteneurs (§2.5, réf maquettes) ——————————————————————————— */
+.wordmark { font: 400 22px/1 var(--fa-font-display); letter-spacing: 2px; text-transform: uppercase; }
 .container { max-width: var(--fa-container); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+.container-wide { max-width: var(--fa-container-wide); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
 .g12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--fa-gutter); row-gap: 16px; }
 .c4 { grid-column: span 4; } .c6 { grid-column: span 6; } .s5 { grid-column: 5 / 11; }
 .section { padding: 120px 0 0; }
@@ -411,7 +413,10 @@
 .link-ghost:hover { color: var(--fa-green); }
 
 /* Search : Poste | Ville | Rechercher — 48px, filet vertical entre champs. */
-.search { display: grid; grid-template-columns: 1fr 1fr auto; height: 48px; border: 1px solid var(--fa-ink); border-radius: var(--fa-radius); background: var(--fa-paper); overflow: hidden; }
+/* PAS d'overflow:hidden ici : le panneau de suggestions (.dd, absolu) serait
+   clippé — bug vu en prod. Les coins droits sont arrondis par le bouton. */
+.search { display: grid; grid-template-columns: 1fr 1fr auto; height: 48px; border: 1px solid var(--fa-ink); border-radius: var(--fa-radius); background: var(--fa-paper); }
+.search--hero { height: 56px; }
 .search:focus-within { border-color: var(--fa-green); }
 /* .field : un champ (icône + input) réutilisable — barre de recherche /emplois
    ET champ « Rechercher une Maison » de l'annuaire (bordé, 34px). */
@@ -420,7 +425,7 @@
 .field svg { width: 18px; height: 18px; stroke: var(--fa-ink-muted); stroke-width: 1.25; fill: none; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 .field input { border: 0; outline: 0; background: transparent; font: 400 .9375rem/1 var(--fa-font-sans); color: var(--fa-ink); width: 100%; min-width: 0; }
 .field input::placeholder { color: var(--fa-ink-muted); }
-.search .btn { height: 48px; border-radius: 0; border: 0; }
+.search .btn { height: 100%; border-radius: 0 calc(var(--fa-radius) - 1px) calc(var(--fa-radius) - 1px) 0; border: 0; }
 
 /* Split-view : liste 480 | filet pointillé | détail. */
 .split { display: grid; grid-template-columns: 480px 1px minmax(0, 1fr); column-gap: 20px; align-items: start; }
@@ -483,7 +488,7 @@
   .search { grid-template-columns: 1fr; height: auto; }
   .search .field { height: 48px; }
   .search .field + .field { background-image: linear-gradient(to right, var(--fa-line) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; background-position: 50% 0; }
-  .search .btn { height: 48px; justify-content: center; }
+  .search .btn { height: 48px; justify-content: center; border-radius: 0 0 calc(var(--fa-radius) - 1px) calc(var(--fa-radius) - 1px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

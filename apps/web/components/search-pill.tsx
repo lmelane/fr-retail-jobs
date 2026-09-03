@@ -57,7 +57,7 @@ export function SearchPill({
   return (
     <form
       role="search"
-      className={cn('search mx-auto w-full', hero ? 'max-w-[760px]' : 'max-w-none', className)}
+      className={cn('search mx-auto w-full', hero ? 'search--hero max-w-[760px]' : 'max-w-none', className)}
       onSubmit={(event) => {
         event.preventDefault();
         onSubmit({ query: query.trim(), city: city.trim() });
