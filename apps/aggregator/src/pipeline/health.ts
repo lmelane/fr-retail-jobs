@@ -31,7 +31,23 @@ export type SourceHealth = {
   jobs: number;
   previous: number | null;
   note?: string;
+  /** "desc 62% date 0% pays 88% url 100%" — recorded on every run for trend. */
+  coverage?: string;
 };
+
+/**
+ * Field-coverage floors (audit L-02 generalized). A source can keep its volume
+ * while silently losing a field — 3 780 Eightfold offers lost their description
+ * behind a renamed API key and nothing alerted. Gated: description and apply
+ * URL, the two direct product promises. Date and country are RECORDED for
+ * trend but not gated — several honest feeds never ship them (LVMH has no date
+ * field at all), and a permanent alert is noise that trains people to ignore
+ * the digest; their fix is per-adapter work (F-05), tracked by the rates.
+ */
+const DESCRIPTION_FLOOR = 0.7;
+const URL_FLOOR = 0.99;
+/** Below this many offers, rates flap on nothing — skip the gate. */
+const COVERAGE_MIN_JOBS = 20;
 
 export type HealthReport = {
   checkedAt: Date;
@@ -86,11 +102,26 @@ export async function checkSourceHealth(
         jobs,
         previous: before,
         note: `${Math.round((1 - jobs / before) * 100)}% fewer offers than the previous run`,
+        coverage: coverageOf(stat),
       });
       continue;
     }
 
-    results.push({ source: stat.source, status: 'OK', jobs, previous: before });
+    // Volume held — but did the FIELDS? (The Eightfold failure mode.)
+    const fieldIncident = fieldCoverageIncident(stat);
+    if (fieldIncident) {
+      results.push({
+        source: stat.source,
+        status: 'DEGRADED',
+        jobs,
+        previous: before,
+        note: fieldIncident,
+        coverage: coverageOf(stat),
+      });
+      continue;
+    }
+
+    results.push({ source: stat.source, status: 'OK', jobs, previous: before, coverage: coverageOf(stat) });
   }
 
   await recordRun(prisma, results);
@@ -103,6 +134,24 @@ export async function checkSourceHealth(
     broken: results.filter((r) => r.status === 'BROKEN').length,
     incidents,
   };
+}
+
+function coverageOf(stat: IngestStats): string | undefined {
+  if (!stat.fetched) return undefined;
+  const pct = (n: number) => `${Math.round((n / stat.fetched) * 100)}%`;
+  return `desc ${pct(stat.withDescription)} date ${pct(stat.withDate)} pays ${pct(stat.withCountry)} url ${pct(stat.withUrl)}`;
+}
+
+/** The gate itself: a big-enough source below a floor is an incident. */
+function fieldCoverageIncident(stat: IngestStats): string | undefined {
+  if (stat.fetched < COVERAGE_MIN_JOBS) return undefined;
+  if (stat.withDescription / stat.fetched < DESCRIPTION_FLOOR) {
+    return `descriptions manquantes sur ${Math.round((1 - stat.withDescription / stat.fetched) * 100)}% des offres`;
+  }
+  if (stat.withUrl / stat.fetched < URL_FLOOR) {
+    return `URL de candidature invalide/vide sur ${stat.fetched - stat.withUrl} offres`;
+  }
+  return undefined;
 }
 
 /**
@@ -135,7 +184,9 @@ async function recordRun(prisma: PrismaClient, results: SourceHealth[]): Promise
           status: result.status,
           jobs: result.jobs,
           previousJobs: result.previous,
-          note: result.note,
+          // The coverage rates ride along on EVERY run, incident or not: they
+          // are the trend the next regression gets caught against.
+          note: [result.note, result.coverage].filter(Boolean).join(' · ') || null,
           ranAt: now,
         },
       }),

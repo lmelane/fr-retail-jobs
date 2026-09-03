@@ -56,7 +56,25 @@ export type IngestStats = {
   merged: number;
   updated: number;
   errors: number;
+  /**
+   * Field-coverage counters (audit L-02 generalized, décision Loïc 2026-09-03):
+   * a source can return the right VOLUME while silently losing a field — the
+   * Eightfold descriptions vanished on 3 780 offers behind a renamed API key,
+   * LVMH ships no dates, Teamtailor can ship empty URLs. Health gates on these.
+   */
+  withDescription: number;
+  withDate: number;
+  withCountry: number;
+  withUrl: number;
 };
+
+/** One place decides what "the field is filled" means, for every ingest path. */
+export function noteFieldCoverage(stats: IngestStats, job: NormalizedJob): void {
+  if ((job.description?.length ?? 0) >= 200) stats.withDescription++;
+  if (job.postedAt) stats.withDate++;
+  if (job.country) stats.withCountry++;
+  if (/^https?:\/\//.test(job.url ?? '')) stats.withUrl++;
+}
 
 function toCandidate(
   job: NormalizedJob,
@@ -155,6 +173,10 @@ async function ingestSitemapSource(
     merged: 0,
     updated: 0,
     errors: 0,
+    withDescription: 0,
+    withDate: 0,
+    withCountry: 0,
+    withUrl: 0,
   };
 
   // Sitemaps repeat themselves (shards overlap, alternates duplicate); a URL
@@ -232,6 +254,7 @@ async function ingestSitemapSource(
         if (inSector) stats.inSector++;
 
         if (isFranceJob(job.country, job.location)) stats.france++;
+        noteFieldCoverage(stats, job);
 
         try {
           // A sitemap/JSON-LD source genuinely is GENERIC_JSONLD.
@@ -339,6 +362,7 @@ async function ingestApiSource(
   const stats: IngestStats = {
     source: sourceKeyFor(source),
     fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 0,
+    withDescription: 0, withDate: 0, withCountry: 0, withUrl: 0,
   };
 
   const type = KIND_TO_ATS[source.kind];
@@ -413,6 +437,7 @@ async function ingestApiSource(
      */
     stats.inSector++;
     if (isFranceJob(job.country, job.location)) stats.france++;
+    noteFieldCoverage(stats, job);
 
     try {
       // The catalogue feed carries its real vendor ATS (WORKDAY, GREENHOUSE…).
@@ -575,6 +600,7 @@ export async function runIngest(
       results.push({
         source: sourceKeyFor(source),
         fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 1,
+        withDescription: 0, withDate: 0, withCountry: 0, withUrl: 0,
       });
       console.error(`[ingest] ${sourceKeyFor(source)} failed: ${briefError(error)}`);
     }
@@ -598,6 +624,7 @@ export async function runIngest(
         merged: 0,
         updated: 0,
         errors: 1,
+       withDescription: 0, withDate: 0, withCountry: 0, withUrl: 0,
       });
       console.error(
         `[ingest] ${source.key} failed:`,

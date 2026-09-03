@@ -15,6 +15,7 @@ const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 
 import { runRefresh } from './pipeline/refresh.js';
 import { runReconcile } from './pipeline/reconcile.js';
 import { separateFusedJobs } from './pipeline/separateFused.js';
+import { retireSource } from './pipeline/retireSource.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
 import { runStats } from './pipeline/stats.js';
 import { exportCompanies } from './export/companies.js';
@@ -127,6 +128,16 @@ try {
     }
   } else if (command === 'reconcile') {
     console.log(JSON.stringify({ ok: true, command, ...(await runReconcile(prisma)) }, null, 2));
+  } else if (command === 'retire-source') {
+    /**
+     * Cleans up after a catalogue line is removed (a robots-forbidden route, an
+     * abandoned Flux B board): detaches the retired source's JobSource rows,
+     * deletes jobs nothing else backs, reassigns canonical URLs it owned.
+     * Guarded: destructive on purpose, so the key must be explicit.
+     */
+    const key = process.argv[3];
+    if (!key || key.startsWith('--')) throw new Error('retire-source needs the sourceKey to retire');
+    console.log(JSON.stringify({ ok: true, command, ...(await retireSource(prisma, key)) }, null, 2));
   } else if (command === 'separate-fused') {
     /**
      * One-shot repair for audit D-01: splits openings a single source published

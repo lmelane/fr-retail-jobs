@@ -67,7 +67,7 @@ async function job(opts: {
 }
 
 function stat(source: string, produced: number): IngestStats {
-  return { source, fetched: produced, inSector: produced, france: produced, created: produced, merged: 0, updated: 0, errors: 0 };
+  return { source, fetched: produced, inSector: produced, france: produced, created: produced, merged: 0, updated: 0, errors: 0, withDescription: produced, withDate: produced, withCountry: produced, withUrl: produced };
 }
 
 async function recordHealth(sourceKey: string, status: string, jobs: number) {
