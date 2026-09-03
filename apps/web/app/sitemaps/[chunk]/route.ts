@@ -9,7 +9,11 @@ import { sitemapCompanies, sitemapOffersChunk } from '@/lib/jobs';
  * /sitemaps/N (N ≥ 1) = la tranche d'offres N, 5 000 URLs, paginée en base
  * par id croissant (stable entre régénérations). lastmod = updatedAt.
  */
-export const revalidate = 3600;
+// force-dynamic + Cache-Control explicite : avec `revalidate`, Next PRÉ-REND
+// la route au BUILD — sur Railway la base interne y est injoignable et un 404
+// prérendu a été figé et servi en prod (constaté: x-nextjs-prerender sur 404).
+export const dynamic = 'force-dynamic';
+const CACHE_HEADER = 'public, s-maxage=3600, stale-while-revalidate=600';
 
 const XML_HEAD = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
