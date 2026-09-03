@@ -33,7 +33,16 @@ const CNAME_FINGERPRINTS: ReadonlyArray<readonly [RegExp, AtsType]> = [
   [/avature\.net/i, 'AVATURE'],
   [/phenompeople\.com|phenom\.com/i, 'PHENOM'],
   [/welcomekit\.co|welcometothejungle\.com/i, 'WTTJ'],
-  [/talentsoft\.com|talent-soft\.com|cegid\.com/i, 'TALENTSOFT'],
+  [/talentsoft\.com|talent-soft\.com|cegid\.(com|cloud)/i, 'TALENTSOFT'],
+  // Providers we recognise but have NO adapter for yet: fingerprinting them still
+  // wins — the brand's careers page enters the review queue (as GENERIC_JSONLD)
+  // with the ATS named in the note, so a human knows exactly which adapter to
+  // wire. Kept as UNKNOWN here; detectionFromTechScan maps them to a review entry.
+  [/taleo\.net/i, 'UNKNOWN'],
+  [/icims\.com/i, 'UNKNOWN'],
+  [/flatchr\.io/i, 'UNKNOWN'],
+  [/jobvite\.com/i, 'UNKNOWN'],
+  [/factorial(hr)?\.(com|fr|es)/i, 'UNKNOWN'],
 ];
 
 type DohAnswer = { Answer?: { type: number; data: string }[] };

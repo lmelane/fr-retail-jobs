@@ -217,9 +217,9 @@ async function probeDigitalRecruiters(domainName: string): Promise<boolean> {
  * Returns null when nothing confirms real postings.
  */
 /** An AtsDetection from a tech-scan hit — the careers host + its identified ATS. */
-function detectionFromTechScan(ats: AtsType, careersHost: string): AtsDetection | null {
+function detectionFromTechScan(ats: AtsType, careersHost: string, cname: string): AtsDetection | null {
   const careersUrl = `https://${careersHost}`;
-  const note = `Tech-scan: ${careersHost} CNAMEs to ${ats}; no page read.`;
+  const note = `Tech-scan: ${careersHost} CNAMEs to ${cname || ats}; no page read.`;
   switch (ats) {
     case 'DIGITALRECRUITERS':
       return { type: ats, careersUrl, config: { domainName: careersHost }, confidence: 0.95, note };
@@ -231,10 +231,11 @@ function detectionFromTechScan(ats: AtsType, careersHost: string): AtsDetection 
     case 'SUCCESSFACTORS':
       return { type: ats, careersUrl, config: { origin: careersUrl }, confidence: 0.85, note };
     default:
-      // ATS whose adapter needs a slug/tenant we can't derive from the host alone
-      // (Workday tenant, SmartRecruiters company…): record the careers page for
-      // review rather than an unusable config.
-      return { type: 'GENERIC_JSONLD', careersUrl, config: { startUrl: careersUrl }, confidence: 0.6, note: `${note} (needs slug — review)` };
+      // A provider we recognise but have no ready-to-use config for (Workday needs
+      // a tenant, Taleo/iCIMS have no adapter yet): record the careers page for
+      // review with the provider named in the note, so a human knows exactly which
+      // adapter to wire — rather than an unusable config or a silent drop.
+      return { type: 'GENERIC_JSONLD', careersUrl, config: { startUrl: careersUrl }, confidence: 0.6, note: `${note} (adapter/slug needed — review)` };
   }
 }
 
@@ -249,7 +250,7 @@ export async function probeAtsBySlug(
   // blind probing. Cheapest and most reliable signal, so it leads.
   const scan = await techScanHostnames(careersDomainCandidates(companyName, siteUrl));
   if (scan) {
-    const detection = detectionFromTechScan(scan.ats, scan.host);
+    const detection = detectionFromTechScan(scan.ats, scan.host, scan.cname);
     if (detection) return detection;
   }
 
