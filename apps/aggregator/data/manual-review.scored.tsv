@@ -1,0 +1,766 @@
+maison	kind	score	verdict	signals	board_name	jobs	sample_url	reason
+Figaret Paris	wttj	0.5	AUTO-VALIDE	ancre-site(+0.5)	Figaret	2	https://www.welcometothejungle.com/fr/companies/figaret/jobs/alternance-assistant-responsable-comptable_paris	board name "Figaret" ≠ maison
+Polaroid Corporation	recruitee	0.5	AUTO-VALIDE	ancre-site(+0.5)	Homepage	15	https://polaroid.recruitee.com/o/validation-architecture-engineer	board name "Homepage" ≠ maison
+Ampère	recruitee	0.3	HUMAIN	domaine(+0.3)	homepage	11	https://werkenbijampere.nl/o/team-lead-depot-eindhoven-1	INDÉCIDABLE/FAUX POSITIF — werkenbijampere.nl = depot de livraison NL — le domaine matche le NOM mais pas la maison : faux positif (piege de la regle domaine)
+JAEGER	recruitee	0.3	HUMAIN	domaine(+0.3)	Homepage	10	https://jobs.jaeger-ttc.com/o/maschinen-und-anlagenfuhrer-beschichten-mwd	INDÉCIDABLE/FAUX POSITIF — titres = industriel du revetement (Beschichten) — pas la maison Jaeger : faux positif
+Siebel	recruitee	0.3	HUMAIN	domaine(+0.3)	Homepage	22	https://werken-bij.siebeljuweliers.nl/o/verkoopmedewerker-roosendaal-outlet-3	doublon orthographe — validé sous « Siebel Juweliers »
+Yaya	recruitee	0.3	HUMAIN	domaine(+0.3)	Homepage	25	https://jobs.yaya.eu/o/area-visual-merchandiser-wmd-fur-rheinland-pfalz-hessen-teilzeit-bis-32-h	doublon orthographe — validé sous « YAYA »
+Columbia	wttj	0.2	HUMAIN	nom(+0.2)	Columbia Sportswear Company	4	https://www.welcometothejungle.com/fr/companies/columbia/jobs/consumer-care-specialist-backline-cdd_schiltigheim	doublon orthographe — validé sous « Columbia Sportswear »
+Cotton On Group	smartrecruiters-whitelabel	0.2	HUMAIN	nom(+0.2)	Cotton On	3	https://jobs.smartrecruiters.com/cottonon/743999671133359	doublon orthographe — validé sous « Cotton On »
+DIM	greenhouse	0.2	HUMAIN	nom(+0.2)	DIM	43	https://job-boards.greenhouse.io/dim/jobs/8050647	doublon orthographe — validé sous « Dim »
+Hush	lever	0.2	HUMAIN	nom(+0.2) site-injoignable(0)	HUSH	11	https://jobs.lever.co/hush/33691840-09fa-4f00-a46b-1715402f4ddd	INDÉCIDABLE/FAUX POSITIF — titres = studio de design NYC (architectural designer) — ni la marque mode UK ni la skincare : faux positif probable pour les 2
+Hush & Hush	lever	0.2	HUMAIN	nom(+0.2)	HUSH	11	https://jobs.lever.co/hush/33691840-09fa-4f00-a46b-1715402f4ddd	INDÉCIDABLE/FAUX POSITIF — idem — faux positif probable
+PEP	greenhouse	0.2	HUMAIN	nom(+0.2)	Pep	6	https://job-boards.greenhouse.io/pep/jobs/8658850002	INDÉCIDABLE/FAUX POSITIF — board "Pep" titres tech sales — pas Pep&Co (retail UK) : faux positif probable pour les 2
+Pep&Co	greenhouse	0.2	HUMAIN	nom(+0.2)	Pep	6	https://job-boards.greenhouse.io/pep/jobs/8658850002	INDÉCIDABLE/FAUX POSITIF — idem
+JAKO-O	personio	0.2	HUMAIN	nom(+0.2)	JAKO AG	20	https://jako.jobs.personio.de/job/1280438	doublon orthographe — validé sous « Jako — board JAKO AG = equipementier, pas JAKO-O »
+Lindex Group	teamtailor	0.2	HUMAIN	nom(+0.2) site-injoignable(0)	Lindex	7	https://lindex.teamtailor.com/jobs/2122798-store-sales-manager	doublon orthographe — validé sous « Lindex »
+Multiopticas	teamtailor	0.2	HUMAIN	nom(+0.2)	Multiópticas	86	https://multiopticas.teamtailor.com/jobs/7971285-director-a-optica-madrid	doublon orthographe — validé sous « Multiópticas »
+Avani	greenhouse	0.2	HUMAIN	nom(+0.2)	Avani Media	0		board name adds business-domain word "media" — likely a different company
+Code	personio	0.2	HUMAIN	nom(+0.2)	CODE Education GmbH	0		board name adds business-domain word "education" — likely a different company
+NIA	personio	0.2	HUMAIN	nom(+0.2)	Nia Health GmbH	0		board name adds business-domain word "health" — likely a different company
+Florence	lever	0.2	HUMAIN	nom(+0.2)	Florence Health	0		board name adds business-domain word "health" — likely a different company
+Saylor	greenhouse	0.2	HUMAIN	nom(+0.2)	Saylor Agency	0		board name adds business-domain word "agency" — likely a different company
+Solera	greenhouse	0.2	HUMAIN	nom(+0.2)	Solera Health	0		board name adds business-domain word "health" — likely a different company
+Supreme	greenhouse	0.2	HUMAIN	nom(+0.2)	Supreme HVAC	0		board name adds business-domain word "hvac" — likely a different company
+TCM	personio	0.2	HUMAIN	nom(+0.2)	TCM Systems GmbH	0		board name adds business-domain word "systems" — likely a different company
+[ p H 7 ]	smartrecruiters-whitelabel	0	AUTO-REJETE		ph7	46	https://jobs.smartrecruiters.com/ph7/102828781	board name "ph7" ≠ maison
+1979 Swimwear	smartrecruiters-whitelabel	0	AUTO-REJETE		1979	2	https://jobs.smartrecruiters.com/1979/743999675580235	board name "1979" ≠ maison
+Amanda Ross Skin Care	wttj	0	AUTO-REJETE		Amanda	3	https://www.welcometothejungle.com/fr/companies/amanda/jobs/consultant-animateur-ice-h-f-france_paris	board name "Amanda" ≠ maison
+Amazon	personio	0	AUTO-REJETE			3	https://amazon.jobs.personio.de/job/1680079	no board name to compare
+Ampere Creations	recruitee	0	AUTO-REJETE		homepage	11	https://werkenbijampere.nl/o/team-lead-depot-eindhoven-1	board name "homepage" ≠ maison
+Angela Caglia Skincare	personio	0	AUTO-REJETE			3	https://angela.jobs.personio.de/job/1995714	no board name to compare
+Angela Kim Couture	personio	0	AUTO-REJETE			3	https://angela.jobs.personio.de/job/1995714	no board name to compare
+Angela Pinto	personio	0	AUTO-REJETE			3	https://angela.jobs.personio.de/job/1995714	no board name to compare
+Anton & Willem	personio	0	AUTO-REJETE		ANTON	11	https://anton.jobs.personio.de/job/834888	board name "ANTON" ≠ maison
+Anton Heunis	personio	0	AUTO-REJETE		ANTON	11	https://anton.jobs.personio.de/job/834888	board name "ANTON" ≠ maison
+Anton Sport	personio	0	HUMAIN	site-injoignable(0)	ANTON	11	https://anton.jobs.personio.de/job/834888	board name "ANTON" ≠ maison
+APL: Athletic Propulsion Labs	teamtailor	0	AUTO-REJETE		APL	5	https://apl.teamtailor.com/jobs/8292718-farmaceut-till-kungens-kurva	board name "APL" ≠ maison
+Arc'teryx	teamtailor	0	AUTO-REJETE		Arc	9	https://arc.teamtailor.com/jobs/8287130-workshop-apprentice-it-basildon	board name "Arc" ≠ maison
+Aristo Shmat	personio	0	AUTO-REJETE		Lenyx Logistik & Service GmbH	10	https://aristo.jobs.personio.de/job/2554817	board name "Lenyx Logistik & Service GmbH" ≠ maison
+ART	personio	0	AUTO-REJETE			3	https://art.jobs.personio.de/job/403330	no board name to compare
+Art & Create	personio	0	HUMAIN	site-injoignable(0)		3	https://art.jobs.personio.de/job/403330	no board name to compare
+Art Disco	personio	0	AUTO-REJETE			3	https://art.jobs.personio.de/job/403330	no board name to compare
+Art of Vedas	personio	0	AUTO-REJETE			3	https://art.jobs.personio.de/job/403330	no board name to compare
+Art-93	personio	0	HUMAIN	site-injoignable(0)		3	https://art.jobs.personio.de/job/403330	no board name to compare
+Art'Abaska	personio	0	AUTO-REJETE			3	https://art.jobs.personio.de/job/403330	no board name to compare
+ASK SCANDINAVIA	teamtailor	0	AUTO-REJETE		Scientific Group	3	https://ask.teamtailor.com/jobs/8251374-account-director-fixed-term-contract	board name "Scientific Group" ≠ maison
+Aura Hair Mist™	greenhouse	0	AUTO-REJETE		Aura	5	https://auraframes.com/careers?gh_jid=8723264002	board name "Aura" ≠ maison
+Aura Moda Italiana	greenhouse	0	AUTO-REJETE		Aura	5	https://auraframes.com/careers?gh_jid=8723264002	board name "Aura" ≠ maison
+Aura Organics	greenhouse	0	AUTO-REJETE		Aura	5	https://auraframes.com/careers?gh_jid=8723264002	board name "Aura" ≠ maison
+Aura Que	greenhouse	0	AUTO-REJETE		Aura	5	https://auraframes.com/careers?gh_jid=8723264002	board name "Aura" ≠ maison
+Air Scense	greenhouse	0	AUTO-REJETE		Air	34	https://job-boards.greenhouse.io/air/jobs/4087693009	board name "Air" ≠ maison
+Air~Pourri	greenhouse	0	AUTO-REJETE		Air	34	https://job-boards.greenhouse.io/air/jobs/4087693009	board name "Air" ≠ maison
+AZUL BY MOUSSY	lever	0	AUTO-REJETE		Azul	17	https://jobs.lever.co/azul/e562ebc4-df65-4497-9a03-23443fb5d89d	board name "Azul" ≠ maison
+Air Cosmetik	teamtailor	0	AUTO-REJETE		AIR	63	https://air.teamtailor.com/jobs/8315945-informatore-trice-servizi-energia-tempo-pieno	board name "AIR" ≠ maison
+Bamboo Beauty Lifes	teamtailor	0	AUTO-REJETE		Bamboo	3	https://bamboo.teamtailor.com/jobs/7910584-senior-it-infrastructure-auditor	board name "Bamboo" ≠ maison
+Bamboo Basics	teamtailor	0	AUTO-REJETE		Bamboo	3	https://bamboo.teamtailor.com/jobs/7910584-senior-it-infrastructure-auditor	board name "Bamboo" ≠ maison
+Bamboo Cay	teamtailor	0	AUTO-REJETE		Bamboo	3	https://bamboo.teamtailor.com/jobs/7910584-senior-it-infrastructure-auditor	board name "Bamboo" ≠ maison
+Bamboo Trading Company	teamtailor	0	AUTO-REJETE		Bamboo	3	https://bamboo.teamtailor.com/jobs/7910584-senior-it-infrastructure-auditor	board name "Bamboo" ≠ maison
+bebe	personio	0	AUTO-REJETE		Skip Intro Gesellschaft für Medienproduktionen mbH	1	https://bebe.jobs.personio.de/job/1333362	board name "Skip Intro Gesellschaft für Medienproduktionen mbH" ≠ maison
+Bébé Lune Studio	personio	0	HUMAIN	site-injoignable(0)	Skip Intro Gesellschaft für Medienproduktionen mbH	1	https://bebe.jobs.personio.de/job/1333362	board name "Skip Intro Gesellschaft für Medienproduktionen mbH" ≠ maison
+Bebe Stores	personio	0	AUTO-REJETE		Skip Intro Gesellschaft für Medienproduktionen mbH	1	https://bebe.jobs.personio.de/job/1333362	board name "Skip Intro Gesellschaft für Medienproduktionen mbH" ≠ maison
+Bentley	personio	0	AUTO-REJETE			10	https://bentley.jobs.personio.de/job/916224	no board name to compare
+Bespoke Post	wttj	0	HUMAIN	site-injoignable(0)	Bespoke	8	https://www.welcometothejungle.com/fr/companies/bespoke/jobs/developpeur-web-fullstack-f-h-cdi-rousset_rousset	board name "Bespoke" ≠ maison
+Best Company	personio	0	AUTO-REJETE			6	https://best.jobs.personio.de/job/2771501	no board name to compare
+Best&Less	personio	0	AUTO-REJETE			6	https://best.jobs.personio.de/job/2771501	no board name to compare
+Best Earth Goods	personio	0	AUTO-REJETE			6	https://best.jobs.personio.de/job/2771501	no board name to compare
+Bettina Bensinger	wttj	0	HUMAIN	site-injoignable(0)	Bettina	7	https://www.welcometothejungle.com/fr/companies/bettina/jobs/assistant-de-collection_monaco_BETTI_kGW1eJz	board name "Bettina" ≠ maison
+Bettina Vermillon	wttj	0	AUTO-REJETE		Bettina	7	https://www.welcometothejungle.com/fr/companies/bettina/jobs/assistant-de-collection_monaco_BETTI_kGW1eJz	board name "Bettina" ≠ maison
+Beyond Good	greenhouse	0	AUTO-REJETE		Beyond	4	https://www.beyondpricing.com/about/careers?gh_jid=4716418005#jobs	board name "Beyond" ≠ maison
+Beyond Retro	greenhouse	0	AUTO-REJETE		Beyond	4	https://www.beyondpricing.com/about/careers?gh_jid=4716418005#jobs	board name "Beyond" ≠ maison
+Beyond Yoga	greenhouse	0	AUTO-REJETE		Beyond	4	https://www.beyondpricing.com/about/careers?gh_jid=4716418005#jobs	board name "Beyond" ≠ maison
+Birch Babe	personio	0	AUTO-REJETE			3	https://birch.jobs.personio.de/job/1533068	no board name to compare
+Birch Beauty	personio	0	AUTO-REJETE			3	https://birch.jobs.personio.de/job/1533068	no board name to compare
+Blend Bunny Cosmetics	greenhouse	0	AUTO-REJETE		Blend	9	https://job-boards.greenhouse.io/blend/jobs/6148697004	board name "Blend" ≠ maison
+Bleu Cerise	wttj	0	AUTO-REJETE		Bleu	17	https://www.welcometothejungle.com/fr/companies/bleu/jobs/ingenieur-senior-operation-m365-entra-id_bagneux_BLEU_x0xwrmp	board name "Bleu" ≠ maison
+Bleu Jean Beauty Co	wttj	0	AUTO-REJETE		Bleu	17	https://www.welcometothejungle.com/fr/companies/bleu/jobs/ingenieur-senior-operation-m365-entra-id_bagneux_BLEU_x0xwrmp	board name "Bleu" ≠ maison
+Bliss	recruitee	0	AUTO-REJETE		homepage	6	https://bliss.recruitee.com/o/senior-associate	board name "homepage" ≠ maison
+Bloom Cosmetics	smartrecruiters-whitelabel	0	AUTO-REJETE		Bloom	2	https://jobs.smartrecruiters.com/bloom/743999719068426	board name "Bloom" ≠ maison
+Branch Basics	greenhouse	0	AUTO-REJETE		Branch	8	https://job-boards.greenhouse.io/branch/jobs/7902638003	board name "Branch" ≠ maison
+Brave Planet	greenhouse	0	HUMAIN	site-injoignable(0)	Brave	15	https://job-boards.greenhouse.io/brave/jobs/8165845	board name "Brave" ≠ maison
+Brave Soles	greenhouse	0	AUTO-REJETE		Brave	15	https://job-boards.greenhouse.io/brave/jobs/8165845	board name "Brave" ≠ maison
+Brave Soul	greenhouse	0	AUTO-REJETE		Brave	15	https://job-boards.greenhouse.io/brave/jobs/8165845	board name "Brave" ≠ maison
+BROADWAY NYC FASHION	greenhouse	0	AUTO-REJETE		Broadway Veterinary Clinic	4	https://boards.greenhouse.io/broadway/jobs/5040356002?gh_jid=5040356002	board name "Broadway Veterinary Clinic" ≠ maison
+Brothers We Stand	teamtailor	0	AUTO-REJETE		Brothers	10	https://brothers.teamtailor.com/jobs/8009477-assistant-store-manager-till-brothers-allum-partille	board name "Brothers" ≠ maison
+Apm	personio	0	AUTO-REJETE			2	https://apm.jobs.personio.de/job/141407	no board name to compare
+Bruce Field	teamtailor	0	AUTO-REJETE		Bruce Studios	4	https://bruce.teamtailor.com/jobs/8246049-partner-coordinator-to-bruce-studios	board name "Bruce Studios" ≠ maison
+Buddy & Hope	teamtailor	0	HUMAIN	site-injoignable(0)	Buddy AB	1	https://buddy.teamtailor.com/jobs/5007179-teknisk-saljare-inom-iot	board name "Buddy AB" ≠ maison
+Buff City Soap	personio	0	AUTO-REJETE		Original BUFF, S.A.	4	https://buff.jobs.personio.de/job/1497679	board name "Original BUFF, S.A." ≠ maison
+Buff Experts	personio	0	AUTO-REJETE		Original BUFF, S.A.	4	https://buff.jobs.personio.de/job/1497679	board name "Original BUFF, S.A." ≠ maison
+Burnt	greenhouse	0	AUTO-REJETE		XION	8	https://job-boards.greenhouse.io/burnt/jobs/4023066008	board name "XION" ≠ maison
+Burt's Bees	teamtailor	0	AUTO-REJETE		Burt Intelligence	3	https://burt.teamtailor.com/jobs/8198798-solutions-engineer-junior-philippines	board name "Burt Intelligence" ≠ maison
+Burt's Bees Baby	teamtailor	0	AUTO-REJETE		Burt Intelligence	3	https://burt.teamtailor.com/jobs/8198798-solutions-engineer-junior-philippines	board name "Burt Intelligence" ≠ maison
+Butter	teamtailor	0	AUTO-REJETE		All Gravy	23	https://butter.teamtailor.com/jobs/8308636-engineering-team-lead-learning	board name "All Gravy" ≠ maison
+Butter & Me	teamtailor	0	AUTO-REJETE		All Gravy	23	https://butter.teamtailor.com/jobs/8308636-engineering-team-lead-learning	board name "All Gravy" ≠ maison
+Butter'd Bodycare	teamtailor	0	AUTO-REJETE		All Gravy	23	https://butter.teamtailor.com/jobs/8308636-engineering-team-lead-learning	board name "All Gravy" ≠ maison
+Cala de la Cruz	personio	0	AUTO-REJETE			2	https://cala.jobs.personio.de/job/2746807	no board name to compare
+CALM Skin Care	greenhouse	0	AUTO-REJETE		Calm.com	1	https://job-boards.greenhouse.io/calm/jobs/8748033002	board name "Calm.com" ≠ maison
+Calzedonia	wttj	0	AUTO-REJETE		ONIVERSE	107	https://www.welcometothejungle.com/fr/companies/calzedonia/jobs/conseiller-de-vente-calzedonia-cdd-35h-menton_menton_ONIVE_q75bYxV	board name "ONIVERSE" ≠ maison
+CAMP DAVID	greenhouse	0	AUTO-REJETE		CAMP	35	https://job-boards.greenhouse.io/camp/jobs/8723373002	board name "CAMP" ≠ maison
+Camp Cove Swim	greenhouse	0	AUTO-REJETE		CAMP	35	https://job-boards.greenhouse.io/camp/jobs/8723373002	board name "CAMP" ≠ maison
+Camp High	greenhouse	0	HUMAIN	site-injoignable(0)	CAMP	35	https://job-boards.greenhouse.io/camp/jobs/8723373002	board name "CAMP" ≠ maison
+Carla Ferreri	teamtailor	0	AUTO-REJETE		Carla	12	https://carla.teamtailor.com/jobs/8211906-spontanansokan-produktion-kungsangen	board name "Carla" ≠ maison
+Carla Zampatti Pty Ltd	teamtailor	0	AUTO-REJETE		Carla	12	https://carla.teamtailor.com/jobs/8211906-spontanansokan-produktion-kungsangen	board name "Carla" ≠ maison
+Casa Amuk	greenhouse	0	AUTO-REJETE		Casa	1	https://job-boards.greenhouse.io/casa/jobs/5175872007	board name "Casa" ≠ maison
+CASA FLINE	greenhouse	0	AUTO-REJETE		Casa	1	https://job-boards.greenhouse.io/casa/jobs/5175872007	board name "Casa" ≠ maison
+Casa Das Peles	greenhouse	0	AUTO-REJETE		Casa	1	https://job-boards.greenhouse.io/casa/jobs/5175872007	board name "Casa" ≠ maison
+Casa Raki	greenhouse	0	AUTO-REJETE		Casa	1	https://job-boards.greenhouse.io/casa/jobs/5175872007	board name "Casa" ≠ maison
+Casa Hair Care	greenhouse	0	AUTO-REJETE		Casa	1	https://job-boards.greenhouse.io/casa/jobs/5175872007	board name "Casa" ≠ maison
+Atlas Rose	personio	0	AUTO-REJETE		Atlas Bildungs Center e.V.	10	https://atlas.jobs.personio.de/job/2336343	board name "Atlas Bildungs Center e.V." ≠ maison
+Charles Clinkard	greenhouse	0	AUTO-REJETE		charles	3	https://job-boards.eu.greenhouse.io/charles/jobs/4690310101	board name "charles" ≠ maison
+Charles Colby	greenhouse	0	HUMAIN	site-injoignable(0)	charles	3	https://job-boards.eu.greenhouse.io/charles/jobs/4690310101	board name "charles" ≠ maison
+Charles Tyrwhitt	greenhouse	0	AUTO-REJETE		charles	3	https://job-boards.eu.greenhouse.io/charles/jobs/4690310101	board name "charles" ≠ maison
+Charlotte Bio	personio	0	AUTO-REJETE		Charlotte Bayern	4	https://charlotte.jobs.personio.de/job/501628	board name "Charlotte Bayern" ≠ maison
+Charlotte Grace	personio	0	AUTO-REJETE		Charlotte Bayern	4	https://charlotte.jobs.personio.de/job/501628	board name "Charlotte Bayern" ≠ maison
+Charlotte Knowles	personio	0	AUTO-REJETE		Charlotte Bayern	4	https://charlotte.jobs.personio.de/job/501628	board name "Charlotte Bayern" ≠ maison
+Charlotte Russe	personio	0	AUTO-REJETE		Charlotte Bayern	4	https://charlotte.jobs.personio.de/job/501628	board name "Charlotte Bayern" ≠ maison
+Charlotte Tilbury Beauty	personio	0	AUTO-REJETE		Charlotte Bayern	4	https://charlotte.jobs.personio.de/job/501628	board name "Charlotte Bayern" ≠ maison
+Cie Malibu	greenhouse	0	AUTO-REJETE		Cie	4	https://job-boards.greenhouse.io/cie/jobs/4701257006	board name "Cie" ≠ maison
+Circus NY	personio	0	HUMAIN	site-injoignable(0)	Circus SE	10	https://circus.jobs.personio.de/job/2726425	board name "Circus SE" ≠ maison
+Clara's New York	greenhouse	0	AUTO-REJETE		Clara 	117	https://job-boards.greenhouse.io/clara/jobs/5144766007	board name "Clara " ≠ maison
+Clear Beauty	greenhouse	0	AUTO-REJETE		CLEAR - Corporate	32	https://job-boards.greenhouse.io/clear/jobs/8154616	board name "CLEAR - Corporate" ≠ maison
+Clear Conscience	greenhouse	0	AUTO-REJETE		CLEAR - Corporate	32	https://job-boards.greenhouse.io/clear/jobs/8154616	board name "CLEAR - Corporate" ≠ maison
+Clear Label Skincare	greenhouse	0	AUTO-REJETE		CLEAR - Corporate	32	https://job-boards.greenhouse.io/clear/jobs/8154616	board name "CLEAR - Corporate" ≠ maison
+Clear Visage	greenhouse	0	AUTO-REJETE		CLEAR - Corporate	32	https://job-boards.greenhouse.io/clear/jobs/8154616	board name "CLEAR - Corporate" ≠ maison
+Bag-all	recruitee	0	AUTO-REJETE		Homepage	4	https://talents.brockhaus-ag.careers/o/ausbildung-zum-fachinformatikerin-fur-anwendungsentwicklung-ab-2027-2028	board name "Homepage" ≠ maison
+BAG AFFAIR	recruitee	0	AUTO-REJETE		Homepage	4	https://talents.brockhaus-ag.careers/o/ausbildung-zum-fachinformatikerin-fur-anwendungsentwicklung-ab-2027-2028	board name "Homepage" ≠ maison
+Cocoon Kapas	greenhouse	0	AUTO-REJETE		Cocoon	2	https://job-boards.greenhouse.io/cocoon/jobs/5821001004	board name "Cocoon" ≠ maison
+Banner Day	teamtailor	0	HUMAIN	site-injoignable(0)	Banner	2	https://banner.teamtailor.com/jobs/8264507-office-manager	board name "Banner" ≠ maison
+Cove Suncare	teamtailor	0	AUTO-REJETE		cove	1	https://cove.teamtailor.com/jobs/8293988-cove-hr-manager	board name "cove" ≠ maison
+CTS	greenhouse	0	AUTO-REJETE		CTS Cloud Trading Solutions LTD	2	https://job-boards.eu.greenhouse.io/cts/jobs/4861227101	board name "CTS Cloud Trading Solutions LTD" ≠ maison
+Current State	greenhouse	0	AUTO-REJETE		Current	7	https://job-boards.greenhouse.io/current/jobs/8686054002	board name "Current" ≠ maison
+Current/Elliott	greenhouse	0	AUTO-REJETE		Current	7	https://job-boards.greenhouse.io/current/jobs/8686054002	board name "Current" ≠ maison
+Dabble & Dollop	teamtailor	0	AUTO-REJETE		Dabble	7	https://dabble.teamtailor.com/jobs/8312728-product-manager-core-12-month-fixed-term-contract	board name "Dabble" ≠ maison
+Dash Hemp	teamtailor	0	HUMAIN	site-injoignable(0)	Dash	1	https://dash.teamtailor.com/jobs/8242410-ux-designer	board name "Dash" ≠ maison
+David & Sons Fine Jewelers	greenhouse	0	AUTO-REJETE		DAVID	8	https://job-boards.greenhouse.io/david/jobs/4716283005	board name "DAVID" ≠ maison
+David Deyong	greenhouse	0	AUTO-REJETE		DAVID	8	https://job-boards.greenhouse.io/david/jobs/4716283005	board name "DAVID" ≠ maison
+David Jones Limited	greenhouse	0	AUTO-REJETE		DAVID	8	https://job-boards.greenhouse.io/david/jobs/4716283005	board name "DAVID" ≠ maison
+David Koma	greenhouse	0	AUTO-REJETE		DAVID	8	https://job-boards.greenhouse.io/david/jobs/4716283005	board name "DAVID" ≠ maison
+David Morris	greenhouse	0	HUMAIN	site-injoignable(0)	DAVID	8	https://job-boards.greenhouse.io/david/jobs/4716283005	board name "DAVID" ≠ maison
+David Yurman	greenhouse	0	AUTO-REJETE		DAVID	8	https://job-boards.greenhouse.io/david/jobs/4716283005	board name "DAVID" ≠ maison
+David Gandy Well Wear	greenhouse	0	AUTO-REJETE		DAVID	8	https://job-boards.greenhouse.io/david/jobs/4716283005	board name "DAVID" ≠ maison
+David's Bridal	greenhouse	0	HUMAIN	site-injoignable(0)	DAVID	8	https://job-boards.greenhouse.io/david/jobs/4716283005	board name "DAVID" ≠ maison
+Betty & Co	personio	0	AUTO-REJETE			3	https://betty.jobs.personio.de/job/1319543	no board name to compare
+Betty and Biddy	personio	0	AUTO-REJETE			3	https://betty.jobs.personio.de/job/1319543	no board name to compare
+Betty Barclay	personio	0	AUTO-REJETE			3	https://betty.jobs.personio.de/job/1319543	no board name to compare
+Dillard's	greenhouse	0	AUTO-REJETE		Dillards	4	https://job-boards.greenhouse.io/dillards/jobs/4320107007	board name "Dillards" ≠ maison
+Donna Carolina	recruitee	0	AUTO-REJETE		Homepage	5	https://careers.askdonna.com/o/ai-data-analyst	board name "Homepage" ≠ maison
+Donna Dura	recruitee	0	AUTO-REJETE		Homepage	5	https://careers.askdonna.com/o/ai-data-analyst	board name "Homepage" ≠ maison
+Donna Karan	recruitee	0	AUTO-REJETE		Homepage	5	https://careers.askdonna.com/o/ai-data-analyst	board name "Homepage" ≠ maison
+Donna Sport	recruitee	0	AUTO-REJETE		Homepage	5	https://careers.askdonna.com/o/ai-data-analyst	board name "Homepage" ≠ maison
+Dots On Tots	greenhouse	0	AUTO-REJETE		Dots	1	https://job-boards.greenhouse.io/dots/jobs/93350	board name "Dots" ≠ maison
+Draeger Paris	recruitee	0	AUTO-REJETE		Homepage	6	https://draegerparis.recruitee.com/o/responsable-de-secteur-hf-35	board name "Homepage" ≠ maison
+Dutch Dandies	lever	0	AUTO-REJETE		Dutch	13	https://jobs.lever.co/dutch/dd00d86f-b444-4f82-8b86-2e2386d4de22	board name "Dutch" ≠ maison
+Dutch Dream Denim	lever	0	HUMAIN	site-injoignable(0)	Dutch	13	https://jobs.lever.co/dutch/dd00d86f-b444-4f82-8b86-2e2386d4de22	board name "Dutch" ≠ maison
+Dutch Label Shop	lever	0	AUTO-REJETE		Dutch	13	https://jobs.lever.co/dutch/dd00d86f-b444-4f82-8b86-2e2386d4de22	board name "Dutch" ≠ maison
+Dyad Fragrance	personio	0	AUTO-REJETE			3	https://dyad.jobs.personio.de/job/2733093	no board name to compare
+E.Leclerc	teamtailor	0	AUTO-REJETE		E.Leclerc Commission VFM	10	https://eleclerc.teamtailor.com/jobs/3504058-boulanger-h-f	board name "E.Leclerc Commission VFM" ≠ maison
+Earnest Mom	greenhouse	0	AUTO-REJETE		Earnest	9	https://app.careerpuck.com/job-board/earnest/job/8167670?gh_jid=8167670	board name "Earnest" ≠ maison
+EARNEST SEWN	greenhouse	0	AUTO-REJETE		Earnest	9	https://app.careerpuck.com/job-board/earnest/job/8167670?gh_jid=8167670	board name "Earnest" ≠ maison
+Eco Lips	teamtailor	0	AUTO-REJETE		TuoLavoro	60	https://eco.teamtailor.com/jobs/8313538-operatore-call-center-tecnologie-idriche	board name "TuoLavoro" ≠ maison
+Eco Intimates	teamtailor	0	AUTO-REJETE		TuoLavoro	60	https://eco.teamtailor.com/jobs/8313538-operatore-call-center-tecnologie-idriche	board name "TuoLavoro" ≠ maison
+Eco Tee Co	teamtailor	0	HUMAIN	site-injoignable(0)	TuoLavoro	60	https://eco.teamtailor.com/jobs/8313538-operatore-call-center-tecnologie-idriche	board name "TuoLavoro" ≠ maison
+Blue & Yellow	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+BLUE BIRD	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Blanket	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Blue Japan	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue By Betsey Johnson	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+BLUE CROSS	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Fire Co.	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue de Gênes	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Fire Pear	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+BLUE ERDOS	lever	0	HUMAIN	site-injoignable(0)	BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Inc	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Illusion	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Lake CBD	lever	0	HUMAIN	site-injoignable(0)	BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue LOOP Originals	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Industry	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Nude	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Nile	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Of A Kind	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Planet Eco-Eyewear	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Rebel	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Ridge Stitches	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+BLUE SEVEN	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+BLUE STANDARD	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Tribe	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Vanilla	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Crane	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Tomato	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Water Girls	lever	0	AUTO-REJETE		BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Blue Water Spa	lever	0	HUMAIN	site-injoignable(0)	BlueCloud Services, Inc.	10	https://jobs.lever.co/blue/cae65436-a504-4d91-a8fa-d3502fbd1242	board name "BlueCloud Services, Inc." ≠ maison
+Eleven Everything	recruitee	0	AUTO-REJETE		Homepage	1	https://eleven.recruitee.com/o/eleven-consulting-group	board name "Homepage" ≠ maison
+Eleven James	recruitee	0	AUTO-REJETE		Homepage	1	https://eleven.recruitee.com/o/eleven-consulting-group	board name "Homepage" ≠ maison
+Eleven Six	recruitee	0	AUTO-REJETE		Homepage	1	https://eleven.recruitee.com/o/eleven-consulting-group	board name "Homepage" ≠ maison
+Eleven W/shes	recruitee	0	AUTO-REJETE		Homepage	1	https://eleven.recruitee.com/o/eleven-consulting-group	board name "Homepage" ≠ maison
+Elite Jewelers	greenhouse	0	AUTO-REJETE		Elite Physical Therapy, Inc. 	12	https://job-boards.greenhouse.io/elite/jobs/5098501007	board name "Elite Physical Therapy, Inc. " ≠ maison
+Ember Wellness	recruitee	0	AUTO-REJETE		Homepage	22	https://ember.recruitee.com/o/intercity-bus-and-coach-driver-kirkcaldy	board name "Homepage" ≠ maison
+Enable the Label	lever	0	HUMAIN	site-injoignable(0)	Enable	2	https://jobs.lever.co/enable/4ecb9452-de46-4794-b08c-c37216c81121	board name "Enable" ≠ maison
+Equinox Fragrance	smartrecruiters-whitelabel	0	HUMAIN	site-injoignable(0)	Equinox	717	https://jobs.smartrecruiters.com/equinox/744000147093669	board name "Equinox" ≠ maison
+Espace Montagne	lever	0	AUTO-REJETE		E Space	144	https://jobs.lever.co/espace/6667b6d1-d1c4-4c8f-9a34-37766dcfab62	board name "E Space" ≠ maison
+Essential Parfums	greenhouse	0	AUTO-REJETE		Essential Anesthesia Management	96	https://job-boards.greenhouse.io/essential/jobs/5200910007	board name "Essential Anesthesia Management" ≠ maison
+ESW Beauty	greenhouse	0	AUTO-REJETE		ESW	4	https://job-boards.greenhouse.io/esw/jobs/8759111002	board name "ESW" ≠ maison
+Eternal Perfume Oils	lever	0	AUTO-REJETE			4	https://jobs.lever.co/eternal/69e24776-7d20-4051-a03f-51a41aad53fa	no board name to compare
+Eternal Leather Goods	lever	0	AUTO-REJETE			4	https://jobs.lever.co/eternal/69e24776-7d20-4051-a03f-51a41aad53fa	no board name to compare
+Eve in Paradise	greenhouse	0	AUTO-REJETE		Eve	36	https://job-boards.greenhouse.io/eve/jobs/4355010009	board name "Eve" ≠ maison
+Eve Lavoie	greenhouse	0	AUTO-REJETE		Eve	36	https://job-boards.greenhouse.io/eve/jobs/4355010009	board name "Eve" ≠ maison
+EVER Skincare	greenhouse	0	AUTO-REJETE		Ever	31	https://job-boards.greenhouse.io/ever/jobs/5350762008	board name "Ever" ≠ maison
+Evolution BIG SIZE	smartrecruiters-whitelabel	0	AUTO-REJETE		Evolution	300	https://jobs.smartrecruiters.com/evolution/744000147231231	board name "Evolution" ≠ maison
+Extreme Intimo	wttj	0	AUTO-REJETE		Extreme Agency	11	https://www.welcometothejungle.com/fr/companies/extreme/jobs/assistant-e-chef-de-projet-en-social-media_clichy	board name "Extreme Agency" ≠ maison
+Extreme Cashmere	wttj	0	AUTO-REJETE		Extreme Agency	11	https://www.welcometothejungle.com/fr/companies/extreme/jobs/assistant-e-chef-de-projet-en-social-media_clichy	board name "Extreme Agency" ≠ maison
+EXTREME POP	wttj	0	AUTO-REJETE		Extreme Agency	11	https://www.welcometothejungle.com/fr/companies/extreme/jobs/assistant-e-chef-de-projet-en-social-media_clichy	board name "Extreme Agency" ≠ maison
+Farfetch	lever	0	AUTO-REJETE			61	https://jobs.lever.co/farfetch/054a48bf-03d9-4a8e-9c54-d3895efeb4e4	no board name to compare
+Fifteen Twenty	wttj	0	AUTO-REJETE		Fifteen	4	https://www.welcometothejungle.com/fr/companies/fifteen/jobs/stage-customer-success-manager-h-f_issy-les-moulineaux	board name "Fifteen" ≠ maison
+Figure 1 Beauty	greenhouse	0	AUTO-REJETE		Figure Lending	11	https://job-boards.greenhouse.io/figure/jobs/8651103002	board name "Figure Lending" ≠ maison
+Filippa K	teamtailor	0	AUTO-REJETE			5	https://filippak.teamtailor.com/jobs/8285869-senior-product-developer-heavy-wovens-parental-leave-cover	no board name to compare
+Fleet Feet	greenhouse	0	AUTO-REJETE		Fleet Data Centers	46	https://job-boards.greenhouse.io/fleet/jobs/4336702009	board name "Fleet Data Centers" ≠ maison
+Flip*Flop	greenhouse	0	AUTO-REJETE		Flip	12	https://job-boards.greenhouse.io/flip/jobs/5365808008	board name "Flip" ≠ maison
+Flow	personio	0	AUTO-REJETE		FLOW media Berlin GmbH	3	https://flow.jobs.personio.de/job/1523279	board name "FLOW media Berlin GmbH" ≠ maison
+Fluency Beauty	greenhouse	0	AUTO-REJETE		Fluency	5	https://www.fluency.inc/careers?gh_jid=4311107009	board name "Fluency" ≠ maison
+Fortis Uhren	teamtailor	0	AUTO-REJETE		Fortis	4	https://fortis.teamtailor.com/jobs/7654663-saljare-pa-distans	board name "Fortis" ≠ maison
+Frame Denim	wttj	0	AUTO-REJETE		Frame	3	https://www.welcometothejungle.com/fr/companies/frame/jobs/consultant-senior_paris	board name "Frame" ≠ maison
+G-Form	personio	0	AUTO-REJETE		GFORM	4	https://gform.jobs.personio.de/job/2715810	board name "GFORM" ≠ maison
+Gainer Beauty LLC	teamtailor	0	AUTO-REJETE		Gainer Oy	1	https://gainer.teamtailor.com/jobs/8232181-varainhankkija	board name "Gainer Oy" ≠ maison
+Gate G1 One	lever	0	AUTO-REJETE		Gate	19	https://jobs.lever.co/gate/95959c87-5902-49f3-af6e-bed398271fad	board name "Gate" ≠ maison
+General Óptica	greenhouse	0	AUTO-REJETE		General Interest 	1	https://job-boards.greenhouse.io/general/jobs/7182645002	board name "General Interest " ≠ maison
+General Pants Co.	greenhouse	0	AUTO-REJETE		General Interest 	1	https://job-boards.greenhouse.io/general/jobs/7182645002	board name "General Interest " ≠ maison
+General Sleep	greenhouse	0	AUTO-REJETE		General Interest 	1	https://job-boards.greenhouse.io/general/jobs/7182645002	board name "General Interest " ≠ maison
+Genesis Footwear	lever	0	HUMAIN	site-injoignable(0)	Genesis Global	5	https://jobs.lever.co/genesis/1dee97e1-ac4a-40dd-b628-76d0c4da1a81	board name "Genesis Global" ≠ maison
+Genuine Myself	personio	0	AUTO-REJETE		Genuine Beauty GmbH	4	https://genuine.jobs.personio.de/job/2742655	board name "Genuine Beauty GmbH" ≠ maison
+Georges Rech	teamtailor	0	AUTO-REJETE		Georges	11	https://georges.teamtailor.com/jobs/8297011-chef-d-equipe-production-h-f	board name "Georges" ≠ maison
+Glide Sculpt	greenhouse	0	AUTO-REJETE		Glide	1	https://job-boards.greenhouse.io/glide/jobs/4020741007	board name "Glide" ≠ maison
+GLITTER FASHION	teamtailor	0	AUTO-REJETE		Glitter	32	https://glitter.teamtailor.com/jobs/8312430-vi-soker-80-butikksjef-til-glitter-strandtorvet	board name "Glitter" ≠ maison
+Globe-Trotter	teamtailor	0	AUTO-REJETE		Globetrotter	31	https://globetrotter.teamtailor.com/jobs/8065264-stellvertretende-teamleitung-im-verkauf-w-m-d	board name "Globetrotter" ≠ maison
+Globetrotter Ausrüstung	teamtailor	0	HUMAIN	site-injoignable(0)	Globetrotter	31	https://globetrotter.teamtailor.com/jobs/8065264-stellvertretende-teamleitung-im-verkauf-w-m-d	board name "Globetrotter" ≠ maison
+Glorious Gangsta	personio	0	HUMAIN	site-injoignable(0)	Küstenjunge GmbH	17	https://glorious.jobs.personio.de/job/1438376	board name "Küstenjunge GmbH" ≠ maison
+Goal Five	greenhouse	0	AUTO-REJETE		GOAL	5	https://www.goalglobal.org/careers?gh_jid=7408675	board name "GOAL" ≠ maison
+Golf Galaxy	greenhouse	0	HUMAIN	site-injoignable(0)	GOLF.com // GOLF Magazine	1	https://job-boards.greenhouse.io/golf/jobs/4707030006	board name "GOLF.com // GOLF Magazine" ≠ maison
+Golf Partner	greenhouse	0	AUTO-REJETE		GOLF.com // GOLF Magazine	1	https://job-boards.greenhouse.io/golf/jobs/4707030006	board name "GOLF.com // GOLF Magazine" ≠ maison
+Golf Town	greenhouse	0	HUMAIN	site-injoignable(0)	GOLF.com // GOLF Magazine	1	https://job-boards.greenhouse.io/golf/jobs/4707030006	board name "GOLF.com // GOLF Magazine" ≠ maison
+Golf・Do	greenhouse	0	HUMAIN	site-injoignable(0)	GOLF.com // GOLF Magazine	1	https://job-boards.greenhouse.io/golf/jobs/4707030006	board name "GOLF.com // GOLF Magazine" ≠ maison
+Goodwin's Skin Soother	greenhouse	0	HUMAIN	site-injoignable(0)	Goodwin	3	https://job-boards.greenhouse.io/goodwin/jobs/5135420007	board name "Goodwin" ≠ maison
+Goody's	greenhouse	0	HUMAIN	site-injoignable(0)	Goody Garage Doors	3	https://job-boards.greenhouse.io/goody/jobs/4384277009	board name "Goody Garage Doors" ≠ maison
+GRAIN DE MALICE	teamtailor	0	AUTO-REJETE		Grain	14	https://grain.teamtailor.com/jobs/7905905-pastry-cook	board name "Grain" ≠ maison
+Grand Frank	lever	0	AUTO-REJETE		Grand Games	9	https://jobs.lever.co/grand/f4facce6-b7d5-44de-9819-f9017cc43397	board name "Grand Games" ≠ maison
+Grand Optics	lever	0	AUTO-REJETE		Grand Games	9	https://jobs.lever.co/grand/f4facce6-b7d5-44de-9819-f9017cc43397	board name "Grand Games" ≠ maison
+Grand Seiko	lever	0	AUTO-REJETE		Grand Games	9	https://jobs.lever.co/grand/f4facce6-b7d5-44de-9819-f9017cc43397	board name "Grand Games" ≠ maison
+Grand Step	lever	0	AUTO-REJETE		Grand Games	9	https://jobs.lever.co/grand/f4facce6-b7d5-44de-9819-f9017cc43397	board name "Grand Games" ≠ maison
+Grand Step Shoes	lever	0	AUTO-REJETE		Grand Games	9	https://jobs.lever.co/grand/f4facce6-b7d5-44de-9819-f9017cc43397	board name "Grand Games" ≠ maison
+Grey Belly	greenhouse	0	HUMAIN	site-injoignable(0)	GREY 	2	https://job-boards.greenhouse.io/grey/jobs/4723087005	board name "GREY " ≠ maison
+Grey Gardens	greenhouse	0	AUTO-REJETE		GREY 	2	https://job-boards.greenhouse.io/grey/jobs/4723087005	board name "GREY " ≠ maison
+HAN KJØBENHAVN	recruitee	0	AUTO-REJETE		Customizable ATS & hiring software Tellent Recruitee	1	https://han.recruitee.com/o/senior-marketer-stichprobe-london	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+Chance of Sunny	wttj	0	AUTO-REJETE		Chance	2	https://www.welcometothejungle.com/fr/companies/chance/jobs/stage-charge-e-de-projets-education_paris	board name "Chance" ≠ maison
+HARIS COTTON	smartrecruiters-whitelabel	0	AUTO-REJETE		Haris	1	https://jobs.smartrecruiters.com/haris/743999705977444	board name "Haris" ≠ maison
+Hazel & Folk	greenhouse	0	AUTO-REJETE		Hazel Health	17	https://job-boards.greenhouse.io/hazel/jobs/7638442003	board name "Hazel Health" ≠ maison
+Hemmerle	personio	0	AUTO-REJETE			3	https://hemmerle.jobs.personio.de/job/1034119	no board name to compare
+Hive & Colony	greenhouse	0	AUTO-REJETE		Hive	11	https://job-boards.eu.greenhouse.io/hive/jobs/4940573101	board name "Hive" ≠ maison
+Hoff	personio	0	AUTO-REJETE			2	https://hoff.jobs.personio.de/job/2713366	no board name to compare
+Honor The House Beauty	greenhouse	0	AUTO-REJETE		Honor	12	https://boards.greenhouse.io/honor/jobs/8777116002?gh_jid=8777116002	board name "Honor" ≠ maison
+Hook and Rope	greenhouse	0	HUMAIN	site-injoignable(0)	Hook	6	https://job-boards.greenhouse.io/hook/jobs/8402409002	board name "Hook" ≠ maison
+HUBER	personio	0	AUTO-REJETE		Huber Parking Deutschland GmbH	13	https://huber.jobs.personio.de/job/2736923	board name "Huber Parking Deutschland GmbH" ≠ maison
+Huber Shop	personio	0	AUTO-REJETE		Huber Parking Deutschland GmbH	13	https://huber.jobs.personio.de/job/2736923	board name "Huber Parking Deutschland GmbH" ≠ maison
+Hug & Clau	smartrecruiters-whitelabel	0	AUTO-REJETE		Hôpitaux Universitaires de Genève	45	https://jobs.smartrecruiters.com/hug/744000147009829	board name "Hôpitaux Universitaires de Genève" ≠ maison
+Clark's Botanicals	personio	0	AUTO-REJETE		CLARK Holding SE	3	https://clark.jobs.personio.de/job/2415353	board name "CLARK Holding SE" ≠ maison
+Hush Puppies	lever	0	AUTO-REJETE		HUSH	11	https://jobs.lever.co/hush/33691840-09fa-4f00-a46b-1715402f4ddd	board name "HUSH" ≠ maison
+HUSHD	smartrecruiters-whitelabel	0	AUTO-REJETE		Hush'D	1	https://jobs.smartrecruiters.com/hushd/743999734309421	board name "Hush'D" ≠ maison
+Hustle Butter	teamtailor	0	AUTO-REJETE		Hustle	7	https://hustle.teamtailor.com/jobs/8271958-design-director	board name "Hustle" ≠ maison
+Icon Brand	recruitee	0	HUMAIN	site-injoignable(0)	Customizable ATS & hiring software Tellent Recruitee	2	https://icon.recruitee.com/o/vendsys-nayax-vm-inobram	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+Icon Eyewear	recruitee	0	AUTO-REJETE		Customizable ATS & hiring software Tellent Recruitee	2	https://icon.recruitee.com/o/vendsys-nayax-vm-inobram	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+igi natur	smartrecruiters-whitelabel	0	HUMAIN	site-injoignable(0)	IGI	4	https://jobs.smartrecruiters.com/igi/744000141979789	board name "IGI" ≠ maison
+Cloud9	greenhouse	0	AUTO-REJETE		Cloud 9	9	https://job-boards.greenhouse.io/cloud9/jobs/8635286002	board name "Cloud 9" ≠ maison
+IN VIVO	wttj	0	AUTO-REJETE		InVivo	2	https://www.welcometothejungle.com/fr/companies/invivo/jobs/architecte-ingenieur-cybersecurite-f-h	board name "InVivo" ≠ maison
+Indigo Sun	greenhouse	0	AUTO-REJETE		Indigo	2	https://job-boards.greenhouse.io/indigo/jobs/5193160007	board name "Indigo" ≠ maison
+iNDiViDUALS Studio	smartrecruiters-whitelabel	0	HUMAIN	site-injoignable(0)	Individuals	3	https://jobs.smartrecruiters.com/individuals/743999700070287	board name "Individuals" ≠ maison
+iNO	greenhouse	0	AUTO-REJETE		Innovative Air	3	https://job-boards.greenhouse.io/ino/jobs/5372283008	board name "Innovative Air" ≠ maison
+Inspired Sense	personio	0	HUMAIN	site-injoignable(0)	Reprise Media	1	https://inspired.jobs.personio.de/job/2592957	board name "Reprise Media" ≠ maison
+Codex Labs Corporation	personio	0	HUMAIN	site-injoignable(0)		1	https://codex.jobs.personio.de/job/2608804	no board name to compare
+Codex Labs	personio	0	HUMAIN	site-injoignable(0)		1	https://codex.jobs.personio.de/job/2608804	no board name to compare
+IRIS	greenhouse	0	AUTO-REJETE		Iris North America	2	https://job-boards.greenhouse.io/iris/jobs/7767193	board name "Iris North America" ≠ maison
+Iris Janvier	greenhouse	0	AUTO-REJETE		Iris North America	2	https://job-boards.greenhouse.io/iris/jobs/7767193	board name "Iris North America" ≠ maison
+Iris Lingerie	greenhouse	0	AUTO-REJETE		Iris North America	2	https://job-boards.greenhouse.io/iris/jobs/7767193	board name "Iris North America" ≠ maison
+Iris&Romeo	greenhouse	0	AUTO-REJETE		Iris North America	2	https://job-boards.greenhouse.io/iris/jobs/7767193	board name "Iris North America" ≠ maison
+Isa Boulder	greenhouse	0	AUTO-REJETE		Innovative Signal Analysis	10	https://job-boards.greenhouse.io/isa/jobs/4297476009	board name "Innovative Signal Analysis" ≠ maison
+Ĭsa Knox	greenhouse	0	AUTO-REJETE		Innovative Signal Analysis	10	https://job-boards.greenhouse.io/isa/jobs/4297476009	board name "Innovative Signal Analysis" ≠ maison
+Isaac Reina	greenhouse	0	AUTO-REJETE		isaac	1	https://job-boards.greenhouse.io/isaac/jobs/5534311004	board name "isaac" ≠ maison
+ITS'DEMO	greenhouse	0	HUMAIN	site-injoignable(0)	Intelligent Technical Solutions	25	https://job-boards.greenhouse.io/its/jobs/7814917003	board name "Intelligent Technical Solutions" ≠ maison
+Community Clothing	greenhouse	0	AUTO-REJETE		Rome Community Partners	1	https://job-boards.greenhouse.io/community/jobs/4983369007	board name "Rome Community Partners" ≠ maison
+Jaeger-LeCoultre	recruitee	0	AUTO-REJETE		Homepage	10	https://jobs.jaeger-ttc.com/o/maschinen-und-anlagenfuhrer-beschichten-mwd	board name "Homepage" ≠ maison
+Jaguar Watches	personio	0	HUMAIN	site-injoignable(0)		3	https://jaguar.jobs.personio.de/job/1792527	no board name to compare
+Japan TKY	greenhouse	0	AUTO-REJETE		Mirakl - Japan	3	https://job-boards.greenhouse.io/japan/jobs/4655923004	board name "Mirakl - Japan" ≠ maison
+Jay Jays	greenhouse	0	AUTO-REJETE		Jay	2	https://job-boards.greenhouse.io/jay/jobs/5170456007	board name "Jay" ≠ maison
+COSMOS COMFORT	personio	0	HUMAIN	site-injoignable(0)		3	https://cosmos.jobs.personio.de/job/2446196	no board name to compare
+Johnson	personio	0	HUMAIN	site-injoignable(0)		3	https://johnson.jobs.personio.de/job/1328955	no board name to compare
+Johnson Fitness & Wellness	personio	0	HUMAIN	site-injoignable(0)		3	https://johnson.jobs.personio.de/job/1328955	no board name to compare
+Johnson's Baby	personio	0	AUTO-REJETE			3	https://johnson.jobs.personio.de/job/1328955	no board name to compare
+Jonak-Paris	wttj	0	AUTO-REJETE		Jonak	17	https://www.welcometothejungle.com/fr/companies/jonak/jobs/conseiller-de-vente-h-f-cdi-8h-annecy_annecy	board name "Jonak" ≠ maison
+Jonathan Cohen	personio	0	AUTO-REJETE			3	https://jonathan.jobs.personio.de/job/1781672	no board name to compare
+Jonathan Simkhai	personio	0	AUTO-REJETE			3	https://jonathan.jobs.personio.de/job/1781672	no board name to compare
+Josh Rosebrook	personio	0	AUTO-REJETE			3	https://josh.jobs.personio.de/job/1587184	no board name to compare
+JOSH V	personio	0	HUMAIN	site-injoignable(0)		3	https://josh.jobs.personio.de/job/1587184	no board name to compare
+Jost	recruitee	0	AUTO-REJETE		Homepage	18	https://jost.recruitee.com/o/hr-officer-1	board name "Homepage" ≠ maison
+Joya Diseño	greenhouse	0	AUTO-REJETE		Joya	193	https://job-boards.greenhouse.io/joya/jobs/7793633003	board name "Joya" ≠ maison
+Jupe by Jackie	lever	0	AUTO-REJETE			2	https://jobs.lever.co/jupe/d7c3888f-09bf-40d3-9ab2-7066ea16cbe6	no board name to compare
+Kaiko	personio	0	AUTO-REJETE			3	https://kaiko.jobs.personio.de/job/1436787	no board name to compare
+Cycle Gear	personio	0	HUMAIN	site-injoignable(0)	CYCLE Netherlands BV	13	https://cycle.jobs.personio.de/job/2562328	board name "CYCLE Netherlands BV" ≠ maison
+Kate Garey	personio	0	HUMAIN	site-injoignable(0)		3	https://kate.jobs.personio.de/job/2766202	no board name to compare
+Kate Lee	personio	0	AUTO-REJETE			3	https://kate.jobs.personio.de/job/2766202	no board name to compare
+Kate Sheridan	personio	0	AUTO-REJETE			3	https://kate.jobs.personio.de/job/2766202	no board name to compare
+Kate Spade	personio	0	AUTO-REJETE			3	https://kate.jobs.personio.de/job/2766202	no board name to compare
+Kate Spade New York	personio	0	AUTO-REJETE			3	https://kate.jobs.personio.de/job/2766202	no board name to compare
+Kate Sylvester	personio	0	AUTO-REJETE			3	https://kate.jobs.personio.de/job/2766202	no board name to compare
+Kate Quinn	personio	0	AUTO-REJETE			3	https://kate.jobs.personio.de/job/2766202	no board name to compare
+Kate's Magik	personio	0	AUTO-REJETE			3	https://kate.jobs.personio.de/job/2766202	no board name to compare
+KATE BARTON	personio	0	AUTO-REJETE			3	https://kate.jobs.personio.de/job/2766202	no board name to compare
+KEEN	greenhouse	0	AUTO-REJETE		Keen Advisor Questionnaire 	1	https://job-boards.greenhouse.io/keen/jobs/5819317004	board name "Keen Advisor Questionnaire " ≠ maison
+Kent & Curwen	personio	0	AUTO-REJETE		KENT Deutschland GmbH	13	https://kent.jobs.personio.de/job/2021408	board name "KENT Deutschland GmbH" ≠ maison
+Kevin Jewelers	personio	0	AUTO-REJETE			3	https://kevin.jobs.personio.de/job/2013560	no board name to compare
+Kevin O'Brien Studio	personio	0	AUTO-REJETE			3	https://kevin.jobs.personio.de/job/2013560	no board name to compare
+KIKS TYO	recruitee	0	AUTO-REJETE		Homepage	2	https://kiks.recruitee.com/o/it-support-medewerker	board name "Homepage" ≠ maison
+Daniel	personio	0	AUTO-REJETE			3	https://daniel.jobs.personio.de/job/1506766	no board name to compare
+Daniel & Bob	personio	0	HUMAIN	site-injoignable(0)		3	https://daniel.jobs.personio.de/job/1506766	no board name to compare
+DANIEL ESSA	personio	0	AUTO-REJETE			3	https://daniel.jobs.personio.de/job/1506766	no board name to compare
+Daniel Hechter	personio	0	AUTO-REJETE			3	https://daniel.jobs.personio.de/job/1506766	no board name to compare
+DANIEL PATRICK	personio	0	HUMAIN	site-injoignable(0)		3	https://daniel.jobs.personio.de/job/1506766	no board name to compare
+Daniel Wellington	personio	0	AUTO-REJETE			3	https://daniel.jobs.personio.de/job/1506766	no board name to compare
+Daniel's Jewelers	personio	0	AUTO-REJETE			3	https://daniel.jobs.personio.de/job/1506766	no board name to compare
+Kleinigkeit	personio	0	AUTO-REJETE			3	https://kleinigkeit.jobs.personio.de/job/1431628	no board name to compare
+Kleos + Klea	teamtailor	0	AUTO-REJETE		Kleos	6	https://kleos.teamtailor.com/jobs/8170966-chief-technology-officer-cto	board name "Kleos" ≠ maison
+Knit-ted Essentials	greenhouse	0	AUTO-REJETE		Knit	14	https://job-boards.greenhouse.io/knit/jobs/4355304009	board name "Knit" ≠ maison
+Known Supply	greenhouse	0	AUTO-REJETE		Known	18	https://job-boards.greenhouse.io/known/jobs/8728825002	board name "Known" ≠ maison
+Kohl's	recruitee	0	HUMAIN	site-injoignable(0)	Stellenangebote & Ausbildung der Kohl Unternehmensgruppe	8	https://jobs.kohl-gmbh.de/o/reinigungskraft2	board name "Stellenangebote & Ausbildung der Kohl Unternehmensgruppe" ≠ maison
+L'Occitane Group	teamtailor	0	AUTO-REJETE		L'Occitane en Provence	26	https://loccitanegroup.teamtailor.com/jobs/8307686-key-holder-beauty-host	board name "L'Occitane en Provence" ≠ maison
+Lao Feng Xiang	personio	0	AUTO-REJETE		LAO Ingenieurgesellschaft mbH	6	https://lao.jobs.personio.de/job/2371935	board name "LAO Ingenieurgesellschaft mbH" ≠ maison
+Diana Madison Beauty	personio	0	AUTO-REJETE		DIANA Electronic-Systeme GmbH	2	https://diana.jobs.personio.de/job/2553312	board name "DIANA Electronic-Systeme GmbH" ≠ maison
+Lemon Jelly	teamtailor	0	AUTO-REJETE		Aphiniti	6	https://lemon.teamtailor.com/jobs/5512703-pr-account-manager	board name "Aphiniti" ≠ maison
+DNA Amsterdam	greenhouse	0	AUTO-REJETE		DNA	1	https://job-boards.greenhouse.io/dna/jobs/8460178002	board name "DNA" ≠ maison
+Dom Tower	personio	0	AUTO-REJETE			3	https://dom.jobs.personio.de/job/2023736	no board name to compare
+Dom Mody Skorska	personio	0	AUTO-REJETE			3	https://dom.jobs.personio.de/job/2023736	no board name to compare
+Life Elements	lever	0	AUTO-REJETE		Life.Church	56	https://jobs.lever.co/life/b6b38530-2d55-48b1-993b-708311cc94a9	board name "Life.Church" ≠ maison
+Life Less Ordinary	lever	0	AUTO-REJETE		Life.Church	56	https://jobs.lever.co/life/b6b38530-2d55-48b1-993b-708311cc94a9	board name "Life.Church" ≠ maison
+Life Style Sports	lever	0	AUTO-REJETE		Life.Church	56	https://jobs.lever.co/life/b6b38530-2d55-48b1-993b-708311cc94a9	board name "Life.Church" ≠ maison
+Lifted Beauty	greenhouse	0	AUTO-REJETE		Lifted	5	https://job-boards.greenhouse.io/lifted/jobs/5771080003	board name "Lifted" ≠ maison
+Loavies	recruitee	0	AUTO-REJETE		My custom page title	4	https://loavies.recruitee.com/o/fashion-stylist-4	board name "My custom page title" ≠ maison
+London Fog	greenhouse	0	AUTO-REJETE		Aimé Leon Dore EU	3	https://job-boards.greenhouse.io/london/jobs/5019478004	board name "Aimé Leon Dore EU" ≠ maison
+London Jewelers	greenhouse	0	HUMAIN	site-injoignable(0)	Aimé Leon Dore EU	3	https://job-boards.greenhouse.io/london/jobs/5019478004	board name "Aimé Leon Dore EU" ≠ maison
+Loop Swim	personio	0	AUTO-REJETE			6	https://loop.jobs.personio.de/job/2764714	no board name to compare
+LOOP WHEELER	personio	0	AUTO-REJETE			6	https://loop.jobs.personio.de/job/2764714	no board name to compare
+Loop.a life	personio	0	HUMAIN	site-injoignable(0)		6	https://loop.jobs.personio.de/job/2764714	no board name to compare
+Loqi	personio	0	AUTO-REJETE			3	https://loqi.jobs.personio.de/job/358627	no board name to compare
+Lore & Heart	wttj	0	HUMAIN	site-injoignable(0)	LORÉ	1	https://www.welcometothejungle.com/fr/companies/lore/jobs/engineering-manager	board name "LORÉ" ≠ maison
+Luciano Gelisio	personio	0	AUTO-REJETE			3	https://luciano.jobs.personio.de/job/1558412	no board name to compare
+Luminous Being	personio	0	AUTO-REJETE		Luminous Cards GmbH	9	https://luminous.jobs.personio.de/job/2766325	board name "Luminous Cards GmbH" ≠ maison
+Lush	greenhouse	0	HUMAIN	site-injoignable(0)	Lush Handmade Cosmetics	147	https://job-boards.greenhouse.io/lush/jobs/8148669	board name "Lush Handmade Cosmetics" ≠ maison
+Lush Lapel	greenhouse	0	AUTO-REJETE		Lush Handmade Cosmetics	147	https://job-boards.greenhouse.io/lush/jobs/8148669	board name "Lush Handmade Cosmetics" ≠ maison
+mad penguin skin care	wttj	0	AUTO-REJETE		MADNETWORK	2	https://www.welcometothejungle.com/fr/companies/mad/jobs/learning-project-manager-assistant-mad-academy-internship-a-partir-de-janvier-2027_paris	board name "MADNETWORK" ≠ maison
+MADE BY SOCIETY	teamtailor	0	AUTO-REJETE		MADE	170	https://made.teamtailor.com/jobs/8313031-commerciale-attivo-a-sul-campo	board name "MADE" ≠ maison
+Made in Sens	teamtailor	0	AUTO-REJETE		MADE	170	https://made.teamtailor.com/jobs/8313031-commerciale-attivo-a-sul-campo	board name "MADE" ≠ maison
+Made Simple Skin Care	teamtailor	0	AUTO-REJETE		MADE	170	https://made.teamtailor.com/jobs/8313031-commerciale-attivo-a-sul-campo	board name "MADE" ≠ maison
+Magnolia Park	greenhouse	0	AUTO-REJETE		Magnolia	16	https://job-boards.greenhouse.io/magnolia/jobs/5408891008	board name "Magnolia" ≠ maison
+Make & Mary®	greenhouse	0	AUTO-REJETE		Make	16	https://www.make.com/en/careers-detail?gh_jid=7778598003	board name "Make" ≠ maison
+Make An Impact	greenhouse	0	HUMAIN	site-injoignable(0)	Make	16	https://www.make.com/en/careers-detail?gh_jid=7778598003	board name "Make" ≠ maison
+Make My Lemonade	greenhouse	0	AUTO-REJETE		Make	16	https://www.make.com/en/careers-detail?gh_jid=7778598003	board name "Make" ≠ maison
+Make the Dot	greenhouse	0	AUTO-REJETE		Make	16	https://www.make.com/en/careers-detail?gh_jid=7778598003	board name "Make" ≠ maison
+Make Up For Ever	greenhouse	0	HUMAIN	site-injoignable(0)	Make	16	https://www.make.com/en/careers-detail?gh_jid=7778598003	board name "Make" ≠ maison
+Make-up Art Cosmetics	greenhouse	0	AUTO-REJETE		Make	16	https://www.make.com/en/careers-detail?gh_jid=7778598003	board name "Make" ≠ maison
+Maki Sandals	wttj	0	AUTO-REJETE		MakiPeople	7	https://www.welcometothejungle.com/fr/companies/maki/jobs/customer-care-operations-intern-en-fr-speaker_paris_MAKIP_j7aN4g6	board name "MakiPeople" ≠ maison
+manière de voir	smartrecruiters-whitelabel	0	AUTO-REJETE		Maniere	1	https://jobs.smartrecruiters.com/maniere/743999699826559	board name "Maniere" ≠ maison
+Mantis World	greenhouse	0	AUTO-REJETE		Mantis	6	https://job-boards.greenhouse.io/mantis/jobs/4670399007	board name "Mantis" ≠ maison
+Marmot	personio	0	HUMAIN	site-injoignable(0)		3	https://marmot.jobs.personio.de/job/1702085	no board name to compare
+Märta Larsson	personio	0	AUTO-REJETE		marta ambulante Pflegedienste GmbH	25	https://marta.jobs.personio.de/job/2773328	board name "marta ambulante Pflegedienste GmbH" ≠ maison
+EMIN + PAUL	personio	0	AUTO-REJETE			3	https://emin.jobs.personio.de/job/2023814	no board name to compare
+MAS Holdings	greenhouse	0	AUTO-REJETE		Midwest Applied Solutions	6	https://job-boards.greenhouse.io/mas/jobs/5139946008	board name "Midwest Applied Solutions" ≠ maison
+Massimo Dutti	recruitee	0	AUTO-REJETE		homepage	2	https://massimodutti.recruitee.com/o/senior-uxui-lead	board name "homepage" ≠ maison
+mat star	teamtailor	0	AUTO-REJETE		MAT Group	6	https://mat.teamtailor.com/jobs/5416037-warehouse-supervisor	board name "MAT Group" ≠ maison
+Match point linen	teamtailor	0	HUMAIN	site-injoignable(0)	MATCH	21	https://match.teamtailor.com/jobs/8278702-10-butikkselger-match-manglerud	board name "MATCH" ≠ maison
+Matt & Nat	recruitee	0	AUTO-REJETE		homepage	8	https://matt.recruitee.com/o/senior-customer-support-agent	board name "homepage" ≠ maison
+MATT Optik	recruitee	0	AUTO-REJETE		homepage	8	https://matt.recruitee.com/o/senior-customer-support-agent	board name "homepage" ≠ maison
+Max	recruitee	0	AUTO-REJETE		Customizable ATS & hiring software Tellent Recruitee	2	https://max.recruitee.com/o/marketer-muster	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+Max Fashion	recruitee	0	HUMAIN	site-injoignable(0)	Customizable ATS & hiring software Tellent Recruitee	2	https://max.recruitee.com/o/marketer-muster	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+Max et Moi	recruitee	0	AUTO-REJETE		Customizable ATS & hiring software Tellent Recruitee	2	https://max.recruitee.com/o/marketer-muster	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+Max Original Leather	recruitee	0	AUTO-REJETE		Customizable ATS & hiring software Tellent Recruitee	2	https://max.recruitee.com/o/marketer-muster	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+MAX&Co.	recruitee	0	AUTO-REJETE		Customizable ATS & hiring software Tellent Recruitee	2	https://max.recruitee.com/o/marketer-muster	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+Max Mara	recruitee	0	AUTO-REJETE		Customizable ATS & hiring software Tellent Recruitee	2	https://max.recruitee.com/o/marketer-muster	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+Maya Chia	lever	0	AUTO-REJETE		MayaHTT	5	https://jobs.lever.co/maya/a07940b9-6aac-4dbc-811a-0169f57be4fb	board name "MayaHTT" ≠ maison
+Maya Mari Kids	lever	0	AUTO-REJETE		MayaHTT	5	https://jobs.lever.co/maya/a07940b9-6aac-4dbc-811a-0169f57be4fb	board name "MayaHTT" ≠ maison
+Maya's Ideas	lever	0	AUTO-REJETE		MayaHTT	5	https://jobs.lever.co/maya/a07940b9-6aac-4dbc-811a-0169f57be4fb	board name "MayaHTT" ≠ maison
+Maya Maya	lever	0	AUTO-REJETE		MayaHTT	5	https://jobs.lever.co/maya/a07940b9-6aac-4dbc-811a-0169f57be4fb	board name "MayaHTT" ≠ maison
+Maya Eco	lever	0	HUMAIN	site-injoignable(0)	MayaHTT	5	https://jobs.lever.co/maya/a07940b9-6aac-4dbc-811a-0169f57be4fb	board name "MayaHTT" ≠ maison
+Maya Magal	lever	0	AUTO-REJETE		MayaHTT	5	https://jobs.lever.co/maya/a07940b9-6aac-4dbc-811a-0169f57be4fb	board name "MayaHTT" ≠ maison
+MCS	greenhouse	0	AUTO-REJETE		Minnesota Cannabis Services	32	https://job-boards.greenhouse.io/mcs/jobs/5227721008	board name "Minnesota Cannabis Services" ≠ maison
+Michel & Amazonka	personio	0	AUTO-REJETE			3	https://michel.jobs.personio.de/job/1903824	no board name to compare
+Michel Germain Parfums	personio	0	AUTO-REJETE			3	https://michel.jobs.personio.de/job/1903824	no board name to compare
+Mind Games	teamtailor	0	AUTO-REJETE		Mind OSS	2	https://mind.teamtailor.com/jobs/8242367-technical-project-engineer	board name "Mind OSS" ≠ maison
+Mirabelle Jewelry	wttj	0	AUTO-REJETE		Mirabelle	5	https://www.welcometothejungle.com/fr/companies/mirabelle/jobs/conseiller-en-pret-viager-hypothecaire-f-h_paris	board name "Mirabelle" ≠ maison
+Moa	smartrecruiters-whitelabel	0	AUTO-REJETE		Melissa's Outdoor Adventures	26	https://jobs.smartrecruiters.com/moa/743999796034297	board name "Melissa's Outdoor Adventures" ≠ maison
+Moo Moo Bath Co	lever	0	AUTO-REJETE		MOO	14	https://jobs.lever.co/moo/6ddec3ee-c622-4319-ac99-545fc1a26fb0	board name "MOO" ≠ maison
+Moo'ilo	lever	0	AUTO-REJETE		MOO	14	https://jobs.lever.co/moo/6ddec3ee-c622-4319-ac99-545fc1a26fb0	board name "MOO" ≠ maison
+MOON JUICE	greenhouse	0	AUTO-REJETE		Moon Creative Lab	7	https://job-boards.greenhouse.io/moon/jobs/8724224002	board name "Moon Creative Lab" ≠ maison
+Moon Boot	greenhouse	0	AUTO-REJETE		Moon Creative Lab	7	https://job-boards.greenhouse.io/moon/jobs/8724224002	board name "Moon Creative Lab" ≠ maison
+Moon Mother Hemp Company	greenhouse	0	AUTO-REJETE		Moon Creative Lab	7	https://job-boards.greenhouse.io/moon/jobs/8724224002	board name "Moon Creative Lab" ≠ maison
+Moon Rabbit Acupuncture	greenhouse	0	AUTO-REJETE		Moon Creative Lab	7	https://job-boards.greenhouse.io/moon/jobs/8724224002	board name "Moon Creative Lab" ≠ maison
+Moon Ridge Company	greenhouse	0	AUTO-REJETE		Moon Creative Lab	7	https://job-boards.greenhouse.io/moon/jobs/8724224002	board name "Moon Creative Lab" ≠ maison
+Moon Valley Organics	greenhouse	0	AUTO-REJETE		Moon Creative Lab	7	https://job-boards.greenhouse.io/moon/jobs/8724224002	board name "Moon Creative Lab" ≠ maison
+More Joy	personio	0	HUMAIN	site-injoignable(0)		3	https://more.jobs.personio.de/job/1977641	no board name to compare
+More & More	personio	0	AUTO-REJETE			3	https://more.jobs.personio.de/job/1977641	no board name to compare
+Morgans Apothecary	greenhouse	0	AUTO-REJETE		Morgan's Early Learning Centers	5	https://job-boards.greenhouse.io/morgans/jobs/7687032003	board name "Morgan's Early Learning Centers" ≠ maison
+Mos Mosh	greenhouse	0	AUTO-REJETE		Michigan Online School	1	https://job-boards.greenhouse.io/mos/jobs/7919993003	board name "Michigan Online School" ≠ maison
+MOS MOSH Gallery.	greenhouse	0	AUTO-REJETE		Michigan Online School	1	https://job-boards.greenhouse.io/mos/jobs/7919993003	board name "Michigan Online School" ≠ maison
+MUDRA	personio	0	AUTO-REJETE			3	https://mudra.jobs.personio.de/job/1653998	no board name to compare
+Mulberry Skincare	lever	0	AUTO-REJETE		Mulberry	33	https://jobs.lever.co/mulberry/9c230855-e3e8-4bac-a876-c692d413d41b	board name "Mulberry" ≠ maison
+MYMARINI	personio	0	AUTO-REJETE			3	https://mymarini.jobs.personio.de/job/1276648	no board name to compare
+N°21	smartrecruiters-whitelabel	0	AUTO-REJETE		N2	1	https://jobs.smartrecruiters.com/n21/95848901	board name "N2" ≠ maison
+National Geographic	greenhouse	0	HUMAIN	site-injoignable(0)	NATIONAL	6	https://job-boards.greenhouse.io/national/jobs/5179542007	board name "NATIONAL" ≠ maison
+National Union of Manufacturers of Aromatic Products	greenhouse	0	AUTO-REJETE		NATIONAL	6	https://job-boards.greenhouse.io/national/jobs/5179542007	board name "NATIONAL" ≠ maison
+NAU!	personio	0	AUTO-REJETE			3	https://nau.jobs.personio.de/job/1671180	no board name to compare
+Neon Hippie	lever	0	AUTO-REJETE		Neon Pagamentos	12	https://jobs.lever.co/neon/026b745f-bc2a-4661-8d4e-a711987c2f0b	board name "Neon Pagamentos" ≠ maison
+Neu Nomads	greenhouse	0	AUTO-REJETE		Fora (Interview Calendar)	10	https://job-boards.greenhouse.io/neu/jobs/5059164008	board name "Fora (Interview Calendar)" ≠ maison
+New Balance	greenhouse	0	HUMAIN	site-injoignable(0)	Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+New Balance Golf Japan	greenhouse	0	AUTO-REJETE		Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+New Directions Aromatics	greenhouse	0	HUMAIN	site-injoignable(0)	Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+New Era	greenhouse	0	AUTO-REJETE		Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+New Girl Order	greenhouse	0	HUMAIN	site-injoignable(0)	Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+New in Town	greenhouse	0	AUTO-REJETE		Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+New Amsterdam Surf Association	greenhouse	0	AUTO-REJETE		Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+New Look	greenhouse	0	AUTO-REJETE		Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+New Man	greenhouse	0	AUTO-REJETE		Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+New Optimist	greenhouse	0	HUMAIN	site-injoignable(0)	Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+New Ordinary People	greenhouse	0	HUMAIN	site-injoignable(0)	Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+New Standard	greenhouse	0	AUTO-REJETE		Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+New York & Company	greenhouse	0	AUTO-REJETE		Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+NEW YORKER	greenhouse	0	AUTO-REJETE		Sonja Inc.  	1	https://job-boards.greenhouse.io/new/jobs/4649245003	board name "Sonja Inc.  " ≠ maison
+Newton Running	lever	0	AUTO-REJETE		Newton	3	https://jobs.lever.co/newton/9f2f00e2-dabb-486d-b6f9-892fca149167	board name "Newton" ≠ maison
+Next	teamtailor	0	AUTO-REJETE		Novati	91	https://next.teamtailor.com/jobs/8313030-commerciale-telefonia-e-internet	board name "Novati" ≠ maison
+Nice Rice	greenhouse	0	AUTO-REJETE		NICE	180	https://boards.eu.greenhouse.io/nice/jobs/4768559101?gh_jid=4768559101	board name "NICE" ≠ maison
+Nice Things	greenhouse	0	AUTO-REJETE		NICE	180	https://boards.eu.greenhouse.io/nice/jobs/4768559101?gh_jid=4768559101	board name "NICE" ≠ maison
+FIND KAPOOR	greenhouse	0	AUTO-REJETE		FIND Healthcareers	17	https://job-boards.greenhouse.io/find/jobs/4227984004	board name "FIND Healthcareers" ≠ maison
+NICO	personio	0	AUTO-REJETE			3	https://nico.jobs.personio.de/job/2104644	no board name to compare
+Finn + Emma	lever	0	AUTO-REJETE		FINN	27	https://jobs.lever.co/finn/103dc21a-1894-4cfc-a514-efa86f6c021c	board name "FINN" ≠ maison
+Finn Flare	lever	0	HUMAIN	site-injoignable(0)	FINN	27	https://jobs.lever.co/finn/103dc21a-1894-4cfc-a514-efa86f6c021c	board name "FINN" ≠ maison
+First Hand	greenhouse	0	AUTO-REJETE		firsthand Health	15	https://job-boards.greenhouse.io/firsthand/jobs/4388517009	board name "firsthand Health" ≠ maison
+NIS	personio	0	AUTO-REJETE			6	https://nis.jobs.personio.de/job/2677870	no board name to compare
+Five Fellas	teamtailor	0	AUTO-REJETE		fiver	228	https://five.teamtailor.com/jobs/8314632-addetto-a-corner-per-negozio-alimentare	board name "fiver" ≠ maison
+FIVE CM	teamtailor	0	AUTO-REJETE		fiver	228	https://five.teamtailor.com/jobs/8314632-addetto-a-corner-per-negozio-alimentare	board name "fiver" ≠ maison
+Five Petals	teamtailor	0	HUMAIN	site-injoignable(0)	fiver	228	https://five.teamtailor.com/jobs/8314632-addetto-a-corner-per-negozio-alimentare	board name "fiver" ≠ maison
+Five Forty The Label	teamtailor	0	AUTO-REJETE		fiver	228	https://five.teamtailor.com/jobs/8314632-addetto-a-corner-per-negozio-alimentare	board name "fiver" ≠ maison
+Flamingo Estate	greenhouse	0	AUTO-REJETE		Flamingo	13	https://job-boards.greenhouse.io/flamingo/jobs/8067083	board name "Flamingo" ≠ maison
+Nº21	smartrecruiters-whitelabel	0	AUTO-REJETE		No	1	https://jobs.smartrecruiters.com/no21/743999678248350	board name "No" ≠ maison
+NOAH	greenhouse	0	AUTO-REJETE		North Oatlands Animal Hospital	6	https://boards.greenhouse.io/noah/jobs/7789780002?gh_jid=7789780002	board name "North Oatlands Animal Hospital" ≠ maison
+Noah & Sisi	greenhouse	0	AUTO-REJETE		North Oatlands Animal Hospital	6	https://boards.greenhouse.io/noah/jobs/7789780002?gh_jid=7789780002	board name "North Oatlands Animal Hospital" ≠ maison
+Noah NYC	greenhouse	0	AUTO-REJETE		North Oatlands Animal Hospital	6	https://boards.greenhouse.io/noah/jobs/7789780002?gh_jid=7789780002	board name "North Oatlands Animal Hospital" ≠ maison
+Nobody Denim	lever	0	AUTO-REJETE		NOBODY	2	https://jobs.lever.co/nobody/8d8a79ac-d346-4ae3-9c8e-c630497c20cb	board name "NOBODY" ≠ maison
+Nobody's Child	lever	0	AUTO-REJETE		NOBODY	2	https://jobs.lever.co/nobody/8d8a79ac-d346-4ae3-9c8e-c630497c20cb	board name "NOBODY" ≠ maison
+Florence Given	lever	0	AUTO-REJETE		Florence Health	14	https://jobs.lever.co/florence/ab4e71d1-f2f0-4b80-a776-53f7b962bc09	board name "Florence Health" ≠ maison
+Florence Leather Market	lever	0	AUTO-REJETE		Florence Health	14	https://jobs.lever.co/florence/ab4e71d1-f2f0-4b80-a776-53f7b962bc09	board name "Florence Health" ≠ maison
+Nothing New	greenhouse	0	AUTO-REJETE		Nothing	11	https://careers.nothing.tech/?gh_jid=4890242101	board name "Nothing" ≠ maison
+Nursing Queen	greenhouse	0	AUTO-REJETE		WellPower - Nursing	2	https://job-boards.greenhouse.io/nursing/jobs/7496155003	board name "WellPower - Nursing" ≠ maison
+NZA New Zealand Auckland	personio	0	AUTO-REJETE			3	https://nza.jobs.personio.de/job/2565443	no board name to compare
+O My Bag	recruitee	0	AUTO-REJETE		Join our team	2	https://omybag.recruitee.com/o/account-manager-dutch-or-german	board name "Join our team" ≠ maison
+Oasis	greenhouse	0	AUTO-REJETE		Oasis Physical Therapy	19	https://job-boards.greenhouse.io/oasis/jobs/5229421007	board name "Oasis Physical Therapy" ≠ maison
+Fox Factor	greenhouse	0	AUTO-REJETE		Fox Creek Veterinary Hospital - Wildwood	6	https://job-boards.greenhouse.io/fox/jobs/5040378002	board name "Fox Creek Veterinary Hospital - Wildwood" ≠ maison
+Fox Racing	greenhouse	0	AUTO-REJETE		Fox Creek Veterinary Hospital - Wildwood	6	https://job-boards.greenhouse.io/fox/jobs/5040378002	board name "Fox Creek Veterinary Hospital - Wildwood" ≠ maison
+Fox's	greenhouse	0	AUTO-REJETE		Fox Creek Veterinary Hospital - Wildwood	6	https://job-boards.greenhouse.io/fox/jobs/5040378002	board name "Fox Creek Veterinary Hospital - Wildwood" ≠ maison
+Fox-Wizel Ltd.	greenhouse	0	AUTO-REJETE		Fox Creek Veterinary Hospital - Wildwood	6	https://job-boards.greenhouse.io/fox/jobs/5040378002	board name "Fox Creek Veterinary Hospital - Wildwood" ≠ maison
+Okanagan Lavender & Herb Farm	lever	0	AUTO-REJETE		Okanagan College	41	https://jobs.lever.co/okanagan/0f1db995-13be-4520-a622-05d9a95c8d11	board name "Okanagan College" ≠ maison
+Oliver Bonas	greenhouse	0	AUTO-REJETE		OLIVER Agency	37	https://job-boards.greenhouse.io/oliver/jobs/8043168	board name "OLIVER Agency" ≠ maison
+Oliver Cabell	greenhouse	0	AUTO-REJETE		OLIVER Agency	37	https://job-boards.greenhouse.io/oliver/jobs/8043168	board name "OLIVER Agency" ≠ maison
+Oliver Designs	greenhouse	0	HUMAIN	site-injoignable(0)	OLIVER Agency	37	https://job-boards.greenhouse.io/oliver/jobs/8043168	board name "OLIVER Agency" ≠ maison
+Oliver J. Woods	greenhouse	0	AUTO-REJETE		OLIVER Agency	37	https://job-boards.greenhouse.io/oliver/jobs/8043168	board name "OLIVER Agency" ≠ maison
+Oliver Grant	greenhouse	0	AUTO-REJETE		OLIVER Agency	37	https://job-boards.greenhouse.io/oliver/jobs/8043168	board name "OLIVER Agency" ≠ maison
+Oliver Peoples	greenhouse	0	AUTO-REJETE		OLIVER Agency	37	https://job-boards.greenhouse.io/oliver/jobs/8043168	board name "OLIVER Agency" ≠ maison
+Oliver Sweeney	greenhouse	0	AUTO-REJETE		OLIVER Agency	37	https://job-boards.greenhouse.io/oliver/jobs/8043168	board name "OLIVER Agency" ≠ maison
+Oliver Spencer	greenhouse	0	AUTO-REJETE		OLIVER Agency	37	https://job-boards.greenhouse.io/oliver/jobs/8043168	board name "OLIVER Agency" ≠ maison
+Oliver Logan	greenhouse	0	AUTO-REJETE		OLIVER Agency	37	https://job-boards.greenhouse.io/oliver/jobs/8043168	board name "OLIVER Agency" ≠ maison
+Olly Lingerie	greenhouse	0	AUTO-REJETE		OLLY	12	https://job-boards.greenhouse.io/olly/jobs/4722372005	board name "OLLY" ≠ maison
+On Running	greenhouse	0	AUTO-REJETE		On	304	https://boards.greenhouse.io/onrunning/jobs/8071276?gh_jid=8071276	board name "On" ≠ maison
+Fresh Cuts Clothing	personio	0	AUTO-REJETE			3	https://fresh.jobs.personio.de/job/2101011	no board name to compare
+Fresh Soul	personio	0	AUTO-REJETE			3	https://fresh.jobs.personio.de/job/2101011	no board name to compare
+Fresh Wave	personio	0	AUTO-REJETE			3	https://fresh.jobs.personio.de/job/2101011	no board name to compare
+Open End	wttj	0	HUMAIN	site-injoignable(0)	Open	139	https://www.welcometothejungle.com/fr/companies/open/jobs/ingenieur-systemes-linux-h-f_tours_OPEN_YKDN68l	board name "Open" ≠ maison
+FRNCH PARIS	wttj	0	AUTO-REJETE		FRNCH	1	https://www.welcometothejungle.com/fr/companies/frnch/jobs/assistant-produit-production_paris	board name "FRNCH" ≠ maison
+Optima	wttj	0	AUTO-REJETE		SOFY	3	https://www.welcometothejungle.com/fr/companies/optima/jobs/product-operations-manager-chef-de-projet-digital-sofy	board name "SOFY" ≠ maison
+Opus	recruitee	0	HUMAIN	site-injoignable(0)	Offres d&#x27;emploi à Tahiti, Moorea et Raiatea (Polynésie Française) Opus RH Tahiti	21	https://opus.recruitee.com/o/category-manager-hf-6	board name "Offres d&#x27;emploi à Tahiti, Moorea et Raiatea (Polynésie Française) Opus RH Tahiti" ≠ maison
+Ora Juice Skincare	greenhouse	0	AUTO-REJETE		Ora	1	https://www.oraclinical.com/job-openings/?gh_jid=4692640006	board name "Ora" ≠ maison
+Orchard Moon	greenhouse	0	AUTO-REJETE		Orchard	25	https://job-boards.greenhouse.io/orchard/jobs/8769049002	board name "Orchard" ≠ maison
+Orca Bay	greenhouse	0	AUTO-REJETE		ORCA Service Technologies	2	https://job-boards.eu.greenhouse.io/orca/jobs/4902476101	board name "ORCA Service Technologies" ≠ maison
+Oscar De La Renta	greenhouse	0	AUTO-REJETE		Oscar Health	266	http://www.hioscar.com/careers/7619750?gh_jid=7619750	board name "Oscar Health" ≠ maison
+Oscar Deen	greenhouse	0	AUTO-REJETE		Oscar Health	266	http://www.hioscar.com/careers/7619750?gh_jid=7619750	board name "Oscar Health" ≠ maison
+Oscar Jacobson	greenhouse	0	AUTO-REJETE		Oscar Health	266	http://www.hioscar.com/careers/7619750?gh_jid=7619750	board name "Oscar Health" ≠ maison
+Oscar Magnuson	greenhouse	0	AUTO-REJETE		Oscar Health	266	http://www.hioscar.com/careers/7619750?gh_jid=7619750	board name "Oscar Health" ≠ maison
+Oscar Wylee	greenhouse	0	HUMAIN	site-injoignable(0)	Oscar Health	266	http://www.hioscar.com/careers/7619750?gh_jid=7619750	board name "Oscar Health" ≠ maison
+Osmosis Beauty	greenhouse	0	AUTO-REJETE		Osmosis	7	https://job-boards.greenhouse.io/osmosis/jobs/7494485003	board name "Osmosis" ≠ maison
+Osprey	personio	0	HUMAIN	site-injoignable(0)		3	https://osprey.jobs.personio.de/job/2686090	no board name to compare
+OUTDOOR PRODUCTS Asia	smartrecruiters-whitelabel	0	AUTO-REJETE		outdoor	1	https://jobs.smartrecruiters.com/outdoor/744000146420064	board name "outdoor" ≠ maison
+Outdoor Voices	smartrecruiters-whitelabel	0	AUTO-REJETE		outdoor	1	https://jobs.smartrecruiters.com/outdoor/744000146420064	board name "outdoor" ≠ maison
+Outdoor Warehouse	smartrecruiters-whitelabel	0	HUMAIN	site-injoignable(0)	outdoor	1	https://jobs.smartrecruiters.com/outdoor/744000146420064	board name "outdoor" ≠ maison
+OUTERSPACE LUXURY	greenhouse	0	AUTO-REJETE		Outerspace	8	https://job-boards.greenhouse.io/outerspace/jobs/5037105004	board name "Outerspace" ≠ maison
+Pair Eyewear	personio	0	AUTO-REJETE		PAIR Finance GmbH	11	https://pair.jobs.personio.de/job/2772667	board name "PAIR Finance GmbH" ≠ maison
+Palm Angels	teamtailor	0	AUTO-REJETE		Palm	1	https://palm.teamtailor.com/jobs/8198094-business-development-representative-corporate-enterprise	board name "Palm" ≠ maison
+Palm Beach Tan	teamtailor	0	AUTO-REJETE		Palm	1	https://palm.teamtailor.com/jobs/8198094-business-development-representative-corporate-enterprise	board name "Palm" ≠ maison
+Papa Bear Care	greenhouse	0	AUTO-REJETE		Papa	7	https://job-boards.greenhouse.io/papa/jobs/5208733007	board name "Papa" ≠ maison
+Par Moi	teamtailor	0	AUTO-REJETE		par group	13	https://par.teamtailor.com/jobs/8307980-addetto-a-gestione-clienti-junior	board name "par group" ≠ maison
+Peachy Sunday	greenhouse	0	AUTO-REJETE		Peachy	2	https://boards.greenhouse.io/peachy/jobs/4698980006?gh_jid=4698980006	board name "Peachy" ≠ maison
+PEAK	greenhouse	0	AUTO-REJETE		Peak Physical Therapy - Upstream	46	https://job-boards.greenhouse.io/peak/jobs/5208198007	board name "Peak Physical Therapy - Upstream" ≠ maison
+Peak Performance	greenhouse	0	HUMAIN	site-injoignable(0)	Peak Physical Therapy - Upstream	46	https://job-boards.greenhouse.io/peak/jobs/5208198007	board name "Peak Physical Therapy - Upstream" ≠ maison
+Penelope Chilvers	teamtailor	0	AUTO-REJETE		Pénélope Welcome	167	https://penelope.teamtailor.com/jobs/8316227-hote-sse-volant-e-vehicule-e	board name "Pénélope Welcome" ≠ maison
+GFG Jewellery by Nilufer	smartrecruiters-whitelabel	0	AUTO-REJETE		gfg	1	https://jobs.smartrecruiters.com/gfg/743999675834056	board name "gfg" ≠ maison
+PETA + JAIN	personio	0	AUTO-REJETE		PETA Deutschland e.V.	1	https://peta.jobs.personio.de/job/102148	board name "PETA Deutschland e.V." ≠ maison
+Gigi Fratelli	personio	0	AUTO-REJETE			3	https://gigi.jobs.personio.de/job/1935763	no board name to compare
+GIGI MODA	personio	0	AUTO-REJETE			3	https://gigi.jobs.personio.de/job/1935763	no board name to compare
+GIGI BURRIS	personio	0	AUTO-REJETE			3	https://gigi.jobs.personio.de/job/1935763	no board name to compare
+Pine Cashmere	greenhouse	0	AUTO-REJETE		Pine	4	https://job-boards.greenhouse.io/pine/jobs/5385175008	board name "Pine" ≠ maison
+Pink Power Makeup	recruitee	0	HUMAIN	site-injoignable(0)	homepage	14	https://pink.recruitee.com/o/hr-office	board name "homepage" ≠ maison
+Pink Root Products	recruitee	0	HUMAIN	site-injoignable(0)	homepage	14	https://pink.recruitee.com/o/hr-office	board name "homepage" ≠ maison
+Pink Woman	recruitee	0	HUMAIN	site-injoignable(0)	homepage	14	https://pink.recruitee.com/o/hr-office	board name "homepage" ≠ maison
+PINK-latte	recruitee	0	HUMAIN	site-injoignable(0)	homepage	14	https://pink.recruitee.com/o/hr-office	board name "homepage" ≠ maison
+Pink Vanilla	recruitee	0	AUTO-REJETE		homepage	14	https://pink.recruitee.com/o/hr-office	board name "homepage" ≠ maison
+Plume Impression	lever	0	AUTO-REJETE		Plume	2	https://jobs.lever.co/plume/9a7a920b-8c84-4c2e-b0d7-e738d12cd564	board name "Plume" ≠ maison
+POD Original	wttj	0	AUTO-REJETE		POD	4	https://www.welcometothejungle.com/fr/companies/pod/jobs/chef-de-projet-data-change_paris	board name "POD" ≠ maison
+Polaroid	recruitee	0	AUTO-REJETE		Homepage	15	https://polaroid.recruitee.com/o/validation-architecture-engineer	board name "Homepage" ≠ maison
+Polaroid Eyewear	recruitee	0	AUTO-REJETE		Homepage	15	https://polaroid.recruitee.com/o/validation-architecture-engineer	board name "Homepage" ≠ maison
+Pom d'api	teamtailor	0	AUTO-REJETE		YOSH	114	https://pom.teamtailor.com/jobs/8306461-food-and-beverage-coordinator-female-only	board name "YOSH" ≠ maison
+POM Amsterdam	teamtailor	0	AUTO-REJETE		YOSH	114	https://pom.teamtailor.com/jobs/8306461-food-and-beverage-coordinator-female-only	board name "YOSH" ≠ maison
+Glow Jar Beauty	personio	0	AUTO-REJETE			3	https://glow.jobs.personio.de/job/1878507	no board name to compare
+Glow Natural Wellness	personio	0	AUTO-REJETE			3	https://glow.jobs.personio.de/job/1878507	no board name to compare
+Glow Recipe	personio	0	AUTO-REJETE			3	https://glow.jobs.personio.de/job/1878507	no board name to compare
+Prophet Skincare	greenhouse	0	AUTO-REJETE		Prophet	21	https://job-boards.greenhouse.io/prophet/jobs/4658318005	board name "Prophet" ≠ maison
+Prose Beauty	wttj	0	AUTO-REJETE		Prose	4	https://www.welcometothejungle.com/fr/companies/prose/jobs/it-support-security-assistant-m-f-apprenticeship_paris	board name "Prose" ≠ maison
+PROTECTIVE Sports	lever	0	AUTO-REJETE		Protective	31	https://jobs.lever.co/protective/0f0e7920-834a-4873-87ff-4750f18c5b88	board name "Protective" ≠ maison
+Grace & Stella	teamtailor	0	AUTO-REJETE		Grace	3	https://grace.teamtailor.com/jobs/7547738-vi-soker-djur-till-vara-produktioner-registrera-ditt-djur-till-var-modellbank-for-djur	board name "Grace" ≠ maison
+Public Desire	greenhouse	0	AUTO-REJETE		Public	4	https://job-boards.greenhouse.io/public/jobs/7982150003	board name "Public" ≠ maison
+Public Myth	greenhouse	0	AUTO-REJETE		Public	4	https://job-boards.greenhouse.io/public/jobs/7982150003	board name "Public" ≠ maison
+Public Habit	greenhouse	0	AUTO-REJETE		Public	4	https://job-boards.greenhouse.io/public/jobs/7982150003	board name "Public" ≠ maison
+Public School	greenhouse	0	AUTO-REJETE		Public	4	https://job-boards.greenhouse.io/public/jobs/7982150003	board name "Public" ≠ maison
+PURPLE PHOENIX NAIL SUPPLY	personio	0	AUTO-REJETE			3	https://purple.jobs.personio.de/job/289919	no board name to compare
+Purple Prairie Botanicals	personio	0	AUTO-REJETE			3	https://purple.jobs.personio.de/job/289919	no board name to compare
+GRO	personio	0	AUTO-REJETE		Geriatrische Rehabilitation Oberbayern - Bruckmühl GmbH	13	https://gro.jobs.personio.de/job/2576782	board name "Geriatrische Rehabilitation Oberbayern - Bruckmühl GmbH" ≠ maison
+Grow Fragrance	personio	0	AUTO-REJETE			3	https://grow.jobs.personio.de/job/1458676	no board name to compare
+Grow From Nature	personio	0	AUTO-REJETE			3	https://grow.jobs.personio.de/job/1458676	no board name to compare
+Radiant Beauty	wttj	0	AUTO-REJETE		Radiant	1	https://www.welcometothejungle.com/fr/companies/radiant/jobs/ingenieur-conception-mecanique-heliostats-outillages-receveur_paris	board name "Radiant" ≠ maison
+Raven + Lily	greenhouse	0	AUTO-REJETE		Raven	4	https://job-boards.greenhouse.io/raven/jobs/5374684008	board name "Raven" ≠ maison
+Reco	recruitee	0	AUTO-REJETE		Vacatures	24	https://werkenbij.reco.eu/o/monteur-camerasystemen	board name "Vacatures" ≠ maison
+Relay Jeans	lever	0	AUTO-REJETE			3	https://jobs.lever.co/relay/298f0f7a-d493-49fa-935d-89a76ef09665	no board name to compare
+Renegade Fashion Outlet	lever	0	AUTO-REJETE		Renegade	3	https://jobs.lever.co/renegade/c286527a-fa39-4891-8da4-a8a0aacc5be0	board name "Renegade" ≠ maison
+Reset	wttj	0	AUTO-REJETE		(RE)SET	3	https://www.welcometothejungle.com/fr/companies/reset/jobs/stage-consultant-transition-environnementale-et-economique-h-f_paris	board name "(RE)SET" ≠ maison
+Retro Jeans	lever	0	AUTO-REJETE		Retro	8	https://jobs.lever.co/retro/c0031c5c-b122-4119-a276-0c5f9528e29a	board name "Retro" ≠ maison
+Retro Luxe Resin	lever	0	AUTO-REJETE		Retro	8	https://jobs.lever.co/retro/c0031c5c-b122-4119-a276-0c5f9528e29a	board name "Retro" ≠ maison
+Revel Nail	greenhouse	0	AUTO-REJETE		Revel	1	https://job-boards.greenhouse.io/revel/jobs/5811037004	board name "Revel" ≠ maison
+Revel Rey	greenhouse	0	AUTO-REJETE		Revel	1	https://job-boards.greenhouse.io/revel/jobs/5811037004	board name "Revel" ≠ maison
+Richter	personio	0	AUTO-REJETE		Mutter AG	5	https://richter.jobs.personio.de/job/1996033	board name "Mutter AG" ≠ maison
+Harmony	lever	0	AUTO-REJETE			9	https://jobs.lever.co/harmony/e6d9d9d8-ec2a-4691-9efe-9810ca25a99e	no board name to compare
+Harmony Handcrafted	lever	0	AUTO-REJETE			9	https://jobs.lever.co/harmony/e6d9d9d8-ec2a-4691-9efe-9810ca25a99e	no board name to compare
+Right-on	teamtailor	0	HUMAIN	site-injoignable(0)	TuoLavoro	3	https://right.teamtailor.com/jobs/8309587-commerciale-settore-energia-anche-come-seconda-attivita	board name "TuoLavoro" ≠ maison
+Rise of Andes	lever	0	AUTO-REJETE		RISE	25	https://jobs.lever.co/rise/21255d58-0c73-4221-ac28-9ab5735d6808	board name "RISE" ≠ maison
+Roberts Wood	smartrecruiters-whitelabel	0	AUTO-REJETE		Roberts 	1	https://jobs.smartrecruiters.com/roberts/901975	board name "Roberts " ≠ maison
+Roller Rabbit	greenhouse	0	AUTO-REJETE		ROLLER	18	https://job-boards.greenhouse.io/roller/jobs/4951411007	board name "ROLLER" ≠ maison
+ROSE BUD	greenhouse	0	AUTO-REJETE		Rosebud Hotel Organization	14	https://job-boards.greenhouse.io/rosebud/jobs/4640838003	board name "Rosebud Hotel Organization" ≠ maison
+Sabrina Zeng	personio	0	AUTO-REJETE			3	https://sabrina.jobs.personio.de/job/848062	no board name to compare
+Samson Sur Mesure	personio	0	HUMAIN	site-injoignable(0)	Samson & Partner	1	https://samson.jobs.personio.de/job/1169941	board name "Samson & Partner" ≠ maison
+Hive & Colony	lever	0	AUTO-REJETE		Hive	76	https://jobs.lever.co/hive/366ff84b-4572-4fed-b16b-d15397de79c8	board name "Hive" ≠ maison
+Holy Shit	personio	0	AUTO-REJETE		HOLY Softdrinks GmbH	39	https://holy.jobs.personio.de/job/2750295	board name "HOLY Softdrinks GmbH" ≠ maison
+Holy Skin	personio	0	AUTO-REJETE		HOLY Softdrinks GmbH	39	https://holy.jobs.personio.de/job/2750295	board name "HOLY Softdrinks GmbH" ≠ maison
+Scotch & Soda	greenhouse	0	AUTO-REJETE		Scotch	2	https://job-boards.greenhouse.io/scotch/jobs/5366565008	board name "Scotch" ≠ maison
+Seek Collective	smartrecruiters-whitelabel	0	AUTO-REJETE		SEEK	40	https://jobs.smartrecruiters.com/seek/744000146889819	board name "SEEK" ≠ maison
+Seek Dry Goods	smartrecruiters-whitelabel	0	AUTO-REJETE		SEEK	40	https://jobs.smartrecruiters.com/seek/744000146889819	board name "SEEK" ≠ maison
+Seed Heritage	greenhouse	0	HUMAIN	site-injoignable(0)	Seed	5	https://job-boards.greenhouse.io/seed/jobs/7809685003	board name "Seed" ≠ maison
+Horizon Athletic	lever	0	AUTO-REJETE		Horizon Robotics	1	https://jobs.lever.co/horizon/81ef015f-fdbf-4b7e-ac6e-1e066b6d1828	board name "Horizon Robotics" ≠ maison
+House of Afangaro	teamtailor	0	HUMAIN	site-injoignable(0)	TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+HOUSE OF ARTISTS	teamtailor	0	HUMAIN	site-injoignable(0)	TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+HOUSE OF BERGISCH	teamtailor	0	HUMAIN	site-injoignable(0)	TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of CB	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Dagmar	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Elysia	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Emanuel Ungaro	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Falguni	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Fraser	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Hatters	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Gravity	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Holland	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Hoops	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Jamie	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Lashes	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of James	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Mahina	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Mammoth	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Potentia	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Hounds	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Saki	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Sunny	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Quadri	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Turkmen	teamtailor	0	AUTO-REJETE		TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House Of Tweed	teamtailor	0	HUMAIN	site-injoignable(0)	TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+House of Useless	teamtailor	0	HUMAIN	site-injoignable(0)	TuoLavoro	105	https://house.teamtailor.com/jobs/8313530-consulente-informativo-prodotti-per-il-comfort	board name "TuoLavoro" ≠ maison
+SEVEN BY SEVEN	teamtailor	0	AUTO-REJETE		Baar	172	https://seven.teamtailor.com/jobs/8313832-addetto-a-assistenza-clienti-per-settore-benessere	board name "Baar" ≠ maison
+SEVEN haircare	teamtailor	0	AUTO-REJETE		Baar	172	https://seven.teamtailor.com/jobs/8313832-addetto-a-assistenza-clienti-per-settore-benessere	board name "Baar" ≠ maison
+Shinola Detroit	greenhouse	0	AUTO-REJETE		Shinola	9	https://job-boards.greenhouse.io/shinola/jobs/8225450002	board name "Shinola" ≠ maison
+Shine Cosmetics	wttj	0	AUTO-REJETE		Shine	9	https://www.welcometothejungle.com/fr/companies/shine/jobs/senior-ai-engineer-ai-native-sdlc-platform	board name "Shine" ≠ maison
+Humana People to People	teamtailor	0	AUTO-REJETE		Humana	18	https://humana.teamtailor.com/jobs/8281155-ohjaaja-sairaanhoitaja-nuorisokoti-satama	board name "Humana" ≠ maison
+SIA ARNIKA	smartrecruiters-whitelabel	0	AUTO-REJETE		Sia	580	https://jobs.smartrecruiters.com/sia/744000147226085	board name "Sia" ≠ maison
+Side Step	wttj	0	HUMAIN	site-injoignable(0)	Side	2	https://www.welcometothejungle.com/fr/companies/side/jobs/vendeur-preparateur-en-boucherie-cdi-h-f_conflans-sainte-honorine	board name "Side" ≠ maison
+Silhouette	lever	0	AUTO-REJETE		DNAM Brands	43	https://jobs.lever.co/silhouette/c29777f7-5bac-414a-849d-b9412b44ff4b	board name "DNAM Brands" ≠ maison
+Silverado Boots	greenhouse	0	AUTO-REJETE		Silverado	121	https://job-boards.greenhouse.io/silverado/jobs/5209596007	board name "Silverado" ≠ maison
+SLATE + SALT	lever	0	AUTO-REJETE		Slate	3	https://jobs.lever.co/slate/86ebcba7-fc6e-4161-b8e7-ba4141e3b7d2	board name "Slate" ≠ maison
+Smart Angel	smartrecruiters-whitelabel	0	AUTO-REJETE		Smart	1	https://jobs.smartrecruiters.com/smart/254759	board name "Smart" ≠ maison
+SONIA CARRASCO	personio	0	AUTO-REJETE		Sonia Solutions S.à r.l.	4	https://sonia.jobs.personio.de/job/2767296	board name "Sonia Solutions S.à r.l." ≠ maison
+Sonia Rykiel	personio	0	AUTO-REJETE		Sonia Solutions S.à r.l.	4	https://sonia.jobs.personio.de/job/2767296	board name "Sonia Solutions S.à r.l." ≠ maison
+Source for Sports	lever	0	AUTO-REJETE		Source	3	https://jobs.lever.co/source/78eb4b50-9ea3-4dfe-a40e-3c0afdee7774	board name "Source" ≠ maison
+SOUTHPOLE	teamtailor	0	HUMAIN	site-injoignable(0)	South Pole	16	https://southpole.teamtailor.com/jobs/8266167-senior-specialist-carbon-projects-risk	board name "South Pole" ≠ maison
+Sphinx Fragrances	wttj	0	AUTO-REJETE		Sphinx	1	https://www.welcometothejungle.com/fr/companies/sphinx/jobs/cdd-de-remplacement-administration-des-ventes-et-facturation-f-h_montaigu-vendee	board name "Sphinx" ≠ maison
+Sports Authority	personio	0	HUMAIN	site-injoignable(0)		3	https://sports.jobs.personio.de/job/1823201	no board name to compare
+Sports Depo	personio	0	HUMAIN	site-injoignable(0)		3	https://sports.jobs.personio.de/job/1823201	no board name to compare
+Sports Direct	personio	0	AUTO-REJETE			3	https://sports.jobs.personio.de/job/1823201	no board name to compare
+Sports Research / SR Natural	personio	0	AUTO-REJETE			3	https://sports.jobs.personio.de/job/1823201	no board name to compare
+Star Child	greenhouse	0	HUMAIN	site-injoignable(0)	Starchild	4	https://job-boards.greenhouse.io/starchild/jobs/5313889008	board name "Starchild" ≠ maison
+Starface World Incorporated	personio	0	AUTO-REJETE		STARFACE GmbH	9	https://starface.jobs.personio.de/job/84518	board name "STARFACE GmbH" ≠ maison
+Intersport Elverys	teamtailor	0	AUTO-REJETE		Intersport Sverige	6	https://intersport.teamtailor.com/jobs/8267568-butikssaljare-intersport-goteborg-hogsbo-421	board name "Intersport Sverige" ≠ maison
+Sterling Jewelers	greenhouse	0	HUMAIN	site-injoignable(0)	Sterling Brands	2	https://www.sterlingbrands.com/careers?gh_jid=7731843	board name "Sterling Brands" ≠ maison
+Sterling King	greenhouse	0	AUTO-REJETE		Sterling Brands	2	https://www.sterlingbrands.com/careers?gh_jid=7731843	board name "Sterling Brands" ≠ maison
+Steve Madden	recruitee	0	AUTO-REJETE		Customizable ATS & hiring software Tellent Recruitee	1	https://stevemadden.recruitee.com/o/sales-associate	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+Stone Fox Swim	greenhouse	0	AUTO-REJETE		Stone - Linkedin	428	https://job-boards.greenhouse.io/stone/jobs/7777648003	board name "Stone - Linkedin" ≠ maison
+Stone Island	greenhouse	0	AUTO-REJETE		Stone - Linkedin	428	https://job-boards.greenhouse.io/stone/jobs/7777648003	board name "Stone - Linkedin" ≠ maison
+Summer Fridays	greenhouse	0	AUTO-REJETE		Summer	1	https://job-boards.greenhouse.io/summer/jobs/4077755003	board name "Summer" ≠ maison
+SUMMER HOURS	greenhouse	0	AUTO-REJETE		Summer	1	https://job-boards.greenhouse.io/summer/jobs/4077755003	board name "Summer" ≠ maison
+Summum	personio	0	HUMAIN	site-injoignable(0)	Banen bij Summum	6	https://summum.jobs.personio.de/job/2536751	board name "Banen bij Summum" ≠ maison
+Summum Woman	personio	0	AUTO-REJETE		Banen bij Summum	6	https://summum.jobs.personio.de/job/2536751	board name "Banen bij Summum" ≠ maison
+Sunset Design Outlet	greenhouse	0	AUTO-REJETE		Sunset Magazine	2	https://job-boards.greenhouse.io/sunset/jobs/6450471	board name "Sunset Magazine" ≠ maison
+Super Deodorant	lever	0	HUMAIN	site-injoignable(0)	Super	2	https://jobs.lever.co/super/28978f50-cf60-4a85-8221-68407cc2a9dc	board name "Super" ≠ maison
+Super Jimat	greenhouse	0	AUTO-REJETE		Super Technologies	191	https://job-boards.eu.greenhouse.io/super/jobs/4918820101	board name "Super Technologies" ≠ maison
+Super Nail	greenhouse	0	AUTO-REJETE		Super Technologies	191	https://job-boards.eu.greenhouse.io/super/jobs/4918820101	board name "Super Technologies" ≠ maison
+Super normal people	greenhouse	0	AUTO-REJETE		Super Technologies	191	https://job-boards.eu.greenhouse.io/super/jobs/4918820101	board name "Super Technologies" ≠ maison
+Super Sports Xebio	greenhouse	0	AUTO-REJETE		Super Technologies	191	https://job-boards.eu.greenhouse.io/super/jobs/4918820101	board name "Super Technologies" ≠ maison
+Sweet Bee Magic	teamtailor	0	AUTO-REJETE		Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Sweet Bee Ultra Beauty	teamtailor	0	AUTO-REJETE		Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+sweet deluxe	teamtailor	0	AUTO-REJETE		Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Sweet Earth	teamtailor	0	AUTO-REJETE		Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Sweet Gisele	teamtailor	0	AUTO-REJETE		Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Sweet July Skin	teamtailor	0	HUMAIN	site-injoignable(0)	Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Sweet LeiLani Cosmetics	teamtailor	0	AUTO-REJETE		Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Sweet Lemon	teamtailor	0	AUTO-REJETE		Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Sweet Mana	teamtailor	0	AUTO-REJETE		Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Sweet Pants	teamtailor	0	AUTO-REJETE		Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Sweet Skins	teamtailor	0	AUTO-REJETE		Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Sweet Sktbs	teamtailor	0	HUMAIN	site-injoignable(0)	Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Sweet Chemistry	teamtailor	0	AUTO-REJETE		Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Sweet Tooth by Sabrina Carpenter	teamtailor	0	AUTO-REJETE		Smart	124	https://sweet.teamtailor.com/jobs/8316007-addetto-a-controllo-qualita-settore-artigianato-ceramiche	board name "Smart" ≠ maison
+Synergy Therm	recruitee	0	AUTO-REJETE		Homepage	4	https://synergy.recruitee.com/o/assistant-property-manager-commercial-offices	board name "Homepage" ≠ maison
+Tamara Mellon	greenhouse	0	HUMAIN	site-injoignable(0)	Tamara	33	https://job-boards.eu.greenhouse.io/tamara/jobs/4849504101	board name "Tamara" ≠ maison
+Tamara's Sugar	greenhouse	0	AUTO-REJETE		Tamara	33	https://job-boards.eu.greenhouse.io/tamara/jobs/4849504101	board name "Tamara" ≠ maison
+Jess & Tilly	personio	0	AUTO-REJETE		Mutter AG	5	https://jess.jobs.personio.de/job/2207698	board name "Mutter AG" ≠ maison
+THEA WITH LOVE	greenhouse	0	AUTO-REJETE		Théa	1	https://job-boards.greenhouse.io/thea/jobs/4328375009	board name "Théa" ≠ maison
+Thrive Causemetics®	greenhouse	0	AUTO-REJETE		THRIVE	3	https://job-boards.greenhouse.io/thrive/jobs/4765726004	board name "THRIVE" ≠ maison
+Toast Society	greenhouse	0	AUTO-REJETE		Toast	309	https://careers.toasttab.com/jobs?gh_jid=8038744	board name "Toast" ≠ maison
+Todd Shelton	personio	0	AUTO-REJETE		TODD Architects	3	https://todd.jobs.personio.de/job/1761414	board name "TODD Architects" ≠ maison
+Tomorrow Denim	greenhouse	0	AUTO-REJETE		Tomorrow.io	22	https://boards.greenhouse.io/tomorrow/jobs/7802524003?gh_jid=7802524003	board name "Tomorrow.io" ≠ maison
+Tradition by WEIS	smartrecruiters-whitelabel	0	AUTO-REJETE		Tradition	3	https://jobs.smartrecruiters.com/tradition/94234489	board name "Tradition" ≠ maison
+Transmission	recruitee	0	AUTO-REJETE		Customizable ATS & hiring software Tellent Recruitee	5	https://transmission.recruitee.com/o/biddable-manager-paid-search-social-programmatic	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+Trixie Cosmetics	personio	0	AUTO-REJETE			2	https://trixie.jobs.personio.de/job/2271600	no board name to compare
+Juice Beauty	teamtailor	0	AUTO-REJETE		JUICE	4	https://juice.teamtailor.com/jobs/8288133-senior-new-business-executive	board name "JUICE" ≠ maison
+Two Blooms & Co	teamtailor	0	AUTO-REJETE		Two	5	https://two.teamtailor.com/jobs/8230638-senior-customer-support-specialist	board name "Two" ≠ maison
+Two Little Beans & Co	teamtailor	0	AUTO-REJETE		Two	5	https://two.teamtailor.com/jobs/8230638-senior-customer-support-specialist	board name "Two" ≠ maison
+Two Lumps of Sugar	teamtailor	0	AUTO-REJETE		Two	5	https://two.teamtailor.com/jobs/8230638-senior-customer-support-specialist	board name "Two" ≠ maison
+Two Peas Organics	teamtailor	0	AUTO-REJETE		Two	5	https://two.teamtailor.com/jobs/8230638-senior-customer-support-specialist	board name "Two" ≠ maison
+Two Sisters Spa	teamtailor	0	AUTO-REJETE		Two	5	https://two.teamtailor.com/jobs/8230638-senior-customer-support-specialist	board name "Two" ≠ maison
+Two Sparrow Australia	teamtailor	0	HUMAIN	site-injoignable(0)	Two	5	https://two.teamtailor.com/jobs/8230638-senior-customer-support-specialist	board name "Two" ≠ maison
+Two Way	teamtailor	0	AUTO-REJETE		Two	5	https://two.teamtailor.com/jobs/8230638-senior-customer-support-specialist	board name "Two" ≠ maison
+TWO WOMEN TWO MEN	teamtailor	0	HUMAIN	site-injoignable(0)	Two	5	https://two.teamtailor.com/jobs/8230638-senior-customer-support-specialist	board name "Two" ≠ maison
+Two-Bi Studiolabwork	teamtailor	0	AUTO-REJETE		Two	5	https://two.teamtailor.com/jobs/8230638-senior-customer-support-specialist	board name "Two" ≠ maison
+UNIQUE 21	personio	0	AUTO-REJETE		unique land use GmbH	3	https://unique.jobs.personio.de/job/2772300	board name "unique land use GmbH" ≠ maison
+Upfront Cosmetics	recruitee	0	AUTO-REJETE		Homepage	23	https://upfront.recruitee.com/o/head-of-brand-activations	board name "Homepage" ≠ maison
+V.I.M.	greenhouse	0	AUTO-REJETE		Vim	2	https://job-boards.greenhouse.io/vim/jobs/8121267	board name "Vim" ≠ maison
+Ventana	greenhouse	0	AUTO-REJETE		Ventana by Buckner	7	https://careers.bucknerretirement.org/open-positions-at-ventana-by-buckner/?gh_jid=7799765003	board name "Ventana by Buckner" ≠ maison
+Veritas	recruitee	0	AUTO-REJETE		homepage	1	https://veritas.recruitee.com/o/avoin-hakemus-oppen-ansokan	board name "homepage" ≠ maison
+Veritas Bespoke	recruitee	0	HUMAIN	site-injoignable(0)	homepage	1	https://veritas.recruitee.com/o/avoin-hakemus-oppen-ansokan	board name "homepage" ≠ maison
+Karl Kani	teamtailor	0	AUTO-REJETE		N Kraft Bemanning	23	https://karl.teamtailor.com/jobs/5570637-markarbetare	board name "N Kraft Bemanning" ≠ maison
+Karl Lagerfeld	teamtailor	0	HUMAIN	site-injoignable(0)	N Kraft Bemanning	23	https://karl.teamtailor.com/jobs/5570637-markarbetare	board name "N Kraft Bemanning" ≠ maison
+Karl Marc John	teamtailor	0	AUTO-REJETE		N Kraft Bemanning	23	https://karl.teamtailor.com/jobs/5570637-markarbetare	board name "N Kraft Bemanning" ≠ maison
+KARL LAGERFELD	teamtailor	0	HUMAIN	site-injoignable(0)	N Kraft Bemanning	23	https://karl.teamtailor.com/jobs/5570637-markarbetare	board name "N Kraft Bemanning" ≠ maison
+Karl Rieker	teamtailor	0	HUMAIN	site-injoignable(0)	N Kraft Bemanning	23	https://karl.teamtailor.com/jobs/5570637-markarbetare	board name "N Kraft Bemanning" ≠ maison
+Via Appia	greenhouse	0	AUTO-REJETE		Via	153	https://job-boards.greenhouse.io/via/jobs/8700271002	board name "Via" ≠ maison
+Via di Gioia	greenhouse	0	AUTO-REJETE		Via	153	https://job-boards.greenhouse.io/via/jobs/8700271002	board name "Via" ≠ maison
+VIA VAI	greenhouse	0	HUMAIN	site-injoignable(0)	Via	153	https://job-boards.greenhouse.io/via/jobs/8700271002	board name "Via" ≠ maison
+VIA APPIA DUE	greenhouse	0	AUTO-REJETE		Via	153	https://job-boards.greenhouse.io/via/jobs/8700271002	board name "Via" ≠ maison
+Vialis	recruitee	0	HUMAIN	site-injoignable(0)	Homepage	65	https://vialis.recruitee.com/o/werkvoorbereider-elektrotechniek-tunnels-1	board name "Homepage" ≠ maison
+Victoria	personio	0	HUMAIN	site-injoignable(0)		3	https://victoria.jobs.personio.de/job/1762115	no board name to compare
+VICTORIA (LUGGAGE)	personio	0	AUTO-REJETE			3	https://victoria.jobs.personio.de/job/1762115	no board name to compare
+Victoria Slavinskaia	personio	0	AUTO-REJETE			3	https://victoria.jobs.personio.de/job/1762115	no board name to compare
+Victoria Beckham	personio	0	AUTO-REJETE			3	https://victoria.jobs.personio.de/job/1762115	no board name to compare
+Victoria's Secret	personio	0	HUMAIN	site-injoignable(0)		3	https://victoria.jobs.personio.de/job/1762115	no board name to compare
+Victory Lab	greenhouse	0	AUTO-REJETE		Victory Creative Group	1	https://job-boards.greenhouse.io/victory/jobs/4071216009	board name "Victory Creative Group" ≠ maison
+Village Leathers	greenhouse	0	AUTO-REJETE		The Village Learning Center	2	https://job-boards.greenhouse.io/village/jobs/7798832003	board name "The Village Learning Center" ≠ maison
+village thrive	greenhouse	0	AUTO-REJETE		The Village Learning Center	2	https://job-boards.greenhouse.io/village/jobs/7798832003	board name "The Village Learning Center" ≠ maison
+Vuori	greenhouse	0	AUTO-REJETE		Archrival Agents | Vuori	3	https://job-boards.greenhouse.io/vuori/jobs/8092401	board name "Archrival Agents | Vuori" ≠ maison
+Water Air Industry	personio	0	AUTO-REJETE		water operations GmbH	7	https://water.jobs.personio.de/job/1817754	board name "water operations GmbH" ≠ maison
+Water Works	personio	0	AUTO-REJETE		water operations GmbH	7	https://water.jobs.personio.de/job/1817754	board name "water operations GmbH" ≠ maison
+Key Largo	teamtailor	0	AUTO-REJETE		TuoLavoro	43	https://key.teamtailor.com/jobs/8313548-sales-manager-nell-assistenza-alle-scelte	board name "TuoLavoro" ≠ maison
+Weekday	recruitee	0	HUMAIN	site-injoignable(0)	Customizable ATS & hiring software Tellent Recruitee	1	https://weekday.recruitee.com/o/key-account-manager	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+WHITE bIRD	personio	0	HUMAIN	site-injoignable(0)		1	https://white-bird.jobs.personio.de/job/2000877	no board name to compare
+Kiwi Glow	personio	0	AUTO-REJETE		KIWI.KI GmbH	2	https://kiwi.jobs.personio.de/job/2678260	board name "KIWI.KI GmbH" ≠ maison
+XOXO	teamtailor	0	AUTO-REJETE		XOXO Gossip Girl	9	https://xoxo.teamtailor.com/jobs/7459063-customer-success-manager	board name "XOXO Gossip Girl" ≠ maison
+Yaya Maria's	recruitee	0	AUTO-REJETE		Homepage	25	https://jobs.yaya.eu/o/area-visual-merchandiser-wmd-fur-rheinland-pfalz-hessen-teilzeit-bis-32-h	board name "Homepage" ≠ maison
+YES DAY	greenhouse	0	AUTO-REJETE		Yes LLC	5	https://cjyes.com/job-list/?gh_jid=5376812008	board name "Yes LLC" ≠ maison
+Yes Friends	greenhouse	0	AUTO-REJETE		Yes LLC	5	https://cjyes.com/job-list/?gh_jid=5376812008	board name "Yes LLC" ≠ maison
+YES I AM	greenhouse	0	AUTO-REJETE		Yes LLC	5	https://cjyes.com/job-list/?gh_jid=5376812008	board name "Yes LLC" ≠ maison
+Yes Studio	greenhouse	0	AUTO-REJETE		Yes LLC	5	https://cjyes.com/job-list/?gh_jid=5376812008	board name "Yes LLC" ≠ maison
+YES ZEE	greenhouse	0	AUTO-REJETE		Yes LLC	5	https://cjyes.com/job-list/?gh_jid=5376812008	board name "Yes LLC" ≠ maison
+Yes! Cosmetics	greenhouse	0	AUTO-REJETE		Yes LLC	5	https://cjyes.com/job-list/?gh_jid=5376812008	board name "Yes LLC" ≠ maison
+YSE Beauty	wttj	0	AUTO-REJETE		Ysé	11	https://www.welcometothejungle.com/fr/companies/yse/jobs/conseiller-ere-de-vente-cdi-35h-aix-en-provence_aix-en-provence	board name "Ysé" ≠ maison
+Ysé Lingerie	wttj	0	AUTO-REJETE		Ysé	11	https://www.welcometothejungle.com/fr/companies/yse/jobs/conseiller-ere-de-vente-cdi-35h-aix-en-provence_aix-en-provence	board name "Ysé" ≠ maison
+Zara	recruitee	0	AUTO-REJETE		Homepage	10	https://zara.recruitee.com/o/compradora-tejidos-zara-man	board name "Homepage" ≠ maison
+zero	recruitee	0	AUTO-REJETE		homepage	23	https://zero.recruitee.com/o/quality-specialist-mwd	board name "homepage" ≠ maison
+zero waste daniel	recruitee	0	AUTO-REJETE		homepage	23	https://zero.recruitee.com/o/quality-specialist-mwd	board name "homepage" ≠ maison
+Zero%	recruitee	0	AUTO-REJETE		homepage	23	https://zero.recruitee.com/o/quality-specialist-mwd	board name "homepage" ≠ maison
+Zoey Naturals	teamtailor	0	AUTO-REJETE		Zoey	7	https://zoey.teamtailor.com/jobs/8293175-interim-hr-operations-payroll-lead-banking-financial-services	board name "Zoey" ≠ maison
+Zola Africa	greenhouse	0	HUMAIN	site-injoignable(0)	Zola	5	https://www.zola.com/about/jobs?gh_jid=8638685002	board name "Zola" ≠ maison
+Lakmé Cosmetics	teamtailor	0	AUTO-REJETE		Lakmé Inspired Haircare	4	https://lakme.teamtailor.com/jobs/8149289-inside-sales-sales-support-espana	board name "Lakmé Inspired Haircare" ≠ maison
+Lille Vinkel Sko	recruitee	0	AUTO-REJETE		Customizable ATS & hiring software Tellent Recruitee	1	https://aucoursera.recruitee.com/o/wwfyr75125	board name "Customizable ATS & hiring software Tellent Recruitee" ≠ maison
+Loft design by	teamtailor	0	AUTO-REJETE		Loft	64	https://loft.teamtailor.com/jobs/8316497-analista-de-pre-vendas-inbound-sdr	board name "Loft" ≠ maison
+Look Sharpish	recruitee	0	HUMAIN	site-injoignable(0)	LOOK Cycle Offres d&#x27;emploi et Carrières dans le Cyclisme	7	https://career.lookcycle.com/o/conseiller-client-premium-hf	board name "LOOK Cycle Offres d&#x27;emploi et Carrières dans le Cyclisme" ≠ maison
+Mighty Good Basics	greenhouse	0	AUTO-REJETE		Mighty	1	https://job-boards.greenhouse.io/mighty/jobs/5783098004	board name "Mighty" ≠ maison
+Mindful Botanicals	personio	0	AUTO-REJETE			3	https://mindful.jobs.personio.de/job/1824322	no board name to compare
+MOB Beauty	teamtailor	0	AUTO-REJETE		Mob	1	https://mob.teamtailor.com/jobs/8259206-in-app-video-editor-3-month-ftc	board name "Mob" ≠ maison
+NAPA 1850	teamtailor	0	AUTO-REJETE		NAPA	1	https://napa.teamtailor.com/jobs/8030987-cybersecurity-datacom-specialist	board name "NAPA" ≠ maison
+Nordisk	personio	0	AUTO-REJETE			3	https://nordisk.jobs.personio.de/job/2775750	no board name to compare
+NORR	teamtailor	0	AUTO-REJETE		Svensk Markservice AB	9	https://norr.teamtailor.com/jobs/8222280-lagbas-for-projekt-och-arbetsledning	board name "Svensk Markservice AB" ≠ maison
+Norrøna	teamtailor	0	AUTO-REJETE		Svensk Markservice AB	9	https://norr.teamtailor.com/jobs/8222280-lagbas-for-projekt-och-arbetsledning	board name "Svensk Markservice AB" ≠ maison
+Oliver Grant	wttj	0	AUTO-REJETE		OLIVER	4	https://www.welcometothejungle.com/fr/companies/oliver/jobs/community-manager-h-f_paris	board name "OLIVER" ≠ maison
+Oliver Logan	wttj	0	AUTO-REJETE		OLIVER	4	https://www.welcometothejungle.com/fr/companies/oliver/jobs/community-manager-h-f_paris	board name "OLIVER" ≠ maison
+Oliver Sweeney	wttj	0	AUTO-REJETE		OLIVER	4	https://www.welcometothejungle.com/fr/companies/oliver/jobs/community-manager-h-f_paris	board name "OLIVER" ≠ maison
+Oliver Cabell	wttj	0	AUTO-REJETE		OLIVER	4	https://www.welcometothejungle.com/fr/companies/oliver/jobs/community-manager-h-f_paris	board name "OLIVER" ≠ maison
+Open End	personio	0	HUMAIN	site-injoignable(0)		10	https://open.jobs.personio.de/job/2759933	no board name to compare
+Patrick McDowell	personio	0	AUTO-REJETE			3	https://patrick.jobs.personio.de/job/1667090	no board name to compare
+Patrick Smith Botanicals	personio	0	AUTO-REJETE			3	https://patrick.jobs.personio.de/job/1667090	no board name to compare
+PETERSON STOOP	recruitee	0	AUTO-REJETE		homepage	21	https://peterson.recruitee.com/o/medewerker-goederenontvangst-hub-den-helder	board name "homepage" ≠ maison
+Poppy & Peonies	recruitee	0	AUTO-REJETE		Homepage	3	https://jobs.poppy.be/o/jr-finance-analyst	board name "Homepage" ≠ maison
+Poppy Barley	recruitee	0	AUTO-REJETE		Homepage	3	https://jobs.poppy.be/o/jr-finance-analyst	board name "Homepage" ≠ maison
+Poppy & Pout	recruitee	0	AUTO-REJETE		Homepage	3	https://jobs.poppy.be/o/jr-finance-analyst	board name "Homepage" ≠ maison
+Poppy Field	recruitee	0	HUMAIN	site-injoignable(0)	Homepage	3	https://jobs.poppy.be/o/jr-finance-analyst	board name "Homepage" ≠ maison
+Poppy Silk	recruitee	0	AUTO-REJETE		Homepage	3	https://jobs.poppy.be/o/jr-finance-analyst	board name "Homepage" ≠ maison
+Porter Blue	lever	0	AUTO-REJETE		Porter Cares, Inc.	28	https://jobs.lever.co/porter/9ced817b-b1a3-4e48-91e0-46994e2e66a8	board name "Porter Cares, Inc." ≠ maison
+Porter Yoshida & Co.	lever	0	HUMAIN	site-injoignable(0)	Porter Cares, Inc.	28	https://jobs.lever.co/porter/9ced817b-b1a3-4e48-91e0-46994e2e66a8	board name "Porter Cares, Inc." ≠ maison
+Porter-Yoshida&Co	lever	0	HUMAIN	site-injoignable(0)	Porter Cares, Inc.	28	https://jobs.lever.co/porter/9ced817b-b1a3-4e48-91e0-46994e2e66a8	board name "Porter Cares, Inc." ≠ maison
+Power Fashion	teamtailor	0	AUTO-REJETE		Power Danmark	48	https://power.teamtailor.com/jobs/8315168-click-collect-medarbejder	board name "Power Danmark" ≠ maison
+Property Of...	recruitee	0	HUMAIN	site-injoignable(0)	Homepage	8	https://trp.recruitee.com/o/assistenz-immobilienverwaltung-mwd	board name "Homepage" ≠ maison
+Oris	wttj	-0.8	AUTO-REJETE	démo(-1) nom(+0.2)	ORIS	2	https://www.welcometothejungle.com/fr/companies/oris/jobs/senior-ai-ml-engineer-m-f-rqth-permanent-contract_lyon_ORIS_AJZgkkR	demo/sandbox board (titles look like samples)
+Alpha Company for Cosmetics LTD	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	2	https://alpha.recruitee.com/o/recruiter-sample-1	demo/sandbox board (titles look like samples)
+Alpha Industries	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	2	https://alpha.recruitee.com/o/recruiter-sample-1	demo/sandbox board (titles look like samples)
+alpha industries	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	2	https://alpha.recruitee.com/o/recruiter-sample-1	demo/sandbox board (titles look like samples)
+ALPHA OG	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	2	https://alpha.recruitee.com/o/recruiter-sample-1	demo/sandbox board (titles look like samples)
+Ariana & Evans	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	1	https://ariana.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Ariana Grande	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	1	https://ariana.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Ariana Grande Fragrances	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	1	https://ariana.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Alfa Sko	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	1	https://alfa.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Birkenstock	recruitee	-1	AUTO-REJETE	démo(-1)		1	https://birkenstock.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Credo	personio	-1	AUTO-REJETE	démo(-1)	Trabajos en Demo Datos	2	https://credo.jobs.personio.de/job/1456653	board name "Trabajos en Demo Datos" ≠ maison
+Euro-Dan	recruitee	-1	AUTO-REJETE	démo(-1)		1	https://euro.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Euro-Star	recruitee	-1	AUTO-REJETE	démo(-1)		1	https://euro.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Lagos	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	1	https://lagos.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Eastern Mountain Sports	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	2	https://eastern.recruitee.com/o/o2e47993w2	demo/sandbox board (titles look like samples)
+Meaningful Beauty ®	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	1	https://meaningful.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Eric Bompard	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	1	https://ericbompard.recruitee.com/o/marketer-senior-exemple-londres	demo/sandbox board (titles look like samples)
+Free Lance	recruitee	-1	AUTO-REJETE	démo(-1) site-injoignable(0)	Customizable ATS & hiring software Tellent Recruitee	1	https://freelance.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Google Merchandise Store	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	1	https://google.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Robert Graham	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	1	https://robert.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+MiN NEW YORK	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	2	https://min.recruitee.com/o/hr-admin-1	demo/sandbox board (titles look like samples)
+PAULA CANOVAS DEL VAS	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	1	https://paula.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Paula Knorr	recruitee	-1	AUTO-REJETE	démo(-1) site-injoignable(0)	Customizable ATS & hiring software Tellent Recruitee	1	https://paula.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)
+Paula's Choice	recruitee	-1	AUTO-REJETE	démo(-1)	Customizable ATS & hiring software Tellent Recruitee	1	https://paula.recruitee.com/o/senior-marketer-sample-london	demo/sandbox board (titles look like samples)

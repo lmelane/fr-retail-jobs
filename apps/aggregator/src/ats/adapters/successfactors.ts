@@ -108,7 +108,7 @@ export async function fetchSuccessFactorsJobs(
   }
 
   if (config.withDescriptions === false) return jobs;
-  return attachSuccessFactorsDescriptions(jobs, Number(config.detailConcurrency ?? 8));
+  return attachSuccessFactorsDescriptions(jobs, Number(config.detailConcurrency ?? 4));
 }
 
 /**

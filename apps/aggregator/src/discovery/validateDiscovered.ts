@@ -97,9 +97,9 @@ export function parseCsvLine(line: string): string[] {
   return fields;
 }
 
-export function loadRows(): Row[] {
+export function loadRows(csvPath: string = CSV_PATH): Row[] {
   const rows: Row[] = [];
-  for (const line of readFileSync(CSV_PATH, 'utf8').trim().split('\n').slice(1)) {
+  for (const line of readFileSync(csvPath, 'utf8').trim().split('\n').slice(1)) {
     if (!line.trim()) continue;
     const [maison, careersDomain, kind, configJson, , robotsVerdict] = parseCsvLine(line);
     if (!maison || !kind) continue;
@@ -149,6 +149,8 @@ type Result = {
   row: Row;
   jobs: number;
   withDescription: number;
+  /** Offers carrying a location — the C-03 bar is titre + URL + lieu. */
+  withLocation: number;
   sampleTitles: string;
   sampleUrl: string;
   error?: string;
@@ -173,7 +175,11 @@ function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise
 export async function fetchWithOneRetry(type: string, row: Row): Promise<NormalizedJob[]> {
   const timeoutMs = PER_SOURCE_TIMEOUT_MS[row.kind] ?? PER_SOURCE_TIMEOUT_MS.default;
   const attempt = () =>
-    withTimeout(fetchAtsJobs(type as never, normalizeSourceConfig(row.config)), timeoutMs, row.maison);
+    withTimeout(
+      fetchAtsJobs(type as never, normalizeSourceConfig(row.config)).then((r) => r.jobs),
+      timeoutMs,
+      row.maison,
+    );
   try {
     return await attempt();
   } catch (error) {
@@ -187,7 +193,7 @@ export async function fetchWithOneRetry(type: string, row: Row): Promise<Normali
 async function validateOne(row: Row): Promise<Result> {
   const type = ATS_TYPE[row.kind] ?? EXTRA_KINDS[row.kind];
   if (!type) {
-    return { row, jobs: 0, withDescription: 0, sampleTitles: '', sampleUrl: '', error: `no adapter for kind "${row.kind}"` };
+    return { row, jobs: 0, withDescription: 0, withLocation: 0, sampleTitles: '', sampleUrl: '', error: `no adapter for kind "${row.kind}"` };
   }
 
   try {
@@ -196,6 +202,7 @@ async function validateOne(row: Row): Promise<Result> {
       row,
       jobs: jobs.length,
       withDescription: jobs.filter((job) => (job.description?.length ?? 0) > 200).length,
+      withLocation: jobs.filter((job) => Boolean(job.city || job.location || job.country)).length,
       sampleTitles: jobs.slice(0, 2).map((job) => job.title).join(' | '),
       sampleUrl: jobs[0]?.url ?? '',
       error: jobs.length === 0 ? 'returned 0 jobs' : undefined,
@@ -205,6 +212,7 @@ async function validateOne(row: Row): Promise<Result> {
       row,
       jobs: 0,
       withDescription: 0,
+      withLocation: 0,
       sampleTitles: '',
       sampleUrl: '',
       error: error instanceof Error ? error.message.slice(0, 160) : String(error),
@@ -218,12 +226,22 @@ async function main(): Promise<void> {
   const onlyKind = arg('kind');
   const seed = Number(arg('seed') ?? 42);
 
-  const rows = loadRows();
-  const targets = onlyKind
+  // Same DNS bypass as j3Probe: a long sweep at real concurrency starves the
+  // macOS resolver and poisons its negative cache — opt-in, never in prod.
+  const { configureExternalDnsFromEnv } = await import('../lib/externalDns.js');
+  configureExternalDnsFromEnv();
+
+  // --input: validate another catalogue (the gated set) instead of the raw
+  // discovery output; --out keeps its report separate.
+  const inputPath = arg('input');
+  const rows = loadRows(inputPath ? fileURLToPath(new URL(`../../${inputPath}`, import.meta.url)) : undefined);
+  const excluded = new Set((arg('exclude') ?? '').split(',').filter(Boolean));
+  const targets = (onlyKind
     ? rows.filter((row) => row.kind === onlyKind)
     : all
       ? rows.filter((row) => ATS_TYPE[row.kind] ?? EXTRA_KINDS[row.kind])
-      : sample(rows, seed);
+      : sample(rows, seed)
+  ).filter((row) => !excluded.has(row.kind));
 
   console.log(`validating ${targets.length} of ${rows.length} discovered sources…`);
 
@@ -242,9 +260,11 @@ async function main(): Promise<void> {
   );
 
   const clean = (value: string) => value.replace(/[\t\n\r]+/g, ' ');
+  const outArg = arg('out');
+  const outPath = outArg ? fileURLToPath(new URL(`../../${outArg}`, import.meta.url)) : OUT_PATH;
   writeFileSync(
-    OUT_PATH,
-    'maison\tkind\tjobs\twith_description\tsample_titles\tsample_url\terror\n' +
+    outPath,
+    'maison\tkind\tjobs\twith_description\twith_location\tsample_titles\tsample_url\terror\n' +
       results
         .map((r) =>
           [
@@ -252,6 +272,7 @@ async function main(): Promise<void> {
             r.row.kind,
             r.jobs,
             r.withDescription,
+            r.withLocation,
             clean(r.sampleTitles),
             clean(r.sampleUrl),
             clean(r.error ?? ''),
@@ -275,7 +296,7 @@ async function main(): Promise<void> {
   for (const [kind, entry] of [...byKind.entries()].sort((a, b) => b[1].jobs - a[1].jobs)) {
     console.log(`${kind}\t${entry.ok}\t${entry.fail}\t${entry.jobs}`);
   }
-  console.log(`\nreport -> data/discovery.validation.tsv`);
+  console.log(`\nreport -> ${outArg ?? 'data/discovery.validation.tsv'}`);
 }
 
 // Run only when executed directly — gateDiscovered imports this module's helpers.

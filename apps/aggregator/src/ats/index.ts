@@ -1,5 +1,5 @@
 import type { AtsType } from '@prisma/client';
-import type { NormalizedJob } from '../types.js';
+import type { AdapterResult, NormalizedJob } from '../types.js';
 import { fetchGreenhouseJobs } from './adapters/greenhouse.js';
 import { fetchLeverJobs } from './adapters/lever.js';
 import { fetchSmartRecruitersJobs } from './adapters/smartrecruiters.js';
@@ -24,7 +24,28 @@ import { fetchLvmhJobs } from './adapters/lvmhAlgolia.js';
 import { fetchWordpressJobs } from './adapters/wordpress.js';
 import { fetchFashionjobsJobs } from './adapters/fashionjobs.js';
 
-export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown>): Promise<NormalizedJob[]> {
+/**
+ * Adapters answer either the legacy array or an AdapterResult (F-04); the
+ * dispatcher normalizes to AdapterResult so every caller sees declaredTotal
+ * and truncated where the vendor announces a count. Legacy adapters graduate
+ * as they are touched — wrapping them changes nothing they did not measure.
+ */
+function toResult(value: NormalizedJob[] | AdapterResult): AdapterResult {
+  return Array.isArray(value) ? { jobs: value } : value;
+}
+
+export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown>): Promise<AdapterResult> {
+  const result = await dispatch(type, config);
+  const normalized = toResult(result);
+  return {
+    ...normalized,
+    truncated:
+      normalized.truncated ??
+      (normalized.declaredTotal !== undefined && normalized.jobs.length < normalized.declaredTotal),
+  };
+}
+
+async function dispatch(type: AtsType, config: Record<string, unknown>): Promise<NormalizedJob[] | AdapterResult> {
   switch (type) {
     case 'GREENHOUSE': return fetchGreenhouseJobs(config);
     case 'LEVER': return fetchLeverJobs(config);

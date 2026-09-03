@@ -1,5 +1,6 @@
 import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -80,17 +81,6 @@ function talentviewRemote(value: number | string | undefined): string | undefine
   return TALENTVIEW_REMOTE[String(value)];
 }
 
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&(?:lt|gt|quot|#39);/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text || undefined;
-}
 
 type Website = { id?: number; locale?: string; website_type?: string };
 
@@ -147,7 +137,12 @@ export async function fetchTalentViewJobs(
   );
 
   const websiteId = websites.find((site) => site.id)?.id;
-  if (!websiteId) return [];
+  // F-06: no public website for the slug is a BROKEN config, not an employer
+  // with zero openings — the silent [] here is exactly the quiet-zero the
+  // health pass cannot tell apart from "stopped hiring".
+  if (!websiteId) {
+    throw new Error(`TalentView "${slug}": no public website behind the slug — config or tenant broken`);
+  }
 
   const campaigns = await fetchJson<Campaign[]>(
     `${API}/companies/${encodeURIComponent(slug)}/campaigns?company_website_id=${websiteId}`,
@@ -162,7 +157,7 @@ export async function fetchTalentViewJobs(
 
   // The listing carries no text; /campaigns/{slug} does. Keyed by SLUG — the id
   // 404s — and the campaign slug lives on the raw listing entry.
-  const limit = pLimit(Number(config.detailConcurrency ?? 6));
+  const limit = pLimit(Number(config.detailConcurrency ?? 4));
   return Promise.all(
     jobs.map((job) =>
       limit(async () => {
@@ -173,7 +168,7 @@ export async function fetchTalentViewJobs(
             `${API}/companies/${encodeURIComponent(slug)}/campaigns/${encodeURIComponent(campaignSlug)}`,
             { headers: detailHeaders(slug) },
           );
-          const description = [stripHtml(detail.description), stripHtml(detail.profile)]
+          const description = [htmlToPlainText(detail.description), htmlToPlainText(detail.profile)]
             .filter(Boolean)
             .join('\n\n');
           // The detail payload also carries salary, remote and experience —

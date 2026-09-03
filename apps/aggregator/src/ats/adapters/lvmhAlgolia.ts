@@ -1,5 +1,6 @@
 import { fetchJson, fetchText } from '../../lib/http.js';
-import type { NormalizedJob } from '../../types.js';
+import { htmlToPlainText } from '../../lib/html.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
  * LVMH's public job index — Sephora, Louis Vuitton, Dior, Tiffany and 49 other
@@ -61,6 +62,8 @@ type LvmhHit = {
   jobResponsabilities?: string;
   profile?: string;
   additionalInformation?: string;
+  /** Epoch SECONDS of publication (probed live 2026-09-03) — F-05. */
+  publicationTimestamp?: number;
 };
 
 type AlgoliaResponse = {
@@ -70,21 +73,6 @@ type AlgoliaResponse = {
   status?: number;
 };
 
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<li[^>]*>/gi, '\n• ')
-    .replace(/<\/(p|div|li|ul|ol|h[1-6])>/gi, '\n')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&(?:lt|gt|quot|#39|rsquo|eacute);/g, ' ')
-    .replace(/[ \t]+/g, ' ')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-  return text || undefined;
-}
 
 /**
  * Re-reads the search key from the site's JS bundle.
@@ -130,7 +118,7 @@ function toNormalized(hit: LvmhHit): NormalizedJob | null {
   // The site renders these four blocks in this order; a candidate reads them
   // as one posting.
   const description = [hit.description, hit.jobResponsabilities, hit.profile, hit.additionalInformation]
-    .map((part) => stripHtml(part))
+    .map((part) => htmlToPlainText(part))
     .filter(Boolean)
     .join('\n\n');
 
@@ -151,6 +139,8 @@ function toNormalized(hit: LvmhHit): NormalizedJob | null {
     // Straight to the Maison's own ATS — the canonical apply URL, which is why
     // this source outranks any jobboard reposting it.
     url: hit.link ?? `${LISTING_URL}?ref=${hit.objectID ?? ''}`,
+    // F-05: the feed DOES carry a date — epoch seconds, not ms.
+    postedAt: hit.publicationTimestamp ? new Date(hit.publicationTimestamp * 1000) : undefined,
     raw: hit,
   };
 }
@@ -162,7 +152,7 @@ function toNormalized(hit: LvmhHit): NormalizedJob | null {
  * `config.country` narrows by country, defaulting to France. Omit both for the
  * whole index.
  */
-export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promise<NormalizedJob[]> {
+export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promise<AdapterResult> {
   const filters = [
     'category:job',
     config.maison ? `maison:"${String(config.maison).replace(/"/g, '')}"` : '',
@@ -174,6 +164,7 @@ export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promi
   let key = String(config.apiKey ?? FALLBACK_KEY);
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
+  let declaredTotal: number | undefined;
 
   for (let page = 0; page < MAX_PAGES; page++) {
     let response = await query(key, filters, page);
@@ -208,9 +199,10 @@ export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promi
       fresh++;
     }
 
+    if (response.nbHits !== undefined) declaredTotal = response.nbHits;
     if (hits.length < PAGE_SIZE || fresh === 0) break;
     if (response.nbHits !== undefined && jobs.length >= response.nbHits) break;
   }
 
-  return jobs;
+  return { jobs, declaredTotal };
 }

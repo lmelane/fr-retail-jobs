@@ -1,5 +1,6 @@
 import { fetchJson } from '../../lib/http.js';
-import type { NormalizedJob } from '../../types.js';
+import { htmlToPlainText } from '../../lib/html.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
  * Phenom People career sites.
@@ -56,17 +57,6 @@ type PhenomResponse = {
   count?: number;
 };
 
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&(?:lt|gt|quot|#39);/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text || undefined;
-}
 
 function toNormalized(data: PhenomJobData, origin: string): NormalizedJob | null {
   if (!data.title) return null;
@@ -88,7 +78,7 @@ function toNormalized(data: PhenomJobData, origin: string): NormalizedJob | null
     // Phenom ships coordinates, so these rows skip geocoding.
     latitude: Number.isFinite(Number(data.latitude)) ? Number(data.latitude) : undefined,
     longitude: Number.isFinite(Number(data.longitude)) ? Number(data.longitude) : undefined,
-    description: stripHtml(data.description),
+    description: htmlToPlainText(data.description),
     url: data.applyUrl ?? data.apply_url ?? `${origin}/job/${id ?? ''}`,
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
     raw: data,
@@ -99,12 +89,13 @@ function toNormalized(data: PhenomJobData, origin: string): NormalizedJob | null
  * Reads a whole Phenom board.
  * `config.origin` is the careers host, e.g. "https://careers.footlocker.com".
  */
-export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const origin = String(config.origin ?? '').replace(/\/$/, '');
   if (!origin) throw new Error('Phenom origin missing');
 
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
+  let declaredTotal: number | undefined;
 
   for (let page = 1; page <= MAX_PAGES; page++) {
     const response = await fetchJson<PhenomResponse>(
@@ -123,14 +114,15 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
       fresh++;
     }
 
+    const total = response.totalCount ?? response.count;
+    if (total !== undefined) declaredTotal = total;
+
     // A short page, or one that adds nothing new, is the end of the board.
     if (batch.length < PAGE_SIZE || fresh === 0) break;
-
-    const total = response.totalCount ?? response.count;
     if (total !== undefined && jobs.length >= total) break;
   }
 
-  return jobs;
+  return { jobs, declaredTotal };
 }
 
 /**

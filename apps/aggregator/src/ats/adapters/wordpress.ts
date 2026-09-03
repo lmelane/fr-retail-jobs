@@ -1,4 +1,5 @@
 import { fetchWithRetry } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -28,23 +29,6 @@ type WpPost = {
   content?: { rendered?: string };
 };
 
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<li[^>]*>/gi, '\n• ')
-    .replace(/<\/(p|div|li|ul|ol|h[1-6])>/gi, '\n')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
-    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&(?:lt|gt|quot|#8217|rsquo);/g, "'")
-    .replace(/[ \t]+/g, ' ')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-  return text || undefined;
-}
 
 /**
  * Reads a category of posts as job offers.
@@ -70,14 +54,14 @@ export async function fetchWordpressJobs(config: Record<string, unknown>): Promi
     if (!Array.isArray(posts) || posts.length === 0) break;
 
     for (const post of posts) {
-      const title = stripHtml(post.title?.rendered);
+      const title = htmlToPlainText(post.title?.rendered);
       if (!title || !post.link) continue;
       const postedAt = post.date ? new Date(post.date) : undefined;
 
       jobs.push({
         externalId: String(post.id ?? post.link),
         title,
-        description: stripHtml(post.content?.rendered),
+        description: htmlToPlainText(post.content?.rendered),
         url: post.link,
         postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
         raw: post,

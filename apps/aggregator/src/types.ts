@@ -93,3 +93,19 @@ export type NormalizedJob = {
   /** Untouched source payload, for debugging and later field extraction. */
   raw?: unknown;
 };
+
+/**
+ * What an adapter hands back (audit F-04).
+ *
+ * `declaredTotal` is the count the SOURCE itself announces for the listing
+ * (Workday `total`, Algolia `nbHits`, SmartRecruiters `totalFound`…).
+ * `truncated` is true when the sweep returned fewer offers than that — a page
+ * cap, a cut pagination, a feed limit. A truncated source LOOKS healthy on
+ * volume alone (Talentsoft returned a clean 20 while holding 112), so the
+ * health pass turns it into a DEGRADED incident instead of a quiet partial.
+ */
+export type AdapterResult = {
+  jobs: NormalizedJob[];
+  declaredTotal?: number;
+  truncated?: boolean;
+};

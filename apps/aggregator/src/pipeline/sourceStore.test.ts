@@ -158,3 +158,17 @@ describe('retireSource marks the catalogue row', () => {
     expect(row.status).toBe('RETIRED');
   });
 });
+
+describe('tenantKeyOf — clés vendor spécifiques', () => {
+  it('distingue deux boards Lever par leur `site`, pas par le domaine vendor partagé', () => {
+    const a = tenantKeyOf('lever', '{"site": "ashoka"}', 'jobs.lever.co');
+    const b = tenantKeyOf('lever', '{"site": "mulberry"}', 'jobs.lever.co');
+    expect(a).toBe('lever:ashoka');
+    expect(b).toBe('lever:mulberry');
+    expect(a).not.toBe(b);
+  });
+  it('DigitalRecruiters par domainName, Magnet par siteKey', () => {
+    expect(tenantKeyOf('digitalrecruiters', '{"domainName": "careers.zadig.com"}')).toBe('digitalrecruiters:careers.zadig.com');
+    expect(tenantKeyOf('magnet', '{"siteKey": "9550007d", "origin": "https://x.com"}')).toBe('magnet:9550007d');
+  });
+});

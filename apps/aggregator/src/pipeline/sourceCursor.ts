@@ -61,9 +61,15 @@ export async function advanceCursor(
   sourceKey: string,
   startPage: number,
   reachedEnd: boolean,
+  /** Last page the crawl actually finished (F-07); resumes right after it. */
+  lastPageDone?: number,
 ): Promise<number> {
   const windowPages = ROTATING_SOURCES[sourceKey]?.windowPages ?? 40;
-  const nextPage = reachedEnd ? 1 : startPage + windowPages;
+  // Resume where the crawl really stopped, not where the window would have
+  // ended: a sweep cut at page 3 of 40 (Cloudflare, deadline) must re-cover
+  // pages 4-40 next run, not skip them. No page done at all = retry the same
+  // window.
+  const nextPage = reachedEnd ? 1 : lastPageDone !== undefined ? lastPageDone + 1 : startPage;
   await prisma.sourceCursor.upsert({
     where: { sourceKey },
     create: { sourceKey, nextPage },

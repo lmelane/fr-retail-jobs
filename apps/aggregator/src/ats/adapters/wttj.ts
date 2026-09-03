@@ -1,5 +1,6 @@
 import { fetchJson, fetchText } from '../../lib/http.js';
-import type { NormalizedJob } from '../../types.js';
+import { htmlToPlainText } from '../../lib/html.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
  * Welcome to the Jungle — its own search API, not a generic jobboard scrape.
@@ -98,23 +99,13 @@ type WttjHit = {
 
 type WttjResponse = { nbHits?: number; hits?: WttjHit[]; message?: string; status?: number };
 
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text || undefined;
-}
 
 function toNormalized(hit: WttjHit, organizationSlug: string): NormalizedJob | null {
   if (!hit.name) return null;
 
   const office = hit.offices?.[0];
   const postedAt = hit.published_at ? new Date(hit.published_at) : undefined;
-  const description = [stripHtml(hit.description), stripHtml(hit.profile)]
+  const description = [htmlToPlainText(hit.description), htmlToPlainText(hit.profile)]
     .filter(Boolean)
     .join('\n\n');
 
@@ -147,11 +138,12 @@ function toNormalized(hit: WttjHit, organizationSlug: string): NormalizedJob | n
  * Every WTTJ posting for one employer. `config.slug` is the organization slug as
  * it appears in the URL (/fr/companies/{slug}/jobs).
  */
-export async function fetchWttjJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+export async function fetchWttjJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const slug = String(config.slug ?? config.organization ?? '');
   if (!slug) throw new Error('WTTJ organization slug missing');
 
   const jobs: NormalizedJob[] = [];
+  let declaredTotal: number | undefined;
 
   const ask = (page: number) =>
     fetchJson<WttjResponse>(`https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`, {
@@ -192,10 +184,11 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<No
       if (job) jobs.push(job);
     }
 
+    if (response.nbHits !== undefined) declaredTotal = response.nbHits;
     // A short page is the last one; nbHits also bounds the loop.
     if (hits.length < PAGE_SIZE) break;
     if (response.nbHits !== undefined && jobs.length >= response.nbHits) break;
   }
 
-  return jobs;
+  return { jobs, declaredTotal };
 }

@@ -24,7 +24,7 @@ describe('fetchWorkdayJobs with a posting missing externalPath', () => {
       ],
     } as never);
 
-    const jobs = await fetchWorkdayJobs({
+    const { jobs } = await fetchWorkdayJobs({
       tenant: 'richemont',
       site: 'richemont',
       origin: 'https://richemont.wd3.myworkdayjobs.com',
@@ -52,7 +52,7 @@ describe('fetchWorkdayJobs apply URL', () => {
       jobPostings: [{ title: 'Vendeur', externalPath: '/job/Paris/Vendeur_R-123' }],
     } as never);
 
-    const jobs = await fetchWorkdayJobs({
+    const { jobs } = await fetchWorkdayJobs({
       tenant: 'richemont',
       site: 'broadbean_external',
       origin: 'https://richemont.wd3.myworkdayjobs.com',
@@ -89,5 +89,22 @@ describe('brandFromWorkdayDetail', () => {
 
   it('returns undefined on a single-brand tenant without those fields', () => {
     expect(brandFromWorkdayDetail({ jobPostingInfo: { jobDescription: 'x' } })).toBeUndefined();
+  });
+});
+
+// ——— F-05 : la date relative du listing devient un postedAt honnête ———
+import { postedAtFromWorkday } from './workday.js';
+
+describe('postedAtFromWorkday', () => {
+  it('parses today / yesterday / N days ago', () => {
+    const now = Date.now();
+    expect(postedAtFromWorkday('Posted Today')!.getTime()).toBeGreaterThan(now - 5_000);
+    expect(Math.round((now - postedAtFromWorkday('Posted Yesterday')!.getTime()) / 86_400_000)).toBe(1);
+    expect(Math.round((now - postedAtFromWorkday('Posted 12 Days Ago')!.getTime()) / 86_400_000)).toBe(12);
+  });
+  it('refuses to invent a date for "30+ Days Ago" or garbage', () => {
+    expect(postedAtFromWorkday('Posted 30+ Days Ago')).toBeUndefined();
+    expect(postedAtFromWorkday('whenever')).toBeUndefined();
+    expect(postedAtFromWorkday(undefined)).toBeUndefined();
   });
 });

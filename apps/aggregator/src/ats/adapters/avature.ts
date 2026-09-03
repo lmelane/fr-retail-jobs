@@ -2,7 +2,7 @@ import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
 import { fetchSitemapUrls } from '../../connectors/generic/jsonLdSitemap.js';
 import { parseMicrodataDescription } from './successfactors.js';
-import type { NormalizedJob } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
  * Avature career sites (L'Oréal, and the group's Maisons).
@@ -141,15 +141,19 @@ export function parseAvatureListing(html: string): NormalizedJob[] {
  * Prefers the listing, which carries the location; falls back to per-offer pages
  * from the sitemap only when no listing URL is configured.
  */
-export async function fetchAvatureJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+export async function fetchAvatureJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const listingUrl = String(config.listingUrl ?? '');
 
   if (listingUrl) {
     const jobs: NormalizedJob[] = [];
     const seen = new Set<string>();
     const pageSize = Number(config.pageSize ?? 20);
+    const maxPages = Number(config.maxPages ?? 120);
 
-    for (let page = 0; page < Number(config.maxPages ?? 120); page++) {
+    // Avature announces no total; the truncation signal here is exhausting the
+    // page cap while every page still yielded fresh offers (F-04).
+    let truncated = false;
+    for (let page = 0; page < maxPages; page++) {
       const separator = listingUrl.includes('?') ? '&' : '?';
       const html = await fetchText(`${listingUrl}${separator}jobOffset=${page * pageSize}`, {
         headers: HEADERS,
@@ -162,17 +166,18 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
         jobs.push(job);
       }
       if (fresh.length === 0) break;
+      if (page === maxPages - 1) truncated = true;
     }
 
-    if (config.withDescriptions === false) return jobs;
+    if (config.withDescriptions === false) return { jobs, truncated };
 
     /**
      * The listing snippet is ~290 characters — an excerpt, not the posting. The
      * full text lives on the detail page as MICRODATA (itemprop="description"),
      * the same shape SuccessFactors uses, since its JSON-LD is empty.
      */
-    const detailLimit = pLimit(Number(config.detailConcurrency ?? 8));
-    return Promise.all(
+    const detailLimit = pLimit(Number(config.detailConcurrency ?? 4));
+    const withDescriptions = await Promise.all(
       jobs.map((job) =>
         detailLimit(async () => {
           try {
@@ -188,13 +193,14 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
         }),
       ),
     );
+    return { jobs: withDescriptions, truncated };
   }
 
   const sitemapUrl = String(config.sitemapUrl ?? '');
   if (!sitemapUrl) throw new Error('Avature listingUrl or sitemapUrl required');
 
   const urls = (await fetchSitemapUrls(sitemapUrl)).filter((url) => JOB_URL.test(url));
-  const limit = pLimit(Number(config.concurrency ?? 10));
+  const limit = pLimit(Number(config.concurrency ?? 4));
 
   const jobs = await Promise.all(
     urls.map((url) =>
@@ -209,5 +215,8 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
     ),
   );
 
-  return jobs.filter((job): job is NormalizedJob => job !== null);
+  // Sitemap path: the sitemap IS the full enumeration — its length is the
+  // declared total, and a page that failed to parse is the truncation.
+  const parsed = jobs.filter((job): job is NormalizedJob => job !== null);
+  return { jobs: parsed, declaredTotal: urls.length };
 }

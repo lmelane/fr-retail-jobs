@@ -57,6 +57,9 @@ describe('geocodeLocation — city never falls back to the full label (G-2)', ()
         ok: true,
         status: 200,
         json: async () => ({ features: [feature] }),
+        // fetchJson lit le corps via le lecteur borné (F-01), qui retombe sur
+        // text() quand le mock n'a pas de stream.
+        text: async () => JSON.stringify({ features: [feature] }),
       })),
     );
   }

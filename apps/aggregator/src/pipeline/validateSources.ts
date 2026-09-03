@@ -102,7 +102,7 @@ async function validateOne(row: Row): Promise<ValidationResult> {
   if (!type) return { row, jobs: 0, withDescription: 0, error: `no adapter for kind "${row.kind}"` };
 
   try {
-    const jobs: NormalizedJob[] = await fetchAtsJobs(type as never, normalizeSourceConfig(row.config));
+    const { jobs } = await fetchAtsJobs(type as never, normalizeSourceConfig(row.config));
     return {
       row,
       jobs: jobs.length,

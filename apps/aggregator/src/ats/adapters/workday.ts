@@ -1,13 +1,14 @@
 import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
-import type { NormalizedJob } from '../../types.js';
+import { htmlToPlainText } from '../../lib/html.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 // externalPath is optional in practice: some tenants (Richemont) return rows
 // without it, and treating it as always-present crashed the whole source.
 type WorkdayPosting = { title: string; externalPath?: string; locationsText?: string; postedOn?: string; bulletFields?: string[] };
 type WorkdayPage = { total?: number; jobPostings?: WorkdayPosting[] };
 
-export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const tenant = String(config.tenant ?? '');
   const site = String(config.site ?? '');
   const origin = String(config.origin ?? '');
@@ -40,6 +41,7 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
         externalId,
         title: job.title,
         location: job.locationsText,
+        postedAt: postedAtFromWorkday(job.postedOn),
         // The public career URL is {origin}/{site}{externalPath}, joined by
         // string — NOT new URL(externalPath, `${origin}/${site}/`), which
         // silently DROPS the /{site}/ segment because externalPath is an
@@ -54,12 +56,17 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
     if (total && out.length >= total) break;
   }
 
-  if (config.withDescriptions === false) return out;
-  return attachWorkdayDescriptions(
-    out,
-    `${origin}/wday/cxs/${tenant}/${site}`,
-    Number(config.detailConcurrency ?? 6),
-  );
+  // F-04: `total` is the tenant's own announced count — the truncation signal.
+  const declaredTotal = total || undefined;
+  if (config.withDescriptions === false) return { jobs: out, declaredTotal };
+  return {
+    jobs: await attachWorkdayDescriptions(
+      out,
+      `${origin}/wday/cxs/${tenant}/${site}`,
+      Number(config.detailConcurrency ?? 4),
+    ),
+    declaredTotal,
+  };
 }
 
 type WorkdayDetail = {
@@ -92,14 +99,24 @@ export function brandFromWorkdayDetail(detail: WorkdayDetail): string | undefine
   return legal.replace(/^[A-Z]{0,2}\d+\s+/, '').trim() || undefined;
 }
 
-function stripHtml(value?: string): string {
-  return (value ?? '')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .trim();
+/**
+ * Workday's listing states the date RELATIVELY ("Posted Today", "Posted 3 Days
+ * Ago") — F-05. "30+ Days Ago" is a floor, not a date: left undefined rather
+ * than invented; the detail's `startDate` (a real ISO date) overrides when the
+ * descriptions pass fetches it, and firstSeenAt covers the rest honestly.
+ */
+export function postedAtFromWorkday(postedOn?: string): Date | undefined {
+  if (!postedOn) return undefined;
+  const text = postedOn.toLowerCase();
+  const day = 86_400_000;
+  if (/\btoday\b/.test(text)) return new Date();
+  if (/\byesterday\b/.test(text)) return new Date(Date.now() - day);
+  const match = text.match(/(\d+)\+?\s+days?\s+ago/);
+  if (!match) return undefined;
+  if (text.includes('+')) return undefined; // "30+" = at least, not equals
+  return new Date(Date.now() - Number(match[1]) * day);
 }
+
 
 /**
  * The listing endpoint returns no description; the detail one does, at
@@ -109,7 +126,7 @@ function stripHtml(value?: string): string {
 export async function attachWorkdayDescriptions(
   jobs: NormalizedJob[],
   cxsBase: string,
-  concurrency = 6,
+  concurrency = 4,
 ): Promise<NormalizedJob[]> {
   const limit = pLimit(concurrency);
 
@@ -124,9 +141,12 @@ export async function attachWorkdayDescriptions(
           if (!info) return job;
           return {
             ...job,
-            description: stripHtml(info.jobDescription) || job.description,
+            description: htmlToPlainText(info.jobDescription) || job.description,
             country: info.country?.descriptor ?? job.country,
             location: info.location ?? job.location,
+            // F-05: the detail's startDate is a REAL date; the listing only
+            // had "Posted N Days Ago".
+            postedAt: info.startDate ? new Date(info.startDate) : job.postedAt,
             // Group tenants: credit the offer to its Maison, not the feed label.
             company: brandFromWorkdayDetail(detail) ?? job.company,
           };

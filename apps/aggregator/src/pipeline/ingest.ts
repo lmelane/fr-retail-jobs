@@ -66,6 +66,10 @@ export type IngestStats = {
   withDate: number;
   withCountry: number;
   withUrl: number;
+  /** Count the SOURCE declares for its listing, when it announces one (F-04). */
+  declaredTotal?: number;
+  /** True when the sweep returned fewer offers than declaredTotal. */
+  truncated?: boolean;
 };
 
 /** One place decides what "the field is filled" means, for every ingest path. */
@@ -82,6 +86,13 @@ function toCandidate(
   companyName: string,
   atsType: AtsType,
 ): CandidateJob & { companyId: string } {
+  // F-06: the apply link is the product promise — a candidate clicking
+  // "Voir l'offre" must land somewhere. A relative path, an empty string or a
+  // javascript: pseudo-URL is refused AT THE BOUNDARY (counted as an error on
+  // the source), never stored for the web layer to render as a dead button.
+  if (!/^https?:\/\//.test(job.url ?? '')) {
+    throw new Error(`invalid apply URL "${(job.url ?? '').slice(0, 80)}" (${job.externalId})`);
+  }
   // Several ATS file "Full-time" / "Plein Temps" under contract, which is a
   // working time, not a contract type. Moved rather than dropped: the UI was
   // printing the source's raw English next to French contract labels.
@@ -390,19 +401,32 @@ async function ingestApiSource(
   // A rotating source resumes partway through its listing so it re-sees every
   // offer within the lifecycle window instead of only ever the newest pages.
   const rotating = isRotatingSource(stats.source);
-  const progress: { reachedEnd?: boolean } = {};
+  const progress: { reachedEnd?: boolean; lastPageDone?: number } = {};
   let startPage = 1;
   if (rotating) {
     startPage = await nextPageFor(prisma, stats.source);
     config = { ...config, startPage, progress };
   }
 
-  const jobs = await fetchAtsJobs(type as never, config);
+  const { jobs, declaredTotal, truncated } = await fetchAtsJobs(type as never, config);
+  stats.declaredTotal = declaredTotal;
+  stats.truncated = truncated;
+  if (truncated) {
+    console.error(
+      `[ingest] ${stats.source}: TRUNCATED — ${jobs.length} collected of ${declaredTotal} declared`,
+    );
+  }
 
   // Move the cursor forward for next run — after a successful fetch only, so a
   // failed crawl retries the same window rather than skipping it.
   if (rotating) {
-    const next = await advanceCursor(prisma, stats.source, startPage, progress.reachedEnd === true);
+    const next = await advanceCursor(
+      prisma,
+      stats.source,
+      startPage,
+      progress.reachedEnd === true,
+      progress.lastPageDone,
+    );
     console.log(`[ingest] ${stats.source}: rotating crawl page ${startPage} → next run resumes at ${next}`);
   }
   stats.fetched = jobs.length;

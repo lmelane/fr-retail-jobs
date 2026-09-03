@@ -152,6 +152,21 @@ try {
     const key = process.argv[3];
     if (!key || key.startsWith('--')) throw new Error('promote needs the sourceKey to promote');
     console.log(JSON.stringify({ ok: true, command, ...(await promoteSource(prisma, key)) }, null, 2));
+  } else if (command === 'promote-validated') {
+    /**
+     * C-02 : promotion en lot depuis un rapport de validation-volume. La barre
+     * du plan par ligne : ≥ 1 offre parsée AVEC lieu, verdict robots lu à la
+     * source et daté, tenant unique. Usage :
+     *   promote-validated --report=data/validation.generiques.tsv --input=data/sources.gated.csv
+     */
+    const { promoteValidated } = await import('./discovery/promoteValidated.js');
+    const argOf = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+    const report = argOf('report');
+    const input = argOf('input');
+    if (!report || !input) throw new Error('promote-validated needs --report=<tsv> and --input=<gated csv>');
+    const stats = await promoteValidated(prisma, report, input);
+    console.log(JSON.stringify({ ok: stats.failed.length === 0, command, ...stats }, null, 2));
+    if (stats.failed.length > 0) process.exitCode = 1;
   } else if (command === 'retire-source') {
     /**
      * Cleans up after a catalogue line is removed (a robots-forbidden route, an

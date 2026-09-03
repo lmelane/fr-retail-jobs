@@ -22,7 +22,7 @@ const ATS_HOSTS = [
 const WIDGET_BACKENDS: ReadonlyArray<{
   re: RegExp;
   type: AtsType;
-  config: (pageUrl: URL) => Record<string, unknown>;
+  config: (pageUrl: URL, html: string) => Record<string, unknown>;
 }> = [
   {
     re: /digitalrecruiters\.com/i,
@@ -44,6 +44,45 @@ const WIDGET_BACKENDS: ReadonlyArray<{
   // recognise them so the brand's careers page enters the review queue as a
   // generic crawl instead of being dropped. The generic JSON-LD crawler reads the
   // page as-is; a human can wire a proper adapter later.
+  // C-05a — vendors with a REAL adapter that the scan used to miss entirely:
+  // their boards fell through to generic-listing (and mostly produced nothing
+  // there — 356 of the 366 gated generics were exactly this). Signatures are
+  // the vendors' own asset/API hosts as embedded in the page.
+  {
+    re: /eightfold\.ai|\/api\/pcsx\//i,
+    type: 'EIGHTFOLD',
+    config: (u) => ({ origin: u.origin, domain: u.hostname.replace(/^careers?\./, '') }),
+  },
+  {
+    re: /phenompeople\.com|phenom-feeds|window\.phenom/i,
+    type: 'PHENOM',
+    config: (u) => ({ origin: u.origin }),
+  },
+  {
+    // SF Career Site Builder pages load their runtime from sfstatic / rmk CDNs.
+    re: /successfactors\.(com|eu)|sfstatic\.io|rmkcdn/i,
+    type: 'SUCCESSFACTORS',
+    config: (u) => ({ origin: u.origin }),
+  },
+  {
+    re: /avature\.net/i,
+    type: 'AVATURE',
+    config: (u) => ({ origin: u.origin, listingUrl: `${u.origin}${u.pathname.includes('SearchJobs') ? u.pathname : '/jobs/SearchJobs/'}` }),
+  },
+  {
+    re: /api\.magnet\.work|magnet\.work/i,
+    type: 'MAGNET',
+    // The widget inlines its siteKey; without it the adapter cannot query.
+    config: (u, html) => ({
+      origin: u.origin,
+      siteKey: html.match(/siteKey["'\s:=]+["']?([0-9a-f]{16,64})/i)?.[1],
+    }),
+  },
+  {
+    re: /pinpointhq\.com/i,
+    type: 'PINPOINT',
+    config: (u) => ({ origin: u.origin }),
+  },
   {
     re: /flatchr\.io|api\.flatchr/i,
     type: 'GENERIC_JSONLD',
@@ -63,7 +102,7 @@ function detectWidgetBackend(html: string, pageUrl: URL): AtsDetection | null {
       return {
         type: backend.type,
         careersUrl: pageUrl.toString(),
-        config: backend.config(pageUrl),
+        config: backend.config(pageUrl, html),
         confidence: 0.85,
         note: `${backend.type} widget detected on ${pageUrl.hostname}`,
       };
@@ -102,6 +141,27 @@ function detectionFromUrl(rawUrl: string): AtsDetection | null {
     const tenant = host.split('.')[0];
     const site = parts[0];
     if (tenant && site) return { type: 'WORKDAY', careersUrl: url.toString(), config: { tenant, site, origin: url.origin }, confidence: 1 };
+  }
+  // C-05a — vendor hosts the URL walk used to ignore, all with real adapters.
+  if (host === 'apply.workable.com') {
+    const account = parts[0];
+    if (account) return { type: 'WORKABLE', careersUrl: url.toString(), config: { account }, confidence: 1 };
+  }
+  if (host === 'jobs.ashbyhq.com') {
+    const board = parts[0];
+    if (board) return { type: 'ASHBY', careersUrl: url.toString(), config: { board }, confidence: 1 };
+  }
+  if (host.endsWith('.teamtailor.com')) {
+    return { type: 'TEAMTAILOR', careersUrl: url.toString(), config: { origin: url.origin }, confidence: 1 };
+  }
+  if (host.endsWith('.pinpointhq.com')) {
+    return { type: 'PINPOINT', careersUrl: url.toString(), config: { origin: url.origin }, confidence: 1 };
+  }
+  if (host.endsWith('.eightfold.ai')) {
+    return { type: 'EIGHTFOLD', careersUrl: url.toString(), config: { origin: url.origin, domain: host }, confidence: 1 };
+  }
+  if (host.endsWith('.avature.net')) {
+    return { type: 'AVATURE', careersUrl: url.toString(), config: { origin: url.origin, listingUrl: `${url.origin}/jobs/SearchJobs/` }, confidence: 1 };
   }
   // Welcome to the Jungle (and its Welcomekit embed): the org slug is the segment
   // after /companies/ — welcometothejungle.com/fr/companies/<slug>[/jobs].
