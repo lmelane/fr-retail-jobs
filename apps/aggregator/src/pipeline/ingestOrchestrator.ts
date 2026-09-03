@@ -1,6 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
 import { plainHttpSources } from '../connectors/registry.js';
-import { loadSourceCatalog, sourceKeyFor } from '../connectors/sourceCatalog.js';
+import { loadActiveSources } from '../connectors/sourceStore.js';
 import { runIngest, KIND_TO_ATS } from './ingest.js';
 import { checkSourceHealth, type SourceHealth } from './health.js';
 import { briefError } from '../lib/normalize.js';
@@ -61,11 +61,11 @@ export type OrchestratorResult = {
  * board — instead of stalling on two giants and reaching no one else. The few
  * large feeds run last, where a cut costs the fewest employers.
  */
-export function allSourceKeys(): string[] {
-  const apiKeys = loadSourceCatalog()
+export async function allSourceKeys(prisma: PrismaClient): Promise<string[]> {
+  const apiKeys = (await loadActiveSources(prisma))
     .filter((source) => KIND_TO_ATS[source.kind])
     .sort((a, b) => (a.jobCount || 0) - (b.jobCount || 0))
-    .map((source) => sourceKeyFor(source));
+    .map((source) => source.key);
   const sitemapKeys = plainHttpSources()
     .filter((source) => source.kind === 'SITEMAP_JSONLD')
     .map((source) => source.key);
@@ -82,7 +82,7 @@ function withTimeout<T>(work: Promise<T>, ms: number, label: string): Promise<T>
 }
 
 export async function ingestAllBySource(prisma: PrismaClient): Promise<OrchestratorResult> {
-  const keys = allSourceKeys();
+  const keys = await allSourceKeys(prisma);
   console.log(`[orchestrator] ${keys.length} sources, each time-bounded: ${keys.join(', ')}`);
 
   const result: OrchestratorResult = { total: keys.length, ok: 0, failed: 0, timedOut: 0, failures: [], incidents: [] };

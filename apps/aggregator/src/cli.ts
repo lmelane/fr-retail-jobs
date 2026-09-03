@@ -16,6 +16,7 @@ import { runRefresh } from './pipeline/refresh.js';
 import { runReconcile } from './pipeline/reconcile.js';
 import { separateFusedJobs } from './pipeline/separateFused.js';
 import { retireSource } from './pipeline/retireSource.js';
+import { importSourcesCsv, promoteSource } from './connectors/sourceStore.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
 import { runStats } from './pipeline/stats.js';
 import { exportCompanies } from './export/companies.js';
@@ -128,6 +129,23 @@ try {
     }
   } else if (command === 'reconcile') {
     console.log(JSON.stringify({ ok: true, command, ...(await runReconcile(prisma)) }, null, 2));
+  } else if (command === 'import-sources') {
+    /**
+     * One-shot seed of the Source table (DEC-3) from data/sources.csv.
+     * Idempotent: re-running updates, never duplicates. After this, the CSV is
+     * dead weight — every runtime consumer reads the table.
+     */
+    const stats = await importSourcesCsv(prisma);
+    console.log(JSON.stringify({ ok: stats.skippedDuplicateTenant.length === 0, command, ...stats }, null, 2));
+    if (stats.skippedDuplicateTenant.length > 0) process.exitCode = 1;
+  } else if (command === 'promote') {
+    /**
+     * DRAFT/VALIDATED/PAUSED -> ACTIVE, guarded: config + dated robots verdict
+     * + at least one proven offer, or the promotion refuses (règles du plan).
+     */
+    const key = process.argv[3];
+    if (!key || key.startsWith('--')) throw new Error('promote needs the sourceKey to promote');
+    console.log(JSON.stringify({ ok: true, command, ...(await promoteSource(prisma, key)) }, null, 2));
   } else if (command === 'retire-source') {
     /**
      * Cleans up after a catalogue line is removed (a robots-forbidden route, an
@@ -200,6 +218,7 @@ try {
     const fresh = process.argv.includes('--fresh');
     const result = await discoverMaisons({
       inputFile,
+      prisma,
       limit: Number.isFinite(limit) ? limit : 0,
       concurrency: Number.isFinite(concurrency) && concurrency > 0 ? concurrency : 3,
       fresh,

@@ -1,5 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
 import type { IngestStats } from './ingest.js';
+import { recordSourceRunSummary } from '../connectors/sourceStore.js';
 
 /**
  * Source health, run after every ingest.
@@ -33,6 +34,8 @@ export type SourceHealth = {
   note?: string;
   /** "desc 62% date 0% pays 88% url 100%" — recorded on every run for trend. */
   coverage?: string;
+  /** Same rates as numbers 0..1, written to SourceRun/Source COLUMNS (L-02). */
+  rates?: { description: number; date: number; country: number; url: number };
 };
 
 /**
@@ -103,6 +106,7 @@ export async function checkSourceHealth(
         previous: before,
         note: `${Math.round((1 - jobs / before) * 100)}% fewer offers than the previous run`,
         coverage: coverageOf(stat),
+        rates: ratesOf(stat),
       });
       continue;
     }
@@ -117,11 +121,19 @@ export async function checkSourceHealth(
         previous: before,
         note: fieldIncident,
         coverage: coverageOf(stat),
+        rates: ratesOf(stat),
       });
       continue;
     }
 
-    results.push({ source: stat.source, status: 'OK', jobs, previous: before, coverage: coverageOf(stat) });
+    results.push({
+      source: stat.source,
+      status: 'OK',
+      jobs,
+      previous: before,
+      coverage: coverageOf(stat),
+      rates: ratesOf(stat),
+    });
   }
 
   await recordRun(prisma, results);
@@ -140,6 +152,18 @@ function coverageOf(stat: IngestStats): string | undefined {
   if (!stat.fetched) return undefined;
   const pct = (n: number) => `${Math.round((n / stat.fetched) * 100)}%`;
   return `desc ${pct(stat.withDescription)} date ${pct(stat.withDate)} pays ${pct(stat.withCountry)} url ${pct(stat.withUrl)}`;
+}
+
+/** The same coverage as numbers, for the queryable columns (L-02). */
+function ratesOf(stat: IngestStats): SourceHealth['rates'] {
+  if (!stat.fetched) return undefined;
+  const rate = (n: number) => Math.round((n / stat.fetched) * 1000) / 1000;
+  return {
+    description: rate(stat.withDescription),
+    date: rate(stat.withDate),
+    country: rate(stat.withCountry),
+    url: rate(stat.withUrl),
+  };
 }
 
 /** The gate itself: a big-enough source below a floor is an incident. */
@@ -177,20 +201,35 @@ async function previousCounts(prisma: PrismaClient): Promise<Map<string, number>
 async function recordRun(prisma: PrismaClient, results: SourceHealth[]): Promise<void> {
   const now = new Date();
   await Promise.all(
-    results.map((result) =>
-      prisma.sourceRun.create({
+    results.map(async (result) => {
+      await prisma.sourceRun.create({
         data: {
           sourceKey: result.source,
           status: result.status,
           jobs: result.jobs,
           previousJobs: result.previous,
           // The coverage rates ride along on EVERY run, incident or not: they
-          // are the trend the next regression gets caught against.
+          // are the trend the next regression gets caught against. Columns
+          // carry the queryable numbers; the note stays human-readable.
           note: [result.note, result.coverage].filter(Boolean).join(' · ') || null,
+          descriptionRate: result.rates?.description ?? null,
+          dateRate: result.rates?.date ?? null,
+          countryRate: result.rates?.country ?? null,
+          urlRate: result.rates?.url ?? null,
           ranAt: now,
         },
-      }),
-    ),
+      });
+      // Denormalized onto the catalogue row too, so « how is this source
+      // doing » is one query on Source (DEC-3).
+      await recordSourceRunSummary(prisma, result.source, {
+        status: result.status,
+        jobs: result.jobs,
+        descriptionRate: result.rates?.description,
+        dateRate: result.rates?.date,
+        countryRate: result.rates?.country,
+        urlRate: result.rates?.url,
+      });
+    }),
   );
 
   // Keep the table bounded: history is for spotting a trend, not an archive.

@@ -2,10 +2,10 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } fr
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pLimit from 'p-limit';
+import type { PrismaClient } from '@prisma/client';
 import { inspectCareerPage } from '../ats/detect.js';
 import { probeAtsBySlug } from './atsProbe.js';
 import { fetchRenderedHtml } from '../lib/browser.js';
-import { loadSourceCatalog } from '../connectors/sourceCatalog.js';
 import { resolveCompany } from '../normalize/company.js';
 import type { AtsDetection } from '../types.js';
 
@@ -145,6 +145,8 @@ function toCsvLine(row: DiscoveryRow): string {
 export async function discoverMaisons(options: {
   /** A `nom,url` CSV roster (required at scale — the world list). */
   inputFile: string;
+  /** For the already-catalogued check — the Source table is the catalogue (DEC-3). */
+  prisma: PrismaClient;
   /** Cap the number of Maisons processed this run; 0 = all remaining. */
   limit?: number;
   /** Parallel browser detections. Keep low — each opens a real page. */
@@ -154,7 +156,14 @@ export async function discoverMaisons(options: {
 }): Promise<{ processed: number; discovered: number; skipped: number; unresolved: number; outPath: string }> {
   const concurrency = options.concurrency ?? 3;
 
-  const known = new Set(loadSourceCatalog().map((s) => resolveCompany(s.maison).companyId));
+  // Skip Maisons the catalogue already serves, whatever their status short of
+  // RETIRED: a PAUSED source is still a known board, not a discovery target.
+  // An empty table is fine here — discovery is how the catalogue gets seeded.
+  const catalogued = await options.prisma.source.findMany({
+    where: { status: { not: 'RETIRED' } },
+    select: { maison: true },
+  });
+  const known = new Set(catalogued.map((s) => resolveCompany(s.maison).companyId));
   const processed = options.fresh ? new Set<string>() : loadProcessed();
 
   // Prepare output files. The review CSV gets a header once; results are appended

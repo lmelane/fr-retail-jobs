@@ -75,6 +75,79 @@ enum AtsType {
   UNKNOWN
 }
 
+/**
+ * Lifecycle of a catalogue source (DEC-3, décision Loïc 2026-09-03).
+ *
+ * DRAFT      discovered/imported, identity or volume not yet proven
+ * VALIDATED  proven (≥1 parsed offer, identity anchored) but not yet ingested
+ * ACTIVE     in the ingest rotation
+ * PAUSED     temporarily out (broken feed, throttling) — its rows stay in base
+ * RETIRED    permanently out; `retire-source` has cleaned its rows
+ */
+enum SourceStatus {
+  DRAFT
+  VALIDATED
+  ACTIVE
+  PAUSED
+  RETIRED
+}
+
+/**
+ * The source catalogue, in base (DEC-3) — replaces data/sources.csv at runtime.
+ *
+ * A CSV had no lifecycle: removing a line left its offers orphaned forever
+ * (the « Cartier +3 » incident), promotion was a hand edit, and nothing
+ * recorded per-source quality. Here every source carries its status, its dated
+ * robots verdict, its last run and its field-coverage rates as queryable
+ * columns.
+ */
+model Source {
+  id            String       @id @default(cuid())
+  /** Stable key, referenced by JobSource.sourceKey and SourceRun.sourceKey. */
+  key           String       @unique
+  /** Displayed employer/board name ("Cartier", "Richemont (toutes Maisons)"). */
+  maison        String
+  careersDomain String?
+  /** Adapter family: workday, greenhouse, generic-listing… */
+  kind          String
+  /**
+   * Adapter config (origin, listingUrl, sitemapUrl…). For legacy sitemap rows
+   * this is `{ "url": "<entry url>" }`.
+   */
+  config        Json
+  /** Shape of a job URL for sitemap filtering, as observed. */
+  jobUrlPattern String?
+  status        SourceStatus @default(DRAFT)
+  /** Dedup tier: EMPLOYER_DIRECT | GROUP_OFFICIAL | ATS_OFFICIAL | SPECIALIST_JOBBOARD | AGGREGATOR */
+  tier          String
+  /**
+   * One row per ATS tenant (unicité par tenant): `kind:normalized-locator`.
+   * Two Maisons resolving to the same board must arbitrate BEFORE import —
+   * shared-tenant duplicates are how one group feed got catalogued twice.
+   */
+  tenantKey     String       @unique
+  robotsVerdict String?
+  /** When the robots verdict was last read at the source — a verdict ages. */
+  robotsCheckedAt DateTime?
+  /** Jobs counted when the source was last verified/promoted. */
+  verifiedJobCount Int?
+  /** Denormalized last-run summary, so the catalogue is readable in one query. */
+  lastRunAt     DateTime?
+  lastRunStatus String?
+  lastRunJobs   Int?
+  /** Last-run field-coverage rates, 0..1 (audit L-02 — queryable, not a note). */
+  descriptionRate Float?
+  dateRate      Float?
+  countryRate   Float?
+  urlRate       Float?
+  note          String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([status])
+  @@index([kind])
+}
+
 model Company {
   id                   String          @id @default(cuid())
   name                 String
@@ -292,6 +365,15 @@ model SourceRun {
   /** What the source held before this run; null on its first. */
   previousJobs Int?
   note         String?
+  /**
+   * Field-coverage rates of this run, 0..1 (audit L-02): a source can keep its
+   * volume while silently losing a field (the Eightfold descriptions). Columns,
+   * not a note string, so trends are queryable.
+   */
+  descriptionRate Float?
+  dateRate     Float?
+  countryRate  Float?
+  urlRate      Float?
   ranAt        DateTime @default(now())
 
   @@index([sourceKey, ranAt])

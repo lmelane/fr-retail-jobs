@@ -33,6 +33,11 @@ const TIER_ORDER = ['EMPLOYER_DIRECT', 'GROUP_OFFICIAL', 'ATS_OFFICIAL', 'SPECIA
 export async function retireSource(prisma: PrismaClient, sourceKey: string): Promise<RetireStats> {
   const stats: RetireStats = { sourceKey, jobSourcesRemoved: 0, jobsDeleted: 0, jobsKept: 0, urlsReassigned: 0 };
 
+  // The catalogue row leaves the rotation first (DEC-3), so a concurrent ingest
+  // cannot re-write rows while this pass detaches them. updateMany: a legacy
+  // key with no Source row (pre-table flow B) still gets its data cleaned.
+  await prisma.source.updateMany({ where: { key: sourceKey }, data: { status: 'RETIRED' } });
+
   const affected = await prisma.job.findMany({
     where: { sources: { some: { sourceKey } } },
     include: { sources: true },

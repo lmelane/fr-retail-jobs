@@ -26,4 +26,8 @@ RUN test -f apps/aggregator/data/maisons.csv
 # A Dockerfile CMD takes precedence over Railway's RUN_COMMAND override, so the
 # selection has to live here, read from the environment — not in a service field
 # that is silently ignored. Defaults to ingest-all.
-CMD ["sh", "-c", "SCHEMA=packages/db/prisma/schema.prisma; (npx prisma migrate deploy --schema $SCHEMA || (npx prisma migrate resolve --schema $SCHEMA --applied 20260903000000_init && npx prisma migrate deploy --schema $SCHEMA)) && npm run ${PIPELINE_CMD:-ingest-all} -w @catwalks/aggregator"]
+# import-sources runs on every start, between migrate and the pipeline: it is
+# idempotent (updates, never duplicates, never touches status) and it is what
+# guarantees the Source table (DEC-3) is seeded before an ingest that now
+# REFUSES to run on an empty catalogue.
+CMD ["sh", "-c", "SCHEMA=packages/db/prisma/schema.prisma; (npx prisma migrate deploy --schema $SCHEMA || (npx prisma migrate resolve --schema $SCHEMA --applied 20260903000000_init && npx prisma migrate deploy --schema $SCHEMA)) && npm run import-sources -w @catwalks/aggregator && npm run ${PIPELINE_CMD:-ingest-all} -w @catwalks/aggregator"]

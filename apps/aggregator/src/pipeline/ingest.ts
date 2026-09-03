@@ -1,7 +1,8 @@
 import type { PrismaClient, AtsType } from '@prisma/client';
 import pLimit from 'p-limit';
-import { plainHttpSources, type JobSource as SourceDef } from '../connectors/registry.js';
-import { loadSourceCatalog, isApiSource, tierFor, sourceKeyFor } from '../connectors/sourceCatalog.js';
+import { plainHttpSources, type JobSource as SourceDef, type SourceTier } from '../connectors/registry.js';
+import { isApiSource } from '../connectors/sourceCatalog.js';
+import { loadActiveSources, type RuntimeSource } from '../connectors/sourceStore.js';
 import { fetchSitemapUrls, fetchJobFromPage } from '../connectors/generic/jsonLdSitemap.js';
 import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
@@ -18,7 +19,6 @@ import { PIPELINE_VERSION } from './version.js';
 import { runGeocode } from './geocodeJobs.js';
 import { purgeStaleForSource } from './purge.js';
 import { fetchAtsJobs } from '../ats/index.js';
-import type { CatalogSource } from '../connectors/sourceCatalog.js';
 
 /**
  * INGEST — picks up new and updated offers.
@@ -292,14 +292,14 @@ async function ingestSitemapSource(
  * pattern and no API. API-backed rows go through the ATS pipeline instead — one
  * request per employer rather than one per offer.
  */
-function catalogSitemapSources(): SourceDef[] {
-  return loadSourceCatalog()
+function catalogSitemapSources(catalog: RuntimeSource[]): SourceDef[] {
+  return catalog
     .filter((source) => !isApiSource(source) && source.jobUrlPattern)
     .map((source) => ({
-      key: sourceKeyFor(source),
+      key: source.key,
       company: source.maison.split('(')[0].trim(),
       flow: 'EMPLOYER' as const,
-      tier: tierFor(source),
+      tier: source.tier as SourceTier,
       kind: 'SITEMAP_JSONLD' as const,
       entryUrl: source.entryUrl,
       robotsVerdict: source.robotsVerdict,
@@ -356,11 +356,11 @@ export const KIND_TO_ATS: Record<string, string> = {
  */
 async function ingestApiSource(
   prisma: PrismaClient,
-  source: CatalogSource,
+  source: RuntimeSource,
   deadlineMs?: number,
 ): Promise<IngestStats> {
   const stats: IngestStats = {
-    source: sourceKeyFor(source),
+    source: source.key,
     fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 0,
     withDescription: 0, withDate: 0, withCountry: 0, withUrl: 0,
   };
@@ -411,7 +411,7 @@ async function ingestApiSource(
     key: stats.source,
     company: source.maison.split('(')[0].trim(),
     flow: 'EMPLOYER',
-    tier: tierFor(source),
+    tier: source.tier as SourceTier,
     kind: 'SITEMAP_JSONLD',
     entryUrl: source.entryUrl,
     robotsVerdict: source.robotsVerdict,
@@ -500,7 +500,11 @@ export async function runIngest(
   prisma: PrismaClient,
   options: IngestOptions = {},
 ): Promise<IngestStats[]> {
-  const all = [...plainHttpSources(), ...catalogSitemapSources()].filter(
+  // The catalogue now lives in the Source table (DEC-3); one read serves both
+  // the sitemap and the API phases. Refuses to run on an unseeded base.
+  const catalog = await loadActiveSources(prisma);
+
+  const all = [...plainHttpSources(), ...catalogSitemapSources(catalog)].filter(
     (source) => source.kind === 'SITEMAP_JSONLD',
   );
 
@@ -583,11 +587,11 @@ export async function runIngest(
    * Sequential on purpose: several portals serve many Maisons from one WAF, and
    * hammering one with parallel calls is what got the validation pass rate-limited.
    */
-  const apiSources = loadSourceCatalog()
+  const apiSources = catalog
     .filter((source) => KIND_TO_ATS[source.kind])
-    .filter((source) => !options.only || sourceKeyFor(source) === options.only);
+    .filter((source) => !options.only || source.key === options.only);
   if (apiSources.length > 0) {
-    console.log(`[ingest] ${apiSources.length} API feeds: ${apiSources.map((s) => sourceKeyFor(s)).join(', ')}`);
+    console.log(`[ingest] ${apiSources.length} API feeds: ${apiSources.map((s) => s.key).join(', ')}`);
   }
 
   for (const source of apiSources) {
@@ -598,11 +602,11 @@ export async function runIngest(
       await geocodeQuietly();
     } catch (error) {
       results.push({
-        source: sourceKeyFor(source),
+        source: source.key,
         fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 1,
         withDescription: 0, withDate: 0, withCountry: 0, withUrl: 0,
       });
-      console.error(`[ingest] ${sourceKeyFor(source)} failed: ${briefError(error)}`);
+      console.error(`[ingest] ${source.key} failed: ${briefError(error)}`);
     }
   }
 

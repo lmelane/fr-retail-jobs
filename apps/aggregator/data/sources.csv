@@ -1,101 +1,84 @@
-maison,careers_domain,kind,entry_url,job_url_pattern,robots_verdict,job_count,verified
-Foot Locker France,careers.footlocker.com,phenom,"{""origin"": ""https://careers.footlocker.com""}",,ALLOWED,2794,yes
-L’Oréal Professionnel,careers.loreal.com,avature,"{""listingUrl"": ""https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0"", ""origin"": ""https://careers.loreal.com""}",,ALLOWED,1722,yes
-Dr. Jart+ +13,careers.elcompanies.com,eightfold,"{""origin"": ""https://careers.elcompanies.com"", ""domain"": ""elcompanies.com""}",,ALLOWED,1386,yes
-Origins,careers.elcompanies.com,eightfold,"{""origin"": ""https://careers.elcompanies.com"", ""domain"": ""elcompanies.com"", ""brandMatch"": ""title:Origins""}",,ALLOWED,1386,yes
-Hermès,,wttj,"{""slug"": ""hermes""}",,ALLOWED,581,yes
-Maje +1,,smartrecruiters-whitelabel,"{""company"": ""SMCP""}",,ALLOWED,534,yes
-Sandro,,smartrecruiters-whitelabel,"{""vendor"": ""SmartRecruiters"", ""company"": ""SMCP"", ""api"": ""https://api.smartrecruiters.com/v1/companies/SMCP/postings?limit=100"", ""brandFacet"": ""customField fieldLabel=Brands""}",,ALLOWED,534,yes
-Richemont (toutes Maisons),richemont.wd3.myworkdayjobs.com,workday,"{""tenant"": ""richemont"", ""site"": ""broadbean_external"", ""origin"": ""https://richemont.wd3.myworkdayjobs.com""}",,ALLOWED,423,yes
-Prada Beauty +8,careers.loreal.com,avature,"{""vendor"": ""avature"", ""origin"": ""https://careers.loreal.com"", ""sitemap"": ""https://careers.loreal.com/en_US/jobs/sitemap.xml"", ""searchUrl"": ""https://careers.loreal.com/en_US/jobs/SearchJobs/?search={TERM}&jobOffset={N}"", ""brandMatch"": ""job-title slug + keyword search union""}",,ALLOWED,416,yes
-Element +6,recrutement.groupe-beaumanoir.com,magnet,"{""siteKey"": ""9550007d348362827f2534be59208f28"", ""origin"": ""https://recrutement.groupe-beaumanoir.com""}",,ALLOWED,408,yes
-Morgan +2,recrutement.groupe-beaumanoir.com,magnet,"{""siteKey"": ""9550007d348362827f2534be59208f28"", ""origin"": ""https://recrutement.groupe-beaumanoir.com"", ""api"": ""https://api.magnet.work/v2/job-offers""}",,ALLOWED,408,yes
-Jean Paul Gaultier +5,jobs.puig.com,successfactors,"{""origin"": ""https://jobs.puig.com""}",,ALLOWED,226,yes
-Rabanne +1,jobs.puig.com,successfactors,"{""origin"": ""https://jobs.puig.com"", ""listingUrl"": ""https://jobs.puig.com/search/?q=&startrow={N}"", ""brandMatch"": ""job slug""}",,ALLOWED,226,yes
-Uriage,jobs.puig.com,successfactors,"{""origin"": ""https://jobs.puig.com"", ""path"": ""/search/"", ""brandMatch"": ""none - no Uriage-labelled posting""}",,ALLOWED,226,yes
-A-Derma +4,pierrefabre.wd3.myworkdayjobs.com,workday,"{""tenant"": ""pierrefabre"", ""site"": ""External_Career_Site"", ""origin"": ""https://pierrefabre.wd3.myworkdayjobs.com""}",,ALLOWED,210,yes
-Aptar Beauty,jobs.aptar.com,successfactors,"{""origin"": ""https://jobs.aptar.com""}",,ALLOWED,208,yes
-Etam,career.groupeetam.com,teamtailor,"{""origin"": ""https://career.groupeetam.com""}",,ALLOWED,188,yes
-Marella,,smartrecruiters-whitelabel,"{""company"": ""MaxMaraFashionGroup""}",,ALLOWED,182,yes
-Galeries Lafayette,carrieres.groupegalerieslafayette.com,teamtailor,"{""origin"": ""https://carrieres.groupegalerieslafayette.com""}",,ALLOWED,157,yes
-GQ France,condenast.wd115.myworkdayjobs.com,workday,"{""tenant"": ""condenast"", ""site"": ""CondeCareers"", ""origin"": ""https://condenast.wd115.myworkdayjobs.com""}",,ALLOWED,139,yes
-Conde Nast France,condenast.wd115.myworkdayjobs.com,workday,"{""tenant"": ""condenast"", ""site"": ""CondeCareers"", ""origin"": ""https://condenast.wd115.myworkdayjobs.com"", ""appliedFacets"": {""locationCountry"": [""54c5b6971ffb4bf0b116fe7651ec789a""]}}",,ALLOWED,139,yes
-Vogue France,condenast.wd115.myworkdayjobs.com,workday,"{""tenant"": ""condenast"", ""site"": ""CondeCareers"", ""origin"": ""https://condenast.wd115.myworkdayjobs.com"", ""appliedFacets"": {""locationCountry"": [""54c5b6971ffb4bf0b116fe7651ec789a""]}, ""brandMatch"": ""title matches /vogue/i""}",,ALLOWED,139,yes
-Vanity Fair France,condenast.wd115.myworkdayjobs.com,workday,"{""tenant"": ""condenast"", ""site"": ""CondeCareers"", ""origin"": ""https://condenast.wd115.myworkdayjobs.com"", ""appliedFacets"": {""locationCountry"": [""54c5b6971ffb4bf0b116fe7651ec789a""]}, ""brandMatch"": ""title matches /vanity\\s*fair/i""}",,ALLOWED,139,yes
-Drunk Elephant +2,careers.shiseido.com,successfactors,"{""origin"": ""https://careers.shiseido.com""}",,ALLOWED,134,yes
-Escada Parfums +16,careers.coty.com,successfactors,"{""origin"": ""https://careers.coty.com""}",,ALLOWED,116,yes
-Philosophy +1,careers.coty.com,successfactors,"{""origin"": ""https://careers.coty.com"", ""listingUrl"": ""https://careers.coty.com/search/?q=&startrow={N}"", ""brandMatch"": ""job slug""}",,ALLOWED,116,yes
-Rimmel,careers.coty.com,successfactors,"{""origin"": ""https://careers.coty.com"", ""vendor"": ""SuccessFactors"", ""listingUrl"": ""https://careers.coty.com/search/?startrow={N}"", ""pageSize"": 25, ""brandMatch"": ""title matches /rimmel/i""}",,ALLOWED,116,yes
-Sally Hansen,careers.coty.com,successfactors,"{""origin"": ""https://careers.coty.com"", ""vendor"": ""SuccessFactors"", ""listingUrl"": ""https://careers.coty.com/search/?startrow={N}"", ""pageSize"": 25, ""brandMatch"": ""title matches /sally.hansen/i""}",,ALLOWED,116,yes
-Vera Wang Parfums,careers.coty.com,successfactors,"{""origin"": ""https://careers.coty.com"", ""path"": ""/search/"", ""brandMatch"": ""none - no Vera Wang-labelled posting""}",,ALLOWED,116,yes
-Canada Goose,canadagoose.wd3.myworkdayjobs.com,workday,"{""tenant"": ""canadagoose"", ""site"": ""CanadaGooseCareers"", ""origin"": ""https://canadagoose.wd3.myworkdayjobs.com""}",,ALLOWED,104,yes
-APM Monaco,,workable,"{""account"": ""apm-monaco""}",,ALLOWED,97,yes
-De Beers London,,smartrecruiters-whitelabel,"{""company"": ""AngloAmericanDeBeersGroup""}",,ALLOWED,96,yes
-Eram +3,recrutement.groupe-eram.com,magnet,"{""siteKey"": ""61ffe84ad14ba0fdbb448d2d388ac4e3"", ""origin"": ""https://recrutement.groupe-eram.com""}",,ALLOWED,89,yes
-Mellow Yellow,recrutement.groupe-eram.com,magnet,"{""siteKey"": ""61ffe84ad14ba0fdbb448d2d388ac4e3"", ""origin"": ""https://recrutement.groupe-eram.com"", ""apiBase"": ""https://api.magnet.work"", ""companyFilter"": ""Mellow Yellow magasin""}",,ALLOWED,89,yes
-Parade +1,recrutement.groupe-eram.com,magnet,"{""siteKey"": ""61ffe84ad14ba0fdbb448d2d388ac4e3"", ""origin"": ""https://recrutement.groupe-eram.com"", ""api"": ""https://api.magnet.work/v2/job-offers""}",,ALLOWED,89,yes
-Audemars Piguet,,smartrecruiters-whitelabel,"{""company"": ""audemarspiguet""}",,ALLOWED,86,yes
-Polène,,ashby,"{""vendor"": ""ashby"", ""slug"": ""polene-paris"", ""board_url"": ""https://jobs.ashbyhq.com/polene-paris"", ""api_url"": ""https://api.ashbyhq.com/posting-api/job-board/polene-paris"", ""method"": ""GET"", ""response_path"": ""jobs[]"", ""id_field"": ""id"", ""discovered_via"": ""https://www.polene-paris.com/blogs/rh/careers""}",,ALLOWED,81,yes
-Helena Rubinstein +8,,wttj,"{""slug"": ""l-oreal""}",,ALLOWED,62,yes
-Maison Margiela,careers.otb.net,successfactors,"{""origin"": ""https://careers.otb.net""}",,ALLOWED,60,yes
-Egon Zehnder,,workable,"{""account"": ""ezrecruiting""}",,ALLOWED,55,yes
-Maison 123,career.maison123.com,teamtailor,"{""origin"": ""https://career.maison123.com""}",,ALLOWED,52,yes
-Soeur,,teamtailor,"{""vendor"": ""teamtailor"", ""subdomain"": ""soeur-1711354805"", ""careers_url"": ""https://soeur-1711354805.teamtailor.com/"", ""jobs_url"": ""https://soeur-1711354805.teamtailor.com/jobs""}",,ALLOWED,52,yes
-Petit Bateau,,smartrecruiters-whitelabel,"{""vendor"": ""smartrecruiters"", ""company"": ""PetitBateau"", ""public_careers_url"": ""https://careers.smartrecruiters.com/PetitBateau"", ""pagination"": {""param"": ""page"", ""page_size"": ""~10-16 variable""}, ""api_note"": ""api.smartrecruiters.com is robots-DISALLOWED for non-LinkedInBot agents; do not use"", ""parent"": ""Groupe Rocher""}",,ALLOWED,50,yes
-NARS,jobs.shiseidoamericas.com,radancy,"{""origin"": ""https://jobs.shiseidoamericas.com"", ""sitemap"": ""https://jobs.shiseidoamericas.com/sitemap.xml"", ""scope"": ""Americas only""}",,ALLOWED,46,yes
-AMIRI,,lever,"{""site"": ""AMIRI""}",,ALLOWED,42,yes
-Clarins,careers.groupeclarins.com,successfactors,"{""origin"": ""https://careers.groupeclarins.com""}",,ALLOWED,40,yes
-My Blend,careers.groupeclarins.com,successfactors,"{""origin"": ""https://careers.groupeclarins.com"", ""listingUrl"": ""https://careers.groupeclarins.com/search/?q=&startrow={N}""}",,ALLOWED,40,yes
-Dr Pierre Ricaud,careers.groupe-rocher.com,successfactors,"{""origin"": ""https://careers.groupe-rocher.com""}",,ALLOWED,30,yes
-Showroomprive,,teamtailor,"{""vendor"": ""teamtailor"", ""careers_url"": ""https://talents.showroomprivegroup.com/"", ""jobs_url"": ""https://talents.showroomprivegroup.com/jobs"", ""rss"": ""https://talents.showroomprivegroup.com/jobs.rss""}",,ALLOWED,30,yes
-Valentino,jobs.valentino.com,successfactors,"{""vendor"": ""successfactors_rmk"", ""origin"": ""https://jobs.valentino.com"", ""path"": ""/search/"", ""pagination"": ""startrow"", ""page_size"": 10, ""job_url"": ""/job/{slug}/{id}/""}",,ALLOWED,29,yes
-Diptyque,,wttj,"{""slug"": ""diptyque-paris""}",,ALLOWED,28,yes
-Aubade,,wttj,"{""slug"": ""aubade""}",,ALLOWED,26,yes
-American Vintage,,wttj,"{""slug"": ""american-vintage""}",,ALLOWED,25,yes
-AMI Paris,,recruitee,"{""subdomain"": ""amiparis""}",,ALLOWED,22,yes
-Lectra,,wttj,"{""slug"": ""lectra""}",,ALLOWED,22,yes
-Medik8,careers.medik8.com,teamtailor,"{""origin"": ""https://careers.medik8.com""}",,ALLOWED,19,yes
-Prisma Media,emploi.prismamedia.com,teamtailor,"{""origin"": ""https://emploi.prismamedia.com"", ""listingUrl"": ""https://emploi.prismamedia.com/jobs""}",,ALLOWED,19,yes
-Charlotte Tilbury,,wttj,"{""slug"": ""charlotte-tilbury""}",,ALLOWED,17,yes
-Jonak,,wttj,"{""slug"": ""jonak""}",,ALLOWED,17,yes
-La Rosee,,wttj,"{""slug"": ""la-rosee""}",,ALLOWED,16,yes
-L’Occitane en Provence +2,careers-group.loccitane.com,successfactors,"{""origin"": ""https://careers-group.loccitane.com""}",,ALLOWED,15,yes
-Melvita,careers-group.loccitane.com,successfactors,"{""origin"": ""https://careers-group.loccitane.com"", ""listingUrl"": ""https://careers-group.loccitane.com/search/?startrow=0""}",,ALLOWED,15,yes
-Karla Otto,careers.karlaotto.com,teamtailor,"{""origin"": ""https://careers.karlaotto.com""}",,ALLOWED,13,yes
-Madame Figaro,,wttj,"{""slug"": ""groupe-figaro""}",,ALLOWED,12,yes
-Apivita,,workable,"{""account"": ""apivita""}",,ALLOWED,11,yes
-Asphalte,,wttj,"{""slug"": ""asphalte""}",,ALLOWED,11,yes
-Jules,,talentview,"{""slug"": ""jules-recrutement""}",,ALLOWED,10,yes
-Promod,,talentview,"{""vendor"": ""talentview"", ""slug"": ""promodjob"", ""company_website_id"": 2498, ""career_site"": ""https://promodjob.talentview.io/"", ""api_url"": ""https://api.talentview.io/funnel/v2/companies/promodjob/campaigns"", ""query"": {""company_website_id"": 2498, ""display_mode"": ""list"", ""offset_start"": 1}, ""pagination"": {""param"": ""offset_start"", ""type"": ""page_number"", ""start"": 1, ""page_size"": 10}, ""id_field"": ""id"", ""detail_url_template"": ""https://promodjob.talentview.io/fr/campaigns/{slug}""}",,ALLOWED,10,yes
-Baccarat,,talentview,"{""slug"": ""baccarat"", ""websiteId"": 3038}",,ALLOWED,10,yes
-Armand Thiery,,wttj,"{""slug"": ""armand-thiery""}",,ALLOWED,8,yes
-Maison Kitsune,,wttj,"{""slug"": ""kitsune-fr""}",,ALLOWED,8,yes
-Aime,,wttj,"{""slug"": ""aime""}",,ALLOWED,7,yes
-Iris van Herpen,,recruitee,"{""subdomain"": ""irisvanherpen""}",,ALLOWED,6,yes
-Typology,typology-1732032895.teamtailor.com,teamtailor,"{""vendor"": ""teamtailor"", ""slug"": ""typology-1732032895"", ""origin"": ""https://typology-1732032895.teamtailor.com"", ""path"": ""/jobs"", ""careers_page"": ""https://www.typology.com/rejoindre-lequipe""}",,ALLOWED,6,yes
-Simone Perele,,wttj,"{""vendor"": ""welcometothejungle"", ""org_slug"": ""simone-perele"", ""org_name"": ""Simone Pérèle"", ""index"": ""wttj_jobs_production_fr""}",,ALLOWED,5,yes
-DFS,careers.dfs.com,successfactors,"{""origin"": ""https://careers.dfs.com""}",,ALLOWED,4,yes
-Margaret Howell,careers.margarethowell.co.uk,teamtailor,"{""origin"": ""https://careers.margarethowell.co.uk""}",,ALLOWED,4,yes
-Embryolisse,,wttj,"{""slug"": ""embryolisse""}",,ALLOWED,3,yes
-Eres,,wttj,"{""slug"": ""maison-eres""}",,ALLOWED,3,yes
-Le Slip Francais,,wttj,"{""slug"": ""le-slip-francais""}",,ALLOWED,1,yes
-Payot,,wttj,"{""vendor"": ""welcometothejungle"", ""slug"": ""payot"", ""org_reference"": ""OHpXMF"", ""org_api"": ""https://api.welcometothejungle.com/api/v1/organizations/payot"", ""jobs_url"": ""https://www.welcometothejungle.com/fr/companies/payot/jobs"", ""embed_on_brand_site"": ""https://www.welcometothejungle.com/fr/companies/payot/embed?c=3&l=2"", ""algolia"": {""app_id"": ""CSEKHVMS53"", ""index"": ""wttj_jobs_production_fr"", ""filter"": ""organization.slug:payot""}}",,ALLOWED,1,yes
-LVMH (toutes Maisons),www.lvmh.com,lvmh_algolia,"{""country"": null}",,ALLOWED,5222,yes
-Kering (toutes Maisons),careers.kering.com,eightfold,"{""origin"": ""https://careers.kering.com"", ""domain"": ""kering.com""}",,ALLOWED (Allow: /api/pcsx),1008,yes
-Parfums Chanel,cc.wd3.myworkdayjobs.com,workday,"{""tenant"": ""cc"", ""site"": ""ChanelCareers"", ""origin"": ""https://cc.wd3.myworkdayjobs.com""}",,ALLOWED,1086,yes
-Normal,jobs.normal.eu,teamtailor,"{""origin"": ""https://jobs.normal.eu""}",,ALLOWED,440,yes
-Versace,capri.wd1.myworkdayjobs.com,workday,"{""tenant"": ""capri"", ""site"": ""Versace"", ""origin"": ""https://capri.wd1.myworkdayjobs.com""}",,ALLOWED,50,yes
-Stella McCartney,stellamccartney.wd3.myworkdayjobs.com,workday,"{""tenant"": ""stellamccartney"", ""site"": ""SMCExternal"", ""origin"": ""https://stellamccartney.wd3.myworkdayjobs.com""}",,ALLOWED,31,yes
-Respire,,wttj,"{""slug"": ""respire""}",,ALLOWED,20,yes
-Oh My Cream,careers.ohmycream.com,teamtailor,"{""origin"": ""https://careers.ohmycream.com""}",,ALLOWED,19,yes
-Patek Philippe,careers.patek.com,successfactors,"{""origin"": ""https://careers.patek.com""}",,ALLOWED,16,yes
-Passage du Desir,passagedudesir-1730297136.teamtailor.com,teamtailor,"{""origin"": ""https://passagedudesir-1730297136.teamtailor.com""}",,ALLOWED,15,yes
-Vivienne Westwood,viviennewestwood.teamtailor.com,teamtailor,"{""origin"": ""https://viviennewestwood.teamtailor.com""}",,ALLOWED,12,yes
-Luxe Talent,www.luxetalent.net,wordpress,"{""origin"": ""https://www.luxetalent.net"", ""categoryId"": 14}",,"ALLOWED (Disallow /wp-admin/ only) — standard WP REST, x-wp-total 478",478,yes
-Michael Page France,www.michaelpage.fr,generic-listing,"{""listingUrl"": ""https://www.michaelpage.fr/jobs"", ""linkPattern"": ""/job-detail/"", ""pageParam"": ""page"", ""concurrency"": 15}",,"ALLOWED (Disallow covers /job-apply/, salary-param URLs and deep facets — not /jobs?page= nor /job-detail/)",3800,yes
-FashionJobs,fr.fashionjobs.com,fashionjobs,"{""maxPages"": 40}",,"ALLOWED (/emploi/ and /s/ not disallowed) — Cloudflare WAF, browser route",7611,yes
-Balmain,balmain-career.talent-soft.com,talentsoft,"{""origin"": ""https://balmain-career.talent-soft.com""}",,ALLOWED,20,yes
-Longchamp,longchamp-career.talent-soft.com,talentsoft,"{""origin"": ""https://longchamp-career.talent-soft.com""}",,ALLOWED,20,yes
-Groupe Printemps,printemps-career.talent-soft.com,talentsoft,"{""origin"": ""https://printemps-career.talent-soft.com""}",,ALLOWED,20,yes
-Groupe Chantelle,groupechantelle-recrute.talent-soft.com,talentsoft,"{""origin"": ""https://groupechantelle-recrute.talent-soft.com""}",,ALLOWED,20,yes
-Lagardère Travel Retail,lagardere-recrute.talent-soft.com,talentsoft,"{""origin"": ""https://lagardere-recrute.talent-soft.com""}",,ALLOWED,20,yes
+"maison","careers_domain","kind","entry_url","job_url_pattern","robots_verdict","job_count","verified"
+"Foot Locker France","careers.footlocker.com","phenom","{""origin"": ""https://careers.footlocker.com""}","","ALLOWED","2794","yes"
+"L’Oréal Professionnel","careers.loreal.com","avature","{""listingUrl"": ""https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0"", ""origin"": ""https://careers.loreal.com""}","","ALLOWED","1722","yes"
+"Dr. Jart+ +13","careers.elcompanies.com","eightfold","{""origin"": ""https://careers.elcompanies.com"", ""domain"": ""elcompanies.com""}","","ALLOWED","1386","yes"
+"Hermès","","wttj","{""slug"": ""hermes""}","","ALLOWED","581","yes"
+"Sandro","","smartrecruiters-whitelabel","{""vendor"": ""SmartRecruiters"", ""company"": ""SMCP"", ""api"": ""https://api.smartrecruiters.com/v1/companies/SMCP/postings?limit=100"", ""brandFacet"": ""customField fieldLabel=Brands""}","","ALLOWED","534","yes"
+"Richemont (toutes Maisons)","richemont.wd3.myworkdayjobs.com","workday","{""tenant"": ""richemont"", ""site"": ""broadbean_external"", ""origin"": ""https://richemont.wd3.myworkdayjobs.com""}","","ALLOWED","423","yes"
+"Element +6","recrutement.groupe-beaumanoir.com","magnet","{""siteKey"": ""9550007d348362827f2534be59208f28"", ""origin"": ""https://recrutement.groupe-beaumanoir.com""}","","ALLOWED","408","yes"
+"Jean Paul Gaultier +5","jobs.puig.com","successfactors","{""origin"": ""https://jobs.puig.com""}","","ALLOWED","226","yes"
+"A-Derma +4","pierrefabre.wd3.myworkdayjobs.com","workday","{""tenant"": ""pierrefabre"", ""site"": ""External_Career_Site"", ""origin"": ""https://pierrefabre.wd3.myworkdayjobs.com""}","","ALLOWED","210","yes"
+"Aptar Beauty","jobs.aptar.com","successfactors","{""origin"": ""https://jobs.aptar.com""}","","ALLOWED","208","yes"
+"Etam","career.groupeetam.com","teamtailor","{""origin"": ""https://career.groupeetam.com""}","","ALLOWED","188","yes"
+"Marella","","smartrecruiters-whitelabel","{""company"": ""MaxMaraFashionGroup""}","","ALLOWED","182","yes"
+"Galeries Lafayette","carrieres.groupegalerieslafayette.com","teamtailor","{""origin"": ""https://carrieres.groupegalerieslafayette.com""}","","ALLOWED","157","yes"
+"Conde Nast France","condenast.wd115.myworkdayjobs.com","workday","{""tenant"": ""condenast"", ""site"": ""CondeCareers"", ""origin"": ""https://condenast.wd115.myworkdayjobs.com"", ""appliedFacets"": {""locationCountry"": [""54c5b6971ffb4bf0b116fe7651ec789a""]}}","","ALLOWED","139","yes"
+"Drunk Elephant +2","careers.shiseido.com","successfactors","{""origin"": ""https://careers.shiseido.com""}","","ALLOWED","134","yes"
+"Escada Parfums +16","careers.coty.com","successfactors","{""origin"": ""https://careers.coty.com""}","","ALLOWED","116","yes"
+"Canada Goose","canadagoose.wd3.myworkdayjobs.com","workday","{""tenant"": ""canadagoose"", ""site"": ""CanadaGooseCareers"", ""origin"": ""https://canadagoose.wd3.myworkdayjobs.com""}","","ALLOWED","104","yes"
+"APM Monaco","","workable","{""account"": ""apm-monaco""}","","ALLOWED","97","yes"
+"De Beers London","","smartrecruiters-whitelabel","{""company"": ""AngloAmericanDeBeersGroup""}","","ALLOWED","96","yes"
+"Eram +3","recrutement.groupe-eram.com","magnet","{""siteKey"": ""61ffe84ad14ba0fdbb448d2d388ac4e3"", ""origin"": ""https://recrutement.groupe-eram.com""}","","ALLOWED","89","yes"
+"Audemars Piguet","","smartrecruiters-whitelabel","{""company"": ""audemarspiguet""}","","ALLOWED","86","yes"
+"Polène","","ashby","{""vendor"": ""ashby"", ""slug"": ""polene-paris"", ""board_url"": ""https://jobs.ashbyhq.com/polene-paris"", ""api_url"": ""https://api.ashbyhq.com/posting-api/job-board/polene-paris"", ""method"": ""GET"", ""response_path"": ""jobs[]"", ""id_field"": ""id"", ""discovered_via"": ""https://www.polene-paris.com/blogs/rh/careers""}","","ALLOWED","81","yes"
+"Helena Rubinstein +8","","wttj","{""slug"": ""l-oreal""}","","ALLOWED","62","yes"
+"Maison Margiela","careers.otb.net","successfactors","{""origin"": ""https://careers.otb.net""}","","ALLOWED","60","yes"
+"Egon Zehnder","","workable","{""account"": ""ezrecruiting""}","","ALLOWED","55","yes"
+"Maison 123","career.maison123.com","teamtailor","{""origin"": ""https://career.maison123.com""}","","ALLOWED","52","yes"
+"Soeur","","teamtailor","{""vendor"": ""teamtailor"", ""subdomain"": ""soeur-1711354805"", ""careers_url"": ""https://soeur-1711354805.teamtailor.com/"", ""jobs_url"": ""https://soeur-1711354805.teamtailor.com/jobs""}","","ALLOWED","52","yes"
+"Petit Bateau","","smartrecruiters-whitelabel","{""vendor"": ""smartrecruiters"", ""company"": ""PetitBateau"", ""public_careers_url"": ""https://careers.smartrecruiters.com/PetitBateau"", ""pagination"": {""param"": ""page"", ""page_size"": ""~10-16 variable""}, ""api_note"": ""api.smartrecruiters.com is robots-DISALLOWED for non-LinkedInBot agents; do not use"", ""parent"": ""Groupe Rocher""}","","ALLOWED","50","yes"
+"NARS","jobs.shiseidoamericas.com","radancy","{""origin"": ""https://jobs.shiseidoamericas.com"", ""sitemap"": ""https://jobs.shiseidoamericas.com/sitemap.xml"", ""scope"": ""Americas only""}","","ALLOWED","46","yes"
+"AMIRI","","lever","{""site"": ""AMIRI""}","","ALLOWED","42","yes"
+"Clarins","careers.groupeclarins.com","successfactors","{""origin"": ""https://careers.groupeclarins.com""}","","ALLOWED","40","yes"
+"Dr Pierre Ricaud","careers.groupe-rocher.com","successfactors","{""origin"": ""https://careers.groupe-rocher.com""}","","ALLOWED","30","yes"
+"Showroomprive","","teamtailor","{""vendor"": ""teamtailor"", ""careers_url"": ""https://talents.showroomprivegroup.com/"", ""jobs_url"": ""https://talents.showroomprivegroup.com/jobs"", ""rss"": ""https://talents.showroomprivegroup.com/jobs.rss""}","","ALLOWED","30","yes"
+"Valentino","jobs.valentino.com","successfactors","{""vendor"": ""successfactors_rmk"", ""origin"": ""https://jobs.valentino.com"", ""path"": ""/search/"", ""pagination"": ""startrow"", ""page_size"": 10, ""job_url"": ""/job/{slug}/{id}/""}","","ALLOWED","29","yes"
+"Diptyque","","wttj","{""slug"": ""diptyque-paris""}","","ALLOWED","28","yes"
+"Aubade","","wttj","{""slug"": ""aubade""}","","ALLOWED","26","yes"
+"American Vintage","","wttj","{""slug"": ""american-vintage""}","","ALLOWED","25","yes"
+"AMI Paris","","recruitee","{""subdomain"": ""amiparis""}","","ALLOWED","22","yes"
+"Lectra","","wttj","{""slug"": ""lectra""}","","ALLOWED","22","yes"
+"Medik8","careers.medik8.com","teamtailor","{""origin"": ""https://careers.medik8.com""}","","ALLOWED","19","yes"
+"Prisma Media","emploi.prismamedia.com","teamtailor","{""origin"": ""https://emploi.prismamedia.com"", ""listingUrl"": ""https://emploi.prismamedia.com/jobs""}","","ALLOWED","19","yes"
+"Charlotte Tilbury","","wttj","{""slug"": ""charlotte-tilbury""}","","ALLOWED","17","yes"
+"Jonak","","wttj","{""slug"": ""jonak""}","","ALLOWED","17","yes"
+"La Rosee","","wttj","{""slug"": ""la-rosee""}","","ALLOWED","16","yes"
+"L’Occitane en Provence +2","careers-group.loccitane.com","successfactors","{""origin"": ""https://careers-group.loccitane.com""}","","ALLOWED","15","yes"
+"Karla Otto","careers.karlaotto.com","teamtailor","{""origin"": ""https://careers.karlaotto.com""}","","ALLOWED","13","yes"
+"Madame Figaro","","wttj","{""slug"": ""groupe-figaro""}","","ALLOWED","12","yes"
+"Apivita","","workable","{""account"": ""apivita""}","","ALLOWED","11","yes"
+"Asphalte","","wttj","{""slug"": ""asphalte""}","","ALLOWED","11","yes"
+"Jules","","talentview","{""slug"": ""jules-recrutement""}","","ALLOWED","10","yes"
+"Promod","","talentview","{""vendor"": ""talentview"", ""slug"": ""promodjob"", ""company_website_id"": 2498, ""career_site"": ""https://promodjob.talentview.io/"", ""api_url"": ""https://api.talentview.io/funnel/v2/companies/promodjob/campaigns"", ""query"": {""company_website_id"": 2498, ""display_mode"": ""list"", ""offset_start"": 1}, ""pagination"": {""param"": ""offset_start"", ""type"": ""page_number"", ""start"": 1, ""page_size"": 10}, ""id_field"": ""id"", ""detail_url_template"": ""https://promodjob.talentview.io/fr/campaigns/{slug}""}","","ALLOWED","10","yes"
+"Baccarat","","talentview","{""slug"": ""baccarat"", ""websiteId"": 3038}","","ALLOWED","10","yes"
+"Armand Thiery","","wttj","{""slug"": ""armand-thiery""}","","ALLOWED","8","yes"
+"Maison Kitsune","","wttj","{""slug"": ""kitsune-fr""}","","ALLOWED","8","yes"
+"Aime","","wttj","{""slug"": ""aime""}","","ALLOWED","7","yes"
+"Iris van Herpen","","recruitee","{""subdomain"": ""irisvanherpen""}","","ALLOWED","6","yes"
+"Typology","typology-1732032895.teamtailor.com","teamtailor","{""vendor"": ""teamtailor"", ""slug"": ""typology-1732032895"", ""origin"": ""https://typology-1732032895.teamtailor.com"", ""path"": ""/jobs"", ""careers_page"": ""https://www.typology.com/rejoindre-lequipe""}","","ALLOWED","6","yes"
+"Simone Perele","","wttj","{""vendor"": ""welcometothejungle"", ""org_slug"": ""simone-perele"", ""org_name"": ""Simone Pérèle"", ""index"": ""wttj_jobs_production_fr""}","","ALLOWED","5","yes"
+"DFS","careers.dfs.com","successfactors","{""origin"": ""https://careers.dfs.com""}","","ALLOWED","4","yes"
+"Margaret Howell","careers.margarethowell.co.uk","teamtailor","{""origin"": ""https://careers.margarethowell.co.uk""}","","ALLOWED","4","yes"
+"Embryolisse","","wttj","{""slug"": ""embryolisse""}","","ALLOWED","3","yes"
+"Eres","","wttj","{""slug"": ""maison-eres""}","","ALLOWED","3","yes"
+"Le Slip Francais","","wttj","{""slug"": ""le-slip-francais""}","","ALLOWED","1","yes"
+"Payot","","wttj","{""vendor"": ""welcometothejungle"", ""slug"": ""payot"", ""org_reference"": ""OHpXMF"", ""org_api"": ""https://api.welcometothejungle.com/api/v1/organizations/payot"", ""jobs_url"": ""https://www.welcometothejungle.com/fr/companies/payot/jobs"", ""embed_on_brand_site"": ""https://www.welcometothejungle.com/fr/companies/payot/embed?c=3&l=2"", ""algolia"": {""app_id"": ""CSEKHVMS53"", ""index"": ""wttj_jobs_production_fr"", ""filter"": ""organization.slug:payot""}}","","ALLOWED","1","yes"
+"LVMH (toutes Maisons)","www.lvmh.com","lvmh_algolia","{""country"": null}","","ALLOWED","5222","yes"
+"Kering (toutes Maisons)","careers.kering.com","eightfold","{""origin"": ""https://careers.kering.com"", ""domain"": ""kering.com""}","","ALLOWED (Allow: /api/pcsx)","1008","yes"
+"Parfums Chanel","cc.wd3.myworkdayjobs.com","workday","{""tenant"": ""cc"", ""site"": ""ChanelCareers"", ""origin"": ""https://cc.wd3.myworkdayjobs.com""}","","ALLOWED","1086","yes"
+"Normal","jobs.normal.eu","teamtailor","{""origin"": ""https://jobs.normal.eu""}","","ALLOWED","440","yes"
+"Versace","capri.wd1.myworkdayjobs.com","workday","{""tenant"": ""capri"", ""site"": ""Versace"", ""origin"": ""https://capri.wd1.myworkdayjobs.com""}","","ALLOWED","50","yes"
+"Stella McCartney","stellamccartney.wd3.myworkdayjobs.com","workday","{""tenant"": ""stellamccartney"", ""site"": ""SMCExternal"", ""origin"": ""https://stellamccartney.wd3.myworkdayjobs.com""}","","ALLOWED","31","yes"
+"Respire","","wttj","{""slug"": ""respire""}","","ALLOWED","20","yes"
+"Oh My Cream","careers.ohmycream.com","teamtailor","{""origin"": ""https://careers.ohmycream.com""}","","ALLOWED","19","yes"
+"Patek Philippe","careers.patek.com","successfactors","{""origin"": ""https://careers.patek.com""}","","ALLOWED","16","yes"
+"Passage du Desir","passagedudesir-1730297136.teamtailor.com","teamtailor","{""origin"": ""https://passagedudesir-1730297136.teamtailor.com""}","","ALLOWED","15","yes"
+"Vivienne Westwood","viviennewestwood.teamtailor.com","teamtailor","{""origin"": ""https://viviennewestwood.teamtailor.com""}","","ALLOWED","12","yes"
+"Luxe Talent","www.luxetalent.net","wordpress","{""origin"": ""https://www.luxetalent.net"", ""categoryId"": 14}","","ALLOWED (Disallow /wp-admin/ only) — standard WP REST, x-wp-total 478","478","yes"
+"Michael Page France","www.michaelpage.fr","generic-listing","{""listingUrl"": ""https://www.michaelpage.fr/jobs"", ""linkPattern"": ""/job-detail/"", ""pageParam"": ""page"", ""concurrency"": 15}","","ALLOWED (Disallow covers /job-apply/, salary-param URLs and deep facets — not /jobs?page= nor /job-detail/)","3800","yes"
+"FashionJobs","fr.fashionjobs.com","fashionjobs","{""maxPages"": 40}","","ALLOWED (/emploi/ and /s/ not disallowed) — Cloudflare WAF, browser route","7611","yes"
+"Balmain","balmain-career.talent-soft.com","talentsoft","{""origin"": ""https://balmain-career.talent-soft.com""}","","ALLOWED","20","yes"
+"Longchamp","longchamp-career.talent-soft.com","talentsoft","{""origin"": ""https://longchamp-career.talent-soft.com""}","","ALLOWED","20","yes"
+"Groupe Printemps","printemps-career.talent-soft.com","talentsoft","{""origin"": ""https://printemps-career.talent-soft.com""}","","ALLOWED","20","yes"
+"Groupe Chantelle","groupechantelle-recrute.talent-soft.com","talentsoft","{""origin"": ""https://groupechantelle-recrute.talent-soft.com""}","","ALLOWED","20","yes"
+"Lagardère Travel Retail","lagardere-recrute.talent-soft.com","talentsoft","{""origin"": ""https://lagardere-recrute.talent-soft.com""}","","ALLOWED","20","yes"
