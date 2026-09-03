@@ -435,6 +435,57 @@ export async function getJob(id: string): Promise<JobRow | null> {
 }
 
 /**
+ * Offres proches d'une fiche, pour le maillage interne (S-01) : d'abord les
+ * autres offres de la même Maison, complétées si besoin par le même secteur.
+ * Champs carte uniquement — pas de description ni de jointure sources.
+ */
+export async function getSimilarJobs(
+  job: Pick<JobRow, 'id' | 'company' | 'sector' | 'city'>,
+  limit = 6,
+): Promise<Array<Pick<JobRow, 'id' | 'title' | 'company' | 'city' | 'contract' | 'postedAt'>>> {
+  if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
+  const select = {
+    id: true,
+    title: true,
+    contract: true,
+    city: true,
+    postedAt: true,
+    company: { select: { name: true } },
+  } as const;
+  const shape = (rows: Array<{ id: string; title: string; contract: string | null; city: string | null; postedAt: Date | null; company: { name: string } }>) =>
+    rows.map((r) => ({
+      id: r.id,
+      title: r.title,
+      company: r.company.name,
+      city: r.city,
+      contract: r.contract,
+      postedAt: r.postedAt,
+    }));
+  try {
+    const sameCompany = await prisma.job.findMany({
+      where: { isActive: true, id: { not: job.id }, company: { name: job.company } },
+      orderBy: { postedAt: 'desc' },
+      take: limit,
+      select,
+    });
+    if (sameCompany.length >= limit || !job.sector) return shape(sameCompany);
+    const fill = await prisma.job.findMany({
+      where: {
+        isActive: true,
+        id: { notIn: [job.id, ...sameCompany.map((r) => r.id)] },
+        company: { sector: job.sector as CompanySector },
+      },
+      orderBy: { postedAt: 'desc' },
+      take: limit - sameCompany.length,
+      select,
+    });
+    return shape([...sameCompany, ...fill]);
+  } catch (error) {
+    throw new DatabaseUnavailableError(error);
+  }
+}
+
+/**
  * The lightweight status the middleware probe needs — existence + isActive only,
  * no joins. The page's own render does the full fetch; this must not repeat the
  * expensive company/sources join just to decide 200 vs 410 vs 404.
