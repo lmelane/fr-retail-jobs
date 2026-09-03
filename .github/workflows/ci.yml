@@ -79,3 +79,18 @@ jobs:
         working-directory: apps/web
       - name: Build
         run: npm run build -w @catwalks/web
+      # E2E (N-07) : l'app buildée + base de fixtures — les parcours critiques
+      # du candidat (recherche, fiche, CTAs D18, 404/200/410) sans skip
+      # silencieux. Les deux projets Playwright (desktop + Pixel 7) sont
+      # chromium ; un seul navigateur à installer.
+      - name: Chromium Playwright
+        run: npx playwright install --with-deps chromium
+        working-directory: apps/web
+      - name: Fixtures e2e
+        run: npx tsx e2e/seed.ts
+        working-directory: apps/web
+      - name: E2E Playwright
+        run: npx playwright test
+        working-directory: apps/web
+        env:
+          E2E_SEEDED: '1'

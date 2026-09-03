@@ -2,12 +2,21 @@ import { defineConfig, devices } from '@playwright/test';
 
 /**
  * E2E config for the critical candidate flows. Tests run against BASE_URL — a
- * local dev server (default) or a deployed URL (E2E_BASE_URL), so the same suite
- * checks a branch locally and smoke-tests prod. No webServer block: the site
- * needs DATABASE_URL, so the caller starts the server (npm run web:dev) or points
- * at a running one — keeping the tests decoupled from DB provisioning.
+ * deployed URL when E2E_BASE_URL is set (prod smoke), else a local `next start`
+ * that Playwright boots itself against the fixtures DB (N-07: CI runs the built
+ * app + seeded data, no silent skips). The server inherits DATABASE_URL, which
+ * must point at the seeded *test* database.
  */
 export default defineConfig({
+  webServer: process.env.E2E_BASE_URL
+    ? undefined
+    : {
+        command: 'npm run start',
+        port: 3009,
+        env: { PORT: '3009' },
+        reuseExistingServer: !process.env.CI,
+        timeout: 120_000,
+      },
   testDir: './e2e',
   timeout: 30_000,
   expect: { timeout: 10_000 },
