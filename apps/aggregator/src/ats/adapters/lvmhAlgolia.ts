@@ -1,5 +1,5 @@
 import { fetchJson, fetchText } from '../../lib/http.js';
-import type { NormalizedJob } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
  * LVMH's public job index — Sephora, Louis Vuitton, Dior, Tiffany and 49 other
@@ -162,7 +162,7 @@ function toNormalized(hit: LvmhHit): NormalizedJob | null {
  * `config.country` narrows by country, defaulting to France. Omit both for the
  * whole index.
  */
-export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promise<NormalizedJob[]> {
+export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promise<AdapterResult> {
   const filters = [
     'category:job',
     config.maison ? `maison:"${String(config.maison).replace(/"/g, '')}"` : '',
@@ -174,6 +174,7 @@ export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promi
   let key = String(config.apiKey ?? FALLBACK_KEY);
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
+  let declaredTotal: number | undefined;
 
   for (let page = 0; page < MAX_PAGES; page++) {
     let response = await query(key, filters, page);
@@ -208,9 +209,10 @@ export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promi
       fresh++;
     }
 
+    if (response.nbHits !== undefined) declaredTotal = response.nbHits;
     if (hits.length < PAGE_SIZE || fresh === 0) break;
     if (response.nbHits !== undefined && jobs.length >= response.nbHits) break;
   }
 
-  return jobs;
+  return { jobs, declaredTotal };
 }

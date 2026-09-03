@@ -1,5 +1,5 @@
 import { fetchJson } from '../../lib/http.js';
-import type { NormalizedJob } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
  * Phenom People career sites.
@@ -99,12 +99,13 @@ function toNormalized(data: PhenomJobData, origin: string): NormalizedJob | null
  * Reads a whole Phenom board.
  * `config.origin` is the careers host, e.g. "https://careers.footlocker.com".
  */
-export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const origin = String(config.origin ?? '').replace(/\/$/, '');
   if (!origin) throw new Error('Phenom origin missing');
 
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
+  let declaredTotal: number | undefined;
 
   for (let page = 1; page <= MAX_PAGES; page++) {
     const response = await fetchJson<PhenomResponse>(
@@ -123,14 +124,15 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
       fresh++;
     }
 
+    const total = response.totalCount ?? response.count;
+    if (total !== undefined) declaredTotal = total;
+
     // A short page, or one that adds nothing new, is the end of the board.
     if (batch.length < PAGE_SIZE || fresh === 0) break;
-
-    const total = response.totalCount ?? response.count;
     if (total !== undefined && jobs.length >= total) break;
   }
 
-  return jobs;
+  return { jobs, declaredTotal };
 }
 
 /**

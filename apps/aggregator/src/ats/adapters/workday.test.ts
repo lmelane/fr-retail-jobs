@@ -24,7 +24,7 @@ describe('fetchWorkdayJobs with a posting missing externalPath', () => {
       ],
     } as never);
 
-    const jobs = await fetchWorkdayJobs({
+    const { jobs } = await fetchWorkdayJobs({
       tenant: 'richemont',
       site: 'richemont',
       origin: 'https://richemont.wd3.myworkdayjobs.com',
@@ -52,7 +52,7 @@ describe('fetchWorkdayJobs apply URL', () => {
       jobPostings: [{ title: 'Vendeur', externalPath: '/job/Paris/Vendeur_R-123' }],
     } as never);
 
-    const jobs = await fetchWorkdayJobs({
+    const { jobs } = await fetchWorkdayJobs({
       tenant: 'richemont',
       site: 'broadbean_external',
       origin: 'https://richemont.wd3.myworkdayjobs.com',

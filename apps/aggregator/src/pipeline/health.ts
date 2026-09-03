@@ -111,6 +111,22 @@ export async function checkSourceHealth(
       continue;
     }
 
+    // Truncation (F-04): the source ANNOUNCED more than the sweep collected.
+    // Volume can look healthy run-over-run while a page cap silently hides
+    // most of the board — Talentsoft served a clean 20 while declaring 112.
+    if (stat.truncated && stat.declaredTotal) {
+      results.push({
+        source: stat.source,
+        status: 'DEGRADED',
+        jobs,
+        previous: before,
+        note: `troncature : ${stat.fetched} collectées sur ${stat.declaredTotal} déclarées`,
+        coverage: coverageOf(stat),
+        rates: ratesOf(stat),
+      });
+      continue;
+    }
+
     // Volume held — but did the FIELDS? (The Eightfold failure mode.)
     const fieldIncident = fieldCoverageIncident(stat);
     if (fieldIncident) {

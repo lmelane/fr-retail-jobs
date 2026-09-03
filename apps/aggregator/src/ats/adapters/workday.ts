@@ -1,13 +1,13 @@
 import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
-import type { NormalizedJob } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 // externalPath is optional in practice: some tenants (Richemont) return rows
 // without it, and treating it as always-present crashed the whole source.
 type WorkdayPosting = { title: string; externalPath?: string; locationsText?: string; postedOn?: string; bulletFields?: string[] };
 type WorkdayPage = { total?: number; jobPostings?: WorkdayPosting[] };
 
-export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const tenant = String(config.tenant ?? '');
   const site = String(config.site ?? '');
   const origin = String(config.origin ?? '');
@@ -54,12 +54,17 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
     if (total && out.length >= total) break;
   }
 
-  if (config.withDescriptions === false) return out;
-  return attachWorkdayDescriptions(
-    out,
-    `${origin}/wday/cxs/${tenant}/${site}`,
-    Number(config.detailConcurrency ?? 6),
-  );
+  // F-04: `total` is the tenant's own announced count — the truncation signal.
+  const declaredTotal = total || undefined;
+  if (config.withDescriptions === false) return { jobs: out, declaredTotal };
+  return {
+    jobs: await attachWorkdayDescriptions(
+      out,
+      `${origin}/wday/cxs/${tenant}/${site}`,
+      Number(config.detailConcurrency ?? 6),
+    ),
+    declaredTotal,
+  };
 }
 
 type WorkdayDetail = {

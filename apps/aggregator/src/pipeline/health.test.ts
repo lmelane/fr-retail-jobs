@@ -74,3 +74,28 @@ describe('checkSourceHealth', () => {
     expect(report.broken).toBe(1);
   });
 });
+
+describe('truncation gate (F-04)', () => {
+  it('a source announcing more than it delivered is DEGRADED, not OK', async () => {
+    // Previous run: healthy volume.
+    await checkSourceHealth(prisma, [stat('printemps', 110)]);
+    // This run: same-ish volume, but the source DECLARED 112 and we got 20 —
+    // the Talentsoft failure mode (RSS cap) that used to look perfectly green.
+    const truncatedStat: IngestStats = { ...stat('printemps', 90), truncated: true, declaredTotal: 112 };
+    const report = await checkSourceHealth(prisma, [truncatedStat]);
+    expect(report.degraded).toBe(1);
+    expect(report.incidents[0]?.note).toContain('troncature');
+    expect(report.incidents[0]?.note).toContain('112');
+  });
+
+  it('rates ride to SourceRun columns on every run (L-02)', async () => {
+    await checkSourceHealth(prisma, [stat('hermes', 50)]);
+    await checkSourceHealth(prisma, [stat('hermes', 50)]);
+    const run = await prisma.sourceRun.findFirstOrThrow({
+      where: { sourceKey: 'hermes' },
+      orderBy: { ranAt: 'desc' },
+    });
+    expect(run.descriptionRate).toBe(1);
+    expect(run.urlRate).toBe(1);
+  });
+});

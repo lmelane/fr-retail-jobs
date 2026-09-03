@@ -1,6 +1,6 @@
 import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
-import type { NormalizedJob } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 type Posting = { id: string; name: string; ref?: string; releasedDate?: string; location?: { city?: string; region?: string; country?: string }; typeOfEmployment?: { label?: string } };
 type Page = { content: Posting[]; totalFound?: number };
@@ -42,10 +42,11 @@ async function fetchDescription(company: string, id: string): Promise<string | u
   }
 }
 
-export async function fetchSmartRecruitersJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+export async function fetchSmartRecruitersJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const company = String(config.company ?? '');
   if (!company) throw new Error('SmartRecruiters company missing');
   const out: NormalizedJob[] = [];
+  let declaredTotal: number | undefined;
   for (let offset = 0; offset < 1000; offset += 100) {
     const page = await fetchJson<Page>(`https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(company)}/postings?limit=100&offset=${offset}`);
     for (const job of page.content ?? []) {
@@ -61,15 +62,17 @@ export async function fetchSmartRecruitersJobs(config: Record<string, unknown>):
         raw: job,
       });
     }
+    if (page.totalFound !== undefined) declaredTotal = page.totalFound;
     if (!page.content?.length || out.length >= (page.totalFound ?? 0)) break;
   }
 
-  if (config.withDescriptions === false) return out;
+  if (config.withDescriptions === false) return { jobs: out, declaredTotal };
 
   const limit = pLimit(Number(config.detailConcurrency ?? 8));
-  return Promise.all(
+  const jobs = await Promise.all(
     out.map((job) =>
       limit(async () => ({ ...job, description: await fetchDescription(company, job.externalId) })),
     ),
   );
+  return { jobs, declaredTotal };
 }

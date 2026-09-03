@@ -66,6 +66,10 @@ export type IngestStats = {
   withDate: number;
   withCountry: number;
   withUrl: number;
+  /** Count the SOURCE declares for its listing, when it announces one (F-04). */
+  declaredTotal?: number;
+  /** True when the sweep returned fewer offers than declaredTotal. */
+  truncated?: boolean;
 };
 
 /** One place decides what "the field is filled" means, for every ingest path. */
@@ -397,7 +401,14 @@ async function ingestApiSource(
     config = { ...config, startPage, progress };
   }
 
-  const jobs = await fetchAtsJobs(type as never, config);
+  const { jobs, declaredTotal, truncated } = await fetchAtsJobs(type as never, config);
+  stats.declaredTotal = declaredTotal;
+  stats.truncated = truncated;
+  if (truncated) {
+    console.error(
+      `[ingest] ${stats.source}: TRUNCATED — ${jobs.length} collected of ${declaredTotal} declared`,
+    );
+  }
 
   // Move the cursor forward for next run — after a successful fetch only, so a
   // failed crawl retries the same window rather than skipping it.

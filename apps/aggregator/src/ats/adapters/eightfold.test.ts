@@ -31,7 +31,7 @@ describe('fetchEightfoldJobs apply URL', () => {
       } as never)
       .mockResolvedValueOnce({ data: { positions: [] } } as never);
 
-    const jobs = await fetchEightfoldJobs({
+    const { jobs } = await fetchEightfoldJobs({
       origin: 'https://careers.elcompanies.com',
       domain: 'elcompanies.com',
       withDescriptions: false,

@@ -1,6 +1,6 @@
 import pLimit from 'p-limit';
 import { fetchJson, fetchWithRetry } from '../../lib/http.js';
-import type { NormalizedJob } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
  * Eightfold AI career sites (Estée Lauder and its Maisons).
@@ -137,7 +137,7 @@ function toNormalized(position: EightfoldPosition, origin: string): NormalizedJo
  */
 export async function fetchEightfoldJobs(
   config: Record<string, unknown>,
-): Promise<NormalizedJob[]> {
+): Promise<AdapterResult> {
   const origin = String(config.origin ?? '').replace(/\/$/, '');
   const domain = String(config.domain ?? origin.replace(/^https?:\/\/careers\./, ''));
   if (!origin) throw new Error('Eightfold origin missing');
@@ -152,6 +152,8 @@ export async function fetchEightfoldJobs(
 
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
+  // F-04: the vendor's own announced count — the truncation signal.
+  let declaredTotal: number | undefined;
 
   for (let page = 0; page < MAX_PAGES; page++) {
     const url = `${origin}/api/pcsx/search?domain=${encodeURIComponent(domain)}&query=&location=&start=${page * PAGE_SIZE}&num=${PAGE_SIZE}`;
@@ -168,16 +170,17 @@ export async function fetchEightfoldJobs(
       fresh++;
     }
 
-    if (positions.length < PAGE_SIZE || fresh === 0) break;
     const count = response.data?.count;
+    if (count !== undefined) declaredTotal = count;
+    if (positions.length < PAGE_SIZE || fresh === 0) break;
     if (count !== undefined && jobs.length >= count) break;
   }
 
-  if (config.withDescriptions === false) return jobs;
+  if (config.withDescriptions === false) return { jobs, declaredTotal };
 
   // Descriptions come from a per-position endpoint; the listing has none.
   const limit = pLimit(Number(config.detailConcurrency ?? 6));
-  return Promise.all(
+  const withDescriptions = await Promise.all(
     jobs.map((job) =>
       limit(async () => {
         try {
@@ -198,4 +201,5 @@ export async function fetchEightfoldJobs(
       }),
     ),
   );
+  return { jobs: withDescriptions, declaredTotal };
 }
