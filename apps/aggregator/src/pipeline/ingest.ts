@@ -401,7 +401,7 @@ async function ingestApiSource(
   // A rotating source resumes partway through its listing so it re-sees every
   // offer within the lifecycle window instead of only ever the newest pages.
   const rotating = isRotatingSource(stats.source);
-  const progress: { reachedEnd?: boolean } = {};
+  const progress: { reachedEnd?: boolean; lastPageDone?: number } = {};
   let startPage = 1;
   if (rotating) {
     startPage = await nextPageFor(prisma, stats.source);
@@ -420,7 +420,13 @@ async function ingestApiSource(
   // Move the cursor forward for next run — after a successful fetch only, so a
   // failed crawl retries the same window rather than skipping it.
   if (rotating) {
-    const next = await advanceCursor(prisma, stats.source, startPage, progress.reachedEnd === true);
+    const next = await advanceCursor(
+      prisma,
+      stats.source,
+      startPage,
+      progress.reachedEnd === true,
+      progress.lastPageDone,
+    );
     console.log(`[ingest] ${stats.source}: rotating crawl page ${startPage} → next run resumes at ${next}`);
   }
   stats.fetched = jobs.length;

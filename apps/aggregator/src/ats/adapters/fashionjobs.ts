@@ -63,7 +63,15 @@ async function renderPatiently(url: string): Promise<string | null> {
  * the cursor: `reachedEnd` is true when the board ran out of pages before the
  * window filled (wrap to page 1 next run).
  */
-export type CrawlProgress = { reachedEnd?: boolean };
+export type CrawlProgress = {
+  reachedEnd?: boolean;
+  /**
+   * Last listing page fully processed (F-07). The cursor resumes at
+   * lastPageDone + 1 — a sweep cut by Cloudflare or the deadline at page
+   * startPage+3 must NOT advance by the whole window and skip 37 pages.
+   */
+  lastPageDone?: number;
+};
 
 /**
  * Reads FashionJobs offers, newest first.
@@ -115,6 +123,7 @@ export async function fetchFashionjobsJobs(
       seen.add(link);
       detailUrls.push(link);
     }
+    progress.lastPageDone = page;
     if (maxJobs > 0 && detailUrls.length >= maxJobs) break;
     await sleep(PAGE_DELAY_MS);
   }

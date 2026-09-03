@@ -28,25 +28,35 @@ describe('the crawl cursor', () => {
     expect(await nextPageFor(prisma, 'fashionjobs')).toBe(1);
   });
 
-  it('advances by the window each run while there are more pages', async () => {
-    const afterRun1 = await advanceCursor(prisma, 'fashionjobs', 1, false);
-    expect(afterRun1).toBe(41); // window = 40
+  it('advances to just after the last page really processed', async () => {
+    // Full window done: pages 1-40 -> resume at 41.
+    const afterRun1 = await advanceCursor(prisma, 'fashionjobs', 1, false, 40);
+    expect(afterRun1).toBe(41);
     expect(await nextPageFor(prisma, 'fashionjobs')).toBe(41);
 
-    const afterRun2 = await advanceCursor(prisma, 'fashionjobs', 41, false);
+    const afterRun2 = await advanceCursor(prisma, 'fashionjobs', 41, false, 80);
     expect(afterRun2).toBe(81);
   });
 
+  it('a sweep cut short resumes where it stopped, never skipping pages (F-07)', async () => {
+    // Cloudflare blocked at page 4: only 1-3 were processed.
+    const next = await advanceCursor(prisma, 'fashionjobs', 1, false, 3);
+    expect(next).toBe(4);
+    // Nothing processed at all: retry the same window, do not advance blind.
+    const retry = await advanceCursor(prisma, 'fashionjobs', 4, false, undefined);
+    expect(retry).toBe(4);
+  });
+
   it('wraps back to page 1 when the board ends', async () => {
-    await advanceCursor(prisma, 'fashionjobs', 241, false); // → 281
-    const wrapped = await advanceCursor(prisma, 'fashionjobs', 281, true); // end reached
+    await advanceCursor(prisma, 'fashionjobs', 241, false, 280); // → 281
+    const wrapped = await advanceCursor(prisma, 'fashionjobs', 281, true, 283); // end reached
     expect(wrapped).toBe(1);
     expect(await nextPageFor(prisma, 'fashionjobs')).toBe(1);
   });
 
   it('keeps a separate cursor per source', async () => {
-    await advanceCursor(prisma, 'fashionjobs', 1, false); // → 41
-    await advanceCursor(prisma, 'other-board', 1, false); // → 41 independently
+    await advanceCursor(prisma, 'fashionjobs', 1, false, 40); // → 41
+    await advanceCursor(prisma, 'other-board', 1, false, 40); // → 41 independently
     expect(await nextPageFor(prisma, 'fashionjobs')).toBe(41);
     expect(await nextPageFor(prisma, 'other-board')).toBe(41);
   });
