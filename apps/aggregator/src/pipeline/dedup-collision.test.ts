@@ -137,6 +137,44 @@ describe('J2 — group feed vs brand feed (LVMH / Louis Vuitton)', () => {
     expect(jobs[0].sources.map((s) => s.sourceKey).sort()).toEqual(['louis-vuitton', 'lvmh']);
   });
 
+  it('never fuses two ids of the SAME source, even with near-identical titles (audit D-01)', async () => {
+    // The exact production damage: one Workday feed lists three identical
+    // retail posts at one boutique under three ids. The old write path fed the
+    // guard the candidate's own identity, so it never fired and the three
+    // became one displayed offer.
+    const first = candidate({
+      sourceKey: 'cartier',
+      company: 'Cartier',
+      externalId: 'wd-1',
+      title: 'Sales Associate',
+      url: 'https://richemont.wd3.myworkdayjobs.com/wd-1',
+      atsType: 'WORKDAY',
+    });
+    const second = candidate({
+      sourceKey: 'cartier',
+      company: 'Cartier',
+      externalId: 'wd-2',
+      title: 'Sales Associate',
+      url: 'https://richemont.wd3.myworkdayjobs.com/wd-2',
+      atsType: 'WORKDAY',
+    });
+
+    await upsertDeduplicated(prisma, first);
+    const result = await upsertDeduplicated(prisma, second);
+
+    expect(result.outcome).toBe('CREATED');
+    expect(await prisma.job.count()).toBe(2);
+  });
+
+  it('still merges the same id arriving again from the same source', async () => {
+    const posting = candidate({ sourceKey: 'lacoste', externalId: 'a-1' });
+    await upsertDeduplicated(prisma, posting);
+    const again = await upsertDeduplicated(prisma, candidate({ sourceKey: 'lacoste', externalId: 'a-1' }));
+
+    expect(again.outcome).not.toBe('CREATED');
+    expect(await prisma.job.count()).toBe(1);
+  });
+
   it('keeps two DIFFERENT openings apart even inside one company and city', async () => {
     const sales = candidate({ sourceKey: 'lacoste', externalId: 'a-1' });
     const stock = candidate({

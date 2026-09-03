@@ -118,14 +118,28 @@ export async function upsertDeduplicated(
     include: { sources: true },
   });
 
-  const existing = clusterJobs.find((job) =>
-    isProbableDuplicate(candidate, {
+  /**
+   * One source never publishes one opening twice: a job that already carries a
+   * JobSource from THIS source under a DIFFERENT id is a different opening,
+   * whatever the titles score. This guard existed in match.ts but the old code
+   * fed it the CANDIDATE's own sourceKey/externalId (`{...candidate}`), so it
+   * could never fire at write time — three distinct "Sales Associate" ids at
+   * the same boutique collapsed into one displayed offer (audit D-01). The
+   * sources are already loaded; compare against the real ones.
+   */
+  const existing = clusterJobs.find((job) => {
+    const sameSourceOtherId = job.sources.some(
+      (source) =>
+        source.sourceKey === candidate.sourceKey && source.externalId !== candidate.externalId,
+    );
+    if (sameSourceOtherId) return false;
+    return isProbableDuplicate(candidate, {
       ...candidate,
       title: job.title,
       location: job.location ?? undefined,
       postedAt: job.postedAt ?? undefined,
-    }),
-  );
+    });
+  });
 
   if (!existing) {
     try {

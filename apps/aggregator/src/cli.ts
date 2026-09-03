@@ -14,6 +14,7 @@ import { submitOfferChanges } from './pipeline/googleIndexing.js';
 const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 * 1000);
 import { runRefresh } from './pipeline/refresh.js';
 import { runReconcile } from './pipeline/reconcile.js';
+import { separateFusedJobs } from './pipeline/separateFused.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
 import { runStats } from './pipeline/stats.js';
 import { exportCompanies } from './export/companies.js';
@@ -126,6 +127,16 @@ try {
     }
   } else if (command === 'reconcile') {
     console.log(JSON.stringify({ ok: true, command, ...(await runReconcile(prisma)) }, null, 2));
+  } else if (command === 'separate-fused') {
+    /**
+     * One-shot repair for audit D-01: splits openings a single source published
+     * under distinct ids that the old write path wrongly fused into one Job.
+     * Prints the before/after metric; after the fix ships, fusedAfter must be 0
+     * and STAY 0 — a non-zero value on a later run means the guard regressed.
+     */
+    const stats = await separateFusedJobs(prisma);
+    console.log(JSON.stringify({ ok: stats.fusedAfter === 0, command, ...stats }, null, 2));
+    if (stats.fusedAfter > 0) process.exitCode = 1;
   } else if (command === 'geocode') {
     console.log(JSON.stringify({ ok: true, command, ...(await runGeocode(prisma)) }, null, 2));
   } else if (command === 'stats') {
