@@ -241,6 +241,10 @@
     background: var(--fa-paper);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* FA Sans has no 600/700 face; without this the browser synthesises a fake
+       bold (heavy, smeared) for any residual font-semibold/bold. Every "600"
+       usage is mapped to Medium 500 instead. */
+    font-synthesis-weight: none;
   }
   body {
     @apply bg-background text-foreground;
