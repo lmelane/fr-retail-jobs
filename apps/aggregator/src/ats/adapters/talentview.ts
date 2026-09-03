@@ -167,7 +167,7 @@ export async function fetchTalentViewJobs(
 
   // The listing carries no text; /campaigns/{slug} does. Keyed by SLUG — the id
   // 404s — and the campaign slug lives on the raw listing entry.
-  const limit = pLimit(Number(config.detailConcurrency ?? 6));
+  const limit = pLimit(Number(config.detailConcurrency ?? 4));
   return Promise.all(
     jobs.map((job) =>
       limit(async () => {

@@ -62,7 +62,7 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
     jobs: await attachWorkdayDescriptions(
       out,
       `${origin}/wday/cxs/${tenant}/${site}`,
-      Number(config.detailConcurrency ?? 6),
+      Number(config.detailConcurrency ?? 4),
     ),
     declaredTotal,
   };
@@ -133,7 +133,7 @@ function stripHtml(value?: string): string {
 export async function attachWorkdayDescriptions(
   jobs: NormalizedJob[],
   cxsBase: string,
-  concurrency = 6,
+  concurrency = 4,
 ): Promise<NormalizedJob[]> {
   const limit = pLimit(concurrency);
 

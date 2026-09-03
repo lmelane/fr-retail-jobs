@@ -4,6 +4,55 @@ import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 const timeoutMs = Number(process.env.HTTP_TIMEOUT_MS ?? 20_000);
 const userAgent = process.env.USER_AGENT ?? 'CatwalksJobsBot/0.1';
 
+/**
+ * F-01 — the body read is bounded too. `response.text()` used to run OUTSIDE
+ * any timeout: a host that answers headers then trickles bytes (or streams
+ * gigabytes) held a worker forever. 30s and 20MB comfortably fit every real
+ * payload here (largest seen: WTTJ shards, a few MB).
+ */
+const readTimeoutMs = Number(process.env.HTTP_READ_TIMEOUT_MS ?? 30_000);
+const maxBodyBytes = Number(process.env.HTTP_MAX_BODY_BYTES ?? 20_000_000);
+
+/**
+ * Adapters' per-detail concurrency must not exceed the per-host gate (4): a
+ * pLimit(8) just parks 4 extra requests in the gate queue where they burn
+ * their timeout budget doing nothing (F-01).
+ */
+export const DEFAULT_DETAIL_CONCURRENCY = 4;
+
+/** Reads a body with a hard time budget and a size cap. */
+async function readBodyBounded(response: Response, url: string): Promise<string> {
+  const body = response.body;
+  // No readable stream (a 204, or a mocked Response in tests): text() is all
+  // there is, and there is nothing to bound.
+  if (!body) return typeof response.text === 'function' ? response.text() : '';
+  const reader = body.getReader();
+  const chunks: Buffer[] = [];
+  let size = 0;
+  const deadline = Date.now() + readTimeoutMs;
+  try {
+    for (;;) {
+      const remaining = deadline - Date.now();
+      if (remaining <= 0) throw new Error(`body read timeout (${readTimeoutMs}ms) for ${url}`);
+      let timer: ReturnType<typeof setTimeout>;
+      const chunk = await Promise.race([
+        reader.read(),
+        new Promise<never>((_, reject) => {
+          timer = setTimeout(() => reject(new Error(`body read timeout (${readTimeoutMs}ms) for ${url}`)), remaining);
+        }),
+      ]).finally(() => clearTimeout(timer!));
+      if (chunk.done) break;
+      size += chunk.value.byteLength;
+      if (size > maxBodyBytes) throw new Error(`body over ${maxBodyBytes} bytes for ${url}`);
+      chunks.push(Buffer.from(chunk.value));
+    }
+  } catch (error) {
+    reader.cancel().catch(() => {});
+    throw error;
+  }
+  return Buffer.concat(chunks).toString('utf8');
+}
+
 /** Redirect hops to follow before giving up — enough for http→https→www chains. */
 const MAX_REDIRECTS = 5;
 
@@ -45,13 +94,17 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
   let lastError: unknown;
   for (let i = 0; i < attempts; i++) {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    let timer: ReturnType<typeof setTimeout> | undefined;
     try {
       // Every request passes through the per-host gate — the global politeness
       // that stops us throttling a shared host (ELC, Richemont, Beaumanoir…) in
       // the first place, instead of only reacting after it blocks us.
-      const response = await withHostGate(url, () =>
-        fetchFollowingSafely(
+      // F-01: the timeout clock starts AFTER the gate grants the slot — time
+      // spent queued behind a backed-off host is not the request's fault, and
+      // starting the timer early expired requests before they even began.
+      const response = await withHostGate(url, () => {
+        timer = setTimeout(() => controller.abort(), timeoutMs);
+        return fetchFollowingSafely(
           url,
           {
             ...init,
@@ -62,8 +115,8 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
             },
           },
           controller.signal,
-        ),
-      );
+        );
+      });
       if (response.ok) {
         reportSuccess(url);
         return response;
@@ -96,19 +149,19 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       if (response.status === 429) {
         const asked = Number(response.headers.get('retry-after'));
         const waitMs = Number.isFinite(asked) && asked > 0 ? asked * 1000 : 20_000 * (i + 1);
-        clearTimeout(timer);
+        if (timer) clearTimeout(timer);
         await sleep(Math.min(waitMs, 90_000));
         continue;
       }
     } catch (error) {
       // A blocked URL will never become fetchable — do not waste retries on it.
       if (error instanceof BlockedUrlError) {
-        clearTimeout(timer);
+        if (timer) clearTimeout(timer);
         throw error;
       }
       lastError = error;
     } finally {
-      clearTimeout(timer);
+      if (timer) clearTimeout(timer);
     }
     await sleep(500 * 2 ** i + Math.floor(Math.random() * 300));
   }
@@ -117,7 +170,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
 
 export async function fetchText(url: string, init: RequestInit = {}): Promise<string> {
   const response = await fetchWithRetry(url, init);
-  return response.text();
+  return readBodyBounded(response, url);
 }
 
 export async function fetchJson<T>(url: string, init: RequestInit = {}): Promise<T> {
@@ -125,5 +178,5 @@ export async function fetchJson<T>(url: string, init: RequestInit = {}): Promise
     ...init,
     headers: { accept: 'application/json', ...(init.headers ?? {}) },
   });
-  return response.json() as Promise<T>;
+  return JSON.parse(await readBodyBounded(response, url)) as T;
 }

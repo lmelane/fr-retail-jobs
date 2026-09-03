@@ -68,7 +68,7 @@ export async function fetchSmartRecruitersJobs(config: Record<string, unknown>):
 
   if (config.withDescriptions === false) return { jobs: out, declaredTotal };
 
-  const limit = pLimit(Number(config.detailConcurrency ?? 8));
+  const limit = pLimit(Number(config.detailConcurrency ?? 4));
   const jobs = await Promise.all(
     out.map((job) =>
       limit(async () => ({ ...job, description: await fetchDescription(company, job.externalId) })),

@@ -139,7 +139,7 @@ export async function fetchDigitalRecruitersJobs(
   }
 
   if (config.withDescriptions === false) return jobs;
-  return attachDescriptions(jobs, Number(config.detailConcurrency ?? 8));
+  return attachDescriptions(jobs, Number(config.detailConcurrency ?? 4));
 }
 
 async function fetchAllPages(domainName: string, locale: string): Promise<NormalizedJob[]> {

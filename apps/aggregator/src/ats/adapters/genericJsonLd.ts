@@ -121,7 +121,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       throw new Error(`generic-listing ${listingPagedUrl}: no offer link matched "${linkPattern}" — pattern or listing broken`);
     }
 
-    const limit = pLimit(Number(config.concurrency ?? 6));
+    const limit = pLimit(Number(config.concurrency ?? 4));
     const pages = await Promise.all(
       [...seen].map((url) =>
         limit(async () => {
@@ -155,7 +155,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     if (urls.length === 0) {
       throw new Error(`generic sitemap ${sitemapUrl}: 0 URLs — sitemap moved or empty`);
     }
-    const limit = pLimit(Number(config.concurrency ?? 8));
+    const limit = pLimit(Number(config.concurrency ?? 4));
     const pages = await Promise.all(
       urls.map((url) =>
         limit(async () => {

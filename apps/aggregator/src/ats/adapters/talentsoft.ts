@@ -162,7 +162,7 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
 
   // 4. Descriptions for the listing-only offers, from their detail pages.
   if (config.withDescriptions !== false) {
-    const limit = pLimit(Number(config.detailConcurrency ?? 6));
+    const limit = pLimit(Number(config.detailConcurrency ?? 4));
     await Promise.all(
       jobs.map((job, index) =>
         limit(async () => {

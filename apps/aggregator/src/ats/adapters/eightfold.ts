@@ -179,7 +179,7 @@ export async function fetchEightfoldJobs(
   if (config.withDescriptions === false) return { jobs, declaredTotal };
 
   // Descriptions come from a per-position endpoint; the listing has none.
-  const limit = pLimit(Number(config.detailConcurrency ?? 6));
+  const limit = pLimit(Number(config.detailConcurrency ?? 4));
   const withDescriptions = await Promise.all(
     jobs.map((job) =>
       limit(async () => {

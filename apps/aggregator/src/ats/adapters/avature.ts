@@ -176,7 +176,7 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
      * full text lives on the detail page as MICRODATA (itemprop="description"),
      * the same shape SuccessFactors uses, since its JSON-LD is empty.
      */
-    const detailLimit = pLimit(Number(config.detailConcurrency ?? 8));
+    const detailLimit = pLimit(Number(config.detailConcurrency ?? 4));
     const withDescriptions = await Promise.all(
       jobs.map((job) =>
         detailLimit(async () => {
@@ -200,7 +200,7 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
   if (!sitemapUrl) throw new Error('Avature listingUrl or sitemapUrl required');
 
   const urls = (await fetchSitemapUrls(sitemapUrl)).filter((url) => JOB_URL.test(url));
-  const limit = pLimit(Number(config.concurrency ?? 10));
+  const limit = pLimit(Number(config.concurrency ?? 4));
 
   const jobs = await Promise.all(
     urls.map((url) =>
