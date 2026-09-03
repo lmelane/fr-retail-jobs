@@ -8,7 +8,8 @@ import type { AtsDetection } from '../types.js';
 
 const ATS_HOSTS = [
   'greenhouse.io', 'lever.co', 'smartrecruiters.com', 'recruitee.com', 'personio.de',
-  'personio.com', 'myworkdayjobs.com', 'teamtailor.com', 'workable.com', 'successfactors.com'
+  'personio.com', 'myworkdayjobs.com', 'teamtailor.com', 'workable.com', 'successfactors.com',
+  'welcometothejungle.com',
 ];
 
 /**
@@ -38,6 +39,20 @@ const WIDGET_BACKENDS: ReadonlyArray<{
     re: /talent-soft\.com|talentsoft\.com/i,
     type: 'TALENTSOFT',
     config: (u) => ({ origin: u.origin }),
+  },
+  // Flatchr and Factorial are common FR/EU widgets with no dedicated adapter yet:
+  // recognise them so the brand's careers page enters the review queue as a
+  // generic crawl instead of being dropped. The generic JSON-LD crawler reads the
+  // page as-is; a human can wire a proper adapter later.
+  {
+    re: /flatchr\.io|api\.flatchr/i,
+    type: 'GENERIC_JSONLD',
+    config: (u) => ({ startUrl: u.toString() }),
+  },
+  {
+    re: /factorial(hr)?\.(com|fr|es)|\.factorial\./i,
+    type: 'GENERIC_JSONLD',
+    config: (u) => ({ startUrl: u.toString() }),
   },
 ];
 
@@ -87,6 +102,13 @@ function detectionFromUrl(rawUrl: string): AtsDetection | null {
     const tenant = host.split('.')[0];
     const site = parts[0];
     if (tenant && site) return { type: 'WORKDAY', careersUrl: url.toString(), config: { tenant, site, origin: url.origin }, confidence: 1 };
+  }
+  // Welcome to the Jungle (and its Welcomekit embed): the org slug is the segment
+  // after /companies/ — welcometothejungle.com/fr/companies/<slug>[/jobs].
+  if (host.endsWith('welcometothejungle.com')) {
+    const i = parts.indexOf('companies');
+    const slug = i >= 0 ? parts[i + 1] : undefined;
+    if (slug) return { type: 'WTTJ', careersUrl: url.toString(), config: { slug }, confidence: 1 };
   }
   return null;
 }
