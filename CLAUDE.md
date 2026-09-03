@@ -63,6 +63,7 @@ Le tracking « candidat inscrit via Fashion Atlas » est **déjà complet côté
 
 ### D22 — Le catalogue doit VIVRE : datePosted stable, auto-index Google, expiration → 410/redirect
 Constat gravé (vérifié en base 2026-09-02) : **0 offre n'a un `firstSeenAt` > 24h** → la base est wipe+rebuild à chaque run (churn), ce qui réinitialise `datePosted` (lu par Google Jobs) et déstabilise les IDs/URLs. Le correctif code existe déjà (`upsert.ts` estampille `pipelineVersion` à chaque touche, pas qu'au create) — **stabilité vérifiée en prod** (SourceRun : `previousJobs ≈ jobs`, ex. hermes 581→581, sandro 533→533 : les sources conservent leurs offres run-to-run, plus de churn). Décisions Loïc, **implémentées 2026-09-03** : (a) **soumission automatique à l'Indexing API Google** des nouvelles/périmées offres à chaque passe — `googleIndexing.ts`, JWT service-account signé avec `crypto` natif, câblé dans `ingest-all`, **no-op tant que `GOOGLE_INDEXING_CREDENTIALS` + le vrai domaine ne sont pas configurés** (code prêt, dormant) ; (b) **offre périmée → 410 Gone** — `middleware.ts` + `/api/offre-status/[id]` (410+noindex pour fermée, 404 pour inexistante, 200 pour active), vérifié en prod. **Action externe restante** : brancher le vrai domaine + provisionner le service account Google. (Décidé par Loïc 2026-09-03 ; (a) code prêt / (b) live.)
+> **D22 révisé (refonte UI, validé Loïc 2026-09-03)** : le 410 d'une offre fermée ne sert plus une **page-stub codée en dur** ; le middleware fait désormais `rewrite` vers la vraie page `/offre/[id]` **avec `status:410` + `x-robots-tag:noindex`** → Google déréférence pareil, MAIS le candidat voit l'offre réelle avec un **bandeau « Expirée »** + un pont « Voir les offres similaires » (DA §4.13). `getJobStatus` renvoie l'offre aussi en `closed` (aucune requête en plus) ; le JSON-LD JobPosting est retiré sur une offre fermée. Vérifié en local : `/offre/<fermée>` → HTTP 410 + page rendue.
 
 ### D23 — La chaîne d'hygiène A→Z : le validateur est la SOURCE, pas un HTTP HEAD
 Un agrégateur ne montre que des offres réelles avec des liens vivants. La chaîne (validée avec Loïc) : (1) Maison entre → détection ATS ; (2) ingest depuis l'ATS (Flux A) avec la **bonne URL** (fix adapters Magnet/Workday/Eightfold + propagation `Job.url` aux lignes existantes) ; (3) **VALIDATION = présence dans le feed de la source** — gratuit (on re-crawle déjà), exhaustif, vrai. Un HTTP HEAD par offre est **rejeté comme primaire** : à 14k+ maisons c'est des millions de requêtes souvent bot-bloquées (FashionJobs/WTTJ renvoient 403 en étant vivants → le HEAD ment ; le feed ne ment pas). Le HEAD reste un **filet de sécurité ponctuel**. (4) Lien mort → **re-crawl source d'abord** (self-heal via `refresh.ts` : une offre survit tant qu'une source la re-liste ; fermée seulement quand toutes ses sources sont stale ; ré-ouverte si la source revient). (5) Offre fermée → **410 Gone** (implémenté : `middleware.ts` + `/api/offre-status/[id]` → 410 pour une offre `isActive:false`, 404 pour un id inexistant, `noindex` sur le 410). (Décidé et validé par Loïc, 2026-09-03.)
@@ -153,6 +154,27 @@ Détail exhaustif des findings (3 audits défensifs, chaque regex exécutée) : 
 - **Unitaires** (sans base) : `npm run test:unit -w @catwalks/aggregator` — normalizers, france, html, ssrf, geocode.
 - **Intégration** (base dédiée) : `DATABASE_URL=…/catwalks_test npm run test:integration -w @catwalks/aggregator` — purge, santé, refresh.
 - ⚠️ **Les tests d'intégration VIDENT la base.** Ils ne tournent QUE sur une base dont le nom contient « test » (garde `src/test/setup-integration.ts` qui refuse sinon). **Ne jamais** les lancer sur la base de démo/prod. Base de démo locale = `catwalks`, base de test = `catwalks_test` (même conteneur Docker `catwalks-audit-pg`, port 55440).
+
+## Règles git — toutes les sessions, sans exception (décidé par Loïc, 2026-09-03)
+
+> Contexte : plusieurs sessions Claude travaillent en parallèle dans le MÊME
+> working tree. Un `git reset --hard` d'une session a effacé le travail non
+> commité d'une autre. Et Railway auto-déploie `origin/main` à chaque push.
+
+- **Interdits** : `git reset --hard`, `git checkout -- .`, `git clean`,
+  `git stash drop`, `git push --force` sur toute branche partagée. En cas de
+  besoin réel : `git stash push -m "<session> <raison>"` et on en parle.
+- **`git status` obligatoire avant tout changement de branche.** Si des
+  fichiers modifiés ne sont pas à toi, tu ne bouges pas (préférer
+  `git worktree add` pour travailler sur une autre branche sans toucher le
+  tree partagé).
+- **Une session = un périmètre de fichiers.** Web : `apps/web`. Pipeline :
+  `apps/aggregator`, `packages/db`, `data/`. Aucun commit hors périmètre ;
+  fichiers racine partagés (CLAUDE.md…) : prévenir l'autre session d'abord.
+- **Push à chaque fin d'étape.** Jamais de travail local non poussé de plus
+  d'une heure.
+- **`main` = prod (Railway auto-déploie chaque push).** Pousser sur main =
+  déployer : on le fait en le sachant, jamais par accident.
 
 ## Méthode de travail
 

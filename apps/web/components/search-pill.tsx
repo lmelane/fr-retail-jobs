@@ -5,24 +5,20 @@ import { MapPin, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 /**
- * The Indeed search pill — Poste | Ville | Rechercher — with live autocomplete
- * on both fields, shared between the landing page and the results header so
- * the two can never drift apart.
+ * The Fashion Atlas search bar — Poste | Ville | Rechercher — with live
+ * autocomplete on both fields, shared between the landing page and the results
+ * header so the two can never drift apart.
  *
- * Field proportions were measured against the live fr.indeed.com pill with
- * Playwright (getComputedStyle) — Indeed only ever supplied the STRUCTURE:
- *  - field: height 60px, font 16px
- *  - suggestion row: 42px tall, 14px text, a 20px icon (search-with-clock for
- *    Poste, a pin for Ville), flex, icon + label with gap
+ * The skin is the Catwalks DA (design_2.md §4.2, réf emplois.html) : a single
+ * rectangle (radius 5px), an ink hairline that turns green on focus, a green
+ * submit button, and a dotted vertical rule between the two fields — never a
+ * rounded Indeed-style pill. The DA `.search` class (globals.css) supplies the
+ * grid, the fields and the responsive stacking; this component supplies only
+ * the autocomplete behaviour on top.
  *
- * The SKIN is the Catwalks DA (decision D17) instead: the pill and its submit
- * button are fully rounded (100vmax), the submit button is black (not
- * Indeed's blue, not the old brand magenta), and there is no shadow at rest —
- * only a hairline border.
- *
- * `size="hero"` is the landing page's own big centered pill; `size="compact"`
- * is the smaller pill that sits in the results header. Both share the exact
- * same autocomplete behavior — only the outer dimensions differ.
+ * `size="hero"` is the landing page's own big centered bar; `size="compact"`
+ * (default) is the sticky bar in the results header. Both share the exact same
+ * autocomplete behavior — only the outer max-width differs.
  */
 
 export interface SearchPillProps {
@@ -37,6 +33,16 @@ export interface SearchPillProps {
   className?: string;
 }
 
+const SearchGlyph = () => (
+  <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+);
+const PinGlyph = () => (
+  <svg viewBox="0 0 24 24" aria-hidden><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11Z" /><circle cx="12" cy="10" r="2.5" /></svg>
+);
+const ArrowGlyph = () => (
+  <svg viewBox="0 0 24 24" aria-hidden width="16" height="16" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+);
+
 export function SearchPill({
   query,
   onQueryChange,
@@ -50,11 +56,8 @@ export function SearchPill({
 
   return (
     <form
-      className={cn(
-        'border-border mx-auto flex h-auto w-full flex-col items-stretch rounded-full border bg-white focus-within:ring-2 focus-within:ring-black/20 sm:flex-row sm:items-center',
-        hero ? 'max-w-[900px] sm:h-[62px]' : 'max-w-[900px] sm:h-[60px]',
-        className,
-      )}
+      role="search"
+      className={cn('search mx-auto w-full', hero ? 'max-w-[760px]' : 'max-w-none', className)}
       onSubmit={(event) => {
         event.preventDefault();
         onSubmit({ query: query.trim(), city: city.trim() });
@@ -65,36 +68,26 @@ export function SearchPill({
         value={query}
         onChange={onQueryChange}
         onCommit={(value) => onQueryChange(value)}
-        icon={<Search className="text-foreground/70 size-5 shrink-0" aria-hidden />}
+        icon={<SearchGlyph />}
         placeholder="Poste, Maison, mot-clé…"
         ariaLabel="Poste ou mot-clé"
-        hero={hero}
       />
-
-      <span className="bg-border mx-4 h-px w-auto shrink-0 sm:mx-1 sm:h-9 sm:w-px" aria-hidden />
 
       <AutocompleteField
         type="city"
         value={city}
         onChange={onCityChange}
         onCommit={(value) => onCityChange(value)}
-        icon={<MapPin className="text-foreground/70 size-5 shrink-0" aria-hidden />}
+        icon={<PinGlyph />}
         placeholder="Ville, région ou pays"
         ariaLabel="Lieu"
-        hero={hero}
-        flexClassName="sm:flex-[0.7] sm:pl-2"
       />
 
-      <div className="p-2">
-        {/* Catwalks DA primary button: black pill, weight 400, hover to
-            grey-600 — not Indeed's blue, not the old brand magenta. */}
-        <button
-          type="submit"
-          className="bg-primary text-primary-foreground hover:bg-grey-600 focus-visible:ring-black/30 h-11 w-full rounded-full px-6 text-[16px] font-normal tracking-[0.4px] transition-colors duration-300 ease-catwalks focus-visible:ring-2 focus-visible:outline-none sm:w-auto"
-        >
-          Rechercher
-        </button>
-      </div>
+      {/* DA primary button (§4.4) : vert plein, weight 400, radius hérité 0
+          dans la barre — la flèche renforce l'action. */}
+      <button type="submit" className="btn btn--primary">
+        Rechercher <ArrowGlyph />
+      </button>
     </form>
   );
 }
@@ -118,8 +111,7 @@ export function AutocompleteField({
   icon,
   placeholder,
   ariaLabel,
-  hero,
-  flexClassName,
+  className,
 }: {
   type: 'title' | 'city' | 'company';
   value: string;
@@ -128,8 +120,9 @@ export function AutocompleteField({
   icon: React.ReactNode;
   placeholder: string;
   ariaLabel: string;
-  hero: boolean;
-  flexClassName?: string;
+  /** Extra classes on the `.field` root — used by the Maison directory to add
+      the bordered 34px box the search bar's own fields don't need. */
+  className?: string;
 }) {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
@@ -210,7 +203,7 @@ export function AutocompleteField({
   };
 
   return (
-    <div ref={containerRef} className={cn('relative flex min-w-0 flex-1 items-center gap-3 px-4 pt-2 sm:pt-0', flexClassName)}>
+    <div ref={containerRef} className={cn('field relative', className)}>
       {icon}
       <input
         ref={inputRef}
@@ -229,23 +222,17 @@ export function AutocompleteField({
         aria-controls={listboxId}
         aria-autocomplete="list"
         autoComplete="off"
-        className={cn(
-          'text-foreground placeholder:text-muted-foreground min-w-0 flex-1 bg-transparent text-[16px] outline-none',
-          hero ? 'h-12 sm:h-full' : 'h-11 sm:h-full',
-        )}
       />
 
-      {/* Suggestion panel — measured against Indeed's own #combobox-what-list:
-          white, radius 12, the same soft shadow as the pill itself, anchored
-          4px below the field. Rendered inline (not portaled): the pill does
-          not sit inside a scroll-clipped container the way the filter row
-          does, so a plain absolute panel is enough here. */}
+      {/* Suggestion panel — DA dropdown (§4.3) : fond paper, filet 1px, radius
+          5px, shadow-menu, ancré sous le champ. Rendu inline : la barre n'est
+          pas dans un conteneur à scroll clippé comme la rangée de filtres. */}
       {open && suggestions.length > 0 && (
         <div
           id={listboxId}
           role="listbox"
           aria-label="Suggestions de recherche"
-          className="border-border/60 absolute top-full left-0 z-20 mt-1 max-h-80 w-full min-w-[280px] overflow-y-auto rounded-[12px] border bg-white py-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
+          className="dd absolute top-[calc(100%+8px)] left-0 max-h-80 w-full min-w-[280px] overflow-y-auto"
         >
           {suggestions.map((suggestion, index) => (
             <button
@@ -255,17 +242,16 @@ export function AutocompleteField({
               aria-selected={index === highlighted}
               onMouseEnter={() => setHighlighted(index)}
               onClick={() => pick(suggestion)}
-              className={cn(
-                'flex h-[42px] w-full items-center gap-3 px-4 text-left text-sm transition-colors',
-                index === highlighted ? 'bg-surface' : 'hover:bg-surface',
-              )}
+              className={cn(index === highlighted && 'bg-paper-alt')}
             >
-              {type === 'title' ? (
-                <Search className="text-foreground/60 size-5 shrink-0" aria-hidden />
-              ) : (
-                <MapPin className="text-foreground/60 size-5 shrink-0" aria-hidden />
-              )}
-              <span className="text-foreground truncate">{suggestion}</span>
+              <span className="flex min-w-0 items-center gap-2 truncate">
+                {type === 'title' ? (
+                  <Search className="size-4 shrink-0 text-ink-muted" aria-hidden />
+                ) : (
+                  <MapPin className="size-4 shrink-0 text-ink-muted" aria-hidden />
+                )}
+                <span className="truncate">{suggestion}</span>
+              </span>
             </button>
           ))}
         </div>

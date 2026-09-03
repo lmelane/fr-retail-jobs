@@ -1,9 +1,16 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import './globals.css';
+import { SiteNav } from '@/components/site-nav';
+import { SiteFooter } from '@/components/site-footer';
+import { NavProgress } from '@/components/nav-progress';
 
 /**
- * Typography is the Catwalks brand face "catwalks_font" (decision D14),
- * self-hosted via @font-face in globals.css — no next/font, no Google request.
+ * Typography — DA « Corporate Elegance » (design_2.md) : deux familles
+ * self-hosted via @font-face dans globals.css, aucune requête CDN.
+ *   FA Display = Instrument Serif (contenu : titres, chiffres clés)
+ *   FA Sans    = Mona Sans (usage : nav, labels, boutons, métas)
+ * Les deux Regular sont préchargées ci-dessous.
  */
 
 export const metadata: Metadata = {
@@ -15,7 +22,18 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className="font-sans antialiased">{children}</body>
+      <head>
+        <link rel="preload" href="/fonts/display/FADisplay-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/sans/FASans-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+      </head>
+      <body className="font-sans antialiased">
+        <Suspense fallback={null}>
+          <NavProgress />
+        </Suspense>
+        <SiteNav />
+        {children}
+        <SiteFooter />
+      </body>
     </html>
   );
 }

@@ -1,178 +1,241 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* ============================================================
-   Catwalks brand typeface — "catwalks_font" (decision D14).
-   The same proprietary face Catwalks uses, self-hosted from
-   /public/fonts. Fashion Atlas is a Catwalks brand, so it wears the
-   brand type — Indeed's Noto Sans was only the structural clone, not
-   the identity. 5 weights: light 300 / regular 400 / medium 500 /
-   bold 700 / oblique italic.
-   ============================================================ */
-@font-face {
-  font-family: "catwalks_font";
-  font-weight: 300;
-  font-display: swap;
-  src: url("/fonts/catwalks_font-light.woff2") format("woff2");
-}
-@font-face {
-  font-family: "catwalks_font";
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/catwalks_font-regular.woff2") format("woff2");
-}
-@font-face {
-  font-family: "catwalks_font";
-  font-weight: 500;
-  font-display: swap;
-  src: url("/fonts/catwalks_font-medium.woff2") format("woff2");
-}
-@font-face {
-  font-family: "catwalks_font";
-  font-weight: 700;
-  font-display: swap;
-  src: url("/fonts/catwalks_font-bold.woff2") format("woff2");
-}
-@font-face {
-  font-family: "catwalks_font";
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/catwalks_font-oblique.woff2") format("woff2");
-}
-/*---break---
+/**
+ * Fashion Atlas — Direction artistique « Corporate Elegance » (design_2.md v1.0).
+ * Serif display (contenu) + sans humaniste (usage), blanc pur, un seul accent
+ * vert #105A33, filets pointillés, radius unique 5px, aucune ombre. Les maquettes
+ * `fashion-atlas-maquettes/*.html` sont la référence de rendu ; ce fichier porte
+ * leurs tokens `--fa-*` et classes `.t-*/.rule/.btn/.pill/…` dans le projet.
  */
+
+/* ————————————————————————————————— Fonts ————————————————————————————————— */
+/* Self-hosted only — aucune font chargée depuis un CDN en production. */
+
+/* FA Display = Instrument Serif (OFL, voir public/fonts/display/OFL.txt). */
+@font-face {
+  font-family: "FA Display";
+  src: url("/fonts/display/FADisplay-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "FA Display";
+  src: url("/fonts/display/FADisplay-Italic.woff2") format("woff2");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+
+/* FA Sans = Mona Sans (400 / 500 ; PAS de 600 — tout « 600 sans » -> 500). */
+@font-face {
+  font-family: "FA Sans";
+  src: url("/fonts/sans/FASans-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "FA Sans";
+  src: url("/fonts/sans/FASans-Italic.woff2") format("woff2");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "FA Sans";
+  /* Medium (500) sert aussi les usages « 600 » de la maquette : caption,
+     t-title, chips, pills. */
+  src: url("/fonts/sans/FASans-Medium.woff2") format("woff2");
+  font-weight: 500 600; font-style: normal; font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
-/**
- * Direction: the Catwalks DA (decision D17) — black, white, grey. No accent
- * colour anywhere. Indeed only ever supplied the STRUCTURE (dense
- * master-detail layout, hierarchy, a search pill) — the SOUL is Catwalks'
- * own: pure black actions, pill-shaped controls, weight always 400 except
- * the brand wordmark, and shadows that appear only on hover.
- */
-@theme {
-  /* --font-sans is declared ONLY in `@theme inline` below: a next/font variable
-     (--font-noto-sans) is injected on <html> at runtime, and a plain @theme bakes
-     its value at build time — when that variable is still empty, so the body fell
-     back to Times. `@theme inline` keeps the var() a live reference instead. */
-
-  /* Catwalks DA: every transition runs 300ms on the same calm easing curve —
-     see --ease-catwalks below. Tailwind's default is 150ms and Indeed's was
-     200ms; neither matches the DA's deliberately slower, calmer response. */
-  --default-transition-duration: 300ms;
-  --default-transition-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
-  --ease-catwalks: cubic-bezier(0.39, 0.575, 0.565, 1);
-
-  /* Neutral grey ladder, exposed as bg-surface-* utilities. No warmth, no hue
-     bias — the DA is strictly black/white/grey. */
-  --color-surface-low: #FAFAFA;
-  --color-surface: #F5F5F5;
-  --color-surface-high: #EEEEEE;
-
-  /* DA tokens, exposed directly as color-* utilities (bg-grey-400, text-grey-400…). */
-  --color-grey-100: #F5F5F5;
-  --color-grey-200: #EEEEEE;
-  --color-grey-400: #767676;
-  --color-grey-600: #4A4A4A;
-  --color-listing-bg: #F8F8F8;
-
-  /* Cards carry NO shadow at rest; this is the one shadow the DA defines,
-     shown only on :hover. */
-  --shadow-m3-1: 0 8px 30px rgba(0, 0, 0, 0.08);
-  --shadow-m3-2: 0 8px 30px rgba(0, 0, 0, 0.08);
-}
-
+/* ——————————————————————————— Tokens --fa-* (design_2 §2) ——————————————————————————— */
 :root {
   color-scheme: light;
-  /* Catwalks DA: black / white / grey only (decision D17). */
-  --background: #FAFAFA;
-  --foreground: #000000;
-  --card: #FFFFFF;
-  --card-foreground: #000000;
-  --popover: #FFFFFF;
-  --popover-foreground: #000000;
-  /* Primary = black. Every bg-primary/text-primary usage in the app becomes
-     the DA's single action colour instead of the old brand magenta. */
-  --primary: #000000;
+
+  /* Encres */
+  --fa-ink: #1C1C1C; --fa-ink-soft: #4A4A4A; --fa-ink-muted: #6B6B6B; --fa-ink-disabled: #A3A3A3;
+  /* Fonds */
+  --fa-paper: #FFFFFF; --fa-paper-alt: #F7F7F5; --fa-paper-deep: #EFEFEC; --fa-line: #D9D9D6;
+  --fa-line-strong: #1C1C1C;
+  /* Accent */
+  --fa-green: #105A33; --fa-green-hover: #0C4728; --fa-green-tint: #E7EFEA; --fa-green-night: #000A05;
+  /* Sémantique */
+  --fa-success: #105A33; --fa-warning: #8A5A00; --fa-danger: #A61E2B;
+  /* Sur photo */
+  --fa-on-photo: #FFFFFF; --fa-veil: rgba(0, 10, 5, .42);
+  --fa-photo-veil-card: linear-gradient(180deg, rgba(0,10,5,0) 45%, rgba(0,10,5,.72) 100%);
+
+  /* Familles */
+  --fa-font-display: "FA Display", "Times New Roman", Times, Georgia, serif;
+  --fa-font-sans: "FA Sans", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --fa-font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Formes / grille / motion */
+  --fa-radius: 5px; --fa-container: 1160px; --fa-container-wide: 1280px; --fa-gutter: 40px;
+  --fa-shadow-menu: 0 1px 0 0 var(--fa-line);
+  --fa-ease: cubic-bezier(.645,.045,.355,1); --fa-ease-out: cubic-bezier(.215,.61,.355,1);
+  --fa-dur-fast: 150ms; --fa-dur-base: 250ms; --fa-dur-slow: 450ms;
+  --header-h: 114px;
+  --fa-z-header: 100; --fa-z-megamenu: 110; --fa-z-dropdown: 120;
+  --fa-z-sticky-search: 90; --fa-z-toast: 200; --fa-z-modal: 300;
+
+  /* ——— Pont shadcn (§13) : les composants ui/ lisent ces variables ——— */
+  --background: var(--fa-paper);
+  --foreground: var(--fa-ink);
+  --card: var(--fa-paper);
+  --card-foreground: var(--fa-ink);
+  --popover: var(--fa-paper);
+  --popover-foreground: var(--fa-ink);
+  --primary: var(--fa-green);
   --primary-foreground: #FFFFFF;
-  /* Secondary = a light grey fill, for selected/active surfaces — no tint. */
-  --secondary: #F5F5F5;
-  --secondary-foreground: #000000;
-  --muted: #F5F5F5;
-  --muted-foreground: #767676;
-  --accent: #F5F5F5;
-  --accent-foreground: #000000;
-  --destructive: oklch(0.55 0.20 22);
-  --border: #E1E1E1;
-  --input: #E1E1E1;
-  --ring: #000000;
-  --chart-1: #000000;
-  --chart-2: #4A4A4A;
-  --chart-3: #767676;
-  --chart-4: #AFAFAF;
-  --chart-5: #EEEEEE;
-  /* Three radii built off a 12px base — still used for inputs/menus; job
-     cards and hero cards override to the DA's 16px/32px directly. */
-  --radius: 0.75rem;
-  --sidebar: #F5F5F5;
-  --sidebar-foreground: #000000;
-  --sidebar-primary: #000000;
+  --secondary: var(--fa-paper-alt);
+  --secondary-foreground: var(--fa-ink);
+  --muted: var(--fa-paper-alt);
+  --muted-foreground: var(--fa-ink-muted);
+  --accent: var(--fa-green-tint);
+  --accent-foreground: var(--fa-green);
+  --destructive: var(--fa-danger);
+  --border: var(--fa-line);
+  --input: var(--fa-line);
+  --ring: var(--fa-green);
+  --success: var(--fa-success);
+  --success-surface: var(--fa-green-tint);
+  --secondary-container: var(--fa-green-tint);
+  --on-secondary-container: var(--fa-green);
+  --surface-low: var(--fa-paper);
+  --surface: var(--fa-paper-alt);
+  --surface-high: var(--fa-paper-deep);
+  --radius: var(--fa-radius);
+  --chart-1: var(--fa-green); --chart-2: var(--fa-ink); --chart-3: var(--fa-ink-muted);
+  --chart-4: var(--fa-line); --chart-5: var(--fa-green-tint);
+  --sidebar: var(--fa-paper); --sidebar-foreground: var(--fa-ink); --sidebar-border: var(--fa-line);
+  --sidebar-ring: var(--fa-green); --sidebar-accent: var(--fa-green-tint);
+  --sidebar-accent-foreground: var(--fa-green); --sidebar-primary: var(--fa-green);
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F5F5F5;
-  --sidebar-accent-foreground: #000000;
-  --sidebar-border: #E1E1E1;
-  --sidebar-ring: #000000;
-
-  --surface-low: #FAFAFA;
-  --surface: #F5F5F5;
-  --surface-high: #EEEEEE;
-
-  /* Semantic colours, separate from the (now absent) accent: a CDI chip
-     still reads green — the DA doesn't forbid semantic colour, only decorative accent colour. */
-  --success: oklch(0.52 0.13 152);
-  --success-surface: oklch(0.95 0.05 152);
-
-  /* Selected/active surface: a light grey fill with black text — used for
-     active filter pills and the selected job card. Replaces the old magenta tint. */
-  --secondary-container: #F5F5F5;
-  --on-secondary-container: #000000;
 }
 
-html,
-body {
-  height: 100%;
+/* ——————————————————————————— Échelle typo (design_2 §11) ——————————————————————————— */
+.t-hero { font: 400 clamp(2.75rem, 6.5vw, 6.25rem)/1 var(--fa-font-display); text-transform: uppercase; letter-spacing: 0; text-wrap: balance; }
+.t-number { font: 400 clamp(3.5rem, 8vw, 7.5rem)/1 var(--fa-font-display); letter-spacing: -.025em; color: var(--fa-green); font-variant-numeric: tabular-nums; }
+.t-d1 { font: 400 2rem/1.125 var(--fa-font-display); text-wrap: balance; }
+.t-d2 { font: 400 1.5rem/1.333 var(--fa-font-display); }
+.t-d3 { font: 400 1.125rem/1.2 var(--fa-font-display); }
+.t-title { font: 500 1rem/1.3125 var(--fa-font-sans); }
+.t-body { font: 400 .9375rem/1.4 var(--fa-font-sans); }
+.t-body2 { font: 400 .875rem/1.285 var(--fa-font-sans); }
+.t-caption { font: 500 .75rem/1.333 var(--fa-font-sans); letter-spacing: .0625rem; text-transform: uppercase; }
+.t-caption-soft { font: 400 .75rem/1.333 var(--fa-font-sans); letter-spacing: .03125rem; text-transform: uppercase; color: var(--fa-ink-muted); }
+.t-ui { font: 400 1rem/1.25 var(--fa-font-sans); }
+.t-ui-small { font: 500 .875rem/1.285 var(--fa-font-sans); }
+
+.muted { color: var(--fa-ink-muted); } .soft { color: var(--fa-ink-soft); } .green { color: var(--fa-green); }
+
+/* ——————————————————————————— Filets pointillés (design_2 §2.6) ——————————————————————————— */
+.rule, .rule-b { background-image: linear-gradient(to right, var(--fa-ink) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; }
+.rule { background-position: 50% 0; padding-top: 1px; }
+.rule-b { background-position: 50% 100%; padding-bottom: 1px; }
+.rule-soft { background-image: linear-gradient(to right, var(--fa-ink-disabled) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; }
+.rule-v { background-image: linear-gradient(to bottom, var(--fa-ink) 25%, transparent 0); background-size: 1px 4px; background-repeat: repeat-y; width: 1px; }
+
+/* ——————————————————————————— Boutons (design_2 §12) ——————————————————————————— */
+.btn { display: inline-flex; align-items: center; gap: 10px; height: 36px; padding: 0 16px;
+  font: 400 1rem/1 var(--fa-font-sans); color: var(--fa-ink); background: transparent;
+  border: 1px solid var(--fa-ink); border-radius: var(--fa-radius); cursor: pointer; text-decoration: none;
+  transition: background-color var(--fa-dur-fast) var(--fa-ease), color var(--fa-dur-fast) var(--fa-ease), border-color var(--fa-dur-fast) var(--fa-ease); }
+.btn:hover { background: var(--fa-ink); color: #fff; }
+.btn--lg { height: 48px; padding: 0 24px; }
+.btn--primary { background: var(--fa-green); border-color: var(--fa-green); color: #fff; }
+.btn--primary:hover { background: var(--fa-green-hover); border-color: var(--fa-green-hover); }
+.btn--green { border-color: var(--fa-green); color: var(--fa-green); }
+.btn--green:hover { background: var(--fa-green); color: #fff; }
+.btn--ghost { border-color: transparent; padding: 0 4px; }
+.btn--ghost:hover { background: transparent; color: var(--fa-ink); text-decoration: underline; text-underline-offset: 4px; }
+.btn--inverse { border-color: #fff; color: #fff; }
+.btn--inverse:hover { background: #fff; color: var(--fa-green); }
+.btn--icon { width: 44px; padding: 0; justify-content: center; }
+.btn:disabled, .btn[aria-disabled="true"] { border-color: var(--fa-ink-disabled); color: var(--fa-ink-disabled); background: transparent; cursor: not-allowed; }
+.btn:focus-visible { outline: 2px solid var(--fa-green); outline-offset: 2px; }
+.btn svg { width: 16px; height: 16px; stroke-width: 1.25; }
+
+/* ——————————————————————————— Grille & conteneurs (§2.5, réf maquettes) ——————————————————————————— */
+.container { max-width: var(--fa-container); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+.g12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--fa-gutter); row-gap: 16px; }
+.c4 { grid-column: span 4; } .c6 { grid-column: span 6; } .s5 { grid-column: 5 / 11; }
+.section { padding: 120px 0 0; }
+.section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 40px; }
+@media (max-width: 1023px) {
+  .g12 { column-gap: 24px; }
+  .c4, .c6, .s5 { grid-column: span 12; }
+  .section { padding-top: 64px; }
 }
 
-body {
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
+/* ——————————————————————————— Pills de filtre (§4.3, réf emplois.html) ——————————————————————————— */
+.pill { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 10px 0 12px; border: 1px solid var(--fa-line); border-radius: var(--fa-radius); background: var(--fa-paper); font: 500 .875rem/1 var(--fa-font-sans); color: var(--fa-ink); white-space: nowrap; cursor: pointer; transition: border-color var(--fa-dur-fast) var(--fa-ease), background-color var(--fa-dur-fast) var(--fa-ease); }
+.pill:hover { border-color: var(--fa-ink); }
+.pill svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.25; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.pill.is-active { background: var(--fa-green-tint); border-color: var(--fa-green); color: var(--fa-green); }
+.pill.is-open { border-color: var(--fa-ink); }
+.pill.is-open svg.chev { transform: rotate(180deg); }
+.pill .count { font-weight: 400; color: var(--fa-ink-muted); font-size: .75rem; letter-spacing: .03em; }
+.pill:focus-visible { outline: 2px solid var(--fa-green); outline-offset: 2px; }
 
-.leaflet-container {
-  font: inherit;
-}
+/* ——————————————————————————— Dropdown (§4.3) ——————————————————————————— */
+.dd { position: absolute; left: 0; top: calc(100% + 6px); z-index: var(--fa-z-dropdown); min-width: 260px; background: var(--fa-paper); border: 1px solid var(--fa-line); border-radius: var(--fa-radius); box-shadow: var(--fa-shadow-menu); padding: 8px 0; }
+.dd__search { display: flex; align-items: center; gap: 8px; margin: 4px 16px 8px; height: 36px; background-image: linear-gradient(to right, var(--fa-ink) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; background-position: 50% 100%; }
+.dd__search svg { width: 16px; height: 16px; stroke: var(--fa-ink-muted); stroke-width: 1.25; fill: none; }
+.dd__search input { border: 0; outline: 0; background: transparent; font: 400 .9375rem/1 var(--fa-font-sans); flex: 1; color: var(--fa-ink); }
+.dd a, .dd button { display: flex; justify-content: space-between; align-items: center; gap: 16px; width: 100%; padding: 10px 16px; font: 400 1rem/1.25 var(--fa-font-sans); color: var(--fa-ink); background: transparent; border: 0; text-align: left; cursor: pointer; }
+.dd a:hover, .dd button:hover { background: var(--fa-paper-alt); }
+.dd a .count, .dd button .count { font: 400 .75rem/1 var(--fa-font-sans); letter-spacing: .03em; color: var(--fa-ink-muted); }
+.dd a.is-checked, .dd button.is-checked { color: var(--fa-green); }
 
-.leaflet-control-attribution {
-  font-size: 10px;
-}
+/* ——————————————————————————— Chips & badges (§4.5, réf etats.html) ——————————————————————————— */
+.chip { display: inline-block; padding: 3px 8px; border-radius: var(--fa-radius); font: 500 .75rem/1.333 var(--fa-font-sans); letter-spacing: .0625rem; text-transform: uppercase; background: var(--fa-green-tint); color: var(--fa-green); vertical-align: 2px; }
+.chip--neutral { background: transparent; color: var(--fa-ink); border: 1px solid var(--fa-line); }
+.chip--warn { background: transparent; color: var(--fa-warning); border: 1px solid rgba(138, 90, 0, .4); }
+/* Point d'état 8px = offre publiée < 48h. */
+.dot-new { width: 8px; height: 8px; border-radius: 9999px; background: var(--fa-green); display: inline-block; flex: none; }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
+/* ——————————————————————————— Champs de formulaire (§4.11) ——————————————————————————— */
+.f-label { display: block; margin-bottom: 8px; }
+.f-input { display: flex; align-items: center; height: 48px; padding: 0 16px; background: var(--fa-paper-alt); border: 0; border-radius: 5px 5px 0 0; font: 400 1rem/1.25 var(--fa-font-sans); color: var(--fa-ink); width: 100%; outline: 0;
+  background-image: linear-gradient(to right, var(--fa-ink) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; background-position: 50% 100%; }
+.f-input::placeholder { color: var(--fa-ink-muted); }
+.f-input:focus { background-color: var(--fa-paper); background-image: linear-gradient(to right, var(--fa-green) 100%, transparent 0); background-size: 100% 1px; }
+.f-input.is-error { background-image: linear-gradient(to right, var(--fa-danger) 100%, transparent 0); background-size: 100% 1px; }
+.upload { height: 160px; border: 1px dotted var(--fa-ink); border-radius: 5px; display: grid; place-items: center; text-align: center; gap: 8px; padding: 24px; }
+.check { display: flex; gap: 10px; align-items: center; font: 400 .9375rem/1.4 var(--fa-font-sans); }
+.check i { width: 18px; height: 18px; border: 1px solid var(--fa-ink); border-radius: 3px; display: grid; place-items: center; flex: none; }
+.check i.on { background: var(--fa-green); border-color: var(--fa-green); }
+.check i svg { width: 12px; height: 12px; stroke: #fff; stroke-width: 1.5; fill: none; }
+.toggle { width: 36px; height: 20px; border-radius: 9999px; background: var(--fa-line); position: relative; flex: none; cursor: pointer; transition: background-color var(--fa-dur-fast) var(--fa-ease); }
+.toggle.on { background: var(--fa-green); }
+.toggle::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 9999px; background: #fff; transition: left var(--fa-dur-fast) var(--fa-ease); }
+.toggle.on::after { left: 18px; }
 
-/*---break---
- */
+/* ——————————————————————————— Toast & barre de progression (§4.12/§4.13) ——————————————————————————— */
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--fa-ink); color: #fff; padding: 12px 20px; border-radius: 5px; font: 400 .9375rem/1.4 var(--fa-font-sans); z-index: var(--fa-z-toast); }
+.progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--fa-green); z-index: var(--fa-z-modal); }
+/* Skeleton : bloc paper-alt sans arrondi, pulsation 1.2s. */
+.sk { background: var(--fa-paper-alt); border-radius: 0; animation: fa-pulse 1.2s linear infinite; }
+@keyframes fa-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
 
 @theme inline {
-  --font-heading: "catwalks_font", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "catwalks_font", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--fa-font-display);
+  --font-sans: var(--fa-font-sans);
+  --font-display: var(--fa-font-display);
+  --font-mono: var(--fa-font-mono);
+  --color-ink: var(--fa-ink);
+  --color-ink-soft: var(--fa-ink-soft);
+  --color-ink-muted: var(--fa-ink-muted);
+  --color-ink-disabled: var(--fa-ink-disabled);
+  --color-paper: var(--fa-paper);
+  --color-paper-alt: var(--fa-paper-alt);
+  --color-paper-deep: var(--fa-paper-deep);
+  --color-line: var(--fa-line);
+  --color-green: var(--fa-green);
+  --color-green-hover: var(--fa-green-hover);
+  --color-green-tint: var(--fa-green-tint);
+  --color-green-night: var(--fa-green-night);
+  --color-warning: var(--fa-warning);
+  --color-danger: var(--fa-danger);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -208,108 +271,225 @@ body {
   --color-success-surface: var(--success-surface);
   --color-secondary-container: var(--secondary-container);
   --color-on-secondary-container: var(--on-secondary-container);
-  /* Indeed's three radii: sm 8px, md 12px, lg 20px (base is 12px). */
-  --radius-sm: calc(var(--radius) * 0.667);
-  --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) * 1.667);
-  --radius-xl: calc(var(--radius) * 2);
-  --radius-2xl: calc(var(--radius) * 2.33);
-  --radius-3xl: calc(var(--radius) * 2.67);
-  --radius-4xl: calc(var(--radius) * 3);
+  --color-surface-low: var(--surface-low);
+  --color-surface: var(--surface);
+  --color-surface-high: var(--surface-high);
+  /* Un seul rayon (5px) ; le reste des échelons pointe dessus pour neutraliser
+     tout arrondi hérité de shadcn. */
+  --radius-sm: var(--fa-radius);
+  --radius-md: var(--fa-radius);
+  --radius-lg: var(--fa-radius);
+  --radius-xl: var(--fa-radius);
+  --radius-2xl: var(--fa-radius);
+  --radius-3xl: var(--fa-radius);
+  --radius-4xl: var(--fa-radius);
+  /* Aucune ombre : les utilitaires shadow-* deviennent inertes, seul le filet
+     de menu subsiste. */
+  --shadow-2xs: none; --shadow-xs: none; --shadow-sm: none; --shadow: none;
+  --shadow-md: none; --shadow-lg: none; --shadow-xl: none; --shadow-2xl: none;
+  --shadow-menu: var(--fa-shadow-menu);
+  --default-transition-duration: var(--fa-dur-base);
+  --default-transition-timing-function: var(--fa-ease);
+  --ease-fa: var(--fa-ease);
 }
-
-/*---break---
- */
-
-.dark {
-  --background: #171717;
-  --foreground: #F5F5F5;
-  --card: #212121;
-  --card-foreground: #F5F5F5;
-  --popover: #212121;
-  --popover-foreground: #F5F5F5;
-  --primary: #FFFFFF;
-  --primary-foreground: #000000;
-  --secondary: #333333;
-  --secondary-foreground: #F5F5F5;
-  --muted: #262626;
-  --muted-foreground: #AFAFAF;
-  --accent: #333333;
-  --accent-foreground: #F5F5F5;
-  --destructive: oklch(0.70 0.17 22);
-  --border: #333333;
-  --input: #3D3D3D;
-  --ring: #FFFFFF;
-  --chart-1: #FFFFFF;
-  --chart-2: #C7C7C7;
-  --chart-3: #AFAFAF;
-  --chart-4: #767676;
-  --chart-5: #4A4A4A;
-  --sidebar: #212121;
-  --sidebar-foreground: #F5F5F5;
-  --sidebar-primary: #FFFFFF;
-  --sidebar-primary-foreground: #000000;
-  --sidebar-accent: #333333;
-  --sidebar-accent-foreground: #F5F5F5;
-  --sidebar-border: #333333;
-  --sidebar-ring: #FFFFFF;
-  --surface-low: #1F1F1F;
-  --surface: #262626;
-  --surface-high: #303030;
-  --success: oklch(0.70 0.14 152);
-  --success-surface: oklch(0.28 0.06 152);
-  --secondary-container: #333333;
-  --on-secondary-container: #F5F5F5;
-}
-
-/*---break---
- */
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    font-family: var(--fa-font-sans);
+    color: var(--fa-ink);
+    background: var(--fa-paper);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* FA Sans has no 600/700 face; without this the browser synthesises a fake
+       bold (heavy, smeared) for any residual font-semibold/bold. Every "600"
+       usage is mapped to Medium 500 instead. */
+    font-synthesis-weight: none;
+  }
   body {
     @apply bg-background text-foreground;
+    font: 400 .9375rem/1.4 var(--fa-font-sans);
   }
-  html {
-    @apply font-sans;
-  }
-  /* Tailwind v4 dropped the default cursor:pointer on buttons; a clickable
-     control must show the hand, like Indeed's does. Not for disabled ones. */
+  /* Un contrôle cliquable montre la main. */
   button:not(:disabled),
   [role='button']:not([aria-disabled='true']),
   a[href] {
     cursor: pointer;
   }
+  :focus-visible {
+    outline: 2px solid var(--fa-green);
+    outline-offset: 2px;
+  }
 }
 
-/* Hero rotating word (see components/rotating-word.tsx): the incoming word rises
-   into place, the outgoing one lifts away, both over 0.3s. Compositor-friendly
-   (transform + opacity only); the pill's width is animated separately in JS. */
-@keyframes rotating-word-in {
-  from {
-    opacity: 0;
-    transform: translateY(0.6em);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Pages intérieures : réserve la hauteur du header global fixe. */
+.page { padding-top: var(--header-h); }
+.page-head { padding: 40px 0 0; }
+.page-head .g12 { row-gap: 24px; align-items: end; }
+.t-page { font: 400 clamp(2.25rem, 4vw, 2.75rem)/1.05 var(--fa-font-display); text-wrap: balance; }
+.crumbs { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+.crumbs span + span::before { content: "·"; margin-right: 8px; color: var(--fa-ink-muted); }
+
+/* ——————————————————————————— Annuaire Maisons (§5.4, réf maisons.html) ——————————————————————————— */
+.cats { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 24px; }
+.cats .spacer { flex: 1; }
+.maisons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; }
+.maisons--page { margin-top: 40px; }
+.maison { display: grid; grid-template-columns: 56px 1fr; column-gap: 16px; padding: 24px 0 28px; }
+.maison > span { min-width: 0; }
+.maison:hover .maison__name { text-decoration: underline; text-underline-offset: 4px; }
+.maison__name { display: block; }
+.maison__meta { display: grid; gap: 8px; margin-top: 4px; }
+.maison__count { display: flex; align-items: baseline; gap: 8px; }
+
+@media (max-width: 1023px) {
+  .maisons { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
 }
-@keyframes rotating-word-out {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-0.6em);
-  }
+@media (max-width: 767px) {
+  .maisons { grid-template-columns: 1fr; }
 }
+
+/* ——————————————————————————— États : 404, vide, expirée (§4.13, réf etats.html) ——————————————————————————— */
+.notfound { min-height: calc(100vh - var(--header-h)); display: grid; align-items: center; padding: 64px 0; }
+.notfound .t-hero { font-size: clamp(2rem, 3.5vw, 2.75rem); text-align: left; color: var(--fa-green); text-transform: uppercase; }
+.empty { padding: 120px 0; text-align: left; }
+.empty .t-d1 { color: var(--fa-green); }
+.empty .actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; align-items: center; }
+.banner { background: var(--fa-paper-alt); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+
+/* ——————————————————————————— Fiche Maison (§5.5, réf maison.html) ——————————————————————————— */
+/* Hero pleine largeur, contenu aligné en bas à gauche (logo + nom). */
+.hero--maison { height: 480px; }
+.hero--maison .container { position: relative; z-index: 1; height: 100%; }
+.hero--maison .logo { width: 96px; height: 96px; font-size: 36px; border-color: rgba(255, 255, 255, .35); background: #fff; color: var(--fa-ink); }
+
+/* Chiffres clés : colonnes FA Display vert, filet pointillé haut. */
+.stats { padding-top: 120px; }
+.stat { padding-top: 24px; }
+.stat .t-caption { display: block; margin-top: 12px; }
+.stats--inline .t-number { font-size: clamp(2.5rem, 4vw, 3.5rem); }
+
+@media (max-width: 1023px) {
+  .hero--maison { height: 360px; }
+  .hero--maison .container { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+
+/* Fiche offre autonome (/offre) : barre CTA sticky en bas sur mobile — fond
+   blanc, filet pointillé haut, les 2 boutons D18. Écart assumé à offre.html
+   (validé par Loïc) pour la conversion mobile. Cachée à lg+ (les CTA inline du
+   détail suffisent). Quand la barre est présente, on masque les CTA inline sur
+   mobile pour ne pas les dupliquer (`.has-apply-bar`). */
+.apply-bar { display: none; }
+@media (max-width: 767px) {
+  /* Fixée au bas du viewport (pas sticky : sticky se décroche en fin de page).
+     Filet pointillé haut, fond blanc. Le contenu reçoit un padding-bottom pour
+     ne pas passer sous la barre. */
+  .apply-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--fa-z-header, 100);
+    display: grid; gap: 8px;
+    padding: 16px 24px calc(16px + env(safe-area-inset-bottom, 0px));
+    background: var(--fa-paper);
+    background-image: linear-gradient(to right, var(--fa-ink) 25%, transparent 0);
+    background-size: 4px 1px; background-repeat: repeat-x; background-position: 50% 0;
+  }
+  .apply-bar .btn { justify-content: center; }
+  /* Réserve la place de la barre fixe (2 boutons 48px + gaps + paddings). */
+  .has-apply-bar { padding-bottom: 148px; }
+  .has-apply-bar .detail__actions, .has-apply-bar .detail__note { display: none; }
+}
+
+/* ——————————————————————————— Moteur /emplois (§5.2, réf emplois.html) ——————————————————————————— */
+
+/* Barre de recherche + filtres, sticky sous le header fixe. */
+.searchbar { position: sticky; top: var(--header-h); z-index: var(--fa-z-search, 90); background: var(--fa-paper); padding: 16px 0 12px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+.filters .spacer { flex: 1; }
+.has-dd { position: relative; }
+.link-ghost { font: 500 .875rem/1 var(--fa-font-sans); color: var(--fa-ink); text-decoration: underline; text-underline-offset: 4px; background: transparent; border: 0; cursor: pointer; }
+.link-ghost:hover { color: var(--fa-green); }
+
+/* Search : Poste | Ville | Rechercher — 48px, filet vertical entre champs. */
+.search { display: grid; grid-template-columns: 1fr 1fr auto; height: 48px; border: 1px solid var(--fa-ink); border-radius: var(--fa-radius); background: var(--fa-paper); overflow: hidden; }
+.search:focus-within { border-color: var(--fa-green); }
+/* .field : un champ (icône + input) réutilisable — barre de recherche /emplois
+   ET champ « Rechercher une Maison » de l'annuaire (bordé, 34px). */
+.field { display: flex; align-items: center; gap: 10px; padding: 0 16px; min-width: 0; }
+.search .field + .field { background-image: linear-gradient(to bottom, var(--fa-line) 25%, transparent 0); background-size: 1px 4px; background-repeat: repeat-y; background-position: 0 50%; }
+.field svg { width: 18px; height: 18px; stroke: var(--fa-ink-muted); stroke-width: 1.25; fill: none; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.field input { border: 0; outline: 0; background: transparent; font: 400 .9375rem/1 var(--fa-font-sans); color: var(--fa-ink); width: 100%; min-width: 0; }
+.field input::placeholder { color: var(--fa-ink-muted); }
+.search .btn { height: 48px; border-radius: 0; border: 0; }
+
+/* Split-view : liste 480 | filet pointillé | détail. */
+.split { display: grid; grid-template-columns: 480px 1px minmax(0, 1fr); column-gap: 20px; align-items: start; }
+.split > .rule-v { align-self: stretch; width: 1px; }
+.list-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; }
+
+/* Carte offre : pas de boîte, filet du <li> parent, titre serif. */
+.offer { display: block; width: 100%; text-align: left; padding: 20px 24px; background: transparent; border: 0; cursor: pointer; transition: background-color var(--fa-dur-fast) var(--fa-ease); }
+.offer:hover { background: var(--fa-paper-alt); }
+.offer.is-selected { background: var(--fa-paper-alt); box-shadow: inset 2px 0 0 0 var(--fa-green); }
+.offer.is-visited .offer__title { color: var(--fa-ink-soft); }
+.offer__top { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+.offer__title { margin: 6px 0 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 9999px; background: var(--fa-green); margin-right: 8px; vertical-align: 1px; }
+.load-more { padding: 32px 24px 64px; }
+
+/* Panneau détail : sticky, scroll interne (prod, cf. §4.7). */
+.detail { position: sticky; top: calc(var(--header-h) + 118px); max-height: calc(100vh - var(--header-h) - 118px); overflow-y: auto; padding: 24px 8px 64px 32px; }
+.detail__head { display: grid; grid-template-columns: 48px 1fr auto; column-gap: 16px; row-gap: 8px; align-items: start; }
+.logo { width: 56px; height: 56px; border: 1px solid var(--fa-line); display: grid; place-items: center; background: var(--fa-paper); font: 400 20px/1 var(--fa-font-display); color: var(--fa-ink); flex: none; }
+.logo--48 { width: 48px; height: 48px; font-size: 18px; }
+.detail__title { grid-column: 2 / 3; margin-top: 2px; }
+.detail__meta { grid-column: 2 / 3; }
+.detail__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.detail__note { margin-top: 12px; }
+.block { margin-top: 32px; }
+.block > .t-caption { display: block; margin-bottom: 8px; }
+.kv { display: grid; grid-template-columns: 160px 1fr; }
+.kv > * { padding: 10px 0; }
+.kv dt { color: var(--fa-ink-muted); font: 400 .875rem/1.4 var(--fa-font-sans); }
+.kv dd { margin: 0; font: 400 .9375rem/1.4 var(--fa-font-sans); }
+.kv > dt:nth-of-type(n+2), .kv > dd:nth-of-type(n+2) { background-image: linear-gradient(to right, var(--fa-ink-disabled) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; background-position: 50% 0; }
+
+/* Description longue : prose serif, largeur de lecture bornée. */
+.prose { max-width: 560px; color: var(--fa-ink-soft); }
+.prose p + p, .prose ul + p, .prose p + ul { margin-top: 16px; }
+.prose ul { padding-left: 16px; list-style: disc; }
+.prose li + li { margin-top: 6px; }
+.prose h4 { font: 500 1rem/1.3125 var(--fa-font-sans); color: var(--fa-ink); margin: 24px 0 8px; }
+.prose a { color: var(--fa-green); }
+.prose a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Offres similaires : liste de liens serif dans le détail. */
+.similar { display: grid; gap: 20px; }
+.similar a { display: grid; gap: 4px; }
+.similar a:hover .t-d3 { text-decoration: underline; text-underline-offset: 4px; }
+
+.source { margin-top: 32px; padding-top: 16px; }
+
+@media (max-width: 1023px) {
+  .split { grid-template-columns: 1fr; }
+  .split > .rule-v, .split > .detail { display: none; }
+  .detail { position: static; max-height: none; overflow: visible; padding: 24px 0; }
+  .kv { grid-template-columns: 1fr; }
+  .kv > dt { padding-bottom: 2px; }
+  .kv > dd { padding-top: 0; }
+  .kv > dd:nth-of-type(n+2) { background: none; }
+}
+@media (max-width: 767px) {
+  .search { grid-template-columns: 1fr; height: auto; }
+  .search .field { height: 48px; }
+  .search .field + .field { background-image: linear-gradient(to right, var(--fa-line) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; background-position: 50% 0; }
+  .search .btn { height: 48px; justify-content: center; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  [class*='rotating-word-in'],
-  [class*='rotating-word-out'] {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
     animation: none !important;
   }
 }
