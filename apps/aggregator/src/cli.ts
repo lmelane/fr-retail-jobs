@@ -130,33 +130,26 @@ try {
     console.log(JSON.stringify({ ok: true, ...(await exportCompanies(prisma, output)) }, null, 2));
   } else if (command === 'discover') {
     /**
-     * ATS discovery over the FashionJobs directory (decision, 2026-09-02): read
-     * the roster of Maisons, detect each one's own ATS, and write the confirmed
-     * sources to data/sources.discovered.csv for HUMAN REVIEW — never straight
-     * into sources.csv. `--limit=<n>` runs a cheap first pass over the top N.
+     * ATS discovery over a roster of Maisons (decision, 2026-09-02): open each
+     * Maison's site in a browser, detect its ATS (following the careers link one
+     * hop), and write confirmed sources to data/sources.discovered.csv for HUMAN
+     * REVIEW — never straight into sources.csv. Resumable: a re-run skips what is
+     * already processed. `--input=<nom,url.csv>` (required), `--limit=<n>` caps
+     * this run, `--fresh` restarts from scratch, `--concurrency=<n>`.
      */
-    const limit = Number(
-      process.argv.find((a) => a.startsWith('--limit='))?.slice('--limit='.length) ?? 0,
-    );
-    // `--input=<path>` resolves from a provided `nom,url` CSV (preferred); without
-    // it, discovery reads the FashionJobs directory as the roster.
-    const inputFile = process.argv.find((a) => a.startsWith('--input='))?.slice('--input='.length);
-    const result = await discoverMaisons({ limit: Number.isFinite(limit) ? limit : 0, inputFile });
-    console.log(
-      JSON.stringify(
-        {
-          ok: true,
-          command,
-          discovered: result.discovered.length,
-          skippedAlreadyKnown: result.skipped,
-          unresolved: result.unresolved,
-          reviewFile: result.outPath,
-          top: result.discovered.slice(0, 15).map((r) => ({ maison: r.maison, kind: r.kind, offers: r.offerCount })),
-        },
-        null,
-        2,
-      ),
-    );
+    const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+    const inputFile = arg('input');
+    if (!inputFile) throw new Error('discover needs --input=<nom,url CSV>');
+    const limit = Number(arg('limit') ?? 0);
+    const concurrency = Number(arg('concurrency') ?? 3);
+    const fresh = process.argv.includes('--fresh');
+    const result = await discoverMaisons({
+      inputFile,
+      limit: Number.isFinite(limit) ? limit : 0,
+      concurrency: Number.isFinite(concurrency) && concurrency > 0 ? concurrency : 3,
+      fresh,
+    });
+    console.log(JSON.stringify({ ok: true, command, ...result }, null, 2));
   } else {
     throw new Error(`Unknown command: ${command}`);
   }
