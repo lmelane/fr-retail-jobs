@@ -3,11 +3,10 @@ Foot Locker France,careers.footlocker.com,phenom,"{""origin"": ""https://careers
 L’Oréal Professionnel,careers.loreal.com,avature,"{""listingUrl"": ""https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0"", ""origin"": ""https://careers.loreal.com""}",,ALLOWED,1722,yes
 Dr. Jart+ +13,careers.elcompanies.com,eightfold,"{""origin"": ""https://careers.elcompanies.com"", ""domain"": ""elcompanies.com""}",,ALLOWED,1386,yes
 Origins,careers.elcompanies.com,eightfold,"{""origin"": ""https://careers.elcompanies.com"", ""domain"": ""elcompanies.com"", ""brandMatch"": ""title:Origins""}",,ALLOWED,1386,yes
-Cartier +3,richemont.wd3.myworkdayjobs.com,workday,"{""tenant"": ""richemont"", ""site"": ""richemont"", ""origin"": ""https://richemont.wd3.myworkdayjobs.com"", ""brandMatch"": ""logoImage.alt on job detail""}",,ALLOWED,1303,yes
 Hermès,,wttj,"{""slug"": ""hermes""}",,ALLOWED,581,yes
 Maje +1,,smartrecruiters-whitelabel,"{""company"": ""SMCP""}",,ALLOWED,534,yes
 Sandro,,smartrecruiters-whitelabel,"{""vendor"": ""SmartRecruiters"", ""company"": ""SMCP"", ""api"": ""https://api.smartrecruiters.com/v1/companies/SMCP/postings?limit=100"", ""brandFacet"": ""customField fieldLabel=Brands""}",,ALLOWED,534,yes
-IWC Schaffhausen +3,richemont.wd3.myworkdayjobs.com,workday,"{""tenant"": ""richemont"", ""site"": ""broadbean_external"", ""origin"": ""https://richemont.wd3.myworkdayjobs.com""}",,ALLOWED,423,yes
+Richemont (toutes Maisons),richemont.wd3.myworkdayjobs.com,workday,"{""tenant"": ""richemont"", ""site"": ""broadbean_external"", ""origin"": ""https://richemont.wd3.myworkdayjobs.com""}",,ALLOWED,423,yes
 Prada Beauty +8,careers.loreal.com,avature,"{""vendor"": ""avature"", ""origin"": ""https://careers.loreal.com"", ""sitemap"": ""https://careers.loreal.com/en_US/jobs/sitemap.xml"", ""searchUrl"": ""https://careers.loreal.com/en_US/jobs/SearchJobs/?search={TERM}&jobOffset={N}"", ""brandMatch"": ""job-title slug + keyword search union""}",,ALLOWED,416,yes
 Element +6,recrutement.groupe-beaumanoir.com,magnet,"{""siteKey"": ""9550007d348362827f2534be59208f28"", ""origin"": ""https://recrutement.groupe-beaumanoir.com""}",,ALLOWED,408,yes
 Morgan +2,recrutement.groupe-beaumanoir.com,magnet,"{""siteKey"": ""9550007d348362827f2534be59208f28"", ""origin"": ""https://recrutement.groupe-beaumanoir.com"", ""api"": ""https://api.magnet.work/v2/job-offers""}",,ALLOWED,408,yes

@@ -64,3 +64,30 @@ describe('fetchWorkdayJobs apply URL', () => {
     );
   });
 });
+
+import { brandFromWorkdayDetail } from './workday.js';
+
+/**
+ * Audit A-01 — on a group tenant, the offer belongs to its Maison. The detail
+ * payload names it twice; shapes verified live on richemont/broadbean_external.
+ */
+describe('brandFromWorkdayDetail', () => {
+  it('prefers the logo alt text — it is the clean brand name', () => {
+    expect(
+      brandFromWorkdayDetail({
+        jobPostingInfo: { logoImage: { alt: 'Panerai' } },
+        hiringOrganization: { name: 'C170 Officine Panerai' },
+      }),
+    ).toBe('Panerai');
+  });
+
+  it('falls back to the legal entity, stripped of its code prefix', () => {
+    expect(brandFromWorkdayDetail({ hiringOrganization: { name: 'C170 Officine Panerai' } })).toBe(
+      'Officine Panerai',
+    );
+  });
+
+  it('returns undefined on a single-brand tenant without those fields', () => {
+    expect(brandFromWorkdayDetail({ jobPostingInfo: { jobDescription: 'x' } })).toBeUndefined();
+  });
+});

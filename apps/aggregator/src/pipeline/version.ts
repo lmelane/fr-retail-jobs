@@ -38,4 +38,14 @@
  *      cleaned once at ingest for every source. Older rows re-fetch cleanly as
  *      each source's next run stamps generation 6.
  */
-export const PIPELINE_VERSION = 6;
+/**
+ *   7  2026-09-03 — attribution par MARQUE sur les flux de groupe (audit A-01,
+ *      D11) : Workday lit logoImage.alt / hiringOrganization, Eightfold lit
+ *      efcustomTextBrand (et sa description, perdue par un champ snake_case
+ *      obsolète), WTTJ lit organization.name, Magnet lit brand. Richemont ne
+ *      passe plus que par la route autorisée par robots (broadbean_external) ;
+ *      la ligne « Cartier +3 » (route Disallow) est supprimée. Les lignes
+ *      étiquetées à la marque de tête (« Cartier », « Dr. Jart+ »…) se
+ *      réécrivent à la vraie Maison au run suivant.
+ */
+export const PIPELINE_VERSION = 7;
