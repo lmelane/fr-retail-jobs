@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
 import { getJob } from '@/lib/jobs';
+import { buildJobPostingJsonLd } from '@/lib/job-posting-jsonld';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -53,43 +54,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
   /**
    * schema.org JobPosting, so search engines index the posting rather than the
-   * page around it. Built from stored fields only — nothing is invented, and an
-   * absent field is simply omitted.
+   * page around it. Built from stored fields only — nothing is invented, an
+   * absent field is simply omitted, and addressCountry is the offer's REAL
+   * country (ISO alpha-2), never a hardcoded FR (see lib/job-posting-jsonld.ts,
+   * tested in lib/job-posting-jsonld.test.ts).
    */
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'JobPosting',
-    title: job.title,
-    description: job.description ?? undefined,
-    datePosted: job.postedAt?.toISOString(),
-    validThrough: job.validThrough?.toISOString(),
-    employmentType: job.contract ?? undefined,
-    hiringOrganization: { '@type': 'Organization', name: job.company },
-    jobLocation: job.city
-      ? {
-          '@type': 'Place',
-          address: {
-            '@type': 'PostalAddress',
-            addressLocality: job.city,
-            postalCode: job.postalCode ?? undefined,
-            addressCountry: 'FR',
-          },
-        }
-      : undefined,
-    baseSalary:
-      job.salaryMin !== null || job.salaryMax !== null
-        ? {
-            '@type': 'MonetaryAmount',
-            currency: job.salaryCurrency ?? 'EUR',
-            value: {
-              '@type': 'QuantitativeValue',
-              minValue: job.salaryMin ?? undefined,
-              maxValue: job.salaryMax ?? undefined,
-              unitText: job.salaryPeriod ?? undefined,
-            },
-          }
-        : undefined,
-  };
+  const structuredData = buildJobPostingJsonLd(job);
 
   return (
     <div className="bg-background flex h-dvh flex-col gap-3 p-3">
