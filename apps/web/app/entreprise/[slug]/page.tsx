@@ -37,12 +37,12 @@ export async function generateMetadata({
   const jobWord = profile.jobCount > 1 ? 'offres' : 'offre';
 
   return {
-    title: `Emplois ${profile.name} — Fashion Atlas`,
+    title: `Emplois ${profile.name} — Mode Careers`,
     description: [
       sector ? `${profile.name}, secteur ${sector}.` : `${profile.name}.`,
       `${profile.jobCount.toLocaleString('fr-FR')} ${jobWord} actuellement ouverte${
         profile.jobCount > 1 ? 's' : ''
-      } sur Fashion Atlas.`,
+      } sur Mode Careers.`,
     ].join(' '),
   };
 }
