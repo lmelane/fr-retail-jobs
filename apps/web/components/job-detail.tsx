@@ -1,6 +1,7 @@
 'use client';
 
 import { contractLabel, relativeDate } from '@/lib/format';
+import { CompanyLogo } from '@/components/company-logo';
 import { displayTitle } from '@/lib/format';
 import type { JobRow } from '@/lib/jobs';
 
@@ -44,9 +45,6 @@ function salaryLabel(job: JobRow): string | null {
   return [band, currency, period].filter(Boolean).join(' ');
 }
 
-const SaveGlyph = () => (
-  <svg viewBox="0 0 24 24" aria-hidden width="16" height="16" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M6 3h12v18l-6-4-6 4z" /></svg>
-);
 const ArrowGlyph = () => (
   <svg viewBox="0 0 24 24" aria-hidden width="16" height="16" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
 );
@@ -108,7 +106,6 @@ function JobFacts({
 export function JobDetail({ job }: { job: JobRow }) {
   const contract = contractLabel(job.contract);
   const salary = salaryLabel(job);
-  const initial = job.company?.trim().charAt(0).toUpperCase() || '·';
 
   // Meta line under the title: ville · contrat · télétravail · publiée.
   const remote =
@@ -122,18 +119,16 @@ export function JobDetail({ job }: { job: JobRow }) {
   return (
     <article key={job.id} aria-label="Détail de l’offre">
       <div className="detail__head">
-        {/* Pastille initiale de la Maison — pas de logo tiers (DA §4.7). */}
-        <span className="logo logo--48" aria-hidden>{initial}</span>
+        {/* Logo Maison (D9, réactivé par la review) — monogramme en repli. */}
+        <CompanyLogo name={job.company} size={48} />
         <span className="t-caption self-center truncate">
           {job.company}
           {job.group ? <span className="muted"> · {job.group}</span> : null}
         </span>
 
-        {/* Sauvegarder : ghost, UI-only pour l'instant (pas de compte candidat
-            côté Fashion Atlas — le compte vit sur Catwalks, D14/D18). */}
-        <button type="button" className="btn btn--ghost" aria-label="Sauvegarder l’offre">
-          <SaveGlyph /> Sauvegarder
-        </button>
+        {/* « Sauvegarder » retiré (review 2026-09-04) : c'était une ghost
+            feature sans comportement — soit fonctionnel, soit absent. Une
+            vraie sauvegarde locale (localStorage + vue dédiée) est au backlog. */}
 
         <h1 className="t-d1 detail__title">{displayTitle(job.title)}</h1>
         {meta && <p className="t-body2 muted detail__meta">{meta}</p>}

@@ -111,6 +111,9 @@
 
 /* ——————————————————————————— Échelle typo (design_2 §11) ——————————————————————————— */
 .t-hero { font: 400 clamp(2.75rem, 6.5vw, 6.25rem)/1 var(--fa-font-display); text-transform: uppercase; letter-spacing: 0; text-wrap: balance; }
+/* Hero de la home (review 2026-09-04) : H1 redimensionné pour une hiérarchie
+   maîtrisée — la recherche vit DANS le hero, plus posée à cheval dessous. */
+.t-hero--home { font-size: clamp(2.25rem, 4.6vw, 4.25rem); line-height: 1.04; }
 .t-number { font: 400 clamp(3.5rem, 8vw, 7.5rem)/1 var(--fa-font-display); letter-spacing: -.025em; color: var(--fa-green); font-variant-numeric: tabular-nums; }
 .t-d1 { font: 400 2rem/1.125 var(--fa-font-display); text-wrap: balance; }
 .t-d2 { font: 400 1.5rem/1.333 var(--fa-font-display); }
@@ -167,6 +170,40 @@
   mask: url('/brand/mode-careers.svg') no-repeat center / contain;
 }
 .brand-logo--sm { width: 121px; height: 14px; }
+
+/* Underline gauche → droite (réf corporate.lacoste.com, review 2026-09-04) :
+   le trait se déploie depuis la gauche au survol et se replie vers la gauche
+   en sortie. Utilisé par la nav, le footer et les liens texte. */
+.u-line { position: relative; }
+.u-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.3s var(--fa-ease);
+}
+.u-line:hover::after,
+.u-line:focus-visible::after,
+.u-line[aria-current='page']::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+/* Variante nav : le trait colle au bas de la rangée de 42px. */
+.u-line--nav::after { bottom: 0; }
+
+/* Aperçu de description dans la carte (review 2026-09-04) : 2 lignes max. */
+.offer__preview {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 6px;
+}
 .container { max-width: var(--fa-container); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
 .container-wide { max-width: var(--fa-container-wide); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
 .g12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--fa-gutter); row-gap: 16px; }
@@ -418,8 +455,8 @@
 /* Barre de recherche + filtres, sticky sous le header fixe. */
 /* padding-bottom porté par le container intérieur (pb-3) pour que son filet
    rule-b tombe au vrai bas du bloc sticky, à largeur container (maquette). */
-.searchbar { position: sticky; top: var(--header-h); z-index: var(--fa-z-search, 90); background: var(--fa-paper); padding: 16px 0 0; }
-.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+.searchbar { position: sticky; top: var(--header-h); z-index: var(--fa-z-search, 90); background: var(--fa-paper); padding: 28px 0 0; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 18px; }
 .filters .spacer { flex: 1; }
 .has-dd { position: relative; }
 .link-ghost { font: 500 .875rem/1 var(--fa-font-sans); color: var(--fa-ink); text-decoration: underline; text-underline-offset: 4px; background: transparent; border: 0; cursor: pointer; }
@@ -443,7 +480,7 @@
 /* Split-view : liste 480 | filet pointillé | détail. */
 .split { display: grid; grid-template-columns: 480px 1px minmax(0, 1fr); column-gap: 20px; align-items: start; }
 .split > .rule-v { align-self: stretch; width: 1px; }
-.list-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; }
+.list-head { display: flex; justify-content: space-between; align-items: center; padding: 26px 24px 14px; }
 
 /* Carte offre : pas de boîte, filet du <li> parent, titre serif. */
 .offer { display: block; width: 100%; text-align: left; padding: 20px 24px; background: transparent; border: 0; cursor: pointer; transition: background-color var(--fa-dur-fast) var(--fa-ease); }

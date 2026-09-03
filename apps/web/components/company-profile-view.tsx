@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { CompanyLogo } from '@/components/company-logo';
 import Link from 'next/link';
 import { Loader2, X } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
@@ -58,12 +59,6 @@ const OutGlyph = () => (
   <svg viewBox="0 0 24 24" aria-hidden width="16" height="16" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg>
 );
 
-function monogramOf(name: string): string {
-  const words = name.trim().split(/\s+/).filter(Boolean);
-  if (words.length === 0) return '·';
-  if (words.length === 1) return words[0]!.charAt(0).toUpperCase();
-  return (words[0]!.charAt(0) + words[1]!.charAt(0)).toUpperCase();
-}
 
 export function CompanyProfileView({
   profile,
@@ -209,8 +204,8 @@ export function CompanyProfileView({
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{ backgroundImage: GRAIN_URL, opacity: 0.9 }} />
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'rgba(0,10,5,.42)' }} />
         <div className="container relative z-[1] flex h-full items-end gap-6 pb-12">
-          {/* Logo 96px blanc bordé — monogramme (jamais de visuel ajouté à la main). */}
-          <span className="logo" aria-hidden>{monogramOf(profile.name)}</span>
+          {/* Logo Maison (D9, réactivé par la review) — monogramme en repli. */}
+          <CompanyLogo name={profile.name} size={96} />
           <div>
             {heroCaption && <p className="t-caption mb-2" style={{ opacity: 0.85 }}>{heroCaption}</p>}
             <h1 className="t-hero" id="maison-title" style={{ fontSize: 'clamp(2.75rem,5.5vw,5rem)', textAlign: 'left' }}>

@@ -8,6 +8,7 @@ import { JobDetail } from '@/components/job-detail';
 import { SearchPill } from '@/components/search-pill';
 import { contractLabel, displayTitle, relativeDate } from '@/lib/format';
 import { offerPath } from '@/lib/offer-url';
+import { CompanyLogo } from '@/components/company-logo';
 import { countryLabel } from '@/lib/countries';
 import { cn } from '@/lib/utils';
 import type { JobFilters, JobRow, JobsResult } from '@/lib/jobs';
@@ -574,7 +575,15 @@ export function JobCard({
     job.remote?.toLowerCase().includes('télé') || job.remote?.toLowerCase().includes('remote')
       ? 'Télétravail'
       : null;
-  const meta = [job.city, contract, remote].filter(Boolean).join(' · ');
+  // Ligne méta homogène (review 2026-09-04) : lieu · contrat · temps de
+  // travail · remote — chaque champ présent s'affiche, aucun n'est requis.
+  const workingTime =
+    job.workingTime === 'TEMPS_PARTIEL' ? 'Temps partiel'
+    : job.workingTime === 'TEMPS_PLEIN' ? 'Temps plein'
+    : null;
+  const meta = [job.city ?? job.location, contract, workingTime, remote].filter(Boolean).join(' · ');
+  // Aperçu de description : l'offre doit se comprendre SANS l'ouvrir.
+  const preview = job.description?.replace(/\s+/g, ' ').trim().slice(0, 220);
 
   return (
     // Une VRAIE ancre (S-01) : le href est le maillage que les crawlers
@@ -595,9 +604,13 @@ export function JobCard({
       className={cn('offer', isSelected && 'is-selected', visited && 'is-visited')}
     >
       <div className="offer__top">
-        <span className="t-caption truncate">
-          {job.company}
-          {job.group ? <span className="muted"> · {job.group}</span> : null}
+        <span className="flex min-w-0 items-center gap-2">
+          {/* Logo Maison (D9, réactivé par la review) — monogramme en repli. */}
+          <CompanyLogo name={job.company} size={22} className="shrink-0" />
+          <span className="t-caption truncate">
+            {job.company}
+            {job.group ? <span className="muted"> · {job.group}</span> : null}
+          </span>
         </span>
         {job.postedAt && <span className="t-caption-soft shrink-0">{relativeDate(job.postedAt)}</span>}
       </div>
@@ -610,6 +623,11 @@ export function JobCard({
       </p>
 
       {meta && <p className="t-body2 muted">{meta}</p>}
+
+      {/* Aperçu tronqué proprement : scanner, comprendre, comparer sans ouvrir. */}
+      {preview && preview.length > 40 && (
+        <p className="t-body2 muted offer__preview">{preview}…</p>
+      )}
     </a>
   );
 }

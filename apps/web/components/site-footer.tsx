@@ -28,7 +28,7 @@ export async function SiteFooter() {
           <p className="t-body2 muted mt-4 max-w-[34ch]">
             Le moteur de recherche des offres Mode, Luxe, Beauté &amp; Retail.
           </p>
-          <a href="https://catwalks.io" target="_blank" rel="noopener noreferrer" className="t-body2 mt-3 inline-block text-ink hover:underline hover:underline-offset-4">
+          <a href="https://catwalks.io" target="_blank" rel="noopener noreferrer" className="t-body2 u-line mt-3 inline-block text-ink">
             Une marque Catwalks <ArrowUpRight />
           </a>
         </div>
@@ -81,7 +81,7 @@ export async function SiteFooter() {
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <li>
-      <Link href={href} className="t-ui text-ink hover:underline hover:underline-offset-4">
+      <Link href={href} className="t-ui u-line text-ink">
         {children}
       </Link>
     </li>
@@ -91,7 +91,7 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
 function FooterExternal({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <li>
-      <a href={href} target="_blank" rel="noopener noreferrer" className="t-ui text-ink hover:underline hover:underline-offset-4">
+      <a href={href} target="_blank" rel="noopener noreferrer" className="t-ui u-line text-ink">
         {children}
         <ArrowUpRight />
       </a>

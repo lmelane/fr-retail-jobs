@@ -61,38 +61,43 @@ export function LandingView({
           opacity: 0.9,
         }} />
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'rgba(0,10,5,.42)' }} />
-        <div className="relative z-[1] grid justify-items-center gap-6 px-6" style={{ paddingTop: 'var(--header-h)', maxWidth: 1040 }}>
+        {/* Composition du hero (review 2026-09-04) : eyebrow → H1 redimensionné
+            → ligne d'appui → recherche, le tout DANS le hero — plus de barre à
+            cheval qui déséquilibrait la section. */}
+        <div
+          className="relative z-[1] grid w-full justify-items-center gap-7 px-6"
+          style={{ paddingTop: 'var(--header-h)', maxWidth: 980 }}
+        >
           <p className="t-caption opacity-90" data-stagger-index="0">Mode · Luxe · Beauté · Horlogerie · Retail</p>
           {/* DEC-1 : la promesse est le compteur réel, jamais « toutes ».
               Base indisponible (0) -> formulation sans chiffre ni absolu. */}
-          <h1 id="hero-title" className="t-hero" data-stagger-index="1">
+          <h1 id="hero-title" className="t-hero t-hero--home" data-stagger-index="1">
             {stats.companies > 0 ? (
               <>Les offres de {nf.format(stats.companies)} Maisons,<br />réunies.</>
             ) : (
               <>Les offres du luxe,<br />réunies.</>
             )}
           </h1>
+          <p className="t-body soft max-w-[52ch] opacity-90" data-stagger-index="2">
+            Sans doublon, avec le texte complet et le lien de candidature direct chez la Maison.
+          </p>
+          <div className="w-full text-ink" data-stagger-index="3">
+            <SearchPill
+              size="hero"
+              query={query}
+              onQueryChange={setQuery}
+              city={city}
+              onCityChange={setCity}
+              onSubmit={({ query: q, city: c }) => {
+                const p = new URLSearchParams();
+                if (q) p.set('q', q);
+                if (c) p.set('ville', c);
+                router.push(p.toString() ? `/emplois?${p}` : '/emplois');
+              }}
+            />
+          </div>
         </div>
       </section>
-
-      {/* ————— Barre de recherche posée sur le bas du hero — SearchPill pour
-          retrouver l'autocomplete (régression corrigée : les inputs nus de la
-          refonte avaient perdu les suggestions que l'ancienne home avait). ————— */}
-      <div className="container relative z-[2] -mt-7 text-ink" data-stagger-index="2">
-        <SearchPill
-          size="hero"
-          query={query}
-          onQueryChange={setQuery}
-          city={city}
-          onCityChange={setCity}
-          onSubmit={({ query: q, city: c }) => {
-            const p = new URLSearchParams();
-            if (q) p.set('q', q);
-            if (c) p.set('ville', c);
-            router.push(p.toString() ? `/emplois?${p}` : '/emplois');
-          }}
-        />
-      </div>
 
       {/* ————— Intro éditoriale (4+6) ————— */}
       <section className="container section" aria-labelledby="intro-title">

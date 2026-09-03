@@ -7,6 +7,7 @@ import { Loader2 } from 'lucide-react';
 import { AutocompleteField } from '@/components/search-pill';
 import { cn } from '@/lib/utils';
 import { companySlug } from '@/lib/company-slug';
+import { CompanyLogo } from '@/components/company-logo';
 import type { CompaniesResult, CompanyFilters, CompanyRow } from '@/lib/companies';
 
 /**
@@ -228,7 +229,6 @@ export function MaisonCard({ company }: { company: CompanyRow }) {
   const nf = new Intl.NumberFormat('fr-FR');
   const sector = SECTOR_LABELS[company.sector ?? ''] ?? 'Hors référentiel';
   const sectorLine = company.group ? `${sector} · ${company.group}` : sector;
-  const monogram = monogramOf(company.name);
 
   const shownCities = company.cities.slice(0, 4);
   const rest = company.cities.length - shownCities.length;
@@ -237,7 +237,7 @@ export function MaisonCard({ company }: { company: CompanyRow }) {
 
   return (
     <Link className="maison rule" href={`/entreprise/${companySlug(company.name)}`}>
-      <span className="logo" aria-hidden>{monogram}</span>
+      <CompanyLogo name={company.name} size={56} />
       <span>
         <span className="maison__name t-d2">{company.name}</span>
         <span className="maison__meta">
@@ -256,12 +256,6 @@ export function MaisonCard({ company }: { company: CompanyRow }) {
 }
 
 /** Monogramme : 1 ou 2 lettres tirées du nom (« Louis Vuitton » → « LV »). */
-function monogramOf(name: string): string {
-  const words = name.trim().split(/\s+/).filter(Boolean);
-  if (words.length === 0) return '·';
-  if (words.length === 1) return words[0]!.charAt(0).toUpperCase();
-  return (words[0]!.charAt(0) + words[1]!.charAt(0)).toUpperCase();
-}
 
 function EmptyMaisons({ query, onReset }: { query: string | null; onReset: () => void }) {
   return (

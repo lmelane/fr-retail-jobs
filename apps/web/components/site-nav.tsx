@@ -84,7 +84,7 @@ export function SiteNav() {
         )}
       >
         {/* Top-bar 72px (desktop) / 64px (mobile) */}
-        <div className="rule-b mx-auto flex h-16 max-w-[var(--fa-container)] items-center px-6 lg:h-[72px] [--fa-ink:currentColor]">
+        <div className="rule-b flex h-16 w-full items-center px-6 lg:h-[72px] lg:px-10 [--fa-ink:currentColor]">
           <div className="hidden flex-1 items-center lg:flex">
             <a href="https://catwalks.io" target="_blank" rel="noopener noreferrer" className="t-caption inline-flex items-center gap-1">
               Catwalks <ArrowUpRight />
@@ -104,10 +104,9 @@ export function SiteNav() {
         </div>
 
         {/* Nav 42px (desktop only) */}
-        <nav className="rule-b mx-auto hidden h-[42px] max-w-[var(--fa-container)] items-center justify-center gap-11 px-6 lg:flex [--fa-ink:currentColor]" aria-label="Navigation principale">
+        <nav className="rule-b hidden h-[42px] w-full items-center justify-center gap-11 px-6 lg:flex lg:px-10 [--fa-ink:currentColor]" aria-label="Navigation principale">
           {NAV.map((item) => {
-            const base =
-              't-caption relative inline-flex h-[42px] items-center gap-1 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:transition-opacity';
+            const base = 't-caption u-line u-line--nav inline-flex h-[42px] items-center gap-1';
             if (item.external) {
               return (
                 <a
@@ -115,7 +114,7 @@ export function SiteNav() {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={cn(base, 'after:opacity-0 hover:after:opacity-50')}
+                  className={base}
                 >
                   {item.label} <ArrowUpRight />
                 </a>
@@ -127,7 +126,7 @@ export function SiteNav() {
                 key={item.href}
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
-                className={cn(base, active ? 'after:opacity-100' : 'after:opacity-0 hover:after:opacity-50')}
+                className={base}
               >
                 {item.label}
               </Link>
