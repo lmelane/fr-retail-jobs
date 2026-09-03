@@ -197,6 +197,12 @@
 .u-line--nav::after { bottom: 0; }
 
 /* Aperçu de description dans la carte (review 2026-09-04) : 2 lignes max. */
+/* Hero vidéo : respect de prefers-reduced-motion — la vidéo disparaît, le
+   poster (fond de la section) porte l'image. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-video { display: none; }
+}
+
 .offer__preview {
   display: -webkit-box;
   -webkit-line-clamp: 2;

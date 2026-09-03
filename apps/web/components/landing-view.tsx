@@ -46,21 +46,36 @@ export function LandingView({
 
   return (
     <main>
-      {/* ————— Hero (vert-nuit + grain, réf home.html) ————— */}
+      {/* ————— Hero vidéo (demande Loïc 2026-09-04) : vidéo de marque en fond
+          (self-hébergée, 4,5 Mo, muette, en boucle) + voile noir 35 % pour
+          faire ressortir le H1 et la recherche. Le poster sert de fond de
+          secours (chargement, reduced-motion) sur le vert-nuit d'origine. ————— */}
       <section
         aria-labelledby="hero-title"
         className="relative grid place-items-center overflow-hidden text-center text-white"
         style={{
           height: 680,
-          background:
-            'radial-gradient(1200px 520px at 68% 18%,rgba(72,112,86,.55),transparent 60%),radial-gradient(800px 600px at 18% 85%,rgba(28,60,42,.7),transparent 65%),radial-gradient(500px 300px at 50% 110%,rgba(120,140,110,.35),transparent 70%),linear-gradient(180deg,#0E2A1C 0%,#0A1F15 55%,#06140D 100%)',
+          background: '#06140D url(/brand/hero-poster.jpg) center / cover no-repeat',
         }}
       >
+        <video
+          className="hero-video pointer-events-none absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/brand/hero-poster.jpg"
+          aria-hidden
+        >
+          <source src="/brand/hero.mp4" type="video/mp4" />
+        </video>
+        {/* Voile noir 35 % au-dessus de la vidéo — lisibilité du H1 + search. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'rgba(0,0,0,.35)' }} />
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{
           backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")`,
           opacity: 0.9,
         }} />
-        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'rgba(0,10,5,.42)' }} />
         {/* Composition du hero (review 2026-09-04) : eyebrow → H1 redimensionné
             → ligne d'appui → recherche, le tout DANS le hero — plus de barre à
             cheval qui déséquilibrait la section. */}
