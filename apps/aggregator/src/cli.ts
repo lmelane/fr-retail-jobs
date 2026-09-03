@@ -7,6 +7,7 @@ import { runReconcile } from './pipeline/reconcile.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
 import { runStats } from './pipeline/stats.js';
 import { exportCompanies } from './export/companies.js';
+import { discoverMaisons } from './discovery/discoverMaisons.js';
 import { closeBrowser } from './lib/browser.js';
 
 /**
@@ -127,6 +128,35 @@ try {
   } else if (command === 'export-companies') {
     const output = process.argv[3] ?? 'companies.csv';
     console.log(JSON.stringify({ ok: true, ...(await exportCompanies(prisma, output)) }, null, 2));
+  } else if (command === 'discover') {
+    /**
+     * ATS discovery over the FashionJobs directory (decision, 2026-09-02): read
+     * the roster of Maisons, detect each one's own ATS, and write the confirmed
+     * sources to data/sources.discovered.csv for HUMAN REVIEW — never straight
+     * into sources.csv. `--limit=<n>` runs a cheap first pass over the top N.
+     */
+    const limit = Number(
+      process.argv.find((a) => a.startsWith('--limit='))?.slice('--limit='.length) ?? 0,
+    );
+    // `--input=<path>` resolves from a provided `nom,url` CSV (preferred); without
+    // it, discovery reads the FashionJobs directory as the roster.
+    const inputFile = process.argv.find((a) => a.startsWith('--input='))?.slice('--input='.length);
+    const result = await discoverMaisons({ limit: Number.isFinite(limit) ? limit : 0, inputFile });
+    console.log(
+      JSON.stringify(
+        {
+          ok: true,
+          command,
+          discovered: result.discovered.length,
+          skippedAlreadyKnown: result.skipped,
+          unresolved: result.unresolved,
+          reviewFile: result.outPath,
+          top: result.discovered.slice(0, 15).map((r) => ({ maison: r.maison, kind: r.kind, offers: r.offerCount })),
+        },
+        null,
+        2,
+      ),
+    );
   } else {
     throw new Error(`Unknown command: ${command}`);
   }

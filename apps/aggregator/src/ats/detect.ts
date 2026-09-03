@@ -45,7 +45,7 @@ function detectionFromUrl(rawUrl: string): AtsDetection | null {
   return null;
 }
 
-async function inspectCareerPage(rawUrl: string): Promise<AtsDetection | null> {
+export async function inspectCareerPage(rawUrl: string): Promise<AtsDetection | null> {
   const direct = detectionFromUrl(rawUrl);
   if (direct) return direct;
   try {
