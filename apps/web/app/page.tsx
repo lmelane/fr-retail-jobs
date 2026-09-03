@@ -1,19 +1,28 @@
 import { LandingView } from '@/components/landing-view';
-import { landingStats } from '@/lib/jobs';
+import { getJobs, landingStats } from '@/lib/jobs';
+import { getCompanies } from '@/lib/companies';
 
 /**
- * Step one of the funnel: the landing page — the Catwalks hero's spirit
- * rewritten for the aggregator (decided 2026-09-02). A rotating word over the
- * families we cover leads the eye to a single search pill; the aggregator's
- * proof (real offer/Maison/country counts) sits below it. No job list here;
- * that is `/emplois`, reached by submitting the pill.
- *
- * The counts are read server-side so the headline states real numbers, never
- * invented copy; a database blip degrades to the pill alone.
+ * Home (design_2.md §5.1) — the editorial entry of the funnel. Everything is read
+ * server-side from real data (never invented copy): headline counts, the sectors
+ * with their offer counts, the Maisons that recruit most, and the latest offers.
+ * A database blip degrades each block to empty rather than failing the page.
  */
 export const dynamic = 'force-dynamic';
 
 export default async function Page() {
-  const stats = await landingStats();
-  return <LandingView stats={stats} />;
+  const [stats, latest, companies] = await Promise.all([
+    landingStats().catch(() => ({ offers: 0, companies: 0, countries: 0 })),
+    getJobs({ page: 1 }).catch(() => null),
+    getCompanies({ page: 1 }).catch(() => null),
+  ]);
+
+  return (
+    <LandingView
+      stats={stats}
+      sectors={latest?.facets.sectors ?? []}
+      maisons={(companies?.companies ?? []).slice(0, 6)}
+      latestOffers={(latest?.jobs ?? []).slice(0, 6)}
+    />
+  );
 }
