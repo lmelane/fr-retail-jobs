@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
-import { getJobStatus } from '@/lib/jobs';
+import { getJobStatus, getSimilarJobs } from '@/lib/jobs';
+import { contractLabel, displayTitle, relativeDate } from '@/lib/format';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -63,6 +64,11 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   if (state.status === 'missing') notFound();
   const job = state.job;
   const isClosed = state.status === 'closed';
+  // Maillage interne (S-01) : chaque fiche relie d'autres fiches — même Maison
+  // d'abord, même secteur en complément. Sans lui, les ~26k pages offres sont
+  // des culs-de-sac (et étaient orphelines tant que les cartes étaient des
+  // boutons).
+  const similar = await getSimilarJobs(job);
 
   /**
    * schema.org JobPosting, so search engines index the posting rather than the
@@ -164,6 +170,30 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             </a>
           </div>
         </div>
+
+        {similar.length > 0 && (
+          <section className="mt-14 max-w-[720px]" aria-labelledby="similar-title">
+            <h2 id="similar-title" className="t-d1 rule pt-6">Offres similaires.</h2>
+            <ul className="mt-2">
+              {similar.map((o) => (
+                <li key={o.id} className="rule-b">
+                  <Link href={`/offre/${o.id}`} className="block py-5 hover:bg-paper-alt">
+                    <div className="flex items-baseline justify-between gap-4">
+                      <span className="t-caption">{o.company}</span>
+                      {o.postedAt && <span className="t-caption-soft shrink-0">{relativeDate(o.postedAt)}</span>}
+                    </div>
+                    <p className="t-d2 mt-1">{displayTitle(o.title)}</p>
+                    {(o.city || o.contract) && (
+                      <p className="t-body2 muted mt-1">
+                        {[o.city, contractLabel(o.contract)].filter(Boolean).join(' · ')}
+                      </p>
+                    )}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
     </main>
   );

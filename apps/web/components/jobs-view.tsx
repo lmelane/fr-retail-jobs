@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -539,7 +540,6 @@ export function JobCard({
   onSelect: () => void;
   isSelected: boolean;
 }) {
-  const router = useRouter();
   const contract = contractLabel(job.contract);
   const isFresh = job.postedAt
     ? Date.now() - new Date(job.postedAt).getTime() < FRESH_MS
@@ -577,21 +577,22 @@ export function JobCard({
   const meta = [job.city, contract, remote].filter(Boolean).join(' · ');
 
   return (
-    <button
-      type="button"
-      onClick={() => {
+    // Vrai lien vers /offre/[id] (S-01) : les ~26k fiches redeviennent
+    // atteignables par les crawlers et les clics modifiés (nouvel onglet).
+    // À lg+, un clic gauche simple est intercepté pour garder le master-detail.
+    <Link
+      href={`/offre/${job.id}`}
+      onClick={(event) => {
         markVisited();
-        // Sous lg le panneau détail est masqué (une seule colonne) : la carte
-        // route vers la fiche autonome /offre/[id]. À lg+ elle sélectionne
-        // l'offre dans le volet de droite (§6, réf emplois.html).
-        if (typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches) {
-          router.push(`/offre/${job.id}`);
-          return;
+        // Clic modifié (cmd/ctrl/shift/alt ou molette) : navigation native.
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        // À lg+ le volet droit affiche l'offre : on sélectionne sans naviguer.
+        // Sous lg (une colonne), le lien route vers la fiche autonome (§6).
+        if (window.matchMedia('(min-width: 1024px)').matches) {
+          event.preventDefault();
+          onSelect();
         }
-        onSelect();
       }}
-      // `aria-current` (valide sur un bouton) porte la sélection ; `aria-selected`
-      // n'est autorisé que dans un listbox/grid, pas sur un bouton simple.
       aria-current={isSelected ? 'true' : undefined}
       className={cn('offer', isSelected && 'is-selected', visited && 'is-visited')}
     >
@@ -611,7 +612,7 @@ export function JobCard({
       </p>
 
       {meta && <p className="t-body2 muted">{meta}</p>}
-    </button>
+    </Link>
   );
 }
 

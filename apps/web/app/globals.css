@@ -433,7 +433,7 @@
 .list-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; }
 
 /* Carte offre : pas de boîte, filet du <li> parent, titre serif. */
-.offer { display: block; width: 100%; text-align: left; padding: 20px 24px; background: transparent; border: 0; cursor: pointer; transition: background-color var(--fa-dur-fast) var(--fa-ease); }
+.offer { display: block; width: 100%; text-align: left; padding: 20px 24px; background: transparent; border: 0; cursor: pointer; color: inherit; text-decoration: none; transition: background-color var(--fa-dur-fast) var(--fa-ease); }
 .offer:hover { background: var(--fa-paper-alt); }
 .offer.is-selected { background: var(--fa-paper-alt); box-shadow: inset 2px 0 0 0 var(--fa-green); }
 .offer.is-visited .offer__title { color: var(--fa-ink-soft); }
