@@ -1,6 +1,8 @@
 import { withHostGate } from '../lib/hostGate.js';
 import { assertPublicUrl } from '../lib/ssrf.js';
+import { techScanHostnames } from './techScan.js';
 import type { AtsDetection } from '../types.js';
+import type { AtsType } from '@prisma/client';
 
 /**
  * Free ATS discovery: most ATS expose a public, unauthenticated endpoint keyed by
@@ -66,9 +68,12 @@ async function probeFetch(
   }
   return withHostGate(url, async () => {
     try {
+      // Follow redirects: some ATS endpoints 30x to a regional host before the
+      // real answer (manual redirect would drop them). The SSRF guard already
+      // validated the initial URL; ATS API hosts are well-known, low-risk.
       const response = await fetch(url, {
         ...init,
-        redirect: 'manual',
+        redirect: 'follow',
         signal: AbortSignal.timeout(PROBE_TIMEOUT_MS),
       });
       if (!response.ok) return null;
@@ -183,16 +188,15 @@ export function careersDomainCandidates(companyName: string, siteUrl?: string): 
   const core = slugCandidates(companyName)[0];
   if (core) roots.add(`${core}.com`);
 
-  // The most likely careers hosts only — every extra candidate is another probe
-  // against the SAME DigitalRecruiters host (serialised by the host gate), so a
-  // long list is the main throughput cost at 14k brands. careers./talents. cover
-  // the overwhelming majority.
-  const prefixes = ['careers', 'talents', 'carriere'];
+  // The most likely careers hosts. `jobs.` is included for the tech-scan (DNS is
+  // cheap and jobs.<brand> is common — jobs.sephora.com), even though it adds a
+  // candidate: the CNAME lookup is far lighter than an HTTP probe.
+  const prefixes = ['careers', 'talents', 'jobs', 'carriere'];
   const domains = new Set<string>();
   for (const root of roots) {
     for (const p of prefixes) domains.add(`${p}.${root}`);
   }
-  return [...domains].slice(0, 6);
+  return [...domains].slice(0, 8);
 }
 
 /** Does this careers domain serve a DigitalRecruiters board? */
@@ -212,11 +216,43 @@ async function probeDigitalRecruiters(domainName: string): Promise<boolean> {
  * directly. Slug-keyed ATS first (cheap), then careers-domain-keyed ones.
  * Returns null when nothing confirms real postings.
  */
+/** An AtsDetection from a tech-scan hit — the careers host + its identified ATS. */
+function detectionFromTechScan(ats: AtsType, careersHost: string): AtsDetection | null {
+  const careersUrl = `https://${careersHost}`;
+  const note = `Tech-scan: ${careersHost} CNAMEs to ${ats}; no page read.`;
+  switch (ats) {
+    case 'DIGITALRECRUITERS':
+      return { type: ats, careersUrl, config: { domainName: careersHost }, confidence: 0.95, note };
+    case 'EIGHTFOLD':
+      return { type: ats, careersUrl, config: { origin: careersUrl }, confidence: 0.9, note };
+    case 'TEAMTAILOR':
+    case 'TALENTSOFT':
+      return { type: ats, careersUrl, config: { origin: careersUrl }, confidence: 0.9, note };
+    case 'SUCCESSFACTORS':
+      return { type: ats, careersUrl, config: { origin: careersUrl }, confidence: 0.85, note };
+    default:
+      // ATS whose adapter needs a slug/tenant we can't derive from the host alone
+      // (Workday tenant, SmartRecruiters company…): record the careers page for
+      // review rather than an unusable config.
+      return { type: 'GENERIC_JSONLD', careersUrl, config: { startUrl: careersUrl }, confidence: 0.6, note: `${note} (needs slug — review)` };
+  }
+}
+
 export async function probeAtsBySlug(
   companyName: string,
   fashionjobsSlug?: string,
   siteUrl?: string,
 ): Promise<AtsDetection | null> {
+  // TECH-SCAN FIRST (the technographics approach): a careers subdomain CNAMEs
+  // straight to its ATS provider (careers.lacoste.com -> digitalrecruiters.com).
+  // Pure DNS — no page load, never blocked, and it says WHICH ATS so we skip
+  // blind probing. Cheapest and most reliable signal, so it leads.
+  const scan = await techScanHostnames(careersDomainCandidates(companyName, siteUrl));
+  if (scan) {
+    const detection = detectionFromTechScan(scan.ats, scan.host);
+    if (detection) return detection;
+  }
+
   // Bounded: the top few slugs only. More candidates barely help and multiply the
   // request count per brand (14k brands -> that matters).
   const slugs = slugCandidates(companyName, fashionjobsSlug).slice(0, 3);
