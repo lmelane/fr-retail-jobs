@@ -1,5 +1,6 @@
 import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 // externalPath is optional in practice: some tenants (Richemont) return rows
@@ -116,14 +117,6 @@ export function postedAtFromWorkday(postedOn?: string): Date | undefined {
   return new Date(Date.now() - Number(match[1]) * day);
 }
 
-function stripHtml(value?: string): string {
-  return (value ?? '')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
 
 /**
  * The listing endpoint returns no description; the detail one does, at
@@ -148,7 +141,7 @@ export async function attachWorkdayDescriptions(
           if (!info) return job;
           return {
             ...job,
-            description: stripHtml(info.jobDescription) || job.description,
+            description: htmlToPlainText(info.jobDescription) || job.description,
             country: info.country?.descriptor ?? job.country,
             location: info.location ?? job.location,
             // F-05: the detail's startDate is a REAL date; the listing only

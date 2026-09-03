@@ -1,4 +1,5 @@
 import { fetchJson, fetchText } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -72,21 +73,6 @@ type AlgoliaResponse = {
   status?: number;
 };
 
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<li[^>]*>/gi, '\n• ')
-    .replace(/<\/(p|div|li|ul|ol|h[1-6])>/gi, '\n')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&(?:lt|gt|quot|#39|rsquo|eacute);/g, ' ')
-    .replace(/[ \t]+/g, ' ')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-  return text || undefined;
-}
 
 /**
  * Re-reads the search key from the site's JS bundle.
@@ -132,7 +118,7 @@ function toNormalized(hit: LvmhHit): NormalizedJob | null {
   // The site renders these four blocks in this order; a candidate reads them
   // as one posting.
   const description = [hit.description, hit.jobResponsabilities, hit.profile, hit.additionalInformation]
-    .map((part) => stripHtml(part))
+    .map((part) => htmlToPlainText(part))
     .filter(Boolean)
     .join('\n\n');
 

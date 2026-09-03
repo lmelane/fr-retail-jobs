@@ -1,4 +1,5 @@
 import { fetchJson } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -25,17 +26,6 @@ type WorkableJob = {
 
 type WorkableResponse = { jobs?: WorkableJob[] };
 
-/** The widget returns HTML fields; the pipeline stores plain text. */
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text || undefined;
-}
 
 export async function fetchWorkableJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
   const account = String(config.account ?? config.slug ?? '');
@@ -49,7 +39,7 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
     .filter((job) => job.title && job.shortcode)
     .map((job) => {
       const postedAt = job.published_on ? new Date(job.published_on) : undefined;
-      const description = [stripHtml(job.description), stripHtml(job.requirements)]
+      const description = [htmlToPlainText(job.description), htmlToPlainText(job.requirements)]
         .filter(Boolean)
         .join('\n\n');
 

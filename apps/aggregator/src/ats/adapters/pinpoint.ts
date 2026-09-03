@@ -1,4 +1,5 @@
 import { fetchJson } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -36,17 +37,6 @@ type PinpointJob = {
 
 type PinpointResponse = { jobs?: PinpointJob[] };
 
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&(?:lt|gt|quot|#39);/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text || undefined;
-}
 
 /**
  * Reads a whole Pinpoint board.
@@ -77,7 +67,7 @@ export async function fetchPinpointJobs(config: Record<string, unknown>): Promis
         // country_id is an ISO-2 code; isFrance handles both that and the name.
         country: job.country_id,
         contract: job.type,
-        description: stripHtml(job.description),
+        description: htmlToPlainText(job.description),
         url: `${origin}/jobs/${job.id ?? ''}`,
         postedAt: posted && !Number.isNaN(posted.getTime()) ? posted : undefined,
         raw: job,

@@ -1,5 +1,6 @@
 import pLimit from 'p-limit';
 import { fetchJson, fetchWithRetry } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -71,17 +72,6 @@ function brandOf(data: DetailResponse['data']): string | undefined {
   return undefined;
 }
 
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&(?:lt|gt|quot|#39);/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text || undefined;
-}
 
 /**
  * Best-effort session cookie from the careers page. It is NOT required — the
@@ -190,7 +180,7 @@ export async function fetchEightfoldJobs(
           );
           return {
             ...job,
-            description: stripHtml(detail.data?.jobDescription ?? detail.data?.job_description),
+            description: htmlToPlainText(detail.data?.jobDescription ?? detail.data?.job_description),
             // Group tenants: the offer belongs to its Maison, not the feed label.
             company: brandOf(detail.data) ?? job.company,
           };

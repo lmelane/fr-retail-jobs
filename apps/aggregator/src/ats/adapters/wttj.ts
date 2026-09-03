@@ -1,4 +1,5 @@
 import { fetchJson, fetchText } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -98,23 +99,13 @@ type WttjHit = {
 
 type WttjResponse = { nbHits?: number; hits?: WttjHit[]; message?: string; status?: number };
 
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text || undefined;
-}
 
 function toNormalized(hit: WttjHit, organizationSlug: string): NormalizedJob | null {
   if (!hit.name) return null;
 
   const office = hit.offices?.[0];
   const postedAt = hit.published_at ? new Date(hit.published_at) : undefined;
-  const description = [stripHtml(hit.description), stripHtml(hit.profile)]
+  const description = [htmlToPlainText(hit.description), htmlToPlainText(hit.profile)]
     .filter(Boolean)
     .join('\n\n');
 

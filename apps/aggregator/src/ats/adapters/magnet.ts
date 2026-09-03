@@ -1,4 +1,5 @@
 import { fetchJson } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -82,17 +83,6 @@ type OffersResponse = {
   data?: { total?: number; list?: MagnetOffer[] };
 };
 
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&(?:lt|gt|quot|#39);/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text || undefined;
-}
 
 /** Magnet writes coordinates as a single "lat,lon" string. */
 function parseCoordinates(value?: string): { latitude?: number; longitude?: number } {
@@ -145,7 +135,7 @@ function toNormalized(offer: MagnetOffer, origin: string): NormalizedJob | null 
 
   // The posting is split across three blocks; a candidate reads them in order.
   const description = [offer.mission_description, offer.profile_description]
-    .map((part) => stripHtml(part))
+    .map((part) => htmlToPlainText(part))
     .filter(Boolean)
     .join('\n\n');
 

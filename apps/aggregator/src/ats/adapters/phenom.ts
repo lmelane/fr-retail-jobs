@@ -1,4 +1,5 @@
 import { fetchJson } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -56,17 +57,6 @@ type PhenomResponse = {
   count?: number;
 };
 
-function stripHtml(value?: string): string | undefined {
-  if (!value) return undefined;
-  const text = value
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&(?:lt|gt|quot|#39);/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text || undefined;
-}
 
 function toNormalized(data: PhenomJobData, origin: string): NormalizedJob | null {
   if (!data.title) return null;
@@ -88,7 +78,7 @@ function toNormalized(data: PhenomJobData, origin: string): NormalizedJob | null
     // Phenom ships coordinates, so these rows skip geocoding.
     latitude: Number.isFinite(Number(data.latitude)) ? Number(data.latitude) : undefined,
     longitude: Number.isFinite(Number(data.longitude)) ? Number(data.longitude) : undefined,
-    description: stripHtml(data.description),
+    description: htmlToPlainText(data.description),
     url: data.applyUrl ?? data.apply_url ?? `${origin}/job/${id ?? ''}`,
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
     raw: data,

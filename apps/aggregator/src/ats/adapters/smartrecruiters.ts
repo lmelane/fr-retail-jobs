@@ -1,5 +1,6 @@
 import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 type Posting = { id: string; name: string; ref?: string; releasedDate?: string; location?: { city?: string; region?: string; country?: string }; typeOfEmployment?: { label?: string } };
@@ -11,15 +12,6 @@ type PostingDetail = {
   };
 };
 
-/** Strips the HTML SmartRecruiters returns inside each section. */
-function stripHtml(value?: string): string {
-  return (value ?? '')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
 
 /**
  * The listing endpoint carries no description; /postings/{id} does, split across
@@ -32,7 +24,7 @@ async function fetchDescription(company: string, id: string): Promise<string | u
     );
     const sections = detail.jobAd?.sections ?? {};
     const text = ['companyDescription', 'jobDescription', 'qualifications', 'additionalInformation']
-      .map((key) => stripHtml(sections[key]?.text))
+      .map((key) => htmlToPlainText(sections[key]?.text))
       .filter(Boolean)
       .join('\n\n');
     return text || undefined;
