@@ -8,6 +8,7 @@
     "start": "next start -p ${PORT:-3000}",
     "typecheck": "tsc --noEmit",
     "e2e": "playwright test",
+    "e2e:seed": "tsx e2e/seed.ts",
     "e2e:install": "playwright install chromium"
   },
   "dependencies": {

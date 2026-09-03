@@ -26,8 +26,8 @@ type HostState = {
   queue: (() => void)[];
 };
 
-const MAX_CONCURRENT_PER_HOST = Number(process.env.HOST_MAX_CONCURRENCY ?? 2);
-const BASE_GAP_MS = Number(process.env.HOST_BASE_GAP_MS ?? 250);
+const MAX_CONCURRENT_PER_HOST = Number(process.env.HOST_MAX_CONCURRENCY ?? 4);
+const BASE_GAP_MS = Number(process.env.HOST_BASE_GAP_MS ?? 80);
 const MAX_GAP_MS = Number(process.env.HOST_MAX_GAP_MS ?? 8_000);
 /** How long a raised gap decays back toward the base, per successful request. */
 const GAP_DECAY = 0.8;

@@ -160,6 +160,9 @@ function toNormalized(offer: MagnetOffer, origin: string): NormalizedJob | null 
     // Magnet ships "lat,lon" — these rows skip geocoding.
     ...parseCoordinates(locality?.coordinates),
     contract: nameOf(offer.contract),
+    // Beaumanoir's feed carries the enseigne per offer (Cache Cache, Bonobo,
+    // Morgan) — credit it, not the group (audit A-01, D11).
+    company: offer.brand ?? offer.company,
     description: description || undefined,
     // The API's own links, in preference order — all verified to resolve. NEVER
     // fall back to `/offre/{id}`: the id is `10955-<base64>`, not a URL path, so

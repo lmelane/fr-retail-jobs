@@ -143,7 +143,63 @@ export function parseMicrodataDescription(html: string): string | undefined {
   return text || undefined;
 }
 
-/** Fills in descriptions from each posting's detail page. */
+export type SuccessFactorsDetail = {
+  title?: string;
+  location?: string;
+  city?: string;
+  country?: string;
+  postalCode?: string;
+  postedAt?: Date;
+  validThrough?: Date;
+  description?: string;
+};
+
+/**
+ * The detail page states the EXACT title and address in microdata — unlike the
+ * URL slug, whose city/title order varies per tenant. Clarins writes
+ * {City}-{Title}-{Postcode} slugs, so the caps heuristic swallowed the title
+ * into the "city" and left UK/DE postcodes inside titles (issue #6). The page
+ * itself never lies:
+ *   <span itemprop="title">Beauty Coach (7.3hrs/wk)</span>
+ *   <meta itemprop="streetAddress" content="Liverpool, GB, L1 8BJ">
+ */
+export function parseMicrodataDetail(html: string): SuccessFactorsDetail {
+  const detail: SuccessFactorsDetail = {};
+
+  // Not every tenant page carries itemprop="title" (the Clarins FR pages do
+  // not); og:title holds the same exact string there.
+  const title =
+    /itemprop="title"[^>]*>([^<]+)</i.exec(html)?.[1]?.trim() ||
+    /property="og:title"\s+content="([^"]+)"/i.exec(html)?.[1]?.trim() ||
+    /og:title"\s*content="([^"]+)"/i.exec(html)?.[1]?.trim();
+  if (title) detail.title = title.replace(/\s+/g, ' ');
+
+  const meta = (name: string) =>
+    new RegExp(`<meta itemprop="${name}" content="([^"]*)"`, 'i').exec(html)?.[1]?.trim();
+
+  const address = meta('streetAddress');
+  if (address) {
+    detail.location = address;
+    // "Liverpool, GB, L1 8BJ" — city, ISO-2 country, then an optional postcode.
+    const parts = address.split(',').map((p) => p.trim()).filter(Boolean);
+    if (parts[0]) detail.city = parts[0];
+    if (parts[1] && /^[A-Z]{2}$/.test(parts[1])) detail.country = parts[1];
+    if (parts[2]) detail.postalCode = parts[2];
+  }
+
+  const posted = meta('datePosted');
+  if (posted && !Number.isNaN(Date.parse(posted))) detail.postedAt = new Date(posted);
+  const valid = meta('validThrough');
+  if (valid && !Number.isNaN(Date.parse(valid))) detail.validThrough = new Date(valid);
+
+  detail.description = parseMicrodataDescription(html);
+  return detail;
+}
+
+/**
+ * Fills in each posting's exact fields from its detail page. The slug-derived
+ * title/location survive only as a fallback when the detail fetch fails.
+ */
 export async function attachSuccessFactorsDescriptions(
   jobs: NormalizedJob[],
   concurrency = 8,
@@ -155,8 +211,18 @@ export async function attachSuccessFactorsDescriptions(
       limit(async () => {
         try {
           const html = await fetchText(job.url, { headers: HEADERS });
-          const description = parseMicrodataDescription(html);
-          return description ? { ...job, description } : job;
+          const detail = parseMicrodataDetail(html);
+          return {
+            ...job,
+            title: detail.title ?? job.title,
+            location: detail.location ?? job.location,
+            city: detail.city ?? job.city,
+            country: detail.country ?? job.country,
+            postalCode: detail.postalCode ?? job.postalCode,
+            postedAt: detail.postedAt ?? job.postedAt,
+            validThrough: detail.validThrough ?? job.validThrough,
+            description: detail.description ?? job.description,
+          };
         } catch {
           // A failed detail fetch must not lose the listing entry.
           return job;

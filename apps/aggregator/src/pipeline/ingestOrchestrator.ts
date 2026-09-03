@@ -1,6 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
 import { plainHttpSources } from '../connectors/registry.js';
-import { loadSourceCatalog, sourceKeyFor } from '../connectors/sourceCatalog.js';
+import { loadActiveSources } from '../connectors/sourceStore.js';
 import { runIngest, KIND_TO_ATS } from './ingest.js';
 import { checkSourceHealth, type SourceHealth } from './health.js';
 import { briefError } from '../lib/normalize.js';
@@ -61,11 +61,11 @@ export type OrchestratorResult = {
  * board — instead of stalling on two giants and reaching no one else. The few
  * large feeds run last, where a cut costs the fewest employers.
  */
-export function allSourceKeys(): string[] {
-  const apiKeys = loadSourceCatalog()
+export async function allSourceKeys(prisma: PrismaClient): Promise<string[]> {
+  const apiKeys = (await loadActiveSources(prisma))
     .filter((source) => KIND_TO_ATS[source.kind])
     .sort((a, b) => (a.jobCount || 0) - (b.jobCount || 0))
-    .map((source) => sourceKeyFor(source));
+    .map((source) => source.key);
   const sitemapKeys = plainHttpSources()
     .filter((source) => source.kind === 'SITEMAP_JSONLD')
     .map((source) => source.key);
@@ -82,7 +82,7 @@ function withTimeout<T>(work: Promise<T>, ms: number, label: string): Promise<T>
 }
 
 export async function ingestAllBySource(prisma: PrismaClient): Promise<OrchestratorResult> {
-  const keys = allSourceKeys();
+  const keys = await allSourceKeys(prisma);
   console.log(`[orchestrator] ${keys.length} sources, each time-bounded: ${keys.join(', ')}`);
 
   const result: OrchestratorResult = { total: keys.length, ok: 0, failed: 0, timedOut: 0, failures: [], incidents: [] };
@@ -106,7 +106,8 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
       result.ok++;
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      if (message.startsWith('__TIMEOUT__')) {
+      const timedOut = message.startsWith('__TIMEOUT__');
+      if (timedOut) {
         result.timedOut++;
         result.failures.push(`${key} (timedOut)`);
         console.error(`[orchestrator] ${key}: timed out after ${PER_SOURCE_TIMEOUT_MS / 1000}s, moving on`);
@@ -115,6 +116,20 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
         result.failures.push(`${key} (failed)`);
         console.error(`[orchestrator] ${key}: failed — ${briefError(error)}`);
       }
+      // L-01: a source that did not finish gets a SourceRun anyway — TIMEOUT or
+      // ERROR — so the refresh knows its offers were NOT re-attested this run
+      // and leaves them open. Without this row the refresh saw only silence,
+      // which is indistinguishable from "the source listed nothing".
+      await prisma.sourceRun
+        .create({
+          data: {
+            sourceKey: key,
+            status: timedOut ? 'TIMEOUT' : 'ERROR',
+            jobs: 0,
+            note: timedOut ? `cut at ${PER_SOURCE_TIMEOUT_MS / 1000}s` : briefError(error),
+          },
+        })
+        .catch((e) => console.error(`[orchestrator] ${key}: failed to record run — ${briefError(e)}`));
     }
   }
 

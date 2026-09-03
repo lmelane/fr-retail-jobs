@@ -11,12 +11,33 @@ import type { PrismaClient } from '@prisma/client';
  * stale.
  */
 
-/** Which sources rotate, and how many listing pages each run covers. */
-export const ROTATING_SOURCES: Record<string, { windowPages: number }> = {
+/** Which sources rotate, how many pages a run covers, and how many exist. */
+export const ROTATING_SOURCES: Record<string, { windowPages: number; totalPagesEstimate: number }> = {
   // FashionJobs: ~282 listing pages behind Cloudflare, ~27 offers each. 40 pages
-  // a run covers the whole board in ~7 runs — a few hours given the cron cadence.
-  fashionjobs: { windowPages: 40 },
+  // a run covers the whole board in ~8 runs — 32h at the 4h cadence (DEC-5).
+  fashionjobs: { windowPages: 40, totalPagesEstimate: 282 },
 };
+
+/**
+ * The graved cadences (DEC-5, décision Loïc 2026-09-03): ingest every 4h,
+ * refresh daily, reconcile weekly. Railway cron expressions derive from these.
+ */
+export const INGEST_INTERVAL_HOURS = 4;
+
+/**
+ * L-01 invariant: an offer must be RE-SEEN by its rotating crawl before the
+ * refresh can count it stale. A full rotation takes ceil(pages/window) runs at
+ * one run per ingest interval; ×1.5 absorbs a skipped or partial run. If
+ * REFRESH_STALE_HOURS drops below this for any rotating source, the refresh
+ * closes offers that are still listed — tested, so a cadence change that
+ * breaks the invariant fails CI instead of silently emptying a source.
+ */
+export function requiredStaleHours(sourceKey: string, ingestIntervalHours = INGEST_INTERVAL_HOURS): number {
+  const rotation = ROTATING_SOURCES[sourceKey];
+  if (!rotation) return 0;
+  const runsPerRotation = Math.ceil(rotation.totalPagesEstimate / rotation.windowPages);
+  return runsPerRotation * ingestIntervalHours * 1.5;
+}
 
 export function isRotatingSource(sourceKey: string): boolean {
   return sourceKey in ROTATING_SOURCES;

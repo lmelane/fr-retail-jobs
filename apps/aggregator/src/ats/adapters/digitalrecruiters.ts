@@ -125,7 +125,24 @@ export async function fetchDigitalRecruitersJobs(
     .replace(/\/$/, '');
   if (!domainName) throw new Error('DigitalRecruiters domainName missing');
 
-  const locale = String(config.locale ?? 'fr_FR');
+  /**
+   * A tenant serves its offers under its own locale; French first (most DR
+   * tenants are French), but an empty fr_FR answer must not silence a
+   * non-francophone tenant — no offer is dropped for its language (decision,
+   * 2026-09-03). An explicit config.locale skips the fallback.
+   */
+  const locales = config.locale ? [String(config.locale)] : ['fr_FR', 'en_US'];
+  let jobs: NormalizedJob[] = [];
+  for (const locale of locales) {
+    jobs = await fetchAllPages(domainName, locale);
+    if (jobs.length > 0) break;
+  }
+
+  if (config.withDescriptions === false) return jobs;
+  return attachDescriptions(jobs, Number(config.detailConcurrency ?? 8));
+}
+
+async function fetchAllPages(domainName: string, locale: string): Promise<NormalizedJob[]> {
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
 
@@ -152,6 +169,5 @@ export async function fetchDigitalRecruitersJobs(
     if (response.count !== undefined && jobs.length >= response.count) break;
   }
 
-  if (config.withDescriptions === false) return jobs;
-  return attachDescriptions(jobs, Number(config.detailConcurrency ?? 8));
+  return jobs;
 }

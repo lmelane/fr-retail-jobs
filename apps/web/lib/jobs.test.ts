@@ -26,7 +26,9 @@ describe('whereClause — combined company filters do not collide', () => {
   it('omits company entirely when no company filter is set', () => {
     const where = whereClause({ city: 'Paris' });
     expect(where.company).toBeUndefined();
-    expect(where.city).toBe('Paris');
+    // Case-insensitive equality (D20): rows store "PARIS", "Paris", "paris"
+    // depending on the source; a filter click must reach all spellings.
+    expect(where.city).toEqual({ equals: 'Paris', mode: 'insensitive' });
   });
 
   it('drops an invalid sector instead of passing it to the enum', () => {

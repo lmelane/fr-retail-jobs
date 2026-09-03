@@ -47,6 +47,14 @@ function isPrivateIpv6(host: string): boolean {
   // IPv4-mapped (::ffff:10.0.0.1) — check the trailing IPv4.
   const mapped = h.match(/:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/);
   if (mapped && isPrivateIpv4(mapped[1])) return true;
+  // Same address, HEX form: WHATWG's URL parser serializes ::ffff:169.254.169.254
+  // as ::ffff:a9fe:a9fe, which slipped past the dotted check (audit R-02).
+  const hexMapped = h.match(/^::ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/);
+  if (hexMapped) {
+    const [hi, lo] = [parseInt(hexMapped[1], 16), parseInt(hexMapped[2], 16)];
+    const dotted = `${hi >> 8}.${hi & 0xff}.${lo >> 8}.${lo & 0xff}`;
+    if (isPrivateIpv4(dotted)) return true;
+  }
   return false;
 }
 

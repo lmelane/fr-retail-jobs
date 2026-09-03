@@ -2,9 +2,10 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } fr
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pLimit from 'p-limit';
+import type { PrismaClient } from '@prisma/client';
 import { inspectCareerPage } from '../ats/detect.js';
+import { probeAtsBySlug } from './atsProbe.js';
 import { fetchRenderedHtml } from '../lib/browser.js';
-import { loadSourceCatalog } from '../connectors/sourceCatalog.js';
 import { resolveCompany } from '../normalize/company.js';
 import type { AtsDetection } from '../types.js';
 
@@ -59,6 +60,32 @@ const OUT_PATH = dataUrl('sources.discovered.csv');
 const PROGRESS_PATH = dataUrl('discovery.progress.tsv');
 /** Maisons auto-discovery could NOT resolve — the queue for the manual pass. */
 const UNRESOLVED_PATH = dataUrl('sources.unresolved.csv');
+/**
+ * Domains proven dead by the reachability sweep — each line carries its
+ * evidence (cause, the resolvers that confirmed a DNS death: 1.1.1.1+8.8.8.8,
+ * never the system resolver alone — see the poisoned-cache incident) and its
+ * check date. Excluded from discovery runs (decision Loïc, 2026-09-03), but a
+ * dead domain is not dead forever: past DEAD_RECHECK_DAYS the entry expires
+ * and the Maison re-enters the queue, so a resurrected brand is found again
+ * without anyone remembering to run anything.
+ */
+const DEAD_PATH = dataUrl('unresolved.dead.tsv');
+const DEAD_RECHECK_DAYS = Number(process.env.DEAD_RECHECK_DAYS ?? 30);
+
+export function loadDeadNames(now = new Date()): Set<string> {
+  if (!existsSync(DEAD_PATH)) return new Set();
+  const cutoff = now.getTime() - DEAD_RECHECK_DAYS * 86_400_000;
+  const dead = new Set<string>();
+  for (const line of readFileSync(DEAD_PATH, 'utf8').split(/\r?\n/).slice(1)) {
+    const [name, , , , , checkedAt] = line.split('\t');
+    if (!name) continue;
+    // No date (legacy line) or a stale check: the verdict has expired.
+    const checked = checkedAt ? Date.parse(checkedAt) : NaN;
+    if (Number.isNaN(checked) || checked < cutoff) continue;
+    dead.add(name.toLowerCase());
+  }
+  return dead;
+}
 
 function csvCell(value: string): string {
   // Defang spreadsheet formula injection: a company name starting with = + - @
@@ -118,6 +145,8 @@ function toCsvLine(row: DiscoveryRow): string {
 export async function discoverMaisons(options: {
   /** A `nom,url` CSV roster (required at scale — the world list). */
   inputFile: string;
+  /** For the already-catalogued check — the Source table is the catalogue (DEC-3). */
+  prisma: PrismaClient;
   /** Cap the number of Maisons processed this run; 0 = all remaining. */
   limit?: number;
   /** Parallel browser detections. Keep low — each opens a real page. */
@@ -127,7 +156,14 @@ export async function discoverMaisons(options: {
 }): Promise<{ processed: number; discovered: number; skipped: number; unresolved: number; outPath: string }> {
   const concurrency = options.concurrency ?? 3;
 
-  const known = new Set(loadSourceCatalog().map((s) => resolveCompany(s.maison).companyId));
+  // Skip Maisons the catalogue already serves, whatever their status short of
+  // RETIRED: a PAUSED source is still a known board, not a discovery target.
+  // An empty table is fine here — discovery is how the catalogue gets seeded.
+  const catalogued = await options.prisma.source.findMany({
+    where: { status: { not: 'RETIRED' } },
+    select: { maison: true },
+  });
+  const known = new Set(catalogued.map((s) => resolveCompany(s.maison).companyId));
   const processed = options.fresh ? new Set<string>() : loadProcessed();
 
   // Prepare output files. The review CSV gets a header once; results are appended
@@ -148,8 +184,12 @@ export async function discoverMaisons(options: {
   if (options.fresh) writeFileSync(PROGRESS_PATH, '', 'utf8');
 
   const roster = parseRosterCsv(readFileSync(options.inputFile, 'utf8'));
+  const dead = loadDeadNames();
   let queue = roster.filter(
-    (c) => !processed.has(c.name) && !known.has(resolveCompany(c.name).companyId),
+    (c) =>
+      !processed.has(c.name) &&
+      !known.has(resolveCompany(c.name).companyId) &&
+      !dead.has(c.name.toLowerCase()),
   );
   const skippedKnownOrDone = roster.length - queue.length;
   if (options.limit && options.limit > 0) queue = queue.slice(0, options.limit);
@@ -164,27 +204,29 @@ export async function discoverMaisons(options: {
         let status = 'unresolved';
         let kind = '';
         try {
-          if (company.url) {
-            // Depth 2: homepage -> "join us"/careers landing -> the actual ATS
-            // (many brands put an HR landing page between the two, e.g. Zadig's
-            // /content/join-us links on to the real listing).
-            const detection = await inspectCareerPage(company.url, 2, fetchRenderedHtml);
-            if (detection) {
-              kind = KIND_FOR_TYPE[detection.type] ?? detection.type.toLowerCase();
-              appendFileSync(OUT_PATH, toCsvLine({ maison: company.name, kind, detection }) + '\n');
-              discovered++;
-              status = detection.type === 'GENERIC_JSONLD' ? 'generic' : 'ats';
-            } else {
-              unresolved++;
-              appendFileSync(
-                UNRESOLVED_PATH,
-                `${csvCell(company.name)},${csvCell(company.url)},${csvCell('no ATS/careers found')}\n`,
-              );
-            }
+          // API-FIRST (the key path, Loïc 2026-09-03): probe the public ATS APIs
+          // directly from the brand name + site URL. This BYPASSES a bot-blocked
+          // marketing homepage entirely — the ATS API is public even when the
+          // site 403s (verified: Lacoste homepage 403 -> careers.lacoste.com API
+          // 461 offers). Cheap, no browser, and it resolves the Cloudflare brands
+          // the homepage crawl never could. The browser is only the fallback.
+          let detection = await probeAtsBySlug(company.name, undefined, company.url);
+          if (!detection && company.url) {
+            // Fallback: read the homepage in a browser (depth 2: homepage ->
+            // careers landing -> ATS) for brands whose ATS the probes missed.
+            detection = await inspectCareerPage(company.url, 2, fetchRenderedHtml);
+          }
+          if (detection) {
+            kind = KIND_FOR_TYPE[detection.type] ?? detection.type.toLowerCase();
+            appendFileSync(OUT_PATH, toCsvLine({ maison: company.name, kind, detection }) + '\n');
+            discovered++;
+            status = detection.type === 'GENERIC_JSONLD' ? 'generic' : 'ats';
           } else {
             unresolved++;
-            status = 'no-url';
-            appendFileSync(UNRESOLVED_PATH, `${csvCell(company.name)},${csvCell('')},${csvCell('no url in roster')}\n`);
+            appendFileSync(
+              UNRESOLVED_PATH,
+              `${csvCell(company.name)},${csvCell(company.url ?? '')},${csvCell('no ATS/careers found')}\n`,
+            );
           }
         } catch {
           unresolved++;

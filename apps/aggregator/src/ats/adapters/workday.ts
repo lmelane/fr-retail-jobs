@@ -68,8 +68,29 @@ type WorkdayDetail = {
     location?: string;
     country?: { descriptor?: string };
     startDate?: string;
+    /** On group tenants, the alt text IS the brand ("Panerai", "Cartier"). */
+    logoImage?: { alt?: string };
   };
+  /** Legal entity, code-prefixed: "C170 Officine Panerai". */
+  hiringOrganization?: { name?: string };
 };
+
+/**
+ * The Maison this posting belongs to, on a GROUP tenant (audit A-01, D11).
+ *
+ * Verified live on richemont/broadbean_external: jobPostingInfo.logoImage.alt
+ * = "Panerai", hiringOrganization.name = "C170 Officine Panerai". Without this,
+ * every offer of the feed inherits the catalogue line's label and 1 300+
+ * Richemont offers all read "Cartier".
+ */
+export function brandFromWorkdayDetail(detail: WorkdayDetail): string | undefined {
+  const alt = detail.jobPostingInfo?.logoImage?.alt?.trim();
+  if (alt) return alt;
+  const legal = detail.hiringOrganization?.name?.trim();
+  if (!legal) return undefined;
+  // Strip the leading entity code ("C170 Officine Panerai" -> "Officine Panerai").
+  return legal.replace(/^[A-Z]{0,2}\d+\s+/, '').trim() || undefined;
+}
 
 function stripHtml(value?: string): string {
   return (value ?? '')
@@ -106,6 +127,8 @@ export async function attachWorkdayDescriptions(
             description: stripHtml(info.jobDescription) || job.description,
             country: info.country?.descriptor ?? job.country,
             location: info.location ?? job.location,
+            // Group tenants: credit the offer to its Maison, not the feed label.
+            company: brandFromWorkdayDetail(detail) ?? job.company,
           };
         } catch {
           // A failed detail fetch must not lose the listing entry.

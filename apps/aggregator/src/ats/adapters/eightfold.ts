@@ -46,8 +46,30 @@ type SearchResponse = {
 };
 
 type DetailResponse = {
-  data?: { job_description?: string; positionUrl?: string };
+  data?: {
+    /** The live API answers camelCase; older tenants snake_case. Read both. */
+    jobDescription?: string;
+    job_description?: string;
+    positionUrl?: string;
+    /**
+     * Tenant-custom brand field — the Maison this offer belongs to. Verified
+     * live on careers.elcompanies.com: efcustomTextBrand = ["Le Labo"].
+     * Without it every ELC offer inherits the catalogue label (audit A-01).
+     */
+    efcustomTextBrand?: string[] | string;
+    brand?: string[] | string;
+    business_unit?: string[] | string;
+  };
 };
+
+/** First non-empty brand value, whatever shape the tenant uses. */
+function brandOf(data: DetailResponse['data']): string | undefined {
+  for (const value of [data?.efcustomTextBrand, data?.brand, data?.business_unit]) {
+    const first = Array.isArray(value) ? value[0] : value;
+    if (first && String(first).trim()) return String(first).trim();
+  }
+  return undefined;
+}
 
 function stripHtml(value?: string): string | undefined {
   if (!value) return undefined;
@@ -163,7 +185,12 @@ export async function fetchEightfoldJobs(
             `${origin}/api/pcsx/position_details?position_id=${encodeURIComponent(job.externalId)}&domain=${encodeURIComponent(domain)}&hl=fr`,
             { headers },
           );
-          return { ...job, description: stripHtml(detail.data?.job_description) };
+          return {
+            ...job,
+            description: stripHtml(detail.data?.jobDescription ?? detail.data?.job_description),
+            // Group tenants: the offer belongs to its Maison, not the feed label.
+            company: brandOf(detail.data) ?? job.company,
+          };
         } catch {
           // A failed detail fetch must not lose the listing entry.
           return job;

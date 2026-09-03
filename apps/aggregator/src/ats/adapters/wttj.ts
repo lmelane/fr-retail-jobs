@@ -134,6 +134,9 @@ function toNormalized(hit: WttjHit, organizationSlug: string): NormalizedJob | n
     salaryCurrency: hit.salary_currency,
     salaryPeriod: hit.salary_period,
     description: description || undefined,
+    // The employer as WTTJ names it — without it, a group slug's offers all
+    // inherit the catalogue label (audit A-01).
+    company: hit.organization?.name,
     url: `https://www.welcometothejungle.com/fr/companies/${organizationSlug}/jobs/${hit.slug ?? ''}`,
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
     raw: hit,

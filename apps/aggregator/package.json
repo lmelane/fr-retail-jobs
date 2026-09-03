@@ -9,10 +9,11 @@
     "refresh": "tsx src/cli.ts refresh",
     "reconcile": "tsx src/cli.ts reconcile",
     "geocode": "tsx src/cli.ts geocode",
+    "import-sources": "tsx src/cli.ts import-sources",
     "stats": "tsx src/cli.ts stats",
     "export:companies": "tsx src/cli.ts export-companies",
     "typecheck": "tsc --noEmit",
-    "test:unit": "vitest run src/normalize src/lib/france.test.ts src/lib/html.test.ts src/lib/ssrf.test.ts src/geo",
+    "test:unit": "vitest run src/normalize src/ats src/connectors/generic src/lib/france.test.ts src/lib/html.test.ts src/lib/ssrf.test.ts src/lib/language.test.ts src/discovery/discoverMaisons.test.ts src/geo",
     "test:integration": "vitest run src/pipeline",
     "test": "npm run test:unit && npm run test:integration"
   },
@@ -22,7 +23,8 @@
     "cheerio": "^1.1.2",
     "fast-xml-parser": "^5.2.5",
     "p-limit": "^7.1.1",
-    "playwright": "1.62.1"
+    "playwright": "1.62.1",
+    "undici": "^7.29.0"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",

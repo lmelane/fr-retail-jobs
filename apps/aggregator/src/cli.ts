@@ -4,6 +4,7 @@ import { ingestAllBySource } from './pipeline/ingestOrchestrator.js';
 import { checkSourceHealth } from './pipeline/health.js';
 import { sendHealthAlert } from './pipeline/alert.js';
 import { submitOfferChanges } from './pipeline/googleIndexing.js';
+import { pingHeartbeat } from './pipeline/heartbeat.js';
 
 /**
  * How far back to look for offers created/closed by THIS run, when notifying
@@ -14,6 +15,9 @@ import { submitOfferChanges } from './pipeline/googleIndexing.js';
 const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 * 1000);
 import { runRefresh } from './pipeline/refresh.js';
 import { runReconcile } from './pipeline/reconcile.js';
+import { separateFusedJobs } from './pipeline/separateFused.js';
+import { retireSource } from './pipeline/retireSource.js';
+import { importSourcesCsv, promoteSource } from './connectors/sourceStore.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
 import { runStats } from './pipeline/stats.js';
 import { exportCompanies } from './export/companies.js';
@@ -103,7 +107,12 @@ try {
       closedRows.map((r) => r.id),
     );
 
-    console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo, alerted, indexing }, null, 2));
+    // DEC-4: tell the external pinger this run happened (no-op unconfigured).
+    // Success = the run completed, even with per-source failures — the pinger
+    // watches for the PIPELINE dying, the Brevo digest covers sick sources.
+    const heartbeat = await pingHeartbeat(orchestration.failed === 0);
+
+    console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo, alerted, indexing, heartbeat }, null, 2));
     if (orchestration.failed > 0 || orchestration.timedOut > 0) {
       console.error(
         `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`,
@@ -126,6 +135,43 @@ try {
     }
   } else if (command === 'reconcile') {
     console.log(JSON.stringify({ ok: true, command, ...(await runReconcile(prisma)) }, null, 2));
+  } else if (command === 'import-sources') {
+    /**
+     * One-shot seed of the Source table (DEC-3) from data/sources.csv.
+     * Idempotent: re-running updates, never duplicates. After this, the CSV is
+     * dead weight — every runtime consumer reads the table.
+     */
+    const stats = await importSourcesCsv(prisma);
+    console.log(JSON.stringify({ ok: stats.skippedDuplicateTenant.length === 0, command, ...stats }, null, 2));
+    if (stats.skippedDuplicateTenant.length > 0) process.exitCode = 1;
+  } else if (command === 'promote') {
+    /**
+     * DRAFT/VALIDATED/PAUSED -> ACTIVE, guarded: config + dated robots verdict
+     * + at least one proven offer, or the promotion refuses (règles du plan).
+     */
+    const key = process.argv[3];
+    if (!key || key.startsWith('--')) throw new Error('promote needs the sourceKey to promote');
+    console.log(JSON.stringify({ ok: true, command, ...(await promoteSource(prisma, key)) }, null, 2));
+  } else if (command === 'retire-source') {
+    /**
+     * Cleans up after a catalogue line is removed (a robots-forbidden route, an
+     * abandoned Flux B board): detaches the retired source's JobSource rows,
+     * deletes jobs nothing else backs, reassigns canonical URLs it owned.
+     * Guarded: destructive on purpose, so the key must be explicit.
+     */
+    const key = process.argv[3];
+    if (!key || key.startsWith('--')) throw new Error('retire-source needs the sourceKey to retire');
+    console.log(JSON.stringify({ ok: true, command, ...(await retireSource(prisma, key)) }, null, 2));
+  } else if (command === 'separate-fused') {
+    /**
+     * One-shot repair for audit D-01: splits openings a single source published
+     * under distinct ids that the old write path wrongly fused into one Job.
+     * Prints the before/after metric; after the fix ships, fusedAfter must be 0
+     * and STAY 0 — a non-zero value on a later run means the guard regressed.
+     */
+    const stats = await separateFusedJobs(prisma);
+    console.log(JSON.stringify({ ok: stats.fusedAfter === 0, command, ...stats }, null, 2));
+    if (stats.fusedAfter > 0) process.exitCode = 1;
   } else if (command === 'geocode') {
     console.log(JSON.stringify({ ok: true, command, ...(await runGeocode(prisma)) }, null, 2));
   } else if (command === 'stats') {
@@ -178,6 +224,7 @@ try {
     const fresh = process.argv.includes('--fresh');
     const result = await discoverMaisons({
       inputFile,
+      prisma,
       limit: Number.isFinite(limit) ? limit : 0,
       concurrency: Number.isFinite(concurrency) && concurrency > 0 ? concurrency : 3,
       fresh,

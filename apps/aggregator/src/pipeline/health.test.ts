@@ -15,7 +15,7 @@ import type { IngestStats } from './ingest.js';
 const prisma = new PrismaClient();
 
 function stat(source: string, created: number): IngestStats {
-  return { source, fetched: created, inSector: created, france: created, created, merged: 0, updated: 0, errors: 0 };
+  return { source, fetched: created, inSector: created, france: created, created, merged: 0, updated: 0, errors: 0, withDescription: created, withDate: created, withCountry: created, withUrl: created };
 }
 
 async function wipe() {
