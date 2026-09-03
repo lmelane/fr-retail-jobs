@@ -44,10 +44,10 @@ export function slugCandidates(companyName: string, fashionjobsSlug?: string): s
   return [...new Set(variants.filter((v): v is string => Boolean(v) && v!.length >= 3))];
 }
 
-async function probeJson(url: string): Promise<unknown | null> {
+async function probeBody(url: string, asText: boolean): Promise<unknown | null> {
   try {
     const response = await fetchWithRetry(url, { signal: AbortSignal.timeout(PROBE_TIMEOUT_MS) }, 1);
-    return await response.json();
+    return asText ? await response.text() : await response.json();
   } catch {
     return null;
   }
@@ -60,6 +60,8 @@ type Probe = {
   hasJobs: (body: any) => boolean;
   careers: (slug: string) => string;
   config: (slug: string) => Record<string, unknown>;
+  /** Endpoint returns text (XML), not JSON — probed as a string. */
+  text?: boolean;
 };
 
 const PROBES: Probe[] = [
@@ -91,22 +93,112 @@ const PROBES: Probe[] = [
     careers: (s) => `https://${s}.recruitee.com`,
     config: (s) => ({ subdomain: s }),
   },
+  {
+    // Teamtailor: <slug>.teamtailor.com/jobs.json (verified: faguo -> 200).
+    type: 'TEAMTAILOR',
+    url: (s) => `https://${encodeURIComponent(s)}.teamtailor.com/jobs.json?per_page=1`,
+    hasJobs: (b) => Array.isArray(b?.items) && b.items.length > 0,
+    careers: (s) => `https://${s}.teamtailor.com`,
+    config: (s) => ({ origin: `https://${s}.teamtailor.com` }),
+  },
+  {
+    // Personio: <slug>.jobs.personio.de/xml (also .com); the XML lists positions.
+    type: 'PERSONIO',
+    url: (s) => `https://${encodeURIComponent(s)}.jobs.personio.de/xml`,
+    // The probe returns XML text (not JSON) — hasJobs inspects the raw string.
+    hasJobs: (b) => typeof b === 'string' && /<position/i.test(b),
+    careers: (s) => `https://${s}.jobs.personio.de`,
+    config: (s) => ({ subdomain: s, host: `${s}.jobs.personio.de` }),
+    text: true,
+  },
+  {
+    // Workable: apply.workable.com/api/v1/widget/accounts/<slug>?details=true.
+    type: 'WORKABLE',
+    url: (s) => `https://apply.workable.com/api/v1/widget/accounts/${encodeURIComponent(s)}?details=true`,
+    hasJobs: (b) => Array.isArray(b?.jobs) && b.jobs.length > 0,
+    careers: (s) => `https://apply.workable.com/${s}`,
+    config: (s) => ({ subdomain: s }),
+  },
+  {
+    // Welcome to the Jungle: the public pages API confirms a company exists on
+    // WTTJ by slug (200 vs 404), no homepage read. The WTTJ adapter then fetches
+    // the real jobs via Algolia from that slug. A job listing carries sections;
+    // require at least one so an empty shell is not counted.
+    type: 'WTTJ',
+    url: (s) => `https://api.welcometothejungle.com/api/v1/pages?path=/fr/companies/${encodeURIComponent(s)}/jobs`,
+    hasJobs: (b) => Boolean(b?.page?.id) && Array.isArray(b?.page?.sections) && b.page.sections.length > 0,
+    careers: (s) => `https://www.welcometothejungle.com/fr/companies/${s}/jobs`,
+    config: (s) => ({ slug: s }),
+  },
 ];
 
 /**
- * Attempts to identify a company's ATS without any paid search API.
- * Returns null when no probe confirms real postings.
+ * Careers-DOMAIN candidates for a brand whose ATS is keyed by a hostname rather
+ * than a slug (DigitalRecruiters, a Teamtailor career subdomain). Built from the
+ * brand's own registrable domain when we have its site URL — this is the API
+ * path that BYPASSES a bot-blocked marketing homepage entirely (the ATS API is
+ * public even when the site 403s; verified: careers.lacoste.com -> 461 offers).
+ */
+export function careersDomainCandidates(companyName: string, siteUrl?: string): string[] {
+  const roots = new Set<string>();
+  if (siteUrl) {
+    try {
+      const host = new URL(siteUrl).hostname.replace(/^www\./, '');
+      roots.add(host);
+    } catch {
+      /* ignore */
+    }
+  }
+  // Also derive a plausible <brand>.com from the name, for rosters without a URL.
+  const core = slugCandidates(companyName)[0];
+  if (core) roots.add(`${core}.com`);
+
+  const prefixes = ['careers', 'career', 'carriere', 'talents', 'talent', 'jobs', 'recrutement', 'emploi'];
+  const domains = new Set<string>();
+  for (const root of roots) {
+    for (const p of prefixes) domains.add(`${p}.${root}`);
+  }
+  return [...domains].slice(0, 12);
+}
+
+/** Does this careers domain serve a DigitalRecruiters board? Returns its count. */
+async function probeDigitalRecruiters(domainName: string): Promise<boolean> {
+  const url = `https://api.digitalrecruiters.com/public/v1/careers-site/job-ads?domainName=${encodeURIComponent(domainName)}&limit=1&page=1&locale=fr_FR`;
+  try {
+    const response = await fetchWithRetry(
+      url,
+      { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}', signal: AbortSignal.timeout(PROBE_TIMEOUT_MS) },
+      1,
+    );
+    const body = (await response.json()) as { items?: unknown[] };
+    return Array.isArray(body.items) && body.items.length > 0;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Attempts to identify a company's ATS without any paid search API and WITHOUT
+ * reading its (possibly bot-blocked) homepage — by probing public ATS endpoints
+ * directly. Slug-keyed ATS first (cheap), then careers-domain-keyed ones.
+ * Returns null when nothing confirms real postings.
  */
 export async function probeAtsBySlug(
   companyName: string,
   fashionjobsSlug?: string,
+  siteUrl?: string,
 ): Promise<AtsDetection | null> {
-  const slugs = slugCandidates(companyName, fashionjobsSlug);
+  // Bounded: the top few slugs only. More candidates barely help and multiply the
+  // request count per brand (14k brands -> that matters).
+  const slugs = slugCandidates(companyName, fashionjobsSlug).slice(0, 3);
 
-  for (const slug of slugs) {
-    for (const probe of PROBES) {
-      const body = await probeJson(probe.url(slug));
-      if (body === null || !probe.hasJobs(body)) continue;
+  // Try every (slug, probe) pair CONCURRENTLY and take the first real hit — much
+  // faster than the nested sequential loops, and the host-gate still keeps us
+  // polite per ATS host.
+  const slugAttempts = slugs.flatMap((slug) =>
+    PROBES.map(async (probe): Promise<AtsDetection | null> => {
+      const body = await probeBody(probe.url(slug), probe.text ?? false);
+      if (body === null || !probe.hasJobs(body)) return null;
       return {
         type: probe.type,
         careersUrl: probe.careers(slug),
@@ -114,7 +206,25 @@ export async function probeAtsBySlug(
         confidence: 0.9,
         note: `Resolved by direct ${probe.type} slug probe ("${slug}"); no search API used.`,
       };
-    }
-  }
-  return null;
+    }),
+  );
+  const slugHit = (await Promise.all(slugAttempts)).find(Boolean);
+  if (slugHit) return slugHit;
+
+  // Domain-keyed: DigitalRecruiters on a careers.<brand> host — reaches a
+  // Cloudflare-blocked brand (Lacoste, Aigle…) through its public API, no
+  // homepage read. Probed concurrently, first hit wins.
+  const domainAttempts = careersDomainCandidates(companyName, siteUrl).map(
+    async (domainName): Promise<AtsDetection | null> =>
+      (await probeDigitalRecruiters(domainName))
+        ? {
+            type: 'DIGITALRECRUITERS' as const,
+            careersUrl: `https://${domainName}`,
+            config: { domainName },
+            confidence: 0.92,
+            note: `Resolved by direct DigitalRecruiters API probe (${domainName}); no homepage read.`,
+          }
+        : null,
+  );
+  return (await Promise.all(domainAttempts)).find(Boolean) ?? null;
 }
