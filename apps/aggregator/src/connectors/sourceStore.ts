@@ -51,7 +51,27 @@ export function tenantKeyOf(kind: string, entryUrl: string, careersDomain?: stri
     config.listingUrl, config.sitemapUrl, config.feedUrl, config.startUrl, config.url,
   ].find((v): v is string => typeof v === 'string' && v.length > 0);
 
-  const raw = locator ?? careersDomain ?? (maison ? sourceKeyFor({ maison } as CatalogSource) : '');
+  /**
+   * Workday : le tenant SEUL n'identifie pas un feed — un même tenant sert
+   * plusieurs sites, et chaque site est un board distinct avec ses propres
+   * offres. Mesuré le 2026-09-04 : les trois boards Uniqlo
+   * (headquarters_eu / store_staff_eu / graduates_eu du tenant `fastretailing`)
+   * s'écrasaient sur `workday:fastretailing`, et les 107 offres boutiques + 11
+   * offres graduate étaient rejetées comme doublons du siège (20 offres). Idem
+   * chez Capri : Michael Kors (519) et Jimmy Choo (50) écartés au profit de
+   * Versace (52).
+   *
+   * La clé existe pour empêcher de re-télécharger LE MÊME feed (D26/D28) — pas
+   * pour fusionner des feeds différents. Le couple tenant+site est ce qui
+   * désigne réellement un feed Workday.
+   */
+  const workdayPair =
+    typeof config.tenant === 'string' && typeof config.site === 'string' && config.tenant && config.site
+      ? `${config.tenant}/${config.site}`
+      : undefined;
+
+  const raw =
+    workdayPair ?? locator ?? careersDomain ?? (maison ? sourceKeyFor({ maison } as CatalogSource) : '');
   const normalized = raw
     .toLowerCase()
     .replace(/^https?:\/\//, '')

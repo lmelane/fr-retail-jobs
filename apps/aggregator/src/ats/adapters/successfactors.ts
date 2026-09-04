@@ -32,7 +32,20 @@ const HEADERS = { 'user-agent': USER_AGENT };
  * Job links look like /job/{City}-{Title}/{id}/ — the city and title are already
  * in the path, which is enough to build the listing without a detail fetch.
  */
-const JOB_LINK = /href="(\/job\/([^"/]+)\/(\d+)\/?)"/g;
+/**
+ * Lien d'offre SuccessFactors : `/job/{slug}/{id}/`, éventuellement préfixé
+ * d'UN segment de site.
+ *
+ * Mesuré le 2026-09-04 : jobs.sephora.com sert ses offres sous
+ * `/France/job/SARAN-CDD-.../1367267555/`. Le motif ancré sur `/job/` n'en
+ * voyait aucune — 48 liens bien présents dans la page, 0 offre remontée. Tout
+ * tenant SAP qui segmente par pays ou par marque est dans ce cas.
+ *
+ * Un seul segment optionnel, et jamais `job` lui-même : on reste ancré sur la
+ * forme réelle plutôt que d'accepter n'importe quelle profondeur, ce qui
+ * ramasserait des liens qui ne sont pas des offres.
+ */
+const JOB_LINK = /href="((?:\/(?!job\/)[^"/]+)?\/job\/([^"/]+)\/(\d+)\/?)"/g;
 
 export type SuccessFactorsJob = {
   url: string;

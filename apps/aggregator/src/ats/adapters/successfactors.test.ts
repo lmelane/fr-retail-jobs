@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { parseMicrodataDetail, splitSlug } from './successfactors.js';
+import { parseListing, parseMicrodataDetail, splitSlug } from './successfactors.js';
 
 /**
  * Issue #6 — Clarins/My Blend postings stored with title and location swapped.
@@ -100,5 +100,31 @@ describe('parseMicrodataDetail — tenants sans streetAddress', () => {
     `);
     expect(d.city).toBe('Liverpool');
     expect(d.country).toBe('GB');
+  });
+})
+
+describe('parseListing — offres sous un préfixe de site', () => {
+  /**
+   * Mesuré le 2026-09-04 : jobs.sephora.com sert ses offres sous
+   * `/France/job/...`. Le motif ancré sur `/job/` n'en voyait aucune — 48 liens
+   * présents dans la page, 0 offre remontée.
+   */
+  test('accepte un segment de préfixe (Sephora /France/job/…)', () => {
+    const jobs = parseListing(
+      '<a href="/France/job/SARAN-CDD-Charge-des-Services-Generaux/1367267555/">x</a>',
+      'https://jobs.sephora.com',
+    );
+    expect(jobs).toHaveLength(1);
+    expect(jobs[0].externalId).toBe('1367267555');
+    expect(jobs[0].url).toBe('https://jobs.sephora.com/France/job/SARAN-CDD-Charge-des-Services-Generaux/1367267555/');
+  });
+
+  test('le cas sans préfixe continue de marcher', () => {
+    const jobs = parseListing('<a href="/job/PARIS-Vendeur/123/">x</a>', 'https://careers.coty.com');
+    expect(jobs[0].url).toBe('https://careers.coty.com/job/PARIS-Vendeur/123/');
+  });
+
+  test('ne ramasse pas un lien à deux segments de préfixe', () => {
+    expect(parseListing('<a href="/a/b/job/X/9/">x</a>', 'https://x.com')).toHaveLength(0);
   });
 })
