@@ -3,7 +3,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn() }));
 
 import { fetchJson } from '../../lib/http.js';
-import { fetchWorkdayJobs } from './workday.js';
+import { fetchWorkdayJobs, locationFromBullets } from './workday.js';
 
 const mockJson = vi.mocked(fetchJson);
 beforeEach(() => mockJson.mockReset());
@@ -106,5 +106,31 @@ describe('postedAtFromWorkday', () => {
     expect(postedAtFromWorkday('Posted 30+ Days Ago')).toBeUndefined();
     expect(postedAtFromWorkday('whenever')).toBeUndefined();
     expect(postedAtFromWorkday(undefined)).toBeUndefined();
+  });
+});
+
+describe('locationFromBullets — tenants qui laissent locationsText vide', () => {
+  /**
+   * Mesuré 2026-09-04 sur Capri (Versace, Michael Kors, Jimmy Choo) : 621
+   * offres, toutes avec un lieu affiché sur la page, toutes SANS lieu une fois
+   * parsées — le tenant remplit `bulletFields`, pas `locationsText`. Une offre
+   * sans lieu est inutilisable pour un candidat.
+   */
+  it('prend le premier bullet qui est un lieu', () => {
+    expect(locationFromBullets(['GV-OUTLET Vancouver', 'GV-OUTLET Vancouver', 'R_778886'])).toBe(
+      'GV-OUTLET Vancouver',
+    );
+  });
+
+  it('ignore un identifiant de réquisition, quelle que soit sa forme', () => {
+    expect(locationFromBullets(['R_778886', 'Milano'])).toBe('Milano');
+    expect(locationFromBullets(['JR12345', 'Paris'])).toBe('Paris');
+    expect(locationFromBullets(['REQ-90210', 'London'])).toBe('London');
+  });
+
+  it('préfère ne rien rendre plutôt qu’afficher un identifiant comme ville', () => {
+    expect(locationFromBullets(['R_778886'])).toBeUndefined();
+    expect(locationFromBullets([])).toBeUndefined();
+    expect(locationFromBullets(undefined)).toBeUndefined();
   });
 });

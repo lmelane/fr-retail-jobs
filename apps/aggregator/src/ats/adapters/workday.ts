@@ -8,6 +8,22 @@ import type { AdapterResult, NormalizedJob } from '../../types.js';
 type WorkdayPosting = { title: string; externalPath?: string; locationsText?: string; postedOn?: string; bulletFields?: string[] };
 type WorkdayPage = { total?: number; jobPostings?: WorkdayPosting[] };
 
+/** Matches a requisition id (R_778886, JR12345, REQ-90210) — never a place. */
+const REQUISITION_ID = /^(r|jr|req)[_-]?\d+$/i;
+
+/**
+ * The location a tenant put in `bulletFields` instead of `locationsText`.
+ *
+ * Workday's own UI shows the bullets as "location · location · requisition id".
+ * Taking the first non-id bullet therefore reads the location exactly where the
+ * candidate sees it. Returns undefined rather than a wrong guess when the only
+ * bullets are ids — a missing location is honest, a requisition id shown as a
+ * city is not.
+ */
+export function locationFromBullets(bullets?: string[]): string | undefined {
+  return bullets?.map((b) => b.trim()).find((b) => b.length > 1 && !REQUISITION_ID.test(b));
+}
+
 export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const tenant = String(config.tenant ?? '');
   const site = String(config.site ?? '');
@@ -40,7 +56,17 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
       out.push({
         externalId,
         title: job.title,
-        location: job.locationsText,
+        /**
+         * Not every tenant fills `locationsText`. Capri (Versace, Michael Kors,
+         * Jimmy Choo) leaves it empty and puts the site in `bulletFields[0]`
+         * instead — measured 2026-09-04: 621 offers, ALL with a location on the
+         * page, ALL location-less once parsed. An offer with no location is
+         * unusable for a candidate, so fall back to the first bullet field,
+         * which is where Workday's own UI reads the location from. The last
+         * bullet is the requisition id (R_778886), never a place: it is
+         * excluded so an id is never displayed as a city.
+         */
+        location: job.locationsText || locationFromBullets(job.bulletFields),
         postedAt: postedAtFromWorkday(job.postedOn),
         // The public career URL is {origin}/{site}{externalPath}, joined by
         // string — NOT new URL(externalPath, `${origin}/${site}/`), which
