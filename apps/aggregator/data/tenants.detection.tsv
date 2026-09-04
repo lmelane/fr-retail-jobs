@@ -1,0 +1,233 @@
+url	kind	marques	bucket	detail	noms
+https://jobs.jcrew.com	Board maison	2	READY	WORKDAY (page)	J.Crew | Madewell
+https://about.puma.com/en/careers	portail	1	READY	WORKDAY (https://about.puma.com/en/jobs/manager-garment-technologist-r42569)	Puma
+https://careers.aigle.com/fr	portail maison	1	READY	DIGITALRECRUITERS (page)	Aigle
+https://careers.am-vintage.com/en	portail maison	1	READY	DIGITALRECRUITERS (page)	American Vintage
+https://careers.lacoste.com/fr/annonces	portail maison	1	READY	DIGITALRECRUITERS (page)	Lacoste
+https://careers.thekooples.com/en/annonces	portail maison	1	READY	DIGITALRECRUITERS (page)	The Kooples
+https://jobs.rossstores.com/search/searchjobs	propre	1	READY	AVATURE (page)	Ross Stores
+https://jobs.sephora.com	portail	1	READY	SUCCESSFACTORS (page)	Sephora
+https://karriere.galeria.de	portail	1	NO_ADAPTER	Cornerstone (https://karriere.galeria.de)	Galeria (Karstadt Kaufhof)
+https://careers.boardriders.com	portail	3	DEAD_HOST	DNS ENOTFOUND	Billabong | Quiksilver | Roxy
+https://jobs.groupe-rocher.com	Board maison	3	DEAD_HOST	DNS ENOTFOUND	Arbonne | Dr Pierre Ricaud | Sabon
+https://career.hm.com/	portail_groupe	6	BOT_WALL	HTTP 403 for https://career.hm.com/	& Other Stories | Monki | Weekday | Arket | COS | H&M
+https://careers.keringeyewear.com	portail	2	DEAD_HOST	DNS ENOTFOUND	Lindberg | Maui Jim
+https://www.capriholdings.com/people/Join-Us/default.aspx	portail_groupe	3	BOT_WALL	HTTP 403 for https://www.capriholdings.com/people/Join-Us/default.aspx	Jimmy Choo | Michael Kors | Versace
+https://careers.tfgbrands.co.uk	portail	2	DEAD_HOST	DNS ENOTFOUND	Phase Eight | Whistles
+https://carrieres.spartoo.com	portail	2	DEAD_HOST	DNS ENOTFOUND	André | Spartoo
+https://careers.abc-mart.net	portail	1	DEAD_HOST	DNS ENOTFOUND	ABC-Mart
+https://careers.agnesb.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Agnès b.
+https://careers.aeropostale.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Aéropostale
+https://careers.aloyoga.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Alo Yoga
+https://careers.alshaya.com	portail	1	BOT_WALL	HTTP 403 for https://careers.alshaya.com	Alshaya Group
+https://careers.amiparis.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Ami Paris
+https://careers.authentic.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Ted Baker
+https://careers.bape.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Bape (A Bathing Ape)
+https://careers.beams.co.jp	portail	1	DEAD_HOST	DNS ENOTFOUND	Beams
+https://careers.bestseller.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Bestseller (Vero Moda, Only, Jack & Jones)
+https://careers.beymen.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Beymen
+https://careers.bimbaylola.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Bimba y Lola
+https://careers.boggi.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Boggi Milano
+https://careers.bogner.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Bogner
+https://careers.boohoogroup.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Boohoo
+https://careers.boyner.com.tr	portail	1	DEAD_HOST	DNS ENOTFOUND	Boyner
+https://careers.brunellocucinelli.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Brunello Cucinelli
+https://careers.buckle.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Buckle
+https://careers.caleres.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Stuart Weitzman
+https://careers.ccc.eu	portail	1	DEAD_HOST	DNS ENOTFOUND	CCC
+https://careers.christianlouboutin.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Christian Louboutin
+https://careers.clarks.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Clarks
+https://careers.courreges.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Courrèges
+https://careers.craft.se	portail	1	DEAD_HOST	DNS ENOTFOUND	Craft
+https://careers.delsey.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Delsey
+https://careers.descente.co.jp	portail	1	DEAD_HOST	DNS ENOTFOUND	Descente
+https://careers.desigual.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Desigual
+https://careers.drmartens.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Dr. Martens
+https://careers.eddiebauer.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Eddie Bauer
+https://careers.esprit.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Esprit
+https://careers.farmers.co.nz	portail	1	BOT_WALL	HTTP 403 for https://careers.farmers.co.nz	Farmers
+https://careers.fearofgod.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Fear of God
+https://careers.fila.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Fila
+https://careers.forever21.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Forever 21
+https://careers.fossilgroup.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Fossil
+https://careers.frame-store.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Frame
+https://careers.frasers.group	portail	1	DEAD_HOST	DNS ENOTFOUND	Sports Direct
+https://careers.furla.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Furla
+https://careers.gant.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Gant
+https://careers.goldwin.co.jp	portail	1	DEAD_HOST	DNS ENOTFOUND	Goldwin
+https://careers.hanesbrands.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Champion
+https://careers.hobbs.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Hobbs
+https://careers.herno.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Herno
+https://careers.holzweiler.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Holzweiler
+https://careers.isabelmarant.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Isabel Marant
+https://careers.iroparis.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Iro
+https://careers.kurtgeiger.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Kurt Geiger
+https://careers.kith.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Kith
+https://careers.landmarkgroup.com	portail	1	BOT_WALL	HTTP 403 for https://careers.landmarkgroup.com	Landmark Group
+https://careers.landsend.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Lands' End
+https://careers.leslipfrancais.fr	portail	1	DEAD_HOST	DNS ENOTFOUND	Le Slip Français
+https://careers.loreal.com	Board maison	1	BOT_WALL	HTTP 403 for https://careers.loreal.com	Mugler
+https://careers.luckybrand.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Lucky Brand
+https://careers.macron.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Macron
+https://careers.mashgroup.jp	portail	1	DEAD_HOST	DNS ENOTFOUND	Snidel
+https://careers.missoni.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Missoni
+https://careers.off---white.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Off-White
+https://careers.office.co.uk	portail	1	DEAD_HOST	DNS ENOTFOUND	Office London
+https://careers.palaceskateboards.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Palace
+https://careers.palmangels.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Palm Angels
+https://careers.paulandshark.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Paul & Shark
+https://careers.revolve.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Revolve
+https://careers.robertocavalli.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Roberto Cavalli
+https://careers.roots.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Roots
+https://careers.rouje.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Rouje
+https://careers.rustans.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Rustan's
+https://careers.sergiorossi.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Sergio Rossi
+https://careers.shoppersstop.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Shoppers Stop
+https://careers.skp-beijing.com	portail	1	DEAD_HOST	DNS ENOTFOUND	SKP
+https://careers.soeur.fr	portail	1	DEAD_HOST	DNS ENOTFOUND	Soeur
+https://careers.soliver.com	portail	1	DEAD_HOST	DNS ENOTFOUND	s.Oliver
+https://careers.stockmann.com	Board maison	1	BOT_WALL	HTTP 403 for https://careers.stockmann.com	Stockmann
+https://careers.stussy.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Stüssy
+https://careers.tabio.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Tabio
+https://careers.tally-weijl.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Tally Weijl
+https://careers.tangs.com	portail	1	BOT_WALL	HTTP 403 for https://careers.tangs.com	TANGS
+https://careers.tillys.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Tillys
+https://careers.tom-tailor.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Tom Tailor
+https://careers.trent-tata.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Westside (Trent)
+https://careers.toteme-studio.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Toteme
+https://careers.triumph.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Triumph
+https://careers.vakko.com.tr	portail	1	DEAD_HOST	DNS ENOTFOUND	Vakko
+https://careers.united-arrows.co.jp	portail	1	DEAD_HOST	DNS ENOTFOUND	United Arrows
+https://careers.vince.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Vince
+https://careers.vilebrequin.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Vilebrequin
+https://careers.wacoal.co.jp	portail	1	DEAD_HOST	DNS ENOTFOUND	Wacoal
+https://careers.zadig-et-voltaire.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Zadig & Voltaire
+https://carrieres.carel.fr	portail	1	DEAD_HOST	DNS ENOTFOUND	Carel
+https://carrieres.fusalp.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Fusalp
+https://carrieres.ikks.com	portail	1	DEAD_HOST	DNS ENOTFOUND	IKKS
+https://carrieres.julien-dorcel.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Julien d’Orcel
+https://carrieres.lecoqsportif.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Le Coq Sportif
+https://carrieres.letanneur.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Le Tanneur
+https://carrieres.lisecharmel.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Lise Charmel
+https://carrieres.mephisto.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Mephisto
+https://carrieres.saint-james.fr	portail	1	DEAD_HOST	DNS ENOTFOUND	Saint James
+https://jobs.jelmoli.ch	portail	1	DEAD_HOST	DNS ENOTFOUND	Jelmoli
+https://jobs.muji.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Muji
+https://jobs.zumiez.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Zumiez
+https://karriere.breuninger.com	Board maison	1	DEAD_HOST	DNS ENOTFOUND	Breuninger
+https://recrutement.besson-chaussures.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Besson Chaussures
+https://recrutement.bizzbee.com	portail	1	DEAD_HOST	DNS ENOTFOUND	Bizzbee
+https://recrutement.rougegorge.com	portail	1	DEAD_HOST	DNS ENOTFOUND	RougeGorge
+https://trabaja.ripley.cl	portail	1	DEAD_HOST	DNS ENOTFOUND	Ripley
+https://we.goldengoose.com/talent/work-with-us/	portail maison	1	NO_ADAPTER	Oracle HCM (https://careers.goldengoose.com/)	Golden Goose
+https://trabalheconosco.riachuelo.com.br	portail	1	DEAD_HOST	DNS ENOTFOUND	Riachuelo
+https://www.carhartt.com/careers	portail maison	1	BOT_WALL	HTTP 403 for https://www.carhartt.com/careers	Carhartt
+https://www.endclothing.com/careers	Careers-Page	1	NO_ADAPTER	Breezy (https://careers.endclothing.com/)	END.
+https://www.dior.com/carrieres/index.html	portail	1	BOT_WALL	HTTP 403 for https://www.dior.com/carrieres/index.html	Dior
+https://www.ferragamo.com/shop/eu/en/sf/work-with-us	portail maison	1	BOT_WALL	HTTP 403 for https://www.ferragamo.com/shop/eu/en/sf/work-with-us	Salvatore Ferragamo
+https://www.guess.com/en-us/careers.html	portail maison	1	BOT_WALL	HTTP 403 for https://www.guess.com/en-us/careers.html	Guess
+https://www.holtrenfrew.com/en/careers	bot-wall	1	BOT_WALL	HTTP 403 for https://www.holtrenfrew.com/en/careers	Holt Renfrew
+https://www.lulus.com/careers.html	portail maison	1	BOT_WALL	HTTP 403 for https://www.lulus.com/careers.html	Lulus
+https://www.rag-bone.com/our-company/careers.html	portail maison	1	BOT_WALL	HTTP 403 for https://www.rag-bone.com/our-company/careers.html	Rag & Bone
+https://www.savagex.com/careers	bot-wall	1	BOT_WALL	HTTP 403 for https://www.savagex.com/careers	Savage x Fenty
+https://www.superdrug.jobs/search	propre	1	NO_ADAPTER	Cornerstone (https://www.superdrug.jobs/search)	Superdrug
+https://www.farfetch.com/careers	portail maison	1	DEAD_HOST	DNS ENOTFOUND	Farfetch
+https://www.windsorstore.com/pages/careers	portail maison	1	NO_ADAPTER	ADP (https://www.windsorstore.com/pages/careers)	Windsor
+https://careers.loccitane.com	portail_groupe	5	NONE	aucune signature	Elemis | Erborian | Melvita | Sol de Janeiro | L'Occitane en Provence
+https://www.swatchgroup.com/en/job-finder	portail_groupe	11	NONE	aucune signature	Blancpain | Hamilton | Harry Winston | Longines | Mido | Rado | Breguet | Certina | Omega | Swatch | Tissot
+https://careers.beiersdorf.com	portail_groupe	3	NONE	aucune signature	Eucerin | La Prairie | Nivea
+https://asoscareers.com	portail	1	NONE	aucune signature	ASOS
+https://www.j-front-retailing.com/recruit	portail	2	NONE	aucune signature	Daimaru Matsuzakaya | Parco
+https://careers-ovsgroup.ovs.it/jobs.php	portail maison	1	NONE	aucune signature	OVS
+https://burlingtonstores.jobs/jobs	portail maison	1	NONE	aucune signature	Burlington
+https://careers-page.com/laperla	Careers-Page	1	NONE	aucune signature	La Perla
+https://careers.aeffe.com	portail	1	NONE	aucune signature	Moschino
+https://careers.abercrombie.com	portail_groupe	2	UNREACHABLE	ECONNRESET	Hollister | Abercrombie & Fitch
+https://careers.axelarigato.com	portail	1	UNREACHABLE	ERR_TLS_CERT_ALTNAME_INVALID	Axel Arigato
+https://careers.azadea.com	portail	1	UNREACHABLE	ECONNRESET	Azadea Group
+https://careers.dillards.com/Careers/	Board maison	1	NONE	aucune signature	Dillard's
+https://careers.express.com	portail	1	NONE	aucune signature	Express
+https://careers.fatface.com	portail maison	1	NONE	aucune signature	FatFace
+https://careers.fenwick.co.uk	portail	1	NONE	aucune signature	Fenwick
+https://careers.fortnumandmason.com/jobs	Board maison	1	NONE	aucune signature	Fortnum & Mason
+https://careers.ecco.com	portail	1	UNREACHABLE	ERR_TLS_CERT_ALTNAME_INVALID	Ecco
+https://careers.g-star.com	portail	1	NONE	aucune signature	G-Star RAW
+https://careers.gymshark.com/	portail maison	1	NONE	aucune signature	Gymshark
+https://careers.giuseppezanotti.com	portail	1	UNREACHABLE	HTTP 400 for https://careers.giuseppezanotti.com	Giuseppe Zanotti
+https://careers.jack-wolfskin.com	portail maison	1	NONE	aucune signature	Jack Wolfskin
+https://careers.luisaviaroma.com	portail	1	UNREACHABLE	ERR_TLS_CERT_ALTNAME_INVALID	LuisaViaRoma
+https://careers.designerbrands.com	portail	1	UNREACHABLE	UND_ERR_CONNECT_TIMEOUT	DSW
+https://careers.manor.ch/fr	portail maison	1	NONE	aucune signature	Manor
+https://careers.ithk.com	portail	1	UNREACHABLE	UND_ERR_CONNECT_TIMEOUT	I.T
+https://careers.mooseknuckles.com	portail	1	NONE	aucune signature	Moose Knuckles
+https://careers.myntra.com	portail	1	NONE	aucune signature	Myntra
+https://careers.nykaa.com	portail	1	NONE	aucune signature	Nykaa
+https://careers.primark.com	portail	1	NONE	aucune signature	Primark
+https://careers.ralphlauren.com	portail	1	NONE	aucune signature	Ralph Lauren
+https://careers.marc-o-polo.com	portail	1	UNREACHABLE	UND_ERR_CONNECT_TIMEOUT	Marc O'Polo
+https://careers.lululemon.com	portail	1	UNREACHABLE	This operation was aborted	Lululemon
+https://careers.superdry.com/	portail maison	1	NONE	aucune signature	Superdry
+https://careers.twinset.com	portail	1	UNREACHABLE	HTTP 530 for https://careers.twinset.com	Twinset
+https://careersatsuitsupply.com/	portail maison	1	NONE	aucune signature	SuitSupply
+https://carrieres.dpam.com	Board maison	1	UNREACHABLE	ERR_TLS_CERT_ALTNAME_INVALID	Du Pareil Au Même
+https://celio-talents.com/	portail	1	NONE	aucune signature	Celio
+https://corporate.aboutyou.de/en/career/jobs	portail maison	1	NONE	aucune signature	About You
+https://corpsite.deichmann.com/en-GB/careers/career-roles	portail maison	1	NONE	aucune signature	Deichmann
+https://empleo.elcorteingles.es/	portail maison	1	NONE	aucune signature	El Corte Inglés
+https://illum.dk/job	portail	1	NONE	aucune signature	Illum
+https://careers.sisley-paris.com	portail	1	UNREACHABLE	UND_ERR_CONNECT_TIMEOUT	Sisley Paris
+https://jobs.falabella.com	portail	1	NONE	aucune signature	Falabella
+https://careers.scotch-soda.com	portail	1	UNREACHABLE	HTTP 522 for https://careers.scotch-soda.com	Scotch & Soda
+https://jobsearch.selfridges.com/	portail maison	1	NONE	aucune signature	Selfridges
+https://karriere.globus.ch/	Board maison	1	NONE	aucune signature	Globus
+https://lumine-recruit.jp/	portail	1	NONE	aucune signature	Lumine
+https://pandoragroup.com/careers	portail	1	NONE	aucune signature	Pandora
+https://recruit.cj.net	portail	1	NONE	aucune signature	Olive Young
+https://recruit.ehyundai.com	portail	1	NONE	aucune signature	Hyundai Department Store
+https://recrutement.beautysuccess.fr/offres/	propre	1	NONE	aucune signature	Beauty Success
+https://job.lotte.co.kr	portail	1	UNREACHABLE	UND_ERR_CONNECT_TIMEOUT	Lotte Department Store
+https://rejoindre.histoiredor.com/offres-emploi/	portail maison	1	NONE	aucune signature	Histoire d’Or
+https://werkenbij.hema.nl	portail	1	NONE	aucune signature	Hema
+https://www.acnestudios.com/hk/en/company/careers/careers.html	portail maison	1	NONE	aucune signature	Acne Studios
+https://www.agatha.fr/fr_FR/nous-rejoindre	portail maison	1	NONE	aucune signature	Agatha
+https://www.allbirds.com/pages/careers	portail maison	1	NONE	aucune signature	Allbirds
+https://www.0101.co.jp/recruit	portail	1	NONE	aucune signature	Marui (OIOI)
+https://www.aswatsoncareers.com/search	propre	1	NONE	aucune signature	Watsons
+https://jobs.louisvuitton.com/en/search-page	portail	1	NONE	aucune signature	Louis Vuitton
+https://www.bexley.fr/recrutement	portail	1	NONE	aucune signature	Bexley
+https://www.bocage.fr/nous-rejoindre	portail maison	1	NONE	aucune signature	Bocage
+https://www.blackdiamondequipment.com/pages/careers	portail maison	1	NONE	aucune signature	Black Diamond
+https://www.bally.com/pages/careers	portail maison	1	NONE	aucune signature	Bally
+https://www.coccinelle.com/it_it/job-application	portail maison	1	NONE	aucune signature	Coccinelle
+https://www.c-and-a.com/eu/en/corporate/company/careers/start	portail maison	1	NONE	aucune signature	C&A
+https://www.coin.it/it-it/lavora-con-noi/lavoraconnoi.html	portail maison	1	NONE	aucune signature	Coin
+https://www.boots.jobs	portail	1	NONE	aucune signature	Boots
+https://www.crewclothing.co.uk/about-crew/work-with-us/	portail maison	1	NONE	aucune signature	Crew Clothing
+https://www.decathlon.com/careers	portail	1	NONE	aucune signature	Decathlon
+https://www.cotopaxi.com/pages/jobs	portail maison	1	NONE	aucune signature	Cotopaxi
+https://www.ganni.com/en/careers.html	portail maison	1	NONE	aucune signature	Ganni
+https://www.fashionnova.com/pages/careers	portail maison	1	NONE	aucune signature	Fashion Nova
+https://www.geox.com/careers	portail maison	1	NONE	aucune signature	Geox
+https://www.etro.com/en-int/careers.html	portail maison	1	NONE	aucune signature	Etro
+https://www.jmweston.com/blogs/talents	portail maison	1	NONE	aucune signature	J.M. Weston
+https://www.jonak.fr/c/contenus/recrutement/nous-rejoindre-18.html	portail maison	1	NONE	aucune signature	Jonak
+https://www.h2o-retailing.co.jp	jobboards	1	NONE	aucune signature	Hankyu Hanshin
+https://www.kastner-oehler.at/job-karriere/offene-stellen/	portail maison	1	NONE	aucune signature	Kastner & Öhler
+https://www.mackage.com/pages/career-opportunities	portail maison	1	NONE	aucune signature	Mackage
+https://www.marc-orian.com/fr_FR/nous-rejoindre	portail maison	1	NONE	aucune signature	Marc Orian
+https://www.manoloblahnik.com/gb/careers	portail maison	1	NONE	aucune signature	Manolo Blahnik
+https://www.nk.se	jobboards	1	NONE	aucune signature	NK — Nordiska Kompaniet
+https://www.norrona.com/fr-FR/a-propos-norrona/careers/	portail maison	1	NONE	aucune signature	Norrøna
+https://www.peek-und-cloppenburg.de/de/karriere/	propre	1	NONE	aucune signature	Peek & Cloppenburg
+https://www.repetto.com/pages/recrutement	portail maison	1	NONE	aucune signature	Repetto
+https://www.paraboot.com/recrutement/	portail maison	1	NONE	aucune signature	Paraboot
+https://www.groupeclarins.com/en/careers	Board maison	1	UNREACHABLE	HTTP 404 for https://www.groupeclarins.com/en/careers	myBlend
+https://www.snipes.career/de/	portail maison	1	NONE	aucune signature	Snipes
+https://www.sogo-seibu.co.jp/recruit.html	portail	1	NONE	aucune signature	Sogo & Seibu
+https://www.stroilioro.com/it_IT/lavora-con-noi/	portail maison	1	NONE	aucune signature	Stroili
+https://www.seasaltcornwall.com/careers	portail maison	1	NONE	aucune signature	Seasalt Cornwall
+https://www.thg.com/careers	portail	1	NONE	aucune signature	Lookfantastic (THG)
+https://www.ripcurl.com/pages/careers	portail maison	1	NONE	aucune signature	Rip Curl
+https://www.vertbaudet.fr/page/recrutement.htm	propre	1	NONE	aucune signature	Vertbaudet
+https://www.werkenbijdebijenkorf.nl/	propre	1	NONE	aucune signature	De Bijenkorf
+https://www.takashimaya.co.jp/corp/recruit/career/	portail maison	1	UNREACHABLE	This operation was aborted	Takashimaya

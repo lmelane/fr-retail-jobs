@@ -1,0 +1,67 @@
+url_morte	domaine_teste	resultat	detail	marques
+https://jobs.groupe-rocher.com	groupe-rocher.com	SUCCESSFACTORS	https://careers.groupe-rocher.com/ conf=0.85 | SUCCESSFACTORS widget detected on careers.groupe-rocher.com	Arbonne | Dr Pierre Ricaud | Sabon
+https://careers.boardriders.com	boardriders.com	SUCCESSFACTORS	https://www.boardriders.com/fr-fr/carriere/ conf=0.85 | SUCCESSFACTORS widget detected on www.boardriders.com	Billabong | Quiksilver | Roxy
+https://careers.tfgbrands.co.uk	tfgbrands.co.uk	rien		Phase Eight | Whistles
+https://careers.abc-mart.net	abc-mart.net	rien		ABC-Mart
+https://careers.aeropostale.com	aeropostale.com	GENERIC_JSONLD	https://www.aeropostale.com/aeropostale-careers/stores-corporate.html?content=footer conf=0.4 | ATS identifié: iCIMS — aucun adaptateur, ne 	Aéropostale
+https://carrieres.spartoo.com	spartoo.com	rien		André | Spartoo
+https://careers.amiparis.com	amiparis.com	RECRUITEE	https://www.amiparis.com conf=0.95 | ATS link discovered on https://www.amiparis.com	Ami Paris
+https://careers.keringeyewear.com	keringeyewear.com	rien		Lindberg | Maui Jim
+https://careers.aloyoga.com	aloyoga.com	rien		Alo Yoga
+https://careers.agnesb.com	agnesb.com	rien		Agnès b.
+https://careers.bestseller.com	bestseller.com	GENERIC_JSONLD	https://www.bestseller.com/careers conf=0.45 | Careers page detected (host/links); generic crawler — needs a human check.	Bestseller (Vero Moda, Only, Jack & Jones)
+https://careers.authentic.com	authentic.com	rien		Ted Baker
+https://careers.bape.com	bape.com	rien		Bape (A Bathing Ape)
+https://careers.boggi.com	boggi.com	RECRUITEE	https://www.boggi.com conf=0.95 | ATS link discovered on https://www.boggi.com	Boggi Milano
+https://careers.bimbaylola.com	bimbaylola.com	rien		Bimba y Lola
+https://careers.boohoogroup.com	boohoogroup.com	rien		Boohoo
+https://careers.beams.co.jp	beams.co.jp	rien		Beams
+https://careers.boyner.com.tr	boyner.com.tr	rien		Boyner
+https://careers.bogner.com	bogner.com	rien		Bogner
+https://careers.caleres.com	caleres.com	rien		Stuart Weitzman
+https://careers.beymen.com	beymen.com	rien		Beymen
+https://careers.brunellocucinelli.com	brunellocucinelli.com	rien		Brunello Cucinelli
+https://careers.buckle.com	buckle.com	rien		Buckle
+https://careers.christianlouboutin.com	christianlouboutin.com	rien		Christian Louboutin
+https://careers.ccc.eu	ccc.eu	rien		CCC
+https://careers.clarks.com	clarks.com	rien		Clarks
+https://careers.courreges.com	courreges.com	rien		Courrèges
+https://careers.desigual.com	desigual.com	GENERIC_JSONLD	https://jobs.desigual.com/?locale=fr_FR conf=0.45 | Careers page detected (host/links); generic crawler — needs a human check.	Desigual
+https://careers.craft.se	craft.se	rien		Craft
+https://careers.drmartens.com	drmartens.com	GENERIC_JSONLD	https://jobs.drmartens.com/ conf=0.45 | Careers page detected (host/links); generic crawler — needs a human check.	Dr. Martens
+https://careers.delsey.com	delsey.com	rien		Delsey
+https://careers.descente.co.jp	descente.co.jp	rien		Descente
+https://careers.eddiebauer.com	eddiebauer.com	rien		Eddie Bauer
+https://careers.esprit.com	esprit.com	rien		Esprit
+https://careers.fearofgod.com	fearofgod.com	rien		Fear of God
+https://careers.fossilgroup.com	fossilgroup.com	rien		Fossil
+https://careers.forever21.com	forever21.com	rien		Forever 21
+https://careers.fila.com	fila.com	rien		Fila
+https://careers.gant.com	gant.com	DIGITALRECRUITERS	https://career.gant.com/en conf=0.85 | DIGITALRECRUITERS widget detected on career.gant.com	Gant
+https://careers.furla.com	furla.com	rien		Furla
+https://careers.frasers.group	frasers.group	rien		Sports Direct
+https://careers.hanesbrands.com	hanesbrands.com	GENERIC_JSONLD	https://www.hanesbrands.com/en/careers/ conf=0.45 | Careers page detected (host/links); generic crawler — needs a human check.	Champion
+https://careers.frame-store.com	frame-store.com	rien		Frame
+https://careers.hobbs.com	hobbs.com	rien		Hobbs
+https://careers.herno.com	herno.com	rien		Herno
+https://careers.goldwin.co.jp	goldwin.co.jp	rien		Goldwin
+https://careers.kurtgeiger.com	kurtgeiger.com	rien		Kurt Geiger
+https://careers.holzweiler.com	holzweiler.com	rien		Holzweiler
+https://careers.iroparis.com	iroparis.com	rien		Iro
+https://careers.isabelmarant.com	isabelmarant.com	rien		Isabel Marant
+https://careers.luckybrand.com	luckybrand.com	GENERIC_JSONLD	https://www.luckybrand.com/careers.html conf=0.4 | ATS identifié: iCIMS — aucun adaptateur, ne pas promouvoir	Lucky Brand
+https://careers.kith.com	kith.com	rien		Kith
+https://careers.macron.com	macron.com	rien		Macron
+https://careers.missoni.com	missoni.com	rien		Missoni
+https://careers.landsend.com	landsend.com	GENERIC_JSONLD	https://www.landsend.com/careers conf=0.4 | ATS identifié: UKG — aucun adaptateur, ne pas promouvoir	Lands' End
+https://careers.mashgroup.jp	mashgroup.jp	rien		Snidel
+https://careers.leslipfrancais.fr	leslipfrancais.fr	rien		Le Slip Français
+https://careers.off---white.com	off---white.com	rien		Off-White
+https://careers.office.co.uk	office.co.uk	rien		Office London
+https://careers.palaceskateboards.com	palaceskateboards.com	rien		Palace
+https://careers.palmangels.com	palmangels.com	rien		Palm Angels
+https://careers.roots.com	roots.com	GENERIC_JSONLD	https://www.roots.com/us/en/careers-page.html conf=0.4 | ATS identifié: Dayforce — aucun adaptateur, ne pas promouvoir	Roots
+https://careers.paulandshark.com	paulandshark.com	rien		Paul & Shark
+https://careers.robertocavalli.com	robertocavalli.com	rien		Roberto Cavalli
+https://careers.rouje.com	rouje.com	rien		Rouje
+https://careers.shoppersstop.com	shoppersstop.com	rien		Shoppers Stop
