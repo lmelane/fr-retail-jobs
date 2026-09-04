@@ -57,3 +57,48 @@ describe('splitSlug (fallback only)', () => {
     expect(city).not.toBe('Baden Württemberg');
   });
 });
+
+describe('parseMicrodataDetail — tenants sans streetAddress', () => {
+  /**
+   * Mesuré 2026-09-04 : Coty 127 offres / 0 lieu, Burberry 133 / 0, Prada
+   * 54 / 0, EssilorLuxottica 1505 / 8 — alors que chaque page détail portait
+   * addressLocality/addressRegion/addressCountry. Ces tenants n'émettent pas
+   * streetAddress, et le repli par slug ne peut rien : il n'accepte une ville
+   * qu'en MAJUSCULES, or ils écrivent « Granollers ».
+   */
+  const separate = `
+    <span itemprop="title">Process Engineer</span>
+    <meta itemprop="addressLocality" content="Granollers">
+    <meta itemprop="addressRegion" content="B">
+    <meta itemprop="addressCountry" content="ES">
+  `;
+
+  test('lit les champs d’adresse séparés', () => {
+    const d = parseMicrodataDetail(separate);
+    expect(d.city).toBe('Granollers');
+    expect(d.country).toBe('ES');
+    expect(d.location).toBe('Granollers, ES');
+  });
+
+  test('écarte un code de province d’une lettre, qui ne dit rien au candidat', () => {
+    expect(parseMicrodataDetail(separate).location).not.toContain(', B,');
+  });
+
+  test('garde une région quand c’est un vrai nom', () => {
+    const d = parseMicrodataDetail(`
+      <meta itemprop="addressLocality" content="Milano">
+      <meta itemprop="addressRegion" content="Lombardia">
+      <meta itemprop="addressCountry" content="IT">
+    `);
+    expect(d.location).toBe('Milano, Lombardia, IT');
+  });
+
+  test('streetAddress reste prioritaire quand il existe', () => {
+    const d = parseMicrodataDetail(`
+      <meta itemprop="streetAddress" content="Liverpool, GB, L1 8BJ">
+      <meta itemprop="addressLocality" content="IGNORE">
+    `);
+    expect(d.city).toBe('Liverpool');
+    expect(d.country).toBe('GB');
+  });
+})

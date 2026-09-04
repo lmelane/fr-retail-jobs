@@ -185,6 +185,32 @@ export function parseMicrodataDetail(html: string): SuccessFactorsDetail {
     if (parts[0]) detail.city = parts[0];
     if (parts[1] && /^[A-Z]{2}$/.test(parts[1])) detail.country = parts[1];
     if (parts[2]) detail.postalCode = parts[2];
+  } else {
+    /**
+     * Not every tenant emits `streetAddress`. Coty, Burberry, Prada and
+     * EssilorLuxottica publish the SAME address as separate schema.org fields
+     * — measured 2026-09-04: Coty 127 offers / 0 locations, Burberry 133 / 0,
+     * Prada 54 / 0, EssilorLuxottica 1505 / 8, while every detail page carried
+     * addressLocality="Granollers" addressRegion="B" addressCountry="ES".
+     *
+     * The slug fallback cannot rescue these: `splitSlug` only accepts a city
+     * written in CAPS, and these tenants write "Granollers". So without this
+     * branch the offers reach a candidate with no city at all — unfilterable,
+     * unmappable, unsortable.
+     */
+    const city = meta('addressLocality');
+    const region = meta('addressRegion');
+    const country = meta('addressCountry');
+    if (city) detail.city = city;
+    if (country && /^[A-Z]{2}$/.test(country)) detail.country = country;
+    const postal = meta('postalCode');
+    if (postal) detail.postalCode = postal;
+    // Region is kept only when it is a real name, not a one-letter province
+    // code ("B" for Barcelona), which would read as noise to a candidate.
+    const composed = [city, region && region.length > 2 ? region : undefined, country]
+      .filter(Boolean)
+      .join(', ');
+    if (composed) detail.location = composed;
   }
 
   const posted = meta('datePosted');
