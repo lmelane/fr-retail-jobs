@@ -5,6 +5,7 @@ import { checkSourceHealth } from './pipeline/health.js';
 import { sendHealthAlert } from './pipeline/alert.js';
 import { submitOfferChanges } from './pipeline/googleIndexing.js';
 import { pingHeartbeat } from './pipeline/heartbeat.js';
+import { runEgressProbe } from './pipeline/egressProbe.js';
 
 /**
  * How far back to look for offers created/closed by THIS run, when notifying
@@ -37,6 +38,9 @@ import { closeBrowser } from './lib/browser.js';
 
 const prisma = new PrismaClient();
 const command = process.argv[2] ?? 'ingest';
+
+// Sonde d'egress AVANT tout (hostGate, ingest, DB) — no-op sans EGRESS_PROBE=1.
+await runEgressProbe();
 
 try {
   if (command === 'ingest') {
