@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { resolveCompany, stripMultiBrandSuffix } from './company.js';
+import { resolveCompany, stripLogoArtifact, stripMultiBrandSuffix } from './company.js';
 
 /**
  * Group ATS feeds (L'Oréal Luxe, Puig, Richemont, SMCP…) publish a whole
@@ -53,5 +53,39 @@ describe('resolveCompany with a multi-brand suffix', () => {
 
   it('still resolves a clean known name unchanged', () => {
     expect(resolveCompany('Cartier').companyId).toBe('CARTIER');
+  });
+});
+
+describe('stripLogoArtifact — "Logo" happé depuis un attribut alt', () => {
+  /**
+   * Mesuré en prod 2026-09-04 : 391 offres actives sous six sociétés fantômes
+   * ("Richemont Logo" 195, "Logo Diptyque" 149, "Cartier Logo" 33…) pendant que
+   * la vraie "Cartier" affichait 0. Le candidat filtrant sur Cartier ne voyait
+   * rien.
+   */
+  it.each([
+    ['Cartier Logo', 'Cartier'],
+    ['Richemont Logo', 'Richemont'],
+    ['Logo Diptyque', 'Diptyque'],
+    ['Jaeger LeCoultre logo', 'Jaeger LeCoultre'],
+    ['Logo Pierre Fabre', 'Pierre Fabre'],
+  ])('%s -> %s', (raw, expected) => {
+    expect(stripLogoArtifact(raw)).toBe(expected);
+  });
+
+  it('ne touche pas un nom où le mot n’est pas en bordure', () => {
+    expect(stripLogoArtifact('Logo Design Studio Paris')).toBe('Design Studio Paris');
+    expect(stripLogoArtifact('Maison Logotype')).toBe('Maison Logotype');
+  });
+
+  it('ne vide jamais un nom réduit au mot seul', () => {
+    expect(stripLogoArtifact('Logo')).toBe('Logo');
+    expect(stripLogoArtifact('  logo  ')).toBe('logo');
+  });
+
+  it('resolveCompany applique le nettoyage bout en bout', () => {
+    expect(resolveCompany('Cartier Logo').displayName).toBe('Cartier');
+    // Composé avec le suffixe multi-marques (D11) : les deux artefacts tombent.
+    expect(resolveCompany('Cartier Logo +3').displayName).toBe('Cartier');
   });
 });

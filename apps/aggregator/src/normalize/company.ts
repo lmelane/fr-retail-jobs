@@ -107,8 +107,28 @@ export function stripMultiBrandSuffix(rawName: string): string {
   return rawName.replace(/\s+\+\d+\s*$/, '').trim();
 }
 
+/**
+ * "Logo" scraped into the employer name, from an image's alt attribute.
+ *
+ * Measured in prod 2026-09-04: 391 live offers sat under six such names —
+ * "Richemont Logo" (195), "Logo Diptyque" (149), "Cartier Logo" (33), "Chloe
+ * Logo" (10)… while the real "Cartier" showed 0. A candidate filtering on
+ * Cartier saw nothing, and the phantom employer appeared instead.
+ *
+ * Only a leading or trailing standalone word is removed, so a real name that
+ * merely contains the letters (or a company genuinely called "Logo") survives:
+ * the word must be at an edge, and stripping must leave something behind.
+ */
+export function stripLogoArtifact(rawName: string): string {
+  const stripped = rawName
+    .replace(/^\s*logos?\s+(?=\S)/i, '')
+    .replace(/(?<=\S)\s+logos?\s*$/i, '')
+    .trim();
+  return stripped || rawName.trim();
+}
+
 export function resolveCompany(rawName: string): CompanyIdentity {
-  const name = stripMultiBrandSuffix(rawName);
+  const name = stripLogoArtifact(stripMultiBrandSuffix(rawName));
   const key = canonicalCompanyKey(name);
 
   const direct = ALIAS_INDEX.get(key);
