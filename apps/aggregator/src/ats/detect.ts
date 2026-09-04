@@ -6,10 +6,22 @@ import { isSearchConfigured, searchWeb } from '../discovery/serper.js';
 import { probeAtsBySlug } from '../discovery/atsProbe.js';
 import type { AtsDetection } from '../types.js';
 
+/**
+ * Vendor hosts whose links are worth extracting from a page's HTML.
+ *
+ * This list GATES `atsLinksInHtml`, which feeds `detectionFromUrl` — so a host
+ * missing here is never submitted to detection at all, even when
+ * `detectionFromUrl` knows how to read it. Measured 2026-09-04: five vendors
+ * with a working adapter (Workable, Ashby, Pinpoint, Eightfold, Avature) had a
+ * URL branch but no entry here, so a showcase page linking to
+ * apply.workable.com fell through to the generic crawler. Keep the two lists in
+ * step: every host `detectionFromUrl` can parse belongs here.
+ */
 const ATS_HOSTS = [
   'greenhouse.io', 'lever.co', 'smartrecruiters.com', 'recruitee.com', 'personio.de',
   'personio.com', 'myworkdayjobs.com', 'teamtailor.com', 'workable.com', 'successfactors.com',
   'welcometothejungle.com',
+  'ashbyhq.com', 'pinpointhq.com', 'eightfold.ai', 'avature.net',
 ];
 
 /**
@@ -94,6 +106,45 @@ const WIDGET_BACKENDS: ReadonlyArray<{
     config: (u) => ({ startUrl: u.toString() }),
   },
 ];
+
+/**
+ * ATS vendors we can NAME but not yet ingest (no adapter).
+ *
+ * Recognising them matters even without an adapter: measured 2026-09-04, an
+ * Aeropostale careers page carries the string "icims" in plain sight and our
+ * detection returned null — the brand was filed as "no ATS found" when the
+ * truth was "iCIMS, and we lack the adapter". Those two conclusions lead to
+ * completely different work, so the distinction has to survive into the report.
+ *
+ * A hit here is NOT promotable: it maps to the generic crawler and carries the
+ * vendor name in `note`, so the catalogue records why the line is waiting.
+ */
+const UNADAPTED_VENDORS: ReadonlyArray<{ re: RegExp; name: string }> = [
+  { re: /icims\.com|icims\.js|\.icims\b/i, name: 'iCIMS' },
+  { re: /taleo\.net|taleo\.com|\/careersection\//i, name: 'Taleo' },
+  { re: /oraclecloud\.com|\/hcmUI\/CandidateExperience/i, name: 'Oracle HCM' },
+  { re: /dayforcehcm\.com|dayforce\.com\/candidateportal/i, name: 'Dayforce' },
+  { re: /csod\.com|cornerstoneondemand\.com/i, name: 'Cornerstone' },
+  { re: /pageuppeople\.com/i, name: 'PageUp' },
+  { re: /beetween\.(com|fr)/i, name: 'Beetween' },
+  { re: /workforcenow\.adp\.com|myjobs\.adp\.com|recruiting\.adp\.com/i, name: 'ADP' },
+  { re: /bamboohr\.com/i, name: 'BambooHR' },
+  { re: /jobvite\.com/i, name: 'Jobvite' },
+  { re: /softgarden\.(io|de|com)/i, name: 'Softgarden' },
+  { re: /gupy\.io/i, name: 'Gupy' },
+  { re: /kallidusrecruit\.com/i, name: 'Kallidus' },
+  { re: /ukg\.(com|pro)|ultipro\.com/i, name: 'UKG' },
+  { re: /paylocity\.com/i, name: 'Paylocity' },
+  { re: /lumesse\.com|talentlink\.com/i, name: 'TalentLink' },
+  { re: /join\.com/i, name: 'JOIN' },
+  { re: /pandape\.(com|infojobs)/i, name: 'Pandapé' },
+  { re: /werecruit\.io/i, name: 'WeRecruit' },
+];
+
+/** The ATS vendor named in a page, when we have no adapter for it. */
+export function unadaptedVendorIn(html: string): string | null {
+  return UNADAPTED_VENDORS.find((v) => v.re.test(html))?.name ?? null;
+}
 
 /** Detect a widget/white-label ATS embedded on a brand's careers page. */
 function detectWidgetBackend(html: string, pageUrl: URL): AtsDetection | null {
@@ -366,6 +417,22 @@ export function detectFromHtml(html: string, rawUrl: string): AtsDetection | nul
   const isCareersHost = /^(talents?|careers?|jobs|recrut|emploi|hr|rh)\./i.test(host);
   const hasJobPosting = /"@type"\s*:\s*"JobPosting"|JobPosting/.test(html);
   const offerLinkCount = (html.match(/\/(offre|offres|job|jobs|career|careers|emploi|vacancy|position)s?\//gi) ?? []).length;
+
+  // 4. A vendor we can NAME but not ingest. Ranked below every adapted ATS (one
+  //    of those is always the better answer) and above the blind generic
+  //    fallback, so the report says "iCIMS, adapter missing" instead of the
+  //    much less useful "careers page, needs a human check".
+  const unadapted = unadaptedVendorIn(html);
+  if (unadapted) {
+    return {
+      type: 'GENERIC_JSONLD',
+      careersUrl: rawUrl,
+      config: { startUrl: rawUrl },
+      confidence: hasJobPosting ? 0.55 : 0.4,
+      note: `ATS identifié: ${unadapted} — aucun adaptateur, ne pas promouvoir`,
+    };
+  }
+
   if (hasJobPosting || isCareersHost || offerLinkCount >= 3) {
     return {
       type: 'GENERIC_JSONLD',

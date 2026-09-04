@@ -66,3 +66,67 @@ describe('detectFromHtml — widgets embarqués (C-05a)', () => {
     expect(detection?.config.siteKey).toBe('9550007d348362827f2534be59208f28');
   });
 });
+
+describe('detectFromHtml — vendors nommés SANS adaptateur', () => {
+  const page = 'https://www.brand.com/careers';
+
+  /**
+   * Mesuré 2026-09-04 sur aeropostale.com : la page carrière portait la chaîne
+   * "icims" en clair et la détection renvoyait null. La marque était classée
+   * « aucun ATS trouvé » alors que la vérité était « iCIMS, adaptateur
+   * manquant » — deux conclusions qui commandent deux travaux différents.
+   */
+  const cases: Array<{ marker: string; vendor: string }> = [
+    { marker: '<script src="https://brand.icims.com/icims2/servlet/icims2"></script>', vendor: 'iCIMS' },
+    { marker: '<a href="https://brand.taleo.net/careersection/ex/joblist.ftl">Jobs</a>', vendor: 'Taleo' },
+    { marker: '<iframe src="https://workforcenow.adp.com/mascsr/default/careers"></iframe>', vendor: 'ADP' },
+    { marker: '<a href="https://brand.csod.com/ux/ats/careersite/4/home">Careers</a>', vendor: 'Cornerstone' },
+    { marker: '<a href="https://brand.gupy.io/">Vagas</a>', vendor: 'Gupy' },
+    { marker: '<a href="https://brand.kallidusrecruit.com/Search.aspx">Vacancies</a>', vendor: 'Kallidus' },
+    { marker: '<a href="https://dc7.pageuppeople.com/apply">Apply</a>', vendor: 'PageUp' },
+  ];
+
+  for (const { marker, vendor } of cases) {
+    it(`${vendor} est nommé dans la note, sans être promouvable`, () => {
+      const detection = detectFromHtml(`<html><body>${marker}</body></html>`, page);
+      expect(detection?.note).toContain(vendor);
+      // Aucun adaptateur : le type reste générique pour que rien ne l'ingère.
+      expect(detection?.type).toBe('GENERIC_JSONLD');
+    });
+  }
+
+  it('un ATS OUTILLÉ gagne toujours sur un vendor non outillé présent sur la même page', () => {
+    const detection = detectFromHtml(
+      '<html><body><a href="https://brand.icims.com/jobs">A</a>' +
+        '<a href="https://boards.greenhouse.io/brand">B</a></body></html>',
+      page,
+    );
+    expect(detection?.type).toBe('GREENHOUSE');
+  });
+});
+
+describe('ATS_HOSTS couvre tout ce que detectionFromUrl sait lire', () => {
+  /**
+   * ATS_HOSTS filtre les liens AVANT detectionFromUrl : un hôte absent de la
+   * liste n'est jamais soumis à la détection, même quand la branche URL existe.
+   * Mesuré 2026-09-04 : Workable, Ashby, Pinpoint, Eightfold et Avature étaient
+   * exactement dans ce cas.
+   */
+  const linked: Array<{ url: string; type: string }> = [
+    { url: 'https://apply.workable.com/brand/', type: 'WORKABLE' },
+    { url: 'https://jobs.ashbyhq.com/brand', type: 'ASHBY' },
+    { url: 'https://brand.pinpointhq.com/', type: 'PINPOINT' },
+    { url: 'https://brand.eightfold.ai/careers', type: 'EIGHTFOLD' },
+    { url: 'https://brand.avature.net/careers', type: 'AVATURE' },
+  ];
+
+  for (const { url, type } of linked) {
+    it(`${type} lié depuis une page vitrine est détecté`, () => {
+      const detection = detectFromHtml(
+        `<html><body><a href="${url}">Nous rejoindre</a></body></html>`,
+        'https://www.brand.com/',
+      );
+      expect(detection?.type).toBe(type);
+    });
+  }
+});
