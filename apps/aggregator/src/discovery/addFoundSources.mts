@@ -59,6 +59,17 @@ const CANDIDATES: Candidate[] = [
   { key: 'clarins-wttj', maison: 'Clarins', kind: 'wttj', type: 'WTTJ', careersDomain: 'welcometothejungle.com', tier: 'SPECIALIST_JOBBOARD', config: { slug: 'groupe-clarins' } },
   { key: 'la-redoute-talentview', maison: 'La Redoute', kind: 'talentview', type: 'TALENTVIEW', careersDomain: 'laredoute-talent.talentview.io', tier: 'ATS_OFFICIAL', config: { origin: 'https://laredoute-talent.talentview.io', slug: 'laredoute-talent' } },
   { key: 'nordstrom', maison: 'Nordstrom', kind: 'workday', type: 'WORKDAY', careersDomain: 'nordstrom.wd501.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'nordstrom', site: 'nordstrom_careers', origin: 'https://nordstrom.wd501.myworkdayjobs.com' } },
+  // Récolte 2 + Pandora — validés par exécution le 2026-09-05/06.
+  { key: 'pandora-talenthub', maison: 'Pandora', kind: 'generic-listing', type: 'GENERIC_JSONLD', careersDomain: 'careers.pandoragroup.com', tier: 'EMPLOYER_DIRECT', config: { listingUrl: 'https://careers.pandoragroup.com/fr/jobs/page/{page}', pageStart: 1, linkPattern: '/job/', maxPages: 250 } },
+  { key: 'aritzia', maison: 'Aritzia', kind: 'workday', type: 'WORKDAY', careersDomain: 'aritzia.wd3.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'aritzia', site: 'External', origin: 'https://aritzia.wd3.myworkdayjobs.com' } },
+  { key: 'lush', maison: 'Lush', kind: 'greenhouse', type: 'GREENHOUSE', careersDomain: 'job-boards.greenhouse.io', tier: 'ATS_OFFICIAL', config: { board: 'lush' } },
+  { key: 'therealreal', maison: 'The RealReal', kind: 'workday', type: 'WORKDAY', careersDomain: 'therealreal.wd1.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'therealreal', site: 'Careers', origin: 'https://therealreal.wd1.myworkdayjobs.com' } },
+  { key: 'aigle-dr', maison: 'Aigle', kind: 'digitalrecruiters', type: 'DIGITALRECRUITERS', careersDomain: 'careers.aigle.com', tier: 'EMPLOYER_DIRECT', config: { domainName: 'careers.aigle.com' } },
+  { key: 'the-kooples-dr', maison: 'The Kooples', kind: 'digitalrecruiters', type: 'DIGITALRECRUITERS', careersDomain: 'careers.thekooples.com', tier: 'EMPLOYER_DIRECT', config: { domainName: 'careers.thekooples.com' } },
+  { key: 'balmain-career', maison: 'Balmain', kind: 'talentsoft', type: 'TALENTSOFT', careersDomain: 'balmain-career.talent-soft.com', tier: 'EMPLOYER_DIRECT', config: { origin: 'https://balmain-career.talent-soft.com' } },
+  { key: 'rebag', maison: 'Rebag', kind: 'greenhouse', type: 'GREENHOUSE', careersDomain: 'job-boards.greenhouse.io', tier: 'ATS_OFFICIAL', config: { board: 'rebag' } },
+  { key: 'vestiaire-collective', maison: 'Vestiaire Collective', kind: 'lever', type: 'LEVER', careersDomain: 'jobs.lever.co', tier: 'ATS_OFFICIAL', config: { site: 'vestiairecollective' } },
+  { key: 'olaplex', maison: 'OLAPLEX', kind: 'greenhouse', type: 'GREENHOUSE', careersDomain: 'boards.greenhouse.io', tier: 'ATS_OFFICIAL', config: { board: 'olaplexcareers' } },
   { key: 'el-palacio-de-hierro', maison: 'El Palacio de Hierro', kind: 'successfactors', type: 'SUCCESSFACTORS', careersDomain: 'empleos.palaciohierro.com.mx', tier: 'EMPLOYER_DIRECT', config: { origin: 'https://empleos.palaciohierro.com.mx' } },
 ];
 
