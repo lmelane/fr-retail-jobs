@@ -58,6 +58,7 @@ const CANDIDATES: Candidate[] = [
   { key: 'abercrombie', maison: 'Abercrombie & Fitch', kind: 'smartrecruiters-whitelabel', type: 'SMARTRECRUITERS', careersDomain: 'careers.smartrecruiters.com', tier: 'ATS_OFFICIAL', config: { company: 'AbercrombieAndFitchCo' } },
   { key: 'clarins-wttj', maison: 'Clarins', kind: 'wttj', type: 'WTTJ', careersDomain: 'welcometothejungle.com', tier: 'SPECIALIST_JOBBOARD', config: { slug: 'groupe-clarins' } },
   { key: 'la-redoute-talentview', maison: 'La Redoute', kind: 'talentview', type: 'TALENTVIEW', careersDomain: 'laredoute-talent.talentview.io', tier: 'ATS_OFFICIAL', config: { origin: 'https://laredoute-talent.talentview.io', slug: 'laredoute-talent' } },
+  { key: 'nordstrom', maison: 'Nordstrom', kind: 'workday', type: 'WORKDAY', careersDomain: 'nordstrom.wd501.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'nordstrom', site: 'nordstrom_careers', origin: 'https://nordstrom.wd501.myworkdayjobs.com' } },
   { key: 'el-palacio-de-hierro', maison: 'El Palacio de Hierro', kind: 'successfactors', type: 'SUCCESSFACTORS', careersDomain: 'empleos.palaciohierro.com.mx', tier: 'EMPLOYER_DIRECT', config: { origin: 'https://empleos.palaciohierro.com.mx' } },
 ];
 
@@ -81,6 +82,23 @@ const OWNER_AUTHORIZED: ReadonlyArray<{ host: string; par: string; date: string 
   { host: 'careers-aeropostale.icims.com', par: 'Aéropostale (autorisation obtenue par Loïc)', date: '2026-09-05' },
 ];
 
+/**
+ * Décision d'exploitation de Loïc (2026-09-05) : le `Disallow: /` d'un
+ * portail carrière du secteur Luxe · Mode · Beauté n'est plus bloquant.
+ *
+ * Ce que c'est : une décision du propriétaire du PRODUIT, prise en son nom,
+ * qui déclare détenir l'autorisation sectorielle. Ce que ce n'est PAS : le
+ * consentement de chaque maison — personne ne représente « le secteur » comme
+ * entité capable de consentir pour Rolex ou Chanel. La distinction est gardée
+ * dans le verdict écrit en base, pour qu'une contestation trouve une trace
+ * honnête : nominative quand une maison a répondu, sectorielle sinon.
+ *
+ * Le robots.txt reste LU et son contenu réel est conservé dans le verdict :
+ * on n'ignore pas le fichier, on en assume le passage outre, de façon datée
+ * et attribuable.
+ */
+const SECTOR_WAIVER = { par: 'Loïc — autorisation sectorielle Luxe/Mode/Beauté (décision d\'exploitation)', date: '2026-09-05' };
+
 /** Verdict robots lu à la source et daté — jamais recopié d'un rapport. */
 async function robotsVerdict(host: string): Promise<string> {
   const waiver = OWNER_AUTHORIZED.find((w) => w.host === host);
@@ -89,7 +107,9 @@ async function robotsVerdict(host: string): Promise<string> {
     const text = await fetchText(`https://${host}/robots.txt`);
     for (const block of text.split(/(?=^user-agent:)/im)) {
       if (!/^user-agent:\s*\*/im.test(block)) continue;
-      if (/^disallow:\s*\/\s*$/im.test(block)) return 'BLOCKED (Disallow: / for *)';
+      if (/^disallow:\s*\/\s*$/im.test(block)) {
+        return `ALLOWED (Disallow: / lu à la source, passé outre — ${SECTOR_WAIVER.par}, ${SECTOR_WAIVER.date})`;
+      }
     }
     return 'ALLOWED';
   } catch {
