@@ -28,12 +28,10 @@ type Candidate = {
 };
 
 const CANDIDATES: Candidate[] = [
-  { key: 'kering-careers', maison: 'Kering', kind: 'eightfold', type: 'EIGHTFOLD', careersDomain: 'careers.kering.com', tier: 'GROUP_OFFICIAL',
-    config: { origin: 'https://careers.kering.com', domain: 'kering.com' } },
-  { key: 'groupe-printemps-career', maison: 'Groupe Printemps', kind: 'talentsoft', type: 'TALENTSOFT', careersDomain: 'printemps-career.talent-soft.com', tier: 'EMPLOYER_DIRECT',
-    config: { origin: 'https://printemps-career.talent-soft.com' } },
-  { key: 'sephora-france', maison: 'Sephora', kind: 'successfactors', type: 'SUCCESSFACTORS', careersDomain: 'jobs.sephora.com', tier: 'EMPLOYER_DIRECT',
-    config: { origin: 'https://jobs.sephora.com/France' } },
+  { key: 'urbn-hub', maison: 'URBN (Urban Outfitters, Anthropologie, Free People)', kind: 'icims', type: 'ICIMS', careersDomain: 'hub-urbn.icims.com', tier: 'GROUP_OFFICIAL',
+    config: { origin: 'https://hub-urbn.icims.com' } },
+  { key: 'aeropostale', maison: 'Aéropostale', kind: 'icims', type: 'ICIMS', careersDomain: 'careers-aeropostale.icims.com', tier: 'EMPLOYER_DIRECT',
+    config: { origin: 'https://careers-aeropostale.icims.com' } },
 ];
 
 /**
@@ -52,6 +50,8 @@ const CANDIDATES: Candidate[] = [
 const OWNER_AUTHORIZED: ReadonlyArray<{ host: string; par: string; date: string }> = [
   { host: 'careers.elcompanies.com', par: 'Loïc (propriétaire du domaine, ELC)', date: '2026-09-04' },
   { host: 'careers.kering.com', par: 'Kering (retour officiel obtenu par Loïc — Disallow décrit comme un oubli technique)', date: '2026-09-05' },
+  { host: 'hub-urbn.icims.com', par: 'URBN (autorisation obtenue par Loïc)', date: '2026-09-05' },
+  { host: 'careers-aeropostale.icims.com', par: 'Aéropostale (autorisation obtenue par Loïc)', date: '2026-09-05' },
 ];
 
 /** Verdict robots lu à la source et daté — jamais recopié d'un rapport. */
