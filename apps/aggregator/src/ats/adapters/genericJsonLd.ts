@@ -94,7 +94,19 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       // than losing the whole source; the pages already collected still ingest.
       let html: string;
       try {
-        html = await fetchText(`${listingPagedUrl}${sep}${pageParam}=${page}`, {
+        /**
+         * Deux formes de pagination : en QUERY (`/jobs?page=N`, Michael Page,
+         * 0-based) ou en CHEMIN (`/jobs/page/N`, Pandora sur TalentHub, 1-based).
+         * Un `{page}` dans l'URL de listing désigne la seconde ; sans lui, on
+         * ajoute le paramètre comme avant. Mesuré le 2026-09-05 : Pandora
+         * rendait 10 offres — la page 1 seule — quand elle en a ~1 800 sur 180
+         * pages. `pageStart` (défaut 0) porte l'origine de la numérotation.
+         */
+        const pageNumber = page + Number(config.pageStart ?? 0);
+        const pageUrl = listingPagedUrl.includes('{page}')
+          ? listingPagedUrl.replace('{page}', String(pageNumber))
+          : `${listingPagedUrl}${sep}${pageParam}=${pageNumber}`;
+        html = await fetchText(pageUrl, {
           headers: {
             'user-agent':
               'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
