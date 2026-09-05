@@ -82,6 +82,7 @@ export function CompanyProfileView({
   const sentinelRef = useRef<HTMLLIElement>(null);
 
   // Barre légère (D20) : ville + contrat, scopée à cette Maison, côté serveur.
+  const [titre, setTitre] = useState('');
   const [ville, setVille] = useState('');
   const [contrat, setContrat] = useState<string | null>(null);
   const contractFacets = useMemo(
@@ -103,6 +104,7 @@ export function CompanyProfileView({
     setPageCount(initialResult.pageCount);
     setSelectedId(initialResult.jobs[0]?.id ?? null);
     setLoadError(null);
+    setTitre('');
     setVille('');
     setContrat(null);
     // La page 1 de la nouvelle Maison vient déjà du serveur (initialResult) :
@@ -128,11 +130,12 @@ export function CompanyProfileView({
   const buildQuery = useCallback(
     (page: number) => {
       const params = new URLSearchParams({ maison: profile.name, pays: 'monde', page: String(page) });
+      if (titre.trim()) params.set('q', titre.trim());
       if (ville.trim()) params.set('ville', ville.trim());
       if (contrat) params.set('contrat', contrat);
       return params;
     },
-    [profile.name, ville, contrat],
+    [profile.name, titre, ville, contrat],
   );
 
   const loadMore = useCallback(async () => {
@@ -195,7 +198,7 @@ export function CompanyProfileView({
     return () => observer.disconnect();
   }, [loadMore]);
 
-  const filtered = ville.trim() !== '' || contrat !== null;
+  const filtered = titre.trim() !== '' || ville.trim() !== '' || contrat !== null;
 
   return (
     <main className="bg-paper">
@@ -247,8 +250,27 @@ export function CompanyProfileView({
           <h2 className="t-d1" id="offres-title">Offres chez {profile.name}</h2>
         </div>
 
-        {/* Barre légère D20 : ville (autocomplete) + pills contrat, scopée. */}
+        {/*
+          Barre légère D20 : intitulé + ville (autocomplete) + pills contrat.
+          Le champ intitulé répond au manque signalé par Loïc (2026-09-05) : sur
+          une Maison à plusieurs centaines d'offres, ville et contrat ne
+          suffisent pas — un candidat cherche « vendeur » ou « visual
+          merchandiser », pas une ville. La recherche existait déjà côté serveur
+          (paramètre `q`), elle n'était simplement pas exposée ici.
+        */}
         <div className="filters" style={{ margin: '0 0 12px' }}>
+          <form className="w-[240px] max-w-full" onSubmit={(e) => e.preventDefault()}>
+            <AutocompleteField
+              type="title"
+              value={titre}
+              onChange={setTitre}
+              onCommit={setTitre}
+              icon={<SearchGlyph />}
+              placeholder="Intitulé du poste"
+              ariaLabel={`Filtrer les offres ${profile.name} par intitulé de poste`}
+              className="h-[34px] rounded-(--fa-radius) border border-line"
+            />
+          </form>
           <form className="w-[240px] max-w-full" onSubmit={(e) => e.preventDefault()}>
             <AutocompleteField
               type="city"
