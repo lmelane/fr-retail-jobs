@@ -120,3 +120,35 @@ export function normalizeLocationString(raw?: string | null): NormalizedLocation
 
   return { city: city || undefined, department, raw: original };
 }
+
+/**
+ * Casse d'AFFICHAGE d'un nom de ville.
+ *
+ * `normalizeLocationString` met tout en majuscules — c'est une clé de dédup,
+ * pas un libellé. Le champ `city` gardait donc la casse de sa source, et le
+ * filtre Ville affichait deux entrées pour une même ville : mesuré en prod le
+ * 2026-09-05, « Paris » (1 860 offres) et « PARIS » (326) côte à côte.
+ *
+ * Les particules restent minuscules (Neuilly-sur-Seine), et un nom déjà écrit
+ * en casse mixte est laissé tel quel : lui réappliquer une règle abîmerait
+ * « s-Hertogenbosch » ou « L'Haÿ-les-Roses », que la source écrit correctement.
+ */
+const CITY_PARTICLES = new Set(['sur', 'sous', 'les', 'le', 'la', 'lès', 'de', 'des', 'du', 'en', 'aux', 'et', 'd', 'l']);
+
+export function displayCity(raw?: string | null): string | undefined {
+  const text = (raw ?? '').trim().replace(/\s+/g, ' ');
+  if (!text) return undefined;
+  // Casse mixte = la source sait écrire ; on n'y touche pas.
+  if (text !== text.toUpperCase() && text !== text.toLowerCase()) return text;
+
+  return text
+    .toLowerCase()
+    .split(/([ \-'])/)
+    .map((part, index) => {
+      if (/^[ \-']$/.test(part) || !part) return part;
+      // Une particule reste minuscule, sauf en tête de nom.
+      if (index > 0 && CITY_PARTICLES.has(part)) return part;
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    })
+    .join('');
+}

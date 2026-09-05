@@ -2,6 +2,8 @@ import type { PrismaClient } from '@prisma/client';
 import { blockingKey, isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } from './match.js';
 import { classifySector, sectorForSource, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
+import { normalizeCountry } from '../normalize/country.js';
+import { displayCity } from '../normalize/location.js';
 import { isFranceJob } from '../lib/france.js';
 import { detectLanguage } from '../lib/language.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
@@ -230,7 +232,16 @@ async function createJob(
         source: candidate.atsType ?? 'GENERIC_JSONLD',
         title: candidate.title,
         location: candidate.location,
-        country: candidate.country,
+        /**
+         * Pays canonique (ISO-2), jamais la valeur brute de la source.
+         *
+         * Mesuré en prod le 2026-09-05 : 256 valeurs distinctes pour ~90 pays.
+         * La France s'écrivait FR / France / fr / FRANCE — quatre lignes dans
+         * le filtre Pays, dont aucune ne montrait plus du tiers des offres
+         * françaises. Normaliser ICI répare toutes les sources d'un coup, là où
+         * un correctif par adaptateur en aurait laissé passer la moitié.
+         */
+        country: normalizeCountry(candidate.country),
         // Stored as a FLAG, never used as a discard: the site defaults to the
         // French view and can widen later. This line was missing — every job
         // sat at the schema default `false`, and a front end filtering on
@@ -239,7 +250,9 @@ async function createJob(
         contract: candidate.contract,
         // Rich fields the richer vendors publish. Absent means "this source does
         // not expose it", so they are written through rather than dropped.
-        city: candidate.city,
+        // Casse d'affichage : « Paris » et « PARIS » apparaissaient comme deux
+        // villes distinctes dans le filtre (1 860 et 326 offres).
+        city: displayCity(candidate.city),
         postalCode: candidate.postalCode,
         latitude: candidate.latitude,
         longitude: candidate.longitude,

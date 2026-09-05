@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeLocationString } from './location.js';
+import { displayCity, normalizeLocationString } from './location.js';
 
 /**
  * Behaviour these tests pin down (BDD): the dedup key rides on `city`, so a
@@ -113,5 +113,31 @@ describe('normalizeLocationString — non-regression: cases that already worked'
     expect(normalizeLocationString('').city).toBeUndefined();
     expect(normalizeLocationString(null).city).toBeUndefined();
     expect(normalizeLocationString(undefined).raw).toBe('');
+  });
+});
+
+describe('displayCity — la casse du filtre Ville', () => {
+  /**
+   * Mesuré en prod le 2026-09-05 : « Paris » (1 860 offres) et « PARIS » (326)
+   * apparaissaient comme deux villes distinctes dans le filtre.
+   */
+  it('normalise une ville criée', () => {
+    expect(displayCity('PARIS')).toBe('Paris');
+    expect(displayCity('NEW YORK')).toBe('New York');
+  });
+
+  it('garde les particules en minuscules', () => {
+    expect(displayCity('NEUILLY-SUR-SEINE')).toBe('Neuilly-sur-Seine');
+    expect(displayCity('AIX-EN-PROVENCE')).toBe('Aix-en-Provence');
+  });
+
+  it('ne touche pas à une casse mixte déjà correcte', () => {
+    expect(displayCity('Neuilly-sur-Seine')).toBe('Neuilly-sur-Seine');
+    expect(displayCity("L'Haÿ-les-Roses")).toBe("L'Haÿ-les-Roses");
+  });
+
+  it('rend undefined sur du vide', () => {
+    expect(displayCity('')).toBeUndefined();
+    expect(displayCity(null)).toBeUndefined();
   });
 });
