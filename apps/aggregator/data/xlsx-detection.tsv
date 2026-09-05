@@ -1,0 +1,47 @@
+id	url	verdict	detail	entites
+CELINE	https://career.celine.com/fr-fr/	BOT_WALL	HTTP 403 for https://career.celine.com/fr-fr/	Celine
+COS	https://career.cos.com/content/coscareer/en_gb/findjob.html?category=&type=&country=coscareer%3Alocation%2Fus	BOT_WALL	HTTP 403 for https://career.cos.com/content/coscar	COS
+LUXEXPERIENCE	https://career.luxexperience.com/	GENERIC	{"startUrl":"https://career.luxexperience.com/"}	LuxExperience, MR PORTER, NET-A-PORTER, YOOX
+MYTHERESA	https://career.mytheresa.com/en/open-positions	GENERIC	{"startUrl":"https://career.mytheresa.com/en/open-positions"}	Mytheresa
+ACNE	https://careers.acnestudios.com/open-positions/	GENERIC	{"feedUrl":"https://careers.acnestudios.com/feed/"}	Acne Studios
+AUDEMARS	https://careers.audemarspiguet.com/fr/job-listing	GENERIC	{"startUrl":"https://careers.audemarspiguet.com/fr/job-listing"}	Audemars Piguet
+BREITLING	https://careers.breitling.com/	READY:SUCCESSFACTORS	{"origin":"https://careers.breitling.com"}	Breitling
+CHALHOUB	https://careers.chalhoubgroup.com/jobs	READY:TEAMTAILOR	{"origin":"https://www.teamtailor.com"}	Chalhoub Group
+DAMIANI	https://careers.damianigroup.com/job/	READY:SUCCESSFACTORS	{"origin":"https://careers.damianigroup.com"}	Damiani, Damiani Group
+DOUGLAS	https://careers.douglas.group/fr/jobs/	GENERIC	{"startUrl":"https://careers.douglas.group/fr/jobs/"}	Douglas
+END	https://careers.endclothing.com/	GENERIC	{"startUrl":"https://careers.endclothing.com/"}	END.
+FENDI	https://careers.fendi.com/job-search-page/job-results-page/	UNREACHABLE	fetch failed	Fendi
+HUGO_BOSS	https://careers.hugoboss.com/fr/fr/search-results	READY:PHENOM	{"origin":"https://careers.hugoboss.com"}	HUGO BOSS
+LULULEMON	https://careers.lululemon.com/en_US/careers/SearchCareer/	UNREACHABLE	This operation was aborted	lululemon
+NIKE	https://careers.nike.com/jobs	READY:AVATURE	{"origin":"https://nikeats.avature.net","listingUrl":"https://nikeats.avature.ne	Converse, Jordan Brand, Nike
+NORDSTROM	https://careers.nordstrom.com/jobs	READY:WORKDAY	{"tenant":"nordstrom","site":"nordstrom_careers","origin":"https://nordstrom.wd5	Nordstrom, Nordstrom Rack
+OUNASS	https://careers.ounass.com/jobs	READY:TEAMTAILOR	{"origin":"https://app.teamtailor.com"}	Ounass
+PVH	https://careers.pvh.com/jobs/search	GENERIC	{"feedUrl":"https://careers.pvh.com/blogs/first-blog-draft"}	Calvin Klein, PVH, Tommy Hilfiger
+RALPH_LAUREN	https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate/?listFilterMode=1&jobRecordsPerPage=6&	GENERIC	{"startUrl":"https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCo	Ralph Lauren
+SAKS_GLOBAL	https://careers.saksglobal.com/us/en	READY:PHENOM	{"origin":"https://careers.saksglobal.com"}	Bergdorf Goodman, Neiman Marcus, Saks OFF 5TH
+SAKS	https://careers.saksglobal.com/us/en/saks-fifth-avenue	READY:WORKDAY	{"tenant":"saks","site":"careers_at_saks","origin":"https://saks.wd1.myworkdayjo	Saks Fifth Avenue
+SPACE_NK	https://careers.spacenk.com/jobs	READY:TEAMTAILOR	{"origin":"https://app.teamtailor.com"}	Space NK
+SSENSE	https://careers.ssense.com/jobs	READY:TEAMTAILOR	{"origin":"https://www.teamtailor.com"}	SSENSE
+ULTA	https://careers.ulta.com/careers/jobs?keywords=&location=	NO_ADAPTER:iCIMS	{"startUrl":"https://careers.ulta.com/careers/jobs?keywords=&location="}	Ulta Beauty
+ZEGNA	https://careers.zegnagroup.com/default?FreeSearch=	GENERIC	{"startUrl":"https://careers.zegnagroup.com/default?FreeSearch="}	Ermenegildo Zegna Group, Thom Browne, TOM FORD Fashion, ZEGNA
+LOCCITANE	https://jobs-fr.loccitane.com/#jobs	READY:TEAMTAILOR	{"origin":"https://loccitanegroupeloiinternationalswit-demo.teamtailor.com"}	Dr. Vranjes Firenze, ELEMIS, Erborian, L'Occitane en Provence, L'Occitane Group, Melvita, Sol de Janeiro
+ADIDAS	https://jobs.adidas-group.com/jobs/	READY:SUCCESSFACTORS	{"origin":"https://jobs.adidas-group.com"}	adidas
+DR_MARTENS	https://jobs.drmartens.com/results	GENERIC	{"startUrl":"https://jobs.drmartens.com/results"}	Dr. Martens
+GLOBUS_CH	https://jobs.globus.ch/offre-emplois.html	GENERIC	{"startUrl":"https://jobs.globus.ch/offre-emplois.html"}	Globus
+LOUIS_VUITTON	https://jobs.louisvuitton.com/en/search-page	GENERIC	{"startUrl":"https://jobs.louisvuitton.com/en/search-page"}	Louis Vuitton
+MANGO	https://jobs.mango.com/	BOT_WALL	HTTP 403 for https://jobs.mango.com/	MANGO
+MONCLER	https://jobs.moncler.com/	UNREACHABLE	fetch failed	Moncler, Moncler Group, Stone Island
+NEW_BALANCE	https://jobs.newbalance.com/fr/fr/search-results	READY:WORKDAY	{"tenant":"newbalance","site":"Careers-UK","origin":"https://newbalance.wd1.mywo	New Balance
+SELFRIDGES	https://jobsearch.selfridges.com/jobs/search	GENERIC	{"startUrl":"https://jobsearch.selfridges.com/jobs/search"}	Selfridges
+NOCIBE	https://recrutement-nocibe.fr/front-jobs.html	NONE	{}	Nocibé
+BEAUTY_SUCCESS	https://recrutement.beautysuccess.fr/offres/	GENERIC	{"feedUrl":"https://recrutement.beautysuccess.fr/feed/"}	Beauty Success
+APM_MONACO	https://www.apm.mc/pages/career-opportunities	NONE	{}	APM Monaco
+BEIERSDORF	https://www.beiersdorf.com/career/your-application/job-search	GENERIC	{"startUrl":"https://www.beiersdorf.com/career/your-application/job-search"}	Beiersdorf, Chantecaille, Eucerin, La Prairie, NIVEA
+BLOOMINGDALES	https://www.bloomingdalesjobs.com/	NO_ADAPTER:Oracle HCM	{"startUrl":"https://www.bloomingdalesjobs.com/"}	Bloomingdale's
+BOOTS	https://www.boots.jobs/search-jobs?jobfeed=external	NONE	{}	Boots
+FENWICK	https://www.careers.fenwick.co.uk/jobs	GENERIC	{"startUrl":"https://www.careers.fenwick.co.uk/jobs"}	Fenwick
+CLARINS	https://www.groupeclarins.com/fr/offres-demploi/	READY:WTTJ	{"slug":"groupe-clarins"}	Clarins
+HARRODS	https://www.harrodscareers.com/jobs	BOT_WALL	HTTP 403 for https://www.harrodscareers.com/jobs	Harrods
+MECCA	https://www.mecca.com/en-au/careers/job-opportunities/	READY:WORKDAY	{"tenant":"mecca","site":"careers","origin":"https://mecca.wd3.myworkdayjobs.com	MECCA
+RIVOLI	https://www.rivoligroup.com/careers/vacancies	GENERIC	{"feedUrl":"https://www.rivoligroup.com/services/customer-care/feedback-form"}	Rivoli Group
+SWATCH	https://www.swatchgroup.com/fr/job-finder	GENERIC	{"startUrl":"https://www.swatchgroup.com/fr/job-finder"}	Blancpain, Breguet, Glashütte Original, Hamilton, Harry Winston, Longines, Mido, Omega, Rado, Swatch, Swatch Group, Tissot

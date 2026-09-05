@@ -1,0 +1,17 @@
+id	ats	resultat	offres	lieu	config
+BREITLING	SUCCESSFACTORS	OK	0	0	{"origin":"https://careers.breitling.com"}
+CHALHOUB	?	ECHEC	0	0	HTTP 404 for https://www.teamtailor.com/jobs.json?per_page=100
+DAMIANI	SUCCESSFACTORS	OK	26	0	{"origin":"https://careers.damianigroup.com"}
+HUGO_BOSS	?	ECHEC	0	0	HTTP 500 for https://careers.hugoboss.com/api/jobs?limit=100&page=1
+NIKE	?	ECHEC	0	0	fetch failed
+NORDSTROM	?	ECHEC	0	0	HTTP 500 for https://nordstrom.wd501.myworkdayjobs.com/wday/cxs/nordst
+OUNASS	?	ECHEC	0	0	Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+SAKS_GLOBAL	?	ECHEC	0	0	HTTP 500 for https://careers.saksglobal.com/api/jobs?limit=100&page=1
+SAKS	WORKDAY	OK	748	748	{"tenant":"saks","site":"careers_at_saks","origin":"https://saks.wd1.myworkdayjobs.com"}
+SPACE_NK	?	ECHEC	0	0	Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+SSENSE	?	ECHEC	0	0	HTTP 404 for https://www.teamtailor.com/jobs.json?per_page=100
+LOCCITANE	TEAMTAILOR	OK	0	0	{"origin":"https://loccitanegroupeloiinternationalswit-demo.teamtailor.com"}
+ADIDAS	SUCCESSFACTORS	OK	1056	0	{"origin":"https://jobs.adidas-group.com"}
+NEW_BALANCE	WORKDAY	OK	81	81	{"tenant":"newbalance","site":"Careers-UK","origin":"https://newbalance.wd1.myworkdayjobs.
+CLARINS	WTTJ	OK	6	6	{"slug":"groupe-clarins"}
+MECCA	WORKDAY	OK	179	168	{"tenant":"mecca","site":"careers","origin":"https://mecca.wd3.myworkdayjobs.com"}
