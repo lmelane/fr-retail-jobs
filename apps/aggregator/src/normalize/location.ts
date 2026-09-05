@@ -152,3 +152,30 @@ export function displayCity(raw?: string | null): string | undefined {
     })
     .join('');
 }
+
+/**
+ * La ville portée par un libellé de lieu libre, quand la source ne fournit pas
+ * de champ dédié.
+ *
+ * Écarte ce qui n'est pas une ville : une adresse de rue (« 1 World Trade
+ * Center, New York, NY » donnerait « World Trade Center »), un libellé de
+ * télétravail, un code. Mieux vaut aucune ville qu'une fausse — un candidat qui
+ * filtre « New York » ne doit pas tomber sur un nom de tour.
+ */
+const STREET_ADDRESS = /^\d+\s|\b(street|avenue|road|boulevard|rue|route|place|center|centre|tower|building|floor|suite)\b/i;
+
+export function cityFromLocation(raw?: string | null): string | undefined {
+  const text = (raw ?? '').trim();
+  if (!text) return undefined;
+
+  // Un premier segment de VOIRIE se saute, il ne s'abandonne pas : dans
+  // « 1 World Trade Center, New York, NY », la ville est le segment suivant.
+  // Rejeter tout le libellé perdrait New York ; le garder donnerait « World
+  // Trade Center » comme ville.
+  const segments = text.split(',').map((part) => part.trim()).filter(Boolean);
+  const usable = STREET_ADDRESS.test(segments[0] ?? '') ? segments.slice(1) : segments;
+  if (usable.length === 0) return undefined;
+
+  const city = normalizeLocationString(usable.join(', ')).city;
+  return city && city.length >= 2 ? city : undefined;
+}

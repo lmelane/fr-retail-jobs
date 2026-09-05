@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { displayCity, normalizeLocationString } from './location.js';
+import { cityFromLocation, displayCity, normalizeLocationString } from './location.js';
 
 /**
  * Behaviour these tests pin down (BDD): the dedup key rides on `city`, so a
@@ -139,5 +139,38 @@ describe('displayCity — la casse du filtre Ville', () => {
   it('rend undefined sur du vide', () => {
     expect(displayCity('')).toBeUndefined();
     expect(displayCity(null)).toBeUndefined();
+  });
+});
+
+describe('cityFromLocation — la ville que porte un libellé libre', () => {
+  /**
+   * Mesuré en prod le 2026-09-05 : 30 716 offres actives (61 %) sans aucune
+   * ville, dont 24 681 portaient pourtant un `location` exploitable. Le champ
+   * n'était jamais dérivé — il ne venait que des adaptateurs qui le
+   * renseignent. Sans ville, l'offre est infiltrable et absente de la carte.
+   */
+  it.each([
+    ['Paris', 'PARIS'],
+    ['Beaverton, Oregon', 'BEAVERTON'],
+    ['New York,US-NY,United States', 'NEW YORK'],
+    ['London, England, gb', 'LONDON'],
+  ])('%s -> %s', (raw, city) => {
+    expect(cityFromLocation(raw)).toBe(city);
+  });
+
+  it('saute un segment de voirie au lieu d’abandonner le libellé', () => {
+    // Rejeter tout perdrait New York ; le garder donnerait « World Trade Center ».
+    expect(cityFromLocation('1 World Trade Center, New York, NY')).toBe('NEW YORK');
+    expect(cityFromLocation('12 rue de la Paix, Paris')).toBe('PARIS');
+  });
+
+  it('un mode de travail n’est pas un lieu', () => {
+    expect(cityFromLocation('Remote')).toBeUndefined();
+    expect(cityFromLocation('Télétravail')).toBeUndefined();
+  });
+
+  it('rend undefined sur du vide', () => {
+    expect(cityFromLocation('')).toBeUndefined();
+    expect(cityFromLocation(null)).toBeUndefined();
   });
 });

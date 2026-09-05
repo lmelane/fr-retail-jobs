@@ -3,7 +3,7 @@ import { blockingKey, isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } 
 import { classifySector, sectorForSource, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
 import { normalizeCountry } from '../normalize/country.js';
-import { displayCity } from '../normalize/location.js';
+import { cityFromLocation, displayCity } from '../normalize/location.js';
 import { isFranceJob } from '../lib/france.js';
 import { detectLanguage } from '../lib/language.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
@@ -253,9 +253,22 @@ async function createJob(
         contract: candidate.contract,
         // Rich fields the richer vendors publish. Absent means "this source does
         // not expose it", so they are written through rather than dropped.
-        // Casse d'affichage : « Paris » et « PARIS » apparaissaient comme deux
-        // villes distinctes dans le filtre (1 860 et 326 offres).
-        city: displayCity(candidate.city),
+        /**
+         * La ville de l'adaptateur, ou, à défaut, celle que porte `location`.
+         *
+         * Mesuré en prod le 2026-09-05 : 30 716 offres actives (61 %) n'avaient
+         * AUCUNE ville — mais 24 681 d'entre elles portaient un `location`
+         * parfaitement exploitable (« Paris », « London, England, gb »,
+         * « New York,US-NY,United States »). Le champ n'était jamais dérivé :
+         * il ne venait que des adaptateurs qui le renseignent explicitement.
+         * Sans ville, l'offre est infiltrable, introuvable sur une carte et
+         * absente du filtre Ville.
+         *
+         * `normalizeLocationString` fait déjà cette extraction pour la clé de
+         * dédup — on réutilise donc un chemin éprouvé plutôt que d'en écrire un
+         * second qui divergerait.
+         */
+        city: displayCity(candidate.city ?? cityFromLocation(candidate.location)),
         postalCode: candidate.postalCode,
         latitude: candidate.latitude,
         longitude: candidate.longitude,
