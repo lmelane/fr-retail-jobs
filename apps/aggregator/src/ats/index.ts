@@ -16,6 +16,7 @@ import { fetchDigitalRecruitersJobs } from './adapters/digitalrecruiters.js';
 import { fetchTalentsoftJobs } from './adapters/talentsoft.js';
 import { fetchTeamtailorJobs } from './adapters/teamtailor.js';
 import { fetchAvatureJobs } from './adapters/avature.js';
+import { fetchIcimsJobs } from './adapters/icims.js';
 import { fetchEightfoldJobs } from './adapters/eightfold.js';
 import { fetchTalentViewJobs } from './adapters/talentview.js';
 import { fetchMagnetJobs } from './adapters/magnet.js';
@@ -62,6 +63,7 @@ async function dispatch(type: AtsType, config: Record<string, unknown>): Promise
     case 'TALENTSOFT': return fetchTalentsoftJobs(config);
     case 'TEAMTAILOR': return fetchTeamtailorJobs(config);
     case 'AVATURE': return fetchAvatureJobs(config);
+    case 'ICIMS': return fetchIcimsJobs(config);
     case 'EIGHTFOLD': return fetchEightfoldJobs(config);
     case 'TALENTVIEW': return fetchTalentViewJobs(config);
     case 'MAGNET': return fetchMagnetJobs(config);
