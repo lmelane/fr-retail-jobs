@@ -128,3 +128,25 @@ describe('parseListing — offres sous un préfixe de site', () => {
     expect(parseListing('<a href="/a/b/job/X/9/">x</a>', 'https://x.com')).toHaveLength(0);
   });
 })
+
+describe('parseMicrodataDetail — troisième format : data-careersite-propertyid', () => {
+  /**
+   * Mesuré le 2026-09-05 sur jobs.adidas-group.com : ni streetAddress ni
+   * addressLocality — le lieu est dans <span data-careersite-propertyid="city">.
+   * 1 056 offres, 0 lieu sans cette branche ; 1 056/1 056 avec.
+   */
+  const html = `
+    <span data-careersite-propertyid="city" class="rtltextaligneligible">Singapore</span>
+    <span data-careersite-propertyid="state" class="rtltextaligneligible">Sing</span>
+    <span data-careersite-propertyid="country" class="rtltextaligneligible">SG</span>`;
+  test('lit ville et pays depuis les propriétés du site carrière', () => {
+    const d = parseMicrodataDetail(html);
+    expect(d.city).toBe('Singapore');
+    expect(d.country).toBe('SG');
+    expect(d.location).toBe('Singapore, SG');
+  });
+  test('les deux premiers formats gardent la priorité', () => {
+    const d = parseMicrodataDetail(`<meta itemprop="addressLocality" content="Paris"><meta itemprop="addressCountry" content="FR">` + html);
+    expect(d.city).toBe('Paris');
+  });
+});

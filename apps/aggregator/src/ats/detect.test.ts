@@ -130,3 +130,22 @@ describe('ATS_HOSTS couvre tout ce que detectionFromUrl sait lire', () => {
     });
   }
 });
+
+describe('detectFromHtml — plusieurs ATS liés depuis une même page', () => {
+  /**
+   * Mesuré le 2026-09-05 sur careers.nike.com : 10 liens Workday (le board)
+   * et 3 liens Avature (la « talent community »). Avature sortait en premier
+   * et la source rendait 0 offre. Un board est lié depuis chaque offre, un
+   * widget périphérique une fois : le plus cité gagne.
+   */
+  it('préfère l’ATS le plus lié, pas le premier rencontré', () => {
+    const html =
+      '<a href="https://nikeats.avature.net/niketalentcommunity">Talent community</a>' +
+      '<a href="https://nike.wd1.myworkdayjobs.com/nke/job/a">A</a>' +
+      '<a href="https://nike.wd1.myworkdayjobs.com/nke/job/b">B</a>' +
+      '<a href="https://nike.wd1.myworkdayjobs.com/nke/job/c">C</a>';
+    const d = detectFromHtml(html, 'https://careers.nike.com/jobs');
+    expect(d?.type).toBe('WORKDAY');
+    expect(d?.config.site).toBe('nke');
+  });
+});

@@ -41,7 +41,15 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
   for (let offset = 0; offset < 5000; offset += 20) {
     const page = await fetchJson<WorkdayPage>(endpoint, {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      /**
+       * `accept-language` fixé à en-US : le transport commun envoie fr-FR par
+       * défaut, et un tenant dont le site carrière n'est pas traduit en
+       * français répond 500 à cette seule en-tête — mesuré le 2026-09-05 sur
+       * nordstrom.wd501 (200 en en-US, 500 en fr-FR, body identique). en-US est
+       * le locale que tout site Workday sert ; la langue des offres, elle,
+       * vient du tenant, pas de l'en-tête.
+       */
+      headers: { 'content-type': 'application/json', 'accept-language': 'en-US,en;q=0.9' },
       body: JSON.stringify({ appliedFacets: {}, limit: 20, offset, searchText: '' }),
     });
     const postings = page.jobPostings ?? [];

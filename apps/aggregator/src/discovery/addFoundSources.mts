@@ -28,10 +28,37 @@ type Candidate = {
 };
 
 const CANDIDATES: Candidate[] = [
-  { key: 'urbn-hub', maison: 'URBN (Urban Outfitters, Anthropologie, Free People)', kind: 'icims', type: 'ICIMS', careersDomain: 'hub-urbn.icims.com', tier: 'GROUP_OFFICIAL',
-    config: { origin: 'https://hub-urbn.icims.com' } },
-  { key: 'aeropostale', maison: 'Aéropostale', kind: 'icims', type: 'ICIMS', careersDomain: 'careers-aeropostale.icims.com', tier: 'EMPLOYER_DIRECT',
-    config: { origin: 'https://careers-aeropostale.icims.com' } },
+  // Fichier Loïc du 2026-09-05 — chaque ligne VALIDÉE par exécution réelle (offres + lieu) avant d'arriver ici.
+  { key: 'nike-nke', maison: 'Nike', kind: 'workday', type: 'WORKDAY', careersDomain: 'nike.wd1.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'nike', site: 'nke', origin: 'https://nike.wd1.myworkdayjobs.com' } },
+  { key: 'nike-nke2', maison: 'Nike', kind: 'workday', type: 'WORKDAY', careersDomain: 'nike.wd1.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'nike', site: 'nke2', origin: 'https://nike.wd1.myworkdayjobs.com' } },
+  { key: 'richemont-workday', maison: 'Richemont', kind: 'workday', type: 'WORKDAY', careersDomain: 'richemont.wd3.myworkdayjobs.com', tier: 'GROUP_OFFICIAL', config: { tenant: 'richemont', site: 'Richemont', origin: 'https://richemont.wd3.myworkdayjobs.com' } },
+  { key: 'tapestry', maison: 'Tapestry (Coach, Kate Spade, Stuart Weitzman)', kind: 'workday', type: 'WORKDAY', careersDomain: 'tapestry.wd108.myworkdayjobs.com', tier: 'GROUP_OFFICIAL', config: { tenant: 'tapestry', site: 'Tapestry_Careers', origin: 'https://tapestry.wd108.myworkdayjobs.com' } },
+  { key: 'adidas', maison: 'adidas', kind: 'successfactors', type: 'SUCCESSFACTORS', careersDomain: 'jobs.adidas-group.com', tier: 'EMPLOYER_DIRECT', config: { origin: 'https://jobs.adidas-group.com' } },
+  { key: 'hm-group', maison: 'H&M Group', kind: 'smartrecruiters-whitelabel', type: 'SMARTRECRUITERS', careersDomain: 'careers.smartrecruiters.com', tier: 'GROUP_OFFICIAL', config: { company: 'HMGroup' } },
+  { key: 'saks', maison: 'Saks Fifth Avenue', kind: 'workday', type: 'WORKDAY', careersDomain: 'saks.wd1.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'saks', site: 'careers_at_saks', origin: 'https://saks.wd1.myworkdayjobs.com' } },
+  { key: 'swarovski', maison: 'Swarovski', kind: 'workday', type: 'WORKDAY', careersDomain: 'swarovski.wd3.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'swarovski', site: 'swarovski', origin: 'https://swarovski.wd3.myworkdayjobs.com' } },
+  { key: 'deckers', maison: 'Deckers (UGG, HOKA)', kind: 'workday', type: 'WORKDAY', careersDomain: 'deckers.wd5.myworkdayjobs.com', tier: 'GROUP_OFFICIAL', config: { tenant: 'deckers', site: 'Deckers', origin: 'https://deckers.wd5.myworkdayjobs.com' } },
+  { key: 'avolta', maison: 'Avolta (Dufry)', kind: 'successfactors', type: 'SUCCESSFACTORS', careersDomain: 'careers.avoltaworld.com', tier: 'GROUP_OFFICIAL', config: { origin: 'https://careers.avoltaworld.com' } },
+  { key: 'rolex', maison: 'Rolex', kind: 'successfactors', type: 'SUCCESSFACTORS', careersDomain: 'www.carrieres-rolex.com', tier: 'EMPLOYER_DIRECT', config: { origin: 'https://www.carrieres-rolex.com' } },
+  { key: 'max-mara', maison: 'Max Mara Fashion Group', kind: 'smartrecruiters-whitelabel', type: 'SMARTRECRUITERS', careersDomain: 'careers.smartrecruiters.com', tier: 'GROUP_OFFICIAL', config: { company: 'MaxMaraFashionGroup' } },
+  { key: 'mecca', maison: 'MECCA', kind: 'workday', type: 'WORKDAY', careersDomain: 'mecca.wd3.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'mecca', site: 'careers', origin: 'https://mecca.wd3.myworkdayjobs.com' } },
+  { key: 'chalhoub', maison: 'Chalhoub Group', kind: 'teamtailor', type: 'TEAMTAILOR', careersDomain: 'careers.chalhoubgroup.com', tier: 'GROUP_OFFICIAL', config: { origin: 'https://careers.chalhoubgroup.com' } },
+  { key: 'space-nk', maison: 'Space NK', kind: 'teamtailor', type: 'TEAMTAILOR', careersDomain: 'careers.spacenk.com', tier: 'EMPLOYER_DIRECT', config: { origin: 'https://careers.spacenk.com' } },
+  { key: 'new-balance', maison: 'New Balance', kind: 'workday', type: 'WORKDAY', careersDomain: 'newbalance.wd1.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'newbalance', site: 'Careers-UK', origin: 'https://newbalance.wd1.myworkdayjobs.com' } },
+  { key: 'brunello-cucinelli', maison: 'Brunello Cucinelli', kind: 'workday', type: 'WORKDAY', careersDomain: 'brunellocucinelli.wd3.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'brunellocucinelli', site: 'Cucinelli', origin: 'https://brunellocucinelli.wd3.myworkdayjobs.com' } },
+  { key: 'lagardere-travel-retail', maison: 'Lagardère Travel Retail', kind: 'teamtailor', type: 'TEAMTAILOR', careersDomain: 'careers.lagardere-tr.com', tier: 'GROUP_OFFICIAL', config: { origin: 'https://careers.lagardere-tr.com' } },
+  { key: 'sisley', maison: 'Sisley', kind: 'smartrecruiters-whitelabel', type: 'SMARTRECRUITERS', careersDomain: 'careers.smartrecruiters.com', tier: 'ATS_OFFICIAL', config: { company: 'SISLEY' } },
+  { key: 'damiani', maison: 'Damiani', kind: 'successfactors', type: 'SUCCESSFACTORS', careersDomain: 'careers.damianigroup.com', tier: 'EMPLOYER_DIRECT', config: { origin: 'https://careers.damianigroup.com' } },
+  { key: 'ounass', maison: 'Ounass', kind: 'teamtailor', type: 'TEAMTAILOR', careersDomain: 'careers.ounass.com', tier: 'EMPLOYER_DIRECT', config: { origin: 'https://careers.ounass.com' } },
+  { key: 'ami-paris-recruitee', maison: 'AMI Paris', kind: 'recruitee', type: 'RECRUITEE', careersDomain: 'amiparis.recruitee.com', tier: 'ATS_OFFICIAL', config: { subdomain: 'amiparis' } },
+  { key: 'loccitane-fr', maison: 'L\'Occitane', kind: 'teamtailor', type: 'TEAMTAILOR', careersDomain: 'jobs-fr.loccitane.com', tier: 'EMPLOYER_DIRECT', config: { origin: 'https://jobs-fr.loccitane.com' } },
+  { key: 'ssense', maison: 'SSENSE', kind: 'teamtailor', type: 'TEAMTAILOR', careersDomain: 'careers.ssense.com', tier: 'EMPLOYER_DIRECT', config: { origin: 'https://careers.ssense.com' } },
+  { key: 'tods', maison: 'Tod\'s Group', kind: 'successfactors', type: 'SUCCESSFACTORS', careersDomain: 'jobs.todsgroup.com', tier: 'GROUP_OFFICIAL', config: { origin: 'https://jobs.todsgroup.com' } },
+  { key: 'lagardere-duty-free', maison: 'Lagardère Duty Free', kind: 'talentsoft', type: 'TALENTSOFT', careersDomain: 'lagardere-travelretaildutyfreeglobal-recrute.talent-soft.com', tier: 'GROUP_OFFICIAL', config: { origin: 'https://lagardere-travelretaildutyfreeglobal-recrute.talent-soft.com' } },
+  { key: 'abercrombie', maison: 'Abercrombie & Fitch', kind: 'smartrecruiters-whitelabel', type: 'SMARTRECRUITERS', careersDomain: 'careers.smartrecruiters.com', tier: 'ATS_OFFICIAL', config: { company: 'AbercrombieAndFitchCo' } },
+  { key: 'clarins-wttj', maison: 'Clarins', kind: 'wttj', type: 'WTTJ', careersDomain: 'welcometothejungle.com', tier: 'SPECIALIST_JOBBOARD', config: { slug: 'groupe-clarins' } },
+  { key: 'la-redoute-talentview', maison: 'La Redoute', kind: 'talentview', type: 'TALENTVIEW', careersDomain: 'laredoute-talent.talentview.io', tier: 'ATS_OFFICIAL', config: { origin: 'https://laredoute-talent.talentview.io', slug: 'laredoute-talent' } },
+  { key: 'el-palacio-de-hierro', maison: 'El Palacio de Hierro', kind: 'successfactors', type: 'SUCCESSFACTORS', careersDomain: 'empleos.palaciohierro.com.mx', tier: 'EMPLOYER_DIRECT', config: { origin: 'https://empleos.palaciohierro.com.mx' } },
 ];
 
 /**

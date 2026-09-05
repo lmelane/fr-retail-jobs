@@ -373,10 +373,25 @@ function atsLinksInHtml(html: string, baseUrl: string): string[] {
  */
 export function detectFromHtml(html: string, rawUrl: string): AtsDetection | null {
   // 1. A known ATS linked from the page — highest confidence, exact config.
+  //
+  //    Quand une page cite PLUSIEURS ATS, le premier lien rencontré gagnait.
+  //    Mesuré le 2026-09-05 sur careers.nike.com : 10 liens Workday (le board,
+  //    1 088 offres) et 3 liens Avature (la « talent community », pas un
+  //    board) — Avature sortait en premier et la source rendait 0 offre.
+  //    On collecte donc toutes les détections et on préfère celle qui
+  //    revient le plus souvent : un board est lié depuis chaque offre, un
+  //    widget périphérique une fois.
+  const votes = new Map<string, { detection: AtsDetection; count: number }>();
   for (const candidate of atsLinksInHtml(html, rawUrl)) {
     const detected = detectionFromUrl(candidate);
-    if (detected) return { ...detected, careersUrl: rawUrl, confidence: 0.95, note: `ATS link discovered on ${rawUrl}` };
+    if (!detected) continue;
+    const key = `${detected.type}:${JSON.stringify(detected.config)}`;
+    const entry = votes.get(key) ?? { detection: detected, count: 0 };
+    entry.count += 1;
+    votes.set(key, entry);
   }
+  const best = [...votes.values()].sort((a, b) => b.count - a.count)[0];
+  if (best) return { ...best.detection, careersUrl: rawUrl, confidence: 0.95, note: `ATS link discovered on ${rawUrl} (${best.count} liens)` };
 
   // 2. A widget/white-label ATS embedded on the brand's own careers domain
   //    (DigitalRecruiters, Teamtailor, TalentSoft…) — real adapter, config from

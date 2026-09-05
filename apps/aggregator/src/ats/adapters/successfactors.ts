@@ -226,6 +226,25 @@ export function parseMicrodataDetail(html: string): SuccessFactorsDetail {
     if (composed) detail.location = composed;
   }
 
+  /**
+   * TROISIÈME format, mesuré le 2026-09-05 sur jobs.adidas-group.com : ni
+   * streetAddress, ni addressLocality — le lieu est dans des <span
+   * data-careersite-propertyid="city|state|country">. 1 056 offres, 0 lieu
+   * sans cette branche. Les trois formats sont ceux des trois générations de
+   * Career Site Builder SAP ; on les lit tous, dans l'ordre du plus précis
+   * au moins précis.
+   */
+  if (!detail.city) {
+    const prop = (name: string) =>
+      new RegExp(`data-careersite-propertyid="${name}"[^>]*>\\s*([^<]{1,80}?)\\s*<`, 'i').exec(html)?.[1]?.trim();
+    const city = prop('city');
+    const country = prop('country');
+    if (city) detail.city = city;
+    if (country && /^[A-Z]{2}$/.test(country)) detail.country = country;
+    const composed = [city, country].filter(Boolean).join(', ');
+    if (composed && !detail.location) detail.location = composed;
+  }
+
   const posted = meta('datePosted');
   if (posted && !Number.isNaN(Date.parse(posted))) detail.postedAt = new Date(posted);
   const valid = meta('validThrough');
