@@ -85,6 +85,35 @@ export function parseAvatureJob(html: string, url: string): NormalizedJob | null
   };
 }
 
+/**
+ * Libellés de BOUTON, jamais un intitulé de poste.
+ *
+ * Chaque carte Avature porte DEUX liens vers la même offre — le titre, puis un
+ * bouton d'action — et le motif de carte attrape le premier texte qui suit un
+ * lien JobDetail. Mesuré le 2026-09-05 sur careers.loreal.com : 20 des 40
+ * cartes de la première page ressortaient « Apply Now », et 189 offres actives
+ * en base portaient ce titre. Un candidat voyait 189 annonces identiques, sans
+ * savoir de quel poste il s'agissait.
+ */
+const BUTTON_LABEL =
+  /^(apply now|apply|postuler|postuler maintenant|bewerben|jetzt bewerben|solicitar|candidatarsi|view (job|details)|voir l'offre|en savoir plus|read more|learn more|details?)$/i;
+
+/**
+ * Le titre lisible d'une carte : le texte du lien s'il en est un, sinon le slug
+ * de l'URL — qui porte TOUJOURS l'intitulé réel
+ * (`/JobDetail/Regional-Activation-Manager-m-f-d-.../253399`). Repli honnête :
+ * un titre reconstruit reste exact, là où « Apply Now » ne dit rien.
+ */
+export function titleFromCard(raw: string, url: string): string | undefined {
+  const text = raw.trim();
+  if (text && !BUTTON_LABEL.test(text)) return text;
+
+  const slug = url.match(/\/JobDetail\/([^/]+)\/\d+\/?$/)?.[1];
+  if (!slug) return undefined;
+  const rebuilt = decodeURIComponent(slug).replace(/-+/g, ' ').replace(/\s+/g, ' ').trim();
+  return rebuilt.length >= 3 ? rebuilt : undefined;
+}
+
 /** One result card on the SearchJobs listing. */
 const LISTING_CARD =
   /href="([^"]*\/jobs\/JobDetail\/[^"]+)"[\s\S]{0,120}?>([^<]{3,120})<[\s\S]{0,600}?/g;
@@ -103,7 +132,7 @@ export function parseAvatureListing(html: string): NormalizedJob[] {
 
   for (const match of html.matchAll(LISTING_CARD)) {
     const url = decode(match[1]);
-    const title = decode(match[2]);
+    const title = titleFromCard(decode(match[2]), url);
     if (!title || seen.has(url)) continue;
     seen.add(url);
 
@@ -115,7 +144,15 @@ export function parseAvatureListing(html: string): NormalizedJob[] {
       .map((cell) => decode(cell))
       .filter(Boolean);
 
-    const publishedAt = cells.findIndex((cell) => /^Publi/i.test(cell));
+    /**
+     * Le marqueur de date, dans la langue du board.
+     *
+     * Le code ne connaissait que « Publié » : sur careers.loreal.com, servi en
+     * anglais, la carte écrit « Posted 01-Oct-2026 » — donc l'index restait à
+     * -1 et la ville, pourtant présente juste avant (« Copenhagen »), était
+     * perdue. Mesuré le 2026-09-05 : 20 cartes sur 20 sans lieu.
+     */
+    const publishedAt = cells.findIndex((cell) => /^(publi|posted|veröffentlicht|publicado|pubblicato)/i.test(cell));
     // The city is the cell immediately before "Publié …".
     const location = publishedAt > 0 ? cells[publishedAt - 1] : undefined;
     const posted = cells[publishedAt]?.match(/(\d{1,2}-\w{3}-\d{4})/)?.[1];
