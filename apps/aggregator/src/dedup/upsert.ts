@@ -82,6 +82,9 @@ export async function upsertDeduplicated(
     company: candidate.company,
     title: candidate.title,
     sourceSector: sectorForSource(candidate.sourceKey),
+    // Toute offre ingérée vient d'une source promue au catalogue : son
+    // appartenance au secteur est déjà établie (voir classifySector).
+    fromCatalogue: Boolean(candidate.sourceKey),
   });
   const sector = (SECTOR_TO_COMPANY_SECTOR[verdict.sector] ?? 'OTHER') as never;
 

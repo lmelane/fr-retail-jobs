@@ -100,3 +100,36 @@ describe('classifySector — unrecognised employer inherits its source sector', 
     expect(withHint.reason).not.toContain('inherited');
   });
 });
+
+describe('classifySector — repli sur le périmètre du catalogue', () => {
+  /**
+   * Mesuré en prod le 2026-09-05 : OTHER était le PREMIER secteur du site avec
+   * 14 925 offres (30 %), et il contenait Levi's (1 308), Crocs (494), MAC
+   * (341), Madewell, Reformation, Mejuri, Suitsupply — que personne ne cherche
+   * hors de la mode. Cause : seules 2 sources sur 434 déclaraient un secteur,
+   * donc toute marque absente de la liste de référence tombait en OTHER.
+   */
+  it('une maison inconnue venue du catalogue est publiable, pas OTHER', () => {
+    const verdict = classifySector({ company: 'Buck Mason', fromCatalogue: true });
+    expect(verdict.inScope).toBe(true);
+    expect(verdict.sector).not.toBe('OTHER');
+  });
+
+  it('sans catalogue, un employeur inconnu reste à revoir', () => {
+    const verdict = classifySector({ company: 'Buck Mason' });
+    expect(verdict.sector).toBe('OTHER');
+    expect(verdict.inScope).toBe(false);
+  });
+
+  it('le repli ne contourne JAMAIS une exclusion de périmètre', () => {
+    // Carrefour est hors vertical par décision : source ou pas, il le reste.
+    const verdict = classifySector({ company: 'Carrefour', fromCatalogue: true });
+    expect(verdict.sector).toBe('OTHER');
+    expect(verdict.inScope).toBe(false);
+  });
+
+  it('la liste de référence garde la priorité sur le repli', () => {
+    const verdict = classifySector({ company: 'Chanel', fromCatalogue: true });
+    expect(verdict.reason).toMatch(/reference list/i);
+  });
+});
