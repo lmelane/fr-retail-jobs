@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { resolveCompany, stripLogoArtifact, stripMultiBrandSuffix } from './company.js';
+import { resolveCompany, stripLegalSuffix, stripLogoArtifact, stripMultiBrandSuffix } from './company.js';
 
 /**
  * Group ATS feeds (L'Oréal Luxe, Puig, Richemont, SMCP…) publish a whole
@@ -95,5 +95,33 @@ describe('resolveCompany — fautes des flux', () => {
     const identity = resolveCompany('VanCleef-Aprels');
     expect(identity.companyId).toBe('VAN_CLEEF');
     expect(identity.displayName).toBe('Van Cleef & Arpels');
+  });
+});
+
+describe('stripLegalSuffix — formes juridiques et entités locales (audit A1)', () => {
+  it('retire la forme juridique, en boucle', () => {
+    expect(stripLegalSuffix('Ulta Beauty, Inc.')).toBe('Ulta Beauty');
+    expect(stripLegalSuffix('Tapestry, Inc.')).toBe('Tapestry');
+    expect(stripLegalSuffix('Nordstrom Inc')).toBe('Nordstrom');
+    expect(stripLegalSuffix('MECCA Brands Pty Ltd')).toBe('MECCA Brands');
+    expect(stripLegalSuffix('The RealReal, Inc.')).toBe('The RealReal');
+  });
+
+  it('retire l’entité locale (pays, Retail, Stores) et la tête « United States of »', () => {
+    expect(stripLegalSuffix('United States of Aritzia Inc.')).toBe('Aritzia');
+    expect(stripLegalSuffix('Coach Stores Canada Corporation')).toBe('Coach');
+    expect(stripLegalSuffix('Michael Kors Retail  Inc')).toBe('Michael Kors');
+  });
+
+  it('ne vide jamais un nom et laisse les noms sains', () => {
+    expect(stripLegalSuffix('Inc.')).toBe('Inc.');
+    expect(stripLegalSuffix('Hermès')).toBe('Hermès');
+    expect(stripLegalSuffix('Swatch Group')).toBe('Swatch Group');
+    expect(stripLegalSuffix('Dr. Jart+')).toBe('Dr. Jart+');
+  });
+
+  it('deux entités d’une même marque sont une seule Maison', () => {
+    expect(resolveCompany('Nordstrom Inc').companyId).toBe(resolveCompany('Nordstrom').companyId);
+    expect(resolveCompany('Ulta Beauty, Inc.').displayName).toBe('Ulta Beauty');
   });
 });

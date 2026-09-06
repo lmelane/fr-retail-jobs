@@ -131,7 +131,7 @@ export function stripLogoArtifact(rawName: string): string {
 }
 
 export function resolveCompany(rawName: string): CompanyIdentity {
-  const name = stripLogoArtifact(stripMultiBrandSuffix(rawName));
+  const name = stripLegalSuffix(stripLogoArtifact(stripMultiBrandSuffix(rawName)));
   const key = canonicalCompanyKey(name);
 
   const direct = ALIAS_INDEX.get(key);
@@ -146,4 +146,31 @@ export function resolveCompany(rawName: string): CompanyIdentity {
     companyId: withoutPrefix.replace(/\s+/g, '_') || key.replace(/\s+/g, '_'),
     displayName: name,
   };
+}
+
+/**
+ * Le nom d'une Maison, sans sa forme juridique ni son entité locale.
+ *
+ * Mesuré en prod le 2026-09-06 (audit A1) : 153 noms à suffixe légal portaient
+ * 16 612 offres — « Ulta Beauty, Inc. » 9 959, « Tapestry, Inc. » 1 607,
+ * « Nordstrom Inc », « United States of Aritzia Inc. », « Coach Stores Canada
+ * Corporation », « Michael Kors Retail Inc ». Un candidat cherche Coach, pas
+ * « Coach Stores Canada Corporation », et deux entités d'une même marque
+ * doivent être UNE Maison. Retiré en boucle, du plus extérieur au plus
+ * intérieur ; jamais un mot qui ferait un nom vide.
+ */
+const LEGAL_FORMS =
+  /(?:,?\s*(?:inc\.?|incorporated|llc|l\.l\.c\.|ltd\.?|limited|pty\.?(?:\s+ltd\.?)?|gmbh|s\.?p\.?a\.?|s\.?a\.?s\.?u?\.?|s\.?a\.?r\.?l\.?|s\.?a\.?|b\.?v\.?|n\.?v\.?|plc|corp\.?|corporation|co\.?,?\s*ltd\.?|s\.?r\.?l\.?|ag|sl|s\.l\.|lda|oy|ab|a\/s|kk|k\.k\.|&\s*co\.?))\s*$/i;
+const ENTITY_TAILS =
+  /\s+(?:retail|stores?|services|holdings?|international|u\.?s\.?a?\.?|u\.?k\.?|canada|france|italia|italy|deutschland|germany|españa|spain|australia|nederland|netherlands|belgium|belgique|schweiz|suisse|switzerland|japan|hong\s+kong|europe|emea|north\s+america|americas?|asia|apac)\s*$/i;
+const ENTITY_HEADS = /^(?:united\s+states\s+of|the\s+united\s+states\s+of)\s+/i;
+
+export function stripLegalSuffix(rawName: string): string {
+  let name = rawName.replace(/\s+/g, ' ').trim();
+  for (let i = 0; i < 6; i++) {
+    const next = name.replace(ENTITY_HEADS, '').replace(LEGAL_FORMS, '').replace(ENTITY_TAILS, '').replace(/[\s,]+$/, '').trim();
+    if (next === name || !next) break;
+    name = next;
+  }
+  return name || rawName.trim();
 }
