@@ -169,39 +169,6 @@ export const JOB_SOURCES: readonly JobSource[] = [
     notes: 'DigitalRecruiters, same shape as Decathlon — one parser covers both.',
   },
   {
-    key: 'loreal',
-    jobUrlPattern: /\/jobs\/JobDetail/,
-    flow: 'EMPLOYER',
-    tier: 'EMPLOYER_DIRECT',
-    company: "L'Oréal",
-    kind: 'SITEMAP_JSONLD',
-    entryUrl: 'https://careers.loreal.com/fr_FR/jobs/sitemap.xml',
-    robotsVerdict: 'Allow: /jobs; Disallow: /jobs/*qtvc= only',
-    verifiedTotal: 1562,
-    verifiedOn: '2026-09-01',
-    notes: 'Avature. JSON-LD is thin (title + datePosted); detail pages need HTML parsing.',
-  },
-  {
-    key: 'kering',
-    // Excludes the listing page and the continent index pages above it.
-    jobUrlPattern: /\/offres-d-emploi\/[^/]+\/[^/]+/,
-    flow: 'EMPLOYER',
-    tier: 'GROUP_OFFICIAL',
-    company: 'Kering (Gucci, Saint Laurent, Balenciaga, …)',
-    kind: 'SITEMAP_JSONLD',
-    entryUrl: 'https://www.kering.com/fr/sitemap.xml',
-    robotsVerdict:
-      'Allow: /. The only Disallow entries (/*?*page=, /*?*search_career=) target the search ' +
-      "engine's query strings, NOT the offers: every job has its own clean URL in the sitemap.",
-    verifiedTotal: 1428,
-    verifiedOn: '2026-09-01',
-    notes:
-      'Verified: sitemap returns 1428 job URLs directly, no pagination involved. A detail page ' +
-      '(Saint Laurent, Paris) yields full JSON-LD: title, datePosted, employmentType, ' +
-      'hiringOrganization, jobLocation with addressCountry "FR". The generic connector reads it as-is. ' +
-      'Still filter on datePosted — the sitemap retains closed postings that keep returning HTTP 200.',
-  },
-  {
     key: 'galeries-lafayette',
     jobUrlPattern: /\/jobs\/\d/,
     flow: 'EMPLOYER',

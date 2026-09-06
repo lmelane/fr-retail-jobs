@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, test } from 'vitest';
 import { parseListing, parseMicrodataDetail, splitSlug } from './successfactors.js';
 
@@ -281,5 +282,45 @@ describe('RMK v2 — rmkJobUrl and normalizeRmkItem', () => {
   test('drops an entry without id or title rather than emit an unlinkable row', () => {
     expect(normalizeRmkItem({ unifiedStandardTitle: 'x' }, 'en_GB', 'https://x')).toBeNull();
     expect(normalizeRmkItem({ id: '1', urlTitle: 'y' }, 'en_GB', 'https://x')).toBeNull();
+  });
+});
+
+describe('parseListing — origine avec segment de site (g6, 2026-09-06)', () => {
+  /**
+   * Sephora France est cataloguée avec `origin: https://jobs.sephora.com/France`
+   * et ses liens sont déjà `/France/job/…`. La concaténation donnait
+   * `/France/France/job/…`, servi en 200 comme page générique sans microdata :
+   * 24 offres à 0 % de description, 0 % de date, 0 % de pays.
+   */
+  test('un chemin absolu se résout sur l’hôte, jamais en doublant le segment', () => {
+    const [job] = parseListing(
+      '<a href="/France/job/SARAN-CDI-Demand-Planner-%28FHX%29/1354866455/">x</a>',
+      'https://jobs.sephora.com/France',
+    );
+    expect(job.url).toBe('https://jobs.sephora.com/France/job/SARAN-CDI-Demand-Planner-%28FHX%29/1354866455/');
+  });
+});
+
+describe('parseMicrodataDetail — le texte garde ses paragraphes (g6, 2026-09-06)', () => {
+  /** Page réelle de Sephora France, tronquée au bloc microdata. */
+  const SEPHORA = readFileSync(new URL('./__fixtures__/g6-sephora-france-1354866455.html', import.meta.url), 'utf8');
+
+  test('lit titre, adresse, date et une description structurée', () => {
+    const d = parseMicrodataDetail(SEPHORA);
+    expect(d.title).toBe('CDI - Demand Planner (F/H/X)');
+    expect(d.city).toBe('SARAN');
+    expect(d.country).toBe('FR');
+    expect(d.postedAt).toBeInstanceOf(Date);
+    expect(d.description!.length).toBeGreaterThan(1500);
+    // 19 <p> et 6 <li> à la source : un pavé sans saut de ligne serait une perte.
+    expect((d.description!.match(/\n/g) ?? []).length).toBeGreaterThan(15);
+    expect(d.description).toContain('• ');
+  });
+
+  test('un bloc à paragraphes ne devient pas un pavé', () => {
+    const d = parseMicrodataDetail(
+      '<div itemprop="description"><div><p>Première phrase.</p></div><div><p>Seconde phrase.</p><ul><li>Un</li><li>Deux</li></ul></div></div><div>hors bloc</div>',
+    );
+    expect(d.description).toBe('Première phrase.\n\nSeconde phrase.\n• Un\n• Deux');
   });
 });

@@ -1,5 +1,7 @@
 import pLimit from 'p-limit';
 import { fetchJson, fetchText } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
+import { microdataDescriptionHtml } from '../../connectors/generic/jsonLdSitemap.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -59,7 +61,15 @@ export function parseListing(html: string, origin: string): SuccessFactorsJob[] 
   for (const match of html.matchAll(JOB_LINK)) {
     const [, path, slug, id] = match;
     if (!seen.has(id)) {
-      seen.set(id, { url: `${origin}${path}`, externalId: id, slug });
+      /**
+       * Le lien est un chemin ABSOLU : il se résout sur l'hôte, pas sur
+       * l'origine configurée. Mesuré le 2026-09-06 sur Sephora France : origin
+       * `https://jobs.sephora.com/France` + lien `/France/job/…` concaténés
+       * donnaient `/France/France/job/…`, que le site sert en HTTP 200 comme
+       * page générique « Careers at Sephora » — sans microdata. 24 offres à
+       * 0 % de description, 0 % de date, 0 % de pays.
+       */
+      seen.set(id, { url: new URL(path, origin).toString(), externalId: id, slug });
     }
   }
   return [...seen.values()];
@@ -351,33 +361,15 @@ export async function fetchSuccessFactorsJobs(
 /**
  * Microdata, not JSON-LD: the text sits in itemprop="description".
  *
- * The block contains nested divs, so a lazy match up to the first </div> stops
- * after ~13 characters. The end is found by walking div depth instead.
+ * Le bloc est converti par `htmlToPlainText`, qui garde paragraphes, listes
+ * et titres. L'ancienne version remplaçait chaque balise par une espace puis
+ * écrasait tout blanc : une page adidas à 33 <p> devenait un pavé de 3 000
+ * caractères sans un seul saut de ligne. Mesuré en base le 2026-09-06 :
+ * adidas 831 pavés sur 1 053 offres, Crocs 495/495, Avolta 217/243 — et
+ * L'Oréal Professionnel 1 356/1 782, dont le détail Avature passe ici aussi.
  */
 export function parseMicrodataDescription(html: string): string | undefined {
-  const start = html.search(/itemprop="description"[^>]*>/i);
-  if (start === -1) return undefined;
-
-  const openTag = html.slice(start).match(/itemprop="description"[^>]*>/i)?.[0] ?? '';
-  let cursor = start + openTag.length;
-  let depth = 1;
-
-  while (depth > 0 && cursor < html.length) {
-    const next = html.slice(cursor).match(/<(\/?)div\b/i);
-    if (!next || next.index === undefined) break;
-    depth += next[1] ? -1 : 1;
-    cursor += next.index + next[0].length;
-  }
-
-  const match = [undefined, html.slice(start + openTag.length, cursor)] as const;
-  const text = match[1]
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&(?:lt|gt|quot|#39);/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text || undefined;
+  return htmlToPlainText(microdataDescriptionHtml(html));
 }
 
 export type SuccessFactorsDetail = {

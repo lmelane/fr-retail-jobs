@@ -1,3 +1,4 @@
+import pLimit from 'p-limit';
 import { fetchJson, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -94,20 +95,74 @@ type WttjHit = {
   remote?: string;
   experience_level_minimum?: number;
   description?: string;
-  profile?: string;
+  profile?: string | null;
+  /** ~400–550 caractères de résumé : le seul texte que l'index porte encore. */
+  summary?: string;
 };
 
 type WttjResponse = { nbHits?: number; hits?: WttjHit[]; message?: string; status?: number };
 
+/**
+ * L'offre complète, par l'API publique du site.
+ *
+ * Mesuré le 2026-09-06 : l'index Algolia ne porte PLUS `description` (absent
+ * de tous les hits, `profile` à null) — seulement `summary`, un résumé de
+ * 400 à 550 caractères. Hermès 609 offres et Diptyque 26 à 0 % de
+ * description en base. Le texte vit sur
+ * `api.welcometothejungle.com/api/v1/organizations/{org}/jobs/{slug}`, sans
+ * clé ni en-tête particulier (vérifié sans user-agent) : `job.description`
+ * en HTML (4 741 caractères, 67 <br>, 15 <li> sur un polisseur Hermès),
+ * `job.profile` et `job.recruitment_process` quand l'employeur les remplit.
+ */
+const JOB_API = 'https://api.welcometothejungle.com/api/v1/organizations';
+
+type WttjApiJob = { description?: string | null; profile?: string | null; recruitment_process?: string | null };
+
+/** Le texte de l'offre tel que l'API le donne : description, puis profil, puis processus. Pur. */
+export function descriptionFromApi(job: WttjApiJob | undefined): string | undefined {
+  return (
+    [htmlToPlainText(job?.description), htmlToPlainText(job?.profile), htmlToPlainText(job?.recruitment_process)]
+      .filter(Boolean)
+      .join('\n\n') || undefined
+  );
+}
+
+async function attachWttjDescriptions(
+  jobs: NormalizedJob[],
+  organizationSlug: string,
+  concurrency: number,
+): Promise<NormalizedJob[]> {
+  const limit = pLimit(concurrency);
+  return Promise.all(
+    jobs.map((job) =>
+      limit(async () => {
+        const hit = job.raw as WttjHit;
+        if (!hit.slug) return job;
+        try {
+          const response = await fetchJson<{ job?: WttjApiJob }>(
+            `${JOB_API}/${hit.organization?.slug ?? organizationSlug}/jobs/${hit.slug}`,
+          );
+          const full = descriptionFromApi(response.job);
+          return full && full.length > (job.description?.length ?? 0) ? { ...job, description: full } : job;
+        } catch {
+          // Un détail injoignable ne doit pas faire perdre l'offre : le résumé reste.
+          return job;
+        }
+      }),
+    ),
+  );
+}
 
 function toNormalized(hit: WttjHit, organizationSlug: string): NormalizedJob | null {
   if (!hit.name) return null;
 
   const office = hit.offices?.[0];
   const postedAt = hit.published_at ? new Date(hit.published_at) : undefined;
-  const description = [htmlToPlainText(hit.description), htmlToPlainText(hit.profile)]
-    .filter(Boolean)
-    .join('\n\n');
+  // Le résumé n'est là qu'en repli : l'offre complète vient de l'API, après.
+  const description =
+    [htmlToPlainText(hit.description), htmlToPlainText(hit.profile)].filter(Boolean).join('\n\n') ||
+    htmlToPlainText(hit.summary) ||
+    '';
 
   return {
     externalId: String(hit.reference ?? hit.slug ?? hit.name),
@@ -190,5 +245,13 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<Ad
     if (response.nbHits !== undefined && jobs.length >= response.nbHits) break;
   }
 
-  return { jobs, declaredTotal };
+  if (config.withDescriptions === false) return { jobs, declaredTotal };
+  // Un hit qui porte encore `description` (ancienne forme de l'index) suffit ;
+  // un résumé, quelle que soit sa longueur, n'est pas l'offre.
+  const complete = jobs.every((job) => typeof (job.raw as WttjHit).description === 'string');
+  if (complete) return { jobs, declaredTotal };
+  return {
+    jobs: await attachWttjDescriptions(jobs, slug, Number(config.detailConcurrency ?? 4)),
+    declaredTotal,
+  };
 }

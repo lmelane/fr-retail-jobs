@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { parseAvatureListing, parseAvaturePortalDetail, parseAvaturePortalListing, titleFromCard } from './avature.js';
 
@@ -177,5 +178,39 @@ ESSENTIAL DUTIES &amp; RESPONSIBILITIES
     const detail = parseAvaturePortalDetail('<html><body>maintenance</body></html>');
     expect(detail.description).toBeUndefined();
     expect(detail.city).toBeUndefined();
+  });
+});
+
+describe('parseAvatureListing — carte réelle careers.loreal.com (g6, 2026-09-06)', () => {
+  const CARD = readFileSync(new URL('./__fixtures__/g6-loreal-listing-card.html', import.meta.url), 'utf8');
+
+  it('lit titre, ville, date, et un extrait sans artefact « /a> » ni bloc de partage', () => {
+    const [job] = parseAvatureListing(CARD);
+    expect(job.title).toBe("Skincare Expert pro L'Oréal Luxe (Lancôme, Biotherm, Kiehl's)");
+    expect(job.externalId).toBe('253106');
+    expect(job.location).toBe('Prague');
+    expect(job.postedAt?.toISOString().slice(0, 10)).toBe('2026-07-15');
+    expect(job.description).toMatch(/^Jsme L'Oréal CZ\/HU\/SK!/);
+    expect(job.description).not.toContain('/a>');
+    expect(job.description).not.toContain('Share');
+    expect(job.description).not.toContain('Apply Now');
+  });
+
+  it('ne compte pas deux fois l’offre par son bouton « Apply Now »', () => {
+    expect(parseAvatureListing(CARD)).toHaveLength(1);
+  });
+
+  /**
+   * Mesuré en base le 2026-09-06 : 63 offres dont la description commence
+   * par « /a> Dongguan Posted 16-Jun-2026 … » — ville et date dans le MÊME
+   * nœud texte, donc le marqueur ancré en tête de cellule ne les voyait pas.
+   */
+  it('sépare la ville et la date quand elles partagent une cellule', () => {
+    const [job] = parseAvatureListing(
+      '<a href="/en_US/jobs/JobDetail/Sales-Manager/250079">Sales Manager</a> Dongguan Posted 16-Jun-2026 <div class="article__content">1. 負責區域百貨櫃點</div>',
+    );
+    expect(job.location).toBe('Dongguan');
+    expect(job.postedAt?.toISOString().slice(0, 10)).toBe('2026-06-16');
+    expect(job.description).toBe('1. 負責區域百貨櫃點');
   });
 });

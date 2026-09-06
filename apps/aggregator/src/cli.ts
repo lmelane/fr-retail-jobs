@@ -180,7 +180,10 @@ try {
      */
     const key = process.argv[3];
     if (!key || key.startsWith('--')) throw new Error('retire-source needs the sourceKey to retire');
-    console.log(JSON.stringify({ ok: true, command, ...(await retireSource(prisma, key)) }, null, 2));
+    // `--external-prefix=https://` : ne retirer qu'une ROUTE d'une clé qui en
+    // porte deux (kering : flux Eightfold vivant + sitemap périmée), voir RetireOptions.
+    const externalIdPrefix = process.argv.find((a) => a.startsWith('--external-prefix='))?.slice('--external-prefix='.length);
+    console.log(JSON.stringify({ ok: true, command, externalIdPrefix, ...(await retireSource(prisma, key, { externalIdPrefix })) }, null, 2));
   } else if (command === 'separate-fused') {
     /**
      * One-shot repair for audit D-01: splits openings a single source published

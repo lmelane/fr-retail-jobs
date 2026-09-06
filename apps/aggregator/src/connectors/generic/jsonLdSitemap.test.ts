@@ -1,9 +1,10 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 vi.mock('../../lib/http.js', () => ({ fetchText: vi.fn(), fetchWithRetry: vi.fn(), fetchJson: vi.fn() }));
 
 import { fetchText } from '../../lib/http.js';
-import { fetchSitemapUrls, normalizeJobPosting } from './jsonLdSitemap.js';
+import { fetchJobFromPage, fetchSitemapUrls, normalizeJobPosting, richestDescription } from './jsonLdSitemap.js';
 
 const mockFetch = vi.mocked(fetchText);
 beforeEach(() => mockFetch.mockClear());
@@ -62,5 +63,47 @@ describe('fetchSitemapUrls — index mal déclaré', () => {
     const urls = await fetchSitemapUrls('https://s/sitemap.xml');
     expect(urls).toEqual(['https://s/jobs/job/a', 'https://s/jobs/job/b']);
     expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('fetchJobFromPage — la description la plus riche de la page (g6, 2026-09-06)', () => {
+  const fixture = (name: string) =>
+    readFileSync(new URL(`../../ats/adapters/__fixtures__/${name}`, import.meta.url), 'utf8');
+
+  /**
+   * L'Oréal (1 716 offres du sitemap, 0 % de description) : le JSON-LD ne
+   * porte que titre + datePosted ; le texte est en microdata sur la même page.
+   */
+  it('L’Oréal : replie sur le bloc microdata quand le JSON-LD est vide', async () => {
+    mockFetch.mockResolvedValueOnce(fixture('g6-loreal-jobdetail.html'));
+    const job = await fetchJobFromPage('https://careers.loreal.com/en_US/jobs/JobDetail/x/253106');
+    expect(job?.title).toBe('_SYNERGIE - Skincare expert');
+    expect(job?.description!.length).toBeGreaterThan(1500);
+    expect(job?.description).toContain('\n');
+    expect(job?.description).toContain("Jsme L'Oréal CZ/HU/SK!");
+  });
+
+  /**
+   * Kering (1 427 offres du sitemap, 12 % de description) : le JSON-LD porte
+   * le portrait de la Maison (~170 caractères) ; l'offre est dans __NEXT_DATA__.
+   */
+  it('Kering : prend le texte du poste dans __NEXT_DATA__, pas le portrait de la Maison', async () => {
+    mockFetch.mockResolvedValueOnce(fixture('g6-kering-jobdetail.html'));
+    const job = await fetchJobFromPage('https://www.kering.com/fr/talent/offres-d-emploi/europe/x/');
+    expect(job?.description!.length).toBeGreaterThan(1500);
+    expect(job?.description).toContain('ROLE');
+    expect(job?.description).toContain('• ');
+    expect(job?.description).not.toMatch(/^Fondée en 1961/);
+  });
+
+  it('un JSON-LD complet n’est pas évincé par un bloc microdata étranger à l’offre', () => {
+    const full = 'Texte complet de l’offre. '.repeat(20);
+    const html = '<div itemprop="description">Portrait de l’entreprise, plus court que l’offre.</div>';
+    expect(richestDescription(html, full)).toBe(full);
+  });
+
+  it('sans texte de page, le JSON-LD reste tel quel', () => {
+    expect(richestDescription('<html></html>', 'court')).toBe('court');
+    expect(richestDescription('<html></html>', undefined)).toBeUndefined();
   });
 });

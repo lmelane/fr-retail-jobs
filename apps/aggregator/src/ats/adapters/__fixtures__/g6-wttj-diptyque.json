@@ -1,0 +1,74 @@
+{
+ "capturedOn": "2026-09-06",
+ "algoliaResponse": {
+  "nbHits": 26,
+  "hits": [
+   {
+    "slug": "chef-de-projet-architecture-h-f_paris_DP_pOglmN8",
+    "reference": "c461c92e-818b-4000-9322-a8f389df0ee6",
+    "name": "Chef de projet Architecture H/F",
+    "contract_type": "full_time",
+    "published_at": "2026-09-01T10:09:44Z",
+    "offices": [
+     {
+      "state": "Ile-de-France",
+      "city": "Paris",
+      "country": "France",
+      "country_code": "FR",
+      "district": "Paris",
+      "local_district": "Paris",
+      "local_city": "Paris",
+      "local_state": "Île-de-France"
+     }
+    ],
+    "organization": {
+     "name": "Diptyque paris",
+     "description": "Born in 1961, amid the artistic effervescence of Paris’s Saint Germain district, diptyque is a creator of singular personal and home fragrances, scented skincare products, and decorative objects – creations that are stories, too, where the imagination wanders.\r\n\r\nMixing reverie and reality, nature and art, diptyque opens the doors to a timeless, fragrant and abundant universe where scents, dancing letters, illustrations and captivating patterns evoke places loved and moments shared.",
+     "reference": "RkGkYNA",
+     "labels": [],
+     "summary": "Créateur de parfums et objets de décoration pour soi et la maison.",
+     "profile_type": "standard",
+     "slug": "diptyque-paris",
+     "logo": {
+      "url": "https://cdn-images.welcometothejungle.com/6PJMiPgKVsMyJuPyLac30eYrmNm5b-R_QHdA0LUhanI/rs:auto:400::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9vcmdhbml6YXRpb24vbG9nby81NzIyLzE1ODE2MC8wOTI1MTVkYy1jM2Q2LTQ2MzAtYjcyMS1iNWU5MTEwMjczMWEuanBn",
+      "thumb": {
+       "url": "https://cdn-images.welcometothejungle.com/fJFxF8OoV7c_YXhJZoyvfwawSlzdv8VE48MRW_vQhLU/rs:auto:70::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9vcmdhbml6YXRpb24vbG9nby81NzIyLzE1ODE2MC8wOTI1MTVkYy1jM2Q2LTQ2MzAtYjcyMS1iNWU5MTEwMjczMWEuanBn"
+      }
+     },
+     "nb_employees": 1020,
+     "creation_year": 1961,
+     "cover_image": {
+      "small": {
+       "url": "https://cdn-images.welcometothejungle.com/X6ui5CiHXYfaXFHEna_iIWiLvSp7ib6NVj77U9m2lyE/rs:auto:640::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWY3OTg0NWU2LTY5YTctNDllZS05ZDkyLTA1NTMwNzM3NGNkMi5qcGc"
+      },
+      "url": "https://cdn-images.welcometothejungle.com/qpa-CEQXExi_3qLCt38J-e9RouQMJBfr1-zKHF0ou4E/rs:auto:2000:450:/g:fp:0:0.5/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWY3OTg0NWU2LTY5YTctNDllZS05ZDkyLTA1NTMwNzM3NGNkMi5qcGc",
+      "medium": {
+       "url": "https://cdn-images.welcometothejungle.com/UO1yGv61EwVvUHKjqYBiVYR3TGKL7M5SOJ21jFC-BR8/rs:auto:900::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWY3OTg0NWU2LTY5YTctNDllZS05ZDkyLTA1NTMwNzM3NGNkMi5qcGc"
+      },
+      "large": {
+       "url": "https://cdn-images.welcometothejungle.com/l_0aGue1HrNnjENGX73aOaX6wVj7Hwj4b8ipRpEEVQc/rs:auto:1500::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWY3OTg0NWU2LTY5YTctNDllZS05ZDkyLTA1NTMwNzM3NGNkMi5qcGc"
+      },
+      "social": {
+       "url": "https://cdn-images.welcometothejungle.com/eoBD5njUZGNnMCHLdRNxOhTVdNLKYcAzoxhgDW-LOCU/rs:auto:1200:627:/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWY3OTg0NWU2LTY5YTctNDllZS05ZDkyLTA1NTMwNzM3NGNkMi5qcGc"
+      }
+     },
+     "profile_ranking": 100,
+     "commitments": [],
+     "equality_index": 97
+    },
+    "summary": "Rejoignez Diptyque, une maison de luxe française, en tant que Chef de projet Architecture. Vous serez responsable du déploiement du concept architectural à différentes échelles, de la boutique au pop-up store, tout en respectant la charte et les codes graphiques de la marque. Vous participerez également au développement de nouvelles typologies de mobiliers et au suivi de l'exécution des projets. Ce poste nécessite une expérience d'au moins 5 ans en architecture intérieure et une maîtrise des logiciels de DAO.",
+    "profile": null,
+    "remote": "no"
+   }
+  ]
+ },
+ "apiResponse": {
+  "job": {
+   "slug": "chef-de-projet-architecture-h-f_paris_DP_pOglmN8",
+   "name": "Chef de projet Architecture H/F",
+   "description": "<p>Au sein du département Architecture, et sous la responsabilité du Responsable Architecture Régional, vous interviendrez dans le cadre de nos ouvertures de boutiques à l&#39;échelle internationale. Vous serez en relation constante avec des marchés internationaux.</p><p>Au quotidien, vous utiliserez votre créativité pour proposer et développer des concepts en adéquation avec notre univers.</p><p> </p><p><strong>Descriptif du poste : </strong></p><ul><li><p>Déploiement du concept architectural à différentes échelles (boutique, corner, travel retail et pop up store…) dans le respect de la charte et des codes graphiques de la marque.</p></li><li><p>Chaque boutique <em>Diptyque</em> ayant un univers propre, vous serez force de proposition (matériaux, tissus, revêtements muraux, mobiliers etc) et participerez au renouvèlement de l&#39;expérience client.</p></li><li><p>Participation au développement de nouvelles typologies de mobiliers en fonction des besoins et de l&#39;évolution des gammes de produits.</p></li><li><p>Développement ou pilotage de 3D sous Rhino ou Sketch Up.</p></li><li><p>Pilotage des phases APS/APD des projets.</p></li><li><p>Suivi exécution des projets avec assistance à la maitrise d&#39;œuvre, appel d&#39;offres, suivi de fabrication et livraison.</p></li><li><p>Suivi des plannings et des budgets auprès des marchés.</p></li><li><p>Suivi logistique des envois aux régions d&#39;éléments décoratifs ou constructifs.</p></li></ul><p> </p><p><strong>Profil recherché : </strong></p><p>Issu(e) d&#39;une formation en architecture ou architecture d&#39;intérieure, vous avez une expérience d&#39;au moins 5 ans en architecture intérieure. Ce poste requiert une très bonne compréhension de l&#39;univers créatif de la Maison Diptyque.</p><ul><li><p>Vous êtes reconnu pour votre sens créatif et votre sens du détail. Vous faites preuve d&#39;autonomie et de réactivité dans la gestion des projets qui vous sont confiés. Votre rigueur, votre sens de l&#39;observation, de l&#39;anticipation et de l&#39;initiative sont des atouts indispensables pour réussir avec succès dans cette mission.</p></li><li><p>Enthousiaste et dynamique, vous disposez d&#39;un réel sens de l&#39;équipe et d&#39;une aisance relationnelle vous permettant de vous adapter à des contextes multiculturels. </p></li><li><p>Vous avez une bonne connaissance des matériaux, de l&#39;agencement et leur mise en œuvre.</p></li><li><p>Vous maitrisez parfaitement les logiciels de DAO : AutoCad, Illustrator, In Design, Photoshop, la suite Office et un logiciel de 3d (Rhino ou Sketchup).</p></li><li><p>Vous êtes capable d&#39;exprimer vos idées à travers des croquis à la main et des moodboards.</p></li><li><p>Vous parlez couramment l&#39;Anglais et possédez le vocabulaire technique de l&#39;architecture.</p></li><li><p>Dans le cadre de cette fonction, vous pourriez être amené à effectuer ponctuellement des déplacements à l&#39;étranger.</p></li></ul>",
+   "profile": null,
+   "recruitment_process": null
+  }
+ }
+}

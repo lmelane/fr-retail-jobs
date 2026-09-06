@@ -225,9 +225,89 @@ export function normalizeJobPosting(
   };
 }
 
+/**
+ * Le HTML intérieur du bloc `itemprop="description"` (microdata schema.org).
+ *
+ * Le bloc contient des div imbriquées : une capture paresseuse jusqu'au
+ * premier </div> s'arrête après ~13 caractères. La fin se trouve en suivant
+ * la profondeur des div. Partagé avec SuccessFactors et Avature, dont les
+ * pages portent le texte sous cette forme — et par le connecteur générique,
+ * dont le JSON-LD est parfois vide de description (L'Oréal).
+ */
+export function microdataDescriptionHtml(html: string): string | undefined {
+  const start = html.search(/itemprop="description"[^>]*>/i);
+  if (start === -1) return undefined;
+  const openTag = html.slice(start).match(/itemprop="description"[^>]*>/i)?.[0] ?? '';
+  const from = start + openTag.length;
+  let cursor = from;
+  let end = html.length;
+  let depth = 1;
+  while (depth > 0 && cursor < html.length) {
+    const next = html.slice(cursor).match(/<(\/?)div\b/i);
+    if (!next || next.index === undefined) break;
+    depth += next[1] ? -1 : 1;
+    if (depth === 0) end = cursor + next.index;
+    cursor += next.index + next[0].length;
+  }
+  // Les fins de ligne du HTML source (\r\n chez SAP) ne sont pas du texte :
+  // gardées, elles empêchent les lignes vides de se replier ("\n\r\n\n\r\n").
+  const inner = html.slice(from, end).replace(/\r/g, '');
+  return inner.trim() ? inner : undefined;
+}
+
+/**
+ * Le texte d'offre d'une page Next.js, dans `props.pageProps.description`.
+ *
+ * Mesuré le 2026-09-06 sur kering.com (1 427 pages du sitemap) : le JSON-LD
+ * met dans `description` le portrait de la Maison (151–204 caractères, le
+ * même sur chaque offre), et le texte du poste (2 329 caractères, avec
+ * paragraphes et listes) n'est que dans `__NEXT_DATA__`.
+ */
+export function nextDataDescriptionHtml(html: string): string | undefined {
+  const raw = html.match(/<script[^>]*id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/i)?.[1];
+  if (!raw) return undefined;
+  try {
+    const description = JSON.parse(raw)?.props?.pageProps?.description;
+    return typeof description === 'string' && description.trim() ? description : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/** Sous ce seuil, une « description » est un résumé, pas l'offre (le taux de couverture compte ≥ 200). */
+const USABLE_DESCRIPTION = 200;
+
+/**
+ * La description la plus riche que la page porte, JSON-LD compris.
+ *
+ * Le JSON-LD n'est pas toujours l'endroit où vit le texte : L'Oréal (Avature)
+ * n'y met que titre + datePosted et garde l'offre en microdata ; Kering y met
+ * le portrait de la Maison et garde l'offre dans `__NEXT_DATA__`. Mesuré le
+ * 2026-09-06 : 1 716 offres L'Oréal à 0 % de description, 1 427 Kering à 12 %.
+ *
+ * Le texte de page ne remplace le JSON-LD que quand celui-ci est inutilisable
+ * (< 200 caractères) ou que la page porte au moins deux fois plus : un bloc
+ * microdata étranger à l'offre (portrait d'entreprise) ne doit pas évincer un
+ * JSON-LD complet.
+ */
+export function richestDescription(html: string, fromJsonLd?: string): string | undefined {
+  const fromPage = [microdataDescriptionHtml(html), nextDataDescriptionHtml(html)]
+    .map((fragment) => htmlToPlainText(fragment))
+    .filter((text): text is string => !!text)
+    .sort((a, b) => b.length - a.length)[0];
+  if (!fromPage) return fromJsonLd;
+  const current = fromJsonLd?.length ?? 0;
+  if (current < USABLE_DESCRIPTION || fromPage.length >= 2 * current) return fromPage;
+  return fromJsonLd;
+}
+
 /** Reads one job page and returns its first JobPosting, or null if none. */
 export async function fetchJobFromPage(pageUrl: string): Promise<NormalizedJob | null> {
   const html = await fetchText(pageUrl, { headers: REQUEST_HEADERS });
   const [posting] = extractJobPostings(html);
-  return posting ? normalizeJobPosting(posting, pageUrl) : null;
+  if (!posting) return null;
+  const job = normalizeJobPosting(posting, pageUrl);
+  if (!job) return null;
+  const description = richestDescription(html, job.description);
+  return description === job.description ? job : { ...job, description };
 }

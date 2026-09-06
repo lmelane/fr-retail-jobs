@@ -86,3 +86,43 @@ describe('retireSource', () => {
     expect(stats.jobsDeleted).toBe(0);
   });
 });
+
+/**
+ * Mesuré le 2026-09-06 : la clé `kering` portait deux routes — le flux
+ * Eightfold (ids numériques, vivant) et une route sitemap (ids = URL, 394
+ * offres périmées dont un stage de 2021). Retirer la clé entière aurait tué
+ * le flux vivant ; le préfixe ne retire que la route morte.
+ */
+describe('retireSource — une seule route d’une clé (externalIdPrefix)', () => {
+  it('ne détache que les rattachements dont l’id commence par le préfixe et laisse la Source ACTIVE', async () => {
+    const company = await prisma.company.create({
+      data: { name: 'Gucci', canonicalKey: 'GUCCI', fashionjobsUrl: 'resolved:GUCCI' },
+    });
+    await prisma.source.deleteMany({ where: { key: 'kering' } });
+    await prisma.source.create({
+      data: { key: 'kering', maison: 'Kering', kind: 'eightfold', config: {}, tier: 'GROUP_OFFICIAL', tenantKey: 'eightfold:kering.com', status: 'ACTIVE' },
+    });
+    // Route sitemap seule : doit disparaître.
+    await prisma.job.create({
+      data: {
+        companyId: company.id, externalId: 'https://www.kering.com/fr/offres/x', source: 'GENERIC_JSONLD', title: 'Stage 2021', url: 'https://www.kering.com/fr/offres/x', fingerprint: 'fp-sitemap',
+        sources: { create: [{ sourceKey: 'kering', sourceTier: 'GROUP_OFFICIAL', externalId: 'https://www.kering.com/fr/offres/x', url: 'https://www.kering.com/fr/offres/x' }] },
+      },
+    });
+    // Route Eightfold : doit rester intacte.
+    await prisma.job.create({
+      data: {
+        companyId: company.id, externalId: '12345', source: 'EIGHTFOLD', title: 'Vendeur', url: 'https://careers.kering.com/12345', fingerprint: 'fp-eightfold',
+        sources: { create: [{ sourceKey: 'kering', sourceTier: 'GROUP_OFFICIAL', externalId: '12345', url: 'https://careers.kering.com/12345' }] },
+      },
+    });
+
+    const stats = await retireSource(prisma, 'kering', { externalIdPrefix: 'https://' });
+
+    expect(stats.jobSourcesRemoved).toBe(1);
+    expect(stats.jobsDeleted).toBe(1);
+    expect(await prisma.job.count()).toBe(1);
+    expect((await prisma.job.findFirstOrThrow()).externalId).toBe('12345');
+    expect((await prisma.source.findUniqueOrThrow({ where: { key: 'kering' } })).status).toBe('ACTIVE');
+  });
+});

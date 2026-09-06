@@ -117,7 +117,34 @@ export function titleFromCard(raw: string, url: string): string | undefined {
 
 /** One result card on the SearchJobs listing. */
 const LISTING_CARD =
-  /href="([^"]*\/jobs\/JobDetail\/[^"]+)"[\s\S]{0,120}?>([^<]{3,120})<[\s\S]{0,600}?/g;
+  /href="([^"]*\/jobs\/JobDetail\/[^"]+)"[\s\S]{0,120}?>([^<]{3,120})</g;
+
+/**
+ * « Posted 15-Jul-2026 », « Publié 01-Oct-2026 »… cherché DANS une cellule,
+ * pas seulement en tête : certaines cartes rendent la ville et la date dans le
+ * même nœud texte (« Dongguan Posted 16-Jun-2026 »).
+ */
+const DATE_MARKER = /(publi\S*|posted|veröffentlicht|publicado|pubblicato)\s+(\d{1,2}-\w{3}-\d{4})/i;
+
+/** Les cellules qui suivent l'extrait ne sont pas l'offre : partage social, boutons. */
+const CARD_NOISE = /^(share( this job)?:?|partager|teilen|compartir|condividi)$/i;
+
+const MONTHS: Record<string, number> = {
+  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+};
+
+/**
+ * « 15-Jul-2026 » → minuit UTC ce jour-là. `new Date('15 Jul 2026')` lisait
+ * la date en heure locale, donc la veille une fois en UTC (14 juillet à
+ * 22:00Z sur un poste en Europe/Paris). Pur.
+ */
+export function parseCardDate(raw: string): Date | undefined {
+  const m = /^(\d{1,2})-([A-Za-z]{3})-(\d{4})$/.exec(raw.trim());
+  if (!m) return undefined;
+  const month = MONTHS[m[2].toLowerCase()];
+  if (month === undefined) return undefined;
+  return new Date(Date.UTC(Number(m[3]), month, Number(m[1])));
+}
 
 /**
  * Parses the SearchJobs listing, which is where Avature actually puts the city.
@@ -137,8 +164,19 @@ export function parseAvatureListing(html: string): NormalizedJob[] {
     if (!title || seen.has(url)) continue;
     seen.add(url);
 
-    // The block after the title holds " | city | Publié dd-Mmm-yyyy".
-    const tail = html.slice(match.index + match[0].length, match.index + match[0].length + 900);
+    /**
+     * Le bloc utile commence APRÈS la fermeture du lien-titre.
+     *
+     * La capture s'arrêtait sur le `<` de `</a>` : la suite commençait donc
+     * par « /a> », que le découpage par balises ne voyait pas comme une
+     * balise, et qui finissait en tête de l'extrait. Mesuré en base le
+     * 2026-09-06 : 63 offres L'Oréal Professionnel dont la description
+     * commence par « /a> Dongguan Posted 16-Jun-2026 … ».
+     */
+    const afterTitle = match.index + match[0].length;
+    const closingLink = html.indexOf('</a>', afterTitle - 1);
+    const from = closingLink !== -1 && closingLink < afterTitle + 200 ? closingLink + '</a>'.length : afterTitle;
+    const tail = html.slice(from, from + 1200);
     const cells = tail
       .replace(/<[^>]+>/g, '|')
       .split('|')
@@ -153,19 +191,38 @@ export function parseAvatureListing(html: string): NormalizedJob[] {
      * -1 et la ville, pourtant présente juste avant (« Copenhagen »), était
      * perdue. Mesuré le 2026-09-05 : 20 cartes sur 20 sans lieu.
      */
-    const publishedAt = cells.findIndex((cell) => /^(publi|posted|veröffentlicht|publicado|pubblicato)/i.test(cell));
-    // The city is the cell immediately before "Publié …".
-    const location = publishedAt > 0 ? cells[publishedAt - 1] : undefined;
-    const posted = cells[publishedAt]?.match(/(\d{1,2}-\w{3}-\d{4})/)?.[1];
-    const postedAt = posted ? new Date(posted.replace(/-/g, ' ')) : undefined;
+    const dateIndex = cells.findIndex((cell) => DATE_MARKER.test(cell));
+    let location: string | undefined;
+    let postedAt: Date | undefined;
+    let excerptCells = cells;
+    if (dateIndex >= 0) {
+      const cell = cells[dateIndex];
+      const marker = cell.match(DATE_MARKER)!;
+      // La ville est le texte qui précède le marqueur : dans la même cellule
+      // (« Dongguan Posted … ») ou dans la cellule d'avant (<span>Prague</span>).
+      const before = cell.slice(0, marker.index).trim();
+      location = before || (dateIndex > 0 ? cells[dateIndex - 1] : undefined);
+      postedAt = parseCardDate(marker[2]);
+      const after = cell.slice((marker.index ?? 0) + marker[0].length).trim();
+      excerptCells = [after, ...cells.slice(dateIndex + 1)];
+    }
+
+    // L'extrait s'arrête au premier bouton ou bloc de partage : « Share this
+    // job: Share Apply Now » n'est pas le texte de l'offre.
+    const excerpt: string[] = [];
+    for (const cell of excerptCells) {
+      if (!cell) continue;
+      if (CARD_NOISE.test(cell) || BUTTON_LABEL.test(cell)) break;
+      excerpt.push(cell);
+    }
 
     jobs.push({
       externalId: url.match(/\/(\d+)\/?$/)?.[1] ?? url,
       title,
       location,
-      description: cells.slice(publishedAt + 1).join(' ').slice(0, 4000) || undefined,
+      description: excerpt.join(' ').slice(0, 4000) || undefined,
       url,
-      postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
+      postedAt,
       raw: { source: 'avature' },
     });
   }
