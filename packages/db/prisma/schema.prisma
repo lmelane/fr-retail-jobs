@@ -306,6 +306,33 @@ model Job {
   firstSeenAt   DateTime @default(now())
   lastSeenAt    DateTime @default(now())
   isActive      Boolean  @default(true)
+  /**
+   * Cycle de vie (Catwalks Intelligence, D38) : quand le refresh a fermé
+   * l'offre — effacé si une source la re-liste (ré-ouverture). Avec
+   * `firstSeenAt`, c'est la durée de publication observée ; « durée de
+   * publication » ≠ time-to-fill, la méthodologie le dit.
+   */
+  closedAt      DateTime?
+  /** Nombre de ré-ouvertures : une offre qui revient plusieurs fois est un signal de repost. */
+  reopenedCount Int      @default(0)
+
+  /**
+   * Taxonomie Intelligence, classée à l'ÉCRITURE depuis titre / département /
+   * description (`normalize/taxonomy.ts`), re-classée à chaque ré-attestation
+   * quand `taxonomyVersion` est en retard — l'auto-guérison, comme le pays et
+   * la ville. Null = non classé (compté comme tel, jamais deviné).
+   */
+  /** Famille de métier du secteur : retail-client-advisor, atelier-craft, crm-clienteling… */
+  jobFunction     String?
+  /** INTERNSHIP | APPRENTICESHIP | GRADUATE | JUNIOR | MID | SENIOR | MANAGER | DIRECTOR | EXECUTIVE */
+  seniority       String?
+  /** Métier de boutique (conseil, direction de boutique, VM, opérations) — le Retail Hiring Index. */
+  isRetail        Boolean?
+  /** L'annonce parle d'IA / machine learning — l'AI Hiring Index. */
+  isAiRelated     Boolean  @default(false)
+  /** Compétences, outils, langues, concepts extraits du texte (dictionnaire canonique). */
+  skills          String[] @default([])
+  taxonomyVersion Int      @default(0)
   fingerprint   String
 
   /**
@@ -331,6 +358,7 @@ model Job {
   canonicalTier String?
 
   sources       JobSource[]
+  events        JobEvent[]
 
   raw           Json?
   createdAt     DateTime @default(now())
@@ -345,6 +373,67 @@ model Job {
   @@index([companyId, isActive])
   // Serves the map: only located, live French jobs are ever plotted.
   @@index([isFrance, isActive, latitude, longitude])
+  // Intelligence : agrégats par pays / métier / séniorité, et les fenêtres J-7 / J-30.
+  @@index([isActive, country])
+  @@index([isActive, jobFunction])
+  @@index([isActive, seniority])
+  @@index([firstSeenAt])
+  @@index([closedAt])
+}
+
+/**
+ * Historique d'une offre (Catwalks Intelligence, D38) : chaque ouverture,
+ * fermeture, ré-ouverture et changement de champ structurant (titre, ville,
+ * pays, société, métier) est un événement daté. C'est ce qui permet, dans
+ * trois ans, de rejouer le marché : la liste des offres se remplace, son
+ * histoire ne se reconstruit pas.
+ */
+model JobEvent {
+  id     String   @id @default(cuid())
+  jobId  String
+  job    Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  /** OPENED | CLOSED | REOPENED | CHANGED */
+  type   String
+  /** Pour CHANGED : le champ (title, city, country, companyId, jobFunction). */
+  field  String?
+  before String?
+  after  String?
+  at     DateTime @default(now())
+
+  @@index([jobId, at])
+  @@index([type, at])
+}
+
+/**
+ * Photographie quotidienne du marché (Catwalks Intelligence, D38), une ligne
+ * par (jour, périmètre, clé) : global, pays, ville, société, groupe, secteur,
+ * métier, séniorité, contrat, et les croisements pays×métier / pays×secteur
+ * qui servent la carte. Idempotente : recalculer un jour ré-écrit ses lignes.
+ *
+ * Les comparaisons J-7 / J-30 / M-12 lisent cette table, jamais Job — les
+ * offres se ferment et se suppriment, la photographie reste.
+ */
+model MarketSnapshot {
+  id                 String   @id @default(cuid())
+  date               DateTime @db.Date
+  /** global | country | city | company | group | sector | function | seniority | contract | country-function | country-sector */
+  scope              String
+  /** '' pour global ; ISO-2 ; 'FR|Paris' ; id de société ; nom de groupe ; clé de métier… */
+  key                String
+  activeJobs         Int
+  /** Offres vues pour la première fois ce jour-là. */
+  newJobs            Int
+  /** Offres fermées ce jour-là. */
+  closedJobs         Int
+  hiringCompanies    Int
+  /** Médiane des jours de publication des offres fermées ce jour-là (null si aucune). */
+  medianLifespanDays Float?
+  reopenedJobs       Int      @default(0)
+  createdAt          DateTime @default(now())
+
+  @@unique([date, scope, key])
+  @@index([scope, key, date])
+  @@index([date, scope])
 }
 
 /**

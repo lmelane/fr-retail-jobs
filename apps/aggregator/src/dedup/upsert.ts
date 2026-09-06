@@ -8,6 +8,7 @@ import { cityFromLocation, displayCity } from '../normalize/location.js';
 import { isFranceJob } from '../lib/france.js';
 import { detectLanguage } from '../lib/language.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
+import { classifyJob, TAXONOMY_VERSION } from '../normalize/taxonomy.js';
 
 
 /** Classifier sectors map 1:1 onto the CompanySector enum. */
@@ -323,6 +324,9 @@ async function createJob(
         fingerprint: `${clusterKey}|${candidate.title}`,
         pipelineVersion: PIPELINE_VERSION,
         lastSeenAt: now,
+        // Taxonomie Intelligence (D38) : métier, séniorité, retail, IA,
+        // compétences — classés ici, à la naissance de la ligne.
+        ...classifyJob(candidate),
         /**
          * The untouched source payload. Nothing is discarded: the normalized
          * columns are the standard view, and this keeps every field a vendor
@@ -384,6 +388,7 @@ type ExistingJob = {
   salaryMax: number | null;
   salaryCurrency: string | null;
   salaryPeriod: string | null;
+  taxonomyVersion: number;
   sources: { sourceKey: string; externalId: string; sourceTier: string }[];
 };
 
@@ -523,6 +528,16 @@ async function attachToExisting(
       pipelineVersion: PIPELINE_VERSION,
       // The normalized values of today reach the rows of yesterday.
       ...reattestationFields(candidate, existing, alreadyKnown),
+      // La taxonomie suit la même règle d'auto-guérison : re-classée par la
+      // source de l'entrée, ou dès que les règles ont changé de version.
+      ...(alreadyKnown || existing.taxonomyVersion < TAXONOMY_VERSION
+        ? classifyJob({
+            title: alreadyKnown ? candidate.title : existing.title,
+            department: candidate.department,
+            description: alreadyKnown ? candidate.description : existing.description,
+            contract: candidate.contract ?? existing.contract,
+          })
+        : {}),
       // A cluster key that drifted (city normalized differently) is re-graved,
       // so the cluster lookup — and the weekly reconcile — find the row again.
       ...(clusterKey && clusterKey !== existing.clusterKey ? { clusterKey } : {}),

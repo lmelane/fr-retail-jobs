@@ -212,6 +212,22 @@ try {
       dryRun: process.argv.includes('--dry-run'),
     });
     console.log(JSON.stringify({ ok: true, command, ...stats }, null, 2));
+  } else if (command === 'classify-jobs') {
+    /**
+     * Rejoue la taxonomie Intelligence (métier, séniorité, retail, IA,
+     * compétences) sur toute la base — actives et fermées — pour les lignes
+     * dont la version de taxonomie est en retard. `--all` re-classe tout,
+     * `--limit=<n>` borne, `--dry-run` compte sans écrire.
+     */
+    const { classifyJobs } = await import('./pipeline/classifyJobs.js');
+    const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+    const limit = Number(arg('limit') ?? 0);
+    const stats = await classifyJobs(prisma, {
+      all: process.argv.includes('--all'),
+      dryRun: process.argv.includes('--dry-run'),
+      limit: Number.isFinite(limit) ? limit : 0,
+    });
+    console.log(JSON.stringify({ ok: true, command, ...stats }, null, 2));
   } else if (command === 'geocode') {
     console.log(JSON.stringify({ ok: true, command, ...(await runGeocode(prisma)) }, null, 2));
   } else if (command === 'stats') {
