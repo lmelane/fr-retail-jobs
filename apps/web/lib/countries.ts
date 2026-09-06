@@ -63,9 +63,20 @@ export function countryCode(raw: string | null | undefined): string | null {
   return null;
 }
 
-/** French label for a canonical code (falls back to the code itself). */
+/**
+ * Libellé français d'un code pays : la table maison d'abord (31 libellés),
+ * puis Intl pour tous les autres — 68 codes sur 91 s'affichaient bruts
+ * (« HU (73) », audit A1, 2026-09-06).
+ */
+const INTL_FR = typeof Intl !== 'undefined' && 'DisplayNames' in Intl ? new Intl.DisplayNames(['fr'], { type: 'region' }) : null;
 export function countryLabel(code: string): string {
-  return LABELS[code] ?? code;
+  if (LABELS[code]) return LABELS[code];
+  try {
+    const label = INTL_FR?.of(code);
+    return label && label !== code ? label : code;
+  } catch {
+    return code;
+  }
 }
 
 /** Every raw spelling that maps to a given canonical code — for the SQL filter. */

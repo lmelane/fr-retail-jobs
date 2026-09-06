@@ -60,11 +60,13 @@ const PARAM: Record<string, string> = {
   page: 'page',
 };
 
-/** Country codes -> French labels for the Pays filter, built from countries.ts. */
-const COUNTRY_LABELS: Record<string, string> = Object.fromEntries(
-  ['FR', 'US', 'GB', 'IT', 'ES', 'DE', 'NL', 'BE', 'PT', 'CA', 'CH', 'CN', 'AU',
-   'DK', 'NO', 'SE', 'KR', 'JP', 'MX', 'MY', 'AE', 'HK', 'SG'].map((c) => [c, countryLabel(c)]),
-);
+/**
+ * Libellé français de TOUT code pays de la facette (FilterMenu lit `labels[value]`) :
+ * la liste fixe de 23 codes laissait 68 codes sur 91 en brut — « HU (73) » (audit A1).
+ */
+const COUNTRY_LABELS: Record<string, string> = new Proxy({} as Record<string, string>, {
+  get: (_target, code) => (typeof code === 'string' ? countryLabel(code) : undefined),
+});
 
 /** Registry keys are lowercase slugs; show the employer-facing label instead. */
 const SOURCE_LABELS: Record<string, string> = {

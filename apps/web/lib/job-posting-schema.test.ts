@@ -21,19 +21,26 @@ const base: JobRow = {
 };
 
 describe('jobPostingSchema', () => {
-  it('falls back to firstSeenAt for datePosted and derives validThrough', () => {
-    const schema = jobPostingSchema(base);
+  const now = new Date('2026-09-06T12:00:00Z');
+
+  it('falls back to firstSeenAt for datePosted, and validThrough is the next-pass horizon', () => {
+    const schema = jobPostingSchema(base, now);
     expect(schema.datePosted).toBe('2026-09-01T00:00:00.000Z');
-    // 60-day horizon from datePosted.
-    expect(schema.validThrough).toBe('2026-10-31T00:00:00.000Z');
+    // Horizon : aujourd'hui + 30 j, jamais dans le passé (audit A4 : 21 157 offres inéligibles).
+    expect(schema.validThrough).toBe('2026-10-06T12:00:00.000Z');
   });
 
-  it('prefers the source datePosted and validThrough when present', () => {
+  it("une validité de source déjà passée est repoussée à l'horizon tant que l'offre est listée", () => {
+    const schema = jobPostingSchema({ ...base, validThrough: new Date('2026-08-01T00:00:00Z') }, now);
+    expect(schema.validThrough).toBe('2026-10-06T12:00:00.000Z');
+  });
+
+  it('prefers the source datePosted and a still-future validThrough', () => {
     const schema = jobPostingSchema({
       ...base,
       postedAt: new Date('2026-09-02T00:00:00Z'),
       validThrough: new Date('2026-09-20T00:00:00Z'),
-    });
+    }, now);
     expect(schema.datePosted).toBe('2026-09-02T00:00:00.000Z');
     expect(schema.validThrough).toBe('2026-09-20T00:00:00.000Z');
   });

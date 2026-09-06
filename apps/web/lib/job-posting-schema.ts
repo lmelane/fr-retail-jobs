@@ -23,7 +23,8 @@ import { offerPath } from './offer-url';
  *    board penalized.
  */
 
-const VALID_THROUGH_FALLBACK_DAYS = 60;
+/** Horizon de validité d'une offre encore listée : le prochain passage, avec marge (cadence quotidienne, D36). */
+const VALID_THROUGH_HORIZON_DAYS = 30;
 
 /** Normalized contract/working time -> schema.org employmentType values. */
 export function schemaEmploymentTypes(
@@ -48,11 +49,19 @@ export function schemaEmploymentTypes(
   return [...types];
 }
 
-export function jobPostingSchema(job: JobRow): Record<string, unknown> {
+export function jobPostingSchema(job: JobRow, now = new Date()): Record<string, unknown> {
   const datePosted = job.postedAt ?? job.firstSeenAt;
-  const validThrough =
-    job.validThrough ??
-    new Date(datePosted.getTime() + VALID_THROUGH_FALLBACK_DAYS * 86_400_000);
+  /**
+   * Une offre encore listée par son ATS est valide : sa validité ne doit jamais
+   * être dans le passé, sinon Google Jobs l'écarte — 21 157 offres actives
+   * (29 %) publiaient une validité dépassée par le repli « publication + 60 j »
+   * (audit A4, 2026-09-06 ; décision Loïc : « si l'offre est encore dans l'ATS,
+   * on met à jour »). La validité de la source est gardée tant qu'elle est
+   * future ; sinon l'horizon du prochain passage : aujourd'hui + 30 jours.
+   * Une offre fermée n'émet pas de JSON-LD (D22).
+   */
+  const horizon = new Date(now.getTime() + VALID_THROUGH_HORIZON_DAYS * 86_400_000);
+  const validThrough = job.validThrough && job.validThrough.getTime() > now.getTime() ? job.validThrough : horizon;
   const employmentType = schemaEmploymentTypes(job.contract, job.workingTime);
   const country = countryCode(job.country);
 

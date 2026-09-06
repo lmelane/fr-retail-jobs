@@ -311,10 +311,23 @@ async function ingestApiSource(
     careersDomain: source.careersDomain || undefined,
   };
 
+  const isBoard = sourceDef.tier === 'SPECIALIST_JOBBOARD' || sourceDef.tier === 'AGGREGATOR';
+  let skippedOutOfSector = 0;
   for (const job of jobs) {
     // Group feeds carry the Maison per offer (LVMH: Sephora, Dior…); a
     // single-house feed falls back to the catalogue label.
     const employer = job.company || sourceDef.company;
+
+    /**
+     * Un JOBBOARD ou un cabinet publie tous les secteurs : Michael Page rendait
+     * 3 334 offres dont 97,7 % hors Mode/Luxe/Beauté (audit A4, 2026-09-06) —
+     * « Contrôleur Qualité Métallurgie » sur un jobboard de mode. Une source
+     * employeur, elle, est dans le secteur par construction (voir ci-dessous).
+     */
+    if (isBoard && !classifySector({ company: employer, title: job.title }).inScope) {
+      skippedOutOfSector++;
+      continue;
+    }
 
     /**
      * NO sector filter and NO France filter here — keep everything, filter on
@@ -351,7 +364,8 @@ async function ingestApiSource(
 
   console.log(
     `[ingest] ${stats.source}: ${stats.france} FR / ${stats.inSector} in-sector / ${stats.fetched} fetched -> ` +
-      `${stats.created} created, ${stats.merged} merged, ${stats.errors} errors`,
+      `${stats.created} created, ${stats.merged} merged, ${stats.errors} errors` +
+      (skippedOutOfSector > 0 ? ` (${skippedOutOfSector} hors secteur écartées)` : ''),
   );
   return stats;
 }
