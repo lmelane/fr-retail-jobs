@@ -227,7 +227,9 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
       <header ref={headerRef} className="searchbar">
         {/* rule-b sur le container (pas full-bleed) : même largeur que les filets
             du header, fidèle à emplois.html. */}
-        <div className="container-wide rule-b pb-3">
+        {/* pb-5 (20 px), pas pb-3 : le filet pointillé collait aux pastilles
+            de filtre (revue Loïc, 2026-09-06). */}
+        <div className="container-wide rule-b pb-5">
           <SearchPill
             query={draft}
             onQueryChange={setDraft}

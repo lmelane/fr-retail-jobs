@@ -472,7 +472,10 @@
 /* PAS d'overflow:hidden ici : le panneau de suggestions (.dd, absolu) serait
    clippé — bug vu en prod. Les coins droits sont arrondis par le bouton. */
 .search { display: grid; grid-template-columns: 1fr 1fr auto; height: 48px; border: 1px solid var(--fa-ink); border-radius: var(--fa-radius); background: var(--fa-paper); }
-.search--hero { height: 56px; border-color: transparent; }
+/* Hero : AUCUNE bordure (pas « transparente ») — avec border-color:transparent,
+   le fond blanc de la barre transparaissait en liseré de 1 px autour du bouton
+   vert (revue Loïc, 2026-09-06). */
+.search--hero { height: 56px; border: 0; }
 .search:focus-within { border-color: var(--fa-green); }
 /* .field : un champ (icône + input) réutilisable — barre de recherche /emplois
    ET champ « Rechercher une Maison » de l'annuaire (bordé, 34px). */

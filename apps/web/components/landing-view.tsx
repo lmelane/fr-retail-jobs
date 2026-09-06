@@ -86,15 +86,20 @@ export function LandingView({
           <p className="t-caption opacity-90" data-stagger-index="0">Mode · Luxe · Beauté · Horlogerie · Retail</p>
           {/* DEC-1 : la promesse est le compteur réel, jamais « toutes ».
               Base indisponible (0) -> formulation sans chiffre ni absolu. */}
+          {/* Revue Loïc (2026-09-06) : l'ancien titre (« Les offres de N
+              Maisons, réunies. ») était trop froid pour l'envergure du site.
+              Les deux compteurs réels portent l'ambition ; DEC-1 tient :
+              jamais « toutes », et sans base (0) une formulation sans chiffre. */}
           <h1 id="hero-title" className="t-hero t-hero--home" data-stagger-index="1">
-            {stats.companies > 0 ? (
-              <>Les offres de {nf.format(stats.companies)} Maisons,<br />réunies.</>
+            {stats.offers > 0 && stats.companies > 0 ? (
+              <>{nf.format(stats.offers)} offres.<br />{nf.format(stats.companies)} Maisons.<br />Un seul moteur.</>
             ) : (
-              <>Les offres du luxe,<br />réunies.</>
+              <>Mode, Luxe, Beauté :<br />un seul moteur.</>
             )}
           </h1>
-          <p className="t-body max-w-[52ch] text-white/85" data-stagger-index="2">
-            Sans doublon, avec le texte complet et le lien de candidature direct chez la Maison.
+          <p className="t-body max-w-[56ch] text-white/85" data-stagger-index="2">
+            Le moteur de recherche des carrières dans la Mode, le Luxe, la Beauté, l’Horlogerie et le Retail.
+            Chaque offre en texte complet, sans doublon, avec le lien pour postuler directement chez la Maison.
           </p>
           <div className="w-full text-ink" data-stagger-index="3">
             <SearchPill
