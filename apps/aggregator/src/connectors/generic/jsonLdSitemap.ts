@@ -56,7 +56,15 @@ export async function fetchSitemapUrls(sitemapUrl: string): Promise<string[]> {
   const xml = await fetchSitemapXml(sitemapUrl);
   const locations = parseSitemapLocations(xml);
 
-  const isIndex = /<sitemapindex[\s>]/i.test(xml);
+  /**
+   * An index is declared by <sitemapindex> — or, when the publisher wraps its
+   * child sitemaps in a plain <urlset> (Selfridges, 2026-09-06: 5 children,
+   * read as 5 "offers" .xml, so 0 real offers), recognised by its content:
+   * every entry is itself a sitemap path.
+   */
+  const looksLikeSitemap = (url: string) => /sitemap.*\.xml(\.gz)?(\?|$)|\/sitemap\/[^/]+$/i.test(url);
+  const isIndex =
+    /<sitemapindex[\s>]/i.test(xml) || (locations.length > 0 && locations.every(looksLikeSitemap));
   if (!isIndex) return locations;
 
   const shards = await Promise.all(
@@ -142,9 +150,22 @@ export function normalizeJobPosting(
 
   const place = firstOf(node.jobLocation) as JsonLdNode | undefined;
   const address = place?.address as JsonLdNode | undefined;
-  const city = typeof address?.addressLocality === 'string' ? address.addressLocality : undefined;
-  const region = typeof address?.addressRegion === 'string' ? address.addressRegion : undefined;
-  const postalCode = typeof address?.postalCode === 'string' ? address.postalCode : undefined;
+  /**
+   * A placeholder is not a value: Boots (2026-09-06, 1 391 offers) fills
+   * addressLocality / addressRegion / postalCode with « - » and puts the real
+   * place in streetAddress, which produced « -, -, - » on every offer. Dashes
+   * are dropped; when no structured city survives, streetAddress becomes the
+   * location text, and the write-time city derivation (street-aware) reads it.
+   */
+  const text = (value: unknown): string | undefined => {
+    if (typeof value !== 'string') return undefined;
+    const trimmed = value.trim();
+    return trimmed && !/^[-–—.]+$/.test(trimmed) ? trimmed : undefined;
+  };
+  const city = text(address?.addressLocality);
+  const region = text(address?.addressRegion);
+  const postalCode = text(address?.postalCode);
+  const streetAddress = text(address?.streetAddress);
 
   // addressCountry is either "FR" or { name: "France" }.
   const rawCountry = address?.addressCountry;
@@ -185,7 +206,7 @@ export function normalizeJobPosting(
   return {
     externalId,
     title,
-    location: [city, region, postalCode].filter(Boolean).join(', ') || undefined,
+    location: [city, region, postalCode].filter(Boolean).join(', ') || streetAddress || undefined,
     city,
     region,
     postalCode,

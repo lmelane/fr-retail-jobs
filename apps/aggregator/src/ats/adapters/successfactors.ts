@@ -1,5 +1,5 @@
 import pLimit from 'p-limit';
-import { fetchText } from '../../lib/http.js';
+import { fetchJson, fetchText } from '../../lib/http.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -83,9 +83,214 @@ export function splitSlug(slug: string): { city?: string; title: string } {
   };
 }
 
+// ---------------------------------------------------------------------------
+// SAP Recruiting Marketing v2 ("rmk-jobs-search") — the JSON path.
+// ---------------------------------------------------------------------------
+
+/**
+ * SAP's newer career-site generation renders the listing CLIENT-side: the
+ * `/search/` page holds no `/job/…/id/` link at all, and the offers come from
+ * `POST {origin}/services/recruiting/v1/jobs` with a JSON body, 10 per page,
+ * one locale per call. Measured 2026-09-06: jobs.douglas.group (147 offers
+ * over 5 locales, HTML path read 0), careers.breitling.com (41 en_GB + 5 fr_FR
+ * + 4 de_DE, HTML path read 0). The detail page is still server-rendered with
+ * the same microdata as the older sites (itemprop="title"/"description"), so
+ * descriptions reuse `attachSuccessFactorsDescriptions`; only the address
+ * microdata is gone, which is why the listing's `jobLocationShort` is kept.
+ */
+const RMK_PAGE_SIZE = 10;
+const RMK_MAX_PAGES = Number(process.env.SF_RMK_MAX_PAGES ?? 300);
+/** Locales read first, so a posting published in several keeps a candidate-readable one. */
+const RMK_PREFERRED_LOCALES = ['fr_FR', 'en_GB', 'en_US'];
+
+export type RmkV2Item = {
+  id?: string | number;
+  unifiedStandardTitle?: string;
+  urlTitle?: string;
+  unifiedUrlTitle?: string;
+  /** "default" on Douglas → `/default/job/…`; absent on Breitling → `/job/…`. */
+  brandUrl?: string;
+  jobLocationShort?: string[];
+  /** Locale-formatted: "10.07.26" (de_DE), "23/06/2026" (en_GB). */
+  unifiedStandardStart?: string;
+  supportedLocales?: string[];
+};
+
+type RmkV2Response = { totalJobs?: number; jobSearchResult?: Array<{ response?: RmkV2Item }> };
+
+/** The locales a tenant exposes, read from the language switcher links of `/search/`. Pure. */
+export function parseRmkLocales(html: string, preferred = RMK_PREFERRED_LOCALES): string[] {
+  const found = new Set<string>();
+  // The switcher links are HTML-escaped (`&amp;locale=`); the fixture caught a `[?&]` that missed them all.
+  for (const match of html.matchAll(/(?:[?&]|&amp;)locale=([a-z]{2}_[A-Z]{2})/g)) found.add(match[1]);
+  const locales = found.size ? [...found] : ['en_US'];
+  return [...preferred.filter((l) => locales.includes(l)), ...locales.filter((l) => !preferred.includes(l))];
+}
+
+/** RMK writes ISO-3 country codes in short locations ("CHE", "CAN"); the pipeline reads ISO-2 or names. */
+const ISO3_TO_ISO2: Record<string, string> = {
+  FRA: 'FR', CHE: 'CH', DEU: 'DE', AUT: 'AT', ITA: 'IT', ESP: 'ES', PRT: 'PT', BEL: 'BE', NLD: 'NL', LUX: 'LU',
+  GBR: 'GB', IRL: 'IE', USA: 'US', CAN: 'CA', MEX: 'MX', BRA: 'BR', JPN: 'JP', CHN: 'CN', HKG: 'HK', SGP: 'SG',
+  ARE: 'AE', SAU: 'SA', QAT: 'QA', AUS: 'AU', KOR: 'KR', IND: 'IN', POL: 'PL', CZE: 'CZ', SWE: 'SE', DNK: 'DK',
+  NOR: 'NO', FIN: 'FI', GRC: 'GR', TUR: 'TR', BGR: 'BG', ROU: 'RO', HUN: 'HU', MCO: 'MC', TWN: 'TW', THA: 'TH',
+};
+
+/**
+ * "La Chaux-de-Fonds, NE, CHE, 2301<br/>" → city + ISO-2 country + postcode;
+ * "Hamburg, Deutschland " → city + country name. Pure.
+ */
+export function parseRmkLocation(raw: string): { location?: string; city?: string; country?: string; postalCode?: string } {
+  const parts = raw
+    .replace(/<[^>]*>/g, ' ')
+    .split(',')
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (parts.length === 0) return {};
+  const out: { location?: string; city?: string; country?: string; postalCode?: string } = {
+    location: parts.join(', '),
+    city: parts[0],
+  };
+  for (const part of parts.slice(1)) {
+    if (/^[A-Z]{3}$/.test(part)) out.country = ISO3_TO_ISO2[part] ?? part;
+    else if (/^[A-Z]{2}$/.test(part) && !out.country) out.country = part;
+    else if (/^\d{4,5}$/.test(part)) out.postalCode = part;
+  }
+  // "Hamburg, Deutschland": no code anywhere, the last token is the country's name.
+  if (!out.country && parts.length > 1 && !/\d/.test(parts[parts.length - 1])) out.country = parts[parts.length - 1];
+  return out;
+}
+
+/** "10.07.26", "05.12.25", "23/06/2026" — day first in every locale seen. Pure. */
+export function parseRmkDate(raw?: string): Date | undefined {
+  if (!raw) return undefined;
+  const m = /^(\d{1,2})[./-](\d{1,2})[./-](\d{2,4})$/.exec(raw.trim());
+  if (!m) {
+    const iso = Date.parse(raw);
+    return Number.isNaN(iso) ? undefined : new Date(iso);
+  }
+  const year = m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3]);
+  const date = new Date(Date.UTC(year, Number(m[2]) - 1, Number(m[1])));
+  return Number.isNaN(date.getTime()) ? undefined : date;
+}
+
+/** `{origin}[/brand]/job/{urlTitle}/{id}-{locale}` — verified 200 on Douglas (`/default/job/…`) and Breitling (`/job/…`). */
+export function rmkJobUrl(origin: string, item: RmkV2Item, locale: string): string | undefined {
+  const slug = (item.urlTitle ?? item.unifiedUrlTitle ?? '').replace(/&amp;/g, '&');
+  if (!slug || item.id === undefined || item.id === '') return undefined;
+  const brand = item.brandUrl ? `/${item.brandUrl}` : '';
+  return `${origin}${brand}/job/${slug}/${item.id}-${locale}`;
+}
+
+/** One listing entry → one posting. Pure; returns null when the entry cannot be linked. */
+export function normalizeRmkItem(item: RmkV2Item, locale: string, origin: string): NormalizedJob | null {
+  const url = rmkJobUrl(origin, item, locale);
+  const title = item.unifiedStandardTitle?.replace(/\s+/g, ' ').trim();
+  if (!url || !title) return null;
+  // City/country come from the first location; a multi-site posting (Breitling's
+  // talent pool lists three) keeps every site in the readable label.
+  const places = (item.jobLocationShort ?? []).map(parseRmkLocation).filter((p) => p.location);
+  const primary = places[0] ?? {};
+  const location = places.length > 1 ? places.map((p) => p.location).join(' / ') : primary.location;
+  return {
+    externalId: String(item.id),
+    title,
+    ...primary,
+    location,
+    language: locale.slice(0, 2),
+    url,
+    postedAt: parseRmkDate(item.unifiedStandardStart),
+    raw: { ...item, locale, source: 'successfactors-rmk-v2' },
+  };
+}
+
+/**
+ * The switcher on `/search/` does not always list every locale: Breitling's
+ * search page shows only `en_GB` while its home page lists de_DE, fr_FR,
+ * ja_JP, zh_CN too — and fr_FR/de_DE hold postings en_GB does not (5 and 4,
+ * measured). Both pages are read; the union is the tenant's locale set.
+ */
+async function discoverRmkLocales(origin: string, searchHtml: string): Promise<string[]> {
+  let homeHtml = '';
+  try {
+    homeHtml = await fetchText(`${origin}/`, { headers: HEADERS });
+  } catch {
+    // The search page alone still names at least one locale.
+  }
+  return parseRmkLocales(`${searchHtml}\n${homeHtml}`);
+}
+
+/**
+ * The endpoint's ORDER IS NOT STABLE: two identical sweeps of Douglas' 126
+ * de_DE rows returned 106 then 110 distinct ids — pages overlap and skip
+ * (measured with every `sortBy` tried; "date" is the least bad, 121/126; no
+ * page-size field is honoured, 10 is fixed). So a locale is swept again until
+ * the union of ids reaches `totalJobs`, or a sweep adds nothing.
+ */
+const RMK_SORT = 'date';
+const RMK_MAX_SWEEPS = Number(process.env.SF_RMK_MAX_SWEEPS ?? 8);
+
+async function postRmkPage(origin: string, locale: string, page: number): Promise<RmkV2Response> {
+  return fetchJson<RmkV2Response>(`${origin}/services/recruiting/v1/jobs`, {
+    method: 'POST',
+    headers: { ...HEADERS, 'content-type': 'application/json' },
+    body: JSON.stringify({
+      locale,
+      pageNumber: page,
+      sortBy: RMK_SORT,
+      keywords: '',
+      location: '',
+      facetFilters: {},
+      brand: '',
+      skills: [],
+      categoryId: 0,
+      alertId: '',
+      rcmCandidateId: '',
+    }),
+  });
+}
+
+/**
+ * Every locale, every page, swept until complete; one posting per requisition
+ * id, kept in the first (preferred) locale it appears in. `declaredTotal` sums
+ * the locales' `totalJobs`, i.e. counts a posting once per locale.
+ */
+export async function fetchRmkV2Jobs(origin: string, locales: string[]): Promise<{ jobs: NormalizedJob[]; declaredTotal: number }> {
+  const byId = new Map<string, NormalizedJob>();
+  let declaredTotal = 0;
+
+  for (const locale of locales) {
+    const perLocale = new Set<string>();
+    let total = 0;
+    for (let sweep = 0; sweep < RMK_MAX_SWEEPS; sweep++) {
+      const before = perLocale.size;
+      for (let page = 0; page < RMK_MAX_PAGES; page++) {
+        const result = await postRmkPage(origin, locale, page);
+        const items = (result.jobSearchResult ?? []).map((r) => r.response).filter((r): r is RmkV2Item => !!r);
+        if (sweep === 0 && page === 0) {
+          total = Number(result.totalJobs ?? 0);
+          declaredTotal += total;
+        }
+        if (items.length === 0) break;
+        for (const item of items) {
+          const job = normalizeRmkItem(item, locale, origin);
+          if (!job) continue;
+          perLocale.add(job.externalId);
+          if (!byId.has(job.externalId)) byId.set(job.externalId, job);
+        }
+        if (items.length < RMK_PAGE_SIZE) break;
+      }
+      // Complete, or this sweep found nothing new: stop for this locale.
+      if (perLocale.size >= total || perLocale.size === before) break;
+    }
+  }
+  return { jobs: [...byId.values()], declaredTotal };
+}
+
 /**
  * Reads a whole SuccessFactors board.
  * `config.origin` is the careers host, e.g. "https://jobs.puig.com".
+ * `config.rmk: true` goes straight to the RMK v2 JSON path; otherwise that
+ * path is tried only when the HTML search page renders no offer link.
  */
 export async function fetchSuccessFactorsJobs(
   config: Record<string, unknown>,
@@ -93,8 +298,16 @@ export async function fetchSuccessFactorsJobs(
   const origin = String(config.origin ?? '').replace(/\/$/, '');
   if (!origin) throw new Error('SuccessFactors origin missing');
 
+  const finish = (list: NormalizedJob[]) =>
+    config.withDescriptions === false ? list : attachSuccessFactorsDescriptions(list, Number(config.detailConcurrency ?? 4));
+
   const jobs: NormalizedJob[] = [];
   const seenIds = new Set<string>();
+
+  if (config.rmk === true) {
+    const html = await fetchText(`${origin}/search/`, { headers: HEADERS });
+    return finish((await fetchRmkV2Jobs(origin, await discoverRmkLocales(origin, html))).jobs);
+  }
 
   for (let page = 0; page < MAX_PAGES; page++) {
     const url = `${origin}/search/?createNewAlert=false&q=&locationsearch=&startrow=${page * PAGE_SIZE}`;
@@ -103,7 +316,19 @@ export async function fetchSuccessFactorsJobs(
 
     // An empty page, or one that repeats what we already have, is the end.
     const fresh = listing.filter((job) => !seenIds.has(job.externalId));
-    if (fresh.length === 0) break;
+    if (fresh.length === 0) {
+      // A first page with NO link is not an empty board: on RMK v2 tenants the
+      // list is fetched client-side. Try the JSON path before concluding.
+      if (page === 0) {
+        try {
+          const rmk = await fetchRmkV2Jobs(origin, await discoverRmkLocales(origin, html));
+          if (rmk.jobs.length > 0) return finish(rmk.jobs);
+        } catch {
+          // Not an RMK v2 tenant (404/401 on the endpoint): the HTML verdict stands.
+        }
+      }
+      break;
+    }
 
     for (const job of fresh) {
       seenIds.add(job.externalId);
@@ -120,8 +345,7 @@ export async function fetchSuccessFactorsJobs(
     }
   }
 
-  if (config.withDescriptions === false) return jobs;
-  return attachSuccessFactorsDescriptions(jobs, Number(config.detailConcurrency ?? 4));
+  return finish(jobs);
 }
 
 /**

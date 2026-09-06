@@ -150,3 +150,136 @@ describe('parseMicrodataDetail — troisième format : data-careersite-propertyi
     expect(d.city).toBe('Paris');
   });
 });
+
+// ---------------------------------------------------------------------------
+// SAP RMK v2 — the JSON path (fixtures captured 2026-09-06).
+// ---------------------------------------------------------------------------
+import { normalizeRmkItem, parseRmkDate, parseRmkLocales, parseRmkLocation, rmkJobUrl, type RmkV2Item } from './successfactors.js';
+
+/** jobs.douglas.group — POST /services/recruiting/v1/jobs, locale de_DE, pageNumber 0, first `response`. */
+const DOUGLAS_ITEM: RmkV2Item & Record<string, unknown> = {
+  jobLocationShort: ['Hamburg, Deutschland '],
+  supportedLocales: ['de_DE'],
+  filter2: ['Brand, Marketing & Communications'],
+  filter3: ['Experienced Professional'],
+  sfstd_marketingBrand_obj: ['DOUGLAS'],
+  custFullTimePartTime: ['Vollzeit'],
+  jobLocationShortWithCoordinates: [{ value: 'Hamburg, Deutschland ', key: '53.5488282,9.9871703' }],
+  brandUrl: 'default',
+  unifiedUrlTitle: 'Senior-Graphic-Designer-&amp;-Team-Lead-Layout-%28wmx%29',
+  unifiedStandardStart: '10.07.26',
+  currency: ['EUR'],
+  custOnsiteRemote: ['Hybrid'],
+  unifiedStandardTitle: 'Senior Graphic Designer & Team Lead Layout (w/m/x)',
+  id: '696',
+  urlTitle: 'Senior-Graphic-Designer-&amp;-Team-Lead-Layout-%28wmx%29',
+};
+
+/** careers.breitling.com — same endpoint, locale en_GB (no brandUrl) and de_DE (three sites, ISO-3 countries). */
+const BREITLING_ITEM: RmkV2Item = {
+  jobLocationShort: ['Montreal, QC, CAN, '],
+  supportedLocales: ['en_GB'],
+  unifiedUrlTitle: 'Sales-Associate-Montreal',
+  unifiedStandardStart: '23/06/2026',
+  unifiedStandardTitle: 'Sales Associate Montreal',
+  id: '1426',
+  urlTitle: 'Sales-Associate-Montreal',
+};
+const BREITLING_POOL: RmkV2Item = {
+  jobLocationShort: ['La Chaux-de-Fonds, NE, CHE, 2301<br/>', 'Grenchen, SO, CHE, ', 'ZH, CHE, 8002<br/>'],
+  unifiedUrlTitle: 'Talent-Pool-Squadonamission',
+  unifiedStandardStart: '05.12.25',
+  unifiedStandardTitle: 'Talent Pool #Squadonamission',
+  id: '540',
+  urlTitle: 'Talent-Pool-Squadonamission',
+};
+
+/** The language switcher of careers.breitling.com/ — the /search/ page lists en_GB only. */
+const SWITCHER = `
+<a href="https://careers.breitling.com/search/?createNewAlert=false&amp;q=&amp;locationsearch=&amp;startrow=0&amp;locale=de_DE">Deutsch</a>
+<a href="/search/?q=&locale=en_GB">English</a>
+<a href="/search/?q=&locale=fr_FR">Français</a>
+<a href="/search/?q=&locale=ja_JP">日本語</a>
+<a href="/search/?q=&locale=en_GB">English (again)</a>`;
+
+describe('RMK v2 — parseRmkLocales', () => {
+  test('reads every locale once, preferred ones first', () => {
+    expect(parseRmkLocales(SWITCHER)).toEqual(['fr_FR', 'en_GB', 'de_DE', 'ja_JP']);
+  });
+
+  test('falls back to en_US when the page names no locale', () => {
+    expect(parseRmkLocales('<html></html>')).toEqual(['en_US']);
+  });
+});
+
+describe('RMK v2 — parseRmkLocation', () => {
+  test('city + ISO-3 country + postcode, markup stripped', () => {
+    expect(parseRmkLocation('La Chaux-de-Fonds, NE, CHE, 2301<br/>')).toEqual({
+      location: 'La Chaux-de-Fonds, NE, CHE, 2301',
+      city: 'La Chaux-de-Fonds',
+      country: 'CH',
+      postalCode: '2301',
+    });
+  });
+
+  test('city + country name when the tenant writes no code', () => {
+    expect(parseRmkLocation('Hamburg, Deutschland ')).toEqual({ location: 'Hamburg, Deutschland', city: 'Hamburg', country: 'Deutschland' });
+  });
+
+  test('keeps an unmapped ISO-3 code rather than inventing a country', () => {
+    expect(parseRmkLocation('Ulaanbaatar, MNG, ').country).toBe('MNG');
+  });
+
+  test('empty input gives nothing, not an empty string', () => {
+    expect(parseRmkLocation('')).toEqual({});
+  });
+});
+
+describe('RMK v2 — parseRmkDate', () => {
+  test('day first in both the dotted two-digit-year and the slashed forms', () => {
+    expect(parseRmkDate('10.07.26')?.toISOString().slice(0, 10)).toBe('2026-07-10');
+    expect(parseRmkDate('23/06/2026')?.toISOString().slice(0, 10)).toBe('2026-06-23');
+    expect(parseRmkDate('05.12.25')?.toISOString().slice(0, 10)).toBe('2025-12-05');
+  });
+
+  test('undefined on garbage', () => {
+    expect(parseRmkDate('n/a')).toBeUndefined();
+    expect(parseRmkDate(undefined)).toBeUndefined();
+  });
+});
+
+describe('RMK v2 — rmkJobUrl and normalizeRmkItem', () => {
+  test('builds the /brand/job/… URL Douglas serves (200) and decodes &amp;', () => {
+    expect(rmkJobUrl('https://jobs.douglas.group', DOUGLAS_ITEM, 'de_DE')).toBe(
+      'https://jobs.douglas.group/default/job/Senior-Graphic-Designer-&-Team-Lead-Layout-%28wmx%29/696-de_DE',
+    );
+  });
+
+  test('builds the /job/… URL Breitling serves (200) when brandUrl is absent', () => {
+    expect(rmkJobUrl('https://careers.breitling.com', BREITLING_ITEM, 'en_GB')).toBe(
+      'https://careers.breitling.com/job/Sales-Associate-Montreal/1426-en_GB',
+    );
+  });
+
+  test('normalises a Douglas entry: id, title, city, country, date, language', () => {
+    const job = normalizeRmkItem(DOUGLAS_ITEM, 'de_DE', 'https://jobs.douglas.group')!;
+    expect(job.externalId).toBe('696');
+    expect(job.title).toBe('Senior Graphic Designer & Team Lead Layout (w/m/x)');
+    expect(job.city).toBe('Hamburg');
+    expect(job.country).toBe('Deutschland');
+    expect(job.postedAt?.toISOString().slice(0, 10)).toBe('2026-07-10');
+    expect(job.language).toBe('de');
+  });
+
+  test('a multi-site posting keeps the first city and lists every site', () => {
+    const job = normalizeRmkItem(BREITLING_POOL, 'de_DE', 'https://careers.breitling.com')!;
+    expect(job.city).toBe('La Chaux-de-Fonds');
+    expect(job.country).toBe('CH');
+    expect(job.location).toBe('La Chaux-de-Fonds, NE, CHE, 2301 / Grenchen, SO, CHE / ZH, CHE, 8002');
+  });
+
+  test('drops an entry without id or title rather than emit an unlinkable row', () => {
+    expect(normalizeRmkItem({ unifiedStandardTitle: 'x' }, 'en_GB', 'https://x')).toBeNull();
+    expect(normalizeRmkItem({ id: '1', urlTitle: 'y' }, 'en_GB', 'https://x')).toBeNull();
+  });
+});

@@ -4,7 +4,7 @@ Lecture seule : aucune écriture en base, aucun `.env`, aucun commit. Scripts da
 
 | Portail | Verdict | Mesure (offres \| lieu \| desc \| temps) | Comment |
 |---|---|---|---|
-| Douglas | **API TROUVÉE — adaptateur écrit** (`frontityJobs.ts`) | 146 \| 146 \| 146 \| 11 s | état Frontity embarqué dans `/fr/jobs/` (163 entrées offre×langue) |
+| Douglas | **RÉSOLU** (SUCCESSFACTORS, chemin RMK v2 ajouté — voir section « RMK v2 ») ; `frontityJobs.ts` en complément (+16 offres internes) | 130 \| 130 \| 130 \| 17 s (SF) · 146 \| 146 \| 146 \| 11 s (Frontity) | `jobs.douglas.group` = SAP RMK v2 JSON ; l'état Frontity de careers.douglas.group porte les mêmes 130 + 16 internes |
 | Beiersdorf | **RÉSOLU** (GENERIC_JSONLD) | 105 \| 105 \| 105 \| 11 s | ajax Sitecore paginé + JSON-LD sur les fiches |
 | Beauty Success | **API TROUVÉE — adaptateur écrit** (`geodirectory.ts`) | 109 \| 109 \| 109 \| 7 s | REST GeoDirectory `/wp-json/geodir/v2/offres` |
 | Nocibé | **API TROUVÉE — adaptateur écrit** (`eqwa.ts`) | 306 \| 306 \| 306 \| 25 s | tableau HTML complet + fiche `.job-detail-desc` |
@@ -88,6 +88,39 @@ Mesure : `23 offres | 23 lieu | 23 desc | 2s` — ex. « Conseiller/ère de vent
 **Adaptateur** `rivoliTypesense.ts` — `fetchRivoliTypesenseJobs({ typesenseOrigin: 'https://typesense.rivoligroup.com', apiKey: '…', collection: 'vacancy', origin: 'https://www.rivoligroup.com' })` : fusion par slug (anglais préféré), page anglaise lue (`main h1`, `.vacancies--detail .default-text-block`) pour les 38 offres indexées seulement en arabe. Mesure : `47 offres | 47 lieu | 46 desc | 14s` — ex. « Customer Care Representative » @ Dubai, 2026-08-23. La clé publique va dans la config de la source (comme la clé Algolia LVMH), pas dans le code.
 
 Script : `src/discovery/g2-rivoli.mts`.
+
+---
+
+## RMK v2 — chemin JSON ajouté à l'adaptateur SuccessFactors (suite de mission, 2026-09-06)
+
+**Pourquoi dans `successfactors.ts` et pas un adaptateur par Maison.** `jobs.douglas.group` et `careers.breitling.com` sont la nouvelle génération SAP Recruiting Marketing (`rmk-jobs-search`, `rmkcdn.successfactors.com`) : la page `/search/` ne rend **aucun** lien `/job/…/id/` (0 sur les deux, mesuré), la liste vient de `POST {origin}/services/recruiting/v1/jobs`. C'est un vendeur ; tout futur tenant SAP migré y passera.
+
+**Le contrat de l'endpoint (mesuré sur les deux tenants).**
+- `POST {origin}/services/recruiting/v1/jobs`, en-têtes `content-type: application/json`, `accept: application/json`, UA navigateur. Body : `{"locale":"de_DE","pageNumber":0,"sortBy":"date","keywords":"","location":"","facetFilters":{},"brand":"","skills":[],"categoryId":0,"alertId":"","rcmCandidateId":""}`.
+- Réponse : `{"totalJobs":126,"jobSearchResult":[{"response":{…}}]}` ; **10 par page, fixe** (aucun champ `pageSize`/`limit`/`rows`… n'est honoré — 7 essayés). Champs utiles : `id` (réquisition), `unifiedStandardTitle`, `urlTitle`/`unifiedUrlTitle`, `brandUrl` (« default » chez Douglas, absent chez Breitling), `jobLocationShort[]` (« Hamburg, Deutschland » / « La Chaux-de-Fonds, NE, CHE, 2301<br/> » / « Montreal, QC, CAN, »), `jobLocationShortWithCoordinates[].key` (lat,lng), `unifiedStandardStart` (« 10.07.26 » de_DE, « 23/06/2026 » en_GB — jour d'abord), `supportedLocales`, plus des champs custom par tenant (`custFullTimePartTime`, `filter2`…). **Pas de description dans la liste.**
+- **Locales** : une par appel ; l'ensemble se lit dans les liens `…&amp;locale=xx_XX` du sélecteur de langue — sur `/search/` **et** sur `/` (la page search de Breitling n'en montre qu'une, la home cinq ; fr_FR et de_DE y portent des offres absentes d'en_GB). Douglas : bg de en_GB en_US es fr it nl pl ro ; totaux de_DE 126, en_US 11, en_GB 8, es 1, pl 1, autres 0. Breitling : en_GB 41, fr_FR 5, de_DE 4, ja/zh 0.
+- **URL publique** : `{origin}[/{brandUrl}]/job/{urlTitle}/{id}-{locale}` — vérifiée 200 : `https://jobs.douglas.group/default/job/Director-SAP-S4-HANA-Transformation-%28fmx%29/612-en_US`, `https://careers.breitling.com/job/Sales-Associate-Montreal/1426-en_GB` (le `&amp;` des slugs est décodé ; `/default/…` répond aussi 200 chez Breitling).
+- **Détail** : la fiche est rendue **côté serveur** (aucun XHR de détail — capture Playwright : seul le `document` et un beacon `/services/t/l`), avec la microdonnée des sites SAP classiques (`itemprop="title"`, `itemprop="description"`), mais **sans adresse** (ni `streetAddress`, ni `addressLocality`, ni `data-careersite-propertyid`) — le lieu vient donc de la liste. `attachSuccessFactorsDescriptions` existant est réutilisé tel quel.
+- **Le piège : l'ordre n'est pas stable.** Deux balayages identiques des 126 lignes de_DE de Douglas donnent 106 puis 110 ids distincts (pages qui se chevauchent et en sautent), quel que soit `sortBy` (`''`, relevancy, relevance, date, newest, title, startDate… ; « date » est le moins mauvais). Correctif : `sortBy: "date"` + **balayages répétés** d'une locale jusqu'à ce que l'union des ids atteigne `totalJobs` ou qu'un balayage n'apporte rien (max 8). Mesuré : convergence en 1–2 balayages (Douglas de_DE [104 → 126], Breitling en_GB [36 → 41]).
+
+**Ce qui a changé dans `successfactors.ts`** (chemin HTML intact, ses tests inchangés et verts) :
+- `parseRmkLocales`, `parseRmkLocation` (ISO-3 → ISO-2 pour ~40 pays, nom de pays sinon, code postal), `parseRmkDate`, `rmkJobUrl`, `normalizeRmkItem`, `fetchRmkV2Jobs` (locales × pages × balayages, dédup par id de réquisition, première locale préférée fr_FR > en_GB > en_US).
+- Déclenchement : `config.rmk === true` → JSON direct ; sinon **seulement** si la page 0 de `/search/` ne rend aucun lien d'offre (un tenant non-RMK y reçoit 404/401 et garde le verdict HTML).
+- `successfactors.test.ts` : +14 tests sur fixtures capturées (item Douglas de_DE, items Breitling en_GB et talent pool multi-sites, sélecteur de langue). Une fixture a attrapé un vrai bug : les liens du sélecteur sont `&amp;locale=`, la première regex `[?&]locale=` n'en voyait aucun.
+
+**Mesures (adaptateur SUCCESSFACTORS, config `{"origin": …}` sans autre clé).**
+
+| Tenant | Avant | Après | Exemple |
+|---|---|---|---|
+| Douglas `https://jobs.douglas.group` | 0 (HTML) | **130 offres \| 130 lieu \| 130 desc \| 17 s** | « Internship Marketing Strategic Campaigns (f/m/x) » @ Düsseldorf, Germany, 2026-09-02 |
+| Breitling `https://careers.breitling.com` | 0 (HTML) | **41 offres \| 41 lieu \| 41 desc \| 6 s** | « Manager Machines Garnissage T0 (m/f/x) » @ La Chaux-de-Fonds, NE, CHE, 2301 (CH), 2026-09-03 |
+| Puig `https://jobs.puig.com` (config actuelle) | — | **230 offres \| 230 lieu \| 230 desc \| 21 s** (chemin HTML, inchangé) | « Marketing Graduate » @ Ciudad de México, MEX, MX |
+
+Contrôle Douglas (`g2-rmkDebug.mts`) : union RMK = **130 ids = exactement les 130 postes SuccessFactors de l'état Frontity** (0 manquant, 0 en trop) ; les 16 offres internes « behindbeauty » de careers.douglas.group ne sont pas dans SAP — seul `frontityJobs.ts` les voit (146 = 130 + 16). Breitling : union 41 = en_GB 41 (fr_FR 5 et de_DE 4 sont des traductions d'offres déjà en anglais).
+
+**Puig n'expose PAS cet endpoint — preuve.** `careers.puig.com` n'est pas SAP : `POST /services/recruiting/v1/jobs` → **404** (HTML de la SPA), `/search/` → 404 (l'adaptateur lève `HTTP 404`), `/opportunities` → Next.js derrière un challenge Cloudflare, données via `GET https://careers.puig.com/api/search?locale=en&page=N` (12/page, `pagination.totalItems 222`, items `id,title,category,brands,place,contractType`, fiche `/en/opportunity/{id}` rendue client). `jobs.puig.com` (l'origin cataloguée) reste un SAP ancienne génération : `/search/?startrow=` sert 25 liens `/job/…/id/` par page → **230 offres** par le chemin HTML ; son `/services/recruiting/v1/jobs` répond **401** `{"error":{"code":"Error","message":"Error retrieving jobs"},"totalJobs":0}`. Les « 15 offres lues » venaient de `careers.puig.com` ; la bonne origin est `jobs.puig.com` (222 chez l'un, 230 chez l'autre : même vivier SF, la page custom filtre un peu).
+
+Scripts : `g2-measureSF.mts` (mesure), `g2-rmkDebug.mts` (contrôle par locale vs Frontity), `g2-sniff.mts douglas-detail|breitling|puig` (captures).
 
 ---
 
