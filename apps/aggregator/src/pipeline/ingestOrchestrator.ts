@@ -1,6 +1,5 @@
 import type { PrismaClient } from '@prisma/client';
 import pLimit from 'p-limit';
-import { plainHttpSources } from '../connectors/registry.js';
 import { loadActiveSources } from '../connectors/sourceStore.js';
 import { runIngest, KIND_TO_ATS } from './ingest.js';
 import { checkSourceHealth, type SourceHealth } from './health.js';
@@ -88,10 +87,7 @@ export async function allSourceKeys(prisma: PrismaClient): Promise<string[]> {
     .filter((source) => KIND_TO_ATS[source.kind])
     .sort((a, b) => (a.jobCount || 0) - (b.jobCount || 0))
     .map((source) => source.key);
-  const sitemapKeys = plainHttpSources()
-    .filter((source) => source.kind === 'SITEMAP_JSONLD')
-    .map((source) => source.key);
-  return onlyRequested([...new Set([...apiKeys, ...sitemapKeys])]);
+  return onlyRequested([...new Set(apiKeys)]);
 }
 
 /**

@@ -20,7 +20,8 @@ import type { NormalizedJob } from '../types.js';
  */
 
 import type { AtsType } from '@prisma/client';
-import type { SourceTier } from '../connectors/registry.js';
+/** Ranking used to pick the canonical apply URL when postings are merged. */
+export type SourceTier = 'EMPLOYER_DIRECT' | 'GROUP_OFFICIAL' | 'ATS_OFFICIAL' | 'SPECIALIST_JOBBOARD' | 'AGGREGATOR';
 
 /** Source ranking: the highest-priority source owns the canonical apply URL. */
 export const SOURCE_PRIORITY: readonly SourceTier[] = [
@@ -31,7 +32,6 @@ export const SOURCE_PRIORITY: readonly SourceTier[] = [
   'AGGREGATOR',
 ];
 
-export type { SourceTier };
 
 export type CandidateJob = NormalizedJob & {
   company: string;

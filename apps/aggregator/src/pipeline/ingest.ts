@@ -1,9 +1,6 @@
 import type { PrismaClient, AtsType } from '@prisma/client';
-import pLimit from 'p-limit';
-import { plainHttpSources, type JobSource as SourceDef, type SourceTier } from '../connectors/registry.js';
-import { isApiSource } from '../connectors/sourceCatalog.js';
+import type { SourceTier } from '../dedup/match.js';
 import { loadActiveSources, type RuntimeSource } from '../connectors/sourceStore.js';
-import { fetchSitemapUrls, fetchJobFromPage } from '../connectors/generic/jsonLdSitemap.js';
 import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
 import { domainFromEmployerSources } from '../normalize/companyDomain.js';
@@ -31,23 +28,6 @@ import { fetchAtsJobs } from '../ats/index.js';
  * everything would drown the base in noise.
  */
 
-/**
- * One HTTP request per offer at ~260ms measured means 500 offers take 2.2 min for
- * a single source, and eight sources 17 minutes — with no output until the very
- * end, so the container just looks hung. Hence real parallelism plus progress
- * logging: a silent pipeline is indistinguishable from a broken one.
- */
-// Six, not twelve: every worker hits the same host, and twelve in parallel is
-// what kept Courir's rate limiter tripped for a whole run (245 of 395 pages).
-const CONCURRENCY = Number(process.env.INGEST_CONCURRENCY ?? 6);
-
-/**
- * No cap by default: a ceiling silently truncates the market, and which offers
- * survive depends on sitemap order rather than on anything meaningful. Set
- * INGEST_MAX_PER_SOURCE only to bound an exceptional run.
- */
-const MAX_JOBS_PER_SOURCE = Number(process.env.INGEST_MAX_PER_SOURCE ?? 0);
-
 export type IngestStats = {
   source: string;
   fetched: number;
@@ -72,6 +52,17 @@ export type IngestStats = {
   /** True when the sweep returned fewer offers than declaredTotal. */
   truncated?: boolean;
 };
+
+/**
+ * Ce que l'écriture doit savoir d'une source : sa clé, sa Maison de repli, son
+ * rang de dédup, son domaine carrière. Le registre codé en dur qui portait ce
+ * type a été supprimé (audit A2, 2026-09-06) : ses six routes sitemap
+ * doublaient des sources de la table Source (courir, galeries-lafayette,
+ * lacoste : 663 offres affichées deux fois) ou tournaient à vide (puig 21 runs
+ * à zéro, wttj 14 offres pour 2 552 pages challengées, decathlon 104 pages
+ * sur 1 240 à chaque run). La table Source est la seule source du catalogue (D28).
+ */
+type SourceDef = { key: string; company: string; tier: SourceTier; careersDomain?: string };
 
 /** One place decides what "the field is filled" means, for every ingest path. */
 export function noteFieldCoverage(stats: IngestStats, job: NormalizedJob): void {
@@ -184,163 +175,7 @@ function toCandidate(
   };
 }
 
-async function ingestSitemapSource(
-  prisma: PrismaClient,
-  source: SourceDef,
-  deadlineMs?: number,
-): Promise<IngestStats> {
-  const stats: IngestStats = {
-    source: source.key,
-    fetched: 0,
-    inSector: 0,
-    france: 0,
-    created: 0,
-    merged: 0,
-    updated: 0,
-    errors: 0,
-    withDescription: 0,
-    withDate: 0,
-    withCountry: 0,
-    withUrl: 0,
-  };
 
-  // Sitemaps repeat themselves (shards overlap, alternates duplicate); a URL
-  // fetched twice is wasted time and a guaranteed write race with itself.
-  const all = [...new Set(await fetchSitemapUrls(source.entryUrl))];
-  // Keep only real job pages: sitemaps mix in listings, utility routes and
-  // editorial pages that carry no JobPosting and would burn the whole run.
-  const jobUrls = source.jobUrlPattern ? all.filter((url) => source.jobUrlPattern!.test(url)) : all;
-
-  /**
-   * On a generalist board, classify from the URL before downloading anything.
-   *
-   * Welcome to the Jungle exposes 59,466 French jobs and only ~4% are in our
-   * vertical. At ~260ms a page that is four hours of fetching to discard
-   * nineteen pages in twenty — while the employer slug sits right there in the
-   * URL and answers the question for free.
-   */
-  const inScopeUrls = source.employerSlugPattern
-    ? jobUrls.filter((url) => {
-        const slug = url.match(source.employerSlugPattern!)?.[1];
-        return slug ? classifySector({ company: slug.replace(/-/g, ' ') }).inScope : false;
-      })
-    : jobUrls;
-
-  const urls = MAX_JOBS_PER_SOURCE > 0 ? inScopeUrls.slice(0, MAX_JOBS_PER_SOURCE) : inScopeUrls;
-  console.log(
-    `[ingest] ${source.key}: ${urls.length} job URLs (of ${jobUrls.length} jobs / ${all.length} sitemap entries)`,
-  );
-
-  // A declared crawl-delay forces serial fetching; otherwise run in parallel.
-  const limit = pLimit(source.crawlDelaySeconds ? 1 : CONCURRENCY);
-  const delayMs = (source.crawlDelaySeconds ?? 0) * 1000;
-
-  // Write as results arrive instead of buffering the whole source: a crash
-  // partway through then keeps everything already ingested.
-  let stoppedAtDeadline = false;
-  await Promise.all(
-    urls.map((url) =>
-      limit(async () => {
-        // Past the soft deadline, stop starting new fetches: Decathlon's
-        // crawl-delay of 10s makes its 1225 pages a multi-hour sweep, so a run
-        // covers what it can and the next continues. Everything already written
-        // stays; only the unfetched tail is deferred.
-        if (deadlineMs && Date.now() >= deadlineMs) {
-          stoppedAtDeadline = true;
-          return;
-        }
-        let job;
-        try {
-          job = await fetchJobFromPage(url);
-          if (delayMs) await new Promise((resolve) => setTimeout(resolve, delayMs));
-        } catch {
-          stats.errors++;
-          return;
-        }
-        if (!job) return;
-        stats.fetched++;
-
-        // The employer name comes from the posting when present; the registry
-        // name is the fallback for feeds that omit it.
-        const rawCompany =
-          (job.raw as { hiringOrganization?: { name?: string } } | undefined)?.hiringOrganization
-            ?.name ?? source.company;
-
-        /**
-         * Same rule as the API path: nothing is discarded, the web filters.
-         *
-         * The sector check stays a DISCARD only for generalist boards (flow
-         * JOBBOARD, e.g. a WTTJ shard where 96% of offers are other
-         * industries); an employer source is in the vertical by construction.
-         * France is always just a stored flag.
-         */
-        const inSector = classifySector({ company: rawCompany, title: job.title }).inScope;
-        if (source.flow === 'JOBBOARD' && !inSector) return;
-        if (inSector) stats.inSector++;
-
-        if (isFranceJob(job.country, job.location)) stats.france++;
-        noteFieldCoverage(stats, job);
-
-        try {
-          // A sitemap/JSON-LD source genuinely is GENERIC_JSONLD.
-          const result = await upsertDeduplicated(
-            prisma,
-            toCandidate(job, source, rawCompany, 'GENERIC_JSONLD'),
-          );
-          if (result.outcome === 'CREATED') stats.created++;
-          else if (result.outcome === 'MERGED') stats.merged++;
-          else stats.updated++;
-        } catch (error) {
-          stats.errors++;
-          if (stats.errors <= 3) console.error(`[ingest] ${source.key} write failed: ${briefError(error)}`);
-        }
-      }),
-    ),
-  );
-
-  console.log(
-    `[ingest] ${source.key}: ${stats.france} FR / ${stats.inSector} in-sector / ${stats.fetched} fetched -> ` +
-      `${stats.created} created, ${stats.merged} merged, ${stats.errors} errors` +
-      // A graceful stop is progress, not an error: say so plainly so a healthy
-      // "continue next run" never reads as a failure in the logs.
-      (stoppedAtDeadline ? ` (stopped at time budget, ${urls.length - stats.fetched - stats.errors} deferred to next run)` : ''),
-  );
-  return stats;
-}
-
-/**
- * Runs every plain-HTTP source. Browser-gated sources (FashionJobs, LVMH) are
- * handled by their own connectors, not here.
- */
-/**
- * Catalogue rows that the sitemap connector can read: the ones with a job URL
- * pattern and no API. API-backed rows go through the ATS pipeline instead — one
- * request per employer rather than one per offer.
- */
-function catalogSitemapSources(catalog: RuntimeSource[]): SourceDef[] {
-  return catalog
-    .filter((source) => !isApiSource(source) && source.jobUrlPattern)
-    .map((source) => ({
-      key: source.key,
-      company: source.maison.split('(')[0].trim(),
-      flow: 'EMPLOYER' as const,
-      tier: source.tier as SourceTier,
-      kind: 'SITEMAP_JSONLD' as const,
-      entryUrl: source.entryUrl,
-      careersDomain: source.careersDomain || undefined,
-      robotsVerdict: source.robotsVerdict,
-      verifiedTotal: source.jobCount,
-      verifiedOn: '2026-09-01',
-      // The catalogue records a URL shape like ".../j/{slug}-{hex24}"; keep the
-      // literal path segment before the first placeholder as the filter.
-      jobUrlPattern: new RegExp(
-        source.jobUrlPattern
-          .replace(/^https?:\/\/[^/]+/, '')
-          .split('{')[0]
-          .replace(/[.*+?^$()|[\]\\]/g, '\\$&') || '/',
-      ),
-    }));
-}
 
 /** Catalogue `kind` -> the dispatcher's AtsType. */
 export const KIND_TO_ATS: Record<string, string> = {
@@ -465,14 +300,8 @@ async function ingestApiSource(
   const sourceDef: SourceDef = {
     key: stats.source,
     company: source.maison.split('(')[0].trim(),
-    flow: 'EMPLOYER',
     tier: source.tier as SourceTier,
-    kind: 'SITEMAP_JSONLD',
-    entryUrl: source.entryUrl,
     careersDomain: source.careersDomain || undefined,
-    robotsVerdict: source.robotsVerdict,
-    verifiedTotal: source.jobCount,
-    verifiedOn: '2026-09-02',
   };
 
   for (const job of jobs) {
@@ -566,33 +395,6 @@ export async function runIngest(
   // the sitemap and the API phases. Refuses to run on an unseeded base.
   const catalog = await loadActiveSources(prisma);
 
-  const all = [...plainHttpSources(), ...catalogSitemapSources(catalog)].filter(
-    (source) => source.kind === 'SITEMAP_JSONLD',
-  );
-
-  // The catalogue and the hand-written registry overlap; keep one entry per key.
-  const byKey = new Map(all.map((source) => [source.key, source]));
-
-  /**
-   * No sector filter on the SOURCE any more.
-   *
-   * Filtering employers up front was losing real houses: Goyard (leather goods)
-   * and Natalys (childrenswear) were both dropped because the reference list did
-   * not hold their name. A false positive is visible and fixable; a missing
-   * Maison is invisible. Offers are still classified individually at write time.
-   */
-  const sources = [...byKey.values()]
-    .filter((source) => !options.only || source.key === options.only)
-    // Cheapest sources first: a run cut short should still have written the
-    // offers that cost least to obtain.
-    .sort((a, b) => (a.crawlDelaySeconds ?? 0) - (b.crawlDelaySeconds ?? 0));
-
-  // Only when there are any: the per-source orchestrator calls this with a
-  // single source in one list and none in the other, so an unconditional line
-  // printed "0 sitemap sources:" on every call — half the log stream was noise.
-  if (sources.length > 0) {
-    console.log(`[ingest] ${sources.length} sitemap sources: ${sources.map((s) => s.key).join(', ')}`);
-  }
   const results: IngestStats[] = [];
 
   /**
@@ -670,33 +472,6 @@ export async function runIngest(
         withDescription: 0, withDate: 0, withCountry: 0, withUrl: 0,
       });
       console.error(`[ingest] ${source.key} failed: ${briefError(error)}`);
-    }
-  }
-
-  // Sitemap sources LAST: heaviest and slowest, so if the run is cut short here
-  // the API feeds above have already produced.
-  for (const source of sources) {
-    try {
-      const stats = await ingestSitemapSource(prisma, source, options.deadlineMs);
-      results.push(stats);
-      await purgeQuietly(stats);
-      await geocodeQuietly();
-    } catch (error) {
-      results.push({
-        source: source.key,
-        fetched: 0,
-        inSector: 0,
-        france: 0,
-        created: 0,
-        merged: 0,
-        updated: 0,
-        errors: 1,
-       withDescription: 0, withDate: 0, withCountry: 0, withUrl: 0,
-      });
-      console.error(
-        `[ingest] ${source.key} failed:`,
-        error instanceof Error ? error.message : String(error),
-      );
     }
   }
 
