@@ -30,7 +30,6 @@ import { fetchTaleoJobs } from './adapters/taleo.js';
 import { fetchAltamiraJobs } from './adapters/altamira.js';
 import { fetchJobylonJobs } from './adapters/jobylon.js';
 import { fetchRitualsJobs } from './adapters/rituals.js';
-import { fetchAsosJobs } from './adapters/asosAlgolia.js';
 import { fetchTalentFunnelJobs } from './adapters/talentFunnel.js';
 import { fetchBashTalentsJobs } from './adapters/bashTalents.js';
 import { fetchEqwaJobs } from './adapters/eqwa.js';
@@ -91,7 +90,6 @@ async function dispatch(type: AtsType, config: Record<string, unknown>): Promise
     case 'ALTAMIRA': return fetchAltamiraJobs(config);
     case 'JOBYLON': return fetchJobylonJobs(config);
     case 'RITUALS': return fetchRitualsJobs(config);
-    case 'ASOS': return fetchAsosJobs(config);
     case 'TALENT_FUNNEL': return fetchTalentFunnelJobs(config);
     case 'BASH_TALENTS': return fetchBashTalentsJobs(config);
     case 'EQWA': return fetchEqwaJobs(config);

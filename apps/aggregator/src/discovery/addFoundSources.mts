@@ -28,18 +28,30 @@ type Candidate = {
 };
 
 const CANDIDATES: Candidate[] = [
-  // Fichier Loïc du 2026-09-05 — chaque ligne VALIDÉE par exécution réelle (offres + lieu) avant d'arriver ici.
-  // Récolte 2 + Pandora — validés par exécution le 2026-09-05/06.
-  { key: 'pandora-talenthub', maison: 'Pandora', kind: 'generic-listing', type: 'GENERIC_JSONLD', careersDomain: 'careers.pandoragroup.com', tier: 'EMPLOYER_DIRECT', config: { listingUrl: 'https://careers.pandoragroup.com/fr/jobs/page/{page}', pageStart: 1, linkPattern: '/job/', maxPages: 250 } },
-  { key: 'aritzia', maison: 'Aritzia', kind: 'workday', type: 'WORKDAY', careersDomain: 'aritzia.wd3.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'aritzia', site: 'External', origin: 'https://aritzia.wd3.myworkdayjobs.com' } },
-  { key: 'lush', maison: 'Lush', kind: 'greenhouse', type: 'GREENHOUSE', careersDomain: 'job-boards.greenhouse.io', tier: 'ATS_OFFICIAL', config: { board: 'lush' } },
-  { key: 'therealreal', maison: 'The RealReal', kind: 'workday', type: 'WORKDAY', careersDomain: 'therealreal.wd1.myworkdayjobs.com', tier: 'ATS_OFFICIAL', config: { tenant: 'therealreal', site: 'Careers', origin: 'https://therealreal.wd1.myworkdayjobs.com' } },
-  { key: 'aigle-dr', maison: 'Aigle', kind: 'digitalrecruiters', type: 'DIGITALRECRUITERS', careersDomain: 'careers.aigle.com', tier: 'EMPLOYER_DIRECT', config: { domainName: 'careers.aigle.com' } },
-  { key: 'the-kooples-dr', maison: 'The Kooples', kind: 'digitalrecruiters', type: 'DIGITALRECRUITERS', careersDomain: 'careers.thekooples.com', tier: 'EMPLOYER_DIRECT', config: { domainName: 'careers.thekooples.com' } },
-  { key: 'balmain-career', maison: 'Balmain', kind: 'talentsoft', type: 'TALENTSOFT', careersDomain: 'balmain-career.talent-soft.com', tier: 'EMPLOYER_DIRECT', config: { origin: 'https://balmain-career.talent-soft.com' } },
-  { key: 'rebag', maison: 'Rebag', kind: 'greenhouse', type: 'GREENHOUSE', careersDomain: 'job-boards.greenhouse.io', tier: 'ATS_OFFICIAL', config: { board: 'rebag' } },
-  { key: 'vestiaire-collective', maison: 'Vestiaire Collective', kind: 'lever', type: 'LEVER', careersDomain: 'jobs.lever.co', tier: 'ATS_OFFICIAL', config: { site: 'vestiairecollective' } },
-  { key: 'olaplex', maison: 'OLAPLEX', kind: 'greenhouse', type: 'GREENHOUSE', careersDomain: 'boards.greenhouse.io', tier: 'ATS_OFFICIAL', config: { board: 'olaplexcareers' } },
+  // Lot « GENERIC » du 2026-09-06 (rapports data/g1..g5-rapport.md) — chaque ligne re-mesurée par exécution avant d'arriver ici.
+  { key: "tiffany-oracle", maison: "Tiffany & Co.", kind: "oraclehcm", type: "ORACLE_HCM", careersDomain: "eljs.fa.us2.oraclecloud.com", tier: "EMPLOYER_DIRECT", config: {origin: "https://eljs.fa.us2.oraclecloud.com", siteNumber: "CX"} },
+  { key: "bloomingdales-oracle", maison: "Bloomingdale's", kind: "oraclehcm", type: "ORACLE_HCM", careersDomain: "ebwh.fa.us2.oraclecloud.com", tier: "EMPLOYER_DIRECT", config: {origin: "https://ebwh.fa.us2.oraclecloud.com", siteNumber: "CX_1002"} },
+  { key: "brown-thomas-taleo", maison: "Brown Thomas Arnotts", kind: "taleo", type: "TALEO", careersDomain: "lde.tbe.taleo.net", tier: "ATS_OFFICIAL", config: {origin: "https://lde.tbe.taleo.net/lde02", org: "ARNOTTS", cws: [79, 70, 71, 72, 73, 74, 75, 76, 77, 78, 60, 61, 62, 63, 64, 66]} },
+  { key: "zegna-altamira", maison: "Zegna", kind: "altamira", type: "ALTAMIRA", careersDomain: "careers.zegnagroup.com", tier: "EMPLOYER_DIRECT", config: {origin: "https://careers.zegnagroup.com"} },
+  { key: "acne-studios-jobylon", maison: "Acne Studios", kind: "jobylon", type: "JOBYLON", careersDomain: "emp.jobylon.com", tier: "ATS_OFFICIAL", config: {companyId: "2631"} },
+  { key: "swatch-group", maison: "Swatch Group", kind: "generic-listing", type: "GENERIC_JSONLD", careersDomain: "www.swatchgroup.com", tier: "GROUP_OFFICIAL", config: {listingUrl: "https://www.swatchgroup.com/fr/job-finder", linkPattern: "/job/", pageParam: "page", pageStart: 0, maxPages: 60} },
+  { key: "luxexperience", maison: "LuxExperience", kind: "generic-listing", type: "GENERIC_JSONLD", careersDomain: "career.luxexperience.com", tier: "GROUP_OFFICIAL", config: {listingUrl: "https://career.luxexperience.com/open-positions", linkPattern: "/open-positions/job-detail/", pageParam: "page", pageStart: 1, maxPages: 40} },
+  { key: "beiersdorf", maison: "Beiersdorf", kind: "generic-listing", type: "GENERIC_JSONLD", careersDomain: "www.beiersdorf.com", tier: "GROUP_OFFICIAL", config: {listingUrl: "https://www.beiersdorf.com/ajax/Jobboard/JobResultAjax?db=web&contextItemId={213FB95D-4545-426C-9F6A-7CD5753A00EA}&lang=en", linkPattern: "career/jobs/", pageParam: "page", pageStart: 1, maxPages: 40} },
+  { key: "globus", maison: "Globus", kind: "generic-listing", type: "GENERIC_JSONLD", careersDomain: "jobs.globus.ch", tier: "EMPLOYER_DIRECT", config: {listingUrl: "https://jobs.globus.ch/offre-emplois.html", linkPattern: "-j", maxPages: 2} },
+  { key: "nocibe-eqwa", maison: "Nocibé", kind: "eqwa", type: "EQWA", careersDomain: "recrutement-nocibe.fr", tier: "EMPLOYER_DIRECT", config: {origin: "https://recrutement-nocibe.fr"} },
+  { key: "beauty-success-geodir", maison: "Beauty Success", kind: "geodirectory", type: "GEODIRECTORY", careersDomain: "recrutement.beautysuccess.fr", tier: "EMPLOYER_DIRECT", config: {origin: "https://recrutement.beautysuccess.fr", restBase: "offres"} },
+  { key: "rivoli-typesense", maison: "Rivoli Group", kind: "typesense", type: "TYPESENSE", careersDomain: "www.rivoligroup.com", tier: "EMPLOYER_DIRECT", config: {typesenseOrigin: "https://typesense.rivoligroup.com", apiKey: "XVzrzN4lSwOowagLCo3jidFzJoDnq7ww", collection: "vacancy", origin: "https://www.rivoligroup.com"} },
+  { key: "douglas-sf", maison: "Douglas", kind: "successfactors", type: "SUCCESSFACTORS", careersDomain: "jobs.douglas.group", tier: "EMPLOYER_DIRECT", config: {origin: "https://jobs.douglas.group"} },
+  { key: "breitling-sf", maison: "Breitling", kind: "successfactors", type: "SUCCESSFACTORS", careersDomain: "careers.breitling.com", tier: "EMPLOYER_DIRECT", config: {origin: "https://careers.breitling.com"} },
+  { key: "puig-sf", maison: "Puig", kind: "successfactors", type: "SUCCESSFACTORS", careersDomain: "jobs.puig.com", tier: "GROUP_OFFICIAL", config: {origin: "https://jobs.puig.com"} },
+  { key: "selfridges", maison: "Selfridges", kind: "generic-listing", type: "GENERIC_JSONLD", careersDomain: "jobsearch.selfridges.com", tier: "EMPLOYER_DIRECT", config: {listingUrl: "https://jobsearch.selfridges.com/jobs/search/-1/{page}", linkPattern: "/jobs/job/", pageStart: 1, maxPages: 50} },
+  { key: "end-clothing", maison: "END.", kind: "generic-listing", type: "GENERIC_JSONLD", careersDomain: "careers.endclothing.com", tier: "EMPLOYER_DIRECT", config: {sitemapUrl: "https://careers.endclothing.com/sitemap.xml"} },
+  { key: "fenwick-volcanic", maison: "Fenwick", kind: "volcanic", type: "VOLCANIC", careersDomain: "www.careers.fenwick.co.uk", tier: "EMPLOYER_DIRECT", config: {origin: "https://www.careers.fenwick.co.uk"} },
+  { key: "boots", maison: "Boots", kind: "generic-listing", type: "GENERIC_JSONLD", careersDomain: "www.boots.jobs", tier: "EMPLOYER_DIRECT", config: {sitemapUrl: "https://www.boots.jobs/sitemap_index.xml", concurrency: 4} },
+  { key: "ulta-jibe", maison: "Ulta Beauty", kind: "jibe", type: "JIBE", careersDomain: "careers.ulta.com", tier: "EMPLOYER_DIRECT", config: {origin: "https://careers.ulta.com"} },
+  { key: "rituals", maison: "Rituals", kind: "rituals", type: "RITUALS", careersDomain: "careers.rituals.com", tier: "EMPLOYER_DIRECT", config: {languages: ["da-DK", "de-AT", "de-CH", "de-DE", "en-GB", "en-IE", "en-NL", "es-ES", "fi-FI", "fr-BE", "fr-CH", "fr-FR", "fr-LU", "hu-HU", "it-IT", "nb-NO", "nl-BE", "nl-NL", "pl-PL", "pt-PT", "ro-RO", "sv-SE"]} },
+  { key: "dr-martens-tf", maison: "Dr. Martens", kind: "talentfunnel", type: "TALENT_FUNNEL", careersDomain: "jobs.drmartens.com", tier: "EMPLOYER_DIRECT", config: {origin: "https://jobs.drmartens.com", tenant: "a3e88308-2615-4415-bb56-cc5267bc1ced"} },
+  { key: "bash-talents", maison: "ba&sh", kind: "bashtalents", type: "BASH_TALENTS", careersDomain: "talents.ba-sh.com", tier: "EMPLOYER_DIRECT", config: {} },
 ];
 
 /**
@@ -142,7 +154,7 @@ for (const c of CANDIDATES) {
       robotsVerdict: verdict,
       robotsCheckedAt: new Date(),
       verifiedJobCount: jobs.length,
-      note: `trouvé manuellement (Loïc, 2026-09-04) — validé ${jobs.length} offres, ${located} avec lieu`,
+      note: `lot GENERIC 2026-09-06 — validé ${jobs.length} offres, ${located} avec lieu`,
     };
     if (existing) await prisma.source.update({ where: { key: c.key }, data });
     else await prisma.source.create({ data: { ...data, key: c.key, status: 'DRAFT' } });

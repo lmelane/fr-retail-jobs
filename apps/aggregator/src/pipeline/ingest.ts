@@ -360,7 +360,6 @@ export const KIND_TO_ATS: Record<string, string> = {
   altamira: 'ALTAMIRA',
   jobylon: 'JOBYLON',
   rituals: 'RITUALS',
-  asos: 'ASOS',
   talentfunnel: 'TALENT_FUNNEL',
   bashtalents: 'BASH_TALENTS',
   eqwa: 'EQWA',
