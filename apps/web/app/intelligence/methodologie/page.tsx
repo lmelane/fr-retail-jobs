@@ -110,7 +110,7 @@ export default async function Page() {
           <div className="i6">
             <Block id="snapshots" title="Snapshots quotidiens." level="fact">
               <p className="t-body soft max-w-[60ch]">
-                Chaque jour, le pipeline photographie le marché : offres actives, nouvelles, fermées, Maisons qui recrutent, durée médiane, ré-ouvertures — pour le monde, chaque pays, ville, Maison, groupe, secteur, métier, séniorité, contrat, famille, et les croisements pays × métier et pays × secteur. Les comparaisons dans le temps lisent ces photographies, jamais la liste des offres du jour. L'historique commence le {fmtDate(coverage.historyStart)}{coverage.hasSnapshots ? '' : ' (premier snapshot à venir)'}. Les jours antérieurs au 6 septembre 2026 sont reconstruits depuis les dates d'observation des offres (marqués comme tels en base) ; un jour photographié en direct n'est jamais ré-écrit.
+                Chaque jour, le pipeline photographie le marché : offres actives, nouvelles, fermées, Maisons qui recrutent, durée médiane, ré-ouvertures — pour le monde, chaque pays, ville, Maison, groupe, secteur, métier, séniorité, contrat, famille, et les croisements pays × métier et pays × secteur. Les comparaisons dans le temps lisent ces photographies, jamais la liste des offres du jour. L'historique commence le {fmtDate(coverage.historyStart)}{coverage.hasSnapshots ? '' : ' (premier snapshot à venir)'}. Les jours antérieurs au 6 septembre 2026 existent en base sous forme reconstruite (depuis les dates d'observation des offres) mais ne servent à aucun indice ni à aucune comparaison : seules les photographies prises en direct comptent, et un jour pris en direct n'est jamais ré-écrit.
               </p>
             </Block>
           </div>

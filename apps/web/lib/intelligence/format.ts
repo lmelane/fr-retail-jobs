@@ -10,13 +10,14 @@
 export const MIN_SAMPLE = 30;
 export const MIN_SNAPSHOT_DAYS = 2;
 /**
- * Début de l'observation FIABLE des offres : depuis le 2026-09-04 la base est
- * stable run après run (D22/D37) ; avant, elle était reconstruite à chaque
- * passage et `firstSeenAt` datait la reconstruction, pas la publication. Une
- * fenêtre « nouvelles 30 j » n'a de sens que 30 jours après cette date : avant,
- * elle compterait comme « nouvelles » des offres publiées bien plus tôt.
+ * Début de l'observation FIABLE des nouvelles offres : le catalogue a été
+ * consolidé le 2026-09-06 (23 portails ajoutés, une quarantaine de sources
+ * retirées, WTTJ par balayage sectoriel) — jusqu'à ce jour inclus, « vue pour
+ * la première fois » mesure l'entrée d'une source au catalogue, pas le marché
+ * (mesuré en prod : « 32 600 nouvelles offres en 24 h » le jour même). Une
+ * fenêtre de N jours ne s'affiche que N jours après cette date.
  */
-export const OBSERVATION_START = '2026-09-04';
+export const OBSERVATION_START = '2026-09-07';
 
 /** La fenêtre de N jours est-elle entièrement couverte par l'observation fiable ? */
 export function windowAvailable(days: number, today = isoDay(new Date())): boolean {

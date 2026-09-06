@@ -10,7 +10,7 @@ import type { Coverage as CoverageData } from '@/lib/intelligence/queries/covera
 import { concentration, indexBase100, median, momentum, repostRate, share, variation } from '@/lib/intelligence/metrics';
 import { fmtDate, fmtDays, fmtIndex, fmtInt, fmtPct, fmtSignedPct, MIN_SAMPLE, NA_FROM, NA_INSUFFICIENT, addDays, windowAvailable, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
-import { FAMILY_LABELS, functionLabel, sectorLabel, seniorityLabel, UNCLASSIFIED_LABEL, type JobFamily } from '@/lib/intelligence/taxonomy';
+import { FAMILY_LABELS, functionLabel, mergeOtherSectors, sectorLabel, seniorityLabel, UNCLASSIFIED_LABEL, type JobFamily } from '@/lib/intelligence/taxonomy';
 
 /**
  * Les blocs standard d'un périmètre (pays, ville, métier, Maison, groupe,
@@ -46,7 +46,7 @@ export function ProfileKpis({ profile, coverage, ctx }: { profile: Profile; cove
     <div className="kpis">
       <Kpi label="Offres actives" value={fmtInt(h.active)} level="fact" green />
       {/* Les fenêtres ne s'affichent que couvertes par l'observation fiable (OBSERVATION_START) : avant, « nouvelles 30 j » = toute la base. */}
-      <Kpi label="Nouvelles · 30 j" value={windowAvailable(30) ? fmtInt(h.new30d) : undefined} na={windowAvailable(30) ? undefined : NA_FROM(windowFrom(30))} level="fact" sub={`${windowAvailable(7) ? `${fmtInt(h.new7d)} sur 7 j · ` : ''}${fmtInt(h.new24h)} sur 24 h`} />
+      <Kpi label="Nouvelles · 30 j" value={windowAvailable(30) ? fmtInt(h.new30d) : undefined} na={windowAvailable(30) ? undefined : NA_FROM(windowFrom(30))} level="fact" sub={[windowAvailable(7) ? `${fmtInt(h.new7d)} sur 7 j` : null, windowAvailable(1) ? `${fmtInt(h.new24h)} sur 24 h` : null].filter(Boolean).join(' · ') || undefined} />
       <Kpi label="Fermées · 30 j" value={windowAvailable(30) ? fmtInt(profile.closed.closed30d) : undefined} na={windowAvailable(30) ? undefined : NA_FROM(windowFrom(30))} level="fact" sub={windowAvailable(7) ? `${fmtInt(profile.closed.closed7d)} sur 7 j` : undefined} />
       {ctx.kind === 'company' ? (
         <Kpi label="Pays" value={fmtInt(profile.countriesTotal)} level="fact" sub={`${fmtInt(h.cities)} villes`} />
@@ -182,7 +182,7 @@ export function ProfileBlocks({ profile, ctx }: { profile: Profile; ctx: Profile
       {showSectors && (
         <div className="i6">
           <Block id="secteurs" title="Secteurs" level="fact-shares" more={{ href: intelPaths.sectors, label: 'Tous les secteurs' }}>
-            <Mix total={total} rows={profile.sectors.map((s) => ({ label: sectorLabel(s.key), count: s.count, href: intelPaths.sector(s.key) }))} />
+            <Mix total={total} rows={mergeOtherSectors(profile.sectors).map((s) => ({ label: sectorLabel(s.key), count: s.count, href: s.key === 'OTHER' ? undefined : intelPaths.sector(s.key) }))} />
           </Block>
         </div>
       )}

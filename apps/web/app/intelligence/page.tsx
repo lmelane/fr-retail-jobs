@@ -12,7 +12,7 @@ import { indexBase100, momentum } from '@/lib/intelligence/metrics';
 import { addDays, fmtDate, fmtIndex, fmtInt, fmtSignedPct, MIN_SAMPLE, NA_FROM, windowAvailable, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { datasetLd, intelMetadata } from '@/lib/intelligence/seo';
-import { functionLabel, sectorLabel, UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
+import { functionLabel, mergeOtherSectors, sectorLabel, UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
 
 export const dynamic = 'force-dynamic';
 
@@ -57,7 +57,7 @@ export default async function Page() {
           <div className="kpis">
             <Kpi label="Offres actives" value={fmtInt(h.active)} level="fact" />
             <Kpi label="Nouvelles · 30 j" value={windowAvailable(30) ? fmtInt(h.new30d) : undefined} na={windowAvailable(30) ? undefined : NA_FROM(windowFrom(30))} level="fact" sub={windowAvailable(7) ? `${fmtInt(h.new7d)} sur 7 j` : undefined} />
-            <Kpi label="Nouvelles · 24 h" value={fmtInt(h.new24h)} level="fact" />
+            <Kpi label="Nouvelles · 24 h" value={windowAvailable(1) ? fmtInt(h.new24h) : undefined} na={windowAvailable(1) ? undefined : NA_FROM(windowFrom(1))} level="fact" />
             <Kpi label="Maisons qui recrutent" value={fmtInt(h.companies)} level="fact" />
             <Kpi label="Pays" value={fmtInt(data.countries.length)} level="fact" />
             <Kpi label="Villes" value={fmtInt(h.cities)} level="fact" />
@@ -142,7 +142,7 @@ export default async function Page() {
           </div>
           <div className="i6">
             <Block id="secteurs" title="Top secteurs." level="fact-shares" more={{ href: intelPaths.sectors, label: 'Tous les secteurs' }}>
-              <BarList total={total} rows={data.sectors.map((s) => ({ label: sectorLabel(s.key), value: s.count, href: intelPaths.sector(s.key), sub: `${fmtInt(s.companies)} Maisons` }))} />
+              <BarList total={total} rows={mergeOtherSectors(data.sectors).map((s) => ({ label: sectorLabel(s.key), value: s.count, href: s.key === 'OTHER' ? undefined : intelPaths.sector(s.key), sub: `${fmtInt(s.companies)} Maisons` }))} />
             </Block>
           </div>
           <div className="i6">

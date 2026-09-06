@@ -11,7 +11,15 @@ import type { SnapshotPoint } from './metrics';
  * Scopes écrits (brief) : global (clé ''), country (ISO-2), city (`CC|Ville`),
  * company (Company.id), group, sector, function, seniority, contract, family,
  * ai ('true'), country-function (`CC|fonction`), country-sector (`CC|SECTEUR`).
+ *
+ * Seules les photographies prises EN DIRECT (`mode = 'live'`) sont lues ici.
+ * Les jours reconstruits (`--backfill-from`) sont une approximation depuis
+ * l'état actuel des offres : mesuré en prod le 2026-09-06, Cartier affichait un
+ * indice base 100 de 457,6 parce que la base était le 4 septembre reconstruit,
+ * quand ses sources n'étaient pas encore au catalogue. Un indice, une variation,
+ * un momentum ne se calculent que sur ce qui a été réellement observé.
  */
+const LIVE = Prisma.sql`AND mode = 'live'`;
 
 export type SnapshotScope =
   | 'global'
@@ -46,7 +54,7 @@ export async function series(scope: SnapshotScope, key: string, days?: number): 
   }>(Prisma.sql`
     SELECT to_char(date, 'YYYY-MM-DD') AS "date", "activeJobs", "newJobs", "closedJobs", "hiringCompanies",
            "medianLifespanDays"::float AS "medianLifespanDays", "reopenedJobs"
-    FROM "MarketSnapshot" WHERE scope = ${scope} AND key = ${key} ${since} ORDER BY date ASC`);
+    FROM "MarketSnapshot" WHERE scope = ${scope} AND key = ${key} ${LIVE} ${since} ORDER BY date ASC`);
   return rows.map((r) => ({
     date: r.date,
     activeJobs: r.activeJobs,
@@ -58,17 +66,17 @@ export async function series(scope: SnapshotScope, key: string, days?: number): 
   }));
 }
 
-/** Date du tout premier snapshot global (ISO date), null si la table est vide. */
+/** Date du premier snapshot global pris EN DIRECT (ISO date), null s'il n'y en a pas encore. */
 export async function firstSnapshotDate(): Promise<string | null> {
   const [row] = await run<{ first: string | null }>(Prisma.sql`
-    SELECT to_char(min(date), 'YYYY-MM-DD') AS "first" FROM "MarketSnapshot" WHERE scope = 'global'`);
+    SELECT to_char(min(date), 'YYYY-MM-DD') AS "first" FROM "MarketSnapshot" WHERE scope = 'global' ${LIVE}`);
   return row?.first ?? null;
 }
 
 /** Nombre de jours de snapshot d'un périmètre. */
 export async function snapshotDays(scope: SnapshotScope, key: string): Promise<number> {
   const [row] = await run<{ n: number }>(Prisma.sql`
-    SELECT count(*)::int AS n FROM "MarketSnapshot" WHERE scope = ${scope} AND key = ${key}`);
+    SELECT count(*)::int AS n FROM "MarketSnapshot" WHERE scope = ${scope} AND key = ${key} ${LIVE}`);
   return row?.n ?? 0;
 }
 
@@ -81,11 +89,11 @@ export async function latestAndBefore(scope: SnapshotScope, daysBack: number): P
     key: string; date: string; activeJobs: number; newJobs: number; closedJobs: number; hiringCompanies: number;
     medianLifespanDays: number | null; reopenedJobs: number; isNow: boolean;
   }>(Prisma.sql`
-    WITH last AS (SELECT max(date) AS d FROM "MarketSnapshot" WHERE scope = ${scope})
+    WITH last AS (SELECT max(date) AS d FROM "MarketSnapshot" WHERE scope = ${scope} ${LIVE})
     SELECT key, to_char(date, 'YYYY-MM-DD') AS "date", "activeJobs", "newJobs", "closedJobs", "hiringCompanies",
            "medianLifespanDays"::float AS "medianLifespanDays", "reopenedJobs", (date = last.d) AS "isNow"
     FROM "MarketSnapshot", last
-    WHERE scope = ${scope} AND (date = last.d OR date = last.d - ${daysBack}::int)`);
+    WHERE scope = ${scope} ${LIVE} AND (date = last.d OR date = last.d - ${daysBack}::int)`);
   const byKey = new Map<string, { now?: SnapshotPoint; before?: SnapshotPoint }>();
   for (const r of rows) {
     const point: SnapshotPoint = {

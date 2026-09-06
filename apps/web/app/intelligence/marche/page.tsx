@@ -78,8 +78,8 @@ export default async function Page() {
               </thead>
               <tbody>
                 <tr>
-                  <td>Aujourd'hui</td>
-                  <td className="num">{fmtInt(h.new24h)}</td>
+                  <td>Aujourd'hui{!windowAvailable(1) && <span className="t-caption-soft"> · observation depuis le {fmtDate(OBSERVATION_START)}</span>}</td>
+                  <td className="num">{windowAvailable(1) ? fmtInt(h.new24h) : <NA na={NA_FROM(windowFrom(1))} />}</td>
                   <td className="num muted">—</td>
                   <td className="num muted">—</td>
                   <td className="num muted">—</td>
