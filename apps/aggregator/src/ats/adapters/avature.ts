@@ -1,5 +1,6 @@
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
+import { htmlToPlainText } from '../../lib/html.js';
 import { fetchSitemapUrls } from '../../connectors/generic/jsonLdSitemap.js';
 import { parseMicrodataDescription } from './successfactors.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -172,13 +173,179 @@ export function parseAvatureListing(html: string): NormalizedJob[] {
   return jobs;
 }
 
+/* ------------------------------------------------------------------------ */
+/* Mode « portail » — tenants habillés comme Ralph Lauren                     */
+/* ------------------------------------------------------------------------ */
+
+/**
+ * Mesuré le 2026-09-06 sur careers.ralphlauren.com (portail Avature 47,
+ * `ralphlauren.avature.net`, derrière AWS WAF — levé par le transport commun) :
+ * ce gabarit n'a ni `/jobs/JobDetail/{slug}/{id}`, ni microdata, ni JSON-LD,
+ * ni date de publication. Il a :
+ *
+ * - PLUSIEURS listes par portail (`SearchJobsCorporate` 209, `SearchJobsRetail`
+ *   876, `SearchJobsNorthCarolinaCampus`), chacune avec sa route de détail
+ *   (`JobDetailCorporate?jobId=`, `JobDetailRetail?jobId=`…) ;
+ * - **6 cartes par page quoi qu'on demande** (`jobRecordsPerPage` est ignoré,
+ *   « 1-6 of 209 results ») : l'offset avance du nombre de cartes lues ;
+ * - un endpoint JSON `…Data/` (carte géographique) qui PLAFONNE à 500 ids —
+ *   la liste paginée fait foi, jamais lui ;
+ * - un détail en blocs `article--details` : le premier porte les champs
+ *   (Ref #, State/Region, Department, Location = PAYS, City), les suivants des
+ *   sections titrées `<h2>` (COMPANY DESCRIPTION, POSITION OVERVIEW, ESSENTIAL
+ *   DUTIES…) — c'est le texte de l'offre.
+ *
+ * Config : `{ origin, lists: ['en_US/CareersCorporate/SearchJobsCorporate', …] }`
+ * (`lists` = chemins de liste relatifs à `origin`).
+ */
+
+const PORTAL_CARD = /<article class="article article--result[\s\S]*?<\/article>/g;
+const PORTAL_CARD_FIELD = {
+  link: /href="([^"]*JobDetail[A-Za-z]*\?jobId=(\d+))"[^>]*>\s*([^<]{1,200}?)\s*<\/a>/,
+  location: /list-item-location">([^<]*)</,
+  reference: /list-item-ref">([^<]*)</,
+  department: /list-item-department">([^<]*)</,
+  excerpt: /<p class="article__content"[^>]*>([\s\S]*?)<\/p>/,
+};
+/** « 1-6 of 209 results » : le total annoncé par la liste. */
+const PORTAL_TOTAL = /of\s+(\d+)\s+results/;
+const PORTAL_DETAIL_BLOCK = /<article class="article article--details[\s\S]*?<\/article>/g;
+const PORTAL_DETAIL_TITLE = /<h2[^>]*>\s*([^<]+?)\s*<\/h2>/;
+/** Blocs de la page qui ne sont pas l'offre : partage social, alertes. */
+const PORTAL_DETAIL_NOISE = /^(share this job|job notifications|partager|alertes?)/i;
+/** 300 pages × 6 cartes = 1 800 offres par liste : couvre Retail (876). */
+const PORTAL_MAX_PAGES = 300;
+
+function portalField(html: string, label: string): string | undefined {
+  const pattern = new RegExp(
+    `field__label"\\s*>\\s*${label}\\s*</div>\\s*<div class="article__content__view__field__value">\\s*([^<]{1,120}?)\\s*</div>`,
+  );
+  return decode(html.match(pattern)?.[1] ?? '') || undefined;
+}
+
+/** Les cartes d'une page de liste « portail », plus le total qu'elle annonce. */
+export function parseAvaturePortalListing(html: string): { jobs: NormalizedJob[]; declaredTotal?: number } {
+  const jobs: NormalizedJob[] = [];
+  const seen = new Set<string>();
+  for (const card of html.match(PORTAL_CARD) ?? []) {
+    const link = card.match(PORTAL_CARD_FIELD.link);
+    if (!link) continue;
+    const [, href, externalId, rawTitle] = link;
+    const title = titleFromCard(decode(rawTitle), href);
+    if (!title || seen.has(externalId)) continue;
+    seen.add(externalId);
+    jobs.push({
+      externalId,
+      title,
+      location: decode(card.match(PORTAL_CARD_FIELD.location)?.[1] ?? '') || undefined,
+      url: decode(href),
+      description: htmlToPlainText(card.match(PORTAL_CARD_FIELD.excerpt)?.[1]) || undefined,
+      raw: {
+        source: 'avature-portal',
+        reference: decode(card.match(PORTAL_CARD_FIELD.reference)?.[1] ?? '') || undefined,
+        department: decode(card.match(PORTAL_CARD_FIELD.department)?.[1] ?? '') || undefined,
+      },
+    });
+  }
+  const total = Number(html.match(PORTAL_TOTAL)?.[1]);
+  return { jobs, declaredTotal: Number.isFinite(total) ? total : undefined };
+}
+
+export type AvaturePortalDetail = {
+  description?: string;
+  city?: string;
+  country?: string;
+  region?: string;
+  reference?: string;
+};
+
+/** Champs et texte d'une page de détail « portail ». Vide si la page n'a pas ce gabarit. */
+export function parseAvaturePortalDetail(html: string): AvaturePortalDetail {
+  const sections: string[] = [];
+  for (const block of html.match(PORTAL_DETAIL_BLOCK) ?? []) {
+    const title = decode(block.match(PORTAL_DETAIL_TITLE)?.[1] ?? '');
+    // Sans titre, c'est le bloc de champs (Ref, City…) — lu à part, pas du texte.
+    if (!title || PORTAL_DETAIL_NOISE.test(title)) continue;
+    const body = htmlToPlainText(block.replace(PORTAL_DETAIL_TITLE, ''))?.trim();
+    if (body) sections.push(`${title}\n${body}`);
+  }
+  return {
+    description: sections.join('\n\n') || undefined,
+    city: portalField(html, 'City'),
+    country: portalField(html, 'Location'),
+    region: portalField(html, 'State/Region'),
+    reference: portalField(html, 'Ref #'),
+  };
+}
+
+async function fetchAvaturePortalJobs(origin: string, lists: string[], config: Record<string, unknown>): Promise<AdapterResult> {
+  const jobs: NormalizedJob[] = [];
+  const seen = new Set<string>();
+  let declaredTotal = 0;
+  let truncated = false;
+
+  for (const list of lists) {
+    const base = `${origin}/${list.replace(/^\/|\/$/g, '')}/`;
+    let listTotal: number | undefined;
+    for (let offset = 0, page = 0; page < PORTAL_MAX_PAGES; page += 1) {
+      const html = await fetchText(`${base}?jobOffset=${offset}&listFilterMode=1`, { headers: HEADERS });
+      const parsed = parseAvaturePortalListing(html);
+      listTotal ??= parsed.declaredTotal;
+      const fresh = parsed.jobs.filter((job) => !seen.has(job.externalId));
+      for (const job of fresh) {
+        seen.add(job.externalId);
+        jobs.push(job);
+      }
+      // Une page sans nouveauté termine la liste : le portail rend la dernière
+      // page en boucle plutôt qu'une page vide.
+      if (fresh.length === 0) break;
+      offset += parsed.jobs.length;
+      if (page === PORTAL_MAX_PAGES - 1) truncated = true;
+    }
+    if (listTotal !== undefined) declaredTotal += listTotal;
+  }
+
+  const result: AdapterResult = { jobs, truncated, ...(declaredTotal > 0 ? { declaredTotal } : {}) };
+  if (config.withDescriptions === false) return result;
+
+  const detailLimit = pLimit(Number(config.detailConcurrency ?? 4));
+  const withDetails = await Promise.all(
+    jobs.map((job) =>
+      detailLimit(async () => {
+        try {
+          const detail = parseAvaturePortalDetail(await fetchText(job.url, { headers: HEADERS }));
+          return {
+            ...job,
+            description: detail.description ?? job.description,
+            city: detail.city ?? job.city,
+            country: detail.country ?? job.country,
+            region: detail.region ?? job.region,
+          };
+        } catch {
+          // Un détail injoignable ne doit pas faire perdre l'offre de liste.
+          return job;
+        }
+      }),
+    ),
+  );
+  return { ...result, jobs: withDetails };
+}
+
 /**
  * Reads a whole Avature board.
  *
  * Prefers the listing, which carries the location; falls back to per-offer pages
- * from the sitemap only when no listing URL is configured.
+ * from the sitemap only when no listing URL is configured. The « portal » mode
+ * (`lists`) is opt-in, for tenants dressed like Ralph Lauren.
  */
 export async function fetchAvatureJobs(config: Record<string, unknown>): Promise<AdapterResult> {
+  const lists = Array.isArray(config.lists) ? config.lists.map(String).filter(Boolean) : [];
+  if (lists.length > 0) {
+    const origin = String(config.origin ?? '').replace(/\/$/, '');
+    if (!origin) throw new Error('Avature portal mode requires origin');
+    return fetchAvaturePortalJobs(origin, lists, config);
+  }
+
   const listingUrl = String(config.listingUrl ?? '');
 
   if (listingUrl) {

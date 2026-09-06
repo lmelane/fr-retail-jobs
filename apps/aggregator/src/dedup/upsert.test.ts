@@ -170,3 +170,31 @@ describe('upsertDeduplicated — URL refresh on re-ingest', () => {
     expect(job.url).toBe('https://employer.example/apply/G9'); // still the employer
   });
 });
+
+/**
+ * Mesuré en prod le 2026-09-06 : les normalisations d'écriture (pays ISO,
+ * ville dérivée, titre de carte) ne touchaient que la création ; les lignes
+ * existantes restaient sales run après run. Une ré-attestation par la même
+ * source doit porter les valeurs normalisées d'aujourd'hui.
+ */
+describe('upsertDeduplicated — ré-attestation ré-écrit les champs normalisés', () => {
+  it('pays en ISO, ville dérivée, titre et description à jour quand la même source re-liste l’offre', async () => {
+    await upsertDeduplicated(
+      prisma,
+      candidate({ sourceKey: 'loreal', externalId: 'L1', company: "L'Oréal", title: 'Apply Now', location: 'Paris', country: 'FR', description: 'court' }),
+    );
+    // Simule une ligne héritée : pays brut, ville absente.
+    await prisma.job.updateMany({ where: {}, data: { country: 'France', city: null, title: 'Apply Now' } });
+
+    const result = await upsertDeduplicated(
+      prisma,
+      candidate({ sourceKey: 'loreal', externalId: 'L1', company: "L'Oréal", title: 'Chef de produit', location: 'Paris', country: 'France', description: 'une description nettement plus riche que la précédente' }),
+    );
+    expect(result.outcome).toBe('UPDATED');
+    const job = await prisma.job.findFirstOrThrow();
+    expect(job.country).toBe('FR');
+    expect(job.city).toBe('Paris');
+    expect(job.title).toBe('Chef de produit');
+    expect(job.description).toContain('nettement plus riche');
+  });
+});

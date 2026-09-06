@@ -78,6 +78,34 @@ describe('fetchGenericJsonLdJobs — zéro silencieux sur les pages de détail',
     ).rejects.toThrow(/1 lien.*0 offre.*0 échec/);
   });
 
+  /**
+   * Mesuré le 2026-09-06 : Michael Page rendait 1 450 offres au lieu de
+   * ~2 900. Une page de challenge Cloudflare au milieu de la liste ne porte
+   * aucun lien, et passait pour la fin de la liste.
+   */
+  it('lève quand une page de challenge interrompt la liste', async () => {
+    mockFetch.mockImplementation(async (url) => {
+      if (String(url).endsWith('page=0')) return '<a href="/x/job/A">a</a>';
+      if (String(url).endsWith('page=1')) return '<html><title>Just a moment...</title><div id="cf-chl-widget"></div></html>';
+      if (String(url).includes('/job/')) return detail('A');
+      return '<p>rien</p>';
+    });
+    await expect(
+      fetchGenericJsonLdJobs({ listingUrl: 'https://www.michaelpage.fr/jobs', linkPattern: '/job/' }),
+    ).rejects.toThrow(/page 1 est une page de challenge/);
+  });
+
+  it('une vraie fin de liste (page vide ordinaire) reste une fin', async () => {
+    mockFetch.mockImplementation(async (url) => {
+      if (String(url).endsWith('page=0')) return '<a href="/x/job/A">a</a>';
+      if (String(url).endsWith('page=1')) return '<html><body>No results</body></html>';
+      if (String(url).includes('/job/')) return detail('A');
+      return '<p>rien</p>';
+    });
+    const jobs = await fetchGenericJsonLdJobs({ listingUrl: 'https://www.michaelpage.fr/jobs', linkPattern: '/job/' });
+    expect(jobs).toHaveLength(1);
+  });
+
   it('ne lève pas quand une partie seulement des détails échoue', async () => {
     mockFetch.mockImplementation(async (url) => {
       if (String(url).endsWith('page=0')) return '<a href="/x/job/A">a</a><a href="/x/job/B">b</a>';

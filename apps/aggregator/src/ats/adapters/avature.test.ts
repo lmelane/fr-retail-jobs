@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseAvatureListing, titleFromCard } from './avature.js';
+import { parseAvatureListing, parseAvaturePortalDetail, parseAvaturePortalListing, titleFromCard } from './avature.js';
 
 describe('titleFromCard — le bouton n’est pas un intitulé de poste', () => {
   /**
@@ -54,5 +54,128 @@ describe('parseAvatureListing — le marqueur de date dépend de la langue', () 
   it('lit aussi la date de publication', () => {
     const [job] = parseAvatureListing(card('Posted'));
     expect(job.postedAt?.getUTCFullYear()).toBe(2026);
+  });
+});
+
+describe('mode portail — gabarit careers.ralphlauren.com (capturé le 2026-09-06)', () => {
+  /** Une carte de `SearchJobsCorporate/?jobOffset=0` telle que le portail la rend. */
+  const CARD = `
+<p class="results">1-6
+                                    of 209
+                 results</p>
+<article class="article article--result 1" id="article--1">
+<div class="article__header"><div class="article__header__text">
+<h3 class="article__header__text__title title title--h6" data-au="ag-h3-6">
+<a class="link" href="https://careers.ralphlauren.com/en_US/CareersCorporate/JobDetailCorporate?jobId=67979" data-au="ag-a-10">
+(Senior) Sales Executive (w/m/d), Polo MW
+</a>
+</h3>
+<div class="article__header__text__subtitle">
+<span class="list-item-location">München, Bavaria, Germany</span> <span class="separator" aria-hidden="true">&nbsp;&#8226;&nbsp;</span> <span class="list-item-ref">#W181339</span> <span class="separator" aria-hidden="true">&nbsp;&#8226;&nbsp;</span> <span class="list-item-department">Sales &amp; Customer Support</span>
+</div></div></div>
+<p class="article__content" tabindex="0">
+What you will dopresentation and selling of our collections in our Showroom...
+</p>
+<div class="article__footer">
+<a class="button button--share button--apply" href="https://careers.ralphlauren.com/en_US/CareersCorporate/ApplicationMethods?jobId=67979">APPLY</a>
+</div>
+</article>`;
+
+  /** La page `JobDetailCorporate?jobId=67979`, réduite à ses blocs `article--details`. */
+  const DETAIL = `
+<article class="article article--details regular-fields--cols-2Z" >
+<div class="article__content__view__field "><div class="article__content__view__field__label" >
+Ref #
+</div><div class="article__content__view__field__value">
+W181339
+</div></div>
+<div class="article__content__view__field "><div class="article__content__view__field__label" >
+State/Region
+</div><div class="article__content__view__field__value">
+Bavaria
+</div></div>
+<div class="article__content__view__field "><div class="article__content__view__field__label" >
+Location
+</div><div class="article__content__view__field__value">
+Germany
+</div></div>
+<div class="article__content__view__field "><div class="article__content__view__field__label" >
+City
+</div><div class="article__content__view__field__value">
+München
+</div></div>
+</article>
+<article class="article article--details " >
+<h2 class="article__header__text__title title title--h6" id="section3__title">
+COMPANY DESCRIPTION
+</h2>
+<div class="article__content__view__field__value">
+<html> <div style="text-align: justify;"> <body> Ralph Lauren Corporation (NYSE:RL) is a global leader in the design, marketing and distribution of premium lifestyle products. </body></div></html>
+</div>
+</article>
+<article class="article article--details " >
+<h2 class="article__header__text__title title title--h6" id="section5__title">
+ESSENTIAL DUTIES &amp; RESPONSIBILITIES
+</h2>
+<div class="article__content__view__field__value">
+<div><u>What you will do</u></div><ul><li><span>presentation and selling of our collections in our Showroom</span></li><li><span>regular visits of designated accounts</span></li></ul>
+</div>
+</article>
+<article class="article article--details " >
+<h2 class="article__header__text__title">Share this job</h2>
+<div>Facebook LinkedIn X</div>
+</article>`;
+
+  it('lit identifiant, titre, lieu, lien et référence depuis une carte', () => {
+    const { jobs, declaredTotal } = parseAvaturePortalListing(CARD);
+    expect(jobs).toHaveLength(1);
+    expect(jobs[0].externalId).toBe('67979');
+    expect(jobs[0].title).toBe('(Senior) Sales Executive (w/m/d), Polo MW');
+    expect(jobs[0].location).toBe('München, Bavaria, Germany');
+    expect(jobs[0].url).toBe('https://careers.ralphlauren.com/en_US/CareersCorporate/JobDetailCorporate?jobId=67979');
+    expect(jobs[0].raw).toMatchObject({ reference: '#W181339', department: 'Sales & Customer Support' });
+    expect(jobs[0].description).toContain('What you will do');
+    expect(declaredTotal).toBe(209);
+  });
+
+  it('accepte les routes de détail des autres listes (Retail, campus)', () => {
+    const retail = CARD.replace(/JobDetailCorporate/g, 'JobDetailRetail').replace(/67979/g, '57705');
+    const [job] = parseAvaturePortalListing(retail).jobs;
+    expect(job.externalId).toBe('57705');
+    expect(job.url).toContain('JobDetailRetail?jobId=57705');
+  });
+
+  it('déduplique deux cartes du même identifiant', () => {
+    expect(parseAvaturePortalListing(CARD + CARD).jobs).toHaveLength(1);
+  });
+
+  it('rend une liste vide (sans total) sur une page qui n’a pas ce gabarit', () => {
+    const parsed = parseAvaturePortalListing('<html><body>maintenance</body></html>');
+    expect(parsed.jobs).toHaveLength(0);
+    expect(parsed.declaredTotal).toBeUndefined();
+  });
+
+  it('assemble les sections titrées du détail en une description, sans le partage social', () => {
+    const detail = parseAvaturePortalDetail(DETAIL);
+    expect(detail.description).toContain('COMPANY DESCRIPTION');
+    expect(detail.description).toContain('global leader in the design');
+    expect(detail.description).toContain('ESSENTIAL DUTIES & RESPONSIBILITIES');
+    expect(detail.description).toContain('regular visits of designated accounts');
+    expect(detail.description).not.toContain('Share this job');
+    expect(detail.description).not.toContain('<');
+  });
+
+  it('lit ville, pays (champ « Location ») et région depuis le bloc de champs', () => {
+    const detail = parseAvaturePortalDetail(DETAIL);
+    expect(detail.city).toBe('München');
+    expect(detail.country).toBe('Germany');
+    expect(detail.region).toBe('Bavaria');
+    expect(detail.reference).toBe('W181339');
+  });
+
+  it('rend des champs vides sur une page sans ce gabarit, pour garder la carte de liste', () => {
+    const detail = parseAvaturePortalDetail('<html><body>maintenance</body></html>');
+    expect(detail.description).toBeUndefined();
+    expect(detail.city).toBeUndefined();
   });
 });

@@ -33,6 +33,9 @@ export function parseJobPostings(html: string, pageUrl: string): NormalizedJob[]
     }));
 }
 
+/** Signatures des pages de challenge (Cloudflare, Akamai, AWS WAF) servies à la place d'une liste. */
+const CHALLENGE_PAGE = /just a moment|cf-chl|cf_chl|challenge-platform|_Incapsula_|aws-waf|awswaf|Access Denied|Attention Required/i;
+
 export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
   /**
    * An RSS/Atom careers feed, when the site publishes one — the cheapest generic
@@ -122,6 +125,18 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       const links = [...html.matchAll(linkRe)]
         .map((m) => new URL(m[1], origin).toString().split('#')[0])
         .filter((u) => !seen.has(u));
+      /**
+       * Une page de liste sans lien est la fin de la liste — SAUF si c'est une
+       * page de challenge servie au milieu du balayage. Mesuré le 2026-09-06
+       * sur Michael Page : 1 450 offres au lieu de ~2 900, la page ~72 était un
+       * challenge Cloudflare, prise pour la fin, et la moitié du board manquait
+       * en silence. Un challenge en cours de liste est une panne nommée.
+       */
+      if (links.length === 0 && seen.size > 0 && CHALLENGE_PAGE.test(html)) {
+        throw new Error(
+          `generic-listing ${listingPagedUrl}: page ${page} est une page de challenge (${seen.size} liens avant) — liste tronquée par un bot-wall`,
+        );
+      }
       if (links.length === 0) break;
       for (const u of links) seen.add(u);
     }

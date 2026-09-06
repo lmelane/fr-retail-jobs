@@ -197,6 +197,14 @@ export async function upsertDeduplicated(
       const winnerId = byJobKey?.id ?? bySourceKey?.jobId;
       if (!winnerId) throw error;
 
+      // This path is ALSO where a source re-reports its own offer under a
+      // changed title (the cluster match fails on the title, the create trips
+      // the unique key): by construction it is the same source and the same
+      // id, so the row takes today's normalized values like any re-attestation.
+      const winner = await prisma.job.findUniqueOrThrow({
+        where: { id: winnerId },
+        select: { title: true, description: true, location: true, city: true, country: true },
+      });
       await prisma.job.update({
         where: { id: winnerId },
         // Stamp the current generation on every touch, not just on create:
@@ -209,6 +217,7 @@ export async function upsertDeduplicated(
           isActive: true,
           pipelineVersion: PIPELINE_VERSION,
           url: candidate.url,
+          ...reattestationFields(candidate, winner, true),
         },
       });
       return { jobId: winnerId, outcome: 'UPDATED', promoted: false };
@@ -322,9 +331,50 @@ type ExistingJob = {
   id: string;
   url: string | null;
   canonicalTier: string | null;
+  title: string;
   description: string | null;
+  location: string | null;
+  city: string | null;
+  country: string | null;
   sources: { sourceKey: string; externalId: string }[];
 };
+
+/**
+ * Ce qu'une ré-attestation ré-écrit sur une offre déjà en base.
+ *
+ * Mesuré en prod le 2026-09-06, après le premier run complet avec les
+ * normalisations d'écriture (pays ISO, ville dérivée, titre de carte, texte
+ * propre) : pays distincts 276 → 282, offres sans ville 37 845 → 37 770,
+ * « Apply Now » 184 → 184. Les correctifs ne touchaient que la CRÉATION ; les
+ * 56 000 lignes existantes étaient ré-attestées à chaque run sans jamais être
+ * ré-écrites. Une offre que sa source re-liste porte les valeurs normalisées
+ * de MAINTENANT : c'est l'auto-guérison de la base, une source à la fois.
+ *
+ * Règles : le pays et la ville ne sont ré-écrits que si le candidat en porte
+ * un (jamais effacés) ; le titre et la description seulement quand c'est la
+ * MÊME source, même id, qui re-parle de son offre (`sameEntry`) — une autre
+ * source n'a pas autorité sur le texte du canonique — et la description
+ * seulement si elle est plus riche.
+ */
+export function reattestationFields(
+  candidate: CandidateJob,
+  existing: Pick<ExistingJob, 'title' | 'description' | 'location' | 'city' | 'country'>,
+  sameEntry: boolean,
+): Partial<Pick<ExistingJob, 'title' | 'description' | 'location' | 'city' | 'country'>> {
+  const out: Partial<Pick<ExistingJob, 'title' | 'description' | 'location' | 'city' | 'country'>> = {};
+  const country = normalizeCountry(candidate.country);
+  if (country && country !== existing.country) out.country = country;
+  const city = displayCity(candidate.city ?? cityFromLocation(candidate.location));
+  if (city && city !== existing.city) out.city = city;
+  if (candidate.location && !existing.location) out.location = candidate.location;
+  if (sameEntry) {
+    if (candidate.title && candidate.title !== existing.title) out.title = candidate.title;
+    if (candidate.description && candidate.description.length > (existing.description?.length ?? 0)) {
+      out.description = candidate.description;
+    }
+  }
+  return out;
+}
 
 async function attachToExisting(
   prisma: PrismaClient,
@@ -378,6 +428,8 @@ async function attachToExisting(
       // Every touch carries the current generation, so a merged offer is never
       // left below the version line and re-purged on the next run.
       pipelineVersion: PIPELINE_VERSION,
+      // The normalized values of today reach the rows of yesterday.
+      ...reattestationFields(candidate, existing, alreadyKnown),
       ...(promoted
         ? {
             url: candidate.url,

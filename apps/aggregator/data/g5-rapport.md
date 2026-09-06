@@ -9,9 +9,9 @@ Mesures du 2026-09-06, lecture seule, depuis un poste local. Chaque chiffre vien
 | Bloomingdale's | Oracle HCM (`ebwh.fa.us2`, site `CX_1002`) | **RÉSOLU** — adaptateur `oraclehcm.ts` écrit | 762 offres / 762 annoncées · 762 lieu · 761 desc>200 · 762 date · 85 s |
 | Tiffany & Co. | Oracle HCM (`eljs.fa.us2`, site `CX`) | **RÉSOLU** — même adaptateur | 419 / 419 · 419 lieu · 419 desc>200 · 419 date · 52 s |
 | Brown Thomas / Arnotts | **Taleo Business Edition** (pas Taleo Enterprise) | **RÉSOLU** — adaptateur `taleo.ts` écrit | 68 offres · 68 lieu · 68 desc>200 · 0 date · 14 s |
-| Ralph Lauren | **Avature** (pas Cornerstone), derrière AWS WAF | **API TROUVÉE, adaptateur à écrire** (extension d'`avature.ts` + jeton WAF) | Corporate : 209 / 209 · 209 lieu · 209 desc>200 · 96 s. Retail : 876 / 876 énumérées · 876 lieu · 60/60 desc>200 sur échantillon · 184 s |
+| Ralph Lauren | **Avature** (pas Cornerstone), derrière AWS WAF (levé par le transport commun) | **RÉSOLU** — mode « portail » ajouté à `avature.ts` | **1 082 / 1 082 annoncées** · 1 082 lieu · 1 082 desc>200 · 1 052 ville · 1 082 pays · 0 date · 449 s (Corporate 209 + Retail 873) |
 
-Trois fichiers d'adaptateur + tests (`npx vitest run src/ats` : 13 fichiers, 112 tests verts, `tsc --noEmit` propre sur les nouveaux fichiers). Ni `src/ats/index.ts`, ni `KIND_TO_ATS`, ni Prisma touchés — le branchement reste à faire.
+Deux adaptateurs nouveaux (`oraclehcm.ts`, `taleo.ts`) + un mode « portail » dans `avature.ts` (autorisation explicite du coordinateur), chacun avec tests sur fixtures capturées (`npx vitest run src/ats` vert, `tsc --noEmit` propre). Ni `src/ats/index.ts`, ni `KIND_TO_ATS`, ni Prisma touchés — Oracle HCM et Taleo restent à brancher ; Ralph Lauren passe par le type `AVATURE` existant.
 
 ---
 
@@ -104,66 +104,60 @@ Lieux : Dublin, Dundrum, Cork, Limerick, Galway, Blanchardstown, head office Dub
 
 ---
 
-## 3. « Cornerstone » Ralph Lauren : API TROUVÉE — c'est AVATURE derrière AWS WAF
+## 3. « Cornerstone » Ralph Lauren : RÉSOLU — c'est AVATURE derrière AWS WAF
 
 ### Ce qui a été trouvé
 
 - `careers.ralphlauren.com/robots.txt` déclare les portails **`ralphlauren.avature.net`** (`RetailManager`, `RLAgency`, `HKEarlyCareer`, `CareersCorporate` = portail 47). `jobRecordsPerPage` / `listFilterMode` sont des paramètres **Avature**, pas Cornerstone. Aucune trace de `csod.com`.
-- Tout `fetch` nu sur `careers.ralphlauren.com/en_US/CareersCorporate/…` (liste, `…/json`, `JobDetail`, sitemap `en_US`) reçoit **HTTP 202, corps vide, `x-amzn-waf-action: challenge`** (Cloudflare devant AWS WAF). `ralphlauren.avature.net/…` → 301 vers le même domaine. Le `sitemap_index.xml` passe mais les sitemaps de langue ne listent que 61 routes utilitaires (4 `JobDetail*` génériques, **0 offre**).
-- **Playwright passe le challenge** en ~7 s et reçoit un cookie `aws-waf-token` (350 car.). **Rejoué sur un `fetch` nu** (via `fetchText`/`fetchJson`, même User-Agent), ce cookie ouvre tout : liste, données carte, détail → 200. Vérifié sur 209 + 209 + 1 requêtes sans un seul 202.
+- Tout `fetch` nu sur `careers.ralphlauren.com/en_US/CareersCorporate/…` (liste, `…/json`, `JobDetail`, sitemap `en_US`) recevait **HTTP 202, corps vide, `x-amzn-waf-action: challenge`** (Cloudflare devant AWS WAF). `ralphlauren.avature.net/…` → 301 vers le même domaine. Les sitemaps ne listent que 61 routes utilitaires, **0 offre**.
+- Chromium passe le challenge et reçoit un cookie `aws-waf-token` ; rejoué sur un `fetch` nu, il ouvre tout. Depuis la brique commune (`src/lib/wafToken.ts` + `primeWafToken`, branchée dans `fetchWithRetry`), **`fetchText` lève le challenge seul** : sur la mesure finale, un seul amorçage (`[waf] https://careers.ralphlauren.com: amorçage réussi en 2786 ms`) puis ~1 270 requêtes HTTP simples sans un 202.
+- `robots.txt` : `Allow: /CareersCorporate`, `Allow: /*/CareersCorporate`, seul `*qtvc=` est interdit — nos URLs n'en portent pas.
 
-### L'API (rejouée, avec le cookie)
+### Le gabarit (rejoué)
 
 Base : `https://careers.ralphlauren.com/en_US/CareersCorporate`. Le portail a **trois listes**, chacune avec sa route de détail :
 
-| Liste | Annoncé | Route détail |
+| Liste | Annoncé (2026-09-06) | Route détail |
 |---|---|---|
 | `SearchJobsCorporate` | 209 | `JobDetailCorporate?jobId=` |
-| `SearchJobsRetail` | **876** | `JobDetailRetail?jobId=` |
-| `SearchJobsNorthCarolinaCampus` | non affiché | `JobDetailNorthCarolinaCampus?jobId=` |
+| `SearchJobsRetail` | 876 le matin, 873 sur la mesure finale | `JobDetailRetail?jobId=` |
+| `SearchJobsNorthCarolinaCampus` | pas de total affiché ; **0 id nouveau** (ses cartes sont déjà dans les deux autres listes) | `JobDetailNorthCarolinaCampus?jobId=` |
 
-1. Énumération en une requête — GET `{base}/SearchJobs{Liste}Data/` → JSON `{ locations: { "<latlon>": { latlon, jobs: [{ id, title, url }] } }, totalCount }` (`totalCount` = nombre de LIEUX, pas d'offres : 29 pour 209 offres Corporate).
-2. Liste paginée — GET `{base}/SearchJobs{Liste}/?jobOffset={n}&listFilterMode=1` : `jobRecordsPerPage` est **ignoré, 6 cartes par page** (« 1-6 of 209 results ») ; avancer `jobOffset` de 6 ; arrêt sur page sans nouvel id. Carte : `<article class="article article--result">`, titre = lien `JobDetail{Liste}?jobId={id}`, `span.list-item-location` (« München, Bavaria, Germany »), `span.list-item-ref` (`#W181339`), `span.list-item-department`.
-3. Détail — GET `{base}/JobDetail{Liste}?jobId={id}` : **pas de JSON-LD, pas de microdata, pas de date**. Blocs `<article class="article article--details">` : le premier porte les champs `Ref #`, `State/Region`, `Department`, `Location` (= pays), `City` ; les suivants sont des sections titrées `<h2>` (COMPANY DESCRIPTION, POSITION OVERVIEW, ESSENTIAL DUTIES & RESPONSIBILITIES, EXPERIENCE, SKILLS…) dans `article__content__view__field__value`.
+1. Liste paginée — GET `{base}/{Liste}/?jobOffset={n}&listFilterMode=1` : `jobRecordsPerPage` est **ignoré, 6 cartes par page** (« 1-6 of 209 results ») ; l'offset avance du nombre de cartes lues ; arrêt sur page sans nouvel id (la dernière page se répète). Carte `<article class="article article--result">` : titre = lien `JobDetail{Liste}?jobId={id}`, `span.list-item-location` (« München, Bavaria, Germany »), `span.list-item-ref` (`#W181339`), `span.list-item-department`, extrait `p.article__content`.
+2. Endpoint JSON `{base}/{Liste}Data/` (carte géographique) : `{ locations: { "<latlon>": { jobs:[{id,title,url}] } }, totalCount }` — `totalCount` = nombre de LIEUX, et l'énumération **plafonne à 500 ids** (Retail : 500 sur 876). Non utilisé par l'adaptateur.
+3. Détail — GET `{base}/JobDetail{Liste}?jobId={id}` : **pas de JSON-LD, pas de microdata, pas de date**. Blocs `<article class="article article--details">` : le premier porte les champs `Ref #`, `State/Region`, `Department`, `Location` (= pays), `City` ; les suivants sont des sections titrées `<h2>` (COMPANY DESCRIPTION, POSITION OVERVIEW, ESSENTIAL DUTIES & RESPONSIBILITIES, EXPERIENCE, SKILLS & KNOWLEDGE) ; « Share this job » et « Job Notifications » sont écartés.
 
-### Mesure (`npx tsx src/discovery/g5-ralphlauren.mts`)
-```
-liste Corporate — token WAF obtenu (350 car.) en 7s
-données carte: 29 lieux (totalCount=29), 209 ids uniques
-liste paginée: 209 cartes (annoncé « of 209 results ») | 209 lieu
-ids carte absents de la liste: 0
-détails: 209 lus | 209 desc>200 | 201 ville | 209 pays | 0 erreurs | 96s total
-   pays: United States=76 India=66 United Kingdom=27 Hong Kong SAR=21 Italy=8 Germany=5 France=4 Switzerland=1 Spain=1
-   ex: (Senior) Sales Executive (w/m/d), Polo MW @ München, Bavaria, Germany — desc 2686 car.
-   ex FR: Brand Image specialist @ Paris, Paris, France — desc 3000 car.
-```
-Retail (`--list Retail --max 60`, énumération complète, détails sur un échantillon de 60) :
-```
-données carte: 206 lieux (totalCount=206), 500 ids uniques      ← l'endpoint carte PLAFONNE à 500 ids
-liste paginée: 876 cartes (annoncé « of 876 results ») | 876 lieu   ← la liste paginée fait foi
-détails: 60 lus | 60 desc>200 | 58 ville | 60 pays | 0 erreurs | 184s total
-   pays (échantillon): United States=49 France=3 Canada=3 United Kingdom=2 Portugal=1 Germany=1 Hong Kong SAR=1
-   ex FR: Animateur des ventes (H/F) - CDI 35h - La Vallée Village @ Serris, Seine-et-Marne, France — desc 2513 car.
-```
-Total du portail : **209 + 876 = 1 085 offres** (campus non compté : sa liste n'affiche pas de total). L'endpoint « données carte » ne peut donc pas servir d'énumération au-delà de 500 offres ; l'adaptateur doit paginer la liste (6 par page → 146 pages pour Retail).
-
-### Pourquoi « adaptateur à écrire » et pas « RÉSOLU »
-L'adaptateur `avature.ts` existant ne convient pas tel quel, et le brief interdit de le modifier : (a) ses motifs attendent `/jobs/JobDetail/{slug}/{id}` — ici c'est `JobDetail{Liste}?jobId={id}` ; (b) il lit la description en microdata — ici elle est dans des blocs `article--details` ; (c) surtout, il faut un **jeton AWS WAF** obtenu par Chromium puis rejoué en cookie sur les `fetch` nus — un transport « amorçage navigateur + HTTP » qui n'existe pas encore dans `src/lib/`. Ce point est une décision d'architecture (D25 : hygiène réseau globale, pas de rustine par adaptateur) : le bon endroit est une fonction `primeWafToken(url)` dans `src/lib/browser.ts`, réutilisable par tout hôte sous AWS WAF, puis un mode `template: 'portal'` dans `avature.ts` avec `listUrl`/`detailRoute`. Le script `g5-ralphlauren.mts` contient déjà le parseur de liste et de détail validés sur 209 offres — il suffit de les déplacer. À noter pour la config finale : les trois listes sont à lire (Corporate 209 + Retail 876 + campus), c'est Retail qui porte l'essentiel du volume.
-
-Config cible proposée :
+### Config (type `AVATURE`, mode portail déclenché par `lists`)
 ```json
-{ "origin": "https://careers.ralphlauren.com", "portal": "en_US/CareersCorporate",
-  "lists": ["Corporate", "Retail", "NorthCarolinaCampus"], "wafChallenge": true }
+{ "origin": "https://careers.ralphlauren.com",
+  "lists": ["en_US/CareersCorporate/SearchJobsCorporate",
+            "en_US/CareersCorporate/SearchJobsRetail",
+            "en_US/CareersCorporate/SearchJobsNorthCarolinaCampus"] }
 ```
+
+### Mesure (`npx tsx src/discovery/g5-ralphlauren.mts`, via `fetchAtsJobs('AVATURE', config)`)
+```
+Ralph Lauren (3 listes): 1082 offres (annoncé 1082) | 1082 lieu | 1082 desc>200 | 1052 ville | 1082 pays | 0 date | 449s
+   pays: United States=751 India=66 United Kingdom=65 Canada=56 Hong Kong SAR=39 France=25 Italy=18 Spain=12 Germany=11 Netherlands=11
+   par liste: Corporate=209 Retail=873
+   ex: (Senior) Sales Executive (w/m/d), Polo MW @ München, Bavaria, Germany — https://careers.ralphlauren.com/en_US/CareersCorporate/JobDetailCorporate?jobId=67979
+   ex FR: Brand Image specialist @ Paris, Paris, France — desc 3064 car.
+```
+1 082 = 209 + 873 = le total annoncé par les deux listes ; 25 offres France. `postedAt` reste `undefined` (aucune date à la source). Les 30 offres sans `city` ont un `location` de liste (le champ `City` n'est pas rempli sur ces fiches). 449 s pour ~1 270 requêtes (porte par hôte, détail en concurrence 4).
+
+### Livrables
+- `src/ats/adapters/avature.ts` — mode portail : `parseAvaturePortalListing`, `parseAvaturePortalDetail`, `fetchAvaturePortalJobs` (branché dans `fetchAvatureJobs` quand `lists` est fourni ; les modes `listingUrl` / `sitemapUrl` sont intacts). `declaredTotal` = somme des « of N results » des listes.
+- `src/ats/adapters/avature.test.ts` — 7 tests ajoutés sur fixtures capturées (carte Corporate, page de détail 67979) ; les 15 tests existants inchangés et verts (22 au total).
+- `src/discovery/g5-ralphlauren.mts` — mesure via `fetchAtsJobs`.
 
 ---
 
 ## Ce qui reste à faire (hors périmètre du brief)
-1. Brancher `ORACLE_HCM` et `TALEO` dans `src/ats/index.ts` / `KIND_TO_ATS` / l'enum Prisma `AtsType` (décision de schéma, pas prise ici).
-2. Ralph Lauren : `primeWafToken` dans `browser.ts` + mode portail dans `avature.ts` (voir §3).
-3. Le tenant Oracle `ebwh` (Macy's Inc.) héberge sans doute d'autres sites (`CX_1`…) : à sonder si Macy's entre au catalogue.
+1. Brancher `ORACLE_HCM` et `TALEO` dans `src/ats/index.ts` / `KIND_TO_ATS` / l'enum Prisma `AtsType` (décision de schéma, pas prise ici). Ralph Lauren n'a besoin que d'une ligne de catalogue `AVATURE` avec la config ci-dessus.
+2. Le tenant Oracle `ebwh` (Macy's Inc.) héberge sans doute d'autres sites (`CX_1`…) : à sonder si Macy's entre au catalogue.
 
 ## Fichiers
 - `apps/aggregator/src/ats/adapters/oraclehcm.ts`, `oraclehcm.test.ts`
 - `apps/aggregator/src/ats/adapters/taleo.ts`, `taleo.test.ts`
+- `apps/aggregator/src/ats/adapters/avature.ts`, `avature.test.ts` (mode portail ajouté)
 - `apps/aggregator/src/discovery/g5-oraclehcm.mts`, `g5-taleo.mts`, `g5-ralphlauren.mts`, `g5-sniff.mts` (capture réseau Playwright), `g5-rl-debug.mts` (comptage des trois listes RL)
