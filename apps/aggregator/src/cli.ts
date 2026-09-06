@@ -51,7 +51,10 @@ try {
     // un-located offers, turning a quick per-source run into minutes of API
     // calls repeated 102 times.
     const skipGeocode = process.argv.includes('--no-geocode');
-    const stats = await runIngest(prisma, only ? { only } : {});
+    // skipGeocode passé AUSSI à runIngest : sans lui, une passe de géocodage
+    // suivait chaque source (7 775 offres en attente = minutes) même avec le
+    // flag, qui ne sautait que la passe finale.
+    const stats = await runIngest(prisma, { ...(only ? { only } : {}), skipGeocode });
     const geo = skipGeocode
       ? { pending: 0, lookedUp: 0, jobsLocated: 0, remaining: 0 }
       : await runGeocode(prisma);
