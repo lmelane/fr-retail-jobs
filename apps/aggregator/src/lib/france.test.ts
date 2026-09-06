@@ -21,6 +21,14 @@ describe('isFranceJob — country wins when explicit', () => {
   });
 });
 
+describe('isFranceJob — un préfixe pays étranger tranche (audit I-1)', () => {
+  it('« US-LA-New Orleans » n’est pas la France, « FR-Paris » l’est', () => {
+    expect(isFranceJob(undefined, 'US-LA-New Orleans')).toBe(false);
+    expect(isFranceJob(undefined, 'FR-Paris')).toBe(true);
+    expect(isFranceJob(undefined, 'GB-London')).toBe(false);
+  });
+});
+
 describe('isFranceJob — location, when no country is given', () => {
   it('recognises real French cities', () => {
     expect(isFranceJob(undefined, 'Paris')).toBe(true);

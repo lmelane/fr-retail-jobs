@@ -60,6 +60,11 @@ export function isFranceJob(country?: string, location?: string): boolean {
   const loc = normalizeLocation(location ?? '');
   if (!loc) return false;
 
+  // « US-LA-New Orleans » : un préfixe pays ISO étranger tranche avant tout
+  // signal de ville (audit I-1 : 24 offres américaines en « France »).
+  const prefix = /^([A-Z]{2})-/.exec((location ?? '').trim().toUpperCase());
+  if (prefix && prefix[1] !== 'FR' && normalizeCountry(prefix[1])) return false;
+
   // A named foreign place overrides a coincidental French token.
   if (matchesAny(loc, FOREIGN_SIGNALS)) return false;
 

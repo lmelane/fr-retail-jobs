@@ -358,7 +358,14 @@ async function createJob(
 
 /** Pays ISO du candidat : celui de la source, sinon celui que porte le lieu (audit A1 : 14 074 offres sans pays). */
 function countryOf(candidate: CandidateJob): string | undefined {
-  return normalizeCountry(candidate.country) ?? countryFromLocation(candidate.location);
+  return (
+    normalizeCountry(candidate.country) ??
+    countryFromLocation(candidate.location) ??
+    // Un lieu que les signaux français reconnaissent (code postal, département,
+    // région) sans pays nommé est en France : 440 offres actives « Paris (75) »
+    // portaient isFrance sans pays (audit I-1, 2026-09-06).
+    (isFranceJob(undefined, candidate.location) ? 'FR' : undefined)
+  );
 }
 
 /** Ville affichable — jamais un pays ou un code pays (« Ch », « Germany » : ~800 « villes », audit A1). */
