@@ -50,6 +50,8 @@ export async function closeBrowser(): Promise<void> {
 const WAF_COOKIE = 'aws-waf-token';
 const wafPrimeTimeoutMs = Number(process.env.WAF_PRIME_TIMEOUT_MS ?? 20_000);
 const WAF_POLL_MS = 500;
+/** Le cookie doit garder la même valeur aussi longtemps avant d'être cru. */
+const WAF_SETTLE_MS = 2_000;
 
 const wafTokens = new Map<string, Promise<string | undefined>>();
 
@@ -98,10 +100,29 @@ async function primeWafTokenOnce(origin: string, url: string): Promise<string | 
       if (!isPublicHttpUrl(page.url())) {
         throw new Error(`Refusing WAF priming on non-public URL: ${page.url()}`);
       }
+      /**
+       * Le cookie apparaît AVANT que le challenge soit terminé, puis change de
+       * valeur quand le script le finalise. Mesuré le 2026-09-06 sur Ralph
+       * Lauren : le premier cookie lu était rejeté (406 sur toutes les
+       * tentatives) dans 2 processus sur 3, le troisième avait lu la valeur
+       * finale. On renvoie donc la valeur seulement une fois STABLE — inchangée
+       * pendant WAF_SETTLE_MS — et le réseau au repos.
+       */
       const deadline = Date.now() + wafPrimeTimeoutMs;
+      let lastValue: string | undefined;
+      let stableSince = 0;
       while (Date.now() < deadline) {
         const token = (await context.cookies(origin)).find((cookie) => cookie.name === WAF_COOKIE);
-        if (token) return `${WAF_COOKIE}=${token.value}`;
+        if (token) {
+          if (token.value !== lastValue) {
+            lastValue = token.value;
+            stableSince = Date.now();
+          } else if (Date.now() - stableSince >= WAF_SETTLE_MS) {
+            await page.waitForLoadState('networkidle', { timeout: 5_000 }).catch(() => undefined);
+            const final = (await context.cookies(origin)).find((cookie) => cookie.name === WAF_COOKIE);
+            return `${WAF_COOKIE}=${final?.value ?? token.value}`;
+          }
+        }
         await page.waitForTimeout(WAF_POLL_MS);
       }
       return undefined;
