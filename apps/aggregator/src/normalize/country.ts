@@ -19,6 +19,7 @@
 
 /** Libellés (toutes langues rencontrées) -> code ISO. */
 const LABEL_TO_ISO: Record<string, string> = {
+  'russian federation': 'RU', 'lao people\'s democratic republic': 'LA', laos: 'LA', 'syrian arab republic': 'SY', 'brunei darussalam': 'BN', 'viet nam': 'VN', 'côte d\'ivoire': 'CI',
   france: 'FR', frankrijk: 'FR', frankreich: 'FR', francia: 'FR',
   'united states': 'US', 'united states of america': 'US', usa: 'US', 'u.s.a.': 'US',
   "états-unis d'amérique": 'US', 'etats-unis': 'US', 'états-unis': 'US',
@@ -110,6 +111,22 @@ const ISO_CODES = new Set([
  * Rend `undefined` plutôt qu'une valeur douteuse : un pays absent est honnête,
  * un mauvais pays envoie le candidat sur des offres qui ne le concernent pas.
  */
+/** Libellés Intl (anglais + français) de chaque code, en minuscules → code. Calculé une fois. */
+const INTL_LABELS: Map<string, string> = (() => {
+  const map = new Map<string, string>();
+  for (const locale of ["en", "fr"]) {
+    let names: Intl.DisplayNames;
+    try { names = new Intl.DisplayNames([locale], { type: "region" }); } catch { continue; }
+    for (const code of ISO_CODES) {
+      try {
+        const label = names.of(code);
+        if (label && label !== code) map.set(label.toLowerCase(), code);
+      } catch { /* code sans libellé */ }
+    }
+  }
+  return map;
+})();
+
 export function normalizeCountry(raw?: string | null): string | undefined {
   if (!raw) return undefined;
   const text = raw.trim();
@@ -129,6 +146,13 @@ export function normalizeCountry(raw?: string | null): string | undefined {
   for (const [label, code] of Object.entries(LABEL_TO_ISO)) {
     if (label.normalize('NFD').replace(/[̀-ͯ]/g, '') === stripped) return code;
   }
+  // Formes officielles longues et articles : « Korea, Republic of », « Netherlands,
+  // The », « Russian Federation » (lot 2, 2026-09-06) — on relit la tête avant la
+  // virgule, sans article, puis les libellés Intl anglais et français.
+  const head = key.split(",")[0].replace(/^the /, "").replace(/ federation$| sar$| s\.a\.r\.$/, "").trim();
+  if (head !== key && LABEL_TO_ISO[head]) return LABEL_TO_ISO[head];
+  const viaIntl = INTL_LABELS.get(head) ?? INTL_LABELS.get(key);
+  if (viaIntl) return viaIntl;
   return undefined;
 }
 

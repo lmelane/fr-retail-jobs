@@ -73,3 +73,14 @@ describe('countryFromLocation', () => {
     expect(normalizeCountry('EU')).toBeUndefined();
   });
 });
+
+describe('normalizeCountry — formes officielles longues (lot 2)', () => {
+  it('lit « X, Republic of », « X, The » et les libellés Intl', () => {
+    expect(normalizeCountry('Korea, Republic of')).toBe('KR');
+    expect(normalizeCountry('Netherlands, The')).toBe('NL');
+    expect(normalizeCountry('Russian Federation')).toBe('RU');
+    expect(normalizeCountry("Lao People's Democratic Republic")).toBe('LA');
+    expect(normalizeCountry('Tanzania, United Republic of')).toBe('TZ');
+    expect(normalizeCountry('Corée du Sud')).toBe('KR');
+  });
+});
