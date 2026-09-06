@@ -24,5 +24,6 @@ const [logo] = await q<any>(`SELECT count(*)::int AS noms_logo FROM "Company" WH
 const [src] = await q<any>(`SELECT count(*)::int AS sources FROM "Source" WHERE status='ACTIVE'`);
 const base = { mesure: new Date().toISOString(), ...row, secteur_other: sect.other, ...logo, ...src };
 console.log(JSON.stringify(base, null, 2));
-writeFileSync('data/baseline-avant-correctifs.json', JSON.stringify(base, null, 2));
+// Chemin de sortie en argument : sans lui, la mesure du 06:26 (l'AVANT) a été écrasée par l'APRÈS.
+writeFileSync(process.argv[2] ?? 'data/baseline.json', JSON.stringify(base, null, 2));
 await p.$disconnect();
