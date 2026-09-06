@@ -1,0 +1,88 @@
+/**
+ * Jetons WAF par origine — la table que `fetchWithRetry` consulte pour joindre
+ * un cookie amorcé à TOUTE requête sortante vers un hôte protégé (règle D25 :
+ * la cause se corrige une fois pour toutes les requêtes, jamais par adaptateur).
+ *
+ * Mesuré le 2026-09-06 sur careers.pvh.com (AWS WAF) : une requête isolée
+ * passe, mais dès qu'on enchaîne, chaque réponse est un **202 au corps vide**
+ * avec `x-amzn-waf-action: challenge` — que `response.ok` prenait pour une
+ * page. Le générique a ainsi « lu » 0 offre sur 1 413 en 114 s, sans erreur.
+ * Avec le cookie `aws-waf-token` posé par une seule navigation Chromium, les
+ * 1 347 pages passent en HTTP simple (0 challenge, 409 s).
+ *
+ * Ce module ne dépend pas de Playwright : l'amorceur réel (`primeWafToken`
+ * dans browser.ts) est chargé paresseusement, et remplaçable dans les tests.
+ */
+
+/** Renvoie l'en-tête `cookie` à joindre, ou `undefined` si aucun jeton n'apparaît. */
+export type WafPrimer = (origin: string) => Promise<string | undefined>;
+
+const cookies = new Map<string, string>();
+const inflight = new Map<string, Promise<string | undefined>>();
+let primer: WafPrimer | undefined;
+
+/** Levée quand le challenge WAF persiste après amorçage : jamais un corps vide accepté comme page. */
+export class WafChallengeError extends Error {
+  constructor(url: string) {
+    super(`WAF challenge non levé pour ${url}`);
+    this.name = 'WafChallengeError';
+  }
+}
+
+/** Un 202 sans contenu marqué `x-amzn-waf-action: challenge` : le WAF Amazon, pas la page. */
+export function isWafChallenge(response: Response): boolean {
+  return response.status === 202 && response.headers.get('x-amzn-waf-action') === 'challenge';
+}
+
+function originOf(url: string): string {
+  return new URL(url).origin;
+}
+
+/** Le cookie amorcé pour l'origine de cette URL, s'il existe. */
+export function getWafCookie(url: string): string | undefined {
+  return cookies.get(originOf(url));
+}
+
+/** Remplace l'amorceur (tests). `undefined` rétablit l'amorceur navigateur. */
+export function setWafPrimer(custom: WafPrimer | undefined): void {
+  primer = custom;
+}
+
+/** Oublie jetons et amorçages en cours (tests). */
+export function clearWafTokens(): void {
+  cookies.clear();
+  inflight.clear();
+}
+
+async function defaultPrimer(origin: string): Promise<string | undefined> {
+  const { primeWafToken } = await import('./browser.js');
+  return primeWafToken(origin);
+}
+
+/**
+ * Amorce le jeton de l'origine de `url` — une seule fois par origine et par
+ * process, même si quatre requêtes parallèles reçoivent le challenge en même
+ * temps. Renvoie le cookie obtenu, ou `undefined` si le WAF n'en a posé aucun.
+ */
+export async function primeWafCookie(url: string): Promise<string | undefined> {
+  const origin = originOf(url);
+  const known = cookies.get(origin);
+  if (known) return known;
+
+  let pending = inflight.get(origin);
+  if (!pending) {
+    const started = Date.now();
+    pending = (primer ?? defaultPrimer)(origin)
+      .then((cookie) => {
+        if (cookie) cookies.set(origin, cookie);
+        console.error(`[waf] ${origin}: amorçage ${cookie ? 'réussi' : 'sans jeton'} en ${Date.now() - started} ms`);
+        return cookie;
+      })
+      .catch((error: unknown) => {
+        console.error(`[waf] ${origin}: amorçage en échec — ${error instanceof Error ? error.message : String(error)}`);
+        return undefined;
+      });
+    inflight.set(origin, pending);
+  }
+  return pending;
+}

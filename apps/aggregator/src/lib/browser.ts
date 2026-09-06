@@ -42,6 +42,70 @@ export async function closeBrowser(): Promise<void> {
 }
 
 /**
+ * AWS WAF pose son jeton dans un cookie `aws-waf-token` une fois le challenge
+ * JavaScript résolu — mesuré le 2026-09-06 sur careers.pvh.com : ~6 s après
+ * la navigation, puis le jeton tient 1 347 requêtes HTTP simples d'affilée.
+ * Au-delà de 20 s sans cookie, l'origine n'est pas (ou plus) derrière ce WAF.
+ */
+const WAF_COOKIE = 'aws-waf-token';
+const wafPrimeTimeoutMs = Number(process.env.WAF_PRIME_TIMEOUT_MS ?? 20_000);
+const WAF_POLL_MS = 500;
+
+const wafTokens = new Map<string, Promise<string | undefined>>();
+
+/**
+ * Ouvre UNE page de l'origine, attend que le challenge WAF soit passé et
+ * renvoie l'en-tête `cookie` (`aws-waf-token=…`) à rejouer en HTTP simple —
+ * `undefined` si aucun jeton n'apparaît dans le délai. Mémorisé par origine
+ * pour la durée du process : un seul amorçage par run et par hôte, même si
+ * plusieurs requêtes parallèles le demandent en même temps.
+ */
+export function primeWafToken(origin: string): Promise<string | undefined> {
+  const key = new URL(origin).origin;
+  let pending = wafTokens.get(key);
+  if (!pending) {
+    pending = primeWafTokenOnce(key).catch((error: unknown) => {
+      // Un amorçage raté ne doit pas être gravé : la prochaine demande réessaie.
+      wafTokens.delete(key);
+      throw error;
+    });
+    wafTokens.set(key, pending);
+  }
+  return pending;
+}
+
+async function primeWafTokenOnce(origin: string): Promise<string | undefined> {
+  assertPublicUrl(origin);
+  return withHostGate(origin, async () => {
+    const browser = await getBrowser();
+    // Même profil que fetchRenderedHtml : le jeton est lié à l'empreinte du
+    // navigateur qui a résolu le challenge, et les requêtes HTTP qui le
+    // rejouent portent un User-Agent desktop de la même famille.
+    const context = await browser.newContext({
+      locale: 'fr-FR',
+      userAgent: BROWSER_USER_AGENT,
+      extraHTTPHeaders: { 'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7' },
+    });
+    try {
+      const page = await context.newPage();
+      await page.goto(`${origin}/`, { waitUntil: 'domcontentloaded', timeout: navigationTimeoutMs });
+      if (!isPublicHttpUrl(page.url())) {
+        throw new Error(`Refusing WAF priming on non-public URL: ${page.url()}`);
+      }
+      const deadline = Date.now() + wafPrimeTimeoutMs;
+      while (Date.now() < deadline) {
+        const token = (await context.cookies(origin)).find((cookie) => cookie.name === WAF_COOKIE);
+        if (token) return `${WAF_COOKIE}=${token.value}`;
+        await page.waitForTimeout(WAF_POLL_MS);
+      }
+      return undefined;
+    } finally {
+      await context.close();
+    }
+  });
+}
+
+/**
  * Fetches fully rendered HTML. Throws on a non-2xx status so a Cloudflare block
  * surfaces as a hard failure instead of being parsed as an empty directory.
  */

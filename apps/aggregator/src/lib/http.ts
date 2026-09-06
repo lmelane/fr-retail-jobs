@@ -1,5 +1,20 @@
 import { assertPublicUrl, isPublicHttpUrl, BlockedUrlError } from './ssrf.js';
 import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
+import { getWafCookie, isWafChallenge, primeWafCookie, WafChallengeError } from './wafToken.js';
+
+export { WafChallengeError } from './wafToken.js';
+
+/**
+ * Joint le cookie WAF amorcé pour l'origine de `url`, s'il existe, aux en-têtes
+ * de la requête — après un éventuel cookie déjà fourni par l'appelant.
+ */
+function withWafCookie(url: string, headers: Record<string, string>): Record<string, string> {
+  const cookie = getWafCookie(url);
+  if (!cookie) return headers;
+  const existing = Object.entries(headers).find(([key]) => key.toLowerCase() === 'cookie');
+  if (!existing) return { ...headers, cookie };
+  return { ...headers, [existing[0]]: `${existing[1]}; ${cookie}` };
+}
 
 const timeoutMs = Number(process.env.HTTP_TIMEOUT_MS ?? 20_000);
 const userAgent = process.env.USER_AGENT ?? 'CatwalksJobsBot/0.1';
@@ -92,7 +107,14 @@ async function fetchFollowingSafely(
 
 export async function fetchWithRetry(url: string, init: RequestInit = {}, attempts = 3): Promise<Response> {
   let lastError: unknown;
-  for (let i = 0; i < attempts; i++) {
+  /**
+   * Challenge WAF (202 vide + `x-amzn-waf-action: challenge`) : on amorce le
+   * jeton de l'origine — une fois — et on accorde UNE re-tentative de plus
+   * que le budget normal, avec le cookie. Un second challenge est un échec
+   * franc (WafChallengeError), jamais un corps vide rendu comme une page.
+   */
+  let wafRetried = false;
+  for (let i = 0; i < attempts + (wafRetried ? 1 : 0); i++) {
     const controller = new AbortController();
     let timer: ReturnType<typeof setTimeout> | undefined;
     try {
@@ -108,15 +130,27 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
           url,
           {
             ...init,
-            headers: {
+            headers: withWafCookie(url, {
               'user-agent': userAgent,
               'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7',
-              ...(init.headers ?? {}),
-            },
+              ...((init.headers as Record<string, string> | undefined) ?? {}),
+            }),
           },
           controller.signal,
         );
       });
+      if (isWafChallenge(response)) {
+        if (timer) clearTimeout(timer);
+        // Une requête déjà munie du jeton et pourtant challengée ne gagnera
+        // rien à être rejouée à l'identique : échec immédiat.
+        if (!wafRetried && !getWafCookie(url)) {
+          wafRetried = true;
+          // L'amorçage tourne hors de la porte d'hôte (déjà rendue) : il ouvre
+          // sa propre page navigateur et passe lui-même par withHostGate.
+          if (await primeWafCookie(url)) continue;
+        }
+        throw new WafChallengeError(url);
+      }
       if (response.ok) {
         reportSuccess(url);
         return response;
@@ -155,7 +189,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       }
     } catch (error) {
       // A blocked URL will never become fetchable — do not waste retries on it.
-      if (error instanceof BlockedUrlError) {
+      if (error instanceof BlockedUrlError || error instanceof WafChallengeError) {
         if (timer) clearTimeout(timer);
         throw error;
       }

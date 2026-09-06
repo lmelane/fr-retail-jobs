@@ -116,6 +116,29 @@ Question à Loïc : Ulta est un retailer beauté 100 % américain (~10 000 offre
 - Adaptateurs + tests : `src/ats/adapters/jibe.ts`, `jibe.test.ts`, `volcanic.ts`, `volcanic.test.ts` (non câblés au dispatch).
 - Discovery : `src/discovery/g3-probe.mts`, `g3-probe2.mts`, `g3-probe3.mts`, `g3-sniff.mts`, `g3-sniff2.mts`, `g3-generic.mts` (mesure générique par nom), `g3-adapters.mts` (mesure des 2 adaptateurs), `g3-icims.mts`, `g3-ulta.mts`, `g3-ulta-icims.mts`, `g3-ulta-icims2.mts`, `g3-boots.mts` (API admin-ajax), `g3-boots-loc.mts`, `g3-fenwick.mts`, `g3-selfridges.mts`, `g3-selfridges2.mts`, `g3-pvh*.mts`.
 
+## Amorçage WAF — brique de transport (suite de mission, 2026-09-06)
+
+Autorisation du coordinateur : ajouts dans `src/lib/browser.ts`, `src/lib/http.ts` ; nouveau `src/lib/wafToken.ts` ; aucune option ajoutée au générique (inutile, point 3).
+
+**Ce qui a été construit**
+- `browser.ts` — `primeWafToken(origin): Promise<string | undefined>` : ouvre `${origin}/` dans le Chromium partagé (même profil que `fetchRenderedHtml` : UA, locale fr-FR, accept-language, porte d'hôte, garde SSRF), sonde les cookies du contexte toutes les 500 ms jusqu'à voir `aws-waf-token`, renvoie `aws-waf-token=…` ; `undefined` après 20 s (`WAF_PRIME_TIMEOUT_MS`). Mémorisé par origine (Map de promesses) : un amorçage par run et par hôte, y compris sous demandes parallèles ; un amorçage en échec n'est pas gravé.
+- `wafToken.ts` — la table `origine → cookie` + `isWafChallenge(response)` (202 **et** `x-amzn-waf-action: challenge`) + `primeWafCookie(url)` (dédoublonne les amorçages en vol, charge `browser.ts` paresseusement, amorceur remplaçable pour les tests) + `WafChallengeError` (« WAF challenge non levé pour <url> »). Journalise `[waf] <origine>: amorçage réussi en N ms`.
+- `http.ts` — point unique dans `fetchWithRetry`, pour TOUS les adaptateurs (D25) : (1) `withWafCookie` joint le cookie amorcé de l'origine à chaque requête, après un éventuel cookie de l'appelant ; (2) un challenge reçu **avant** le test `response.ok` (jusqu'ici un 202 vide passait pour une page) déclenche l'amorçage puis **une** re-tentative hors budget normal ; un challenge sur une requête déjà munie du jeton, ou un amorçage sans jeton, lève `WafChallengeError` immédiatement, jamais rejouée, jamais un corps vide rendu. Comportement existant inchangé pour tout ce qui n'est pas un challenge (un 202 ordinaire passe comme avant — testé).
+
+**Tests** (`src/lib/wafToken.test.ts`, réseau mocké, Playwright jamais lancé) — 7/7 : amorçage + re-tentative unique avec cookie ; `WafChallengeError` si le challenge persiste (1 challenge + 1 re-tentative, pas de 3ᵉ appel) ; échec sans re-tentative quand aucun jeton n'apparaît ; jeton mémorisé par origine (1 amorçage pour 3 requêtes) ; 3 requêtes parallèles challengées → 1 seul amorçage ; autre origine intacte et cookie de l'appelant préservé (`session=abc; aws-waf-token=…`) ; 202 ordinaire inchangé. Suite `src/lib` + `connectors/generic` + tests du générique : 73/73. `npx tsc --noEmit` : propre sur mes fichiers ; **une erreur étrangère** : `src/ats/index.ts` importe `./adapters/asosAlgolia.js`, fichier supprimé sur disque par une autre session (`git status` : `D`), ce qui rend le dispatch inimportable pendant la mesure.
+
+**Mesure réelle** (`g3-pvh-waf-measure.mts` — tente `fetchAtsJobs('GENERIC_JSONLD', …)`, replie sur `fetchGenericJsonLdJobs`, la fonction exacte que le dispatch appelle, à cause de l'import cassé ci-dessus) :
+```
+[waf] https://careers.pvh.com: amorçage réussi en 2423 ms
+pvh (générique + amorçage WAF): 1347 offres | 1333 lieu | 1342 desc | 1347 date | 156s
+   ex: Sales Advisor 32 uur @ Roosendaal, Noord-Brabant, 4703 TB
+   pays: US:527 DE:151 NL:128 IT:126 FR:90 CA:61 GB:54 TR:43 AU:21 PL:19
+```
+Seconde passe sur le code final (après le dernier ajustement de `http.ts`) : `amorçage réussi en 1572 ms` → `1347 offres | 1333 lieu | 1342 desc | 1347 date | 129s`, mêmes pays.
+1 347 / 1 347 URLs du sitemap sur les deux passes (attendu ≈ 1 339 : les 8 erreurs de la passe manuelle étaient transitoires), **amorçage 1,6–2,4 s**, config inchangée `{ "sitemapUrl": "https://careers.pvh.com/sitemap.xml" }` — aucune option d'adaptateur. Avant la brique, la même config lisait 0 offre en 114 s.
+
+Réutilisable tel quel pour Ralph Lauren (Avature derrière le même WAF) : rien à écrire côté adaptateur, le challenge est absorbé dans `fetchWithRetry`. Limite connue : l'amorçage ouvre `${origin}/` — si un site ne pose le challenge que sur un sous-chemin, le jeton n'apparaîtra pas et la requête échouera en `WafChallengeError` (visible, pas silencieux).
+
 ## Points transverses remontés
 1. `fetchSitemapUrls` ne reconnaît un index qu'à la balise `<sitemapindex>` : Selfridges (index mal déclaré en `<urlset>`) rend 0.
 2. `normalizeJobPosting` prend `-` pour une ville : Boots rend 1 391 lieux « -, -, - ».
