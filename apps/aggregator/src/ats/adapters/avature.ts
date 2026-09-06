@@ -433,8 +433,12 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
     // page cap while every page still yielded fresh offers (F-04).
     let truncated = false;
     for (let page = 0; page < maxPages; page++) {
-      const separator = listingUrl.includes('?') ? '&' : '?';
-      const html = await fetchText(`${listingUrl}${separator}jobOffset=${page * pageSize}`, {
+      // jobOffset REMPLACÉ, jamais ajouté : la config L'Oréal porte déjà
+      // `?jobOffset=0`, et `…jobOffset=0&jobOffset=1160` répond 406 — 1 716 offres
+      // BROKEN au run global du 2026-09-06 13:11.
+      const pageUrl = new URL(listingUrl);
+      pageUrl.searchParams.set('jobOffset', String(page * pageSize));
+      const html = await fetchText(pageUrl.toString(), {
         headers: HEADERS,
       });
 

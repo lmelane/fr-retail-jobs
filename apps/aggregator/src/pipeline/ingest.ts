@@ -311,7 +311,15 @@ async function ingestApiSource(
     careersDomain: source.careersDomain || undefined,
   };
 
-  const isBoard = sourceDef.tier === 'SPECIALIST_JOBBOARD' || sourceDef.tier === 'AGGREGATOR';
+  /**
+   * Filtre sectoriel OPT-IN par source (`config.filterSector: true`), jamais
+   * déduit du rang : le rang « jobboard » couvre aussi la page WTTJ d'UNE Maison
+   * (Diptyque, A.P.C., Fusalp…) et les cabinets spécialisés (Luxe Talent), dont
+   * chaque offre est dans le secteur par construction — le filtre par titre y
+   * a écarté 100 % des offres de 18 sources au run du 2026-09-06 13:11 (« 26
+   * hors secteur écartées », BROKEN). Seul un board généraliste le demande.
+   */
+  const isBoard = config.filterSector === true;
   let skippedOutOfSector = 0;
   for (const job of jobs) {
     // Group feeds carry the Maison per offer (LVMH: Sephora, Dior…); a

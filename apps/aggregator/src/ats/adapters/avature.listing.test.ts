@@ -58,3 +58,14 @@ describe('postedAtFromJsonLd', () => {
     expect(postedAtFromJsonLd('<html><body>maintenance</body></html>')).toBeUndefined();
   });
 });
+
+/** Run global du 2026-09-06 13:11 : `…?jobOffset=0&jobOffset=1160` → 406, L'Oréal BROKEN (1 716 offres). */
+describe('fetchAvatureJobs (mode liste) — pagination', () => {
+  it('remplace jobOffset dans une listingUrl qui le porte déjà, sans le dupliquer', async () => {
+    mockText.mockResolvedValue('<html></html>');
+    await fetchAvatureJobs({ listingUrl: 'https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0', maxPages: 1 }).catch(() => undefined);
+    const first = String(mockText.mock.calls[0]?.[0]);
+    expect(first).toBe('https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0');
+    expect(first.match(/jobOffset=/g)).toHaveLength(1);
+  });
+});
