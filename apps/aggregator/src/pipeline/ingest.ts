@@ -9,7 +9,7 @@ import { resolveCompany } from '../normalize/company.js';
 import { normalizeContract, normalizeWorkingTime, isWorkingTimeValue, extractContract, extractSalaryBand } from '../normalize/contract.js';
 import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
-import { coerceAmount, coerceText, briefError } from '../lib/normalize.js';
+import { coerceAmount, coerceCoordinate, coerceText, briefError } from '../lib/normalize.js';
 import { normalizeSourceConfig } from '../connectors/sourceConfig.js';
 import { isRotatingSource, nextPageFor, advanceCursor } from './sourceCursor.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
@@ -143,6 +143,9 @@ function toCandidate(
     salaryCurrency: coerceText(job.salaryCurrency),
     salaryPeriod: coerceText(job.salaryPeriod),
     remote: coerceText(job.remote),
+    // Float columns: Rituals shipped "52.37" as a string and lost 577 offers.
+    latitude: coerceCoordinate(job.latitude, 90),
+    longitude: coerceCoordinate(job.longitude, 180),
     // "UNKNOWN" is the normalizer's non-answer, not a value — stored as such
     // it is truthy, and the UI printed "Contrat : UNKNOWN" on every offer.
     contract: contract === 'UNKNOWN' ? undefined : contract,

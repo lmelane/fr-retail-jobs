@@ -69,6 +69,22 @@ export function briefError(error: unknown, maxLength = 200): string {
  * write. A string passes through, a number becomes its text, everything else is
  * dropped.
  */
+/**
+ * Une coordonnée GPS, quel que soit le type que l'adaptateur a laissé passer.
+ *
+ * Mesuré en prod le 2026-09-06 : Rituals sert `lonLat.lat` en chaîne
+ * ("52.37"), écrite telle quelle dans une colonne Float → 577 offres sur
+ * 1 088 refusées à l'écriture (« Expected Float or Null, provided String »).
+ * Coercé ICI, à la frontière, pour qu'aucun adaptateur ne puisse plus faire
+ * fuir ce type. Hors plage (|lat| > 90, |lng| > 180) = pas une coordonnée.
+ */
+export function coerceCoordinate(value: unknown, max = 180): number | undefined {
+  // Number('') vaut 0 : une chaîne vide n'est pas une coordonnée à l'équateur.
+  const parsed =
+    typeof value === 'number' ? value : typeof value === 'string' && value.trim() ? Number(value.trim()) : NaN;
+  return Number.isFinite(parsed) && Math.abs(parsed) <= max ? parsed : undefined;
+}
+
 export function coerceText(value: unknown): string | undefined {
   if (typeof value === 'string') return value.trim() || undefined;
   if (typeof value === 'number' && Number.isFinite(value)) return String(value);

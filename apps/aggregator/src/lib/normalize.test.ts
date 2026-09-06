@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { coerceAmount, coerceText, briefError } from './normalize.js';
+import { coerceAmount, coerceCoordinate, coerceText, briefError } from './normalize.js';
 
 /**
  * A salary column is Int?, but a schema.org feed (Teamtailor, medik8) hands the
@@ -99,5 +99,26 @@ describe('briefError', () => {
     expect(brief).toContain('salaryCurrency');
     expect(brief).toContain('Expected String');
     expect(brief).not.toContain('is_required');
+  });
+});
+
+/**
+ * Mesuré en prod le 2026-09-06 : Rituals sert la latitude en chaîne
+ * ("52.37") ; écrite telle quelle dans une colonne Float, 577 offres sur
+ * 1 088 étaient refusées. La frontière coerce, l'adaptateur ne peut plus fuir.
+ */
+describe('coerceCoordinate', () => {
+  it('accepte un nombre ou une chaîne numérique', () => {
+    expect(coerceCoordinate(52.37, 90)).toBe(52.37);
+    expect(coerceCoordinate('52.37', 90)).toBe(52.37);
+    expect(coerceCoordinate(' -1.5 ', 180)).toBe(-1.5);
+  });
+
+  it('refuse le vide, le texte et le hors-plage', () => {
+    expect(coerceCoordinate('', 90)).toBeUndefined();
+    expect(coerceCoordinate('Paris', 90)).toBeUndefined();
+    expect(coerceCoordinate(undefined, 90)).toBeUndefined();
+    expect(coerceCoordinate(95, 90)).toBeUndefined();
+    expect(coerceCoordinate('200', 180)).toBeUndefined();
   });
 });
