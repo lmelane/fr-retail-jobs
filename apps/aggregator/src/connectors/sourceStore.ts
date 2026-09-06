@@ -47,6 +47,13 @@ export function tenantKeyOf(kind: string, entryUrl: string, careersDomain?: stri
     // leur absence écrasait toutes les sources Lever sur « jobs.lever.co »
     // et la contrainte tenant en refusait 17 bonnes (attrapé à la promotion).
     config.site, config.domainName, config.siteKey,
+    // `domain` (Eightfold) : c'est le tenant, pas l'hôte. Mesuré le 2026-09-06 :
+    // dr-jart-13 (origin careers.elcompanies.com) et estee-lauder-companies
+    // (origin elcompanies.eightfold.ai) portent le même domain=elcompanies.com,
+    // donc le MÊME feed de 1 441 offres — visité deux fois par run, 10 min
+    // chacune. Sans `domain` ici, la clé tombait sur l'origin et les deux
+    // passaient pour deux tenants.
+    config.domain,
     config.origin, config.host,
     config.listingUrl, config.sitemapUrl, config.feedUrl, config.startUrl, config.url,
   ].find((v): v is string => typeof v === 'string' && v.length > 0);

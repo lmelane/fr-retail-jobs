@@ -24,3 +24,17 @@ describe('tenantKeyOf — Workday : le tenant seul n’identifie pas un feed', (
     expect(tenantKeyOf('workday', JSON.stringify({ tenant: 'acme' }))).toBe('workday:acme');
   });
 })
+
+describe('tenantKeyOf — Eightfold : le domain est le tenant, pas l’hôte', () => {
+  /**
+   * Mesuré le 2026-09-06 : dr-jart-13 et estee-lauder-companies pointaient le
+   * même domain=elcompanies.com via deux origins différents, et passaient pour
+   * deux tenants — le même feed de 1 441 offres visité deux fois par run.
+   */
+  it('deux origins du même domain Eightfold donnent une seule clé', () => {
+    const a = tenantKeyOf('eightfold', JSON.stringify({ origin: 'https://careers.elcompanies.com', domain: 'elcompanies.com' }));
+    const b = tenantKeyOf('eightfold', JSON.stringify({ origin: 'https://elcompanies.eightfold.ai', domain: 'elcompanies.com' }));
+    expect(a).toBe(b);
+    expect(a).toBe('eightfold:elcompanies.com');
+  });
+});
