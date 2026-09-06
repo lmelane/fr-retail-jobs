@@ -19,7 +19,7 @@
 
 /** Libellés (toutes langues rencontrées) -> code ISO. */
 const LABEL_TO_ISO: Record<string, string> = {
-  'russian federation': 'RU', 'lao people\'s democratic republic': 'LA', laos: 'LA', 'syrian arab republic': 'SY', 'brunei darussalam': 'BN', 'viet nam': 'VN', 'côte d\'ivoire': 'CI',
+  'russian federation': 'RU', 'lao people\'s democratic republic': 'LA', laos: 'LA', 'syrian arab republic': 'SY', 'brunei darussalam': 'BN',
   france: 'FR', frankrijk: 'FR', frankreich: 'FR', francia: 'FR',
   'united states': 'US', 'united states of america': 'US', usa: 'US', 'u.s.a.': 'US',
   "états-unis d'amérique": 'US', 'etats-unis': 'US', 'états-unis': 'US',

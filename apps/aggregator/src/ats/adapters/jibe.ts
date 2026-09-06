@@ -1,5 +1,6 @@
 import { fetchWithRetry, fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
+import { employmentTermsFrom } from '../../normalize/contract.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -54,7 +55,24 @@ export type JibeJob = {
   posting_expiry_date?: string;
   apply_url?: string;
   meta_data?: { canonical_url?: string };
+  /** Tenant-configured tags: Ulta puts « Part Time » in tags1 and « Regular » in tags2 (9 959 offers without a contract, audit a1 I10). */
+  tags1?: string[];
+  tags2?: string[];
+  tags3?: string[];
+  tags4?: string[];
+  tags5?: string[];
+  tags6?: string[];
+  tags7?: string[];
+  tags8?: string[];
+  tags9?: string[];
 };
+
+/** Every `tagsN` value of a Phenom-family entry, whatever the tenant filed there. */
+function tagValues(data: Record<string, unknown>): unknown[] {
+  return Object.entries(data)
+    .filter(([key]) => /^tags\d+$/.test(key))
+    .flatMap(([, value]) => (Array.isArray(value) ? value : [value]));
+}
 
 export type JibePage = { jobs?: Array<{ data?: JibeJob }>; totalCount?: number };
 
@@ -90,6 +108,8 @@ export function parseJibePage(page: JibePage, origin: string): NormalizedJob[] {
     const url = job.meta_data?.canonical_url || `${origin}/careers/jobs/${encodeURIComponent(slug)}${lang}`;
 
     const department = job.department || (Array.isArray(job.category) ? job.category[0] : job.category) || undefined;
+    // Only the tags that NAME a contract or a working time; a date or a banner stays out.
+    const terms = employmentTermsFrom(tagValues(job as Record<string, unknown>));
 
     jobs.push({
       externalId,
@@ -104,6 +124,8 @@ export function parseJibePage(page: JibePage, origin: string): NormalizedJob[] {
       description: htmlToPlainText(job.description) || undefined,
       department: department || undefined,
       company: job.hiring_organization || undefined,
+      contract: terms,
+      workingTime: terms,
       url,
       postedAt: asDate(job.posted_date),
       validThrough: asDate(job.posting_expiry_date),

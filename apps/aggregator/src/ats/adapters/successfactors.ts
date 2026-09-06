@@ -124,7 +124,20 @@ export type RmkV2Item = {
   /** Locale-formatted: "10.07.26" (de_DE), "23/06/2026" (en_GB). */
   unifiedStandardStart?: string;
   supportedLocales?: string[];
+  /** Standard RMK contract field — null on all 130 Douglas items (l2, 2026-09-06), read when a tenant fills it. */
+  unifiedStandardEmploymentType?: string[] | string;
+  /** Douglas: ["Full Time"] — the working time, never read before l2. */
+  custFullTimePartTime?: string[] | string;
+  /** Douglas: ["Hybrid"]. */
+  custOnsiteRemote?: string[] | string;
 };
+
+/** First non-empty value of an RMK field, which may be a string or a list. */
+function firstRmk(value?: string[] | string | null): string | undefined {
+  const first = Array.isArray(value) ? value[0] : value;
+  const text = first?.trim();
+  return text || undefined;
+}
 
 type RmkV2Response = { totalJobs?: number; jobSearchResult?: Array<{ response?: RmkV2Item }> };
 
@@ -207,6 +220,9 @@ export function normalizeRmkItem(item: RmkV2Item, locale: string, origin: string
     ...primary,
     location,
     language: locale.slice(0, 2),
+    contract: firstRmk(item.unifiedStandardEmploymentType),
+    workingTime: firstRmk(item.custFullTimePartTime),
+    remote: firstRmk(item.custOnsiteRemote),
     url,
     postedAt: parseRmkDate(item.unifiedStandardStart),
     raw: { ...item, locale, source: 'successfactors-rmk-v2' },

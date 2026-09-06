@@ -1,0 +1,70 @@
+{
+ "data": {
+  "count": 1447,
+  "positions": [
+   {
+    "id": 1168274633754,
+    "displayJobId": "27132",
+    "name": "Accounting Manager",
+    "locations": [
+     "Bogota,CO-DC,Colombia"
+    ],
+    "standardizedLocations": [
+     "Bogotá, Bogota, CO"
+    ],
+    "postedTs": 1788549801,
+    "solrScore": null,
+    "stars": 0,
+    "department": "Finance",
+    "creationTs": 1785164607,
+    "isHot": 1,
+    "workLocationOption": "hybrid",
+    "locationFlexibility": null,
+    "atsJobId": "27132",
+    "positionUrl": "/careers/job/1168274633754"
+   },
+   {
+    "id": 1168275396976,
+    "displayJobId": "29149",
+    "name": "Keyholder-The Cosmetics Company Store- Part Time- Camarillo premium outlets Camarillo, CA",
+    "locations": [
+     "Camarillo,US-CA,United States"
+    ],
+    "standardizedLocations": [
+     "Camarillo, CA, US"
+    ],
+    "postedTs": 1788539195,
+    "solrScore": null,
+    "stars": 0,
+    "department": "Sales",
+    "creationTs": 1788216875,
+    "isHot": 1,
+    "workLocationOption": "onsite",
+    "locationFlexibility": null,
+    "atsJobId": "29149",
+    "positionUrl": "/careers/job/1168275396976"
+   },
+   {
+    "id": 1168274968490,
+    "displayJobId": "28249",
+    "name": "Estore Fulfilment Coordinator - Le Labo - Part Time - Shoreditch, UK",
+    "locations": [
+     "London,GB-LND,United Kingdom"
+    ],
+    "standardizedLocations": [
+     "England,GB"
+    ],
+    "postedTs": 1788303600,
+    "solrScore": null,
+    "stars": 0,
+    "department": "Sales",
+    "creationTs": 1786978075,
+    "isHot": 1,
+    "workLocationOption": "onsite",
+    "locationFlexibility": null,
+    "atsJobId": "28249",
+    "positionUrl": "/careers/job/1168274968490"
+   }
+  ]
+ }
+}

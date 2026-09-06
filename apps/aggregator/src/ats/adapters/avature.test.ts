@@ -214,3 +214,16 @@ describe('parseAvatureListing — carte réelle careers.loreal.com (g6, 2026-09-
     expect(job.description).toBe('1. 負責區域百貨櫃點');
   });
 });
+
+// ——— l2 (2026-09-06) : la fiche portail publie `datePosted` en JSON-LD (L'Oréal, 1 771 offres sans date) ———
+describe('parseAvaturePortalDetail — l2 : date de publication', () => {
+  const LOREAL = readFileSync(new URL('./__fixtures__/g6-loreal-jobdetail.html', import.meta.url), 'utf8');
+
+  it('lit le datePosted du JSON-LD de la fiche', () => {
+    expect(parseAvaturePortalDetail(LOREAL).postedAt?.toISOString().slice(0, 10)).toBe('2026-07-15');
+  });
+
+  it('reste sans date sur une page sans JSON-LD', () => {
+    expect(parseAvaturePortalDetail('<html><body>maintenance</body></html>').postedAt).toBeUndefined();
+  });
+});

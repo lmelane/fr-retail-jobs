@@ -1,0 +1,89 @@
+{
+ "id": "744000147686588",
+ "name": "Allievo/a Manager di Store - Percorso “Grow With Us”",
+ "uuid": "cb22281a-27b4-4d5a-856a-860c73c6a62e",
+ "jobAdId": "298ebcd9-e8b3-4872-bf46-2e2137f2cd3d",
+ "defaultJobAd": false,
+ "refNumber": "REF3836C",
+ "company": {
+  "identifier": "Primark",
+  "name": "Primark"
+ },
+ "releasedDate": "2026-09-06T11:57:38.676Z",
+ "location": {
+  "city": "Livorno",
+  "country": "it",
+  "address": "Via Edda Fagni, 40",
+  "remote": false,
+  "hybrid": false,
+  "fullLocation": "Livorno, , Italy"
+ },
+ "industry": {
+  "id": "retail",
+  "label": "Retail"
+ },
+ "department": {},
+ "function": {
+  "id": "sales",
+  "label": "Sales"
+ },
+ "typeOfEmployment": {
+  "id": "permanent",
+  "label": "Full-time"
+ },
+ "experienceLevel": {
+  "id": "associate",
+  "label": "Associate"
+ },
+ "customField": [
+  {
+   "fieldId": "6874b79198f98110761a7e54",
+   "fieldLabel": "Recruitment Type",
+   "valueId": "retailManagement",
+   "valueLabel": "Retail Management"
+  },
+  {
+   "fieldId": "6874bb1ecb7046bf41466685",
+   "fieldLabel": "Worker Sub Type",
+   "valueId": "6fbd97e8abb31079e5247add267e19bf",
+   "valueLabel": "Fixed Term (Fixed Term)"
+  },
+  {
+   "fieldId": "6798e178b1b228180779ccc6",
+   "fieldLabel": "Brands",
+   "valueId": "default",
+   "valueLabel": "Primark"
+  },
+  {
+   "fieldId": "6874bc68cb7046bf41466686",
+   "fieldLabel": "Time Type",
+   "valueId": "23f774cf9482107766a666c933de1874",
+   "valueLabel": "Full time"
+  },
+  {
+   "fieldId": "6874cca3345d4803afba7d65",
+   "fieldLabel": "Primary Location",
+   "valueId": "fb8adbf13d5210d18b4cfa41206961fe",
+   "valueLabel": "271 Florence"
+  },
+  {
+   "fieldId": "COUNTRY",
+   "fieldLabel": "Country/Region",
+   "valueId": "it",
+   "valueLabel": "Italy"
+  },
+  {
+   "fieldId": "6874d05c2670f20eeed88402",
+   "fieldLabel": "Primark Function",
+   "valueId": "bb495626-8093-4bda-8a14-afc024d20555",
+   "valueLabel": "Retail Management"
+  }
+ ],
+ "visibility": "PUBLIC",
+ "ref": "https://api.smartrecruiters.com/v1/companies/primark/postings/744000147686588",
+ "language": {
+  "code": "it",
+  "label": "Italian",
+  "labelNative": "italiano"
+ }
+}

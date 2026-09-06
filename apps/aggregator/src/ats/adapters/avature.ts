@@ -314,6 +314,8 @@ export type AvaturePortalDetail = {
   country?: string;
   region?: string;
   reference?: string;
+  /** JSON-LD `datePosted` of the page — L'Oréal publishes it on every fiche (1 771 offers stored without a date, audit a4). */
+  postedAt?: Date;
 };
 
 /** Champs et texte d'une page de détail « portail ». Vide si la page n'a pas ce gabarit. */
@@ -332,7 +334,19 @@ export function parseAvaturePortalDetail(html: string): AvaturePortalDetail {
     country: portalField(html, 'Location'),
     region: portalField(html, 'State/Region'),
     reference: portalField(html, 'Ref #'),
+    postedAt: postedAtFromJsonLd(html),
   };
+}
+
+/**
+ * The JSON-LD `datePosted` of a detail page, whatever the template (l2).
+ * L'Oréal's listing mode read it (`parseAvatureJob`) but its merge dropped it:
+ * 1 771 offers carried our first-seen date instead — verified live 2026-09-06
+ * on three undated fiches, all publishing "2026-08-24" / "2026-01-01".
+ */
+export function postedAtFromJsonLd(html: string): Date | undefined {
+  const posted = html.match(/"datePosted"\s*:\s*"([^"]+)"/i)?.[1];
+  return posted && !Number.isNaN(Date.parse(posted)) ? new Date(posted) : undefined;
 }
 
 async function fetchAvaturePortalJobs(origin: string, lists: string[], config: Record<string, unknown>): Promise<AdapterResult> {
@@ -344,7 +358,10 @@ async function fetchAvaturePortalJobs(origin: string, lists: string[], config: R
   for (const list of lists) {
     const base = `${origin}/${list.replace(/^\/|\/$/g, '')}/`;
     let listTotal: number | undefined;
-    for (let offset = 0, page = 0; page < PORTAL_MAX_PAGES; page += 1) {
+    // `config.maxPages` borne une lecture partielle (mesure locale, hôte qui
+    // rate-limite) ; sans elle, la borne haute du plus gros portail connu.
+    const maxPages = Math.min(PORTAL_MAX_PAGES, Number(config.maxPages) || PORTAL_MAX_PAGES);
+    for (let offset = 0, page = 0; page < maxPages; page += 1) {
       const html = await fetchText(`${base}?jobOffset=${offset}&listFilterMode=1`, { headers: HEADERS });
       const parsed = parseAvaturePortalListing(html);
       listTotal ??= parsed.declaredTotal;
@@ -357,7 +374,7 @@ async function fetchAvaturePortalJobs(origin: string, lists: string[], config: R
       // page en boucle plutôt qu'une page vide.
       if (fresh.length === 0) break;
       offset += parsed.jobs.length;
-      if (page === PORTAL_MAX_PAGES - 1) truncated = true;
+      if (page === maxPages - 1) truncated = true;
     }
     if (listTotal !== undefined) declaredTotal += listTotal;
   }
@@ -377,6 +394,7 @@ async function fetchAvaturePortalJobs(origin: string, lists: string[], config: R
             city: detail.city ?? job.city,
             country: detail.country ?? job.country,
             region: detail.region ?? job.region,
+            postedAt: detail.postedAt ?? job.postedAt,
           };
         } catch {
           // Un détail injoignable ne doit pas faire perdre l'offre de liste.
@@ -444,9 +462,11 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
           try {
             const html = await fetchText(job.url, { headers: HEADERS });
             const full = parseMicrodataDescription(html);
+            // The card dates most offers; the fiche dates the rest (l2).
+            const postedAt = job.postedAt ?? postedAtFromJsonLd(html);
             return full && full.length > (job.description?.length ?? 0)
-              ? { ...job, description: full }
-              : job;
+              ? { ...job, description: full, postedAt }
+              : { ...job, postedAt };
           } catch {
             // A failed detail fetch must not lose the listing entry.
             return job;

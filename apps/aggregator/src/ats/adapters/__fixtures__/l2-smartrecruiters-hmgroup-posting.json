@@ -1,0 +1,119 @@
+{
+ "id": "744000147675219",
+ "name": "Part Time Sales Advisor (Aman Central, Kedah)",
+ "uuid": "345e0c97-993f-4beb-8df3-4b20fae92ebe",
+ "jobAdId": "b4e1d0d3-4480-4fa6-a41a-281e50c6ad0a",
+ "defaultJobAd": true,
+ "refNumber": "REF129390L",
+ "company": {
+  "identifier": "HMGroup",
+  "name": "H&M Group"
+ },
+ "releasedDate": "2026-09-06T02:59:57.551Z",
+ "location": {
+  "city": "Alor Setar",
+  "region": "Kedah",
+  "country": "my",
+  "address": "Lebuhraya Darul Aman",
+  "remote": false,
+  "hybrid": false,
+  "latitude": "6.1330228",
+  "longitude": "100.3686586",
+  "fullLocation": "Alor Setar, Kedah, Malaysia"
+ },
+ "industry": {
+  "id": "retail",
+  "label": "Retail"
+ },
+ "department": {
+  "id": "1957506",
+  "label": "H&M"
+ },
+ "function": {
+  "id": "sales",
+  "label": "Sales"
+ },
+ "typeOfEmployment": {
+  "id": "part-time",
+  "label": "Part-time"
+ },
+ "experienceLevel": {
+  "id": "not_applicable",
+  "label": "Not Applicable"
+ },
+ "customField": [
+  {
+   "fieldId": "COUNTRY",
+   "fieldLabel": "Country/Region",
+   "valueId": "my",
+   "valueLabel": "Malaysia"
+  },
+  {
+   "fieldId": "635a2978703919071e0b3671",
+   "fieldLabel": "Evergreen Posting",
+   "valueId": "edf4def7-9339-443c-bb68-3a42c8a60ca1",
+   "valueLabel": "Yes"
+  },
+  {
+   "fieldId": "659d554e48e74850cd8b0a4e",
+   "fieldLabel": "Generic Job",
+   "valueId": "3000226",
+   "valueLabel": "Sales Associate"
+  },
+  {
+   "fieldId": "5f71daf86c81f15360dbfcf9",
+   "fieldLabel": "Department",
+   "valueId": "1957506",
+   "valueLabel": "H&M"
+  },
+  {
+   "fieldId": "5f71daf86c81f15360dbfcf8",
+   "fieldLabel": "Brands",
+   "valueId": "441360b6-60d3-43cd-9011-13a104b2dce8",
+   "valueLabel": "H&M"
+  },
+  {
+   "fieldId": "659d54fc7bb2116f8160084a",
+   "fieldLabel": "Job Type",
+   "valueId": "Store",
+   "valueLabel": "Store"
+  },
+  {
+   "fieldId": "659d553f6d64e50e0450df59",
+   "fieldLabel": "Sub Family",
+   "valueId": "2000000",
+   "valueLabel": "Sales"
+  },
+  {
+   "fieldId": "63ef20786199a30bcdd26eae",
+   "fieldLabel": "Pipeline",
+   "valueId": "95fad653-e47e-4fd3-bdf9-c6b3bab67dcc",
+   "valueLabel": "Yes"
+  },
+  {
+   "fieldId": "659d19037bb2116f81600849",
+   "fieldLabel": "Business Area",
+   "valueId": "3381",
+   "valueLabel": "H&M Brand Sales"
+  },
+  {
+   "fieldId": "659d552b62e4707b12220788",
+   "fieldLabel": "Job Family",
+   "valueId": "1000007",
+   "valueLabel": "Customer Experience & Sales"
+  },
+  {
+   "fieldId": "659d18e69389bd3ddbb08562",
+   "fieldLabel": "Business Group",
+   "valueId": "3389",
+   "valueLabel": "East Asia"
+  }
+ ],
+ "visibility": "PUBLIC",
+ "ref": "https://api.smartrecruiters.com/v1/companies/hmgroup/postings/744000147675219",
+ "language": {
+  "code": "en",
+  "label": "English",
+  "labelNative": "English (US)"
+ }
+}

@@ -324,3 +324,22 @@ describe('parseMicrodataDetail — le texte garde ses paragraphes (g6, 2026-09-0
     expect(d.description).toBe('Première phrase.\n\nSeconde phrase.\n• Un\n• Deux');
   });
 });
+
+// ——— l2 (2026-09-06) : RMK v2 publie temps de travail et mode de travail (Douglas 130/130 sans temps) ———
+import { readFileSync as readFixture } from 'node:fs';
+
+describe('normalizeRmkItem — l2 : custFullTimePartTime, custOnsiteRemote, unifiedStandardEmploymentType', () => {
+  const DOUGLAS_L2 = JSON.parse(readFixture(new URL('./__fixtures__/l2-successfactors-douglas-item.json', import.meta.url), 'utf8'));
+
+  test('lit « Full Time » et « Hybrid » sur un item Douglas réel', () => {
+    const job = normalizeRmkItem(DOUGLAS_L2, 'de_DE', 'https://jobs.douglas.group')!;
+    expect(job.workingTime).toBe('Full Time');
+    expect(job.remote).toBe('Hybrid');
+    expect(job.contract).toBeUndefined();
+  });
+
+  test('lit unifiedStandardEmploymentType comme contrat quand un tenant le remplit', () => {
+    const job = normalizeRmkItem({ ...DOUGLAS_L2, unifiedStandardEmploymentType: ['Permanent'] }, 'de_DE', 'https://jobs.douglas.group')!;
+    expect(job.contract).toBe('Permanent');
+  });
+});

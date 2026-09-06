@@ -8,6 +8,16 @@ import type { AdapterResult, NormalizedJob } from '../../types.js';
 type WorkdayPosting = { title: string; externalPath?: string; locationsText?: string; postedOn?: string; bulletFields?: string[] };
 type WorkdayPage = { total?: number; jobPostings?: WorkdayPosting[] };
 
+/**
+ * Locale demandé à Workday, liste ET détail. Le transport commun envoie fr-FR
+ * par défaut ; Workday traduit alors tout par machine : 1 794 offres Tapestry en
+ * français, « Entraîneur Netherlands B.V. » pour Coach, pays « États-Unis
+ * d'Amérique » (98 lignes non ISO), 161 Levi's / 108 Richemont en `fr` hors pays
+ * francophones (audit a4, 2026-09-06). En en-US, le tenant rend ses propres
+ * textes et des libellés que la frontière sait normaliser.
+ */
+const EN_US = { 'accept-language': 'en-US,en;q=0.9' } as const;
+
 /** Matches a requisition id (R_778886, JR12345, REQ-90210) — never a place. */
 const REQUISITION_ID = /^(r|jr|req)[_-]?\d+$/i;
 
@@ -49,7 +59,7 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
        * le locale que tout site Workday sert ; la langue des offres, elle,
        * vient du tenant, pas de l'en-tête.
        */
-      headers: { 'content-type': 'application/json', 'accept-language': 'en-US,en;q=0.9' },
+      headers: { 'content-type': 'application/json', ...EN_US },
       body: JSON.stringify({ appliedFacets: {}, limit: 20, offset, searchText: '' }),
     });
     const postings = page.jobPostings ?? [];
@@ -107,8 +117,15 @@ type WorkdayDetail = {
   jobPostingInfo?: {
     jobDescription?: string;
     location?: string;
+    /** English label in en-US ("Taiwan Region", "United States of America"); the boundary maps it to ISO. */
     country?: { descriptor?: string };
     startDate?: string;
+    /** Fin de publication ("2026-09-12") — validThrough, jamais lu avant l2. */
+    endDate?: string;
+    /** "Full time" / "Part time" / "Variable" — jamais lu avant l2 (14 385 offres sans temps). */
+    timeType?: string;
+    /** "Hybrid", "Remote", "On-site" quand le tenant le publie. */
+    remoteType?: string;
     /** On group tenants, the alt text IS the brand ("Panerai", "Cartier"). */
     logoImage?: { alt?: string };
   };
@@ -170,7 +187,9 @@ export async function attachWorkdayDescriptions(
         const path = (job.raw as { externalPath?: string } | undefined)?.externalPath;
         if (!path) return job;
         try {
-          const detail = await fetchJson<WorkdayDetail>(`${cxsBase}${path}`);
+          // Même locale que la liste : sans cet en-tête, le détail arrive
+          // traduit par machine (voir EN_US).
+          const detail = await fetchJson<WorkdayDetail>(`${cxsBase}${path}`, { headers: { ...EN_US } });
           const info = detail.jobPostingInfo;
           if (!info) return job;
           return {
@@ -181,6 +200,10 @@ export async function attachWorkdayDescriptions(
             // F-05: the detail's startDate is a REAL date; the listing only
             // had "Posted N Days Ago".
             postedAt: info.startDate ? new Date(info.startDate) : job.postedAt,
+            validThrough: info.endDate ? new Date(info.endDate) : job.validThrough,
+            // `||` : Workday rend "" quand le tenant ne remplit pas le champ (2/100 chez Tapestry).
+            workingTime: info.timeType || job.workingTime,
+            remote: info.remoteType || job.remote,
             // Group tenants: credit the offer to its Maison, not the feed label.
             company: brandFromWorkdayDetail(detail) ?? job.company,
           };

@@ -23,7 +23,9 @@ import type { AdapterResult, NormalizedJob } from '../../types.js';
  *   `viewRequisition?org=…&cws=…&rid=…` (bloc `cwsJobDescription`). Une
  *   réquisition retirée y répond 200 avec « Job Not Available » — sans
  *   description, on garde ce que la liste a donné ;
- * - aucune date de publication n'est publiée, ni en liste ni en détail.
+ * - la liste ne date rien, mais la fiche porte un JSON-LD avec `datePosted`
+ *   au format « 2026-08-20 00:00:00.0 » (l2, 2026-09-06 — 68 offres Brown
+ *   Thomas affichées avec la date de notre premier passage).
  *
  * Config : `{ origin: 'https://lde.tbe.taleo.net/lde02', org: 'ARNOTTS', cws: [79, 70, 60] }`
  * (`origin` inclut le préfixe de pod ; `cws` accepte un nombre ou une liste).
@@ -84,6 +86,23 @@ export function parseTaleoDescription(html: string): string | undefined {
   return htmlToPlainText(block) || undefined;
 }
 
+/** « 2026-08-20 00:00:00.0 » (JSON-LD TBE) → minuit UTC de ce jour. Pure. */
+export function parseTaleoDate(raw?: string): Date | undefined {
+  const m = raw?.trim().match(/^(\d{4}-\d{2}-\d{2})(?:[ T](\d{2}:\d{2}:\d{2}))?/);
+  if (!m) return undefined;
+  const date = new Date(`${m[1]}T${m[2] ?? '00:00:00'}Z`);
+  return Number.isNaN(date.getTime()) ? undefined : date;
+}
+
+export type TaleoDetail = { description?: string; postedAt?: Date };
+
+/** Texte et date d'une page `viewRequisition` ; vide si l'offre est retirée. */
+export function parseTaleoDetail(html: string): TaleoDetail {
+  const description = parseTaleoDescription(html);
+  if (!description) return {};
+  return { description, postedAt: parseTaleoDate(html.match(/"datePosted"\s*:\s*"([^"]+)"/i)?.[1]) };
+}
+
 function sessionCookie(response: Response): string | undefined {
   const raw = response.headers.get('set-cookie') ?? '';
   return raw.match(/JSESSIONID=[^;]+/)?.[0];
@@ -132,8 +151,10 @@ export async function fetchTaleoJobs(config: Record<string, unknown>): Promise<A
     jobs.map((job) =>
       limit(async () => {
         try {
-          const description = parseTaleoDescription(await fetchText(job.url));
-          return description ? { ...job, description } : job;
+          const detail = parseTaleoDetail(await fetchText(job.url));
+          return detail.description
+            ? { ...job, description: detail.description, postedAt: detail.postedAt ?? job.postedAt }
+            : job;
         } catch {
           // Un détail injoignable ne doit pas faire perdre l'offre de liste.
           return job;

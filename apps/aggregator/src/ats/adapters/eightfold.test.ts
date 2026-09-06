@@ -60,3 +60,56 @@ describe('fetchEightfoldJobs apply URL — la position, pas son groupe', () => {
     expect(jobs[0]?.url.endsWith(jobs[0]!.externalId)).toBe(true);
   });
 });
+
+// ——— l2 (2026-09-06) : standardizedLocations est une liste de CHAÎNES ; le détail nomme la Maison et l'affectation ———
+import { readFileSync } from 'node:fs';
+
+const fixture = (name: string) => JSON.parse(readFileSync(new URL(`./__fixtures__/${name}`, import.meta.url), 'utf8'));
+
+describe('fetchEightfoldJobs — l2 : pays et ville lus depuis « City, Region, CC » (ELC 1 469/1 470 sans pays)', () => {
+  it('lit le pays ISO-2 en fin de chaîne et la ville en tête de `locations`', async () => {
+    mockRetry.mockResolvedValueOnce({ headers: { getSetCookie: () => [] } } as never);
+    mockJson.mockResolvedValueOnce(fixture('l2-eightfold-elc-search.json')).mockResolvedValue({ data: { positions: [] } });
+
+    const { jobs } = await fetchEightfoldJobs({ origin: 'https://careers.elcompanies.com', domain: 'elcompanies.com', withDescriptions: false });
+
+    expect(jobs.map((j) => j.country)).toEqual(['CO', 'US', 'GB']);
+    expect(jobs[0].city).toBe('Bogota');
+    expect(jobs[0].location).toBe('Bogota, CO-DC, Colombia');
+    // « England,GB » n'a que deux tokens : la ville vient de `locations`, pas de la région.
+    expect(jobs[2].city).toBe('London');
+  });
+
+  it('accepte encore la forme objet { city, country } d’autres tenants', async () => {
+    mockRetry.mockResolvedValueOnce({ headers: { getSetCookie: () => [] } } as never);
+    mockJson
+      .mockResolvedValueOnce({ data: { positions: [{ id: 1, name: 'Vendeur', locations: ['Paris, France'], standardizedLocations: [{ city: 'Paris', country: 'FR' }] }] } })
+      .mockResolvedValue({ data: { positions: [] } });
+    const { jobs } = await fetchEightfoldJobs({ origin: 'https://x', domain: 'x.com', withDescriptions: false });
+    expect(jobs[0].country).toBe('FR');
+    expect(jobs[0].city).toBe('Paris');
+  });
+});
+
+describe('fetchEightfoldJobs — l2 : la Maison (Kering `efcustomTextHouse`) et l’affectation (ELC `efcustomTextAssignmentcat`)', () => {
+  it('crédite une offre Kering à sa Maison, avec son sous-type de contrat', async () => {
+    mockRetry.mockResolvedValueOnce({ headers: { getSetCookie: () => [] } } as never);
+    mockJson.mockResolvedValueOnce(fixture('l2-eightfold-kering-search.json')).mockResolvedValue(fixture('l2-eightfold-kering-detail.json'));
+
+    const { jobs } = await fetchEightfoldJobs({ origin: 'https://careers.kering.com', domain: 'kering.com' });
+
+    expect(jobs[0].company).toBe('Bottega Veneta');
+    expect(jobs[0].contract).toBe('Regular');
+  });
+
+  it('lit « Fulltime-Regular » comme contrat ET temps de travail chez Estée Lauder', async () => {
+    mockRetry.mockResolvedValueOnce({ headers: { getSetCookie: () => [] } } as never);
+    mockJson.mockResolvedValueOnce(fixture('l2-eightfold-elc-search.json')).mockResolvedValue(fixture('l2-eightfold-elc-detail.json'));
+
+    const { jobs } = await fetchEightfoldJobs({ origin: 'https://careers.elcompanies.com', domain: 'elcompanies.com' });
+
+    expect(jobs[0].company).toBe('Estée Lauder Companies');
+    expect(jobs[0].contract).toBe('Fulltime-Regular');
+    expect(jobs[0].workingTime).toBe('Fulltime-Regular');
+  });
+});

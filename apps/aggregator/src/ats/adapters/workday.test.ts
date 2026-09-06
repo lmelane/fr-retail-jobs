@@ -134,3 +134,39 @@ describe('locationFromBullets — tenants qui laissent locationsText vide', () =
     expect(locationFromBullets(undefined)).toBeUndefined();
   });
 });
+
+// ——— l2 (2026-09-06) : le détail est lu en en-US, et il porte timeType / endDate ———
+import { readFileSync } from 'node:fs';
+
+/** Détail cxs Tapestry (Sales Associate, Taïwan) capturé en en-US le 2026-09-06, description tronquée. */
+const TAPESTRY_DETAIL_EN = JSON.parse(
+  readFileSync(new URL('./__fixtures__/l2-workday-tapestry-detail-en-US.json', import.meta.url), 'utf8'),
+);
+
+describe('attachWorkdayDescriptions — l2 : détail demandé en en-US, temps de travail et fin de publication lus', () => {
+  it('envoie accept-language en-US sur le détail (le transport commun force fr-FR) et lit timeType, endDate, country', async () => {
+    mockJson
+      .mockResolvedValueOnce({
+        total: 1,
+        jobPostings: [{ title: 'Sales Associate', externalPath: '/job/Taipei/Sales-Associate_JR14730', postedOn: 'Posted 30+ Days Ago' }],
+      } as never)
+      .mockResolvedValueOnce(TAPESTRY_DETAIL_EN as never);
+
+    const { jobs } = await fetchWorkdayJobs({
+      tenant: 'tapestry',
+      site: 'Tapestry_Careers',
+      origin: 'https://tapestry.wd108.myworkdayjobs.com',
+    });
+
+    const detailCall = mockJson.mock.calls[1];
+    const headers = (detailCall?.[1] as { headers?: Record<string, string> } | undefined)?.headers ?? {};
+    expect(headers['accept-language']).toMatch(/^en-US/);
+
+    expect(jobs[0].workingTime).toBe('Full time');
+    expect(jobs[0].country).toBe('Taiwan Region');
+    expect(jobs[0].company).toBe('Coach Netherlands B.V. - Taiwan Branch');
+    expect(jobs[0].description).toMatch(/^Coach is a global fashion house/);
+    expect(jobs[0].postedAt?.toISOString().slice(0, 10)).toBe('2026-09-04');
+    expect(jobs[0].validThrough?.toISOString().slice(0, 10)).toBe('2026-09-12');
+  });
+});

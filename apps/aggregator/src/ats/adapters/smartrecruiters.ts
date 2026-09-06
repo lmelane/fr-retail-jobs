@@ -3,8 +3,56 @@ import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
-type Posting = { id: string; name: string; ref?: string; releasedDate?: string; location?: { city?: string; region?: string; country?: string }; typeOfEmployment?: { label?: string } };
-type Page = { content: Posting[]; totalFound?: number };
+export type SmartRecruitersPosting = {
+  id: string;
+  name: string;
+  ref?: string;
+  releasedDate?: string;
+  location?: { city?: string; region?: string; country?: string };
+  /**
+   * `id` is the contract, `label` the working time — measured 2026-09-06 on
+   * H&M (1 622) and Primark (824): ids permanent / part-time / contract, labels
+   * Full-time / Part-time / Contract. Only the label was read, and it filed as a
+   * working time: 3 553 contracts lost (audit a4 §4.10).
+   */
+  typeOfEmployment?: { id?: string; label?: string };
+  /** Declared language ("hu", "en-GB") — ignored before l2, so a Hungarian H&M posting was detected as `pt`. */
+  language?: { code?: string };
+  department?: { label?: string };
+};
+type Page = { content: SmartRecruitersPosting[]; totalFound?: number };
+
+/** SmartRecruiters' contract ids, in words the contract normalizer knows. */
+const CONTRACT_BY_ID: Record<string, string> = {
+  permanent: 'Permanent',
+  contract: 'Fixed-term contract',
+  temporary: 'Temporary',
+  intern: 'Internship',
+  internship: 'Internship',
+  apprenticeship: 'Apprenticeship',
+  freelance: 'Freelance',
+};
+
+/** One listing entry → one posting (no description: /postings/{id} carries it). Exported for tests. */
+export function parseSmartRecruitersPosting(job: SmartRecruitersPosting, company: string): NormalizedJob {
+  const location = [job.location?.city, job.location?.region, job.location?.country].filter(Boolean).join(', ');
+  const type = job.typeOfEmployment;
+  const id = type?.id?.trim().toLowerCase();
+  return {
+    externalId: job.id,
+    title: job.name,
+    location,
+    country: job.location?.country,
+    // An unmapped id ("part-time") falls back to the label, which the boundary
+    // then files as a working time rather than a contract.
+    contract: (id && CONTRACT_BY_ID[id]) || type?.label || undefined,
+    workingTime: type?.label || type?.id || undefined,
+    language: job.language?.code?.trim().toLowerCase().split(/[-_]/)[0] || undefined,
+    url: `https://jobs.smartrecruiters.com/${company}/${job.id}`,
+    postedAt: job.releasedDate ? new Date(job.releasedDate) : undefined,
+    raw: job,
+  };
+}
 
 type PostingDetail = {
   jobAd?: {
@@ -39,21 +87,12 @@ export async function fetchSmartRecruitersJobs(config: Record<string, unknown>):
   if (!company) throw new Error('SmartRecruiters company missing');
   const out: NormalizedJob[] = [];
   let declaredTotal: number | undefined;
-  for (let offset = 0; offset < 1000; offset += 100) {
+  // Pas de plafond à 1 000 : l'API sert les offsets au-delà (vérifié : H&M
+  // offset=1600 → 200, totalFound 1 622) ; le plafond laissait 622 offres H&M
+  // jamais lues (lot 2, 2026-09-06). 20 000 = garde-fou contre une boucle.
+  for (let offset = 0; offset < 20_000; offset += 100) {
     const page = await fetchJson<Page>(`https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(company)}/postings?limit=100&offset=${offset}`);
-    for (const job of page.content ?? []) {
-      const location = [job.location?.city, job.location?.region, job.location?.country].filter(Boolean).join(', ');
-      out.push({
-        externalId: job.id,
-        title: job.name,
-        location,
-        country: job.location?.country,
-        contract: job.typeOfEmployment?.label,
-        url: `https://jobs.smartrecruiters.com/${company}/${job.id}`,
-        postedAt: job.releasedDate ? new Date(job.releasedDate) : undefined,
-        raw: job,
-      });
-    }
+    for (const job of page.content ?? []) out.push(parseSmartRecruitersPosting(job, company));
     if (page.totalFound !== undefined) declaredTotal = page.totalFound;
     if (!page.content?.length || out.length >= (page.totalFound ?? 0)) break;
   }

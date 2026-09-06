@@ -1,6 +1,7 @@
 import pLimit from 'p-limit';
 import { fetchJson, fetchWithRetry } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
+import { employmentTermsFrom, normalizeWorkingTime } from '../../normalize/contract.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -35,8 +36,15 @@ type EightfoldPosition = {
   id?: number | string;
   displayJobId?: string;
   name?: string;
+  /** The tenant's own label: "Bogota,CO-DC,Colombia", "Paris, France". */
   locations?: string[];
-  standardizedLocations?: Array<{ city?: string; country?: string }>;
+  /**
+   * Live tenants (ELC, Kering) send STRINGS — "Bogotá, Bogota, CO", "England,GB"
+   * — the ISO-2 country last. Read as objects, the country was lost on
+   * 1 469/1 470 Estée Lauder offers (audit a4). The object form is kept for
+   * tenants that still send it.
+   */
+  standardizedLocations?: Array<string | { city?: string; country?: string }>;
   postedTs?: number;
   positionUrl?: string;
   department?: string;
@@ -58,18 +66,66 @@ type DetailResponse = {
      * Without it every ELC offer inherits the catalogue label (audit A-01).
      */
     efcustomTextBrand?: string[] | string;
+    /** Kering's Maison field — verified live 2026-09-06: efcustomTextHouse = ["Bottega Veneta"]. */
+    efcustomTextHouse?: string[] | string;
     brand?: string[] | string;
     business_unit?: string[] | string;
+    /** ELC: "Fulltime-Regular" / "Fulltime-Temporary" — contract AND working time in one word. */
+    efcustomTextAssignmentcat?: string[] | string;
+    /** Kering: "Regular" / "Fixed Term". */
+    efcustomTextWorkerSubtype?: string[] | string;
+    custom_JD?: { data_fields?: { assignmentcat?: string[] | string } };
   };
 };
 
 /** First non-empty brand value, whatever shape the tenant uses. */
 function brandOf(data: DetailResponse['data']): string | undefined {
-  for (const value of [data?.efcustomTextBrand, data?.brand, data?.business_unit]) {
+  for (const value of [data?.efcustomTextBrand, data?.efcustomTextHouse, data?.brand, data?.business_unit]) {
     const first = Array.isArray(value) ? value[0] : value;
     if (first && String(first).trim()) return String(first).trim();
   }
   return undefined;
+}
+
+/** The contract / working-time words the tenant publishes on the detail (l2). */
+function termsOf(data: DetailResponse['data']): string | undefined {
+  return employmentTermsFrom([
+    data?.efcustomTextAssignmentcat,
+    data?.efcustomTextWorkerSubtype,
+    data?.custom_JD?.data_fields?.assignmentcat,
+  ]);
+}
+
+/**
+ * Where the offer is, from the two location fields the search returns.
+ *
+ * Verified live 2026-09-06 — ELC: locations ["London,GB-LND,United Kingdom"],
+ * standardizedLocations ["England,GB"]; Kering: ["Paris, France"] /
+ * ["Paris, IDF, FR"]. The ISO country is the LAST token of the standardized
+ * string; the city is the FIRST token of the tenant's own label (the
+ * standardized one can stop at the region, "England"). Exported for tests.
+ */
+export function placeFromEightfold(position: EightfoldPosition): { location?: string; city?: string; country?: string } {
+  const split = (value: string) => value.split(',').map((part) => part.trim()).filter(Boolean);
+  const rawParts = position.locations?.[0] ? split(position.locations[0]) : [];
+  const standardized = position.standardizedLocations?.[0];
+
+  if (standardized && typeof standardized === 'object') {
+    return {
+      location: rawParts.join(', ') || standardized.city,
+      city: rawParts[0] ?? standardized.city,
+      country: standardized.country,
+    };
+  }
+
+  const stdParts = typeof standardized === 'string' ? split(standardized) : [];
+  const last = stdParts.at(-1);
+  const country = last && /^[A-Z]{2}$/.test(last) ? last : rawParts.length > 1 ? rawParts.at(-1) : undefined;
+  return {
+    location: rawParts.join(', ') || stdParts.join(', ') || undefined,
+    city: rawParts[0] ?? (stdParts.length >= 3 ? stdParts[0] : undefined),
+    country,
+  };
 }
 
 
@@ -99,7 +155,7 @@ async function openSession(origin: string): Promise<string> {
 function toNormalized(position: EightfoldPosition, origin: string): NormalizedJob | null {
   if (!position.name) return null;
 
-  const standardized = position.standardizedLocations?.[0];
+  const place = placeFromEightfold(position);
   const postedAt = position.postedTs ? new Date(position.postedTs * 1000) : undefined;
 
   // positionUrl is RELATIVE ("/careers/job/123"): stored as-is it is not a
@@ -121,8 +177,7 @@ function toNormalized(position: EightfoldPosition, origin: string): NormalizedJo
   return {
     externalId: String(position.id ?? position.displayJobId ?? position.name),
     title: position.name,
-    location: standardized?.city ?? position.locations?.[0],
-    country: standardized?.country,
+    ...place,
     url: positionUrl,
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
     raw: position,
@@ -187,11 +242,15 @@ export async function fetchEightfoldJobs(
             `${origin}/api/pcsx/position_details?position_id=${encodeURIComponent(job.externalId)}&domain=${encodeURIComponent(domain)}&hl=fr`,
             { headers },
           );
+          const terms = termsOf(detail.data);
           return {
             ...job,
             description: htmlToPlainText(detail.data?.jobDescription ?? detail.data?.job_description),
             // Group tenants: the offer belongs to its Maison, not the feed label.
             company: brandOf(detail.data) ?? job.company,
+            // "Fulltime-Regular" carries both; the boundary splits contract from time.
+            contract: terms ?? job.contract,
+            workingTime: terms && normalizeWorkingTime(terms) !== 'UNKNOWN' ? terms : job.workingTime,
           };
         } catch {
           // A failed detail fetch must not lose the listing entry.

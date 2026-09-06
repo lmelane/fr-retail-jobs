@@ -1,0 +1,70 @@
+{
+ "data": {
+  "count": 1033,
+  "positions": [
+   {
+    "id": 563705892727529,
+    "displayJobId": "R170443",
+    "name": "BOTTEGA VENETA Store Manager (m/f/d) Vienna",
+    "locations": [
+     "Vienna, Vienna, Austria"
+    ],
+    "standardizedLocations": [
+     "Vienna, Vienna, AT"
+    ],
+    "postedTs": 1788393600,
+    "solrScore": null,
+    "stars": 0,
+    "department": "Sales",
+    "creationTs": 1788393600,
+    "isHot": 1,
+    "workLocationOption": "onsite",
+    "locationFlexibility": null,
+    "atsJobId": "R170443",
+    "positionUrl": "/careers/job/563705892727529"
+   },
+   {
+    "id": 563705892662786,
+    "displayJobId": "R169926",
+    "name": "POMELLATO Sales Associate 新宿伊勢丹",
+    "locations": [
+     "Tokyo, Tokyo, Japan"
+    ],
+    "standardizedLocations": [
+     "Tokyo, Tokyo, JP"
+    ],
+    "postedTs": 1788134400,
+    "solrScore": null,
+    "stars": 0,
+    "department": "Sales",
+    "creationTs": 1787184000,
+    "isHot": 1,
+    "workLocationOption": "onsite",
+    "locationFlexibility": null,
+    "atsJobId": "R169926",
+    "positionUrl": "/careers/job/563705892662786"
+   },
+   {
+    "id": 563705892402334,
+    "displayJobId": "R168406",
+    "name": "SAINT LAURENT - WW Editorial Content Manager",
+    "locations": [
+     "Paris, France"
+    ],
+    "standardizedLocations": [
+     "Paris, IDF, FR"
+    ],
+    "postedTs": 1784592000,
+    "solrScore": null,
+    "stars": 0,
+    "department": "Communication & Marketing",
+    "creationTs": 1784073600,
+    "isHot": 1,
+    "workLocationOption": "onsite",
+    "locationFlexibility": null,
+    "atsJobId": "R168406",
+    "positionUrl": "/careers/job/563705892402334"
+   }
+  ]
+ }
+}

@@ -67,3 +67,22 @@ describe('parseTaleoDescription', () => {
     expect(parseTaleoDescription(GONE)).toBeUndefined();
   });
 });
+
+// ——— l2 (2026-09-06) : la fiche TBE publie bien une date, en JSON-LD (« 2026-08-20 00:00:00.0 ») ———
+import { readFileSync } from 'node:fs';
+import { parseTaleoDetail } from './taleo.js';
+
+describe('parseTaleoDetail — l2 : date de publication et texte', () => {
+  const BROWN_THOMAS = readFileSync(new URL('./__fixtures__/l2-taleo-brownthomas-detail.html', import.meta.url), 'utf8');
+
+  it('lit le datePosted du JSON-LD malgré son format « date heure.0 »', () => {
+    const detail = parseTaleoDetail(BROWN_THOMAS);
+    expect(detail.postedAt?.toISOString()).toBe('2026-08-20T00:00:00.000Z');
+    expect(detail.description).toContain('Unwrap a Magical Opportunity');
+  });
+
+  it('rend une date absente sur une réquisition retirée', () => {
+    expect(parseTaleoDetail(GONE).postedAt).toBeUndefined();
+    expect(parseTaleoDetail(GONE).description).toBeUndefined();
+  });
+});

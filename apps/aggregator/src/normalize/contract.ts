@@ -28,7 +28,10 @@ export type ContractType =
  */
 const PATTERNS: ReadonlyArray<readonly [PatternType, RegExp]> = [
   // Explicit, unambiguous contract tokens win over role words and generic terms.
-  ['CDD', /\bCDD\b|DUR[ÉE]E D[ÉE]TERMIN[ÉE]E|FIXED[ -]TERM|CONTRAT TEMPORAIRE/],
+  // l2 (2026-09-06) : « Temporary » / « Seasonal » sont ce que les ATS anglophones
+  // publient pour un contrat à durée déterminée (Eightfold « Fulltime-Temporary »,
+  // Sephora « Seasonal Associate ») — un CDD, pas une mission d'intérim.
+  ['CDD', /\bCDD\b|DUR[ÉE]E D[ÉE]TERMIN[ÉE]E|FIXED[ -]?TERM|CONTRAT TEMPORAIRE|\bTEMPORARY\b|\bTEMP\b|SEASONAL|SAISONNI/],
   ['CDI', /\bCDI\b|CONTRAT (?:À|A) DUR[ÉE]E IND[ÉE]TERMIN[ÉE]E/],
   ['ALTERNANCE', /ALTERNANCE|APPRENTISSAGE|APPRENTICE|PROFESSIONNALISATION|WORK[ -]STUDY/],
   ['STAGE', /\bSTAGE\b|STAGIAIRE|INTERNSHIP|\bINTERN\b|\bTRAINEE\b/],
@@ -39,7 +42,7 @@ const PATTERNS: ReadonlyArray<readonly [PatternType, RegExp]> = [
   ['GRADUATE', /GRADUATE PROGRAM|JEUNE DIPLOME/],
   // "MISSION" alone is dropped (Commission/Emission/"Chef de Mission"); a real
   // interim mission carries "intérim" and matches through INTERIM below.
-  ['INTERIM', /\bINTERIM\b|INT[ÉE]RIMAIRE|\bTEMPORARY\b|\bTEMP\b|ZERO HEURE|ZERO[ -]HOUR/],
+  ['INTERIM', /\bINTERIM\b|INT[ÉE]RIMAIRE|ZERO HEURE|ZERO[ -]HOUR/],
   // CONSULTANT dropped: a consultant can be a salaried employee. Only words that
   // genuinely name a freelance arrangement qualify.
   ['FREELANCE', /FREELANCE|\bINDEPENDANT\b|PRESTATAIRE|SELF[ -]EMPLOYED/],
@@ -79,9 +82,18 @@ export function normalizeContract(raw?: string | null): ContractType {
  */
 export type WorkingTime = 'TEMPS_PLEIN' | 'TEMPS_PARTIEL' | 'UNKNOWN';
 
+/**
+ * l2 (2026-09-06) : `PART_TIME` / `FULL_TIME` (schema.org, Phenom, Workday
+ * `timeType`, Jibe) ne passaient pas le `[ -]` — 64 472 offres sans temps de
+ * travail (84 %). La forme collée (« Fulltime-Regular », Eightfold), l'allemand
+ * (Teilzeit / Vollzeit, Kastner & Öhler) et le chinois (全职 / 兼职, LVMH) sont
+ * lus aussi ; « À temps plein » (Workday fr-FR) passe par la perte d'accents.
+ */
 const WORKING_TIME: ReadonlyArray<readonly [WorkingTime, RegExp]> = [
-  ['TEMPS_PARTIEL', /PART[ -]TIME|TEMPS[ -]PARTIEL|MI[ -]TEMPS|\d{1,2}\s?H\b/],
-  ['TEMPS_PLEIN', /FULL[ -]TIME|TEMPS[ -]PLEIN|PLEIN[ -]TEMPS|35H|39H/],
+  // Un horaire chiffré n'est un temps partiel qu'en dessous de 35 h : « 35H »
+  // et « 39H » tombaient ici avant d'atteindre la ligne temps plein (revue l2).
+  ['TEMPS_PARTIEL', /PART[ _-]?TIME|TEMPS[ -]PARTIEL|MI[ -]TEMPS|TEILZEIT|兼职|\b(?:[0-2]?\d|3[0-4])\s?H\b/],
+  ['TEMPS_PLEIN', /FULL[ _-]?TIME|TEMPS[ -]PLEIN|PLEIN[ -]TEMPS|VOLLZEIT|全职|\b3[5-9]\s?H\b/],
 ];
 
 export function normalizeWorkingTime(raw?: string | null): WorkingTime {
@@ -102,6 +114,29 @@ export function normalizeWorkingTime(raw?: string | null): WorkingTime {
  */
 export function isWorkingTimeValue(raw?: string | null): boolean {
   return normalizeWorkingTime(raw) !== 'UNKNOWN' && normalizeContract(raw) === 'UNKNOWN';
+}
+
+/** True when a value names a contract or a working time — anything the two normalizers recognise. */
+export function isEmploymentTerm(raw?: string | null): boolean {
+  return normalizeContract(raw) !== 'UNKNOWN' || normalizeWorkingTime(raw) !== 'UNKNOWN';
+}
+
+/**
+ * The employment terms among a source's loose, tenant-configured values.
+ *
+ * Phenom-family APIs (Foot Locker, Ulta/Jibe) publish the contract and the
+ * working time in numbered `tags` whose meaning each tenant chooses: Foot Locker
+ * puts « Regular Part-Time » in tags2 next to a date in tags1 and a banner in
+ * tags4. Only the values that NAME a term are kept, joined so the contract and
+ * the working-time normalizers each find their word — a date or a banner never
+ * reaches the contract column.
+ */
+export function employmentTermsFrom(values: ReadonlyArray<unknown>): string | undefined {
+  const terms = values
+    .flatMap((value) => (Array.isArray(value) ? value : [value]))
+    .map((value) => (value === undefined || value === null ? '' : String(value).trim()))
+    .filter((value) => value && isEmploymentTerm(value));
+  return terms.length ? [...new Set(terms)].join(' · ') : undefined;
 }
 
 /**

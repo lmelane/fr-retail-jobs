@@ -1,0 +1,40 @@
+{
+ "jobLocationShort": [
+  "Düsseldorf, Germany "
+ ],
+ "supportedLocales": [
+  "en_GB"
+ ],
+ "filter2": [
+  "Brand, Marketing & Communications"
+ ],
+ "filter3": [
+  "Young Talents"
+ ],
+ "sfstd_marketingBrand_obj": [
+  "DOUGLAS"
+ ],
+ "custFullTimePartTime": [
+  "Full Time"
+ ],
+ "jobLocationShortWithCoordinates": [
+  {
+   "value": "Düsseldorf, Germany ",
+   "key": "51.2230411,6.7824545"
+  }
+ ],
+ "brandUrl": "default",
+ "unifiedUrlTitle": "Internship-Marketing-Strategic-Campaigns-%28fmx%29",
+ "unifiedStandardStart": "02/09/2026",
+ "currency": [
+  "EUR"
+ ],
+ "unifiedStandardTitle": "Internship Marketing Strategic Campaigns (f/m/x)",
+ "custOnsiteRemote": [
+  "Hybrid"
+ ],
+ "id": "982",
+ "urlTitle": "Internship-Marketing-Strategic-Campaigns-%28fmx%29",
+ "locale": "en_GB",
+ "source": "successfactors-rmk-v2"
+}

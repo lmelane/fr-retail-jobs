@@ -1,0 +1,38 @@
+{
+ "jobPostingInfo": {
+  "id": "55b1ce5b8ada100202eae999c8530000",
+  "title": "Sales Associate",
+  "jobDescription": "<p>Coach is a global fashion house founded in New York in 1941. Inspired by the vision of Creative Director Stuart Vevers and the inclusive and courageous spirit of our hometown, we make beautiful things, crafted to last—for you to be yourself in.<br /> <br />Coach is part of the Tapestry portfolio – a global house of brands committed to stretching what’s possible.</p><p><br />A member of the Tape",
+  "location": "Kaohsiung, Taiwan Region (Tw Kaohsiung Eda Factory Outlet - Coach)",
+  "postedOn": "Posted 2 Days Ago",
+  "startDate": "2026-09-04",
+  "timeType": "Full time",
+  "jobReqId": "JR14637",
+  "jobPostingId": "Sales-Associate_JR14637",
+  "jobPostingSiteId": "Tapestry_Careers",
+  "country": {
+   "descriptor": "Taiwan Region",
+   "id": "a4e08b475d6a4176853c9d1cb9854e02"
+  },
+  "canApply": true,
+  "posted": true,
+  "includeResumeParsing": true,
+  "jobRequisitionLocation": {
+   "descriptor": "Tw Kaohsiung Eda Factory Outlet",
+   "country": {
+    "descriptor": "Taiwan Region",
+    "id": "a4e08b475d6a4176853c9d1cb9854e02",
+    "alpha2Code": "TW"
+   }
+  },
+  "externalUrl": "https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers/job/Kaohsiung-Taiwan-Region-Tw-Kaohsiung-Eda-Factory-Outlet---Coach/Sales-Associate_JR14637",
+  "timeLeftToApply": "5 days left to apply",
+  "endDate": "2026-09-12",
+  "jobPostingEndDateAsText": "End Date: September 12, 2026"
+ },
+ "hiringOrganization": {
+  "name": "Coach Netherlands B.V. - Taiwan Branch",
+  "url": ""
+ },
+ "userAuthenticated": false
+}

@@ -1,0 +1,51 @@
+{
+ "data": {
+  "id": 1168274633754,
+  "displayJobId": "27132",
+  "name": "Accounting Manager",
+  "locations": [
+   "Bogota,CO-DC,Colombia"
+  ],
+  "standardizedLocations": [
+   "Bogotá, Bogota, CO"
+  ],
+  "postedTs": 1788549801,
+  "stars": 0,
+  "department": "Finance",
+  "creationTs": 1785164607,
+  "jobDescription": "<div><div style=\"padding: 10px 0px;border: 1px solid transparent;\"><div style=\"font-size:16px;word-wrap: break-word;\"><h2 style=\"font-size: 1em; margin: 0px\">Description</h2>\r</div><div><div><p>The Accounting Manager will oversee the integrity of financial reporting, statutory compliance, tax report",
+  "location": "Bogota,CO-DC,Colombia",
+  "isHot": 1,
+  "workLocationOption": "hybrid",
+  "locationFlexibility": null,
+  "atsJobId": "27132",
+  "positionUrl": "/careers/job/1168274633754",
+  "publicUrl": "https://careers.elcompanies.com/careers/job/1168274633754",
+  "efcustomTextBrand": [
+   "Estée Lauder Companies"
+  ],
+  "efcustomTextJobsubfunction": [
+   "Accounting and Reporting"
+  ],
+  "efcustomTextAssignmentcat": [
+   "Fulltime-Regular"
+  ],
+  "jdHighlight": [],
+  "positionExtraDetails": {
+   "videos": [],
+   "blogs": [],
+   "perks": [],
+   "pymww": {
+    "people": [],
+    "count": 0
+   },
+   "customContent": []
+  },
+  "positionUserActions": {
+   "isSaved": false,
+   "applyAction": {
+    "status": "allowed"
+   }
+  }
+ }
+}

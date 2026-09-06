@@ -82,3 +82,65 @@ describe('extractSalaryBand — only a real salary, never any euro amount', () =
     expect(band?.max).toBe(35_000);
   });
 });
+
+// ——— l2 (2026-09-06) : valeurs structurées des ATS, perdues à la frontière ———
+import { normalizeWorkingTime, isWorkingTimeValue, isEmploymentTerm } from './contract.js';
+
+describe('l2 — FULL_TIME / PART_TIME (schema.org, Workday, Jibe, Phenom) sont un temps de travail', () => {
+  it('reconnaît la forme à underscore comme temps de travail, jamais comme contrat', () => {
+    expect(normalizeWorkingTime('FULL_TIME')).toBe('TEMPS_PLEIN');
+    expect(normalizeWorkingTime('PART_TIME')).toBe('TEMPS_PARTIEL');
+    expect(normalizeContract('FULL_TIME')).toBe('UNKNOWN');
+    expect(normalizeContract('PART_TIME')).toBe('UNKNOWN');
+    expect(isWorkingTimeValue('PART_TIME')).toBe(true);
+    expect(isWorkingTimeValue('FULL_TIME')).toBe(true);
+  });
+
+  it('lit les libellés Workday (fr/en), allemands et collés (Eightfold)', () => {
+    expect(normalizeWorkingTime('À temps plein')).toBe('TEMPS_PLEIN');
+    expect(normalizeWorkingTime('Full time')).toBe('TEMPS_PLEIN');
+    expect(normalizeWorkingTime('Teilzeit')).toBe('TEMPS_PARTIEL');
+    expect(normalizeWorkingTime('Vollzeit')).toBe('TEMPS_PLEIN');
+    expect(normalizeWorkingTime('Fulltime-Regular')).toBe('TEMPS_PLEIN');
+    expect(normalizeWorkingTime('Regular Part-Time')).toBe('TEMPS_PARTIEL');
+  });
+});
+
+describe('l2 — permanent/regular → CDI ; temporary/fixed term/seasonal → CDD ; intern → STAGE ; apprentice → ALTERNANCE', () => {
+  it('classe les valeurs structurées que les ATS publient', () => {
+    expect(normalizeContract('permanent')).toBe('CDI');
+    expect(normalizeContract('Regular Part-Time')).toBe('CDI');
+    expect(normalizeContract('Fulltime-Regular')).toBe('CDI');
+    expect(normalizeContract('Temporary')).toBe('CDD');
+    expect(normalizeContract('Fulltime-Temporary')).toBe('CDD');
+    expect(normalizeContract('Fixed-term contract')).toBe('CDD');
+    expect(normalizeContract('Seasonal')).toBe('CDD');
+    expect(normalizeContract('Internship')).toBe('STAGE');
+    expect(normalizeContract('Apprenticeship')).toBe('ALTERNANCE');
+  });
+
+  it('ne lit pas CONTEMPORARY comme un CDD', () => {
+    expect(normalizeContract('Contemporary Art Advisor')).toBe('UNKNOWN');
+  });
+});
+
+describe('l2 — isEmploymentTerm : un tag qui nomme un contrat ou un temps, et rien d’autre', () => {
+  it('accepte Regular / Part Time, refuse une enseigne, une date, une région', () => {
+    expect(isEmploymentTerm('Regular')).toBe(true);
+    expect(isEmploymentTerm('Part Time')).toBe(true);
+    expect(isEmploymentTerm('Regular Part-Time')).toBe(true);
+    expect(isEmploymentTerm('Kids Foot Locker')).toBe(false);
+    expect(isEmploymentTerm('9/4/2026')).toBe(false);
+    expect(isEmploymentTerm('North America')).toBe(false);
+    expect(isEmploymentTerm(undefined)).toBe(false);
+  });
+});
+
+describe('l2 (revue) — un horaire chiffré : partiel sous 35 h, plein de 35 à 39 h', () => {
+  it('« 35H » et « 39H » sont un temps plein, « 24H » un temps partiel', () => {
+    expect(normalizeWorkingTime('Vendeur 35H CDI')).toBe('TEMPS_PLEIN');
+    expect(normalizeWorkingTime('CDI 39h')).toBe('TEMPS_PLEIN');
+    expect(normalizeWorkingTime('CDI 24H - Vendeur')).toBe('TEMPS_PARTIEL');
+    expect(normalizeWorkingTime('Conseiller H/F')).toBe('UNKNOWN');
+  });
+});

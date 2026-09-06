@@ -64,7 +64,19 @@ type LvmhHit = {
   additionalInformation?: string;
   /** Epoch SECONDS of publication (probed live 2026-09-03) — F-05. */
   publicationTimestamp?: number;
+  /** "EN", "FR", "ZH-HANS", "IT"… present on 5 490/5 490 hits (l2, 2026-09-06), never mapped before. */
+  language?: string;
 };
+
+/**
+ * The hit's declared language as ISO-639-1: "ZH-HANS" → "zh", "EN" → "en".
+ * "SP" is the index's own spelling of Spanish (11 hits) — not an ISO code.
+ */
+export function lvmhLanguage(raw?: string | null): string | undefined {
+  const code = (raw ?? '').trim().toLowerCase().split(/[-_]/)[0];
+  if (!code) return undefined;
+  return code === 'sp' ? 'es' : code;
+}
 
 type AlgoliaResponse = {
   hits?: LvmhHit[];
@@ -131,6 +143,7 @@ function toNormalized(hit: LvmhHit): NormalizedJob | null {
     country: hit.country,
     contract: hit.contract,
     workingTime: hit.fullTimePartTime,
+    language: lvmhLanguage(hit.language),
     department: hit.function,
     // The Maison, not the group: "Sephora", not "LVMH".
     company: hit.maison,
