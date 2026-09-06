@@ -6,6 +6,7 @@ import { loadActiveSources, type RuntimeSource } from '../connectors/sourceStore
 import { fetchSitemapUrls, fetchJobFromPage } from '../connectors/generic/jsonLdSitemap.js';
 import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
+import { domainFromEmployerSources } from '../normalize/companyDomain.js';
 import { normalizeContract, normalizeWorkingTime, isWorkingTimeValue, extractContract, extractSalaryBand } from '../normalize/contract.js';
 import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
@@ -165,7 +166,17 @@ function toCandidate(
     // dedup key and the card all agree on one name.
     ...(() => {
       const identity = resolveCompany(companyName);
-      return { company: identity.displayName, companyId: identity.companyId };
+      return {
+        company: identity.displayName,
+        companyId: identity.companyId,
+        // The Maison's domain, for its logo — only when THIS source is the
+        // Maison's own careers site (tier + name resolve to the same company)
+        // and the host is not an ATS vendor's. No network: read off the row.
+        companyDomain:
+          domainFromEmployerSources(identity.companyId, [
+            { maison: source.company, tier: source.tier, careersDomain: source.careersDomain },
+          ]) ?? undefined,
+      };
     })(),
     sourceKey: source.key,
     sourceTier: source.tier,
@@ -316,6 +327,7 @@ function catalogSitemapSources(catalog: RuntimeSource[]): SourceDef[] {
       tier: source.tier as SourceTier,
       kind: 'SITEMAP_JSONLD' as const,
       entryUrl: source.entryUrl,
+      careersDomain: source.careersDomain || undefined,
       robotsVerdict: source.robotsVerdict,
       verifiedTotal: source.jobCount,
       verifiedOn: '2026-09-01',
@@ -454,6 +466,7 @@ async function ingestApiSource(
     tier: source.tier as SourceTier,
     kind: 'SITEMAP_JSONLD',
     entryUrl: source.entryUrl,
+    careersDomain: source.careersDomain || undefined,
     robotsVerdict: source.robotsVerdict,
     verifiedTotal: source.jobCount,
     verifiedOn: '2026-09-02',

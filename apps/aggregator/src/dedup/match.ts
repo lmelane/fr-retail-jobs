@@ -44,6 +44,12 @@ export type CandidateJob = NormalizedJob & {
    * separates two different sources that happen to share an externalId.
    */
   atsType?: AtsType;
+  /**
+   * The Maison's own domain (`sephora.com`), when THIS source is the Maison's
+   * careers site and names it — read off the catalogue, never guessed from the
+   * name. Written to Company.domain if empty; it is what the logo is built from.
+   */
+  companyDomain?: string;
 };
 
 /** Postings more than this far apart are treated as separate openings. */

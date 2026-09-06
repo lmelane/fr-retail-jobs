@@ -10,7 +10,7 @@ import type { JobRow } from './jobs';
  */
 
 const base: JobRow = {
-  id: 'ck123', title: 'Vendeur', company: 'Cartier', group: 'Richemont',
+  id: 'ck123', title: 'Vendeur', company: 'Cartier', companyDomain: 'cartier.com', group: 'Richemont',
   city: 'PARIS', location: 'Paris, France', contract: 'CDI', sector: 'LUXURY',
   url: 'https://x/1', postedAt: null, latitude: null, longitude: null,
   sourceCount: 1, sources: ['cartier'], description: 'desc', applyUrl: 'https://x/1',

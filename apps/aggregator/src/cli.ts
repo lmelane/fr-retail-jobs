@@ -194,6 +194,21 @@ try {
     const stats = await separateFusedJobs(prisma);
     console.log(JSON.stringify({ ok: stats.fusedAfter === 0, command, ...stats }, null, 2));
     if (stats.fusedAfter > 0) process.exitCode = 1;
+  } else if (command === 'resolve-domains') {
+    /**
+     * Pose Company.domain (le logo) sur les Maisons actives qui n'en ont pas :
+     * le domaine carrière du catalogue, sinon Wikidata (P856, ≤ 1 req/s),
+     * sinon rien — l'initiale plutôt qu'un logo d'une autre entreprise.
+     * Idempotente. `--limit=<n>` borne le run, `--dry-run` n'écrit rien.
+     */
+    const { resolveDomains } = await import('./pipeline/resolveDomains.js');
+    const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+    const limit = Number(arg('limit') ?? 0);
+    const stats = await resolveDomains(prisma, {
+      limit: Number.isFinite(limit) ? limit : 0,
+      dryRun: process.argv.includes('--dry-run'),
+    });
+    console.log(JSON.stringify({ ok: true, command, ...stats }, null, 2));
   } else if (command === 'geocode') {
     console.log(JSON.stringify({ ok: true, command, ...(await runGeocode(prisma)) }, null, 2));
   } else if (command === 'stats') {

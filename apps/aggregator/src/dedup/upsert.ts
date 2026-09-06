@@ -104,6 +104,9 @@ export async function upsertDeduplicated(
       fashionjobsUrl: `resolved:${candidate.companyId}`,
       parentGroup,
       lastSeenAt: now,
+      // The Maison's domain (its logo), when this source names it: the
+      // catalogue's careers host, never a guess from the name.
+      ...(candidate.companyDomain ? { domain: candidate.companyDomain, domainSource: 'source-careers' } : {}),
     },
     // Re-write the name on every update, not only on create: a Company created
     // before the "+N" strip (decision D11) shipped keeps its polluted name
@@ -113,8 +116,19 @@ export async function upsertDeduplicated(
     // companyId, so this is a stable self-heal — the 40 legacy rows clean up on
     // their next ingest.
     update: { name: candidate.company, sector, parentGroup, lastSeenAt: now },
-    select: { id: true },
+    select: { id: true, domain: true },
   });
+
+  // A Company first created by a group feed (no domain) gets its domain the
+  // day its own careers site re-attests it. Fill only when EMPTY: a domain
+  // already set — by the catalogue, Wikidata or a hand — is never overwritten,
+  // so a wrong write cannot churn a logo back and forth between two sources.
+  if (candidate.companyDomain && !company.domain) {
+    await prisma.company.updateMany({
+      where: { id: company.id, domain: null },
+      data: { domain: candidate.companyDomain, domainSource: 'source-careers' },
+    });
+  }
 
   // Only live jobs in the same cluster can absorb this posting. The cluster key
   // is indexed, so this stays a narrow lookup rather than a scan.

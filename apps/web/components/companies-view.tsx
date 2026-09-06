@@ -237,7 +237,7 @@ export function MaisonCard({ company }: { company: CompanyRow }) {
 
   return (
     <Link className="maison rule" href={`/entreprise/${companySlug(company.name)}`}>
-      <CompanyLogo name={company.name} size={56} />
+      <CompanyLogo name={company.name} domain={company.domain} size={56} />
       <span>
         <span className="maison__name t-d2">{company.name}</span>
         <span className="maison__meta">

@@ -208,7 +208,7 @@ export function CompanyProfileView({
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'rgba(0,10,5,.42)' }} />
         <div className="container relative z-[1] flex h-full items-end gap-6 pb-12">
           {/* Logo Maison (D9, réactivé par la review) — monogramme en repli. */}
-          <CompanyLogo name={profile.name} size={96} />
+          <CompanyLogo name={profile.name} domain={profile.domain} size={96} />
           <div>
             {heroCaption && <p className="t-caption mb-2" style={{ opacity: 0.85 }}>{heroCaption}</p>}
             <h1 className="t-hero" id="maison-title" style={{ fontSize: 'clamp(2.75rem,5.5vw,5rem)', textAlign: 'left' }}>

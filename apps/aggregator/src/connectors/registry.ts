@@ -59,6 +59,8 @@ export type JobSource = {
   kind: SourceKind;
   /** The URL that enumerates jobs. */
   entryUrl: string;
+  /** Careers host as catalogued (`careers.hermes.com`) — the Maison's domain comes from it. */
+  careersDomain?: string;
   robotsVerdict: string;
   /** Total jobs seen at verification time, all countries. */
   verifiedTotal?: number;

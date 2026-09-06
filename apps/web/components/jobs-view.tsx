@@ -608,7 +608,7 @@ export function JobCard({
       <div className="offer__top">
         <span className="flex min-w-0 items-center gap-2">
           {/* Logo Maison (D9, réactivé par la review) — monogramme en repli. */}
-          <CompanyLogo name={job.company} size={22} className="shrink-0" />
+          <CompanyLogo name={job.company} domain={job.companyDomain} size={22} className="shrink-0" />
           <span className="t-caption truncate">
             {job.company}
             {job.group ? <span className="muted"> · {job.group}</span> : null}

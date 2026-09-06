@@ -2,27 +2,33 @@
 
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { guessDomain } from '@/lib/company-domain';
 
 /**
- * Logo d'une Maison (D9, réactivé par la review UX du 2026-09-04) : favicon
- * via DuckDuckGo (`icons.duckduckgo.com/ip3/{domaine}.ico` — gratuit, sans
- * clé, respectueux de la vie privée), domaine deviné depuis le nom, et
- * monogramme en repli (`onError` OU domaine indevinable). Le logo ne casse
- * jamais l'affichage : au pire, la pastille initiale d'origine.
+ * Logo d'une Maison (D9) : le favicon de SON domaine, via `/api/logo`, ou le
+ * monogramme.
+ *
+ * Le domaine vient de la base (`Company.domain`), posé à l'ingest depuis le
+ * domaine carrière du catalogue ou par `resolve-domains` (Wikidata P856) —
+ * jamais deviné depuis le nom. Loïc, 2026-09-06 : « les pictogrammes des
+ * entreprises ne correspondent pas aux entreprises » — un nom devinait souvent
+ * le domaine réel d'une AUTRE entreprise (mac.com, omega.com), et aucun
+ * `onError` ne peut détecter « mauvaise entreprise ». Sans domaine connu, le
+ * monogramme : il dit moins, mais il ne ment pas.
  */
 
 export function CompanyLogo({
   name,
+  domain,
   size = 32,
   className,
 }: {
   name: string;
+  /** `Company.domain` — null/undefined quand aucune source ne le nomme. */
+  domain?: string | null;
   size?: number;
   className?: string;
 }) {
   const [failed, setFailed] = useState(false);
-  const domain = guessDomain(name);
   const monogram = name.trim().charAt(0).toUpperCase() || '·';
 
   if (!domain || failed) {

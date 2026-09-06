@@ -177,6 +177,15 @@ model Company {
    * held this from the start and nothing was reading it.
    */
   parentGroup          String?
+  /**
+   * Site officiel de la Maison, hôte nu (`hermes.com`, `dior.com`), lu à une
+   * source qui la NOMME — jamais deviné depuis le nom : un nom devine souvent
+   * le domaine réel d'une AUTRE entreprise, et le logo affiché ment. Null =
+   * inconnu, et le site montre l'initiale plutôt qu'un logo faux.
+   */
+  domain               String?
+  /** D'où vient `domain` : `source-careers` (catalogue) | `wikidata` (P856) | `manual`. */
+  domainSource         String?
   fashionjobsUrl       String          @unique
   fashionjobsSlug      String?
   fashionjobsOfferCount Int?

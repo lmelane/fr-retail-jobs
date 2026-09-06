@@ -22,6 +22,8 @@ export type CompanyRow = {
   /** Parent group (LVMH, Kering…), when the Maison belongs to one — for the
       "Secteur · Groupe" caption. Null for standalone Maisons and cabinets. */
   group: string | null;
+  /** The Maison's own domain, for its logo; null when no source names it (monogram). */
+  domain: string | null;
   jobCount: number;
   /** Cities where this employer currently has openings, busiest first. */
   cities: { city: string; count: number; latitude: number | null; longitude: number | null }[];
@@ -165,7 +167,7 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
   const [companies, cityRows] = await Promise.all([
     prisma.company.findMany({
       where: { id: { in: pageIds } },
-      select: { id: true, name: true, sector: true, parentGroup: true },
+      select: { id: true, name: true, sector: true, parentGroup: true, domain: true },
     }),
     // One grouped query for every city of every company on this page, rather
     // than a query per company.
@@ -199,6 +201,7 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
         name: company?.name ?? '—',
         sector: company?.sector ?? null,
         group: company?.parentGroup ?? null,
+        domain: company?.domain ?? null,
         jobCount: row._count,
         cities: (citiesByCompany.get(row.companyId) ?? []).sort((a, b) => b.count - a.count),
       };
@@ -259,6 +262,8 @@ export type CompanyProfile = {
   name: string;
   sector: string | null;
   parentGroup: string | null;
+  /** The Maison's own domain, for its logo; null when no source names it. */
+  domain: string | null;
   careersUrl: string | null;
   jobCount: number;
   cities: { city: string; count: number }[];
@@ -277,7 +282,7 @@ export async function getCompanyBySlug(slug: string): Promise<CompanyProfile | n
     // Match by slug over the display name — several rows can share a name only
     // after a bad ingest, so take the one with the most live offers.
     const candidates = await prisma.company.findMany({
-      select: { id: true, name: true, sector: true, parentGroup: true, careersUrl: true },
+      select: { id: true, name: true, sector: true, parentGroup: true, domain: true, careersUrl: true },
     });
     const match = candidates
       .filter((c) => companySlug(c.name) === slug)
@@ -309,6 +314,7 @@ export async function getCompanyBySlug(slug: string): Promise<CompanyProfile | n
       name: match.name,
       sector: match.sector,
       parentGroup: match.parentGroup,
+      domain: match.domain,
       careersUrl: match.careersUrl,
       jobCount,
       cities: cityGroups.map((g) => ({ city: g.city as string, count: g._count })),

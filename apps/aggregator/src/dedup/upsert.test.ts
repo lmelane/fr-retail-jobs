@@ -198,3 +198,45 @@ describe('upsertDeduplicated — ré-attestation ré-écrit les champs normalis�
     expect(job.description).toContain('nettement plus riche');
   });
 });
+
+/**
+ * Le domaine d'une Maison (son logo) vient d'une source qui la NOMME : le
+ * domaine carrière du catalogue, posé à l'ingest sans réseau. Jamais deviné
+ * depuis le nom — un nom devine souvent le domaine d'une autre entreprise.
+ */
+describe('upsertDeduplicated — Company.domain depuis la source employeur', () => {
+  it('pose domain + domainSource=source-careers à la création de la Company', async () => {
+    await upsertDeduplicated(
+      prisma,
+      candidate({ sourceKey: 'sephora', externalId: 'S1', company: 'Sephora', title: 'Vendeur', location: 'Paris', companyDomain: 'sephora.com' }),
+    );
+    const company = await prisma.company.findFirstOrThrow({ where: { name: 'Sephora' } });
+    expect(company.domain).toBe('sephora.com');
+    expect(company.domainSource).toBe('source-careers');
+  });
+
+  it('remplit un domain vide à la ré-attestation, mais n’écrase jamais un domain déjà posé', async () => {
+    // Company créée par un flux de groupe (aucun domaine), puis re-vue par sa source directe.
+    await upsertDeduplicated(
+      prisma,
+      candidate({ sourceKey: 'lvmh', externalId: 'V1', company: 'Sephora', title: 'Vendeur', location: 'Paris', sourceTier: 'GROUP_OFFICIAL' }),
+    );
+    expect((await prisma.company.findFirstOrThrow({ where: { name: 'Sephora' } })).domain).toBeNull();
+
+    await upsertDeduplicated(
+      prisma,
+      candidate({ sourceKey: 'sephora', externalId: 'S2', company: 'Sephora', title: 'Caissier', location: 'Lyon', companyDomain: 'sephora.com' }),
+    );
+    expect((await prisma.company.findFirstOrThrow({ where: { name: 'Sephora' } })).domain).toBe('sephora.com');
+
+    // Un domaine posé (ici à la main) survit à une ré-attestation qui en porte un autre.
+    await prisma.company.updateMany({ where: { name: 'Sephora' }, data: { domain: 'sephora.fr', domainSource: 'manual' } });
+    await upsertDeduplicated(
+      prisma,
+      candidate({ sourceKey: 'sephora', externalId: 'S3', company: 'Sephora', title: 'Manager', location: 'Nice', companyDomain: 'sephora.com' }),
+    );
+    const company = await prisma.company.findFirstOrThrow({ where: { name: 'Sephora' } });
+    expect(company.domain).toBe('sephora.fr');
+    expect(company.domainSource).toBe('manual');
+  });
+});

@@ -119,6 +119,8 @@ export type JobRow = {
   id: string;
   title: string;
   company: string;
+  /** The Maison's own domain (`sephora.com`) for its logo; null when no source names it. */
+  companyDomain: string | null;
   group: string | null;
   city: string | null;
   location: string | null;
@@ -355,7 +357,7 @@ async function countFacets(
 }
 
 function toRow(row: {
-  id: string; title: string; company: { name: string; sector: string | null; parentGroup: string | null };
+  id: string; title: string; company: { name: string; sector: string | null; parentGroup: string | null; domain: string | null };
   city: string | null; location: string | null; contract: string | null; url: string;
   postedAt: Date | null; latitude: number | null; longitude: number | null;
   sources: { sourceKey: string }[]; description: string | null; postalCode: string | null;
@@ -368,6 +370,7 @@ function toRow(row: {
     id: row.id,
     title: row.title,
     company: row.company.name,
+    companyDomain: row.company.domain,
     group: row.company.parentGroup,
     city: row.city,
     location: row.location,
