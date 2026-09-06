@@ -229,3 +229,8 @@ Détail exhaustif des findings (3 audits défensifs, chaque regex exécutée) : 
 2. **Boucle obligatoire par correctif** : reproduction (test/BDD) → correction → audit défensif → tests de non-régression → validation. Après chaque correction : audit défensif / BDD → validation → correction suivante.
 3. **BDD** : formaliser les comportements attendus en scénarios vérifiables (socle de tests à créer — aujourd'hui absent).
 4. Rien n'est « corrigé » parce que ça paraît logique : **preuve d'exécution** exigée.
+
+### D34 — Doublon ELC / Dr. Jart : 1 332 postes affichés deux fois, retrait de `dr-jart-13`
+Mesuré le 2026-09-06 : `dr-jart-13` (origin `careers.elcompanies.com`) et `estee-lauder-companies` (origin `elcompanies.eightfold.ai`) sont **le même tenant Eightfold** (`domain=elcompanies.com`) — 1 462 externalId identiques, feed de 1 441 offres visité deux fois par run (10 min chacune, sur un run de 3 h 28 pour un cron de 4 h). La garde tenant ne l'a pas vu : `domain` n'était pas dans le locator, la clé tombait sur l'origin (corrigé, commit `701813e`).
+Le doublon est **visible par le candidat** : 1 332 postes existent sous deux Jobs, parce que Dr. Jart étiquette 1 319 offres « Dr.Jart+ » là où ELC attribue correctement (MAC 379, Jo Malone 130, Clinique 115, Tom Ford 81…). C'est le risque A-01 réalisé, pas un défaut de dédup : le reconcile ne peut pas fusionner deux sociétés différentes.
+**Décision (par délégation)** : `retire-source dr-jart-13`. Preuve préalable exigée par D27 : 1 462/1 502 externalId présents chez ELC avec la bonne marque ; les 40 restants sont périmés (ELC = 1 462 au total). Rien de vivant n'est perdu. Exécuté dans la fenêtre entre deux runs, jamais pendant un ingest.
