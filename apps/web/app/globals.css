@@ -578,3 +578,139 @@
     animation: none !important;
   }
 }
+
+/* ——————————————————————————— Catwalks Intelligence (lot W1) ———————————————————————————
+   Même grammaire : serif = contenu et chiffres, sans = interface, filets
+   pointillés, un seul vert, radius 5px, aucune ombre, aucune pill. Les
+   graphiques sont des SVG maison (components/intelligence/charts). */
+
+/* Sous-navigation Intelligence : filet pointillé bas, entrées caption, défile
+   horizontalement sur mobile. */
+.intel-nav { display: flex; gap: 32px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.intel-nav::-webkit-scrollbar { display: none; }
+.intel-nav a { display: inline-flex; align-items: center; height: 44px; white-space: nowrap; color: var(--fa-ink); }
+.intel-nav a[aria-current="page"] { color: var(--fa-green); }
+
+/* Hero vert-nuit de la home Intelligence (comme le bandeau matching). */
+.intel-hero { background: var(--fa-green-night); color: #fff; padding: 72px 0 64px; margin-top: 0; }
+.intel-hero .t-caption { color: rgba(255,255,255,.7); }
+.intel-hero .t-hero { font-size: clamp(2.25rem, 5vw, 4.5rem); line-height: 1.02; text-transform: none; letter-spacing: -.01em; }
+.intel-hero .lede { color: rgba(255,255,255,.78); max-width: 60ch; }
+/* KPI sur fond nuit : chiffres serif blancs, filets pointillés blancs atténués. */
+.intel-hero .kpis { --fa-ink: rgba(255,255,255,.45); margin-top: 56px; }
+.intel-hero .kpi .t-caption { color: rgba(255,255,255,.85); }
+.intel-hero .kpi .t-caption-soft { color: rgba(255,255,255,.5); }
+.intel-hero .kpi .kpi__value { color: #fff; }
+.intel-hero .kpi .kpi__na { color: rgba(255,255,255,.55); }
+
+/* Grille KPI : 4 colonnes desktop, 2 mobile, filet pointillé au-dessus de chaque tuile. */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 40px; row-gap: 32px; }
+.kpi { padding-top: 20px; display: grid; gap: 8px; align-content: start; }
+.kpi__value { font: 400 clamp(2rem, 3.2vw, 2.75rem)/1 var(--fa-font-display); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.kpi__value--green { color: var(--fa-green); }
+.kpi__na { font: 400 .9375rem/1.4 var(--fa-font-sans); color: var(--fa-ink-muted); }
+.kpi__sub { color: var(--fa-ink-muted); }
+
+/* Niveau d'une métrique (règle 2) : caption-soft ; la lecture Catwalks en vert. */
+.lvl { display: inline-block; }
+.lvl--insight { color: var(--fa-green); }
+
+/* Ligne de couverture (règle 3). */
+.coverage { display: flex; flex-wrap: wrap; gap: 8px 0; padding: 16px 0; }
+.coverage span + span::before { content: "·"; margin: 0 10px; color: var(--fa-ink-disabled); }
+
+/* Blocs de page : titre serif + niveau ; filet pointillé au-dessus. */
+.iblock { padding-top: 24px; }
+.iblock__head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.iblock__head .t-d2 a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.igrid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 40px; row-gap: 64px; }
+.igrid > .i6 { grid-column: span 6; } .igrid > .i4 { grid-column: span 4; } .igrid > .i8 { grid-column: span 8; } .igrid > .i12 { grid-column: span 12; }
+
+/* Lecture Catwalks : une phrase serif, filet pointillé gauche. */
+.insight { padding-left: 20px; background-image: linear-gradient(to bottom, var(--fa-green) 25%, transparent 0); background-size: 1px 4px; background-repeat: repeat-y; background-position: 0 0; }
+.insight p { font: 400 1.25rem/1.4 var(--fa-font-display); text-wrap: pretty; }
+
+/* n/d : une ligne sans, muted, jamais un faux chiffre. */
+.na { color: var(--fa-ink-muted); font: 400 .9375rem/1.4 var(--fa-font-sans); }
+
+/* BarList : libellé + barre 6px + valeur serif tabulaire. */
+.barlist { display: grid; gap: 14px; }
+.barlist__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; row-gap: 6px; align-items: baseline; }
+.barlist__label { font: 400 .9375rem/1.3 var(--fa-font-sans); color: var(--fa-ink); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.barlist__label a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.barlist__label small { color: var(--fa-ink-muted); font-size: .8125rem; margin-left: 8px; }
+.barlist__value { font: 400 1.125rem/1 var(--fa-font-display); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.barlist__value small { font: 400 .75rem/1 var(--fa-font-sans); color: var(--fa-ink-muted); margin-left: 8px; letter-spacing: .03em; }
+.barlist__track { grid-column: 1 / -1; height: 6px; background: var(--fa-paper-alt); position: relative; }
+.barlist__fill { position: absolute; inset: 0 auto 0 0; background: var(--fa-green); }
+.barlist__fill--muted { background: var(--fa-ink-disabled); }
+.barlist--compact { gap: 10px; }
+.barlist--compact .barlist__track { height: 4px; }
+
+/* Tableau de classement : filets pointillés entre lignes, chiffres serif tabulaires. */
+.itable { width: 100%; border-collapse: collapse; }
+.itable th { text-align: left; padding: 0 12px 12px 0; font: 500 .75rem/1.333 var(--fa-font-sans); letter-spacing: .0625rem; text-transform: uppercase; color: var(--fa-ink-muted); white-space: nowrap; }
+.itable th.num, .itable td.num { text-align: right; padding-right: 0; padding-left: 12px; }
+.itable td { padding: 12px 12px 12px 0; font: 400 .9375rem/1.3 var(--fa-font-sans); vertical-align: baseline; background-image: linear-gradient(to right, var(--fa-ink-disabled) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; background-position: 50% 0; }
+.itable td.num { font: 400 1.0625rem/1 var(--fa-font-display); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.itable td.num.muted { color: var(--fa-ink-muted); font-family: var(--fa-font-sans); font-size: .875rem; }
+.itable td a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.itable-wrap { overflow-x: auto; }
+
+/* Graphiques SVG : encre, vert, grille pointillée, chiffres tabulaires. */
+.chart { display: block; width: 100%; height: auto; font-family: var(--fa-font-sans); font-variant-numeric: tabular-nums; }
+.chart .grid { stroke: var(--fa-ink-disabled); stroke-width: 1; stroke-dasharray: 1 3; }
+.chart .axis { fill: var(--fa-ink-muted); font-size: 11px; letter-spacing: .03em; }
+.chart .line { fill: none; stroke: var(--fa-green); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.chart .line--muted { stroke: var(--fa-ink-muted); stroke-width: 1; }
+.chart .baseline { stroke: var(--fa-ink); stroke-width: 1; stroke-dasharray: 2 4; }
+.chart .dot { fill: var(--fa-paper); stroke: var(--fa-green); stroke-width: 1.5; }
+.chart .dot--hit { fill: transparent; stroke: none; cursor: crosshair; }
+.chart .end { font-family: var(--fa-font-display); font-size: 18px; fill: var(--fa-ink); }
+.chart .label { fill: var(--fa-ink); font-size: 12px; }
+.chart .area { fill: var(--fa-green); stroke: none; }
+.chart .gauge__track { stroke: var(--fa-line); stroke-width: 6; stroke-linecap: butt; }
+.chart .gauge__base { stroke: var(--fa-ink); stroke-width: 1; }
+.chart .gauge__mark { fill: var(--fa-green); }
+
+/* Infobulle (composant client) : encre sur blanc, filet, radius 5px, sans ombre. */
+.tip { position: fixed; z-index: var(--fa-z-dropdown); pointer-events: none; background: var(--fa-paper); border: 1px solid var(--fa-ink); border-radius: var(--fa-radius); padding: 8px 12px; font: 400 .8125rem/1.35 var(--fa-font-sans); color: var(--fa-ink); max-width: 260px; white-space: pre-line; }
+.tip b { font: 400 1rem/1 var(--fa-font-display); font-variant-numeric: tabular-nums; display: block; margin-bottom: 2px; }
+
+/* Carte du monde : séquentiel une teinte (le vert du clair au foncé), pays sans
+   offre en paper-alt, Antarctique retirée. Le mode (volume / nouvelles 30 j)
+   est un attribut posé par le toggle client ; chaque pays porte ses deux
+   couleurs en variables. */
+.wmap { width: 100%; height: auto; display: block; }
+.wmap path { stroke: var(--fa-paper); stroke-width: .5; fill: var(--fa-paper-alt); transition: fill var(--fa-dur-fast) var(--fa-ease); }
+.wmap[data-mode="volume"] path[data-has] { fill: var(--fv); }
+.wmap[data-mode="new30"] path[data-has] { fill: var(--fn); }
+.wmap a:hover path, .wmap a:focus-visible path { stroke: var(--fa-ink); stroke-width: 1; }
+.wmap a:focus-visible { outline: none; }
+.wmap-legend { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.wmap-legend i { display: inline-block; width: 28px; height: 10px; }
+.wmap-toggle { display: inline-flex; border: 1px solid var(--fa-line); border-radius: var(--fa-radius); overflow: hidden; }
+.wmap-toggle button { font: 500 .875rem/1 var(--fa-font-sans); padding: 0 12px; height: 34px; background: var(--fa-paper); color: var(--fa-ink); border: 0; cursor: pointer; }
+.wmap-toggle button + button { border-left: 1px solid var(--fa-line); }
+.wmap-toggle button[aria-pressed="true"] { background: var(--fa-green-tint); color: var(--fa-green); }
+
+/* Mix (répartition) : liste compacte libellé · part · compte. */
+.mix { display: grid; gap: 10px; }
+.mix__row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 16px; align-items: baseline; font: 400 .9375rem/1.3 var(--fa-font-sans); }
+.mix__row .pct { font: 400 1.0625rem/1 var(--fa-font-display); font-variant-numeric: tabular-nums; }
+.mix__row .n { color: var(--fa-ink-muted); font-size: .8125rem; font-variant-numeric: tabular-nums; min-width: 4ch; text-align: right; }
+
+/* Méthodologie : définitions. */
+.defs dt { font: 500 1rem/1.3125 var(--fa-font-sans); margin-top: 24px; }
+.defs dd { margin: 6px 0 0; color: var(--fa-ink-soft); max-width: 66ch; }
+
+@media (max-width: 1023px) {
+  .igrid { column-gap: 24px; row-gap: 48px; }
+  .igrid > .i6, .igrid > .i4, .igrid > .i8 { grid-column: span 12; }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+  .intel-hero { padding: 48px 0 40px; }
+  .intel-hero .kpis { margin-top: 40px; }
+}
+@media (max-width: 767px) {
+  .intel-nav { gap: 24px; }
+}

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { frNumber } from '@/lib/format';
 import { Loader2 } from 'lucide-react';
 import { AutocompleteField } from '@/components/search-pill';
 import { cn } from '@/lib/utils';
@@ -111,7 +112,7 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
   };
 
   const activeSector = params.get('secteur');
-  const nf = new Intl.NumberFormat('fr-FR');
+  const nf = frNumber;
 
   return (
     <main className="page bg-paper">
@@ -226,7 +227,7 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
  * le filet vient du <a>. Exporté pour réutilisation éventuelle.
  */
 export function MaisonCard({ company }: { company: CompanyRow }) {
-  const nf = new Intl.NumberFormat('fr-FR');
+  const nf = frNumber;
   const sector = SECTOR_LABELS[company.sector ?? ''] ?? 'Hors référentiel';
   const sectorLine = company.group ? `${sector} · ${company.group}` : sector;
 

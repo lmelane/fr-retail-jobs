@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import './globals.css';
 import { SiteNav } from '@/components/site-nav';
-import { landingStats } from '@/lib/jobs';
+import { landingStatsCached as landingStats } from '@/lib/jobs';
 import { siteUrl } from '@/lib/site-url';
 import { SiteFooter } from '@/components/site-footer';
 import { NavProgress } from '@/components/nav-progress';

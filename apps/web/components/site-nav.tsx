@@ -32,6 +32,8 @@ type NavItem =
 const NAV: NavItem[] = [
   { label: 'Offres', href: '/emplois', match: (p) => p.startsWith('/emplois') || p.startsWith('/offre') },
   { label: 'Maisons', href: '/entreprises', match: (p) => p.startsWith('/entreprises') || p.startsWith('/maisons') || p.startsWith('/entreprise') },
+  // Catwalks Intelligence (lot W1) : l'observatoire, page interne.
+  { label: 'Intelligence', href: '/intelligence', match: (p) => p.startsWith('/intelligence') },
   { label: 'Matching', href: 'https://catwalks.io/inscription?utm_source=fashion-atlas&utm_medium=aggregator&utm_campaign=nav-matching', external: true },
   { label: 'À propos', href: 'https://catwalks.io', external: true },
 ];

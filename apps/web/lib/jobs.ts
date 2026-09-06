@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache';
 import { prisma, CompanySector } from '@catwalks/db';
 import { expandCompanyTerm } from './groups';
 import { countryCode, rawValuesForCode } from './countries';
@@ -778,3 +779,9 @@ export async function landingStats(): Promise<{
     return { offers: 0, companies: 0, countries: 0, newCompaniesThisWeek: 0 };
   }
 }
+
+/**
+ * `landingStats` est appelé par le layout ET le footer de CHAQUE page : dix
+ * requêtes par vue, cache chaud compris (audit I-5). Mémorisé 10 minutes.
+ */
+export const landingStatsCached = unstable_cache(landingStats, ['landing-stats'], { revalidate: 600, tags: ['landing'] });

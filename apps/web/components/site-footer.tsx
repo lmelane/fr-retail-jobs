@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { landingStats } from '@/lib/jobs';
+import { frNumber } from '@/lib/format';
+import { landingStatsCached as landingStats } from '@/lib/jobs';
 
 /**
  * Footer (design_2.md §4.14), identical on every route.
@@ -17,7 +18,7 @@ const ArrowUpRight = () => (
 
 export async function SiteFooter() {
   const stats = await landingStats().catch(() => ({ offers: 0, companies: 0, countries: 0, newCompaniesThisWeek: 0 }));
-  const nf = new Intl.NumberFormat('fr-FR');
+  const nf = frNumber;
 
   return (
     <footer className="rule bg-paper">
@@ -41,6 +42,7 @@ export async function SiteFooter() {
             <FooterLink href="/entreprises">Les Maisons</FooterLink>
             <FooterLink href="/emplois?secteur=FASHION">Par secteur</FooterLink>
             <FooterLink href="/emplois?pays=FR">Par pays</FooterLink>
+            <FooterLink href="/intelligence">Intelligence</FooterLink>
           </ul>
         </nav>
 

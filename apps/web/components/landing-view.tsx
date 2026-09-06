@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { SearchPill } from '@/components/search-pill';
 import { companySlug } from '@/lib/company-slug';
 import { offerPath } from '@/lib/offer-url';
-import { displayTitle, relativeDate, contractLabel } from '@/lib/format';
+import { displayTitle, relativeDate, contractLabel, frNumber } from '@/lib/format';
 import type { CompanyRow } from '@/lib/companies';
 import type { JobRow } from '@/lib/jobs';
 
@@ -40,7 +40,7 @@ export function LandingView({
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [city, setCity] = useState('');
-  const nf = new Intl.NumberFormat('fr-FR');
+  const nf = frNumber;
 
   const sectorCount = (v: string) => sectors.find((s) => s.value === v)?.count ?? 0;
 

@@ -1,0 +1,1350 @@
+{
+ "measuredAt": "2026-09-06T15:19:08.961Z",
+ "mode": "core",
+ "withDescriptions": false,
+ "seconds": 12,
+ "total": {
+  "n": 2091,
+  "lieu": 2091,
+  "desc": 2057,
+  "date": 2091,
+  "fr": 1761
+ },
+ "declaredTotal": 2091,
+ "truncated": false,
+ "indexNbHits": 2091,
+ "byOrg": {
+  "5asec": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 6
+  },
+  "a-p-c": {
+   "n": 20,
+   "lieu": 20,
+   "desc": 20,
+   "date": 20,
+   "fr": 20
+  },
+  "aesthe": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 1,
+   "date": 2,
+   "fr": 2
+  },
+  "aime": {
+   "n": 7,
+   "lieu": 7,
+   "desc": 7,
+   "date": 7,
+   "fr": 7
+  },
+  "amantys": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "american-vintage": {
+   "n": 20,
+   "lieu": 20,
+   "desc": 20,
+   "date": 20,
+   "fr": 19
+  },
+  "antipodes": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "armand-thiery": {
+   "n": 10,
+   "lieu": 10,
+   "desc": 10,
+   "date": 10,
+   "fr": 10
+  },
+  "asphalte": {
+   "n": 10,
+   "lieu": 10,
+   "desc": 10,
+   "date": 10,
+   "fr": 10
+  },
+  "atelier-15": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "atlas-compagnie": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "aubade": {
+   "n": 28,
+   "lieu": 28,
+   "desc": 28,
+   "date": 28,
+   "fr": 28
+  },
+  "ba-sh-1": {
+   "n": 32,
+   "lieu": 32,
+   "desc": 32,
+   "date": 32,
+   "fr": 31
+  },
+  "balzac-paris": {
+   "n": 20,
+   "lieu": 20,
+   "desc": 20,
+   "date": 20,
+   "fr": 18
+  },
+  "bettina": {
+   "n": 5,
+   "lieu": 5,
+   "desc": 5,
+   "date": 5,
+   "fr": 0
+  },
+  "biografy": {
+   "n": 7,
+   "lieu": 7,
+   "desc": 7,
+   "date": 7,
+   "fr": 7
+  },
+  "biologique-recherche-fr": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 6
+  },
+  "bleu-libellule": {
+   "n": 11,
+   "lieu": 11,
+   "desc": 10,
+   "date": 11,
+   "fr": 11
+  },
+  "blissim": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "bogoods": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "bureau-de-presse-pascale-venot": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "cabaia": {
+   "n": 4,
+   "lieu": 4,
+   "desc": 4,
+   "date": 4,
+   "fr": 4
+  },
+  "call-it-by-your-name": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "calzedonia": {
+   "n": 113,
+   "lieu": 113,
+   "desc": 113,
+   "date": 113,
+   "fr": 113
+  },
+  "choose": {
+   "n": 5,
+   "lieu": 5,
+   "desc": 5,
+   "date": 5,
+   "fr": 5
+  },
+  "clinique-des-champs-elysees": {
+   "n": 9,
+   "lieu": 9,
+   "desc": 9,
+   "date": 9,
+   "fr": 9
+  },
+  "collector-square": {
+   "n": 4,
+   "lieu": 4,
+   "desc": 4,
+   "date": 4,
+   "fr": 4
+  },
+  "columbia": {
+   "n": 4,
+   "lieu": 4,
+   "desc": 4,
+   "date": 4,
+   "fr": 4
+  },
+  "coptis": {
+   "n": 5,
+   "lieu": 5,
+   "desc": 5,
+   "date": 5,
+   "fr": 3
+  },
+  "daily-retail": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "des-gateaux-et-du-pain": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 6
+  },
+  "devialet": {
+   "n": 12,
+   "lieu": 12,
+   "desc": 12,
+   "date": 12,
+   "fr": 9
+  },
+  "diptyque-paris": {
+   "n": 26,
+   "lieu": 26,
+   "desc": 26,
+   "date": 26,
+   "fr": 23
+  },
+  "eluxtravel": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 4
+  },
+  "embryolisse": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "expanscience": {
+   "n": 8,
+   "lieu": 8,
+   "desc": 8,
+   "date": 8,
+   "fr": 8
+  },
+  "faguo": {
+   "n": 9,
+   "lieu": 9,
+   "desc": 9,
+   "date": 9,
+   "fr": 6
+  },
+  "fairly-made": {
+   "n": 5,
+   "lieu": 5,
+   "desc": 5,
+   "date": 5,
+   "fr": 5
+  },
+  "faume": {
+   "n": 4,
+   "lieu": 4,
+   "desc": 4,
+   "date": 4,
+   "fr": 4
+  },
+  "figaret": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "french-bloom": {
+   "n": 4,
+   "lieu": 4,
+   "desc": 4,
+   "date": 4,
+   "fr": 4
+  },
+  "frnch": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "from-future": {
+   "n": 12,
+   "lieu": 12,
+   "desc": 12,
+   "date": 12,
+   "fr": 12
+  },
+  "fusalp": {
+   "n": 19,
+   "lieu": 19,
+   "desc": 19,
+   "date": 19,
+   "fr": 11
+  },
+  "graduate": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "groupe-clarins": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 6
+  },
+  "groupe-l-occitane": {
+   "n": 22,
+   "lieu": 22,
+   "desc": 22,
+   "date": 22,
+   "fr": 22
+  },
+  "groupe-potel-et-chabot": {
+   "n": 18,
+   "lieu": 18,
+   "desc": 18,
+   "date": 18,
+   "fr": 18
+  },
+  "groupe-rocher": {
+   "n": 16,
+   "lieu": 16,
+   "desc": 16,
+   "date": 16,
+   "fr": 16
+  },
+  "haddad-brands-europe": {
+   "n": 9,
+   "lieu": 9,
+   "desc": 9,
+   "date": 9,
+   "fr": 9
+  },
+  "hast": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "helmut-agency": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "hermes": {
+   "n": 609,
+   "lieu": 609,
+   "desc": 609,
+   "date": 609,
+   "fr": 413
+  },
+  "hindbag": {
+   "n": 5,
+   "lieu": 5,
+   "desc": 3,
+   "date": 5,
+   "fr": 5
+  },
+  "idealwine": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "ihg": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 1,
+   "date": 2,
+   "fr": 2
+  },
+  "in-haircare": {
+   "n": 4,
+   "lieu": 4,
+   "desc": 4,
+   "date": 4,
+   "fr": 4
+  },
+  "inuwet": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 0,
+   "date": 1,
+   "fr": 1
+  },
+  "isispharma": {
+   "n": 4,
+   "lieu": 4,
+   "desc": 4,
+   "date": 4,
+   "fr": 4
+  },
+  "isotoner": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "izipizi": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "jerome-dreyfuss": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "jonak": {
+   "n": 20,
+   "lieu": 20,
+   "desc": 20,
+   "date": 20,
+   "fr": 19
+  },
+  "js-exp": {
+   "n": 12,
+   "lieu": 12,
+   "desc": 12,
+   "date": 12,
+   "fr": 12
+  },
+  "kerzon-1": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "kiabi": {
+   "n": 250,
+   "lieu": 250,
+   "desc": 229,
+   "date": 250,
+   "fr": 168
+  },
+  "kitsune-fr": {
+   "n": 9,
+   "lieu": 9,
+   "desc": 9,
+   "date": 9,
+   "fr": 9
+  },
+  "kymono": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "l-oreal": {
+   "n": 72,
+   "lieu": 72,
+   "desc": 72,
+   "date": 72,
+   "fr": 72
+  },
+  "la-bonne-brosse": {
+   "n": 4,
+   "lieu": 4,
+   "desc": 4,
+   "date": 4,
+   "fr": 4
+  },
+  "la-rosee": {
+   "n": 15,
+   "lieu": 15,
+   "desc": 15,
+   "date": 15,
+   "fr": 14
+  },
+  "laboratoire-cooper": {
+   "n": 13,
+   "lieu": 13,
+   "desc": 11,
+   "date": 13,
+   "fr": 12
+  },
+  "labote": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "lacoste": {
+   "n": 30,
+   "lieu": 30,
+   "desc": 30,
+   "date": 30,
+   "fr": 30
+  },
+  "le-slip-francais": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "lebeurre-com": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "les-ateliers-autrement": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "les-raffineurs": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 6
+  },
+  "les-secrets-de-loly": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "little-cigogne": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 6
+  },
+  "losanje": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "louise-misha": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "lunettes-pour-tous": {
+   "n": 4,
+   "lieu": 4,
+   "desc": 4,
+   "date": 4,
+   "fr": 3
+  },
+  "lush-france": {
+   "n": 8,
+   "lieu": 8,
+   "desc": 8,
+   "date": 8,
+   "fr": 8
+  },
+  "luxurynsight": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "mad": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "maison-eres": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "make-my-lemonade": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "manucurist": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 5,
+   "date": 6,
+   "fr": 6
+  },
+  "martha-1": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "milia-matcha": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "moea": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "monsieur-tshirt": {
+   "n": 4,
+   "lieu": 4,
+   "desc": 4,
+   "date": 4,
+   "fr": 4
+  },
+  "nooance": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "odaje": {
+   "n": 5,
+   "lieu": 5,
+   "desc": 5,
+   "date": 5,
+   "fr": 5
+  },
+  "oden": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "oh-my-cream": {
+   "n": 8,
+   "lieu": 8,
+   "desc": 8,
+   "date": 8,
+   "fr": 8
+  },
+  "pandora-": {
+   "n": 53,
+   "lieu": 53,
+   "desc": 53,
+   "date": 53,
+   "fr": 53
+  },
+  "panier-des-sens": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 6
+  },
+  "pattern": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "payot": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "petit-picotin": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "pied-de-biche": {
+   "n": 5,
+   "lieu": 5,
+   "desc": 5,
+   "date": 5,
+   "fr": 5
+  },
+  "pm-studio": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 6
+  },
+  "prose": {
+   "n": 4,
+   "lieu": 4,
+   "desc": 4,
+   "date": 4,
+   "fr": 3
+  },
+  "puig": {
+   "n": 12,
+   "lieu": 12,
+   "desc": 12,
+   "date": 12,
+   "fr": 9
+  },
+  "relax-massage-uk-ltd": {
+   "n": 5,
+   "lieu": 5,
+   "desc": 5,
+   "date": 5,
+   "fr": 5
+  },
+  "respire": {
+   "n": 16,
+   "lieu": 16,
+   "desc": 16,
+   "date": 16,
+   "fr": 16
+  },
+  "ritz-paris": {
+   "n": 56,
+   "lieu": 56,
+   "desc": 54,
+   "date": 56,
+   "fr": 56
+  },
+  "rosae-paris": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "safe-harbor": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "sas-jane-simone-a-bordeaux": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "sessun": {
+   "n": 34,
+   "lieu": 34,
+   "desc": 34,
+   "date": 34,
+   "fr": 23
+  },
+  "shangri-la-paris": {
+   "n": 9,
+   "lieu": 9,
+   "desc": 9,
+   "date": 9,
+   "fr": 9
+  },
+  "simone-perele": {
+   "n": 5,
+   "lieu": 5,
+   "desc": 5,
+   "date": 5,
+   "fr": 5
+  },
+  "standard-texile": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "sud-express": {
+   "n": 42,
+   "lieu": 42,
+   "desc": 42,
+   "date": 42,
+   "fr": 42
+  },
+  "surprise-paris": {
+   "n": 4,
+   "lieu": 4,
+   "desc": 4,
+   "date": 4,
+   "fr": 4
+  },
+  "the-agent-1": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 0
+  },
+  "the-invisible-collection": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 1
+  },
+  "thom-europe": {
+   "n": 56,
+   "lieu": 56,
+   "desc": 55,
+   "date": 56,
+   "fr": 56
+  },
+  "tissus-des-ursules-tdu-group": {
+   "n": 24,
+   "lieu": 24,
+   "desc": 24,
+   "date": 24,
+   "fr": 24
+  },
+  "treatwell": {
+   "n": 5,
+   "lieu": 5,
+   "desc": 5,
+   "date": 5,
+   "fr": 5
+  },
+  "trone-1": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "une-robe-un-soir": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "unilever": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 1,
+   "date": 2,
+   "fr": 2
+  },
+  "vanessa-wu": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "veja": {
+   "n": 18,
+   "lieu": 18,
+   "desc": 18,
+   "date": 18,
+   "fr": 17
+  },
+  "voyage-prive": {
+   "n": 10,
+   "lieu": 10,
+   "desc": 10,
+   "date": 10,
+   "fr": 10
+  },
+  "wecasa": {
+   "n": 10,
+   "lieu": 10,
+   "desc": 10,
+   "date": 10,
+   "fr": 10
+  },
+  "wine-services": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "wolf-lingerie": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "yade": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "yay": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "yellowkorner-1": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "yse": {
+   "n": 11,
+   "lieu": 11,
+   "desc": 11,
+   "date": 11,
+   "fr": 11
+  },
+  "zen-collective-france": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "zeta-shoes": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  }
+ },
+ "bySector": {
+  "collaborative-economy": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 6
+  },
+  "fashion-1": {
+   "n": 890,
+   "lieu": 890,
+   "desc": 867,
+   "date": 890,
+   "fr": 774
+  },
+  "home-care-services": {
+   "n": 16,
+   "lieu": 16,
+   "desc": 16,
+   "date": 16,
+   "fr": 16
+  },
+  "health-1": {
+   "n": 43,
+   "lieu": 43,
+   "desc": 40,
+   "date": 43,
+   "fr": 41
+  },
+  "cosmetics": {
+   "n": 359,
+   "lieu": 359,
+   "desc": 352,
+   "date": 359,
+   "fr": 346
+  },
+  "jewelry-1": {
+   "n": 152,
+   "lieu": 152,
+   "desc": 151,
+   "date": 152,
+   "fr": 149
+  },
+  "marketing-communications": {
+   "n": 12,
+   "lieu": 12,
+   "desc": 12,
+   "date": 12,
+   "fr": 12
+  },
+  "digital": {
+   "n": 619,
+   "lieu": 619,
+   "desc": 619,
+   "date": 619,
+   "fr": 423
+  },
+  "selective-distribution": {
+   "n": 781,
+   "lieu": 781,
+   "desc": 780,
+   "date": 781,
+   "fr": 584
+  },
+  "e-commerce-1": {
+   "n": 859,
+   "lieu": 859,
+   "desc": 833,
+   "date": 859,
+   "fr": 768
+  },
+  "design-2": {
+   "n": 25,
+   "lieu": 25,
+   "desc": 25,
+   "date": 25,
+   "fr": 24
+  },
+  "luxury-1": {
+   "n": 1046,
+   "lieu": 1046,
+   "desc": 1042,
+   "date": 1046,
+   "fr": 826
+  },
+  "hotel": {
+   "n": 82,
+   "lieu": 82,
+   "desc": 79,
+   "date": 82,
+   "fr": 82
+  },
+  "tourism-1": {
+   "n": 15,
+   "lieu": 15,
+   "desc": 14,
+   "date": 15,
+   "fr": 13
+  },
+  "public-relations": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "event-management": {
+   "n": 26,
+   "lieu": 26,
+   "desc": 26,
+   "date": 26,
+   "fr": 26
+  },
+  "foodservice": {
+   "n": 211,
+   "lieu": 211,
+   "desc": 209,
+   "date": 211,
+   "fr": 211
+  },
+  "mobile-apps": {
+   "n": 15,
+   "lieu": 15,
+   "desc": 15,
+   "date": 15,
+   "fr": 15
+  },
+  "sports": {
+   "n": 34,
+   "lieu": 34,
+   "desc": 34,
+   "date": 34,
+   "fr": 34
+  },
+  "pharmaceutical-biotech": {
+   "n": 26,
+   "lieu": 26,
+   "desc": 24,
+   "date": 26,
+   "fr": 23
+  },
+  "it-digital-1": {
+   "n": 5,
+   "lieu": 5,
+   "desc": 5,
+   "date": 5,
+   "fr": 3
+  },
+  "connected-objects": {
+   "n": 12,
+   "lieu": 12,
+   "desc": 12,
+   "date": 12,
+   "fr": 9
+  },
+  "electronics-telecommunications": {
+   "n": 12,
+   "lieu": 12,
+   "desc": 12,
+   "date": 12,
+   "fr": 9
+  },
+  "environment-sustainable-development": {
+   "n": 18,
+   "lieu": 18,
+   "desc": 18,
+   "date": 18,
+   "fr": 15
+  },
+  "saas-cloud-services": {
+   "n": 10,
+   "lieu": 10,
+   "desc": 10,
+   "date": 10,
+   "fr": 10
+  },
+  "software-1": {
+   "n": 14,
+   "lieu": 14,
+   "desc": 14,
+   "date": 14,
+   "fr": 14
+  },
+  "beverage": {
+   "n": 9,
+   "lieu": 9,
+   "desc": 9,
+   "date": 9,
+   "fr": 9
+  },
+  "mass-distribution": {
+   "n": 253,
+   "lieu": 253,
+   "desc": 231,
+   "date": 253,
+   "fr": 171
+  },
+  "lifestyle": {
+   "n": 55,
+   "lieu": 55,
+   "desc": 55,
+   "date": 55,
+   "fr": 44
+  },
+  "interior-design": {
+   "n": 7,
+   "lieu": 7,
+   "desc": 7,
+   "date": 7,
+   "fr": 6
+  },
+  "human-resources": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 2,
+   "date": 2,
+   "fr": 2
+  },
+  "e-commerce": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 6
+  },
+  "mode": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 6
+  },
+  "socialtech-greentech": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "artificial-intelligence-machine-learning": {
+   "n": 5,
+   "lieu": 5,
+   "desc": 5,
+   "date": 5,
+   "fr": 4
+  },
+  "big-data-1": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "strategy-1": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "advertising": {
+   "n": 6,
+   "lieu": 6,
+   "desc": 6,
+   "date": 6,
+   "fr": 6
+  },
+  "leisure": {
+   "n": 15,
+   "lieu": 15,
+   "desc": 15,
+   "date": 15,
+   "fr": 15
+  },
+  "engineering": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "logistics": {
+   "n": 3,
+   "lieu": 3,
+   "desc": 3,
+   "date": 3,
+   "fr": 3
+  },
+  "digital-marketing-data-marketing": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 0
+  },
+  "design-engineering-office": {
+   "n": 1,
+   "lieu": 1,
+   "desc": 1,
+   "date": 1,
+   "fr": 1
+  },
+  "consumer-goods": {
+   "n": 2,
+   "lieu": 2,
+   "desc": 1,
+   "date": 2,
+   "fr": 2
+  }
+ },
+ "sample": [
+  {
+   "externalId": "ae8ae96d-8825-4128-87a0-6a43d0a5ec85",
+   "title": "Chargé(e) administratif et développement du réseau d'affiliés",
+   "location": "Paris",
+   "country": "France",
+   "contract": "full_time",
+   "city": "Paris",
+   "remote": "no",
+   "experienceYears": null,
+   "salaryMin": 33000,
+   "salaryMax": 35000,
+   "salaryCurrency": "EUR",
+   "salaryPeriod": "yearly",
+   "description": "* Formation Bac +2 à Bac +3 en commerce, gestion ou relation client.\n \n* Première expérience réussie dans la gestion de réseau, l’administration des ventes, le support clients ou la relation partenaires.\n \n* Excellent sens du service et de la communication.\n \n* Organisation, rigueur et autonomie.\n \n",
+   "company": "5àsec",
+   "url": "https://www.welcometothejungle.com/fr/companies/5asec/jobs/charge-administratif-et-developpement-du-reseau-d-affilies_paris",
+   "postedAt": "2026-09-02T12:37:55.000Z"
+  },
+  {
+   "externalId": "39da36b0-132f-47e8-a2a1-d54fad143a9d",
+   "title": "Commercial(e) mid market H/F",
+   "location": "Paris",
+   "country": "France",
+   "contract": "full_time",
+   "city": "Paris",
+   "remote": "punctual",
+   "experienceYears": null,
+   "salaryMin": null,
+   "salaryMax": null,
+   "salaryCurrency": "EUR",
+   "salaryPeriod": "yearly",
+   "description": "Parce que chaque client est particulier, nous recherchons quelqu’un de passionné par le commerce et le développement.\n\n* En excellent(e) communicant(e), vous aimez interagir avec les clients, les prospects et les équipes internes.\n \n* Vous justifiez d’une **expérience de 2 à 5 ans dans la vente B2B*",
+   "company": "5àsec",
+   "url": "https://www.welcometothejungle.com/fr/companies/5asec/jobs/commercial-mid-market-h-f_paris_5SEC_XDVaj27",
+   "postedAt": "2026-08-27T09:10:33.000Z"
+  },
+  {
+   "externalId": "61275004-bdc4-4d1e-8198-c207a16b31f5",
+   "title": "Office manager Retail H/F",
+   "location": "Paris",
+   "country": "France",
+   "contract": "temporary",
+   "city": "Paris",
+   "remote": "punctual",
+   "experienceYears": null,
+   "salaryMin": null,
+   "salaryMax": null,
+   "salaryCurrency": "EUR",
+   "salaryPeriod": "yearly",
+   "description": "* Formation Bac +2 à Bac +5 en gestion, commerce ou administration.\n \n* Première expérience réussie dans un environnement Retail ou multisites.\n \n* Excellente maîtrise des outils bureautiques, notamment Excel.\n \n* Sens de l'organisation et gestion des priorités.\n \n* Bon relationnel et esprit d'équip",
+   "company": "5àsec",
+   "url": "https://www.welcometothejungle.com/fr/companies/5asec/jobs/office-manager-retail-h-f_paris",
+   "postedAt": "2026-08-27T08:47:15.000Z"
+  }
+ ]
+}

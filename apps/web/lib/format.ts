@@ -74,3 +74,11 @@ export function contractLabel(value: string | null | undefined): string | null {
   if (!value || value === 'UNKNOWN') return null;
   return CONTRACT_LABELS[value] ?? value;
 }
+
+/**
+ * fr-FR sépare les milliers par une espace fine insécable (U+202F) que la
+ * police display du site ne dessine pas — « 71525 » sur le hero (mesuré en
+ * prod le 2026-09-06). L'espace insécable classique existe partout.
+ */
+const NF_FR = new Intl.NumberFormat('fr-FR');
+export const frNumber = { format: (n: number) => NF_FR.format(n).replace(/\u202f/g, '\u00a0') };

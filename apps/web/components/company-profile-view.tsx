@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CompanyLogo } from '@/components/company-logo';
 import Link from 'next/link';
+import { frNumber } from '@/lib/format';
 import { Loader2, X } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
 import { JobCard } from '@/components/jobs-view';
@@ -69,7 +70,7 @@ export function CompanyProfileView({
 }) {
   const sectorLabel = profile.sector ? SECTOR_LABELS[profile.sector] ?? profile.sector : null;
   const heroCaption = [sectorLabel, profile.parentGroup].filter(Boolean).join(' · ');
-  const nf = new Intl.NumberFormat('fr-FR');
+  const nf = frNumber;
 
   const [selectedId, setSelectedId] = useState<string | null>(initialResult.jobs[0]?.id ?? null);
 

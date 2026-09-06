@@ -3,6 +3,7 @@ import { siteUrl } from '@/lib/site-url';
 import { companySlug } from '@/lib/company-slug';
 import { offerPath } from '@/lib/offer-url';
 import { sitemapCompanies, sitemapOffersChunk } from '@/lib/jobs';
+import { sitemapIntelligence } from '@/lib/intelligence/sitemap';
 
 /**
  * Un chunk du sitemap (S-03) : /sitemaps/0 = pages statiques + Maisons ;
@@ -40,6 +41,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ chunk: 
         seen.add(slug);
         urls.push(urlTag(`${base}/entreprise/${slug}`, company.updatedAt));
       }
+      // Catwalks Intelligence (lot W1) : pages statiques + pays / villes /
+      // métiers / Maisons / groupes au-dessus du seuil.
+      for (const path of await sitemapIntelligence()) urls.push(urlTag(`${base}${path}`));
     } else {
       for (const offer of await sitemapOffersChunk(chunk - 1)) {
         urls.push(urlTag(`${base}${offerPath(offer)}`, offer.updatedAt));
@@ -51,6 +55,6 @@ export async function GET(_req: Request, { params }: { params: Promise<{ chunk: 
   }
 
   return new NextResponse(`${XML_HEAD}${urls.join('\n')}\n</urlset>\n`, {
-    headers: { 'content-type': 'application/xml; charset=utf-8' },
+    headers: { 'content-type': 'application/xml; charset=utf-8', 'cache-control': CACHE_HEADER },
   });
 }
