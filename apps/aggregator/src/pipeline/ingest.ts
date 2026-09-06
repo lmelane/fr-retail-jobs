@@ -355,6 +355,19 @@ export const KIND_TO_ATS: Record<string, string> = {
   wordpress: 'WORDPRESS',
   fashionjobs: 'FASHIONJOBS',
   'generic-listing': 'GENERIC_JSONLD',
+  oraclehcm: 'ORACLE_HCM',
+  taleo: 'TALEO',
+  altamira: 'ALTAMIRA',
+  jobylon: 'JOBYLON',
+  rituals: 'RITUALS',
+  asos: 'ASOS',
+  talentfunnel: 'TALENT_FUNNEL',
+  bashtalents: 'BASH_TALENTS',
+  eqwa: 'EQWA',
+  geodirectory: 'GEODIRECTORY',
+  typesense: 'TYPESENSE',
+  jibe: 'JIBE',
+  volcanic: 'VOLCANIC',
 };
 
 /**

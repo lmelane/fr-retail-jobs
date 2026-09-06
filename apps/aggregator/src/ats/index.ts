@@ -24,6 +24,20 @@ import { fetchPinpointJobs } from './adapters/pinpoint.js';
 import { fetchLvmhJobs } from './adapters/lvmhAlgolia.js';
 import { fetchWordpressJobs } from './adapters/wordpress.js';
 import { fetchFashionjobsJobs } from './adapters/fashionjobs.js';
+// Lot « GENERIC » du 2026-09-06 : treize portails lus par exécution.
+import { fetchOracleHcmJobs } from './adapters/oraclehcm.js';
+import { fetchTaleoJobs } from './adapters/taleo.js';
+import { fetchAltamiraJobs } from './adapters/altamira.js';
+import { fetchJobylonJobs } from './adapters/jobylon.js';
+import { fetchRitualsJobs } from './adapters/rituals.js';
+import { fetchAsosJobs } from './adapters/asosAlgolia.js';
+import { fetchTalentFunnelJobs } from './adapters/talentFunnel.js';
+import { fetchBashTalentsJobs } from './adapters/bashTalents.js';
+import { fetchEqwaJobs } from './adapters/eqwa.js';
+import { fetchGeoDirectoryJobs } from './adapters/geodirectory.js';
+import { fetchRivoliTypesenseJobs } from './adapters/rivoliTypesense.js';
+import { fetchJibeJobs } from './adapters/jibe.js';
+import { fetchVolcanicJobs } from './adapters/volcanic.js';
 
 /**
  * Adapters answer either the legacy array or an AdapterResult (F-04); the
@@ -72,6 +86,19 @@ async function dispatch(type: AtsType, config: Record<string, unknown>): Promise
     case 'WORDPRESS': return fetchWordpressJobs(config);
     case 'FASHIONJOBS': return fetchFashionjobsJobs(config);
     case 'GENERIC_JSONLD': return fetchGenericJsonLdJobs(config);
+    case 'ORACLE_HCM': return fetchOracleHcmJobs(config);
+    case 'TALEO': return fetchTaleoJobs(config);
+    case 'ALTAMIRA': return fetchAltamiraJobs(config);
+    case 'JOBYLON': return fetchJobylonJobs(config);
+    case 'RITUALS': return fetchRitualsJobs(config);
+    case 'ASOS': return fetchAsosJobs(config);
+    case 'TALENT_FUNNEL': return fetchTalentFunnelJobs(config);
+    case 'BASH_TALENTS': return fetchBashTalentsJobs(config);
+    case 'EQWA': return fetchEqwaJobs(config);
+    case 'GEODIRECTORY': return fetchGeoDirectoryJobs(config);
+    case 'TYPESENSE': return fetchRivoliTypesenseJobs(config);
+    case 'JIBE': return fetchJibeJobs(config);
+    case 'VOLCANIC': return fetchVolcanicJobs(config);
     default: throw new Error(`Unsupported ATS type: ${type}`);
   }
 }
