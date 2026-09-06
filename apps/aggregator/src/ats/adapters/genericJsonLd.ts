@@ -134,6 +134,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     }
 
     const limit = pLimit(Number(config.concurrency ?? 4));
+    let detailFailures = 0;
     const pages = await Promise.all(
       [...seen].map((url) =>
         limit(async () => {
@@ -151,12 +152,29 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
               url,
             );
           } catch {
+            detailFailures++;
             return [];
           }
         }),
       ),
     );
-    return pages.flat();
+    const jobs = pages.flat();
+    /**
+     * Zéro silencieux, deuxième forme (mesurée le 2026-09-06 sur Michael Page,
+     * un run sur deux) : la liste rend ses liens, mais AUCUNE page de détail ne
+     * rend d'offre — soit elles échouent (403), soit elles répondent une page de
+     * challenge sans JobPosting. Chaque échec avalé en [] donnait « 0 fetched,
+     * 0 errors » : la source passait BROKEN sans qu'une ligne dise pourquoi. Un
+     * échec total est une panne à nommer, pas un employeur sans poste.
+     */
+    if (seen.size > 0 && jobs.length === 0 && !pastDeadline()) {
+      throw new Error(
+        `generic-listing ${listingPagedUrl}: ${seen.size} lien${seen.size > 1 ? 's' : ''} d'offre, ` +
+          `0 offre lue, ${detailFailures} échec${detailFailures > 1 ? 's' : ''} de détail — ` +
+          `pages de détail bloquées ou sans JobPosting`,
+      );
+    }
+    return jobs;
   }
 
   const sitemapUrl = String(config.sitemapUrl ?? '');

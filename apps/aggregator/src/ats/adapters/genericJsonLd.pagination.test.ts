@@ -47,3 +47,45 @@ describe('fetchGenericJsonLdJobs — pagination par CHEMIN ({page})', () => {
     expect(requested[0]).toBe('https://www.michaelpage.fr/jobs?page=0');
   });
 });
+
+describe('fetchGenericJsonLdJobs — zéro silencieux sur les pages de détail', () => {
+  /**
+   * Mesuré en prod le 2026-09-06 : Michael Page alterne 2 936 offres et
+   * « 0 fetched, 0 errors » un run sur deux. La liste rendait bien ses liens ;
+   * ce sont les pages de détail qui revenaient vides (challenge Cloudflare
+   * servi à l'IP du cron). Chaque échec était avalé en [] : la source passait
+   * BROKEN sans qu'aucune ligne d'erreur ne dise pourquoi.
+   */
+  it('lève une erreur quand la liste a des liens mais qu’aucune page de détail ne rend d’offre', async () => {
+    mockFetch.mockImplementation(async (url) => {
+      if (String(url).endsWith('page=0')) return '<a href="/x/job/A">a</a><a href="/x/job/B">b</a>';
+      if (String(url).includes('/job/')) throw new Error('HTTP 403 for ' + url);
+      return '<p>rien</p>';
+    });
+    await expect(
+      fetchGenericJsonLdJobs({ listingUrl: 'https://www.michaelpage.fr/jobs', linkPattern: '/job/' }),
+    ).rejects.toThrow(/2 liens.*0 offre.*2 échecs/);
+  });
+
+  it('lève aussi quand les pages de détail répondent sans JobPosting (page de challenge)', async () => {
+    mockFetch.mockImplementation(async (url) => {
+      if (String(url).endsWith('page=0')) return '<a href="/x/job/A">a</a>';
+      if (String(url).includes('/job/')) return '<html><body>Just a moment… challenge</body></html>';
+      return '<p>rien</p>';
+    });
+    await expect(
+      fetchGenericJsonLdJobs({ listingUrl: 'https://www.michaelpage.fr/jobs', linkPattern: '/job/' }),
+    ).rejects.toThrow(/1 lien.*0 offre.*0 échec/);
+  });
+
+  it('ne lève pas quand une partie seulement des détails échoue', async () => {
+    mockFetch.mockImplementation(async (url) => {
+      if (String(url).endsWith('page=0')) return '<a href="/x/job/A">a</a><a href="/x/job/B">b</a>';
+      if (String(url).endsWith('/job/A')) return detail('A');
+      if (String(url).endsWith('/job/B')) throw new Error('HTTP 500');
+      return '<p>rien</p>';
+    });
+    const jobs = await fetchGenericJsonLdJobs({ listingUrl: 'https://www.michaelpage.fr/jobs', linkPattern: '/job/' });
+    expect(jobs.map((j) => j.title)).toEqual(['Offer A']);
+  });
+});
