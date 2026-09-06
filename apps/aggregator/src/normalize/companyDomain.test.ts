@@ -47,6 +47,13 @@ describe('rootDomainOf — la racine d’un domaine carrière', () => {
     ['jobs.douglas.group', 'douglas.group'],
     ['www.lvmh.com', 'lvmh.com'],
     ['hub-urbn.example.com', 'example.com'],
+    // Suffixes publics hors de toute liste maison (Public Suffix List) :
+    // « co.id » n'était pas dans les 18 suffixes codés, URBN affichait un
+    // logo pour « co.id » (prod, 2026-09-06).
+    ['www.urbanjakarta.co.id', 'urbanjakarta.co.id'],
+    ['tnw.waw.pl', 'tnw.waw.pl'],
+    ['careers.harveynichols.co.uk', 'harveynichols.co.uk'],
+    ['jobs.fastretailing.co.jp', 'fastretailing.co.jp'],
   ])('%s -> %s', (host, root) => {
     expect(rootDomainOf(host)).toBe(root);
   });
@@ -322,6 +329,34 @@ describe('resolveViaWikidata — chemin (ii)', () => {
     };
     expect(await resolveViaWikidata('Exemple', client)).toBe('exemple.com');
     expect(log).toEqual(['Q1', 'Q2']);
+  });
+
+  it('refuse un site officiel qui ne porte pas le nom : l’homonyme d’une autre entreprise', async () => {
+    // Prod 2026-09-06 : « URBN » → « Urban Jakarta Propertindo » (Indonesian
+    // company) → urbanjakarta.co.id ; « Wing » → x.company ; « Dunhill » → bat.com.
+    const client: WikidataClient = {
+      async search() {
+        return {
+          search: [
+            { id: 'Q1', label: 'Urban Jakarta Propertindo', description: 'Indonesian company' },
+            { id: 'Q2', label: 'URBN', description: 'American retail company' },
+          ],
+        };
+      },
+      async officialWebsite(id) {
+        const site = id === 'Q1' ? 'https://www.urbanjakarta.co.id' : 'https://www.urbn.com';
+        return { claims: { P856: [{ rank: 'normal', mainsnak: { datavalue: { value: site } } }] } };
+      },
+    };
+    // Le libellé exact « URBN » prime (Q2) ; si seule Q1 existait, rien.
+    expect(await resolveViaWikidata('URBN', client)).toBe('urbn.com');
+    const onlyHomonym: WikidataClient = {
+      async search() {
+        return { search: [{ id: 'Q1', label: 'Urban Jakarta Propertindo', description: 'Indonesian company' }] };
+      },
+      officialWebsite: client.officialWebsite,
+    };
+    expect(await resolveViaWikidata('URBN', onlyHomonym)).toBeNull();
   });
 
   it('ne lit les claims qu’une fois, pour l’entité retenue', async () => {

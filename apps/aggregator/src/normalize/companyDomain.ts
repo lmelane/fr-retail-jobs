@@ -1,3 +1,4 @@
+import { parse } from 'tldts';
 import { fetchJson } from '../lib/http.js';
 import { resolveCompany } from './company.js';
 
@@ -59,15 +60,6 @@ const ATS_HOST_SUFFIXES = [
 ];
 
 /**
- * Suffixes publics en deux parties : la racine de `fenwick.co.uk` est
- * `fenwick.co.uk`, pas `co.uk`. Liste courte, celle des pays du catalogue.
- */
-const TWO_PART_SUFFIXES = new Set([
-  'co.uk', 'org.uk', 'ac.uk', 'co.za', 'com.au', 'net.au', 'com.mx', 'com.br', 'co.jp',
-  'co.nz', 'com.tr', 'com.sg', 'com.hk', 'co.kr', 'com.ar', 'co.in', 'com.cn', 'co.il',
-]);
-
-/**
  * Mots de carrière qu'un label peut porter à la place d'un sous-domaine :
  * `carrieres-rolex.com`, `recrutement-nocibe.fr`, `burberrycareers.com`. Le
  * label restant doit garder au moins 3 caractères, sinon c'était le nom.
@@ -85,6 +77,10 @@ function stripCareerWord(label: string): string {
  * tombe — `careers.`, `jobs.`, `carrieres.`, `recrutement.`, `talent.`,
  * `hub-…`, `www.` et les autres, sans liste à tenir — et un hôte ATS ne rend
  * rien. Accepte une URL ou un hôte avec port.
+ *
+ * Le suffixe public vient de la Public Suffix List (tldts, embarquée, sans
+ * réseau) : une liste maison de 18 suffixes réduisait `x.co.id` à « co.id »
+ * — mesuré en prod le 2026-09-06, URBN affichait un logo pour « co.id ».
  */
 export function rootDomainOf(raw: string | null | undefined): string | null {
   const trimmed = (raw ?? '').trim().toLowerCase();
@@ -96,15 +92,13 @@ export function rootDomainOf(raw: string | null | undefined): string | null {
     return null;
   }
   if (!HOST_RE.test(host)) return null;
-  if (/^\d+(\.\d+){3}$/.test(host)) return null;
   if (ATS_HOST_SUFFIXES.some((suffix) => host === suffix || host.endsWith(`.${suffix}`))) return null;
 
-  const labels = host.split('.');
-  const lastTwo = labels.slice(-2).join('.');
-  const suffixSize = TWO_PART_SUFFIXES.has(lastTwo) ? 2 : 1;
-  if (labels.length < suffixSize + 1) return null;
-  const label = stripCareerWord(labels[labels.length - suffixSize - 1]);
-  const suffix = labels.slice(-suffixSize).join('.');
+  const parsed = parse(host);
+  if (parsed.isIp || !parsed.domain || !parsed.publicSuffix) return null;
+  const suffix = parsed.publicSuffix;
+  const label = stripCareerWord(parsed.domain.slice(0, -(suffix.length + 1)));
+  if (!label) return null;
   return `${label}.${suffix}`;
 }
 
@@ -292,6 +286,13 @@ const CLAIMS_READS_PER_SEARCH = 2;
  * (« Christian Dior Couture » n'en a pas) cède la place à la suivante ; sans
  * suivante, rien — on ne remonte jamais au groupe (P749 : LVMH), dont le logo
  * n'est pas celui de la Maison.
+ *
+ * Le domaine retenu doit PORTER LE NOM, comme sur le chemin catalogue : une
+ * recherche par nom rend des homonymes que la description ne suffit pas à
+ * écarter — mesuré en prod le 2026-09-06 : « URBN » → Urban Jakarta
+ * Propertindo (« Indonesian company »), « Towa » → une société savante
+ * polonaise, « Wing » → x.company, « Dunhill » → bat.com. Un domaine sans le
+ * nom cède la place à l'entité suivante ; sans suivante, rien (l'initiale).
  */
 export async function resolveViaWikidata(name: string, client: WikidataClient): Promise<string | null> {
   for (const term of wikidataSearchTerms(name)) {
@@ -300,7 +301,7 @@ export async function resolveViaWikidata(name: string, client: WikidataClient): 
       const ranked = rankWikidataEntities(response.search ?? [], term).slice(0, CLAIMS_READS_PER_SEARCH);
       for (const entity of ranked) {
         const domain = hostFromOfficialWebsite(await client.officialWebsite(entity.id));
-        if (domain) return domain;
+        if (domain && nameMatchesDomain(term, domain)) return domain;
       }
     }
   }
