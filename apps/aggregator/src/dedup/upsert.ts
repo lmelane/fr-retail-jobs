@@ -130,6 +130,25 @@ export async function upsertDeduplicated(
     });
   }
 
+  /**
+   * Identité EXACTE d'abord : la même source qui re-parle de la même offre
+   * (sourceKey + externalId) — le cas de loin le plus fréquent, indexé, et
+   * valable que l'offre soit active ou fermée.
+   *
+   * Audit A2 (2026-09-06) : sans ce chemin, une offre dont la clé de cluster
+   * gravée ne correspondait plus à la clé recalculée (4 906 offres) ratait la
+   * recherche de cluster, tombait dans la récupération P2002 qui touchait le
+   * Job mais jamais la JobSource — 1 855 offres vivantes avec une JobSource
+   * inactive, fermées (410) par le refresh puis ré-ouvertes par l'ingest
+   * suivant, tous les jours. Ici, Job ET JobSource sont ré-attestés, et la
+   * clé de cluster est ré-écrite si elle a changé.
+   */
+  const ownEntry = await prisma.jobSource.findUnique({
+    where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
+    select: { job: { include: { sources: true } } },
+  });
+  if (ownEntry) return attachToExisting(prisma, candidate, ownEntry.job, now, clusterKey);
+
   // Only live jobs in the same cluster can absorb this posting. The cluster key
   // is indexed, so this stays a narrow lookup rather than a scan.
   const clusterJobs = await prisma.job.findMany({
@@ -215,30 +234,15 @@ export async function upsertDeduplicated(
       // changed title (the cluster match fails on the title, the create trips
       // the unique key): by construction it is the same source and the same
       // id, so the row takes today's normalized values like any re-attestation.
-      const winner = await prisma.job.findUniqueOrThrow({
-        where: { id: winnerId },
-        select: { title: true, description: true, location: true, city: true, country: true },
-      });
-      await prisma.job.update({
-        where: { id: winnerId },
-        // Stamp the current generation on every touch, not just on create:
-        // a row left at an older version is deleted by the next generation
-        // purge, then recreated — churning its id and firstSeenAt on every run.
-        // Refresh the url too, so an adapter URL fix reaches rows already stored
-        // (same source -> same canonical URL, so this only corrects).
-        data: {
-          lastSeenAt: now,
-          isActive: true,
-          pipelineVersion: PIPELINE_VERSION,
-          url: candidate.url,
-          ...reattestationFields(candidate, winner, true),
-        },
-      });
-      return { jobId: winnerId, outcome: 'UPDATED', promoted: false };
+      // Same path as any re-attestation: Job AND JobSource touched, cluster
+      // key re-graved. The old hand-written update here forgot the JobSource
+      // (audit A2: 1 855 live jobs with an inactive JobSource).
+      const winner = await prisma.job.findUniqueOrThrow({ where: { id: winnerId }, include: { sources: true } });
+      return attachToExisting(prisma, candidate, winner, now, clusterKey);
     }
   }
 
-  return attachToExisting(prisma, candidate, existing, now);
+  return attachToExisting(prisma, candidate, existing, now, clusterKey);
 }
 
 async function createJob(
@@ -345,6 +349,7 @@ type ExistingJob = {
   id: string;
   url: string | null;
   canonicalTier: string | null;
+  clusterKey: string | null;
   title: string;
   description: string | null;
   location: string | null;
@@ -395,6 +400,8 @@ async function attachToExisting(
   candidate: CandidateJob,
   existing: ExistingJob,
   now: Date,
+  /** La clé de cluster d'AUJOURD'HUI : ré-écrite si elle diffère de celle gravée. */
+  clusterKey?: string,
 ): Promise<UpsertResult> {
   const alreadyKnown = existing.sources.some(
     (source) => source.sourceKey === candidate.sourceKey && source.externalId === candidate.externalId,
@@ -444,6 +451,9 @@ async function attachToExisting(
       pipelineVersion: PIPELINE_VERSION,
       // The normalized values of today reach the rows of yesterday.
       ...reattestationFields(candidate, existing, alreadyKnown),
+      // A cluster key that drifted (city normalized differently) is re-graved,
+      // so the cluster lookup — and the weekly reconcile — find the row again.
+      ...(clusterKey && clusterKey !== existing.clusterKey ? { clusterKey } : {}),
       ...(promoted
         ? {
             url: candidate.url,

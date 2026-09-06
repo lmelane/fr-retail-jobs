@@ -16,6 +16,14 @@ function withWafCookie(url: string, headers: Record<string, string>): Record<str
   return { ...headers, [existing[0]]: `${existing[1]}; ${cookie}` };
 }
 
+/** Statut HTTP définitif (4xx hors 403/405/429) : pas de nouvel essai. */
+export class HttpStatusError extends Error {
+  constructor(public readonly status: number, url: string) {
+    super(`HTTP ${status} for ${url}`);
+    this.name = 'HttpStatusError';
+  }
+}
+
 const timeoutMs = Number(process.env.HTTP_TIMEOUT_MS ?? 20_000);
 const userAgent = process.env.USER_AGENT ?? 'CatwalksJobsBot/0.1';
 
@@ -165,7 +173,9 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
        * seconds, the gain is a whole group's offers not dropped to a blip.
        */
       if (![403, 405, 429, 500, 502, 503, 504].includes(response.status)) {
-        throw new Error(`HTTP ${response.status} for ${url}`);
+        // Un 404/410/400 ne changera pas au prochain essai : il était rejoué
+        // 3 fois (3,9 s) parce que levé DANS le try — audit A2, 2026-09-06.
+        throw new HttpStatusError(response.status, url);
       }
       // A soft block means we are being rude to this host — grow its gap so the
       // whole pool naturally slows down for it (and only it), not just this retry.
@@ -189,7 +199,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       }
     } catch (error) {
       // A blocked URL will never become fetchable — do not waste retries on it.
-      if (error instanceof BlockedUrlError || error instanceof WafChallengeError) {
+      if (error instanceof BlockedUrlError || error instanceof WafChallengeError || error instanceof HttpStatusError) {
         if (timer) clearTimeout(timer);
         throw error;
       }

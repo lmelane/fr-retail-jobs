@@ -240,3 +240,33 @@ describe('upsertDeduplicated — Company.domain depuis la source employeur', () 
     expect(company.domainSource).toBe('manual');
   });
 });
+
+/**
+ * Audit A2 (2026-09-06) : 1 855 offres vivantes portaient une JobSource
+ * inactive — la récupération P2002 touchait le Job, jamais la JobSource ni la
+ * clé de cluster. Le refresh les fermait (410), l'ingest suivant les
+ * ré-ouvrait : cycle quotidien.
+ */
+describe('upsertDeduplicated — identité exacte et ré-attestation complète', () => {
+  it('une offre fermée, re-listée sous un lieu normalisé autrement, revient active avec sa JobSource active et sa clé à jour', async () => {
+    const first = await upsertDeduplicated(
+      prisma,
+      candidate({ sourceKey: 'loreal', externalId: 'L9', company: "L'Oréal", title: 'Chef de produit', location: 'Paris' }),
+    );
+    // Simule la fermeture par le refresh + une clé de cluster gravée périmée.
+    await prisma.job.update({ where: { id: first.jobId }, data: { isActive: false, clusterKey: 'LOREAL|' } });
+    await prisma.jobSource.updateMany({ where: { jobId: first.jobId }, data: { isActive: false } });
+
+    const again = await upsertDeduplicated(
+      prisma,
+      candidate({ sourceKey: 'loreal', externalId: 'L9', company: "L'Oréal", title: 'Chef de produit', city: 'Paris' }),
+    );
+    expect(again.jobId).toBe(first.jobId);
+    expect(again.outcome).toBe('UPDATED');
+    const job = await prisma.job.findUniqueOrThrow({ where: { id: first.jobId }, include: { sources: true } });
+    expect(job.isActive).toBe(true);
+    expect(job.clusterKey).not.toBe('LOREAL|');
+    expect(job.sources.every((s) => s.isActive)).toBe(true);
+    expect(await prisma.job.count()).toBe(1);
+  });
+});

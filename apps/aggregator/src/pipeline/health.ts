@@ -87,13 +87,16 @@ export async function checkSourceHealth(
 
     // Zero from a source that was producing is the signal that matters most:
     // it is what a rotated key, a moved path and a new bot shield all look like.
-    if (jobs === 0 && before > 0) {
+    if (jobs === 0) {
       results.push({
         source: stat.source,
         status: 'BROKEN',
         jobs,
         previous: before,
-        note: `returned nothing, held ${before} offers on the previous run`,
+        note:
+          before > 0
+            ? `returned nothing, held ${before} offers on the last productive run`
+            : 'returned nothing again — never produced since it was catalogued',
       });
       continue;
     }
@@ -207,9 +210,19 @@ async function previousCounts(prisma: PrismaClient): Promise<Map<string, number>
     orderBy: { ranAt: 'desc' },
     select: { sourceKey: true, jobs: true },
   });
+  /**
+   * La référence est le dernier run PRODUCTIF, pas le dernier run : après un
+   * BROKEN (0), le run suivant à 0 se comparait à 0 et passait OK — 66 runs
+   * « OK à 0 » sur 17 sources (Nordstrom 1 294 → 0, Rolex 208 → 0, Sephora
+   * France 9 fois), le digest ne prévenait qu'une fois et le refresh fermait
+   * leurs offres (audit A2, 2026-09-06). Une source qui a déjà tourné mais
+   * n'a jamais produit vaut 0 : « toujours rien » reste une panne, pas un NEW.
+   */
   const latest = new Map<string, number>();
   for (const row of rows) {
-    if (!latest.has(row.sourceKey)) latest.set(row.sourceKey, row.jobs);
+    const known = latest.get(row.sourceKey);
+    if (known === undefined) latest.set(row.sourceKey, row.jobs);
+    else if (known === 0 && row.jobs > 0) latest.set(row.sourceKey, row.jobs);
   }
   return latest;
 }

@@ -382,6 +382,9 @@ export const KIND_TO_ATS: Record<string, string> = {
   typesense: 'TYPESENSE',
   jibe: 'JIBE',
   volcanic: 'VOLCANIC',
+  // iCIMS : adaptateur et dispatch existaient, le kind manquait ici — URBN (1 329 + 906) et
+  // Aéropostale (17) ACTIVE n'ont jamais tourné, sans aucun signal (audit A2, 2026-09-06).
+  icims: 'ICIMS',
   swatchgroup: 'SWATCH_GROUP',
 };
 

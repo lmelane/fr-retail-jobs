@@ -60,45 +60,56 @@ export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown
   };
 }
 
+/**
+ * Un adaptateur par AtsType lisible. Exporté pour que la table des kinds du
+ * catalogue (KIND_TO_ATS) soit testée contre lui : trois sources iCIMS ACTIVE
+ * (2 252 offres) n'ont jamais tourné parce que le kind manquait dans la table
+ * alors que l'adaptateur et ce dispatch existaient (audit A2, 2026-09-06).
+ */
+export const ADAPTERS: Record<string, (config: Record<string, unknown>) => Promise<NormalizedJob[] | AdapterResult>> = {
+  GREENHOUSE: fetchGreenhouseJobs,
+  LEVER: fetchLeverJobs,
+  SMARTRECRUITERS: fetchSmartRecruitersJobs,
+  RECRUITEE: fetchRecruiteeJobs,
+  PERSONIO: fetchPersonioJobs,
+  WORKDAY: fetchWorkdayJobs,
+  ASHBY: fetchAshbyJobs,
+  WORKABLE: fetchWorkableJobs,
+  WTTJ: fetchWttjJobs,
+  SUCCESSFACTORS: fetchSuccessFactorsJobs,
+  PHENOM: fetchPhenomJobs,
+  DIGITALRECRUITERS: fetchDigitalRecruitersJobs,
+  TALENTSOFT: fetchTalentsoftJobs,
+  TEAMTAILOR: fetchTeamtailorJobs,
+  AVATURE: fetchAvatureJobs,
+  ICIMS: fetchIcimsJobs,
+  EIGHTFOLD: fetchEightfoldJobs,
+  TALENTVIEW: fetchTalentViewJobs,
+  MAGNET: fetchMagnetJobs,
+  PINPOINT: fetchPinpointJobs,
+  LVMH_ALGOLIA: fetchLvmhJobs,
+  WORDPRESS: fetchWordpressJobs,
+  FASHIONJOBS: fetchFashionjobsJobs,
+  GENERIC_JSONLD: fetchGenericJsonLdJobs,
+  ORACLE_HCM: fetchOracleHcmJobs,
+  TALEO: fetchTaleoJobs,
+  ALTAMIRA: fetchAltamiraJobs,
+  JOBYLON: fetchJobylonJobs,
+  RITUALS: fetchRitualsJobs,
+  TALENT_FUNNEL: fetchTalentFunnelJobs,
+  BASH_TALENTS: fetchBashTalentsJobs,
+  EQWA: fetchEqwaJobs,
+  GEODIRECTORY: fetchGeoDirectoryJobs,
+  TYPESENSE: fetchRivoliTypesenseJobs,
+  JIBE: fetchJibeJobs,
+  VOLCANIC: fetchVolcanicJobs,
+  SWATCH_GROUP: fetchSwatchGroupJobs,
+};
+
+export const SUPPORTED_ATS_TYPES = Object.keys(ADAPTERS);
+
 async function dispatch(type: AtsType, config: Record<string, unknown>): Promise<NormalizedJob[] | AdapterResult> {
-  switch (type) {
-    case 'GREENHOUSE': return fetchGreenhouseJobs(config);
-    case 'LEVER': return fetchLeverJobs(config);
-    case 'SMARTRECRUITERS': return fetchSmartRecruitersJobs(config);
-    case 'RECRUITEE': return fetchRecruiteeJobs(config);
-    case 'PERSONIO': return fetchPersonioJobs(config);
-    case 'WORKDAY': return fetchWorkdayJobs(config);
-    case 'ASHBY': return fetchAshbyJobs(config);
-    case 'WORKABLE': return fetchWorkableJobs(config);
-    case 'WTTJ': return fetchWttjJobs(config);
-    case 'SUCCESSFACTORS': return fetchSuccessFactorsJobs(config);
-    case 'PHENOM': return fetchPhenomJobs(config);
-    case 'DIGITALRECRUITERS': return fetchDigitalRecruitersJobs(config);
-    case 'TALENTSOFT': return fetchTalentsoftJobs(config);
-    case 'TEAMTAILOR': return fetchTeamtailorJobs(config);
-    case 'AVATURE': return fetchAvatureJobs(config);
-    case 'ICIMS': return fetchIcimsJobs(config);
-    case 'EIGHTFOLD': return fetchEightfoldJobs(config);
-    case 'TALENTVIEW': return fetchTalentViewJobs(config);
-    case 'MAGNET': return fetchMagnetJobs(config);
-    case 'PINPOINT': return fetchPinpointJobs(config);
-    case 'LVMH_ALGOLIA': return fetchLvmhJobs(config);
-    case 'WORDPRESS': return fetchWordpressJobs(config);
-    case 'FASHIONJOBS': return fetchFashionjobsJobs(config);
-    case 'GENERIC_JSONLD': return fetchGenericJsonLdJobs(config);
-    case 'ORACLE_HCM': return fetchOracleHcmJobs(config);
-    case 'TALEO': return fetchTaleoJobs(config);
-    case 'ALTAMIRA': return fetchAltamiraJobs(config);
-    case 'JOBYLON': return fetchJobylonJobs(config);
-    case 'RITUALS': return fetchRitualsJobs(config);
-    case 'TALENT_FUNNEL': return fetchTalentFunnelJobs(config);
-    case 'BASH_TALENTS': return fetchBashTalentsJobs(config);
-    case 'EQWA': return fetchEqwaJobs(config);
-    case 'GEODIRECTORY': return fetchGeoDirectoryJobs(config);
-    case 'TYPESENSE': return fetchRivoliTypesenseJobs(config);
-    case 'JIBE': return fetchJibeJobs(config);
-    case 'VOLCANIC': return fetchVolcanicJobs(config);
-    case 'SWATCH_GROUP': return fetchSwatchGroupJobs(config);
-    default: throw new Error(`Unsupported ATS type: ${type}`);
-  }
+  const adapter = ADAPTERS[type];
+  if (!adapter) throw new Error(`Unsupported ATS type: ${type}`);
+  return adapter(config);
 }

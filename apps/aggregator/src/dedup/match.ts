@@ -63,7 +63,10 @@ const TITLE_SIMILARITY_THRESHOLD = 0.72;
  * "Christian Dior Couture SA" land in the same bucket.
  */
 export function blockingKey(job: CandidateJob): string {
-  const city = normalizeLocationString(job.location).city ?? '';
+  // La ville structurée de l'adaptateur d'abord : 4 158 offres avec `city` mais
+  // un `location` illisible se rangeaient dans le cluster « sans ville »
+  // (L'Oréal : 1 782 offres, 461 villes, une seule clé — audit A2, 2026-09-06).
+  const city = normalizeLocationString(job.city ?? job.location).city ?? '';
   return `${resolveCompany(job.company).companyId}|${city}`;
 }
 

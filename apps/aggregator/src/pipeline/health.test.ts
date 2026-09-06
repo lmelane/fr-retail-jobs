@@ -99,3 +99,18 @@ describe('truncation gate (F-04)', () => {
     expect(run.urlRate).toBe(1);
   });
 });
+
+/**
+ * Audit A2 (2026-09-06) : après un BROKEN, un second run à 0 se comparait à
+ * 0 et passait OK — 66 runs « OK à 0 » sur 17 sources ; le refresh fermait
+ * leurs offres et le digest ne prévenait qu'une fois.
+ */
+describe('checkSourceHealth — zéro après zéro', () => {
+  it('BROKEN puis 0 → toujours BROKEN, référence = dernier run productif', async () => {
+    await checkSourceHealth(prisma, [stat('nordstrom', 1294)]);
+    await checkSourceHealth(prisma, [stat('nordstrom', 0)]);
+    const report = await checkSourceHealth(prisma, [stat('nordstrom', 0)]);
+    expect(report.broken).toBe(1);
+    expect(report.incidents[0]?.previous).toBe(1294);
+  });
+});
