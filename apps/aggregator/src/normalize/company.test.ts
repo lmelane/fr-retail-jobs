@@ -89,3 +89,11 @@ describe('stripLogoArtifact — "Logo" happé depuis un attribut alt', () => {
     expect(resolveCompany('Cartier Logo +3').displayName).toBe('Cartier');
   });
 });
+
+describe('resolveCompany — fautes des flux', () => {
+  it('« VanCleef-Aprels » (flux Richemont) est Van Cleef & Arpels', () => {
+    const identity = resolveCompany('VanCleef-Aprels');
+    expect(identity.companyId).toBe('VAN_CLEEF');
+    expect(identity.displayName).toBe('Van Cleef & Arpels');
+  });
+});

@@ -66,6 +66,9 @@ const ALIASES: ReadonlyArray<readonly [string, CompanyIdentity]> = [
   ['CARTIER', { companyId: 'CARTIER', displayName: 'Cartier', group: 'Richemont' }],
   ['VAN CLEEF AND ARPELS', { companyId: 'VAN_CLEEF', displayName: 'Van Cleef & Arpels', group: 'Richemont' }],
   ['VAN CLEEF ARPELS', { companyId: 'VAN_CLEEF', displayName: 'Van Cleef & Arpels', group: 'Richemont' }],
+  // Orthographe du flux Richemont Workday (mesurée 2026-09-06, 266 offres) : « VanCleef-Aprels ».
+  ['VANCLEEF-APRELS', { companyId: 'VAN_CLEEF', displayName: 'Van Cleef & Arpels', group: 'Richemont' }],
+  ['VANCLEEF APRELS', { companyId: 'VAN_CLEEF', displayName: 'Van Cleef & Arpels', group: 'Richemont' }],
   ['RICHEMONT', { companyId: 'RICHEMONT', displayName: 'Richemont', group: 'Richemont' }],
 
   ['SANDRO', { companyId: 'SANDRO', displayName: 'Sandro', group: 'SMCP' }],
