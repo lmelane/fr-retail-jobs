@@ -44,7 +44,7 @@ export async function middleware(request: NextRequest) {
     // request.url = https://0.0.0.0:8080/… (x-forwarded-proto), le TLS échouait
     // sur un port HTTP et le catch rendait 200 — 10/10 offres fermées en 200 en
     // prod, jamais 410 (audit A5, 2026-09-06).
-    const probe = await fetch(new URL(`/api/offre-status/${encodeURIComponent(id)}`, `http://127.0.0.1:${process.env.PORT ?? 3000}`), {
+    const probe = await fetch(new URL(`/api/offre-status/${encodeURIComponent(id)}`, `http://127.0.0.1:${process.env.PORT ?? 8080}`), {
       headers: { 'x-internal-probe': '1' },
     });
     if (!probe.ok) return NextResponse.next();
