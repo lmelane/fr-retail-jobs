@@ -367,6 +367,7 @@ export const KIND_TO_ATS: Record<string, string> = {
   typesense: 'TYPESENSE',
   jibe: 'JIBE',
   volcanic: 'VOLCANIC',
+  swatchgroup: 'SWATCH_GROUP',
 };
 
 /**

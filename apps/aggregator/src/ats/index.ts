@@ -37,6 +37,7 @@ import { fetchGeoDirectoryJobs } from './adapters/geodirectory.js';
 import { fetchRivoliTypesenseJobs } from './adapters/rivoliTypesense.js';
 import { fetchJibeJobs } from './adapters/jibe.js';
 import { fetchVolcanicJobs } from './adapters/volcanic.js';
+import { fetchSwatchGroupJobs } from './adapters/swatchgroup.js';
 
 /**
  * Adapters answer either the legacy array or an AdapterResult (F-04); the
@@ -97,6 +98,7 @@ async function dispatch(type: AtsType, config: Record<string, unknown>): Promise
     case 'TYPESENSE': return fetchRivoliTypesenseJobs(config);
     case 'JIBE': return fetchJibeJobs(config);
     case 'VOLCANIC': return fetchVolcanicJobs(config);
+    case 'SWATCH_GROUP': return fetchSwatchGroupJobs(config);
     default: throw new Error(`Unsupported ATS type: ${type}`);
   }
 }
