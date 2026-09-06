@@ -13,16 +13,21 @@ import type { PrismaClient } from '@prisma/client';
 
 /** Which sources rotate, how many pages a run covers, and how many exist. */
 export const ROTATING_SOURCES: Record<string, { windowPages: number; totalPagesEstimate: number }> = {
-  // FashionJobs: ~282 listing pages behind Cloudflare, ~27 offers each. 40 pages
-  // a run covers the whole board in ~8 runs — 32h at the 4h cadence (DEC-5).
-  fashionjobs: { windowPages: 40, totalPagesEstimate: 282 },
+  // FashionJobs : ~282 pages de liste derrière Cloudflare, ~27 offres chacune.
+  // Cadence quotidienne (D36, 2026-09-06) : la fenêtre couvre TOUT le board en
+  // un run (282 pages ≈ 18 min au rythme mesuré de 40 pages / 2,5 min), sinon
+  // une rotation de 8 runs à 24 h = 12 jours, et le refresh (48 h) fermerait
+  // des offres encore listées (invariant L-01, cadence.test.ts).
+  fashionjobs: { windowPages: 300, totalPagesEstimate: 282 },
 };
 
 /**
- * The graved cadences (DEC-5, décision Loïc 2026-09-03): ingest every 4h,
- * refresh daily, reconcile weekly. Railway cron expressions derive from these.
+ * Cadence gravée (D36, décision Loïc 2026-09-06, révise DEC-5) : un ingest
+ * par jour, la nuit (03:00 Paris), refresh après, reconcile hebdomadaire.
+ * « Une fois par jour max, pour détecter et nettoyer les offres périmées. »
+ * Les crons restent gelés jusqu'au run global validé à 100 %.
  */
-export const INGEST_INTERVAL_HOURS = 4;
+export const INGEST_INTERVAL_HOURS = 24;
 
 /**
  * L-01 invariant: an offer must be RE-SEEN by its rotating crawl before the

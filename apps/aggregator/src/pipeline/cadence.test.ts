@@ -13,8 +13,8 @@ import { ROTATING_SOURCES, INGEST_INTERVAL_HOURS, requiredStaleHours } from './s
 describe('cadence invariant (L-01)', () => {
   const STALE_HOURS = Number(process.env.REFRESH_STALE_HOURS ?? 48);
 
-  it('graves the DEC-5 ingest cadence', () => {
-    expect(INGEST_INTERVAL_HOURS).toBe(4);
+  it('graves the D36 daily ingest cadence', () => {
+    expect(INGEST_INTERVAL_HOURS).toBe(24);
   });
 
   it('staleHours covers a full rotation ×1.5 for every rotating source', () => {
@@ -27,8 +27,9 @@ describe('cadence invariant (L-01)', () => {
   });
 
   it('computes the requirement from pages, window and interval', () => {
-    // FashionJobs: ceil(282/40)=8 runs × 4h × 1.5 = 48h — exactly the window.
-    expect(requiredStaleHours('fashionjobs')).toBe(48);
+    // FashionJobs : ceil(282/300)=1 run × 24h × 1.5 = 36h ≤ 48h (D36 : le board
+    // entier en un run, sinon 8 runs × 24h × 1.5 = 288h > 48h).
+    expect(requiredStaleHours('fashionjobs')).toBe(36);
     // A non-rotating source has no rotation requirement.
     expect(requiredStaleHours('hermes')).toBe(0);
   });

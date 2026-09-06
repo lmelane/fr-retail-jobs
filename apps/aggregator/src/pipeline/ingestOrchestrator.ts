@@ -91,7 +91,25 @@ export async function allSourceKeys(prisma: PrismaClient): Promise<string[]> {
   const sitemapKeys = plainHttpSources()
     .filter((source) => source.kind === 'SITEMAP_JSONLD')
     .map((source) => source.key);
-  return [...new Set([...apiKeys, ...sitemapKeys])];
+  return onlyRequested([...new Set([...apiKeys, ...sitemapKeys])]);
+}
+
+/**
+ * Run ciblé (décision Loïc, 2026-09-06) : « on arrête les runs trop longs,
+ * il faut une solution localisée ». `INGEST_ONLY_KEYS="hermes,kering"` posé
+ * sur le service Railway limite le run aux clés listées — depuis l'egress de
+ * la prod (D32 : un poste local n'a pas le même), en quelques minutes, sans
+ * les 490 autres sources. Une clé inconnue est signalée, pas ignorée en
+ * silence. Vide ou absente : run complet.
+ */
+export function onlyRequested(keys: string[], raw = process.env.INGEST_ONLY_KEYS): string[] {
+  const wanted = (raw ?? '').split(',').map((k) => k.trim()).filter(Boolean);
+  if (wanted.length === 0) return keys;
+  const known = new Set(keys);
+  const unknown = wanted.filter((k) => !known.has(k));
+  if (unknown.length > 0) throw new Error(`INGEST_ONLY_KEYS : clés inconnues ou inactives — ${unknown.join(', ')}`);
+  const set = new Set(wanted);
+  return keys.filter((k) => set.has(k));
 }
 
 /** Rejects if the work does not settle within the budget. */
