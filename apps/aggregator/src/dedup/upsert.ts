@@ -355,8 +355,11 @@ function countryOf(candidate: CandidateJob): string | undefined {
 
 /** Ville affichable — jamais un pays ou un code pays (« Ch », « Germany » : ~800 « villes », audit A1). */
 function cityOf(candidate: CandidateJob): string | undefined {
-  const city = displayCity(candidate.city ?? cityFromLocation(candidate.location));
-  return city && !normalizeCountry(city) ? city : undefined;
+  // La ville de l'adaptateur si elle est un lieu (location.ts rejette pays, états,
+  // codes magasin, modes de travail), SINON celle que porte le lieu : +1 231
+  // offres avec ville (lot 4). Pas de garde « ≠ pays » ici : elle effaçait
+  // Singapour, Hong Kong, Luxembourg, Monaco (750 offres légitimes).
+  return displayCity(candidate.city) ?? cityFromLocation(candidate.location);
 }
 
 type ExistingJob = {

@@ -1,0 +1,382 @@
+libelle,type
+# Libellés qui ne sont PAS une ville et ne doivent jamais apparaître dans le filtre Ville.
+# type : region (état, province, région, Land, comté) · mode (mode de travail, périmètre) ·
+#        service (un service ou une entité que la source range dans le champ lieu).
+# Les pays sont reconnus par `normalizeCountry` (country.ts) et n'ont pas à figurer ici,
+# sauf un libellé non standard. Casse, accents et ponctuation ignorés.
+#
+# ── France ──
+Île-de-France,region
+IDF,region
+Auvergne-Rhône-Alpes,region
+Provence-Alpes-Côte d'Azur,region
+PACA,region
+Occitanie,region
+Nouvelle-Aquitaine,region
+Hauts-de-France,region
+Grand Est,region
+Bretagne,region
+Normandie,region
+Pays de la Loire,region
+Centre-Val de Loire,region
+Bourgogne-Franche-Comté,region
+Corse,region
+# ── Royaume-Uni, Irlande ──
+England,region
+Scotland,region
+Wales,region
+Northern Ireland,region
+Great Britain,region
+Channel Islands,region
+The Channel Islands,region
+County Dublin,region
+# ── Allemagne, Autriche, Suisse ──
+Bayern,region
+Bavaria,region
+Bavière,region
+Baden-Württemberg,region
+Hessen,region
+Hesse,region
+Nordrhein-Westfalen,region
+North Rhine-Westphalia,region
+NRW,region
+Niedersachsen,region
+Lower Saxony,region
+Sachsen,region
+Saxony,region
+Rheinland-Pfalz,region
+Schleswig-Holstein,region
+Brandenburg,region
+Vaud,region
+Ticino,region
+Tessin,region
+Valais,region
+Wallis,region
+Aargau,region
+Argovie,region
+Graubünden,region
+Grisons,region
+# ── Italie ──
+Lombardia,region
+Lombardy,region
+Lombardie,region
+Toscana,region
+Tuscany,region
+Toscane,region
+Lazio,region
+Latium,region
+Piemonte,region
+Piedmont,region
+Piémont,region
+Veneto,region
+Vénétie,region
+Emilia-Romagna,region
+Emilia Romagna,region
+Campania,region
+Campanie,region
+Sicilia,region
+Sicily,region
+Sicile,region
+Liguria,region
+Ligurie,region
+Puglia,region
+Apulia,region
+Marche,region
+# ── Espagne, Portugal ──
+Cataluña,region
+Catalonia,region
+Catalunya,region
+Catalogne,region
+Andalucía,region
+Andalusia,region
+Andalousie,region
+Comunidad Valenciana,region
+Valencian Community,region
+Comunidad de Madrid,region
+Castilla-La Mancha,region
+Castilla la Mancha,region
+Castile-La Mancha,region
+Castilla y León,region
+Castile and Leon,region
+País Vasco,region
+Basque Country,region
+Euskadi,region
+Galicia,region
+Aragón,region
+Aragon,region
+Asturias,region
+Cantabria,region
+Islas Baleares,region
+Balearic Islands,region
+Canarias,region
+Canary Islands,region
+Extremadura,region
+Navarra,region
+# ── Benelux ──
+Flanders,region
+Vlaanderen,region
+Flandre,region
+Wallonie,region
+Wallonia,region
+Noord-Holland,region
+North Holland,region
+Zuid-Holland,region
+South Holland,region
+Noord-Brabant,region
+Gelderland,region
+# ── Europe centrale et orientale ──
+Masovian Voivodeship,region
+Województwo mazowieckie,region
+Mazowieckie,region
+Małopolskie,region
+Malopolskie,region
+Lesser Poland,region
+Attica,region
+Hovedstaden,region
+# ── Amérique du Nord : États et provinces (New York et Washington restent des villes) ──
+Alabama,region
+Alaska,region
+Arizona,region
+Arkansas,region
+California,region
+Californie,region
+Colorado,region
+Connecticut,region
+Delaware,region
+Florida,region
+Floride,region
+Hawaii,region
+Hawaï,region
+Idaho,region
+Illinois,region
+Indiana,region
+Iowa,region
+Kansas,region
+Kentucky,region
+Louisiana,region
+Louisiane,region
+Maine,region
+Maryland,region
+Massachusetts,region
+Michigan,region
+Minnesota,region
+Mississippi,region
+Missouri,region
+Montana,region
+Nebraska,region
+Nevada,region
+New Hampshire,region
+New Jersey,region
+New Mexico,region
+Nouveau-Mexique,region
+North Carolina,region
+Caroline du Nord,region
+North Dakota,region
+Dakota du Nord,region
+Ohio,region
+Oklahoma,region
+Oregon,region
+Pennsylvania,region
+Pennsylvanie,region
+Rhode Island,region
+South Carolina,region
+Caroline du Sud,region
+South Dakota,region
+Dakota du Sud,region
+Tennessee,region
+Texas,region
+Utah,region
+Vermont,region
+Virginia,region
+Virginie,region
+West Virginia,region
+Virginie-Occidentale,region
+Wisconsin,region
+Wyoming,region
+District of Columbia,region
+Inland Empire,region
+Bay Area,region
+Ontario,region
+British Columbia,region
+Colombie-Britannique,region
+Alberta,region
+Manitoba,region
+Saskatchewan,region
+Nova Scotia,region
+Nouvelle-Écosse,region
+New Brunswick,region
+Nouveau-Brunswick,region
+Estado de México,region
+Jalisco,region
+Nuevo León,region
+Minas Gerais,region
+# ── Océanie ──
+Western Australia,region
+South Australia,region
+New South Wales,region
+Queensland,region
+Northern Territory,region
+Tasmania,region
+Australian Capital Territory,region
+QLD,region
+NSW,region
+VIC,region
+TAS,region
+ACT,region
+# ── Asie ──
+Guangdong,region
+广东省,region
+Jiangsu,region
+江苏省,region
+Zhejiang,region
+浙江省,region
+Hainan,region
+海南省,region
+Yunnan,region
+云南省,region
+Sichuan,region
+Hubei,region
+Hunan,region
+Fujian,region
+Shandong,region
+Henan,region
+Hebei,region
+Shaanxi,region
+Liaoning,region
+Anhui,region
+Jiangxi,region
+Maharashtra,region
+Karnataka,region
+Tamil Nadu,region
+Haryana,region
+Riyadh Province,region
+Gyeonggi-do,region
+Gyeonggi,region
+경기도,region
+Makkah Province,region
+# ── Modes de travail et périmètres ──
+Remote,mode
+Télétravail,mode
+Full remote,mode
+Home office,mode
+Homeoffice,mode
+Home-office,mode
+Home based,mode
+Home-based,mode
+Work from home,mode
+WFH,mode
+Hybrid,mode
+Hybride,mode
+Onsite,mode
+On-site,mode
+On site,mode
+Flexible,mode
+Flex,mode
+Various,mode
+Various locations,mode
+Multiple,mode
+Multiple locations,mode
+Other,mode
+Others,mode
+Autre,mode
+Autres,mode
+Nationwide,mode
+National,mode
+Anywhere,mode
+Virtual,mode
+Field,mode
+Field based,mode
+Field-based,mode
+Travel,mode
+TBD,mode
+TBA,mode
+N/A,mode
+None,mode
+Global,mode
+Europe,mode
+EMEA,mode
+APAC,mode
+Asia,mode
+Asia Pacific,mode
+LATAM,mode
+Americas,mode
+North America,mode
+Amérique du Nord,mode
+Worldwide,mode
+International,mode
+All,mode
+Any,mode
+Unknown,mode
+Not specified,mode
+Non précisé,mode
+À définir,mode
+Divers,mode
+全国,mode
+开放中,mode
+해당사항,mode
+Chinese Mainland,mode
+# Pays écrits dans leur langue, que country.ts ne lit pas
+日本,pays
+中国,pays
+中國,pays
+中国大陆,pays
+한국,pays
+대한민국,pays
+台灣,pays
+台湾,pays
+Corée,pays
+Korea,pays
+Republic of,pays
+Republic,pays
+The,pays
+Kingdom of,pays
+China Mainland,mode
+Mainland China,mode
+# ── Services et entités que la source met dans le champ lieu ──
+Réseau,service
+Network,service
+Networks,service
+Corporate,service
+Head Office,service
+Headquarter,service
+Headquarters,service
+HQ,service
+Office,service
+Bureau,service
+Siège,service
+Sede,service
+Sede Centrale,service
+Retail,service
+Wholesale,service
+Consulting,service
+Marketing,service
+Social Media,service
+Expansion,service
+Organization,service
+Transformation and IT,service
+Sales Market,service
+Saks Direct,service
+Alterations,service
+ECDC,service
+NMG,service
+NMS,service
+Nm Swrs,service
+Northpark,service
+Pinnacle Park,service
+Dolphin,service
+Sawgrass,service
+DMV,service
+# Un type de contrat rangé dans le champ lieu
+CDI,service
+CDD,service
+Stage,service
+Alternance,service
+Intérim,service
+Interim,service
+Freelance,service
+Temps plein,service
+Temps partiel,service
+Full time,service
+Part time,service
+Full-time,service
+Part-time,service
