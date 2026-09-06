@@ -79,10 +79,18 @@ function toNormalized(data: PhenomJobData, origin: string): NormalizedJob | null
     latitude: Number.isFinite(Number(data.latitude)) ? Number(data.latitude) : undefined,
     longitude: Number.isFinite(Number(data.longitude)) ? Number(data.longitude) : undefined,
     description: htmlToPlainText(data.description),
-    url: data.applyUrl ?? data.apply_url ?? `${origin}/job/${id ?? ''}`,
+    // Phenom livre `apply_url` = l'étape de CONNEXION iCIMS (`/jobs/<id>/login`,
+    // 2 842/2 842 liens Foot Locker sur une page de login) ; la fiche publique est
+    // `/jobs/<id>/job` (audit A5, 2026-09-06).
+    url: publicJobUrl(data.applyUrl ?? data.apply_url ?? `${origin}/job/${id ?? ''}`),
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
     raw: data,
   };
+}
+
+/** La fiche publique, jamais l'étape de connexion iCIMS que Phenom met dans apply_url (`/jobs/<id>/login` → `/jobs/<id>/job`). */
+export function publicJobUrl(url: string): string {
+  return url.replace(/(\/jobs\/[^/?#]+)\/login(?=[/?#]|$)/, '$1/job');
 }
 
 /**

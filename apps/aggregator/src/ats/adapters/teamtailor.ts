@@ -55,7 +55,26 @@ type FeedItem = {
 type Feed = { items?: FeedItem[]; next_url?: string };
 
 
-function toNormalized(item: FeedItem): NormalizedJob | null {
+/**
+ * L'hôte des fiches quand le feed n'est pas servi par lui : normal.eu publie
+ * son feed sur jobs.normal.eu mais ses 478 fiches n'existent que sur
+ * jobs.normal.{no,fr,…} — 478/478 liens « Postuler » en 404 (audit A5,
+ * 2026-09-06). `config.jobOrigin` remplace l'hôte des URL d'offre.
+ */
+function rehost(url: string | undefined, jobOrigin?: string): string {
+  if (!url || !jobOrigin) return url ?? '';
+  try {
+    const target = new URL(jobOrigin);
+    const u = new URL(url);
+    u.protocol = target.protocol;
+    u.host = target.host;
+    return u.toString();
+  } catch {
+    return url;
+  }
+}
+
+export function toNormalized(item: FeedItem, jobOrigin?: string): NormalizedJob | null {
   const posting = item._jobposting;
   const title = item.title ?? posting?.title;
   if (!title) return null;
@@ -81,7 +100,7 @@ function toNormalized(item: FeedItem): NormalizedJob | null {
     salaryPeriod: posting?.baseSalary?.value?.unitText,
     // The feed carries the whole posting; content_html is the same text.
     description: htmlToPlainText(posting?.description ?? item.content_html),
-    url: item.url ?? '',
+    url: rehost(item.url, jobOrigin),
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
     raw: item,
   };
@@ -96,6 +115,7 @@ export async function fetchTeamtailorJobs(
 ): Promise<NormalizedJob[]> {
   const origin = String(config.origin ?? '').replace(/\/$/, '');
   if (!origin) throw new Error('Teamtailor origin missing');
+  const jobOrigin = typeof config.jobOrigin === 'string' ? config.jobOrigin : undefined;
 
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
@@ -107,7 +127,7 @@ export async function fetchTeamtailorJobs(
     let fresh = 0;
 
     for (const item of items) {
-      const job = toNormalized(item);
+      const job = toNormalized(item, jobOrigin);
       if (!job || seen.has(job.externalId)) continue;
       seen.add(job.externalId);
       jobs.push(job);

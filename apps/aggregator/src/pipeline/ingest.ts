@@ -7,7 +7,7 @@ import { domainFromEmployerSources } from '../normalize/companyDomain.js';
 import { normalizeContract, normalizeWorkingTime, isWorkingTimeValue, extractContract, extractSalaryBand } from '../normalize/contract.js';
 import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
-import { coerceAmount, coerceCoordinate, coerceText, briefError } from '../lib/normalize.js';
+import { coerceAmount, coerceCoordinate, coerceText, cleanTitle, cleanPlace, plausiblePostedAt, canonicalPeriod, canonicalRemote, boundedSalary, briefError } from '../lib/normalize.js';
 import { normalizeSourceConfig } from '../connectors/sourceConfig.js';
 import { isRotatingSource, nextPageFor, advanceCursor } from './sourceCursor.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
@@ -124,17 +124,24 @@ function toCandidate(
 
   return {
     ...job,
+    // Titre nettoyé (entités, espaces parasites : 2 400 offres, audit A1) ; lieu et
+    // ville sans balise (« /a> » sur 71 offres L'Oréal) ; date de publication
+    // plausible (5 offres « publiées en 2028 ») ; salaire borné pour les devises
+    // majeures (58 M€/an chez Michael Page).
+    title: cleanTitle(job.title) ?? job.title,
+    location: cleanPlace(job.location),
+    city: cleanPlace(job.city),
+    postedAt: plausiblePostedAt(job.postedAt),
     description,
-    salaryMin,
-    salaryMax,
+    ...boundedSalary(salaryMin, salaryMax, job.salaryCurrency),
     // String columns, coerced at the boundary: TalentView sends NUMERIC ids for
     // the currency ("1") and remote level, which crashed every write ("Expected
     // String, provided Int"). Coercing here means no adapter can ever leak the
     // wrong type into these columns again — the adapter's own mapping is the
     // readable value, this is the guardrail.
-    salaryCurrency: coerceText(job.salaryCurrency),
-    salaryPeriod: coerceText(job.salaryPeriod),
-    remote: coerceText(job.remote),
+    salaryCurrency: coerceText(job.salaryCurrency)?.toUpperCase(),
+    salaryPeriod: canonicalPeriod(job.salaryPeriod),
+    remote: canonicalRemote(job.remote),
     // Float columns: Rituals shipped "52.37" as a string and lost 577 offers.
     latitude: coerceCoordinate(job.latitude, 90),
     longitude: coerceCoordinate(job.longitude, 180),

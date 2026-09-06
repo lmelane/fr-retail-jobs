@@ -41,3 +41,22 @@ describe('fetchEightfoldJobs apply URL', () => {
     expect(jobs[0].url).toBe('https://careers.elcompanies.com/careers/job/1168274680915');
   });
 });
+
+/**
+ * Audit A1 (2026-09-06) : 125 offres Estée Lauder envoyaient le candidat sur
+ * une AUTRE position — `positionUrl` de la liste est l'URL canonique du groupe
+ * de positions similaires, pas celle de la position.
+ */
+describe('fetchEightfoldJobs apply URL — la position, pas son groupe', () => {
+  it("construit l'URL depuis l'id de la position même quand positionUrl pointe ailleurs", async () => {
+    mockRetry.mockResolvedValueOnce({ headers: { getSetCookie: () => ['sid=abc; Path=/'] } } as never);
+    mockJson
+      .mockResolvedValueOnce({
+        data: { positions: [{ id: 1168273610474, name: 'Beauty Advisor', positionUrl: '/careers/job/1168274067860' }] },
+      })
+      .mockResolvedValue({ data: { positions: [] } });
+    const { jobs } = await fetchEightfoldJobs({ origin: 'https://careers.elcompanies.com', domain: 'elcompanies.com', withDescriptions: false });
+    expect(jobs[0]?.url).toBe('https://careers.elcompanies.com/careers/job/1168273610474');
+    expect(jobs[0]?.url.endsWith(jobs[0]!.externalId)).toBe(true);
+  });
+});

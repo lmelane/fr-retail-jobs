@@ -80,13 +80,28 @@ const LABEL_TO_ISO: Record<string, string> = {
 };
 
 /** Codes ISO-2 valides rencontrés, pour ne pas laisser passer n'importe quoi. */
+/**
+ * Tous les codes ISO 3166-1 alpha-2 connus d'Intl (280), pas une liste
+ * blanche partielle : 208 offres en Lettonie, Serbie, Kosovo… étaient rejetées
+ * comme « pas un pays » (audit A1, 2026-09-06).
+ */
 const ISO_CODES = new Set([
+  // Régions Intl qui ne sont pas des pays (EU, UN, ZZ…) retirées.
   ...Object.values(LABEL_TO_ISO),
-  'AD','AE','AM','AR','AT','AU','AW','BD','BE','BG','BH','BL','BR','CA','CH','CL','CN','CO','CZ',
-  'DE','DK','DO','EG','ES','FI','FR','GB','GG','GR','GU','HK','HR','HU','ID','IE','IL','IN','IT',
-  'JP','KH','KR','KW','LB','LT','LU','MA','MC','MF','MO','MV','MX','MY','NA','NL','NO','NZ','PA',
-  'PE','PH','PK','PL','PR','PT','QA','RO','RU','SA','SC','SE','SG','SI','SK','TH','TN','TR','TW',
-  'UA','US','UY','VI','VN','ZA',
+  'AC','AD','AE','AF','AG','AI','AL','AM','AN','AO','AQ','AR','AS','AT','AU','AW','AX','AZ','BA','BB',
+  'BD','BE','BF','BG','BH','BI','BJ','BL','BM','BN','BO','BQ','BR','BS','BT','BU','BV','BW','BY','BZ',
+  'CA','CC','CD','CF','CG','CH','CI','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CU','CV','CW','CX',
+  'CY','CZ','DD','DE','DG','DJ','DK','DM','DO','DY','DZ','EA','EC','EE','EG','EH','ER','ES','ET',
+  'FI','FJ','FK','FM','FO','FR','FX','GA','GB','GD','GE','GF','GG','GH','GI','GL','GM','GN','GP',
+  'GQ','GR','GS','GT','GU','GW','GY','HK','HM','HN','HR','HT','HU','HV','IC','ID','IE','IL','IM','IN',
+  'IO','IQ','IR','IS','IT','JE','JM','JO','JP','KE','KG','KH','KI','KM','KN','KP','KR','KW','KY','KZ',
+  'LA','LB','LC','LI','LK','LR','LS','LT','LU','LV','LY','MA','MC','MD','ME','MF','MG','MH','MK','ML',
+  'MM','MN','MO','MP','MQ','MR','MS','MT','MU','MV','MW','MX','MY','MZ','NA','NC','NE','NF','NG','NH',
+  'NI','NL','NO','NP','NR','NU','NZ','OM','PA','PE','PF','PG','PH','PK','PL','PM','PN','PR','PS','PT',
+  'PW','PY','QA','RE','RH','RO','RS','RU','RW','SA','SB','SC','SD','SE','SG','SH','SI','SJ','SK',
+  'SL','SM','SN','SO','SR','SS','ST','SU','SV','SX','SY','SZ','TA','TC','TD','TF','TG','TH','TJ','TK',
+  'TL','TM','TN','TO','TP','TR','TT','TV','TW','TZ','UA','UG','UK','UM','US','UY','UZ','VA','VC',
+  'VD','VE','VG','VI','VN','VU','WF','WS','XK','YD','YE','YT','YU','ZA','ZM','ZR','ZW',
 ]);
 
 /**
@@ -113,6 +128,36 @@ export function normalizeCountry(raw?: string | null): string | undefined {
   const stripped = key.normalize('NFD').replace(/[̀-ͯ]/g, '');
   for (const [label, code] of Object.entries(LABEL_TO_ISO)) {
     if (label.normalize('NFD').replace(/[̀-ͯ]/g, '') === stripped) return code;
+  }
+  return undefined;
+}
+
+/**
+ * Le pays porté par un LIEU quand la source n'en donne pas.
+ *
+ * Mesuré en prod le 2026-09-06 (audit A1) : 14 074 offres actives sans pays,
+ * dont 11 313 avec un lieu exploitable — « Columbus,US-OH,United States »,
+ * « CH », « London, England, gb », Boots 100 % au Royaume-Uni. Le filtre Pays
+ * ne les atteignait jamais. On lit le dernier segment, puis un préfixe
+ * « US-OH », puis chaque segment ; jamais une devinette : sans pays reconnu,
+ * undefined.
+ */
+export function countryFromLocation(location?: string | null): string | undefined {
+  if (!location) return undefined;
+  const segments = location.split(/[,|/·;]/).map((s) => s.trim()).filter(Boolean);
+  for (const segment of [...segments].reverse()) {
+    const direct = normalizeCountry(segment);
+    if (direct) return direct;
+    const prefixed = segment.match(/^([A-Za-z]{2})-[A-Za-z0-9]{1,3}$/);
+    if (prefixed) {
+      const code = normalizeCountry(prefixed[1]);
+      if (code) return code;
+    }
+    const parenthesised = segment.match(/\(([^)]+)\)\s*$/);
+    if (parenthesised) {
+      const code = normalizeCountry(parenthesised[1]);
+      if (code) return code;
+    }
   }
   return undefined;
 }

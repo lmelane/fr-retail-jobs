@@ -1,3 +1,4 @@
+import { normalizeCountry } from '../normalize/country.js';
 import { normalizeLocation } from './normalize.js';
 
 /**
@@ -47,6 +48,11 @@ function matchesAny(loc: string, signals: readonly string[]): boolean {
 }
 
 export function isFranceJob(country?: string, location?: string): boolean {
+  // Le pays normalisé décide (« Frankreich », « Francia » → FR) : 248 offres FR
+  // portaient isFrance=false, et « France » avait deux définitions (audit A1).
+  const iso = normalizeCountry(country);
+  if (iso === 'FR') return true;
+  if (iso) return false;
   const c = (country ?? '').trim().toUpperCase();
   if (['FR', 'FRA', 'FRANCE'].includes(c)) return true;
   if (c && !['REMOTE', 'EUROPE', 'EU'].includes(c)) return false;

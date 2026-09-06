@@ -31,7 +31,10 @@ import { briefError } from '../lib/normalize.js';
  * houses. They run LAST (smallest-first ordering), so the long budget only
  * applies once the quick feeds are already in.
  */
-const PER_SOURCE_TIMEOUT_MS = Number(process.env.INGEST_SOURCE_TIMEOUT_MS ?? 20 * 60_000);
+// 40 min depuis D36 (cadence quotidienne, 4 voies) : à 20 min, Michael Page
+// ne lisait que 1 450 offres sur 3 334 par run et la queue de sa liste n'était
+// jamais revue — fermée à 48 h, vivante ou non (audit A5, 2026-09-06).
+const PER_SOURCE_TIMEOUT_MS = Number(process.env.INGEST_SOURCE_TIMEOUT_MS ?? 40 * 60_000);
 
 /**
  * How long before the hard timeout a slow crawl should stop itself. The margin

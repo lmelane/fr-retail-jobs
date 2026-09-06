@@ -2,7 +2,8 @@ import type { PrismaClient } from '@prisma/client';
 import { blockingKey, isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } from './match.js';
 import { classifySector, sectorForSource, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
-import { normalizeCountry } from '../normalize/country.js';
+import { resolveCompany } from '../normalize/company.js';
+import { countryFromLocation, normalizeCountry } from '../normalize/country.js';
 import { cityFromLocation, displayCity } from '../normalize/location.js';
 import { isFranceJob } from '../lib/france.js';
 import { detectLanguage } from '../lib/language.js';
@@ -91,7 +92,9 @@ export async function upsertDeduplicated(
   // The reference list knows Sandro belongs to SMCP and Dior to LVMH. Storing
   // it lets a search for one brand reach offers a group portal published under
   // the parent's name — and gives the group its own filter.
-  const parentGroup = findMaison(candidate.company)?.group || null;
+  // Le référentiel d'abord, puis le groupe que porte l'alias (Cartier → Richemont) :
+  // ~5 100 offres de flux de groupe n'avaient aucun groupe (audit A1).
+  const parentGroup = findMaison(candidate.company)?.group || resolveCompany(candidate.company).group || null;
 
   const company = await prisma.company.upsert({
     where: { fashionjobsUrl: `resolved:${candidate.companyId}` },
@@ -271,12 +274,12 @@ async function createJob(
          * françaises. Normaliser ICI répare toutes les sources d'un coup, là où
          * un correctif par adaptateur en aurait laissé passer la moitié.
          */
-        country: normalizeCountry(candidate.country),
+        country: countryOf(candidate),
         // Stored as a FLAG, never used as a discard: the site defaults to the
         // French view and can widen later. This line was missing — every job
         // sat at the schema default `false`, and a front end filtering on
         // isFrance:true would have shown an empty board over a full database.
-        isFrance: isFranceJob(candidate.country, candidate.location),
+        isFrance: isFranceJob(countryOf(candidate) ?? candidate.country, candidate.location),
         contract: candidate.contract,
         // Rich fields the richer vendors publish. Absent means "this source does
         // not expose it", so they are written through rather than dropped.
@@ -295,7 +298,7 @@ async function createJob(
          * dédup — on réutilise donc un chemin éprouvé plutôt que d'en écrire un
          * second qui divergerait.
          */
-        city: displayCity(candidate.city ?? cityFromLocation(candidate.location)),
+        city: cityOf(candidate),
         postalCode: candidate.postalCode,
         latitude: candidate.latitude,
         longitude: candidate.longitude,
@@ -345,17 +348,29 @@ async function createJob(
   return { jobId: created.id, outcome: 'CREATED', promoted: true };
 }
 
+/** Pays ISO du candidat : celui de la source, sinon celui que porte le lieu (audit A1 : 14 074 offres sans pays). */
+function countryOf(candidate: CandidateJob): string | undefined {
+  return normalizeCountry(candidate.country) ?? countryFromLocation(candidate.location);
+}
+
+/** Ville affichable — jamais un pays ou un code pays (« Ch », « Germany » : ~800 « villes », audit A1). */
+function cityOf(candidate: CandidateJob): string | undefined {
+  const city = displayCity(candidate.city ?? cityFromLocation(candidate.location));
+  return city && !normalizeCountry(city) ? city : undefined;
+}
+
 type ExistingJob = {
   id: string;
   url: string | null;
   canonicalTier: string | null;
   clusterKey: string | null;
+  isFrance: boolean;
   title: string;
   description: string | null;
   location: string | null;
   city: string | null;
   country: string | null;
-  sources: { sourceKey: string; externalId: string }[];
+  sources: { sourceKey: string; externalId: string; sourceTier: string }[];
 };
 
 /**
@@ -377,15 +392,21 @@ type ExistingJob = {
  */
 export function reattestationFields(
   candidate: CandidateJob,
-  existing: Pick<ExistingJob, 'title' | 'description' | 'location' | 'city' | 'country'>,
+  existing: Pick<ExistingJob, 'title' | 'description' | 'location' | 'city' | 'country' | 'isFrance'>,
   sameEntry: boolean,
-): Partial<Pick<ExistingJob, 'title' | 'description' | 'location' | 'city' | 'country'>> {
-  const out: Partial<Pick<ExistingJob, 'title' | 'description' | 'location' | 'city' | 'country'>> = {};
-  const country = normalizeCountry(candidate.country);
+): Partial<Pick<ExistingJob, 'title' | 'description' | 'location' | 'city' | 'country' | 'isFrance'>> {
+  const out: Partial<Pick<ExistingJob, 'title' | 'description' | 'location' | 'city' | 'country' | 'isFrance'>> = {};
+  const country = countryOf(candidate);
   if (country && country !== existing.country) out.country = country;
-  const city = displayCity(candidate.city ?? cityFromLocation(candidate.location));
+  if (country) {
+    const isFrance = isFranceJob(country, candidate.location);
+    if (isFrance !== existing.isFrance) out.isFrance = isFrance;
+  }
+  const city = cityOf(candidate);
   if (city && city !== existing.city) out.city = city;
-  if (candidate.location && !existing.location) out.location = candidate.location;
+  if (candidate.location && (!existing.location || sameEntry) && candidate.location !== existing.location) {
+    out.location = candidate.location;
+  }
   if (sameEntry) {
     if (candidate.title && candidate.title !== existing.title) out.title = candidate.title;
     if (candidate.description && candidate.description.length > (existing.description?.length ?? 0)) {
@@ -429,7 +450,15 @@ async function attachToExisting(
 
   // A better-ranked source takes over the canonical apply URL: a candidate should
   // always be sent to the employer when the employer is publishing the role.
-  const promoted = tierRank(candidate.sourceTier) < tierRank(existing.canonicalTier ?? '');
+  /**
+   * Le rang canonique gravé n'a d'autorité que si une source ATTACHÉE le porte
+   * encore : 3 128 offres gardaient un canonicalTier orphelin (EMPLOYER_DIRECT
+   * alors que la seule source restante est GROUP_OFFICIAL, après un retrait de
+   * source), ce qui bloquait tout rafraîchissement d'URL — le correctif
+   * Eightfold n'atteignait jamais la base (audit A5, 2026-09-06).
+   */
+  const ownerTier = existing.sources.some((s) => s.sourceTier === existing.canonicalTier) ? existing.canonicalTier : null;
+  const promoted = tierRank(candidate.sourceTier) < tierRank(ownerTier ?? '');
 
   // Refresh the canonical URL WITHOUT promotion only when the writer is the SAME
   // OR HIGHER tier as the current owner AND the URL actually changed. This lets
@@ -438,7 +467,7 @@ async function attachToExisting(
   // jobboard) hijack the employer's canonical link — which would churn "Postuler
   // chez [Maison]" between the real employer and a jobboard copy on every cycle
   // (breaks D18). tierRank: lower number = higher priority.
-  const sameOrHigherTier = tierRank(candidate.sourceTier) <= tierRank(existing.canonicalTier ?? '');
+  const sameOrHigherTier = tierRank(candidate.sourceTier) <= tierRank(ownerTier ?? '');
   const urlRefresh = !promoted && sameOrHigherTier && candidate.url && candidate.url !== existing.url;
 
   await prisma.job.update({

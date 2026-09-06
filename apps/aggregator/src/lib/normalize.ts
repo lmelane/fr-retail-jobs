@@ -122,3 +122,76 @@ export function normalizeLocation(value: string): string {
     .replace(/[\u0300-\u036f]/g, '')
     .toUpperCase();
 }
+
+/**
+ * Un titre tel qu'on l'affiche : entités décodées, balises retirées, espaces
+ * repliés. 129 titres portaient encore des entités et 2 300 des espaces
+ * parasites parce que le titre n'était jamais nettoyé (audit A1, 2026-09-06).
+ */
+export function cleanTitle(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined;
+  const text = value
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&amp;(amp|lt|gt|nbsp|quot|#\d+);/gi, '&$1;')
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&(?:quot|rsquo|lsquo|apos);/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text || undefined;
+}
+
+/** Un lieu ou une ville : jamais un fragment de balise (« /a> », 71 offres L'Oréal, audit A1). */
+export function cleanPlace(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined;
+  const text = value.replace(/\s+/g, ' ').trim();
+  if (!text || /[<>]/.test(text) || /\bvar\s|function\s*\(/.test(text)) return undefined;
+  return text;
+}
+
+/** Une date de publication plausible : ni demain, ni invalide (5 offres « publiées en 2028 », audit A1). */
+export function plausiblePostedAt(value: unknown, now = new Date()): Date | undefined {
+  if (!(value instanceof Date) || Number.isNaN(value.getTime())) return undefined;
+  return value.getTime() > now.getTime() + 86_400_000 ? undefined : value;
+}
+
+const PERIODS: Record<string, string> = {
+  year: 'YEAR', yearly: 'YEAR', annual: 'YEAR', annually: 'YEAR', an: 'YEAR', annee: 'YEAR', année: 'YEAR', per_year: 'YEAR',
+  month: 'MONTH', monthly: 'MONTH', mois: 'MONTH', per_month: 'MONTH',
+  week: 'WEEK', weekly: 'WEEK', semaine: 'WEEK',
+  day: 'DAY', daily: 'DAY', jour: 'DAY',
+  hour: 'HOUR', hourly: 'HOUR', heure: 'HOUR', per_hour: 'HOUR',
+};
+/** Période de salaire canonique (YEAR | MONTH | WEEK | DAY | HOUR), sinon rien. */
+export function canonicalPeriod(value: unknown): string | undefined {
+  const key = coerceText(value)?.toLowerCase().replace(/[\s-]+/g, '_');
+  if (!key) return undefined;
+  if (['YEAR', 'MONTH', 'WEEK', 'DAY', 'HOUR'].includes(key.toUpperCase())) return key.toUpperCase();
+  return PERIODS[key];
+}
+
+const REMOTE: Array<[RegExp, string]> = [
+  [/^(no|non|none|onsite|on[-_ ]?site|sur[-_ ]?site|office|presentiel|présentiel|false)$/i, 'no'],
+  [/^(partial|hybrid|hybride|partiel|télétravail partiel|teletravail partiel|part)$/i, 'partial'],
+  [/^(yes|oui|full|fulltime|full[-_ ]?remote|remote|télétravail|teletravail|true|total)$/i, 'full'],
+];
+/** Télétravail canonique (no | partial | full), sinon rien — « unknown » et les libellés bruts ne sont plus stockés. */
+export function canonicalRemote(value: unknown): string | undefined {
+  const text = coerceText(value);
+  if (!text) return undefined;
+  for (const [re, out] of REMOTE) if (re.test(text.trim())) return out;
+  return undefined;
+}
+
+const MAJOR = new Set(['EUR', 'USD', 'GBP', 'CHF', 'CAD', 'AUD']);
+const MAX_MAJOR_ANNUAL = 1_000_000;
+/** Un salaire en devise majeure au-delà d'un million par an est une erreur de source (Michael Page : 58–66 M€), pas un salaire. */
+export function boundedSalary(min: number | undefined, max: number | undefined, currency: unknown): { salaryMin: number | undefined; salaryMax: number | undefined } {
+  const cur = coerceText(currency)?.toUpperCase();
+  const aberrant = (cur === undefined || MAJOR.has(cur)) && ((min ?? 0) > MAX_MAJOR_ANNUAL || (max ?? 0) > MAX_MAJOR_ANNUAL);
+  return aberrant ? { salaryMin: undefined, salaryMax: undefined } : { salaryMin: min, salaryMax: max };
+}

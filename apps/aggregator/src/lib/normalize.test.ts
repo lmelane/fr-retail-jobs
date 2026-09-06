@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { coerceAmount, coerceCoordinate, coerceText, briefError } from './normalize.js';
+import { coerceAmount, coerceCoordinate, coerceText, briefError, cleanTitle, cleanPlace, plausiblePostedAt, canonicalPeriod, canonicalRemote, boundedSalary } from './normalize.js';
 
 /**
  * A salary column is Int?, but a schema.org feed (Teamtailor, medik8) hands the
@@ -120,5 +120,40 @@ describe('coerceCoordinate', () => {
     expect(coerceCoordinate(undefined, 90)).toBeUndefined();
     expect(coerceCoordinate(95, 90)).toBeUndefined();
     expect(coerceCoordinate('200', 180)).toBeUndefined();
+  });
+});
+
+describe('nettoyeurs de frontière (audit A1, 2026-09-06)', () => {
+  it('cleanTitle décode les entités, retire les balises, replie les espaces', () => {
+    expect(cleanTitle('  Sales &amp;amp; Marketing   Manager <b>H/F</b> ')).toBe('Sales & Marketing Manager H/F');
+    expect(cleanTitle('')).toBeUndefined();
+  });
+
+  it('cleanPlace refuse un fragment de balise ou de script', () => {
+    expect(cleanPlace('/a>')).toBeUndefined();
+    expect(cleanPlace('var socialShareButtons = 1')).toBeUndefined();
+    expect(cleanPlace(' Paris ,  France ')).toBe('Paris , France');
+  });
+
+  it('plausiblePostedAt refuse le futur et l’invalide', () => {
+    const now = new Date('2026-09-06T12:00:00Z');
+    expect(plausiblePostedAt(new Date('2028-03-08'), now)).toBeUndefined();
+    expect(plausiblePostedAt(new Date('invalid'), now)).toBeUndefined();
+    expect(plausiblePostedAt(new Date('2026-09-05'), now)?.toISOString()).toBe('2026-09-05T00:00:00.000Z');
+  });
+
+  it('canonicalPeriod et canonicalRemote ne stockent que des valeurs du référentiel', () => {
+    expect(canonicalPeriod('yearly')).toBe('YEAR');
+    expect(canonicalPeriod('par mois')).toBeUndefined();
+    expect(canonicalPeriod('mois')).toBe('MONTH');
+    expect(canonicalRemote('unknown')).toBeUndefined();
+    expect(canonicalRemote('télétravail partiel')).toBe('partial');
+    expect(canonicalRemote('sur site')).toBe('no');
+  });
+
+  it('boundedSalary écarte 58 M€/an mais garde 1 530 000 COP', () => {
+    expect(boundedSalary(58_235_520, 66_554_880, 'EUR')).toEqual({ salaryMin: undefined, salaryMax: undefined });
+    expect(boundedSalary(1_530_000, 2_000_000, 'COP')).toEqual({ salaryMin: 1_530_000, salaryMax: 2_000_000 });
+    expect(boundedSalary(45_000, 55_000, 'EUR')).toEqual({ salaryMin: 45_000, salaryMax: 55_000 });
   });
 });

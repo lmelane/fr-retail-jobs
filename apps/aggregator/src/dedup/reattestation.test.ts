@@ -3,7 +3,7 @@ import { reattestationFields } from './upsert.js';
 import type { CandidateJob } from './match.js';
 
 const base = { sourceKey: 'hermes', sourceTier: 'EMPLOYER_DIRECT', externalId: 'H1', company: 'Hermès', url: 'https://x/1', raw: {} } as CandidateJob;
-const existing = { title: 'Apply Now', description: 'court', location: null, city: null, country: 'France' };
+const existing = { title: 'Apply Now', description: 'court', location: null, city: null, country: 'France', isFrance: false };
 
 /**
  * Mesuré en prod le 2026-09-06 : après le premier run avec les normalisations

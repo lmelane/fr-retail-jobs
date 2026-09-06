@@ -105,9 +105,18 @@ function toNormalized(position: EightfoldPosition, origin: string): NormalizedJo
   // positionUrl is RELATIVE ("/careers/job/123"): stored as-is it is not a
   // fetchable URL, so every Eightfold apply link (Estée Lauder, Dr. Jart+…) was
   // a dead relative path. Resolve it against the origin; verified 200.
-  const positionUrl = position.positionUrl
-    ? new URL(position.positionUrl, `${origin}/`).toString()
-    : `${origin}/careers?pid=${position.id ?? ''}`;
+  /**
+   * L'URL est construite depuis l'id de LA position, jamais reprise de
+   * `positionUrl` : sur la liste `positions`, Eightfold y met l'URL canonique
+   * du GROUPE de positions similaires — 125 offres Estée Lauder envoyaient le
+   * candidat sur une autre position (autre ville, autre contrat), promesse D18
+   * rompue (audit A1, 2026-09-06). Vérifié : `/careers/job/<id>` → 200.
+   */
+  const positionUrl = position.id
+    ? `${origin}/careers/job/${position.id}`
+    : position.positionUrl
+      ? new URL(position.positionUrl, `${origin}/`).toString()
+      : `${origin}/careers?pid=`;
 
   return {
     externalId: String(position.id ?? position.displayJobId ?? position.name),

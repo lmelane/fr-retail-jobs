@@ -14,7 +14,10 @@
  */
 export function htmlToPlainText(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined;
+  // Greenhouse échappe deux fois (« &amp;amp; » sur 2 515 offres, audit A1) : un
+  // premier passage rend « &amp; », le décodage normal fait le reste.
   const text = value
+    .replace(/&amp;(amp|lt|gt|nbsp|quot|#\d+|#x[0-9a-f]+);/gi, '&$1;')
     .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
     .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
     .replace(/&amp;/g, '&')

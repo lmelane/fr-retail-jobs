@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { normalizeCountry } from './country.js';
+import { countryFromLocation, normalizeCountry } from './country.js';
 
 describe('normalizeCountry', () => {
   /**
@@ -44,5 +44,32 @@ describe('normalizeCountry', () => {
     expect(normalizeCountry(null)).toBeUndefined();
     expect(normalizeCountry('XX')).toBeUndefined();
     expect(normalizeCountry('Remote')).toBeUndefined();
+  });
+});
+
+describe('countryFromLocation', () => {
+  it('lit le pays au bout du lieu, dans toute langue', () => {
+    expect(countryFromLocation('Columbus,US-OH,United States')).toBe('US');
+    expect(countryFromLocation('London, England, gb')).toBe('GB');
+    expect(countryFromLocation('Paris, Île-de-France, France')).toBe('FR');
+    expect(countryFromLocation('Genève (Suisse)')).toBe('CH');
+  });
+
+  it('accepte un code seul et un préfixe « US-OH »', () => {
+    expect(countryFromLocation('CH')).toBe('CH');
+    expect(countryFromLocation('Columbus, US-OH')).toBe('US');
+  });
+
+  it('ne devine jamais', () => {
+    expect(countryFromLocation('Remote')).toBeUndefined();
+    expect(countryFromLocation('Boutique Champs-Élysées')).toBeUndefined();
+    expect(countryFromLocation('')).toBeUndefined();
+  });
+
+  it('la liste ISO est complète (Lettonie, Serbie, Kosovo), sans les régions Intl', () => {
+    expect(normalizeCountry('LV')).toBe('LV');
+    expect(normalizeCountry('RS')).toBe('RS');
+    expect(normalizeCountry('XK')).toBe('XK');
+    expect(normalizeCountry('EU')).toBeUndefined();
   });
 });
