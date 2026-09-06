@@ -190,6 +190,12 @@ export const KIND_TO_ATS: Record<string, string> = {
   avature: 'AVATURE',
   eightfold: 'EIGHTFOLD',
   wttj: 'WTTJ',
+  /**
+   * Balayage sectoriel WTTJ (w1, 2026-09-06) : même AtsType que `wttj` pour
+   * que la même offre lue par les deux chemins soit UNE identité
+   * (companyId, WTTJ, externalId) — l'adaptateur branche sur la config.
+   */
+  'wttj-sector': 'WTTJ',
   workday: 'WORKDAY',
   magnet: 'MAGNET',
   teamtailor: 'TEAMTAILOR',

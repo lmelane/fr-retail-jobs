@@ -10,6 +10,7 @@ import { fetchGenericJsonLdJobs } from './adapters/genericJsonLd.js';
 import { fetchAshbyJobs } from './adapters/ashby.js';
 import { fetchWorkableJobs } from './adapters/workable.js';
 import { fetchWttjJobs } from './adapters/wttj.js';
+import { fetchWttjSectorJobs } from './adapters/wttjSector.js';
 import { fetchSuccessFactorsJobs } from './adapters/successfactors.js';
 import { fetchPhenomJobs } from './adapters/phenom.js';
 import { fetchDigitalRecruitersJobs } from './adapters/digitalrecruiters.js';
@@ -75,7 +76,10 @@ export const ADAPTERS: Record<string, (config: Record<string, unknown>) => Promi
   WORKDAY: fetchWorkdayJobs,
   ASHBY: fetchAshbyJobs,
   WORKABLE: fetchWorkableJobs,
-  WTTJ: fetchWttjJobs,
+  // Une société (`slug`) ou tout un secteur (`sectors` / `parentSectors` /
+  // `organizations`) : même AtsType, même identité d'offre, deux lectures.
+  WTTJ: (config) =>
+    config.sectors || config.parentSectors || config.organizations ? fetchWttjSectorJobs(config) : fetchWttjJobs(config),
   SUCCESSFACTORS: fetchSuccessFactorsJobs,
   PHENOM: fetchPhenomJobs,
   DIGITALRECRUITERS: fetchDigitalRecruitersJobs,

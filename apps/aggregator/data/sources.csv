@@ -1,5 +1,5 @@
 "maison","careers_domain","kind","entry_url","job_url_pattern","robots_verdict","job_count","verified"
-"Foot Locker France","careers.footlocker.com","phenom","{""origin"": ""https://careers.footlocker.com""}","","ALLOWED","2794","yes"
+"Foot Locker France","careers.footlocker.com","phenom","{""origin"": ""https://careers.footlocker.com"", ""brandTag"": ""tags4""}","","ALLOWED","2794","yes"
 "L’Oréal Professionnel","careers.loreal.com","avature","{""listingUrl"": ""https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0"", ""origin"": ""https://careers.loreal.com""}","","ALLOWED","1722","yes"
 "Dr. Jart+ +13","careers.elcompanies.com","eightfold","{""origin"": ""https://careers.elcompanies.com"", ""domain"": ""elcompanies.com""}","","ALLOWED","1386","yes"
 "Hermès","","wttj","{""slug"": ""hermes""}","","ALLOWED","581","yes"

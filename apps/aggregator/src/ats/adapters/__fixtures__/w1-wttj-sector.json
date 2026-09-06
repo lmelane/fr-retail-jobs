@@ -1,0 +1,136 @@
+{
+ "facetResponse": {
+  "hits": [],
+  "nbHits": 2357,
+  "page": 0,
+  "nbPages": 0,
+  "hitsPerPage": 0,
+  "exhaustiveFacetsCount": true,
+  "facets": {
+   "organization.slug": {
+    "diptyque-paris": 26,
+    "hermes": 609,
+    "ritz-paris": 56
+   },
+   "offices.country_code": {
+    "FR": 2026,
+    "US": 76,
+    "IT": 54
+   }
+  },
+  "query": "",
+  "params": "hitsPerPage=0&facets=organization.slug,offices.country_code&maxValuesPerFacet=1000&filters=sectors.reference:\"luxury-1\" OR ..."
+ },
+ "hermesPage": {
+  "hits": [
+   {
+    "slug": "polisseur-se_chessy",
+    "reference": "69ca0aa1-ec72-429b-9e6d-620ecb7e6c7d",
+    "name": "Polisseur(se)",
+    "contract_type": "full_time",
+    "published_at": "2026-09-06T00:03:51Z",
+    "offices": [
+     {
+      "state": "Ile-de-France",
+      "city": "Chessy",
+      "country": "France",
+      "country_code": "FR",
+      "district": "Seine-et-Marne",
+      "local_district": "Seine-et-Marne",
+      "local_city": "Chessy",
+      "local_state": "Île-de-France"
+     }
+    ],
+    "organization": {
+     "slug": "hermes",
+     "name": "Hermès"
+    },
+    "summary": "Rejoignez Hermès, une maison française de luxe, en tant que Polisseur(se) à Chessy (77). Vous serez responsable de la réalisation des opérations de polissage et de finition sur des pièces de joaillerie, en respectant les standards de qualité et d'exigence de la joaillerie. Vous devez avoir une expérience minimum de 3 ans en polissage, idéalement dans un environnement exigeant en matière de qualité.",
+    "sectors": [
+     {
+      "name": "Luxe",
+      "reference": "luxury-1",
+      "parent_name": "Mode / Luxe / Beauté / Art de vivre",
+      "parent_reference": "fashion-luxury-beauty-lifestyle"
+     },
+     {
+      "name": "Distribution sélective",
+      "reference": "selective-distribution",
+      "parent_name": "Distribution",
+      "parent_reference": "distribution-1"
+     },
+     {
+      "name": "Digital",
+      "reference": "digital",
+      "parent_name": "Publicité / Marketing / Agence",
+      "parent_reference": "advertising-marketing-agency"
+     }
+    ],
+    "remote": "unknown",
+    "language": "fr",
+    "objectID": "69ca0aa1-ec72-429b-9e6d-620ecb7e6c7d",
+    "profile": null
+   }
+  ],
+  "nbHits": 1,
+  "page": 0,
+  "nbPages": 1,
+  "hitsPerPage": 100
+ },
+ "ritzPage": {
+  "hits": [
+   {
+    "slug": "chef-de-rang_paris",
+    "reference": "ritz-ref-1",
+    "name": "Chef de rang",
+    "contract_type": "full_time",
+    "published_at": "2026-09-06T00:03:51Z",
+    "offices": [
+     {
+      "state": "Ile-de-France",
+      "city": "Chessy",
+      "country": "France",
+      "country_code": "FR",
+      "district": "Seine-et-Marne",
+      "local_district": "Seine-et-Marne",
+      "local_city": "Chessy",
+      "local_state": "Île-de-France"
+     }
+    ],
+    "organization": {
+     "slug": "ritz-paris",
+     "name": "Ritz Paris"
+    },
+    "summary": "Au Ritz.",
+    "sectors": [
+     {
+      "name": "Luxe",
+      "reference": "luxury-1",
+      "parent_name": "Mode / Luxe / Beauté / Art de vivre",
+      "parent_reference": "fashion-luxury-beauty-lifestyle"
+     },
+     {
+      "name": "Distribution sélective",
+      "reference": "selective-distribution",
+      "parent_name": "Distribution",
+      "parent_reference": "distribution-1"
+     },
+     {
+      "name": "Digital",
+      "reference": "digital",
+      "parent_name": "Publicité / Marketing / Agence",
+      "parent_reference": "advertising-marketing-agency"
+     }
+    ],
+    "remote": "unknown",
+    "language": "fr",
+    "objectID": "69ca0aa1-ec72-429b-9e6d-620ecb7e6c7d",
+    "profile": null
+   }
+  ],
+  "nbHits": 1,
+  "page": 0,
+  "nbPages": 1,
+  "hitsPerPage": 100
+ }
+}

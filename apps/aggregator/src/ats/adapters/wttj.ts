@@ -102,6 +102,40 @@ type WttjHit = {
 
 type WttjResponse = { nbHits?: number; hits?: WttjHit[]; message?: string; status?: number };
 
+/** Ce qu'Algolia rend à toute requête : un refus se lit dans `message`/`status`, jamais dans un tableau vide. */
+type AlgoliaRefusable = { message?: string; status?: number };
+
+/**
+ * Une requête sur l'index WTTJ, avec la seule clé que ce module connaît.
+ *
+ * Partagée entre l'adaptateur par société (`fetchWttjJobs`) et l'adaptateur
+ * sectoriel (`wttjSector.ts`) : la clé publique tourne, et la rafraîchir doit
+ * se faire à UN endroit, sinon les deux adaptateurs se contredisent au même
+ * run. Un refus après rafraîchissement est une erreur nommée — jamais un
+ * résultat vide, qui se lirait « cette Maison ne recrute pas ».
+ */
+export async function wttjSearch<T extends AlgoliaRefusable>(body: Record<string, unknown>): Promise<T> {
+  const ask = () =>
+    fetchJson<T>(`https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`, {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify(body),
+    });
+
+  let response = await ask();
+  if (response.status === 403 || response.message) {
+    if (await refreshSearchKey()) response = await ask();
+    if (response.status === 403 || response.message) {
+      throw new Error(
+        `WTTJ refused the query (${response.message ?? 'status 403'}). The public search ` +
+          'key has rotated and could not be refreshed from the site — re-extract ' +
+          'ALGOLIA_API_KEY_CLIENT rather than recording this employer as having no jobs.',
+      );
+    }
+  }
+  return response;
+}
+
 /**
  * L'offre complète, par l'API publique du site.
  *
@@ -200,38 +234,19 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<Ad
   const jobs: NormalizedJob[] = [];
   let declaredTotal: number | undefined;
 
-  const ask = (page: number) =>
-    fetchJson<WttjResponse>(`https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`, {
-      method: 'POST',
-      headers: headers(),
-      body: JSON.stringify({
-        // The slug must be QUOTED: unquoted, Algolia silently returns nbHits 0
-        // for every organization, which reads as "no jobs" rather than as a
-        // malformed filter.
-        query: '',
-        filters: `organization.slug:"${slug}"`,
-        hitsPerPage: PAGE_SIZE,
-        page,
-      }),
-    });
-
   for (let page = 0; ; page++) {
-    let response = await ask(page);
-
-    // A rotated key. Refresh once, then retry — and if that fails, throw. An
-    // empty array here is indistinguishable from "this employer is not hiring".
-    if (response.status === 403 || response.message) {
-      if (page === 0 && (await refreshSearchKey())) {
-        response = await ask(page);
-      }
-      if (response.status === 403 || response.message) {
-        throw new Error(
-          `WTTJ refused the query (${response.message ?? 'status 403'}). The public search ` +
-            'key has rotated and could not be refreshed from the site — re-extract ' +
-            'ALGOLIA_API_KEY_CLIENT rather than recording this employer as having no jobs.',
-        );
-      }
-    }
+    // A rotated key is refreshed once and a persistent refusal throws (see
+    // wttjSearch): an empty array here is indistinguishable from "this
+    // employer is not hiring".
+    const response = await wttjSearch<WttjResponse>({
+      // The slug must be QUOTED: unquoted, Algolia silently returns nbHits 0
+      // for every organization, which reads as "no jobs" rather than as a
+      // malformed filter.
+      query: '',
+      filters: `organization.slug:"${slug}"`,
+      hitsPerPage: PAGE_SIZE,
+      page,
+    });
 
     const hits = response.hits ?? [];
     for (const hit of hits) {
