@@ -1,4 +1,5 @@
 import type { PrismaClient } from '@prisma/client';
+import pLimit from 'p-limit';
 import { plainHttpSources } from '../connectors/registry.js';
 import { loadActiveSources } from '../connectors/sourceStore.js';
 import { runIngest, KIND_TO_ATS } from './ingest.js';
@@ -6,7 +7,7 @@ import { checkSourceHealth, type SourceHealth } from './health.js';
 import { briefError } from '../lib/normalize.js';
 
 /**
- * Runs every source under its OWN time budget (decision D6), in series.
+ * Runs every source under its OWN time budget (decision D6), a few at a time.
  *
  * A single run of all 102 sources took 21 minutes and was killed by the platform
  * before it reached one API feed — the reason production held a handful of
@@ -39,6 +40,27 @@ const PER_SOURCE_TIMEOUT_MS = Number(process.env.INGEST_SOURCE_TIMEOUT_MS ?? 20 
  * stop that keeps its work — rather than being cut mid-flight by withTimeout.
  */
 const SOFT_DEADLINE_MARGIN_MS = 90_000;
+
+/**
+ * How many sources run at once.
+ *
+ * Mesuré le 2026-09-06 (chronométrage des logs, `runTiming.mts`) : 470
+ * sources en SÉRIE = 3 h 28 pour un cron de 4 h, dont 76 % du temps sur 15
+ * sources (Michael Page 19 min, L'Oréal 17, Lacoste 16, Kering 12…) — des
+ * visites de pages de détail à concurrence 4, chacune attendant son hôte.
+ * Pendant qu'une source attend son hôte, les 469 autres attendaient aussi.
+ *
+ * Paralléliser les SOURCES ne change rien au débit PAR HÔTE : la porte par
+ * hôte (D25, `hostGate.ts`) borne la concurrence et le délai sur chaque hôte,
+ * quel que soit le nombre de sources qui le visitent. Des sources sur des
+ * hôtes différents ne s'attendent donc plus ; celles qui partagent un hôte
+ * (les Maisons Richemont, ELC) se sérialisent d'elles-mêmes à la porte.
+ *
+ * Quatre, pas plus : le pool Prisma du service est à 8 connexions, et
+ * l'écriture ne tient jamais de transaction interactive (la purge est un
+ * batch), donc quatre sources qui écrivent ne peuvent pas s'inter-bloquer.
+ */
+const SOURCE_CONCURRENCY = Number(process.env.INGEST_SOURCE_CONCURRENCY ?? 4);
 
 export type OrchestratorResult = {
   total: number;
@@ -87,55 +109,66 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
 
   const result: OrchestratorResult = { total: keys.length, ok: 0, failed: 0, timedOut: 0, failures: [], incidents: [] };
 
-  for (const key of keys) {
-    try {
-      // One source at a time, bounded. runIngest with {only} does the source's
-      // own purge; geocoding is skipped here and run once after the loop. The
-      // soft deadline lets a slow crawl stop gracefully just before the hard
-      // timeout, keeping what it fetched.
-      const deadlineMs = Date.now() + PER_SOURCE_TIMEOUT_MS - SOFT_DEADLINE_MARGIN_MS;
-      const stats = await withTimeout(runIngest(prisma, { only: key, deadlineMs }), PER_SOURCE_TIMEOUT_MS, key);
-      // Record this source's health so a source that stops producing becomes a
-      // detectable incident (BROKEN) on its next run — one SourceRun per source.
-      // Collect any incident so the run can send ONE digest at the end.
-      const health = await checkSourceHealth(prisma, stats).catch((e) => {
-        console.error(`[orchestrator] ${key}: health record failed — ${e instanceof Error ? e.message : e}`);
-        return null;
-      });
-      if (health) result.incidents.push(...health.incidents);
-      result.ok++;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      const timedOut = message.startsWith('__TIMEOUT__');
-      if (timedOut) {
-        result.timedOut++;
-        result.failures.push(`${key} (timedOut)`);
-        console.error(`[orchestrator] ${key}: timed out after ${PER_SOURCE_TIMEOUT_MS / 1000}s, moving on`);
-      } else {
-        result.failed++;
-        result.failures.push(`${key} (failed)`);
-        console.error(`[orchestrator] ${key}: failed — ${briefError(error)}`);
-      }
-      // L-01: a source that did not finish gets a SourceRun anyway — TIMEOUT or
-      // ERROR — so the refresh knows its offers were NOT re-attested this run
-      // and leaves them open. Without this row the refresh saw only silence,
-      // which is indistinguishable from "the source listed nothing".
-      await prisma.sourceRun
-        .create({
-          data: {
-            sourceKey: key,
-            status: timedOut ? 'TIMEOUT' : 'ERROR',
-            jobs: 0,
-            note: timedOut ? `cut at ${PER_SOURCE_TIMEOUT_MS / 1000}s` : briefError(error),
-          },
-        })
-        .catch((e) => console.error(`[orchestrator] ${key}: failed to record run — ${briefError(e)}`));
-    }
-  }
+  // Smallest-first order is preserved by the limiter: the giants are still
+  // started last, and now run side by side instead of one after the other.
+  const limit = pLimit(SOURCE_CONCURRENCY);
+  await Promise.all(keys.map((key) => limit(() => ingestOne(prisma, key, result))));
 
   console.log(
     `[orchestrator] done: ${result.ok}/${result.total} ok, ${result.failed} failed, ${result.timedOut} timed out` +
       (result.failures.length ? ` — ${result.failures.join(', ')}` : ''),
   );
   return result;
+}
+
+/** One source, bounded by its own timeout; the counters it touches are shared. */
+async function ingestOne(prisma: PrismaClient, key: string, result: OrchestratorResult): Promise<void> {
+  try {
+    // runIngest with {only} does the source's own purge; geocoding is skipped
+    // here and run ONCE by the CLI after every source — a per-source pass
+    // would run four times over the same cities in parallel. The soft
+    // deadline lets a slow crawl stop gracefully just before the hard
+    // timeout, keeping what it fetched.
+    const deadlineMs = Date.now() + PER_SOURCE_TIMEOUT_MS - SOFT_DEADLINE_MARGIN_MS;
+    const stats = await withTimeout(
+      runIngest(prisma, { only: key, deadlineMs, skipGeocode: true }),
+      PER_SOURCE_TIMEOUT_MS,
+      key,
+    );
+    // Record this source's health so a source that stops producing becomes a
+    // detectable incident (BROKEN) on its next run — one SourceRun per source.
+    // Collect any incident so the run can send ONE digest at the end.
+    const health = await checkSourceHealth(prisma, stats).catch((e) => {
+      console.error(`[orchestrator] ${key}: health record failed — ${e instanceof Error ? e.message : e}`);
+      return null;
+    });
+    if (health) result.incidents.push(...health.incidents);
+    result.ok++;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const timedOut = message.startsWith('__TIMEOUT__');
+    if (timedOut) {
+      result.timedOut++;
+      result.failures.push(`${key} (timedOut)`);
+      console.error(`[orchestrator] ${key}: timed out after ${PER_SOURCE_TIMEOUT_MS / 1000}s, moving on`);
+    } else {
+      result.failed++;
+      result.failures.push(`${key} (failed)`);
+      console.error(`[orchestrator] ${key}: failed — ${briefError(error)}`);
+    }
+    // L-01: a source that did not finish gets a SourceRun anyway — TIMEOUT or
+    // ERROR — so the refresh knows its offers were NOT re-attested this run
+    // and leaves them open. Without this row the refresh saw only silence,
+    // which is indistinguishable from "the source listed nothing".
+    await prisma.sourceRun
+      .create({
+        data: {
+          sourceKey: key,
+          status: timedOut ? 'TIMEOUT' : 'ERROR',
+          jobs: 0,
+          note: timedOut ? `cut at ${PER_SOURCE_TIMEOUT_MS / 1000}s` : briefError(error),
+        },
+      })
+      .catch((e) => console.error(`[orchestrator] ${key}: failed to record run — ${briefError(e)}`));
+  }
 }

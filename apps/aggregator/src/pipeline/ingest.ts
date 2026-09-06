@@ -518,6 +518,12 @@ export type IngestOptions = {
    * hard timeout that discards the in-flight work.
    */
   deadlineMs?: number;
+  /**
+   * Leave geocoding to the caller. The orchestrator runs sources in parallel
+   * and the CLI geocodes once at the end; a pass after every source would
+   * look up the same cities several times at once.
+   */
+  skipGeocode?: boolean;
 };
 
 export async function runIngest(
@@ -567,6 +573,7 @@ export async function runIngest(
    * GeoCache makes repeat passes nearly free.
    */
   const geocodeQuietly = async () => {
+    if (options.skipGeocode) return;
     try {
       await runGeocode(prisma);
     } catch (error) {
