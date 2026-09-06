@@ -150,7 +150,7 @@ export async function upsertDeduplicated(
     where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
     select: { job: { include: { sources: true } } },
   });
-  if (ownEntry) return attachToExisting(prisma, candidate, ownEntry.job, now, clusterKey);
+  if (ownEntry) return attachToExisting(prisma, candidate, ownEntry.job, now, clusterKey, company.id);
 
   // Only live jobs in the same cluster can absorb this posting. The cluster key
   // is indexed, so this stays a narrow lookup rather than a scan.
@@ -241,11 +241,11 @@ export async function upsertDeduplicated(
       // key re-graved. The old hand-written update here forgot the JobSource
       // (audit A2: 1 855 live jobs with an inactive JobSource).
       const winner = await prisma.job.findUniqueOrThrow({ where: { id: winnerId }, include: { sources: true } });
-      return attachToExisting(prisma, candidate, winner, now, clusterKey);
+      return attachToExisting(prisma, candidate, winner, now, clusterKey, company.id);
     }
   }
 
-  return attachToExisting(prisma, candidate, existing, now, clusterKey);
+  return attachToExisting(prisma, candidate, existing, now, clusterKey, company.id);
 }
 
 async function createJob(
@@ -364,12 +364,23 @@ type ExistingJob = {
   url: string | null;
   canonicalTier: string | null;
   clusterKey: string | null;
+  companyId: string;
   isFrance: boolean;
   title: string;
   description: string | null;
   location: string | null;
   city: string | null;
   country: string | null;
+  postedAt: Date | null;
+  validThrough: Date | null;
+  language: string | null;
+  contract: string | null;
+  workingTime: string | null;
+  remote: string | null;
+  salaryMin: number | null;
+  salaryMax: number | null;
+  salaryCurrency: string | null;
+  salaryPeriod: string | null;
   sources: { sourceKey: string; externalId: string; sourceTier: string }[];
 };
 
@@ -390,12 +401,32 @@ type ExistingJob = {
  * source n'a pas autorité sur le texte du canonique — et la description
  * seulement si elle est plus riche.
  */
+type Reattestable = Pick<
+  ExistingJob,
+  | 'title' | 'description' | 'location' | 'city' | 'country' | 'isFrance' | 'postedAt' | 'validThrough'
+  | 'language' | 'contract' | 'workingTime' | 'remote' | 'salaryMin' | 'salaryMax' | 'salaryCurrency' | 'salaryPeriod'
+>;
+
+/**
+ * Champs simples : REMPLIS par n'importe quelle source quand ils sont vides,
+ * RÉ-ÉCRITS seulement par la source qui a publié l'entrée (`sameEntry`).
+ *
+ * Audit A4 (2026-09-06) : date, langue, contrat, temps de travail, validité,
+ * salaire n'étaient écrits qu'à la création — lignes nées avant le 04/09 :
+ * 38 % sans date, 80 % sans langue ; après : 3 % / 2 %. LVMH : 4 131 dates
+ * présentes dans le brut, 5 212 offres sans date.
+ */
+const SIMPLE_FIELDS = [
+  'postedAt', 'validThrough', 'language', 'contract', 'workingTime', 'remote',
+  'salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod',
+] as const;
+
 export function reattestationFields(
   candidate: CandidateJob,
-  existing: Pick<ExistingJob, 'title' | 'description' | 'location' | 'city' | 'country' | 'isFrance'>,
+  existing: Reattestable,
   sameEntry: boolean,
-): Partial<Pick<ExistingJob, 'title' | 'description' | 'location' | 'city' | 'country' | 'isFrance'>> {
-  const out: Partial<Pick<ExistingJob, 'title' | 'description' | 'location' | 'city' | 'country' | 'isFrance'>> = {};
+): Partial<Reattestable> {
+  const out: Partial<Reattestable> = {};
   const country = countryOf(candidate);
   if (country && country !== existing.country) out.country = country;
   if (country) {
@@ -406,6 +437,13 @@ export function reattestationFields(
   if (city && city !== existing.city) out.city = city;
   if (candidate.location && (!existing.location || sameEntry) && candidate.location !== existing.location) {
     out.location = candidate.location;
+  }
+  for (const field of SIMPLE_FIELDS) {
+    const value = candidate[field];
+    if (value === undefined || value === null) continue;
+    const current = existing[field];
+    const same = current instanceof Date && value instanceof Date ? current.getTime() === value.getTime() : current === value;
+    if ((current === null || sameEntry) && !same) (out as Record<string, unknown>)[field] = value;
   }
   if (sameEntry) {
     if (candidate.title && candidate.title !== existing.title) out.title = candidate.title;
@@ -423,6 +461,8 @@ async function attachToExisting(
   now: Date,
   /** La clé de cluster d'AUJOURD'HUI : ré-écrite si elle diffère de celle gravée. */
   clusterKey?: string,
+  /** La société résolue d'aujourd'hui : ré-écrite par la source de l'entrée (alias corrigé, « Logo », marque de groupe). */
+  companyId?: string,
 ): Promise<UpsertResult> {
   const alreadyKnown = existing.sources.some(
     (source) => source.sourceKey === candidate.sourceKey && source.externalId === candidate.externalId,
@@ -483,6 +523,9 @@ async function attachToExisting(
       // A cluster key that drifted (city normalized differently) is re-graved,
       // so the cluster lookup — and the weekly reconcile — find the row again.
       ...(clusterKey && clusterKey !== existing.clusterKey ? { clusterKey } : {}),
+      // 1 166 offres restaient sous une société périmée (audit A1) : l'alias ou
+      // la marque corrigés ne les atteignaient jamais.
+      ...(alreadyKnown && companyId && companyId !== existing.companyId ? { companyId } : {}),
       ...(promoted
         ? {
             url: candidate.url,

@@ -3,7 +3,7 @@ import { reattestationFields } from './upsert.js';
 import type { CandidateJob } from './match.js';
 
 const base = { sourceKey: 'hermes', sourceTier: 'EMPLOYER_DIRECT', externalId: 'H1', company: 'Hermès', url: 'https://x/1', raw: {} } as CandidateJob;
-const existing = { title: 'Apply Now', description: 'court', location: null, city: null, country: 'France', isFrance: false };
+const existing = { title: 'Apply Now', description: 'court', location: null, city: null, country: 'France', isFrance: false, postedAt: null, validThrough: null, language: null, contract: null, workingTime: null, remote: null, salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null };
 
 /**
  * Mesuré en prod le 2026-09-06 : après le premier run avec les normalisations
@@ -44,5 +44,31 @@ describe('reattestationFields', () => {
   it('une description plus courte ne remplace pas la plus riche', () => {
     const out = reattestationFields({ ...base, title: 'Apply Now', description: 'a' }, { ...existing, description: 'texte riche' }, true);
     expect(out.description).toBeUndefined();
+  });
+});
+
+/** Audit A4 (2026-09-06) : date, langue, contrat… n'étaient écrits qu'à la création. */
+describe('reattestationFields — champs simples', () => {
+  const posted = new Date('2026-09-01T00:00:00Z');
+  it('remplit un champ vide, quelle que soit la source', () => {
+    const out = reattestationFields({ ...base, sourceKey: 'fashionjobs', title: 'x', postedAt: posted, language: 'fr', contract: 'CDI' }, existing, false);
+    expect(out.postedAt).toEqual(posted);
+    expect(out.language).toBe('fr');
+    expect(out.contract).toBe('CDI');
+  });
+
+  it('ne ré-écrit un champ rempli que pour la même entrée', () => {
+    const filled = { ...existing, postedAt: posted, language: 'fr', contract: 'CDI' };
+    const other = reattestationFields({ ...base, sourceKey: 'fashionjobs', title: 'x', postedAt: new Date('2026-09-03T00:00:00Z'), language: 'en', contract: 'CDD' }, filled, false);
+    expect(other).toEqual({});
+    const same = reattestationFields({ ...base, title: 'Apply Now', postedAt: new Date('2026-09-03T00:00:00Z'), language: 'en', contract: 'CDD' }, filled, true);
+    expect(same.postedAt).toEqual(new Date('2026-09-03T00:00:00Z'));
+    expect(same.language).toBe('en');
+    expect(same.contract).toBe('CDD');
+  });
+
+  it('une date identique ne produit pas d’écriture', () => {
+    const filled = { ...existing, postedAt: posted };
+    expect(reattestationFields({ ...base, title: 'Apply Now', postedAt: new Date(posted) }, filled, true)).toEqual({});
   });
 });
