@@ -51,7 +51,8 @@ const CANDIDATES: Candidate[] = [
   { key: "ulta-jibe", maison: "Ulta Beauty", kind: "jibe", type: "JIBE", careersDomain: "careers.ulta.com", tier: "EMPLOYER_DIRECT", config: {origin: "https://careers.ulta.com"} },
   { key: "rituals", maison: "Rituals", kind: "rituals", type: "RITUALS", careersDomain: "careers.rituals.com", tier: "EMPLOYER_DIRECT", config: {languages: ["da-DK", "de-AT", "de-CH", "de-DE", "en-GB", "en-IE", "en-NL", "es-ES", "fi-FI", "fr-BE", "fr-CH", "fr-FR", "fr-LU", "hu-HU", "it-IT", "nb-NO", "nl-BE", "nl-NL", "pl-PL", "pt-PT", "ro-RO", "sv-SE"]} },
   { key: "dr-martens-tf", maison: "Dr. Martens", kind: "talentfunnel", type: "TALENT_FUNNEL", careersDomain: "jobs.drmartens.com", tier: "EMPLOYER_DIRECT", config: {origin: "https://jobs.drmartens.com", tenant: "a3e88308-2615-4415-bb56-cc5267bc1ced"} },
-  { key: "bash-talents", maison: "ba&sh", kind: "bashtalents", type: "BASH_TALENTS", careersDomain: "talents.ba-sh.com", tier: "EMPLOYER_DIRECT", config: {} },
+  { key: "bash-talents", maison: "ba&sh", kind: "bashtalents", type: "BASH_TALENTS", careersDomain: "talents.ba-sh.com", tier: "EMPLOYER_DIRECT", config: { origin: "https://talents.ba-sh.com", locale: "fr-FR" } },
+  { key: "pvh", maison: "PVH", kind: "generic-listing", type: "GENERIC_JSONLD", careersDomain: "careers.pvh.com", tier: "GROUP_OFFICIAL", config: { sitemapUrl: "https://careers.pvh.com/sitemap.xml", concurrency: 4 } },
 ];
 
 /**
@@ -112,7 +113,9 @@ async function robotsVerdict(host: string): Promise<string> {
 const prisma = new PrismaClient();
 const summary = { promoted: [] as string[], skipped: [] as string[], refused: [] as string[] };
 
-for (const c of CANDIDATES) {
+/** Clés passées en argument : ne rejouer que celles-là (les autres sont déjà prouvées). */
+const only = process.argv.slice(2).filter((a) => !a.startsWith("--"));
+for (const c of CANDIDATES.filter((c) => only.length === 0 || only.includes(c.key))) {
   try {
     // 1. Preuve d'exécution : l'adaptateur rend-il de vraies offres localisées ?
     const result: any = await fetchAtsJobs(c.type as any, c.config as any);
