@@ -77,6 +77,12 @@ async function scenario() {
   ]);
   const a2 = await prisma.job.findFirstOrThrow({ where: { externalId: 'a2' } });
   await prisma.jobEvent.create({ data: { jobId: a2.id, type: 'REOPENED', at: NOW } });
+  // Les fermetures du jour sont des ÉVÉNEMENTS (le refresh les écrit) : en
+  // live, c'est eux que la photographie compte, pas `closedAt` (audit I-2).
+  for (const ext of ['a8', 'b2', 'b3']) {
+    const job = await prisma.job.findFirstOrThrow({ where: { externalId: ext } });
+    await prisma.jobEvent.create({ data: { jobId: job.id, type: 'CLOSED', at: NOW } });
+  }
   return { acme, beta };
 }
 
@@ -157,6 +163,16 @@ describe('runSnapshot — le jour même (live)', () => {
     expect(await row('global', '')).toMatchObject({ activeJobs: 8, closedJobs: 3 });
   });
 
+  it('une fermeture du jour reste comptée après une ré-ouverture (événement immuable, pas closedAt)', async () => {
+    await scenario();
+    // b3 fermée puis ré-ouverte le même jour : closedAt repasse à null.
+    const b3 = await prisma.job.findFirstOrThrow({ where: { externalId: 'b3' } });
+    await prisma.job.update({ where: { id: b3.id }, data: { isActive: true, closedAt: null, reopenedCount: 1, events: { create: { type: 'REOPENED', at: NOW } } } });
+    await runSnapshot(prisma, { now: NOW });
+    expect(await row('global', '')).toMatchObject({ activeJobs: 9, closedJobs: 3, reopenedJobs: 2 });
+    expect((await prisma.marketSnapshot.findFirst({ where: { scope: 'global' } }))?.mode).toBe('live');
+  });
+
   it('refuse un jour futur', async () => {
     await expect(runSnapshot(prisma, { now: NOW, date: daysAgo(-1) })).rejects.toThrow(/future/);
   });
@@ -181,6 +197,22 @@ describe('runSnapshot — backfill (reconstruction)', () => {
     // Aujourd'hui : la vérité `isActive`.
     expect(await row('global', '')).toMatchObject({ activeJobs: 8, newJobs: 1, closedJobs: 3 });
     expect(await prisma.marketSnapshot.groupBy({ by: ['date'] })).toHaveLength(4);
+  });
+
+  it('une reconstruction n’écrase JAMAIS un jour photographié live', async () => {
+    await scenario();
+    // Hier, photographié « en direct » (simulé : now = hier), avec la vérité d'hier.
+    const yesterday = daysAgo(1);
+    await runSnapshot(prisma, { now: yesterday });
+    const liveYesterday = await row('global', '', dayBounds(yesterday).day);
+    expect((await prisma.marketSnapshot.findFirst({ where: { date: dayBounds(yesterday).day } }))?.mode).toBe('live');
+    // Aujourd'hui, un backfill qui repasse sur hier depuis l'état actuel des offres.
+    const stats = await runSnapshot(prisma, { now: NOW, backfillFrom: daysAgo(2) });
+    expect(stats.days.map((d) => [d.mode, d.skippedLive ?? false])).toEqual([
+      ['reconstructed', false], ['reconstructed', true], ['live', false],
+    ]);
+    expect(await row('global', '', dayBounds(yesterday).day)).toEqual(liveYesterday);
+    expect((await prisma.marketSnapshot.findFirst({ where: { date: dayBounds(daysAgo(2)).day } }))?.mode).toBe('reconstructed');
   });
 
   it('une offre fermée avant closedAt (isActive false, closedAt null) est fermée à son lastSeenAt', async () => {

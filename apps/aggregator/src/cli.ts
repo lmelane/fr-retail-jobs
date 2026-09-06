@@ -139,10 +139,16 @@ try {
      */
     let snapshot: SnapshotStats | null = null;
     let snapshotError: string | null = null;
-    try {
-      snapshot = await runSnapshot(prisma);
-    } catch (error) {
-      snapshotError = error instanceof Error ? error.message : String(error);
+    if (refresh.refused) {
+      // Un refresh refusé laisse des offres périmées « actives » : les
+      // photographier ferait entrer un faux jour dans l'historique (audit I-2).
+      snapshotError = 'refresh refused by the mass-closure guard — no snapshot taken for today';
+    } else {
+      try {
+        snapshot = await runSnapshot(prisma);
+      } catch (error) {
+        snapshotError = error instanceof Error ? error.message : String(error);
+      }
     }
     // Report honestly: a refused mass-closure or a skipped broken source is an
     // incident the scheduler must show, not a silent ok:true.

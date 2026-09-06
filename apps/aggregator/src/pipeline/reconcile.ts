@@ -89,7 +89,17 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
                 }),
               ]
             : []),
-          prisma.job.update({ where: { id: other.id }, data: { isActive: false } }),
+          // Le perdant n'est pas une fermeture de poste : daté (closedAt) pour
+          // sortir des actives, et tracé MERGED — jamais CLOSED — pour que la
+          // photographie du jour ne le compte pas comme une offre fermée (audit I-2).
+          prisma.job.update({
+            where: { id: other.id },
+            data: {
+              isActive: false,
+              closedAt: new Date(),
+              events: { create: { type: 'MERGED', field: 'mergedInto', after: keeper.id } },
+            },
+          }),
         ]);
         stats.sourcesMoved += moved.count;
         absorbed.add(other.id);

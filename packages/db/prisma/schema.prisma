@@ -429,6 +429,13 @@ model MarketSnapshot {
   /** Médiane des jours de publication des offres fermées ce jour-là (null si aucune). */
   medianLifespanDays Float?
   reopenedJobs       Int      @default(0)
+  /**
+   * `live` = photographié le jour même (vérité du moment, immuable : une
+   * reconstruction ne l'écrase jamais) ; `reconstructed` = rejoué depuis
+   * firstSeenAt/closedAt (approximation, audit I-2 : rejouer un jour depuis
+   * l'état ACTUEL des offres ré-écrivait l'histoire).
+   */
+  mode               String   @default("live")
   createdAt          DateTime @default(now())
 
   @@unique([date, scope, key])

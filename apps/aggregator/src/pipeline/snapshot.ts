@@ -81,6 +81,8 @@ export type SnapshotDayStats = {
   rows: number;
   byScope: Record<string, number>;
   durationMs: number;
+  /** Jour laissé intact : il porte une photographie `live`, qu'une reconstruction n'écrase jamais. */
+  skippedLive?: boolean;
 };
 
 export type SnapshotStats = {
@@ -132,12 +134,30 @@ function baseCte(mode: SnapshotMode, start: Date, end: Date): Prisma.Sql {
   const active = activePredicate(mode, end);
   const inDay = (column: Prisma.Sql) => Prisma.sql`(${column} >= ${utc(start)} AND ${column} < ${utc(end)})`;
   const isNew = inDay(Prisma.sql`j."firstSeenAt"`);
-  const isClosed = Prisma.sql`(j."closedAt" IS NOT NULL AND ${inDay(Prisma.sql`j."closedAt"`)})`;
+  /**
+   * Fermée ce jour-là : en `live`, l'événement CLOSED du jour — immuable, là
+   * où `closedAt` est remis à null par une ré-ouverture (audit I-2 : rejouer
+   * le jour après une ré-ouverture faisait passer closedJobs de 1 à 0). En
+   * reconstruction, la date de fermeture effective (closedAt, sinon
+   * lastSeenAt d'une offre inactive d'avant D38).
+   */
+  const effectiveClose = Prisma.sql`COALESCE(j."closedAt", CASE WHEN j."isActive" THEN NULL ELSE j."lastSeenAt" END)`;
+  const isClosed =
+    mode === 'live'
+      ? Prisma.sql`(cl."jobId" IS NOT NULL)`
+      : Prisma.sql`(${effectiveClose} IS NOT NULL AND ${inDay(effectiveClose)})`;
+  const closeInstant = mode === 'live' ? Prisma.sql`cl.closed_at` : effectiveClose;
   return Prisma.sql`
     reopened AS (
       SELECT DISTINCT e."jobId"
       FROM "JobEvent" e
       WHERE e.type = 'REOPENED' AND ${inDay(Prisma.sql`e.at`)}
+    ),
+    closed_events AS (
+      SELECT e."jobId", MAX(e.at) AS closed_at
+      FROM "JobEvent" e
+      WHERE e.type = 'CLOSED' AND ${inDay(Prisma.sql`e.at`)}
+      GROUP BY e."jobId"
     ),
     base AS (
       SELECT
@@ -155,11 +175,12 @@ function baseCte(mode: SnapshotMode, start: Date, end: Date): Prisma.Sql {
         ${active} AS active,
         ${isNew} AS is_new,
         ${isClosed} AS is_closed,
-        CASE WHEN ${isClosed} THEN EXTRACT(EPOCH FROM (j."closedAt" - j."firstSeenAt")) / 86400.0 END AS lifespan_days,
+        CASE WHEN ${isClosed} THEN EXTRACT(EPOCH FROM (${closeInstant} - j."firstSeenAt")) / 86400.0 END AS lifespan_days,
         (r."jobId" IS NOT NULL) AS is_reopened
       FROM "Job" j
       JOIN "Company" c ON c.id = j."companyId"
       LEFT JOIN reopened r ON r."jobId" = j.id
+      LEFT JOIN closed_events cl ON cl."jobId" = j.id
       WHERE ${active} OR ${isNew} OR ${isClosed} OR r."jobId" IS NOT NULL
     )`;
 }
@@ -218,6 +239,17 @@ async function aggregateScope(
 async function snapshotDay(prisma: PrismaClient, day: Date, mode: SnapshotMode): Promise<SnapshotDayStats> {
   const startedAt = Date.now();
   const { start, end } = dayBounds(day);
+
+  // Une photographie prise le jour même est la vérité de ce jour : une
+  // reconstruction (depuis l'état ACTUEL des offres) ne la remplace jamais
+  // (audit I-2 : un backfill rejoué changeait la société d'hier, retirait
+  // les offres supprimées depuis, effaçait les fermetures ré-ouvertes).
+  if (mode === 'reconstructed') {
+    const live = await prisma.marketSnapshot.count({ where: { date: day, mode: 'live' } });
+    if (live > 0) {
+      return { date: formatDay(day), mode, rows: 0, byScope: {}, durationMs: Date.now() - startedAt, skippedLive: true };
+    }
+  }
   const base = baseCte(mode, start, end);
 
   const data: Prisma.MarketSnapshotCreateManyInput[] = [];
@@ -225,11 +257,13 @@ async function snapshotDay(prisma: PrismaClient, day: Date, mode: SnapshotMode):
   for (const scope of SNAPSHOT_SCOPES) {
     const rows = await aggregateScope(prisma, scope, base);
     byScope[scope] = rows.length;
-    for (const row of rows) data.push({ date: day, scope, ...row });
+    for (const row of rows) data.push({ date: day, scope, mode, ...row });
   }
 
-  // Idempotent : le jour est ré-écrit d'un bloc, jamais à moitié. Par
-  // tranches (borne Postgres des paramètres liés), dans UNE transaction.
+  // Idempotent : le jour est ré-écrit d'un bloc, jamais à moitié (un `live`
+  // rejoué le même jour remplace le `live` précédent : c'est le même jour, vu
+  // plus tard). Par tranches (borne Postgres des paramètres liés), dans UNE
+  // transaction.
   await prisma.$transaction([
     prisma.marketSnapshot.deleteMany({ where: { date: day } }),
     ...chunk(data).map((batch) => prisma.marketSnapshot.createMany({ data: batch })),

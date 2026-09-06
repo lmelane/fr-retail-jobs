@@ -22,6 +22,6 @@ const orphans = await p.job.findMany({
 console.log(`${key}: ${stale.length} rattachements non revus depuis ${since.toISOString()}, ${orphans.length} offres sans autre source vivante`);
 if (!apply) { await p.$disconnect(); process.exit(0); }
 await p.jobSource.updateMany({ where: { id: { in: stale.map((s) => s.id) } }, data: { isActive: false } });
-const closed = await p.job.updateMany({ where: { id: { in: orphans.map((j) => j.id) } }, data: { isActive: false } });
+const closed = await p.job.updateMany({ where: { id: { in: orphans.map((j) => j.id) } }, data: { isActive: false, closedAt: new Date() } });
 console.log(JSON.stringify({ jobSourcesClosed: stale.length, jobsClosed: closed.count }));
 await p.$disconnect();
