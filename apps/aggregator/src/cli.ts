@@ -145,6 +145,10 @@ try {
       snapshotError = 'refresh refused by the mass-closure guard — no snapshot taken for today';
     } else {
       try {
+        // La garde IA par société (audit I-3) tourne chaque nuit, AVANT la
+        // photographie : l'indice IA du jour ne compte pas les textes d'entreprise.
+        const { aiCompanyGuard } = await import('./pipeline/classifyJobs.js');
+        await aiCompanyGuard(prisma);
         snapshot = await runSnapshot(prisma);
       } catch (error) {
         snapshotError = error instanceof Error ? error.message : String(error);

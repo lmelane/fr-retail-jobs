@@ -134,8 +134,100 @@ describe('classifyFunction — la famille de métier du secteur, depuis le titre
     ['Distribution Planner', 'supply-chain-logistics'],
     ['Directeur.rice Régional.e Sud', 'retail-area-management'],
     ['Assistant.e Réseaux Sociaux - Stage 6 mois', 'marketing-communication'],
+    // Audit I-3 (2 × 300 offres jugées) — chaque titre est un cas réel de prod
+    ['Stylist 16 hours', 'retail-client-advisor'],
+    ['Full-Time Stylist (Bloomingdales - North Michigan)', 'retail-client-advisor'],
+    ['Designated Selling Associate - Luxottica', 'retail-client-advisor'],
+    ['Selling Associate - Womens Shoes', 'retail-client-advisor'],
+    ['Athlete III', 'retail-client-advisor'],
+    ['Kundenberater (m/w/d)', 'retail-client-advisor'],
+    ['Weihnachtsaushilfe (m/w/d)', 'retail-client-advisor'],
+    ['Temporary Associate', 'retail-client-advisor'],
+    ['Associate III', 'retail-client-advisor'],
+    ['Retail Experience Intern', 'retail-client-advisor'],
+    ['Jewellery Expert', 'retail-client-advisor'],
+    ['Welcome Host Zürich', 'retail-client-advisor'],
+    ['Customer Host (4 HRS)', 'retail-client-advisor'],
+    ['Master Stylist', 'beauty-advisor'],
+    ['Elite Stylist', 'beauty-advisor'],
+    ['Brow Waxing Expert', 'beauty-advisor'],
+    ['Specialty Artist - MAC', 'beauty-advisor'],
+    ['Lead Piercer (Part-Time)', 'beauty-advisor'],
+    ['MECCA Chadstone - Skin Specialist', 'beauty-advisor'],
+    ['CDI - Sellier Maroquinier', 'atelier-craft'],
+    ['Joaillier SAV (H/F)', 'atelier-craft'],
+    ['Incastonatore', 'atelier-craft'],
+    ['CDI Sculpteur (H/F)', 'atelier-craft'],
+    ['Spécialiste métier Polissage', 'atelier-craft'],
+    ['Constructeur Mouvements (Le Sentier)', 'atelier-craft'],
+    ['CDD - Metteur aux Bains (H/F)', 'atelier-craft'],
+    ['Senior Machine Learning Engineer, ITC', 'it-data'],
+    ['Data Engineer (H/F) STAGE TALENT DAY', 'it-data'],
+    ['Senior Data Scientist, Growth', 'it-data'],
+    ['Manufacturing Operations Semantic/Data Architect', 'it-data'],
+    ['Senior Director, Enterprise Architecture - AI & Data', 'it-data'],
+    ["Apprentissage d'informaticien∙ne CFC", 'it-data'],
+    ['Solution Architect, WFM Systems', 'it-data'],
+    ['Task Associate', 'retail-operations'],
+    ['Seasonal Retail Stock - Fashion Valley', 'retail-operations'],
+    ['Full Time Operation Associate', 'retail-operations'],
+    ['Boutique Administrator', 'retail-operations'],
+    ['Stock Executive', 'retail-operations'],
+    ['Cajeros/as Part Time', 'retail-operations'],
+    ['Operations Leader - Full Time', 'retail-operations'],
+    ['Asset Protection Investigator', 'retail-operations'],
+    ['TEAM MANAGER', 'retail-store-management'],
+    ['Storemanager (m/w/d)', 'retail-store-management'],
+    ['Assistent Shopmanager', 'retail-store-management'],
+    ['Responsable des Ventes H/F', 'retail-store-management'],
+    ['Responsável de Turno', 'retail-store-management'],
+    ['Souschef', 'retail-store-management'],
+    ['DIRECTEUR/RICE ADJOINT/E', 'retail-store-management'],
+    ['Assistant Store Leader', 'retail-store-management'],
+    ['Restaurant Supervisor, Full Time - Newport Beach', 'hospitality'],
+    ['Restaurant Host - Marketplace Café', 'hospitality'],
+    ['Crew Member Kitchen - 1600 Lully', 'hospitality'],
+    ['Sous-chef', 'hospitality'],
+    ['CDI - Contrôleur de gestion industriel (H/F)', 'finance'],
+    ['Fashion & Accessories Manufacturing Project Controller', 'finance'],
+    ['Trésorier Groupe H/F', 'finance'],
+    ['Account Payable Trainee - Project management & Process Improvement', 'finance'],
+    ['STAGE - Assistant(e) Sales Merchandiser Fashion Accessoires', 'merchandising-buying'],
+    ['Directrice de Collection Ceinture', 'merchandising-buying'],
+    ['Acheteur Indirect (H/F)', 'supply-chain-logistics'],
+    ["Gestionnaire d'ordonnancement (H/F)", 'supply-chain-logistics'],
+    ['Senior Manager, Client Experience', 'crm-clienteling'],
+    ['Clienteling Product Management Intern', 'crm-clienteling'],
+    ['Stage - Assistant(e) Clienteling International', 'crm-clienteling'],
+    ['Client Contact Consultant, Fixed Term, E-Commerce', 'customer-service'],
+    ['E-Boutique Client Advisor', 'customer-service'],
+    ['Client Success Representative (Remote, Contract)', 'customer-service'],
+    ['Regional Online Retail Director', 'ecommerce-digital'],
+    ['Operations Supervisor ECommerce - Evenings', 'ecommerce-digital'],
+    ['Cleaning Technician (FTC - Workload Support)', 'admin-facilities'],
+    ['PR Assistant Manager', 'marketing-communication'],
+    ['Coordinator, Promotions', 'marketing-communication'],
+    ['People & Culture In-Store Business Partner', 'hr-talent'],
+    ['CDI - Développeur Peaux Précieuses', 'product-development-rd'],
+    ['Senior Manager, Legal Operations and Innovation', 'legal-compliance'],
+    ['B2B Operations Specialist', 'wholesale-b2b'],
+    ['National Field Force Manager', 'wholesale-b2b'],
+    ['Temp Assistant Manager, Network Development', 'strategy-management'],
+    ['Assistant Manager, High Jewelry Assortment', 'merchandising-buying'],
+    ['Van Cleef & Arpels Client Insights Assistant Manager', 'crm-clienteling'],
+    ['Tech Team Lead', 'it-data'],
+    ['Responsabile Qualità HCI', 'manufacturing-quality'],
+    ['Chef.fe d\'équipe (Temps plein)', 'retail-store-management'],
   ])('%s → %s', (title, expected) => {
     expect(classifyFunction(title)).toBe(expected);
+  });
+
+  it('le département de salon ou de boutique prime sur un titre générique (audit I-3)', () => {
+    expect(classifyFunction('Stylist', 'Salon Professionals')).toBe('beauty-advisor');
+    expect(classifyFunction('Stylist', undefined)).toBe('design-creation');
+    expect(classifyFunction('General Manager', 'Retail Management')).toBe('retail-store-management');
+    expect(classifyFunction('General Manager', undefined)).toBe('strategy-management');
+    expect(classifyFunction('Coordinator', 'Retail Associates')).toBe('retail-client-advisor');
   });
 
   it('lit le département quand le titre est muet', () => {
@@ -181,14 +273,32 @@ describe('classifySeniority — l’ordre des tests fait la règle', () => {
     ['Project Manager', undefined, 'MID'],
     ['Chef de projet CRM', undefined, 'MID'],
     ['Senior Client Advisor', undefined, 'SENIOR'],
-    ['Expert Horloger', undefined, 'SENIOR'],
+    ['Expert Horloger', undefined, 'MID'],
     ['Junior Designer', undefined, 'JUNIOR'],
     ['Assistant Chef de Produit', undefined, 'JUNIOR'],
-    ['Sales Associate', undefined, 'JUNIOR'],
+    ['Sales Associate', undefined, 'MID'],
+    ['Sales Assistant', undefined, 'MID'],
     ['Client Advisor', undefined, 'MID'],
     ['Maroquinier', undefined, 'MID'],
+    // Audit I-3 : un coordinateur, un specialist, un expert ne managent pas
+    ['VM Coordinator', undefined, 'MID'],
+    ['Coordinateur.rice Données', undefined, 'MID'],
+    ['Retail Operations Specialist', undefined, 'MID'],
+    ['Brow Waxing Expert', undefined, 'MID'],
+    ['CRO Manager', undefined, 'MID'],
+    ['Lehrstelle als Uhrmacher∙in EFZ', undefined, 'APPRENTICESHIP'],
+    ['Apprendista Addetto al Taglio', undefined, 'APPRENTICESHIP'],
+    ['Auszubildender zum Werkzeugmechaniker 2027', undefined, 'APPRENTICESHIP'],
+    ['Stagaire Excellence Opérationnelle', undefined, 'INTERNSHIP'],
+    ['Assistant Store Leader', undefined, 'MANAGER'],
+    ['Retail General Manager, Melrose Ave', undefined, 'DIRECTOR'],
   ])('%s → %s', (title, contract, expected) => {
     expect(classifySeniority(title, contract)).toBe(expected);
+  });
+
+  it('un General Manager de magasin dirige une boutique, pas une entreprise (département Retail Management)', () => {
+    expect(classifySeniority('General Manager', undefined, 'Retail Management')).toBe('DIRECTOR');
+    expect(classifySeniority('General Manager', undefined, undefined)).toBe('EXECUTIVE');
   });
 
   it('lit le contrat normalisé quand le titre ne dit rien', () => {
@@ -221,6 +331,19 @@ describe('isAiRelated — sigles en capitales strictes, expressions longues tout
     expect(isAiRelated('Formulation Chemist', 'Le sérum est dosé en 50 ML. Vous maîtrisez la formulation.')).toBe(false);
     expect(isAiRelated('Data Product Manager', 'Au sein de la Direction Analytics & IA, vous pilotez les cas d’usage d’intelligence artificielle. Please refrain from using AI tools during interviews.')).toBe(true);
   });
+
+  it('ignore les clauses d’entreprise, le code de l’Iowa et la saison italienne (audit I-3)', () => {
+    expect(isAiRelated('Warehouse Technician', 'We do not employ machine learning technologies during this phase of the process.')).toBe(false);
+    expect(isAiRelated('Account Executive', 'AI at Toast: We believe learning new AI tools empowers us to do our best work.')).toBe(false);
+    expect(isAiRelated('Vendeur', "L'utilisation de l'Intelligence Artificielle peut être utilisée à des fins de présélection.")).toBe(false);
+    expect(isAiRelated('Sales Advisor', 'We do not use any personal information to train any AI models.')).toBe(false);
+    expect(isAiRelated('Sales Associate', 'Altoona, IA, USA. Full time.')).toBe(false);
+    expect(isAiRelated('Visual Merchandiser', 'Campagna vendite AI 2027, showroom Milano.')).toBe(false);
+    expect(isAiRelated('Junior Global Pricing Manager', 'University degree in economics, data science or statistics.')).toBe(false);
+    expect(isAiRelated('Operations Manager', 'Resolve issues with Booster, My Copilot, and other systems.')).toBe(false);
+    expect(isAiRelated('Machine Learning Engineer', 'You build and ship models.')).toBe(true);
+    expect(isAiRelated('Data Scientist', 'You apply data science to pricing. Strong background in data science and statistics.')).toBe(true);
+  });
 });
 
 describe('extractSkills — dictionnaire fermé, langues seulement près d’un mot de langue', () => {
@@ -237,6 +360,18 @@ describe('extractSkills — dictionnaire fermé, langues seulement près d’un 
       expect.arrayContaining(['Français', 'Italien']),
     );
     expect(extractSkills('Anglais courant exigé.')).toContain('Anglais');
+  });
+
+  it('ne prend ni « in-store events », ni « apply via Workday », ni « territoire français » (audit I-3)', () => {
+    expect(extractSkills('You will support in-store events and training events.')).not.toContain('Événementiel');
+    expect(extractSkills('Event management and event planning experience required.')).toContain('Événementiel');
+    expect(extractSkills('Current employees, apply via your Workday account.')).not.toContain('Workday');
+    expect(extractSkills('Experience administering Workday HCM.')).toContain('Workday');
+    expect(extractSkills('Nocibé, réseau de plus de 550 points de vente répartis sur tout le territoire français.')).not.toContain('Français');
+    expect(extractSkills('Customers buying gifts will appreciate your help.')).not.toContain('Achats');
+    expect(extractSkills('Hair styling and cutting techniques.')).not.toContain('Stylisme');
+    expect(extractSkills('Build a sustainable, vibrant House.')).not.toContain('Développement durable');
+    expect(extractSkills('1er réseau de franchise en optique.')).not.toContain('Franchise');
   });
 
   it('vide pour un texte vide, trié et sans doublon sinon', () => {

@@ -1,5 +1,36 @@
 import type { PrismaClient } from '@prisma/client';
-import { classifyJob, TAXONOMY_VERSION } from '../normalize/taxonomy.js';
+import { AI_TITLE_RE, classifyJob, comparableTitle, TAXONOMY_VERSION } from '../normalize/taxonomy.js';
+
+/**
+ * Garde par société (audit I-3, principe mesuré) : un drapeau IA porté par
+ * plus de 80 % des offres d'une société de ≥ 20 offres est un TEXTE
+ * D'ENTREPRISE recopié dans chaque annonce (Infuse 410/410, The RealReal
+ * 136/136, Quince 133/133, Peloton 49/49), pas un métier. Pour ces sociétés,
+ * seules les offres dont le TITRE parle d'IA gardent le drapeau.
+ */
+export const AI_COMPANY_SHARE = 0.8;
+export const AI_COMPANY_MIN_JOBS = 20;
+
+export type AiGuardStats = { companies: number; cleared: number };
+
+export async function aiCompanyGuard(prisma: PrismaClient): Promise<AiGuardStats> {
+  const suspects = await prisma.$queryRaw<{ companyId: string; total: bigint; ai: bigint }[]>`
+    SELECT "companyId", count(*)::bigint AS total, count(*) FILTER (WHERE "isAiRelated")::bigint AS ai
+    FROM "Job" WHERE "isActive"
+    GROUP BY "companyId"
+    HAVING count(*) >= ${AI_COMPANY_MIN_JOBS} AND count(*) FILTER (WHERE "isAiRelated")::float / count(*) > ${AI_COMPANY_SHARE}
+  `;
+  let cleared = 0;
+  for (const s of suspects) {
+    const rows = await prisma.job.findMany({ where: { companyId: s.companyId, isAiRelated: true }, select: { id: true, title: true } });
+    const toClear = rows.filter((r) => !AI_TITLE_RE.test(comparableTitle(r.title))).map((r) => r.id);
+    if (toClear.length) {
+      const r = await prisma.job.updateMany({ where: { id: { in: toClear } }, data: { isAiRelated: false } });
+      cleared += r.count;
+    }
+  }
+  return { companies: suspects.length, cleared };
+}
 
 /**
  * `classify-jobs` — rejoue la taxonomie Intelligence (D38) sur toute la base,
@@ -26,6 +57,7 @@ export type ClassifyJobsStats = {
   bySeniority: Record<string, number>;
   unclassified: number;
   aiRelated: number;
+  aiGuard?: AiGuardStats;
 };
 
 const DEFAULT_BATCH = 500;
@@ -62,6 +94,11 @@ export async function classifyJobs(prisma: PrismaClient, options: ClassifyJobsOp
     cursor = rows[rows.length - 1].id;
     if (options.limit && stats.scanned >= options.limit) break;
     if (rows.length < batchSize) break;
+  }
+  if (!options.dryRun) {
+    const guard = await aiCompanyGuard(prisma);
+    stats.aiRelated -= guard.cleared;
+    stats.aiGuard = guard;
   }
   return stats;
 }

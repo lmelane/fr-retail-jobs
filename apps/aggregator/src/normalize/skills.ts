@@ -34,7 +34,7 @@ const TOOLS: ReadonlyArray<[string, RegExp]> = [
   ['Adobe Premiere', /premiere pro/i],
   ['After Effects', /after ?effects/i],
   ['Figma', /\bfigma\b/i],
-  ['Sketch', /\bsketch\b(?! (?:book|ing|es))/i],
+  ['Sketch', /figma, sketch|sketch, figma|sketch app|\bsketch\b(?= (?:and|&|,) (?:figma|invision|adobe xd|zeplin))/i],
   ['Canva', /\bcanva\b/i],
   ['CLO 3D', /\bclo ?3d\b|\bclo\b/i],
   ['Browzwear', /browzwear|\bvstitcher\b/i],
@@ -52,7 +52,8 @@ const TOOLS: ReadonlyArray<[string, RegExp]> = [
   ['Magento', /magento|adobe commerce/i],
   ['Cegid', /\bcegid\b/i],
   ['Oracle', /\boracle\b(?! (?:cloud hcm|hcm|recruiting))/i],
-  ['Workday', /\bworkday\b/i],
+  // « apply via your Workday account » n'est pas une compétence (2 800 sur 2 976, audit I-3)
+  ['Workday', /(?<!(?:via|your|through|into|in|on|to) (?:your |the )?)\bworkday\b(?! (?:account|portal|profile|career|login|log ?in|job))/i],
   ['Python', /\bpython\b/i],
   ['SQL', /\bSQL\b/],
   ['R', /\bR\b(?= (?:studio|programming|language|\/ ?python|, python|and python|et python))/],
@@ -92,7 +93,7 @@ const LANGUAGES: ReadonlyArray<[string, RegExp]> = [
 ];
 
 /** Un mot de langue à moins de 70 caractères : la seule chose qui fait d'un adjectif de nationalité une compétence. */
-const LANGUAGE_CUE_RE = /fluen|proficien|speak|spoken|langu|langue|bilingu|native|natif|courant|ma[iî]tris|niveau|level|parl|written|oral|\bB2\b|\bC1\b|\bC2\b|conversational|advanced|intermediate|business level|mother tongue|idioma|lingua|sprach|kenntnisse|required|requis|plus\b|appreciated|appr[eé]ci|mandatory|obligatoire|indispensable|would be|serait un|is a must|is required|est requis|exig/i;
+const LANGUAGE_CUE_RE = /fluen|proficien|speak|spoken|langu|langue|bilingu|native|natif|courant|ma[iî]tris|niveau|level|parl|written|oral|\bB2\b|\bC1\b|\bC2\b|conversational|advanced|intermediate|business level|mother tongue|idioma|lingua|sprach|kenntnisse|required|requis|is a plus|un plus|a plus\b|appreciated|appr[eé]ci|mandatory|obligatoire|indispensable|would be|serait un|is a must|is required|est requis/i;
 const LANGUAGE_WINDOW = 70;
 
 const CONCEPTS: ReadonlyArray<[string, RegExp]> = [
@@ -105,7 +106,7 @@ const CONCEPTS: ReadonlyArray<[string, RegExp]> = [
   ['Retail', /\bretail\b/i],
   ['Wholesale', /wholesale/i],
   ['Travel retail', /travel retail|duty[- ]free/i],
-  ['Achats', /\bbuying\b|\bachats?\b/i],
+  ['Achats', /\bbuying (team|office|department|role|manager|assistant|experience|process|strateg)|(experience|background) in buying|\bachats?\b/i],
   ['Développement produit', /product development|d[eé]veloppement produit/i],
   ['Supply chain', /supply ?chain/i],
   ['Logistique', /logisti(cs|que)/i],
@@ -119,7 +120,8 @@ const CONCEPTS: ReadonlyArray<[string, RegExp]> = [
   ['SEO', /\bSEO\b/],
   ['SEA / Paid media', /\bSEA\b|paid media|paid social|google ads|meta ads/i],
   ['Relations presse', /public relations|relations presse|press relations|\bPR\b/],
-  ['Événementiel', /event management|[eé]v[eé]nementiel|events?\b/i],
+  // « in-store events » n'est pas de l'événementiel (455 vrais sur 17 420, audit I-3)
+  ['Événementiel', /event (management|planning|coordination|production|marketing|manager|planner)|[eé]v[eé]nementiel|organisation d.[eé]v[eé]nements|gestion d.[eé]v[eé]nements/i],
   ['Analyse de données', /data analysis|analyse de donn[eé]es|data-driven|analytics/i],
   ['Reporting', /\breporting\b/i],
   ['KPI', /\bKPIs?\b/],
@@ -147,7 +149,7 @@ const CONCEPTS: ReadonlyArray<[string, RegExp]> = [
   ['Patronage', /pattern ?making|patronage|mod[eé]lisme/i],
   ['Couture', /\bsewing\b|\bcouture\b/i],
   ['Textile', /\btextile/i],
-  ['Stylisme', /\bstyling\b|stylisme/i],
+  ['Stylisme', /(?<!hair )(?<!nail )\bstyling\b(?! (?:hair|tools))|stylisme/i],
   ['Photographie', /photograph/i],
   ['Montage vidéo', /video editing|montage vid[eé]o/i],
   ['Prise de parole', /public speaking|prise de parole/i],
@@ -155,7 +157,7 @@ const CONCEPTS: ReadonlyArray<[string, RegExp]> = [
   ['Leadership', /leadership/i],
   ['Vente', /\bsales\b|\bvente\b/i],
   ['Luxe', /\bluxury\b|\bluxe\b/i],
-  ['Développement durable', /sustainab|d[eé]veloppement durable|\bRSE\b|\bCSR\b|\bESG\b/i],
+  ['Développement durable', /sustainability\b|sustainable (?:development|sourcing|fashion|materials?|packaging|supply|practices|strateg|initiative|program|design|products?|luxury|retail|solutions?)|d[eé]veloppement durable|\bRSE\b|\bCSR\b|\bESG\b/i],
   ['Traçabilité', /traceability|tra[cç]abilit[eé]/i],
   ['Circularité', /circular(ity)?\b|circularit[eé]/i],
   ['Intelligence artificielle', /artificial intelligence|intelligence artificielle|machine learning|generative ai|\bGenAI\b|\bLLMs?\b/i],
@@ -166,7 +168,7 @@ const CONCEPTS: ReadonlyArray<[string, RegExp]> = [
   ['Point de vente (POS)', /\bPOS\b|point of sale|caisse\b/i],
   ['B2B', /\bB2B\b/],
   ['Marketplace', /marketplace/i],
-  ['Franchise', /franchis/i],
+  ['Franchise', /(?<!r[eé]seau de )(?<!network of )franchis(?:e|ing)\b(?! (?:leader|network|r[eé]seau))/i],
   ['Retail media', /retail media/i],
   ['Web3 / NFT', /\bweb ?3\b|\bNFTs?\b|metaverse|m[eé]tavers/i],
 ];
