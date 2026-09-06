@@ -47,7 +47,10 @@ export async function middleware(request: NextRequest) {
     const probe = await fetch(new URL(`/api/offre-status/${encodeURIComponent(id)}`, `http://127.0.0.1:${process.env.PORT ?? 8080}`), {
       headers: { 'x-internal-probe': '1' },
     });
-    if (!probe.ok) return NextResponse.next();
+    if (!probe.ok) {
+      console.error(`[offre-status] sonde ${probe.status} pour ${id}`);
+      return NextResponse.next();
+    }
     const { status } = (await probe.json()) as { status: 'active' | 'closed' | 'missing' };
     if (status !== 'closed') return NextResponse.next();
 
@@ -57,7 +60,10 @@ export async function middleware(request: NextRequest) {
       status: 410,
       headers: { 'x-robots-tag': 'noindex' },
     });
-  } catch {
+  } catch (error) {
+    // Jamais silencieux : une sonde qui échoue rend une offre fermée en 200
+    // (audit A5 : 10/10 fermées en 200, cause invisible pendant des jours).
+    console.error(`[offre-status] sonde en échec pour ${id} : ${error instanceof Error ? error.message : String(error)}`);
     return NextResponse.next();
   }
 }
