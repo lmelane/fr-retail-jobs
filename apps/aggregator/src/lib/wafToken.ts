@@ -15,7 +15,7 @@
  */
 
 /** Renvoie l'en-tête `cookie` à joindre, ou `undefined` si aucun jeton n'apparaît. */
-export type WafPrimer = (origin: string) => Promise<string | undefined>;
+export type WafPrimer = (url: string) => Promise<string | undefined>;
 
 const cookies = new Map<string, string>();
 const inflight = new Map<string, Promise<string | undefined>>();
@@ -54,9 +54,9 @@ export function clearWafTokens(): void {
   inflight.clear();
 }
 
-async function defaultPrimer(origin: string): Promise<string | undefined> {
+async function defaultPrimer(url: string): Promise<string | undefined> {
   const { primeWafToken } = await import('./browser.js');
-  return primeWafToken(origin);
+  return primeWafToken(url);
 }
 
 /**
@@ -72,7 +72,7 @@ export async function primeWafCookie(url: string): Promise<string | undefined> {
   let pending = inflight.get(origin);
   if (!pending) {
     const started = Date.now();
-    pending = (primer ?? defaultPrimer)(origin)
+    pending = (primer ?? defaultPrimer)(url)
       .then((cookie) => {
         if (cookie) cookies.set(origin, cookie);
         console.error(`[waf] ${origin}: amorçage ${cookie ? 'réussi' : 'sans jeton'} en ${Date.now() - started} ms`);

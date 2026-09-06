@@ -50,7 +50,9 @@ describe('fetchWithRetry face à un challenge WAF', () => {
 
     expect(body).toBe('<html>offre</html>');
     expect(primer).toHaveBeenCalledTimes(1);
-    expect(primer).toHaveBeenCalledWith(ORIGIN);
+    // L'amorçage navigue sur l'URL challengée, pas sur la racine : Ralph
+    // Lauren ne pose le challenge que sous /en_US/CareersCorporate/…
+    expect(primer).toHaveBeenCalledWith(`${ORIGIN}/jobs/une-offre`);
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(sentHeaders(fetchMock, 0).cookie).toBeUndefined();
     expect(sentHeaders(fetchMock, 1).cookie).toBe('aws-waf-token=jeton-test');

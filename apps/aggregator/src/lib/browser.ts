@@ -60,11 +60,11 @@ const wafTokens = new Map<string, Promise<string | undefined>>();
  * pour la durée du process : un seul amorçage par run et par hôte, même si
  * plusieurs requêtes parallèles le demandent en même temps.
  */
-export function primeWafToken(origin: string): Promise<string | undefined> {
-  const key = new URL(origin).origin;
+export function primeWafToken(url: string): Promise<string | undefined> {
+  const key = new URL(url).origin;
   let pending = wafTokens.get(key);
   if (!pending) {
-    pending = primeWafTokenOnce(key).catch((error: unknown) => {
+    pending = primeWafTokenOnce(key, url).catch((error: unknown) => {
       // Un amorçage raté ne doit pas être gravé : la prochaine demande réessaie.
       wafTokens.delete(key);
       throw error;
@@ -74,8 +74,14 @@ export function primeWafToken(origin: string): Promise<string | undefined> {
   return pending;
 }
 
-async function primeWafTokenOnce(origin: string): Promise<string | undefined> {
-  assertPublicUrl(origin);
+/**
+ * Navigue sur l'URL CHALLENGÉE elle-même, pas sur la racine de l'origine :
+ * Ralph Lauren ne pose le challenge que sous /en_US/CareersCorporate/… — la
+ * racine répond sans jeton, et l'amorçage expirait après 20 s (mesuré
+ * 2026-09-06). Le jeton reste mémorisé par origine.
+ */
+async function primeWafTokenOnce(origin: string, url: string): Promise<string | undefined> {
+  assertPublicUrl(url);
   return withHostGate(origin, async () => {
     const browser = await getBrowser();
     // Même profil que fetchRenderedHtml : le jeton est lié à l'empreinte du
@@ -88,7 +94,7 @@ async function primeWafTokenOnce(origin: string): Promise<string | undefined> {
     });
     try {
       const page = await context.newPage();
-      await page.goto(`${origin}/`, { waitUntil: 'domcontentloaded', timeout: navigationTimeoutMs });
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: navigationTimeoutMs });
       if (!isPublicHttpUrl(page.url())) {
         throw new Error(`Refusing WAF priming on non-public URL: ${page.url()}`);
       }

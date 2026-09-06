@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { fetchAtsJobs } from '../ats/index.js';
 import { fetchText } from '../lib/http.js';
+import { closeBrowser } from '../lib/browser.js';
 import { tenantKeyOf, promoteSource } from '../connectors/sourceStore.js';
 
 /**
@@ -53,6 +54,7 @@ const CANDIDATES: Candidate[] = [
   { key: "dr-martens-tf", maison: "Dr. Martens", kind: "talentfunnel", type: "TALENT_FUNNEL", careersDomain: "jobs.drmartens.com", tier: "EMPLOYER_DIRECT", config: {origin: "https://jobs.drmartens.com", tenant: "a3e88308-2615-4415-bb56-cc5267bc1ced"} },
   { key: "bash-talents", maison: "ba&sh", kind: "bashtalents", type: "BASH_TALENTS", careersDomain: "talents.ba-sh.com", tier: "EMPLOYER_DIRECT", config: { origin: "https://talents.ba-sh.com", locale: "fr-FR" } },
   { key: "pvh", maison: "PVH", kind: "generic-listing", type: "GENERIC_JSONLD", careersDomain: "careers.pvh.com", tier: "GROUP_OFFICIAL", config: { sitemapUrl: "https://careers.pvh.com/sitemap.xml", concurrency: 4 } },
+  { key: "ralph-lauren-avature", maison: "Ralph Lauren", kind: "avature", type: "AVATURE", careersDomain: "careers.ralphlauren.com", tier: "EMPLOYER_DIRECT", config: { origin: "https://careers.ralphlauren.com", lists: ["en_US/CareersCorporate/SearchJobsCorporate", "en_US/CareersCorporate/SearchJobsRetail"] } },
 ];
 
 /**
@@ -172,3 +174,5 @@ for (const c of CANDIDATES.filter((c) => only.length === 0 || only.includes(c.ke
 console.log(JSON.stringify(summary, null, 2));
 console.log('sources ACTIVE:', await prisma.source.count({ where: { status: 'ACTIVE' } }));
 await prisma.$disconnect();
+// L'amorçage WAF ouvre un Chromium partagé : sans le fermer, le process ne se termine jamais (mesuré 2026-09-06, PVH).
+await closeBrowser();
