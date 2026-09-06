@@ -9,6 +9,7 @@ import { isFranceJob } from '../lib/france.js';
 import { detectLanguage } from '../lib/language.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
 import { classifyJob, TAXONOMY_VERSION } from '../normalize/taxonomy.js';
+import { changedEvents, diffStructuralFields, toNestedEventRow, type JobEventInput } from '../pipeline/jobEvents.js';
 
 
 /** Classifier sectors map 1:1 onto the CompanySector enum. */
@@ -347,6 +348,9 @@ async function createJob(
             raw: candidate.raw as never,
           },
         },
+        // L'histoire commence ici (D38) : une ouverture, dans la même écriture
+        // que la ligne — jamais une offre sans son événement de naissance.
+        events: { create: { type: 'OPENED', at: now } },
       },
   });
   return { jobId: created.id, outcome: 'CREATED', promoted: true };
@@ -372,8 +376,10 @@ type ExistingJob = {
   canonicalTier: string | null;
   clusterKey: string | null;
   companyId: string;
+  isActive: boolean;
   isFrance: boolean;
   title: string;
+  jobFunction: string | null;
   description: string | null;
   location: string | null;
   city: string | null;
@@ -518,49 +524,71 @@ async function attachToExisting(
   const sameOrHigherTier = tierRank(candidate.sourceTier) <= tierRank(ownerTier ?? '');
   const urlRefresh = !promoted && sameOrHigherTier && candidate.url && candidate.url !== existing.url;
 
+  const data = {
+    lastSeenAt: now,
+    isActive: true,
+    // Every touch carries the current generation, so a merged offer is never
+    // left below the version line and re-purged on the next run.
+    pipelineVersion: PIPELINE_VERSION,
+    // The normalized values of today reach the rows of yesterday.
+    ...reattestationFields(candidate, existing, alreadyKnown),
+    // La taxonomie suit la même règle d'auto-guérison : re-classée par la
+    // source de l'entrée, ou dès que les règles ont changé de version.
+    ...(alreadyKnown || existing.taxonomyVersion < TAXONOMY_VERSION
+      ? classifyJob({
+          title: alreadyKnown ? candidate.title : existing.title,
+          department: candidate.department,
+          description: alreadyKnown ? candidate.description : existing.description,
+          contract: candidate.contract ?? existing.contract,
+        })
+      : {}),
+    // A cluster key that drifted (city normalized differently) is re-graved,
+    // so the cluster lookup — and the weekly reconcile — find the row again.
+    ...(clusterKey && clusterKey !== existing.clusterKey ? { clusterKey } : {}),
+    // 1 166 offres restaient sous une société périmée (audit A1) : l'alias ou
+    // la marque corrigés ne les atteignaient jamais.
+    ...(alreadyKnown && companyId && companyId !== existing.companyId ? { companyId } : {}),
+    ...(promoted
+      ? {
+          url: candidate.url,
+          canonicalTier: candidate.sourceTier,
+          title: candidate.title,
+          // Keep the richest description available across sources — and the
+          // language of the text now shown.
+          ...(candidate.description && candidate.description.length > (existing.description?.length ?? 0)
+            ? {
+                description: candidate.description,
+                language: candidate.language ?? detectLanguage(candidate.description),
+              }
+            : {}),
+        }
+      : urlRefresh
+        ? { url: candidate.url }
+        : {}),
+  };
+
+  /**
+   * L'histoire (D38) : un CHANGED par champ structurant qui change vraiment
+   * (titre, ville, pays, société, métier — jamais la description, les dates
+   * ou le salaire), et une RÉ-OUVERTURE quand une source re-liste une offre
+   * que le refresh avait fermée. Avant, `isActive: true` était remis sans le
+   * dire : la fermeture disparaissait de la base sans laisser de trace.
+   */
+  const reopening = !existing.isActive;
+  const events: JobEventInput[] = [
+    ...(reopening ? [{ jobId: existing.id, type: 'REOPENED' as const, at: now }] : []),
+    ...changedEvents(existing.id, diffStructuralFields(existing, data), now),
+  ];
+
+  // Une seule écriture : la ligne et ses événements dans la même requête
+  // (createMany imbriqué), sans transaction interactive à tenir sous six
+  // workers concurrents.
   await prisma.job.update({
     where: { id: existing.id },
     data: {
-      lastSeenAt: now,
-      isActive: true,
-      // Every touch carries the current generation, so a merged offer is never
-      // left below the version line and re-purged on the next run.
-      pipelineVersion: PIPELINE_VERSION,
-      // The normalized values of today reach the rows of yesterday.
-      ...reattestationFields(candidate, existing, alreadyKnown),
-      // La taxonomie suit la même règle d'auto-guérison : re-classée par la
-      // source de l'entrée, ou dès que les règles ont changé de version.
-      ...(alreadyKnown || existing.taxonomyVersion < TAXONOMY_VERSION
-        ? classifyJob({
-            title: alreadyKnown ? candidate.title : existing.title,
-            department: candidate.department,
-            description: alreadyKnown ? candidate.description : existing.description,
-            contract: candidate.contract ?? existing.contract,
-          })
-        : {}),
-      // A cluster key that drifted (city normalized differently) is re-graved,
-      // so the cluster lookup — and the weekly reconcile — find the row again.
-      ...(clusterKey && clusterKey !== existing.clusterKey ? { clusterKey } : {}),
-      // 1 166 offres restaient sous une société périmée (audit A1) : l'alias ou
-      // la marque corrigés ne les atteignaient jamais.
-      ...(alreadyKnown && companyId && companyId !== existing.companyId ? { companyId } : {}),
-      ...(promoted
-        ? {
-            url: candidate.url,
-            canonicalTier: candidate.sourceTier,
-            title: candidate.title,
-            // Keep the richest description available across sources — and the
-            // language of the text now shown.
-            ...(candidate.description && candidate.description.length > (existing.description?.length ?? 0)
-              ? {
-                  description: candidate.description,
-                  language: candidate.language ?? detectLanguage(candidate.description),
-                }
-              : {}),
-          }
-        : urlRefresh
-          ? { url: candidate.url }
-          : {}),
+      ...data,
+      ...(reopening ? { closedAt: null, reopenedCount: { increment: 1 } } : {}),
+      ...(events.length ? { events: { createMany: { data: events.map(toNestedEventRow) } } } : {}),
     },
   });
 

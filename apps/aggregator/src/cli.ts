@@ -15,6 +15,7 @@ import { runEgressProbe } from './pipeline/egressProbe.js';
  */
 const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 * 1000);
 import { runRefresh } from './pipeline/refresh.js';
+import { parseDay, runSnapshot, type SnapshotStats } from './pipeline/snapshot.js';
 import { runReconcile } from './pipeline/reconcile.js';
 import { separateFusedJobs } from './pipeline/separateFused.js';
 import { retireSource } from './pipeline/retireSource.js';
@@ -30,8 +31,10 @@ import { closeBrowser } from './lib/browser.js';
  * job never takes the others down:
  *
  *   ingest    (~2h)    new and updated offers; dedup happens at write time
- *   refresh   (daily)  lifecycle — closes offers no source reports any more
+ *   refresh   (daily)  lifecycle — closes offers no source reports any more,
+ *                      then takes the day's market snapshot (D38)
  *   reconcile (weekly) retroactive merges after an alias or synonym is added
+ *   snapshot  (manual) the market snapshot alone: --date=, --backfill-from=
  *
  * geocode runs after ingest to resolve any new cities for the map.
  */
@@ -128,9 +131,24 @@ try {
     }
   } else if (command === 'refresh') {
     const refresh = await runRefresh(prisma);
+    /**
+     * D38 : la photographie du jour se prend APRÈS les fermetures, pour que
+     * `closedJobs` et la durée de publication médiane reflètent ce refresh.
+     * Un échec du snapshot est un incident visible (exit 1) mais ne cache
+     * jamais le résultat du refresh, déjà acquis.
+     */
+    let snapshot: SnapshotStats | null = null;
+    let snapshotError: string | null = null;
+    try {
+      snapshot = await runSnapshot(prisma);
+    } catch (error) {
+      snapshotError = error instanceof Error ? error.message : String(error);
+    }
     // Report honestly: a refused mass-closure or a skipped broken source is an
     // incident the scheduler must show, not a silent ok:true.
-    console.log(JSON.stringify({ ok: !refresh.refused, command, ...refresh }, null, 2));
+    console.log(
+      JSON.stringify({ ok: !refresh.refused && !snapshotError, command, ...refresh, snapshot, snapshotError }, null, 2),
+    );
     if (refresh.refused) {
       console.error('[refresh] mass-closure guard refused the run — a source is likely broken');
       process.exitCode = 1;
@@ -140,6 +158,24 @@ try {
         `[refresh] left offers of broken sources open: ${refresh.skippedBrokenSources.join(', ')}`,
       );
     }
+    if (snapshotError) {
+      console.error(`[snapshot] failed after refresh: ${snapshotError}`);
+      process.exitCode = 1;
+    }
+  } else if (command === 'snapshot') {
+    /**
+     * Photographie du marché (D38) pour un jour : `--date=YYYY-MM-DD` (défaut
+     * aujourd'hui UTC), `--backfill-from=YYYY-MM-DD` reconstruit chaque jour
+     * depuis cette date (approximation : voir snapshot.ts). Idempotent.
+     */
+    const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+    const date = arg('date');
+    const backfillFrom = arg('backfill-from');
+    const stats = await runSnapshot(prisma, {
+      ...(date ? { date: parseDay(date) } : {}),
+      ...(backfillFrom ? { backfillFrom: parseDay(backfillFrom) } : {}),
+    });
+    console.log(JSON.stringify({ ok: true, command, ...stats }, null, 2));
   } else if (command === 'reconcile') {
     console.log(JSON.stringify({ ok: true, command, ...(await runReconcile(prisma)) }, null, 2));
   } else if (command === 'import-sources') {

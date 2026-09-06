@@ -1,4 +1,6 @@
-import type { PrismaClient } from '@prisma/client';
+import type { Prisma, PrismaClient } from '@prisma/client';
+import { chunk } from '../lib/chunk.js';
+import { recordEvents } from './jobEvents.js';
 
 /**
  * REFRESH — lifecycle pass: NEW / UNCHANGED / UPDATED / CLOSED.
@@ -78,6 +80,25 @@ async function brokenSourceKeys(prisma: PrismaClient): Promise<Set<string>> {
   return broken;
 }
 
+/**
+ * `updateMany` sur une liste d'ids, par tranches : au-delà de 32 767
+ * paramètres liés Postgres refuse la requête d'un bloc (mesuré : 65 903 ids
+ * → « too many bind variables »). Le refresh ferme des centaines d'offres par
+ * nuit, et des dizaines de milliers le jour où une base est reconstruite.
+ */
+async function updateJobsInBatches(
+  tx: Pick<PrismaClient, 'job'>,
+  ids: ReadonlyArray<string>,
+  data: Prisma.JobUpdateManyMutationInput,
+): Promise<number> {
+  let count = 0;
+  for (const batch of chunk(ids)) {
+    const result = await tx.job.updateMany({ where: { id: { in: batch } }, data });
+    count += result.count;
+  }
+  return count;
+}
+
 export async function runRefresh(
   prisma: PrismaClient,
   options: RefreshOptions = {},
@@ -149,27 +170,38 @@ export async function runRefresh(
       })
     : { count: 0 };
 
-  // 2. Close jobs with no active source left.
+  // 2. Close jobs with no active source left. `closedAt` is the observed end of
+  //    publication (D38): with `firstSeenAt` it is the lifespan the market
+  //    snapshots measure. One CLOSED event per offer, written in one batch.
+  const now = new Date();
   const orphaned = await prisma.job.findMany({
     where: { isActive: true, sources: { none: { isActive: true } } },
     select: { id: true },
   });
   const closedJobs = orphaned.length
-    ? await prisma.job.updateMany({
-        where: { id: { in: orphaned.map((job) => job.id) } },
-        data: { isActive: false },
+    ? await prisma.$transaction(async (tx) => {
+        const count = await updateJobsInBatches(tx, orphaned.map((job) => job.id), { isActive: false, closedAt: now });
+        await recordEvents(tx, orphaned.map((job) => ({ jobId: job.id, type: 'CLOSED' as const, at: now })));
+        return { count };
       })
     : { count: 0 };
 
   // 3. Reopen a closed job whose source came back, rather than duplicating it.
+  //    The closure is erased (`closedAt: null`) and counted: an offer that
+  //    comes back several times is a repost signal, not a new opening.
   const revived = await prisma.job.findMany({
     where: { isActive: false, sources: { some: { isActive: true } } },
     select: { id: true },
   });
   const reopened = revived.length
-    ? await prisma.job.updateMany({
-        where: { id: { in: revived.map((job) => job.id) } },
-        data: { isActive: true },
+    ? await prisma.$transaction(async (tx) => {
+        const count = await updateJobsInBatches(tx, revived.map((job) => job.id), {
+          isActive: true,
+          closedAt: null,
+          reopenedCount: { increment: 1 },
+        });
+        await recordEvents(tx, revived.map((job) => ({ jobId: job.id, type: 'REOPENED' as const, at: now })));
+        return { count };
       })
     : { count: 0 };
 
