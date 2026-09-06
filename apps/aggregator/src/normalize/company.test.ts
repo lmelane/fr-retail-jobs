@@ -125,3 +125,12 @@ describe('stripLegalSuffix — formes juridiques et entités locales (audit A1)'
     expect(resolveCompany('Ulta Beauty, Inc.').displayName).toBe('Ulta Beauty');
   });
 });
+
+describe('resolveCompany — étiquettes du flux ELC', () => {
+  it('« Estée Lauder - Brand » est la marque Estée Lauder, groupe Estée Lauder Companies', () => {
+    const brand = resolveCompany('Estée Lauder - Brand');
+    expect(brand.displayName).toBe('Estée Lauder');
+    expect(brand.group).toBe('Estée Lauder Companies');
+    expect(resolveCompany('Estée Lauder Companies').companyId).not.toBe(brand.companyId);
+  });
+});

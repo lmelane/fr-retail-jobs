@@ -71,6 +71,12 @@ const ALIASES: ReadonlyArray<readonly [string, CompanyIdentity]> = [
   ['VANCLEEF APRELS', { companyId: 'VAN_CLEEF', displayName: 'Van Cleef & Arpels', group: 'Richemont' }],
   ['RICHEMONT', { companyId: 'RICHEMONT', displayName: 'Richemont', group: 'Richemont' }],
 
+  // Flux Eightfold ELC (lot 2, 2026-09-06) : la marque « Estée Lauder » y est étiquetée « Estée Lauder - Brand » (122 offres) ;
+  // le groupe s'écrit « Estée Lauder Companies ».
+  ['ESTEE LAUDER BRAND', { companyId: 'ESTEE_LAUDER', displayName: 'Estée Lauder', group: 'Estée Lauder Companies' }],
+  ['ESTEE LAUDER', { companyId: 'ESTEE_LAUDER', displayName: 'Estée Lauder', group: 'Estée Lauder Companies' }],
+  ['ESTEE LAUDER COMPANIES', { companyId: 'ESTEE_LAUDER_COMPANIES', displayName: 'Estée Lauder Companies', group: 'Estée Lauder Companies' }],
+
   ['SANDRO', { companyId: 'SANDRO', displayName: 'Sandro', group: 'SMCP' }],
   ['MAJE', { companyId: 'MAJE', displayName: 'Maje', group: 'SMCP' }],
   ['CLAUDIE PIERLOT', { companyId: 'CLAUDIE_PIERLOT', displayName: 'Claudie Pierlot', group: 'SMCP' }],
