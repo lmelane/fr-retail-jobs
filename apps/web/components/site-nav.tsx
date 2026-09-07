@@ -85,28 +85,31 @@ export function SiteNav() {
           onPhoto ? 'bg-transparent text-white' : 'bg-paper text-ink',
         )}
       >
-        {/* Top-bar 72px (desktop) / 64px (mobile) */}
-        <div className="rule-b flex h-16 w-full items-center px-6 lg:h-[72px] lg:px-10 [--fa-ink:currentColor]">
-          <div className="hidden flex-1 items-center lg:flex">
+        {/* Top-bar 72px (desktop) / 64px (mobile).
+            Le point de bascule est `md:` (768px), celui de la DA §6 — PAS `lg:`
+            (1024px en Tailwind), qui laissait toute la tablette en portrait avec
+            une nav repliée et un header de 114px (mesuré le 2026-09-07). */}
+        <div className="rule-b flex h-16 w-full items-center px-6 md:h-[72px] md:px-10 [--fa-ink:currentColor]">
+          <div className="hidden flex-1 items-center md:flex">
             <a href="https://catwalks.io" target="_blank" rel="noopener noreferrer" className="t-caption inline-flex items-center gap-1">
               Catwalks <ArrowUpRight />
             </a>
           </div>
-          <Link href="/" className="flex flex-1 justify-center lg:flex-none" aria-label="Mode Careers — accueil">
+          <Link href="/" className="flex flex-1 justify-center md:flex-none" aria-label="Mode Careers — accueil">
             <span className="brand-logo" role="img" aria-hidden="true" />
           </Link>
           <div className="flex flex-1 items-center justify-end">
-            <button type="button" className="t-caption hidden items-center gap-1 lg:inline-flex" aria-label="Langue">
+            <button type="button" className="t-caption hidden items-center gap-1 md:inline-flex" aria-label="Langue">
               FR <ChevronDown />
             </button>
-            <button type="button" onClick={() => setMenuOpen(true)} aria-label="Menu" className="grid size-11 place-items-center lg:hidden">
+            <button type="button" onClick={() => setMenuOpen(true)} aria-label="Menu" className="grid size-11 place-items-center md:hidden">
               <Burger />
             </button>
           </div>
         </div>
 
         {/* Nav 42px (desktop only) */}
-        <nav className="rule-b hidden h-[42px] w-full items-center justify-center gap-11 px-6 lg:flex lg:px-10 [--fa-ink:currentColor]" aria-label="Navigation principale">
+        <nav className="rule-b hidden h-[42px] w-full items-center justify-center gap-11 px-6 md:flex md:px-10 [--fa-ink:currentColor]" aria-label="Navigation principale">
           {NAV.map((item) => {
             const base = 't-caption u-line u-line--nav inline-flex h-[42px] items-center gap-1';
             if (item.external) {
@@ -139,7 +142,7 @@ export function SiteNav() {
 
       {/* Mobile full-screen menu */}
       {menuOpen && (
-        <div className="fixed inset-0 z-[120] bg-paper lg:hidden">
+        <div className="fixed inset-0 z-[120] bg-paper md:hidden">
           <div className="mx-auto flex h-16 max-w-[var(--fa-container)] items-center justify-between px-6">
             <span className="brand-logo text-ink" role="img" aria-label="Mode Careers" />
             <button type="button" onClick={() => setMenuOpen(false)} aria-label="Fermer" className="grid size-11 place-items-center text-ink"><Close /></button>

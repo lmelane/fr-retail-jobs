@@ -8,7 +8,7 @@ import { contractLabel } from '@/lib/format';
 import type { Profile } from '@/lib/intelligence/queries/profile';
 import type { Coverage as CoverageData } from '@/lib/intelligence/queries/coverage';
 import { concentration, indexBase100, median, momentum, repostRate, share, variation } from '@/lib/intelligence/metrics';
-import { fmtDate, fmtDays, fmtIndex, fmtInt, fmtPct, fmtSignedPct, MIN_SAMPLE, NA_FROM, NA_INSUFFICIENT, addDays, windowAvailable, windowFrom } from '@/lib/intelligence/format';
+import { fmtDate, fmtDays, fmtIndex, fmtInt, fmtNew, fmtPct, fmtSignedPct, MIN_SAMPLE, NA_FROM, NA_INSUFFICIENT, addDays, windowAvailable, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { FAMILY_LABELS, functionLabel, mergeOtherSectors, sectorLabel, seniorityLabel, UNCLASSIFIED_LABEL, type JobFamily } from '@/lib/intelligence/taxonomy';
 
@@ -29,6 +29,15 @@ export type ProfileContext = {
 const Arrow = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden width="16" height="16"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
 );
+
+/**
+ * « +N · 30 j » sous une ligne de liste, ou rien tant que l'observation ne
+ * couvre pas la fenêtre — sinon le compte égale le total (cf. `fmtNew`).
+ */
+function newSub(n: number): string | undefined {
+  const v = fmtNew(n);
+  return v && n > 0 ? `+${v} · 30 j` : undefined;
+}
 
 export function ProfileKpis({ profile, coverage, ctx }: { profile: Profile; coverage: CoverageData; ctx: ProfileContext }) {
   const h = profile.headline;
@@ -118,7 +127,7 @@ export function ProfileBlocks({ profile, ctx }: { profile: Profile; ctx: Profile
           <Block id="pays" title="Top pays" level="fact-shares" more={{ href: intelPaths.geographies, label: 'Toutes les géographies' }}>
             <BarList
               total={total}
-              rows={profile.countries.slice(0, 10).map((c) => ({ label: countryLabel(c.code), value: c.active, href: intelPaths.country(c.code), sub: c.new30 > 0 ? `+${fmtInt(c.new30)} · 30 j` : undefined }))}
+              rows={profile.countries.slice(0, 10).map((c) => ({ label: countryLabel(c.code), value: c.active, href: intelPaths.country(c.code), sub: newSub(c.new30) }))}
             />
             {profile.countriesUnknown > 0 && <p className="t-caption-soft mt-3">{fmtInt(profile.countriesUnknown)} offres sans pays identifié.</p>}
           </Block>

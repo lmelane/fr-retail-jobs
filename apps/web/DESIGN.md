@@ -1,191 +1,67 @@
-# Catwalks — Direction artistique
+# DESIGN.md — Mode Careers
 
-**Direction : Material 3 Expressive — le langage de Gemini.**
+> **La direction artistique de référence est [`design_2.md`](../../design_2.md)**, à la racine du dépôt :
+> « Corporate Elegance », v1.0 du 3 septembre 2026, 57 ko, auto-suffisante
+> (tokens §2, composants §4, pages §5, responsive §6, accessibilité §7).
+> C'est elle qu'implémente `app/globals.css`. Elle est **postérieure** à la
+> décision D17 de `CLAUDE.md` et la remplace sur tous les points de style.
 
-Implémentée avec notre stack (shadcn/ui + Tailwind + Lucide + Motion). Les
-primitives shadcn sont retokenisées en Material 3 : on garde les composants,
-on remplace le langage visuel. Aucun composant écrit à la main.
+## Deux pièges documentés ici, parce qu'ils ont déjà égaré des audits
 
----
+**1. Ce fichier a porté une DA Material 3 périmée.** Jusqu'au 2026-09-07 il
+décrivait une direction bleu Google (surfaces teintées, bordures interdites,
+rayons 12–28 px), écrite le 1er septembre pour une refonte **abandonnée deux
+jours plus tard**. Un audit s'y fiant aurait recommandé de repeindre le site.
 
-## 1. Le principe Material 3
+**2. D17 dans `CLAUDE.md` décrit l'ancien site, pas la cible.** D17 grave
+« monochrome strict, graisse 400 partout, titres en capitales, pastilles
+100vmax ». `design_2.md` §0.1 liste précisément ces traits comme les
+**faiblesses** de l'ancien site (« ressemble à un template SaaS… une graisse
+unique, pas de contraste serif/sans, arrondis génériques, pas d'accent »), et
+§1 prescrit l'inverse. Le code suit `design_2.md`. **En cas de doute, la DA
+gagne sur D17**, et un audit mené sur D17 condamnerait le travail bien fait.
 
-Trois piliers, qui expliquent chaque décision plus bas :
+## Les invariants réels (source : `design_2.md` §1)
 
-1. **Surfaces teintées, pas de bordures.** La hiérarchie vient de plans colorés
-   superposés (`surface`, `surface-container`, `surface-container-high`), jamais
-   d'un filet gris. Une bordure est un aveu d'échec de la hiérarchie.
-2. **Formes généreuses.** Rayons larges (12–28px) et pilules complètes sur les
-   contrôles. C'est la signature visuelle la plus reconnaissable de Gemini.
-3. **Motion physique.** Ressorts, pas des courbes linéaires. Le mouvement doit
-   sembler avoir une masse.
+1. **Le serif porte le sens, le sans porte l'usage.** Contenu (titre d'offre,
+   nom de Maison, titre de section, chiffre clé) en serif display ; interface
+   (nav, filtres, libellés, boutons, métadonnées) en sans.
+2. **Une seule couleur d'accent**, réservée à l'action principale, l'état
+   actif/sélectionné, les liens d'emphase, les chiffres clés et les libellés de
+   rubrique. Jamais en aplat décoratif de grande surface.
+3. **Le filet pointillé remplace la carte.** On sépare par des filets, pas par
+   des boîtes ; les bordures pleines sont réservées aux champs et boutons.
+4. **Aucune ombre, un seul rayon (5 px). Pas de pastilles.** Pas de rayon sur
+   les images ni sur les conteneurs.
+5. **Blanc, pas gris.** Fond de page `#FFFFFF` ; le gris clair ne sert qu'aux
+   surfaces de saisie et aux états désactivés.
+6. **Capitales = serif display de hero, ou caption.** Les titres d'offres ne
+   sont **plus** en capitales.
+7. **La photo est le seul décor.** Pas d'illustration, pas de dégradé, pas de
+   motif ; aucune photo dans le moteur hors logos de Maisons.
+8. **Densité utile.** Vues éditoriales aux grands pas (64–160 px), vues moteur
+   aux petits pas (8–24 px).
 
----
+Accessibilité (§7) : contraste ≥ 4.5:1, focus visible partout, cibles tactiles
+≥ 44 × 44, filets décoratifs `aria-hidden`, l'accent jamais seul porteur d'une
+information, `prefers-reduced-motion` respecté, un seul H1 par page.
 
-## 2. Couleur — palette Material 3 (source : `#0b57d0`)
+## Écart connu entre le code et la DA
 
-Rôles Material appliqués aux variables shadcn, pour que les composants suivent
-sans être modifiés.
+`design_2.md` fixe l'accent à **`#105A33`** (vert, 8.3:1 sur blanc).
+`app/globals.css:56` pose `--fa-green: #022026` — un bleu-pétrole très sombre.
+Le nom de la variable dit « green », la valeur n'en est pas un.
+**Non tranché : à arbitrer par Loïc** (aligner le code sur la DA, ou regraver la
+DA sur la couleur réellement retenue). Ne pas « corriger » l'un ou l'autre sans
+décision.
 
-| Rôle Material | Valeur | Usage |
-|---|---|---|
-| `primary` | `oklch(48% 0.19 264)` — le bleu Google `#0b57d0` | Actions, état actif, pins |
-| `on-primary` | `oklch(100% 0 0)` | Texte sur primary |
-| `primary-container` | `oklch(92% 0.05 264)` | Fonds d'accent doux, chips actives |
-| `on-primary-container` | `oklch(28% 0.11 264)` | Texte sur container |
-| `surface` | `oklch(99% 0.004 264)` | Fond de page |
-| `surface-container-low` | `oklch(97% 0.006 264)` | Zones surélevées |
-| `surface-container` | `oklch(95.5% 0.008 264)` | Barres, panneaux |
-| `surface-container-high` | `oklch(93% 0.01 264)` | Survol, sélection |
-| `on-surface` | `oklch(20% 0.015 264)` | Texte principal |
-| `on-surface-variant` | `oklch(45% 0.02 264)` | Texte secondaire |
-| `outline-variant` | `oklch(88% 0.008 264)` | Séparateurs, en dernier recours |
+## Où lire le reste
 
-**Règle :** toute surface est teintée sur la teinte 264. Un gris pur (chroma 0)
-casse le système — c'est ce qui fait qu'une interface « ressemble à Bootstrap »
-plutôt qu'à Material.
-
----
-
-## 3. Typographie — échelle Material 3
-
-Poppins (Google Sans n'est pas distribuée publiquement ; Poppins en est la
-géométrique la plus proche).
-
-| Rôle Material | Taille | Interligne | Graisse | Interlettrage | Usage |
-|---|---|---|---|---|---|
-| `headline-small` | 24px | 32px | 400 | 0 | Titre de page |
-| `title-medium` | 16px | 24px | 500 | +0.15px | Titre d'offre |
-| `title-small` | 14px | 20px | 500 | +0.1px | Nom de Maison |
-| `body-medium` | 14px | 20px | 400 | +0.25px | Corps |
-| `label-large` | 14px | 20px | 500 | +0.1px | Boutons, chips |
-| `label-medium` | 12px | 16px | 500 | +0.5px | Métadonnées |
-
-**Interlettrage positif** — c'est l'inverse d'un système Linear-like, et c'est
-volontaire : Material privilégie la lisibilité posée sur la densité.
-
----
-
-## 4. Formes
-
-| Élément | Rayon | Token Material |
-|---|---|---|
-| Chips, boutons | `9999px` (pilule) | `corner-full` |
-| Cartes, lignes | `16px` | `corner-large` |
-| Conteneurs, carte | `28px` | `corner-extra-large` |
-| Champs de saisie | `28px` (pilule) | `corner-extra-large` |
-
-Le rayon large **est** la signature. Sous 12px, l'interface cesse de ressembler
-à Gemini.
-
----
-
-## 5. Élévation — teinte, pas ombre
-
-Material 3 remplace les ombres portées par des **surfaces teintées**. Une carte
-n'est pas « au-dessus », elle est « plus dense en couleur ».
-
-- Niveau 0 : `surface`
-- Niveau 1 : `surface-container-low`
-- Niveau 2 : `surface-container` + ombre très douce `0 1px 2px rgba(11,87,208,0.06)`
-- Niveau 3 : `surface-container-high`
-
-L'ombre reste teintée bleu, jamais noire.
-
----
-
-## 6. Espacement
-
-Incréments de **4px** (`gap-1` = 4px, `gap-2` = 8px…). Material est plus aéré
-qu'un outil dense : une ligne d'offre respire à `p-4` (16px), pas `py-3`.
-
----
-
-## 7. Motion — ressorts, pas des courbes
-
-Material 3 Expressive utilise un motion **physique**. Avec Motion :
-
-```ts
-// Spatial (position, taille) — rebond léger
-{ type: 'spring', stiffness: 380, damping: 30 }
-// Effets (opacité, couleur) — sans rebond
-{ type: 'spring', stiffness: 400, damping: 40 }
-```
-
-- Entrée de liste : cascade 20ms/ligne, spring spatial
-- Filtrage : `layout` sur les lignes, spring
-- Pas de `duration` fixe : c'est le ressort qui décide
-
----
-
-## 8. Composants
-
-Tout vient de `npx shadcn add`, **retokenisé** via les variables CSS. Ce qui
-change par rapport au défaut shadcn :
-
-- `--radius: 1rem` (16px) au lieu de 0.5rem
-- Chips et boutons forcés en `rounded-full`
-- Fonds `surface-container` au lieu de bordures
-- Ondulation Material approximée par une transition de fond au survol
-
----
-
-## 9. Contrôle avant livraison
-
-- [ ] Aucun gris pur : toute surface est teintée 264
-- [ ] Rayons ≥ 16px, pilules sur les contrôles
-- [ ] Hiérarchie par surfaces superposées, pas par bordures
-- [ ] Interlettrage positif conforme à l'échelle Material
-- [ ] Motion par ressorts, sans durées fixes
-- [ ] Ombres teintées bleu, jamais noires
-- [ ] Tous les composants issus du CLI shadcn
-- [ ] `prefers-reduced-motion` respecté
-
----
-
-## 10. Modèle d'interface : Indeed, langage Gemini
-
-**Liste à gauche (~40 %), détail de l'offre à droite (~60 %).** Cliquer une offre
-ouvre son détail dans le panneau, sans quitter la page ni perdre les filtres.
-C'est le modèle des jobboards parce qu'il fonctionne : comparer plusieurs offres
-demande de garder la liste sous les yeux.
-
-La carte n'occupe pas la moitié de l'écran en permanence — elle devient un
-onglet du panneau de droite (Détail · Carte · Analytics). Une carte est un mode
-d'exploration, pas la vue par défaut d'un candidat qui lit des annonces.
-
-Le détail contient : titre, Maison, localisation, contrat, date, description
-complète, sources ayant vu l'offre, et un bouton **Postuler** qui pointe vers
-l'URL canonique employeur.
-
----
-
-## 11. Analytics — palette validée
-
-Palette catégorielle, **validée par `scripts/validate_palette.js`** (5/5 en mode
-clair). Ne pas modifier sans revalider : deux teintes voisines mal choisies
-deviennent indiscernables en deutéranopie.
-
-```
-#1a73e8  bleu     (série 1)
-#c5221f  rouge    (série 2)
-#00897b  turquoise(série 3)
-#b06000  ambre    (série 4)
-#9334e6  violet   (série 5)
-#3f7d20  vert     (série 6)
-```
-
-L'ordre est **fixe** : une teinte appartient à une entité, jamais à un rang. Un
-filtre qui change le nombre de séries ne doit pas repeindre les survivantes.
-
-Séquentiel (volumes sur carte, densité) : une seule teinte `#1a73e8`, du clair
-au foncé. Jamais d'arc-en-ciel.
-
-Formes retenues :
-- **Répartition géographique** → carte à cercles proportionnels (déjà en place)
-- **Publications dans le temps** → aire empilée par secteur
-- **Contrats / secteurs** → barres horizontales triées
-- **Top employeurs** → barres horizontales, 10 max puis « Autres »
-
-Règles non négociables : un seul axe Y (jamais de double échelle), légende dès
-2 séries, libellés directs quand ≤ 4 séries, survol avec infobulle partout.
+| Sujet | Source |
+|---|---|
+| Tokens, typographie, grille, composants, pages | `design_2.md` §2 à §5 |
+| Points de rupture responsive | `design_2.md` §6 |
+| Accessibilité | `design_2.md` §7 |
+| Photographie et imagerie | `design_2.md` §8 |
+| Décisions produit qui contraignent l'UI | `CLAUDE.md` — D13, D18, D20, D22 (D17 : périmé sur le style) |
+| Implémentation | `app/globals.css` |

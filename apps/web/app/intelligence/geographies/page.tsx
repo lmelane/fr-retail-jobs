@@ -6,7 +6,7 @@ import { WorldMap } from '@/components/intelligence/world-map';
 import { countryLabel } from '@/lib/countries';
 import { getGeographies } from '@/lib/intelligence/queries/lists';
 import { getCoverage } from '@/lib/intelligence/queries/coverage';
-import { addDays, fmtDate, fmtInt, fmtPct, fmtSignedPct, MIN_SAMPLE, NA_FROM, NA_INSUFFICIENT } from '@/lib/intelligence/format';
+import { addDays, fmtDate, fmtInt, fmtNew, fmtPct, fmtSignedPct, MIN_SAMPLE, NA_FROM, NA_INSUFFICIENT, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
 
@@ -57,7 +57,7 @@ export default async function Page() {
                     <tr key={c.code}>
                       <td><Link href={intelPaths.country(c.code)}>{countryLabel(c.code)}</Link></td>
                       <td className="num">{fmtInt(c.active)}</td>
-                      <td className="num">{fmtInt(c.new30)}</td>
+                      <td className="num">{fmtNew(c.new30) ?? <NA na={NA_FROM(windowFrom(30))} />}</td>
                       <td className="num muted">{data.total >= MIN_SAMPLE ? fmtPct(c.active / data.total) : <NA na={NA_INSUFFICIENT(data.total)} />}</td>
                       <td className="num">{fmtInt(c.companies)}</td>
                       <td className="num muted">{pct !== null ? fmtSignedPct(pct) : <NA na={g?.before ? NA_INSUFFICIENT(g.before.activeJobs) : NA_FROM(addDays(coverage.historyStart, 30))} />}</td>

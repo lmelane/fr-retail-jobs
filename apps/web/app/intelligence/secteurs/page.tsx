@@ -5,7 +5,7 @@ import { countryLabel } from '@/lib/countries';
 import { getSectorsList } from '@/lib/intelligence/queries/lists';
 import { getCoverage } from '@/lib/intelligence/queries/coverage';
 import { share } from '@/lib/intelligence/metrics';
-import { fmtInt, fmtPct } from '@/lib/intelligence/format';
+import { fmtInt, fmtNew, fmtPct } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
 import { functionLabel, OTHER_SECTOR_LABEL, SECTOR_LABELS, SECTOR_SLUGS, SECTORS, UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
@@ -36,7 +36,12 @@ export default async function Page() {
           {SECTORS.map((s) => {
             const row = byKey.get(s);
             const sh = share(row?.count ?? 0, data.total);
-            return <Kpi key={s} label={SECTOR_LABELS[s]} value={fmtInt(row?.count ?? 0)} level="fact" sub={sh.ok ? `${fmtPct(sh.value)} des offres · +${fmtInt(row?.new30 ?? 0)} sur 30 j` : `+${fmtInt(row?.new30 ?? 0)} sur 30 j`} />;
+            // Le « +N sur 30 j » ne s'affiche que si l'observation couvre la
+            // fenêtre : sinon il recopierait le total (cf. `fmtNew`).
+            const new30 = fmtNew(row?.new30 ?? 0);
+            const part = sh.ok ? `${fmtPct(sh.value)} des offres` : null;
+            const sub = [part, new30 ? `+${new30} sur 30 j` : null].filter(Boolean).join(' · ') || undefined;
+            return <Kpi key={s} label={SECTOR_LABELS[s]} value={fmtInt(row?.count ?? 0)} level="fact" sub={sub} />;
           })}
         </div>
       </section>

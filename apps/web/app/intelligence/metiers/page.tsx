@@ -4,7 +4,7 @@ import { Block, Coverage, IntelPage, JsonLd, NA, PageHead } from '@/components/i
 import { countryLabel } from '@/lib/countries';
 import { getFunctionsList } from '@/lib/intelligence/queries/lists';
 import { getCoverage } from '@/lib/intelligence/queries/coverage';
-import { fmtInt, fmtPct, MIN_SAMPLE, NA_INSUFFICIENT } from '@/lib/intelligence/format';
+import { fmtInt, fmtNew, fmtPct, MIN_SAMPLE, NA_FROM, NA_INSUFFICIENT, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
 import { FAMILY_LABELS, JOB_FUNCTIONS, seniorityLabel, UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
@@ -53,7 +53,7 @@ export default async function Page() {
                     <td className="muted">{FAMILY_LABELS[def.family]}</td>
                     <td className="num">{fmtInt(row?.count ?? 0)}</td>
                     <td className="num muted">{data.total >= MIN_SAMPLE ? fmtPct((row?.count ?? 0) / data.total) : <NA na={NA_INSUFFICIENT(data.total)} />}</td>
-                    <td className="num">{fmtInt(row?.new30 ?? 0)}</td>
+                    <td className="num">{fmtNew(row?.new30 ?? 0) ?? <NA na={NA_FROM(windowFrom(30))} />}</td>
                     <td className="muted">{row && row.topCountries.length > 0 ? row.topCountries.map((c) => countryLabel(c.code)).join(' · ') : '—'}</td>
                     <td className="muted">{row && row.topCompanies.length > 0 ? row.topCompanies.map((c) => c.name).join(' · ') : '—'}</td>
                     <td className="muted">{row && row.seniority[0] ? seniorityLabel(row.seniority[0].key || null) : '—'}</td>
@@ -64,7 +64,7 @@ export default async function Page() {
                   <td className="muted">—</td>
                   <td className="num">{fmtInt(unclassified?.count ?? 0)}</td>
                   <td className="num muted">{data.total >= MIN_SAMPLE ? fmtPct((unclassified?.count ?? 0) / data.total) : <NA na={NA_INSUFFICIENT(data.total)} />}</td>
-                  <td className="num">{fmtInt(unclassified?.new30 ?? 0)}</td>
+                  <td className="num">{fmtNew(unclassified?.new30 ?? 0) ?? <NA na={NA_FROM(windowFrom(30))} />}</td>
                   <td className="muted">{unclassified && unclassified.topCountries.length > 0 ? unclassified.topCountries.map((c) => countryLabel(c.code)).join(' · ') : '—'}</td>
                   <td className="muted">{unclassified && unclassified.topCompanies.length > 0 ? unclassified.topCompanies.map((c) => c.name).join(' · ') : '—'}</td>
                   <td className="muted">—</td>

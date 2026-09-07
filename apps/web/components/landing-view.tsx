@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useHeroVideo } from '@/hooks/use-hero-video';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { SearchPill } from '@/components/search-pill';
@@ -41,6 +42,8 @@ export function LandingView({
   const [query, setQuery] = useState('');
   const [city, setCity] = useState('');
   const nf = frNumber;
+  // 4,4 Mo de décor : ni sous reduced-motion, ni sur petit écran (cf. le hook).
+  const heroVideo = useHeroVideo();
 
   const sectorCount = (v: string) => sectors.find((s) => s.value === v)?.count ?? 0;
 
@@ -58,18 +61,20 @@ export function LandingView({
           background: '#011317 url(/brand/hero-poster.jpg) center / cover no-repeat',
         }}
       >
-        <video
-          className="hero-video pointer-events-none absolute inset-0 h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster="/brand/hero-poster.jpg"
-          aria-hidden
-        >
-          <source src="/brand/hero.mp4" type="video/mp4" />
-        </video>
+        {heroVideo && (
+          <video
+            className="hero-video pointer-events-none absolute inset-0 h-full w-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster="/brand/hero-poster.jpg"
+            aria-hidden
+          >
+            <source src="/brand/hero.mp4" type="video/mp4" />
+          </video>
+        )}
         {/* Voile noir 35 % au-dessus de la vidéo — lisibilité du H1 + search. */}
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'rgba(0,0,0,.35)' }} />
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{

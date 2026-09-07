@@ -70,6 +70,10 @@
   --fa-shadow-menu: 0 1px 0 0 var(--fa-line);
   --fa-ease: cubic-bezier(.645,.045,.355,1); --fa-ease-out: cubic-bezier(.215,.61,.355,1);
   --fa-dur-fast: 150ms; --fa-dur-base: 250ms; --fa-dur-slow: 450ms;
+  /* 72px de barre + 42px de nav. Sous 768px la nav est repliée dans le menu :
+     le header n'est plus que la barre de 64px (DA §6). Mesuré le 2026-09-07 :
+     la valeur restait à 114px jusqu'à 320px, soit 13,5 % de la hauteur d'un
+     iPhone 13 occupés en permanence par l'en-tête. */
   --header-h: 114px;
   --fa-z-header: 100; --fa-z-megamenu: 110; --fa-z-dropdown: 120;
   --fa-z-sticky-search: 90; --fa-z-toast: 200; --fa-z-modal: 300;
@@ -107,6 +111,13 @@
   --sidebar-ring: var(--fa-green); --sidebar-accent: var(--fa-green-tint);
   --sidebar-accent-foreground: var(--fa-green); --sidebar-primary: var(--fa-green);
   --sidebar-primary-foreground: #FFFFFF;
+}
+
+/* Sous 768px la nav secondaire est repliée dans le menu : le header se réduit
+   à sa barre (DA §6). La variable pilote `.page`, la barre sticky et le panneau
+   détail — un seul endroit à corriger. */
+@media (max-width: 767px) {
+  :root { --header-h: 64px; }
 }
 
 /* ——————————————————————————— Échelle typo (design_2 §11) ——————————————————————————— */
@@ -202,8 +213,11 @@
 .u-line--nav::after { bottom: 0; }
 
 /* Aperçu de description dans la carte (review 2026-09-04) : 2 lignes max. */
-/* Hero vidéo : respect de prefers-reduced-motion — la vidéo disparaît, le
-   poster (fond de la section) porte l'image. */
+/* Hero vidéo : respect de prefers-reduced-motion. Filet de sécurité seulement —
+   la vraie décision est au rendu (`useHeroVideo`), parce que `display:none`
+   masque la vidéo SANS empêcher son téléchargement : 4,4 Mo étaient servis à
+   l'iPhone 13 puis jetés (mesuré le 2026-09-07). Cette règle ne couvre plus que
+   l'instant entre la première peinture et l'hydratation. */
 @media (prefers-reduced-motion: reduce) {
   .hero-video { display: none; }
 }

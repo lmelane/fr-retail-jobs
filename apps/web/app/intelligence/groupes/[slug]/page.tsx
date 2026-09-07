@@ -6,7 +6,7 @@ import { ProfileBlocks, ProfileFooter, ProfileKpis, ProfileSeries } from '@/comp
 import { getProfile } from '@/lib/intelligence/queries/profile';
 import { getCoverage } from '@/lib/intelligence/queries/coverage';
 import { resolveGroup } from '@/lib/intelligence/queries/resolve';
-import { addDays, fmtInt, fmtPct, MIN_SAMPLE, NA_FROM } from '@/lib/intelligence/format';
+import { addDays, fmtInt, fmtNew, fmtPct, MIN_SAMPLE, NA_FROM, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
 import { sectorLabel } from '@/lib/intelligence/taxonomy';
@@ -68,7 +68,7 @@ export default async function Page({ params }: Params) {
                     <td className="muted">{sectorLabel(c.sector)}</td>
                     <td className="num">{fmtInt(c.active)}</td>
                     <td className="num muted">{h.active >= MIN_SAMPLE ? fmtPct(c.active / h.active) : <NA na={{ kind: 'insufficient', n: h.active }} />}</td>
-                    <td className="num">{fmtInt(c.new30)}</td>
+                    <td className="num">{fmtNew(c.new30) ?? <NA na={NA_FROM(windowFrom(30))} />}</td>
                     <td className="num muted"><NA na={profile.series.length >= 2 ? { kind: 'none' } : NA_FROM(addDays(coverage.historyStart, 7))} /></td>
                   </tr>
                 ))}

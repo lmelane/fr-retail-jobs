@@ -29,6 +29,23 @@ export function windowFrom(days: number): string {
   return addDays(OBSERVATION_START, days);
 }
 
+/**
+ * Un compte de nouveautés sur N jours, ou `null` tant que l'observation ne
+ * couvre pas la fenêtre.
+ *
+ * Sans ce garde-fou, la requête compte toutes les offres dont `firstSeenAt`
+ * tombe dans la fenêtre — or le catalogue a été reconstruit le 2026-09-06,
+ * donc AUCUNE offre n'est plus ancienne : « nouvelles sur 30 j » recopiait le
+ * total. Mesuré en prod le 2026-09-07 sur /intelligence/metiers : les 11
+ * lignes affichaient « Demande » et « Nouvelles · 30 j » à l'identique
+ * (24 995 offres de conseil de vente, dont 24 995 « nouvelles »), sous
+ * l'étiquette « fait observé ». Les KPI passaient déjà par `windowAvailable` ;
+ * les colonnes de tableau, les listes et la carte du monde, non.
+ */
+export function fmtNew(n: number, days = 30): string | null {
+  return windowAvailable(days) ? fmtInt(n) : null;
+}
+
 const NF_RAW = new Intl.NumberFormat('fr-FR');
 const NF1_RAW = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 /**
