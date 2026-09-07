@@ -5,7 +5,7 @@ import { TipLayer } from './charts/tip-layer';
 import { fmtDate, fmtInt, fmtPct, naText, type NotAvailable, MIN_SAMPLE } from '@/lib/intelligence/format';
 import type { Coverage as CoverageData } from '@/lib/intelligence/queries/coverage';
 import { intelPaths } from '@/lib/intelligence/paths';
-import { jsonLd } from '@/lib/intelligence/seo';
+import { DATA_LICENSE_NAME, DATA_LICENSE_URL, jsonLd } from '@/lib/intelligence/seo';
 
 /**
  * Chrome partagé des pages Intelligence : enveloppe (sous-nav + calque
@@ -71,6 +71,10 @@ export function Coverage({ coverage, jobs }: { coverage: CoverageData; jobs?: nu
       {coverage.updatedAt && <span>mis à jour le {fmtDate(coverage.updatedAt)}</span>}
       <span>
         <Link href={intelPaths.methodology} className="u-line text-ink">Méthodologie</Link>
+      </span>
+      <span>
+        Réutilisable avec citation —{' '}
+        <a href={DATA_LICENSE_URL} rel="license noopener" target="_blank" className="u-line text-ink">{DATA_LICENSE_NAME}</a>
       </span>
     </p>
   );

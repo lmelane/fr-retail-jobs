@@ -6,7 +6,8 @@ import { getMethodology } from '@/lib/intelligence/queries/methodology';
 import { getCoverage } from '@/lib/intelligence/queries/coverage';
 import { fmtDate, fmtInt, fmtPct, MIN_SAMPLE, MIN_SNAPSHOT_DAYS, OBSERVATION_START } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
-import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
+import { breadcrumbLd, DATA_LICENSE_NAME, DATA_LICENSE_URL, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
+import { siteUrl } from '@/lib/site-url';
 import { FAMILY_LABELS, JOB_FUNCTIONS, SENIORITIES, SENIORITY_LABELS } from '@/lib/intelligence/taxonomy';
 
 export const dynamic = 'force-dynamic';
@@ -161,6 +162,28 @@ export default async function Page() {
             <dt>Intensité vs référence</dt>
             <dd>Offres actives d'une Maison / moyenne de ses snapshots sur 90 jours. n/d sans historique.</dd>
           </dl>
+        </Block>
+      </section>
+
+      <section className="container" style={{ paddingTop: 64 }}>
+        <Block id="reutilisation" title="Réutilisation des données." level="fact">
+          <div className="grid gap-3 max-w-[66ch] t-body soft">
+            <p>
+              Les chiffres, graphiques et classements publiés par Catwalks Intelligence sont réutilisables librement —
+              y compris à des fins commerciales, et y compris modifiés — sous licence{' '}
+              <a href={DATA_LICENSE_URL} rel="license noopener" target="_blank" className="u-line text-ink">{DATA_LICENSE_NAME}</a>,
+              à une seule condition : <strong>citer Mode Careers avec un lien vers la page d'où vient le chiffre</strong>.
+            </p>
+            <p>
+              Exemple de citation : « Source : Mode Careers — Catwalks Intelligence
+              {coverage.updatedAt ? `, ${fmtDate(coverage.updatedAt)}` : ''} », avec un lien vers{' '}
+              {siteUrl()}{intelPaths.home}.
+            </p>
+            <p>
+              Cette licence couvre les <em>données publiées ici</em>. Le texte des offres appartient aux employeurs qui
+              les publient : il est affiché avec un lien vers leur site, et n'entre pas dans cette autorisation.
+            </p>
+          </div>
         </Block>
       </section>
 

@@ -11,6 +11,15 @@ import { siteUrl } from '@/lib/site-url';
 export const TITLE_MAX = 60;
 const BRAND = 'Catwalks Intelligence';
 
+/**
+ * Licence de publication des données de l'observatoire (D41, décision Loïc
+ * 2026-09-07) : reprise libre CONTRE citation + lien. Une seule définition,
+ * lue par le JSON-LD `Dataset` et par la mention visible — les deux ne peuvent
+ * pas diverger.
+ */
+export const DATA_LICENSE_URL = 'https://creativecommons.org/licenses/by/4.0/deed.fr';
+export const DATA_LICENSE_NAME = 'CC BY 4.0';
+
 /** `${subject} · Catwalks Intelligence`, raccourci pour tenir en 60 caractères. */
 export function intelTitle(subject: string): string {
   const full = `${subject} · ${BRAND}`;
@@ -90,6 +99,7 @@ export function datasetLd(input: { description: string; historyStart: string; da
     inLanguage: 'fr',
     creator: { '@type': 'Organization', name: 'Catwalks', url: 'https://catwalks.io' },
     isAccessibleForFree: true,
+    license: DATA_LICENSE_URL,
     temporalCoverage: `${input.historyStart}/..`,
     spatialCoverage: `${input.countries} pays`,
     variableMeasured: ['offres actives', 'nouvelles offres', 'offres fermées', 'Maisons qui recrutent', 'durée médiane de publication'],

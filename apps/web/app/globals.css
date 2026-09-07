@@ -130,8 +130,13 @@
 
 /* ——————————————————————————— Filets pointillés (design_2 §2.6) ——————————————————————————— */
 .rule, .rule-b { background-image: linear-gradient(to right, var(--fa-ink) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; }
-.rule { background-position: 50% 0; padding-top: 1px; }
-.rule-b { background-position: 50% 100%; padding-bottom: 1px; }
+/* Le padding de 1px n'est PAS décoratif : il donne au fond la hauteur où se
+   dessiner. Il passe par une variable pour qu'un écart plus grand puisse le
+   remplacer — sinon la règle écrase tout `pb-*` posé sur la même boîte, et le
+   filet reste collé au contenu (mesuré le 2026-09-07 sur /emplois : le pb-5
+   des filtres ne produisait que 1px). */
+.rule { background-position: 50% 0; padding-top: var(--rule-gap, 1px); }
+.rule-b { background-position: 50% 100%; padding-bottom: var(--rule-gap, 1px); }
 .rule-soft { background-image: linear-gradient(to right, var(--fa-ink-disabled) 25%, transparent 0); background-size: 4px 1px; background-repeat: repeat-x; }
 .rule-v { background-image: linear-gradient(to bottom, var(--fa-ink) 25%, transparent 0); background-size: 1px 4px; background-repeat: repeat-y; width: 1px; }
 

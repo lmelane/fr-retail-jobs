@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
+import { useCallback, useEffect, useRef, useState, useTransition, type CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Check, ChevronDown, Loader2, X } from 'lucide-react';
@@ -229,9 +229,11 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
       <header ref={headerRef} className="searchbar">
         {/* rule-b sur le container (pas full-bleed) : même largeur que les filets
             du header, fidèle à emplois.html. */}
-        {/* pb-5 (20 px), pas pb-3 : le filet pointillé collait aux pastilles
-            de filtre (revue Loïc, 2026-09-06). */}
-        <div className="container-wide rule-b pb-5">
+        {/* L'écart passe par --rule-gap : `.rule-b` fixe lui-même le
+            padding-bottom qui porte son filet, donc un `pb-*` posé ici est
+            écrasé — c'est pourquoi les pastilles restaient collées au trait
+            malgré deux réglages (revue Loïc, 2026-09-06 puis 2026-09-07). */}
+        <div className="container-wide rule-b" style={{ '--rule-gap': '24px' } as CSSProperties}>
           <SearchPill
             query={draft}
             onQueryChange={setDraft}
