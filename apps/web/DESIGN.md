@@ -46,14 +46,13 @@ Accessibilité (§7) : contraste ≥ 4.5:1, focus visible partout, cibles tactil
 ≥ 44 × 44, filets décoratifs `aria-hidden`, l'accent jamais seul porteur d'une
 information, `prefers-reduced-motion` respecté, un seul H1 par page.
 
-## Écart connu entre le code et la DA
+## L'accent : `#022026`
 
-`design_2.md` fixe l'accent à **`#105A33`** (vert, 8.3:1 sur blanc).
-`app/globals.css:56` pose `--fa-green: #022026` — un bleu-pétrole très sombre.
-Le nom de la variable dit « green », la valeur n'en est pas un.
-**Non tranché : à arbitrer par Loïc** (aligner le code sur la DA, ou regraver la
-DA sur la couleur réellement retenue). Ne pas « corriger » l'un ou l'autre sans
-décision.
+Bleu-pétrole, **17:1 sur blanc** — le double du contraste de l'ancien vert
+`#105A33` (8.3:1), et très au-delà du 4.5:1 exigé par §7. Arbitré par Loïc le
+2026-09-07 : c'est le code qui avait raison, `design_2.md` a été regravée.
+La variable garde le nom `--fa-green` pour ne pas casser les usages ; sa valeur
+n'est pas un vert.
 
 ## Où lire le reste
 

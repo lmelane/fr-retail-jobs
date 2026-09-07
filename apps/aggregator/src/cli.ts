@@ -258,6 +258,17 @@ try {
       dryRun: process.argv.includes('--dry-run'),
     });
     console.log(JSON.stringify({ ok: true, command, ...stats }, null, 2));
+  } else if (command === 'apply-domain-sheet') {
+    /**
+     * Applique le référentiel de domaines établi à la main (D45) :
+     * IDENTIFIÉ pose le domaine, RATTACHÉ fusionne l'entité juridique dans sa
+     * marque mère, À VÉRIFIER ne touche à rien. `--apply` pour écrire.
+     */
+    const { applyDomainSheet } = await import('./pipeline/applyDomainSheet.js');
+    const file = process.argv.find((a) => a.startsWith('--file='))?.slice('--file='.length)
+      ?? 'data/maisons-domaines-loic.tsv';
+    const stats = await applyDomainSheet(prisma, file, { apply: process.argv.includes('--apply') });
+    console.log(JSON.stringify({ ok: true, command, file, ...stats }, null, 2));
   } else if (command === 'classify-jobs') {
     /**
      * Rejoue la taxonomie Intelligence (métier, séniorité, retail, IA,
