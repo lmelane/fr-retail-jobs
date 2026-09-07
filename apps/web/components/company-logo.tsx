@@ -49,7 +49,9 @@ export function CompanyLogo({
       // Passe par notre route plutôt que par le fournisseur en direct : elle
       // seule voit le statut HTTP et peut refuser le placeholder « domaine
       // inconnu », que le navigateur afficherait sans déclencher onError.
-      src={`/api/logo?domain=${encodeURIComponent(domain)}`}
+      // `size * 2` pour les écrans à haute densité : un logo de 96px affiché
+      // avec une image de 96px est flou sur tout écran Retina.
+      src={`/api/logo?domain=${encodeURIComponent(domain)}&size=${size * 2}`}
       alt=""
       width={size}
       height={size}

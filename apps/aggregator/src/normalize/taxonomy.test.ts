@@ -18,6 +18,17 @@ describe('classifyFunction — la famille de métier du secteur, depuis le titre
     ['Make-Up Artist', 'beauty-advisor'],
     ['Conseillère Beauté', 'beauty-advisor'],
     ['Fragrance Specialist', 'beauty-advisor'],
+    // Un superviseur d'entrepôt n'est PAS un directeur de boutique : titres
+    // réels mesurés en prod le 2026-09-07 (19 offres mal classées).
+    ['Warehouse Supervisor', 'supply-chain-logistics'],
+    ['Warehouse Supervisor II', 'supply-chain-logistics'],
+    ['Floor Supervisor Warehouse', 'supply-chain-logistics'],
+    ['Shift Lead, Warehouse', 'supply-chain-logistics'],
+    ['Distribution Centre Team Leader - Day Shift', 'supply-chain-logistics'],
+    ['Distribution Supervisor - Late Shift', 'supply-chain-logistics'],
+    ['Superviseur Logistique Produits Finis (H/F)', 'supply-chain-logistics'],
+    ['Logistics Supervisor - all departments (m/f/d)', 'supply-chain-logistics'],
+    ['Warehouse Team Leader - PM Shift', 'supply-chain-logistics'],
     ['Store Manager', 'retail-store-management'],
     ['Assistant Store Manager', 'retail-store-management'],
     ['Boutique Director', 'retail-store-management'],

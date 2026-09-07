@@ -446,8 +446,13 @@
 
 /* ——————————————————————————— Fiche Maison (§5.5, réf maison.html) ——————————————————————————— */
 /* Hero pleine largeur, contenu aligné en bas à gauche (logo + nom). */
+/* Le hero passe SOUS le header fixe (l'image occupe toute la hauteur), mais
+   son CONTENU ne doit jamais s'y glisser : sans ce padding, le logo de 96px
+   remontait derrière le wordmark « MODE CAREERS » sur mobile — les deux se
+   superposaient (mesuré le 2026-09-07 : logo à top=0 pour un header de 64px). */
 .hero--maison { height: 480px; }
-.hero--maison .container { position: relative; z-index: 1; height: 100%; }
+.hero--maison .container { position: relative; z-index: 1; height: 100%; padding-top: var(--header-h); }
+
 .hero--maison .logo { width: 96px; height: 96px; font-size: 36px; border-color: rgba(255, 255, 255, .35); background: #fff; color: var(--fa-ink); }
 
 /* Chiffres clés : colonnes FA Display vert, filet pointillé haut. */
@@ -457,7 +462,10 @@
 .stats--inline .t-number { font-size: clamp(2.5rem, 4vw, 3.5rem); }
 
 @media (max-width: 1023px) {
-  .hero--maison { height: 360px; }
+  /* Hauteur libre : le contenu (logo + secteur + nom) est empilé, une hauteur
+     fixe de 360px laissait un grand vide sous le titre (capture 2026-09-07). */
+  .hero--maison { height: auto; min-height: 280px; }
+  .hero--maison .container { padding-bottom: 32px; }
   .hero--maison .container { flex-direction: column; align-items: flex-start; gap: 16px; }
 }
 

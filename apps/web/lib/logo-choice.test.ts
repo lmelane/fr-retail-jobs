@@ -26,6 +26,26 @@ describe('preferLogo', () => {
   });
 });
 
+describe('preferLogo — taille d’affichage demandée', () => {
+  it('garde le transparent quand il couvre la taille affichée (pastille de liste)', () => {
+    // Ralph Lauren en pastille 22px : l'ICO 48px suffit, pas de cadre blanc.
+    expect(preferLogo(ico(48), jpeg(64), 44).name).toBe('ico-48');
+  });
+
+  it('prend l’opaque plus net quand le transparent ne couvre pas (hero 96px Retina)', () => {
+    // Le même Ralph Lauren dans le hero : 48px agrandi à 192px est flou.
+    expect(preferLogo(ico(48), jpeg(180), 192).name).toBe('jpeg-180');
+  });
+
+  it('reste symétrique à taille demandée', () => {
+    expect(preferLogo(ico(48), jpeg(180), 192).name).toBe(preferLogo(jpeg(180), ico(48), 192).name);
+  });
+
+  it('ne prend jamais un opaque plus PETIT que le transparent', () => {
+    expect(preferLogo(ico(64), jpeg(32), 192).name).toBe('ico-64');
+  });
+});
+
 describe('bestLogo', () => {
   it('ignore les fournisseurs muets', () => {
     expect(bestLogo([null, ico(64)])?.width).toBe(64);

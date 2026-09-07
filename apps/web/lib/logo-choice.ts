@@ -24,18 +24,28 @@ export const MIN_LOGO_PX = 32;
  */
 export const OPAQUE_MUST_EXCEED = 1.5;
 
-/** Le meilleur des deux : la taille décide, la transparence départage. */
-export function preferLogo<T extends LogoCandidate>(a: T, b: T): T {
+/**
+ * Le meilleur des deux : la taille décide, la transparence départage.
+ *
+ * `needed` est la taille à laquelle le logo sera AFFICHÉ. Un transparent qui
+ * la couvre gagne — c'est le cas d'une pastille de liste. S'il ne la couvre
+ * pas alors qu'un opaque plus grand existe, la netteté prime : dans le hero
+ * d'une fiche Maison (96px, soit 192px en Retina), l'ICO 48px de Ralph Lauren
+ * sortait flou là où Google servait 180px.
+ */
+export function preferLogo<T extends LogoCandidate>(a: T, b: T, needed = MIN_LOGO_PX): T {
   if (a.opaque !== b.opaque) {
     const transparent = a.opaque ? b : a;
     const opaque = a.opaque ? a : b;
+    // Le transparent suffit à la taille d'affichage : il garde l'avantage.
+    if (transparent.width >= needed) return transparent;
     return opaque.width > transparent.width * OPAQUE_MUST_EXCEED ? opaque : transparent;
   }
   return b.width > a.width ? b : a;
 }
 
 /** Le meilleur candidat utilisable, ou `null` → le composant met son monogramme. */
-export function bestLogo<T extends LogoCandidate>(candidates: readonly (T | null)[]): T | null {
-  const best = candidates.filter((c): c is T => c !== null).reduce<T | null>((a, b) => (a === null ? b : preferLogo(a, b)), null);
+export function bestLogo<T extends LogoCandidate>(candidates: readonly (T | null)[], needed = MIN_LOGO_PX): T | null {
+  const best = candidates.filter((c): c is T => c !== null).reduce<T | null>((a, b) => (a === null ? b : preferLogo(a, b, needed)), null);
   return best && best.width >= MIN_LOGO_PX ? best : null;
 }

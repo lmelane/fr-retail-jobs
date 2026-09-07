@@ -28,10 +28,31 @@ import { bestLogo } from '@/lib/logo-choice';
 /** Le placeholder « domaine inconnu » de DuckDuckGo, à l'octet près. */
 const DDG_PLACEHOLDER_BYTES = 1478;
 
+/**
+ * `size` est la taille d'AFFICHAGE demandée par l'appelant : Google sert
+ * jusqu'à 180px quand on les demande (mesuré le 2026-09-07 : sz=64 → 64px,
+ * sz=128 → 128px, sz=256 → 180px), là où une pastille de liste n'a besoin que
+ * de 64. Le hero d'une fiche Maison affiche 96px, donc 192px en Retina : sans
+ * ce paramètre il agrandissait un ICO de 48px et le logo sortait flou.
+ */
 const PROVIDERS = [
   (domain: string) => `https://icons.duckduckgo.com/ip3/${domain}.ico`,
-  (domain: string) => `https://www.google.com/s2/favicons?domain=${domain}&sz=64`,
+  (domain: string, size: number) => `https://www.google.com/s2/favicons?domain=${domain}&sz=${size}`,
 ];
+
+/**
+ * Google n'accepte QUE ces paliers de `sz` : toute autre valeur retombe
+ * silencieusement à 16px — mesuré le 2026-09-07, `sz=192` rendait 16×16 et
+ * `sz=160` aussi, là où 180 et 256 rendent bien leur taille. Demander une
+ * valeur libre dégradait donc le logo au lieu de l'améliorer.
+ */
+const GOOGLE_SIZES = [64, 96, 128, 180, 256] as const;
+const DEFAULT_SIZE = 64;
+
+/** Le plus petit palier qui couvre la taille demandée. */
+function googleSize(needed: number): number {
+  return GOOGLE_SIZES.find((s) => s >= needed) ?? GOOGLE_SIZES[GOOGLE_SIZES.length - 1];
+}
 
 /** Un hôte simple : lettres, chiffres, tirets et points. Rien d'autre. */
 const DOMAIN_RE = /^[a-z0-9-]{1,63}(\.[a-z0-9-]{1,63}){1,3}$/;
@@ -76,10 +97,12 @@ export async function GET(request: Request) {
   // l'icône réelle du site — Ulta Beauty 1024 px, Crocs et GANT 256 px, Canada
   // Goose 144 px que Google ignore. Prendre le premier qui répond, ou n'en
   // garder qu'un, dégrade l'un ou l'autre de ces groupes.
-  const candidates = await Promise.all(PROVIDERS.map((buildUrl) => fetchLogo(buildUrl(domain))));
+  const requested = Number(new URL(request.url).searchParams.get('size') ?? DEFAULT_SIZE);
+  const size = Number.isFinite(requested) ? Math.max(Math.round(requested), DEFAULT_SIZE) : DEFAULT_SIZE;
+  const candidates = await Promise.all(PROVIDERS.map((buildUrl) => fetchLogo(buildUrl(domain, googleSize(size)))));
   // Sous le seuil de lisibilité, `bestLogo` rend null : le monogramme de la
   // Maison vaut mieux qu'une image baveuse (D9).
-  const best = bestLogo(candidates);
+  const best = bestLogo(candidates, size);
   if (!best) return new NextResponse(null, { status: 404 });
 
   return new NextResponse(best.bytes, {
