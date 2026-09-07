@@ -144,6 +144,9 @@ export type JobRow = {
   // so the detail view renders only what is present.
   postalCode: string | null;
   department: string | null;
+  /** Métier et séniorité (taxonomie D38) : ce qui distingue deux offres d'une même Maison dans la liste. */
+  jobFunction: string | null;
+  seniority: string | null;
   workingTime: string | null;
   remote: string | null;
   experienceYears: number | null;
@@ -366,6 +369,7 @@ function toRow(row: {
   experienceYears: number | null; educationLevel: string | null; salaryMin: number | null;
   salaryMax: number | null; salaryCurrency: string | null; salaryPeriod: string | null;
   validThrough: Date | null; country: string | null; language: string | null; firstSeenAt: Date;
+  jobFunction: string | null; seniority: string | null;
 }): JobRow {
   return {
     id: row.id,
@@ -387,6 +391,8 @@ function toRow(row: {
     applyUrl: row.url,
     postalCode: row.postalCode,
     department: row.department,
+    jobFunction: row.jobFunction,
+    seniority: row.seniority,
     workingTime: row.workingTime,
     remote: row.remote,
     experienceYears: row.experienceYears,
@@ -492,6 +498,42 @@ export async function resolveOfferParam(
  * Server-rendered as links on the offer page, they are also real crawl paths
  * between offers, which the sitemap-less crawl requirement leans on.
  */
+/**
+ * Le bloc Maison de la colonne latérale d'une offre (DA §5.3) : combien
+ * d'offres ouvertes, dans combien de villes et de pays.
+ *
+ * Une seule requête agrégée — la page offre est la plus vue du site, elle ne
+ * peut pas se permettre de charger les offres d'une Maison pour les compter.
+ */
+export type CompanyAside = { openJobs: number; cities: number; countries: number; domain: string | null; sector: string | null; group: string | null };
+
+export async function getCompanyAside(companyName: string): Promise<CompanyAside | null> {
+  if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
+  try {
+    const company = await prisma.company.findFirst({
+      where: { name: companyName },
+      select: { id: true, domain: true, sector: true, parentGroup: true },
+    });
+    if (!company) return null;
+    const [agg] = await prisma.$queryRaw<{ jobs: bigint; cities: bigint; countries: bigint }[]>`
+      SELECT count(*)::bigint AS jobs,
+             count(DISTINCT lower(city))::bigint AS cities,
+             count(DISTINCT country)::bigint AS countries
+      FROM "Job" WHERE "companyId" = ${company.id} AND "isActive"`;
+    return {
+      openJobs: Number(agg?.jobs ?? 0),
+      cities: Number(agg?.cities ?? 0),
+      countries: Number(agg?.countries ?? 0),
+      domain: company.domain,
+      sector: company.sector,
+      group: company.parentGroup,
+    };
+  } catch (error) {
+    if (error instanceof DatabaseUnavailableError) throw error;
+    throw new DatabaseUnavailableError(error);
+  }
+}
+
 export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {

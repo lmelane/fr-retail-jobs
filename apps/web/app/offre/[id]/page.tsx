@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
-import { resolveOfferParam, getSimilarJobs } from '@/lib/jobs';
+import { resolveOfferParam, getSimilarJobs, getCompanyAside } from '@/lib/jobs';
+import { frNumber } from '@/lib/format';
 import { offerPath } from '@/lib/offer-url';
 import { companySlug } from '@/lib/company-slug';
 import { jobPostingSchema } from '@/lib/job-posting-schema';
@@ -82,7 +83,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const structuredData = jobPostingSchema(job);
 
   // S-01 : offres similaires — vraies ancres crawlables entre offres.
-  const similar = await getSimilarJobs(job, 6);
+  const [similar, aside] = await Promise.all([getSimilarJobs(job, 6), getCompanyAside(job.company)]);
 
   return (
     <main className="page bg-paper">
@@ -139,7 +140,8 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             vraie langue pour les lecteurs d'écran et les crawlers (S-02a,
             adaptation par délégation : App Router ne permet pas un <html lang>
             par route). */}
-        <div className="has-apply-bar max-w-[720px]" lang={job.language ?? undefined}>
+        <div className="offer-page">
+        <div className="has-apply-bar" lang={job.language ?? undefined}>
           <JobDetail job={job} />
 
           {/* Barre CTA sticky (mobile only, cf. globals .apply-bar). Reprend les
@@ -157,6 +159,30 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
               Voir l’offre chez {job.company}
             </a>
           </div>
+        </div>
+
+        {/* Colonne latérale (DA §5.3) : sans elle, la page SEO — la plus vue du
+            site — était une colonne de 720px sans issue. Le bloc Maison donne
+            au candidat où aller ensuite. Sous lg, elle passe sous le détail. */}
+        {aside && aside.openJobs > 1 && (
+          <aside className="offer-aside" aria-labelledby="aside-maison">
+            <div className="rule pt-6 pb-8">
+              <p className="t-caption text-ink-muted" id="aside-maison">La Maison</p>
+              <p className="t-d2 mt-2">{job.company}</p>
+              {aside.group && <p className="t-body2 muted">{aside.group}</p>}
+              <dl className="defs mt-4">
+                <dt>Offres ouvertes</dt>
+                <dd>{frNumber.format(aside.openJobs)}</dd>
+                {aside.cities > 0 && (<><dt>Villes</dt><dd>{frNumber.format(aside.cities)}</dd></>)}
+                {aside.countries > 0 && (<><dt>Pays</dt><dd>{frNumber.format(aside.countries)}</dd></>)}
+              </dl>
+              <Link className="btn mt-5" href={`/emplois?maison=${encodeURIComponent(job.company)}`}>
+                Voir les {frNumber.format(aside.openJobs)} offres
+                <svg viewBox="0 0 24 24" aria-hidden width="16" height="16" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </Link>
+            </div>
+          </aside>
+        )}
         </div>
 
         {/* Offres similaires (S-01) : même Maison d'abord, puis même secteur.

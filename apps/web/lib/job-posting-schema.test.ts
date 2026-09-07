@@ -14,7 +14,7 @@ const base: JobRow = {
   city: 'PARIS', location: 'Paris, France', contract: 'CDI', sector: 'LUXURY',
   url: 'https://x/1', postedAt: null, latitude: null, longitude: null,
   sourceCount: 1, sources: ['cartier'], description: 'desc', applyUrl: 'https://x/1',
-  postalCode: null, department: null, workingTime: null, remote: null,
+  postalCode: null, department: null, jobFunction: null, seniority: null, workingTime: null, remote: null,
   experienceYears: null, educationLevel: null, salaryMin: null, salaryMax: null,
   salaryCurrency: null, salaryPeriod: null, validThrough: null,
   country: 'France', language: 'fr', firstSeenAt: new Date('2026-09-01T00:00:00Z'),

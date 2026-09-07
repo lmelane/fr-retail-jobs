@@ -8,6 +8,7 @@ import { JobDetail } from '@/components/job-detail';
 import { SearchPill } from '@/components/search-pill';
 import { contractLabel, displayTitle, relativeDate } from '@/lib/format';
 import { offerPath } from '@/lib/offer-url';
+import { jobFacets } from '@/lib/job-preview';
 import { CompanyLogo } from '@/components/company-logo';
 import { countryLabel } from '@/lib/countries';
 import { cn } from '@/lib/utils';
@@ -122,6 +123,13 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
    */
   const headerRef = useRef<HTMLElement>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
+  /**
+   * Sous 768px les 6 pastilles de filtre s'empilaient sur 100px : la première
+   * offre commençait à 437px sur un écran de 664px (mesuré sur iPhone 13), soit
+   * les deux tiers de l'écran avant le premier résultat. Elles passent derrière
+   * un bouton « Filtres (n) » (DA §4.3) ; au-dessus de 768px rien ne change.
+   */
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
     const node = headerRef.current;
@@ -248,7 +256,17 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
           />
 
           {/* ============ Filtres : pills DA (§4.3), dropdowns click-driven ============ */}
-          <div className="filters">
+          <button
+            type="button"
+            className="filters-toggle btn"
+            aria-expanded={filtersOpen}
+            aria-controls="filtres"
+            onClick={() => setFiltersOpen((open) => !open)}
+          >
+            Filtres{activeCount > 0 ? ` (${activeCount})` : ''}
+            <ChevronDown aria-hidden />
+          </button>
+          <div className="filters" id="filtres" data-open={filtersOpen ? 'true' : 'false'}>
             <FilterMenu
               label="Pays"
               active={params.get('pays')}
@@ -588,8 +606,10 @@ export function JobCard({
     : job.workingTime === 'TEMPS_PLEIN' ? 'Temps plein'
     : null;
   const meta = [job.city ?? job.location, contract, workingTime, remote].filter(Boolean).join(' · ');
-  // Aperçu de description : l'offre doit se comprendre SANS l'ouvrir.
-  const preview = job.description?.replace(/\s+/g, ' ').trim().slice(0, 220);
+  // Ce qui DISTINGUE ce poste : métier, séniorité, département — l'aperçu de
+  // description était le même texte d'entreprise sur 76 % des offres (cf.
+  // `lib/job-preview.ts`), donc la liste ne différenciait plus rien.
+  const facets = jobFacets(job);
 
   return (
     // Une VRAIE ancre (S-01) : le href est le maillage que les crawlers
@@ -630,10 +650,8 @@ export function JobCard({
 
       {meta && <p className="t-body2 muted">{meta}</p>}
 
-      {/* Aperçu tronqué proprement : scanner, comprendre, comparer sans ouvrir. */}
-      {preview && preview.length > 40 && (
-        <p className="t-body2 muted offer__preview">{preview}…</p>
-      )}
+      {/* Scanner, comprendre, comparer sans ouvrir. */}
+      {facets && <p className="t-body2 muted offer__preview">{facets}</p>}
     </a>
   );
 }

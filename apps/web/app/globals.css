@@ -492,6 +492,20 @@
    rule-b tombe au vrai bas du bloc sticky, à largeur container (maquette). */
 .searchbar { position: sticky; top: var(--header-h); z-index: var(--fa-z-search, 90); background: var(--fa-paper); padding-top: 28px; }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 18px; }
+/* Le bouton n'existe qu'en dessous de 768px : au-delà les pastilles sont
+   toujours visibles et il disparaît. */
+.filters-toggle { display: none; }
+
+/* Filtres repliés sous 768px (DA §4.3) : 6 pastilles empilées occupaient 100px
+   et repoussaient la première offre à 437px sur un écran de 664px (mesuré sur
+   iPhone 13), soit les deux tiers de l'écran avant le premier résultat. */
+@media (max-width: 767px) {
+  .filters-toggle { display: inline-flex; margin-top: 18px; }
+  .filters { margin-top: 12px; }
+  .filters[data-open='false'] { display: none; }
+  .filters[data-open='true'] { flex-direction: column; align-items: stretch; }
+  .filters[data-open='true'] .spacer { display: none; }
+}
 .filters .spacer { flex: 1; }
 .has-dd { position: relative; }
 .link-ghost { font: 500 .875rem/1 var(--fa-font-sans); color: var(--fa-ink); text-decoration: underline; text-underline-offset: 4px; background: transparent; border: 0; cursor: pointer; }
@@ -516,6 +530,16 @@
 .search .btn { height: 100%; border-radius: 0 calc(var(--fa-radius) - 1px) calc(var(--fa-radius) - 1px) 0; border: 0; }
 
 /* Split-view : liste 480 | filet pointillé | détail. */
+/* Page offre autonome (DA §5.3) : détail 8 col + colonne latérale 4 col. Sans
+   elle la page SEO — la plus vue du site — était une colonne de 720px sans
+   issue : rien n'indiquait où aller après avoir lu l'offre. */
+.offer-page { display: grid; grid-template-columns: minmax(0, 720px) minmax(0, 300px); column-gap: var(--fa-gutter); align-items: start; }
+.offer-aside { position: sticky; top: calc(var(--header-h) + 24px); }
+@media (max-width: 1023px) {
+  .offer-page { grid-template-columns: minmax(0, 1fr); }
+  .offer-aside { position: static; }
+}
+
 .split { display: grid; grid-template-columns: 480px 1px minmax(0, 1fr); column-gap: 20px; align-items: start; }
 .split > .rule-v { align-self: stretch; width: 1px; }
 .list-head { display: flex; justify-content: space-between; align-items: center; padding: 26px 24px 14px; }
