@@ -57,7 +57,7 @@ const rows = directory.map(d => {
     liens_carriere_candidats_non_certifies: [...new Set(candidates.map((l:any)=>l.to))].join(' | '),
     sites_candidats_lus: (r?.pages ?? []).filter((p: any)=>p.from === r.candidateOrigin).map((p: any)=>p.url).join(' | '),
     portail_revu: decision?.portalUrl ?? '', preuve_identite_ou_portail: (decision?.evidenceUrls ?? []).join(' | '),
-    qualification_humaine: decision?.verdict ?? 'NON_CERTIFIE_PAR_CETTE_RECHERCHE',
+    qualification_documentee: decision?.verdict ?? 'NON_CERTIFIE_PAR_CETTE_RECHERCHE',
     ats_revu: decision?.ats ?? '', prochaine_action: decision?.nextAction ?? (direct.length ? 'Certifier identité, attribution et complétude de la source existante' : 'Retrouver puis prouver le portail officiel; vérifier aussi les groupes et alias'),
   };
 }).sort((a,b) => Number(b.offres_annuaire)-Number(a.offres_annuaire) || a.nom_fashionjobs.localeCompare(b.nom_fashionjobs));
