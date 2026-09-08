@@ -1,0 +1,624 @@
+[
+  {
+    "jobId": "cmtpiyux20n3fpf5l25xyzokd",
+    "sourceId": "cmtpiyux20n3gpf5l1ff82vme",
+    "url": "https://jobs.douglas.group/default/job/Specialist-Online-Sales-Activation/1000-en_US",
+    "storedDate": "2026-03-09T00:00:00.000Z",
+    "expectedDate": "2026-09-03T00:00:00.000Z",
+    "raw": {
+      "id": "1000",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "Digital"
+      ],
+      "filter3": [
+        "Experienced Professional"
+      ],
+      "brandUrl": "default",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "Specialist-Online-Sales-Activation",
+      "unifiedUrlTitle": "Specialist-Online-Sales-Activation",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Sofia, Bulgaria "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "custFullTimePartTime": [
+        "Full Time"
+      ],
+      "unifiedStandardStart": "9/3/26",
+      "unifiedStandardTitle": "Specialist Online Sales Activation",
+      "sfstd_marketingBrand_obj": [
+        "DOUGLAS"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "42.6977082,23.3218675",
+          "value": "Sofia, Bulgaria "
+        }
+      ]
+    }
+  },
+  {
+    "jobId": "cmtpiyuxn0n3jpf5lgnzyyuzr",
+    "sourceId": "cmtpiyuxn0n3kpf5llnn0lvof",
+    "url": "https://jobs.douglas.group/default/job/Manager-CRM-Analytics-%28fmx%29/603-en_US",
+    "storedDate": "2026-02-09T00:00:00.000Z",
+    "expectedDate": "2026-09-02T00:00:00.000Z",
+    "raw": {
+      "id": "603",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "Data, Analytics & AI"
+      ],
+      "filter3": [
+        "Experienced Professional"
+      ],
+      "brandUrl": "default",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "Manager-CRM-Analytics-%28fmx%29",
+      "unifiedUrlTitle": "Manager-CRM-Analytics-%28fmx%29",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Düsseldorf, Germany "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "unifiedStandardEnd": "9/2/27",
+      "custFullTimePartTime": [
+        "Full Time"
+      ],
+      "unifiedStandardStart": "9/2/26",
+      "unifiedStandardTitle": "Manager CRM Analytics (f/m/x)",
+      "sfstd_marketingBrand_obj": [
+        "DOUGLAS"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "51.2230411,6.7824545",
+          "value": "Düsseldorf, Germany "
+        }
+      ]
+    }
+  },
+  {
+    "jobId": "cmtpiyuy70n3npf5lwp6st1cs",
+    "sourceId": "cmtpiyuy70n3opf5lxstoxsgz",
+    "url": "https://jobs.douglas.group/NOCIBE/job/Senior-Manager-Procurement-&-Supplier-%28fmx%29/619-en_US",
+    "storedDate": "2026-02-09T00:00:00.000Z",
+    "expectedDate": "2026-09-02T00:00:00.000Z",
+    "raw": {
+      "id": "619",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "Purchasing, Pricing & Assortment"
+      ],
+      "filter3": [
+        "Experienced Professional"
+      ],
+      "brandUrl": "NOCIBE",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "Senior-Manager-Procurement-&amp;-Supplier-%28fmx%29",
+      "unifiedUrlTitle": "Senior-Manager-Procurement-&amp;-Supplier-%28fmx%29",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Düsseldorf, Germany "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "unifiedStandardEnd": "9/2/27",
+      "custFullTimePartTime": [
+        "Full Time"
+      ],
+      "unifiedStandardStart": "9/2/26",
+      "unifiedStandardTitle": "Senior Manager Procurement & Supplier (f/m/x)",
+      "sfstd_marketingBrand_obj": [
+        "NOCIBE"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "51.2230411,6.7824545",
+          "value": "Düsseldorf, Germany "
+        }
+      ]
+    }
+  },
+  {
+    "jobId": "cmtpiyuys0n3rpf5l2lj25irq",
+    "sourceId": "cmtpiyuys0n3spf5lz0pt21jw",
+    "url": "https://jobs.douglas.group/default/job/Assistant-to-SVP-Group-Transformation-%28fmx%29/636-en_US",
+    "storedDate": "2026-01-09T00:00:00.000Z",
+    "expectedDate": "2026-09-01T00:00:00.000Z",
+    "raw": {
+      "id": "636",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "Strategy, PMO & Business Development"
+      ],
+      "filter3": [
+        "Experienced Professional"
+      ],
+      "brandUrl": "default",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "Assistant-to-SVP-Group-Transformation-%28fmx%29",
+      "unifiedUrlTitle": "Assistant-to-SVP-Group-Transformation-%28fmx%29",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Düsseldorf, Germany "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "unifiedStandardEnd": "9/1/27",
+      "custFullTimePartTime": [
+        "Part Time"
+      ],
+      "unifiedStandardStart": "9/1/26",
+      "unifiedStandardTitle": "Assistant to SVP Group Transformation (f/m/x)",
+      "sfstd_marketingBrand_obj": [
+        "DOUGLAS"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "51.2230411,6.7824545",
+          "value": "Düsseldorf, Germany "
+        }
+      ]
+    }
+  },
+  {
+    "jobId": "cmtpiyuzd0n3vpf5l9gudlybl",
+    "sourceId": "cmtpiyuzd0n3wpf5l8ceraadp",
+    "url": "https://jobs.douglas.group/default/job/%28Senior%29-Manager-Payroll-%28fmx%29/602-en_US",
+    "storedDate": "2028-03-08T00:00:00.000Z",
+    "expectedDate": "2026-08-27T00:00:00.000Z",
+    "raw": {
+      "id": "602",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "People"
+      ],
+      "filter3": [
+        "Experienced Professional"
+      ],
+      "brandUrl": "default",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "%28Senior%29-Manager-Payroll-%28fmx%29",
+      "unifiedUrlTitle": "%28Senior%29-Manager-Payroll-%28fmx%29",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Düsseldorf, Germany "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "custFullTimePartTime": [
+        "Full Time"
+      ],
+      "unifiedStandardStart": "8/27/26",
+      "unifiedStandardTitle": "(Senior) Manager Payroll (f/m/x)",
+      "sfstd_marketingBrand_obj": [
+        "DOUGLAS"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "51.2230411,6.7824545",
+          "value": "Düsseldorf, Germany "
+        }
+      ]
+    }
+  },
+  {
+    "jobId": "cmtpiyuzx0n3zpf5lyxbc6fdl",
+    "sourceId": "cmtpiyuzx0n40pf5lvqsgut3f",
+    "url": "https://jobs.douglas.group/default/job/Working-Student-Investor-Relations-%28fmx%29/899-en_US",
+    "storedDate": "2027-06-08T00:00:00.000Z",
+    "expectedDate": "2026-08-18T00:00:00.000Z",
+    "raw": {
+      "id": "899",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "Finance & Controlling"
+      ],
+      "filter3": [
+        "Early Career"
+      ],
+      "brandUrl": "default",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "Working-Student-Investor-Relations-%28fmx%29",
+      "unifiedUrlTitle": "Working-Student-Investor-Relations-%28fmx%29",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Düsseldorf, Germany "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "unifiedStandardEnd": "8/18/27",
+      "custFullTimePartTime": [
+        "Full Time"
+      ],
+      "unifiedStandardStart": "8/18/26",
+      "unifiedStandardTitle": "Working Student Investor Relations (f/m/x)",
+      "sfstd_marketingBrand_obj": [
+        "DOUGLAS"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "51.2230411,6.7824545",
+          "value": "Düsseldorf, Germany "
+        }
+      ]
+    }
+  },
+  {
+    "jobId": "cmtpiyv0j0n43pf5lozrm0xyk",
+    "sourceId": "cmtpiyv0j0n44pf5l6cxa6ouj",
+    "url": "https://jobs.douglas.group/default/job/Manager-Investor-Relations-%28fmx%29/920-en_US",
+    "storedDate": "2027-06-08T00:00:00.000Z",
+    "expectedDate": "2026-08-18T00:00:00.000Z",
+    "raw": {
+      "id": "920",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "Finance & Controlling"
+      ],
+      "filter3": [
+        "Experienced Professional"
+      ],
+      "brandUrl": "default",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "Manager-Investor-Relations-%28fmx%29",
+      "unifiedUrlTitle": "Manager-Investor-Relations-%28fmx%29",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Düsseldorf, Germany "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "unifiedStandardEnd": "8/18/27",
+      "custFullTimePartTime": [
+        "Full Time"
+      ],
+      "unifiedStandardStart": "8/18/26",
+      "unifiedStandardTitle": "Manager Investor Relations (f/m/x)",
+      "sfstd_marketingBrand_obj": [
+        "DOUGLAS"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "51.2230411,6.7824545",
+          "value": "Düsseldorf, Germany "
+        }
+      ]
+    }
+  },
+  {
+    "jobId": "cmtpiyv140n47pf5lo4vcbdcn",
+    "sourceId": "cmtpiyv140n48pf5l9ie3fcjr",
+    "url": "https://jobs.douglas.group/default/job/%28Senior%29-Analytics-Manager-Demand-&-Order-Management-%28fmx%29/898-en_US",
+    "storedDate": "2027-02-08T00:00:00.000Z",
+    "expectedDate": "2026-08-14T00:00:00.000Z",
+    "raw": {
+      "id": "898",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "Supply Chain"
+      ],
+      "filter3": [
+        "Experienced Professional"
+      ],
+      "brandUrl": "default",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "%28Senior%29-Analytics-Manager-Demand-&amp;-Order-Management-%28fmx%29",
+      "unifiedUrlTitle": "%28Senior%29-Analytics-Manager-Demand-&amp;-Order-Management-%28fmx%29",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Düsseldorf, Germany "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "unifiedStandardEnd": "8/14/27",
+      "custFullTimePartTime": [
+        "Full Time"
+      ],
+      "unifiedStandardStart": "8/14/26",
+      "unifiedStandardTitle": "(Senior) Analytics Manager Demand & Order Management (f/m/x)",
+      "sfstd_marketingBrand_obj": [
+        "DOUGLAS"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "51.2230411,6.7824545",
+          "value": "Düsseldorf, Germany "
+        }
+      ]
+    }
+  },
+  {
+    "jobId": "cmtpiyv1w0n4bpf5lk1w18h3p",
+    "sourceId": "cmtpiyv1w0n4cpf5lmjphspo6",
+    "url": "https://jobs.douglas.group/default/job/Legal-Counsel-Commercial%2C-Procurement-&-Product-Compliance-%28fmx%29-limited-to-18-months/878-en_US",
+    "storedDate": "2026-12-08T00:00:00.000Z",
+    "expectedDate": "2026-08-12T00:00:00.000Z",
+    "raw": {
+      "id": "878",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "Legal, Compliance & Risk"
+      ],
+      "filter3": [
+        "Experienced Professional"
+      ],
+      "brandUrl": "default",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "Legal-Counsel-Commercial%2C-Procurement-&amp;-Product-Compliance-%28fmx%29-limited-to-18-months",
+      "unifiedUrlTitle": "Legal-Counsel-Commercial%2C-Procurement-&amp;-Product-Compliance-%28fmx%29-limited-to-18-months",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Düsseldorf, Germany "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "unifiedStandardEnd": "8/12/27",
+      "custFullTimePartTime": [
+        "Full Time"
+      ],
+      "unifiedStandardStart": "8/12/26",
+      "unifiedStandardTitle": "Legal Counsel Commercial, Procurement & Product Compliance (f/m/x) - limited to 18 months",
+      "sfstd_marketingBrand_obj": [
+        "DOUGLAS"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "51.2230411,6.7824545",
+          "value": "Düsseldorf, Germany "
+        }
+      ]
+    }
+  },
+  {
+    "jobId": "cmtpiyv2g0n4fpf5lom199s1g",
+    "sourceId": "cmtpiyv2g0n4gpf5lz22lkde8",
+    "url": "https://jobs.douglas.group/default/job/Contributor-Assortment-&-Purchasing-%28fmx%29/835-en_US",
+    "storedDate": "2026-06-08T00:00:00.000Z",
+    "expectedDate": "2026-08-06T00:00:00.000Z",
+    "raw": {
+      "id": "835",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "Purchasing, Pricing & Assortment"
+      ],
+      "filter3": [
+        "Early Career"
+      ],
+      "brandUrl": "default",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "Contributor-Assortment-&amp;-Purchasing-%28fmx%29",
+      "unifiedUrlTitle": "Contributor-Assortment-&amp;-Purchasing-%28fmx%29",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Sofia, Bulgaria "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "unifiedStandardEnd": "9/6/26",
+      "custFullTimePartTime": [
+        "Full Time"
+      ],
+      "unifiedStandardStart": "8/6/26",
+      "unifiedStandardTitle": "Contributor Assortment & Purchasing (f/m/x)",
+      "sfstd_marketingBrand_obj": [
+        "DOUGLAS"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "42.6977082,23.3218675",
+          "value": "Sofia, Bulgaria "
+        }
+      ]
+    }
+  },
+  {
+    "jobId": "cmtpiyv310n4jpf5l8gk8akul",
+    "sourceId": "cmtpiyv310n4kpf5lavab1dq3",
+    "url": "https://jobs.douglas.group/default/job/Director-SAP-S4-HANA-Transformation-%28fmx%29/612-en_US",
+    "storedDate": "2026-05-06T00:00:00.000Z",
+    "expectedDate": "2026-06-05T00:00:00.000Z",
+    "raw": {
+      "id": "612",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "Strategy, PMO & Business Development"
+      ],
+      "filter3": [
+        "Leadership"
+      ],
+      "brandUrl": "default",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "Director-SAP-S4-HANA-Transformation-%28fmx%29",
+      "unifiedUrlTitle": "Director-SAP-S4-HANA-Transformation-%28fmx%29",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Düsseldorf, Germany "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "unifiedStandardEnd": "6/4/27",
+      "custFullTimePartTime": [
+        "Full Time"
+      ],
+      "unifiedStandardStart": "6/5/26",
+      "unifiedStandardTitle": "Director SAP S/4 HANA Transformation (f/m/x)",
+      "sfstd_marketingBrand_obj": [
+        "DOUGLAS"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "51.2230411,6.7824545",
+          "value": "Düsseldorf, Germany "
+        }
+      ]
+    }
+  },
+  {
+    "jobId": "cmtrsg8ec0k6lpg5mp017twi7",
+    "sourceId": "cmtrsg8ec0k6mpg5mn2l1tdci",
+    "url": "https://jobs.douglas.group/default/job/Team-Lead-Business-Intelligence-&-Insights-Enablement-%28fmx%29/940-en_US",
+    "storedDate": "2026-06-09T00:00:00.000Z",
+    "expectedDate": "2026-09-06T00:00:00.000Z",
+    "raw": {
+      "id": "940",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "Data, Analytics & AI"
+      ],
+      "filter3": [
+        "Leadership"
+      ],
+      "brandUrl": "default",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "Team-Lead-Business-Intelligence-&amp;-Insights-Enablement-%28fmx%29",
+      "unifiedUrlTitle": "Team-Lead-Business-Intelligence-&amp;-Insights-Enablement-%28fmx%29",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Düsseldorf, Germany "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "unifiedStandardEnd": "9/1/27",
+      "custFullTimePartTime": [
+        "Full Time"
+      ],
+      "unifiedStandardStart": "9/6/26",
+      "unifiedStandardTitle": "Team Lead Business Intelligence & Insights Enablement (f/m/x)",
+      "sfstd_marketingBrand_obj": [
+        "DOUGLAS"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "51.2230411,6.7824545",
+          "value": "Düsseldorf, Germany "
+        }
+      ]
+    }
+  },
+  {
+    "jobId": "cmtt7znjr0rdqmy01b7e5jwsi",
+    "sourceId": "cmtt7znjr0rdrmy01jpbjfvn4",
+    "url": "https://jobs.douglas.group/default/job/EHS-Manager-%28fmx%29/624-en_US",
+    "storedDate": "2026-08-09T00:00:00.000Z",
+    "expectedDate": "2026-09-08T00:00:00.000Z",
+    "raw": {
+      "id": "624",
+      "locale": "en_US",
+      "source": "successfactors-rmk-v2",
+      "filter2": [
+        "Real Estate"
+      ],
+      "filter3": [
+        "Experienced Professional"
+      ],
+      "brandUrl": "default",
+      "currency": [
+        "EUR"
+      ],
+      "urlTitle": "EHS-Manager-%28fmx%29",
+      "unifiedUrlTitle": "EHS-Manager-%28fmx%29",
+      "custOnsiteRemote": [
+        "Hybrid"
+      ],
+      "jobLocationShort": [
+        "Düsseldorf, Germany "
+      ],
+      "supportedLocales": [
+        "en_US"
+      ],
+      "unifiedStandardEnd": "9/8/27",
+      "custFullTimePartTime": [
+        "Full or Part Time"
+      ],
+      "unifiedStandardStart": "9/8/26",
+      "unifiedStandardTitle": "EHS Manager (f/m/x)",
+      "sfstd_marketingBrand_obj": [
+        "DOUGLAS"
+      ],
+      "jobLocationShortWithCoordinates": [
+        {
+          "key": "51.2230411,6.7824545",
+          "value": "Düsseldorf, Germany "
+        }
+      ]
+    }
+  }
+]
