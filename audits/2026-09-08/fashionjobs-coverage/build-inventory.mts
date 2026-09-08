@@ -53,6 +53,11 @@ const rows = directory.map(d => {
     comparaison_certifiee: 'NON_PERIMETRES_ET_FRAICHEUR_A_ATTESTER',
     domaines_base: companies.map(c=>c.domain).filter(Boolean).join(' | '), sources_catalogue: byCatalogue.map(s=>`${s.key}:${s.status}`).join(' | '),
     sources_directes_actives: direct.map(s=>s.key).join(' | '), portails_groupe: groupMapped ? decision.sourceKeys.join(' | ') : '',
+    ats_directs_catalogues: [...new Set(direct.map(s=>s.kind))].join(' | '),
+    portails_directs_catalogues_a_certifier: [...new Set(direct.flatMap(s=>{
+      const configured = Object.values(s.config ?? {}).filter((v): v is string=>typeof v==='string' && /^https?:\/\//i.test(v));
+      return configured.length ? configured.map(v=>{const u=new URL(v); for(const k of [...u.searchParams.keys()]) if(/token|signature|auth|api.?key|jwt/i.test(k))u.searchParams.delete(k); return u.toString();}) : s.careersDomain ? [s.careersDomain] : [];
+    }))].join(' | '),
     statut_recherche: r?.status ?? 'NON_ENCORE_TRAITE',
     liens_carriere_candidats_non_certifies: [...new Set(candidates.map((l:any)=>l.to))].join(' | '),
     sites_candidats_lus: (r?.pages ?? []).filter((p: any)=>p.from === r.candidateOrigin).map((p: any)=>p.url).join(' | '),
