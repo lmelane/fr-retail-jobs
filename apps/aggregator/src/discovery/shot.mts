@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const out = '/private/tmp/claude-501/-Users-lmelane-Downloads-catwalks-job-aggregator/cb987be9-6318-41c2-be50-828162123854/scratchpad';
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await page.goto('https://modecareers.com/?nocache=' + Date.now(), { waitUntil: 'networkidle', timeout: 60000 });
+await page.screenshot({ path: `${out}/home.png`, clip: { x: 0, y: 0, width: 1440, height: 760 } });
+console.log('h1:', (await page.textContent('h1'))?.replace(/\s+/g, ' ').trim());
+console.log('logo mask:', await page.$eval('.brand-logo', (el) => getComputedStyle(el).maskImage || getComputedStyle(el).webkitMaskImage));
+console.log('hero search border:', await page.$eval('.search--hero', (el) => getComputedStyle(el).borderTopWidth + ' ' + getComputedStyle(el).borderTopStyle));
+await page.goto('https://modecareers.com/emplois?nocache=' + Date.now(), { waitUntil: 'networkidle', timeout: 60000 });
+await page.screenshot({ path: `${out}/emplois-bar.png`, clip: { x: 0, y: 0, width: 1440, height: 340 } });
+console.log('filters container class:', await page.$eval('.searchbar > div', (el) => el.className));
+await browser.close();

@@ -61,6 +61,7 @@ export type CandidateJob = NormalizedJob & {
   programType?: string;
   engagementType?: string;
   isSeasonal?: boolean;
+  workplaceType?: string;
 };
 
 /** Postings more than this far apart are treated as separate openings. */

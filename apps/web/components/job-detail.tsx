@@ -1,6 +1,6 @@
 'use client';
 
-import { employmentTermLabel, workTimeLabel, programTypeLabel, relativeDate } from '@/lib/format';
+import { employmentTermLabel, workTimeLabel, programTypeLabel, workplaceTypeLabel, relativeDate } from '@/lib/format';
 import { CompanyLogo } from '@/components/company-logo';
 import { displayTitle } from '@/lib/format';
 import type { JobRow } from '@/lib/jobs';
@@ -18,15 +18,6 @@ import type { JobRow } from '@/lib/jobs';
  * /emplois, the /offre page standalone) so this component works identically in
  * both — one visual language for an offer wherever it is read.
  */
-
-/** Source remote wording -> a clean French label. */
-function remoteLabel(raw: string): string {
-  const v = raw.trim().toLowerCase();
-  if (/hybrid|hybride|partiel/.test(v)) return 'Hybride';
-  if (/full|complet|100|remote|télétravail|teletravail/.test(v)) return 'Télétravail';
-  if (/no|non|onsite|sur site|présentiel|presentiel/.test(v)) return 'Sur site';
-  return raw;
-}
 
 /** "35 000 – 42 000 € par an", from whichever half the source published. */
 function salaryLabel(job: JobRow): string | null {
@@ -77,8 +68,10 @@ function JobFacts({
   if (workTime) facts.push(['Temps de travail', workTime]);
   if (job.programType) facts.push(['Programme', programTypeLabel(job.programType) ?? job.programType]);
   if (job.isSeasonal) facts.push(['Saisonnier', 'Oui']);
-  if (job.remote && !/^(unknown|non pr[ée]cis[ée]|n\/?a|none|unspecified)$/i.test(job.remote.trim()))
-    facts.push(['Télétravail', remoteLabel(job.remote)]);
+  // `workplaceType` ne porte plus que ONSITE | HYBRID | REMOTE : plus besoin de
+  // filtrer les non-réponses (« unknown » n'est plus une valeur stockée).
+  const workplace = workplaceTypeLabel(job.workplaceType);
+  if (workplace) facts.push(['Télétravail', workplace]);
   if (job.experienceYears !== null)
     facts.push(['Expérience', `${job.experienceYears} an${job.experienceYears > 1 ? 's' : ''}`]);
   if (job.educationLevel) facts.push(['Formation', job.educationLevel]);
@@ -114,8 +107,8 @@ export function JobDetail({ job }: { job: JobRow }) {
 
   // Meta line under the title: ville · contrat · télétravail · publiée.
   const remote =
-    job.remote && !/^(unknown|non pr[ée]cis[ée]|n\/?a|none|unspecified)$/i.test(job.remote.trim())
-      ? remoteLabel(job.remote)
+    job.workplaceType
+      ? workplaceTypeLabel(job.workplaceType)
       : null;
   const meta = [job.city, employmentTerm, remote, job.postedAt ? `Publiée ${relativeDate(job.postedAt)}` : null]
     .filter(Boolean)

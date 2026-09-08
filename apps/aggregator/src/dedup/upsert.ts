@@ -307,7 +307,7 @@ async function createJob(
         latitude: candidate.latitude,
         longitude: candidate.longitude,
         workTime: candidate.workTime,
-        remote: candidate.remote,
+        workplaceType: candidate.workplaceType,
         experienceYears: candidate.experienceYears,
         educationLevel: candidate.educationLevel,
         salaryMin: candidate.salaryMin,
@@ -408,7 +408,7 @@ type ExistingJob = {
   programType: string | null;
   engagementType: string | null;
   isSeasonal: boolean | null;
-  remote: string | null;
+  workplaceType: string | null;
   salaryMin: number | null;
   salaryMax: number | null;
   salaryCurrency: string | null;
@@ -437,7 +437,7 @@ type ExistingJob = {
 type Reattestable = Pick<
   ExistingJob,
   | 'title' | 'description' | 'location' | 'city' | 'country' | 'isFrance' | 'postedAt' | 'validThrough'
-  | 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType' | 'isSeasonal' | 'remote' | 'salaryMin' | 'salaryMax' | 'salaryCurrency' | 'salaryPeriod'
+  | 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType' | 'isSeasonal' | 'workplaceType' | 'salaryMin' | 'salaryMax' | 'salaryCurrency' | 'salaryPeriod'
 >;
 
 /**
@@ -450,7 +450,7 @@ type Reattestable = Pick<
  * présentes dans le brut, 5 212 offres sans date.
  */
 const SIMPLE_FIELDS = [
-  'postedAt', 'validThrough', 'language', 'employmentTerm', 'workTime', 'programType', 'engagementType', 'isSeasonal', 'remote',
+  'postedAt', 'validThrough', 'language', 'employmentTerm', 'workTime', 'programType', 'engagementType', 'isSeasonal', 'workplaceType',
   'salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod',
 ] as const;
 

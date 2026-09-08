@@ -14,7 +14,7 @@ const base: JobRow = {
   city: 'PARIS', location: 'Paris, France', employmentTerm: 'PERMANENT', sector: 'LUXURY',
   url: 'https://x/1', postedAt: null, latitude: null, longitude: null,
   sourceCount: 1, sources: ['cartier'], description: 'desc', applyUrl: 'https://x/1',
-  postalCode: null, department: null, jobFunction: null, seniority: null, workTime: null, remote: null,
+  postalCode: null, department: null, jobFunction: null, seniority: null, workTime: null, workplaceType: null,
   programType: null, engagementType: null, isSeasonal: null,
   experienceYears: null, educationLevel: null, salaryMin: null, salaryMax: null,
   salaryCurrency: null, salaryPeriod: null, validThrough: null,

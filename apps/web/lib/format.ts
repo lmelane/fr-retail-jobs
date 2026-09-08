@@ -98,6 +98,19 @@ const PROGRAM_TYPE_LABELS: Record<string, string> = {
   VIE: 'V.I.E',
 };
 
+/** Le MODE DE TRAVAIL, dans les mots que lit un candidat français. */
+const WORKPLACE_TYPE_LABELS: Record<string, string> = {
+  ONSITE: 'Sur site',
+  HYBRID: 'Hybride',
+  REMOTE: 'Télétravail',
+};
+
+/** Le libellé français d'un mode de travail, ou null si absent. */
+export function workplaceTypeLabel(value: string | null | undefined): string | null {
+  if (!value) return null;
+  return WORKPLACE_TYPE_LABELS[value] ?? value;
+}
+
 /** Le libellé français d'un dispositif, ou null si absent. */
 export function programTypeLabel(value: string | null | undefined): string | null {
   if (!value) return null;

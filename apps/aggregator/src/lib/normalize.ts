@@ -179,13 +179,6 @@ const REMOTE: Array<[RegExp, string]> = [
   [/^(partial|hybrid|hybride|partiel|télétravail partiel|teletravail partiel|part)$/i, 'partial'],
   [/^(yes|oui|full|fulltime|full[-_ ]?remote|remote|télétravail|teletravail|true|total)$/i, 'full'],
 ];
-/** Télétravail canonique (no | partial | full), sinon rien — « unknown » et les libellés bruts ne sont plus stockés. */
-export function canonicalRemote(value: unknown): string | undefined {
-  const text = coerceText(value);
-  if (!text) return undefined;
-  for (const [re, out] of REMOTE) if (re.test(text.trim())) return out;
-  return undefined;
-}
 
 const MAJOR = new Set(['EUR', 'USD', 'GBP', 'CHF', 'CAD', 'AUD']);
 const MAX_MAJOR_ANNUAL = 1_000_000;

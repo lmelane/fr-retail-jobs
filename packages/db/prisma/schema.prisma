@@ -311,8 +311,20 @@ model Job {
    * sont à la fois FIXED_TERM et saisonnières.
    */
   isSeasonal     Boolean?
-  /** Remote policy as the source words it. */
-  remote        String?
+  /**
+   * Le MODE DE TRAVAIL, en taxonomie mondiale : ONSITE | HYBRID | REMOTE.
+   * `null` = les sources ne le publient pas — jamais « sur site » par défaut.
+   *
+   * A remplacé `remote`, qui portait le vocabulaire PROPRIÉTAIRE de Welcome to
+   * the Jungle (`punctual`, `fulltime`, `unknown`) directement dans le modèle
+   * mondial, et stockait « unknown » comme une VALEUR sur 648 offres.
+   *
+   * ONSITE se définit comme « poste principalement rattaché au site, même si un
+   * télétravail occasionnel est autorisé » — c'est pourquoi le `punctual` de
+   * WTTJ (« télétravail ponctuel autorisé ») y tombe sans prétendre que le
+   * télétravail est interdit. La valeur brute reste traçable dans `raw`.
+   */
+  workplaceType String?
   experienceYears Int?
   educationLevel  String?
 

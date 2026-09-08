@@ -20,6 +20,12 @@ import {
   type Employment,
 } from '../normalize/employment.js';
 import { precedenceFor, type TrustLevel } from './verdict.js';
+import {
+  readWorkplaceField,
+  readWorkplaceText,
+  readWorkplaceDescription,
+  type WorkplaceType,
+} from '../normalize/workplace.js';
 import { OBSERVED_DIMENSIONS, type ObservedDimension } from './contradictions.js';
 
 /**
@@ -75,6 +81,8 @@ export type ResolvedEmployment = {
   programType?: string;
   engagementType?: string;
   isSeasonal?: true;
+  /** Le MODE DE TRAVAIL : ONSITE | HYBRID | REMOTE. */
+  workplaceType?: WorkplaceType;
   /** Le détail par dimension, pour la traçabilité (`enrichment`). */
   decisions: Partial<Record<ObservedDimension, ResolvedDimension>>;
 };
@@ -225,6 +233,32 @@ export function resolveCanonicalDimensions(
     }
   }
   if (seasonalFrom.some((e) => e.isSeasonal)) out.isSeasonal = true;
+
+  /**
+   * LE MODE DE TRAVAIL, par ordre de fiabilité : champ déclaré > titre >
+   * description. La description passe par ses propres règles d'ASSERTION —
+   * l'audit du 2026-09-08 a montré que la simple présence du mot produisait
+   * 80 % de faux positifs (« hybrid technology », « #LI-Remote »).
+   *
+   * Les chemins écartés après mesure : `has_remote` (vaut `true` sur 100 % des
+   * lignes WTTJ, y compris quand `remote: no`), `location_type` (= `LAT_LNG`),
+   * `locationType` (= un type de site, pas un mode de travail).
+   */
+  const WORKPLACE_KEYS = [
+    'remote', 'isRemote', 'workplaceType', 'custOnsiteRemote',
+    'telecommuting', 'on_site', 'hybrid', 'remote_work_type',
+  ] as const;
+  if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+    const payload = raw as Record<string, unknown>;
+    for (const key of WORKPLACE_KEYS) {
+      const v = payload[key];
+      if (v === undefined || v === null) continue;
+      const read = readWorkplaceField(key, Array.isArray(v) ? String(v[0] ?? '') : String(v));
+      if (read) { out.workplaceType = read.type; break; }
+    }
+  }
+  if (!out.workplaceType) out.workplaceType = readWorkplaceText(input.title)?.type;
+  if (!out.workplaceType) out.workplaceType = readWorkplaceDescription(input.description)?.type;
 
   return out;
 }

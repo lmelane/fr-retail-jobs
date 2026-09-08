@@ -9,7 +9,7 @@ import { loadTrust } from '../trust/persist.js';
 import { extractSalaryBand } from '../normalize/salary.js';
 import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
-import { coerceAmount, coerceCoordinate, coerceText, cleanTitle, cleanPlace, plausiblePostedAt, canonicalPeriod, canonicalRemote, boundedSalary, briefError } from '../lib/normalize.js';
+import { coerceAmount, coerceCoordinate, coerceText, cleanTitle, cleanPlace, plausiblePostedAt, canonicalPeriod, boundedSalary, briefError } from '../lib/normalize.js';
 import { normalizeSourceConfig } from '../connectors/sourceConfig.js';
 import { isRotatingSource, nextPageFor, advanceCursor } from './sourceCursor.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
@@ -152,7 +152,7 @@ function toCandidate(
     // readable value, this is the guardrail.
     salaryCurrency: coerceText(job.salaryCurrency)?.toUpperCase(),
     salaryPeriod: canonicalPeriod(job.salaryPeriod),
-    remote: canonicalRemote(job.remote),
+    workplaceType: employment.workplaceType,
     // Float columns: Rituals shipped "52.37" as a string and lost 577 offers.
     latitude: coerceCoordinate(job.latitude, 90),
     longitude: coerceCoordinate(job.longitude, 180),

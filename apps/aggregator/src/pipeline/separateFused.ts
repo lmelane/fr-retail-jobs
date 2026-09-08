@@ -99,7 +99,7 @@ export async function separateFusedJobs(prisma: PrismaClient): Promise<Separatio
             engagementType: job.engagementType,
             isSeasonal: job.isSeasonal,
             workTime: job.workTime,
-            remote: job.remote,
+            workplaceType: job.workplaceType,
             department: job.department,
             language: job.language,
             description: job.description,

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { coerceAmount, coerceCoordinate, coerceText, briefError, cleanTitle, cleanPlace, plausiblePostedAt, canonicalPeriod, canonicalRemote, boundedSalary } from './normalize.js';
+import { coerceAmount, coerceCoordinate, coerceText, briefError, cleanTitle, cleanPlace, plausiblePostedAt, canonicalPeriod, boundedSalary } from './normalize.js';
 
 /**
  * A salary column is Int?, but a schema.org feed (Teamtailor, medik8) hands the
@@ -142,13 +142,10 @@ describe('nettoyeurs de frontière (audit A1, 2026-09-06)', () => {
     expect(plausiblePostedAt(new Date('2026-09-05'), now)?.toISOString()).toBe('2026-09-05T00:00:00.000Z');
   });
 
-  it('canonicalPeriod et canonicalRemote ne stockent que des valeurs du référentiel', () => {
+  it('canonicalPeriod ne stocke que des valeurs du référentiel', () => {
     expect(canonicalPeriod('yearly')).toBe('YEAR');
     expect(canonicalPeriod('par mois')).toBeUndefined();
     expect(canonicalPeriod('mois')).toBe('MONTH');
-    expect(canonicalRemote('unknown')).toBeUndefined();
-    expect(canonicalRemote('télétravail partiel')).toBe('partial');
-    expect(canonicalRemote('sur site')).toBe('no');
   });
 
   it('boundedSalary écarte 58 M€/an mais garde 1 530 000 COP', () => {

@@ -596,7 +596,7 @@ export function JobCard({
 
   // Meta : ville · contrat · télétravail — texte, sans icône (DA §4.6).
   const remote =
-    job.remote?.toLowerCase().includes('télé') || job.remote?.toLowerCase().includes('remote')
+    job.workplaceType === 'REMOTE' || job.workplaceType === 'HYBRID'
       ? 'Télétravail'
       : null;
   // Ligne méta homogène (review 2026-09-04) : lieu · contrat · temps de

@@ -162,7 +162,7 @@ export type JobRow = {
   jobFunction: string | null;
   seniority: string | null;
   workTime: string | null;
-  remote: string | null;
+  workplaceType: string | null;
   experienceYears: number | null;
   educationLevel: string | null;
   salaryMin: number | null;
@@ -380,7 +380,7 @@ function toRow(row: {
   programType: string | null; engagementType: string | null; isSeasonal: boolean | null;
   postedAt: Date | null; latitude: number | null; longitude: number | null;
   sources: { sourceKey: string }[]; description: string | null; postalCode: string | null;
-  department: string | null; workTime: string | null; remote: string | null;
+  department: string | null; workTime: string | null; workplaceType: string | null;
   experienceYears: number | null; educationLevel: string | null; salaryMin: number | null;
   salaryMax: number | null; salaryCurrency: string | null; salaryPeriod: string | null;
   validThrough: Date | null; country: string | null; language: string | null; firstSeenAt: Date;
@@ -412,7 +412,7 @@ function toRow(row: {
     jobFunction: row.jobFunction,
     seniority: row.seniority,
     workTime: row.workTime,
-    remote: row.remote,
+    workplaceType: row.workplaceType,
     experienceYears: row.experienceYears,
     educationLevel: row.educationLevel,
     salaryMin: row.salaryMin,
