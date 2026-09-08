@@ -1,0 +1,115 @@
+﻿id,path,level,reason,source,dimension,observedAt,evaluatedAt,eligibleCount,agreementCount,evaluatorVersion,contradictionRate,contradictionCount
+cmtsef5e000003ndnnmsmszzt,employmentType,UNTRUSTED,543 contradictions sur 753 observations (72.1 %),pvh,workTime,2026-09-07T22:22:48.71,2026-09-08T08:19:32.199,753,210,trust-v1,0.7211155378486056,543
+cmtsef5gi00033ndnrowsifrb,contract_type,DEGRADED,35 contradictions sur 164 observations (21.3 %),wttj-sector,workTime,2026-09-07T22:27:02.833,2026-09-08T08:19:32.199,164,129,trust-v1,0.2134146341463415,35
+cmtsef5i300063ndn9owqe1wg,employmentType,UNTRUSTED,22 contradictions sur 44 observations (50.0 %),fashionjobs,workTime,2026-09-07T23:07:24.888,2026-09-08T08:19:32.199,44,22,trust-v1,0.5,22
+cmtsef5jm00093ndn73gwnep5,timeType,DEGRADED,19 contradictions sur 140 observations (13.6 %),nike,workTime,2026-09-07T22:12:11.534,2026-09-08T08:19:32.199,140,121,trust-v1,0.1357142857142857,19
+cmtsef5l3000c3ndnwlpymric,timeType,TRUSTED,15 contradictions sur 297 observations (5.1 %),mango,workTime,2026-09-07T22:25:50.802,2026-09-08T08:19:32.199,297,282,trust-v1,0.0505050505050505,15
+cmtsef5mn000f3ndnzp5e0rza,fullTimePartTimeFilter,TRUSTED,14 contradictions sur 786 observations (1.8 %),lvmh,workTime,2026-09-07T22:28:46.788,2026-09-08T08:19:32.199,786,772,trust-v1,0.0178117048346056,14
+cmtsef5o5000i3ndnrvpku1ia,employmentType,DEGRADED,13 contradictions sur 60 observations (21.7 %),fashionjobs,employmentTerm,2026-09-07T23:07:24.976,2026-09-08T08:19:32.199,60,47,trust-v1,0.2166666666666667,13
+cmtsef5s4000l3ndnhoqdkpd2,contract_type,TRUSTED,11 contradictions sur 156 observations (7.1 %),wttj-sector,employmentTerm,2026-09-07T22:27:02.786,2026-09-08T08:19:32.199,156,145,trust-v1,0.07051282051282051,11
+cmtsef5tk000o3ndnsy4n0yfk,employment_type,DEGRADED,7 contradictions sur 68 observations (10.3 %),foot-locker-france,workTime,2026-09-07T22:27:39.367,2026-09-08T08:19:32.199,68,61,trust-v1,0.1029411764705882,7
+cmtsef5v4000r3ndn0ez3k11o,tags2[0],DEGRADED,7 contradictions sur 68 observations (10.3 %),foot-locker-france,workTime,2026-09-07T22:27:39.367,2026-09-08T08:19:32.199,68,61,trust-v1,0.1029411764705882,7
+cmtsef5wm000u3ndnxcfqga1t,timeType,DEGRADED,6 contradictions sur 53 observations (11.3 %),uniqlo-stores,workTime,2026-09-07T22:04:17.379,2026-09-08T08:19:32.199,53,47,trust-v1,0.1132075471698113,6
+cmtsef5y3000x3ndnm8yts6i9,employmentType,INSUFFICIENT_EVIDENCE,"7 observations comparables, minimum 30",bevilles-jewellers,workTime,2026-09-07T22:02:31.686,2026-09-08T08:19:32.199,7,2,trust-v1,0.7142857142857143,5
+cmtsef5zi00103ndnq84uge96,contract_type,INSUFFICIENT_EVIDENCE,"13 observations comparables, minimum 30",sessun,workTime,2026-09-07T22:27:01.228,2026-09-08T08:19:32.199,13,8,trust-v1,0.3846153846153846,5
+cmtsef61200133ndn0oa5wmrn,employment_type_code,TRUSTED,5 contradictions sur 54 observations (9.3 %),kult-olymp-hades,workTime,2026-09-07T22:03:42.558,2026-09-08T08:19:32.199,54,49,trust-v1,0.09259259259259259,5
+cmtsef62s00163ndn6zhc4kzc,contract_type[0],TRUSTED,4 contradictions sur 93 observations (4.3 %),element-6,employmentTerm,2026-09-07T22:07:39.652,2026-09-08T08:19:32.199,93,89,trust-v1,0.04301075268817205,4
+cmtsef67300193ndnm3xigo9p,employmentType,INSUFFICIENT_EVIDENCE,"4 observations comparables, minimum 30",jako,programType,2026-09-07T22:02:14.579,2026-09-08T08:19:32.199,4,0,trust-v1,1,4
+cmtsef68r001c3ndnnhqw55ia,employmentType,TRUSTED,3 contradictions sur 133 observations (2.3 %),fashionjobs,programType,2026-09-07T23:07:24.964,2026-09-08T08:19:32.199,133,130,trust-v1,0.02255639097744361,3
+cmtsef6a8001f3ndnyufk9xh8,category[0],INSUFFICIENT_EVIDENCE,"21 observations comparables, minimum 30",groupe-chantelle,employmentTerm,2026-09-07T22:02:15.618,2026-09-08T08:19:32.199,21,18,trust-v1,0.1428571428571428,3
+cmtsef6br001i3ndn2uscodgw,employment_type_code,INSUFFICIENT_EVIDENCE,"10 observations comparables, minimum 30",kapten-son,workTime,2026-09-07T22:02:32.736,2026-09-08T08:19:32.199,10,7,trust-v1,0.3,3
+cmtsef6d9001l3ndn6yl08x15,bulletFields[2],TRUSTED,3 contradictions sur 162 observations (1.9 %),mango,employmentTerm,2026-09-07T22:25:49.132,2026-09-08T08:19:32.199,162,159,trust-v1,0.01851851851851852,3
+cmtsef6ev001o3ndnp0ny5i9s,contract_type,TRUSTED,2 contradictions sur 73 observations (2.7 %),hermes,employmentTerm,2026-09-07T23:07:24.076,2026-09-08T08:19:32.199,73,71,trust-v1,0.0273972602739726,2
+cmtsef6g7001r3ndnljm7s1c9,contract_type,INSUFFICIENT_EVIDENCE,"3 observations comparables, minimum 30",pied-de-biche,workTime,2026-09-07T22:27:00.389,2026-09-08T08:19:32.199,3,1,trust-v1,0.6666666666666666,2
+cmtsef6hs001u3ndngk1l9eg9,employmentType,INSUFFICIENT_EVIDENCE,"13 observations comparables, minimum 30",marc-o-polo,workTime,2026-09-07T22:02:04.514,2026-09-08T08:19:32.199,13,11,trust-v1,0.1538461538461539,2
+cmtsef6lo001x3ndnysmcskp1,employmentType,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",laverana-gmbh-co-kg,programType,2026-09-07T22:02:27.275,2026-09-08T08:19:32.199,2,0,trust-v1,1,2
+cmtsef6nb00203ndn3bakbsnu,employmentType,INSUFFICIENT_EVIDENCE,"4 observations comparables, minimum 30",polene,workTime,2026-09-07T22:03:42.79,2026-09-08T08:19:32.199,4,3,trust-v1,0.25,1
+cmtsef6oy00233ndn5zz77t5g,contract_type,TRUSTED,1 contradictions sur 141 observations (0.7 %),wttj-sector,programType,2026-09-07T22:27:02.703,2026-09-08T08:19:32.199,141,140,trust-v1,0.007092198581560284,1
+cmtsef6qi00263ndnxf1g63fw,contract_type[0],INSUFFICIENT_EVIDENCE,"14 observations comparables, minimum 30",eram-3,employmentTerm,2026-09-07T22:03:46.619,2026-09-08T08:19:32.199,14,13,trust-v1,0.07142857142857142,1
+cmtsef6rz00293ndnn24hdden,employmentType,INSUFFICIENT_EVIDENCE,"4 observations comparables, minimum 30",sessun,workTime,2026-09-07T22:27:00.997,2026-09-08T08:19:32.199,4,3,trust-v1,0.25,1
+cmtsef6tp002c3ndnlcpfmgzi,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",element-6,workTime,2026-09-07T22:07:36.514,2026-09-08T08:19:32.199,1,0,trust-v1,1,1
+cmtsef6vk002f3ndn9v6nk9c6,category[1],INSUFFICIENT_EVIDENCE,"9 observations comparables, minimum 30",groupe-printemps,employmentTerm,2026-09-07T22:02:25.972,2026-09-08T08:19:32.199,9,8,trust-v1,0.1111111111111111,1
+cmtsef6zh002i3ndnfhm6i2pk,job_type,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",baccarat,employmentTerm,2026-09-07T22:01:45.874,2026-09-08T08:19:32.199,2,1,trust-v1,0.5,1
+cmtsef70y002l3ndnfwt5zowd,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",oska,workTime,2026-09-07T22:01:39.054,2026-09-08T08:19:32.199,1,0,trust-v1,1,1
+cmtsef72h002o3ndn2id3v6gv,employment_type_code,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",profuomo,employmentTerm,2026-09-07T22:01:34.96,2026-09-08T08:19:32.199,1,0,trust-v1,1,1
+cmtsef73z002r3ndnqo2cap61,employmentType,INSUFFICIENT_EVIDENCE,"4 observations comparables, minimum 30",end-clothing,workTime,2026-09-07T22:02:26.202,2026-09-08T08:19:32.199,4,3,trust-v1,0.25,1
+cmtsef75j002u3ndnjcvskefo,employmentType,INSUFFICIENT_EVIDENCE,"4 observations comparables, minimum 30",hermes,employmentTerm,2026-09-07T22:26:53.858,2026-09-08T08:19:32.199,4,4,trust-v1,0,0
+cmtsef770002x3ndnhby0rihc,employment_type_code,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",iris-van-herpen,workTime,2026-09-07T22:01:26.789,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef78g00303ndn5tppphx2,employment_type_code,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",iris-van-herpen,programType,2026-09-07T22:01:26.819,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsef79x00333ndnfigk4ir7,contract_type,INSUFFICIENT_EVIDENCE,"7 observations comparables, minimum 30",wttj-sector,engagementType,2026-09-07T22:27:01.752,2026-09-08T08:19:32.199,7,7,trust-v1,0,0
+cmtsef7e700363ndnzx48qrag,contract_type,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",madame-figaro,employmentTerm,2026-09-07T22:01:53.324,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsef7fq00393ndnsp7oz2tw,contract_type,INSUFFICIENT_EVIDENCE,"7 observations comparables, minimum 30",madame-figaro,programType,2026-09-07T22:01:53.343,2026-09-08T08:19:32.199,7,7,trust-v1,0,0
+cmtsef7hl003c3ndn4oym32kf,employment_type_code,INSUFFICIENT_EVIDENCE,"10 observations comparables, minimum 30",ami-paris,employmentTerm,2026-09-07T23:07:22.583,2026-09-08T08:19:32.199,10,10,trust-v1,0,0
+cmtsef7j1003f3ndnqpyszhnv,employment_type_code,INSUFFICIENT_EVIDENCE,"6 observations comparables, minimum 30",ami-paris,programType,2026-09-07T22:02:21.022,2026-09-08T08:19:32.199,6,6,trust-v1,0,0
+cmtsef7ki003i3ndnn0nsv850,contract_type,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",fashionjobs,employmentTerm,2026-09-07T22:26:44.189,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef7lz003l3ndn3hxvlfpi,contract_type,TRUSTED,0 contradictions sur 33 observations (0.0 %),helena-rubinstein-8,programType,2026-09-07T22:26:58.355,2026-09-08T08:19:32.199,33,33,trust-v1,0,0
+cmtsef7ni003o3ndne5n17z38,contract_type,INSUFFICIENT_EVIDENCE,"5 observations comparables, minimum 30",helena-rubinstein-8,employmentTerm,2026-09-07T22:26:58.298,2026-09-08T08:19:32.199,5,5,trust-v1,0,0
+cmtsef7p0003r3ndn7b2y7e89,contract_type[0],INSUFFICIENT_EVIDENCE,"3 observations comparables, minimum 30",eram-3,programType,2026-09-07T22:03:46.717,2026-09-08T08:19:32.199,3,3,trust-v1,0,0
+cmtsef7t6003u3ndnoieagho7,employment_type,TRUSTED,0 contradictions sur 31 observations (0.0 %),apm-monaco,workTime,2026-09-07T22:03:47.831,2026-09-08T08:19:32.199,31,31,trust-v1,0,0
+cmtsef7uk003x3ndnwfktcdub,employment_type,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",apm-monaco,employmentTerm,2026-09-07T22:03:48.095,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef7w000403ndnt6y3a5qe,contract_type[0],INSUFFICIENT_EVIDENCE,"22 observations comparables, minimum 30",element-6,programType,2026-09-07T22:07:39.852,2026-09-08T08:19:32.199,22,22,trust-v1,0,0
+cmtsef7xh00433ndnxd4md2i8,contract_type[1],INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",element-6,employmentTerm,2026-09-07T22:07:36.852,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef7z000463ndnphob7vi4,contract_type,TRUSTED,0 contradictions sur 112 observations (0.0 %),hermes,programType,2026-09-07T22:26:54.455,2026-09-08T08:19:32.199,112,112,trust-v1,0,0
+cmtsef80c00493ndn1nop41iy,employmentType,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",wttj-sector,programType,2026-09-07T22:27:02.565,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsef81r004c3ndntkevb7tz,employmentType,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",sessun,employmentTerm,2026-09-07T22:27:01.147,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsef83a004f3ndn8r62pmrx,employmentType,INSUFFICIENT_EVIDENCE,"3 observations comparables, minimum 30",eric-bompard,employmentTerm,2026-09-07T22:02:39.374,2026-09-08T08:19:32.199,3,3,trust-v1,0,0
+cmtsef872004i3ndnfr86nayo,employmentType,INSUFFICIENT_EVIDENCE,"4 observations comparables, minimum 30",wttj-sector,employmentTerm,2026-09-07T22:27:01.719,2026-09-08T08:19:32.199,4,4,trust-v1,0,0
+cmtsef88j004l3ndndbb84cn2,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",element-6,employmentTerm,2026-09-07T22:07:36.547,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef8a2004o3ndnfafzlkiq,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",jean-paul-gaultier-5,employmentTerm,2026-09-07T22:06:10.975,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef8bm004r3ndnncx6ny0q,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",sezane,employmentTerm,2026-09-07T22:04:10.652,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef8d6004u3ndnj2sb112q,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",a-p-c,programType,2026-09-07T22:26:43.336,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef8ek004x3ndnnjt3jhm5,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",element-6,programType,2026-09-07T22:07:36.9,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef8g400503ndnzvzg1wte,category[1],INSUFFICIENT_EVIDENCE,"8 observations comparables, minimum 30",balmain,programType,2026-09-07T22:02:14.312,2026-09-08T08:19:32.199,8,8,trust-v1,0,0
+cmtsef8hp00533ndnw6vpljk3,category[1],INSUFFICIENT_EVIDENCE,"14 observations comparables, minimum 30",balmain,employmentTerm,2026-09-07T22:02:14.271,2026-09-08T08:19:32.199,14,14,trust-v1,0,0
+cmtsef8lx00563ndn9ah3wrkf,category[1],INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",balmain,workTime,2026-09-07T22:02:14.177,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef8nf00593ndn8kyz7l6p,category[0],INSUFFICIENT_EVIDENCE,"19 observations comparables, minimum 30",longchamp,employmentTerm,2026-09-07T22:02:16.734,2026-09-08T08:19:32.199,19,19,trust-v1,0,0
+cmtsef8oy005c3ndn9p1kgpqx,category[1],INSUFFICIENT_EVIDENCE,"9 observations comparables, minimum 30",groupe-printemps,programType,2026-09-07T22:02:25.956,2026-09-08T08:19:32.199,9,9,trust-v1,0,0
+cmtsef8qi005f3ndn0pol5gt6,category[0],INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",groupe-chantelle,programType,2026-09-07T22:02:15.491,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef8s1005i3ndnb7sysm3x,category[1],INSUFFICIENT_EVIDENCE,"6 observations comparables, minimum 30",lagardere-travel-retail,programType,2026-09-07T22:02:15.741,2026-09-08T08:19:32.199,6,6,trust-v1,0,0
+cmtsef8ti005l3ndnycv1slqn,category[1],INSUFFICIENT_EVIDENCE,"10 observations comparables, minimum 30",lagardere-travel-retail,employmentTerm,2026-09-07T22:02:15.692,2026-09-08T08:19:32.199,10,10,trust-v1,0,0
+cmtsef8uz005o3ndnngjh2w8v,job_type,INSUFFICIENT_EVIDENCE,"3 observations comparables, minimum 30",jules,employmentTerm,2026-09-07T22:01:47.557,2026-09-08T08:19:32.199,3,3,trust-v1,0,0
+cmtsef8wf005r3ndntf43kvk4,job_type,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",baccarat,programType,2026-09-07T22:01:45.834,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsef90a005u3ndni8i5fpv6,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",hermes,programType,2026-09-07T22:26:49.277,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef91u005x3ndn773cur2e,employmentType,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",kiabi,employmentTerm,2026-09-07T22:26:57.237,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsef93c00603ndnu03hjor4,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",kiabi,programType,2026-09-07T22:26:55.764,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef94t00633ndnfl1qvkzj,job_type,INSUFFICIENT_EVIDENCE,"10 observations comparables, minimum 30",promod,employmentTerm,2026-09-07T22:01:48.459,2026-09-08T08:19:32.199,10,10,trust-v1,0,0
+cmtsef96h00663ndn43n71fzf,tags2[0],INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",foot-locker-france,programType,2026-09-07T22:27:32.477,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef97y00693ndne0gwfax7,employment_type_code,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",nikin,engagementType,2026-09-07T22:01:13.459,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef99r006c3ndnic52gdr6,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",got-bag,programType,2026-09-07T22:01:15.025,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef9be006f3ndnkexwo0jx,employmentType,INSUFFICIENT_EVIDENCE,"4 observations comparables, minimum 30",kastner-ohler,workTime,2026-09-07T22:01:16.072,2026-09-08T08:19:32.199,4,4,trust-v1,0,0
+cmtsef9ff006i3ndnm5h54fv4,contract_type,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",pied-de-biche,programType,2026-09-07T22:27:00.408,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsef9gw006l3ndnf6qiv1mk,contract_type,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",monsieur-tshirt,employmentTerm,2026-09-07T22:26:59.576,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsef9ie006o3ndnuv9bye5j,contract_type,INSUFFICIENT_EVIDENCE,"3 observations comparables, minimum 30",monsieur-tshirt,programType,2026-09-07T22:26:59.567,2026-09-08T08:19:32.199,3,3,trust-v1,0,0
+cmtsef9jw006r3ndnnl5l8r5u,employment_type_code,INSUFFICIENT_EVIDENCE,"8 observations comparables, minimum 30",bright,workTime,2026-09-07T22:01:41.119,2026-09-08T08:19:32.199,8,8,trust-v1,0,0
+cmtsef9lm006u3ndn7w3rb4mi,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",mateo,programType,2026-09-07T22:01:44.406,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef9n8006x3ndn4ml95j7l,employmentType,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",aeyde,programType,2026-09-07T22:01:44.771,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsef9oo00703ndnamv1t94q,employment_type_code,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",bego,programType,2026-09-07T22:01:48.157,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsef9qa00733ndnnozrvlyf,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",stanley-stella,programType,2026-09-07T22:01:50.711,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsef9ue00763ndn4caok316,contract_type,INSUFFICIENT_EVIDENCE,"7 observations comparables, minimum 30",a-p-c,programType,2026-09-07T22:26:43.427,2026-09-08T08:19:32.199,7,7,trust-v1,0,0
+cmtsef9w000793ndniyb2waye,employment_type_code,INSUFFICIENT_EVIDENCE,"3 observations comparables, minimum 30",yaya,workTime,2026-09-07T22:02:28.337,2026-09-08T08:19:32.199,3,3,trust-v1,0,0
+cmtsef9xh007c3ndn5bs8qpb5,employment_type_code,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",state-of-art,workTime,2026-09-07T22:02:32.246,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsef9z3007f3ndnk1ozhbuz,employment_type_code,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",kapten-son,programType,2026-09-06T13:12:52.31,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsefa0l007i3ndnj6hroy7l,contract_type,INSUFFICIENT_EVIDENCE,"3 observations comparables, minimum 30",sessun,programType,2026-09-07T22:27:01.188,2026-09-08T08:19:32.199,3,3,trust-v1,0,0
+cmtsefa27007l3ndnt6fo4oxl,contract_type,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",sessun,employmentTerm,2026-09-07T22:27:01.156,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsefa3n007o3ndnnrinncmv,employment_type_code,INSUFFICIENT_EVIDENCE,"4 observations comparables, minimum 30",ms-mode,programType,2026-09-07T22:03:25.915,2026-09-08T08:19:32.199,4,4,trust-v1,0,0
+cmtsefa7l007r3ndnhxo59z9f,employment_type_code,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",my-jewellery,programType,2026-09-07T22:03:45.403,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsefa98007u3ndnc4rpruc1,timeType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",movado,workTime,2026-09-07T22:04:32.778,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsefaas007x3ndncqhaqfrf,timeType,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",madewell,workTime,2026-09-07T22:06:35.774,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsefacf00803ndnyxuw5io8,timeType,INSUFFICIENT_EVIDENCE,"12 observations comparables, minimum 30",richemont,workTime,2026-09-07T22:22:24.173,2026-09-08T08:19:32.199,12,12,trust-v1,0,0
+cmtsefadz00833ndnnjo5e4e1,contract_type,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",fashionjobs,programType,2026-09-07T22:26:57.594,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsefafi00863ndna2wmkelt,bulletFields[0],INSUFFICIENT_EVIDENCE,"3 observations comparables, minimum 30",diptyque-workday,programType,2026-09-07T22:05:14.955,2026-09-08T08:19:32.199,3,3,trust-v1,0,0
+cmtsefagz00893ndni18hc93g,bulletFields[0],INSUFFICIENT_EVIDENCE,"8 observations comparables, minimum 30",diptyque-workday,employmentTerm,2026-09-07T22:05:14.846,2026-09-08T08:19:32.199,8,8,trust-v1,0,0
+cmtsefaii008c3ndn0nso38uq,employmentType,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",sezane,programType,2026-09-07T22:04:11.431,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsefami008f3ndnlzwgqa0d,employment_type_code,INSUFFICIENT_EVIDENCE,"4 observations comparables, minimum 30",boggi-milano,workTime,2026-09-07T22:03:49.011,2026-09-08T08:19:32.199,4,4,trust-v1,0,0
+cmtsefany008i3ndnepki7zn4,employment_type_code,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",boggi-milano,programType,2026-09-07T22:03:49.064,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsefapi008l3ndn5oyshfp0,employment_type,INSUFFICIENT_EVIDENCE,"18 observations comparables, minimum 30",sezane,workTime,2026-09-07T22:04:11.753,2026-09-08T08:19:32.199,18,18,trust-v1,0,0
+cmtsefar2008o3ndnlmdplwfy,bulletFields[1],INSUFFICIENT_EVIDENCE,"14 observations comparables, minimum 30",mango,employmentTerm,2026-09-07T22:25:49.275,2026-09-08T08:19:32.199,14,14,trust-v1,0,0
+cmtsefasm008r3ndnflsr1bxz,contract_type,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",clarins-wttj,programType,2026-09-07T22:26:47.279,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsefau2008u3ndnsbopbaut,category[1],INSUFFICIENT_EVIDENCE,"8 observations comparables, minimum 30",lagardere-duty-free,employmentTerm,2026-09-07T22:01:44.425,2026-09-08T08:19:32.199,8,8,trust-v1,0,0
+cmtsefavm008x3ndnfucvm3tn,category[1],INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",lagardere-duty-free,programType,2026-09-07T22:01:44.38,2026-09-08T08:19:32.199,1,1,trust-v1,0,0
+cmtsefax500903ndn3naxe7us,timeType,INSUFFICIENT_EVIDENCE,"2 observations comparables, minimum 30",nike-nke2,workTime,2026-09-07T22:07:42.941,2026-09-08T08:19:32.199,2,2,trust-v1,0,0
+cmtsefb1400933ndnn6g1xpt6,timeType,INSUFFICIENT_EVIDENCE,"15 observations comparables, minimum 30",saks,workTime,2026-09-07T22:11:18.468,2026-09-08T08:19:32.199,15,15,trust-v1,0,0
+cmtsefb2o00963ndnlpidf24t,employmentType[0],TRUSTED,0 contradictions sur 905 observations (0.0 %),pandora-talenthub,workTime,2026-09-07T22:34:10.388,2026-09-08T08:19:32.199,905,905,trust-v1,0,0
+cmtsefb4900993ndnum6g8t0h,employmentType[0],INSUFFICIENT_EVIDENCE,"3 observations comparables, minimum 30",luxexperience,programType,2026-09-07T22:03:05.821,2026-09-08T08:19:32.199,3,3,trust-v1,0,0
+cmtsefb5r009c3ndn6jrrkx12,employmentType[0],INSUFFICIENT_EVIDENCE,"4 observations comparables, minimum 30",pandora-talenthub,programType,2026-09-07T22:34:04.725,2026-09-08T08:19:32.199,4,4,trust-v1,0,0
+cmtsefb7b009f3ndni9jzgy84,employmentType,INSUFFICIENT_EVIDENCE,"1 observations comparables, minimum 30",marc-o-polo,programType,2026-09-06T09:12:44.209,2026-09-08T08:19:32.199,1,1,trust-v1,0,0

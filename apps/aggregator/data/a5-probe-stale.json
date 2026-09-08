@@ -1,0 +1,341 @@
+[
+ {
+  "sourceKey": "normal",
+  "id": "cmtlva29j07ix3nk5zfbu2dcu",
+  "url": "https://jobs.normal.eu/jobs/8309029-employe-libre-service-polyvalent-f-h",
+  "status": 404,
+  "klass": "404",
+  "ms": 99
+ },
+ {
+  "sourceKey": "lvmh",
+  "id": "cmtk499dj1k1rny2b9yy8egri",
+  "url": "https://emea3.recruitmentplatform.com/apply-app/pages/application-form?jobId=PYZFK026203F3VBQB798N7VG6-1088046&langCode=en_US",
+  "status": 200,
+  "finalUrl": "https://www.lvmh.com/rac/csod/prod/apply.html?jobId=PYZFK026203F3VBQB798N7VG6-1088046&langCode=en_US",
+  "klass": "200_expiree",
+  "note": "n['’]est plus disponible",
+  "ms": 237
+ },
+ {
+  "sourceKey": "lovisa",
+  "id": "cmtm8pa601jffpv5je8abz0to",
+  "url": "https://careers.lovisa.com/jobs/8290700-vendeur-euse-en-cdd-35h",
+  "status": 410,
+  "klass": "410",
+  "ms": 248
+ },
+ {
+  "sourceKey": "sandro",
+  "id": "cmtk29r870mnvnv2b2dxxvpk3",
+  "url": "https://jobs.smartrecruiters.com/SMCP/744000137927489",
+  "status": 200,
+  "finalUrl": "https://jobs.smartrecruiters.com/SMCP/744000137927489",
+  "klass": "200_visible",
+  "note": "marqueur aussi: offre (a )?expir",
+  "ms": 150
+ },
+ {
+  "sourceKey": "lvmh",
+  "id": "cmtk48s081ghbny2br5ybrxy8",
+  "url": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=293726",
+  "status": 200,
+  "finalUrl": "https://jobs.sephora.com/USA/job/Montclair-Beauty-Advisor-Part-Time-CA-91763/1365193955/",
+  "klass": "200_visible",
+  "note": "marqueur aussi: position has been filled",
+  "ms": 486
+ },
+ {
+  "sourceKey": "sandro",
+  "id": "cmtlvbnp508ar3nk5edcnhhfn",
+  "url": "https://jobs.smartrecruiters.com/SMCP/744000137885659",
+  "status": 200,
+  "finalUrl": "https://jobs.smartrecruiters.com/SMCP/744000137885659",
+  "klass": "200_visible",
+  "ms": 200
+ },
+ {
+  "sourceKey": "merkal",
+  "id": "cmtlyk0ge09msqf5ku94ekhai",
+  "url": "https://merkal.teamtailor.com/jobs/7856110-vendedor-a-5-horas-semanales-sabados",
+  "status": 410,
+  "klass": "410",
+  "ms": 633
+ },
+ {
+  "sourceKey": "fashionjobs",
+  "id": "cmtkdw2971u2hnf2b705zv0cn",
+  "url": "https://fr.fashionjobs.com/emploi/bangle-up/Charge-d-e-commerce,12015060.html",
+  "status": 403,
+  "klass": "403_waf",
+  "ms": 666
+ },
+ {
+  "sourceKey": "fashionjobs",
+  "id": "cmtkdw2wy1uannf2b88k0lypn",
+  "url": "https://fr.fashionjobs.com/emploi/groupe-rautureau-apple-shoes/Stagiaire-community-manager,12010803.html",
+  "status": 403,
+  "klass": "403_waf",
+  "ms": 713
+ },
+ {
+  "sourceKey": "l-oreal-professionnel",
+  "id": "cmtlv6nv405xv3nk5dz0t5r8y",
+  "url": "https://careers.loreal.com/en_US/jobs/JobDetail/Retail-Store-Manager/247206",
+  "status": 404,
+  "klass": "404",
+  "ms": 846
+ },
+ {
+  "sourceKey": "fashionjobs",
+  "id": "cmtkdw2d41u3xnf2bnn4e99q0",
+  "url": "https://fr.fashionjobs.com/emploi/l-atelier-d-amaya/Responsable-adjoint-h-f-parly-2,11939275.html",
+  "status": 403,
+  "klass": "403_waf",
+  "ms": 847
+ },
+ {
+  "sourceKey": "blueland",
+  "id": "cmtlyfevs00m8qf5kf47chluz",
+  "url": "https://jobs.lever.co/blueland/fcaeaf1c-e631-4580-9381-c483d19dae29",
+  "status": 404,
+  "klass": "404",
+  "ms": 883
+ },
+ {
+  "sourceKey": "lovisa",
+  "id": "cmtm8p9p21j9vpv5jlytqknvk",
+  "url": "https://careers.lovisa.com/jobs/8302909-team-member-part-time",
+  "status": 200,
+  "finalUrl": "https://careers.lovisa.com/jobs/8302909-team-member-part-time",
+  "klass": "200_visible",
+  "note": "marqueur aussi: no longer (available|accepting|open|active|exists)",
+  "ms": 165
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki5qpk1q05mn2bvm9mmh61",
+  "url": "https://www.michaelpage.fr/job-detail/technicien-qualit%C3%A9-hf-industrie-chimique-pharmaceutique-fh/ref/jn-032026-6979080",
+  "status": 410,
+  "klass": "410",
+  "ms": 1300
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki5f1h1n97mn2btnm7l2wv",
+  "url": "https://www.michaelpage.fr/job-detail/responsable-de-production-hf-nuit-fh/ref/jn-072026-7070650",
+  "status": 410,
+  "klass": "410",
+  "ms": 1480
+ },
+ {
+  "sourceKey": "funky-buddha",
+  "id": "cmtlyicrb05ghqf5kg31vx8os",
+  "url": "https://jobs.smartrecruiters.com/ALTEXSA/744000143041365",
+  "status": 200,
+  "finalUrl": "https://jobs.smartrecruiters.com/ALTEXSA/744000143041365",
+  "klass": "200_visible",
+  "ms": 171
+ },
+ {
+  "sourceKey": "l-oreal-professionnel",
+  "id": "cmtk0gcry08gzs32b0gnn4wxe",
+  "url": "https://careers.loreal.com/en_US/jobs/JobDetail/L-Or-al-Luxe-Multi-Brand-Solo-Counter-Manager-Boots-Taunton-30-Hours/248307",
+  "status": 404,
+  "klass": "404",
+  "ms": 890
+ },
+ {
+  "sourceKey": "crocs",
+  "id": "cmtm7f3oc0ya3pv5juar721ao",
+  "url": "https://careers.crocs.com/job/Simpsonville-Store-Manager-KY-40067/1420011700/",
+  "status": 200,
+  "finalUrl": "https://careers.crocs.com/job/Simpsonville-Store-Manager-KY-40067/1420011700/",
+  "klass": "200_visible",
+  "note": "marqueur aussi: position has been filled",
+  "ms": 925
+ },
+ {
+  "sourceKey": "sandro",
+  "id": "cmtk29rhc0mpcnv2bsbcerl7l",
+  "url": "https://jobs.smartrecruiters.com/SMCP/744000137881989",
+  "status": 200,
+  "finalUrl": "https://jobs.smartrecruiters.com/SMCP/744000137881989",
+  "klass": "200_visible",
+  "ms": 124
+ },
+ {
+  "sourceKey": "fashionjobs",
+  "id": "cmtlvhz7i0bnt3nk52ffcgv8t",
+  "url": "https://fr.fashionjobs.com/emploi/coltesse/Assistant-modeliste-styliste-h,12012247.html",
+  "status": 403,
+  "klass": "403_waf",
+  "ms": 587
+ },
+ {
+  "sourceKey": "lvmh",
+  "id": "cmtk497ar1jisny2bm53fqyqu",
+  "url": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=292802",
+  "status": 200,
+  "finalUrl": "https://jobs.sephora.com/Germany/job/D%C3%BCsseldorf-HQ-Working-Student-Retail-&-Operations/1363185755/",
+  "klass": "200_visible",
+  "note": "marqueur aussi: position has been filled",
+  "ms": 228
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtlvk00m0cwz3nk5yzqf9aff",
+  "url": "https://www.michaelpage.fr/job-detail/technicien-de-maintenance-hf/ref/jn-072026-7065772",
+  "status": 410,
+  "klass": "410",
+  "ms": 1804
+ },
+ {
+  "sourceKey": "l-oreal-professionnel",
+  "id": "cmtlv57vw057r3nk5l7yxv0ic",
+  "url": "https://careers.loreal.com/en_US/jobs/JobDetail/L-Or-al-Luxe-Multi-Brand-Beauty-Advisor-John-Lewis-Bluewater-37-5-Hours/254761",
+  "status": 404,
+  "klass": "404",
+  "ms": 932
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki5k2h1oi1mn2baqqkg33i",
+  "url": "https://www.michaelpage.fr/job-detail/technicienne-de-maintenance-fh/ref/jn-012026-6917331",
+  "status": 410,
+  "klass": "410",
+  "ms": 2225
+ },
+ {
+  "sourceKey": "nike",
+  "id": "cmtm8p2h01il3pv5jk5fpqfgm",
+  "url": "https://nike.wd1.myworkdayjobs.com/nke/job/Talke-United-Kingdom/Retail-Assistant--Athlete----PT-30H---Talk_R-87053",
+  "status": 403,
+  "klass": "403_waf",
+  "ms": 1147
+ },
+ {
+  "sourceKey": "fashionjobs",
+  "id": "cmtmkaglm2jptpv4x4mvq71yc",
+  "url": "https://fr.fashionjobs.com/emploi/parfums-christian-dior/Stage-janvier-2027-ingenieur-management-de-projet-gestion-de-la-demande-supply-chain-f-h,12049733.html",
+  "status": 403,
+  "klass": "403_waf",
+  "ms": 1207
+ },
+ {
+  "sourceKey": "l-oreal-professionnel",
+  "id": "cmtk0fsmk073gs32bn55dg950",
+  "url": "https://careers.loreal.com/en_US/jobs/JobDetail/Customer-Care-Lead/252562",
+  "status": 200,
+  "finalUrl": "https://careers.loreal.com/en_US/jobs/JobDetail/Customer-Care-Lead/252562",
+  "klass": "200_visible",
+  "note": "marqueur aussi: has expired",
+  "ms": 862
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki5f8e1nb2mn2b4m3dkf43",
+  "url": "https://www.michaelpage.fr/job-detail/directeur-de-magasin-hf/ref/jn-072026-7071261",
+  "status": 410,
+  "klass": "410",
+  "ms": 3916
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki5ktm1oo7mn2byok5pl4f",
+  "url": "https://www.michaelpage.fr/job-detail/expert-immobilier-s%C3%A9nior-fh/ref/jn-062026-7042620",
+  "status": 410,
+  "klass": "410",
+  "ms": 3390
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki55dp1kplmn2bxh8ytgyv",
+  "url": "https://www.michaelpage.fr/job-detail/technicien-de-maintenance-industrielle-38-hf/ref/jn-062026-7049391",
+  "status": 200,
+  "finalUrl": "https://www.michaelpage.fr/job-detail/technicien-de-maintenance-%C3%A9lectrom%C3%A9canique-hf/ref/jn-062026-7049391",
+  "klass": "200_visible",
+  "ms": 3183
+ },
+ {
+  "sourceKey": "parfums-chanel",
+  "id": "cmtk3fw0m0rufny2bwr1i9gax",
+  "url": "https://cc.wd3.myworkdayjobs.com/ChanelCareers/job/Zrich/Stockist_JOBREQ00115082",
+  "status": 403,
+  "klass": "403_waf",
+  "ms": 819
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki564r1kxumn2bykmkaqgh",
+  "url": "https://www.michaelpage.fr/job-detail/assistant-planification-des-tourn%C3%A9es-dinterventions-hf/ref/jn-052026-7027170",
+  "status": 410,
+  "klass": "410",
+  "ms": 4425
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki5qmx1pzpmn2bbq0360xf",
+  "url": "https://www.michaelpage.fr/job-detail/cheffe-dequipe-maintenance-hf/ref/jn-072026-7054098",
+  "status": 200,
+  "finalUrl": "https://www.michaelpage.fr/job-detail/cheffe-dequipe-maintenance-hf/ref/jn-072026-7054098",
+  "klass": "200_visible",
+  "ms": 3870
+ },
+ {
+  "sourceKey": "fashionjobs",
+  "id": "cmtkdw2pq1u7xnf2bzaayycah",
+  "url": "https://fr.fashionjobs.com/emploi/bureau-de-presse-pascale-venot/Stage-assistant-attache-de-presse,12012176.html",
+  "status": 403,
+  "klass": "403_waf",
+  "ms": 2567
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki4v5x1hefmn2b0wqyad16",
+  "url": "https://www.michaelpage.fr/job-detail/assistante-administrative-rh-fh/ref/jn-092026-7095405",
+  "status": 410,
+  "klass": "410",
+  "ms": 5012
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki52st1jx0mn2b8sgpg76f",
+  "url": "https://www.michaelpage.fr/job-detail/assistant-supply-chain-transport-hf/ref/jn-082026-7088156",
+  "status": 410,
+  "klass": "410",
+  "ms": 5596
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki5q4s1pvvmn2bre0on1nu",
+  "url": "https://www.michaelpage.fr/job-detail/controleur-de-gestion-fh/ref/jn-072026-7055071",
+  "status": 410,
+  "klass": "410",
+  "ms": 4575
+ },
+ {
+  "sourceKey": "fashionjobs",
+  "id": "cmtmsyah22ehcso5l87ztqbbf",
+  "url": "https://fr.fashionjobs.com/emploi/superga-beauty/Designer-styliste,12015122.html",
+  "status": 403,
+  "klass": "403_waf",
+  "ms": 5307
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki58h51ljrmn2b3ph06pje",
+  "url": "https://www.michaelpage.fr/job-detail/technicien-usines-eau-potable-hf/ref/jn-072026-7054711",
+  "status": 410,
+  "klass": "410",
+  "ms": 5771
+ },
+ {
+  "sourceKey": "michael-page-france",
+  "id": "cmtki5k291ohxmn2b2sz60idy",
+  "url": "https://www.michaelpage.fr/job-detail/technicienne-de-maintenance-fh/ref/jn-012026-6922672",
+  "status": 410,
+  "klass": "410",
+  "ms": 7232
+ }
+]

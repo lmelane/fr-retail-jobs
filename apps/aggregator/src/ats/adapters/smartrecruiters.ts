@@ -19,6 +19,7 @@ export type SmartRecruitersPosting = {
   /** Declared language ("hu", "en-GB") — ignored before l2, so a Hungarian H&M posting was detected as `pt`. */
   language?: { code?: string };
   department?: { label?: string };
+  customField?: { fieldLabel?: string; valueLabel?: string }[];
 };
 type Page = { content: SmartRecruitersPosting[]; totalFound?: number };
 
@@ -34,13 +35,22 @@ const CONTRACT_BY_ID: Record<string, string> = {
 };
 
 /** One listing entry → one posting (no description: /postings/{id} carries it). Exported for tests. */
-export function parseSmartRecruitersPosting(job: SmartRecruitersPosting, company: string): NormalizedJob {
+export function smartRecruitersEmployer(job: SmartRecruitersPosting, field?: string): string | undefined {
+  if (!field) return undefined;
+  const names = [...new Set((job.customField ?? []).filter(f => f.fieldLabel === field).map(f => f.valueLabel?.trim()).filter((s): s is string => !!s))];
+  return names.length === 1 ? names[0] : undefined;
+}
+
+export function parseSmartRecruitersPosting(job: SmartRecruitersPosting, company: string, employerField?: string): NormalizedJob {
   const location = [job.location?.city, job.location?.region, job.location?.country].filter(Boolean).join(', ');
   const type = job.typeOfEmployment;
   const id = type?.id?.trim().toLowerCase();
   return {
     externalId: job.id,
     title: job.name,
+    // Opt-in field whose employer meaning was verified for this tenant.
+    // Missing/contradictory values retain the source's GROUP fallback.
+    company: smartRecruitersEmployer(job, employerField),
     location,
     country: job.location?.country,
     // An unmapped id ("part-time") falls back to the label, which the boundary
@@ -92,7 +102,7 @@ export async function fetchSmartRecruitersJobs(config: Record<string, unknown>):
   // jamais lues (lot 2, 2026-09-06). 20 000 = garde-fou contre une boucle.
   for (let offset = 0; offset < 20_000; offset += 100) {
     const page = await fetchJson<Page>(`https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(company)}/postings?limit=100&offset=${offset}`);
-    for (const job of page.content ?? []) out.push(parseSmartRecruitersPosting(job, company));
+    for (const job of page.content ?? []) out.push(parseSmartRecruitersPosting(job, company, typeof config.employerField === 'string' ? config.employerField : undefined));
     if (page.totalFound !== undefined) declaredTotal = page.totalFound;
     if (!page.content?.length || out.length >= (page.totalFound ?? 0)) break;
   }

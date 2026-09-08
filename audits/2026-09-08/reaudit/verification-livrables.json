@@ -1,0 +1,36 @@
+{
+  "verifiedAtUTC": "2026-09-08T16:32:15.589157+00:00",
+  "checks": {
+    "total_jobs": true,
+    "active_jobs": true,
+    "country_present": true,
+    "country_fr": true,
+    "isFrance": true,
+    "country_flag_disagreements": true,
+    "functions": true,
+    "country_export": true,
+    "csv_marques-smcp-mal-rattachees": true,
+    "csv_fusions-identifiants-oracle": true,
+    "csv_maisons-sources-a-instruire": true,
+    "csv_france-ecart-canonique-filtre": true,
+    "csv_dates-futures": true,
+    "csv_expiration-declaree-depassee": true,
+    "csv_entreprises-production": true,
+    "csv_entreprises-sans-empreinte-source-active": true,
+    "csv_sources-et-risques": true,
+    "csv_catwalks-couverture": true,
+    "csv_fhcm-couverture": true,
+    "duplicate_lower_bound": true,
+    "api_statuses": true,
+    "api_first_page_membership": true,
+    "api_counts": true,
+    "document_local_links": true
+  },
+  "checksPassed": 24,
+  "scope": "Local QA of real production audit evidence only; no application tests or production mutations",
+  "temporaryCredentialMaterialRemoved": true,
+  "removedAuditTemporaryFiles": [
+    "catwalks-reaudit-pg-vars.json",
+    "catwalks-reaudit-status.json"
+  ]
+}

@@ -3,6 +3,7 @@ import { lockCompanyRows, lockSourceWrites } from '../lib/writeLocks.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { createHash } from 'node:crypto';
 import { selectCanonicalSource } from './canonical.js';
+import { hasRequisitionConflict } from './postingIdentity.js';
 import { blockingKey, isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } from './match.js';
 import { classifySector, sectorForSource, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
@@ -203,15 +204,22 @@ async function upsertInTransaction(
     where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
     select: { job: { include: { sources: true }, omit: { searchText: true } } },
   });
-  if (ownEntry) return attachToExisting(prisma, candidate, ownEntry.job, now, clusterKey, company.id);
+  if (ownEntry) {
+    // An exact feed ID does not make a historically corrupted merge safe.
+    // Fail the write/run attestation until a reviewed repair separates it.
+    if (hasRequisitionConflict([candidate.url, ...ownEntry.job.sources.filter(s => s.isActive).map(s => s.url)])) {
+      throw new Error(`REQUISITION_IDENTITY_CONFLICT job=${ownEntry.job.id}; reviewed separation required`);
+    }
+    return attachToExisting(prisma, candidate, ownEntry.job, now, clusterKey, company.id);
+  }
 
   // Only live jobs in the same cluster can absorb this posting. The cluster key
   // is indexed, so this stays a narrow lookup rather than a scan.
   const clusterJobs = await prisma.job.findMany({
     where: { clusterKey, isActive: true, sources: { none: { sourceKey: candidate.sourceKey } } },
     select: {
-      id: true, title: true, countryCode: true, city: true, location: true, postedAt: true,
-      sources: { select: { sourceKey: true, externalId: true } },
+      id: true, title: true, countryCode: true, city: true, location: true, postedAt: true, url: true,
+      sources: { select: { sourceKey: true, externalId: true, url: true, isActive: true } },
     },
     orderBy: [{ firstSeenAt: 'asc' }, { id: 'asc' }],
   });
@@ -226,6 +234,7 @@ async function upsertInTransaction(
    * sources are already loaded; compare against the real ones.
    */
   const existing = clusterJobs.find((job) => {
+    if (hasRequisitionConflict([candidate.url, ...job.sources.filter(s => s.isActive).map(s => s.url)])) return false;
     const sameSourceOtherId = job.sources.some(
       (source) =>
         source.sourceKey === candidate.sourceKey && source.externalId !== candidate.externalId,
@@ -234,6 +243,7 @@ async function upsertInTransaction(
     return isProbableDuplicate(candidate, {
       ...candidate,
       title: job.title,
+      url: job.url,
       // Use the stored posting's evidence, not the incoming country's/city's
       // values inherited by the spread above.
       country: job.countryCode ?? undefined,
@@ -249,123 +259,72 @@ async function upsertInTransaction(
   return attachToExisting(prisma, candidate, matched, now, clusterKey, company.id);
 }
 
+/** Complete projection of one authoritative observation; shared by creation and reviewed repairs. */
+export function canonicalJobContent(candidate: CandidateJob) {
+  const country = countryOf(candidate);
+  const clusterKey = blockingKey(candidate);
+  const taxonomy = classifyJob(candidate);
+  return {
+    externalId: candidate.externalId,
+    source: candidate.atsType ?? 'GENERIC_JSONLD' as const,
+    title: candidate.title,
+    description: candidate.description ?? null,
+    location: candidate.location ?? null,
+    countryCode: country ?? null,
+    adminArea1: adminArea1Of(candidate, country) ?? null,
+    isFrance: isFranceJob(country ?? candidate.country, candidate.location),
+    city: cityOf(candidate) ?? null,
+    postalCode: candidate.postalCode ?? null,
+    latitude: candidate.latitude ?? null,
+    longitude: candidate.longitude ?? null,
+    employmentTerm: candidate.employmentTerm ?? null,
+    engagementType: candidate.engagementType ?? null,
+    isSeasonal: candidate.isSeasonal ?? null,
+    workTime: candidate.workTime ?? null,
+    workplaceType: candidate.workplaceType ?? null,
+    experienceYears: candidate.experienceYears ?? null,
+    educationLevel: candidate.educationLevel ?? null,
+    salaryMin: candidate.salaryMin ?? null,
+    salaryMax: candidate.salaryMax ?? null,
+    salaryCurrency: candidate.salaryCurrency ?? null,
+    salaryPeriod: candidate.salaryPeriod ?? null,
+    department: candidate.department ?? null,
+    validThrough: candidate.validThrough ?? null,
+    language: candidate.language ?? detectLanguage(candidate.description ?? candidate.title),
+    url: candidate.url,
+    postedAt: candidate.postedAt ?? null,
+    clusterKey,
+    canonicalTier: candidate.sourceTier,
+    canonicalSourceKey: candidate.sourceKey,
+    canonicalExternalId: candidate.externalId,
+    fingerprint: `${clusterKey}|${candidate.title}`,
+    pipelineVersion: PIPELINE_VERSION,
+    ...taxonomy,
+    programType: candidate.programType ?? taxonomy.programType,
+    raw: candidate.raw == null ? Prisma.DbNull : candidate.raw as Prisma.InputJsonValue,
+  };
+}
+
 async function createJob(
   prisma: Prisma.TransactionClient,
   candidate: CandidateJob & { companyId: string },
   companyId: string,
-  clusterKey: string,
+  _clusterKey: string,
   now: Date,
 ): Promise<UpsertResult> {
-  // Résolu UNE fois : la subdivision en dépend, et deux lectures divergentes du
-  // même candidat produiraient un pays et une subdivision incohérents.
-  const country = countryOf(candidate);
   const created = await prisma.job.create({
     data: {
-        companyId,
-        externalId: candidate.externalId,
-        // The real ATS, not a hard-coded default: the unique key
-        // (companyId, source, externalId) must separate two different sources
-        // that happen to share an externalId for the same employer.
-        source: candidate.atsType ?? 'GENERIC_JSONLD',
-        title: candidate.title,
-        location: candidate.location,
-        /**
-         * Pays canonique (ISO-2), jamais la valeur brute de la source.
-         *
-         * Mesuré en prod le 2026-09-05 : 256 valeurs distinctes pour ~90 pays.
-         * La France s'écrivait FR / France / fr / FRANCE — quatre lignes dans
-         * le filtre Pays, dont aucune ne montrait plus du tiers des offres
-         * françaises. Normaliser ICI répare toutes les sources d'un coup, là où
-         * un correctif par adaptateur en aurait laissé passer la moitié.
-         */
-        countryCode: country,
-        adminArea1: adminArea1Of(candidate, country),
-        // Stored as a FLAG, never used as a discard: the site defaults to the
-        // French view and can widen later. This line was missing — every job
-        // sat at the schema default `false`, and a front end filtering on
-        // isFrance:true would have shown an empty board over a full database.
-        isFrance: isFranceJob(country ?? candidate.country, candidate.location),
-        employmentTerm: candidate.employmentTerm,
-        engagementType: candidate.engagementType,
-        isSeasonal: candidate.isSeasonal,
-        // Rich fields the richer vendors publish. Absent means "this source does
-        // not expose it", so they are written through rather than dropped.
-        /**
-         * La ville de l'adaptateur, ou, à défaut, celle que porte `location`.
-         *
-         * Mesuré en prod le 2026-09-05 : 30 716 offres actives (61 %) n'avaient
-         * AUCUNE ville — mais 24 681 d'entre elles portaient un `location`
-         * parfaitement exploitable (« Paris », « London, England, gb »,
-         * « New York,US-NY,United States »). Le champ n'était jamais dérivé :
-         * il ne venait que des adaptateurs qui le renseignent explicitement.
-         * Sans ville, l'offre est infiltrable, introuvable sur une carte et
-         * absente du filtre Ville.
-         *
-         * `normalizeLocationString` fait déjà cette extraction pour la clé de
-         * dédup — on réutilise donc un chemin éprouvé plutôt que d'en écrire un
-         * second qui divergerait.
-         */
-        city: cityOf(candidate),
-        postalCode: candidate.postalCode,
-        latitude: candidate.latitude,
-        longitude: candidate.longitude,
-        workTime: candidate.workTime,
-        workplaceType: candidate.workplaceType,
-        experienceYears: candidate.experienceYears,
-        educationLevel: candidate.educationLevel,
-        salaryMin: candidate.salaryMin,
-        salaryMax: candidate.salaryMax,
-        salaryCurrency: candidate.salaryCurrency,
-        salaryPeriod: candidate.salaryPeriod,
-        department: candidate.department,
-        validThrough: candidate.validThrough,
-        description: candidate.description,
-        // Stored, never filtered on (decision, 2026-09-03): the catalogue is
-        // worldwide and the language serves display/translation later.
-        language: candidate.language ?? detectLanguage(candidate.description ?? candidate.title),
-        url: candidate.url,
-        postedAt: candidate.postedAt,
-        clusterKey,
-        canonicalTier: candidate.sourceTier,
-        canonicalSourceKey: candidate.sourceKey,
-        canonicalExternalId: candidate.externalId,
-        fingerprint: `${clusterKey}|${candidate.title}`,
-        pipelineVersion: PIPELINE_VERSION,
-        lastSeenAt: now,
-        // Taxonomie Intelligence (D38) : métier, séniorité, retail, IA,
-        // compétences — classés ici, à la naissance de la ligne.
-        ...classifyJob(candidate),
-        /**
-         * Le dispositif vient de la SOURCE si elle le nomme, et seulement à
-         * défaut de l'intitulé : un champ dédié bat une inférence de titre.
-         * Posé APRÈS `classifyJob` pour que cet ordre soit lisible ici plutôt
-         * que dépendant de la position des clés.
-         */
-        programType: candidate.programType ?? classifyJob(candidate).programType,
-        /**
-         * The untouched source payload. Nothing is discarded: the normalized
-         * columns are the standard view, and this keeps every field a vendor
-         * publishes — including ones no column exists for yet, which can then be
-         * promoted later without re-fetching the whole market.
-         */
-        raw: candidate.raw as never,
-        sources: {
-          create: {
-            sourceKey: candidate.sourceKey,
-            sourceTier: candidate.sourceTier,
-            externalId: candidate.externalId,
-            url: candidate.url,
-            title: candidate.title,
-            postedAt: candidate.postedAt,
-            lastSeenAt: now,
-            // Per-source payload too: each source sees the posting differently.
-            raw: candidate.raw as never,
-          },
-        },
-        // L'histoire commence ici (D38) : une ouverture, dans la même écriture
-        // que la ligne — jamais une offre sans son événement de naissance.
-        events: { create: { type: 'OPENED', at: now } },
-      },
+      ...canonicalJobContent(candidate),
+      companyId,
+      lastSeenAt: now,
+      sources: { create: {
+        sourceKey: candidate.sourceKey, sourceTier: candidate.sourceTier,
+        externalId: candidate.externalId, url: candidate.url, title: candidate.title,
+        postedAt: candidate.postedAt, lastSeenAt: now,
+        raw: candidate.raw == null ? Prisma.DbNull : candidate.raw as Prisma.InputJsonValue,
+      } },
+      events: { create: { type: 'OPENED', at: now } },
+    },
   });
   return { jobId: created.id, outcome: 'CREATED', promoted: true };
 }

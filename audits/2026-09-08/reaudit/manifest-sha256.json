@@ -1,0 +1,425 @@
+{
+  "snapshotUTC": "2026-09-08T15:57:38Z",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 93,
+      "sha256": "a33e4047f67dc7d2a69075322094b9399d94206db2f02de9bab704023cb0dea5"
+    },
+    {
+      "path": "ANNEXE-TECHNIQUE.md",
+      "bytes": 33431,
+      "sha256": "1cdacc6fc88149340b6134f0ce928f4225fff2abeca2ac31b428f73b38613fc9"
+    },
+    {
+      "path": "RAPPORT-REAUDIT.md",
+      "bytes": 22909,
+      "sha256": "a4ff86cb70d7bf679c7e923fa047a7c0ae9d9fc44c932e969f8cbf583d421aee"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2572,
+      "sha256": "5bdccb679594f344966ec882b6cf9756d6bde6b5298066c9c20b9ef46fbd6cc2"
+    },
+    {
+      "path": "analyze.py",
+      "bytes": 6624,
+      "sha256": "48b9955a77bae9456557c4e57cb1770ba3e9b430fb451a94b3e7618b4b6c93ca"
+    },
+    {
+      "path": "brand-counts.sql",
+      "bytes": 1198,
+      "sha256": "bbb7826edd260777a33975df84986bc8dd1393e2bbe7fde8d58b3c62f93ad582"
+    },
+    {
+      "path": "build-candidates.py",
+      "bytes": 11061,
+      "sha256": "0b4a3deaf8c142297db5a68ce2c08d80f9fccf93c76d2f75f9cc2f0433e1c1bd"
+    },
+    {
+      "path": "build-deliverables.py",
+      "bytes": 7319,
+      "sha256": "7d88c9f15b2bbdcdea095066d6976eca6697c5bf2f6595daf5b3897e8b6e0d60"
+    },
+    {
+      "path": "check-api.mjs",
+      "bytes": 1434,
+      "sha256": "ec7dd4350b1508ee2f8e1943948c9f41a2478f34691804d87d2c8e10f0f2e8e3"
+    },
+    {
+      "path": "check-links.py",
+      "bytes": 2028,
+      "sha256": "fb606eac50b776ebce3347e7a68256501f0dafd516aee66b62ad1f04f0414cc8"
+    },
+    {
+      "path": "coverage.py",
+      "bytes": 2249,
+      "sha256": "fa7b088e7876e8b2b06479ef431f03560c42427b2157ed2ca30f81aeefbd62c3"
+    },
+    {
+      "path": "details.sql",
+      "bytes": 1535,
+      "sha256": "1a8bfc9e612ef2c5ad300eb62bc2c0eafc322a78e8b723c4154324afbaaec674"
+    },
+    {
+      "path": "evidence/analysis-summary.json",
+      "bytes": 3245,
+      "sha256": "97354bca5f9a7b3b0332441b235213f66299da8623970cdf1632520f86de3b93"
+    },
+    {
+      "path": "evidence/api-companies-fr-beauty.json",
+      "bytes": 78140,
+      "sha256": "40095d55cf76217a75ee694a226e27e3dc88d36f4c58cc3a600674def71e3451"
+    },
+    {
+      "path": "evidence/api-country-chain.json",
+      "bytes": 82850,
+      "sha256": "b322560b321396f53e51663c1e22af63ff7a0b11dee90d46c347398f241dbc21"
+    },
+    {
+      "path": "evidence/catwalks-coverage.json",
+      "bytes": 14501,
+      "sha256": "5f7f8b424c424546ba3d11a89ac7677fd2b8d305d6128dc7294f6bebe2ed6afa"
+    },
+    {
+      "path": "evidence/catwalks-maisons.html",
+      "bytes": 223556,
+      "sha256": "95f3d430662b1a39257693d2f2ae94f7fe7e291fe1f537b56fb874c80f4fde63"
+    },
+    {
+      "path": "evidence/companies-without-active-source-footprint.json",
+      "bytes": 144191,
+      "sha256": "cb21ff57c29eddc1dc596228f19244623c314c9b28825fd528c08a336ff2ed4f"
+    },
+    {
+      "path": "evidence/companies.json",
+      "bytes": 656050,
+      "sha256": "54c717b0ff2768c9d357ba369628755c5fa5435f4f093b5ba16f930f8a5142f5"
+    },
+    {
+      "path": "evidence/company-duplicate-identities.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "evidence/company-source-links.json",
+      "bytes": 189466,
+      "sha256": "66622d84a3e15b096569fce5c9599071957d90db20ebcf4136b6a584096b0b7e"
+    },
+    {
+      "path": "evidence/countries.json",
+      "bytes": 13691,
+      "sha256": "467a949b886cb12862f1796a780c81b6941e7ddbd85dc7fc3eb460461027e92f"
+    },
+    {
+      "path": "evidence/current-column-types.json",
+      "bytes": 1928,
+      "sha256": "e442df0a7b2a00bb9f387e4e6d212d136c6d347475b1c8512126d3a37f047d13"
+    },
+    {
+      "path": "evidence/delivery-summary.json",
+      "bytes": 10441,
+      "sha256": "d2b37309a4606a8900406fadc3736c51e9472cceb228a98d4cbcdc3de2a22505"
+    },
+    {
+      "path": "evidence/deployment-sanitized.json",
+      "bytes": 589,
+      "sha256": "63f516b5c28b42a98d486307b8b25b558c38a84bd0930e48c31ca3462cfac642"
+    },
+    {
+      "path": "evidence/duplicate-summary.json",
+      "bytes": 1252521,
+      "sha256": "898030c98bbe7b91a1be3bc34dc48ed352ab4a59729ee36fc3af481a29ac0c79"
+    },
+    {
+      "path": "evidence/duplicates-exact-url.json",
+      "bytes": 58861,
+      "sha256": "9540426d8eb87f476e4199b14756afe6467012abd4ba1321b551829fb25922c5"
+    },
+    {
+      "path": "evidence/duplicates-fingerprint.json",
+      "bytes": 6969107,
+      "sha256": "f8319672c4629973fe268f5c02903f2caeb8edfc80d5130c67bfddb4ad54de1f"
+    },
+    {
+      "path": "evidence/duplicates-same-ats-external-id.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "evidence/duplicates-same-text-title-city-country.json",
+      "bytes": 5957768,
+      "sha256": "30f24192d551fce745d461ad8a2b3ec4e89166500196088d194a53b0e0a5e08e"
+    },
+    {
+      "path": "evidence/duplicates-same-title-city-country.json",
+      "bytes": 9343100,
+      "sha256": "ba4a04f9fd8c69ed75b2c3201c2c6c0889d029d339b33c617c73d218ac3f3bf5"
+    },
+    {
+      "path": "evidence/event-lifecycle-examples.json",
+      "bytes": 4709,
+      "sha256": "7446318abd6d3d528c66910d70565772792065106b3c2686b8314ac10836073c"
+    },
+    {
+      "path": "evidence/events.json",
+      "bytes": 1214,
+      "sha256": "ad649954a274b58ce98b198976af3d41e4c36047a88df842e7969ca5a025d2dd"
+    },
+    {
+      "path": "evidence/expired-active.json",
+      "bytes": 63015,
+      "sha256": "cee54909be3bb967c77b0d9acc552badcd28a9ebb6b76ad9a989d12d184728d2"
+    },
+    {
+      "path": "evidence/fhcm-coverage.json",
+      "bytes": 19317,
+      "sha256": "7586e9266d3c85b5c7a6df7dfc69079ee39136002a16ba364b729fcb3d5205fd"
+    },
+    {
+      "path": "evidence/fhcm-maisons.html",
+      "bytes": 58470,
+      "sha256": "f7010b06e8bb3e82065d7cc87e2b3de4af683ee0c6a9459089773b6e7752c2e0"
+    },
+    {
+      "path": "evidence/france-flag-mismatch.json",
+      "bytes": 2317,
+      "sha256": "53880f22de033a756d136f270c30630a830302c4f522f3500430fa3c64196673"
+    },
+    {
+      "path": "evidence/france-location-review.json",
+      "bytes": 20525,
+      "sha256": "563f7ce43444b226c3a87b9a61e9d62d1b1bfcc5677af0de194560507f16b41d"
+    },
+    {
+      "path": "evidence/future-dates.json",
+      "bytes": 4847,
+      "sha256": "621264aacc217b4e089f8af3f57169aaece5215f8fe15d5edbcd1c77153568ab"
+    },
+    {
+      "path": "evidence/job-metadata.json",
+      "bytes": 126395932,
+      "sha256": "d5e6e081a694fb7ad0ecd8d74add5b60c6fc32447a8a8b6fc3791de6285faf5c"
+    },
+    {
+      "path": "evidence/job-sources.json",
+      "bytes": 35533292,
+      "sha256": "368198a4316e34d12f2d0cdb26524cd01bac2cbca294f98e9f0ca0b0e30d427f"
+    },
+    {
+      "path": "evidence/latest-runs.json",
+      "bytes": 248598,
+      "sha256": "72f93da89313929522e5c1ad02e2e36576fe7d82ab7c891876e708430a237b48"
+    },
+    {
+      "path": "evidence/live-employer-links.json",
+      "bytes": 8800,
+      "sha256": "ee53e3923d2e7e4e38da7303e8b8a3040e27a6e9075d9c052a9267e1e39b3211"
+    },
+    {
+      "path": "evidence/merged-oracle-id-conflicts.json",
+      "bytes": 105377,
+      "sha256": "91cdb0b6778009478d8cc40d5fc2b118e79787348ef9d382a7d34685e7b034a0"
+    },
+    {
+      "path": "evidence/observation-events-count.json",
+      "bytes": 59,
+      "sha256": "c42b1f74e659ca219bc6cf7586e2486264e7a618a46af03ff4ce205d5f838db0"
+    },
+    {
+      "path": "evidence/official-career-links.json",
+      "bytes": 3165,
+      "sha256": "ce05b48215685cef8d2f9eb5085aceb88ab87438986a288cf86a3ff02259319b"
+    },
+    {
+      "path": "evidence/raw-availability.json",
+      "bytes": 124,
+      "sha256": "0d0fe356bee1d47e3fcde25ada2515604d0dcad7f71d60f36ec14b50a44fae66"
+    },
+    {
+      "path": "evidence/raw-quality.json",
+      "bytes": 5576,
+      "sha256": "0305149b46345a20814ae8f89c0b24c5b6e7c31f706484354b6f0166349ed1f7"
+    },
+    {
+      "path": "evidence/run-cadence.json",
+      "bytes": 68829,
+      "sha256": "c337b7aec27988455655d3348d58f622fcb00ac0745fca1491e94b73800305a6"
+    },
+    {
+      "path": "evidence/runs-history.json",
+      "bytes": 5277045,
+      "sha256": "453bf8a62f3e1ca8040f6297e789d85a9c90b11178da145f1ed2430d9bab493c"
+    },
+    {
+      "path": "evidence/selected-raw.json",
+      "bytes": 306037,
+      "sha256": "869cf4dbfb5478f1e2bbf7c44b69ecf76b1a1e6639c55c58fd9d73cc0a2fa9c3"
+    },
+    {
+      "path": "evidence/smcp-brand-counts.json",
+      "bytes": 601,
+      "sha256": "8f0c1e704aa9cb0a353594ba5fb152587165c5ca8844529022071f9fbeebfaaa"
+    },
+    {
+      "path": "evidence/smcp-brand-rows.json",
+      "bytes": 166776,
+      "sha256": "3a663519edca6350bfa79c9c2fadd7704b81942b60958650ce6b723abb390684"
+    },
+    {
+      "path": "evidence/smcp-raw-shape.json",
+      "bytes": 15447,
+      "sha256": "ec90a3e0a298d6b27ca4f67f3fb12452658fd3976392b20051ad57470b72a912"
+    },
+    {
+      "path": "evidence/snapshot.json",
+      "bytes": 164,
+      "sha256": "5370792d91ce9cbffcfa51e364485adda0c73ffd911d995c9f6a56a4e67ce648"
+    },
+    {
+      "path": "evidence/source-health.json",
+      "bytes": 182565,
+      "sha256": "fedd5f7725731b603de4d4e1a8fb382e5c66b68428c91036989386e499792d50"
+    },
+    {
+      "path": "evidence/sources.json",
+      "bytes": 329904,
+      "sha256": "fe15a0f4e60e735f0eb38fa3052e5715f0db9cb03419862dc20b4743bc46e552"
+    },
+    {
+      "path": "evidence/tiffany-source-geography.json",
+      "bytes": 1221,
+      "sha256": "842c3af1cf25c968bd11ab70afae604f17a4ff1874983080d26fd14b099739a7"
+    },
+    {
+      "path": "evidence/totals-corrected.json",
+      "bytes": 832,
+      "sha256": "9d0c8178ad284674fca0e874ef8be84d7316b275226f791a8f7221391f6facea"
+    },
+    {
+      "path": "evidence/totals.json",
+      "bytes": 789,
+      "sha256": "f62c1a46efd4605e0d46bfb45778e8c6bda755c4fc6c8c7a1c38828200f3cd2b"
+    },
+    {
+      "path": "evidence/trust.json",
+      "bytes": 53322,
+      "sha256": "ffb0e09c89b0c4e786cfb1f56d8ecaceab52b9faddb6883be8b29e37b5dc8cdd"
+    },
+    {
+      "path": "evidence/ui-detector.json",
+      "bytes": 489,
+      "sha256": "e1c7ce88aa88ce1c1ff8f7d01cee91a4e5d812969294866fa363723f88a9382d"
+    },
+    {
+      "path": "identity.sql",
+      "bytes": 659,
+      "sha256": "a2e8c9ea6abbbf42e06362b858245d66f6f84141980c9c6d393d0d913b521988"
+    },
+    {
+      "path": "official-links.py",
+      "bytes": 1623,
+      "sha256": "0f52469dfe2eebfb19acab7abfdac1bef3dc88ee386fc2a22ef19938ff9cc2bc"
+    },
+    {
+      "path": "quality.sql",
+      "bytes": 1991,
+      "sha256": "c8ff1182d2ba38a98173e521ddda89041d5ce66466b44e9733d5b20c33e7f4ef"
+    },
+    {
+      "path": "raw-availability.sql",
+      "bytes": 603,
+      "sha256": "5fbfe0f36319ba5ba17da5b00c2e1d63fbd1d96236cadea099b351f8fef1783d"
+    },
+    {
+      "path": "read-production.py",
+      "bytes": 1182,
+      "sha256": "81fdd5df19bdb324e4984e1c5b229feaef4928703bff819f60932c2f3428c861"
+    },
+    {
+      "path": "snapshot.sql",
+      "bytes": 7005,
+      "sha256": "0e0775de6626680d1ea105d203dfed9b14c21f630164744e66b470e3bc848907"
+    },
+    {
+      "path": "tableaux/catwalks-couverture.csv",
+      "bytes": 6261,
+      "sha256": "dd86545d830a233d7484dc44a812efb37e1cdb3425b110d1535c6796fb4d5958"
+    },
+    {
+      "path": "tableaux/confiance-champs-sources.csv",
+      "bytes": 22531,
+      "sha256": "5ec55bd68fad2757e2ba749dd561a7a649b61f18292ddf294f83cd3cb4055dab"
+    },
+    {
+      "path": "tableaux/dates-futures.csv",
+      "bytes": 2803,
+      "sha256": "eb0a599fd2f865fc6c7672e3eeb715e459ca2e4af40ad4343cf36495e1f2c7d8"
+    },
+    {
+      "path": "tableaux/doublons-urls-revue.csv",
+      "bytes": 20792,
+      "sha256": "eb31580af08df8bd1a8bafce10b07e80bb356d5f52f984dc7d5893c5481ace9c"
+    },
+    {
+      "path": "tableaux/entreprises-production.csv",
+      "bytes": 177452,
+      "sha256": "786783103665ff6d4b100f387ee3b8aec934757766bb80901eb950919d077a45"
+    },
+    {
+      "path": "tableaux/entreprises-sans-empreinte-source-active.csv",
+      "bytes": 38163,
+      "sha256": "451f1d76e2e3c152ffdf28023e856bfbb0884e0e28d86f56b4e2a3316a60f9c7"
+    },
+    {
+      "path": "tableaux/expiration-declaree-depassee.csv",
+      "bytes": 32477,
+      "sha256": "03b66881ffd754a4e34d722a0ecf3d33a5bb284f2ee183c72bf9a5f441df2590"
+    },
+    {
+      "path": "tableaux/fhcm-couverture.csv",
+      "bytes": 8760,
+      "sha256": "420c2a8fd96e734d98c23acd192f78d17d00827e79260e9eb59ddc32c45437a6"
+    },
+    {
+      "path": "tableaux/france-ecart-canonique-filtre.csv",
+      "bytes": 1341,
+      "sha256": "c59b878f599b805a8efb042c1f05a267d046a767d53a273045cd12e737976e07"
+    },
+    {
+      "path": "tableaux/fusions-identifiants-oracle.csv",
+      "bytes": 39125,
+      "sha256": "04410f82b1f7079f9b18a364dc5a30ab64b6d05d03e237689102b308ad7cb9a1"
+    },
+    {
+      "path": "tableaux/maisons-sources-a-instruire.csv",
+      "bytes": 26918,
+      "sha256": "ea9e4ac448ebc3e6da17d6ab898cf0132c6b6a55b37f93de82c0f9b540da4f0b"
+    },
+    {
+      "path": "tableaux/marques-smcp-mal-rattachees.csv",
+      "bytes": 45221,
+      "sha256": "7d68b10fbc486e30781212e261080d2a15eeaf9e0e4370b138785da43872eb0e"
+    },
+    {
+      "path": "tableaux/pays-france-cas-a-revoir.csv",
+      "bytes": 10718,
+      "sha256": "78a4fae924cdf88baa2270daa1bd8749e89d2d67a6d4177468b4416899607246"
+    },
+    {
+      "path": "tableaux/pays-production.csv",
+      "bytes": 1807,
+      "sha256": "f949f4ba7eba4f46281ef2c9940b159519071612310865ff6ba09b5270f06bcb"
+    },
+    {
+      "path": "tableaux/sources-et-risques.csv",
+      "bytes": 128759,
+      "sha256": "8959e72a2712e3c07a7655785d0068a507c22c3d8328e6508fad24f3732efd59"
+    },
+    {
+      "path": "verification-livrables.json",
+      "bytes": 1199,
+      "sha256": "b1292674ed72ee24eef2b49d19882eb76e3880353578ec4dc0a0c8a385baecc7"
+    }
+  ]
+}

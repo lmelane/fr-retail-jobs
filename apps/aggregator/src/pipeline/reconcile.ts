@@ -1,5 +1,6 @@
 import { selectCanonicalSource } from '../dedup/canonical.js';
 import { lockCompanyRows } from '../lib/writeLocks.js';
+import { hasRequisitionConflict } from '../dedup/postingIdentity.js';
 import type { PrismaClient } from '@prisma/client';
 import { cannotBeSameOpening, isProbableDuplicate, type CandidateJob } from '../dedup/match.js';
 
@@ -57,6 +58,7 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
         for (let j = i + 1; j < jobs.length; j++) {
           const other = jobs[j];
           if (absorbed.has(other.id)) continue;
+          if (hasRequisitionConflict([...keeper.sources, ...other.sources].map(source => source.url))) continue;
 
           const asCandidate = (job: (typeof jobs)[number]): CandidateJob => ({
             externalId: job.externalId,

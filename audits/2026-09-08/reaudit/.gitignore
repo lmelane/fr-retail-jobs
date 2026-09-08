@@ -1,0 +1,4 @@
+# Local production snapshots: retain locally, do not add large RAW exports to Git.
+evidence/
+# Reviewed aggregate tables, without full production RAW snapshots.
+!tableaux/*.csv

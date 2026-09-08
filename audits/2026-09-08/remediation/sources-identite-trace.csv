@@ -1,0 +1,441 @@
+﻿source,nom_catalogue,tenant,offres_actives,employeurs,trace_gate,nom_archive,note_activation,certification_identite
+585-gold,585 Gold,smartrecruiters-whitelabel:585gold,3,1,validated-name,585 Gold,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+abercrombie,Abercrombie & Fitch,smartrecruiters-whitelabel:abercrombieandfitchco,8,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 8 offres, 8 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+ackermans,Ackermans,teamtailor:careers.ackermans.co.za,3,1,anchored,Ackermans,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+acne-studios-jobylon,Acne Studios,jobylon:emp.jobylon.com,30,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 27 offres, 27 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+a-derma-4,A-Derma +4,workday:pierrefabre/external_career_site,255,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+adidas,adidas,successfactors:jobs.adidas-group.com,1106,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 1056 offres, 1056 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+aeropostale,Aéropostale,icims:careers-aeropostale.icims.com,18,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 17 offres, 17 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+aeyde,aeyde,personio:aeyde,10,1,anchored,aeyde,"promu par validation-volume (10 offres, 10 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+agency,Agency,smartrecruiters-whitelabel:agency,4,1,validated-name,Agency,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+aigle,Aigle,digitalrecruiters:careers.aigle.com,107,1,anchored,Aigle,"promu par validation-volume (104 offres, 104 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+aime-leon-dore,Aimé Leon Dore,greenhouse:aimeleondore,12,1,validated-name,Aimé Leon Dore,"promu par validation-volume (12 offres, 12 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+aim-n,Aim'n,teamtailor:career.aimn.com,4,1,anchored,Aim'n,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+akira,AKIRA,teamtailor:careers.shopakira.com,175,1,anchored,AKIRA,"promu par validation-volume (171 offres, 171 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+alberto,Alberto,generic-listing:www.alberto-pants.com/jobs-and-careers,5,1,anchored,Alberto,"promu par validation-volume (8 offres, 8 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+alpha-industries,alpha industries,personio:alpha-industries-gmbh-co-kg,2,1,anchored,alpha industries,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+ami-paris,AMI Paris,recruitee:amiparis,21,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+amiri,AMIRI,lever:amiri,41,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+annoushka,Annoushka,teamtailor:careers.annoushka.com,4,1,anchored,Annoushka,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+apivita,Apivita,workable:apivita,11,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+apm-monaco,APM Monaco,workable:apm-monaco,98,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+aptar-beauty,Aptar Beauty,successfactors:jobs.aptar.com,214,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+aritzia,Aritzia,workday:aritzia/external,554,2,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 554 offres, 554 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+army-logic,Army Logic,lever:hypebeast,21,1,anchored,Army Logic,"promu par validation-volume (21 offres, 21 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+aroma-zone,Aroma-Zone,teamtailor:careers.aroma-zone.com,181,1,anchored,Aroma-Zone,"promu par validation-volume (176 offres, 176 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+ashoka,ASHOKA,lever:ashoka,6,1,validated-name,ASHOKA,"promu par validation-volume (6 offres, 6 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+asics,ASICS,smartrecruiters-whitelabel:asics,54,1,validated-name,ASICS,"promu par validation-volume (54 offres, 54 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+asket,ASKET,teamtailor:asket.teamtailor.com,2,1,validated-name,ASKET,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+asos,ASOS,smartrecruiters-whitelabel:asos,64,1,validated-name,ASOS,"promu par validation-volume (67 offres, 67 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+atlantis,Atlantis,personio:atlantis,3,1,validated-name,Atlantis,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+attaquer,Attaquer,generic-listing:attaquercycling.com/pages/careers,3,1,anchored,Attaquer,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+audemars-piguet,Audemars Piguet,smartrecruiters-whitelabel:audemarspiguet,88,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+avolta,Avolta (Dufry),successfactors:careers.avoltaworld.com,246,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 244 offres, 243 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+axel-arigato,AXEL ARIGATO,teamtailor:axelarigato.teamtailor.com,2,1,validated-name,AXEL ARIGATO,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+b2,B2,teamtailor:careers.brownsshoes.com,67,1,anchored,B2,"promu par validation-volume (65 offres, 65 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+baccarat,Baccarat,talentview:baccarat,10,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+ballantynes,Ballantynes,smartrecruiters-whitelabel:ballantynes,11,1,validated-name,Ballantynes,"promu par validation-volume (11 offres, 11 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+balmain,Balmain,talentsoft:balmain-career.talent-soft.com,27,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+baron,Baron,smartrecruiters-whitelabel:baron,5,1,validated-name,Baron,"promu par validation-volume (5 offres, 5 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+bash-talents,ba&sh,bashtalents:talents.ba-sh.com,59,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 50 offres, 50 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+beauty-success-geodir,Beauty Success,geodirectory:recrutement.beautysuccess.fr,109,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 109 offres, 109 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+bego,Bego,recruitee:bego,11,1,validated-domain,Bego,"promu par validation-volume (11 offres, 11 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+beiersdorf,Beiersdorf,generic-listing:www.beiersdorf.com/ajax/jobboard/jobresultajax?db=web&contextitemid={213fb95d-4545-426c-9f6a-7cd5753a00ea}&lang=en,108,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 105 offres, 105 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+bellabeat,Bellabeat,smartrecruiters-whitelabel:bellabeat,1,1,validated-name,Bellabeat,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+bella-canvas,BELLA+CANVAS,greenhouse:bellacanvas,2,1,validated-name,BELLA+CANVAS,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+bellroy,Bellroy,greenhouse:bellroy,14,1,validated-name,Bellroy,"promu par validation-volume (13 offres, 13 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+belstaff,Belstaff,teamtailor:belstaff.teamtailor.com,46,1,validated-name,Belstaff,"promu par validation-volume (44 offres, 44 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+bernadette,BERNADETTE,greenhouse:bernadette,1,1,validated-name,BERNADETTE,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+bespoke-post,Bespoke Post,lever:bespokepost,4,1,validated-name,Bespoke Post,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+bevilles-jewellers,Bevilles Jewellers,generic-listing:careers.bevilles.com.au/jobs/search?_gl=1%2a2x44re%2a_gcl_au%2amja5mdy4mjgwmi4xnzq3nzk1njaxljqymzi4ndq0ny4xnzuxnda5mtczlje3nte0mdkxnzm.,24,1,anchored,Bevilles Jewellers,"promu par validation-volume (23 offres, 23 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+bizzbee,Bizzbee,teamtailor:recrutement.b-z-b.com,21,1,anchored,BZB,"trouvé manuellement (Loïc, 2026-09-04) — validé 21 offres, 20 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+blacks,Blacks,greenhouse:blacks,1,1,validated-name,Blacks,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+blend,Blend,greenhouse:blend,9,1,validated-name,Blend,"promu par validation-volume (9 offres, 9 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+bloom,Bloom,smartrecruiters-whitelabel:bloom,2,1,validated-name,Bloom,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+bloomingdales-oracle,Bloomingdale's,oraclehcm:ebwh.fa.us2.oraclecloud.com,777,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 762 offres, 762 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+blue-banana,Blue Banana,teamtailor:bluebanana.teamtailor.com,19,1,validated-name,Blue Banana,"promu par validation-volume (18 offres, 16 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+blueland,Blueland,lever:blueland,3,1,validated-name,Blueland,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+boggi-milano,Boggi Milano,recruitee:boggimilano1,102,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 99 offres, 99 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+bombas,Bombas,greenhouse:bombas,13,1,validated-name,Bombas,"promu par validation-volume (13 offres, 13 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+boots,Boots,generic-listing:www.boots.jobs/sitemap_index.xml,1506,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 1391 offres, 1391 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+bravissimo,Bravissimo,teamtailor:careers.bravissimo.com,16,1,anchored,Bravissimo,"promu par validation-volume (14 offres, 14 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+breitling-sf,Breitling,successfactors:careers.breitling.com,41,1,anchored,Breitling,"lot GENERIC 2026-09-06 — validé 41 offres, 41 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+bright,BRIGHT,recruitee:bright,9,1,validated-domain,BRIGHT,"promu par validation-volume (9 offres, 9 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+brilliant-earth,Brilliant Earth,greenhouse:brilliantearth,82,1,validated-name,Brilliant Earth,"promu par validation-volume (82 offres, 82 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+brothers,Brothers,teamtailor:brothers.teamtailor.com,13,1,validated-name,Brothers,"promu par validation-volume (10 offres, 9 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+browns,Browns,lever:farfetch,65,1,anchored,Browns,"promu par validation-volume (60 offres, 60 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+browns-shoes,Browns Shoes,teamtailor:brownsshoes.teamtailor.com,66,1,validated-name,Browns Shoes,"promu par validation-volume (65 offres, 65 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+brown-thomas-taleo,Brown Thomas Arnotts,taleo:lde.tbe.taleo.net/lde02,72,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 68 offres, 68 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+brunello-cucinelli,Brunello Cucinelli,workday:brunellocucinelli/cucinelli,45,5,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 45 offres, 45 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+b-s-international,B's International,smartrecruiters-whitelabel:bsinternational,62,1,validated-name,B's International,"promu par validation-volume (57 offres, 57 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+bubble,Bubble,greenhouse:bubbleskincare,6,1,anchored,Bubble,"promu par validation-volume (6 offres, 6 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+buck-mason,Buck Mason,lever:buckmason,245,1,validated-name,Buck Mason,"promu par validation-volume (244 offres, 244 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+buff,BUFF,teamtailor:work-with-us.buff.com,4,1,anchored,BUFF,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+burberry,Burberry,successfactors:burberrycareers.com,135,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 133 offres, 133 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+burnt,Burnt,teamtailor:careers.burnt.co.za,8,1,anchored,Burnt,"promu par validation-volume (7 offres, 7 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+bzb,BZB,teamtailor:bzb.teamtailor.com,21,1,validated-name,BZB,"promu par validation-volume (21 offres, 20 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+cabaia,Cabaia,teamtailor:cabaia.teamtailor.com,7,1,validated-name,Cabaia,"promu par validation-volume (7 offres, 7 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+cal-k-holding,Çalık Holding,successfactors:careers.calik.com,4,1,anchored,Çalık Holding,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+cambio,CAMBIO,teamtailor:cambio.teamtailor.com,9,1,validated-name,CAMBIO,"promu par validation-volume (9 offres, 9 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+camper,CAMPER,teamtailor:careers.camper.com,43,1,anchored,CAMPER,"promu par validation-volume (43 offres, 39 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+canada-goose,Canada Goose,workday:canadagoose/canadagoosecareers,101,6,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+capri-jimmy-choo,Jimmy Choo,workday:capri/jimmychoocareers,50,10,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 50 offres, 50 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+capri-michael-kors,Michael Kors,workday:capri/michael_kors,521,21,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 520 offres, 520 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+carla-b,CARLA B,teamtailor:carla.teamtailor.com,12,1,validated-name,CARLA B,"promu par validation-volume (12 offres, 10 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+castore,Castore,teamtailor:careers.castore.com,26,1,anchored,Castore,"promu par validation-volume (25 offres, 25 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+catbird,Catbird,lever:catbird,18,1,anchored,Catbird,"promu par validation-volume (20 offres, 20 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+celio,celio,teamtailor:celio.teamtailor.com,8,1,validated-name,celio,"promu par validation-volume (8 offres, 8 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+chalhoub,Chalhoub Group,teamtailor:careers.chalhoubgroup.com,143,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 126 offres, 126 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+chico-s,Chico's,workday:knitwellgroup/canada_jobs,11,3,anchored | anchored,Chico's | Lane Bryant,"promu par validation-volume (9 offres, 9 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+chisholm-hunter,Chisholm Hunter,smartrecruiters-whitelabel:chisholmhunter,1,1,validated-name,Chisholm Hunter,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+chrome,Chrome,greenhouse:chromeindustries,1,1,anchored,Chrome,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+city-beauty,City Beauty,greenhouse:citybeauty,1,1,validated-name,City Beauty,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+clarins,Clarins,successfactors:careers.groupeclarins.com,47,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+clarkson-eyecare,Clarkson Eyecare,greenhouse:clarksoneyecare,142,1,validated-name,Clarkson Eyecare,"promu par validation-volume (153 offres, 153 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+cleo,Cleo,greenhouse:cleo,5,1,validated-name,Cleo,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+closed,CLOSED,personio:closed,14,1,validated-name,CLOSED,"promu par validation-volume (14 offres, 14 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+club-l-london,Club L London,teamtailor:careers.clubllondon.com,18,1,anchored,Club L London,"promu par validation-volume (16 offres, 16 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+club-monaco,Club Monaco,greenhouse:clubmonaco,24,1,validated-name,Club Monaco,"promu par validation-volume (24 offres, 24 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+coast,Coast,greenhouse:coast,17,1,validated-name,Coast,"promu par validation-volume (17 offres, 17 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+conde-nast-france,Conde Nast France,workday:condenast/condecareers,142,12,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+cotton-on,Cotton On,smartrecruiters-whitelabel:cottonon,3,1,validated-arbitrated,Cotton On,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+courir,Courir,smartrecruiters-whitelabel:courir,402,1,validated-name,Courir,"promu par validation-volume (392 offres, 392 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+cove,Cove,teamtailor:cove.teamtailor.com,1,1,validated-name,Cove,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+crocs,Crocs,successfactors:careers.crocs.com,486,1,anchored,Crocs,"promu par validation-volume (381 offres, 29 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+cuyana,Cuyana,greenhouse:cuyana,1,1,validated-name,Cuyana,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+cynthia-rowley,Cynthia Rowley,smartrecruiters-whitelabel:cynthiarowley,1,1,validated-name,Cynthia Rowley,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+damart,Damart,teamtailor:damart.teamtailor.com,3,1,validated-name,Damart,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+damiani,Damiani,successfactors:careers.damianigroup.com,26,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 26 offres, 26 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+de-beers-london,De Beers London,smartrecruiters-whitelabel:angloamericandebeersgroup,112,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+decjuba,DECJUBA,successfactors:careers.decjuba.com.au,148,1,anchored,DECJUBA,"promu par validation-volume (148 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+deckers,"Deckers (UGG, HOKA)",workday:deckers/deckers,404,4,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 403 offres, 403 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+dfs,DFS,successfactors:careers.dfs.com,4,1,anchored,La Samaritaine,,NON_DEDUITE_DU_STATUT_ACTIVE
+didi,DIDI,greenhouse:didi,9,1,validated-name,DIDI,"promu par validation-volume (9 offres, 9 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+dim,Dim,greenhouse:dim,44,1,validated-arbitrated,Dim,"promu par validation-volume (43 offres, 43 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+diptyque-workday,Diptyque,workday:diptyqueparis/diptyquecareers,153,1,ARCHIVE_GATE_ABSENTE,,"flux A employeur fourni par Loïc (double-check IA, 2026-09-04) — 150 offres sondées live; prime sur WTTJ",NON_DEDUITE_DU_STATUT_ACTIVE
+dna,dna,greenhouse:dna,1,1,validated-name,dna,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+dolce-gabbana,Dolce & Gabbana,successfactors:jobs.dolcegabbana.com,86,1,anchored,Dolce & Gabbana,"promu par validation-volume (71 offres, 26 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+dolls-kill,Dolls Kill,lever:dollskill,11,1,validated-name,Dolls Kill,"promu par validation-volume (11 offres, 11 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+douglas-sf,Douglas,successfactors:jobs.douglas.group,138,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 128 offres, 128 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+dr-martens-tf,Dr. Martens,talentfunnel:a3e88308-2615-4415-bb56-cc5267bc1ced,152,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 143 offres, 143 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+dr-pierre-ricaud,Dr Pierre Ricaud,successfactors:careers.groupe-rocher.com,39,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+drunk-elephant-2,Drunk Elephant +2,successfactors:careers.shiseido.com,162,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+dune-london,Dune London,teamtailor:careers.dunelondon.com,28,1,anchored | anchored,Dune London | Head Over Heels by Dune,"promu par validation-volume (25 offres, 25 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+eastpak,Eastpak,smartrecruiters-whitelabel:eastpak,4,1,validated-name,Eastpak,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+eclipse,éclipse,greenhouse:eclipse,1,1,validated-name,éclipse,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+egon-zehnder,Egon Zehnder,workable:ezrecruiting,53,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+element-6,Element +6,magnet:9550007d348362827f2534be59208f28,400,13,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+el-palacio-de-hierro,El Palacio de Hierro,successfactors:empleos.palaciohierro.com.mx,4,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 4 offres, 4 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+end-clothing,END.,generic-listing:careers.endclothing.com/sitemap.xml,22,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 22 offres, 22 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+ephemera,EPHEMERA,teamtailor:ephemera.teamtailor.com,27,1,validated-name,EPHEMERA,"promu par validation-volume (21 offres, 21 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+eram-3,Eram +3,magnet:61ffe84ad14ba0fdbb448d2d388ac4e3,81,8,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+eric-bompard,Eric Bompard,smartrecruiters-whitelabel:ericbompard,35,1,validated-name,Eric Bompard,"promu par validation-volume (31 offres, 31 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+escada-parfums-16,Escada Parfums +16,successfactors:careers.coty.com,129,1,anchored,Coty,,NON_DEDUITE_DU_STATUT_ACTIVE
+essilorluxottica,EssilorLuxottica,smartrecruiters-whitelabel:essilorluxottica,7,1,validated-name,EssilorLuxottica,"promu par validation-volume (7 offres, 7 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+estee-lauder-companies,The Estée Lauder Companies,eightfold:elcompanies.eightfold.ai,1502,21,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 1410 offres, 1410 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+etam,Etam,teamtailor:career.groupeetam.com,241,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+eurofragrance,Eurofragrance,teamtailor:careers.eurofragance.com,38,1,anchored,Eurofragrance,"promu par validation-volume (37 offres, 37 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+everlane,Everlane,greenhouse:everlane,45,1,validated-name,Everlane,"promu par validation-volume (43 offres, 43 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+everything-but-water,Everything But Water,workday:everythingbutwater/external,41,1,anchored,Everything But Water,"promu par validation-volume (42 offres, 42 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+f-a-e,f.a.e.,greenhouse:thrivemarket,17,1,anchored | validated-name,f.a.e. | Thrive Market,"promu par validation-volume (16 offres, 16 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+faguo,FAGUO,teamtailor:carriere.faguo-store.com,10,1,anchored,FAGUO,"promu par validation-volume (9 offres, 9 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+fashionjobs,FashionJobs,fashionjobs:fr.fashionjobs.com,757,204,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+fastrack,Fastrack,teamtailor:fastrack.teamtailor.com,17,1,validated-name,Fastrack,"promu par validation-volume (17 offres, 16 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+fay,Fay,greenhouse:fay,2,1,validated-name,Fay,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+fenwick-volcanic,Fenwick,volcanic:www.careers.fenwick.co.uk,31,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 31 offres, 31 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+ferrari,Ferrari,successfactors:jobs.ferrari.com,7,1,anchored,Ferrari,"promu par validation-volume (7 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+figs,FIGS,greenhouse:figs15,30,1,anchored,FIGS,"promu par validation-volume (28 offres, 28 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+filson,Filson,greenhouse:filson,9,1,validated-name,Filson,"promu par validation-volume (10 offres, 10 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+fitflop,FitFlop,teamtailor:careers.fitflop.com,10,1,anchored,FitFlop,"promu par validation-volume (10 offres, 10 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+fjallraven,Fjällräven,teamtailor:career.fjallraven.com,1,1,anchored,Fjällräven,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+foot-locker-france,Foot Locker France,phenom:careers.footlocker.com,2835,4,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+frank-darling,Frank Darling,teamtailor:careers.frankdarling.com,33,1,anchored,Frank Darling,"promu par validation-volume (34 offres, 33 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+fred-perry,Fred Perry,teamtailor:careers.fredperry.com,20,1,anchored,Fred Perry,"promu par validation-volume (16 offres, 16 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+funky-buddha,Funky Buddha,smartrecruiters-whitelabel:altexsa,20,1,anchored,Funky Buddha,"promu par validation-volume (20 offres, 20 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+galeries-lafayette,Galeries Lafayette,teamtailor:carrieres.groupegalerieslafayette.com,165,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+galileo,Galileo,greenhouse:galileo,13,1,validated-name,Galileo,"promu par validation-volume (12 offres, 12 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+ganni,GANNI,teamtailor:ganni.teamtailor.com,11,1,validated-name,GANNI,"promu par validation-volume (11 offres, 8 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+gant,GANT,digitalrecruiters:career.gant.com,107,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 103 offres, 103 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+gate,Gate,lever:gate,19,1,validated-name,Gate,"promu par validation-volume (19 offres, 19 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+genesis,Genesis,lever:genesis,5,1,validated-name,Genesis,"promu par validation-volume (5 offres, 5 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+georges,GEORGES,teamtailor:georges.teamtailor.com,12,1,validated-name,GEORGES,"promu par validation-volume (11 offres, 11 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+ghost,Ghost,greenhouse:ghost,4,1,validated-name,Ghost,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+giga,Giga,personio:giga,2,1,validated-name,Giga,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+g-label-by-goop,G.Label by Goop,greenhouse:goop,5,1,anchored,G.Label by Goop,"promu par validation-volume (6 offres, 6 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+glitter,Glitter,teamtailor:glitter.teamtailor.com,32,1,validated-name,Glitter,"promu par validation-volume (31 offres, 31 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+globus,Globus,generic-listing:jobs.globus.ch/offre-emplois.html,23,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 23 offres, 23 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+glossier,Glossier,greenhouse:glossier,23,1,validated-name,Glossier,"promu par validation-volume (22 offres, 22 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+good-american,Good American,lever:goodamerican,15,1,validated-name,Good American,"promu par validation-volume (15 offres, 15 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+go-outdoors,Go Outdoors,greenhouse:gooutdoors,4,1,validated-name,Go Outdoors,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+gorjana,Gorjana,greenhouse:gorjana,167,1,validated-name,Gorjana,"promu par validation-volume (167 offres, 167 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+got-bag,GOT BAG,personio:got-bag-gmbh,3,1,anchored,GOT BAG,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+gridline,Gridline,lever:gridline,4,1,validated-name,Gridline,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+groundies,Groundies,personio:groundies,1,1,validated-name,Groundies,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+groupe-chantelle,Groupe Chantelle,talentsoft:groupechantelle-recrute.talent-soft.com,38,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+groupe-printemps,Groupe Printemps,talentsoft:printemps-career.talent-soft.com,113,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+guild-pepper,Guild+Pepper,greenhouse:guild,4,1,validated-domain,Guild+Pepper,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+gymshark,Gymshark,greenhouse:gymshark,17,1,validated-name,Gymshark,"promu par validation-volume (17 offres, 17 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+hades,Hades,personio:hades,7,1,validated-name,Hades,"promu par validation-volume (7 offres, 7 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+hanna-andersson,Hanna Andersson,lever:hannaandersson,8,1,validated-name,Hanna Andersson,"promu par validation-volume (8 offres, 8 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+hans-anders,Hans Anders,teamtailor:jobs.hansanders.nl,141,1,anchored,Hans Anders,"promu par validation-volume (149 offres, 149 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+happy-socks,Happy Socks,teamtailor:happysocks.teamtailor.com,4,1,validated-name,Happy Socks,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+herschel-supply-co,Herschel Supply Co.,greenhouse:herschelsupplyco,7,1,validated-name,Herschel Supply Co.,"promu par validation-volume (7 offres, 7 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+hm-group,H&M Group,smartrecruiters-whitelabel:hmgroup,1761,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 1000 offres, 1000 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+hoff,Hoff,teamtailor:careers.thehoffbrand.com,8,1,anchored,Hoff,"promu par validation-volume (9 offres, 9 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+hone,HONE,greenhouse:hone,2,1,validated-name,HONE,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+honey-birdette,Honey Birdette,teamtailor:honeybirdette.teamtailor.com,56,1,validated-name,Honey Birdette,"promu par validation-volume (58 offres, 58 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+honor,Honor,greenhouse:honor,15,1,validated-name,Honor,"promu par validation-volume (12 offres, 12 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+horace,Horace,teamtailor:horace.teamtailor.com,19,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 19 offres, 16 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+hot-topic,Hot Topic,lever:hottopic,17,1,validated-name,Hot Topic,"promu par validation-volume (17 offres, 17 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+huber,HUBER,successfactors:careers.huber.com,32,1,anchored,HUBER,"promu par validation-volume (30 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+ilia,ILIA,greenhouse:ilia,15,1,validated-name,ILIA,"promu par validation-volume (13 offres, 13 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+imi-s,imi's,greenhouse:imi,4,1,validated-name,imi's,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+indiska,Indiska,teamtailor:careers.indiska.com,2,1,anchored,Indiska,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+innisfree,Innisfree,smartrecruiters-whitelabel:innisfree,1,1,validated-name,Innisfree,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+intersport,INTERSPORT,teamtailor:intersport.teamtailor.com,5,1,validated-name,INTERSPORT,"promu par validation-volume (6 offres, 6 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+ion,ION,lever:ion,83,1,validated-name,ION,"promu par validation-volume (69 offres, 69 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+iris-van-herpen,Iris van Herpen,recruitee:irisvanherpen,6,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+it-s-fashion,It's Fashion,smartrecruiters-whitelabel:itsfashion,1,1,validated-name,It's Fashion,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+jako,Jako,personio:jako,20,1,validated-arbitrated,Jako,"promu par validation-volume (20 offres, 20 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+jansport,JanSport,workday:vfc/jansport_careers,6,1,anchored,JanSport,"promu par validation-volume (6 offres, 6 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+jd-sports,JD Sports,greenhouse:jdsports,202,1,validated-name,JD Sports,"promu par validation-volume (200 offres, 200 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+jean-paul-gaultier-5,Jean Paul Gaultier +5,successfactors:jobs.puig.com,232,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+jeans-centre,Jeans Centre,recruitee:jeanscentre,69,1,validated-domain,Jeans Centre,"promu par validation-volume (57 offres, 57 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+jewells,Jewells,teamtailor:jewells.teamtailor.com,4,1,validated-name,Jewells,"promu par validation-volume (4 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+j-lindeberg,J.Lindeberg,teamtailor:jlindeberg.teamtailor.com,12,1,validated-name,J.Lindeberg,"promu par validation-volume (10 offres, 9 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+joe-fresh,Joe Fresh,smartrecruiters-whitelabel:joefresh,3,1,validated-name,Joe Fresh,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+john-henric,John Henric,teamtailor:johnhenric.teamtailor.com,14,1,validated-name,John Henric,"promu par validation-volume (14 offres, 14 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+jojo-maman-bebe,JoJo Maman Bébé,teamtailor:jojomamanbebe.teamtailor.com,26,1,validated-name,JoJo Maman Bébé,"promu par validation-volume (25 offres, 25 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+jonsson-workwear,Jonsson Workwear,greenhouse:jonssonworkwear,36,1,validated-name,Jonsson Workwear,"promu par validation-volume (38 offres, 38 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+joy,Joy,teamtailor:joy.teamtailor.com,2,1,validated-name,Joy,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+jules,Jules,talentview:jules-recrutement,10,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+julie-grace,Julie & Grace,personio:julie-grace,4,1,anchored,Julie & Grace,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+kapten-son,Kapten & Son,recruitee:kaptenandson,30,1,validated-domain,Kapten & Son,"promu par validation-volume (28 offres, 28 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+karla-otto,Karla Otto,teamtailor:careers.karlaotto.com,12,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+kastner-ohler,Kastner & Öhler,generic-listing:www.kastner-oehler.at/job-karriere/angebot/backoffice-mitarbeiterin-graz-teilzeit,4,1,anchored,Kastner & Öhler,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+kate-mcleod,Kate McLeod,greenhouse:katemcleod,3,1,validated-name,Kate McLeod,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+katie-loxton,Katie Loxton,teamtailor:careers.katieloxton.com,19,1,anchored,Katie Loxton,"promu par validation-volume (19 offres, 19 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+kent,KENT,personio:kent,13,1,validated-name,KENT,"promu par validation-volume (13 offres, 13 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+kering,Kering (toutes Maisons),eightfold:kering.com,1056,14,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+kiabi,Kiabi,smartrecruiters-whitelabel:kiabi,268,1,validated-name,Kiabi,"promu par validation-volume (261 offres, 261 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+kicks,Kicks,teamtailor:careers.kicks.se,13,1,anchored,Kicks,"promu par validation-volume (14 offres, 14 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+kidzart,Kidzart,smartrecruiters-whitelabel:kidzart,1,1,validated-name,Kidzart,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+kiko-milano,Kiko Milano,recruitee:kikomilano,22,1,validated-name,Kiko Milano,"promu par validation-volume (21 offres, 21 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+killstar,KILLSTAR,teamtailor:killstar.teamtailor.com,3,1,validated-name,KILLSTAR,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+klattermusen,Klättermusen,teamtailor:careers.klattermusen.com,2,1,anchored,Klättermusen,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+knock-knock,Knock Knock,greenhouse:knock,2,1,validated-name,Knock Knock,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+kult-olymp-hades,KULT | OLYMP&HADES,recruitee:jpweltersgorgensgmbhcobekleidungskg,80,1,anchored,KULT | OLYMP&HADES,"promu par validation-volume (80 offres, 80 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+la-casa-de-las-carcasas,La casa de las Carcasas,teamtailor:lacasadelascarcasas.teamtailor.com,735,1,validated-name,La casa de las Carcasas,"promu par validation-volume (722 offres, 721 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+lacoste,Lacoste,digitalrecruiters:careers.lacoste.com,453,1,anchored,Lacoste,"promu par validation-volume (455 offres, 455 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+lagardere-duty-free,Lagardère Duty Free,talentsoft:lagardere-travelretaildutyfreeglobal-recrute.talent-soft.com,9,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 9 offres, 9 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+lagardere-travel-retail,Lagardère Travel Retail,talentsoft:lagardere-recrute.talent-soft.com,21,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+lager-157,LAGER 157,teamtailor:careers.lager157.com,48,1,anchored,LAGER 157,"promu par validation-volume (45 offres, 45 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+la-redoute-talentview,La Redoute,talentview:laredoute-talent,5,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 5 offres, 5 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+la-senza,La Senza,greenhouse:lasenza,54,1,validated-name,La Senza,"promu par validation-volume (49 offres, 49 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+laverana-gmbh-co-kg,Laverana GmbH & Co. KG,personio:lavera,24,1,anchored,Laverana GmbH & Co. KG,"promu par validation-volume (25 offres, 25 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+lavish-alice,Lavish Alice,teamtailor:lavishalice.teamtailor.com,2,1,validated-name,Lavish Alice,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+lensa,Lensa,teamtailor:lensa.teamtailor.com,3,1,validated-name,Lensa,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+lerros,LERROS,personio:lerros,1,1,validated-name,LERROS,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+levis,Levi's,workday:levistraussandco/external,1323,2,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 1303 offres, 1303 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+lexington,Lexington,teamtailor:jobs.lexingtoncompany.com,2,1,anchored,Lexington,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+lindex,Lindex,teamtailor:lindex.teamtailor.com,7,1,validated-arbitrated,Lindex,"promu par validation-volume (7 offres, 7 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+little-words-project,Little Words Project,greenhouse:littlewordsproject,14,1,validated-name,Little Words Project,"promu par validation-volume (14 offres, 14 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+l-occitane-en-provence-2,L’Occitane en Provence +2,successfactors:careers-group.loccitane.com,15,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+loccitane-fr,L'Occitane,teamtailor:jobs-fr.loccitane.com,18,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 16 offres, 16 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+loft,LOFT,teamtailor:loft.teamtailor.com,62,1,validated-name,LOFT,"promu par validation-volume (62 offres, 57 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+longchamp,Longchamp,talentsoft:longchamp-career.talent-soft.com,26,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+loplabbet,Löplabbet,teamtailor:loplabbet.teamtailor.com,1,1,validated-name,Löplabbet,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+l-oreal-professionnel,L’Oréal Professionnel,avature:careers.loreal.com,1804,2,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+lounge,Lounge,teamtailor:careers.lounge.com,15,1,anchored,Lounge,"promu par validation-volume (11 offres, 11 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+lovable,Lovable,greenhouse:lovable,63,1,validated-name,Lovable,"promu par validation-volume (63 offres, 63 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+lovisa,Lovisa,teamtailor:careers.lovisa.com,841,2,anchored,Lovisa,"promu par validation-volume (811 offres, 811 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+lucy-yak,Lucy & Yak,teamtailor:lucyandyak.teamtailor.com,5,1,validated-name,Lucy & Yak,"promu par validation-volume (5 offres, 5 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+luhta,Luhta,teamtailor:luhta.teamtailor.com,5,1,validated-name,Luhta,"promu par validation-volume (4 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+lumentee,Lumentee,generic-listing:lumentee.com/careers,5,1,anchored,Lumentee,"promu par validation-volume (5 offres, 5 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+lush,Lush,greenhouse:lush,184,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 186 offres, 186 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+luxe-talent,Luxe Talent,wordpress:www.luxetalent.net,478,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+luxexperience,LuxExperience,generic-listing:career.luxexperience.com/open-positions,54,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 50 offres, 50 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+lvmh,LVMH (toutes Maisons),lvmh_algolia:www.lvmh.com,5712,51,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+madame-figaro,Madame Figaro,wttj:groupe-figaro,12,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+madewell,Madewell,workday:jcrew/madewellcareers,278,3,anchored,Madewell,"promu par validation-volume (252 offres, 252 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+madhappy,Madhappy,lever:madhappy,15,1,validated-name,Madhappy,"promu par validation-volume (15 offres, 15 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+magasin-du-nord,Magasin du Nord,teamtailor:magasin.teamtailor.com,44,1,validated-name,Magasin du Nord,"promu par validation-volume (40 offres, 40 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+maison-123,Maison 123,teamtailor:career.maison123.com,59,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+maison-margiela,Maison Margiela,successfactors:careers.otb.net,107,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+mango,Mango,workday:mango/mango_work_your_passion,1604,28,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 1575 offres, 1575 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+marc-o-polo,Marc O'Polo,generic-listing:company.marc-o-polo.com/en/career,40,1,anchored,Marc O'Polo,"promu par validation-volume (15 offres, 15 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+marella,Marella,smartrecruiters-whitelabel:maxmarafashiongroup,195,1,validated-name,Max Mara Fashion Group,,NON_DEDUITE_DU_STATUT_ACTIVE
+margaret-howell,Margaret Howell,teamtailor:careers.margarethowell.co.uk,4,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+markham,Markham,lever:markham,3,1,validated-name,Markham,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+maryruth-s,MaryRuth's,teamtailor:careers.maryruths.com,3,1,anchored,MaryRuth's,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+mascot-workwear,MASCOT Workwear,successfactors:careers.mascot.dk,42,1,anchored,MASCOT Workwear,"promu par validation-volume (40 offres, 19 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+mateo,Mateo,personio:mateo,9,1,validated-name,Mateo,"promu par validation-volume (9 offres, 9 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+mecca,MECCA,workday:mecca/careers,180,3,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 179 offres, 168 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+medik8,Medik8,teamtailor:careers.medik8.com,21,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+mejuri,Mejuri,greenhouse:mejuri,141,1,validated-name,Mejuri,"promu par validation-volume (141 offres, 141 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+merkal,Merkal,teamtailor:merkal.teamtailor.com,39,1,validated-name,Merkal,"promu par validation-volume (36 offres, 36 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+merz-b-schwanen,Merz B. Schwanen,personio:merz-b-schwanen,2,1,anchored | validated-name,Merz B. Schwanen | Merz B. Schwanen,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+method-h-l-a,METHOD H L.A.,greenhouse:method,2,1,validated-name,METHOD H L.A.,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+minimalist,Minimalist,recruitee:minimalist,8,1,validated-domain,Minimalist,"promu par validation-volume (8 offres, 8 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+miu-miu,Miu Miu,smartrecruiters-whitelabel:miu,7,1,validated-name,Miu Miu,"promu par validation-volume (7 offres, 7 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+molton-brown,Molton Brown,greenhouse:moltonbrown,17,1,validated-name,Molton Brown,"promu par validation-volume (18 offres, 18 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+monica-vinader,Monica Vinader,teamtailor:careers.monicavinader.com,39,1,anchored,Monica Vinader,"promu par validation-volume (37 offres, 37 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+motel,Motel,teamtailor:jobs.motelrocks.com,1,1,anchored,Motel,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+movado,Movado,workday:movadogroup/careers,128,13,anchored,Movado,"promu par validation-volume (127 offres, 127 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+mq-marqet,MQ MarQet,teamtailor:career.mq.se,14,1,anchored | anchored,MQ MarQet | MQ  Sweden,"promu par validation-volume (13 offres, 13 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+mr-marvis,MR MARVIS,teamtailor:mrmarvis.teamtailor.com,31,1,validated-name,MR MARVIS,"promu par validation-volume (31 offres, 31 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+ms-mode,MS Mode,recruitee:msmode,64,1,validated-name,MS Mode,"promu par validation-volume (64 offres, 64 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+mulberry,Mulberry,lever:mulberry,32,1,validated-name,Mulberry,"promu par validation-volume (32 offres, 32 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+multiopticas,Multiópticas,teamtailor:multiopticas.teamtailor.com,85,1,validated-arbitrated,Multiópticas,"promu par validation-volume (85 offres, 84 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+mvmt,MVMT,smartrecruiters-whitelabel:mvmt,1,1,validated-name,MVMT,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+my-jewellery,My Jewellery,recruitee:myjewellery,87,1,validated-name,My Jewellery,"promu par validation-volume (85 offres, 85 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+naos,NAOS,successfactors:careers.naos.com,25,1,anchored,NAOS,"promu par validation-volume (27 offres, 25 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+nars,NARS,radancy:jobs.shiseidoamericas.com,53,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+naturkompaniet,Naturkompaniet,teamtailor:naturkompaniet.teamtailor.com,5,1,validated-name,Naturkompaniet,"promu par validation-volume (5 offres, 5 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+new-balance,New Balance,workday:newbalance/careers-uk,88,6,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 81 offres, 81 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+nexus,Nexus,greenhouse:nexus,4,1,validated-name,Nexus,"promu par validation-volume (5 offres, 5 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+nike,Nike,workday:nike/nke,808,43,anchored,Nike,"promu par validation-volume (775 offres, 775 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+nike-nke2,Nike,workday:nike/nke2,344,2,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 344 offres, 344 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+nikin,NIKIN,recruitee:nikin,2,1,validated-domain,NIKIN,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+nimble,Nimble,recruitee:nimble,5,1,validated-domain,Nimble,"promu par validation-volume (5 offres, 5 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+nocibe-eqwa,Nocibé,eqwa:recrutement-nocibe.fr,313,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 306 offres, 306 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+nordstrom,Nordstrom,workday:nordstrom/nordstrom_careers,1302,1,anchored | anchored,Eliza J | Nordstrom,"trouvé manuellement (Loïc, 2026-09-04) — validé 1294 offres, 1294 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+normal,Normal,teamtailor:jobs.normal.eu,487,1,ARCHIVE_GATE_ABSENTE,,"jobOrigin jobs.normal.fr : les fiches n existent pas sur jobs.normal.eu (audit A5, 2026-09-06)",NON_DEDUITE_DU_STATUT_ACTIVE
+novara,Novara,lever:novara,6,1,validated-name,Novara,"promu par validation-volume (6 offres, 6 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+nude-project,Nude Project,teamtailor:nudeproject.teamtailor.com,13,1,validated-name,Nude Project,"promu par validation-volume (13 offres, 12 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+nudie-jeans,Nudie Jeans,teamtailor:careers.nudiejeans.com,4,1,anchored,Nudie Jeans,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+nutrafol,Nutrafol,greenhouse:nutrafol,12,1,validated-name,Nutrafol,"promu par validation-volume (12 offres, 12 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+nutrire,Nutrire,teamtailor:careers.tricoci.com,50,1,anchored,Nutrire,"promu par validation-volume (50 offres, 47 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+nyx-professional-makeup,NYX Professional Makeup,teamtailor:nyx.teamtailor.com,19,1,validated-name,NYX Professional Makeup,"promu par validation-volume (21 offres, 21 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+oak-essentials,Oak Essentials,greenhouse:jennikayne,32,1,anchored,Oak Essentials,"promu par validation-volume (30 offres, 30 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+obi-obi,OBI OBI,recruitee:obi,1,1,validated-name,OBI OBI,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+oh-my-cream,Oh My Cream,teamtailor:careers.ohmycream.com,22,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+oh-polly,Oh Polly,teamtailor:ohpolly.teamtailor.com,11,1,validated-name,Oh Polly,"promu par validation-volume (11 offres, 11 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+olaplex,OLAPLEX,greenhouse:olaplexcareers,10,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 10 offres, 10 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+one,ONE,teamtailor:careers.one.com,7,1,anchored,ONE,"promu par validation-volume (7 offres, 7 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+oniverse,Oniverse (Calzedonia),generic-listing:careers.oniverse.it/fr-fr/home,30,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 16 offres, 16 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+orchestra,Orchestra,greenhouse:orchestra,29,1,validated-name,Orchestra,"promu par validation-volume (29 offres, 29 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+orlebar-brown,Orlebar Brown,teamtailor:careers.orlebarbrown.com,15,1,anchored,Orlebar Brown,"promu par validation-volume (14 offres, 13 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+ortovox,ORTOVOX,personio:ortovox,1,1,validated-name,ORTOVOX,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+oska,OSKA,generic-listing:www.oska.com/fr/jobs,7,1,anchored,OSKA,"promu par validation-volume (7 offres, 7 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+ounass,Ounass,teamtailor:careers.ounass.com,25,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 25 offres, 22 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+pandora-talenthub,Pandora,generic-listing:careers.pandoragroup.com/fr/jobs/page/{page},1922,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 1825 offres, 1820 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+parachute,Parachute,greenhouse:parachutehome,8,1,anchored,Parachute,"promu par validation-volume (8 offres, 8 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+parco,Parco,smartrecruiters-whitelabel:parco,1,1,validated-name,Parco,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+parfums-chanel,Parfums Chanel,workday:cc/chanelcareers,1117,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+passage-du-desir,Passage du Desir,teamtailor:passagedudesir-1730297136.teamtailor.com,14,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+patek-philippe,Patek Philippe,successfactors:careers.patek.com,19,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+peacocks,Peacocks,smartrecruiters-whitelabel:peacocks,25,1,validated-name,Peacocks,"promu par validation-volume (25 offres, 25 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+peak-performance,Peak Performance,teamtailor:peakperformance.teamtailor.com,10,1,validated-name,Peak Performance,"promu par validation-volume (10 offres, 9 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+pegador,Pegador,personio:pegador,13,1,validated-name,Pegador,"promu par validation-volume (13 offres, 13 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+penningtons,Penningtons,smartrecruiters-whitelabel:reitmanscanadalteltd,320,1,anchored,Penningtons,"promu par validation-volume (306 offres, 306 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+pepco,Pepco,personio:pepco,54,1,validated-name,Pepco,"promu par validation-volume (52 offres, 52 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+petit-bateau,Petit Bateau,smartrecruiters-whitelabel:petitbateau,56,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+petrol-industries,Petrol Industries,teamtailor:careers.petrolindustries.com,2,1,anchored,Petrol Industries,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+pga-tour-superstore,PGA Tour Superstore,workday:pgatoursuperstore/pgat_ss,192,1,anchored,PGA Tour Superstore,"promu par validation-volume (189 offres, 189 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+picard,PICARD,recruitee:picard,4,1,validated-name,PICARD,"promu par validation-volume (5 offres, 5 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+pina,Piña,personio:pina,2,1,validated-name,Piña,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+plume-impression,Plume Impression,greenhouse:plume,18,1,validated-domain,Plume Impression,"promu par validation-volume (18 offres, 18 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+point-zero,Point Zero,smartrecruiters-whitelabel:pointzero,1,1,validated-name,Point Zero,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+polene,Polène,ashby:polene-paris,79,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+prada-group,Prada Group,successfactors:jobs.pradagroup.com,103,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 54 offres, 54 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+primark,Primark,smartrecruiters-whitelabel:primark,929,1,validated-name,Primark,"trouvé manuellement (Loïc, 2026-09-04) — validé 851 offres, 851 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+printful,Printful,teamtailor:careers.printful.com,4,1,anchored,Printful,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+prisma-media,Prisma Media,teamtailor:emploi.prismamedia.com,19,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+profil-optik,Profil Optik,teamtailor:profiloptik.teamtailor.com,37,1,validated-name,Profil Optik,"promu par validation-volume (35 offres, 35 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+profuomo,Profuomo,recruitee:profuomo,7,1,validated-domain,Profuomo,"promu par validation-volume (7 offres, 7 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+promod,Promod,talentview:promodjob,12,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+pronovias,Pronovias,teamtailor:careers.pronovias.com,35,1,anchored,Pronovias,"promu par validation-volume (27 offres, 27 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+psycho-bunny,Psycho Bunny,generic-listing:careers.psychobunny.com/job-search,10,1,anchored,Psycho Bunny,"promu par validation-volume (10 offres, 10 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+public,Public,greenhouse:public,4,1,validated-name,Public,"promu par validation-volume (4 offres, 4 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+pvh,PVH,generic-listing:careers.pvh.com/sitemap.xml,1379,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 1347 offres, 1333 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+quince,Quince,greenhouse:quince,132,1,validated-name,Quince,"promu par validation-volume (129 offres, 129 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+ralph-lauren-avature,Ralph Lauren,avature:careers.ralphlauren.com,1096,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 1082 offres, 1082 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+realself,RealSelf,lever:realself,1,1,validated-name,RealSelf,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+rebag,Rebag,greenhouse:rebag,17,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 17 offres, 17 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+reformation,Reformation,greenhouse:reformation,137,1,validated-name,Reformation,"promu par validation-volume (135 offres, 135 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+richemont,Richemont (toutes Maisons),workday:richemont/broadbean_external,446,14,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+richemont-workday,Richemont,workday:richemont/richemont,1373,19,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 1337 offres, 1337 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+rituals,Rituals,rituals:careers.rituals.com,1145,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 1088 offres, 1088 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+rivoli-typesense,Rivoli Group,typesense:www.rivoligroup.com,47,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 47 offres, 47 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+rolex,Rolex,successfactors:www.carrieres-rolex.com,211,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 208 offres, 208 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+rotate,ROTATE,recruitee:rotate,5,1,validated-domain,ROTATE,"promu par validation-volume (5 offres, 5 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+route-one-skin,route one skin,greenhouse:route,2,1,validated-domain,route one skin,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+sabon,Sabon,teamtailor:sabon.teamtailor.com,2,1,validated-name,Sabon,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+sacoor-brothers,Sacoor Brothers,smartrecruiters-whitelabel:sacoorbrothers,1,1,validated-name,Sacoor Brothers,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+saffron,Saffron,teamtailor:saffron.teamtailor.com,2,1,validated-name,Saffron,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+saks,Saks Fifth Avenue,workday:saks/careers_at_saks,778,5,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 748 offres, 748 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+salomon,Salomon,smartrecruiters-whitelabel:salomon,77,1,validated-name,Salomon,"promu par validation-volume (69 offres, 69 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+saltrock,Saltrock,personio:saltrock,3,1,validated-name,Saltrock,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+samson,Samson,personio:samson,1,1,validated-name,Samson,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+sandro,Sandro,smartrecruiters-whitelabel:smcp,557,1,validated-name,SMCP Group,,NON_DEDUITE_DU_STATUT_ACTIVE
+seer,Seer,greenhouse:seer,3,1,validated-name,Seer,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+selfridges,Selfridges,generic-listing:jobsearch.selfridges.com/jobs/search/-1/{page},67,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 43 offres, 43 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+sep,SEP,lever:sep,5,1,validated-name,SEP,"promu par validation-volume (5 offres, 5 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+sephora-france,Sephora,successfactors:jobs.sephora.com/france,25,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 24 offres, 24 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+sezane,Sézane,workable:sezane-3,113,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 111 offres, 111 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+shein,SHEIN,greenhouse:shein,18,1,validated-name,SHEIN,"promu par validation-volume (18 offres, 18 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+shinola,Shinola,greenhouse:shinola,9,1,validated-name,Shinola,"promu par validation-volume (9 offres, 9 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+showroomprive,Showroomprive,teamtailor:,30,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+siebel-juweliers,Siebel Juweliers,recruitee:siebel,22,1,validated-arbitrated,Siebel Juweliers,"promu par validation-volume (21 offres, 21 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+silbon,Silbon,teamtailor:silbon.teamtailor.com,78,1,validated-name,Silbon,"promu par validation-volume (75 offres, 75 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+singularu,Singularu,teamtailor:singularu.teamtailor.com,30,1,validated-name,Singularu,"promu par validation-volume (31 offres, 31 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+sioux,Sioux,recruitee:sioux,17,1,validated-domain,Sioux,"promu par validation-volume (16 offres, 16 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+sisley,Sisley,smartrecruiters-whitelabel:sisley,30,1,validated-name,Sisley,"promu par validation-volume (28 offres, 28 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+skin-laundry,Skin Laundry,greenhouse:skinlaundry,44,1,validated-name,Skin Laundry,"promu par validation-volume (44 offres, 44 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+soeur,Soeur,teamtailor:soeur-1711354805,55,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+space-nk,Space NK,teamtailor:spacenk.teamtailor.com,93,1,validated-name,Space NK,"promu par validation-volume (82 offres, 82 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+spinelli-kilcollin,Spinelli Kilcollin,greenhouse:spinellikilcollin,3,1,validated-name,Spinelli Kilcollin,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+sport-1,Sport 1,teamtailor:sport1.teamtailor.com,11,1,validated-name,Sport 1,"promu par validation-volume (11 offres, 8 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+ssense,SSENSE,teamtailor:careers.ssense.com,15,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 15 offres, 15 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+stanley-stella,STANLEY/STELLA,personio:stanley-stella,10,1,validated-name,STANLEY/STELLA,"promu par validation-volume (11 offres, 11 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+state-of-art,State of Art,recruitee:stateofart,28,1,validated-name,State of Art,"promu par validation-volume (27 offres, 27 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+stella-mccartney,Stella McCartney,workday:stellamccartney/smcexternal,32,2,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+subset,Subset,teamtailor:subset.teamtailor.com,4,1,validated-name,Subset,"promu par validation-volume (4 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+suitsupply,Suitsupply,greenhouse:suitsupply,164,1,validated-name,Suitsupply,"promu par validation-volume (161 offres, 161 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+supergoop,Supergoop!,greenhouse:supergoop,11,1,validated-name,Supergoop!,"promu par validation-volume (11 offres, 11 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+swarovski,Swarovski,workday:swarovski/swarovski,531,32,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 502 offres, 501 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+swatch-group,Swatch Group,swatchgroup:www.swatchgroup.com,290,26,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — adaptateur dédié (lieu #jl, 5 champs, marque logo) : 279 offres, 279 lieu, 279 desc",NON_DEDUITE_DU_STATUT_ACTIVE
+tala,TALA,lever:tala,8,1,validated-name,TALA,"promu par validation-volume (8 offres, 8 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+tapestry,"Tapestry (Coach, Kate Spade, Stuart Weitzman)",workday:tapestry/tapestry_careers,2059,19,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 2000 offres, 1998 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+taylor-stitch,Taylor Stitch,smartrecruiters-whitelabel:taylorstitch,2,1,validated-name,Taylor Stitch,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+tekla,Tekla,greenhouse:tekla,4,1,validated-name,Tekla,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+the-kooples,The Kooples,digitalrecruiters:careers.thekooples.com,69,1,anchored,The Kooples,"promu par validation-volume (67 offres, 67 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+therealreal,The RealReal,workday:therealreal/careers,136,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 136 offres, 136 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+thirdlove,ThirdLove,greenhouse:thirdlove,32,1,validated-name,ThirdLove,"promu par validation-volume (32 offres, 32 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+thomas-sabo,THOMAS SABO,personio:thomassabo,42,1,validated-name,THOMAS SABO,"promu par validation-volume (28 offres, 28 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+tiffany-oracle,Tiffany & Co.,oraclehcm:eljs.fa.us2.oraclecloud.com,423,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 419 offres, 419 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+tiger-of-sweden,Tiger of Sweden,teamtailor:tigerofsweden.teamtailor.com,5,1,validated-name,Tiger of Sweden,"promu par validation-volume (6 offres, 6 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+tods,Tod's Group,successfactors:jobs.todsgroup.com,15,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 14 offres, 14 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+tom-wood,Tom Wood,teamtailor:tomwood.teamtailor.com,3,1,validated-name,Tom Wood,"promu par validation-volume (2 offres, 2 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+toteme,Totême,teamtailor:toteme.teamtailor.com,21,1,validated-name,Totême,"promu par validation-volume (21 offres, 21 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+tropicfeel,Tropicfeel,teamtailor:tropicfeel.teamtailor.com,1,1,validated-name,Tropicfeel,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+trussardi,Trussardi,teamtailor:trussardi.teamtailor.com,16,1,validated-name,Trussardi,"promu par validation-volume (15 offres, 14 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+typology,Typology,teamtailor:typology-1732032895,8,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+ulta-jibe,Ulta Beauty,jibe:careers.ulta.com,10052,2,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 9959 offres, 9959 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+undiz,Undiz,teamtailor:undiz.teamtailor.com,48,1,validated-name,Undiz,"promu par validation-volume (48 offres, 48 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+uniqlo-graduates,Uniqlo,workday:fastretailing/graduates_eu_uniqlo,11,11,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 11 offres, 11 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+uniqlo-headquarters,Uniqlo,workday:fastretailing/headquarters_eu_uniqlo,24,5,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 20 offres, 20 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+uniqlo-stores,Uniqlo,workday:fastretailing/store_staff_eu_uniqlo,115,10,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 109 offres, 109 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+united-colors-of-benetton,United Colors of Benetton,smartrecruiters-whitelabel:unitedcolorsofbenetton,1,1,validated-name,United Colors of Benetton,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+urbn-hub,"URBN (Urban Outfitters, Anthropologie, Free People)",icims:hub-urbn.icims.com,1365,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 1329 offres, 1329 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+urbn-stores,URBN Stores,icims:stores-na-urbn.icims.com,934,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 906 offres, 906 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+valentino,Valentino,successfactors:jobs.valentino.com,34,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+velvet-canyon,Velvet Canyon,smartrecruiters-whitelabel:velvetcanyon,1,1,validated-name,Velvet Canyon,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+veronica-beard,Veronica Beard,greenhouse:veronicabeard,44,1,validated-name,Veronica Beard,"promu par validation-volume (41 offres, 41 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+versace,Versace,workday:capri/versace,54,6,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+vestiaire-collective,Vestiaire Collective,lever:vestiairecollective,11,1,ARCHIVE_GATE_ABSENTE,,"trouvé manuellement (Loïc, 2026-09-04) — validé 11 offres, 11 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+via,VIA,greenhouse:via,155,1,validated-name,VIA,"promu par validation-volume (154 offres, 154 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+visionlab,VisionLab,smartrecruiters-whitelabel:visionlab,1,1,validated-name,VisionLab,"promu par validation-volume (1 offres, 1 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+vitamin-a,Vitamin A,teamtailor:vitamin.teamtailor.com,21,1,validated-name,Vitamin A,"promu par validation-volume (17 offres, 17 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+vivienne-westwood,Vivienne Westwood,teamtailor:viviennewestwood.teamtailor.com,12,1,ARCHIVE_GATE_ABSENTE,,,NON_DEDUITE_DU_STATUT_ACTIVE
+vivobarefoot,Vivobarefoot,teamtailor:vivobarefoot.teamtailor.com,13,1,validated-name,Vivobarefoot,"promu par validation-volume (13 offres, 13 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+vlisco,Vlisco,teamtailor:vlisco.teamtailor.com,7,1,validated-name,Vlisco,"promu par validation-volume (7 offres, 7 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+wehkamp,Wehkamp,smartrecruiters-whitelabel:wehkamp,3,1,validated-name,Wehkamp,"promu par validation-volume (3 offres, 3 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+white-stuff,White Stuff,teamtailor:whitestuff.teamtailor.com,81,1,validated-name,White Stuff,"promu par validation-volume (79 offres, 79 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+wttj-sector,Welcome to the Jungle (Mode · Luxe · Beauté),wttj-sector:www.welcometothejungle.com,1975,109,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 1901 offres, 1901 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE
+wunderkind,Wunderkind,greenhouse:wunderkind,11,1,validated-name,Wunderkind,"promu par validation-volume (11 offres, 11 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+yaya,YAYA,recruitee:yaya,24,1,validated-arbitrated,YAYA,"promu par validation-volume (25 offres, 25 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+yema,Yema,smartrecruiters-whitelabel:yema,6,1,validated-name,Yema,"promu par validation-volume (6 offres, 6 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+yes,YES,greenhouse:yes,5,1,validated-name,YES,"promu par validation-volume (5 offres, 5 avec lieu)",NON_DEDUITE_DU_STATUT_ACTIVE
+zegna-altamira,Zegna,altamira:careers.zegnagroup.com,64,1,ARCHIVE_GATE_ABSENTE,,"lot GENERIC 2026-09-06 — validé 60 offres, 60 avec lieu",NON_DEDUITE_DU_STATUT_ACTIVE

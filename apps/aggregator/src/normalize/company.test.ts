@@ -99,6 +99,11 @@ describe('resolveCompany — fautes des flux', () => {
 });
 
 describe('stripLegalSuffix — formes juridiques et entités locales (audit A1)', () => {
+  it('does not remove legal-form letters inside the real Lovisa brand', () => {
+    expect(stripLegalSuffix('Lovisa')).toBe('Lovisa');
+    expect(resolveCompany('Lovisa').companyId).toBe('LOVISA');
+    expect(stripLegalSuffix('Lovisa Pty Ltd')).toBe('Lovisa');
+  });
   it('retire la forme juridique, en boucle', () => {
     expect(stripLegalSuffix('Ulta Beauty, Inc.')).toBe('Ulta Beauty');
     expect(stripLegalSuffix('Tapestry, Inc.')).toBe('Tapestry');

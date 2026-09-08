@@ -158,8 +158,33 @@ model Source {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 
+  identityReviews SourceIdentityReview[]
+
   @@index([status])
   @@index([kind])
+}
+
+/** Append-only identity decisions. A working feed is not an employer proof. */
+model SourceIdentityReview {
+  id             String   @id @default(cuid())
+  sourceKey      String
+  tenantKey      String
+  subjectKey     String
+  sourceHash     String
+  verdict        String
+  method         String
+  officialDomain String
+  proofUrl       String
+  portalUrl      String
+  statement      String
+  artifactHash   String
+  artifactText   String   @default("")
+  reviewer       String
+  checkedAt      DateTime
+  createdAt      DateTime @default(now())
+  source         Source   @relation(fields: [sourceKey], references: [key], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([sourceKey, createdAt])
 }
 
 model Company {
@@ -482,6 +507,24 @@ model Job {
  * trois ans, de rejouer le marché : la liste des offres se remplace, son
  * histoire ne se reconstruit pas.
  */
+/** Append-only correction evidence; no cascading FK can erase this history. */
+model DataCorrection {
+  id         String   @id @default(cuid())
+  batchId    String
+  planHash   String
+  commitHash String
+  finding    String
+  entityType String
+  entityId   String
+  before     Json
+  after      Json
+  evidence   Json
+  createdAt  DateTime @default(now())
+
+  @@unique([batchId, entityType, entityId])
+  @@index([entityType, entityId])
+}
+
 model JobEvent {
   id     String   @id @default(cuid())
   jobId  String

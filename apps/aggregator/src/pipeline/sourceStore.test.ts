@@ -1,6 +1,7 @@
 import '../test/setup-integration.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
+import { createHash } from 'node:crypto';
 import {
   importSourcesCsv,
   loadActiveSources,
@@ -8,6 +9,7 @@ import {
   tenantKeyOf,
 } from '../connectors/sourceStore.js';
 import { retireSource } from './retireSource.js';
+import { sourceIdentityHash, sourceSubjectKey } from '../connectors/sourceIdentity.js';
 
 /**
  * DEC-3 — the catalogue lives in the Source table, with a lifecycle.
@@ -21,6 +23,8 @@ import { retireSource } from './retireSource.js';
 const prisma = new PrismaClient();
 
 async function wipe() {
+  // This file is guarded by setup-integration and only runs on a test DB.
+  await prisma.$executeRawUnsafe('TRUNCATE TABLE "SourceIdentityReview"');
   await prisma.jobSource.deleteMany({});
   await prisma.job.deleteMany({});
   await prisma.company.deleteMany({});
@@ -134,11 +138,24 @@ describe('promoteSource', () => {
   });
 
   it('promotes a proven DRAFT to ACTIVE', async () => {
-    await prisma.source.create({ data: draft() });
+    const source = await prisma.source.create({ data: draft() });
+    const artifactText = 'Official careers: https://job-boards.greenhouse.io/testmaison';
+    await prisma.sourceIdentityReview.create({ data: {
+      sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source),
+      verdict: 'VERIFIED', method: 'OFFICIAL_LINK', officialDomain: 'test-maison.example',
+      proofUrl: 'https://test-maison.example/careers', portalUrl: 'https://job-boards.greenhouse.io/testmaison',
+      statement: 'The official employer careers page links to this exact ATS tenant.', artifactHash: createHash('sha256').update(artifactText).digest('hex'), artifactText, reviewer: 'integration-test', checkedAt: new Date(),
+    } });
     const result = await promoteSource(prisma, 'test-draft');
     expect(result).toEqual({ key: 'test-draft', from: 'DRAFT', to: 'ACTIVE' });
     const row = await prisma.source.findUniqueOrThrow({ where: { key: 'test-draft' } });
     expect(row.status).toBe('ACTIVE');
+  });
+
+  it('refuses technical success without employer evidence (the historic homonym admission path)', async () => {
+    await prisma.source.create({ data: draft({ key: 'coast', maison: 'Coast', config: { board: 'coast' }, tenantKey: 'greenhouse:coast' }) });
+    await expect(promoteSource(prisma, 'coast')).rejects.toThrow(/employer identity/);
+    expect((await prisma.source.findUniqueOrThrow({ where: { key: 'coast' } })).status).toBe('DRAFT');
   });
 
   it('refuses without a dated robots verdict', async () => {

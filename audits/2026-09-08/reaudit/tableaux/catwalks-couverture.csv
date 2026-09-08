@@ -1,0 +1,62 @@
+﻿nom,preuve_reference,rapprochement,entites_base,ids_base,offres_sous_ces_identites
+Acqua di Parma,https://catwalks.io/maisons/acqua-di-parma,EXACT_NORMALISE,Acqua Di Parma,cmtk4969e1j8tny2bqz2ta2m1,10
+Aesop,https://catwalks.io/maisons/aesop,NON_RETROUVE,,,0
+American Vintage,https://catwalks.io/maisons/american-vintage,EXACT_NORMALISE,American Vintage,cmtjwp18i065ym72bg5ksg9ol,20
+AMI Paris,https://catwalks.io/maisons/ami-paris,EXACT_NORMALISE,AMI PARIS,cmtk1xawc00zknv2b2dybtlb7,21
+Balenciaga,https://catwalks.io/maisons/balenciaga,EXACT_NORMALISE,Balenciaga,cmtpukur529bgl35m0lsirz9b,139
+Beauty Success,https://catwalks.io/maisons/beauty-success,EXACT_NORMALISE,Beauty Success,cmtpiybmp0kgopf5lx59eajm5,109
+Benefit Cosmetics,https://catwalks.io/maisons/benefit-cosmetics,EXACT_NORMALISE,BeneFit Cosmetics,cmtk48gld1cv1ny2b50vkg4lx,20
+Bon Parfumeur,https://catwalks.io/maisons/bon-parfumeur,NON_RETROUVE,,,0
+Breitling,https://catwalks.io/maisons/breitling,EXACT_NORMALISE,Breitling,cmtpiw7tl09ylpf5ljsb8xnnt,41
+Canada Goose,https://catwalks.io/maisons/canada-goose,EXACT_NORMALISE,Canada Goose,cmtk1ywiz04tnnv2bym3tmeto,96
+Cartier,https://catwalks.io/maisons/cartier,EXACT_NORMALISE,Cartier,cmtkgqym00xm7mn2bsqf6ewhn,155
+Chanel,https://catwalks.io/maisons/chanel,POSSIBLE_A_REVOIR,Parfums Chanel,cmtk3fqsl0q3vny2brbrpo8tx,1117
+Chloé,https://catwalks.io/maisons/chloe,EXACT_NORMALISE,Chloe,cmtkdvutp1ru9nf2bbqeq9stw,25
+Courrèges,https://catwalks.io/maisons/courreges,POSSIBLE_A_REVOIR,COURREGES DISTRIBUTION,cmtkdw2b81u3bnf2bzkhmrt75,0
+Dior,https://catwalks.io/maisons/dior,EXACT_NORMALISE,Christian Dior Couture,cmtk48e6r1bu9ny2bxbq8un50,485
+Diptyque,https://catwalks.io/maisons/diptyque,EXACT_NORMALISE,Diptyque,cmtk1xe9n01a0nv2b2p3qyil0,153
+Essential Parfums,https://catwalks.io/maisons/essential-parfums,NON_RETROUVE,,,0
+Ex Nihilo,https://catwalks.io/maisons/ex-nihilo,NON_RETROUVE,,,0
+Extime Duty Free Paris,https://catwalks.io/maisons/extime-duty-free-paris,NON_RETROUVE,,,0
+Frame,https://catwalks.io/maisons/frame,EXACT_NORMALISE,Frame,cmtlyf5pn00e1qf5khh935v7y,0
+Givenchy,https://catwalks.io/maisons/givenchy,EXACT_NORMALISE,Givenchy,cmtk48iq11dpqny2bwfo36lp2,24
+Groupe Novi,https://catwalks.io/maisons/groupe-novi,NON_RETROUVE,,,0
+Guerlain,https://catwalks.io/maisons/guerlain,EXACT_NORMALISE,Guerlain,cmtk48g7g1cp9ny2bsq7h0e65,116
+Hermès,https://catwalks.io/maisons/hermes,EXACT_NORMALISE,Hermès,cmtjwf5mi0a6rld2b52mvdmlg,650
+Isabel Marant,https://catwalks.io/maisons/isabel-marant,EXACT_NORMALISE,ISABEL MARANT,cmtkdvx4o1skknf2bpqfbvpnd,17
+Jacquemus,https://catwalks.io/maisons/jacquemus,NON_RETROUVE,,,0
+JFG Clinic,https://catwalks.io/maisons/jfg-clinic,NON_RETROUVE,,,0
+Juliette Has A Gun,https://catwalks.io/maisons/juliette-has-a-gun,EXACT_NORMALISE,JULIETTE HAS A GUN,cmtkdvw5w1sb6nf2b5wzr2wr3,2
+Kering,https://catwalks.io/maisons/kering,EXACT_NORMALISE,Kering,cmtjwa11205v4ld2b4be98q45,4
+L'Atelier du sourcil,https://catwalks.io/maisons/l-atelier-du-sourcil,NON_RETROUVE,,,0
+L'Occitane en Provence,https://catwalks.io/maisons/l-occitane-en-provence,EXACT_NORMALISE,L’Occitane en Provence,cmtke2us500d0lp2bu5et2x5u,15
+L'Oréal,https://catwalks.io/maisons/l-oreal,EXACT_NORMALISE,L'Oréal,cmtjw1ejj0141ld2bt20epmki,31
+Lagardère Travel Retail,https://catwalks.io/maisons/lagardere-travel-retail,EXACT_NORMALISE,Lagardère Travel Retail,cmtkdvxv61strnf2blvpva5y3,0
+Lancel,https://catwalks.io/maisons/lancel,EXACT_NORMALISE,LANCEL,cmtkdvxgl1soynf2buwtrw9nd,3
+Le Bon Marché,https://catwalks.io/maisons/le-bon-marche,EXACT_NORMALISE,Le Bon Marché,cmtk48eex1bxlny2b3drci9sc,48
+Lemaire,https://catwalks.io/maisons/lemaire,EXACT_NORMALISE,LEMAIRE,cmtkdvvtj1s7lnf2bo95yg5p5,1
+Lise Charmel,https://catwalks.io/maisons/lise-charmel,NON_RETROUVE,,,0
+Loewe Perfumes,https://catwalks.io/maisons/loewe-perfumes,ALIAS_REVU,Perfumes Loewe,cmtk48i0l1di2ny2b5nkl6pdu,10
+Longchamp,https://catwalks.io/maisons/longchamp,EXACT_NORMALISE,Longchamp,cmtkdvuvo1rv2nf2bol2swzih,26
+Louis Vuitton,https://catwalks.io/maisons/louis-vuitton,EXACT_NORMALISE,Louis Vuitton,cmtk48ee91bx9ny2bt1bil52u,616
+LVMH,https://catwalks.io/maisons/lvmh,EXACT_NORMALISE,LVMH,cmtk48edz1bx5ny2bwve7xek3,71
+Maison Crivelli,https://catwalks.io/maisons/crivelli,NON_RETROUVE,,,0
+Maison Francis Kurkdjian,https://catwalks.io/maisons/maison-francis-kurkdjian,EXACT_NORMALISE,Maison Francis Kurkdjian,cmtk48fxt1clbny2bmdwyoihy,32
+Maje,https://catwalks.io/maisons/maje,IDENTITE_PRESENTE_OFFRES_RATTACHEES_A_SANDRO,Maje,cmtkf06ej0lqap22bicqm90nc,0
+Marella,https://catwalks.io/maisons/marella,EXACT_NORMALISE,Marella,cmtk21o7a09qvnv2be8azetpy,196
+Meilleur Moment,https://catwalks.io/maisons/meilleur-moment,NON_RETROUVE,,,0
+Messika,https://catwalks.io/maisons/messika,NON_RETROUVE,,,0
+Officine Universelle Buly,https://catwalks.io/maisons/officine-universelle-buly,EXACT_NORMALISE,Officine Universelle Buly,cmtk48gjk1cu9ny2b980gxybv,13
+Oh My Cream,https://catwalks.io/maisons/oh-my-cream,EXACT_NORMALISE,Oh My Cream,cmtk1x9j900v9nv2bsq7qg8m1,27
+Paris Aéroport,https://catwalks.io/maisons/paris-aeroport,NON_RETROUVE,,,0
+Polène,https://catwalks.io/maisons/polene,EXACT_NORMALISE,POLÈNE,cmtk01dhf0000kc47k44sukf3,79
+Printemps,https://catwalks.io/maisons/printemps,EXACT_NORMALISE,Printemps,cmtkdvvqa1s6anf2bc4v3e8e5,120
+Repetto,https://catwalks.io/maisons/repetto,EXACT_NORMALISE,REPETTO,cmtkdvuig1rp7nf2bffwmb758,6
+Sabon,https://catwalks.io/maisons/sabon,EXACT_NORMALISE,Sabon,cmtlyf15d00afqf5kkmggppyy,2
+Saint Laurent,https://catwalks.io/maisons/saint-laurent,EXACT_NORMALISE,Saint Laurent,cmtpukum3299ml35mw6vwiqno,203
+Sandro,https://catwalks.io/maisons/sandro,EXACT_NORMALISE,Sandro,cmtk29nb80m1dnv2bg5xl385h,557
+Sephora,https://catwalks.io/maisons/sephora,EXACT_NORMALISE,Sephora,cmtk48dz71brqny2bsyv4ml8m,2299
+Sézane,https://catwalks.io/maisons/sezane,EXACT_NORMALISE,SÉZANE,cmtkdvw5m1sb2nf2bvkqxcjar,113
+Sisley,https://catwalks.io/maisons/sisley,EXACT_NORMALISE,Sisley,cmtlyja1p07utqf5kdf0s34b3,30
+Typology,https://catwalks.io/maisons/typology,EXACT_NORMALISE,Typology,cmtk1wyuo002onv2b3n2zt0td,8
+La Bonne Brosse,https://catwalks.io/maisons/la-bonne-brosse,EXACT_NORMALISE,La Bonne Brosse,cmtpz35qu03yc3ncq9dkfdsgb,4
