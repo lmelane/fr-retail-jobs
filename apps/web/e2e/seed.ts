@@ -55,7 +55,7 @@ async function main() {
         title,
         location: 'Paris, France',
         city: 'PARIS',
-        country: 'France',
+        countryCode: 'FR',
         isFrance: true,
         employmentTerm: 'PERMANENT',
         description:

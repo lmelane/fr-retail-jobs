@@ -10,7 +10,7 @@ import { isFranceJob } from '../lib/france.js';
 import { detectLanguage } from '../lib/language.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
 import { classifyJob, TAXONOMY_VERSION } from '../normalize/taxonomy.js';
-import { changedEvents, diffStructuralFields, toNestedEventRow, type JobEventInput } from '../pipeline/jobEvents.js';
+import { changedEvents, diffStructuralFields, structuralValuesOf, toNestedEventRow, type JobEventInput } from '../pipeline/jobEvents.js';
 
 
 /** Classifier sectors map 1:1 onto the CompanySector enum. */
@@ -280,7 +280,7 @@ async function createJob(
          * françaises. Normaliser ICI répare toutes les sources d'un coup, là où
          * un correctif par adaptateur en aurait laissé passer la moitié.
          */
-        country,
+        countryCode: country,
         adminArea1: adminArea1Of(candidate, country),
         // Stored as a FLAG, never used as a discard: the site defaults to the
         // French view and can widen later. This line was missing — every job
@@ -436,7 +436,7 @@ type ExistingJob = {
   description: string | null;
   location: string | null;
   city: string | null;
-  country: string | null;
+  countryCode: string | null;
   adminArea1: string | null;
   postedAt: Date | null;
   validThrough: Date | null;
@@ -474,7 +474,7 @@ type ExistingJob = {
  */
 type Reattestable = Pick<
   ExistingJob,
-  | 'title' | 'description' | 'location' | 'city' | 'country' | 'adminArea1' | 'isFrance' | 'postedAt' | 'validThrough'
+  | 'title' | 'description' | 'location' | 'city' | 'countryCode' | 'adminArea1' | 'isFrance' | 'postedAt' | 'validThrough'
   | 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType' | 'isSeasonal' | 'workplaceType' | 'salaryMin' | 'salaryMax' | 'salaryCurrency' | 'salaryPeriod'
 >;
 
@@ -499,7 +499,7 @@ export function reattestationFields(
 ): Partial<Reattestable> {
   const out: Partial<Reattestable> = {};
   const country = countryOf(candidate);
-  if (country && country !== existing.country) out.country = country;
+  if (country && country !== existing.countryCode) out.countryCode = country;
   if (country) {
     const isFrance = isFranceJob(country, candidate.location);
     if (isFrance !== existing.isFrance) out.isFrance = isFrance;
@@ -647,7 +647,10 @@ async function attachToExisting(
   const reopening = !existing.isActive;
   const events: JobEventInput[] = [
     ...(reopening ? [{ jobId: existing.id, type: 'REOPENED' as const, at: now }] : []),
-    ...changedEvents(existing.id, diffStructuralFields(existing, data), now),
+    // `structuralValuesOf` traduit les noms de COLONNE en noms d'ÉVÉNEMENT
+    // (`countryCode` → `country`) : sans lui, un changement de pays cesse
+    // silencieusement d'être tracé.
+    ...changedEvents(existing.id, diffStructuralFields(structuralValuesOf(existing), structuralValuesOf(data)), now),
   ];
 
   // Une seule écriture : la ligne et ses événements dans la même requête

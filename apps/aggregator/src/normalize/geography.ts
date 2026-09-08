@@ -24,6 +24,21 @@ export type GeoMethod =
   | 'LOCATION_COUNTRY_NAME'
   | 'LOCATION_ADMIN1_SUFFIX';
 
+/**
+ * Le pays STOCKÉ est-il une donnée sur laquelle on peut compter ?
+ *
+ * *« Valeur legacy conservée ≠ valeur considérée comme prouvée »* (Loïc,
+ * 2026-09-08). La chaîne refuse de corriger sans preuve ; ce refus est correct,
+ * mais il laisse en base une valeur que l'on SAIT douteuse. La marquer permet à
+ * l'observatoire de ne pas la compter comme certaine, sans rien inventer.
+ *
+ * `undefined` = rien de suspect. On ne marque que ce qu'on a démontré douteux.
+ */
+export type CountryIntegrity = 'AMBIGUOUS';
+
+/** Pourquoi le pays stocké est suspect. Une raison NOMMÉE, jamais un score. */
+export type IntegrityReason = 'COUNTRY_ADMIN1_CODE_COLLISION';
+
 export type ResolvedGeography = {
   countryCode?: string;
   city?: string;
@@ -33,6 +48,13 @@ export type ResolvedGeography = {
   method?: GeoMethod;
   sourcePath?: string;
   confidence?: number;
+  /**
+   * Porté UNIQUEMENT quand la chaîne conserve une valeur qu'elle sait douteuse.
+   * Ne concerne jamais une valeur qu'elle vient d'établir : celle-ci a sa
+   * provenance dans `method`.
+   */
+  countryIntegrity?: CountryIntegrity;
+  integrityReason?: IntegrityReason;
 };
 
 export type GeographyInput = {
@@ -185,7 +207,18 @@ const COLLIDING_CODES = new Set([
 function contradictsUs(parts: string[]): boolean {
   // Trois segments ou plus : « Hamburg, HH, de » n'est pas « ville, état ».
   if (parts.length > 2) return true;
-  // Un segment nomme un pays qui n'est pas les États-Unis.
+  return namesAnotherCountry(parts);
+}
+
+/**
+ * Un segment nomme-t-il explicitement un pays autre que les États-Unis ?
+ *
+ * Distinct de `contradictsUs` : celui-ci ne regarde QUE les noms de pays, sans
+ * le signal « trop de segments ». C'est ce qui distingue « Cordoba, AR-X,
+ * **Argentina** » (le pays est écrit, aucune ambiguïté) de « Bentonville, AR »
+ * (rien ne dit le pays, le code est ambigu).
+ */
+function namesAnotherCountry(parts: string[]): boolean {
   return parts.some((p) => {
     const named = COUNTRY_NAMES[upper(p)];
     return named !== undefined && named !== 'US';
@@ -229,6 +262,17 @@ const SUBDIVISION_NAMES: Record<string, Map<string, string>> = Object.fromEntrie
     new Map(Object.values(table).map((name) => [upper(name), name])),
   ]),
 );
+
+/**
+ * Les formes canoniques attendues en base, exposées pour les POST-CONDITIONS.
+ *
+ * Un invariant doit pouvoir vérifier « toute subdivision stockée appartient à la
+ * table de son pays » sans redéclarer les 50 états — une seconde liste finirait
+ * par diverger de celle qui écrit, et l'invariant validerait alors sa propre
+ * copie plutôt que la réalité.
+ */
+export const US_SUBDIVISION_NAMES: ReadonlySet<string> = new Set(Object.values(US_STATES));
+export const CA_SUBDIVISION_NAMES: ReadonlySet<string> = new Set(Object.values(CA_PROVINCES));
 
 /**
  * LA SEULE PORTE D'ENTRÉE de `adminArea1`.

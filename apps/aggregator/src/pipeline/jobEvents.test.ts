@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  changedEvents, diffStructuralFields, toEventRow, toNestedEventRow, truncateEventValue, EVENT_VALUE_MAX_LENGTH,
+  changedEvents, diffStructuralFields, structuralValuesOf, toEventRow, toNestedEventRow, truncateEventValue, EVENT_VALUE_MAX_LENGTH,
 } from './jobEvents.js';
 
 /**
@@ -8,6 +8,40 @@ import {
  * valeur change vraiment : la ré-attestation touche 70 000 lignes par nuit,
  * un « touché » par ligne noierait l'histoire sous du bruit.
  */
+/**
+ * LE PONT ENTRE LA COLONNE ET L'ÉVÉNEMENT.
+ *
+ * La colonne Prisma se nomme `countryCode` depuis le 2026-09-08 ; le champ
+ * d'événement reste `country`, parce que `JobEvent.field` porte cette valeur sur
+ * des milliers de lignes d'historique déjà écrites. Renommer l'événement
+ * désalignerait les vieux événements des nouveaux — on ne réécrit pas une
+ * histoire pour harmoniser un nom technique.
+ *
+ * Ce test existe parce que le bug est SILENCIEUX : sans le pont, la lecture
+ * dynamique `row['country']` sur une ligne qui n'a plus que `countryCode` rend
+ * `undefined`, et plus aucun changement de pays n'est jamais tracé. Aucun
+ * typecheck ne le dit ; seul un test d'exécution le voit.
+ */
+describe('structuralValuesOf — la colonne countryCode alimente le champ country', () => {
+  it('traduit le nom de colonne en nom d’événement', () => {
+    const values = structuralValuesOf({ title: 'Vendeur', city: 'Paris', countryCode: 'FR', companyId: 'c1', jobFunction: null });
+    expect(values.country).toBe('FR');
+  });
+
+  it('détecte un changement de pays de bout en bout', () => {
+    const before = structuralValuesOf({ title: 'Vendeur', countryCode: 'France' });
+    const after = structuralValuesOf({ title: 'Vendeur', countryCode: 'FR' });
+    expect(diffStructuralFields(before, after)).toEqual([
+      { field: 'country', before: 'France', after: 'FR' },
+    ]);
+  });
+
+  /** Un champ absent reste absent : la ré-attestation ne ré-écrit que ce qu'elle porte. */
+  it('ne fabrique pas une valeur pour une colonne absente', () => {
+    expect('country' in structuralValuesOf({ title: 'Vendeur' })).toBe(false);
+  });
+});
+
 describe('diffStructuralFields', () => {
   it('ne relève que les champs structurants dont la valeur diffère', () => {
     const before = { title: 'Vendeur', city: 'Paris', country: 'FR', companyId: 'c1', jobFunction: null };

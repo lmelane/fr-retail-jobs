@@ -146,7 +146,7 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
     ? {}
     : filters.country === 'FR'
       ? { isFrance: true }
-      : { OR: rawValuesForCode(filters.country).map((v) => ({ country: { equals: v, mode: 'insensitive' as const } })) };
+      : { OR: rawValuesForCode(filters.country).map((v) => ({ countryCode: { equals: v, mode: 'insensitive' as const } })) };
   const jobWhere = {
     isActive: true,
     ...countryWhere,
@@ -230,12 +230,12 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
   // is counted on its reliable flag; other countries fold their raw spellings
   // into one code.
   const [rawCountries, franceJobs] = await Promise.all([
-    prisma.job.groupBy({ by: ['country'], where: { isActive: true }, _count: true }),
+    prisma.job.groupBy({ by: ['countryCode'], where: { isActive: true }, _count: true }),
     prisma.job.count({ where: { isActive: true, isFrance: true } }),
   ]);
   const countryCounts = new Map<string, number>();
   for (const row of rawCountries) {
-    const code = countryCode(row.country);
+    const code = countryCode(row.countryCode);
     if (!code || code === 'FR') continue;
     countryCounts.set(code, (countryCounts.get(code) ?? 0) + row._count);
   }

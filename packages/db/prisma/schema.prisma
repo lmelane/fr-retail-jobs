@@ -260,7 +260,27 @@ model Job {
   source        AtsType
   title         String
   location      String?
-  country       String?
+  /**
+   * Le code ISO 3166-1 alpha-2 du pays — `FR`, `US`, `GB`, `JP`. Jamais un
+   * libellé libre : la normalisation a lieu à l'écriture (`normalizeCountry`).
+   * Nommée `countryCode` et non `country` parce qu'elle stocke précisément un
+   * code, pas un « pays » au sens large (renommage atomique du 2026-09-08).
+   */
+  countryCode   String?
+  /**
+   * Le pays stocké est-il une donnée sur laquelle on peut compter ?
+   *
+   * `null` = rien de suspect. `AMBIGUOUS` = la valeur est CONSERVÉE mais on
+   * sait qu'elle peut être fausse : *valeur legacy conservée ≠ valeur prouvée*
+   * (décision Loïc, 2026-09-08).
+   *
+   * Le cas mesuré : `CA` désigne à la fois le Canada et la Californie, et la
+   * base contient les deux sous ce code — « Toronto, CA » et « Los Angeles,
+   * CA ». La chaîne refuse de trancher sans preuve indépendante ; ce drapeau
+   * permet à l'observatoire de ne pas compter un `CA` douteux comme un Canada
+   * certain. Il disparaît de lui-même dès qu'une preuve apparaît.
+   */
+  countryIntegrity String?
   isFrance      Boolean  @default(false)
 
   // Geo, for the Leaflet map. Sources give a city and usually a postcode but
@@ -444,7 +464,7 @@ model Job {
   // Serves the map: only located, live French jobs are ever plotted.
   @@index([isFrance, isActive, latitude, longitude])
   // Intelligence : agrégats par pays / métier / séniorité, et les fenêtres J-7 / J-30.
-  @@index([isActive, country])
+  @@index([isActive, countryCode])
   @@index([isActive, jobFunction])
   @@index([isActive, seniority])
   @@index([firstSeenAt])

@@ -10,9 +10,9 @@ const q = <T,>(s: string) => p.$queryRawUnsafe<T[]>(s);
 const [row] = await q<any>(`
   SELECT
     count(*)::int AS actives,
-    count(DISTINCT country)::int AS pays_distincts,
-    count(*) FILTER (WHERE country IN ('FR','France','fr','FRANCE'))::int AS france_toutes_formes,
-    count(*) FILTER (WHERE country = 'FR')::int AS france_iso,
+    count(DISTINCT "countryCode")::int AS pays_distincts,
+    count(*) FILTER (WHERE "countryCode" IN ('FR','France','fr','FRANCE'))::int AS france_toutes_formes,
+    count(*) FILTER (WHERE "countryCode" = 'FR')::int AS france_iso,
     count(*) FILTER (WHERE city IS NULL)::int AS sans_ville,
     count(*) FILTER (WHERE city IS NULL AND location IS NOT NULL)::int AS ville_recuperable,
     count(*) FILTER (WHERE title IN ('Apply Now','Apply now','Postuler'))::int AS titre_bouton,

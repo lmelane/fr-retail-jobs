@@ -70,9 +70,9 @@ async function main(): Promise<void> {
 
   for (;;) {
     const rows = await prisma.job.findMany({
-      where: { isActive: true, country: { not: null } },
+      where: { isActive: true, countryCode: { not: null } },
       select: {
-        id: true, title: true, country: true, city: true, location: true, raw: true,
+        id: true, title: true, countryCode: true, city: true, location: true, raw: true,
         sources: { where: { isActive: true }, select: { sourceKey: true }, take: 1 },
       },
       orderBy: { id: 'asc' }, take: BATCH,
@@ -83,7 +83,7 @@ async function main(): Promise<void> {
 
     for (const row of rows) {
       scanned++;
-      if (!row.country || !AMBIGUOUS.has(row.country)) continue;
+      if (!row.countryCode || !AMBIGUOUS.has(row.countryCode)) continue;
 
       const payload =
         row.raw && typeof row.raw === 'object' && !Array.isArray(row.raw)
@@ -96,12 +96,12 @@ async function main(): Promise<void> {
         city: row.city,
         // Le pays déjà stocké arbitre les codes qui collisionnent : sans lui,
         // « Berlin, DE » et « El Segundo, CA » sont indiscernables.
-        legacyCountry: row.country,
+        legacyCountry: row.countryCode,
       });
 
-      if (!r.countryCode || r.countryCode === row.country) continue;
+      if (!r.countryCode || r.countryCode === row.countryCode) continue;
 
-      const key = `${row.country} → ${r.countryCode}`;
+      const key = `${row.countryCode} → ${r.countryCode}`;
       const source = row.sources[0]?.sourceKey ?? '(sans source)';
       const method = r.method ?? '(aucune)';
 
@@ -119,14 +119,14 @@ async function main(): Promise<void> {
         if (bucket.length < 3) {
           bucket.push(
             `location=« ${(row.location ?? '').slice(0, 30)} » city=${row.city ?? '-'} ` +
-            `legacy=${row.country} → ${r.countryCode} admin=${r.adminArea1 ?? '-'} [${method}]`,
+            `legacy=${row.countryCode} → ${r.countryCode} admin=${r.adminArea1 ?? '-'} [${method}]`,
           );
           samples.set(key, bucket);
         }
       } else {
         stillAmbiguous++;
         if (ambiguousSamples.length < 8) {
-          ambiguousSamples.push(`${row.country} → ${r.countryCode} via ${method} « ${(row.location ?? '').slice(0, 34)} »`);
+          ambiguousSamples.push(`${row.countryCode} → ${r.countryCode} via ${method} « ${(row.location ?? '').slice(0, 34)} »`);
         }
       }
     }

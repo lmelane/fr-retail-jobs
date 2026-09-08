@@ -11,7 +11,7 @@ import { familyOf, type JobFamily } from './taxonomy';
  * Maison, groupe, secteur, métier) et rend des nombres ou des lignes triées.
  *
  * Le pays est lu à la source : `isFrance` (fiable) pour la France, sinon les
- * graphies brutes de `Job.country` repliées sur un code ISO-2 via
+ * graphies de `Job.countryCode` repliées sur un code ISO-2 via
  * `lib/countries` — la prod est normalisée ISO, une copie locale plus ancienne
  * mélange « Italie » / « Italy » / « IT » ; la couche tient les deux.
  */
@@ -80,10 +80,10 @@ async function run<T>(query: Prisma.Sql): Promise<T[]> {
 }
 
 /**
- * Graphies brutes de `Job.country` (en minuscules) qui se replient sur un code.
+ * Graphies de `Job.countryCode` (en minuscules) qui se replient sur un code.
  * Lues en base, pas devinées : la liste des valeurs distinctes est courte.
  */
-const distinctCountries = cache(() => run<{ country: string }>(Prisma.sql`SELECT DISTINCT country FROM "Job" WHERE country IS NOT NULL`));
+const distinctCountries = cache(() => run<{ country: string }>(Prisma.sql`SELECT DISTINCT "countryCode" AS country FROM "Job" WHERE "countryCode" IS NOT NULL`));
 
 export async function countrySpellings(code: string): Promise<string[]> {
   // Mémorisé par requête (React cache) : la même liste servait 20 fois par page (audit I-5).
@@ -100,7 +100,7 @@ export async function scopeSql(scope: Scope): Promise<Prisma.Sql> {
     } else {
       const spellings = await countrySpellings(scope.country);
       if (spellings.length === 0) parts.push(Prisma.sql`FALSE`);
-      else parts.push(Prisma.sql`NOT j."isFrance" AND lower(j.country) IN (${Prisma.join(spellings)})`);
+      else parts.push(Prisma.sql`NOT j."isFrance" AND lower(j."countryCode") IN (${Prisma.join(spellings)})`);
     }
   }
   if (scope.city) parts.push(Prisma.sql`lower(j.city) = ${scope.city.toLowerCase()}`);
@@ -151,7 +151,7 @@ export async function closedFacts(scope: Scope = {}): Promise<ClosedFacts> {
 export async function byCountry(scope: Scope = {}): Promise<{ rows: CountryCount[]; unknown: number }> {
   const where = await scopeSql(scope);
   const raw = await run<{ isFrance: boolean; country: string | null; active: number; new30: number; companies: number }>(Prisma.sql`
-    SELECT j."isFrance" AS "isFrance", j.country, count(*)::int AS "active", ${NEW30} AS "new30",
+    SELECT j."isFrance" AS "isFrance", j."countryCode" AS country, count(*)::int AS "active", ${NEW30} AS "new30",
            count(DISTINCT j."companyId")::int AS "companies"
     ${FROM} WHERE j."isActive" AND ${where} GROUP BY 1, 2`);
   const merged = new Map<string, CountryCount>();
@@ -175,7 +175,7 @@ export async function byCountry(scope: Scope = {}): Promise<{ rows: CountryCount
 export async function byCity(scope: Scope = {}, limit = 50): Promise<CityCount[]> {
   const where = await scopeSql(scope);
   const raw = await run<{ isFrance: boolean; country: string | null; city: string; active: number; new30: number; companies: number }>(Prisma.sql`
-    SELECT j."isFrance" AS "isFrance", j.country, j.city, count(*)::int AS "active", ${NEW30} AS "new30",
+    SELECT j."isFrance" AS "isFrance", j."countryCode" AS country, j.city, count(*)::int AS "active", ${NEW30} AS "new30",
            count(DISTINCT j."companyId")::int AS "companies"
     ${FROM} WHERE j."isActive" AND j.city IS NOT NULL AND ${where} GROUP BY 1, 2, 3 ORDER BY 4 DESC`);
   const merged = new Map<string, CityCount>();
@@ -262,7 +262,7 @@ export async function topSkills(scope: Scope = {}, limit = 20): Promise<Count[]>
  */
 export async function newCities30d(companyId: string): Promise<{ city: string; code: string | null; firstSeenAt: string }[]> {
   const rows = await run<{ city: string; isFrance: boolean; country: string | null; first: string }>(Prisma.sql`
-    SELECT j.city, bool_or(j."isFrance") AS "isFrance", min(j.country) AS country,
+    SELECT j.city, bool_or(j."isFrance") AS "isFrance", min(j."countryCode") AS country,
            to_char(min(j."firstSeenAt") AT TIME ZONE 'UTC', 'YYYY-MM-DD') AS "first"
     FROM "Job" j WHERE j."companyId" = ${companyId} AND j.city IS NOT NULL
     GROUP BY j.city HAVING min(j."firstSeenAt") >= now() - interval '30 days' ORDER BY 4 DESC`);

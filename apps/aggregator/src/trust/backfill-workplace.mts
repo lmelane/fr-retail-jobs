@@ -67,7 +67,7 @@ async function run(): Promise<void> {
     const rows = await prisma.job.findMany({
       where: { isActive: true },
       select: {
-        id: true, title: true, description: true, raw: true, workplaceType: true, country: true,
+        id: true, title: true, description: true, raw: true, workplaceType: true, countryCode: true,
         sources: { where: { isActive: true }, select: { sourceKey: true }, take: 1 },
       },
       orderBy: { id: 'asc' }, take: BATCH,
@@ -142,7 +142,7 @@ async function run(): Promise<void> {
         bump(byOrigin, decided.origin);
         bump(byPath, `${decided.path}`);
         bump(bySource, sourceKey);
-        bump(byCountry, row.country ?? '(sans pays)');
+        bump(byCountry, row.countryCode ?? '(sans pays)');
         if (samples.length < 10) {
           samples.push(`${decided.type.padEnd(7)} ${decided.origin.padEnd(20)} ${decided.path.padEnd(20)} « ${row.title.slice(0, 42)} »`);
         }

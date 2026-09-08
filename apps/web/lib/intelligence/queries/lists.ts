@@ -60,7 +60,7 @@ export type DimRow = {
 async function dimensionRows(column: Prisma.Sql, base: (Count & { new30: number })[]): Promise<DimRow[]> {
   const [countries, companies, seniority] = await Promise.all([
     run<Cross>(Prisma.sql`
-      SELECT ${column} AS "dim", j."isFrance" AS "isFrance", j.country, count(*)::int AS "count"
+      SELECT ${column} AS "dim", j."isFrance" AS "isFrance", j."countryCode" AS country, count(*)::int AS "count"
       FROM "Job" j JOIN "Company" c ON c.id = j."companyId" WHERE j."isActive" GROUP BY 1, 2, 3`),
     run<CrossCompany>(Prisma.sql`
       SELECT * FROM (

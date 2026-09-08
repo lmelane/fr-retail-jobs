@@ -3,7 +3,7 @@ import { reattestationFields } from './upsert.js';
 import type { CandidateJob } from './match.js';
 
 const base = { sourceKey: 'hermes', sourceTier: 'EMPLOYER_DIRECT', externalId: 'H1', company: 'Hermès', url: 'https://x/1', raw: {} } as CandidateJob;
-const existing = { title: 'Apply Now', description: 'court', location: null, city: null, country: 'France', adminArea1: null, isFrance: false, postedAt: null, validThrough: null, language: null, employmentTerm: null, workTime: null, programType: null, engagementType: null, isSeasonal: null, workplaceType: null, salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null };
+const existing = { title: 'Apply Now', description: 'court', location: null, city: null, countryCode: 'France', adminArea1: null, isFrance: false, postedAt: null, validThrough: null, language: null, employmentTerm: null, workTime: null, programType: null, engagementType: null, isSeasonal: null, workplaceType: null, salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null };
 
 /**
  * Mesuré en prod le 2026-09-06 : après le premier run avec les normalisations
@@ -14,14 +14,14 @@ const existing = { title: 'Apply Now', description: 'court', location: null, cit
 describe('reattestationFields', () => {
   it('ré-écrit le pays en ISO et dérive la ville depuis le lieu, quelle que soit la source', () => {
     const out = reattestationFields({ ...base, title: 'Vendeur', country: 'France', location: 'Paris, 75008' }, existing, false);
-    expect(out.country).toBe('FR');
+    expect(out.countryCode).toBe('FR');
     expect(out.city).toBe('Paris');
     expect(out.location).toBe('Paris, 75008');
     expect(out.title).toBeUndefined();
   });
 
   it('n’efface jamais un pays ou une ville que le candidat ne porte pas', () => {
-    const out = reattestationFields({ ...base, title: 'Vendeur' }, { ...existing, country: 'FR', adminArea1: null, city: 'Paris' }, false);
+    const out = reattestationFields({ ...base, title: 'Vendeur' }, { ...existing, countryCode: 'FR', adminArea1: null, city: 'Paris' }, false);
     expect(out).toEqual({});
   });
 
@@ -50,7 +50,7 @@ describe('reattestationFields', () => {
   it('dérive la subdivision depuis le lieu à la ré-attestation', () => {
     const out = reattestationFields({ ...base, title: 'Vendeur', location: 'Columbus, Ohio' }, existing, false);
     expect(out.adminArea1).toBe('Ohio');
-    expect(out.country).toBe('US');
+    expect(out.countryCode).toBe('US');
   });
 
   /**
@@ -60,7 +60,7 @@ describe('reattestationFields', () => {
   it('efface une subdivision que la chaîne ne reconnaît plus', () => {
     const out = reattestationFields(
       { ...base, title: 'Vendeur', country: 'Australia', location: 'Success, WA' },
-      { ...existing, country: 'AU', adminArea1: 'Washington' },
+      { ...existing, countryCode: 'AU', adminArea1: 'Washington' },
       false,
     );
     expect(out.adminArea1).toBeNull();
@@ -69,7 +69,7 @@ describe('reattestationFields', () => {
   it('ne touche pas une subdivision déjà correcte', () => {
     const out = reattestationFields(
       { ...base, title: 'Vendeur', location: 'Columbus, Ohio' },
-      { ...existing, country: 'US', city: 'Columbus', location: 'Columbus, Ohio', adminArea1: 'Ohio' },
+      { ...existing, countryCode: 'US', city: 'Columbus', location: 'Columbus, Ohio', adminArea1: 'Ohio' },
       false,
     );
     expect(out.adminArea1).toBeUndefined();

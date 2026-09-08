@@ -56,7 +56,7 @@ async function main(): Promise<void> {
     const rows = await prisma.job.findMany({
       where: { isActive: true },
       select: {
-        id: true, title: true, country: true, city: true, location: true, raw: true,
+        id: true, title: true, countryCode: true, city: true, location: true, raw: true,
         sources: { where: { isActive: true }, select: { sourceKey: true }, take: 1 },
       },
       orderBy: { id: 'asc' }, take: BATCH,
@@ -67,7 +67,7 @@ async function main(): Promise<void> {
 
     for (const row of rows) {
       scanned++;
-      if (row.country) hasCountryNow++;
+      if (row.countryCode) hasCountryNow++;
       if (row.city) hasCityNow++;
 
       const payload =
@@ -91,21 +91,21 @@ async function main(): Promise<void> {
        * comble ce qui manque.
        */
       const legacyCountryIsWrong =
-        row.country !== null &&
-        AMBIGUOUS_CODES.has(row.country) &&
+        row.countryCode !== null &&
+        AMBIGUOUS_CODES.has(row.countryCode) &&
         resolved.countryCode !== undefined &&
-        resolved.countryCode !== row.country;
+        resolved.countryCode !== row.countryCode;
 
       const finalCountryValue = legacyCountryIsWrong
         ? resolved.countryCode
-        : (row.country ?? resolved.countryCode);
+        : (row.countryCode ?? resolved.countryCode);
       const finalCityValue = row.city && isValidCityName(row.city) ? row.city : resolved.city;
 
       if (finalCountryValue) finalCountry++;
       if (finalCityValue) finalCity++;
       if (resolved.adminArea1) finalAdmin1++;
 
-      if (!row.country && resolved.countryCode) {
+      if (!row.countryCode && resolved.countryCode) {
         countryGained++;
         if (resolved.method) bump(byMethod, resolved.method);
         bump(bySource, row.sources[0]?.sourceKey ?? '(sans source)');
@@ -114,7 +114,7 @@ async function main(): Promise<void> {
       if (legacyCountryIsWrong) {
         countryCorrected++;
         if (corrections.length < 10) {
-          corrections.push(`${row.country} → ${resolved.countryCode} (${resolved.adminArea1 ?? '-'}) « ${(row.location ?? '').slice(0, 34)} »`);
+          corrections.push(`${row.countryCode} → ${resolved.countryCode} (${resolved.adminArea1 ?? '-'}) « ${(row.location ?? '').slice(0, 34)} »`);
         }
       }
       if (row.city && !isValidCityName(row.city)) {

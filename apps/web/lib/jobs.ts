@@ -7,9 +7,10 @@ import { offerIdCandidates } from './offer-url';
 /**
  * Prisma condition for a Pays filter code.
  *
- * France is matched on the isFrance flag (reliable, unlike the raw `country`
- * which appears as "France"/"FR"/"fr"). Any other code matches the raw
- * spellings that normalize to it, case-insensitively.
+ * France is matched on the isFrance flag. Any other code matches the spellings
+ * that normalize to it, case-insensitively — a safety net for legacy rows: the
+ * column is 100% ISO-2 as of 2026-09-08 (measured: 66 882 rows, 0 free-form),
+ * but a spelling that has not been re-attested yet must still be reachable.
  */
 function countryCondition(code: string | undefined) {
   if (!code) return {};
@@ -17,7 +18,7 @@ function countryCondition(code: string | undefined) {
   // `in` has no case-insensitive mode in Prisma, and the stored values vary in
   // case ("Italie"/"IT"/"it"), so match each spelling with equals-insensitive.
   const spellings = rawValuesForCode(code);
-  return { OR: spellings.map((value) => ({ country: { equals: value, mode: 'insensitive' as const } })) };
+  return { OR: spellings.map((value) => ({ countryCode: { equals: value, mode: 'insensitive' as const } })) };
 }
 
 /**
@@ -170,8 +171,8 @@ export type JobRow = {
   salaryCurrency: string | null;
   salaryPeriod: string | null;
   validThrough: Date | null;
-  /** Raw country as the source wrote it; canonicalized via lib/countries. */
-  country: string | null;
+  /** Code pays ISO-2 tel que stocke ; libelle via lib/countries. */
+  countryCode: string | null;
   /** ISO-639-1 language of the posting text, when detected at ingest. */
   language: string | null;
   /** First sighting — the honest datePosted fallback when the source ships none. */
@@ -319,7 +320,7 @@ async function countFacets(
     }),
     // Country facet: group the raw spellings, normalize them below. Uses the
     // country-free where so every country stays offered, not just the selected one.
-    prisma.job.groupBy({ by: ['country'], where: whereForCountry, _count: true }),
+    prisma.job.groupBy({ by: ['countryCode'], where: whereForCountry, _count: true }),
     // France is counted on the reliable flag, not its three raw spellings.
     prisma.job.count({ where: { ...whereForCountry, isFrance: true } }),
   ]);
@@ -354,7 +355,7 @@ async function countFacets(
   // flag), and prepend France so it leads the list when present.
   const countryCounts = new Map<string, number>();
   for (const row of rawCountries) {
-    const code = countryCode(row.country);
+    const code = countryCode(row.countryCode);
     if (!code || code === 'FR') continue;
     countryCounts.set(code, (countryCounts.get(code) ?? 0) + row._count);
   }
@@ -383,7 +384,7 @@ function toRow(row: {
   department: string | null; workTime: string | null; workplaceType: string | null;
   experienceYears: number | null; educationLevel: string | null; salaryMin: number | null;
   salaryMax: number | null; salaryCurrency: string | null; salaryPeriod: string | null;
-  validThrough: Date | null; country: string | null; language: string | null; firstSeenAt: Date;
+  validThrough: Date | null; countryCode: string | null; language: string | null; firstSeenAt: Date;
   jobFunction: string | null; seniority: string | null;
 }): JobRow {
   return {
@@ -420,7 +421,7 @@ function toRow(row: {
     salaryCurrency: row.salaryCurrency,
     salaryPeriod: row.salaryPeriod,
     validThrough: row.validThrough,
-    country: row.country,
+    countryCode: row.countryCode,
     language: row.language,
     firstSeenAt: row.firstSeenAt,
   };
@@ -536,7 +537,7 @@ export async function getCompanyAside(companyName: string): Promise<CompanyAside
     const [agg] = await prisma.$queryRaw<{ jobs: bigint; cities: bigint; countries: bigint }[]>`
       SELECT count(*)::bigint AS jobs,
              count(DISTINCT lower(city))::bigint AS cities,
-             count(DISTINCT country)::bigint AS countries
+             count(DISTINCT "countryCode")::bigint AS countries
       FROM "Job" WHERE "companyId" = ${company.id} AND "isActive"`;
     return {
       openJobs: Number(agg?.jobs ?? 0),
@@ -808,9 +809,9 @@ export async function landingStats(): Promise<{
       prisma.job.count({ where: { isActive: true } }),
       prisma.company.count({ where: { jobs: { some: { isActive: true } } } }),
       prisma.job.findMany({
-        where: { isActive: true, country: { not: null } },
-        select: { country: true },
-        distinct: ['country'],
+        where: { isActive: true, countryCode: { not: null } },
+        select: { countryCode: true },
+        distinct: ['countryCode'],
       }),
       // A Maison is "new this week" when it has live offers now and had NONE
       // older than a week — its first sighting is recent, not just one more
@@ -824,7 +825,7 @@ export async function landingStats(): Promise<{
       prisma.job.findFirst({ orderBy: { firstSeenAt: 'asc' }, select: { firstSeenAt: true } }),
     ]);
     // Raw country spellings collapse to canonical codes (IT/Italy/it -> IT).
-    const codes = new Set(countryRows.map((r) => countryCode(r.country)).filter(Boolean));
+    const codes = new Set(countryRows.map((r) => countryCode(r.countryCode)).filter(Boolean));
     // « +810 cette semaine » sur 810 Maisons après un fresh start se lit comme
     // un bug : tant que la base n'a pas 7 jours d'historique, le delta est un
     // artefact — masqué (0), il réapparaît de lui-même à J+7.

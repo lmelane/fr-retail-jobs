@@ -184,7 +184,7 @@ describe('upsertDeduplicated — ré-attestation ré-écrit les champs normalis�
       candidate({ sourceKey: 'loreal', externalId: 'L1', company: "L'Oréal", title: 'Apply Now', location: 'Paris', country: 'FR', description: 'court' }),
     );
     // Simule une ligne héritée : pays brut, ville absente.
-    await prisma.job.updateMany({ where: {}, data: { country: 'France', city: null, title: 'Apply Now' } });
+    await prisma.job.updateMany({ where: {}, data: { countryCode: 'France', city: null, title: 'Apply Now' } });
 
     const result = await upsertDeduplicated(
       prisma,
@@ -192,7 +192,7 @@ describe('upsertDeduplicated — ré-attestation ré-écrit les champs normalis�
     );
     expect(result.outcome).toBe('UPDATED');
     const job = await prisma.job.findFirstOrThrow();
-    expect(job.country).toBe('FR');
+    expect(job.countryCode).toBe('FR');
     expect(job.city).toBe('Paris');
     expect(job.title).toBe('Chef de produit');
     expect(job.description).toContain('nettement plus riche');

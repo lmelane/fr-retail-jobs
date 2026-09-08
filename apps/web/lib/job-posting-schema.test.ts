@@ -18,7 +18,7 @@ const base: JobRow = {
   programType: null, engagementType: null, isSeasonal: null,
   experienceYears: null, educationLevel: null, salaryMin: null, salaryMax: null,
   salaryCurrency: null, salaryPeriod: null, validThrough: null,
-  country: 'France', language: 'fr', firstSeenAt: new Date('2026-09-01T00:00:00Z'),
+  countryCode: 'FR', language: 'fr', firstSeenAt: new Date('2026-09-01T00:00:00Z'),
 };
 
 describe('jobPostingSchema', () => {
@@ -50,11 +50,11 @@ describe('jobPostingSchema', () => {
     const fr = jobPostingSchema(base) as { jobLocation: { address: Record<string, unknown> } };
     expect(fr.jobLocation.address.addressCountry).toBe('FR');
 
-    const it_ = jobPostingSchema({ ...base, country: 'Italia' }) as typeof fr;
+    const it_ = jobPostingSchema({ ...base, countryCode: 'IT' }) as typeof fr;
     expect(it_.jobLocation.address.addressCountry).toBe('IT');
 
     // Unknown country: the field is OMITTED — a Milan offer must never say FR.
-    const unknown = jobPostingSchema({ ...base, country: null }) as typeof fr;
+    const unknown = jobPostingSchema({ ...base, countryCode: null }) as typeof fr;
     expect('addressCountry' in unknown.jobLocation.address).toBe(false);
   });
 

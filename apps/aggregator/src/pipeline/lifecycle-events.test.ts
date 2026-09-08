@@ -138,7 +138,7 @@ describe('upsert — OPENED, CHANGED, REOPENED', () => {
 
   it('un pays normalisé qui change écrit CHANGED(country) — l’auto-guérison laisse une trace', async () => {
     const created = await upsertDeduplicated(prisma, candidate({ externalId: 'G4', title: 'Vendeur', country: 'FR' }));
-    await prisma.job.update({ where: { id: created.jobId }, data: { country: 'France' } }); // ligne héritée
+    await prisma.job.update({ where: { id: created.jobId }, data: { countryCode: 'France' } }); // ligne héritée
     await upsertDeduplicated(prisma, candidate({ externalId: 'G4', title: 'Vendeur', country: 'France' }));
     expect(await eventsOf(created.jobId)).toContainEqual({ type: 'CHANGED', field: 'country', before: 'France', after: 'FR' });
   });

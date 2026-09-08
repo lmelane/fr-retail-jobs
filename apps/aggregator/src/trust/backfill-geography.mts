@@ -17,7 +17,8 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import { resolveGeography } from '../normalize/geography.js';
+import { resolveGeography, US_SUBDIVISION_NAMES, CA_SUBDIVISION_NAMES } from '../normalize/geography.js';
+import { checkInvariants, formatInvariants, type Invariant } from './postconditions.js';
 
 const prisma = new PrismaClient();
 const BATCH = 5000;
@@ -25,6 +26,41 @@ const APPLY = process.argv.includes('--apply');
 
 /** Les méthodes autorisées à ÉCRASER une valeur existante : un champ déclaré. */
 const CAN_CORRECT = new Set(['RAW_COUNTRY', 'RAW_COUNTRY_CODE']);
+
+/** Une ligne telle qu'elle SERA en base, toutes écritures appliquées. */
+type FinalRow = { id: string; countryCode: string | null; adminArea1: string | null };
+
+/**
+ * Ce que la base doit vérifier APRÈS la migration — des propriétés, pas des
+ * comptes. « Aucune subdivision hors table » reste vrai quand le volume change ;
+ * « exactement 15 845 subdivisions » serait faux dès le lendemain.
+ */
+const INVARIANTS: Invariant<FinalRow>[] = [
+  {
+    name: 'une subdivision n’existe que sous un pays dont on possède la table',
+    violates: (r) => r.adminArea1 !== null && r.countryCode !== 'US' && r.countryCode !== 'CA',
+    describe: (r) => `${r.countryCode ?? 'sans pays'} → « ${r.adminArea1} »`,
+  },
+  {
+    name: 'une subdivision est toujours une forme canonique de son pays',
+    violates: (r) => {
+      if (r.adminArea1 === null) return false;
+      const table = r.countryCode === 'US' ? US_SUBDIVISION_NAMES : r.countryCode === 'CA' ? CA_SUBDIVISION_NAMES : undefined;
+      return !table?.has(r.adminArea1);
+    },
+    describe: (r) => `${r.countryCode} → « ${r.adminArea1} » (hors table)`,
+  },
+  {
+    name: 'une subdivision sans pays est impossible',
+    violates: (r) => r.adminArea1 !== null && r.countryCode === null,
+    describe: (r) => `« ${r.adminArea1} » sans pays`,
+  },
+  {
+    name: 'un pays stocké est un code ISO-2',
+    violates: (r) => r.countryCode !== null && !/^[A-Z]{2}$/.test(r.countryCode),
+    describe: (r) => `« ${r.countryCode} »`,
+  },
+];
 
 async function main(): Promise<void> {
   let scanned = 0;
@@ -41,11 +77,17 @@ async function main(): Promise<void> {
   /** Corrections REFUSÉES faute de preuve indépendante — elles restent en base. */
   let ambiguousRefused = 0;
   const updates: { id: string; data: Record<string, string | null> }[] = [];
+  /**
+   * ÉTAPE 2 — l'état final SIMULÉ : chaque ligne telle qu'elle sera une fois
+   * l'écriture appliquée (ou non appliquée, si rien ne la concerne). C'est cette
+   * population, et non la liste des écritures, que les invariants jugent.
+   */
+  const finalState: FinalRow[] = [];
 
   for (;;) {
     const rows = await prisma.job.findMany({
       where: { isActive: true },
-      select: { id: true, country: true, city: true, location: true, adminArea1: true, raw: true },
+      select: { id: true, countryCode: true, city: true, location: true, adminArea1: true, raw: true },
       orderBy: { id: 'asc' }, take: BATCH,
       ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
     });
@@ -54,7 +96,7 @@ async function main(): Promise<void> {
 
     for (const row of rows) {
       scanned++;
-      if (row.country) countryBefore++;
+      if (row.countryCode) countryBefore++;
       if (row.city) cityBefore++;
 
       const payload =
@@ -66,21 +108,21 @@ async function main(): Promise<void> {
         rawCountry: typeof payload.country === 'string' ? payload.country : undefined,
         location: row.location,
         city: row.city,
-        legacyCountry: row.country,
+        legacyCountry: row.countryCode,
       });
 
       const data: Record<string, string> = {};
       let clearAdmin = false;
 
       // — COMPLÉTUDE : combler un vide, jamais risqué —
-      if (!row.country && r.countryCode) {
-        data.country = r.countryCode;
+      if (!row.countryCode && r.countryCode) {
+        data.countryCode = r.countryCode;
         countryAdded++;
       }
       // — QUALITÉ : corriger une valeur existante, sous preuve déclarée —
-      else if (row.country && r.countryCode && r.countryCode !== row.country) {
+      else if (row.countryCode && r.countryCode && r.countryCode !== row.countryCode) {
         if (r.method && CAN_CORRECT.has(r.method)) {
-          data.country = r.countryCode;
+          data.countryCode = r.countryCode;
           countryCorrected++;
         } else {
           // Sans preuve indépendante, la valeur existante reste : « null ou
@@ -122,6 +164,15 @@ async function main(): Promise<void> {
       if (clearAdmin || Object.keys(data).length > 0) {
         updates.push({ id: row.id, data: clearAdmin ? { ...data, adminArea1: null } : data });
       }
+
+      // L'état RÉSULTANT de cette ligne : la valeur écrite si elle change, la
+      // valeur existante sinon. Une ligne que ce lot ne touche pas compte
+      // autant que les autres — c'est justement là que dormaient les 703.
+      finalState.push({
+        id: row.id,
+        countryCode: data.countryCode ?? row.countryCode,
+        adminArea1: clearAdmin ? null : data.adminArea1 ?? row.adminArea1,
+      });
     }
     process.stderr.write(`  … ${scanned}\r`);
   }
@@ -139,6 +190,23 @@ async function main(): Promise<void> {
   console.log(`  canonicalisés (« FL » → « Florida ») : ${adminCanonical}`);
   console.log(`  EFFACÉS (non reconnus)      : ${adminCleared}`);
   console.log(`\nLignes à modifier : ${updates.length}`);
+
+  /**
+   * ÉTAPE 3 — les invariants de l'ÉTAT FINAL, pas des écritures.
+   *
+   * Le compte ci-dessus dit ce qu'on va écrire. Ces invariants disent à quoi la
+   * base ressemblera une fois TOUTES les écritures combinées — c'est ce contrôle
+   * qui, le 2026-09-08, a trouvé 703 subdivisions inventées qu'aucun dry-run
+   * n'avait pu voir.
+   */
+  const { text, ok } = formatInvariants(checkInvariants(finalState, INVARIANTS));
+  console.log(`\nINVARIANTS DE L'ÉTAT FINAL`);
+  console.log(text);
+  if (!ok) {
+    console.error(`\n✗ L'état final violerait un invariant — rien n'est écrit.`);
+    await prisma.$disconnect();
+    process.exit(1);
+  }
 
   if (APPLY) {
     console.log(`\n=== ÉCRITURE ===`);

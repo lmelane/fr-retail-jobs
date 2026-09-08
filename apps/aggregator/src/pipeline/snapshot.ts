@@ -169,7 +169,12 @@ function baseCte(mode: SnapshotMode, start: Date, end: Date): Prisma.Sql {
       SELECT
         j.id,
         j."companyId",
-        j.country,
+        -- La colonne se nomme countryCode ; la DIMENSION statistique se nomme
+        -- country, et elle doit le rester : MarketSnapshot.scope porte cette
+        -- valeur sur des milliers de lignes d historique. Renommer la dimension
+        -- pour suivre un nom technique casserait la comparaison avec les
+        -- photographies deja prises. L alias tient les deux.
+        j."countryCode" AS country,
         j.city,
         c."parentGroup",
         c.sector::text AS sector,

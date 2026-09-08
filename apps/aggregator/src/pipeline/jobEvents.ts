@@ -34,6 +34,40 @@ export type JobEventInput = {
 
 type StructuralValues = Partial<Record<StructuralField, string | null | undefined>>;
 
+/**
+ * Le PONT entre le nom de COLONNE et le nom d'ÉVÉNEMENT.
+ *
+ * La colonne se nomme `countryCode` depuis le renommage du 2026-09-08 ; le champ
+ * d'événement reste `country`, parce que `JobEvent.field` porte déjà cette
+ * valeur sur des milliers de lignes d'historique. Renommer l'événement
+ * désalignerait les anciens des nouveaux — on ne réécrit pas une histoire pour
+ * harmoniser un nom technique (décision Loïc).
+ *
+ * Toute future divergence colonne/événement passe par ici, et par nulle part
+ * ailleurs : c'est le seul endroit où les deux vocabulaires se rencontrent.
+ */
+const COLUMN_TO_EVENT_FIELD: Record<string, StructuralField> = { countryCode: 'country' };
+
+/**
+ * Projette une ligne (ou un patch) Prisma sur le vocabulaire des événements.
+ *
+ * Sans cette projection, `diffStructuralFields` lit `row['country']` sur une
+ * ligne qui ne porte plus que `countryCode` : elle trouve `undefined`, conclut
+ * « inchangé », et AUCUN changement de pays n'est plus jamais tracé. Le bug est
+ * muet — pas d'erreur, pas de type qui proteste, juste une histoire qui s'arrête.
+ */
+export function structuralValuesOf(row: Record<string, unknown>): StructuralValues {
+  const out: StructuralValues = {};
+  for (const field of STRUCTURAL_FIELDS) {
+    // Le nom de colonne correspondant à ce champ d'événement, s'il diffère.
+    const column = Object.keys(COLUMN_TO_EVENT_FIELD).find((c) => COLUMN_TO_EVENT_FIELD[c] === field) ?? field;
+    // `in` et non `?.` : un champ ABSENT doit rester absent (inchangé), là où
+    // une valeur `null` présente est un effacement réel.
+    if (column in row) out[field] = row[column] as string | null | undefined;
+  }
+  return out;
+}
+
 export type StructuralChange = { field: StructuralField; before: string | null; after: string | null };
 
 /** Tronque à 200 caractères ; `null`/`undefined` restent `null`. */

@@ -80,7 +80,7 @@ export function jobPostingSchema(job: JobRow, now = new Date()): Record<string, 
   const horizon = new Date(now.getTime() + VALID_THROUGH_HORIZON_DAYS * 86_400_000);
   const validThrough = job.validThrough && job.validThrough.getTime() > now.getTime() ? job.validThrough : horizon;
   const employmentTypes = schemaEmploymentTypes(job.employmentTerm, job.workTime, job.programType, job.engagementType);
-  const country = countryCode(job.country);
+  const country = countryCode(job.countryCode);
 
   return {
     '@context': 'https://schema.org',

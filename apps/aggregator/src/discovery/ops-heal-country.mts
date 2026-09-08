@@ -12,13 +12,13 @@ import { isFranceJob } from '../lib/france.js';
 const p = new PrismaClient();
 const rows = await p.job.findMany({
   where: { isActive: true },
-  select: { id: true, country: true, location: true, city: true, isFrance: true },
+  select: { id: true, countryCode: true, location: true, city: true, isFrance: true },
 });
 let country = 0, france = 0, city = 0;
 for (const r of rows) {
   const data: Record<string, unknown> = {};
-  const iso = r.country && /^[A-Z]{2}$/.test(r.country) ? r.country : normalizeCountry(r.country) ?? countryFromLocation(r.location) ?? null;
-  if (iso !== r.country && iso) { data.country = iso; country++; }
+  const iso = r.countryCode && /^[A-Z]{2}$/.test(r.countryCode) ? r.countryCode : normalizeCountry(r.countryCode) ?? countryFromLocation(r.location) ?? null;
+  if (iso !== r.countryCode && iso) { data.countryCode = iso; country++; }
   const isFrance = isFranceJob(iso ?? undefined, r.location);
   if (isFrance !== r.isFrance) { data.isFrance = isFrance; france++; }
   const canon = displayCity(r.city);

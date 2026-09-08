@@ -88,7 +88,7 @@ export async function separateFusedJobs(prisma: PrismaClient): Promise<Separatio
             source: job.source,
             title: source.title ?? job.title,
             location: job.location,
-            country: job.country,
+            countryCode: job.countryCode,
             isFrance: job.isFrance,
             city: job.city,
             postalCode: job.postalCode,

@@ -112,8 +112,7 @@ describe('resolveGeography — adminArea1 : jamais un libellé non reconnu', () 
   /**
    * « Success, WA » est en AUSTRALIE (Western Australia), pas dans l'état de
    * Washington : la table US ne s'applique que si le pays est US.
-   */
-  /**
+   *
    * `legacyCountry` est un ARBITRE, pas une sortie : la fonction ne republie
    * pas le pays déjà stocké, elle s'en sert pour refuser une lecture. Le
    * backfill, lui, conserve la valeur existante.
@@ -181,6 +180,65 @@ describe('resolveGeography — un pays stocké qui n’en est pas un', () => {
     const r = resolveGeography({ location: 'Buenos Aires, AR-B, Argentina', legacyCountry: 'AR' });
     expect(r.countryCode).toBe('AR');
     expect(r.adminArea1).toBeUndefined();
+  });
+});
+
+/**
+ * L'INTÉGRITÉ DU PAYS — décision Loïc du 2026-09-08.
+ *
+ * *« Valeur legacy conservée ≠ valeur considérée comme prouvée. »* La chaîne
+ * refuse de corriger 36 offres dont le `country` stocké est un code qui
+ * collisionne avec une subdivision (« Scottsdale, AZ », « North Little Rock,
+ * AR »). Elle a raison de refuser — mais l'observatoire ne doit pas compter un
+ * `AR` douteux comme une Argentine certaine.
+ *
+ * On ne corrige pas, on SIGNALE. Le jour où une preuve indépendante apparaît
+ * (code postal, coordonnées, champ raw), le moteur tranche tout seul.
+ */
+describe('resolveGeography — countryIntegrity', () => {
+  /**
+   * LA CHAÎNE NE MARQUE RIEN PAR ELLE-MÊME, et c'est une décision, pas un oubli.
+   *
+   * Une première version signalait « le pays stocké est le code du suffixe »
+   * (« Scottsdale, AZ » sous le pays AZ). Mesuré en prod : ce critère marquait
+   * **1 725 offres**, dont Berlin/Munich sous `DE` (594) et le Canada sous `CA`
+   * (307) — tous parfaitement justes. « Berlin, DE » et « Scottsdale, AZ » ont
+   * EXACTEMENT la même forme ; seule une table ville→pays les sépare, et on n'en
+   * a pas.
+   *
+   * Le marquage vit donc au niveau de l'INVENTAIRE (`mark-ambiguous-country`),
+   * qui peut constater qu'un code n'est attesté nulle part dans la base —
+   * une propriété du corpus, pas de l'offre. Le garder ici rendrait
+   * `resolveGeography` dépendante de l'état de la base, donc non rejouable.
+   */
+  it.each([
+    ['Scottsdale, AZ', 'AZ'],
+    ['Berlin, DE', 'DE'],
+    ['Toronto, CA', 'CA'],
+    ['North Little Rock, AR', 'AR'],
+  ])('%s ne porte jamais de marque : la forme seule ne prouve rien', (location, legacyCountry) => {
+    expect(resolveGeography({ location, legacyCountry }).countryIntegrity).toBeUndefined();
+  });
+
+  /**
+   * Le contre-cas qui reste vrai : « Cordoba, AR-X, Argentina » porte le pays
+   * en toutes lettres. 24 des 37 offres « AR » sont dans ce cas — elles sont
+   * ATTESTÉES et ne relèvent d'aucun doute.
+   */
+  it.each([
+    'Cordoba, AR-X, Argentina',
+    'Buenos Aires, AR-B, Argentina',
+    'Rosario, AR-S, Argentina',
+  ])('%s est attestée par le pays nommé', (location) => {
+    expect(resolveGeography({ location, legacyCountry: 'AR' }).countryCode).toBe('AR');
+  });
+
+  /** Une preuve indépendante tranche pour de bon : plus aucun doute. */
+  it('un champ pays déclaré par la source résout la collision', () => {
+    const r = resolveGeography({ location: 'Scottsdale, AZ', legacyCountry: 'AZ', rawCountryCode: 'US' });
+    expect(r.countryCode).toBe('US');
+    expect(r.adminArea1).toBe('Arizona');
+    expect(r.countryIntegrity).toBeUndefined();
   });
 });
 

@@ -51,9 +51,9 @@ describe('whereClause — combined company filters do not collide', () => {
 
   it('a non-FR country matches its raw spellings case-insensitively', () => {
     const where = whereClause({ country: 'IT' });
-    const or = (where as { OR?: { country?: { equals?: string } }[] }).OR;
+    const or = (where as { OR?: { countryCode?: { equals?: string } }[] }).OR;
     expect(Array.isArray(or)).toBe(true);
-    expect(or!.some((c) => c.country?.equals?.toLowerCase() === 'italie')).toBe(true);
+    expect(or!.some((c) => c.countryCode?.equals?.toLowerCase() === 'italie')).toBe(true);
   });
 
   it('search terms go under AND, not company (so q + maison coexist)', () => {

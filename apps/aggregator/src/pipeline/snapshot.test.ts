@@ -44,7 +44,7 @@ async function seed(companyId: string, rows: Seed[]) {
     await prisma.job.create({
       data: {
         companyId, externalId: row.ext, source: 'GENERIC_JSONLD', title: `Poste ${row.ext}`, url: `https://x/${row.ext}`,
-        fingerprint: `fp-${row.ext}`, city: row.city, country: row.country, firstSeenAt: row.firstSeenAt,
+        fingerprint: `fp-${row.ext}`, city: row.city, countryCode: row.country, firstSeenAt: row.firstSeenAt,
         closedAt: row.closedAt ?? null, isActive: row.isActive ?? true,
         jobFunction: row.jobFunction ?? null, isRetail: row.isRetail ?? null, isAiRelated: row.isAiRelated ?? false,
         seniority: row.seniority ?? null, employmentTerm: row.employmentTerm ?? null,
@@ -221,7 +221,7 @@ describe('runSnapshot — backfill (reconstruction)', () => {
     await prisma.job.create({
       data: {
         companyId: acme.id, externalId: 'old', source: 'GENERIC_JSONLD', title: 'Ancienne', url: 'https://x/old', fingerprint: 'fp-old',
-        firstSeenAt: daysAgo(10), lastSeenAt: daysAgo(5), isActive: false, closedAt: null, country: 'FR',
+        firstSeenAt: daysAgo(10), lastSeenAt: daysAgo(5), isActive: false, closedAt: null, countryCode: 'FR',
       },
     });
     await runSnapshot(prisma, { now: NOW, backfillFrom: daysAgo(6) });
