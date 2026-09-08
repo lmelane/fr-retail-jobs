@@ -32,6 +32,7 @@ type Seed = {
   closedAt?: Date;
   isActive?: boolean;
   jobFunction?: string;
+  employmentTerm?: string;
   isRetail?: boolean;
   isAiRelated?: boolean;
   seniority?: string;
@@ -46,7 +47,7 @@ async function seed(companyId: string, rows: Seed[]) {
         fingerprint: `fp-${row.ext}`, city: row.city, country: row.country, firstSeenAt: row.firstSeenAt,
         closedAt: row.closedAt ?? null, isActive: row.isActive ?? true,
         jobFunction: row.jobFunction ?? null, isRetail: row.isRetail ?? null, isAiRelated: row.isAiRelated ?? false,
-        seniority: row.seniority ?? null, contract: row.contract ?? null,
+        seniority: row.seniority ?? null, employmentTerm: row.employmentTerm ?? null,
       },
     });
   }
@@ -60,7 +61,7 @@ async function scenario() {
     data: { name: 'Beta', canonicalKey: 'beta', fashionjobsUrl: 'resolved:beta', sector: 'FASHION', parentGroup: 'GroupB' },
   });
   await seed(acme.id, [
-    { ext: 'a1', city: 'Paris', country: 'FR', firstSeenAt: NOW, jobFunction: 'retail-client-advisor', isRetail: true, seniority: 'JUNIOR', contract: 'CDI' },
+    { ext: 'a1', city: 'Paris', country: 'FR', firstSeenAt: NOW, jobFunction: 'retail-client-advisor', isRetail: true, seniority: 'JUNIOR', employmentTerm: 'PERMANENT' },
     { ext: 'a2', city: 'Paris', country: 'FR', firstSeenAt: daysAgo(10) },
     { ext: 'a3', city: 'Paris', country: 'FR', firstSeenAt: daysAgo(10), jobFunction: 'atelier-craft', isRetail: false },
     { ext: 'a4', city: 'Paris', country: 'FR', firstSeenAt: daysAgo(10), jobFunction: 'finance', isRetail: false, isAiRelated: true },
@@ -139,8 +140,8 @@ describe('runSnapshot — le jour même (live)', () => {
     // Séniorité, contrat, IA.
     expect(await row('seniority', 'JUNIOR')).toMatchObject({ activeJobs: 1 });
     expect(await row('seniority', 'unclassified')).toMatchObject({ activeJobs: 7 });
-    expect(await row('contract', 'CDI')).toMatchObject({ activeJobs: 1 });
-    expect(await row('contract', 'UNKNOWN')).toMatchObject({ activeJobs: 7 });
+    expect(await row('employmentTerm', 'PERMANENT')).toMatchObject({ activeJobs: 1 });
+    expect(await row('employmentTerm', 'UNKNOWN')).toMatchObject({ activeJobs: 7 });
     expect(await row('ai', 'true')).toEqual({ activeJobs: 1, newJobs: 0, closedJobs: 0, hiringCompanies: 1, medianLifespanDays: null, reopenedJobs: 0 });
     // Croisements : pays×métier n'atteint jamais 5 actives ici ; pays×secteur FR|LUXURY = 6.
     expect(stats.days[0].byScope['country-function']).toBe(0);

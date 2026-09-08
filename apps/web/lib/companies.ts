@@ -303,10 +303,10 @@ export async function getCompanyBySlug(slug: string): Promise<CompanyProfile | n
         take: 12,
       }),
       prisma.job.groupBy({
-        by: ['contract'],
-        where: { ...where, contract: { not: null } },
+        by: ['employmentTerm'],
+        where: { ...where, employmentTerm: { not: null } },
         _count: true,
-        orderBy: { _count: { contract: 'desc' } },
+        orderBy: { _count: { employmentTerm: 'desc' } },
       }),
     ]);
 
@@ -318,7 +318,7 @@ export async function getCompanyBySlug(slug: string): Promise<CompanyProfile | n
       careersUrl: match.careersUrl,
       jobCount,
       cities: cityGroups.map((g) => ({ city: g.city as string, count: g._count })),
-      contracts: contractGroups.map((g) => ({ value: g.contract as string, count: g._count })),
+      contracts: contractGroups.map((g) => ({ value: g.employmentTerm as string, count: g._count })),
     };
   } catch (error) {
     if (error instanceof DatabaseUnavailableError) throw error;

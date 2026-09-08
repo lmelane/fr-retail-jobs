@@ -1,6 +1,6 @@
 import { fetchWithRetry, fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
-import { employmentTermsFrom } from '../../normalize/contract.js';
+import { employmentTermsFrom } from '../../normalize/employment.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**

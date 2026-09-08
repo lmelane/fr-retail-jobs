@@ -147,5 +147,5 @@ export function isSector(value: string): value is Sector {
   return (SECTORS as ReadonlyArray<string>).includes(value);
 }
 
-/** Vocabulaire contrat stocké dans Job.contract (libellés via lib/format contractLabel). */
+/** Vocabulaire de durée stocké dans Job.employmentTerm (libellés : lib/format employmentTermLabel). */
 export const CONTRACTS = ['CDI', 'CDD', 'STAGE', 'ALTERNANCE', 'VIE', 'INTERIM', 'FREELANCE', 'GRADUATE'] as const;

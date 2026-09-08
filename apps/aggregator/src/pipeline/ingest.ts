@@ -4,7 +4,8 @@ import { loadActiveSources, type RuntimeSource } from '../connectors/sourceStore
 import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
 import { domainFromEmployerSources } from '../normalize/companyDomain.js';
-import { normalizeContract, normalizeWorkingTime, isWorkingTimeValue, extractContract, extractSalaryBand } from '../normalize/contract.js';
+import { readEmployment, decomposeCompositeCode, extractEmployment, type Employment } from '../normalize/employment.js';
+import { extractSalaryBand } from '../normalize/salary.js';
 import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
 import { coerceAmount, coerceCoordinate, coerceText, cleanTitle, cleanPlace, plausiblePostedAt, canonicalPeriod, canonicalRemote, boundedSalary, briefError } from '../lib/normalize.js';
@@ -86,30 +87,38 @@ function toCandidate(
   if (!/^https?:\/\//.test(job.url ?? '')) {
     throw new Error(`invalid apply URL "${(job.url ?? '').slice(0, 80)}" (${job.externalId})`);
   }
-  // Several ATS file "Full-time" / "Plein Temps" under contract, which is a
-  // working time, not a contract type. Moved rather than dropped: the UI was
-  // printing the source's raw English next to French contract labels.
-  const misfiled = isWorkingTimeValue(job.contract);
-
-  // Clean the description to plain text ONCE, at ingest, for every source: some
-  // ship raw HTML (Greenhouse), some HTML-escaped HTML (Teamtailor). Done first
-  // so the contract/salary extraction below reads clean text too, and so the
-  // database holds only clean text and the web renders it directly.
+  // Le texte propre AVANT toute lecture : certaines sources publient du HTML
+  // brut (Greenhouse), d'autres du HTML échappé (Teamtailor). Fait une seule
+  // fois ici, pour que la lecture des dimensions et du salaire lise du texte,
+  // et pour que la base ne contienne que du propre.
   const description = htmlToPlainText(job.description);
 
   /**
-   * The contract, from wherever the posting states it.
+   * LES CINQ DIMENSIONS D'EMPLOI, par ordre de fiabilité de la preuve.
    *
-   * Sources often leave the field empty while the title says "CDI 18H -
-   * Vendeur" or the text opens with "CDI à pourvoir". Falling back to title
-   * then description recovers most of them; the description is capped because
-   * a long posting can name other contract types in passing ("après un stage
-   * réussi…"), and the opening lines are where the real one is announced.
+   * L'ordre suit la règle posée : un champ structuré de la source bat le titre,
+   * qui bat la description. Chaque source de preuve ne REMPLIT que les
+   * dimensions encore vides — une preuve plus faible n'écrase jamais une plus
+   * forte. Les dimensions sont indépendantes : « CDD 35H saisonnier » renseigne
+   * la durée, le rythme ET le drapeau saisonnier, sans arbitrage entre eux.
    */
-  let contract = misfiled ? 'UNKNOWN' : normalizeContract(job.contract);
-  if (contract === 'UNKNOWN') contract = extractContract(job.title, description);
+  const employment: Employment = {};
+  const fill = (from: Employment) => {
+    if (!employment.employmentTerm && from.employmentTerm) employment.employmentTerm = from.employmentTerm;
+    if (!employment.workTime && from.workTime) employment.workTime = from.workTime;
+    if (!employment.programType && from.programType) employment.programType = from.programType;
+    if (!employment.engagementType && from.engagementType) employment.engagementType = from.engagementType;
+    if (!employment.isSeasonal && from.isSeasonal) employment.isSeasonal = true;
+  };
 
-  const workingTime = normalizeWorkingTime(misfiled ? job.contract : job.workingTime);
+  // 1. Les champs dédiés de la source. `decomposeCompositeCode` d'abord : un
+  //    code comme « parttime_fixed_term » porte DEUX dimensions, et le lire
+  //    comme un mot unique en perdrait une (225 offres mesurées).
+  fill(decomposeCompositeCode(job.contract));
+  fill(readEmployment(job.contract));
+  fill(readEmployment(job.workingTime));
+  // 2. Le titre puis la description, pour ce que les champs n'ont pas dit.
+  fill(extractEmployment(job.title, description));
 
   // Coerce the structured salary at the boundary: a schema.org feed (Teamtailor)
   // hands minValue/maxValue over as strings ("75000"), and written through to an
@@ -146,10 +155,11 @@ function toCandidate(
     // Float columns: Rituals shipped "52.37" as a string and lost 577 offers.
     latitude: coerceCoordinate(job.latitude, 90),
     longitude: coerceCoordinate(job.longitude, 180),
-    // "UNKNOWN" is the normalizer's non-answer, not a value — stored as such
-    // it is truthy, and the UI printed "Contrat : UNKNOWN" on every offer.
-    contract: contract === 'UNKNOWN' ? undefined : contract,
-    workingTime: workingTime === 'UNKNOWN' ? undefined : workingTime,
+    // Chaque dimension reste VIDE quand la source ne la dit pas : l'absence
+    // d'information est un vide, pas une valeur. (L'ancien « UNKNOWN » stocké
+    // était truthy, et l'écran affichait « Contrat : UNKNOWN » sur chaque offre
+    // dont la source omettait le champ.)
+    ...employment,
     ...(salaryFromText
       ? {
           salaryMin: salaryFromText.min,

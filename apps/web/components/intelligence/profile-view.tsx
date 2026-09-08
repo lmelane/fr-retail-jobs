@@ -4,7 +4,7 @@ import { BarList } from './charts/bar-list';
 import { LineChart } from './charts/line-chart';
 import { IndexGauge } from './charts/index-gauge';
 import { countryLabel } from '@/lib/countries';
-import { contractLabel } from '@/lib/format';
+import { employmentTermLabel } from '@/lib/format';
 import type { Profile } from '@/lib/intelligence/queries/profile';
 import type { Coverage as CoverageData } from '@/lib/intelligence/queries/coverage';
 import { concentration, indexBase100, median, momentum, repostRate, share, variation } from '@/lib/intelligence/metrics';
@@ -204,7 +204,7 @@ export function ProfileBlocks({ profile, ctx }: { profile: Profile; ctx: Profile
         <Block id="contrat" title="Contrat" level="fact-shares">
           <Mix
             total={total}
-            rows={profile.contracts.map((c) => ({ label: c.key ? contractLabel(c.key) ?? c.key : 'Non précisé', count: c.count, href: c.key ? jobs({ contrat: c.key }) : undefined }))}
+            rows={profile.contracts.map((c) => ({ label: c.key ? employmentTermLabel(c.key) ?? c.key : 'Non précisé', count: c.count, href: c.key ? jobs({ contrat: c.key }) : undefined }))}
           />
         </Block>
       </div>

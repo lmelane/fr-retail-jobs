@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { SearchPill } from '@/components/search-pill';
 import { companySlug } from '@/lib/company-slug';
 import { offerPath } from '@/lib/offer-url';
-import { displayTitle, relativeDate, contractLabel, frNumber } from '@/lib/format';
+import { displayTitle, relativeDate, employmentTermLabel, frNumber } from '@/lib/format';
 import type { CompanyRow } from '@/lib/companies';
 import type { JobRow } from '@/lib/jobs';
 
@@ -207,7 +207,7 @@ export function LandingView({
                   </div>
                   <p className="t-d2 mt-1">{displayTitle(o.title)}</p>
                   <p className="t-body2 muted mt-1">
-                    {[o.city, contractLabel(o.contract)].filter(Boolean).join(' · ')}
+                    {[o.city, employmentTermLabel(o.employmentTerm)].filter(Boolean).join(' · ')}
                   </p>
                 </Link>
               </li>

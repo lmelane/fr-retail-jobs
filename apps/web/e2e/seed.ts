@@ -57,7 +57,7 @@ async function main() {
         city: 'PARIS',
         country: 'France',
         isFrance: true,
-        contract: 'CDI',
+        employmentTerm: 'PERMANENT',
         description:
           'Description complète de poste pour les tests bout-en-bout. '.repeat(10),
         language: 'fr',

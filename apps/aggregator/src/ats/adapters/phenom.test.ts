@@ -14,7 +14,7 @@ describe('publicJobUrl', () => {
 
 // ——— l2 (2026-09-06) : marque réelle, contrat et temps depuis la charge Phenom (Foot Locker : 1 769 postes US sous « Foot Locker France ») ———
 import { parsePhenomJob } from './phenom.js';
-import { normalizeContract, normalizeWorkingTime } from '../../normalize/contract.js';
+import { readEmployment } from '../../normalize/employment.js';
 
 /** Entrée `/api/jobs` de careers.footlocker.com capturée le 2026-09-06 (a4-phenom), champs longs abrégés. */
 const FOOT_LOCKER = {
@@ -54,13 +54,13 @@ describe('parsePhenomJob — l2', () => {
 
   it('lit le contrat dans le tag qui le nomme (Regular → CDI) et le temps dans employment_type (PART_TIME)', () => {
     const job = parsePhenomJob(FOOT_LOCKER, 'https://careers.footlocker.com', {})!;
-    expect(normalizeContract(job.contract)).toBe('CDI');
-    expect(normalizeWorkingTime(job.workingTime)).toBe('TEMPS_PARTIEL');
+    expect(readEmployment(job.contract).employmentTerm).toBe('PERMANENT');
+    expect(readEmployment(job.workingTime).workTime).toBe('PART_TIME');
   });
 
   it('sans tag de contrat, employment_type seul reste un temps de travail (pas un faux contrat)', () => {
     const job = parsePhenomJob({ ...FOOT_LOCKER, tags2: undefined }, 'https://x', {})!;
-    expect(normalizeContract(job.contract)).toBe('UNKNOWN');
-    expect(normalizeWorkingTime(job.workingTime)).toBe('TEMPS_PARTIEL');
+    expect(readEmployment(job.contract).employmentTerm).toBeUndefined();
+    expect(readEmployment(job.workingTime).workTime).toBe('PART_TIME');
   });
 });

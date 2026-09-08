@@ -30,7 +30,7 @@ export type SnapshotScope =
   | 'sector'
   | 'function'
   | 'seniority'
-  | 'contract'
+  | 'employmentTerm'
   | 'family'
   | 'ai'
   | 'country-function'

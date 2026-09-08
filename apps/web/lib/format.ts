@@ -50,29 +50,64 @@ export function relativeDate(date: Date | string | null): string {
 }
 
 /**
- * French display labels for the normalized vocabularies.
+ * LA COUCHE DE LOCALISATION — l'unique endroit où la taxonomie mondiale
+ * redevient des mots français.
  *
- * The normalizers answer "UNKNOWN" when a source states nothing — that is a
- * non-answer, not a value, and it reached the screen as a literal chip reading
- * "UNKNOWN" on every offer whose source omits the field. contractLabel returns
- * null for it so callers render nothing instead.
+ * Depuis la refonte du 2026-09-08, la base stocke la NATURE de la relation
+ * d'emploi en vocabulaire mondial (`PERMANENT`, `FIXED_TERM`…) et non plus une
+ * grille juridique française. « CDI » n'est plus une valeur : c'est le mot que
+ * lit un candidat français pour `PERMANENT`.
+ *
+ * Deux conséquences à ne pas perdre de vue :
+ *  - `PERMANENT` → « CDI » est une TRADUCTION d'affichage, pas une équivalence
+ *    juridique : un « Permanent » britannique n'est pas régi par le droit
+ *    français. Un futur marché non francophone traduira autrement, sans
+ *    toucher à la donnée.
+ *  - `null` signifie « la source ne le dit pas ». Rien ne s'affiche alors —
+ *    l'ancien « UNKNOWN » stocké finissait en pastille littérale à l'écran.
  */
-const CONTRACT_LABELS: Record<string, string> = {
-  CDI: 'CDI',
-  CDD: 'CDD',
-  STAGE: 'Stage',
-  ALTERNANCE: 'Alternance',
-  VIE: 'V.I.E',
-  INTERIM: 'Intérim',
+const EMPLOYMENT_TYPE_LABELS: Record<string, string> = {
+  PERMANENT: 'CDI',
+  FIXED_TERM: 'CDD',
+  TEMPORARY: 'Intérim',
+  INTERNSHIP: 'Stage',
+  APPRENTICESHIP: 'Alternance',
+  SEASONAL: 'Saisonnier',
   FREELANCE: 'Freelance',
-  GRADUATE: 'Graduate program',
-  TEMPS_PLEIN: 'Temps plein',
-  TEMPS_PARTIEL: 'Temps partiel',
+  INDEPENDENT_CONTRACTOR: 'Indépendant',
+  OTHER: 'Autre',
 };
 
-export function contractLabel(value: string | null | undefined): string | null {
-  if (!value || value === 'UNKNOWN') return null;
-  return CONTRACT_LABELS[value] ?? value;
+const WORK_TIME_LABELS: Record<string, string> = {
+  FULL_TIME: 'Temps plein',
+  PART_TIME: 'Temps partiel',
+  OTHER: 'Autre',
+};
+
+/** Le libellé français d'une nature de relation d'emploi, ou null si absente. */
+export function employmentTermLabel(value: string | null | undefined): string | null {
+  if (!value) return null;
+  return EMPLOYMENT_TYPE_LABELS[value] ?? value;
+}
+
+/** Les dispositifs, dans les mots que lit un candidat français. */
+const PROGRAM_TYPE_LABELS: Record<string, string> = {
+  INTERNSHIP: 'Stage',
+  APPRENTICESHIP: 'Alternance',
+  GRADUATE_PROGRAM: 'Graduate program',
+  VIE: 'V.I.E',
+};
+
+/** Le libellé français d'un dispositif, ou null si absent. */
+export function programTypeLabel(value: string | null | undefined): string | null {
+  if (!value) return null;
+  return PROGRAM_TYPE_LABELS[value] ?? value;
+}
+
+/** Le libellé français d'un rythme de travail, ou null si absent. */
+export function workTimeLabel(value: string | null | undefined): string | null {
+  if (!value) return null;
+  return WORK_TIME_LABELS[value] ?? value;
 }
 
 /**

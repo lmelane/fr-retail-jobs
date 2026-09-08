@@ -74,15 +74,15 @@ describe('parseJibePage', () => {
 });
 
 // ——— l2 (2026-09-06) : Ulta publie le contrat et le temps dans `tags1` / `tags2` (9 959 offres sans contrat) ———
-import { normalizeContract, normalizeWorkingTime } from '../../normalize/contract.js';
+import { readEmployment } from '../../normalize/employment.js';
 
 describe('parseJibePage — l2 : contrat et temps depuis les tags', () => {
   const withTags = (tags: Record<string, string[]>) => ({ jobs: [{ data: { ...PAGE.jobs[0].data, ...tags } }] });
 
   it('lit « Regular » (contrat) et « Part Time » (temps) dans les tags', () => {
     const [job] = parseJibePage(withTags({ tags1: ['Part Time'], tags2: ['Regular'] }), 'https://careers.ulta.com');
-    expect(normalizeContract(job.contract)).toBe('CDI');
-    expect(normalizeWorkingTime(job.workingTime)).toBe('TEMPS_PARTIEL');
+    expect(readEmployment(job.contract).employmentTerm).toBe('PERMANENT');
+    expect(readEmployment(job.workingTime).workTime).toBe('PART_TIME');
   });
 
   it('ignore les tags qui ne nomment ni un contrat ni un temps (date, enseigne, région)', () => {

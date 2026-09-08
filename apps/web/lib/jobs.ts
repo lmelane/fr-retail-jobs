@@ -57,14 +57,14 @@ export class DatabaseUnavailableError extends Error {
  * Filters mirror the aggregator's own model, so the UI exposes the whole
  * pipeline rather than a subset of it:
  *  - sector / maison / group  -> the reference list
- *  - contract                 -> the normalized contract vocabulary
+ *  - employmentTerm           -> la taxonomie mondiale de la relation d'emploi
  *  - city                     -> the collapsed location (Paris 8 -> PARIS)
  *  - source                   -> which connector saw the offer
  */
 export type JobFilters = {
   q?: string;
   sector?: string;
-  contract?: string;
+  employmentTerm?: string;
   city?: string;
   group?: string;
   maison?: string;
@@ -103,7 +103,9 @@ export function parseFilters(params: Record<string, string | string[] | undefine
   return {
     q: one('q'),
     city: one('ville'),
-    contract: one('contrat'),
+    // Le paramètre d'URL reste « contrat » (public, indexé) ; sa VALEUR est
+    // désormais la taxonomie mondiale (PERMANENT, FIXED_TERM…).
+    employmentTerm: one('contrat'),
     sector: one('secteur'),
     maison: one('maison'),
     group: one('groupe'),
@@ -125,7 +127,11 @@ export type JobRow = {
   group: string | null;
   city: string | null;
   location: string | null;
-  contract: string | null;
+  /** Les dimensions d'emploi, indépendantes : durée, rythme, dispositif, nature, saisonnier. */
+  employmentTerm: string | null;
+  programType: string | null;
+  engagementType: string | null;
+  isSeasonal: boolean | null;
   sector: string | null;
   url: string;
   postedAt: Date | null;
@@ -147,7 +153,7 @@ export type JobRow = {
   /** Métier et séniorité (taxonomie D38) : ce qui distingue deux offres d'une même Maison dans la liste. */
   jobFunction: string | null;
   seniority: string | null;
-  workingTime: string | null;
+  workTime: string | null;
   remote: string | null;
   experienceYears: number | null;
   educationLevel: string | null;
@@ -217,7 +223,7 @@ export function whereClause(filters: JobFilters) {
     // Case-insensitive: the facet value is canonical ("Paris") but the column
     // holds mixed spellings ("PARIS", "Paris"), so an exact match dropped half.
     ...(filters.city ? { city: { equals: filters.city, mode: 'insensitive' as const } } : {}),
-    ...(filters.contract ? { contract: filters.contract } : {}),
+    ...(filters.employmentTerm ? { employmentTerm: filters.employmentTerm } : {}),
     ...(Object.keys(company).length ? { company } : {}),
     ...(filters.source ? { sources: { some: { sourceKey: filters.source, isActive: true } } } : {}),
     // Each term must appear in SOME field, so "vendeuse paris" needs both words
@@ -231,7 +237,7 @@ export function whereClause(filters: JobFilters) {
               { city: { contains: term, mode: 'insensitive' as const } },
               { location: { contains: term, mode: 'insensitive' as const } },
               { department: { contains: term, mode: 'insensitive' as const } },
-              { contract: { contains: term, mode: 'insensitive' as const } },
+              { employmentTerm: { contains: term, mode: 'insensitive' as const } },
               // A brand and its parent are the same search. "sandro" has to
               // reach offers a group portal filed under "SMCP", and "smcp" has
               // to reach every brand beneath it.
@@ -291,7 +297,7 @@ async function countFacets(
   };
 
   const [contracts, cities, sectors, sources, rawCountries, franceCount] = await Promise.all([
-    prisma.job.groupBy({ by: ['contract'], where, _count: true }),
+    prisma.job.groupBy({ by: ['employmentTerm'], where, _count: true }),
     prisma.job.groupBy({ by: ['city'], where, _count: true, orderBy: { _count: { city: 'desc' } }, take: 60 }),
     // Sector, Maison and Group live on Company, so they are grouped through the join.
     prisma.job.groupBy({ by: ['companyId'], where, _count: true, orderBy: { _count: { companyId: 'desc' } }, take: 300 }),
@@ -351,7 +357,7 @@ async function countFacets(
 
   return {
     sectors: fromMap(sectorCounts),
-    contracts: asFacets(contracts, 'contract'),
+    contracts: asFacets(contracts, 'employmentTerm'),
     cities: cityFacets(cities),
     groups: fromMap(groupCounts),
     maisons: fromMap(maisonCounts),
@@ -362,10 +368,11 @@ async function countFacets(
 
 function toRow(row: {
   id: string; title: string; company: { name: string; sector: string | null; parentGroup: string | null; domain: string | null };
-  city: string | null; location: string | null; contract: string | null; url: string;
+  city: string | null; location: string | null; employmentTerm: string | null; url: string;
+  programType: string | null; engagementType: string | null; isSeasonal: boolean | null;
   postedAt: Date | null; latitude: number | null; longitude: number | null;
   sources: { sourceKey: string }[]; description: string | null; postalCode: string | null;
-  department: string | null; workingTime: string | null; remote: string | null;
+  department: string | null; workTime: string | null; remote: string | null;
   experienceYears: number | null; educationLevel: string | null; salaryMin: number | null;
   salaryMax: number | null; salaryCurrency: string | null; salaryPeriod: string | null;
   validThrough: Date | null; country: string | null; language: string | null; firstSeenAt: Date;
@@ -379,7 +386,10 @@ function toRow(row: {
     group: row.company.parentGroup,
     city: row.city,
     location: row.location,
-    contract: row.contract,
+    employmentTerm: row.employmentTerm,
+    programType: row.programType,
+    engagementType: row.engagementType,
+    isSeasonal: row.isSeasonal,
     sector: row.company.sector,
     url: row.url,
     postedAt: row.postedAt,
@@ -393,7 +403,7 @@ function toRow(row: {
     department: row.department,
     jobFunction: row.jobFunction,
     seniority: row.seniority,
-    workingTime: row.workingTime,
+    workTime: row.workTime,
     remote: row.remote,
     experienceYears: row.experienceYears,
     educationLevel: row.educationLevel,

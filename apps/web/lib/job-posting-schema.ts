@@ -13,7 +13,7 @@ import { offerPath } from './offer-url';
  *  - validThrough: the source's own expiry, else a 60-day horizon from
  *    datePosted — a fallback, refreshed as long as the offer is re-listed,
  *    and the 410 kills the page when it closes for real;
- *  - employmentType: the schema.org enum, mapped from the normalized contract
+ *  - employmentTerm: the schema.org enum, mapped from the normalized contract
  *    (CDI is not "CDI" for a crawler);
  *  - addressCountry: the canonical code of what the SOURCE said — never a
  *    hard-coded FR on a worldwide board (the audited S-02b bug), omitted when
@@ -26,26 +26,43 @@ import { offerPath } from './offer-url';
 /** Horizon de validité d'une offre encore listée : le prochain passage, avec marge (cadence quotidienne, D36). */
 const VALID_THROUGH_HORIZON_DAYS = 30;
 
-/** Normalized contract/working time -> schema.org employmentType values. */
+/**
+ * Les dimensions d'emploi → l'énumération `employmentType` de schema.org, lue
+ * par Google Jobs.
+ *
+ * Schema.org mélange dans UN seul champ ce que notre modèle sépare en quatre
+ * dimensions : sa liste contient à la fois des rythmes (FULL_TIME, PART_TIME),
+ * des durées (TEMPORARY), des dispositifs (INTERN) et des natures juridiques
+ * (CONTRACTOR). C'est justement la confusion que notre base ne fait plus — mais
+ * l'export SEO doit parler la langue du destinataire. La traduction se fait donc
+ * ICI, à la frontière, et le modèle interne reste propre.
+ *
+ * Plusieurs valeurs sont légitimes pour une même offre (« PART_TIME » et
+ * « TEMPORARY » pour un CDD à temps partiel) : schema.org accepte un tableau.
+ */
 export function schemaEmploymentTypes(
-  contract: string | null,
-  workingTime: string | null,
+  employmentTerm: string | null,
+  workTime: string | null,
+  programType: string | null = null,
+  engagementType: string | null = null,
 ): string[] {
   const types = new Set<string>();
-  // The normalizer's ContractType union (aggregator normalize/contract.ts).
-  switch (contract) {
-    case 'CDI': case 'GRADUATE': types.add('FULL_TIME'); break;
-    case 'CDD': case 'INTERIM': case 'VIE': types.add('TEMPORARY'); break;
-    case 'STAGE': case 'ALTERNANCE': types.add('INTERN'); break;
-    case 'FREELANCE': types.add('CONTRACTOR'); break;
-    default: break;
-  }
-  if (workingTime === 'TEMPS_PARTIEL') {
-    types.add('PART_TIME');
-    types.delete('FULL_TIME');
-  } else if (workingTime === 'TEMPS_PLEIN') {
-    types.add('FULL_TIME');
-  }
+
+  // Durée : seul le CDD/intérim a un équivalent — « PERMANENT » n'existe pas
+  // dans l'énumération, où le permanent se déduit de l'absence de TEMPORARY.
+  if (employmentTerm === 'FIXED_TERM' || employmentTerm === 'TEMPORARY') types.add('TEMPORARY');
+
+  // Dispositif : stage et alternance sont « INTERN » pour Google.
+  if (programType === 'INTERNSHIP' || programType === 'APPRENTICESHIP') types.add('INTERN');
+
+  // Nature juridique : freelance et independent contractor partagent la même
+  // valeur côté schema.org, faute de distinction dans son vocabulaire.
+  if (engagementType === 'FREELANCE' || engagementType === 'INDEPENDENT_CONTRACTOR') types.add('CONTRACTOR');
+
+  // Rythme — la dimension la mieux couverte par l'énumération.
+  if (workTime === 'PART_TIME') types.add('PART_TIME');
+  else if (workTime === 'FULL_TIME') types.add('FULL_TIME');
+
   return [...types];
 }
 
@@ -62,7 +79,7 @@ export function jobPostingSchema(job: JobRow, now = new Date()): Record<string, 
    */
   const horizon = new Date(now.getTime() + VALID_THROUGH_HORIZON_DAYS * 86_400_000);
   const validThrough = job.validThrough && job.validThrough.getTime() > now.getTime() ? job.validThrough : horizon;
-  const employmentType = schemaEmploymentTypes(job.contract, job.workingTime);
+  const employmentTypes = schemaEmploymentTypes(job.employmentTerm, job.workTime, job.programType, job.engagementType);
   const country = countryCode(job.country);
 
   return {
@@ -72,7 +89,7 @@ export function jobPostingSchema(job: JobRow, now = new Date()): Record<string, 
     description: job.description ?? undefined,
     datePosted: datePosted.toISOString(),
     validThrough: validThrough.toISOString(),
-    employmentType: employmentType.length ? employmentType : undefined,
+    employmentType: employmentTypes.length ? employmentTypes : undefined,
     identifier: { '@type': 'PropertyValue', name: job.company, value: job.id },
     hiringOrganization: { '@type': 'Organization', name: job.company },
     // The candidate applies at the employer, not on this page (D18).

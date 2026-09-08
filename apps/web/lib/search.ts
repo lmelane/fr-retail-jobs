@@ -63,7 +63,7 @@ export type SearchableJob = {
   company: string;
   city: string | null;
   location: string | null;
-  contract: string | null;
+  employmentTerm: string | null;
   description: string | null;
   sector: string | null;
 };
@@ -71,7 +71,7 @@ export type SearchableJob = {
 /** One normalized blob per posting; built once per row, not once per term. */
 export function searchIndex(job: SearchableJob): string {
   return normalize(
-    [job.title, job.company, job.city, job.location, job.contract, job.sector, job.description]
+    [job.title, job.company, job.city, job.location, job.employmentTerm, job.sector, job.description]
       .filter(Boolean)
       .join(' '),
   );

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { classifyFunction, classifyJob, classifySeniority, isAiRelated, JOB_FUNCTIONS } from './taxonomy.js';
+import { classifyFunction, classifyJob, classifyProgramType, classifySeniority, isAiRelated, JOB_FUNCTIONS } from './taxonomy.js';
 import { extractSkills } from './skills.js';
 
 describe('classifyFunction — la famille de métier du secteur, depuis le titre', () => {
@@ -262,13 +262,6 @@ describe('classifyFunction — la famille de métier du secteur, depuis le titre
 
 describe('classifySeniority — l’ordre des tests fait la règle', () => {
   it.each([
-    ['Stage - Assistant Manager Boutique', undefined, 'INTERNSHIP'],
-    ['Internship - Marketing', undefined, 'INTERNSHIP'],
-    ['Alternance - Chargé de communication', undefined, 'APPRENTICESHIP'],
-    ['Apprentice Watchmaker', undefined, 'APPRENTICESHIP'],
-    ['Graduate Program - Retail', undefined, 'GRADUATE'],
-    ['V.I.E. Finance - New York', undefined, 'GRADUATE'],
-    ['Management Trainee', undefined, 'GRADUATE'],
     ['Chief Marketing Officer', undefined, 'EXECUTIVE'],
     ['VP Retail Americas', undefined, 'EXECUTIVE'],
     ['Managing Director', undefined, 'EXECUTIVE'],
@@ -297,26 +290,55 @@ describe('classifySeniority — l’ordre des tests fait la règle', () => {
     ['Retail Operations Specialist', undefined, 'MID'],
     ['Brow Waxing Expert', undefined, 'MID'],
     ['CRO Manager', undefined, 'MID'],
-    ['Lehrstelle als Uhrmacher∙in EFZ', undefined, 'APPRENTICESHIP'],
-    ['Apprendista Addetto al Taglio', undefined, 'APPRENTICESHIP'],
-    ['Auszubildender zum Werkzeugmechaniker 2027', undefined, 'APPRENTICESHIP'],
-    ['Stagaire Excellence Opérationnelle', undefined, 'INTERNSHIP'],
     ['Assistant Store Leader', undefined, 'MANAGER'],
     ['Retail General Manager, Melrose Ave', undefined, 'DIRECTOR'],
-  ])('%s → %s', (title, contract, expected) => {
-    expect(classifySeniority(title, contract)).toBe(expected);
+  ])('%s → %s', (title, _unused, expected) => {
+    expect(classifySeniority(title)).toBe(expected);
   });
 
   it('un General Manager de magasin dirige une boutique, pas une entreprise (département Retail Management)', () => {
-    expect(classifySeniority('General Manager', undefined, 'Retail Management')).toBe('DIRECTOR');
-    expect(classifySeniority('General Manager', undefined, undefined)).toBe('EXECUTIVE');
+    expect(classifySeniority('General Manager', 'Retail Management')).toBe('DIRECTOR');
+    expect(classifySeniority('General Manager', undefined)).toBe('EXECUTIVE');
   });
 
-  it('lit le contrat normalisé quand le titre ne dit rien', () => {
-    expect(classifySeniority('Chargé de communication', 'Stage')).toBe('INTERNSHIP');
-    expect(classifySeniority('Chargé de communication', 'Alternance')).toBe('APPRENTICESHIP');
-    expect(classifySeniority('Analyst', 'V.I.E.')).toBe('GRADUATE');
-    expect(classifySeniority('Analyst', 'CDI')).toBe('MID');
+  /**
+   * La séniorité ne classe plus AUCUN dispositif : un stagiaire n'est pas un
+   * niveau, il est un `programType`. Elle rend le niveau réel de l'intitulé —
+   * MID par défaut quand rien ne le précise.
+   */
+  it('un intitulé de programme ne produit plus de séniorité de programme', () => {
+    for (const title of ['Stage - Assistant Manager', 'Alternance - Chargé de communication', 'V.I.E. Finance']) {
+      expect(['INTERNSHIP', 'APPRENTICESHIP', 'GRADUATE']).not.toContain(classifySeniority(title));
+    }
+  });
+});
+
+/**
+ * Les DISPOSITIFS, sortis de la séniorité le 2026-09-08 : ils polluaient
+ * 4 296 offres. Les motifs multilingues éprouvés (WERKSTUDENT, LEHRSTELLE,
+ * AZUBI, NEOLAUREAT…) les servent désormais.
+ */
+describe('classifyProgramType', () => {
+  it.each([
+    ['Stage - Assistant Manager Boutique', 'INTERNSHIP'],
+    ['Internship - Marketing', 'INTERNSHIP'],
+    ['Werkstudent Marketing (m/w/d)', 'INTERNSHIP'],
+    ['Alternance - Chargé de communication', 'APPRENTICESHIP'],
+    ['Apprentice Watchmaker', 'APPRENTICESHIP'],
+    ['Lehrstelle als Uhrmacher∙in EFZ', 'APPRENTICESHIP'],
+    ['Apprendista Addetto al Taglio', 'APPRENTICESHIP'],
+    ['Auszubildender zum Werkzeugmechaniker 2027', 'APPRENTICESHIP'],
+    ['Stagaire Excellence Opérationnelle', 'INTERNSHIP'],
+    ['Graduate Program - Retail', 'GRADUATE_PROGRAM'],
+    ['Management Trainee', 'GRADUATE_PROGRAM'],
+    ['V.I.E. Finance - New York', 'VIE'],
+  ])('%s → %s', (title, expected) => {
+    expect(classifyProgramType(title)).toBe(expected);
+  });
+
+  it('rend null quand l’intitulé ne nomme aucun dispositif', () => {
+    expect(classifyProgramType('Conseiller de vente')).toBeNull();
+    expect(classifyProgramType('Directeur de boutique')).toBeNull();
   });
 });
 
@@ -400,7 +422,6 @@ describe('classifyJob — tout en une passe', () => {
       title: 'Senior Client Advisor - Mandarin Speaker',
       department: 'Retail',
       description: 'Fluent Mandarin required. Clienteling and CRM tools (Salesforce).',
-      contract: 'CDI',
     });
     expect(result.jobFunction).toBe('retail-client-advisor');
     expect(result.seniority).toBe('SENIOR');

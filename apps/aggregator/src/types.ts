@@ -49,7 +49,7 @@ export type NormalizedJob = {
   longitude?: number;
 
   // --- Terms --------------------------------------------------------------
-  /** Raw contract label; normalizeContract() maps it to the canonical set. */
+  /** Raw contract label; normalizeEmploymentType() maps it to the canonical set. */
   contract?: string;
   /** Full-time / part-time, when stated separately from the contract. */
   workingTime?: string;

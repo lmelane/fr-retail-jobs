@@ -71,7 +71,7 @@ export async function classifyJobs(prisma: PrismaClient, options: ClassifyJobsOp
   for (;;) {
     const rows = await prisma.job.findMany({
       where,
-      select: { id: true, title: true, department: true, description: true, contract: true },
+      select: { id: true, title: true, department: true, description: true, programType: true },
       orderBy: { id: 'asc' },
       take: batchSize,
       ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),

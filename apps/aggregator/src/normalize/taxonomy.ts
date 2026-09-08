@@ -1,4 +1,4 @@
-import { normalizeContract } from './contract.js';
+import { readEmployment, type ProgramType } from './employment.js';
 import { extractSkills } from './skills.js';
 
 /**
@@ -55,10 +55,15 @@ export type JobFunction =
   | 'hospitality'
   | 'admin-facilities';
 
+/**
+ * NIVEAUX de séniorité — et uniquement des niveaux.
+ *
+ * INTERNSHIP, APPRENTICESHIP et GRADUATE en ont été RETIRÉS le 2026-09-08 : ce
+ * sont des DISPOSITIFS, pas des niveaux, et ils polluaient 4 296 offres. Ils
+ * vivent désormais dans `programType`, dimension indépendante — un stagiaire
+ * peut d'ailleurs être junior, et un participant à un graduate program aussi.
+ */
 export type Seniority =
-  | 'INTERNSHIP'
-  | 'APPRENTICESHIP'
-  | 'GRADUATE'
   | 'JUNIOR'
   | 'MID'
   | 'SENIOR'
@@ -98,9 +103,6 @@ export const JOB_FUNCTIONS: ReadonlyArray<FunctionDefinition> = [
 ];
 
 export const SENIORITY_LABELS: Readonly<Record<Seniority, string>> = {
-  INTERNSHIP: 'Stage',
-  APPRENTICESHIP: 'Alternance',
-  GRADUATE: 'Jeune diplômé · VIE · Graduate',
   JUNIOR: 'Junior',
   MID: 'Confirmé',
   SENIOR: 'Senior · Expert',
@@ -293,6 +295,12 @@ export function familyOf(fn: JobFunction | null | undefined): JobFamily | null {
   return fn ? FAMILY_OF[fn] ?? null : null;
 }
 
+/**
+ * Ces trois motifs sont le fruit de mois d'observation réelle (WERKSTUDENT,
+ * LEHRSTELLE, AZUBI, NEOLAUREAT, BECARI…). Ils ne classent plus une SÉNIORITÉ —
+ * les programmes en sont sortis le 2026-09-08 — mais alimentent `programType`,
+ * la dimension à laquelle ils appartenaient depuis le début.
+ */
 const INTERNSHIP_RE = /\bSTAGE\b|STAGIAIRE|STAGAIRE|INTERN(SHIP)?S?\b|TIROCIN|PRACTICAS|PRAKTIK|ESTAGIO|WERKSTUDENT|PLACEMENT (STUDENT|YEAR)|STUDENT PLACEMENT|\bSTUDENT\b|BECARI/;
 const APPRENTICESHIP_RE = /ALTERNAN|APPRENTI|APPRENTICE|APPRENTISSAGE|APPRENDIST|\bLEHRE\b|LEHRSTELLE|LEHRLING|AUSBILDUNG|AUSZUBILDEND|AZUBI|\bELEV\b|WORK[- ]STUDY|DUAL(ES)? (STUD|DEGREE)|CONTRAT (DE )?PRO(FESSIONNALISATION)?\b|LEARNERSHIP/;
 const GRADUATE_RE = /GRADUATE|\bV\.?I\.?E\.?\b(?! )|\bVIE\b (?:\d|-|MISSION|PROGRAM|CONTRACT|[A-Z]{2,}\b)|TRAINEE|JEUNE\S* DIPLOM|EARLY CAREER|ROTATIONAL|NEOLAUREAT|MANAGEMENT TRAINING PROGRAM|\bMTP\b/;
@@ -318,15 +326,11 @@ const JUNIOR_RE = /\bJUNIOR\b|\bJR\.?\b|ENTRY[- ]LEVEL|DEBUTANT|\bTRAINEE\b|AIDE
  * Store Manager » est un manager ; « Senior Product Manager » est un senior
  * (un product manager ne manage pas d'équipe).
  */
-export function classifySeniority(title: string | null | undefined, contract?: string | null, department?: string | null): Seniority {
+export function classifySeniority(
+  title: string | null | undefined,
+  department?: string | null,
+): Seniority {
   const t = comparableTitle(title);
-  if (INTERNSHIP_RE.test(t)) return 'INTERNSHIP';
-  if (APPRENTICESHIP_RE.test(t)) return 'APPRENTICESHIP';
-  if (GRADUATE_RE.test(t)) return 'GRADUATE';
-  const byContract = normalizeContract(contract);
-  if (byContract === 'STAGE') return 'INTERNSHIP';
-  if (byContract === 'ALTERNANCE') return 'APPRENTICESHIP';
-  if (byContract === 'VIE' || byContract === 'GRADUATE') return 'GRADUATE';
   // « General Manager » d'un magasin (Ulta : département « Retail Management ») dirige une boutique, pas une entreprise.
   const d = comparableTitle(department);
   if (/GENERAL MANAGER/.test(t) && (/(STORE|RETAIL|BOUTIQUE|SHOP|MAGASIN)/.test(t) || STORE_DEPARTMENT_RE.test(d))) return 'DIRECTOR';
@@ -395,20 +399,38 @@ export type JobClassification = {
   isAiRelated: boolean;
   skills: string[];
   taxonomyVersion: number;
+  /** Le dispositif nommé par l'intitulé — dimension distincte de la séniorité. */
+  programType: ProgramType | null;
 };
+
+/**
+ * Le DISPOSITIF que nomme un intitulé, ou `null`.
+ *
+ * Réutilise les motifs multilingues éprouvés ci-dessus. Le plus spécifique
+ * gagne : « Graduate Program » et « V.I.E » avant l'alternance, elle-même avant
+ * le stage — « Management Trainee Program » est un parcours de jeune diplômé,
+ * pas un stage.
+ */
+export function classifyProgramType(title: string | null | undefined): ProgramType | null {
+  const t = comparableTitle(title);
+  if (GRADUATE_RE.test(t)) return /\bV\.?I\.?E\.?\b/.test(t) ? 'VIE' : 'GRADUATE_PROGRAM';
+  if (APPRENTICESHIP_RE.test(t)) return 'APPRENTICESHIP';
+  if (INTERNSHIP_RE.test(t)) return 'INTERNSHIP';
+  return null;
+}
 
 /** Tout ce que la taxonomie écrit sur une offre, en une passe. */
 export function classifyJob(input: {
   title: string | null | undefined;
   department?: string | null;
   description?: string | null;
-  contract?: string | null;
 }): JobClassification {
   const jobFunction = classifyFunction(input.title, input.department);
   const family = familyOf(jobFunction);
   return {
     jobFunction,
-    seniority: classifySeniority(input.title, input.contract, input.department),
+    seniority: classifySeniority(input.title, input.department),
+    programType: classifyProgramType(input.title),
     isRetail: family === null ? null : family === 'retail',
     isAiRelated: isAiRelated(input.title, input.description),
     skills: extractSkills(`${input.title ?? ''}\n${input.description ?? ''}`),

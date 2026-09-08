@@ -50,6 +50,17 @@ export type CandidateJob = NormalizedJob & {
    * name. Written to Company.domain if empty; it is what the logo is built from.
    */
   companyDomain?: string;
+  /**
+   * Les deux dimensions d'emploi, en taxonomie CANONIQUE — distinctes des
+   * champs `contract`/`workingTime` de `NormalizedJob`, qui portent le mot BRUT
+   * de la source. Un adaptateur remonte « Permanent » ; l'ingest en dérive
+   * `employmentType: 'PERMANENT'` et c'est cette valeur-là qui est stockée.
+   */
+  employmentTerm?: string;
+  workTime?: string;
+  programType?: string;
+  engagementType?: string;
+  isSeasonal?: boolean;
 };
 
 /** Postings more than this far apart are treated as separate openings. */

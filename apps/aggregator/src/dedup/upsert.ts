@@ -282,7 +282,9 @@ async function createJob(
         // sat at the schema default `false`, and a front end filtering on
         // isFrance:true would have shown an empty board over a full database.
         isFrance: isFranceJob(countryOf(candidate) ?? candidate.country, candidate.location),
-        contract: candidate.contract,
+        employmentTerm: candidate.employmentTerm,
+        engagementType: candidate.engagementType,
+        isSeasonal: candidate.isSeasonal,
         // Rich fields the richer vendors publish. Absent means "this source does
         // not expose it", so they are written through rather than dropped.
         /**
@@ -304,7 +306,7 @@ async function createJob(
         postalCode: candidate.postalCode,
         latitude: candidate.latitude,
         longitude: candidate.longitude,
-        workingTime: candidate.workingTime,
+        workTime: candidate.workTime,
         remote: candidate.remote,
         experienceYears: candidate.experienceYears,
         educationLevel: candidate.educationLevel,
@@ -328,6 +330,13 @@ async function createJob(
         // Taxonomie Intelligence (D38) : métier, séniorité, retail, IA,
         // compétences — classés ici, à la naissance de la ligne.
         ...classifyJob(candidate),
+        /**
+         * Le dispositif vient de la SOURCE si elle le nomme, et seulement à
+         * défaut de l'intitulé : un champ dédié bat une inférence de titre.
+         * Posé APRÈS `classifyJob` pour que cet ordre soit lisible ici plutôt
+         * que dépendant de la position des clés.
+         */
+        programType: candidate.programType ?? classifyJob(candidate).programType,
         /**
          * The untouched source payload. Nothing is discarded: the normalized
          * columns are the standard view, and this keeps every field a vendor
@@ -394,8 +403,11 @@ type ExistingJob = {
   postedAt: Date | null;
   validThrough: Date | null;
   language: string | null;
-  contract: string | null;
-  workingTime: string | null;
+  employmentTerm: string | null;
+  workTime: string | null;
+  programType: string | null;
+  engagementType: string | null;
+  isSeasonal: boolean | null;
   remote: string | null;
   salaryMin: number | null;
   salaryMax: number | null;
@@ -425,7 +437,7 @@ type ExistingJob = {
 type Reattestable = Pick<
   ExistingJob,
   | 'title' | 'description' | 'location' | 'city' | 'country' | 'isFrance' | 'postedAt' | 'validThrough'
-  | 'language' | 'contract' | 'workingTime' | 'remote' | 'salaryMin' | 'salaryMax' | 'salaryCurrency' | 'salaryPeriod'
+  | 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType' | 'isSeasonal' | 'remote' | 'salaryMin' | 'salaryMax' | 'salaryCurrency' | 'salaryPeriod'
 >;
 
 /**
@@ -438,7 +450,7 @@ type Reattestable = Pick<
  * présentes dans le brut, 5 212 offres sans date.
  */
 const SIMPLE_FIELDS = [
-  'postedAt', 'validThrough', 'language', 'contract', 'workingTime', 'remote',
+  'postedAt', 'validThrough', 'language', 'employmentTerm', 'workTime', 'programType', 'engagementType', 'isSeasonal', 'remote',
   'salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod',
 ] as const;
 
@@ -546,7 +558,6 @@ async function attachToExisting(
           title: alreadyKnown ? candidate.title : existing.title,
           department: candidate.department,
           description: alreadyKnown ? candidate.description : existing.description,
-          contract: candidate.contract ?? existing.contract,
         })
       : {}),
     // A cluster key that drifted (city normalized differently) is re-graved,

@@ -3,7 +3,7 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
 import { resolveOfferParam, getSimilarJobs, getCompanyAside } from '@/lib/jobs';
-import { frNumber } from '@/lib/format';
+import { frNumber, employmentTermLabel } from '@/lib/format';
 import { offerPath } from '@/lib/offer-url';
 import { companySlug } from '@/lib/company-slug';
 import { jobPostingSchema } from '@/lib/job-posting-schema';
@@ -201,7 +201,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                     <span className="t-caption-soft block">
                       {s.company}
                       {s.city ? ` · ${s.city}` : ''}
-                      {s.contract ? ` · ${s.contract}` : ''}
+                      {s.employmentTerm ? ` · ${employmentTermLabel(s.employmentTerm)}` : ''}
                     </span>
                   </Link>
                 </li>

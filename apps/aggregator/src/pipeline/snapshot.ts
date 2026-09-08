@@ -29,7 +29,7 @@ import { chunk } from '../lib/chunk.js';
 
 export const SNAPSHOT_SCOPES = [
   'global', 'country', 'city', 'company', 'group', 'sector', 'function', 'family',
-  'seniority', 'contract', 'ai', 'country-function', 'country-sector',
+  'seniority', 'employmentTerm', 'ai', 'country-function', 'country-sector',
 ] as const;
 export type SnapshotScope = (typeof SNAPSHOT_SCOPES)[number];
 
@@ -43,6 +43,12 @@ export const MIN_ACTIVE_FOR_CROSS = 5;
 export const CRAFT_FUNCTIONS = ['atelier-craft', 'manufacturing-quality'] as const;
 
 export const UNCLASSIFIED_KEY = 'unclassified';
+/**
+ * La clé du périmètre `employmentTerm` pour les offres dont la source ne dit
+ * pas la durée. `null` ne peut pas servir de clé de regroupement, mais la
+ * distinction reste lisible : « UNKNOWN » signifie « non renseigné », jamais
+ * une valeur de la taxonomie.
+ */
 export const UNKNOWN_CONTRACT_KEY = 'UNKNOWN';
 
 export function compositeKey(...parts: string[]): string {
@@ -169,7 +175,7 @@ function baseCte(mode: SnapshotMode, start: Date, end: Date): Prisma.Sql {
         c.sector::text AS sector,
         j."jobFunction",
         j.seniority,
-        j.contract,
+        j."employmentTerm",
         j."isRetail",
         j."isAiRelated",
         ${active} AS active,
@@ -203,7 +209,7 @@ const SCOPE_KEYS: Record<SnapshotScope, { key: Prisma.Sql; minActive: number }> 
     minActive: 0,
   },
   seniority: { key: Prisma.sql`COALESCE(seniority, ${UNCLASSIFIED_KEY})`, minActive: 0 },
-  contract: { key: Prisma.sql`COALESCE(contract, ${UNKNOWN_CONTRACT_KEY})`, minActive: 0 },
+  employmentTerm: { key: Prisma.sql`COALESCE("employmentTerm", ${UNKNOWN_CONTRACT_KEY})`, minActive: 0 },
   ai: { key: Prisma.sql`CASE WHEN "isAiRelated" THEN 'true' END`, minActive: 0 },
   'country-function': {
     key: Prisma.sql`country || ${KEY_SEPARATOR} || COALESCE("jobFunction", ${UNCLASSIFIED_KEY})`,

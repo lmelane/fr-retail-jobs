@@ -5,16 +5,17 @@ import type { JobRow } from './jobs';
 /**
  * S-02a/S-02b intérim — the JSON-LD contract, pinned:
  * datePosted falls back to firstSeenAt, validThrough gets a horizon,
- * employmentType speaks schema.org, and addressCountry is NEVER a hard-coded
+ * employmentTerm speaks schema.org, and addressCountry is NEVER a hard-coded
  * FR — it is the canonical code of what the source said, or absent.
  */
 
 const base: JobRow = {
   id: 'ck123', title: 'Vendeur', company: 'Cartier', companyDomain: 'cartier.com', group: 'Richemont',
-  city: 'PARIS', location: 'Paris, France', contract: 'CDI', sector: 'LUXURY',
+  city: 'PARIS', location: 'Paris, France', employmentTerm: 'PERMANENT', sector: 'LUXURY',
   url: 'https://x/1', postedAt: null, latitude: null, longitude: null,
   sourceCount: 1, sources: ['cartier'], description: 'desc', applyUrl: 'https://x/1',
-  postalCode: null, department: null, jobFunction: null, seniority: null, workingTime: null, remote: null,
+  postalCode: null, department: null, jobFunction: null, seniority: null, workTime: null, remote: null,
+  programType: null, engagementType: null, isSeasonal: null,
   experienceYears: null, educationLevel: null, salaryMin: null, salaryMax: null,
   salaryCurrency: null, salaryPeriod: null, validThrough: null,
   country: 'France', language: 'fr', firstSeenAt: new Date('2026-09-01T00:00:00Z'),
@@ -65,17 +66,42 @@ describe('jobPostingSchema', () => {
   });
 });
 
+/**
+ * La TRADUCTION vers schema.org, à la frontière.
+ *
+ * Google mélange dans un seul champ ce que notre base sépare en quatre
+ * dimensions : rythmes, durées, dispositifs et natures juridiques y cohabitent.
+ * On parle sa langue en sortie sans jamais re-mélanger le modèle interne.
+ */
 describe('schemaEmploymentTypes', () => {
-  it('speaks schema.org, not French HR', () => {
-    expect(schemaEmploymentTypes('CDI', null)).toEqual(['FULL_TIME']);
-    expect(schemaEmploymentTypes('CDD', null)).toEqual(['TEMPORARY']);
-    expect(schemaEmploymentTypes('STAGE', null)).toEqual(['INTERN']);
-    expect(schemaEmploymentTypes('FREELANCE', null)).toEqual(['CONTRACTOR']);
+  it('traduit chaque dimension vers le vocabulaire de Google', () => {
+    expect(schemaEmploymentTypes('FIXED_TERM', null)).toEqual(['TEMPORARY']);
+    expect(schemaEmploymentTypes('TEMPORARY', null)).toEqual(['TEMPORARY']);
+    expect(schemaEmploymentTypes(null, null, 'INTERNSHIP')).toEqual(['INTERN']);
+    expect(schemaEmploymentTypes(null, null, 'APPRENTICESHIP')).toEqual(['INTERN']);
+    expect(schemaEmploymentTypes(null, null, null, 'FREELANCE')).toEqual(['CONTRACTOR']);
+    expect(schemaEmploymentTypes(null, null, null, 'INDEPENDENT_CONTRACTOR')).toEqual(['CONTRACTOR']);
+    expect(schemaEmploymentTypes(null, 'FULL_TIME')).toEqual(['FULL_TIME']);
+    expect(schemaEmploymentTypes(null, 'PART_TIME')).toEqual(['PART_TIME']);
   });
-  it('part-time replaces the CDI full-time assumption', () => {
-    expect(schemaEmploymentTypes('CDI', 'TEMPS_PARTIEL')).toEqual(['PART_TIME']);
+
+  /**
+   * `PERMANENT` n'existe pas dans l'énumération de schema.org : le permanent s'y
+   * déduit de l'ABSENCE de TEMPORARY. On n'invente donc pas « FULL_TIME », qui
+   * serait un rythme affirmé sans preuve.
+   */
+  it('un poste permanent n’invente pas un rythme', () => {
+    expect(schemaEmploymentTypes('PERMANENT', null)).toEqual([]);
+    expect(schemaEmploymentTypes('PERMANENT', 'FULL_TIME')).toEqual(['FULL_TIME']);
   });
-  it('unknown contract yields nothing rather than a guess', () => {
+
+  /** Les dimensions étant cumulables, plusieurs valeurs peuvent sortir ensemble. */
+  it('cumule les dimensions présentes', () => {
+    expect(schemaEmploymentTypes('FIXED_TERM', 'PART_TIME')).toEqual(['TEMPORARY', 'PART_TIME']);
+    expect(schemaEmploymentTypes(null, 'FULL_TIME', 'INTERNSHIP')).toEqual(['INTERN', 'FULL_TIME']);
+  });
+
+  it('rend un tableau vide plutôt qu’une supposition', () => {
     expect(schemaEmploymentTypes(null, null)).toEqual([]);
   });
 });

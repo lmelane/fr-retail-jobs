@@ -273,9 +273,44 @@ model Job {
   latitude      Float?
   longitude     Float?
 
-  contract      String?
-  /** Full-time / part-time, when stated separately from the contract. */
-  workingTime   String?
+  /**
+   * LES CINQ DIMENSIONS D'EMPLOI — mondiales, indépendantes et CUMULABLES.
+   *
+   * Elles remplacent `contract` + `workingTime`, qui mélangeaient quatre
+   * concepts dans un champ unique et imposaient une grille juridique FRANÇAISE
+   * (CDI/CDD/STAGE) à un catalogue mondial : un « Permanent » britannique n'est
+   * pas un CDI, et un `CONTRACTOR` américain n'est pas un freelance.
+   *
+   * Deux mesures ont imposé la séparation (2026-09-08) :
+   *  · `employment_type_code` sert « parttime_fixed_term » (225 offres) —
+   *    DEUX dimensions dans une seule valeur, dont une était forcément écrasée ;
+   *  · 2 359 offres Sephora sont « CDD » ET « Seasonal » : les deux sont vraies
+   *    en même temps, donc `isSeasonal` ne peut pas être une valeur de durée.
+   *
+   * Règle : « le faible volume décide si on EXPOSE une dimension, pas si on
+   * POLLUE la taxonomie canonique. » `engagementType` (0,3 % des offres) reste
+   * une colonne nullable propre, sans index ni facette.
+   *
+   * « CDI » n'est plus une valeur : c'est le LIBELLÉ français de PERMANENT,
+   * produit par la couche de localisation du site.
+   */
+  /** DURÉE : PERMANENT | FIXED_TERM | TEMPORARY. null = la source ne le dit pas. */
+  employmentTerm String?
+  /** RYTHME : FULL_TIME | PART_TIME. */
+  workTime       String?
+  /** DISPOSITIF : INTERNSHIP | APPRENTICESHIP | GRADUATE_PROGRAM | VIE. */
+  programType    String?
+  /**
+   * NATURE JURIDIQUE : EMPLOYEE | FREELANCE | INDEPENDENT_CONTRACTOR.
+   * `EMPLOYEE` exige une preuve positive — il n'est jamais déduit de l'absence
+   * de freelance, ce qui reviendrait à inventer une donnée.
+   */
+  engagementType String?
+  /**
+   * Poste saisonnier — caractéristique INDÉPENDANTE de la durée : 2 414 offres
+   * sont à la fois FIXED_TERM et saisonnières.
+   */
+  isSeasonal     Boolean?
   /** Remote policy as the source words it. */
   remote        String?
   experienceYears Int?
@@ -367,7 +402,8 @@ model Job {
   @@unique([companyId, source, externalId])
   @@index([clusterKey])
   @@index([department])
-  @@index([contract])
+  @@index([employmentTerm])
+  @@index([workTime])
   @@index([isFrance, isActive])
   @@index([fingerprint])
   @@index([companyId, isActive])
@@ -416,7 +452,7 @@ model JobEvent {
 model MarketSnapshot {
   id                 String   @id @default(cuid())
   date               DateTime @db.Date
-  /** global | country | city | company | group | sector | function | seniority | contract | country-function | country-sector */
+  /** global | country | city | company | group | sector | function | seniority | employmentTerm | country-function | country-sector */
   scope              String
   /** '' pour global ; ISO-2 ; 'FR|Paris' ; id de société ; nom de groupe ; clé de métier… */
   key                String

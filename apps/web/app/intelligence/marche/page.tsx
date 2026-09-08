@@ -4,7 +4,7 @@ import { LineChart } from '@/components/intelligence/charts/line-chart';
 import { IndexGauge } from '@/components/intelligence/charts/index-gauge';
 import { SmallMultiples } from '@/components/intelligence/charts/small-multiples';
 import { StackedArea } from '@/components/intelligence/charts/stacked-area';
-import { contractLabel } from '@/lib/format';
+import { employmentTermLabel } from '@/lib/format';
 import { getMarket } from '@/lib/intelligence/queries/market';
 import { getCoverage } from '@/lib/intelligence/queries/coverage';
 import { indexBase100, momentum, repostRate, variation } from '@/lib/intelligence/metrics';
@@ -141,7 +141,7 @@ export default async function Page() {
         <div className="igrid">
           <div className="i4">
             <Block id="contrat" title="Contrats." level="fact-shares">
-              <Mix total={h.active} rows={data.contracts.map((c) => ({ label: c.key ? contractLabel(c.key) ?? c.key : 'Non précisé', count: c.count, href: c.key ? intelPaths.jobs({ contrat: c.key }) : undefined }))} />
+              <Mix total={h.active} rows={data.contracts.map((c) => ({ label: c.key ? employmentTermLabel(c.key) ?? c.key : 'Non précisé', count: c.count, href: c.key ? intelPaths.jobs({ contrat: c.key }) : undefined }))} />
             </Block>
           </div>
           <div className="i4">

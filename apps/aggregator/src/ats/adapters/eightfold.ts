@@ -1,7 +1,7 @@
 import pLimit from 'p-limit';
 import { fetchJson, fetchWithRetry } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
-import { employmentTermsFrom, normalizeWorkingTime } from '../../normalize/contract.js';
+import { employmentTermsFrom, readEmployment } from '../../normalize/employment.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -250,7 +250,7 @@ export async function fetchEightfoldJobs(
             company: brandOf(detail.data) ?? job.company,
             // "Fulltime-Regular" carries both; the boundary splits contract from time.
             contract: terms ?? job.contract,
-            workingTime: terms && normalizeWorkingTime(terms) !== 'UNKNOWN' ? terms : job.workingTime,
+            workingTime: terms && readEmployment(terms) !== null ? terms : job.workingTime,
           };
         } catch {
           // A failed detail fetch must not lose the listing entry.

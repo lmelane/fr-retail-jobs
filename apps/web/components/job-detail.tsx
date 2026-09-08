@@ -1,6 +1,6 @@
 'use client';
 
-import { contractLabel, relativeDate } from '@/lib/format';
+import { employmentTermLabel, workTimeLabel, programTypeLabel, relativeDate } from '@/lib/format';
 import { CompanyLogo } from '@/components/company-logo';
 import { displayTitle } from '@/lib/format';
 import type { JobRow } from '@/lib/jobs';
@@ -59,19 +59,24 @@ const OutGlyph = () => (
  */
 function JobFacts({
   job,
-  contract,
+  employmentTerm,
   salary,
 }: {
   job: JobRow;
-  contract: string | null;
+  /** Libellé de la DURÉE, déjà localisé par l'appelant. */
+  employmentTerm: string | null;
   salary: string | null;
 }) {
   const facts: [string, string][] = [];
 
-  if (contract) facts.push(['Contrat', contract]);
+  if (employmentTerm) facts.push(['Contrat', employmentTerm]);
   if (salary) facts.push(['Salaire', salary]);
-  const workingTime = contractLabel(job.workingTime);
-  if (workingTime) facts.push(['Temps de travail', workingTime]);
+  // Le RYTHME a sa propre table de libellés : le traduire avec celle des durées
+  // affichait « Temps de travail : CDI ».
+  const workTime = workTimeLabel(job.workTime);
+  if (workTime) facts.push(['Temps de travail', workTime]);
+  if (job.programType) facts.push(['Programme', programTypeLabel(job.programType) ?? job.programType]);
+  if (job.isSeasonal) facts.push(['Saisonnier', 'Oui']);
   if (job.remote && !/^(unknown|non pr[ée]cis[ée]|n\/?a|none|unspecified)$/i.test(job.remote.trim()))
     facts.push(['Télétravail', remoteLabel(job.remote)]);
   if (job.experienceYears !== null)
@@ -104,7 +109,7 @@ function JobFacts({
 }
 
 export function JobDetail({ job }: { job: JobRow }) {
-  const contract = contractLabel(job.contract);
+  const employmentTerm = employmentTermLabel(job.employmentTerm);
   const salary = salaryLabel(job);
 
   // Meta line under the title: ville · contrat · télétravail · publiée.
@@ -112,7 +117,7 @@ export function JobDetail({ job }: { job: JobRow }) {
     job.remote && !/^(unknown|non pr[ée]cis[ée]|n\/?a|none|unspecified)$/i.test(job.remote.trim())
       ? remoteLabel(job.remote)
       : null;
-  const meta = [job.city, contract, remote, job.postedAt ? `Publiée ${relativeDate(job.postedAt)}` : null]
+  const meta = [job.city, employmentTerm, remote, job.postedAt ? `Publiée ${relativeDate(job.postedAt)}` : null]
     .filter(Boolean)
     .join(' · ');
 
@@ -156,7 +161,7 @@ export function JobDetail({ job }: { job: JobRow }) {
         Un profil Catwalks vous fait matcher avec les Maisons qui recrutent votre profil.
       </p>
 
-      <JobFacts job={job} contract={contract} salary={salary} />
+      <JobFacts job={job} employmentTerm={employmentTerm} salary={salary} />
 
       <div className="block">
         <span className="t-caption green">Description</span>

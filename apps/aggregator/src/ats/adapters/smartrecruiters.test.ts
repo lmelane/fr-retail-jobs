@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { parseSmartRecruitersPosting } from './smartrecruiters.js';
-import { normalizeContract, normalizeWorkingTime, isWorkingTimeValue } from '../../normalize/contract.js';
+import { readEmployment } from '../../normalize/employment.js';
 
 /**
  * l2 (2026-09-06) — l'API publie `typeOfEmployment.{id,label}` et `language.code`,
@@ -21,17 +21,20 @@ describe('parseSmartRecruitersPosting — l2', () => {
   it('permanent → CDI, contract → CDD ; le libellé donne le temps de travail', () => {
     const base = fixture('l2-smartrecruiters-hmgroup-posting.json');
     const permanent = parseSmartRecruitersPosting({ ...base, typeOfEmployment: { id: 'permanent', label: 'Full-time' } }, 'HMGroup');
-    expect(normalizeContract(permanent.contract)).toBe('CDI');
-    expect(normalizeWorkingTime(permanent.workingTime)).toBe('TEMPS_PLEIN');
+    expect(readEmployment(permanent.contract).employmentTerm).toBe('PERMANENT');
+    expect(readEmployment(permanent.workingTime).workTime).toBe('FULL_TIME');
 
+    // SmartRecruiters range ce libellé dans un CHAMP DÉDIÉ au type d'emploi :
+    // « Contract » y désigne une durée déterminée, là où le mot nu dans un code
+    // composite reste ambigu et n'est pas tranché.
     const contract = parseSmartRecruitersPosting({ ...base, typeOfEmployment: { id: 'contract', label: 'Contract' } }, 'HMGroup');
-    expect(normalizeContract(contract.contract)).toBe('CDD');
+    expect(readEmployment(contract.contract).employmentTerm).toBe('FIXED_TERM');
   });
 
   it('part-time n’est pas un contrat : seul le temps de travail est renseigné', () => {
     const job = parseSmartRecruitersPosting({ ...fixture('l2-smartrecruiters-primark-posting.json'), typeOfEmployment: { id: 'part-time', label: 'Part-time' } }, 'primark');
-    expect(job.contract === undefined || isWorkingTimeValue(job.contract)).toBe(true);
-    expect(normalizeWorkingTime(job.workingTime)).toBe('TEMPS_PARTIEL');
+    expect(readEmployment(job.contract).employmentTerm).toBeUndefined();
+    expect(readEmployment(job.workingTime).workTime).toBe('PART_TIME');
   });
 
   it('garde identifiant, titre, lieu, date et URL publique', () => {

@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Check, ChevronDown, Loader2, X } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
 import { SearchPill } from '@/components/search-pill';
-import { contractLabel, displayTitle, relativeDate } from '@/lib/format';
+import { employmentTermLabel, displayTitle, relativeDate } from '@/lib/format';
 import { offerPath } from '@/lib/offer-url';
 import { jobFacets } from '@/lib/job-preview';
 import { CompanyLogo } from '@/components/company-logo';
@@ -565,7 +565,7 @@ export function JobCard({
   onSelect: () => void;
   isSelected: boolean;
 }) {
-  const contract = contractLabel(job.contract);
+  const contract = employmentTermLabel(job.employmentTerm);
   const isFresh = job.postedAt
     ? Date.now() - new Date(job.postedAt).getTime() < FRESH_MS
     : false;
@@ -602,8 +602,8 @@ export function JobCard({
   // Ligne méta homogène (review 2026-09-04) : lieu · contrat · temps de
   // travail · remote — chaque champ présent s'affiche, aucun n'est requis.
   const workingTime =
-    job.workingTime === 'TEMPS_PARTIEL' ? 'Temps partiel'
-    : job.workingTime === 'TEMPS_PLEIN' ? 'Temps plein'
+    job.workTime === 'TEMPS_PARTIEL' ? 'Temps partiel'
+    : job.workTime === 'TEMPS_PLEIN' ? 'Temps plein'
     : null;
   const meta = [job.city ?? job.location, contract, workingTime, remote].filter(Boolean).join(' · ');
   // Ce qui DISTINGUE ce poste : métier, séniorité, département — l'aperçu de
