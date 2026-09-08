@@ -1,0 +1,27 @@
+{
+  "batchId": "20260908-JOBAFFINITY-DIRECT-v1",
+  "sha": "61a2dc805eab0ad93445a2d5cdfd09886f76e1d0540cd952f1b164dde43ba35f",
+  "apply": true,
+  "before": {
+    "jobs": 73801,
+    "sources": 76718,
+    "events": 15695
+  },
+  "after": {
+    "jobs": 73801,
+    "sources": 76718,
+    "events": 15695
+  },
+  "results": [
+    {
+      "key": "intersport-france",
+      "written": 0,
+      "idempotent": true
+    },
+    {
+      "key": "blackstore",
+      "written": 0,
+      "idempotent": true
+    }
+  ]
+}

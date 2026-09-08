@@ -1,0 +1,78 @@
+{
+  "at": "2026-09-08T21:25:26.933Z",
+  "sources": [
+    {
+      "key": "intersport-france",
+      "representations": 930,
+      "uniqueJobs": 930,
+      "rawSame": 0,
+      "rawChanged": 930,
+      "held": 63,
+      "rawPresent": 930,
+      "source": {
+        "status": "ACTIVE",
+        "lastRunStatus": "DEGRADED",
+        "lastRunJobs": 930
+      },
+      "latestRun": {
+        "ranAt": "2026-09-08T21:24:19.750Z",
+        "complete": false,
+        "canAttestAbsence": false,
+        "errors": 0,
+        "fetched": 993,
+        "accepted": 930,
+        "note": "63 annonces non publiables archivées (12 non résolues) ; aucune attestation d’absence · desc 100% date 100% pays 99% url 100%"
+      }
+    },
+    {
+      "key": "blackstore",
+      "representations": 48,
+      "uniqueJobs": 48,
+      "rawSame": 0,
+      "rawChanged": 48,
+      "held": 6,
+      "rawPresent": 48,
+      "source": {
+        "status": "ACTIVE",
+        "lastRunStatus": "DEGRADED",
+        "lastRunJobs": 48
+      },
+      "latestRun": {
+        "ranAt": "2026-09-08T21:25:04.665Z",
+        "complete": true,
+        "canAttestAbsence": false,
+        "errors": 0,
+        "fetched": 54,
+        "accepted": 48,
+        "note": "6 annonces non publiables archivées (0 non résolues) ; énumération et fermetures attestées · desc 100% date 100% pays 100% url 100%"
+      }
+    }
+  ],
+  "uniqueNewJobs": 940,
+  "sharedJobs": 38,
+  "newFrance": 933,
+  "newMissingCountry": 7,
+  "totals": {
+    "active": 72359,
+    "france": 10684,
+    "companies": 1567,
+    "sources": 500,
+    "activeSources": 424
+  },
+  "newCompanyRows": [
+    {
+      "id": "cmtlyfvaf016cqf5k6yvon72v",
+      "name": "Intersport",
+      "kind": "RETAILER",
+      "sector": "RETAIL",
+      "parentGroup": null
+    },
+    {
+      "id": "cmtt64q3n00073nkj2m32mmvb",
+      "name": "Blackstore",
+      "kind": "RETAILER",
+      "sector": "FASHION",
+      "parentGroup": "Intersport"
+    }
+  ]
+}

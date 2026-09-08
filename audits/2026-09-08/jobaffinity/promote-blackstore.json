@@ -1,0 +1,7 @@
+{
+  "ok": true,
+  "command": "promote",
+  "key": "blackstore",
+  "from": "DRAFT",
+  "to": "ACTIVE"
+}

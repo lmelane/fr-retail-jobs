@@ -1,0 +1,29 @@
+{
+  "at": "2026-09-08T21:16:35.987636+00:00",
+  "status": "IDENTIFIED_NOT_YET_APPLIED",
+  "note": "Additional official-store corroboration found after adapter freeze; country enrichment must be repeatable in the adapter before any backfill.",
+  "cases": [
+    {
+      "rawCity": "THIAIS BELLE EPINE",
+      "rawPostalCode": "94521",
+      "officialStoreCity": "Thiais",
+      "officialStorePostalCode": "94320",
+      "officialStoreUrl": "https://www.intersport.fr/Val-de-Marne-94/Thiais-94320/INTERSPORT-THIAISBELLEEPINE/04933_000/",
+      "affectedJobs": 4
+    },
+    {
+      "rawCity": "MORTEAU CEDEX",
+      "rawPostalCode": "25501",
+      "officialStoreCity": "Morteau",
+      "officialStorePostalCode": "25500",
+      "officialStoreUrl": "https://www.intersport.fr/Doubs-25/MORTEAU-25500/INTERSPORT-MORTEAU/00583_000/",
+      "affectedJobs": 2
+    },
+    {
+      "rawCity": "VAL THORENS",
+      "rawPostalCode": "73440",
+      "affectedJobs": 1,
+      "status": "DIRECT_STORE_IDENTITY_NOT_RESOLVED"
+    }
+  ]
+}

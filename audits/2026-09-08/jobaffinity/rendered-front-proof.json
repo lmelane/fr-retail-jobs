@@ -1,0 +1,27 @@
+{
+  "at": "2026-09-08T21:30:17.322500+00:00",
+  "method": "Ordinary browser navigation; rendered DOM text read via CUA",
+  "home": {
+    "url": "https://modecareers.com/",
+    "visibleActiveJobs": 72359,
+    "visibleHiringCompanies": 1043,
+    "visibleCountries": 119
+  },
+  "franceSearch": {
+    "url": "https://modecareers.com/emplois?pays=FR",
+    "visibleFilter": "Pays · France",
+    "visibleResults": 10684,
+    "visibleWorldFooter": 72359
+  },
+  "existingOpenFinding": {
+    "finding": "Douglas future publication dates still visible on homepage",
+    "visibleFutureDayOffsets": [
+      546,
+      272,
+      272,
+      152,
+      90
+    ],
+    "status": "PREVIOUSLY_IDENTIFIED_P1_NOT_FIXED_IN_THIS_LOT"
+  }
+}

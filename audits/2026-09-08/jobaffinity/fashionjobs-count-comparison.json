@@ -1,0 +1,24 @@
+{
+  "at": "2026-09-08T21:26:18.391Z",
+  "method": "FashionJobs directory counters only; no FashionJobs job details. Production direct-source company counts. Different snapshots; counts are not a job-by-job equivalence proof.",
+  "comparison": [
+    {
+      "company": "Intersport",
+      "companyId": "cmtlyfvaf016cqf5k6yvon72v",
+      "fashionjobsDirectoryOffers": 577,
+      "fashionjobsProfile": "https://fr.fashionjobs.com/recrutement/intersport.html",
+      "directActiveWorld": 879,
+      "directActiveFrance": 867,
+      "differenceFrance": 290
+    },
+    {
+      "company": "Blackstore",
+      "companyId": "cmtt64q3n00073nkj2m32mmvb",
+      "fashionjobsDirectoryOffers": 66,
+      "fashionjobsProfile": "https://fr.fashionjobs.com/recrutement/blackstore.html",
+      "directActiveWorld": 66,
+      "directActiveFrance": 66,
+      "differenceFrance": 0
+    }
+  ]
+}
