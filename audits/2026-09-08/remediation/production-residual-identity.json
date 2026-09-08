@@ -1,0 +1,722 @@
+{
+  "at": "2026-09-08T18:05:38.445Z",
+  "readOnly": true,
+  "historicalNameOnlySources": 198,
+  "remainingActive": 178,
+  "remainingUniqueActiveJobs": 7178,
+  "interpretation": "Requalification backlog, not a count of demonstrated errors.",
+  "sources": [
+    {
+      "key": "saltrock",
+      "maison": "Saltrock"
+    },
+    {
+      "key": "supergoop",
+      "maison": "Supergoop!"
+    },
+    {
+      "key": "primark",
+      "maison": "Primark"
+    },
+    {
+      "key": "city-beauty",
+      "maison": "City Beauty"
+    },
+    {
+      "key": "blacks",
+      "maison": "Blacks"
+    },
+    {
+      "key": "joy",
+      "maison": "Joy"
+    },
+    {
+      "key": "visionlab",
+      "maison": "VisionLab"
+    },
+    {
+      "key": "giga",
+      "maison": "Giga"
+    },
+    {
+      "key": "dna",
+      "maison": "dna"
+    },
+    {
+      "key": "lerros",
+      "maison": "LERROS"
+    },
+    {
+      "key": "parco",
+      "maison": "Parco"
+    },
+    {
+      "key": "cove",
+      "maison": "Cove"
+    },
+    {
+      "key": "velvet-canyon",
+      "maison": "Velvet Canyon"
+    },
+    {
+      "key": "belstaff",
+      "maison": "Belstaff"
+    },
+    {
+      "key": "bzb",
+      "maison": "BZB"
+    },
+    {
+      "key": "killstar",
+      "maison": "KILLSTAR"
+    },
+    {
+      "key": "jewells",
+      "maison": "Jewells"
+    },
+    {
+      "key": "sabon",
+      "maison": "Sabon"
+    },
+    {
+      "key": "jd-sports",
+      "maison": "JD Sports"
+    },
+    {
+      "key": "oh-polly",
+      "maison": "Oh Polly"
+    },
+    {
+      "key": "nude-project",
+      "maison": "Nude Project"
+    },
+    {
+      "key": "luhta",
+      "maison": "Luhta"
+    },
+    {
+      "key": "merkal",
+      "maison": "Merkal"
+    },
+    {
+      "key": "asos",
+      "maison": "ASOS"
+    },
+    {
+      "key": "585-gold",
+      "maison": "585 Gold"
+    },
+    {
+      "key": "agency",
+      "maison": "Agency"
+    },
+    {
+      "key": "atlantis",
+      "maison": "Atlantis"
+    },
+    {
+      "key": "b-s-international",
+      "maison": "B's International"
+    },
+    {
+      "key": "baron",
+      "maison": "Baron"
+    },
+    {
+      "key": "bellroy",
+      "maison": "Bellroy"
+    },
+    {
+      "key": "aime-leon-dore",
+      "maison": "Aimé Leon Dore"
+    },
+    {
+      "key": "bernadette",
+      "maison": "BERNADETTE"
+    },
+    {
+      "key": "buck-mason",
+      "maison": "Buck Mason"
+    },
+    {
+      "key": "carla-b",
+      "maison": "CARLA B"
+    },
+    {
+      "key": "clarkson-eyecare",
+      "maison": "Clarkson Eyecare"
+    },
+    {
+      "key": "asket",
+      "maison": "ASKET"
+    },
+    {
+      "key": "bespoke-post",
+      "maison": "Bespoke Post"
+    },
+    {
+      "key": "celio",
+      "maison": "celio"
+    },
+    {
+      "key": "cuyana",
+      "maison": "Cuyana"
+    },
+    {
+      "key": "cambio",
+      "maison": "CAMBIO"
+    },
+    {
+      "key": "bombas",
+      "maison": "Bombas"
+    },
+    {
+      "key": "cabaia",
+      "maison": "Cabaia"
+    },
+    {
+      "key": "cynthia-rowley",
+      "maison": "Cynthia Rowley"
+    },
+    {
+      "key": "brothers",
+      "maison": "Brothers"
+    },
+    {
+      "key": "bloom",
+      "maison": "Bloom"
+    },
+    {
+      "key": "damart",
+      "maison": "Damart"
+    },
+    {
+      "key": "everlane",
+      "maison": "Everlane"
+    },
+    {
+      "key": "gorjana",
+      "maison": "Gorjana"
+    },
+    {
+      "key": "eric-bompard",
+      "maison": "Eric Bompard"
+    },
+    {
+      "key": "orchestra",
+      "maison": "Orchestra"
+    },
+    {
+      "key": "browns-shoes",
+      "maison": "Browns Shoes"
+    },
+    {
+      "key": "glitter",
+      "maison": "Glitter"
+    },
+    {
+      "key": "ghost",
+      "maison": "Ghost"
+    },
+    {
+      "key": "genesis",
+      "maison": "Genesis"
+    },
+    {
+      "key": "filson",
+      "maison": "Filson"
+    },
+    {
+      "key": "dolls-kill",
+      "maison": "Dolls Kill"
+    },
+    {
+      "key": "good-american",
+      "maison": "Good American"
+    },
+    {
+      "key": "fastrack",
+      "maison": "Fastrack"
+    },
+    {
+      "key": "georges",
+      "maison": "GEORGES"
+    },
+    {
+      "key": "ephemera",
+      "maison": "EPHEMERA"
+    },
+    {
+      "key": "blueland",
+      "maison": "Blueland"
+    },
+    {
+      "key": "gymshark",
+      "maison": "Gymshark"
+    },
+    {
+      "key": "knock-knock",
+      "maison": "Knock Knock"
+    },
+    {
+      "key": "innisfree",
+      "maison": "Innisfree"
+    },
+    {
+      "key": "kidzart",
+      "maison": "Kidzart"
+    },
+    {
+      "key": "la-senza",
+      "maison": "La Senza"
+    },
+    {
+      "key": "joe-fresh",
+      "maison": "Joe Fresh"
+    },
+    {
+      "key": "kate-mcleod",
+      "maison": "Kate McLeod"
+    },
+    {
+      "key": "hades",
+      "maison": "Hades"
+    },
+    {
+      "key": "ilia",
+      "maison": "ILIA"
+    },
+    {
+      "key": "kent",
+      "maison": "KENT"
+    },
+    {
+      "key": "closed",
+      "maison": "CLOSED"
+    },
+    {
+      "key": "mejuri",
+      "maison": "Mejuri"
+    },
+    {
+      "key": "nyx-professional-makeup",
+      "maison": "NYX Professional Makeup"
+    },
+    {
+      "key": "ms-mode",
+      "maison": "MS Mode"
+    },
+    {
+      "key": "miu-miu",
+      "maison": "Miu Miu"
+    },
+    {
+      "key": "my-jewellery",
+      "maison": "My Jewellery"
+    },
+    {
+      "key": "mulberry",
+      "maison": "Mulberry"
+    },
+    {
+      "key": "kiabi",
+      "maison": "Kiabi"
+    },
+    {
+      "key": "markham",
+      "maison": "Markham"
+    },
+    {
+      "key": "naturkompaniet",
+      "maison": "Naturkompaniet"
+    },
+    {
+      "key": "nexus",
+      "maison": "Nexus"
+    },
+    {
+      "key": "madhappy",
+      "maison": "Madhappy"
+    },
+    {
+      "key": "method-h-l-a",
+      "maison": "METHOD H L.A."
+    },
+    {
+      "key": "lovable",
+      "maison": "Lovable"
+    },
+    {
+      "key": "loplabbet",
+      "maison": "Löplabbet"
+    },
+    {
+      "key": "glossier",
+      "maison": "Glossier"
+    },
+    {
+      "key": "profil-optik",
+      "maison": "Profil Optik"
+    },
+    {
+      "key": "sacoor-brothers",
+      "maison": "Sacoor Brothers"
+    },
+    {
+      "key": "picard",
+      "maison": "PICARD"
+    },
+    {
+      "key": "realself",
+      "maison": "RealSelf"
+    },
+    {
+      "key": "quince",
+      "maison": "Quince"
+    },
+    {
+      "key": "happy-socks",
+      "maison": "Happy Socks"
+    },
+    {
+      "key": "pepco",
+      "maison": "Pepco"
+    },
+    {
+      "key": "saffron",
+      "maison": "Saffron"
+    },
+    {
+      "key": "hanna-andersson",
+      "maison": "Hanna Andersson"
+    },
+    {
+      "key": "ganni",
+      "maison": "GANNI"
+    },
+    {
+      "key": "peacocks",
+      "maison": "Peacocks"
+    },
+    {
+      "key": "reformation",
+      "maison": "Reformation"
+    },
+    {
+      "key": "spinelli-kilcollin",
+      "maison": "Spinelli Kilcollin"
+    },
+    {
+      "key": "subset",
+      "maison": "Subset"
+    },
+    {
+      "key": "space-nk",
+      "maison": "Space NK"
+    },
+    {
+      "key": "marella",
+      "maison": "Marella"
+    },
+    {
+      "key": "suitsupply",
+      "maison": "Suitsupply"
+    },
+    {
+      "key": "stanley-stella",
+      "maison": "STANLEY/STELLA"
+    },
+    {
+      "key": "intersport",
+      "maison": "INTERSPORT"
+    },
+    {
+      "key": "hot-topic",
+      "maison": "Hot Topic"
+    },
+    {
+      "key": "shein",
+      "maison": "SHEIN"
+    },
+    {
+      "key": "sisley",
+      "maison": "Sisley"
+    },
+    {
+      "key": "singularu",
+      "maison": "Singularu"
+    },
+    {
+      "key": "silbon",
+      "maison": "Silbon"
+    },
+    {
+      "key": "state-of-art",
+      "maison": "State of Art"
+    },
+    {
+      "key": "shinola",
+      "maison": "Shinola"
+    },
+    {
+      "key": "thirdlove",
+      "maison": "ThirdLove"
+    },
+    {
+      "key": "tom-wood",
+      "maison": "Tom Wood"
+    },
+    {
+      "key": "tiger-of-sweden",
+      "maison": "Tiger of Sweden"
+    },
+    {
+      "key": "veronica-beard",
+      "maison": "Veronica Beard"
+    },
+    {
+      "key": "j-lindeberg",
+      "maison": "J.Lindeberg"
+    },
+    {
+      "key": "vivobarefoot",
+      "maison": "Vivobarefoot"
+    },
+    {
+      "key": "trussardi",
+      "maison": "Trussardi"
+    },
+    {
+      "key": "vitamin-a",
+      "maison": "Vitamin A"
+    },
+    {
+      "key": "thomas-sabo",
+      "maison": "THOMAS SABO"
+    },
+    {
+      "key": "toteme",
+      "maison": "Totême"
+    },
+    {
+      "key": "vlisco",
+      "maison": "Vlisco"
+    },
+    {
+      "key": "taylor-stitch",
+      "maison": "Taylor Stitch"
+    },
+    {
+      "key": "loft",
+      "maison": "LOFT"
+    },
+    {
+      "key": "obi-obi",
+      "maison": "OBI OBI"
+    },
+    {
+      "key": "white-stuff",
+      "maison": "White Stuff"
+    },
+    {
+      "key": "yema",
+      "maison": "Yema"
+    },
+    {
+      "key": "mateo",
+      "maison": "Mateo"
+    },
+    {
+      "key": "wehkamp",
+      "maison": "Wehkamp"
+    },
+    {
+      "key": "wunderkind",
+      "maison": "Wunderkind"
+    },
+    {
+      "key": "little-words-project",
+      "maison": "Little Words Project"
+    },
+    {
+      "key": "peak-performance",
+      "maison": "Peak Performance"
+    },
+    {
+      "key": "kiko-milano",
+      "maison": "Kiko Milano"
+    },
+    {
+      "key": "magasin-du-nord",
+      "maison": "Magasin du Nord"
+    },
+    {
+      "key": "lavish-alice",
+      "maison": "Lavish Alice"
+    },
+    {
+      "key": "pina",
+      "maison": "Piña"
+    },
+    {
+      "key": "chisholm-hunter",
+      "maison": "Chisholm Hunter"
+    },
+    {
+      "key": "mvmt",
+      "maison": "MVMT"
+    },
+    {
+      "key": "it-s-fashion",
+      "maison": "It's Fashion"
+    },
+    {
+      "key": "ortovox",
+      "maison": "ORTOVOX"
+    },
+    {
+      "key": "samson",
+      "maison": "Samson"
+    },
+    {
+      "key": "united-colors-of-benetton",
+      "maison": "United Colors of Benetton"
+    },
+    {
+      "key": "tropicfeel",
+      "maison": "Tropicfeel"
+    },
+    {
+      "key": "groundies",
+      "maison": "Groundies"
+    },
+    {
+      "key": "club-monaco",
+      "maison": "Club Monaco"
+    },
+    {
+      "key": "ballantynes",
+      "maison": "Ballantynes"
+    },
+    {
+      "key": "essilorluxottica",
+      "maison": "EssilorLuxottica"
+    },
+    {
+      "key": "jojo-maman-bebe",
+      "maison": "JoJo Maman Bébé"
+    },
+    {
+      "key": "herschel-supply-co",
+      "maison": "Herschel Supply Co."
+    },
+    {
+      "key": "imi-s",
+      "maison": "imi's"
+    },
+    {
+      "key": "honey-birdette",
+      "maison": "Honey Birdette"
+    },
+    {
+      "key": "lensa",
+      "maison": "Lensa"
+    },
+    {
+      "key": "sport-1",
+      "maison": "Sport 1"
+    },
+    {
+      "key": "bella-canvas",
+      "maison": "BELLA+CANVAS"
+    },
+    {
+      "key": "axel-arigato",
+      "maison": "AXEL ARIGATO"
+    },
+    {
+      "key": "eastpak",
+      "maison": "Eastpak"
+    },
+    {
+      "key": "lucy-yak",
+      "maison": "Lucy & Yak"
+    },
+    {
+      "key": "skin-laundry",
+      "maison": "Skin Laundry"
+    },
+    {
+      "key": "nutrafol",
+      "maison": "Nutrafol"
+    },
+    {
+      "key": "mr-marvis",
+      "maison": "MR MARVIS"
+    },
+    {
+      "key": "asics",
+      "maison": "ASICS"
+    },
+    {
+      "key": "jonsson-workwear",
+      "maison": "Jonsson Workwear"
+    },
+    {
+      "key": "molton-brown",
+      "maison": "Molton Brown"
+    },
+    {
+      "key": "john-henric",
+      "maison": "John Henric"
+    },
+    {
+      "key": "la-casa-de-las-carcasas",
+      "maison": "La casa de las Carcasas"
+    },
+    {
+      "key": "pegador",
+      "maison": "Pegador"
+    },
+    {
+      "key": "blue-banana",
+      "maison": "Blue Banana"
+    },
+    {
+      "key": "brilliant-earth",
+      "maison": "Brilliant Earth"
+    },
+    {
+      "key": "salomon",
+      "maison": "Salomon"
+    },
+    {
+      "key": "courir",
+      "maison": "Courir"
+    },
+    {
+      "key": "undiz",
+      "maison": "Undiz"
+    },
+    {
+      "key": "go-outdoors",
+      "maison": "Go Outdoors"
+    },
+    {
+      "key": "sandro",
+      "maison": "SMCP (toutes Maisons)"
+    },
+    {
+      "key": "point-zero",
+      "maison": "Point Zero"
+    },
+    {
+      "key": "tekla",
+      "maison": "Tekla"
+    },
+    {
+      "key": "bellabeat",
+      "maison": "Bellabeat"
+    }
+  ]
+}

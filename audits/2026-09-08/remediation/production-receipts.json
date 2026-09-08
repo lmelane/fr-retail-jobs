@@ -1,0 +1,49 @@
+[
+  {
+    "batchId": "20260908-P0-ORACLE-v1",
+    "hash": "ee8210da8eddbb9c7fa2d5e919cc7b20987de160328a1743cf02ea5bd3a39efe",
+    "alreadyApplied": false,
+    "written": 85,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-P0-SMCP-v1",
+    "hash": "7cd262437689be9f69a6aa964e3f378e23b4c8378c945484dd4b1f70216401f6",
+    "alreadyApplied": false,
+    "written": 461,
+    "smcpBrandContradictions": 0,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-P0-EMPLOYERS-v1",
+    "hash": "d4c61b846b3113b8486fece377378443fb6f41cba66abcb9eaefbbb607057c1d",
+    "alreadyApplied": false,
+    "written": 326,
+    "smcpBrandContradictions": 0,
+    "excludedActiveRepresentations": 0,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-P0-HOMONYMS-v1",
+    "hash": "f7eb921a0b5cdeae37da618f345b595f8210cf0d2ae13447cf0ddc5989aa208e",
+    "alreadyApplied": false,
+    "written": 456,
+    "smcpBrandContradictions": 0,
+    "excludedActiveRepresentations": 0,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-P0-SOURCE-OWNERS-v1",
+    "hash": "aab76370e1bf7143ce44a438de58709d7b38bc42d86dc7fa884c8ce93ee9493d",
+    "alreadyApplied": false,
+    "written": 3800,
+    "sourceOwnerContradictions": 0,
+    "smcpBrandContradictions": 0,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  }
+]

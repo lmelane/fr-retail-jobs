@@ -1,0 +1,770 @@
+{
+  "at": "2026-09-08T18:04:36.102Z",
+  "readOnly": true,
+  "activeJobs": 71263,
+  "companies": 1563,
+  "companiesWithActiveJobs": 1039,
+  "companyKinds": [
+    {
+      "_count": 20,
+      "kind": "OTHER"
+    },
+    {
+      "_count": 1531,
+      "kind": "UNKNOWN"
+    },
+    {
+      "_count": 2,
+      "kind": "GROUP"
+    },
+    {
+      "_count": 5,
+      "kind": "RETAILER"
+    },
+    {
+      "_count": 5,
+      "kind": "MAISON"
+    }
+  ],
+  "sourceStatuses": [
+    {
+      "_count": 420,
+      "status": "ACTIVE"
+    },
+    {
+      "_count": 68,
+      "status": "RETIRED"
+    },
+    {
+      "_count": 7,
+      "status": "PAUSED"
+    }
+  ],
+  "activeAdapterFamilies": 38,
+  "companiesWithoutActiveSourceFootprint": 364,
+  "sourceIdentityReviews": 0,
+  "activeCompaniesWithoutDomain": 325,
+  "franceCanonical": 9637,
+  "franceFilter": 9634,
+  "franceDisagreements": [
+    {
+      "id": "cmtk48jfp1e0lny2bsc60qmw9",
+      "title": "Responsable Ressources Humaines (F/H) - Région Belgique - CDI",
+      "location": "Bruxelles, Belgique",
+      "countryCode": "FR",
+      "isFrance": false
+    },
+    {
+      "id": "cmtp1wbdb02e1qq4zqbedsx3e",
+      "title": "Quality Control Associated (CDI)",
+      "location": "Tourcoing",
+      "countryCode": "FR",
+      "isFrance": false
+    },
+    {
+      "id": "cmtp1wbd102dxqq4z33d3co5a",
+      "title": "Quality Control Associated (CDD)",
+      "location": "Tourcoing",
+      "countryCode": "FR",
+      "isFrance": false
+    }
+  ],
+  "countries": [
+    {
+      "_count": 30286,
+      "countryCode": "US"
+    },
+    {
+      "_count": 9637,
+      "countryCode": "FR"
+    },
+    {
+      "_count": 2806,
+      "countryCode": "GB"
+    },
+    {
+      "_count": 2681,
+      "countryCode": "DE"
+    },
+    {
+      "_count": 2630,
+      "countryCode": "CA"
+    },
+    {
+      "_count": 2312,
+      "countryCode": "IT"
+    },
+    {
+      "_count": 2022,
+      "countryCode": "ES"
+    },
+    {
+      "_count": 1679,
+      "countryCode": "NL"
+    },
+    {
+      "_count": 1162,
+      "countryCode": "AU"
+    },
+    {
+      "_count": 1154,
+      "countryCode": "CN"
+    },
+    {
+      "_count": 1061,
+      "countryCode": "CH"
+    },
+    {
+      "_count": 575,
+      "countryCode": "BE"
+    },
+    {
+      "_count": 517,
+      "countryCode": "JP"
+    },
+    {
+      "_count": 513,
+      "countryCode": "IN"
+    },
+    {
+      "_count": 496,
+      "countryCode": "KR"
+    },
+    {
+      "_count": 433,
+      "countryCode": "PT"
+    },
+    {
+      "_count": 404,
+      "countryCode": "MX"
+    },
+    {
+      "_count": 388,
+      "countryCode": "SG"
+    },
+    {
+      "_count": 352,
+      "countryCode": "DK"
+    },
+    {
+      "_count": 334,
+      "countryCode": "HK"
+    },
+    {
+      "_count": 322,
+      "countryCode": "PL"
+    },
+    {
+      "_count": 305,
+      "countryCode": "SE"
+    },
+    {
+      "_count": 305,
+      "countryCode": "AT"
+    },
+    {
+      "_count": 263,
+      "countryCode": "TH"
+    },
+    {
+      "_count": 254,
+      "countryCode": "TR"
+    },
+    {
+      "_count": 251,
+      "countryCode": "IE"
+    },
+    {
+      "_count": 247,
+      "countryCode": "MY"
+    },
+    {
+      "_count": 232,
+      "countryCode": "AE"
+    },
+    {
+      "_count": 217,
+      "countryCode": "BR"
+    },
+    {
+      "_count": 196,
+      "countryCode": "NO"
+    },
+    {
+      "_count": 179,
+      "countryCode": "CL"
+    },
+    {
+      "_count": 169,
+      "countryCode": "GR"
+    },
+    {
+      "_count": 163,
+      "countryCode": "TW"
+    },
+    {
+      "_count": 153,
+      "countryCode": "ZA"
+    },
+    {
+      "_count": 138,
+      "countryCode": "NZ"
+    },
+    {
+      "_count": 130,
+      "countryCode": "VN"
+    },
+    {
+      "_count": 115,
+      "countryCode": "CZ"
+    },
+    {
+      "_count": 110,
+      "countryCode": "SA"
+    },
+    {
+      "_count": 110,
+      "countryCode": "CO"
+    },
+    {
+      "_count": 98,
+      "countryCode": "RO"
+    },
+    {
+      "_count": 90,
+      "countryCode": "HU"
+    },
+    {
+      "_count": 86,
+      "countryCode": "IL"
+    },
+    {
+      "_count": 73,
+      "countryCode": "MO"
+    },
+    {
+      "_count": 63,
+      "countryCode": "PR"
+    },
+    {
+      "_count": 57,
+      "countryCode": "PE"
+    },
+    {
+      "_count": 53,
+      "countryCode": "MA"
+    },
+    {
+      "_count": 49,
+      "countryCode": "ID"
+    },
+    {
+      "_count": 47,
+      "countryCode": "PH"
+    },
+    {
+      "_count": 47,
+      "countryCode": "LU"
+    },
+    {
+      "_count": 37,
+      "countryCode": "AR"
+    },
+    {
+      "_count": 36,
+      "countryCode": "FI"
+    },
+    {
+      "_count": 36,
+      "countryCode": "MC"
+    },
+    {
+      "_count": 34,
+      "countryCode": "EG"
+    },
+    {
+      "_count": 34,
+      "countryCode": "HR"
+    },
+    {
+      "_count": 31,
+      "countryCode": "BG"
+    },
+    {
+      "_count": 31,
+      "countryCode": "PA"
+    },
+    {
+      "_count": 27,
+      "countryCode": "VA"
+    },
+    {
+      "_count": 22,
+      "countryCode": "SK"
+    },
+    {
+      "_count": 22,
+      "countryCode": "LT"
+    },
+    {
+      "_count": 20,
+      "countryCode": "KY"
+    },
+    {
+      "_count": 20,
+      "countryCode": "UK"
+    },
+    {
+      "_count": 20,
+      "countryCode": "AZ"
+    },
+    {
+      "_count": 20,
+      "countryCode": "GA"
+    },
+    {
+      "_count": 18,
+      "countryCode": "TN"
+    },
+    {
+      "_count": 15,
+      "countryCode": "SC"
+    },
+    {
+      "_count": 15,
+      "countryCode": "BH"
+    },
+    {
+      "_count": 14,
+      "countryCode": "NC"
+    },
+    {
+      "_count": 12,
+      "countryCode": "MD"
+    },
+    {
+      "_count": 12,
+      "countryCode": "AL"
+    },
+    {
+      "_count": 12,
+      "countryCode": "MN"
+    },
+    {
+      "_count": 10,
+      "countryCode": "QA"
+    },
+    {
+      "_count": 9,
+      "countryCode": "SI"
+    },
+    {
+      "_count": 8,
+      "countryCode": "PK"
+    },
+    {
+      "_count": 8,
+      "countryCode": "KH"
+    },
+    {
+      "_count": 8,
+      "countryCode": "UA"
+    },
+    {
+      "_count": 7,
+      "countryCode": "RU"
+    },
+    {
+      "_count": 6,
+      "countryCode": "NE"
+    },
+    {
+      "_count": 6,
+      "countryCode": "LV"
+    },
+    {
+      "_count": 6,
+      "countryCode": "GG"
+    },
+    {
+      "_count": 6,
+      "countryCode": "RS"
+    },
+    {
+      "_count": 6,
+      "countryCode": "VI"
+    },
+    {
+      "_count": 5,
+      "countryCode": "MV"
+    },
+    {
+      "_count": 5,
+      "countryCode": "AD"
+    },
+    {
+      "_count": 5,
+      "countryCode": "KZ"
+    },
+    {
+      "_count": 4,
+      "countryCode": "JO"
+    },
+    {
+      "_count": 4,
+      "countryCode": "LS"
+    },
+    {
+      "_count": 3,
+      "countryCode": "XK"
+    },
+    {
+      "_count": 3,
+      "countryCode": "BD"
+    },
+    {
+      "_count": 3,
+      "countryCode": "LB"
+    },
+    {
+      "_count": 3,
+      "countryCode": "LA"
+    },
+    {
+      "_count": 3,
+      "countryCode": "NH"
+    },
+    {
+      "_count": 3,
+      "countryCode": "SZ"
+    },
+    {
+      "_count": 3,
+      "countryCode": "YU"
+    },
+    {
+      "_count": 3,
+      "countryCode": "JE"
+    },
+    {
+      "_count": 2,
+      "countryCode": "BA"
+    },
+    {
+      "_count": 2,
+      "countryCode": "NA"
+    },
+    {
+      "_count": 2,
+      "countryCode": "EE"
+    },
+    {
+      "_count": 2,
+      "countryCode": "GE"
+    },
+    {
+      "_count": 2,
+      "countryCode": "BS"
+    },
+    {
+      "_count": 2,
+      "countryCode": "SD"
+    },
+    {
+      "_count": 2,
+      "countryCode": "DO"
+    },
+    {
+      "_count": 2,
+      "countryCode": "UY"
+    },
+    {
+      "_count": 2,
+      "countryCode": "OM"
+    },
+    {
+      "_count": 2,
+      "countryCode": "KW"
+    },
+    {
+      "_count": 2,
+      "countryCode": "MT"
+    },
+    {
+      "_count": 1,
+      "countryCode": "NG"
+    },
+    {
+      "_count": 1,
+      "countryCode": "GU"
+    },
+    {
+      "_count": 1,
+      "countryCode": "EC"
+    },
+    {
+      "_count": 1,
+      "countryCode": "MU"
+    },
+    {
+      "_count": 1,
+      "countryCode": "CY"
+    },
+    {
+      "_count": 1,
+      "countryCode": "CR"
+    },
+    {
+      "_count": 1,
+      "countryCode": "IM"
+    },
+    {
+      "_count": 1,
+      "countryCode": "BL"
+    },
+    {
+      "_count": 1,
+      "countryCode": "MK"
+    },
+    {
+      "_count": 1,
+      "countryCode": "MF"
+    },
+    {
+      "_count": 1,
+      "countryCode": "ME"
+    },
+    {
+      "_count": 1,
+      "countryCode": "ST"
+    },
+    {
+      "_count": 1,
+      "countryCode": "KE"
+    },
+    {
+      "_count": 1,
+      "countryCode": "AW"
+    },
+    {
+      "_count": 1,
+      "countryCode": "AM"
+    },
+    {
+      "_count": 4647,
+      "countryCode": null
+    }
+  ],
+  "cohorts": {
+    "sandro": {
+      "source": {
+        "key": "sandro",
+        "maison": "SMCP (toutes Maisons)",
+        "status": "ACTIVE"
+      },
+      "counts": {
+        "Maje": 148,
+        "SMCP": 203,
+        "Claudie Pierlot": 69,
+        "Sandro": 102,
+        "Fursac": 35
+      }
+    },
+    "parfums-chanel": {
+      "source": {
+        "key": "parfums-chanel",
+        "maison": "Chanel",
+        "status": "ACTIVE"
+      },
+      "counts": {
+        "Chanel": 1117
+      }
+    },
+    "l-oreal-professionnel": {
+      "source": {
+        "key": "l-oreal-professionnel",
+        "maison": "L'Oréal (toutes Maisons)",
+        "status": "ACTIVE"
+      },
+      "counts": {
+        "L'Oréal": 1804
+      }
+    },
+    "lovisa": {
+      "source": {
+        "key": "lovisa",
+        "maison": "Lovisa",
+        "status": "ACTIVE"
+      },
+      "counts": {
+        "Lovisa": 841
+      }
+    },
+    "browns": {
+      "source": {
+        "key": "browns",
+        "maison": "Farfetch (portail multi-enseignes)",
+        "status": "ACTIVE"
+      },
+      "counts": {
+        "Farfetch": 52,
+        "Luxclusif": 7,
+        "Stadium Goods": 3,
+        "Browns": 3
+      }
+    },
+    "tiffany-oracle": {
+      "source": {
+        "key": "tiffany-oracle",
+        "maison": "Tiffany & Co.",
+        "status": "ACTIVE"
+      },
+      "counts": {
+        "Tiffany & Co.": 423
+      }
+    }
+  },
+  "excluded": [
+    {
+      "key": "fay",
+      "maison": "Fay, plateforme de nutrition et santé",
+      "status": "RETIRED"
+    },
+    {
+      "key": "didi",
+      "maison": "DiDi, conduite autonome",
+      "status": "RETIRED"
+    },
+    {
+      "key": "coast",
+      "maison": "Coast, cartes de paiement pour flottes",
+      "status": "RETIRED"
+    },
+    {
+      "key": "ashoka",
+      "maison": "Ashoka (entrepreneuriat social)",
+      "status": "RETIRED"
+    },
+    {
+      "key": "cleo",
+      "maison": "Cleo Communications, intégration logicielle",
+      "status": "RETIRED"
+    },
+    {
+      "key": "gate",
+      "maison": "Gate, plateforme de cryptomonnaies",
+      "status": "RETIRED"
+    },
+    {
+      "key": "ion",
+      "maison": "ION Group, logiciels financiers",
+      "status": "RETIRED"
+    },
+    {
+      "key": "blend",
+      "maison": "Blend Labs, logiciels bancaires",
+      "status": "RETIRED"
+    },
+    {
+      "key": "public",
+      "maison": "Public, plateforme d’investissement",
+      "status": "RETIRED"
+    },
+    {
+      "key": "sep",
+      "maison": "SEP, ingénierie logicielle",
+      "status": "RETIRED"
+    },
+    {
+      "key": "via",
+      "maison": "Via (mobilité)",
+      "status": "RETIRED"
+    },
+    {
+      "key": "yes",
+      "maison": "YES LLC, installations électriques industrielles",
+      "status": "RETIRED"
+    },
+    {
+      "key": "eclipse",
+      "maison": "Eclipse Laboratories, blockchain",
+      "status": "RETIRED"
+    },
+    {
+      "key": "seer",
+      "maison": "Seer, protéomique et biotechnologies",
+      "status": "RETIRED"
+    },
+    {
+      "key": "tala",
+      "maison": "Tala, infrastructure de crédit",
+      "status": "RETIRED"
+    },
+    {
+      "key": "honor",
+      "maison": "Honor Technology, aide à domicile",
+      "status": "RETIRED"
+    },
+    {
+      "key": "hone",
+      "maison": "Hone, formation professionnelle",
+      "status": "RETIRED"
+    },
+    {
+      "key": "gridline",
+      "maison": "Gridline, investissements privés",
+      "status": "RETIRED"
+    },
+    {
+      "key": "novara",
+      "maison": "Novara, logiciels EHS et gestion des risques",
+      "status": "RETIRED"
+    },
+    {
+      "key": "galileo",
+      "maison": "Galileo, soins médicaux",
+      "status": "RETIRED"
+    }
+  ],
+  "oracleExamples": [
+    {
+      "id": "cmtrslaab1615pg5m8dosnymn",
+      "title": "CDD - Client Advisor Portuguese Speaker (F/H) - Paris",
+      "city": null,
+      "countryCode": "FR",
+      "isActive": true,
+      "sources": [
+        {
+          "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63763",
+          "isActive": true
+        },
+        {
+          "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63763",
+          "isActive": true
+        }
+      ]
+    },
+    {
+      "id": "cmtrsla9p1610pg5mo0wtb1id",
+      "title": "Senior Client Advisor | Full-time | Gold Coast",
+      "city": null,
+      "countryCode": "AU",
+      "isActive": true,
+      "sources": [
+        {
+          "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63762",
+          "isActive": true
+        },
+        {
+          "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63762",
+          "isActive": true
+        }
+      ]
+    }
+  ],
+  "identityGuard": {
+    "source": "coast",
+    "outcome": "Error: promote: \"coast\" has no verified employer identity review",
+    "method": "Pure assertion against actual stored source and latest review; no promotion or writes attempted."
+  }
+}

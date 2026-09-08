@@ -1,0 +1,1424 @@
+{
+  "at": "2026-09-08T18:07:48.556Z",
+  "readOnly": true,
+  "source": {
+    "key": "fashionjobs",
+    "maison": "FashionJobs",
+    "status": "ACTIVE",
+    "config": {
+      "maxPages": 40
+    },
+    "robotsVerdict": "ALLOWED (/emploi/ and /s/ not disallowed) — Cloudflare WAF, browser route",
+    "robotsCheckedAt": "2026-09-02T00:00:00.000Z",
+    "verifiedJobCount": 7611
+  },
+  "cursor": {
+    "sourceKey": "fashionjobs",
+    "nextPage": 81,
+    "updatedAt": "2026-09-07T23:07:21.632Z"
+  },
+  "activeRepresentations": 757,
+  "activeUniqueJobs": 757,
+  "firstLastObservation": {
+    "_min": {
+      "firstSeenAt": "2026-09-02T17:42:22.110Z"
+    },
+    "_max": {
+      "lastSeenAt": "2026-09-07T23:07:25.044Z"
+    }
+  },
+  "france": {
+    "total": 9634,
+    "withFashionjobs": 755,
+    "onlyFashionjobs": 588,
+    "fashionjobsAndOther": 167,
+    "withoutFashionjobs": 8879
+  },
+  "sourceCoverage": [
+    {
+      "sourceKey": "wttj-sector",
+      "maison": "Welcome to the Jungle (Mode · Luxe · Beauté)",
+      "kind": "wttj-sector",
+      "tier": "SPECIALIST_JOBBOARD",
+      "france": 1622
+    },
+    {
+      "sourceKey": "lvmh",
+      "maison": "LVMH (toutes Maisons)",
+      "kind": "lvmh_algolia",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 1317
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "maison": "FashionJobs",
+      "kind": "fashionjobs",
+      "tier": "SPECIALIST_JOBBOARD",
+      "france": 755
+    },
+    {
+      "sourceKey": "parfums-chanel",
+      "maison": "Chanel",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 430
+    },
+    {
+      "sourceKey": "hermes",
+      "maison": "Hermès",
+      "kind": "wttj",
+      "tier": "SPECIALIST_JOBBOARD",
+      "france": 413
+    },
+    {
+      "sourceKey": "element-6",
+      "maison": "Element +6",
+      "kind": "magnet",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 400
+    },
+    {
+      "sourceKey": "mango",
+      "maison": "Mango",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 307
+    },
+    {
+      "sourceKey": "courir",
+      "maison": "Courir",
+      "kind": "smartrecruiters-whitelabel",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 279
+    },
+    {
+      "sourceKey": "nocibe-eqwa",
+      "maison": "Nocibé",
+      "kind": "eqwa",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 267
+    },
+    {
+      "sourceKey": "richemont-workday",
+      "maison": "Richemont",
+      "kind": "workday",
+      "tier": "GROUP_OFFICIAL",
+      "france": 257
+    },
+    {
+      "sourceKey": "rituals",
+      "maison": "Rituals",
+      "kind": "rituals",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 254
+    },
+    {
+      "sourceKey": "sandro",
+      "maison": "SMCP (toutes Maisons)",
+      "kind": "smartrecruiters-whitelabel",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 248
+    },
+    {
+      "sourceKey": "kering",
+      "maison": "Kering (toutes Maisons)",
+      "kind": "eightfold",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 180
+    },
+    {
+      "sourceKey": "aroma-zone",
+      "maison": "Aroma-Zone",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 180
+    },
+    {
+      "sourceKey": "kiabi",
+      "maison": "Kiabi",
+      "kind": "smartrecruiters-whitelabel",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 177
+    },
+    {
+      "sourceKey": "galeries-lafayette",
+      "maison": "Galeries Lafayette",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 161
+    },
+    {
+      "sourceKey": "etam",
+      "maison": "Etam",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 152
+    },
+    {
+      "sourceKey": "foot-locker-france",
+      "maison": "Foot Locker France",
+      "kind": "phenom",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 149
+    },
+    {
+      "sourceKey": "richemont",
+      "maison": "Richemont (toutes Maisons)",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 131
+    },
+    {
+      "sourceKey": "la-casa-de-las-carcasas",
+      "maison": "La casa de las Carcasas",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 120
+    },
+    {
+      "sourceKey": "beauty-success-geodir",
+      "maison": "Beauty Success",
+      "kind": "geodirectory",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 109
+    },
+    {
+      "sourceKey": "normal",
+      "maison": "Normal",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 107
+    },
+    {
+      "sourceKey": "aigle",
+      "maison": "Aigle",
+      "kind": "digitalrecruiters",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 105
+    },
+    {
+      "sourceKey": "pandora-talenthub",
+      "maison": "Pandora",
+      "kind": "generic-listing",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 104
+    },
+    {
+      "sourceKey": "pvh",
+      "maison": "PVH",
+      "kind": "generic-listing",
+      "tier": "GROUP_OFFICIAL",
+      "france": 90
+    },
+    {
+      "sourceKey": "lacoste",
+      "maison": "Lacoste",
+      "kind": "digitalrecruiters",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 88
+    },
+    {
+      "sourceKey": "lovisa",
+      "maison": "Lovisa",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 87
+    },
+    {
+      "sourceKey": "a-derma-4",
+      "maison": "A-Derma +4",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 85
+    },
+    {
+      "sourceKey": "eram-3",
+      "maison": "Eram +3",
+      "kind": "magnet",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 81
+    },
+    {
+      "sourceKey": "sezane",
+      "maison": "Sézane",
+      "kind": "workable",
+      "tier": "ATS_OFFICIAL",
+      "france": 72
+    },
+    {
+      "sourceKey": "jean-paul-gaultier-5",
+      "maison": "Jean Paul Gaultier +5",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 72
+    },
+    {
+      "sourceKey": "helena-rubinstein-8",
+      "maison": "Helena Rubinstein +8",
+      "kind": "wttj",
+      "tier": "SPECIALIST_JOBBOARD",
+      "france": 72
+    },
+    {
+      "sourceKey": "primark",
+      "maison": "Primark",
+      "kind": "smartrecruiters-whitelabel",
+      "tier": "ATS_OFFICIAL",
+      "france": 67
+    },
+    {
+      "sourceKey": "groupe-printemps",
+      "maison": "Groupe Printemps",
+      "kind": "talentsoft",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 67
+    },
+    {
+      "sourceKey": "the-kooples",
+      "maison": "The Kooples",
+      "kind": "digitalrecruiters",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 56
+    },
+    {
+      "sourceKey": "nike",
+      "maison": "Nike",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 55
+    },
+    {
+      "sourceKey": "hm-group",
+      "maison": "H&M Group",
+      "kind": "smartrecruiters-whitelabel",
+      "tier": "GROUP_OFFICIAL",
+      "france": 52
+    },
+    {
+      "sourceKey": "adidas",
+      "maison": "adidas",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 52
+    },
+    {
+      "sourceKey": "drunk-elephant-2",
+      "maison": "Drunk Elephant +2",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 46
+    },
+    {
+      "sourceKey": "polene",
+      "maison": "Polène",
+      "kind": "ashby",
+      "tier": "ATS_OFFICIAL",
+      "france": 46
+    },
+    {
+      "sourceKey": "petit-bateau",
+      "maison": "Petit Bateau",
+      "kind": "smartrecruiters-whitelabel",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 46
+    },
+    {
+      "sourceKey": "bash-talents",
+      "maison": "ba&sh",
+      "kind": "bashtalents",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 43
+    },
+    {
+      "sourceKey": "maison-123",
+      "maison": "Maison 123",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 40
+    },
+    {
+      "sourceKey": "dr-pierre-ricaud",
+      "maison": "Dr Pierre Ricaud",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 39
+    },
+    {
+      "sourceKey": "uniqlo-stores",
+      "maison": "Uniqlo",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 38
+    },
+    {
+      "sourceKey": "estee-lauder-companies",
+      "maison": "The Estée Lauder Companies",
+      "kind": "eightfold",
+      "tier": "GROUP_OFFICIAL",
+      "france": 38
+    },
+    {
+      "sourceKey": "salomon",
+      "maison": "Salomon",
+      "kind": "smartrecruiters-whitelabel",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 36
+    },
+    {
+      "sourceKey": "soeur",
+      "maison": "Soeur",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 35
+    },
+    {
+      "sourceKey": "levis",
+      "maison": "Levi's",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 34
+    },
+    {
+      "sourceKey": "diptyque-workday",
+      "maison": "Diptyque",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 34
+    },
+    {
+      "sourceKey": "eric-bompard",
+      "maison": "Eric Bompard",
+      "kind": "smartrecruiters-whitelabel",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 32
+    },
+    {
+      "sourceKey": "undiz",
+      "maison": "Undiz",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 32
+    },
+    {
+      "sourceKey": "swarovski",
+      "maison": "Swarovski",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 31
+    },
+    {
+      "sourceKey": "aptar-beauty",
+      "maison": "Aptar Beauty",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 29
+    },
+    {
+      "sourceKey": "showroomprive",
+      "maison": "Showroomprive",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 29
+    },
+    {
+      "sourceKey": "sisley",
+      "maison": "Sisley",
+      "kind": "smartrecruiters-whitelabel",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 29
+    },
+    {
+      "sourceKey": "ephemera",
+      "maison": "EPHEMERA",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 27
+    },
+    {
+      "sourceKey": "dr-martens-tf",
+      "maison": "Dr. Martens",
+      "kind": "talentfunnel",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 26
+    },
+    {
+      "sourceKey": "sessun",
+      "maison": "Sessùn",
+      "kind": "wttj",
+      "tier": "SPECIALIST_JOBBOARD",
+      "france": 25
+    },
+    {
+      "sourceKey": "sephora-france",
+      "maison": "Sephora",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 25
+    },
+    {
+      "sourceKey": "ralph-lauren-avature",
+      "maison": "Ralph Lauren",
+      "kind": "avature",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 25
+    },
+    {
+      "sourceKey": "swatch-group",
+      "maison": "Swatch Group",
+      "kind": "swatchgroup",
+      "tier": "GROUP_OFFICIAL",
+      "france": 23
+    },
+    {
+      "sourceKey": "groupe-chantelle",
+      "maison": "Groupe Chantelle",
+      "kind": "talentsoft",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 22
+    },
+    {
+      "sourceKey": "balmain",
+      "maison": "Balmain",
+      "kind": "talentsoft",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 20
+    },
+    {
+      "sourceKey": "oh-my-cream",
+      "maison": "Oh My Cream",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 20
+    },
+    {
+      "sourceKey": "a-p-c",
+      "maison": "a.p.c",
+      "kind": "wttj",
+      "tier": "SPECIALIST_JOBBOARD",
+      "france": 20
+    },
+    {
+      "sourceKey": "bzb",
+      "maison": "BZB",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 20
+    },
+    {
+      "sourceKey": "bizzbee",
+      "maison": "Bizzbee",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 20
+    },
+    {
+      "sourceKey": "nyx-professional-makeup",
+      "maison": "NYX Professional Makeup",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 19
+    },
+    {
+      "sourceKey": "prisma-media",
+      "maison": "Prisma Media",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 19
+    },
+    {
+      "sourceKey": "loccitane-fr",
+      "maison": "L'Occitane",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 18
+    },
+    {
+      "sourceKey": "longchamp",
+      "maison": "Longchamp",
+      "kind": "talentsoft",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 18
+    },
+    {
+      "sourceKey": "escada-parfums-16",
+      "maison": "Escada Parfums +16",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 16
+    },
+    {
+      "sourceKey": "new-balance",
+      "maison": "New Balance",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 15
+    },
+    {
+      "sourceKey": "horace",
+      "maison": "Horace",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 15
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "maison": "Michael Kors",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 14
+    },
+    {
+      "sourceKey": "ami-paris",
+      "maison": "AMI Paris",
+      "kind": "recruitee",
+      "tier": "ATS_OFFICIAL",
+      "france": 14
+    },
+    {
+      "sourceKey": "conde-nast-france",
+      "maison": "Conde Nast France",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 14
+    },
+    {
+      "sourceKey": "boggi-milano",
+      "maison": "Boggi Milano",
+      "kind": "recruitee",
+      "tier": "ATS_OFFICIAL",
+      "france": 13
+    },
+    {
+      "sourceKey": "passage-du-desir",
+      "maison": "Passage du Desir",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 13
+    },
+    {
+      "sourceKey": "maison-margiela",
+      "maison": "Maison Margiela",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 13
+    },
+    {
+      "sourceKey": "promod",
+      "maison": "Promod",
+      "kind": "talentview",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 12
+    },
+    {
+      "sourceKey": "apm-monaco",
+      "maison": "APM Monaco",
+      "kind": "workable",
+      "tier": "ATS_OFFICIAL",
+      "france": 12
+    },
+    {
+      "sourceKey": "georges",
+      "maison": "GEORGES",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 12
+    },
+    {
+      "sourceKey": "madame-figaro",
+      "maison": "Madame Figaro",
+      "kind": "wttj",
+      "tier": "SPECIALIST_JOBBOARD",
+      "france": 12
+    },
+    {
+      "sourceKey": "deckers",
+      "maison": "Deckers (UGG, HOKA)",
+      "kind": "workday",
+      "tier": "GROUP_OFFICIAL",
+      "france": 11
+    },
+    {
+      "sourceKey": "oniverse",
+      "maison": "Oniverse (Calzedonia)",
+      "kind": "generic-listing",
+      "tier": "GROUP_OFFICIAL",
+      "france": 11
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "maison": "Beiersdorf",
+      "kind": "generic-listing",
+      "tier": "GROUP_OFFICIAL",
+      "france": 11
+    },
+    {
+      "sourceKey": "crocs",
+      "maison": "Crocs",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 11
+    },
+    {
+      "sourceKey": "tiffany-oracle",
+      "maison": "Tiffany & Co.",
+      "kind": "oraclehcm",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 10
+    },
+    {
+      "sourceKey": "naos",
+      "maison": "NAOS",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 10
+    },
+    {
+      "sourceKey": "lagardere-travel-retail",
+      "maison": "Lagardère Travel Retail",
+      "kind": "talentsoft",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 10
+    },
+    {
+      "sourceKey": "baccarat",
+      "maison": "Baccarat",
+      "kind": "talentview",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 10
+    },
+    {
+      "sourceKey": "jules",
+      "maison": "Jules",
+      "kind": "talentview",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 9
+    },
+    {
+      "sourceKey": "pronovias",
+      "maison": "Pronovias",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 9
+    },
+    {
+      "sourceKey": "clarins",
+      "maison": "Clarins",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 9
+    },
+    {
+      "sourceKey": "l-occitane-en-provence-2",
+      "maison": "L’Occitane en Provence +2",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 9
+    },
+    {
+      "sourceKey": "tapestry",
+      "maison": "Tapestry (Coach, Kate Spade, Stuart Weitzman)",
+      "kind": "workday",
+      "tier": "GROUP_OFFICIAL",
+      "france": 9
+    },
+    {
+      "sourceKey": "celio",
+      "maison": "celio",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 8
+    },
+    {
+      "sourceKey": "typology",
+      "maison": "Typology",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 8
+    },
+    {
+      "sourceKey": "monsieur-tshirt",
+      "maison": "Monsieur Tshirt",
+      "kind": "wttj",
+      "tier": "SPECIALIST_JOBBOARD",
+      "france": 7
+    },
+    {
+      "sourceKey": "uniqlo-headquarters",
+      "maison": "Uniqlo",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 7
+    },
+    {
+      "sourceKey": "cabaia",
+      "maison": "Cabaia",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 7
+    },
+    {
+      "sourceKey": "faguo",
+      "maison": "FAGUO",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 7
+    },
+    {
+      "sourceKey": "dolce-gabbana",
+      "maison": "Dolce & Gabbana",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 7
+    },
+    {
+      "sourceKey": "urbn-hub",
+      "maison": "URBN (Urban Outfitters, Anthropologie, Free People)",
+      "kind": "icims",
+      "tier": "GROUP_OFFICIAL",
+      "france": 6
+    },
+    {
+      "sourceKey": "brunello-cucinelli",
+      "maison": "Brunello Cucinelli",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 6
+    },
+    {
+      "sourceKey": "vestiaire-collective",
+      "maison": "Vestiaire Collective",
+      "kind": "lever",
+      "tier": "ATS_OFFICIAL",
+      "france": 6
+    },
+    {
+      "sourceKey": "pied-de-biche",
+      "maison": "Pied de Biche",
+      "kind": "wttj",
+      "tier": "SPECIALIST_JOBBOARD",
+      "france": 6
+    },
+    {
+      "sourceKey": "clarins-wttj",
+      "maison": "Clarins",
+      "kind": "wttj",
+      "tier": "SPECIALIST_JOBBOARD",
+      "france": 6
+    },
+    {
+      "sourceKey": "lagardere-duty-free",
+      "maison": "Lagardère Duty Free",
+      "kind": "talentsoft",
+      "tier": "GROUP_OFFICIAL",
+      "france": 6
+    },
+    {
+      "sourceKey": "camper",
+      "maison": "CAMPER",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 5
+    },
+    {
+      "sourceKey": "l-oreal-professionnel",
+      "maison": "L'Oréal (toutes Maisons)",
+      "kind": "avature",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 5
+    },
+    {
+      "sourceKey": "my-jewellery",
+      "maison": "My Jewellery",
+      "kind": "recruitee",
+      "tier": "ATS_OFFICIAL",
+      "france": 5
+    },
+    {
+      "sourceKey": "prada-group",
+      "maison": "Prada Group",
+      "kind": "successfactors",
+      "tier": "GROUP_OFFICIAL",
+      "france": 5
+    },
+    {
+      "sourceKey": "dim",
+      "maison": "Dim",
+      "kind": "greenhouse",
+      "tier": "ATS_OFFICIAL",
+      "france": 5
+    },
+    {
+      "sourceKey": "toteme",
+      "maison": "Totême",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 4
+    },
+    {
+      "sourceKey": "gant",
+      "maison": "GANT",
+      "kind": "digitalrecruiters",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 4
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "maison": "Jimmy Choo",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 4
+    },
+    {
+      "sourceKey": "versace",
+      "maison": "Versace",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 4
+    },
+    {
+      "sourceKey": "audemars-piguet",
+      "maison": "Audemars Piguet",
+      "kind": "smartrecruiters-whitelabel",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 4
+    },
+    {
+      "sourceKey": "acne-studios-jobylon",
+      "maison": "Acne Studios",
+      "kind": "jobylon",
+      "tier": "ATS_OFFICIAL",
+      "france": 3
+    },
+    {
+      "sourceKey": "oska",
+      "maison": "OSKA",
+      "kind": "generic-listing",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 3
+    },
+    {
+      "sourceKey": "reformation",
+      "maison": "Reformation",
+      "kind": "greenhouse",
+      "tier": "ATS_OFFICIAL",
+      "france": 3
+    },
+    {
+      "sourceKey": "zegna-altamira",
+      "maison": "Zegna",
+      "kind": "altamira",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 2
+    },
+    {
+      "sourceKey": "canada-goose",
+      "maison": "Canada Goose",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 2
+    },
+    {
+      "sourceKey": "fred-perry",
+      "maison": "Fred Perry",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 2
+    },
+    {
+      "sourceKey": "joy",
+      "maison": "Joy",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 2
+    },
+    {
+      "sourceKey": "marella",
+      "maison": "Marella",
+      "kind": "smartrecruiters-whitelabel",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 2
+    },
+    {
+      "sourceKey": "movado",
+      "maison": "Movado",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 2
+    },
+    {
+      "sourceKey": "hoff",
+      "maison": "Hoff",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 1
+    },
+    {
+      "sourceKey": "uniqlo-graduates",
+      "maison": "Uniqlo",
+      "kind": "workday",
+      "tier": "ATS_OFFICIAL",
+      "france": 1
+    },
+    {
+      "sourceKey": "margaret-howell",
+      "maison": "Margaret Howell",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 1
+    },
+    {
+      "sourceKey": "avolta",
+      "maison": "Avolta (Dufry)",
+      "kind": "successfactors",
+      "tier": "GROUP_OFFICIAL",
+      "france": 1
+    },
+    {
+      "sourceKey": "orlebar-brown",
+      "maison": "Orlebar Brown",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 1
+    },
+    {
+      "sourceKey": "valentino",
+      "maison": "Valentino",
+      "kind": "successfactors",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 1
+    },
+    {
+      "sourceKey": "veronica-beard",
+      "maison": "Veronica Beard",
+      "kind": "greenhouse",
+      "tier": "ATS_OFFICIAL",
+      "france": 1
+    },
+    {
+      "sourceKey": "de-beers-london",
+      "maison": "De Beers London",
+      "kind": "smartrecruiters-whitelabel",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 1
+    },
+    {
+      "sourceKey": "tods",
+      "maison": "Tod's Group",
+      "kind": "successfactors",
+      "tier": "GROUP_OFFICIAL",
+      "france": 1
+    },
+    {
+      "sourceKey": "mr-marvis",
+      "maison": "MR MARVIS",
+      "kind": "teamtailor",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 1
+    },
+    {
+      "sourceKey": "boots",
+      "maison": "Boots",
+      "kind": "generic-listing",
+      "tier": "EMPLOYER_DIRECT",
+      "france": 1
+    }
+  ],
+  "runs": [
+    {
+      "id": "cmtrup4by4ngkpg5mwlibx1ir",
+      "sourceKey": "fashionjobs",
+      "status": "OK",
+      "jobs": 286,
+      "previousJobs": 104,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "note": "desc 100% date 100% pays 100% url 100%",
+      "descriptionRate": 1,
+      "dateRate": 1,
+      "countryRate": 1,
+      "urlRate": 1,
+      "ranAt": "2026-09-07T23:07:25.102Z"
+    },
+    {
+      "id": "cmtpw96zi4k89l35mi8kqzvnc",
+      "sourceKey": "fashionjobs",
+      "status": "DEGRADED",
+      "jobs": 104,
+      "previousJobs": 153,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "note": "descriptions manquantes sur 60% des offres · desc 40% date 40% pays 40% url 40%",
+      "descriptionRate": 0.398,
+      "dateRate": 0.398,
+      "countryRate": 0.398,
+      "urlRate": 0.398,
+      "ranAt": "2026-09-06T14:15:28.925Z"
+    },
+    {
+      "id": "cmtpkx1o559uwpf5lpu21qg2z",
+      "sourceKey": "fashionjobs",
+      "status": "OK",
+      "jobs": 153,
+      "previousJobs": 104,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "note": "desc 100% date 100% pays 100% url 100%",
+      "descriptionRate": 1,
+      "dateRate": 1,
+      "countryRate": 1,
+      "urlRate": 1,
+      "ranAt": "2026-09-06T08:58:06.388Z"
+    },
+    {
+      "id": "cmtpgjdnt3dzrqq4zqfp2m3dw",
+      "sourceKey": "fashionjobs",
+      "status": "OK",
+      "jobs": 104,
+      "previousJobs": 110,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "note": "desc 100% date 100% pays 100% url 100%",
+      "descriptionRate": 1,
+      "dateRate": 1,
+      "countryRate": 1,
+      "urlRate": 1,
+      "ranAt": "2026-09-06T06:55:30.280Z"
+    },
+    {
+      "id": "cmtp869nu3rrkqq4zz6ozo4o8",
+      "sourceKey": "fashionjobs",
+      "status": "OK",
+      "jobs": 110,
+      "previousJobs": 110,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "note": "desc 100% date 100% pays 100% url 100%",
+      "descriptionRate": 1,
+      "dateRate": 1,
+      "countryRate": 1,
+      "urlRate": 1,
+      "ranAt": "2026-09-06T03:01:21.641Z"
+    },
+    {
+      "id": "cmtoyke1x2syxqq4z5lg8zn5b",
+      "sourceKey": "fashionjobs",
+      "status": "OK",
+      "jobs": 110,
+      "previousJobs": 111,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "note": "desc 100% date 100% pays 100% url 100%",
+      "descriptionRate": 1,
+      "dateRate": 1,
+      "countryRate": 1,
+      "urlRate": 1,
+      "ranAt": "2026-09-05T22:32:24.356Z"
+    },
+    {
+      "id": "cmtoq510w303iqq4z6u5cy24s",
+      "sourceKey": "fashionjobs",
+      "status": "OK",
+      "jobs": 111,
+      "previousJobs": 112,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "note": "desc 100% date 100% pays 100% url 100%",
+      "descriptionRate": 1,
+      "dateRate": 1,
+      "countryRate": 1,
+      "urlRate": 1,
+      "ranAt": "2026-09-05T18:36:30.704Z"
+    },
+    {
+      "id": "cmtohkuvh2zxmqq4zumcj6ixd",
+      "sourceKey": "fashionjobs",
+      "status": "OK",
+      "jobs": 112,
+      "previousJobs": 111,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "note": "desc 100% date 100% pays 100% url 100%",
+      "descriptionRate": 1,
+      "dateRate": 1,
+      "countryRate": 1,
+      "urlRate": 1,
+      "ranAt": "2026-09-05T14:36:52.684Z"
+    },
+    {
+      "id": "cmto8w9nb2xxiqq4z96mny7l6",
+      "sourceKey": "fashionjobs",
+      "status": "OK",
+      "jobs": 111,
+      "previousJobs": 112,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "note": "desc 100% date 100% pays 100% url 100%",
+      "descriptionRate": 1,
+      "dateRate": 1,
+      "countryRate": 1,
+      "urlRate": 1,
+      "ranAt": "2026-09-05T10:33:48.503Z"
+    },
+    {
+      "id": "cmto0cpo02yo2qq4zmx5uw0rr",
+      "sourceKey": "fashionjobs",
+      "status": "OK",
+      "jobs": 112,
+      "previousJobs": 112,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "note": "desc 100% date 100% pays 100% url 100%",
+      "descriptionRate": 1,
+      "dateRate": 1,
+      "countryRate": 1,
+      "urlRate": 1,
+      "ranAt": "2026-09-05T06:34:39.215Z"
+    },
+    {
+      "id": "cmtnrubz72ycsqq4zcfgfb400",
+      "sourceKey": "fashionjobs",
+      "status": "OK",
+      "jobs": 112,
+      "previousJobs": 108,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "note": "desc 100% date 100% pays 100% url 100%",
+      "descriptionRate": 1,
+      "dateRate": 1,
+      "countryRate": 1,
+      "urlRate": 1,
+      "ranAt": "2026-09-05T02:36:24.739Z"
+    },
+    {
+      "id": "cmtnjjrei33bvqq4zriovrlz8",
+      "sourceKey": "fashionjobs",
+      "status": "OK",
+      "jobs": 108,
+      "previousJobs": 107,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "note": "desc 100% date 100% pays 100% url 100%",
+      "descriptionRate": 1,
+      "dateRate": 1,
+      "countryRate": 1,
+      "urlRate": 1,
+      "ranAt": "2026-09-04T22:44:14.586Z"
+    }
+  ],
+  "missingCountrySources": [
+    {
+      "sourceKey": "boots",
+      "missing": 1499
+    },
+    {
+      "sourceKey": "l-oreal-professionnel",
+      "missing": 1227
+    },
+    {
+      "sourceKey": "luxe-talent",
+      "missing": 478
+    },
+    {
+      "sourceKey": "urbn-hub",
+      "missing": 143
+    },
+    {
+      "sourceKey": "mejuri",
+      "missing": 109
+    },
+    {
+      "sourceKey": "brown-thomas-taleo",
+      "missing": 72
+    },
+    {
+      "sourceKey": "lovable",
+      "missing": 60
+    },
+    {
+      "sourceKey": "pepco",
+      "missing": 53
+    },
+    {
+      "sourceKey": "pandora-talenthub",
+      "missing": 52
+    },
+    {
+      "sourceKey": "reformation",
+      "missing": 50
+    }
+  ],
+  "lorealCountries": [
+    {
+      "_count": 5,
+      "countryCode": "AL"
+    },
+    {
+      "_count": 13,
+      "countryCode": "AR"
+    },
+    {
+      "_count": 8,
+      "countryCode": "AZ"
+    },
+    {
+      "_count": 72,
+      "countryCode": "CA"
+    },
+    {
+      "_count": 12,
+      "countryCode": "CO"
+    },
+    {
+      "_count": 5,
+      "countryCode": "FR"
+    },
+    {
+      "_count": 6,
+      "countryCode": "GA"
+    },
+    {
+      "_count": 1,
+      "countryCode": "HK"
+    },
+    {
+      "_count": 4,
+      "countryCode": "ID"
+    },
+    {
+      "_count": 17,
+      "countryCode": "IL"
+    },
+    {
+      "_count": 9,
+      "countryCode": "IN"
+    },
+    {
+      "_count": 15,
+      "countryCode": "KY"
+    },
+    {
+      "_count": 1,
+      "countryCode": "LA"
+    },
+    {
+      "_count": 21,
+      "countryCode": "MA"
+    },
+    {
+      "_count": 5,
+      "countryCode": "MD"
+    },
+    {
+      "_count": 1,
+      "countryCode": "ME"
+    },
+    {
+      "_count": 5,
+      "countryCode": "MN"
+    },
+    {
+      "_count": 8,
+      "countryCode": "NC"
+    },
+    {
+      "_count": 5,
+      "countryCode": "NE"
+    },
+    {
+      "_count": 2,
+      "countryCode": "NH"
+    },
+    {
+      "_count": 15,
+      "countryCode": "PA"
+    },
+    {
+      "_count": 2,
+      "countryCode": "SC"
+    },
+    {
+      "_count": 2,
+      "countryCode": "SD"
+    },
+    {
+      "_count": 20,
+      "countryCode": "SG"
+    },
+    {
+      "_count": 12,
+      "countryCode": "TN"
+    },
+    {
+      "_count": 302,
+      "countryCode": "US"
+    },
+    {
+      "_count": 9,
+      "countryCode": "VA"
+    },
+    {
+      "_count": 1227,
+      "countryCode": null
+    }
+  ]
+}

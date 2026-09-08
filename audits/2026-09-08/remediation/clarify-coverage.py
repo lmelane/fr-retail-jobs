@@ -10,6 +10,7 @@ def norm(s):
 data=[json.loads(l) for l in private.read_text().splitlines() if l.startswith('{')]
 summary=next(x for x in data if x['dataset']=='current-coverage')
 companies=next(x['rows'] for x in data if x['dataset']=='company-identities')
+decisions={d['subject']:d for d in json.loads((root/'candidate-identity-decisions.json').read_text())}
 rows=[]
 for item in csv.DictReader(original.open(encoding='utf-8-sig')):
  name=item['identite_canonique_proposee']
@@ -26,7 +27,12 @@ for item in csv.DictReader(original.open(encoding='utf-8-sig')):
   proof='https://ievagroup.com/atelier-du-sourcil-boudoir-du-regard/'
   domain='atelierdusourcil.com';parent='IEVA Group'
   comment='Identité et groupe confirmés par IEVA et atelierdusourcil.com/pages/notre-univers. La piste NOVI du premier inventaire est rejetée ; portail carrière à qualifier.'
- rows.append(dict(identite=name,lot='CORRECTION_SMCP' if item['statut']=='RATTACHEMENT_ERRONE_DEMONTRE' else 'EXTENSION_OU_COUVERTURE',identite_documentee='OUI',preuve_identite=proof,groupe_parent=parent,domaine=domain,presence_company='PRESENTE' if matches else 'NON_RETROUVEE_NOM_CLE_ALIAS',fiches_company=' | '.join(c['name'] for c in matches),offres_actives=sum(c['active'] for c in matches),collecte_nouvelle_validee='NON',nouvelle_source_activee='NON',commentaire=comment))
+ decision=decisions.get(name)
+ if not decision or decision['scope']!='COMMERCIAL_IDENTITY_ONLY' or decision['decision']!='DOCUMENTED':
+  raise ValueError(f'Revue documentaire explicite manquante : {name}. Ne pas déduire une identité du domaine ou du nom.')
+ proof=decision['proofUrl']
+ comment=decision['statement']
+ rows.append(dict(identite=name,lot='CORRECTION_SMCP' if item['statut']=='RATTACHEMENT_ERRONE_DEMONTRE' else 'EXTENSION_OU_COUVERTURE',identite_documentee='OUI',portee_preuve=decision['scope'],date_revue=decision['reviewDate'],preuve_identite=proof,groupe_parent=parent,domaine=domain,presence_company='PRESENTE' if matches else 'NON_RETROUVEE_NOM_CLE_ALIAS',fiches_company=' | '.join(c['name'] for c in matches),offres_actives=sum(c['active'] for c in matches),collecte_nouvelle_validee='NON',nouvelle_source_activee='NON',commentaire=comment))
 with (root/'couverture-qualifiee.csv').open('w',newline='',encoding='utf-8-sig') as f:
  w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
 extension=[r for r in rows if r['lot']=='EXTENSION_OU_COUVERTURE']

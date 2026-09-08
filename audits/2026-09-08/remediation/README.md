@@ -2,6 +2,8 @@
 
 Lire d’abord [l’audit des causes](AUDIT-IDENTITE-RACINE.md), puis les tableaux de preuves. Le rapport initial dans `../reaudit` reste une photographie avant correction ; ses qualifications trop larges sont rectifiées explicitement ici.
 
+**Mise à jour : les cinq lots sont fusionnés, déployés et appliqués en production.** Voir [l’état exact et les preuves après](ETAT-PRODUCTION.md). Les nouvelles questions de couverture France et FashionJobs sont mesurées séparément dans [la comparaison FashionJobs](FRANCE-FASHIONJOBS.md).
+
 ## Périmètre préparé
 
 | Lot | Réparation répétée sur copie restaurée | Plan SHA-256 |
