@@ -1,0 +1,98 @@
+[
+  {
+    "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-01",
+    "hash": "2f6df3e3fbef7d8dea9d01d5e1639ef6432f4ee27d66e89a8e2b78573d48a201",
+    "alreadyApplied": false,
+    "written": 500,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-02",
+    "hash": "491e478f1cb9963100c103eadf165805761016b0137ef960a36081e15ff9dee3",
+    "alreadyApplied": false,
+    "written": 500,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-03",
+    "hash": "c5f4279245412fecdde8c8cb2b1c3ec87f5d20dd32fe86311b19ebe6245453c2",
+    "alreadyApplied": false,
+    "written": 500,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-04",
+    "hash": "2851a369571b5dd18502775dd832ec519ce2bf9c2eee9197d98387864b6c5c15",
+    "alreadyApplied": false,
+    "written": 500,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-05",
+    "hash": "3aee4483e2f198e11fda46dca10d46b31db0b759379c61650d0fcdbc9dc5bc5a",
+    "alreadyApplied": false,
+    "written": 500,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-06",
+    "hash": "2aea46cc35e91eafce79d09b0d26db95f41820bab1e12d5f9ed52adb2220b0b8",
+    "alreadyApplied": false,
+    "written": 524,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-07",
+    "hash": "5707644c29fc791f140ec7122bd1861a754504c6fcea26188e8933c4cdcf6663",
+    "alreadyApplied": false,
+    "written": 750,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-08",
+    "hash": "09a13ad2097136da26880f157bf76c627df97492d1bd3b66e3698e01457ac786",
+    "alreadyApplied": false,
+    "written": 750,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-09",
+    "hash": "b57988805a948a3f176684d35e9b87352ce3c887b7391f17b3132745c9d93717",
+    "alreadyApplied": false,
+    "written": 750,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-10",
+    "hash": "12ebd1407cf6be74b43b6fc598855662e0013dbbc43ba186bc13d798b73bfcde",
+    "alreadyApplied": false,
+    "written": 599,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-11",
+    "hash": "12e2fc28976437f5aae446334eda97486426906430564d94c5cff4f786fc14f1",
+    "alreadyApplied": false,
+    "written": 500,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  },
+  {
+    "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-12",
+    "hash": "d690945dc4f04717d03a019320e85d3add67e79994822de2158d26cf59aa8dd8",
+    "alreadyApplied": false,
+    "written": 211,
+    "oracleConflicts": 0,
+    "lifecycleViolations": 0
+  }
+]

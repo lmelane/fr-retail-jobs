@@ -1,0 +1,45 @@
+import '../test/setup-integration.js';
+import { afterAll, describe, expect, it } from 'vitest';
+import { PrismaClient } from '@prisma/client';
+import { archivePublicationHold } from './publicationHold.js';
+import { toCandidate } from './ingest.js';
+import { isTrustedForAttestation } from './attestation.js';
+const db = new PrismaClient();
+afterAll(() => db.$disconnect());
+it('archives the real azert defect idempotently without public jobs and forbids publication', async () => {
+  const key = 'jobaffinity-hold-test';
+  await db.source.upsert({ where: { key }, update: { status: 'DRAFT' }, create: { key, maison: 'Intersport', kind: 'jobaffinity-wordpress', tenantKey: key, tier: 'ATS_OFFICIAL', config: {} } });
+  const job = { externalId: 'wu8otj4ccxanrwy3u8', title: 'azert', url: 'https://jobaffinity.fr/apply/wu8otj4ccxanrwy3u8', publicationHold: 'APPLICATION_HTTP_404', raw: { post: { id: 6407, date_gmt: '2021-06-17T00:00:00' }, applicationEvidence: { status: 404 } } };
+  const before = [await db.job.count(), await db.jobEvent.count()];
+  await archivePublicationHold(db, key, job); await archivePublicationHold(db, key, job);
+  expect(await db.sourceObservation.count({ where: { sourceKey: key } })).toBe(1);
+  expect([await db.job.count(), await db.jobEvent.count()]).toEqual(before);
+  expect(() => toCandidate(job, { key, company: 'Intersport', tier: 'ATS_OFFICIAL' }, 'Intersport', 'JOBAFFINITY_WORDPRESS')).toThrow('held');
+  expect(isTrustedForAttestation({ status: 'DEGRADED', complete: false, fetched: 993, declaredTotal: 993 })).toBe(false);
+  expect(isTrustedForAttestation({ status: 'DEGRADED', complete: true, errors: 0, fetched: 993, declaredTotal: 993 })).toBe(true);
+  await db.sourceObservation.deleteMany({ where: { sourceKey: key } }); await db.source.delete({ where: { key } });
+});
+
+it('withdraws only the confirmed representation, preserves history, and a newer attestation wins', async () => {
+  const { upsertDeduplicated } = await import('../dedup/upsert.js');
+  const { resolveCompany } = await import('../normalize/company.js');
+  const key = 'jobaffinity-withdrawal-test';
+  await db.source.upsert({ where: { key }, update: { status: 'ACTIVE' }, create: { key, maison: 'Intersport', kind: 'jobaffinity-wordpress', tenantKey: key, tier: 'ATS_OFFICIAL', config: {}, status: 'ACTIVE' } });
+  const candidate = { company: 'Intersport', companyId: resolveCompany('Intersport').companyId, sourceKey: key, externalId: 'withdrawal-witness', sourceTier: 'ATS_OFFICIAL' as const, atsType: 'JOBAFFINITY_WORDPRESS' as const, title: 'Technicien Cycle H/F', url: 'https://jobaffinity.fr/apply/rpp3vwzazs9dmsf9f9', country: 'FR', city: 'Paris', raw: { revision: 1 } };
+  const initial = await upsertDeduplicated(db, candidate);
+  const observationTime = new Date(Date.now() - 60_000);
+  const closed = { ...candidate, publicationHold: 'APPLICATION_EXPLICITLY_CLOSED', publicationWithdrawnAt: observationTime, raw: { applicationEvidence: { status: 200, state: 'CLOSED', checkedAt: observationTime.toISOString() } } };
+  await archivePublicationHold(db, key, closed);
+  expect((await db.job.findUniqueOrThrow({ where: { id: initial.jobId } })).isActive).toBe(true);
+  await db.jobSource.updateMany({ where: { sourceKey: key }, data: { lastSeenAt: new Date(observationTime.getTime() - 60_000) } });
+  await archivePublicationHold(db, key, closed);
+  await archivePublicationHold(db, key, closed);
+  expect((await db.job.findUniqueOrThrow({ where: { id: initial.jobId } })).isActive).toBe(false);
+  expect(await db.jobEvent.count({ where: { jobId: initial.jobId, type: 'CLOSED' } })).toBe(1);
+  expect((await db.jobSource.findFirstOrThrow({ where: { sourceKey: key } })).raw).toEqual({ revision: 1 });
+  await upsertDeduplicated(db, candidate);
+  expect((await db.job.findUniqueOrThrow({ where: { id: initial.jobId } })).isActive).toBe(true);
+  expect(await db.jobEvent.count({ where: { jobId: initial.jobId, type: 'REOPENED' } })).toBe(1);
+  await db.jobSource.deleteMany({ where: { sourceKey: key } }); await db.job.delete({ where: { id: initial.jobId } });
+  await db.sourceObservation.deleteMany({ where: { sourceKey: key } }); await db.source.delete({ where: { key } });
+});

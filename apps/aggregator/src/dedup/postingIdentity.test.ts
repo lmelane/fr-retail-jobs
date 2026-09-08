@@ -15,3 +15,12 @@ describe('Oracle requisition identity — production witnesses 63762/63763', () 
     expect(hasRequisitionConflict([`${root}/en/sites/CX/job/63762`, `${root}/en/sites/CX/job/63762`])).toBe(false);
   });
 });
+
+describe('JobAffinity cross-board application identity', () => {
+  const a = 'https://jobaffinity.fr/apply/v9f3i6k3c5c8z2z9ly';
+  it('keeps tracking-independent identity and separates different application tokens', () => {
+    expect(postingIdentity(a + '?src=Site%20Blackstore')).toEqual(postingIdentity(a + '?src=Intersport'));
+    expect(hasRequisitionConflict([a, 'https://jobaffinity.fr/apply/rpp3vwzazs9dmsf9f9'])).toBe(true);
+    expect(postingIdentity('https://jobaffinity.fr.evil.example/apply/v9f3i6k3c5c8z2z9ly')).toBeUndefined();
+  });
+});

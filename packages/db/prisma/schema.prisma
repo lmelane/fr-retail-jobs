@@ -50,6 +50,7 @@ enum DiscoveryStatus {
 
 enum AtsType {
   FLATCHR
+  JOBAFFINITY_WORDPRESS
   PINPOINT
   LVMH_ALGOLIA
   MAGNET
