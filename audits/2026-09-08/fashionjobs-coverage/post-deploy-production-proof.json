@@ -1,0 +1,15 @@
+{
+  "at": "2026-09-08T18:58:31.500Z",
+  "source": {
+    "key": "fashionjobs",
+    "status": "PAUSED"
+  },
+  "lastRun": {
+    "ranAt": "2026-09-07T23:07:25.102Z",
+    "status": "OK",
+    "jobs": 286
+  },
+  "corrections": 1,
+  "activeJobs": 71263,
+  "france": 9634
+}
