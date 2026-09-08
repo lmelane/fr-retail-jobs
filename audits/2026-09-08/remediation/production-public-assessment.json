@@ -1,0 +1,21 @@
+{
+  "at": "2026-09-08T18:03:17.588377+00:00",
+  "directory": {
+    "url": "https://modecareers.com/entreprises",
+    "status": 200,
+    "sha256": "6e6065d611c36aa206ecfbb58e5f7ee892286d1670da680306ea3a0e31c3faa7"
+  },
+  "britain": {
+    "GB": 2806,
+    "UK": 20,
+    "api": 2826,
+    "explanation": "The API and facet normalize legacy UK to GB. Exact stored GB alone is not the public filter definition; 2806 + 20 = 2826."
+  },
+  "france": {
+    "countryCodeFR": 9637,
+    "isFranceAndApi": 9634,
+    "difference": 3,
+    "status": "OPEN_P1"
+  },
+  "routeExplanation": "The repository serves the employer directory at /entreprises. /maisons returns 404 on modecareers.com; catwalks.io/maisons is a different referenced website. A default Python user agent returned 403 on /entreprises; the named audit user agent is recorded separately."
+}

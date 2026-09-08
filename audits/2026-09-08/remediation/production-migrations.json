@@ -1,0 +1,11 @@
+{
+  "at": "2026-09-08T17:57:43.704318+00:00",
+  "commit": "758cd7518a5fedbf388b61b9b47eb3f11ea06be2",
+  "exit": 0,
+  "applied": [
+    "Applying migration `20260909060000_correction_evidence`",
+    "Applying migration `20260909061000_source_identity_review`",
+    "Applying migration `20260909062000_identity_evidence_artifact`"
+  ],
+  "allApplied": true
+}

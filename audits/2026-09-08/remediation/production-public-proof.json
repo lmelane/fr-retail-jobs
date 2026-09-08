@@ -1,0 +1,5763 @@
+{
+  "at": "2026-09-08T18:02:00.575453+00:00",
+  "readOnly": true,
+  "requests": 26,
+  "rows": [
+    {
+      "url": "https://modecareers.com/api/jobs?pays=monde",
+      "finalUrl": "https://modecareers.com/api/jobs?pays=monde",
+      "status": 200,
+      "at": "2026-09-08T18:01:55.341345+00:00",
+      "sha256": "648122ea0a2c41f8429ef555958a20de80b8197f4ba576b804733a7762fd5551",
+      "total": 71263,
+      "expectedFromDatabase": 71263,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 9634
+        },
+        {
+          "value": "US",
+          "count": 30286
+        },
+        {
+          "value": "GB",
+          "count": 2826
+        },
+        {
+          "value": "DE",
+          "count": 2681
+        },
+        {
+          "value": "CA",
+          "count": 2630
+        },
+        {
+          "value": "IT",
+          "count": 2312
+        },
+        {
+          "value": "ES",
+          "count": 2022
+        },
+        {
+          "value": "NL",
+          "count": 1679
+        },
+        {
+          "value": "AU",
+          "count": 1162
+        },
+        {
+          "value": "CN",
+          "count": 1154
+        },
+        {
+          "value": "CH",
+          "count": 1061
+        },
+        {
+          "value": "BE",
+          "count": 575
+        },
+        {
+          "value": "JP",
+          "count": 517
+        },
+        {
+          "value": "IN",
+          "count": 513
+        },
+        {
+          "value": "KR",
+          "count": 496
+        },
+        {
+          "value": "PT",
+          "count": 433
+        },
+        {
+          "value": "MX",
+          "count": 404
+        },
+        {
+          "value": "SG",
+          "count": 388
+        },
+        {
+          "value": "DK",
+          "count": 352
+        },
+        {
+          "value": "HK",
+          "count": 334
+        },
+        {
+          "value": "PL",
+          "count": 322
+        },
+        {
+          "value": "AT",
+          "count": 305
+        },
+        {
+          "value": "SE",
+          "count": 305
+        },
+        {
+          "value": "TH",
+          "count": 263
+        },
+        {
+          "value": "TR",
+          "count": 254
+        },
+        {
+          "value": "IE",
+          "count": 251
+        },
+        {
+          "value": "MY",
+          "count": 247
+        },
+        {
+          "value": "AE",
+          "count": 232
+        },
+        {
+          "value": "BR",
+          "count": 217
+        },
+        {
+          "value": "NO",
+          "count": 196
+        },
+        {
+          "value": "CL",
+          "count": 179
+        },
+        {
+          "value": "GR",
+          "count": 169
+        },
+        {
+          "value": "TW",
+          "count": 163
+        },
+        {
+          "value": "ZA",
+          "count": 153
+        },
+        {
+          "value": "NZ",
+          "count": 138
+        },
+        {
+          "value": "VN",
+          "count": 130
+        },
+        {
+          "value": "CZ",
+          "count": 115
+        },
+        {
+          "value": "SA",
+          "count": 110
+        },
+        {
+          "value": "CO",
+          "count": 110
+        },
+        {
+          "value": "RO",
+          "count": 98
+        },
+        {
+          "value": "HU",
+          "count": 90
+        },
+        {
+          "value": "IL",
+          "count": 86
+        },
+        {
+          "value": "MO",
+          "count": 73
+        },
+        {
+          "value": "PR",
+          "count": 63
+        },
+        {
+          "value": "PE",
+          "count": 57
+        },
+        {
+          "value": "MA",
+          "count": 53
+        },
+        {
+          "value": "ID",
+          "count": 49
+        },
+        {
+          "value": "LU",
+          "count": 47
+        },
+        {
+          "value": "PH",
+          "count": 47
+        },
+        {
+          "value": "AR",
+          "count": 37
+        },
+        {
+          "value": "MC",
+          "count": 36
+        },
+        {
+          "value": "FI",
+          "count": 36
+        },
+        {
+          "value": "EG",
+          "count": 34
+        },
+        {
+          "value": "HR",
+          "count": 34
+        },
+        {
+          "value": "PA",
+          "count": 31
+        },
+        {
+          "value": "BG",
+          "count": 31
+        },
+        {
+          "value": "VA",
+          "count": 27
+        },
+        {
+          "value": "SK",
+          "count": 22
+        },
+        {
+          "value": "LT",
+          "count": 22
+        },
+        {
+          "value": "AZ",
+          "count": 20
+        },
+        {
+          "value": "KY",
+          "count": 20
+        },
+        {
+          "value": "GA",
+          "count": 20
+        },
+        {
+          "value": "TN",
+          "count": 18
+        },
+        {
+          "value": "BH",
+          "count": 15
+        },
+        {
+          "value": "SC",
+          "count": 15
+        },
+        {
+          "value": "NC",
+          "count": 14
+        },
+        {
+          "value": "AL",
+          "count": 12
+        },
+        {
+          "value": "MN",
+          "count": 12
+        },
+        {
+          "value": "MD",
+          "count": 12
+        },
+        {
+          "value": "QA",
+          "count": 10
+        },
+        {
+          "value": "SI",
+          "count": 9
+        },
+        {
+          "value": "UA",
+          "count": 8
+        },
+        {
+          "value": "PK",
+          "count": 8
+        },
+        {
+          "value": "KH",
+          "count": 8
+        },
+        {
+          "value": "RU",
+          "count": 7
+        },
+        {
+          "value": "RS",
+          "count": 6
+        },
+        {
+          "value": "NE",
+          "count": 6
+        },
+        {
+          "value": "VI",
+          "count": 6
+        },
+        {
+          "value": "LV",
+          "count": 6
+        },
+        {
+          "value": "GG",
+          "count": 6
+        },
+        {
+          "value": "KZ",
+          "count": 5
+        },
+        {
+          "value": "MV",
+          "count": 5
+        },
+        {
+          "value": "AD",
+          "count": 5
+        },
+        {
+          "value": "LS",
+          "count": 4
+        },
+        {
+          "value": "JO",
+          "count": 4
+        },
+        {
+          "value": "YU",
+          "count": 3
+        },
+        {
+          "value": "LA",
+          "count": 3
+        },
+        {
+          "value": "NH",
+          "count": 3
+        },
+        {
+          "value": "SZ",
+          "count": 3
+        },
+        {
+          "value": "JE",
+          "count": 3
+        },
+        {
+          "value": "BD",
+          "count": 3
+        },
+        {
+          "value": "XK",
+          "count": 3
+        },
+        {
+          "value": "LB",
+          "count": 3
+        },
+        {
+          "value": "BS",
+          "count": 2
+        },
+        {
+          "value": "GE",
+          "count": 2
+        },
+        {
+          "value": "EE",
+          "count": 2
+        },
+        {
+          "value": "KW",
+          "count": 2
+        },
+        {
+          "value": "NA",
+          "count": 2
+        },
+        {
+          "value": "MT",
+          "count": 2
+        },
+        {
+          "value": "DO",
+          "count": 2
+        },
+        {
+          "value": "BA",
+          "count": 2
+        },
+        {
+          "value": "UY",
+          "count": 2
+        },
+        {
+          "value": "SD",
+          "count": 2
+        },
+        {
+          "value": "OM",
+          "count": 2
+        },
+        {
+          "value": "MF",
+          "count": 1
+        },
+        {
+          "value": "MU",
+          "count": 1
+        },
+        {
+          "value": "CY",
+          "count": 1
+        },
+        {
+          "value": "ST",
+          "count": 1
+        },
+        {
+          "value": "EC",
+          "count": 1
+        },
+        {
+          "value": "KE",
+          "count": 1
+        },
+        {
+          "value": "GU",
+          "count": 1
+        },
+        {
+          "value": "ME",
+          "count": 1
+        },
+        {
+          "value": "BL",
+          "count": 1
+        },
+        {
+          "value": "AW",
+          "count": 1
+        },
+        {
+          "value": "IM",
+          "count": 1
+        },
+        {
+          "value": "AM",
+          "count": 1
+        },
+        {
+          "value": "NG",
+          "count": 1
+        },
+        {
+          "value": "CR",
+          "count": 1
+        },
+        {
+          "value": "MK",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "Chanel",
+        "Douglas",
+        "L'Oréal",
+        "Levi's",
+        "New Balance",
+        "PVH",
+        "Pierre Fabre",
+        "ba&sh"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=FR",
+      "finalUrl": "https://modecareers.com/api/jobs?pays=FR",
+      "status": 200,
+      "at": "2026-09-08T18:01:55.675671+00:00",
+      "sha256": "fe853b4a42d66269123d39c2e41f40e3c63d7039e79b0ef6149accd653c23916",
+      "total": 9634,
+      "expectedFromDatabase": 9634,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 9634
+        },
+        {
+          "value": "US",
+          "count": 30286
+        },
+        {
+          "value": "GB",
+          "count": 2826
+        },
+        {
+          "value": "DE",
+          "count": 2681
+        },
+        {
+          "value": "CA",
+          "count": 2630
+        },
+        {
+          "value": "IT",
+          "count": 2312
+        },
+        {
+          "value": "ES",
+          "count": 2022
+        },
+        {
+          "value": "NL",
+          "count": 1679
+        },
+        {
+          "value": "AU",
+          "count": 1162
+        },
+        {
+          "value": "CN",
+          "count": 1154
+        },
+        {
+          "value": "CH",
+          "count": 1061
+        },
+        {
+          "value": "BE",
+          "count": 575
+        },
+        {
+          "value": "JP",
+          "count": 517
+        },
+        {
+          "value": "IN",
+          "count": 513
+        },
+        {
+          "value": "KR",
+          "count": 496
+        },
+        {
+          "value": "PT",
+          "count": 433
+        },
+        {
+          "value": "MX",
+          "count": 404
+        },
+        {
+          "value": "SG",
+          "count": 388
+        },
+        {
+          "value": "DK",
+          "count": 352
+        },
+        {
+          "value": "HK",
+          "count": 334
+        },
+        {
+          "value": "PL",
+          "count": 322
+        },
+        {
+          "value": "AT",
+          "count": 305
+        },
+        {
+          "value": "SE",
+          "count": 305
+        },
+        {
+          "value": "TH",
+          "count": 263
+        },
+        {
+          "value": "TR",
+          "count": 254
+        },
+        {
+          "value": "IE",
+          "count": 251
+        },
+        {
+          "value": "MY",
+          "count": 247
+        },
+        {
+          "value": "AE",
+          "count": 232
+        },
+        {
+          "value": "BR",
+          "count": 217
+        },
+        {
+          "value": "NO",
+          "count": 196
+        },
+        {
+          "value": "CL",
+          "count": 179
+        },
+        {
+          "value": "GR",
+          "count": 169
+        },
+        {
+          "value": "TW",
+          "count": 163
+        },
+        {
+          "value": "ZA",
+          "count": 153
+        },
+        {
+          "value": "NZ",
+          "count": 138
+        },
+        {
+          "value": "VN",
+          "count": 130
+        },
+        {
+          "value": "CZ",
+          "count": 115
+        },
+        {
+          "value": "SA",
+          "count": 110
+        },
+        {
+          "value": "CO",
+          "count": 110
+        },
+        {
+          "value": "RO",
+          "count": 98
+        },
+        {
+          "value": "HU",
+          "count": 90
+        },
+        {
+          "value": "IL",
+          "count": 86
+        },
+        {
+          "value": "MO",
+          "count": 73
+        },
+        {
+          "value": "PR",
+          "count": 63
+        },
+        {
+          "value": "PE",
+          "count": 57
+        },
+        {
+          "value": "MA",
+          "count": 53
+        },
+        {
+          "value": "ID",
+          "count": 49
+        },
+        {
+          "value": "LU",
+          "count": 47
+        },
+        {
+          "value": "PH",
+          "count": 47
+        },
+        {
+          "value": "AR",
+          "count": 37
+        },
+        {
+          "value": "MC",
+          "count": 36
+        },
+        {
+          "value": "FI",
+          "count": 36
+        },
+        {
+          "value": "EG",
+          "count": 34
+        },
+        {
+          "value": "HR",
+          "count": 34
+        },
+        {
+          "value": "PA",
+          "count": 31
+        },
+        {
+          "value": "BG",
+          "count": 31
+        },
+        {
+          "value": "VA",
+          "count": 27
+        },
+        {
+          "value": "SK",
+          "count": 22
+        },
+        {
+          "value": "LT",
+          "count": 22
+        },
+        {
+          "value": "AZ",
+          "count": 20
+        },
+        {
+          "value": "KY",
+          "count": 20
+        },
+        {
+          "value": "GA",
+          "count": 20
+        },
+        {
+          "value": "TN",
+          "count": 18
+        },
+        {
+          "value": "BH",
+          "count": 15
+        },
+        {
+          "value": "SC",
+          "count": 15
+        },
+        {
+          "value": "NC",
+          "count": 14
+        },
+        {
+          "value": "AL",
+          "count": 12
+        },
+        {
+          "value": "MN",
+          "count": 12
+        },
+        {
+          "value": "MD",
+          "count": 12
+        },
+        {
+          "value": "QA",
+          "count": 10
+        },
+        {
+          "value": "SI",
+          "count": 9
+        },
+        {
+          "value": "UA",
+          "count": 8
+        },
+        {
+          "value": "PK",
+          "count": 8
+        },
+        {
+          "value": "KH",
+          "count": 8
+        },
+        {
+          "value": "RU",
+          "count": 7
+        },
+        {
+          "value": "RS",
+          "count": 6
+        },
+        {
+          "value": "NE",
+          "count": 6
+        },
+        {
+          "value": "VI",
+          "count": 6
+        },
+        {
+          "value": "LV",
+          "count": 6
+        },
+        {
+          "value": "GG",
+          "count": 6
+        },
+        {
+          "value": "KZ",
+          "count": 5
+        },
+        {
+          "value": "MV",
+          "count": 5
+        },
+        {
+          "value": "AD",
+          "count": 5
+        },
+        {
+          "value": "LS",
+          "count": 4
+        },
+        {
+          "value": "JO",
+          "count": 4
+        },
+        {
+          "value": "YU",
+          "count": 3
+        },
+        {
+          "value": "LA",
+          "count": 3
+        },
+        {
+          "value": "NH",
+          "count": 3
+        },
+        {
+          "value": "SZ",
+          "count": 3
+        },
+        {
+          "value": "JE",
+          "count": 3
+        },
+        {
+          "value": "BD",
+          "count": 3
+        },
+        {
+          "value": "XK",
+          "count": 3
+        },
+        {
+          "value": "LB",
+          "count": 3
+        },
+        {
+          "value": "BS",
+          "count": 2
+        },
+        {
+          "value": "GE",
+          "count": 2
+        },
+        {
+          "value": "EE",
+          "count": 2
+        },
+        {
+          "value": "KW",
+          "count": 2
+        },
+        {
+          "value": "NA",
+          "count": 2
+        },
+        {
+          "value": "MT",
+          "count": 2
+        },
+        {
+          "value": "DO",
+          "count": 2
+        },
+        {
+          "value": "BA",
+          "count": 2
+        },
+        {
+          "value": "UY",
+          "count": 2
+        },
+        {
+          "value": "SD",
+          "count": 2
+        },
+        {
+          "value": "OM",
+          "count": 2
+        },
+        {
+          "value": "MF",
+          "count": 1
+        },
+        {
+          "value": "MU",
+          "count": 1
+        },
+        {
+          "value": "CY",
+          "count": 1
+        },
+        {
+          "value": "ST",
+          "count": 1
+        },
+        {
+          "value": "EC",
+          "count": 1
+        },
+        {
+          "value": "KE",
+          "count": 1
+        },
+        {
+          "value": "GU",
+          "count": 1
+        },
+        {
+          "value": "ME",
+          "count": 1
+        },
+        {
+          "value": "BL",
+          "count": 1
+        },
+        {
+          "value": "AW",
+          "count": 1
+        },
+        {
+          "value": "IM",
+          "count": 1
+        },
+        {
+          "value": "AM",
+          "count": 1
+        },
+        {
+          "value": "NG",
+          "count": 1
+        },
+        {
+          "value": "CR",
+          "count": 1
+        },
+        {
+          "value": "MK",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "Kiabi",
+        "Longchamp",
+        "ONIVERSE",
+        "Pierre Fabre",
+        "ba&sh"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=US",
+      "finalUrl": "https://modecareers.com/api/jobs?pays=US",
+      "status": 200,
+      "at": "2026-09-08T18:01:56.029248+00:00",
+      "sha256": "e1b6c43c2114bf01fdc9ee24e4aed2ac4411b11c54110313ba4b762b9e01b4fe",
+      "total": 30286,
+      "expectedFromDatabase": 30286,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 9634
+        },
+        {
+          "value": "US",
+          "count": 30286
+        },
+        {
+          "value": "GB",
+          "count": 2826
+        },
+        {
+          "value": "DE",
+          "count": 2681
+        },
+        {
+          "value": "CA",
+          "count": 2630
+        },
+        {
+          "value": "IT",
+          "count": 2312
+        },
+        {
+          "value": "ES",
+          "count": 2022
+        },
+        {
+          "value": "NL",
+          "count": 1679
+        },
+        {
+          "value": "AU",
+          "count": 1162
+        },
+        {
+          "value": "CN",
+          "count": 1154
+        },
+        {
+          "value": "CH",
+          "count": 1061
+        },
+        {
+          "value": "BE",
+          "count": 575
+        },
+        {
+          "value": "JP",
+          "count": 517
+        },
+        {
+          "value": "IN",
+          "count": 513
+        },
+        {
+          "value": "KR",
+          "count": 496
+        },
+        {
+          "value": "PT",
+          "count": 433
+        },
+        {
+          "value": "MX",
+          "count": 404
+        },
+        {
+          "value": "SG",
+          "count": 388
+        },
+        {
+          "value": "DK",
+          "count": 352
+        },
+        {
+          "value": "HK",
+          "count": 334
+        },
+        {
+          "value": "PL",
+          "count": 322
+        },
+        {
+          "value": "AT",
+          "count": 305
+        },
+        {
+          "value": "SE",
+          "count": 305
+        },
+        {
+          "value": "TH",
+          "count": 263
+        },
+        {
+          "value": "TR",
+          "count": 254
+        },
+        {
+          "value": "IE",
+          "count": 251
+        },
+        {
+          "value": "MY",
+          "count": 247
+        },
+        {
+          "value": "AE",
+          "count": 232
+        },
+        {
+          "value": "BR",
+          "count": 217
+        },
+        {
+          "value": "NO",
+          "count": 196
+        },
+        {
+          "value": "CL",
+          "count": 179
+        },
+        {
+          "value": "GR",
+          "count": 169
+        },
+        {
+          "value": "TW",
+          "count": 163
+        },
+        {
+          "value": "ZA",
+          "count": 153
+        },
+        {
+          "value": "NZ",
+          "count": 138
+        },
+        {
+          "value": "VN",
+          "count": 130
+        },
+        {
+          "value": "CZ",
+          "count": 115
+        },
+        {
+          "value": "SA",
+          "count": 110
+        },
+        {
+          "value": "CO",
+          "count": 110
+        },
+        {
+          "value": "RO",
+          "count": 98
+        },
+        {
+          "value": "HU",
+          "count": 90
+        },
+        {
+          "value": "IL",
+          "count": 86
+        },
+        {
+          "value": "MO",
+          "count": 73
+        },
+        {
+          "value": "PR",
+          "count": 63
+        },
+        {
+          "value": "PE",
+          "count": 57
+        },
+        {
+          "value": "MA",
+          "count": 53
+        },
+        {
+          "value": "ID",
+          "count": 49
+        },
+        {
+          "value": "LU",
+          "count": 47
+        },
+        {
+          "value": "PH",
+          "count": 47
+        },
+        {
+          "value": "AR",
+          "count": 37
+        },
+        {
+          "value": "MC",
+          "count": 36
+        },
+        {
+          "value": "FI",
+          "count": 36
+        },
+        {
+          "value": "EG",
+          "count": 34
+        },
+        {
+          "value": "HR",
+          "count": 34
+        },
+        {
+          "value": "PA",
+          "count": 31
+        },
+        {
+          "value": "BG",
+          "count": 31
+        },
+        {
+          "value": "VA",
+          "count": 27
+        },
+        {
+          "value": "SK",
+          "count": 22
+        },
+        {
+          "value": "LT",
+          "count": 22
+        },
+        {
+          "value": "AZ",
+          "count": 20
+        },
+        {
+          "value": "KY",
+          "count": 20
+        },
+        {
+          "value": "GA",
+          "count": 20
+        },
+        {
+          "value": "TN",
+          "count": 18
+        },
+        {
+          "value": "BH",
+          "count": 15
+        },
+        {
+          "value": "SC",
+          "count": 15
+        },
+        {
+          "value": "NC",
+          "count": 14
+        },
+        {
+          "value": "AL",
+          "count": 12
+        },
+        {
+          "value": "MN",
+          "count": 12
+        },
+        {
+          "value": "MD",
+          "count": 12
+        },
+        {
+          "value": "QA",
+          "count": 10
+        },
+        {
+          "value": "SI",
+          "count": 9
+        },
+        {
+          "value": "UA",
+          "count": 8
+        },
+        {
+          "value": "PK",
+          "count": 8
+        },
+        {
+          "value": "KH",
+          "count": 8
+        },
+        {
+          "value": "RU",
+          "count": 7
+        },
+        {
+          "value": "RS",
+          "count": 6
+        },
+        {
+          "value": "NE",
+          "count": 6
+        },
+        {
+          "value": "VI",
+          "count": 6
+        },
+        {
+          "value": "LV",
+          "count": 6
+        },
+        {
+          "value": "GG",
+          "count": 6
+        },
+        {
+          "value": "KZ",
+          "count": 5
+        },
+        {
+          "value": "MV",
+          "count": 5
+        },
+        {
+          "value": "AD",
+          "count": 5
+        },
+        {
+          "value": "LS",
+          "count": 4
+        },
+        {
+          "value": "JO",
+          "count": 4
+        },
+        {
+          "value": "YU",
+          "count": 3
+        },
+        {
+          "value": "LA",
+          "count": 3
+        },
+        {
+          "value": "NH",
+          "count": 3
+        },
+        {
+          "value": "SZ",
+          "count": 3
+        },
+        {
+          "value": "JE",
+          "count": 3
+        },
+        {
+          "value": "BD",
+          "count": 3
+        },
+        {
+          "value": "XK",
+          "count": 3
+        },
+        {
+          "value": "LB",
+          "count": 3
+        },
+        {
+          "value": "BS",
+          "count": 2
+        },
+        {
+          "value": "GE",
+          "count": 2
+        },
+        {
+          "value": "EE",
+          "count": 2
+        },
+        {
+          "value": "KW",
+          "count": 2
+        },
+        {
+          "value": "NA",
+          "count": 2
+        },
+        {
+          "value": "MT",
+          "count": 2
+        },
+        {
+          "value": "DO",
+          "count": 2
+        },
+        {
+          "value": "BA",
+          "count": 2
+        },
+        {
+          "value": "UY",
+          "count": 2
+        },
+        {
+          "value": "SD",
+          "count": 2
+        },
+        {
+          "value": "OM",
+          "count": 2
+        },
+        {
+          "value": "MF",
+          "count": 1
+        },
+        {
+          "value": "MU",
+          "count": 1
+        },
+        {
+          "value": "CY",
+          "count": 1
+        },
+        {
+          "value": "ST",
+          "count": 1
+        },
+        {
+          "value": "EC",
+          "count": 1
+        },
+        {
+          "value": "KE",
+          "count": 1
+        },
+        {
+          "value": "GU",
+          "count": 1
+        },
+        {
+          "value": "ME",
+          "count": 1
+        },
+        {
+          "value": "BL",
+          "count": 1
+        },
+        {
+          "value": "AW",
+          "count": 1
+        },
+        {
+          "value": "IM",
+          "count": 1
+        },
+        {
+          "value": "AM",
+          "count": 1
+        },
+        {
+          "value": "NG",
+          "count": 1
+        },
+        {
+          "value": "CR",
+          "count": 1
+        },
+        {
+          "value": "MK",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "LuxExperience",
+        "MAC",
+        "Pandora",
+        "Ulta Beauty"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=GB",
+      "finalUrl": "https://modecareers.com/api/jobs?pays=GB",
+      "status": 200,
+      "at": "2026-09-08T18:01:56.315489+00:00",
+      "sha256": "a14728fbeced4165456f72635e16b04efbe2f4cf031024f1ffdcc41229ca5f34",
+      "total": 2826,
+      "expectedFromDatabase": 2806,
+      "delta": 20,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 9634
+        },
+        {
+          "value": "US",
+          "count": 30286
+        },
+        {
+          "value": "GB",
+          "count": 2826
+        },
+        {
+          "value": "DE",
+          "count": 2681
+        },
+        {
+          "value": "CA",
+          "count": 2630
+        },
+        {
+          "value": "IT",
+          "count": 2312
+        },
+        {
+          "value": "ES",
+          "count": 2022
+        },
+        {
+          "value": "NL",
+          "count": 1679
+        },
+        {
+          "value": "AU",
+          "count": 1162
+        },
+        {
+          "value": "CN",
+          "count": 1154
+        },
+        {
+          "value": "CH",
+          "count": 1061
+        },
+        {
+          "value": "BE",
+          "count": 575
+        },
+        {
+          "value": "JP",
+          "count": 517
+        },
+        {
+          "value": "IN",
+          "count": 513
+        },
+        {
+          "value": "KR",
+          "count": 496
+        },
+        {
+          "value": "PT",
+          "count": 433
+        },
+        {
+          "value": "MX",
+          "count": 404
+        },
+        {
+          "value": "SG",
+          "count": 388
+        },
+        {
+          "value": "DK",
+          "count": 352
+        },
+        {
+          "value": "HK",
+          "count": 334
+        },
+        {
+          "value": "PL",
+          "count": 322
+        },
+        {
+          "value": "AT",
+          "count": 305
+        },
+        {
+          "value": "SE",
+          "count": 305
+        },
+        {
+          "value": "TH",
+          "count": 263
+        },
+        {
+          "value": "TR",
+          "count": 254
+        },
+        {
+          "value": "IE",
+          "count": 251
+        },
+        {
+          "value": "MY",
+          "count": 247
+        },
+        {
+          "value": "AE",
+          "count": 232
+        },
+        {
+          "value": "BR",
+          "count": 217
+        },
+        {
+          "value": "NO",
+          "count": 196
+        },
+        {
+          "value": "CL",
+          "count": 179
+        },
+        {
+          "value": "GR",
+          "count": 169
+        },
+        {
+          "value": "TW",
+          "count": 163
+        },
+        {
+          "value": "ZA",
+          "count": 153
+        },
+        {
+          "value": "NZ",
+          "count": 138
+        },
+        {
+          "value": "VN",
+          "count": 130
+        },
+        {
+          "value": "CZ",
+          "count": 115
+        },
+        {
+          "value": "SA",
+          "count": 110
+        },
+        {
+          "value": "CO",
+          "count": 110
+        },
+        {
+          "value": "RO",
+          "count": 98
+        },
+        {
+          "value": "HU",
+          "count": 90
+        },
+        {
+          "value": "IL",
+          "count": 86
+        },
+        {
+          "value": "MO",
+          "count": 73
+        },
+        {
+          "value": "PR",
+          "count": 63
+        },
+        {
+          "value": "PE",
+          "count": 57
+        },
+        {
+          "value": "MA",
+          "count": 53
+        },
+        {
+          "value": "ID",
+          "count": 49
+        },
+        {
+          "value": "LU",
+          "count": 47
+        },
+        {
+          "value": "PH",
+          "count": 47
+        },
+        {
+          "value": "AR",
+          "count": 37
+        },
+        {
+          "value": "MC",
+          "count": 36
+        },
+        {
+          "value": "FI",
+          "count": 36
+        },
+        {
+          "value": "EG",
+          "count": 34
+        },
+        {
+          "value": "HR",
+          "count": 34
+        },
+        {
+          "value": "PA",
+          "count": 31
+        },
+        {
+          "value": "BG",
+          "count": 31
+        },
+        {
+          "value": "VA",
+          "count": 27
+        },
+        {
+          "value": "SK",
+          "count": 22
+        },
+        {
+          "value": "LT",
+          "count": 22
+        },
+        {
+          "value": "AZ",
+          "count": 20
+        },
+        {
+          "value": "KY",
+          "count": 20
+        },
+        {
+          "value": "GA",
+          "count": 20
+        },
+        {
+          "value": "TN",
+          "count": 18
+        },
+        {
+          "value": "BH",
+          "count": 15
+        },
+        {
+          "value": "SC",
+          "count": 15
+        },
+        {
+          "value": "NC",
+          "count": 14
+        },
+        {
+          "value": "AL",
+          "count": 12
+        },
+        {
+          "value": "MN",
+          "count": 12
+        },
+        {
+          "value": "MD",
+          "count": 12
+        },
+        {
+          "value": "QA",
+          "count": 10
+        },
+        {
+          "value": "SI",
+          "count": 9
+        },
+        {
+          "value": "UA",
+          "count": 8
+        },
+        {
+          "value": "PK",
+          "count": 8
+        },
+        {
+          "value": "KH",
+          "count": 8
+        },
+        {
+          "value": "RU",
+          "count": 7
+        },
+        {
+          "value": "RS",
+          "count": 6
+        },
+        {
+          "value": "NE",
+          "count": 6
+        },
+        {
+          "value": "VI",
+          "count": 6
+        },
+        {
+          "value": "LV",
+          "count": 6
+        },
+        {
+          "value": "GG",
+          "count": 6
+        },
+        {
+          "value": "KZ",
+          "count": 5
+        },
+        {
+          "value": "MV",
+          "count": 5
+        },
+        {
+          "value": "AD",
+          "count": 5
+        },
+        {
+          "value": "LS",
+          "count": 4
+        },
+        {
+          "value": "JO",
+          "count": 4
+        },
+        {
+          "value": "YU",
+          "count": 3
+        },
+        {
+          "value": "LA",
+          "count": 3
+        },
+        {
+          "value": "NH",
+          "count": 3
+        },
+        {
+          "value": "SZ",
+          "count": 3
+        },
+        {
+          "value": "JE",
+          "count": 3
+        },
+        {
+          "value": "BD",
+          "count": 3
+        },
+        {
+          "value": "XK",
+          "count": 3
+        },
+        {
+          "value": "LB",
+          "count": 3
+        },
+        {
+          "value": "BS",
+          "count": 2
+        },
+        {
+          "value": "GE",
+          "count": 2
+        },
+        {
+          "value": "EE",
+          "count": 2
+        },
+        {
+          "value": "KW",
+          "count": 2
+        },
+        {
+          "value": "NA",
+          "count": 2
+        },
+        {
+          "value": "MT",
+          "count": 2
+        },
+        {
+          "value": "DO",
+          "count": 2
+        },
+        {
+          "value": "BA",
+          "count": 2
+        },
+        {
+          "value": "UY",
+          "count": 2
+        },
+        {
+          "value": "SD",
+          "count": 2
+        },
+        {
+          "value": "OM",
+          "count": 2
+        },
+        {
+          "value": "MF",
+          "count": 1
+        },
+        {
+          "value": "MU",
+          "count": 1
+        },
+        {
+          "value": "CY",
+          "count": 1
+        },
+        {
+          "value": "ST",
+          "count": 1
+        },
+        {
+          "value": "EC",
+          "count": 1
+        },
+        {
+          "value": "KE",
+          "count": 1
+        },
+        {
+          "value": "GU",
+          "count": 1
+        },
+        {
+          "value": "ME",
+          "count": 1
+        },
+        {
+          "value": "BL",
+          "count": 1
+        },
+        {
+          "value": "AW",
+          "count": 1
+        },
+        {
+          "value": "IM",
+          "count": 1
+        },
+        {
+          "value": "AM",
+          "count": 1
+        },
+        {
+          "value": "NG",
+          "count": 1
+        },
+        {
+          "value": "CR",
+          "count": 1
+        },
+        {
+          "value": "MK",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "Jo Malone London",
+        "LuxExperience",
+        "Pandora",
+        "Primark",
+        "Rituals",
+        "ba&sh"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=DE",
+      "finalUrl": "https://modecareers.com/api/jobs?pays=DE",
+      "status": 200,
+      "at": "2026-09-08T18:01:56.578018+00:00",
+      "sha256": "586c7deef6138bb37dbe47b45bef5868a46688e47d5db3000a6905e55ea7c6d2",
+      "total": 2681,
+      "expectedFromDatabase": 2681,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 9634
+        },
+        {
+          "value": "US",
+          "count": 30286
+        },
+        {
+          "value": "GB",
+          "count": 2826
+        },
+        {
+          "value": "DE",
+          "count": 2681
+        },
+        {
+          "value": "CA",
+          "count": 2630
+        },
+        {
+          "value": "IT",
+          "count": 2312
+        },
+        {
+          "value": "ES",
+          "count": 2022
+        },
+        {
+          "value": "NL",
+          "count": 1679
+        },
+        {
+          "value": "AU",
+          "count": 1162
+        },
+        {
+          "value": "CN",
+          "count": 1154
+        },
+        {
+          "value": "CH",
+          "count": 1061
+        },
+        {
+          "value": "BE",
+          "count": 575
+        },
+        {
+          "value": "JP",
+          "count": 517
+        },
+        {
+          "value": "IN",
+          "count": 513
+        },
+        {
+          "value": "KR",
+          "count": 496
+        },
+        {
+          "value": "PT",
+          "count": 433
+        },
+        {
+          "value": "MX",
+          "count": 404
+        },
+        {
+          "value": "SG",
+          "count": 388
+        },
+        {
+          "value": "DK",
+          "count": 352
+        },
+        {
+          "value": "HK",
+          "count": 334
+        },
+        {
+          "value": "PL",
+          "count": 322
+        },
+        {
+          "value": "AT",
+          "count": 305
+        },
+        {
+          "value": "SE",
+          "count": 305
+        },
+        {
+          "value": "TH",
+          "count": 263
+        },
+        {
+          "value": "TR",
+          "count": 254
+        },
+        {
+          "value": "IE",
+          "count": 251
+        },
+        {
+          "value": "MY",
+          "count": 247
+        },
+        {
+          "value": "AE",
+          "count": 232
+        },
+        {
+          "value": "BR",
+          "count": 217
+        },
+        {
+          "value": "NO",
+          "count": 196
+        },
+        {
+          "value": "CL",
+          "count": 179
+        },
+        {
+          "value": "GR",
+          "count": 169
+        },
+        {
+          "value": "TW",
+          "count": 163
+        },
+        {
+          "value": "ZA",
+          "count": 153
+        },
+        {
+          "value": "NZ",
+          "count": 138
+        },
+        {
+          "value": "VN",
+          "count": 130
+        },
+        {
+          "value": "CZ",
+          "count": 115
+        },
+        {
+          "value": "SA",
+          "count": 110
+        },
+        {
+          "value": "CO",
+          "count": 110
+        },
+        {
+          "value": "RO",
+          "count": 98
+        },
+        {
+          "value": "HU",
+          "count": 90
+        },
+        {
+          "value": "IL",
+          "count": 86
+        },
+        {
+          "value": "MO",
+          "count": 73
+        },
+        {
+          "value": "PR",
+          "count": 63
+        },
+        {
+          "value": "PE",
+          "count": 57
+        },
+        {
+          "value": "MA",
+          "count": 53
+        },
+        {
+          "value": "ID",
+          "count": 49
+        },
+        {
+          "value": "LU",
+          "count": 47
+        },
+        {
+          "value": "PH",
+          "count": 47
+        },
+        {
+          "value": "AR",
+          "count": 37
+        },
+        {
+          "value": "MC",
+          "count": 36
+        },
+        {
+          "value": "FI",
+          "count": 36
+        },
+        {
+          "value": "EG",
+          "count": 34
+        },
+        {
+          "value": "HR",
+          "count": 34
+        },
+        {
+          "value": "PA",
+          "count": 31
+        },
+        {
+          "value": "BG",
+          "count": 31
+        },
+        {
+          "value": "VA",
+          "count": 27
+        },
+        {
+          "value": "SK",
+          "count": 22
+        },
+        {
+          "value": "LT",
+          "count": 22
+        },
+        {
+          "value": "AZ",
+          "count": 20
+        },
+        {
+          "value": "KY",
+          "count": 20
+        },
+        {
+          "value": "GA",
+          "count": 20
+        },
+        {
+          "value": "TN",
+          "count": 18
+        },
+        {
+          "value": "BH",
+          "count": 15
+        },
+        {
+          "value": "SC",
+          "count": 15
+        },
+        {
+          "value": "NC",
+          "count": 14
+        },
+        {
+          "value": "AL",
+          "count": 12
+        },
+        {
+          "value": "MN",
+          "count": 12
+        },
+        {
+          "value": "MD",
+          "count": 12
+        },
+        {
+          "value": "QA",
+          "count": 10
+        },
+        {
+          "value": "SI",
+          "count": 9
+        },
+        {
+          "value": "UA",
+          "count": 8
+        },
+        {
+          "value": "PK",
+          "count": 8
+        },
+        {
+          "value": "KH",
+          "count": 8
+        },
+        {
+          "value": "RU",
+          "count": 7
+        },
+        {
+          "value": "RS",
+          "count": 6
+        },
+        {
+          "value": "NE",
+          "count": 6
+        },
+        {
+          "value": "VI",
+          "count": 6
+        },
+        {
+          "value": "LV",
+          "count": 6
+        },
+        {
+          "value": "GG",
+          "count": 6
+        },
+        {
+          "value": "KZ",
+          "count": 5
+        },
+        {
+          "value": "MV",
+          "count": 5
+        },
+        {
+          "value": "AD",
+          "count": 5
+        },
+        {
+          "value": "LS",
+          "count": 4
+        },
+        {
+          "value": "JO",
+          "count": 4
+        },
+        {
+          "value": "YU",
+          "count": 3
+        },
+        {
+          "value": "LA",
+          "count": 3
+        },
+        {
+          "value": "NH",
+          "count": 3
+        },
+        {
+          "value": "SZ",
+          "count": 3
+        },
+        {
+          "value": "JE",
+          "count": 3
+        },
+        {
+          "value": "BD",
+          "count": 3
+        },
+        {
+          "value": "XK",
+          "count": 3
+        },
+        {
+          "value": "LB",
+          "count": 3
+        },
+        {
+          "value": "BS",
+          "count": 2
+        },
+        {
+          "value": "GE",
+          "count": 2
+        },
+        {
+          "value": "EE",
+          "count": 2
+        },
+        {
+          "value": "KW",
+          "count": 2
+        },
+        {
+          "value": "NA",
+          "count": 2
+        },
+        {
+          "value": "MT",
+          "count": 2
+        },
+        {
+          "value": "DO",
+          "count": 2
+        },
+        {
+          "value": "BA",
+          "count": 2
+        },
+        {
+          "value": "UY",
+          "count": 2
+        },
+        {
+          "value": "SD",
+          "count": 2
+        },
+        {
+          "value": "OM",
+          "count": 2
+        },
+        {
+          "value": "MF",
+          "count": 1
+        },
+        {
+          "value": "MU",
+          "count": 1
+        },
+        {
+          "value": "CY",
+          "count": 1
+        },
+        {
+          "value": "ST",
+          "count": 1
+        },
+        {
+          "value": "EC",
+          "count": 1
+        },
+        {
+          "value": "KE",
+          "count": 1
+        },
+        {
+          "value": "GU",
+          "count": 1
+        },
+        {
+          "value": "ME",
+          "count": 1
+        },
+        {
+          "value": "BL",
+          "count": 1
+        },
+        {
+          "value": "AW",
+          "count": 1
+        },
+        {
+          "value": "IM",
+          "count": 1
+        },
+        {
+          "value": "AM",
+          "count": 1
+        },
+        {
+          "value": "NG",
+          "count": 1
+        },
+        {
+          "value": "CR",
+          "count": 1
+        },
+        {
+          "value": "MK",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "Douglas",
+        "LuxExperience",
+        "PVH"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=IT",
+      "finalUrl": "https://modecareers.com/api/jobs?pays=IT",
+      "status": 200,
+      "at": "2026-09-08T18:01:56.837814+00:00",
+      "sha256": "dd00dd9faf42481d8dd4c289b8e3479ddd99c831ec621644ab22682bf9584e79",
+      "total": 2312,
+      "expectedFromDatabase": 2312,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 9634
+        },
+        {
+          "value": "US",
+          "count": 30286
+        },
+        {
+          "value": "GB",
+          "count": 2826
+        },
+        {
+          "value": "DE",
+          "count": 2681
+        },
+        {
+          "value": "CA",
+          "count": 2630
+        },
+        {
+          "value": "IT",
+          "count": 2312
+        },
+        {
+          "value": "ES",
+          "count": 2022
+        },
+        {
+          "value": "NL",
+          "count": 1679
+        },
+        {
+          "value": "AU",
+          "count": 1162
+        },
+        {
+          "value": "CN",
+          "count": 1154
+        },
+        {
+          "value": "CH",
+          "count": 1061
+        },
+        {
+          "value": "BE",
+          "count": 575
+        },
+        {
+          "value": "JP",
+          "count": 517
+        },
+        {
+          "value": "IN",
+          "count": 513
+        },
+        {
+          "value": "KR",
+          "count": 496
+        },
+        {
+          "value": "PT",
+          "count": 433
+        },
+        {
+          "value": "MX",
+          "count": 404
+        },
+        {
+          "value": "SG",
+          "count": 388
+        },
+        {
+          "value": "DK",
+          "count": 352
+        },
+        {
+          "value": "HK",
+          "count": 334
+        },
+        {
+          "value": "PL",
+          "count": 322
+        },
+        {
+          "value": "AT",
+          "count": 305
+        },
+        {
+          "value": "SE",
+          "count": 305
+        },
+        {
+          "value": "TH",
+          "count": 263
+        },
+        {
+          "value": "TR",
+          "count": 254
+        },
+        {
+          "value": "IE",
+          "count": 251
+        },
+        {
+          "value": "MY",
+          "count": 247
+        },
+        {
+          "value": "AE",
+          "count": 232
+        },
+        {
+          "value": "BR",
+          "count": 217
+        },
+        {
+          "value": "NO",
+          "count": 196
+        },
+        {
+          "value": "CL",
+          "count": 179
+        },
+        {
+          "value": "GR",
+          "count": 169
+        },
+        {
+          "value": "TW",
+          "count": 163
+        },
+        {
+          "value": "ZA",
+          "count": 153
+        },
+        {
+          "value": "NZ",
+          "count": 138
+        },
+        {
+          "value": "VN",
+          "count": 130
+        },
+        {
+          "value": "CZ",
+          "count": 115
+        },
+        {
+          "value": "SA",
+          "count": 110
+        },
+        {
+          "value": "CO",
+          "count": 110
+        },
+        {
+          "value": "RO",
+          "count": 98
+        },
+        {
+          "value": "HU",
+          "count": 90
+        },
+        {
+          "value": "IL",
+          "count": 86
+        },
+        {
+          "value": "MO",
+          "count": 73
+        },
+        {
+          "value": "PR",
+          "count": 63
+        },
+        {
+          "value": "PE",
+          "count": 57
+        },
+        {
+          "value": "MA",
+          "count": 53
+        },
+        {
+          "value": "ID",
+          "count": 49
+        },
+        {
+          "value": "LU",
+          "count": 47
+        },
+        {
+          "value": "PH",
+          "count": 47
+        },
+        {
+          "value": "AR",
+          "count": 37
+        },
+        {
+          "value": "MC",
+          "count": 36
+        },
+        {
+          "value": "FI",
+          "count": 36
+        },
+        {
+          "value": "EG",
+          "count": 34
+        },
+        {
+          "value": "HR",
+          "count": 34
+        },
+        {
+          "value": "PA",
+          "count": 31
+        },
+        {
+          "value": "BG",
+          "count": 31
+        },
+        {
+          "value": "VA",
+          "count": 27
+        },
+        {
+          "value": "SK",
+          "count": 22
+        },
+        {
+          "value": "LT",
+          "count": 22
+        },
+        {
+          "value": "AZ",
+          "count": 20
+        },
+        {
+          "value": "KY",
+          "count": 20
+        },
+        {
+          "value": "GA",
+          "count": 20
+        },
+        {
+          "value": "TN",
+          "count": 18
+        },
+        {
+          "value": "BH",
+          "count": 15
+        },
+        {
+          "value": "SC",
+          "count": 15
+        },
+        {
+          "value": "NC",
+          "count": 14
+        },
+        {
+          "value": "AL",
+          "count": 12
+        },
+        {
+          "value": "MN",
+          "count": 12
+        },
+        {
+          "value": "MD",
+          "count": 12
+        },
+        {
+          "value": "QA",
+          "count": 10
+        },
+        {
+          "value": "SI",
+          "count": 9
+        },
+        {
+          "value": "UA",
+          "count": 8
+        },
+        {
+          "value": "PK",
+          "count": 8
+        },
+        {
+          "value": "KH",
+          "count": 8
+        },
+        {
+          "value": "RU",
+          "count": 7
+        },
+        {
+          "value": "RS",
+          "count": 6
+        },
+        {
+          "value": "NE",
+          "count": 6
+        },
+        {
+          "value": "VI",
+          "count": 6
+        },
+        {
+          "value": "LV",
+          "count": 6
+        },
+        {
+          "value": "GG",
+          "count": 6
+        },
+        {
+          "value": "KZ",
+          "count": 5
+        },
+        {
+          "value": "MV",
+          "count": 5
+        },
+        {
+          "value": "AD",
+          "count": 5
+        },
+        {
+          "value": "LS",
+          "count": 4
+        },
+        {
+          "value": "JO",
+          "count": 4
+        },
+        {
+          "value": "YU",
+          "count": 3
+        },
+        {
+          "value": "LA",
+          "count": 3
+        },
+        {
+          "value": "NH",
+          "count": 3
+        },
+        {
+          "value": "SZ",
+          "count": 3
+        },
+        {
+          "value": "JE",
+          "count": 3
+        },
+        {
+          "value": "BD",
+          "count": 3
+        },
+        {
+          "value": "XK",
+          "count": 3
+        },
+        {
+          "value": "LB",
+          "count": 3
+        },
+        {
+          "value": "BS",
+          "count": 2
+        },
+        {
+          "value": "GE",
+          "count": 2
+        },
+        {
+          "value": "EE",
+          "count": 2
+        },
+        {
+          "value": "KW",
+          "count": 2
+        },
+        {
+          "value": "NA",
+          "count": 2
+        },
+        {
+          "value": "MT",
+          "count": 2
+        },
+        {
+          "value": "DO",
+          "count": 2
+        },
+        {
+          "value": "BA",
+          "count": 2
+        },
+        {
+          "value": "UY",
+          "count": 2
+        },
+        {
+          "value": "SD",
+          "count": 2
+        },
+        {
+          "value": "OM",
+          "count": 2
+        },
+        {
+          "value": "MF",
+          "count": 1
+        },
+        {
+          "value": "MU",
+          "count": 1
+        },
+        {
+          "value": "CY",
+          "count": 1
+        },
+        {
+          "value": "ST",
+          "count": 1
+        },
+        {
+          "value": "EC",
+          "count": 1
+        },
+        {
+          "value": "KE",
+          "count": 1
+        },
+        {
+          "value": "GU",
+          "count": 1
+        },
+        {
+          "value": "ME",
+          "count": 1
+        },
+        {
+          "value": "BL",
+          "count": 1
+        },
+        {
+          "value": "AW",
+          "count": 1
+        },
+        {
+          "value": "IM",
+          "count": 1
+        },
+        {
+          "value": "AM",
+          "count": 1
+        },
+        {
+          "value": "NG",
+          "count": 1
+        },
+        {
+          "value": "CR",
+          "count": 1
+        },
+        {
+          "value": "MK",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "Boggi Milano",
+        "Chanel",
+        "H&M Group",
+        "JD Sports",
+        "Kiabi",
+        "LuxExperience",
+        "Marella",
+        "ONIVERSE",
+        "PVH",
+        "Pandora",
+        "Primark",
+        "Sephora",
+        "ba&sh"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=CA",
+      "finalUrl": "https://modecareers.com/api/jobs?pays=CA",
+      "status": 200,
+      "at": "2026-09-08T18:01:57.079524+00:00",
+      "sha256": "19784fbaf8c6b8a6bd0ea703c2e0c5b6ceff3351d6550d09dcf7ec025d35bf16",
+      "total": 2630,
+      "expectedFromDatabase": 2630,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 9634
+        },
+        {
+          "value": "US",
+          "count": 30286
+        },
+        {
+          "value": "GB",
+          "count": 2826
+        },
+        {
+          "value": "DE",
+          "count": 2681
+        },
+        {
+          "value": "CA",
+          "count": 2630
+        },
+        {
+          "value": "IT",
+          "count": 2312
+        },
+        {
+          "value": "ES",
+          "count": 2022
+        },
+        {
+          "value": "NL",
+          "count": 1679
+        },
+        {
+          "value": "AU",
+          "count": 1162
+        },
+        {
+          "value": "CN",
+          "count": 1154
+        },
+        {
+          "value": "CH",
+          "count": 1061
+        },
+        {
+          "value": "BE",
+          "count": 575
+        },
+        {
+          "value": "JP",
+          "count": 517
+        },
+        {
+          "value": "IN",
+          "count": 513
+        },
+        {
+          "value": "KR",
+          "count": 496
+        },
+        {
+          "value": "PT",
+          "count": 433
+        },
+        {
+          "value": "MX",
+          "count": 404
+        },
+        {
+          "value": "SG",
+          "count": 388
+        },
+        {
+          "value": "DK",
+          "count": 352
+        },
+        {
+          "value": "HK",
+          "count": 334
+        },
+        {
+          "value": "PL",
+          "count": 322
+        },
+        {
+          "value": "AT",
+          "count": 305
+        },
+        {
+          "value": "SE",
+          "count": 305
+        },
+        {
+          "value": "TH",
+          "count": 263
+        },
+        {
+          "value": "TR",
+          "count": 254
+        },
+        {
+          "value": "IE",
+          "count": 251
+        },
+        {
+          "value": "MY",
+          "count": 247
+        },
+        {
+          "value": "AE",
+          "count": 232
+        },
+        {
+          "value": "BR",
+          "count": 217
+        },
+        {
+          "value": "NO",
+          "count": 196
+        },
+        {
+          "value": "CL",
+          "count": 179
+        },
+        {
+          "value": "GR",
+          "count": 169
+        },
+        {
+          "value": "TW",
+          "count": 163
+        },
+        {
+          "value": "ZA",
+          "count": 153
+        },
+        {
+          "value": "NZ",
+          "count": 138
+        },
+        {
+          "value": "VN",
+          "count": 130
+        },
+        {
+          "value": "CZ",
+          "count": 115
+        },
+        {
+          "value": "SA",
+          "count": 110
+        },
+        {
+          "value": "CO",
+          "count": 110
+        },
+        {
+          "value": "RO",
+          "count": 98
+        },
+        {
+          "value": "HU",
+          "count": 90
+        },
+        {
+          "value": "IL",
+          "count": 86
+        },
+        {
+          "value": "MO",
+          "count": 73
+        },
+        {
+          "value": "PR",
+          "count": 63
+        },
+        {
+          "value": "PE",
+          "count": 57
+        },
+        {
+          "value": "MA",
+          "count": 53
+        },
+        {
+          "value": "ID",
+          "count": 49
+        },
+        {
+          "value": "LU",
+          "count": 47
+        },
+        {
+          "value": "PH",
+          "count": 47
+        },
+        {
+          "value": "AR",
+          "count": 37
+        },
+        {
+          "value": "MC",
+          "count": 36
+        },
+        {
+          "value": "FI",
+          "count": 36
+        },
+        {
+          "value": "EG",
+          "count": 34
+        },
+        {
+          "value": "HR",
+          "count": 34
+        },
+        {
+          "value": "PA",
+          "count": 31
+        },
+        {
+          "value": "BG",
+          "count": 31
+        },
+        {
+          "value": "VA",
+          "count": 27
+        },
+        {
+          "value": "SK",
+          "count": 22
+        },
+        {
+          "value": "LT",
+          "count": 22
+        },
+        {
+          "value": "AZ",
+          "count": 20
+        },
+        {
+          "value": "KY",
+          "count": 20
+        },
+        {
+          "value": "GA",
+          "count": 20
+        },
+        {
+          "value": "TN",
+          "count": 18
+        },
+        {
+          "value": "BH",
+          "count": 15
+        },
+        {
+          "value": "SC",
+          "count": 15
+        },
+        {
+          "value": "NC",
+          "count": 14
+        },
+        {
+          "value": "AL",
+          "count": 12
+        },
+        {
+          "value": "MN",
+          "count": 12
+        },
+        {
+          "value": "MD",
+          "count": 12
+        },
+        {
+          "value": "QA",
+          "count": 10
+        },
+        {
+          "value": "SI",
+          "count": 9
+        },
+        {
+          "value": "UA",
+          "count": 8
+        },
+        {
+          "value": "PK",
+          "count": 8
+        },
+        {
+          "value": "KH",
+          "count": 8
+        },
+        {
+          "value": "RU",
+          "count": 7
+        },
+        {
+          "value": "RS",
+          "count": 6
+        },
+        {
+          "value": "NE",
+          "count": 6
+        },
+        {
+          "value": "VI",
+          "count": 6
+        },
+        {
+          "value": "LV",
+          "count": 6
+        },
+        {
+          "value": "GG",
+          "count": 6
+        },
+        {
+          "value": "KZ",
+          "count": 5
+        },
+        {
+          "value": "MV",
+          "count": 5
+        },
+        {
+          "value": "AD",
+          "count": 5
+        },
+        {
+          "value": "LS",
+          "count": 4
+        },
+        {
+          "value": "JO",
+          "count": 4
+        },
+        {
+          "value": "YU",
+          "count": 3
+        },
+        {
+          "value": "LA",
+          "count": 3
+        },
+        {
+          "value": "NH",
+          "count": 3
+        },
+        {
+          "value": "SZ",
+          "count": 3
+        },
+        {
+          "value": "JE",
+          "count": 3
+        },
+        {
+          "value": "BD",
+          "count": 3
+        },
+        {
+          "value": "XK",
+          "count": 3
+        },
+        {
+          "value": "LB",
+          "count": 3
+        },
+        {
+          "value": "BS",
+          "count": 2
+        },
+        {
+          "value": "GE",
+          "count": 2
+        },
+        {
+          "value": "EE",
+          "count": 2
+        },
+        {
+          "value": "KW",
+          "count": 2
+        },
+        {
+          "value": "NA",
+          "count": 2
+        },
+        {
+          "value": "MT",
+          "count": 2
+        },
+        {
+          "value": "DO",
+          "count": 2
+        },
+        {
+          "value": "BA",
+          "count": 2
+        },
+        {
+          "value": "UY",
+          "count": 2
+        },
+        {
+          "value": "SD",
+          "count": 2
+        },
+        {
+          "value": "OM",
+          "count": 2
+        },
+        {
+          "value": "MF",
+          "count": 1
+        },
+        {
+          "value": "MU",
+          "count": 1
+        },
+        {
+          "value": "CY",
+          "count": 1
+        },
+        {
+          "value": "ST",
+          "count": 1
+        },
+        {
+          "value": "EC",
+          "count": 1
+        },
+        {
+          "value": "KE",
+          "count": 1
+        },
+        {
+          "value": "GU",
+          "count": 1
+        },
+        {
+          "value": "ME",
+          "count": 1
+        },
+        {
+          "value": "BL",
+          "count": 1
+        },
+        {
+          "value": "AW",
+          "count": 1
+        },
+        {
+          "value": "IM",
+          "count": 1
+        },
+        {
+          "value": "AM",
+          "count": 1
+        },
+        {
+          "value": "NG",
+          "count": 1
+        },
+        {
+          "value": "CR",
+          "count": 1
+        },
+        {
+          "value": "MK",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "MAC",
+        "Oak Essentials",
+        "Pandora",
+        "Penningtons"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=ES",
+      "finalUrl": "https://modecareers.com/api/jobs?pays=ES",
+      "status": 200,
+      "at": "2026-09-08T18:01:57.354217+00:00",
+      "sha256": "818090e3d7f49aebfb15c0f8628e1e6415e54420ba59ef26d19366b20f6e0c39",
+      "total": 2022,
+      "expectedFromDatabase": 2022,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 9634
+        },
+        {
+          "value": "US",
+          "count": 30286
+        },
+        {
+          "value": "GB",
+          "count": 2826
+        },
+        {
+          "value": "DE",
+          "count": 2681
+        },
+        {
+          "value": "CA",
+          "count": 2630
+        },
+        {
+          "value": "IT",
+          "count": 2312
+        },
+        {
+          "value": "ES",
+          "count": 2022
+        },
+        {
+          "value": "NL",
+          "count": 1679
+        },
+        {
+          "value": "AU",
+          "count": 1162
+        },
+        {
+          "value": "CN",
+          "count": 1154
+        },
+        {
+          "value": "CH",
+          "count": 1061
+        },
+        {
+          "value": "BE",
+          "count": 575
+        },
+        {
+          "value": "JP",
+          "count": 517
+        },
+        {
+          "value": "IN",
+          "count": 513
+        },
+        {
+          "value": "KR",
+          "count": 496
+        },
+        {
+          "value": "PT",
+          "count": 433
+        },
+        {
+          "value": "MX",
+          "count": 404
+        },
+        {
+          "value": "SG",
+          "count": 388
+        },
+        {
+          "value": "DK",
+          "count": 352
+        },
+        {
+          "value": "HK",
+          "count": 334
+        },
+        {
+          "value": "PL",
+          "count": 322
+        },
+        {
+          "value": "AT",
+          "count": 305
+        },
+        {
+          "value": "SE",
+          "count": 305
+        },
+        {
+          "value": "TH",
+          "count": 263
+        },
+        {
+          "value": "TR",
+          "count": 254
+        },
+        {
+          "value": "IE",
+          "count": 251
+        },
+        {
+          "value": "MY",
+          "count": 247
+        },
+        {
+          "value": "AE",
+          "count": 232
+        },
+        {
+          "value": "BR",
+          "count": 217
+        },
+        {
+          "value": "NO",
+          "count": 196
+        },
+        {
+          "value": "CL",
+          "count": 179
+        },
+        {
+          "value": "GR",
+          "count": 169
+        },
+        {
+          "value": "TW",
+          "count": 163
+        },
+        {
+          "value": "ZA",
+          "count": 153
+        },
+        {
+          "value": "NZ",
+          "count": 138
+        },
+        {
+          "value": "VN",
+          "count": 130
+        },
+        {
+          "value": "CZ",
+          "count": 115
+        },
+        {
+          "value": "SA",
+          "count": 110
+        },
+        {
+          "value": "CO",
+          "count": 110
+        },
+        {
+          "value": "RO",
+          "count": 98
+        },
+        {
+          "value": "HU",
+          "count": 90
+        },
+        {
+          "value": "IL",
+          "count": 86
+        },
+        {
+          "value": "MO",
+          "count": 73
+        },
+        {
+          "value": "PR",
+          "count": 63
+        },
+        {
+          "value": "PE",
+          "count": 57
+        },
+        {
+          "value": "MA",
+          "count": 53
+        },
+        {
+          "value": "ID",
+          "count": 49
+        },
+        {
+          "value": "LU",
+          "count": 47
+        },
+        {
+          "value": "PH",
+          "count": 47
+        },
+        {
+          "value": "AR",
+          "count": 37
+        },
+        {
+          "value": "MC",
+          "count": 36
+        },
+        {
+          "value": "FI",
+          "count": 36
+        },
+        {
+          "value": "EG",
+          "count": 34
+        },
+        {
+          "value": "HR",
+          "count": 34
+        },
+        {
+          "value": "PA",
+          "count": 31
+        },
+        {
+          "value": "BG",
+          "count": 31
+        },
+        {
+          "value": "VA",
+          "count": 27
+        },
+        {
+          "value": "SK",
+          "count": 22
+        },
+        {
+          "value": "LT",
+          "count": 22
+        },
+        {
+          "value": "AZ",
+          "count": 20
+        },
+        {
+          "value": "KY",
+          "count": 20
+        },
+        {
+          "value": "GA",
+          "count": 20
+        },
+        {
+          "value": "TN",
+          "count": 18
+        },
+        {
+          "value": "BH",
+          "count": 15
+        },
+        {
+          "value": "SC",
+          "count": 15
+        },
+        {
+          "value": "NC",
+          "count": 14
+        },
+        {
+          "value": "AL",
+          "count": 12
+        },
+        {
+          "value": "MN",
+          "count": 12
+        },
+        {
+          "value": "MD",
+          "count": 12
+        },
+        {
+          "value": "QA",
+          "count": 10
+        },
+        {
+          "value": "SI",
+          "count": 9
+        },
+        {
+          "value": "UA",
+          "count": 8
+        },
+        {
+          "value": "PK",
+          "count": 8
+        },
+        {
+          "value": "KH",
+          "count": 8
+        },
+        {
+          "value": "RU",
+          "count": 7
+        },
+        {
+          "value": "RS",
+          "count": 6
+        },
+        {
+          "value": "NE",
+          "count": 6
+        },
+        {
+          "value": "VI",
+          "count": 6
+        },
+        {
+          "value": "LV",
+          "count": 6
+        },
+        {
+          "value": "GG",
+          "count": 6
+        },
+        {
+          "value": "KZ",
+          "count": 5
+        },
+        {
+          "value": "MV",
+          "count": 5
+        },
+        {
+          "value": "AD",
+          "count": 5
+        },
+        {
+          "value": "LS",
+          "count": 4
+        },
+        {
+          "value": "JO",
+          "count": 4
+        },
+        {
+          "value": "YU",
+          "count": 3
+        },
+        {
+          "value": "LA",
+          "count": 3
+        },
+        {
+          "value": "NH",
+          "count": 3
+        },
+        {
+          "value": "SZ",
+          "count": 3
+        },
+        {
+          "value": "JE",
+          "count": 3
+        },
+        {
+          "value": "BD",
+          "count": 3
+        },
+        {
+          "value": "XK",
+          "count": 3
+        },
+        {
+          "value": "LB",
+          "count": 3
+        },
+        {
+          "value": "BS",
+          "count": 2
+        },
+        {
+          "value": "GE",
+          "count": 2
+        },
+        {
+          "value": "EE",
+          "count": 2
+        },
+        {
+          "value": "KW",
+          "count": 2
+        },
+        {
+          "value": "NA",
+          "count": 2
+        },
+        {
+          "value": "MT",
+          "count": 2
+        },
+        {
+          "value": "DO",
+          "count": 2
+        },
+        {
+          "value": "BA",
+          "count": 2
+        },
+        {
+          "value": "UY",
+          "count": 2
+        },
+        {
+          "value": "SD",
+          "count": 2
+        },
+        {
+          "value": "OM",
+          "count": 2
+        },
+        {
+          "value": "MF",
+          "count": 1
+        },
+        {
+          "value": "MU",
+          "count": 1
+        },
+        {
+          "value": "CY",
+          "count": 1
+        },
+        {
+          "value": "ST",
+          "count": 1
+        },
+        {
+          "value": "EC",
+          "count": 1
+        },
+        {
+          "value": "KE",
+          "count": 1
+        },
+        {
+          "value": "GU",
+          "count": 1
+        },
+        {
+          "value": "ME",
+          "count": 1
+        },
+        {
+          "value": "BL",
+          "count": 1
+        },
+        {
+          "value": "AW",
+          "count": 1
+        },
+        {
+          "value": "IM",
+          "count": 1
+        },
+        {
+          "value": "AM",
+          "count": 1
+        },
+        {
+          "value": "NG",
+          "count": 1
+        },
+        {
+          "value": "CR",
+          "count": 1
+        },
+        {
+          "value": "MK",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "Boggi Milano",
+        "H&M Group",
+        "LuxExperience",
+        "Pandora",
+        "Primark",
+        "Pronovias",
+        "ba&sh"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=AU",
+      "finalUrl": "https://modecareers.com/api/jobs?pays=AU",
+      "status": 200,
+      "at": "2026-09-08T18:01:57.643175+00:00",
+      "sha256": "11ba52a5f32a08da8c739ab8c5052fb18b8a512b2048a7e6e6c104c3e8025c26",
+      "total": 1162,
+      "expectedFromDatabase": 1162,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 9634
+        },
+        {
+          "value": "US",
+          "count": 30286
+        },
+        {
+          "value": "GB",
+          "count": 2826
+        },
+        {
+          "value": "DE",
+          "count": 2681
+        },
+        {
+          "value": "CA",
+          "count": 2630
+        },
+        {
+          "value": "IT",
+          "count": 2312
+        },
+        {
+          "value": "ES",
+          "count": 2022
+        },
+        {
+          "value": "NL",
+          "count": 1679
+        },
+        {
+          "value": "AU",
+          "count": 1162
+        },
+        {
+          "value": "CN",
+          "count": 1154
+        },
+        {
+          "value": "CH",
+          "count": 1061
+        },
+        {
+          "value": "BE",
+          "count": 575
+        },
+        {
+          "value": "JP",
+          "count": 517
+        },
+        {
+          "value": "IN",
+          "count": 513
+        },
+        {
+          "value": "KR",
+          "count": 496
+        },
+        {
+          "value": "PT",
+          "count": 433
+        },
+        {
+          "value": "MX",
+          "count": 404
+        },
+        {
+          "value": "SG",
+          "count": 388
+        },
+        {
+          "value": "DK",
+          "count": 352
+        },
+        {
+          "value": "HK",
+          "count": 334
+        },
+        {
+          "value": "PL",
+          "count": 322
+        },
+        {
+          "value": "AT",
+          "count": 305
+        },
+        {
+          "value": "SE",
+          "count": 305
+        },
+        {
+          "value": "TH",
+          "count": 263
+        },
+        {
+          "value": "TR",
+          "count": 254
+        },
+        {
+          "value": "IE",
+          "count": 251
+        },
+        {
+          "value": "MY",
+          "count": 247
+        },
+        {
+          "value": "AE",
+          "count": 232
+        },
+        {
+          "value": "BR",
+          "count": 217
+        },
+        {
+          "value": "NO",
+          "count": 196
+        },
+        {
+          "value": "CL",
+          "count": 179
+        },
+        {
+          "value": "GR",
+          "count": 169
+        },
+        {
+          "value": "TW",
+          "count": 163
+        },
+        {
+          "value": "ZA",
+          "count": 153
+        },
+        {
+          "value": "NZ",
+          "count": 138
+        },
+        {
+          "value": "VN",
+          "count": 130
+        },
+        {
+          "value": "CZ",
+          "count": 115
+        },
+        {
+          "value": "SA",
+          "count": 110
+        },
+        {
+          "value": "CO",
+          "count": 110
+        },
+        {
+          "value": "RO",
+          "count": 98
+        },
+        {
+          "value": "HU",
+          "count": 90
+        },
+        {
+          "value": "IL",
+          "count": 86
+        },
+        {
+          "value": "MO",
+          "count": 73
+        },
+        {
+          "value": "PR",
+          "count": 63
+        },
+        {
+          "value": "PE",
+          "count": 57
+        },
+        {
+          "value": "MA",
+          "count": 53
+        },
+        {
+          "value": "ID",
+          "count": 49
+        },
+        {
+          "value": "LU",
+          "count": 47
+        },
+        {
+          "value": "PH",
+          "count": 47
+        },
+        {
+          "value": "AR",
+          "count": 37
+        },
+        {
+          "value": "MC",
+          "count": 36
+        },
+        {
+          "value": "FI",
+          "count": 36
+        },
+        {
+          "value": "EG",
+          "count": 34
+        },
+        {
+          "value": "HR",
+          "count": 34
+        },
+        {
+          "value": "PA",
+          "count": 31
+        },
+        {
+          "value": "BG",
+          "count": 31
+        },
+        {
+          "value": "VA",
+          "count": 27
+        },
+        {
+          "value": "SK",
+          "count": 22
+        },
+        {
+          "value": "LT",
+          "count": 22
+        },
+        {
+          "value": "AZ",
+          "count": 20
+        },
+        {
+          "value": "KY",
+          "count": 20
+        },
+        {
+          "value": "GA",
+          "count": 20
+        },
+        {
+          "value": "TN",
+          "count": 18
+        },
+        {
+          "value": "BH",
+          "count": 15
+        },
+        {
+          "value": "SC",
+          "count": 15
+        },
+        {
+          "value": "NC",
+          "count": 14
+        },
+        {
+          "value": "AL",
+          "count": 12
+        },
+        {
+          "value": "MN",
+          "count": 12
+        },
+        {
+          "value": "MD",
+          "count": 12
+        },
+        {
+          "value": "QA",
+          "count": 10
+        },
+        {
+          "value": "SI",
+          "count": 9
+        },
+        {
+          "value": "UA",
+          "count": 8
+        },
+        {
+          "value": "PK",
+          "count": 8
+        },
+        {
+          "value": "KH",
+          "count": 8
+        },
+        {
+          "value": "RU",
+          "count": 7
+        },
+        {
+          "value": "RS",
+          "count": 6
+        },
+        {
+          "value": "NE",
+          "count": 6
+        },
+        {
+          "value": "VI",
+          "count": 6
+        },
+        {
+          "value": "LV",
+          "count": 6
+        },
+        {
+          "value": "GG",
+          "count": 6
+        },
+        {
+          "value": "KZ",
+          "count": 5
+        },
+        {
+          "value": "MV",
+          "count": 5
+        },
+        {
+          "value": "AD",
+          "count": 5
+        },
+        {
+          "value": "LS",
+          "count": 4
+        },
+        {
+          "value": "JO",
+          "count": 4
+        },
+        {
+          "value": "YU",
+          "count": 3
+        },
+        {
+          "value": "LA",
+          "count": 3
+        },
+        {
+          "value": "NH",
+          "count": 3
+        },
+        {
+          "value": "SZ",
+          "count": 3
+        },
+        {
+          "value": "JE",
+          "count": 3
+        },
+        {
+          "value": "BD",
+          "count": 3
+        },
+        {
+          "value": "XK",
+          "count": 3
+        },
+        {
+          "value": "LB",
+          "count": 3
+        },
+        {
+          "value": "BS",
+          "count": 2
+        },
+        {
+          "value": "GE",
+          "count": 2
+        },
+        {
+          "value": "EE",
+          "count": 2
+        },
+        {
+          "value": "KW",
+          "count": 2
+        },
+        {
+          "value": "NA",
+          "count": 2
+        },
+        {
+          "value": "MT",
+          "count": 2
+        },
+        {
+          "value": "DO",
+          "count": 2
+        },
+        {
+          "value": "BA",
+          "count": 2
+        },
+        {
+          "value": "UY",
+          "count": 2
+        },
+        {
+          "value": "SD",
+          "count": 2
+        },
+        {
+          "value": "OM",
+          "count": 2
+        },
+        {
+          "value": "MF",
+          "count": 1
+        },
+        {
+          "value": "MU",
+          "count": 1
+        },
+        {
+          "value": "CY",
+          "count": 1
+        },
+        {
+          "value": "ST",
+          "count": 1
+        },
+        {
+          "value": "EC",
+          "count": 1
+        },
+        {
+          "value": "KE",
+          "count": 1
+        },
+        {
+          "value": "GU",
+          "count": 1
+        },
+        {
+          "value": "ME",
+          "count": 1
+        },
+        {
+          "value": "BL",
+          "count": 1
+        },
+        {
+          "value": "AW",
+          "count": 1
+        },
+        {
+          "value": "IM",
+          "count": 1
+        },
+        {
+          "value": "AM",
+          "count": 1
+        },
+        {
+          "value": "NG",
+          "count": 1
+        },
+        {
+          "value": "CR",
+          "count": 1
+        },
+        {
+          "value": "MK",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "Burberry",
+        "PVH",
+        "Pandora",
+        "Sephora"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?source=sandro",
+      "finalUrl": "https://modecareers.com/api/jobs?source=sandro",
+      "status": 200,
+      "at": "2026-09-08T18:01:57.767661+00:00",
+      "sha256": "406a417f45110a16d8dc0774d85d2ecf1a95764f93dd235d353e98cf0ae7f64e",
+      "total": 557,
+      "expectedFromDatabase": 557,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 248
+        },
+        {
+          "value": "DE",
+          "count": 91
+        },
+        {
+          "value": "GB",
+          "count": 55
+        },
+        {
+          "value": "NL",
+          "count": 44
+        },
+        {
+          "value": "ES",
+          "count": 29
+        },
+        {
+          "value": "IT",
+          "count": 19
+        },
+        {
+          "value": "PT",
+          "count": 17
+        },
+        {
+          "value": "CH",
+          "count": 15
+        },
+        {
+          "value": "BE",
+          "count": 14
+        },
+        {
+          "value": "IE",
+          "count": 10
+        },
+        {
+          "value": "MC",
+          "count": 5
+        },
+        {
+          "value": "LU",
+          "count": 4
+        },
+        {
+          "value": "DK",
+          "count": 3
+        },
+        {
+          "value": "SE",
+          "count": 3
+        }
+      ],
+      "sampleEmployers": [
+        "Claudie Pierlot",
+        "Fursac",
+        "Maje",
+        "SMCP",
+        "Sandro"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?source=parfums-chanel",
+      "finalUrl": "https://modecareers.com/api/jobs?source=parfums-chanel",
+      "status": 200,
+      "at": "2026-09-08T18:01:57.889190+00:00",
+      "sha256": "0c42f8e5c3d2b5a4b1e68bf191fcd3715362b560f51ccb4d4e67a454ce96856e",
+      "total": 1117,
+      "expectedFromDatabase": 1117,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 430
+        },
+        {
+          "value": "US",
+          "count": 132
+        },
+        {
+          "value": "CN",
+          "count": 86
+        },
+        {
+          "value": "HK",
+          "count": 49
+        },
+        {
+          "value": "GB",
+          "count": 47
+        },
+        {
+          "value": "KR",
+          "count": 44
+        },
+        {
+          "value": "JP",
+          "count": 39
+        },
+        {
+          "value": "CH",
+          "count": 35
+        },
+        {
+          "value": "CA",
+          "count": 34
+        },
+        {
+          "value": "SG",
+          "count": 29
+        },
+        {
+          "value": "MX",
+          "count": 20
+        },
+        {
+          "value": "TW",
+          "count": 18
+        },
+        {
+          "value": "IT",
+          "count": 16
+        },
+        {
+          "value": "ES",
+          "count": 15
+        },
+        {
+          "value": "AE",
+          "count": 14
+        },
+        {
+          "value": "TH",
+          "count": 13
+        },
+        {
+          "value": "MO",
+          "count": 12
+        },
+        {
+          "value": "DE",
+          "count": 11
+        },
+        {
+          "value": "AU",
+          "count": 10
+        },
+        {
+          "value": "VN",
+          "count": 10
+        },
+        {
+          "value": "MY",
+          "count": 7
+        },
+        {
+          "value": "SE",
+          "count": 5
+        },
+        {
+          "value": "IE",
+          "count": 4
+        },
+        {
+          "value": "TR",
+          "count": 4
+        },
+        {
+          "value": "BR",
+          "count": 3
+        },
+        {
+          "value": "MC",
+          "count": 3
+        },
+        {
+          "value": "DK",
+          "count": 2
+        },
+        {
+          "value": "NL",
+          "count": 2
+        },
+        {
+          "value": "CZ",
+          "count": 1
+        },
+        {
+          "value": "AT",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "Chanel"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?source=l-oreal-professionnel",
+      "finalUrl": "https://modecareers.com/api/jobs?source=l-oreal-professionnel",
+      "status": 200,
+      "at": "2026-09-08T18:01:58.097838+00:00",
+      "sha256": "7d66844cfd46f1f2ff3a6d7e952c5eca8c85d0dafe833fdb485efd07d3bc5828",
+      "total": 1804,
+      "expectedFromDatabase": 1804,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 5
+        },
+        {
+          "value": "US",
+          "count": 302
+        },
+        {
+          "value": "CA",
+          "count": 72
+        },
+        {
+          "value": "MA",
+          "count": 21
+        },
+        {
+          "value": "SG",
+          "count": 20
+        },
+        {
+          "value": "IL",
+          "count": 17
+        },
+        {
+          "value": "KY",
+          "count": 15
+        },
+        {
+          "value": "PA",
+          "count": 15
+        },
+        {
+          "value": "AR",
+          "count": 13
+        },
+        {
+          "value": "TN",
+          "count": 12
+        },
+        {
+          "value": "CO",
+          "count": 12
+        },
+        {
+          "value": "VA",
+          "count": 9
+        },
+        {
+          "value": "IN",
+          "count": 9
+        },
+        {
+          "value": "AZ",
+          "count": 8
+        },
+        {
+          "value": "NC",
+          "count": 8
+        },
+        {
+          "value": "GA",
+          "count": 6
+        },
+        {
+          "value": "AL",
+          "count": 5
+        },
+        {
+          "value": "NE",
+          "count": 5
+        },
+        {
+          "value": "MN",
+          "count": 5
+        },
+        {
+          "value": "MD",
+          "count": 5
+        },
+        {
+          "value": "ID",
+          "count": 4
+        },
+        {
+          "value": "NH",
+          "count": 2
+        },
+        {
+          "value": "SD",
+          "count": 2
+        },
+        {
+          "value": "SC",
+          "count": 2
+        },
+        {
+          "value": "LA",
+          "count": 1
+        },
+        {
+          "value": "ME",
+          "count": 1
+        },
+        {
+          "value": "HK",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "L'Oréal"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?source=lovisa",
+      "finalUrl": "https://modecareers.com/api/jobs?source=lovisa",
+      "status": 200,
+      "at": "2026-09-08T18:01:58.201457+00:00",
+      "sha256": "ac22c297ad3f8ba75e55af89f838ebb7d34d8afc607f92b7c260b3838a33fbea",
+      "total": 841,
+      "expectedFromDatabase": 841,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 87
+        },
+        {
+          "value": "US",
+          "count": 366
+        },
+        {
+          "value": "AU",
+          "count": 86
+        },
+        {
+          "value": "CA",
+          "count": 86
+        },
+        {
+          "value": "DE",
+          "count": 60
+        },
+        {
+          "value": "GB",
+          "count": 38
+        },
+        {
+          "value": "MY",
+          "count": 25
+        },
+        {
+          "value": "PL",
+          "count": 21
+        },
+        {
+          "value": "NZ",
+          "count": 16
+        },
+        {
+          "value": "ZA",
+          "count": 9
+        },
+        {
+          "value": "NL",
+          "count": 8
+        },
+        {
+          "value": "IT",
+          "count": 7
+        },
+        {
+          "value": "SG",
+          "count": 5
+        },
+        {
+          "value": "ES",
+          "count": 4
+        },
+        {
+          "value": "HK",
+          "count": 4
+        },
+        {
+          "value": "PR",
+          "count": 4
+        },
+        {
+          "value": "IE",
+          "count": 3
+        },
+        {
+          "value": "AT",
+          "count": 2
+        },
+        {
+          "value": "HU",
+          "count": 2
+        },
+        {
+          "value": "BE",
+          "count": 2
+        },
+        {
+          "value": "CH",
+          "count": 2
+        },
+        {
+          "value": "LU",
+          "count": 2
+        },
+        {
+          "value": "NA",
+          "count": 1
+        },
+        {
+          "value": "RO",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "Lovisa"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?source=browns",
+      "finalUrl": "https://modecareers.com/api/jobs?source=browns",
+      "status": 200,
+      "at": "2026-09-08T18:01:58.324389+00:00",
+      "sha256": "1bda02e36f4d95bc903eca4fafbca4520a1ad7b8dbbfd9bb054625f2b539fc4b",
+      "total": 65,
+      "expectedFromDatabase": 65,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "PT",
+          "count": 45
+        },
+        {
+          "value": "GB",
+          "count": 11
+        },
+        {
+          "value": "US",
+          "count": 4
+        },
+        {
+          "value": "JP",
+          "count": 2
+        },
+        {
+          "value": "NL",
+          "count": 2
+        },
+        {
+          "value": "BR",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "Browns",
+        "Farfetch",
+        "Luxclusif",
+        "Stadium Goods"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?source=tiffany-oracle",
+      "finalUrl": "https://modecareers.com/api/jobs?source=tiffany-oracle",
+      "status": 200,
+      "at": "2026-09-08T18:01:58.437030+00:00",
+      "sha256": "46e19bc40da8bbf88e08513eaa0df637237b8a18839fb8a10df85b3e9439214b",
+      "total": 423,
+      "expectedFromDatabase": 423,
+      "delta": 0,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 10
+        },
+        {
+          "value": "US",
+          "count": 263
+        },
+        {
+          "value": "CA",
+          "count": 34
+        },
+        {
+          "value": "AU",
+          "count": 17
+        },
+        {
+          "value": "JP",
+          "count": 14
+        },
+        {
+          "value": "KR",
+          "count": 10
+        },
+        {
+          "value": "BR",
+          "count": 9
+        },
+        {
+          "value": "DE",
+          "count": 9
+        },
+        {
+          "value": "TH",
+          "count": 6
+        },
+        {
+          "value": "TR",
+          "count": 6
+        },
+        {
+          "value": "SG",
+          "count": 6
+        },
+        {
+          "value": "MX",
+          "count": 6
+        },
+        {
+          "value": "IT",
+          "count": 6
+        },
+        {
+          "value": "GB",
+          "count": 5
+        },
+        {
+          "value": "PH",
+          "count": 4
+        },
+        {
+          "value": "ES",
+          "count": 2
+        },
+        {
+          "value": "AE",
+          "count": 2
+        },
+        {
+          "value": "NL",
+          "count": 2
+        },
+        {
+          "value": "CN",
+          "count": 2
+        },
+        {
+          "value": "MY",
+          "count": 2
+        },
+        {
+          "value": "CL",
+          "count": 1
+        },
+        {
+          "value": "AT",
+          "count": 1
+        },
+        {
+          "value": "VN",
+          "count": 1
+        },
+        {
+          "value": "IE",
+          "count": 1
+        },
+        {
+          "value": "DO",
+          "count": 1
+        },
+        {
+          "value": "NZ",
+          "count": 1
+        },
+        {
+          "value": "HK",
+          "count": 1
+        },
+        {
+          "value": "CH",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "Tiffany & Co."
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Maje",
+      "finalUrl": "https://modecareers.com/api/jobs?maison=Maje",
+      "status": 200,
+      "at": "2026-09-08T18:01:58.549110+00:00",
+      "sha256": "06e12ea92a4589798f6e1ffde26554804583fee38b2b50111cb8d87ed2f01254",
+      "total": 148,
+      "sampleEmployers": [
+        "Maje"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Claudie+Pierlot",
+      "finalUrl": "https://modecareers.com/api/jobs?maison=Claudie+Pierlot",
+      "status": 200,
+      "at": "2026-09-08T18:01:58.649825+00:00",
+      "sha256": "60d3f3a69daaa1c8a6be3def9e73402010d7379ff4c1e9741d86b406cfe90f73",
+      "total": 69,
+      "sampleEmployers": [
+        "Claudie Pierlot"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Fursac",
+      "finalUrl": "https://modecareers.com/api/jobs?maison=Fursac",
+      "status": 200,
+      "at": "2026-09-08T18:01:58.749282+00:00",
+      "sha256": "528a819ece2129bfc6c23a37151504faeb72e26849c5e22ee195a3b70b7ee944",
+      "total": 35,
+      "sampleEmployers": [
+        "Fursac"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Sandro",
+      "finalUrl": "https://modecareers.com/api/jobs?maison=Sandro",
+      "status": 200,
+      "at": "2026-09-08T18:01:58.882677+00:00",
+      "sha256": "4091a5d61910fa6ecdae106a649497417bec9f3133652bf720d3bcc4351777d4",
+      "total": 102,
+      "sampleEmployers": [
+        "Sandro"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=SMCP",
+      "finalUrl": "https://modecareers.com/api/jobs?maison=SMCP",
+      "status": 200,
+      "at": "2026-09-08T18:01:58.981253+00:00",
+      "sha256": "e4f7ba7a5eb2e1949f90f3541aa9719751bb6e31107ce76b1bef5c40c383cab0",
+      "total": 203,
+      "sampleEmployers": [
+        "SMCP"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/health",
+      "finalUrl": "https://modecareers.com/api/health",
+      "status": 200,
+      "at": "2026-09-08T18:01:59.088714+00:00",
+      "sha256": "a29ee2b15c494311c52521766e44af56a3ad2248e7a8ab465e5206463c13d288",
+      "health": {
+        "status": "ok"
+      }
+    },
+    {
+      "url": "https://modecareers.com/",
+      "finalUrl": "https://modecareers.com/",
+      "status": 200,
+      "at": "2026-09-08T18:01:59.643441+00:00",
+      "sha256": "c1c6afe6b74e82f156b5e3276a0988495615e5b375d8134b8d2970df22114bc7"
+    },
+    {
+      "url": "https://modecareers.com/maisons",
+      "finalUrl": "https://modecareers.com/maisons",
+      "status": 404,
+      "at": "2026-09-08T18:01:59.759179+00:00",
+      "sha256": "a6fddf7f3b91f9db9c0206e26142620da08338f025edec1a5c05439c888f8b39"
+    },
+    {
+      "url": "https://modecareers.com/intelligence/pays/FR",
+      "finalUrl": "https://modecareers.com/intelligence/pays/FR",
+      "status": 200,
+      "at": "2026-09-08T18:02:00.073194+00:00",
+      "sha256": "4f98dc849702acd0ec34ddc956da9cdcfa0047bd81a881fcf00ec52575cdae37"
+    },
+    {
+      "url": "https://modecareers.com/offre/cmtrslaab1615pg5m8dosnymn",
+      "finalUrl": "https://modecareers.com/offre/cdd-client-advisor-portuguese-speaker-f-h-paris-cmtrslaab1615pg5m8dosnymn",
+      "status": 200,
+      "at": "2026-09-08T18:02:00.338756+00:00",
+      "sha256": "3f5369ca2f6a4ff58f42fc6c9a1d5e1b72496debf25b4e0668d42afc18e92996",
+      "jobPosting": [
+        {
+          "@type": "JobPosting",
+          "title": "CDD - Client Advisor Portuguese Speaker (F/H) - Paris",
+          "hiringOrganization": {
+            "@type": "Organization",
+            "name": "Tiffany & Co."
+          },
+          "jobLocation": {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "addressCountry": "FR"
+            }
+          },
+          "datePosted": "2026-09-07T12:10:16.000Z",
+          "url": "https://modecareers.com/offre/cdd-client-advisor-portuguese-speaker-f-h-paris-cmtrslaab1615pg5m8dosnymn"
+        }
+      ],
+      "expectedCountry": "FR"
+    },
+    {
+      "url": "https://modecareers.com/offre/cmtrsla9p1610pg5mo0wtb1id",
+      "finalUrl": "https://modecareers.com/offre/senior-client-advisor-full-time-gold-coast-cmtrsla9p1610pg5mo0wtb1id",
+      "status": 200,
+      "at": "2026-09-08T18:02:00.575233+00:00",
+      "sha256": "0771755d38bf985e87356ca7f3ed50c84d9f10141dd24be504a79ad8b9e8af08",
+      "jobPosting": [
+        {
+          "@type": "JobPosting",
+          "title": "Senior Client Advisor | Full-time | Gold Coast",
+          "hiringOrganization": {
+            "@type": "Organization",
+            "name": "Tiffany & Co."
+          },
+          "jobLocation": {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "addressCountry": "AU"
+            }
+          },
+          "datePosted": "2026-09-07T02:18:35.000Z",
+          "url": "https://modecareers.com/offre/senior-client-advisor-full-time-gold-coast-cmtrsla9p1610pg5mo0wtb1id"
+        }
+      ],
+      "expectedCountry": "AU"
+    }
+  ],
+  "countMismatches": [
+    {
+      "url": "https://modecareers.com/api/jobs?pays=GB",
+      "finalUrl": "https://modecareers.com/api/jobs?pays=GB",
+      "status": 200,
+      "at": "2026-09-08T18:01:56.315489+00:00",
+      "sha256": "a14728fbeced4165456f72635e16b04efbe2f4cf031024f1ffdcc41229ca5f34",
+      "total": 2826,
+      "expectedFromDatabase": 2806,
+      "delta": 20,
+      "totalInDatabase": 71263,
+      "returnedRows": 25,
+      "countriesFacet": [
+        {
+          "value": "FR",
+          "count": 9634
+        },
+        {
+          "value": "US",
+          "count": 30286
+        },
+        {
+          "value": "GB",
+          "count": 2826
+        },
+        {
+          "value": "DE",
+          "count": 2681
+        },
+        {
+          "value": "CA",
+          "count": 2630
+        },
+        {
+          "value": "IT",
+          "count": 2312
+        },
+        {
+          "value": "ES",
+          "count": 2022
+        },
+        {
+          "value": "NL",
+          "count": 1679
+        },
+        {
+          "value": "AU",
+          "count": 1162
+        },
+        {
+          "value": "CN",
+          "count": 1154
+        },
+        {
+          "value": "CH",
+          "count": 1061
+        },
+        {
+          "value": "BE",
+          "count": 575
+        },
+        {
+          "value": "JP",
+          "count": 517
+        },
+        {
+          "value": "IN",
+          "count": 513
+        },
+        {
+          "value": "KR",
+          "count": 496
+        },
+        {
+          "value": "PT",
+          "count": 433
+        },
+        {
+          "value": "MX",
+          "count": 404
+        },
+        {
+          "value": "SG",
+          "count": 388
+        },
+        {
+          "value": "DK",
+          "count": 352
+        },
+        {
+          "value": "HK",
+          "count": 334
+        },
+        {
+          "value": "PL",
+          "count": 322
+        },
+        {
+          "value": "AT",
+          "count": 305
+        },
+        {
+          "value": "SE",
+          "count": 305
+        },
+        {
+          "value": "TH",
+          "count": 263
+        },
+        {
+          "value": "TR",
+          "count": 254
+        },
+        {
+          "value": "IE",
+          "count": 251
+        },
+        {
+          "value": "MY",
+          "count": 247
+        },
+        {
+          "value": "AE",
+          "count": 232
+        },
+        {
+          "value": "BR",
+          "count": 217
+        },
+        {
+          "value": "NO",
+          "count": 196
+        },
+        {
+          "value": "CL",
+          "count": 179
+        },
+        {
+          "value": "GR",
+          "count": 169
+        },
+        {
+          "value": "TW",
+          "count": 163
+        },
+        {
+          "value": "ZA",
+          "count": 153
+        },
+        {
+          "value": "NZ",
+          "count": 138
+        },
+        {
+          "value": "VN",
+          "count": 130
+        },
+        {
+          "value": "CZ",
+          "count": 115
+        },
+        {
+          "value": "SA",
+          "count": 110
+        },
+        {
+          "value": "CO",
+          "count": 110
+        },
+        {
+          "value": "RO",
+          "count": 98
+        },
+        {
+          "value": "HU",
+          "count": 90
+        },
+        {
+          "value": "IL",
+          "count": 86
+        },
+        {
+          "value": "MO",
+          "count": 73
+        },
+        {
+          "value": "PR",
+          "count": 63
+        },
+        {
+          "value": "PE",
+          "count": 57
+        },
+        {
+          "value": "MA",
+          "count": 53
+        },
+        {
+          "value": "ID",
+          "count": 49
+        },
+        {
+          "value": "LU",
+          "count": 47
+        },
+        {
+          "value": "PH",
+          "count": 47
+        },
+        {
+          "value": "AR",
+          "count": 37
+        },
+        {
+          "value": "MC",
+          "count": 36
+        },
+        {
+          "value": "FI",
+          "count": 36
+        },
+        {
+          "value": "EG",
+          "count": 34
+        },
+        {
+          "value": "HR",
+          "count": 34
+        },
+        {
+          "value": "PA",
+          "count": 31
+        },
+        {
+          "value": "BG",
+          "count": 31
+        },
+        {
+          "value": "VA",
+          "count": 27
+        },
+        {
+          "value": "SK",
+          "count": 22
+        },
+        {
+          "value": "LT",
+          "count": 22
+        },
+        {
+          "value": "AZ",
+          "count": 20
+        },
+        {
+          "value": "KY",
+          "count": 20
+        },
+        {
+          "value": "GA",
+          "count": 20
+        },
+        {
+          "value": "TN",
+          "count": 18
+        },
+        {
+          "value": "BH",
+          "count": 15
+        },
+        {
+          "value": "SC",
+          "count": 15
+        },
+        {
+          "value": "NC",
+          "count": 14
+        },
+        {
+          "value": "AL",
+          "count": 12
+        },
+        {
+          "value": "MN",
+          "count": 12
+        },
+        {
+          "value": "MD",
+          "count": 12
+        },
+        {
+          "value": "QA",
+          "count": 10
+        },
+        {
+          "value": "SI",
+          "count": 9
+        },
+        {
+          "value": "UA",
+          "count": 8
+        },
+        {
+          "value": "PK",
+          "count": 8
+        },
+        {
+          "value": "KH",
+          "count": 8
+        },
+        {
+          "value": "RU",
+          "count": 7
+        },
+        {
+          "value": "RS",
+          "count": 6
+        },
+        {
+          "value": "NE",
+          "count": 6
+        },
+        {
+          "value": "VI",
+          "count": 6
+        },
+        {
+          "value": "LV",
+          "count": 6
+        },
+        {
+          "value": "GG",
+          "count": 6
+        },
+        {
+          "value": "KZ",
+          "count": 5
+        },
+        {
+          "value": "MV",
+          "count": 5
+        },
+        {
+          "value": "AD",
+          "count": 5
+        },
+        {
+          "value": "LS",
+          "count": 4
+        },
+        {
+          "value": "JO",
+          "count": 4
+        },
+        {
+          "value": "YU",
+          "count": 3
+        },
+        {
+          "value": "LA",
+          "count": 3
+        },
+        {
+          "value": "NH",
+          "count": 3
+        },
+        {
+          "value": "SZ",
+          "count": 3
+        },
+        {
+          "value": "JE",
+          "count": 3
+        },
+        {
+          "value": "BD",
+          "count": 3
+        },
+        {
+          "value": "XK",
+          "count": 3
+        },
+        {
+          "value": "LB",
+          "count": 3
+        },
+        {
+          "value": "BS",
+          "count": 2
+        },
+        {
+          "value": "GE",
+          "count": 2
+        },
+        {
+          "value": "EE",
+          "count": 2
+        },
+        {
+          "value": "KW",
+          "count": 2
+        },
+        {
+          "value": "NA",
+          "count": 2
+        },
+        {
+          "value": "MT",
+          "count": 2
+        },
+        {
+          "value": "DO",
+          "count": 2
+        },
+        {
+          "value": "BA",
+          "count": 2
+        },
+        {
+          "value": "UY",
+          "count": 2
+        },
+        {
+          "value": "SD",
+          "count": 2
+        },
+        {
+          "value": "OM",
+          "count": 2
+        },
+        {
+          "value": "MF",
+          "count": 1
+        },
+        {
+          "value": "MU",
+          "count": 1
+        },
+        {
+          "value": "CY",
+          "count": 1
+        },
+        {
+          "value": "ST",
+          "count": 1
+        },
+        {
+          "value": "EC",
+          "count": 1
+        },
+        {
+          "value": "KE",
+          "count": 1
+        },
+        {
+          "value": "GU",
+          "count": 1
+        },
+        {
+          "value": "ME",
+          "count": 1
+        },
+        {
+          "value": "BL",
+          "count": 1
+        },
+        {
+          "value": "AW",
+          "count": 1
+        },
+        {
+          "value": "IM",
+          "count": 1
+        },
+        {
+          "value": "AM",
+          "count": 1
+        },
+        {
+          "value": "NG",
+          "count": 1
+        },
+        {
+          "value": "CR",
+          "count": 1
+        },
+        {
+          "value": "MK",
+          "count": 1
+        }
+      ],
+      "sampleEmployers": [
+        "Jo Malone London",
+        "LuxExperience",
+        "Pandora",
+        "Primark",
+        "Rituals",
+        "ba&sh"
+      ]
+    }
+  ],
+  "httpFailures": [
+    {
+      "url": "https://modecareers.com/maisons",
+      "finalUrl": "https://modecareers.com/maisons",
+      "status": 404,
+      "at": "2026-09-08T18:01:59.759179+00:00",
+      "sha256": "a6fddf7f3b91f9db9c0206e26142620da08338f025edec1a5c05439c888f8b39"
+    }
+  ]
+}

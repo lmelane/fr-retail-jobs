@@ -1,0 +1,344 @@
+[
+  {
+    "subject": "Jacquemus",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.jacquemus.com/en_us/contact-us",
+    "statement": "Page officielle Jacquemus ; lien Career vers jobs.eu.lever.co/jacquemus observé. Validation technique non réalisée.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Saint James",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://fr.saint-james.com/pages/08-notre-equipe",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Armor-lux",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.armorlux.com/",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Aesop",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.aesop.com/",
+    "statement": "Site officiel de produits de soin, avec lien Careers ; aucune validation technique déduite.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Rouje",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.rouje.com/pages/marque-employeur",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Groupe NOVI",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://groupe-novi.com/nous-rejoindre/",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "L’Atelier du Sourcil",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://ievagroup.com/atelier-du-sourcil-boudoir-du-regard/",
+    "statement": "Identité et groupe confirmés par IEVA et atelierdusourcil.com/pages/notre-univers. La piste NOVI du premier inventaire est rejetée ; portail carrière à qualifier.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Messika",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.messika.com/en/house-messika",
+    "statement": "Présentation officielle de la Maison de joaillerie par sa fondatrice.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Bon Parfumeur",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.bonparfumeur.com/fr",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Essential Parfums",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://us.essentialparfums.com/",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Ex Nihilo",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.ex-nihilo-paris.com/fr/la-maison",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Maison Crivelli",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://maisoncrivelli.com/fr-fr/collections",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Lise Charmel",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.lisecharmel.com/lc_fr_fr/carrieres",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Inditex",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.inditexpeople.com/fr/fr",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Zara",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.inditexpeople.com/fr/fr",
+    "statement": "Acteur nommé explicitement sur le portail officiel Inditex People. Domaine propre et connecteur sont des validations distinctes.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Pull&Bear",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.inditexpeople.com/fr/fr",
+    "statement": "Acteur nommé explicitement sur le portail officiel Inditex People. Domaine propre et connecteur sont des validations distinctes.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Massimo Dutti",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.inditexpeople.com/fr/fr",
+    "statement": "Acteur nommé explicitement sur le portail officiel Inditex People. Domaine propre et connecteur sont des validations distinctes.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Bershka",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.inditexpeople.com/fr/fr",
+    "statement": "Acteur nommé explicitement sur le portail officiel Inditex People. Domaine propre et connecteur sont des validations distinctes.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Stradivarius",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.inditexpeople.com/fr/fr",
+    "statement": "Acteur nommé explicitement sur le portail officiel Inditex People. Domaine propre et connecteur sont des validations distinctes.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Oysho",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.inditexpeople.com/fr/fr",
+    "statement": "Acteur nommé explicitement sur le portail officiel Inditex People. Domaine propre et connecteur sont des validations distinctes.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Zara Home",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.inditexpeople.com/fr/fr",
+    "statement": "Acteur nommé explicitement sur le portail officiel Inditex People. Domaine propre et connecteur sont des validations distinctes.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Lefties",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.inditexpeople.com/fr/fr",
+    "statement": "Acteur nommé explicitement sur le portail officiel Inditex People. Domaine propre et connecteur sont des validations distinctes.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Tempe",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.inditexpeople.com/fr/fr",
+    "statement": "Acteur nommé explicitement sur le portail officiel Inditex People. Domaine propre et connecteur sont des validations distinctes.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "SMCP",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.smcp.com/fr/marques/",
+    "statement": "SMCP nomme explicitement ses quatre marques. L’absence de domaine propre renseigné ne remet pas en cause cette identité.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Maje",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.smcp.com/fr/marques/",
+    "statement": "SMCP nomme explicitement ses quatre marques. L’absence de domaine propre renseigné ne remet pas en cause cette identité.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Claudie Pierlot",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.smcp.com/fr/marques/",
+    "statement": "SMCP nomme explicitement ses quatre marques. L’absence de domaine propre renseigné ne remet pas en cause cette identité.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Fursac",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.smcp.com/fr/marques/",
+    "statement": "SMCP nomme explicitement ses quatre marques. L’absence de domaine propre renseigné ne remet pas en cause cette identité.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Patou",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.patou.com/fr/pages/hr-enquiries",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Fusalp",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://fusalp.com/",
+    "statement": "Collections ski et prêt-à-porter sur le site officiel. Cette pièce ne valide pas le connecteur carrière.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Akris",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://us.akris.com/pages/careers",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Paul Smith",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://reloved.paulsmith.com/pages/confidentiality",
+    "statement": "Page du domaine officiel identifiant Paul Smith Limited. Aucun ATS certifié par cette pièce.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Dries Van Noten",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.driesvannoten.com/en-eu/pages/career-open-positions",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Thom Browne",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.thombrowne.com/en-mo/pages/contact",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Grand Seiko",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.grand-seiko.com/fr-fr/support",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Harrods",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.harrods.com/en-gb/c/faqs/other",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "El Corte Inglés",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.elcorteingles.es/informacioncorporativa/es/contacto/",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Takashimaya",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.takashimaya.co.jp/corp/recruit/career/job/",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  },
+  {
+    "subject": "Isetan Mitsukoshi",
+    "decision": "DOCUMENTED",
+    "scope": "COMMERCIAL_IDENTITY_ONLY",
+    "proofUrl": "https://www.imhds.co.jp/recruit/index.html",
+    "statement": "Identité documentée ; validation du connecteur indépendante.",
+    "reviewDate": "2026-09-08",
+    "reviewer": "Codex — audit documentaire"
+  }
+]
