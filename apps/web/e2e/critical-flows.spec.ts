@@ -52,6 +52,13 @@ async function firstOfferId(page: import('@playwright/test').Page, baseURL: stri
 }
 
 test.describe('offer detail — the honest bridge (D18)', () => {
+  test('keeps an undated offer available without inventing a Google publication date', async ({ page }) => {
+    test.skip(!process.env.E2E_SEEDED, 'needs the known undated fixture');
+    const response = await page.goto('/offre/e2e-active-3');
+    expect(response?.status()).toBe(200);
+    await expect(page.getByRole('link', { name: /voir l.?offre/i })).toBeVisible();
+    await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(0);
+  });
   test('renders the two distinct CTAs, never a false transmission promise', async ({ page, baseURL }) => {
     await page.goto(`/offre/${await firstOfferId(page, baseURL)}`);
     // The Catwalks matching CTA (leads to inscription with UTM).

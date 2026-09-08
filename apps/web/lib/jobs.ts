@@ -181,7 +181,7 @@ export type JobRow = {
   countryCode: string | null;
   /** ISO-639-1 language of the posting text, when detected at ingest. */
   language: string | null;
-  /** First sighting — the honest datePosted fallback when the source ships none. */
+  /** Our first sighting, separate from the employer's publication date. */
   firstSeenAt: Date;
 };
 

@@ -1,0 +1,77 @@
+[
+  {
+    "sourceKey": "urbn-stores",
+    "url": "https://stores-na-urbn.icims.com/jobs/31176/anthropologie-seasonal-sales-associate/job?in_iframe=1",
+    "status": 200,
+    "bytes": 30649,
+    "dateSnippets": [
+      "sRegion\":\"MT\",\"postOfficeBoxNumber\":\"UNAVAILABLE\"},\"@type\":\"Place\"}],\"datePosted\":\"2026-08-26T04:00:00.000Z\",\"occupationalCategory\":\"Stores\"}</script>\n<script type=\"text/javascript\">\ntry {\ndocument.body.classNa"
+    ],
+    "sha256": "f59ddb752e5801f0d9375e6857f3c973cd6cb8c1d97f94eaccf9eca23805bb87"
+  },
+  {
+    "sourceKey": "adidas",
+    "url": "https://jobs.adidas-group.com/job/Lisbon-Sales-Associate-Loja-adidas-Est%C3%A1dio-da-Luz-Lisboa-PART-TIME-11/1426939833/",
+    "status": 200,
+    "bytes": 48756,
+    "dateSnippets": [],
+    "sha256": "f121b13544bc0d703978871a3848b0c15a70babe33d949c9a0ef676d4cd26a9b"
+  },
+  {
+    "sourceKey": "ralph-lauren-avature",
+    "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/JobDetailRetail?jobId=68611",
+    "status": 202,
+    "bytes": 0,
+    "dateSnippets": [],
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "sourceKey": "l-oreal-professionnel",
+    "url": "https://careers.loreal.com/en_US/jobs/JobDetail/Seasonal-Retail-Consultant-Aesop-Rockefeller-Center-Part-Time/254337",
+    "status": 200,
+    "bytes": 118947,
+    "dateSnippets": [
+      "obPosting\",\"title\":\"Seasonal Retail Consultant | Rockefeller Center\",\"datePosted\":\"2026-10-15\"}</script><script type='text/javascript'>\n    (function(o,l) {\n        window.oliviaChatData = window.oliviaChatData"
+    ],
+    "sha256": "4d9751f50e10a28f7b572c85cad52b4859f2b5b2d8381dff7a039ee0f2ca3035"
+  },
+  {
+    "sourceKey": "fenwick-volcanic",
+    "url": "https://www.careers.fenwick.co.uk/job/restaurant-manager-5980790",
+    "status": 200,
+    "bytes": 710035,
+    "dateSnippets": [
+      "ntifier\":{\"@type\":\"PropertyValue\",\"name\":\"Fenwick\",\"value\":\"013683\"},\"datePosted\":\"2026-07-29T15:30:19.826Z\",\"validThrough\":\"2026-09-30T22:59:00.000Z\",\"employmentType\":[],\"hiringOrganization\":{\"@type\":\"Organiza"
+    ],
+    "sha256": "b7c55e1a52647714fc993a4bfe1ddf6d281eb76085089cb90708d3a6e79a51c2"
+  },
+  {
+    "sourceKey": "aeropostale",
+    "url": "https://careers-aeropostale.icims.com/jobs/9271/wholesale-planner-%28full-price-channel%29/job?in_iframe=1",
+    "status": 200,
+    "bytes": 40434,
+    "dateSnippets": [
+      "sRegion\":\"NY\",\"postOfficeBoxNumber\":\"UNAVAILABLE\"},\"@type\":\"Place\"}],\"datePosted\":\"2026-08-12T04:00:00.000Z\",\"occupationalCategory\":\"Corporate Positions\"}</script>\n<script type=\"text/javascript\">\ntry {\ndocument",
+      "iv>\n<div class=\"iCIMS_JobHeaderTag\">\n<dt class=\"iCIMS_JobHeaderField\">Posted Date</dt>\n<dd class=\"iCIMS_JobHeaderData\"><span title=\"8/12/2026 3:01 PM\">\n4 weeks ago<span class=\"sr-only\">(8/12/2026 3:01 PM)</span>"
+    ],
+    "sha256": "991fe37708889d8bb84fac689b3f8ca65b3101b2bbd9e9f03bd9492901e56000"
+  },
+  {
+    "sourceKey": "zegna-altamira",
+    "url": "https://careers.zegnagroup.com/jobs/job-details?JobID=275081222&Team=231361273",
+    "status": 200,
+    "bytes": 95256,
+    "dateSnippets": [
+      "st successful family companies and a global luxury lifestyle brand.\",\"datePosted\" : \"2026-09-07T09:29:49+02:00\",\"hiringOrganization\": {\"@type\": \"Organization\",\"name\": \"EZ Service Srl\"},\"jobLocation\": {  \"@type\""
+    ],
+    "sha256": "5d043143e97202000385c154e82917b4e85b996bf844b68087c031a17913e73c"
+  },
+  {
+    "sourceKey": "brown-thomas-taleo",
+    "url": "https://lde.tbe.taleo.net/lde02/ats/careers/v2/viewRequisition?org=ARNOTTS&cws=73&rid=5715",
+    "status": 200,
+    "bytes": 52267,
+    "dateSnippets": [],
+    "sha256": "5987c0c91735c256374c1bbbfa4aec058f2a4399918dca0567f4bf31b697f0c1"
+  }
+]

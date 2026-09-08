@@ -8,8 +8,9 @@ import { offerPath } from './offer-url';
  *
  * Built from stored fields only — nothing invented, an absent field is
  * omitted. The parts Google Jobs actually gates on:
- *  - datePosted: postedAt when the source ships it, else firstSeenAt — the
- *    honest first sighting, made stable by D22 (no more churn);
+ *  - datePosted: the employer's original publication date. firstSeenAt is
+ *    our discovery date and cannot substitute for this required Google field.
+ *    Without a publication date the page remains available without JobPosting;
  *  - validThrough: the source's own expiry, omitted when unknown. Rendering
  *    the page does not establish a new application deadline;
  *  - employmentTerm: the schema.org enum, mapped from the normalized contract
@@ -62,8 +63,9 @@ export function schemaEmploymentTypes(
   return [...types];
 }
 
-export function jobPostingSchema(job: JobRow): Record<string, unknown> {
-  const datePosted = job.postedAt ?? job.firstSeenAt;
+export function jobPostingSchema(job: JobRow): Record<string, unknown> | null {
+  const datePosted = job.postedAt;
+  if (!datePosted || !Number.isFinite(datePosted.getTime())) return null;
   const employmentTypes = schemaEmploymentTypes(job.employmentTerm, job.workTime, job.programType, job.engagementType);
   const country = countryCode(job.countryCode);
 

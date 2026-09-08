@@ -1,0 +1,16 @@
+{
+  "at": "2026-09-08T20:36:33.410Z",
+  "cohortJobs": 4321,
+  "qualifiedJobs": 1914,
+  "conflictingJobs": 0,
+  "representationStatuses": {
+    "DATE_PROVEN": 1980,
+    "NO_DATE_IN_CHECKED_FORMATS": 159,
+    "REDIRECT_IDENTITY_REVIEW_REQUIRED": 17,
+    "SOURCE_DATE_INVALID_OR_FUTURE": 8,
+    "HOST_TRANSPORT_UNRESOLVED": 3064,
+    "FETCH_ERROR": 23,
+    "UNEXPECTED_HTTP_OR_EMPTY": 4
+  },
+  "status": "INTERMEDIATE_READ_ONLY_NOT_YET_REPAIRED"
+}
