@@ -4,6 +4,7 @@ import { classifySector, sectorForSource, type Sector } from '../normalize/secto
 import { findMaison } from '../normalize/maisons.js';
 import { resolveCompany } from '../normalize/company.js';
 import { countryFromLocation, normalizeCountry } from '../normalize/country.js';
+import { resolveGeography } from '../normalize/geography.js';
 import { cityFromLocation, displayCity } from '../normalize/location.js';
 import { isFranceJob } from '../lib/france.js';
 import { detectLanguage } from '../lib/language.js';
@@ -257,6 +258,9 @@ async function createJob(
   clusterKey: string,
   now: Date,
 ): Promise<UpsertResult> {
+  // Résolu UNE fois : la subdivision en dépend, et deux lectures divergentes du
+  // même candidat produiraient un pays et une subdivision incohérents.
+  const country = countryOf(candidate);
   const created = await prisma.job.create({
     data: {
         companyId,
@@ -276,12 +280,13 @@ async function createJob(
          * françaises. Normaliser ICI répare toutes les sources d'un coup, là où
          * un correctif par adaptateur en aurait laissé passer la moitié.
          */
-        country: countryOf(candidate),
+        country,
+        adminArea1: adminArea1Of(candidate, country),
         // Stored as a FLAG, never used as a discard: the site defaults to the
         // French view and can widen later. This line was missing — every job
         // sat at the schema default `false`, and a front end filtering on
         // isFrance:true would have shown an empty board over a full database.
-        isFrance: isFranceJob(countryOf(candidate) ?? candidate.country, candidate.location),
+        isFrance: isFranceJob(country ?? candidate.country, candidate.location),
         employmentTerm: candidate.employmentTerm,
         engagementType: candidate.engagementType,
         isSeasonal: candidate.isSeasonal,
@@ -365,16 +370,48 @@ async function createJob(
   return { jobId: created.id, outcome: 'CREATED', promoted: true };
 }
 
-/** Pays ISO du candidat : celui de la source, sinon celui que porte le lieu (audit A1 : 14 074 offres sans pays). */
+/**
+ * Pays ISO du candidat : celui de la source, sinon celui que porte le lieu
+ * (audit A1 : 14 074 offres sans pays).
+ *
+ * `resolveGeography` est consulté AVANT `countryFromLocation` parce qu'il porte
+ * la garde de collision : « Nashville, TN » y devient US/Tennessee, mais
+ * « Berlin, DE » reste allemande. `countryFromLocation`, qui lit les segments à
+ * l'envers sans cette garde, produisait 567 offres berlinoises au Delaware
+ * (audit du 2026-09-08).
+ */
 function countryOf(candidate: CandidateJob): string | undefined {
+  const geo = resolveGeography({
+    rawCountry: candidate.country,
+    location: candidate.location,
+    city: candidate.city,
+  });
   return (
     normalizeCountry(candidate.country) ??
+    geo.countryCode ??
     countryFromLocation(candidate.location) ??
     // Un lieu que les signaux français reconnaissent (code postal, département,
     // région) sans pays nommé est en France : 440 offres actives « Paris (75) »
     // portaient isFrance sans pays (audit I-1, 2026-09-06).
     (isFranceJob(undefined, candidate.location) ? 'FR' : undefined)
   );
+}
+
+/**
+ * La subdivision administrative, lue par la même chaîne que le pays.
+ *
+ * `legacyCountry` reçoit le pays que `countryOf` vient d'établir : sans lui,
+ * « Success, WA » (Western Australia) redeviendrait « Washington » à chaque
+ * ré-attestation, et le backfill et l'ingest divergeraient — l'invariant
+ * `ingest == replay` l'interdit.
+ */
+function adminArea1Of(candidate: CandidateJob, country: string | undefined): string | undefined {
+  return resolveGeography({
+    rawCountry: candidate.country,
+    location: candidate.location,
+    city: candidate.city,
+    legacyCountry: country,
+  }).adminArea1;
 }
 
 /** Ville affichable — jamais un pays ou un code pays (« Ch », « Germany » : ~800 « villes », audit A1). */
@@ -400,6 +437,7 @@ type ExistingJob = {
   location: string | null;
   city: string | null;
   country: string | null;
+  adminArea1: string | null;
   postedAt: Date | null;
   validThrough: Date | null;
   language: string | null;
@@ -436,7 +474,7 @@ type ExistingJob = {
  */
 type Reattestable = Pick<
   ExistingJob,
-  | 'title' | 'description' | 'location' | 'city' | 'country' | 'isFrance' | 'postedAt' | 'validThrough'
+  | 'title' | 'description' | 'location' | 'city' | 'country' | 'adminArea1' | 'isFrance' | 'postedAt' | 'validThrough'
   | 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType' | 'isSeasonal' | 'workplaceType' | 'salaryMin' | 'salaryMax' | 'salaryCurrency' | 'salaryPeriod'
 >;
 
@@ -465,6 +503,20 @@ export function reattestationFields(
   if (country) {
     const isFrance = isFranceJob(country, candidate.location);
     if (isFrance !== existing.isFrance) out.isFrance = isFrance;
+  }
+  /**
+   * `adminArea1` est DÉRIVÉ, comme le pays — il n'existe pas sur le candidat.
+   * Il doit pouvoir être POSÉ **et EFFACÉ** : une offre australienne étiquetée
+   * « Washington » par l'ancienne chaîne (703 cas mesurés le 2026-09-08) ne se
+   * répare que si la ré-attestation sait écrire `null`. Sans ce chemin, chaque
+   * correctif de géographie n'existerait qu'en backfill — donc temporaire.
+   *
+   * On n'efface QUE lorsque le candidat porte un lieu : une source qui n'en
+   * publie pas ne doit pas détruire ce qu'une autre a établi.
+   */
+  const admin = adminArea1Of(candidate, country);
+  if (admin !== (existing.adminArea1 ?? undefined) && (admin || candidate.location)) {
+    out.adminArea1 = admin ?? null;
   }
   const city = cityOf(candidate);
   if (city && city !== existing.city) out.city = city;

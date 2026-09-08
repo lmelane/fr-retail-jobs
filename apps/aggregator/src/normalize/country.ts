@@ -86,6 +86,23 @@ const LABEL_TO_ISO: Record<string, string> = {
  * blanche partielle : 208 offres en Lettonie, Serbie, Kosovo… étaient rejetées
  * comme « pas un pays » (audit A1, 2026-09-06).
  */
+/**
+ * Les codes qu'Intl expose mais qui ne sont PAS des pays ISO 3166-1 en vigueur :
+ * codes « exceptionnellement réservés » (`UK`, `FX`, `EA`, `IC`, `AC`, `CP`,
+ * `DG`, `TA`) et pays DISPARUS (`NH` Nouvelles-Hébrides, `SU` URSS, `YU`
+ * Yougoslavie, `DD` RDA, `AN` Antilles néerlandaises, `ZR` Zaïre, `BU`, `CS`,
+ * `DY`, `HV`, `RH`, `TP`, `VD`, `YD`, `PZ`, `NQ`, `WK`, `JT`, `MI`, `CT`).
+ *
+ * Les garder revient à accepter comme pays des codes qui sont, dans nos données,
+ * des SUBDIVISIONS : mesuré le 2026-09-08 — 20 offres sous « UK » (le code
+ * valide est `GB`, et la table de libellés le disait déjà) et 3 offres à Salem
+ * et Lebanon sous « NH », qui sont dans le New Hampshire américain.
+ */
+const NON_ISO_CODES = new Set([
+  'UK', 'FX', 'EA', 'IC', 'AC', 'CP', 'DG', 'TA',
+  'NH', 'SU', 'YU', 'DD', 'AN', 'ZR', 'BU', 'CS', 'DY', 'HV', 'RH', 'TP', 'VD', 'YD',
+]);
+
 const ISO_CODES = new Set([
   // Régions Intl qui ne sont pas des pays (EU, UN, ZZ…) retirées.
   ...Object.values(LABEL_TO_ISO),
@@ -103,7 +120,7 @@ const ISO_CODES = new Set([
   'SL','SM','SN','SO','SR','SS','ST','SU','SV','SX','SY','SZ','TA','TC','TD','TF','TG','TH','TJ','TK',
   'TL','TM','TN','TO','TP','TR','TT','TV','TW','TZ','UA','UG','UK','UM','US','UY','UZ','VA','VC',
   'VD','VE','VG','VI','VN','VU','WF','WS','XK','YD','YE','YT','YU','ZA','ZM','ZR','ZW',
-]);
+].filter((code) => !NON_ISO_CODES.has(code)));
 
 /**
  * Le code ISO-2 d'un pays écrit dans n'importe quelle langue ou casse.
@@ -135,7 +152,14 @@ export function normalizeCountry(raw?: string | null): string | undefined {
   // Déjà un code ISO-2, quelle que soit la casse.
   if (/^[a-z]{2}$/i.test(text)) {
     const code = text.toUpperCase();
-    return ISO_CODES.has(code) ? code : undefined;
+    if (ISO_CODES.has(code)) return code;
+    /**
+     * Un code non ISO peut tout de même DÉSIGNER un pays : « UK » est le
+     * Royaume-Uni dans l'usage courant, et la table des libellés le sait. On la
+     * consulte avant de renoncer — sinon `UK` et `GB` deviennent deux clés.
+     * Un code disparu (`NH`, `SU`) n'y figure pas et reste refusé.
+     */
+    return LABEL_TO_ISO[text.toLowerCase()];
   }
 
   const key = text.toLowerCase().replace(/\s+/g, ' ');

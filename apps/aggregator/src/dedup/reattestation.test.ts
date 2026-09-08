@@ -3,7 +3,7 @@ import { reattestationFields } from './upsert.js';
 import type { CandidateJob } from './match.js';
 
 const base = { sourceKey: 'hermes', sourceTier: 'EMPLOYER_DIRECT', externalId: 'H1', company: 'Hermès', url: 'https://x/1', raw: {} } as CandidateJob;
-const existing = { title: 'Apply Now', description: 'court', location: null, city: null, country: 'France', isFrance: false, postedAt: null, validThrough: null, language: null, employmentTerm: null, workTime: null, programType: null, engagementType: null, isSeasonal: null, workplaceType: null, salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null };
+const existing = { title: 'Apply Now', description: 'court', location: null, city: null, country: 'France', adminArea1: null, isFrance: false, postedAt: null, validThrough: null, language: null, employmentTerm: null, workTime: null, programType: null, engagementType: null, isSeasonal: null, workplaceType: null, salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null };
 
 /**
  * Mesuré en prod le 2026-09-06 : après le premier run avec les normalisations
@@ -21,7 +21,7 @@ describe('reattestationFields', () => {
   });
 
   it('n’efface jamais un pays ou une ville que le candidat ne porte pas', () => {
-    const out = reattestationFields({ ...base, title: 'Vendeur' }, { ...existing, country: 'FR', city: 'Paris' }, false);
+    const out = reattestationFields({ ...base, title: 'Vendeur' }, { ...existing, country: 'FR', adminArea1: null, city: 'Paris' }, false);
     expect(out).toEqual({});
   });
 
@@ -39,6 +39,40 @@ describe('reattestationFields', () => {
     const out = reattestationFields({ ...base, sourceKey: 'fashionjobs', title: 'Sales Advisor', description: 'x'.repeat(500) }, existing, false);
     expect(out.title).toBeUndefined();
     expect(out.description).toBeUndefined();
+  });
+
+  /**
+   * `adminArea1` est DÉRIVÉ du lieu, jamais recopié du candidat — il n'existe
+   * pas sur `CandidateJob`. Sans ce chemin, une offre déjà en base ne verrait
+   * jamais sa subdivision arriver ni se corriger : mesuré le 2026-09-08, les
+   * 703 subdivisions fausses ne pouvaient être réparées que hors ligne.
+   */
+  it('dérive la subdivision depuis le lieu à la ré-attestation', () => {
+    const out = reattestationFields({ ...base, title: 'Vendeur', location: 'Columbus, Ohio' }, existing, false);
+    expect(out.adminArea1).toBe('Ohio');
+    expect(out.country).toBe('US');
+  });
+
+  /**
+   * Et il doit aussi savoir EFFACER : une offre australienne étiquetée
+   * « Washington » par l'ancienne chaîne doit repasser à null, pas rester.
+   */
+  it('efface une subdivision que la chaîne ne reconnaît plus', () => {
+    const out = reattestationFields(
+      { ...base, title: 'Vendeur', country: 'Australia', location: 'Success, WA' },
+      { ...existing, country: 'AU', adminArea1: 'Washington' },
+      false,
+    );
+    expect(out.adminArea1).toBeNull();
+  });
+
+  it('ne touche pas une subdivision déjà correcte', () => {
+    const out = reattestationFields(
+      { ...base, title: 'Vendeur', location: 'Columbus, Ohio' },
+      { ...existing, country: 'US', city: 'Columbus', location: 'Columbus, Ohio', adminArea1: 'Ohio' },
+      false,
+    );
+    expect(out.adminArea1).toBeUndefined();
   });
 
   it('une description plus courte ne remplace pas la plus riche', () => {

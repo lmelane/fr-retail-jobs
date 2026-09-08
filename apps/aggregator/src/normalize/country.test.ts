@@ -38,6 +38,32 @@ describe('normalizeCountry', () => {
     expect(normalizeCountry('Coree, Republique de')).toBe('KR');
   });
 
+  /**
+   * MESURÉ EN PROD (2026-09-08) : 20 offres stockées sous le pays « UK ».
+   * `UK` n'est PAS un code ISO 3166-1 — c'est un code « exceptionnellement
+   * réservé » qu'Intl expose, et la liste ISO l'acceptait tel quel, court-
+   * circuitant la table de libellés qui le mappe pourtant sur `GB`.
+   * Deux codes pour un seul pays = un filtre Pays qui ment.
+   */
+  it('« UK » est le Royaume-Uni, donc GB', () => {
+    expect(normalizeCountry('UK')).toBe('GB');
+    expect(normalizeCountry('uk')).toBe('GB');
+    expect(normalizeCountry('GB')).toBe('GB');
+  });
+
+  /**
+   * `NH` = Nouvelles-Hébrides, pays DISPARU en 1980 (devenu Vanuatu). Intl le
+   * connaît encore ; aucune offre de 2026 n'y est publiée. Mesuré : 3 offres
+   * à Salem et Lebanon, dans le New Hampshire américain.
+   */
+  it('refuse les codes de pays disparus', () => {
+    expect(normalizeCountry('NH')).toBeUndefined();
+    expect(normalizeCountry('SU')).toBeUndefined();
+    expect(normalizeCountry('YU')).toBeUndefined();
+    expect(normalizeCountry('DD')).toBeUndefined();
+    expect(normalizeCountry('AN')).toBeUndefined();
+  });
+
   it('préfère undefined à un pays douteux', () => {
     expect(normalizeCountry('undefined')).toBeUndefined();
     expect(normalizeCountry('')).toBeUndefined();

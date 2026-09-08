@@ -267,8 +267,30 @@ model Job {
   // never coordinates, so these are resolved via the French government's
   // Adresse API (api-adresse.data.gouv.fr — free, no key, 50 req/s/IP).
   city          String?
+  /**
+   * La première subdivision administrative du pays : California, Île-de-France,
+   * Ontario, Tokyo. Modèle mondial validé le 2026-09-08.
+   *
+   * PAS de colonne `continent` : « Europe », « Asia Pacific » (le champ
+   * `geographicArea` de certaines sources) sont des macro-régions BUSINESS,
+   * dérivables du pays le jour où le besoin existe. Les mettre ici mélangerait
+   * deux niveaux conceptuels.
+   */
+  adminArea1    String?
+  /**
+   * Le second niveau (comté, département). Nullable et VOLONTAIREMENT vide :
+   * aucune source du catalogue ne le fournit aujourd'hui, et on ne remplit pas
+   * artificiellement une colonne pour la justifier.
+   */
+  adminArea2    String?
   postalCode    String?
-  /** INSEE commune code: a stable join key, unlike a city name. */
+  /**
+   * Code commune INSEE — identifiant national français, conservé parce qu'il
+   * est une clé de jointure stable (contrairement à un nom de ville), mais qui
+   * n'est PAS une primitive mondiale : 2 750 des 2 770 offres qui le portent
+   * sont françaises. Les futurs identifiants nationaux le rejoindront dans une
+   * structure `locationIdentifiers` plutôt qu'en ajoutant une colonne par pays.
+   */
   inseeCode     String?
   latitude      Float?
   longitude     Float?
