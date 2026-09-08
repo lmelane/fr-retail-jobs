@@ -149,3 +149,26 @@ describe('detectFromHtml — plusieurs ATS liés depuis une même page', () => {
     expect(d?.config.site).toBe('nke');
   });
 });
+
+import { careersLinksInHtml } from './detect.js';
+
+describe('official homepage career discovery', () => {
+  it('retains external recruitment links and excludes shop promotions', () => {
+    const html = '<a href="/offres">Nos offres</a><a href="/newsletter">Rejoindre la newsletter</a>' +
+      '<a href="https://adopt.flatchr.io/fr/company/adopt">Nous rejoindre</a>';
+    expect(careersLinksInHtml(html, 'https://www.adopt.com/fr/'))
+      .toEqual(['https://adopt.flatchr.io/fr/company/adopt']);
+    expect(detectFromHtml(html, 'https://www.adopt.com/fr/')).toMatchObject({
+      type: 'FLATCHR', config: { listingUrl: 'https://adopt.flatchr.io/fr/company/adopt/' },
+    });
+    expect(Object.values(KIND_TO_ATS)).toContain('FLATCHR');
+  });
+  it('never mistakes an arbitrary Flatchr script for an ingestible employer board', () => {
+    expect(detectFromHtml('<script src="https://api.flatchr.io/widget.js"></script>', 'https://brand.com/')).toBeNull();
+  });
+});
+
+it('reads root-hosted Flatchr board identity from payload, not the domain slug', () => {
+  const html = '<script id="__NEXT_DATA__">'+JSON.stringify({page:'/company/[companySlug]',query:{companySlug:'toscane'},props:{baseUrlPath:'/fr/company'}})+'</script>';
+  expect(detectFromHtml(html,'https://toscane.flatchr.io/')).toMatchObject({type:'FLATCHR',config:{listingUrl:'https://toscane.flatchr.io/fr/company/toscane/'}});
+});

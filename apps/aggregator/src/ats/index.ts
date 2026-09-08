@@ -1,3 +1,4 @@
+import { fetchFlatchrJobs } from './adapters/flatchr.js';
 import type { AtsType } from '@prisma/client';
 import type { AdapterResult, NormalizedJob } from '../types.js';
 import { fetchGreenhouseJobs } from './adapters/greenhouse.js';
@@ -118,6 +119,7 @@ export const ADAPTERS: Record<string, (config: Record<string, unknown>) => Promi
   JIBE: fetchJibeJobs,
   VOLCANIC: fetchVolcanicJobs,
   SWATCH_GROUP: fetchSwatchGroupJobs,
+  FLATCHR: fetchFlatchrJobs,
 };
 
 export const SUPPORTED_ATS_TYPES = Object.keys(ADAPTERS);

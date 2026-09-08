@@ -36,7 +36,7 @@ export function assertIdentityReview(source: IdentitySource, review: SourceIdent
   const proof = new URL(review.proofUrl); const portal = new URL(review.portalUrl);
   const domain = review.officialDomain.toLowerCase();
   if (!/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(domain) || proof.protocol !== 'https:' || portal.protocol !== 'https:' || proof.username || proof.password || portal.username || portal.password) throw new Error('promote: invalid official identity evidence URLs');
-  const vendorDomains = ['greenhouse.io', 'lever.co', 'smartrecruiters.com', 'teamtailor.com', 'myworkdayjobs.com', 'oraclecloud.com', 'recruitee.com', 'personio.de', 'personio.com', 'workable.com', 'welcometothejungle.com'];
+  const vendorDomains = ['flatchr.io', 'werecruit.io', 'greenhouse.io', 'lever.co', 'smartrecruiters.com', 'teamtailor.com', 'myworkdayjobs.com', 'oraclecloud.com', 'recruitee.com', 'personio.de', 'personio.com', 'workable.com', 'welcometothejungle.com'];
   if (parse(domain).domain !== domain || vendorDomains.includes(domain)) throw new Error('promote: an ATS vendor or public suffix is not the reviewed official employer domain');
   if (proof.hostname !== domain && !proof.hostname.endsWith(`.${domain}`)) throw new Error('promote: evidence page must belong to the reviewed official domain');
 }

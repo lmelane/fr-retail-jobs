@@ -252,6 +252,7 @@ export const KIND_TO_ATS: Record<string, string> = {
   // Aéropostale (17) ACTIVE n'ont jamais tourné, sans aucun signal (audit A2, 2026-09-06).
   icims: 'ICIMS',
   swatchgroup: 'SWATCH_GROUP',
+  flatchr: 'FLATCHR',
 };
 
 /**
