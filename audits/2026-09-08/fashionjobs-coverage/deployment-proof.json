@@ -1,0 +1,50 @@
+{
+  "at": "2026-09-08T18:59:13.715770+00:00",
+  "rows": [
+    {
+      "service": "Postgres",
+      "status": "SUCCESS",
+      "deployment": "0391dd34-5466-4691-91e6-f3e059c3aed7",
+      "commit": null,
+      "buildOnly": null,
+      "cron": null,
+      "nextCronRunAt": null
+    },
+    {
+      "service": "catwalks-reconcile",
+      "status": "SUCCESS",
+      "deployment": "7cbd8cfb-4086-4658-979b-8efc1835bcbb",
+      "commit": "7990e14e82a0698ac76149cdba9c9a47b883daa1",
+      "buildOnly": true,
+      "cron": "0 3 * * 1",
+      "nextCronRunAt": "2026-09-14T03:00:00Z"
+    },
+    {
+      "service": "catwalks-web",
+      "status": "SUCCESS",
+      "deployment": "c2675af2-e653-42d9-989f-2e35a64c5f37",
+      "commit": "758cd7518a5fedbf388b61b9b47eb3f11ea06be2",
+      "buildOnly": false,
+      "cron": null,
+      "nextCronRunAt": null
+    },
+    {
+      "service": "catwalks-aggregator",
+      "status": "SUCCESS",
+      "deployment": "0c0be04a-8216-488d-b545-7105318adf7f",
+      "commit": "7990e14e82a0698ac76149cdba9c9a47b883daa1",
+      "buildOnly": true,
+      "cron": "0 22 * * *",
+      "nextCronRunAt": "2026-09-08T22:00:00Z"
+    },
+    {
+      "service": "catwalks-refresh",
+      "status": "SUCCESS",
+      "deployment": "987e7580-6401-4d4b-b4e8-005eedfba715",
+      "commit": "7990e14e82a0698ac76149cdba9c9a47b883daa1",
+      "buildOnly": true,
+      "cron": "0 2 * * *",
+      "nextCronRunAt": "2026-09-09T02:00:00Z"
+    }
+  ]
+}

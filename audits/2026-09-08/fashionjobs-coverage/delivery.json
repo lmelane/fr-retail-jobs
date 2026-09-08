@@ -1,9 +1,13 @@
 {
   "applicationFix": {
     "finding": "FashionJobs directory MAISON 1-2-3 counter concatenation",
-    "commit": null,
-    "mainMerge": null,
-    "deployed": false
+    "commit": "27c037f68fd44c32c9867159c16d671aeffd185e",
+    "mainMerge": "7990e14e82a0698ac76149cdba9c9a47b883daa1",
+    "deployed": true,
+    "deploymentScope": "Three worker images SUCCESS, buildOnly; normal scheduled execution. Web application unchanged.",
+    "productionParserExecution": false,
+    "realDirectoryReplay": true,
+    "pullRequest": "https://github.com/lmelane/fr-retail-jobs/pull/22"
   },
   "sourcePause": {
     "productionApplied": true,
@@ -14,7 +18,15 @@
   "validation": {
     "unitTestsPassed": 1362,
     "typecheck": "PASS",
-    "ci": "PENDING",
-    "inventoryRows": 749
-  }
+    "ci": "SUCCESS",
+    "inventoryRows": 749,
+    "ciUrl": "https://github.com/lmelane/fr-retail-jobs/actions/runs/34265721692",
+    "testedHead": "953288e44d215bd5707299463fcddddca9ea502d",
+    "testedTreeEqualsMergedMain": true,
+    "integrationTestsPassed": 196,
+    "webTestsPassed": 102,
+    "webTestsSkipped": 2,
+    "e2eTestsPassed": 16
+  },
+  "observedAt": "2026-09-08T18:59:13.722122+00:00"
 }
