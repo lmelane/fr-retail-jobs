@@ -16,6 +16,11 @@ describe('loadMaisons — CRLF line endings are stripped (M-1)', () => {
     // Sanity: the reference list is the backbone of the filter, not a stub.
     expect(entries.length).toBeGreaterThan(700);
   });
+  it('retains the reviewed RIU/Toscane group through the shared ingest/replay reference', () => {
+    expect(findMaison('RIU Paris')?.group).toBe('Armand Thiery');
+    expect(findMaison('Toscane')?.group).toBe('Armand Thiery');
+    expect(findMaison('Adopt Parfums')?.group).toBeUndefined();
+  });
 
   it('never leaves a carriage return in any field', () => {
     for (const entry of entries) {

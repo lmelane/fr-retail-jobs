@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import { parseFlatchrBoard } from '../../../apps/aggregator/src/ats/adapters/flatchr.js';
 import { normalizeCountry } from '../../../apps/aggregator/src/normalize/country.js';
 import { digest } from '../../../apps/aggregator/src/remediation/plan.js';
+import { findMaison } from '../../../apps/aggregator/src/normalize/maisons.js';
 const manifest=JSON.parse(readFileSync('audits/2026-09-08/direct-sources/flatchr-certificates.json','utf8'));
 const db=new PrismaClient();
 try{
@@ -18,6 +19,8 @@ try{
    const countries:Record<string,number>={};let rawExact=0;
    for(const row of rows){
     const e=expected.get(row.externalId);if(!e)throw new Error(`Unexpected id ${row.externalId}`);
+    const reviewedGroup=findMaison(r.name)?.group;
+    if(reviewedGroup && row.job.company.parentGroup!==reviewedGroup)throw new Error(`Reviewed group lost ${row.externalId}`);
     if(!row.isActive || !row.job.isActive || row.job.countryCode!==normalizeCountry(e.country) ||
        row.job.isFrance!==(normalizeCountry(e.country)==='FR') || row.job.company.canonicalKey!==r.canonicalKey ||
        row.url!==e.url || !row.raw)throw new Error(`Canonical discrepancy ${row.externalId}`);
@@ -27,7 +30,7 @@ try{
    const source=await tx.source.findUniqueOrThrow({where:{key:r.key},select:{key:true,status:true,lastRunJobs:true,lastRunStatus:true}});
    const review=await tx.sourceIdentityReview.findFirst({where:{sourceKey:r.key},orderBy:{createdAt:'desc'},select:{verdict:true,sourceHash:true,artifactHash:true}});
    const latestRun=await tx.sourceRun.findFirst({where:{sourceKey:r.key},orderBy:{ranAt:'desc'},select:{status:true,fetched:true,accepted:true,declaredTotal:true,truncated:true,complete:true,canAttestAbsence:true,ranAt:true,errors:true}});
-   sources.push({...source,review,latestRun,jobs:rows.length,uniqueJobIds:new Set(rows.map(j=>j.jobId)).size,countries,
+   sources.push({...source,review,latestRun,parentGroups:[...new Set(rows.map(j=>j.job.company.parentGroup))],jobs:rows.length,uniqueJobIds:new Set(rows.map(j=>j.jobId)).size,countries,
     rawExactAgainstArchivedPayload:rawExact,rawPresent:rows.length,rawChangedSinceArchive:rows.length-rawExact,
     nullJobFunction:rows.filter(x=>!x.job.jobFunction).length,idsHash:digest(rows.map(x=>x.externalId).sort())});
   }

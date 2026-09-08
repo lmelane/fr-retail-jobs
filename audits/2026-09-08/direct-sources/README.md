@@ -13,7 +13,7 @@ Trois enseignes étaient absentes du catalogue direct et des identités correspo
 | Toscane | https://www.toscane-boutique.fr/ | 20 | 20 |
 | Total de ce lot, identités distinctes | | 156 | 117 |
 
-Adopt : Italie 28, Belgique 7, Canada 4. Aucune restriction France/locale dans la collecte. Les groupes parents ne sont pas renseignés sans dossier de rattachement ; leur recherche reste à faire. L'identité de marque et le portail, eux, sont établis. Les compteurs FashionJobs ne prouvent pas un recouvrement offre par offre.
+Adopt : Italie 28, Belgique 7, Canada 4. Aucune restriction France/locale dans la collecte. Le manifeste initial ne renseignait pas les groupes parents. Le contrôle détaillé ci-dessous a ensuite identifié une omission pour RIU Paris et Toscane ; l'absence de groupe chez Adopt reste limitée à ce que son flux expose. Les compteurs FashionJobs ne prouvent pas un recouvrement offre par offre.
 
 ## Causes constatées et correctifs
 
@@ -31,6 +31,7 @@ La page publique non filtrée contient `props.data.items`. La liste complète al
 |---|---|---|
 | vacancy.company.id + vacancy.id | Identité stable, publication/slug non utilisés comme clé | externalId, pas de doublon sur republication/changement de titre |
 | vacancy.company.name | Résolution centrale, alias Adopt explicite | Company canonique ; identité attestée depuis domaine officiel |
+| vacancy.company.group | Assertion explicite conservée par l'adaptateur ; rattachement relu avant ajout au référentiel commun | RIU Paris / Toscane → Armand Thiery ; pas d'inférence pour Adopt |
 | vacancy.address.country/locality/postal_code/coordinates | Champs du filtre public, normaliseur géographique commun | Pays ISO-2, ville, coordonnées ; pas de carte ville→pays improvisée |
 | administrative_area_level_1/2 | Niveaux incohérents selon les pays | Conservés RAW, pas de région forcée |
 | contract_type / partial | Dimensions d'emploi communes | Contrat/temps de travail ; conserver contradictions source/titre |
@@ -76,3 +77,13 @@ PR #24 fusionnée, main `4f1c0cc1b1b5f150641916514b9aea1a9e5e9801`. Les quatre s
 | Exhaustivité du catalogue antérieur | Non certifiée globalement | — | — | — | Aucun backfill implicite | existing-source-enumeration.json |
 
 LVMH a été relu indépendamment, sans écriture : **5 648 annoncées / 5 648 IDs uniques récupérés**, dont **1 342 FR**, sans filtre pays ni troncature (`lvmh-world-read.json`). Le relevé des anciennes sources trouvait 416 derniers runs avec `complete = null` (majoritairement du 7 septembre, avant l'instrumentation), et trois avec preuve de complétude rapportée par l'adaptateur. Cela ne démontre pas 416 sources cassées ; leur historique ne permet pas encore la certification exigée. La configuration Condé Nast comporte un filtre pays à examiner ; LVMH porte bien `country: null`.
+
+## Contre-audit du groupe : omission dans notre implémentation
+
+Les 15 RAW RIU Paris et 20 RAW Toscane archivés exposent tous `vacancy.company.group = "Armand Thiery"`. L'adaptateur ne transmettait pas cette assertion et le référentiel commun ne la renseignait pas. C'était une perte dans notre intégration, pas un champ absent chez la source. `groups-production-before.json` prouve les deux Company avec groupe null et donne les empreintes des 35 offres, représentations et historiques.
+
+Correctif : transmettre la chaîne explicite dans NormalizedJob.group et ajouter les deux rattachements relus au référentiel `maisons.csv`, avec les URLs des portails attestés comme provenance. L'upsert commun conserve le référentiel relu comme autorité ; aucune confiance automatique dans un groupe arbitraire d'ATS. Deux témoins couvrent le groupe explicite, les valeurs absentes/malformées et les références utilisées à l'ingestion/replay.
+
+La réparation séparée `20260908-FLATCHR-REVIEWED-GROUPS-v1` touche deux Company et journalise leurs avant/après dans DataCorrection. Le trigger existant recalcule uniquement le texte de recherche des 35 Job concernés. Tous les autres champs des Job, tous les JobSource/RAW et JobEvent doivent conserver exactement leur empreinte ; le nouveau texte de recherche doit être égal à la projection attendue. `repair-groups.mts` contrôle ces propriétés. Le manifeste initial et son SHA ne sont pas réécrits.
+
+Répétition sur copie réelle : deux écritures, puis zéro à la répétition du même plan ; invariants Oracle et cycle de vie verts. Preuves `groups-replay-before.json` / `groups-replay-after.json`. Une nouvelle ingestion RIU sur cette copie relit 15 offres : zéro création, zéro fusion, zéro erreur, groupe conservé et RAW inchangés (`groups-replay-reingest-proof.json`). Validation locale : 1 386 tests unitaires et typecheck des deux applications. La fusion, le déploiement et la réparation effective de production sont consignés séparément après leur exécution ; cette section seule ne les atteste pas.
