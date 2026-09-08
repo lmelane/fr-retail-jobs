@@ -554,3 +554,71 @@ model SourceCursor {
 
   @@map("SourceCursor")
 }
+
+/**
+ * La FIABILITÉ D'UNE PREUVE, mesurée puis jugée — `sourceFieldTrust` (2026-09-08).
+ *
+ * Née du constat qu'un champ « structuré » n'est pas automatiquement une source
+ * de vérité : PVH déclarait `employmentType: FULL_TIME` sur 1 372 offres, dont
+ * 485 dont le titre disait « Part-Time ».
+ *
+ * Le moteur est GÉNÉRIQUE : aucune source n'est nommée dans le code. Si demain
+ * une autre source se comporte pareil, la même mesure la détecte sans qu'on
+ * ajoute une règle. PVH n'est qu'une observation parmi d'autres.
+ *
+ * Le grain est `source × chemin × dimension`, jamais la source seule : un champ
+ * peut être faux pour le rythme sans rien dire de sa fiabilité ailleurs.
+ */
+model SourceFieldTrust {
+  id             String   @id @default(cuid())
+  /** Clé du catalogue (`pvh`, `fashionjobs`…). */
+  source         String
+  /** Chemin dans le payload (`employmentType`, `tags1[0]`) — pas la valeur. */
+  path           String
+  /** Dimension jugée : employmentTerm | workTime | programType | engagementType. */
+  dimension      String
+
+  /** TRUSTED | DEGRADED | UNTRUSTED | INSUFFICIENT_EVIDENCE. */
+  level          String
+  /** Offres où les DEUX preuves se prononcent — le dénominateur, pas le total. */
+  eligibleCount  Int
+  agreementCount Int
+  contradictionCount Int
+  contradictionRate  Float
+  /** La phrase qui explique le verdict, lisible sans relire le code. */
+  reason         String
+  /** Quelle logique a produit ce verdict — pour pouvoir rejouer. */
+  evaluatorVersion String
+  /** Dernière offre observée pour ce triplet : un verdict doit pouvoir vieillir. */
+  observedAt     DateTime
+  evaluatedAt    DateTime @default(now())
+
+  history        SourceFieldTrustObservation[]
+
+  @@unique([source, path, dimension])
+  @@index([level])
+}
+
+/**
+ * L'HISTORIQUE des observations — il n'expire JAMAIS.
+ *
+ * Le verdict opérationnel peut retomber à INSUFFICIENT_EVIDENCE après 60 jours
+ * de silence (une source peut réparer son flux), mais la mémoire de son
+ * comportement passé reste : c'est ce qui permet d'expliquer une dégradation
+ * ancienne et de détecter une RÉCIDIVE. Décision Loïc : « le verdict
+ * opérationnel peut expirer ; l'observation historique, non. »
+ */
+model SourceFieldTrustObservation {
+  id             String   @id @default(cuid())
+  trustId        String
+  trust          SourceFieldTrust @relation(fields: [trustId], references: [id], onDelete: Cascade)
+  level          String
+  eligibleCount  Int
+  contradictionCount Int
+  contradictionRate  Float
+  evaluatorVersion String
+  observedAt     DateTime
+  recordedAt     DateTime @default(now())
+
+  @@index([trustId, recordedAt])
+}

@@ -208,6 +208,7 @@ describe('readEmployment — lecture d’une valeur libre vers les 4 dimensions'
     it('une valeur composée renseigne plusieurs dimensions à la fois', () => {
       expect(readEmployment('Fulltime-Regular')).toEqual({
         workTime: 'FULL_TIME',
+        workTimeEvidence: 'EXPLICIT',
         employmentTerm: 'PERMANENT',
       });
     });
@@ -301,5 +302,39 @@ describe('conflits révélés par le dry-run', () => {
 
   it('« Trainee » seul reste un stage', () => {
     expect(readEmployment('Trainee Digital Media').programType).toBe('INTERNSHIP');
+  });
+});
+
+/**
+ * LA QUALITÉ INTRINSÈQUE DE LA PREUVE (décision Loïc, 2026-09-08).
+ *
+ * « Sales Associate - Part-Time » DÉCLARE le rythme ; « Conseiller de vente
+ * 21h » le laisse DÉDUIRE d'un horaire. Les deux donnent PART_TIME, mais ils
+ * n'ont pas la même autorité : un titre explicite peut détrôner un champ
+ * structuré dégradé, une inférence non.
+ */
+describe('readEmployment — explicite vs inféré', () => {
+  it('un mot de rythme est une preuve EXPLICITE', () => {
+    expect(readEmployment('Sales Associate - Part-Time').workTimeEvidence).toBe('EXPLICIT');
+    expect(readEmployment('Conseiller de vente — Temps partiel').workTimeEvidence).toBe('EXPLICIT');
+    expect(readEmployment('Verkäufer Vollzeit').workTimeEvidence).toBe('EXPLICIT');
+  });
+
+  it('un horaire chiffré est une INFÉRENCE', () => {
+    expect(readEmployment('Conseiller de vente 21h').workTime).toBe('PART_TIME');
+    expect(readEmployment('Conseiller de vente 21h').workTimeEvidence).toBe('INFERRED');
+    expect(readEmployment('Vendeur 35H').workTime).toBe('FULL_TIME');
+    expect(readEmployment('Vendeur 35H').workTimeEvidence).toBe('INFERRED');
+  });
+
+  it('sans rythme, aucune nature de preuve', () => {
+    expect(readEmployment('Conseiller de vente').workTimeEvidence).toBeUndefined();
+  });
+
+  /** L'explicite l'emporte quand les deux coexistent : « CDI 21h Temps plein ». */
+  it('un mot explicite prime sur un horaire dans le même libellé', () => {
+    const r = readEmployment('Vendeur 21h - Temps plein');
+    expect(r.workTime).toBe('FULL_TIME');
+    expect(r.workTimeEvidence).toBe('EXPLICIT');
   });
 });

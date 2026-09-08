@@ -63,7 +63,16 @@ export type Employment = {
    * `undefined` = la source ne dit rien ; on n'écrit jamais `false` par défaut.
    */
   isSeasonal?: true;
+  /**
+   * La NATURE de la preuve qui a donné `workTime` : un mot déclaré
+   * (« Part-Time ») ou une déduction depuis un horaire (« 21h »). Elle décide
+   * de l'autorité de cette preuve face à un champ structuré dégradé.
+   */
+  workTimeEvidence?: EvidenceQuality;
 };
+
+/** Une preuve déclarée par la source, ou déduite par nous. */
+export type EvidenceQuality = 'EXPLICIT' | 'INFERRED';
 
 /** Accents et casse retirés : les sources écrivent « Intérim », « INTERIM », « interim ». */
 function upper(raw: string): string {
@@ -138,11 +147,27 @@ const TERM_PATTERNS: ReadonlyArray<readonly [EmploymentTerm, RegExp]> = [
  */
 const SEASONAL_PATTERN = /\bSEASONAL\b|SAISONNIER|SAISONNIERE|SAISONNALIER|TRAVAIL SAISONNIER|SAISONARBEIT/;
 
-/** RYTHME. Un horaire chiffré n'est un temps partiel qu'en dessous de 35 h. */
-const WORK_TIME_PATTERNS: ReadonlyArray<readonly [WorkTime, RegExp]> = [
-  ['PART_TIME', /PART[ _-]?TIME|TEMPS[ -]PARTIEL|MI[ -]TEMPS|TEILZEIT|兼职|\b(?:[0-2]?\d|3[0-4])\s?H\b/],
-  ['FULL_TIME', /FULL[ _-]?TIME|TEMPS[ -]PLEIN|PLEIN[ -]TEMPS|VOLLZEIT|全职|\b3[5-9]\s?H\b/],
+/**
+ * RYTHME — deux natures de preuve, séparées.
+ *
+ * « Part-Time » DÉCLARE le rythme ; « 21h » le laisse DÉDUIRE d'un horaire.
+ * Les deux donnent PART_TIME, mais ils n'ont pas la même autorité : un titre
+ * explicite peut détrôner un champ structuré dégradé, une inférence non
+ * (décision Loïc, 2026-09-08). L'explicite est donc testé en PREMIER.
+ */
+const WORK_TIME_EXPLICIT: ReadonlyArray<readonly [WorkTime, RegExp]> = [
+  ['FULL_TIME', /FULL[ _-]?TIME|TEMPS[ -]PLEIN|PLEIN[ -]TEMPS|VOLLZEIT|全职/],
+  ['PART_TIME', /PART[ _-]?TIME|TEMPS[ -]PARTIEL|MI[ -]TEMPS|TEILZEIT|兼职/],
 ];
+
+/** Un horaire chiffré n'est un temps partiel qu'en dessous de 35 h. */
+const WORK_TIME_INFERRED: ReadonlyArray<readonly [WorkTime, RegExp]> = [
+  ['PART_TIME', /\b(?:[0-2]?\d|3[0-4])\s?H\b/],
+  ['FULL_TIME', /\b3[5-9]\s?H\b/],
+];
+
+/** Les deux familles, pour les usages qui ne se soucient pas de la nature. */
+const WORK_TIME_PATTERNS = [...WORK_TIME_EXPLICIT, ...WORK_TIME_INFERRED] as const;
 
 /**
  * NATURE JURIDIQUE. `CONTRACTOR` (valeur schema.org) désigne un independent
@@ -176,8 +201,13 @@ export function readEmployment(raw?: string | null): Employment {
   for (const [type, pattern] of TERM_PATTERNS) {
     if (pattern.test(value)) { out.employmentTerm = type; break; }
   }
-  for (const [type, pattern] of WORK_TIME_PATTERNS) {
-    if (pattern.test(value)) { out.workTime = type; break; }
+  for (const [type, pattern] of WORK_TIME_EXPLICIT) {
+    if (pattern.test(value)) { out.workTime = type; out.workTimeEvidence = 'EXPLICIT'; break; }
+  }
+  if (!out.workTime) {
+    for (const [type, pattern] of WORK_TIME_INFERRED) {
+      if (pattern.test(value)) { out.workTime = type; out.workTimeEvidence = 'INFERRED'; break; }
+    }
   }
   for (const [type, pattern] of ENGAGEMENT_PATTERNS) {
     if (pattern.test(value)) { out.engagementType = type; break; }

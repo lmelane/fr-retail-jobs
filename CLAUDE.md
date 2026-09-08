@@ -422,3 +422,32 @@ Tests : **1 023 unitaires + 140 intégration verts, typecheck 0 erreur**. Trois 
 > **Le paramètre technique suit le modèle** : `?employmentTerm=` remplace `?contrat=`. Inventaire fait AVANT de renommer — ni le sitemap ni aucun canonical ne le référençaient, donc aucune URL indexée en jeu. L'ancien reste LU (liens partagés) mais rien ne l'émet plus. Les autres paramètres (`ville`, `secteur`, `pays`) restent en français : ils n'ont jamais désigné une taxonomie. _On ne supprime pas un concept partout sauf dans la couche de routing._
 
 **Audit des autres taxonomies, mesuré le même jour** — le pire cas redouté n'existait pas : séniorité déjà mondiale (MID/SENIOR/MANAGER/DIRECTOR/EXECUTIVE, aucun « Cadre »), salaire déjà propre (devise d'origine + période : USD/HOUR 123, MXN, COP — aucune conversion), `educationLevel` **null sur 71 629 offres** (aucun Bac+2/+5). Restent ouverts, hors périmètre de ce lot : le **télétravail** (vocabulaire maison `no/partial/full/punctual`, pas de restriction géographique pour « remote within US ») et `inseeCode`, concept français rempli sur 3,9 % des offres — à auditer sur le raw avant tout modèle.
+
+
+### D53 — Un moteur MONDIAL, jamais des rustines par pays ou par source (2026-09-08)
+**Règle d'architecture posée par Loïc**, qui englobe D52 et tout ce qui suit : *on modélise des concepts universels, on conserve la donnée source telle quelle, puis on localise uniquement l'affichage.* Ce qu'on ne construit jamais : `if France → CDI`, `if PVH → titre prioritaire`, `if Sephora → seasonal spécial`. Ce qu'on construit :
+`RAW SOURCE → extraction de preuves → fiabilité source/chemin → normalisation mondiale → dimensions canoniques → localisation UX`.
+« CDI » (FR), « Permanent » (UK), « Unbefristet » (DE) → `employmentTerm = PERMANENT` → réaffiché dans la langue du lecteur. Même principe partout : `workTime` indépendant du contrat, `programType` indépendant de la séniorité, `engagementType` indépendant de la durée, `isSeasonal` cumulable avec FIXED_TERM, demain `workplaceType` + restriction géographique du remote, `adminArea` plutôt qu'une architecture INSEE, devises et périodes d'origine, taxonomie métier mondiale.
+**Ce n'est plus « faire tourner 440 scrapers » : c'est une couche mondiale de normalisation et de qualité de la donnée emploi**, sur laquelle reposeront recherche, filtres, matching et observatoire.
+
+### D54 — `sourceFieldTrust v1` : un champ « structuré » n'est pas une source de vérité (2026-09-08)
+**Le constat** : PVH déclare `employmentType: FULL_TIME` sur ses 1 372 offres, dont **485 dont le titre dit « Part-Time »**. La tentation était d'écrire `if (source === 'pvh')` dans le parseur. Règle imposée par Loïc : **on mesure d'abord, une règle déterministe décide ensuite** — et *si PVH ne ressort pas naturellement de la mesure, c'est le modèle de mesure qui est mauvais*.
+
+**Test de validité passé** : PVH sort en tête sans qu'aucune règle ne porte son nom. Et la mesure a trouvé un second cas inconnu — **fashionjobs, 50 %** (« Conseiller de Vente - **Temps Partiel** » déclaré FULL_TIME).
+
+**Le grain est `source × chemin × dimension`**, jamais la source seule : le champ de PVH est faux pour `workTime`, ce qui ne dit rien de sa fiabilité ailleurs. **Le dénominateur est le point critique** : `comparable` compte les offres où les DEUX preuves se prononcent — pas le total de la source. Sans ça, LVMH (26 contradictions sur 786 → 3,3 %, TRUSTED) paraîtrait pire que fashionjobs (22 sur 44 → 50 %, UNTRUSTED).
+
+**Quatre états déterministes, pas de score opaque** : `MIN_EVIDENCE = 30` · TRUSTED < 10 % · DEGRADED 10–34 % · UNTRUSTED ≥ 34 % · péremption à 60 jours. **Une preuve démontrée fausse est ÉCARTÉE, pas pondérée** — elle ne doit pas pouvoir l'emporter par accident de configuration.
+
+**Le split `TITLE_EXPLICIT` / `TITLE_INFERRED`, et sa conséquence.** « Sales Associate - Part-Time » DÉCLARE le rythme ; « Conseiller de vente **21h** » le laisse DÉDUIRE. Loïc : *ajouter la traçabilité sans en tirer la conséquence logique n'aurait servi à rien.* D'où l'ordre : sur un champ DEGRADED, un titre explicite le détrône, **une inférence non** (`TITLE_EXPLICIT > STRUCTURED > TITLE_INFERRED`). Effet de bord mesuré et bénéfique : « Full-Time 20h » rendait PART_TIME (l'horaire l'emportait), il rend FULL_TIME — cas réel corrigé, « Conseiller(e) de vente - **Temps Partiel** 20h » était stocké FULL_TIME.
+
+**Trois défauts trouvés par les contrôles de Loïc, avant écriture :**
+1. La priorité était calculée sur le verdict du chemin SUIVANT après avoir filtré un chemin UNTRUSTED — un triplet sous le seuil pouvait donc influencer la décision. Corrigé : le verdict qui décide est celui du chemin **le plus défavorable**.
+2. `element-6` publie `contract_type: ["CDD", "CDI"]` — deux durées incompatibles. On prenait « la première », un tirage au sort. Corrigé : `AMBIGUOUS_STRUCTURED`, la valeur existante reste.
+3. Sandro (106) / Nordstrom (52) venaient de `NO_STRUCTURED_EVIDENCE` (leur `bulletFields` ne porte qu'une référence `R-860798`), pas de `INSUFFICIENT_EVIDENCE` — prouvé par exécution.
+
+**Cinq invariants vérifiés automatiquement avant chaque écriture**, le script refuse d'écrire si l'un tombe : `INSUFFICIENT_EVIDENCE = 0 changement` · `AMBIGUOUS_STRUCTURED ne tranche jamais` · `TRUSTED garde la priorité au champ` · `DEGRADED : une inférence ne bat pas le champ` · `UNTRUSTED : le champ n'est jamais consulté`.
+
+**Appliqué en prod, sans re-scrape : 1 419 Jobs corrigés.** workTime 1 013 · employmentTerm 371 · programType 42 · engagementType 2. Par verdict : UNTRUSTED 565 · NO_STRUCTURED_EVIDENCE 541 · DEGRADED 210 · TRUSTED 112 · **INSUFFICIENT_EVIDENCE 0** · AMBIGUOUS_STRUCTURED 0. Quand le titre décide : TITLE_EXPLICIT 1 033 · TITLE_INFERRED 130. Vérifié : **les 485 offres PVH « Part-Time » sont enfin PART_TIME**. Sauvegarde des 71 629 lignes dans `backups/`.
+
+**Persistance à deux durées de vie** : `SourceFieldTrust` porte le verdict opérationnel (114 lignes : 93 INSUFFICIENT_EVIDENCE, 13 TRUSTED, 6 DEGRADED, 2 UNTRUSTED) ; `SourceFieldTrustObservation` empile chaque évaluation **pour toujours**. Loïc : *« le verdict opérationnel peut expirer ; l'observation historique, non »* — c'est ce qui permet d'expliquer une dégradation passée et de détecter une récidive, sans condamner une source qui répare son flux.
