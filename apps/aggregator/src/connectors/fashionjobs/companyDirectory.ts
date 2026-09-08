@@ -30,7 +30,12 @@ export function parseFashionJobsCompanies(html: string): DiscoveredCompany[] {
     }
     if (!/\/recrutement\/.+\.html/i.test(new URL(url).pathname)) return;
 
-    const surrounding = collapseWhitespace(anchor.closest('li').text() || anchor.parent().text());
+    // Read count metadata without the employer label. Cheerio's text() joins
+    // adjacent elements: “MAISON 1-2-3” + “40 offres” otherwise becomes 340.
+    const container = anchor.closest('li').length ? anchor.closest('li') : anchor.parent();
+    const metadata = container.clone();
+    metadata.find('a').remove();
+    const surrounding = collapseWhitespace(metadata.text());
     const countMatch = surrounding.match(/(?:\(([\d\s\u00a0\u202f]+)\)|([\d\s\u00a0\u202f]+)\s+offres?\s+d['’]emploi)/i);
     const rawCount = countMatch?.[1] ?? countMatch?.[2];
     const offerCount = rawCount ? Number(rawCount.replace(/\D/g, '')) : undefined;

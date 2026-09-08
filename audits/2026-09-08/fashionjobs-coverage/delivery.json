@@ -1,0 +1,20 @@
+{
+  "applicationFix": {
+    "finding": "FashionJobs directory MAISON 1-2-3 counter concatenation",
+    "commit": null,
+    "mainMerge": null,
+    "deployed": false
+  },
+  "sourcePause": {
+    "productionApplied": true,
+    "applicationCommit": "9d763a2d6acc5a50a0c65e6f6d2596aab68efd02",
+    "newJobsWritten": 0
+  },
+  "newEmployerSourcesActivated": 0,
+  "validation": {
+    "unitTestsPassed": 1362,
+    "typecheck": "PASS",
+    "ci": "PENDING",
+    "inventoryRows": 749
+  }
+}

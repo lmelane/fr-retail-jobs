@@ -1,0 +1,43 @@
+{
+  "directoryUrl": "https://fr.fashionjobs.com/societesrecrutent/",
+  "directoryObservedAt": "2026-09-08T18:09:15.743Z",
+  "productionAt": "2026-09-08T18:32:00.191Z",
+  "htmlSha256": "7b7482c8647792463b0b9bb0d6cedc54c0ed59815f60857efde363072a814794",
+  "directoryEntries": 749,
+  "announcedDirectoryCountSum": 5650,
+  "entriesWithoutCounter": 2,
+  "distinctCandidateCompanyIds": 491,
+  "coverageStates": {
+    "SOURCE_DIRECTE_CATALOGUEE_A_CERTIFIER": 82,
+    "COMPANY_PRESENTE_SANS_DIRECT_IDENTIFIE": 393,
+    "AUCUN_RAPPROCHEMENT_ETABLI": 256,
+    "PORTAIL_GROUPE_CATALOGUE_ATTRIBUTION_A_VERIFIER": 3,
+    "SOURCE_CATALOGUEE_SANS_DIRECT_ACTIF": 15
+  },
+  "researchStates": {
+    "WEBSITE_UNREADABLE": 98,
+    "CAREER_LINKS_OBSERVED_REVIEW_REQUIRED": 86,
+    "NO_WEBSITE_IN_PROFILE_OR_PROFILE_UNREADABLE": 437,
+    "NO_CAREER_LINK_FOUND_ON_PAGES_READ": 108,
+    "ATS_HINT_REVIEW_REQUIRED": 19,
+    "EMPLOYER_NOT_DISCLOSED": 1
+  },
+  "ambiguousCompanyMatches": 6,
+  "subjectsWithCareerLinkCandidates": 113,
+  "counterCorrections": [
+    {
+      "name": "MAISON 1-2-3",
+      "before": 340,
+      "after": 40
+    }
+  ],
+  "production": {
+    "companies": 1563,
+    "companiesWithActiveJobs": 1039,
+    "activeJobs": 71263,
+    "france": 9634,
+    "activeSources": 419,
+    "structuredIdentityReviews": 0
+  },
+  "note": "Complete observed directory, not all historical FashionJobs customers. Company and source matches are not identity approvals. Counts are signals, not proven recall or duplicate rates."
+}
