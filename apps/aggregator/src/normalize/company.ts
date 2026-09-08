@@ -31,6 +31,9 @@ export type CompanyIdentity = {
  * the employer feeds. Extend as new spellings turn up — this is data, not logic.
  */
 const ALIASES: ReadonlyArray<readonly [string, CompanyIdentity]> = [
+  // Official adopt.com footer -> Adopt Parfums Flatchr board, reviewed 2026-09-08.
+  ['ADOPT', { companyId: 'ADOPT_PARFUMS', displayName: 'Adopt Parfums' }],
+  ['ADOPT PARFUMS', { companyId: 'ADOPT_PARFUMS', displayName: 'Adopt Parfums' }],
   ['DIOR', { companyId: 'DIOR', displayName: 'Christian Dior Couture', group: 'LVMH' }],
   ['CHRISTIAN DIOR', { companyId: 'DIOR', displayName: 'Christian Dior Couture', group: 'LVMH' }],
   ['CHRISTIAN DIOR COUTURE', { companyId: 'DIOR', displayName: 'Christian Dior Couture', group: 'LVMH' }],

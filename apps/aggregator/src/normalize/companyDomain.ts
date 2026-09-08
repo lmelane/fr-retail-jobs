@@ -56,7 +56,7 @@ const ATS_HOST_SUFFIXES = [
   'applytojob.com', 'jobvite.com', 'ultipro.com', 'brassring.com', 'csod.com',
   'cornerstoneondemand.com', 'pinpointhq.com', 'digitalrecruiters.com', 'talentlyft.com',
   'dayforcehcm.com', 'paylocity.com', 'jobs.net', 'welcometothejungle.com', 'fashionjobs.com',
-  'linkedin.com', 'indeed.com', 'glassdoor.com',
+  'linkedin.com', 'indeed.com', 'glassdoor.com', 'flatchr.io', 'werecruit.io',
 ];
 
 /**

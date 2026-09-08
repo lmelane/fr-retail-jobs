@@ -21,7 +21,7 @@ const ATS_HOSTS = [
   'greenhouse.io', 'lever.co', 'smartrecruiters.com', 'recruitee.com', 'personio.de',
   'personio.com', 'myworkdayjobs.com', 'teamtailor.com', 'workable.com', 'successfactors.com',
   'welcometothejungle.com',
-  'ashbyhq.com', 'pinpointhq.com', 'eightfold.ai', 'avature.net',
+  'ashbyhq.com', 'pinpointhq.com', 'eightfold.ai', 'avature.net', 'flatchr.io',
 ];
 
 /**
@@ -94,11 +94,6 @@ const WIDGET_BACKENDS: ReadonlyArray<{
     re: /pinpointhq\.com/i,
     type: 'PINPOINT',
     config: (u) => ({ origin: u.origin }),
-  },
-  {
-    re: /flatchr\.io|api\.flatchr/i,
-    type: 'GENERIC_JSONLD',
-    config: (u) => ({ startUrl: u.toString() }),
   },
   {
     re: /factorial(hr)?\.(com|fr|es)|\.factorial\./i,
@@ -193,6 +188,11 @@ function detectionFromUrl(rawUrl: string): AtsDetection | null {
     const site = parts[0];
     if (tenant && site) return { type: 'WORKDAY', careersUrl: url.toString(), config: { tenant, site, origin: url.origin }, confidence: 1 };
   }
+  if (host.endsWith('.flatchr.io') && /^[a-z]{2}(?:-[A-Za-z]{2})?$/.test(parts[0] ?? '') &&
+      parts[1] === 'company' && /^[a-z0-9-]+$/i.test(parts[2] ?? '')) {
+    const listingUrl = `${url.origin}/${parts[0]}/company/${parts[2]}/`;
+    return { type: 'FLATCHR', careersUrl: url.toString(), config: { listingUrl }, confidence: 1 };
+  }
   // C-05a — vendor hosts the URL walk used to ignore, all with real adapters.
   if (host === 'apply.workable.com') {
     const account = parts[0];
@@ -226,13 +226,13 @@ function detectionFromUrl(rawUrl: string): AtsDetection | null {
 
 /**
  * Anchor text/href that marks a link to a careers/jobs page, FR + EN. Kept
- * broad on purpose — a missed keyword (e.g. "rejoindre", "offres", "talents")
+ * broad on purpose — a missed keyword (e.g. "rejoindre", "talents")
  * means a whole brand's ATS is never discovered. Measured on Ba&sh: the link was
  * "nous rejoindre" -> talents.ba-sh.com/fr-FR/offres, matched by none of the
  * original keywords.
  */
 const CAREERS_LINK_RE =
-  /career|carri[eè]re|recrut|rejoin|rejoign|talent|jobs?\b|emploi|offres?\b|vacanc|opening|hiring|work-with-us|work with us|join-us|join us|travailler|nous-rejoindre/i;
+  /career|carri[eè]re|recrut|rejoin|rejoign|talent|jobs?\b|emploi|vacanc|opening|hiring|work-with-us|work with us|join-us|join us|travailler|nous-rejoindre/i;
 
 /** The registrable domain (eTLD+1, approx): "talents.ba-sh.com" -> "ba-sh.com". */
 function registrableDomain(hostname: string): string {
@@ -247,8 +247,8 @@ function registrableDomain(hostname: string): string {
  *
  * Crucially this accepts a careers SUBDOMAIN on the same registrable domain
  * (talents.ba-sh.com, careers.brand.com, jobs.brand.com) — where most brands
- * actually host recruiting — not only same-hostname paths. It stays within the
- * brand's own domain, so it will not wander onto a random external link.
+ * actually host recruiting — not only same-hostname paths. External career links are candidates too; source ownership requires separate
+ * evidence before activation.
  */
 function findCareersLinks($: cheerio.CheerioAPI, baseUrl: string): string[] {
   const baseDomain = registrableDomain(new URL(baseUrl).hostname);
@@ -261,7 +261,12 @@ function findCareersLinks($: cheerio.CheerioAPI, baseUrl: string): string[] {
     if (!CAREERS_LINK_RE.test(anchorText + ' ' + href)) return;
     try {
       const abs = new URL(href, baseUrl);
-      if (registrableDomain(abs.hostname) !== baseDomain) return; // stay on the brand
+      if (!['http:', 'https:'].includes(abs.protocol)) return;
+      if (/cookie|privacy|confidential|newsletter/i.test(abs.pathname + ' ' + anchorText)) return;
+      // A strong career link can legitimately lead to an external ATS. Discovery
+      // remains a candidate; SourceIdentityReview decides employer ownership.
+      if (registrableDomain(abs.hostname) !== baseDomain &&
+          !/career|carri[eè]re|recrut|rejoindre|join[ -]us|work[ -]with[ -]us|emplois?|jobs?|vacanc|talents?/i.test(anchorText)) return;
       const clean = abs.toString();
       if (seen.has(clean)) return;
       seen.add(clean);
@@ -270,9 +275,9 @@ function findCareersLinks($: cheerio.CheerioAPI, baseUrl: string): string[] {
       let score = 0;
       if (/^(talents?|careers?|jobs|recrut|emploi|hr|rh)\./i.test(abs.hostname)) score += 4;
       if (/\b(career|carriere|carrière|join-us|join us|nous-rejoindre|nous rejoindre|work-with-us|recrut|hiring)\b/i.test(abs.pathname.replace(/[-_/]/g, ' '))) score += 3;
-      if (/\b(jobs?|emplois?|offres?|vacanc|opening|positions?)\b/i.test(abs.pathname.replace(/[-_/]/g, ' '))) score += 2;
+      if (/\b(jobs?|emplois?|vacanc|opening|positions?)\b/i.test(abs.pathname.replace(/[-_/]/g, ' '))) score += 2;
       const t = anchorText.replace(/[-_]/g, ' ');
-      if (/\b(carriere|carrière|career|careers|recrut|rejoindre|rejoins|join us|work with us|nos offres|emploi|talent)\b/i.test(t)) score += 2;
+      if (/\b(carriere|carrière|career|careers|recrut|rejoindre|rejoins|join us|work with us|emploi|talent)\b/i.test(t)) score += 2;
       // A loose keyword match ALONE (score 0) is a false positive
       // ("flash-price-drops" matching "drop") — drop it.
       if (score > 0) scored.push({ url: clean, score });
@@ -372,6 +377,21 @@ function atsLinksInHtml(html: string, baseUrl: string): string[] {
  * and the browser paths so the detection logic lives in one place.
  */
 export function detectFromHtml(html: string, rawUrl: string): AtsDetection | null {
+  // Some Flatchr tenants serve the company board at `/` without redirecting.
+  // Derive the canonical board path from the actual payload, never a brand slug guess.
+  let pageUrl: URL;
+  try { pageUrl = new URL(rawUrl); } catch { return null; }
+  if (pageUrl.hostname.endsWith('.flatchr.io')) {
+    try {
+      const payload = JSON.parse(cheerio.load(html)('#__NEXT_DATA__').text());
+      const base = payload.props?.baseUrlPath;
+      const slug = payload.query?.companySlug;
+      if (payload.page === '/company/[companySlug]' && /^\/[a-z]{2}\/company$/.test(base ?? '') &&
+          /^[a-z0-9-]+$/i.test(slug ?? '')) {
+        return detectionFromUrl(`${pageUrl.origin}${base}/${slug}/`);
+      }
+    } catch { /* Missing/blocked payload is not an ingestible board. */ }
+  }
   // 1. A known ATS linked from the page — highest confidence, exact config.
   //
   //    Quand une page cite PLUSIEURS ATS, le premier lien rencontré gagnait.

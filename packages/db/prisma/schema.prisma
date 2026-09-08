@@ -49,6 +49,7 @@ enum DiscoveryStatus {
 }
 
 enum AtsType {
+  FLATCHR
   PINPOINT
   LVMH_ALGOLIA
   MAGNET

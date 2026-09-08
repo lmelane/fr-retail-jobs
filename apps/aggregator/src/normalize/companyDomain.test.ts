@@ -29,6 +29,10 @@ function fixture<T>(name: string): T {
 }
 
 describe('rootDomainOf — la racine d’un domaine carrière', () => {
+  it('does not turn a Flatchr/WeRecruit tenant into an employer domain', () => {
+    expect(rootDomainOf('adopt.flatchr.io')).toBeNull();
+    expect(rootDomainOf('careers.werecruit.io')).toBeNull();
+  });
   it.each([
     ['careers.hermes.com', 'hermes.com'],
     ['jobs.sephora.com', 'sephora.com'],
