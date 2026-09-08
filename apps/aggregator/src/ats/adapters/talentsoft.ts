@@ -73,9 +73,24 @@ export function talentsoftItemToJob(item: RssItem): NormalizedJob | null {
   };
 }
 
-/** One listing card: link, title, and the content list (ref / date / place). */
+/**
+ * Une carte du listing : lien, titre, puis la liste (réf / date / lieu).
+ *
+ * DEUX gabarits, et c'est le cœur du bug Lagardère (2026-09-08) : le motif
+ * n'acceptait que `ts-offer-card__title-link`, et le site sert désormais
+ * `ts-offer-list-item__title-link` — **0 occurrence de l'ancien** dans la page
+ * réellement servie, contre 70 du nouveau. Le listing entier devenait
+ * invisible et seules les 20 offres du flux RSS subsistaient, sur 109
+ * annoncées. Le fetch réussissait pourtant (96 Ko, HTTP 200, 12 cartes par
+ * page) : ni pagination bloquée, ni anti-bot.
+ *
+ * `ts-offer-(?:card|list-item)__title-link` couvre les deux — d'autres tenants
+ * TalentSoft servent encore l'ancien. L'ordre des attributs n'est pas garanti
+ * non plus (`class` avant ou après `href`) : on accepte les deux sens plutôt
+ * que de re-casser au prochain changement de thème.
+ */
 const CARD_RE =
-  /class="ts-offer-card__title-link[^"]*"\s+href="(\/offre-de-emploi\/[^"]*_(\d+)\.aspx)"[^>]*>\s*([^<]+?)\s*<\/a>/g;
+  /<a\b(?=[^>]*class="ts-offer-(?:card|list-item)__title-link)[^>]*\shref="(\/offre-de-emploi\/[^"]*_(\d+)\.aspx)"[^>]*>\s*([^<]+?)\s*<\/a>/g;
 
 /** Cards of one listing page — each card's body runs until the next card. */
 export function listingCards(html: string, origin: string): NormalizedJob[] {
@@ -86,15 +101,36 @@ export function listingCards(html: string, origin: string): NormalizedJob[] {
     const start = match.index ?? 0;
     const end = matches[i + 1]?.index ?? Math.min(html.length, start + 4000);
     const after = html.slice(start, end);
-    const lis = [...after.matchAll(/<li[^>]*>([^<]+)<\/li>/g)].map((m) => m[1].trim());
-    const date = lis.find((v) => /^\d{2}\/\d{2}\/\d{4}$/.test(v));
-    const place = lis.filter((v) => !/^Réf/i.test(v) && !/^\d{2}\/\d{2}\/\d{4}$/.test(v)).pop();
+    /**
+     * Les métadonnées d'une carte, dans les DEUX gabarits.
+     *
+     * L'ancien les listait en `<li>` ; l'actuel écrit une seule ligne
+     * « Réf. : 2026-10345 | 08/09/2026 | Malakoff » dans un `<ul>`. Ne lire que
+     * les `<li>` laissait 109 des 129 offres sans lieu ni date (mesuré le
+     * 2026-09-08 : seules les 20 du flux RSS étaient localisées). On collecte
+     * les deux formes, puis on trie par ce que chaque valeur EST — une date se
+     * reconnaît, une référence aussi, le reste est le lieu.
+     */
+    const cells = [
+      ...[...after.matchAll(/<li[^>]*>([^<]+)<\/li>/g)].map((m) => m[1]),
+      ...[...after.matchAll(/<ul[^>]*class="ts-offer-list-item__description[^"]*"[^>]*>([^<]+)</g)]
+        .flatMap((m) => m[1].split('|')),
+    ]
+      .map((cell) => htmlToPlainText(cell)?.trim() ?? '')
+      .filter(Boolean);
+
+    const date = cells.find((v) => /^\d{2}\/\d{2}\/\d{4}$/.test(v));
+    const place = cells
+      .filter((v) => !/^r[ée]f\b/i.test(v) && !/^\d{2}\/\d{2}\/\d{4}$/.test(v))
+      .pop();
     const postedAt = date
       ? new Date(`${date.slice(6, 10)}-${date.slice(3, 5)}-${date.slice(0, 2)}T00:00:00Z`)
       : undefined;
     jobs.push({
       externalId: id,
-      title: title.trim(),
+      // Le HTML servi porte des entités (« A&#233;roport de Nice ») : un
+      // candidat ne doit jamais lire du code source dans un intitulé.
+      title: htmlToPlainText(title)?.trim() ?? title.trim(),
       location: place || undefined,
       url: `${origin}${path}`,
       postedAt,
@@ -128,6 +164,15 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
 
   // 2. The FULL listing, page by page, until the announced total is covered.
   let declaredTotal: number | undefined;
+  /**
+   * Le balayage s'est-il arrêté AVANT d'avoir couvert le board ?
+   *
+   * `truncated` était calculé nulle part et jamais renvoyé (le commentaire le
+   * promettait pourtant) : une page en échec ou un gabarit non reconnu sortait
+   * de la boucle en silence, et le run passait pour complet. Depuis D51 ce
+   * drapeau décide du DROIT D'ATTESTER — un run tronqué ne ferme plus rien.
+   */
+  let truncated = false;
   const fromListing: NormalizedJob[] = [];
   const seenListing = new Set<string>();
   for (let page = 1; page <= Number(config.maxPages ?? 100); page++) {
@@ -137,7 +182,9 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
         `${origin}/offre-de-emploi/liste-toutes-offres.aspx?page=${page}&LCID=${FRENCH_LCID}`,
       );
     } catch {
-      break; // the RSS offers below still ship; `truncated` says the rest
+      // Les offres du RSS partent quand même, mais le board n'a pas été vu.
+      truncated = true;
+      break;
     }
     if (declaredTotal === undefined) {
       const announced = html.match(/\((\d+)\s+offres?/i);
@@ -150,7 +197,17 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
       fromListing.push(job);
     }
     if (declaredTotal !== undefined && seenListing.size >= declaredTotal) break;
+    // Plafond de pages atteint alors que la page produisait encore : le reste
+    // du board n'a pas été lu.
+    if (page === Number(config.maxPages ?? 100)) truncated = true;
   }
+
+  /**
+   * Le juge final : la source ANNONCE un total, on compare à ce qu'on a vu.
+   * C'est ce qui attrape un gabarit qui change en silence — le cas Lagardère,
+   * où le listing rendait 0 carte et où seul le RSS (20 sur 109) subsistait.
+   */
+  if (declaredTotal !== undefined && seenListing.size < declaredTotal) truncated = true;
 
   // 3. Merge: the listing enumerates, the RSS enriches its overlap — and
   // still carries the board alone if the listing markup ever changes.
@@ -178,5 +235,5 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
     );
   }
 
-  return { jobs, declaredTotal };
+  return { jobs, declaredTotal, truncated };
 }

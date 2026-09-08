@@ -1,5 +1,6 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { talentsoftItemToJob } from './talentsoft.js';
+import { talentsoftItemToJob, listingCards } from './talentsoft.js';
 
 /**
  * Parsing the TalentSoft RSS <item> shape, verified live against Longchamp's
@@ -44,7 +45,7 @@ describe('talentsoftItemToJob', () => {
 });
 
 // ——— F-04 : lecture complète du listing HTML (le RSS est plafonné à 20) ———
-import { listingCards, talentsoftDetailDescription } from './talentsoft.js';
+import { talentsoftDetailDescription } from './talentsoft.js';
 
 const LISTING_FIXTURE = `
 <title>PRINTEMPS - Résultat de votre recherche (2 offres, page 1) / Tout afficher</title>
@@ -86,5 +87,70 @@ describe('talentsoftDetailDescription', () => {
   });
   it('rend vide quand la section est absente, jamais un texte inventé', () => {
     expect(talentsoftDetailDescription('<h2>Autre</h2>x<h2>Fin</h2>')).toBe('');
+  });
+});
+
+/**
+ * LE CAS LAGARDÈRE (2026-09-08, D51/P1) — la troncature 20/109.
+ *
+ * Le site a changé de gabarit : ses cartes portent `ts-offer-list-item__title-link`
+ * (70 occurrences dans la page servie) là où le motif cherchait
+ * `ts-offer-card__title-link` — **0 occurrence**. Le listing entier devenait
+ * invisible, et les 20 offres restantes venaient du seul flux RSS (qui ne sert
+ * que les 20 plus récentes). Le fetch, lui, réussissait : 96 Ko, HTTP 200,
+ * 12 cartes par page, pages 2 et 3 accessibles — donc ni pagination bloquée,
+ * ni anti-bot, ni limite serveur.
+ *
+ * La fixture est le HTML RÉELLEMENT SERVI, capturé ce jour-là.
+ */
+describe('listingCards — gabarits TalentSoft', () => {
+  const fixture = readFileSync(
+    new URL('./__fixtures__/talentsoft-lagardere-listing.html', import.meta.url),
+    'utf8',
+  );
+
+  it('lit le gabarit ACTUEL du site (ts-offer-list-item)', () => {
+    const jobs = listingCards(fixture, 'https://lagardere-recrute.talent-soft.com');
+    expect(jobs.length).toBeGreaterThanOrEqual(3);
+    expect(jobs[0].externalId).toMatch(/^\d+$/);
+    expect(jobs[0].title.length).toBeGreaterThan(3);
+    expect(jobs[0].url).toContain('https://lagardere-recrute.talent-soft.com/offre-de-emploi/');
+  });
+
+  it("garde le gabarit HISTORIQUE (ts-offer-card) — d'autres tenants le servent encore", () => {
+    const legacy =
+      '<a class="ts-offer-card__title-link " href="/offre-de-emploi/emploi-vendeur-h-f_1234.aspx">Vendeur H/F</a>' +
+      '<ul><li>Réf. 1234</li><li>01/09/2026</li><li>Paris</li></ul>';
+    const jobs = listingCards(legacy, 'https://x.talent-soft.com');
+    expect(jobs).toHaveLength(1);
+    expect(jobs[0].externalId).toBe('1234');
+    expect(jobs[0].title).toBe('Vendeur H/F');
+  });
+
+  /**
+   * Le gabarit actuel ne met PAS ses métadonnées dans des <li> : il écrit une
+   * seule ligne « Réf. : 2026-10345 | 08/09/2026 | Malakoff ». Sans cette
+   * lecture, 109 des 129 offres partaient sans lieu ni date — mesuré le
+   * 2026-09-08 : 20 offres localisées sur 129, les 20 du seul flux RSS.
+   */
+  it('lit le lieu et la date de la ligne « Réf. | date | ville »', () => {
+    const jobs = listingCards(fixture, 'https://lagardere-recrute.talent-soft.com');
+    const located = jobs.filter((j) => j.location);
+    expect(located.length).toBe(jobs.length);
+    expect(jobs.filter((j) => j.postedAt).length).toBe(jobs.length);
+    expect(jobs.some((j) => j.location === 'Malakoff')).toBe(true);
+  });
+
+  /**
+   * Le HTML servi porte des entités (« A&#233;roport de Nice ») : un candidat
+   * ne doit jamais lire « Aéroport » écrit en code source.
+   */
+  it('décode les entités HTML du titre', () => {
+    const jobs = listingCards(fixture, 'https://lagardere-recrute.talent-soft.com');
+    expect(jobs.some((j) => /&#\d+;|&amp;|&quot;/.test(j.title))).toBe(false);
+  });
+
+  it("n'invente aucune offre sur une page sans carte", () => {
+    expect(listingCards('<html><body><p>Aucune offre</p></body></html>', 'https://x')).toEqual([]);
   });
 });
