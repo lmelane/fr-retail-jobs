@@ -4,7 +4,7 @@ import type { JobRow } from './jobs';
 
 /**
  * S-02a/S-02b intérim — the JSON-LD contract, pinned:
- * datePosted falls back to firstSeenAt, validThrough is source evidence only,
+ * datePosted uses the employer publication date, validThrough is source evidence only,
  * employmentTerm speaks schema.org, and addressCountry is NEVER a hard-coded
  * FR — it is the canonical code of what the source said, or absent.
  */
@@ -12,7 +12,7 @@ import type { JobRow } from './jobs';
 const base: JobRow = {
   id: 'ck123', title: 'Vendeur', company: 'Cartier', companyDomain: 'cartier.com', group: 'Richemont',
   city: 'PARIS', location: 'Paris, France', employmentTerm: 'PERMANENT', sector: 'LUXURY',
-  url: 'https://x/1', postedAt: null, latitude: null, longitude: null,
+  url: 'https://x/1', postedAt: new Date('2026-08-20T00:00:00Z'), latitude: null, longitude: null,
   sourceCount: 1, sources: ['cartier'], description: 'desc', applyUrl: 'https://x/1',
   postalCode: null, department: null, jobFunction: null, seniority: null, workTime: null, workplaceType: null,
   programType: null, engagementType: null, isSeasonal: null,
@@ -22,14 +22,19 @@ const base: JobRow = {
 };
 
 describe('jobPostingSchema', () => {
-  it('falls back to firstSeenAt for datePosted and omits an unknown deadline', () => {
-    const schema = jobPostingSchema(base);
-    expect(schema.datePosted).toBe('2026-09-01T00:00:00.000Z');
+  it('never substitutes discovery for an absent or invalid employer publication date', () => {
+    expect(jobPostingSchema({ ...base, postedAt: null })).toBeNull();
+    expect(jobPostingSchema({ ...base, postedAt: new Date('invalid') })).toBeNull();
+  });
+
+  it('keeps the employer publication date and omits an unknown deadline', () => {
+    const schema = jobPostingSchema(base)!;
+    expect(schema.datePosted).toBe('2026-08-20T00:00:00.000Z');
     expect(JSON.parse(JSON.stringify(schema))).not.toHaveProperty('validThrough');
   });
 
   it('does not extend an explicit expired deadline when the page is rendered', () => {
-    const schema = jobPostingSchema({ ...base, validThrough: new Date('2026-08-01T00:00:00Z') });
+    const schema = jobPostingSchema({ ...base, validThrough: new Date('2026-08-01T00:00:00Z') })!;
     expect(schema.validThrough).toBe('2026-08-01T00:00:00.000Z');
   });
 
@@ -38,20 +43,20 @@ describe('jobPostingSchema', () => {
       ...base,
       postedAt: new Date('2026-09-02T00:00:00Z'),
       validThrough: new Date('2026-09-20T00:00:00Z'),
-    });
+    })!;
     expect(schema.datePosted).toBe('2026-09-02T00:00:00.000Z');
     expect(schema.validThrough).toBe('2026-09-20T00:00:00.000Z');
   });
 
   it('does not publish a salary with an invented currency', () => {
     for (const amounts of [{ salaryMin: 50000 }, { salaryMax: 70000 }]) {
-      const schema = jobPostingSchema({ ...base, ...amounts, salaryCurrency: null });
+      const schema = jobPostingSchema({ ...base, ...amounts, salaryCurrency: null })!;
       expect(JSON.parse(JSON.stringify(schema))).not.toHaveProperty('baseSalary');
     }
   });
 
   it('preserves a known salary currency and period', () => {
-    const schema = jobPostingSchema({ ...base, salaryMin: 20, salaryMax: 30, salaryCurrency: 'USD', salaryPeriod: 'HOUR' });
+    const schema = jobPostingSchema({ ...base, salaryMin: 20, salaryMax: 30, salaryCurrency: 'USD', salaryPeriod: 'HOUR' })!;
     expect(schema.baseSalary).toEqual({
       '@type': 'MonetaryAmount', currency: 'USD',
       value: { '@type': 'QuantitativeValue', minValue: 20, maxValue: 30, unitText: 'HOUR' },
@@ -71,7 +76,7 @@ describe('jobPostingSchema', () => {
   });
 
   it('declares the aggregator honestly: identifier + directApply false', () => {
-    const schema = jobPostingSchema(base);
+    const schema = jobPostingSchema(base)!;
     expect(schema.directApply).toBe(false);
     expect(schema.identifier).toEqual({ '@type': 'PropertyValue', name: 'Cartier', value: 'ck123' });
     expect(schema.inLanguage).toBe('fr');

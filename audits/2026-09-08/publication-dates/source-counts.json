@@ -1,0 +1,66 @@
+{
+  "at": "2026-09-08T20:28:17.218Z",
+  "sources": [
+    {
+      "sourceKey": "urbn-hub",
+      "jobs": 1364,
+      "representations": 1364
+    },
+    {
+      "sourceKey": "adidas",
+      "jobs": 1106,
+      "representations": 1106
+    },
+    {
+      "sourceKey": "ralph-lauren-avature",
+      "jobs": 1095,
+      "representations": 1095
+    },
+    {
+      "sourceKey": "urbn-stores",
+      "jobs": 934,
+      "representations": 934
+    },
+    {
+      "sourceKey": "element-6",
+      "jobs": 392,
+      "representations": 392
+    },
+    {
+      "sourceKey": "l-oreal-professionnel",
+      "jobs": 128,
+      "representations": 128
+    },
+    {
+      "sourceKey": "eram-3",
+      "jobs": 81,
+      "representations": 81
+    },
+    {
+      "sourceKey": "zegna-altamira",
+      "jobs": 64,
+      "representations": 64
+    },
+    {
+      "sourceKey": "fenwick-volcanic",
+      "jobs": 31,
+      "representations": 31
+    },
+    {
+      "sourceKey": "lvmh",
+      "jobs": 29,
+      "representations": 29
+    },
+    {
+      "sourceKey": "aeropostale",
+      "jobs": 18,
+      "representations": 18
+    },
+    {
+      "sourceKey": "brown-thomas-taleo",
+      "jobs": 13,
+      "representations": 13
+    }
+  ],
+  "note": "Source counts overlap; the cohort is 4321 distinct active jobs."
+}

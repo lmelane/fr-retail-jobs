@@ -1,5 +1,6 @@
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
+import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
@@ -64,7 +65,7 @@ export function parseAltamiraDetail(row: AltamiraRow, html: string, url: string)
   const description = htmlToPlainText(detailCell(html, 'Text') ?? '');
   const brand = htmlToPlainText(detailCell(html, 'Brand') ?? '');
 
-  return {
+  return enrichPostingEvidence({
     externalId: row.externalId,
     title: htmlToPlainText(detailCell(html, 'Title') ?? '') || row.title,
     location: row.location ?? (parts.length ? [city, country].filter(Boolean).join(', ') : undefined),
@@ -77,7 +78,7 @@ export function parseAltamiraDetail(row: AltamiraRow, html: string, url: string)
     url,
     description: description || undefined,
     raw: { source: 'altamira', team: row.team, locations },
-  };
+  }, html);
 }
 
 export async function fetchAltamiraJobs(config: Record<string, unknown>): Promise<AdapterResult> {

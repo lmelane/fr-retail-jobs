@@ -64,6 +64,7 @@ type MagnetOffer = {
   }>;
   contract?: { name?: string } | string;
   published_at?: string;
+  publication_date?: string;
   url?: string;
   /**
    * The real, working links the API ships. `apply_link`/`link` are canonical
@@ -121,7 +122,7 @@ async function login(siteKey: string, origin: string): Promise<string> {
   return token;
 }
 
-function toNormalized(offer: MagnetOffer, origin: string): NormalizedJob | null {
+export function normalizeMagnetOffer(offer: MagnetOffer, origin: string): NormalizedJob | null {
   if (!offer.title) return null;
 
   // A working apply link is mandatory — an offer a candidate cannot open is
@@ -131,7 +132,8 @@ function toNormalized(offer: MagnetOffer, origin: string): NormalizedJob | null 
   if (!applyUrl) return null;
 
   const locality = offer.localities?.[0];
-  const posted = offer.published_at ? new Date(offer.published_at) : undefined;
+  const publication = offer.publication_date ?? offer.published_at;
+  const posted = publication ? new Date(publication) : undefined;
 
   // The posting is split across three blocks; a candidate reads them in order.
   const description = [offer.mission_description, offer.profile_description]
@@ -200,7 +202,7 @@ export async function fetchMagnetJobs(config: Record<string, unknown>): Promise<
     let fresh = 0;
 
     for (const offer of list) {
-      const job = toNormalized(offer, origin);
+      const job = normalizeMagnetOffer(offer, origin);
       if (!job || seen.has(job.externalId)) continue;
       seen.add(job.externalId);
       jobs.push(job);

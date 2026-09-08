@@ -1,0 +1,36 @@
+{
+  "at": "2026-09-08T20:26:42.053Z",
+  "counts": [
+    {
+      "active": 71419,
+      "withPublicationDate": 67098,
+      "withoutPublicationDate": 4321,
+      "futurePublicationDate": 5,
+      "withExpiry": 4395,
+      "expiredButActive": 79
+    }
+  ],
+  "examples": [
+    {
+      "id": "cmtk0fpdo06h4s32bqdvrp33z",
+      "title": "Marketing Graduate - Professional Products Division",
+      "postedAt": null,
+      "firstSeenAt": "2026-09-02T11:25:54.108Z",
+      "source": "AVATURE"
+    },
+    {
+      "id": "cmtk0fpe006h8s32bfj0idqs9",
+      "title": "Nordic Data & Analytics Manager",
+      "postedAt": null,
+      "firstSeenAt": "2026-09-02T11:25:54.121Z",
+      "source": "AVATURE"
+    },
+    {
+      "id": "cmtk0fpea06hcs32bd1scql27",
+      "title": "Retail Activation Manager - Consumer Products Division",
+      "postedAt": null,
+      "firstSeenAt": "2026-09-02T11:25:54.130Z",
+      "source": "AVATURE"
+    }
+  ]
+}

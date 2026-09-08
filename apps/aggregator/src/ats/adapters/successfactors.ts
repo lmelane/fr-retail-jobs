@@ -1,5 +1,7 @@
 import pLimit from 'p-limit';
+import * as cheerio from 'cheerio';
 import { fetchJson, fetchText } from '../../lib/http.js';
+import { readPostingEvidence } from '../../lib/postingEvidence.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { microdataDescriptionHtml } from '../../connectors/generic/jsonLdSitemap.js';
 import type { NormalizedJob } from '../../types.js';
@@ -408,6 +410,20 @@ export type SuccessFactorsDetail = {
  *   <span itemprop="title">Beauty Coach (7.3hrs/wk)</span>
  *   <meta itemprop="streetAddress" content="Liverpool, GB, L1 8BJ">
  */
+/** Some RMK templates expose publication in a visible date token, not microdata.
+ * Only the observed explicit English month form is decoded; never parse an
+ * ambiguous numeric date or the page's current year as a posting date.
+ */
+export function parseSuccessFactorsVisibleDate(html: string): Date | undefined {
+  const $ = cheerio.load(html);
+  const value = $('[data-careersite-propertyid="date"]').first().text().trim();
+  const match = /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2}),\s+(\d{4})$/.exec(value);
+  if (!match) return undefined;
+  const month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(match[1]);
+  const date = new Date(Date.UTC(Number(match[3]),month,Number(match[2])));
+  return date.getUTCMonth()===month && date.getUTCDate()===Number(match[2]) ? date : undefined;
+}
+
 export function parseMicrodataDetail(html: string): SuccessFactorsDetail {
   const detail: SuccessFactorsDetail = {};
 
@@ -479,6 +495,7 @@ export function parseMicrodataDetail(html: string): SuccessFactorsDetail {
 
   const posted = meta('datePosted');
   if (posted && !Number.isNaN(Date.parse(posted))) detail.postedAt = new Date(posted);
+  else detail.postedAt = parseSuccessFactorsVisibleDate(html);
   const valid = meta('validThrough');
   if (valid && !Number.isNaN(Date.parse(valid))) detail.validThrough = new Date(valid);
 
@@ -512,6 +529,10 @@ export async function attachSuccessFactorsDescriptions(
             postedAt: detail.postedAt ?? job.postedAt,
             validThrough: detail.validThrough ?? job.validThrough,
             description: detail.description ?? job.description,
+            raw: { ...(job.raw as object), postingEvidence: {
+              ...readPostingEvidence(html, job.url).evidence,
+              visibleDateRaw: cheerio.load(html)('[data-careersite-propertyid="date"]').first().text().trim() || null,
+            } },
           };
         } catch {
           // A failed detail fetch must not lose the listing entry.

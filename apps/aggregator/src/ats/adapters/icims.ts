@@ -1,4 +1,6 @@
 import { fetchText } from '../../lib/http.js';
+import pLimit from 'p-limit';
+import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
@@ -18,9 +20,8 @@ import type { AdapterResult, NormalizedJob } from '../../types.js';
  *    `pr=1` en rend zéro. Démarrer à 1 sautait donc l'unique page d'un petit
  *    portail et le faisait passer pour vide.
  *
- * Chaque carte porte déjà lieu, identifiant, titre, lien ET un extrait de
- * description : une seule requête par page suffit, sans visiter les pages
- * détail — ce qui est à la fois plus rapide et plus poli pour l'hôte.
+ * Cards contain an excerpt only. Detail JSON-LD carries the full description,
+ * employer publication date and expiry, so it must also be read.
  */
 
 /** Une carte d'offre : `<li class="… iCIMS_JobCardItem">` jusqu'à la suivante. */
@@ -113,5 +114,10 @@ export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<A
     if (fresh.length === 0) break;
   }
 
-  return { jobs: out };
+  const limit = pLimit(Math.max(1, Math.min(4, Number(config.detailConcurrency) || 2)));
+  const jobs = await Promise.all(out.map(job => limit(async () => {
+    try { return enrichPostingEvidence(job, await fetchText(job.url)); }
+    catch (error) { return { ...job, raw: { ...(job.raw as object), detailReadError: String(error) } }; }
+  })));
+  return { jobs };
 }

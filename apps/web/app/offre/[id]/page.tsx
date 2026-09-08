@@ -89,7 +89,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     <main className="page bg-paper">
       {/* JSON-LD JobPosting seulement pour une offre active : sur une offre
           fermée (410 + noindex), annoncer un poste ouvert serait contradictoire. */}
-      {!isClosed && (
+      {!isClosed && structuredData && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeJsonLd(structuredData) }}

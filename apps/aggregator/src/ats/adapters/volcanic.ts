@@ -1,4 +1,6 @@
-import { fetchJson } from '../../lib/http.js';
+import { fetchJson, fetchText } from '../../lib/http.js';
+import pLimit from 'p-limit';
+import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
@@ -102,8 +104,14 @@ export async function fetchVolcanicJobs(config: Record<string, unknown>): Promis
     if (typeof data.page_count === 'number' && page >= data.page_count) break;
   }
 
+  const limit = pLimit(Math.max(1, Math.min(4, Number(config.detailConcurrency) || 2)));
+  const jobs = await Promise.all(out.map(job => limit(async () => {
+    if (job.postedAt) return job;
+    try { return enrichPostingEvidence(job, await fetchText(job.url)); }
+    catch (error) { return { ...job, raw: { ...(job.raw as object), detailReadError: String(error) } }; }
+  })));
   return {
-    jobs: out,
+    jobs,
     declaredTotal,
     truncated: declaredTotal !== undefined && out.length < declaredTotal,
   };

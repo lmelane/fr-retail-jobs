@@ -45,7 +45,7 @@ async function main() {
     },
   });
 
-  const job = (id: string, title: string, isActive: boolean) =>
+  const job = (id: string, title: string, isActive: boolean, postedAt: Date | null = new Date('2026-09-01T00:00:00Z')) =>
     prisma.job.create({
       data: {
         id,
@@ -63,6 +63,7 @@ async function main() {
         language: 'fr',
         url: `https://careers.example.com/${id}`,
         isActive,
+        postedAt,
         fingerprint: `fp-${id}`,
         clusterKey: `${company.id}|PARIS`,
         sources: {
@@ -79,7 +80,7 @@ async function main() {
 
   await job(FIXTURES.activeJobId, 'Vendeur / Vendeuse Boutique (H/F)', true);
   await job('e2e-active-2', 'Responsable Boutique (H/F)', true);
-  await job('e2e-active-3', 'Conseiller de vente (H/F)', true);
+  await job('e2e-active-3', 'Conseiller de vente (H/F)', true, null);
   await job(FIXTURES.closedJobId, 'Offre expirée — CDI Vendeur', false);
 
   console.log('e2e fixtures seeded: 3 active offers, 1 closed, 1 Maison.');
