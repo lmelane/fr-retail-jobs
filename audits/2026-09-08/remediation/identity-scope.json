@@ -1,0 +1,66 @@
+{
+  "at": "2026-09-08T17:34:52.084Z",
+  "namesOnlySources": 198,
+  "jobsAffectedByNameOnlyHistory": 7549,
+  "contradictedSources": 20,
+  "contradictedActiveJobs": 371,
+  "contradictedOtherSources": 0,
+  "labelledGroupSources": [
+    {
+      "key": "parfums-chanel",
+      "maison": "Parfums Chanel",
+      "kind": "workday",
+      "config": {
+        "site": "ChanelCareers",
+        "origin": "https://cc.wd3.myworkdayjobs.com",
+        "tenant": "cc"
+      }
+    },
+    {
+      "key": "browns",
+      "maison": "Browns",
+      "kind": "lever",
+      "config": {
+        "site": "farfetch"
+      }
+    },
+    {
+      "key": "l-oreal-professionnel",
+      "maison": "L’Oréal Professionnel",
+      "kind": "avature",
+      "config": {
+        "origin": "https://careers.loreal.com",
+        "listingUrl": "https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0"
+      }
+    },
+    {
+      "key": "sandro",
+      "maison": "Sandro",
+      "kind": "smartrecruiters-whitelabel",
+      "config": {
+        "api": "https://api.smartrecruiters.com/v1/companies/SMCP/postings?limit=100",
+        "vendor": "SmartRecruiters",
+        "company": "SMCP",
+        "brandFacet": "customField fieldLabel=Brands"
+      }
+    }
+  ],
+  "counts": [
+    {
+      "_count": 65,
+      "sourceKey": "browns"
+    },
+    {
+      "_count": 1804,
+      "sourceKey": "l-oreal-professionnel"
+    },
+    {
+      "_count": 1117,
+      "sourceKey": "parfums-chanel"
+    },
+    {
+      "_count": 557,
+      "sourceKey": "sandro"
+    }
+  ]
+}

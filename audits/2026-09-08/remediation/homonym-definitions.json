@@ -1,0 +1,164 @@
+[
+  {
+    "key": "coast",
+    "kind": "greenhouse",
+    "configField": "board",
+    "tenant": "coast",
+    "name": "Coast, cartes de paiement pour flottes",
+    "canonicalKey": "COAST_OUT_OF_SECTOR",
+    "proof": "https://job-boards.greenhouse.io/coast/jobs/4645584004"
+  },
+  {
+    "key": "blend",
+    "kind": "greenhouse",
+    "configField": "board",
+    "tenant": "blend",
+    "name": "Blend Labs, logiciels bancaires",
+    "canonicalKey": "BLEND_OUT_OF_SECTOR",
+    "proof": "https://job-boards.greenhouse.io/blend/jobs/6148697004"
+  },
+  {
+    "key": "tala",
+    "kind": "lever",
+    "configField": "site",
+    "tenant": "tala",
+    "name": "Tala, infrastructure de crédit",
+    "canonicalKey": "TALA_OUT_OF_SECTOR",
+    "proof": "https://jobs.lever.co/tala/a538a1ca-0b76-46d1-a933-d43dbe7f5c83"
+  },
+  {
+    "key": "ion",
+    "kind": "lever",
+    "configField": "site",
+    "tenant": "ion",
+    "name": "ION Group, logiciels financiers",
+    "canonicalKey": "ION_OUT_OF_SECTOR",
+    "proof": "https://jobs.lever.co/ion/82c48e10-8f67-4227-a68c-3fbe3f181389"
+  },
+  {
+    "key": "gate",
+    "kind": "lever",
+    "configField": "site",
+    "tenant": "gate",
+    "name": "Gate, plateforme de cryptomonnaies",
+    "canonicalKey": "GATE_OUT_OF_SECTOR",
+    "proof": "https://jobs.lever.co/gate/432e213a-7f09-4a16-9dc0-7bcdf0ffc362"
+  },
+  {
+    "key": "didi",
+    "kind": "greenhouse",
+    "configField": "board",
+    "tenant": "didi",
+    "name": "DiDi, conduite autonome",
+    "canonicalKey": "DIDI_OUT_OF_SECTOR",
+    "proof": "https://job-boards.greenhouse.io/didi/jobs/8131863"
+  },
+  {
+    "key": "fay",
+    "kind": "greenhouse",
+    "configField": "board",
+    "tenant": "fay",
+    "name": "Fay, plateforme de nutrition et santé",
+    "canonicalKey": "FAY_OUT_OF_SECTOR",
+    "proof": "https://job-boards.greenhouse.io/fay/jobs/5238250008"
+  },
+  {
+    "key": "honor",
+    "kind": "greenhouse",
+    "configField": "board",
+    "tenant": "honor",
+    "name": "Honor Technology, aide à domicile",
+    "canonicalKey": "HONOR_OUT_OF_SECTOR",
+    "proof": "https://job-boards.greenhouse.io/honor/jobs/8777116002"
+  },
+  {
+    "key": "hone",
+    "kind": "greenhouse",
+    "configField": "board",
+    "tenant": "hone",
+    "name": "Hone, formation professionnelle",
+    "canonicalKey": "HONE_OUT_OF_SECTOR",
+    "proof": "https://job-boards.greenhouse.io/hone/jobs/4110121009"
+  },
+  {
+    "key": "cleo",
+    "kind": "greenhouse",
+    "configField": "board",
+    "tenant": "cleo",
+    "name": "Cleo Communications, intégration logicielle",
+    "canonicalKey": "CLEO_OUT_OF_SECTOR",
+    "proof": "https://job-boards.greenhouse.io/cleo/jobs/4725537005"
+  },
+  {
+    "key": "gridline",
+    "kind": "lever",
+    "configField": "site",
+    "tenant": "gridline",
+    "name": "Gridline, investissements privés",
+    "canonicalKey": "GRIDLINE_OUT_OF_SECTOR",
+    "proof": "https://jobs.lever.co/gridline/60d566e4-aa74-4b93-a98d-6f5ebe11c98d"
+  },
+  {
+    "key": "novara",
+    "kind": "lever",
+    "configField": "site",
+    "tenant": "novara",
+    "name": "Novara, logiciels EHS et gestion des risques",
+    "canonicalKey": "NOVARA_OUT_OF_SECTOR",
+    "proof": "https://jobs.lever.co/novara/1faa23a2-ce3f-46b2-8714-4f5ccc4c2fa6"
+  },
+  {
+    "key": "sep",
+    "kind": "lever",
+    "configField": "site",
+    "tenant": "sep",
+    "name": "SEP, ingénierie logicielle",
+    "canonicalKey": "SEP_OUT_OF_SECTOR",
+    "proof": "https://jobs.lever.co/sep/7b96b0c6-8429-4861-bf69-a00956e42a8d"
+  },
+  {
+    "key": "public",
+    "kind": "greenhouse",
+    "configField": "board",
+    "tenant": "public",
+    "name": "Public, plateforme d’investissement",
+    "canonicalKey": "PUBLIC_OUT_OF_SECTOR",
+    "proof": "https://job-boards.greenhouse.io/public/jobs/7982150003"
+  },
+  {
+    "key": "galileo",
+    "kind": "greenhouse",
+    "configField": "board",
+    "tenant": "galileo",
+    "name": "Galileo, soins médicaux",
+    "canonicalKey": "GALILEO_OUT_OF_SECTOR",
+    "proof": "https://job-boards.greenhouse.io/galileo/jobs/8703228002"
+  },
+  {
+    "key": "eclipse",
+    "kind": "greenhouse",
+    "configField": "board",
+    "tenant": "eclipse",
+    "name": "Eclipse Laboratories, blockchain",
+    "canonicalKey": "ECLIPSE_OUT_OF_SECTOR",
+    "proof": "https://job-boards.greenhouse.io/eclipse/jobs/4981191008"
+  },
+  {
+    "key": "seer",
+    "kind": "greenhouse",
+    "configField": "board",
+    "tenant": "seer",
+    "name": "Seer, protéomique et biotechnologies",
+    "canonicalKey": "SEER_OUT_OF_SECTOR",
+    "proof": "https://seer.bio/"
+  },
+  {
+    "key": "yes",
+    "kind": "greenhouse",
+    "configField": "board",
+    "tenant": "yes",
+    "name": "YES LLC, installations électriques industrielles",
+    "canonicalKey": "YES_OUT_OF_SECTOR",
+    "proof": "https://cjyes.com/"
+  }
+]

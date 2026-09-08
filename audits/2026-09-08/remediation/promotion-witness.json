@@ -1,0 +1,11 @@
+{
+  "witness": "Real Coast source metadata, isolated test database",
+  "baselineCommit": "b7aa6dafe00c8cc286a43b62332b938de5db7a9f",
+  "before": {
+    "key": "coast",
+    "from": "DRAFT",
+    "to": "ACTIVE"
+  },
+  "afterRejected": "promote: \"coast\" has no verified employer identity review",
+  "prodModified": false
+}

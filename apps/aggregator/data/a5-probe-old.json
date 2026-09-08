@@ -1,0 +1,194 @@
+[
+ {
+  "sourceKey": "via",
+  "id": "cmtm77zv90l1qpv5j77hvro45",
+  "url": "https://job-boards.greenhouse.io/via/jobs/7567583002",
+  "status": 200,
+  "finalUrl": "https://job-boards.greenhouse.io/via/jobs/7567583002",
+  "klass": "200_visible",
+  "ms": 288
+ },
+ {
+  "sourceKey": "ion",
+  "id": "cmtlymya10g2kqf5k6zua92vi",
+  "url": "https://jobs.lever.co/ion/ea950f84-6597-4a36-884a-883aa681f928",
+  "status": 200,
+  "finalUrl": "https://jobs.lever.co/ion/ea950f84-6597-4a36-884a-883aa681f928",
+  "klass": "200_visible",
+  "ms": 321
+ },
+ {
+  "sourceKey": "aritzia",
+  "id": "cmtp3xbo81iypqq4zbjqapks8",
+  "url": "https://aritzia.wd3.myworkdayjobs.com/External/job/Florida-Miami/Retail-Stores---Risk-Associate_R0009417",
+  "status": 200,
+  "finalUrl": "https://aritzia.wd3.myworkdayjobs.com/wday/cxs/aritzia/External/job/Florida-Miami/Retail-Stores---Risk-Associate_R0009417",
+  "klass": "200_visible",
+  "note": "workday-json",
+  "ms": 383
+ },
+ {
+  "sourceKey": "laverana-gmbh-co-kg",
+  "id": "cmtlyiwl706zjqf5kccqgckms",
+  "url": "https://lavera.jobs.personio.de/job/1214633",
+  "status": 200,
+  "finalUrl": "https://lavera.jobs.personio.de/job/1214633",
+  "klass": "200_visible",
+  "ms": 156
+ },
+ {
+  "sourceKey": "levis",
+  "id": "cmtn7sbu51vo6qq5lnfjdfk77",
+  "url": "https://levistraussandco.wd5.myworkdayjobs.com/External/job/LFO-ISTANBUL-VIAPORT-ASIA-OUTLET-SHOPPING-Istanbul-Turkey/FULL-TIME-PERSONEL_R-0107465",
+  "status": 200,
+  "finalUrl": "https://levistraussandco.wd5.myworkdayjobs.com/wday/cxs/levistraussandco/External/job/LFO-ISTANBUL-VIAPORT-ASIA-OUTLET-SHOPPING-Istanbul-Turkey/FULL-TIME-PERSONEL_R-0107465",
+  "klass": "200_visible",
+  "note": "workday-json",
+  "ms": 742
+ },
+ {
+  "sourceKey": "hot-topic",
+  "id": "cmtlyi1vw04kwqf5kqqbiioav",
+  "url": "https://jobs.lever.co/hottopic/851e88d1-260e-46c4-b2f0-071fd4e6fed6",
+  "status": 200,
+  "finalUrl": "https://jobs.lever.co/hottopic/851e88d1-260e-46c4-b2f0-071fd4e6fed6",
+  "klass": "200_visible",
+  "ms": 277
+ },
+ {
+  "sourceKey": "luxe-talent",
+  "id": "cmtlvb2qf07zd3nk5p833rp8r",
+  "url": "https://www.luxetalent.net/assistant-store-manager-italian-premium-fashion-brand-parndorf/",
+  "status": 200,
+  "finalUrl": "https://www.luxetalent.net/assistant-store-manager-italian-premium-fashion-brand-parndorf/",
+  "klass": "200_visible",
+  "ms": 833
+ },
+ {
+  "sourceKey": "ion",
+  "id": "cmtlymy7b0g1oqf5kjhjzcizb",
+  "url": "https://jobs.lever.co/ion/5fd7a2ad-6759-4e56-a991-fde231e08828",
+  "status": 200,
+  "finalUrl": "https://jobs.lever.co/ion/5fd7a2ad-6759-4e56-a991-fde231e08828",
+  "klass": "200_visible",
+  "ms": 237
+ },
+ {
+  "sourceKey": "ulta-jibe",
+  "id": "cmtpkk0jx51atpf5l9lf8dg9f",
+  "url": "https://careers.ulta.com/jobs/277949?lang=en-us",
+  "status": 200,
+  "finalUrl": "https://careers.ulta.com/careers/jobs/277949?lang=en-us",
+  "klass": "200_visible",
+  "note": "marqueur aussi: no longer (available|accepting|open|active|exists)",
+  "ms": 1004
+ },
+ {
+  "sourceKey": "ulta-jibe",
+  "id": "cmtpkk31a51lwpf5l7tnbdkt1",
+  "url": "https://careers.ulta.com/jobs/220999?lang=en-us",
+  "status": 200,
+  "finalUrl": "https://careers.ulta.com/careers/jobs/220999?lang=en-us",
+  "klass": "200_visible",
+  "note": "marqueur aussi: no longer (available|accepting|open|active|exists)",
+  "ms": 1008
+ },
+ {
+  "sourceKey": "kering",
+  "id": "cmtk3b60a0mi9ny2bgnnmsinf",
+  "url": "https://careers.kering.com/careers/job/563705876669107",
+  "status": 200,
+  "finalUrl": "https://careers.kering.com/careers/job/563705876669107",
+  "klass": "200_visible",
+  "note": "marqueur aussi: has expired",
+  "ms": 291
+ },
+ {
+  "sourceKey": "luxe-talent",
+  "id": "cmtk27spw0jxknv2bugbe4554",
+  "url": "https://www.luxetalent.net/counter-manager-fragrances-sector/",
+  "status": 200,
+  "finalUrl": "https://www.luxetalent.net/counter-manager-fragrances-sector/",
+  "klass": "200_visible",
+  "ms": 1065
+ },
+ {
+  "sourceKey": "ulta-jibe",
+  "id": "cmtpkk0lt51b1pf5lu62tynhu",
+  "url": "https://careers.ulta.com/jobs/277820?lang=en-us",
+  "status": 200,
+  "finalUrl": "https://careers.ulta.com/careers/jobs/277820?lang=en-us",
+  "klass": "200_visible",
+  "note": "marqueur aussi: no longer (available|accepting|open|active|exists)",
+  "ms": 1090
+ },
+ {
+  "sourceKey": "ulta-jibe",
+  "id": "cmtpkjyfh511dpf5l6kfgqr4p",
+  "url": "https://careers.ulta.com/jobs/301028?lang=en-us",
+  "status": 200,
+  "finalUrl": "https://careers.ulta.com/careers/jobs/301028?lang=en-us",
+  "klass": "200_visible",
+  "note": "marqueur aussi: no longer (available|accepting|open|active|exists)",
+  "ms": 1099
+ },
+ {
+  "sourceKey": "ulta-jibe",
+  "id": "cmtpkk3zx51pwpf5lriok9qak",
+  "url": "https://careers.ulta.com/jobs/13448?lang=en-us",
+  "status": 200,
+  "finalUrl": "https://careers.ulta.com/careers/jobs/13448?lang=en-us",
+  "klass": "200_visible",
+  "note": "marqueur aussi: no longer (available|accepting|open|active|exists)",
+  "ms": 1245
+ },
+ {
+  "sourceKey": "ulta-jibe",
+  "id": "cmtpkjxuu50yppf5lsfw4mq8j",
+  "url": "https://careers.ulta.com/jobs/167514?lang=en-us",
+  "status": 200,
+  "finalUrl": "https://careers.ulta.com/careers/jobs/167514?lang=en-us",
+  "klass": "200_visible",
+  "note": "marqueur aussi: no longer (available|accepting|open|active|exists)",
+  "ms": 1277
+ },
+ {
+  "sourceKey": "ulta-jibe",
+  "id": "cmtpkjyuu5139pf5la65n5hk2",
+  "url": "https://careers.ulta.com/jobs/295952?lang=en-us",
+  "status": 200,
+  "finalUrl": "https://careers.ulta.com/careers/jobs/295952?lang=en-us",
+  "klass": "200_visible",
+  "note": "marqueur aussi: no longer (available|accepting|open|active|exists)",
+  "ms": 997
+ },
+ {
+  "sourceKey": "ulta-jibe",
+  "id": "cmtpkk3nj51ogpf5l85hqxig1",
+  "url": "https://careers.ulta.com/jobs/199897?lang=en-us",
+  "status": 200,
+  "finalUrl": "https://careers.ulta.com/careers/jobs/199897?lang=en-us",
+  "klass": "200_visible",
+  "note": "marqueur aussi: no longer (available|accepting|open|active|exists)",
+  "ms": 1068
+ },
+ {
+  "sourceKey": "ulta-jibe",
+  "id": "cmtpkk024518xpf5l5itlh24h",
+  "url": "https://careers.ulta.com/jobs/284682?lang=en-us",
+  "status": 200,
+  "finalUrl": "https://careers.ulta.com/careers/jobs/284682?lang=en-us",
+  "klass": "200_visible",
+  "note": "marqueur aussi: no longer (available|accepting|open|active|exists)",
+  "ms": 570
+ },
+ {
+  "sourceKey": "buck-mason",
+  "id": "cmtm7bu1r0tpupv5jwwuwa5na",
+  "url": "https://jobs.lever.co/buckmason/956bfa48-d1df-4db7-9616-96c00a28b433",
+  "status": 200,
+  "finalUrl": "https://jobs.lever.co/buckmason/956bfa48-d1df-4db7-9616-96c00a28b433",
+  "klass": "200_visible",
+  "ms": 1882
+ }
+]
