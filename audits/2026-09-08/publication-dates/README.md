@@ -30,3 +30,9 @@ Premier passage intermédiaire : 1 914 Jobs avec date prouvée, zéro conflit en
 En attendant une date employeur, la page reste disponible et son lien de candidature fonctionne, mais elle n'émet plus un JobPosting avec une date de découverte faussement présentée comme date de publication. Une date récupérée rétablit automatiquement le balisage. Les dates connues ne sont ni rajeunies ni remplacées. Ceci ne certifie pas à lui seul l'ensemble des exigences Google Jobs : description complète, pays, télétravail, expiration et identité employeur doivent également être justifiés. L'inclusion effective reste une décision de Google.
 
 Validation locale : 1 392 tests unitaires agrégateur, tests du schéma Google et typecheck des deux applications. Les tests de parcours couvrent une offre datée et une offre sans date, avec page et candidature toujours disponibles. Les données de production sont réparées séparément par plans d'avant/après, après fusion et déploiement ; les reçus seront ajoutés après exécution.
+
+## Cohorte finale qualifiée et répétition
+
+Après reprise des URL iCIMS : **2 844 Jobs** avec date prouvée, appuyés par **3 740 représentations**, zéro contradiction entre dates retenues. Douze plans de 250 Jobs maximum, 6 584 opérations au total. Les 1 477 Jobs restants ne sont pas déclarés sans date à la source : des blocages, fermetures, formats à examiner et dates futures restent séparés dans recovery-evidence.json.
+
+Répétition sur copie réelle terminée : 6 584 corrections journalisées et 2 844 événements CORRECTED. 71 419 offres actives et 9 751 France inchangées ; 1 477 dates restent nulles. Tous les RAW, les autres champs métier des Job et les événements d'origine sont identiques aux avant-images. Preuve : rehearsal-proof.json. Aucun de ces chiffres de répétition ne prétend que le backfill a déjà été appliqué en production.

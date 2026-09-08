@@ -1,0 +1,169 @@
+{
+  "at": "2026-09-08T20:44:24.868Z",
+  "evidenceHash": "18d8af81a3b543d179f9242b8dc1a4b8aee108c5bfb95e2808aa8943d36e342a",
+  "batches": [
+    {
+      "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-01",
+      "jobs": 250,
+      "representations": 250,
+      "correctedEvents": 250,
+      "ledger": 500,
+      "commits": [
+        "LOCAL"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    },
+    {
+      "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-02",
+      "jobs": 250,
+      "representations": 250,
+      "correctedEvents": 250,
+      "ledger": 500,
+      "commits": [
+        "LOCAL"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    },
+    {
+      "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-03",
+      "jobs": 250,
+      "representations": 250,
+      "correctedEvents": 250,
+      "ledger": 500,
+      "commits": [
+        "LOCAL"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    },
+    {
+      "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-04",
+      "jobs": 250,
+      "representations": 250,
+      "correctedEvents": 250,
+      "ledger": 500,
+      "commits": [
+        "LOCAL"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    },
+    {
+      "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-05",
+      "jobs": 250,
+      "representations": 250,
+      "correctedEvents": 250,
+      "ledger": 500,
+      "commits": [
+        "LOCAL"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    },
+    {
+      "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-06",
+      "jobs": 250,
+      "representations": 274,
+      "correctedEvents": 250,
+      "ledger": 524,
+      "commits": [
+        "LOCAL"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    },
+    {
+      "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-07",
+      "jobs": 250,
+      "representations": 500,
+      "correctedEvents": 250,
+      "ledger": 750,
+      "commits": [
+        "LOCAL"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    },
+    {
+      "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-08",
+      "jobs": 250,
+      "representations": 500,
+      "correctedEvents": 250,
+      "ledger": 750,
+      "commits": [
+        "LOCAL"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    },
+    {
+      "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-09",
+      "jobs": 250,
+      "representations": 500,
+      "correctedEvents": 250,
+      "ledger": 750,
+      "commits": [
+        "LOCAL"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    },
+    {
+      "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-10",
+      "jobs": 250,
+      "representations": 349,
+      "correctedEvents": 250,
+      "ledger": 599,
+      "commits": [
+        "LOCAL"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    },
+    {
+      "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-11",
+      "jobs": 250,
+      "representations": 250,
+      "correctedEvents": 250,
+      "ledger": 500,
+      "commits": [
+        "LOCAL"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    },
+    {
+      "batchId": "20260908-ORIGINAL-PUBLICATION-DATES-v1-12",
+      "jobs": 94,
+      "representations": 117,
+      "correctedEvents": 94,
+      "ledger": 211,
+      "commits": [
+        "LOCAL"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    }
+  ],
+  "counts": [
+    {
+      "active": 71419,
+      "withoutPublicationDate": 1477,
+      "france": 9751
+    }
+  ]
+}
