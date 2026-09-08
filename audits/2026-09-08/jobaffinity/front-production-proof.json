@@ -1,0 +1,61 @@
+{
+  "at": "2026-09-08T21:26:42.184191+00:00",
+  "checks": [
+    {
+      "url": "https://modecareers.com/api/jobs?pays=FR",
+      "status": 200,
+      "apiTotal": 10684,
+      "dbTotal": 10684,
+      "delta": 0,
+      "sha256": "76de7a146afc4a62e3e059cf7f257b12d8867c32c8655f4d43f114e3c0a885be"
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=monde",
+      "status": 200,
+      "apiTotal": 72359,
+      "dbTotal": 72359,
+      "delta": 0,
+      "sha256": "cb0f74b95d010129287a3068a9d29472131da8d6bf9a899d1b43a3ae5dda2d88"
+    },
+    {
+      "url": "https://modecareers.com/offre/administrateur-rice-des-ventes-c-c-intersport-h-f-cmtt6849a00033nnj6qnpdmq7",
+      "status": 200,
+      "sha256": "c3860f9af6cc1966a2e238c7e6794d74733ef6a4cfea9581071d031d2d710154",
+      "jobPosting": {
+        "datePosted": "2026-09-08T13:08:27.000Z",
+        "country": "FR",
+        "company": "Intersport",
+        "employmentType": null
+      },
+      "matchesDatabase": true
+    },
+    {
+      "url": "https://modecareers.com/offre/vendeur-h-f-cmtt68nkm00bf3nnjhnmb8lw1",
+      "status": 200,
+      "sha256": "3e9094d0d6b098078078658decf6cfdb791ff82636e9e46ae341fa3be9aa4d87",
+      "jobPosting": {
+        "datePosted": "2026-09-03T15:05:17.000Z",
+        "country": "FR",
+        "company": "Blackstore",
+        "employmentType": [
+          "TEMPORARY"
+        ]
+      },
+      "matchesDatabase": true
+    },
+    {
+      "url": "https://modecareers.com/offre/hote-de-caisse-et-d-accueil-h-f-temps-partiel-cmtt6856d000l3nnjc1smj00f",
+      "status": 200,
+      "sha256": "7471e0dfeb94d3e68a11042bad379368b7f4d234da83d252ed5823ec56d726ec",
+      "jobPosting": {
+        "datePosted": "2026-09-08T10:30:14.000Z",
+        "country": "FR",
+        "company": "Intersport",
+        "employmentType": [
+          "PART_TIME"
+        ]
+      },
+      "matchesDatabase": true
+    }
+  ]
+}

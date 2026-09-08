@@ -1,0 +1,41 @@
+{
+  "applicationCommit": "75f0ff56d1434dd513a5c48c63af5cabf831a383",
+  "mainCommit": "030a101602d78a0470db05f4a84b6f08e650ec63",
+  "pullRequest": "https://github.com/lmelane/fr-retail-jobs/pull/27",
+  "ciRun": "34279097931",
+  "deployments": [
+    {
+      "service": "catwalks-reconcile",
+      "deploymentId": "356b1bd7-6c8e-4ab7-93b1-eb9b5b3852cc",
+      "status": "SUCCESS",
+      "commit": "030a101602d78a0470db05f4a84b6f08e650ec63",
+      "buildOnly": true
+    },
+    {
+      "service": "catwalks-web",
+      "deploymentId": "039a4711-c44e-4c7f-831e-cde58cdf23a0",
+      "status": "SUCCESS",
+      "commit": "030a101602d78a0470db05f4a84b6f08e650ec63",
+      "buildOnly": false
+    },
+    {
+      "service": "catwalks-aggregator",
+      "deploymentId": "7b17182e-b713-4bbb-ab25-5f506201ca11",
+      "status": "SUCCESS",
+      "commit": "030a101602d78a0470db05f4a84b6f08e650ec63",
+      "buildOnly": true
+    },
+    {
+      "service": "catwalks-refresh",
+      "deploymentId": "089f141d-5cf6-48e7-a229-523cd5e6d929",
+      "status": "SUCCESS",
+      "commit": "030a101602d78a0470db05f4a84b6f08e650ec63",
+      "buildOnly": true
+    }
+  ],
+  "backup": {
+    "path": "backups/remediation-20260908/before-jobaffinity-20260908T2107.dump",
+    "bytes": 271318098,
+    "sha256": "47e95f474b005152efe80706988eeb60ddf4483bf0848918add54b593509af7c"
+  }
+}

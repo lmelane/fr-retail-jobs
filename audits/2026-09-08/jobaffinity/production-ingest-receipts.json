@@ -1,0 +1,109 @@
+[
+  {
+    "ok": true,
+    "command": "ingest",
+    "sources": [
+      {
+        "source": "intersport-france",
+        "fetched": 993,
+        "inSector": 930,
+        "france": 923,
+        "created": 930,
+        "merged": 0,
+        "updated": 0,
+        "errors": 0,
+        "withDescription": 930,
+        "withDate": 930,
+        "withCountry": 923,
+        "withUrl": 930,
+        "complete": false,
+        "declaredTotal": 993,
+        "truncated": false,
+        "held": 63,
+        "heldUnresolved": 12
+      }
+    ],
+    "geo": {
+      "pending": 0,
+      "lookedUp": 0,
+      "jobsLocated": 0,
+      "remaining": 0
+    },
+    "health": {
+      "checkedAt": "2026-09-08T21:24:19.924Z",
+      "ok": 0,
+      "degraded": 1,
+      "broken": 0,
+      "incidents": [
+        {
+          "source": "intersport-france",
+          "jobs": 930,
+          "previous": null,
+          "coverage": "desc 100% date 100% pays 99% url 100%",
+          "rates": {
+            "description": 1,
+            "date": 1,
+            "country": 0.992,
+            "url": 1
+          },
+          "status": "DEGRADED",
+          "note": "63 annonces non publiables archivées (12 non résolues) ; aucune attestation d’absence"
+        }
+      ]
+    },
+    "alerted": false
+  },
+  {
+    "ok": true,
+    "command": "ingest",
+    "sources": [
+      {
+        "source": "blackstore",
+        "fetched": 54,
+        "inSector": 48,
+        "france": 48,
+        "created": 10,
+        "merged": 38,
+        "updated": 0,
+        "errors": 0,
+        "withDescription": 48,
+        "withDate": 48,
+        "withCountry": 48,
+        "withUrl": 48,
+        "complete": true,
+        "declaredTotal": 54,
+        "truncated": false,
+        "held": 6
+      }
+    ],
+    "geo": {
+      "pending": 0,
+      "lookedUp": 0,
+      "jobsLocated": 0,
+      "remaining": 0
+    },
+    "health": {
+      "checkedAt": "2026-09-08T21:25:05.012Z",
+      "ok": 0,
+      "degraded": 1,
+      "broken": 0,
+      "incidents": [
+        {
+          "source": "blackstore",
+          "jobs": 48,
+          "previous": null,
+          "coverage": "desc 100% date 100% pays 100% url 100%",
+          "rates": {
+            "description": 1,
+            "date": 1,
+            "country": 1,
+            "url": 1
+          },
+          "status": "DEGRADED",
+          "note": "6 annonces non publiables archivées (0 non résolues) ; énumération et fermetures attestées"
+        }
+      ]
+    },
+    "alerted": false
+  }
+]

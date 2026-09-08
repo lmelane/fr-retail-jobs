@@ -1,0 +1,59 @@
+{
+  "at": "2026-09-08T21:26:18.391Z",
+  "brands": [
+    {
+      "id": "cmtlyfvaf016cqf5k6yvon72v",
+      "name": "Intersport",
+      "canonicalKey": "INTERSPORT",
+      "world": 879,
+      "france": 867
+    },
+    {
+      "id": "cmtt64q3n00073nkj2m32mmvb",
+      "name": "Blackstore",
+      "canonicalKey": "BLACKSTORE",
+      "world": 66,
+      "france": 66
+    }
+  ],
+  "examples": [
+    {
+      "token": "rpp3vwzazs9dmsf9f9",
+      "jobId": "cmtt6849a00033nnj6qnpdmq7",
+      "title": "ADMINISTRATEUR·RICE DES VENTES C&C – INTERSPORT H/F",
+      "company": "Intersport",
+      "url": "https://modecareers.com/offre/administrateur-rice-des-ventes-c-c-intersport-h-f-cmtt6849a00033nnj6qnpdmq7",
+      "postedAt": "2026-09-08T13:08:27.000Z",
+      "country": "FR",
+      "workTime": null
+    },
+    {
+      "token": "v9f3i6k3c5c8z2z9ly",
+      "jobId": "cmtt68nkm00bf3nnjhnmb8lw1",
+      "title": "Vendeur H/F",
+      "company": "Blackstore",
+      "url": "https://modecareers.com/offre/vendeur-h-f-cmtt68nkm00bf3nnjhnmb8lw1",
+      "postedAt": "2026-09-03T15:05:17.000Z",
+      "country": "FR",
+      "workTime": null
+    },
+    {
+      "token": "kk9lf81m7g02gp16m8",
+      "jobId": "cmtt6856d000l3nnjc1smj00f",
+      "title": "Hôte de caisse et d’accueil H/F - Temps partiel",
+      "company": "Intersport",
+      "url": "https://modecareers.com/offre/hote-de-caisse-et-d-accueil-h-f-temps-partiel-cmtt6856d000l3nnjc1smj00f",
+      "postedAt": "2026-09-08T10:30:14.000Z",
+      "country": "FR",
+      "workTime": "PART_TIME"
+    }
+  ],
+  "counts": [
+    {
+      "active": 72359,
+      "france": 10684,
+      "withoutPublicationDate": 1477,
+      "withoutCountry": 4654
+    }
+  ]
+}

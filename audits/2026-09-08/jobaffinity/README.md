@@ -1,5 +1,10 @@
 # Intersport et Blackstore : sources directes, contrôlées le 8 septembre 2026
 
+**Livraison en production vérifiée le 8 septembre 2026 à 21:26 UTC.** PR27 fusionnée, commit applicatif `75f0ff5`, main `030a101`, quatre services Railway déployés. Deux sources activées, une nouvelle enseigne canonique (Blackstore), source Intersport existante conservée.
+
+**+940 offres distinctes, dont +933 France. Totaux : 72 359 actives / 10 684 France.** 978 représentations, 38 rapprochements entre portails, zéro erreur d’ingestion. Les six anciennes offres Intersport (dont cinq actives), leurs RAW et leurs historiques sont identiques. Les 978 articles et cartes source sont identiques aux captures ; seule l’empreinte HTML globale du nouveau balayage diffère.
+
+
 Les domaines officiels relient explicitement les deux portails fournis. Blackstore est une enseigne du groupe Intersport, confirmé par https://www.blackstore.fr/qui-sommes-nous/. Intersport existe déjà dans Catwalks avec un autre portail Teamtailor ; cette source supplémentaire ne le remplace pas. Blackstore possède sa propre identité canonique et le lien de groupe est conservé.
 
 ## Mesure avant import
@@ -34,3 +39,29 @@ Les reçus de staging, répétition, commit, déploiement et preuves après prod
 940 offres distinctes supplémentaires : 930 créées depuis le portail Intersport, puis 10 créations et 38 rapprochements depuis Blackstore. 933 pays FR prouvés ; 7 pays restent inconnus (Thiais, Morteau et Val Thorens), avec contradiction source archivée. 978 représentations publiables, toutes leurs charges RAW exactes après ingestion. 69 représentations retenues hors publication correspondent à 54 liens fermés uniques et 12 contradictions uniques, avec chevauchement des portails.
 
 Second passage : 0 création, 0 nouvelle fusion, 978 mises à jour des mêmes représentations ; volumes inchangés. 1 400 tests unitaires et 199 tests d’intégration passent, ainsi que le typecheck des deux applications. Ces chiffres sont une répétition locale, pas encore une preuve de production.
+
+## Comparaison avec les compteurs FashionJobs
+
+| Enseigne | Annuaire FashionJobs capturé | Offres directes actives France en production | Monde direct |
+|---|---:|---:|---:|
+| Intersport | 577 | 867 | 879 |
+| Blackstore | 66 | 66 | 66 |
+
+Les 879 Intersport comprennent les cinq offres actives du portail international antérieur. Les 66 Blackstore exigent le rapprochement des deux nouveaux portails : le portail de l’enseigne seul fournit 48 offres publiables. Ce sont des volumes de snapshots différents, pas une équivalence offre par offre. Aucune offre FashionJobs n’a été importée.
+
+## État précis du lot
+
+| Finding | Fixé ? | Commit applicatif | Main ? | Déployé ? | Données réparées / intégrées ? | Preuve prod |
+|---|---|---|---|---|---|---|
+| Deux portails directs manquants | Oui | 75f0ff5 | 030a101 | Oui | 940 offres supplémentaires | production-proof.json |
+| Doublons des deux portails | Oui | 75f0ff5 | Oui | Oui | 38 rattachements, 978 représentations / 940 offres | production-proof.json |
+| Fausses annonces ouvertes | Oui pour les fermetures prouvées | 75f0ff5 | Oui | Oui | 54 liens fermés exclus, preuves conservées | application-audit.json et traces d’ingestion |
+| Templates expirés avec formulaire accessible | Identifiés, non résolus | 75f0ff5 (mise en attente) | Oui | Oui | 12 liens non publiés ; aucun statut ouvert inventé | live-validation.json |
+| Pays non renseignés dans la nouvelle cohorte | Partiel | 75f0ff5 | Oui | Oui | 933 pays France prouvés ; 7 restent non renseignés | final-metrics.json |
+| Dates originales, lot PR26 | Oui sur la cohorte prouvée | 9ae6b7b | 1b3fe6e | Oui | 2 844 Jobs et 3 740 JobSources réparés ; 1 477 dates restent inconnues globalement | ../publication-dates/production-proof.json |
+
+Les références officielles de magasins permettent d’avancer sur six des sept pays restants (Thiais et Morteau). `additional-store-geography-proof.json` les distingue : preuves documentées après gel du lot, non encore intégrées au traitement récurrent, donc pas de backfill isolé qui serait annulé à la prochaine ingestion. Val Thorens reste à rapprocher précisément.
+
+Le statut source DEGRADED est explicite : Intersport conserve 12 contradictions, et Blackstore a six lignes fermées dans son listing. Zéro erreur technique. Le premier run n’accorde aucun droit d’attester l’absence ; Intersport reste bloqué pour les clôtures par simple absence tant que les contradictions persistent. Les retraits explicites par formulaire utilisent le gestionnaire de cycle de vie et conservent les autres sources actives.
+
+La préparation Google Jobs est contrôlée sur trois pages réelles : date, pays, employeur et temps partiel correspondent à la base. Cela ne garantit pas l’indexation Google ni l’éligibilité des offres dont un champ requis manque. Le réaudit global, les 1 477 dates restantes et la qualification des autres employeurs mondiaux restent ouverts.

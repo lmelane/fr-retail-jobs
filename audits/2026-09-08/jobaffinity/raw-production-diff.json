@@ -1,0 +1,23 @@
+{
+  "at": "2026-09-08T21:25:49.958Z",
+  "sources": [
+    {
+      "key": "intersport-france",
+      "rows": 930,
+      "differingPaths": {
+        "listingEvidence.sha256": 930
+      },
+      "postPayloadsExact": 930,
+      "boardRowsExact": 930
+    },
+    {
+      "key": "blackstore",
+      "rows": 48,
+      "differingPaths": {
+        "listingEvidence.sha256": 48
+      },
+      "postPayloadsExact": 48,
+      "boardRowsExact": 48
+    }
+  ]
+}

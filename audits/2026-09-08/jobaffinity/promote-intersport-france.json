@@ -1,0 +1,7 @@
+{
+  "ok": true,
+  "command": "promote",
+  "key": "intersport-france",
+  "from": "DRAFT",
+  "to": "ACTIVE"
+}
