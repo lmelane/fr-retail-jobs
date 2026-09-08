@@ -34,6 +34,15 @@ describe('Flatchr public board', () => {
     const posting = item('a'); posting.vacancy.show_address = false; posting.vacancy.show_contract_type = false;
     expect(parseFlatchrBoard(board([posting]), url).jobs[0]).toMatchObject({country:'France',contract:'CDD'});
   });
+  it('preserves explicit group evidence without inventing one from absent or malformed fields', () => {
+    for (const [group, expected] of [[' Armand Thiery ', 'Armand Thiery'], [null, undefined], [{ name: 'Guess' }, undefined]] as const) {
+      const posting = item('a');
+      Object.assign(posting.vacancy.company, { group });
+      const job = parseFlatchrBoard(board([posting]), url).jobs[0];
+      expect(job.group).toBe(expected);
+      expect(job.raw).toEqual(posting);
+    }
+  });
   it('keeps vacancy identity through republication/title changes', () => {
     const original = item('a');
     const repost = { ...original, id: 'new-publication', vacancy: { ...original.vacancy, slug: 'a-new-title' } };

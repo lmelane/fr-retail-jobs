@@ -1,0 +1,49 @@
+{
+  "applicationCommit": "6c6ae6bae1eb5ab454d5244faa278c6208d92ee1",
+  "mainCommit": "4f1c0cc1b1b5f150641916514b9aea1a9e5e9801",
+  "pr": "https://github.com/lmelane/fr-retail-jobs/pull/24",
+  "ci": {
+    "runId": 34272012328,
+    "result": "SUCCESS"
+  },
+  "deployments": [
+    {
+      "service": "catwalks-reconcile",
+      "deploymentId": "08ee418b-fd77-45b4-934f-7992fcf2c984",
+      "status": "SUCCESS",
+      "commit": "4f1c0cc1b1b5f150641916514b9aea1a9e5e9801",
+      "buildOnly": true
+    },
+    {
+      "service": "catwalks-web",
+      "deploymentId": "1eae079f-913f-4c7f-b4c0-b09de322c221",
+      "status": "SUCCESS",
+      "commit": "4f1c0cc1b1b5f150641916514b9aea1a9e5e9801",
+      "buildOnly": false
+    },
+    {
+      "service": "catwalks-aggregator",
+      "deploymentId": "b071e8a7-81b2-4fe8-94c8-1b98e533123a",
+      "status": "SUCCESS",
+      "commit": "4f1c0cc1b1b5f150641916514b9aea1a9e5e9801",
+      "buildOnly": true
+    },
+    {
+      "service": "catwalks-refresh",
+      "deploymentId": "1fd8f3e9-32a3-4503-8b1e-4989a329a629",
+      "status": "SUCCESS",
+      "commit": "4f1c0cc1b1b5f150641916514b9aea1a9e5e9801",
+      "buildOnly": true
+    }
+  ],
+  "migration": "20260909190000_flatchr_adapter",
+  "productionIngestExecuted": true,
+  "execution": "Committed main checkout, targeted normal ingest CLI against production PostgreSQL; workers use the same deployed commit.",
+  "newSources": 3,
+  "newWorldJobs": 156,
+  "newFranceJobs": 117,
+  "backup": {
+    "bytes": 266785137,
+    "sha256": "cda8379e93b4af2c9742e24ff5b6c6475e3b191cd60378e8fa21f94a483451cc"
+  }
+}

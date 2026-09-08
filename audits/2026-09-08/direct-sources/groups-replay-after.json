@@ -1,0 +1,95 @@
+{
+  "at": "2026-09-08T20:22:19.554Z",
+  "companies": [
+    {
+      "id": "cmtt37c4v000a3n13t87bcpuw",
+      "name": "RIU Paris",
+      "canonicalKey": "RIU_PARIS",
+      "kind": "MAISON",
+      "sector": "FASHION",
+      "parentGroup": "Armand Thiery",
+      "domain": "riuparis.fr",
+      "domainSource": "manual",
+      "fashionjobsUrl": "resolved:RIU_PARIS",
+      "fashionjobsSlug": null,
+      "fashionjobsOfferCount": null,
+      "careersUrl": "https://riuparis.flatchr.io/fr/company/riuparis/",
+      "atsType": "FLATCHR",
+      "atsConfig": {
+        "listingUrl": "https://riuparis.flatchr.io/fr/company/riuparis/"
+      },
+      "discoveryStatus": "FOUND",
+      "discoveryNote": "https://www.riuparis.fr/fr-fr/recrutement links explicitly to riuparis.flatchr.io; the unfiltered Flatchr board names RIU Paris on every vacancy. Identity reviewed from employer website, not a guessed ATS slug.",
+      "firstSeenAt": "2026-09-08T19:53:18.127Z",
+      "lastSeenAt": "2026-09-08T19:54:24.704Z",
+      "lastAtsDiscoveryAt": "2026-09-08T19:51:47.029Z",
+      "lastJobSyncAt": null,
+      "createdAt": "2026-09-08T19:53:18.127Z",
+      "updatedAt": "2026-09-08T20:21:35.749Z"
+    },
+    {
+      "id": "cmtt37c53000i3n13znnvkpet",
+      "name": "Toscane",
+      "canonicalKey": "TOSCANE",
+      "kind": "MAISON",
+      "sector": "FASHION",
+      "parentGroup": "Armand Thiery",
+      "domain": "toscane-boutique.fr",
+      "domainSource": "manual",
+      "fashionjobsUrl": "resolved:TOSCANE",
+      "fashionjobsSlug": null,
+      "fashionjobsOfferCount": null,
+      "careersUrl": "https://toscane.flatchr.io/fr/company/toscane/",
+      "atsType": "FLATCHR",
+      "atsConfig": {
+        "listingUrl": "https://toscane.flatchr.io/fr/company/toscane/"
+      },
+      "discoveryStatus": "FOUND",
+      "discoveryNote": "https://www.toscane-boutique.fr/ links explicitly to toscane.flatchr.io; the unfiltered Flatchr board names Toscane on every vacancy. Identity reviewed from employer website, not a guessed ATS slug.",
+      "firstSeenAt": "2026-09-08T19:53:18.135Z",
+      "lastSeenAt": "2026-09-08T19:54:28.621Z",
+      "lastAtsDiscoveryAt": "2026-09-08T19:51:49.045Z",
+      "lastJobSyncAt": null,
+      "createdAt": "2026-09-08T19:53:18.135Z",
+      "updatedAt": "2026-09-08T20:21:35.761Z"
+    }
+  ],
+  "evidence": [
+    {
+      "sourceKey": "riu-paris",
+      "portal": "https://riuparis.flatchr.io/fr/company/riuparis/",
+      "officialProof": "https://www.riuparis.fr/fr-fr/recrutement",
+      "boardHash": "6b5b942fb202fe370f5bc140830c73878f406d29c857072ee3df5789ea5dcf43",
+      "path": "vacancy.company.group",
+      "sourceValue": "Armand Thiery",
+      "reviewedConfidence": "HIGH",
+      "companyId": "cmtt37c4v000a3n13t87bcpuw",
+      "parentGroup": "Armand Thiery",
+      "jobs": 15,
+      "jobsHash": "b5583551143a5311982b23a7f59c809a37ad067349ba03424f15c725fe317134",
+      "jobsWithNullGroupSearchHash": "f52761523930b7b976393d1abeb09aaaefb13e147377645bd6eddc7c7f933953",
+      "searchIndexConsistent": true,
+      "representationsHash": "5ad9ff457278e456ad4b60e3b1fabbfa3fd5ff05f4f90a9a0027a96d67f72388",
+      "eventsHash": "25969db17c8d12f076b1bf188586e248ec0fce77b2874a42037473a5aa566461",
+      "events": 15
+    },
+    {
+      "sourceKey": "toscane",
+      "portal": "https://toscane.flatchr.io/fr/company/toscane/",
+      "officialProof": "https://www.toscane-boutique.fr/",
+      "boardHash": "7f3ffdac90ef545ce89ae86c6807726b92a13264e8fe27dce8141096bd863784",
+      "path": "vacancy.company.group",
+      "sourceValue": "Armand Thiery",
+      "reviewedConfidence": "HIGH",
+      "companyId": "cmtt37c53000i3n13znnvkpet",
+      "parentGroup": "Armand Thiery",
+      "jobs": 20,
+      "jobsHash": "3aca2e54d4dd5a2730d82b1a3f879f8efc1068dc287d20c70c91fe96a75fc39c",
+      "jobsWithNullGroupSearchHash": "5034f0fb308401bbc8c36e7444d845f1217f2649ba446b2293b01f1ca4cfa797",
+      "searchIndexConsistent": true,
+      "representationsHash": "fc1fadc96e531540652b10ced7ce88593a2b0d3f974c194c8caafbb2dae63d03",
+      "eventsHash": "2ad1dad33721491ac4179b13d363492d76ad4abd514f4aba6e9bfc1d8dcf1981",
+      "events": 20
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "url": "https://modecareers.com/api/jobs?pays=FR",
+    "at": "2026-09-08T20:06:51.024079+00:00",
+    "http": 200,
+    "total": 9751,
+    "databaseTotal": 9751,
+    "delta": 0,
+    "hash": "16b694d875c7f349a5de7c4ed873b3003b64696e22626de4ccb86a351cfcd984"
+  },
+  {
+    "url": "https://modecareers.com/api/jobs?pays=monde",
+    "at": "2026-09-08T20:06:51.619604+00:00",
+    "http": 200,
+    "total": 71419,
+    "databaseTotal": 71419,
+    "delta": 0,
+    "hash": "00c64adc0911fac019d8eedf693df71a3f0ad8678e7e1b5824ba0f1222412ee6"
+  }
+]

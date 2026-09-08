@@ -1,0 +1,32 @@
+{
+  "batchId": "20260908-FLATCHR-DIRECT-v1",
+  "sha": "cdac8384df569d5880e7e892c9ef9531b987702a15afd3b1350a42590dc1f71d",
+  "apply": true,
+  "before": {
+    "jobs": 73801,
+    "events": 12851,
+    "representations": 76718
+  },
+  "after": {
+    "jobs": 73801,
+    "events": 12851,
+    "representations": 76718
+  },
+  "results": [
+    {
+      "key": "adopt-parfums",
+      "written": 0,
+      "idempotent": true
+    },
+    {
+      "key": "riu-paris",
+      "written": 0,
+      "idempotent": true
+    },
+    {
+      "key": "toscane",
+      "written": 0,
+      "idempotent": true
+    }
+  ]
+}

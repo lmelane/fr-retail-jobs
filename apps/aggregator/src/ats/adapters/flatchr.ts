@@ -74,6 +74,9 @@ export function parseFlatchrBoard(html: string, listingUrl: string): AdapterResu
       Math.abs(latitude) <= 90 && Math.abs(longitude) <= 180;
     return {
       externalId, title: v.title.trim(), company: v.company.name.trim(), description,
+      // Preserve the explicit source assertion. Company.parentGroup remains
+      // governed by the reviewed central reference, not arbitrary vendor text.
+      group: text(v.company.group),
       url: `${url.origin}${boardPath}/vacancy/${v.slug}`,
       location: text(address?.formatted_address), city: text(address?.locality),
       postalCode: text(address?.postal_code), country: text(address?.country),

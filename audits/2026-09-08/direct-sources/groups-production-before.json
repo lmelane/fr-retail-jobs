@@ -1,0 +1,91 @@
+{
+  "at": "2026-09-08T20:21:11.713Z",
+  "companies": [
+    {
+      "id": "cmtt3jqm9000a3nx9yknve29r",
+      "name": "RIU Paris",
+      "canonicalKey": "RIU_PARIS",
+      "kind": "MAISON",
+      "sector": "FASHION",
+      "parentGroup": null,
+      "domain": "riuparis.fr",
+      "domainSource": "manual",
+      "fashionjobsUrl": "resolved:RIU_PARIS",
+      "fashionjobsSlug": null,
+      "fashionjobsOfferCount": null,
+      "careersUrl": "https://riuparis.flatchr.io/fr/company/riuparis/",
+      "atsType": "FLATCHR",
+      "atsConfig": {
+        "listingUrl": "https://riuparis.flatchr.io/fr/company/riuparis/"
+      },
+      "discoveryStatus": "FOUND",
+      "discoveryNote": "https://www.riuparis.fr/fr-fr/recrutement links explicitly to riuparis.flatchr.io; the unfiltered Flatchr board names RIU Paris on every vacancy. Identity reviewed from employer website, not a guessed ATS slug.",
+      "firstSeenAt": "2026-09-08T20:02:56.769Z",
+      "lastSeenAt": "2026-09-08T20:04:30.599Z",
+      "lastAtsDiscoveryAt": "2026-09-08T19:51:47.029Z",
+      "lastJobSyncAt": null,
+      "createdAt": "2026-09-08T20:02:56.769Z",
+      "updatedAt": "2026-09-08T20:04:30.662Z"
+    },
+    {
+      "id": "cmtt3jqra000i3nx9khntpmay",
+      "name": "Toscane",
+      "canonicalKey": "TOSCANE",
+      "kind": "MAISON",
+      "sector": "FASHION",
+      "parentGroup": null,
+      "domain": "toscane-boutique.fr",
+      "domainSource": "manual",
+      "fashionjobsUrl": "resolved:TOSCANE",
+      "fashionjobsSlug": null,
+      "fashionjobsOfferCount": null,
+      "careersUrl": "https://toscane.flatchr.io/fr/company/toscane/",
+      "atsType": "FLATCHR",
+      "atsConfig": {
+        "listingUrl": "https://toscane.flatchr.io/fr/company/toscane/"
+      },
+      "discoveryStatus": "FOUND",
+      "discoveryNote": "https://www.toscane-boutique.fr/ links explicitly to toscane.flatchr.io; the unfiltered Flatchr board names Toscane on every vacancy. Identity reviewed from employer website, not a guessed ATS slug.",
+      "firstSeenAt": "2026-09-08T20:02:56.950Z",
+      "lastSeenAt": "2026-09-08T20:04:41.002Z",
+      "lastAtsDiscoveryAt": "2026-09-08T19:51:49.045Z",
+      "lastJobSyncAt": null,
+      "createdAt": "2026-09-08T20:02:56.950Z",
+      "updatedAt": "2026-09-08T20:04:41.062Z"
+    }
+  ],
+  "evidence": [
+    {
+      "sourceKey": "riu-paris",
+      "portal": "https://riuparis.flatchr.io/fr/company/riuparis/",
+      "officialProof": "https://www.riuparis.fr/fr-fr/recrutement",
+      "boardHash": "6b5b942fb202fe370f5bc140830c73878f406d29c857072ee3df5789ea5dcf43",
+      "path": "vacancy.company.group",
+      "sourceValue": "Armand Thiery",
+      "reviewedConfidence": "HIGH",
+      "companyId": "cmtt3jqm9000a3nx9yknve29r",
+      "parentGroup": null,
+      "jobs": 15,
+      "jobsHash": "15389bb0a5615c0ff80134524f0bf3b3ee9e3f3f33bef29a423249ab6dd4f315",
+      "representationsHash": "064ad7eeb897b2f8cdb7a5d0505aeb692fb425a4e1f7835039857068b88e07aa",
+      "eventsHash": "4bfb83a8fb73a073a99c52e4a1531970d7fb564e2780c872fbf18048e5f62b08",
+      "events": 15
+    },
+    {
+      "sourceKey": "toscane",
+      "portal": "https://toscane.flatchr.io/fr/company/toscane/",
+      "officialProof": "https://www.toscane-boutique.fr/",
+      "boardHash": "7f3ffdac90ef545ce89ae86c6807726b92a13264e8fe27dce8141096bd863784",
+      "path": "vacancy.company.group",
+      "sourceValue": "Armand Thiery",
+      "reviewedConfidence": "HIGH",
+      "companyId": "cmtt3jqra000i3nx9khntpmay",
+      "parentGroup": null,
+      "jobs": 20,
+      "jobsHash": "4ad2e4a2932c53644f585049056eac1f856081eeffb58d3b8aa1cd0c4cb28116",
+      "representationsHash": "d16395e53ee191de338e31122a3745f7978b5dbd081afcfc351fa198a0642d8a",
+      "eventsHash": "2874ba701eb6c727dd4836e982eeace0167a0e1ec6e390ca58b153c15c35fb5f",
+      "events": 20
+    }
+  ]
+}
