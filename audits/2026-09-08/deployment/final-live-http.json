@@ -1,0 +1,60 @@
+{
+  "measuredAt": "2026-09-08T15:40:48.456Z",
+  "commit": "b7aa6dafe00c8cc286a43b62332b938de5db7a9f",
+  "origin": "https://modecareers.com",
+  "checks": [
+    {
+      "path": "/api/health",
+      "status": 200,
+      "elapsedMs": 184,
+      "bytes": 15,
+      "result": {
+        "status": "ok"
+      }
+    },
+    {
+      "path": "/api/jobs?page=1",
+      "status": 200,
+      "elapsedMs": 532,
+      "bytes": 184383,
+      "result": {
+        "total": 71636,
+        "rows": 25
+      }
+    },
+    {
+      "path": "/api/jobs?pays=FR",
+      "status": 200,
+      "elapsedMs": 214,
+      "bytes": 194933,
+      "result": {
+        "total": 9636,
+        "rows": 25
+      }
+    },
+    {
+      "path": "/emplois",
+      "status": 200,
+      "elapsedMs": 476,
+      "bytes": 250974
+    },
+    {
+      "path": "/entreprises",
+      "status": 200,
+      "elapsedMs": 416,
+      "bytes": 1127810
+    },
+    {
+      "path": "/intelligence/pays/FR",
+      "status": 200,
+      "elapsedMs": 285,
+      "bytes": 109240
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "elapsedMs": 63,
+      "bytes": 1888
+    }
+  ]
+}

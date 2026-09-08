@@ -1,0 +1,57 @@
+[
+  {
+    "service": "Postgres",
+    "deploymentId": "0391dd34-5466-4691-91e6-f3e059c3aed7",
+    "status": "SUCCESS",
+    "commit": null,
+    "cronSchedule": null,
+    "startCommand": null,
+    "deploymentStartCommand": null,
+    "healthcheckPath": null,
+    "nextCronRunAt": null
+  },
+  {
+    "service": "catwalks-reconcile",
+    "deploymentId": "5f8d8aa5-f454-4741-b987-9a1091e6f81b",
+    "status": "SUCCESS",
+    "commit": "b7aa6dafe00c8cc286a43b62332b938de5db7a9f",
+    "cronSchedule": "0 3 * * 1",
+    "startCommand": null,
+    "deploymentStartCommand": null,
+    "healthcheckPath": null,
+    "nextCronRunAt": "2026-09-14T03:00:00Z"
+  },
+  {
+    "service": "catwalks-web",
+    "deploymentId": "2d465968-30a9-41ad-a9ba-130edec3fd79",
+    "status": "SUCCESS",
+    "commit": "b7aa6dafe00c8cc286a43b62332b938de5db7a9f",
+    "cronSchedule": null,
+    "startCommand": null,
+    "deploymentStartCommand": null,
+    "healthcheckPath": "/api/health",
+    "nextCronRunAt": null
+  },
+  {
+    "service": "catwalks-aggregator",
+    "deploymentId": "77ac814f-d67f-464e-9ace-ddc821376608",
+    "status": "SUCCESS",
+    "commit": "b7aa6dafe00c8cc286a43b62332b938de5db7a9f",
+    "cronSchedule": "0 22 * * *",
+    "startCommand": "sh apps/aggregator/start.sh",
+    "deploymentStartCommand": "sh apps/aggregator/start.sh",
+    "healthcheckPath": null,
+    "nextCronRunAt": "2026-09-08T22:00:00Z"
+  },
+  {
+    "service": "catwalks-refresh",
+    "deploymentId": "7388c3e9-6bf8-44a6-9767-0796d7a062f3",
+    "status": "SUCCESS",
+    "commit": "b7aa6dafe00c8cc286a43b62332b938de5db7a9f",
+    "cronSchedule": "0 2 * * *",
+    "startCommand": null,
+    "deploymentStartCommand": null,
+    "healthcheckPath": null,
+    "nextCronRunAt": "2026-09-09T02:00:00Z"
+  }
+]

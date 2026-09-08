@@ -1,0 +1,152 @@
+{
+  "ok": true,
+  "before": {
+    "jobs": 73645,
+    "observations": 0
+  },
+  "after": {
+    "jobs": 73645,
+    "observations": 32
+  },
+  "results": [
+    {
+      "key": "olaplex",
+      "ms": 687,
+      "stats": [
+        {
+          "source": "olaplex",
+          "fetched": 10,
+          "inSector": 10,
+          "france": 0,
+          "created": 0,
+          "merged": 0,
+          "updated": 10,
+          "errors": 0,
+          "withDescription": 10,
+          "withDate": 10,
+          "withCountry": 0,
+          "withUrl": 10,
+          "complete": true,
+          "truncated": false
+        }
+      ],
+      "health": {
+        "broken": 0,
+        "degraded": 0
+      },
+      "run": {
+        "status": "OK",
+        "complete": true,
+        "canAttestAbsence": true,
+        "fetched": 10,
+        "accepted": 10,
+        "errors": 0
+      }
+    },
+    {
+      "key": "vestiaire-collective",
+      "ms": 1546,
+      "stats": [
+        {
+          "source": "vestiaire-collective",
+          "fetched": 11,
+          "inSector": 11,
+          "france": 6,
+          "created": 0,
+          "merged": 0,
+          "updated": 11,
+          "errors": 0,
+          "withDescription": 11,
+          "withDate": 11,
+          "withCountry": 0,
+          "withUrl": 11,
+          "complete": true,
+          "truncated": false
+        }
+      ],
+      "health": {
+        "broken": 0,
+        "degraded": 0
+      },
+      "run": {
+        "status": "OK",
+        "complete": true,
+        "canAttestAbsence": true,
+        "fetched": 11,
+        "accepted": 11,
+        "errors": 0
+      }
+    },
+    {
+      "key": "uniqlo-graduates",
+      "ms": 2081,
+      "stats": [
+        {
+          "source": "uniqlo-graduates",
+          "fetched": 11,
+          "inSector": 11,
+          "france": 1,
+          "created": 0,
+          "merged": 0,
+          "updated": 11,
+          "errors": 0,
+          "withDescription": 11,
+          "withDate": 11,
+          "withCountry": 11,
+          "withUrl": 11,
+          "complete": true,
+          "declaredTotal": 11,
+          "truncated": false
+        }
+      ],
+      "health": {
+        "broken": 0,
+        "degraded": 0
+      },
+      "run": {
+        "status": "OK",
+        "complete": true,
+        "canAttestAbsence": true,
+        "fetched": 11,
+        "accepted": 11,
+        "errors": 0
+      }
+    },
+    {
+      "key": "olaplex",
+      "ms": 482,
+      "stats": [
+        {
+          "source": "olaplex",
+          "fetched": 10,
+          "inSector": 10,
+          "france": 0,
+          "created": 0,
+          "merged": 0,
+          "updated": 10,
+          "errors": 0,
+          "withDescription": 10,
+          "withDate": 10,
+          "withCountry": 0,
+          "withUrl": 10,
+          "complete": true,
+          "truncated": false
+        }
+      ],
+      "health": {
+        "broken": 0,
+        "degraded": 0
+      },
+      "run": {
+        "status": "OK",
+        "complete": true,
+        "canAttestAbsence": true,
+        "fetched": 10,
+        "accepted": 10,
+        "errors": 0
+      }
+    }
+  ],
+  "runtime": "v24.18.1",
+  "commit": "ae352d47668d520b60575c56ef1eb253a6499609"
+}

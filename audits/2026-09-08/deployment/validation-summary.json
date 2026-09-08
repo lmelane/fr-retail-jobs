@@ -1,0 +1,68 @@
+{
+  "measuredAt": "2026-09-08T15:43:05.604424+00:00",
+  "productionSnapshot": {
+    "activeJobs": 71636,
+    "trackedSources": 440,
+    "sourcesWithActiveFootprints": 447,
+    "pausedSourcesWithActiveFootprints": 7
+  },
+  "canarySources": [
+    "olaplex",
+    "vestiaire-collective",
+    "uniqlo-graduates"
+  ],
+  "canaryAttestations": 32,
+  "canaryCreatedJobs": 0,
+  "repeatCreatedJobs": 0,
+  "tests": {
+    "unit": 1351,
+    "integration": 189,
+    "web": 102,
+    "webSkipped": 2,
+    "e2e": 16,
+    "totalPassed": 1658
+  },
+  "build": "passed",
+  "typecheck": "passed",
+  "productionRuntime": "Node 24.18.1 (Playwright image)",
+  "localAndCIRuntime": "Node 22",
+  "dependencyFindings": {
+    "before": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 5,
+      "critical": 1,
+      "total": 10
+    },
+    "after": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "remainingReleaseWork": [],
+  "productionCertification": false,
+  "operationalGaps": [
+    "Full source completeness coverage after real collection cycles",
+    "Independent alert failure injection and provider restore RPO/RTO",
+    "Sustained production load and slow text searches",
+    "Complete field provenance/replay and worldwide reference coverage",
+    "Least privilege, preexisting public database proxy consumers and retention policy"
+  ],
+  "deployed": true,
+  "deployedCommit": "b7aa6dafe00c8cc286a43b62332b938de5db7a9f",
+  "remoteCI": "passed",
+  "finalServices": "final-services.json",
+  "finalHttp": "final-live-http.json",
+  "backup": {
+    "logicalBackupRestore": "passed",
+    "railwayVolumeSizeMB": 10000,
+    "newRailwaySnapshot": "314c6f38-202b-4072-81e6-7f615b33cec1",
+    "providerSnapshotRestore": "not tested",
+    "preexistingSnapshotsPreserved": true
+  }
+}

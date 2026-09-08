@@ -1,28 +1,30 @@
 {
-  "recordedAt": "2026-09-08T13:14:44.806441+00:00",
+  "recordedAt": "2026-09-08T15:43:05.604424+00:00",
   "baselineCommit": "c353ed39bf8f82c44c6bfd2f8e5bfa00ddef7629",
   "productionReady": false,
-  "deployed": false,
-  "productionWritesPerformed": false,
-  "scope": "Local changes and synthetic validation; production observations in the initial audit are historical.",
-  "runtime": "Node 22.23.2",
-  "database": "PostgreSQL 18, isolated local synthetic databases",
+  "deployed": true,
+  "productionWritesPerformed": true,
+  "scope": "Deployed hardening release with six production migrations and controlled canary ingestion; global production certification remains open.",
+  "runtime": "Node 22 in tests/CI; Node 24.18.1 in deployed collector",
+  "database": "PostgreSQL 18 production; restored isolated production copy used for rehearsal",
   "tests": {
     "aggregatorUnit": 1351,
-    "aggregatorIntegration": 187,
-    "webPassed": 100,
+    "aggregatorIntegration": 189,
+    "webPassed": 102,
     "webSkipped": 2,
     "e2e": 16,
-    "totalPassed": 1654,
+    "totalPassed": 1658,
     "typecheck": "passed",
     "webBuild": "passed",
-    "remoteCI": "not run"
+    "remoteCI": "passed"
   },
   "migrations": [
     "20260909000000_identity_integrity",
     "20260909010000_run_attestation",
     "20260909020000_run_completion",
-    "20260909030000_indexed_job_search"
+    "20260909030000_indexed_job_search",
+    "20260909040000_backfill_job_search",
+    "20260909050000_concurrent_job_search_index"
   ],
   "benchmarks": {
     "write": "load-validation.json",
@@ -33,15 +35,13 @@
     "restore-validation.json",
     "restore-validation-observations.json"
   ],
-  "delivery": "LIVRAISON-LOT-2.md",
+  "delivery": "DEPLOIEMENT-PRODUCTION.md",
   "blockers": [
-    "Certify completeness contracts and monitor unknown coverage across active sources.",
-    "Rehearse coordinated migration and recovery on a representative isolated copy; verify production backups and RPO/RTO.",
-    "Prove alert delivery and independent scheduler/monitoring failure detection.",
-    "Harmonize purge, retireSource, separation and event retention with concurrency invariants.",
-    "Make CSV activation follow the same dated evidence contract as promotion.",
-    "Validate deployment isolation, least privilege, dependency exposure and sustained load.",
-    "Measure storage growth and define retention for observations, search projection, index, WAL and backups."
+    "Certify completeness across real scheduled collection cycles.",
+    "Measure provider recovery RPO/RTO and independent failure alerting.",
+    "Validate sustained load, slow searches, connection/concurrency budgets.",
+    "Complete field provenance, versioned replay and worldwide coverage measurement.",
+    "Inventory database proxy consumers and least-privilege roles; define storage retention."
   ],
   "remainingQualityWork": [
     "Field provenance and versioned replay",
@@ -51,5 +51,7 @@
     "Accessibility and pagination response races",
     "Independent worldwide employer reference coverage and annotated quality evaluation"
   ],
-  "userDataExcluded": true
+  "userDataExcluded": true,
+  "deployedCommit": "b7aa6dafe00c8cc286a43b62332b938de5db7a9f",
+  "releaseEvidence": "deployment/validation-summary.json"
 }

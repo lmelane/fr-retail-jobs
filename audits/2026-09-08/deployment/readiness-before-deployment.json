@@ -1,0 +1,55 @@
+{
+  "recordedAt": "2026-09-08T13:14:44.806441+00:00",
+  "baselineCommit": "c353ed39bf8f82c44c6bfd2f8e5bfa00ddef7629",
+  "productionReady": false,
+  "deployed": false,
+  "productionWritesPerformed": false,
+  "scope": "Local changes and synthetic validation; production observations in the initial audit are historical.",
+  "runtime": "Node 22.23.2",
+  "database": "PostgreSQL 18, isolated local synthetic databases",
+  "tests": {
+    "aggregatorUnit": 1351,
+    "aggregatorIntegration": 187,
+    "webPassed": 100,
+    "webSkipped": 2,
+    "e2e": 16,
+    "totalPassed": 1654,
+    "typecheck": "passed",
+    "webBuild": "passed",
+    "remoteCI": "not run"
+  },
+  "migrations": [
+    "20260909000000_identity_integrity",
+    "20260909010000_run_attestation",
+    "20260909020000_run_completion",
+    "20260909030000_indexed_job_search"
+  ],
+  "benchmarks": {
+    "write": "load-validation.json",
+    "search": "search-validation.json",
+    "limitations": "Small local synthetic workloads; no production traffic, soak, multi-replica or ATS capacity certification."
+  },
+  "restoreEvidence": [
+    "restore-validation.json",
+    "restore-validation-observations.json"
+  ],
+  "delivery": "LIVRAISON-LOT-2.md",
+  "blockers": [
+    "Certify completeness contracts and monitor unknown coverage across active sources.",
+    "Rehearse coordinated migration and recovery on a representative isolated copy; verify production backups and RPO/RTO.",
+    "Prove alert delivery and independent scheduler/monitoring failure detection.",
+    "Harmonize purge, retireSource, separation and event retention with concurrency invariants.",
+    "Make CSV activation follow the same dated evidence contract as promotion.",
+    "Validate deployment isolation, least privilege, dependency exposure and sustained load.",
+    "Measure storage growth and define retention for observations, search projection, index, WAL and backups."
+  ],
+  "remainingQualityWork": [
+    "Field provenance and versioned replay",
+    "Versioned country ambiguity inventory",
+    "Full source health dimensions and history",
+    "Durable external indexing queue",
+    "Accessibility and pagination response races",
+    "Independent worldwide employer reference coverage and annotated quality evaluation"
+  ],
+  "userDataExcluded": true
+}

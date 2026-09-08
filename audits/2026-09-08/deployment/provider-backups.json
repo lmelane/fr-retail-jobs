@@ -1,0 +1,76 @@
+{
+  "data": {
+    "volumeInstanceBackupList": [
+      {
+        "id": "29c60707-b79c-4a5d-81eb-e22c064b32a0",
+        "name": "Manual",
+        "createdAt": "2026-09-03T18:39:48.980Z",
+        "expiresAt": null,
+        "usedMB": 331,
+        "referencedMB": 575,
+        "volumeInstanceSizeMB": 5000,
+        "scheduleId": null
+      },
+      {
+        "id": "7065f142-bbb4-46ce-bf87-d2ed6e61744c",
+        "name": "Daily Schedule",
+        "createdAt": "2026-09-04T09:33:01.462Z",
+        "expiresAt": "2026-09-10T09:33:01.452Z",
+        "usedMB": 356,
+        "referencedMB": 766,
+        "volumeInstanceSizeMB": 5000,
+        "scheduleId": "d43fd4e5-f1f6-4c17-a3f3-ce68cf56fa68"
+      },
+      {
+        "id": "6672a8df-60a4-489b-8316-124b933dc2c8",
+        "name": "Daily Schedule",
+        "createdAt": "2026-09-05T09:33:01.621Z",
+        "expiresAt": "2026-09-11T09:33:01.599Z",
+        "usedMB": 356,
+        "referencedMB": 805,
+        "volumeInstanceSizeMB": 5000,
+        "scheduleId": "d43fd4e5-f1f6-4c17-a3f3-ce68cf56fa68"
+      },
+      {
+        "id": "2023eb78-8d55-4061-8f0c-1b29025763f2",
+        "name": "Weekly Schedule",
+        "createdAt": "2026-09-06T04:40:51.091Z",
+        "expiresAt": "2026-10-03T04:40:51.077Z",
+        "usedMB": 402,
+        "referencedMB": 872,
+        "volumeInstanceSizeMB": 5000,
+        "scheduleId": "32fced85-31c7-4946-9bd3-e180de3a2e2b"
+      },
+      {
+        "id": "281e5df7-87d7-43d8-b77e-f04570a72cec",
+        "name": "Daily Schedule",
+        "createdAt": "2026-09-06T17:12:33.757Z",
+        "expiresAt": "2026-09-12T17:12:33.733Z",
+        "usedMB": 391,
+        "referencedMB": 1381,
+        "volumeInstanceSizeMB": 5000,
+        "scheduleId": "d43fd4e5-f1f6-4c17-a3f3-ce68cf56fa68"
+      },
+      {
+        "id": "f61afabb-afb7-4ce9-82d3-e24a64db7ff6",
+        "name": "Daily Schedule",
+        "createdAt": "2026-09-07T09:33:01.102Z",
+        "expiresAt": "2026-09-13T09:33:01.092Z",
+        "usedMB": 385,
+        "referencedMB": 1382,
+        "volumeInstanceSizeMB": 5000,
+        "scheduleId": "d43fd4e5-f1f6-4c17-a3f3-ce68cf56fa68"
+      },
+      {
+        "id": "2c405baa-8fce-4c6f-a538-d868d1e1007f",
+        "name": "Daily Schedule",
+        "createdAt": "2026-09-08T09:33:01.764Z",
+        "expiresAt": "2026-09-14T09:33:01.755Z",
+        "usedMB": 505,
+        "referencedMB": 1459,
+        "volumeInstanceSizeMB": 5000,
+        "scheduleId": "d43fd4e5-f1f6-4c17-a3f3-ce68cf56fa68"
+      }
+    ]
+  }
+}
