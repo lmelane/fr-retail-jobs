@@ -1,0 +1,148 @@
+{
+  "at": "2026-09-08T14:26:00.619Z",
+  "exitCode": 0,
+  "elapsedMs": 56254,
+  "output": "Environment variables loaded from .env\nPrisma schema loaded from packages/db/prisma/schema.prisma\nDatasource \"db\": PostgreSQL database \"railway\", schema \"public\" at \"sakura.proxy.rlwy.net:40792\"\n\n19 migrations found in prisma/migrations\n\nApplying migration `20260909000000_identity_integrity`\nApplying migration `20260909010000_run_attestation`\nApplying migration `20260909020000_run_completion`\nApplying migration `20260909030000_indexed_job_search`\nApplying migration `20260909040000_backfill_job_search`\nApplying migration `20260909050000_concurrent_job_search_index`\n\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  Update available 6.19.3 -> 8.0.0-rc.13                 \u2502\n\u2502                                                         \u2502\n\u2502  This is a major update - please follow the guide at    \u2502\n\u2502  https://pris.ly/d/major-version-upgrade                \u2502\n\u2502                                                         \u2502\n\u2502  Run the following to update                            \u2502\n\u2502    npm i --save-dev prisma@latest                       \u2502\n\u2502    npm i @prisma/client@latest                          \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\nThe following migration(s) have been applied:\n\nmigrations/\n  \u2514\u2500 20260909000000_identity_integrity/\n    \u2514\u2500 migration.sql\n  \u2514\u2500 20260909010000_run_attestation/\n    \u2514\u2500 migration.sql\n  \u2514\u2500 20260909020000_run_completion/\n    \u2514\u2500 migration.sql\n  \u2514\u2500 20260909030000_indexed_job_search/\n    \u2514\u2500 migration.sql\n  \u2514\u2500 20260909040000_backfill_job_search/\n    \u2514\u2500 migration.sql\n  \u2514\u2500 20260909050000_concurrent_job_search_index/\n    \u2514\u2500 migration.sql\n      \nAll migrations have been successfully applied.\n",
+  "probes": [
+    {
+      "at": "2026-09-08T14:25:04.456Z",
+      "ms": 91,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:06.491Z",
+      "ms": 34,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:08.523Z",
+      "ms": 31,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:10.586Z",
+      "ms": 62,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:12.675Z",
+      "ms": 90,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:14.775Z",
+      "ms": 98,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:16.868Z",
+      "ms": 91,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:18.972Z",
+      "ms": 103,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:21.061Z",
+      "ms": 89,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:23.156Z",
+      "ms": 94,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:25.258Z",
+      "ms": 102,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:27.292Z",
+      "ms": 33,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:29.317Z",
+      "ms": 23,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:31.357Z",
+      "ms": 39,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:33.451Z",
+      "ms": 94,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:35.553Z",
+      "ms": 101,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:37.647Z",
+      "ms": 94,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:39.743Z",
+      "ms": 95,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:41.945Z",
+      "ms": 202,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:43.971Z",
+      "ms": 25,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:46.033Z",
+      "ms": 60,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:48.142Z",
+      "ms": 108,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:50.229Z",
+      "ms": 87,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:52.323Z",
+      "ms": 94,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:54.433Z",
+      "ms": 109,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:56.521Z",
+      "ms": 87,
+      "status": 404
+    },
+    {
+      "at": "2026-09-08T14:25:58.618Z",
+      "ms": 95,
+      "status": 404
+    }
+  ],
+  "httpProbeValidity": {
+    "valid": false,
+    "reason": "Probes targeted retired catwalks-web-production.up.railway.app instead of modecareers.com; 404s cannot establish production availability or downtime.",
+    "correctedEvidence": "final-live-http.json"
+  }
+}

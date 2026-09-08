@@ -1,0 +1,32 @@
+[
+  {
+    "service": "catwalks-reconcile",
+    "cronSchedule": "0 3 * * 1",
+    "startCommand": null,
+    "response": {
+      "data": {
+        "serviceInstanceUpdate": true
+      }
+    }
+  },
+  {
+    "service": "catwalks-aggregator",
+    "cronSchedule": "0 22 * * *",
+    "startCommand": null,
+    "response": {
+      "data": {
+        "serviceInstanceUpdate": true
+      }
+    }
+  },
+  {
+    "service": "catwalks-refresh",
+    "cronSchedule": "0 2 * * *",
+    "startCommand": null,
+    "response": {
+      "data": {
+        "serviceInstanceUpdate": true
+      }
+    }
+  }
+]

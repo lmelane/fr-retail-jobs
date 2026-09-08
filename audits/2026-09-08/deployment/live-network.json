@@ -1,0 +1,5 @@
+{
+  "node": "v24.18.1",
+  "http": true,
+  "browser": true
+}

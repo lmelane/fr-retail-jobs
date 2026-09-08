@@ -2,6 +2,8 @@
 
 **8 septembre 2026 — Catwalks / Mode Careers**
 
+> État historique avant déploiement. Le [rapport de déploiement](./DEPLOIEMENT-PRODUCTION.md) et `readiness.json` décrivent désormais la version en production et les validations finales.
+
 **Décision : corrections validées localement ; certification globale de production non acquise.** Ce lot traite des défauts d'identité, de concurrence, de fermeture d'offres, de collecte et de performance reproduits pendant l'audit. Aucun déploiement et aucune écriture en production n'ont été effectués. Les modifications restent dans le répertoire de travail, disponibles pour revue, sans commit.
 
 Révision de référence : `c353ed39bf8f82c44c6bfd2f8e5bfa00ddef7629`. Le [plan complet](./PLAN-VALIDATION-PRODUCTION.md) et l'[audit initial](./AUDIT-PRODUCTION.md) restent les références pour les chantiers qui dépassent cette livraison. Les chiffres de production de l'audit sont une photographie antérieure, pas un nouvel état mesuré après ces corrections.

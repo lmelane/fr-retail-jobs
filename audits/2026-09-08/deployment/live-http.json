@@ -1,0 +1,57 @@
+{
+  "measuredAt": "2026-09-08T15:33:12.242Z",
+  "baseUrl": "https://modecareers.com",
+  "results": [
+    {
+      "path": "/api/health",
+      "status": 200,
+      "ms": 324
+    },
+    {
+      "path": "/api/jobs?page=1",
+      "status": 200,
+      "ms": 463,
+      "total": 71636,
+      "returned": 25
+    },
+    {
+      "path": "/api/jobs?pays=FR",
+      "status": 200,
+      "ms": 268,
+      "total": 9636,
+      "returned": 25
+    },
+    {
+      "path": "/api/jobs?q=store%20manager&ville=Paris",
+      "status": 200,
+      "ms": 2037,
+      "total": 184,
+      "returned": 25
+    },
+    {
+      "path": "/emplois",
+      "status": 200,
+      "ms": 474
+    },
+    {
+      "path": "/entreprises",
+      "status": 200,
+      "ms": 380
+    },
+    {
+      "path": "/intelligence",
+      "status": 200,
+      "ms": 91
+    },
+    {
+      "path": "/intelligence/pays/FR",
+      "status": 200,
+      "ms": 59
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "ms": 48
+    }
+  ]
+}
