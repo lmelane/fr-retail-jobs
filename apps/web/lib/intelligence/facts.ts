@@ -233,7 +233,7 @@ export async function bySeniority(scope: Scope = {}): Promise<Count[]> {
 export async function byContract(scope: Scope = {}): Promise<Count[]> {
   const where = await scopeSql(scope);
   const rows = await run<{ key: string | null; count: number }>(Prisma.sql`
-    SELECT j.employmentTerm AS "key", count(*)::int AS "count" ${FROM} WHERE j."isActive" AND ${where} GROUP BY 1 ORDER BY 2 DESC`);
+    SELECT j."employmentTerm" AS "key", count(*)::int AS "count" ${FROM} WHERE j."isActive" AND ${where} GROUP BY 1 ORDER BY 2 DESC`);
   return rows.map((r) => ({ key: r.key && r.key !== 'UNKNOWN' ? r.key : '', count: r.count }));
 }
 

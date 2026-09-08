@@ -44,3 +44,47 @@ describe.skipIf(!enabled)('intelligence facts (local prod copy, read-only)', () 
     expect(await snap.snapshotDays('global', '')).toBe(s.length);
   });
 });
+
+/**
+ * FUMÉE SQL — chaque requête brute doit au moins S'EXÉCUTER.
+ *
+ * Écrit après un 500 en prod le 2026-09-08 : `SELECT j.employmentTerm` (sans
+ * guillemets) — Postgres replie l'identifiant non cité en minuscules, cherche
+ * `j.employmentterm`, et toute la page Pays tombait. Le typecheck ne voit rien
+ * dans une chaîne SQL, et le test d'intégration ci-dessus ne tournait que sur
+ * une copie locale de prod que personne n'a.
+ *
+ * Celui-ci tourne sur N'IMPORTE QUELLE base au bon schéma, base vide comprise :
+ * il n'affirme rien sur les données, seulement que le SQL est valide. C'est le
+ * contrôle le moins cher qui aurait attrapé ce bug.
+ */
+const schemaOnly = Boolean(process.env.DATABASE_URL);
+
+describe.skipIf(!schemaOnly)('intelligence facts — le SQL brut est valide', () => {
+  it('exécute chaque agrégat sans erreur SQL', async () => {
+    const facts = await import('../intelligence/facts');
+    // Toute colonne mal citée fait échouer l'appel : c'est l'assertion.
+    await Promise.all([
+      facts.headline(),
+      facts.byCountry(),
+      facts.byCity({}, 5),
+      facts.byCompany({}, 5),
+      facts.bySector(),
+      facts.byFunction(),
+      facts.bySeniority(),
+      facts.byContract(),
+      facts.closedFacts(),
+    ]);
+  });
+
+  /** Un périmètre non vide emprunte d'autres branches SQL (le `where` du scope). */
+  it('exécute les agrégats sous un périmètre pays', async () => {
+    const facts = await import('../intelligence/facts');
+    await Promise.all([
+      facts.headline({ country: 'FR' }),
+      facts.byCity({ country: 'FR' }, 5),
+      facts.byContract({ country: 'FR' }),
+      facts.byFunction({ country: 'FR' }),
+    ]);
+  });
+});

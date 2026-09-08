@@ -10,7 +10,8 @@
     "test": "vitest run",
     "e2e": "playwright test",
     "e2e:seed": "tsx e2e/seed.ts",
-    "e2e:install": "playwright install chromium"
+    "e2e:install": "playwright install chromium",
+    "test:sql": "vitest run lib/__tests__/intelligence-facts.integration.test.ts"
   },
   "dependencies": {
     "@catwalks/db": "*",
