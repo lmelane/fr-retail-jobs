@@ -69,7 +69,7 @@ describe('refresh — closedAt, reopenedCount et événements', () => {
   it('ferme : closedAt posé + CLOSED ; ré-ouvre : closedAt null, reopenedCount 1 + REOPENED', async () => {
     const c = await company();
     const j = await staleJob(c.id, 'kering', 'k1');
-    await prisma.sourceRun.create({ data: { sourceKey: 'kering', status: 'OK', jobs: 100, ranAt: new Date() } });
+    await prisma.sourceRun.create({ data: { sourceKey: 'kering', status: 'OK', jobs: 100, canAttestAbsence: true, ranAt: new Date() } });
 
     const before = Date.now();
     const closed = await runRefresh(prisma);
@@ -99,7 +99,7 @@ describe('refresh — closedAt, reopenedCount et événements', () => {
     await staleJob(c.id, 'kering', 'k1');
     await staleJob(c.id, 'kering', 'k2');
     await staleJob(c.id, 'kering', 'k3');
-    await prisma.sourceRun.create({ data: { sourceKey: 'kering', status: 'OK', jobs: 100, ranAt: new Date() } });
+    await prisma.sourceRun.create({ data: { sourceKey: 'kering', status: 'OK', jobs: 100, canAttestAbsence: true, ranAt: new Date() } });
 
     const result = await runRefresh(prisma);
     expect(result.closedJobs).toBe(3);

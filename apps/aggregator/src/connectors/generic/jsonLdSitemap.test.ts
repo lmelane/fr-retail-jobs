@@ -1,13 +1,23 @@
 import { readFileSync } from 'node:fs';
+import { gzipSync } from 'node:zlib';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-vi.mock('../../lib/http.js', () => ({ fetchText: vi.fn(), fetchWithRetry: vi.fn(), fetchJson: vi.fn() }));
+vi.mock('../../lib/http.js', async importOriginal => ({
+  ...await importOriginal<typeof import('../../lib/http.js')>(),
+  fetchText: vi.fn(), fetchWithRetry: vi.fn(), fetchJson: vi.fn(),
+}));
 
-import { fetchText } from '../../lib/http.js';
+import { fetchText, fetchWithRetry } from '../../lib/http.js';
 import { fetchJobFromPage, fetchSitemapUrls, normalizeJobPosting, richestDescription } from './jsonLdSitemap.js';
 
 const mockFetch = vi.mocked(fetchText);
 beforeEach(() => mockFetch.mockClear());
+
+it('refuses a compressed sitemap whose decompressed body exceeds the cap', async () => {
+  const compressed = gzipSync(Buffer.alloc(20_000_001, 65));
+  vi.mocked(fetchWithRetry).mockResolvedValueOnce(new Response(compressed));
+  await expect(fetchSitemapUrls('https://example.com/sitemap.xml.gz')).rejects.toThrow();
+});
 
 describe('normalizeJobPosting — lieu', () => {
   /**

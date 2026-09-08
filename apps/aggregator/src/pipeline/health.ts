@@ -1,5 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
 import type { IngestStats } from './ingest.js';
+import { isTrustedForAttestation } from './attestation.js';
 import { recordSourceRunSummary } from '../connectors/sourceStore.js';
 
 /**
@@ -73,15 +74,32 @@ export async function checkSourceHealth(
   prisma: PrismaClient,
   stats: IngestStats[],
 ): Promise<HealthReport> {
-  const previous = await previousCounts(prisma);
+  const previous = await previousCounts(prisma, stats.map(s => s.source));
   const results: SourceHealth[] = [];
 
   for (const stat of stats) {
     const jobs = stat.created + stat.merged + stat.updated;
     const before = previous.get(stat.source) ?? null;
 
-    if (before === null) {
-      results.push({ source: stat.source, status: 'NEW', jobs, previous: null });
+    const base = { source: stat.source, jobs, previous: before,
+      coverage: coverageOf(stat), rates: ratesOf(stat) };
+    if (stat.errors > 0) {
+      results.push({ ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN',
+        note: `${stat.errors} erreurs de collecte ou d’écriture` });
+      continue;
+    }
+    if (stat.truncated) {
+      results.push({ ...base, status: 'DEGRADED',
+        note: `troncature : ${stat.fetched} collectées` +
+          (stat.declaredTotal == null ? ', total inconnu' : ` sur ${stat.declaredTotal} déclarées`) });
+      continue;
+    }
+    if (before === null && jobs === 0) {
+      results.push({ ...base, status: 'BROKEN', note: 'premier run sans offre exploitable' });
+      continue;
+    }
+    if (jobs > 0 && stat.complete !== true) {
+      results.push({ ...base, status: 'DEGRADED', note: 'complétude du balayage non attestée' });
       continue;
     }
 
@@ -94,36 +112,20 @@ export async function checkSourceHealth(
         jobs,
         previous: before,
         note:
-          before > 0
+          before != null && before > 0
             ? `returned nothing, held ${before} offers on the last productive run`
             : 'returned nothing again — never produced since it was catalogued',
       });
       continue;
     }
 
-    if (before > 0 && jobs < before * COLLAPSE_RATIO) {
+    if (before != null && before > 0 && jobs < before * COLLAPSE_RATIO) {
       results.push({
         source: stat.source,
         status: 'DEGRADED',
         jobs,
         previous: before,
         note: `${Math.round((1 - jobs / before) * 100)}% fewer offers than the previous run`,
-        coverage: coverageOf(stat),
-        rates: ratesOf(stat),
-      });
-      continue;
-    }
-
-    // Truncation (F-04): the source ANNOUNCED more than the sweep collected.
-    // Volume can look healthy run-over-run while a page cap silently hides
-    // most of the board — Talentsoft served a clean 20 while declaring 112.
-    if (stat.truncated && stat.declaredTotal) {
-      results.push({
-        source: stat.source,
-        status: 'DEGRADED',
-        jobs,
-        previous: before,
-        note: `troncature : ${stat.fetched} collectées sur ${stat.declaredTotal} déclarées`,
         coverage: coverageOf(stat),
         rates: ratesOf(stat),
       });
@@ -147,7 +149,7 @@ export async function checkSourceHealth(
 
     results.push({
       source: stat.source,
-      status: 'OK',
+      status: before === null ? 'NEW' : 'OK',
       jobs,
       previous: before,
       coverage: coverageOf(stat),
@@ -155,7 +157,7 @@ export async function checkSourceHealth(
     });
   }
 
-  await recordRun(prisma, results);
+  await recordRun(prisma, results, stats);
 
   const incidents = results.filter((r) => r.status === 'BROKEN' || r.status === 'DEGRADED');
   return {
@@ -168,15 +170,15 @@ export async function checkSourceHealth(
 }
 
 function coverageOf(stat: IngestStats): string | undefined {
-  if (!stat.fetched) return undefined;
-  const pct = (n: number) => `${Math.round((n / stat.fetched) * 100)}%`;
+  if (!stat.inSector) return undefined;
+  const pct = (n: number) => `${Math.round((n / stat.inSector) * 100)}%`;
   return `desc ${pct(stat.withDescription)} date ${pct(stat.withDate)} pays ${pct(stat.withCountry)} url ${pct(stat.withUrl)}`;
 }
 
 /** The same coverage as numbers, for the queryable columns (L-02). */
 function ratesOf(stat: IngestStats): SourceHealth['rates'] {
-  if (!stat.fetched) return undefined;
-  const rate = (n: number) => Math.round((n / stat.fetched) * 1000) / 1000;
+  if (!stat.inSector) return undefined;
+  const rate = (n: number) => Math.round((n / stat.inSector) * 1000) / 1000;
   return {
     description: rate(stat.withDescription),
     date: rate(stat.withDate),
@@ -187,12 +189,12 @@ function ratesOf(stat: IngestStats): SourceHealth['rates'] {
 
 /** The gate itself: a big-enough source below a floor is an incident. */
 function fieldCoverageIncident(stat: IngestStats): string | undefined {
-  if (stat.fetched < COVERAGE_MIN_JOBS) return undefined;
-  if (stat.withDescription / stat.fetched < DESCRIPTION_FLOOR) {
-    return `descriptions manquantes sur ${Math.round((1 - stat.withDescription / stat.fetched) * 100)}% des offres`;
+  if (stat.inSector < COVERAGE_MIN_JOBS) return undefined;
+  if (stat.withDescription / stat.inSector < DESCRIPTION_FLOOR) {
+    return `descriptions manquantes sur ${Math.round((1 - stat.withDescription / stat.inSector) * 100)}% des offres`;
   }
-  if (stat.withUrl / stat.fetched < URL_FLOOR) {
-    return `URL de candidature invalide/vide sur ${stat.fetched - stat.withUrl} offres`;
+  if (stat.withUrl / stat.inSector < URL_FLOOR) {
+    return `URL de candidature invalide/vide sur ${stat.inSector - stat.withUrl} offres`;
   }
   return undefined;
 }
@@ -204,9 +206,10 @@ function fieldCoverageIncident(stat: IngestStats): string | undefined {
  * itself, so the baseline is genuinely the previous run — not this one. A source
  * with no history returns nothing and is treated as NEW.
  */
-async function previousCounts(prisma: PrismaClient): Promise<Map<string, number>> {
+async function previousCounts(prisma: PrismaClient, sourceKeys: string[]): Promise<Map<string, number>> {
   // Most recent first; the first row seen per source is its last run.
   const rows = await prisma.sourceRun.findMany({
+    where: { sourceKey: { in: sourceKeys } },
     orderBy: { ranAt: 'desc' },
     select: { sourceKey: true, jobs: true },
   });
@@ -227,16 +230,27 @@ async function previousCounts(prisma: PrismaClient): Promise<Map<string, number>
   return latest;
 }
 
-async function recordRun(prisma: PrismaClient, results: SourceHealth[]): Promise<void> {
+async function recordRun(prisma: PrismaClient, results: SourceHealth[], stats: IngestStats[]): Promise<void> {
   const now = new Date();
   await Promise.all(
     results.map(async (result) => {
+      const stat = stats.find(s => s.source === result.source)!;
       await prisma.sourceRun.create({
         data: {
           sourceKey: result.source,
           status: result.status,
           jobs: result.jobs,
           previousJobs: result.previous,
+          fetched: stat.fetched,
+          complete: stat.complete ?? null,
+          accepted: stat.inSector,
+          declaredTotal: stat.declaredTotal ?? null,
+          truncated: stat.truncated ?? false,
+          errors: stat.errors,
+          canAttestAbsence: result.previous !== null && isTrustedForAttestation({
+            status: result.status, complete: stat.complete, errors: stat.errors, truncated: stat.truncated,
+            declaredTotal: stat.declaredTotal, fetched: stat.fetched,
+          }) && !(result.previous != null && result.previous > 0 && result.jobs < result.previous * COLLAPSE_RATIO),
           // The coverage rates ride along on EVERY run, incident or not: they
           // are the trend the next regression gets caught against. Columns
           // carry the queryable numbers; the note stays human-readable.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseFilters } from './jobs';
+import { parseFilters, MAX_PAGE } from './jobs';
 
 /**
  * LE PARAMÈTRE TECHNIQUE porte le nom de la DIMENSION, pas un mot français.
@@ -15,6 +15,12 @@ import { parseFilters } from './jobs';
  * couche de localisation, pas le modèle.
  */
 describe('parseFilters — le paramètre de durée d’emploi', () => {
+  it.each(['1.5', '-1', 'Infinity', 'NaN', '9007199254740993'])('normalizes invalid page %s', page => {
+    expect(parseFilters({ page }).page).toBe(1);
+  });
+  it('bounds oversized offsets and search text', () => {
+    expect(parseFilters({ page: '999999', q: 'a'.repeat(5000) })).toMatchObject({ page: MAX_PAGE, q: 'a'.repeat(200) });
+  });
   // parseFilters reçoit les searchParams de Next (un objet), pas une URLSearchParams.
   const filters = (qs: string) =>
     parseFilters(Object.fromEntries(new URLSearchParams(qs).entries()));

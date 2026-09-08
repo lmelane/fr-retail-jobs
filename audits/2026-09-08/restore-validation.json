@@ -1,0 +1,175 @@
+{
+  "measuredAt": "2026-09-08T13:08:16.325977+00:00",
+  "scope": "Local synthetic PostgreSQL 18 backup and restore with 70000 jobs, including indexed search schema; not a production backup test",
+  "tables": [
+    {
+      "table": "Company",
+      "source": {
+        "count": 1000,
+        "checksum": "cadbbad918a8dc1c606b2e6c2540e0a3"
+      },
+      "restored": {
+        "count": 1000,
+        "checksum": "cadbbad918a8dc1c606b2e6c2540e0a3"
+      },
+      "equal": true
+    },
+    {
+      "table": "CompanyAlias",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "GeoCache",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "Job",
+      "source": {
+        "count": 70000,
+        "checksum": "2af281fb356cd1d8ac799fc2cbe154dc"
+      },
+      "restored": {
+        "count": 70000,
+        "checksum": "2af281fb356cd1d8ac799fc2cbe154dc"
+      },
+      "equal": true
+    },
+    {
+      "table": "JobEvent",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "JobSource",
+      "source": {
+        "count": 70000,
+        "checksum": "5b3b7a44cbe9a3d38ba15183c9336013"
+      },
+      "restored": {
+        "count": 70000,
+        "checksum": "5b3b7a44cbe9a3d38ba15183c9336013"
+      },
+      "equal": true
+    },
+    {
+      "table": "MarketSnapshot",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "Source",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "SourceCursor",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "SourceFieldTrust",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "SourceFieldTrustObservation",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "SourceObservation",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "SourceRun",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "_prisma_migrations",
+      "source": {
+        "count": 17,
+        "checksum": "63eb61bc64810d420246d26934da25fb"
+      },
+      "restored": {
+        "count": 17,
+        "checksum": "63eb61bc64810d420246d26934da25fb"
+      },
+      "equal": true
+    }
+  ],
+  "allEqual": true
+}

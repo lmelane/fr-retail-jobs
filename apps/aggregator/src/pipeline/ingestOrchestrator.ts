@@ -1,3 +1,4 @@
+import { withSourceBudget } from '../lib/sourceBudget.js';
 import type { PrismaClient } from '@prisma/client';
 import pLimit from 'p-limit';
 import { loadActiveSources } from '../connectors/sourceStore.js';
@@ -7,20 +8,9 @@ import { briefError } from '../lib/normalize.js';
 import { WafChallengeError } from '../lib/wafToken.js';
 
 /**
- * Runs every source under its OWN time budget (decision D6), a few at a time.
- *
- * A single run of all 102 sources took 21 minutes and was killed by the platform
- * before it reached one API feed — the reason production held a handful of
- * employers. Here each source is ingested in-process but bounded by a timeout:
- * a feed that hangs is abandoned and the next one starts, so no single source
- * can starve the run, whatever the volume.
- *
- * In-process rather than a child process per source: spawning `tsx` 102 times
- * pays a TypeScript recompile (~10s) on every source — minutes of pure overhead.
- * A per-source timeout gives the same isolation for a hung feed without it. A
- * source that throws is caught; geocoding runs ONCE, after the loop, in the CLI.
- *
- * API feeds run first (cheap, the bulk of the market), sitemap sources last.
+ * Bounded source concurrency with cooperative cancellation. A timed-out source
+ * retains its worker until I/O settles; HTTP and browser work receive cancellation,
+ * and writes check the signal before committing. This is not process isolation.
  */
 
 /**
@@ -59,9 +49,8 @@ const SOFT_DEADLINE_MARGIN_MS = 90_000;
  * hôtes différents ne s'attendent donc plus ; celles qui partagent un hôte
  * (les Maisons Richemont, ELC) se sérialisent d'elles-mêmes à la porte.
  *
- * Quatre, pas plus : le pool Prisma du service est à 8 connexions, et
- * l'écriture ne tient jamais de transaction interactive (la purge est un
- * batch), donc quatre sources qui écrivent ne peuvent pas s'inter-bloquer.
+ * Quatre sources par défaut ; chaque offre utilise une transaction courte.
+ * Le pool doit garder de la marge pour les requêtes de suivi et les verrous.
  */
 const SOURCE_CONCURRENCY = Number(process.env.INGEST_SOURCE_CONCURRENCY ?? 4);
 
@@ -112,15 +101,6 @@ export function onlyRequested(keys: string[], raw = process.env.INGEST_ONLY_KEYS
   return keys.filter((k) => set.has(k));
 }
 
-/** Rejects if the work does not settle within the budget. */
-function withTimeout<T>(work: Promise<T>, ms: number, label: string): Promise<T> {
-  let timer: ReturnType<typeof setTimeout>;
-  const timeout = new Promise<never>((_, reject) => {
-    timer = setTimeout(() => reject(new Error(`__TIMEOUT__ ${label}`)), ms);
-  });
-  return Promise.race([work, timeout]).finally(() => clearTimeout(timer)) as Promise<T>;
-}
-
 export async function ingestAllBySource(prisma: PrismaClient): Promise<OrchestratorResult> {
   const keys = await allSourceKeys(prisma);
   console.log(`[orchestrator] ${keys.length} sources, each time-bounded: ${keys.join(', ')}`);
@@ -147,21 +127,21 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     // would run four times over the same cities in parallel. The soft
     // deadline lets a slow crawl stop gracefully just before the hard
     // timeout, keeping what it fetched.
-    const deadlineMs = Date.now() + PER_SOURCE_TIMEOUT_MS - SOFT_DEADLINE_MARGIN_MS;
-    const stats = await withTimeout(
-      runIngest(prisma, { only: key, deadlineMs, skipGeocode: true }),
+    const deadlineMs = Date.now() + PER_SOURCE_TIMEOUT_MS - Math.min(SOFT_DEADLINE_MARGIN_MS, PER_SOURCE_TIMEOUT_MS / 10);
+    const stats = await withSourceBudget(
+      () => runIngest(prisma, { only: key, deadlineMs, skipGeocode: true }),
       PER_SOURCE_TIMEOUT_MS,
       key,
     );
     // Record this source's health so a source that stops producing becomes a
     // detectable incident (BROKEN) on its next run — one SourceRun per source.
     // Collect any incident so the run can send ONE digest at the end.
-    const health = await checkSourceHealth(prisma, stats).catch((e) => {
-      console.error(`[orchestrator] ${key}: health record failed — ${e instanceof Error ? e.message : e}`);
-      return null;
-    });
-    if (health) result.incidents.push(...health.incidents);
-    result.ok++;
+    const health = await checkSourceHealth(prisma, stats);
+    result.incidents.push(...health.incidents);
+    if (stats.some(stat => stat.errors > 0) || health.broken > 0) {
+      result.failed++;
+      result.failures.push(key + ' (ingest errors)');
+    } else result.ok++;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     const timedOut = message.startsWith('__TIMEOUT__');
@@ -196,6 +176,7 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
           sourceKey: key,
           status: timedOut ? 'TIMEOUT' : challenged ? 'CHALLENGED' : 'ERROR',
           jobs: 0,
+          canAttestAbsence: false,
           note: timedOut
             ? `cut at ${PER_SOURCE_TIMEOUT_MS / 1000}s`
             : challenged

@@ -1,4 +1,8 @@
-import type { PrismaClient } from '@prisma/client';
+import { assertSourceRunning } from '../lib/sourceBudget.js';
+import { lockCompanyRows, lockSourceWrites } from '../lib/writeLocks.js';
+import { Prisma, type PrismaClient } from '@prisma/client';
+import { createHash } from 'node:crypto';
+import { selectCanonicalSource } from './canonical.js';
 import { blockingKey, isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } from './match.js';
 import { classifySector, sectorForSource, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
@@ -69,8 +73,54 @@ export async function upsertDeduplicated(
   prisma: PrismaClient,
   candidate: CandidateJob & { companyId: string },
 ): Promise<UpsertResult> {
+  for (let attempt = 0; ; attempt++) {
+    assertSourceRunning();
+    try {
+      return await prisma.$transaction(async tx => {
+        await lockSourceWrites(tx, candidate.sourceKey);
+        const source = await tx.source.findUnique({ where: { key: candidate.sourceKey }, select: { status: true } });
+        if (source?.status === 'RETIRED') throw new Error(`Source ${candidate.sourceKey} is RETIRED`);
+        // Source identity protects relocation/renaming; company serializes the
+        // matching decision across independent feeds and cluster buckets.
+        for (const key of [JSON.stringify(['entry', candidate.sourceKey, candidate.externalId]), JSON.stringify(['company', candidate.companyId])]) {
+          await tx.$queryRaw`SELECT 1 AS locked FROM pg_advisory_xact_lock(hashtextextended(${key}, 0))`;
+        }
+        const target = await tx.company.findUnique({
+          where: { fashionjobsUrl: `resolved:${candidate.companyId}` }, select: { id: true },
+        });
+        const current = await tx.jobSource.findUnique({
+          where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
+          select: { job: { select: { companyId: true } } },
+        });
+        await lockCompanyRows(tx, [target?.id, current?.job.companyId].filter((id): id is string => !!id));
+        assertSourceRunning();
+        const result = await upsertInTransaction(tx, candidate);
+        assertSourceRunning(); // Throw inside the transaction so cancellation rolls writes back.
+        return result;
+      }, { maxWait: 10_000, timeout: 30_000 });
+    } catch (error) {
+      // Retry the entire transaction, never query inside an aborted transaction.
+      const code = error instanceof Error && 'code' in error ? error.code : undefined;
+      if (attempt >= 2 || (code !== 'P2034' && code !== 'P2002')) throw error;
+    }
+  }
+}
+
+async function upsertInTransaction(
+  prisma: Prisma.TransactionClient,
+  candidate: CandidateJob & { companyId: string },
+): Promise<UpsertResult> {
   const clusterKey = blockingKey(candidate);
   const now = new Date();
+  if (candidate.raw !== undefined && candidate.raw !== null) {
+    const payload = JSON.stringify(candidate.raw);
+    const contentHash = createHash('sha256').update(payload).digest('hex');
+    await prisma.sourceObservation.upsert({
+      where: { sourceKey_externalId_contentHash: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, contentHash } },
+      create: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, contentHash, raw: candidate.raw as Prisma.InputJsonValue, pipelineVersion: PIPELINE_VERSION, observedAt: now },
+      update: {},
+    });
+  }
 
   // Job.companyId is a foreign key, so the Company row has to exist first —
   // otherwise every single write fails on a constraint violation and the run
@@ -151,15 +201,19 @@ export async function upsertDeduplicated(
    */
   const ownEntry = await prisma.jobSource.findUnique({
     where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
-    select: { job: { include: { sources: true } } },
+    select: { job: { include: { sources: true }, omit: { searchText: true } } },
   });
   if (ownEntry) return attachToExisting(prisma, candidate, ownEntry.job, now, clusterKey, company.id);
 
   // Only live jobs in the same cluster can absorb this posting. The cluster key
   // is indexed, so this stays a narrow lookup rather than a scan.
   const clusterJobs = await prisma.job.findMany({
-    where: { clusterKey, isActive: true },
-    include: { sources: true },
+    where: { clusterKey, isActive: true, sources: { none: { sourceKey: candidate.sourceKey } } },
+    select: {
+      id: true, title: true, countryCode: true, city: true, location: true, postedAt: true,
+      sources: { select: { sourceKey: true, externalId: true } },
+    },
+    orderBy: [{ firstSeenAt: 'asc' }, { id: 'asc' }],
   });
 
   /**
@@ -180,79 +234,23 @@ export async function upsertDeduplicated(
     return isProbableDuplicate(candidate, {
       ...candidate,
       title: job.title,
+      // Use the stored posting's evidence, not the incoming country's/city's
+      // values inherited by the spread above.
+      country: job.countryCode ?? undefined,
+      city: job.city ?? undefined,
       location: job.location ?? undefined,
       postedAt: job.postedAt ?? undefined,
     });
   });
 
-  if (!existing) {
-    try {
-      return await createJob(prisma, candidate, company.id, clusterKey, now);
-    } catch (error) {
-      /**
-       * The race this catches, seen live: six workers, two copies of the same
-       * offer, both pass the cluster lookup before either has written, the
-       * second create violates a unique key — 123 write errors on one Kering
-       * run. The violation IS the answer: the job exists now, so fall through
-       * and attach to it like any other duplicate.
-       *
-       * TWO unique keys can trip here, and the recovery must survive both:
-       *   - Job(companyId, source, externalId): the same opening, same ATS.
-       *   - JobSource(sourceKey, externalId): the same feed entry reached this
-       *     job through a different cluster, and its source row already exists —
-       *     possibly on a Job written with a DIFFERENT `source` (atsType), so the
-       *     Job-key lookup below misses it. Looking up by the Job key alone then
-       *     found no winner and re-threw, losing the offer (the real Kering bug).
-       */
-      const isUniqueViolation =
-        error instanceof Error && 'code' in error && (error as { code?: string }).code === 'P2002';
-      if (!isUniqueViolation) throw error;
+  if (!existing) return createJob(prisma, candidate, company.id, clusterKey, now);
 
-      // Try the Job unique key first (same opening, same ATS); if that misses,
-      // the collision was on the JobSource key, so find the job that already
-      // owns this (sourceKey, externalId). Either way we resolve a winning job
-      // id — the offer attaches instead of being thrown away.
-      const byJobKey = await prisma.job.findUnique({
-        where: {
-          companyId_source_externalId: {
-            companyId: company.id,
-            source: candidate.atsType ?? 'GENERIC_JSONLD',
-            externalId: candidate.externalId,
-          },
-        },
-        select: { id: true },
-      });
-      const bySourceKey = byJobKey
-        ? null
-        : await prisma.jobSource.findUnique({
-            where: {
-              sourceKey_externalId: {
-                sourceKey: candidate.sourceKey,
-                externalId: candidate.externalId,
-              },
-            },
-            select: { jobId: true },
-          });
-      const winnerId = byJobKey?.id ?? bySourceKey?.jobId;
-      if (!winnerId) throw error;
-
-      // This path is ALSO where a source re-reports its own offer under a
-      // changed title (the cluster match fails on the title, the create trips
-      // the unique key): by construction it is the same source and the same
-      // id, so the row takes today's normalized values like any re-attestation.
-      // Same path as any re-attestation: Job AND JobSource touched, cluster
-      // key re-graved. The old hand-written update here forgot the JobSource
-      // (audit A2: 1 855 live jobs with an inactive JobSource).
-      const winner = await prisma.job.findUniqueOrThrow({ where: { id: winnerId }, include: { sources: true } });
-      return attachToExisting(prisma, candidate, winner, now, clusterKey, company.id);
-    }
-  }
-
-  return attachToExisting(prisma, candidate, existing, now, clusterKey, company.id);
+  const matched = await prisma.job.findUniqueOrThrow({ where: { id: existing.id }, include: { sources: true }, omit: { searchText: true } });
+  return attachToExisting(prisma, candidate, matched, now, clusterKey, company.id);
 }
 
 async function createJob(
-  prisma: PrismaClient,
+  prisma: Prisma.TransactionClient,
   candidate: CandidateJob & { companyId: string },
   companyId: string,
   clusterKey: string,
@@ -329,6 +327,8 @@ async function createJob(
         postedAt: candidate.postedAt,
         clusterKey,
         canonicalTier: candidate.sourceTier,
+        canonicalSourceKey: candidate.sourceKey,
+        canonicalExternalId: candidate.externalId,
         fingerprint: `${clusterKey}|${candidate.title}`,
         pipelineVersion: PIPELINE_VERSION,
         lastSeenAt: now,
@@ -423,37 +423,7 @@ function cityOf(candidate: CandidateJob): string | undefined {
   return displayCity(candidate.city) ?? cityFromLocation(candidate.location);
 }
 
-type ExistingJob = {
-  id: string;
-  url: string | null;
-  canonicalTier: string | null;
-  clusterKey: string | null;
-  companyId: string;
-  isActive: boolean;
-  isFrance: boolean;
-  title: string;
-  jobFunction: string | null;
-  description: string | null;
-  location: string | null;
-  city: string | null;
-  countryCode: string | null;
-  adminArea1: string | null;
-  postedAt: Date | null;
-  validThrough: Date | null;
-  language: string | null;
-  employmentTerm: string | null;
-  workTime: string | null;
-  programType: string | null;
-  engagementType: string | null;
-  isSeasonal: boolean | null;
-  workplaceType: string | null;
-  salaryMin: number | null;
-  salaryMax: number | null;
-  salaryCurrency: string | null;
-  salaryPeriod: string | null;
-  taxonomyVersion: number;
-  sources: { sourceKey: string; externalId: string; sourceTier: string }[];
-};
+type ExistingJob = Prisma.JobGetPayload<{ include: { sources: true }; omit: { searchText: true } }>;
 
 /**
  * Ce qu'une ré-attestation ré-écrit sur une offre déjà en base.
@@ -468,9 +438,9 @@ type ExistingJob = {
  *
  * Règles : le pays et la ville ne sont ré-écrits que si le candidat en porte
  * un (jamais effacés) ; le titre et la description seulement quand c'est la
- * MÊME source, même id, qui re-parle de son offre (`sameEntry`) — une autre
+ * source actuellement canonique (`hasAuthority`) — une autre
  * source n'a pas autorité sur le texte du canonique — et la description
- * seulement si elle est plus riche.
+ * même si la correction est plus courte.
  */
 type Reattestable = Pick<
   ExistingJob,
@@ -480,7 +450,7 @@ type Reattestable = Pick<
 
 /**
  * Champs simples : REMPLIS par n'importe quelle source quand ils sont vides,
- * RÉ-ÉCRITS seulement par la source qui a publié l'entrée (`sameEntry`).
+ * RÉ-ÉCRITS seulement par la source actuellement canonique (`hasAuthority`).
  *
  * Audit A4 (2026-09-06) : date, langue, contrat, temps de travail, validité,
  * salaire n'étaient écrits qu'à la création — lignes nées avant le 04/09 :
@@ -489,50 +459,64 @@ type Reattestable = Pick<
  */
 const SIMPLE_FIELDS = [
   'postedAt', 'validThrough', 'language', 'employmentTerm', 'workTime', 'programType', 'engagementType', 'isSeasonal', 'workplaceType',
-  'salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod',
 ] as const;
+const SALARY_FIELDS = ['salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod'] as const;
 
 export function reattestationFields(
   candidate: CandidateJob,
   existing: Reattestable,
-  sameEntry: boolean,
+  hasAuthority: boolean,
 ): Partial<Reattestable> {
   const out: Partial<Reattestable> = {};
   const country = countryOf(candidate);
-  if (country && country !== existing.countryCode) out.countryCode = country;
-  if (country) {
-    const isFrance = isFranceJob(country, candidate.location);
-    if (isFrance !== existing.isFrance) out.isFrance = isFrance;
-  }
-  /**
-   * `adminArea1` est DÉRIVÉ, comme le pays — il n'existe pas sur le candidat.
-   * Il doit pouvoir être POSÉ **et EFFACÉ** : une offre australienne étiquetée
-   * « Washington » par l'ancienne chaîne (703 cas mesurés le 2026-09-08) ne se
-   * répare que si la ré-attestation sait écrire `null`. Sans ce chemin, chaque
-   * correctif de géographie n'existerait qu'en backfill — donc temporaire.
-   *
-   * On n'efface QUE lorsque le candidat porte un lieu : une source qui n'en
-   * publie pas ne doit pas détruire ce qu'une autre a établi.
-   */
-  const admin = adminArea1Of(candidate, country);
-  if (admin !== (existing.adminArea1 ?? undefined) && (admin || candidate.location)) {
-    out.adminArea1 = admin ?? null;
-  }
-  const city = cityOf(candidate);
-  if (city && city !== existing.city) out.city = city;
-  if (candidate.location && (!existing.location || sameEntry) && candidate.location !== existing.location) {
-    out.location = candidate.location;
+  const maySetGeography = hasAuthority || (!existing.countryCode && !existing.city && !existing.location);
+  if (maySetGeography) {
+    if (country && country !== existing.countryCode) out.countryCode = country;
+    if (country) {
+      const isFrance = isFranceJob(country, candidate.location);
+      if (isFrance !== existing.isFrance) out.isFrance = isFrance;
+    }
+    /**
+     * `adminArea1` est DÉRIVÉ, comme le pays — il n'existe pas sur le candidat.
+     * Il doit pouvoir être POSÉ **et EFFACÉ** : une offre australienne étiquetée
+     * « Washington » par l'ancienne chaîne (703 cas mesurés le 2026-09-08) ne se
+     * répare que si la ré-attestation sait écrire `null`. Sans ce chemin, chaque
+     * correctif de géographie n'existerait qu'en backfill — donc temporaire.
+     *
+     * On n'efface QUE lorsque le candidat porte un lieu : une source qui n'en
+     * publie pas ne doit pas détruire ce qu'une autre a établi.
+     */
+    const admin = adminArea1Of(candidate, country);
+    if (admin !== (existing.adminArea1 ?? undefined) && (admin || candidate.location)) {
+      out.adminArea1 = admin ?? null;
+    }
+    const city = cityOf(candidate);
+    if (city && city !== existing.city) out.city = city;
+    if (candidate.location && (!existing.location || hasAuthority) && candidate.location !== existing.location) {
+      out.location = candidate.location;
+    }
+  } else if (country && country === normalizeCountry(existing.countryCode) && country !== existing.countryCode) {
+    out.countryCode = country; // spelling normalization, not a change of country
   }
   for (const field of SIMPLE_FIELDS) {
     const value = candidate[field];
     if (value === undefined || value === null) continue;
     const current = existing[field];
     const same = current instanceof Date && value instanceof Date ? current.getTime() === value.getTime() : current === value;
-    if ((current === null || sameEntry) && !same) (out as Record<string, unknown>)[field] = value;
+    if ((current === null || hasAuthority) && !same) (out as Record<string, unknown>)[field] = value;
   }
-  if (sameEntry) {
+  // A salary is one tuple: never combine an employer amount with a board's
+  // currency, or preserve an old currency after an authoritative new amount.
+  if (SALARY_FIELDS.some(field => candidate[field] !== undefined) &&
+      (hasAuthority || SALARY_FIELDS.every(field => existing[field] === null))) {
+    for (const field of SALARY_FIELDS) {
+      const value = candidate[field] ?? null;
+      if (value !== existing[field]) (out as Record<string, unknown>)[field] = value;
+    }
+  }
+  if (hasAuthority) {
     if (candidate.title && candidate.title !== existing.title) out.title = candidate.title;
-    if (candidate.description && candidate.description.length > (existing.description?.length ?? 0)) {
+    if (candidate.description !== undefined && candidate.description !== existing.description) {
       out.description = candidate.description;
     }
   }
@@ -540,7 +524,7 @@ export function reattestationFields(
 }
 
 async function attachToExisting(
-  prisma: PrismaClient,
+  prisma: Prisma.TransactionClient,
   candidate: CandidateJob,
   existing: ExistingJob,
   now: Date,
@@ -553,7 +537,7 @@ async function attachToExisting(
     (source) => source.sourceKey === candidate.sourceKey && source.externalId === candidate.externalId,
   );
 
-  await prisma.jobSource.upsert({
+  const observedSource = await prisma.jobSource.upsert({
     where: {
       sourceKey_externalId: {
         sourceKey: candidate.sourceKey,
@@ -569,31 +553,18 @@ async function attachToExisting(
       title: candidate.title,
       postedAt: candidate.postedAt,
       lastSeenAt: now,
+      raw: candidate.raw as Prisma.InputJsonValue | undefined,
     },
-    update: { url: candidate.url, title: candidate.title, lastSeenAt: now, isActive: true },
+    update: { url: candidate.url, title: candidate.title, postedAt: candidate.postedAt, sourceTier: candidate.sourceTier, lastSeenAt: now, isActive: true, raw: candidate.raw as Prisma.InputJsonValue | undefined },
   });
 
-  // A better-ranked source takes over the canonical apply URL: a candidate should
-  // always be sent to the employer when the employer is publishing the role.
-  /**
-   * Le rang canonique gravé n'a d'autorité que si une source ATTACHÉE le porte
-   * encore : 3 128 offres gardaient un canonicalTier orphelin (EMPLOYER_DIRECT
-   * alors que la seule source restante est GROUP_OFFICIAL, après un retrait de
-   * source), ce qui bloquait tout rafraîchissement d'URL — le correctif
-   * Eightfold n'atteignait jamais la base (audit A5, 2026-09-06).
-   */
-  const ownerTier = existing.sources.some((s) => s.sourceTier === existing.canonicalTier) ? existing.canonicalTier : null;
-  const promoted = tierRank(candidate.sourceTier) < tierRank(ownerTier ?? '');
-
-  // Refresh the canonical URL WITHOUT promotion only when the writer is the SAME
-  // OR HIGHER tier as the current owner AND the URL actually changed. This lets
-  // an adapter fix (a corrected URL format from the same/higher-tier source)
-  // reach rows already in the base, without letting a LOWER-tier source (a
-  // jobboard) hijack the employer's canonical link — which would churn "Postuler
-  // chez [Maison]" between the real employer and a jobboard copy on every cycle
-  // (breaks D18). tierRank: lower number = higher priority.
-  const sameOrHigherTier = tierRank(candidate.sourceTier) <= tierRank(ownerTier ?? '');
-  const urlRefresh = !promoted && sameOrHigherTier && candidate.url && candidate.url !== existing.url;
+  const owner = selectCanonicalSource([
+    ...existing.sources.filter(s => s.id !== observedSource.id), observedSource,
+  ], existing)!;
+  const hasAuthority = owner.id === observedSource.id;
+  const promoted = hasAuthority && (
+    owner.sourceKey !== existing.canonicalSourceKey || owner.externalId !== existing.canonicalExternalId
+  ) && tierRank(owner.sourceTier) < tierRank(existing.canonicalTier ?? '');
 
   const data = {
     lastSeenAt: now,
@@ -602,39 +573,27 @@ async function attachToExisting(
     // left below the version line and re-purged on the next run.
     pipelineVersion: PIPELINE_VERSION,
     // The normalized values of today reach the rows of yesterday.
-    ...reattestationFields(candidate, existing, alreadyKnown),
+    ...reattestationFields(candidate, existing, hasAuthority),
     // La taxonomie suit la même règle d'auto-guérison : re-classée par la
     // source de l'entrée, ou dès que les règles ont changé de version.
-    ...(alreadyKnown || existing.taxonomyVersion < TAXONOMY_VERSION
+    ...(hasAuthority || existing.taxonomyVersion < TAXONOMY_VERSION
       ? classifyJob({
-          title: alreadyKnown ? candidate.title : existing.title,
-          department: candidate.department,
-          description: alreadyKnown ? candidate.description : existing.description,
+          title: hasAuthority ? candidate.title : existing.title,
+          department: hasAuthority ? candidate.department : existing.department ?? undefined,
+          description: hasAuthority ? candidate.description : existing.description,
         })
       : {}),
     // A cluster key that drifted (city normalized differently) is re-graved,
     // so the cluster lookup — and the weekly reconcile — find the row again.
-    ...(clusterKey && clusterKey !== existing.clusterKey ? { clusterKey } : {}),
+    ...(hasAuthority && clusterKey && clusterKey !== existing.clusterKey ? { clusterKey } : {}),
     // 1 166 offres restaient sous une société périmée (audit A1) : l'alias ou
     // la marque corrigés ne les atteignaient jamais.
-    ...(alreadyKnown && companyId && companyId !== existing.companyId ? { companyId } : {}),
-    ...(promoted
-      ? {
-          url: candidate.url,
-          canonicalTier: candidate.sourceTier,
-          title: candidate.title,
-          // Keep the richest description available across sources — and the
-          // language of the text now shown.
-          ...(candidate.description && candidate.description.length > (existing.description?.length ?? 0)
-            ? {
-                description: candidate.description,
-                language: candidate.language ?? detectLanguage(candidate.description),
-              }
-            : {}),
-        }
-      : urlRefresh
-        ? { url: candidate.url }
-        : {}),
+    ...(hasAuthority && companyId && companyId !== existing.companyId ? { companyId } : {}),
+    url: owner.url,
+    canonicalTier: owner.sourceTier,
+    canonicalSourceKey: owner.sourceKey,
+    canonicalExternalId: owner.externalId,
+    ...(hasAuthority && candidate.raw !== undefined ? { raw: candidate.raw as Prisma.InputJsonValue } : {}),
   };
 
   /**

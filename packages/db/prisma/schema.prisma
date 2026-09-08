@@ -447,13 +447,17 @@ model Job {
   canonicalTier String?
 
   sources       JobSource[]
+  canonicalSourceKey String?
+  canonicalExternalId String?
+  /** Maintained by database triggers, including company renames. Partial GIN index in SQL migration. */
+  searchText String @default("")
   events        JobEvent[]
 
   raw           Json?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  @@unique([companyId, source, externalId])
+  @@index([companyId, source, externalId])
   @@index([clusterKey])
   @@index([department])
   @@index([employmentTerm])
@@ -573,6 +577,14 @@ model SourceRun {
   jobs         Int
   /** What the source held before this run; null on its first. */
   previousJobs Int?
+  /** Explicit lifecycle evidence. Null denotes an unmeasured legacy run. */
+  fetched      Int?
+  accepted     Int?
+  declaredTotal Int?
+  truncated    Boolean?
+  errors       Int?
+  canAttestAbsence Boolean?
+  complete     Boolean?
   note         String?
   /**
    * Field-coverage rates of this run, 0..1 (audit L-02): a source can keep its
@@ -675,4 +687,17 @@ model SourceFieldTrustObservation {
   recordedAt     DateTime @default(now())
 
   @@index([trustId, recordedAt])
+}
+
+/** Distinct observed payloads; retained independently of live Job/JobSource rows. */
+model SourceObservation {
+  id String @id @default(cuid())
+  sourceKey String
+  externalId String
+  contentHash String
+  raw Json
+  pipelineVersion Int
+  observedAt DateTime @default(now())
+  @@unique([sourceKey, externalId, contentHash])
+  @@index([sourceKey, observedAt])
 }

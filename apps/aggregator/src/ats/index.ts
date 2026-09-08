@@ -52,12 +52,21 @@ function toResult(value: NormalizedJob[] | AdapterResult): AdapterResult {
 
 export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown>): Promise<AdapterResult> {
   const result = await dispatch(type, config);
+  return normalizeAdapterResult(result);
+}
+
+export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult): AdapterResult {
   const normalized = toResult(result);
+  const truncated = normalized.truncated ??
+    (normalized.declaredTotal !== undefined && normalized.jobs.length < normalized.declaredTotal);
+  const unique = new Set(normalized.jobs.map(job => job.externalId)).size;
+  const countProvesCompletion = normalized.declaredTotal !== undefined &&
+    Number.isSafeInteger(normalized.declaredTotal) && normalized.declaredTotal >= 0 &&
+    unique === normalized.declaredTotal;
   return {
     ...normalized,
-    truncated:
-      normalized.truncated ??
-      (normalized.declaredTotal !== undefined && normalized.jobs.length < normalized.declaredTotal),
+    truncated,
+    complete: unique === normalized.jobs.length && !truncated && (normalized.complete ?? countProvesCompletion),
   };
 }
 
@@ -68,7 +77,8 @@ export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown
  * alors que l'adaptateur et ce dispatch existaient (audit A2, 2026-09-06).
  */
 export const ADAPTERS: Record<string, (config: Record<string, unknown>) => Promise<NormalizedJob[] | AdapterResult>> = {
-  GREENHOUSE: fetchGreenhouseJobs,
+  // Greenhouse documents this endpoint as the complete public job board.
+  GREENHOUSE: async config => ({ jobs: await fetchGreenhouseJobs(config), complete: true }),
   LEVER: fetchLeverJobs,
   SMARTRECRUITERS: fetchSmartRecruitersJobs,
   RECRUITEE: fetchRecruiteeJobs,

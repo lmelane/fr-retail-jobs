@@ -143,6 +143,7 @@ async function openSession(origin: string): Promise<string> {
       headers: { 'user-agent': USER_AGENT },
     });
     const cookies = response.headers.getSetCookie?.() ?? [];
+    await response.body?.cancel();
     return cookies.map((cookie) => cookie.split(';')[0]).join('; ');
   } catch (error) {
     console.warn(

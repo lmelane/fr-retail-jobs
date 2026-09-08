@@ -5,7 +5,7 @@ import { fetchText } from '../../lib/http.js';
 import { fetchSitemapUrls, extractJobPostings, normalizeJobPosting } from '../../connectors/generic/jsonLdSitemap.js';
 import { fetchRssJobs } from '../../connectors/generic/rssFeed.js';
 import { collapseWhitespace, briefError } from '../../lib/normalize.js';
-import type { NormalizedJob } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 function flattenJsonLd(value: unknown): any[] {
   if (Array.isArray(value)) return value.flatMap(flattenJsonLd);
@@ -36,14 +36,14 @@ export function parseJobPostings(html: string, pageUrl: string): NormalizedJob[]
 /** Signatures des pages de challenge (Cloudflare, Akamai, AWS WAF) servies à la place d'une liste. */
 const CHALLENGE_PAGE = /just a moment|cf-chl|cf_chl|challenge-platform|_Incapsula_|aws-waf|awswaf|Access Denied|Attention Required/i;
 
-export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   /**
    * An RSS/Atom careers feed, when the site publishes one — the cheapest generic
    * path (no page crawl at all). Many small brands and TalentSoft/WordPress sites
    * expose a feed of openings; parsing it needs no per-vendor code.
    */
   if (config.feedUrl) {
-    return fetchRssJobs(config);
+    return { jobs: await fetchRssJobs(config), complete: false };
   }
 
   /**
@@ -85,6 +85,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     const seen = new Set<string>();
     const origin = new URL(listingPagedUrl).origin;
 
+    let reachedEnd = false;
     for (let page = 0; page < Number(config.maxPages ?? 400); page++) {
       if (pastDeadline()) break;
       const sep = listingPagedUrl.includes('?') ? '&' : '?';
@@ -117,14 +118,15 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
         });
       } catch (error) {
         const is404 = error instanceof Error && / 404 /.test(` ${error.message} `);
+        if (is404 && page > 0) reachedEnd = true;
         if (!is404) {
           console.error(`[generic-listing] ${listingPagedUrl} stopped at page ${page}: ${briefError(error)}`);
         }
         break;
       }
-      const links = [...html.matchAll(linkRe)]
-        .map((m) => new URL(m[1], origin).toString().split('#')[0])
-        .filter((u) => !seen.has(u));
+      const pageLinks = [...html.matchAll(linkRe)]
+        .map((m) => new URL(m[1], origin).toString().split('#')[0]);
+      const links = pageLinks.filter(u => !seen.has(u));
       /**
        * Une page de liste sans lien est la fin de la liste — SAUF si c'est une
        * page de challenge servie au milieu du balayage. Mesuré le 2026-09-06
@@ -137,7 +139,11 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
           `generic-listing ${listingPagedUrl}: page ${page} est une page de challenge (${seen.size} liens avant) — liste tronquée par un bot-wall`,
         );
       }
-      if (links.length === 0) break;
+      if (links.length === 0) {
+        // A repeated nonempty page is a broken pager, not proof of the end.
+        reachedEnd = pageLinks.length === 0;
+        break;
+      }
       for (const u of links) seen.add(u);
     }
 
@@ -155,9 +161,9 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
         limit(async () => {
           // Stop starting new detail fetches past the budget; what was already
           // fetched stays, the rest is picked up next run.
-          if (pastDeadline()) return [];
+          if (pastDeadline()) { detailFailures++; return []; }
           try {
-            return parseJobPostings(
+            const parsed = parseJobPostings(
               await fetchText(url, {
                 headers: {
                   'user-agent':
@@ -166,6 +172,8 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
               }),
               url,
             );
+            if (parsed.length === 0) detailFailures++;
+            return parsed;
           } catch {
             detailFailures++;
             return [];
@@ -189,7 +197,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
           `pages de détail bloquées ou sans JobPosting`,
       );
     }
-    return jobs;
+    return { jobs, complete: reachedEnd && detailFailures === 0, truncated: !reachedEnd || detailFailures > 0 };
   }
 
   const sitemapUrl = String(config.sitemapUrl ?? '');
@@ -224,11 +232,13 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     );
 
     const seen = new Set<string>();
-    return pages.flat().filter((job) => {
+    const jobs = pages.flat().filter((job) => {
       if (seen.has(job.externalId)) return false;
       seen.add(job.externalId);
       return true;
     });
+    // The sitemap reader currently tolerates unreachable shards; it cannot prove completeness.
+    return { jobs, complete: false };
   }
 
   const startUrl = String(config.startUrl ?? '');
@@ -253,5 +263,5 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
   })));
   const byKey = new Map<string, NormalizedJob>();
   for (const job of [...direct, ...pages.flat()]) byKey.set(`${job.externalId}|${job.url}`, job);
-  return [...byKey.values()];
+  return { jobs: [...byKey.values()], complete: false, truncated: links.size > 150 };
 }

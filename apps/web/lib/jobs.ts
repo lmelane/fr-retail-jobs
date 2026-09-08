@@ -2,6 +2,7 @@ import { unstable_cache } from 'next/cache';
 import { prisma, CompanySector } from '@catwalks/db';
 import { expandCompanyTerm } from './groups';
 import { countryCode, rawValuesForCode } from './countries';
+import { searchSummary } from './job-search-query';
 import { offerIdCandidates } from './offer-url';
 
 /**
@@ -88,7 +89,7 @@ export type JobFilters = {
 export function parseFilters(params: Record<string, string | string[] | undefined>): JobFilters {
   const one = (key: string) => {
     const value = params[key];
-    return (Array.isArray(value) ? value[0] : value)?.trim() || undefined;
+    return (Array.isArray(value) ? value[0] : value)?.trim().slice(0, 200) || undefined;
   };
 
   const page = Number(one('page'));
@@ -120,12 +121,17 @@ export function parseFilters(params: Record<string, string | string[] | undefine
     group: one('groupe'),
     source: one('source'),
     country,
-    page: Number.isFinite(page) && page > 0 ? page : 1,
+    page: normalizedPage(page),
   };
 }
 
 /** Offers per page. */
 export const PAGE_SIZE = 25;
+/** A bounded offset until the public API adopts cursor pagination. */
+export const MAX_PAGE = 10_000;
+function normalizedPage(page: number | undefined): number {
+  return Number.isSafeInteger(page) && page! > 0 ? Math.min(page!, MAX_PAGE) : 1;
+}
 
 export type JobRow = {
   id: string;
@@ -277,104 +283,6 @@ export function canonicalCity(raw: string): string {
     .replace(/(^|[\s'’-])([a-zà-ÿ])/g, (_, sep, ch) => sep + ch.toLocaleUpperCase('fr-FR'));
 }
 
-/** One grouped count per facet, over every row the filters match. */
-async function countFacets(
-  where: WhereClause,
-  whereForCountry: WhereClause = where,
-): Promise<JobsResult['facets']> {
-  const asFacets = (rows: { _count: number }[], key: string) =>
-    rows
-      .map((row) => ({
-        value: String((row as Record<string, unknown>)[key] ?? ''),
-        count: row._count,
-      }))
-      .filter((facet) => facet.value !== '')
-      .sort((a, b) => b.count - a.count);
-
-  /** Merge raw city rows case-insensitively into one canonical entry each. */
-  const cityFacets = (rows: { city: string | null; _count: number }[]) => {
-    const merged = new Map<string, number>();
-    for (const row of rows) {
-      if (!row.city) continue;
-      const key = canonicalCity(row.city);
-      if (!key) continue;
-      merged.set(key, (merged.get(key) ?? 0) + row._count);
-    }
-    return [...merged.entries()]
-      .map(([value, count]) => ({ value, count }))
-      .sort((a, b) => b.count - a.count);
-  };
-
-  const [contracts, cities, sectors, sources, rawCountries, franceCount] = await Promise.all([
-    prisma.job.groupBy({ by: ['employmentTerm'], where, _count: true }),
-    prisma.job.groupBy({ by: ['city'], where, _count: true, orderBy: { _count: { city: 'desc' } }, take: 60 }),
-    // Sector, Maison and Group live on Company, so they are grouped through the join.
-    prisma.job.groupBy({ by: ['companyId'], where, _count: true, orderBy: { _count: { companyId: 'desc' } }, take: 300 }),
-    // Source lives on JobSource: count live source rows of jobs matching the filters.
-    prisma.jobSource.groupBy({
-      by: ['sourceKey'],
-      where: { isActive: true, job: where },
-      _count: true,
-      orderBy: { _count: { sourceKey: 'desc' } },
-      take: 40,
-    }),
-    // Country facet: group the raw spellings, normalize them below. Uses the
-    // country-free where so every country stays offered, not just the selected one.
-    prisma.job.groupBy({ by: ['countryCode'], where: whereForCountry, _count: true }),
-    // France is counted on the reliable flag, not its three raw spellings.
-    prisma.job.count({ where: { ...whereForCountry, isFrance: true } }),
-  ]);
-
-  const companies = await prisma.company.findMany({
-    where: { id: { in: sectors.map((row) => row.companyId) } },
-    select: { id: true, name: true, sector: true, parentGroup: true },
-  });
-  const byId = new Map(companies.map((company) => [company.id, company]));
-
-  const sectorCounts = new Map<string, number>();
-  const maisonCounts = new Map<string, number>();
-  const groupCounts = new Map<string, number>();
-  for (const row of sectors) {
-    const company = byId.get(row.companyId);
-    if (!company) continue;
-    const sector = String(company.sector ?? '');
-    sectorCounts.set(sector, (sectorCounts.get(sector) ?? 0) + row._count);
-    maisonCounts.set(company.name, (maisonCounts.get(company.name) ?? 0) + row._count);
-    if (company.parentGroup) {
-      groupCounts.set(company.parentGroup, (groupCounts.get(company.parentGroup) ?? 0) + row._count);
-    }
-  }
-
-  const fromMap = (map: Map<string, number>) =>
-    [...map.entries()]
-      .map(([value, count]) => ({ value, count }))
-      .filter((facet) => facet.value !== '')
-      .sort((a, b) => b.count - a.count);
-
-  // Country facet: normalize raw spellings to a code, drop FR (counted on the
-  // flag), and prepend France so it leads the list when present.
-  const countryCounts = new Map<string, number>();
-  for (const row of rawCountries) {
-    const code = countryCode(row.countryCode);
-    if (!code || code === 'FR') continue;
-    countryCounts.set(code, (countryCounts.get(code) ?? 0) + row._count);
-  }
-  const countries = [
-    ...(franceCount > 0 ? [{ value: 'FR', count: franceCount }] : []),
-    ...fromMap(countryCounts),
-  ];
-
-  return {
-    sectors: fromMap(sectorCounts),
-    contracts: asFacets(contracts, 'employmentTerm'),
-    cities: cityFacets(cities),
-    groups: fromMap(groupCounts),
-    maisons: fromMap(maisonCounts),
-    sources: asFacets(sources as { _count: number }[], 'sourceKey'),
-    countries,
-  };
-}
-
 function toRow(row: {
   id: string; title: string; company: { name: string; sector: string | null; parentGroup: string | null; domain: string | null };
   city: string | null; location: string | null; employmentTerm: string | null; url: string;
@@ -455,6 +363,7 @@ export async function getJobStatus(
   try {
     const row = await prisma.job.findUnique({
       where: { id },
+      omit: { raw: true, searchText: true },
       include: {
         company: true,
         sources: { select: { sourceKey: true }, where: { isActive: true } },
@@ -567,7 +476,8 @@ export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> 
     const sameMaison = await prisma.job.findMany({
       where: { ...base, company: { name: job.company } },
       include,
-      orderBy: { postedAt: 'desc' },
+      omit: { raw: true, searchText: true },
+      orderBy: [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }],
       take: limit,
     });
     if (sameMaison.length >= limit) return sameMaison.map(toRow);
@@ -581,7 +491,8 @@ export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> 
             ...(job.city ? { city: { equals: job.city, mode: 'insensitive' as const } } : {}),
           },
           include,
-          orderBy: { postedAt: 'desc' },
+          omit: { raw: true, searchText: true },
+          orderBy: [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }],
           take: limit - sameMaison.length,
         })
       : [];
@@ -594,40 +505,33 @@ export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> 
 export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
 
-  const where = whereClause(filters);
-  // The Pays facet must ignore the CURRENT country filter: with France selected
-  // by default, counting countries inside the France-filtered set left only
-  // "France" in the dropdown, so a candidate could never switch country. Built
-  // from every other filter but not the country one, so all reachable countries
-  // stay switchable.
-  const whereForCountryFacet = whereClause({ ...filters, country: undefined });
-  const page = Math.max(1, filters.page ?? 1);
-
+  const page = normalizedPage(filters.page);
   try {
-    const [rows, total, totalInDatabase] = await Promise.all([
-      prisma.job.findMany({
-        where,
-        include: {
-          company: true,
-          sources: { select: { sourceKey: true }, where: { isActive: true } },
-        },
-        orderBy: [{ postedAt: 'desc' }, { firstSeenAt: 'desc' }],
-        skip: (page - 1) * PAGE_SIZE,
-        take: PAGE_SIZE,
-      }),
-      prisma.job.count({ where }),
-      prisma.job.count({ where: { isActive: true } }),
-    ]);
-
+    const summary = await searchSummary(filters, page, PAGE_SIZE);
+    const rows = await prisma.job.findMany({
+      where: { id: { in: summary.ids }, isActive: true },
+      omit: { raw: true, searchText: true },
+      include: { company: true, sources: { select: { sourceKey: true }, where: { isActive: true } } },
+    });
+    const byId = new Map(rows.map(row => [row.id, row]));
+    const countries = new Map<string, number>();
+    for (const facet of summary.rawCountries) {
+      const code = countryCode(facet.value);
+      if (code && code !== 'FR') countries.set(code, (countries.get(code) ?? 0) + facet.count);
+    }
     return {
-      jobs: rows.map(toRow),
-      total,
-      totalInDatabase,
-      page,
-      pageCount: Math.max(1, Math.ceil(total / PAGE_SIZE)),
-      // Facets counted across the WHOLE match set, in the database. The Pays
-      // facet uses the country-free where so every country stays switchable.
-      facets: await countFacets(where, whereForCountryFacet),
+      jobs: summary.ids.flatMap(id => { const row = byId.get(id); return row ? [toRow(row)] : []; }),
+      total: summary.total, totalInDatabase: summary.totalInDatabase, page,
+      pageCount: Math.max(1, Math.ceil(summary.total / PAGE_SIZE)),
+      facets: {
+        sectors: summary.sectors, contracts: summary.contracts,
+        cities: summary.cities.map(f => ({ ...f, value: canonicalCity(f.value) })),
+        groups: summary.groups, maisons: summary.maisons, sources: summary.sources,
+        countries: [
+          ...(summary.franceCount ? [{ value: 'FR', count: summary.franceCount }] : []),
+          ...[...countries].map(([value, count]) => ({ value, count })).sort((a,b) => b.count-a.count),
+        ],
+      },
     };
   } catch (error) {
     throw new DatabaseUnavailableError(error);

@@ -65,7 +65,7 @@ afterAll(async () => {
 });
 
 describe('purgeStaleForSource', () => {
-  it('removes a stale single-source job that this source no longer lists', async () => {
+  it('closes a stale job while preserving its identity and history', async () => {
     const c = await makeCompany('acme', 'Acme');
     // Stale (v4) job whose only source is "kering" — kering's run just succeeded
     // at v5 without re-seeing it, so it is gone from kering.
@@ -73,8 +73,10 @@ describe('purgeStaleForSource', () => {
 
     const result = await purgeStaleForSource(prisma, 'kering', CURRENT);
 
-    expect(result.jobsDeleted).toBe(1);
-    expect(await prisma.job.count()).toBe(0);
+    expect(result.jobsClosed).toBe(1);
+    expect(await prisma.job.count()).toBe(1);
+    expect(await prisma.job.count({ where: { isActive: true } })).toBe(0);
+    expect(await prisma.jobEvent.count({ where: { type: 'CLOSED' } })).toBe(1);
   });
 
   it('keeps a job that another source still lists, only detaching the stale source', async () => {
@@ -93,11 +95,11 @@ describe('purgeStaleForSource', () => {
     const result = await purgeStaleForSource(prisma, 'kering', CURRENT);
 
     // The job survives because loreal still carries it.
-    expect(result.jobsDeleted).toBe(0);
+    expect(result.jobsClosed).toBe(0);
     const still = await prisma.job.findUnique({ where: { id: job.id }, include: { sources: true } });
     expect(still).not.toBeNull();
     // kering's stale source row is gone; loreal remains.
-    const keys = still!.sources.map((s) => s.sourceKey).sort();
+    const keys = still!.sources.filter(s => s.isActive).map((s) => s.sourceKey).sort();
     expect(keys).toEqual(['loreal']);
   });
 
@@ -107,7 +109,7 @@ describe('purgeStaleForSource', () => {
 
     const result = await purgeStaleForSource(prisma, 'kering', CURRENT);
 
-    expect(result.jobsDeleted).toBe(0);
+    expect(result.jobsClosed).toBe(0);
     expect(await prisma.job.count()).toBe(1);
   });
 
@@ -118,7 +120,7 @@ describe('purgeStaleForSource', () => {
 
     const result = await purgeStaleForSource(prisma, 'kering', CURRENT);
 
-    expect(result.jobsDeleted).toBe(0);
+    expect(result.jobsClosed).toBe(0);
     expect(await prisma.job.count()).toBe(1);
   });
 });

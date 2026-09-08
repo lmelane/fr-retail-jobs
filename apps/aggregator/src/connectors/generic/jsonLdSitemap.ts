@@ -1,5 +1,5 @@
 import { gunzipSync } from 'node:zlib';
-import { fetchText, fetchWithRetry } from '../../lib/http.js';
+import { fetchText, fetchWithRetry, readBytesBounded } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
 
@@ -37,10 +37,10 @@ async function fetchSitemapXml(sitemapUrl: string): Promise<string> {
     return fetchText(sitemapUrl, { headers: REQUEST_HEADERS });
   }
   const response = await fetchWithRetry(sitemapUrl, { headers: REQUEST_HEADERS });
-  const buffer = Buffer.from(await response.arrayBuffer());
+  const buffer = await readBytesBounded(response, sitemapUrl);
   // Some hosts pre-decompress .gz on the wire; only gunzip a real gzip header.
   const isGzip = buffer[0] === 0x1f && buffer[1] === 0x8b;
-  return (isGzip ? gunzipSync(buffer) : buffer).toString('utf8');
+  return (isGzip ? gunzipSync(buffer, { maxOutputLength: 20_000_000 }) : buffer).toString('utf8');
 }
 
 /**

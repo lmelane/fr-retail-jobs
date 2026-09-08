@@ -1,4 +1,4 @@
-import { fetchWithRetry } from '../../lib/http.js';
+import { fetchWithRetry, readBodyBounded } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
@@ -98,7 +98,7 @@ export async function fetchGeoDirectoryJobs(config: Record<string, unknown>): Pr
       { headers: { 'user-agent': USER_AGENT, accept: 'application/json' } },
     );
     // Même précaution que l'adaptateur WordPress : un BOM en tête casse JSON.parse.
-    const text = (await response.text()).replace(/^﻿/, '');
+    const text = (await readBodyBounded(response, origin)).replace(/^﻿/, '');
     const posts = JSON.parse(text) as GeoDirPost[];
     if (!Array.isArray(posts) || posts.length === 0) break;
 

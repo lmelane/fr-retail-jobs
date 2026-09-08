@@ -1,5 +1,6 @@
 import { withHostGate } from '../lib/hostGate.js';
 import { assertPublicUrl } from '../lib/ssrf.js';
+import { fetchFollowingSafely, readBodyBounded } from '../lib/http.js';
 import { techScanHostnames } from './techScan.js';
 import type { AtsDetection } from '../types.js';
 import type { AtsType } from '@prisma/client';
@@ -68,16 +69,10 @@ async function probeFetch(
   }
   return withHostGate(url, async () => {
     try {
-      // Follow redirects: some ATS endpoints 30x to a regional host before the
-      // real answer (manual redirect would drop them). The SSRF guard already
-      // validated the initial URL; ATS API hosts are well-known, low-risk.
-      const response = await fetch(url, {
-        ...init,
-        redirect: 'follow',
-        signal: AbortSignal.timeout(PROBE_TIMEOUT_MS),
-      });
-      if (!response.ok) return null;
-      return asText ? await response.text() : await response.json();
+      const response = await fetchFollowingSafely(url, init, AbortSignal.timeout(PROBE_TIMEOUT_MS));
+      if (!response.ok) { await response.body?.cancel(); return null; }
+      const body = await readBodyBounded(response, url);
+      return asText ? body : JSON.parse(body);
     } catch {
       return null;
     }

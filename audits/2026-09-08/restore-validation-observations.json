@@ -1,0 +1,175 @@
+{
+  "measuredAt": "2026-09-08T12:46:17.599370+00:00",
+  "scope": "Local synthetic PostgreSQL 18 backup and restore; not a production backup recovery test",
+  "tables": [
+    {
+      "table": "Company",
+      "source": {
+        "count": 10,
+        "checksum": "f0441b8e6942d8267441f0e159c42576"
+      },
+      "restored": {
+        "count": 10,
+        "checksum": "f0441b8e6942d8267441f0e159c42576"
+      },
+      "equal": true
+    },
+    {
+      "table": "CompanyAlias",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "GeoCache",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "Job",
+      "source": {
+        "count": 2000,
+        "checksum": "72218c3d42807e8cbdf49691c5ea4990"
+      },
+      "restored": {
+        "count": 2000,
+        "checksum": "72218c3d42807e8cbdf49691c5ea4990"
+      },
+      "equal": true
+    },
+    {
+      "table": "JobEvent",
+      "source": {
+        "count": 2000,
+        "checksum": "cd86c0e7f47acec6d911f02602940a41"
+      },
+      "restored": {
+        "count": 2000,
+        "checksum": "cd86c0e7f47acec6d911f02602940a41"
+      },
+      "equal": true
+    },
+    {
+      "table": "JobSource",
+      "source": {
+        "count": 2000,
+        "checksum": "b485788a269ca124b0e94e2c36c9a0ee"
+      },
+      "restored": {
+        "count": 2000,
+        "checksum": "b485788a269ca124b0e94e2c36c9a0ee"
+      },
+      "equal": true
+    },
+    {
+      "table": "MarketSnapshot",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "Source",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "SourceCursor",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "SourceFieldTrust",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "SourceFieldTrustObservation",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "SourceObservation",
+      "source": {
+        "count": 2002,
+        "checksum": "c3ca197b0a09938db5f64d76df2c0eb6"
+      },
+      "restored": {
+        "count": 2002,
+        "checksum": "c3ca197b0a09938db5f64d76df2c0eb6"
+      },
+      "equal": true
+    },
+    {
+      "table": "SourceRun",
+      "source": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "restored": {
+        "count": 0,
+        "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+      },
+      "equal": true
+    },
+    {
+      "table": "_prisma_migrations",
+      "source": {
+        "count": 16,
+        "checksum": "ebe373552fa1071aeea99c118a780025"
+      },
+      "restored": {
+        "count": 16,
+        "checksum": "ebe373552fa1071aeea99c118a780025"
+      },
+      "equal": true
+    }
+  ],
+  "allEqual": true
+}

@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-09-08T13:09:40.030Z",
+  "freshnessHours": 48,
+  "totals": {
+    "activeJobs": 2003,
+    "atRiskJobs": 0,
+    "withoutFreshSource": 0,
+    "withoutActiveSource": 0,
+    "expiredStillActive": 0,
+    "canonicalUrlUnbacked": 0
+  },
+  "sources": [
+    {
+      "sourceKey": "cto-benchmark",
+      "activeJobs": 2000,
+      "atRiskJobs": 0,
+      "exclusivelyBackedJobs": 2000,
+      "stalePostings": 0,
+      "lastStatus": null,
+      "lastRunAt": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "descriptionRate": null,
+      "countryRate": null,
+      "dateRate": null,
+      "urlRate": null
+    },
+    {
+      "sourceKey": "maison-fixture",
+      "activeJobs": 3,
+      "atRiskJobs": 0,
+      "exclusivelyBackedJobs": 3,
+      "stalePostings": 0,
+      "lastStatus": null,
+      "lastRunAt": null,
+      "canAttestAbsence": null,
+      "complete": null,
+      "fetched": null,
+      "accepted": null,
+      "declaredTotal": null,
+      "truncated": null,
+      "errors": null,
+      "descriptionRate": null,
+      "countryRate": null,
+      "dateRate": null,
+      "urlRate": null
+    }
+  ],
+  "definitions": {
+    "atRiskJobs": "Distinct active jobs with no fresh active source, no active source backing the canonical URL, or a known elapsed validThrough.",
+    "alternateSources": "A fresh alternate source protects a job from freshness risk even if another source is stale.",
+    "aggregation": "Per-source exposures overlap; never sum them to obtain the global total.",
+    "unknown": "Null means unmeasured. Field presence rates do not establish field correctness."
+  },
+  "notYetMeasured": [
+    "field-level contradictions",
+    "country ambiguity inventory",
+    "validated field completeness",
+    "adapter drift against versioned fixtures",
+    "worldwide employer coverage against a reference universe"
+  ]
+}

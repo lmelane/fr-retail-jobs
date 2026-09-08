@@ -15,6 +15,8 @@
  * catalogue is unaffected; only a host we are being rude to slows down.
  */
 
+import { assertSourceRunning, sourceDelay, sourceSignal } from './sourceBudget.js';
+
 type HostState = {
   /** Requests in flight to this host right now. */
   active: number;
@@ -51,29 +53,42 @@ function hostOf(url: string): string {
   }
 }
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
 /**
  * Runs `task` under the gate for `url`'s host: waits for a concurrency slot and
  * the per-host gap, runs it, then releases the slot and wakes the next waiter.
  */
 export async function withHostGate<T>(url: string, task: () => Promise<T>): Promise<T> {
+  assertSourceRunning();
   const host = hostOf(url);
   const state = stateFor(host);
 
   // Wait for a concurrency slot.
   if (state.active >= MAX_CONCURRENT_PER_HOST) {
-    await new Promise<void>((resolve) => state.queue.push(resolve));
-  }
-  state.active++;
-
-  // Honour the per-host gap so bursts to one host are spaced out.
-  const now = Date.now();
-  const wait = Math.max(0, state.nextAllowedAt - now);
-  state.nextAllowedAt = Math.max(now, state.nextAllowedAt) + state.gapMs;
-  if (wait > 0) await sleep(wait);
+    await new Promise<void>((resolve, reject) => {
+      const signal = sourceSignal();
+      const grant = () => {
+        signal?.removeEventListener('abort', cancel);
+        state.active++; // Reserve before waking, so new arrivals cannot steal the slot.
+        resolve();
+      };
+      const cancel = () => {
+        const index = state.queue.indexOf(grant);
+        if (index >= 0) state.queue.splice(index, 1);
+        reject(signal?.reason);
+      };
+      state.queue.push(grant);
+      signal?.addEventListener('abort', cancel, { once: true });
+      if (signal?.aborted) cancel();
+    });
+  } else state.active++;
 
   try {
+    // Honour the per-host gap so bursts to one host are spaced out.
+    const now = Date.now();
+    const wait = Math.max(0, state.nextAllowedAt - now);
+    state.nextAllowedAt = Math.max(now, state.nextAllowedAt) + state.gapMs;
+    if (wait > 0) await sourceDelay(wait);
+    assertSourceRunning();
     return await task();
   } finally {
     state.active--;

@@ -24,13 +24,15 @@ afterAll(async () => {
   await prisma.$disconnect();
 });
 
-async function jobIn(cluster: string, opts: { ext: string; sourceKey: string; tier: string; title?: string }) {
+async function jobIn(cluster: string, opts: { ext: string; sourceKey: string; tier: string; title?: string; countryCode?: string; postedAt?: Date }) {
   return prisma.job.create({
     data: {
       company: { create: { name: 'x', canonicalKey: `c-${opts.ext}`, fashionjobsUrl: `resolved:${opts.ext}-${Math.random()}` } },
       externalId: opts.ext,
       source: 'GENERIC_JSONLD',
       title: opts.title ?? 'Conseiller de vente H/F',
+      countryCode: opts.countryCode,
+      postedAt: opts.postedAt,
       url: `https://x/${opts.ext}`,
       fingerprint: `fp-${opts.ext}`,
       clusterKey: cluster,
@@ -48,6 +50,27 @@ async function jobIn(cluster: string, opts: { ext: string; sourceKey: string; ti
 }
 
 describe('runReconcile', () => {
+  it.each([
+    { countryCode: 'US' },
+    { title: 'Assistant Store Manager' },
+    { postedAt: new Date('2026-06-30T00:00:00Z') },
+  ])('does not undo ingest identity guards: %j', async (change) => {
+    const evidence = { title: 'Store Manager', countryCode: 'FR', postedAt: new Date('2026-01-01T00:00:00Z') };
+    await jobIn('acme|PARIS', { ext: 'a', sourceKey: 'employer', tier: 'EMPLOYER_DIRECT', ...evidence });
+    await jobIn('acme|PARIS', { ext: 'b', sourceKey: 'board', tier: 'SPECIALIST_JOBBOARD', ...evidence, ...change });
+    expect((await runReconcile(prisma)).jobsMerged).toBe(0);
+    expect(await prisma.job.count({ where: { isActive: true } })).toBe(2);
+  });
+
+  it('does not use a posting with unknown country to bridge FR and US', async () => {
+    const unknown = await jobIn('acme|PARIS', { ext: 'u', sourceKey: 'unknown', tier: 'SPECIALIST_JOBBOARD' });
+    await prisma.job.update({ where: { id: unknown.id }, data: { firstSeenAt: new Date('2000-01-01') } });
+    await jobIn('acme|PARIS', { ext: 'fr', sourceKey: 'fr', tier: 'EMPLOYER_DIRECT', countryCode: 'FR' });
+    await jobIn('acme|PARIS', { ext: 'us', sourceKey: 'us', tier: 'EMPLOYER_DIRECT', countryCode: 'US' });
+    expect((await runReconcile(prisma)).jobsMerged).toBe(1);
+    expect(await prisma.job.count({ where: { isActive: true } })).toBe(2);
+  });
+
   it('merges two now-duplicate jobs in one cluster into a single active job', async () => {
     // Same cluster (company|city), near-identical titles, different sources.
     const keeper = await jobIn('acme|PARIS', { ext: 'a', sourceKey: 'employer', tier: 'EMPLOYER_DIRECT', title: 'Conseiller de vente H/F' });

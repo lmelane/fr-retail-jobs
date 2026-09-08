@@ -1,0 +1,76 @@
+{
+  "auditedOn": "2026-09-08",
+  "timezone": "Europe/Paris",
+  "repository": "/Users/lmelane/Downloads/catwalks-job-aggregator",
+  "lastReviewedCommit": "c353ed39bf8f82c44c6bfd2f8e5bfa00ddef7629",
+  "applicationChangesByAuditor": false,
+  "productionWritesByAuditor": false,
+  "productionDeploymentsByAuditor": false,
+  "verification": {
+    "typecheck": "PASS (aggregator + web)",
+    "aggregatorFull": {
+      "files": 84,
+      "passed": 1460,
+      "failed": 0,
+      "durationSeconds": 9.82,
+      "atLocal": "12:40:45"
+    },
+    "webFinal": {
+      "files": 9,
+      "passed": 82,
+      "skipped": 2,
+      "failed": 0,
+      "durationSeconds": 0.557,
+      "atLocal": "12:45:22"
+    },
+    "freshDatabaseMigrations": {
+      "applied": 13,
+      "result": "PASS",
+      "postgresMajor": 18
+    },
+    "nextProductionBuild": "PASS; build antérieur au correctif SQL concurrent 3b4221d",
+    "browserE2E": {
+      "passed": 15,
+      "failed": 1,
+      "reason": "Le scénario mobile recherche Pays sans ouvrir Filtres; présence du filtre vérifiée manuellement.",
+      "isolatedSeededDatabase": true
+    },
+    "capacityLoadTest": "NOT_PERFORMED",
+    "productionSecurityExploit": "NOT_PERFORMED"
+  },
+  "productionIncident": {
+    "observed": "Recherche indisponible; erreur répétée The column Job.country does not exist in the current database.",
+    "logTimestampsUTC": [
+      "2026-09-08T10:33:45Z",
+      "2026-09-08T10:34:35Z",
+      "2026-09-08T10:35:25Z",
+      "2026-09-08T10:35:33Z"
+    ],
+    "schemaObservation": "Job.countryCode présente; Job.country absente.",
+    "recoveryCheck": {
+      "atUTC": "2026-09-08T10:44:53Z",
+      "jobsPageHTTP": 200,
+      "unavailableMessage": false,
+      "apiHTTP": 200,
+      "apiTotal": 71636,
+      "apiRows": 25
+    },
+    "auditorIntervention": "Aucune correction ou action de déploiement."
+  },
+  "limitations": [
+    "Dépôt et déploiements modifiés simultanément par une autre activité.",
+    "Mesures de production ponctuelles par SELECT, pas une série SLO.",
+    "Reproductions synthétiques: mécanismes démontrés, fréquence de survenue en production non mesurée.",
+    "Configuration des secrets, restauration des sauvegardes et autorisations de chaque source non certifiées."
+  ],
+  "productionMetricQueries": {
+    "jobs": "SELECT count(*)::int AS total, count(*) FILTER (WHERE \"isActive\")::int AS active, count(DISTINCT \"companyId\") FILTER (WHERE \"isActive\")::int AS companies, count(DISTINCT \"countryCode\") FILTER (WHERE \"isActive\")::int AS countries, count(*) FILTER (WHERE \"isActive\" AND \"lastSeenAt\"<now()-interval '48 hours')::int AS stale48h, count(*) FILTER (WHERE \"isActive\" AND \"validThrough\"<now())::int AS past_expiry, count(*) FILTER (WHERE \"isActive\" AND length(coalesce(description,''))<200)::int AS short_description, count(*) FILTER (WHERE \"isActive\" AND \"countryCode\" IS NULL)::int AS missing_country, count(*) FILTER (WHERE \"isActive\" AND \"countryIntegrity\" IS NOT NULL)::int AS uncertain_country, count(*) FILTER (WHERE \"isActive\" AND city IS NULL)::int AS missing_city, count(*) FILTER (WHERE \"isActive\" AND \"salaryMin\" IS NOT NULL AND \"salaryCurrency\" IS NULL)::int AS salary_without_currency FROM \"Job\"",
+    "sources": "SELECT status,\"lastRunStatus\",count(*)::int AS count FROM \"Source\" GROUP BY 1,2 ORDER BY 1,2",
+    "top": "SELECT c.name, count(*)::int AS jobs FROM \"Job\" j JOIN \"Company\" c ON c.id=j.\"companyId\" WHERE j.\"isActive\" GROUP BY 1 ORDER BY 2 DESC LIMIT 10",
+    "source_freshness": "SELECT count(*) FILTER (WHERE \"lastRunAt\"<now()-interval '48 hours')::int AS stale48h, count(*) FILTER (WHERE \"robotsCheckedAt\" IS NULL)::int AS no_robots_date, count(*) FILTER (WHERE \"robotsVerdict\" IS NULL)::int AS no_robots, min(\"lastRunAt\") AS oldest_run FROM \"Source\" WHERE status='ACTIVE'",
+    "integrity": "SELECT count(*) FILTER (WHERE j.\"isActive\" AND NOT EXISTS (SELECT 1 FROM \"JobSource\" s WHERE s.\"jobId\"=j.id AND s.\"isActive\"))::int AS live_without_active_source, count(*) FILTER (WHERE j.\"isActive\" AND NOT EXISTS (SELECT 1 FROM \"JobSource\" s WHERE s.\"jobId\"=j.id AND s.\"isActive\" AND s.url=j.url))::int AS live_canonical_not_active FROM \"Job\" j",
+    "raw": "SELECT count(*)::int AS sources,count(*) FILTER (WHERE raw IS NULL)::int AS sources_without_raw FROM \"JobSource\"",
+    "snapshots": "SELECT min(date),max(date),count(DISTINCT date)::int AS days FROM \"MarketSnapshot\"",
+    "indexes": "SELECT indexname,indexdef FROM pg_indexes WHERE tablename='Job'"
+  }
+}

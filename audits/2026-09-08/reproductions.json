@@ -1,0 +1,66 @@
+{
+  "crossCountry": {
+    "sameJob": true,
+    "firstCountry": "FR",
+    "secondCountry": "US",
+    "outcome": "MERGED"
+  },
+  "roleAndDate": {
+    "managerVsAssistantSimilarity": 0.8,
+    "managerVsAssistantMerged": true,
+    "identicalTitle180DaysApartMerged": true
+  },
+  "lowerTierOverwrite": {
+    "title": "Assistant Store Manager",
+    "url": "https://employer.example/offer-1",
+    "salaryMin": 25000,
+    "canonicalTier": "EMPLOYER_DIRECT"
+  },
+  "rawRefresh": {
+    "jobRaw": {
+      "revision": 1
+    },
+    "sourceRaw": {
+      "revision": 1
+    },
+    "descriptionChanged": false
+  },
+  "explicitExpiry": {
+    "isActive": true,
+    "validThrough": "2025-01-01T00:00:00.000Z"
+  },
+  "staleCanonical": {
+    "url": "https://employer.example/offer-1",
+    "activeSourceUrls": [
+      "https://board.example/live"
+    ]
+  },
+  "concurrentDuplicates": {
+    "jobsCreated": 2,
+    "outcomes": [
+      "CREATED",
+      "CREATED"
+    ]
+  },
+  "disallowedPromotion": {
+    "key": "audit-1788863948478-forbidden",
+    "from": "DRAFT",
+    "to": "ACTIVE"
+  },
+  "filteredCoverage": [
+    {
+      "source": "audit-1788863948478-health",
+      "status": "DEGRADED",
+      "jobs": 20,
+      "previous": 20,
+      "note": "descriptions manquantes sur 80% des offres",
+      "coverage": "desc 20% date 20% pays 20% url 20%",
+      "rates": {
+        "description": 0.2,
+        "date": 0.2,
+        "country": 0.2,
+        "url": 0.2
+      }
+    }
+  ]
+}

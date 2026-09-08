@@ -12,13 +12,17 @@ import { isTrustedForAttestation, ATTESTATION_MIN_COVERAGE } from './attestation
  * garde alors le droit d'attester.
  */
 describe('isTrustedForAttestation', () => {
+  it('unknown completion never proves absence, even with an OK status', () => {
+    expect(isTrustedForAttestation({ status: 'OK', fetched: 100 })).toBe(false);
+    expect(isTrustedForAttestation({ status: 'OK', complete: false, fetched: 100 })).toBe(false);
+  });
   it('un run OK atteste', () => {
-    expect(isTrustedForAttestation({ status: 'OK' })).toBe(true);
+    expect(isTrustedForAttestation({ complete: true, status: 'OK' })).toBe(true);
   });
 
   describe('les échecs francs n’attestent jamais', () => {
     it.each(['BROKEN', 'TIMEOUT', 'ERROR', 'CHALLENGED'] as const)('%s → refus', (status) => {
-      expect(isTrustedForAttestation({ status })).toBe(false);
+      expect(isTrustedForAttestation({ complete: true, status })).toBe(false);
     });
   });
 
@@ -29,21 +33,21 @@ describe('isTrustedForAttestation', () => {
    */
   it('un run tronqué n’atteste pas, même s’il a produit des offres', () => {
     expect(
-      isTrustedForAttestation({ status: 'DEGRADED', truncated: true, declaredTotal: 109, fetched: 20 }),
+      isTrustedForAttestation({ complete: true, status: 'DEGRADED', truncated: true, declaredTotal: 109, fetched: 20 }),
     ).toBe(false);
   });
 
   it('une couverture sous le plancher n’atteste pas', () => {
-    expect(isTrustedForAttestation({ status: 'DEGRADED', declaredTotal: 100, fetched: 50 })).toBe(false);
+    expect(isTrustedForAttestation({ complete: true, status: 'DEGRADED', declaredTotal: 100, fetched: 50 })).toBe(false);
   });
 
   it('une couverture au-dessus du plancher atteste', () => {
-    expect(isTrustedForAttestation({ status: 'OK', declaredTotal: 100, fetched: 99 })).toBe(true);
+    expect(isTrustedForAttestation({ complete: true, status: 'OK', declaredTotal: 100, fetched: 99 })).toBe(true);
   });
 
   it('le plancher lui-même atteste (borne incluse)', () => {
     const fetched = Math.ceil(100 * ATTESTATION_MIN_COVERAGE);
-    expect(isTrustedForAttestation({ status: 'OK', declaredTotal: 100, fetched })).toBe(true);
+    expect(isTrustedForAttestation({ complete: true, status: 'OK', declaredTotal: 100, fetched })).toBe(true);
   });
 
   /**
@@ -52,7 +56,7 @@ describe('isTrustedForAttestation', () => {
    * fermerait jamais et le catalogue se remplirait de postes morts.
    */
   it('sans total déclaré, un run sain atteste', () => {
-    expect(isTrustedForAttestation({ status: 'OK', fetched: 250 })).toBe(true);
+    expect(isTrustedForAttestation({ complete: true, status: 'OK', fetched: 250 })).toBe(true);
   });
 
   /**
@@ -61,7 +65,7 @@ describe('isTrustedForAttestation', () => {
    * Confondre les deux fermerait la porte à toute expiration normale.
    */
   it('un DEGRADED de couverture de CHAMP atteste encore', () => {
-    expect(isTrustedForAttestation({ status: 'DEGRADED', fetched: 900, declaredTotal: 900 })).toBe(true);
+    expect(isTrustedForAttestation({ complete: true, status: 'DEGRADED', fetched: 900, declaredTotal: 900 })).toBe(true);
   });
 
   /**
@@ -69,15 +73,15 @@ describe('isTrustedForAttestation', () => {
    * 300 sans que la source l'annonce est le motif même de L'Oréal/Michael Page.
    */
   it('un effondrement de volume face au run précédent n’atteste pas', () => {
-    expect(isTrustedForAttestation({ status: 'DEGRADED', fetched: 300, previous: 1700 })).toBe(false);
+    expect(isTrustedForAttestation({ complete: true, status: 'DEGRADED', fetched: 300, previous: 1700 })).toBe(false);
   });
 
   it('une variation normale atteste', () => {
-    expect(isTrustedForAttestation({ status: 'OK', fetched: 1650, previous: 1700 })).toBe(true);
+    expect(isTrustedForAttestation({ complete: true, status: 'OK', fetched: 1650, previous: 1700 })).toBe(true);
   });
 
   /** Une source neuve n'a pas de passé : rien à attester, mais rien à fermer non plus. */
   it('un run NEW n’atteste pas', () => {
-    expect(isTrustedForAttestation({ status: 'NEW', fetched: 40 })).toBe(false);
+    expect(isTrustedForAttestation({ complete: true, status: 'NEW', fetched: 40 })).toBe(false);
   });
 });

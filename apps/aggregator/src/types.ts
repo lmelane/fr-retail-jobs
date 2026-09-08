@@ -108,4 +108,6 @@ export type AdapterResult = {
   jobs: NormalizedJob[];
   declaredTotal?: number;
   truncated?: boolean;
+  /** Explicit proof of enumeration completion; absence is unknown, not complete. */
+  complete?: boolean;
 };

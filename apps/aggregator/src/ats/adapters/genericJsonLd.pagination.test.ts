@@ -27,12 +27,12 @@ describe('fetchGenericJsonLdJobs — pagination par CHEMIN ({page})', () => {
       if (String(url).includes('/job/')) return detail(String(url).split('/').pop() ?? '');
       return '<p>rien</p>';
     });
-    const jobs = await fetchGenericJsonLdJobs({ listingUrl: 'https://careers.pandoragroup.com/fr/jobs/page/{page}', pageStart: 1, linkPattern: '/job/' });
+    const result = await fetchGenericJsonLdJobs({ listingUrl: 'https://careers.pandoragroup.com/fr/jobs/page/{page}', pageStart: 1, linkPattern: '/job/' });
     expect(requested[0]).toBe('https://careers.pandoragroup.com/fr/jobs/page/1');
     expect(requested).toContain('https://careers.pandoragroup.com/fr/jobs/page/2');
     expect(requested).not.toContain('https://careers.pandoragroup.com/fr/jobs/page/0');
     expect(requested.some((u) => u.includes('?page='))).toBe(false);
-    expect(jobs.map((j) => j.title).sort()).toEqual(['Offer A1', 'Offer B2']);
+    expect(result.jobs.map((j) => j.title).sort()).toEqual(['Offer A1', 'Offer B2']);
   });
 
   it('sans {page}, la forme ?page=N reste inchangée (0-based)', async () => {
@@ -75,7 +75,7 @@ describe('fetchGenericJsonLdJobs — zéro silencieux sur les pages de détail',
     });
     await expect(
       fetchGenericJsonLdJobs({ listingUrl: 'https://www.michaelpage.fr/jobs', linkPattern: '/job/' }),
-    ).rejects.toThrow(/1 lien.*0 offre.*0 échec/);
+    ).rejects.toThrow(/1 lien.*0 offre.*1 échec/);
   });
 
   /**
@@ -102,8 +102,8 @@ describe('fetchGenericJsonLdJobs — zéro silencieux sur les pages de détail',
       if (String(url).includes('/job/')) return detail('A');
       return '<p>rien</p>';
     });
-    const jobs = await fetchGenericJsonLdJobs({ listingUrl: 'https://www.michaelpage.fr/jobs', linkPattern: '/job/' });
-    expect(jobs).toHaveLength(1);
+    const result = await fetchGenericJsonLdJobs({ listingUrl: 'https://www.michaelpage.fr/jobs', linkPattern: '/job/' });
+    expect(result.jobs).toHaveLength(1);
   });
 
   it('ne lève pas quand une partie seulement des détails échoue', async () => {
@@ -113,7 +113,9 @@ describe('fetchGenericJsonLdJobs — zéro silencieux sur les pages de détail',
       if (String(url).endsWith('/job/B')) throw new Error('HTTP 500');
       return '<p>rien</p>';
     });
-    const jobs = await fetchGenericJsonLdJobs({ listingUrl: 'https://www.michaelpage.fr/jobs', linkPattern: '/job/' });
-    expect(jobs.map((j) => j.title)).toEqual(['Offer A']);
+    const result = await fetchGenericJsonLdJobs({ listingUrl: 'https://www.michaelpage.fr/jobs', linkPattern: '/job/' });
+    expect(result.jobs.map((j) => j.title)).toEqual(['Offer A']);
+    expect(result.truncated).toBe(true);
+    expect(result.complete).toBe(false);
   });
 });

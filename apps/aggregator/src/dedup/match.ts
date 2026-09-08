@@ -1,6 +1,7 @@
 import { normalizeJobTitle } from '../lib/normalize.js';
 import { normalizeLocationString } from '../normalize/location.js';
 import { resolveCompany } from '../normalize/company.js';
+import { normalizeCountry } from '../normalize/country.js';
 import type { NormalizedJob } from '../types.js';
 
 /**
@@ -172,10 +173,27 @@ function weeklyHours(title: string): string | undefined {
  * difference. Clustering them lost 122 of 408 offers, and someone searching for
  * a 35H post would have seen a single "30H" listing.
  */
-function cannotBeSameOpening(a: CandidateJob, b: CandidateJob): boolean {
+export function cannotBeSameOpening(a: CandidateJob, b: CandidateJob): boolean {
   // One source never publishes one opening twice. Two rows from the same feed
   // with different ids are two jobs — this alone would have caught Beaumanoir.
   if (a.sourceKey === b.sourceKey && a.externalId !== b.externalId) return true;
+
+  // Compare declared countries only. Missing evidence is not a country, and a
+  // shared city name cannot overrule two contradictory country codes.
+  const countryA = normalizeCountry(a.country);
+  const countryB = normalizeCountry(b.country);
+  if (countryA && countryB && countryA !== countryB) return true;
+
+  // "Assistant Store Manager" contains "Store Manager", but is a different
+  // level. Restrict this veto to management roles: "Sales Assistant" remains
+  // eligible to match its translated sales title.
+  if (roleConcepts(a.title).has('ROLE_STORE_MANAGER') && roleConcepts(b.title).has('ROLE_STORE_MANAGER')) {
+    const deputy = /\b(?:ASSISTANT(?:E)?|DEPUTY|ADJOINT(?:E)?)\b/;
+    if (deputy.test(normalizeJobTitle(a.title)) !== deputy.test(normalizeJobTitle(b.title))) return true;
+  }
+
+  // An identical title is not proof that two recruitment rounds are one job.
+  if (daysApart(a.postedAt, b.postedAt) > MAX_DAYS_APART) return true;
 
   const hoursA = weeklyHours(a.title);
   const hoursB = weeklyHours(b.title);
@@ -186,7 +204,6 @@ export function isProbableDuplicate(a: CandidateJob, b: CandidateJob): boolean {
   if (blockingKey(a) !== blockingKey(b)) return false;
   if (cannotBeSameOpening(a, b)) return false;
   if (normalizeJobTitle(a.title) === normalizeJobTitle(b.title)) return true;
-  if (daysApart(a.postedAt, b.postedAt) > MAX_DAYS_APART) return false;
   return titleSimilarity(a.title, b.title) >= TITLE_SIMILARITY_THRESHOLD;
 }
 
@@ -220,7 +237,12 @@ export function clusterJobs(jobs: readonly CandidateJob[]): JobCluster[] {
   for (const job of jobs) {
     const key = blockingKey(job);
     const groups = buckets.get(key) ?? [];
-    const target = groups.find((group) => group.some((other) => isProbableDuplicate(job, other)));
+    // An intermediate copy with missing evidence must not bridge incompatible
+    // postings (e.g. FR -> unknown country -> US).
+    const target = groups.find((group) =>
+      group.every((other) => !cannotBeSameOpening(job, other)) &&
+      group.some((other) => isProbableDuplicate(job, other)),
+    );
     if (target) target.push(job);
     else groups.push([job]);
     buckets.set(key, groups);

@@ -55,6 +55,8 @@ const NEVER_ATTESTS: ReadonlySet<RunStatus> = new Set<RunStatus>([
 
 export type AttestationInput = {
   status: RunStatus;
+  complete?: boolean;
+  errors?: number;
   /** Le total que la SOURCE elle-même annonce pour son listing, si elle l'annonce. */
   declaredTotal?: number;
   /** Ce que le balayage a réellement collecté. */
@@ -74,7 +76,7 @@ export type AttestationInput = {
  * une suppression dans notre catalogue.
  */
 export function isTrustedForAttestation(run: AttestationInput): boolean {
-  if (NEVER_ATTESTS.has(run.status)) return false;
+  if (run.complete !== true || NEVER_ATTESTS.has(run.status) || (run.errors ?? 0) > 0) return false;
 
   // Le balayage s'est arrêté sur un plafond : par construction, il n'a pas
   // atteint la fin du board.

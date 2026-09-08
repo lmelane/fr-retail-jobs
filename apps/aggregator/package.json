@@ -11,9 +11,10 @@
     "geocode": "tsx src/cli.ts geocode",
     "import-sources": "tsx src/cli.ts import-sources",
     "stats": "tsx src/cli.ts stats",
+    "health:report": "tsx src/cli.ts health-report",
     "export:companies": "tsx src/cli.ts export-companies",
     "typecheck": "tsc --noEmit",
-    "test:unit": "vitest run src/normalize src/ats src/connectors/generic src/lib/france.test.ts src/lib/html.test.ts src/lib/ssrf.test.ts src/lib/language.test.ts src/lib/chunk.test.ts src/discovery/discoverMaisons.test.ts src/geo src/pipeline/jobEvents.test.ts src/pipeline/snapshot.keys.test.ts",
+    "test:unit": "vitest run --exclude 'src/pipeline/**' --exclude 'src/dedup/**'",
     "test:integration": "vitest run src/pipeline src/dedup",
     "test": "npm run test:unit && npm run test:integration"
   },

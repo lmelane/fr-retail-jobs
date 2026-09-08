@@ -1,7 +1,9 @@
+import { assertSourceRunning, sourceSignal, sourceDelay } from './sourceBudget.js';
 import { assertPublicUrl, isPublicHttpUrl, BlockedUrlError } from './ssrf.js';
 import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 import { getWafCookie, isWafChallenge, primeWafCookie, WafChallengeError } from './wafToken.js';
 import { detectChallenge } from './responseIntegrity.js';
+import { publicDispatcher } from './publicTransport.js';
 
 export { WafChallengeError } from './wafToken.js';
 export { detectChallenge, type ChallengeVendor } from './responseIntegrity.js';
@@ -46,17 +48,23 @@ const maxBodyBytes = Number(process.env.HTTP_MAX_BODY_BYTES ?? 20_000_000);
 export const DEFAULT_DETAIL_CONCURRENCY = 4;
 
 /** Reads a body with a hard time budget and a size cap. */
-async function readBodyBounded(response: Response, url: string): Promise<string> {
+export async function readBytesBounded(response: Response, url: string): Promise<Buffer> {
   const body = response.body;
   // No readable stream (a 204, or a mocked Response in tests): text() is all
   // there is, and there is nothing to bound.
-  if (!body) return typeof response.text === 'function' ? response.text() : '';
+  if (!body) {
+    const buffer = typeof response.arrayBuffer === 'function'
+      ? Buffer.from(await response.arrayBuffer()) : Buffer.from(typeof response.text === 'function' ? await response.text() : '');
+    if (buffer.length > maxBodyBytes) throw new Error(`body over ${maxBodyBytes} bytes for ${url}`);
+    return buffer;
+  }
   const reader = body.getReader();
   const chunks: Buffer[] = [];
   let size = 0;
   const deadline = Date.now() + readTimeoutMs;
   try {
     for (;;) {
+      assertSourceRunning();
       const remaining = deadline - Date.now();
       if (remaining <= 0) throw new Error(`body read timeout (${readTimeoutMs}ms) for ${url}`);
       let timer: ReturnType<typeof setTimeout>;
@@ -75,15 +83,15 @@ async function readBodyBounded(response: Response, url: string): Promise<string>
     reader.cancel().catch(() => {});
     throw error;
   }
-  return Buffer.concat(chunks).toString('utf8');
+  return Buffer.concat(chunks);
+}
+
+export async function readBodyBounded(response: Response, url: string): Promise<string> {
+  return (await readBytesBounded(response, url)).toString('utf8');
 }
 
 /** Redirect hops to follow before giving up — enough for http→https→www chains. */
 const MAX_REDIRECTS = 5;
-
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 /**
  * One fetch that follows redirects MANUALLY, validating every hop against the
@@ -91,22 +99,49 @@ function sleep(ms: number) {
  * internal target (169.254.169.254, localhost) unchecked; validating each
  * Location closes that.
  */
-async function fetchFollowingSafely(
+export async function fetchFollowingSafely(
   url: string,
   init: RequestInit,
   signal: AbortSignal,
 ): Promise<Response> {
   let current = url;
+  let request: RequestInit = { ...init, headers: new Headers(init.headers) };
   for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+    signal.throwIfAborted();
     assertPublicUrl(current);
-    const response = await fetch(current, { ...init, signal, redirect: 'manual' });
+    const options: RequestInit = { ...request, headers: Object.fromEntries(new Headers(request.headers)),
+      signal, redirect: 'manual' };
+    // Node's fetch and installed undici share the dispatcher protocol, but
+    // their separately versioned TypeScript declarations are not assignable.
+    Object.assign(options, { dispatcher: publicDispatcher() });
+    const response = await fetch(current, options);
 
     // 3xx with a Location -> validate and follow it ourselves.
     if (response.status >= 300 && response.status < 400) {
       const location = response.headers.get('location');
       if (!location) return response;
+      await response.body?.cancel();
       const next = new URL(location, current).toString();
       if (!isPublicHttpUrl(next)) throw new BlockedUrlError(next);
+      if (new URL(next).origin !== new URL(current).origin) {
+        // Arbitrary API keys can have custom names. Forward only negotiation headers.
+        const safe = new Headers();
+        for (const key of ['accept', 'accept-language', 'user-agent']) {
+          const value = new Headers(request.headers).get(key);
+          if (value) safe.set(key, value);
+        }
+        // Do not forward a credential-bearing POST body to a different origin.
+        if (request.body != null && ![301, 302, 303].includes(response.status)) {
+          throw new Error('Refusing cross-origin redirect with a request body');
+        }
+        request = { ...request, headers: safe };
+      }
+      if (response.status === 303 && request.method !== 'HEAD' ||
+          [301, 302].includes(response.status) && request.method?.toUpperCase() === 'POST') {
+        const headers = new Headers(request.headers);
+        for (const key of ['content-type', 'content-length', 'transfer-encoding']) headers.delete(key);
+        request = { ...request, method: 'GET', body: undefined, headers };
+      }
       current = next;
       continue;
     }
@@ -125,6 +160,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
    */
   let wafRetried = false;
   for (let i = 0; i < attempts + (wafRetried ? 1 : 0); i++) {
+    assertSourceRunning();
     const controller = new AbortController();
     let timer: ReturnType<typeof setTimeout> | undefined;
     try {
@@ -135,6 +171,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       // spent queued behind a backed-off host is not the request's fault, and
       // starting the timer early expired requests before they even began.
       const response = await withHostGate(url, () => {
+        assertSourceRunning();
         timer = setTimeout(() => controller.abort(), timeoutMs);
         return fetchFollowingSafely(
           url,
@@ -143,13 +180,14 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
             headers: withWafCookie(url, {
               'user-agent': userAgent,
               'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7',
-              ...((init.headers as Record<string, string> | undefined) ?? {}),
+              ...Object.fromEntries(new Headers(init.headers)),
             }),
           },
-          controller.signal,
+          AbortSignal.any([controller.signal, ...[sourceSignal(), init.signal].filter((s): s is AbortSignal => !!s)]),
         );
       });
       if (isWafChallenge(response)) {
+        await response.body?.cancel();
         if (timer) clearTimeout(timer);
         // Une requête déjà munie du jeton et pourtant challengée ne gagnera
         // rien à être rejouée à l'identique : échec immédiat.
@@ -165,6 +203,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         reportSuccess(url);
         return response;
       }
+      await response.body?.cancel();
       /**
        * Transient statuses worth another attempt after a backoff. 403 and 405
        * are here because an anti-bot WAF returns them as a SOFT block, not a
@@ -196,10 +235,12 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         const asked = Number(response.headers.get('retry-after'));
         const waitMs = Number.isFinite(asked) && asked > 0 ? asked * 1000 : 20_000 * (i + 1);
         if (timer) clearTimeout(timer);
-        await sleep(Math.min(waitMs, 90_000));
+        await sourceDelay(Math.min(waitMs, 90_000));
         continue;
       }
     } catch (error) {
+      assertSourceRunning();
+      init.signal?.throwIfAborted();
       // A blocked URL will never become fetchable — do not waste retries on it.
       if (error instanceof BlockedUrlError || error instanceof WafChallengeError || error instanceof HttpStatusError) {
         if (timer) clearTimeout(timer);
@@ -209,7 +250,9 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
     } finally {
       if (timer) clearTimeout(timer);
     }
-    await sleep(500 * 2 ** i + Math.floor(Math.random() * 300));
+    if (i + 1 < attempts + (wafRetried ? 1 : 0)) {
+      await sourceDelay(500 * 2 ** i + Math.floor(Math.random() * 300));
+    }
   }
   throw lastError instanceof Error ? lastError : new Error(`Request failed: ${url}`);
 }
@@ -251,7 +294,7 @@ export async function fetchText(url: string, init: RequestInit = {}): Promise<st
 export async function fetchJson<T>(url: string, init: RequestInit = {}): Promise<T> {
   const response = await fetchWithRetry(url, {
     ...init,
-    headers: { accept: 'application/json', ...(init.headers ?? {}) },
+    headers: { accept: 'application/json', ...Object.fromEntries(new Headers(init.headers)) },
   });
   return JSON.parse(await readBodyBounded(response, url)) as T;
 }

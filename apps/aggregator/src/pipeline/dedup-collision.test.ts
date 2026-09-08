@@ -48,6 +48,34 @@ afterAll(async () => {
   await prisma.$disconnect();
 });
 
+describe('audit — distinct postings survive write-time matching', () => {
+  it.each([
+    { country: 'US' },
+    { title: 'Assistant Store Manager' },
+    { postedAt: new Date('2026-06-30T00:00:00Z') },
+  ])('keeps contradictory evidence separate: %j', async (change) => {
+    const first = candidate({ sourceKey: 'employer', title: 'Store Manager', city: 'Paris', country: 'FR', postedAt: new Date('2026-01-01T00:00:00Z') });
+    const second = candidate({ ...first, sourceKey: 'board', externalId: 'board-1', atsType: 'WTTJ', ...change });
+    const created = await upsertDeduplicated(prisma, first);
+    const other = await upsertDeduplicated(prisma, second);
+    expect(other.outcome).toBe('CREATED');
+    expect(other.jobId).not.toBe(created.jobId);
+    expect(await prisma.job.count()).toBe(2);
+    expect(await prisma.jobSource.count()).toBe(2);
+  });
+
+  it('still reattests the same source identity after a date or country correction', async () => {
+    const first = candidate({ sourceKey: 'employer', country: 'FR', postedAt: new Date('2026-01-01T00:00:00Z') });
+    const created = await upsertDeduplicated(prisma, first);
+    const changed = { ...first, country: 'US', postedAt: new Date('2026-06-30T00:00:00Z') };
+    for (let repeat = 0; repeat < 3; repeat++) {
+      expect((await upsertDeduplicated(prisma, changed)).jobId).toBe(created.jobId);
+    }
+    expect(await prisma.job.count()).toBe(1);
+    expect(await prisma.jobSource.count()).toBe(1);
+  });
+});
+
 describe('J2 — flow A vs flow B on the same Maison (Lacoste)', () => {
   it('merges the WTTJ copy into the employer posting: 1 job, 2 sources, employer URL kept', async () => {
     const fromEmployer = candidate({ sourceKey: 'lacoste' });

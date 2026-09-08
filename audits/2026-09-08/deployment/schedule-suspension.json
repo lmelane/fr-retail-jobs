@@ -1,0 +1,26 @@
+[
+  {
+    "service": "catwalks-reconcile",
+    "suspendedSchedule": {
+      "data": {
+        "serviceInstanceUpdate": true
+      }
+    }
+  },
+  {
+    "service": "catwalks-aggregator",
+    "suspendedSchedule": {
+      "data": {
+        "serviceInstanceUpdate": true
+      }
+    }
+  },
+  {
+    "service": "catwalks-refresh",
+    "suspendedSchedule": {
+      "data": {
+        "serviceInstanceUpdate": true
+      }
+    }
+  }
+]

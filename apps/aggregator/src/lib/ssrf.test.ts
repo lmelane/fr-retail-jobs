@@ -16,6 +16,11 @@ describe('isPublicHttpUrl — allows real public endpoints', () => {
 });
 
 describe('isPublicHttpUrl — refuses internal and non-HTTP targets', () => {
+  it.each(['http://localhost./', 'http://db.internal./', 'http://[fe90::1]/',
+    'http://[ff02::1]/', 'http://198.18.0.1/', 'http://192.0.2.1/',
+    'http://[2002:7f00:1::]/', 'https://user:secret@example.com/'])('blocks %s', url => {
+    expect(isPublicHttpUrl(url)).toBe(false);
+  });
   it('refuses the cloud metadata endpoint', () => {
     expect(isPublicHttpUrl('http://169.254.169.254/latest/meta-data/')).toBe(false);
     expect(isPublicHttpUrl('http://metadata.google.internal/computeMetadata/v1/')).toBe(false);

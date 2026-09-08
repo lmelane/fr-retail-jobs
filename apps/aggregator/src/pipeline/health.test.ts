@@ -15,7 +15,7 @@ import type { IngestStats } from './ingest.js';
 const prisma = new PrismaClient();
 
 function stat(source: string, created: number): IngestStats {
-  return { source, fetched: created, inSector: created, france: created, created, merged: 0, updated: 0, errors: 0, withDescription: created, withDate: created, withCountry: created, withUrl: created };
+  return { source, complete: true, fetched: created, inSector: created, france: created, created, merged: 0, updated: 0, errors: 0, withDescription: created, withDate: created, withCountry: created, withUrl: created };
 }
 
 async function wipe() {
@@ -29,6 +29,47 @@ afterAll(async () => {
 });
 
 describe('checkSourceHealth', () => {
+  it('does not grant attestation to an adapter that never measured completion', async () => {
+    await checkSourceHealth(prisma, [stat('legacy-adapter', 100)]);
+    const report = await checkSourceHealth(prisma, [{ ...stat('legacy-adapter', 100), complete: undefined }]);
+    expect(report.degraded).toBe(1);
+    const run = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'legacy-adapter' }, orderBy: { ranAt: 'desc' } });
+    expect(run.complete).toBeNull();
+    expect(run.canAttestAbsence).toBe(false);
+  });
+  it('measures accepted postings, and records coverage even on the first run', async () => {
+    const report = await checkSourceHealth(prisma, [{ ...stat('filtered-board', 30), fetched: 1000 }]);
+    expect(report.incidents).toHaveLength(0);
+    const run = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'filtered-board' } });
+    expect(run.descriptionRate).toBe(1);
+    expect(run.accepted).toBe(30);
+    expect(run.fetched).toBe(1000);
+    expect(run.canAttestAbsence).toBe(false);
+  });
+
+  it('does not hide truncation with an unknown total on a first run', async () => {
+    const report = await checkSourceHealth(prisma, [{ ...stat('partial', 30), truncated: true }]);
+    expect(report.degraded).toBe(1);
+    expect(report.incidents[0].note).toContain('total inconnu');
+    expect((await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'partial' } })).canAttestAbsence).toBe(false);
+  });
+
+  it('does not grant attestation after a partial write failure despite stable volume', async () => {
+    await checkSourceHealth(prisma, [stat('partial-write', 100)]);
+    const report = await checkSourceHealth(prisma, [{ ...stat('partial-write', 99), errors: 1 }]);
+    expect(report.degraded).toBe(1);
+    const run = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'partial-write' }, orderBy: { ranAt: 'desc' } });
+    expect(run.errors).toBe(1);
+    expect(run.canAttestAbsence).toBe(false);
+  });
+
+  it('allows complete runs with weak descriptions to attest, using structured evidence', async () => {
+    await checkSourceHealth(prisma, [stat('weak-descriptions', 100)]);
+    await checkSourceHealth(prisma, [{ ...stat('weak-descriptions', 100), withDescription: 10 }]);
+    const run = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'weak-descriptions' }, orderBy: { ranAt: 'desc' } });
+    expect(run.status).toBe('DEGRADED');
+    expect(run.canAttestAbsence).toBe(true);
+  });
   it('marks a source NEW on its first run (no history)', async () => {
     const report = await checkSourceHealth(prisma, [stat('kering', 100)]);
     expect(report.incidents).toHaveLength(0);

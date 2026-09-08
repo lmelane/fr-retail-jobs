@@ -1,0 +1,207 @@
+{
+  "capturedOn": "2026-09-08",
+  "method": "SELECT en transaction READ ONLY, timeout 10 secondes",
+  "measurements": [
+    {
+      "name": "jobs",
+      "rows": [
+        {
+          "total": 73645,
+          "active": 71636,
+          "companies": 1054,
+          "countries": 122,
+          "stale48h": 427,
+          "past_expiry": 79,
+          "short_description": 776,
+          "missing_country": 4754,
+          "uncertain_country": 0,
+          "missing_city": 1186,
+          "salary_without_currency": 99
+        }
+      ]
+    },
+    {
+      "name": "sources",
+      "rows": [
+        {
+          "status": "ACTIVE",
+          "lastRunStatus": "BROKEN",
+          "count": 1
+        },
+        {
+          "status": "ACTIVE",
+          "lastRunStatus": "DEGRADED",
+          "count": 5
+        },
+        {
+          "status": "ACTIVE",
+          "lastRunStatus": "OK",
+          "count": 434
+        },
+        {
+          "status": "PAUSED",
+          "lastRunStatus": "OK",
+          "count": 7
+        },
+        {
+          "status": "RETIRED",
+          "lastRunStatus": "OK",
+          "count": 48
+        }
+      ]
+    },
+    {
+      "name": "top",
+      "rows": [
+        {
+          "name": "Ulta Beauty",
+          "jobs": 10051
+        },
+        {
+          "name": "Sephora",
+          "jobs": 2299
+        },
+        {
+          "name": "Pandora",
+          "jobs": 1937
+        },
+        {
+          "name": "Foot Locker",
+          "jobs": 1914
+        },
+        {
+          "name": "L’Oréal Professionnel",
+          "jobs": 1773
+        },
+        {
+          "name": "H&M Group",
+          "jobs": 1761
+        },
+        {
+          "name": "Tapestry",
+          "jobs": 1660
+        },
+        {
+          "name": "Boots",
+          "jobs": 1506
+        },
+        {
+          "name": "PVH",
+          "jobs": 1379
+        },
+        {
+          "name": "URBN",
+          "jobs": 1365
+        }
+      ]
+    },
+    {
+      "name": "source_freshness",
+      "rows": [
+        {
+          "stale48h": 0,
+          "no_robots_date": 0,
+          "no_robots": 0,
+          "oldest_run": "2026-09-07T22:01:08.772Z"
+        }
+      ]
+    },
+    {
+      "name": "integrity",
+      "rows": [
+        {
+          "live_without_active_source": 0,
+          "live_canonical_not_active": 11
+        }
+      ]
+    },
+    {
+      "name": "raw",
+      "rows": [
+        {
+          "sources": 76562,
+          "sources_without_raw": 8964
+        }
+      ]
+    },
+    {
+      "name": "snapshots",
+      "rows": [
+        {
+          "min": "2026-09-04T00:00:00.000Z",
+          "max": "2026-09-08T00:00:00.000Z",
+          "days": 4
+        }
+      ]
+    },
+    {
+      "name": "indexes",
+      "rows": [
+        {
+          "indexname": "Job_pkey",
+          "indexdef": "CREATE UNIQUE INDEX \"Job_pkey\" ON public.\"Job\" USING btree (id)"
+        },
+        {
+          "indexname": "Job_isFrance_isActive_idx",
+          "indexdef": "CREATE INDEX \"Job_isFrance_isActive_idx\" ON public.\"Job\" USING btree (\"isFrance\", \"isActive\")"
+        },
+        {
+          "indexname": "Job_fingerprint_idx",
+          "indexdef": "CREATE INDEX \"Job_fingerprint_idx\" ON public.\"Job\" USING btree (fingerprint)"
+        },
+        {
+          "indexname": "Job_companyId_isActive_idx",
+          "indexdef": "CREATE INDEX \"Job_companyId_isActive_idx\" ON public.\"Job\" USING btree (\"companyId\", \"isActive\")"
+        },
+        {
+          "indexname": "Job_companyId_source_externalId_key",
+          "indexdef": "CREATE UNIQUE INDEX \"Job_companyId_source_externalId_key\" ON public.\"Job\" USING btree (\"companyId\", source, \"externalId\")"
+        },
+        {
+          "indexname": "Job_isFrance_isActive_latitude_longitude_idx",
+          "indexdef": "CREATE INDEX \"Job_isFrance_isActive_latitude_longitude_idx\" ON public.\"Job\" USING btree (\"isFrance\", \"isActive\", latitude, longitude)"
+        },
+        {
+          "indexname": "Job_clusterKey_idx",
+          "indexdef": "CREATE INDEX \"Job_clusterKey_idx\" ON public.\"Job\" USING btree (\"clusterKey\")"
+        },
+        {
+          "indexname": "Job_department_idx",
+          "indexdef": "CREATE INDEX \"Job_department_idx\" ON public.\"Job\" USING btree (department)"
+        },
+        {
+          "indexname": "Job_isActive_countryCode_idx",
+          "indexdef": "CREATE INDEX \"Job_isActive_countryCode_idx\" ON public.\"Job\" USING btree (\"isActive\", \"countryCode\")"
+        },
+        {
+          "indexname": "Job_isActive_jobFunction_idx",
+          "indexdef": "CREATE INDEX \"Job_isActive_jobFunction_idx\" ON public.\"Job\" USING btree (\"isActive\", \"jobFunction\")"
+        },
+        {
+          "indexname": "Job_isActive_seniority_idx",
+          "indexdef": "CREATE INDEX \"Job_isActive_seniority_idx\" ON public.\"Job\" USING btree (\"isActive\", seniority)"
+        },
+        {
+          "indexname": "Job_firstSeenAt_idx",
+          "indexdef": "CREATE INDEX \"Job_firstSeenAt_idx\" ON public.\"Job\" USING btree (\"firstSeenAt\")"
+        },
+        {
+          "indexname": "Job_closedAt_idx",
+          "indexdef": "CREATE INDEX \"Job_closedAt_idx\" ON public.\"Job\" USING btree (\"closedAt\")"
+        },
+        {
+          "indexname": "Job_employmentTerm_idx",
+          "indexdef": "CREATE INDEX \"Job_employmentTerm_idx\" ON public.\"Job\" USING btree (\"employmentTerm\")"
+        },
+        {
+          "indexname": "Job_workTime_idx",
+          "indexdef": "CREATE INDEX \"Job_workTime_idx\" ON public.\"Job\" USING btree (\"workTime\")"
+        },
+        {
+          "indexname": "Job_adminArea1_idx",
+          "indexdef": "CREATE INDEX \"Job_adminArea1_idx\" ON public.\"Job\" USING btree (\"adminArea1\")"
+        }
+      ]
+    }
+  ]
+}
