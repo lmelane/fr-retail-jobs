@@ -1,0 +1,241 @@
+[
+  {
+    "directoryNames": [
+      "ARMOR LUX"
+    ],
+    "actorType": "MAISON",
+    "portalUrl": "https://careers.werecruit.io/fr/armor-lux",
+    "ats": "WeRecruit",
+    "verdict": "LIEN_OFFICIEL_VERS_PORTAIL_CONFIRME",
+    "evidenceUrls": [
+      "https://www.armorlux.com/",
+      "https://careers.werecruit.io/fr/armor-lux"
+    ],
+    "evidenceHashes": [
+      "63de319212fe1aa9dde2de1df31c68a1e2d1870ab72a83ec317ab477743c064b"
+    ],
+    "nextAction": "Créer le dossier Armor-lux; valider le flux WeRecruit et son exhaustivité avant activation. Ne pas confondre avec Armor Group industriel.",
+    "reviewedAt": "2026-09-08",
+    "sourceActivated": false,
+    "productionIdentityUpdated": false,
+    "technicalValidation": "NOT_COMPLETE"
+  },
+  {
+    "directoryNames": [
+      "BOMPARD"
+    ],
+    "actorType": "MAISON",
+    "companyCanonicalKeys": [
+      "ERIC_BOMPARD"
+    ],
+    "sourceKeys": [
+      "eric-bompard"
+    ],
+    "portalUrl": "https://careers.smartrecruiters.com/ERICBOMPARD",
+    "ats": "SmartRecruiters",
+    "verdict": "ALIAS_ET_LIEN_OFFICIEL_CONFIRMES",
+    "evidenceUrls": [
+      "https://www.eric-bompard.com/",
+      "https://careers.smartrecruiters.com/ERICBOMPARD"
+    ],
+    "evidenceHashes": [
+      "5dc7dbf05683d4c9cfba3fd96ae7aa51d887647af6a0c7eede6737881c3bf234"
+    ],
+    "nextAction": "Réutiliser la source eric-bompard; enregistrer l’alias après revue, mesurer la couverture France et la complétude.",
+    "reviewedAt": "2026-09-08",
+    "sourceActivated": false,
+    "productionIdentityUpdated": false,
+    "technicalValidation": "NOT_COMPLETE"
+  },
+  {
+    "directoryNames": [
+      "CALZEDONIA",
+      "INTIMISSIMI",
+      "TEZENIS"
+    ],
+    "actorType": "ENSEIGNE",
+    "groupOnly": true,
+    "parentGroup": "Oniverse",
+    "sourceKeys": [
+      "oniverse"
+    ],
+    "portalUrl": "https://careers.oniverse.it/fr-FR/home",
+    "ats": "Portail Oniverse; moteur à qualifier",
+    "verdict": "MARQUES_ET_PORTAIL_GROUPE_CONFIRMES",
+    "evidenceUrls": [
+      "https://www.oniverse.it/en/careers/join-oniverse"
+    ],
+    "evidenceHashes": [
+      "ba693cf4844ac83784d35d50d35fe7864d940ad14ea56e44c8cb55daa28405db"
+    ],
+    "nextAction": "Réutiliser oniverse et ses filtres de marque officiels; mesurer chaque enseigne en France. Ne pas attribuer tout le groupe à chacune.",
+    "reviewedAt": "2026-09-08",
+    "sourceActivated": false,
+    "productionIdentityUpdated": false,
+    "technicalValidation": "NOT_COMPLETE"
+  },
+  {
+    "directoryNames": [
+      "SKECHERS"
+    ],
+    "actorType": "ENSEIGNE",
+    "portalUrl": "https://careers.skechers.com/fr/fr/",
+    "ats": "Phenom détecté; configuration et flux à valider",
+    "verdict": "PORTAIL_SUR_DOMAINE_OFFICIEL_CONFIRME",
+    "evidenceUrls": [
+      "https://www.skechers.fr/",
+      "https://careers.skechers.com/fr/fr/"
+    ],
+    "nextAction": "Valider le flux et les filtres France, puis dossier source et activation contrôlée.",
+    "reviewedAt": "2026-09-08",
+    "sourceActivated": false,
+    "productionIdentityUpdated": false,
+    "technicalValidation": "NOT_COMPLETE"
+  },
+  {
+    "directoryNames": [
+      "HUGO BOSS FRANCE"
+    ],
+    "actorType": "MAISON",
+    "companyCanonicalKeys": [
+      "HUGO_BOSS"
+    ],
+    "portalUrl": "https://careers.hugoboss.com/global/en",
+    "ats": "Phenom détecté; configuration et flux à valider",
+    "verdict": "LIEN_OFFICIEL_VERS_PORTAIL_CONFIRME",
+    "evidenceUrls": [
+      "https://www.hugoboss.com/",
+      "https://careers.hugoboss.com/global/en"
+    ],
+    "evidenceHashes": [
+      "432edaedcee7cd18e8c434075c54312bf7f9c1c2f6cc1cdc09107a5a6d409c95",
+      "cab59afe0ac6bb7e4fa7aef5bb82bc313f63e1e64082c4d6205a6758294d94d9"
+    ],
+    "nextAction": "Valider l’adaptateur et les pays; préserver HUGO/BOSS et la filiale France sans créer de faux doublons.",
+    "reviewedAt": "2026-09-08",
+    "sourceActivated": false,
+    "productionIdentityUpdated": false,
+    "technicalValidation": "NOT_COMPLETE"
+  },
+  {
+    "directoryNames": [
+      "GERARD DAREL"
+    ],
+    "actorType": "MAISON",
+    "portalUrl": "https://gerarddarel.taleez.com/",
+    "ats": "Taleez; accès technique non validé",
+    "verdict": "LIEN_OFFICIEL_OBSERVE_ACCES_A_VALIDER",
+    "evidenceUrls": [
+      "https://gerarddarel.com/fr-fr/recruitment",
+      "https://gerarddarel.taleez.com/"
+    ],
+    "nextAction": "Le footer officiel pointe vers Taleez (Gérard Darel & Pablo), le corps vers FashionJobs. Vérifier le portail Taleez et la séparation des marques; ne pas conclure à une absence de source directe.",
+    "reviewedAt": "2026-09-08",
+    "sourceActivated": false,
+    "productionIdentityUpdated": false,
+    "technicalValidation": "NOT_COMPLETE"
+  },
+  {
+    "directoryNames": [
+      "INTERSPORT"
+    ],
+    "actorType": "ENSEIGNE",
+    "companyCanonicalKeys": [
+      "INTERSPORT"
+    ],
+    "sourceKeys": [
+      "intersport"
+    ],
+    "portalUrl": "https://recrutement.intersport.fr/",
+    "ats": "Site carrière France; moteur à qualifier",
+    "verdict": "PORTAIL_FRANCE_OFFICIEL_IDENTIFIE",
+    "evidenceUrls": [
+      "https://recrutement.intersport.fr/"
+    ],
+    "nextAction": "La source Teamtailor existante ne couvre aucune offre France dans la base; auditer le portail France séparément sans supposer un seul portail mondial.",
+    "reviewedAt": "2026-09-08",
+    "sourceActivated": false,
+    "productionIdentityUpdated": false,
+    "technicalValidation": "NOT_COMPLETE"
+  },
+  {
+    "directoryNames": [
+      "BLACKSTORE"
+    ],
+    "actorType": "ENSEIGNE",
+    "portalUrl": "https://recrutement.intersport.fr/",
+    "ats": "Portail groupe France; candidat Intuition à relier",
+    "verdict": "OFFRES_SUR_PORTAIL_GROUPE_IDENTIFIEES",
+    "evidenceUrls": [
+      "https://www.blackstore.fr/qui-sommes-nous/",
+      "https://recrutement.intersport.fr/2026/02/11/conseiller-de-vente-h-f-3/",
+      "https://blackstore.candidater.fr/"
+    ],
+    "nextAction": "Prouver le périmètre Blackstore sur le portail Intersport; qualifier candidater.fr, sans créer une source sur la seule similitude du nom.",
+    "reviewedAt": "2026-09-08",
+    "sourceActivated": false,
+    "productionIdentityUpdated": false,
+    "technicalValidation": "NOT_COMPLETE"
+  },
+  {
+    "directoryNames": [
+      "ADOPT PARFUMS"
+    ],
+    "actorType": "MAISON",
+    "portalUrl": "https://adopt.flatchr.io/fr/company/adopt/",
+    "ats": "Flatchr; flux et pagination à valider",
+    "verdict": "PORTAIL_LIE_PAR_PUBLICATION_OFFICIELLE_CONFIRME",
+    "evidenceUrls": [
+      "https://fr.linkedin.com/posts/adoptparfums_alternance-adoptparfums-emasup-activity-7348719608440262656-60bk",
+      "https://adopt.flatchr.io/fr/company/adopt/"
+    ],
+    "evidenceHashes": [
+      "49ab00a7b1b399025e4de685940fd12888397735a142403534865b02c33b3be1",
+      "3337a0d1fd22329776609703775965a9ec7d1d2868eeeefa5d71b0565ce77fa9"
+    ],
+    "nextAction": "Flux public embarqué mesuré: 121 entrées publiées, dont 82 France. Développer et valider le connecteur Flatchr, identité structurée et postconditions avant activation.",
+    "reviewedAt": "2026-09-08",
+    "sourceActivated": false,
+    "productionIdentityUpdated": false,
+    "technicalValidation": "NOT_COMPLETE",
+    "declaredPortalTotal": 121,
+    "declaredPortalScope": "TOUS_PAYS; FRANCE_NON_ENCORE_ISOLEE",
+    "directFrancePublished": 82,
+    "directUniqueVacancies": 121
+  },
+  {
+    "directoryNames": [
+      "ZADIG & VOLTAIRE"
+    ],
+    "actorType": "MAISON",
+    "companyCanonicalKeys": [
+      "ZADIG_AND_VOLTAIRE"
+    ],
+    "portalUrl": "https://zadig-et-voltaire.com/eu/fr/content/job-recruitment",
+    "ats": "",
+    "verdict": "PAGE_OFFICIELLE_CONFIRME_FLUX_A_TROUVER",
+    "evidenceUrls": [
+      "https://zadig-et-voltaire.com/eu/fr/content/job-recruitment"
+    ],
+    "nextAction": "La page officielle fournit un email de candidature; poursuivre la recherche du flux public et distinguer les boutiques partenaires.",
+    "reviewedAt": "2026-09-08",
+    "sourceActivated": false,
+    "productionIdentityUpdated": false,
+    "technicalValidation": "NOT_COMPLETE"
+  },
+  {
+    "directoryNames": [
+      "CONFIDENTIEL"
+    ],
+    "actorType": "EMPLOYEUR_NON_DIVULGUE",
+    "verdict": "IDENTITE_NON_INFERABLE",
+    "evidenceUrls": [
+      "https://fr.fashionjobs.com/societesrecrutent/"
+    ],
+    "nextAction": "Ne pas inventer l’employeur ni le rattacher arbitrairement à une Maison.",
+    "reviewedAt": "2026-09-08",
+    "sourceActivated": false,
+    "productionIdentityUpdated": false,
+    "technicalValidation": "NOT_COMPLETE"
+  }
+]

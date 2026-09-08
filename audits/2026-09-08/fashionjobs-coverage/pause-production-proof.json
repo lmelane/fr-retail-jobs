@@ -1,0 +1,16 @@
+{
+  "at": "2026-09-08T18:21:49.692Z",
+  "source": {
+    "key": "fashionjobs",
+    "status": "PAUSED"
+  },
+  "sourceCount": 419,
+  "jobs": 1206,
+  "activeJobs": 856,
+  "representations": 1206,
+  "jobsHash": "5f31ffb940b22c34c2ee13d3e5f45aaed0f587369d7fe2255a1984f81da7c650",
+  "representationsHash": "74cb273d26e58a49009102a7ffa6ba3b5e149a67cd99905564596ec9b39a8a46",
+  "correctionCount": 1,
+  "jobsPreservedExactly": true,
+  "representationsPreservedExactly": true
+}

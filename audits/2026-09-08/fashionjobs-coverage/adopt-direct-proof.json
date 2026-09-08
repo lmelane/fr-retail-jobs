@@ -1,0 +1,628 @@
+{
+  "observedAt": "2026-09-08T18:47:38.354075+00:00",
+  "url": "https://adopt.flatchr.io/fr/company/adopt/",
+  "htmlSha256": "3337a0d1fd22329776609703775965a9ec7d1d2868eeeefa5d71b0565ce77fa9",
+  "announcedTotal": 121,
+  "embeddedItems": 121,
+  "distinctPublicationIds": 121,
+  "distinctVacancyIds": 121,
+  "countriesRaw": {
+    "Italie": 28,
+    "France": 82,
+    "Canada": 4,
+    "Belgique": 7
+  },
+  "publicationStates": {
+    "True:published": 121
+  },
+  "fashionjobsDirectoryCount": 43,
+  "catwalksActiveJobsUnderMatchedIdentity": 0,
+  "comparisonCaveat": "FashionJobs counter scope not certified as France-only. Direct snapshot proves published entries, not a later employer closure delay. No Catwalks source activated.",
+  "postingIds": [
+    {
+      "publicationId": "AbY1n7l18ql9LgJN",
+      "vacancyId": 690673,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "0M5O9yjzmYLpxbQB",
+      "vacancyId": 690671,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "zbPjpoWqmQwpY51y",
+      "vacancyId": 690616,
+      "country": "France"
+    },
+    {
+      "publicationId": "jqBwprw71K3dArDl",
+      "vacancyId": 690389,
+      "country": "France"
+    },
+    {
+      "publicationId": "yObP9OoQb5291ZYB",
+      "vacancyId": 690386,
+      "country": "France"
+    },
+    {
+      "publicationId": "0M5O9yjzBaEpxbQB",
+      "vacancyId": 690286,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "41QG9eaEGB59K6Xe",
+      "vacancyId": 690271,
+      "country": "France"
+    },
+    {
+      "publicationId": "KzqPnNVeMPqn31m0",
+      "vacancyId": 690235,
+      "country": "France"
+    },
+    {
+      "publicationId": "DYjo9m1zgW79kR0r",
+      "vacancyId": 690234,
+      "country": "France"
+    },
+    {
+      "publicationId": "QorW9wrzgKonyelR",
+      "vacancyId": 690222,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "brjV9MG8b6zdR5mN",
+      "vacancyId": 682373,
+      "country": "France"
+    },
+    {
+      "publicationId": "q5r6pYL3olL9AmMv",
+      "vacancyId": 689997,
+      "country": "Canada"
+    },
+    {
+      "publicationId": "Bely9P34WeVnkEKR",
+      "vacancyId": 689996,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "5aMxpQLGm849GZ2O",
+      "vacancyId": 689844,
+      "country": "France"
+    },
+    {
+      "publicationId": "q1xlpRwrEqgd6zEM",
+      "vacancyId": 689754,
+      "country": "France"
+    },
+    {
+      "publicationId": "KJ0MpzjxxkapXNgx",
+      "vacancyId": 689705,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "5aMxpQLGlEb9GZ2O",
+      "vacancyId": 689518,
+      "country": "France"
+    },
+    {
+      "publicationId": "y3EOp2gBq1Yd1KMq",
+      "vacancyId": 689501,
+      "country": "France"
+    },
+    {
+      "publicationId": "DYjo9m1zAV79kR0r",
+      "vacancyId": 689381,
+      "country": "France"
+    },
+    {
+      "publicationId": "5kDWnbEzyAqdyawr",
+      "vacancyId": 689262,
+      "country": "France"
+    },
+    {
+      "publicationId": "8q3Bp4XBNAvp0RMg",
+      "vacancyId": 689260,
+      "country": "France"
+    },
+    {
+      "publicationId": "GYLqn1bgo0m9mE0y",
+      "vacancyId": 689192,
+      "country": "France"
+    },
+    {
+      "publicationId": "lV0D9a4z0RVnWELk",
+      "vacancyId": 689180,
+      "country": "France"
+    },
+    {
+      "publicationId": "KJ0MpzjxmQqpXNgx",
+      "vacancyId": 689177,
+      "country": "France"
+    },
+    {
+      "publicationId": "ENkKd8lBZ7Bd3xYG",
+      "vacancyId": 689069,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "jqBwprw7axVdArDl",
+      "vacancyId": 689045,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "0M5O9yjz0XwpxbQB",
+      "vacancyId": 689042,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "KJ0Mpzjx1MWpXNgx",
+      "vacancyId": 688984,
+      "country": "France"
+    },
+    {
+      "publicationId": "yObP9OoQer791ZYB",
+      "vacancyId": 688924,
+      "country": "France"
+    },
+    {
+      "publicationId": "GYLqn1bgA6B9mE0y",
+      "vacancyId": 688913,
+      "country": "France"
+    },
+    {
+      "publicationId": "Lm5NdDL5kZ5dAGbZ",
+      "vacancyId": 688729,
+      "country": "France"
+    },
+    {
+      "publicationId": "AONxpv1zDGK9Pg4Q",
+      "vacancyId": 688727,
+      "country": "France"
+    },
+    {
+      "publicationId": "xy5JpxlzxXEpz7lV",
+      "vacancyId": 688665,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "lV0D9a4zw6VnWELk",
+      "vacancyId": 688661,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "V4A8d0zBvzy9KxjR",
+      "vacancyId": 688654,
+      "country": "France"
+    },
+    {
+      "publicationId": "mQNJ9WXKVEgp5LwD",
+      "vacancyId": 688608,
+      "country": "France"
+    },
+    {
+      "publicationId": "AbY1n7l1KZl9LgJN",
+      "vacancyId": 688590,
+      "country": "France"
+    },
+    {
+      "publicationId": "q5r6pYL3VXV9AmMv",
+      "vacancyId": 688578,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "EjyY9l7z4wKnZl7o",
+      "vacancyId": 688465,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "jqBwprw7Ol5dArDl",
+      "vacancyId": 688330,
+      "country": "Canada"
+    },
+    {
+      "publicationId": "5kDWnbEzxD4dyawr",
+      "vacancyId": 688324,
+      "country": "Canada"
+    },
+    {
+      "publicationId": "86rjpgbz7D39E17e",
+      "vacancyId": 688098,
+      "country": "France"
+    },
+    {
+      "publicationId": "kea8pXXNKV6pN1o0",
+      "vacancyId": 687892,
+      "country": "France"
+    },
+    {
+      "publicationId": "Lm5NdDL5j6EdAGbZ",
+      "vacancyId": 687861,
+      "country": "France"
+    },
+    {
+      "publicationId": "5aMxpQLGoLj9GZ2O",
+      "vacancyId": 687770,
+      "country": "France"
+    },
+    {
+      "publicationId": "q5r6pYLqPWb9AmMv",
+      "vacancyId": 687313,
+      "country": "France"
+    },
+    {
+      "publicationId": "5aMxpQLa5519GZ2O",
+      "vacancyId": 687240,
+      "country": "France"
+    },
+    {
+      "publicationId": "5kDWnbEqJDLdyawr",
+      "vacancyId": 687139,
+      "country": "France"
+    },
+    {
+      "publicationId": "DYjo9m1rbzO9kR0r",
+      "vacancyId": 687133,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "mQNJ9WXqOoMp5LwD",
+      "vacancyId": 686928,
+      "country": "France"
+    },
+    {
+      "publicationId": "EjyY9l7GQe7nZl7o",
+      "vacancyId": 686846,
+      "country": "Canada"
+    },
+    {
+      "publicationId": "EZBvp5G2vlGnMoVm",
+      "vacancyId": 686825,
+      "country": "France"
+    },
+    {
+      "publicationId": "41QG9ea2NNP9K6Xe",
+      "vacancyId": 686476,
+      "country": "Belgique"
+    },
+    {
+      "publicationId": "8oWlpGKk1k0p63O1",
+      "vacancyId": 686470,
+      "country": "Belgique"
+    },
+    {
+      "publicationId": "q5r6pYLqWgm9AmMv",
+      "vacancyId": 686460,
+      "country": "Belgique"
+    },
+    {
+      "publicationId": "yObP9Ooq1Vg91ZYB",
+      "vacancyId": 686449,
+      "country": "Belgique"
+    },
+    {
+      "publicationId": "5kDWnbEqyEydyawr",
+      "vacancyId": 686021,
+      "country": "France"
+    },
+    {
+      "publicationId": "Lm5NdDL3Ox7dAGbZ",
+      "vacancyId": 685825,
+      "country": "France"
+    },
+    {
+      "publicationId": "zj8Md6lYMGl9YZ70",
+      "vacancyId": 685543,
+      "country": "France"
+    },
+    {
+      "publicationId": "KJ0MpzjVZ4qpXNgx",
+      "vacancyId": 675953,
+      "country": "France"
+    },
+    {
+      "publicationId": "ENkKd8l8OBZd3xYG",
+      "vacancyId": 684706,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "5aMxpQLagJj9GZ2O",
+      "vacancyId": 684495,
+      "country": "France"
+    },
+    {
+      "publicationId": "Lm5NdDLrl8OdAGbZ",
+      "vacancyId": 684309,
+      "country": "France"
+    },
+    {
+      "publicationId": "zbPjpoWEGG1pY51y",
+      "vacancyId": 684290,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "67MknKV3vxVdJ120",
+      "vacancyId": 684276,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "q5r6pYLlObe9AmMv",
+      "vacancyId": 684273,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "AONxpv1vNRK9Pg4Q",
+      "vacancyId": 684242,
+      "country": "France"
+    },
+    {
+      "publicationId": "YXmVp31qWEOn8Mzr",
+      "vacancyId": 683728,
+      "country": "France"
+    },
+    {
+      "publicationId": "xy5JpxlNqBBpz7lV",
+      "vacancyId": 683700,
+      "country": "France"
+    },
+    {
+      "publicationId": "8oWlpGKE38mp63O1",
+      "vacancyId": 683172,
+      "country": "France"
+    },
+    {
+      "publicationId": "QorW9wrKDbwnyelR",
+      "vacancyId": 682846,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "q5r6pYLl53D9AmMv",
+      "vacancyId": 682769,
+      "country": "France"
+    },
+    {
+      "publicationId": "JL2lpEM67AypwBXK",
+      "vacancyId": 682767,
+      "country": "France"
+    },
+    {
+      "publicationId": "QorW9wrKQ1BnyelR",
+      "vacancyId": 682751,
+      "country": "France"
+    },
+    {
+      "publicationId": "mQNJ9WXlgArp5LwD",
+      "vacancyId": 682737,
+      "country": "France"
+    },
+    {
+      "publicationId": "lV0D9a457kjnWELk",
+      "vacancyId": 682441,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "yVgL9k3YWrb91PD5",
+      "vacancyId": 682265,
+      "country": "France"
+    },
+    {
+      "publicationId": "Bely9P3RXzVnkEKR",
+      "vacancyId": 681651,
+      "country": "France"
+    },
+    {
+      "publicationId": "YJA39JvNZgw9lNQw",
+      "vacancyId": 681177,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "EZBvp5GqgZWnMoVm",
+      "vacancyId": 681175,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "xy5JpxlN6YQpz7lV",
+      "vacancyId": 681169,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "mQNJ9WXoAmgp5LwD",
+      "vacancyId": 680585,
+      "country": "Belgique"
+    },
+    {
+      "publicationId": "8q3Bp4Xxooap0RMg",
+      "vacancyId": 679828,
+      "country": "France"
+    },
+    {
+      "publicationId": "brjV9MGYPAYdR5mN",
+      "vacancyId": 679199,
+      "country": "Belgique"
+    },
+    {
+      "publicationId": "KJ0MpzjWEm6pXNgx",
+      "vacancyId": 678909,
+      "country": "France"
+    },
+    {
+      "publicationId": "AONxpv1x6zx9Pg4Q",
+      "vacancyId": 677349,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "jqBwprw21L0dArDl",
+      "vacancyId": 676643,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "zbPjpoWkgVwpY51y",
+      "vacancyId": 676477,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "5aMxpQLZOPj9GZ2O",
+      "vacancyId": 675156,
+      "country": "France"
+    },
+    {
+      "publicationId": "lV0D9a4e6BxnWELk",
+      "vacancyId": 674427,
+      "country": "France"
+    },
+    {
+      "publicationId": "Lm5NdDLYb22dAGbZ",
+      "vacancyId": 672321,
+      "country": "France"
+    },
+    {
+      "publicationId": "y3EOp2g8q83d1KMq",
+      "vacancyId": 671962,
+      "country": "France"
+    },
+    {
+      "publicationId": "EjyY9l7BW2MnZl7o",
+      "vacancyId": 671956,
+      "country": "France"
+    },
+    {
+      "publicationId": "8q3Bp4XQG1rp0RMg",
+      "vacancyId": 671310,
+      "country": "France"
+    },
+    {
+      "publicationId": "Bely9P3KOAXnkEKR",
+      "vacancyId": 671231,
+      "country": "Belgique"
+    },
+    {
+      "publicationId": "AbY1n7lrbJq9LgJN",
+      "vacancyId": 669805,
+      "country": "France"
+    },
+    {
+      "publicationId": "Bely9P3VrlynkEKR",
+      "vacancyId": 669128,
+      "country": "France"
+    },
+    {
+      "publicationId": "8q3Bp4XN2aOp0RMg",
+      "vacancyId": 668665,
+      "country": "France"
+    },
+    {
+      "publicationId": "zbPjpoWAmY5pY51y",
+      "vacancyId": 668986,
+      "country": "France"
+    },
+    {
+      "publicationId": "brjV9MGRARrdR5mN",
+      "vacancyId": 668699,
+      "country": "France"
+    },
+    {
+      "publicationId": "KJ0Mpzj50MWpXNgx",
+      "vacancyId": 668440,
+      "country": "France"
+    },
+    {
+      "publicationId": "41QG9ea42DX9K6Xe",
+      "vacancyId": 667855,
+      "country": "France"
+    },
+    {
+      "publicationId": "brjV9MGR7YgdR5mN",
+      "vacancyId": 665347,
+      "country": "France"
+    },
+    {
+      "publicationId": "bMGYdVARoo3p3JPN",
+      "vacancyId": 664980,
+      "country": "France"
+    },
+    {
+      "publicationId": "Lm5NdDLoeXEdAGbZ",
+      "vacancyId": 664935,
+      "country": "France"
+    },
+    {
+      "publicationId": "brjV9MGRB1wdR5mN",
+      "vacancyId": 664914,
+      "country": "France"
+    },
+    {
+      "publicationId": "jqBwprwJO70dArDl",
+      "vacancyId": 664269,
+      "country": "France"
+    },
+    {
+      "publicationId": "y3EOp2gQwqyd1KMq",
+      "vacancyId": 662758,
+      "country": "France"
+    },
+    {
+      "publicationId": "41QG9eaBxeK9K6Xe",
+      "vacancyId": 662571,
+      "country": "France"
+    },
+    {
+      "publicationId": "brjV9MGgVGzdR5mN",
+      "vacancyId": 655350,
+      "country": "France"
+    },
+    {
+      "publicationId": "bMGYdVAQ1zKp3JPN",
+      "vacancyId": 661968,
+      "country": "France"
+    },
+    {
+      "publicationId": "41QG9eaBl2P9K6Xe",
+      "vacancyId": 661960,
+      "country": "France"
+    },
+    {
+      "publicationId": "kea8pXX7lozpN1o0",
+      "vacancyId": 657371,
+      "country": "France"
+    },
+    {
+      "publicationId": "GYLqn1byBlm9mE0y",
+      "vacancyId": 657367,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "NDRr9BAZOYknYqQy",
+      "vacancyId": 656538,
+      "country": "France"
+    },
+    {
+      "publicationId": "jqBwprwag4YdArDl",
+      "vacancyId": 656500,
+      "country": "Italie"
+    },
+    {
+      "publicationId": "QorW9wr0veknyelR",
+      "vacancyId": 656312,
+      "country": "France"
+    },
+    {
+      "publicationId": "YJA39JvEDkY9lNQw",
+      "vacancyId": 649731,
+      "country": "France"
+    },
+    {
+      "publicationId": "5kDWnbE4ro4dyawr",
+      "vacancyId": 649730,
+      "country": "France"
+    },
+    {
+      "publicationId": "8q3Bp4XLbmQp0RMg",
+      "vacancyId": 632180,
+      "country": "France"
+    },
+    {
+      "publicationId": "JL2lpEMDbovpwBXK",
+      "vacancyId": 605499,
+      "country": "France"
+    }
+  ]
+}
