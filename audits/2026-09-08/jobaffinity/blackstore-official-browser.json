@@ -1,0 +1,12 @@
+{
+  "url": "https://www.blackstore.fr/",
+  "title": "BLACKSTORE | Vivez l’expérience mode !",
+  "links": [
+    {
+      "label": "Nous rejoindre",
+      "url": "https://blackstore.candidater.fr/"
+    }
+  ],
+  "method": "Observed DOM anchors via ordinary in-app browser navigation",
+  "observedAt": "2026-09-08T20:41:37.905189+00:00"
+}

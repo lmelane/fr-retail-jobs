@@ -1,3 +1,4 @@
+import { fetchJobaffinityWordpressJobs } from './adapters/jobaffinityWordpress.js';
 import { fetchFlatchrJobs } from './adapters/flatchr.js';
 import type { AtsType } from '@prisma/client';
 import type { AdapterResult, NormalizedJob } from '../types.js';
@@ -120,6 +121,7 @@ export const ADAPTERS: Record<string, (config: Record<string, unknown>) => Promi
   VOLCANIC: fetchVolcanicJobs,
   SWATCH_GROUP: fetchSwatchGroupJobs,
   FLATCHR: fetchFlatchrJobs,
+  JOBAFFINITY_WORDPRESS: fetchJobaffinityWordpressJobs,
 };
 
 export const SUPPORTED_ATS_TYPES = Object.keys(ADAPTERS);

@@ -88,6 +88,10 @@ export async function checkSourceHealth(
         note: `${stat.errors} erreurs de collecte ou d’écriture` });
       continue;
     }
+    if (stat.held) {
+      results.push({ ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN', note: `${stat.held} annonces non publiables archivées (${stat.heldUnresolved ?? 0} non résolues) ; ${stat.complete ? 'énumération et fermetures attestées' : 'aucune attestation d’absence'}` });
+      continue;
+    }
     if (stat.truncated) {
       results.push({ ...base, status: 'DEGRADED',
         note: `troncature : ${stat.fetched} collectées` +

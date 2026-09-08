@@ -1,0 +1,27 @@
+{
+  "at": "2026-09-08T21:09:16.474Z",
+  "before": {
+    "active": 71419,
+    "france": 9751
+  },
+  "runs": [
+    {
+      "key": "intersport-france",
+      "created": 930,
+      "merged": 0,
+      "updated": 0,
+      "held": 63
+    },
+    {
+      "key": "blackstore",
+      "created": 10,
+      "merged": 38,
+      "updated": 0,
+      "held": 6
+    }
+  ],
+  "after": {
+    "active": 72359,
+    "france": 10684
+  }
+}

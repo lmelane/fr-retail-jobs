@@ -4,7 +4,12 @@ export type PostingIdentity = { tenant: string; requisition: string };
 export function postingIdentity(value: string): PostingIdentity | undefined {
   try {
     const url = new URL(value);
-    if (!/^https?:$/.test(url.protocol) || !/\.oraclecloud\.com$/i.test(url.hostname)) return;
+    if (!/^https?:$/.test(url.protocol) || url.username || url.password) return;
+    if (url.hostname === 'jobaffinity.fr' && !url.port) {
+      const token = url.pathname.match(/^\/apply\/([a-z0-9]{10,64})\/?$/);
+      if (token) return { tenant: 'jobaffinity:jobaffinity.fr', requisition: token[1] };
+    }
+    if (!/\.oraclecloud\.com$/i.test(url.hostname)) return;
     const match = url.pathname.match(/^\/hcmUI\/CandidateExperience\/[^/]+\/sites\/([^/]+)\/job\/([^/]+)\/?$/i);
     if (!match) return;
     return {

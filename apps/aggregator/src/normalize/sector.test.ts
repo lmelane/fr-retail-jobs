@@ -71,8 +71,8 @@ describe('classifySector — genuinely out-of-vertical employers stay excluded (
   it('keeps generalist retailers and services out', () => {
     expect(verdict('Carrefour').inScope).toBe(false);
     expect(verdict('Capgemini').inScope).toBe(false);
-    // Sporting-goods stay out; fashion footwear (Courir, Foot Locker) stays in.
-    expect(verdict('Intersport').inScope).toBe(false);
+    // Intersport is explicitly reviewed for the requested retail expansion.
+    expect(verdict('Intersport').inScope).toBe(true);
   });
 });
 

@@ -1,0 +1,61 @@
+[
+  {
+    "at": "2026-09-08T20:55:35.851330+00:00",
+    "url": "https://modecareers.com/api/jobs?pays=FR",
+    "status": 200,
+    "sha256": "33896e0a0d15f2c4adcac5babdd433cf9a285df5365d23e2a81ce7b7456bc384",
+    "total": 9751
+  },
+  {
+    "at": "2026-09-08T20:55:36.407774+00:00",
+    "url": "https://modecareers.com/api/jobs?pays=monde",
+    "status": 200,
+    "sha256": "452b6d72c45ea75432bfd547d2b67cb617804b2db8892269fe2dfa88a5741f1f",
+    "total": 71419
+  },
+  {
+    "at": "2026-09-08T20:55:36.601208+00:00",
+    "url": "https://modecareers.com/offre/sales-associate-loja-adidas-estadio-da-luz-lisboa-part-time-cmtp4oots26rdqq4z8cbjluix",
+    "status": 200,
+    "sha256": "dd6a015182847825bdf2d121bf5dbcea04365e8b99eee34063adbd0bdcce30c9",
+    "jobPostings": [
+      {
+        "@context": "https://schema.org",
+        "@type": "JobPosting",
+        "title": "Sales Associate Loja adidas Est\u00e1dio da Luz - Lisboa - PART-TIME",
+        "description": "Sales Associate Loja adidas Est\u00e1dio da Luz - Lisboa - PART-TIME Na adidas, estamos convencidos de que o desporto tem o poder de transformar o mundo! Est\u00e1s pronto para fazer parte desta revolu\u00e7\u00e3o? ESTAMOS \u00c0 PROCURA DE VENDEDORES (PART-TIME) PARA A NOSSA LOJA NO EST\u00c1DIO DA LUZ! Se tens paix\u00e3o pelo desporto e pela moda e adoras o mundo do retalho, esta \u00e9 a tua oportunidade para te juntares a uma marca l\u00edder e experimentar a emo\u00e7\u00e3o do jogo. O QUE \u00c9 QUE OFERECEMOS?\n\u2022 Sal\u00e1rio competitivo: Reconhecemos o teu esfor\u00e7o e empenho.\n\u2022 Bem-estar f\u00edsico e mental: Cuidamos de ti e dos teus. Oferecemos um subs\u00eddio desportivo mensal e recebe apoio gratuito para a sa\u00fade mental, com o nosso programa de assist\u00eancia aos colaboradores.\n\u2022 Um hor\u00e1rio que te se poder\u00e1 adaptar \u00e0s tuas necessidades.\n\u2022 Descontos exclusivos: Desfruta de at\u00e9 44% de desconto nos produtos adidas.\n\u2022 Oportunidades de carreira: Desenvolve a tua carreira numa marca desportiva ic\u00f3nica com v\u00e1rias oportunidades de promo\u00e7\u00e3o interna. PRINCIPAIS RESPONSABILIDADES\n\u2022 Prestar um servi\u00e7o excecional ao cliente. </div",
+        "datePosted": "2026-08-17T00:00:00.000Z",
+        "employmentType": [
+          "PART_TIME"
+        ],
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "adidas",
+          "value": "cmtp4oots26rdqq4z8cbjluix"
+        },
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "adidas"
+        },
+        "directApply": false,
+        "url": "https://modecareers.com/offre/sales-associate-loja-adidas-estadio-da-luz-lisboa-part-time-cmtp4oots26rdqq4z8cbjluix",
+        "inLanguage": "pt",
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Lisbonne",
+            "addressCountry": "PT"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "at": "2026-09-08T20:55:36.743490+00:00",
+    "url": "https://modecareers.com/offre/marketing-graduate-professional-products-division-cmtk0fpdo06h4s32bqdvrp33z",
+    "status": 200,
+    "sha256": "1c056e9fcd664cbbcaf07e29401f20c1b5999ec02d47159c67418203db1d8484",
+    "jobPostings": []
+  }
+]

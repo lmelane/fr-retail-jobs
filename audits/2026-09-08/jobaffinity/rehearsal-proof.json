@@ -1,0 +1,62 @@
+{
+  "at": "2026-09-08T21:09:52.621Z",
+  "sources": [
+    {
+      "key": "intersport-france",
+      "representations": 930,
+      "uniqueJobs": 930,
+      "rawSame": 930,
+      "rawChanged": 0,
+      "held": 63,
+      "rawPresent": 930,
+      "source": {
+        "status": "DRAFT",
+        "lastRunStatus": null,
+        "lastRunJobs": null
+      },
+      "latestRun": null
+    },
+    {
+      "key": "blackstore",
+      "representations": 48,
+      "uniqueJobs": 48,
+      "rawSame": 48,
+      "rawChanged": 0,
+      "held": 6,
+      "rawPresent": 48,
+      "source": {
+        "status": "DRAFT",
+        "lastRunStatus": null,
+        "lastRunJobs": null
+      },
+      "latestRun": null
+    }
+  ],
+  "uniqueNewJobs": 940,
+  "sharedJobs": 38,
+  "newFrance": 933,
+  "newMissingCountry": 7,
+  "totals": {
+    "active": 72359,
+    "france": 10684,
+    "companies": 1567,
+    "sources": 500,
+    "activeSources": 422
+  },
+  "newCompanyRows": [
+    {
+      "id": "cmtlyfvaf016cqf5k6yvon72v",
+      "name": "Intersport",
+      "kind": "RETAILER",
+      "sector": "RETAIL",
+      "parentGroup": null
+    },
+    {
+      "id": "cmtt5wqe400073nobq1dstp1y",
+      "name": "Blackstore",
+      "kind": "RETAILER",
+      "sector": "FASHION",
+      "parentGroup": "Intersport"
+    }
+  ]
+}

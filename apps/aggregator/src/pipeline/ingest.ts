@@ -1,3 +1,4 @@
+import { archivePublicationHold } from './publicationHold.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import type { PrismaClient, AtsType } from '@prisma/client';
 import type { SourceTier } from '../dedup/match.js';
@@ -42,6 +43,8 @@ export type IngestStats = {
   merged: number;
   updated: number;
   errors: number;
+  held?: number;
+  heldUnresolved?: number;
   /**
    * Field-coverage counters (audit L-02 generalized, décision Loïc 2026-09-03):
    * a source can return the right VOLUME while silently losing a field — the
@@ -89,6 +92,7 @@ export function toCandidate(
    */
   trust: TrustContext = new Map(),
 ): CandidateJob & { companyId: string } {
+  if (job.publicationHold) throw new Error(`Posting is held: ${job.publicationHold}`);
   // F-06: the apply link is the product promise — a candidate clicking
   // "Voir l'offre" must land somewhere. A relative path, an empty string or a
   // javascript: pseudo-URL is refused AT THE BOUNDARY (counted as an error on
@@ -253,6 +257,7 @@ export const KIND_TO_ATS: Record<string, string> = {
   icims: 'ICIMS',
   swatchgroup: 'SWATCH_GROUP',
   flatchr: 'FLATCHR',
+  'jobaffinity-wordpress': 'JOBAFFINITY_WORDPRESS',
 };
 
 /**
@@ -339,6 +344,16 @@ async function ingestApiSource(
   let skippedOutOfSector = 0;
   for (const job of jobs) {
     assertSourceRunning();
+    if (job.publicationHold) {
+      stats.held = (stats.held ?? 0) + 1;
+      if (!['APPLICATION_HTTP_404', 'APPLICATION_HTTP_410', 'APPLICATION_EXPLICITLY_CLOSED'].includes(job.publicationHold)) {
+        stats.heldUnresolved = (stats.heldUnresolved ?? 0) + 1;
+        stats.complete = false;
+      }
+      await archivePublicationHold(prisma, stats.source, job);
+      console.warn(`[ingest] ${stats.source}: publication held ${job.externalId}: ${job.publicationHold}`);
+      continue;
+    }
     // Group feeds carry the Maison per offer (LVMH: Sephora, Dior…); a
     // single-house feed falls back to the catalogue label.
     const employer = job.company || sourceDef.company;

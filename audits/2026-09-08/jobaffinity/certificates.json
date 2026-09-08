@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "batchId": "20260908-JOBAFFINITY-DIRECT-v1",
+  "records": [
+    {
+      "key": "intersport-france",
+      "name": "Intersport",
+      "domain": "intersport.fr",
+      "canonicalKey": "INTERSPORT",
+      "config": {
+        "listingUrl": "https://recrutement.intersport.fr/",
+        "employer": "Intersport",
+        "brands": {
+          "Intersport": "Intersport",
+          "Intersport Montagne": "Intersport",
+          "Intersport Outlet": "Intersport",
+          "BlackStore": "Blackstore",
+          "Intersport, Intersport Montagne": "Intersport"
+        }
+      },
+      "aliases": [
+        "INTERSPORT"
+      ],
+      "parentGroup": null,
+      "sector": "RETAIL",
+      "checkedAt": "2026-09-08T21:07:17.757Z",
+      "publishable": 930,
+      "existingCompanyId": "cmtlyfvaf016cqf5k6yvon72v",
+      "beforeCompanyHash": "8410e3e093bdcf7b198659f6db8c95c7c78eae7e84df5a546100d206aacc2859",
+      "artifactPath": "audits/2026-09-08/jobaffinity/intersport-official-browser.json",
+      "artifactHash": "55eb5878f0a5811cf9817ee7bd32bc79a883b325f98ff9f901d22c7174963da8",
+      "proofUrl": "https://www.intersport.fr/nous-rejoindre/",
+      "statement": "Official employer domain https://www.intersport.fr/nous-rejoindre/ links to https://recrutement.intersport.fr/. Unfiltered active-board enumeration, included-ID WordPress details and all JobAffinity application endpoints were checked. Closed endpoints and invalid mission text are held with archived RAW. Blackstore is a separate enseigne of Intersport, confirmed at https://www.blackstore.fr/qui-sommes-nous/."
+    },
+    {
+      "key": "blackstore",
+      "name": "Blackstore",
+      "domain": "blackstore.fr",
+      "canonicalKey": "BLACKSTORE",
+      "config": {
+        "listingUrl": "https://blackstore.candidater.fr/",
+        "employer": "Blackstore"
+      },
+      "aliases": [
+        "BLACKSTORE"
+      ],
+      "parentGroup": "Intersport",
+      "sector": "FASHION",
+      "checkedAt": "2026-09-08T21:07:25.588Z",
+      "publishable": 48,
+      "existingCompanyId": null,
+      "beforeCompanyHash": null,
+      "artifactPath": "audits/2026-09-08/jobaffinity/blackstore-official-browser.json",
+      "artifactHash": "851dbba1fa099a2eb7bded7daf9a3ea6441d38f39fbee5e93efdfd16900df0fb",
+      "proofUrl": "https://www.blackstore.fr/",
+      "statement": "Official employer domain https://www.blackstore.fr/ links to https://blackstore.candidater.fr/. Unfiltered active-board enumeration, included-ID WordPress details and all JobAffinity application endpoints were checked. Closed endpoints and invalid mission text are held with archived RAW. Blackstore is a separate enseigne of Intersport, confirmed at https://www.blackstore.fr/qui-sommes-nous/."
+    }
+  ]
+}

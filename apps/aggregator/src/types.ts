@@ -18,19 +18,23 @@ export type AtsDetection = {
 /**
  * The canonical job shape every adapter produces.
  *
- * One schema for nineteen vendors, so the pipeline downstream — dedup, sector
+ * One schema for supported vendors, so the pipeline downstream — dedup, sector
  * classification, France filtering, the front end — never needs to know which
  * ATS a row came from.
  *
  * Fields are optional because coverage genuinely varies: Pinpoint gives salary
  * bands, Phenom and Magnet give coordinates, WTTJ and TalentView give remote
  * policy and experience level, and several give none of it. An absent field
- * means "this source does not publish it", never "not fetched".
+ * can mean unpublished, unparsed or not yet fetched; RAW evidence distinguishes them.
  */
 export type NormalizedJob = {
   /** Stable id within a source. Falls back to the page URL when the source has none. */
   externalId: string;
   title: string;
+  /** Measured source-content defect: archive the observation without publishing. */
+  publicationHold?: string;
+  /** When a direct application endpoint explicitly proved withdrawal. */
+  publicationWithdrawnAt?: Date;
 
   // --- Location -----------------------------------------------------------
   /** Human-readable location as the source wrote it: "Paris, 75008". */
@@ -69,7 +73,7 @@ export type NormalizedJob = {
   salaryPeriod?: string;
 
   // --- Content ------------------------------------------------------------
-  /** Full posting text, plain. Every adapter fills this. */
+  /** Posting text, plain. Completeness must be measured per source. */
   description?: string;
   /**
    * ISO-639-1 language of the posting, when the SOURCE declares it. Left unset

@@ -103,6 +103,7 @@ export function loadSourceCatalog(): CatalogSource[] {
  */
 const API_KINDS = new Set([
   'flatchr',
+  'jobaffinity-wordpress',
   'greenhouse',
   'lever',
   'lever-eu',

@@ -36,3 +36,9 @@ Validation locale : 1 392 tests unitaires agrégateur, tests du schéma Google e
 Après reprise des URL iCIMS : **2 844 Jobs** avec date prouvée, appuyés par **3 740 représentations**, zéro contradiction entre dates retenues. Douze plans de 250 Jobs maximum, 6 584 opérations au total. Les 1 477 Jobs restants ne sont pas déclarés sans date à la source : des blocages, fermetures, formats à examiner et dates futures restent séparés dans recovery-evidence.json.
 
 Répétition sur copie réelle terminée : 6 584 corrections journalisées et 2 844 événements CORRECTED. 71 419 offres actives et 9 751 France inchangées ; 1 477 dates restent nulles. Tous les RAW, les autres champs métier des Job et les événements d'origine sont identiques aux avant-images. Preuve : rehearsal-proof.json. Aucun de ces chiffres de répétition ne prétend que le backfill a déjà été appliqué en production.
+
+## Production verified after PR26
+
+Main `1b3fe6e13880d413eeaec3016e8dfd41cbcffbed` deployed successfully to the web and all three worker images. The 12 reviewed repair plans applied 6,584 column repairs (2,844 Jobs and 3,740 JobSources). `production-proof.json` verifies every RAW, original observation field and historical event, plus all 2,844 correction events and their ledger. A second application wrote zero rows. Backup SHA-256: `2807b35363c0d812b83d34bae81f4c53c436dba7a1c0d0a9446fab7496e087ab`.
+
+Active jobs remain 71,419; France filter 9,751. Missing publication dates fell from 4,321 to 1,477. `front-production-after.json` proves unchanged API counts and the Adidas witness now emits employer date 2026-08-17. The unresolved L’Oréal witness stays accessible but emits no invented JobPosting date. This proves date repair, not Google indexing or universal eligibility.

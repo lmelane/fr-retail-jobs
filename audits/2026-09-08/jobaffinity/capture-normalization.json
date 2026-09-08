@@ -1,0 +1,71 @@
+[
+  {
+    "key": "intersport-france",
+    "config": {
+      "listingUrl": "https://recrutement.intersport.fr/",
+      "employer": "Intersport",
+      "brands": {
+        "Intersport": "Intersport",
+        "Intersport Montagne": "Intersport",
+        "Intersport Outlet": "Intersport",
+        "BlackStore": "Blackstore",
+        "Intersport, Intersport Montagne": "Intersport"
+      }
+    },
+    "jobs": 993,
+    "countries": {
+      "FR": 939,
+      "UNKNOWN": 54
+    },
+    "employers": {
+      "Intersport": 933,
+      "Blackstore": 60
+    },
+    "contracts": {
+      "CDI": 662,
+      "CDD": 281,
+      "Stage": 10,
+      "Alternance": 36,
+      "Autre": 3,
+      "Mission": 1
+    },
+    "workingTimes": {
+      "UNKNOWN": 986,
+      "part-time": 6,
+      "full-time": 1
+    },
+    "dates": 993
+  },
+  {
+    "key": "blackstore",
+    "config": {
+      "listingUrl": "https://blackstore.candidater.fr/",
+      "employer": "Blackstore",
+      "brands": {
+        "Intersport": "Intersport",
+        "Intersport Montagne": "Intersport",
+        "Intersport Outlet": "Intersport",
+        "BlackStore": "Blackstore",
+        "Intersport, Intersport Montagne": "Intersport"
+      }
+    },
+    "jobs": 54,
+    "countries": {
+      "FR": 53,
+      "UNKNOWN": 1
+    },
+    "employers": {
+      "Blackstore": 54
+    },
+    "contracts": {
+      "CDD": 29,
+      "CDI": 23,
+      "Alternance": 2
+    },
+    "workingTimes": {
+      "UNKNOWN": 53,
+      "part-time": 1
+    },
+    "dates": 54
+  }
+]
