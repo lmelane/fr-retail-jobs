@@ -110,7 +110,14 @@ const PROGRAM_PATTERNS: ReadonlyArray<readonly [ProgramType, RegExp]> = [
    * diplômé, pas un stage : « trainee » seul évoque le stage, mais accompagné de
    * « program » il désigne un graduate program. Testé AVANT la règle stage.
    */
-  ['GRADUATE_PROGRAM', /GRADUATE[ _-]?PROGRAM|JEUNE DIPLOME|TRAINEE[ _-]?PROGRAMM?/],
+  /**
+   * `MANAGEMENT TRAINEE` sans « Program » : divergence trouvée par l'invariant
+   * `ingest == replay` (2026-09-08) — `taxonomy.ts` le classait graduate,
+   * ce module stage. Un management trainee EST un parcours de jeune diplômé
+   * (rotations, encadrement, débouché cadre) ; un « trainee » seul reste un
+   * stage. Deux modules ne peuvent pas juger la même chose différemment.
+   */
+  ['GRADUATE_PROGRAM', /GRADUATE[ _-]?PROGRAM|JEUNE DIPLOME|TRAINEE[ _-]?PROGRAMM?|MANAGEMENT[ _-]?TRAINEE|GRADUATE[ _-]?MANAGEMENT/],
   ['APPRENTICESHIP', /ALTERNANCE|APPRENTISSAGE|APPRENTICE(?:SHIP)?|PROFESSIONNALISATION|WORK[ -]STUDY|AUSBILDUNG/],
   ['INTERNSHIP', /\bSTAGE\b|(?<!HORS )STAGIAIRE|INTERNSHIP|\bINTERN\b|\bTRAINEE\b|PRAKTIKUM|PRACTICAS|TIROCINIO/],
 ];

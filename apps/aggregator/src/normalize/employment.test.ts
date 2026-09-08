@@ -338,3 +338,31 @@ describe('readEmployment — explicite vs inféré', () => {
     expect(r.workTimeEvidence).toBe('EXPLICIT');
   });
 });
+
+/**
+ * CONVERGENCE avec la taxonomie — divergence trouvée par l'invariant
+ * `ingest == replay` (2026-09-08).
+ *
+ * Le replay et l'ingest classaient « Management Trainee » différemment :
+ * `taxonomy.ts` disait GRADUATE_PROGRAM, `employment.ts` INTERNSHIP. Deux
+ * modules ne peuvent pas juger la même chose différemment — c'est exactement la
+ * divergence que la chaîne commune doit rendre impossible.
+ *
+ * Arbitrage : un « management trainee » est un parcours de jeune diplômé
+ * (rotations, encadrement, débouché cadre) ; un « trainee » seul reste un stage.
+ */
+describe('convergence programType avec la taxonomie', () => {
+  it.each([
+    'Management Trainee',
+    'Management Trainee (Ankara)',
+    'Retail Management Trainee',
+    'Graduate Management Trainee',
+  ])('« %s » est un graduate program', (title) => {
+    expect(readEmployment(title).programType).toBe('GRADUATE_PROGRAM');
+  });
+
+  it('« Trainee » seul reste un stage', () => {
+    expect(readEmployment('Trainee Digital Media').programType).toBe('INTERNSHIP');
+    expect(readEmployment('Marketing Trainee').programType).toBe('INTERNSHIP');
+  });
+});
