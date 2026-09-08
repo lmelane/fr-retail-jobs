@@ -25,3 +25,7 @@ Lecture du 8 septembre 22:25 UTC / 9 septembre 00:25 Paris, avec le code corrig�
 ## État de livraison
 
 Correctif validé localement. Fusion et déploiement attendent la fin du run en cours. Pas de backfill de Job nécessaire : le correctif produit la preuve au prochain parcours réel. Il ne faut pas réécrire a posteriori les anciens SourceRun pour les déclarer complets. Les garde-fous de clôture existants restent applicables ; une collecte complète ne certifie pas le pays, l'employeur ou l'accessibilité individuelle de chaque candidature.
+
+## Effet potentiel sur la fraîcheur, mesuré avant déploiement
+
+La base contient 5 527 représentations actives de ces sources ; 347 sont absentes des captures courantes, dont 214 non réobservées depuis plus de 48 h. Zéro représentation absente ne relève d’une ancienne génération de Job : aucun nettoyage de génération immédiat n’est attendu. Ces chiffres ne prouvent pas 347 fermetures : ils identifient les lignes exposées au mécanisme de fraîcheur après un futur run attesté. La revue doit conserver les sources alternatives et les délais. Aucune fermeture n’a été exécutée. Voir `absence-exposure-before.json`.
