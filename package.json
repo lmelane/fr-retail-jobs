@@ -21,5 +21,9 @@
     "@prisma/engines@6.19.3": true,
     "@prisma/client@6.19.3": true,
     "esbuild@0.28.2": true
+  },
+  "overrides": {
+    "postcss": "8.5.28",
+    "deepmerge-ts": "8.0.0"
   }
 }
