@@ -144,3 +144,40 @@ describe('l2 (revue) — un horaire chiffré : partiel sous 35 h, plein de 35 à
     expect(normalizeWorkingTime('Conseiller H/F')).toBe('UNKNOWN');
   });
 });
+
+/**
+ * Libellés MESURÉS en base le 2026-09-08 (replay contrat) et non reconnus.
+ *
+ * Ils viennent d'un inventaire SQL des valeurs réelles présentes dans le `raw`
+ * des offres sans contrat, pas d'une liste imaginée : chaque ligne est un
+ * nombre d'offres perdues sur ce seul libellé.
+ */
+describe('normalizeContract — libellés réels manquants (replay 2026-09-08)', () => {
+  it('« Fix-Term » est un CDD (538 offres, Michael Kors / Capri)', () => {
+    expect(normalizeContract('Fix-Term')).toBe('CDD');
+  });
+
+  it('« Temporary (Fixed Term) » est un CDD', () => {
+    expect(normalizeContract('Temporary (Fixed Term)')).toBe('CDD');
+  });
+
+  it('« CONTRACTOR » (schema.org) est un freelance (18 offres)', () => {
+    expect(normalizeContract('CONTRACTOR')).toBe('FREELANCE');
+  });
+
+  it('les formes longues françaises restent lues', () => {
+    expect(normalizeContract('Contrat à durée déterminée (hors stagiaire) (durée déterminée)')).toBe('CDD');
+    expect(normalizeContract('Stagiaire (durée déterminée) (stagiaire)')).toBe('STAGE');
+  });
+
+  /**
+   * Le garde-fou : ces ajouts ne doivent pas transformer un temps de travail ni
+   * un nom de lieu en contrat. « Regularny, niepełny etat » (polonais) contient
+   * « Regular » — mais dit « temps partiel », pas un type de contrat.
+   */
+  it("n'invente pas un contrat depuis un lieu ou une enseigne", () => {
+    expect(normalizeContract('MK Orlando International')).toBe('UNKNOWN');
+    expect(normalizeContract('WUSTERMARK, Allemagne')).toBe('UNKNOWN');
+    expect(normalizeContract('Ventes (monomarques/multimarques)')).toBe('UNKNOWN');
+  });
+});

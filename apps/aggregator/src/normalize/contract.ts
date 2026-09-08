@@ -31,10 +31,27 @@ const PATTERNS: ReadonlyArray<readonly [PatternType, RegExp]> = [
   // l2 (2026-09-06) : « Temporary » / « Seasonal » sont ce que les ATS anglophones
   // publient pour un contrat à durée déterminée (Eightfold « Fulltime-Temporary »,
   // Sephora « Seasonal Associate ») — un CDD, pas une mission d'intérim.
-  ['CDD', /\bCDD\b|DUR[ÉE]E D[ÉE]TERMIN[ÉE]E|FIXED[ -]?TERM|CONTRAT TEMPORAIRE|\bTEMPORARY\b|\bTEMP\b|SEASONAL|SAISONNI/],
-  ['CDI', /\bCDI\b|CONTRAT (?:À|A) DUR[ÉE]E IND[ÉE]TERMIN[ÉE]E/],
+  // « FIX-TERM » (sans le D) : 538 offres Michael Kors / Capri perdues sur ce
+  // seul libellé, mesuré au replay du 2026-09-08. `FIX(?:ED)?[ -]?TERM` couvre
+  // les deux graphies sans ouvrir la porte à autre chose.
+  /**
+   * STAGE et ALTERNANCE passent AVANT le CDD : un stage EST à durée
+   * déterminée, mais « stage » est l'information précise et « CDD » la
+   * catégorie large. Sans cet ordre, « Stagiaire (durée déterminée)
+   * (stagiaire) » — la forme longue que sert Workday en français — ressortait
+   * en CDD et le candidat perdait la nature réelle du poste (mesuré au replay
+   * du 2026-09-08). Le mot le plus spécifique gagne.
+   */
   ['ALTERNANCE', /ALTERNANCE|APPRENTISSAGE|APPRENTICE|PROFESSIONNALISATION|WORK[ -]STUDY/],
-  ['STAGE', /\bSTAGE\b|STAGIAIRE|INTERNSHIP|\bINTERN\b|\bTRAINEE\b/],
+  /**
+   * `(?<!HORS )` : Workday sert « Contrat à durée déterminée (HORS STAGIAIRE) »
+   * — le mot « stagiaire » y apparaît dans une EXCLUSION, et cette offre est un
+   * vrai CDD. Sans la garde, le passage de STAGE devant CDD (ci-dessus)
+   * requalifiait ces offres en stage, ce qui est faux.
+   */
+  ['STAGE', /\bSTAGE\b|(?<!HORS )STAGIAIRE|INTERNSHIP|\bINTERN\b|\bTRAINEE\b/],
+  ['CDD', /\bCDD\b|DUR[ÉE]E D[ÉE]TERMIN[ÉE]E|FIX(?:ED)?[ -]?TERM|CONTRAT TEMPORAIRE|\bTEMPORARY\b|\bTEMP\b|SEASONAL|SAISONNI/],
+  ['CDI', /\bCDI\b|CONTRAT (?:À|A) DUR[ÉE]E IND[ÉE]TERMIN[ÉE]E/],
   // V.I.E only via the dotted form or the full wording — the bare word "VIE"
   // collides with the French word "vie" (qualité de vie, assurance vie) once
   // uppercased, and flooded the classifier with false positives.
@@ -44,8 +61,10 @@ const PATTERNS: ReadonlyArray<readonly [PatternType, RegExp]> = [
   // interim mission carries "intérim" and matches through INTERIM below.
   ['INTERIM', /\bINTERIM\b|INT[ÉE]RIMAIRE|ZERO HEURE|ZERO[ -]HOUR/],
   // CONSULTANT dropped: a consultant can be a salaried employee. Only words that
-  // genuinely name a freelance arrangement qualify.
-  ['FREELANCE', /FREELANCE|\bINDEPENDANT\b|PRESTATAIRE|SELF[ -]EMPLOYED/],
+  // genuinely name a freelance arrangement qualify. `CONTRACTOR` est la valeur
+  // schema.org `employmentType` pour un prestataire (18 offres mesurées) — le
+  // mot est réservé à ce sens dans ce vocabulaire, contrairement à « consultant ».
+  ['FREELANCE', /FREELANCE|\bINDEPENDANT\b|PRESTATAIRE|SELF[ -]EMPLOYED|\bCONTRACTOR\b/],
   // Generic defaults last: "permanent"/"regular" are what many ATS emit for any
   // open-ended role.
   ['CDI_GENERIC', /IND[ÉE]TERMIN[ÉE]E|PERMANENT|\bREGULAR\b|FULL[ -]TIME EMPLOYEE/],
