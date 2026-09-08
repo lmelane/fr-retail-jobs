@@ -1,0 +1,26 @@
+{
+  "at": "2026-09-08T22:20:17.147Z",
+  "evidenceHash": "afe1d82c975a8247bbc93a85b1f4f3e2ff9f3d0114931c5142077886b3d4fe34",
+  "batches": [
+    {
+      "batchId": "20260909-RMK-LOCALE-DATES-v1",
+      "jobs": 13,
+      "representations": 13,
+      "correctedEvents": 13,
+      "ledger": 26,
+      "commits": [
+        "3231285a6884670b5577d23ec5c2b2c2002fdd09"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true
+    }
+  ],
+  "counts": [
+    {
+      "active": 73345,
+      "withoutPublicationDate": 1412,
+      "france": 10872
+    }
+  ]
+}

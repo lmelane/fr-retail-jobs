@@ -28,3 +28,9 @@ Le listing anglais américain courant expose **8 offres**, contre 13 représenta
 `prepare-repair.mts` relit la production ou sa copie, exige le RAW archivé et la date avant attendue, refuse les représentations multiples non arbitrées, puis produit un plan atomique de **26 opérations** (13 Job et 13 JobSource). Les mécanismes de réparation existants verrouillent sources/entreprises, contrôlent toutes les avant-images, journalisent chaque correction et préservent les événements antérieurs. Une seconde application doit écrire zéro ligne.
 
 La fusion, le déploiement et les preuves après production seront consignés ici une fois effectués. Aucun statut de fraîcheur ni offre active ne sera modifié par ce lot de dates.
+
+## Répétition réalisée
+
+Sauvegarde réelle : 298 512 153 octets, SHA-256 `a80d5ea438ec85a39c187034b28daa17622cb989a73e2421eac2c391bfec25c0`. Restauration sans erreur dans une nouvelle base locale dédiée. Plan appliqué : 26 écritures, 13 événements CORRECTED, aucun RAW ni événement historique modifié ; seconde application : zéro écriture. Voir `rehearsal-proof.json`, `rehearsal-receipt.json`, `rehearsal-idempotence.json`.
+
+Commit applicatif `3231285`, PR https://github.com/lmelane/fr-retail-jobs/pull/29. Les deux contrôles CI du commit applicatif sont verts. Fusion volontairement différée tant que la collecte globale est en cours, pour ne pas déclencher son remplacement par un déploiement automatique. La production n'a pas encore été réparée.
