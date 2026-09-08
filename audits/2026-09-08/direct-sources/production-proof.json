@@ -1,0 +1,113 @@
+{
+  "at": "2026-09-08T20:05:48.802Z",
+  "sources": [
+    {
+      "key": "adopt-parfums",
+      "status": "ACTIVE",
+      "lastRunJobs": 121,
+      "lastRunStatus": "NEW",
+      "review": {
+        "verdict": "VERIFIED",
+        "sourceHash": "a844dbba6ea9ec5c14ab2eb4cdb38bcefe643674146ca0f0fafe625875781166",
+        "artifactHash": "fd0b5bfb0c1166daa65a6bf5c7fe5d9e0d17a87d137307a0893948ca3b5f554f"
+      },
+      "latestRun": {
+        "status": "NEW",
+        "fetched": 121,
+        "accepted": 121,
+        "declaredTotal": 121,
+        "truncated": false,
+        "complete": true,
+        "canAttestAbsence": false,
+        "ranAt": "2026-09-08T20:04:12.249Z",
+        "errors": 0
+      },
+      "jobs": 121,
+      "uniqueJobIds": 121,
+      "countries": {
+        "FR": 82,
+        "BE": 7,
+        "IT": 28,
+        "CA": 4
+      },
+      "rawExactAgainstArchivedPayload": 121,
+      "rawPresent": 121,
+      "rawChangedSinceArchive": 0,
+      "nullJobFunction": 0,
+      "idsHash": "aaf421c99f88c495fb867b76609a127915c1ff44270b7a0f5dfd2ab8f40ed18a"
+    },
+    {
+      "key": "riu-paris",
+      "status": "ACTIVE",
+      "lastRunJobs": 15,
+      "lastRunStatus": "NEW",
+      "review": {
+        "verdict": "VERIFIED",
+        "sourceHash": "eeb61c609d41cb5c1cc97b9e9fba1ba2c4252384bea06a0c71479a2686b25baf",
+        "artifactHash": "b83282a1579326e505501a6d9cb382a120e94266e80a46e152aa090bdccb05e4"
+      },
+      "latestRun": {
+        "status": "NEW",
+        "fetched": 15,
+        "accepted": 15,
+        "declaredTotal": 15,
+        "truncated": false,
+        "complete": true,
+        "canAttestAbsence": false,
+        "ranAt": "2026-09-08T20:04:30.907Z",
+        "errors": 0
+      },
+      "jobs": 15,
+      "uniqueJobIds": 15,
+      "countries": {
+        "FR": 15
+      },
+      "rawExactAgainstArchivedPayload": 15,
+      "rawPresent": 15,
+      "rawChangedSinceArchive": 0,
+      "nullJobFunction": 0,
+      "idsHash": "79d2b72c8b2dce4766294cae016de21daa391c9bbe0790446a59dacfab82c5a7"
+    },
+    {
+      "key": "toscane",
+      "status": "ACTIVE",
+      "lastRunJobs": 20,
+      "lastRunStatus": "NEW",
+      "review": {
+        "verdict": "VERIFIED",
+        "sourceHash": "e2cb581e541852c539c0aaee43a9eccce2d2a5476aa55120d33110bfc228cb2f",
+        "artifactHash": "adb2488f47141c2c9d21adb2ca5662446e73bdfb8a52341df9448d90e1f759cf"
+      },
+      "latestRun": {
+        "status": "NEW",
+        "fetched": 20,
+        "accepted": 20,
+        "declaredTotal": 20,
+        "truncated": false,
+        "complete": true,
+        "canAttestAbsence": false,
+        "ranAt": "2026-09-08T20:04:41.304Z",
+        "errors": 0
+      },
+      "jobs": 20,
+      "uniqueJobIds": 20,
+      "countries": {
+        "FR": 20
+      },
+      "rawExactAgainstArchivedPayload": 20,
+      "rawPresent": 20,
+      "rawChangedSinceArchive": 0,
+      "nullJobFunction": 0,
+      "idsHash": "b09b8da4176778a9677768229c448ee36cdeb50e5daa027791b8b37eda7247e2"
+    }
+  ],
+  "allJobs": 73801,
+  "activeJobs": 71419,
+  "france": 9751,
+  "allRepresentations": 76718,
+  "allEvents": 12851,
+  "fashionjobs": {
+    "status": "PAUSED",
+    "lastRunAt": "2026-09-07T23:07:25.106Z"
+  }
+}

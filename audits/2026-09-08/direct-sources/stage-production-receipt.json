@@ -1,0 +1,38 @@
+{
+  "batchId": "20260908-FLATCHR-DIRECT-v1",
+  "sha": "cdac8384df569d5880e7e892c9ef9531b987702a15afd3b1350a42590dc1f71d",
+  "apply": true,
+  "before": {
+    "jobs": 73645,
+    "events": 12695,
+    "representations": 76562
+  },
+  "after": {
+    "jobs": 73645,
+    "events": 12695,
+    "representations": 76562
+  },
+  "results": [
+    {
+      "key": "adopt-parfums",
+      "companyId": "cmtt3jq6q00003nx9kegbxkdh",
+      "status": "DRAFT",
+      "identity": "VERIFIED",
+      "written": 1
+    },
+    {
+      "key": "riu-paris",
+      "companyId": "cmtt3jqm9000a3nx9yknve29r",
+      "status": "DRAFT",
+      "identity": "VERIFIED",
+      "written": 1
+    },
+    {
+      "key": "toscane",
+      "companyId": "cmtt3jqra000i3nx9khntpmay",
+      "status": "DRAFT",
+      "identity": "VERIFIED",
+      "written": 1
+    }
+  ]
+}

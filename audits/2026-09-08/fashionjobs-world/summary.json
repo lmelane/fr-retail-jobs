@@ -1,0 +1,94 @@
+{
+  "at": "2026-09-08T20:13:56.062Z",
+  "productionComparisonAt": "2026-09-08T20:10:23.703Z",
+  "editions": 87,
+  "parsedEditions": 81,
+  "explicitEmptyEditions": [
+    "et",
+    "li",
+    "ly",
+    "ve",
+    "ye",
+    "zm"
+  ],
+  "unresolved": [],
+  "countryProfileRows": 3971,
+  "distinctNormalizedLabels": 1653,
+  "labelsNotInFrance": 906,
+  "labelsWithActiveDirectCatalogueCandidate": 234,
+  "candidateLabelsWithDbMatch": 657,
+  "candidateLabelsWithoutDbMatch": 996,
+  "ambiguousDbMatches": [
+    {
+      "label": "ELLE INTERNATIONAL",
+      "ids": [
+        "cmtkdw0hr1tiznf2bth7vfiky",
+        "cmtrup3ob4n99pg5mrrljc38t"
+      ]
+    },
+    {
+      "label": "FAIR FASHION AGENT INTERNATIONAL",
+      "ids": [
+        "cmtnac1tt2sn8qq5l3jk84cel",
+        "cmtpw96do4k3nl35mii9jtnaj"
+      ]
+    },
+    {
+      "label": "KSI RETAIL",
+      "ids": [
+        "cmtkdvuwr1rvinf2bg83fdzpf",
+        "cmtpw95zy4k0hl35mew33fqog"
+      ]
+    },
+    {
+      "label": "LAGARDERE TRAVEL RETAIL",
+      "ids": [
+        "cmtkdvxv61strnf2blvpva5y3",
+        "cmtpu023j04jil35mg4a1g7vf"
+      ]
+    },
+    {
+      "label": "LTD INTERNATIONAL",
+      "ids": [
+        "cmtkdvvnl1s56nf2b4wguve1b",
+        "cmtrup1pw4mnupg5mp5zf8mds"
+      ]
+    },
+    {
+      "label": "MYLO CONCEPT STORE",
+      "ids": [
+        "cmtkdvyfp1t0onf2b16gy3kfe",
+        "cmtrup2bo4muhpg5m0gvq0etc"
+      ]
+    },
+    {
+      "label": "NIKE RETAIL SERVICES",
+      "ids": [
+        "cmtm8oxhh1h49pv5jqclfah77",
+        "cmtm8oy381hbdpv5jzsp4t1a8"
+      ]
+    },
+    {
+      "label": "POIRAY INTERNATIONAL",
+      "ids": [
+        "cmtkdvxip1spqnf2bzqsn7awe",
+        "cmtpw96kt4k50l35m5ickofp2"
+      ]
+    },
+    {
+      "label": "ULTA BEAUTY INC",
+      "ids": [
+        "cmtpkdkdi474apf5l272m6owb",
+        "cmtpuyimv3pbul35m36fwuuzo"
+      ]
+    }
+  ],
+  "offerPagesFetched": 0,
+  "productionWrites": 0,
+  "limits": [
+    "Normalized labels are not certified legal or commercial identities.",
+    "Same brand may have multiple labels; no forced merge.",
+    "Country directory counters overlap and do not equal distinct global vacancies.",
+    "Comparison uses the dated production export; direct portal research remains incomplete."
+  ]
+}
