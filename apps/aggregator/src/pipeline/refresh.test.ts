@@ -55,8 +55,8 @@ async function job(companyId: string, sourceKey: string, externalId: string, hou
   });
 }
 
-async function recordHealth(sourceKey: string, status: string, jobs: number) {
-  await prisma.sourceRun.create({ data: { sourceKey, status, jobs, ranAt: new Date() } });
+async function recordHealth(sourceKey: string, status: string, jobs: number, note?: string) {
+  await prisma.sourceRun.create({ data: { sourceKey, status, jobs, note, ranAt: new Date() } });
 }
 
 beforeEach(wipe);
@@ -107,6 +107,65 @@ describe('runRefresh', () => {
     expect(result.closedJobs).toBe(0);
     expect(await prisma.job.count({ where: { isActive: true } })).toBe(2);
     expect(result.skippedBrokenSources).toEqual(expect.arrayContaining(['fashionjobs', 'hermes']));
+  });
+
+  /**
+   * LE CAS L'ORÉAL (2026-09-08, D51). Un anti-bot nous sert une page d'attente :
+   * nous n'avons pas lu des offres, nous avons lu un mur. Ce run ne prouve rien,
+   * et fermer sur lui fabriquerait l'illusion « la Maison n'embauche plus ».
+   */
+  it("ne ferme RIEN quand la source a été bloquée par un anti-bot (CHALLENGED)", async () => {
+    const c = await company();
+    await job(c.id, 'l-oreal-professionnel', 'lo1', 72);
+    await job(c.id, 'l-oreal-professionnel', 'lo2', 72);
+    await recordHealth('l-oreal-professionnel', 'CHALLENGED', 0, "anti-bot cloudflare : page d'attente servie");
+
+    const result = await runRefresh(prisma);
+
+    expect(result.closedJobs).toBe(0);
+    expect(await prisma.job.count({ where: { isActive: true } })).toBe(2);
+    expect(result.skippedBrokenSources).toContain('l-oreal-professionnel');
+  });
+
+  /**
+   * LE CAS LAGARDÈRE (20 lues sur 109 déclarées). Le run a PRODUIT des offres —
+   * il franchissait donc toutes les gardes existantes, qui ne testaient que le
+   * zéro — mais il n'a pas vu son board. Il ne peut rien conclure sur les 89
+   * offres qu'il n'a pas lues.
+   */
+  it("ne ferme RIEN quand le dernier run était TRONQUÉ, même s'il a produit", async () => {
+    const c = await company();
+    await job(c.id, 'lagardere-travel-retail', 'lg1', 72);
+    await job(c.id, 'lagardere-travel-retail', 'lg2', 72);
+    await recordHealth(
+      'lagardere-travel-retail',
+      'DEGRADED',
+      20,
+      'troncature : 20 collectées sur 109 déclarées',
+    );
+
+    const result = await runRefresh(prisma);
+
+    expect(result.closedJobs).toBe(0);
+    expect(await prisma.job.count({ where: { isActive: true } })).toBe(2);
+    expect(result.skippedBrokenSources).toContain('lagardere-travel-retail');
+  });
+
+  /**
+   * La contrepartie indispensable : un DEGRADED de COUVERTURE DE CHAMP (des
+   * descriptions manquantes) a bien vu tout le board. Il garde le droit
+   * d'attester — sinon plus aucune offre expirée ne se fermerait jamais et le
+   * catalogue se remplirait de postes morts.
+   */
+  it('ferme normalement sur un DEGRADED de couverture de champ (board vu en entier)', async () => {
+    const c = await company();
+    await job(c.id, 'urbn-stores', 'u1', 72);
+    await recordHealth('urbn-stores', 'DEGRADED', 915, 'descriptions manquantes sur 37% des offres');
+
+    const result = await runRefresh(prisma);
+
+    expect(result.closedJobs).toBe(1);
+    expect(result.skippedBrokenSources).not.toContain('urbn-stores');
   });
 
   it('keeps a multi-source offer while any source still reports it', async () => {

@@ -62,7 +62,9 @@ describe('fetchWithRetry face à un challenge WAF', () => {
     fetchMock.mockImplementation(async () => challenge());
 
     await expect(fetchWithRetry(`${ORIGIN}/jobs/x`)).rejects.toBeInstanceOf(WafChallengeError);
-    await expect(fetchWithRetry(`${ORIGIN}/jobs/x`)).rejects.toThrow('WAF challenge non levé pour');
+    // Le message NOMME le fournisseur : « CHALLENGED par aws » est un
+    // diagnostic exploitable, « 0 offre » envoyait chercher un bug d'adaptateur.
+    await expect(fetchWithRetry(`${ORIGIN}/jobs/x`)).rejects.toThrow('Challenge aws non levé pour');
     // Deux appels : 1 challenge + 1 re-tentative, pas de troisième essai.
     expect(fetchMock).toHaveBeenCalledTimes(2 + 1);
     expect(primer).toHaveBeenCalledTimes(1);

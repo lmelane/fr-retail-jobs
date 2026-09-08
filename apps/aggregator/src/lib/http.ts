@@ -1,8 +1,10 @@
 import { assertPublicUrl, isPublicHttpUrl, BlockedUrlError } from './ssrf.js';
 import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 import { getWafCookie, isWafChallenge, primeWafCookie, WafChallengeError } from './wafToken.js';
+import { detectChallenge } from './responseIntegrity.js';
 
 export { WafChallengeError } from './wafToken.js';
+export { detectChallenge, type ChallengeVendor } from './responseIntegrity.js';
 
 /**
  * Joint le cookie WAF amorcé pour l'origine de `url`, s'il existe, aux en-têtes
@@ -212,9 +214,38 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
   throw lastError instanceof Error ? lastError : new Error(`Request failed: ${url}`);
 }
 
+/**
+ * Le texte d'une réponse — après contrôle d'intégrité.
+ *
+ * Le contrôle est ICI et non dans `fetchWithRetry` parce qu'un challenge servi
+ * en 200 (Cloudflare) n'est reconnaissable qu'une fois le CORPS lu : le statut
+ * et les en-têtes sont ceux d'une page normale. Mesuré le 2026-09-08 sur
+ * careers.loreal.com — la page d'attente passait `response.ok`, le parseur n'y
+ * trouvait aucune carte, et 1 711 offres tombaient BROKEN sans une erreur.
+ *
+ * Un challenge lève désormais `WafChallengeError`, comme le WAF Amazon : la
+ * source est enregistrée en échec franc (donc EXCLUE de toute fermeture
+ * d'offres) au lieu d'être prise pour un board devenu vide.
+ */
 export async function fetchText(url: string, init: RequestInit = {}): Promise<string> {
   const response = await fetchWithRetry(url, init);
-  return readBodyBounded(response, url);
+  const body = await readBodyBounded(response, url);
+
+  const vendor = detectChallenge(response, body);
+  if (vendor) {
+    // Amorçage navigateur : le même chemin qui débloque déjà le WAF Amazon.
+    // Une seule tentative — une origine déjà munie du jeton et pourtant
+    // challengée ne gagnera rien à être rejouée à l'identique.
+    if (!getWafCookie(url) && (await primeWafCookie(url))) {
+      const retried = await fetchWithRetry(url, init);
+      const retriedBody = await readBodyBounded(retried, url);
+      if (!detectChallenge(retried, retriedBody)) return retriedBody;
+    }
+    reportThrottle(url);
+    throw new WafChallengeError(url, vendor);
+  }
+
+  return body;
 }
 
 export async function fetchJson<T>(url: string, init: RequestInit = {}): Promise<T> {

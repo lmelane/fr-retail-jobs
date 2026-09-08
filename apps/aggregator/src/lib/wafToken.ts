@@ -21,11 +21,22 @@ const cookies = new Map<string, string>();
 const inflight = new Map<string, Promise<string | undefined>>();
 let primer: WafPrimer | undefined;
 
-/** Levée quand le challenge WAF persiste après amorçage : jamais un corps vide accepté comme page. */
+/**
+ * Levée quand le challenge persiste après amorçage : jamais un corps vide — ni
+ * une page d'attente — accepté comme page.
+ *
+ * `vendor` nomme le fournisseur anti-bot rencontré (aws, cloudflare, akamai…).
+ * Il remonte jusqu'au SourceRun : « CHALLENGED par cloudflare » est un
+ * diagnostic exploitable, là où « 0 offre » envoyait chercher un bug d'adaptateur
+ * qui n'existait pas (cf. L'Oréal, 2026-09-08).
+ */
 export class WafChallengeError extends Error {
-  constructor(url: string) {
-    super(`WAF challenge non levé pour ${url}`);
+  readonly vendor: string;
+
+  constructor(url: string, vendor = 'aws') {
+    super(`Challenge ${vendor} non levé pour ${url}`);
     this.name = 'WafChallengeError';
+    this.vendor = vendor;
   }
 }
 

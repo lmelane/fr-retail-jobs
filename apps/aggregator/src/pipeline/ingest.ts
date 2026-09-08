@@ -16,6 +16,7 @@ import type { NormalizedJob } from '../types.js';
 import { PIPELINE_VERSION } from './version.js';
 import { runGeocode } from './geocodeJobs.js';
 import { purgeStaleForSource } from './purge.js';
+import { isTrustedForAttestation } from './attestation.js';
 import { fetchAtsJobs } from '../ats/index.js';
 
 /**
@@ -451,15 +452,31 @@ export async function runIngest(
   };
 
   /**
-   * Purge this source's older-generation rows — but only after it produced.
+   * Purge this source's older-generation rows — but ONLY if the run earned the
+   * right to attest absence.
    *
-   * A source that wrote nothing this run must not purge: that would delete its
-   * whole footprint on the exact failure (silent zero) the purge must survive.
-   * Runs per source, right after its success, so a later source that breaks
-   * cannot undo it and can never empty the base.
+   * Historiquement la seule garde était « la source a-t-elle écrit quelque
+   * chose ? » (`producedOutput`), qui couvre le zéro silencieux mais PAS le run
+   * partiel : `lagardere-travel-retail` écrivait 20 offres en en déclarant 109,
+   * franchissait la garde, et la purge supprimait les 89 autres. La règle du
+   * 2026-09-08 (D51) tranche : seul un run complet et fiable peut faire
+   * disparaître ce qu'il n'a pas revu.
    */
   const purgeQuietly = async (stats: IngestStats) => {
     if (!producedOutput(stats)) return;
+    if (!isTrustedForAttestation({
+      status: 'OK', // l'échec franc n'arrive jamais ici (il est capturé plus haut)
+      declaredTotal: stats.declaredTotal,
+      fetched: stats.fetched,
+      truncated: stats.truncated,
+    })) {
+      console.warn(
+        `[ingest] ${stats.source}: purge REFUSÉE — run non fiable pour attester ` +
+          `(${stats.fetched} collectées${stats.declaredTotal ? ` sur ${stats.declaredTotal} déclarées` : ''}` +
+          `${stats.truncated ? ', tronqué' : ''}). Les offres non revues survivent.`,
+      );
+      return;
+    }
     try {
       const purged = await purgeStaleForSource(prisma, stats.source, PIPELINE_VERSION);
       if (purged.jobsDeleted > 0 || purged.sourcesDetached > 0) {

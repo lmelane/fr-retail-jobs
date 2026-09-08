@@ -4,6 +4,7 @@ import { loadActiveSources } from '../connectors/sourceStore.js';
 import { runIngest, KIND_TO_ATS } from './ingest.js';
 import { checkSourceHealth, type SourceHealth } from './health.js';
 import { briefError } from '../lib/normalize.js';
+import { WafChallengeError } from '../lib/wafToken.js';
 
 /**
  * Runs every source under its OWN time budget (decision D6), a few at a time.
@@ -164,10 +165,22 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     const timedOut = message.startsWith('__TIMEOUT__');
+    /**
+     * Un anti-bot n'est ni une panne d'adaptateur ni une source vide : c'est un
+     * refus d'accès, souvent temporaire, et il se règle autrement (amorçage
+     * navigateur, politesse par hôte). Le nommer CHALLENGED évite d'envoyer
+     * chercher un bug qui n'existe pas — le cas L'Oréal a coûté deux
+     * diagnostics erronés avant d'être compris (D51).
+     */
+    const challenged = error instanceof WafChallengeError;
     if (timedOut) {
       result.timedOut++;
       result.failures.push(`${key} (timedOut)`);
       console.error(`[orchestrator] ${key}: timed out after ${PER_SOURCE_TIMEOUT_MS / 1000}s, moving on`);
+    } else if (challenged) {
+      result.failed++;
+      result.failures.push(`${key} (challenged)`);
+      console.error(`[orchestrator] ${key}: bloqué par un anti-bot (${error.vendor}) — offres conservées`);
     } else {
       result.failed++;
       result.failures.push(`${key} (failed)`);
@@ -181,9 +194,13 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
       .create({
         data: {
           sourceKey: key,
-          status: timedOut ? 'TIMEOUT' : 'ERROR',
+          status: timedOut ? 'TIMEOUT' : challenged ? 'CHALLENGED' : 'ERROR',
           jobs: 0,
-          note: timedOut ? `cut at ${PER_SOURCE_TIMEOUT_MS / 1000}s` : briefError(error),
+          note: timedOut
+            ? `cut at ${PER_SOURCE_TIMEOUT_MS / 1000}s`
+            : challenged
+              ? `anti-bot ${(error as WafChallengeError).vendor} : page d'attente servie, aucune offre lue`
+              : briefError(error),
         },
       })
       .catch((e) => console.error(`[orchestrator] ${key}: failed to record run — ${briefError(e)}`));

@@ -139,7 +139,12 @@ export async function applyDomainSheet(
           where: { id: j.id },
           data: {
             companyId: parent.id,
-            clusterKey: j.clusterKey.replace(`${company.canonicalKey}|`, `${parent.canonicalKey}|`),
+            // `clusterKey` est nullable en base : une offre née avant la clé de
+            // cluster n'en porte pas. On ne réécrit que ce qui existe — comme le
+            // fingerprint juste en dessous — au lieu de déréférencer un null.
+            ...(j.clusterKey
+              ? { clusterKey: j.clusterKey.replace(`${company.canonicalKey}|`, `${parent.canonicalKey}|`) }
+              : {}),
             ...(j.fingerprint ? { fingerprint: j.fingerprint.replace(`${company.canonicalKey}|`, `${parent.canonicalKey}|`) } : {}),
           },
         });

@@ -63,21 +63,53 @@ export type RefreshStats = {
  * its offers this run, so their silence proves nothing — closing on it would
  * manufacture the "Maison stopped hiring" illusion.
  */
-const UNFINISHED_STATUSES = new Set(['BROKEN', 'TIMEOUT', 'ERROR']);
+const UNFINISHED_STATUSES = new Set(['BROKEN', 'TIMEOUT', 'ERROR', 'CHALLENGED']);
 
+/**
+ * Les sources dont le dernier run n'a PAS le droit d'attester une absence.
+ *
+ * Deux familles, et la seconde manquait jusqu'au 2026-09-08 (D51) :
+ *
+ *  1. L'échec franc — BROKEN, TIMEOUT, ERROR, et désormais CHALLENGED (un WAF
+ *     nous a servi une page d'attente : nous n'avons pas lu des offres).
+ *  2. Le run PARTIEL — statut DEGRADED avec une troncature ou une couverture
+ *     sous le plancher. `lagardere-travel-retail` lisait 20 offres sur 109
+ *     déclarées : le run « produisait », donc rien ne l'arrêtait, et le refresh
+ *     fermait les 89 autres. Un run qui n'a pas vu le board ne prouve rien sur
+ *     ce qu'il n'a pas lu.
+ */
 async function brokenSourceKeys(prisma: PrismaClient): Promise<Set<string>> {
   const rows = await prisma.sourceRun.findMany({
     orderBy: { ranAt: 'desc' },
-    select: { sourceKey: true, status: true },
+    select: { sourceKey: true, status: true, jobs: true, note: true },
   });
   const seen = new Set<string>();
   const broken = new Set<string>();
   for (const row of rows) {
     if (seen.has(row.sourceKey)) continue; // only the latest run per source
     seen.add(row.sourceKey);
-    if (UNFINISHED_STATUSES.has(row.status)) broken.add(row.sourceKey);
+    if (UNFINISHED_STATUSES.has(row.status)) {
+      broken.add(row.sourceKey);
+      continue;
+    }
+    // Un DEGRADED de TRONCATURE n'atteste pas ; un DEGRADED de couverture de
+    // champ (descriptions manquantes) a bien vu tout le board et atteste.
+    if (row.status === 'DEGRADED' && isTruncationNote(row.note)) broken.add(row.sourceKey);
   }
   return broken;
+}
+
+/**
+ * La note d'un run tronqué, telle que `health.ts` l'écrit :
+ * « troncature : 20 collectées sur 109 déclarées ».
+ *
+ * Lire la note plutôt qu'ajouter une colonne évite une migration sur une base
+ * de 73 000 offres pour une information que le run écrit déjà. La couverture
+ * chiffrée reste disponible dans les colonnes de taux.
+ */
+function isTruncationNote(note: string | null): boolean {
+  if (!note) return false;
+  return /troncature|truncat|fewer offers than the previous run/i.test(note);
 }
 
 /**
