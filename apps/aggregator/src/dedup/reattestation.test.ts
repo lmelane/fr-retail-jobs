@@ -12,12 +12,28 @@ const existing = { title: 'Apply Now', description: 'court', location: null, cit
  * porter les valeurs normalisées d'aujourd'hui.
  */
 describe('reattestationFields', () => {
-  it('ré-écrit le pays en ISO et dérive la ville depuis le lieu, quelle que soit la source', () => {
-    const out = reattestationFields({ ...base, title: 'Vendeur', country: 'France', location: 'Paris, 75008' }, existing, false);
+  it('une source secondaire ne change pas une géographie établie', () => {
+    const out = reattestationFields({ ...base, country: 'US', city: 'Paris', location: 'Paris, Texas', title: 'x' }, { ...existing, countryCode: 'FR', city: 'Paris', location: 'Paris, France' }, false);
+    expect(out.countryCode).toBeUndefined();
+    expect(out.location).toBeUndefined();
+    expect(out.adminArea1).toBeUndefined();
+  });
+
+  it('ne mélange pas une devise secondaire avec un montant employeur', () => {
+    const out = reattestationFields({ ...base, title: 'x', salaryCurrency: 'USD' }, { ...existing, salaryMin: 50000 }, false);
+    expect(out.salaryCurrency).toBeUndefined();
+  });
+
+  it('un nouveau montant autoritaire sans devise ne conserve pas une ancienne devise', () => {
+    const out = reattestationFields({ ...base, title: 'x', salaryMin: 25 }, { ...existing, salaryMin: 50000, salaryCurrency: 'EUR', salaryPeriod: 'YEAR' }, true);
+    expect(out).toMatchObject({ salaryMin: 25, salaryCurrency: null, salaryPeriod: null });
+  });
+  it('la source autoritaire ré-écrit le pays en ISO et dérive la ville', () => {
+    const out = reattestationFields({ ...base, title: 'Vendeur', country: 'France', location: 'Paris, 75008' }, existing, true);
     expect(out.countryCode).toBe('FR');
     expect(out.city).toBe('Paris');
     expect(out.location).toBe('Paris, 75008');
-    expect(out.title).toBeUndefined();
+    expect(out.title).toBe('Vendeur');
   });
 
   it('n’efface jamais un pays ou une ville que le candidat ne porte pas', () => {
@@ -48,7 +64,7 @@ describe('reattestationFields', () => {
    * 703 subdivisions fausses ne pouvaient être réparées que hors ligne.
    */
   it('dérive la subdivision depuis le lieu à la ré-attestation', () => {
-    const out = reattestationFields({ ...base, title: 'Vendeur', location: 'Columbus, Ohio' }, existing, false);
+    const out = reattestationFields({ ...base, title: 'Vendeur', location: 'Columbus, Ohio' }, existing, true);
     expect(out.adminArea1).toBe('Ohio');
     expect(out.countryCode).toBe('US');
   });
@@ -61,7 +77,7 @@ describe('reattestationFields', () => {
     const out = reattestationFields(
       { ...base, title: 'Vendeur', country: 'Australia', location: 'Success, WA' },
       { ...existing, countryCode: 'AU', adminArea1: 'Washington' },
-      false,
+      true,
     );
     expect(out.adminArea1).toBeNull();
   });
@@ -75,9 +91,9 @@ describe('reattestationFields', () => {
     expect(out.adminArea1).toBeUndefined();
   });
 
-  it('une description plus courte ne remplace pas la plus riche', () => {
+  it('une correction autoritaire plus courte remplace le texte précédent', () => {
     const out = reattestationFields({ ...base, title: 'Apply Now', description: 'a' }, { ...existing, description: 'texte riche' }, true);
-    expect(out.description).toBeUndefined();
+    expect(out.description).toBe('a');
   });
 });
 

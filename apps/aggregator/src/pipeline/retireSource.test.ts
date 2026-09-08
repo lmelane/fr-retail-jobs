@@ -23,7 +23,7 @@ afterAll(async () => {
 });
 
 describe('retireSource', () => {
-  it('deletes orphaned jobs, keeps shared ones, reassigns the canonical URL', async () => {
+  it('closes orphaned jobs, keeps shared ones, reassigns the canonical URL', async () => {
     const company = await prisma.company.create({
       data: { name: 'Cartier', canonicalKey: 'CARTIER', fashionjobsUrl: 'resolved:CARTIER' },
     });
@@ -67,23 +67,23 @@ describe('retireSource', () => {
 
     expect(stats).toEqual({
       sourceKey: 'cartier-3',
-      jobSourcesRemoved: 2,
-      jobsDeleted: 1,
+      sourcesDeactivated: 2,
+      jobsClosed: 1,
       jobsKept: 1,
       urlsReassigned: 1,
     });
 
-    const jobs = await prisma.job.findMany({ include: { sources: true } });
+    const jobs = await prisma.job.findMany({ where: { isActive: true }, include: { sources: true } });
     expect(jobs).toHaveLength(1);
     expect(jobs[0].url).toBe('https://wttj/w-2');
     expect(jobs[0].canonicalTier).toBe('SPECIALIST_JOBBOARD');
-    expect(jobs[0].sources.map((s) => s.sourceKey)).toEqual(['wttj']);
+    expect(jobs[0].sources.filter(s => s.isActive).map((s) => s.sourceKey)).toEqual(['wttj']);
   });
 
   it('is a no-op for an unknown key', async () => {
     const stats = await retireSource(prisma, 'nothing-here');
-    expect(stats.jobSourcesRemoved).toBe(0);
-    expect(stats.jobsDeleted).toBe(0);
+    expect(stats.sourcesDeactivated).toBe(0);
+    expect(stats.jobsClosed).toBe(0);
   });
 });
 
@@ -119,10 +119,11 @@ describe('retireSource — une seule route d’une clé (externalIdPrefix)', () 
 
     const stats = await retireSource(prisma, 'kering', { externalIdPrefix: 'https://' });
 
-    expect(stats.jobSourcesRemoved).toBe(1);
-    expect(stats.jobsDeleted).toBe(1);
-    expect(await prisma.job.count()).toBe(1);
-    expect((await prisma.job.findFirstOrThrow()).externalId).toBe('12345');
+    expect(stats.sourcesDeactivated).toBe(1);
+    expect(stats.jobsClosed).toBe(1);
+    expect(await prisma.job.count()).toBe(2);
+    expect(await prisma.job.count({ where: { isActive: true } })).toBe(1);
+    expect((await prisma.job.findFirstOrThrow({ where: { isActive: true } })).externalId).toBe('12345');
     expect((await prisma.source.findUniqueOrThrow({ where: { key: 'kering' } })).status).toBe('ACTIVE');
   });
 });

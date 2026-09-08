@@ -1,0 +1,26 @@
+{
+  "measuredAt": "2026-09-08T12:44:08.939Z",
+  "runtime": "v22.23.2",
+  "count": 2000,
+  "concurrency": 4,
+  "create": {
+    "elapsedMs": 16084.831917,
+    "jobsPerSecond": 124.34074600967433,
+    "operationP50Ms": 31.291583000000173,
+    "operationP95Ms": 49.82837500000096
+  },
+  "reattest": {
+    "elapsedMs": 8107.032666000003,
+    "jobsPerSecond": 246.69938834560006,
+    "operationP50Ms": 15.114666000001307,
+    "operationP95Ms": 24.922834000000876
+  },
+  "invariants": {
+    "jobs": 2000,
+    "observations": 2000,
+    "sourceRows": 2000,
+    "opened": 2000
+  },
+  "rssBytes": 150306816,
+  "scope": "Synthetic local PostgreSQL 18 write workload. Excludes ATS latency, production network, multi-replica capacity and soak testing."
+}

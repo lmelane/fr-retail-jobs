@@ -10,9 +10,8 @@ import { offerPath } from './offer-url';
  * omitted. The parts Google Jobs actually gates on:
  *  - datePosted: postedAt when the source ships it, else firstSeenAt — the
  *    honest first sighting, made stable by D22 (no more churn);
- *  - validThrough: the source's own expiry, else a 60-day horizon from
- *    datePosted — a fallback, refreshed as long as the offer is re-listed,
- *    and the 410 kills the page when it closes for real;
+ *  - validThrough: the source's own expiry, omitted when unknown. Rendering
+ *    the page does not establish a new application deadline;
  *  - employmentTerm: the schema.org enum, mapped from the normalized contract
  *    (CDI is not "CDI" for a crawler);
  *  - addressCountry: the canonical code of what the SOURCE said — never a
@@ -22,9 +21,6 @@ import { offerPath } from './offer-url';
  *    at the employer, and saying otherwise is the kind of lie that gets a
  *    board penalized.
  */
-
-/** Horizon de validité d'une offre encore listée : le prochain passage, avec marge (cadence quotidienne, D36). */
-const VALID_THROUGH_HORIZON_DAYS = 30;
 
 /**
  * Les dimensions d'emploi → l'énumération `employmentType` de schema.org, lue
@@ -66,19 +62,8 @@ export function schemaEmploymentTypes(
   return [...types];
 }
 
-export function jobPostingSchema(job: JobRow, now = new Date()): Record<string, unknown> {
+export function jobPostingSchema(job: JobRow): Record<string, unknown> {
   const datePosted = job.postedAt ?? job.firstSeenAt;
-  /**
-   * Une offre encore listée par son ATS est valide : sa validité ne doit jamais
-   * être dans le passé, sinon Google Jobs l'écarte — 21 157 offres actives
-   * (29 %) publiaient une validité dépassée par le repli « publication + 60 j »
-   * (audit A4, 2026-09-06 ; décision Loïc : « si l'offre est encore dans l'ATS,
-   * on met à jour »). La validité de la source est gardée tant qu'elle est
-   * future ; sinon l'horizon du prochain passage : aujourd'hui + 30 jours.
-   * Une offre fermée n'émet pas de JSON-LD (D22).
-   */
-  const horizon = new Date(now.getTime() + VALID_THROUGH_HORIZON_DAYS * 86_400_000);
-  const validThrough = job.validThrough && job.validThrough.getTime() > now.getTime() ? job.validThrough : horizon;
   const employmentTypes = schemaEmploymentTypes(job.employmentTerm, job.workTime, job.programType, job.engagementType);
   const country = countryCode(job.countryCode);
 
@@ -88,7 +73,8 @@ export function jobPostingSchema(job: JobRow, now = new Date()): Record<string, 
     title: job.title,
     description: job.description ?? undefined,
     datePosted: datePosted.toISOString(),
-    validThrough: validThrough.toISOString(),
+    // An expired source date remains expired until new evidence corrects it.
+    validThrough: job.validThrough?.toISOString(),
     employmentType: employmentTypes.length ? employmentTypes : undefined,
     identifier: { '@type': 'PropertyValue', name: job.company, value: job.id },
     hiringOrganization: { '@type': 'Organization', name: job.company },
@@ -110,10 +96,10 @@ export function jobPostingSchema(job: JobRow, now = new Date()): Record<string, 
           }
         : undefined,
     baseSalary:
-      job.salaryMin !== null || job.salaryMax !== null
+      job.salaryCurrency && (job.salaryMin !== null || job.salaryMax !== null)
         ? {
             '@type': 'MonetaryAmount',
-            currency: job.salaryCurrency ?? 'EUR',
+            currency: job.salaryCurrency,
             value: {
               '@type': 'QuantitativeValue',
               minValue: job.salaryMin ?? undefined,

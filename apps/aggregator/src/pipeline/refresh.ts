@@ -1,4 +1,6 @@
-import type { Prisma, PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
+import { selectCanonicalSource } from '../dedup/canonical.js';
+import { lockCompanyRows } from '../lib/writeLocks.js';
 import { chunk } from '../lib/chunk.js';
 import { recordEvents } from './jobEvents.js';
 
@@ -63,72 +65,17 @@ export type RefreshStats = {
  * its offers this run, so their silence proves nothing — closing on it would
  * manufacture the "Maison stopped hiring" illusion.
  */
-const UNFINISHED_STATUSES = new Set(['BROKEN', 'TIMEOUT', 'ERROR', 'CHALLENGED']);
-
-/**
- * Les sources dont le dernier run n'a PAS le droit d'attester une absence.
- *
- * Deux familles, et la seconde manquait jusqu'au 2026-09-08 (D51) :
- *
- *  1. L'échec franc — BROKEN, TIMEOUT, ERROR, et désormais CHALLENGED (un WAF
- *     nous a servi une page d'attente : nous n'avons pas lu des offres).
- *  2. Le run PARTIEL — statut DEGRADED avec une troncature ou une couverture
- *     sous le plancher. `lagardere-travel-retail` lisait 20 offres sur 109
- *     déclarées : le run « produisait », donc rien ne l'arrêtait, et le refresh
- *     fermait les 89 autres. Un run qui n'a pas vu le board ne prouve rien sur
- *     ce qu'il n'a pas lu.
- */
-async function brokenSourceKeys(prisma: PrismaClient): Promise<Set<string>> {
-  const rows = await prisma.sourceRun.findMany({
-    orderBy: { ranAt: 'desc' },
-    select: { sourceKey: true, status: true, jobs: true, note: true },
+/** Missing or legacy evidence cannot authorize an automatic closure. */
+async function brokenSourceKeys(prisma: PrismaClient, cutoff: Date): Promise<Set<string>> {
+  const rows = await prisma.$queryRaw<Array<{ sourceKey: string; canAttestAbsence: boolean | null; ranAt: Date }>>`
+    SELECT DISTINCT ON ("sourceKey") "sourceKey", "canAttestAbsence", "ranAt"
+    FROM "SourceRun" ORDER BY "sourceKey", "ranAt" DESC, "id" DESC
+  `;
+  const trusted = new Set(rows.filter(row => row.canAttestAbsence === true && row.ranAt >= cutoff).map(row => row.sourceKey));
+  const sources = await prisma.jobSource.findMany({
+    where: { isActive: true }, distinct: ['sourceKey'], select: { sourceKey: true },
   });
-  const seen = new Set<string>();
-  const broken = new Set<string>();
-  for (const row of rows) {
-    if (seen.has(row.sourceKey)) continue; // only the latest run per source
-    seen.add(row.sourceKey);
-    if (UNFINISHED_STATUSES.has(row.status)) {
-      broken.add(row.sourceKey);
-      continue;
-    }
-    // Un DEGRADED de TRONCATURE n'atteste pas ; un DEGRADED de couverture de
-    // champ (descriptions manquantes) a bien vu tout le board et atteste.
-    if (row.status === 'DEGRADED' && isTruncationNote(row.note)) broken.add(row.sourceKey);
-  }
-  return broken;
-}
-
-/**
- * La note d'un run tronqué, telle que `health.ts` l'écrit :
- * « troncature : 20 collectées sur 109 déclarées ».
- *
- * Lire la note plutôt qu'ajouter une colonne évite une migration sur une base
- * de 73 000 offres pour une information que le run écrit déjà. La couverture
- * chiffrée reste disponible dans les colonnes de taux.
- */
-function isTruncationNote(note: string | null): boolean {
-  if (!note) return false;
-  return /troncature|truncat|fewer offers than the previous run/i.test(note);
-}
-
-/**
- * `updateMany` sur une liste d'ids, par tranches : au-delà de 32 767
- * paramètres liés Postgres refuse la requête d'un bloc (mesuré : 65 903 ids
- * → « too many bind variables »). Le refresh ferme des centaines d'offres par
- * nuit, et des dizaines de milliers le jour où une base est reconstruite.
- */
-async function updateJobsInBatches(
-  tx: Pick<PrismaClient, 'job'>,
-  ids: ReadonlyArray<string>,
-  data: Prisma.JobUpdateManyMutationInput,
-): Promise<number> {
-  let count = 0;
-  for (const batch of chunk(ids)) {
-    const result = await tx.job.updateMany({ where: { id: { in: batch } }, data });
-    count += result.count;
-  }
-  return count;
+  return new Set(sources.filter(row => !trusted.has(row.sourceKey)).map(row => row.sourceKey));
 }
 
 export async function runRefresh(
@@ -140,7 +87,7 @@ export async function runRefresh(
   const minCloseForGuard = options.minCloseForGuard ?? MIN_CLOSE_FOR_GUARD;
   const cutoff = new Date(Date.now() - staleHours * 3_600_000);
 
-  const skipped = await brokenSourceKeys(prisma);
+  const skipped = await brokenSourceKeys(prisma, cutoff);
   const skippedBrokenSources = [...skipped];
 
   // Which source listings are stale AND belong to a source that is not broken.
@@ -158,16 +105,21 @@ export async function runRefresh(
   // above, no active source would remain. Compute before writing anything so the
   // mass-closure guard can refuse first.
   const staleJobIds = new Set(staleSources.map((s) => s.jobId));
-  const wouldClose: string[] = [];
+  const orphans = await prisma.job.findMany({
+    where: { isActive: true, sources: { none: { isActive: true } } }, select: { id: true },
+  });
+  const wouldClose: string[] = orphans.map(j => j.id);
   if (staleJobIds.size > 0) {
+    for (const ids of chunk([...staleJobIds])) {
     const affected = await prisma.job.findMany({
-      where: { id: { in: [...staleJobIds] }, isActive: true },
+      where: { id: { in: ids }, isActive: true },
       select: { id: true, sources: { select: { id: true, isActive: true } } },
     });
     const staleSourceIds = new Set(staleSources.map((s) => s.id));
     for (const job of affected) {
       const remainsActive = job.sources.some((s) => s.isActive && !staleSourceIds.has(s.id));
       if (!remainsActive) wouldClose.push(job.id);
+    }
     }
   }
 
@@ -194,48 +146,59 @@ export async function runRefresh(
     };
   }
 
-  // 1. Deactivate stale (non-broken) source listings.
-  const closedSources = staleSources.length
-    ? await prisma.jobSource.updateMany({
-        where: { id: { in: staleSources.map((s) => s.id) } },
-        data: { isActive: false },
-      })
-    : { count: 0 };
-
-  // 2. Close jobs with no active source left. `closedAt` is the observed end of
-  //    publication (D38): with `firstSeenAt` it is the lifespan the market
-  //    snapshots measure. One CLOSED event per offer, written in one batch.
-  const now = new Date();
-  const orphaned = await prisma.job.findMany({
-    where: { isActive: true, sources: { none: { isActive: true } } },
-    select: { id: true },
-  });
-  const closedJobs = orphaned.length
-    ? await prisma.$transaction(async (tx) => {
-        const count = await updateJobsInBatches(tx, orphaned.map((job) => job.id), { isActive: false, closedAt: now });
-        await recordEvents(tx, orphaned.map((job) => ({ jobId: job.id, type: 'CLOSED' as const, at: now })));
-        return { count };
-      })
-    : { count: 0 };
-
-  // 3. Reopen a closed job whose source came back, rather than duplicating it.
-  //    The closure is erased (`closedAt: null`) and counted: an offer that
-  //    comes back several times is a repost signal, not a new opening.
+  // Re-read under the same company lock as ingestion. A fresh re-attestation
+  // between planning and writing must survive, and events must match committed transitions.
+  const candidates = new Set([...staleJobIds, ...orphans.map(j => j.id)]);
   const revived = await prisma.job.findMany({
-    where: { isActive: false, sources: { some: { isActive: true } } },
-    select: { id: true },
+    where: { isActive: false, sources: { some: { isActive: true } } }, select: { id: true },
   });
-  const reopened = revived.length
-    ? await prisma.$transaction(async (tx) => {
-        const count = await updateJobsInBatches(tx, revived.map((job) => job.id), {
-          isActive: true,
-          closedAt: null,
-          reopenedCount: { increment: 1 },
+  for (const job of revived) candidates.add(job.id);
+  const closedSources = { count: 0 }, closedJobs = { count: 0 }, reopened = { count: 0 };
+  for (const ids of chunk([...candidates], 100)) {
+    const planned = await prisma.job.findMany({ where: { id: { in: ids } }, select: { id: true, companyId: true } });
+    const companies = new Map<string, string[]>();
+    for (const job of planned) companies.set(job.companyId, [...(companies.get(job.companyId) ?? []), job.id]);
+    for (const [companyId, jobIds] of companies) {
+      const counts = await prisma.$transaction(async tx => {
+        await lockCompanyRows(tx, [companyId]);
+        // Another maintenance operation may have moved an offer since planning.
+        const currentJobs = await tx.job.findMany({
+          where: { id: { in: jobIds }, companyId }, select: { id: true },
         });
-        await recordEvents(tx, revived.map((job) => ({ jobId: job.id, type: 'REOPENED' as const, at: now })));
-        return { count };
-      })
-    : { count: 0 };
+        const currentIds = currentJobs.map(job => job.id);
+        const deactivated = await tx.jobSource.updateMany({
+          where: { jobId: { in: currentIds }, isActive: true, lastSeenAt: { lt: cutoff },
+            ...(skipped.size ? { sourceKey: { notIn: skippedBrokenSources } } : {}) },
+          data: { isActive: false },
+        });
+        const jobs = await tx.job.findMany({ where: { id: { in: currentIds } }, include: { sources: true } });
+        let closed = 0, opened = 0;
+        const now = new Date();
+        for (const job of jobs) {
+          const owner = selectCanonicalSource(job.sources, job);
+          const active = !!owner;
+          const transition = active !== job.isActive;
+          const changedOwner = owner && (job.canonicalSourceKey !== owner.sourceKey ||
+            job.canonicalExternalId !== owner.externalId || job.url !== owner.url);
+          if (!transition && !changedOwner) continue;
+          await tx.job.update({ where: { id: job.id }, data: {
+            ...(transition ? { isActive: active, closedAt: active ? null : now,
+              ...(active ? { reopenedCount: { increment: 1 } } : {}) } : {}),
+            ...(owner ? { url: owner.url, canonicalTier: owner.sourceTier,
+              canonicalSourceKey: owner.sourceKey, canonicalExternalId: owner.externalId } : {}),
+          } });
+          if (transition) {
+            await recordEvents(tx, [{ jobId: job.id, type: active ? 'REOPENED' : 'CLOSED', at: now }]);
+            if (active) opened++; else closed++;
+          }
+        }
+        return { sources: deactivated.count, closed, opened };
+      }, { maxWait: 10_000, timeout: 30_000 });
+      closedSources.count += counts.sources;
+      closedJobs.count += counts.closed;
+      reopened.count += counts.opened;
+    }
+  }
 
   const checked = await prisma.job.count();
 

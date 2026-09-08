@@ -1,4 +1,6 @@
-import type { Browser } from 'playwright';
+import type { Browser, BrowserContext } from 'playwright';
+import { assertSourceRunning, sourceSignal } from './sourceBudget.js';
+import { createPublicBrowserProxy } from './browserProxy.js';
 import { assertPublicUrl, isPublicHttpUrl } from './ssrf.js';
 import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 
@@ -16,12 +18,41 @@ const BROWSER_USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
 
 let browserPromise: Promise<Browser> | null = null;
+let proxy: Awaited<ReturnType<typeof createPublicBrowserProxy>> | null = null;
+
+/** Validate before sending each request, including redirects and subresources. */
+async function guardContext(context: BrowserContext): Promise<() => void> {
+  const signal = sourceSignal();
+  const cancel = () => { void context.close().catch(() => {}); };
+  signal?.addEventListener('abort', cancel, { once: true });
+  try {
+    assertSourceRunning();
+    await context.route('**/*', route => {
+      if (signal?.aborted || !isPublicHttpUrl(route.request().url())) return route.abort('blockedbyclient');
+      return route.continue();
+    });
+  } catch (error) {
+    signal?.removeEventListener('abort', cancel);
+    await context.close();
+    throw error;
+  }
+  return () => signal?.removeEventListener('abort', cancel);
+}
 
 async function getBrowser(): Promise<Browser> {
+  assertSourceRunning();
   if (!browserPromise) {
     browserPromise = import('playwright')
-      .then(({ chromium }) => chromium.launch({ headless: true }))
-      .catch((error) => {
+      .then(async ({ chromium }) => {
+        proxy = await createPublicBrowserProxy();
+        return chromium.launch({ headless: true,
+          proxy: { server: proxy.url, bypass: '<-loopback>' },
+          args: ['--disable-quic', '--force-webrtc-ip-handling-policy=disable_non_proxied_udp'],
+        });
+      })
+      .catch(async (error) => {
+        await proxy?.close();
+        proxy = null;
         browserPromise = null;
         throw new Error(
           `Playwright is required to read Cloudflare-protected pages but could not start: ${
@@ -38,7 +69,12 @@ export async function closeBrowser(): Promise<void> {
   const pending = browserPromise;
   browserPromise = null;
   const browser = await pending.catch(() => null);
-  await browser?.close();
+  try {
+    await browser?.close();
+  } finally {
+    await proxy?.close();
+    proxy = null;
+  }
 }
 
 /**
@@ -93,7 +129,9 @@ async function primeWafTokenOnce(origin: string, url: string): Promise<string | 
       locale: 'fr-FR',
       userAgent: BROWSER_USER_AGENT,
       extraHTTPHeaders: { 'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7' },
+      serviceWorkers: 'block',
     });
+    const releaseGuard = await guardContext(context);
     try {
       const page = await context.newPage();
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: navigationTimeoutMs });
@@ -127,6 +165,7 @@ async function primeWafTokenOnce(origin: string, url: string): Promise<string | 
       }
       return undefined;
     } finally {
+      releaseGuard();
       await context.close();
     }
   });
@@ -150,7 +189,9 @@ export async function fetchRenderedHtml(url: string): Promise<string> {
       locale: 'fr-FR',
       userAgent: BROWSER_USER_AGENT,
       extraHTTPHeaders: { 'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7' },
+      serviceWorkers: 'block',
     });
+    const releaseGuard = await guardContext(context);
 
     try {
       const page = await context.newPage();
@@ -177,6 +218,7 @@ export async function fetchRenderedHtml(url: string): Promise<string> {
       await page.waitForTimeout(settleMs);
       return await page.content();
     } finally {
+      releaseGuard();
       await context.close();
     }
   });

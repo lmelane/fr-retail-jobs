@@ -49,11 +49,12 @@ describe('fetchGenericJsonLdJobs — paginated listing that 404s past the last p
       return '<p></p>';
     });
 
-    const jobs = await fetchGenericJsonLdJobs(config);
+    const result = await fetchGenericJsonLdJobs(config);
 
     // The old code threw the 404 up and lost BOTH offers; now both survive.
-    expect(jobs).toHaveLength(2);
-    expect(jobs.map((j) => j.title).sort()).toEqual(['Offer 1', 'Offer 2']);
+    expect(result.jobs).toHaveLength(2);
+    expect(result.jobs.map((j) => j.title).sort()).toEqual(['Offer 1', 'Offer 2']);
+    expect(result.complete).toBe(true);
   });
 
   it('stops when a page returns no more offer links', async () => {
@@ -65,8 +66,8 @@ describe('fetchGenericJsonLdJobs — paginated listing that 404s past the last p
       return '<p></p>';
     });
 
-    const jobs = await fetchGenericJsonLdJobs(config);
-    expect(jobs).toHaveLength(1);
+    const result = await fetchGenericJsonLdJobs(config);
+    expect(result.jobs).toHaveLength(1);
   });
 
   it('does not throw the whole source away when a mid-listing fetch fails', async () => {
@@ -78,9 +79,11 @@ describe('fetchGenericJsonLdJobs — paginated listing that 404s past the last p
       return '<p></p>';
     });
 
-    const jobs = await fetchGenericJsonLdJobs(config);
+    const result = await fetchGenericJsonLdJobs(config);
+    expect(result.truncated).toBe(true);
+    expect(result.complete).toBe(false);
     // The page-0 offer still ingests rather than the source failing outright.
-    expect(jobs).toHaveLength(1);
+    expect(result.jobs).toHaveLength(1);
   });
 
   it('stops paginating immediately when the deadline is already past', async () => {
@@ -95,9 +98,11 @@ describe('fetchGenericJsonLdJobs — paginated listing that 404s past the last p
 
     // A deadline in the past: not a single listing page should be fetched, and
     // the source returns cleanly rather than failing.
-    const jobs = await fetchGenericJsonLdJobs({ ...config, deadlineMs: Date.now() - 1000 });
+    const result = await fetchGenericJsonLdJobs({ ...config, deadlineMs: Date.now() - 1000 });
+    expect(result.truncated).toBe(true);
+    expect(result.complete).toBe(false);
     expect(listingFetches).toBe(0);
-    expect(jobs).toHaveLength(0);
+    expect(result.jobs).toHaveLength(0);
   });
 
   it('ignores the deadline guard entirely when no deadline is set', async () => {
@@ -109,7 +114,7 @@ describe('fetchGenericJsonLdJobs — paginated listing that 404s past the last p
       return '<p></p>';
     });
     // No deadlineMs → normal full behaviour.
-    const jobs = await fetchGenericJsonLdJobs(config);
-    expect(jobs).toHaveLength(1);
+    const result = await fetchGenericJsonLdJobs(config);
+    expect(result.jobs).toHaveLength(1);
   });
 });

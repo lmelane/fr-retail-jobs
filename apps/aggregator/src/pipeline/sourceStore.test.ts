@@ -53,7 +53,7 @@ describe('tenantKeyOf', () => {
 });
 
 describe('importSourcesCsv', () => {
-  it('seeds the real catalogue as ACTIVE and is idempotent', async () => {
+  it('seeds drafts without invented proof and is idempotent', async () => {
     const first = await importSourcesCsv(prisma);
     // 83 rows: the verified catalogue after the tenant consolidation (D-28)
     // removed the 17 duplicate rows that re-fetched the same group feed.
@@ -62,16 +62,33 @@ describe('importSourcesCsv', () => {
 
     const again = await importSourcesCsv(prisma);
     expect(again.imported).toBe(0);
-    expect(again.updated).toBe(first.imported);
+    expect(again.updated).toBe(0);
     expect(await prisma.source.count()).toBe(first.imported);
 
     const rows = await loadActiveSources(prisma);
-    expect(rows.length).toBe(first.imported);
-    // Every imported row carries a dated robots verdict and a tier.
+    expect(rows.length).toBe(0);
+    // The CSV has no dated evidence and cannot activate a source.
     const sample = await prisma.source.findFirstOrThrow();
-    expect(sample.robotsCheckedAt).toBeInstanceOf(Date);
+    expect(sample.robotsCheckedAt).toBeNull();
+    expect(sample.verifiedJobCount).toBeNull();
     expect(sample.tier).toBeTruthy();
-    expect(sample.status).toBe('ACTIVE');
+    expect(sample.status).toBe('DRAFT');
+  });
+
+  it('preserves operational configuration and real dated evidence on re-import', async () => {
+    await importSourcesCsv(prisma);
+    const one = await prisma.source.findFirstOrThrow();
+    const proof = new Date('2026-09-07T11:12:13Z');
+    await prisma.source.update({ where: { id: one.id }, data: {
+      status: 'ACTIVE', config: { board: 'corrected-live-board' },
+      robotsCheckedAt: proof, robotsVerdict: 'DISALLOWED', verifiedJobCount: 987,
+    } });
+    await importSourcesCsv(prisma);
+    const after = await prisma.source.findUniqueOrThrow({ where: { id: one.id } });
+    expect(after.config).toEqual({ board: 'corrected-live-board' });
+    expect(after.robotsCheckedAt).toEqual(proof);
+    expect(after.robotsVerdict).toBe('DISALLOWED');
+    expect(after.verifiedJobCount).toBe(987);
   });
 
   it('does not resurrect a RETIRED source on re-import', async () => {
@@ -93,6 +110,7 @@ describe('loadActiveSources', () => {
   it('returns only ACTIVE rows', async () => {
     await importSourcesCsv(prisma);
     const one = await prisma.source.findFirstOrThrow();
+    await prisma.source.updateMany({ data: { status: 'ACTIVE' } });
     await prisma.source.update({ where: { id: one.id }, data: { status: 'PAUSED' } });
     const rows = await loadActiveSources(prisma);
     expect(rows.find((r) => r.key === one.key)).toBeUndefined();
@@ -131,6 +149,12 @@ describe('promoteSource', () => {
   it('refuses without a proven offer', async () => {
     await prisma.source.create({ data: draft({ verifiedJobCount: 0 }) });
     await expect(promoteSource(prisma, 'test-draft')).rejects.toThrow(/offer/);
+  });
+
+  it.each(['DISALLOWED', 'UNKNOWN', 'ERROR'])('refuses a dated %s robots verdict', async verdict => {
+    await prisma.source.create({ data: draft({ robotsVerdict: verdict }) });
+    await expect(promoteSource(prisma, 'test-draft')).rejects.toThrow(/ALLOWED/);
+    expect((await prisma.source.findUniqueOrThrow({ where: { key: 'test-draft' } })).status).toBe('DRAFT');
   });
 
   it('refuses to promote a RETIRED source', async () => {

@@ -9,6 +9,16 @@
  * host.
  */
 
+import { BlockList, isIP } from 'node:net';
+
+const globalV6 = new BlockList();
+globalV6.addSubnet('2000::', 3, 'ipv6');
+const specialV6 = new BlockList();
+for (const [address, prefix] of [['2001::', 32], ['2001:2::', 48], ['2001:db8::', 32],
+  ['2001:10::', 28], ['2001:20::', 28], ['2002::', 16], ['3fff::', 20]] as const) {
+  specialV6.addSubnet(address, prefix, 'ipv6');
+}
+
 /** Hostnames that must never be fetched, whatever the scheme. */
 const BLOCKED_HOSTNAMES = new Set([
   'localhost',
@@ -26,7 +36,7 @@ function isPrivateIpv4(host: string): boolean {
   if (!m) return false;
   const parts = m.slice(1, 5).map(Number);
   if (parts.some((n) => n > 255)) return true; // malformed -> refuse
-  const [a, b] = parts;
+  const [a, b, c] = parts;
   return (
     a === 0 || // 0.0.0.0/8
     a === 10 || // 10.0.0.0/8 private
@@ -35,6 +45,10 @@ function isPrivateIpv4(host: string): boolean {
     (a === 172 && b >= 16 && b <= 31) || // 172.16.0.0/12 private
     (a === 192 && b === 168) || // 192.168.0.0/16 private
     (a === 100 && b >= 64 && b <= 127) || // 100.64.0.0/10 CGNAT
+    (a === 192 && b === 0 && (c === 0 || c === 2)) ||
+    (a === 192 && b === 88 && c === 99) ||
+    (a === 198 && (b === 18 || b === 19 || b === 51 && c === 100)) ||
+    (a === 203 && b === 0 && c === 113) ||
     a >= 224 // multicast / reserved
   );
 }
@@ -53,9 +67,14 @@ function isPrivateIpv6(host: string): boolean {
   if (hexMapped) {
     const [hi, lo] = [parseInt(hexMapped[1], 16), parseInt(hexMapped[2], 16)];
     const dotted = `${hi >> 8}.${hi & 0xff}.${lo >> 8}.${lo & 0xff}`;
-    if (isPrivateIpv4(dotted)) return true;
+    return isPrivateIpv4(dotted);
   }
-  return false;
+  return !globalV6.check(h, 'ipv6') || specialV6.check(h, 'ipv6');
+}
+
+export function isPublicIp(address: string): boolean {
+  const family = isIP(address);
+  return family === 4 ? !isPrivateIpv4(address) : family === 6 && !isPrivateIpv6(address);
 }
 
 /** True when this URL is safe to fetch (public http/https host). */
@@ -67,8 +86,9 @@ export function isPublicHttpUrl(raw: string): boolean {
     return false;
   }
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return false;
+  if (url.username || url.password) return false;
 
-  const host = url.hostname.toLowerCase();
+  const host = url.hostname.toLowerCase().replace(/\.+$/, '');
   if (!host) return false;
   if (BLOCKED_HOSTNAMES.has(host)) return false;
   if (host.endsWith('.localhost') || host.endsWith('.internal') || host.endsWith('.local')) return false;

@@ -1,0 +1,28 @@
+{
+  "measuredAt": "2026-09-08T12:49:04.260177+00:00",
+  "scope": "Populated local schema followed by all four transactional migrations",
+  "baselineMigrations": 13,
+  "applied": [
+    "20260909000000_identity_integrity",
+    "20260909010000_run_attestation",
+    "20260909020000_run_completion",
+    "20260909030000_indexed_job_search"
+  ],
+  "before": {
+    "id": "upgrade-job",
+    "countryCode": "FR",
+    "adminArea1": "Île-de-France",
+    "title": "Store Manager",
+    "externalId": "42"
+  },
+  "after": {
+    "id": "upgrade-job",
+    "countryCode": "FR",
+    "adminArea1": "Île-de-France",
+    "title": "Store Manager",
+    "externalId": "42"
+  },
+  "preserved": true,
+  "separateTenantIdentityPermitted": true,
+  "searchProjectionBackfilled": true
+}

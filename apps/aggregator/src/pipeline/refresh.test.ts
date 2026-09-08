@@ -55,8 +55,8 @@ async function job(companyId: string, sourceKey: string, externalId: string, hou
   });
 }
 
-async function recordHealth(sourceKey: string, status: string, jobs: number, note?: string) {
-  await prisma.sourceRun.create({ data: { sourceKey, status, jobs, note, ranAt: new Date() } });
+async function recordHealth(sourceKey: string, status: string, jobs: number, note?: string, canAttestAbsence = status === 'OK') {
+  await prisma.sourceRun.create({ data: { sourceKey, status, jobs, note, canAttestAbsence, ranAt: new Date() } });
 }
 
 beforeEach(wipe);
@@ -66,6 +66,15 @@ afterAll(async () => {
 });
 
 describe('runRefresh', () => {
+  it('keeps jobs when evidence is absent or legacy, regardless of the human note', async () => {
+    const c = await company();
+    await job(c.id, 'missing', 'missing-1', 72);
+    await job(c.id, 'legacy', 'legacy-1', 72);
+    await prisma.sourceRun.create({ data: { sourceKey: 'legacy', status: 'OK', jobs: 10, note: 'complete and healthy' } });
+    const result = await runRefresh(prisma);
+    expect(result.closedJobs).toBe(0);
+    expect(result.skippedBrokenSources).toEqual(expect.arrayContaining(['missing', 'legacy']));
+  });
   it('closes an offer whose only source has been silent past the window', async () => {
     const c = await company();
     await job(c.id, 'kering', 'stale1', 72); // 72h > 48h window
@@ -75,6 +84,15 @@ describe('runRefresh', () => {
 
     expect(result.closedJobs).toBe(1);
     expect(await prisma.job.count({ where: { isActive: true } })).toBe(0);
+  });
+
+  it('writes exactly one closure event when several refreshes overlap', async () => {
+    const c = await company();
+    const j = await job(c.id, 'healthy', 'concurrent', 72);
+    await recordHealth('healthy', 'OK', 100);
+    const results = await Promise.all(Array.from({ length: 4 }, () => runRefresh(prisma)));
+    expect(results.reduce((n, r) => n + r.closedJobs, 0)).toBe(1);
+    expect(await prisma.jobEvent.count({ where: { jobId: j.id, type: 'CLOSED' } })).toBe(1);
   });
 
   it('does NOT close offers of a source that just broke', async () => {
@@ -160,7 +178,7 @@ describe('runRefresh', () => {
   it('ferme normalement sur un DEGRADED de couverture de champ (board vu en entier)', async () => {
     const c = await company();
     await job(c.id, 'urbn-stores', 'u1', 72);
-    await recordHealth('urbn-stores', 'DEGRADED', 915, 'descriptions manquantes sur 37% des offres');
+    await recordHealth('urbn-stores', 'DEGRADED', 915, 'descriptions manquantes sur 37% des offres', true);
 
     const result = await runRefresh(prisma);
 

@@ -4,7 +4,7 @@ import type { JobRow } from './jobs';
 
 /**
  * S-02a/S-02b intérim — the JSON-LD contract, pinned:
- * datePosted falls back to firstSeenAt, validThrough gets a horizon,
+ * datePosted falls back to firstSeenAt, validThrough is source evidence only,
  * employmentTerm speaks schema.org, and addressCountry is NEVER a hard-coded
  * FR — it is the canonical code of what the source said, or absent.
  */
@@ -22,18 +22,15 @@ const base: JobRow = {
 };
 
 describe('jobPostingSchema', () => {
-  const now = new Date('2026-09-06T12:00:00Z');
-
-  it('falls back to firstSeenAt for datePosted, and validThrough is the next-pass horizon', () => {
-    const schema = jobPostingSchema(base, now);
+  it('falls back to firstSeenAt for datePosted and omits an unknown deadline', () => {
+    const schema = jobPostingSchema(base);
     expect(schema.datePosted).toBe('2026-09-01T00:00:00.000Z');
-    // Horizon : aujourd'hui + 30 j, jamais dans le passé (audit A4 : 21 157 offres inéligibles).
-    expect(schema.validThrough).toBe('2026-10-06T12:00:00.000Z');
+    expect(JSON.parse(JSON.stringify(schema))).not.toHaveProperty('validThrough');
   });
 
-  it("une validité de source déjà passée est repoussée à l'horizon tant que l'offre est listée", () => {
-    const schema = jobPostingSchema({ ...base, validThrough: new Date('2026-08-01T00:00:00Z') }, now);
-    expect(schema.validThrough).toBe('2026-10-06T12:00:00.000Z');
+  it('does not extend an explicit expired deadline when the page is rendered', () => {
+    const schema = jobPostingSchema({ ...base, validThrough: new Date('2026-08-01T00:00:00Z') });
+    expect(schema.validThrough).toBe('2026-08-01T00:00:00.000Z');
   });
 
   it('prefers the source datePosted and a still-future validThrough', () => {
@@ -41,9 +38,24 @@ describe('jobPostingSchema', () => {
       ...base,
       postedAt: new Date('2026-09-02T00:00:00Z'),
       validThrough: new Date('2026-09-20T00:00:00Z'),
-    }, now);
+    });
     expect(schema.datePosted).toBe('2026-09-02T00:00:00.000Z');
     expect(schema.validThrough).toBe('2026-09-20T00:00:00.000Z');
+  });
+
+  it('does not publish a salary with an invented currency', () => {
+    for (const amounts of [{ salaryMin: 50000 }, { salaryMax: 70000 }]) {
+      const schema = jobPostingSchema({ ...base, ...amounts, salaryCurrency: null });
+      expect(JSON.parse(JSON.stringify(schema))).not.toHaveProperty('baseSalary');
+    }
+  });
+
+  it('preserves a known salary currency and period', () => {
+    const schema = jobPostingSchema({ ...base, salaryMin: 20, salaryMax: 30, salaryCurrency: 'USD', salaryPeriod: 'HOUR' });
+    expect(schema.baseSalary).toEqual({
+      '@type': 'MonetaryAmount', currency: 'USD',
+      value: { '@type': 'QuantitativeValue', minValue: 20, maxValue: 30, unitText: 'HOUR' },
+    });
   });
 
   it('maps addressCountry from the source value, never a default', () => {

@@ -1,0 +1,58 @@
+{
+  "measuredAt": "2026-09-08T12:54:17.607Z",
+  "runtime": "v22.23.2",
+  "jobs": 70000,
+  "companies": 1000,
+  "sources": 100,
+  "results": [
+    {
+      "name": "world",
+      "requests": 12,
+      "concurrency": 4,
+      "total": 70000,
+      "p50Ms": 445.9696249999997,
+      "p95Ms": 593.2499579999994
+    },
+    {
+      "name": "country",
+      "requests": 12,
+      "concurrency": 4,
+      "total": 11666,
+      "p50Ms": 113.9667500000005,
+      "p95Ms": 125.36666700000023
+    },
+    {
+      "name": "title search",
+      "requests": 12,
+      "concurrency": 4,
+      "total": 14000,
+      "p50Ms": 16504.892333999996,
+      "p95Ms": 16640.591708
+    },
+    {
+      "name": "title and city",
+      "requests": 12,
+      "concurrency": 4,
+      "total": 2333,
+      "p50Ms": 23567.302582999997,
+      "p95Ms": 25675.241833000007
+    },
+    {
+      "name": "no match",
+      "requests": 12,
+      "concurrency": 4,
+      "total": 0,
+      "p50Ms": 20601.25766599999,
+      "p95Ms": 20685.597584000003
+    },
+    {
+      "name": "late page",
+      "requests": 12,
+      "concurrency": 4,
+      "total": 70000,
+      "p50Ms": 521.4489579999936,
+      "p95Ms": 965.2225000000035
+    }
+  ],
+  "scope": "Local synthetic SQL query workload including facet counts; excludes HTTP rendering, production network and long-running load."
+}

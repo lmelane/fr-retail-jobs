@@ -67,11 +67,11 @@ async function job(opts: {
 }
 
 function stat(source: string, produced: number): IngestStats {
-  return { source, fetched: produced, inSector: produced, france: produced, created: produced, merged: 0, updated: 0, errors: 0, withDescription: produced, withDate: produced, withCountry: produced, withUrl: produced };
+  return { source, complete: true, fetched: produced, inSector: produced, france: produced, created: produced, merged: 0, updated: 0, errors: 0, withDescription: produced, withDate: produced, withCountry: produced, withUrl: produced };
 }
 
 async function recordHealth(sourceKey: string, status: string, jobs: number) {
-  await prisma.sourceRun.create({ data: { sourceKey, status, jobs, ranAt: new Date() } });
+  await prisma.sourceRun.create({ data: { sourceKey, status, jobs, canAttestAbsence: status === 'OK', ranAt: new Date() } });
 }
 
 beforeEach(wipe);
@@ -111,7 +111,7 @@ describe('OP2 — the ingest is cut short mid-run', () => {
     // The run was killed after cartier, before dior. cartier's purge ran.
     const purged = await purgeStaleForSource(prisma, 'cartier', V);
     // cartier has nothing stale (its only offer is v6), so nothing is removed.
-    expect(purged.jobsDeleted).toBe(0);
+    expect(purged.jobsClosed).toBe(0);
     // dior's old-generation offer is untouched — its source never ran.
     expect(await prisma.job.count()).toBe(2);
     const dior = await prisma.job.findFirst({ where: { externalId: 'dior1' } });
@@ -165,15 +165,14 @@ describe('OP4 — an offer reappears after being closed', () => {
 });
 
 describe('OP5 — two ingests missed in a row (source silent 50h, but healthy last it ran)', () => {
-  it('closes the offer once past the window — this is correct, the offer is gone', async () => {
+  it('keeps the offer when the last complete crawl is itself stale', async () => {
     const c = await company('lacoste');
-    await recordHealth('lacoste', 'OK', 50); // last time it ran, it was fine
+    await prisma.sourceRun.create({ data: { sourceKey: 'lacoste', status: 'OK', jobs: 50,
+      canAttestAbsence: true, ranAt: new Date(Date.now() - 50 * 3_600_000) } });
     await job({ companyId: c.id, ext: 'l1', sourceKey: 'lacoste', hoursAgo: 50 });
     const refresh = await runRefresh(prisma);
-    // 50h > 48h and the source is not BROKEN, so the offer closes. This is the
-    // intended behaviour: if the source keeps reporting but this offer stopped
-    // appearing, it is genuinely gone.
-    expect(refresh.closedJobs).toBe(1);
+    // A historical success proves nothing about an absence today.
+    expect(refresh.closedJobs).toBe(0);
   });
 });
 

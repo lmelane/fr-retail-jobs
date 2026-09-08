@@ -46,7 +46,10 @@ const command = process.argv[2] ?? 'ingest';
 await runEgressProbe();
 
 try {
-  if (command === 'ingest') {
+  if (command === 'health-report') {
+    const { buildHealthReport } = await import('./pipeline/healthReport.js');
+    console.log(JSON.stringify(await buildHealthReport(prisma), null, 2));
+  } else if (command === 'ingest') {
     // `ingest --source=<key>` runs one source as a short, independent job (D6).
     const only = process.argv.find((arg) => arg.startsWith('--source='))?.slice('--source='.length);
     // The orchestrator geocodes ONCE at the end, so it passes --no-geocode to
@@ -120,9 +123,9 @@ try {
     // DEC-4: tell the external pinger this run happened (no-op unconfigured).
     // Success = the run completed, even with per-source failures — the pinger
     // watches for the PIPELINE dying, the Brevo digest covers sick sources.
-    const heartbeat = await pingHeartbeat(orchestration.failed === 0);
+    const heartbeat = await pingHeartbeat(orchestration.failed === 0 && orchestration.timedOut === 0);
 
-    console.log(JSON.stringify({ ok: orchestration.failed === 0, command, orchestration, geo, alerted, indexing, heartbeat }, null, 2));
+    console.log(JSON.stringify({ ok: orchestration.failed === 0 && orchestration.timedOut === 0, command, orchestration, geo, alerted, indexing, heartbeat }, null, 2));
     if (orchestration.failed > 0 || orchestration.timedOut > 0) {
       console.error(
         `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`,

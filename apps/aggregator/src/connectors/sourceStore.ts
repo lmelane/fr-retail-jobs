@@ -137,9 +137,9 @@ export type ImportStats = {
 /**
  * One-shot import of data/sources.csv into the Source table.
  *
- * Idempotent by key: re-running updates config/verdict/count, never duplicates.
- * The 101 verified rows arrive ACTIVE — they ARE the production rotation; new
- * discoveries enter as DRAFT via the promotion path, not through here.
+ * Seed only: existing operational rows remain authoritative and are never
+ * overwritten by an undated CSV. New rows arrive DRAFT without fabricated
+ * validation evidence and must pass the normal promotion gate.
  * A second maison mapping to an already-imported tenant is REFUSED and
  * reported, not silently merged: that conflict is a human arbitration.
  */
@@ -148,6 +148,8 @@ export async function importSourcesCsv(prisma: PrismaClient): Promise<ImportStat
 
   for (const source of loadSourceCatalog()) {
     const key = sourceKeyFor(source);
+    // CSV imports must never replace live configuration or dated evidence.
+    if (await prisma.source.findUnique({ where: { key } })) continue;
     const tenantKey = tenantKeyOf(source.kind, source.entryUrl, source.careersDomain, source.maison);
     let config: Record<string, unknown>;
     try {
@@ -174,18 +176,11 @@ export async function importSourcesCsv(prisma: PrismaClient): Promise<ImportStat
       tier: tierFor(source),
       tenantKey,
       robotsVerdict: source.robotsVerdict || null,
-      // The CSV's verdicts were all read live during the 2026-09 validation.
-      robotsCheckedAt: new Date('2026-09-02'),
-      verifiedJobCount: source.jobCount || null,
+      robotsCheckedAt: null,
+      verifiedJobCount: null,
     };
-    const existing = await prisma.source.findUnique({ where: { key } });
-    if (existing) {
-      await prisma.source.update({ where: { key }, data });
-      stats.updated++;
-    } else {
-      await prisma.source.create({ data: { ...data, key, status: 'ACTIVE' } });
-      stats.imported++;
-    }
+    await prisma.source.create({ data: { ...data, key, status: 'DRAFT' } });
+    stats.imported++;
   }
 
   return stats;
@@ -215,6 +210,9 @@ export async function promoteSource(prisma: PrismaClient, key: string): Promise<
   }
   if (!row.robotsVerdict || !row.robotsCheckedAt) {
     throw new Error(`promote: "${key}" has no dated robots verdict — read robots.txt at the source first`);
+  }
+  if (row.robotsVerdict.trim().toUpperCase() !== 'ALLOWED') {
+    throw new Error(`promote: "${key}" needs an ALLOWED robots verdict, got "${row.robotsVerdict}"`);
   }
   if (!row.verifiedJobCount || row.verifiedJobCount < 1) {
     throw new Error(`promote: "${key}" has no proven offer (verifiedJobCount) — run the volume validation first`);

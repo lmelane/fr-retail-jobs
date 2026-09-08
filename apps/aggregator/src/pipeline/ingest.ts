@@ -1,3 +1,4 @@
+import { assertSourceRunning } from '../lib/sourceBudget.js';
 import type { PrismaClient, AtsType } from '@prisma/client';
 import type { SourceTier } from '../dedup/match.js';
 import { loadActiveSources, type RuntimeSource } from '../connectors/sourceStore.js';
@@ -33,6 +34,7 @@ import { fetchAtsJobs } from '../ats/index.js';
 
 export type IngestStats = {
   source: string;
+  complete?: boolean;
   fetched: number;
   inSector: number;
   france: number;
@@ -305,7 +307,8 @@ async function ingestApiSource(
     config = { ...config, startPage, progress };
   }
 
-  const { jobs, declaredTotal, truncated } = await fetchAtsJobs(type as never, config);
+  const { jobs, declaredTotal, truncated, complete } = await fetchAtsJobs(type as never, config);
+  stats.complete = complete;
   stats.declaredTotal = declaredTotal;
   stats.truncated = truncated;
   if (truncated) {
@@ -314,18 +317,6 @@ async function ingestApiSource(
     );
   }
 
-  // Move the cursor forward for next run — after a successful fetch only, so a
-  // failed crawl retries the same window rather than skipping it.
-  if (rotating) {
-    const next = await advanceCursor(
-      prisma,
-      stats.source,
-      startPage,
-      progress.reachedEnd === true,
-      progress.lastPageDone,
-    );
-    console.log(`[ingest] ${stats.source}: rotating crawl page ${startPage} → next run resumes at ${next}`);
-  }
   stats.fetched = jobs.length;
 
   const sourceDef: SourceDef = {
@@ -346,6 +337,7 @@ async function ingestApiSource(
   const isBoard = config.filterSector === true;
   let skippedOutOfSector = 0;
   for (const job of jobs) {
+    assertSourceRunning();
     // Group feeds carry the Maison per offer (LVMH: Sephora, Dior…); a
     // single-house feed falls back to the catalogue label.
     const employer = job.company || sourceDef.company;
@@ -399,6 +391,18 @@ async function ingestApiSource(
       `${stats.created} created, ${stats.merged} merged, ${stats.errors} errors` +
       (skippedOutOfSector > 0 ? ` (${skippedOutOfSector} hors secteur écartées)` : ''),
   );
+  assertSourceRunning();
+  // Commit progress only after all accepted postings have been persisted.
+  if (rotating && stats.errors === 0) {
+    const next = await advanceCursor(
+      prisma,
+      stats.source,
+      startPage,
+      progress.reachedEnd === true,
+      progress.lastPageDone,
+    );
+    console.log(`[ingest] ${stats.source}: rotating crawl page ${startPage} → next run resumes at ${next}`);
+  }
   return stats;
 }
 
@@ -451,15 +455,10 @@ export async function runIngest(
   /**
    * Les verdicts de confiance, lus UNE FOIS pour tout le run.
    *
-   * À 71 000 offres, une lecture par offre serait un N+1 masqué. Un échec de
-   * lecture n'interrompt jamais un ingest : on repart alors sur le comportement
-   * par défaut (`structured > title > description`), qui est aussi celui d'une
-   * base où aucun verdict n'a encore été mesuré.
+   * Une panne de lecture interrompt la collecte : elle ne doit jamais rétablir
+   * une priorité de champ qu’un verdict de confiance avait rejetée.
    */
-  const trust = await loadTrust(prisma).catch((error) => {
-    console.warn(`[ingest] verdicts de confiance illisibles (${briefError(error)}) — priorité par défaut`);
-    return new Map<string, string>();
-  });
+  const trust = await loadTrust(prisma); // Never restore rejected field priorities on a registry failure.
 
   const results: IngestStats[] = [];
 
@@ -494,12 +493,19 @@ export async function runIngest(
    */
   const purgeQuietly = async (stats: IngestStats) => {
     if (!producedOutput(stats)) return;
+    assertSourceRunning();
+    const previous = await prisma.sourceRun.findFirst({
+      where: { sourceKey: stats.source, jobs: { gt: 0 } },
+      orderBy: { ranAt: 'desc' }, select: { jobs: true },
+    });
     if (!isTrustedForAttestation({
-      status: 'OK', // l'échec franc n'arrive jamais ici (il est capturé plus haut)
+      status: previous ? 'OK' : 'NEW',
+      complete: stats.complete,
       declaredTotal: stats.declaredTotal,
       fetched: stats.fetched,
       truncated: stats.truncated,
-    })) {
+      errors: stats.errors,
+    }) || (previous && stats.created + stats.merged + stats.updated < previous.jobs * 0.5)) {
       console.warn(
         `[ingest] ${stats.source}: purge REFUSÉE — run non fiable pour attester ` +
           `(${stats.fetched} collectées${stats.declaredTotal ? ` sur ${stats.declaredTotal} déclarées` : ''}` +
@@ -509,10 +515,10 @@ export async function runIngest(
     }
     try {
       const purged = await purgeStaleForSource(prisma, stats.source, PIPELINE_VERSION);
-      if (purged.jobsDeleted > 0 || purged.sourcesDetached > 0) {
+      if (purged.jobsClosed > 0 || purged.sourcesDeactivated > 0) {
         console.log(
-          `[ingest] ${stats.source}: generation purge removed ${purged.jobsDeleted} stale jobs, ` +
-            `detached ${purged.sourcesDetached} stale sources`,
+          `[ingest] ${stats.source}: generation cleanup closed ${purged.jobsClosed} stale jobs, ` +
+            `deactivated ${purged.sourcesDeactivated} stale sources`,
         );
       }
     } catch (error) {
@@ -543,6 +549,7 @@ export async function runIngest(
 
   for (const source of apiSources) {
     try {
+      assertSourceRunning();
       const stats = await ingestApiSource(prisma, source, options.deadlineMs, trust);
       results.push(stats);
       await purgeQuietly(stats);

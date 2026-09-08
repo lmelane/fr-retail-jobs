@@ -64,16 +64,9 @@ export async function separateFusedJobs(prisma: PrismaClient): Promise<Separatio
       if (source.id === keeper.id) continue;
 
       await prisma.$transaction(async (tx) => {
-        const existing = await tx.job.findUnique({
-          where: {
-            companyId_source_externalId: {
-              companyId: job.companyId,
-              source: job.source,
-              externalId: source.externalId,
-            },
-          },
-          select: { id: true },
-        });
+        // The source entry, not ATS family + ID, determines ownership.
+        const entry = await tx.jobSource.findUnique({ where: { id: source.id }, select: { jobId: true } });
+        const existing = entry && entry.jobId !== job.id ? { id: entry.jobId } : null;
 
         if (existing) {
           await tx.jobSource.update({ where: { id: source.id }, data: { jobId: existing.id } });
@@ -107,6 +100,8 @@ export async function separateFusedJobs(prisma: PrismaClient): Promise<Separatio
             postedAt: source.postedAt ?? job.postedAt,
             clusterKey: job.clusterKey,
             canonicalTier: source.sourceTier,
+            canonicalSourceKey: source.sourceKey,
+            canonicalExternalId: source.externalId,
             fingerprint: `${job.clusterKey}|${source.title ?? job.title}|${source.externalId}`,
             pipelineVersion: PIPELINE_VERSION,
             firstSeenAt: source.firstSeenAt,

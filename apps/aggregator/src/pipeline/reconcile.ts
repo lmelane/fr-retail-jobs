@@ -1,5 +1,7 @@
+import { selectCanonicalSource } from '../dedup/canonical.js';
+import { lockCompanyRows } from '../lib/writeLocks.js';
 import type { PrismaClient } from '@prisma/client';
-import { isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } from '../dedup/match.js';
+import { cannotBeSameOpening, isProbableDuplicate, type CandidateJob } from '../dedup/match.js';
 
 /**
  * RECONCILE — retroactive merges.
@@ -19,11 +21,6 @@ export type ReconcileStats = {
   sourcesMoved: number;
 };
 
-function tierRank(tier: string | null): number {
-  const index = SOURCE_PRIORITY.indexOf(tier as (typeof SOURCE_PRIORITY)[number]);
-  return index === -1 ? SOURCE_PRIORITY.length : index;
-}
-
 export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats> {
   const stats: ReconcileStats = { clustersScanned: 0, jobsMerged: 0, sourcesMoved: 0 };
 
@@ -39,73 +36,90 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
     if (!group.clusterKey) continue;
     stats.clustersScanned++;
 
-    const jobs = await prisma.job.findMany({
-      where: { clusterKey: group.clusterKey, isActive: true },
-      include: { sources: true },
-      orderBy: { firstSeenAt: 'asc' },
+    const planned = await prisma.job.findMany({
+      where: { clusterKey: group.clusterKey, isActive: true }, select: { companyId: true },
     });
+    await prisma.$transaction(async tx => {
+      await lockCompanyRows(tx, planned.map(job => job.companyId));
+      const jobs = await tx.job.findMany({
+        where: { clusterKey: group.clusterKey, isActive: true, companyId: { in: planned.map(job => job.companyId) } },
+        include: { sources: true },
+        orderBy: [{ firstSeenAt: 'asc' }, { id: 'asc' }],
+      });
 
-    const absorbed = new Set<string>();
+      const absorbed = new Set<string>();
 
-    for (let i = 0; i < jobs.length; i++) {
-      const keeper = jobs[i];
-      if (absorbed.has(keeper.id)) continue;
+      for (let i = 0; i < jobs.length; i++) {
+        const keeper = jobs[i];
+        if (absorbed.has(keeper.id)) continue;
+        const members = [{ ...keeper, sources: [...keeper.sources] }];
 
-      for (let j = i + 1; j < jobs.length; j++) {
-        const other = jobs[j];
-        if (absorbed.has(other.id)) continue;
+        for (let j = i + 1; j < jobs.length; j++) {
+          const other = jobs[j];
+          if (absorbed.has(other.id)) continue;
 
-        const asCandidate = (job: (typeof jobs)[number]): CandidateJob => ({
-          externalId: job.externalId,
-          title: job.title,
-          location: job.location ?? undefined,
-          url: job.url,
-          postedAt: job.postedAt ?? undefined,
-          company: job.clusterKey ?? '',
-          // The job's own source key, not an empty string: an empty key on both
-          // sides made cannotBeSameOpening fire (same source, different ids) and
-          // blocked EVERY merge. A real key still guards the true case — two
-          // offers from the SAME source never merge — while letting two jobs from
-          // different sources be recognised as one opening.
-          sourceKey: job.sources[0]?.sourceKey ?? job.id,
-          sourceTier: (job.canonicalTier as CandidateJob['sourceTier']) ?? 'AGGREGATOR',
-        });
+          const asCandidate = (job: (typeof jobs)[number]): CandidateJob => ({
+            externalId: job.externalId,
+            title: job.title,
+            country: job.countryCode ?? undefined,
+            city: job.city ?? undefined,
+            location: job.location ?? undefined,
+            url: job.url,
+            postedAt: job.postedAt ?? undefined,
+            company: job.clusterKey ?? '',
+            // The job's own source key, not an empty string: an empty key on both
+            // sides made cannotBeSameOpening fire (same source, different ids) and
+            // blocked EVERY merge. A real key still guards the true case — two
+            // offers from the SAME source never merge — while letting two jobs from
+            // different sources be recognised as one opening.
+            sourceKey: job.sources[0]?.sourceKey ?? job.id,
+            sourceTier: (job.canonicalTier as CandidateJob['sourceTier']) ?? 'AGGREGATOR',
+          });
 
-        if (!isProbableDuplicate(asCandidate(keeper), asCandidate(other))) continue;
+          // Preserve every veto after absorbing an intermediate posting whose
+          // country or date was missing. Reconcile must not undo ingest guards.
+          if (members.some(member => cannotBeSameOpening(asCandidate(member), asCandidate(other)))) continue;
+          if (members.some(member => member.sources.some(source =>
+            other.sources.some(peer => peer.sourceKey === source.sourceKey && peer.externalId !== source.externalId),
+          ))) continue;
+          if (!isProbableDuplicate(asCandidate(keeper), asCandidate(other))) continue;
 
-        // Merge in ONE transaction: move the loser's sources onto the keeper,
-        // promote the URL if the loser ranks higher, then retire the loser.
-        // Atomic on purpose — a crash between moving the sources and retiring the
-        // loser would otherwise leave two active jobs sharing the same sources,
-        // re-introducing the very duplicate reconcile exists to remove.
-        const promote = tierRank(other.canonicalTier) < tierRank(keeper.canonicalTier);
-        const [moved] = await prisma.$transaction([
-          prisma.jobSource.updateMany({ where: { jobId: other.id }, data: { jobId: keeper.id } }),
-          ...(promote
-            ? [
-                prisma.job.update({
-                  where: { id: keeper.id },
-                  data: { url: other.url, canonicalTier: other.canonicalTier, title: other.title },
-                }),
-              ]
-            : []),
+          // Merge in ONE transaction: move the loser's sources onto the keeper,
+          // promote the URL if the loser ranks higher, then retire the loser.
+          // Atomic on purpose — a crash between moving the sources and retiring the
+          // loser would otherwise leave two active jobs sharing the same sources,
+          // re-introducing the very duplicate reconcile exists to remove.
+          const owner = selectCanonicalSource([...keeper.sources, ...other.sources], keeper);
+          const promote = owner && other.sources.some(source => source.id === owner.id);
+          const moved = await tx.jobSource.updateMany({ where: { jobId: other.id }, data: { jobId: keeper.id } });
+          if (owner) {
+            const patch = {
+              url: owner.url, canonicalTier: owner.sourceTier,
+              ...(promote ? { title: owner.title ?? other.title } : {}),
+              canonicalSourceKey: owner.sourceKey, canonicalExternalId: owner.externalId,
+            };
+            await tx.job.update({ where: { id: keeper.id }, data: patch });
+            Object.assign(keeper, patch);
+          }
+          keeper.sources.push(...other.sources);
           // Le perdant n'est pas une fermeture de poste : daté (closedAt) pour
           // sortir des actives, et tracé MERGED — jamais CLOSED — pour que la
           // photographie du jour ne le compte pas comme une offre fermée (audit I-2).
-          prisma.job.update({
+          await tx.job.update({
             where: { id: other.id },
             data: {
               isActive: false,
               closedAt: new Date(),
               events: { create: { type: 'MERGED', field: 'mergedInto', after: keeper.id } },
             },
-          }),
-        ]);
-        stats.sourcesMoved += moved.count;
-        absorbed.add(other.id);
-        stats.jobsMerged++;
+          });
+          stats.sourcesMoved += moved.count;
+          absorbed.add(other.id);
+          members.push(other);
+          stats.jobsMerged++;
+        }
       }
-    }
+    }, { maxWait: 10_000, timeout: 30_000 });
   }
 
   return stats;

@@ -26,8 +26,9 @@ test.describe('landing', () => {
 });
 
 test.describe('results board', () => {
-  test('shows offers and the filter bar, and selects a first offer', async ({ page }) => {
+  test('shows offers and the filter bar, and selects a first offer', async ({ page, isMobile }) => {
     await page.goto('/emplois');
+    if (isMobile) await page.getByRole('button', { name: /^filtres/i }).click();
     // The filter bar surfaces the real filters (D8/D19).
     await expect(page.getByRole('button', { name: /pays/i })).toBeVisible();
     // At least one offer card renders — on mobile the detail pane is hidden

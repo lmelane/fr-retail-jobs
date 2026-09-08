@@ -1,0 +1,819 @@
+{
+  "id": "0eae47d0-598d-4cf0-bb3f-b38921eafa7e",
+  "name": "data feed of jobs",
+  "deletedAt": null,
+  "workspace": {
+    "name": "lmelant"
+  },
+  "environments": {
+    "edges": [
+      {
+        "node": {
+          "id": "e66b019c-d280-41dc-85d8-25ed86bdd101",
+          "name": "production",
+          "canAccess": true,
+          "deletedAt": null,
+          "serviceInstances": {
+            "edges": [
+              {
+                "node": {
+                  "id": "0409cbfb-5ff4-4e0c-94bd-bcfc7609a90d",
+                  "serviceId": "b5c68d1c-6988-4f15-8d85-afe684109cea",
+                  "serviceName": "Postgres",
+                  "environmentId": "e66b019c-d280-41dc-85d8-25ed86bdd101",
+                  "latestDeployment": {
+                    "canRedeploy": true,
+                    "id": "0391dd34-5466-4691-91e6-f3e059c3aed7",
+                    "meta": {
+                      "image": "ghcr.io/railwayapp-templates/postgres-ssl:18",
+                      "imageDigest": "sha256:0a458a815f2d12e6aad17d8abca4f956a60ca50adf12ac50ad4ce314015459af",
+                      "logsV2": true,
+                      "patchId": "3caddad5-c9af-451f-9caf-1b12c882f3e7",
+                      "reason": "deploy",
+                      "runtime": "V2",
+                      "serviceManifest": {
+                        "build": {
+                          "buildCommand": null,
+                          "buildEnvironment": "V3",
+                          "builder": "RAILPACK",
+                          "dockerfilePath": null,
+                          "nixpacksConfigPath": null,
+                          "nixpacksPlan": null,
+                          "watchPatterns": []
+                        },
+                        "deploy": {
+                          "cronSchedule": null,
+                          "drainingSeconds": null,
+                          "healthcheckPath": null,
+                          "healthcheckTimeout": null,
+                          "ipv6EgressEnabled": false,
+                          "limitOverride": null,
+                          "multiRegionConfig": {
+                            "europe-west4-drams3a": {
+                              "numReplicas": 1
+                            }
+                          },
+                          "numReplicas": 1,
+                          "overlapSeconds": null,
+                          "preDeployCommand": null,
+                          "preDeployTimeoutSeconds": null,
+                          "region": null,
+                          "registryCredentials": null,
+                          "requiredMountPath": "/var/lib/postgresql/data",
+                          "restartPolicyMaxRetries": 10,
+                          "restartPolicyType": "ON_FAILURE",
+                          "runtime": "V2",
+                          "sleepApplication": false,
+                          "startCommand": null,
+                          "useLegacyStacker": false
+                        }
+                      },
+                      "volumeMounts": [
+                        "/var/lib/postgresql/data"
+                      ]
+                    },
+                    "status": "SUCCESS",
+                    "createdAt": "2026-09-01T14:10:49.240Z",
+                    "deploymentStopped": false
+                  },
+                  "activeDeployments": [
+                    {
+                      "id": "0391dd34-5466-4691-91e6-f3e059c3aed7",
+                      "status": "SUCCESS",
+                      "createdAt": "2026-09-01T14:10:49.240Z",
+                      "meta": {
+                        "image": "ghcr.io/railwayapp-templates/postgres-ssl:18",
+                        "imageDigest": "sha256:0a458a815f2d12e6aad17d8abca4f956a60ca50adf12ac50ad4ce314015459af",
+                        "logsV2": true,
+                        "patchId": "3caddad5-c9af-451f-9caf-1b12c882f3e7",
+                        "reason": "deploy",
+                        "runtime": "V2",
+                        "serviceManifest": {
+                          "build": {
+                            "buildCommand": null,
+                            "buildEnvironment": "V3",
+                            "builder": "RAILPACK",
+                            "dockerfilePath": null,
+                            "nixpacksConfigPath": null,
+                            "nixpacksPlan": null,
+                            "watchPatterns": []
+                          },
+                          "deploy": {
+                            "cronSchedule": null,
+                            "drainingSeconds": null,
+                            "healthcheckPath": null,
+                            "healthcheckTimeout": null,
+                            "ipv6EgressEnabled": false,
+                            "limitOverride": null,
+                            "multiRegionConfig": {
+                              "europe-west4-drams3a": {
+                                "numReplicas": 1
+                              }
+                            },
+                            "numReplicas": 1,
+                            "overlapSeconds": null,
+                            "preDeployCommand": null,
+                            "preDeployTimeoutSeconds": null,
+                            "region": null,
+                            "registryCredentials": null,
+                            "requiredMountPath": "/var/lib/postgresql/data",
+                            "restartPolicyMaxRetries": 10,
+                            "restartPolicyType": "ON_FAILURE",
+                            "runtime": "V2",
+                            "sleepApplication": false,
+                            "startCommand": null,
+                            "useLegacyStacker": false
+                          }
+                        },
+                        "volumeMounts": [
+                          "/var/lib/postgresql/data"
+                        ]
+                      }
+                    }
+                  ],
+                  "source": {
+                    "repo": null,
+                    "image": "ghcr.io/railwayapp-templates/postgres-ssl:18"
+                  },
+                  "domains": {
+                    "serviceDomains": [],
+                    "customDomains": []
+                  },
+                  "cronSchedule": null,
+                  "nextCronRunAt": null,
+                  "startCommand": null
+                }
+              },
+              {
+                "node": {
+                  "id": "0e55c2e3-af59-4393-aa54-3e8d1daa6551",
+                  "serviceId": "85d0e5ba-992a-467e-9ddd-0dc25be1d74c",
+                  "serviceName": "catwalks-reconcile",
+                  "environmentId": "e66b019c-d280-41dc-85d8-25ed86bdd101",
+                  "latestDeployment": {
+                    "canRedeploy": true,
+                    "id": "aaf1783a-2998-4e50-af16-13a2d563ce99",
+                    "meta": {
+                      "branch": "main",
+                      "buildOnly": true,
+                      "commitAuthor": "lmelane",
+                      "commitHash": "c012795dee489b55befd160ca5022d9f81ca3b82",
+                      "commitMessage": "refactor(geo)!: Job.country devient Job.countryCode, et une migration se juge sur son état final\n\nLa colonne ne stocke plus un « pays » libre : elle stocke un code ISO-2\ncanonique. Mesuré avant de renommer — 66 882 valeurs, 100 % au format ISO,\nzéro graphie libre. Le nom décrit enfin la sémantique. Renommage ATOMIQUE :\npas de dual-write, pas de colonne parallèle, pas de période de bascule.\n\nCe qui NE change pas, volontairement. `JobEvent.field = 'country'` et\n`MarketSnapshot.scope = 'country'` restent : ce sont des noms de DIMENSION\nportés par des milliers de lignes d'historique, pas des noms de colonne.\nRéécrire une série pour harmoniser un nom technique serait la falsifier.\nRestent aussi `CandidateJob.country` (valeur brute de la source, qui vaut\n« France » ou « United States »), `filters.country` (le filtre `?pays=`), et\nles fonctions métier `normalizeCountry` / `countryFromLocation`.\n\nLe piège que le typecheck ne voit pas, trouvé par les tests d'intégration :\n`STRUCTURAL_FIELDS` contient la chaîne 'country', utilisée pour lire\ndynamiquement la propriété d'une ligne. Après renommage elle lisait\n`row['country']` sur un objet qui n'a plus que `countryCode` — undefined,\n« inchangé », et plus aucun changement de pays n'était tracé. Aucune erreur,\naucun type qui proteste, juste une histoire qui s'arrête. D'où\n`structuralValuesOf`, seul endroit où les deux vocabulaires se rencontrent.\nMême vigilance pour le SQL brut : la colonne est lue sous alias\n(`j.\"countryCode\" AS country`) partout où un type TS ou une clé de scope\nattend encore `country` — renommer l'un sans l'autre compile et renvoie\nundefined en silence.\n\nPost-conditions de migration (`trust/postconditions.ts`). Le dry-run\ngéographie annonçait 18 733 subdivisions et disait vrai sur ce qu'il allait\nécrire ; la base en contenait 703 de fausses, trouvées en la relisant après\ncoup. Un dry-run valide une intention, pas un résultat. La troisième étape\njuge donc l'ÉTAT FINAL SIMULÉ — toutes écritures combinées, y compris les\nlignes que le lot ne touche pas, car c'est là que dormaient les 703. Les\ninvariants sont des propriétés, jamais des comptes : « aucune subdivision\nhors de la table de son pays » survit à un changement de volume. Un échec\nnomme la valeur fautive et bloque l'écriture (exit 1) — vérifié en exécution\nsur une ligne empoisonnée.\n\nProd : migration appliquée, 66 882 pays et 15 845 subdivisions intacts, index\nrenommé, 4 invariants verts, backfill à 0 ligne à modifier.\n\n1 238 tests unitaires, 146 d'intégration, 80 web.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>",
+                      "fileServiceManifest": {},
+                      "imageDigest": "sha256:6317fb6ea0e6ce7337a88195bb13d5a742cce8c2be4bd6a7f139f69102f3773d",
+                      "logsV2": true,
+                      "nixpacksProviders": [],
+                      "plan": "pro",
+                      "propertyFileMapping": {},
+                      "reason": "deploy",
+                      "repo": "lmelane/fr-retail-jobs",
+                      "rootDirectory": null,
+                      "runtime": "V2",
+                      "serviceManifest": {
+                        "build": {
+                          "buildCommand": null,
+                          "buildEnvironment": "V3",
+                          "builder": "DOCKERFILE",
+                          "dockerfilePath": "apps/aggregator/Dockerfile",
+                          "nixpacksConfigPath": null,
+                          "nixpacksPlan": null,
+                          "watchPatterns": [
+                            "apps/aggregator/**",
+                            "packages/db/**",
+                            "package-lock.json"
+                          ]
+                        },
+                        "deploy": {
+                          "cronSchedule": "0 3 * * 1",
+                          "drainingSeconds": null,
+                          "healthcheckPath": null,
+                          "healthcheckTimeout": null,
+                          "ipv6EgressEnabled": false,
+                          "limitOverride": null,
+                          "multiRegionConfig": {
+                            "europe-west4-drams3a": {
+                              "numReplicas": 1
+                            }
+                          },
+                          "numReplicas": 1,
+                          "overlapSeconds": null,
+                          "preDeployCommand": null,
+                          "preDeployTimeoutSeconds": null,
+                          "region": null,
+                          "registryCredentials": null,
+                          "requiredMountPath": null,
+                          "restartPolicyMaxRetries": null,
+                          "restartPolicyType": "NEVER",
+                          "runtime": "V2",
+                          "sleepApplication": false,
+                          "startCommand": null,
+                          "useLegacyStacker": false
+                        }
+                      },
+                      "volumeMounts": []
+                    },
+                    "status": "SUCCESS",
+                    "createdAt": "2026-09-08T10:33:41.675Z",
+                    "deploymentStopped": false
+                  },
+                  "activeDeployments": [
+                    {
+                      "id": "aaf1783a-2998-4e50-af16-13a2d563ce99",
+                      "status": "SUCCESS",
+                      "createdAt": "2026-09-08T10:33:41.675Z",
+                      "meta": {
+                        "branch": "main",
+                        "buildOnly": true,
+                        "commitAuthor": "lmelane",
+                        "commitHash": "c012795dee489b55befd160ca5022d9f81ca3b82",
+                        "commitMessage": "refactor(geo)!: Job.country devient Job.countryCode, et une migration se juge sur son état final\n\nLa colonne ne stocke plus un « pays » libre : elle stocke un code ISO-2\ncanonique. Mesuré avant de renommer — 66 882 valeurs, 100 % au format ISO,\nzéro graphie libre. Le nom décrit enfin la sémantique. Renommage ATOMIQUE :\npas de dual-write, pas de colonne parallèle, pas de période de bascule.\n\nCe qui NE change pas, volontairement. `JobEvent.field = 'country'` et\n`MarketSnapshot.scope = 'country'` restent : ce sont des noms de DIMENSION\nportés par des milliers de lignes d'historique, pas des noms de colonne.\nRéécrire une série pour harmoniser un nom technique serait la falsifier.\nRestent aussi `CandidateJob.country` (valeur brute de la source, qui vaut\n« France » ou « United States »), `filters.country` (le filtre `?pays=`), et\nles fonctions métier `normalizeCountry` / `countryFromLocation`.\n\nLe piège que le typecheck ne voit pas, trouvé par les tests d'intégration :\n`STRUCTURAL_FIELDS` contient la chaîne 'country', utilisée pour lire\ndynamiquement la propriété d'une ligne. Après renommage elle lisait\n`row['country']` sur un objet qui n'a plus que `countryCode` — undefined,\n« inchangé », et plus aucun changement de pays n'était tracé. Aucune erreur,\naucun type qui proteste, juste une histoire qui s'arrête. D'où\n`structuralValuesOf`, seul endroit où les deux vocabulaires se rencontrent.\nMême vigilance pour le SQL brut : la colonne est lue sous alias\n(`j.\"countryCode\" AS country`) partout où un type TS ou une clé de scope\nattend encore `country` — renommer l'un sans l'autre compile et renvoie\nundefined en silence.\n\nPost-conditions de migration (`trust/postconditions.ts`). Le dry-run\ngéographie annonçait 18 733 subdivisions et disait vrai sur ce qu'il allait\nécrire ; la base en contenait 703 de fausses, trouvées en la relisant après\ncoup. Un dry-run valide une intention, pas un résultat. La troisième étape\njuge donc l'ÉTAT FINAL SIMULÉ — toutes écritures combinées, y compris les\nlignes que le lot ne touche pas, car c'est là que dormaient les 703. Les\ninvariants sont des propriétés, jamais des comptes : « aucune subdivision\nhors de la table de son pays » survit à un changement de volume. Un échec\nnomme la valeur fautive et bloque l'écriture (exit 1) — vérifié en exécution\nsur une ligne empoisonnée.\n\nProd : migration appliquée, 66 882 pays et 15 845 subdivisions intacts, index\nrenommé, 4 invariants verts, backfill à 0 ligne à modifier.\n\n1 238 tests unitaires, 146 d'intégration, 80 web.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>",
+                        "fileServiceManifest": {},
+                        "imageDigest": "sha256:6317fb6ea0e6ce7337a88195bb13d5a742cce8c2be4bd6a7f139f69102f3773d",
+                        "logsV2": true,
+                        "nixpacksProviders": [],
+                        "plan": "pro",
+                        "propertyFileMapping": {},
+                        "reason": "deploy",
+                        "repo": "lmelane/fr-retail-jobs",
+                        "rootDirectory": null,
+                        "runtime": "V2",
+                        "serviceManifest": {
+                          "build": {
+                            "buildCommand": null,
+                            "buildEnvironment": "V3",
+                            "builder": "DOCKERFILE",
+                            "dockerfilePath": "apps/aggregator/Dockerfile",
+                            "nixpacksConfigPath": null,
+                            "nixpacksPlan": null,
+                            "watchPatterns": [
+                              "apps/aggregator/**",
+                              "packages/db/**",
+                              "package-lock.json"
+                            ]
+                          },
+                          "deploy": {
+                            "cronSchedule": "0 3 * * 1",
+                            "drainingSeconds": null,
+                            "healthcheckPath": null,
+                            "healthcheckTimeout": null,
+                            "ipv6EgressEnabled": false,
+                            "limitOverride": null,
+                            "multiRegionConfig": {
+                              "europe-west4-drams3a": {
+                                "numReplicas": 1
+                              }
+                            },
+                            "numReplicas": 1,
+                            "overlapSeconds": null,
+                            "preDeployCommand": null,
+                            "preDeployTimeoutSeconds": null,
+                            "region": null,
+                            "registryCredentials": null,
+                            "requiredMountPath": null,
+                            "restartPolicyMaxRetries": null,
+                            "restartPolicyType": "NEVER",
+                            "runtime": "V2",
+                            "sleepApplication": false,
+                            "startCommand": null,
+                            "useLegacyStacker": false
+                          }
+                        },
+                        "volumeMounts": []
+                      }
+                    }
+                  ],
+                  "source": {
+                    "repo": "lmelane/fr-retail-jobs",
+                    "image": null
+                  },
+                  "domains": {
+                    "serviceDomains": [],
+                    "customDomains": []
+                  },
+                  "cronSchedule": "0 3 * * 1",
+                  "nextCronRunAt": "2026-09-14T03:00:00Z",
+                  "startCommand": null
+                }
+              },
+              {
+                "node": {
+                  "id": "5e189ce3-3765-49a7-bd1a-4d669d054e04",
+                  "serviceId": "a2280bb1-36be-4e6a-8250-2acc2aef0a47",
+                  "serviceName": "catwalks-web",
+                  "environmentId": "e66b019c-d280-41dc-85d8-25ed86bdd101",
+                  "latestDeployment": {
+                    "canRedeploy": true,
+                    "id": "0d0568ec-d29c-4199-8cd4-f5b96fb7c083",
+                    "meta": {
+                      "branch": "main",
+                      "buildOnly": false,
+                      "commitAuthor": "lmelane",
+                      "commitHash": "3b4221dcc52e18ad1040a67caa04799d6d939071",
+                      "commitMessage": "fix(web): une colonne SQL non citée cassait toute la page Pays\n\n`SELECT j.employmentTerm` sans guillemets : Postgres replie tout identifiant\nnon cité en minuscules, cherche `j.employmentterm`, ne le trouve pas, et\n/intelligence/pays/FR rendait 500. Bug introduit avec la migration\nemploymentTerm (D52), révélé aujourd'hui en vérifiant les pages après le\nrenommage countryCode — le renommage n'en est pas la cause.\n\nPourquoi rien ne l'avait vu : le typecheck ne lit pas l'intérieur d'une chaîne\nSQL, et le test d'intégration qui appelle pourtant `byContract()` ne s'exécute\nque si DATABASE_URL vaut exactement une copie locale de prod — qui n'existe\nsur aucune machine. Il était sauté depuis toujours.\n\nD'où un test de FUMÉE SQL : il exécute chaque agrégat brut contre n'importe\nquelle base au bon schéma, base vide comprise, et n'affirme rien sur les\ndonnées — seulement que le SQL est valide. Vérifié en exécution : il échoue\nsans le correctif, passe avec. `npm run test:sql -w web` le lance.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>",
+                      "fileServiceManifest": {},
+                      "imageDigest": "sha256:d7e7d1317398108cdd0a499fa84354f3044d6c612d4ae8278368b055785c0fca",
+                      "logsV2": true,
+                      "nixpacksProviders": [],
+                      "plan": "pro",
+                      "propertyFileMapping": {},
+                      "reason": "deploy",
+                      "repo": "lmelane/fr-retail-jobs",
+                      "rootDirectory": null,
+                      "runtime": "V2",
+                      "serviceManifest": {
+                        "build": {
+                          "buildCommand": null,
+                          "buildEnvironment": "V3",
+                          "builder": "DOCKERFILE",
+                          "dockerfilePath": "apps/web/Dockerfile",
+                          "nixpacksConfigPath": null,
+                          "nixpacksPlan": null,
+                          "watchPatterns": [
+                            "apps/web/**",
+                            "packages/db/**",
+                            "package-lock.json"
+                          ]
+                        },
+                        "deploy": {
+                          "cronSchedule": null,
+                          "drainingSeconds": null,
+                          "healthcheckPath": null,
+                          "healthcheckTimeout": null,
+                          "ipv6EgressEnabled": false,
+                          "limitOverride": null,
+                          "multiRegionConfig": {
+                            "europe-west4-drams3a": {
+                              "numReplicas": 1
+                            }
+                          },
+                          "numReplicas": 1,
+                          "overlapSeconds": null,
+                          "preDeployCommand": null,
+                          "preDeployTimeoutSeconds": null,
+                          "region": null,
+                          "registryCredentials": null,
+                          "requiredMountPath": null,
+                          "restartPolicyMaxRetries": 10,
+                          "restartPolicyType": "ON_FAILURE",
+                          "runtime": "V2",
+                          "sleepApplication": false,
+                          "startCommand": null,
+                          "useLegacyStacker": false
+                        }
+                      },
+                      "volumeMounts": []
+                    },
+                    "status": "SUCCESS",
+                    "createdAt": "2026-09-08T10:39:49.719Z",
+                    "deploymentStopped": false
+                  },
+                  "activeDeployments": [
+                    {
+                      "id": "0d0568ec-d29c-4199-8cd4-f5b96fb7c083",
+                      "status": "SUCCESS",
+                      "createdAt": "2026-09-08T10:39:49.719Z",
+                      "meta": {
+                        "branch": "main",
+                        "buildOnly": false,
+                        "commitAuthor": "lmelane",
+                        "commitHash": "3b4221dcc52e18ad1040a67caa04799d6d939071",
+                        "commitMessage": "fix(web): une colonne SQL non citée cassait toute la page Pays\n\n`SELECT j.employmentTerm` sans guillemets : Postgres replie tout identifiant\nnon cité en minuscules, cherche `j.employmentterm`, ne le trouve pas, et\n/intelligence/pays/FR rendait 500. Bug introduit avec la migration\nemploymentTerm (D52), révélé aujourd'hui en vérifiant les pages après le\nrenommage countryCode — le renommage n'en est pas la cause.\n\nPourquoi rien ne l'avait vu : le typecheck ne lit pas l'intérieur d'une chaîne\nSQL, et le test d'intégration qui appelle pourtant `byContract()` ne s'exécute\nque si DATABASE_URL vaut exactement une copie locale de prod — qui n'existe\nsur aucune machine. Il était sauté depuis toujours.\n\nD'où un test de FUMÉE SQL : il exécute chaque agrégat brut contre n'importe\nquelle base au bon schéma, base vide comprise, et n'affirme rien sur les\ndonnées — seulement que le SQL est valide. Vérifié en exécution : il échoue\nsans le correctif, passe avec. `npm run test:sql -w web` le lance.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>",
+                        "fileServiceManifest": {},
+                        "imageDigest": "sha256:d7e7d1317398108cdd0a499fa84354f3044d6c612d4ae8278368b055785c0fca",
+                        "logsV2": true,
+                        "nixpacksProviders": [],
+                        "plan": "pro",
+                        "propertyFileMapping": {},
+                        "reason": "deploy",
+                        "repo": "lmelane/fr-retail-jobs",
+                        "rootDirectory": null,
+                        "runtime": "V2",
+                        "serviceManifest": {
+                          "build": {
+                            "buildCommand": null,
+                            "buildEnvironment": "V3",
+                            "builder": "DOCKERFILE",
+                            "dockerfilePath": "apps/web/Dockerfile",
+                            "nixpacksConfigPath": null,
+                            "nixpacksPlan": null,
+                            "watchPatterns": [
+                              "apps/web/**",
+                              "packages/db/**",
+                              "package-lock.json"
+                            ]
+                          },
+                          "deploy": {
+                            "cronSchedule": null,
+                            "drainingSeconds": null,
+                            "healthcheckPath": null,
+                            "healthcheckTimeout": null,
+                            "ipv6EgressEnabled": false,
+                            "limitOverride": null,
+                            "multiRegionConfig": {
+                              "europe-west4-drams3a": {
+                                "numReplicas": 1
+                              }
+                            },
+                            "numReplicas": 1,
+                            "overlapSeconds": null,
+                            "preDeployCommand": null,
+                            "preDeployTimeoutSeconds": null,
+                            "region": null,
+                            "registryCredentials": null,
+                            "requiredMountPath": null,
+                            "restartPolicyMaxRetries": 10,
+                            "restartPolicyType": "ON_FAILURE",
+                            "runtime": "V2",
+                            "sleepApplication": false,
+                            "startCommand": null,
+                            "useLegacyStacker": false
+                          }
+                        },
+                        "volumeMounts": []
+                      }
+                    }
+                  ],
+                  "source": {
+                    "repo": "lmelane/fr-retail-jobs",
+                    "image": null
+                  },
+                  "domains": {
+                    "serviceDomains": [],
+                    "customDomains": [
+                      {
+                        "id": "0c4060ae-843b-4d22-975c-a38212a390c1",
+                        "domain": "modecareers.com",
+                        "targetPort": 8080
+                      },
+                      {
+                        "id": "15e92a68-1bc7-4dcc-bf42-c62daa07c14b",
+                        "domain": "www.modecareers.com",
+                        "targetPort": 8080
+                      }
+                    ]
+                  },
+                  "cronSchedule": null,
+                  "nextCronRunAt": null,
+                  "startCommand": null
+                }
+              },
+              {
+                "node": {
+                  "id": "b4f28077-95f1-4dd5-ba21-83398a616c99",
+                  "serviceId": "203613c5-701f-4013-a2c0-66c8de147c34",
+                  "serviceName": "catwalks-aggregator",
+                  "environmentId": "e66b019c-d280-41dc-85d8-25ed86bdd101",
+                  "latestDeployment": {
+                    "canRedeploy": true,
+                    "id": "351d0297-3e03-483c-b58c-69ef45c47242",
+                    "meta": {
+                      "branch": "main",
+                      "buildOnly": true,
+                      "commitAuthor": "lmelane",
+                      "commitHash": "c012795dee489b55befd160ca5022d9f81ca3b82",
+                      "commitMessage": "refactor(geo)!: Job.country devient Job.countryCode, et une migration se juge sur son état final\n\nLa colonne ne stocke plus un « pays » libre : elle stocke un code ISO-2\ncanonique. Mesuré avant de renommer — 66 882 valeurs, 100 % au format ISO,\nzéro graphie libre. Le nom décrit enfin la sémantique. Renommage ATOMIQUE :\npas de dual-write, pas de colonne parallèle, pas de période de bascule.\n\nCe qui NE change pas, volontairement. `JobEvent.field = 'country'` et\n`MarketSnapshot.scope = 'country'` restent : ce sont des noms de DIMENSION\nportés par des milliers de lignes d'historique, pas des noms de colonne.\nRéécrire une série pour harmoniser un nom technique serait la falsifier.\nRestent aussi `CandidateJob.country` (valeur brute de la source, qui vaut\n« France » ou « United States »), `filters.country` (le filtre `?pays=`), et\nles fonctions métier `normalizeCountry` / `countryFromLocation`.\n\nLe piège que le typecheck ne voit pas, trouvé par les tests d'intégration :\n`STRUCTURAL_FIELDS` contient la chaîne 'country', utilisée pour lire\ndynamiquement la propriété d'une ligne. Après renommage elle lisait\n`row['country']` sur un objet qui n'a plus que `countryCode` — undefined,\n« inchangé », et plus aucun changement de pays n'était tracé. Aucune erreur,\naucun type qui proteste, juste une histoire qui s'arrête. D'où\n`structuralValuesOf`, seul endroit où les deux vocabulaires se rencontrent.\nMême vigilance pour le SQL brut : la colonne est lue sous alias\n(`j.\"countryCode\" AS country`) partout où un type TS ou une clé de scope\nattend encore `country` — renommer l'un sans l'autre compile et renvoie\nundefined en silence.\n\nPost-conditions de migration (`trust/postconditions.ts`). Le dry-run\ngéographie annonçait 18 733 subdivisions et disait vrai sur ce qu'il allait\nécrire ; la base en contenait 703 de fausses, trouvées en la relisant après\ncoup. Un dry-run valide une intention, pas un résultat. La troisième étape\njuge donc l'ÉTAT FINAL SIMULÉ — toutes écritures combinées, y compris les\nlignes que le lot ne touche pas, car c'est là que dormaient les 703. Les\ninvariants sont des propriétés, jamais des comptes : « aucune subdivision\nhors de la table de son pays » survit à un changement de volume. Un échec\nnomme la valeur fautive et bloque l'écriture (exit 1) — vérifié en exécution\nsur une ligne empoisonnée.\n\nProd : migration appliquée, 66 882 pays et 15 845 subdivisions intacts, index\nrenommé, 4 invariants verts, backfill à 0 ligne à modifier.\n\n1 238 tests unitaires, 146 d'intégration, 80 web.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>",
+                      "fileServiceManifest": {},
+                      "imageDigest": "sha256:0602ba1745d6fadf0d0edf88ff0c4689506fac2d9124527c1bb7760b7bf6645e",
+                      "logsV2": true,
+                      "nixpacksProviders": [],
+                      "plan": "pro",
+                      "propertyFileMapping": {},
+                      "reason": "deploy",
+                      "repo": "lmelane/fr-retail-jobs",
+                      "rootDirectory": null,
+                      "runtime": "V2",
+                      "serviceManifest": {
+                        "build": {
+                          "buildCommand": null,
+                          "buildEnvironment": "V3",
+                          "builder": "DOCKERFILE",
+                          "dockerfilePath": "apps/aggregator/Dockerfile",
+                          "nixpacksConfigPath": null,
+                          "nixpacksPlan": null,
+                          "watchPatterns": [
+                            "apps/aggregator/**",
+                            "packages/db/**",
+                            "package-lock.json"
+                          ]
+                        },
+                        "deploy": {
+                          "cronSchedule": "0 22 * * *",
+                          "drainingSeconds": null,
+                          "healthcheckPath": null,
+                          "healthcheckTimeout": null,
+                          "ipv6EgressEnabled": false,
+                          "limitOverride": null,
+                          "multiRegionConfig": {
+                            "europe-west4-drams3a": {
+                              "numReplicas": 1
+                            }
+                          },
+                          "numReplicas": 1,
+                          "overlapSeconds": null,
+                          "preDeployCommand": null,
+                          "preDeployTimeoutSeconds": null,
+                          "region": null,
+                          "registryCredentials": null,
+                          "requiredMountPath": null,
+                          "restartPolicyMaxRetries": null,
+                          "restartPolicyType": "NEVER",
+                          "runtime": "V2",
+                          "sleepApplication": false,
+                          "startCommand": null,
+                          "useLegacyStacker": false
+                        }
+                      },
+                      "volumeMounts": []
+                    },
+                    "status": "SUCCESS",
+                    "createdAt": "2026-09-08T10:33:41.675Z",
+                    "deploymentStopped": false
+                  },
+                  "activeDeployments": [
+                    {
+                      "id": "351d0297-3e03-483c-b58c-69ef45c47242",
+                      "status": "SUCCESS",
+                      "createdAt": "2026-09-08T10:33:41.675Z",
+                      "meta": {
+                        "branch": "main",
+                        "buildOnly": true,
+                        "commitAuthor": "lmelane",
+                        "commitHash": "c012795dee489b55befd160ca5022d9f81ca3b82",
+                        "commitMessage": "refactor(geo)!: Job.country devient Job.countryCode, et une migration se juge sur son état final\n\nLa colonne ne stocke plus un « pays » libre : elle stocke un code ISO-2\ncanonique. Mesuré avant de renommer — 66 882 valeurs, 100 % au format ISO,\nzéro graphie libre. Le nom décrit enfin la sémantique. Renommage ATOMIQUE :\npas de dual-write, pas de colonne parallèle, pas de période de bascule.\n\nCe qui NE change pas, volontairement. `JobEvent.field = 'country'` et\n`MarketSnapshot.scope = 'country'` restent : ce sont des noms de DIMENSION\nportés par des milliers de lignes d'historique, pas des noms de colonne.\nRéécrire une série pour harmoniser un nom technique serait la falsifier.\nRestent aussi `CandidateJob.country` (valeur brute de la source, qui vaut\n« France » ou « United States »), `filters.country` (le filtre `?pays=`), et\nles fonctions métier `normalizeCountry` / `countryFromLocation`.\n\nLe piège que le typecheck ne voit pas, trouvé par les tests d'intégration :\n`STRUCTURAL_FIELDS` contient la chaîne 'country', utilisée pour lire\ndynamiquement la propriété d'une ligne. Après renommage elle lisait\n`row['country']` sur un objet qui n'a plus que `countryCode` — undefined,\n« inchangé », et plus aucun changement de pays n'était tracé. Aucune erreur,\naucun type qui proteste, juste une histoire qui s'arrête. D'où\n`structuralValuesOf`, seul endroit où les deux vocabulaires se rencontrent.\nMême vigilance pour le SQL brut : la colonne est lue sous alias\n(`j.\"countryCode\" AS country`) partout où un type TS ou une clé de scope\nattend encore `country` — renommer l'un sans l'autre compile et renvoie\nundefined en silence.\n\nPost-conditions de migration (`trust/postconditions.ts`). Le dry-run\ngéographie annonçait 18 733 subdivisions et disait vrai sur ce qu'il allait\nécrire ; la base en contenait 703 de fausses, trouvées en la relisant après\ncoup. Un dry-run valide une intention, pas un résultat. La troisième étape\njuge donc l'ÉTAT FINAL SIMULÉ — toutes écritures combinées, y compris les\nlignes que le lot ne touche pas, car c'est là que dormaient les 703. Les\ninvariants sont des propriétés, jamais des comptes : « aucune subdivision\nhors de la table de son pays » survit à un changement de volume. Un échec\nnomme la valeur fautive et bloque l'écriture (exit 1) — vérifié en exécution\nsur une ligne empoisonnée.\n\nProd : migration appliquée, 66 882 pays et 15 845 subdivisions intacts, index\nrenommé, 4 invariants verts, backfill à 0 ligne à modifier.\n\n1 238 tests unitaires, 146 d'intégration, 80 web.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>",
+                        "fileServiceManifest": {},
+                        "imageDigest": "sha256:0602ba1745d6fadf0d0edf88ff0c4689506fac2d9124527c1bb7760b7bf6645e",
+                        "logsV2": true,
+                        "nixpacksProviders": [],
+                        "plan": "pro",
+                        "propertyFileMapping": {},
+                        "reason": "deploy",
+                        "repo": "lmelane/fr-retail-jobs",
+                        "rootDirectory": null,
+                        "runtime": "V2",
+                        "serviceManifest": {
+                          "build": {
+                            "buildCommand": null,
+                            "buildEnvironment": "V3",
+                            "builder": "DOCKERFILE",
+                            "dockerfilePath": "apps/aggregator/Dockerfile",
+                            "nixpacksConfigPath": null,
+                            "nixpacksPlan": null,
+                            "watchPatterns": [
+                              "apps/aggregator/**",
+                              "packages/db/**",
+                              "package-lock.json"
+                            ]
+                          },
+                          "deploy": {
+                            "cronSchedule": "0 22 * * *",
+                            "drainingSeconds": null,
+                            "healthcheckPath": null,
+                            "healthcheckTimeout": null,
+                            "ipv6EgressEnabled": false,
+                            "limitOverride": null,
+                            "multiRegionConfig": {
+                              "europe-west4-drams3a": {
+                                "numReplicas": 1
+                              }
+                            },
+                            "numReplicas": 1,
+                            "overlapSeconds": null,
+                            "preDeployCommand": null,
+                            "preDeployTimeoutSeconds": null,
+                            "region": null,
+                            "registryCredentials": null,
+                            "requiredMountPath": null,
+                            "restartPolicyMaxRetries": null,
+                            "restartPolicyType": "NEVER",
+                            "runtime": "V2",
+                            "sleepApplication": false,
+                            "startCommand": null,
+                            "useLegacyStacker": false
+                          }
+                        },
+                        "volumeMounts": []
+                      }
+                    }
+                  ],
+                  "source": {
+                    "repo": "lmelane/fr-retail-jobs",
+                    "image": null
+                  },
+                  "domains": {
+                    "serviceDomains": [],
+                    "customDomains": []
+                  },
+                  "cronSchedule": "0 22 * * *",
+                  "nextCronRunAt": "2026-09-08T22:00:00Z",
+                  "startCommand": null
+                }
+              },
+              {
+                "node": {
+                  "id": "dc0b1193-19d6-4e8d-942e-39cb93120c64",
+                  "serviceId": "ddc5dece-7865-4cfa-b71e-8d139e2e1ea5",
+                  "serviceName": "catwalks-refresh",
+                  "environmentId": "e66b019c-d280-41dc-85d8-25ed86bdd101",
+                  "latestDeployment": {
+                    "canRedeploy": true,
+                    "id": "881edd6a-de2c-4ef8-b2c0-112323a49f08",
+                    "meta": {
+                      "branch": "main",
+                      "buildOnly": true,
+                      "commitAuthor": "lmelane",
+                      "commitHash": "c012795dee489b55befd160ca5022d9f81ca3b82",
+                      "commitMessage": "refactor(geo)!: Job.country devient Job.countryCode, et une migration se juge sur son état final\n\nLa colonne ne stocke plus un « pays » libre : elle stocke un code ISO-2\ncanonique. Mesuré avant de renommer — 66 882 valeurs, 100 % au format ISO,\nzéro graphie libre. Le nom décrit enfin la sémantique. Renommage ATOMIQUE :\npas de dual-write, pas de colonne parallèle, pas de période de bascule.\n\nCe qui NE change pas, volontairement. `JobEvent.field = 'country'` et\n`MarketSnapshot.scope = 'country'` restent : ce sont des noms de DIMENSION\nportés par des milliers de lignes d'historique, pas des noms de colonne.\nRéécrire une série pour harmoniser un nom technique serait la falsifier.\nRestent aussi `CandidateJob.country` (valeur brute de la source, qui vaut\n« France » ou « United States »), `filters.country` (le filtre `?pays=`), et\nles fonctions métier `normalizeCountry` / `countryFromLocation`.\n\nLe piège que le typecheck ne voit pas, trouvé par les tests d'intégration :\n`STRUCTURAL_FIELDS` contient la chaîne 'country', utilisée pour lire\ndynamiquement la propriété d'une ligne. Après renommage elle lisait\n`row['country']` sur un objet qui n'a plus que `countryCode` — undefined,\n« inchangé », et plus aucun changement de pays n'était tracé. Aucune erreur,\naucun type qui proteste, juste une histoire qui s'arrête. D'où\n`structuralValuesOf`, seul endroit où les deux vocabulaires se rencontrent.\nMême vigilance pour le SQL brut : la colonne est lue sous alias\n(`j.\"countryCode\" AS country`) partout où un type TS ou une clé de scope\nattend encore `country` — renommer l'un sans l'autre compile et renvoie\nundefined en silence.\n\nPost-conditions de migration (`trust/postconditions.ts`). Le dry-run\ngéographie annonçait 18 733 subdivisions et disait vrai sur ce qu'il allait\nécrire ; la base en contenait 703 de fausses, trouvées en la relisant après\ncoup. Un dry-run valide une intention, pas un résultat. La troisième étape\njuge donc l'ÉTAT FINAL SIMULÉ — toutes écritures combinées, y compris les\nlignes que le lot ne touche pas, car c'est là que dormaient les 703. Les\ninvariants sont des propriétés, jamais des comptes : « aucune subdivision\nhors de la table de son pays » survit à un changement de volume. Un échec\nnomme la valeur fautive et bloque l'écriture (exit 1) — vérifié en exécution\nsur une ligne empoisonnée.\n\nProd : migration appliquée, 66 882 pays et 15 845 subdivisions intacts, index\nrenommé, 4 invariants verts, backfill à 0 ligne à modifier.\n\n1 238 tests unitaires, 146 d'intégration, 80 web.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>",
+                      "fileServiceManifest": {},
+                      "imageDigest": "sha256:208629d6f9f5f4f86567f219cdc06a53cd978a691b5c3a2be4a15edae29f60b0",
+                      "logsV2": true,
+                      "nixpacksProviders": [],
+                      "plan": "pro",
+                      "propertyFileMapping": {},
+                      "reason": "deploy",
+                      "repo": "lmelane/fr-retail-jobs",
+                      "rootDirectory": null,
+                      "runtime": "V2",
+                      "serviceManifest": {
+                        "build": {
+                          "buildCommand": null,
+                          "buildEnvironment": "V3",
+                          "builder": "DOCKERFILE",
+                          "dockerfilePath": "apps/aggregator/Dockerfile",
+                          "nixpacksConfigPath": null,
+                          "nixpacksPlan": null,
+                          "watchPatterns": [
+                            "apps/aggregator/**",
+                            "packages/db/**",
+                            "package-lock.json"
+                          ]
+                        },
+                        "deploy": {
+                          "cronSchedule": "0 2 * * *",
+                          "drainingSeconds": null,
+                          "healthcheckPath": null,
+                          "healthcheckTimeout": null,
+                          "ipv6EgressEnabled": false,
+                          "limitOverride": null,
+                          "multiRegionConfig": {
+                            "europe-west4-drams3a": {
+                              "numReplicas": 1
+                            }
+                          },
+                          "numReplicas": 1,
+                          "overlapSeconds": null,
+                          "preDeployCommand": null,
+                          "preDeployTimeoutSeconds": null,
+                          "region": null,
+                          "registryCredentials": null,
+                          "requiredMountPath": null,
+                          "restartPolicyMaxRetries": null,
+                          "restartPolicyType": "NEVER",
+                          "runtime": "V2",
+                          "sleepApplication": false,
+                          "startCommand": null,
+                          "useLegacyStacker": false
+                        }
+                      },
+                      "volumeMounts": []
+                    },
+                    "status": "SUCCESS",
+                    "createdAt": "2026-09-08T10:33:41.674Z",
+                    "deploymentStopped": false
+                  },
+                  "activeDeployments": [
+                    {
+                      "id": "881edd6a-de2c-4ef8-b2c0-112323a49f08",
+                      "status": "SUCCESS",
+                      "createdAt": "2026-09-08T10:33:41.674Z",
+                      "meta": {
+                        "branch": "main",
+                        "buildOnly": true,
+                        "commitAuthor": "lmelane",
+                        "commitHash": "c012795dee489b55befd160ca5022d9f81ca3b82",
+                        "commitMessage": "refactor(geo)!: Job.country devient Job.countryCode, et une migration se juge sur son état final\n\nLa colonne ne stocke plus un « pays » libre : elle stocke un code ISO-2\ncanonique. Mesuré avant de renommer — 66 882 valeurs, 100 % au format ISO,\nzéro graphie libre. Le nom décrit enfin la sémantique. Renommage ATOMIQUE :\npas de dual-write, pas de colonne parallèle, pas de période de bascule.\n\nCe qui NE change pas, volontairement. `JobEvent.field = 'country'` et\n`MarketSnapshot.scope = 'country'` restent : ce sont des noms de DIMENSION\nportés par des milliers de lignes d'historique, pas des noms de colonne.\nRéécrire une série pour harmoniser un nom technique serait la falsifier.\nRestent aussi `CandidateJob.country` (valeur brute de la source, qui vaut\n« France » ou « United States »), `filters.country` (le filtre `?pays=`), et\nles fonctions métier `normalizeCountry` / `countryFromLocation`.\n\nLe piège que le typecheck ne voit pas, trouvé par les tests d'intégration :\n`STRUCTURAL_FIELDS` contient la chaîne 'country', utilisée pour lire\ndynamiquement la propriété d'une ligne. Après renommage elle lisait\n`row['country']` sur un objet qui n'a plus que `countryCode` — undefined,\n« inchangé », et plus aucun changement de pays n'était tracé. Aucune erreur,\naucun type qui proteste, juste une histoire qui s'arrête. D'où\n`structuralValuesOf`, seul endroit où les deux vocabulaires se rencontrent.\nMême vigilance pour le SQL brut : la colonne est lue sous alias\n(`j.\"countryCode\" AS country`) partout où un type TS ou une clé de scope\nattend encore `country` — renommer l'un sans l'autre compile et renvoie\nundefined en silence.\n\nPost-conditions de migration (`trust/postconditions.ts`). Le dry-run\ngéographie annonçait 18 733 subdivisions et disait vrai sur ce qu'il allait\nécrire ; la base en contenait 703 de fausses, trouvées en la relisant après\ncoup. Un dry-run valide une intention, pas un résultat. La troisième étape\njuge donc l'ÉTAT FINAL SIMULÉ — toutes écritures combinées, y compris les\nlignes que le lot ne touche pas, car c'est là que dormaient les 703. Les\ninvariants sont des propriétés, jamais des comptes : « aucune subdivision\nhors de la table de son pays » survit à un changement de volume. Un échec\nnomme la valeur fautive et bloque l'écriture (exit 1) — vérifié en exécution\nsur une ligne empoisonnée.\n\nProd : migration appliquée, 66 882 pays et 15 845 subdivisions intacts, index\nrenommé, 4 invariants verts, backfill à 0 ligne à modifier.\n\n1 238 tests unitaires, 146 d'intégration, 80 web.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>",
+                        "fileServiceManifest": {},
+                        "imageDigest": "sha256:208629d6f9f5f4f86567f219cdc06a53cd978a691b5c3a2be4a15edae29f60b0",
+                        "logsV2": true,
+                        "nixpacksProviders": [],
+                        "plan": "pro",
+                        "propertyFileMapping": {},
+                        "reason": "deploy",
+                        "repo": "lmelane/fr-retail-jobs",
+                        "rootDirectory": null,
+                        "runtime": "V2",
+                        "serviceManifest": {
+                          "build": {
+                            "buildCommand": null,
+                            "buildEnvironment": "V3",
+                            "builder": "DOCKERFILE",
+                            "dockerfilePath": "apps/aggregator/Dockerfile",
+                            "nixpacksConfigPath": null,
+                            "nixpacksPlan": null,
+                            "watchPatterns": [
+                              "apps/aggregator/**",
+                              "packages/db/**",
+                              "package-lock.json"
+                            ]
+                          },
+                          "deploy": {
+                            "cronSchedule": "0 2 * * *",
+                            "drainingSeconds": null,
+                            "healthcheckPath": null,
+                            "healthcheckTimeout": null,
+                            "ipv6EgressEnabled": false,
+                            "limitOverride": null,
+                            "multiRegionConfig": {
+                              "europe-west4-drams3a": {
+                                "numReplicas": 1
+                              }
+                            },
+                            "numReplicas": 1,
+                            "overlapSeconds": null,
+                            "preDeployCommand": null,
+                            "preDeployTimeoutSeconds": null,
+                            "region": null,
+                            "registryCredentials": null,
+                            "requiredMountPath": null,
+                            "restartPolicyMaxRetries": null,
+                            "restartPolicyType": "NEVER",
+                            "runtime": "V2",
+                            "sleepApplication": false,
+                            "startCommand": null,
+                            "useLegacyStacker": false
+                          }
+                        },
+                        "volumeMounts": []
+                      }
+                    }
+                  ],
+                  "source": {
+                    "repo": "lmelane/fr-retail-jobs",
+                    "image": null
+                  },
+                  "domains": {
+                    "serviceDomains": [],
+                    "customDomains": []
+                  },
+                  "cronSchedule": "0 2 * * *",
+                  "nextCronRunAt": "2026-09-09T02:00:00Z",
+                  "startCommand": null
+                }
+              }
+            ]
+          },
+          "volumeInstances": {
+            "edges": [
+              {
+                "node": {
+                  "serviceId": "b5c68d1c-6988-4f15-8d85-afe684109cea",
+                  "mountPath": "/var/lib/postgresql/data",
+                  "environmentId": "e66b019c-d280-41dc-85d8-25ed86bdd101",
+                  "currentSizeMB": 1427.21024,
+                  "sizeMB": 5000,
+                  "volume": {
+                    "name": "postgres-volume",
+                    "id": "32f92d01-d465-42e6-8fab-79e17d0a4d3f"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "services": {
+    "edges": [
+      {
+        "node": {
+          "id": "203613c5-701f-4013-a2c0-66c8de147c34",
+          "name": "catwalks-aggregator"
+        }
+      },
+      {
+        "node": {
+          "id": "85d0e5ba-992a-467e-9ddd-0dc25be1d74c",
+          "name": "catwalks-reconcile"
+        }
+      },
+      {
+        "node": {
+          "id": "a2280bb1-36be-4e6a-8250-2acc2aef0a47",
+          "name": "catwalks-web"
+        }
+      },
+      {
+        "node": {
+          "id": "b5c68d1c-6988-4f15-8d85-afe684109cea",
+          "name": "Postgres"
+        }
+      },
+      {
+        "node": {
+          "id": "ddc5dece-7865-4cfa-b71e-8d139e2e1ea5",
+          "name": "catwalks-refresh"
+        }
+      }
+    ]
+  }
+}

@@ -1,5 +1,6 @@
 import { Resolver } from 'node:dns/promises';
-import { Agent, setGlobalDispatcher } from 'undici';
+import { setGlobalDispatcher } from 'undici';
+import { usePublicResolver } from './publicTransport.js';
 
 /**
  * Opt-in DNS bypass for bulk local runs (incident, 2026-09-03).
@@ -59,7 +60,7 @@ export function configureExternalDnsFromEnv(): boolean {
 
   // Node's built-in fetch shares undici's global dispatcher registry
   // (Symbol.for), so this rewires it too — verified live on 3 955 hosts.
-  setGlobalDispatcher(new Agent({ connect: { lookup: lookup as never, timeout: 12_000 } }));
+  setGlobalDispatcher(usePublicResolver(lookup as never));
   console.log(`[dns] system resolver bypassed -> ${servers.join(', ')}`);
   return true;
 }

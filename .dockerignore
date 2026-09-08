@@ -7,7 +7,16 @@ build/
 .env.*
 !.env.example
 *.csv
+!apps/aggregator/data/*.csv
+!apps/aggregator/data/discovery/*.csv
 *.html
 *.xml
+!apps/web/app/sitemap.xml/
+!apps/web/app/sitemap.xml/**
 *.log
 .DS_Store
+**/.next/
+**/test-results/
+**/playwright-report/
+backups/
+audits/
