@@ -80,6 +80,8 @@ const ALIASES: ReadonlyArray<readonly [string, CompanyIdentity]> = [
   ['SANDRO', { companyId: 'SANDRO', displayName: 'Sandro', group: 'SMCP' }],
   ['MAJE', { companyId: 'MAJE', displayName: 'Maje', group: 'SMCP' }],
   ['CLAUDIE PIERLOT', { companyId: 'CLAUDIE_PIERLOT', displayName: 'Claudie Pierlot', group: 'SMCP' }],
+  ['FURSAC', { companyId: 'FURSAC', displayName: 'Fursac', group: 'SMCP' }],
+  ['SMCP', { companyId: 'SMCP', displayName: 'SMCP' }],
 
   ['LOREAL', { companyId: 'LOREAL', displayName: "L'Oréal", group: "L'Oréal" }],
   ['L OREAL', { companyId: 'LOREAL', displayName: "L'Oréal", group: "L'Oréal" }],
@@ -166,7 +168,7 @@ export function resolveCompany(rawName: string): CompanyIdentity {
  * intérieur ; jamais un mot qui ferait un nom vide.
  */
 const LEGAL_FORMS =
-  /(?:,?\s*(?:inc\.?|incorporated|llc|l\.l\.c\.|ltd\.?|limited|pty\.?(?:\s+ltd\.?)?|gmbh|s\.?p\.?a\.?|s\.?a\.?s\.?u?\.?|s\.?a\.?r\.?l\.?|s\.?a\.?|b\.?v\.?|n\.?v\.?|plc|corp\.?|corporation|co\.?,?\s*ltd\.?|s\.?r\.?l\.?|ag|sl|s\.l\.|lda|oy|ab|a\/s|kk|k\.k\.|&\s*co\.?))\s*$/i;
+  /(?:,\s*|\s+)(?:inc\.?|incorporated|llc|l\.l\.c\.|ltd\.?|limited|pty\.?(?:\s+ltd\.?)?|gmbh|s\.?p\.?a\.?|s\.?a\.?s\.?u?\.?|s\.?a\.?r\.?l\.?|s\.?a\.?|b\.?v\.?|n\.?v\.?|plc|corp\.?|corporation|co\.?,?\s*ltd\.?|s\.?r\.?l\.?|ag|sl|s\.l\.|lda|oy|ab|a\/s|kk|k\.k\.|&\s*co\.?)\s*$/i;
 const ENTITY_TAILS =
   /\s+(?:retail|stores?|services|holdings?|international|u\.?s\.?a?\.?|u\.?k\.?|canada|france|italia|italy|deutschland|germany|españa|spain|australia|nederland|netherlands|belgium|belgique|schweiz|suisse|switzerland|japan|hong\s+kong|europe|emea|north\s+america|americas?|asia|apac)\s*$/i;
 const ENTITY_HEADS = /^(?:united\s+states\s+of|the\s+united\s+states\s+of)\s+/i;

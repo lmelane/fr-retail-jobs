@@ -1,5 +1,7 @@
 import type { Prisma, PrismaClient, Source, SourceStatus } from '@prisma/client';
 import { loadSourceCatalog, tierFor, sourceKeyFor, type CatalogSource } from './sourceCatalog.js';
+import { requireSourceIdentity } from './sourceIdentity.js';
+import { lockSourceWrites } from '../lib/writeLocks.js';
 
 /**
  * The catalogue, read from the Source table (DEC-3) — the CSV is now only the
@@ -198,29 +200,34 @@ export type PromoteResult = {
  * DATED robots verdict, and at least one really-parsed offer behind its count.
  */
 export async function promoteSource(prisma: PrismaClient, key: string): Promise<PromoteResult> {
-  const row = await prisma.source.findUnique({ where: { key } });
-  if (!row) throw new Error(`promote: no source with key "${key}"`);
-  if (row.status === 'ACTIVE') throw new Error(`promote: "${key}" is already ACTIVE`);
-  if (row.status === 'RETIRED') {
-    throw new Error(`promote: "${key}" is RETIRED — re-validate it as a new source instead`);
-  }
-  const config = row.config as Record<string, unknown> | null;
-  if (!config || Object.keys(config).length === 0) {
-    throw new Error(`promote: "${key}" has no adapter config`);
-  }
-  if (!row.robotsVerdict || !row.robotsCheckedAt) {
-    throw new Error(`promote: "${key}" has no dated robots verdict — read robots.txt at the source first`);
-  }
-  if (row.robotsVerdict.trim().toUpperCase() !== 'ALLOWED') {
-    throw new Error(`promote: "${key}" needs an ALLOWED robots verdict, got "${row.robotsVerdict}"`);
-  }
-  if (!row.verifiedJobCount || row.verifiedJobCount < 1) {
-    throw new Error(`promote: "${key}" has no proven offer (verifiedJobCount) — run the volume validation first`);
-  }
+  return prisma.$transaction(async tx => {
+    await lockSourceWrites(tx, key, true);
+    const row = await tx.source.findUnique({ where: { key } });
+    if (!row) throw new Error(`promote: no source with key "${key}"`);
+    if (row.status === 'ACTIVE') throw new Error(`promote: "${key}" is already ACTIVE`);
+    if (row.status === 'RETIRED') {
+      throw new Error(`promote: "${key}" is RETIRED — re-validate it as a new source instead`);
+    }
+    const config = row.config as Record<string, unknown> | null;
+    if (!config || Object.keys(config).length === 0) {
+      throw new Error(`promote: "${key}" has no adapter config`);
+    }
+    if (!row.robotsVerdict || !row.robotsCheckedAt) {
+      throw new Error(`promote: "${key}" has no dated robots verdict — read robots.txt at the source first`);
+    }
+    if (row.robotsVerdict.trim().toUpperCase() !== 'ALLOWED') {
+      throw new Error(`promote: "${key}" needs an ALLOWED robots verdict, got "${row.robotsVerdict}"`);
+    }
+    if (!row.verifiedJobCount || row.verifiedJobCount < 1) {
+      throw new Error(`promote: "${key}" has no proven offer (verifiedJobCount) — run the volume validation first`);
+    }
 
-  const from = row.status;
-  await prisma.source.update({ where: { key }, data: { status: 'ACTIVE' } });
-  return { key, from, to: 'ACTIVE' };
+    const from = row.status;
+    await requireSourceIdentity(tx, row);
+    const changed = await tx.source.updateMany({ where: { key, updatedAt: row.updatedAt, status: from }, data: { status: 'ACTIVE' } });
+    if (changed.count !== 1) throw new Error('promote: source changed while its identity was checked');
+    return { key, from, to: 'ACTIVE' };
+  });
 }
 
 /**

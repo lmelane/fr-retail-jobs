@@ -83,6 +83,14 @@ function detailUrl(origin: string, site: string, id: string): string {
   return `${origin}/hcmRestApi/resources/latest/recruitingCEJobRequisitionDetails?onlyData=true&expand=all&finder=${finder}`;
 }
 
+/** Read one actual requisition; also used by reviewed, evidence-based repairs. */
+export async function fetchOracleRequisitionDetail(origin: string, site: string, id: string): Promise<OracleDetail | undefined> {
+  const body = await fetchJson<DetailResponse>(detailUrl(origin, site, id));
+  const detail = body.items?.[0];
+  if (detail && String(detail.Id) !== id) throw new Error(`Oracle detail ID mismatch: expected ${id}`);
+  return detail;
+}
+
 /** L'URL publique de l'offre sur le portail candidat, vérifiée 200 (Tiffany, 2026-09-06). */
 export function jobPageUrl(origin: string, site: string, id: string, lang = 'en'): string {
   return `${origin}/hcmUI/CandidateExperience/${lang}/sites/${site}/job/${encodeURIComponent(id)}`;
@@ -111,7 +119,7 @@ export function normalizeListRequisition(
     url: jobPageUrl(origin, site, String(req.Id), lang),
     postedAt: parseDate(req.PostedDate),
     description: htmlToPlainText(req.ShortDescriptionStr) || undefined,
-    raw: { source: 'oraclehcm', site },
+    raw: { source: 'oraclehcm', site, list: req },
   };
 }
 
@@ -145,6 +153,7 @@ export function mergeDetail(job: NormalizedJob, detail: OracleDetail): Normalize
     language: detail.ContentLocale?.slice(0, 2).toLowerCase() || undefined,
     postedAt: parseDate(detail.ExternalPostedStartDate) ?? job.postedAt,
     description,
+    raw: { ...(job.raw as Record<string, unknown>), detail },
   };
 }
 
@@ -187,8 +196,7 @@ export async function fetchOracleHcmJobs(config: Record<string, unknown>): Promi
     jobs.map((job) =>
       limit(async () => {
         try {
-          const body = await fetchJson<DetailResponse>(detailUrl(origin, site, job.externalId));
-          const detail = body.items?.[0];
+          const detail = await fetchOracleRequisitionDetail(origin, site, job.externalId);
           return detail ? mergeDetail(job, detail) : job;
         } catch {
           // Un détail injoignable ne doit pas faire perdre l'offre de liste.

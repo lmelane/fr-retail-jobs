@@ -77,7 +77,7 @@ export function noteFieldCoverage(stats: IngestStats, job: NormalizedJob): void 
   if (/^https?:\/\//.test(job.url ?? '')) stats.withUrl++;
 }
 
-function toCandidate(
+export function toCandidate(
   job: NormalizedJob,
   source: SourceDef,
   companyName: string,

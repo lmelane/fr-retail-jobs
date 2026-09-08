@@ -200,6 +200,19 @@ try {
     const stats = await importSourcesCsv(prisma);
     console.log(JSON.stringify({ ok: stats.skippedDuplicateTenant.length === 0, command, ...stats }, null, 2));
     if (stats.skippedDuplicateTenant.length > 0) process.exitCode = 1;
+  } else if (command === 'identity-profile') {
+    const { sourceIdentityHash, sourceSubjectKey } = await import('./connectors/sourceIdentity.js');
+    const key = process.argv[3];
+    if (!key || key.startsWith('--')) throw new Error('identity-profile needs a source key');
+    const source = await prisma.source.findUniqueOrThrow({ where: { key } });
+    console.log(JSON.stringify({ sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source) }, null, 2));
+  } else if (command === 'review-source-identity') {
+    const { readFileSync } = await import('node:fs');
+    const { recordSourceIdentityReview } = await import('./connectors/sourceIdentity.js');
+    const arg = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+    const record = arg('record'); const artifact = arg('artifact');
+    if (!record || !artifact) throw new Error('review-source-identity needs --record=<json> --artifact=<archived evidence file> [--apply]');
+    console.log(JSON.stringify(await recordSourceIdentityReview(prisma, JSON.parse(readFileSync(record, 'utf8')), readFileSync(artifact), process.argv.includes('--apply')), null, 2));
   } else if (command === 'promote') {
     /**
      * DRAFT/VALIDATED/PAUSED -> ACTIVE, guarded: config + dated robots verdict

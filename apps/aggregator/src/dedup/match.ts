@@ -3,6 +3,7 @@ import { normalizeLocationString } from '../normalize/location.js';
 import { resolveCompany } from '../normalize/company.js';
 import { normalizeCountry } from '../normalize/country.js';
 import type { NormalizedJob } from '../types.js';
+import { hasRequisitionConflict } from './postingIdentity.js';
 
 /**
  * Deduplication.
@@ -174,6 +175,7 @@ function weeklyHours(title: string): string | undefined {
  * a 35H post would have seen a single "30H" listing.
  */
 export function cannotBeSameOpening(a: CandidateJob, b: CandidateJob): boolean {
+  if (hasRequisitionConflict([a.url, b.url])) return true;
   // One source never publishes one opening twice. Two rows from the same feed
   // with different ids are two jobs — this alone would have caught Beaumanoir.
   if (a.sourceKey === b.sourceKey && a.externalId !== b.externalId) return true;

@@ -1,7 +1,15 @@
 import { fetchJson } from '../../lib/http.js';
 import type { AdapterResult } from '../../types.js';
 
-type LeverJob = { id: string; text: string; hostedUrl: string; createdAt?: number; descriptionPlain?: string; categories?: { location?: string; commitment?: string } };
+export type LeverJob = { id: string; text: string; hostedUrl: string; createdAt?: number; descriptionPlain?: string; categories?: { location?: string; commitment?: string; department?: string } };
+
+/** Exact, tenant-reviewed department mapping; an unknown department stays unresolved. */
+export function leverEmployer(job: LeverJob, mapping: unknown): string | undefined {
+  const department = job.categories?.department;
+  if (!department || !mapping || typeof mapping !== 'object' || Array.isArray(mapping) || !Object.hasOwn(mapping, department)) return undefined;
+  const value = (mapping as Record<string, unknown>)[department];
+  return typeof value === 'string' && value.trim() ? value.trim() : undefined;
+}
 
 export async function fetchLeverJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const site = String(config.site ?? '');
@@ -39,6 +47,7 @@ export async function fetchLeverJobs(config: Record<string, unknown>): Promise<A
   const normalized = jobs.map((job) => ({
     externalId: job.id,
     title: job.text,
+    company: leverEmployer(job, config.employerByDepartment),
     location: job.categories?.location,
     contract: job.categories?.commitment,
     description: job.descriptionPlain,
