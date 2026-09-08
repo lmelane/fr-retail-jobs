@@ -4,7 +4,8 @@ import { loadActiveSources, type RuntimeSource } from '../connectors/sourceStore
 import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
 import { domainFromEmployerSources } from '../normalize/companyDomain.js';
-import { readEmployment, decomposeCompositeCode, extractEmployment, type Employment } from '../normalize/employment.js';
+import { resolveCanonicalDimensions, type TrustContext } from '../trust/resolve.js';
+import { loadTrust } from '../trust/persist.js';
 import { extractSalaryBand } from '../normalize/salary.js';
 import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
@@ -79,6 +80,12 @@ function toCandidate(
   source: SourceDef,
   companyName: string,
   atsType: AtsType,
+  /**
+   * Les verdicts de confiance, chargés UNE fois par run et résolus en mémoire :
+   * une requête par offre serait un N+1 masqué sur 71 000 lignes. Une map vide
+   * = comportement par défaut, jamais un échec d'ingest.
+   */
+  trust: TrustContext = new Map(),
 ): CandidateJob & { companyId: string } {
   // F-06: the apply link is the product promise — a candidate clicking
   // "Voir l'offre" must land somewhere. A relative path, an empty string or a
@@ -94,31 +101,25 @@ function toCandidate(
   const description = htmlToPlainText(job.description);
 
   /**
-   * LES CINQ DIMENSIONS D'EMPLOI, par ordre de fiabilité de la preuve.
+   * LES CINQ DIMENSIONS D'EMPLOI — décidées par la chaîne COMMUNE.
    *
-   * L'ordre suit la règle posée : un champ structuré de la source bat le titre,
-   * qui bat la description. Chaque source de preuve ne REMPLIT que les
-   * dimensions encore vides — une preuve plus faible n'écrase jamais une plus
-   * forte. Les dimensions sont indépendantes : « CDD 35H saisonnier » renseigne
-   * la durée, le rythme ET le drapeau saisonnier, sans arbitrage entre eux.
+   * `resolveCanonicalDimensions` est la même fonction qu'utilisent le replay
+   * offline, le dry-run et les tests : il n'existe pas de seconde
+   * implémentation de la priorité. À preuves identiques et version de trust
+   * identique, l'ingest et le replay produisent la même valeur canonique —
+   * sinon le prochain run réintroduirait ce que le backfill vient de corriger.
    */
-  const employment: Employment = {};
-  const fill = (from: Employment) => {
-    if (!employment.employmentTerm && from.employmentTerm) employment.employmentTerm = from.employmentTerm;
-    if (!employment.workTime && from.workTime) employment.workTime = from.workTime;
-    if (!employment.programType && from.programType) employment.programType = from.programType;
-    if (!employment.engagementType && from.engagementType) employment.engagementType = from.engagementType;
-    if (!employment.isSeasonal && from.isSeasonal) employment.isSeasonal = true;
-  };
-
-  // 1. Les champs dédiés de la source. `decomposeCompositeCode` d'abord : un
-  //    code comme « parttime_fixed_term » porte DEUX dimensions, et le lire
-  //    comme un mot unique en perdrait une (225 offres mesurées).
-  fill(decomposeCompositeCode(job.contract));
-  fill(readEmployment(job.contract));
-  fill(readEmployment(job.workingTime));
-  // 2. Le titre puis la description, pour ce que les champs n'ont pas dit.
-  fill(extractEmployment(job.title, description));
+  const employment = resolveCanonicalDimensions(
+    {
+      sourceKey: source.key,
+      title: job.title,
+      description,
+      contract: job.contract,
+      workingTime: job.workingTime,
+      raw: job.raw,
+    },
+    trust,
+  );
 
   // Coerce the structured salary at the boundary: a schema.org feed (Teamtailor)
   // hands minValue/maxValue over as strings ("75000"), and written through to an
@@ -159,7 +160,11 @@ function toCandidate(
     // d'information est un vide, pas une valeur. (L'ancien « UNKNOWN » stocké
     // était truthy, et l'écran affichait « Contrat : UNKNOWN » sur chaque offre
     // dont la source omettait le champ.)
-    ...employment,
+    employmentTerm: employment.employmentTerm,
+    workTime: employment.workTime,
+    programType: employment.programType,
+    engagementType: employment.engagementType,
+    isSeasonal: employment.isSeasonal,
     ...(salaryFromText
       ? {
           salaryMin: salaryFromText.min,
@@ -259,6 +264,8 @@ async function ingestApiSource(
   prisma: PrismaClient,
   source: RuntimeSource,
   deadlineMs?: number,
+  /** Verdicts chargés une fois par run — voir `toCandidate`. */
+  trust: TrustContext = new Map(),
 ): Promise<IngestStats> {
   const stats: IngestStats = {
     source: source.key,
@@ -373,7 +380,7 @@ async function ingestApiSource(
       // The catalogue feed carries its real vendor ATS (WORKDAY, GREENHOUSE…).
       const result = await upsertDeduplicated(
         prisma,
-        toCandidate(job, sourceDef, employer, type as AtsType),
+        toCandidate(job, sourceDef, employer, type as AtsType, trust),
       );
       if (result.outcome === 'CREATED') stats.created++;
       else if (result.outcome === 'MERGED') stats.merged++;
@@ -440,6 +447,19 @@ export async function runIngest(
   // The catalogue now lives in the Source table (DEC-3); one read serves both
   // the sitemap and the API phases. Refuses to run on an unseeded base.
   const catalog = await loadActiveSources(prisma);
+
+  /**
+   * Les verdicts de confiance, lus UNE FOIS pour tout le run.
+   *
+   * À 71 000 offres, une lecture par offre serait un N+1 masqué. Un échec de
+   * lecture n'interrompt jamais un ingest : on repart alors sur le comportement
+   * par défaut (`structured > title > description`), qui est aussi celui d'une
+   * base où aucun verdict n'a encore été mesuré.
+   */
+  const trust = await loadTrust(prisma).catch((error) => {
+    console.warn(`[ingest] verdicts de confiance illisibles (${briefError(error)}) — priorité par défaut`);
+    return new Map<string, string>();
+  });
 
   const results: IngestStats[] = [];
 
@@ -523,7 +543,7 @@ export async function runIngest(
 
   for (const source of apiSources) {
     try {
-      const stats = await ingestApiSource(prisma, source, options.deadlineMs);
+      const stats = await ingestApiSource(prisma, source, options.deadlineMs, trust);
       results.push(stats);
       await purgeQuietly(stats);
       await geocodeQuietly();
