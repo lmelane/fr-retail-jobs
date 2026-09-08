@@ -52,7 +52,7 @@ const SECTOR_LABELS: Record<string, string> = {
 const PARAM: Record<string, string> = {
   q: 'q',
   city: 'ville',
-  contract: 'contrat',
+  contract: 'employmentTerm',
   sector: 'secteur',
   maison: 'maison',
   group: 'groupe',
@@ -283,9 +283,9 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
             />
             <FilterMenu
               label="Contrat"
-              active={params.get('contrat')}
+              active={params.get('employmentTerm') ?? params.get('contrat')}
               options={data.facets.contracts}
-              onSelect={(value) => toggle('contrat', value)}
+              onSelect={(value) => toggle('employmentTerm', value)}
             />
             <FilterMenu
               label="Ville"

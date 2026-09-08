@@ -204,7 +204,7 @@ export function ProfileBlocks({ profile, ctx }: { profile: Profile; ctx: Profile
         <Block id="contrat" title="Contrat" level="fact-shares">
           <Mix
             total={total}
-            rows={profile.contracts.map((c) => ({ label: c.key ? employmentTermLabel(c.key) ?? c.key : 'Non précisé', count: c.count, href: c.key ? jobs({ contrat: c.key }) : undefined }))}
+            rows={profile.contracts.map((c) => ({ label: c.key ? employmentTermLabel(c.key) ?? c.key : 'Non précisé', count: c.count, href: c.key ? jobs({ employmentTerm: c.key }) : undefined }))}
           />
         </Block>
       </div>

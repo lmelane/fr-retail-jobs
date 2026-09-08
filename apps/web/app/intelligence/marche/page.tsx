@@ -141,7 +141,7 @@ export default async function Page() {
         <div className="igrid">
           <div className="i4">
             <Block id="contrat" title="Contrats." level="fact-shares">
-              <Mix total={h.active} rows={data.contracts.map((c) => ({ label: c.key ? employmentTermLabel(c.key) ?? c.key : 'Non précisé', count: c.count, href: c.key ? intelPaths.jobs({ contrat: c.key }) : undefined }))} />
+              <Mix total={h.active} rows={data.contracts.map((c) => ({ label: c.key ? employmentTermLabel(c.key) ?? c.key : 'Non précisé', count: c.count, href: c.key ? intelPaths.jobs({ employmentTerm: c.key }) : undefined }))} />
             </Block>
           </div>
           <div className="i4">

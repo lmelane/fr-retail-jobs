@@ -133,7 +133,7 @@ export function CompanyProfileView({
       const params = new URLSearchParams({ maison: profile.name, pays: 'monde', page: String(page) });
       if (titre.trim()) params.set('q', titre.trim());
       if (ville.trim()) params.set('ville', ville.trim());
-      if (contrat) params.set('contrat', contrat);
+      if (contrat) params.set('employmentTerm', contrat);
       return params;
     },
     [profile.name, titre, ville, contrat],

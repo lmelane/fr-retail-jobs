@@ -103,9 +103,17 @@ export function parseFilters(params: Record<string, string | string[] | undefine
   return {
     q: one('q'),
     city: one('ville'),
-    // Le paramètre d'URL reste « contrat » (public, indexé) ; sa VALEUR est
-    // désormais la taxonomie mondiale (PERMANENT, FIXED_TERM…).
-    employmentTerm: one('contrat'),
+    /**
+     * Le paramètre technique porte le nom de la DIMENSION, pas un mot français :
+     * la base est mondiale, et « contrat » y désignait une grille juridique qui
+     * n'existe plus. L'ancien `?contrat=` reste accepté en lecture — des liens
+     * partagés existent — mais rien ne l'émet plus. Aucune URL indexée n'est en
+     * jeu : ni le sitemap ni un canonical ne l'ont jamais référencé (vérifié).
+     *
+     * L'interface, elle, continue d'écrire « Contrat » et « CDI » : c'est la
+     * couche de localisation, pas le modèle.
+     */
+    employmentTerm: one('employmentTerm') ?? one('contrat'),
     sector: one('secteur'),
     maison: one('maison'),
     group: one('groupe'),
