@@ -1,0 +1,26 @@
+{
+  "at": "2026-09-09T16:55:22.417Z",
+  "database": "/catwalks_lot4_replay_20260909c",
+  "planHash": "3eeafaa891abb5f94aa4b57d4f2d97e53360279dcbd0fd2557eab1d4909585e1",
+  "result": {
+    "alreadyApplied": false,
+    "written": 23,
+    "excludedActiveRepresentations": 0,
+    "lifecycleViolations": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "written": 0,
+    "excludedActiveRepresentations": 0,
+    "lifecycleViolations": 0
+  },
+  "total": 77447,
+  "reviewedJobs": 11,
+  "activeBefore": 11,
+  "activeAfter": 0,
+  "withdrawnNotClosed": true,
+  "idsPreserved": true,
+  "rawPreserved": true,
+  "historyPreserved": true,
+  "employerPreserved": true
+}

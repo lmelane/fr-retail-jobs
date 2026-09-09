@@ -63,6 +63,8 @@ Public (`lindex-public-production-proof.json`) : `/api/jobs?maison=Lindex` monde
 
 ## Limites encore ouvertes
 
+Suivies avec témoins et critères de résolution dans [backlog-data-quality.md](backlog-data-quality.md) (L1 à L4).
+
 - **Aucune date de publication** n'est publiée par le flux EasyCruit : ces 41 offres ne sont pas balisées pour Google Jobs, par choix (pas de date inventée). Une date native ne pourrait venir que d'une autre surface officielle, non observée.
 - **Lieux** : le champ `Location` d'EasyCruit porte parfois un comté norvégien (« Rogaland », « Vestland »), un centre commercial (« Maxi Sandnes », « Bluewater ») ou rien (une offre). Ils sont conservés tels quels dans `city` ; la Norvège n'a pas de table de subdivisions, donc `adminArea1` reste vide (D53). À traiter dans le lot géographie, pas par exception.
 - Une offre reste sans `employmentTerm` (titre « Vikariat », champ « Fast ») : contradiction réelle, non tranchée faute de mesure de fiabilité (D54). Les autres `null` (13 durées, 8 rythmes) correspondent à des valeurs que la source n'exprime pas canoniquement (« Ekstrahjelp », « Ved behov », « Na smlouvu », « VPP », « Příležitostná práce »).

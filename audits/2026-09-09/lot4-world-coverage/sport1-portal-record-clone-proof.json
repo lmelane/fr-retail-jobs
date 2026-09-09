@@ -1,0 +1,47 @@
+{
+  "at": "2026-09-09T16:55:22.775Z",
+  "environment": "clone",
+  "companyId": "cmtlygxyn02pfqf5kej297efs",
+  "written": 1,
+  "replay": 0,
+  "before": {
+    "careersUrl": null,
+    "discoveryStatus": "PENDING",
+    "atsType": "UNKNOWN"
+  },
+  "after": {
+    "careersUrl": "https://karriere.sport1.no/",
+    "discoveryStatus": "NEEDS_REVIEW",
+    "atsType": "UNKNOWN",
+    "lastAtsDiscoveryAt": "2026-09-09T15:18:41.002Z"
+  },
+  "candidate": {
+    "vendor": "reachmee",
+    "portalUrl": "https://karriere.sport1.no/",
+    "openingsUrl": "https://karriere.sport1.no/jobs",
+    "tenant": {
+      "host": "web103.reachmee.com",
+      "path": "/ext/I021/1899",
+      "site": "12"
+    },
+    "observedOpenings": 0,
+    "observedAt": "2026-09-09T15:18:41.002Z",
+    "evidence": {
+      "officialSite": {
+        "url": "https://www.sport1.no/",
+        "sha256": "665343ba788a6eb454341572dd66d370b4dcb01a57758d82a540ae612cf72f25"
+      },
+      "portal": {
+        "url": "https://karriere.sport1.no/",
+        "sha256": "ee54fe205a79746e7360efa2d126ed366769189d87749691f922fef0877130ec"
+      },
+      "openingsRendered": {
+        "url": "https://karriere.sport1.no/jobs",
+        "sha256": "8603ceba246819ec411bf56d3bc5a907313fea81b41cd9c1847dd734cbec0f7e"
+      }
+    },
+    "adapter": "NONE_YET",
+    "activation": "NOT_ACTIVATED",
+    "resolution": "Build and validate a ReachMee adapter against real postings once karriere.sport1.no lists at least one opening; franchise stores may recruit through other channels, which remain to investigate."
+  }
+}
