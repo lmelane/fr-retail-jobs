@@ -1,4 +1,5 @@
 import { XMLParser } from 'fast-xml-parser';
+import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
@@ -44,9 +45,27 @@ export type RssItem = {
   pubDate?: string;
 };
 
-/** The numeric offer id lives in the detail link as `idOffre=<n>`. */
-function externalIdFromLink(link: string): string {
-  return new URL(link).searchParams.get('idOffre') ?? link;
+/**
+ * The numeric offer id. Three shapes are served, all measured:
+ *  - `…detailoffre.aspx?idOffre=<n>` (Longchamp, Balmain, Printemps…);
+ *  - `…/offre-de-emploi/emploi-<slug>_<n>.aspx` (the listing cards);
+ *  - a link OFF the board, e.g. Lagardère's RSS points to
+ *    `lagardere.com/nous-rejoindre/postuler/offre-2026-10266-502`, which
+ *    redirects to the group's home page. Its reference "2026-10266" is the
+ *    board id 10266 with the year prefixed (verified card by card on the
+ *    listing: `_10266.aspx` ↔ "Réf. 2026-10266"). Falling back to the whole
+ *    link made 20 RSS items look like 20 extra postings with dead URLs.
+ */
+export function externalIdFromLink(link: string, title?: string): string {
+  try {
+    const url = new URL(link);
+    const param = url.searchParams.get('idOffre');
+    if (param) return param;
+    const path = /_(\d+)\.aspx$/i.exec(url.pathname);
+    if (path) return path[1];
+  } catch { /* fall through to the reference */ }
+  const reference = /\b\d{4}-(\d{3,})\b/.exec(`${title ?? ''} ${link}`);
+  return reference ? reference[1] : link;
 }
 
 export function talentsoftItemToJob(item: RssItem): NormalizedJob | null {
@@ -62,7 +81,7 @@ export function talentsoftItemToJob(item: RssItem): NormalizedJob | null {
   const [contract, ...places] = categories;
 
   return {
-    externalId: externalIdFromLink(link),
+    externalId: externalIdFromLink(link, title),
     title,
     location: places.join(', ') || undefined,
     contract: contract || undefined,
@@ -175,32 +194,43 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
   let truncated = false;
   const fromListing: NormalizedJob[] = [];
   const seenListing = new Set<string>();
-  for (let page = 1; page <= Number(config.maxPages ?? 100); page++) {
+  const issues = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  const maxPages = Number(config.maxPages ?? 100);
+  let pages = 0, rawCount = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+  const listingEndpoint = `${origin}/offre-de-emploi/liste-toutes-offres.aspx?LCID=${FRENCH_LCID}`;
+  for (let page = 1; page <= maxPages; page++) {
+    const url = `${origin}/offre-de-emploi/liste-toutes-offres.aspx?page=${page}&LCID=${FRENCH_LCID}`;
     let html: string;
     try {
-      html = await fetchText(
-        `${origin}/offre-de-emploi/liste-toutes-offres.aspx?page=${page}&LCID=${FRENCH_LCID}`,
-      );
+      html = await fetchText(url);
     } catch {
       // Les offres du RSS partent quand même, mais le board n'a pas été vu.
-      truncated = true;
+      truncated = true; termination = 'LISTING_FETCH_FAILED'; issues.add('LISTING_FETCH_FAILED');
       break;
     }
-    if (declaredTotal === undefined) {
-      const announced = html.match(/\((\d+)\s+offres?/i);
-      if (announced) declaredTotal = Number(announced[1]);
+    pages++;
+    const announced = html.match(/\((\d+)\s+offres?/i);
+    if (announced) {
+      if (declaredTotal === undefined) declaredTotal = Number(announced[1]);
+      else if (declaredTotal !== Number(announced[1])) issues.add('SOURCE_TOTAL_CHANGED');
     }
-    const cards = listingCards(html, origin).filter((job) => !seenListing.has(job.externalId));
-    if (cards.length === 0) break;
+    const all = listingCards(html, origin);
+    rawCount += all.length;
+    const cards = all.filter((job) => !seenListing.has(job.externalId));
+    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: (page - 1) * 10,
+      pagination: declaredTotal === undefined ? null : { start: (page - 1) * 10, end: (page - 1) * 10 + all.length, total: declaredTotal },
+      ids: all.map((j) => j.externalId), publisherCounter: announced ? announced[0] : '', componentCounters: [`listingIds=${seenListing.size + cards.length}`] });
+    // The board serves its first page again past the last one (page 12 of 11
+    // answers "page 1"): a page without a new card is the end, not an error.
+    if (cards.length === 0) { termination = all.length ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break; }
     for (const job of cards) {
       seenListing.add(job.externalId);
       fromListing.push(job);
     }
-    if (declaredTotal !== undefined && seenListing.size >= declaredTotal) break;
-    // Plafond de pages atteint alors que la page produisait encore : le reste
-    // du board n'a pas été lu.
-    if (page === Number(config.maxPages ?? 100)) truncated = true;
+    if (declaredTotal !== undefined && seenListing.size >= declaredTotal) { termination = 'ANNOUNCED_TOTAL_REACHED'; break; }
   }
+  if (termination === 'PAGE_BUDGET_EXHAUSTED') truncated = true;
 
   /**
    * Le juge final : la source ANNONCE un total, on compare à ce qu'on a vu.
@@ -209,13 +239,27 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
    */
   if (declaredTotal !== undefined && seenListing.size < declaredTotal) truncated = true;
 
-  // 3. Merge: the listing enumerates, the RSS enriches its overlap — and
-  // still carries the board alone if the listing markup ever changes.
+  // 3. Merge: the listing enumerates, the RSS enriches its overlap — the
+  // board URL is kept (an RSS link may leave the board and redirect
+  // elsewhere, as on Lagardère). An RSS item that matches no listing card is
+  // added only when its link is ON the board; otherwise it is retained as a
+  // rejected row for diagnosis, never counted as a posting.
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const originHost = new URL(origin).hostname;
   const jobs: NormalizedJob[] = fromListing.map((job) => {
     const rss = byId.get(job.externalId);
-    return rss ? { ...job, ...rss, location: rss.location ?? job.location } : job;
+    return rss ? { ...job, ...rss, url: job.url, location: rss.location ?? job.location, raw: { ...(job.raw as object), rss: rss.raw } } : job;
   });
-  for (const [id, job] of byId) if (!seenListing.has(id)) jobs.push(job);
+  for (const [id, job] of byId) {
+    if (seenListing.has(id)) continue;
+    let onBoard = false;
+    try { onBoard = new URL(job.url).hostname === originHost; } catch { /* off board */ }
+    if (onBoard && fromListing.length === 0) jobs.push(job);                       // listing unreadable: the RSS still carries the board
+    else if (onBoard) { jobs.push(job); issues.add('RSS_ITEM_ABSENT_FROM_LISTING'); }
+    else rejectedRows.push({ reason: 'RSS_ITEM_LINK_OFF_BOARD_AND_ABSENT_FROM_LISTING', raw: job.raw });
+  }
+  const complete = declaredTotal !== undefined && seenListing.size === declaredTotal && !truncated && issues.size === 0;
+  if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
 
   // 4. Descriptions for the listing-only offers, from their detail pages.
   if (config.withDescriptions !== false) {
@@ -235,5 +279,8 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
     );
   }
 
-  return { jobs, declaredTotal, truncated };
+  return { jobs, declaredTotal, truncated, complete, rejectedRows,
+    enumeration: { method: 'ANNOUNCED_TOTAL_HTML_PAGINATION_WITH_RSS_ENRICHMENT', endpoint: listingEndpoint, pages, rawCount, termination, issues: [...issues],
+      scopes: [{ scope: 'listing', declaredTotal: declaredTotal ?? -1, uniqueIds: seenListing.size, pages, complete }, { scope: 'rss', declaredTotal: byId.size, uniqueIds: byId.size, pages: 1, complete: true }],
+      pageEvidence } };
 }
