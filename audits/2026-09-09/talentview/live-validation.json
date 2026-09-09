@@ -1,0 +1,1608 @@
+{
+  "at": "2026-09-09T05:02:24.998Z",
+  "productionWrites": 0,
+  "scope": "ALL_PUBLIC_WEBSITES_ALL_COUNTRIES",
+  "descriptionsRead": false,
+  "results": [
+    {
+      "source": "la-redoute-talentview",
+      "at": "2026-09-09T05:02:22.464Z",
+      "complete": true,
+      "truncated": false,
+      "fetched": 5,
+      "unique": 5,
+      "countries": [
+        "Spain",
+        "Portugal",
+        "United Kingdom"
+      ],
+      "rowsSha256": "a08c437b139f5b367ee70e7ad9831603a40b922053c1860b0f2487dfb7119708",
+      "rows": [
+        {
+          "id": "196618",
+          "url": "https://laredoute-talent.talentview.io/jobs/knhb4i",
+          "country": "Spain",
+          "title": "Social Media Executive Iberia - Barcelona",
+          "location": "Barcelona"
+        },
+        {
+          "id": "195441",
+          "url": "https://laredoute-talent.talentview.io/jobs/d50cn8",
+          "country": "Portugal",
+          "title": "Site Reliability Engineer",
+          "location": "Leiria"
+        },
+        {
+          "id": "193964",
+          "url": "https://laredoute-talent.talentview.io/jobs/dubxwv",
+          "country": "United Kingdom",
+          "title": "Product Category Manager  (maternity cover) - UK",
+          "location": "Bradford"
+        },
+        {
+          "id": "193972",
+          "url": "https://laredoute-talent.talentview.io/jobs/1827gw",
+          "country": "Portugal",
+          "title": "Observability Engineer - Site Reliability Engineer",
+          "location": "Leiria"
+        },
+        {
+          "id": "178511",
+          "url": "https://laredoute-talent.talentview.io/jobs/62whej",
+          "country": "Portugal",
+          "title": "Spontaneous applications  - Portugal",
+          "location": "Leiria"
+        }
+      ]
+    },
+    {
+      "source": "promod",
+      "at": "2026-09-09T05:02:22.477Z",
+      "complete": true,
+      "truncated": false,
+      "fetched": 53,
+      "unique": 53,
+      "countries": [
+        "France",
+        "Suisse"
+      ],
+      "rowsSha256": "839ca5584f229cca35a2ae9963da3d74a4503d3b6889f915709db0cd4396a73a",
+      "rows": [
+        {
+          "id": "191033",
+          "url": "https://promodjob.talentview.io/jobs/kg4vc4",
+          "country": "France",
+          "title": "COMPTABLE H/F",
+          "location": "Marcq-en-Barœul"
+        },
+        {
+          "id": "196964",
+          "url": "https://promodjob.talentview.io/jobs/x06j9b",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Salaise-sur-Sanne"
+        },
+        {
+          "id": "196944",
+          "url": "https://promodjob.talentview.io/jobs/g8cla8",
+          "country": "France",
+          "title": "Responsable de magasin",
+          "location": "Paris"
+        },
+        {
+          "id": "196938",
+          "url": "https://promodjob.talentview.io/jobs/u4mj89",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Paris"
+        },
+        {
+          "id": "196897",
+          "url": "https://promodjob.talentview.io/jobs/82fw63",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Poitiers"
+        },
+        {
+          "id": "196929",
+          "url": "https://promodjob.talentview.io/jobs/n3f768",
+          "country": "France",
+          "title": "Vendeur.se Houdemont 35h",
+          "location": "Houdemont"
+        },
+        {
+          "id": "196895",
+          "url": "https://promodjob.talentview.io/jobs/l65h2x",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Lattes"
+        },
+        {
+          "id": "196865",
+          "url": "https://promodjob.talentview.io/jobs/mjzhkc",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Lescar"
+        },
+        {
+          "id": "196861",
+          "url": "https://promodjob.talentview.io/jobs/mwopsx",
+          "country": "France",
+          "title": "Responsable adjoint.e de magasin",
+          "location": "Marseille"
+        },
+        {
+          "id": "191430",
+          "url": "https://promodjob.talentview.io/jobs/eh2i0n",
+          "country": "France",
+          "title": "AGENT LOGISTIQUE",
+          "location": "Wattrelos"
+        },
+        {
+          "id": "196643",
+          "url": "https://promodjob.talentview.io/jobs/2z81fu",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Châteauroux"
+        },
+        {
+          "id": "196674",
+          "url": "https://promodjob.talentview.io/jobs/yvp5lt",
+          "country": "France",
+          "title": "Responsable adjoint.e de magasin",
+          "location": "Paris"
+        },
+        {
+          "id": "196598",
+          "url": "https://promodjob.talentview.io/jobs/phgebe",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Rennes"
+        },
+        {
+          "id": "196616",
+          "url": "https://promodjob.talentview.io/jobs/jo6i09",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Arcueil"
+        },
+        {
+          "id": "196605",
+          "url": "https://promodjob.talentview.io/jobs/usq2tz",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Paris"
+        },
+        {
+          "id": "196589",
+          "url": "https://promodjob.talentview.io/jobs/7z583u",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Marseille"
+        },
+        {
+          "id": "196469",
+          "url": "https://promodjob.talentview.io/jobs/h84ote",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Bordeaux"
+        },
+        {
+          "id": "196553",
+          "url": "https://promodjob.talentview.io/jobs/tcxsp0",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Plaisir"
+        },
+        {
+          "id": "196465",
+          "url": "https://promodjob.talentview.io/jobs/it4d22",
+          "country": "France",
+          "title": "Vendeur.se (alternance)",
+          "location": "Lille"
+        },
+        {
+          "id": "195222",
+          "url": "https://promodjob.talentview.io/jobs/gbtpwl",
+          "country": "France",
+          "title": "Responsable adjoint.e de magasin",
+          "location": "Rennes"
+        },
+        {
+          "id": "195187",
+          "url": "https://promodjob.talentview.io/jobs/ap791j",
+          "country": "France",
+          "title": "Responsable adjoint.e de magasin",
+          "location": "Rennes"
+        },
+        {
+          "id": "195217",
+          "url": "https://promodjob.talentview.io/jobs/afc1vj",
+          "country": "France",
+          "title": "Responsable adjoint.e de magasin",
+          "location": "Rennes"
+        },
+        {
+          "id": "196368",
+          "url": "https://promodjob.talentview.io/jobs/u3u950",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Guichainville"
+        },
+        {
+          "id": "196365",
+          "url": "https://promodjob.talentview.io/jobs/fn0hom",
+          "country": "France",
+          "title": "Vendeur.se (contrat étudiant)",
+          "location": "Melun"
+        },
+        {
+          "id": "190958",
+          "url": "https://promodjob.talentview.io/jobs/wespg6",
+          "country": "France",
+          "title": "Responsable adjoint.e de magasin",
+          "location": "Pontarlier"
+        },
+        {
+          "id": "196313",
+          "url": "https://promodjob.talentview.io/jobs/2tzr9j",
+          "country": "France",
+          "title": "Responsable adjoint.e de magasin",
+          "location": "Montigny-le-Bretonneux"
+        },
+        {
+          "id": "196256",
+          "url": "https://promodjob.talentview.io/jobs/d7pfe5",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Montauban"
+        },
+        {
+          "id": "196225",
+          "url": "https://promodjob.talentview.io/jobs/d0dx6z",
+          "country": "Suisse",
+          "title": "Vendeur.se",
+          "location": "Neuchâtel"
+        },
+        {
+          "id": "196154",
+          "url": "https://promodjob.talentview.io/jobs/arclss",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Lieusaint"
+        },
+        {
+          "id": "196002",
+          "url": "https://promodjob.talentview.io/jobs/dfjvjl",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Rennes"
+        },
+        {
+          "id": "195824",
+          "url": "https://promodjob.talentview.io/jobs/6j3m5f",
+          "country": "France",
+          "title": "Vendeur.se (contrat étudiant)",
+          "location": "Angers"
+        },
+        {
+          "id": "195750",
+          "url": "https://promodjob.talentview.io/jobs/zfd6ex",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Saint-Grégoire"
+        },
+        {
+          "id": "195653",
+          "url": "https://promodjob.talentview.io/jobs/sv1gv0",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Montreuil"
+        },
+        {
+          "id": "195555",
+          "url": "https://promodjob.talentview.io/jobs/rwh7cz",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Les Clayes-sous-Bois"
+        },
+        {
+          "id": "195521",
+          "url": "https://promodjob.talentview.io/jobs/4txacm",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Voiron"
+        },
+        {
+          "id": "188329",
+          "url": "https://promodjob.talentview.io/jobs/59gcyn",
+          "country": "France",
+          "title": "Responsable adjoint.e de magasin",
+          "location": "Paris"
+        },
+        {
+          "id": "194325",
+          "url": "https://promodjob.talentview.io/jobs/2kzchj",
+          "country": "France",
+          "title": "Vendeur.se (contrat étudiant)",
+          "location": "Aix-les-Bains"
+        },
+        {
+          "id": "193798",
+          "url": "https://promodjob.talentview.io/jobs/ffc520",
+          "country": "France",
+          "title": "Vendeur.se (contrat étudiant)",
+          "location": "Vannes"
+        },
+        {
+          "id": "193495",
+          "url": "https://promodjob.talentview.io/jobs/zcckrn",
+          "country": "France",
+          "title": "Responsable de magasin",
+          "location": "Le Havre"
+        },
+        {
+          "id": "193446",
+          "url": "https://promodjob.talentview.io/jobs/y688zs",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Quimper"
+        },
+        {
+          "id": "193383",
+          "url": "https://promodjob.talentview.io/jobs/pjxgds",
+          "country": "France",
+          "title": "Responsable adjoint.e de magasin",
+          "location": "Aix-en-Provence"
+        },
+        {
+          "id": "192297",
+          "url": "https://promodjob.talentview.io/jobs/pbceyx",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Bordeaux"
+        },
+        {
+          "id": "192051",
+          "url": "https://promodjob.talentview.io/jobs/ougtrj",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Écully"
+        },
+        {
+          "id": "191931",
+          "url": "https://promodjob.talentview.io/jobs/7xedm0",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Nice"
+        },
+        {
+          "id": "191818",
+          "url": "https://promodjob.talentview.io/jobs/uceh3f",
+          "country": "France",
+          "title": "Responsable adjoint.e de magasin",
+          "location": "Grenoble"
+        },
+        {
+          "id": "190386",
+          "url": "https://promodjob.talentview.io/jobs/y40660",
+          "country": "France",
+          "title": "Responsable adjoint.e de magasin",
+          "location": "Lyon"
+        },
+        {
+          "id": "191451",
+          "url": "https://promodjob.talentview.io/jobs/se0ws7",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Le Chesnay-Rocquencourt"
+        },
+        {
+          "id": "191040",
+          "url": "https://promodjob.talentview.io/jobs/1exshn",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Vaulx-en-Velin"
+        },
+        {
+          "id": "190933",
+          "url": "https://promodjob.talentview.io/jobs/1c5j31",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Pontivy"
+        },
+        {
+          "id": "190849",
+          "url": "https://promodjob.talentview.io/jobs/9sa5qw",
+          "country": "France",
+          "title": "Responsable adjoint.e de magasin",
+          "location": "Tourcoing"
+        },
+        {
+          "id": "190421",
+          "url": "https://promodjob.talentview.io/jobs/12760u",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Saint-Priest"
+        },
+        {
+          "id": "187289",
+          "url": "https://promodjob.talentview.io/jobs/qtxbyk",
+          "country": "France",
+          "title": "Vendeur.se (contrat étudiant)",
+          "location": "Cherbourg-en-Cotentin"
+        },
+        {
+          "id": "187287",
+          "url": "https://promodjob.talentview.io/jobs/3ifhaj",
+          "country": "France",
+          "title": "Vendeur.se",
+          "location": "Cherbourg-en-Cotentin"
+        }
+      ]
+    },
+    {
+      "source": "baccarat",
+      "at": "2026-09-09T05:02:23.013Z",
+      "complete": true,
+      "truncated": false,
+      "fetched": 19,
+      "unique": 19,
+      "countries": [
+        "France"
+      ],
+      "rowsSha256": "fdc6fc1055783ed58012ce727cdd2f22b07b49abf48c6c4632c5ae77d4b8ab0d",
+      "rows": [
+        {
+          "id": "196948",
+          "url": "https://baccarat.talentview.io/jobs/8a9iqd",
+          "country": "France",
+          "title": "Conseiller de Vente - La Vallée Village (h/f)",
+          "location": "Serris"
+        },
+        {
+          "id": "196665",
+          "url": "https://baccarat.talentview.io/jobs/zqc6rc",
+          "country": "France",
+          "title": "Ingénieur Méthodes et Process h/f",
+          "location": "Baccarat"
+        },
+        {
+          "id": "196517",
+          "url": "https://baccarat.talentview.io/jobs/troi8s",
+          "country": "France",
+          "title": "Adjoint Responsable UAP H/F",
+          "location": "Baccarat"
+        },
+        {
+          "id": "196294",
+          "url": "https://baccarat.talentview.io/jobs/yyfizc",
+          "country": "France",
+          "title": "Chef de Produit Décoration (h/f)",
+          "location": "Paris"
+        },
+        {
+          "id": "195505",
+          "url": "https://baccarat.talentview.io/jobs/2q8mc6",
+          "country": "France",
+          "title": "Agent d’entretien Moules h/f",
+          "location": "Baccarat"
+        },
+        {
+          "id": "195488",
+          "url": "https://baccarat.talentview.io/jobs/qxdrqm",
+          "country": "France",
+          "title": "Stage Usineur H/F",
+          "location": "Baccarat"
+        },
+        {
+          "id": "195326",
+          "url": "https://baccarat.talentview.io/jobs/tkpsn9",
+          "country": "France",
+          "title": "Stage paie H/F",
+          "location": "Baccarat"
+        },
+        {
+          "id": "190805",
+          "url": "https://baccarat.talentview.io/jobs/ones09",
+          "country": "France",
+          "title": "Conseiller de Vente Flagship (h/f)",
+          "location": "Paris"
+        },
+        {
+          "id": "191886",
+          "url": "https://baccarat.talentview.io/jobs/l4ie9p",
+          "country": "France",
+          "title": "Grand Vendeur (h/f)",
+          "location": "Paris"
+        },
+        {
+          "id": "191732",
+          "url": "https://baccarat.talentview.io/jobs/k77h6r",
+          "country": "France",
+          "title": "Coordinateur Industrialisation et mise en production  H/F",
+          "location": "Baccarat"
+        },
+        {
+          "id": "190394",
+          "url": "https://baccarat.talentview.io/jobs/7f59rv",
+          "country": "France",
+          "title": "Global Retail Training Manager CDD (h/f)",
+          "location": "Paris"
+        },
+        {
+          "id": "190115",
+          "url": "https://baccarat.talentview.io/jobs/l1pjyb",
+          "country": "France",
+          "title": "Chargé(e) de projets développement packaging responsable (h/f)",
+          "location": "Baccarat"
+        },
+        {
+          "id": "190175",
+          "url": "https://baccarat.talentview.io/jobs/m6zrg6",
+          "country": "France",
+          "title": "Acheteur H/F",
+          "location": "Baccarat"
+        },
+        {
+          "id": "189944",
+          "url": "https://baccarat.talentview.io/jobs/041abb",
+          "country": "France",
+          "title": "Technicien Coordinateur conformités machines et interventions (h/f)",
+          "location": "Baccarat"
+        },
+        {
+          "id": "187570",
+          "url": "https://baccarat.talentview.io/jobs/1f87h0",
+          "country": "France",
+          "title": "Stage HSE",
+          "location": "Baccarat"
+        },
+        {
+          "id": "185863",
+          "url": "https://baccarat.talentview.io/jobs/cvysmy",
+          "country": "France",
+          "title": "Technicien Cire Perdue H/F",
+          "location": "Baccarat"
+        },
+        {
+          "id": "185650",
+          "url": "https://baccarat.talentview.io/jobs/yta1su",
+          "country": "France",
+          "title": "Stage développement process (h/f)",
+          "location": "Baccarat"
+        },
+        {
+          "id": "166747",
+          "url": "https://baccarat.talentview.io/jobs/0w9yle",
+          "country": "France",
+          "title": "Médecin du travail H/F",
+          "location": "Baccarat"
+        },
+        {
+          "id": "64328",
+          "url": "https://baccarat.talentview.io/jobs/deosi8",
+          "country": "France",
+          "title": "Stages H/F",
+          "location": "Baccarat"
+        }
+      ]
+    },
+    {
+      "source": "jules",
+      "at": "2026-09-09T05:02:23.563Z",
+      "complete": true,
+      "truncated": false,
+      "fetched": 73,
+      "unique": 73,
+      "countries": [
+        "France",
+        "Belgique"
+      ],
+      "rowsSha256": "9905496d1d4f97c575ae2adee8f15f321c9fb52cb6f52f5d3b8d343d7cb0e70b",
+      "rows": [
+        {
+          "id": "196703",
+          "url": "https://jules-recrutement.talentview.io/jobs/g1q368",
+          "country": "France",
+          "title": "Vendeur 35H H/F - Angers Atoll",
+          "location": "Beaucouzé"
+        },
+        {
+          "id": "196607",
+          "url": "https://jules-recrutement.talentview.io/jobs/xgs8z4",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F) - Limoges St Martial",
+          "location": "Limoges"
+        },
+        {
+          "id": "193834",
+          "url": "https://jules-recrutement.talentview.io/jobs/gpue96",
+          "country": "France",
+          "title": "Responsable de Magasin (H/F) - Nice",
+          "location": "Nice"
+        },
+        {
+          "id": "191860",
+          "url": "https://jules-recrutement.talentview.io/jobs/qhdfed",
+          "country": "France",
+          "title": "Responsable de magasin (H/F)",
+          "location": "Le Chesnay-Rocquencourt"
+        },
+        {
+          "id": "196334",
+          "url": "https://jules-recrutement.talentview.io/jobs/9zn5zx",
+          "country": "France",
+          "title": "Visuel Merchandiser Opérationnel H/F - Atoll",
+          "location": "Beaucouzé"
+        },
+        {
+          "id": "196328",
+          "url": "https://jules-recrutement.talentview.io/jobs/7bbq37",
+          "country": "France",
+          "title": "Responsable de magasin (H/F)",
+          "location": "Pontarlier"
+        },
+        {
+          "id": "196326",
+          "url": "https://jules-recrutement.talentview.io/jobs/dziqeq",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F)",
+          "location": "Beaucouzé"
+        },
+        {
+          "id": "196080",
+          "url": "https://jules-recrutement.talentview.io/jobs/4epjqz",
+          "country": "Belgique",
+          "title": "PARTTIME VERKOOPMEDEWERKER M/V",
+          "location": "Kuurne"
+        },
+        {
+          "id": "196292",
+          "url": "https://jules-recrutement.talentview.io/jobs/wlgqor",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F) - Annecy Epagny CDD 6 mois",
+          "location": "Epagny Metz-Tessy"
+        },
+        {
+          "id": "193827",
+          "url": "https://jules-recrutement.talentview.io/jobs/3hgxzc",
+          "country": "France",
+          "title": "Visuel Merchandiser Opérationnel H/F",
+          "location": "Le Chesnay-Rocquencourt"
+        },
+        {
+          "id": "194227",
+          "url": "https://jules-recrutement.talentview.io/jobs/5xuza9",
+          "country": "France",
+          "title": "Visuel Merchandiser Opérationnel H/F",
+          "location": "Vélizy-Villacoublay"
+        },
+        {
+          "id": "196127",
+          "url": "https://jules-recrutement.talentview.io/jobs/sjn80c",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F) - St Genis",
+          "location": "Saint-Genis-Laval"
+        },
+        {
+          "id": "196107",
+          "url": "https://jules-recrutement.talentview.io/jobs/vbf9lj",
+          "country": "France",
+          "title": "Responsable de Magasin (H/F)",
+          "location": "Mont-Saint-Martin"
+        },
+        {
+          "id": "196087",
+          "url": "https://jules-recrutement.talentview.io/jobs/ca9m82",
+          "country": "France",
+          "title": "Visuel Merchandiser Opérationnel H/F - Carré Sénart",
+          "location": "Lieusaint"
+        },
+        {
+          "id": "196086",
+          "url": "https://jules-recrutement.talentview.io/jobs/v6ie8z",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F)",
+          "location": "Lieusaint"
+        },
+        {
+          "id": "196082",
+          "url": "https://jules-recrutement.talentview.io/jobs/l6flmi",
+          "country": "France",
+          "title": "Responsable de magasin (H/F) - RM Aéroville",
+          "location": "Roissy-en-France"
+        },
+        {
+          "id": "196079",
+          "url": "https://jules-recrutement.talentview.io/jobs/t2l9qj",
+          "country": "Belgique",
+          "title": "PARTTIME VERKOOPMEDEWERKER M/V",
+          "location": "Gent"
+        },
+        {
+          "id": "196071",
+          "url": "https://jules-recrutement.talentview.io/jobs/1p6jd6",
+          "country": "France",
+          "title": "Responsable de magasin (H/F) - Auxerre",
+          "location": "Auxerre"
+        },
+        {
+          "id": "196053",
+          "url": "https://jules-recrutement.talentview.io/jobs/l9pqqx",
+          "country": "France",
+          "title": "Stage assistant chef de produit H/F",
+          "location": "Roubaix"
+        },
+        {
+          "id": "196046",
+          "url": "https://jules-recrutement.talentview.io/jobs/c5xkjv",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F) - CDI",
+          "location": "Marseille"
+        },
+        {
+          "id": "196004",
+          "url": "https://jules-recrutement.talentview.io/jobs/z84e8w",
+          "country": "France",
+          "title": "Responsable de Magasin (H/F)",
+          "location": "Paris"
+        },
+        {
+          "id": "195924",
+          "url": "https://jules-recrutement.talentview.io/jobs/tb8rtj",
+          "country": "Belgique",
+          "title": "PARTTIME VERKOOPMEDEWERKER M/V",
+          "location": "Leuven"
+        },
+        {
+          "id": "195920",
+          "url": "https://jules-recrutement.talentview.io/jobs/p6zzgk",
+          "country": "France",
+          "title": "Responsable de magasin (H/F) - St Malo",
+          "location": "Saint-Malo"
+        },
+        {
+          "id": "195198",
+          "url": "https://jules-recrutement.talentview.io/jobs/wr2k0z",
+          "country": "France",
+          "title": "Traffic Manager Performance (H/F)",
+          "location": "Roubaix"
+        },
+        {
+          "id": "195541",
+          "url": "https://jules-recrutement.talentview.io/jobs/n3qfww",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F) - Langon",
+          "location": "Langon"
+        },
+        {
+          "id": "195538",
+          "url": "https://jules-recrutement.talentview.io/jobs/akix8s",
+          "country": "France",
+          "title": "Responsable de magasin (H/F) - Brive CDD 6 mois",
+          "location": "Brive-la-Gaillarde"
+        },
+        {
+          "id": "195331",
+          "url": "https://jules-recrutement.talentview.io/jobs/1gb9p5",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F) - CDD 4 mois",
+          "location": "Marseille"
+        },
+        {
+          "id": "195320",
+          "url": "https://jules-recrutement.talentview.io/jobs/dotzi0",
+          "country": "France",
+          "title": "Vendeur ou Responsable Adjoint en alternance (H/F) - Plan de campagne",
+          "location": "Cabriès"
+        },
+        {
+          "id": "195315",
+          "url": "https://jules-recrutement.talentview.io/jobs/eh0k0i",
+          "country": "France",
+          "title": "Vendeur ou Responsable Adjoint en alternance (H/F) - Nice",
+          "location": "Nice"
+        },
+        {
+          "id": "195224",
+          "url": "https://jules-recrutement.talentview.io/jobs/rhwsrd",
+          "country": "France",
+          "title": "Responsable de Magasin (H/F) - Vichy",
+          "location": "Vichy"
+        },
+        {
+          "id": "195218",
+          "url": "https://jules-recrutement.talentview.io/jobs/9brlnp",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F) - Toulouse Lapeyrouse",
+          "location": "Toulouse"
+        },
+        {
+          "id": "195207",
+          "url": "https://jules-recrutement.talentview.io/jobs/pa6wsy",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F) - Toulon",
+          "location": "La Valette-du-Var"
+        },
+        {
+          "id": "194765",
+          "url": "https://jules-recrutement.talentview.io/jobs/xy5isd",
+          "country": "France",
+          "title": "Vendeur 35H H/F - Beynost",
+          "location": "Beynost"
+        },
+        {
+          "id": "194665",
+          "url": "https://jules-recrutement.talentview.io/jobs/3p4xb0",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F) - Pau Lescar CDD 1 mois",
+          "location": "Lescar"
+        },
+        {
+          "id": "191598",
+          "url": "https://jules-recrutement.talentview.io/jobs/tek1fq",
+          "country": "France",
+          "title": "Responsable de magasin (H/F)",
+          "location": "Strasbourg"
+        },
+        {
+          "id": "189960",
+          "url": "https://jules-recrutement.talentview.io/jobs/ekj951",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F)",
+          "location": "Puteaux"
+        },
+        {
+          "id": "191113",
+          "url": "https://jules-recrutement.talentview.io/jobs/1qbrvs",
+          "country": "France",
+          "title": "Responsable de magasin (H/F)",
+          "location": "Houdemont"
+        },
+        {
+          "id": "191324",
+          "url": "https://jules-recrutement.talentview.io/jobs/23xf5w",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F)",
+          "location": "Neuville-en-Ferrain"
+        },
+        {
+          "id": "191549",
+          "url": "https://jules-recrutement.talentview.io/jobs/mqz2k1",
+          "country": "France",
+          "title": "Responsable de magasin (H/F)",
+          "location": "Angers"
+        },
+        {
+          "id": "187947",
+          "url": "https://jules-recrutement.talentview.io/jobs/9zphd6",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F)",
+          "location": "Plaisir"
+        },
+        {
+          "id": "188624",
+          "url": "https://jules-recrutement.talentview.io/jobs/u6ioe0",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F)",
+          "location": "Rosny-sous-Bois"
+        },
+        {
+          "id": "188627",
+          "url": "https://jules-recrutement.talentview.io/jobs/4xiw4y",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F)",
+          "location": "Le Chesnay-Rocquencourt"
+        },
+        {
+          "id": "189721",
+          "url": "https://jules-recrutement.talentview.io/jobs/torltf",
+          "country": "France",
+          "title": "Responsable de Magasin (H/F)",
+          "location": "Châteaubriant"
+        },
+        {
+          "id": "187909",
+          "url": "https://jules-recrutement.talentview.io/jobs/b3jmzz",
+          "country": "France",
+          "title": "Responsable de Magasin (H/F)",
+          "location": "Haguenau"
+        },
+        {
+          "id": "187910",
+          "url": "https://jules-recrutement.talentview.io/jobs/ehevy9",
+          "country": "France",
+          "title": "Visuel Merchandiser Opérationnel H/F",
+          "location": "Lyon"
+        },
+        {
+          "id": "187366",
+          "url": "https://jules-recrutement.talentview.io/jobs/td36df",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F)",
+          "location": "Dijon"
+        },
+        {
+          "id": "185974",
+          "url": "https://jules-recrutement.talentview.io/jobs/upivjh",
+          "country": "France",
+          "title": "Responsable de Magasin (H/F)",
+          "location": "Paris"
+        },
+        {
+          "id": "185971",
+          "url": "https://jules-recrutement.talentview.io/jobs/60xhrj",
+          "country": "France",
+          "title": "Responsable de Magasin (H/F)",
+          "location": "Paris"
+        },
+        {
+          "id": "179872",
+          "url": "https://jules-recrutement.talentview.io/jobs/r7upyj",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F) - Lyon Part Dieu",
+          "location": "Lyon"
+        },
+        {
+          "id": "194109",
+          "url": "https://jules-recrutement.talentview.io/jobs/e90wg8",
+          "country": "France",
+          "title": "Vendeur ou Responsable Adjoint en alternance (H/F) - Lyon Beynost",
+          "location": "Beynost"
+        },
+        {
+          "id": "193830",
+          "url": "https://jules-recrutement.talentview.io/jobs/vgtkt2",
+          "country": "France",
+          "title": "Responsable de magasin (H/F) - Oyonnax CDD 6 mois",
+          "location": "Oyonnax"
+        },
+        {
+          "id": "193781",
+          "url": "https://jules-recrutement.talentview.io/jobs/x6n4oi",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F)",
+          "location": "Paris"
+        },
+        {
+          "id": "193659",
+          "url": "https://jules-recrutement.talentview.io/jobs/ikzwyv",
+          "country": "France",
+          "title": "Responsable de magasin (H/F)",
+          "location": "Barjouville"
+        },
+        {
+          "id": "191648",
+          "url": "https://jules-recrutement.talentview.io/jobs/kjofqw",
+          "country": "France",
+          "title": "Vendeur 35H H/F - Thonon les Bains",
+          "location": "Thonon-les-Bains"
+        },
+        {
+          "id": "191594",
+          "url": "https://jules-recrutement.talentview.io/jobs/vbwpx8",
+          "country": "France",
+          "title": "Vendeur ou Responsable Adjoint en alternance (H/F) - Lyon",
+          "location": "Lyon"
+        },
+        {
+          "id": "191403",
+          "url": "https://jules-recrutement.talentview.io/jobs/mmtvgw",
+          "country": "France",
+          "title": "Vendeur ou Responsable Adjoint en alternance (H/F) - Annecy",
+          "location": "Annecy"
+        },
+        {
+          "id": "191109",
+          "url": "https://jules-recrutement.talentview.io/jobs/iqid4v",
+          "country": "France",
+          "title": "Responsable de magasin (H/F) -  Lyon",
+          "location": "Lyon"
+        },
+        {
+          "id": "190925",
+          "url": "https://jules-recrutement.talentview.io/jobs/3zf5kb",
+          "country": "France",
+          "title": "Vendeur ou Responsable Adjoint en alternance (H/F) - Antibes",
+          "location": "Antibes"
+        },
+        {
+          "id": "190922",
+          "url": "https://jules-recrutement.talentview.io/jobs/7wyqw0",
+          "country": "France",
+          "title": "Vendeur ou Responsable Adjoint en alternance (H/F) - St Etienne",
+          "location": "Saint-Étienne"
+        },
+        {
+          "id": "190921",
+          "url": "https://jules-recrutement.talentview.io/jobs/cgeagt",
+          "country": "France",
+          "title": "Vendeur ou Responsable Adjoint en alternance (H/F) - Béziers",
+          "location": "Béziers"
+        },
+        {
+          "id": "190809",
+          "url": "https://jules-recrutement.talentview.io/jobs/hczngp",
+          "country": "France",
+          "title": "Vendeur 35H H/F - Caluire et Cuire",
+          "location": "Caluire-et-Cuire"
+        },
+        {
+          "id": "190724",
+          "url": "https://jules-recrutement.talentview.io/jobs/864lir",
+          "country": "France",
+          "title": "Vendeur 35H H/F - Le Pontet",
+          "location": "Le Pontet"
+        },
+        {
+          "id": "189488",
+          "url": "https://jules-recrutement.talentview.io/jobs/39t3ic",
+          "country": "France",
+          "title": "Vendeur ou Responsable Adjoint en alternance (H/F) - Bourg en Bresse",
+          "location": "Bourg-en-Bresse"
+        },
+        {
+          "id": "189458",
+          "url": "https://jules-recrutement.talentview.io/jobs/i59hzl",
+          "country": "France",
+          "title": "Vendeur 28H H/F",
+          "location": "Rennes"
+        },
+        {
+          "id": "188992",
+          "url": "https://jules-recrutement.talentview.io/jobs/24il2g",
+          "country": "France",
+          "title": "Responsable de magasin adjoint (H/F) - Annecy Epagny",
+          "location": "Epagny Metz-Tessy"
+        },
+        {
+          "id": "188756",
+          "url": "https://jules-recrutement.talentview.io/jobs/a83tsy",
+          "country": "France",
+          "title": "Responsable de magasin (H/F) - Albertville",
+          "location": "Albertville"
+        },
+        {
+          "id": "188757",
+          "url": "https://jules-recrutement.talentview.io/jobs/zh835v",
+          "country": "France",
+          "title": "Responsable de Magasin (H/F) - Tignieu",
+          "location": "Tignieu-Jameyzieu"
+        },
+        {
+          "id": "187797",
+          "url": "https://jules-recrutement.talentview.io/jobs/73611s",
+          "country": "France",
+          "title": "Vendeur 35H H/F - Avignon Le Pontet",
+          "location": "Le Pontet"
+        },
+        {
+          "id": "186132",
+          "url": "https://jules-recrutement.talentview.io/jobs/tkf97u",
+          "country": "France",
+          "title": "Vendeur 35H H/F - Toulouse Labège",
+          "location": "Toulouse"
+        },
+        {
+          "id": "185604",
+          "url": "https://jules-recrutement.talentview.io/jobs/pwad4y",
+          "country": "France",
+          "title": "Vendeur H/F - Tignieu",
+          "location": "Tignieu-Jameyzieu"
+        },
+        {
+          "id": "185058",
+          "url": "https://jules-recrutement.talentview.io/jobs/w091s9",
+          "country": "France",
+          "title": "Responsable de magasin (H/F) - Albertville",
+          "location": "Albertville"
+        },
+        {
+          "id": "181457",
+          "url": "https://jules-recrutement.talentview.io/jobs/ia2h4w",
+          "country": "France",
+          "title": "Vendeur H/F",
+          "location": "Nantes"
+        },
+        {
+          "id": "18022",
+          "url": "https://jules-recrutement.talentview.io/jobs/7d8xet",
+          "country": "France",
+          "title": "Candidature spontanée",
+          "location": "Roubaix"
+        }
+      ]
+    },
+    {
+      "source": "sud-express-candidate",
+      "at": "2026-09-09T05:02:23.632Z",
+      "complete": true,
+      "truncated": false,
+      "fetched": 68,
+      "unique": 68,
+      "countries": [
+        "France"
+      ],
+      "rowsSha256": "f022bb9f8c4ffd936bbbfd55cf75c1689cb6b979bd25ef4179f7c2936af97135",
+      "rows": [
+        {
+          "id": "196956",
+          "url": "https://sud-express.talentview.io/jobs/2hoc0f",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Paris"
+        },
+        {
+          "id": "195683",
+          "url": "https://sud-express.talentview.io/jobs/31fcwg",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Aix-les-Bains"
+        },
+        {
+          "id": "195687",
+          "url": "https://sud-express.talentview.io/jobs/r4mu3i",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Lieusaint"
+        },
+        {
+          "id": "191163",
+          "url": "https://sud-express.talentview.io/jobs/1ac4at",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Paris"
+        },
+        {
+          "id": "191679",
+          "url": "https://sud-express.talentview.io/jobs/19o71b",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Paris"
+        },
+        {
+          "id": "195692",
+          "url": "https://sud-express.talentview.io/jobs/z22kaj",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Puteaux"
+        },
+        {
+          "id": "196845",
+          "url": "https://sud-express.talentview.io/jobs/yk8fpo",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Toulouse"
+        },
+        {
+          "id": "196841",
+          "url": "https://sud-express.talentview.io/jobs/txxd6q",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Toulouse"
+        },
+        {
+          "id": "196835",
+          "url": "https://sud-express.talentview.io/jobs/8izas9",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Paris"
+        },
+        {
+          "id": "196826",
+          "url": "https://sud-express.talentview.io/jobs/5oroeh",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Toulouse"
+        },
+        {
+          "id": "196817",
+          "url": "https://sud-express.talentview.io/jobs/fljssv",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Colmar"
+        },
+        {
+          "id": "196760",
+          "url": "https://sud-express.talentview.io/jobs/tnk0e2",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Montpellier"
+        },
+        {
+          "id": "196758",
+          "url": "https://sud-express.talentview.io/jobs/3g3ddz",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Montpellier"
+        },
+        {
+          "id": "196475",
+          "url": "https://sud-express.talentview.io/jobs/82ewj5",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Cannes"
+        },
+        {
+          "id": "196287",
+          "url": "https://sud-express.talentview.io/jobs/8zf5le",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Pont-l'Abbé"
+        },
+        {
+          "id": "186742",
+          "url": "https://sud-express.talentview.io/jobs/xez0f4",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Talange"
+        },
+        {
+          "id": "192604",
+          "url": "https://sud-express.talentview.io/jobs/9qdiei",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Saint-Malo"
+        },
+        {
+          "id": "196264",
+          "url": "https://sud-express.talentview.io/jobs/yeghqi",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Laval"
+        },
+        {
+          "id": "192899",
+          "url": "https://sud-express.talentview.io/jobs/ypn1kd",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Bègles"
+        },
+        {
+          "id": "189418",
+          "url": "https://sud-express.talentview.io/jobs/joeh6c",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Arcachon"
+        },
+        {
+          "id": "192831",
+          "url": "https://sud-express.talentview.io/jobs/diz1t4",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Aix-en-Provence"
+        },
+        {
+          "id": "186426",
+          "url": "https://sud-express.talentview.io/jobs/4zl89r",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Nice"
+        },
+        {
+          "id": "189496",
+          "url": "https://sud-express.talentview.io/jobs/p4okwd",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Ajaccio"
+        },
+        {
+          "id": "193361",
+          "url": "https://sud-express.talentview.io/jobs/8506he",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Marseille"
+        },
+        {
+          "id": "192897",
+          "url": "https://sud-express.talentview.io/jobs/1uwyop",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Strasbourg"
+        },
+        {
+          "id": "196251",
+          "url": "https://sud-express.talentview.io/jobs/jf9dme",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Paris"
+        },
+        {
+          "id": "196250",
+          "url": "https://sud-express.talentview.io/jobs/72ow2p",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Paris"
+        },
+        {
+          "id": "196249",
+          "url": "https://sud-express.talentview.io/jobs/u2dr8o",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Paris"
+        },
+        {
+          "id": "196236",
+          "url": "https://sud-express.talentview.io/jobs/ma6ztb",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Antibes"
+        },
+        {
+          "id": "196237",
+          "url": "https://sud-express.talentview.io/jobs/ck3wg7",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Nice"
+        },
+        {
+          "id": "195988",
+          "url": "https://sud-express.talentview.io/jobs/yalu2b",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Aubière"
+        },
+        {
+          "id": "195976",
+          "url": "https://sud-express.talentview.io/jobs/2v8k9f",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Sélestat"
+        },
+        {
+          "id": "195974",
+          "url": "https://sud-express.talentview.io/jobs/i00w8x",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Sélestat"
+        },
+        {
+          "id": "195973",
+          "url": "https://sud-express.talentview.io/jobs/sp2c8c",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Mulhouse"
+        },
+        {
+          "id": "189915",
+          "url": "https://sud-express.talentview.io/jobs/s8yiqn",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Besançon"
+        },
+        {
+          "id": "195971",
+          "url": "https://sud-express.talentview.io/jobs/0jedsb",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Mulhouse"
+        },
+        {
+          "id": "195934",
+          "url": "https://sud-express.talentview.io/jobs/s43uma",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Villefontaine"
+        },
+        {
+          "id": "195901",
+          "url": "https://sud-express.talentview.io/jobs/bgm1mo",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Antibes"
+        },
+        {
+          "id": "193245",
+          "url": "https://sud-express.talentview.io/jobs/5k7k27",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Le Mans"
+        },
+        {
+          "id": "191769",
+          "url": "https://sud-express.talentview.io/jobs/dv1pcb",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Saint-Maur-des-Fossés"
+        },
+        {
+          "id": "195774",
+          "url": "https://sud-express.talentview.io/jobs/q60bsv",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Romans-sur-Isère"
+        },
+        {
+          "id": "191302",
+          "url": "https://sud-express.talentview.io/jobs/8iw6t0",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Chamonix-Mont-Blanc"
+        },
+        {
+          "id": "195704",
+          "url": "https://sud-express.talentview.io/jobs/nyreir",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Nantes"
+        },
+        {
+          "id": "195703",
+          "url": "https://sud-express.talentview.io/jobs/i95szn",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Nantes"
+        },
+        {
+          "id": "195697",
+          "url": "https://sud-express.talentview.io/jobs/xclud1",
+          "country": "France",
+          "title": "Responsables de Boutique H/F",
+          "location": "Paris"
+        },
+        {
+          "id": "195696",
+          "url": "https://sud-express.talentview.io/jobs/vnybrr",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Paris"
+        },
+        {
+          "id": "195693",
+          "url": "https://sud-express.talentview.io/jobs/ykj6ck",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Paris"
+        },
+        {
+          "id": "195691",
+          "url": "https://sud-express.talentview.io/jobs/n6fhuw",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Saint-Germain-en-Laye"
+        },
+        {
+          "id": "195684",
+          "url": "https://sud-express.talentview.io/jobs/ao40qj",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Aix-les-Bains"
+        },
+        {
+          "id": "195682",
+          "url": "https://sud-express.talentview.io/jobs/tqhl4o",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Mâcon"
+        },
+        {
+          "id": "195040",
+          "url": "https://sud-express.talentview.io/jobs/cniyx8",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Villefontaine"
+        },
+        {
+          "id": "191162",
+          "url": "https://sud-express.talentview.io/jobs/bnl2na",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Paris"
+        },
+        {
+          "id": "192996",
+          "url": "https://sud-express.talentview.io/jobs/pmy24x",
+          "country": "France",
+          "title": "Responsables de Boutique H/F",
+          "location": "Saint-Germain-en-Laye"
+        },
+        {
+          "id": "192879",
+          "url": "https://sud-express.talentview.io/jobs/5c33jw",
+          "country": "France",
+          "title": "Responsables de Boutique H/F",
+          "location": "Rouen"
+        },
+        {
+          "id": "186719",
+          "url": "https://sud-express.talentview.io/jobs/4hk2mn",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Le Touquet-Paris-Plage"
+        },
+        {
+          "id": "191770",
+          "url": "https://sud-express.talentview.io/jobs/mhsjig",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Lille"
+        },
+        {
+          "id": "191170",
+          "url": "https://sud-express.talentview.io/jobs/wsmbv5",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Dijon"
+        },
+        {
+          "id": "191160",
+          "url": "https://sud-express.talentview.io/jobs/lbfqsp",
+          "country": "France",
+          "title": "Conseiller de vente H/F",
+          "location": "Paris"
+        },
+        {
+          "id": "191157",
+          "url": "https://sud-express.talentview.io/jobs/c0epne",
+          "country": "France",
+          "title": "Responsables de Boutique H/F",
+          "location": "Paris"
+        },
+        {
+          "id": "188967",
+          "url": "https://sud-express.talentview.io/jobs/vw4mk7",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Villefontaine"
+        },
+        {
+          "id": "190126",
+          "url": "https://sud-express.talentview.io/jobs/xkx6sm",
+          "country": "France",
+          "title": "Conseiller de vente (H/F)",
+          "location": "Bordeaux"
+        },
+        {
+          "id": "185719",
+          "url": "https://sud-express.talentview.io/jobs/frk48x",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Saint-Brieuc"
+        },
+        {
+          "id": "186625",
+          "url": "https://sud-express.talentview.io/jobs/0b3x1n",
+          "country": "France",
+          "title": "Responsables de Boutique H/F",
+          "location": "Paris"
+        },
+        {
+          "id": "186351",
+          "url": "https://sud-express.talentview.io/jobs/ouf2co",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Cannes"
+        },
+        {
+          "id": "180341",
+          "url": "https://sud-express.talentview.io/jobs/ralcn0",
+          "country": "France",
+          "title": "Responsable Boutique (H/F)",
+          "location": "Bègles"
+        },
+        {
+          "id": "183563",
+          "url": "https://sud-express.talentview.io/jobs/wr9rs2",
+          "country": "France",
+          "title": "Responsables de Boutique H/F",
+          "location": "Paris"
+        },
+        {
+          "id": "178537",
+          "url": "https://sud-express.talentview.io/jobs/xy8gks",
+          "country": "France",
+          "title": "Responsable régional(e) Grand Est",
+          "location": ""
+        },
+        {
+          "id": "1546",
+          "url": "https://sud-express.talentview.io/jobs/wtvnf8",
+          "country": "France",
+          "title": "Candidature spontanée",
+          "location": "Paris"
+        }
+      ]
+    }
+  ]
+}

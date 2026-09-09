@@ -1,7 +1,7 @@
 import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
-import type { NormalizedJob } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
  * TalentView career sites (Tape à l'œil and others).
@@ -125,7 +125,7 @@ function toNormalized(campaign: Campaign, slug: string): NormalizedJob | null {
  */
 export async function fetchTalentViewJobs(
   config: Record<string, unknown>,
-): Promise<NormalizedJob[]> {
+): Promise<AdapterResult> {
   const slug = String(config.slug ?? '');
   if (!slug) throw new Error('TalentView slug missing');
 
@@ -136,29 +136,64 @@ export async function fetchTalentViewJobs(
     { headers: HEADERS },
   );
 
-  const websiteId = websites.find((site) => site.id)?.id;
-  // F-06: no public website for the slug is a BROKEN config, not an employer
-  // with zero openings — the silent [] here is exactly the quiet-zero the
-  // health pass cannot tell apart from "stopped hiring".
-  if (!websiteId) {
-    throw new Error(`TalentView "${slug}": no public website behind the slug — config or tenant broken`);
+  if (!Array.isArray(websites) || websites.length === 0 ||
+      websites.some(site => !site || !Number.isSafeInteger(site.id) || site.id! <= 0)) {
+    throw new Error(`TalentView "${slug}": invalid or missing public website inventory`);
+  }
+  const websiteIds = [...new Set(websites.map(site => site.id!))];
+  if (websiteIds.length !== websites.length) throw new Error(`TalentView "${slug}": duplicate public website IDs`);
+  const maxPages = Number(config.maxPages ?? 500);
+  if (!Number.isSafeInteger(maxPages) || maxPages < 1 || maxPages > 500) {
+    throw new Error('TalentView maxPages must be an integer between 1 and 500');
   }
 
-  const campaigns = await fetchJson<Campaign[]>(
-    `${API}/companies/${encodeURIComponent(slug)}/campaigns?company_website_id=${websiteId}`,
-    { headers: HEADERS },
-  );
-
-  const jobs = campaigns
-    .map((campaign) => toNormalized(campaign, slug))
-    .filter((job): job is NormalizedJob => job !== null);
-
-  if (config.withDescriptions === false) return jobs;
+  // The official client starts offset_start at 1, increments by ONE (page,
+  // not row offset), and keeps scrolling while ten campaigns are returned.
+  // Without pagination this adapter silently stopped at the first ten jobs.
+  // Every public website is enumerated; a website locale is not a country filter.
+  const jobs: NormalizedJob[] = [];
+  const globalIds = new Set<string>();
+  let truncated = false;
+  let complete = true;
+  for (const websiteId of websiteIds) {
+    const websiteIdsSeen = new Set<string>();
+    let terminal = false;
+    for (let page = 1; page <= maxPages; page++) {
+      const url = new URL(`${API}/companies/${encodeURIComponent(slug)}/campaigns`);
+      url.searchParams.set('company_website_id', String(websiteId));
+      url.searchParams.set('display_mode', 'list');
+      url.searchParams.set('offset_start', String(page));
+      const campaigns = await fetchJson<Campaign[]>(url.toString(), { headers: HEADERS });
+      if (!Array.isArray(campaigns)) throw new Error(`TalentView "${slug}": malformed campaigns page ${page}`);
+      let fresh = 0;
+      for (const campaign of campaigns) {
+        if (!campaign || typeof campaign.name !== 'string' || !campaign.name.trim() ||
+            typeof campaign.slug !== 'string' || !campaign.slug.trim() ||
+            (campaign.id != null && !(typeof campaign.id === 'number' && Number.isSafeInteger(campaign.id) && campaign.id > 0 || typeof campaign.id === 'string' && campaign.id.trim().length > 0))) {
+          throw new Error(`TalentView "${slug}": invalid campaign on page ${page}`);
+        }
+        const job = toNormalized(campaign, slug)!;
+        if (websiteIdsSeen.has(job.externalId)) { truncated = true; continue; }
+        websiteIdsSeen.add(job.externalId);
+        fresh++;
+        // The same campaign can appear on several public locale websites.
+        if (!globalIds.has(job.externalId)) {
+          globalIds.add(job.externalId);
+          jobs.push(job);
+        }
+      }
+      if (campaigns.length < 10) { terminal = true; break; }
+      if (fresh === 0) { truncated = true; break; }
+    }
+    if (!terminal) { complete = false; truncated = true; }
+  }
+  const result = { jobs, truncated, complete: complete && !truncated };
+  if (config.withDescriptions === false) return result;
 
   // The listing carries no text; /campaigns/{slug} does. Keyed by SLUG — the id
   // 404s — and the campaign slug lives on the raw listing entry.
   const limit = pLimit(Number(config.detailConcurrency ?? 4));
-  return Promise.all(
+  const withDetails = await Promise.all(
     jobs.map((job) =>
       limit(async () => {
         const campaignSlug = (job.raw as Campaign | undefined)?.slug;
@@ -189,4 +224,5 @@ export async function fetchTalentViewJobs(
       }),
     ),
   );
+  return { ...result, jobs: withDetails };
 }
