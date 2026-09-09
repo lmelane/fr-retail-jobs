@@ -17,3 +17,9 @@ Règles communes : aucune valeur n'est forcée, aucune date technique (`date_sta
 |---|---|---|---|
 | S1 | Portail officiel ReachMee sans offre le 2026-09-09 ; aucun adaptateur ReachMee | `sport1-browser-proof.json` (« Vi har for tiden ingen ledige stillinger »), `Company.atsConfig` de `cmtlygxyn02pfqf5kej297efs` | Dès qu'une offre réelle apparaît sur `karriere.sport1.no/jobs`, construire et valider l'adaptateur ReachMee sur elle, puis candidat → revue → promotion |
 | S2 | Franchises : zéro sur le portail central ne prouve pas zéro offre chez les franchisés | — | Recherche des canaux de recrutement des magasins franchisés (portails régionaux, annonces locales) avant toute affirmation d'absence |
+
+## Lagardère Travel Retail (source `lagardere-travel-retail`, Talentsoft)
+
+| # | Point ouvert | Témoins | Cause mesurée | Critère de résolution |
+|---|---|---|---|---|
+| L5 | **20 offres fantômes** aux URLs mortes (redirigées vers `lagardere.com`), doublons des 20 offres les plus récentes du listing | représentations `lagardere-travel-retail` dont `externalId` est une URL `lagardere.com/nous-rejoindre/postuler/offre-…` | identifiant RSS = lien entier (pas d'`idOffre`), donc jamais rapproché de la carte `_<id>.aspx` ; corrigé dans l'adaptateur (PR 59) | après le run corrigé, ces 20 représentations ne sont plus ré-attestées ; `postingMerges` les refuse par construction (deux `externalId` distincts d'une même source ne sont jamais fusionnés), donc leur sortie passe par le **refresh** à sa reprise (fermeture après 48 h sans ré-attestation). Critère : 0 offre active de cette source dont l'URL quitte le board ; à défaut, un plan revu de retrait au niveau offre reste à concevoir |

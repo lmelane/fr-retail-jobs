@@ -25,3 +25,20 @@ Les 38 dossiers du handoff (§ 6) rapprochés par clé ou par Maison donnent **4
 ## Règle gravée
 
 Un reçu de sonde n'est comparable à un autre qu'à révision de code égale ou plus récente. Le tracker ordonne désormais par révision puis par date ; l'ancien classement à l'horloge est la cause d'une fausse alerte de 26 sources, corrigée le jour même.
+
+## Premier dossier instruit : DigitalRecruiters (Lacoste, Aigle, Gant, The Kooples)
+
+Les 38 dossiers partagent un trait : leur dernier reçu vient de la révision de code la plus ancienne (`b8c153f`) et ne porte **aucune preuve d'énumération** (`method` absent). Un re-sondage complet des 38 avec le code actuel a été lancé ; en parallèle, le premier dossier a été instruit sur son modèle natif.
+
+**Lacoste** : l'API publique liste des **diffusions**, pas des annonces — `count = 460`, `id = <job_ad_id>-<diffusion>`, 453 `job_ad_id` distincts. Les 7 lignes en plus sont la même annonce diffusée pour plusieurs lieux (« Japan » / « Tokyo » / « Shinjuku City » ; Aventura deux fois). Ce n'est **ni un bug de compteur ni 7 offres perdues** : l'adaptateur gardait la première diffusion par annonce et jetait les autres en silence, sans rien prouver. Correction universelle (PR 58) : une offre par annonce (identité inchangée), toutes les diffusions et leurs lieux conservés dans le RAW, la localisation la plus précise affichée, et une preuve d'énumération à **deux compteurs séparés** — diffusions (le compteur éditeur) et annonces (les offres).
+
+| Tenant | Annonces | Diffusions (compteur éditeur) | Complet | Annonces multi-lieux |
+|---|---:|---:|---|---|
+| Lacoste | 452 | 459 | oui | 4 (Japon ×3, Aventura) |
+| Aigle | 109 | 110 | oui | 1 (Paris / Île-de-France) |
+| Gant | 108 | 112 | oui | 4 (Holzwickede / Düsseldorf ; Uppsala) |
+| The Kooples | 69 | 69 | oui | 0 |
+
+Mesuré en direct le 2026-09-09 (`digitalrecruiters-live-check.json`). Reste pour clore ces 4 dossiers : reçu à la nouvelle révision, run de production borné qui ré-atteste les offres avec leurs diffusions en RAW, puis mise à jour du tracker.
+
+**Production DigitalRecruiters (18:00 UTC, PR 58 mergée `2031fe3`, workers redéployés, web inchangé — diff vide)** : run Railway borné `562185a0-aedf-4006-aae1-e77aa979e29b` sur `lacoste,aigle,gant,the-kooples` : Lacoste 452 / 459 diffusions, 3 créées, 449 mises à jour ; Aigle 109 / 110, 2 créées ; Gant 108 / 112 ; The Kooples 69 / 69 ; **0 erreur, 4 énumérations complètes**, 26 lignes Railway, 25 événements durables, 0 perte (`dr-production-delivery-proof.json`). Après run (`dr-production-after.json`) : toutes les offres ré-attestées portent leurs diffusions en RAW (452 / 109 / 108 / 69), 9 annonces multi-lieux tracées ; parité API : Aigle 109 = 109, GANT 108 = 108 ; Lacoste 464 actives (12 non re-listées ce run, à la charge du refresh) et The Kooples 71 (2 idem). **Quatre dossiers sur 38 clos au niveau adaptateur et vérifiés en production ; 34 restent.**
