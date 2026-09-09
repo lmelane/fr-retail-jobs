@@ -1,0 +1,149 @@
+{
+  "at": "2026-09-09T18:01:39.662Z",
+  "sources": {
+    "lacoste": {
+      "active": 464,
+      "withDiffusionsInRaw": 452,
+      "multiLocation": [
+        {
+          "externalId": "3827197",
+          "location": "Osaka",
+          "locations": [
+            "Japan",
+            "Osaka"
+          ]
+        },
+        {
+          "externalId": "4467265",
+          "location": "Aventura, Florida",
+          "locations": [
+            "Aventura"
+          ]
+        },
+        {
+          "externalId": "3827169",
+          "location": "Tokyo",
+          "locations": [
+            "Japan",
+            "Tokyo",
+            "Shinjuku City"
+          ]
+        },
+        {
+          "externalId": "2935039",
+          "location": "東京, 東京都",
+          "locations": [
+            "Japan",
+            "東京",
+            "渋谷区"
+          ]
+        }
+      ],
+      "lastRun": {
+        "status": "OK",
+        "fetched": 452,
+        "accepted": 452,
+        "declaredTotal": 459,
+        "complete": true,
+        "truncated": false,
+        "errors": 0,
+        "ranAt": "2026-09-09T18:00:46.604Z"
+      },
+      "company": "Lacoste",
+      "apiTotal": 469
+    },
+    "aigle": {
+      "active": 109,
+      "withDiffusionsInRaw": 109,
+      "multiLocation": [
+        {
+          "externalId": "2941903",
+          "location": "Île-de-France",
+          "locations": [
+            "Paris",
+            "Île-de-France"
+          ]
+        }
+      ],
+      "lastRun": {
+        "status": "OK",
+        "fetched": 109,
+        "accepted": 109,
+        "declaredTotal": 110,
+        "complete": true,
+        "truncated": false,
+        "errors": 0,
+        "ranAt": "2026-09-09T18:00:05.949Z"
+      },
+      "company": "Aigle",
+      "apiTotal": 109
+    },
+    "gant": {
+      "active": 108,
+      "withDiffusionsInRaw": 108,
+      "multiLocation": [
+        {
+          "externalId": "4564981",
+          "location": "Düsseldorf, Nordrhein-Westfalen, 40474",
+          "locations": [
+            "Holzwickede",
+            "Düsseldorf"
+          ]
+        },
+        {
+          "externalId": "4564965",
+          "location": "Düsseldorf, Nordrhein-Westfalen",
+          "locations": [
+            "Holzwickede",
+            "Düsseldorf"
+          ]
+        },
+        {
+          "externalId": "4477783",
+          "location": "Düsseldorf, Nordrhein-Westfalen, 40474",
+          "locations": [
+            "Holzwickede",
+            "Düsseldorf"
+          ]
+        },
+        {
+          "externalId": "4572389",
+          "location": "Uppsala, Uppsala County",
+          "locations": [
+            "Uppsala län",
+            "Uppsala"
+          ]
+        }
+      ],
+      "lastRun": {
+        "status": "OK",
+        "fetched": 108,
+        "accepted": 108,
+        "declaredTotal": 112,
+        "complete": true,
+        "truncated": false,
+        "errors": 0,
+        "ranAt": "2026-09-09T18:00:06.033Z"
+      },
+      "company": "GANT",
+      "apiTotal": 108
+    },
+    "the-kooples": {
+      "active": 71,
+      "withDiffusionsInRaw": 69,
+      "multiLocation": [],
+      "lastRun": {
+        "status": "OK",
+        "fetched": 69,
+        "accepted": 69,
+        "declaredTotal": 69,
+        "complete": true,
+        "truncated": false,
+        "errors": 0,
+        "ranAt": "2026-09-09T18:00:01.378Z"
+      },
+      "company": "The Kooples",
+      "apiTotal": 71
+    }
+  }
+}

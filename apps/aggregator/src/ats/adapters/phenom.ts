@@ -146,6 +146,8 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
   let declaredTotal: number | undefined;
+  const issues = new Set<string>();
+  let pages = 0, rawCount = 0, withoutData = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
 
   for (let page = 1; page <= MAX_PAGES; page++) {
     const response = await fetchJson<PhenomResponse>(
@@ -154,10 +156,12 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
     );
 
     const batch = response.jobs ?? [];
+    pages++; rawCount += batch.length;
     let fresh = 0;
 
     for (const entry of batch) {
-      const job = entry.data ? parsePhenomJob(entry.data, origin, config) : null;
+      if (!entry.data) { withoutData++; continue; }
+      const job = parsePhenomJob(entry.data, origin, config);
       if (!job || seen.has(job.externalId)) continue;
       seen.add(job.externalId);
       jobs.push(job);
@@ -165,14 +169,28 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
     }
 
     const total = response.totalCount ?? response.count;
-    if (total !== undefined) declaredTotal = total;
+    if (total !== undefined) {
+      if (declaredTotal === undefined) declaredTotal = total;
+      else if (declaredTotal !== total) issues.add('SOURCE_TOTAL_CHANGED');
+    }
 
-    // A short page, or one that adds nothing new, is the end of the board.
-    if (batch.length < PAGE_SIZE || fresh === 0) break;
-    if (total !== undefined && jobs.length >= total) break;
+    if (total !== undefined && jobs.length >= total) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
+    // A page that adds nothing new is the end of the board (or a loop).
+    if (fresh === 0) { termination = batch.length ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break; }
+    /**
+     * Foot Locker, 2026-09-09 : 2 836 lues pour 2 847 déclarées. Une page
+     * COURTE n'est pas la fin quand le total n'est pas atteint — l'API peut
+     * servir une page allégée (entrées sans `data`, doublons) au milieu du
+     * board ; on ne s'arrête sur une page courte qu'en l'absence de total.
+     */
+    if (total === undefined && batch.length < PAGE_SIZE) { termination = 'SHORT_PAGE'; break; }
   }
 
-  return { jobs, declaredTotal };
+  const complete = declaredTotal !== undefined && jobs.length === declaredTotal && issues.size === 0;
+  if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
+  return { jobs, declaredTotal, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredTotal !== undefined && jobs.length < declaredTotal),
+    enumeration: { method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION', endpoint: `${origin}/api/jobs`, pages, rawCount, termination, issues: [...issues],
+      scopes: [{ scope: 'jobs', declaredTotal: declaredTotal ?? -1, uniqueIds: jobs.length, pages, complete }, { scope: 'entriesWithoutData', declaredTotal: withoutData, uniqueIds: withoutData, pages, complete: true }] } };
 }
 
 /**

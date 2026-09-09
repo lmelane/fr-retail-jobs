@@ -1,0 +1,105 @@
+{
+  "at": "2026-09-09T18:01:25.020186+00:00",
+  "applicationCommit": "e67e9ea",
+  "applicationMerge": "2031fe3a8cf9fa20d61687216bb19a3195597b68",
+  "nativeRunId": "562185a0-aedf-4006-aae1-e77aa979e29b",
+  "deploymentId": "a326affd-c44d-4899-abcc-b32ee14dca5f",
+  "startedAt": "2026-09-09T17:59:52.280Z",
+  "finishedAt": "2026-09-09T18:00:46.690Z",
+  "status": "COMPLETED",
+  "sources": {
+    "the-kooples": {
+      "stats": {
+        "fetched": 69,
+        "created": 0,
+        "updated": 69,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 69,
+        "withDescription": 69,
+        "withCountry": 69,
+        "withDate": 69
+      },
+      "enumeration": {
+        "fetched": 69,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 69
+      }
+    },
+    "aigle": {
+      "stats": {
+        "fetched": 109,
+        "created": 2,
+        "updated": 107,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 110,
+        "withDescription": 109,
+        "withCountry": 109,
+        "withDate": 109
+      },
+      "enumeration": {
+        "fetched": 109,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 110
+      }
+    },
+    "gant": {
+      "stats": {
+        "fetched": 108,
+        "created": 0,
+        "updated": 108,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 112,
+        "withDescription": 77,
+        "withCountry": 108,
+        "withDate": 108
+      },
+      "enumeration": {
+        "fetched": 108,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 112
+      }
+    },
+    "lacoste": {
+      "stats": {
+        "fetched": 452,
+        "created": 3,
+        "updated": 449,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 459,
+        "withDescription": 448,
+        "withCountry": 452,
+        "withDate": 452
+      },
+      "enumeration": {
+        "fetched": 452,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 459
+      }
+    }
+  },
+  "logProof": {
+    "railwayLines": 26,
+    "maxLinesPerSecond": 10,
+    "droppedMessageWarnings": 0,
+    "durableEvents": 25,
+    "persistenceFailures": 0
+  },
+  "globalWorkersRemainPaused": true,
+  "remaining": "Diffusions are now kept in RAW with their locations; a JobLocation model for multi-location postings remains open (backlog)."
+}
