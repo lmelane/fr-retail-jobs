@@ -192,7 +192,9 @@ function baseCte(mode: SnapshotMode, start: Date, end: Date): Prisma.Sql {
       JOIN "Company" c ON c.id = j."companyId"
       LEFT JOIN reopened r ON r."jobId" = j.id
       LEFT JOIN closed_events cl ON cl."jobId" = j.id
-      WHERE ${active} OR ${isNew} OR ${isClosed} OR r."jobId" IS NOT NULL
+      -- Preserved aliases are not another opening or a source closure. Never
+      -- turn their lastSeenAt into a synthetic closedAt during reconstruction.
+      WHERE j."mergedIntoId" IS NULL AND (${active} OR ${isNew} OR ${isClosed} OR r."jobId" IS NOT NULL)
     )`;
 }
 

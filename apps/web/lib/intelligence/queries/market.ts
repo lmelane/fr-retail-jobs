@@ -41,8 +41,8 @@ async function windowFacts(): Promise<WindowFacts[]> {
   try {
     const rows = await prisma.$queryRaw<{ days: number; opened: number; closed: number }[]>(Prisma.sql`
       SELECT w.days,
-        (SELECT count(*)::int FROM "Job" WHERE "firstSeenAt" >= now() - (w.days || ' days')::interval) AS "opened",
-        (SELECT count(*)::int FROM "Job" WHERE "closedAt" IS NOT NULL AND NOT "isActive" AND "closedAt" >= now() - (w.days || ' days')::interval) AS "closed"
+        (SELECT count(*)::int FROM "Job" WHERE "mergedIntoId" IS NULL AND "firstSeenAt" >= now() - (w.days || ' days')::interval) AS "opened",
+        (SELECT count(*)::int FROM "Job" WHERE "mergedIntoId" IS NULL AND "closedAt" IS NOT NULL AND NOT "isActive" AND "closedAt" >= now() - (w.days || ' days')::interval) AS "closed"
       FROM (VALUES ${Prisma.join(WINDOWS.map((w) => Prisma.sql`(${w.days}::int)`))}) AS w(days) ORDER BY w.days`);
     return WINDOWS.map((w) => {
       const r = rows.find((x) => x.days === w.days);

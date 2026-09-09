@@ -17,7 +17,7 @@ export const INTEL_REVALIDATE_SECONDS = 3600;
 
 export function cached<A extends unknown[], R>(name: string, fn: (...args: A) => Promise<R>): (...args: A) => Promise<R> {
   return (...args: A) =>
-    unstable_cache(() => fn(...args), ['intelligence', name, JSON.stringify(args)], {
+    unstable_cache(() => fn(...args), ['intelligence-canonical-postings-v2', name, JSON.stringify(args)], {
       revalidate: INTEL_REVALIDATE_SECONDS,
       tags: ['intelligence'],
     })();

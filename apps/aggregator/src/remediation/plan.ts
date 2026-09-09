@@ -106,7 +106,7 @@ export async function verifyRepair(prisma: Prisma.TransactionClient, invariants:
   if (invariants.includes('lifecycle')) {
     const bad = await prisma.job.findFirst({ where: { OR: [
       { isActive: true, closedAt: { not: null } },
-      { isActive: false, closedAt: null },
+      { isActive: false, closedAt: null, mergedIntoId: null },
       { isActive: true, sources: { none: { isActive: true } } },
     ] }, select: { id: true } });
     if (bad) throw new Error(`Lifecycle invariant failed: ${bad.id}`);

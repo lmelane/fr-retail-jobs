@@ -2,6 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { prisma } from '@catwalks/db';
 import { getJobs, whereClause, getJobStatus, getOfferState, resolveOfferParam } from './jobs';
 import { offerPath } from './offer-url';
+import { closedFacts } from './intelligence/facts';
 
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
 const enabled = !!url && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && /test/i.test(url.pathname);
@@ -69,7 +70,7 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     await prisma.job.create({ data: {
       id: origin, companyId: `${prefix}0`, externalId: 'old-posting', source: 'GENERIC_JSONLD',
       title: 'Ancien titre', url: 'https://example.com/old-posting', fingerprint: origin,
-      isActive: false, mergedIntoId: target,
+      isActive: false, mergedIntoId: target, closedAt: new Date(),
       events: { create: { type: 'MERGED', field: 'mergedInto', after: target } },
     } });
     const state = await getJobStatus(origin);
@@ -79,9 +80,11 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     expect(await getOfferState(origin)).toBe('active');
     expect((await resolveOfferParam(origin))).toMatchObject({ status: 'active', job: { id: target }, matchedId: origin });
     expect(offerPath(state.job)).not.toContain(origin);
+    expect((await closedFacts({ companyId: `${prefix}0` })).closed30d).toBe(0);
     await prisma.job.update({ where: { id: target }, data: { isActive: false, closedAt: new Date() } });
     expect(await getOfferState(origin)).toBe('closed');
     expect((await getJobStatus(origin)).status).toBe('closed');
+    expect((await closedFacts({ companyId: `${prefix}0` })).closed30d).toBe(1);
     await prisma.job.delete({ where: { id: origin } });
     await prisma.job.update({ where: { id: target }, data: { isActive: true, closedAt: null } });
   });

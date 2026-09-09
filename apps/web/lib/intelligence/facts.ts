@@ -143,7 +143,7 @@ export async function closedFacts(scope: Scope = {}): Promise<ClosedFacts> {
       (percentile_cont(0.5) WITHIN GROUP (ORDER BY extract(epoch FROM (j."closedAt" - j."firstSeenAt")) / 86400.0)
         FILTER (WHERE j."closedAt" >= now() - interval '30 days'))::float AS "median",
       count(*) FILTER (WHERE j."closedAt" >= now() - interval '30 days')::int AS "sample"
-    ${FROM} WHERE NOT j."isActive" AND j."closedAt" IS NOT NULL AND ${where}`);
+    ${FROM} WHERE j."mergedIntoId" IS NULL AND NOT j."isActive" AND j."closedAt" IS NOT NULL AND ${where}`);
   return { closed7d: row.closed7d, closed30d: row.closed30d, medianLifespanDays30: row.median, closedSample30: row.sample };
 }
 
