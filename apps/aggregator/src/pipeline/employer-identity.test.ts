@@ -7,6 +7,7 @@ import { resolveCompany } from '../normalize/company.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
 import { buildEmployerRepair, applyEmployerRepair, type EmployerRepairSpec } from '../identity/repair.js';
 import { digest } from '../remediation/plan.js';
+import { recordDiscoveredEmployer } from './discoverFashionJobs.js';
 
 const p = new PrismaClient();
 async function clear() {
@@ -39,6 +40,18 @@ async function pair() {
 }
 
 describe('Employer identity evidence and conservation', () => {
+  it('a repeated directory observation cannot overwrite canonical identity or forget raw drift', async () => {
+    const company = { name: 'Maison 123', fashionjobsUrl: 'https://fr.fashionjobs.com/recrutement/maison-123,1.html', fashionjobsSlug: 'maison-123,1', offerCount: 40 };
+    const first = await recordDiscoveredEmployer(p, company);
+    const before = await p.company.findUniqueOrThrow({ where: { id: first.id } });
+    const changed = { ...company, name: 'Maison 123 40', offerCount: 39 };
+    expect(await recordDiscoveredEmployer(p, changed)).toEqual({ id: first.id, needsReview: true });
+    await recordDiscoveredEmployer(p, changed);
+    expect(await p.company.findUniqueOrThrow({ where: { id: first.id } })).toMatchObject({ name: before.name, canonicalKey: before.canonicalKey, fashionjobsOfferCount: 39 });
+    expect(await p.company.count()).toBe(1);
+    expect(await p.employerObservation.count()).toBe(2);
+    expect(await p.employerObservation.findFirst({ where: { rule: 'REVIEW_REQUIRED' } })).toMatchObject({ rawEmployerName: changed.name, canonicalEmployerId: first.id });
+  });
   it('preserves genuine numerals, countries, legal forms and Unicode in comparison labels', () => {
     for (const name of ['Maison 123', 'DEVRED 1902', 'Medik8', 'Coach Shanghai Limited 2', 'LTD INTERNATIONAL', 'France', '資生堂']) {
       expect(normalizedEmployerName(name)).toBe(name.normalize('NFKC').toLowerCase());
@@ -91,6 +104,38 @@ describe('Employer identity evidence and conservation', () => {
     const plan = await buildEmployerRepair(p, spec(a.id, b.id));
     await expect(applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789')).rejects.toThrow('Posting identity collision');
     expect(await p.job.count()).toBe(2); expect(await p.employerIdentityReview.count()).toBe(0);
+  });
+  it('consolidates proven postings atomically and both sources replay into one preserved ID', async () => {
+    const a = await company('Old banner'), b = await company('Current banner');
+    const input = (name: string, sourceKey: string) => ({ ...posting(name, 'native-42', sourceKey), raw: { posting: { issuer: 'https://careers.example.com', id: 42 } } });
+    const { rawEmployerName: ignoredA, ...legacyA } = input(a.name, 'old-portal');
+    const { rawEmployerName: ignoredB, ...legacyB } = input(b.name, 'new-portal');
+    const old = await upsertDeduplicated(p, legacyA), current = await upsertDeduplicated(p, legacyB);
+    const sources = await p.jobSource.findMany({ orderBy: { id: 'asc' } });
+    const events = await p.jobEvent.findMany({ orderBy: { id: 'asc' } });
+    const before = await p.job.findUniqueOrThrow({ where: { id: old.jobId } });
+    const plan = await buildEmployerRepair(p, { ...spec(a.id, b.id), aliases: [
+      { sourceKey: 'old-portal', rawName: a.name, companyId: b.id },
+      { sourceKey: 'new-portal', rawName: b.name, companyId: b.id },
+    ], postingMerges: [{ fromId: old.jobId, toId: current.jobId, issuer: 'https://careers.example.com', postingId: '42', witnesses: sources.map(s => ({ sourceId: s.id, issuerPath: ['posting', 'issuer'], postingIdPath: ['posting', 'id'] })) }] });
+    // Same-looking IDs are not enough when the stored issuer contradicts the plan.
+    const poisoned = structuredClone(plan); poisoned.postingMerges![0].issuer = 'https://another-tenant.example.com';
+    await expect(applyEmployerRepair(p, poisoned, digest(poisoned), 'abcdef0123456789')).rejects.toThrow('Invalid posting RAW witness');
+    expect(await p.employerIdentityReview.count()).toBe(0);
+    await applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789');
+    expect(await p.job.count()).toBe(2); expect(await p.job.count({ where: { isActive: true } })).toBe(1);
+    expect(await p.job.findUniqueOrThrow({ where: { id: old.jobId } })).toMatchObject({ mergedIntoId: current.jobId, isActive: false, closedAt: before.closedAt });
+    expect(await p.jobSource.findMany({ orderBy: { id: 'asc' } })).toEqual(sources.map(s => ({ ...s, jobId: current.jobId })));
+    expect(await p.jobEvent.findMany({ where: { id: { in: events.map(e => e.id) } }, orderBy: { id: 'asc' } })).toEqual(events);
+    for (let pass = 0; pass < 2; pass++) for (const candidate of [input(a.name, 'old-portal'), input(b.name, 'new-portal')]) {
+      expect((await upsertDeduplicated(p, candidate)).jobId).toBe(current.jobId);
+    }
+    expect(await p.job.count()).toBe(2); expect(await p.job.count({ where: { isActive: true } })).toBe(1);
+    await expect(p.job.update({ where: { id: old.jobId }, data: { isActive: true } })).rejects.toThrow();
+    await expect(p.job.update({ where: { id: old.jobId }, data: { mergedIntoId: null } })).rejects.toThrow('immutable');
+    await expect(p.jobSource.update({ where: { id: sources[0].id }, data: { jobId: old.jobId } })).rejects.toThrow('cannot own source');
+    await expect(p.job.update({ where: { id: current.jobId }, data: { companyId: a.id } })).rejects.toThrow('employer mismatch');
+    expect((await applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789')).alreadyApplied).toBe(true);
   });
 });
 

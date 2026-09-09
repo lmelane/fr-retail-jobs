@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { prisma } from '@catwalks/db';
-import { getJobs, whereClause } from './jobs';
+import { getJobs, whereClause, getJobStatus, getOfferState, resolveOfferParam } from './jobs';
+import { offerPath } from './offer-url';
 
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
 const enabled = !!url && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && /test/i.test(url.pathname);
@@ -62,5 +63,26 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     await prisma.company.update({ where: { id: `${prefix}0` }, data: { name: `${prefix}0` } });
     expect((await getJobs({ q: 'UniqueSearchTitle', group })).total).toBe(0);
     expect((await getJobs({ q: 'UniqueMaisonLabel', group })).total).toBe(0);
+  });
+  it('resolves an absorbed posting for pages, old URLs and the middleware status probe', async () => {
+    const target = `${prefix}000`, origin = `${prefix}old-posting`;
+    await prisma.job.create({ data: {
+      id: origin, companyId: `${prefix}0`, externalId: 'old-posting', source: 'GENERIC_JSONLD',
+      title: 'Ancien titre', url: 'https://example.com/old-posting', fingerprint: origin,
+      isActive: false, mergedIntoId: target,
+      events: { create: { type: 'MERGED', field: 'mergedInto', after: target } },
+    } });
+    const state = await getJobStatus(origin);
+    expect(state.status).toBe('active');
+    if (state.status === 'missing') throw new Error('Canonical posting missing');
+    expect(state.job.id).toBe(target);
+    expect(await getOfferState(origin)).toBe('active');
+    expect((await resolveOfferParam(origin))).toMatchObject({ status: 'active', job: { id: target }, matchedId: origin });
+    expect(offerPath(state.job)).not.toContain(origin);
+    await prisma.job.update({ where: { id: target }, data: { isActive: false, closedAt: new Date() } });
+    expect(await getOfferState(origin)).toBe('closed');
+    expect((await getJobStatus(origin)).status).toBe('closed');
+    await prisma.job.delete({ where: { id: origin } });
+    await prisma.job.update({ where: { id: target }, data: { isActive: true, closedAt: null } });
   });
 });

@@ -4,6 +4,7 @@ import { Prisma, type PrismaClient } from '@prisma/client';
 import { lockCompanyRows, lockSourceWrites, lockEmployerCatalogue } from '../lib/writeLocks.js';
 import { employerAliasKey, normalizedEmployerName } from '../normalize/employerName.js';
 import { digest, json, stable } from '../remediation/plan.js';
+import { validatePostingMerges, type PostingMerge } from './postingRepair.js';
 
 export type EmployerRepairSpec = {
   batchId: string;
@@ -12,6 +13,7 @@ export type EmployerRepairSpec = {
   reviewedAt: string;
   evidence: { url: string; sha256: string; artifactText: string; explanation: string }[];
   merges: { fromId: string; toId: string }[];
+  postingMerges?: PostingMerge[];
   aliases: { sourceKey: string; rawName: string; companyId: string; legacyAliasId?: string }[];
   companies?: { id: string; name?: string; kind?: 'MAISON' | 'BRAND' | 'GROUP' | 'RETAILER'; parentGroupId?: string | null }[];
 };
@@ -69,7 +71,7 @@ export async function buildEmployerRepair(prisma: PrismaClient, spec: EmployerRe
   }, { isolationLevel: 'RepeatableRead', timeout: 120_000 });
 }
 
-/** No deletes, no posting deduplication, no inferred aliases: one atomic, replayable decision. */
+/** No deletes or inferred aliases: one atomic, replayable reviewed decision. */
 export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRepairPlan, expectedHash: string, commitHash: string) {
   validate(plan);
   const planHash = digest(plan);
@@ -98,14 +100,17 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
       if ((from.kind === 'GROUP') !== (to.kind === 'GROUP')) throw new Error('A group and its brand cannot be merged');
       if (from.parentGroupId && from.parentGroupId !== to.parentGroupId) throw new Error('Parent relationship conflict requires a separate review');
     }
-    // The legacy ATS/externalId tuple can overlap across feeds. Its SQL index
-    // is no longer unique; this is an application guard requiring a separate
-    // posting review before an employer merge can leave overlapping records.
+    const postingMerges = plan.postingMerges ?? [];
+    validatePostingMerges(before.jobs, postingMerges, moves);
+    const postingTargets = new Map(postingMerges.map(m => [m.fromId, m.toId]));
+    // A collision must be covered by explicit RAW witnesses. Existing redirects
+    // are historical IDs, not additional canonical postings.
     const keys = new Map<string, string>();
     for (const job of before.jobs) {
+      if (job.mergedIntoId) continue;
       const key = JSON.stringify([moves.get(job.companyId) ?? job.companyId, job.source, job.externalId]);
       const other = keys.get(key);
-      if (other) throw new Error(`Posting identity collision: ${other}/${job.id}`);
+      if (other && (postingTargets.get(other) ?? other) !== (postingTargets.get(job.id) ?? job.id)) throw new Error(`Posting identity collision: ${other}/${job.id}`);
       keys.set(key, job.id);
     }
     for (const a of plan.aliases) {
@@ -128,6 +133,25 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
       await tx.dataCorrection.create({ data: { batchId: plan.batchId, planHash, commitHash, finding: 'LOT1_EMPLOYER_IDENTITY', entityType: 'Job', entityId: job.id, before: { companyId: job.companyId, clusterKey: job.clusterKey, fingerprint: job.fingerprint }, after: patch, evidence: { reviewId: plan.batchId } } });
       await tx.jobEvent.create({ data: { jobId: job.id, type: 'CORRECTED', field: 'companyId', before: job.companyId, after: companyId } });
       movedJobs++;
+    }
+    for (const decision of postingMerges) {
+      const from = before.jobs.find(j => j.id === decision.fromId)!;
+      // One keeper can absorb several reviewed duplicates. Read its current
+      // lifecycle to preserve the union of observations through this transaction.
+      const to = await tx.job.findUniqueOrThrow({ where: { id: decision.toId }, omit: { searchText: true } });
+      for (const source of from.sources) {
+        await tx.jobSource.update({ where: { id: source.id }, data: { jobId: to.id } });
+        await tx.dataCorrection.create({ data: { batchId: plan.batchId, planHash, commitHash, finding: 'LOT1_POSTING_CONSOLIDATION', entityType: 'JobSource', entityId: source.id, before: { jobId: from.id }, after: { jobId: to.id }, evidence: json(decision) as Prisma.InputJsonValue } });
+      }
+      const patch = {
+        firstSeenAt: new Date(Math.min(from.firstSeenAt.getTime(), to.firstSeenAt.getTime())),
+        lastSeenAt: new Date(Math.max(from.lastSeenAt.getTime(), to.lastSeenAt.getTime())),
+        isActive: from.isActive || to.isActive,
+        closedAt: from.isActive || to.isActive ? null : to.closedAt,
+      };
+      await tx.job.update({ where: { id: to.id }, data: patch });
+      await tx.job.update({ where: { id: from.id }, data: { isActive: false, mergedIntoId: to.id, events: { create: { type: 'MERGED', field: 'mergedInto', after: to.id } } } });
+      await tx.dataCorrection.create({ data: { batchId: plan.batchId, planHash, commitHash, finding: 'LOT1_POSTING_CONSOLIDATION', entityType: 'PostingMerge', entityId: from.id, before: json({ from: { isActive: from.isActive, mergedIntoId: from.mergedIntoId }, to: { id: to.id, firstSeenAt: to.firstSeenAt, lastSeenAt: to.lastSeenAt, isActive: to.isActive, closedAt: to.closedAt } }) as Prisma.InputJsonValue, after: json({ from: { isActive: false, mergedIntoId: to.id }, to: { id: to.id, ...patch } }) as Prisma.InputJsonValue, evidence: json(decision) as Prisma.InputJsonValue } });
     }
     for (const m of plan.merges) {
       await tx.company.update({ where: { id: m.fromId }, data: { mergedIntoId: m.toId, identityReviewId: plan.batchId } });
@@ -176,15 +200,30 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
       }
     }
     const after = await snapshot(tx, plan.companyIds);
-    if (before.jobs.length !== after.jobs.length || before.jobs.filter(j => j.isActive).length !== after.jobs.filter(j => j.isActive).length) throw new Error('Job conservation failed');
+    const expected = new Map(before.jobs.map(j => [j.id, { ...j, sources: [...j.sources], events: [...j.events] }]));
+    for (const [fromId, toId] of moves) for (const j of expected.values()) if (j.companyId === fromId) {
+      j.companyId = toId;
+      const rekey = (v: string | null) => v === null ? null : v.includes('|') ? companies.get(toId)!.canonicalKey + v.slice(v.indexOf('|')) : v;
+      j.clusterKey = rekey(j.clusterKey); j.fingerprint = rekey(j.fingerprint)!;
+    }
+    for (const d of postingMerges) {
+      const from = expected.get(d.fromId)!, to = expected.get(d.toId)!;
+      to.sources.push(...from.sources.map(s => ({ ...s, jobId: to.id })));
+      to.sources.sort((a, b) => a.id.localeCompare(b.id)); from.sources = [];
+      to.firstSeenAt = new Date(Math.min(from.firstSeenAt.getTime(), to.firstSeenAt.getTime()));
+      to.lastSeenAt = new Date(Math.max(from.lastSeenAt.getTime(), to.lastSeenAt.getTime()));
+      to.isActive ||= from.isActive; if (to.isActive) to.closedAt = null;
+      from.isActive = false; from.mergedIntoId = to.id;
+    }
+    if (before.jobs.length !== after.jobs.length || [...expected.values()].filter(j => j.isActive).length !== after.jobs.filter(j => j.isActive).length) throw new Error('Job conservation failed');
     // Strong invariant: every pre-existing representation, RAW and event survives;
     // every job field outside the allowed identity changes is byte-identical.
     const byId = new Map(after.jobs.map(j => [j.id, j]));
     for (const old of before.jobs) {
       const next = byId.get(old.id);
       if (!next) throw new Error(`Missing job ${old.id}`);
-      const strip = ({ companyId, clusterKey, fingerprint, updatedAt, events, ...rest }: typeof old) => rest;
-      if (stable(json(strip(old))) !== stable(json(strip(next)))) throw new Error(`Unexpected job/RAW/source change: ${old.id}`);
+      const strip = ({ updatedAt, events, ...rest }: typeof old) => rest;
+      if (stable(json(strip(expected.get(old.id)!))) !== stable(json(strip(next)))) throw new Error(`Unexpected job/RAW/source change: ${old.id}`);
       const preserved = new Map(next.events.map(e => [e.id, stable(json(e))]));
       if (old.events.some(e => preserved.get(e.id) !== stable(json(e)))) throw new Error(`History loss: ${old.id}`);
       if (moves.has(next.companyId)) throw new Error(`Job still references merged employer: ${old.id}`);

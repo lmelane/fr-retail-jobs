@@ -338,6 +338,11 @@ model JobSource {
 
 model Job {
   id            String   @id @default(cuid())
+  // An absorbed posting retains its ID, content and history. It can never reopen;
+  // its source representations and public URL resolve to the canonical posting.
+  mergedIntoId  String?
+  mergedInto    Job?     @relation("JobRedirect", fields: [mergedIntoId], references: [id], onDelete: NoAction)
+  mergedJobs    Job[]    @relation("JobRedirect")
   companyId     String
   company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   externalId    String
@@ -542,6 +547,7 @@ model Job {
   updatedAt     DateTime @updatedAt
 
   @@index([companyId, source, externalId])
+  @@index([mergedIntoId])
   @@index([clusterKey])
   @@index([department])
   @@index([employmentTerm])

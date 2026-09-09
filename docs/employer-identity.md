@@ -12,7 +12,7 @@ Historical assignments remain explicitly `LEGACY_UNREVIEWED`. This is not an evi
 
 `EmployerObservation` records the original label, origin, normalized label, canonical ID, rule, alias/review ID and RAW hash per version. Missing historical evidence is not reconstructed from a canonical label. Reviews and observations are append-only in PostgreSQL. Company names and parent relationships no longer change as a side effect of ingesting one offer.
 
-Both ingest and weekly reconciliation require the same actual `Job.companyId` before comparing postings. A historical cluster-key collision is insufficient. Employer identity repair never merges job records.
+Both ingest and weekly reconciliation require the same actual `Job.companyId` before comparing postings. A historical cluster-key collision is insufficient. An employer merge does not authorize posting consolidation. An explicit posting decision additionally needs matching native issuer and requisition witnesses in the two archived RAW representations.
 
 ## Reviewed repairs
 
@@ -31,9 +31,9 @@ The specification contains:
 - scoped raw aliases;
 - optional canonical name/kind and parent relationships.
 
-The plan captures all affected companies, predecessor redirects, offers (including closed ones), representations and events. Its hash and expected before-state must match at application time. A catalogue lock drains identity writes before the atomic transaction. Source/company locks follow the same ordering as ingestion. Conflicting ATS posting IDs abort with the two job IDs; they are never deleted or silently fused.
+The plan captures all affected companies, predecessor redirects, offers (including closed ones), representations and events. Its hash and expected before-state must match at application time. A catalogue lock drains identity writes before the atomic transaction. Source/company locks follow the same ordering as ingestion. Conflicting ATS posting IDs abort with the two job IDs unless the plan includes a separately witnessed posting consolidation; records are never deleted or silently fused.
 
-Changes produce append-only `DataCorrection` entries and `CORRECTED` job events. Old Company rows survive. Alias owners and predecessor redirects are flattened when roots are merged again. Every existing Job ID, non-identity field, JobSource, RAW payload and event must survive unchanged. Counts alone are insufficient: postconditions compare individual rows and histories. Re-applying the same reviewed batch is idempotent; changing its content is rejected.
+Changes produce append-only `DataCorrection` entries and `CORRECTED` job events. Old Company rows survive. Alias owners and predecessor redirects are flattened when roots are merged again. Every existing Job ID, RAW payload and prior event must survive unchanged. In an explicit posting consolidation only the reviewed JobSource ownership, posting redirect/activity and canonical first/last observation envelope may change, in addition to employer fields. Postconditions reconstruct these exact changes and compare all remaining fields. Counts alone are insufficient: postconditions compare individual rows and histories. Re-applying the same reviewed batch is idempotent; changing its content is rejected.
 
 Take a current database backup, rehearse on a restored copy, run regressions, commit/review/merge and deploy before applying to production. Compare front results, counts and old URLs with the repaired DB. Do not resume a massive ingestion while outstanding review blocks are unmeasured. A compensating repair must use the preserved before-state and an explicit new review; never edit old audit evidence.
 
@@ -54,3 +54,12 @@ Workday listings without a successful detail and employer field carry an explici
 When a source configuration changes, revalidate the official employer link and create a new repair plan for its existing alias. Applying that explicit decision updates the configuration binding in place and records the previous binding and review in DataCorrection. An unchanged alias is not automatically rebound during ingestion.
 
 TalentView passes the native `entity.name` claim to the reviewed resolver while retaining the configured employer as the unresolved candidate. An operational unit is not automatically a new Company. Teamtailor passes its explicit `_jobposting.hiringOrganization.name` and field provenance. Both preserve RAW before normalization; the audit inventories those native paths.
+
+
+## Business identity and recurrence
+
+The objective is fidelity to the employer’s organization, not fewer catalogue rows. Group, brand, retailer, hiring legal entity and operational unit are different concepts. A shared domain, parent or ATS does not authorize their merger. Preserve separate employers when that reflects the business. A verified rebrand can justify an alias/redirect; posting equality is reviewed independently of that business decision.
+
+`Job.mergedIntoId` preserves an absorbed posting and its old public URL. PostgreSQL forbids an active redirect, sources owned by a redirect, a missing MERGED event, cycles, a change of redirect target, and cross-employer redirects. Canonical lifecycle checks follow the target. Consolidation retains the prior closedAt on the absorbed row; it does not invent a source closure. Ingestion finds moved source representations by their existing stable IDs, so a replay cannot reactivate the absorbed row. Reconciliation writes the same redirect relation.
+
+The FashionJobs directory importer updates discovery metadata only. It never rewrites an existing employer name or canonical key, follows an existing employer redirect, archives each distinct raw observation in EmployerObservation, and surfaces changed labels as REVIEW_REQUIRED. A directory observation is not an official identity verification. No FashionJobs job offers are fetched by this workflow.
