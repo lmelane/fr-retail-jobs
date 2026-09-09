@@ -1,0 +1,14 @@
+{
+  "at": "2026-09-09T12:54:57.952Z",
+  "result": {
+    "total": 2,
+    "ok": 2,
+    "failed": 0,
+    "timedOut": 0,
+    "failures": [],
+    "incidents": []
+  },
+  "before": 77359,
+  "after": 77359,
+  "deletedIds": []
+}

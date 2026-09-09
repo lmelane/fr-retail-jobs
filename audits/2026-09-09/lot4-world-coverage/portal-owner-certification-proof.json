@@ -1,0 +1,45 @@
+{
+  "at": "2026-09-09T12:49:22.692Z",
+  "database": "LOCAL_REPLAY_ONLY",
+  "commit": "46054a7159401f6a2d43b4b981ba45dba98d4106",
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 3
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "certifications": [
+    {
+      "written": {
+        "sourceKey": "escada-parfums-16",
+        "sourceHash": "e1a886df31e8577806647d29eb857afb54e00d5f5b624401a572fd2309c13a91",
+        "verdict": "VERIFIED",
+        "written": 1
+      },
+      "promoted": {
+        "key": "escada-parfums-16",
+        "from": "PAUSED",
+        "to": "ACTIVE"
+      }
+    },
+    {
+      "written": {
+        "sourceKey": "jean-paul-gaultier-5",
+        "sourceHash": "e30d77acfed9643b8af79ee85c5c74eca7683c841e6e6e03f7a794e8defe0b87",
+        "verdict": "VERIFIED",
+        "written": 1
+      },
+      "promoted": {
+        "key": "jean-paul-gaultier-5",
+        "from": "PAUSED",
+        "to": "ACTIVE"
+      }
+    }
+  ],
+  "jobCount": 77352,
+  "active": 74124
+}

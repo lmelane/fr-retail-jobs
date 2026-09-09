@@ -1,0 +1,71 @@
+{
+  "sharedEvidence": {
+    "reviewCount": 1,
+    "reviewBytes": 165905,
+    "correctionRows": 776,
+    "correctionEvidenceBytes": 808439,
+    "allReferenceReview": true
+  },
+  "at": "2026-09-09T12:48:47.163Z",
+  "database": "LOCAL_REPLAY_ONLY",
+  "result": {
+    "alreadyApplied": false,
+    "written": 776,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "allJobs": 77352,
+  "allActive": 74124,
+  "changedJobs": 386,
+  "rawRepresentationsPreserved": 386,
+  "idAndLifecycleConservation": true,
+  "rawConservation": true,
+  "counts": [
+    {
+      "_count": 4,
+      "companyId": "cmtlyh20a032mqf5kbcvcruas",
+      "isActive": false
+    },
+    {
+      "_count": 245,
+      "companyId": "cmtlyh20a032mqf5kbcvcruas",
+      "isActive": true
+    },
+    {
+      "_count": 5,
+      "companyId": "crdc20b76fad2447c3096c7e2b",
+      "isActive": false
+    },
+    {
+      "_count": 132,
+      "companyId": "crdc20b76fad2447c3096c7e2b",
+      "isActive": true
+    }
+  ],
+  "companies": [
+    {
+      "id": "crdc20b76fad2447c3096c7e2b",
+      "name": "Coty",
+      "kind": "GROUP",
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtkdvxxm1sunnf2bzy0l1xiw",
+      "name": "Jean Paul Gaultier",
+      "kind": "UNKNOWN",
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtke4i4q04wvlp2bovmyapbq",
+      "name": "Escada Parfums",
+      "kind": "UNKNOWN",
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyh20a032mqf5kbcvcruas",
+      "name": "Puig",
+      "kind": "GROUP",
+      "mergedIntoId": null
+    }
+  ]
+}
