@@ -39,6 +39,6 @@ describe('Phenom — énumération prouvée contre le total éditeur', () => {
     const r = await fetchPhenomJobs({ origin: 'https://careers.example.com' });
     expect(r.jobs).toHaveLength(149); expect(r.declaredTotal).toBe(150); expect(r.complete).toBe(false);
     expect(r.enumeration?.rawCount).toBe(150); expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['REPEATED_IDS_ACROSS_PAGES', 'ENUMERATION_NOT_PROVEN']));
-    expect(r.enumeration?.pageEvidence).toHaveLength(2); expect(r.enumeration?.pageEvidence?.[1]?.componentCounters).toContain('repeated=1');
+    expect(r.enumeration?.pageEvidence).toHaveLength(3); expect(r.enumeration?.termination).toBe('EMPTY_PAGE'); expect(r.enumeration?.pageEvidence?.[1]?.componentCounters).toContain('repeated=1');
   });
 });
