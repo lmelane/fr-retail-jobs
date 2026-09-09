@@ -237,10 +237,36 @@ describe('RMK v2 — parseRmkLocation', () => {
 });
 
 describe('RMK v2 — parseRmkDate', () => {
+  const usWitnesses: { raw: RmkV2Item & {locale:string}; expectedDate: string; storedDate: string }[] = JSON.parse(readFixture(new URL('./__fixtures__/rmk-douglas-us-dates.json', import.meta.url), 'utf8'));
+  test.each(usWitnesses)('production requisition $raw.id: locale prevents $storedDate', (w) => {
+    expect(parseRmkDate(w.raw.unifiedStandardStart, w.raw.locale)?.toISOString()).toBe(w.expectedDate);
+    const job = normalizeRmkItem(w.raw, w.raw.locale, 'https://jobs.douglas.group')!;
+    expect(job.postedAt?.toISOString()).toBe(w.expectedDate);
+    expect((job.raw as any).rmkDateEvidence).toMatchObject({ rawValue: w.raw.unifiedStandardStart, locale: 'en_US', parsedValue: w.expectedDate });
+  });
+  test.each(['31/02/2026', '29/02/2025', '00/08/2026', '13/13/2026', '1/2-26', '1/2/026'])('rejects invalid calendar input %s', (raw) => {
+    expect(parseRmkDate(raw, 'en_GB')).toBeUndefined();
+  });
+  test('same numbers differ by known locale, unknown formats stay unresolved', () => {
+    expect(parseRmkDate('8/12/26', 'en_US')?.toISOString()).toBe('2026-08-12T00:00:00.000Z');
+    expect(parseRmkDate('8/12/26', 'en_GB')?.toISOString()).toBe('2026-12-08T00:00:00.000Z');
+    expect(parseRmkDate('8/12/26')).toBeUndefined();
+    expect(parseRmkDate('8/12/26', 'xx_XX')).toBeUndefined();
+    expect(parseRmkDate('8.12.26', 'en_US')).toBeUndefined();
+  });
+  test('valid leap day and strict ISO dates work without runtime date guessing', () => {
+    expect(parseRmkDate('29/02/2024', 'fr_FR')?.toISOString()).toBe('2024-02-29T00:00:00.000Z');
+    expect(parseRmkDate('2026-08-27')?.toISOString()).toBe('2026-08-27T00:00:00.000Z');
+    expect(parseRmkDate('2026-08-27T10:30:00+02:00')?.toISOString()).toBe('2026-08-27T08:30:00.000Z');
+    expect(parseRmkDate('2026-02-31')).toBeUndefined();
+    expect(parseRmkDate('2026-02-31T10:00:00Z')).toBeUndefined();
+    expect(parseRmkDate('August 27')).toBeUndefined();
+  });
+
   test('day first in both the dotted two-digit-year and the slashed forms', () => {
-    expect(parseRmkDate('10.07.26')?.toISOString().slice(0, 10)).toBe('2026-07-10');
-    expect(parseRmkDate('23/06/2026')?.toISOString().slice(0, 10)).toBe('2026-06-23');
-    expect(parseRmkDate('05.12.25')?.toISOString().slice(0, 10)).toBe('2025-12-05');
+    expect(parseRmkDate('10.07.26', 'de_DE')?.toISOString().slice(0, 10)).toBe('2026-07-10');
+    expect(parseRmkDate('23/06/2026', 'en_GB')?.toISOString().slice(0, 10)).toBe('2026-06-23');
+    expect(parseRmkDate('05.12.25', 'de_DE')?.toISOString().slice(0, 10)).toBe('2025-12-05');
   });
 
   test('undefined on garbage', () => {

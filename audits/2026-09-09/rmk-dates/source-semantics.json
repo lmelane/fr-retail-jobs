@@ -1,0 +1,30 @@
+{
+  "at": "2026-09-08T22:17:23.535214+00:00",
+  "sources": [
+    {
+      "url": "https://userapps.support.sap.com/sap/support/knowledge/en/3495707",
+      "finding": "Unified Data Model: Most recent sorting is based on Posting date in RCM."
+    },
+    {
+      "url": "https://userapps.support.sap.com/sap/support/knowledge/en/2253054",
+      "finding": "Legacy RMK reference dates can refresh monthly; this behavior does not apply with Unified Data Model."
+    },
+    {
+      "url": "https://jobs.douglas.group/platform/js/localized/strings_en_US.js?h=239e66d2",
+      "finding": "common_dateformat: MM/dd/yyyy",
+      "sha256": "1135ddf8d1c5601e59217ad12031322fd982ee5bcb55967940c03b7fbe2a4ecd"
+    }
+  ],
+  "liveApi": {
+    "url": "https://jobs.douglas.group/services/recruiting/v1/jobs",
+    "locale": "en_US",
+    "sortBy": "date",
+    "total": 8,
+    "sha256": "0922d68a01832dc9e14d3c8c09dec71bddb48beccfad1755d0983fbfa59ce605"
+  },
+  "interpretation": "Douglas uses the Unified Data Model API and its Most Recent sort. Treat unifiedStandardStart as the source posting date, decoded in the request locale. The prior claim that it is an employment start date is not supported. This does not certify legacy RMK reference dates or first-ever publication across reposts.",
+  "limits": [
+    "13 archived US representations have dates to repair; current en_US board contains 8. Date correction must not imply current openness for the other 5.",
+    "HTTP 200 detail HTML can be an empty application shell. It is not independent evidence of a publication date or an open application."
+  ]
+}

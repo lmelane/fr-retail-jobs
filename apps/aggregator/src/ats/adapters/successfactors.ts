@@ -185,17 +185,43 @@ export function parseRmkLocation(raw: string): { location?: string; city?: strin
   return out;
 }
 
-/** "10.07.26", "05.12.25", "23/06/2026" — day first in every locale seen. Pure. */
-export function parseRmkDate(raw?: string): Date | undefined {
+/** Reviewed RMK locale formats, observed on Douglas/Breitling. Unknown locales
+ * stay unresolved instead of silently applying a European or US convention.
+ */
+const RMK_DATE_FORMATS: Record<string, { order: 'DMY' | 'MDY'; separator: string }> = {
+  en_US: { order: 'MDY', separator: '/' },
+  en_GB: { order: 'DMY', separator: '/' },
+  de_DE: { order: 'DMY', separator: '.' },
+  fr_FR: { order: 'DMY', separator: '/' },
+  es_ES: { order: 'DMY', separator: '/' },
+  pl_PL: { order: 'DMY', separator: '.' },
+};
+
+function calendarDate(year: number, month: number, day: number): Date | undefined {
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return year >= 1000 && date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day
+    ? date : undefined;
+}
+
+/** Pure, locale-aware parser: Date.UTC must never roll an invalid month into
+ * another year. No clock, default locale, or permissive Date.parse fallback.
+ */
+export function parseRmkDate(raw?: string, locale?: string): Date | undefined {
   if (!raw) return undefined;
-  const m = /^(\d{1,2})[./-](\d{1,2})[./-](\d{2,4})$/.exec(raw.trim());
-  if (!m) {
-    const iso = Date.parse(raw);
-    return Number.isNaN(iso) ? undefined : new Date(iso);
+  const value = raw.trim();
+  const iso = /^(\d{4})-(\d{2})-(\d{2})(?:T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2}))?$/.exec(value);
+  if (iso) {
+    if (!calendarDate(Number(iso[1]), Number(iso[2]), Number(iso[3]))) return undefined;
+    const millis = Date.parse(value);
+    return Number.isFinite(millis) ? new Date(millis) : undefined;
   }
-  const year = m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3]);
-  const date = new Date(Date.UTC(year, Number(m[2]) - 1, Number(m[1])));
-  return Number.isNaN(date.getTime()) ? undefined : date;
+  const format = locale ? RMK_DATE_FORMATS[locale] : undefined;
+  const m = /^(\d{1,2})([./-])(\d{1,2})\2(\d{2}|\d{4})$/.exec(value);
+  if (!m || !format || m[2] !== format.separator) return undefined;
+  const year = m[4].length === 2 ? 2000 + Number(m[4]) : Number(m[4]);
+  const month = Number(format.order === 'MDY' ? m[1] : m[3]);
+  const day = Number(format.order === 'MDY' ? m[3] : m[1]);
+  return calendarDate(year, month, day);
 }
 
 /** `{origin}[/brand]/job/{urlTitle}/{id}-{locale}` — verified 200 on Douglas (`/default/job/…`) and Breitling (`/job/…`). */
@@ -226,8 +252,12 @@ export function normalizeRmkItem(item: RmkV2Item, locale: string, origin: string
     workingTime: firstRmk(item.custFullTimePartTime),
     remote: firstRmk(item.custOnsiteRemote),
     url,
-    postedAt: parseRmkDate(item.unifiedStandardStart),
-    raw: { ...item, locale, source: 'successfactors-rmk-v2' },
+    postedAt: parseRmkDate(item.unifiedStandardStart, locale),
+    raw: { ...item, locale, source: 'successfactors-rmk-v2', rmkDateEvidence: {
+      field: 'unifiedStandardStart', rawValue: item.unifiedStandardStart ?? null, locale,
+      parserVersion: 'rmk-locale-calendar-v1',
+      parsedValue: parseRmkDate(item.unifiedStandardStart, locale)?.toISOString() ?? null,
+    } },
   };
 }
 
