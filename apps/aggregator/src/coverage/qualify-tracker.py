@@ -62,13 +62,26 @@ for root in a.research:
             rec = json.loads(line); research[rec['id']].append({**rec, 'pass': root})
 
 # ---------------------------------------------------------------- native receipts (latest per source)
+# The most recent evidence is the receipt produced by the NEWEST adapter code, then the latest
+# in time: probe passes ran concurrently on 2026-09-09, and a long alphabetical run on an older
+# revision (b8c153f) finished after targeted re-probes on newer revisions. Ordering by wall
+# clock alone showed 26 false "regressions". Revision dates come from `git show -s --format=%ct`.
+import subprocess
+_rev_dates: dict[str, int] = {}
+def revision_date(rev):
+    if not rev: return 0
+    if rev not in _rev_dates:
+        out = subprocess.run(['git', 'show', '-s', '--format=%ct', rev], capture_output=True, text=True)
+        _rev_dates[rev] = int(out.stdout.split()[0]) if out.returncode == 0 and out.stdout.strip() else 0
+    return _rev_dates[rev]
+def receipt_rank(r): return (revision_date(r.get('revision')), r.get('finishedAt') or r.get('startedAt') or '')
 receipts = {}; ever_complete = set()
 for root in a.probes:
     for f in pathlib.Path(root).glob('*.receipt.json'):
         r = json.load(open(f)); r['receiptFile'] = str(f)
-        key = r['sourceKey']; when = r.get('finishedAt') or r.get('startedAt') or ''
+        key = r['sourceKey']
         if r.get('status') == 'FETCH_COMPLETE': ever_complete.add(key)
-        if key not in receipts or when > (receipts[key].get('finishedAt') or receipts[key].get('startedAt') or ''):
+        if key not in receipts or receipt_rank(r) > receipt_rank(receipts[key]):
             receipts[key] = r
 
 # ---------------------------------------------------------------- per-source verdicts (shared by both tables)

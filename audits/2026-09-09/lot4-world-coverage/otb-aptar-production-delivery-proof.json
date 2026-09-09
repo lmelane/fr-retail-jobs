@@ -1,0 +1,63 @@
+{
+  "at": "2026-09-09T17:46:25.685383+00:00",
+  "applicationCommit": "cf61376",
+  "applicationMerge": "772ee8db3b3936802cc2265da84b5d9f6e1bbc6b",
+  "nativeRunId": "3c2306b5-9052-4f1c-a11e-08a4da1edc96",
+  "deploymentId": "3407e4b9-d58d-42a9-b7d8-6131de036172",
+  "startedAt": "2026-09-09T17:45:10.671Z",
+  "finishedAt": "2026-09-09T17:45:38.575Z",
+  "status": "COMPLETED",
+  "sources": {
+    "aptar-beauty": {
+      "stats": {
+        "fetched": 215,
+        "created": 7,
+        "updated": 208,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 215,
+        "withDescription": 213,
+        "withCountry": 213,
+        "withDate": 215
+      },
+      "enumeration": {
+        "fetched": 215,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 215
+      }
+    },
+    "maison-margiela": {
+      "stats": {
+        "fetched": 153,
+        "created": 8,
+        "updated": 145,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 153,
+        "withDescription": 153,
+        "withCountry": 153,
+        "withDate": 153
+      },
+      "enumeration": {
+        "fetched": 153,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 153
+      }
+    }
+  },
+  "logProof": {
+    "railwayLines": 16,
+    "maxLinesPerSecond": 6,
+    "droppedMessageWarnings": 0,
+    "durableEvents": 15,
+    "persistenceFailures": 0
+  },
+  "globalWorkersRemainPaused": true,
+  "remaining": "Aptar Pharma segment postings (14 descriptions) are attributed to Aptar Group: perimeter decision for the owner. Brand attribution relies on the native dept property; postings without it stay with OTB."
+}

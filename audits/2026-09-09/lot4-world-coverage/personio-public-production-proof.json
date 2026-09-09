@@ -1,0 +1,41 @@
+{
+  "at": "2026-09-09T17:43:25.734Z",
+  "environment": "PRODUCTION",
+  "withdrawnWitnesses": 57,
+  "all410WithoutJobPosting": true,
+  "offenders": [],
+  "apiTotalsFormerEmployers": {
+    "Mateo": {
+      "status": 200,
+      "total": 0
+    },
+    "KENT": {
+      "status": 200,
+      "total": 0
+    },
+    "Jako": {
+      "status": 200,
+      "total": 0
+    },
+    "Hades": {
+      "status": 200,
+      "total": 0
+    },
+    "Giga": {
+      "status": 200,
+      "total": 0
+    },
+    "Atlantis": {
+      "status": 200,
+      "total": 0
+    },
+    "Samson": {
+      "status": 200,
+      "total": 0
+    },
+    "Piña": {
+      "status": 200,
+      "total": 0
+    }
+  }
+}

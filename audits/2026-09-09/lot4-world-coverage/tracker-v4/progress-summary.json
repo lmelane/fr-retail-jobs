@@ -1,0 +1,171 @@
+{
+  "before": {
+    "before": {
+      "rows": 1653,
+      "labels": 1670,
+      "researchStarted": 1653,
+      "statuses": {
+        "PROFILE_ONLY_WEBSITE_SEARCH_REQUIRED": 1096,
+        "OFFICIAL_PORTAL_SEARCH_REQUIRED": 181,
+        "ATS_CANDIDATES_TO_QUALIFY": 278,
+        "CAREER_LINKS_TO_QUALIFY": 98
+      },
+      "sourcesWithReceipts": 430,
+      "independentNewIdentityCertifications": 0,
+      "newSourceActivations": 0,
+      "note": "Discovery progress only. Explicit reviewer decisions and activation records must be added separately."
+    },
+    "after": {
+      "databaseAt": "2026-09-09T16:42:14.447Z",
+      "totals": {
+        "jobs": 77447,
+        "active": 74198,
+        "france": 10957,
+        "ids": "e88d2de651669a8941e42e410ae028a2"
+      },
+      "rows": 1653,
+      "labels": 1670,
+      "fashionjobsMatch": {
+        "NO_CANDIDATE": 1022,
+        "EXACT_NAME_OR_ALIAS_CANDIDATE": 617,
+        "REVIEWED_ALIAS_DECISION": 14
+      },
+      "canonicalIdentity": {
+        "NO_CANDIDATE": 1022,
+        "NAME_MATCH_ONLY": 617,
+        "ATTESTED": 14
+      },
+      "officialPortal": {
+        "NONE_OBSERVED_YET": 1270,
+        "CANDIDATE_PORTALS_ONLY": 281,
+        "OFFICIAL_PORTAL_CONFIRMED": 6,
+        "CAREER_LINKS_NOT_YET_QUALIFIED": 96
+      },
+      "portalResearch": {
+        "WEBSITE_SEARCH_REQUIRED": 1247,
+        "NO_CAREER_LINK_ON_PAGES_READ": 128,
+        "ATS_CANDIDATES_TO_QUALIFY": 201,
+        "CAREER_LINKS_TO_QUALIFY": 74,
+        "RESEARCH_INTERRUPTED": 3
+      },
+      "activation": {
+        "NO_SOURCE": 1142,
+        "ONLY_PAUSED_OR_RETIRED": 273,
+        "ACTIVE_SOURCE": 238
+      },
+      "feedCompleteness": {
+        "NO_ACTIVE_FEED": 1415,
+        "ALL_ACTIVE_FEEDS_COMPLETE": 194,
+        "SOME_ACTIVE_FEED_PARTIAL_OR_UNPROVEN": 44
+      },
+      "worldwideCoverage": {
+        "NOT_PROVEN": 1653
+      },
+      "actorsWithUnvisitedUrls": 137,
+      "unvisitedUrls": 2614,
+      "actorsWithDocumentedFailures": 175,
+      "sources": {
+        "total": 503,
+        "byStatus": {
+          "ACTIVE": 423,
+          "RETIRED": 72,
+          "PAUSED": 8
+        },
+        "certification": {
+          "LEGACY_UNCERTIFIED": 421,
+          "CERTIFIED_CURRENT": 10,
+          "RETIRED_UNCERTIFIED": 72
+        },
+        "certificationActiveOnly": {
+          "LEGACY_UNCERTIFIED": 413,
+          "CERTIFIED_CURRENT": 10
+        },
+        "completenessActiveOnly": {
+          "CONFIGURED_FEED_ENUMERATED_COMPLETELY": 385,
+          "PARTIAL_OR_UNPROVEN": 38
+        },
+        "withNativeReceipt": 425,
+        "activeWithAnyCompleteReceiptEver": 383,
+        "activeCompleteOnLatestReceiptOnly": 383,
+        "activeRegressedSinceCompleteReceipt": []
+      },
+      "note": "Each dimension is measured separately. ATTESTED identity never implies a confirmed portal, an active source, a complete feed or worldwide coverage, and vice versa."
+    }
+  },
+  "after": {
+    "databaseAt": "2026-09-09T17:47:37.744Z",
+    "totals": {
+      "jobs": 77462,
+      "active": 74157,
+      "france": 10961,
+      "ids": "f802e9e7b05d882e3c78d672e7b0eb93"
+    },
+    "rows": 1653,
+    "labels": 1670,
+    "fashionjobsMatch": {
+      "NO_CANDIDATE": 1017,
+      "EXACT_NAME_OR_ALIAS_CANDIDATE": 617,
+      "REVIEWED_ALIAS_DECISION": 19
+    },
+    "canonicalIdentity": {
+      "NO_CANDIDATE": 1017,
+      "NAME_MATCH_ONLY": 616,
+      "ATTESTED": 20
+    },
+    "officialPortal": {
+      "NONE_OBSERVED_YET": 1267,
+      "CANDIDATE_PORTALS_ONLY": 279,
+      "OFFICIAL_PORTAL_CONFIRMED": 12,
+      "CAREER_LINKS_NOT_YET_QUALIFIED": 95
+    },
+    "portalResearch": {
+      "WEBSITE_SEARCH_REQUIRED": 1247,
+      "NO_CAREER_LINK_ON_PAGES_READ": 128,
+      "ATS_CANDIDATES_TO_QUALIFY": 201,
+      "CAREER_LINKS_TO_QUALIFY": 74,
+      "RESEARCH_INTERRUPTED": 3
+    },
+    "activation": {
+      "NO_SOURCE": 1137,
+      "ONLY_PAUSED_OR_RETIRED": 273,
+      "ACTIVE_SOURCE": 243
+    },
+    "feedCompleteness": {
+      "NO_ACTIVE_FEED": 1410,
+      "ALL_ACTIVE_FEEDS_COMPLETE": 199,
+      "SOME_ACTIVE_FEED_PARTIAL_OR_UNPROVEN": 44
+    },
+    "worldwideCoverage": {
+      "NOT_PROVEN": 1653
+    },
+    "actorsWithUnvisitedUrls": 137,
+    "unvisitedUrls": 2614,
+    "actorsWithDocumentedFailures": 175,
+    "sources": {
+      "total": 503,
+      "byStatus": {
+        "ACTIVE": 414,
+        "RETIRED": 81,
+        "PAUSED": 8
+      },
+      "certification": {
+        "LEGACY_UNCERTIFIED": 410,
+        "CERTIFIED_CURRENT": 12,
+        "RETIRED_UNCERTIFIED": 81
+      },
+      "certificationActiveOnly": {
+        "LEGACY_UNCERTIFIED": 402,
+        "CERTIFIED_CURRENT": 12
+      },
+      "completenessActiveOnly": {
+        "CONFIGURED_FEED_ENUMERATED_COMPLETELY": 376,
+        "PARTIAL_OR_UNPROVEN": 38
+      },
+      "withNativeReceipt": 425,
+      "activeWithAnyCompleteReceiptEver": 374,
+      "activeCompleteOnLatestReceiptOnly": 374,
+      "activeRegressedSinceCompleteReceipt": []
+    },
+    "note": "Each dimension is measured separately. ATTESTED identity never implies a confirmed portal, an active source, a complete feed or worldwide coverage, and vice versa."
+  }
+}

@@ -107,3 +107,7 @@ Voir [le diagnostic, la correction et les preuves de production](easycruit-linde
 ## Point de contrôle — tracker v3 et Sport 1 (9 septembre, soir)
 
 Voir [tracker-qualification.md](tracker-qualification.md) (sept verdicts séparés, avant/après sur données réelles) et [sport1-reachmee.md](sport1-reachmee.md) (11 annonces de démonstration retirées en production, 0 fermeture, portail ReachMee documenté sans activation). Backlog qualité des champs : [backlog-data-quality.md](backlog-data-quality.md). Production après : 77 447 offres, 74 187 actives, 10 957 France ; workers toujours en pause.
+
+## Point de contrôle — portails partagés, dossiers Personio, réconciliation (9 septembre, soir)
+
+Voir [otb-aptar-shared-portals.md](otb-aptar-shared-portals.md) (attribution par offre sur `careers.otb.net` et `jobs.aptar.com`, 735 opérations en production, run réel 0 erreur), [personio-dossiers.md](personio-dossiers.md) (5 homonymes séparés, 3 retraits revus, 14 variantes juridiques classées sans mutation, 57 offres retirées sans fermeture) et [completeness-reconciliation.md](completeness-reconciliation.md) (385 → 357 expliqué : 2 sources retirées + 26 faux positifs d'ordre de reçus ; liste unique : les 38 dossiers). Production après : 77 447 offres, 74 130 actives avant le run borné ; workers toujours en pause.

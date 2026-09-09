@@ -1,0 +1,106 @@
+{
+  "at": "2026-09-09T17:28:06.403Z",
+  "pass": "second",
+  "result": {
+    "total": 2,
+    "ok": 2,
+    "failed": 0,
+    "timedOut": 0,
+    "failures": [],
+    "incidents": []
+  },
+  "runs": [
+    {
+      "sourceKey": "aptar-beauty",
+      "status": "OK",
+      "fetched": 215,
+      "accepted": 215,
+      "complete": true,
+      "errors": 0,
+      "note": "desc 99% date 100% pays 99% url 100%"
+    },
+    {
+      "sourceKey": "maison-margiela",
+      "status": "OK",
+      "fetched": 153,
+      "accepted": 153,
+      "complete": true,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    }
+  ],
+  "before": {
+    "maison-margiela → Diesel": {
+      "active": 85,
+      "inactive": 0
+    },
+    "aptar-beauty → Aptar Group": {
+      "active": 224,
+      "inactive": 4
+    },
+    "maison-margiela → OTB": {
+      "active": 17,
+      "inactive": 4
+    },
+    "maison-margiela → Maison Margiela": {
+      "active": 25,
+      "inactive": 0
+    },
+    "maison-margiela → Marni": {
+      "active": 14,
+      "inactive": 0
+    },
+    "maison-margiela → Jil Sander": {
+      "active": 11,
+      "inactive": 0
+    },
+    "maison-margiela → Staff International": {
+      "active": 4,
+      "inactive": 0
+    },
+    "maison-margiela → Brave Kid": {
+      "active": 1,
+      "inactive": 0
+    }
+  },
+  "after": {
+    "maison-margiela → Diesel": {
+      "active": 85,
+      "inactive": 0
+    },
+    "maison-margiela → OTB": {
+      "active": 17,
+      "inactive": 4
+    },
+    "aptar-beauty → Aptar Group": {
+      "active": 224,
+      "inactive": 4
+    },
+    "maison-margiela → Maison Margiela": {
+      "active": 25,
+      "inactive": 0
+    },
+    "maison-margiela → Marni": {
+      "active": 14,
+      "inactive": 0
+    },
+    "maison-margiela → Jil Sander": {
+      "active": 11,
+      "inactive": 0
+    },
+    "maison-margiela → Staff International": {
+      "active": 4,
+      "inactive": 0
+    },
+    "maison-margiela → Brave Kid": {
+      "active": 1,
+      "inactive": 0
+    }
+  },
+  "attributionChanges": 0,
+  "changed": [],
+  "deletedIds": [],
+  "activeWithBrandPropertyArchived": 153,
+  "identityEventsMentioned": 0,
+  "firstSeenPreserved": true
+}

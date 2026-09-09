@@ -1,0 +1,308 @@
+{
+  "at": "2026-09-09T17:42:39.654Z",
+  "environment": "production",
+  "commit": "772ee8db3b3936802cc2265da84b5d9f6e1bbc6b",
+  "plans": {
+    "homonyms": {
+      "planHash": "a877e6aca5e921159825746d82497d859651d309639496148d8b80994f7e22a7",
+      "operations": 74,
+      "byEntity": {
+        "Company": 5,
+        "Source": 5,
+        "JobSource": 32,
+        "Job": 32
+      },
+      "result": {
+        "alreadyApplied": false,
+        "written": 74,
+        "sourceOwnerContradictions": 0,
+        "excludedActiveRepresentations": 0,
+        "lifecycleViolations": 0
+      },
+      "replay": {
+        "alreadyApplied": true,
+        "written": 0,
+        "sourceOwnerContradictions": 0,
+        "excludedActiveRepresentations": 0,
+        "lifecycleViolations": 0
+      }
+    },
+    "withdrawals": {
+      "planHash": "c7b96834db68b28543685d8ddcb56e9463e43230ed8227a1ec1934c5dd4d691b",
+      "operations": 53,
+      "byEntity": {
+        "Source": 3,
+        "JobSource": 25,
+        "Job": 25
+      },
+      "result": {
+        "alreadyApplied": false,
+        "written": 53,
+        "excludedActiveRepresentations": 0,
+        "lifecycleViolations": 0
+      },
+      "replay": {
+        "alreadyApplied": true,
+        "written": 0,
+        "excludedActiveRepresentations": 0,
+        "lifecycleViolations": 0
+      }
+    }
+  },
+  "total": 77447,
+  "activeBefore": 74187,
+  "activeAfter": 74130,
+  "reviewedJobs": 57,
+  "withdrawn": 57,
+  "idsPreserved": true,
+  "rawPreserved": true,
+  "historyPreserved": true,
+  "priorClosuresPreserved": true,
+  "noNewClosure": true,
+  "sources": {
+    "mateo": {
+      "status": "RETIRED",
+      "active": 0,
+      "company": [
+        "Mateo Estate GmbH"
+      ]
+    },
+    "pina": {
+      "status": "RETIRED",
+      "active": 0,
+      "company": [
+        "Pina Technologies GmbH"
+      ]
+    },
+    "samson": {
+      "status": "RETIRED",
+      "active": 0,
+      "company": [
+        "Samson & Partner"
+      ]
+    },
+    "kent": {
+      "status": "RETIRED",
+      "active": 0,
+      "company": [
+        "KENT Europe GmbH"
+      ]
+    },
+    "hades": {
+      "status": "RETIRED",
+      "active": 0,
+      "company": [
+        "Hades Resources GmbH"
+      ]
+    },
+    "giga": {
+      "status": "RETIRED",
+      "active": 0,
+      "company": [
+        "Giga"
+      ]
+    },
+    "atlantis": {
+      "status": "RETIRED",
+      "active": 0,
+      "company": [
+        "Atlantis"
+      ]
+    },
+    "jako": {
+      "status": "RETIRED",
+      "active": 0,
+      "company": [
+        "Jako"
+      ]
+    }
+  },
+  "companiesBefore": [
+    {
+      "id": "cmtlyg2u201flqf5klox5u8uw",
+      "name": "Hades",
+      "canonicalKey": "HADES",
+      "kind": "UNKNOWN",
+      "domain": null,
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyex0q006oqf5kkzb67rhl",
+      "name": "Giga",
+      "canonicalKey": "GIGA",
+      "kind": "UNKNOWN",
+      "domain": null,
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyf2w500c1qf5k6yt452ds",
+      "name": "Atlantis",
+      "canonicalKey": "ATLANTIS",
+      "kind": "UNKNOWN",
+      "domain": null,
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyif3a05mvqf5k7qlbus4m",
+      "name": "Jako",
+      "canonicalKey": "JAKO",
+      "kind": "UNKNOWN",
+      "domain": "jako.com",
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlygihe0223qf5kw8bngmmt",
+      "name": "Mateo",
+      "canonicalKey": "MATEO",
+      "kind": "UNKNOWN",
+      "domain": "mateonewyork.com",
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyhl6k03ahqf5k7i70t2gs",
+      "name": "KENT",
+      "canonicalKey": "KENT",
+      "kind": "UNKNOWN",
+      "domain": null,
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyeu1c0049qf5k3yl177sy",
+      "name": "Samson",
+      "canonicalKey": "SAMSON",
+      "kind": "UNKNOWN",
+      "domain": null,
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyf0nw009xqf5koft1d168",
+      "name": "Piña",
+      "canonicalKey": "PINA",
+      "kind": "UNKNOWN",
+      "domain": null,
+      "mergedIntoId": null
+    },
+    {
+      "id": "cr76ab25338280de02db704afa",
+      "name": "SaltRock GmbH",
+      "canonicalKey": "REVIEWED_37e1214e993669c4eabcaae0f6fffa6a2bd4d3a8c5ada3b42f09d9d5e755c882",
+      "kind": "OTHER",
+      "domain": "saltrock.de",
+      "mergedIntoId": null
+    }
+  ],
+  "companiesAfter": [
+    {
+      "id": "cmtlyg2u201flqf5klox5u8uw",
+      "name": "Hades",
+      "canonicalKey": "HADES",
+      "kind": "UNKNOWN",
+      "domain": null,
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyex0q006oqf5kkzb67rhl",
+      "name": "Giga",
+      "canonicalKey": "GIGA",
+      "kind": "UNKNOWN",
+      "domain": null,
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyf2w500c1qf5k6yt452ds",
+      "name": "Atlantis",
+      "canonicalKey": "ATLANTIS",
+      "kind": "UNKNOWN",
+      "domain": null,
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyif3a05mvqf5k7qlbus4m",
+      "name": "Jako",
+      "canonicalKey": "JAKO",
+      "kind": "UNKNOWN",
+      "domain": "jako.com",
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlygihe0223qf5kw8bngmmt",
+      "name": "Mateo",
+      "canonicalKey": "MATEO",
+      "kind": "UNKNOWN",
+      "domain": "mateonewyork.com",
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyhl6k03ahqf5k7i70t2gs",
+      "name": "KENT",
+      "canonicalKey": "KENT",
+      "kind": "UNKNOWN",
+      "domain": null,
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyeu1c0049qf5k3yl177sy",
+      "name": "Samson",
+      "canonicalKey": "SAMSON",
+      "kind": "UNKNOWN",
+      "domain": null,
+      "mergedIntoId": null
+    },
+    {
+      "id": "cmtlyf0nw009xqf5koft1d168",
+      "name": "Piña",
+      "canonicalKey": "PINA",
+      "kind": "UNKNOWN",
+      "domain": null,
+      "mergedIntoId": null
+    },
+    {
+      "id": "cr76ab25338280de02db704afa",
+      "name": "SaltRock GmbH",
+      "canonicalKey": "REVIEWED_37e1214e993669c4eabcaae0f6fffa6a2bd4d3a8c5ada3b42f09d9d5e755c882",
+      "kind": "OTHER",
+      "domain": "saltrock.de",
+      "mergedIntoId": null
+    },
+    {
+      "id": "cra46f9cb71eb5000cad1424ff",
+      "name": "Mateo Estate GmbH",
+      "canonicalKey": "REVIEWED_2469a3216778ee4d3cfe1d56152d450d56eba78a57fbb7892a9b717abb29a9fa",
+      "kind": "OTHER",
+      "domain": "hellomateo.de",
+      "mergedIntoId": null
+    },
+    {
+      "id": "cr53adb0728e2cecda90dfe606",
+      "name": "Pina Technologies GmbH",
+      "canonicalKey": "REVIEWED_3ce6de1e1609ced2070ce9b3a1675f540d1285f9aeb2b4b26b2614917b2fc507",
+      "kind": "OTHER",
+      "domain": "pina.earth",
+      "mergedIntoId": null
+    },
+    {
+      "id": "cr2109923f11bd8a8aa8495dd2",
+      "name": "Samson & Partner",
+      "canonicalKey": "REVIEWED_745ec29fb6f3f12d3d9072a4b60aef6b62f53730a4a65b13f9967274a1e64dea",
+      "kind": "OTHER",
+      "domain": "samson-partner.de",
+      "mergedIntoId": null
+    },
+    {
+      "id": "crfaba8a12691a26781521c93f",
+      "name": "KENT Europe GmbH",
+      "canonicalKey": "REVIEWED_565a280e981805d6630528ffca406340819fda5e67ed6c17f93c15c38a95ec45",
+      "kind": "SUPPLIER",
+      "domain": "kenteurope.com",
+      "mergedIntoId": null
+    },
+    {
+      "id": "cr4ac21bf25d9ff0e94be7a61e",
+      "name": "Hades Resources GmbH",
+      "canonicalKey": "REVIEWED_f523436fdfdfdca9dfeef996c31711eaac2937eee68c1e29f346d04c07da2323",
+      "kind": "OTHER",
+      "domain": "hades.com",
+      "mergedIntoId": null
+    }
+  ]
+}
