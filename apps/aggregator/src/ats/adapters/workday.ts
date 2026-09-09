@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
@@ -45,8 +46,19 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
    * Workday reports `total` ONLY on the first page — every later page returns
    * total: 0. Comparing against it each time stops the loop at 40 of 1088, so
    * the count is captured once and the loop otherwise ends on a short page.
+   *
+   * Enumeration proof (2026-09-09): each page is archived (offset, ids, sha256,
+   * the publisher total when the page carries one). Nordstrom and Swatch read
+   * one posting fewer than the announced total run after run; the proof now
+   * says WHY — a posting repeated across pages (unstable sort), a row without
+   * `externalPath`, or a total that the board simply never serves — instead of
+   * an unexplained −1.
    */
   let total = 0;
+  const seen = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  const issues = new Set<string>();
+  let pagesRead = 0, rawCount = 0, repeatedIds = 0, withoutPath = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
 
   for (let offset = 0; offset < 5000; offset += 20) {
     const page = await fetchJson<WorkdayPage>(endpoint, {
@@ -63,14 +75,22 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
       body: JSON.stringify({ appliedFacets: {}, limit: 20, offset, searchText: '' }),
     });
     const postings = page.jobPostings ?? [];
-    if (page.total) total = page.total;
+    pagesRead += 1; rawCount += postings.length;
+    if (page.total) {
+      if (!total) total = page.total;
+      else if (page.total !== total) issues.add('SOURCE_TOTAL_CHANGED');
+    }
+    const pageIds: string[] = [];
     for (const job of postings) {
       // A posting without an externalPath has neither a stable id nor a URL to
       // send a candidate to — skip it rather than crash the whole source on
       // `undefined.split`. Richemont's tenant returned such rows, and the throw
       // lost all ~1300 of its offers ("cartier-3 failed: reading 'split'").
-      if (!job.externalPath) continue;
+      if (!job.externalPath) { withoutPath += 1; continue; }
       const externalId = job.externalPath.split('/').filter(Boolean).pop() ?? job.externalPath;
+      pageIds.push(externalId);
+      if (seen.has(externalId)) { repeatedIds += 1; continue; }
+      seen.add(externalId);
       out.push({
         externalId,
         title: job.title,
@@ -96,20 +116,36 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
         raw: job,
       });
     }
-    if (postings.length < 20) break;
-    if (total && out.length >= total) break;
+    pageEvidence.push({ url: `${endpoint}#offset=${offset}`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
+      ids: pageIds, publisherCounter: page.total ? `total=${page.total}` : '', componentCounters: [`rows=${postings.length}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `withoutPath=${withoutPath}`] });
+    if (postings.length === 0) { termination = 'EMPTY_PAGE'; break; }
+    // The announced total counts ROWS (a path-less row included): once that many
+    // rows are read the board is exhausted, whether or not every row was a
+    // usable posting. Completeness below is judged on unique usable ids.
+    if (total && rawCount >= total) { termination = seen.size >= total ? 'PUBLISHER_TOTAL_REACHED' : 'PUBLISHER_TOTAL_ROWS_READ'; break; }
+    // A short page ends the board unless the publisher still announces more:
+    // then the next offset is read, so a shortened page in the middle of the
+    // board does not pass for its end.
+    if (postings.length < 20 && !total) { termination = 'SHORT_PAGE'; break; }
   }
+  if (repeatedIds) issues.add('REPEATED_IDS_ACROSS_PAGES');
+  if (withoutPath) issues.add('ROWS_WITHOUT_EXTERNAL_PATH');
+  const complete = total > 0 && seen.size === total && termination !== 'PAGE_BUDGET_EXHAUSTED' && !issues.has('SOURCE_TOTAL_CHANGED');
+  if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
+  const enumeration: AdapterResult['enumeration'] = { method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION', endpoint, pages: pagesRead, rawCount, termination, issues: [...issues],
+    scopes: [{ scope: 'jobs', declaredTotal: total || -1, uniqueIds: seen.size, pages: pagesRead, complete }], pageEvidence };
 
   // F-04: `total` is the tenant's own announced count — the truncation signal.
   const declaredTotal = total || undefined;
-  if (config.withDescriptions === false) return { jobs: out.map(job => ({ ...job, publicationHold: 'WORKDAY_LISTING_WITHOUT_EMPLOYER_DETAIL' })), declaredTotal };
+  const truncated = termination === 'PAGE_BUDGET_EXHAUSTED' || (total > 0 && seen.size < total);
+  if (config.withDescriptions === false) return { jobs: out.map(job => ({ ...job, publicationHold: 'WORKDAY_LISTING_WITHOUT_EMPLOYER_DETAIL' })), declaredTotal, complete, truncated, enumeration };
   return {
     jobs: await attachWorkdayDescriptions(
       out,
       `${origin}/wday/cxs/${tenant}/${site}`,
       Number(config.detailConcurrency ?? 4),
     ),
-    declaredTotal,
+    declaredTotal, complete, truncated, enumeration,
   };
 }
 
