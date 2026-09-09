@@ -20,7 +20,10 @@ describe.skipIf(!enabled)('intelligence facts (local prod copy, read-only)', () 
     expect(countries.rows.reduce((s, r) => s + r.active, 0) + countries.unknown).toBe(h.active);
     expect(cities.reduce((s, r) => s + r.active, 0)).toBeLessThanOrEqual(h.active);
     expect(companies.reduce((s, r) => s + r.active, 0)).toBe(h.active);
-    expect(sum(sectors)).toBe(h.active);
+    // Sectors overlap. Check the actual membership expansion, not a false partition.
+    const {prisma}=await import('@catwalks/db');
+    const [expected]=await prisma.$queryRaw<{n:number}[]>`SELECT sum(greatest(cardinality(c."sectorCodes"),1))::int n FROM "Job" j JOIN "Company" c ON c.id=j."companyId" WHERE j."isActive"`;
+    expect(sum(sectors)).toBe(expected.n);
     expect(sum(functions)).toBe(h.active);
     expect(sum(seniority)).toBe(h.active);
     expect(sum(contracts)).toBe(h.active);

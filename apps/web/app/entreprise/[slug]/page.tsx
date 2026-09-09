@@ -6,18 +6,6 @@ import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
-const SECTOR_LABELS: Record<string, string> = {
-  FASHION: 'Mode',
-  LUXURY: 'Luxe',
-  BEAUTY: 'Beauté',
-  JEWELRY_WATCHES: 'Joaillerie',
-  RETAIL: 'Retail',
-  SUPPLIER: 'Fournisseurs',
-  MEDIA_AGENCY: 'Médias',
-  RECRUITER: 'Cabinets',
-  OTHER: 'Hors référentiel',
-  UNKNOWN: 'Hors référentiel',
-};
 
 /**
  * One Maison, on its own URL — decision D15: ~515 indexable pages, the
@@ -33,7 +21,7 @@ export async function generateMetadata({
   const profile = await getCompanyBySlug((await params).slug);
   if (!profile) return { title: 'Entreprise introuvable' };
 
-  const sector = profile.sector ? SECTOR_LABELS[profile.sector] ?? profile.sector : null;
+  const sector = profile.sectors?.map(s=>s.label).join(' · ') || null;
   const jobWord = profile.jobCount > 1 ? 'offres' : 'offre';
 
   return {

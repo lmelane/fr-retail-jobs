@@ -1,3 +1,4 @@
+import {sectorSql,sectorJoin} from '../sectors';
 import { cache } from 'react';
 import { prisma, Prisma } from '@catwalks/db';
 import { DatabaseUnavailableError } from '@/lib/jobs';
@@ -108,7 +109,7 @@ export async function scopeSql(scope: Scope): Promise<Prisma.Sql> {
   if (scope.city) parts.push(Prisma.sql`lower(j.city) = ${scope.city.toLowerCase()}`);
   if (scope.companyId) parts.push(Prisma.sql`j."companyId" = ${scope.companyId}`);
   if (scope.group) parts.push(Prisma.sql`c."parentGroup" = ${scope.group}`);
-  if (scope.sector) parts.push(Prisma.sql`c.sector::text = ${scope.sector}`);
+  if (scope.sector) parts.push(sectorSql(scope.sector));
   if (scope.fn) parts.push(Prisma.sql`j."jobFunction" = ${scope.fn}`);
   if (scope.occupation) parts.push(Prisma.sql`j."occupationCode" = ${scope.occupation}`);
   return Prisma.join(parts, ' AND ');
@@ -196,7 +197,7 @@ export async function byCity(scope: Scope = {}, limit = 50): Promise<CityCount[]
 export async function byCompany(scope: Scope = {}, limit = 50): Promise<CompanyCount[]> {
   const where = await scopeSql(scope);
   return run<CompanyCount>(Prisma.sql`
-    SELECT j."companyId" AS "id", c.name, c."parentGroup" AS "group", c.sector::text AS "sector", c.domain,
+    SELECT j."companyId" AS "id", c.name, c."parentGroup" AS "group", array_to_string(c."sectorCodes",'|') AS "sector", c.domain,
            count(*)::int AS "active", ${NEW30} AS "new30"
     ${FROM} WHERE j."isActive" AND ${where}
     GROUP BY 1, 2, 3, 4, 5 ORDER BY 6 DESC, 2 ASC LIMIT ${limit}`);
@@ -213,8 +214,8 @@ export async function byGroup(scope: Scope = {}, limit = 50): Promise<(Count & {
 export async function bySector(scope: Scope = {}): Promise<(Count & { new30: number; companies: number })[]> {
   const where = await scopeSql(scope);
   return run<Count & { new30: number; companies: number }>(Prisma.sql`
-    SELECT c.sector::text AS "key", count(*)::int AS "count", ${NEW30} AS "new30", count(DISTINCT j."companyId")::int AS "companies"
-    ${FROM} WHERE j."isActive" AND ${where} GROUP BY 1 ORDER BY 2 DESC`);
+    SELECT business_sector.code AS "key", count(*)::int AS "count", ${NEW30} AS "new30", count(DISTINCT j."companyId")::int AS "companies"
+    ${FROM} ${sectorJoin} WHERE j."isActive" AND ${where} GROUP BY 1 ORDER BY 2 DESC`);
 }
 
 /** Métier : clé nulle rendue '' (« Non classé »), toujours présente dans la liste. */

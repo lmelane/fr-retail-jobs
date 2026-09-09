@@ -1,3 +1,4 @@
+import {getSectorPresentation} from '@/lib/sectors';
 import { getOccupationPresentation } from '@/lib/occupations';
 import Link from 'next/link';
 import { Block, Coverage, Insight, Kpi, Mix, NA } from './chrome';
@@ -11,7 +12,7 @@ import type { Coverage as CoverageData } from '@/lib/intelligence/queries/covera
 import { concentration, indexBase100, median, momentum, repostRate, share, variation } from '@/lib/intelligence/metrics';
 import { fmtDate, fmtDays, fmtIndex, fmtInt, fmtNew, fmtPct, fmtSignedPct, MIN_SAMPLE, NA_FROM, NA_INSUFFICIENT, addDays, windowAvailable, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
-import { mergeOtherSectors, sectorLabel, UNCLASSIFIED_LABEL, type JobFamily } from '@/lib/intelligence/taxonomy';
+import { mergeOtherSectors, UNCLASSIFIED_LABEL, type JobFamily } from '@/lib/intelligence/taxonomy';
 
 /**
  * Les blocs standard d'un périmètre (pays, ville, métier, Maison, groupe,
@@ -107,6 +108,7 @@ export function ProfileSeries({ profile, coverage, title }: { profile: Profile; 
 }
 
 export async function ProfileBlocks({ profile, ctx }: { profile: Profile; ctx: ProfileContext }) {
+  const {label:sectorLabel}=await getSectorPresentation();
   const {functionLabel,FAMILY_LABELS,seniorityLabel}=await getOccupationPresentation();
   const h = profile.headline;
   const total = h.active;

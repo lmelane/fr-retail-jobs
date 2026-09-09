@@ -40,6 +40,7 @@ export type SnapshotScope =
 /** A taxonomy change is a measurement change, not market growth. Retain old
  * rows but compare only full days after the new release finished replaying. */
 function occupationBoundary(scope:SnapshotScope){
+  if(['sector','country-sector'].includes(scope)) return Prisma.sql`AND date > (SELECT max("createdAt")::date FROM "SectorReview")`;
   return ['function','occupation','family','seniority','country-function'].includes(scope)
     ? Prisma.sql`AND date > (SELECT "backfilledAt"::date FROM "OccupationState" WHERE id='active')`
     : Prisma.empty;

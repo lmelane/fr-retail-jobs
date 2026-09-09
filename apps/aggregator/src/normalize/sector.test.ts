@@ -109,10 +109,10 @@ describe('classifySector — repli sur le périmètre du catalogue', () => {
    * hors de la mode. Cause : seules 2 sources sur 434 déclaraient un secteur,
    * donc toute marque absente de la liste de référence tombait en OTHER.
    */
-  it('une maison inconnue venue du catalogue est publiable, pas OTHER', () => {
+  it('une maison inconnue venue du catalogue reste publiable sans inventer Retail', () => {
     const verdict = classifySector({ company: 'Buck Mason', fromCatalogue: true });
     expect(verdict.inScope).toBe(true);
-    expect(verdict.sector).not.toBe('OTHER');
+    expect(verdict.sector).toBe('OTHER');
   });
 
   it('sans catalogue, un employeur inconnu reste à revoir', () => {

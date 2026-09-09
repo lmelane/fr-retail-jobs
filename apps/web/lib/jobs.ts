@@ -1,7 +1,8 @@
+import { getSectorPresentation, sectorWhere } from './sectors';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { companyIdentityWhere } from './company-identity';
 import { unstable_cache } from 'next/cache';
-import { prisma, CompanySector, canonicalJobId } from '@catwalks/db';
+import { prisma, canonicalJobId } from '@catwalks/db';
 import { expandCompanyTerm } from './groups';
 import { countryCode, rawValuesForCode } from './countries';
 import { searchSummary } from './job-search-query';
@@ -24,19 +25,10 @@ function countryCondition(code: string | undefined) {
   return { OR: spellings.map((value) => ({ countryCode: { equals: value, mode: 'insensitive' as const } })) };
 }
 
-/**
- * A sector filter value that is a real CompanySector, or undefined.
- *
- * The value comes from the URL. Passing an unknown string straight to the enum
- * column made Prisma throw, which the catch turned into a false "database
- * unavailable" page. An invalid filter should simply match nothing, so validate
- * it here and drop it when it is not a real sector.
- */
-export function validSector(value: string | undefined): CompanySector | undefined {
-  if (!value) return undefined;
-  return (Object.values(CompanySector) as string[]).includes(value)
-    ? (value as CompanySector)
-    : undefined;
+/** Sector keys are data, not an application enum. Unknown keys stay bound
+ * parameters and match zero; dropping them would silently widen the search. */
+export function validSector(value: string | undefined): string | undefined {
+  return value || undefined;
 }
 
 /**
@@ -71,6 +63,9 @@ export type JobFilters = {
   jobFunction?: string;
   sector?: string;
   employmentTerm?: string;
+  workTime?: string;
+  programType?: string;
+  engagementType?: string;
   city?: string;
   group?: string;
   maison?: string;
@@ -122,6 +117,7 @@ export function parseFilters(params: Record<string, string | string[] | undefine
      * couche de localisation, pas le modèle.
      */
     employmentTerm: one('employmentTerm') ?? one('contrat'),
+    workTime: one('workTime'), programType: one('programType'), engagementType: one('engagementType'),
     sector: one('secteur'),
     maison: one('maison'),
     group: one('groupe'),
@@ -154,6 +150,7 @@ export type JobRow = {
   engagementType: string | null;
   isSeasonal: boolean | null;
   sector: string | null;
+  sectorCodes?: string[];
   url: string;
   postedAt: Date | null;
   latitude: number | null;
@@ -208,8 +205,11 @@ export type JobsResult = {
   page: number;
   pageCount: number;
   facets: {
-    sectors: { value: string; count: number }[];
+    sectors: { value: string; count: number; label?: string }[];
     contracts: { value: string; count: number }[];
+    workTimes?: { value: string; count: number }[];
+    programs?: { value: string; count: number }[];
+    engagements?: { value: string; count: number }[];
     cities: { value: string; count: number }[];
     groups: { value: string; count: number }[];
     maisons: { value: string; count: number }[];
@@ -238,7 +238,7 @@ export function whereClause(filters: JobFilters) {
   const sector = validSector(filters.sector);
   const company = {
     ...(filters.maison ? companyIdentityWhere(filters.maison) : {}),
-    ...(sector ? { sector } : {}),
+    ...(sector ? sectorWhere(sector) : {}),
     ...(filters.group ? { parentGroup: filters.group } : {}),
   };
 
@@ -254,6 +254,9 @@ export function whereClause(filters: JobFilters) {
     // holds mixed spellings ("PARIS", "Paris"), so an exact match dropped half.
     ...(filters.city ? { city: { equals: filters.city, mode: 'insensitive' as const } } : {}),
     ...(filters.employmentTerm ? { employmentTerm: filters.employmentTerm } : {}),
+    ...(filters.workTime ? { workTime: filters.workTime } : {}),
+    ...(filters.programType ? { programType: filters.programType } : {}),
+    ...(filters.engagementType ? { engagementType: filters.engagementType } : {}),
     ...(Object.keys(company).length ? { company } : {}),
     ...(filters.source ? { sources: { some: { sourceKey: filters.source, isActive: true } } } : {}),
     // Each term must appear in SOME field, so "vendeuse paris" needs both words
@@ -324,6 +327,7 @@ function toRow(row: {
     engagementType: row.engagementType,
     isSeasonal: row.isSeasonal,
     sector: row.company.sector,
+    sectorCodes: (row.company as {sectorCodes?:string[]}).sectorCodes??[],
     url: row.url,
     postedAt: row.postedAt,
     latitude: row.latitude,
@@ -466,7 +470,7 @@ export async function getCompanyAside(companyName: string): Promise<CompanyAside
   try {
     const company = await prisma.company.findFirst({
       where: { name: companyName },
-      select: { id: true, domain: true, sector: true, parentGroup: true },
+      select: { id: true, domain: true, sector: true, sectorCodes: true, parentGroup: true },
     });
     if (!company) return null;
     const [agg] = await prisma.$queryRaw<{ jobs: bigint; cities: bigint; countries: bigint }[]>`
@@ -509,12 +513,12 @@ export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> 
     const taxonomy=await getOptionalOccupationPresentation();
     if (sameMaison.length >= limit) return sameMaison.map(row=>toRow(row,taxonomy));
 
-    const sector = validSector(job.sector ?? undefined);
-    const fill = sector
+    const sectorCodes = job.sectorCodes??[];
+    const fill = sectorCodes.length
       ? await prisma.job.findMany({
           where: {
             ...base,
-            company: { sector, name: { not: job.company } },
+            company: { sectorCodes:{hasSome:sectorCodes}, name: { not: job.company } },
             ...(job.city ? { city: { equals: job.city, mode: 'insensitive' as const } } : {}),
           },
           include,
@@ -554,7 +558,8 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
       pageCount: Math.max(1, Math.ceil(summary.total / PAGE_SIZE)),
       facets: {
         occupations: summary.occupations.map(f=>({...f,label:f.value==='unclassified'?'Métier à préciser':taxonomy.occupationLabel(f.value)??'Libellé indisponible'})),
-        sectors: summary.sectors, contracts: summary.contracts,
+        sectors: (await getSectorPresentation()).sectors.map(s=>({value:s.code,label:s.label,count:summary.sectors.find(f=>f.value===s.code)?.count??0})).concat(summary.sectors.filter(f=>f.value==='unclassified').map(f=>({...f,label:'Secteur à vérifier'}))), contracts: summary.contracts,
+      workTimes: summary.workTimes, programs: summary.programs, engagements: summary.engagements,
         cities: summary.cities.map(f => ({ ...f, value: canonicalCity(f.value) })),
         groups: summary.groups, maisons: summary.maisons, sources: summary.sources,
         countries: [

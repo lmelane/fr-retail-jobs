@@ -22,18 +22,6 @@ import type { CompaniesResult, CompanyFilters, CompanyRow } from '@/lib/companie
  * Pas de carte (D12).
  */
 
-const SECTOR_LABELS: Record<string, string> = {
-  FASHION: 'Mode',
-  LUXURY: 'Luxe',
-  BEAUTY: 'Beauté',
-  JEWELRY_WATCHES: 'Joaillerie',
-  RETAIL: 'Retail',
-  SUPPLIER: 'Fournisseurs',
-  MEDIA_AGENCY: 'Médias',
-  RECRUITER: 'Cabinets',
-  OTHER: 'Hors référentiel',
-  UNKNOWN: 'Hors référentiel',
-};
 
 const SearchGlyph = () => (
   <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
@@ -144,7 +132,7 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
               onClick={() => navigate({ secteur: activeSector === facet.value ? null : facet.value })}
               className={cn('pill', activeSector === facet.value && 'is-active')}
             >
-              {SECTOR_LABELS[facet.value] ?? facet.value}{' '}
+              {facet.label ?? 'Secteur à vérifier'}{' '}
               <span className="count tabular-nums">{nf.format(facet.count)}</span>
             </button>
           ))}
@@ -228,7 +216,7 @@ export function CompaniesView({ data }: { data: CompaniesResult; filters: Compan
  */
 export function MaisonCard({ company }: { company: CompanyRow }) {
   const nf = frNumber;
-  const sector = SECTOR_LABELS[company.sector ?? ''] ?? 'Hors référentiel';
+  const sector = company.sectors?.map(s=>s.label).join(' · ') || 'Secteur à vérifier';
   const sectorLine = company.group ? `${sector} · ${company.group}` : sector;
 
   const shownCities = company.cities.slice(0, 4);

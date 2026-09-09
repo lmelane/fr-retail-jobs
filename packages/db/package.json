@@ -6,7 +6,8 @@
   "main": "index.ts",
   "exports": {
     ".": "./index.ts",
-    "./occupations": "./occupations.ts"
+    "./occupations": "./occupations.ts",
+    "./presentation": "./presentation.ts"
   },
   "scripts": {
     "db:generate": "prisma generate",

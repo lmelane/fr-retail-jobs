@@ -1,3 +1,4 @@
+import {getSectorPresentation} from '@/lib/sectors';
 import { getOccupationPresentation } from '@/lib/occupations';
 import type { Metadata } from 'next';
 import { Block, Coverage, IntelPage, JsonLd, Kpi, Mix, PageHead } from '@/components/intelligence/chrome';
@@ -9,7 +10,7 @@ import { share } from '@/lib/intelligence/metrics';
 import { fmtInt, fmtNew, fmtPct } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
-import { OTHER_SECTOR_LABEL, SECTOR_LABELS, SECTOR_SLUGS, SECTORS, UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
+import { OTHER_SECTOR_LABEL, UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,6 +21,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
+  const presentation=await getSectorPresentation();
+  const SECTORS=presentation.sectors.map(s=>s.code),SECTOR_LABELS=presentation.labels,SECTOR_SLUGS=Object.fromEntries(presentation.sectors.map(s=>[s.code,s.code.toLowerCase().replace(/_/g,'-')]));
   const {JOB_FUNCTIONS,FUNCTION_BY_KEY,FAMILY_LABELS,functionLabel}=await getOccupationPresentation();
   const [data, coverage] = await Promise.all([getSectorsList(), getCoverage()]);
   const byKey = new Map(data.rows.map((r) => [r.key, r]));
@@ -31,7 +34,7 @@ export default async function Page() {
     <IntelPage>
       <JsonLd data={webPageLd({ name: 'Secteurs du recrutement luxe', description: DESCRIPTION, path: intelPaths.sectors, dateModified: coverage.updatedAt })} />
       <JsonLd data={breadcrumbLd(crumbs)} />
-      <PageHead crumbs={crumbs} title="Secteurs." lede={<p>Le secteur est celui de la Maison qui publie l'offre. Cinq secteurs de référence ; les autres (fournisseurs, médias, cabinets) sont regroupés en « {OTHER_SECTOR_LABEL} ».</p>} />
+      <PageHead crumbs={crumbs} title="Secteurs." lede={<p>Le secteur est celui de la Maison qui publie l'offre. Une Maison peut appartenir à plusieurs secteurs : les volumes se recouvrent et ne doivent pas être additionnés. « Secteur à vérifier » conserve les offres dont le classement attend une preuve.</p>} />
 
       <section className="container" style={{ paddingTop: 48 }}>
         <div className="kpis">
@@ -86,9 +89,9 @@ export default async function Page() {
       <section className="container" style={{ paddingTop: 64 }} id="autres">
         <Block id="s-autres" title={`${OTHER_SECTOR_LABEL}.`} level="fact">
           {othersCount > 0 ? (
-            <BarList total={data.total} rows={others.map((r) => ({ label: r.key === 'UNKNOWN' ? 'Hors référentiel' : r.key, value: r.count }))} />
+            <BarList total={data.total} rows={others.map((r) => ({ label: presentation.label(r.key), value: r.count }))} />
           ) : (
-            <p className="na">Aucune offre hors des cinq secteurs de référence.</p>
+            <p className="na">Toutes les offres ont au moins un secteur renseigné.</p>
           )}
         </Block>
       </section>

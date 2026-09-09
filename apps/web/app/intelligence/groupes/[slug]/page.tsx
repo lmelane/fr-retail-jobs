@@ -1,3 +1,4 @@
+import {getSectorPresentation} from '@/lib/sectors';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -9,7 +10,7 @@ import { resolveGroup } from '@/lib/intelligence/queries/resolve';
 import { addDays, fmtInt, fmtNew, fmtPct, MIN_SAMPLE, NA_FROM, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
-import { sectorLabel } from '@/lib/intelligence/taxonomy';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -29,6 +30,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Params) {
+  const {label:sectorLabel}=await getSectorPresentation();
   const group = await resolveGroup((await params).slug);
   if (!group) notFound();
   const [profile, coverage] = await Promise.all([getProfile({ group }, { snapshot: { scope: 'group', key: group }, limits: { companies: 100 } }), getCoverage()]);

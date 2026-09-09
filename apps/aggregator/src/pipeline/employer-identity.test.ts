@@ -100,7 +100,7 @@ describe('Employer identity evidence and conservation', () => {
     const { a, b } = await pair();
     const source = await p.job.findFirstOrThrow({ where: { companyId: a.id }, omit: { searchText: true } });
     const { id, createdAt, updatedAt, ...copy } = source;
-    await p.job.create({ data: { ...copy, companyId: b.id, raw: copy.raw ?? undefined, occupationEvidence: copy.occupationEvidence ?? undefined } });
+    await p.job.create({ data: { ...copy, companyId: b.id, raw: copy.raw ?? undefined, occupationEvidence: copy.occupationEvidence ?? undefined, employmentEvidence:copy.employmentEvidence??undefined } });
     const plan = await buildEmployerRepair(p, spec(a.id, b.id));
     await expect(applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789')).rejects.toThrow('Posting identity collision');
     expect(await p.job.count()).toBe(2); expect(await p.employerIdentityReview.count()).toBe(0);

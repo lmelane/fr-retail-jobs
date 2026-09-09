@@ -1,6 +1,6 @@
 import { companySlug } from '@/lib/company-slug';
 import { citySlug, kebab } from './format';
-import { SECTOR_SLUGS, isSector } from './taxonomy';
+
 
 /** URLs stables en français sans accent — un seul endroit les compose. */
 export const intelPaths = {
@@ -15,7 +15,7 @@ export const intelPaths = {
   fn: (key: string) => `/intelligence/metiers/${key}`,
   company: (name: string) => `/intelligence/maisons/${companySlug(name)}`,
   group: (name: string) => `/intelligence/groupes/${kebab(name)}`,
-  sector: (value: string) => `/intelligence/secteurs#${isSector(value) ? SECTOR_SLUGS[value] : 'autres'}`,
+  sector: (value: string) => `/intelligence/secteurs#${value==='unclassified'?'autres':value.toLowerCase().replace(/_/g,'-')}`,
   /** Le moteur d'offres, filtré (paramètres réels de `parseFilters`). */
   jobs: (params: Record<string, string | undefined>) => {
     const p = new URLSearchParams();

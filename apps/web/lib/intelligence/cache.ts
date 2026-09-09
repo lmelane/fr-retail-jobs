@@ -26,7 +26,8 @@ export function cached<A extends unknown[], R>(name: string, fn: (...args: A) =>
     try {
       const latest = await prisma.dataCorrection.findFirst({ orderBy: [{ createdAt: 'desc' }, { id: 'desc' }], select: { id: true } });
       const occupation = await prisma.occupationState.findUniqueOrThrow({where:{id:'active'}});
-      revision = [latest?.id ?? 'initial',occupation.releaseId,occupation.updatedAt.toISOString()].join(':');
+      const sector=await prisma.sectorReview.findFirst({orderBy:[{createdAt:'desc'},{id:'desc'}],select:{id:true}});
+      revision = [sector?.id??'no-sector-review',latest?.id ?? 'initial',occupation.releaseId,occupation.updatedAt.toISOString()].join(':');
     } catch (error) { throw new DatabaseUnavailableError(error); }
     return unstable_cache(() => fn(...args), ['intelligence-canonical-postings-v2', revision, name, JSON.stringify(args)], {
       revalidate: INTEL_REVALIDATE_SECONDS,

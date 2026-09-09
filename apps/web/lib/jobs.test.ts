@@ -14,14 +14,14 @@ describe('whereClause — combined company filters do not collide', () => {
     // A single company object carrying all three constraints.
     expect(where.company).toEqual({
       ...companyIdentityWhere('Christian Dior Couture'),
-      sector: 'LUXURY',
+      sectorCodes: {has:'LUXURY'},
       parentGroup: 'LVMH',
     });
   });
 
   it('keeps maison and sector together', () => {
     const where = whereClause({ maison: 'Guerlain', sector: 'BEAUTY' });
-    expect(where.company).toEqual({ ...companyIdentityWhere('Guerlain'), sector: 'BEAUTY' });
+    expect(where.company).toEqual({ ...companyIdentityWhere('Guerlain'), sectorCodes: {has:'BEAUTY'} });
   });
 
   it('omits company entirely when no company filter is set', () => {
@@ -32,10 +32,9 @@ describe('whereClause — combined company filters do not collide', () => {
     expect(where.city).toEqual({ equals: 'Paris', mode: 'insensitive' });
   });
 
-  it('drops an invalid sector instead of passing it to the enum', () => {
+  it('preserves an unknown filter so it matches zero, never the entire catalogue', () => {
     const where = whereClause({ sector: 'NOT_A_SECTOR' });
-    // Invalid sector -> no company filter, no crash.
-    expect(where.company).toBeUndefined();
+    expect(where.company).toEqual({sectorCodes:{has:'NOT_A_SECTOR'}});
   });
 
   it('applies isActive always, but not isFrance by default (D10: every country)', () => {
@@ -70,8 +69,8 @@ describe('validSector', () => {
     expect(validSector('FASHION')).toBe('FASHION');
   });
   it('rejects unknown values', () => {
-    expect(validSector('DROP TABLE')).toBeUndefined();
-    expect(validSector('luxury')).toBeUndefined(); // case-sensitive enum
+    expect(validSector('DROP TABLE')).toBe('DROP TABLE'); // bound value, never SQL
+    expect(validSector('luxury')).toBe('luxury'); // case-sensitive enum
     expect(validSector(undefined)).toBeUndefined();
   });
 });

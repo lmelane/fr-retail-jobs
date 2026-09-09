@@ -63,13 +63,14 @@ describe('resolveCanonicalDimensions', () => {
    * RÈGLE ABSOLUE : un triplet sous le seuil ne change JAMAIS, à lui seul, une
    * valeur canonique. Il se comporte exactement comme l'absence de verdict.
    */
-  it('INSUFFICIENT_EVIDENCE : comportement par défaut, le champ prime', () => {
+  it('INSUFFICIENT_EVIDENCE : une contradiction explicite demande une revue', () => {
     const input = { sourceKey: 's', title: 'Sales Associate - Part-Time', raw: { employmentType: 'FULL_TIME' } };
     const withVerdict = resolveCanonicalDimensions(input, trustOf({ 's employmentType workTime': 'INSUFFICIENT_EVIDENCE' }));
     const withNone = resolveCanonicalDimensions(input, new Map());
-    expect(withVerdict.workTime).toBe('FULL_TIME');
+    expect(withVerdict.workTime).toBeUndefined();
+    expect(withVerdict.decisions.workTime?.origin).toBe('CONFLICTING_EXPLICIT_EVIDENCE');
     expect(withVerdict.workTime).toBe(withNone.workTime);
-    expect(withVerdict.decisions.workTime?.origin).toBe('STRUCTURED');
+    expect(withVerdict.decisions.workTime?.origin).toBe('CONFLICTING_EXPLICIT_EVIDENCE');
   });
 
   /**
@@ -137,4 +138,16 @@ describe('resolveCanonicalDimensions', () => {
     const t = trustOf({ 'pvh employmentType workTime': 'UNTRUSTED' });
     expect(resolveCanonicalDimensions(input, t)).toEqual(resolveCanonicalDimensions(input, t));
   });
+});
+
+it('reads a declared contractFilter at the shared boundary without an ATS-specific branch', () => {
+  const result=resolveCanonicalDimensions({sourceKey:'any-ats',title:'Analyst',raw:{contractFilter:'Permanent Job'}});
+  expect(result.employmentTerm).toBe('PERMANENT');
+  expect(result.decisions.employmentTerm?.origin).toBe('STRUCTURED');
+});
+it('reads structured labels as work time and retains an ambiguous duration as unresolved', () => {
+  const result=resolveCanonicalDimensions({sourceKey:'any-ats',title:'Analyst',raw:{typeOfEmployment:{id:'permanent',label:'Part-time'},contractFilter:'Permanent Job',contract:'Temporary Job'}});
+  expect(result.workTime).toBe('PART_TIME');
+  expect(result.employmentTerm).toBeUndefined();
+  expect(result.decisions.employmentTerm?.origin).toBe('AMBIGUOUS_STRUCTURED');
 });

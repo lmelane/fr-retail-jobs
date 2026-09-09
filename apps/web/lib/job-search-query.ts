@@ -1,6 +1,7 @@
+import { sectorSql } from './sectors';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { companyIdentitySql, companyAliasSql } from './company-identity';
-import { Prisma, CompanySector, prisma } from '@catwalks/db';
+import { Prisma, prisma } from '@catwalks/db';
 import { expandCompanyTerm } from './groups';
 import { rawValuesForCode } from './countries';
 import type { JobFilters } from './jobs';
@@ -8,7 +9,7 @@ import type { JobFilters } from './jobs';
 type Facet = { value: string; count: number };
 export type SearchSummary = {
   ids: string[]; total: number; totalInDatabase: number; franceCount: number;
-  sectors: Facet[]; contracts: Facet[]; cities: Facet[]; groups: Facet[];
+  sectors: Facet[]; contracts: Facet[]; workTimes: Facet[]; programs: Facet[]; engagements: Facet[]; cities: Facet[]; groups: Facet[];
   maisons: Facet[]; sources: Facet[]; rawCountries: Facet[]; occupations: Facet[];
 };
 
@@ -28,9 +29,10 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
   if (filters.employmentTerm) conditions.push(Prisma.sql`j."employmentTerm" = ${filters.employmentTerm}`);
   if (filters.maison) conditions.push(companyIdentitySql(filters.maison));
   if (filters.group) conditions.push(Prisma.sql`c."parentGroup" = ${filters.group}`);
-  if (filters.sector && (Object.values(CompanySector) as string[]).includes(filters.sector)) {
-    conditions.push(Prisma.sql`c.sector = ${filters.sector}::"CompanySector"`);
-  }
+  if (filters.sector) conditions.push(sectorSql(filters.sector));
+  if (filters.workTime) conditions.push(Prisma.sql`j."workTime" = ${filters.workTime}`);
+  if (filters.programType) conditions.push(Prisma.sql`j."programType" = ${filters.programType}`);
+  if (filters.engagementType) conditions.push(Prisma.sql`j."engagementType" = ${filters.engagementType}`);
   if (filters.source) conditions.push(Prisma.sql`EXISTS (
     SELECT 1 FROM "JobSource" src WHERE src."jobId" = j.id AND src."isActive" AND src."sourceKey" = ${filters.source})`);
   const queryTerms = (filters.q ?? '').trim().split(/\s+/).filter(Boolean);
@@ -83,8 +85,8 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
   }
   const [summary] = await prisma.$queryRaw<SearchSummary[]>(Prisma.sql`
     WITH ${matchCte} base AS MATERIALIZED (
-      SELECT j.id, j."occupationCode", j."countryCode", j."isFrance", j.city, j."employmentTerm", j."postedAt", j."firstSeenAt",
-        c.name AS maison, c.sector, c."parentGroup" AS groupe
+      SELECT j.id, j."occupationCode", j."countryCode", j."isFrance", j.city, j."employmentTerm", j."workTime", j."programType", j."engagementType", j."postedAt", j."firstSeenAt",
+        c.name AS maison, c."sectorCodes", c."parentGroup" AS groupe
       FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${matchJoin}
       WHERE ${Prisma.join(conditions, ' AND ')}
     ), scoped AS MATERIALIZED (SELECT * FROM base WHERE ${country})
@@ -95,8 +97,12 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
       ARRAY(SELECT id FROM scoped ORDER BY "postedAt" DESC NULLS LAST, "firstSeenAt" DESC, id
         LIMIT ${pageSize} OFFSET ${(page - 1) * pageSize}) AS ids,
       ${facet(Prisma.sql`COALESCE("occupationCode", 'unclassified')`)} AS occupations,
-      ${facet(Prisma.sql`sector`)} AS sectors,
+      (SELECT coalesce(jsonb_agg(jsonb_build_object('value',code,'count',n) ORDER BY n DESC,code),'[]'::jsonb)
+        FROM (SELECT code,count(*)::int n FROM scoped CROSS JOIN LATERAL unnest(CASE WHEN cardinality("sectorCodes")=0 THEN ARRAY['unclassified'] ELSE "sectorCodes" END) code GROUP BY code) f) AS sectors,
       ${facet(Prisma.sql`"employmentTerm"`)} AS contracts,
+      ${facet(Prisma.sql`"workTime"`)} AS "workTimes",
+      ${facet(Prisma.sql`"programType"`)} AS programs,
+      ${facet(Prisma.sql`"engagementType"`)} AS engagements,
       ${facet(Prisma.sql`lower(trim(city))`, 60)} AS cities,
       ${facet(Prisma.sql`groupe`)} AS groups,
       ${facet(Prisma.sql`maison`)} AS maisons,

@@ -1,3 +1,4 @@
+import { employmentLabel } from '@catwalks/db/presentation';
 const RELATIVE = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
 
 /**
@@ -66,62 +67,12 @@ export function relativeDate(date: Date | string | null): string {
  *  - `null` signifie « la source ne le dit pas ». Rien ne s'affiche alors —
  *    l'ancien « UNKNOWN » stocké finissait en pastille littérale à l'écran.
  */
-const EMPLOYMENT_TYPE_LABELS: Record<string, string> = {
-  PERMANENT: 'CDI',
-  FIXED_TERM: 'CDD',
-  TEMPORARY: 'Intérim',
-  INTERNSHIP: 'Stage',
-  APPRENTICESHIP: 'Alternance',
-  SEASONAL: 'Saisonnier',
-  FREELANCE: 'Freelance',
-  INDEPENDENT_CONTRACTOR: 'Indépendant',
-  OTHER: 'Autre',
-};
-
-const WORK_TIME_LABELS: Record<string, string> = {
-  FULL_TIME: 'Temps plein',
-  PART_TIME: 'Temps partiel',
-  OTHER: 'Autre',
-};
-
-/** Le libellé français d'une nature de relation d'emploi, ou null si absente. */
-export function employmentTermLabel(value: string | null | undefined): string | null {
-  if (!value) return null;
-  return EMPLOYMENT_TYPE_LABELS[value] ?? value;
-}
-
-/** Les dispositifs, dans les mots que lit un candidat français. */
-const PROGRAM_TYPE_LABELS: Record<string, string> = {
-  INTERNSHIP: 'Stage',
-  APPRENTICESHIP: 'Alternance',
-  GRADUATE_PROGRAM: 'Graduate program',
-  VIE: 'V.I.E',
-};
-
-/** Le MODE DE TRAVAIL, dans les mots que lit un candidat français. */
-const WORKPLACE_TYPE_LABELS: Record<string, string> = {
-  ONSITE: 'Sur site',
-  HYBRID: 'Hybride',
-  REMOTE: 'Télétravail',
-};
-
-/** Le libellé français d'un mode de travail, ou null si absent. */
-export function workplaceTypeLabel(value: string | null | undefined): string | null {
-  if (!value) return null;
-  return WORKPLACE_TYPE_LABELS[value] ?? value;
-}
-
-/** Le libellé français d'un dispositif, ou null si absent. */
-export function programTypeLabel(value: string | null | undefined): string | null {
-  if (!value) return null;
-  return PROGRAM_TYPE_LABELS[value] ?? value;
-}
-
-/** Le libellé français d'un rythme de travail, ou null si absent. */
-export function workTimeLabel(value: string | null | undefined): string | null {
-  if (!value) return null;
-  return WORK_TIME_LABELS[value] ?? value;
-}
+export { EMPLOYMENT_LABELS } from '@catwalks/db/presentation';
+export const employmentTermLabel = (value: string | null | undefined) => employmentLabel('employmentTerm', value);
+export const workTimeLabel = (value: string | null | undefined) => employmentLabel('workTime', value);
+export const programTypeLabel = (value: string | null | undefined) => employmentLabel('programType', value);
+export const engagementTypeLabel = (value: string | null | undefined) => employmentLabel('engagementType', value);
+export const workplaceTypeLabel = (value: string | null | undefined) => employmentLabel('workplaceType', value);
 
 /**
  * fr-FR sépare les milliers par une espace fine insécable (U+202F) que la

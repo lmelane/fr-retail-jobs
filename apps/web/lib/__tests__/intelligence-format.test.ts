@@ -3,7 +3,7 @@ import { addDays, citySlug, fmtDate, fmtIndex, fmtInt, fmtPct, fmtSigned, fmtSig
 import { intelTitle, jsonLd, TITLE_MAX } from '../intelligence/seo';
 import { alpha2FromNumeric, knownAlpha2 } from '../intelligence/country-ids';
 import { countryCode } from '../countries';
-import { sectorLabel } from '../intelligence/taxonomy';
+
 import { level, thresholds } from '../../components/intelligence/world-map';
 
 describe('formatters (fr-FR)', () => {
@@ -70,12 +70,6 @@ describe('country ids', () => {
     expect(countryCode('Hong Kong, RAS Chine')).toBe('HK');
     expect(countryCode("États-Unis d'Amérique")).toBe('US');
     expect(countryCode('Nowhere Land')).toBeNull();
-  });
-});
-
-describe('taxonomy', () => {
-  it('labels seniority and sectors independently from occupation keys', () => {
-    expect(sectorLabel('SUPPLIER')).toBe('Autres');
   });
 });
 

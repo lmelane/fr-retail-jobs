@@ -33,9 +33,22 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
   it('counts all 301 companies in sector and group totals', async () => {
     const result = await getJobs({ group });
     expect(result.total).toBe(301);
-    expect(result.facets.sectors).toEqual([{ value: 'LUXURY', count: 301 }]);
+    expect(result.facets.sectors.filter(s=>s.count>0)).toEqual([{value:'unclassified',label:'Secteur à vérifier',count:301}]);
+    expect(result.facets.sectors.some(s=>s.value==='WATCHMAKING'&&s.label==='Horlogerie')).toBe(true);
     expect(result.facets.groups).toEqual([{ value: group, count: 301 }]);
     expect(result.facets.maisons).toHaveLength(301);
+  });
+
+  it('accepts a new sector and localized label as reviewed data without changing frontend enums',async()=>{
+    const {previewSectors,applySectors}=await import('../../aggregator/src/sectors/review');
+    const concept={code:'AUDIT_NEW_VERTICAL',slug:'audit-new-vertical',labels:{fr:'Verticale témoin',en:'Witness vertical'},definition:'Dedicated test concept',position:100};
+    const c=await prisma.company.findUniqueOrThrow({where:{id:`${prefix}0`}});
+    const m={reviewer:'web integration',concepts:[concept],companies:[{id:c.id,canonicalKey:c.canonicalKey,codes:[concept.code,'WATCHMAKING'],evidence:[concept.code,'WATCHMAKING'].map(code=>({code,source:'https://example.com/sector-proof',statement:'Independent business sector evidence fixture',confidence:'HIGH' as const,basis:'OFFICIAL_SOURCE' as const,checkedAt:'2026-09-09T00:00:00Z'}))}]};
+    const plan=await previewSectors(prisma,m);await applySectors(prisma,m,plan.reviewHash);
+    const r=await getJobs({sector:concept.code,group});expect(r.total).toBe(1);expect(r.facets.sectors.find(s=>s.value===concept.code)).toEqual({value:concept.code,label:concept.labels.fr,count:1});
+    expect((await getJobs({sector:'WATCHMAKING',group})).total).toBe(1);
+    expect((await getJobs({group})).total).toBe(301);
+    expect((await getJobs({sector:'NO_SUCH_SECTOR',group})).total).toBe(0);
   });
 
   it('uses a stable order for tied dates across successive pages', async () => {
