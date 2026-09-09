@@ -1,0 +1,61 @@
+{
+  "at": "2026-09-09T17:26:49.193Z",
+  "environment": "clone",
+  "commit": "2bcb7833127f20017fe0c33b71e36898e384132e",
+  "aliases": {
+    "planHash": "947731d947d9161aebaaa4e94e210b400860586fcea666202424cde767bd67ff",
+    "result": {
+      "alreadyApplied": false,
+      "movedJobs": 0,
+      "aliases": 9
+    },
+    "replay": {
+      "alreadyApplied": true,
+      "movedJobs": 0,
+      "aliases": 0
+    }
+  },
+  "certifications": [
+    {
+      "written": {
+        "sourceKey": "maison-margiela",
+        "sourceHash": "bf98483b2417d3418552ba15794d1100662eb6f817336475d913da55c02b24e2",
+        "verdict": "VERIFIED",
+        "written": 1
+      },
+      "promoted": {
+        "key": "maison-margiela",
+        "from": "PAUSED",
+        "to": "ACTIVE"
+      }
+    },
+    {
+      "written": {
+        "sourceKey": "aptar-beauty",
+        "sourceHash": "ed405cacff28f3c9a60a5c16c25c48dd519238351c9ca6dd1d7e7377cf772720",
+        "verdict": "VERIFIED",
+        "written": 1
+      },
+      "promoted": {
+        "key": "aptar-beauty",
+        "from": "PAUSED",
+        "to": "ACTIVE"
+      }
+    }
+  ],
+  "sector": {
+    "reviewHash": "2b9df7d9b94cf0958017678989fa31f4a35d426d92038c8909acb9c01c3fdd67",
+    "result": {
+      "changed": 5,
+      "conceptsChanged": 0,
+      "reviewId": "2b9df7d9b94cf0958017678989fa31f4a35d426d92038c8909acb9c01c3fdd67",
+      "activeAffected": 133
+    },
+    "replay": {
+      "changed": 0,
+      "reviewId": null
+    }
+  },
+  "jobCount": 77447,
+  "active": 74187
+}

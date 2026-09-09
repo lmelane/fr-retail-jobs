@@ -1,0 +1,106 @@
+{
+  "at": "2026-09-09T17:46:45.301Z",
+  "environment": "PRODUCTION",
+  "results": [
+    {
+      "brand": "Diesel",
+      "dbActive": 85,
+      "apiTotal": 85,
+      "idsMatched": true,
+      "extraInApi": 0,
+      "samplePosting": {
+        "id": "cmtmfqfiq0bggpv4xq7hidb6s",
+        "httpStatus": 200,
+        "jobPosting": true
+      }
+    },
+    {
+      "brand": "Aptar Group",
+      "dbActive": 224,
+      "apiTotal": 224,
+      "idsMatched": true,
+      "extraInApi": 0,
+      "samplePosting": {
+        "id": "cmtk22cu20bfcnv2btdqctuq2",
+        "httpStatus": 200,
+        "jobPosting": true
+      }
+    },
+    {
+      "brand": "OTB",
+      "dbActive": 17,
+      "apiTotal": 17,
+      "idsMatched": true,
+      "extraInApi": 0,
+      "samplePosting": {
+        "id": "cmtne5rt70cc5qq4zinga9dtj",
+        "httpStatus": 200,
+        "jobPosting": true
+      }
+    },
+    {
+      "brand": "Maison Margiela",
+      "dbActive": 25,
+      "apiTotal": 25,
+      "idsMatched": true,
+      "extraInApi": 0,
+      "samplePosting": {
+        "id": "cmtlv892806p33nk53trdhpq1",
+        "httpStatus": 200,
+        "jobPosting": true
+      }
+    },
+    {
+      "brand": "Marni",
+      "dbActive": 14,
+      "apiTotal": 14,
+      "idsMatched": true,
+      "extraInApi": 0,
+      "samplePosting": {
+        "id": "cmtk1y4jw02q6nv2b2m24akpn",
+        "httpStatus": 200,
+        "jobPosting": true
+      }
+    },
+    {
+      "brand": "Jil Sander",
+      "dbActive": 11,
+      "apiTotal": 11,
+      "idsMatched": true,
+      "extraInApi": 0,
+      "samplePosting": {
+        "id": "cmtn5dwc30c40qq5lib74xgle",
+        "httpStatus": 200,
+        "jobPosting": true
+      }
+    },
+    {
+      "brand": "Staff International",
+      "dbActive": 4,
+      "apiTotal": 4,
+      "idsMatched": true,
+      "extraInApi": 0,
+      "samplePosting": {
+        "id": "cmtn5dwai0c3kqq5lipcrqdoa",
+        "httpStatus": 200,
+        "jobPosting": true
+      }
+    },
+    {
+      "brand": "Brave Kid",
+      "dbActive": 1,
+      "apiTotal": 1,
+      "idsMatched": true,
+      "extraInApi": 0,
+      "samplePosting": {
+        "id": "cmtne5rpn0cbaqq4zhpe0d6wp",
+        "httpStatus": 200,
+        "jobPosting": true
+      }
+    }
+  ],
+  "formerAttribution": {
+    "Aptar Beauty": 0
+  },
+  "allMatched": true
+}

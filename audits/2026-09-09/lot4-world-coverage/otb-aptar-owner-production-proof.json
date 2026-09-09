@@ -1,0 +1,138 @@
+{
+  "at": "2026-09-09T17:42:14.045Z",
+  "environment": "production",
+  "commit": "772ee8db3b3936802cc2265da84b5d9f6e1bbc6b",
+  "planHash": "b1f4bda436842c61e8d64f21c59a45926c3604197320d20b9967b4d88f990f40",
+  "operations": {
+    "total": 735,
+    "Job": 351,
+    "Company": 8,
+    "JobSource": 374,
+    "Source": 2
+  },
+  "result": {
+    "alreadyApplied": false,
+    "written": 735,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "written": 0,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "allJobs": 77447,
+  "allActive": 74187,
+  "idAndLifecycleConservation": true,
+  "rawConservation": true,
+  "rawRepresentationsPreserved": 374,
+  "attributionAfter": [
+    {
+      "company": "Maison Margiela",
+      "kind": "UNKNOWN",
+      "isActive": true,
+      "jobs": 23
+    },
+    {
+      "company": "Jil Sander",
+      "kind": "BRAND",
+      "isActive": false,
+      "jobs": 1
+    },
+    {
+      "company": "Jil Sander",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 10
+    },
+    {
+      "company": "Brave Kid",
+      "kind": "OTHER",
+      "isActive": true,
+      "jobs": 1
+    },
+    {
+      "company": "Diesel",
+      "kind": "BRAND",
+      "isActive": false,
+      "jobs": 6
+    },
+    {
+      "company": "Diesel",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 73
+    },
+    {
+      "company": "OTB",
+      "kind": "GROUP",
+      "isActive": false,
+      "jobs": 5
+    },
+    {
+      "company": "OTB",
+      "kind": "GROUP",
+      "isActive": true,
+      "jobs": 16
+    },
+    {
+      "company": "Staff International",
+      "kind": "SUPPLIER",
+      "isActive": false,
+      "jobs": 1
+    },
+    {
+      "company": "Staff International",
+      "kind": "SUPPLIER",
+      "isActive": true,
+      "jobs": 3
+    },
+    {
+      "company": "Aptar Group",
+      "kind": "GROUP",
+      "isActive": false,
+      "jobs": 4
+    },
+    {
+      "company": "Aptar Group",
+      "kind": "GROUP",
+      "isActive": true,
+      "jobs": 217
+    },
+    {
+      "company": "Marni",
+      "kind": "BRAND",
+      "isActive": false,
+      "jobs": 3
+    },
+    {
+      "company": "Marni",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 11
+    }
+  ],
+  "sources": [
+    {
+      "key": "aptar-beauty",
+      "maison": "Aptar Group",
+      "tier": "GROUP_OFFICIAL",
+      "status": "PAUSED",
+      "config": {
+        "origin": "https://jobs.aptar.com"
+      }
+    },
+    {
+      "key": "maison-margiela",
+      "maison": "OTB",
+      "tier": "GROUP_OFFICIAL",
+      "status": "PAUSED",
+      "config": {
+        "origin": "https://careers.otb.net",
+        "brandProperty": "dept"
+      }
+    }
+  ],
+  "brandObservations": 132
+}

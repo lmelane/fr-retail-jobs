@@ -54,8 +54,8 @@
     },
     "feedCompleteness": {
       "NO_ACTIVE_FEED": 1415,
-      "ALL_ACTIVE_FEEDS_COMPLETE": 190,
-      "SOME_ACTIVE_FEED_PARTIAL_OR_UNPROVEN": 48
+      "ALL_ACTIVE_FEEDS_COMPLETE": 194,
+      "SOME_ACTIVE_FEED_PARTIAL_OR_UNPROVEN": 44
     },
     "worldwideCoverage": {
       "NOT_PROVEN": 1653
@@ -80,40 +80,13 @@
         "CERTIFIED_CURRENT": 10
       },
       "completenessActiveOnly": {
-        "CONFIGURED_FEED_ENUMERATED_COMPLETELY": 359,
-        "PARTIAL_OR_UNPROVEN": 64
+        "CONFIGURED_FEED_ENUMERATED_COMPLETELY": 385,
+        "PARTIAL_OR_UNPROVEN": 38
       },
       "withNativeReceipt": 425,
       "activeWithAnyCompleteReceiptEver": 383,
-      "activeCompleteOnLatestReceiptOnly": 357,
-      "activeRegressedSinceCompleteReceipt": [
-        "jeans-centre",
-        "kapten-son",
-        "kiko-milano",
-        "kult-olymp-hades",
-        "minimalist",
-        "ms-mode",
-        "my-jewellery",
-        "nikin",
-        "nimble",
-        "obi-obi",
-        "pegador",
-        "pepco",
-        "picard",
-        "pina",
-        "profuomo",
-        "rotate",
-        "samson",
-        "sezane",
-        "siebel-juweliers",
-        "sioux",
-        "stanley-stella",
-        "state-of-art",
-        "thomas-sabo",
-        "tods",
-        "valentino",
-        "yaya"
-      ]
+      "activeCompleteOnLatestReceiptOnly": 383,
+      "activeRegressedSinceCompleteReceipt": []
     },
     "note": "Each dimension is measured separately. ATTESTED identity never implies a confirmed portal, an active source, a complete feed or worldwide coverage, and vice versa."
   }
