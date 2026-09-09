@@ -1,0 +1,26 @@
+[
+  {
+    "at": "2026-09-09T04:47:27.761Z",
+    "url": "https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=240",
+    "status": 200,
+    "contentType": "text/html;charset=UTF-8",
+    "server": "cloudflare",
+    "retryAfter": null,
+    "bytes": 232515,
+    "sha256": "cd9083497075f3d2745068ae02b61204426456fc77b2088a273dc75010cfbb62",
+    "title": "\n                Job Search | L'Oréal Careers | Search\n            ",
+    "jobLinks": 40
+  },
+  {
+    "at": "2026-09-09T04:47:30.057Z",
+    "url": "https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0",
+    "status": 200,
+    "contentType": "text/html;charset=UTF-8",
+    "server": "cloudflare",
+    "retryAfter": null,
+    "bytes": 228906,
+    "sha256": "e98cd55ad6eed5f5c790972609ea441d52d04a918585eeee3490d2672ab42f25",
+    "title": "\n                Job Search | L'Oréal Careers | Search\n            ",
+    "jobLinks": 40
+  }
+]

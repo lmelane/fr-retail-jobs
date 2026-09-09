@@ -429,30 +429,57 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
     const pageSize = Number(config.pageSize ?? 20);
     const maxPages = Number(config.maxPages ?? 120);
 
-    // Avature announces no total; the truncation signal here is exhausting the
-    // page cap while every page still yielded fresh offers (F-04).
+    // L'Oréal's 999+ badge is a lower bound, never an exact declaredTotal.
+    // Only the explicit end-of-list marker proves completion.
     let truncated = false;
+    let complete = false;
+    let paginationUrl = listingUrl;
     for (let page = 0; page < maxPages; page++) {
       // jobOffset REMPLACÉ, jamais ajouté : la config L'Oréal porte déjà
       // `?jobOffset=0`, et `…jobOffset=0&jobOffset=1160` répond 406 — 1 716 offres
       // BROKEN au run global du 2026-09-06 13:11.
-      const pageUrl = new URL(listingUrl);
+      const pageUrl = new URL(paginationUrl);
       pageUrl.searchParams.set('jobOffset', String(page * pageSize));
+      // L'Oréal returned 406 at offset 240 on 2026-09-08; the same URL and
+      // headers returned a genuine listing the next morning. Retry within the
+      // common host gate and source budget, without assuming this is a WAF or
+      // treating a persistent rejection as an empty page. Other HTTP clients
+      // retain the default terminal-406 policy.
       const html = await fetchText(pageUrl.toString(), {
         headers: HEADERS,
-      });
+      }, new URL(listingUrl).hostname === 'careers.loreal.com'
+        ? { additionalTransientStatuses: [406] } : {});
 
+      if (page === 0 && new URL(listingUrl).hostname === 'careers.loreal.com') {
+        // Use the same public fragment endpoint as the site's Load More button.
+        // Discover it from the fetched page; never guess a tenant route.
+        const observed = html.match(/var\s+searchJobsAJAXPage\s*=\s*["']([^"']+)["']/)?.[1];
+        if (observed) {
+          const candidate = new URL(observed, listingUrl);
+          const expectedPath = new URL(listingUrl).pathname.replace(/SearchJobs\/?$/, 'SearchJobsAJAX');
+          if (candidate.origin === new URL(listingUrl).origin &&
+              candidate.pathname.replace(/\/$/, '') === expectedPath && !candidate.search && !candidate.hash && !candidate.username && !candidate.password) {
+            paginationUrl = candidate.toString().replace(/\/$/, '') + '/';
+          }
+        }
+      }
       const batch = parseAvatureListing(html);
       const fresh = batch.filter((job) => !seen.has(job.externalId));
       for (const job of fresh) {
         seen.add(job.externalId);
         jobs.push(job);
       }
-      if (fresh.length === 0) break;
+      if (fresh.length === 0) {
+        complete = batch.length === 0 && /<article\b[^>]*class=["'][^"']*\barticle--result--nojobs\b/i.test(html);
+        // A repeated page or unrecognised HTML is not proof of an empty board.
+        truncated ||= !complete;
+        break;
+      }
+      if (fresh.length !== batch.length) truncated = true;
       if (page === maxPages - 1) truncated = true;
     }
 
-    if (config.withDescriptions === false) return { jobs, truncated };
+    if (config.withDescriptions === false) return { jobs, truncated, complete: complete && !truncated };
 
     /**
      * The listing snippet is ~290 characters — an excerpt, not the posting. The
@@ -478,7 +505,7 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
         }),
       ),
     );
-    return { jobs: withDescriptions, truncated };
+    return { jobs: withDescriptions, truncated, complete: complete && !truncated };
   }
 
   const sitemapUrl = String(config.sitemapUrl ?? '');

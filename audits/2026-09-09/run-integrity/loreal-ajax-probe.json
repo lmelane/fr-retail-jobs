@@ -1,0 +1,24 @@
+[
+  {
+    "at": "2026-09-09T04:50:42.592Z",
+    "url": "https://careers.loreal.com/en_US/jobs/SearchJobsAJAX/?jobOffset=240",
+    "status": 200,
+    "contentType": "text/html;charset=UTF-8",
+    "server": "cloudflare",
+    "retryAfter": null,
+    "bytes": 99985,
+    "sha256": "0ac98792bfc6849e15257d1717bbb266a70f1639b0429e71323bf09f894f3eb9",
+    "jobLinks": 40
+  },
+  {
+    "at": "2026-09-09T04:50:44.445Z",
+    "url": "https://careers.loreal.com/en_US/jobs/SearchJobsAJAX/?jobOffset=1760",
+    "status": 200,
+    "contentType": "text/html;charset=UTF-8",
+    "server": "cloudflare",
+    "retryAfter": null,
+    "bytes": 586,
+    "sha256": "89d5677fe5f26b72534a3e1c95c8c0ee927e53668f03e003ff96514922b6d401",
+    "jobLinks": 0
+  }
+]

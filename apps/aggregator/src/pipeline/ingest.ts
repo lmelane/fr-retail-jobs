@@ -43,6 +43,8 @@ export type IngestStats = {
   merged: number;
   updated: number;
   errors: number;
+  /** Bounded original cause, persisted in SourceRun rather than lost with logs. */
+  errorNote?: string;
   held?: number;
   heldUnresolved?: number;
   /**
@@ -575,6 +577,7 @@ export async function runIngest(
         source: source.key,
         fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 1,
         withDescription: 0, withDate: 0, withCountry: 0, withUrl: 0,
+        errorNote: briefError(error),
       });
       console.error(`[ingest] ${source.key} failed: ${briefError(error)}`);
     }

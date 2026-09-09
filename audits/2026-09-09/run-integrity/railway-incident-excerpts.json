@@ -1,0 +1,20 @@
+{
+  "deployment": "7b17182e-b713-4bbb-ab25-5f506201ca11",
+  "logs": [
+    {
+      "timestamp": "2026-09-08T22:35:14.133353087Z",
+      "level": "error",
+      "message": "[ingest] l-oreal-professionnel failed: HTTP 406 for https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=240"
+    },
+    {
+      "message": "[orchestrator] done: 423/424 ok, 1 failed, 0 timed out \u2014 l-oreal-professionnel (ingest errors)",
+      "timestamp": "2026-09-08T22:49:47.226850043Z",
+      "level": "info"
+    },
+    {
+      "level": "error",
+      "timestamp": "2026-09-08T22:50:06.664385035Z",
+      "message": "Railway rate limit of 500 logs/sec reached for replica, update your application to reduce the logging rate. Messages dropped: 2925"
+    }
+  ]
+}

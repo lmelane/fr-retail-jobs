@@ -29,6 +29,17 @@ afterAll(async () => {
 });
 
 describe('checkSourceHealth', () => {
+  it('persists the original failed-page cause and denies absence attestation', async () => {
+    const failed = { ...stat('l-oreal-professionnel', 0), errors: 1, complete: false,
+      errorNote: 'HTTP 406 for https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=240' };
+    const report = await checkSourceHealth(prisma, [failed]);
+    const run = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: failed.source } });
+    expect(report.broken).toBe(1);
+    expect(run.note).toContain(failed.errorNote);
+    expect(run.errors).toBe(1);
+    expect(run.canAttestAbsence).toBe(false);
+  });
+
   it('does not grant attestation to an adapter that never measured completion', async () => {
     await checkSourceHealth(prisma, [stat('legacy-adapter', 100)]);
     const report = await checkSourceHealth(prisma, [{ ...stat('legacy-adapter', 100), complete: undefined }]);
