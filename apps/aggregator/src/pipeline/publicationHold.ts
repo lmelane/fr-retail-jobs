@@ -1,4 +1,5 @@
 import { deactivateSources } from './deactivateSources.js';
+import { publicationDisposition } from './publicationDisposition.js';
 import { createHash } from 'node:crypto';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import type { NormalizedJob } from '../types.js';
@@ -25,10 +26,11 @@ export async function archivePublicationHold(db: PrismaClient, sourceKey: string
     assertSourceRunning();
   });
   const withdrawn = job.publicationWithdrawnAt;
-  if (withdrawn && ['APPLICATION_HTTP_404', 'APPLICATION_HTTP_410', 'APPLICATION_EXPLICITLY_CLOSED'].includes(job.publicationHold)) {
+  const disposition = publicationDisposition(job.publicationHold);
+  if (withdrawn && disposition) {
     if (!Number.isFinite(withdrawn.getTime()) || withdrawn.getTime() > Date.now()) throw new Error('Invalid withdrawal observation time');
     // Reuse the existing history-preserving lifecycle writer. A newer ingestion
     // wins the race; the observation cannot deactivate a re-attested posting.
-    await deactivateSources(db, { sourceKey, externalId: job.externalId, lastSeenAt: { lt: withdrawn } }, { kind: 'CLOSED' });
+    await deactivateSources(db, { sourceKey, externalId: job.externalId, lastSeenAt: { lt: withdrawn } }, disposition);
   }
 }

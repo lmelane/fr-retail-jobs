@@ -38,3 +38,11 @@ describe('tenantKeyOf — Eightfold : le domain est le tenant, pas l’hôte', (
     expect(a).toBe('eightfold:elcompanies.com');
   });
 });
+
+describe('Harri tenant identity',()=>{
+  it('keeps separate employer portals on the same host and one key for URL/slug forms',()=>{
+    const a=tenantKeyOf('harri',JSON.stringify({portalUrl:'https://harri.com/Saltrock-Careers',brandId:8522347}));
+    expect(a).toBe(tenantKeyOf('harri',JSON.stringify({slug:'Saltrock-Careers',brandId:8522347})));
+    expect(a).not.toBe(tenantKeyOf('harri',JSON.stringify({slug:'another-employer'})));
+  });
+});
