@@ -1,0 +1,40 @@
+{
+  "deploymentId": "d1970799-1740-4a69-a03b-c041ad1bf068",
+  "commit": "0dbcb2f15e7f304a56cf3b3db7bce0f193adc848",
+  "runId": "fdf37131-8130-4b49-8b7b-301607f25953",
+  "lines": 6,
+  "peakLinesPerSecond": 3,
+  "railwayDroppedWarnings": 0,
+  "logs": [
+    {
+      "message": "Starting Container",
+      "timestamp": "2026-09-09T07:21:36.609281110Z",
+      "severity": "info"
+    },
+    {
+      "message": "run.started",
+      "timestamp": "2026-09-09T07:21:37.586103311Z",
+      "severity": "info"
+    },
+    {
+      "message": "ingest.sources_selected",
+      "timestamp": "2026-09-09T07:21:37.586108717Z",
+      "severity": "info"
+    },
+    {
+      "message": "source.ingest_completed",
+      "timestamp": "2026-09-09T07:21:47.254507970Z",
+      "severity": "info"
+    },
+    {
+      "message": "command.result",
+      "timestamp": "2026-09-09T07:21:47.254514311Z",
+      "severity": "info"
+    },
+    {
+      "message": "run.completed",
+      "timestamp": "2026-09-09T07:21:47.254518754Z",
+      "severity": "info"
+    }
+  ]
+}

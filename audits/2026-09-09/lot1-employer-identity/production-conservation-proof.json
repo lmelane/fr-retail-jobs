@@ -1,0 +1,11 @@
+{
+  "asOf": "2026-09-09T07:23:16.438Z",
+  "baselineJobs": 77322,
+  "baselineSources": 80348,
+  "baselineEvents": 21718,
+  "lostJobIds": 0,
+  "lostSourceIds": 0,
+  "alteredOrLostPriorEvents": 0,
+  "verifiedEvidenceArtifacts": 10,
+  "baselineSha256": "7a03897ed1fe731bff5778b03bee576dc2ae7bfd27c09588f12befb938bf124a"
+}
