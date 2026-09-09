@@ -17,11 +17,6 @@ import type { JobRow } from '@/lib/jobs';
  * Maisons qui recrutent, dernières offres, bandeau matching. Données réelles.
  */
 
-const SECTOR_LABELS: Record<string, string> = {
-  FASHION: 'Mode', LUXURY: 'Luxe', BEAUTY: 'Beauté', JEWELRY_WATCHES: 'Horlogerie & Joaillerie',
-  RETAIL: 'Retail', SUPPLIER: 'Fournisseurs', MEDIA_AGENCY: 'Médias', RECRUITER: 'Cabinets',
-};
-const HERO_SECTORS = ['FASHION', 'LUXURY', 'BEAUTY', 'JEWELRY_WATCHES', 'RETAIL'];
 
 const Arrow = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden width="16" height="16"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
@@ -34,7 +29,7 @@ export function LandingView({
   latestOffers,
 }: {
   stats: { offers: number; companies: number; countries: number; newCompaniesThisWeek: number };
-  sectors: { value: string; count: number }[];
+  sectors: { value: string; count: number; label?: string }[];
   maisons: CompanyRow[];
   latestOffers: JobRow[];
 }) {
@@ -163,10 +158,10 @@ export function LandingView({
           <h2 id="sectors-title" className="t-d1" data-stagger-index="0">Explorer par secteur.</h2>
         </div>
         <div className="grid grid-cols-2 gap-x-10 gap-y-6 md:grid-cols-5">
-          {HERO_SECTORS.map((s) => (
-            <Link key={s} href={`/emplois?secteur=${s}`} className="rule block pt-6 group" data-stagger-index={HERO_SECTORS.indexOf(s) % 5}>
-              <span className="t-d2 block group-hover:underline group-hover:underline-offset-4">{SECTOR_LABELS[s]}</span>
-              <span className="t-caption-soft mt-2 block">{nf.format(sectorCount(s))} offres</span>
+          {sectors.filter(s=>s.value!=='unclassified').map((s,i) => (
+            <Link key={s.value} href={`/emplois?secteur=${s.value}`} className="rule block pt-6 group" data-stagger-index={i % 5}>
+              <span className="t-d2 block group-hover:underline group-hover:underline-offset-4">{s.label}</span>
+              <span className="t-caption-soft mt-2 block">{nf.format(sectorCount(s.value))} offres</span>
             </Link>
           ))}
         </div>
@@ -183,7 +178,7 @@ export function LandingView({
             {maisons.map((m, i) => (
               <Link key={m.id} href={`/entreprise/${companySlug(m.name)}`} className="rule block py-6 group" data-stagger-index={i % 3}>
                 <span className="t-d2 block group-hover:underline group-hover:underline-offset-4">{m.name}</span>
-                {m.sector && <span className="t-caption-soft mt-1 block">{SECTOR_LABELS[m.sector] ?? m.sector}</span>}
+                {m.sectors?.length ? <span className="t-caption-soft mt-1 block">{m.sectors.map(s=>s.label).join(' · ')}</span> : null}
                 <span className="t-body2 muted mt-2 block tabular-nums">{nf.format(m.jobCount)} {m.jobCount > 1 ? 'emplois ouverts' : 'emploi ouvert'}</span>
               </Link>
             ))}

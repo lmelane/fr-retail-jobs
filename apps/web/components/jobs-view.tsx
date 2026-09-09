@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Check, ChevronDown, Loader2, X } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
 import { SearchPill } from '@/components/search-pill';
-import { employmentTermLabel, displayTitle, relativeDate } from '@/lib/format';
+import { employmentTermLabel, workTimeLabel, programTypeLabel, engagementTypeLabel, workplaceTypeLabel, EMPLOYMENT_LABELS, displayTitle, relativeDate } from '@/lib/format';
 import { offerPath } from '@/lib/offer-url';
 import { jobFacets } from '@/lib/job-preview';
 import { CompanyLogo } from '@/components/company-logo';
@@ -32,21 +32,6 @@ import type { JobFilters, JobRow, JobsResult } from '@/lib/jobs';
  *    the one offer being read.
  */
 
-const SECTOR_LABELS: Record<string, string> = {
-  FASHION: 'Mode',
-  LUXURY: 'Luxe',
-  BEAUTY: 'Beauté',
-  JEWELRY_WATCHES: 'Joaillerie',
-  RETAIL: 'Retail',
-  SUPPLIER: 'Fournisseurs',
-  MEDIA_AGENCY: 'Médias',
-  RECRUITER: 'Cabinets',
-  // Employers the reference list does not name — enseignes reached through a
-  // jobboard rather than their own ATS. "UNKNOWN" read as a bug; the offers are
-  // real, they simply sit outside the 728-house list.
-  OTHER: 'Hors référentiel',
-  UNKNOWN: 'Hors référentiel',
-};
 
 /** URL keys, in French, because the URL is user-visible. */
 const PARAM: Record<string, string> = {
@@ -55,6 +40,7 @@ const PARAM: Record<string, string> = {
   jobFunction: 'fonction',
   city: 'ville',
   contract: 'employmentTerm',
+  workTime:'workTime', programType:'programType', engagementType:'engagementType',
   sector: 'secteur',
   maison: 'maison',
   group: 'groupe',
@@ -288,15 +274,19 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
               label="Secteur"
               active={params.get('secteur')}
               options={data.facets.sectors}
-              labels={SECTOR_LABELS}
+              labels={Object.fromEntries(data.facets.sectors.map(s=>[s.value,s.label??'Secteur à vérifier']))}
               onSelect={(value) => toggle('secteur', value)}
             />
             <FilterMenu
               label="Contrat"
               active={params.get('employmentTerm') ?? params.get('contrat')}
               options={data.facets.contracts}
+              labels={EMPLOYMENT_LABELS.employmentTerm}
               onSelect={(value) => toggle('employmentTerm', value)}
             />
+            <FilterMenu label="Temps de travail" active={params.get('workTime')} options={data.facets.workTimes??[]} labels={EMPLOYMENT_LABELS.workTime} onSelect={value=>toggle('workTime',value)} />
+            <FilterMenu label="Programme" active={params.get('programType')} options={data.facets.programs??[]} labels={EMPLOYMENT_LABELS.programType} onSelect={value=>toggle('programType',value)} />
+            <FilterMenu label="Statut" active={params.get('engagementType')} options={data.facets.engagements??[]} labels={EMPLOYMENT_LABELS.engagementType} onSelect={value=>toggle('engagementType',value)} />
             <FilterMenu
               label="Ville"
               active={params.get('ville')}
@@ -466,7 +456,7 @@ function FilterMenu({
 
     const place = () => {
       const box = buttonRef.current?.getBoundingClientRect();
-      if (box) setRect({ top: box.bottom + 4, left: box.left });
+      if (box) setRect({ top: box.bottom + 4, left: Math.max(12,Math.min(box.left,window.innerWidth-268)) });
     };
     place();
 
@@ -526,7 +516,7 @@ function FilterMenu({
             role="listbox"
             aria-label={label}
             style={{ top: rect.top, left: rect.left }}
-            className="dd fixed max-h-80 w-64 overflow-y-auto"
+            className="dd fixed max-h-80 w-64 max-w-[calc(100vw-24px)] overflow-y-auto"
           >
             {options.map((option) => {
               const isActive = option.value === active;
@@ -575,7 +565,7 @@ export function JobCard({
   onSelect: () => void;
   isSelected: boolean;
 }) {
-  const contract = employmentTermLabel(job.employmentTerm);
+  const contract = [employmentTermLabel(job.employmentTerm),programTypeLabel(job.programType),engagementTypeLabel(job.engagementType)].filter(Boolean).join(' · ');
   const isFresh = job.postedAt
     ? Date.now() - new Date(job.postedAt).getTime() < FRESH_MS
     : false;
@@ -605,16 +595,8 @@ export function JobCard({
   };
 
   // Meta : ville · contrat · télétravail — texte, sans icône (DA §4.6).
-  const remote =
-    job.workplaceType === 'REMOTE' || job.workplaceType === 'HYBRID'
-      ? 'Télétravail'
-      : null;
-  // Ligne méta homogène (review 2026-09-04) : lieu · contrat · temps de
-  // travail · remote — chaque champ présent s'affiche, aucun n'est requis.
-  const workingTime =
-    job.workTime === 'TEMPS_PARTIEL' ? 'Temps partiel'
-    : job.workTime === 'TEMPS_PLEIN' ? 'Temps plein'
-    : null;
+  const remote = job.workplaceType==='HYBRID'||job.workplaceType==='REMOTE' ? workplaceTypeLabel(job.workplaceType):null;
+  const workingTime = workTimeLabel(job.workTime);
   const meta = [job.city ?? job.location, contract, workingTime, remote].filter(Boolean).join(' · ');
   // Ce qui DISTINGUE ce poste : métier, séniorité, département — l'aperçu de
   // description était le même texte d'entreprise sur 76 % des offres (cf.

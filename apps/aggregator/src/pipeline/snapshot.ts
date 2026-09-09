@@ -177,7 +177,7 @@ function baseCte(mode: SnapshotMode, start: Date, end: Date): Prisma.Sql {
         j."countryCode" AS country,
         j.city,
         c."parentGroup",
-        c.sector::text AS sector,
+        c."sectorCodes",
         j."jobFunction",
         j."occupationCode",
         j."occupationGroup",
@@ -237,7 +237,7 @@ async function aggregateScope(
       COUNT(DISTINCT "companyId") FILTER (WHERE active)::int AS "hiringCompanies",
       (percentile_cont(0.5) WITHIN GROUP (ORDER BY lifespan_days) FILTER (WHERE is_closed))::float AS "medianLifespanDays",
       COUNT(*) FILTER (WHERE is_reopened)::int AS "reopenedJobs"
-    FROM base
+    FROM base ${scope==='sector'||scope==='country-sector'?Prisma.sql`CROSS JOIN LATERAL unnest(CASE WHEN cardinality("sectorCodes")=0 THEN ARRAY['unclassified'] ELSE "sectorCodes" END) sector`:Prisma.empty}
     WHERE ${key} IS NOT NULL
     GROUP BY 1
     HAVING COUNT(*) FILTER (WHERE active) >= ${minActive}

@@ -248,29 +248,10 @@ export function classifySector(input: {
     };
   }
 
-  /**
-   * Employeur inconnu de la liste, venu d'une source du CATALOGUE.
-   *
-   * Une source n'entre au catalogue qu'après validation manuelle : c'est, par
-   * construction, une maison Mode · Luxe · Beauté · Horlogerie · Retail. Son
-   * appartenance au périmètre est donc déjà établie — la liste de référence ne
-   * fait qu'en préciser le segment.
-   *
-   * Sans ce repli, mesuré en prod le 2026-09-05 : `OTHER` était le PREMIER
-   * secteur du site avec 14 925 offres (30 %), et il contenait Levi's (1 308),
-   * Crocs (494), MAC (341), Madewell, Reformation, Mejuri, Gorjana,
-   * Suitsupply — que personne ne cherche hors de la mode. Le filtre Secteur
-   * cachait donc un tiers du catalogue derrière un libellé qui ne veut rien
-   * dire pour un candidat.
-   *
-   * On rend RETAIL et non un segment inventé : c'est le segment le plus large
-   * et le moins trompeur pour une maison dont on ne sait pas encore si elle est
-   * mode, beauté ou horlogerie. `inScope` reste true — l'offre est publiable —
-   * mais `reason` dit qu'un humain doit préciser le segment.
-   */
+  // Scope was reviewed at source activation; it proves admission, not Retail.
   if (input.fromCatalogue) {
     return {
-      sector: 'RETAIL',
+      sector: 'OTHER',
       inScope: true,
       reason: 'source du catalogue (périmètre déjà validé) ; segment à préciser',
     };

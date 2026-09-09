@@ -1,3 +1,4 @@
+import {getSectorPresentation} from '@/lib/sectors';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
@@ -12,7 +13,7 @@ import { intensity } from '@/lib/intelligence/metrics';
 import { addDays, fmtDate, fmtInt, MIN_SAMPLE, NA_FROM, windowAvailable, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
-import { sectorLabel } from '@/lib/intelligence/taxonomy';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -32,6 +33,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Params) {
+  const {label:sectorLabel}=await getSectorPresentation();
   const slug = (await params).slug;
   const company = await resolveCompany(slug);
   if (!company) notFound();

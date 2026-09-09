@@ -1,3 +1,4 @@
+import {previewSectors,applySectors} from '../sectors/review.js';
 import '../test/setup-integration.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
@@ -61,6 +62,10 @@ async function scenario() {
   const beta = await prisma.company.create({
     data: { name: 'Beta', canonicalKey: 'beta', fashionjobsUrl: 'resolved:beta', sector: 'FASHION', parentGroup: 'GroupB' },
   });
+  for(const [company,codes] of [[acme,['WATCHMAKING','JEWELRY']],[beta,['FASHION']]] as const){
+    const manifest={reviewer:'snapshot-test',companies:[{id:company.id,canonicalKey:company.canonicalKey,codes:[...codes],evidence:codes.map(code=>({code,source:'https://example.com',statement:'Snapshot fixture',confidence:'HIGH' as const,basis:'OFFICIAL_SOURCE' as const,checkedAt:NOW.toISOString()}))}]};
+    const preview=await previewSectors(prisma,manifest);await applySectors(prisma,manifest,preview.reviewHash);
+  }
   await seed(acme.id, [
     { ext: 'a1', city: 'Paris', country: 'FR', firstSeenAt: NOW, jobFunction: 'retail-client-advisor', isRetail: true, seniority: 'JUNIOR', employmentTerm: 'PERMANENT' },
     { ext: 'a2', city: 'Paris', country: 'FR', firstSeenAt: daysAgo(10) },
@@ -127,7 +132,7 @@ describe('runSnapshot — le jour même (live)', () => {
     expect(stats.days[0].byScope.group).toBe(1);
     expect(await row('group', 'GroupB')).toEqual({ activeJobs: 1, newJobs: 0, closedJobs: 2, hiringCompanies: 1, medianLifespanDays: 6, reopenedJobs: 0 });
     // Secteur (enum de la Maison).
-    expect(await row('sector', 'LUXURY')).toEqual({ activeJobs: 7, newJobs: 1, closedJobs: 1, hiringCompanies: 1, medianLifespanDays: 4, reopenedJobs: 1 });
+    expect(await row('sector', 'WATCHMAKING')).toEqual({ activeJobs: 7, newJobs: 1, closedJobs: 1, hiringCompanies: 1, medianLifespanDays: 4, reopenedJobs: 1 });
     expect(await row('sector', 'FASHION')).toEqual({ activeJobs: 1, newJobs: 0, closedJobs: 2, hiringCompanies: 1, medianLifespanDays: 6, reopenedJobs: 0 });
     // Métier : null compte comme « unclassified », jamais deviné.
     expect(stats.days[0].byScope.function).toBe(5);
@@ -146,8 +151,8 @@ describe('runSnapshot — le jour même (live)', () => {
     expect(await row('ai', 'true')).toEqual({ activeJobs: 1, newJobs: 0, closedJobs: 0, hiringCompanies: 1, medianLifespanDays: null, reopenedJobs: 0 });
     // Croisements : pays×métier n'atteint jamais 5 actives ici ; pays×secteur FR|LUXURY = 6.
     expect(stats.days[0].byScope['country-function']).toBe(0);
-    expect(stats.days[0].byScope['country-sector']).toBe(1);
-    expect(await row('country-sector', 'FR|LUXURY')).toEqual({ activeJobs: 6, newJobs: 1, closedJobs: 1, hiringCompanies: 1, medianLifespanDays: 4, reopenedJobs: 1 });
+    expect(stats.days[0].byScope['country-sector']).toBe(2);
+    expect(await row('country-sector', 'FR|WATCHMAKING')).toEqual({ activeJobs: 6, newJobs: 1, closedJobs: 1, hiringCompanies: 1, medianLifespanDays: 4, reopenedJobs: 1 });
 
     // Hier n'existe pas : b4 (fermée hier) n'apparaît nulle part aujourd'hui.
     expect(await prisma.marketSnapshot.count({ where: { closedJobs: 4 } })).toBe(0);

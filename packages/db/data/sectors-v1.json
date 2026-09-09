@@ -1,0 +1,152 @@
+[
+  {
+    "code": "FASHION",
+    "slug": "mode",
+    "labels": {
+      "fr": "Mode",
+      "en": "Clothing and fashion collections"
+    },
+    "definition": "Clothing and fashion collections",
+    "position": 0
+  },
+  {
+    "code": "LEATHER_GOODS",
+    "slug": "maroquinerie",
+    "labels": {
+      "fr": "Maroquinerie",
+      "en": "Leather goods and saddlery"
+    },
+    "definition": "Leather goods and saddlery",
+    "position": 1
+  },
+  {
+    "code": "FOOTWEAR",
+    "slug": "chaussures",
+    "labels": {
+      "fr": "Chaussures",
+      "en": "Footwear"
+    },
+    "definition": "Footwear",
+    "position": 2
+  },
+  {
+    "code": "JEWELRY",
+    "slug": "joaillerie",
+    "labels": {
+      "fr": "Joaillerie",
+      "en": "Jewelry"
+    },
+    "definition": "Jewelry",
+    "position": 3
+  },
+  {
+    "code": "WATCHMAKING",
+    "slug": "horlogerie",
+    "labels": {
+      "fr": "Horlogerie",
+      "en": "Watches and watchmaking"
+    },
+    "definition": "Watches and watchmaking",
+    "position": 4
+  },
+  {
+    "code": "BEAUTY",
+    "slug": "beaute",
+    "labels": {
+      "fr": "Beauté",
+      "en": "Cosmetics, makeup and skin or hair care"
+    },
+    "definition": "Cosmetics, makeup and skin or hair care",
+    "position": 5
+  },
+  {
+    "code": "FRAGRANCE",
+    "slug": "parfumerie",
+    "labels": {
+      "fr": "Parfumerie",
+      "en": "Perfumes and fragrances"
+    },
+    "definition": "Perfumes and fragrances",
+    "position": 6
+  },
+  {
+    "code": "EYEWEAR",
+    "slug": "lunetterie",
+    "labels": {
+      "fr": "Lunetterie",
+      "en": "Eyewear"
+    },
+    "definition": "Eyewear",
+    "position": 7
+  },
+  {
+    "code": "HOME_LIFESTYLE",
+    "slug": "maison-lifestyle",
+    "labels": {
+      "fr": "Maison & Lifestyle",
+      "en": "Homeware, furniture and lifestyle objects"
+    },
+    "definition": "Homeware, furniture and lifestyle objects",
+    "position": 8
+  },
+  {
+    "code": "WINES_SPIRITS",
+    "slug": "vins-spiritueux",
+    "labels": {
+      "fr": "Vins & Spiritueux",
+      "en": "Wine, champagne and spirits"
+    },
+    "definition": "Wine, champagne and spirits",
+    "position": 9
+  },
+  {
+    "code": "HOSPITALITY",
+    "slug": "hospitality",
+    "labels": {
+      "fr": "Hospitality",
+      "en": "Luxury hospitality and travel"
+    },
+    "definition": "Luxury hospitality and travel",
+    "position": 10
+  },
+  {
+    "code": "LUXURY_MOBILITY",
+    "slug": "automobile-mobilite-luxe",
+    "labels": {
+      "fr": "Automobile & Mobilité de luxe",
+      "en": "Luxury automobiles and mobility"
+    },
+    "definition": "Luxury automobiles and mobility",
+    "position": 11
+  },
+  {
+    "code": "ART_DESIGN",
+    "slug": "art-design",
+    "labels": {
+      "fr": "Art & Design",
+      "en": "Art and design"
+    },
+    "definition": "Art and design",
+    "position": 12
+  },
+  {
+    "code": "RETAIL",
+    "slug": "retail",
+    "labels": {
+      "fr": "Retail",
+      "en": "Retail distribution as an employer activity"
+    },
+    "definition": "Retail distribution as an employer activity; not a job family",
+    "position": 13
+  },
+  {
+    "code": "LUXURY_TECH_SERVICES",
+    "slug": "luxury-tech-services",
+    "labels": {
+      "fr": "Luxury Tech & Services",
+      "en": "Technology and services specialized in this vertical"
+    },
+    "definition": "Technology and services specialized in this vertical; not generic IT",
+    "position": 14
+  }
+]

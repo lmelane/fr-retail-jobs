@@ -1,3 +1,4 @@
+import { EMPLOYMENT_RAW_KEYS, employmentPathsAt as pathsAt } from '../normalize/employment-evidence.js';
 /**
  * LA CHAÎNE DE DÉCISION CANONIQUE — une seule, pour tout le monde.
  *
@@ -34,11 +35,7 @@ import { OBSERVED_DIMENSIONS, type ObservedDimension } from './contradictions.js
  * exactement les mêmes chemins, sinon un verdict porterait sur un champ que la
  * résolution ne consulte jamais.
  */
-export const EMPLOYMENT_RAW_KEYS = [
-  'employment_type_code', 'fullTimePartTimeFilter', 'employmentType', 'employment_type',
-  'contractType', 'contract_type', 'timeType', 'jobType', 'job_type',
-  'bulletFields', 'category', 'categories', 'tags1', 'tags2', 'tags3', 'tags4', 'tags5', 'tags6',
-] as const;
+
 
 /**
  * Les verdicts, indexés par `source path dimension`.
@@ -66,7 +63,8 @@ export type DecisionOrigin =
   | 'TITLE_EXPLICIT'
   | 'TITLE_INFERRED'
   | 'NO_STRUCTURED_EVIDENCE'
-  | 'AMBIGUOUS_STRUCTURED';
+  | 'AMBIGUOUS_STRUCTURED'
+  | 'CONFLICTING_EXPLICIT_EVIDENCE';
 
 export type ResolvedDimension = {
   value: string | undefined;
@@ -88,17 +86,6 @@ export type ResolvedEmployment = {
 };
 
 /** Les valeurs textuelles d'une clé, avec le chemin exact où elles vivent. */
-function pathsAt(payload: Record<string, unknown>, key: string): { path: string; value: string }[] {
-  const v = payload[key];
-  if (v === undefined || v === null) return [];
-  if (Array.isArray(v)) {
-    return v
-      .map((e, i) => ({ path: `${key}[${i}]`, value: String(e ?? '').trim() }))
-      .filter((c) => c.value !== '');
-  }
-  const text = String(v).trim();
-  return text ? [{ path: key, value: text }] : [];
-}
 
 /** Ce qu'une valeur de source dit, tous chemins de lecture confondus. */
 function readValue(value: string): Employment {
@@ -169,7 +156,7 @@ function resolveDimension(
   const worst = structured.reduce<TrustLevel>((acc, s) => {
     const lvl = (s.level ?? 'INSUFFICIENT_EVIDENCE') as TrustLevel;
     return RANK[lvl] < RANK[acc] ? lvl : acc;
-  }, 'TRUSTED');
+  }, structured.some(s=>!s.level||s.level==='INSUFFICIENT_EVIDENCE')?'INSUFFICIENT_EVIDENCE':'TRUSTED');
 
   /**
    * Un champ qui se contredit LUI-MÊME ne tranche rien : `contract_type:
@@ -179,6 +166,13 @@ function resolveDimension(
   const usableValues = new Set(structured.filter((s) => s.level !== 'UNTRUSTED').map((s) => s.value));
   const ambiguous = usableValues.size > 1;
   const structuredValue = usableValues.size === 1 ? [...usableValues][0] : undefined;
+  // A previously unassessed field cannot silently overturn an explicit title.
+  // Measured TRUSTED/DEGRADED/UNTRUSTED precedence remains unchanged.
+  const literalTitle=readEmployment(input.title)[dim];
+  if(worst==='INSUFFICIENT_EVIDENCE' && literalTitle && titleKind==='TITLE_EXPLICIT' && structuredValue && literalTitle!==structuredValue){
+    return {value:undefined,trustLevel:worst,origin:'CONFLICTING_EXPLICIT_EVIDENCE'};
+  }
+
 
   for (const kind of precedenceFor(worst)) {
     if (kind === 'STRUCTURED') {
@@ -262,3 +256,5 @@ export function resolveCanonicalDimensions(
 
   return out;
 }
+
+export { EMPLOYMENT_RAW_KEYS } from '../normalize/employment-evidence.js';

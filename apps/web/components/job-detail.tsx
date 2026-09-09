@@ -1,6 +1,6 @@
 'use client';
 
-import { employmentTermLabel, workTimeLabel, programTypeLabel, workplaceTypeLabel, relativeDate } from '@/lib/format';
+import { employmentTermLabel, engagementTypeLabel, workTimeLabel, programTypeLabel, workplaceTypeLabel, relativeDate } from '@/lib/format';
 import { CompanyLogo } from '@/components/company-logo';
 import { displayTitle } from '@/lib/format';
 import type { JobRow } from '@/lib/jobs';
@@ -67,6 +67,7 @@ function JobFacts({
   const workTime = workTimeLabel(job.workTime);
   if (workTime) facts.push(['Temps de travail', workTime]);
   if (job.programType) facts.push(['Programme', programTypeLabel(job.programType) ?? job.programType]);
+  if (job.engagementType) facts.push(['Statut', engagementTypeLabel(job.engagementType)!]);
   if (job.isSeasonal) facts.push(['Saisonnier', 'Oui']);
   // `workplaceType` ne porte plus que ONSITE | HYBRID | REMOTE : plus besoin de
   // filtrer les non-réponses (« unknown » n'est plus une valeur stockée).

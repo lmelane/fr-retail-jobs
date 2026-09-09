@@ -1,3 +1,4 @@
+import {getSectorPresentation} from '@/lib/sectors';
 import { getOccupationPresentation } from '@/lib/occupations';
 import type { Metadata } from 'next';
 import { Block, Coverage, IntelPage, JsonLd, Kpi, Mix, NA, PageHead } from '@/components/intelligence/chrome';
@@ -12,7 +13,7 @@ import { indexBase100, momentum, repostRate, variation } from '@/lib/intelligenc
 import { addDays, fmtDate, fmtDays, fmtIndex, fmtInt, fmtPct, fmtSigned, fmtSignedPct, MIN_SAMPLE, NA_FROM, NA_INSUFFICIENT, OBSERVATION_START, windowAvailable, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
-import { sectorLabel, UNCLASSIFIED_LABEL, type JobFamily } from '@/lib/intelligence/taxonomy';
+import { UNCLASSIFIED_LABEL, type JobFamily } from '@/lib/intelligence/taxonomy';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,6 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
+  const {label:sectorLabel}=await getSectorPresentation();
   const {FAMILY_LABELS,seniorityLabel}=await getOccupationPresentation();
   const [data, coverage] = await Promise.all([getMarket(), getCoverage()]);
   const h = data.headline;

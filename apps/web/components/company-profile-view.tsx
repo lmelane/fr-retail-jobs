@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CompanyLogo } from '@/components/company-logo';
 import Link from 'next/link';
-import { frNumber } from '@/lib/format';
+import { frNumber, EMPLOYMENT_LABELS } from '@/lib/format';
 import { Loader2, X } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
 import { JobCard } from '@/components/jobs-view';
@@ -23,29 +23,8 @@ import type { JobRow, JobsResult } from '@/lib/jobs';
  * grille « Par ville » vers /emplois filtré.
  */
 
-const CONTRACT_LABELS: Record<string, string> = {
-  CDI: 'CDI',
-  CDD: 'CDD',
-  STAGE: 'Stage',
-  ALTERNANCE: 'Alternance',
-  INTERIM: 'Intérim',
-  FREELANCE: 'Freelance',
-  APPRENTICESHIP: 'Apprentissage',
-  GRADUATE: 'Graduate',
-};
+const CONTRACT_LABELS = EMPLOYMENT_LABELS.employmentTerm;
 
-const SECTOR_LABELS: Record<string, string> = {
-  FASHION: 'Mode',
-  LUXURY: 'Luxe',
-  BEAUTY: 'Beauté',
-  JEWELRY_WATCHES: 'Joaillerie',
-  RETAIL: 'Retail',
-  SUPPLIER: 'Fournisseurs',
-  MEDIA_AGENCY: 'Médias',
-  RECRUITER: 'Cabinets',
-  OTHER: 'Hors référentiel',
-  UNKNOWN: 'Hors référentiel',
-};
 
 // Fond vert-nuit + grain, identique au hero de la home (réf home.html).
 const HERO_BG =
@@ -68,7 +47,7 @@ export function CompanyProfileView({
   profile: CompanyProfile;
   jobs: JobsResult;
 }) {
-  const sectorLabel = profile.sector ? SECTOR_LABELS[profile.sector] ?? profile.sector : null;
+  const sectorLabel = profile.sectors?.map(s=>s.label).join(' · ') || 'Secteur à vérifier';
   const heroCaption = [sectorLabel, profile.parentGroup].filter(Boolean).join(' · ');
   const nf = frNumber;
 

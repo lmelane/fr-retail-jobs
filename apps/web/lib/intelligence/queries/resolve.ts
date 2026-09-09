@@ -69,7 +69,7 @@ const companyIndex = cached('company-index', async (): Promise<Record<string, Re
   try {
     const rows = await prisma.company.findMany({
       select: {
-        id: true, name: true, sector: true, parentGroup: true, domain: true, careersUrl: true,
+        id: true, name: true, sector: true, sectorCodes:true, parentGroup: true, domain: true, careersUrl: true,
         _count: { select: { jobs: { where: { isActive: true } } } },
       },
     });
@@ -78,7 +78,7 @@ const companyIndex = cached('company-index', async (): Promise<Record<string, Re
     for (const c of sorted) {
       const slug = companySlug(c.name);
       if (!slug || out[slug]) continue;
-      out[slug] = { id: c.id, name: c.name, sector: c.sector, parentGroup: c.parentGroup, domain: c.domain, careersUrl: c.careersUrl };
+      out[slug] = { id: c.id, name: c.name, sector: c.sectorCodes.join('|'), parentGroup: c.parentGroup, domain: c.domain, careersUrl: c.careersUrl };
     }
     return out;
   } catch (error) {
@@ -109,5 +109,5 @@ export async function resolveCompany(slug: string): Promise<ResolvedCompany | nu
     where: { entityType: 'Company', after: { path: ['mergedIntoId'], equals: company.id } },
     orderBy: { createdAt: 'desc' }, select: { createdAt: true },
   });
-  return { id: company.id, name: company.name, sector: company.sector, parentGroup: company.parentGroup, domain: company.domain, careersUrl: company.careersUrl, identityRevision: revision?.planHash, identityChangedAt: merge?.createdAt.toISOString().slice(0, 10) ?? null };
+  return { id: company.id, name: company.name, sector: company.sectorCodes.join('|'), parentGroup: company.parentGroup, domain: company.domain, careersUrl: company.careersUrl, identityRevision: revision?.planHash, identityChangedAt: merge?.createdAt.toISOString().slice(0, 10) ?? null };
 }

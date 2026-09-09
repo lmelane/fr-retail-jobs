@@ -1,0 +1,7 @@
+{
+  "employmentTerm": {"PERMANENT":"CDI","FIXED_TERM":"CDD","TEMPORARY":"Intérim / Temporaire"},
+  "workTime": {"FULL_TIME":"Temps plein","PART_TIME":"Temps partiel"},
+  "programType": {"INTERNSHIP":"Stage","APPRENTICESHIP":"Alternance","GRADUATE_PROGRAM":"Programme jeunes diplômés","VIE":"V.I.E"},
+  "engagementType": {"EMPLOYEE":"Salariat","FREELANCE":"Freelance","INDEPENDENT_CONTRACTOR":"Indépendant"},
+  "workplaceType": {"ONSITE":"Sur site","HYBRID":"Hybride","REMOTE":"Télétravail"}
+}

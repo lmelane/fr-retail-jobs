@@ -154,6 +154,9 @@ export function toCandidate(
     // plausible (5 offres « publiées en 2028 ») ; salaire borné pour les devises
     // majeures (58 M€/an chez Michael Page).
     rawTitle: job.title,
+    rawContract: job.contract,
+    rawWorkingTime: job.workingTime,
+    employmentEvidence: JSON.parse(JSON.stringify({version:'employment-paths-20260909-v2',sourceKey:source.key,input:{contract:job.contract??null,workingTime:job.workingTime??null,title:job.title},decisions:employment.decisions})),
     title: cleanTitle(job.title) ?? job.title,
     location: cleanPlace(job.location),
     city: cleanPlace(job.city),

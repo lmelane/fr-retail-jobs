@@ -195,7 +195,12 @@ model Company {
   name                 String
   canonicalKey         String
   kind                 CompanyKind     @default(UNKNOWN)
+  /** Legacy classification retained as source evidence; never a canonical filter. */
   sector               CompanySector   @default(UNKNOWN)
+  sectorCodes          String[]        @default([])
+  sectorEvidence       Json?
+  sectorReviewId       String?
+  sectorReview         SectorReview?   @relation(fields: [sectorReviewId], references: [id], onDelete: Restrict)
   /**
    * Parent group, from the 728-house reference list: Sandro and Maje both sit
    * under SMCP, Dior under LVMH.
@@ -426,6 +431,10 @@ model Job {
    * produit par la couche de localisation du site.
    */
   /** DURÉE : PERMANENT | FIXED_TERM | TEMPORARY. null = la source ne le dit pas. */
+  rawContract String?
+  rawWorkingTime String?
+  /** Input and resolution trace, not a substitute for the retained canonical field. */
+  employmentEvidence Json?
   employmentTerm String?
   /** RYTHME : FULL_TIME | PART_TIME. */
   workTime       String?
@@ -897,4 +906,23 @@ model OccupationState {
   updatedAt DateTime          @updatedAt
   /** Completed reclassification boundary; old statistical series remain archived. */
   backfilledAt DateTime?
+}
+
+/** Data-managed business verticals, independent of occupation families. */
+model SectorConcept {
+  code String @id
+  slug String @unique
+  labels Json
+  definition String
+  position Int
+}
+/** Immutable reviewed transition. The complete previous membership is retained. */
+model SectorReview {
+  id String @id
+  manifest Json
+  before Json
+  reviewer String
+  createdAt DateTime @default(now())
+  companies Company[]
+  @@index([createdAt,id])
 }

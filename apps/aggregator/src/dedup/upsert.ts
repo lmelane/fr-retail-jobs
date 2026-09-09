@@ -317,6 +317,9 @@ export function canonicalJobContent(candidate: CandidateJob, catalogue: Compiled
     postalCode: candidate.postalCode ?? null,
     latitude: candidate.latitude ?? null,
     longitude: candidate.longitude ?? null,
+    rawContract: candidate.rawContract ?? null,
+    rawWorkingTime: candidate.rawWorkingTime ?? null,
+    employmentEvidence: candidate.employmentEvidence as Prisma.InputJsonValue | undefined,
     employmentTerm: candidate.employmentTerm ?? null,
     engagementType: candidate.engagementType ?? null,
     isSeasonal: candidate.isSeasonal ?? null,
@@ -577,6 +580,13 @@ async function attachToExisting(
   ) && tierRank(owner.sourceTier) < tierRank(existing.canonicalTier ?? '');
 
   const reattested = reattestationFields(candidate, existing, hasAuthority);
+  if(hasAuthority){
+    const decisions=candidate.employmentEvidence?.decisions as Record<string,{origin?:string}>|undefined;
+    for(const dimension of ['employmentTerm','workTime','programType','engagementType']){
+      if(['CONFLICTING_EXPLICIT_EVIDENCE','AMBIGUOUS_STRUCTURED'].includes(decisions?.[dimension]?.origin??''))Object.assign(reattested,{[dimension]:null});
+    }
+  }
+
   const effective = { ...existing, ...reattested };
   const classification = classifyOccupationContent({
     title:effective.title,department:effective.department,description:effective.description,
@@ -607,6 +617,7 @@ async function attachToExisting(
     canonicalTier: owner.sourceTier,
     canonicalSourceKey: owner.sourceKey,
     canonicalExternalId: owner.externalId,
+    ...(hasAuthority && candidate.employmentEvidence ? {rawContract:candidate.rawContract??null,rawWorkingTime:candidate.rawWorkingTime??null,employmentEvidence:candidate.employmentEvidence as Prisma.InputJsonValue}:{}),
     ...(hasAuthority && candidate.raw !== undefined ? { raw: candidate.raw as Prisma.InputJsonValue } : {}),
   };
 

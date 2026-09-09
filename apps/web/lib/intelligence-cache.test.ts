@@ -1,7 +1,7 @@
 import { beforeEach, expect, it, vi } from 'vitest';
 
-const state = vi.hoisted(() => ({ latest: vi.fn(), occupation: vi.fn(), values: new Map<string, unknown>() }));
-vi.mock('@catwalks/db', () => ({ prisma: { dataCorrection: { findFirst: state.latest }, occupationState: { findUniqueOrThrow: state.occupation } } }));
+const state = vi.hoisted(() => ({ latest: vi.fn(), occupation: vi.fn(), sector:vi.fn(), values: new Map<string, unknown>() }));
+vi.mock('@catwalks/db', () => ({ prisma: { dataCorrection: { findFirst: state.latest }, occupationState: { findUniqueOrThrow: state.occupation }, sectorReview:{findFirst:state.sector} } }));
 vi.mock('./jobs', () => ({ DatabaseUnavailableError: class extends Error {} }));
 vi.mock('next/cache', () => ({ unstable_cache: (fn: () => Promise<unknown>, keys: string[]) => async () => {
   const key = JSON.stringify(keys);
@@ -10,7 +10,7 @@ vi.mock('next/cache', () => ({ unstable_cache: (fn: () => Promise<unknown>, keys
 } }));
 import { cached } from './intelligence/cache';
 
-beforeEach(() => { state.values.clear(); state.latest.mockReset(); state.occupation.mockResolvedValue({releaseId:"occupation-v1",updatedAt:new Date(0)}); });
+beforeEach(() => { state.values.clear(); state.latest.mockReset(); state.sector.mockResolvedValue(null); state.occupation.mockResolvedValue({releaseId:"occupation-v1",updatedAt:new Date(0)}); });
 
 it('a new committed correction invalidates the aggregate without a restart', async () => {
   const query = vi.fn().mockResolvedValueOnce(44).mockResolvedValueOnce(22);

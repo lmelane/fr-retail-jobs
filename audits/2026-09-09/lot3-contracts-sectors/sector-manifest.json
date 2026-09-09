@@ -1,0 +1,3801 @@
+{
+  "reviewer": "Lot 3 / revue documentaire 2026-09-09",
+  "companies": [
+    {
+      "id": "cmtjw1ejj0141ld2bt20epmki",
+      "canonicalKey": "LOREAL",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (L'Oréal, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtjwevud09phld2b3dd13ehg",
+      "canonicalKey": "GALERIES_LAFAYETTE",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "http://www.groupegalerieslafayette.com/brands",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Galeries Lafayette, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtjwf5mi0a6rld2b52mvdmlg",
+      "canonicalKey": "HERMES",
+      "codes": [
+        "BEAUTY",
+        "FASHION",
+        "FOOTWEAR",
+        "FRAGRANCE",
+        "HOME_LIFESTYLE",
+        "JEWELRY",
+        "LEATHER_GOODS",
+        "WATCHMAKING"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.hermes.com/fr/fr/content/333134-la-liberte-de-creation/",
+          "statement": "Le site officiel détaille les créations de la Maison : vêtements, cuir, chaussures, bijoux, montres, parfum, beauté et objets pour la maison.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.664Z"
+        },
+        {
+          "code": "LEATHER_GOODS",
+          "source": "https://www.hermes.com/fr/fr/content/333134-la-liberte-de-creation/",
+          "statement": "Le site officiel détaille les créations de la Maison : vêtements, cuir, chaussures, bijoux, montres, parfum, beauté et objets pour la maison.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        },
+        {
+          "code": "FOOTWEAR",
+          "source": "https://www.hermes.com/fr/fr/content/333134-la-liberte-de-creation/",
+          "statement": "Le site officiel détaille les créations de la Maison : vêtements, cuir, chaussures, bijoux, montres, parfum, beauté et objets pour la maison.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        },
+        {
+          "code": "JEWELRY",
+          "source": "https://www.hermes.com/fr/fr/content/333134-la-liberte-de-creation/",
+          "statement": "Le site officiel détaille les créations de la Maison : vêtements, cuir, chaussures, bijoux, montres, parfum, beauté et objets pour la maison.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        },
+        {
+          "code": "WATCHMAKING",
+          "source": "https://www.hermes.com/fr/fr/content/333134-la-liberte-de-creation/",
+          "statement": "Le site officiel détaille les créations de la Maison : vêtements, cuir, chaussures, bijoux, montres, parfum, beauté et objets pour la maison.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        },
+        {
+          "code": "BEAUTY",
+          "source": "https://www.hermes.com/fr/fr/content/333134-la-liberte-de-creation/",
+          "statement": "Le site officiel détaille les créations de la Maison : vêtements, cuir, chaussures, bijoux, montres, parfum, beauté et objets pour la maison.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        },
+        {
+          "code": "FRAGRANCE",
+          "source": "https://www.hermes.com/fr/fr/content/333134-la-liberte-de-creation/",
+          "statement": "Le site officiel détaille les créations de la Maison : vêtements, cuir, chaussures, bijoux, montres, parfum, beauté et objets pour la maison.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        },
+        {
+          "code": "HOME_LIFESTYLE",
+          "source": "https://www.hermes.com/fr/fr/content/333134-la-liberte-de-creation/",
+          "statement": "Le site officiel détaille les créations de la Maison : vêtements, cuir, chaussures, bijoux, montres, parfum, beauté et objets pour la maison.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtjwp18i065ym72bg5ksg9ol",
+      "canonicalKey": "AMERICAN_VINTAGE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (American Vintage, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtjwp1bd0665m72bmgtojhlh",
+      "canonicalKey": "BA_AND_SH",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://ba-sh.com/fr/en/",
+          "statement": "Segment FASHION du référentiel maisons.csv (ba&sh, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtjwp1i00669m72by8btsmwp",
+      "canonicalKey": "SIMONE_PERELE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://simone-perele.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Simone Perele, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtjzhlnt0000oe2b1pugscrp",
+      "canonicalKey": "FOOT_LOCKER",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.footlocker.fr/",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Foot Locker France, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk01dhf0000kc47k44sukf3",
+      "canonicalKey": "POLENE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Polène, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1wtu60000nv2bu7ldtw3l",
+      "canonicalKey": "LE_SLIP_FRANCAIS",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.leslipfrancais.fr/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Le Slip Francais, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1wu370006nv2bypaqmugs",
+      "canonicalKey": "PAYOT",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.payot.com/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Payot, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1wu5l000bnv2by772ury1",
+      "canonicalKey": "EMBRYOLISSE",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://embryolisse.com/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Embryolisse, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1wuf7000pnv2bt7jfac3t",
+      "canonicalKey": "ERES",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.comitecolbert.com/member-sitemap.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Eres, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1wy4r0012nv2b3e8ive7o",
+      "canonicalKey": "DFS",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment RETAIL du référentiel maisons.csv (DFS, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1wyb0001hnv2b6x0jz8y9",
+      "canonicalKey": "MARGARET_HOWELL",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/paris-fashion-week/maisons",
+          "statement": "Segment FASHION du référentiel maisons.csv (Margaret Howell, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1wyi0001znv2bg0mj7o48",
+      "canonicalKey": "IRIS_VAN_HERPEN",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Iris van Herpen, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1wyuo002onv2b3n2zt0td",
+      "canonicalKey": "TYPOLOGY",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Typology, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1wz0k003dnv2bwzphy7tt",
+      "canonicalKey": "AIME",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://aime.co/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Aime, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1wz6d0046nv2bucbg8xh9",
+      "canonicalKey": "ARMAND_THIERY",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.armandthiery.fr/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Armand Thiery, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1x1dn0067nv2bokd2qj4h",
+      "canonicalKey": "JULES",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.jules.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Jules, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1x1ns0072nv2bytyhwuta",
+      "canonicalKey": "PROMOD",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.promod.fr/fr-fr/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Promod, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1x25v008snv2bv7w2h0el",
+      "canonicalKey": "APIVITA",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://careers.puig.com/love-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Apivita, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1x2e5009znv2bt1564w1s",
+      "canonicalKey": "ASPHALTE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.asphalte.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Asphalte, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1x36n00cgnv2bhktbf88p",
+      "canonicalKey": "VIVIENNE_WESTWOOD",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Vivienne Westwood, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1x53d00gsnv2bs1v5t7uj",
+      "canonicalKey": "MELVITA",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://group.loccitane.com/group/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Melvita, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1x6d300k6nv2b24wkfwy7",
+      "canonicalKey": "LA_ROSEE",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.larosee-cosmetiques.com/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (La Rosee, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1x7nm00ntnv2bzsidjrg9",
+      "canonicalKey": "CHARLOTTE_TILBURY",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://careers.puig.com/love-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Charlotte Tilbury, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1x83i00pqnv2biab352pq",
+      "canonicalKey": "JONAK",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.jonak.fr/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Jonak, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1x8k600rgnv2bgkniul2q",
+      "canonicalKey": "MEDIK8",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.loreal.com/en/brands/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Medik8, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1x9j900v9nv2bsq7qg8m1",
+      "canonicalKey": "OH_MY_CREAM",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Oh My Cream, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1xadl00xcnv2bvoxue0t9",
+      "canonicalKey": "RESPIRE",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://respire.co/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Respire, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1xawc00zknv2b2dybtlb7",
+      "canonicalKey": "AMI_PARIS",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (AMI Paris, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1xdjg0176nv2b70ayaadr",
+      "canonicalKey": "AUBADE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://aubade.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Aubade, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1xe9n01a0nv2b2p3qyil0",
+      "canonicalKey": "DIPTYQUE",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Diptyque, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1xg5w01d2nv2bq5sx8fs0",
+      "canonicalKey": "VALENTINO",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Valentino, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1xhso01g1nv2ba8gk7kul",
+      "canonicalKey": "DR_PIERRE_RICAUD",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.groupe-rocher.com/marques",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Dr Pierre Ricaud, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1xktt01jdnv2ba1o5xwx4",
+      "canonicalKey": "STELLA_MCCARTNEY",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Stella McCartney, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1xo5o01r8nv2bdb8gyo9y",
+      "canonicalKey": "MY_BLEND",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.groupeclarins.com/brand-sitemap.xml",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (My Blend, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1xpzv01vonv2bzmxjc610",
+      "canonicalKey": "AMIRI",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (AMIRI, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1xrp9020anv2bx7tlltw0",
+      "canonicalKey": "PETIT_BATEAU",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.petit-bateau.fr/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Petit Bateau, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1xxkp025dnv2b2ssr1yjk",
+      "canonicalKey": "VERSACE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Versace, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1xyja02asnv2b2cq1izbi",
+      "canonicalKey": "123",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.maison123.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Maison 123, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1y3xj02mznv2bpqzs2233",
+      "canonicalKey": "MARGIELA",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Maison Margiela, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1yga503pknv2busrstjte",
+      "canonicalKey": "MELLOW_YELLOW",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.groupe-eram.com/marques",
+          "statement": "Segment FASHION du référentiel maisons.csv (Mellow Yellow, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1ywiz04tnnv2bym3tmeto",
+      "canonicalKey": "CANADA_GOOSE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Canada Goose, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1zfg905uanv2bia5cvq2s",
+      "canonicalKey": "RIMMEL",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.coty.com/our-brands/all-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Rimmel, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1zlfk066xnv2bvxr547jp",
+      "canonicalKey": "SALLY_HANSEN",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.coty.com/our-brands/all-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Sally Hansen, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk1zrls06jknv2bk040kacx",
+      "canonicalKey": "VERA_WANG_PARFUMS",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.coty.com/our-brands/all-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Vera Wang Parfums, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk21o7a09qvnv2be8azetpy",
+      "canonicalKey": "MARELLA",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Marella, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk21s720aa5nv2byuid9uwb",
+      "canonicalKey": "ETAM",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.etam.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Etam, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk23whh0dgnnv2b2136d7se",
+      "canonicalKey": "URIAGE",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://careers.puig.com/love-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Uriage, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk26ge70hulnv2b0qav4amw",
+      "canonicalKey": "NORMAL",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://jobs.normal.fr/",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Normal, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk29nb80m1dnv2bg5xl385h",
+      "canonicalKey": "SANDRO",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Sandro, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk3fqsl0q3vny2brbrpo8tx",
+      "canonicalKey": "PARFUMS_CHANEL",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.comitecolbert.com/member-sitemap.xml",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Parfums Chanel, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48dz71brqny2bsyv4ml8m",
+      "canonicalKey": "SEPHORA",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Sephora, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48e6r1bu9ny2bxbq8un50",
+      "canonicalKey": "DIOR",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Christian Dior Couture, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48ead1bvtny2br5o6wk5j",
+      "canonicalKey": "PARFUMS_DIOR",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Parfums Christian Dior, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48edb1bwxny2bji7mu21b",
+      "canonicalKey": "MAKE_UP_FOR_EVER",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Make Up For Ever, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48ee91bx9ny2bt1bil52u",
+      "canonicalKey": "LOUIS_VUITTON",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Louis Vuitton, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48eex1bxlny2b3drci9sc",
+      "canonicalKey": "BON_MARCHE",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Le Bon Marché, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48ef51bxpny2bimpd88oz",
+      "canonicalKey": "FRESH",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Fresh, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48eib1bytny2b0aeiqprm",
+      "canonicalKey": "CELINE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Celine, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48ek71bzkny2b9rs9hzev",
+      "canonicalKey": "BERLUTI",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Berluti, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48fsk1cjbny2bgajhyzgg",
+      "canonicalKey": "LVMH_PERFUMES_AND_COSMETICS",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (LVMH Perfumes & Cosmetics, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48fxt1clbny2bmdwyoihy",
+      "canonicalKey": "FRANCIS_KURKDJIAN",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Maison Francis Kurkdjian, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48g3r1cnrny2bd0sjfisq",
+      "canonicalKey": "LORO_PIANA",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Loro Piana, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48g5s1conny2bv651ayg7",
+      "canonicalKey": "LOEWE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Loewe, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48g7g1cp9ny2bsq7h0e65",
+      "canonicalKey": "GUERLAIN",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Guerlain, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48gbl1cqxny2basnh2vl5",
+      "canonicalKey": "FENDI",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Fendi, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48gjk1cu9ny2b980gxybv",
+      "canonicalKey": "OFFICINE_UNIVERSELLE_BULY",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Officine Universelle Buly, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48gld1cv1ny2b50vkg4lx",
+      "canonicalKey": "BENEFIT_COSMETICS",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (BeneFit Cosmetics, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48hzp1dhmny2bo7vhzeof",
+      "canonicalKey": "RIMOWA",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Rimowa, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48i0d1dhyny2btode4nsu",
+      "canonicalKey": "EMILIO_PUCCI",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Emilio Pucci, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48i0l1di2ny2b5nkl6pdu",
+      "canonicalKey": "PERFUMES_LOEWE",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Perfumes Loewe, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48ipj1dpiny2bgnr0fj3t",
+      "canonicalKey": "KENZO",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Kenzo, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48iq11dpqny2bwfo36lp2",
+      "canonicalKey": "GIVENCHY",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Givenchy, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48irc1dqany2bt7e36jw9",
+      "canonicalKey": "FASHION_GROUP",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Fashion Group, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48jpp1e4eny2bmt0x8uay",
+      "canonicalKey": "MOYNAT",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Moynat, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48o4l1fdzny2b19sg7r4g",
+      "canonicalKey": "MARC_JACOBS",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Marc Jacobs, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48oez1fh6ny2benucme2z",
+      "canonicalKey": "THELIOS",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Thélios, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk48rn61ge3ny2b1tkivmlp",
+      "canonicalKey": "KENDO",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Kendo, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk4969e1j8tny2bqz2ta2m1",
+      "canonicalKey": "ACQUA_DI_PARMA",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Acqua Di Parma, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk4975x1jhbny2bwqudq3pn",
+      "canonicalKey": "24S_COM",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment RETAIL du référentiel maisons.csv (24S.com, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk49ily1lzyny2b1ctj3ioy",
+      "canonicalKey": "FENTY",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Fenty, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk49msx1ms1ny2bkeriur6w",
+      "canonicalKey": "ROSSIMODA",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Rossimoda, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk49u951oakny2b2fr859g1",
+      "canonicalKey": "PARFUMS_GIVENCHY",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Parfums Givenchy, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk4xpoe1ryyny2b4n2dj391",
+      "canonicalKey": "LACOSTE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Lacoste, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvuel1rnnnf2ba6k0ky9j",
+      "canonicalKey": "AGNES_B",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (agnès b., HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvugb1ro7nf2b00w12jbk",
+      "canonicalKey": "VANESSA_BRUNO",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.vanessabruno.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Vanessa Bruno, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvuig1rp7nf2bffwmb758",
+      "canonicalKey": "REPETTO",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Repetto, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvumn1rqynf2bxg2eyo0q",
+      "canonicalKey": "BALMAIN",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Balmain, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvuoc1rrpnf2b0f8dunsp",
+      "canonicalKey": "ROUJE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.rouje.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Rouje, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvurw1rthnf2b8qwacb78",
+      "canonicalKey": "LANVIN",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Lanvin, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvutp1ru9nf2bbqeq9stw",
+      "canonicalKey": "CHLOE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Chloé, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvuvh1ruynf2bgauxrzqm",
+      "canonicalKey": "ZADIG_AND_VOLTAIRE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://zadig-et-voltaire.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Zadig & Voltaire, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvuvo1rv2nf2bol2swzih",
+      "canonicalKey": "LONGCHAMP",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Longchamp, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvv941rzynf2b2y3wk2vf",
+      "canonicalKey": "OFFICINE_GENERALE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Officine Générale, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvvez1s2gnf2blgcl5orb",
+      "canonicalKey": "BLUEMARBLE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,\"designer_profile\")]]",
+          "statement": "Segment FASHION du référentiel maisons.csv (Bluemarble, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvvqa1s6anf2bc4v3e8e5",
+      "canonicalKey": "PRINTEMPS",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Printemps, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvvtj1s7lnf2bo95yg5p5",
+      "canonicalKey": "LEMAIRE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Lemaire, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvw5m1sb2nf2bvkqxcjar",
+      "canonicalKey": "SEZANE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Sézane, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvw5w1sb6nf2b5wzr2wr3",
+      "canonicalKey": "JULIETTE_HAS_A_GUN",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Juliette Has a Gun, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvx4o1skknf2bpqfbvpnd",
+      "canonicalKey": "ISABEL_MARANT",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Isabel Marant, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvxc91sninf2br3plbw5g",
+      "canonicalKey": "MORGAN",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Morgan, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvxgl1soynf2buwtrw9nd",
+      "canonicalKey": "LANCEL",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Lancel, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvxv61strnf2blvpva5y3",
+      "canonicalKey": "LAGARDERE_TRAVEL_RETAIL",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Lagardère Travel Retail, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvxxm1sunnf2bzy0l1xiw",
+      "canonicalKey": "JEAN_PAUL_GAULTIER",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://careers.puig.com/love-brands",
+          "statement": "Segment FASHION du référentiel maisons.csv (Jean Paul Gaultier, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdw0421tf8nf2bolc7zbpd",
+      "canonicalKey": "DARJEELING",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://chantelle.com/groupe/fr/marques",
+          "statement": "Segment FASHION du référentiel maisons.csv (Darjeeling, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdw04w1tfknf2bluc0dg4u",
+      "canonicalKey": "ZIMMERMANN",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Zimmermann, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdw1281tpjnf2blnu9pqbo",
+      "canonicalKey": "ZUHAIR_MURAD",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/paris-fashion-week/maisons",
+          "statement": "Segment FASHION du référentiel maisons.csv (Zuhair Murad, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdw1tg1twnnf2bx97omtjb",
+      "canonicalKey": "JULIE_DE_LIBRAN",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/paris-fashion-week/maisons",
+          "statement": "Segment FASHION du référentiel maisons.csv (Julie de Libran, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdw20z1tzdnf2brufdm9gd",
+      "canonicalKey": "BARBARA_BUI",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Barbara Bui, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdw3la1uixnf2bpd480sai",
+      "canonicalKey": "LUDOVIC_DE_SAINT_SERNIN",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://prize.cdn.prismic.io/api/v2/documents/search?q=[[at(document.type,\"designer_profile\")]]",
+          "statement": "Segment FASHION du référentiel maisons.csv (Ludovic de Saint Sernin, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke2us500d0lp2bu5et2x5u",
+      "canonicalKey": "L_OCCITANE_EN_PROVENCE",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (L’Occitane en Provence, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke332p010plp2b807b00bh",
+      "canonicalKey": "CHANTELLE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://chantelle.com/groupe/fr/marques",
+          "statement": "Segment FASHION du référentiel maisons.csv (Groupe Chantelle, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke394t01kilp2bpousq8lf",
+      "canonicalKey": "SHOWROOMPRIVE",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.showroomprive.com/",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Showroomprive, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke3l8a020rlp2bxmnyau6y",
+      "canonicalKey": "NARS",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://corp.shiseido.com/en/brands/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (NARS, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke3vth02xjlp2b1q64xylk",
+      "canonicalKey": "HELENA_RUBINSTEIN",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.loreal.com/en/brands/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Helena Rubinstein, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke40s803ihlp2bivl9w2x4",
+      "canonicalKey": "ERAM",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.groupe-eram.com/marques",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Groupe Eram, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke435r03yilp2bboffufjb",
+      "canonicalKey": "PARADE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.groupe-eram.com/marques",
+          "statement": "Segment FASHION du référentiel maisons.csv (Parade, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke4i4q04wvlp2bovmyapbq",
+      "canonicalKey": "ESCADA_PARFUMS",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.coty.com/our-brands/all-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Escada Parfums, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke4lpz05a4lp2bdckzf8oe",
+      "canonicalKey": "PHILOSOPHY",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.coty.com/our-brands/all-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Philosophy, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke5ftx06hglp2ba60asvet",
+      "canonicalKey": "DRUNK_ELEPHANT",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://corp.shiseido.com/en/brands/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Drunk Elephant, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke7tkh0ae1lp2b57izhi1r",
+      "canonicalKey": "A_DERMA",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.pierre-fabre.com/fr-fr/notre-entreprise/nos-marques",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (A-Derma, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke8b8q0bqdlp2b0b11m6lb",
+      "canonicalKey": "RABANNE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://careers.puig.com/love-brands",
+          "statement": "Segment FASHION du référentiel maisons.csv (Rabanne, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtke8pvh0cyelp2bpe0rowj9",
+      "canonicalKey": "ELEMENT",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Element, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkevx0q0f94p22bzj7l1pu5",
+      "canonicalKey": "PRADA_BEAUTY",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.loreal.com/en/brands/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Prada Beauty, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkexksm0i95p22bacmnhd81",
+      "canonicalKey": "IWC_SCHAFFHAUSEN",
+      "codes": [
+        "WATCHMAKING"
+      ],
+      "evidence": [
+        {
+          "code": "WATCHMAKING",
+          "source": "https://www.richemont.com/news-media/press-releases-news/richemont-maintained-strong-momentum-with-sales-up-11-at-constant-rates-for-its-third-quarter-ended-31-december-2025/",
+          "statement": "Maison nommée dans la division Specialist Watchmakers du groupe. Cette attribution ne prétend pas exclure ses autres activités.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkf06ej0lqap22bicqm90nc",
+      "canonicalKey": "MAJE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Maje, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkgqym00xm7mn2bsqf6ewhn",
+      "canonicalKey": "CARTIER",
+      "codes": [
+        "FRAGRANCE",
+        "JEWELRY",
+        "LEATHER_GOODS",
+        "WATCHMAKING"
+      ],
+      "evidence": [
+        {
+          "code": "JEWELRY",
+          "source": "https://www.cartier.com/fr-fr/maison",
+          "statement": "La présentation officielle de Cartier cite bijoux et montres ainsi que parfum et maroquinerie.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        },
+        {
+          "code": "WATCHMAKING",
+          "source": "https://www.cartier.com/fr-fr/maison",
+          "statement": "La présentation officielle de Cartier cite bijoux et montres ainsi que parfum et maroquinerie.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        },
+        {
+          "code": "LEATHER_GOODS",
+          "source": "https://www.cartier.com/fr-fr/maison",
+          "statement": "La présentation officielle de Cartier cite bijoux et montres ainsi que parfum et maroquinerie.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        },
+        {
+          "code": "FRAGRANCE",
+          "source": "https://www.cartier.com/fr-fr/maison",
+          "statement": "La présentation officielle de Cartier cite bijoux et montres ainsi que parfum et maroquinerie.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtkh4iq611o8mn2b6gawe3qz",
+      "canonicalKey": "DR_JART",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Dr. Jart+, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyf15d00afqf5kkmggppyy",
+      "canonicalKey": "SABON",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Sabon, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyf59l00d4qf5kji99ofjs",
+      "canonicalKey": "DAMART",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.damart.fr/",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Damart, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyf5pn00e1qf5khh935v7y",
+      "canonicalKey": "FRAME",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (FRAME, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyfvaf016cqf5k6yvon72v",
+      "canonicalKey": "INTERSPORT",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.intersport.fr/nous-rejoindre/",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Intersport, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyg43c01i0qf5knvlnwias",
+      "canonicalKey": "MIU_MIU",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Miu Miu, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyh20a032mqf5kbcvcruas",
+      "canonicalKey": "PUIG",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://jobs.puig.com/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Puig, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyiig305w5qf5kntqzz9kw",
+      "canonicalKey": "BZB",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.b-z-b.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (BZB, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyikj7063aqf5k8tvb7mww",
+      "canonicalKey": "NYX_PROFESSIONAL_MAKEUP",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.loreal.com/en/brands/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (NYX Professional Makeup, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyl72q0brzqf5kvz8u8x0t",
+      "canonicalKey": "UNDIZ",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.undiz.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Undiz, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlymv130ftcqf5ksa2087g6",
+      "canonicalKey": "THE_KOOPLES",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.thekooples.com/fr/fr/",
+          "statement": "Segment FASHION du référentiel maisons.csv (The Kooples, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyntsb0j24qf5kxz2mq88k",
+      "canonicalKey": "GEMO",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.groupe-eram.com/marques",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Gemo, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyntz10j3nqf5k4qbz9fb0",
+      "canonicalKey": "TBS",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.groupe-eram.com/marques",
+          "statement": "Segment FASHION du référentiel maisons.csv (TBS, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyntzi0j3rqf5k76y9zjzn",
+      "canonicalKey": "BOCAGE",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.groupe-eram.com/marques",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Bocage, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyojxw0k1zqf5k0bdeyvwn",
+      "canonicalKey": "AIGLE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.aigle.com/fr/fr",
+          "statement": "Segment FASHION du référentiel maisons.csv (Aigle, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm79t8k0pxwpv5j18srpsl3",
+      "canonicalKey": "JD_SPORTS",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.jdsports.fr/",
+          "statement": "Segment RETAIL du référentiel maisons.csv (JD Sports France, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7ucoz10xspv5jc900ovd5",
+      "canonicalKey": "LA_HALLE",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml",
+          "statement": "Segment RETAIL du référentiel maisons.csv (La Halle, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7ucqi10y3pv5j1s4jalzb",
+      "canonicalKey": "VIB_S",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Vib's, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7ucr010y7pv5j8qg9y2m6",
+      "canonicalKey": "CACHE_CACHE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Cache Cache, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7ucrc10ybpv5j8tv9kuxe",
+      "canonicalKey": "CAROLL",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Caroll, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7ucrz10yjpv5jxyca11id",
+      "canonicalKey": "BONOBO",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Bonobo, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7ucvd10zipv5jhj0euv63",
+      "canonicalKey": "BEAUMANOIR",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.groupe-beaumanoir.com/",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Groupe Beaumanoir, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7ud191117pv5jj1qug7bf",
+      "canonicalKey": "BREAL",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Breal, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7udvv11bjpv5jpfcafu5v",
+      "canonicalKey": "SARENZA",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.groupe-beaumanoir.com/brand-fr-sitemap.xml",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Sarenza, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7vjr713g7pv5ji8tuynax",
+      "canonicalKey": "PANERAI",
+      "codes": [
+        "WATCHMAKING"
+      ],
+      "evidence": [
+        {
+          "code": "WATCHMAKING",
+          "source": "https://www.richemont.com/news-media/press-releases-news/richemont-maintained-strong-momentum-with-sales-up-11-at-constant-rates-for-its-third-quarter-ended-31-december-2025/",
+          "statement": "Maison nommée dans la division Specialist Watchmakers du groupe. Cette attribution ne prétend pas exclure ses autres activités.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7vjsd13gjpv5joc783er9",
+      "canonicalKey": "ROGER_DUBUIS",
+      "codes": [
+        "WATCHMAKING"
+      ],
+      "evidence": [
+        {
+          "code": "WATCHMAKING",
+          "source": "https://www.richemont.com/news-media/press-releases-news/richemont-maintained-strong-momentum-with-sales-up-11-at-constant-rates-for-its-third-quarter-ended-31-december-2025/",
+          "statement": "Maison nommée dans la division Specialist Watchmakers du groupe. Cette attribution ne prétend pas exclure ses autres activités.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7vjwi13ijpv5jzwlbc7k8",
+      "canonicalKey": "PIAGET",
+      "codes": [
+        "WATCHMAKING"
+      ],
+      "evidence": [
+        {
+          "code": "WATCHMAKING",
+          "source": "https://www.richemont.com/news-media/press-releases-news/richemont-maintained-strong-momentum-with-sales-up-11-at-constant-rates-for-its-third-quarter-ended-31-december-2025/",
+          "statement": "Maison nommée dans la division Specialist Watchmakers du groupe. Cette attribution ne prétend pas exclure ses autres activités.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7vk4i13mjpv5j6cxfx6x6",
+      "canonicalKey": "BUCCELLATI",
+      "codes": [
+        "JEWELRY"
+      ],
+      "evidence": [
+        {
+          "code": "JEWELRY",
+          "source": "https://www.richemont.com/news-media/press-releases-news/richemont-maintained-strong-momentum-with-sales-up-11-at-constant-rates-for-its-third-quarter-ended-31-december-2025/",
+          "statement": "Maison nommée dans la division Jewellery Maisons du groupe. Cette attribution ne prétend pas exclure ses autres activités.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm7vkmb13urpv5jyhkiiuqy",
+      "canonicalKey": "DELVAUX",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.comitecolbert.com/member-sitemap.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Delvaux, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jh3y1uq0pv5j8iia3oel",
+      "canonicalKey": "LE_LABO",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Le Labo, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jh821uqspv5jo8nfdl8f",
+      "canonicalKey": "AVEDA",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Aveda, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jhbl1uropv5jgiox664p",
+      "canonicalKey": "TOM_FORD",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (TOM FORD, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jhdf1us8pv5jzx7vl620",
+      "canonicalKey": "JO_MALONE_LONDON",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Jo Malone London, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jhdr1uscpv5jsrlet8v2",
+      "canonicalKey": "EDITIONS_DE_PARFUMS_FREDERIC_MALLE",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Editions de Parfums Frédéric Malle, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jhhk1uu0pv5j158p5va1",
+      "canonicalKey": "LA_MER",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (La Mer, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jhk11uuspv5j88l02rs6",
+      "canonicalKey": "TOO_FACED",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Too Faced, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jhl91uvcpv5jsvprsagj",
+      "canonicalKey": "KILIAN_PARIS",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (KILIAN PARIS, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jhoq1uwgpv5jb20n95wp",
+      "canonicalKey": "CLINIQUE",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Clinique, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jhxx1uz4pv5j4te5c4ys",
+      "canonicalKey": "BUMBLE_AND_BUMBLE",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Bumble and bumble, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jj1i1v9rpv5jqtul8ypw",
+      "canonicalKey": "DECIEM",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (DECIEM, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jo9m1wn3pv5jhgmin92n",
+      "canonicalKey": "BALMAIN_BEAUTY",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Balmain Beauty, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jt0m1y23pv5jdiiiv612",
+      "canonicalKey": "SMASHBOX",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Smashbox, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm9jv7m1yo7pv5j3tr8q3gz",
+      "canonicalKey": "LAB_SERIES",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Lab Series, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtn5ohf00ryrqq5l7babv4xg",
+      "canonicalKey": "PIERRE_FABRE",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.pierre-fabre.com/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Pierre Fabre, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtnac1hs2sk6qq5lduz9cj80",
+      "canonicalKey": "THALGO",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.thalgo.fr/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Thalgo, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtnac1py2slpqq5lh2i6um91",
+      "canonicalKey": "DEVRED_1902",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://devred.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Devred 1902, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtp1ugf000qsqq4ziso5gxms",
+      "canonicalKey": "LA_REDOUTE",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "http://www.groupegalerieslafayette.com/brands",
+          "statement": "Segment RETAIL du référentiel maisons.csv (La Redoute, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtp1wba602d3qq4zgo9r0gp7",
+      "canonicalKey": "VESTIAIRE_COLLECTIVE",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://www.vestiairecollective.com/",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Vestiaire Collective, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtp25hct0fl7qq4zwb6y1cby",
+      "canonicalKey": "NEW_BALANCE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://jobs.newbalance.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (New Balance, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtp522sk2cvyqq4zqwc70j3f",
+      "canonicalKey": "DUNHILL",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.richemont.com/en/home/brands/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Dunhill, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtp5231m2czuqq4zugsqalxv",
+      "canonicalKey": "ALAIA",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.maison-alaia.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Alaïa, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtp868ul3rmjqq4zy6kzyfzn",
+      "canonicalKey": "WOOYOUNGMI",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Wooyoungmi, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtp868vn3rmyqq4zr6do6jh6",
+      "canonicalKey": "FATHER_AND_SONS",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.fatherandsons.fr/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Father & Sons, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtp868xg3rngqq4ztaue6dkx",
+      "canonicalKey": "LE_COQ_SPORTIF",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.lecoqsportif.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Le Coq Sportif, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpivor3076wpf5l7m081zui",
+      "canonicalKey": "ACNE_STUDIOS",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Acne Studios, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpiybmp0kgopf5lx59eajm5",
+      "canonicalKey": "BEAUTY_SUCCESS",
+      "codes": [
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "RETAIL",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment RETAIL du référentiel maisons.csv (Beauty Success, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpj0vom0xiepf5lq0cvy73h",
+      "canonicalKey": "ROLEX",
+      "codes": [
+        "WATCHMAKING"
+      ],
+      "evidence": [
+        {
+          "code": "WATCHMAKING",
+          "source": "https://www.rolex.com/fr",
+          "statement": "La marque présente ses collections de montres suisses sur son site officiel.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpjsp7t2oscpf5llnw44g9z",
+      "canonicalKey": "PVH",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://careers.pvh.com/",
+          "statement": "Segment FASHION du référentiel maisons.csv (PVH, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpkwyaf59j6pf5ljou0p1ha",
+      "canonicalKey": "PIMKIE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.pimkie.fr/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Pimkie, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpkwydu59jupf5lu9u2aoxk",
+      "canonicalKey": "SHISEIDO",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://corp.shiseido.com/en/brands/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Shiseido, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpkwz1p59mppf5ljfnyi3dj",
+      "canonicalKey": "YVES_ROCHER",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.groupe-rocher.com/marques",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Yves Rocher, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpnabka00003nltzkvgh51x",
+      "canonicalKey": "VAN_CLEEF",
+      "codes": [
+        "JEWELRY"
+      ],
+      "evidence": [
+        {
+          "code": "JEWELRY",
+          "source": "https://www.richemont.com/news-media/press-releases-news/richemont-maintained-strong-momentum-with-sales-up-11-at-constant-rates-for-its-third-quarter-ended-31-december-2025/",
+          "statement": "Maison nommée dans la division Jewellery Maisons du groupe. Cette attribution ne prétend pas exclure ses autres activités.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpukulc299gl35mw39q19gd",
+      "canonicalKey": "BOTTEGA_VENETA",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.kering.com/fr/maisons/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Bottega Veneta, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpukulu299jl35m7o9uu7n5",
+      "canonicalKey": "POMELLATO",
+      "codes": [
+        "JEWELRY"
+      ],
+      "evidence": [
+        {
+          "code": "JEWELRY",
+          "source": "https://www.kering.com/fr/maisons/",
+          "statement": "Maison explicitement nommée dans le pôle Joaillerie de Kering.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpukum3299ml35mw6vwiqno",
+      "canonicalKey": "SAINT_LAURENT",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Saint Laurent, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpukumb299pl35mjhjnch7w",
+      "canonicalKey": "GUCCI",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.kering.com/fr/maisons/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Gucci, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpukumq299vl35m0urpfp28",
+      "canonicalKey": "KERING_EYEWEAR",
+      "codes": [
+        "EYEWEAR"
+      ],
+      "evidence": [
+        {
+          "code": "EYEWEAR",
+          "source": "https://www.kering.com/fr/maisons/",
+          "statement": "Entité explicitement décrite dans la présentation des Maisons du groupe : lunetterie / manufacture de porcelaine selon l’entité.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.666Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpukupk29ayl35m17qtqyup",
+      "canonicalKey": "BOUCHERON",
+      "codes": [
+        "JEWELRY"
+      ],
+      "evidence": [
+        {
+          "code": "JEWELRY",
+          "source": "https://www.kering.com/fr/maisons/",
+          "statement": "Maison explicitement nommée dans le pôle Joaillerie de Kering.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpukupr29b1l35mckj6xsi1",
+      "canonicalKey": "BRIONI",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.kering.com/fr/maisons/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Brioni, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpukur529bgl35m0lsirz9b",
+      "canonicalKey": "BALENCIAGA",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Balenciaga, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpukv2229eml35msvpmgb2m",
+      "canonicalKey": "ALEXANDER_MCQUEEN",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Alexander McQueen, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpukwfg29u7l35mwnpobyd8",
+      "canonicalKey": "QEELIN",
+      "codes": [
+        "JEWELRY"
+      ],
+      "evidence": [
+        {
+          "code": "JEWELRY",
+          "source": "https://www.kering.com/fr/maisons/",
+          "statement": "Maison explicitement nommée dans le pôle Joaillerie de Kering.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:04:51.665Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpuzklu3yvgl35mnr9elxwo",
+      "canonicalKey": "ESTEE_LAUDER",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.elcompanies.com/en/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Estée Lauder, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpw96hg4k4dl35mhmmk4slt",
+      "canonicalKey": "CARVEN",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/maisons?status=1",
+          "statement": "Segment FASHION du référentiel maisons.csv (Carven, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpwvij600giql5m8iiplvov",
+      "canonicalKey": "L_OREAL_PROFESSIONNEL",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.loreal.com/en/brands/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (L’Oréal Professionnel, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpysj9l00e13ncqrmgfrbo0",
+      "canonicalKey": "BALZAC_PARIS",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.balzac-paris.fr/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Balzac Paris, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpysplz00hi3ncqxjsc3vfv",
+      "canonicalKey": "BIOLOGIQUE_RECHERCHE",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.comitecolbert.com/member-sitemap.xml",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Biologique Recherche, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpyux0801di3ncqqxwcy7ut",
+      "canonicalKey": "ROCHER",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.groupe-rocher.com/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Groupe Rocher, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtpz3rz2046v3ncqkxb7ogjb",
+      "canonicalKey": "LOSANJE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://andam.fr/laureats-andam/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Losanje, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtrta68w39ukpg5mze4sqp6m",
+      "canonicalKey": "LVMH_FRAGRANCE_BRANDS",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.lvmh.com/proxyApi/v1/jobhub/criteria?lang=fr",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (LVMH Fragrance Brands, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtrup2gm4mw2pg5msl9kb7zl",
+      "canonicalKey": "MOSSI",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://fhcm.paris/fr/paris-fashion-week/maisons",
+          "statement": "Segment FASHION du référentiel maisons.csv (Mossi, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtt3jq6q00003nx9kegbxkdh",
+      "canonicalKey": "ADOPT_PARFUMS",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.adopt.com/fr/",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Adopt Parfums, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtt3jqm9000a3nx9yknve29r",
+      "canonicalKey": "RIU_PARIS",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://riuparis.flatchr.io/fr/company/riuparis/",
+          "statement": "Segment FASHION du référentiel maisons.csv (RIU Paris, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtt3jqra000i3nx9khntpmay",
+      "canonicalKey": "TOSCANE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://toscane.flatchr.io/fr/company/toscane/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Toscane, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtt64q3n00073nkj2m32mmvb",
+      "canonicalKey": "BLACKSTORE",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.blackstore.fr/qui-sommes-nous/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Blackstore, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtt936q33vgnmy0193xrdzxy",
+      "canonicalKey": "ERBORIAN",
+      "codes": [
+        "BEAUTY"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://group.loccitane.com/group/our-brands",
+          "statement": "Segment BEAUTY du référentiel maisons.csv (Erborian, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cr57e9ef0f339cdfa95081d842",
+      "canonicalKey": "FURSAC",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.smcp.com/fr/marques/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Fursac, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cr5c9308138c86e24341e51b89",
+      "canonicalKey": "CLAUDIE_PIERLOT",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.smcp.com/fr/marques/",
+          "statement": "Segment FASHION du référentiel maisons.csv (Claudie Pierlot, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    },
+    {
+      "id": "cr68476d4c991498cd9a77c741",
+      "canonicalKey": "CHANEL",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://catwalks.io/sitemap-maisons.xml",
+          "statement": "Segment FASHION du référentiel maisons.csv (Chanel, HIGH). Le classement historique est conservé séparément. Provenance du référentiel conservée ; ne vaut pas nouvelle vérification du site ni liste exhaustive des activités.",
+          "confidence": "MEDIUM",
+          "basis": "REFERENCE_LIST",
+          "checkedAt": "2026-09-09T10:54:44.345Z"
+        }
+      ]
+    }
+  ]
+}

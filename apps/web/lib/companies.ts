@@ -1,3 +1,4 @@
+import {getSectorPresentation,sectorWhere,type SectorView} from './sectors';
 import { companyIdentityWhere } from './company-identity';
 import { prisma } from '@catwalks/db';
 import { DatabaseUnavailableError, validSector } from './jobs';
@@ -20,6 +21,7 @@ export type CompanyRow = {
   id: string;
   name: string;
   sector: string | null;
+  sectors?: SectorView[];
   /** Parent group (LVMH, Kering…), when the Maison belongs to one — for the
       "Secteur · Groupe" caption. Null for standalone Maisons and cabinets. */
   group: string | null;
@@ -35,7 +37,7 @@ export type CompaniesResult = {
   total: number;
   page: number;
   pageCount: number;
-  sectors: { value: string; count: number }[];
+  sectors: { value: string; count: number; label?: string }[];
   /** Offers per country code (FR, US, IT…), for the world map. */
   countries: { code: string; count: number }[];
 };
@@ -120,6 +122,7 @@ export async function suggestCompanies(query: string): Promise<string[]> {
 
 async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult> {
   const page = Math.max(1, filters.page ?? 1);
+  const presentation=await getSectorPresentation();
 
   // Only employers with a live French offer: a company row with nothing open
   // answers no question a candidate is asking.
@@ -131,7 +134,7 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
   const sector = validSector(filters.sector);
   const query = filters.q?.trim();
   const company = {
-    ...(sector ? { sector } : {}),
+    ...(sector ? sectorWhere(sector) : {}),
     ...(query
       ? {
           OR: expandCompanyTerm(query).flatMap((name) => [
@@ -168,7 +171,7 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
   const [companies, cityRows] = await Promise.all([
     prisma.company.findMany({
       where: { id: { in: pageIds } },
-      select: { id: true, name: true, sector: true, parentGroup: true, domain: true },
+      select: { id: true, name: true, sector: true, sectorCodes:true, parentGroup: true, domain: true },
     }),
     // One grouped query for every city of every company on this page, rather
     // than a query per company.
@@ -201,6 +204,7 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
         id: row.companyId,
         name: company?.name ?? '—',
         sector: company?.sector ?? null,
+        sectors:presentation.sectors.filter(s=>company?.sectorCodes.includes(s.code)),
         group: company?.parentGroup ?? null,
         domain: company?.domain ?? null,
         jobCount: row._count,
@@ -212,19 +216,18 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
 
   const sectorRows = await prisma.job.groupBy({
     by: ['companyId'],
-    where: { isActive: true },
+    where: jobWhere,
     _count: true,
   });
   const sectorCompanies = await prisma.company.findMany({
     where: { id: { in: sectorRows.map((row) => row.companyId) } },
-    select: { id: true, sector: true },
+    select: { id: true, sector: true, sectorCodes:true },
   });
-  const sectorById = new Map(sectorCompanies.map((company) => [company.id, company.sector]));
+  const sectorById = new Map(sectorCompanies.map((company) => [company.id, company.sectorCodes]));
   const sectorCounts = new Map<string, number>();
   for (const row of sectorRows) {
-    const sector = String(sectorById.get(row.companyId) ?? '');
-    if (!sector) continue;
-    sectorCounts.set(sector, (sectorCounts.get(sector) ?? 0) + row._count);
+    const codes=sectorById.get(row.companyId)??[];
+    for(const sector of codes.length?codes:['unclassified']) sectorCounts.set(sector,(sectorCounts.get(sector)??0)+row._count);
   }
 
   // Offers per country, WORLD-WIDE (not France-only), for the world map. France
@@ -252,9 +255,7 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
     total: grouped.length,
     page,
     pageCount: Math.max(1, Math.ceil(grouped.length / COMPANY_PAGE_SIZE)),
-    sectors: [...sectorCounts.entries()]
-      .map(([value, count]) => ({ value, count }))
-      .sort((a, b) => b.count - a.count),
+    sectors: [...presentation.sectors.map(s=>({value:s.code,label:s.label,count:sectorCounts.get(s.code)??0})),{value:'unclassified',label:'Secteur à vérifier',count:sectorCounts.get('unclassified')??0}],
     countries,
   };
 }
@@ -262,6 +263,7 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
 export type CompanyProfile = {
   name: string;
   sector: string | null;
+  sectors?: SectorView[];
   parentGroup: string | null;
   /** The Maison's own domain, for its logo; null when no source names it. */
   domain: string | null;
@@ -283,7 +285,7 @@ export async function getCompanyBySlug(slug: string): Promise<CompanyProfile | n
     // Match by slug over the display name — several rows can share a name only
     // after a bad ingest, so take the one with the most live offers.
     const candidates = await prisma.company.findMany({
-      select: { id: true, name: true, sector: true, parentGroup: true, domain: true, careersUrl: true, mergedIntoId: true },
+      select: { id: true, name: true, sector: true, sectorCodes:true, parentGroup: true, domain: true, careersUrl: true, mergedIntoId: true },
     });
     let match = candidates
       .filter((c) => companySlug(c.name) === slug)
@@ -323,6 +325,7 @@ export async function getCompanyBySlug(slug: string): Promise<CompanyProfile | n
     return {
       name: match.name,
       sector: match.sector,
+      sectors:(await getSectorPresentation()).sectors.filter(s=>match.sectorCodes.includes(s.code)),
       parentGroup: match.parentGroup,
       domain: match.domain,
       careersUrl: match.careersUrl,

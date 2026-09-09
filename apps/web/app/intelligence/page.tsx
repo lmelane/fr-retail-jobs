@@ -1,3 +1,4 @@
+import {getSectorPresentation} from '@/lib/sectors';
 import { getOccupationPresentation } from '@/lib/occupations';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -13,7 +14,7 @@ import { indexBase100, momentum } from '@/lib/intelligence/metrics';
 import { addDays, fmtDate, fmtIndex, fmtInt, fmtSignedPct, MIN_SAMPLE, NA_FROM, windowAvailable, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { datasetLd, intelMetadata } from '@/lib/intelligence/seo';
-import { mergeOtherSectors, sectorLabel, UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
+import { mergeOtherSectors, UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,6 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
+  const {label:sectorLabel}=await getSectorPresentation();
   const {JOB_FUNCTIONS,FUNCTION_BY_KEY,FAMILY_LABELS,functionLabel}=await getOccupationPresentation();
   const [data, coverage] = await Promise.all([getHome(), getCoverage()]);
   const h = data.headline;
