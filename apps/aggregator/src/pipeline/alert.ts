@@ -1,3 +1,4 @@
+import { log } from '../observability/logger.js';
 import type { HealthReport } from './health.js';
 
 /** The minimal health shape the alert needs — both ingest paths can satisfy it. */
@@ -74,7 +75,7 @@ export async function sendHealthAlert(report: AlertReport): Promise<boolean> {
   const apiKey = process.env.BREVO_API_KEY;
   const sender = process.env.BREVO_SENDER_EMAIL;
   if (!apiKey || !sender) {
-    console.warn('[alert] BREVO_API_KEY/SENDER not set — health digest skipped', {
+    await log.warn('alert.unconfigured', '[alert] BREVO_API_KEY/SENDER not set — health digest skipped', {
       broken: report.broken,
       degraded: report.degraded,
     });
@@ -93,12 +94,13 @@ export async function sendHealthAlert(report: AlertReport): Promise<boolean> {
       }),
     });
     if (!response.ok) {
-      console.error('[alert] Brevo error', response.status, await response.text().catch(() => ''));
+      await log.error('alert.http_failed', '[alert] Brevo error', response.status, await response.text().catch(() => ''));
       return false;
     }
     return true;
   } catch (error) {
-    console.error('[alert] exception', error instanceof Error ? error.message : String(error));
+    log.assertHealthy();
+    await log.error('alert.failed', { error });
     return false;
   }
 }

@@ -1,3 +1,4 @@
+import { log } from '../../observability/logger.js';
 import { fetchRenderedHtml } from '../../lib/browser.js';
 import { extractJobPostings, normalizeJobPosting } from '../../connectors/generic/jsonLdSitemap.js';
 import { createHash } from 'node:crypto';
@@ -107,7 +108,7 @@ export async function fetchFashionjobsJobs(
     if (html === null) {
       // The shield held through the retry. Keep what we have rather than
       // failing the run — but say so, loudly enough for the health check.
-      console.error(`[fashionjobs] listing page ${page} blocked twice; stopping the sweep here`);
+      await log.error('adapter.listing_blocked', `[fashionjobs] listing page ${page} blocked twice; stopping the sweep here`);
       break;
     }
 

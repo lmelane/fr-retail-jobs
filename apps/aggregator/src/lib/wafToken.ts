@@ -1,3 +1,4 @@
+import { log } from '../observability/logger.js';
 /**
  * Jetons WAF par origine — la table que `fetchWithRetry` consulte pour joindre
  * un cookie amorcé à TOUTE requête sortante vers un hôte protégé (règle D25 :
@@ -84,13 +85,13 @@ export async function primeWafCookie(url: string): Promise<string | undefined> {
   if (!pending) {
     const started = Date.now();
     pending = (primer ?? defaultPrimer)(url)
-      .then((cookie) => {
+      .then(async (cookie) => {
         if (cookie) cookies.set(origin, cookie);
-        console.error(`[waf] ${origin}: amorçage ${cookie ? 'réussi' : 'sans jeton'} en ${Date.now() - started} ms`);
+        await log.info('waf.bootstrap_completed', `[waf] ${origin}: amorçage ${cookie ? 'réussi' : 'sans jeton'} en ${Date.now() - started} ms`);
         return cookie;
       })
-      .catch((error: unknown) => {
-        console.error(`[waf] ${origin}: amorçage en échec — ${error instanceof Error ? error.message : String(error)}`);
+      .catch(async (error: unknown) => {
+        await log.error('waf.bootstrap_failed', `[waf] ${origin}: amorçage en échec — ${error instanceof Error ? error.message : String(error)}`, { error });
         return undefined;
       });
     inflight.set(origin, pending);

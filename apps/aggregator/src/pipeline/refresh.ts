@@ -1,3 +1,4 @@
+import { log } from '../observability/logger.js';
 import type { PrismaClient } from '@prisma/client';
 import { selectCanonicalSource } from '../dedup/canonical.js';
 import { lockCompanyRows } from '../lib/writeLocks.js';
@@ -132,10 +133,8 @@ export async function runRefresh(
     liveTotal > 0 &&
     wouldClose.length / liveTotal > maxCloseRatio
   ) {
-    console.error(
-      `[refresh] REFUSED: would close ${wouldClose.length} of ${liveTotal} live offers ` +
-        `(> ${Math.round(maxCloseRatio * 100)}%). A source is likely broken — not closing anything.`,
-    );
+    await log.error('refresh.refused', `[refresh] REFUSED: would close ${wouldClose.length} of ${liveTotal} live offers ` +
+        `(> ${Math.round(maxCloseRatio * 100)}%). A source is likely broken — not closing anything.`);
     return {
       checked: liveTotal,
       closedSources: 0,

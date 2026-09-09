@@ -1,3 +1,4 @@
+import { log } from '../observability/logger.js';
 import { withSourceBudget } from '../lib/sourceBudget.js';
 import type { PrismaClient } from '@prisma/client';
 import pLimit from 'p-limit';
@@ -103,25 +104,31 @@ export function onlyRequested(keys: string[], raw = process.env.INGEST_ONLY_KEYS
 
 export async function ingestAllBySource(prisma: PrismaClient): Promise<OrchestratorResult> {
   const keys = await allSourceKeys(prisma);
-  console.log(`[orchestrator] ${keys.length} sources, each time-bounded: ${keys.join(', ')}`);
+  await log.info('run.sources_selected', { sources: keys.length, sourceKeys: keys, concurrency: SOURCE_CONCURRENCY, timeoutMs: PER_SOURCE_TIMEOUT_MS });
 
   const result: OrchestratorResult = { total: keys.length, ok: 0, failed: 0, timedOut: 0, failures: [], incidents: [] };
 
   // Smallest-first order is preserved by the limiter: the giants are still
   // started last, and now run side by side instead of one after the other.
   const limit = pLimit(SOURCE_CONCURRENCY);
-  await Promise.all(keys.map((key) => limit(() => ingestOne(prisma, key, result))));
+  const settlements = await Promise.allSettled(keys.map((key) => limit(() => log.withContext({ sourceKey: key }, async () => {
+    log.assertHealthy();
+    const source = await prisma.source.findUniqueOrThrow({ where: { key }, select: { kind: true } });
+    return log.withContext({ connectorId: source.kind }, () => ingestOne(prisma, key, result));
+  }))));
+  const failed = settlements.find((s): s is PromiseRejectedResult => s.status === 'rejected');
+  if (failed) throw failed.reason;
 
-  console.log(
-    `[orchestrator] done: ${result.ok}/${result.total} ok, ${result.failed} failed, ${result.timedOut} timed out` +
-      (result.failures.length ? ` — ${result.failures.join(', ')}` : ''),
-  );
+  await log.info('run.sources_completed', `[orchestrator] done: ${result.ok}/${result.total} ok, ${result.failed} failed, ${result.timedOut} timed out` +
+      (result.failures.length ? ` — ${result.failures.join(', ')}` : ''));
   return result;
 }
 
 /** One source, bounded by its own timeout; the counters it touches are shared. */
 async function ingestOne(prisma: PrismaClient, key: string, result: OrchestratorResult): Promise<void> {
+  const started = Date.now();
   try {
+    await log.info('source_sync_started', { sourceKey: key });
     // runIngest with {only} does the source's own purge; geocoding is skipped
     // here and run ONCE by the CLI after every source — a per-source pass
     // would run four times over the same cities in parallel. The soft
@@ -138,11 +145,13 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     // Collect any incident so the run can send ONE digest at the end.
     const health = await checkSourceHealth(prisma, stats);
     result.incidents.push(...health.incidents);
+    await log.info('source_sync_completed', { sourceKey: key, durationMs: Date.now() - started, fetched: stats.reduce((n, s) => n + s.fetched, 0), created: stats.reduce((n, s) => n + s.created, 0), updated: stats.reduce((n, s) => n + s.updated, 0), held: stats.reduce((n, s) => n + (s.held ?? 0), 0), errors: stats.reduce((n, s) => n + s.errors, 0), http: log.counters(key), stats, health: { broken: health.broken, degraded: health.degraded } });
     if (stats.some(stat => stat.errors > 0) || health.broken > 0) {
       result.failed++;
       result.failures.push(key + ' (ingest errors)');
     } else result.ok++;
   } catch (error) {
+    log.assertHealthy();
     const message = error instanceof Error ? error.message : String(error);
     const timedOut = message.startsWith('__TIMEOUT__');
     /**
@@ -156,15 +165,15 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     if (timedOut) {
       result.timedOut++;
       result.failures.push(`${key} (timedOut)`);
-      console.error(`[orchestrator] ${key}: timed out after ${PER_SOURCE_TIMEOUT_MS / 1000}s, moving on`);
+      await log.error('source.timed_out', `[orchestrator] ${key}: timed out after ${PER_SOURCE_TIMEOUT_MS / 1000}s, moving on`, { error });
     } else if (challenged) {
       result.failed++;
       result.failures.push(`${key} (challenged)`);
-      console.error(`[orchestrator] ${key}: bloqué par un anti-bot (${error.vendor}) — offres conservées`);
+      await log.error('source.challenged', `[orchestrator] ${key}: bloqué par un anti-bot (${error.vendor}) — offres conservées`, { error });
     } else {
       result.failed++;
       result.failures.push(`${key} (failed)`);
-      console.error(`[orchestrator] ${key}: failed — ${briefError(error)}`);
+      await log.error('source.failed', `[orchestrator] ${key}: failed — ${briefError(error)}`, { error });
     }
     // L-01: a source that did not finish gets a SourceRun anyway — TIMEOUT or
     // ERROR — so the refresh knows its offers were NOT re-attested this run
@@ -174,6 +183,7 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
       .create({
         data: {
           sourceKey: key,
+          ...(log.runId() ? { runId: log.runId() } : {}),
           status: timedOut ? 'TIMEOUT' : challenged ? 'CHALLENGED' : 'ERROR',
           jobs: 0,
           canAttestAbsence: false,
@@ -184,6 +194,8 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
               : briefError(error),
         },
       })
-      .catch((e) => console.error(`[orchestrator] ${key}: failed to record run — ${briefError(e)}`));
+      .catch(async (e) => await log.error('source.record_failed', `[orchestrator] ${key}: failed to record run — ${briefError(e)}`, { error: e }));
+  } finally {
+    await log.flush(key);
   }
 }

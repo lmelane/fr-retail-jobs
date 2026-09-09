@@ -1,0 +1,32 @@
+{
+  "asOf": "2026-09-09T05:46:35.146Z",
+  "activeJobs": 74113,
+  "status": [
+    {
+      "status": "BROKEN",
+      "sources": 1,
+      "errors": 1,
+      "sourcesAboveOldErrorCap": 0
+    },
+    {
+      "status": "DEGRADED",
+      "sources": 246,
+      "errors": 0,
+      "sourcesAboveOldErrorCap": 0
+    },
+    {
+      "status": "OK",
+      "sources": 275,
+      "errors": 0,
+      "sourcesAboveOldErrorCap": 0
+    }
+  ],
+  "recentErrors": [
+    {
+      "sourceKey": "l-oreal-professionnel",
+      "ranAt": "2026-09-08T22:35:05.614Z",
+      "errors": 1,
+      "note": "1 erreurs de collecte ou d’écriture"
+    }
+  ]
+}

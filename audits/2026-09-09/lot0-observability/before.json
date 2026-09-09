@@ -1,0 +1,62 @@
+{
+  "deploymentId": "7b17182e-b713-4bbb-ab25-5f506201ca11",
+  "retainedRows": 1744,
+  "first": "2026-09-08T22:03:26.061274393Z",
+  "last": "2026-09-08T22:50:06.664385035Z",
+  "peakRetainedRowsPerUtcSecond": [
+    [
+      "2026-09-08T22:49:54",
+      542
+    ],
+    [
+      "2026-09-08T22:03:30",
+      41
+    ],
+    [
+      "2026-09-08T22:03:28",
+      38
+    ],
+    [
+      "2026-09-08T22:20:21",
+      35
+    ],
+    [
+      "2026-09-08T22:03:31",
+      28
+    ]
+  ],
+  "peakOutsideFinalJson": [
+    [
+      "2026-09-08T22:03:30",
+      41
+    ]
+  ],
+  "producers": {
+    "cli.pretty_json": 541,
+    "ingest.source_summary_or_error": 433,
+    "ingest.sources_selected": 424,
+    "ingest.purge_refused": 244,
+    "ingest.publication_held": 69,
+    "other": 17,
+    "egress": 10,
+    "orchestrator": 2,
+    "waf": 2,
+    "indexing": 1,
+    "railway.dropped": 1
+  },
+  "examples": {
+    "other": "Starting Container",
+    "egress": "[egress] timestamp              2026-09-08T22:03:26.574Z",
+    "orchestrator": "[orchestrator] 424 sources, each time-bounded: bellabeat, bernadette, blacks, chisholm-hunter, chrome, city-beauty, cove, cuyana, cynthia-rowley, dna, fjallraven, groundies, innisfree, it-s-fashion, kidzart, lerros, lopl",
+    "ingest.sources_selected": "[ingest] 1 API feeds: blacks",
+    "ingest.source_summary_or_error": "[ingest] blacks: 0 FR / 1 in-sector / 1 fetched -> 0 created, 0 merged, 0 errors",
+    "ingest.purge_refused": "[ingest] fjallraven: purge REFUSÉE — run non fiable pour attester (1 collectées). Les offres non revues survivent.",
+    "ingest.publication_held": "[ingest] blackstore: publication held ms1dvqbyh8h4m40ryg: APPLICATION_EXPLICITLY_CLOSED",
+    "waf": "[waf] https://careers.ralphlauren.com: amorçage réussi en 7309 ms",
+    "indexing": "[indexing] SITE_URL/NEXT_PUBLIC_SITE_URL not set — nothing submitted (connect the domain first)",
+    "cli.pretty_json": "{",
+    "railway.dropped": "Railway rate limit of 500 logs/sec reached for replica, update your application to reduce the logging rate. Messages dropped: 2925"
+  },
+  "droppedReported": 2925,
+  "limit": "Counts describe retained logs only; dropped payloads cannot be reconstructed."
+}

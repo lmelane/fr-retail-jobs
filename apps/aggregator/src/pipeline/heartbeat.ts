@@ -1,3 +1,4 @@
+import { log } from '../observability/logger.js';
 /**
  * External dead-man's-switch ping (DEC-4).
  *
@@ -22,7 +23,7 @@ export async function pingHeartbeat(ok: boolean): Promise<'pinged' | 'skipped' |
   } catch (error) {
     // The heartbeat must never take the run down with it — but a pinger that
     // cannot be reached is itself worth a log line.
-    console.error(`[heartbeat] ping failed: ${error instanceof Error ? error.message : String(error)}`);
+    await log.error('heartbeat.failed', `[heartbeat] ping failed: ${error instanceof Error ? error.message : String(error)}`, { error });
     return 'failed';
   }
 }

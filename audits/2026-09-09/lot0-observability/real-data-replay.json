@@ -1,0 +1,28 @@
+{
+  "runId": "0fa4f087-7994-4568-bfcc-dd7aa795c6cf",
+  "status": "COMPLETED",
+  "durationMs": 776,
+  "metrics": {
+    "byEvent": {
+      "run.started": 1,
+      "health.report": 1,
+      "run.completed": 1
+    },
+    "printed": 3,
+    "counters": {},
+    "recorded": 3,
+    "repeated": 0,
+    "debugDisabled": 0,
+    "persistenceFailures": 0
+  },
+  "report": {
+    "eventId": "95738bde-10ac-414c-a3d7-9845110b5477",
+    "activeJobs": 74113,
+    "sources": 432,
+    "fullPayloadBytes": 149069,
+    "previousPrettyJsonLines": 8668
+  },
+  "activeJobsInDatabase": 74113,
+  "persistedEvents": 3,
+  "diagnosticPayloadIntact": true
+}

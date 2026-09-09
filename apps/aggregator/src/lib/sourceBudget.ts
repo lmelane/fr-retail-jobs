@@ -1,9 +1,10 @@
+import { log } from '../observability/logger.js';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { setTimeout as delay } from 'node:timers/promises';
 
 const budgets = new AsyncLocalStorage<AbortSignal>();
 export const sourceSignal = () => budgets.getStore();
-export const assertSourceRunning = () => sourceSignal()?.throwIfAborted();
+export const assertSourceRunning = () => { log.assertHealthy(); sourceSignal()?.throwIfAborted(); };
 export const sourceDelay = (ms: number) => delay(ms, undefined, { signal: sourceSignal() });
 
 /** Cancel cooperatively and wait for settlement before releasing the worker. */
