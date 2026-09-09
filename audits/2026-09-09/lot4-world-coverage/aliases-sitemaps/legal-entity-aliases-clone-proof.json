@@ -1,0 +1,53 @@
+{
+  "at": "2026-09-09T20:18:31.396Z",
+  "environment": "clone",
+  "commit": "3e44e4ba544e2067846a5e55d47e4064840e16b8",
+  "planHash": "df8c14230edfb2f8535523b58da188edd59c949327adcbcbc98d1a23e7d9d945",
+  "aliasesPlanned": 15,
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 15
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "written": [
+    "nordstrom: Nordstrom Inc → Nordstrom",
+    "mango: MANGO FRANCE, S.A.R.L. → Mango",
+    "mango: MANGO MNG, S.A. → Mango",
+    "mango: MNG-MANGO U.K. LIMITED → Mango",
+    "capri-michael-kors: Michael Kors Retail  Inc → Michael Kors",
+    "mango: MANGO  ITALIA S.r.l. → Mango",
+    "mango: MANGO SINGAPORE GARMENTS PTE, LTD → Mango",
+    "mango: MNG MANGO IRELAND LIMITED → Mango",
+    "mango: MANGONOR Comércio de Vestuário S.A → Mango",
+    "capri-michael-kors: Michael Kors (Canada) Holdings LTD → Michael Kors",
+    "mango: MANGO SUISSE SA → Mango",
+    "capri-michael-kors: Michael Kors (Bucharest Stores) SRL → Michael Kors",
+    "capri-michael-kors: Michael Kors (USA) Inc → Michael Kors",
+    "capri-jimmy-choo: J Choo Germany GmbH → Jimmy Choo",
+    "mango: Mango Deutschland GMBH → Mango"
+  ],
+  "evidence": [
+    {
+      "url": "https://www.nordstrom.com/",
+      "sha256": "9b713e56b6c63a49675e81a70456a02050612715b70071c027bc434b5e071bc1"
+    },
+    {
+      "url": "https://www.mango.com/",
+      "sha256": "c53d64c91abbb7ce1f52135406df74460af00abf9d640e03a69641c4bbe45af0"
+    },
+    {
+      "url": "https://capri.wd1.myworkdayjobs.com/Michael_Kors",
+      "sha256": "20003bf23125ff554ad61e86cef6914ff419cae9a1b9334c461621cd8dc74920"
+    },
+    {
+      "url": "https://capri.wd1.myworkdayjobs.com/JimmyChooCareers",
+      "sha256": "0101f5752bf764bf1b304e0e886a1fdc5788b420586dd0e8ed91211c8c76abe0"
+    }
+  ],
+  "sheetSha": "9582c6dbb8066c1448b29f72afa8dd74689f32c6cdc845d87a7f38fd4bcce722"
+}

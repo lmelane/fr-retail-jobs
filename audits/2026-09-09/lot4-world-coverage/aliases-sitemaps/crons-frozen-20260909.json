@@ -1,0 +1,29 @@
+{
+  "at": "2026-09-09T20:22:52.086258+00:00",
+  "services": {
+    "aggregator": {
+      "cronBefore": "0 22 * * *",
+      "cronAfter": "0 0 29 2 *",
+      "startCommand": "sh apps/aggregator/start.sh",
+      "PIPELINE_PAUSED": "1",
+      "PIPELINE_CMD": "ingest-all",
+      "INGEST_ONLY_KEYS": null
+    },
+    "refresh": {
+      "cronBefore": "0 2 * * *",
+      "cronAfter": "0 0 29 2 *",
+      "startCommand": null,
+      "PIPELINE_PAUSED": "1",
+      "PIPELINE_CMD": "refresh",
+      "INGEST_ONLY_KEYS": null
+    },
+    "reconcile": {
+      "cronBefore": "0 3 * * 1",
+      "cronAfter": "0 0 29 2 *",
+      "startCommand": null,
+      "PIPELINE_PAUSED": "1",
+      "PIPELINE_CMD": "reconcile",
+      "INGEST_ONLY_KEYS": null
+    }
+  }
+}

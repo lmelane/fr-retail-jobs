@@ -1,0 +1,227 @@
+{
+ "at": "2026-09-09T20:07:23.787Z",
+ "summary": {
+  "pairs": 17,
+  "postings": 201,
+  "byRule": {
+   "A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER": {
+    "pairs": 7,
+    "postings": 161
+   },
+   "B_D45_SHEET_ATTACHED": {
+    "pairs": 9,
+    "postings": 34
+   },
+   "OWNER_REVIEW": {
+    "pairs": 1,
+    "postings": 6
+   }
+  }
+ },
+ "rows": [
+  {
+   "sourceKey": "nordstrom",
+   "maison": "Nordstrom",
+   "rawLabel": "Nordstrom Inc",
+   "normalized": "nordstrom inc",
+   "postings": 107,
+   "rule": "A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER",
+   "target": "Nordstrom",
+   "evidence": "resolveCompany(\"Nordstrom Inc\") = NORDSTROM = brand key",
+   "existingAlias": null,
+   "sourceEmployerDomain": "nordstrom.com"
+  },
+  {
+   "sourceKey": "urbn-stores",
+   "maison": "URBN Stores",
+   "rawLabel": "URBN Stores",
+   "normalized": "urbn stores",
+   "postings": 23,
+   "rule": "A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER",
+   "target": "URBN",
+   "evidence": "resolveCompany(\"URBN Stores\") = URBN = brand key",
+   "existingAlias": null,
+   "sourceEmployerDomain": "urbn.com"
+  },
+  {
+   "sourceKey": "mango",
+   "maison": "Mango",
+   "rawLabel": "MANGO FRANCE, S.A.R.L.",
+   "normalized": "mango france, s.a.r.l.",
+   "postings": 23,
+   "rule": "A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER",
+   "target": "Mango",
+   "evidence": "resolveCompany(\"MANGO FRANCE, S.A.R.L.\") = MANGO = brand key",
+   "existingAlias": null,
+   "sourceEmployerDomain": "mango.com"
+  },
+  {
+   "sourceKey": "mango",
+   "maison": "Mango",
+   "rawLabel": "MANGO MNG, S.A.",
+   "normalized": "mango mng, s.a.",
+   "postings": 19,
+   "rule": "B_D45_SHEET_ATTACHED",
+   "target": "Mango",
+   "evidence": "D45 sheet row \"MANGO MNG\" → mango.com (= Mango)",
+   "existingAlias": null,
+   "sourceEmployerDomain": "mango.com"
+  },
+  {
+   "sourceKey": "mango",
+   "maison": "Mango",
+   "rawLabel": "MNG-MANGO U.K. LIMITED",
+   "normalized": "mng-mango u.k. limited",
+   "postings": 6,
+   "rule": "B_D45_SHEET_ATTACHED",
+   "target": "Mango",
+   "evidence": "D45 sheet row \"MNG-MANGO U.K. LIMITED\" → mango.com (= Mango)",
+   "existingAlias": null,
+   "sourceEmployerDomain": "mango.com"
+  },
+  {
+   "sourceKey": "kering",
+   "maison": "Kering (toutes Maisons)",
+   "rawLabel": "Kering",
+   "normalized": "kering",
+   "postings": 6,
+   "rule": "OWNER_REVIEW",
+   "target": null,
+   "evidence": "own company \"Kering\" exists, not merged (cmtjwa11205v4ld2b4be98q45)",
+   "existingAlias": null,
+   "sourceEmployerDomain": null
+  },
+  {
+   "sourceKey": "capri-michael-kors",
+   "maison": "Michael Kors",
+   "rawLabel": "Michael Kors Retail  Inc",
+   "normalized": "michael kors retail inc",
+   "postings": 4,
+   "rule": "A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER",
+   "target": "Michael Kors",
+   "evidence": "resolveCompany(\"Michael Kors Retail  Inc\") = MICHAEL_KORS = brand key",
+   "existingAlias": null,
+   "sourceEmployerDomain": "michaelkors.com"
+  },
+  {
+   "sourceKey": "mango",
+   "maison": "Mango",
+   "rawLabel": "MANGO  ITALIA S.r.l.",
+   "normalized": "mango italia s.r.l.",
+   "postings": 2,
+   "rule": "A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER",
+   "target": "Mango",
+   "evidence": "resolveCompany(\"MANGO  ITALIA S.r.l.\") = MANGO = brand key",
+   "existingAlias": null,
+   "sourceEmployerDomain": "mango.com"
+  },
+  {
+   "sourceKey": "mango",
+   "maison": "Mango",
+   "rawLabel": "MANGO SINGAPORE GARMENTS PTE, LTD",
+   "normalized": "mango singapore garments pte, ltd",
+   "postings": 2,
+   "rule": "B_D45_SHEET_ATTACHED",
+   "target": "Mango",
+   "evidence": "D45 sheet row \"MANGO SINGAPORE GARMENTS PTE, LTD\" → mango.com (= Mango)",
+   "existingAlias": null,
+   "sourceEmployerDomain": "mango.com"
+  },
+  {
+   "sourceKey": "mango",
+   "maison": "Mango",
+   "rawLabel": "MNG MANGO IRELAND LIMITED",
+   "normalized": "mng mango ireland limited",
+   "postings": 2,
+   "rule": "B_D45_SHEET_ATTACHED",
+   "target": "Mango",
+   "evidence": "D45 sheet row \"MNG MANGO IRELAND\" → mango.com (= Mango)",
+   "existingAlias": null,
+   "sourceEmployerDomain": "mango.com"
+  },
+  {
+   "sourceKey": "mango",
+   "maison": "Mango",
+   "rawLabel": "MANGONOR Comércio de Vestuário S.A",
+   "normalized": "mangonor comércio de vestuário s.a",
+   "postings": 1,
+   "rule": "B_D45_SHEET_ATTACHED",
+   "target": "Mango",
+   "evidence": "D45 sheet row \"MANGONOR Comércio de Vestuário\" → mango.com (= Mango)",
+   "existingAlias": null,
+   "sourceEmployerDomain": "mango.com"
+  },
+  {
+   "sourceKey": "capri-michael-kors",
+   "maison": "Michael Kors",
+   "rawLabel": "Michael Kors (Canada) Holdings LTD",
+   "normalized": "michael kors (canada) holdings ltd",
+   "postings": 1,
+   "rule": "B_D45_SHEET_ATTACHED",
+   "target": "Michael Kors",
+   "evidence": "D45 sheet row \"Michael Kors (Canada) Holdings LTD\" → michaelkors.com (= Michael Kors)",
+   "existingAlias": null,
+   "sourceEmployerDomain": "michaelkors.com"
+  },
+  {
+   "sourceKey": "mango",
+   "maison": "Mango",
+   "rawLabel": "MANGO SUISSE SA",
+   "normalized": "mango suisse sa",
+   "postings": 1,
+   "rule": "A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER",
+   "target": "Mango",
+   "evidence": "resolveCompany(\"MANGO SUISSE SA\") = MANGO = brand key",
+   "existingAlias": null,
+   "sourceEmployerDomain": "mango.com"
+  },
+  {
+   "sourceKey": "capri-michael-kors",
+   "maison": "Michael Kors",
+   "rawLabel": "Michael Kors (Bucharest Stores) SRL",
+   "normalized": "michael kors (bucharest stores) srl",
+   "postings": 1,
+   "rule": "B_D45_SHEET_ATTACHED",
+   "target": "Michael Kors",
+   "evidence": "D45 sheet row \"Michael Kors (Bucharest Stores)\" → michaelkors.com (= Michael Kors)",
+   "existingAlias": null,
+   "sourceEmployerDomain": "michaelkors.com"
+  },
+  {
+   "sourceKey": "capri-michael-kors",
+   "maison": "Michael Kors",
+   "rawLabel": "Michael Kors (USA) Inc",
+   "normalized": "michael kors (usa) inc",
+   "postings": 1,
+   "rule": "B_D45_SHEET_ATTACHED",
+   "target": "Michael Kors",
+   "evidence": "D45 sheet row \"Michael Kors (USA)\" → michaelkors.com (= Michael Kors)",
+   "existingAlias": null,
+   "sourceEmployerDomain": "michaelkors.com"
+  },
+  {
+   "sourceKey": "capri-jimmy-choo",
+   "maison": "Jimmy Choo",
+   "rawLabel": "J Choo Germany GmbH",
+   "normalized": "j choo germany gmbh",
+   "postings": 1,
+   "rule": "B_D45_SHEET_ATTACHED",
+   "target": "Jimmy Choo",
+   "evidence": "D45 sheet row \"J Choo\" → jimmychoo.com (= Jimmy Choo)",
+   "existingAlias": null,
+   "sourceEmployerDomain": "jimmychoo.com"
+  },
+  {
+   "sourceKey": "mango",
+   "maison": "Mango",
+   "rawLabel": "Mango Deutschland GMBH",
+   "normalized": "mango deutschland gmbh",
+   "postings": 1,
+   "rule": "A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER",
+   "target": "Mango",
+   "evidence": "resolveCompany(\"Mango Deutschland GMBH\") = MANGO = brand key",
+   "existingAlias": null,
+   "sourceEmployerDomain": "mango.com"
+  }
+ ]
+}

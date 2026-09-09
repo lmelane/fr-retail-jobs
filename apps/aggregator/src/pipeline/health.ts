@@ -86,7 +86,7 @@ export async function checkSourceHealth(
       coverage: coverageOf(stat), rates: ratesOf(stat) };
     if (stat.errors > 0) {
       results.push({ ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN',
-        note: `${stat.errors} erreurs de collecte ou d’écriture${stat.errorNote ? ` : ${stat.errorNote}` : ''}` });
+        note: `${stat.errors} erreurs de collecte ou d’écriture${stat.errorNote ? ` : ${stat.errorNote}` : ''}${stat.rejected ? ` · ${stat.rejected} lignes rejetées avec motif (${Object.entries(stat.rejectedReasons ?? {}).map(([k, v]) => `${k}=${v}`).join(', ')})` : ''}` });
       continue;
     }
     if (stat.held) {

@@ -1,4 +1,5 @@
 import { KIND_TO_ATS } from '../ats/catalogKinds.js';
+import { splitRejectedRows } from './rejectedRows.js';
 import { loadOccupationTaxonomy, type CompiledOccupationTaxonomy } from '@catwalks/db/occupations';
 import { log } from '../observability/logger.js';
 import { archivePublicationHold } from './publicationHold.js';
@@ -53,6 +54,9 @@ export type IngestStats = {
   occupationReleases?: Record<string,number>;
   /** Bounded original cause, persisted in SourceRun rather than lost with logs. */
   errorNote?: string;
+  /** Rows the adapter rejected with a reason (failures are also counted in `errors`; explained rejections are not). */
+  rejected?: number;
+  rejectedReasons?: Record<string, number>;
   held?: number;
   heldUnresolved?: number;
   /**
@@ -295,8 +299,15 @@ async function ingestApiSource(
     evidenceStatus: enumeration ? 'RECORDED' : 'ADAPTER_ENUMERATION_EVIDENCE_NOT_IMPLEMENTED',
   });
   if (rejectedRows?.length) {
-    stats.errors += rejectedRows.length;
-    await log.warn('source.rows_rejected', { sourceKey: stats.source, count: rejectedRows.length, rejectedRows });
+    // Only rows the adapter could not READ count as collection errors; an explained
+    // rejection (expired page still listed, row without a path) is a witness of the
+    // enumeration and must not turn a complete source DEGRADED nor withhold its right
+    // to attest absence (Alberto 6 postings / 74 expired pages, 2026-09-09).
+    const split = splitRejectedRows(rejectedRows);
+    stats.errors += split.failures.length;
+    stats.rejected = rejectedRows.length;
+    stats.rejectedReasons = split.reasons;
+    await log.warn('source.rows_rejected', { sourceKey: stats.source, count: rejectedRows.length, failures: split.failures.length, reasons: split.reasons, rejectedRows });
   }
   stats.complete = complete;
   stats.declaredTotal = declaredTotal;

@@ -1,0 +1,158 @@
+{
+  "at": "2026-09-09T19:59:44.330Z",
+  "totals": {
+    "sources": 6,
+    "postings": 201,
+    "pairs": 17
+  },
+  "alreadyExistingPostings": 6,
+  "uncertifiedActiveSources": 400,
+  "bySource": [
+    {
+      "sourceKey": "nordstrom",
+      "postings": 107,
+      "labels": 1,
+      "first": "2026-09-09T19:53:59.168Z",
+      "last": "2026-09-09T19:54:04.108Z"
+    },
+    {
+      "sourceKey": "mango",
+      "postings": 57,
+      "labels": 9,
+      "first": "2026-09-09T19:51:56.193Z",
+      "last": "2026-09-09T19:51:57.929Z"
+    },
+    {
+      "sourceKey": "urbn-stores",
+      "postings": 23,
+      "labels": 1,
+      "first": "2026-09-09T18:30:05.188Z",
+      "last": "2026-09-09T18:30:27.292Z"
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "postings": 7,
+      "labels": 4,
+      "first": "2026-09-09T19:49:11.560Z",
+      "last": "2026-09-09T19:49:12.899Z"
+    },
+    {
+      "sourceKey": "kering",
+      "postings": 6,
+      "labels": 1,
+      "first": "2026-09-09T19:55:03.916Z",
+      "last": "2026-09-09T19:55:04.068Z"
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "postings": 1,
+      "labels": 1,
+      "first": "2026-09-09T19:47:50.751Z",
+      "last": "2026-09-09T19:47:50.751Z"
+    }
+  ],
+  "topLabels": [
+    {
+      "sourceKey": "nordstrom",
+      "maison": "Nordstrom",
+      "rawEmployerName": "Nordstrom Inc",
+      "postings": 107
+    },
+    {
+      "sourceKey": "urbn-stores",
+      "maison": "URBN Stores",
+      "rawEmployerName": "URBN Stores",
+      "postings": 23
+    },
+    {
+      "sourceKey": "mango",
+      "maison": "Mango",
+      "rawEmployerName": "MANGO FRANCE, S.A.R.L.",
+      "postings": 23
+    },
+    {
+      "sourceKey": "mango",
+      "maison": "Mango",
+      "rawEmployerName": "MANGO MNG, S.A.",
+      "postings": 19
+    },
+    {
+      "sourceKey": "mango",
+      "maison": "Mango",
+      "rawEmployerName": "MNG-MANGO U.K. LIMITED",
+      "postings": 6
+    },
+    {
+      "sourceKey": "kering",
+      "maison": "Kering (toutes Maisons)",
+      "rawEmployerName": "Kering",
+      "postings": 6
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "maison": "Michael Kors",
+      "rawEmployerName": "Michael Kors Retail  Inc",
+      "postings": 4
+    },
+    {
+      "sourceKey": "mango",
+      "maison": "Mango",
+      "rawEmployerName": "MANGO  ITALIA S.r.l.",
+      "postings": 2
+    },
+    {
+      "sourceKey": "mango",
+      "maison": "Mango",
+      "rawEmployerName": "MANGO SINGAPORE GARMENTS PTE, LTD",
+      "postings": 2
+    },
+    {
+      "sourceKey": "mango",
+      "maison": "Mango",
+      "rawEmployerName": "MNG MANGO IRELAND LIMITED",
+      "postings": 2
+    },
+    {
+      "sourceKey": "mango",
+      "maison": "Mango",
+      "rawEmployerName": "MANGONOR Comércio de Vestuário S.A",
+      "postings": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "maison": "Michael Kors",
+      "rawEmployerName": "Michael Kors (Canada) Holdings LTD",
+      "postings": 1
+    },
+    {
+      "sourceKey": "mango",
+      "maison": "Mango",
+      "rawEmployerName": "MANGO SUISSE SA",
+      "postings": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "maison": "Michael Kors",
+      "rawEmployerName": "Michael Kors (Bucharest Stores) SRL",
+      "postings": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "maison": "Michael Kors",
+      "rawEmployerName": "Michael Kors (USA) Inc",
+      "postings": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "maison": "Jimmy Choo",
+      "rawEmployerName": "J Choo Germany GmbH",
+      "postings": 1
+    },
+    {
+      "sourceKey": "mango",
+      "maison": "Mango",
+      "rawEmployerName": "Mango Deutschland GMBH",
+      "postings": 1
+    }
+  ]
+}

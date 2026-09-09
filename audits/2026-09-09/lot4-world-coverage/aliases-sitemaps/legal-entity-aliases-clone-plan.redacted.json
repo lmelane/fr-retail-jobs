@@ -1,0 +1,136 @@
+{
+ "batchId": "20260909-LOT4-LEGAL-ENTITY-ALIASES-v1",
+ "statement": "Source-scoped aliases for native legal-entity labels refused by the identity gate (EmployerObservation REVIEW_REQUIRED, 2026-09-09 runs). Rule A: the label resolves to the brand's own canonical key (brand + legal/country qualifier). Rule B: the label is a row of the owner's D45 domain sheet (sha256 9582c6dbb8066c1448b29f72afa8dd74689f32c6cdc845d87a7f38fd4bcce722) attached to the brand's official domain — decision of 2026-09-07. No merge, no group/brand equivalence; raw labels stay in every observation. nordstrom: \"Nordstrom Inc\" → Nordstrom [A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER: resolveCompany(\"Nordstrom Inc\") = NORDSTROM = brand key] · mango: \"MANGO FRANCE, S.A.R.L.\" → Mango [A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER: resolveCompany(\"MANGO FRANCE, S.A.R.L.\") = MANGO = brand key] · mango: \"MANGO MNG, S.A.\" → Mango [B_D45_SHEET_ATTACHED: D45 sheet row \"MANGO MNG\" → mango.com (= Mango)] · mango: \"MNG-MANGO U.K. LIMITED\" → Mango [B_D45_SHEET_ATTACHED: D45 sheet row \"MNG-MANGO U.K. LIMITED\" → mango.com (= Mango)] · capri-michael-kors: \"Michael Kors Retail  Inc\" → Michael Kors [A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER: resolveCompany(\"Michael Kors Retail  Inc\") = MICHAEL_KORS = brand key] · mango: \"MANGO  ITALIA S.r.l.\" → Mango [A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER: resolveCompany(\"MANGO  ITALIA S.r.l.\") = MANGO = brand key] · mango: \"MANGO SINGAPORE GARMENTS PTE, LTD\" → Mango [B_D45_SHEET_ATTACHED: D45 sheet row \"MANGO SINGAPORE GARMENTS PTE, LTD\" → mango.com (= Mango)] · mango: \"MNG MANGO IRELAND LIMITED\" → Mango [B_D45_SHEET_ATTACHED: D45 sheet row \"MNG MANGO IRELAND\" → mango.com (= Mango)] · mango: \"MANGONOR Comércio de Vestuário S.A\" → Mango [B_D45_SHEET_ATTACHED: D45 sheet row \"MANGONOR Comércio de Vestuário\" → mango.com (= Mango)] · capri-michael-kors: \"Michael Kors (Canada) Holdings LTD\" → Michael Kors [B_D45_SHEET_ATTACHED: D45 sheet row \"Michael Kors (Canada) Holdings LTD\" → michaelkors.com (= Michael Kors)] · mango: \"MANGO SUISSE SA\" → Mango [A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER: resolveCompany(\"MANGO SUISSE SA\") = MANGO = brand key] · capri-michael-kors: \"Michael Kors (Bucharest Stores) SRL\" → Michael Kors [B_D45_SHEET_ATTACHED: D45 sheet row \"Michael Kors (Bucharest Stores)\" → michaelkors.com (= Michael Kors)] · capri-michael-kors: \"Michael Kors (USA) Inc\" → Michael Kors [B_D45_SHEET_ATTACHED: D45 sheet row \"Michael Kors (USA)\" → michaelkors.com (= Michael Kors)] · capri-jimmy-choo: \"J Choo Germany GmbH\" → Jimmy Choo [B_D45_SHEET_ATTACHED: D45 sheet row \"J Choo\" → jimmychoo.com (= Jimmy Choo)] · mango: \"Mango Deutschland GMBH\" → Mango [A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER: resolveCompany(\"Mango Deutschland GMBH\") = MANGO = brand key]",
+ "reviewedBy": "Derived from existing decisions (resolveCompany canonical key; D45 sheet by Loïc) — Claude, LOT 4 resume",
+ "reviewedAt": "2026-09-09T20:18:27.186Z",
+ "evidence": [
+  {
+   "url": "https://www.nordstrom.com/",
+   "sha256": "9b713e56b6c63a49675e81a70456a02050612715b70071c027bc434b5e071bc1",
+   "artifactText": "<archived 254059 chars>",
+   "explanation": "Official site of Nordstrom (nordstrom.com); the native labels below are legal entities of this brand: \"Nordstrom Inc\" (A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER)."
+  },
+  {
+   "url": "https://www.mango.com/",
+   "sha256": "c53d64c91abbb7ce1f52135406df74460af00abf9d640e03a69641c4bbe45af0",
+   "artifactText": "<archived 179337 chars>",
+   "explanation": "Official site of Mango (mango.com); the native labels below are legal entities of this brand: \"MANGO FRANCE, S.A.R.L.\" (A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER), \"MANGO MNG, S.A.\" (B_D45_SHEET_ATTACHED), \"MNG-MANGO U.K. LIMITED\" (B_D45_SHEET_ATTACHED), \"MANGO  ITALIA S.r.l.\" (A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER), \"MANGO SINGAPORE GARMENTS PTE, LTD\" (B_D45_SHEET_ATTACHED), \"MNG MANGO IRELAND LIMITED\" (B_D45_SHEET_ATTACHED), \"MANGONOR Comércio de Vestuário S.A\" (B_D45_SHEET_ATTACHED), \"MANGO SUISSE SA\" (A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER), \"Mango Deutschland GMBH\" (A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER)."
+  },
+  {
+   "url": "https://capri.wd1.myworkdayjobs.com/Michael_Kors",
+   "sha256": "20003bf23125ff554ad61e86cef6914ff419cae9a1b9334c461621cd8dc74920",
+   "artifactText": "<archived 8540 chars>",
+   "explanation": "Employer's own Workday career portal for Michael Kors (official site michaelkors.com refuses automated reads, HTTP 403); the native labels below are legal entities of this brand: \"Michael Kors Retail  Inc\" (A_BRAND_WITH_LEGAL_OR_COUNTRY_QUALIFIER), \"Michael Kors (Canada) Holdings LTD\" (B_D45_SHEET_ATTACHED), \"Michael Kors (Bucharest Stores) SRL\" (B_D45_SHEET_ATTACHED), \"Michael Kors (USA) Inc\" (B_D45_SHEET_ATTACHED)."
+  },
+  {
+   "url": "https://capri.wd1.myworkdayjobs.com/JimmyChooCareers",
+   "sha256": "0101f5752bf764bf1b304e0e886a1fdc5788b420586dd0e8ed91211c8c76abe0",
+   "artifactText": "<archived 7327 chars>",
+   "explanation": "Employer's own Workday career portal for Jimmy Choo (official site jimmychoo.com refuses automated reads, HTTP 403); the native labels below are legal entities of this brand: \"J Choo Germany GmbH\" (B_D45_SHEET_ATTACHED)."
+  }
+ ],
+ "merges": [],
+ "aliases": [
+  {
+   "sourceKey": "nordstrom",
+   "rawName": "Nordstrom Inc",
+   "companyId": "cmtpjpt4j2hoypf5lusxkuh9m"
+  },
+  {
+   "sourceKey": "mango",
+   "rawName": "MANGO FRANCE, S.A.R.L.",
+   "companyId": "cmtn89596205lqq5l0deggb1g"
+  },
+  {
+   "sourceKey": "mango",
+   "rawName": "MANGO MNG, S.A.",
+   "companyId": "cmtn89596205lqq5l0deggb1g"
+  },
+  {
+   "sourceKey": "mango",
+   "rawName": "MNG-MANGO U.K. LIMITED",
+   "companyId": "cmtn89596205lqq5l0deggb1g"
+  },
+  {
+   "sourceKey": "capri-michael-kors",
+   "rawName": "Michael Kors Retail  Inc",
+   "companyId": "cmtnfq0zm17kyqq4zqj5ndjdd"
+  },
+  {
+   "sourceKey": "mango",
+   "rawName": "MANGO  ITALIA S.r.l.",
+   "companyId": "cmtn89596205lqq5l0deggb1g"
+  },
+  {
+   "sourceKey": "mango",
+   "rawName": "MANGO SINGAPORE GARMENTS PTE, LTD",
+   "companyId": "cmtn89596205lqq5l0deggb1g"
+  },
+  {
+   "sourceKey": "mango",
+   "rawName": "MNG MANGO IRELAND LIMITED",
+   "companyId": "cmtn89596205lqq5l0deggb1g"
+  },
+  {
+   "sourceKey": "mango",
+   "rawName": "MANGONOR Comércio de Vestuário S.A",
+   "companyId": "cmtn89596205lqq5l0deggb1g"
+  },
+  {
+   "sourceKey": "capri-michael-kors",
+   "rawName": "Michael Kors (Canada) Holdings LTD",
+   "companyId": "cmtnfq0zm17kyqq4zqj5ndjdd"
+  },
+  {
+   "sourceKey": "mango",
+   "rawName": "MANGO SUISSE SA",
+   "companyId": "cmtn89596205lqq5l0deggb1g"
+  },
+  {
+   "sourceKey": "capri-michael-kors",
+   "rawName": "Michael Kors (Bucharest Stores) SRL",
+   "companyId": "cmtnfq0zm17kyqq4zqj5ndjdd"
+  },
+  {
+   "sourceKey": "capri-michael-kors",
+   "rawName": "Michael Kors (USA) Inc",
+   "companyId": "cmtnfq0zm17kyqq4zqj5ndjdd"
+  },
+  {
+   "sourceKey": "capri-jimmy-choo",
+   "rawName": "J Choo Germany GmbH",
+   "companyId": "cmtpu1jq90ao8l35mi3a8soo6"
+  },
+  {
+   "sourceKey": "mango",
+   "rawName": "Mango Deutschland GMBH",
+   "companyId": "cmtn89596205lqq5l0deggb1g"
+  }
+ ],
+ "version": 1,
+ "sourceHashes": {
+  "capri-jimmy-choo": "a1f9735dc05508991c3550c532c51597176ae45a5fe7d573ffbd0c6e28189740",
+  "capri-michael-kors": "d66ee722d785d48a0be9eb8a695f170bd309767a505ffa78c4c867a5a5e70f38",
+  "fashionjobs": "8dc3b3a1b8588c67adf6d70f16e928af6ffce4d2663f89bd1887414280cccc3a",
+  "mango": "4d98dcbcbfb4b773c86d42edad819a03b872be27a8ed12dfb15d27a9ff135ce0",
+  "nordstrom": "2c022a3add2d60d9927964fd94a3187148ae45fdf5d16791b0cd2df7445a2cbe"
+ },
+ "createdAt": "2026-09-09T20:18:28.397Z",
+ "companyIds": [
+  "cmtn89596205lqq5l0deggb1g",
+  "cmtnfq0zm17kyqq4zqj5ndjdd",
+  "cmtpjpt4j2hoypf5lusxkuh9m",
+  "cmtpu1jq90ao8l35mi3a8soo6"
+ ],
+ "sourceKeys": [
+  "capri-jimmy-choo",
+  "capri-michael-kors",
+  "fashionjobs",
+  "mango",
+  "nordstrom"
+ ],
+ "beforeHash": "39f1bcd7504705713bfe8e0b6048bcf123984525d46c6ab22f8fdb35c3a6d278",
+ "jobCount": 2366,
+ "activeJobCount": 2275,
+ "sourceCount": 2369
+}

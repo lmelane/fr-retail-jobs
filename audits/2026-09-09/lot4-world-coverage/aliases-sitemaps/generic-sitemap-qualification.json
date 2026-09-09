@@ -1,0 +1,198 @@
+{
+ "at": "2026-09-09T20:03:42.737Z",
+ "results": {
+  "oniverse": {
+   "sitemapUrl": "https://careers.oniverse.it/sitemap.xml",
+   "seconds": 197,
+   "postings": 363,
+   "declaredTotal": 734,
+   "complete": false,
+   "truncated": true,
+   "rejected": {
+    "LISTED_PAGE_FETCH_FAILED": 191,
+    "LISTED_PAGE_WITHOUT_JOBPOSTING": 180
+   },
+   "enumeration": {
+    "method": "SITEMAP_URLSET_WITH_DETAIL_READ",
+    "pages": 1,
+    "termination": "LISTED_PAGES_MISSING",
+    "issues": [
+     "PAGE_FETCH_FAILURES=191",
+     "ENUMERATION_NOT_PROVEN"
+    ]
+   },
+   "withDescription": 353,
+   "withDate": 363,
+   "withLocation": 363,
+   "employers": [],
+   "sample": [
+    {
+     "id": "55bbffae8f1d26a462c43966d9d388260651d254",
+     "title": "CUCITRICE/CUCITORE CAMPIONARISTA TEZENIS",
+     "url": "https://careers.oniverse.it/en-GB/carriere/CUCITRICE_CUCITORE_CAMPIONARISTA_TEZENIS_175408117.htm"
+    },
+    {
+     "id": "8295a9a21a7e9fc9d89b6fbe2226cea2073f4476",
+     "title": "CUOCO/A SIGNORVINO FOIANO DELLA CHIANA (AR)",
+     "url": "https://careers.oniverse.it/en-GB/carriere/CUOCO_A_SIGNORVINO_FOIANO_DELLA_CHIANA_AR_212020872.htm"
+    },
+    {
+     "id": "abb9d56f91788ed5c337f21e895b7f297e809ea3",
+     "title": "CDV - CDI 35H - ST LAZARE",
+     "url": "https://careers.oniverse.it/en-GB/carriere/CDV_CDI_35H_ST_LAZARE_185919401.htm"
+    }
+   ]
+  },
+  "psycho-bunny": {
+   "sitemapUrl": "https://careers.psychobunny.com/jobs-sitemap.xml",
+   "seconds": 270,
+   "postings": 149,
+   "declaredTotal": 153,
+   "complete": false,
+   "truncated": true,
+   "rejected": {
+    "LISTED_PAGE_FETCH_FAILED": 4
+   },
+   "enumeration": {
+    "method": "SITEMAP_URLSET_WITH_DETAIL_READ",
+    "pages": 1,
+    "termination": "LISTED_PAGES_MISSING",
+    "issues": [
+     "PAGE_FETCH_FAILURES=4",
+     "ENUMERATION_NOT_PROVEN"
+    ]
+   },
+   "withDescription": 149,
+   "withDate": 149,
+   "withLocation": 149,
+   "employers": [],
+   "sample": [
+    {
+     "id": "fdda8333eb2bc960d5c046493188bcb0e64def85",
+     "title": "Sales Associate",
+     "url": "https://careers.psychobunny.com/job/1754/sales_associate"
+    },
+    {
+     "id": "55fa116efe9074f5ba4d8a121c03f1332f4dcdc5",
+     "title": "Sales Associate",
+     "url": "https://careers.psychobunny.com/job/3032/sales_associate"
+    },
+    {
+     "id": "ac9ff84a2711c5caccc3ff32bd98bdb9c0b3113b",
+     "title": "Sales Associate",
+     "url": "https://careers.psychobunny.com/job/3045/sales_associate"
+    }
+   ]
+  },
+  "oska": {
+   "sitemapUrl": "https://www.oska.com/jobs-sitemap1.xml",
+   "seconds": 8,
+   "postings": 35,
+   "declaredTotal": 35,
+   "complete": true,
+   "truncated": false,
+   "rejected": {},
+   "enumeration": {
+    "method": "SITEMAP_URLSET_WITH_DETAIL_READ",
+    "pages": 1,
+    "termination": "ALL_LISTED_PAGES_READ",
+    "issues": []
+   },
+   "withDescription": 35,
+   "withDate": 35,
+   "withLocation": 35,
+   "employers": [],
+   "sample": [
+    {
+     "id": "246e3914abcf9c50094ae36489736532edc4558a",
+     "title": "Fashion Consultant (m/f/d) 40 &#8211; 50%",
+     "url": "https://www.oska.com/jobs/modeberater-stgallen-ch/"
+    },
+    {
+     "id": "70f935b705332052baf8a608ad41775b5f781841",
+     "title": "Fashion Consultant (m/f/d) 40 &#8211; 50%",
+     "url": "https://www.oska.com/de/jobs/modeberater-stgallen-ch/"
+    },
+    {
+     "id": "9f16c21211458fa34c49248249535a9e49ba7f24",
+     "title": "Fashion Consultant (m/f/d) 40 &#8211; 50%",
+     "url": "https://www.oska.com/fr/jobs/modeberater-stgallen-ch/"
+    }
+   ]
+  },
+  "bevilles-jewellers": {
+   "sitemapUrl": "https://careers.bevilles.com.au/sitemap.xml",
+   "seconds": 7,
+   "postings": 23,
+   "declaredTotal": 23,
+   "complete": true,
+   "truncated": false,
+   "rejected": {},
+   "enumeration": {
+    "method": "SITEMAP_URLSET_WITH_DETAIL_READ",
+    "pages": 1,
+    "termination": "ALL_LISTED_PAGES_READ",
+    "issues": []
+   },
+   "withDescription": 23,
+   "withDate": 23,
+   "withLocation": 23,
+   "employers": [],
+   "sample": [
+    {
+     "id": "40e0f24ecf0af5a737e83ccd7d3ad2595758e574",
+     "title": "Australia Wide Management Opportunities",
+     "url": "https://careers.bevilles.com.au/jobs/australia-wide-management-opportunities-australia-all-australia-qld-brisbane-metro-area-qld"
+    },
+    {
+     "id": "f6f53e7821eec7a8cbc715a93648db6088d9ed0f",
+     "title": "Manager in Training - Chermside",
+     "url": "https://careers.bevilles.com.au/jobs/manager-in-training-chermside-qld-brisbane-metro-area-qld-australia"
+    },
+    {
+     "id": "08d6e658d3f9451c6c2ea65eecb09a25e554f4f7",
+     "title": "Sales Professional - Tea Tree Plaza - Casual",
+     "url": "https://careers.bevilles.com.au/jobs/sales-professional-tea-tree-plaza-casual-sa-adelaide-metro-area-sa-australia"
+    }
+   ]
+  },
+  "alberto": {
+   "sitemapUrl": "https://www.alberto-pants.com/sitemap-0.xml",
+   "seconds": 6,
+   "postings": 6,
+   "declaredTotal": 80,
+   "complete": false,
+   "truncated": false,
+   "rejected": {
+    "LISTED_PAGE_WITHOUT_JOBPOSTING": 74
+   },
+   "enumeration": {
+    "method": "SITEMAP_URLSET_WITH_DETAIL_READ",
+    "pages": 1,
+    "termination": "ALL_LISTED_PAGES_READ",
+    "issues": []
+   },
+   "withDescription": 6,
+   "withDate": 6,
+   "withLocation": 6,
+   "employers": [],
+   "sample": [
+    {
+     "id": "3aa52094df63036abaa5b87eee3c99e3604713ba",
+     "title": "WERKSTUDENT / AUSHILFE VERSAND UND LAGER M/W/D",
+     "url": "https://www.alberto-pants.com/en/jobs-and-careers/werkstudent-aushilfe-versand-lager/"
+    },
+    {
+     "id": "10740472e52102765bc5cacdfa56ea488273644c",
+     "title": "MITARBEITER/IN VERSAND UND LAGER M/W/D - FACHLAGERIST/IN",
+     "url": "https://www.alberto-pants.com/en/jobs-and-careers/mitarbeiter-versand-lager/"
+    },
+    {
+     "id": "bde84cec54a9eaf854aced6b7ce645825e574932",
+     "title": "WERKSTUDENT / AUSHILFE VERSAND UND LAGER M/W/D",
+     "url": "https://www.alberto-pants.com/en/jobs-and-careers/werkstudent-aushilfe-versand-lager/"
+    }
+   ]
+  }
+ }
+}
