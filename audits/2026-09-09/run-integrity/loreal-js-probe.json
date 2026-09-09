@@ -1,0 +1,24 @@
+[
+  {
+    "at": "2026-09-09T04:50:22.289Z",
+    "url": "https://careers.loreal.com/portal/170/js/SearchJobs.js?v=1783106622",
+    "status": 200,
+    "contentType": "application/javascript",
+    "server": "cloudflare",
+    "retryAfter": null,
+    "bytes": 29030,
+    "sha256": "8a5b00fa4cc9c82f97f54cfe13a702ee511b42e9e0736eb69e2c403fb8db978e",
+    "jobLinks": 0
+  },
+  {
+    "at": "2026-09-09T04:50:22.372Z",
+    "url": "https://careers.loreal.com/portal/170/js/Cards.js?v=1783106622",
+    "status": 200,
+    "contentType": "application/javascript",
+    "server": "cloudflare",
+    "retryAfter": null,
+    "bytes": 13061,
+    "sha256": "a1f7bf1c311111bbbf5ab3aadbc6c9d6f269e0c03ab6645cb79f22337fd0e83b",
+    "jobLinks": 0
+  }
+]
