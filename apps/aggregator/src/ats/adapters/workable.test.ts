@@ -29,6 +29,17 @@ describe('Workable independent enumeration',()=>{
   const repeated=await fetchWorkableJobs({account:'brand'});expect(repeated.complete).toBe(false);
   expect(repeated.enumeration?.termination).toBe('REPEATED_OR_INVALID_CURSOR');
  });
+ it('coalesces only the same requisition ID across locations and keeps both RAW records',async()=>{
+  const one={...row,city:'Kavala',country:'Greece'}; const two={...row,city:'Alexandroupoli',country:'Greece'};
+  fetch.mockResolvedValueOnce({jobs:[one,two]}).mockResolvedValueOnce({total:1,results:[{...row,location:{city:'Kavala',country:'Greece'}}]});
+  const r=await fetchWorkableJobs({account:'brand'});expect(r.jobs).toHaveLength(1);expect(r.complete).toBe(true);
+  expect(r.jobs[0].raw).toMatchObject({widgetRepresentations:[one,two],representationResolution:'SAME_REQUISITION_MULTIPLE_LOCATIONS'});
+ });
+ it('keeps conflicting duplicate content as RAW and prevents a complete verdict',async()=>{
+  fetch.mockResolvedValueOnce({jobs:[row,{...row,title:'Different role'}]}).mockResolvedValueOnce({total:1,results:[row]});
+  const r=await fetchWorkableJobs({account:'brand'});expect(r.complete).toBe(false);
+  expect((r.jobs[0].raw as any).widgetRepresentations).toHaveLength(2);
+ });
  it('rejects error-shaped widget responses instead of inventing zero jobs',async()=>{
   fetch.mockResolvedValueOnce({error:'bad gateway'});await expect(fetchWorkableJobs({account:'brand'})).rejects.toThrow('INVALID_WIDGET');
  });

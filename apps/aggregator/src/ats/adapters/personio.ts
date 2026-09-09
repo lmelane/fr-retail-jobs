@@ -1,6 +1,9 @@
-import { XMLParser } from 'fast-xml-parser';
+import pLimit from 'p-limit';
+import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
+import { assertSourceRunning } from '../../lib/sourceBudget.js';
+import { XMLParser, XMLValidator } from 'fast-xml-parser';
 import { fetchText } from '../../lib/http.js';
-import type { NormalizedJob } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
  * A single description section arrives as an object, several as an array
@@ -22,36 +25,49 @@ function descriptionOf(job: any): string | undefined {
   return text || undefined;
 }
 
-function parsePositions(xml: string): any[] {
+export function parsePositions(xml: string): any[] {
+  if (XMLValidator.validate(xml) !== true) throw new Error('PERSONIO_INVALID_XML');
   const parser = new XMLParser({ ignoreAttributes: false, textNodeName: '#text' });
-  // The Personio feed root is literally `<workzag-jobs>`; the hyphen forces bracket access.
-  const positions = parser.parse(xml)?.['workzag-jobs']?.position ?? [];
+  const document = parser.parse(xml);
+  if (!Object.hasOwn(document, 'workzag-jobs')) throw new Error('PERSONIO_INVALID_FEED_ROOT');
+  const positions = document['workzag-jobs']?.position ?? [];
   return (Array.isArray(positions) ? positions : [positions]).filter(Boolean);
 }
 
-export async function fetchPersonioJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+export async function fetchPersonioJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const host = String(config.host ?? '');
   if (!host) throw new Error('Personio host missing');
-
-  /**
-   * `?language=fr` returns the feed with EMPTY <jobDescriptions> when the board
-   * carries no French translation (verified on pepco.jobs.personio.de: fr/en
-   * empty, default full). Prefer French when it exists, but an offer without its
-   * text breaks the product promise — so fall back to the board's own language.
-   */
-  let list = parsePositions(await fetchText(`https://${host}/xml?language=fr`));
-  if (!list.some((job) => descriptionOf(job))) {
-    list = parsePositions(await fetchText(`https://${host}/xml`));
+  const endpoint = `https://${host}/xml`;
+  const list = parsePositions(await fetchText(endpoint));
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const jobs: NormalizedJob[] = [];
+  for (const raw of list) {
+    if (!/^[0-9]+$/.test(String(raw.id ?? '')) || typeof raw.name !== 'string' || !raw.name.trim()) {
+      rejectedRows.push({ reason: 'MISSING_OR_INVALID_ID_OR_TITLE', raw }); continue;
+    }
+    jobs.push({
+      externalId: String(raw.id), title: raw.name,
+      // Department is a business unit, not a geographic component.
+      location: raw.office ? String(raw.office) : undefined,
+      contract: raw.employmentType ? String(raw.employmentType) : undefined,
+      description: descriptionOf(raw), url: `https://${host}/job/${raw.id}`,
+      // XML createdAt is creation, not an asserted publication. Read datePosted
+      // from the actual single JobPosting instead; preserve createdAt in RAW.
+      raw,
+    });
   }
-
-  return list.map((job: any) => ({
-    externalId: String(job.id ?? job.name),
-    title: String(job.name ?? ''),
-    location: [job.office, job.department].filter(Boolean).map(String).join(', ') || undefined,
-    contract: job.employmentType ? String(job.employmentType) : undefined,
-    description: descriptionOf(job),
-    url: `https://${host}/job/${job.id ?? ''}`,
-    postedAt: job.createdAt ? new Date(String(job.createdAt)) : undefined,
-    raw: job,
-  }));
+  const limit = pLimit(2);
+  const enriched = await Promise.all(jobs.map(job=>limit(async()=>{
+    try { return enrichPostingEvidence(job, await fetchText(job.url)); }
+    catch (error) {
+      assertSourceRunning();
+      return { ...job, raw: { ...(job.raw as object), detailReadError: String(error).slice(0,1000) } };
+    }
+  })));
+  return {
+    jobs: enriched, rejectedRows,
+    complete: rejectedRows.length === 0 && new Set(jobs.map(job=>job.externalId)).size === list.length,
+    enumeration: { method: 'DOCUMENTED_COMPLETE_XML_FEED', endpoint, pages: 1, rawCount: list.length,
+      termination: 'FULL_RESPONSE', documentation: 'https://developer.personio.de/v1.0/reference/get_xml' },
+  };
 }

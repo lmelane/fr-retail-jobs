@@ -113,9 +113,28 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
       raw: { listing: row, detailReadError: 'ABSENT_FROM_DETAIL_WIDGET' },
     });
   }
+  // Workable's widget expands a requisition once per location (observed on
+  // APIVITA 8841DE97D4). The paginated listing is one row per requisition.
+  // Group only the same ATS ID, retain every representation and require the
+  // non-geographic content to agree; a name resemblance is never a merge key.
+  const representations = new Map<string, NormalizedJob[]>();
+  for (const job of jobs) representations.set(job.externalId, [...(representations.get(job.externalId) ?? []), job]);
+  let conflictingRepresentations = false;
+  const uniqueJobs = [...representations].map(([id, variants]) => {
+    if (variants.length === 1) return variants[0];
+    const signature = (job: NormalizedJob) => JSON.stringify([job.title,job.description,job.contract,job.postedAt?.toISOString()]);
+    const conflict = new Set(variants.map(signature)).size !== 1;
+    if (conflict) conflictingRepresentations = true;
+    const primary = listed.get(id)?.location;
+    const chosen = variants.find(job => (job.raw as any)?.city === primary?.city && (job.raw as any)?.country === primary?.country) ?? variants[0];
+    return { ...chosen, raw: { ...(chosen.raw as object),
+      widgetRepresentations: variants.map(job=>job.raw), listingEvidence: listed.get(id),
+      representationResolution: conflict ? 'CONTENT_CONFLICT_REVIEW_REQUIRED' : 'SAME_REQUISITION_MULTIPLE_LOCATIONS',
+    } };
+  });
   const sameIds = widgetIds.size === listed.size && [...widgetIds].every(id=>listed.has(id));
-  return { jobs, declaredTotal, rejectedRows,
-    complete: terminal === 'CURSOR_EXHAUSTED' && stableTotal && sameIds && listed.size === declaredTotal && rejectedRows.length === 0 && widgetIds.size === data.jobs.length,
+  return { jobs: uniqueJobs, declaredTotal, rejectedRows,
+    complete: terminal === 'CURSOR_EXHAUSTED' && stableTotal && sameIds && listed.size === declaredTotal && rejectedRows.length === 0 && !conflictingRepresentations,
     enumeration: { method: 'WIDGET_CROSSCHECKED_WITH_CURSOR_LISTING', endpoint, pages,
       rawCount: data.jobs.length, termination: terminal,
       documentation: 'https://workable.readme.io/reference/jobs-1' },
