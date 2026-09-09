@@ -3,7 +3,7 @@ import { reattestationFields } from './upsert.js';
 import type { CandidateJob } from './match.js';
 
 const base = { sourceKey: 'hermes', sourceTier: 'EMPLOYER_DIRECT', externalId: 'H1', company: 'Hermès', url: 'https://x/1', raw: {} } as CandidateJob;
-const existing = { title: 'Apply Now', description: 'court', location: null, city: null, countryCode: 'France', adminArea1: null, isFrance: false, postedAt: null, validThrough: null, language: null, employmentTerm: null, workTime: null, programType: null, engagementType: null, isSeasonal: null, workplaceType: null, salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null };
+const existing = { title: 'Apply Now', description: 'court', location: null, city: null, countryCode: 'France', adminArea1: null, isFrance: true, postedAt: null, validThrough: null, language: null, employmentTerm: null, workTime: null, programType: null, engagementType: null, isSeasonal: null, workplaceType: null, salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null };
 
 /**
  * Mesuré en prod le 2026-09-06 : après le premier run avec les normalisations
@@ -120,5 +120,25 @@ describe('reattestationFields — champs simples', () => {
   it('une date identique ne produit pas d’écriture', () => {
     const filled = { ...existing, postedAt: posted };
     expect(reattestationFields({ ...base, title: 'Apply Now', postedAt: new Date(posted) }, filled, true)).toEqual({});
+  });
+});
+
+
+describe('France filter follows the retained canonical country', () => {
+  it('repairs the two observed Tourcoing cases without inventing a country from the city', () => {
+    const out = reattestationFields({ ...base, title: 'Quality Control Associated (CDD)', location: 'Tourcoing' },
+      { ...existing, title: 'Quality Control Associated (CDD)', countryCode: 'FR', city: 'Tourcoing', location: 'Tourcoing', isFrance: false }, true);
+    expect(out).toEqual({ isFrance: true });
+  });
+  it('never lets a secondary source change the country used by the filter', () => {
+    const out = reattestationFields({ ...base, country: 'US', title: existing.title },
+      { ...existing, countryCode: 'FR', isFrance: false }, false);
+    expect(out).toEqual({ isFrance: true });
+  });
+  it('repairs a stale French flag for a retained foreign country and preserves unknown geography', () => {
+    expect(reattestationFields({ ...base, title: existing.title },
+      { ...existing, countryCode: 'BE', isFrance: true }, false)).toEqual({ isFrance: false });
+    expect(reattestationFields({ ...base, title: existing.title },
+      { ...existing, countryCode: null, isFrance: false }, false)).toEqual({});
   });
 });

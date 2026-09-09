@@ -1,0 +1,29 @@
+{
+  "at": "2026-09-09T05:15:14.729Z",
+  "evidenceHash": "962f97412dcb040ff33b9db63ff7b6279b5193192007a6ba96ef338f8db08211",
+  "batches": [
+    {
+      "batchId": "20260909-FRANCE-DERIVED-FLAG-v1",
+      "jobs": 2,
+      "representations": 2,
+      "correctedEvents": 2,
+      "ledger": 2,
+      "commits": [
+        "local-france-rehearsal"
+      ],
+      "rawPreserved": true,
+      "originalHistoryPreserved": true,
+      "otherJobFieldsPreserved": true,
+      "geographyUnchanged": true
+    }
+  ],
+  "counts": [
+    {
+      "active": 74113,
+      "withoutPublicationDate": 1411,
+      "france": 10936,
+      "canonicalfrance": 10936,
+      "contradictions": 0
+    }
+  ]
+}

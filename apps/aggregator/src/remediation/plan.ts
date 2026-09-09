@@ -13,7 +13,7 @@ export type Operation = { entity: Entity; id: string; before: Row | null; patch:
 export type RepairPlan = {
   version: 1; batchId: string; finding: string; createdAt: string;
   sourceKeys: string[]; companyIds: string[]; operations: Operation[];
-  evidence: Row; invariants: ('oracle' | 'lifecycle' | 'smcp' | 'excluded-identities' | 'source-owners')[];
+  evidence: Row; invariants: ('oracle' | 'lifecycle' | 'smcp' | 'excluded-identities' | 'source-owners' | 'france-filter')[];
   excludedSourceKeys?: string[];
   ownerRules?: { sourceKey: string; name: string; departmentMap?: Record<string, string> }[];
   observations?: { sourceKey: string; externalId: string; raw: Prisma.InputJsonValue; observedAt: string }[];
@@ -57,6 +57,16 @@ async function write(tx: Prisma.TransactionClient, op: Operation) {
 
 export async function verifyRepair(prisma: Prisma.TransactionClient, invariants: RepairPlan['invariants'], excludedSourceKeys = ['via', 'ashoka'], ownerRules: RepairPlan['ownerRules'] = []) {
   const result: Record<string, number> = {};
+  if (invariants.includes('france-filter')) {
+    // Check the whole active population, including rows outside the repair.
+    // Unknown geography is not converted into a country assertion.
+    const bad = await prisma.job.findFirst({ where: { isActive: true, OR: [
+      { countryCode: 'FR', isFrance: false },
+      { countryCode: { not: null, notIn: ['FR'] }, isFrance: true },
+    ] }, select: { id: true, countryCode: true, isFrance: true } });
+    if (bad) throw new Error(`France filter invariant failed: ${bad.id} (${bad.countryCode}/${bad.isFrance})`);
+    result.franceFilterContradictions = 0;
+  }
   if (invariants.includes('source-owners')) {
     if (!ownerRules.length) throw new Error('Source owner invariant needs reviewed rules');
     for (const rule of ownerRules) {

@@ -457,6 +457,14 @@ export function reattestationFields(
   } else if (country && country === normalizeCountry(existing.countryCode) && country !== existing.countryCode) {
     out.countryCode = country; // spelling normalization, not a change of country
   }
+  // isFrance is a projection of the retained canonical country, not another
+  // independently inferred geography field. A country-less reobservation
+  // (Tourcoing at Vestiaire Collective) must repair a stale filter flag while
+  // preserving the established country and the authority of its source.
+  const retainedCountry = normalizeCountry(out.countryCode ?? existing.countryCode);
+  if (retainedCountry && existing.isFrance !== (retainedCountry === 'FR')) {
+    out.isFrance = retainedCountry === 'FR';
+  }
   for (const field of SIMPLE_FIELDS) {
     const value = candidate[field];
     if (value === undefined || value === null) continue;

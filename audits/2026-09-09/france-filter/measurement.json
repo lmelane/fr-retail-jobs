@@ -1,0 +1,21 @@
+{
+  "at": "2026-09-09T05:08:36.147Z",
+  "mismatches": [
+    {
+      "id": "cmtp1wbd102dxqq4z33d3co5a",
+      "title": "Quality Control Associated (CDD)",
+      "city": "Tourcoing",
+      "countryCode": "FR",
+      "isFrance": false,
+      "canonicalSourceKey": "vestiaire-collective"
+    },
+    {
+      "id": "cmtp1wbdb02e1qq4zqbedsx3e",
+      "title": "Quality Control Associated (CDI)",
+      "city": "Tourcoing",
+      "countryCode": "FR",
+      "isFrance": false,
+      "canonicalSourceKey": "vestiaire-collective"
+    }
+  ]
+}
