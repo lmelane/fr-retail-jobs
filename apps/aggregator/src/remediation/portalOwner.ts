@@ -32,6 +32,16 @@ export type PortalOwnerReview = {
       externalId: string; targetName: string; targetKind: Exclude<CompanyKind, 'UNKNOWN'>;
       /** The brand's own official domain when the native page states it (JSON-LD `sameAs`); recorded for the logo, never guessed from a name. */
       targetDomain?: string;
+      /**
+       * A sub-label whose native page attests a relation to another brand of the
+       * same portal (URBN: "FP Movement" → freepeople.com/fpmovement) keeps its OWN
+       * identity; the attested relation is RECORDED (observation + correction
+       * evidence), never turned into a merge (owner decision 2026-09-09). The
+       * database only accepts a canonical GROUP as `parentGroupId`, so the
+       * portal owner stays the recorded group and the related brand — which must
+       * already exist or be created by this review — is the traceable relation.
+       */
+      relatedBrandName?: string;
       evidence: { url: string; sha256: string; property: string; value: string; observedAt: string };
     }>;
     evidence: { url: string; artifactText: string; sha256: string; statement: string }[];
@@ -101,6 +111,7 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
       const brandTargets = new Map<string, { id: string; key: string }>();
       const brandTargetIds = new Set<string>();
       const brandDomains = new Map<string, string | null>();
+      const relatedBrands = new Map<string, { id: string; name: string }>();
       for (const posting of spec.postings ?? []) {
         if (!/^[A-Za-z0-9._:-]{1,80}$/.test(posting.externalId) || posting.externalId in postingOwners) throw new Error(`Invalid or repeated reviewed posting: ${posting.externalId}`);
         if (!(Object.values(CompanyKind) as string[]).includes(posting.targetKind) || (posting.targetKind as string) === 'UNKNOWN' || !normalizedEmployerName(posting.targetName)) throw new Error(`Invalid reviewed brand for posting ${posting.externalId}`);
@@ -118,18 +129,30 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
           if (existing?.mergedIntoId) throw new Error(`Brand target requires a separate identity review: ${brand.companyId}`);
           const id = existing?.id ?? `cr${createHash('sha256').update(`REVIEWED_BRAND:${identity.companyId}:${brand.companyId}`).digest('hex').slice(0,24)}`;
           if (id === targetId) throw new Error('Brand target collides with the portal owner');
+          // An attested related brand must be a known company of this portal (existing, or created earlier in this review).
+          let related: { id: string; name: string } | null = null;
+          if (posting.relatedBrandName) {
+            const relatedKey = resolveCompany(posting.relatedBrandName);
+            if (relatedKey.companyId === brand.companyId) throw new Error(`Posting ${posting.externalId}: a brand cannot be related to itself`);
+            const relatedEntry = brandTargets.get(relatedKey.companyId);
+            const relatedRow = relatedEntry ? null : await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${relatedKey.companyId}` } });
+            if (!relatedEntry && (!relatedRow || relatedRow.mergedIntoId)) throw new Error(`Posting ${posting.externalId}: attested related brand "${posting.relatedBrandName}" is not a known company of this portal`);
+            related = { id: relatedEntry?.id ?? relatedRow!.id, name: relatedEntry ? posting.relatedBrandName.trim() : relatedRow!.name };
+          }
           entry = { id, key: brand.companyId }; brandTargets.set(brand.companyId, entry); brandTargetIds.add(id); companyIds.add(id);
           if (!existing) {
             operations.push({ entity: 'Company', id, before: null, patch: { name: posting.targetName.trim(), canonicalKey: brand.companyId, kind: posting.targetKind, parentGroup: identity.displayName, parentGroupId: targetId, identityReviewId: review.batchId, fashionjobsUrl: `resolved:${brand.companyId}`, ...(posting.targetDomain ? { domain: posting.targetDomain, domainSource: ev.url } : {}) },
-              reason: `Brand named by the native posting property "${ev.property}" on the reviewed ${spec.officialDomain} portal; parent group is the portal owner.` });
+              reason: related ? `Sub-label named by the native posting property "${ev.property}" on the reviewed ${spec.officialDomain} portal; its page attests a relation to ${related.name} (recorded, not merged); parent group is the portal owner.` : `Brand named by the native posting property "${ev.property}" on the reviewed ${spec.officialDomain} portal; parent group is the portal owner.` });
           } else if (!existing.parentGroupId && (!existing.parentGroup || resolveCompany(existing.parentGroup).companyId === identity.companyId)) {
             // A recorded relationship must reference the review that established it (DB check constraint).
             operations.push({ entity: 'Company', id, before: json(existing), patch: { parentGroup: identity.displayName, parentGroupId: targetId, identityReviewId: review.batchId, ...(posting.targetDomain && !existing.domain ? { domain: posting.targetDomain, domainSource: ev.url } : {}) }, reason: `Existing brand attested on the reviewed ${spec.officialDomain} portal; parent group recorded, identity unchanged.` });
           }
+          if (related) relatedBrands.set(brand.companyId, related);
         }
         postingOwners[posting.externalId] = brand.companyId;
+        const relatedBrand = relatedBrands.get(brand.companyId);
         observations.push({ sourceKey: source.key, externalId: posting.externalId, observedAt: ev.observedAt,
-          raw: { reviewedEmployer: { property: ev.property, value: ev.value, targetName: posting.targetName, canonicalKey: brand.companyId, reviewId: review.batchId }, page: { url: ev.url, sha256: ev.sha256 } } });
+          raw: { reviewedEmployer: { property: ev.property, value: ev.value, targetName: posting.targetName, canonicalKey: brand.companyId, reviewId: review.batchId, ...(relatedBrand ? { attestedRelatedBrand: relatedBrand.name, attestedRelatedBrandId: relatedBrand.id } : {}) }, page: { url: ev.url, sha256: ev.sha256 } } });
       }
       ownerRules.push({ sourceKey: spec.sourceKey, name: spec.targetName, canonicalKey: identity.companyId, includeInactive: !!spec.withdrawal, ...(Object.keys(postingOwners).length ? { postingOwners } : {}) });
 
@@ -182,7 +205,7 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
         evidence: review.sources.flatMap(s => s.evidence.map(e => ({ url: e.url, artifactText: e.artifactText, sha256: e.sha256, explanation: e.statement }))) },
       evidence: { reviewId: review.batchId, reviewedAt: review.reviewedAt, reviewer: review.reviewer,
         sources: review.sources.map(s => ({ sourceKey: s.sourceKey, targetName: s.targetName, identityScope: s.identityScope ?? 'LEGACY_KEY', withdrawal: s.withdrawal ?? null, expectedSourceHash: s.expectedSourceHash, configPatch: s.configPatch ?? null, portalHosts: s.portalHosts ?? [],
-          brandPostings: (s.postings ?? []).length, brands: [...new Set((s.postings ?? []).map(p => p.targetName))], evidence: s.evidence.map(e => ({ url: e.url, sha256: e.sha256 })) })),
+          brandPostings: (s.postings ?? []).length, brands: [...new Set((s.postings ?? []).map(p => p.targetName))], relatedBrands: Object.fromEntries((s.postings ?? []).filter(p => p.relatedBrandName).map(p => [p.targetName, p.relatedBrandName!])), evidence: s.evidence.map(e => ({ url: e.url, sha256: e.sha256 })) })),
         preservation: 'Original company identities, job IDs, RAW, observations and histories preserved; only explicitly reviewed lifecycle transitions; CORRECTED events retain the decision.' },
       invariants: ['lifecycle', 'source-owners', ...(review.sources.some(s => s.withdrawal) ? ['excluded-identities' as const] : [])],
       excludedSourceKeys: review.sources.filter(s => s.withdrawal).map(s => s.sourceKey),

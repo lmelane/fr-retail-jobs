@@ -60,9 +60,24 @@ export async function recordSourceIdentityReview(prisma: PrismaClient, document:
     // Every decision must identify the exact source and preserve its evidence.
     assertIdentityReview(source, { ...review, verdict: 'VERIFIED' });
     if (createHash('sha256').update(artifact).digest('hex') !== review.artifactHash) throw new Error('Identity artifact hash mismatch');
-    const { sourceKey, tenantKey, subjectKey, sourceHash, verdict, method, officialDomain, proofUrl, portalUrl, statement, artifactHash, reviewer, checkedAt } = review;
-    const data = { sourceKey, tenantKey, subjectKey, sourceHash, verdict, method, officialDomain, proofUrl, portalUrl, statement, artifactHash, artifactText, reviewer, checkedAt };
+    if (review.portalScope != null && !['SINGLE_BRAND', 'MULTI_BRAND'].includes(review.portalScope)) throw new Error('portalScope must be SINGLE_BRAND or MULTI_BRAND');
+    const { sourceKey, tenantKey, subjectKey, sourceHash, verdict, method, officialDomain, proofUrl, portalUrl, statement, artifactHash, reviewer, checkedAt, portalScope } = review;
+    const data = { sourceKey, tenantKey, subjectKey, sourceHash, verdict, method, officialDomain, proofUrl, portalUrl, statement, artifactHash, artifactText, reviewer, checkedAt, portalScope: portalScope ?? null };
     if (apply) await tx.sourceIdentityReview.create({ data });
     return { sourceKey, sourceHash, verdict, written: apply ? 1 : 0 };
   });
+}
+
+/**
+ * The reviewed perimeter of a portal, valid ONLY for the configuration it was
+ * certified for: a later VERIFIED review supersedes, a contradiction cancels,
+ * a changed configuration invalidates. Returns null unless a current VERIFIED
+ * review states SINGLE_BRAND or MULTI_BRAND.
+ */
+export async function certifiedPortalScope(prisma: Pick<PrismaClient, 'sourceIdentityReview' | 'source'>, sourceKey: string): Promise<'SINGLE_BRAND' | 'MULTI_BRAND' | null> {
+  const source = await prisma.source.findUnique({ where: { key: sourceKey } });
+  if (!source) return null;
+  const review = await prisma.sourceIdentityReview.findFirst({ where: { sourceKey: source.key }, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
+  if (!review || review.verdict !== 'VERIFIED' || review.sourceHash !== sourceIdentityHash(source)) return null;
+  return review.portalScope === 'SINGLE_BRAND' || review.portalScope === 'MULTI_BRAND' ? review.portalScope : null;
 }

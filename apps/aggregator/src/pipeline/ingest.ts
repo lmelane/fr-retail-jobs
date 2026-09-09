@@ -7,6 +7,8 @@ import { publicationDisposition } from './publicationDisposition.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import type { PrismaClient, AtsType } from '@prisma/client';
 import type { SourceTier } from '../dedup/match.js';
+import { certifiedPortalScope } from '../connectors/sourceIdentity.js';
+import { employerFromCertifiedScope } from './certifiedScopeEmployer.js';
 import { loadActiveSources, type RuntimeSource } from '../connectors/sourceStore.js';
 import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
@@ -335,7 +337,11 @@ async function ingestApiSource(
    */
   const isBoard = config.filterSector === true;
   let skippedOutOfSector = 0;
-  for (const job of jobs) {
+  // Postings whose page names no employer may take the portal owner only on a
+  // portal whose perimeter is certified SINGLE_BRAND for this configuration.
+  const scope = jobs.some(j => j.publicationHold === 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL') ? await certifiedPortalScope(prisma, stats.source) : null;
+  for (const rawJob of jobs) {
+    const job = employerFromCertifiedScope(rawJob, sourceDef.company, scope);
     assertSourceRunning();
     if (job.publicationHold) {
       stats.held = (stats.held ?? 0) + 1;

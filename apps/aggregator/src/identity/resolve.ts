@@ -9,7 +9,7 @@ import { PIPELINE_VERSION } from '../pipeline/version.js';
 type Company = Prisma.CompanyGetPayload<Record<string, never>>;
 export type EmployerResolution = {
   company: Company | null;
-  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED';
+  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE';
   rawEmployerName: string;
   normalizedEmployerName: string;
   aliasId?: string;
@@ -69,6 +69,15 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
         orderBy: [{ observedAt: 'desc' }, { id: 'desc' }], select: { normalizedEmployerName: true },
       });
       if (previous && previous.normalizedEmployerName !== normalized) {
+        // A response that OMITS the house and falls back to the group label
+        // (Kering feed without `efcustomTextHouse`, 6 postings on 2026-09-09) is
+        // not a new identity: the posting keeps the house previously attested for
+        // this source id, the observation records the group label (the omission
+        // stays traceable), and every other field keeps updating. Only the group
+        // recorded for the house qualifies — any other label is still a change.
+        if (normalizedEmployerName(current.parentGroup ?? '') === normalized || (current.parentGroupId !== null && company !== null && (await canonicalEmployer(tx, company)).id === current.parentGroupId)) {
+          return { company: current, rule: 'GROUP_LABEL_KEPT_HOUSE', rawEmployerName, normalizedEmployerName: normalized };
+        }
         throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, current.name);
       }
     }

@@ -8,7 +8,7 @@ const artifactText = 'SMCP careers: https://jobs.smartrecruiters.com/SMCP';
 const source = { key: 'sandro', maison: 'SMCP (toutes Maisons)', kind: 'smartrecruiters-whitelabel', config: { company: 'SMCP', employerField: 'Brands' }, careersDomain: 'smcp.com', tier: 'GROUP_OFFICIAL', tenantKey: 'smartrecruiters-whitelabel:smcp' };
 const review = (): SourceIdentityReview => ({
   id: 'review', sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source),
-  verdict: 'VERIFIED', method: 'GROUP_DOCUMENT', officialDomain: 'smcp.com', proofUrl: 'https://www.smcp.com/fr/talents/offres-d-emploi/',
+  verdict: 'VERIFIED', portalScope: null, method: 'GROUP_DOCUMENT', officialDomain: 'smcp.com', proofUrl: 'https://www.smcp.com/fr/talents/offres-d-emploi/',
   portalUrl: 'https://jobs.smartrecruiters.com/SMCP', statement: 'The official SMCP group publishes this career portal for its named brands.', artifactHash: createHash('sha256').update(artifactText).digest('hex'), artifactText, reviewer: 'test', checkedAt: at, createdAt: at,
 });
 

@@ -188,6 +188,8 @@ model SourceIdentityReview {
   reviewer       String
   checkedAt      DateTime
   createdAt      DateTime @default(now())
+  /** Reviewed perimeter of the portal for THIS configuration: SINGLE_BRAND (every posting belongs to the certified employer) or MULTI_BRAND. Null = not reviewed. */
+  portalScope    String?
   source         Source   @relation(fields: [sourceKey], references: [key], onDelete: Restrict, onUpdate: Restrict)
 
   @@index([sourceKey, createdAt])
