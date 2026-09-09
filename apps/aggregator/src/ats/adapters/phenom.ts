@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { employmentTermsFrom } from '../../normalize/employment.js';
@@ -147,26 +148,35 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
   const seen = new Set<string>();
   let declaredTotal: number | undefined;
   const issues = new Set<string>();
-  let pages = 0, rawCount = 0, withoutData = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+  let pages = 0, rawCount = 0, withoutData = 0, repeatedIds = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
 
   for (let page = 1; page <= MAX_PAGES; page++) {
-    const response = await fetchJson<PhenomResponse>(
-      `${origin}/api/jobs?limit=${PAGE_SIZE}&page=${page}`,
-      { headers: HEADERS },
-    );
+    const url = `${origin}/api/jobs?limit=${PAGE_SIZE}&page=${page}`;
+    const response = await fetchJson<PhenomResponse>(url, { headers: HEADERS });
 
     const batch = response.jobs ?? [];
     pages++; rawCount += batch.length;
     let fresh = 0;
+    const pageIds: string[] = [];
 
     for (const entry of batch) {
       if (!entry.data) { withoutData++; continue; }
       const job = parsePhenomJob(entry.data, origin, config);
-      if (!job || seen.has(job.externalId)) continue;
+      if (!job) continue;
+      pageIds.push(job.externalId);
+      // Foot Locker, 2026-09-09 : 2 850 entrées servies pour 2 850 annoncées,
+      // 2 839 identifiants distincts — 11 offres revenaient sur deux pages
+      // (pagination instable) et 11 autres n'ont donc jamais été servies. Le
+      // doublon est compté et nommé ; il refuse la preuve, il ne la remplace pas.
+      if (seen.has(job.externalId)) { repeatedIds++; continue; }
       seen.add(job.externalId);
       jobs.push(job);
       fresh++;
     }
+    const pageTotal = response.totalCount ?? response.count;
+    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: (page - 1) * PAGE_SIZE, pagination: null,
+      ids: pageIds, publisherCounter: pageTotal === undefined ? '' : `total=${pageTotal}`, componentCounters: [`entries=${batch.length}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `withoutData=${withoutData}`] });
 
     const total = response.totalCount ?? response.count;
     if (total !== undefined) {
@@ -186,11 +196,12 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
     if (total === undefined && batch.length < PAGE_SIZE) { termination = 'SHORT_PAGE'; break; }
   }
 
+  if (repeatedIds) issues.add('REPEATED_IDS_ACROSS_PAGES');
   const complete = declaredTotal !== undefined && jobs.length === declaredTotal && issues.size === 0;
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
   return { jobs, declaredTotal, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredTotal !== undefined && jobs.length < declaredTotal),
     enumeration: { method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION', endpoint: `${origin}/api/jobs`, pages, rawCount, termination, issues: [...issues],
-      scopes: [{ scope: 'jobs', declaredTotal: declaredTotal ?? -1, uniqueIds: jobs.length, pages, complete }, { scope: 'entriesWithoutData', declaredTotal: withoutData, uniqueIds: withoutData, pages, complete: true }] } };
+      pageEvidence, scopes: [{ scope: 'jobs', declaredTotal: declaredTotal ?? -1, uniqueIds: jobs.length, pages, complete }, { scope: 'entriesWithoutData', declaredTotal: withoutData, uniqueIds: withoutData, pages, complete: true }] } };
 }
 
 /**
