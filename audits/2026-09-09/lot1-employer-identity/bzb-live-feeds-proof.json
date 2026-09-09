@@ -1,0 +1,273 @@
+{
+  "at": "2026-09-09T07:39:54.595Z",
+  "environment": "read-only live official Teamtailor feeds; no ingestion",
+  "sameNativeIds": true,
+  "results": [
+    {
+      "sourceKey": "bizzbee",
+      "maison": "Bizzbee",
+      "complete": true,
+      "jobs": [
+        {
+          "externalId": "a75a7f9a-4510-4946-be50-66f7c6da109c",
+          "url": "https://recrutement.b-z-b.com/jobs/8341991-vendeur-h-f-cdi-25h",
+          "employer": "BZB",
+          "nativeId": 8341991,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "febdfe76-bccf-4ee1-abb1-9c193c8c1d73",
+          "url": "https://recrutement.b-z-b.com/jobs/8320675-vendeur-h-f-cdi-7h",
+          "employer": "BZB",
+          "nativeId": 8320675,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "e66f7dca-79ab-40ee-9ada-8cf448d0f6db",
+          "url": "https://recrutement.b-z-b.com/jobs/8311757-responsable-de-magasin-h-f",
+          "employer": "BZB",
+          "nativeId": 8311757,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "24f4d2ae-6b8d-42a0-a085-52522c3e6699",
+          "url": "https://recrutement.b-z-b.com/jobs/8280892-vendeur-h-f-cdi-35h00",
+          "employer": "BZB",
+          "nativeId": 8280892,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "872fc40e-0b67-45ae-bb0e-4f14695888ba",
+          "url": "https://recrutement.b-z-b.com/jobs/8280828-assistant-chef-de-produit-h-f-cdd",
+          "employer": "BZB",
+          "nativeId": 8280828,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "df42de1e-8f42-4e5d-a6a3-71583444aa6a",
+          "url": "https://recrutement.b-z-b.com/jobs/8280694-vendeur-h-f-cdi-10h00",
+          "employer": "BZB",
+          "nativeId": 8280694,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "0cc31ea0-516c-4941-9c42-ba125964822b",
+          "url": "https://recrutement.b-z-b.com/jobs/8267489-cdd-vendeur-h-f-24h",
+          "employer": "BZB",
+          "nativeId": 8267489,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "d05e2802-0595-4693-8588-56d232c268ed",
+          "url": "https://recrutement.b-z-b.com/jobs/8256018-vendeur-h-f-cdd-35h",
+          "employer": "BZB",
+          "nativeId": 8256018,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "159cddaa-e4d8-420f-b416-845dd725b85b",
+          "url": "https://recrutement.b-z-b.com/jobs/8252998-vendeur-h-f-cdi-7h00",
+          "employer": "BZB",
+          "nativeId": 8252998,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "d9727247-6c0d-4bd9-b4da-7a3cd3bf3869",
+          "url": "https://recrutement.b-z-b.com/jobs/8237266-responsable-de-magasin-h-f",
+          "employer": "BZB",
+          "nativeId": 8237266,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "e7d6a641-a118-4552-bae3-8d14c3a6e26f",
+          "url": "https://recrutement.b-z-b.com/jobs/8211639-vendeur-h-f-cdi-35h",
+          "employer": "BZB",
+          "nativeId": 8211639,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "5c90053e-2759-4bc4-b330-6e789480df99",
+          "url": "https://recrutement.b-z-b.com/jobs/8198207-vendeur-h-f-cdd-30h",
+          "employer": "BZB",
+          "nativeId": 8198207,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "f2ec1518-2dde-4846-8297-db2ce80ddb63",
+          "url": "https://recrutement.b-z-b.com/jobs/8149989-responsable-adjoint-de-magasin-h-f-la-roche-yon",
+          "employer": "BZB",
+          "nativeId": 8149989,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "3a332c86-6997-4beb-a299-26de6a2834bc",
+          "url": "https://recrutement.b-z-b.com/jobs/8188557-vendeur-h-f-cdi-12h",
+          "employer": "BZB",
+          "nativeId": 8188557,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "56b84cb3-9324-4eca-bfec-54a7a22eff40",
+          "url": "https://recrutement.b-z-b.com/jobs/8105766-vendeur-h-f-cdi-35h",
+          "employer": "BZB",
+          "nativeId": 8105766,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "f0260bf7-2b93-4ee1-8988-adaabfd0e991",
+          "url": "https://recrutement.b-z-b.com/jobs/8104284-vendeur-cdi-25h-h-f",
+          "employer": "BZB",
+          "nativeId": 8104284,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "3d3e8f92-aa3a-4b17-a41b-fa014725585e",
+          "url": "https://recrutement.b-z-b.com/jobs/8088902-demand-supply-planner-h-f",
+          "employer": "BZB",
+          "nativeId": 8088902,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "aa44cb83-a20b-48c7-b769-8b95d0c1dab7",
+          "url": "https://recrutement.b-z-b.com/jobs/8088861-responsable-developpement-h-f",
+          "employer": "BZB",
+          "nativeId": 8088861,
+          "issuer": "https://recrutement.b-z-b.com"
+        }
+      ]
+    },
+    {
+      "sourceKey": "bzb",
+      "maison": "BZB",
+      "complete": true,
+      "jobs": [
+        {
+          "externalId": "a75a7f9a-4510-4946-be50-66f7c6da109c",
+          "url": "https://bzb.teamtailor.com/jobs/8341991-vendeur-h-f-cdi-25h",
+          "employer": "BZB",
+          "nativeId": 8341991,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "febdfe76-bccf-4ee1-abb1-9c193c8c1d73",
+          "url": "https://bzb.teamtailor.com/jobs/8320675-vendeur-h-f-cdi-7h",
+          "employer": "BZB",
+          "nativeId": 8320675,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "e66f7dca-79ab-40ee-9ada-8cf448d0f6db",
+          "url": "https://bzb.teamtailor.com/jobs/8311757-responsable-de-magasin-h-f",
+          "employer": "BZB",
+          "nativeId": 8311757,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "24f4d2ae-6b8d-42a0-a085-52522c3e6699",
+          "url": "https://bzb.teamtailor.com/jobs/8280892-vendeur-h-f-cdi-35h00",
+          "employer": "BZB",
+          "nativeId": 8280892,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "872fc40e-0b67-45ae-bb0e-4f14695888ba",
+          "url": "https://bzb.teamtailor.com/jobs/8280828-assistant-chef-de-produit-h-f-cdd",
+          "employer": "BZB",
+          "nativeId": 8280828,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "df42de1e-8f42-4e5d-a6a3-71583444aa6a",
+          "url": "https://bzb.teamtailor.com/jobs/8280694-vendeur-h-f-cdi-10h00",
+          "employer": "BZB",
+          "nativeId": 8280694,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "0cc31ea0-516c-4941-9c42-ba125964822b",
+          "url": "https://bzb.teamtailor.com/jobs/8267489-cdd-vendeur-h-f-24h",
+          "employer": "BZB",
+          "nativeId": 8267489,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "d05e2802-0595-4693-8588-56d232c268ed",
+          "url": "https://bzb.teamtailor.com/jobs/8256018-vendeur-h-f-cdd-35h",
+          "employer": "BZB",
+          "nativeId": 8256018,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "159cddaa-e4d8-420f-b416-845dd725b85b",
+          "url": "https://bzb.teamtailor.com/jobs/8252998-vendeur-h-f-cdi-7h00",
+          "employer": "BZB",
+          "nativeId": 8252998,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "d9727247-6c0d-4bd9-b4da-7a3cd3bf3869",
+          "url": "https://bzb.teamtailor.com/jobs/8237266-responsable-de-magasin-h-f",
+          "employer": "BZB",
+          "nativeId": 8237266,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "e7d6a641-a118-4552-bae3-8d14c3a6e26f",
+          "url": "https://bzb.teamtailor.com/jobs/8211639-vendeur-h-f-cdi-35h",
+          "employer": "BZB",
+          "nativeId": 8211639,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "5c90053e-2759-4bc4-b330-6e789480df99",
+          "url": "https://bzb.teamtailor.com/jobs/8198207-vendeur-h-f-cdd-30h",
+          "employer": "BZB",
+          "nativeId": 8198207,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "f2ec1518-2dde-4846-8297-db2ce80ddb63",
+          "url": "https://bzb.teamtailor.com/jobs/8149989-responsable-adjoint-de-magasin-h-f-la-roche-yon",
+          "employer": "BZB",
+          "nativeId": 8149989,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "3a332c86-6997-4beb-a299-26de6a2834bc",
+          "url": "https://bzb.teamtailor.com/jobs/8188557-vendeur-h-f-cdi-12h",
+          "employer": "BZB",
+          "nativeId": 8188557,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "56b84cb3-9324-4eca-bfec-54a7a22eff40",
+          "url": "https://bzb.teamtailor.com/jobs/8105766-vendeur-h-f-cdi-35h",
+          "employer": "BZB",
+          "nativeId": 8105766,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "f0260bf7-2b93-4ee1-8988-adaabfd0e991",
+          "url": "https://bzb.teamtailor.com/jobs/8104284-vendeur-cdi-25h-h-f",
+          "employer": "BZB",
+          "nativeId": 8104284,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "3d3e8f92-aa3a-4b17-a41b-fa014725585e",
+          "url": "https://bzb.teamtailor.com/jobs/8088902-demand-supply-planner-h-f",
+          "employer": "BZB",
+          "nativeId": 8088902,
+          "issuer": "https://recrutement.b-z-b.com"
+        },
+        {
+          "externalId": "aa44cb83-a20b-48c7-b769-8b95d0c1dab7",
+          "url": "https://bzb.teamtailor.com/jobs/8088861-responsable-developpement-h-f",
+          "employer": "BZB",
+          "nativeId": 8088861,
+          "issuer": "https://recrutement.b-z-b.com"
+        }
+      ]
+    }
+  ]
+}
