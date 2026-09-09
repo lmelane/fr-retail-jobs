@@ -1,0 +1,213 @@
+{
+  "asOf": "2026-09-09T08:15:11.504Z",
+  "results": [
+    {
+      "name": "Promod",
+      "status": 200,
+      "total": 54,
+      "companies": [
+        "Promod"
+      ],
+      "returnedJobIds": [
+        "cmttrsmst0003m90115cw1ey6",
+        "cmtpkx0az59q7pf5lzosafi35",
+        "cmtt7v7bl022umy012420t9lz",
+        "cmtt7v7c70230my01crdcmd0d",
+        "cmtt7v7cs0236my01o54zj7zq",
+        "cmtt7v7df023cmy01k76hglsh",
+        "cmtt7v7e0023imy01aeg2qhgj",
+        "cmtt7v7eh023omy01f42vprf8",
+        "cmtrscqpv01rbpg5mddaxr6f8",
+        "cmtrscqqf01rgpg5mo1upydgq",
+        "cmtn57boh01ugqq5lc3dthb9w",
+        "cmtn57bot01ukqq5lx05ifj0l",
+        "cmtn57bpa01uoqq5lare2ju0v",
+        "cmtlrbvan006doc2b5c7owics",
+        "cmtlrbvb2006hoc2b2z6w9li8",
+        "cmtlvi3im0bpz3nk5a30wz3dj",
+        "cmtlk0uet0060la2bl8r1junj",
+        "cmtlk0ufh0064la2bdgjp12sg",
+        "cmtlk0ugc0068la2bjiqaba96",
+        "cmtl9vxhw0064qt2bv1isr62h",
+        "cmtkehsvo006mp22by03vx5ol",
+        "cmtlvi3mp0bq13nk59ebj4k8h",
+        "cmtlvi3ph0bq33nk525lt47s2",
+        "cmttrbo8n002sqt01trci9yzt",
+        "cmttrbo9m002yqt01xjwqf8is"
+      ],
+      "responseSha256": "1fb12391bc4e6c4b184eb73e9df2d695c1287bc002067df7372c55b94adcb04a"
+    },
+    {
+      "name": "PROMOD - MAGASIN",
+      "status": 200,
+      "total": 54,
+      "companies": [
+        "Promod"
+      ],
+      "returnedJobIds": [
+        "cmttrsmst0003m90115cw1ey6",
+        "cmtpkx0az59q7pf5lzosafi35",
+        "cmtt7v7bl022umy012420t9lz",
+        "cmtt7v7c70230my01crdcmd0d",
+        "cmtt7v7cs0236my01o54zj7zq",
+        "cmtt7v7df023cmy01k76hglsh",
+        "cmtt7v7e0023imy01aeg2qhgj",
+        "cmtt7v7eh023omy01f42vprf8",
+        "cmtrscqpv01rbpg5mddaxr6f8",
+        "cmtrscqqf01rgpg5mo1upydgq",
+        "cmtn57boh01ugqq5lc3dthb9w",
+        "cmtn57bot01ukqq5lx05ifj0l",
+        "cmtn57bpa01uoqq5lare2ju0v",
+        "cmtlrbvan006doc2b5c7owics",
+        "cmtlrbvb2006hoc2b2z6w9li8",
+        "cmtlvi3im0bpz3nk5a30wz3dj",
+        "cmtlk0uet0060la2bl8r1junj",
+        "cmtlk0ufh0064la2bdgjp12sg",
+        "cmtlk0ugc0068la2bjiqaba96",
+        "cmtl9vxhw0064qt2bv1isr62h",
+        "cmtkehsvo006mp22by03vx5ol",
+        "cmtlvi3mp0bq13nk59ebj4k8h",
+        "cmtlvi3ph0bq33nk525lt47s2",
+        "cmttrbo8n002sqt01trci9yzt",
+        "cmttrbo9m002yqt01xjwqf8is"
+      ],
+      "responseSha256": "1fb12391bc4e6c4b184eb73e9df2d695c1287bc002067df7372c55b94adcb04a"
+    },
+    {
+      "name": "Aubade",
+      "status": 200,
+      "total": 29,
+      "companies": [
+        "Aubade"
+      ],
+      "returnedJobIds": [
+        "cmtt9302h3ufymy0179iqqrza",
+        "cmtt930343ug8my01mhgjwu84",
+        "cmtrt8sqq2ygwpg5m8c8e4csr",
+        "cmtmwq0b80613so4zym3rj65y",
+        "cmtpw96hw4k4jl35m75179thl",
+        "cmtmwq0cf061bso4z9wc0zgyy",
+        "cmtpw96ih4k4nl35mduiud513",
+        "cmtmwq0bu0617so4zluo906f9",
+        "cmtk1xe1r019onv2bkqycbert",
+        "cmtk1xdkj017cnv2buig6ilyn",
+        "cmtk1xdlc017gnv2bf8mnt5od",
+        "cmtk1xdm0017knv2bq8w2tmkt",
+        "cmtk1xdmo017onv2bw2xku1dy",
+        "cmtk1xdnc017snv2bvrkv2g21",
+        "cmtk1xdoi017wnv2bumahtcqm",
+        "cmtk1xdpf0180nv2bbhq1siat",
+        "cmtk1xdq50184nv2bi87y5pjm",
+        "cmtlv7ytd06kp3nk5i3ws2wfv",
+        "cmtlv7ywe06kr3nk5sw6jonbr",
+        "cmtk1xdsh018env2bpljceem2",
+        "cmtp868xy3rnmqq4ztnoc2ob5",
+        "cmtk1xduo018mnv2bfsnxv5ob",
+        "cmtk1xdvf018qnv2b5wjhl31b",
+        "cmtk1xdx7018ynv2bexbk79vu",
+        "cmtlv7z8f06kv3nk5c4rvd8qf"
+      ],
+      "responseSha256": "db558f02cfaa676d38df8ef78e99d9dcd0be5aff28774f664754163c64933e3d"
+    },
+    {
+      "name": "Aubade Paris",
+      "status": 200,
+      "total": 29,
+      "companies": [
+        "Aubade"
+      ],
+      "returnedJobIds": [
+        "cmtt9302h3ufymy0179iqqrza",
+        "cmtt930343ug8my01mhgjwu84",
+        "cmtrt8sqq2ygwpg5m8c8e4csr",
+        "cmtmwq0b80613so4zym3rj65y",
+        "cmtpw96hw4k4jl35m75179thl",
+        "cmtmwq0cf061bso4z9wc0zgyy",
+        "cmtpw96ih4k4nl35mduiud513",
+        "cmtmwq0bu0617so4zluo906f9",
+        "cmtk1xe1r019onv2bkqycbert",
+        "cmtk1xdkj017cnv2buig6ilyn",
+        "cmtk1xdlc017gnv2bf8mnt5od",
+        "cmtk1xdm0017knv2bq8w2tmkt",
+        "cmtk1xdmo017onv2bw2xku1dy",
+        "cmtk1xdnc017snv2bvrkv2g21",
+        "cmtk1xdoi017wnv2bumahtcqm",
+        "cmtk1xdpf0180nv2bbhq1siat",
+        "cmtk1xdq50184nv2bi87y5pjm",
+        "cmtlv7ytd06kp3nk5i3ws2wfv",
+        "cmtlv7ywe06kr3nk5sw6jonbr",
+        "cmtk1xdsh018env2bpljceem2",
+        "cmtp868xy3rnmqq4ztnoc2ob5",
+        "cmtk1xduo018mnv2bfsnxv5ob",
+        "cmtk1xdvf018qnv2b5wjhl31b",
+        "cmtk1xdx7018ynv2bexbk79vu",
+        "cmtlv7z8f06kv3nk5c4rvd8qf"
+      ],
+      "responseSha256": "db558f02cfaa676d38df8ef78e99d9dcd0be5aff28774f664754163c64933e3d"
+    },
+    {
+      "name": "Fusalp",
+      "status": 200,
+      "total": 21,
+      "companies": [
+        "Fusalp"
+      ],
+      "returnedJobIds": [
+        "cmtlyid5405iyqf5kcabdhnfp",
+        "cmtlyicyi05haqf5k1qgalral",
+        "cmtlyicz105heqf5koiqxf5md",
+        "cmtlyiczf05hiqf5ku19zlan2",
+        "cmtlyiczt05hmqf5kmwm4kgbg",
+        "cmtlyid0b05hqqf5k462gn1jl",
+        "cmtlyid0t05huqf5kyzbr6o1n",
+        "cmtlyid1e05hyqf5kbbnliebu",
+        "cmtnjjqu9336eqq4z3lweel2s",
+        "cmtlyid1v05i2qf5kl49r0095",
+        "cmtlyid2b05i6qf5kpw1cxlnc",
+        "cmtlyid2o05iaqf5kigf4bf4y",
+        "cmtlyid3005ieqf5kt5h4mnk7",
+        "cmtp868ny3rkgqq4zy4fb3glm",
+        "cmtlyid3i05iiqf5kqlqx2uxh",
+        "cmtlyid3w05imqf5kldj0y3mh",
+        "cmtlyid4i05iqqf5kbgeqy0hp",
+        "cmtlyid5i05j2qf5k2qb3zuft",
+        "cmtlyid5x05j6qf5k8fzfkbpz",
+        "cmtlyid6a05jaqf5kwpopdqi1",
+        "cmtlyid6k05jeqf5kh9ggxto1"
+      ],
+      "responseSha256": "2cd68e66d7b6b6019fcec4ffa316d3d4b20e0ab19011eb66f9a055d9639abf4d"
+    },
+    {
+      "name": "CREATIONS FUSALP",
+      "status": 200,
+      "total": 21,
+      "companies": [
+        "Fusalp"
+      ],
+      "returnedJobIds": [
+        "cmtlyid5405iyqf5kcabdhnfp",
+        "cmtlyicyi05haqf5k1qgalral",
+        "cmtlyicz105heqf5koiqxf5md",
+        "cmtlyiczf05hiqf5ku19zlan2",
+        "cmtlyiczt05hmqf5kmwm4kgbg",
+        "cmtlyid0b05hqqf5k462gn1jl",
+        "cmtlyid0t05huqf5kyzbr6o1n",
+        "cmtlyid1e05hyqf5kbbnliebu",
+        "cmtnjjqu9336eqq4z3lweel2s",
+        "cmtlyid1v05i2qf5kl49r0095",
+        "cmtlyid2b05i6qf5kpw1cxlnc",
+        "cmtlyid2o05iaqf5kigf4bf4y",
+        "cmtlyid3005ieqf5kt5h4mnk7",
+        "cmtp868ny3rkgqq4zy4fb3glm",
+        "cmtlyid3i05iiqf5kqlqx2uxh",
+        "cmtlyid3w05imqf5kldj0y3mh",
+        "cmtlyid4i05iqqf5kbgeqy0hp",
+        "cmtlyid5i05j2qf5k2qb3zuft",
+        "cmtlyid5x05j6qf5k8fzfkbpz",
+        "cmtlyid6a05jaqf5kwpopdqi1",
+        "cmtlyid6k05jeqf5kh9ggxto1"
+      ],
+      "responseSha256": "2cd68e66d7b6b6019fcec4ffa316d3d4b20e0ab19011eb66f9a055d9639abf4d"
+    }
+  ]
+}

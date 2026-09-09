@@ -1,0 +1,10 @@
+{
+  "deploymentId": "c7aef813-d214-4687-854b-c19aa8a37159",
+  "commit": "606be144240452abf67825688002abbcf9f22ad2",
+  "fetchedLines": 7,
+  "limit": 100,
+  "peakLinesPerSecond": 3,
+  "railwayDropWarnings": 0,
+  "errorLines": 0,
+  "scope": "One bounded real BZB run; not a full operating cycle or load test."
+}

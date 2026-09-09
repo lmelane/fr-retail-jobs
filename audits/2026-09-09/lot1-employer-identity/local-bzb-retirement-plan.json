@@ -1,0 +1,293 @@
+{
+  "version": 1,
+  "batchId": "lot1-bzb-duplicate-portal-retirement-20260909-v1",
+  "finding": "LOT1_DUPLICATE_PORTAL_RETIREMENT",
+  "createdAt": "2026-09-09T07:52:11.462Z",
+  "sourceKeys": [
+    "bizzbee",
+    "bzb"
+  ],
+  "companyIds": [
+    "cmtlyiig305w5qf5kntqzz9kw"
+  ],
+  "operations": [
+    {
+      "entity": "Source",
+      "id": "cmtn0q3q100063nhvbk5nfy0j",
+      "patch": {
+        "status": "RETIRED"
+      },
+      "reason": "Same Teamtailor tenant and all 18 current native posting IDs as the retained BZB portal; preserve source row and unique locator reservation.",
+      "beforeHash": "633f662ba01f8cbf6d65568053836d1c2ac3dbc16c7dba44bf9b16be2bddd9b8"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7sk053uqq5lrhvjfhm9",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "5062a794e2a8a18b42980fb4d362348a1dd69415f84721ff7b992f5c6019d18d"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7t0053yqq5lentq801l",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "76ed8b80035534d0860b6ecc574a7418fb52977f8bef02db5f7cccdde8ec0c2d"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7td0542qq5lsa12vv5u",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "c37eda381c58746e6e48064006d8c9616d81170759315f3664100082a091c84d"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7tp0546qq5ly5rwsmq2",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "7b3f60d6f82e748b7ee5afde6204ad30798e1dcc4de0caef3eb4b995d3c1d5c9"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7wa054eqq5l5xy551b6",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "900450b389ad0ad333e273fd67e7cb9ea1865c60c1124dc116dadb0b216d0361"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7wi054iqq5lktr5trbn",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "51256c6e520d0ba70a092a9f1697402e42554b58e3a7978191c5ebb8bbe307ce"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7wr054mqq5lxydtzp9w",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "f6d592f4831c95d96a255d0377b8b02e43b8fda34a2704aa41a41a41563c2a42"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7x1054qqq5l4n9bk7l6",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "51507fad957f107f9935887f84382e048579d6b41f6ca21fa4c6b639c5e27b2b"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7xa054uqq5lmkhk0f4z",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "86c75fe10f370bc1dc3e7fafa2f62ce05443f323d2d250b810cb7e3c2c095c11"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7xk054yqq5lqrpvljvg",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "6be2d01bb4db893771dd78374ebf2ce1491b94bed2f0032405d637c8b9bd5751"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7xs0552qq5liub02pni",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "00bbc9325e66908a471ca201cf03caad866ff91410c28f213c39a7d393a01cd9"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7y10556qq5l3ck0ko2q",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "11f775b20a48616919f70bd4c7b8f1c2e7f84f6418d5eba78ed9e0968c944cfc"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7ya055aqq5lqrqwykdg",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "22d6bca8a40925ad4c065ccf351295b4061ce4828d5bac1c5b02cb5b507836f5"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7yk055eqq5l2wco95fv",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "d2004c295785d37b191abea3a4f94227f039abdf70ca24b4e390212ba278cd0a"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7yw055iqq5lro8b6gj2",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "7cd53c3a621cb9e31f3d7a7ac703b51d7fce44d9451a91754b12fe241c1c1e86"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7z5055mqq5lgb7s6tjb",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "b5647adaadfc5ba1bff27fd58b0a6f00c14fe74fd6d684032426ce05562b037e"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7zl055qqq5lob8576c6",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "176e1f6c48e1d9a987c426cfc9ed4a21e454523fdd730d90fc67e9392de15641"
+    },
+    {
+      "entity": "Job",
+      "id": "cmtlyiim205y7qf5k3th4lz3c",
+      "patch": {
+        "canonicalSourceKey": "bzb",
+        "canonicalExternalId": "15205d03-32c1-4c28-ab68-d405952068ac",
+        "url": "https://bzb.teamtailor.com/jobs/8031500-vendeur-h-f-cdd-30h",
+        "canonicalTier": "EMPLOYER_DIRECT"
+      },
+      "reason": "Keep the canonical apply URL bound to the retained active native representation.",
+      "beforeHash": "67030137f5a64919ecded5ad13b0a60908057011c2274352ca6460f674d8889e"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a7zv055uqq5lysc8j2ox",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "a59cace5589cbfdf260ac8ebc6b249b2fc9d0a0e62320706b3634906677442aa"
+    },
+    {
+      "entity": "Job",
+      "id": "cmtlyiima05ybqf5kgcgdupqi",
+      "patch": {
+        "canonicalSourceKey": "bzb",
+        "canonicalExternalId": "6baf1887-6641-4d98-bae3-2f7d1140243c",
+        "url": "https://bzb.teamtailor.com/jobs/8010651-vendeur-h-f-cdi-35h00",
+        "canonicalTier": "EMPLOYER_DIRECT"
+      },
+      "reason": "Keep the canonical apply URL bound to the retained active native representation.",
+      "beforeHash": "0e80cf0018ee9bd7ea6ab23dbc28abe0058039d64b65668ac03af25fa97365c6"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a805055yqq5l22gn2yp6",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "6e6caf2ce220474d3a0bb474e2529d566bae635befd3a1cf5b97567f1c00d145"
+    },
+    {
+      "entity": "Job",
+      "id": "cmtlyiimk05yfqf5kms8c1qvh",
+      "patch": {
+        "canonicalSourceKey": "bzb",
+        "canonicalExternalId": "678b54bf-a401-4726-a43c-9e9ef3d4fb75",
+        "url": "https://bzb.teamtailor.com/jobs/7978550-vendeur-h-f-cdi-35h",
+        "canonicalTier": "EMPLOYER_DIRECT"
+      },
+      "reason": "Keep the canonical apply URL bound to the retained active native representation.",
+      "beforeHash": "c81210b4bd78303bea827641d3955a652031312a7eba23373a6a56f88edeb21d"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtn5a80f0562qq5ln7rrd5k1",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "601cccee152a3e96f800febf74919bd88c5f6c40a5a5122670830e26ad0535f4"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtrsddio04mcpg5mkd34g0di",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "dda00d467d56e75e0c6d244cb8de6a4ff916851ef4a660f8470b84d3501a583f"
+    },
+    {
+      "entity": "JobSource",
+      "id": "cmtt7vzrd05s6my01xff8wgpc",
+      "patch": {
+        "isActive": false
+      },
+      "reason": "Retire duplicate feed attestation; retained BZB source is active for this same native opening. Preserve ID, RAW, observation dates and job ownership.",
+      "beforeHash": "a43b2f530d22ab588f0ab002f672377dbca60c7848bbffb7039f4cba556097c5"
+    }
+  ],
+  "evidence": {
+    "businessReviewId": "lot1-bzb-business-rebrand-postings-20260909-v1",
+    "liveProofHash": "4a5aae221341eb8a5398f1c85c830752c5079ccd95e8cd5ad31f736ec91922bc",
+    "liveCheckedAt": "2026-09-09T07:39:54.595Z",
+    "retainedSource": "bzb",
+    "retiredSource": "bizzbee",
+    "liveNativeIds": [
+      8341991,
+      8320675,
+      8311757,
+      8280892,
+      8280828,
+      8280694,
+      8267489,
+      8256018,
+      8252998,
+      8237266,
+      8211639,
+      8198207,
+      8149989,
+      8188557,
+      8105766,
+      8104284,
+      8088902,
+      8088861
+    ]
+  },
+  "invariants": [
+    "excluded-identities",
+    "lifecycle"
+  ],
+  "excludedSourceKeys": [
+    "bizzbee"
+  ],
+  "planHash": "fd60fb0daccfa54348064f494e7bd4069e4042afc9ae636c14f2e6f56498b382"
+}

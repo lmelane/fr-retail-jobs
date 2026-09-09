@@ -1,0 +1,41 @@
+{
+  "env": "local",
+  "commit": "357ea62237b058c1345c2eaf71ff604a411d9849",
+  "planHash": "fd60fb0daccfa54348064f494e7bd4069e4042afc9ae636c14f2e6f56498b382",
+  "before": {
+    "jobs": 77352,
+    "active": 74124,
+    "representations": 80380,
+    "events": 21836
+  },
+  "after": {
+    "jobs": 77352,
+    "active": 74124,
+    "representations": 80380,
+    "events": 21839
+  },
+  "result": {
+    "alreadyApplied": false,
+    "written": 26,
+    "excludedActiveRepresentations": 0,
+    "lifecycleViolations": 0
+  },
+  "repeated": {
+    "alreadyApplied": true,
+    "written": 0,
+    "excludedActiveRepresentations": 0,
+    "lifecycleViolations": 0
+  },
+  "sources": [
+    {
+      "key": "bzb",
+      "status": "ACTIVE",
+      "tenantKey": "teamtailor:bzb.teamtailor.com"
+    },
+    {
+      "key": "bizzbee",
+      "status": "RETIRED",
+      "tenantKey": "teamtailor:recrutement.b-z-b.com"
+    }
+  ]
+}
