@@ -1,3 +1,4 @@
+import { reactivateJob } from '../pipeline/lifecycle.js';
 import { lockOccupationTaxonomy, loadOccupationTaxonomy, type CompiledOccupationTaxonomy } from '@catwalks/db/occupations';
 import { classifyOccupationContent, occupationState, recordOccupationObservation } from '../occupation/persist.js';
 import { EmployerIdentityReviewRequired } from '../identity/errors.js';
@@ -628,9 +629,9 @@ async function attachToExisting(
    * que le refresh avait fermée. Avant, `isActive: true` était remis sans le
    * dire : la fermeture disparaissait de la base sans laisser de trace.
    */
-  const reopening = !existing.isActive;
+  const reactivation = reactivateJob(existing);
   const events: JobEventInput[] = [
-    ...(reopening ? [{ jobId: existing.id, type: 'REOPENED' as const, at: now }] : []),
+    ...(reactivation ? [{ jobId: existing.id, type: reactivation.type, at: now }] : []),
     // `structuralValuesOf` traduit les noms de COLONNE en noms d'ÉVÉNEMENT
     // (`countryCode` → `country`) : sans lui, un changement de pays cesse
     // silencieusement d'être tracé.
@@ -644,7 +645,7 @@ async function attachToExisting(
     where: { id: existing.id },
     data: {
       ...data,
-      ...(reopening ? { closedAt: null, reopenedCount: { increment: 1 } } : {}),
+      ...reactivation?.data,
       ...(events.length ? { events: { createMany: { data: events.map(toNestedEventRow) } } } : {}),
     },
   });

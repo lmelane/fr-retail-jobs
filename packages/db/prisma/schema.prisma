@@ -500,6 +500,9 @@ model Job {
    * publication » ≠ time-to-fill, la méthodologie le dit.
    */
   closedAt      DateTime?
+  /** Catalogue withdrawal is not evidence that the employer closed the role. */
+  withdrawnAt   DateTime?
+  withdrawalReason String?
   /** Nombre de ré-ouvertures : une offre qui revient plusieurs fois est un signal de repost. */
   reopenedCount Int      @default(0)
 

@@ -29,6 +29,6 @@ export async function archivePublicationHold(db: PrismaClient, sourceKey: string
     if (!Number.isFinite(withdrawn.getTime()) || withdrawn.getTime() > Date.now()) throw new Error('Invalid withdrawal observation time');
     // Reuse the existing history-preserving lifecycle writer. A newer ingestion
     // wins the race; the observation cannot deactivate a re-attested posting.
-    await deactivateSources(db, { sourceKey, externalId: job.externalId, lastSeenAt: { lt: withdrawn } });
+    await deactivateSources(db, { sourceKey, externalId: job.externalId, lastSeenAt: { lt: withdrawn } }, { kind: 'CLOSED' });
   }
 }

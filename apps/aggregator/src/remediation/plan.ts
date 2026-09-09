@@ -11,7 +11,7 @@ import { leverEmployer, type LeverJob } from '../ats/adapters/lever.js';
 
 export type Entity = 'Job' | 'JobSource' | 'Company' | 'Source';
 export type Row = Record<string, unknown>;
-export type Operation = { entity: Entity; id: string; before: Row | null; patch: Row; reason: string };
+export type Operation = { entity: Entity; id: string; before: Row | null; patch: Row; reason: string; evidence?: Row };
 export type RepairPlan = {
   version: 1; batchId: string; finding: string; createdAt: string;
   sourceKeys: string[]; companyIds: string[]; operations: Operation[];
@@ -109,7 +109,9 @@ export async function verifyRepair(prisma: Prisma.TransactionClient, invariants:
   if (invariants.includes('lifecycle')) {
     const bad = await prisma.job.findFirst({ where: { OR: [
       { isActive: true, closedAt: { not: null } },
-      { isActive: false, closedAt: null, mergedIntoId: null },
+      { isActive: false, closedAt: null, withdrawnAt: null, mergedIntoId: null },
+      { withdrawnAt: { not: null }, OR: [{ isActive: true }, { closedAt: { not: null } }, { withdrawalReason: null }] },
+      { withdrawnAt: null, withdrawalReason: { not: null } },
       { isActive: true, sources: { none: { isActive: true } } },
     ] }, select: { id: true } });
     if (bad) throw new Error(`Lifecycle invariant failed: ${bad.id}`);
@@ -187,7 +189,7 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
         entityType: op.entity, entityId: op.id,
         before: op.before as Prisma.InputJsonValue ?? Prisma.JsonNull,
         after: after as Prisma.InputJsonValue,
-        evidence: { ...plan.evidence, reason: op.reason } as Prisma.InputJsonValue });
+        evidence: { ...plan.evidence, ...op.evidence, reason: op.reason } as Prisma.InputJsonValue });
     }
     await tx.dataCorrection.createMany({ data: records });
     await tx.jobEvent.createMany({ data: plan.operations.filter(o => o.entity === 'Job').map(o => ({

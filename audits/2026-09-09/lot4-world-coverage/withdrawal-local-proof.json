@@ -1,0 +1,25 @@
+{
+  "at": "2026-09-09T13:32:35.252Z",
+  "environment": "isolated production clone",
+  "planHash": "89b27fdf6f102ca5ed78689a134ad1271956335a43c29925f36a5ee1f71c5d1d",
+  "totals": [
+    {
+      "total": 77359,
+      "active": 74131,
+      "france": 10951,
+      "dated_closures": 2835,
+      "withdrawals": 371
+    }
+  ],
+  "affected": 371,
+  "unchangedOtherFields": true,
+  "differences": [],
+  "rawPreserved": true,
+  "activeBefore": 0,
+  "activeAfter": 0,
+  "datedClosuresBefore": 371,
+  "datedClosuresAfter": 0,
+  "withdrawalsAfter": 371,
+  "corrections": 371,
+  "fakeClosedEvents": 0
+}

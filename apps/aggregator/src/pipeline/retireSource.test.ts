@@ -23,7 +23,7 @@ afterAll(async () => {
 });
 
 describe('retireSource', () => {
-  it('closes orphaned jobs, keeps shared ones, reassigns the canonical URL', async () => {
+  it('withdraws orphaned jobs, keeps shared ones, reassigns the canonical URL', async () => {
     const company = await prisma.company.create({
       data: { name: 'Cartier', canonicalKey: 'CARTIER', fashionjobsUrl: 'resolved:CARTIER' },
     });
@@ -68,7 +68,8 @@ describe('retireSource', () => {
     expect(stats).toEqual({
       sourceKey: 'cartier-3',
       sourcesDeactivated: 2,
-      jobsClosed: 1,
+      jobsClosed: 0,
+      jobsWithdrawn: 1,
       jobsKept: 1,
       urlsReassigned: 1,
     });
@@ -78,6 +79,10 @@ describe('retireSource', () => {
     expect(jobs[0].url).toBe('https://wttj/w-2');
     expect(jobs[0].canonicalTier).toBe('SPECIALIST_JOBBOARD');
     expect(jobs[0].sources.filter(s => s.isActive).map((s) => s.sourceKey)).toEqual(['wttj']);
+    const withdrawn = await prisma.job.findFirstOrThrow({ where: { fingerprint: 'fp1' } });
+    expect(withdrawn).toMatchObject({ isActive: false, closedAt: null, withdrawalReason: 'SOURCE_RETIRED' });
+    expect(withdrawn.withdrawnAt).toBeInstanceOf(Date);
+    expect(await prisma.jobEvent.count({ where: { type: 'CLOSED' } })).toBe(0);
   });
 
   it('is a no-op for an unknown key', async () => {
@@ -120,7 +125,8 @@ describe('retireSource — une seule route d’une clé (externalIdPrefix)', () 
     const stats = await retireSource(prisma, 'kering', { externalIdPrefix: 'https://' });
 
     expect(stats.sourcesDeactivated).toBe(1);
-    expect(stats.jobsClosed).toBe(1);
+    expect(stats.jobsClosed).toBe(0);
+    expect(stats.jobsWithdrawn).toBe(1);
     expect(await prisma.job.count()).toBe(2);
     expect(await prisma.job.count({ where: { isActive: true } })).toBe(1);
     expect((await prisma.job.findFirstOrThrow({ where: { isActive: true } })).externalId).toBe('12345');

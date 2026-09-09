@@ -8,7 +8,7 @@ import { chunk } from '../lib/chunk.js';
  * actives, nouvelles, fermées, le nombre de Maisons qui recrutent, la durée
  * de publication médiane des offres fermées ce jour-là, les ré-ouvertures.
  * Les comparaisons J-7 / J-30 / M-12 lisent cette table, jamais `Job` : les
- * offres se ferment et se suppriment (`retire-source`), la photographie reste.
+ * offres se ferment ou sont retirées du catalogue, la photographie reste.
  *
  * Tout est agrégé en SQL (GROUP BY sur une CTE commune) : la base fait
  * 70 000 offres actives, on ne les charge jamais en mémoire. Idempotent :
@@ -18,13 +18,12 @@ import { chunk } from '../lib/chunk.js';
  *  - `live` (le jour même) : « active » = `Job.isActive`, la vérité du moment ;
  *  - `reconstructed` (un jour passé, `--backfill-from`) : « active au jour J »
  *    = `firstSeenAt` avant la fin de J et pas fermée avant la fin de J. C'est
- *    une RECONSTRUCTION approximative : les offres supprimées par
- *    `retire-source` n'y sont plus, et avant le 2026-09-04 la base était
+ *    une RECONSTRUCTION approximative : les cycles de réouverture ne sont pas
+ *    intégralement reconstruits, et avant le 2026-09-04 la base était
  *    reconstruite à chaque run (les `firstSeenAt` de cette époque sont ceux
- *    de la reconstruction, pas de la publication). Une offre fermée avant que
- *    `closedAt` existe (isActive=false, closedAt null) est considérée fermée à
- *    son `lastSeenAt` — sans cela, chaque fermeture d'avant D38 compterait
- *    comme active pour toujours.
+ *    de la reconstruction, pas de la publication). Un retrait daté borne la
+ *    présence au catalogue, sans compter comme fermeture. Une offre inactive
+ *    sans date de fermeture/retrait ne prouve aucune période active passée.
  */
 
 export const SNAPSHOT_SCOPES = [
@@ -127,8 +126,10 @@ function utc(instant: Date): Prisma.Sql {
  */
 function activePredicate(mode: SnapshotMode, end: Date): Prisma.Sql {
   if (mode === 'live') return Prisma.sql`j."isActive"`;
-  const effectiveClose = Prisma.sql`COALESCE(j."closedAt", CASE WHEN j."isActive" THEN NULL ELSE j."lastSeenAt" END)`;
-  return Prisma.sql`(j."firstSeenAt" < ${utc(end)} AND (${effectiveClose} IS NULL OR ${effectiveClose} >= ${utc(end)}))`;
+  const unavailableAt = Prisma.sql`COALESCE(j."closedAt", j."withdrawnAt")`;
+  // An undated legacy inactive row cannot establish a historical live period.
+  // Withdrawal ends catalogue availability without becoming a market closure.
+  return Prisma.sql`(j."firstSeenAt" < ${utc(end)} AND (j."isActive" OR ${unavailableAt} >= ${utc(end)}))`;
 }
 
 /**
@@ -144,10 +145,10 @@ function baseCte(mode: SnapshotMode, start: Date, end: Date): Prisma.Sql {
    * Fermée ce jour-là : en `live`, l'événement CLOSED du jour — immuable, là
    * où `closedAt` est remis à null par une ré-ouverture (audit I-2 : rejouer
    * le jour après une ré-ouverture faisait passer closedJobs de 1 à 0). En
-   * reconstruction, la date de fermeture effective (closedAt, sinon
-   * lastSeenAt d'une offre inactive d'avant D38).
+   * reconstruction, la date de fermeture enregistrée. Ni le dernier passage
+   * ni un retrait du catalogue ne constitue une fermeture d'employeur.
    */
-  const effectiveClose = Prisma.sql`COALESCE(j."closedAt", CASE WHEN j."isActive" THEN NULL ELSE j."lastSeenAt" END)`;
+  const effectiveClose = Prisma.sql`j."closedAt"`;
   const isClosed =
     mode === 'live'
       ? Prisma.sql`(cl."jobId" IS NOT NULL)`

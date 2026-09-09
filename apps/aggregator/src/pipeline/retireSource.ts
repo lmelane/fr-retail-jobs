@@ -4,7 +4,7 @@ import { lockSourceWrites } from '../lib/writeLocks.js';
 
 export type RetireOptions = { externalIdPrefix?: string };
 
-/** Retirement closes attestations and preserves offer URLs and event history. */
+/** Retirement withdraws attestations; it never proves employer closure. */
 export async function retireSource(prisma: PrismaClient, sourceKey: string, options: RetireOptions = {}) {
   const prefix = options.externalIdPrefix;
   if (!prefix) await prisma.$transaction(async tx => {
@@ -12,5 +12,5 @@ export async function retireSource(prisma: PrismaClient, sourceKey: string, opti
     await tx.source.updateMany({ where: { key: sourceKey }, data: { status: 'RETIRED' } });
   }, { maxWait: 10_000, timeout: 30_000 });
   const sourceWhere = { sourceKey, ...(prefix ? { externalId: { startsWith: prefix } } : {}) };
-  return { sourceKey, ...await deactivateSources(prisma, sourceWhere) };
+  return { sourceKey, ...await deactivateSources(prisma, sourceWhere, { kind: 'WITHDRAWN', reason: 'SOURCE_RETIRED' }) };
 }

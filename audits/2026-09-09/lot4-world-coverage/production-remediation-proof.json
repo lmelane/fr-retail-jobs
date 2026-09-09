@@ -1,0 +1,568 @@
+{
+  "at": "2026-09-09T13:21:02.841460+00:00",
+  "commit": "b09c942ff6d71e43fca263d591f1458339e19a4e",
+  "pullRequest": "https://github.com/lmelane/fr-retail-jobs/pull/49",
+  "ci": "https://github.com/lmelane/fr-retail-jobs/actions/runs/34354209477",
+  "deployment": [
+    {
+      "service": "aggregator",
+      "id": "4775aef8-7892-412e-96f9-7672a052ce0d",
+      "status": "SUCCESS",
+      "commit": "b09c942ff6d71e43fca263d591f1458339e19a4e",
+      "command": "sh apps/aggregator/start.sh",
+      "paused": "1"
+    },
+    {
+      "service": "refresh",
+      "id": "f0df786a-b294-4add-b4f4-c7e8932e1fce",
+      "status": "SUCCESS",
+      "commit": "b09c942ff6d71e43fca263d591f1458339e19a4e",
+      "command": null,
+      "paused": "1"
+    },
+    {
+      "service": "reconcile",
+      "id": "fa956e16-8637-4609-b49f-c30d6dc3361e",
+      "status": "SUCCESS",
+      "commit": "b09c942ff6d71e43fca263d591f1458339e19a4e",
+      "command": null,
+      "paused": "1"
+    },
+    {
+      "service": "web",
+      "id": "84908ecf-6d92-4939-9c71-07bff5c66989",
+      "status": "SUCCESS",
+      "commit": "b09c942ff6d71e43fca263d591f1458339e19a4e",
+      "command": null,
+      "paused": null
+    }
+  ],
+  "ownerRepair": {
+    "batchId": "20260909-LOT4-PORTAL-OWNERS-v1",
+    "operations": 776,
+    "jobsReassigned": 386,
+    "activeJobsReassigned": 377,
+    "totalBefore": 77352,
+    "totalImmediatelyAfter": 77352,
+    "activeBefore": 74124,
+    "activeImmediatelyAfter": 74124,
+    "allIdsAndLifecyclePreserved": true,
+    "all386RawRepresentationsPreserved": true,
+    "idLifecycleHash": "3469b0a130356bb82a14ba577b3add6de8f74cce988eee295759554a6c0ee9d3",
+    "rawHash": "861819b741b709737012f2f25cba2197755486e646bec454115f7acd4c393dcd",
+    "sharedProofDocument": true,
+    "replay": {
+      "batchId": "20260909-LOT4-PORTAL-OWNERS-v1",
+      "hash": "f3447e7397412ec5a17f6d48a3a97276165b5933c0d02e448ebade14ef78cf82",
+      "alreadyApplied": true,
+      "written": 0,
+      "sourceOwnerContradictions": 0,
+      "lifecycleViolations": 0
+    }
+  },
+  "aliases": {
+    "added": 3,
+    "replay": {
+      "alreadyApplied": true,
+      "movedJobs": 0,
+      "aliases": 0
+    }
+  },
+  "sourceIdentity": {
+    "recertifiedExistingSources": [
+      "escada-parfums-16",
+      "jean-paul-gaultier-5"
+    ],
+    "newSourcesActivated": 0,
+    "newCanonicalEmployerCreated": "Coty",
+    "originalBrandsMerged": false
+  },
+  "ingestion": {
+    "runId": "c38dc263-691c-4e2a-a3a4-19638ac534b3",
+    "revision": "b09c942ff6d71e43fca263d591f1458339e19a4e",
+    "status": "COMPLETED",
+    "originalJobsRetained": 77352,
+    "totalJobsAfter": 77360,
+    "activeAfter": 74132,
+    "franceAfter": 10952,
+    "sources": [
+      {
+        "runId": "c38dc263-691c-4e2a-a3a4-19638ac534b3",
+        "id": "cmtu4baxr00esn101k2q5djke",
+        "sourceKey": "escada-parfums-16",
+        "status": "OK",
+        "jobs": 131,
+        "previousJobs": 128,
+        "fetched": 131,
+        "accepted": 131,
+        "declaredTotal": 131,
+        "truncated": false,
+        "errors": 0,
+        "canAttestAbsence": true,
+        "complete": true,
+        "note": "desc 100% date 100% pays 100% url 100%",
+        "descriptionRate": 1,
+        "dateRate": 1,
+        "countryRate": 1,
+        "urlRate": 1,
+        "ranAt": "2026-09-09T13:12:08.989Z"
+      },
+      {
+        "runId": "c38dc263-691c-4e2a-a3a4-19638ac534b3",
+        "id": "cmtu4bj13014bn101ax5wwnwi",
+        "sourceKey": "jean-paul-gaultier-5",
+        "status": "OK",
+        "jobs": 227,
+        "previousJobs": 226,
+        "fetched": 227,
+        "accepted": 227,
+        "declaredTotal": 227,
+        "truncated": false,
+        "errors": 0,
+        "canAttestAbsence": true,
+        "complete": true,
+        "note": "desc 100% date 100% pays 100% url 100%",
+        "descriptionRate": 1,
+        "dateRate": 1,
+        "countryRate": 1,
+        "urlRate": 1,
+        "ranAt": "2026-09-09T13:12:19.479Z"
+      }
+    ],
+    "metrics": {
+      "byEvent": {
+        "run.started": 1,
+        "run.completed": 1,
+        "ingest.completed": 1,
+        "source_sync_started": 2,
+        "run.sources_selected": 1,
+        "run.sources_completed": 1,
+        "source_sync_completed": 2,
+        "ingest.sources_selected": 2,
+        "source.ingest_completed": 2,
+        "source.enumeration_observed": 2
+      },
+      "printed": 15,
+      "counters": {
+        "http.attempts": 371,
+        "http.responses": 371
+      },
+      "recorded": 15,
+      "repeated": 0,
+      "debugDisabled": 0,
+      "persistenceFailures": 0
+    },
+    "durableEnumerationEvents": 2
+  },
+  "railwayLogs": {
+    "deploymentId": "15dd9c1c-0197-4b2a-94d3-8e412c2397fe",
+    "logLines": 16,
+    "maxLinesPerSecond": 7,
+    "railwayDroppedLogWarnings": 0
+  },
+  "publicCountersBefore": [
+    {
+      "url": "https://modecareers.com/api/jobs?",
+      "at": "2026-09-09T13:06:20.555854+00:00",
+      "status": 200,
+      "total": 74124,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmttrsmst0003m90115cw1ey6",
+          "company": "Promod",
+          "title": "Premier.ère Vendeuse"
+        },
+        {
+          "id": "cmtt8ewlw29d6my01oxbty8l4",
+          "company": "Converse Sporting Goods",
+          "title": "Senior Supervisor, Product & Merchandising Integration - Converse"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=FR",
+      "at": "2026-09-09T13:06:20.901892+00:00",
+      "status": 200,
+      "total": 10947,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmttrsmst0003m90115cw1ey6",
+          "company": "Promod",
+          "title": "Premier.ère Vendeuse"
+        },
+        {
+          "id": "cmtt7xfph0edcmy01nrx90ic7",
+          "company": "ba&sh",
+          "title": "premier·ère vendeur·euse f/h - boutique outlet lille - cdi 39h"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=US",
+      "at": "2026-09-09T13:06:21.413952+00:00",
+      "status": 200,
+      "total": 30943,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmtt7xfai0e8imy01lmfioqtd",
+          "company": "LuxExperience",
+          "title": "Brand Marketing Manager"
+        },
+        {
+          "id": "cmtpiwr6u0cdapf5l1gl9jjkl",
+          "company": "LuxExperience",
+          "title": "Head of Personal Shopping - North America"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=GB",
+      "at": "2026-09-09T13:06:21.711899+00:00",
+      "status": 200,
+      "total": 2872,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmtrseeg70a8wpg5m0jrqkdao",
+          "company": "LuxExperience",
+          "title": "Finance Analyst"
+        },
+        {
+          "id": "cmtrseeeg0a8hpg5mg8x2q22r",
+          "company": "LuxExperience",
+          "title": "Design Manager Womenswear"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=DE",
+      "at": "2026-09-09T13:06:21.988592+00:00",
+      "status": 200,
+      "total": 2739,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmtt7xf9z0e8cmy019wcn05lb",
+          "company": "LuxExperience",
+          "title": "Head of Customer Experience (f/m/d)"
+        },
+        {
+          "id": "cmtrseeff0a8rpg5ml1bwriiq",
+          "company": "LuxExperience",
+          "title": "(Senior) Online Marketing Manager (f/m/d)"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=IT",
+      "at": "2026-09-09T13:06:22.426456+00:00",
+      "status": 200,
+      "total": 2446,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmtpiwrm60ckwpf5lgda6bwpy",
+          "company": "LuxExperience",
+          "title": "Cyber Security Engineer"
+        },
+        {
+          "id": "cmtpiwr5t0ccqpf5ly6pyjkm2",
+          "company": "LuxExperience",
+          "title": "Senior Still Life Stylist"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Coty",
+      "at": "2026-09-09T13:06:22.623572+00:00",
+      "status": 200,
+      "total": 0,
+      "page": 1,
+      "returned": 0,
+      "sample": []
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Puig",
+      "at": "2026-09-09T13:06:22.844150+00:00",
+      "status": 200,
+      "total": 13,
+      "page": 1,
+      "returned": 13,
+      "sample": [
+        {
+          "id": "cmtt94h4f40gkmy01prui094x",
+          "company": "Puig",
+          "title": "CDD - International Trainer (H/F) | BYREDO"
+        },
+        {
+          "id": "cmtpz4r4q04m33ncqyhbgwbol",
+          "company": "Puig",
+          "title": "Assistant(e) Marketing Opérationnel Marché France - Stage"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Escada+Parfums",
+      "at": "2026-09-09T13:06:23.152315+00:00",
+      "status": 200,
+      "total": 132,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmtk1z5gf05fmnv2bo0ezcpad",
+          "company": "Escada Parfums",
+          "title": "Senior Key Account Manager - Luxury Retail (m/w/d)"
+        },
+        {
+          "id": "cmtlv8jz806tn3nk5lmhmseec",
+          "company": "Escada Parfums",
+          "title": "Senior Digital Media Manager (m/w/d)"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Jean+Paul+Gaultier",
+      "at": "2026-09-09T13:06:23.407905+00:00",
+      "status": 200,
+      "total": 246,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmtk239cg0co6nv2biozvdur7",
+          "company": "Jean Paul Gaultier",
+          "title": "Retail Coordinator"
+        },
+        {
+          "id": "cmtt82dzn16jmmy01zm7ihnka",
+          "company": "Jean Paul Gaultier",
+          "title": "Byreo Kildare Store Client Advisor"
+        }
+      ]
+    }
+  ],
+  "publicCountersAfter": [
+    {
+      "url": "https://modecareers.com/api/jobs?",
+      "at": "2026-09-09T13:13:28.041128+00:00",
+      "status": 200,
+      "total": 74132,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmttrsmst0003m90115cw1ey6",
+          "company": "Promod",
+          "title": "Premier.ère Vendeuse"
+        },
+        {
+          "id": "cmtt82iqx17o4my01jhfefhqe",
+          "company": "Puig",
+          "title": "Gerente de Marketing de Produtos - Jean Paul Gaultier"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=FR",
+      "at": "2026-09-09T13:13:28.381389+00:00",
+      "status": 200,
+      "total": 10952,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmttrsmst0003m90115cw1ey6",
+          "company": "Promod",
+          "title": "Premier.ère Vendeuse"
+        },
+        {
+          "id": "cmtk239b20co2nv2b2uhui6ny",
+          "company": "Puig",
+          "title": "Responsable RP"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=US",
+      "at": "2026-09-09T13:13:28.894983+00:00",
+      "status": 200,
+      "total": 30943,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmtlv8l3o06u33nk5vwu1myho",
+          "company": "Coty",
+          "title": "Process Engineer Co-Op"
+        },
+        {
+          "id": "cmtk1z5ca05f8nv2bnys8799h",
+          "company": "Coty",
+          "title": "Process Engineer Co-Op"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=GB",
+      "at": "2026-09-09T13:13:29.256670+00:00",
+      "status": 200,
+      "total": 2872,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmtk239880cnunv2bx0bmxece",
+          "company": "Puig",
+          "title": "Penhaligons Bicester Store Fragrance Specialist 7.5 hours"
+        },
+        {
+          "id": "cmtk1z5ed05ffnv2bvlsjka3p",
+          "company": "Coty",
+          "title": "Brand Finance Manager"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=DE",
+      "at": "2026-09-09T13:13:29.534281+00:00",
+      "status": 200,
+      "total": 2740,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmtk1z5b805f4nv2b1fe70m96",
+          "company": "Coty",
+          "title": "Marketing Intern (m/f/d) - Fragrance Brands"
+        },
+        {
+          "id": "cmtu4bdl600g2n101xu1mk6yi",
+          "company": "Puig",
+          "title": "Demand Planning Manager (m/w/d)"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?pays=IT",
+      "at": "2026-09-09T13:13:29.934610+00:00",
+      "status": 200,
+      "total": 2446,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmtpiwrm60ckwpf5lgda6bwpy",
+          "company": "LuxExperience",
+          "title": "Cyber Security Engineer"
+        },
+        {
+          "id": "cmtpiwr5t0ccqpf5ly6pyjkm2",
+          "company": "LuxExperience",
+          "title": "Senior Still Life Stylist"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Coty",
+      "at": "2026-09-09T13:13:30.126458+00:00",
+      "status": 200,
+      "total": 136,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmtk1z5ed05ffnv2bvlsjka3p",
+          "company": "Coty",
+          "title": "Brand Finance Manager"
+        },
+        {
+          "id": "cmtlv8l3o06u33nk5vwu1myho",
+          "company": "Coty",
+          "title": "Process Engineer Co-Op"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Puig",
+      "at": "2026-09-09T13:13:30.351396+00:00",
+      "status": 200,
+      "total": 262,
+      "page": 1,
+      "returned": 25,
+      "sample": [
+        {
+          "id": "cmtt82iqx17o4my01jhfefhqe",
+          "company": "Puig",
+          "title": "Gerente de Marketing de Produtos - Jean Paul Gaultier"
+        },
+        {
+          "id": "cmtt82iqf17nwmy01c7g8hobm",
+          "company": "Puig",
+          "title": "Architect"
+        }
+      ]
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Escada+Parfums",
+      "at": "2026-09-09T13:13:30.601099+00:00",
+      "status": 200,
+      "total": 0,
+      "page": 1,
+      "returned": 0,
+      "sample": []
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Jean+Paul+Gaultier",
+      "at": "2026-09-09T13:13:30.802433+00:00",
+      "status": 200,
+      "total": 1,
+      "page": 1,
+      "returned": 1,
+      "sample": [
+        {
+          "id": "cmtnjjr3p33a1qq4z12d5uyya",
+          "company": "Jean Paul Gaultier",
+          "title": "Alternance - Assistant(e) Production, Image & Events"
+        }
+      ]
+    }
+  ],
+  "publicRenderedPages": [
+    {
+      "url": "https://modecareers.com/emplois?maison=Coty",
+      "at": "2026-09-09T13:16:51.274Z",
+      "sha256": "66be47a6f2335e1d40c11e88c7bfe283435dbdc51d59a25ab1210c783264f78a",
+      "excerpt": "Catwalks FR OffresMaisonsIntelligenceMatching À propos Rechercher Filtres (1)PaysMétierSecteurContratTemps de travailProgrammeVilleMaison · CotyRéinitialiser136 offresToutes les offres· 136Cotyaujourd'huiBrand Finance ManagerLondres · HybrideFinanceCotyaujourd'huiProcess Engineer Co-OpHunt ValleyProduction & qualitéCotyaujourd'huiProcess Engineer C"
+    },
+    {
+      "url": "https://modecareers.com/emplois?maison=Puig",
+      "at": "2026-09-09T13:16:51.531Z",
+      "sha256": "ca66f0e14801d6ab6989f40d3442068761eed83863a11a9189a268bdada9d467",
+      "excerpt": "Catwalks FR OffresMaisonsIntelligenceMatching À propos Rechercher Filtres (1)PaysMétierSecteurContratTemps de travailProgrammeVilleMaison · PuigRéinitialiser262 offresToutes les offres· 262Puigaujourd'huiGerente de Marketing de Produtos - Jean Paul GaultierRio de JaneiroMarketing & communicationPuigaujourd'huiArchitectStockholmCréation & design · S"
+    },
+    {
+      "url": "https://modecareers.com/emplois?pays=FR",
+      "at": "2026-09-09T13:16:51.843Z",
+      "sha256": "1a4d9c954d152d011ad0ab36778bea5130d0aeb0c9ed3188461279c0df5c9d17",
+      "excerpt": "Catwalks FR OffresMaisonsIntelligenceMatching À propos Rechercher Filtres (1)Pays · FranceMétierSecteurContratTemps de travailProgrammeStatutVilleMaisonGroupeRéinitialiser10 952 offresToutes les offres· 10 952Promodaujourd'huiPremier.ère VendeuseRots · CDIConseiller de ventePuigaujourd'huiResponsable RpParisManagerPuigaujourd'huiSenior DesignerPari"
+    },
+    {
+      "url": "https://modecareers.com/entreprises?q=Coty",
+      "at": "2026-09-09T13:16:52.040Z",
+      "sha256": "9f0ef9bc29666c832aea5016677b5d6e7e18533f22444e4cd1c11962404ff067",
+      "excerpt": "Catwalks FR OffresMaisonsIntelligenceMatching À propos Maisons1 Maisons et cabinets, du studio de création à la boutique. Chaque fiche regroupe les offres publiques de la Maison, ses villes et son groupe.Toutes 1Mode 0Maroquinerie 0Chaussures 0Joaillerie 0Horlogerie 0Beauté 136Parfumerie 136Lunetterie 0Maison & Lifestyle 0Vins & Spiritueux 0Hospita"
+    }
+  ],
+  "lot4Complete": false,
+  "globalIngestionPaused": true
+}

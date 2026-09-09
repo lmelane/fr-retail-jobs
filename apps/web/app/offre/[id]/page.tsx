@@ -49,7 +49,7 @@ export async function generateMetadata({
   const state = await resolveOfferParam(decodeURIComponent((await params).id));
   if (state.status === 'missing') return { title: 'Offre introuvable' };
   const { job } = state;
-  const closedPrefix = state.status === 'closed' ? 'Offre expirée — ' : '';
+  const closedPrefix = state.status === 'closed' ? (job.withdrawnAt ? 'Offre retirée — ' : 'Offre expirée — ') : '';
 
   return {
     title: `${closedPrefix}${job.title} — ${job.company}${job.city ? ` · ${job.city}` : ''}`,
@@ -120,8 +120,8 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         {isClosed && (
           <div className="banner rule rule-b mb-6 max-w-[720px]">
             <span className="t-body">
-              <span className="chip chip--warn">Expirée</span>&nbsp; Cette offre n’est plus
-              publiée par {job.company}.
+              <span className="chip chip--warn">{job.withdrawnAt ? 'Retirée' : 'Expirée'}</span>&nbsp;
+              {job.withdrawnAt ? 'Cette offre a été retirée de notre catalogue.' : `Cette offre n’est plus publiée par ${job.company}.`}
             </span>
             <Link className="btn" href={`/emplois?maison=${encodeURIComponent(job.company)}`}>
               Voir les offres similaires

@@ -73,12 +73,12 @@ export async function planOracleRepair(prisma: PrismaClient, evidence: Evidence)
       patch = json({ ...canonicalJobContent(candidate, occupations),
         // Coordinates/INSEE inherited from another requisition are not evidence.
         inseeCode: null, adminArea2: null, countryIntegrity: null,
-        lastSeenAt: new Date(evidence.at), isActive: true, closedAt: null,
+        lastSeenAt: new Date(evidence.at), isActive: true, closedAt: null, withdrawnAt: null, withdrawalReason: null,
       });
     } else {
       const own = afterSources.find(s => s.jobId === job.id && s.externalId === job.externalId);
       if (afterSources.some(s => s.jobId === job.id && s.isActive)) throw new Error(`Unassigned live source: ${job.id}`);
-      patch = { isActive: false, closedAt: evidence.at };
+      patch = { isActive: false, closedAt: evidence.at, withdrawnAt: null, withdrawalReason: null };
       // A historical old requisition (62948) had inherited a live one's content.
       if (own) Object.assign(patch, {
         title: own.title ?? job.title, url: own.url, canonicalSourceKey: own.sourceKey, canonicalExternalId: own.externalId,

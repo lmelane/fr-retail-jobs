@@ -120,7 +120,9 @@ try {
     const since = new Date(Date.now() - INDEXING_WINDOW_MS);
     const [createdRows, closedRows] = await Promise.all([
       prisma.job.findMany({ where: { isActive: true, firstSeenAt: { gte: since } }, select: { id: true }, take: 500 }),
-      prisma.job.findMany({ where: { isActive: false, lastSeenAt: { gte: since } }, select: { id: true }, take: 500 }),
+      prisma.job.findMany({ where: { isActive: false, OR: [
+        { closedAt: { gte: since } }, { withdrawnAt: { gte: since } },
+      ] }, select: { id: true }, take: 500 }),
     ]);
     const indexing = await submitOfferChanges(
       createdRows.map((r) => r.id),

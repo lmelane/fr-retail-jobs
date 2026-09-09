@@ -7,13 +7,14 @@ import { planSmcpRepair } from './smcp.js';
 import { planExcludedIdentities } from './identities.js';
 import { planReviewedPortalOwners } from './portalOwner.js';
 import { planSourceOwners } from './owners.js';
+import { planAdministrativeWithdrawals } from './withdrawal.js';
 
 const prisma = new PrismaClient();
 const [command, ...args] = process.argv.slice(2);
 const arg = (name: string) => { const i = args.indexOf(name); if (i < 0 || !args[i + 1]) throw new Error(`Missing ${name}`); return args[i + 1]; };
 try {
-  if (command === 'plan-oracle' || command === 'plan-smcp' || command === 'plan-identities' || command === 'plan-homonyms' || command === 'plan-owners' || command === 'plan-portal-owners') {
-    const plan = command === 'plan-portal-owners' ? await planReviewedPortalOwners(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8'))) : command === 'plan-oracle'
+  if (command === 'plan-oracle' || command === 'plan-smcp' || command === 'plan-identities' || command === 'plan-homonyms' || command === 'plan-owners' || command === 'plan-portal-owners' || command === 'plan-withdrawals') {
+    const plan = command === 'plan-withdrawals' ? await planAdministrativeWithdrawals(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8'))) : command === 'plan-portal-owners' ? await planReviewedPortalOwners(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8'))) : command === 'plan-oracle'
       ? await planOracleRepair(prisma, JSON.parse(readFileSync(arg('--evidence'), 'utf8')))
       : command === 'plan-smcp' ? await planSmcpRepair(prisma)
       : command === 'plan-owners' ? await planSourceOwners(prisma)

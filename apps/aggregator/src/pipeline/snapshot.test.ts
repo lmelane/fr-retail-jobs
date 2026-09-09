@@ -236,7 +236,19 @@ describe('runSnapshot — backfill (reconstruction)', () => {
     expect((await prisma.marketSnapshot.findFirst({ where: { date: dayBounds(daysAgo(2)).day } }))?.mode).toBe('reconstructed');
   });
 
-  it('une offre fermée avant closedAt (isActive false, closedAt null) est fermée à son lastSeenAt', async () => {
+  it('un retrait borne la présence historique sans compter comme fermeture', async () => {
+    const c = await prisma.company.create({ data: { name: 'Retrait', canonicalKey: 'withdrawal', fashionjobsUrl: 'resolved:withdrawal' } });
+    await prisma.job.create({ data: {
+      companyId: c.id, externalId: 'withdrawn', source: 'GENERIC_JSONLD', title: 'Conseiller', url: 'https://x/withdrawn', fingerprint: 'withdrawn',
+      firstSeenAt: daysAgo(10), lastSeenAt: daysAgo(5), isActive: false, closedAt: null, withdrawnAt: daysAgo(3), withdrawalReason: 'OUT_OF_SCOPE',
+    } });
+    await runSnapshot(prisma, { now: NOW, backfillFrom: daysAgo(4) });
+    expect(await row('global', '', dayBounds(daysAgo(4)).day)).toMatchObject({ activeJobs: 1, closedJobs: 0 });
+    expect(await row('global', '', dayBounds(daysAgo(3)).day)).toBeNull();
+    expect(await prisma.marketSnapshot.count({ where: { closedJobs: { gt: 0 } } })).toBe(0);
+  });
+
+  it('ne transforme pas le dernier passage d’une offre inactive en fermeture ni en période active prouvée', async () => {
     const acme = await prisma.company.create({ data: { name: 'Acme', canonicalKey: 'acme', fashionjobsUrl: 'resolved:acme' } });
     await prisma.job.create({
       data: {
@@ -245,7 +257,7 @@ describe('runSnapshot — backfill (reconstruction)', () => {
       },
     });
     await runSnapshot(prisma, { now: NOW, backfillFrom: daysAgo(6) });
-    expect(await row('global', '', dayBounds(daysAgo(6)).day)).toMatchObject({ activeJobs: 1 });
+    expect(await row('global', '', dayBounds(daysAgo(6)).day)).toBeNull();
     expect(await row('global', '', dayBounds(daysAgo(4)).day)).toBeNull(); // plus rien ce jour-là : aucune ligne
   });
 });
