@@ -66,6 +66,8 @@ Les preuves locales sont dans `local-repair-proof.json`, `local-front-proof.json
 
 Le lot ne justifie donc pas encore l’affirmation « toutes les identités mondiales sont validées ».
 
-Validation du code avant livraison : 1 460 tests unitaires agrégateur, 215 tests d’intégration, vérifications de types des deux applications. Tests web avec base dédiée : 103 réussis, 2 tests nécessitant une autre photographie historique explicitement ignorés. Aucune simulation de charge. Les lectures du front ont été répétées sur la copie réelle.
+Validation du code avant livraison : 1 463 tests unitaires agrégateur, 219 tests d’intégration, vérifications de types des deux applications. Tests web avec base dédiée : 103 réussis, 2 tests nécessitant une autre photographie historique explicitement ignorés. Aucune simulation de charge. Les lectures du front ont été répétées sur la copie réelle.
 
 Les relations `parentGroupId` et `mergedIntoId` exigent désormais une décision référencée par FK. Les cycles, un parent non GROUP et la mutation des preuves sont refusés par la base. Les profils intelligence résolvent également les anciens IDs, changent de version de cache à la correction et ne présentent pas une fusion de périmètres comme une croissance économique.
+
+Complément avant livraison : les alias sont liés au hash de leur source/tenant/configuration ; un changement invalide la résolution. Les six alias historiques disposent de cinq preuves officielles déjà enregistrées et revalidées, permettant une migration conservant leurs IDs. Les détails Workday manquants/échoués déclenchent une retenue explicite avec diagnostic archivé, sans affectation implicite au groupe.

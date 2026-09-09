@@ -102,7 +102,7 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
 
   // F-04: `total` is the tenant's own announced count — the truncation signal.
   const declaredTotal = total || undefined;
-  if (config.withDescriptions === false) return { jobs: out, declaredTotal };
+  if (config.withDescriptions === false) return { jobs: out.map(job => ({ ...job, publicationHold: 'WORKDAY_LISTING_WITHOUT_EMPLOYER_DETAIL' })), declaredTotal };
   return {
     jobs: await attachWorkdayDescriptions(
       out,
@@ -185,15 +185,18 @@ export async function attachWorkdayDescriptions(
     jobs.map((job) =>
       limit(async () => {
         const path = (job.raw as { externalPath?: string } | undefined)?.externalPath;
-        if (!path) return job;
+        if (!path) return { ...job, publicationHold: 'WORKDAY_DETAIL_PATH_MISSING' };
         try {
           // Même locale que la liste : sans cet en-tête, le détail arrive
           // traduit par machine (voir EN_US).
           const detail = await fetchJson<WorkdayDetail>(`${cxsBase}${path}`, { headers: { ...EN_US } });
           const info = detail.jobPostingInfo;
-          if (!info) return job;
+          if (!info) return { ...job, raw: { ...(job.raw as Record<string, unknown>), detail }, publicationHold: 'WORKDAY_DETAIL_SCHEMA_INVALID' };
+          const employer = brandFromWorkdayDetail(detail);
+          if (!employer) return { ...job, raw: { ...(job.raw as Record<string, unknown>), detail }, publicationHold: 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL' };
           return {
             ...job,
+            publicationHold: job.publicationHold?.startsWith('WORKDAY_') ? undefined : job.publicationHold,
             // Keep the exact detail that supplied the employer, dates and country.
             // Preserve listing keys for replay and subsequent detail refreshes.
             raw: { ...(job.raw as Record<string, unknown>), detail },
@@ -208,16 +211,22 @@ export async function attachWorkdayDescriptions(
             workingTime: info.timeType || job.workingTime,
             remote: info.remoteType || job.remote,
             // Group tenants: credit the offer to its Maison, not the feed label.
-            company: brandFromWorkdayDetail(detail) ?? job.company,
+            company: employer,
             employerEvidence: info.logoImage?.alt?.trim()
               ? { rawName: info.logoImage.alt, path: 'detail.jobPostingInfo.logoImage.alt', rule: 'LOGO_ALT' }
               : detail.hiringOrganization?.name?.trim()
-                ? { rawName: detail.hiringOrganization.name, path: 'detail.hiringOrganization.name', rule: 'LEADING_ENTITY_CODE_REMOVED' }
+                ? { rawName: detail.hiringOrganization.name, path: 'detail.hiringOrganization.name', rule: /^[A-Z]{0,2}\d+\s+/.test(detail.hiringOrganization.name.trim()) ? 'LEADING_ENTITY_CODE_REMOVED' : 'HIRING_ORGANIZATION_LABEL' }
                 : job.employerEvidence,
           };
-        } catch {
-          // A failed detail fetch must not lose the listing entry.
-          return job;
+        } catch (error) {
+          // A failed detail is not evidence that the listing belongs to the
+          // GROUP printed in the catalogue. Keep the listing and the exact
+          // diagnostic as a publication hold; it cannot attest absence.
+          return { ...job, publicationHold: 'WORKDAY_DETAIL_FETCH_FAILED', raw: {
+            ...(job.raw as Record<string, unknown>), detailFailure: error instanceof Error
+              ? { name: error.name, message: error.message, stack: error.stack }
+              : { message: String(error) },
+          } };
         }
       }),
     ),

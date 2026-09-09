@@ -1,3 +1,4 @@
+import { sourceIdentityHash } from '../connectors/sourceIdentity.js';
 import { createHash } from 'node:crypto';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { lockCompanyRows, lockSourceWrites, lockEmployerCatalogue } from '../lib/writeLocks.js';
@@ -11,12 +12,12 @@ export type EmployerRepairSpec = {
   reviewedAt: string;
   evidence: { url: string; sha256: string; artifactText: string; explanation: string }[];
   merges: { fromId: string; toId: string }[];
-  aliases: { sourceKey: string; rawName: string; companyId: string }[];
+  aliases: { sourceKey: string; rawName: string; companyId: string; legacyAliasId?: string }[];
   companies?: { id: string; name?: string; kind?: 'MAISON' | 'BRAND' | 'GROUP' | 'RETAILER'; parentGroupId?: string | null }[];
 };
 export type EmployerRepairPlan = EmployerRepairSpec & {
   version: 1; createdAt: string; companyIds: string[]; sourceKeys: string[];
-  beforeHash: string; jobCount: number; activeJobCount: number; sourceCount: number;
+  beforeHash: string; sourceHashes: Record<string, string>; jobCount: number; activeJobCount: number; sourceCount: number;
 };
 
 
@@ -37,7 +38,7 @@ function validate(spec: EmployerRepairSpec) {
   if (new Set((spec.companies ?? []).map(c => c.id)).size !== (spec.companies ?? []).length) throw new Error('Duplicate company edit in plan');
   for (const m of spec.merges) if (m.fromId === m.toId || origins.has(m.toId)) throw new Error('Merge chains/cycles are forbidden; flatten the reviewed plan');
   if ((spec.companies ?? []).some(c => origins.has(c.id))) throw new Error('Edit canonical targets separately from merged origins');
-  for (const a of spec.aliases) if (!a.sourceKey || !normalizedEmployerName(a.rawName) || origins.has(a.companyId)) throw new Error('Alias must target a canonical root');
+  for (const a of spec.aliases) if (!a.sourceKey || a.sourceKey === '*' || !normalizedEmployerName(a.rawName) || origins.has(a.companyId)) throw new Error('Alias must target a canonical root');
 }
 
 async function snapshot(tx: Prisma.TransactionClient, ids: string[]) {
@@ -62,7 +63,9 @@ export async function buildEmployerRepair(prisma: PrismaClient, spec: EmployerRe
     }
     const before = await snapshot(tx, companyIds);
     const sourceKeys = [...new Set([...before.jobs.flatMap(j => j.sources.map(s => s.sourceKey)), ...spec.aliases.filter(a => a.sourceKey !== '*').map(a => a.sourceKey)])].sort();
-    return { ...spec, version: 1, createdAt: new Date().toISOString(), companyIds, sourceKeys, beforeHash: digest(before), jobCount: before.jobs.length, activeJobCount: before.jobs.filter(j => j.isActive).length, sourceCount: before.jobs.reduce((n, j) => n + j.sources.length, 0) };
+    const catalogue = await tx.source.findMany({ where: { key: { in: sourceKeys } } });
+    const sourceHashes = Object.fromEntries(sourceKeys.map(key => { const row=catalogue.find(s=>s.key===key); return [key, row ? sourceIdentityHash(row) : 'UNCATALOGUED']; }));
+    return { ...spec, version: 1, sourceHashes, createdAt: new Date().toISOString(), companyIds, sourceKeys, beforeHash: digest(before), jobCount: before.jobs.length, activeJobCount: before.jobs.filter(j => j.isActive).length, sourceCount: before.jobs.reduce((n, j) => n + j.sources.length, 0) };
   }, { isolationLevel: 'RepeatableRead', timeout: 120_000 });
 }
 
@@ -80,6 +83,11 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
     }
     for (const key of plan.sourceKeys) await lockSourceWrites(tx, key, true);
     await lockCompanyRows(tx, plan.companyIds);
+    const catalogue = await tx.source.findMany({ where: { key: { in: plan.sourceKeys } } });
+    for (const key of plan.sourceKeys) {
+      const row = catalogue.find(s => s.key === key);
+      if (plan.sourceHashes[key] !== (row ? sourceIdentityHash(row) : 'UNCATALOGUED')) throw new Error(`Source identity changed since planning: ${key}`);
+    }
     const before = await snapshot(tx, plan.companyIds);
     if (digest(before) !== plan.beforeHash) throw new Error('Employer data changed since planning; rebuild and review');
     const companies = new Map(before.companies.map(c => [c.id, c]));
@@ -149,9 +157,14 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
     for (const a of plan.aliases) {
       const normalizedName = normalizedEmployerName(a.rawName);
       const prior = await tx.companyAlias.findUnique({ where: { sourceKey_normalizedName: { sourceKey: a.sourceKey, normalizedName } } });
-      if (prior && !prior.reviewId) throw new Error('Legacy alias needs an explicit reviewed migration');
-      if (!prior) {
-        await tx.companyAlias.create({ data: { aliasKey: employerAliasKey(a.sourceKey, a.rawName), displayName: a.rawName, normalizedName, sourceKey: a.sourceKey, companyId: a.companyId, reviewId: plan.batchId } });
+      if (a.legacyAliasId) {
+        const legacy = before.companies.flatMap(c => c.aliases).find(alias => alias.id === a.legacyAliasId);
+        if (!legacy || legacy.reviewId || legacy.companyId !== a.companyId || normalizedEmployerName(legacy.displayName) !== normalizedName || (prior && prior.id !== legacy.id)) throw new Error('Invalid legacy alias migration');
+        const upgraded = await tx.companyAlias.update({ where: { id: legacy.id }, data: { aliasKey: employerAliasKey(a.sourceKey, a.rawName), sourceKey: a.sourceKey, normalizedName, sourceHash: plan.sourceHashes[a.sourceKey], reviewId: plan.batchId } });
+        await tx.dataCorrection.create({ data: { batchId: plan.batchId, planHash, commitHash, finding: 'LOT1_EMPLOYER_IDENTITY', entityType: 'CompanyAlias', entityId: legacy.id, before: json(legacy) as Prisma.InputJsonValue, after: json(upgraded) as Prisma.InputJsonValue, evidence: { reviewId: plan.batchId } } });
+      } else if (prior && !prior.reviewId) throw new Error('Legacy alias needs an explicit reviewed migration');
+      else if (!prior) {
+        await tx.companyAlias.create({ data: { aliasKey: employerAliasKey(a.sourceKey, a.rawName), displayName: a.rawName, normalizedName, sourceKey: a.sourceKey, sourceHash: plan.sourceHashes[a.sourceKey], companyId: a.companyId, reviewId: plan.batchId } });
         aliases++;
       }
     }

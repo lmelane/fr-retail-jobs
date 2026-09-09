@@ -10,6 +10,7 @@ import { digest } from '../remediation/plan.js';
 
 const p = new PrismaClient();
 async function clear() {
+  await p.source.deleteMany({ where: { key: 'promod' } });
   await p.companyAlias.deleteMany(); await p.jobEvent.deleteMany(); await p.jobSource.deleteMany(); await p.job.deleteMany();
   await p.company.updateMany({ data: { mergedIntoId: null, parentGroupId: null } });
   await p.company.deleteMany(); await p.$executeRaw`TRUNCATE "EmployerObservation", "EmployerIdentityReview" CASCADE`; await p.$executeRaw`TRUNCATE "DataCorrection"`;
@@ -105,4 +106,39 @@ it('enforces reviewed parent links, prevents cycles and preserves immutable evid
   await p.company.update({ where: { id: parent.id }, data: { name: 'Canonical Group' } });
   expect((await p.company.findUniqueOrThrow({ where: { id: child.id } })).parentGroup).toBe('Canonical Group');
   await expect(p.employerIdentityReview.update({ where: { id: proof.batchId }, data: { statement: 'replace proof' } })).rejects.toThrow('append-only');
+});
+
+it('does not silently accept a changed employer label on an already-known posting', async () => {
+  await company('Acme');
+  const { rawEmployerName, ...legacy } = posting('Acme');
+  await upsertDeduplicated(p, legacy);
+  await upsertDeduplicated(p, posting('Acme'));
+  await expect(upsertDeduplicated(p, posting('Acme France'))).rejects.toThrow('needs evidence');
+  expect(await p.job.count()).toBe(1);
+});
+
+it('upgrades a legacy alias only through an explicit scoped evidence decision', async () => {
+  const c = await company('Promod');
+  const old = await p.companyAlias.create({ data: { aliasKey: 'PROMOD_LEGACY', displayName: 'Promod', companyId: c.id } });
+  const input = { ...spec('unused', c.id), merges: [], aliases: [{ sourceKey: 'promod', rawName: 'Promod', companyId: c.id, legacyAliasId: old.id }] };
+  const plan = await buildEmployerRepair(p, input);
+  await applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789');
+  const alias = await p.companyAlias.findUniqueOrThrow({ where: { id: old.id } });
+  expect(alias).toMatchObject({ sourceKey: 'promod', reviewId: plan.batchId, normalizedName: 'promod' });
+  expect(await p.companyAlias.count()).toBe(1);
+  expect(await p.dataCorrection.findFirst({ where: { entityType: 'CompanyAlias', entityId: old.id } })).not.toBeNull();
+});
+
+it('does not transfer a reviewed alias when the source key acquires a different tenant', async () => {
+  const { plan } = await pair();
+  await applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789');
+  await p.source.create({ data: { key: 'promod', maison: 'Promod', kind: 'talentview', config: { slug: 'different-tenant' }, tier: 'EMPLOYER_DIRECT', tenantKey: 'test:changed-promod', status: 'ACTIVE' } });
+  await expect(upsertDeduplicated(p, posting('Promod'))).rejects.toThrow('ALIAS_SOURCE_OR_TENANT_CHANGED');
+});
+
+it('rejects a repair if the source configuration changed after its review snapshot', async () => {
+  const { plan } = await pair();
+  await p.source.create({ data: { key: 'promod', maison: 'Promod', kind: 'talentview', config: { slug: 'changed' }, tier: 'EMPLOYER_DIRECT', tenantKey: 'test:changed-promod', status: 'ACTIVE' } });
+  await expect(applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789')).rejects.toThrow('Source identity changed since planning');
+  expect(await p.employerIdentityReview.count()).toBe(0);
 });

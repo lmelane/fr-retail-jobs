@@ -258,6 +258,8 @@ model CompanyAlias {
   /** Explicit scope: a homonym in another source is not the same employer. */
   sourceKey   String   @default("*")
   normalizedName String?
+  /** Hash of the reviewed source/tenant configuration, not just its mutable key. */
+  sourceHash String?
   reviewId    String?
   review      EmployerIdentityReview? @relation(fields: [reviewId], references: [id], onDelete: Restrict)
   createdAt   DateTime @default(now())

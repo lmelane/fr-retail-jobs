@@ -1,3 +1,4 @@
+import { sourceIdentityHash } from '../connectors/sourceIdentity.js';
 import { EmployerIdentityReviewRequired } from './errors.js';
 import { createHash } from 'node:crypto';
 import { Prisma } from '@prisma/client';
@@ -41,6 +42,12 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
   const roots = await Promise.all(aliases.map(a => canonicalEmployer(tx, a.company)));
   if (new Set(roots.map(c => c.id)).size > 1) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, `CONFLICT: ${roots.map(c => c.id).join(',')}`);
   const alias = aliases.find(a => a.sourceKey === candidate.sourceKey) ?? aliases[0];
+  if (alias) {
+    const source = await tx.source.findUnique({ where: { key: candidate.sourceKey } });
+    if (alias.sourceKey !== candidate.sourceKey || alias.sourceHash !== (source ? sourceIdentityHash(source) : 'UNCATALOGUED')) {
+      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, 'ALIAS_SOURCE_OR_TENANT_CHANGED');
+    }
+  }
   if (alias) return {
     company: roots[aliases.indexOf(alias)]!, rule: 'REVIEWED_ALIAS', rawEmployerName,
     normalizedEmployerName: normalized, aliasId: alias.id, reviewId: alias.reviewId!,
@@ -56,6 +63,15 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
       select: { job: { select: { company: true } } },
     });
     const current = entry ? await canonicalEmployer(tx, entry.job.company) : null;
+    if (current) {
+      const previous = await tx.employerObservation.findFirst({
+        where: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, canonicalEmployerId: { not: null } },
+        orderBy: [{ observedAt: 'desc' }, { id: 'desc' }], select: { normalizedEmployerName: true },
+      });
+      if (previous && previous.normalizedEmployerName !== normalized) {
+        throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, current.name);
+      }
+    }
     const target = company ? await canonicalEmployer(tx, company) : null;
     if (current && (!target || current.id !== target.id)) {
       throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target?.name ?? candidate.company);

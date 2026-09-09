@@ -86,6 +86,10 @@ export async function upsertDeduplicated(
         await lockSourceWrites(tx, candidate.sourceKey);
         const source = await tx.source.findUnique({ where: { key: candidate.sourceKey }, select: { status: true } });
         if (source?.status === 'RETIRED') throw new Error(`Source ${candidate.sourceKey} is RETIRED`);
+        // Read identity/observation state only after serializing this upstream
+        // posting; another writer may otherwise create it between lookup and lock.
+        const entryKey = JSON.stringify(['entry', candidate.sourceKey, candidate.externalId]);
+        await tx.$queryRaw`SELECT 1 AS locked FROM pg_advisory_xact_lock(hashtextextended(${entryKey}, 0))`;
         const resolution = await resolveEmployer(tx, candidate);
         const resolved = resolution.company ? {
           ...candidate, company: resolution.company.name,
@@ -97,9 +101,8 @@ export async function upsertDeduplicated(
         } : candidate;
         // Source identity protects relocation/renaming; company serializes the
         // matching decision across independent feeds and cluster buckets.
-        for (const key of [JSON.stringify(['entry', candidate.sourceKey, candidate.externalId]), JSON.stringify(['company', resolved.companyId])]) {
-          await tx.$queryRaw`SELECT 1 AS locked FROM pg_advisory_xact_lock(hashtextextended(${key}, 0))`;
-        }
+        const companyKey = JSON.stringify(['company', resolved.companyId]);
+        await tx.$queryRaw`SELECT 1 AS locked FROM pg_advisory_xact_lock(hashtextextended(${companyKey}, 0))`;
         const target = resolution.company;
         const current = await tx.jobSource.findUnique({
           where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
