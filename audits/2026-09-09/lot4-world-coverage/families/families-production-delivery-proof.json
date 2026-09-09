@@ -1,0 +1,177 @@
+{
+  "at": "2026-09-09T19:56:49.983758+00:00",
+  "applicationCommit": "c3f2014c28e66254693248ddbf74cd1a9bdc65bf",
+  "applicationMerge": "c3f2014c28e66254693248ddbf74cd1a9bdc65bf",
+  "nativeRunId": "5f093d17-a5c0-4c9e-b18b-57a5de796641",
+  "deploymentId": "783117cc-d66d-4f0a-b530-2cc8943a93d8",
+  "startedAt": "2026-09-09T19:47:40.946Z",
+  "finishedAt": "2026-09-09T19:55:08.403Z",
+  "status": "COMPLETED_WITH_ERRORS",
+  "sources": {
+    "capri-jimmy-choo": {
+      "stats": {
+        "fetched": 51,
+        "created": 0,
+        "updated": 50,
+        "merged": 0,
+        "errors": 1,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 51,
+        "withDescription": 51,
+        "withCountry": 51,
+        "withDate": 51
+      },
+      "enumeration": {
+        "fetched": 51,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 51
+      }
+    },
+    "rituals": {
+      "stats": {
+        "fetched": 1123,
+        "created": 46,
+        "updated": 1077,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 1123,
+        "withDescription": 1120,
+        "withCountry": 1123,
+        "withDate": 1123
+      },
+      "enumeration": {
+        "fetched": 1123,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 1123
+      }
+    },
+    "swatch-group": {
+      "stats": {
+        "fetched": 61,
+        "created": 10,
+        "updated": 51,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 61,
+        "withDescription": 61,
+        "withCountry": 60,
+        "withDate": 61
+      },
+      "enumeration": {
+        "fetched": 61,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 61
+      }
+    },
+    "capri-michael-kors": {
+      "stats": {
+        "fetched": 512,
+        "created": 0,
+        "updated": 505,
+        "merged": 0,
+        "errors": 7,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 512,
+        "withDescription": 512,
+        "withCountry": 512,
+        "withDate": 512
+      },
+      "enumeration": {
+        "fetched": 512,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 512
+      }
+    },
+    "mango": {
+      "stats": {
+        "fetched": 1627,
+        "created": 7,
+        "updated": 1536,
+        "merged": 0,
+        "errors": 57,
+        "complete": false,
+        "truncated": true,
+        "declaredTotal": 1628,
+        "withDescription": 1600,
+        "withCountry": 1600,
+        "withDate": 1600
+      },
+      "enumeration": {
+        "fetched": 1627,
+        "complete": false,
+        "truncated": true,
+        "declaredTotal": 1628
+      }
+    },
+    "nordstrom": {
+      "stats": {
+        "fetched": 1303,
+        "created": 0,
+        "updated": 1194,
+        "merged": 0,
+        "errors": 107,
+        "complete": false,
+        "truncated": true,
+        "declaredTotal": 1312,
+        "withDescription": 1301,
+        "withCountry": 1301,
+        "withDate": 1301
+      },
+      "enumeration": {
+        "fetched": 1303,
+        "complete": false,
+        "truncated": true,
+        "declaredTotal": 1312
+      }
+    },
+    "kering": {
+      "stats": {
+        "fetched": 1030,
+        "created": 23,
+        "updated": 1001,
+        "merged": 0,
+        "errors": 6,
+        "complete": false,
+        "truncated": true,
+        "declaredTotal": 1031,
+        "withDescription": 1022,
+        "withCountry": 1027,
+        "withDate": 1030
+      },
+      "enumeration": {
+        "fetched": 1030,
+        "complete": false,
+        "truncated": true,
+        "declaredTotal": 1031
+      }
+    }
+  },
+  "logProof": {
+    "railwayLines": 232,
+    "maxLinesPerSecond": 109,
+    "droppedMessageWarnings": 0,
+    "durableEvents": 256,
+    "persistenceFailures": 0
+  },
+  "globalWorkersRemainPaused": true,
+  "writeFailuresBySource": {
+    "capri-jimmy-choo": 1,
+    "rituals": 0,
+    "swatch-group": 0,
+    "capri-michael-kors": 7,
+    "mango": 57,
+    "nordstrom": 107,
+    "kering": 6
+  },
+  "remaining": "FP Movement, Anthro Weddings, Maeve credited to their parent brand (reversible by alias); Reclectic and Menus and Venues identity/perimeter left to the owner; one Urban Outfitters posting held under URBN (legacy FashionJobs attestation)."
+}

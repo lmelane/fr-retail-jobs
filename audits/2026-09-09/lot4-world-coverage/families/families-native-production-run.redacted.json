@@ -1,0 +1,685 @@
+{
+ "id": "5f093d17-a5c0-4c9e-b18b-57a5de796641",
+ "command": "lot4-families-production-validation",
+ "revision": "c3f2014c28e66254693248ddbf74cd1a9bdc65bf",
+ "startedAt": "2026-09-09T19:47:40.946Z",
+ "finishedAt": "2026-09-09T19:55:08.403Z",
+ "status": "COMPLETED_WITH_ERRORS",
+ "metrics": {
+  "byEvent": {
+   "run.started": 1,
+   "run.completed": 1,
+   "ingest.completed": 1,
+   "job.write_failed": 178,
+   "source_sync_started": 7,
+   "job.publication_held": 29,
+   "run.sources_selected": 1,
+   "source.purge_refused": 6,
+   "run.sources_completed": 1,
+   "source_sync_completed": 7,
+   "ingest.sources_selected": 7,
+   "source.ingest_completed": 7,
+   "source.listing_truncated": 3,
+   "source.enumeration_observed": 7
+  },
+  "printed": 231,
+  "counters": {
+   "http.retries": 38,
+   "http.attempts": 4946,
+   "http.responses": 4945
+  },
+  "recorded": 256,
+  "repeated": 26,
+  "debugDisabled": 0,
+  "persistenceFailures": 0
+ },
+ "events": [
+  {
+   "at": "2026-09-09T19:47:40.987Z",
+   "event": "source_sync_started",
+   "sourceKey": "capri-michael-kors",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:40.987Z",
+   "event": "source_sync_started",
+   "sourceKey": "kering",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:40.987Z",
+   "event": "source_sync_started",
+   "sourceKey": "capri-jimmy-choo",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:40.987Z",
+   "event": "source_sync_started",
+   "sourceKey": "swatch-group",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:40.950Z",
+   "event": "run.started",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:40.977Z",
+   "event": "run.sources_selected",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:41.039Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:50.647Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "capri-jimmy-choo",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:52.210Z",
+   "event": "source.ingest_completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:52.214Z",
+   "event": "source.purge_refused",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:52.248Z",
+   "event": "source_sync_completed",
+   "sourceKey": "capri-jimmy-choo",
+   "stats": {
+    "errors": 1,
+    "france": 4,
+    "merged": 0,
+    "source": "capri-jimmy-choo",
+    "created": 0,
+    "fetched": 51,
+    "updated": 50,
+    "withUrl": 51,
+    "complete": true,
+    "inSector": 51,
+    "withDate": 51,
+    "truncated": false,
+    "withCountry": 51,
+    "declaredTotal": 51,
+    "withDescription": 51,
+    "occupationReleases": {
+     "catwalks-occupations-20260909-v1": 50
+    },
+    "occupationStatuses": {
+     "NO_RULE": 2,
+     "CLASSIFIED": 26,
+     "FAMILY_ONLY": 22
+    },
+    "occupationReleaseId": "catwalks-occupations-20260909-v1"
+   }
+  },
+  {
+   "at": "2026-09-09T19:47:52.264Z",
+   "event": "source_sync_started",
+   "sourceKey": "nordstrom",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:52.307Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:54.439Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "rituals",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:48:30.335Z",
+   "event": "source.ingest_completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:48:30.355Z",
+   "event": "source_sync_completed",
+   "sourceKey": "rituals",
+   "stats": {
+    "errors": 0,
+    "france": 239,
+    "merged": 0,
+    "source": "rituals",
+    "created": 46,
+    "fetched": 1123,
+    "updated": 1077,
+    "withUrl": 1123,
+    "complete": true,
+    "inSector": 1123,
+    "withDate": 1123,
+    "truncated": false,
+    "withCountry": 1123,
+    "declaredTotal": 1123,
+    "withDescription": 1120,
+    "occupationReleases": {
+     "catwalks-occupations-20260909-v1": 1123
+    },
+    "occupationStatuses": {
+     "NO_RULE": 8,
+     "CLASSIFIED": 480,
+     "FAMILY_ONLY": 635
+    },
+    "occupationReleaseId": "catwalks-occupations-20260909-v1"
+   }
+  },
+  {
+   "at": "2026-09-09T19:48:30.364Z",
+   "event": "source_sync_started",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:48:30.405Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:41.053Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:41.074Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:41.096Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:49.817Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "swatch-group",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:51.632Z",
+   "event": "source.ingest_completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:51.637Z",
+   "event": "source.purge_refused",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:51.670Z",
+   "event": "source_sync_completed",
+   "sourceKey": "swatch-group",
+   "stats": {
+    "errors": 0,
+    "france": 4,
+    "merged": 0,
+    "source": "swatch-group",
+    "created": 10,
+    "fetched": 61,
+    "updated": 51,
+    "withUrl": 61,
+    "complete": true,
+    "inSector": 61,
+    "withDate": 61,
+    "truncated": false,
+    "withCountry": 60,
+    "declaredTotal": 61,
+    "withDescription": 61,
+    "occupationReleases": {
+     "catwalks-occupations-20260909-v1": 61
+    },
+    "occupationStatuses": {
+     "NO_RULE": 11,
+     "CLASSIFIED": 29,
+     "FAMILY_ONLY": 21
+    },
+    "occupationReleaseId": "catwalks-occupations-20260909-v1"
+   }
+  },
+  {
+   "at": "2026-09-09T19:47:51.687Z",
+   "event": "source_sync_started",
+   "sourceKey": "rituals",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:47:51.725Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:49:11.524Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "capri-michael-kors",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:51:56.149Z",
+   "event": "source.listing_truncated",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:49:26.734Z",
+   "event": "source.ingest_completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:49:26.737Z",
+   "event": "source.purge_refused",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:49:26.770Z",
+   "event": "source_sync_completed",
+   "sourceKey": "capri-michael-kors",
+   "stats": {
+    "errors": 7,
+    "france": 15,
+    "merged": 0,
+    "source": "capri-michael-kors",
+    "created": 0,
+    "fetched": 512,
+    "updated": 505,
+    "withUrl": 512,
+    "complete": true,
+    "inSector": 512,
+    "withDate": 512,
+    "truncated": false,
+    "withCountry": 512,
+    "declaredTotal": 512,
+    "withDescription": 512,
+    "occupationReleases": {
+     "catwalks-occupations-20260909-v1": 505
+    },
+    "occupationStatuses": {
+     "NO_RULE": 23,
+     "CLASSIFIED": 346,
+     "FAMILY_ONLY": 136
+    },
+    "occupationReleaseId": "catwalks-occupations-20260909-v1"
+   }
+  },
+  {
+   "at": "2026-09-09T19:51:56.132Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:32.641Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:33.456Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:36.470Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:36.566Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:37.798Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:38.299Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:42.036Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:42.046Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:42.227Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:42.380Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:42.673Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:44.177Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:45.880Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:45.890Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:45.949Z",
+   "event": "source.ingest_completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:45.953Z",
+   "event": "source.purge_refused",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:55:08.275Z",
+   "event": "source.ingest_completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:55:08.279Z",
+   "event": "source.purge_refused",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:03.102Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:12.205Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:12.564Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:18.862Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:23.475Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:24.319Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:28.733Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:29.380Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:30.640Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:30.673Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:31.015Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:32.341Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:32.634Z",
+   "event": "job.publication_held",
+   "sourceKey": "mango",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:52:45.986Z",
+   "event": "source_sync_completed",
+   "sourceKey": "mango",
+   "stats": {
+    "held": 27,
+    "errors": 57,
+    "france": 318,
+    "merged": 0,
+    "source": "mango",
+    "created": 7,
+    "fetched": 1627,
+    "updated": 1536,
+    "withUrl": 1600,
+    "complete": false,
+    "inSector": 1600,
+    "withDate": 1600,
+    "truncated": true,
+    "withCountry": 1600,
+    "declaredTotal": 1628,
+    "heldUnresolved": 27,
+    "withDescription": 1600,
+    "occupationReleases": {
+     "catwalks-occupations-20260909-v1": 1543
+    },
+    "occupationStatuses": {
+     "NO_RULE": 78,
+     "CLASSIFIED": 1218,
+     "FAMILY_ONLY": 247
+    },
+    "occupationReleaseId": "catwalks-occupations-20260909-v1"
+   }
+  },
+  {
+   "at": "2026-09-09T19:53:59.060Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "nordstrom",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:53:59.079Z",
+   "event": "source.listing_truncated",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:54:24.997Z",
+   "event": "job.publication_held",
+   "sourceKey": "nordstrom",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:54:26.409Z",
+   "event": "job.publication_held",
+   "sourceKey": "nordstrom",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:54:29.751Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "kering",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:54:31.473Z",
+   "event": "source.listing_truncated",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:54:43.231Z",
+   "event": "source.ingest_completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:54:43.235Z",
+   "event": "source.purge_refused",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:54:43.268Z",
+   "event": "source_sync_completed",
+   "sourceKey": "nordstrom",
+   "stats": {
+    "held": 2,
+    "errors": 107,
+    "france": 0,
+    "merged": 0,
+    "source": "nordstrom",
+    "created": 0,
+    "fetched": 1303,
+    "updated": 1194,
+    "withUrl": 1301,
+    "complete": false,
+    "inSector": 1301,
+    "withDate": 1301,
+    "truncated": true,
+    "withCountry": 1301,
+    "declaredTotal": 1312,
+    "heldUnresolved": 2,
+    "withDescription": 1301,
+    "occupationReleases": {
+     "catwalks-occupations-20260909-v1": 1194
+    },
+    "occupationStatuses": {
+     "NO_RULE": 51,
+     "CLASSIFIED": 158,
+     "FAMILY_ONLY": 985
+    },
+    "occupationReleaseId": "catwalks-occupations-20260909-v1"
+   }
+  },
+  {
+   "at": "2026-09-09T19:55:08.311Z",
+   "event": "source_sync_completed",
+   "sourceKey": "kering",
+   "stats": {
+    "errors": 6,
+    "france": 179,
+    "merged": 0,
+    "source": "kering",
+    "created": 23,
+    "fetched": 1030,
+    "updated": 1001,
+    "withUrl": 1030,
+    "complete": false,
+    "inSector": 1030,
+    "withDate": 1030,
+    "truncated": true,
+    "withCountry": 1027,
+    "declaredTotal": 1031,
+    "withDescription": 1022,
+    "occupationReleases": {
+     "catwalks-occupations-20260909-v1": 1024
+    },
+    "occupationStatuses": {
+     "NO_RULE": 81,
+     "CLASSIFIED": 491,
+     "FAMILY_ONLY": 452
+    },
+    "occupationReleaseId": "catwalks-occupations-20260909-v1"
+   }
+  },
+  {
+   "at": "2026-09-09T19:55:08.328Z",
+   "event": "run.sources_completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:55:08.353Z",
+   "event": "ingest.completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:55:08.378Z",
+   "event": "run.completed",
+   "sourceKey": null,
+   "stats": null
+  }
+ ]
+}

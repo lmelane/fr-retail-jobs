@@ -1,0 +1,487 @@
+{
+  "at": "2026-09-09T19:56:39.971Z",
+  "failures": {
+    "capri-jimmy-choo|EmployerIdentityReviewRequired": {
+      "J Choo": 1
+    },
+    "capri-michael-kors|EmployerIdentityReviewRequired": {
+      "Michael Kors": 4,
+      "Michael Kors (USA)": 1,
+      "Michael Kors (Canada)": 1,
+      "Michael Kors (Bucharest Stores)": 1
+    },
+    "mango|EmployerIdentityReviewRequired": {
+      "MNG-MANGO": 6,
+      "MANGO MNG": 19,
+      "Mango": 27,
+      "MANGONOR Comércio de Vestuário": 1,
+      "MNG MANGO IRELAND": 2,
+      "MANGO SINGAPORE GARMENTS PTE": 2
+    },
+    "nordstrom|EmployerIdentityReviewRequired": {
+      "Nordstrom": 107
+    },
+    "kering|EmployerIdentityReviewRequired": {
+      "Kering": 6
+    }
+  },
+  "samples": {
+    "capri-jimmy-choo|EmployerIdentityReviewRequired": [
+      "Employer identity needs evidence: source=capri-jimmy-choo externalId=Sales-Associate_R_782377 raw=\"J Choo Germany GmbH\" proposed=\"J Choo\""
+    ],
+    "capri-michael-kors|EmployerIdentityReviewRequired": [
+      "Employer identity needs evidence: source=capri-michael-kors externalId=Cashier--Michael-Kors--Las-Vegas-Premium-North--Las-Vegas--NV_R_782934 raw=\"Michael Kors Retail  Inc\" proposed=\"Michael Kors\"",
+      "Employer identity needs evidence: source=capri-michael-kors externalId=PT-Sales-Assistant--University-Park-Mall-Mishawaka--IN_R_786492 raw=\"Michael Kors Retail  Inc\" proposed=\"Michael Kors\""
+    ],
+    "mango|EmployerIdentityReviewRequired": [
+      "Employer identity needs evidence: source=mango externalId=STOCKROOM-ASSISTANT--40-Hours--Oxford-St-_JR139857-1 raw=\"MNG-MANGO U.K. LIMITED\" proposed=\"MNG-MANGO\"",
+      "Employer identity needs evidence: source=mango externalId=MULTIFUNCIONAL-SALES-ASSOCIATE--30hours-Fix-Term--Oxford-St-_JR141797-1 raw=\"MNG-MANGO U.K. LIMITED\" proposed=\"MNG-MANGO\""
+    ],
+    "nordstrom|EmployerIdentityReviewRequired": [
+      "Employer identity needs evidence: source=nordstrom externalId=Nordstrom-Rack-Hiring-Day---Thursday--September-17th--11am-5pm---Bellevue-Lincoln-Square-Rack_R-874251 raw=\"Nordstrom Inc\" proposed=\"Nordstrom\"",
+      "Employer identity needs evidence: source=nordstrom externalId=Seasonal---Regular-Customer-Service--Sales-Floor-Support---Stock---The-Gallery-at-Westbury-Plaza-Rack_R-874148 raw=\"Nordstrom Inc\" proposed=\"Nordstrom\""
+    ],
+    "kering|EmployerIdentityReviewRequired": [
+      "Employer identity needs evidence: source=kering externalId=563705891381795 raw=\"Kering\" proposed=\"Kering\"",
+      "Employer identity needs evidence: source=kering externalId=563705891350322 raw=\"Kering\" proposed=\"Kering\""
+    ]
+  },
+  "rawLabels": {
+    "capri-jimmy-choo": {
+      "J Choo Germany GmbH": 1
+    },
+    "capri-michael-kors": {
+      "Michael Kors Retail  Inc": 4,
+      "Michael Kors (USA) Inc": 1,
+      "Michael Kors (Canada) Holdings LTD": 1,
+      "Michael Kors (Bucharest Stores) SRL": 1
+    },
+    "mango": {
+      "MNG-MANGO U.K. LIMITED": 6,
+      "MANGO MNG, S.A.": 19,
+      "MANGO  ITALIA S.r.l.": 2,
+      "MANGONOR Comércio de Vestuário S.A": 1,
+      "MANGO FRANCE, S.A.R.L.": 23,
+      "MANGO SUISSE SA": 1,
+      "Mango Deutschland GMBH": 1,
+      "MNG MANGO IRELAND LIMITED": 2,
+      "MANGO SINGAPORE GARMENTS PTE, LTD": 2
+    },
+    "nordstrom": {
+      "Nordstrom Inc": 107
+    },
+    "kering": {
+      "Kering": 6
+    }
+  },
+  "otherEvents": [
+    {
+      "s": null,
+      "e": "run.sources_selected",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "nordstrom",
+      "e": "ingest.sources_selected",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "mango",
+      "e": "job.publication_held",
+      "l": "warn",
+      "n": 27
+    },
+    {
+      "s": "swatch-group",
+      "e": "source.enumeration_observed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "capri-michael-kors",
+      "e": "source.ingest_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "mango",
+      "e": "source.listing_truncated",
+      "l": "error",
+      "n": 1
+    },
+    {
+      "s": "rituals",
+      "e": "ingest.sources_selected",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "mango",
+      "e": "source.purge_refused",
+      "l": "warn",
+      "n": 1
+    },
+    {
+      "s": "capri-michael-kors",
+      "e": "source.purge_refused",
+      "l": "warn",
+      "n": 1
+    },
+    {
+      "s": "rituals",
+      "e": "source_sync_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "nordstrom",
+      "e": "source.enumeration_observed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "capri-michael-kors",
+      "e": "source_sync_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "mango",
+      "e": "source_sync_started",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "capri-jimmy-choo",
+      "e": "ingest.sources_selected",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "kering",
+      "e": "source.enumeration_observed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "nordstrom",
+      "e": "source.listing_truncated",
+      "l": "error",
+      "n": 1
+    },
+    {
+      "s": null,
+      "e": "run.started",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "nordstrom",
+      "e": "source_sync_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "rituals",
+      "e": "source.enumeration_observed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "capri-jimmy-choo",
+      "e": "source.purge_refused",
+      "l": "warn",
+      "n": 1
+    },
+    {
+      "s": "capri-michael-kors",
+      "e": "ingest.sources_selected",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "rituals",
+      "e": "source_sync_started",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "rituals",
+      "e": "source.ingest_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "capri-michael-kors",
+      "e": "source.enumeration_observed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "mango",
+      "e": "ingest.sources_selected",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "capri-jimmy-choo",
+      "e": "source_sync_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "mango",
+      "e": "source.enumeration_observed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "swatch-group",
+      "e": "ingest.sources_selected",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "swatch-group",
+      "e": "source.purge_refused",
+      "l": "warn",
+      "n": 1
+    },
+    {
+      "s": null,
+      "e": "run.completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "nordstrom",
+      "e": "source.purge_refused",
+      "l": "warn",
+      "n": 1
+    },
+    {
+      "s": "nordstrom",
+      "e": "source.ingest_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "swatch-group",
+      "e": "source_sync_started",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "nordstrom",
+      "e": "job.publication_held",
+      "l": "warn",
+      "n": 2
+    },
+    {
+      "s": "kering",
+      "e": "source_sync_started",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "mango",
+      "e": "source.ingest_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "swatch-group",
+      "e": "source.ingest_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "kering",
+      "e": "source.ingest_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "capri-michael-kors",
+      "e": "source_sync_started",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "capri-jimmy-choo",
+      "e": "source.ingest_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "nordstrom",
+      "e": "source_sync_started",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "kering",
+      "e": "ingest.sources_selected",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "mango",
+      "e": "source_sync_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "kering",
+      "e": "source_sync_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": null,
+      "e": "ingest.completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "capri-jimmy-choo",
+      "e": "source.enumeration_observed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": null,
+      "e": "run.sources_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "capri-jimmy-choo",
+      "e": "source_sync_started",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "swatch-group",
+      "e": "source_sync_completed",
+      "l": "info",
+      "n": 1
+    },
+    {
+      "s": "kering",
+      "e": "source.purge_refused",
+      "l": "warn",
+      "n": 1
+    },
+    {
+      "s": "kering",
+      "e": "source.listing_truncated",
+      "l": "error",
+      "n": 1
+    }
+  ],
+  "sources": [
+    {
+      "key": "mango",
+      "status": "ACTIVE",
+      "lastRunAt": "2026-09-09T19:52:45.981Z",
+      "lastRunStatus": "DEGRADED",
+      "lastRunJobs": 1543
+    },
+    {
+      "key": "capri-michael-kors",
+      "status": "ACTIVE",
+      "lastRunAt": "2026-09-09T19:49:26.766Z",
+      "lastRunStatus": "DEGRADED",
+      "lastRunJobs": 505
+    },
+    {
+      "key": "capri-jimmy-choo",
+      "status": "ACTIVE",
+      "lastRunAt": "2026-09-09T19:47:52.243Z",
+      "lastRunStatus": "DEGRADED",
+      "lastRunJobs": 50
+    },
+    {
+      "key": "kering",
+      "status": "ACTIVE",
+      "lastRunAt": "2026-09-09T19:55:08.307Z",
+      "lastRunStatus": "DEGRADED",
+      "lastRunJobs": 1024
+    },
+    {
+      "key": "nordstrom",
+      "status": "ACTIVE",
+      "lastRunAt": "2026-09-09T19:54:43.264Z",
+      "lastRunStatus": "DEGRADED",
+      "lastRunJobs": 1194
+    },
+    {
+      "key": "swatch-group",
+      "status": "ACTIVE",
+      "lastRunAt": "2026-09-09T19:47:51.665Z",
+      "lastRunStatus": "DEGRADED",
+      "lastRunJobs": 61
+    },
+    {
+      "key": "rituals",
+      "status": "ACTIVE",
+      "lastRunAt": "2026-09-09T19:48:30.352Z",
+      "lastRunStatus": "OK",
+      "lastRunJobs": 1123
+    }
+  ],
+  "sourceRunsOfRun": [
+    {
+      "sourceKey": "swatch-group",
+      "status": "DEGRADED",
+      "fetched": 61,
+      "errors": 0,
+      "note": "78% fewer offers than the previous run · desc 100% date 100% pays 98% url 100%"
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "status": "DEGRADED",
+      "fetched": 51,
+      "errors": 1,
+      "note": "1 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "rituals",
+      "status": "OK",
+      "fetched": 1123,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "status": "DEGRADED",
+      "fetched": 512,
+      "errors": 7,
+      "note": "7 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "mango",
+      "status": "DEGRADED",
+      "fetched": 1627,
+      "errors": 57,
+      "note": "57 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "nordstrom",
+      "status": "DEGRADED",
+      "fetched": 1303,
+      "errors": 107,
+      "note": "107 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "kering",
+      "status": "DEGRADED",
+      "fetched": 1030,
+      "errors": 6,
+      "note": "6 erreurs de collecte ou d’écriture · desc 99% date 100% pays 100% url 100%"
+    }
+  ]
+}
