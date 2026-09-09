@@ -2,6 +2,8 @@
 
 Le socle est livré en production. Les contrats sont localisés en français, les dimensions d'emploi restent distinctes et les secteurs sont désormais un référentiel de données à appartenances multiples. La qualification du corpus n'est pas exhaustive : **47 016 / 74 124 offres actives (63,43 %) ont au moins un secteur documenté**. Les 27 108 autres restent visibles et sont dans une file de revue explicite.
 
+**Périmètre front de cette livraison : `modecareers.com`, application web de ce dépôt et du service Railway contrôlé.** La page [Catwalks / Maisons](https://catwalks.io/maisons) est une autre surface : elle affiche 61 Maisons et 14 offres lors de la vérification. Ses chiffres ne sont pas présentés comme ceux de la base agrégateur, et ce rapport ne revendique pas son alignement avec les 74 124 offres.
+
 ## ÉTAT AVANT
 
 Mesure du 9 septembre 2026 à 10:54 UTC, avant réparation : **77 352 offres stockées, 74 124 actives, 10 947 actives France**, 1 567 identités non fusionnées.

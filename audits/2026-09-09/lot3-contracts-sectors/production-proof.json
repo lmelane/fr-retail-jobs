@@ -598,5 +598,15 @@
       "paused": null
     }
   ],
-  "postNativeEmploymentAndSectorCountsUnchanged": true
+  "postNativeEmploymentAndSectorCountsUnchanged": true,
+  "scope": {
+    "repository": "lmelane/fr-retail-jobs",
+    "productionFront": "https://modecareers.com",
+    "otherObservedSurface": {
+      "url": "https://catwalks.io/maisons",
+      "displayedCompanies": 61,
+      "displayedJobs": 14,
+      "note": "Separate surface; not asserted to share the aggregator database or to be repaired by this delivery."
+    }
+  }
 }
