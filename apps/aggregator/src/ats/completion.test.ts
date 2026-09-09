@@ -3,9 +3,14 @@ import { normalizeAdapterResult } from './index.js';
 
 const job = { externalId: '1', title: 'Vendeur', url: 'https://example.com/1' };
 describe('adapter completion evidence', () => {
-  it('never allows rejected rows to be hidden by a complete flag or a matching count', () => {
-    expect(normalizeAdapterResult({ jobs: [job], declaredTotal: 1, complete: true,
+  it('keeps rejected rows visible and never lets a matching count hide them; an adapter that judged them may still prove its enumeration', () => {
+    // Legacy adapter (no verdict): a rejection is doubt, the count proves nothing.
+    expect(normalizeAdapterResult({ jobs: [job], declaredTotal: 1,
       rejectedRows: [{ reason: 'MALFORMED_SOURCE_ROW', raw: { id: null } }] }).complete).toBe(false);
+    // Adapter with an explicit verdict: the rejected rows are its witnesses (expired sitemap page, path-less row) and stay reported.
+    const judged = normalizeAdapterResult({ jobs: [job], declaredTotal: 2, complete: true, truncated: false,
+      rejectedRows: [{ reason: 'LISTED_PAGE_WITHOUT_JOBPOSTING', raw: { url: 'https://example.com/2' } }] });
+    expect(judged.complete).toBe(true); expect(judged.rejectedRows).toHaveLength(1);
   });
   it('does not invent completion for a legacy array', () => {
     expect(normalizeAdapterResult([job]).complete).toBe(false);

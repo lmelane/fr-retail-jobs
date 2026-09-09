@@ -9,6 +9,7 @@ vi.mock('../../lib/http.js', async importOriginal => ({
 
 import { fetchText, fetchWithRetry } from '../../lib/http.js';
 import { fetchJobFromPage, fetchSitemapUrls, normalizeJobPosting, richestDescription } from './jsonLdSitemap.js';
+import { parseSitemapLocations } from './jsonLdSitemap.js';
 
 const mockFetch = vi.mocked(fetchText);
 beforeEach(() => mockFetch.mockClear());
@@ -115,5 +116,21 @@ describe('fetchJobFromPage — la description la plus riche de la page (g6, 2026
   it('sans texte de page, le JSON-LD reste tel quel', () => {
     expect(richestDescription('<html></html>', 'court')).toBe('court');
     expect(richestDescription('<html></html>', undefined)).toBeUndefined();
+  });
+});
+
+
+describe('sitemap <loc> decoding', () => {
+  it('decodes XML character references and CDATA so the URL fetched is the one the publisher meant', () => {
+    const xml = `<urlset><url><loc>https://careers.oniverse.it/en-GB/carriere/&#214;sterreich_157730240.htm</loc></url>
+      <url><loc>https://attaquercycling.com/sitemap_pages_1.xml?from=1&amp;to=2</loc></url>
+      <url><loc><![CDATA[https://example.com/jobs/caf%C3%A9?x=1&y=2]]></loc></url>
+      <url><loc>https://example.com/&#x00E9;t&#233;</loc></url></urlset>`;
+    expect(parseSitemapLocations(xml)).toEqual([
+      'https://careers.oniverse.it/en-GB/carriere/Österreich_157730240.htm',
+      'https://attaquercycling.com/sitemap_pages_1.xml?from=1&to=2',
+      'https://example.com/jobs/caf%C3%A9?x=1&y=2',
+      'https://example.com/été',
+    ]);
   });
 });
