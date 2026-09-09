@@ -41,3 +41,13 @@ it('still refuses a different brand label, and a group label when no group is re
   await prisma.company.update({ where: { id: house.id }, data: { parentGroup: null, parentGroupId: null } });
   await expect(prisma.$transaction(tx => resolveEmployer(tx, { ...base, company: group.name, companyId: group.canonicalKey, rawEmployerName: group.name, employerLabelOrigin: 'ADAPTER_COMPANY' }))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
 });
+
+it('keeps the house even when no earlier observation exists for the posting (the gate predates most sources)', async () => {
+  const { group, house, base } = await fixture();
+  await prisma.employerObservation.deleteMany({ where: { sourceKey: SOURCE, externalId: base.externalId } }).catch(() => undefined); // append-only: may be refused, the case below works either way
+  const asGroup = { ...base, externalId: `${base.externalId}-fresh`, company: group.name, companyId: group.canonicalKey, rawEmployerName: group.name, employerLabelOrigin: 'ADAPTER_COMPANY' };
+  await prisma.jobSource.create({ data: { jobId: (await prisma.job.findFirstOrThrow({ where: { sources: { some: { externalId: base.externalId } } } })).id, sourceKey: SOURCE, externalId: asGroup.externalId, url: `https://careers.example.com/job/${asGroup.externalId}`, sourceTier: 'GROUP_OFFICIAL', isActive: true, firstSeenAt: new Date(), lastSeenAt: new Date(), raw: {} } });
+  const resolution = await prisma.$transaction(tx => resolveEmployer(tx, asGroup));
+  expect(resolution.company?.id).toBe(house.id); expect(resolution.rule).toBe('GROUP_LABEL_KEPT_HOUSE');
+});
+
