@@ -1,3 +1,4 @@
+import { companyIdentitySql, companyAliasSql } from './company-identity';
 import { Prisma, CompanySector, prisma } from '@catwalks/db';
 import { expandCompanyTerm } from './groups';
 import { rawValuesForCode } from './countries';
@@ -22,25 +23,31 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
   const conditions: Prisma.Sql[] = [Prisma.sql`j."isActive"`];
   if (filters.city) conditions.push(Prisma.sql`j.city ILIKE ${filters.city}`);
   if (filters.employmentTerm) conditions.push(Prisma.sql`j."employmentTerm" = ${filters.employmentTerm}`);
-  if (filters.maison) conditions.push(Prisma.sql`c.name = ${filters.maison}`);
+  if (filters.maison) conditions.push(companyIdentitySql(filters.maison));
   if (filters.group) conditions.push(Prisma.sql`c."parentGroup" = ${filters.group}`);
   if (filters.sector && (Object.values(CompanySector) as string[]).includes(filters.sector)) {
     conditions.push(Prisma.sql`c.sector = ${filters.sector}::"CompanySector"`);
   }
   if (filters.source) conditions.push(Prisma.sql`EXISTS (
     SELECT 1 FROM "JobSource" src WHERE src."jobId" = j.id AND src."isActive" AND src."sourceKey" = ${filters.source})`);
-  for (const term of (filters.q ?? '').trim().split(/\s+/).filter(Boolean)) {
+  const queryTerms = (filters.q ?? '').trim().split(/\s+/).filter(Boolean);
+  // Resolve the small employer registry first. Putting a Company OR directly
+  // beside the searchText prefilter prevents the trigram index from narrowing
+  // the large Job table. Canonical names keep that prefilter a superset.
+  const aliasNames = await Promise.all(queryTerms.map(term => prisma.$queryRaw<{ name: string }[]>(Prisma.sql`
+    SELECT c.name FROM "Company" c WHERE ${companyAliasSql(term, 'contains')}`)));
+  for (const [index, term] of queryTerms.entries()) {
     const pattern = `%${term}%`;
     // Indexed prefilter is a superset. Keep the original field-level predicate
     // below, so company aliases cannot create false matches in a job title.
-    const terms = [...new Set([term, ...expandCompanyTerm(term)])];
+    const terms = [...new Set([term, ...expandCompanyTerm(term), ...aliasNames[index].map(c => c.name)])];
     conditions.push(Prisma.sql`(${Prisma.join(terms.map(t => Prisma.sql`j."searchText" ILIKE ${`%${t}%`}`), ' OR ')})`);
     const matches = [
       Prisma.sql`j.title ILIKE ${pattern}`, Prisma.sql`j.description ILIKE ${pattern}`,
       Prisma.sql`j.city ILIKE ${pattern}`, Prisma.sql`j.location ILIKE ${pattern}`,
       Prisma.sql`j.department ILIKE ${pattern}`, Prisma.sql`j."employmentTerm" ILIKE ${pattern}`,
       ...expandCompanyTerm(term).flatMap(name => [
-        Prisma.sql`c.name ILIKE ${`%${name}%`}`, Prisma.sql`c."parentGroup" ILIKE ${`%${name}%`}`,
+        companyIdentitySql(name, 'contains'), Prisma.sql`c."parentGroup" ILIKE ${`%${name}%`}`,
       ]),
     ];
     conditions.push(Prisma.sql`(${Prisma.join(matches, ' OR ')})`);

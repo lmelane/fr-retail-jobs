@@ -27,7 +27,7 @@ afterAll(async () => {
 async function jobIn(cluster: string, opts: { ext: string; sourceKey: string; tier: string; title?: string; countryCode?: string; postedAt?: Date }) {
   return prisma.job.create({
     data: {
-      company: { create: { name: 'x', canonicalKey: `c-${opts.ext}`, fashionjobsUrl: `resolved:${opts.ext}-${Math.random()}` } },
+      company: { connectOrCreate: { where: { fashionjobsUrl: `fixture:${cluster}` }, create: { name: 'x', canonicalKey: cluster.split('|')[0], fashionjobsUrl: `fixture:${cluster}` } } },
       externalId: opts.ext,
       source: 'GENERIC_JSONLD',
       title: opts.title ?? 'Conseiller de vente H/F',
@@ -50,6 +50,13 @@ async function jobIn(cluster: string, opts: { ext: string; sourceKey: string; ti
 }
 
 describe('runReconcile', () => {
+  it('refuses a historical cluster collision between different employers', async () => {
+    await jobIn('acme|PARIS', { ext: 'a', sourceKey: 'employer', tier: 'EMPLOYER_DIRECT' });
+    const other = await jobIn('another|PARIS', { ext: 'b', sourceKey: 'board', tier: 'SPECIALIST_JOBBOARD' });
+    await prisma.job.update({ where: { id: other.id }, data: { clusterKey: 'acme|PARIS' } });
+    expect((await runReconcile(prisma)).jobsMerged).toBe(0);
+    expect(await prisma.job.count({ where: { isActive: true } })).toBe(2);
+  });
   it.each([
     { countryCode: 'US' },
     { title: 'Assistant Store Manager' },

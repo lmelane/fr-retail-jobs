@@ -170,3 +170,16 @@ describe('attachWorkdayDescriptions — l2 : détail demandé en en-US, temps de
     expect(jobs[0].validThrough?.toISOString().slice(0, 10)).toBe('2026-09-12');
   });
 });
+
+import { attachWorkdayDescriptions } from './workday.js';
+it('keeps the real Workday legal-entity field and its numeric code as replay evidence', async () => {
+  const detail = {
+    jobPostingInfo: { jobDescription: 'Role description', startDate: '2026-09-01' },
+    hiringOrganization: { name: '30360 CONDE NAST (INDIA) PVT LTD - 30360' },
+  };
+  mockJson.mockResolvedValueOnce(detail as never);
+  const [job] = await attachWorkdayDescriptions([{ externalId: 'R-24144', title: 'Senior Manager', url: 'https://condenast.wd115.myworkdayjobs.com/CondeCareers/job/example', raw: { externalPath: '/job/example' } }], 'https://condenast.wd115.myworkdayjobs.com/wday/cxs/condenast/CondeCareers');
+  expect(job.raw).toEqual({ externalPath: '/job/example', detail });
+  expect(job.employerEvidence).toEqual({ rawName: detail.hiringOrganization.name, path: 'detail.hiringOrganization.name', rule: 'LEADING_ENTITY_CODE_REMOVED' });
+  expect(job.company).toBe('CONDE NAST (INDIA) PVT LTD - 30360');
+});

@@ -1,0 +1,61 @@
+{
+  "environment": "restored production copy; working-tree implementation, base commit recorded for local rehearsal only",
+  "planHash": "9744eeb5742905a9e392fc8754eb50387bc0bb44ce6189dfa1022b441db67ad8",
+  "before": {
+    "jobs": 77322,
+    "active": 74113,
+    "sources": 80348,
+    "events": 21705,
+    "observations": 72070
+  },
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 31,
+    "aliases": 8
+  },
+  "after": {
+    "jobs": 77322,
+    "active": 74113,
+    "sources": 80348,
+    "events": 21736,
+    "observations": 72070
+  },
+  "companies": [
+    {
+      "id": "cmtk1x1ns0072nv2bytyhwuta",
+      "name": "Promod",
+      "kind": "RETAILER",
+      "mergedIntoId": null,
+      "_count": {
+        "jobs": 21
+      }
+    },
+    {
+      "id": "cmtk1xdjg0176nv2b70ayaadr",
+      "name": "Aubade",
+      "kind": "MAISON",
+      "mergedIntoId": null,
+      "_count": {
+        "jobs": 29
+      }
+    },
+    {
+      "id": "cmtlyiz3m076kqf5kegty1y42",
+      "name": "Aubade Paris",
+      "kind": "UNKNOWN",
+      "mergedIntoId": "cmtk1xdjg0176nv2b70ayaadr",
+      "_count": {
+        "jobs": 0
+      }
+    },
+    {
+      "id": "cmtpkx0bb59q9pf5le0vx07cg",
+      "name": "PROMOD - MAGASIN",
+      "kind": "UNKNOWN",
+      "mergedIntoId": "cmtk1x1ns0072nv2bytyhwuta",
+      "_count": {
+        "jobs": 0
+      }
+    }
+  ]
+}

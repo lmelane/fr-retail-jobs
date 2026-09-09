@@ -1,0 +1,20 @@
+{
+  "note": "Single real queries against the restored production dataset; no load simulation.",
+  "times": [
+    {
+      "q": "Promod",
+      "ms": 1895,
+      "total": 21
+    },
+    {
+      "q": "PROMOD - MAGASIN",
+      "ms": 3016,
+      "total": 21
+    },
+    {
+      "q": "Aubade Paris",
+      "ms": 17,
+      "total": 29
+    }
+  ]
+}

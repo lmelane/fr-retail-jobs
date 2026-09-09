@@ -190,6 +190,8 @@ export function toCandidate(
     ...(() => {
       const identity = resolveCompany(companyName);
       return {
+        rawEmployerName: job.employerEvidence?.rawName ?? companyName,
+        employerLabelOrigin: job.employerEvidence ? `${job.employerEvidence.path}:${job.employerEvidence.rule}` : job.company ? 'ADAPTER_COMPANY' : 'SOURCE_CATALOGUE_LABEL',
         company: identity.displayName,
         companyId: identity.companyId,
         // The Maison's domain, for its logo — only when THIS source is the

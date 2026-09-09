@@ -1,3 +1,4 @@
+import { companyIdentityWhere } from './company-identity';
 import { unstable_cache } from 'next/cache';
 import { prisma, CompanySector } from '@catwalks/db';
 import { expandCompanyTerm } from './groups';
@@ -224,7 +225,7 @@ export function whereClause(filters: JobFilters) {
   // silently dropped all but Groupe. Merge them into a single relation filter.
   const sector = validSector(filters.sector);
   const company = {
-    ...(filters.maison ? { name: filters.maison } : {}),
+    ...(filters.maison ? companyIdentityWhere(filters.maison) : {}),
     ...(sector ? { sector } : {}),
     ...(filters.group ? { parentGroup: filters.group } : {}),
   };
@@ -257,7 +258,7 @@ export function whereClause(filters: JobFilters) {
               // reach offers a group portal filed under "SMCP", and "smcp" has
               // to reach every brand beneath it.
               ...expandCompanyTerm(term).flatMap((name) => [
-                { company: { name: { contains: name, mode: 'insensitive' as const } } },
+                { company: companyIdentityWhere(name, 'contains') },
                 { company: { parentGroup: { contains: name, mode: 'insensitive' as const } } },
               ]),
             ],

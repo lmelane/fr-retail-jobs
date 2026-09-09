@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { Block, IntelPage, JsonLd, Kpi, NA, PageHead } from '@/components/intelligence/chrome';
 import { ProfileBlocks, ProfileFooter, ProfileKpis, ProfileSeries } from '@/components/intelligence/profile-view';
 import { countryLabel } from '@/lib/countries';
@@ -21,7 +21,7 @@ type Params = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const company = await resolveCompany((await params).slug);
   if (!company) return { title: 'Maison introuvable' };
-  const profile = await getProfile({ companyId: company.id }, { snapshot: { scope: 'company', key: company.id }, skills: true, newCities: true });
+  const profile = await getProfile({ companyId: company.id }, { snapshot: { scope: 'company', key: company.id, afterDate: company.identityChangedAt }, identityRevision: company.identityRevision, skills: true, newCities: true });
   const n = profile.headline.active;
   return intelMetadata({
     subject: `${company.name} : intelligence recrutement`,
@@ -32,10 +32,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Params) {
-  const company = await resolveCompany((await params).slug);
+  const slug = (await params).slug;
+  const company = await resolveCompany(slug);
   if (!company) notFound();
+  if (slug !== companySlug(company.name)) permanentRedirect(intelPaths.company(company.name));
   const [profile, coverage] = await Promise.all([
-    getProfile({ companyId: company.id }, { snapshot: { scope: 'company', key: company.id }, skills: true, newCities: true }),
+    getProfile({ companyId: company.id }, { snapshot: { scope: 'company', key: company.id, afterDate: company.identityChangedAt }, identityRevision: company.identityRevision, skills: true, newCities: true }),
     getCoverage(),
   ]);
   const h = profile.headline;
@@ -69,6 +71,9 @@ export default async function Page({ params }: Params) {
         }
       />
 
+      {company.identityChangedAt && (
+        <p className="container muted">Les fiches de cette entreprise ont été regroupées le {fmtDate(company.identityChangedAt)}. Les comparaisons historiques portent sur les journées complètes suivant ce regroupement ; les anciennes observations sont conservées.</p>
+      )}
       <section className="container" style={{ paddingTop: 48 }}>
         <ProfileKpis profile={profile} coverage={coverage} ctx={ctx} />
         <div className="kpis mt-8">

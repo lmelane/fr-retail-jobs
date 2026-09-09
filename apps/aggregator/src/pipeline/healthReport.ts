@@ -1,3 +1,4 @@
+import { employerIdentityHealth } from '../identity/health.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
 
 /** Operational exposure, not a weighted score that could hide a critical defect. */
@@ -59,7 +60,7 @@ export async function buildHealthReport(prisma: PrismaClient, asOf = new Date(),
     FROM keys k LEFT JOIN counts c USING ("sourceKey") LEFT JOIN latest l USING ("sourceKey")
     ORDER BY "atRiskJobs" DESC, "exclusivelyBackedJobs" DESC, k."sourceKey"`);
     return {
-      schemaVersion: 1, asOf: asOf.toISOString(), freshnessHours, totals, sources,
+      schemaVersion: 2, employerIdentity: await employerIdentityHealth(tx), asOf: asOf.toISOString(), freshnessHours, totals, sources,
       definitions: {
         atRiskJobs: 'Distinct active jobs with no fresh active source, no active source backing the canonical URL, or a known elapsed validThrough.',
         alternateSources: 'A fresh alternate source protects a job from freshness risk even if another source is stale.',

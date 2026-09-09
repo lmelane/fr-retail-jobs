@@ -11,6 +11,7 @@ datasource db {
 enum CompanyKind {
   UNKNOWN
   MAISON
+  BRAND
   GROUP
   RETAILER
   AGENCY
@@ -204,6 +205,16 @@ model Company {
    * held this from the start and nothing was reading it.
    */
   parentGroup          String?
+  /** Reviewed relationship. A group is an entity, never an alias for its brands. */
+  parentGroupId        String?
+  parent               Company? @relation("CompanyGroup", fields: [parentGroupId], references: [id], onDelete: Restrict)
+  children             Company[] @relation("CompanyGroup")
+  /** Reviewed identity merge: preserve the old ID and URL instead of deleting it. */
+  mergedIntoId         String?
+  mergedInto           Company? @relation("CompanyMerge", fields: [mergedIntoId], references: [id], onDelete: Restrict)
+  mergedFrom           Company[] @relation("CompanyMerge")
+  identityReviewId     String?
+  identityReview       EmployerIdentityReview? @relation(fields: [identityReviewId], references: [id], onDelete: Restrict)
   /**
    * Site officiel de la Maison, hôte nu (`hermes.com`, `dior.com`), lu à une
    * source qui la NOMME — jamais deviné depuis le nom : un nom devine souvent
@@ -230,6 +241,8 @@ model Company {
   jobs                  Job[]
   aliases               CompanyAlias[]
 
+  @@index([parentGroupId])
+  @@index([mergedIntoId])
   @@index([sector])
   @@index([canonicalKey])
   @@index([discoveryStatus])
@@ -241,8 +254,50 @@ model CompanyAlias {
   aliasKey    String   @unique
   displayName String
   companyId   String
-  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  company     Company  @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  /** Explicit scope: a homonym in another source is not the same employer. */
+  sourceKey   String   @default("*")
+  normalizedName String?
+  reviewId    String?
+  review      EmployerIdentityReview? @relation(fields: [reviewId], references: [id], onDelete: Restrict)
   createdAt   DateTime @default(now())
+
+  @@unique([sourceKey, normalizedName])
+}
+
+/** Immutable evidence for a reviewed alias/merge/group relationship. */
+model EmployerIdentityReview {
+  id          String @id
+  statement   String
+  evidence    Json
+  planHash    String
+  reviewedBy  String
+  reviewedAt  DateTime
+  createdAt   DateTime @default(now())
+  aliases     CompanyAlias[]
+  companies   Company[]
+}
+
+/** What the adapter said, and the exact identity decision used for that revision. */
+model EmployerObservation {
+  id                     String @id @default(cuid())
+  sourceKey              String
+  externalId             String
+  observationHash        String
+  rawEmployerName        String
+  labelOrigin            String @default("LEGACY_UNSPECIFIED")
+  normalizedEmployerName String
+  canonicalEmployerId    String?
+  rule                   String
+  aliasId                String?
+  reviewId               String?
+  rawHash                String?
+  pipelineVersion        Int
+  observedAt             DateTime @default(now())
+
+  @@unique([sourceKey, externalId, observationHash])
+  @@index([canonicalEmployerId, rule])
+  @@index([sourceKey, rule])
 }
 
 /**

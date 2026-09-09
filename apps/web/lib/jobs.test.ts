@@ -1,3 +1,4 @@
+import { companyIdentityWhere } from './company-identity';
 import { describe, it, expect } from 'vitest';
 import { whereClause, validSector } from './jobs';
 
@@ -12,7 +13,7 @@ describe('whereClause — combined company filters do not collide', () => {
     const where = whereClause({ maison: 'Christian Dior Couture', sector: 'LUXURY', group: 'LVMH' });
     // A single company object carrying all three constraints.
     expect(where.company).toEqual({
-      name: 'Christian Dior Couture',
+      ...companyIdentityWhere('Christian Dior Couture'),
       sector: 'LUXURY',
       parentGroup: 'LVMH',
     });
@@ -20,7 +21,7 @@ describe('whereClause — combined company filters do not collide', () => {
 
   it('keeps maison and sector together', () => {
     const where = whereClause({ maison: 'Guerlain', sector: 'BEAUTY' });
-    expect(where.company).toEqual({ name: 'Guerlain', sector: 'BEAUTY' });
+    expect(where.company).toEqual({ ...companyIdentityWhere('Guerlain'), sector: 'BEAUTY' });
   });
 
   it('omits company entirely when no company filter is set', () => {
@@ -58,7 +59,7 @@ describe('whereClause — combined company filters do not collide', () => {
 
   it('search terms go under AND, not company (so q + maison coexist)', () => {
     const where = whereClause({ q: 'vendeur', maison: 'Sézane' });
-    expect(where.company).toEqual({ name: 'Sézane' });
+    expect(where.company).toEqual(companyIdentityWhere('Sézane'));
     expect(Array.isArray((where as { AND?: unknown[] }).AND)).toBe(true);
   });
 });

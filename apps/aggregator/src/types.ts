@@ -82,6 +82,8 @@ export type NormalizedJob = {
   language?: string;
   /** Employer as named by the source; overrides the registry name when present. */
   company?: string;
+  /** Original field when an adapter transforms an employer label. */
+  employerEvidence?: { rawName: string; path: string; rule: string };
   /** Parent group, when the source distinguishes it. */
   group?: string;
   /** Function or department, e.g. "Retail", "Marketing". */

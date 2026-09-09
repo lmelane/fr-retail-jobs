@@ -1,0 +1,5992 @@
+{
+  "note": "Exact stored values at explicit employer/organization paths. Roles remain distinct; absence of a path is not an empty employer. Legacy Workday detail evidence was not archived.",
+  "labels": [
+    {
+      "sourceKey": "585-gold",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "585 GOLD",
+      "representations": 3,
+      "companies": [
+        "cmtlyf2nu00boqf5kuyuhtkee"
+      ]
+    },
+    {
+      "sourceKey": "abercrombie",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Abercrombie and Fitch Co.",
+      "representations": 8,
+      "companies": [
+        "cmtp1v3vg01b0qq4zderk1xev"
+      ]
+    },
+    {
+      "sourceKey": "agency",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Agency",
+      "representations": 4,
+      "companies": [
+        "cmtlyfcc400jyqf5k8ws3kzvm"
+      ]
+    },
+    {
+      "sourceKey": "alberto",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ALBERTO",
+      "representations": 2,
+      "companies": [
+        "cmtlyg9r801muqf5klchmoqem"
+      ]
+    },
+    {
+      "sourceKey": "a-p-c",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "A.P.C.",
+      "representations": 16,
+      "companies": [
+        "cmtkdvwgc1sednf2bnfwm5tv7"
+      ]
+    },
+    {
+      "sourceKey": "asics",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "ASICS",
+      "representations": 56,
+      "companies": [
+        "cmtlylxp80d81qf5kbtj1mux8"
+      ]
+    },
+    {
+      "sourceKey": "asos",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "ASOS",
+      "representations": 72,
+      "companies": [
+        "cmtlympe50flvqf5kap2lx5o8"
+      ]
+    },
+    {
+      "sourceKey": "attaquer",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Attaquer",
+      "representations": 3,
+      "companies": [
+        "cmtlyf4ja00ceqf5ku6o1sxkz"
+      ]
+    },
+    {
+      "sourceKey": "audemars-piguet",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Audemars Piguet",
+      "representations": 96,
+      "companies": [
+        "cmtk1yc6s036rnv2bbklpocx9"
+      ]
+    },
+    {
+      "sourceKey": "baccarat",
+      "path": "entity.name",
+      "role": "ENTITY",
+      "label": "Baccarat",
+      "representations": 12,
+      "companies": [
+        "cmtk1x1x8007xnv2bua2lbw3p"
+      ]
+    },
+    {
+      "sourceKey": "ballantynes",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Ballantynes",
+      "representations": 12,
+      "companies": [
+        "cmtlygtsm02gjqf5kxwsgn40j"
+      ]
+    },
+    {
+      "sourceKey": "baron",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Baron ",
+      "representations": 5,
+      "companies": [
+        "cmtlyfpzs00w4qf5k8yxuw6kx"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf AG",
+      "representations": 3,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Australia Ltd.",
+      "representations": 2,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf CEE Holding GmbH",
+      "representations": 1,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Consumer Products (Pty.) Ltd.",
+      "representations": 2,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf d.o.o.",
+      "representations": 2,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf East Africa Limited",
+      "representations": 2,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Gesellschaft mbH",
+      "representations": 1,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Inc.",
+      "representations": 7,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Ind&#250;stria e Com&#233;rcio Ltda.",
+      "representations": 2,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf India Service Private Limited",
+      "representations": 1,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Kft.",
+      "representations": 1,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf M&#233;xico, S.A. de C.V.",
+      "representations": 4,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf (Malaysia) SDN. BHD.",
+      "representations": 5,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Manufacturing Argentona, S.L.",
+      "representations": 3,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Manufacturing Mexico, S.A. de C.V.",
+      "representations": 5,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Manufacturing Poznan Sp. z o.o.",
+      "representations": 1,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Near East FZ-LLC",
+      "representations": 1,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Nivea Consumer Products Nigeria Limited",
+      "representations": 1,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf NIVEA LTDA.",
+      "representations": 1,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf NV",
+      "representations": 1,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Philippines Incorporated",
+      "representations": 1,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Romania s.r.l.",
+      "representations": 1,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf S.A.",
+      "representations": 7,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf s.a.s.",
+      "representations": 11,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Shared Services GmbH",
+      "representations": 2,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf Shared Services Poland Sp.z o.o.",
+      "representations": 1,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf SpA",
+      "representations": 6,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf spol. s r.o.",
+      "representations": 3,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf (Thailand) Co., Ltd.",
+      "representations": 4,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Beiersdorf UK Ltd.",
+      "representations": 5,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "NIVEA India Pvt. Ltd.",
+      "representations": 3,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "NIVEA Polska Sp. z o.o.",
+      "representations": 10,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "NIVEA (Shanghai) Company",
+      "representations": 2,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "NIVEA (Shanghai) Company Limited",
+      "representations": 7,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "NIVEA (Taiwan) Ltd.",
+      "representations": 3,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "P.T. Beiersdorf Indonesia",
+      "representations": 2,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SA Beiersdorf NV",
+      "representations": 3,
+      "companies": [
+        "cmtpiy9vu0jzmpf5ljoimrw0m"
+      ]
+    },
+    {
+      "sourceKey": "bellabeat",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Bellabeat",
+      "representations": 1,
+      "companies": [
+        "cmtlyejok0005qf5kw1u6ovvk"
+      ]
+    },
+    {
+      "sourceKey": "bevilles-jewellers",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Bevilles External",
+      "representations": 24,
+      "companies": [
+        "cmtlyitdx06irqf5kpes03i2d"
+      ]
+    },
+    {
+      "sourceKey": "bloom",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Bloom",
+      "representations": 2,
+      "companies": [
+        "cmtlyewfc005yqf5kknnxe42a"
+      ]
+    },
+    {
+      "sourceKey": "boots",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Boots",
+      "representations": 1608,
+      "companies": [
+        "cmtpjx4nv2wqjpf5ljaaqw1jm"
+      ]
+    },
+    {
+      "sourceKey": "b-s-international",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "B&S International",
+      "representations": 73,
+      "companies": [
+        "cmtlym2oc0diiqf5ku1pczppi",
+        "cmtpu1wpq0cqol35mt9czrz1s"
+      ]
+    },
+    {
+      "sourceKey": "chisholm-hunter",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Chisholm Hunter",
+      "representations": 1,
+      "companies": [
+        "cmtlyekdh000kqf5k235x5km4"
+      ]
+    },
+    {
+      "sourceKey": "clarins-wttj",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Groupe Clarins",
+      "representations": 3,
+      "companies": [
+        "cmtk1xmf601msnv2bnv9cn2rz"
+      ]
+    },
+    {
+      "sourceKey": "cotton-on",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Cotton On",
+      "representations": 3,
+      "companies": [
+        "cmtlyf4ye00crqf5ktjngwekz"
+      ]
+    },
+    {
+      "sourceKey": "courir",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Courir",
+      "representations": 430,
+      "companies": [
+        "cmtjvn7mp0000ld2bc3dm4w94"
+      ]
+    },
+    {
+      "sourceKey": "cynthia-rowley",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "CYNTHIA ROWLEY",
+      "representations": 1,
+      "companies": [
+        "cmtlyeoft0019qf5ksb60zdxo"
+      ]
+    },
+    {
+      "sourceKey": "de-beers-london",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Anglo American / De Beers Group",
+      "representations": 137,
+      "companies": [
+        "cmtk1ylsa0480nv2b4opry0mr"
+      ]
+    },
+    {
+      "sourceKey": "eastpak",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Eastpak",
+      "representations": 4,
+      "companies": [
+        "cmtlyfkto00ooqf5k9jltqp95"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "BILLABONG, ELEMENT (Réseau)",
+      "representations": 2,
+      "companies": [
+        "cmtm7ucwb10zupv5jceo6wpcz"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "BILLABONG (Réseau)",
+      "representations": 1,
+      "companies": [
+        "cmtm7ucwb10zupv5jceo6wpcz"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Boardriders (Réseau)",
+      "representations": 14,
+      "companies": [
+        "cmtm7ucwb10zupv5jceo6wpcz"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Boardriders (Siège)",
+      "representations": 11,
+      "companies": [
+        "cmtm7ucwb10zupv5jceo6wpcz"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "BONOBO (Réseau)",
+      "representations": 43,
+      "companies": [
+        "cmtke8pvh0cyelp2bpe0rowj9",
+        "cmtm7ucrz10yjpv5jxyca11id"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "BONOBO (Siège)",
+      "representations": 4,
+      "companies": [
+        "cmtm7ucrz10yjpv5jxyca11id"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "BREAL (Réseau)",
+      "representations": 11,
+      "companies": [
+        "cmtm7ud191117pv5jj1qug7bf"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "CACHE CACHE (Réseau)",
+      "representations": 61,
+      "companies": [
+        "cmtke8pvh0cyelp2bpe0rowj9",
+        "cmtm7ucr010y7pv5j8qg9y2m6"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "CACHE CACHE (Siège)",
+      "representations": 1,
+      "companies": [
+        "cmtm7ucr010y7pv5j8qg9y2m6"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "CAROLL (Réseau)",
+      "representations": 31,
+      "companies": [
+        "cmtm7ucrc10ybpv5j8tv9kuxe"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "CAROLL (Siège)",
+      "representations": 3,
+      "companies": [
+        "cmtm7ucrc10ybpv5j8tv9kuxe"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "C-LOG (Siège)",
+      "representations": 37,
+      "companies": [
+        "cmtke8pvh0cyelp2bpe0rowj9",
+        "cmtm7uctm10yypv5jyqjvi6le"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "C-STOCK (Réseau)",
+      "representations": 1,
+      "companies": [
+        "cmtm7ucvd10zipv5jhj0euv63"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Groupe Beaumanoir (International)",
+      "representations": 1,
+      "companies": [
+        "cmtm7ucvd10zipv5jhj0euv63"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Groupe Beaumanoir (Siège)",
+      "representations": 17,
+      "companies": [
+        "cmtke8pvh0cyelp2bpe0rowj9",
+        "cmtm7ucvd10zipv5jhj0euv63"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Jennyfer (Siège)",
+      "representations": 1,
+      "companies": [
+        "cmtm7ud90113spv5j3puy2q4l"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "KOKOLO",
+      "representations": 3,
+      "companies": [
+        "cmtm7ucvd10zipv5jhj0euv63"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "LA HALLE (Réseau)",
+      "representations": 62,
+      "companies": [
+        "cmtke8pvh0cyelp2bpe0rowj9",
+        "cmtm7ucoz10xspv5jc900ovd5"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "LA HALLE (Siège)",
+      "representations": 4,
+      "companies": [
+        "cmtm7ucoz10xspv5jc900ovd5"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "MORGAN (Réseau)",
+      "representations": 37,
+      "companies": [
+        "cmtkdvxc91sninf2br3plbw5g"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "MORGAN (Siège)",
+      "representations": 4,
+      "companies": [
+        "cmtkdvxc91sninf2br3plbw5g"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "QUIKSILVER, BILLABONG, ROXY, DC SHOES, RVCA, ELEMENT (Réseau)",
+      "representations": 9,
+      "companies": [
+        "cmtm7ucwb10zupv5jceo6wpcz"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "QUIKSILVER, BILLABONG, ROXY, ELEMENT (Réseau)",
+      "representations": 2,
+      "companies": [
+        "cmtm7ucwb10zupv5jceo6wpcz"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "QUIKSILVER, ROXY, DC SHOES (Réseau)",
+      "representations": 3,
+      "companies": [
+        "cmtm7ucwb10zupv5jceo6wpcz"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "QUIKSILVER, ROXY, DC SHOES, RVCA, ELEMENT (Réseau)",
+      "representations": 3,
+      "companies": [
+        "cmtm7ucvd10zipv5jhj0euv63"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "ROXY (Réseau)",
+      "representations": 1,
+      "companies": [
+        "cmtm7ucwb10zupv5jceo6wpcz"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "RVCA (Réseau)",
+      "representations": 1,
+      "companies": [
+        "cmtm7ucwb10zupv5jceo6wpcz"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "SARENZA",
+      "representations": 5,
+      "companies": [
+        "cmtm7udvv11bjpv5jpfcafu5v"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Sarenza Studio (Réseau)",
+      "representations": 2,
+      "companies": [
+        "cmtm7ud6s1130pv5jovfzvdq6"
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Vib's (Réseau)",
+      "representations": 31,
+      "companies": [
+        "cmtm7ucqi10y3pv5j1s4jalzb"
+      ]
+    },
+    {
+      "sourceKey": "end-clothing",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "END",
+      "representations": 22,
+      "companies": [
+        "cmtpivgpi063zpf5lyoc3h76b"
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Bocage / Eram siège",
+      "representations": 4,
+      "companies": [
+        "cmtke40s803ihlp2bivl9w2x4"
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Bocage magasin",
+      "representations": 10,
+      "companies": [
+        "cmtlyntzi0j3rqf5k76y9zjzn"
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Dresco",
+      "representations": 1,
+      "companies": [
+        "cmtlynuc70j6zqf5k49qoc6wk"
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Eram magasin",
+      "representations": 13,
+      "companies": [
+        "cmtke40s803ihlp2bivl9w2x4"
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Gémo magasin",
+      "representations": 41,
+      "companies": [
+        "cmtke40s803ihlp2bivl9w2x4",
+        "cmtlyntsb0j24qf5kxz2mq88k"
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Gémo siège",
+      "representations": 2,
+      "companies": [
+        "cmtlyntsb0j24qf5kxz2mq88k"
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Groupe Eram",
+      "representations": 3,
+      "companies": [
+        "cmtke40s803ihlp2bivl9w2x4"
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Log XL",
+      "representations": 1,
+      "companies": [
+        "cmtlynuf50j7rqf5kwlmp66le"
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Mellow Yellow magasin",
+      "representations": 7,
+      "companies": [
+        "cmtk1yga503pknv2busrstjte"
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "Parade",
+      "representations": 2,
+      "companies": [
+        "cmtke435r03yilp2bboffufjb"
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "TBS magasin",
+      "representations": 9,
+      "companies": [
+        "cmtke40s803ihlp2bivl9w2x4",
+        "cmtlyntz10j3nqf5k4qbz9fb0"
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "path": "company",
+      "role": "COMPANY",
+      "label": "TBS siège",
+      "representations": 1,
+      "companies": [
+        "cmtlyntz10j3nqf5k4qbz9fb0"
+      ]
+    },
+    {
+      "sourceKey": "eric-bompard",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "ERIC BOMPARD",
+      "representations": 36,
+      "companies": [
+        "cmtkdvvsi1s76nf2bi5afj7va"
+      ]
+    },
+    {
+      "sourceKey": "essilorluxottica",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "EssilorLuxottica Demo",
+      "representations": 7,
+      "companies": [
+        "cmtlyg1rw01dzqf5kg3qi5nht"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "2 MAI PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2sg1u8znf2bjpd9lgvr"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "360 TALENT LONDON",
+      "representations": 4,
+      "companies": [
+        "cmtkdw0aw1tgrnf2bke9mhl7g"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "58 FACETTES",
+      "representations": 1,
+      "companies": [
+        "cmtkdvzx21td0nf2bpm258lmx"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ABSOLUT CASHMERE",
+      "representations": 1,
+      "companies": [
+        "cmtkdvzgn1t83nf2ba9rhyuip"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "AGATHA",
+      "representations": 4,
+      "companies": [
+        "cmtkdvxmi1sqsnf2bqyk4udiq"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "AGNÈS B.",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuel1rnnnf2ba6k0ky9j"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "AKHO",
+      "representations": 1,
+      "companies": [
+        "cmtp868z33rnzqq4zjy1vwkng"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ALAIN AFFLELOU",
+      "representations": 83,
+      "companies": [
+        "cmtpgj7p83dohqq4zc6l1us92"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ALBYA",
+      "representations": 1,
+      "companies": [
+        "cmtkdw0l91tk1nf2bns84n4tr"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ALEXANDRA ZHUKOVA",
+      "representations": 1,
+      "companies": [
+        "cmtkdw26y1u1gnf2biqd4m0tu"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ALEXEIN CONSEIL",
+      "representations": 1,
+      "companies": [
+        "cmtkdvujg1rpnnf2b42lriz7o"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ALOHAS",
+      "representations": 1,
+      "companies": [
+        "cmtkdvzor1tafnf2bb0j058kz"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ALVEOLE STUDIO",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2nl1u79nf2bpupgruh3"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "AMINA MUADDI",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuw81rvanf2b54k7a2ch"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "AMOREPACIFIC",
+      "representations": 1,
+      "companies": [
+        "cmtkdvup61rs5nf2baqharc22"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ANNE FONTAINE",
+      "representations": 1,
+      "companies": [
+        "cmtnac1rh2smcqq5lnrpu7crl"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ANTOINE ET LILI",
+      "representations": 1,
+      "companies": [
+        "cmtoq4zay2zxkqq4zn3e3scsq"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "A.P.C.",
+      "representations": 3,
+      "companies": [
+        "cmtkdvwgc1sednf2bnfwm5tv7"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "APM MONACO",
+      "representations": 7,
+      "companies": [
+        "cmtk1yo9b04j7nv2bvtd8huil"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "APOSTROPHE",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuc91rmsnf2bcgwxwjng"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ARABIAN OUD",
+      "representations": 2,
+      "companies": [
+        "cmtkdvwkd1sfwnf2bfqbhra29"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ARC'TERYX",
+      "representations": 7,
+      "companies": [
+        "cmtpkwx4n59fkpf5lz5pmczqs"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ARLETTIE",
+      "representations": 1,
+      "companies": [
+        "cmtkdvugw1rofnf2b1b13rupe"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ARLETTIE PARIS",
+      "representations": 2,
+      "companies": [
+        "cmtkdvwyi1sjpnf2bh2d43ha5"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ARMINE OHANYAN PARIS",
+      "representations": 2,
+      "companies": [
+        "cmtlq3u9u1lxipg2b9gu9rfdx"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "AROMA ZONE",
+      "representations": 1,
+      "companies": [
+        "cmtm78mgv0ntlpv5jqkyn1ncz"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ARQÉ PARIS",
+      "representations": 2,
+      "companies": [
+        "cmtkdw1zi1tytnf2b64w6fbuf"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ATELIER 19.6",
+      "representations": 1,
+      "companies": [
+        "cmtkdw12j1tpnnf2bb9ch9kcd"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ATELIER DIANA MARTINEZ",
+      "representations": 1,
+      "companies": [
+        "cmtp868ys3rnvqq4z7cf8do74"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "AUBADE",
+      "representations": 4,
+      "companies": [
+        "cmtk1xdjg0176nv2b70ayaadr"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "AUDETTE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2f21u4jnf2b2nd4klck"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "AURÉLIE BIDERMANN",
+      "representations": 3,
+      "companies": [
+        "cmtkdw0jf1tjenf2b9vzjv9fb"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "AUTREMENT PR",
+      "representations": 2,
+      "companies": [
+        "cmtkdw2a91u2wnf2bq23iunzg"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "AXENTIA",
+      "representations": 1,
+      "companies": [
+        "cmtkdvzxf1td4nf2bna3s85fp"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "AZZEDINE ALAIA",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuoz1rs1nf2bqrva17su"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BALMAIN",
+      "representations": 5,
+      "companies": [
+        "cmtkdvumn1rqynf2bxg2eyo0q"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BANDE ORIGINALE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw3321ucsnf2ba6ml5xly"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BANGLE UP",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2931u2fnf2baqrbuhnh"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BAOBAB COLLECTION",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuhp1rovnf2bf3wgeias"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BARBARA BUI",
+      "representations": 2,
+      "companies": [
+        "cmtkdw20z1tzdnf2brufdm9gd"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BARBARISME PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2ai1u30nf2bjgxj2odr"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BERENICE",
+      "representations": 1,
+      "companies": [
+        "cmtkdvwa01scqnf2bnomlnaix"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BLACK CAT STUDIO",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2g01u4vnf2bwk4se0tp"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BLUE BOX",
+      "representations": 2,
+      "companies": [
+        "cmtkdw0361tf0nf2birz84kkt"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BOADICÉE",
+      "representations": 1,
+      "companies": [
+        "cmtlq3ubl1lxxpg2bqe29ftoo"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BOARDRIDERS",
+      "representations": 2,
+      "companies": [
+        "cmtm7ucwb10zupv5jceo6wpcz"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BRUN STUDIO - ARTIST DESIGNER",
+      "representations": 1,
+      "companies": [
+        "cmtkdvy851syenf2bskkudv9r"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BUREAU DE PRESSE PASCALE VENOT",
+      "representations": 1,
+      "companies": [
+        "cmtkdvvt01s7enf2btvhwa58l"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "BY MARIE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2jh1u66nf2b0bno4g04"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "C&A",
+      "representations": 2,
+      "companies": [
+        "cmtkdw17j1trcnf2btvinbjwg"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CAMELEONS RH",
+      "representations": 4,
+      "companies": [
+        "cmtkdvygh1t10nf2briurzyb4"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CAMPER",
+      "representations": 2,
+      "companies": [
+        "cmtlq3uim1m0gpg2bcbdwtixo"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CANOPEA",
+      "representations": 1,
+      "companies": [
+        "cmtnrub4q2y71qq4zu0551vws"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CARVEN",
+      "representations": 1,
+      "companies": [
+        "cmtpw96hg4k4dl35mhmmk4slt"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CÉLESTE MOGADOR",
+      "representations": 1,
+      "companies": [
+        "cmtkdvy5q1sxknf2bt8tuhwni"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CÈUCLE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2o31u7hnf2blhqsf1cp"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CHARLESTOWN",
+      "representations": 1,
+      "companies": [
+        "cmtkdvxrc1ssbnf2bpo3v9yzx"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CHEVAL BLANC",
+      "representations": 6,
+      "companies": [
+        "cmtk48efg1bxtny2bpe0ppxlg"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CHIC AT WORK",
+      "representations": 2,
+      "companies": [
+        "cmtkdvub61rmgnf2bq7yh4n5l"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CHILDREN WORLDWIDE FASHION C.W.F",
+      "representations": 3,
+      "companies": [
+        "cmtkdvzna1t9vnf2bsx57k9p4"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CHN HAI",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2m91u6rnf2bj6cukiw5"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CHRISTIAN DIOR COUTURE",
+      "representations": 3,
+      "companies": [
+        "cmtk48e6r1bu9ny2bxbq8un50"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CITIZENS OF HUMANITY",
+      "representations": 1,
+      "companies": [
+        "cmtnac1rq2smgqq5l9m0c9puq"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CLAIRE'S",
+      "representations": 1,
+      "companies": [
+        "cmtpkx0pr59sqpf5lfz0vxtaf"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "COLTESSE",
+      "representations": 2,
+      "companies": [
+        "cmtkdw2mh1u6vnf2bv8y3qxhq"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "COMPTOIR DES COTONNIERS",
+      "representations": 1,
+      "companies": [
+        "cmtkdvvws1s8pnf2bwla95cz7"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "COMPTOIR VINTAGE",
+      "representations": 1,
+      "companies": [
+        "cmtnac0xi2sdfqq5lk7d6j81z"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CONCEPT RECRUTEMENT",
+      "representations": 7,
+      "companies": [
+        "cmtkdvvyz1s9hnf2b7y3h2cj3"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CONFIDENTIEL",
+      "representations": 7,
+      "companies": [
+        "cmtkdvwgx1selnf2bfysmzr7y"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CONSCIOUS LOVE",
+      "representations": 1,
+      "companies": [
+        "cmtp868px3rlaqq4z2ltmpmk7"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "COPAINS",
+      "representations": 1,
+      "companies": [
+        "cmtlq3ucl1lycpg2bi77mf37o"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "COURIR",
+      "representations": 12,
+      "companies": [
+        "cmtjvn7mp0000ld2bc3dm4w94"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "COURREGES DISTRIBUTION",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2b81u3bnf2bzkhmrt75"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "COUTURE & RETAIL CAMÉLÉONS RH",
+      "representations": 1,
+      "companies": [
+        "cmtkdvyh41t1cnf2bwghkhpg0"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CREATIONS FUSALP",
+      "representations": 2,
+      "companies": [
+        "cmtkdvupo1rshnf2b5mz54rmt"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CROSSMODE PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtp868zy3rofqq4zrmuqlmk5"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "CTZAR",
+      "representations": 1,
+      "companies": [
+        "cmtnac1pp2sllqq5llqla2dqa"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DARJEELING",
+      "representations": 18,
+      "companies": [
+        "cmtkdw0421tf8nf2bolc7zbpd"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DEELUXE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw0rv1tm8nf2bb825qxri"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DE GABOR PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuku1rqbnf2beqvrwzz5"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DELAGE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw27j1u1snf2b6k637kiw"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DEPECH'MODE",
+      "representations": 8,
+      "companies": [
+        "cmtkdvuio1rpbnf2bltfbynz2"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DEVERNOIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdw1yq1tymnf2bpa2buiu8"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DEVRED 1902",
+      "representations": 1,
+      "companies": [
+        "cmtnac1py2slpqq5lh2i6um91"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DIAPERIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdw25v1u16nf2bhe67lj18"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DIGIWEST AGENCY",
+      "representations": 1,
+      "companies": [
+        "cmtlq3u221lvbpg2bi5cppnwo"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DINH VAN",
+      "representations": 1,
+      "companies": [
+        "cmtkdvxw01su3nf2but3bkw0q"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DINH VAN PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdvyuw1t4mnf2bpbim5cwq"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DIVPROTOCOL",
+      "representations": 1,
+      "companies": [
+        "cmtmkagpb2jqgpv4x5iufop2g"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DJULA",
+      "representations": 2,
+      "companies": [
+        "cmtkdw0g31tilnf2b8781vbza"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DONATELLE GODART - PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdw1ya1tyenf2b44uvotk1"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "D'ORSAY",
+      "representations": 1,
+      "companies": [
+        "cmtnac1ny2sktqq5lqrf4wp6u"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DO YOU SPEAK FRANÇAIS ?",
+      "representations": 1,
+      "companies": [
+        "cmtkdvylj1t2nnf2bns1q360w"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DRÔLE DE MONSIEUR",
+      "representations": 2,
+      "companies": [
+        "cmtkdw2df1u3znf2b5d65u1xm"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "DUMEBI",
+      "representations": 1,
+      "companies": [
+        "cmtkdw05t1tfwnf2bbaq97jqn"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "EDEN PARK",
+      "representations": 2,
+      "companies": [
+        "cmtkdvupi1rsdnf2bluk35mnh"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ELLE INTERNATIONAL",
+      "representations": 1,
+      "companies": [
+        "cmtrup3ob4n99pg5mrrljc38t"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ELSA SCHIAPARELLI",
+      "representations": 1,
+      "companies": [
+        "cmtkdw0li1tk5nf2bai9y64y1"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ERIC BOMPARD",
+      "representations": 10,
+      "companies": [
+        "cmtkdvvsi1s76nf2bi5afj7va"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Estée Lauder Companies",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuwf1rvenf2bk6p3g02y"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ETERNEL PARISIEN",
+      "representations": 1,
+      "companies": [
+        "cmtkdvy131svtnf2b9xjx7akf"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "EXE WORLDWIDE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw13q1tq3nf2b0uw3elbs"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "FAIR FASHION AGENT INTERNATIONAL",
+      "representations": 1,
+      "companies": [
+        "cmtpw96do4k3nl35mii9jtnaj"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "FASHION EXPERT",
+      "representations": 1,
+      "companies": [
+        "cmtkdvutv1rudnf2biteg22ga"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "FATHER AND SONS",
+      "representations": 1,
+      "companies": [
+        "cmtp868vn3rmyqq4zr6do6jh6"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "FIGARET",
+      "representations": 1,
+      "companies": [
+        "cmtkdvv5c1ryunf2b97b3chj5"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "FIRN",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2a21u2snf2bwyyhmm7s"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "FLORENCE MOORHEAD",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2nu1u7dnf2b7as10qhb"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "FRANCINE BRAMLI PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtlq3ud31lykpg2bduhm3r5e"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "FRANCOISE",
+      "representations": 2,
+      "companies": [
+        "cmtkdvxn61sr0nf2bv93bmc7i"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "FREEMAN T.PORTER",
+      "representations": 1,
+      "companies": [
+        "cmtlq3u701lwopg2bnh177ykl"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "FRENCH TEX",
+      "representations": 2,
+      "companies": [
+        "cmtpkwysl59kupf5ltt1dvyhx"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "FROM FUTURE",
+      "representations": 4,
+      "companies": [
+        "cmtkdvyvj1t4unf2bw0iei77m"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "GALDERMA",
+      "representations": 1,
+      "companies": [
+        "cmtpkx0g459rcpf5l7ijhrer1"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "GAS BIJOUX",
+      "representations": 2,
+      "companies": [
+        "cmtkdvzmt1t9nnf2bfm84y91x"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "GILI'S",
+      "representations": 1,
+      "companies": [
+        "cmtlq3u481lvypg2bftz89cli"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "GISELE PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtoq4zdi2zybqq4zuqr7kpil"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "GOOD BRANDS - TYPOLOGY",
+      "representations": 1,
+      "companies": [
+        "cmtlq3tzd1lufpg2b19q1inc8"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "GOYARD",
+      "representations": 2,
+      "companies": [
+        "cmtpkwyxn59ltpf5lq5vk2ing"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "GRANDVISION",
+      "representations": 5,
+      "companies": [
+        "cmtpkwyw259lhpf5ljczxqsjf"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "GROUPE CHANTELLE LINGERIE",
+      "representations": 3,
+      "companies": [
+        "cmtkdvun31rr6nf2br4o71hap"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "GROUPE PRINTEMPS",
+      "representations": 9,
+      "companies": [
+        "cmtkdvvqa1s6anf2bc4v3e8e5"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "GROUPE RAUTUREAU APPLE SHOES",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2wv1ualnf2ba5xa96hn"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "GUESS",
+      "representations": 4,
+      "companies": [
+        "cmtkdvwzj1sk4nf2bc9qilm0t"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "HAST PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtmkagqn2jqwpv4x29ldqtld"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "HERMES",
+      "representations": 8,
+      "companies": [
+        "cmtjwf5mi0a6rld2b52mvdmlg"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "HÉROÏNES !",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuec1rnjnf2bufb7jic1"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "HESCHUNG",
+      "representations": 1,
+      "companies": [
+        "cmtkdvzz01tdonf2b644sxz3d"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Histoire d'Or",
+      "representations": 1,
+      "companies": [
+        "cmtmkagh72joxpv4x39t228br"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "HUGO BOSS FRANCE",
+      "representations": 10,
+      "companies": [
+        "cmtkdvubp1rmknf2buqbqgu2l"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "IBIS ROUGE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw12u1tprnf2bw7gsk5zi"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "IMPASSE DE LA DÉFENSE",
+      "representations": 1,
+      "companies": [
+        "cmtlq3u9o1lxepg2bsv9nq6ab"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "INDITEX",
+      "representations": 10,
+      "companies": [
+        "cmtpkwxds59g5pf5ls2ooxi17"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "INOUI EDITIONS",
+      "representations": 2,
+      "companies": [
+        "cmtlq3tmp1lqwpg2bjsmk71or"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "INSTITUT KARITE PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2zd1ubhnf2b4nwl7kdn"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "IRIDESCENCE BIJOUX",
+      "representations": 2,
+      "companies": [
+        "cmtp868om3rkqqq4z6mef2dsi"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "IRO",
+      "representations": 2,
+      "companies": [
+        "cmtkdvudb1rn8nf2b54by8ci1"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ISABEL MARANT",
+      "representations": 18,
+      "companies": [
+        "cmtkdvx4o1skknf2bpqfbvpnd"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ISTITUTO MARANGONI PARIS",
+      "representations": 2,
+      "companies": [
+        "cmtkdvy0b1svhnf2b0j2ruzkm"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "IZAC",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuyp1rw6nf2b3qcsj9pn"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "JACADI",
+      "representations": 1,
+      "companies": [
+        "cmtnac0wy2sd7qq5l71073l44"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "JACK GOMME",
+      "representations": 1,
+      "companies": [
+        "cmtp8690h3ronqq4zwaz2fx4l"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "JAMINI",
+      "representations": 1,
+      "companies": [
+        "cmtkdvyxg1t5jnf2bcibg8md1"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "JEAN PAUL GAULTIER",
+      "representations": 4,
+      "companies": [
+        "cmtkdvxxm1sunnf2bzy0l1xiw"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "JIMMY FAIRLY",
+      "representations": 4,
+      "companies": [
+        "cmtkdw27s1u1wnf2b2n1gh0l5"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "JM.ATELSON",
+      "representations": 1,
+      "companies": [
+        "cmtkdvy481sx0nf2b59zo3txa"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "JS MILLENIUM ENVIES",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuh21rojnf2bw6t97y39"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "JULES",
+      "representations": 1,
+      "companies": [
+        "cmtk1x1dn0067nv2bokd2qj4h"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "JULES & JENN",
+      "representations": 1,
+      "companies": [
+        "cmtkdvy7k1sy6nf2bk4odsuwu"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "JULIETTE HAS A GUN",
+      "representations": 2,
+      "companies": [
+        "cmtkdvw5w1sb6nf2b5wzr2wr3"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "JUST FACES MGMT",
+      "representations": 1,
+      "companies": [
+        "cmtnac1np2skpqq5ls26tn22y"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "KAMI",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2431u0fnf2bw7q19iji"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "KRYS",
+      "representations": 12,
+      "companies": [
+        "cmtpgj7lb3dn5qq4z3cxvzsk6"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "KSI MODE",
+      "representations": 1,
+      "companies": [
+        "cmtp868vg3rmuqq4z150o1s59"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "KSI RETAIL",
+      "representations": 9,
+      "companies": [
+        "cmtkdvuwr1rvinf2bg83fdzpf",
+        "cmtpw95zy4k0hl35mew33fqog"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "KUJTEN CACHEMIRE",
+      "representations": 2,
+      "companies": [
+        "cmtkdvufg1rnznf2byc79miie"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LAB DIP",
+      "representations": 1,
+      "companies": [
+        "cmtrup1wv4mrbpg5m25zfncj1"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LA BOUTIQUE DU COIFFEUR",
+      "representations": 8,
+      "companies": [
+        "cmtpkwyco59jmpf5l7q90nip8"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LA BRUNE ET LA BLONDE",
+      "representations": 2,
+      "companies": [
+        "cmtkdw05g1tfsnf2bsrl8uhnq"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LA COUR DES ICONES",
+      "representations": 1,
+      "companies": [
+        "cmtlq3u9f1lxapg2b3kvsu7yg"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LA FEE MARABOUTEE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2em1u4bnf2bjlkcqi1x"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LA LUEUR DE L'AUBE",
+      "representations": 1,
+      "companies": [
+        "cmtlq3u5d1lwapg2bthfm7wxa"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LA MAISON GOOSSENS",
+      "representations": 1,
+      "companies": [
+        "cmtkdvxbq1snanf2bwybrb13w"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LA MARQUE 64",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2hy1u5jnf2bswdyg70w"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LA MODE VINTAGE",
+      "representations": 1,
+      "companies": [
+        "cmtpw96kd4k4wl35mg0lw9202"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LANCEL",
+      "representations": 3,
+      "companies": [
+        "cmtkdvxgl1soynf2buwtrw9nd"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LANVIN",
+      "representations": 2,
+      "companies": [
+        "cmtkdvurw1rthnf2b8qwacb78"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LA PELUCHERIE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw30x1ubznf2b2tv15nro"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LA RÉPONSE D",
+      "representations": 1,
+      "companies": [
+        "cmtkdw0141tecnf2bjamzjotg"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "L'ATELIER D'AMAYA",
+      "representations": 7,
+      "companies": [
+        "cmtkdvw4s1sarnf2b4zx3q8i2"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LAURE DE SAGAZAN",
+      "representations": 1,
+      "companies": [
+        "cmtkdw13f1tpznf2bkuzfx1cy"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LAURENCE BRAS",
+      "representations": 1,
+      "companies": [
+        "cmtkdw0sl1tmgnf2b0zlevsmx"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LE COQ SPORTIF",
+      "representations": 1,
+      "companies": [
+        "cmtp868xg3rngqq4ztaue6dkx"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LEFTIES",
+      "representations": 2,
+      "companies": [
+        "cmtpkx0ca59qgpf5lohfivgwj"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LE GUILLOU HABILLEUR",
+      "representations": 1,
+      "companies": [
+        "cmtkdvx661sl4nf2bqq3m1mv6"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LEICA CAMERA",
+      "representations": 1,
+      "companies": [
+        "cmtkdw25a1u0ynf2b6w2tsp6l"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LE JARDIN PARFUMÉ",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2r81u8jnf2boai2m5yp"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LEMAIRE",
+      "representations": 1,
+      "companies": [
+        "cmtkdvvtj1s7lnf2bo95yg5p5"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LE PALAIS DES THÉS",
+      "representations": 1,
+      "companies": [
+        "cmtkdvxbf1sn6nf2b5o6qvo6c"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LESAGE PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdvzfu1t7snf2bayrckjm0"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LES POSSIBLES",
+      "representations": 1,
+      "companies": [
+        "cmtkdw24s1u0qnf2bvirz8v1y"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LE TANNEUR & CIE",
+      "representations": 3,
+      "companies": [
+        "cmtkdvy1j1svxnf2bhwmol39o"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LE TEMPS DES CERISES",
+      "representations": 2,
+      "companies": [
+        "cmtpkx0ab59q1pf5lc6mahy5u"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LFP EMPLOI MODE",
+      "representations": 6,
+      "companies": [
+        "cmtkdw0ny1tkynf2bzqvvh2d1"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "L'HOMME INVISIBLE",
+      "representations": 1,
+      "companies": [
+        "cmtkdvy381swpnf2bfeu4pym4"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LIBERTY'S MAGAZINE",
+      "representations": 1,
+      "companies": [
+        "cmtoq4zda2zy7qq4zedf2gprm"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LIPAULT (GROUPE SAMSONITE)",
+      "representations": 1,
+      "companies": [
+        "cmtkdvy4n1sx8nf2bvxwv79tb"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LIVY",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2bs1u3jnf2bcaxbjlnn"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LM LULU",
+      "representations": 1,
+      "companies": [
+        "cmtkdvur21rt5nf2baqoyw9yb"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LONGCHAMP",
+      "representations": 3,
+      "companies": [
+        "cmtkdvuvo1rv2nf2bol2swzih"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "L'OREAL GROUP",
+      "representations": 3,
+      "companies": [
+        "cmtpkwxjp59hcpf5lc3ggp4ii"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LOUISE MISHA",
+      "representations": 1,
+      "companies": [
+        "cmtlyez4l008oqf5kvnv9cl9o"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LTD INTERNATIONAL",
+      "representations": 19,
+      "companies": [
+        "cmtkdvvnl1s56nf2b4wguve1b",
+        "cmtrup1pw4mnupg5mp5zf8mds"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LUDOVIC WINTERSTAN",
+      "representations": 1,
+      "companies": [
+        "cmtoq4zcm2zxzqq4zh30kfu3u"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LUMYA STUDIO",
+      "representations": 2,
+      "companies": [
+        "cmtkdvy8m1syinf2bzhu09kjb"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LUNAS FRANCE",
+      "representations": 1,
+      "companies": [
+        "cmtkdvzq11tavnf2bkvbw63up"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LVMH FRAGRANCE BRANDS",
+      "representations": 5,
+      "companies": [
+        "cmtk48fsk1cjbny2bgajhyzgg"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MAIER",
+      "representations": 1,
+      "companies": [
+        "cmtnac0wi2sd3qq5l5b8hevds"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MAILLE CREATION",
+      "representations": 2,
+      "companies": [
+        "cmtkdvueu1rnrnf2bbkz1lgzd"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MAISON ANDI",
+      "representations": 1,
+      "companies": [
+        "cmtkdvvis1s3wnf2b7wk22ppu"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MAISON AYAKA",
+      "representations": 1,
+      "companies": [
+        "cmtlq3u6a1lwhpg2b8sg7z76z"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MAISON BM",
+      "representations": 1,
+      "companies": [
+        "cmtkdvy7s1syanf2be6gcepur"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MAISON LEMARIÉ",
+      "representations": 1,
+      "companies": [
+        "cmtnac1o62skxqq5lhnqhy2b1"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MAISON LEMOINE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2ts1u9fnf2btar9870t"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MAISON LOUIS PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2391u04nf2bmyn0xmwq"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MAISON MONTAGUT",
+      "representations": 1,
+      "companies": [
+        "cmtkdvyhn1t1gnf2bfb5inlv1"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MAISON SHIRA",
+      "representations": 1,
+      "companies": [
+        "cmtkdw20l1tz9nf2b3oz671po"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MANGO",
+      "representations": 11,
+      "companies": [
+        "cmtn89596205lqq5l0deggb1g"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MANG PRODUCTION",
+      "representations": 1,
+      "companies": [
+        "cmtkdw04k1tfgnf2b0ya3jxzl"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MANPOWER CABINET DE RECRUTEMENT COMMERCE MODE LUXE",
+      "representations": 4,
+      "companies": [
+        "cmtkdvuso1rttnf2b8qqswto4"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MANPOWER COUTURE",
+      "representations": 2,
+      "companies": [
+        "cmtlq3tz11lubpg2bc7bxlddi"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MANPOWER COUTURE MODE ET LUXE",
+      "representations": 6,
+      "companies": [
+        "cmtkdvxic1spmnf2bszodb3wk"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MARCO RIBEIRO",
+      "representations": 2,
+      "companies": [
+        "cmtlq3uda1lyopg2b0zt5wagh"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MARELLA",
+      "representations": 1,
+      "companies": [
+        "cmtk21o7a09qvnv2be8azetpy"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MAX MARA",
+      "representations": 1,
+      "companies": [
+        "cmtkdw1a51ts3nf2btqrq8c49"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MERCI",
+      "representations": 2,
+      "companies": [
+        "cmtnac1b62shqqq5lbyiyzfd1"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MIDNIGHT THEORY",
+      "representations": 1,
+      "companies": [
+        "cmtp868hc3rivqq4zf7lktov5"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MIMI & COOKIE",
+      "representations": 1,
+      "companies": [
+        "cmtp868zr3robqq4z6ubcm4n7"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MINIMEPARIS",
+      "representations": 5,
+      "companies": [
+        "cmtkdvydr1szwnf2b9lkp3v4c"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MINOÏ",
+      "representations": 3,
+      "companies": [
+        "cmtkdw00x1te8nf2bums86jpf"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MIRA BELLEPARIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdvzpp1tarnf2bv5wtdbxo"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MISERICORDIA",
+      "representations": 1,
+      "companies": [
+        "cmtnac1u52sncqq5lmrh9nt9d"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MODELOR COUTURE",
+      "representations": 8,
+      "companies": [
+        "cmtp8689s3rhiqq4zkjut95yo"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MODELOR RETAIL",
+      "representations": 1,
+      "companies": [
+        "cmtpw96v64k7el35m53n2f1ce"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MODELOR SERVICE",
+      "representations": 3,
+      "companies": [
+        "cmtp869213rpfqq4zz8l0wssq"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MODESIGN",
+      "representations": 1,
+      "companies": [
+        "cmtkdw0dv1thtnf2bwq90fpar"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MOLLI",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2q41u83nf2b9le4oqoy"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MOLLY BRACKEN",
+      "representations": 1,
+      "companies": [
+        "cmtkdvujt1rpvnf2bgiok2qi8"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MOONYOUNGHEE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2eu1u4fnf2bkrypzdc7"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MORGAN",
+      "representations": 13,
+      "companies": [
+        "cmtkdvxc91sninf2br3plbw5g"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MOSSI",
+      "representations": 1,
+      "companies": [
+        "cmtrup2gm4mw2pg5msl9kb7zl"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MPTW INTERNATIONAL",
+      "representations": 1,
+      "companies": [
+        "cmtp868y43rnoqq4zl4ymbpau"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MUM OF",
+      "representations": 1,
+      "companies": [
+        "cmtkdvzz91tdsnf2bdh98logm"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MVO STUDIO",
+      "representations": 1,
+      "companies": [
+        "cmtkdvydh1szsnf2bd1h06uo3"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "MYLO CONCEPT STORE",
+      "representations": 1,
+      "companies": [
+        "cmtrup2bo4muhpg5m0gvq0etc"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "NABOU PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdw2v41u9vnf2bn37sk4r5"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "NACH",
+      "representations": 3,
+      "companies": [
+        "cmtkdw0sv1tmknf2b27tk2k1w"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "NEW BALANCE",
+      "representations": 1,
+      "companies": [
+        "cmtp25hct0fl7qq4zwb6y1cby"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "NIKE",
+      "representations": 2,
+      "companies": [
+        "cmtm8oy381hbdpv5jzsp4t1a8"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "NOUKTAH",
+      "representations": 1,
+      "companies": [
+        "cmtp868uw3rmnqq4z9f9u7z2p"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "NOUR HAMMOUR",
+      "representations": 1,
+      "companies": [
+        "cmtnac1pd2slhqq5lddztuhbt"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "OCARAT",
+      "representations": 2,
+      "companies": [
+        "cmtkdvx7q1slqnf2b1yd4d54w"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ODACE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw20c1tz5nf2bn3qj97qi"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ODAEL",
+      "representations": 2,
+      "companies": [
+        "cmtkdvzeg1t7dnf2bi47pw33b"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "OPALITE MUSIC",
+      "representations": 1,
+      "companies": [
+        "cmtkdvyl11t2fnf2bhs0ofndn"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "OPTIC 2000",
+      "representations": 9,
+      "companies": [
+        "cmtpgj89w3dxpqq4z58l2gs53"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PACO RABANNE MODE",
+      "representations": 2,
+      "companies": [
+        "cmtkdvxx41sufnf2b1rgv1kd1"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PALMER INTERNATIONAL",
+      "representations": 1,
+      "companies": [
+        "cmtkdvv0b1rwunf2buofei3le"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PARAMOUR",
+      "representations": 1,
+      "companies": [
+        "cmtkdw0f81tidnf2b7vv03ul0"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PARFUMS CHRISTIAN DIOR",
+      "representations": 16,
+      "companies": [
+        "cmtk48ead1bvtny2br5o6wk5j"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PERCASSI",
+      "representations": 11,
+      "companies": [
+        "cmtkdvyol1t39nf2bydq6zztr"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PERRIER COMMUNICATION",
+      "representations": 1,
+      "companies": [
+        "cmtkdw04c1tfcnf2bhdjdv9g7"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PIAPARIS",
+      "representations": 1,
+      "companies": [
+        "cmtkdvukc1rq3nf2b2xq90dvh"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PIMKIE",
+      "representations": 4,
+      "companies": [
+        "cmtpkwyaf59j6pf5ljou0p1ha"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "POINT PLUME",
+      "representations": 1,
+      "companies": [
+        "cmtnac11o2se4qq5l80cz19jg"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "POIRAY INTERNATIONAL",
+      "representations": 3,
+      "companies": [
+        "cmtkdvxip1spqnf2bzqsn7awe",
+        "cmtpw96kt4k50l35m5ickofp2"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "POSTURE FASHION AGENCY",
+      "representations": 2,
+      "companies": [
+        "cmtkdvyfy1t0snf2bgtnt9x0y"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PRADA",
+      "representations": 2,
+      "companies": [
+        "cmtp8686e3rh3qq4z7tykspax"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PR CONSULTING PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtp868u13rmbqq4ztjczy5br"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PRINCESSE TAM TAM",
+      "representations": 1,
+      "companies": [
+        "cmtkdw36f1udznf2b2l37ywkp"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PROMOD",
+      "representations": 1,
+      "companies": [
+        "cmtk1x1ns0072nv2bytyhwuta"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PROMOD - MAGASIN",
+      "representations": 2,
+      "companies": [
+        "cmtpkx0bb59q9pf5le0vx07cg"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PROTOTEXTILE",
+      "representations": 2,
+      "companies": [
+        "cmtkdvztw1tc8nf2bvomrp7jo"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "RALPH LAUREN",
+      "representations": 3,
+      "companies": [
+        "cmtkdvy3z1swwnf2bo3y8vb22"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "RECIFE PARIS",
+      "representations": 2,
+      "companies": [
+        "cmtkdw1xt1ty6nf2b4dyn4u5k"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "REDLINE",
+      "representations": 2,
+      "companies": [
+        "cmtrup2zo4n0xpg5m00e2d0s0"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "REPETTO",
+      "representations": 3,
+      "companies": [
+        "cmtkdvuig1rp7nf2bffwmb758"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "RIM PARFUM",
+      "representations": 6,
+      "companies": [
+        "cmtp8696z3rquqq4zlhwfc365"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "RIVER WOODS",
+      "representations": 1,
+      "companies": [
+        "cmtkdvzqj1taznf2blun1ebp0"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ROSEANNA",
+      "representations": 1,
+      "companies": [
+        "cmtnac1oo2sl5qq5lp9q1h0mz"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SAMAYA",
+      "representations": 4,
+      "companies": [
+        "cmtkdvuci1rmwnf2bcm602sh6"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SAMSOE SAMSOE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw00e1te4nf2bfthmmfoh"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SAS LA RUCHE SKINCARE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw0b51tgvnf2ba1ilmb9j"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SCARLETTE ATELIERS",
+      "representations": 1,
+      "companies": [
+        "cmtlq3u3c1lvnpg2bs3iku811"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SEKI ARTISANAL",
+      "representations": 1,
+      "companies": [
+        "cmto8w8vd2xrsqq4ztjyb9i24"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SEPTIÈME LARGEUR CHAUSSEUR",
+      "representations": 1,
+      "companies": [
+        "cmtp868pp3rl6qq4zejl3mpkw"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SESSÙN",
+      "representations": 4,
+      "companies": [
+        "cmtjwf6tz0a8dld2bumichh9u"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SÉZANE",
+      "representations": 3,
+      "companies": [
+        "cmtkdvw5m1sb2nf2bvkqxcjar"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SHISEIDO",
+      "representations": 2,
+      "companies": [
+        "cmtpkwydu59jupf5lu9u2aoxk"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SHOWROOM GROUP",
+      "representations": 5,
+      "companies": [
+        "cmtpkwywl59llpf5lk66a4sjp"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SH PARIS",
+      "representations": 1,
+      "companies": [
+        "cmtp8690q3rorqq4zjbvm55ok"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SIGAL",
+      "representations": 1,
+      "companies": [
+        "cmtkdvzhn1t8enf2ba10y8tq3"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SINTEL",
+      "representations": 26,
+      "companies": [
+        "cmtkdvumu1rr2nf2bqcmyma7r"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SOPHIE D'AGON",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuiy1rpfnf2bkl5uui4v"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SOPHIE MALLEBRANCHE®",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuj41rpjnf2b4ho0y3oh"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "STEAMONE",
+      "representations": 1,
+      "companies": [
+        "cmtkdvujm1rprnf2bxs0f0zgm"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "STEPHANE HUMBERT LUCAS",
+      "representations": 1,
+      "companies": [
+        "cmtkdvw9g1scinf2bsayuyht9"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "STEVEN PASSARO",
+      "representations": 1,
+      "companies": [
+        "cmtnac1i32skaqq5lc9hsiv77"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SUD EXPRESS",
+      "representations": 15,
+      "companies": [
+        "cmtkdvwy01sjhnf2bsr141joy"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SUNGLASS HUT FRANCE",
+      "representations": 5,
+      "companies": [
+        "cmtkdvyob1t35nf2bp92av46f"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SUPERGA BEAUTY",
+      "representations": 1,
+      "companies": [
+        "cmtkdw24k1u0mnf2b541g84d9"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "SYLVIA TOLEDANO",
+      "representations": 1,
+      "companies": [
+        "cmtkdw1vi1txjnf2b67ntr5ef"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "TARA JARMON (GROUPE BRAND SISTERS)",
+      "representations": 2,
+      "companies": [
+        "cmtkdw1ge1ttnnf2bf6qlqpws"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "TARATATA BIJOUX",
+      "representations": 1,
+      "companies": [
+        "cmtnac12c2se8qq5l9vr4jla6"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "TARTINE ET CHOCOLAT",
+      "representations": 1,
+      "companies": [
+        "cmtkdvvjy1s4cnf2bs9ugdulp"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "TEDDY SMITH",
+      "representations": 1,
+      "companies": [
+        "cmtkdvyiy1t1nnf2bk8opeofc"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "TERAN CONDE PARIS",
+      "representations": 3,
+      "companies": [
+        "cmtkdw3061ubonf2be8bqrbv7"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "THALGO",
+      "representations": 1,
+      "companies": [
+        "cmtnac1hs2sk6qq5lduz9cj80"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "THE FRANKIE SHOP",
+      "representations": 3,
+      "companies": [
+        "cmtkdvy4x1sxcnf2b93cyn46y"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "THE KORNER",
+      "representations": 1,
+      "companies": [
+        "cmtkdvui71rp3nf2breei6paw"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "THE ROOM",
+      "representations": 1,
+      "companies": [
+        "cmtkdvykb1t23nf2bllykrw8n"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "THEUNISSEN",
+      "representations": 1,
+      "companies": [
+        "cmtkdvyjo1t1vnf2bfl4fa7ez"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "THOMAS SABO",
+      "representations": 1,
+      "companies": [
+        "cmtlyjbk307y0qf5kj62terkl"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "TRESSÉ",
+      "representations": 3,
+      "companies": [
+        "cmtkdvxyq1suznf2b27jfskv5"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "UNIVERS PRESSE",
+      "representations": 1,
+      "companies": [
+        "cmtkdw18p1trsnf2bp3mqm1u4"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "UNODE50",
+      "representations": 1,
+      "companies": [
+        "cmtkdvuha1ronnf2bx75dseo4"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "URBN",
+      "representations": 1,
+      "companies": [
+        "cmtpkx0dp59qspf5lz9252szw"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "VAILLANT STUDIO",
+      "representations": 1,
+      "companies": [
+        "cmtkdvwju1sfonf2bhwfvc49o"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "VALERIAN HUGHES PARIS",
+      "representations": 3,
+      "companies": [
+        "cmtkdw0yx1toonf2but44npz9"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "VANESSA BRUNO",
+      "representations": 3,
+      "companies": [
+        "cmtkdvugb1ro7nf2b00w12jbk"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "VANESSA SPOSI",
+      "representations": 1,
+      "companies": [
+        "cmtkdw36p1ue3nf2b971lcq8d"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "VARIOUS ARCHIVES",
+      "representations": 2,
+      "companies": [
+        "cmtp868o43rkiqq4zhga3pvg5"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "V DE VINSTER",
+      "representations": 1,
+      "companies": [
+        "cmtkdw1341tpvnf2bah13iwjl"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "VERONICA BEARD",
+      "representations": 1,
+      "companies": [
+        "cmtlykan40ad4qf5ki13taw2h"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "VESTIAIRE COLLECTIVE",
+      "representations": 1,
+      "companies": [
+        "cmtp1wba602d3qq4zgo9r0gp7"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "VESTIAIRE DES PARISIENNES",
+      "representations": 1,
+      "companies": [
+        "cmtoq4zbf2zxoqq4zm9jn67c0"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "VICOMTE-A",
+      "representations": 1,
+      "companies": [
+        "cmtkdw0db1thlnf2bzpiszgpf"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "VIVIENNE WESTWOOD",
+      "representations": 1,
+      "companies": [
+        "cmtk1x36n00cgnv2bhktbf88p"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "VOILA ST BARTH",
+      "representations": 1,
+      "companies": [
+        "cmtkdvv3c1rxynf2b6cs7vafv"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "WEILL",
+      "representations": 1,
+      "companies": [
+        "cmtkdw0ak1tgnnf2bqedvcp6r"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "WINNING SEARCH",
+      "representations": 1,
+      "companies": [
+        "cmtkdw3ek1ugmnf2b0qrb3rix"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "WOOYOUNGMI",
+      "representations": 1,
+      "companies": [
+        "cmtp868ul3rmjqq4zy6kzyfzn"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "WOP WORLD OF POP",
+      "representations": 1,
+      "companies": [
+        "cmtkdvyjw1t1znf2bwjr24yz0"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "WSN DEVELOPPEMENT",
+      "representations": 1,
+      "companies": [
+        "cmtkdvxcr1snqnf2bihy71s5a"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "YVES ROCHER",
+      "representations": 3,
+      "companies": [
+        "cmtpkwz1p59mppf5ljfnyi3dj"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "YVES SALOMON",
+      "representations": 2,
+      "companies": [
+        "cmtlq3uao1lxppg2bltvzk24o"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ZADIG & VOLTAIRE",
+      "representations": 8,
+      "companies": [
+        "cmtkdvuvh1ruynf2bgauxrzqm"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ZADIG&VOLTAIRE",
+      "representations": 4,
+      "companies": [
+        "cmtkdvuvh1ruynf2bgauxrzqm"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ZAPA (GROUPE BRAND SISTERS)",
+      "representations": 2,
+      "companies": [
+        "cmtkdvyn41t2ynf2b4k624zyy"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ZIMMERMANN",
+      "representations": 1,
+      "companies": [
+        "cmtkdw04w1tfknf2bluc0dg4u"
+      ]
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "ZUHAIR MURAD",
+      "representations": 1,
+      "companies": [
+        "cmtkdw1281tpjnf2blnu9pqbo"
+      ]
+    },
+    {
+      "sourceKey": "funky-buddha",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "ALTEX S.A.",
+      "representations": 32,
+      "companies": [
+        "cmtlyicmd05ezqf5kga7az5mj"
+      ]
+    },
+    {
+      "sourceKey": "globus",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Magazine zum Globus AG",
+      "representations": 23,
+      "companies": [
+        "cmtpivf1805zdpf5l7uqlcm4v"
+      ]
+    },
+    {
+      "sourceKey": "helena-rubinstein-8",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "L'Oréal Groupe",
+      "representations": 69,
+      "companies": [
+        "cmtjwf6za08pxo72be8uvm8kn",
+        "cmtke3vth02xjlp2b1q64xylk"
+      ]
+    },
+    {
+      "sourceKey": "hermes",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Hermès",
+      "representations": 569,
+      "companies": [
+        "cmtjwf5mi0a6rld2b52mvdmlg"
+      ]
+    },
+    {
+      "sourceKey": "hm-group",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "H&M Group",
+      "representations": 1836,
+      "companies": [
+        "cmtp46ok11vbvqq4zlowazudi"
+      ]
+    },
+    {
+      "sourceKey": "innisfree",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Innisfree",
+      "representations": 1,
+      "companies": [
+        "cmtlyepmq001yqf5k9vuzx4go"
+      ]
+    },
+    {
+      "sourceKey": "it-s-fashion",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "It's Fashion",
+      "representations": 1,
+      "companies": [
+        "cmtlyepx70023qf5kvs9hngwv"
+      ]
+    },
+    {
+      "sourceKey": "joe-fresh",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Joe Fresh",
+      "representations": 3,
+      "companies": [
+        "cmtlyf6dr00erqf5k71exi0hj"
+      ]
+    },
+    {
+      "sourceKey": "jules",
+      "path": "entity.name",
+      "role": "ENTITY",
+      "label": "Jules",
+      "representations": 11,
+      "companies": [
+        "cmtk1x1dn0067nv2bokd2qj4h"
+      ]
+    },
+    {
+      "sourceKey": "kastner-ohler",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Kastner &amp; Öhler Online Shop",
+      "representations": 4,
+      "companies": [
+        "cmtlyf6zn00f4qf5k07p5lyfi"
+      ]
+    },
+    {
+      "sourceKey": "kiabi",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Kiabi",
+      "representations": 295,
+      "companies": [
+        "cmtjwf5lj0a6nld2bnolo0jgg"
+      ]
+    },
+    {
+      "sourceKey": "kidzart",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "KidzArt",
+      "representations": 1,
+      "companies": [
+        "cmtlyeqdv002dqf5kb8jj1p9z"
+      ]
+    },
+    {
+      "sourceKey": "la-redoute-talentview",
+      "path": "entity.name",
+      "role": "ENTITY",
+      "label": "La Redoute",
+      "representations": 4,
+      "companies": [
+        "cmtp1ugf000qsqq4ziso5gxms"
+      ]
+    },
+    {
+      "sourceKey": "la-redoute-talentview",
+      "path": "entity.name",
+      "role": "ENTITY",
+      "label": "La Redoute.",
+      "representations": 1,
+      "companies": [
+        "cmtp1ugf000qsqq4ziso5gxms"
+      ]
+    },
+    {
+      "sourceKey": "lumentee",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Lumentee",
+      "representations": 5,
+      "companies": [
+        "cmtlyfryv00ygqf5kv4lecpr2"
+      ]
+    },
+    {
+      "sourceKey": "luxexperience",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "LuxExperience",
+      "representations": 57,
+      "companies": [
+        "cmtpiwqt90c84pf5lmyf2ej5r"
+      ]
+    },
+    {
+      "sourceKey": "madame-figaro",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Groupe Figaro",
+      "representations": 12,
+      "companies": [
+        "cmtlyh1em02zwqf5kv0mxy3c6"
+      ]
+    },
+    {
+      "sourceKey": "marc-o-polo",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Marc O’Polo",
+      "representations": 44,
+      "companies": [
+        "cmtlyhuzx03y3qf5kd8pwex6t"
+      ]
+    },
+    {
+      "sourceKey": "marella",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Max Mara Fashion Group",
+      "representations": 201,
+      "companies": [
+        "cmtk21o7a09qvnv2be8azetpy"
+      ]
+    },
+    {
+      "sourceKey": "miu-miu",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "MIU",
+      "representations": 7,
+      "companies": [
+        "cmtlyg43c01i0qf5knvlnwias"
+      ]
+    },
+    {
+      "sourceKey": "monsieur-tshirt",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Monsieur TSHIRT",
+      "representations": 7,
+      "companies": [
+        "cmtlyg4ad01itqf5krlev71zk"
+      ]
+    },
+    {
+      "sourceKey": "mvmt",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "MVMT",
+      "representations": 1,
+      "companies": [
+        "cmtlyerss0036qf5k9zsq1hgj"
+      ]
+    },
+    {
+      "sourceKey": "nars",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Shiseido Americas Corporation",
+      "representations": 53,
+      "companies": [
+        "cmtke3l8a020rlp2bxmnyau6y"
+      ]
+    },
+    {
+      "sourceKey": "oniverse",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Oniverse",
+      "representations": 40,
+      "companies": [
+        "cmtne0bra03erqq4z1zo8emif"
+      ]
+    },
+    {
+      "sourceKey": "oska",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "OSKA",
+      "representations": 7,
+      "companies": [
+        "cmtlyg8ly01kfqf5kfrj65rrx"
+      ]
+    },
+    {
+      "sourceKey": "pandora-talenthub",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Pandora",
+      "representations": 2077,
+      "companies": [
+        "cmtjwf6ge08pfo72b7oqm8q3c"
+      ]
+    },
+    {
+      "sourceKey": "parco",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "PARCO",
+      "representations": 1,
+      "companies": [
+        "cmtlyesg1003lqf5kpsykrexc"
+      ]
+    },
+    {
+      "sourceKey": "peacocks",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Peacocks",
+      "representations": 25,
+      "companies": [
+        "cmtlyiyg0070yqf5k4jkqsmce"
+      ]
+    },
+    {
+      "sourceKey": "penningtons",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Reitmans (Canada) Ltée/Ltd",
+      "representations": 359,
+      "companies": [
+        "cmtm7dvh50vl7pv5jsetivsoz"
+      ]
+    },
+    {
+      "sourceKey": "petit-bateau",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Petit Bateau",
+      "representations": 53,
+      "companies": [
+        "cmtk1xrp9020anv2bx7tlltw0"
+      ]
+    },
+    {
+      "sourceKey": "pied-de-biche",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Pied de Biche",
+      "representations": 6,
+      "companies": [
+        "cmtlyfyn6018yqf5kzdk3yvi7"
+      ]
+    },
+    {
+      "sourceKey": "point-zero",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Point Zero",
+      "representations": 1,
+      "companies": [
+        "cmtlyesum003uqf5ksjtz26r5"
+      ]
+    },
+    {
+      "sourceKey": "primark",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Primark",
+      "representations": 1069,
+      "companies": [
+        "cmtn76cbr1guhqq5lw7243y4e"
+      ]
+    },
+    {
+      "sourceKey": "promod",
+      "path": "entity.name",
+      "role": "ENTITY",
+      "label": "Promod",
+      "representations": 6,
+      "companies": [
+        "cmtk1x1ns0072nv2bytyhwuta"
+      ]
+    },
+    {
+      "sourceKey": "promod",
+      "path": "entity.name",
+      "role": "ENTITY",
+      "label": "Promod - magasin",
+      "representations": 15,
+      "companies": [
+        "cmtk1x1ns0072nv2bytyhwuta"
+      ]
+    },
+    {
+      "sourceKey": "psycho-bunny",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Psycho Bunny",
+      "representations": 15,
+      "companies": [
+        "cmtlygsbd02dkqf5kpbjp81jd"
+      ]
+    },
+    {
+      "sourceKey": "pvh",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "PVH",
+      "representations": 1397,
+      "companies": [
+        "cmtpjsp7t2oscpf5llnw44g9z"
+      ]
+    },
+    {
+      "sourceKey": "sacoor-brothers",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Sacoor Brothers",
+      "representations": 1,
+      "companies": [
+        "cmtlyett00044qf5kvrvom4yi"
+      ]
+    },
+    {
+      "sourceKey": "salomon",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Salomon",
+      "representations": 87,
+      "companies": [
+        "cmtlyn3er0g8jqf5k5deva229"
+      ]
+    },
+    {
+      "sourceKey": "sandro",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "SMCP",
+      "representations": 578,
+      "companies": [
+        "cmtk29nb80m1dnv2bg5xl385h",
+        "cmtkf06ej0lqap22bicqm90nc",
+        "cr57e9ef0f339cdfa95081d842",
+        "cr5c9308138c86e24341e51b89",
+        "crcafaa7a4ec667cf18ea56024"
+      ]
+    },
+    {
+      "sourceKey": "selfridges",
+      "path": "hiringOrganization.name",
+      "role": "HIRING_ORGANIZATION",
+      "label": "Selfridges",
+      "representations": 74,
+      "companies": [
+        "cmtpiwcqo0apdpf5l5u32983f"
+      ]
+    },
+    {
+      "sourceKey": "sessun",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Sessùn",
+      "representations": 31,
+      "companies": [
+        "cmtjwf6tz0a8dld2bumichh9u"
+      ]
+    },
+    {
+      "sourceKey": "sisley",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "SISLEY",
+      "representations": 31,
+      "companies": [
+        "cmtlyja1p07utqf5kdf0s34b3"
+      ]
+    },
+    {
+      "sourceKey": "taylor-stitch",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Taylor Stitch",
+      "representations": 2,
+      "companies": [
+        "cmtlyf1rt00axqf5ki70zmk2r"
+      ]
+    },
+    {
+      "sourceKey": "united-colors-of-benetton",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "United colors of benetton",
+      "representations": 1,
+      "companies": [
+        "cmtlyeuiq004jqf5k3rccw1vd"
+      ]
+    },
+    {
+      "sourceKey": "velvet-canyon",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Velvet Canyon",
+      "representations": 1,
+      "companies": [
+        "cmtlyeusm004oqf5kcmhd21q2"
+      ]
+    },
+    {
+      "sourceKey": "visionlab",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "Visionlab",
+      "representations": 1,
+      "companies": [
+        "cmtlyev26004tqf5k2u68ppc5"
+      ]
+    },
+    {
+      "sourceKey": "wehkamp",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "wehkamp",
+      "representations": 3,
+      "companies": [
+        "cmtlyfb8300iqqf5kk13pvuds"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Aime",
+      "representations": 8,
+      "companies": [
+        "cmtk1wz0k003dnv2bwzphy7tt"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Amantys",
+      "representations": 1,
+      "companies": [
+        "cmtpyrti4002p3ncq64cyetrk"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "American Vintage",
+      "representations": 20,
+      "companies": [
+        "cmtjwp18i065ym72bg5ksg9ol"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Antipodes Médical",
+      "representations": 3,
+      "companies": [
+        "cmtpyry8w004j3ncqvpj2k5vd"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "A.P.C.",
+      "representations": 18,
+      "companies": [
+        "cmtkdvwgc1sednf2bnfwm5tv7"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Armand Thiery",
+      "representations": 10,
+      "companies": [
+        "cmtk1wz6d0046nv2bucbg8xh9"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Asphalte",
+      "representations": 9,
+      "companies": [
+        "cmtk1x2e5009znv2bt1564w1s"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "ATELIER 15",
+      "representations": 4,
+      "companies": [
+        "cmtpys3cg006n3ncqlstzadvs"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Aubade Paris",
+      "representations": 24,
+      "companies": [
+        "cmtk1xdjg0176nv2b70ayaadr",
+        "cmtlyiz3m076kqf5kegty1y42"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Balzac Paris",
+      "representations": 21,
+      "companies": [
+        "cmtpysj9l00e13ncqrmgfrbo0"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "ba&sh",
+      "representations": 38,
+      "companies": [
+        "cmtjwp1bd0665m72bmgtojhlh"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Bettina",
+      "representations": 5,
+      "companies": [
+        "cmtpysoay00gt3ncqcw6fjkre"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "BIOLOGIQUE RECHERCHE",
+      "representations": 8,
+      "companies": [
+        "cmtpysplz00hi3ncqxjsc3vfv"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Bleu Libellule",
+      "representations": 11,
+      "companies": [
+        "cmtpysr3a00ic3ncq4do9xp6s"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Blissim",
+      "representations": 1,
+      "companies": [
+        "cmtpystqz00jv3ncqf1u3mcyq"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Bogoods",
+      "representations": 1,
+      "companies": [
+        "cmtpystyv00k03ncqkpybv0gh"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Brut Clothing",
+      "representations": 1,
+      "companies": [
+        "cmtpys46400723ncqe1sx61p5"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "CABAIA",
+      "representations": 4,
+      "companies": [
+        "cmtlyg0wt01d5qf5k13fihscd"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Call It By Your Name",
+      "representations": 1,
+      "companies": [
+        "cmtpysv6j00km3ncq50dc3cg0"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Charlotte Tilbury",
+      "representations": 17,
+      "companies": [
+        "cmtk1x7nm00ntnv2bzsidjrg9"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Choose",
+      "representations": 5,
+      "companies": [
+        "cmtpytzgb011p3ncqttiwnk6u"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Collector Square",
+      "representations": 4,
+      "companies": [
+        "cmtkdvxl61sqgnf2bhklqiqd8"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Columbia Sportswear Company",
+      "representations": 5,
+      "companies": [
+        "cmtlyfg6v00nqqf5k929kj41w"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Diptyque paris",
+      "representations": 27,
+      "companies": [
+        "cmtlyj6mk07leqf5kn4ipgxhk"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Embryolisse",
+      "representations": 3,
+      "companies": [
+        "cmtk1wu5l000bnv2by772ury1"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "ERBORIAN INTERNATIONAL",
+      "representations": 1,
+      "companies": [
+        "cmtt936q33vgnmy0193xrdzxy"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "ERES",
+      "representations": 2,
+      "companies": [
+        "cmtk1wuf7000pnv2bt7jfac3t"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Faguo",
+      "representations": 9,
+      "companies": [
+        "cmtlyghjc01zzqf5k2a95m27g"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Figaret",
+      "representations": 2,
+      "companies": [
+        "cmtkdvv5c1ryunf2b97b3chj5"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "FRNCH",
+      "representations": 1,
+      "companies": [
+        "cmtpyugfx01713ncq2gq28pv8"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "FROM FUTURE",
+      "representations": 12,
+      "companies": [
+        "cmtkdvyvj1t4unf2bw0iei77m"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Fusalp",
+      "representations": 18,
+      "companies": [
+        "cmtlyicya05h8qf5kra05oe95"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Groupe Clarins",
+      "representations": 6,
+      "companies": [
+        "cmtk1xmf601msnv2bnv9cn2rz"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Groupe Rocher",
+      "representations": 19,
+      "companies": [
+        "cmtpyux0801di3ncqqxwcy7ut"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "HADDAD BRANDS EUROPE",
+      "representations": 11,
+      "companies": [
+        "cmtpyv1g501fq3ncqff9ifdmu"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Hast",
+      "representations": 2,
+      "companies": [
+        "cmtpyv4mn01gz3ncqigpri78n"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Hermès",
+      "representations": 608,
+      "companies": [
+        "cmtjwf5mi0a6rld2b52mvdmlg"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Hindbag",
+      "representations": 5,
+      "companies": [
+        "cmtlyfr1600xaqf5kej8v3ztx"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Histoire d'Or",
+      "representations": 57,
+      "companies": [
+        "cmtmkagh72joxpv4x39t228br"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "In Haircare",
+      "representations": 4,
+      "companies": [
+        "cmtlq3uds1lywpg2b7gowhkg4"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Inuwet",
+      "representations": 1,
+      "companies": [
+        "cmtpz11xf02yt3ncqlxog52yz"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Invisible Collection",
+      "representations": 2,
+      "companies": [
+        "cmtpz5jvv04xg3ncq4p1o4uik"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "ISOTONER",
+      "representations": 1,
+      "companies": [
+        "cmtpz127v02yy3ncqo8zgczgv"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "IZIPIZI",
+      "representations": 3,
+      "companies": [
+        "cmtpz12gd02z33ncqopqskfr3"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Jérôme Dreyfuss",
+      "representations": 1,
+      "companies": [
+        "cmtlyeq2y0028qf5khgaakw4k"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Jonak",
+      "representations": 22,
+      "companies": [
+        "cmtk1x83i00pqnv2biab352pq"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "JUNE STORE",
+      "representations": 12,
+      "companies": [
+        "cmtpz17g1031a3ncqz0xose2v"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Kerzon",
+      "representations": 1,
+      "companies": [
+        "cmtpz1ar3032y3ncqnh0c7hxu"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Kiabi",
+      "representations": 239,
+      "companies": [
+        "cmtjwf5lj0a6nld2bnolo0jgg"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Kilo Shop",
+      "representations": 3,
+      "companies": [
+        "cmtpyu31f013a3ncqpu9x82sr"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Kitsuné",
+      "representations": 9,
+      "companies": [
+        "cmtk1x0yj005anv2bh3cj5lcq"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Kymono",
+      "representations": 2,
+      "companies": [
+        "cmtpz2pqp03rw3ncqnt29j46j"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "La Bonne Brosse",
+      "representations": 4,
+      "companies": [
+        "cmtpz35qu03yc3ncq9dkfdsgb"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Laboté",
+      "representations": 1,
+      "companies": [
+        "cmtpz3a4804053ncq55lvnzdj"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Lacoste",
+      "representations": 30,
+      "companies": [
+        "cmtk4xpoe1ryyny2b4n2dj391"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "La Rosée",
+      "representations": 15,
+      "companies": [
+        "cmtk1x6d300k6nv2b24wkfwy7"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "LEBEURRE",
+      "representations": 2,
+      "companies": [
+        "cmtpz3hpj043b3ncqerxuyuhf"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Lectra",
+      "representations": 21,
+      "companies": [
+        "cmtjwf5w00a7bld2btatjxphs"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Les Ateliers Autrement",
+      "representations": 2,
+      "companies": [
+        "cmtpz3owk045c3ncq3o4qjwas"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Le Slip Français",
+      "representations": 1,
+      "companies": [
+        "cmtk1wtu60000nv2bu7ldtw3l"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Les Secrets De Loly",
+      "representations": 3,
+      "companies": [
+        "cmtpz3pcq045m3ncq0h3ihtkd"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "LITTLE CIGOGNE",
+      "representations": 6,
+      "companies": [
+        "cmtpz3q3804613ncqqb6f9psj"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "L’Occitane",
+      "representations": 21,
+      "companies": [
+        "cmtp1xiqw03ngqq4zikinuk6e"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "L'Oréal Groupe",
+      "representations": 72,
+      "companies": [
+        "cmtjwf6za08pxo72be8uvm8kn"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "LOSANJE",
+      "representations": 3,
+      "companies": [
+        "cmtpz3rz2046v3ncqkxb7ogjb"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Louise Misha",
+      "representations": 2,
+      "companies": [
+        "cmtlyez4l008oqf5kvnv9cl9o"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "LUNETTES POUR TOUS",
+      "representations": 3,
+      "companies": [
+        "cmtlyfo4800teqf5k2jjyt09y"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "LUSH | France",
+      "representations": 10,
+      "companies": [
+        "cmtp2e9ep0s5oqq4zb3sg9k9a"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "MADNETWORK",
+      "representations": 2,
+      "companies": [
+        "cmtpz3vmc048m3ncqjb6n1fff"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Make My Lemonade",
+      "representations": 2,
+      "companies": [
+        "cmtpz3wkc04923ncqguqdiepd"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "MANUCURIST",
+      "representations": 6,
+      "companies": [
+        "cmtpz3x04049c3ncqfj6ripzh"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "MARTHA",
+      "representations": 1,
+      "companies": [
+        "cmtpz3ylw04a63ncqroyshtdk"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "MERCI",
+      "representations": 1,
+      "companies": [
+        "cmtnac1b62shqqq5lbyiyzfd1"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "MoEa",
+      "representations": 1,
+      "companies": [
+        "cmtlyer8c002wqf5kxyjfg4sv"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Monsieur TSHIRT",
+      "representations": 4,
+      "companies": [
+        "cmtlyg4ad01itqf5krlev71zk"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Nooānce",
+      "representations": 1,
+      "companies": [
+        "cmtpz40ay04aq3ncq1e4vg5i2"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Odaje (ex M. Moustache)",
+      "representations": 5,
+      "companies": [
+        "cmtpz40kp04av3ncqes6do3vb"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Oden",
+      "representations": 1,
+      "companies": [
+        "cmtpz426o04bk3ncq09ordman"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Oh My Cream",
+      "representations": 10,
+      "companies": [
+        "cmtk1x9j900v9nv2bsq7qg8m1"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "ONIVERSE",
+      "representations": 115,
+      "companies": [
+        "cmtne0bra03erqq4z1zo8emif"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Pandora",
+      "representations": 102,
+      "companies": [
+        "cmtjwf6ge08pfo72b7oqm8q3c"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Panier Des Sens",
+      "representations": 6,
+      "companies": [
+        "cmtpz4kkd04j13ncq79vbs3pb"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "PATTERN",
+      "representations": 1,
+      "companies": [
+        "cmtpz4mag04jv3ncq17psklkf"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "PAYOT",
+      "representations": 1,
+      "companies": [
+        "cmtk1wu370006nv2bypaqmugs"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "PETIT PICOTIN",
+      "representations": 1,
+      "companies": [
+        "cmtpz4mtc04k33ncqb7uj4uzs"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Pied de Biche",
+      "representations": 6,
+      "companies": [
+        "cmtlyfyn6018yqf5kzdk3yvi7"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "PM Studio Paris",
+      "representations": 6,
+      "companies": [
+        "cmtpz4oci04kn3ncq1biagbnv"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Prose",
+      "representations": 4,
+      "companies": [
+        "cmtpz4q2i04lh3ncqifzc5flc"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Puig France",
+      "representations": 13,
+      "companies": [
+        "cmtlyh20a032mqf5kbcvcruas"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Respire",
+      "representations": 15,
+      "companies": [
+        "cmtk1xadl00xcnv2bvoxue0t9"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Rosae Paris",
+      "representations": 1,
+      "companies": [
+        "cmtpz4zrx04p13ncq398dovwb"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "SAFE HARBOR",
+      "representations": 4,
+      "companies": [
+        "cmtpz4zwp04p63ncqjiz7v7vs"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Sessùn",
+      "representations": 32,
+      "companies": [
+        "cmtjwf6tz0a8dld2bumichh9u"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "SHISEIDO",
+      "representations": 1,
+      "companies": [
+        "cmtpkwydu59jupf5lu9u2aoxk"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "SIMONE A BORDEAUX",
+      "representations": 2,
+      "companies": [
+        "cmtkdvus41rtlnf2bmzsytd4n"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Simone Pérèle",
+      "representations": 5,
+      "companies": [
+        "cmtjwp1i00669m72by8btsmwp"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "STANDARD TEXTILE",
+      "representations": 2,
+      "companies": [
+        "cmtpz59yw04t43ncqitmdwtqx"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Sud Express",
+      "representations": 45,
+      "companies": [
+        "cmtkdvwy01sjhnf2bsr141joy"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Surprise-paris",
+      "representations": 4,
+      "companies": [
+        "cmtpz5iv404ww3ncqf7e6ekuh"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "The Bradery",
+      "representations": 4,
+      "companies": [
+        "cmtrt96hh32jrpg5mkohtfcgs"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Tissus des Ursules - TDU Group",
+      "representations": 34,
+      "companies": [
+        "cmtpz5wyq055i3ncqggpqy45n"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Trone",
+      "representations": 1,
+      "companies": [
+        "cmtpz62g5058u3ncqtv2zuqqc"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Une Robe Un Soir",
+      "representations": 2,
+      "companies": [
+        "cmtpz62nt058z3ncqqocbxdkj"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Vanessa Wu",
+      "representations": 1,
+      "companies": [
+        "cmtpz634c05993ncqs0w970fd"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "VEJA",
+      "representations": 15,
+      "companies": [
+        "cmtjwf60o0a7fld2bfo7snlma"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Wolf Lingerie",
+      "representations": 2,
+      "companies": [
+        "cmtlyfbdg00j3qf5kcmsvepi2"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Yade",
+      "representations": 2,
+      "companies": [
+        "cmtpz67ru05b53ncqvo7e6dwb"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "YAY",
+      "representations": 1,
+      "companies": [
+        "cmtpz68bi05bf3ncqbq9kled8"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Ysé",
+      "representations": 12,
+      "companies": [
+        "cmtpz68jo05bk3ncq0uqw5phj"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Zen Collective France",
+      "representations": 1,
+      "companies": [
+        "cmtpz6b4m05d33ncq9dpit5c9"
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "path": "organization.name",
+      "role": "ORGANIZATION",
+      "label": "Zeta Shoes",
+      "representations": 1,
+      "companies": [
+        "cmtpz6bck05d83ncq2o1u9ov0"
+      ]
+    },
+    {
+      "sourceKey": "yema",
+      "path": "company.name",
+      "role": "COMPANY",
+      "label": "YEMA",
+      "representations": 6,
+      "companies": [
+        "cmtlyfzxq01b1qf5kcja65tqq"
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { CompanyProfileView } from '@/components/company-profile-view';
-import { getCompanyBySlug } from '@/lib/companies';
+import { getCompanyBySlug, companySlug } from '@/lib/companies';
 import { getJobs } from '@/lib/jobs';
 import type { Metadata } from 'next';
 
@@ -61,6 +61,7 @@ export default async function Page({
   const { slug } = await params;
   const profile = await getCompanyBySlug(slug);
   if (!profile) notFound();
+  if (slug !== companySlug(profile.name)) permanentRedirect(`/entreprise/${companySlug(profile.name)}`);
 
   // World-scoped (a Maison recruits across countries), matching the board's
   // world-by-default scope and the page's in-view filter refetch.

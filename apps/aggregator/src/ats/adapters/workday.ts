@@ -194,6 +194,9 @@ export async function attachWorkdayDescriptions(
           if (!info) return job;
           return {
             ...job,
+            // Keep the exact detail that supplied the employer, dates and country.
+            // Preserve listing keys for replay and subsequent detail refreshes.
+            raw: { ...(job.raw as Record<string, unknown>), detail },
             description: htmlToPlainText(info.jobDescription) || job.description,
             country: info.country?.descriptor ?? job.country,
             location: info.location ?? job.location,
@@ -206,6 +209,11 @@ export async function attachWorkdayDescriptions(
             remote: info.remoteType || job.remote,
             // Group tenants: credit the offer to its Maison, not the feed label.
             company: brandFromWorkdayDetail(detail) ?? job.company,
+            employerEvidence: info.logoImage?.alt?.trim()
+              ? { rawName: info.logoImage.alt, path: 'detail.jobPostingInfo.logoImage.alt', rule: 'LOGO_ALT' }
+              : detail.hiringOrganization?.name?.trim()
+                ? { rawName: detail.hiringOrganization.name, path: 'detail.hiringOrganization.name', rule: 'LEADING_ENTITY_CODE_REMOVED' }
+                : job.employerEvidence,
           };
         } catch {
           // A failed detail fetch must not lose the listing entry.

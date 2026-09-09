@@ -1,0 +1,94 @@
+{
+  "results": [
+    {
+      "name": "Promod",
+      "directory": [
+        {
+          "name": "Promod",
+          "count": 21
+        }
+      ],
+      "filteredJobs": 21,
+      "facets": [
+        {
+          "count": 21,
+          "value": "Promod"
+        }
+      ],
+      "byText": 21
+    },
+    {
+      "name": "PROMOD - MAGASIN",
+      "directory": [
+        {
+          "name": "Promod",
+          "count": 21
+        }
+      ],
+      "filteredJobs": 21,
+      "facets": [
+        {
+          "count": 21,
+          "value": "Promod"
+        }
+      ],
+      "byText": 21
+    },
+    {
+      "name": "Aubade",
+      "directory": [
+        {
+          "name": "Aubade",
+          "count": 29
+        }
+      ],
+      "filteredJobs": 29,
+      "facets": [
+        {
+          "count": 29,
+          "value": "Aubade"
+        }
+      ],
+      "byText": 29
+    },
+    {
+      "name": "Aubade Paris",
+      "directory": [
+        {
+          "name": "Aubade",
+          "count": 29
+        }
+      ],
+      "filteredJobs": 29,
+      "facets": [
+        {
+          "count": 29,
+          "value": "Aubade"
+        }
+      ],
+      "byText": 29
+    }
+  ],
+  "redirects": [
+    {
+      "slug": "promod",
+      "name": "Promod",
+      "count": 21
+    },
+    {
+      "slug": "promod-magasin",
+      "name": "Promod",
+      "count": 21
+    },
+    {
+      "slug": "aubade",
+      "name": "Aubade",
+      "count": 29
+    },
+    {
+      "slug": "aubade-paris",
+      "name": "Aubade",
+      "count": 29
+    }
+  ]
+}

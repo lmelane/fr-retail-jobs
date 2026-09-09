@@ -1,0 +1,99 @@
+{
+  "batchId": "lot1-promod-aubade-20260909-v1",
+  "statement": "Promod - magasin is a recruiting label for the Promod retail network (official Promod website links to TalentView, whose stored entity 598 carries this label). Aubade and Aubade Paris are the same Maison (official Aubade website links to WTTJ /companies/aubade; stored organization.reference rx9Ax61 and slug aubade occur in representations attached to both IDs). Employer identity only: preserve every distinct posting.",
+  "reviewedBy": "Codex / requested Lot 1 evidence review",
+  "reviewedAt": "2026-09-09T06:15:14Z",
+  "merges": [
+    {
+      "fromId": "cmtpkx0bb59q9pf5le0vx07cg",
+      "toId": "cmtk1x1ns0072nv2bytyhwuta"
+    },
+    {
+      "fromId": "cmtlyiz3m076kqf5kegty1y42",
+      "toId": "cmtk1xdjg0176nv2b70ayaadr"
+    }
+  ],
+  "companies": [
+    {
+      "id": "cmtk1x1ns0072nv2bytyhwuta",
+      "kind": "RETAILER"
+    },
+    {
+      "id": "cmtk1xdjg0176nv2b70ayaadr",
+      "name": "Aubade",
+      "kind": "MAISON"
+    }
+  ],
+  "aliases": [
+    {
+      "sourceKey": "promod",
+      "rawName": "Promod",
+      "companyId": "cmtk1x1ns0072nv2bytyhwuta"
+    },
+    {
+      "sourceKey": "promod",
+      "rawName": "PROMOD - MAGASIN",
+      "companyId": "cmtk1x1ns0072nv2bytyhwuta"
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "rawName": "Promod",
+      "companyId": "cmtk1x1ns0072nv2bytyhwuta"
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "rawName": "PROMOD - MAGASIN",
+      "companyId": "cmtk1x1ns0072nv2bytyhwuta"
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "rawName": "Aubade",
+      "companyId": "cmtk1xdjg0176nv2b70ayaadr"
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "rawName": "Aubade Paris",
+      "companyId": "cmtk1xdjg0176nv2b70ayaadr"
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "rawName": "Aubade",
+      "companyId": "cmtk1xdjg0176nv2b70ayaadr"
+    },
+    {
+      "sourceKey": "fashionjobs",
+      "rawName": "Aubade Paris",
+      "companyId": "cmtk1xdjg0176nv2b70ayaadr"
+    }
+  ],
+  "version": 1,
+  "createdAt": "2026-09-09T06:21:39.103Z",
+  "companyIds": [
+    "cmtk1x1ns0072nv2bytyhwuta",
+    "cmtk1xdjg0176nv2b70ayaadr",
+    "cmtlyiz3m076kqf5kegty1y42",
+    "cmtpkx0bb59q9pf5le0vx07cg"
+  ],
+  "sourceKeys": [
+    "fashionjobs",
+    "promod",
+    "wttj-sector"
+  ],
+  "beforeHash": "0727f46f28318af27f50011154d06cac13c22d44cdfdc385618a8068126c3443",
+  "jobCount": 62,
+  "activeJobCount": 50,
+  "sourceCount": 67,
+  "evidence": [
+    {
+      "url": "https://www.promod.fr/fr-fr/",
+      "sha256": "c2d557eb87625e13f1829de0646b444a45d8561c2ec3cd32a125cb5676a4be5c",
+      "explanation": "Official recruitment link points to promodjob.talentview.io; real stored entity id 598 is Promod - magasin."
+    },
+    {
+      "url": "https://aubade.com/",
+      "sha256": "2d5df55f4a7a04ec59156850d2b21bf6b6083f335421fa46747f89bfffd7e6b6",
+      "explanation": "Official careers link points to WTTJ /companies/aubade, the identical external organization rx9Ax61 under both company IDs."
+    }
+  ],
+  "planHash": "9744eeb5742905a9e392fc8754eb50387bc0bb44ce6189dfa1022b441db67ad8"
+}

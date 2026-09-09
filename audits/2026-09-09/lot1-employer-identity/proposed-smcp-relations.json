@@ -1,0 +1,71 @@
+{
+  "batchId": "lot1-smcp-parent-relations-20260909-v1",
+  "statement": "Official SMCP careers site explicitly names Sandro, Maje, Claudie Pierlot and Fursac. Link the four existing Maison IDs to the existing SMCP GROUP ID; keep all five identities distinct.",
+  "reviewedBy": "Codex / requested Lot 1 evidence review",
+  "reviewedAt": "2026-09-09T06:29:41.012Z",
+  "merges": [],
+  "companies": [
+    {
+      "id": "cmtk29nb80m1dnv2bg5xl385h",
+      "parentGroupId": "crcafaa7a4ec667cf18ea56024"
+    },
+    {
+      "id": "cmtkf06ej0lqap22bicqm90nc",
+      "parentGroupId": "crcafaa7a4ec667cf18ea56024"
+    },
+    {
+      "id": "cr5c9308138c86e24341e51b89",
+      "parentGroupId": "crcafaa7a4ec667cf18ea56024"
+    },
+    {
+      "id": "cr57e9ef0f339cdfa95081d842",
+      "parentGroupId": "crcafaa7a4ec667cf18ea56024"
+    }
+  ],
+  "aliases": [
+    {
+      "sourceKey": "sandro",
+      "rawName": "Sandro",
+      "companyId": "cmtk29nb80m1dnv2bg5xl385h"
+    },
+    {
+      "sourceKey": "sandro",
+      "rawName": "Maje",
+      "companyId": "cmtkf06ej0lqap22bicqm90nc"
+    },
+    {
+      "sourceKey": "sandro",
+      "rawName": "Claudie Pierlot",
+      "companyId": "cr5c9308138c86e24341e51b89"
+    },
+    {
+      "sourceKey": "sandro",
+      "rawName": "Fursac",
+      "companyId": "cr57e9ef0f339cdfa95081d842"
+    }
+  ],
+  "version": 1,
+  "createdAt": "2026-09-09T06:29:41.166Z",
+  "companyIds": [
+    "cmtk29nb80m1dnv2bg5xl385h",
+    "cmtkf06ej0lqap22bicqm90nc",
+    "cr57e9ef0f339cdfa95081d842",
+    "cr5c9308138c86e24341e51b89",
+    "crcafaa7a4ec667cf18ea56024"
+  ],
+  "sourceKeys": [
+    "sandro"
+  ],
+  "beforeHash": "1bf4122973330a4e79cdb355da951243af471b955f6adfd52707605f636af4cd",
+  "jobCount": 583,
+  "activeJobCount": 568,
+  "sourceCount": 583,
+  "evidence": [
+    {
+      "url": "https://www.smcp.com/fr/talents/offres-d-emploi/",
+      "sha256": "bcfa99bb8723ec78973cae236b0391133b96cfd2411ce5baa8da3ae18df2ab6e",
+      "explanation": "Official group site names all four Maisons separately and presents their recruitment offers."
+    }
+  ],
+  "planHash": "7e278253ba51118637ae4995f52661b8b81d80e616f312dbf563a0ae4eb2cdee"
+}

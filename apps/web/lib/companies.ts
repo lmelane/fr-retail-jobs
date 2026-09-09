@@ -1,3 +1,4 @@
+import { companyIdentityWhere } from './company-identity';
 import { prisma } from '@catwalks/db';
 import { DatabaseUnavailableError, validSector } from './jobs';
 import { expandCompanyTerm } from './groups';
@@ -102,7 +103,7 @@ export async function suggestCompanies(query: string): Promise<string[]> {
   try {
     const rows = await prisma.company.findMany({
       where: {
-        name: { contains: q, mode: 'insensitive' },
+        ...companyIdentityWhere(q, 'contains'),
         jobs: { some: { isActive: true } },
       },
       select: { name: true, _count: { select: { jobs: { where: { isActive: true } } } } },
@@ -134,7 +135,7 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
     ...(query
       ? {
           OR: expandCompanyTerm(query).flatMap((name) => [
-            { name: { contains: name, mode: 'insensitive' as const } },
+            companyIdentityWhere(name, 'contains'),
             { parentGroup: { contains: name, mode: 'insensitive' as const } },
           ]),
         }
@@ -282,12 +283,21 @@ export async function getCompanyBySlug(slug: string): Promise<CompanyProfile | n
     // Match by slug over the display name — several rows can share a name only
     // after a bad ingest, so take the one with the most live offers.
     const candidates = await prisma.company.findMany({
-      select: { id: true, name: true, sector: true, parentGroup: true, domain: true, careersUrl: true },
+      select: { id: true, name: true, sector: true, parentGroup: true, domain: true, careersUrl: true, mergedIntoId: true },
     });
-    const match = candidates
+    let match = candidates
       .filter((c) => companySlug(c.name) === slug)
       .sort((a, b) => a.name.localeCompare(b.name))[0];
     if (!match) return null;
+    const byId = new Map(candidates.map(c => [c.id, c]));
+    const visited = new Set<string>();
+    while (match.mergedIntoId) {
+      if (visited.has(match.id)) throw new Error('Employer redirect cycle');
+      visited.add(match.id);
+      const target = byId.get(match.mergedIntoId);
+      if (!target) throw new Error('Missing canonical employer');
+      match = target;
+    }
 
     // World-scoped (revises D12): a Maison recruits across countries, and the
     // board now defaults to every country, so the header count and city/contract
