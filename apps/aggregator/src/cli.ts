@@ -1,3 +1,4 @@
+import { summarizeOrchestration } from './lib/runSummary.js';
 import { PrismaClient } from '@prisma/client';
 import { runIngest } from './pipeline/ingest.js';
 import { ingestAllBySource } from './pipeline/ingestOrchestrator.js';
@@ -121,11 +122,14 @@ try {
     );
 
     // DEC-4: tell the external pinger this run happened (no-op unconfigured).
-    // Success = the run completed, even with per-source failures — the pinger
-    // watches for the PIPELINE dying, the Brevo digest covers sick sources.
+    // A completed run with source failures remains a failure signal. The
+    // summary distinguishes source incidents from an interrupted process.
     const heartbeat = await pingHeartbeat(orchestration.failed === 0 && orchestration.timedOut === 0);
 
-    console.log(JSON.stringify({ ok: orchestration.failed === 0 && orchestration.timedOut === 0, command, orchestration, geo, alerted, indexing, heartbeat }, null, 2));
+    // SourceRun already persists each incident. Dumping hundreds of nested
+    // records exceeded Railway's 500-lines/s limit and hid the final outcome.
+    console.log(JSON.stringify({ event: 'ingest.completed', command,
+      ...summarizeOrchestration(orchestration), geo, alerted, indexing, heartbeat }));
     if (orchestration.failed > 0 || orchestration.timedOut > 0) {
       console.error(
         `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`,

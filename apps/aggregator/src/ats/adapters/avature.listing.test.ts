@@ -69,3 +69,50 @@ describe('fetchAvatureJobs (mode liste) — pagination', () => {
     expect(first.match(/jobOffset=/g)).toHaveLength(1);
   });
 });
+
+describe('L’Oréal bounded recovery policy', () => {
+  it('opts the measured tenant into 406 recovery at the common HTTP boundary', async () => {
+    mockText.mockResolvedValue('<html></html>');
+    await fetchAvatureJobs({ listingUrl: 'https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0', withDescriptions: false });
+    expect(mockText.mock.calls[0][2]).toEqual({ additionalTransientStatuses: [406] });
+  });
+  it('does not change another Avature tenant’s HTTP semantics', async () => {
+    mockText.mockResolvedValue('<html></html>');
+    await fetchAvatureJobs({ listingUrl: 'https://other.example/jobs/SearchJobs/', withDescriptions: false });
+    expect(mockText.mock.calls[0][2]).toEqual({});
+  });
+  it('never turns a persistent pagination failure into an empty or complete board', async () => {
+    mockText.mockResolvedValueOnce(CARD).mockRejectedValueOnce(new Error('HTTP 406 for offset 20'));
+    await expect(fetchAvatureJobs({ listingUrl: 'https://careers.loreal.com/en_US/jobs/SearchJobs/', withDescriptions: false }))
+      .rejects.toThrow('HTTP 406');
+  });
+});
+
+describe('L’Oréal observed AJAX pagination and termination', () => {
+  const listingUrl = 'https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0';
+  const terminal = fixture('loreal-terminal-page.html');
+  it('uses the observed same-origin endpoint and requires the real terminal marker', async () => {
+    mockText.mockResolvedValueOnce('<script>var searchJobsAJAXPage = "https://careers.loreal.com/en_US/jobs/SearchJobsAJAX";</script>' + CARD)
+      .mockResolvedValueOnce(terminal);
+    const result = await fetchAvatureJobs({ listingUrl, withDescriptions: false });
+    expect(mockText.mock.calls[1][0]).toBe('https://careers.loreal.com/en_US/jobs/SearchJobsAJAX/?jobOffset=20');
+    expect(result).toMatchObject({ complete: true, truncated: false });
+    expect(result.jobs).toHaveLength(1);
+    expect(result.declaredTotal).toBeUndefined();
+  });
+  it('does not attest a loop, an unrecognised page or a page cap', async () => {
+    for (const tail of [CARD, '<html>Maintenance</html>']) {
+      mockText.mockReset().mockResolvedValueOnce(CARD).mockResolvedValueOnce(tail);
+      expect(await fetchAvatureJobs({ listingUrl, withDescriptions: false })).toMatchObject({ complete: false, truncated: true });
+    }
+    mockText.mockReset().mockResolvedValueOnce(CARD);
+    expect(await fetchAvatureJobs({ listingUrl, maxPages: 1, withDescriptions: false })).toMatchObject({ complete: false, truncated: true });
+  });
+  it('rejects a cross-origin pagination hint and never treats a translation string as an empty board', async () => {
+    mockText.mockResolvedValueOnce('<script>var searchJobsAJAXPage = "https://other.example/en_US/jobs/SearchJobsAJAX";</script>' + CARD)
+      .mockResolvedValueOnce('<script>var TXT_NO_RESULTS_PAGINATION_LEGEND="Showing 0 results";</script>');
+    const result = await fetchAvatureJobs({ listingUrl, withDescriptions: false });
+    expect(mockText.mock.calls[1][0]).toBe('https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=20');
+    expect(result.complete).toBe(false);
+  });
+});

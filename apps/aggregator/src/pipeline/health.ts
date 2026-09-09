@@ -85,7 +85,7 @@ export async function checkSourceHealth(
       coverage: coverageOf(stat), rates: ratesOf(stat) };
     if (stat.errors > 0) {
       results.push({ ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN',
-        note: `${stat.errors} erreurs de collecte ou d’écriture` });
+        note: `${stat.errors} erreurs de collecte ou d’écriture${stat.errorNote ? ` : ${stat.errorNote}` : ''}` });
       continue;
     }
     if (stat.held) {

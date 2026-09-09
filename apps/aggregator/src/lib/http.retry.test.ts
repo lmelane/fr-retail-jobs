@@ -61,3 +61,25 @@ describe('fetchWithRetry — statuts définitifs', () => {
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 });
+
+describe('source-specific transient HTTP 406', () => {
+  it('does not retry a terminal 406 without an upstream-specific policy', async () => {
+    fetchMock.mockResolvedValue(new Response('not acceptable', { status: 406 }));
+    await expect(fetchText('https://terminal-406.example/jobs')).rejects.toBeInstanceOf(HttpStatusError);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+  it('recovers a transient rejection without changing URL, headers or country scope', async () => {
+    fetchMock.mockResolvedValueOnce(new Response('not acceptable', { status: 406 }))
+      .mockResolvedValueOnce(new Response('<html>public listing</html>'));
+    const url = 'https://retry-406.example/jobs?jobOffset=240';
+    expect(await fetchText(url, {}, { additionalTransientStatuses: [406] })).toContain('public listing');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock.mock.calls.map(call => call[0])).toEqual([url, url]);
+  });
+  it('bounds persistent 406 retries and preserves the status and offset in the error', async () => {
+    fetchMock.mockImplementation(() => Promise.resolve(new Response('not acceptable', { status: 406 })));
+    await expect(fetchText('https://persistent-406.example/jobs?jobOffset=240', {}, { additionalTransientStatuses: [406] }))
+      .rejects.toMatchObject({ status: 406, message: expect.stringContaining('jobOffset=240') });
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+});

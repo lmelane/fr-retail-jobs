@@ -150,7 +150,10 @@ export async function fetchFollowingSafely(
   throw new Error(`Too many redirects (>${MAX_REDIRECTS}) for ${url}`);
 }
 
-export async function fetchWithRetry(url: string, init: RequestInit = {}, attempts = 3): Promise<Response> {
+/** Additional transient statuses require evidence from the specific upstream. */
+export type HttpRetryPolicy = { additionalTransientStatuses?: readonly number[] };
+
+export async function fetchWithRetry(url: string, init: RequestInit = {}, attempts = 3, policy: HttpRetryPolicy = {}): Promise<Response> {
   let lastError: unknown;
   /**
    * Challenge WAF (202 vide + `x-amzn-waf-action: challenge`) : on amorce le
@@ -213,7 +216,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
        * still fails cleanly after the (capped) retries — the cost is a few
        * seconds, the gain is a whole group's offers not dropped to a blip.
        */
-      if (![403, 405, 429, 500, 502, 503, 504].includes(response.status)) {
+      if (![403, 405, 429, 500, 502, 503, 504, ...(policy.additionalTransientStatuses ?? [])].includes(response.status)) {
         // Un 404/410/400 ne changera pas au prochain essai : il était rejoué
         // 3 fois (3,9 s) parce que levé DANS le try — audit A2, 2026-09-06.
         throw new HttpStatusError(response.status, url);
@@ -221,7 +224,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       // A soft block means we are being rude to this host — grow its gap so the
       // whole pool naturally slows down for it (and only it), not just this retry.
       reportThrottle(url);
-      lastError = new Error(`HTTP ${response.status} for ${url}`);
+      lastError = new HttpStatusError(response.status, url);
 
       /**
        * 429 is the host telling us to slow down, and a half-second retry is
@@ -270,8 +273,8 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
  * source est enregistrée en échec franc (donc EXCLUE de toute fermeture
  * d'offres) au lieu d'être prise pour un board devenu vide.
  */
-export async function fetchText(url: string, init: RequestInit = {}): Promise<string> {
-  const response = await fetchWithRetry(url, init);
+export async function fetchText(url: string, init: RequestInit = {}, policy: HttpRetryPolicy = {}): Promise<string> {
+  const response = await fetchWithRetry(url, init, 3, policy);
   const body = await readBodyBounded(response, url);
 
   const vendor = detectChallenge(response, body);
@@ -280,7 +283,7 @@ export async function fetchText(url: string, init: RequestInit = {}): Promise<st
     // Une seule tentative — une origine déjà munie du jeton et pourtant
     // challengée ne gagnera rien à être rejouée à l'identique.
     if (!getWafCookie(url) && (await primeWafCookie(url))) {
-      const retried = await fetchWithRetry(url, init);
+      const retried = await fetchWithRetry(url, init, 3, policy);
       const retriedBody = await readBodyBounded(retried, url);
       if (!detectChallenge(retried, retriedBody)) return retriedBody;
     }
