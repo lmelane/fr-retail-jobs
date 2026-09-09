@@ -21,11 +21,14 @@
  * 94 %, métier 93 %, contrat 33 %. C'est cela qu'on affiche.
  */
 
-import { functionLabel, seniorityLabel, UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
+import { UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
 
 export type PreviewFields = {
   jobFunction?: string | null;
+  occupationLabel?: string | null;
+  occupationFamilyLabel?: string | null;
   seniority?: string | null;
+  seniorityLabel?: string | null;
   department?: string | null;
 };
 
@@ -36,9 +39,9 @@ export type PreviewFields = {
  * lisible (Maison, titre, ville, contrat, date sont au-dessus).
  */
 export function jobFacets(job: PreviewFields): string | null {
-  const fnLabel = job.jobFunction ? functionLabel(job.jobFunction) : null;
+  const fnLabel = job.occupationLabel ?? job.occupationFamilyLabel ?? null;
   const fn = fnLabel && fnLabel !== UNCLASSIFIED_LABEL ? fnLabel : null;
-  const senLabel = job.seniority ? seniorityLabel(job.seniority) : null;
+  const senLabel = job.seniorityLabel ?? null;
   const sen = senLabel && senLabel !== UNCLASSIFIED_LABEL ? senLabel : null;
   // Le département n'est utile que s'il n'est pas la redite du métier.
   const dept = job.department?.trim();

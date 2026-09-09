@@ -8,5 +8,7 @@ export default defineConfig({
   test: {
     include: ['lib/**/*.test.ts'],
     environment: 'node',
+    // Database tests may publish a catalogue revision; serialize their fixtures.
+    fileParallelism: false,
   },
 });

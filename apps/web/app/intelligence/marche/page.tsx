@@ -1,3 +1,4 @@
+import { getOccupationPresentation } from '@/lib/occupations';
 import type { Metadata } from 'next';
 import { Block, Coverage, IntelPage, JsonLd, Kpi, Mix, NA, PageHead } from '@/components/intelligence/chrome';
 import { LineChart } from '@/components/intelligence/charts/line-chart';
@@ -11,7 +12,7 @@ import { indexBase100, momentum, repostRate, variation } from '@/lib/intelligenc
 import { addDays, fmtDate, fmtDays, fmtIndex, fmtInt, fmtPct, fmtSigned, fmtSignedPct, MIN_SAMPLE, NA_FROM, NA_INSUFFICIENT, OBSERVATION_START, windowAvailable, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
-import { FAMILY_LABELS, sectorLabel, seniorityLabel, UNCLASSIFIED_LABEL, type JobFamily } from '@/lib/intelligence/taxonomy';
+import { sectorLabel, UNCLASSIFIED_LABEL, type JobFamily } from '@/lib/intelligence/taxonomy';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,6 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
+  const {FAMILY_LABELS,seniorityLabel}=await getOccupationPresentation();
   const [data, coverage] = await Promise.all([getMarket(), getCoverage()]);
   const h = data.headline;
   const idx = indexBase100(data.global);
@@ -31,8 +33,8 @@ export default async function Page() {
   const families = data.families.map((f) => ({ label: f.key ? FAMILY_LABELS[f.key as JobFamily] : UNCLASSIFIED_LABEL, count: f.count }));
   // Aire empilée retail · corporate · atelier dans le temps : trois séries de
   // snapshots `family`, alignées sur les dates communes. Vide → n/d daté.
-  const familyKeys: JobFamily[] = ['retail', 'corporate', 'craft'];
-  const familyDates = data.familySeries.length === 3 ? data.familySeries[0].series.map((p) => p.date) : [];
+  const familyKeys: JobFamily[] = Object.keys(FAMILY_LABELS);
+  const familyDates = data.familySeries.length > 0 ? data.familySeries[0].series.map((p) => p.date) : [];
   const familyPoints = familyDates
     .map((date) => ({ date, values: data.familySeries.map((s) => s.series.find((p) => p.date === date)?.activeJobs ?? NaN) }))
     .filter((p) => p.values.every((v) => Number.isFinite(v)));
@@ -150,7 +152,7 @@ export default async function Page() {
             </Block>
           </div>
           <div className="i4">
-            <Block id="famille" title="Retail · corporate · atelier." level="fact-shares">
+            <Block id="famille" title="Domaines professionnels." level="fact-shares">
               <Mix total={h.active} rows={families} />
             </Block>
           </div>
@@ -159,7 +161,7 @@ export default async function Page() {
               {familyPoints.length >= 2 ? (
                 <StackedArea points={familyPoints} labels={familyKeys.map((k) => FAMILY_LABELS[k])} ariaLabel="Offres actives par famille, jour par jour" />
               ) : (
-                <p className="na">Aire empilée retail · corporate · atelier, lue dans les snapshots `family` — disponible à partir du {fmtDate(addDays(coverage.historyStart, 1))}.</p>
+                <p className="na">Les comparaisons par domaine seront disponibles après deux journées complètes mesurées avec le même référentiel.</p>
               )}
             </Block>
           </div>

@@ -1,6 +1,7 @@
 import '../test/setup-integration.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
+import { BOOTSTRAP_TAXONOMY } from '../normalize/taxonomy.js';
 import { runSnapshot, dayBounds, SNAPSHOT_SCOPES } from './snapshot.js';
 
 /**
@@ -46,7 +47,7 @@ async function seed(companyId: string, rows: Seed[]) {
         companyId, externalId: row.ext, source: 'GENERIC_JSONLD', title: `Poste ${row.ext}`, url: `https://x/${row.ext}`,
         fingerprint: `fp-${row.ext}`, city: row.city, countryCode: row.country, firstSeenAt: row.firstSeenAt,
         closedAt: row.closedAt ?? null, isActive: row.isActive ?? true,
-        jobFunction: row.jobFunction ?? null, isRetail: row.isRetail ?? null, isAiRelated: row.isAiRelated ?? false,
+        jobFunction: row.jobFunction ?? null, occupationGroup: BOOTSTRAP_TAXONOMY.families.get(row.jobFunction ?? '')?.group ?? null, isRetail: row.isRetail ?? null, isAiRelated: row.isAiRelated ?? false,
         seniority: row.seniority ?? null, employmentTerm: row.employmentTerm ?? null,
       },
     });

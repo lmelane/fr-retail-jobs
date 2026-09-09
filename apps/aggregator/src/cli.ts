@@ -291,22 +291,48 @@ try {
       ?? 'data/maisons-domaines-loic.tsv';
     const stats = await applyDomainSheet(prisma, file, { apply: process.argv.includes('--apply') });
     await log.info('command.result', { ok: true, command, file, ...stats });
+  } else if (command === 'occupation-review-queue') {
+    const {occupationReviewQueue}=await import('./occupation/inventory.js');
+    const {writeFile}=await import('node:fs/promises');
+    const output=process.argv.find(a=>a.startsWith('--output='))?.slice(9);
+    if(!output)throw new Error('Review queue requires --output=<inventory.json>');
+    const result=await occupationReviewQueue(prisma,Number(process.argv.find(a=>a.startsWith('--limit='))?.slice(8)??500));
+    await writeFile(output,JSON.stringify(result,null,2)+'\n');
+    await log.info('occupation.review_queue',{output,activeUnresolved:result.activeUnresolved,totalVariants:result.totalVariants,returnedVariants:result.returnedVariants});
+  } else if (command === 'occupation-preview' || command === 'occupation-activate') {
+    const {readFile,writeFile} = await import('node:fs/promises');
+    const {previewOccupationRelease,activateOccupationRelease} = await import('./occupation/release.js');
+    const arg = (name:string) => process.argv.find(a=>a.startsWith(`--${name}=`))?.slice(name.length+3);
+    const file=arg('file'),output=arg('output');
+    if(!file||!output)throw new Error('Occupation catalogue commands require --file=<manifest.json> and --output=<receipt.json>');
+    const manifest=JSON.parse(await readFile(file,'utf8'));
+    let receipt;
+    if(command==='occupation-preview')receipt=await previewOccupationRelease(prisma,manifest);
+    else {
+      const review=arg('review'),commit=arg('commit');
+      if(!review||!commit||!process.argv.includes('--apply'))throw new Error('Activation requires --review=<preview.json> --commit=<implementation SHA> --apply');
+      receipt=await activateOccupationRelease(prisma,manifest,JSON.parse(await readFile(review,'utf8')),commit);
+    }
+    await writeFile(output,JSON.stringify(receipt,null,2)+'\n');
+    await log.info('occupation.catalogue_result',{command,releaseId:receipt.targetRelease,activeJobs:receipt.activeJobs,classifiedActive:receipt.classifiedActive,proofHash:receipt.proofHash,output});
   } else if (command === 'classify-jobs') {
     /**
-     * Rejoue la taxonomie Intelligence (métier, séniorité, retail, IA,
-     * compétences) sur toute la base — actives et fermées — pour les lignes
+     * Rejoue la version active du référentiel métier (métier, séniorité, retail) sur toute la base — actives et fermées — pour les lignes
      * dont la version de taxonomie est en retard. `--all` re-classe tout,
      * `--limit=<n>` borne, `--dry-run` compte sans écrire.
      */
     const { classifyJobs } = await import('./pipeline/classifyJobs.js');
     const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
     const limit = Number(arg('limit') ?? 0);
+    if(!Number.isInteger(limit)||limit<0)throw new Error('--limit must be a nonnegative integer');
     const stats = await classifyJobs(prisma, {
       all: process.argv.includes('--all'),
       dryRun: process.argv.includes('--dry-run'),
+      expectedRelease: arg('expected-release'),
       limit: Number.isFinite(limit) ? limit : 0,
     });
-    await log.info('command.result', { ok: true, command, ...stats });
+    await log.info('command.result', { ok: stats.remaining===0 || !!process.argv.includes('--dry-run') || limit>0, command, ...stats });
+    if(!process.argv.includes('--dry-run')&&!limit&&stats.remaining!==0)throw new Error(`OCCUPATION_REPLAY_INCOMPLETE: ${stats.remaining} canonical postings remain on an older release`);
   } else if (command === 'geocode') {
     await log.info('command.result', { ok: true, command, ...(await runGeocode(prisma)) });
   } else if (command === 'stats') {

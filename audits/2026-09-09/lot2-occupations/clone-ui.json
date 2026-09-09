@@ -1,0 +1,132 @@
+[
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "path": "/emplois?pays=FR",
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "heading": [
+      "Premier.ère Vendeuse"
+    ]
+  },
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "path": "/emplois?metier=unclassified",
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "heading": [
+      "Senior Supervisor, Product & Merchandising Integration - Converse"
+    ]
+  },
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "path": "/intelligence/metiers",
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "heading": [
+      "Métiers."
+    ]
+  },
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "path": "/intelligence/metiers/sales-advisor",
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "heading": [
+      "Conseiller de vente"
+    ]
+  },
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "path": "/intelligence/methodologie",
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "heading": [
+      "Méthodologie."
+    ]
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "path": "/emplois?pays=FR",
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "heading": [
+      "Premier.ère Vendeuse"
+    ]
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "path": "/emplois?metier=unclassified",
+    "status": 200,
+    "errors": [],
+    "overflow": true,
+    "heading": [
+      "Senior Supervisor, Product & Merchandising Integration - Converse"
+    ]
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "path": "/intelligence/metiers",
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "heading": [
+      "Métiers."
+    ]
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "path": "/intelligence/metiers/sales-advisor",
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "heading": [
+      "Conseiller de vente"
+    ]
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "path": "/intelligence/methodologie",
+    "status": 200,
+    "errors": [],
+    "overflow": false,
+    "heading": [
+      "Méthodologie."
+    ]
+  }
+]

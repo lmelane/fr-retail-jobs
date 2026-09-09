@@ -1,0 +1,119 @@
+{
+  "queries": [
+    {
+      "q": "Conseiller de vente",
+      "before": 3756,
+      "after": 17320,
+      "added": 13564,
+      "lost": 0,
+      "durationMs": 746
+    },
+    {
+      "q": "Sales Advisor",
+      "before": 8445,
+      "after": 22307,
+      "added": 13862,
+      "lost": 0,
+      "durationMs": 1475
+    },
+    {
+      "q": "Client Advisor",
+      "before": 4075,
+      "after": 18800,
+      "added": 14725,
+      "lost": 0,
+      "durationMs": 755
+    },
+    {
+      "q": "Hairdresser",
+      "before": 19,
+      "after": 4469,
+      "added": 4450,
+      "lost": 0,
+      "durationMs": 108
+    },
+    {
+      "q": "Beauty Advisor",
+      "before": 6175,
+      "after": 6871,
+      "added": 696,
+      "lost": 0,
+      "durationMs": 909
+    },
+    {
+      "q": "Paralegal",
+      "before": 16,
+      "after": 16,
+      "added": 0,
+      "lost": 0,
+      "durationMs": 666
+    },
+    {
+      "q": "Area Manager",
+      "before": 15904,
+      "after": 15904,
+      "added": 0,
+      "lost": 0,
+      "durationMs": 4717
+    },
+    {
+      "q": "Conseiller de vente Paris",
+      "before": 927,
+      "after": 927,
+      "added": 0,
+      "lost": 0,
+      "durationMs": 822
+    },
+    {
+      "q": "次世代の仕事",
+      "before": 0,
+      "after": 0,
+      "added": 0,
+      "lost": 0,
+      "durationMs": 30
+    }
+  ],
+  "countries": [
+    {
+      "country": "WORLD",
+      "db": 74124,
+      "api": 74124,
+      "facetSum": 74124
+    },
+    {
+      "country": "FR",
+      "db": 10947,
+      "api": 10947,
+      "facetSum": 10947
+    },
+    {
+      "country": "US",
+      "db": 30943,
+      "api": 30943,
+      "facetSum": 30943
+    },
+    {
+      "country": "GB",
+      "db": 2872,
+      "api": 2872,
+      "facetSum": 2872
+    },
+    {
+      "country": "DE",
+      "db": 2739,
+      "api": 2739,
+      "facetSum": 2739
+    },
+    {
+      "country": "IT",
+      "db": 2446,
+      "api": 2446,
+      "facetSum": 2446
+    }
+  ],
+  "review": {
+    "activeUnresolved": 39089,
+    "totalVariants": 26723,
+    "returnedVariants": 500
+  }
+}

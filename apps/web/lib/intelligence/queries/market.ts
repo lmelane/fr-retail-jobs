@@ -1,3 +1,4 @@
+import { getOccupationPresentation } from '@/lib/occupations';
 import { prisma, Prisma } from '@catwalks/db';
 import { DatabaseUnavailableError } from '@/lib/jobs';
 import { cached } from '../cache';
@@ -34,7 +35,6 @@ export type MarketData = {
   /** Séries `family` dans l'ordre retail, corporate, craft. */
   familySeries: { key: JobFamily; series: SnapshotPoint[] }[];
 };
-const FAMILY_KEYS: JobFamily[] = ['retail', 'corporate', 'craft'];
 
 async function windowFacts(): Promise<WindowFacts[]> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
@@ -56,6 +56,8 @@ async function windowFacts(): Promise<WindowFacts[]> {
 const SECTOR_KEYS = ['FASHION', 'LUXURY', 'BEAUTY', 'JEWELRY_WATCHES', 'RETAIL'];
 
 export const getMarket = cached('market', async (): Promise<MarketData> => {
+  const {FAMILY_LABELS}=await getOccupationPresentation();
+  const FAMILY_KEYS=Object.keys(FAMILY_LABELS);
   const [h, closed, windows, global, contracts, seniority, functions, ...rest] = await Promise.all([
     headline(),
     closedFacts(),
@@ -76,7 +78,7 @@ export const getMarket = cached('market', async (): Promise<MarketData> => {
     global,
     contracts,
     seniority,
-    families: toFamilies(functions),
+    families: await toFamilies(functions),
     sectorSeries: SECTOR_KEYS.map((key, i) => ({ key, series: sectorSeries[i] })),
     familySeries: FAMILY_KEYS.map((key, i) => ({ key, series: familySeries[i] })),
   };

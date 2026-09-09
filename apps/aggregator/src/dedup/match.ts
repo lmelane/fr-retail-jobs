@@ -39,6 +39,8 @@ export type CandidateJob = NormalizedJob & {
   company: string;
   /** Exact adapter label before any spelling/identity heuristic. */
   rawEmployerName?: string;
+  /** Exact adapter title before cleanTitle; payload remains in RAW. */
+  rawTitle?: string;
   employerLabelOrigin?: string;
   /** Resolved database identity key; never recompute it from the display name. */
   canonicalEmployerKey?: string;

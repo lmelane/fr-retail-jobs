@@ -1,3 +1,4 @@
+import { getOccupationPresentation, getOccupationMetrics } from '@/lib/occupations';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Block, Coverage, IntelPage, JsonLd, NA, PageHead } from '@/components/intelligence/chrome';
@@ -7,18 +8,21 @@ import { getCoverage } from '@/lib/intelligence/queries/coverage';
 import { fmtInt, fmtNew, fmtPct, MIN_SAMPLE, NA_FROM, NA_INSUFFICIENT, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
-import { FAMILY_LABELS, JOB_FUNCTIONS, seniorityLabel, UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
+import { UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
 
 export const dynamic = 'force-dynamic';
 
-const DESCRIPTION = 'Les 25 métiers du secteur Mode, Luxe, Beauté, Horlogerie et Retail : demande (offres actives), part, nouvelles offres 30 jours, top pays, top Maisons et séniorité dominante. Classification par règles, couverture affichée.';
+const DESCRIPTION = 'Les métiers et familles professionnelles du secteur Mode, Luxe, Beauté, Horlogerie et Retail : demande (offres actives), part, nouvelles offres 30 jours, top pays, top Maisons et séniorité dominante. Classification par règles, couverture affichée.';
 
 export async function generateMetadata(): Promise<Metadata> {
   return intelMetadata({ subject: 'Métiers du luxe : la demande par fonction', description: DESCRIPTION, path: intelPaths.functions });
 }
 
 export default async function Page() {
+  const {taxonomy,JOB_FUNCTIONS,FUNCTION_BY_KEY,FAMILY_LABELS,functionLabel,seniorityLabel}=await getOccupationPresentation();
   const [data, coverage] = await Promise.all([getFunctionsList(), getCoverage()]);
+  const occupations=await getOccupationMetrics();
+  const occupationRows=[...taxonomy.occupations.values()].map(d=>({key:d.key,label:d.labels.fr,family:functionLabel(d.family),count:occupations.counts.get(d.key)??0})).sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label));
   const byKey = new Map(data.rows.map((r) => [r.key, r]));
   const unclassified = byKey.get('');
   const rows = JOB_FUNCTIONS.map((f) => ({ def: f, row: byKey.get(f.key) })).sort((a, b) => (b.row?.count ?? 0) - (a.row?.count ?? 0));
@@ -28,10 +32,19 @@ export default async function Page() {
     <IntelPage>
       <JsonLd data={webPageLd({ name: 'Métiers du luxe', description: DESCRIPTION, path: intelPaths.functions, dateModified: coverage.updatedAt })} />
       <JsonLd data={breadcrumbLd(crumbs)} />
-      <PageHead crumbs={crumbs} title="Métiers." lede={<p>Les 25 fonctions de la taxonomie Catwalks, classées par demande. Une offre est classée à l'écriture depuis son titre, son département et son texte ; le « non classé » est affiché avec sa part — c'est la couverture réelle.</p>} />
+      <PageHead crumbs={crumbs} title="Métiers." lede={<p>Les métiers identifiés et les familles professionnelles, classés par nombre d’offres actives. Les intitulés d’origine restent consultables, y compris lorsqu’ils ne peuvent pas encore être classés.</p>} />
 
       <section className="container" style={{ paddingTop: 48 }}>
-        <Block id="fonctions" title="Les 25 fonctions." level="fact">
+        <Block id="metiers" title="Métiers identifiés." level="fact">
+          {!occupations.ready&&<p role="status" className="t-body soft mb-5">Le reclassement des offres est en cours. Les totaux par métier peuvent encore évoluer ; toutes les offres restent consultables.</p>}
+          <p className="t-body soft mb-5">{fmtInt(occupations.classified)} offres sur {fmtInt(occupations.total)} ont un métier précis identifié. {fmtInt(occupations.unclassified)} restent à préciser ou présentent plusieurs métiers possibles. <Link href="/emplois?metier=unclassified">Consulter ces offres</Link>.</p>
+          <div className="itable-wrap"><table className="itable">
+            <thead><tr><th>Métier</th><th>Famille professionnelle</th><th className="num">Offres actives</th></tr></thead>
+            <tbody>{occupationRows.filter(o=>o.count>0).map(o=><tr key={o.key}><td><Link href={intelPaths.fn(o.key)}>{o.label}</Link></td><td>{o.family}</td><td className="num">{fmtInt(o.count)}</td></tr>)}</tbody>
+          </table></div>
+          {occupations.classified===0&&<p className="t-body">Le classement détaillé est en cours. Toutes les offres restent accessibles dans la recherche.</p>}
+        </Block>
+        <Block id="fonctions" title="Familles professionnelles." level="fact">
           <div className="itable-wrap">
             <table className="itable">
               <thead>

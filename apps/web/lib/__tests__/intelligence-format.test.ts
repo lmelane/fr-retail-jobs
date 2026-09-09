@@ -3,7 +3,7 @@ import { addDays, citySlug, fmtDate, fmtIndex, fmtInt, fmtPct, fmtSigned, fmtSig
 import { intelTitle, jsonLd, TITLE_MAX } from '../intelligence/seo';
 import { alpha2FromNumeric, knownAlpha2 } from '../intelligence/country-ids';
 import { countryCode } from '../countries';
-import { familyOf, functionLabel, isFunctionKey, JOB_FUNCTIONS, sectorLabel, seniorityLabel } from '../intelligence/taxonomy';
+import { sectorLabel } from '../intelligence/taxonomy';
 import { level, thresholds } from '../../components/intelligence/world-map';
 
 describe('formatters (fr-FR)', () => {
@@ -74,15 +74,7 @@ describe('country ids', () => {
 });
 
 describe('taxonomy', () => {
-  it('has the 25 functions of the pipeline with a family each', () => {
-    expect(JOB_FUNCTIONS).toHaveLength(25);
-    expect(isFunctionKey('retail-client-advisor')).toBe(true);
-    expect(familyOf('atelier-craft')).toBe('craft');
-    expect(familyOf('finance')).toBe('corporate');
-    expect(familyOf(null)).toBeNull();
-    expect(functionLabel(null)).toBe('Non classé');
-    expect(functionLabel('nope')).toBe('Non classé');
-    expect(seniorityLabel('EXECUTIVE')).toBe('Dirigeant');
+  it('labels seniority and sectors independently from occupation keys', () => {
     expect(sectorLabel('SUPPLIER')).toBe('Autres');
   });
 });

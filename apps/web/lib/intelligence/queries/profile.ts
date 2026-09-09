@@ -79,7 +79,7 @@ export const getProfile = cached('profile', async (scope: Scope, options: Profil
     groups,
     sectors,
     functions,
-    families: toFamilies(functions),
+    families: await toFamilies(functions),
     seniority,
     contracts,
     skills,

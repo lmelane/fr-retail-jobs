@@ -1,3 +1,5 @@
+import { recordOccupationObservation } from '../occupation/persist.js';
+import { lockOccupationTaxonomy } from '@catwalks/db/occupations';
 import { createHash } from 'node:crypto';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { lockCompanyRows, lockSourceWrites } from '../lib/writeLocks.js';
@@ -136,6 +138,16 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
       const current = beforeRows.get(`${op.entity}:${op.id}`) ?? null;
       if (digest(current) !== digest(op.before)) throw new Error(`Stale plan: ${op.entity}/${op.id}`);
     }
+    const occupationOps=plan.operations.filter(op=>op.entity==='Job'&&op.patch.occupationReleaseId);
+    if(occupationOps.length){
+      const active=await lockOccupationTaxonomy(tx);
+      for(const op of occupationOps)if(op.patch.occupationReleaseId!==active.manifest.id)throw new Error(`Stale occupation release in repair plan: ${op.id}`);
+    }
+    for(const op of plan.operations){
+      if(op.entity==='Job' && op.before?.occupationReleaseId &&
+        ['title','department','rawTitle'].some(k=>k in op.patch && digest(op.patch[k])!==digest(op.before![k])) &&
+        !('occupationEvidence' in op.patch))throw new Error(`Occupation projection missing from reviewed plan: ${op.id}; regenerate the plan with canonicalJobContent`);
+    }
     // Thousands of identity-only corrections share this exact text-field shape.
     // Batch them after creating their target Companies; all before-images were
     // already checked and the entire transaction still rolls back on failure.
@@ -159,6 +171,7 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
     const afterRows = await rows(tx, plan.operations);
     for (const op of plan.operations) {
       const after = afterRows.get(`${op.entity}:${op.id}`)!;
+      if(op.entity==='Job'&&after.occupationReleaseId)await recordOccupationObservation(tx,{...after,id:op.id},op.before);
       records.push({ batchId: plan.batchId, planHash: hash, commitHash, finding: plan.finding,
         entityType: op.entity, entityId: op.id,
         before: op.before as Prisma.InputJsonValue ?? Prisma.JsonNull,

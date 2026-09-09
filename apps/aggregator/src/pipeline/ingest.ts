@@ -1,3 +1,4 @@
+import { loadOccupationTaxonomy, type CompiledOccupationTaxonomy } from '@catwalks/db/occupations';
 import { log } from '../observability/logger.js';
 import { archivePublicationHold } from './publicationHold.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
@@ -44,6 +45,10 @@ export type IngestStats = {
   merged: number;
   updated: number;
   errors: number;
+  occupationStatuses?: Record<string, number>;
+  /** Initial release; occupationReleases counts the actual decisions if activation occurs mid-run. */
+  occupationReleaseId?: string;
+  occupationReleases?: Record<string,number>;
   /** Bounded original cause, persisted in SourceRun rather than lost with logs. */
   errorNote?: string;
   held?: number;
@@ -148,6 +153,7 @@ export function toCandidate(
     // ville sans balise (« /a> » sur 71 offres L'Oréal) ; date de publication
     // plausible (5 offres « publiées en 2028 ») ; salaire borné pour les devises
     // majeures (58 M€/an chez Michael Page).
+    rawTitle: job.title,
     title: cleanTitle(job.title) ?? job.title,
     location: cleanPlace(job.location),
     city: cleanPlace(job.city),
@@ -279,6 +285,7 @@ async function ingestApiSource(
   deadlineMs?: number,
   /** Verdicts chargés une fois par run — voir `toCandidate`. */
   trust: TrustContext = new Map(),
+  catalogue?: CompiledOccupationTaxonomy,
 ): Promise<IngestStats> {
   const stats: IngestStats = {
     source: source.key,
@@ -318,6 +325,10 @@ async function ingestApiSource(
     config = { ...config, startPage, progress };
   }
 
+  const occupationTaxonomy = catalogue ?? await loadOccupationTaxonomy(prisma);
+  stats.occupationReleaseId = occupationTaxonomy.manifest.id;
+  stats.occupationStatuses = {};
+  stats.occupationReleases = {};
   const { jobs, declaredTotal, truncated, complete } = await fetchAtsJobs(type as never, config);
   stats.complete = complete;
   stats.declaredTotal = declaredTotal;
@@ -392,7 +403,10 @@ async function ingestApiSource(
       const result = await upsertDeduplicated(
         prisma,
         toCandidate(job, sourceDef, employer, type as AtsType, trust),
+        occupationTaxonomy,
       );
+      stats.occupationStatuses[result.occupationStatus] = (stats.occupationStatuses[result.occupationStatus] ?? 0) + 1;
+      stats.occupationReleases[result.occupationReleaseId] = (stats.occupationReleases[result.occupationReleaseId] ?? 0) + 1;
       if (result.outcome === 'CREATED') stats.created++;
       else if (result.outcome === 'MERGED') stats.merged++;
       else stats.updated++;
@@ -475,6 +489,7 @@ export async function runIngest(
    * Une panne de lecture interrompt la collecte : elle ne doit jamais rétablir
    * une priorité de champ qu’un verdict de confiance avait rejetée.
    */
+  const occupationTaxonomy = await loadOccupationTaxonomy(prisma);
   const trust = await loadTrust(prisma); // Never restore rejected field priorities on a registry failure.
 
   const results: IngestStats[] = [];
@@ -563,7 +578,7 @@ export async function runIngest(
   for (const source of apiSources) {
     try {
       assertSourceRunning();
-      const stats = await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => ingestApiSource(prisma, source, options.deadlineMs, trust));
+      const stats = await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => ingestApiSource(prisma, source, options.deadlineMs, trust, occupationTaxonomy));
       results.push(stats);
       await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => purgeQuietly(stats));
       await geocodeQuietly();

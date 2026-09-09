@@ -596,7 +596,7 @@
 .source { margin-top: 32px; padding-top: 16px; }
 
 @media (max-width: 1023px) {
-  .split { grid-template-columns: 1fr; }
+  .split { grid-template-columns: minmax(0, 1fr); }
   .split > .rule-v, .split > .detail { display: none; }
   .detail { position: static; max-height: none; overflow: visible; padding: 24px 0; }
   .kv { grid-template-columns: 1fr; }

@@ -51,6 +51,8 @@ const SECTOR_LABELS: Record<string, string> = {
 /** URL keys, in French, because the URL is user-visible. */
 const PARAM: Record<string, string> = {
   q: 'q',
+  occupation: 'metier',
+  jobFunction: 'fonction',
   city: 'ville',
   contract: 'employmentTerm',
   sector: 'secteur',
@@ -266,6 +268,7 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
             Filtres{activeCount > 0 ? ` (${activeCount})` : ''}
             <ChevronDown aria-hidden />
           </button>
+          {data.occupationEnrichmentAvailable === false && <p role="status" className="t-body2 muted">Les libellés métiers sont temporairement indisponibles. Les offres restent accessibles par leur titre.</p>}
           <div className="filters" id="filtres" data-open={filtersOpen ? 'true' : 'false'}>
             <FilterMenu
               label="Pays"
@@ -273,6 +276,13 @@ export function JobsView({ data, filters }: { data: JobsResult; filters: JobFilt
               options={data.facets.countries}
               labels={COUNTRY_LABELS}
               onSelect={(value) => toggle('pays', value)}
+            />
+            <FilterMenu
+              label="Métier"
+              active={params.get('metier')}
+              options={data.facets.occupations ?? []}
+              labels={Object.fromEntries((data.facets.occupations ?? []).map(o=>[o.value,o.label]))}
+              onSelect={(value) => toggle('metier', value)}
             />
             <FilterMenu
               label="Secteur"

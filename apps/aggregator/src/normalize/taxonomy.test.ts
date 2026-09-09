@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { classifyFunction, classifyJob, classifyProgramType, classifySeniority, isAiRelated, JOB_FUNCTIONS } from './taxonomy.js';
+import { classifyFunction, classifyJob, classifyProgramType, classifySeniority, isAiRelated, JOB_FUNCTIONS, BOOTSTRAP_TAXONOMY } from './taxonomy.js';
 import { extractSkills } from './skills.js';
 
 describe('classifyFunction — la famille de métier du secteur, depuis le titre', () => {
@@ -15,7 +15,7 @@ describe('classifyFunction — la famille de métier du secteur, depuis le titre
     ['Brand Ambassador', 'retail-client-advisor'],
     ['Style Advisor', 'retail-client-advisor'],
     ['Beauty Advisor - Sephora Champs-Élysées', 'beauty-advisor'],
-    ['Make-Up Artist', 'beauty-advisor'],
+    ['Make-Up Artist', 'beauty-services'],
     ['Conseillère Beauté', 'beauty-advisor'],
     ['Fragrance Specialist', 'beauty-advisor'],
     // Un superviseur d'entrepôt n'est PAS un directeur de boutique : titres
@@ -72,7 +72,7 @@ describe('classifyFunction — la famille de métier du secteur, depuis le titre
     ['Press Officer', 'marketing-communication'],
     ['Social Media Manager', 'marketing-communication'],
     ['Chargé de communication', 'marketing-communication'],
-    ['Graphic Designer', 'marketing-communication'],
+    ['Graphic Designer', 'design-creation'],
     ['Fashion Designer - Womenswear', 'design-creation'],
     ['Styliste', 'design-creation'],
     ['Creative Director', 'design-creation'],
@@ -164,7 +164,7 @@ describe('classifyFunction — la famille de métier du secteur, depuis le titre
     ['Customer Host (4 HRS)', 'retail-client-advisor'],
     ['Master Stylist', 'beauty-advisor'],
     ['Elite Stylist', 'beauty-advisor'],
-    ['Brow Waxing Expert', 'beauty-advisor'],
+    ['Brow Waxing Expert', 'beauty-services'],
     ['Specialty Artist - MAC', 'beauty-advisor'],
     ['Lead Piercer (Part-Time)', 'beauty-advisor'],
     ['MECCA Chadstone - Skin Specialist', 'beauty-advisor'],
@@ -237,7 +237,7 @@ describe('classifyFunction — la famille de métier du secteur, depuis le titre
   });
 
   it('le département de salon ou de boutique prime sur un titre générique (audit I-3)', () => {
-    expect(classifyFunction('Stylist', 'Salon Professionals')).toBe('beauty-advisor');
+    expect(classifyFunction('Stylist', 'Salon Professionals')).toBe('beauty-services');
     expect(classifyFunction('Stylist', undefined)).toBe('design-creation');
     expect(classifyFunction('General Manager', 'Retail Management')).toBe('retail-store-management');
     expect(classifyFunction('General Manager', undefined)).toBe('strategy-management');
@@ -259,7 +259,7 @@ describe('classifyFunction — la famille de métier du secteur, depuis le titre
   it('le référentiel a des clés uniques et une famille chacune', () => {
     const keys = JOB_FUNCTIONS.map((f) => f.key);
     expect(new Set(keys).size).toBe(keys.length);
-    expect(JOB_FUNCTIONS.every((f) => ['retail', 'craft', 'corporate'].includes(f.family))).toBe(true);
+    expect(JOB_FUNCTIONS.every((f) => BOOTSTRAP_TAXONOMY.groups.has(f.family))).toBe(true);
   });
 });
 
@@ -277,22 +277,22 @@ describe('classifySeniority — l’ordre des tests fait la règle', () => {
     ['Responsable de boutique', undefined, 'MANAGER'],
     ['Team Leader', undefined, 'MANAGER'],
     ['Senior Product Manager', undefined, 'SENIOR'],
-    ['Project Manager', undefined, 'MID'],
-    ['Chef de projet CRM', undefined, 'MID'],
+    ['Project Manager', undefined, null],
+    ['Chef de projet CRM', undefined, null],
     ['Senior Client Advisor', undefined, 'SENIOR'],
-    ['Expert Horloger', undefined, 'MID'],
+    ['Expert Horloger', undefined, null],
     ['Junior Designer', undefined, 'JUNIOR'],
     ['Assistant Chef de Produit', undefined, 'JUNIOR'],
-    ['Sales Associate', undefined, 'MID'],
-    ['Sales Assistant', undefined, 'MID'],
-    ['Client Advisor', undefined, 'MID'],
-    ['Maroquinier', undefined, 'MID'],
+    ['Sales Associate', undefined, null],
+    ['Sales Assistant', undefined, null],
+    ['Client Advisor', undefined, null],
+    ['Maroquinier', undefined, null],
     // Audit I-3 : un coordinateur, un specialist, un expert ne managent pas
-    ['VM Coordinator', undefined, 'MID'],
-    ['Coordinateur.rice Données', undefined, 'MID'],
-    ['Retail Operations Specialist', undefined, 'MID'],
-    ['Brow Waxing Expert', undefined, 'MID'],
-    ['CRO Manager', undefined, 'MID'],
+    ['VM Coordinator', undefined, null],
+    ['Coordinateur.rice Données', undefined, null],
+    ['Retail Operations Specialist', undefined, null],
+    ['Brow Waxing Expert', undefined, null],
+    ['CRO Manager', undefined, null],
     ['Assistant Store Leader', undefined, 'MANAGER'],
     ['Retail General Manager, Melrose Ave', undefined, 'DIRECTOR'],
   ])('%s → %s', (title, _unused, expected) => {
@@ -307,7 +307,7 @@ describe('classifySeniority — l’ordre des tests fait la règle', () => {
   /**
    * La séniorité ne classe plus AUCUN dispositif : un stagiaire n'est pas un
    * niveau, il est un `programType`. Elle rend le niveau réel de l'intitulé —
-   * MID par défaut quand rien ne le précise.
+   * null quand le titre ne précise aucun niveau.
    */
   it('un intitulé de programme ne produit plus de séniorité de programme', () => {
     for (const title of ['Stage - Assistant Manager', 'Alternance - Chargé de communication', 'V.I.E. Finance']) {

@@ -14,7 +14,8 @@
     // files it happens to see and the emitted layout shifts as imports change.
     "rootDir": "src",
     "outDir": "dist",
-    "noEmit": true
+    "noEmit": true,
+    "allowImportingTsExtensions": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]

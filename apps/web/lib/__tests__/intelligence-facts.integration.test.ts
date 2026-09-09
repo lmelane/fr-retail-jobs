@@ -1,20 +1,18 @@
 import { describe, it, expect } from 'vitest';
 
-/**
- * Test d'intégration LÉGER sur la copie locale de prod — et SEULEMENT elle :
- * il ne tourne que si DATABASE_URL est exactement l'URL locale du brief
- * (jamais `catwalks_test`, vidée par d'autres tests ; jamais la prod). Lecture
- * seule. Il vérifie que chaque requête SQL répond et que les totaux se
- * recoupent (pays + sans pays = actives ; villes ≤ actives ; scope FR ⊂ monde).
- */
-const LOCAL = 'postgresql://catwalks:catwalks@localhost:55440/catwalks';
-const enabled = process.env.DATABASE_URL === LOCAL;
+/** Real-corpus checks are explicitly opted into on a local replay database.
+ * No fixed credential/port: an obsolete local URL used to silently skip them.
+ * This file only reads data; never run the destructive fixture suites here. */
+const corpusUrl = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : null;
+const enabled = process.env.READ_ONLY_CORPUS_TEST === '1' &&
+  !!corpusUrl && ['localhost', '127.0.0.1'].includes(corpusUrl.hostname) &&
+  /^\/catwalks_.*replay/.test(corpusUrl.pathname);
 
 describe.skipIf(!enabled)('intelligence facts (local prod copy, read-only)', () => {
   it('answers every aggregate and the totals reconcile', async () => {
     const facts = await import('../intelligence/facts');
     const [h, countries, cities, companies, sectors, functions, seniority, contracts, closed] = await Promise.all([
-      facts.headline(), facts.byCountry(), facts.byCity({}, 1000), facts.byCompany({}, 1000), facts.bySector(),
+      facts.headline(), facts.byCountry(), facts.byCity({}, 1000), facts.byCompany({}, 10000), facts.bySector(),
       facts.byFunction(), facts.bySeniority(), facts.byContract(), facts.closedFacts(),
     ]);
     expect(h.active).toBeGreaterThan(0);

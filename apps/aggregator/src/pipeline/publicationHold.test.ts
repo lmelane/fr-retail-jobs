@@ -1,4 +1,4 @@
-import '../test/setup-integration.js';
+import { clearOccupationLedger } from '../test/setup-integration.js';
 import { afterAll, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { archivePublicationHold } from './publicationHold.js';
@@ -40,6 +40,7 @@ it('withdraws only the confirmed representation, preserves history, and a newer 
   await upsertDeduplicated(db, candidate);
   expect((await db.job.findUniqueOrThrow({ where: { id: initial.jobId } })).isActive).toBe(true);
   expect(await db.jobEvent.count({ where: { jobId: initial.jobId, type: 'REOPENED' } })).toBe(1);
+  await clearOccupationLedger();
   await db.jobSource.deleteMany({ where: { sourceKey: key } }); await db.job.delete({ where: { id: initial.jobId } });
   await db.sourceObservation.deleteMany({ where: { sourceKey: key } }); await db.source.delete({ where: { key } });
 });

@@ -1,3 +1,5 @@
+import { lockOccupationTaxonomy, loadOccupationTaxonomy, type CompiledOccupationTaxonomy } from '@catwalks/db/occupations';
+import { classifyOccupationContent, occupationState, recordOccupationObservation } from '../occupation/persist.js';
 import { EmployerIdentityReviewRequired } from '../identity/errors.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
 import { lockEmployerCatalogue } from '../lib/writeLocks.js';
@@ -18,7 +20,7 @@ import { cityFromLocation, displayCity } from '../normalize/location.js';
 import { isFranceJob } from '../lib/france.js';
 import { detectLanguage } from '../lib/language.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
-import { classifyJob, TAXONOMY_VERSION } from '../normalize/taxonomy.js';
+import { TAXONOMY_VERSION } from '../normalize/taxonomy.js';
 import { changedEvents, diffStructuralFields, structuralValuesOf, toNestedEventRow, type JobEventInput } from '../pipeline/jobEvents.js';
 
 
@@ -68,6 +70,8 @@ export type UpsertResult = {
   outcome: UpsertOutcome;
   /** True when this source took over the canonical apply URL. */
   promoted: boolean;
+  occupationStatus: string;
+  occupationReleaseId: string;
 };
 
 /**
@@ -77,7 +81,9 @@ export type UpsertResult = {
 export async function upsertDeduplicated(
   prisma: PrismaClient,
   candidate: CandidateJob & { companyId: string },
+  catalogue?: CompiledOccupationTaxonomy,
 ): Promise<UpsertResult> {
+  const taxonomy = catalogue ?? await loadOccupationTaxonomy(prisma);
   for (let attempt = 0; ; attempt++) {
     assertSourceRunning();
     try {
@@ -110,7 +116,8 @@ export async function upsertDeduplicated(
         });
         await lockCompanyRows(tx, [target?.id, current?.job.companyId].filter((id): id is string => !!id));
         assertSourceRunning();
-        const result = await upsertInTransaction(tx, resolved, resolution);
+        const currentTaxonomy = await lockOccupationTaxonomy(tx, taxonomy);
+        const result = await upsertInTransaction(tx, resolved, resolution, currentTaxonomy);
         assertSourceRunning(); // Throw inside the transaction so cancellation rolls writes back.
         return result;
       }, { maxWait: 10_000, timeout: 30_000 });
@@ -144,6 +151,7 @@ async function upsertInTransaction(
   prisma: Prisma.TransactionClient,
   candidate: CandidateJob & { companyId: string },
   resolution: EmployerResolution,
+  catalogue: CompiledOccupationTaxonomy,
 ): Promise<UpsertResult> {
   const clusterKey = blockingKey(candidate);
   const now = new Date();
@@ -242,7 +250,7 @@ async function upsertInTransaction(
     if (hasRequisitionConflict([candidate.url, ...ownEntry.job.sources.filter(s => s.isActive).map(s => s.url)])) {
       throw new Error(`REQUISITION_IDENTITY_CONFLICT job=${ownEntry.job.id}; reviewed separation required`);
     }
-    return attachToExisting(prisma, candidate, ownEntry.job, now, clusterKey, company.id);
+    return attachToExisting(prisma, catalogue, candidate, ownEntry.job, now, clusterKey, company.id);
   }
 
   // Only live jobs in the same cluster can absorb this posting. The cluster key
@@ -285,17 +293,17 @@ async function upsertInTransaction(
     });
   });
 
-  if (!existing) return createJob(prisma, candidate, company.id, clusterKey, now);
+  if (!existing) return createJob(prisma, catalogue, candidate, company.id, clusterKey, now);
 
   const matched = await prisma.job.findUniqueOrThrow({ where: { id: existing.id }, include: { sources: true }, omit: { searchText: true } });
-  return attachToExisting(prisma, candidate, matched, now, clusterKey, company.id);
+  return attachToExisting(prisma, catalogue, candidate, matched, now, clusterKey, company.id);
 }
 
 /** Complete projection of one authoritative observation; shared by creation and reviewed repairs. */
-export function canonicalJobContent(candidate: CandidateJob) {
+export function canonicalJobContent(candidate: CandidateJob, catalogue: CompiledOccupationTaxonomy) {
   const country = countryOf(candidate);
   const clusterKey = blockingKey(candidate);
-  const taxonomy = classifyJob(candidate);
+  const taxonomy = classifyOccupationContent(candidate,catalogue);
   return {
     externalId: candidate.externalId,
     source: candidate.atsType ?? 'GENERIC_JSONLD' as const,
@@ -339,6 +347,7 @@ export function canonicalJobContent(candidate: CandidateJob) {
 
 async function createJob(
   prisma: Prisma.TransactionClient,
+  catalogue: CompiledOccupationTaxonomy,
   candidate: CandidateJob & { companyId: string },
   companyId: string,
   _clusterKey: string,
@@ -346,7 +355,7 @@ async function createJob(
 ): Promise<UpsertResult> {
   const created = await prisma.job.create({
     data: {
-      ...canonicalJobContent(candidate),
+      ...canonicalJobContent(candidate,catalogue),
       companyId,
       lastSeenAt: now,
       sources: { create: {
@@ -358,7 +367,8 @@ async function createJob(
       events: { create: { type: 'OPENED', at: now } },
     },
   });
-  return { jobId: created.id, outcome: 'CREATED', promoted: true };
+  await recordOccupationObservation(prisma,created,null);
+  return { jobId: created.id, outcome: 'CREATED', promoted: true, occupationStatus: created.occupationStatus, occupationReleaseId: created.occupationReleaseId! };
 }
 
 /**
@@ -524,6 +534,7 @@ export function reattestationFields(
 
 async function attachToExisting(
   prisma: Prisma.TransactionClient,
+  catalogue: CompiledOccupationTaxonomy,
   candidate: CandidateJob,
   existing: ExistingJob,
   now: Date,
@@ -565,6 +576,14 @@ async function attachToExisting(
     owner.sourceKey !== existing.canonicalSourceKey || owner.externalId !== existing.canonicalExternalId
   ) && tierRank(owner.sourceTier) < tierRank(existing.canonicalTier ?? '');
 
+  const reattested = reattestationFields(candidate, existing, hasAuthority);
+  const effective = { ...existing, ...reattested };
+  const classification = classifyOccupationContent({
+    title:effective.title,department:effective.department,description:effective.description,
+    rawTitle:hasAuthority?(candidate.rawTitle??(effective.title===existing.title?existing.rawTitle:null)):existing.rawTitle,
+    sourceKey:hasAuthority?candidate.sourceKey:existing.canonicalSourceKey??undefined,
+    externalId:hasAuthority?candidate.externalId:existing.canonicalExternalId??undefined,
+  },catalogue);
   const data = {
     lastSeenAt: now,
     isActive: true,
@@ -572,15 +591,11 @@ async function attachToExisting(
     // left below the version line and re-purged on the next run.
     pipelineVersion: PIPELINE_VERSION,
     // The normalized values of today reach the rows of yesterday.
-    ...reattestationFields(candidate, existing, hasAuthority),
+    ...reattested,
     // La taxonomie suit la même règle d'auto-guérison : re-classée par la
     // source de l'entrée, ou dès que les règles ont changé de version.
-    ...(hasAuthority || existing.taxonomyVersion < TAXONOMY_VERSION
-      ? classifyJob({
-          title: hasAuthority ? candidate.title : existing.title,
-          department: hasAuthority ? candidate.department : existing.department ?? undefined,
-          description: hasAuthority ? candidate.description : existing.description,
-        })
+    ...(hasAuthority || effective.department !== existing.department || existing.occupationReleaseId !== catalogue.manifest.id || existing.taxonomyVersion < TAXONOMY_VERSION
+      ? {...occupationState(classification),taxonomyVersion:TAXONOMY_VERSION,isAiRelated:classification.isAiRelated,skills:classification.skills}
       : {}),
     // A cluster key that drifted (city normalized differently) is re-graved,
     // so the cluster lookup — and the weekly reconcile — find the row again.
@@ -614,7 +629,7 @@ async function attachToExisting(
   // Une seule écriture : la ligne et ses événements dans la même requête
   // (createMany imbriqué), sans transaction interactive à tenir sous six
   // workers concurrents.
-  await prisma.job.update({
+  const written = await prisma.job.update({
     where: { id: existing.id },
     data: {
       ...data,
@@ -623,9 +638,12 @@ async function attachToExisting(
     },
   });
 
+  await recordOccupationObservation(prisma,written,existing);
   return {
     jobId: existing.id,
     outcome: alreadyKnown ? 'UPDATED' : 'MERGED',
     promoted,
+    occupationStatus: written.occupationStatus,
+    occupationReleaseId: written.occupationReleaseId!,
   };
 }

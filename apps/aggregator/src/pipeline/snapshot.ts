@@ -28,7 +28,7 @@ import { chunk } from '../lib/chunk.js';
  */
 
 export const SNAPSHOT_SCOPES = [
-  'global', 'country', 'city', 'company', 'group', 'sector', 'function', 'family',
+  'global', 'country', 'city', 'company', 'group', 'sector', 'function', 'occupation', 'family',
   'seniority', 'employmentTerm', 'ai', 'country-function', 'country-sector',
 ] as const;
 export type SnapshotScope = (typeof SNAPSHOT_SCOPES)[number];
@@ -40,7 +40,7 @@ export const KEY_SEPARATOR = '|';
 export const MIN_ACTIVE_FOR_CROSS = 5;
 
 /** Les métiers de la famille « atelier » : `isRetail=false` couvre corporate ET craft, la fonction tranche. */
-export const CRAFT_FUNCTIONS = ['atelier-craft', 'manufacturing-quality'] as const;
+
 
 export const UNCLASSIFIED_KEY = 'unclassified';
 /**
@@ -179,6 +179,8 @@ function baseCte(mode: SnapshotMode, start: Date, end: Date): Prisma.Sql {
         c."parentGroup",
         c.sector::text AS sector,
         j."jobFunction",
+        j."occupationCode",
+        j."occupationGroup",
         j.seniority,
         j."employmentTerm",
         j."isRetail",
@@ -207,14 +209,8 @@ const SCOPE_KEYS: Record<SnapshotScope, { key: Prisma.Sql; minActive: number }> 
   group: { key: Prisma.sql`"parentGroup"`, minActive: 0 },
   sector: { key: Prisma.sql`sector`, minActive: 0 },
   function: { key: Prisma.sql`COALESCE("jobFunction", ${UNCLASSIFIED_KEY})`, minActive: 0 },
-  family: {
-    key: Prisma.sql`CASE
-      WHEN "jobFunction" IN (${Prisma.join([...CRAFT_FUNCTIONS])}) THEN 'craft'
-      WHEN "isRetail" THEN 'retail'
-      WHEN "isRetail" = false THEN 'corporate'
-      ELSE ${UNCLASSIFIED_KEY} END`,
-    minActive: 0,
-  },
+  occupation: {key:Prisma.sql`COALESCE("occupationCode", ${UNCLASSIFIED_KEY})`,minActive:0},
+  family: {key:Prisma.sql`COALESCE("occupationGroup", ${UNCLASSIFIED_KEY})`,minActive:0},
   seniority: { key: Prisma.sql`COALESCE(seniority, ${UNCLASSIFIED_KEY})`, minActive: 0 },
   employmentTerm: { key: Prisma.sql`COALESCE("employmentTerm", ${UNKNOWN_CONTRACT_KEY})`, minActive: 0 },
   ai: { key: Prisma.sql`CASE WHEN "isAiRelated" THEN 'true' END`, minActive: 0 },

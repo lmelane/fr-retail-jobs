@@ -1,3 +1,4 @@
+import { getOccupationPresentation } from '@/lib/occupations';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { IntelPage, JsonLd, PageHead } from '@/components/intelligence/chrome';
@@ -7,16 +8,19 @@ import { getCoverage } from '@/lib/intelligence/queries/coverage';
 import { fmtInt, MIN_SAMPLE } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
-import { FAMILY_LABELS, FUNCTION_BY_KEY } from '@/lib/intelligence/taxonomy';
+
 
 export const dynamic = 'force-dynamic';
 
 type Params = { params: Promise<{ key: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const def = FUNCTION_BY_KEY.get((await params).key);
+  const {taxonomy,FUNCTION_BY_KEY,FAMILY_LABELS}=await getOccupationPresentation();
+  const key=(await params).key;
+  const occupation=taxonomy.occupations.get(key);
+  const def=occupation?{key:occupation.key,label:occupation.labels.fr,family:taxonomy.families.get(occupation.family!)!.group!}:FUNCTION_BY_KEY.get(key);
   if (!def) return { title: 'Métier introuvable' };
-  const profile = await getProfile({ fn: def.key }, { snapshot: { scope: 'function', key: def.key }, skills: true });
+  const profile = await getProfile(occupation?{occupation:def.key}:{fn:def.key}, {snapshot:{scope:occupation?'occupation':'function',key:def.key},skills:true});
   const n = profile.headline.active;
   return intelMetadata({
     subject: `${def.label} : la demande mondiale`,
@@ -27,15 +31,18 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Params) {
-  const def = FUNCTION_BY_KEY.get((await params).key);
+  const {taxonomy,JOB_FUNCTIONS,FUNCTION_BY_KEY,FAMILY_LABELS,functionLabel}=await getOccupationPresentation();
+  const key=(await params).key;
+  const occupation=taxonomy.occupations.get(key);
+  const def=occupation?{key:occupation.key,label:occupation.labels.fr,family:taxonomy.families.get(occupation.family!)!.group!}:FUNCTION_BY_KEY.get(key);
   if (!def) notFound();
   const [profile, coverage] = await Promise.all([
-    getProfile({ fn: def.key }, { snapshot: { scope: 'function', key: def.key }, skills: true }),
+    getProfile(occupation?{occupation:def.key}:{fn:def.key}, {snapshot:{scope:occupation?'occupation':'function',key:def.key},skills:true}),
     getCoverage(),
   ]);
   const path = intelPaths.fn(def.key);
   const crumbs = [{ name: 'Intelligence', path: intelPaths.home }, { name: 'Métiers', path: intelPaths.functions }, { name: def.label, path }];
-  const ctx = { kind: 'function' as const, name: def.label, jobsParams: { q: def.label } };
+  const ctx = { kind: 'function' as const, name: def.label, jobsParams: occupation?{metier:def.key}:{fonction:def.key} };
 
   return (
     <IntelPage>

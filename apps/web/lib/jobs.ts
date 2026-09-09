@@ -1,3 +1,4 @@
+import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { companyIdentityWhere } from './company-identity';
 import { unstable_cache } from 'next/cache';
 import { prisma, CompanySector, canonicalJobId } from '@catwalks/db';
@@ -66,6 +67,8 @@ export class DatabaseUnavailableError extends Error {
  */
 export type JobFilters = {
   q?: string;
+  occupation?: string;
+  jobFunction?: string;
   sector?: string;
   employmentTerm?: string;
   city?: string;
@@ -105,6 +108,8 @@ export function parseFilters(params: Record<string, string | string[] | undefine
 
   return {
     q: one('q'),
+    occupation: one('metier'),
+    jobFunction: one('fonction'),
     city: one('ville'),
     /**
      * Le paramètre technique porte le nom de la DIMENSION, pas un mot français :
@@ -168,6 +173,11 @@ export type JobRow = {
   department: string | null;
   /** Métier et séniorité (taxonomie D38) : ce qui distingue deux offres d'une même Maison dans la liste. */
   jobFunction: string | null;
+  occupationCode?: string | null;
+  occupationLabel?: string | null;
+  seniorityLabel?: string | null;
+  occupationFamilyLabel?: string | null;
+  occupationStatus?: string;
   seniority: string | null;
   workTime: string | null;
   workplaceType: string | null;
@@ -187,6 +197,7 @@ export type JobRow = {
 };
 
 export type JobsResult = {
+  occupationEnrichmentAvailable?: boolean;
   /** One page of results, not the whole match set. */
   jobs: JobRow[];
   /** Every row matching the filters, across all pages. */
@@ -205,6 +216,7 @@ export type JobsResult = {
     sources: { value: string; count: number }[];
     /** Country facet values are canonical codes (FR, IT…); the UI labels them. */
     countries: { value: string; count: number }[];
+    occupations?: { value: string; label: string; count: number }[];
   };
 };
 
@@ -236,6 +248,8 @@ export function whereClause(filters: JobFilters) {
     // Pays filter narrows it. France uses the reliable isFrance flag; other
     // countries match the raw `country` spellings that map to their code.
     ...countryCondition(filters.country),
+    ...(filters.occupation ? { occupationCode: filters.occupation === 'unclassified' ? null : filters.occupation } : {}),
+    ...(filters.jobFunction ? { jobFunction: filters.jobFunction } : {}),
     // Case-insensitive: the facet value is canonical ("Paris") but the column
     // holds mixed spellings ("PARIS", "Paris"), so an exact match dropped half.
     ...(filters.city ? { city: { equals: filters.city, mode: 'insensitive' as const } } : {}),
@@ -295,7 +309,8 @@ function toRow(row: {
   salaryMax: number | null; salaryCurrency: string | null; salaryPeriod: string | null;
   validThrough: Date | null; countryCode: string | null; language: string | null; firstSeenAt: Date;
   jobFunction: string | null; seniority: string | null;
-}): JobRow {
+  occupationCode?: string | null; occupationStatus?: string;
+}, taxonomy: OptionalOccupationPresentation): JobRow {
   return {
     id: row.id,
     title: row.title,
@@ -320,6 +335,11 @@ function toRow(row: {
     postalCode: row.postalCode,
     department: row.department,
     jobFunction: row.jobFunction,
+    seniorityLabel: row.seniority?taxonomy.seniorityLabel(row.seniority):null,
+    occupationCode: row.occupationCode??null,
+    occupationLabel: taxonomy.occupationLabel(row.occupationCode),
+    occupationFamilyLabel: taxonomy.functionLabel(row.jobFunction),
+    occupationStatus: row.occupationStatus,
     seniority: row.seniority,
     workTime: row.workTime,
     workplaceType: row.workplaceType,
@@ -373,8 +393,9 @@ export async function getJobStatus(
       },
     });
     if (!row) return { status: 'missing' };
-    if (!row.isActive) return { status: 'closed', job: toRow(row) };
-    return { status: 'active', job: toRow(row) };
+    const taxonomy=await getOptionalOccupationPresentation();
+    if (!row.isActive) return { status: 'closed', job: toRow(row, taxonomy) };
+    return { status: 'active', job: toRow(row, taxonomy) };
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }
@@ -485,7 +506,8 @@ export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> 
       orderBy: [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }],
       take: limit,
     });
-    if (sameMaison.length >= limit) return sameMaison.map(toRow);
+    const taxonomy=await getOptionalOccupationPresentation();
+    if (sameMaison.length >= limit) return sameMaison.map(row=>toRow(row,taxonomy));
 
     const sector = validSector(job.sector ?? undefined);
     const fill = sector
@@ -501,7 +523,7 @@ export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> 
           take: limit - sameMaison.length,
         })
       : [];
-    return [...sameMaison, ...fill].map(toRow);
+    return [...sameMaison, ...fill].map(row=>toRow(row,taxonomy));
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }
@@ -512,7 +534,8 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
 
   const page = normalizedPage(filters.page);
   try {
-    const summary = await searchSummary(filters, page, PAGE_SIZE);
+    const taxonomy=await getOptionalOccupationPresentation();
+    const summary = await searchSummary(filters, page, PAGE_SIZE, taxonomy);
     const rows = await prisma.job.findMany({
       where: { id: { in: summary.ids }, isActive: true },
       omit: { raw: true, searchText: true },
@@ -525,10 +548,12 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
       if (code && code !== 'FR') countries.set(code, (countries.get(code) ?? 0) + facet.count);
     }
     return {
-      jobs: summary.ids.flatMap(id => { const row = byId.get(id); return row ? [toRow(row)] : []; }),
+      jobs: summary.ids.flatMap(id => { const row = byId.get(id); return row ? [toRow(row, taxonomy)] : []; }),
+      occupationEnrichmentAvailable: taxonomy.available,
       total: summary.total, totalInDatabase: summary.totalInDatabase, page,
       pageCount: Math.max(1, Math.ceil(summary.total / PAGE_SIZE)),
       facets: {
+        occupations: summary.occupations.map(f=>({...f,label:f.value==='unclassified'?'Métier à préciser':taxonomy.occupationLabel(f.value)??'Libellé indisponible'})),
         sectors: summary.sectors, contracts: summary.contracts,
         cities: summary.cities.map(f => ({ ...f, value: canonicalCity(f.value) })),
         groups: summary.groups, maisons: summary.maisons, sources: summary.sources,
