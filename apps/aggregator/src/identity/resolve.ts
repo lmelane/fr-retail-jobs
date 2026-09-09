@@ -63,25 +63,26 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
       select: { job: { select: { company: true } } },
     });
     const current = entry ? await canonicalEmployer(tx, entry.job.company) : null;
+    const target = company ? await canonicalEmployer(tx, company) : null;
+    if (current && target && current.id !== target.id) {
+      // A response that OMITS the house and falls back to the group recorded for
+      // it (Kering feed without `efcustomTextHouse`, 6 postings on 2026-09-09) is
+      // not a new identity: the posting keeps the house attested for this source
+      // id, the observation records the group label (the omission stays
+      // traceable), and every other field keeps updating. Only the group recorded
+      // for the house qualifies — any other label is still an identity change.
+      const isRecordedGroup = normalizedEmployerName(current.parentGroup ?? '') === normalized || (current.parentGroupId !== null && current.parentGroupId === target.id);
+      if (isRecordedGroup) return { company: current, rule: 'GROUP_LABEL_KEPT_HOUSE', rawEmployerName, normalizedEmployerName: normalized };
+    }
     if (current) {
       const previous = await tx.employerObservation.findFirst({
         where: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, canonicalEmployerId: { not: null } },
         orderBy: [{ observedAt: 'desc' }, { id: 'desc' }], select: { normalizedEmployerName: true },
       });
       if (previous && previous.normalizedEmployerName !== normalized) {
-        // A response that OMITS the house and falls back to the group label
-        // (Kering feed without `efcustomTextHouse`, 6 postings on 2026-09-09) is
-        // not a new identity: the posting keeps the house previously attested for
-        // this source id, the observation records the group label (the omission
-        // stays traceable), and every other field keeps updating. Only the group
-        // recorded for the house qualifies — any other label is still a change.
-        if (normalizedEmployerName(current.parentGroup ?? '') === normalized || (current.parentGroupId !== null && company !== null && (await canonicalEmployer(tx, company)).id === current.parentGroupId)) {
-          return { company: current, rule: 'GROUP_LABEL_KEPT_HOUSE', rawEmployerName, normalizedEmployerName: normalized };
-        }
         throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, current.name);
       }
     }
-    const target = company ? await canonicalEmployer(tx, company) : null;
     if (current && (!target || current.id !== target.id)) {
       throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target?.name ?? candidate.company);
     }
