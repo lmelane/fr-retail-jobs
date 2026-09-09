@@ -52,8 +52,77 @@ Aucun test de charge. Sur une requête réelle « Sales Advisor » de la copie, 
 
 La précision sémantique n'est pas égale au taux de couverture. La file d'investigation doit confronter chaque variante à son payload natif et à son contexte avant d'ajouter une règle. Aucun statut non résolu ne prouve à lui seul une limite de l'ATS. La clé source conservée dans la décision identifie le propriétaire canonique du posting ; elle ne constitue pas une attestation indépendante de chacun de ses champs, notamment d’un département historiquement conservé. Les entrées exactes du calcul sont enregistrées. Les titres historiques ne disposant pas de valeur originale attestée sont marqués `STORED_TITLE_ONLY` ; aucune valeur brute n'est inventée, et les payloads historiques restent conservés.
 
-Ce registre initial n'est pas une traduction exhaustive de tous les métiers du monde ni une correspondance ESCO validée. Les publications sur des corpus beaucoup plus volumineux devront respecter les budgets opérationnels : lots bornés pour les écritures et durée mesurée de la revue transactionnelle. La migration des heuristiques larges ne prouve pas leur exactitude sémantique exhaustive.
+Les algorithmes de matching et de recommandation ne sont pas refondus dans ce lot ; leur exploitation de ce référentiel devra être validée à son tour. Ce registre initial n'est pas une traduction exhaustive de tous les métiers du monde ni une correspondance ESCO validée. Les publications sur des corpus beaucoup plus volumineux devront respecter les budgets opérationnels : lots bornés pour les écritures et durée mesurée de la revue transactionnelle. La migration des heuristiques larges ne prouve pas leur exactitude sémantique exhaustive.
 
-## ÉTAT APRÈS ET GO / NO-GO
+## ÉTAT APRÈS
 
-**Validation locale terminée ; livraison en cours.** Les résultats locaux ne constituent pas une preuve de déploiement. Le tableau de livraison et le reçu de production seront complétés après commit, CI, merge, déploiement et replay de production. Aucun GO global « 100 % production-ready » ne découle de ce lot.
+**Code livré, mergé et déployé ; données de production effectivement reclassées.**
+
+- Implémentation : `0116cd9` ; correction de grille mobile : `e87f54c`.
+- [PR #44](https://github.com/lmelane/fr-retail-jobs/pull/44), mergée dans `main` : **`93c5d3fec247100b15d4031a199bba4eea036ad9`**. CI de la PR et du merge verte.
+- Quatre services Railway sur cette révision, statut SUCCESS. La commande normale de l'agrégateur a été rétablie après le témoin natif. **Les crons restent en pause**, conformément à l'état de maintenance précédent ; aucun run mondial ni ajout massif de sources n'a été lancé.
+- Première passe : **77 329 écritures**, zéro ligne restante. Deuxième passe : **77 329 vérifiées, zéro écriture**.
+- L'empreinte des décisions en production est strictement celle du replay approuvé : `7749ddd937ff3fdc91ba1bcf1272a143da0979e6eb13c237f5cd001e1878bb2e`.
+- Reçu durable `DataCorrection` : **`cmttyq1y100003nc10q7ze8qr`**. Les 77 329 transitions initiales ont chacune leur observation immuable.
+
+La conservation exhaustive est démontrée **avant** le témoin d'ingestion. Ce témoin est ensuite enregistré séparément : une ingestion actualise légitimement ses observations et ses horodatages, contrairement au backfill métier.
+
+## MÉTRIQUES
+
+Périmètre : offres actives, sauf mention contraire. Mesure après backfill du 9 septembre 2026 à 10:34 UTC ; le témoin natif conserve les mêmes volumes.
+
+| Mesure | Avant | Après production |
+|---|---:|---:|
+| Offres actives | 74 124 | **74 124** |
+| Lignes Job, historiques et redirections inclus | 77 352 | **77 352** |
+| Offres France | 10 947 | **10 947** |
+| Métier précis attribué | Pas de modèle | **35 035 — 47,27 %** |
+| Famille seule, sans métier précis | Non distingué | **34 289** |
+| Sans règle métier | Non distingué | **4 736 — 6,39 %** |
+| Ambiguïtés métier | Non distingué | **64 — 0,09 %** |
+| Famille renseignée, métiers précis inclus | 68 820 | **69 331 — 93,53 %** |
+| Valeurs MID | 53 557 | **6, explicitement motivées** |
+| Séniorité non renseignée | 528 | **54 020** |
+| Concepts métier définis / représentés | 0 / 0 | **61 / 59** |
+| Alias déclarés / variantes normalisées rattachées | Pas de modèle | **310 / 14 647** |
+| Résultats littéraux perdus, neuf recherches contrôlées | — | **0** |
+| Écart base/API/somme des facettes, monde + FR/US/GB/DE/IT | — | **0** |
+| Offres supprimées par le backfill | — | **0** |
+
+L'absence de séniorité est visible et documentée ; elle ne remplace pas une information source existante par une estimation. Le taux de couverture métier **n'est pas une mesure de précision statistique** issue d'une annotation exhaustive.
+
+## PREUVES DE PRODUCTION
+
+- [Avant](production-before.json), [après](production-after.json), [décisions conformes au plan](production-decisions.json), [reçu durable](production-delivery-receipt.json), [deux exécutions](production-runs.json).
+- [Déploiements Railway](production-deployments.json), [comparaison recherche/base/API](production-search.json), [pages HTTP et offre close 410](production-http.json), [contrôle mobile réel](production-mobile.json), [message public pendant le replay](production-during-replay.json).
+- [Ingestion native BZB dans Railway](native-ingest.json), [témoins avec valeurs brutes et règles](native-witnesses.json).
+- [Publication d'un label sans redémarrage sur fixtures](data-only-publication-test.json). Cette preuve est un test d'intégration, distinct du corpus réel.
+- [Premier contrôle visuel](clone-ui.json) : le débordement détecté y reste visible. [Contrôle correctif ciblé](clone-mobile-final.json), puis contrôle de production ci-dessus : 390 px de contenu pour 390 px de fenêtre.
+
+Témoin natif : **18 récupérées, 18 mises à jour, zéro erreur**, avec la version attendue. **14** ont un métier précis, **3** une famille seule et **1** reste sans règle ; toutes sont conservées. Les 18 titres bruts sont enregistrés et le recalcul donne exactement les mêmes décisions que l'ingestion. Les cinq événements applicatifs sont persistés ; Railway expose six lignes avec le démarrage du conteneur, pic mesuré de cinq lignes/seconde et aucune défaillance de persistance.
+
+Le cas sans règle est « Responsable Développement H/F », département non renseigné dans la projection actuelle. Ce constat prouve que le titre est conservé, **pas** qu'aucun contexte exploitable n'existe sur le portail. L'investigation du contenu natif reste nécessaire avant d'ajouter une règle. Même principe pour les trois familles seules.
+
+**Point transmis au lot 6 :** le run BZB observe 18 offres, tandis que 22 liens BZB restent actifs en base. Les quatre liens non revus sont listés dans le reçu natif. Aucun total indépendant n'est déclaré par ce feed. Cela ne prouve ni une exhaustivité mondiale ni quatre offres fantômes : il faut confronter les URLs, la pagination et les preuves de fermeture. Aucune fermeture manuelle n'a été forcée pendant ce lot.
+
+## TABLEAU DE LIVRAISON
+
+Dans ce tableau, « données réparées » signifie que la correction mesurée a été appliquée ; cela ne signifie pas que chaque métier du marché est désormais couvert.
+
+| Finding | Fixé ? | Commit | Main ? | Déployé ? | Données réparées ? | Preuve prod |
+|---|---|---|---|---|---|---|
+| Taxonomie codée en dur, sans métiers précis | Oui, architecture | 0116cd9 | Oui, 93c5d3f | Oui | 77 329 décisions | production-decisions.json |
+| MID attribué par défaut | Oui | 0116cd9 | Oui | Oui | 53 557 → 6 MID actifs | production-after.json |
+| Prestations beauté confondues avec conseil retail | Oui pour les métiers précis couverts | 0116cd9 | Oui | Oui | Famille services dédiée | production-decisions.json et registre déployé |
+| Provenance et historique de classification absents | Oui pour les nouvelles décisions ; raw historique manquant explicite | 0116cd9 | Oui | Oui | 77 329 observations initiales + transitions natives | production-delivery-receipt.json |
+| Front et pipeline utilisent deux référentiels | Oui | 0116cd9 | Oui | Oui | Registre partagé | production-search.json |
+| Risque de perte des résultats non canonisés | Garde démontré | 0116cd9 | Oui | Oui | Aucune offre perdue | production-after.json, native-ingest.json |
+| Débordement mobile avec noms longs | Oui | e87f54c | Oui | Oui | Sans objet | production-mobile.json |
+| 39 089 offres sans métier précis | **Partiel : file d'investigation, pas fusion forcée** | 0116cd9 | Oui | Oui | Conservées ; résolution sémantique à poursuivre | production-after.json |
+| 4 liens BZB actifs non revus dans le témoin | **Identifié, à investiguer au lot 6** | — | Rapport | Sans objet | Non, aucune fermeture forcée | native-ingest.json |
+
+## GO / NO-GO POUR LE LOT SUIVANT
+
+**GO pour le lot 3 sur les fondations techniques du lot 2** : registre de données commun, identifiants stables, règles traçables, abstention explicite, conservation des offres, replay reproductible et preuve native en production.
+
+**Pas de validation « 100 % des métiers du monde canonisés » ni « système intégralement production-ready »**. La couverture précise reste à 47,27 %, les heuristiques de familles doivent continuer à être examinées, et la fraîcheur/complétude ATS relève des lots suivants. Le catalogue peut désormais être enrichi par des versions de données revues, sans modifier le backend ou le front pour chaque intitulé. Aucun lot suivant n'a été exécuté ici.

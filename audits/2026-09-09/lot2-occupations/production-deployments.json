@@ -1,0 +1,34 @@
+[
+  {
+    "service": "aggregator",
+    "id": "96b79b2e-7cfd-474e-baa1-f0a334805743",
+    "status": "SUCCESS",
+    "commit": "93c5d3fec247100b15d4031a199bba4eea036ad9",
+    "command": "sh apps/aggregator/start.sh",
+    "paused": "1"
+  },
+  {
+    "service": "refresh",
+    "id": "3fa78a79-dcc5-49f3-892b-a537e1ce43e0",
+    "status": "SUCCESS",
+    "commit": "93c5d3fec247100b15d4031a199bba4eea036ad9",
+    "command": null,
+    "paused": "1"
+  },
+  {
+    "service": "reconcile",
+    "id": "04d2c5b3-3791-439f-8d54-85404f9bce5e",
+    "status": "SUCCESS",
+    "commit": "93c5d3fec247100b15d4031a199bba4eea036ad9",
+    "command": null,
+    "paused": "1"
+  },
+  {
+    "service": "web",
+    "id": "8ce5b463-05a8-4179-a125-f0fcf4b4b54d",
+    "status": "SUCCESS",
+    "commit": "93c5d3fec247100b15d4031a199bba4eea036ad9",
+    "command": null,
+    "paused": null
+  }
+]

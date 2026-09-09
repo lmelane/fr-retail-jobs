@@ -1,0 +1,58 @@
+[
+  {
+    "path": "/emplois",
+    "url": "https://modecareers.com/emplois",
+    "status": 200,
+    "hasOccupationCoverage": false,
+    "hasErrors": false
+  },
+  {
+    "path": "/emplois?metier=unclassified",
+    "url": "https://modecareers.com/emplois?metier=unclassified",
+    "status": 200,
+    "hasOccupationCoverage": false,
+    "hasErrors": false
+  },
+  {
+    "path": "/intelligence/metiers",
+    "url": "https://modecareers.com/intelligence/metiers",
+    "status": 200,
+    "hasOccupationCoverage": false,
+    "hasErrors": false
+  },
+  {
+    "path": "/intelligence/metiers/sales-advisor",
+    "url": "https://modecareers.com/intelligence/metiers/sales-advisor",
+    "status": 200,
+    "hasOccupationCoverage": false,
+    "hasErrors": false
+  },
+  {
+    "path": "/intelligence/metiers/hairdresser",
+    "url": "https://modecareers.com/intelligence/metiers/hairdresser",
+    "status": 200,
+    "hasOccupationCoverage": false,
+    "hasErrors": false
+  },
+  {
+    "path": "/intelligence/methodologie",
+    "url": "https://modecareers.com/intelligence/methodologie",
+    "status": 200,
+    "hasOccupationCoverage": false,
+    "hasErrors": false
+  },
+  {
+    "path": "/offre/cmtpjszco2qvzpf5l0x1oo191",
+    "url": "https://modecareers.com/offre/conseiller-ere-de-vente-calvin-klein-underwear-marseille-terrasses-du-cmtpjszco2qvzpf5l0x1oo191",
+    "status": 200,
+    "hasOccupationCoverage": false,
+    "hasErrors": false
+  },
+  {
+    "path": "/offre/cmtlyjlxr08c5qf5kezplzoby",
+    "url": "https://modecareers.com/offre/cmtlyjlxr08c5qf5kezplzoby",
+    "status": 410,
+    "hasOccupationCoverage": false,
+    "hasErrors": false
+  }
+]

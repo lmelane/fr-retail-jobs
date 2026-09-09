@@ -1,0 +1,207 @@
+{
+  "run": {
+    "id": "a5ea7efc-b315-4923-9ea7-a1080b239b9d",
+    "command": "ingest",
+    "revision": "93c5d3fec247100b15d4031a199bba4eea036ad9",
+    "startedAt": "2026-09-09T10:37:07.841Z",
+    "finishedAt": "2026-09-09T10:37:08.827Z",
+    "status": "COMPLETED",
+    "metrics": {
+      "byEvent": {
+        "run.started": 1,
+        "run.completed": 1,
+        "command.result": 1,
+        "ingest.sources_selected": 1,
+        "source.ingest_completed": 1
+      },
+      "printed": 5,
+      "counters": {
+        "http.attempts": 1,
+        "http.responses": 1
+      },
+      "recorded": 5,
+      "repeated": 0,
+      "debugDisabled": 0,
+      "persistenceFailures": 0
+    }
+  },
+  "source": {
+    "at": "2026-09-09T10:38:15.276Z",
+    "source": "bzb",
+    "jobs": 22,
+    "active": 22,
+    "withRawTitle": 18,
+    "releaseId": "catwalks-occupations-20260909-v1",
+    "mismatches": [],
+    "runs": [
+      {
+        "runId": "a5ea7efc-b315-4923-9ea7-a1080b239b9d",
+        "id": "cmttyryum0020oa01xq1xakpf",
+        "sourceKey": "bzb",
+        "status": "OK",
+        "jobs": 18,
+        "previousJobs": 18,
+        "fetched": 18,
+        "accepted": 18,
+        "declaredTotal": null,
+        "truncated": false,
+        "errors": 0,
+        "canAttestAbsence": true,
+        "complete": true,
+        "note": "desc 100% date 100% pays 94% url 100%",
+        "descriptionRate": 1,
+        "dateRate": 1,
+        "countryRate": 0.944,
+        "urlRate": 1,
+        "ranAt": "2026-09-09T10:37:08.782Z"
+      }
+    ]
+  },
+  "active": 74124,
+  "fr": 10947,
+  "statuses": [
+    {
+      "_count": 64,
+      "occupationStatus": "AMBIGUOUS"
+    },
+    {
+      "_count": 4736,
+      "occupationStatus": "NO_RULE"
+    },
+    {
+      "_count": 34289,
+      "occupationStatus": "FAMILY_ONLY"
+    },
+    {
+      "_count": 35035,
+      "occupationStatus": "CLASSIFIED"
+    }
+  ],
+  "activeLinksNotSeenThisRun": [
+    {
+      "jobId": "cmtlyiiir05wzqf5k4idj2pw7",
+      "externalId": "408dd7fb-9507-4a90-a2ee-f8a911a217d3",
+      "url": "https://bzb.teamtailor.com/jobs/8246613-vendeur-h-f-cdi-25h",
+      "lastSeenAt": "2026-09-08T22:04:27.960Z"
+    },
+    {
+      "jobId": "cmtlyiima05ybqf5kgcgdupqi",
+      "externalId": "6baf1887-6641-4d98-bae3-2f7d1140243c",
+      "url": "https://bzb.teamtailor.com/jobs/8010651-vendeur-h-f-cdi-35h00",
+      "lastSeenAt": "2026-09-06T13:12:29.269Z"
+    },
+    {
+      "jobId": "cmtlyiimk05yfqf5kms8c1qvh",
+      "externalId": "678b54bf-a401-4726-a43c-9e9ef3d4fb75",
+      "url": "https://bzb.teamtailor.com/jobs/7978550-vendeur-h-f-cdi-35h",
+      "lastSeenAt": "2026-09-06T13:12:29.277Z"
+    },
+    {
+      "jobId": "cmtlyiim205y7qf5k3th4lz3c",
+      "externalId": "15205d03-32c1-4c28-ab68-d405952068ac",
+      "url": "https://bzb.teamtailor.com/jobs/8031500-vendeur-h-f-cdd-30h",
+      "lastSeenAt": "2026-09-06T13:12:29.261Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "1da23528-69ff-46fc-adae-843957558085",
+      "event": "run.started",
+      "payload": {
+        "command": "ingest",
+        "debugEnabled": false,
+        "deploymentId": "6f541790-d5b3-440f-80b4-ca3cf62aab2a",
+        "logSpacingMs": 25
+      }
+    },
+    {
+      "id": "935d0d8b-d0d9-4ec4-83e8-b5b6d6fb641b",
+      "event": "ingest.sources_selected",
+      "payload": {
+        "details": [],
+        "message": "[ingest] 1 API feeds: bzb"
+      }
+    },
+    {
+      "id": "b1caf7ea-017b-4f9a-8b4c-14a8abf675e0",
+      "event": "source.ingest_completed",
+      "payload": {
+        "details": [],
+        "message": "[ingest] bzb: 17 FR / 18 in-sector / 18 fetched -> 0 created, 0 merged, 0 errors"
+      }
+    },
+    {
+      "id": "26c5ef6d-74c7-4c24-b68d-5cffd581b5a6",
+      "event": "command.result",
+      "payload": {
+        "ok": true,
+        "geo": {
+          "pending": 0,
+          "lookedUp": 0,
+          "remaining": 0,
+          "jobsLocated": 0
+        },
+        "health": {
+          "ok": 1,
+          "broken": 0,
+          "degraded": 0,
+          "checkedAt": "2026-09-09T10:37:08.791Z",
+          "incidents": []
+        },
+        "alerted": false,
+        "command": "ingest",
+        "sources": [
+          {
+            "errors": 0,
+            "france": 17,
+            "merged": 0,
+            "source": "bzb",
+            "created": 0,
+            "fetched": 18,
+            "updated": 18,
+            "withUrl": 18,
+            "complete": true,
+            "inSector": 18,
+            "withDate": 18,
+            "truncated": false,
+            "withCountry": 17,
+            "declaredTotal": null,
+            "withDescription": 18,
+            "occupationReleases": {
+              "catwalks-occupations-20260909-v1": 18
+            },
+            "occupationStatuses": {
+              "NO_RULE": 1,
+              "CLASSIFIED": 14,
+              "FAMILY_ONLY": 3
+            },
+            "occupationReleaseId": "catwalks-occupations-20260909-v1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "f8f73671-cc2b-4300-bb2a-803446254702",
+      "event": "run.completed",
+      "payload": {
+        "status": "COMPLETED",
+        "byEvent": {
+          "run.started": 1,
+          "command.result": 1,
+          "ingest.sources_selected": 1,
+          "source.ingest_completed": 1
+        },
+        "command": "ingest",
+        "printed": 4,
+        "counters": {
+          "http.attempts": 1,
+          "http.responses": 1
+        },
+        "recorded": 4,
+        "repeated": 0,
+        "debugDisabled": 0,
+        "persistenceFailures": 0
+      }
+    }
+  ]
+}
