@@ -1,8 +1,10 @@
 /** Re-read archived employer pages; no network or data writes to production. */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { careerCandidates } from './career-links.mjs';
 const root = 'backups/remediation-20260908';
 const rows: any[] = [];
+const reprocessedAt = new Date().toISOString();
 for (const mode of ['known','profiles']) {
   const path = `${root}/portal-research-${mode}.jsonl`;
   if (!existsSync(path)) continue;
@@ -11,6 +13,7 @@ for (const mode of ['known','profiles']) {
     const links: any[] = [];
     for (const p of r.pages ?? []) {
       const html = readFileSync(`${root}/portal-evidence/${p.sha256}.html`,'utf8');
+      if (createHash('sha256').update(html).digest('hex') !== p.sha256) throw new Error(`Archive hash mismatch: ${p.url}`);
       for (const l of careerCandidates(html,p.url)) {
         const url = new URL(l.to);
         for (const key of [...url.searchParams.keys()]) if (/token|signature|auth|api.?key|jwt|^utm_/i.test(key)) url.searchParams.delete(key);
@@ -18,7 +21,7 @@ for (const mode of ['known','profiles']) {
           indirectBoard:/\b(fashionjobs|linkedin|indeed|hellowork|glassdoor)\./i.test(url.hostname)});
       }
     }
-    rows.push({name:r.name,attemptAt:r.at,status:r.status,candidateOrigin:r.candidateOrigin,
+    rows.push({name:r.name,attemptAt:r.at,reprocessedAt,extractorVersion:'career-links-v2-consumer-context',status:r.status,candidateOrigin:r.candidateOrigin,
       declaredWebsites:r.declaredWebsites ?? [],identityCertified:false,sourceActivated:false,
       pages:(r.pages ?? []).map((p:any)=>({url:p.url,at:p.at,sha256:p.sha256,title:p.title,ats:p.atsHint?.type ?? p.unsupportedVendorHint ?? null})),
       links:[...new Map(links.map(l=>[l.from+' '+l.to,l])).values()],

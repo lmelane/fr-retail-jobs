@@ -1,0 +1,52 @@
+{
+  "at": "2026-09-09T05:22:57.754397+00:00",
+  "services": [
+    {
+      "service": "catwalks-aggregator",
+      "deployment": "f1f6963d-c084-4629-823a-8366714c5c1d",
+      "status": "SUCCESS",
+      "commit": "8513d7428cc917c69e7511016139f6fa2cc2c607",
+      "buildOnly": true,
+      "createdAt": "2026-09-09T05:18:22.256Z",
+      "latestDeploymentStatus": "SUCCESS",
+      "PIPELINE_PAUSED": "1",
+      "command": "ingest-all",
+      "cron": "0 22 * * *"
+    },
+    {
+      "service": "catwalks-refresh",
+      "deployment": "bc30ada4-026a-4560-ab31-497a14ac442c",
+      "status": "SUCCESS",
+      "commit": "8513d7428cc917c69e7511016139f6fa2cc2c607",
+      "buildOnly": true,
+      "createdAt": "2026-09-09T05:18:22.256Z",
+      "latestDeploymentStatus": "SUCCESS",
+      "PIPELINE_PAUSED": "1",
+      "command": "refresh",
+      "cron": "0 2 * * *"
+    },
+    {
+      "service": "catwalks-reconcile",
+      "deployment": "14e62c45-952b-474d-9246-f09e4aee28f5",
+      "status": "SUCCESS",
+      "commit": "8513d7428cc917c69e7511016139f6fa2cc2c607",
+      "buildOnly": true,
+      "createdAt": "2026-09-09T05:18:22.256Z",
+      "latestDeploymentStatus": "SUCCESS",
+      "PIPELINE_PAUSED": "1",
+      "command": "reconcile",
+      "cron": "0 3 * * 1"
+    },
+    {
+      "service": "catwalks-web",
+      "deployment": "039a4711-c44e-4c7f-831e-cde58cdf23a0",
+      "status": "SUCCESS",
+      "commit": "030a101602d78a0470db05f4a84b6f08e650ec63",
+      "buildOnly": false,
+      "createdAt": "2026-09-08T21:13:29.286Z",
+      "latestDeploymentStatus": "SKIPPED"
+    }
+  ],
+  "globalRunRestarted": false,
+  "targetedIngestionStarted": false
+}

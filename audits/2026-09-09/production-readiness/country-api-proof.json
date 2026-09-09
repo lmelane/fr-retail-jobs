@@ -1,0 +1,91 @@
+{
+  "at": "2026-09-09T05:20:21.793363+00:00",
+  "databaseSnapshotAt": "2026-09-09T05:20:06.088Z",
+  "scope": "API totals and first page country values; no full pagination replay",
+  "countries": [
+    {
+      "country": "FR",
+      "url": "https://modecareers.com/api/jobs?pays=FR",
+      "status": 200,
+      "database": 10936,
+      "api": 10936,
+      "delta": 0,
+      "world": 74113,
+      "firstPageRows": 25,
+      "firstPageWrongCountryIds": [],
+      "sha256": "261991ae315fca3869fe29beb48b8c1ffb1f4b10edffc8a3412e6e56e57552e3"
+    },
+    {
+      "country": "US",
+      "url": "https://modecareers.com/api/jobs?pays=US",
+      "status": 200,
+      "database": 30943,
+      "api": 30943,
+      "delta": 0,
+      "world": 74113,
+      "firstPageRows": 25,
+      "firstPageWrongCountryIds": [],
+      "sha256": "63145ecc6d66be46da7d69bfd3afb512d88735a0cc36c05e1a5184c42499c884"
+    },
+    {
+      "country": "GB",
+      "url": "https://modecareers.com/api/jobs?pays=GB",
+      "status": 200,
+      "database": 2872,
+      "api": 2872,
+      "delta": 0,
+      "world": 74113,
+      "firstPageRows": 25,
+      "firstPageWrongCountryIds": [],
+      "sha256": "cbe868ba030582fafee85fc0bac4025aaa4d0d35eb27dfcf43c01cb1314550a7"
+    },
+    {
+      "country": "DE",
+      "url": "https://modecareers.com/api/jobs?pays=DE",
+      "status": 200,
+      "database": 2739,
+      "api": 2739,
+      "delta": 0,
+      "world": 74113,
+      "firstPageRows": 25,
+      "firstPageWrongCountryIds": [],
+      "sha256": "714cf328bc30ed534d316a3211ff43ffe4df0cf82aa35f7d7554174cf552792b"
+    },
+    {
+      "country": "IT",
+      "url": "https://modecareers.com/api/jobs?pays=IT",
+      "status": 200,
+      "database": 2446,
+      "api": 2446,
+      "delta": 0,
+      "world": 74113,
+      "firstPageRows": 25,
+      "firstPageWrongCountryIds": [],
+      "sha256": "3346776227fc56cc1e5ae2d7ce021f94b853789ce3f7b16e61a0dbbd1f8bfa9a"
+    },
+    {
+      "country": "ES",
+      "url": "https://modecareers.com/api/jobs?pays=ES",
+      "status": 200,
+      "database": 2070,
+      "api": 2070,
+      "delta": 0,
+      "world": 74113,
+      "firstPageRows": 25,
+      "firstPageWrongCountryIds": [],
+      "sha256": "528f22da561ef2b726733fe886c55080f1ef2bbd0e0eb1e2cf518985ba4afb7b"
+    },
+    {
+      "country": "CA",
+      "url": "https://modecareers.com/api/jobs?pays=CA",
+      "status": 200,
+      "database": 2790,
+      "api": 2790,
+      "delta": 0,
+      "world": 74113,
+      "firstPageRows": 25,
+      "firstPageWrongCountryIds": [],
+      "sha256": "3d9d2c5f84ac80f4a49689625406f86587ddeb527137525d9caf77a856950691"
+    }
+  ]
+}

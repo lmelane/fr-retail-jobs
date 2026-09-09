@@ -1,0 +1,216 @@
+{
+  "at": "2026-09-09T05:26:50.105Z",
+  "scope": "Offline replay of original archived employer pages. No fresh source observation, no production writes or activation.",
+  "beforeLedgerSha256": "b3df827815f27725f1fdb2a23ff1b0c9e2ea53863ae5456abb713ceac931c632",
+  "conservedLabels": 1653,
+  "conservedProfiles": 3971,
+  "originalObservationDatesAndLinksPreserved": true,
+  "tezenisWitness": {
+    "observedPage": "https://www.tezenis.com/fr/",
+    "pageSha256": "4727bab95e220c5d6c0dedbd46f3761abf669471c5bc2fbf4d3802456e7992a0",
+    "before": [
+      {
+        "from": "https://www.tezenis.com/fr/",
+        "to": "https://www.tezenis.com/fr/login/",
+        "label": "Tezenis Talent"
+      },
+      {
+        "from": "https://www.tezenis.com/fr/",
+        "to": "https://www.tezenis.com/fr/loyaltylanding/",
+        "label": "Programme de fidélité Tezenis Talent"
+      },
+      {
+        "from": "https://www.tezenis.com/fr/",
+        "to": "https://www.calzedoniagroup.com/en/the-group/careers",
+        "label": "Travailler avec nous"
+      }
+    ],
+    "after": [
+      {
+        "from": "https://www.tezenis.com/fr/",
+        "to": "https://www.calzedoniagroup.com/en/the-group/careers",
+        "label": "Travailler avec nous"
+      }
+    ]
+  },
+  "stageChanges": [
+    {
+      "labels": [
+        "SINTEL"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://sintel-recrutement.fr/",
+        "https://sintel-recrutement.fr/entreprises/",
+        "https://sintel-recrutement.fr/nos-metiers/",
+        "https://sintel-recrutement.fr/expertises/",
+        "https://sintel-recrutement.fr/map-access/",
+        "https://sintel-recrutement.fr/about/",
+        "https://sintel-recrutement.fr/rse/",
+        "https://sintel-recrutement.fr/wp-content/uploads/2023/07/RH-SINTEL.pdf",
+        "https://sintel-recrutement.fr/zh-hans/",
+        "https://sintel-recrutement.fr/en/",
+        "https://sintel-recrutement.fr/sintel-connect/?action=register",
+        "https://sintel-recrutement.fr/joindre-cv/",
+        "https://sintel-recrutement.fr/nos-annonces/",
+        "https://sintel-recrutement.fr/services/",
+        "https://twitter.com/Sintel_Recrute",
+        "https://sintel-recrutement.fr/mentions-legales/",
+        "https://sintel-recrutement.fr/map-access/?section=form",
+        "https://sintel-recrutement.fr/faq/"
+      ]
+    },
+    {
+      "labels": [
+        "GUESS"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://www.guess.eu/en-fr/career-page.html"
+      ]
+    },
+    {
+      "labels": [
+        "MODELOR COUTURE"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://recrutement.modelor.fr/",
+        "https://modelor.nous-recrutons.fr/",
+        "https://mahola.nous-recrutons.fr/",
+        "http://modelor.nous-recrutons.fr/"
+      ]
+    },
+    {
+      "labels": [
+        "ZAPA"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://www.talentdetection.com/brand-sisters-tara-jarmon-zapa-/69767-T0IJ9MNTYo/accueil"
+      ]
+    },
+    {
+      "labels": [
+        "AMERICAN VINTAGE"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://careers.am-vintage.com/en"
+      ]
+    },
+    {
+      "labels": [
+        "FALCONERI"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://www.oniverse.it/il-gruppo/careers"
+      ]
+    },
+    {
+      "labels": [
+        "FROM FUTURE"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://www.welcometothejungle.com/fr/companies/from-future"
+      ]
+    },
+    {
+      "labels": [
+        "LANCEL SOGEDI"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://lancel.nous-recrutons.fr/"
+      ]
+    },
+    {
+      "labels": [
+        "LIVY"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://int.li-vy.com/pages/livy-recrute"
+      ]
+    },
+    {
+      "labels": [
+        "MARC ORIAN"
+      ],
+      "before": "CAREER_LINK_REVIEW_REQUIRED",
+      "after": "RESEARCH_INCOMPLETE",
+      "links": []
+    },
+    {
+      "labels": [
+        "FIGARET"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://www.welcometothejungle.com/fr/companies/figaret"
+      ]
+    },
+    {
+      "labels": [
+        "BALIBARIS"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://balibaris-career.softy.pro/offres"
+      ]
+    },
+    {
+      "labels": [
+        "ROUJE"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://www.rouje.com/pages/marque-employeur"
+      ]
+    },
+    {
+      "labels": [
+        "JIMMY FAIRLY"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://jimmyfairly.factorial.fr/#jobs"
+      ]
+    },
+    {
+      "labels": [
+        "LA PRAIRIE GROUP"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://www.careers.laprairiegroup.ch/"
+      ]
+    },
+    {
+      "labels": [
+        "KARL LAGERFELD"
+      ],
+      "before": "RESEARCH_INCOMPLETE",
+      "after": "CAREER_LINK_REVIEW_REQUIRED",
+      "links": [
+        "https://jobs.eu.lever.co/karllagerfeld"
+      ]
+    }
+  ]
+}
