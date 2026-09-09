@@ -4,13 +4,15 @@ import { fetchJson, fetchText } from '../../lib/http.js';
 import { readPostingEvidence } from '../../lib/postingEvidence.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { microdataDescriptionHtml } from '../../connectors/generic/jsonLdSitemap.js';
-import type { NormalizedJob } from '../../types.js';
+import { assertSourceRunning } from '../../lib/sourceBudget.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
  * SAP SuccessFactors (RMK) career sites.
  *
  * Widely used across the sector: Puig, Sephora, Goyard, Douglas, The Body Shop,
- * Petit Bateau. It has no JSON API, but its search page is SERVER-rendered —
+ * Petit Bateau. Classic search pages are SERVER-rendered; newer RMK sites use
+ * the JSON protocol below.
  * which is why a JSON-LD parser found nothing on Puig and reported zero offers.
  *
  * Verified 2026-09-01 on jobs.puig.com: the search page returns 25 job links per
@@ -23,9 +25,8 @@ import type { NormalizedJob } from '../../types.js';
  * JSON-LD-only parser silently finds nothing.
  */
 
-const PAGE_SIZE = 25;
 /** Guard against a mis-parsed listing paginating forever. */
-const MAX_PAGES = Number(process.env.SF_MAX_PAGES ?? 60);
+const MAX_PAGES = Number(process.env.SF_MAX_PAGES ?? 10000);
 
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
@@ -309,101 +310,121 @@ async function postRmkPage(origin: string, locale: string, page: number): Promis
 
 /**
  * Every locale, every page, swept until complete; one posting per requisition
- * id, kept in the first (preferred) locale it appears in. `declaredTotal` sums
- * the locales' `totalJobs`, i.e. counts a posting once per locale.
+ * id, kept in the first (preferred) locale it appears in. Completion is checked
+ * per locale; translated postings are deduplicated in the union.
  */
-export async function fetchRmkV2Jobs(origin: string, locales: string[]): Promise<{ jobs: NormalizedJob[]; declaredTotal: number }> {
+export async function fetchRmkV2Jobs(origin: string, locales: string[]): Promise<AdapterResult> {
   const byId = new Map<string, NormalizedJob>();
-  let declaredTotal = 0;
-
+  const scopes: NonNullable<NonNullable<AdapterResult['enumeration']>['scopes']> = [];
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const issues = new Set<string>();
+  let pages = 0, rawCount = 0;
   for (const locale of locales) {
     const perLocale = new Set<string>();
-    let total = 0;
+    let total: number | undefined, scopePages = 0;
+    let changed = false;
     for (let sweep = 0; sweep < RMK_MAX_SWEEPS; sweep++) {
       const before = perLocale.size;
       for (let page = 0; page < RMK_MAX_PAGES; page++) {
         const result = await postRmkPage(origin, locale, page);
-        const items = (result.jobSearchResult ?? []).map((r) => r.response).filter((r): r is RmkV2Item => !!r);
-        if (sweep === 0 && page === 0) {
-          total = Number(result.totalJobs ?? 0);
-          declaredTotal += total;
-        }
-        if (items.length === 0) break;
-        for (const item of items) {
-          const job = normalizeRmkItem(item, locale, origin);
-          if (!job) continue;
+        if (!Number.isSafeInteger(result.totalJobs) || result.totalJobs! < 0 || !Array.isArray(result.jobSearchResult)) throw new Error('SAP_RMK_INVALID_LIST_RESPONSE');
+        if (total === undefined) total = result.totalJobs;
+        else if (total !== result.totalJobs) { changed = true; issues.add(`SOURCE_TOTAL_CHANGED:${locale}`); }
+        pages++; scopePages++; rawCount += result.jobSearchResult.length;
+        for (const row of result.jobSearchResult) {
+          const job = row.response ? normalizeRmkItem(row.response, locale, origin) : null;
+          if (!job) { rejectedRows.push({ reason: `INVALID_RMK_ROW:${locale}`, raw: row }); continue; }
           perLocale.add(job.externalId);
           if (!byId.has(job.externalId)) byId.set(job.externalId, job);
         }
-        if (items.length < RMK_PAGE_SIZE) break;
+        if (result.jobSearchResult.length < RMK_PAGE_SIZE || perLocale.size >= total!) break;
       }
-      // Complete, or this sweep found nothing new: stop for this locale.
-      if (perLocale.size >= total || perLocale.size === before) break;
+      if (perLocale.size >= total! || perLocale.size === before) break;
     }
+    const complete = total !== undefined && perLocale.size === total && !changed;
+    if (!complete) issues.add(`LOCALE_ENUMERATION_UNPROVEN:${locale}`);
+    scopes.push({ scope: locale, declaredTotal: total ?? 0, uniqueIds: perLocale.size, pages: scopePages, complete });
   }
-  return { jobs: [...byId.values()], declaredTotal };
+  const complete = scopes.length > 0 && scopes.every(s => s.complete) && rejectedRows.length === 0;
+  // Counts per language overlap. Never compare their sum with the union of jobs.
+  return { jobs: [...byId.values()], complete, truncated: !complete, rejectedRows,
+    enumeration: { method: 'OBSERVED_RMK_PER_LOCALE_TOTALS', endpoint: `${origin}/services/recruiting/v1/jobs`,
+      pages, rawCount, termination: complete ? 'ALL_LOCALE_TOTALS_REACHED' : 'INCOMPLETE_LOCALE_ENUMERATION', scopes, issues: [...issues] } };
 }
 
-/**
- * Reads a whole SuccessFactors board.
- * `config.origin` is the careers host, e.g. "https://jobs.puig.com".
- * `config.rmk: true` goes straight to the RMK v2 JSON path; otherwise that
- * path is tried only when the HTML search page renders no offer link.
- */
-export async function fetchSuccessFactorsJobs(
-  config: Record<string, unknown>,
-): Promise<NormalizedJob[]> {
+/** Counts are read from the publisher's pagination component, never whole-page digits. */
+export function parseSuccessFactorsPagination(html: string): { start: number; end: number; total: number } | null {
+  const $ = cheerio.load(html, { scriptingEnabled: false });
+  const values: Array<{ start: number; end: number; total: number }> = [];
+  $('.paginationLabel').each((_, node) => {
+    const parts = $(node).find('b').map((_, b) => $(b).text().trim()).get();
+    const range = parts[0]?.match(/^(\d+)\s*[–—-]\s*(\d+)$/);
+    const total = parts[1]?.replace(/[.,\s\u00a0\u202f]/g, '');
+    if (range && total && /^\d+$/.test(total)) values.push({ start: Number(range[1]), end: Number(range[2]), total: Number(total) });
+  });
+  if (!values.length) {
+    const label = $('#tile-search-results-label').text().trim();
+    const numbers = label.match(/\d[\d.,\u00a0\u202f]*/g)?.map(x => Number(x.replace(/[.,\u00a0\u202f]/g, '')));
+    if (numbers?.length === 3) values.push({ start: numbers[0], end: numbers[1], total: numbers[2] });
+  }
+  const valid = values.filter(v => Object.values(v).every(Number.isSafeInteger) && v.start >= 0 && v.end >= v.start && v.total >= v.end);
+  if (!valid.length || new Set(valid.map(v => JSON.stringify(v))).size !== 1) return null;
+  return valid[0];
+}
+
+/** One implementation serves both the dispatcher and legacy array consumers. */
+export async function fetchSuccessFactorsResult(config: Record<string, unknown>): Promise<AdapterResult> {
   const origin = String(config.origin ?? '').replace(/\/$/, '');
   if (!origin) throw new Error('SuccessFactors origin missing');
-
-  const finish = (list: NormalizedJob[]) =>
-    config.withDescriptions === false ? list : attachSuccessFactorsDescriptions(list, Number(config.detailConcurrency ?? 4));
-
+  if (!Number.isSafeInteger(MAX_PAGES) || MAX_PAGES < 1 || MAX_PAGES > 10000) throw new Error('Invalid SAP page budget');
+  const finish = async (result: AdapterResult): Promise<AdapterResult> => ({ ...result,
+    jobs: config.withDescriptions === false ? result.jobs : await attachSuccessFactorsDescriptions(result.jobs, Number(config.detailConcurrency ?? 4)) });
   const jobs: NormalizedJob[] = [];
   const seenIds = new Set<string>();
-
-  if (config.rmk === true) {
-    const html = await fetchText(`${origin}/search/`, { headers: HEADERS });
-    return finish((await fetchRmkV2Jobs(origin, await discoverRmkLocales(origin, html))).jobs);
+  const firstUrl = `${origin}/search/?createNewAlert=false&q=&locationsearch=&startrow=0`;
+  const firstHtml = await fetchText(firstUrl, { headers: HEADERS });
+  if (config.rmk === true || /rmk-jobs-search/.test(firstHtml)) {
+    return finish(await fetchRmkV2Jobs(origin, await discoverRmkLocales(origin, firstHtml)));
   }
-
+  let offset = 0, pages = 0, rawCount = 0, declaredTotal: number | undefined;
+  let termination = 'PAGE_BUDGET_EXHAUSTED';
+  const issues = new Set<string>();
   for (let page = 0; page < MAX_PAGES; page++) {
-    const url = `${origin}/search/?createNewAlert=false&q=&locationsearch=&startrow=${page * PAGE_SIZE}`;
-    const html = await fetchText(url, { headers: HEADERS });
-    const listing = parseListing(html, origin);
-
-    // An empty page, or one that repeats what we already have, is the end.
-    const fresh = listing.filter((job) => !seenIds.has(job.externalId));
-    if (fresh.length === 0) {
-      // A first page with NO link is not an empty board: on RMK v2 tenants the
-      // list is fetched client-side. Try the JSON path before concluding.
-      if (page === 0) {
-        try {
-          const rmk = await fetchRmkV2Jobs(origin, await discoverRmkLocales(origin, html));
-          if (rmk.jobs.length > 0) return finish(rmk.jobs);
-        } catch {
-          // Not an RMK v2 tenant (404/401 on the endpoint): the HTML verdict stands.
-        }
-      }
-      break;
+    const html = page === 0 ? firstHtml : await fetchText(`${origin}/search/?createNewAlert=false&q=&locationsearch=&startrow=${offset}`, { headers: HEADERS });
+    pages++;
+    const pagination = parseSuccessFactorsPagination(html);
+    if (pagination) {
+      if (declaredTotal === undefined) declaredTotal = pagination.total;
+      else if (declaredTotal !== pagination.total) issues.add('SOURCE_TOTAL_CHANGED');
     }
-
+    const listing = parseListing(html, origin);
+    rawCount += listing.length;
+    const fresh = listing.filter(job => !seenIds.has(job.externalId));
     for (const job of fresh) {
       seenIds.add(job.externalId);
       const { city, title } = splitSlug(job.slug);
-      jobs.push({
-        externalId: job.externalId,
-        title,
-        location: city,
-        // The listing does not carry a country; France detection falls back to
-        // the city, which is what the location normaliser already handles.
-        url: job.url,
-        raw: { slug: job.slug, source: 'successfactors' },
-      });
+      jobs.push({ externalId: job.externalId, title, location: city, url: job.url, raw: { slug: job.slug, source: 'successfactors' } });
     }
+    if (pagination && seenIds.size === pagination.total) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
+    if (fresh.length === 0) {
+      if (page === 0 && !pagination) {
+        // Endpoint failures remain failures, never a silently empty HTML board.
+        return finish(await fetchRmkV2Jobs(origin, await discoverRmkLocales(origin, html)));
+      }
+      termination = listing.length ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break;
+    }
+    const next = pagination ? pagination.end : offset + listing.length;
+    if (next <= offset) { termination = 'NON_ADVANCING_OFFSET'; break; }
+    offset = next;
   }
+  const complete = declaredTotal !== undefined && jobs.length === declaredTotal && issues.size === 0;
+  if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
+  return finish({ jobs, declaredTotal, complete, truncated: !complete,
+    enumeration: { method: 'PUBLISHER_HTML_PAGINATION', endpoint: firstUrl, pages, rawCount, termination, issues: [...issues] } });
+}
 
-  return finish(jobs);
+export async function fetchSuccessFactorsJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+  return (await fetchSuccessFactorsResult(config)).jobs;
 }
 
 /**
@@ -421,6 +442,8 @@ export function parseMicrodataDescription(html: string): string | undefined {
 }
 
 export type SuccessFactorsDetail = {
+  company?: string;
+  employerEvidence?: NormalizedJob['employerEvidence'];
   title?: string;
   location?: string;
   city?: string;
@@ -467,6 +490,13 @@ export function parseMicrodataDetail(html: string): SuccessFactorsDetail {
 
   const meta = (name: string) =>
     new RegExp(`<meta itemprop="${name}" content="([^"]*)"`, 'i').exec(html)?.[1]?.trim();
+
+  const $ = cheerio.load(html, { scriptingEnabled: false });
+  const employerNames = [...new Set($('[itemprop="hiringOrganization"]').map((_, node) => $(node).attr('content')?.trim() || $(node).find('[itemprop="name"]').first().text().trim()).get().filter(Boolean))];
+  if (employerNames.length === 1) {
+    detail.company = employerNames[0];
+    detail.employerEvidence = { rawName: employerNames[0], path: 'microdata.hiringOrganization', rule: 'EXPLICIT_JOBPOSTING_EMPLOYER' };
+  }
 
   const address = meta('streetAddress');
   if (address) {
@@ -551,6 +581,8 @@ export async function attachSuccessFactorsDescriptions(
           const detail = parseMicrodataDetail(html);
           return {
             ...job,
+            company: detail.company ?? job.company,
+            employerEvidence: detail.employerEvidence ?? job.employerEvidence,
             title: detail.title ?? job.title,
             location: detail.location ?? job.location,
             city: detail.city ?? job.city,
@@ -561,12 +593,13 @@ export async function attachSuccessFactorsDescriptions(
             description: detail.description ?? job.description,
             raw: { ...(job.raw as object), postingEvidence: {
               ...readPostingEvidence(html, job.url).evidence,
+              microdataEmployer: detail.employerEvidence ?? null,
               visibleDateRaw: cheerio.load(html)('[data-careersite-propertyid="date"]').first().text().trim() || null,
             } },
           };
-        } catch {
-          // A failed detail fetch must not lose the listing entry.
-          return job;
+        } catch (error) {
+          assertSourceRunning();
+          return { ...job, raw: { ...(job.raw as object), detailReadError: String(error).slice(0, 1000) } };
         }
       }),
     ),
