@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { log } from '../../observability/logger.js';
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
@@ -261,35 +262,58 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
 
   const links: string[] = [];
   const seen = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  let pagesRead = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
   for (let page = 0; page < maxPages; page += 1) {
-    const html = await fetchText(`${origin}/${lang}/job-finder?page=${page}`);
+    const url = `${origin}/${lang}/job-finder?page=${page}`;
+    const html = await fetchText(url);
     // Chaque carte porte le lien 3 fois (image, titre, « En savoir plus ») :
     // dédoublonner dans la page, puis contre les pages déjà lues.
-    const fresh = [...new Set([...html.matchAll(/href="(\/[a-z]{2}\/job\/\d+)"/g)].map((m) => `${origin}${m[1]}`))]
-      .filter((link) => !seen.has(link));
+    const inPage = [...new Set([...html.matchAll(/href="(\/[a-z]{2}\/job\/\d+)"/g)].map((m) => `${origin}${m[1]}`))];
+    const fresh = inPage.filter((link) => !seen.has(link));
     for (const link of fresh) {
       seen.add(link);
       links.push(link);
     }
+    pagesRead += 1;
+    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
+      ids: inPage.map((l) => l.split('/').pop() ?? l), publisherCounter: '', componentCounters: [`links=${inPage.length}`, `fresh=${fresh.length}`, `uniqueLinks=${seen.size}`] });
     // Le pager Drupal rend la dernière page en boucle au-delà de la fin :
     // une page sans lien NOUVEAU termine la lecture (comme le générique).
-    if (fresh.length === 0) break;
+    if (fresh.length === 0) { termination = inPage.length ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break; }
   }
   if (links.length === 0) throw new Error(`Swatch Group ${origin}/${lang}/job-finder: aucun lien /job/ — gabarit ou listing cassé`);
 
+  /**
+   * 2026-09-09 : 265 offres pour 267 liens, run après run, sans cause nommée.
+   * Une fiche que le parseur ne lit pas ou que le réseau ne rend pas devient
+   * une ligne REJETÉE avec son URL et sa cause — jamais un simple « −2 ».
+   */
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
   const limit = pLimit(Number(config.concurrency ?? 4));
   const jobs = await Promise.all(
     links.map((url) =>
       limit(async () => {
         try {
-          return parseSwatchJobPage(await fetchText(url), url);
+          const job = parseSwatchJobPage(await fetchText(url), url);
+          if (!job) rejectedRows.push({ reason: 'DETAIL_UNPARSED', raw: { url } });
+          return job;
         } catch (error) {
           await log.error('adapter.detail_failed', `[swatchgroup] ${url}: ${(error as Error).message.slice(0, 120)}`, { error });
+          rejectedRows.push({ reason: 'DETAIL_FETCH_FAILED', raw: { url, error: String(error).slice(0, 200) } });
           return null;
         }
       }),
     ),
   );
-
-  return { jobs: jobs.filter((job): job is NormalizedJob => job !== null), declaredTotal: links.length };
+  const issues: string[] = [];
+  if (rejectedRows.length) issues.push('DETAILS_REJECTED');
+  // The board is exhausted when the pager repeats itself; the count is the
+  // adapter's own link count (the page publishes no total), so the proof is
+  // "every listed link read into a posting", not a publisher counter.
+  const complete = termination === 'REPEATED_PAGE' && rejectedRows.length === 0;
+  if (!complete) issues.push('ENUMERATION_NOT_PROVEN');
+  return { jobs: jobs.filter((job): job is NormalizedJob => job !== null), declaredTotal: links.length, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED', rejectedRows,
+    enumeration: { method: 'DRUPAL_PAGER_UNTIL_NO_NEW_LINK_THEN_EVERY_DETAIL', endpoint: `${origin}/${lang}/job-finder`, pages: pagesRead, rawCount: links.length, termination, issues,
+      scopes: [{ scope: 'links', declaredTotal: links.length, uniqueIds: links.length, pages: pagesRead, complete: termination === 'REPEATED_PAGE' }, { scope: 'details', declaredTotal: links.length, uniqueIds: links.length - rejectedRows.length, pages: links.length, complete: rejectedRows.length === 0 }], pageEvidence } };
 }

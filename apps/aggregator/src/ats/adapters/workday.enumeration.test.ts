@@ -20,15 +20,23 @@ describe('Workday — enumeration proof against the announced total', () => {
   it('names a posting repeated across pages as the cause of a missing one, and does not claim completeness', async () => {
     vi.mocked(fetchJson).mockResolvedValueOnce(page(Array.from({ length: 20 }, (_, i) => i), 25)).mockResolvedValueOnce(page([19, 20, 21, 22, 23], 0));
     const r = await fetchWorkdayJobs(config);
-    expect(r.jobs).toHaveLength(24); expect(r.complete).toBe(false); expect(r.truncated).toBe(true); expect(fetchJson).toHaveBeenCalledTimes(2);
+    // Every announced row was read (not truncated) yet one announced posting never appeared: not proven.
+    expect(r.jobs).toHaveLength(24); expect(r.complete).toBe(false); expect(r.truncated).toBe(false); expect(fetchJson).toHaveBeenCalledTimes(2);
     expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['REPEATED_IDS_ACROSS_PAGES', 'ENUMERATION_NOT_PROVEN'])); expect(r.enumeration?.termination).toBe('PUBLISHER_TOTAL_ROWS_READ');
     expect(r.enumeration?.pageEvidence?.[1]?.componentCounters).toContain('repeated=1');
   });
   it('keeps reading a short page while the publisher announces more, and counts rows without a path', async () => {
-    vi.mocked(fetchJson).mockResolvedValueOnce(page(Array.from({ length: 20 }, (_, i) => i), 41)).mockResolvedValueOnce({ total: 0, jobPostings: [...[20, 21, 22].map(posting), { title: 'No path' } as any] }).mockResolvedValueOnce(page(Array.from({ length: 18 }, (_, i) => 23 + i), 0));
+    vi.mocked(fetchJson).mockResolvedValueOnce(page(Array.from({ length: 20 }, (_, i) => i), 41)).mockResolvedValueOnce({ total: 0, jobPostings: [...[20, 21, 22].map(posting), { title: 'No path' } as any] }).mockResolvedValueOnce(page(Array.from({ length: 17 }, (_, i) => 23 + i), 0));
     const r = await fetchWorkdayJobs(config);
-    expect(r.jobs).toHaveLength(41); expect(r.complete).toBe(true); expect(fetchJson).toHaveBeenCalledTimes(3);
-    expect(r.enumeration?.issues).toEqual(['ROWS_WITHOUT_EXTERNAL_PATH']); expect(r.enumeration?.termination).toBe('PUBLISHER_TOTAL_REACHED');
+    expect(r.jobs).toHaveLength(40); expect(r.complete).toBe(true); expect(fetchJson).toHaveBeenCalledTimes(3);
+    expect(r.enumeration?.issues).toEqual(['ROWS_WITHOUT_EXTERNAL_PATH']); expect(r.enumeration?.termination).toBe('PUBLISHER_TOTAL_ROWS_READ');
+    expect(r.rejectedRows).toEqual([{ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: { title: 'No path' } }]);
+  });
+  it('Nordstrom: every announced row read, three of them without a path — proven, with the rejected rows as witnesses', async () => {
+    const rows = [...Array.from({ length: 17 }, (_, i) => posting(i)), { title: 'a' }, { title: 'b' }, { title: 'c' }] as any[];
+    vi.mocked(fetchJson).mockResolvedValueOnce({ total: 20, jobPostings: rows });
+    const r = await fetchWorkdayJobs(config);
+    expect(r.jobs).toHaveLength(17); expect(r.declaredTotal).toBe(20); expect(r.complete).toBe(true); expect(r.truncated).toBe(false); expect(r.rejectedRows).toHaveLength(3);
   });
   it('without an announced total, a short page ends the board and nothing is proven', async () => {
     vi.mocked(fetchJson).mockResolvedValueOnce(page([1, 2, 3]));

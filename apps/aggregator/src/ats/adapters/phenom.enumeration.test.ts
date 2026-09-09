@@ -31,4 +31,14 @@ describe('Phenom — énumération prouvée contre le total éditeur', () => {
     expect(r.jobs).toHaveLength(2); expect(r.complete).toBe(false); expect(r.enumeration?.termination).toBe('SHORT_PAGE');
     expect(fetchJson).toHaveBeenCalledTimes(1);
   });
+  it('Foot Locker: as many entries served as announced, but ids repeated across pages — the cause is named, the proof refused', async () => {
+    vi.mocked(fetchJson)
+      .mockResolvedValueOnce(page(Array.from({ length: 100 }, (_, i) => i), 150))
+      .mockResolvedValueOnce(page([99, ...Array.from({ length: 49 }, (_, i) => 100 + i)], 150))   // 50 entries, one already served
+      .mockResolvedValueOnce(page([], 150));
+    const r = await fetchPhenomJobs({ origin: 'https://careers.example.com' });
+    expect(r.jobs).toHaveLength(149); expect(r.declaredTotal).toBe(150); expect(r.complete).toBe(false);
+    expect(r.enumeration?.rawCount).toBe(150); expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['REPEATED_IDS_ACROSS_PAGES', 'ENUMERATION_NOT_PROVEN']));
+    expect(r.enumeration?.pageEvidence).toHaveLength(3); expect(r.enumeration?.termination).toBe('EMPTY_PAGE'); expect(r.enumeration?.pageEvidence?.[1]?.componentCounters).toContain('repeated=1');
+  });
 });
