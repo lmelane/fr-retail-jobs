@@ -7,11 +7,11 @@ Deux erreurs `DatabaseUnavailableError` sont observées dans les logs à 15:22:2
 
 ## Correction
 - L’image web embarque le CLI Prisma et ses dépendances verrouillées, dans un répertoire séparé du serveur standalone.
-- `apps/web/railway.json` exige `prisma migrate deploy` avant démarrage et le contrôle `/api/health` avant bascule du trafic. Ce fichier doit être effectivement sélectionné dans le service Railway.
+- Le contrat versionné `apps/web/deployment-contract.json` exige `prisma migrate deploy` avant démarrage et le contrôle `/api/health` avant bascule du trafic. Ses valeurs sont appliquées par l’API au service web et relues dans le manifeste du déploiement.
 - Le build incorpore automatiquement les noms et SHA-256 de toutes ses migrations. La santé refuse une migration attendue absente, modifiée ou échouée. Des migrations additionnelles appliquées par une version ultérieure sont autorisées pour préserver un rollback compatible.
 - Les workers conservent leur contrôle préalable et restent en pause pendant la qualification.
 
-Selon la [documentation Railway](https://docs.railway.com/deployments/pre-deploy-command), l’échec du pre-deploy arrête le déploiement. La [configuration versionnée](https://docs.railway.com/config-as-code) évite que cette étape dépende uniquement d’une opération manuelle.
+Selon la [documentation Railway](https://docs.railway.com/deployments/pre-deploy-command), l’échec du pre-deploy arrête le déploiement. L’API a explicitement refusé de sélectionner un nouveau fichier `railway.json` : ce mécanisme est déprécié. Le [remplacement IaC](https://docs.railway.com/infrastructure-as-code) porte sur l’environnement complet ; nous ne migrons pas implicitement toutes les ressources pour ce correctif. Le contrat du hook est versionné et sa configuration effective est vérifiée par API. La santé reste un verrou applicatif indépendant du hook.
 
 ## Preuves et tests
 Image Docker réelle construite et démarrée sur une base PostgreSQL 18 isolée : 38 migrations → santé 503 ; exécution du CLI embarqué → 39 migrations → santé 200 ; replay → aucune migration restante. Six tests du contrôle de santé et typecheck réussis. Vérification en lecture seule de production après récupération : 39 attendues, 39 appliquées, aucun checksum divergent ni échec.
