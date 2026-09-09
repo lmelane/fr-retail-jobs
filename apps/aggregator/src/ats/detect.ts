@@ -347,7 +347,7 @@ function findFeedUrl(html: string, baseUrl: string): string | undefined {
 
 /** Every ATS link referenced anywhere in a page's HTML. */
 function atsLinksInHtml(html: string, baseUrl: string): string[] {
-  const $ = cheerio.load(html);
+  const $ = cheerio.load(html, { scriptingEnabled: false });
   const candidates = new Set<string>();
   $('a[href], iframe[src], script[src]').each((_, el) => {
     const raw = $(el).attr('href') ?? $(el).attr('src');
@@ -388,7 +388,7 @@ export function detectFromHtml(html: string, rawUrl: string): AtsDetection | nul
   try { pageUrl = new URL(rawUrl); } catch { return null; }
   if (pageUrl.hostname.endsWith('.flatchr.io')) {
     try {
-      const payload = JSON.parse(cheerio.load(html)('#__NEXT_DATA__').text());
+      const payload = JSON.parse(cheerio.load(html, { scriptingEnabled: false })('#__NEXT_DATA__').text());
       const base = payload.props?.baseUrlPath;
       const slug = payload.query?.companySlug;
       if (payload.page === '/company/[companySlug]' && /^\/[a-z]{2}\/company$/.test(base ?? '') &&
@@ -493,7 +493,7 @@ export function detectFromHtml(html: string, rawUrl: string): AtsDetection | nul
  * anchor scan misses). Deduped, anchor hits first.
  */
 export function careersLinksInHtml(html: string, baseUrl: string): string[] {
-  const anchors = findCareersLinks(cheerio.load(html), baseUrl);
+  const anchors = findCareersLinks(cheerio.load(html, { scriptingEnabled: false }), baseUrl);
   const raw = careersSubdomainUrlsInHtml(html, baseUrl);
   return [...new Set([...anchors, ...raw])].slice(0, 4);
 }
