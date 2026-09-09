@@ -1,0 +1,3109 @@
+{
+  "asOf": "2026-09-09T07:06:54.956Z",
+  "results": [
+    {
+      "path": "/api/companies?q=Promod",
+      "status": 200,
+      "body": {
+        "total": 1,
+        "page": 1,
+        "pageCount": 1,
+        "sectors": [
+          {
+            "value": "RETAIL",
+            "count": 36088
+          },
+          {
+            "value": "BEAUTY",
+            "count": 16635
+          },
+          {
+            "value": "FASHION",
+            "count": 13040
+          },
+          {
+            "value": "JEWELRY_WATCHES",
+            "count": 5841
+          },
+          {
+            "value": "LUXURY",
+            "count": 1685
+          },
+          {
+            "value": "RECRUITER",
+            "count": 531
+          },
+          {
+            "value": "SUPPLIER",
+            "count": 240
+          },
+          {
+            "value": "MEDIA_AGENCY",
+            "count": 44
+          },
+          {
+            "value": "OTHER",
+            "count": 9
+          }
+        ],
+        "countries": [
+          {
+            "code": "FR",
+            "count": 10936
+          },
+          {
+            "code": "US",
+            "count": 30943
+          },
+          {
+            "code": "GB",
+            "count": 2872
+          },
+          {
+            "code": "CA",
+            "count": 2790
+          },
+          {
+            "code": "DE",
+            "count": 2739
+          },
+          {
+            "code": "IT",
+            "count": 2446
+          },
+          {
+            "code": "ES",
+            "count": 2070
+          },
+          {
+            "code": "NL",
+            "count": 1715
+          },
+          {
+            "code": "CN",
+            "count": 1169
+          },
+          {
+            "code": "AU",
+            "count": 1165
+          },
+          {
+            "code": "CH",
+            "count": 1079
+          },
+          {
+            "code": "BE",
+            "count": 597
+          },
+          {
+            "code": "IN",
+            "count": 518
+          },
+          {
+            "code": "JP",
+            "count": 518
+          },
+          {
+            "code": "KR",
+            "count": 486
+          },
+          {
+            "code": "PT",
+            "count": 435
+          },
+          {
+            "code": "SG",
+            "count": 402
+          },
+          {
+            "code": "MX",
+            "count": 391
+          },
+          {
+            "code": "DK",
+            "count": 368
+          },
+          {
+            "code": "HK",
+            "count": 338
+          },
+          {
+            "code": "PL",
+            "count": 325
+          },
+          {
+            "code": "SE",
+            "count": 316
+          },
+          {
+            "code": "AT",
+            "count": 311
+          },
+          {
+            "code": "TH",
+            "count": 268
+          },
+          {
+            "code": "IE",
+            "count": 254
+          },
+          {
+            "code": "TR",
+            "count": 252
+          },
+          {
+            "code": "MY",
+            "count": 246
+          },
+          {
+            "code": "AE",
+            "count": 240
+          },
+          {
+            "code": "BR",
+            "count": 219
+          },
+          {
+            "code": "NO",
+            "count": 201
+          },
+          {
+            "code": "CL",
+            "count": 183
+          },
+          {
+            "code": "GR",
+            "count": 179
+          },
+          {
+            "code": "TW",
+            "count": 163
+          },
+          {
+            "code": "ZA",
+            "count": 157
+          },
+          {
+            "code": "NZ",
+            "count": 141
+          },
+          {
+            "code": "VN",
+            "count": 129
+          },
+          {
+            "code": "CO",
+            "count": 113
+          },
+          {
+            "code": "SA",
+            "count": 111
+          },
+          {
+            "code": "CZ",
+            "count": 100
+          },
+          {
+            "code": "RO",
+            "count": 98
+          },
+          {
+            "code": "IL",
+            "count": 96
+          },
+          {
+            "code": "HU",
+            "count": 91
+          },
+          {
+            "code": "MO",
+            "count": 79
+          },
+          {
+            "code": "MA",
+            "count": 67
+          },
+          {
+            "code": "PR",
+            "count": 63
+          },
+          {
+            "code": "PE",
+            "count": 58
+          },
+          {
+            "code": "PH",
+            "count": 53
+          },
+          {
+            "code": "LU",
+            "count": 50
+          },
+          {
+            "code": "ID",
+            "count": 49
+          },
+          {
+            "code": "FI",
+            "count": 38
+          },
+          {
+            "code": "PA",
+            "count": 38
+          },
+          {
+            "code": "AR",
+            "count": 37
+          },
+          {
+            "code": "EG",
+            "count": 36
+          },
+          {
+            "code": "MC",
+            "count": 36
+          },
+          {
+            "code": "HR",
+            "count": 35
+          },
+          {
+            "code": "TN",
+            "count": 33
+          },
+          {
+            "code": "BG",
+            "count": 29
+          },
+          {
+            "code": "VA",
+            "count": 29
+          },
+          {
+            "code": "GA",
+            "count": 27
+          },
+          {
+            "code": "KY",
+            "count": 26
+          },
+          {
+            "code": "LT",
+            "count": 20
+          },
+          {
+            "code": "SK",
+            "count": 16
+          },
+          {
+            "code": "BH",
+            "count": 15
+          },
+          {
+            "code": "NC",
+            "count": 15
+          },
+          {
+            "code": "SC",
+            "count": 15
+          },
+          {
+            "code": "AL",
+            "count": 12
+          },
+          {
+            "code": "MD",
+            "count": 12
+          },
+          {
+            "code": "MN",
+            "count": 12
+          },
+          {
+            "code": "QA",
+            "count": 10
+          },
+          {
+            "code": "RS",
+            "count": 10
+          },
+          {
+            "code": "SI",
+            "count": 9
+          },
+          {
+            "code": "AZ",
+            "count": 8
+          },
+          {
+            "code": "KH",
+            "count": 8
+          },
+          {
+            "code": "PK",
+            "count": 8
+          },
+          {
+            "code": "UA",
+            "count": 8
+          },
+          {
+            "code": "RU",
+            "count": 7
+          },
+          {
+            "code": "GG",
+            "count": 6
+          },
+          {
+            "code": "LV",
+            "count": 6
+          },
+          {
+            "code": "NE",
+            "count": 6
+          },
+          {
+            "code": "VI",
+            "count": 6
+          },
+          {
+            "code": "AD",
+            "count": 5
+          },
+          {
+            "code": "KZ",
+            "count": 5
+          },
+          {
+            "code": "MV",
+            "count": 5
+          },
+          {
+            "code": "BD",
+            "count": 4
+          },
+          {
+            "code": "JO",
+            "count": 4
+          },
+          {
+            "code": "LS",
+            "count": 4
+          },
+          {
+            "code": "XK",
+            "count": 4
+          },
+          {
+            "code": "JE",
+            "count": 3
+          },
+          {
+            "code": "LA",
+            "count": 3
+          },
+          {
+            "code": "SZ",
+            "count": 3
+          },
+          {
+            "code": "AW",
+            "count": 2
+          },
+          {
+            "code": "BL",
+            "count": 2
+          },
+          {
+            "code": "BS",
+            "count": 2
+          },
+          {
+            "code": "BY",
+            "count": 2
+          },
+          {
+            "code": "DO",
+            "count": 2
+          },
+          {
+            "code": "EE",
+            "count": 2
+          },
+          {
+            "code": "GE",
+            "count": 2
+          },
+          {
+            "code": "KE",
+            "count": 2
+          },
+          {
+            "code": "KW",
+            "count": 2
+          },
+          {
+            "code": "LB",
+            "count": 2
+          },
+          {
+            "code": "MT",
+            "count": 2
+          },
+          {
+            "code": "NA",
+            "count": 2
+          },
+          {
+            "code": "NH",
+            "count": 2
+          },
+          {
+            "code": "OM",
+            "count": 2
+          },
+          {
+            "code": "SD",
+            "count": 2
+          },
+          {
+            "code": "AM",
+            "count": 1
+          },
+          {
+            "code": "BA",
+            "count": 1
+          },
+          {
+            "code": "CR",
+            "count": 1
+          },
+          {
+            "code": "CY",
+            "count": 1
+          },
+          {
+            "code": "EC",
+            "count": 1
+          },
+          {
+            "code": "GU",
+            "count": 1
+          },
+          {
+            "code": "IM",
+            "count": 1
+          },
+          {
+            "code": "ME",
+            "count": 1
+          },
+          {
+            "code": "MF",
+            "count": 1
+          },
+          {
+            "code": "MU",
+            "count": 1
+          },
+          {
+            "code": "NG",
+            "count": 1
+          },
+          {
+            "code": "ST",
+            "count": 1
+          },
+          {
+            "code": "UY",
+            "count": 1
+          }
+        ],
+        "companies": [
+          {
+            "id": "cmtk1x1ns0072nv2bytyhwuta",
+            "name": "Promod",
+            "jobCount": 21
+          }
+        ]
+      },
+      "responseSha256": "55cc731dab01f36004751c06f680c9cf1911834b5140344eb7532ecb630f0b72"
+    },
+    {
+      "path": "/api/jobs?maison=Promod",
+      "status": 200,
+      "body": {
+        "total": 21,
+        "totalInDatabase": 74113,
+        "page": 1,
+        "pageCount": 1,
+        "facets": {
+          "sectors": [
+            {
+              "count": 21,
+              "value": "FASHION"
+            }
+          ],
+          "contracts": [
+            {
+              "count": 13,
+              "value": "PERMANENT"
+            },
+            {
+              "count": 7,
+              "value": "FIXED_TERM"
+            }
+          ],
+          "cities": [
+            {
+              "count": 4,
+              "value": "Paris"
+            },
+            {
+              "count": 2,
+              "value": "Marseille"
+            },
+            {
+              "count": 1,
+              "value": "Arcueil"
+            },
+            {
+              "count": 1,
+              "value": "Bordeaux"
+            },
+            {
+              "count": 1,
+              "value": "Châteauroux"
+            },
+            {
+              "count": 1,
+              "value": "Houdemont"
+            },
+            {
+              "count": 1,
+              "value": "Lattes"
+            },
+            {
+              "count": 1,
+              "value": "Lescar"
+            },
+            {
+              "count": 1,
+              "value": "Lille"
+            },
+            {
+              "count": 1,
+              "value": "Marcq-En-Barœul"
+            },
+            {
+              "count": 1,
+              "value": "Plaisir"
+            },
+            {
+              "count": 1,
+              "value": "Poitiers"
+            },
+            {
+              "count": 1,
+              "value": "Pontivy"
+            },
+            {
+              "count": 1,
+              "value": "Rennes"
+            },
+            {
+              "count": 1,
+              "value": "Salaise-Sur-Sanne"
+            },
+            {
+              "count": 1,
+              "value": "Vaulx-En-Velin"
+            },
+            {
+              "count": 1,
+              "value": "Wattrelos"
+            }
+          ],
+          "groups": [],
+          "maisons": [
+            {
+              "count": 21,
+              "value": "Promod"
+            }
+          ],
+          "sources": [
+            {
+              "count": 19,
+              "value": "promod"
+            },
+            {
+              "count": 4,
+              "value": "fashionjobs"
+            }
+          ],
+          "countries": [
+            {
+              "value": "FR",
+              "count": 21
+            }
+          ]
+        },
+        "jobs": [
+          {
+            "id": "cmtpkx0az59q7pf5lzosafi35",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt7v7bl022umy012420t9lz",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt7v7c70230my01crdcmd0d",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt7v7cs0236my01o54zj7zq",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt7v7df023cmy01k76hglsh",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt7v7e0023imy01aeg2qhgj",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt7v7eh023omy01f42vprf8",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtrscqpv01rbpg5mddaxr6f8",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtrscqqf01rgpg5mo1upydgq",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtn57boh01ugqq5lc3dthb9w",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtn57bot01ukqq5lx05ifj0l",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtn57bpa01uoqq5lare2ju0v",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlrbvan006doc2b5c7owics",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlrbvb2006hoc2b2z6w9li8",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlvi3im0bpz3nk5a30wz3dj",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlk0uet0060la2bl8r1junj",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlk0ufh0064la2bdgjp12sg",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlk0ugc0068la2bjiqaba96",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtl9vxhw0064qt2bv1isr62h",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtpkx0bi59qbpf5lkbenp7y3",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtpkx1mn59uupf5l2zu5qapw",
+            "company": "Promod",
+            "countryCode": "FR"
+          }
+        ]
+      },
+      "responseSha256": "d961719ceaef3c231008844cbf1ea5cb2f82d27e4675a45d0b6412b5ec1b63de"
+    },
+    {
+      "path": "/api/companies?q=PROMOD%20-%20MAGASIN",
+      "status": 200,
+      "body": {
+        "total": 1,
+        "page": 1,
+        "pageCount": 1,
+        "sectors": [
+          {
+            "value": "RETAIL",
+            "count": 36088
+          },
+          {
+            "value": "BEAUTY",
+            "count": 16635
+          },
+          {
+            "value": "FASHION",
+            "count": 13040
+          },
+          {
+            "value": "JEWELRY_WATCHES",
+            "count": 5841
+          },
+          {
+            "value": "LUXURY",
+            "count": 1685
+          },
+          {
+            "value": "RECRUITER",
+            "count": 531
+          },
+          {
+            "value": "SUPPLIER",
+            "count": 240
+          },
+          {
+            "value": "MEDIA_AGENCY",
+            "count": 44
+          },
+          {
+            "value": "OTHER",
+            "count": 9
+          }
+        ],
+        "countries": [
+          {
+            "code": "FR",
+            "count": 10936
+          },
+          {
+            "code": "US",
+            "count": 30943
+          },
+          {
+            "code": "GB",
+            "count": 2872
+          },
+          {
+            "code": "CA",
+            "count": 2790
+          },
+          {
+            "code": "DE",
+            "count": 2739
+          },
+          {
+            "code": "IT",
+            "count": 2446
+          },
+          {
+            "code": "ES",
+            "count": 2070
+          },
+          {
+            "code": "NL",
+            "count": 1715
+          },
+          {
+            "code": "CN",
+            "count": 1169
+          },
+          {
+            "code": "AU",
+            "count": 1165
+          },
+          {
+            "code": "CH",
+            "count": 1079
+          },
+          {
+            "code": "BE",
+            "count": 597
+          },
+          {
+            "code": "IN",
+            "count": 518
+          },
+          {
+            "code": "JP",
+            "count": 518
+          },
+          {
+            "code": "KR",
+            "count": 486
+          },
+          {
+            "code": "PT",
+            "count": 435
+          },
+          {
+            "code": "SG",
+            "count": 402
+          },
+          {
+            "code": "MX",
+            "count": 391
+          },
+          {
+            "code": "DK",
+            "count": 368
+          },
+          {
+            "code": "HK",
+            "count": 338
+          },
+          {
+            "code": "PL",
+            "count": 325
+          },
+          {
+            "code": "SE",
+            "count": 316
+          },
+          {
+            "code": "AT",
+            "count": 311
+          },
+          {
+            "code": "TH",
+            "count": 268
+          },
+          {
+            "code": "IE",
+            "count": 254
+          },
+          {
+            "code": "TR",
+            "count": 252
+          },
+          {
+            "code": "MY",
+            "count": 246
+          },
+          {
+            "code": "AE",
+            "count": 240
+          },
+          {
+            "code": "BR",
+            "count": 219
+          },
+          {
+            "code": "NO",
+            "count": 201
+          },
+          {
+            "code": "CL",
+            "count": 183
+          },
+          {
+            "code": "GR",
+            "count": 179
+          },
+          {
+            "code": "TW",
+            "count": 163
+          },
+          {
+            "code": "ZA",
+            "count": 157
+          },
+          {
+            "code": "NZ",
+            "count": 141
+          },
+          {
+            "code": "VN",
+            "count": 129
+          },
+          {
+            "code": "CO",
+            "count": 113
+          },
+          {
+            "code": "SA",
+            "count": 111
+          },
+          {
+            "code": "CZ",
+            "count": 100
+          },
+          {
+            "code": "RO",
+            "count": 98
+          },
+          {
+            "code": "IL",
+            "count": 96
+          },
+          {
+            "code": "HU",
+            "count": 91
+          },
+          {
+            "code": "MO",
+            "count": 79
+          },
+          {
+            "code": "MA",
+            "count": 67
+          },
+          {
+            "code": "PR",
+            "count": 63
+          },
+          {
+            "code": "PE",
+            "count": 58
+          },
+          {
+            "code": "PH",
+            "count": 53
+          },
+          {
+            "code": "LU",
+            "count": 50
+          },
+          {
+            "code": "ID",
+            "count": 49
+          },
+          {
+            "code": "FI",
+            "count": 38
+          },
+          {
+            "code": "PA",
+            "count": 38
+          },
+          {
+            "code": "AR",
+            "count": 37
+          },
+          {
+            "code": "EG",
+            "count": 36
+          },
+          {
+            "code": "MC",
+            "count": 36
+          },
+          {
+            "code": "HR",
+            "count": 35
+          },
+          {
+            "code": "TN",
+            "count": 33
+          },
+          {
+            "code": "BG",
+            "count": 29
+          },
+          {
+            "code": "VA",
+            "count": 29
+          },
+          {
+            "code": "GA",
+            "count": 27
+          },
+          {
+            "code": "KY",
+            "count": 26
+          },
+          {
+            "code": "LT",
+            "count": 20
+          },
+          {
+            "code": "SK",
+            "count": 16
+          },
+          {
+            "code": "BH",
+            "count": 15
+          },
+          {
+            "code": "NC",
+            "count": 15
+          },
+          {
+            "code": "SC",
+            "count": 15
+          },
+          {
+            "code": "AL",
+            "count": 12
+          },
+          {
+            "code": "MD",
+            "count": 12
+          },
+          {
+            "code": "MN",
+            "count": 12
+          },
+          {
+            "code": "QA",
+            "count": 10
+          },
+          {
+            "code": "RS",
+            "count": 10
+          },
+          {
+            "code": "SI",
+            "count": 9
+          },
+          {
+            "code": "AZ",
+            "count": 8
+          },
+          {
+            "code": "KH",
+            "count": 8
+          },
+          {
+            "code": "PK",
+            "count": 8
+          },
+          {
+            "code": "UA",
+            "count": 8
+          },
+          {
+            "code": "RU",
+            "count": 7
+          },
+          {
+            "code": "GG",
+            "count": 6
+          },
+          {
+            "code": "LV",
+            "count": 6
+          },
+          {
+            "code": "NE",
+            "count": 6
+          },
+          {
+            "code": "VI",
+            "count": 6
+          },
+          {
+            "code": "AD",
+            "count": 5
+          },
+          {
+            "code": "KZ",
+            "count": 5
+          },
+          {
+            "code": "MV",
+            "count": 5
+          },
+          {
+            "code": "BD",
+            "count": 4
+          },
+          {
+            "code": "JO",
+            "count": 4
+          },
+          {
+            "code": "LS",
+            "count": 4
+          },
+          {
+            "code": "XK",
+            "count": 4
+          },
+          {
+            "code": "JE",
+            "count": 3
+          },
+          {
+            "code": "LA",
+            "count": 3
+          },
+          {
+            "code": "SZ",
+            "count": 3
+          },
+          {
+            "code": "AW",
+            "count": 2
+          },
+          {
+            "code": "BL",
+            "count": 2
+          },
+          {
+            "code": "BS",
+            "count": 2
+          },
+          {
+            "code": "BY",
+            "count": 2
+          },
+          {
+            "code": "DO",
+            "count": 2
+          },
+          {
+            "code": "EE",
+            "count": 2
+          },
+          {
+            "code": "GE",
+            "count": 2
+          },
+          {
+            "code": "KE",
+            "count": 2
+          },
+          {
+            "code": "KW",
+            "count": 2
+          },
+          {
+            "code": "LB",
+            "count": 2
+          },
+          {
+            "code": "MT",
+            "count": 2
+          },
+          {
+            "code": "NA",
+            "count": 2
+          },
+          {
+            "code": "NH",
+            "count": 2
+          },
+          {
+            "code": "OM",
+            "count": 2
+          },
+          {
+            "code": "SD",
+            "count": 2
+          },
+          {
+            "code": "AM",
+            "count": 1
+          },
+          {
+            "code": "BA",
+            "count": 1
+          },
+          {
+            "code": "CR",
+            "count": 1
+          },
+          {
+            "code": "CY",
+            "count": 1
+          },
+          {
+            "code": "EC",
+            "count": 1
+          },
+          {
+            "code": "GU",
+            "count": 1
+          },
+          {
+            "code": "IM",
+            "count": 1
+          },
+          {
+            "code": "ME",
+            "count": 1
+          },
+          {
+            "code": "MF",
+            "count": 1
+          },
+          {
+            "code": "MU",
+            "count": 1
+          },
+          {
+            "code": "NG",
+            "count": 1
+          },
+          {
+            "code": "ST",
+            "count": 1
+          },
+          {
+            "code": "UY",
+            "count": 1
+          }
+        ],
+        "companies": [
+          {
+            "id": "cmtk1x1ns0072nv2bytyhwuta",
+            "name": "Promod",
+            "jobCount": 21
+          }
+        ]
+      },
+      "responseSha256": "55cc731dab01f36004751c06f680c9cf1911834b5140344eb7532ecb630f0b72"
+    },
+    {
+      "path": "/api/jobs?maison=PROMOD%20-%20MAGASIN",
+      "status": 200,
+      "body": {
+        "total": 21,
+        "totalInDatabase": 74113,
+        "page": 1,
+        "pageCount": 1,
+        "facets": {
+          "sectors": [
+            {
+              "count": 21,
+              "value": "FASHION"
+            }
+          ],
+          "contracts": [
+            {
+              "count": 13,
+              "value": "PERMANENT"
+            },
+            {
+              "count": 7,
+              "value": "FIXED_TERM"
+            }
+          ],
+          "cities": [
+            {
+              "count": 4,
+              "value": "Paris"
+            },
+            {
+              "count": 2,
+              "value": "Marseille"
+            },
+            {
+              "count": 1,
+              "value": "Arcueil"
+            },
+            {
+              "count": 1,
+              "value": "Bordeaux"
+            },
+            {
+              "count": 1,
+              "value": "Châteauroux"
+            },
+            {
+              "count": 1,
+              "value": "Houdemont"
+            },
+            {
+              "count": 1,
+              "value": "Lattes"
+            },
+            {
+              "count": 1,
+              "value": "Lescar"
+            },
+            {
+              "count": 1,
+              "value": "Lille"
+            },
+            {
+              "count": 1,
+              "value": "Marcq-En-Barœul"
+            },
+            {
+              "count": 1,
+              "value": "Plaisir"
+            },
+            {
+              "count": 1,
+              "value": "Poitiers"
+            },
+            {
+              "count": 1,
+              "value": "Pontivy"
+            },
+            {
+              "count": 1,
+              "value": "Rennes"
+            },
+            {
+              "count": 1,
+              "value": "Salaise-Sur-Sanne"
+            },
+            {
+              "count": 1,
+              "value": "Vaulx-En-Velin"
+            },
+            {
+              "count": 1,
+              "value": "Wattrelos"
+            }
+          ],
+          "groups": [],
+          "maisons": [
+            {
+              "count": 21,
+              "value": "Promod"
+            }
+          ],
+          "sources": [
+            {
+              "count": 19,
+              "value": "promod"
+            },
+            {
+              "count": 4,
+              "value": "fashionjobs"
+            }
+          ],
+          "countries": [
+            {
+              "value": "FR",
+              "count": 21
+            }
+          ]
+        },
+        "jobs": [
+          {
+            "id": "cmtpkx0az59q7pf5lzosafi35",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt7v7bl022umy012420t9lz",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt7v7c70230my01crdcmd0d",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt7v7cs0236my01o54zj7zq",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt7v7df023cmy01k76hglsh",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt7v7e0023imy01aeg2qhgj",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt7v7eh023omy01f42vprf8",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtrscqpv01rbpg5mddaxr6f8",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtrscqqf01rgpg5mo1upydgq",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtn57boh01ugqq5lc3dthb9w",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtn57bot01ukqq5lx05ifj0l",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtn57bpa01uoqq5lare2ju0v",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlrbvan006doc2b5c7owics",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlrbvb2006hoc2b2z6w9li8",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlvi3im0bpz3nk5a30wz3dj",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlk0uet0060la2bl8r1junj",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlk0ufh0064la2bdgjp12sg",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlk0ugc0068la2bjiqaba96",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtl9vxhw0064qt2bv1isr62h",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtpkx0bi59qbpf5lkbenp7y3",
+            "company": "Promod",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtpkx1mn59uupf5l2zu5qapw",
+            "company": "Promod",
+            "countryCode": "FR"
+          }
+        ]
+      },
+      "responseSha256": "d961719ceaef3c231008844cbf1ea5cb2f82d27e4675a45d0b6412b5ec1b63de"
+    },
+    {
+      "path": "/api/companies?q=Aubade",
+      "status": 200,
+      "body": {
+        "total": 1,
+        "page": 1,
+        "pageCount": 1,
+        "sectors": [
+          {
+            "value": "RETAIL",
+            "count": 36088
+          },
+          {
+            "value": "BEAUTY",
+            "count": 16635
+          },
+          {
+            "value": "FASHION",
+            "count": 13040
+          },
+          {
+            "value": "JEWELRY_WATCHES",
+            "count": 5841
+          },
+          {
+            "value": "LUXURY",
+            "count": 1685
+          },
+          {
+            "value": "RECRUITER",
+            "count": 531
+          },
+          {
+            "value": "SUPPLIER",
+            "count": 240
+          },
+          {
+            "value": "MEDIA_AGENCY",
+            "count": 44
+          },
+          {
+            "value": "OTHER",
+            "count": 9
+          }
+        ],
+        "countries": [
+          {
+            "code": "FR",
+            "count": 10936
+          },
+          {
+            "code": "US",
+            "count": 30943
+          },
+          {
+            "code": "GB",
+            "count": 2872
+          },
+          {
+            "code": "CA",
+            "count": 2790
+          },
+          {
+            "code": "DE",
+            "count": 2739
+          },
+          {
+            "code": "IT",
+            "count": 2446
+          },
+          {
+            "code": "ES",
+            "count": 2070
+          },
+          {
+            "code": "NL",
+            "count": 1715
+          },
+          {
+            "code": "CN",
+            "count": 1169
+          },
+          {
+            "code": "AU",
+            "count": 1165
+          },
+          {
+            "code": "CH",
+            "count": 1079
+          },
+          {
+            "code": "BE",
+            "count": 597
+          },
+          {
+            "code": "IN",
+            "count": 518
+          },
+          {
+            "code": "JP",
+            "count": 518
+          },
+          {
+            "code": "KR",
+            "count": 486
+          },
+          {
+            "code": "PT",
+            "count": 435
+          },
+          {
+            "code": "SG",
+            "count": 402
+          },
+          {
+            "code": "MX",
+            "count": 391
+          },
+          {
+            "code": "DK",
+            "count": 368
+          },
+          {
+            "code": "HK",
+            "count": 338
+          },
+          {
+            "code": "PL",
+            "count": 325
+          },
+          {
+            "code": "SE",
+            "count": 316
+          },
+          {
+            "code": "AT",
+            "count": 311
+          },
+          {
+            "code": "TH",
+            "count": 268
+          },
+          {
+            "code": "IE",
+            "count": 254
+          },
+          {
+            "code": "TR",
+            "count": 252
+          },
+          {
+            "code": "MY",
+            "count": 246
+          },
+          {
+            "code": "AE",
+            "count": 240
+          },
+          {
+            "code": "BR",
+            "count": 219
+          },
+          {
+            "code": "NO",
+            "count": 201
+          },
+          {
+            "code": "CL",
+            "count": 183
+          },
+          {
+            "code": "GR",
+            "count": 179
+          },
+          {
+            "code": "TW",
+            "count": 163
+          },
+          {
+            "code": "ZA",
+            "count": 157
+          },
+          {
+            "code": "NZ",
+            "count": 141
+          },
+          {
+            "code": "VN",
+            "count": 129
+          },
+          {
+            "code": "CO",
+            "count": 113
+          },
+          {
+            "code": "SA",
+            "count": 111
+          },
+          {
+            "code": "CZ",
+            "count": 100
+          },
+          {
+            "code": "RO",
+            "count": 98
+          },
+          {
+            "code": "IL",
+            "count": 96
+          },
+          {
+            "code": "HU",
+            "count": 91
+          },
+          {
+            "code": "MO",
+            "count": 79
+          },
+          {
+            "code": "MA",
+            "count": 67
+          },
+          {
+            "code": "PR",
+            "count": 63
+          },
+          {
+            "code": "PE",
+            "count": 58
+          },
+          {
+            "code": "PH",
+            "count": 53
+          },
+          {
+            "code": "LU",
+            "count": 50
+          },
+          {
+            "code": "ID",
+            "count": 49
+          },
+          {
+            "code": "FI",
+            "count": 38
+          },
+          {
+            "code": "PA",
+            "count": 38
+          },
+          {
+            "code": "AR",
+            "count": 37
+          },
+          {
+            "code": "EG",
+            "count": 36
+          },
+          {
+            "code": "MC",
+            "count": 36
+          },
+          {
+            "code": "HR",
+            "count": 35
+          },
+          {
+            "code": "TN",
+            "count": 33
+          },
+          {
+            "code": "BG",
+            "count": 29
+          },
+          {
+            "code": "VA",
+            "count": 29
+          },
+          {
+            "code": "GA",
+            "count": 27
+          },
+          {
+            "code": "KY",
+            "count": 26
+          },
+          {
+            "code": "LT",
+            "count": 20
+          },
+          {
+            "code": "SK",
+            "count": 16
+          },
+          {
+            "code": "BH",
+            "count": 15
+          },
+          {
+            "code": "NC",
+            "count": 15
+          },
+          {
+            "code": "SC",
+            "count": 15
+          },
+          {
+            "code": "AL",
+            "count": 12
+          },
+          {
+            "code": "MD",
+            "count": 12
+          },
+          {
+            "code": "MN",
+            "count": 12
+          },
+          {
+            "code": "QA",
+            "count": 10
+          },
+          {
+            "code": "RS",
+            "count": 10
+          },
+          {
+            "code": "SI",
+            "count": 9
+          },
+          {
+            "code": "AZ",
+            "count": 8
+          },
+          {
+            "code": "KH",
+            "count": 8
+          },
+          {
+            "code": "PK",
+            "count": 8
+          },
+          {
+            "code": "UA",
+            "count": 8
+          },
+          {
+            "code": "RU",
+            "count": 7
+          },
+          {
+            "code": "GG",
+            "count": 6
+          },
+          {
+            "code": "LV",
+            "count": 6
+          },
+          {
+            "code": "NE",
+            "count": 6
+          },
+          {
+            "code": "VI",
+            "count": 6
+          },
+          {
+            "code": "AD",
+            "count": 5
+          },
+          {
+            "code": "KZ",
+            "count": 5
+          },
+          {
+            "code": "MV",
+            "count": 5
+          },
+          {
+            "code": "BD",
+            "count": 4
+          },
+          {
+            "code": "JO",
+            "count": 4
+          },
+          {
+            "code": "LS",
+            "count": 4
+          },
+          {
+            "code": "XK",
+            "count": 4
+          },
+          {
+            "code": "JE",
+            "count": 3
+          },
+          {
+            "code": "LA",
+            "count": 3
+          },
+          {
+            "code": "SZ",
+            "count": 3
+          },
+          {
+            "code": "AW",
+            "count": 2
+          },
+          {
+            "code": "BL",
+            "count": 2
+          },
+          {
+            "code": "BS",
+            "count": 2
+          },
+          {
+            "code": "BY",
+            "count": 2
+          },
+          {
+            "code": "DO",
+            "count": 2
+          },
+          {
+            "code": "EE",
+            "count": 2
+          },
+          {
+            "code": "GE",
+            "count": 2
+          },
+          {
+            "code": "KE",
+            "count": 2
+          },
+          {
+            "code": "KW",
+            "count": 2
+          },
+          {
+            "code": "LB",
+            "count": 2
+          },
+          {
+            "code": "MT",
+            "count": 2
+          },
+          {
+            "code": "NA",
+            "count": 2
+          },
+          {
+            "code": "NH",
+            "count": 2
+          },
+          {
+            "code": "OM",
+            "count": 2
+          },
+          {
+            "code": "SD",
+            "count": 2
+          },
+          {
+            "code": "AM",
+            "count": 1
+          },
+          {
+            "code": "BA",
+            "count": 1
+          },
+          {
+            "code": "CR",
+            "count": 1
+          },
+          {
+            "code": "CY",
+            "count": 1
+          },
+          {
+            "code": "EC",
+            "count": 1
+          },
+          {
+            "code": "GU",
+            "count": 1
+          },
+          {
+            "code": "IM",
+            "count": 1
+          },
+          {
+            "code": "ME",
+            "count": 1
+          },
+          {
+            "code": "MF",
+            "count": 1
+          },
+          {
+            "code": "MU",
+            "count": 1
+          },
+          {
+            "code": "NG",
+            "count": 1
+          },
+          {
+            "code": "ST",
+            "count": 1
+          },
+          {
+            "code": "UY",
+            "count": 1
+          }
+        ],
+        "companies": [
+          {
+            "id": "cmtk1xdjg0176nv2b70ayaadr",
+            "name": "Aubade",
+            "jobCount": 29
+          }
+        ]
+      },
+      "responseSha256": "618638814762b357ea70088a224427c31e4ef516bd15f2edbe569c5f57a35933"
+    },
+    {
+      "path": "/api/jobs?maison=Aubade",
+      "status": 200,
+      "body": {
+        "total": 29,
+        "totalInDatabase": 74113,
+        "page": 1,
+        "pageCount": 2,
+        "facets": {
+          "sectors": [
+            {
+              "count": 29,
+              "value": "FASHION"
+            }
+          ],
+          "contracts": [
+            {
+              "count": 12,
+              "value": "FIXED_TERM"
+            },
+            {
+              "count": 9,
+              "value": "PERMANENT"
+            }
+          ],
+          "cities": [
+            {
+              "count": 11,
+              "value": "Paris"
+            },
+            {
+              "count": 4,
+              "value": "Nantes"
+            },
+            {
+              "count": 2,
+              "value": "Tours"
+            },
+            {
+              "count": 1,
+              "value": "Avignon"
+            },
+            {
+              "count": 1,
+              "value": "Bayonne"
+            },
+            {
+              "count": 1,
+              "value": "Bègles"
+            },
+            {
+              "count": 1,
+              "value": "Corbeil-Essonnes"
+            },
+            {
+              "count": 1,
+              "value": "Metz"
+            },
+            {
+              "count": 1,
+              "value": "Montpellier"
+            },
+            {
+              "count": 1,
+              "value": "Nice"
+            },
+            {
+              "count": 1,
+              "value": "Nîmes"
+            },
+            {
+              "count": 1,
+              "value": "Pimbo"
+            },
+            {
+              "count": 1,
+              "value": "Rennes"
+            },
+            {
+              "count": 1,
+              "value": "Rouen"
+            },
+            {
+              "count": 1,
+              "value": "Serris"
+            }
+          ],
+          "groups": [],
+          "maisons": [
+            {
+              "count": 29,
+              "value": "Aubade"
+            }
+          ],
+          "sources": [
+            {
+              "count": 26,
+              "value": "wttj-sector"
+            },
+            {
+              "count": 6,
+              "value": "fashionjobs"
+            }
+          ],
+          "countries": [
+            {
+              "value": "FR",
+              "count": 29
+            }
+          ]
+        },
+        "jobs": [
+          {
+            "id": "cmtt9302h3ufymy0179iqqrza",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt930343ug8my01mhgjwu84",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtrt8sqq2ygwpg5m8c8e4csr",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtmwq0b80613so4zym3rj65y",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtpw96hw4k4jl35m75179thl",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtmwq0cf061bso4z9wc0zgyy",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtpw96ih4k4nl35mduiud513",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtmwq0bu0617so4zluo906f9",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xe1r019onv2bkqycbert",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdkj017cnv2buig6ilyn",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdlc017gnv2bf8mnt5od",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdm0017knv2bq8w2tmkt",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdmo017onv2bw2xku1dy",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdnc017snv2bvrkv2g21",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdoi017wnv2bumahtcqm",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdpf0180nv2bbhq1siat",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdq50184nv2bi87y5pjm",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlv7ytd06kp3nk5i3ws2wfv",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlv7ywe06kr3nk5sw6jonbr",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdsh018env2bpljceem2",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtp868xy3rnmqq4ztnoc2ob5",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xduo018mnv2bfsnxv5ob",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdvf018qnv2b5wjhl31b",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdx7018ynv2bexbk79vu",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlv7z8f06kv3nk5c4rvd8qf",
+            "company": "Aubade",
+            "countryCode": "FR"
+          }
+        ]
+      },
+      "responseSha256": "3740ead82c9bef7e333f6b81a37872af1fe5737d2ae5844ff1a98ab71fb84618"
+    },
+    {
+      "path": "/api/companies?q=Aubade%20Paris",
+      "status": 200,
+      "body": {
+        "total": 1,
+        "page": 1,
+        "pageCount": 1,
+        "sectors": [
+          {
+            "value": "RETAIL",
+            "count": 36088
+          },
+          {
+            "value": "BEAUTY",
+            "count": 16635
+          },
+          {
+            "value": "FASHION",
+            "count": 13040
+          },
+          {
+            "value": "JEWELRY_WATCHES",
+            "count": 5841
+          },
+          {
+            "value": "LUXURY",
+            "count": 1685
+          },
+          {
+            "value": "RECRUITER",
+            "count": 531
+          },
+          {
+            "value": "SUPPLIER",
+            "count": 240
+          },
+          {
+            "value": "MEDIA_AGENCY",
+            "count": 44
+          },
+          {
+            "value": "OTHER",
+            "count": 9
+          }
+        ],
+        "countries": [
+          {
+            "code": "FR",
+            "count": 10936
+          },
+          {
+            "code": "US",
+            "count": 30943
+          },
+          {
+            "code": "GB",
+            "count": 2872
+          },
+          {
+            "code": "CA",
+            "count": 2790
+          },
+          {
+            "code": "DE",
+            "count": 2739
+          },
+          {
+            "code": "IT",
+            "count": 2446
+          },
+          {
+            "code": "ES",
+            "count": 2070
+          },
+          {
+            "code": "NL",
+            "count": 1715
+          },
+          {
+            "code": "CN",
+            "count": 1169
+          },
+          {
+            "code": "AU",
+            "count": 1165
+          },
+          {
+            "code": "CH",
+            "count": 1079
+          },
+          {
+            "code": "BE",
+            "count": 597
+          },
+          {
+            "code": "IN",
+            "count": 518
+          },
+          {
+            "code": "JP",
+            "count": 518
+          },
+          {
+            "code": "KR",
+            "count": 486
+          },
+          {
+            "code": "PT",
+            "count": 435
+          },
+          {
+            "code": "SG",
+            "count": 402
+          },
+          {
+            "code": "MX",
+            "count": 391
+          },
+          {
+            "code": "DK",
+            "count": 368
+          },
+          {
+            "code": "HK",
+            "count": 338
+          },
+          {
+            "code": "PL",
+            "count": 325
+          },
+          {
+            "code": "SE",
+            "count": 316
+          },
+          {
+            "code": "AT",
+            "count": 311
+          },
+          {
+            "code": "TH",
+            "count": 268
+          },
+          {
+            "code": "IE",
+            "count": 254
+          },
+          {
+            "code": "TR",
+            "count": 252
+          },
+          {
+            "code": "MY",
+            "count": 246
+          },
+          {
+            "code": "AE",
+            "count": 240
+          },
+          {
+            "code": "BR",
+            "count": 219
+          },
+          {
+            "code": "NO",
+            "count": 201
+          },
+          {
+            "code": "CL",
+            "count": 183
+          },
+          {
+            "code": "GR",
+            "count": 179
+          },
+          {
+            "code": "TW",
+            "count": 163
+          },
+          {
+            "code": "ZA",
+            "count": 157
+          },
+          {
+            "code": "NZ",
+            "count": 141
+          },
+          {
+            "code": "VN",
+            "count": 129
+          },
+          {
+            "code": "CO",
+            "count": 113
+          },
+          {
+            "code": "SA",
+            "count": 111
+          },
+          {
+            "code": "CZ",
+            "count": 100
+          },
+          {
+            "code": "RO",
+            "count": 98
+          },
+          {
+            "code": "IL",
+            "count": 96
+          },
+          {
+            "code": "HU",
+            "count": 91
+          },
+          {
+            "code": "MO",
+            "count": 79
+          },
+          {
+            "code": "MA",
+            "count": 67
+          },
+          {
+            "code": "PR",
+            "count": 63
+          },
+          {
+            "code": "PE",
+            "count": 58
+          },
+          {
+            "code": "PH",
+            "count": 53
+          },
+          {
+            "code": "LU",
+            "count": 50
+          },
+          {
+            "code": "ID",
+            "count": 49
+          },
+          {
+            "code": "FI",
+            "count": 38
+          },
+          {
+            "code": "PA",
+            "count": 38
+          },
+          {
+            "code": "AR",
+            "count": 37
+          },
+          {
+            "code": "EG",
+            "count": 36
+          },
+          {
+            "code": "MC",
+            "count": 36
+          },
+          {
+            "code": "HR",
+            "count": 35
+          },
+          {
+            "code": "TN",
+            "count": 33
+          },
+          {
+            "code": "BG",
+            "count": 29
+          },
+          {
+            "code": "VA",
+            "count": 29
+          },
+          {
+            "code": "GA",
+            "count": 27
+          },
+          {
+            "code": "KY",
+            "count": 26
+          },
+          {
+            "code": "LT",
+            "count": 20
+          },
+          {
+            "code": "SK",
+            "count": 16
+          },
+          {
+            "code": "BH",
+            "count": 15
+          },
+          {
+            "code": "NC",
+            "count": 15
+          },
+          {
+            "code": "SC",
+            "count": 15
+          },
+          {
+            "code": "AL",
+            "count": 12
+          },
+          {
+            "code": "MD",
+            "count": 12
+          },
+          {
+            "code": "MN",
+            "count": 12
+          },
+          {
+            "code": "QA",
+            "count": 10
+          },
+          {
+            "code": "RS",
+            "count": 10
+          },
+          {
+            "code": "SI",
+            "count": 9
+          },
+          {
+            "code": "AZ",
+            "count": 8
+          },
+          {
+            "code": "KH",
+            "count": 8
+          },
+          {
+            "code": "PK",
+            "count": 8
+          },
+          {
+            "code": "UA",
+            "count": 8
+          },
+          {
+            "code": "RU",
+            "count": 7
+          },
+          {
+            "code": "GG",
+            "count": 6
+          },
+          {
+            "code": "LV",
+            "count": 6
+          },
+          {
+            "code": "NE",
+            "count": 6
+          },
+          {
+            "code": "VI",
+            "count": 6
+          },
+          {
+            "code": "AD",
+            "count": 5
+          },
+          {
+            "code": "KZ",
+            "count": 5
+          },
+          {
+            "code": "MV",
+            "count": 5
+          },
+          {
+            "code": "BD",
+            "count": 4
+          },
+          {
+            "code": "JO",
+            "count": 4
+          },
+          {
+            "code": "LS",
+            "count": 4
+          },
+          {
+            "code": "XK",
+            "count": 4
+          },
+          {
+            "code": "JE",
+            "count": 3
+          },
+          {
+            "code": "LA",
+            "count": 3
+          },
+          {
+            "code": "SZ",
+            "count": 3
+          },
+          {
+            "code": "AW",
+            "count": 2
+          },
+          {
+            "code": "BL",
+            "count": 2
+          },
+          {
+            "code": "BS",
+            "count": 2
+          },
+          {
+            "code": "BY",
+            "count": 2
+          },
+          {
+            "code": "DO",
+            "count": 2
+          },
+          {
+            "code": "EE",
+            "count": 2
+          },
+          {
+            "code": "GE",
+            "count": 2
+          },
+          {
+            "code": "KE",
+            "count": 2
+          },
+          {
+            "code": "KW",
+            "count": 2
+          },
+          {
+            "code": "LB",
+            "count": 2
+          },
+          {
+            "code": "MT",
+            "count": 2
+          },
+          {
+            "code": "NA",
+            "count": 2
+          },
+          {
+            "code": "NH",
+            "count": 2
+          },
+          {
+            "code": "OM",
+            "count": 2
+          },
+          {
+            "code": "SD",
+            "count": 2
+          },
+          {
+            "code": "AM",
+            "count": 1
+          },
+          {
+            "code": "BA",
+            "count": 1
+          },
+          {
+            "code": "CR",
+            "count": 1
+          },
+          {
+            "code": "CY",
+            "count": 1
+          },
+          {
+            "code": "EC",
+            "count": 1
+          },
+          {
+            "code": "GU",
+            "count": 1
+          },
+          {
+            "code": "IM",
+            "count": 1
+          },
+          {
+            "code": "ME",
+            "count": 1
+          },
+          {
+            "code": "MF",
+            "count": 1
+          },
+          {
+            "code": "MU",
+            "count": 1
+          },
+          {
+            "code": "NG",
+            "count": 1
+          },
+          {
+            "code": "ST",
+            "count": 1
+          },
+          {
+            "code": "UY",
+            "count": 1
+          }
+        ],
+        "companies": [
+          {
+            "id": "cmtk1xdjg0176nv2b70ayaadr",
+            "name": "Aubade",
+            "jobCount": 29
+          }
+        ]
+      },
+      "responseSha256": "618638814762b357ea70088a224427c31e4ef516bd15f2edbe569c5f57a35933"
+    },
+    {
+      "path": "/api/jobs?maison=Aubade%20Paris",
+      "status": 200,
+      "body": {
+        "total": 29,
+        "totalInDatabase": 74113,
+        "page": 1,
+        "pageCount": 2,
+        "facets": {
+          "sectors": [
+            {
+              "count": 29,
+              "value": "FASHION"
+            }
+          ],
+          "contracts": [
+            {
+              "count": 12,
+              "value": "FIXED_TERM"
+            },
+            {
+              "count": 9,
+              "value": "PERMANENT"
+            }
+          ],
+          "cities": [
+            {
+              "count": 11,
+              "value": "Paris"
+            },
+            {
+              "count": 4,
+              "value": "Nantes"
+            },
+            {
+              "count": 2,
+              "value": "Tours"
+            },
+            {
+              "count": 1,
+              "value": "Avignon"
+            },
+            {
+              "count": 1,
+              "value": "Bayonne"
+            },
+            {
+              "count": 1,
+              "value": "Bègles"
+            },
+            {
+              "count": 1,
+              "value": "Corbeil-Essonnes"
+            },
+            {
+              "count": 1,
+              "value": "Metz"
+            },
+            {
+              "count": 1,
+              "value": "Montpellier"
+            },
+            {
+              "count": 1,
+              "value": "Nice"
+            },
+            {
+              "count": 1,
+              "value": "Nîmes"
+            },
+            {
+              "count": 1,
+              "value": "Pimbo"
+            },
+            {
+              "count": 1,
+              "value": "Rennes"
+            },
+            {
+              "count": 1,
+              "value": "Rouen"
+            },
+            {
+              "count": 1,
+              "value": "Serris"
+            }
+          ],
+          "groups": [],
+          "maisons": [
+            {
+              "count": 29,
+              "value": "Aubade"
+            }
+          ],
+          "sources": [
+            {
+              "count": 26,
+              "value": "wttj-sector"
+            },
+            {
+              "count": 6,
+              "value": "fashionjobs"
+            }
+          ],
+          "countries": [
+            {
+              "value": "FR",
+              "count": 29
+            }
+          ]
+        },
+        "jobs": [
+          {
+            "id": "cmtt9302h3ufymy0179iqqrza",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtt930343ug8my01mhgjwu84",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtrt8sqq2ygwpg5m8c8e4csr",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtmwq0b80613so4zym3rj65y",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtpw96hw4k4jl35m75179thl",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtmwq0cf061bso4z9wc0zgyy",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtpw96ih4k4nl35mduiud513",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtmwq0bu0617so4zluo906f9",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xe1r019onv2bkqycbert",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdkj017cnv2buig6ilyn",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdlc017gnv2bf8mnt5od",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdm0017knv2bq8w2tmkt",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdmo017onv2bw2xku1dy",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdnc017snv2bvrkv2g21",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdoi017wnv2bumahtcqm",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdpf0180nv2bbhq1siat",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdq50184nv2bi87y5pjm",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlv7ytd06kp3nk5i3ws2wfv",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlv7ywe06kr3nk5sw6jonbr",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdsh018env2bpljceem2",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtp868xy3rnmqq4ztnoc2ob5",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xduo018mnv2bfsnxv5ob",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdvf018qnv2b5wjhl31b",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtk1xdx7018ynv2bexbk79vu",
+            "company": "Aubade",
+            "countryCode": "FR"
+          },
+          {
+            "id": "cmtlv7z8f06kv3nk5c4rvd8qf",
+            "company": "Aubade",
+            "countryCode": "FR"
+          }
+        ]
+      },
+      "responseSha256": "3740ead82c9bef7e333f6b81a37872af1fe5737d2ae5844ff1a98ab71fb84618"
+    },
+    {
+      "path": "/entreprise/promod",
+      "status": 200,
+      "location": null,
+      "title": "Emplois Promod — Mode Careers"
+    },
+    {
+      "path": "/intelligence/maisons/promod",
+      "status": 200,
+      "location": null,
+      "title": "Promod : intelligence recrutement · Catwalks Intelligence"
+    },
+    {
+      "path": "/entreprise/promod-magasin",
+      "status": 308,
+      "location": "/entreprise/promod",
+      "title": "Emplois Promod — Mode Careers"
+    },
+    {
+      "path": "/intelligence/maisons/promod-magasin",
+      "status": 308,
+      "location": "/intelligence/maisons/promod",
+      "title": "Promod : intelligence recrutement · Catwalks Intelligence"
+    },
+    {
+      "path": "/entreprise/aubade",
+      "status": 200,
+      "location": null,
+      "title": "Emplois Aubade — Mode Careers"
+    },
+    {
+      "path": "/intelligence/maisons/aubade",
+      "status": 200,
+      "location": null,
+      "title": "Aubade : intelligence recrutement · Catwalks Intelligence"
+    },
+    {
+      "path": "/entreprise/aubade-paris",
+      "status": 308,
+      "location": "/entreprise/aubade",
+      "title": "Emplois Aubade — Mode Careers"
+    },
+    {
+      "path": "/intelligence/maisons/aubade-paris",
+      "status": 308,
+      "location": "/intelligence/maisons/aubade",
+      "title": "Aubade : intelligence recrutement · Catwalks Intelligence"
+    }
+  ]
+}

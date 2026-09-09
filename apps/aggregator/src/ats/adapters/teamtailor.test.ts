@@ -18,6 +18,13 @@ describe('toNormalized — hôte des fiches', () => {
 
 const captured = JSON.parse(readFileSync(new URL('./__fixtures__/teamtailor-live-items.json', import.meta.url), 'utf8'));
 const origin = 'https://carrieres.groupegalerieslafayette.com';
+it('uses the actual hiring organization from the archived feed before the catalogue label', () => {
+  const item = captured.items[0];
+  const job = toNormalized(item)!;
+  expect(job.company).toBe(item._jobposting.hiringOrganization.name);
+  expect(job.employerEvidence).toEqual({ rawName: 'Groupe Galeries Lafayette', path: '_jobposting.hiringOrganization.name', rule: 'HIRING_ORGANIZATION_LABEL' });
+  expect(job.raw).toEqual(item);
+});
 const page = (items: unknown[], next?: string) => ({version: captured.version, feed_url: captured.feed_url, items, ...(next === undefined ? {} : {next_url: next})});
 beforeEach(() => vi.mocked(fetchJson).mockReset());
 describe('Teamtailor enumeration evidence', () => {

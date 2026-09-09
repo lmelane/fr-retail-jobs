@@ -1,0 +1,240 @@
+{
+  "environment": "production",
+  "commit": "7643171aacc4be29039032bd5deb7665b994555d",
+  "before": {
+    "asOf": "2026-09-09T07:05:00.865Z",
+    "jobs": 77322,
+    "active": 74113,
+    "sources": 80348,
+    "events": 21718,
+    "observations": 72178,
+    "companies": 1571,
+    "aliases": 6
+  },
+  "batches": [
+    {
+      "batchId": "lot1-promod-aubade-20260909-v1",
+      "planHash": "80209d514ad6a7a44193ebb7fc7b0f396a9cec468161105284a427adaa724be2",
+      "result": {
+        "alreadyApplied": false,
+        "movedJobs": 31,
+        "aliases": 8
+      },
+      "repeated": {
+        "alreadyApplied": true,
+        "movedJobs": 0,
+        "aliases": 0
+      }
+    },
+    {
+      "batchId": "lot1-smcp-parent-relations-20260909-v1",
+      "planHash": "55100c0d923c158193cf8cc5bd827323f80bf066268cb167748746828d38c74d",
+      "result": {
+        "alreadyApplied": false,
+        "movedJobs": 0,
+        "aliases": 4
+      },
+      "repeated": {
+        "alreadyApplied": true,
+        "movedJobs": 0,
+        "aliases": 0
+      }
+    },
+    {
+      "batchId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "planHash": "d01b11f8b0db6f116f5aa590e623416ba4104a14c1da044e0d403ca8713101b5",
+      "result": {
+        "alreadyApplied": false,
+        "movedJobs": 0,
+        "aliases": 0
+      },
+      "repeated": {
+        "alreadyApplied": true,
+        "movedJobs": 0,
+        "aliases": 0
+      }
+    }
+  ],
+  "after": {
+    "asOf": "2026-09-09T07:06:46.253Z",
+    "jobs": 77322,
+    "active": 74113,
+    "sources": 80348,
+    "events": 21749,
+    "observations": 72178,
+    "companies": 1571,
+    "aliases": 18
+  },
+  "companies": [
+    {
+      "id": "cmtt3jq6q00003nx9kegbxkdh",
+      "name": "Adopt Parfums",
+      "kind": "MAISON",
+      "parentGroupId": null,
+      "mergedIntoId": null,
+      "identityReviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "_count": {
+        "jobs": 121
+      }
+    },
+    {
+      "id": "cmtk1xdjg0176nv2b70ayaadr",
+      "name": "Aubade",
+      "kind": "MAISON",
+      "parentGroupId": null,
+      "mergedIntoId": null,
+      "identityReviewId": "lot1-promod-aubade-20260909-v1",
+      "_count": {
+        "jobs": 29
+      }
+    },
+    {
+      "id": "cmtlyiz3m076kqf5kegty1y42",
+      "name": "Aubade Paris",
+      "kind": "UNKNOWN",
+      "parentGroupId": null,
+      "mergedIntoId": "cmtk1xdjg0176nv2b70ayaadr",
+      "identityReviewId": "lot1-promod-aubade-20260909-v1",
+      "_count": {
+        "jobs": 0
+      }
+    },
+    {
+      "id": "cmtt64q3n00073nkj2m32mmvb",
+      "name": "Blackstore",
+      "kind": "RETAILER",
+      "parentGroupId": null,
+      "mergedIntoId": null,
+      "identityReviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "_count": {
+        "jobs": 66
+      }
+    },
+    {
+      "id": "cr5c9308138c86e24341e51b89",
+      "name": "Claudie Pierlot",
+      "kind": "MAISON",
+      "parentGroupId": "crcafaa7a4ec667cf18ea56024",
+      "mergedIntoId": null,
+      "identityReviewId": "lot1-smcp-parent-relations-20260909-v1",
+      "_count": {
+        "jobs": 120
+      }
+    },
+    {
+      "id": "cr57e9ef0f339cdfa95081d842",
+      "name": "Fursac",
+      "kind": "MAISON",
+      "parentGroupId": "crcafaa7a4ec667cf18ea56024",
+      "mergedIntoId": null,
+      "identityReviewId": "lot1-smcp-parent-relations-20260909-v1",
+      "_count": {
+        "jobs": 56
+      }
+    },
+    {
+      "id": "cmtlyfvaf016cqf5k6yvon72v",
+      "name": "Intersport",
+      "kind": "RETAILER",
+      "parentGroupId": null,
+      "mergedIntoId": null,
+      "identityReviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "_count": {
+        "jobs": 879
+      }
+    },
+    {
+      "id": "cmtkf06ej0lqap22bicqm90nc",
+      "name": "Maje",
+      "kind": "MAISON",
+      "parentGroupId": "crcafaa7a4ec667cf18ea56024",
+      "mergedIntoId": null,
+      "identityReviewId": "lot1-smcp-parent-relations-20260909-v1",
+      "_count": {
+        "jobs": 226
+      }
+    },
+    {
+      "id": "cmtk1x1ns0072nv2bytyhwuta",
+      "name": "Promod",
+      "kind": "RETAILER",
+      "parentGroupId": null,
+      "mergedIntoId": null,
+      "identityReviewId": "lot1-promod-aubade-20260909-v1",
+      "_count": {
+        "jobs": 21
+      }
+    },
+    {
+      "id": "cmtpkx0bb59q9pf5le0vx07cg",
+      "name": "PROMOD - MAGASIN",
+      "kind": "UNKNOWN",
+      "parentGroupId": null,
+      "mergedIntoId": "cmtk1x1ns0072nv2bytyhwuta",
+      "identityReviewId": "lot1-promod-aubade-20260909-v1",
+      "_count": {
+        "jobs": 0
+      }
+    },
+    {
+      "id": "cmtt3jqm9000a3nx9yknve29r",
+      "name": "RIU Paris",
+      "kind": "MAISON",
+      "parentGroupId": null,
+      "mergedIntoId": null,
+      "identityReviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "_count": {
+        "jobs": 15
+      }
+    },
+    {
+      "id": "cmtk29nb80m1dnv2bg5xl385h",
+      "name": "Sandro",
+      "kind": "MAISON",
+      "parentGroupId": "crcafaa7a4ec667cf18ea56024",
+      "mergedIntoId": null,
+      "identityReviewId": "lot1-smcp-parent-relations-20260909-v1",
+      "_count": {
+        "jobs": 135
+      }
+    },
+    {
+      "id": "cmtt3jqra000i3nx9khntpmay",
+      "name": "Toscane",
+      "kind": "MAISON",
+      "parentGroupId": null,
+      "mergedIntoId": null,
+      "identityReviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "_count": {
+        "jobs": 20
+      }
+    }
+  ],
+  "corrections": [
+    {
+      "_count": 5,
+      "batchId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "entityType": "Company"
+    },
+    {
+      "_count": 6,
+      "batchId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "entityType": "CompanyAlias"
+    },
+    {
+      "_count": 4,
+      "batchId": "lot1-promod-aubade-20260909-v1",
+      "entityType": "Company"
+    },
+    {
+      "_count": 31,
+      "batchId": "lot1-promod-aubade-20260909-v1",
+      "entityType": "Job"
+    },
+    {
+      "_count": 4,
+      "batchId": "lot1-smcp-parent-relations-20260909-v1",
+      "entityType": "Company"
+    }
+  ]
+}

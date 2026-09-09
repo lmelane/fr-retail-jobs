@@ -52,3 +52,5 @@ Company intelligence resolves redirects and the latest correction revision befor
 Workday listings without a successful detail and employer field carry an explicit publication hold. Fetch, schema, missing-path and missing-employer failures are distinguished and preserved in RAW. A later successful detail clears only its Workday hold; unrelated holds remain. Incomplete retrieval cannot attest absence.
 
 When a source configuration changes, revalidate the official employer link and create a new repair plan for its existing alias. Applying that explicit decision updates the configuration binding in place and records the previous binding and review in DataCorrection. An unchanged alias is not automatically rebound during ingestion.
+
+TalentView passes the native `entity.name` claim to the reviewed resolver while retaining the configured employer as the unresolved candidate. An operational unit is not automatically a new Company. Teamtailor passes its explicit `_jobposting.hiringOrganization.name` and field provenance. Both preserve RAW before normalization; the audit inventories those native paths.

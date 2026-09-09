@@ -1,0 +1,23 @@
+{
+  "env": "production",
+  "commit": "7643171aacc4be29039032bd5deb7665b994555d",
+  "planHash": "aa4b224a463f285ebed3c4c72abcbe5e5478a1f8faf6fa1dc6332e216a7389fe",
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 2,
+    "aliases": 2
+  },
+  "repeated": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "company": {
+    "id": "cmtlyicya05h8qf5kra05oe95",
+    "name": "Fusalp",
+    "kind": "MAISON",
+    "_count": {
+      "jobs": 21
+    }
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "asOf": "2026-09-09T07:08:49.972Z",
+  "activeJobs": 74145,
+  "runs": [
+    {
+      "runId": "38c79297-3556-4493-984d-accc081d51ee",
+      "command": "ingest",
+      "revision": "7643171aacc4be29039032bd5deb7665b994555d",
+      "startedAt": "2026-09-09T07:08:25.601Z",
+      "finishedAt": "2026-09-09T07:08:32.139Z",
+      "status": "COMPLETED",
+      "metrics": {
+        "byEvent": {
+          "run.started": 1,
+          "run.completed": 1,
+          "command.result": 1,
+          "ingest.sources_selected": 1,
+          "source.ingest_completed": 1
+        },
+        "printed": 5,
+        "counters": {
+          "http.attempts": 60,
+          "http.responses": 60
+        },
+        "recorded": 5,
+        "repeated": 0,
+        "debugDisabled": 0,
+        "persistenceFailures": 0
+      },
+      "persistedEvents": 5,
+      "recordedCountMatches": true,
+      "errors": [],
+      "held": {
+        "events": 0,
+        "distinctPostings": 0,
+        "reasons": []
+      },
+      "sourceRuns": [
+        {
+          "runId": "38c79297-3556-4493-984d-accc081d51ee",
+          "sourceKey": "promod",
+          "status": "OK",
+          "jobs": 53,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%"
+        }
+      ],
+      "summary": [
+        {
+          "eventId": "745cd119-dc1a-4c25-876c-5e26f50ae823",
+          "payload": {
+            "ok": true,
+            "geo": {
+              "pending": 0,
+              "lookedUp": 0,
+              "remaining": 0,
+              "jobsLocated": 0
+            },
+            "health": {
+              "ok": 1,
+              "broken": 0,
+              "degraded": 0,
+              "checkedAt": "2026-09-09T07:08:32.108Z",
+              "incidents": []
+            },
+            "alerted": false,
+            "command": "ingest",
+            "sources": [
+              {
+                "errors": 0,
+                "france": 52,
+                "merged": 2,
+                "source": "promod",
+                "created": 29,
+                "fetched": 53,
+                "updated": 22,
+                "withUrl": 53,
+                "complete": true,
+                "inSector": 53,
+                "withDate": 53,
+                "truncated": false,
+                "withCountry": 53,
+                "declaredTotal": null,
+                "withDescription": 53
+              }
+            ]
+          }
+        }
+      ],
+      "report": null,
+      "eventIds": [
+        "8712739b-c990-4da1-95a7-84f595747a24",
+        "78e0785b-cb9a-4d06-a98a-8523ad6f2646",
+        "0ea674c2-7414-40b6-b180-980b01c19da6",
+        "745cd119-dc1a-4c25-876c-5e26f50ae823",
+        "dcd57b48-19cb-40a1-af51-034887fcf50e"
+      ]
+    }
+  ],
+  "journalBytes": [
+    {
+      "bytes": 180224
+    }
+  ]
+}

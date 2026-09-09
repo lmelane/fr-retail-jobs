@@ -1,0 +1,61 @@
+{
+  "batchId": "lot1-fusalp-legal-commercial-20260909-v1",
+  "statement": "Créations Fusalp is the legal publisher of the Fusalp official site (registration 330 792 987). The official site links to WTTJ /companies/fusalp, organization FuJQmo in stored RAW. Existing historical source labels CREATIONS FUSALP and Fusalp refer to the same Maison. Preserve all distinct offers and original employer labels.",
+  "reviewedBy": "Codex / requested Lot 1 evidence review",
+  "reviewedAt": "2026-09-09T07:08:00Z",
+  "merges": [
+    {
+      "fromId": "cmtkdvupo1rshnf2b5mz54rmt",
+      "toId": "cmtlyicya05h8qf5kra05oe95"
+    }
+  ],
+  "companies": [
+    {
+      "id": "cmtlyicya05h8qf5kra05oe95",
+      "kind": "MAISON"
+    }
+  ],
+  "aliases": [
+    {
+      "sourceKey": "fashionjobs",
+      "rawName": "CREATIONS FUSALP",
+      "companyId": "cmtlyicya05h8qf5kra05oe95"
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "rawName": "Fusalp",
+      "companyId": "cmtlyicya05h8qf5kra05oe95"
+    }
+  ],
+  "version": 1,
+  "sourceHashes": {
+    "fashionjobs": "8dc3b3a1b8588c67adf6d70f16e928af6ffce4d2663f89bd1887414280cccc3a",
+    "wttj-sector": "0038e97647b4f56d6fb2d763ce257543961ccbbd000c4e2d6c1c173171139583"
+  },
+  "createdAt": "2026-09-09T07:08:10.929Z",
+  "companyIds": [
+    "cmtkdvupo1rshnf2b5mz54rmt",
+    "cmtlyicya05h8qf5kra05oe95"
+  ],
+  "sourceKeys": [
+    "fashionjobs",
+    "wttj-sector"
+  ],
+  "beforeHash": "ff2a97ce13c71ad139edb8d46e718bf269d29c3d9a77af7b397b46bf01f2eb80",
+  "jobCount": 21,
+  "activeJobCount": 21,
+  "sourceCount": 21,
+  "evidence": [
+    {
+      "url": "https://fusalp.com/pages/mentions-legales/",
+      "sha256": "0e7f2554513a8a23c4a43a66eb5dbb6b13250827665f15a668b99e4804ca04ff",
+      "explanation": "Official legal notice explicitly identifies Créations Fusalp, SA, registration 330 792 987 as publisher."
+    },
+    {
+      "url": "https://fusalp.com/",
+      "sha256": "33101db9019b34fe5483c4a67614a00dfd11c86588e4a70448e73e02a7d96b0d",
+      "explanation": "Official site careers link to WTTJ Fusalp, matching the stored organization slug and reference FuJQmo."
+    }
+  ],
+  "planHash": "aa4b224a463f285ebed3c4c72abcbe5e5478a1f8faf6fa1dc6332e216a7389fe"
+}

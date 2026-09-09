@@ -1,0 +1,119 @@
+{
+  "batchId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+  "statement": "Migrate the six unused legacy aliases into source-scoped runtime bindings using the five existing official identity reviews, each revalidated against its current source/tenant/configuration. Preserve all alias and Company IDs.",
+  "reviewedBy": "Codex / requested Lot 1 evidence review",
+  "reviewedAt": "2026-09-09T06:58:55.157Z",
+  "merges": [],
+  "aliases": [
+    {
+      "sourceKey": "toscane",
+      "rawName": "Toscane",
+      "companyId": "cmtt3jqra000i3nx9khntpmay",
+      "legacyAliasId": "cmtt3jqrw000k3nx9namrep8q"
+    },
+    {
+      "sourceKey": "riu-paris",
+      "rawName": "RIU Paris",
+      "companyId": "cmtt3jqm9000a3nx9yknve29r",
+      "legacyAliasId": "cmtt3jqmq000c3nx9o2zv25tb"
+    },
+    {
+      "sourceKey": "blackstore",
+      "rawName": "Blackstore",
+      "companyId": "cmtt64q3n00073nkj2m32mmvb",
+      "legacyAliasId": "cmtt64q4q00093nkjobvhpzut"
+    },
+    {
+      "sourceKey": "intersport-france",
+      "rawName": "Intersport",
+      "companyId": "cmtlyfvaf016cqf5k6yvon72v",
+      "legacyAliasId": "cmtt64pva00013nkjelglr892"
+    },
+    {
+      "sourceKey": "adopt-parfums",
+      "rawName": "Adopt",
+      "companyId": "cmtt3jq6q00003nx9kegbxkdh",
+      "legacyAliasId": "cmtt3jq7t00023nx9q656q04n"
+    },
+    {
+      "sourceKey": "adopt-parfums",
+      "rawName": "Adopt Parfums",
+      "companyId": "cmtt3jq6q00003nx9kegbxkdh",
+      "legacyAliasId": "cmtt3jq8s00043nx9rx9xdfpi"
+    }
+  ],
+  "companies": [
+    {
+      "id": "cmtt3jqra000i3nx9khntpmay"
+    },
+    {
+      "id": "cmtt3jqm9000a3nx9yknve29r"
+    },
+    {
+      "id": "cmtt64q3n00073nkj2m32mmvb"
+    },
+    {
+      "id": "cmtlyfvaf016cqf5k6yvon72v"
+    },
+    {
+      "id": "cmtt3jq6q00003nx9kegbxkdh"
+    }
+  ],
+  "version": 1,
+  "sourceHashes": {
+    "adopt-parfums": "a844dbba6ea9ec5c14ab2eb4cdb38bcefe643674146ca0f0fafe625875781166",
+    "blackstore": "8244a14dfdb6a7840ea959d43d911b6019c3c5954f5a6f42ab21f1c527542527",
+    "intersport": "a1dc2dfb76b4f48a92beff7c79ae91d6791836454c328e47ccd72eade6ff92b8",
+    "intersport-france": "c021e140a3d95287e1fd67f1d63f0c6d9144016cfc4cb7ba17391351947e029a",
+    "riu-paris": "eeb61c609d41cb5c1cc97b9e9fba1ba2c4252384bea06a0c71479a2686b25baf",
+    "toscane": "e2cb581e541852c539c0aaee43a9eccce2d2a5476aa55120d33110bfc228cb2f"
+  },
+  "createdAt": "2026-09-09T07:05:03.712Z",
+  "companyIds": [
+    "cmtlyfvaf016cqf5k6yvon72v",
+    "cmtt3jq6q00003nx9kegbxkdh",
+    "cmtt3jqm9000a3nx9yknve29r",
+    "cmtt3jqra000i3nx9khntpmay",
+    "cmtt64q3n00073nkj2m32mmvb"
+  ],
+  "sourceKeys": [
+    "adopt-parfums",
+    "blackstore",
+    "intersport",
+    "intersport-france",
+    "riu-paris",
+    "toscane"
+  ],
+  "beforeHash": "e7d4204defc92ca2f1805662dacdde54ba85f2e84176e1e09e2aaca9692b6d3d",
+  "jobCount": 1102,
+  "activeJobCount": 1101,
+  "sourceCount": 1140,
+  "evidence": [
+    {
+      "url": "https://www.toscane-boutique.fr/",
+      "sha256": "adb2488f47141c2c9d21adb2ca5662446e73bdfb8a52341df9448d90e1f759cf",
+      "explanation": "Existing verified source review cmtt3jqsz000n3nx92vohem68: https://www.toscane-boutique.fr/ links explicitly to toscane.flatchr.io; the unfiltered Flatchr board names Toscane on every vacancy. Identity reviewed from employer website, not a guessed ATS slug."
+    },
+    {
+      "url": "https://www.riuparis.fr/fr-fr/recrutement",
+      "sha256": "b83282a1579326e505501a6d9cb382a120e94266e80a46e152aa090bdccb05e4",
+      "explanation": "Existing verified source review cmtt3jqno000f3nx9za3j64qr: https://www.riuparis.fr/fr-fr/recrutement links explicitly to riuparis.flatchr.io; the unfiltered Flatchr board names RIU Paris on every vacancy. Identity reviewed from employer website, not a guessed ATS slug."
+    },
+    {
+      "url": "https://www.blackstore.fr/",
+      "sha256": "851dbba1fa099a2eb7bded7daf9a3ea6441d38f39fbee5e93efdfd16900df0fb",
+      "explanation": "Existing verified source review cmtt64q65000c3nkjfjy4iphq: Official employer domain https://www.blackstore.fr/ links to https://blackstore.candidater.fr/. Unfiltered active-board enumeration, included-ID WordPress details and all JobAffinity application endpoints were checked. Closed endpoints and invalid mission text are held with archived RAW. Blackstore is a separate enseigne of Intersport, confirmed at https://www.blackstore.fr/qui-sommes-nous/."
+    },
+    {
+      "url": "https://www.intersport.fr/nous-rejoindre/",
+      "sha256": "55eb5878f0a5811cf9817ee7bd32bc79a883b325f98ff9f901d22c7174963da8",
+      "explanation": "Existing verified source review cmtt64pxr00043nkjfhnre3c5: Official employer domain https://www.intersport.fr/nous-rejoindre/ links to https://recrutement.intersport.fr/. Unfiltered active-board enumeration, included-ID WordPress details and all JobAffinity application endpoints were checked. Closed endpoints and invalid mission text are held with archived RAW. Blackstore is a separate enseigne of Intersport, confirmed at https://www.blackstore.fr/qui-sommes-nous/."
+    },
+    {
+      "url": "https://www.adopt.com/fr/",
+      "sha256": "fd0b5bfb0c1166daa65a6bf5c7fe5d9e0d17a87d137307a0893948ca3b5f554f",
+      "explanation": "Existing verified source review cmtt3jqaz00073nx9g11l5ebf: https://www.adopt.com/fr/ links explicitly to adopt.flatchr.io; the unfiltered Flatchr board names Adopt Parfums on every vacancy. Identity reviewed from employer website, not a guessed ATS slug."
+    }
+  ],
+  "planHash": "d01b11f8b0db6f116f5aa590e623416ba4104a14c1da044e0d403ca8713101b5"
+}

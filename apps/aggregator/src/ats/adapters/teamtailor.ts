@@ -27,6 +27,7 @@ const USER_AGENT =
 const HEADERS = { 'user-agent': USER_AGENT, accept: 'application/json' };
 
 type JobPostingNode = {
+  hiringOrganization?: { name?: string };
   title?: string;
   description?: string;
   identifier?: { value?: string } | string;
@@ -86,6 +87,10 @@ export function toNormalized(item: FeedItem, jobOrigin?: string): NormalizedJob 
   return {
     externalId: String(item.id ?? item.url ?? title),
     title,
+    company: posting?.hiringOrganization?.name?.trim() || undefined,
+    employerEvidence: posting?.hiringOrganization?.name?.trim()
+      ? { rawName: posting.hiringOrganization.name, path: '_jobposting.hiringOrganization.name', rule: 'HIRING_ORGANIZATION_LABEL' }
+      : undefined,
     location:
       [address?.addressLocality, address?.addressRegion, address?.postalCode]
         .filter(Boolean)

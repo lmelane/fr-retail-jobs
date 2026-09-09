@@ -1,0 +1,447 @@
+{
+  "asOf": "2026-09-09T07:14:49.914Z",
+  "environment": "read-only production resolver + live official TalentView listing",
+  "promod": {
+    "fetched": 53,
+    "complete": true,
+    "distinctRawLabels": [
+      "Promod",
+      "Promod - magasin"
+    ],
+    "rows": [
+      {
+        "externalId": "191033",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196964",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196944",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196938",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196897",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196929",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196895",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196865",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196861",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "191430",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196643",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196674",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196598",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196616",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196605",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196589",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196469",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196553",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196465",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "195222",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "195187",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "195217",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196368",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196365",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "190958",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196313",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196256",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196225",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196154",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "196002",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "195824",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "195750",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "195653",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "195555",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "195521",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "188329",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "194325",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "193798",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "193495",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "193446",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "193383",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "192297",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "192051",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "191931",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "191818",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "190386",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "191451",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "191040",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "190933",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "190849",
+        "rawEmployerName": "Promod",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "190421",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "187289",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      },
+      {
+        "externalId": "187287",
+        "rawEmployerName": "Promod - magasin",
+        "origin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION",
+        "canonicalId": "cmtk1x1ns0072nv2bytyhwuta",
+        "reviewId": "lot1-promod-aubade-20260909-v1",
+        "rule": "REVIEWED_ALIAS"
+      }
+    ]
+  },
+  "bzb": {
+    "externalId": "24f4d2ae-6b8d-42a0-a085-52522c3e6699",
+    "catalogue": "Bizzbee",
+    "rawEmployerName": "BZB",
+    "origin": "_jobposting.hiringOrganization.name:HIRING_ORGANIZATION_LABEL",
+    "decision": {
+      "held": "EmployerIdentityReviewRequired: Employer identity needs evidence: source=bizzbee externalId=24f4d2ae-6b8d-42a0-a085-52522c3e6699 raw=\"BZB\" proposed=\"BZB\""
+    }
+  }
+}

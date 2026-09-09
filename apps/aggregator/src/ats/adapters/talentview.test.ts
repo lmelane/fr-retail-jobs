@@ -98,3 +98,12 @@ describe('TalentView public pagination, real Sud Express payloads', () => {
     await expect(fetchTalentViewJobs({slug:'sud-express',maxPages:0})).rejects.toThrow('maxPages');
   });
 });
+
+it('preserves an entity label without turning a business unit into a company', async () => {
+  mockJson.mockResolvedValueOnce([{ id: 3038 }])
+    .mockResolvedValueOnce([{ id: 42, name: 'Vendeur', slug: 'vendeur', entity: { id: 598, name: 'Promod - magasin' } }])
+    .mockResolvedValueOnce({});
+  const { jobs: [job] } = await fetchTalentViewJobs({ slug: 'promodjob' });
+  expect(job.company).toBeUndefined();
+  expect(job.employerEvidence).toEqual({ rawName: 'Promod - magasin', path: 'entity.name', rule: 'ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION' });
+});
