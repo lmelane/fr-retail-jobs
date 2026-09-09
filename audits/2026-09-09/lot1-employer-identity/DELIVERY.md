@@ -1,63 +1,95 @@
-# Lot 1 — livraison et limites vérifiées
+# Lot 1 — livraison, logique métier et limites vérifiées
 
-Le socle et les trois fusions d’employeurs sont livrés au commit `7643171aacc4be29039032bd5deb7665b994555d` (PR #38). Le complément d’extraction native est fusionné et exécuté sur Railway au commit `0dbcb2f15e7f304a56cf3b3db7bce0f193adc848` (PR #39). Le lot global n’est pas clôturé : les identités historiques et les doublons d’offres exposés par cette revue demandent encore des décisions. Aucun nombre de fiches ci-dessous ne signifie que toutes les entreprises sont indépendamment validées.
+Le lot reste **ouvert**. Le socle, quatre consolidations d’employeurs prouvées et la déduplication Bizzbee/BZB sont livrés. La dernière version applicative est `606be144240452abf67825688002abbcf9f22ad2`, fusionnée sur main et déployée sur les quatre services Railway. La commande normale de l’agrégateur est restaurée ; les crons massifs restent en pause.
 
-## Mesures
+## La bonne organisation, sans objectif de fusion
 
-| Mesure | Avant réparations | Après réparations seules | Après deux collectes Promod réelles |
+La référence est l’organisation métier de l’employeur. Une marque, une enseigne, un groupe, une société employeuse et une unité opérationnelle ne sont pas interchangeables. Un domaine, un nom proche ou un ATS commun ne justifie pas une fusion. Une différence de raison sociale ne justifie pas non plus, à elle seule, la création de deux marques publiques.
+
+Une revue peut confirmer des alias d’une même identité, maintenir des identités distinctes et documenter leur relation, ou préciser les preuves qui manquent. Les preuves et leur date restent conservées pour permettre une nouvelle décision en cas de réorganisation. L’égalité de deux offres est une question indépendante de l’identité de leur employeur.
+
+Après BZB, l’audit mesure **414 paires candidates, dont 47 avec des offres actives des deux côtés**. Ce ne sont ni 414 doublons avérés, ni 414 fusions à réaliser. Le détecteur ne consomme pas encore un registre de décisions « entités distinctes, vérifiées » : ce manque reste à traiter pour éviter une revue répétitive de cas légitimes. La clôture ne doit pas exiger zéro paire de noms similaires.
+
+## Mesures réelles
+
+| Mesure | Avant Lot 1 | Après Promod et avant BZB | Après BZB et sa collecte réelle |
 |---|---:|---:|---:|
 | Fiches Company conservées | 1 571 | 1 571 | 1 571 |
-| Racines du catalogue | 1 571 | 1 568 | 1 568 |
-| Racines avec offres actives | 1 047 | 1 044 | 1 044 |
-| Alias enregistrés | 6 non consommés | 20 revus et liés à leur source | 20 |
-| Offres, tous états | 77 322 | 77 322 | 77 352 |
-| Offres actives | 74 113 | 74 113 | 74 146 |
-| Représentations JobSource | 80 348 | 80 348 | 80 380 |
-| Événements JobEvent | 21 718 | 21 751 | 21 790 |
-| Observations RAW | 72 178 | 72 178 | 72 222 |
-| Offres réattribuées par les réparations | — | 33, dont 28 actives | inchangé |
-| Offres perdues par les réparations | — | 0 | — |
+| Racines du catalogue | 1 571 | 1 568 | 1 567 |
+| Racines avec offres actives | 1 047 | 1 044 | 1 043 |
+| Alias | 6 historiques non consommés | 20 revus | 24 revus |
+| Offres, tous états, IDs conservés | 77 322 | 77 352 | 77 352 |
+| Offres actives | 74 113 | 74 146 | 74 124 |
+| Représentations JobSource | 80 348 | 80 380 | 80 380 |
+| Événements JobEvent | 21 718 | 21 790 | 21 839 |
+| Observations RAW SourceObservation | 72 178 | 72 222 | 72 222 |
+| Lignes Job réattribuées par réparation, cumul | — | 33 | 56 |
+| Paires d’offres consolidées avec preuve native | — | 0 | 23 |
+| Doublons actifs retirés des comptes | — | 0 | 22 |
 
-Le premier run Promod a créé **29 offres** et **rouvert 3**. Le second a observé une offre supplémentaire : **54 offres mondiales**, dont 53 identifiées France. Au total : **30 créations + 3 réouvertures**, aucune augmentation due aux fusions d’entreprise. Chacun des deux runs conserve ses cinq événements sur cinq, sans erreur ni échec de persistance ; pic observé de trois lignes/s sur Railway, aucun avertissement de suppression. Ces passages bornés ne sont pas des tests de charge ni une validation de toutes les sources.
+Les collectes Promod ont créé 30 offres et rouvert trois offres. La baisse ultérieure de 22 actives correspond aux seuls doublons BZB prouvés ; aucune offre n’a été supprimée. Les 56 lignes réattribuées ne représentent pas 56 recrutements distincts : elles incluent les 23 anciens IDs Bizzbee conservés comme redirections.
 
-**716 libellés RAW distincts sur 10 chemins explicites, dans 201 sources**, mesurés sur la copie complète avant la nouvelle collecte. La première mesure de 582 couvrait neuf chemins : l’ajout de `_jobposting.hiringOrganization.name` étend l’observation, ce n’est pas une hausse artificielle des données ni une preuve d’exhaustivité de tous les RAW.
+L’inventaire RAW mesure **716 libellés distincts sur dix chemins explicites, dans 201 sources**. Ce périmètre est documenté et non exhaustif. Le catalogue contient 500 sources : 423 ACTIVE, 69 RETIRED, 8 PAUSED. ACTIVE est un statut de catalogue, pas une attestation indépendante de fiabilité de chaque source ni une indication que les crons tournent.
 
-## Décisions et preuves
+Preuves : [inventaire après BZB](production-after-bzb-inventory.json), [métriques détaillées](production-bzb-final-metrics.json), [paires actives restantes](remaining-active-candidates-after-bzb.json).
 
-| Finding | Fixé ? | Commit | Main ? | Déployé ? | Données réparées ? | Preuve production |
+## Correctifs et état de livraison
+
+| Finding | Fixé ? | Commit | Main ? | Déployé ? | Données réparées ? | Preuve prod |
 |---|---|---|---|---|---|---|
-| Fragmentation Promod / PROMOD - MAGASIN | Oui | 7643171 | Oui | Oui | 2 offres réattribuées | Plan `lot1-promod-aubade-20260909-v1`; compteur 21 après réparation, puis 54 après les deux collectes |
-| Fragmentation AUBADE / Aubade Paris | Oui | 7643171 | Oui | Oui | 29 offres réattribuées | Même plan ; 29 actives en base/API/annuaire |
-| Créations Fusalp / Fusalp | Oui | 7643171 | Oui | Oui | 2 offres réattribuées | Plan `lot1-fusalp-legal-commercial-20260909-v1`; 21 actives |
-| Alias historiques non consommés | Oui | 7643171 | Oui | Oui | Six IDs migrés avec cinq preuves officielles | `production-legacy-alias-plan.json`, `production-repair-proof.json` |
-| Liens groupe SMCP | Sur quatre Maisons prouvées | 7643171 | Oui | Oui | Quatre FK ; aucune offre déplacée | `production-smcp-plan.json` ; cinq identités restent distinctes |
-| Réécriture du nom par ingestion / fusion sur une clé de nom | Oui, garde de résolution | 7643171 | Oui | Oui | Aucune correction massive implicite | Tests + 53 décisions REVIEWED_ALIAS du run Promod |
-| Champs employeur TalentView / Teamtailor ignorés | Oui | 0dbcb2f | Oui | Oui | 54 dernières décisions Promod utilisent désormais `entity.name` | `production-native-run-proof.json`, `production-native-final-metrics.json` |
-| Détail employeur Workday perdu ou remplacé lors d’un échec | Code corrigé | 7643171 | Oui | Oui | Aucun détail historique inventé | Tests de régression sur RAW réel ; pas encore de run Workday de validation production |
-| Noms avec nombres « Promod 53 », etc. | Anomalie non retrouvée dans Company.name | — | — | — | Zéro nombre retiré sans preuve | Les quatre noms stockés sont propres ; API `name` et `jobCount` séparés |
-| Bizzbee / BZB et offres en double | Cause prouvée, réparation non appliquée | — | Non | Non | Non | 23 paires de même identifiant Teamtailor, dont 22 actives ; voir `bzb-overlap-proof.json` |
-| Autres candidats / classifications historiques | Audit disponible, revue incomplète | — | — | — | Non | Inventaire de toutes les fiches et paires candidates |
+| Promod / PROMOD - MAGASIN | Oui, identité prouvée | 7643171 | Oui | Oui | 2 offres réattribuées | `production-repair-proof.json` ; compteur 54 après collectes |
+| AUBADE / Aubade Paris | Oui, identité prouvée | 7643171 | Oui | Oui | 29 offres réattribuées | `production-repair-proof.json` ; compteur 29 |
+| Créations Fusalp / Fusalp | Oui, identité prouvée | 7643171 | Oui | Oui | 2 offres réattribuées | `production-fusalp-proof.json` ; compteur 21 |
+| Six alias historiques non consommés | Oui | 7643171 | Oui | Oui | Six IDs migrés, cinq preuves officielles | `production-legacy-alias-plan.json` |
+| Relations SMCP | Quatre Maisons prouvées | 7643171 | Oui | Oui | Quatre FK ; zéro offre déplacée | `production-smcp-plan.json` ; groupe et Maisons distincts |
+| Réécriture du nom par ingestion / collision de clé de nom | Garde de résolution livrée | 7643171 | Oui | Oui | Aucune réparation massive implicite | Décisions Promod et BZB en REVIEWED_ALIAS |
+| Champs employeur TalentView / Teamtailor ignorés | Oui | 0dbcb2f | Oui | Oui | Décisions natives des collectes Promod et BZB | `production-native-run-proof.json`, `production-bzb-run-proof.json` |
+| Détail employeur Workday perdu lors d’un échec | Code corrigé ; validation native prod restante | 7643171 | Oui | Oui | Aucun détail historique inventé | Régression sur RAW réel ; pas de run Workday de validation production |
+| Réécriture d’identité par une nouvelle observation d’annuaire | Oui pour les fiches existantes | 35634f2 | Oui | Oui | Pas de renommage manuel | Tests d’import et de rejeu ; pas de collecte FashionJobs massive de validation |
+| Bizzbee / BZB | Oui, changement de nom officiel | 606be14 | Oui | Oui | 23 Job réattribués ; quatre alias | `production-bzb-consolidation-proof.json` |
+| Offres Bizzbee / BZB en double | Oui, 23 paires natives prouvées | 606be14 | Oui | Oui | 23 redirections, 22 doublons actifs en moins | `production-bzb-front-after.json` ; IDs/historiques conservés |
+| Deux portails BZB collectés en parallèle | Oui, même ensemble natif vérifié | 606be14 | Oui | Oui | `bizzbee` RETIRED, `bzb` ACTIVE ; trois liens propriétaires réattribués | `bzb-live-feeds-proof.json`, `production-bzb-retirement-proof.json` |
+| Consolidation comptée comme fermeture / agrégat en cache périmé | Oui | 606be14 | Oui | Oui | Pas de dates de fermeture fabriquées ; snapshots historiques conservés | Invariants, tests de statistiques, index de révision mesuré en prod |
+| Conservation des témoins natifs avant rafraîchissement RAW | Oui | 606be14 | Oui | Oui | 47 artifacts immuables archivés et vérifiés | `production-bzb-conservation-proof.json` |
+| « Promod 53 », etc. dans Company.name | Anomalie non retrouvée dans les quatre noms stockés | — | — | — | Zéro chiffre retiré sans preuve | Nom et compteur séparés ; pas de règle de suppression générale |
+| Autres paires, distinctions métier, types et relations historiques | Revue incomplète | — | — | — | Pas de fusion forcée | `remaining-active-candidates-after-bzb.json` |
 
-Les réparations sont transactionnelles et idempotentes. Chaque ancienne offre, représentation RAW et événement de leur périmètre est comparé avant/après ; les anciennes Company restent des redirections. Les plans de production ont retrouvé exactement les mêmes empreintes d’état initial que la répétition complète. La sauvegarde préalable restaurée et vérifiée porte le SHA-256 `ab72d8d55f1db6a3c809339cd45d3983766981a21e244f8b0fc87dce4c1ccf3a`.
+Les PR applicatives correspondantes sont [#38](https://github.com/lmelane/fr-retail-jobs/pull/38), [#39](https://github.com/lmelane/fr-retail-jobs/pull/39), [#41](https://github.com/lmelane/fr-retail-jobs/pull/41) et [#42](https://github.com/lmelane/fr-retail-jobs/pull/42). Les commits de documentation ultérieurs ne changent pas la version applicative mesurée.
 
-Les noms historiques et leurs anciennes pages aboutissent aux profils canoniques, en 308 pour les pages, y compris l’intelligence. Les instantanés historiques sont conservés ; une consolidation de périmètres n’est pas présentée comme une croissance des recrutements.
+## BZB : preuve avant, réparation, preuve après
 
-## Causes encore à traiter
+Le [site officiel](https://www.b-z-b.com/actu.html) annonce le changement Bizzbee → BZB. Indépendamment, les 23 paires stockées partagent le même émetteur natif `hiringOrganization.sameAs` et le même `identifier.value` Teamtailor. Ni les titres, ni la ressemblance des noms ne déterminent cette déduplication.
 
-**Bizzbee / BZB.** Le site officiel annonce le changement de nom. Les deux feeds archivés portent `hiringOrganization.name=BZB`, le même `sameAs=https://recrutement.b-z-b.com` et 23 identifiants identiques. Le champ employeur était ignoré par Teamtailor au profit du nom configuré. Le blocage actuel vient du **garde applicatif de réparation**, pas d’un index SQL unique : cet index a déjà été remplacé par un index ordinaire. La répétition déclenche ce garde et annule toute écriture. Le traitement requis est une consolidation conjointe des employeurs et des offres prouvées identiques : conserver tous les anciens IDs et événements, toutes les représentations, rediriger les anciennes URLs d’offre et ne compter qu’une fois chaque poste. Ne pas lancer une réconciliation globale non revue pour contourner ce garde.
+La sauvegarde immédiatement préalable (`359 928 365` octets, SHA-256 `846d71a81b28054a15bf36f095dc16bb47714cf07846718daec6b4936606e8d3`) a été restaurée. La répétition finale a appliqué le même plan de consolidation que la production. Les mêmes 26 opérations de retrait de portail ont été répétées avec leurs états initiaux respectifs. Les transactions sont idempotentes ; leur seconde application n’écrit rien.
 
-**Extraction native de l’identité.** TalentView conserve `entity.name` et Teamtailor `_jobposting.hiringOrganization.name`, mais ces champs n’étaient pas transmis au journal d’identité. Un complément de code les transmet maintenant avant la normalisation. Une entité TalentView peut être une unité opérationnelle : elle passe par les alias revus et ne devient pas automatiquement une nouvelle entreprise. Sur les 53 offres Promod relues à l’API officielle, `Promod` et `Promod - magasin` donnent le même ID revu. Le rejeu d’un RAW réel Bizzbee expose BZB et requiert la décision conjointe ci-dessus. Le complément est livré par la PR #39. Le second run Railway récupère 54 offres ; les 54 décisions les plus récentes utilisent `entity.name` et les alias revus, avec zéro erreur. Les anciennes observations fondées sur le catalogue restent conservées pour la traçabilité.
+Les 77 352 IDs Job, 80 380 IDs JobSource et 21 790 événements préexistants sont tous retrouvés après le run, sans événement ancien modifié. La revue archive un document officiel et les 46 représentations natives complètes, avec leurs empreintes, y compris les représentations historiques qui n’avaient pas encore de SourceObservation. Les anciennes Company et Job ne sont pas supprimées.
 
-**Revue du catalogue.** Après les trois fusions : 415 paires candidates, dont 48 avec des actives des deux côtés ; ce ne sont pas 415 doublons prouvés. [Foot Locker/Kids Foot Locker](https://www.footlocker-inc.com/), [groupe Prada/marque Prada](https://www.pradagroup.com/en/brands/prada.html) et [Dior Couture/Parfums Dior](https://www.lvmh.com/en/lvmh-x-vivatech-2026/maisons-x-tech-partners-2026) illustrent pourquoi un domaine partagé ne suffit pas. Il reste 1 528 racines au type historique UNKNOWN et 159 relations parent purement textuelles. Douze racines ont une décision directement référencée par le nouveau champ de revue ; ce compteur décrit le registre actuel, pas l’inexistence de preuves publiques pour les autres.
+Le run Railway `cfb6f15f-0b62-4ac7-8a8b-8b3226ee6fa1`, au commit `606be14`, a récupéré **18 offres, mis à jour 18, créé zéro, fusionné zéro, rencontré zéro erreur**. Les 18 décisions utilisent le champ natif `_jobposting.hiringOrganization.name` avec REVIEWED_ALIAS. Le journal conserve cinq événements sur cinq, sans échec de persistance ; pic observé de trois lignes/s, sans avertissement de suppression Railway. Ce run borné ne valide pas toutes les sources ni la charge d’exploitation globale.
 
-## Priorités pour clôturer ce lot
+Le front renvoie les mêmes 22 IDs actifs pour Bizzbee et BZB, sous le nom canonique BZB. Les 22 anciennes URLs actives redirigent en 308 vers le bon poste ; l’ancienne URL déjà fermée reste en 410. Promod, Aubade et Fusalp conservent leurs résultats, y compris via leurs anciens noms.
 
-1. Consolider Bizzbee/BZB avec preuve de chaque poste et conservation des anciennes URLs ; retirer le doublon de portail sans perdre les observations.
-2. Examiner les autres paires actives en priorité, puis les anciennes fiches ; enregistrer aussi les décisions « entités distinctes » et leurs preuves.
-3. Compléter types et liens de groupe avec les documents officiels. Séparer une Maison, une enseigne, un groupe, une entité légale, un ATS et une source.
-4. Étendre l’extraction RAW documentée aux autres adaptateurs, mesurer les décisions d’identité manquantes avant reprise massive.
-5. Valider les parcours Workday et un cycle complet d’exploitation ; garder la réserve de validation du Lot 0 sur le cycle complet.
+Preuves : [restauration](bzb-backup-restoration-proof.json), [répétition finale](final-local-bzb-consolidation-proof.json), [application production](production-bzb-consolidation-proof.json), [retrait du portail](production-bzb-retirement-proof.json), [conservation](production-bzb-conservation-proof.json), [run réel](production-bzb-run-proof.json), [état final Railway](bzb-deployment-after-validation.json).
 
-Tests du complément : 1 465 tests unitaires agrégateur, 219 intégrations, vérifications de types des deux applications ; la CI couvre également le build et les E2E web. Les crons massifs restent en pause.
+## Base et API après réparation
 
-La vérification globale après les collectes retrouve les 77 322 IDs d’offres et les 80 348 IDs de représentations du backup, ainsi que les 21 718 événements antérieurs strictement inchangés. Les dix artifacts des décisions passent leur SHA-256 (`production-conservation-proof.json`). Le front confirme Promod 54, Aubade 29, Fusalp 21, y compris par leurs anciens noms (`production-native-front-proof.json`).
+| Filtre | Base | API | Écart |
+|---|---:|---:|---:|
+| Monde | 74 124 | 74 124 | 0 |
+| France | 10 947 | 10 947 | 0 |
+| États-Unis | 30 943 | 30 943 | 0 |
+| Royaume-Uni | 2 872 | 2 872 | 0 |
+| Allemagne | 2 739 | 2 739 | 0 |
+| Italie | 2 446 | 2 446 | 0 |
+
+Mesure datée dans [production-bzb-country-parity.json](production-bzb-country-parity.json). France utilise le prédicat actuel `isFrance`, les autres pays `countryCode`. Cette égalité valide la transmission des compteurs testés ; elle ne prouve pas l’exactitude de toutes les localisations ni l’exhaustivité de la couverture France.
+
+## Causes et validations encore ouvertes
+
+1. **Distinctions métier durables.** Revoir les 47 paires actives en séparant alias, relations et entités réellement distinctes, puis mémoriser les décisions avec leurs preuves. Un groupe et sa marque ou deux enseignes sœurs ne doivent pas être fusionnés pour faire baisser un compteur. Le détecteur actuel réémet encore ces candidats.
+2. **Structure du catalogue.** 1 526 racines ont un type historique non renseigné et 159 relations parent restent textuelles. Ces manques ne signifient pas que les entreprises n’existent pas ou que leur identité publique est invérifiable. Les compléter exige des preuves d’organisation, pas une classification de convenance.
+3. **Entrées de découverte.** Une nouvelle URL FashionJobs peut encore créer une fiche Company PENDING. Le correctif des fiches existantes ne prouve pas que toutes les nouvelles entrées sont rapprochées de leur identité officielle. Auditer le parcours découverte → validation → promotion sans fusion par nom ; aucune offre FashionJobs n’est récupérée par ce chantier.
+4. **Provenance native.** Étendre les champs explicitement extraits au-delà de Workday, TalentView et Teamtailor. Une unité ou un département ATS n’est pas automatiquement l’employeur. Valider Workday sur une collecte réelle bornée puis un cycle d’exploitation complet avant de lever les réserves du Lot 0.
+5. **Fraîcheur observée sur BZB.** Quatre représentations encore actives n’étaient pas dans les 18 offres du dernier feed complet. Leurs IDs, dates et URLs figurent dans les métriques. Elles n’ont pas été fermées à l’occasion d’une correction d’identité ; leur situation relève de la validation du cycle de vie.
+6. **Localisation manquante BZB.** Une offre observée n’a pas de pays. Son payload de feed ne contient ni jobLocation, ni jobLocationType, ni applicantLocationRequirements. L’enrichissement par sa page détaillée reste à auditer : cette absence ne démontre pas que l’employeur ne publie la localisation nulle part. Aucun pays n’a été inventé à partir de la nationalité de l’enseigne. Voir [le témoin](bzb-null-country-proof.json).
+
+Validation de la dernière livraison applicative : **1 465 tests unitaires agrégateur, 222 intégrations, 106 tests web réussis et deux tests explicitement conditionnés à un snapshot ignorés**, typechecks, build Next.js et E2E de CI réussis. Les suites seules ne remplacent pas les preuves production ci-dessus et ne clôturent pas les travaux restants.

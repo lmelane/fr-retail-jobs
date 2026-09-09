@@ -1,0 +1,30 @@
+{
+  "at": "2026-09-09T08:28:21.226Z",
+  "scope": "Stored native feed payload only; detail-page enrichment has not been audited. Absence here does not prove that the employer publishes no location elsewhere.",
+  "rows": [
+    {
+      "id": "cmtlyiils05y3qf5km26wqnws",
+      "url": "https://bzb.teamtailor.com/jobs/8088861-responsable-developpement-h-f",
+      "canonical": {
+        "title": "Responsable Développement H/F",
+        "location": null,
+        "city": null,
+        "countryCode": null
+      },
+      "fields": {
+        "jobLocation": {
+          "present": false,
+          "value": null
+        },
+        "jobLocationType": {
+          "present": false,
+          "value": null
+        },
+        "applicantLocationRequirements": {
+          "present": false,
+          "value": null
+        }
+      }
+    }
+  ]
+}

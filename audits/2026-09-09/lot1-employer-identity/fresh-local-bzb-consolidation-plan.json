@@ -1,0 +1,850 @@
+{
+  "batchId": "lot1-bzb-business-rebrand-postings-20260909-v1",
+  "statement": "Bizzbee became BZB in 2022 according to the official BZB announcement. These are successive names of the same fashion retailer, not separate subsidiaries or group/brand entities. Independently, each explicitly listed pair has the same Teamtailor native posting identifier and hiringOrganization.sameAs in both archived source representations. Preserve both Job IDs, all RAW and previous events, redirect the duplicate to the BZB posting, and count each verified opening once. No title-based posting inference.",
+  "reviewedBy": "Codex / requested business identity review",
+  "reviewedAt": "2026-09-09T07:38:00Z",
+  "merges": [
+    {
+      "fromId": "cmtn5a7sg053rqq5ltoj3513x",
+      "toId": "cmtlyiig305w5qf5kntqzz9kw"
+    }
+  ],
+  "companies": [
+    {
+      "id": "cmtlyiig305w5qf5kntqzz9kw",
+      "kind": "RETAILER"
+    }
+  ],
+  "postingMerges": [
+    {
+      "fromId": "cmtrsddio04mbpg5mhzfot1rs",
+      "toId": "cmtrsddm404n5pg5mdrn63np5",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8311757",
+      "witnesses": [
+        {
+          "sourceId": "cmtrsddio04mcpg5mkd34g0di",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtrsddm404n6pg5mihko3818",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7xk054xqq5lfpt27j0j",
+      "toId": "cmtlyiijj05xbqf5kd7e8c8ss",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8211639",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7xk054yqq5lqrpvljvg",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiijj05xcqf5kp7ohh9km",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7xs0551qq5l7x8mfa0f",
+      "toId": "cmtlyiijs05xfqf5klocpdijf",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8198207",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7xs0552qq5liub02pni",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiijs05xgqf5k5yolj690",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7wa054dqq5lo9od8v2w",
+      "toId": "cmtlyiihv05wnqf5ka7upfck6",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8267489",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7wa054eqq5l5xy551b6",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiihv05woqf5knfwjsg7x",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtt7vzrd05s5my01c5z8lx2g",
+      "toId": "cmtt7w0dz05wtmy014p0e1uk0",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8341991",
+      "witnesses": [
+        {
+          "sourceId": "cmtt7vzrd05s6my01xff8wgpc",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtt7w0dz05wumy01f0a96jdm",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7vc0549qq5l0g4zhxch",
+      "toId": "cmtlyiihi05wjqf5k8j5znb8h",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8279808",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7vc054aqq5lmzxb586a",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiihi05wkqf5kj4yaaoae",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7zl055pqq5ljnmc1p17",
+      "toId": "cmtlyiils05y3qf5km26wqnws",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8088861",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7zl055qqq5lob8576c6",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiils05y4qf5kv25f6cu6",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7ya0559qq5l1pmmf42t",
+      "toId": "cmtlyiiko05xnqf5kgn62updk",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8188557",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7ya055aqq5lqrqwykdg",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiiko05xoqf5kh6jqnsxs",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7z5055lqq5ljlkezbks",
+      "toId": "cmtlyiili05xzqf5kmo4rmzqj",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8088902",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7z5055mqq5lgb7s6tjb",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiilj05y0qf5kwg5t3p4v",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a805055xqq5lmgwh6v3p",
+      "toId": "cmtlyiima05ybqf5kgcgdupqi",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8010651",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a805055yqq5l22gn2yp6",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiima05ycqf5kkxczze1e",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7y10555qq5lt1orfn69",
+      "toId": "cmtlyiik705xjqf5kl1u61ukl",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8149989",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7y10556qq5l3ck0ko2q",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiik805xkqf5kyvbtmkab",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7yw055hqq5lqff1a1lf",
+      "toId": "cmtlyiil705xvqf5kgfo321xw",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8104284",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7yw055iqq5lro8b6gj2",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiil705xwqf5kryvf0o3y",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7t0053xqq5l72y82g4n",
+      "toId": "cmtlyiigm05w7qf5kacc7w8dj",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8280892",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7t0053yqq5lentq801l",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiigm05w8qf5kp017mram",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7tp0545qq5l4cw4ruma",
+      "toId": "cmtlyiiha05wfqf5kdv30g1yi",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8280694",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7tp0546qq5ly5rwsmq2",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiiha05wgqf5khppnuwy6",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7yk055dqq5lta381gqs",
+      "toId": "cmtlyiiky05xrqf5kiqmbhd9k",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8105766",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7yk055eqq5l2wco95fv",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiiky05xsqf5k419zlott",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7sk053tqq5l6p9h120b",
+      "toId": "cmtn5a8j80567qq5ld285atsu",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8320675",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7sk053uqq5lrhvjfhm9",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtn5a8j80568qq5ln6mmf3kr",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7td0541qq5lz9idpbz7",
+      "toId": "cmtlyiigy05wbqf5kruoszcti",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8280828",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7td0542qq5lsa12vv5u",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiigy05wcqf5km5wnzo36",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7zv055tqq5lds4jm4n5",
+      "toId": "cmtlyiim205y7qf5k3th4lz3c",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8031500",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7zv055uqq5lysc8j2ox",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiim205y8qf5kpbm5k6c9",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7x9054tqq5l2az8n4w0",
+      "toId": "cmtlyiij905x7qf5k3a7zij3z",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8237266",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7xa054uqq5lmkhk0f4z",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiij905x8qf5k9u60j2k4",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7wr054lqq5lilf91gh5",
+      "toId": "cmtlyiiif05wvqf5keamhqvdm",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8252998",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7wr054mqq5lxydtzp9w",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiiif05wwqf5k0tvxxay9",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7x0054pqq5lit5fpmr6",
+      "toId": "cmtlyiiir05wzqf5k4idj2pw7",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8246613",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7x1054qqq5l4n9bk7l6",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiiir05x0qf5kb72sbvgr",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a80f0561qq5lno01ybmu",
+      "toId": "cmtlyiimk05yfqf5kms8c1qvh",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "7978550",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a80f0562qq5ln7rrd5k1",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiimk05ygqf5k1vd8lp96",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    },
+    {
+      "fromId": "cmtn5a7wi054hqq5lmji7rrg2",
+      "toId": "cmtlyiii505wrqf5k0bhxhfiv",
+      "issuer": "https://recrutement.b-z-b.com",
+      "postingId": "8256018",
+      "witnesses": [
+        {
+          "sourceId": "cmtn5a7wi054iqq5lktr5trbn",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        },
+        {
+          "sourceId": "cmtlyiii505wsqf5kcqi8tqus",
+          "issuerPath": [
+            "_jobposting",
+            "hiringOrganization",
+            "sameAs"
+          ],
+          "postingIdPath": [
+            "_jobposting",
+            "identifier",
+            "value"
+          ]
+        }
+      ]
+    }
+  ],
+  "aliases": [
+    {
+      "sourceKey": "bizzbee",
+      "rawName": "Bizzbee",
+      "companyId": "cmtlyiig305w5qf5kntqzz9kw"
+    },
+    {
+      "sourceKey": "bizzbee",
+      "rawName": "BZB",
+      "companyId": "cmtlyiig305w5qf5kntqzz9kw"
+    },
+    {
+      "sourceKey": "bzb",
+      "rawName": "Bizzbee",
+      "companyId": "cmtlyiig305w5qf5kntqzz9kw"
+    },
+    {
+      "sourceKey": "bzb",
+      "rawName": "BZB",
+      "companyId": "cmtlyiig305w5qf5kntqzz9kw"
+    }
+  ],
+  "version": 1,
+  "sourceHashes": {
+    "bizzbee": "4446e3d78d1d15fd098e14308f7b99e40170423bb798f6fa36ba0b7f1391423a",
+    "bzb": "d1884199f5317ce56826dd7ca63a12bfc6278ab86ef6a42c5bf08d39f0b5fa30"
+  },
+  "createdAt": "2026-09-09T07:42:39.008Z",
+  "companyIds": [
+    "cmtlyiig305w5qf5kntqzz9kw",
+    "cmtn5a7sg053rqq5ltoj3513x"
+  ],
+  "sourceKeys": [
+    "bizzbee",
+    "bzb"
+  ],
+  "beforeHash": "33befc2d17b816eb7342a455f4287f797366473955ca0adbe82820967454411c",
+  "jobCount": 47,
+  "activeJobCount": 44,
+  "sourceCount": 47,
+  "evidence": [
+    {
+      "url": "https://www.b-z-b.com/actu.html",
+      "sha256": "bbb0ac0a0843a733e9ebaa5a2dc48765500a0a82ee83c36067f7aa14bd9cd705",
+      "explanation": "Official 2022 Bizzbee-to-BZB change of trading name; posting equality is separately witnessed by each archived native issuer and requisition identifier."
+    }
+  ],
+  "planHash": "4bfd68fe0da6869151564c65775888f857facc9c5a2e6e73df7c7a3008aeca63"
+}

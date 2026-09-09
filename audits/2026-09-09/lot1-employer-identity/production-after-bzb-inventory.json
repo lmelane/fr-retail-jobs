@@ -1,0 +1,57 @@
+{
+  "asOf": "2026-09-09T08:27:39.226Z",
+  "counts": {
+    "companies": 1571,
+    "aliases": 24,
+    "jobs": 77352,
+    "activeJobs": 74124,
+    "representations": 80380,
+    "events": 21839,
+    "observations": 72222
+  },
+  "health": {
+    "companyRecords": 1571,
+    "canonicalRoots": 1567,
+    "mergedRecords": 4,
+    "rootsWithActiveJobs": 1043,
+    "aliases": 24,
+    "reviewedAliases": 24,
+    "unclassifiedRoots": 1526,
+    "freeTextParentsWithoutRelation": 159,
+    "jobsOnMergedCompanies": 0,
+    "pendingObservations": 0,
+    "legacyObservations": 0,
+    "rules": [
+      {
+        "_count": 18,
+        "rule": "REVIEWED_ALIAS",
+        "labelOrigin": "_jobposting.hiringOrganization.name:HIRING_ORGANIZATION_LABEL"
+      },
+      {
+        "_count": 53,
+        "rule": "REVIEWED_ALIAS",
+        "labelOrigin": "SOURCE_CATALOGUE_LABEL"
+      },
+      {
+        "_count": 54,
+        "rule": "REVIEWED_ALIAS",
+        "labelOrigin": "entity.name:ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION"
+      }
+    ],
+    "definitions": {
+      "canonicalRoots": "Catalogue roots, not a count of independently validated employers.",
+      "observations": "Versioned decisions, not distinct jobs. Legacy labels were not archived consistently; no retrospective 100% provenance claim.",
+      "unclassifiedRoots": "Existing UNKNOWN classifications remain visible as review work; no classification is inferred from a name."
+    }
+  },
+  "rawLabelMetrics": {
+    "explicitPaths": 10,
+    "distinctLabels": 716,
+    "sources": 201,
+    "exhaustive": false,
+    "reason": "Only explicit stored paths are measured; legacy Workday detail and unlisted adapter structures are not reconstructed."
+  },
+  "candidatePairsWithBothActive": 47,
+  "candidatePairs": 414,
+  "interpretation": "Similarity candidates, never confirmed duplicates or a target number of mergers. DISTINCT reviews are not yet consumed by audit.mts."
+}

@@ -1,0 +1,73 @@
+{
+  "at": "2026-09-09T07:44:00.703Z",
+  "phase": "before",
+  "rows": [
+    {
+      "name": "Bizzbee",
+      "status": 200,
+      "total": 22,
+      "employers": [
+        "Bizzbee"
+      ],
+      "ids": [
+        "cmtt7vzrd05s5my01c5z8lx2g",
+        "cmtn5a7sk053tqq5l6p9h120b",
+        "cmtrsddio04mbpg5mhzfot1rs",
+        "cmtn5a7t0053xqq5l72y82g4n",
+        "cmtn5a7td0541qq5lz9idpbz7",
+        "cmtn5a7tp0545qq5l4cw4ruma",
+        "cmtn5a7wa054dqq5lo9od8v2w",
+        "cmtn5a7wi054hqq5lmji7rrg2",
+        "cmtn5a7wr054lqq5lilf91gh5",
+        "cmtn5a7x0054pqq5lit5fpmr6",
+        "cmtn5a7x9054tqq5l2az8n4w0",
+        "cmtn5a7xk054xqq5lfpt27j0j",
+        "cmtn5a7xs0551qq5l7x8mfa0f",
+        "cmtn5a7y10555qq5lt1orfn69",
+        "cmtn5a7ya0559qq5l1pmmf42t",
+        "cmtn5a7yk055dqq5lta381gqs",
+        "cmtn5a7yw055hqq5lqff1a1lf",
+        "cmtn5a7z5055lqq5ljlkezbks",
+        "cmtn5a7zl055pqq5ljnmc1p17",
+        "cmtn5a7zv055tqq5lds4jm4n5",
+        "cmtn5a805055xqq5lmgwh6v3p",
+        "cmtn5a80f0561qq5lno01ybmu"
+      ],
+      "sha256": "3071b41cad5fff56fd3f6620c03ad97cf5538d789d4db438bbcca3b83a1b2578"
+    },
+    {
+      "name": "BZB",
+      "status": 200,
+      "total": 22,
+      "employers": [
+        "BZB"
+      ],
+      "ids": [
+        "cmtt7w0dz05wtmy014p0e1uk0",
+        "cmtn5a8j80567qq5ld285atsu",
+        "cmtrsddm404n5pg5mdrn63np5",
+        "cmtlyiigm05w7qf5kacc7w8dj",
+        "cmtlyiigy05wbqf5kruoszcti",
+        "cmtlyiiha05wfqf5kdv30g1yi",
+        "cmtlyiihv05wnqf5ka7upfck6",
+        "cmtlyiii505wrqf5k0bhxhfiv",
+        "cmtlyiiif05wvqf5keamhqvdm",
+        "cmtlyiiir05wzqf5k4idj2pw7",
+        "cmtlyiij905x7qf5k3a7zij3z",
+        "cmtlyiijj05xbqf5kd7e8c8ss",
+        "cmtlyiijs05xfqf5klocpdijf",
+        "cmtlyiik705xjqf5kl1u61ukl",
+        "cmtlyiiko05xnqf5kgn62updk",
+        "cmtlyiiky05xrqf5kiqmbhd9k",
+        "cmtlyiil705xvqf5kgfo321xw",
+        "cmtlyiili05xzqf5kmo4rmzqj",
+        "cmtlyiils05y3qf5km26wqnws",
+        "cmtlyiim205y7qf5k3th4lz3c",
+        "cmtlyiima05ybqf5kgcgdupqi",
+        "cmtlyiimk05yfqf5kms8c1qvh"
+      ],
+      "sha256": "01972389c43b120ad9024eb73009a2363f7db82f8503620e2cde9e3e6302f8e3"
+    }
+  ],
+  "redirects": []
+}

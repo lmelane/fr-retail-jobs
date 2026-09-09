@@ -1,0 +1,189 @@
+{
+  "at": "2026-09-09T08:08:19.292Z",
+  "phase": "after",
+  "rows": [
+    {
+      "name": "Bizzbee",
+      "status": 200,
+      "total": 22,
+      "employers": [
+        "BZB"
+      ],
+      "ids": [
+        "cmtt7w0dz05wtmy014p0e1uk0",
+        "cmtn5a8j80567qq5ld285atsu",
+        "cmtrsddm404n5pg5mdrn63np5",
+        "cmtlyiigm05w7qf5kacc7w8dj",
+        "cmtlyiigy05wbqf5kruoszcti",
+        "cmtlyiiha05wfqf5kdv30g1yi",
+        "cmtlyiihv05wnqf5ka7upfck6",
+        "cmtlyiii505wrqf5k0bhxhfiv",
+        "cmtlyiiif05wvqf5keamhqvdm",
+        "cmtlyiiir05wzqf5k4idj2pw7",
+        "cmtlyiij905x7qf5k3a7zij3z",
+        "cmtlyiijj05xbqf5kd7e8c8ss",
+        "cmtlyiijs05xfqf5klocpdijf",
+        "cmtlyiik705xjqf5kl1u61ukl",
+        "cmtlyiiko05xnqf5kgn62updk",
+        "cmtlyiiky05xrqf5kiqmbhd9k",
+        "cmtlyiil705xvqf5kgfo321xw",
+        "cmtlyiili05xzqf5kmo4rmzqj",
+        "cmtlyiils05y3qf5km26wqnws",
+        "cmtlyiim205y7qf5k3th4lz3c",
+        "cmtlyiima05ybqf5kgcgdupqi",
+        "cmtlyiimk05yfqf5kms8c1qvh"
+      ],
+      "sha256": "17ca155efb199c20290b5ead48c12483ab7db19c9206f7991d007df2c1d96b4c"
+    },
+    {
+      "name": "BZB",
+      "status": 200,
+      "total": 22,
+      "employers": [
+        "BZB"
+      ],
+      "ids": [
+        "cmtt7w0dz05wtmy014p0e1uk0",
+        "cmtn5a8j80567qq5ld285atsu",
+        "cmtrsddm404n5pg5mdrn63np5",
+        "cmtlyiigm05w7qf5kacc7w8dj",
+        "cmtlyiigy05wbqf5kruoszcti",
+        "cmtlyiiha05wfqf5kdv30g1yi",
+        "cmtlyiihv05wnqf5ka7upfck6",
+        "cmtlyiii505wrqf5k0bhxhfiv",
+        "cmtlyiiif05wvqf5keamhqvdm",
+        "cmtlyiiir05wzqf5k4idj2pw7",
+        "cmtlyiij905x7qf5k3a7zij3z",
+        "cmtlyiijj05xbqf5kd7e8c8ss",
+        "cmtlyiijs05xfqf5klocpdijf",
+        "cmtlyiik705xjqf5kl1u61ukl",
+        "cmtlyiiko05xnqf5kgn62updk",
+        "cmtlyiiky05xrqf5kiqmbhd9k",
+        "cmtlyiil705xvqf5kgfo321xw",
+        "cmtlyiili05xzqf5kmo4rmzqj",
+        "cmtlyiils05y3qf5km26wqnws",
+        "cmtlyiim205y7qf5k3th4lz3c",
+        "cmtlyiima05ybqf5kgcgdupqi",
+        "cmtlyiimk05yfqf5kms8c1qvh"
+      ],
+      "sha256": "17ca155efb199c20290b5ead48c12483ab7db19c9206f7991d007df2c1d96b4c"
+    }
+  ],
+  "redirects": [
+    {
+      "id": "cmtrsddio04mbpg5mhzfot1rs",
+      "status": 308,
+      "target": "/offre/responsable-de-magasin-h-f-cmtrsddm404n5pg5mdrn63np5"
+    },
+    {
+      "id": "cmtn5a7xk054xqq5lfpt27j0j",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdi-35h-cmtlyiijj05xbqf5kd7e8c8ss"
+    },
+    {
+      "id": "cmtn5a7xs0551qq5l7x8mfa0f",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdd-30h-cmtlyiijs05xfqf5klocpdijf"
+    },
+    {
+      "id": "cmtn5a7wa054dqq5lo9od8v2w",
+      "status": 308,
+      "target": "/offre/cdd-vendeur-h-f-24h-cmtlyiihv05wnqf5ka7upfck6"
+    },
+    {
+      "id": "cmtt7vzrd05s5my01c5z8lx2g",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdi-25h-cmtt7w0dz05wtmy014p0e1uk0"
+    },
+    {
+      "id": "cmtn5a7vc0549qq5l0g4zhxch",
+      "status": 410,
+      "target": null
+    },
+    {
+      "id": "cmtn5a7zl055pqq5ljnmc1p17",
+      "status": 308,
+      "target": "/offre/responsable-developpement-h-f-cmtlyiils05y3qf5km26wqnws"
+    },
+    {
+      "id": "cmtn5a7z5055lqq5ljlkezbks",
+      "status": 308,
+      "target": "/offre/demand-supply-planner-h-f-cmtlyiili05xzqf5kmo4rmzqj"
+    },
+    {
+      "id": "cmtn5a7ya0559qq5l1pmmf42t",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdi-12h-cmtlyiiko05xnqf5kgn62updk"
+    },
+    {
+      "id": "cmtn5a805055xqq5lmgwh6v3p",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdi-35h00-cmtlyiima05ybqf5kgcgdupqi"
+    },
+    {
+      "id": "cmtn5a7y10555qq5lt1orfn69",
+      "status": 308,
+      "target": "/offre/responsable-adjoint-de-magasin-h-f-la-roche-yon-cmtlyiik705xjqf5kl1u61ukl"
+    },
+    {
+      "id": "cmtn5a7yw055hqq5lqff1a1lf",
+      "status": 308,
+      "target": "/offre/vendeur-cdi-25h-h-f-cmtlyiil705xvqf5kgfo321xw"
+    },
+    {
+      "id": "cmtn5a7t0053xqq5l72y82g4n",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdi-35h00-cmtlyiigm05w7qf5kacc7w8dj"
+    },
+    {
+      "id": "cmtn5a7tp0545qq5l4cw4ruma",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdi-10h00-cmtlyiiha05wfqf5kdv30g1yi"
+    },
+    {
+      "id": "cmtn5a7yk055dqq5lta381gqs",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdi-35h-cmtlyiiky05xrqf5kiqmbhd9k"
+    },
+    {
+      "id": "cmtn5a7sk053tqq5l6p9h120b",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdi-7h-cmtn5a8j80567qq5ld285atsu"
+    },
+    {
+      "id": "cmtn5a7td0541qq5lz9idpbz7",
+      "status": 308,
+      "target": "/offre/assistant-chef-de-produit-h-f-cdd-cmtlyiigy05wbqf5kruoszcti"
+    },
+    {
+      "id": "cmtn5a7zv055tqq5lds4jm4n5",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdd-30h-cmtlyiim205y7qf5k3th4lz3c"
+    },
+    {
+      "id": "cmtn5a7x9054tqq5l2az8n4w0",
+      "status": 308,
+      "target": "/offre/responsable-de-magasin-h-f-cmtlyiij905x7qf5k3a7zij3z"
+    },
+    {
+      "id": "cmtn5a7wr054lqq5lilf91gh5",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdi-7h00-cmtlyiiif05wvqf5keamhqvdm"
+    },
+    {
+      "id": "cmtn5a7x0054pqq5lit5fpmr6",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdi-25h-cmtlyiiir05wzqf5k4idj2pw7"
+    },
+    {
+      "id": "cmtn5a80f0561qq5lno01ybmu",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdi-35h-cmtlyiimk05yfqf5kms8c1qvh"
+    },
+    {
+      "id": "cmtn5a7wi054hqq5lmji7rrg2",
+      "status": 308,
+      "target": "/offre/vendeur-h-f-cdd-35h-cmtlyiii505wrqf5k0bhxhfiv"
+    }
+  ]
+}

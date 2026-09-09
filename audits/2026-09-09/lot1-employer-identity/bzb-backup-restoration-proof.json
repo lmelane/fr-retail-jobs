@@ -1,0 +1,13 @@
+{
+  "backup": {
+    "path": "backups/lot1-20260909/before-bzb-consolidation.dump",
+    "bytes": 359928365,
+    "sha256": "846d71a81b28054a15bf36f095dc16bb47714cf07846718daec6b4936606e8d3"
+  },
+  "restoration": {
+    "restored": "backups/lot1-20260909/before-bzb-consolidation.dump",
+    "database": "catwalks_lot1_replay_20260909",
+    "savedPreviousRehearsal": "backups/lot1-20260909/after-local-bzb-rehearsal-20260909095708.dump",
+    "backupSha256": "846d71a81b28054a15bf36f095dc16bb47714cf07846718daec6b4936606e8d3"
+  }
+}

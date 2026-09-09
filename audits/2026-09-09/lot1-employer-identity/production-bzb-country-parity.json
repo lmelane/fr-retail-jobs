@@ -1,0 +1,48 @@
+{
+  "at": "2026-09-09T08:15:59.961Z",
+  "revision": "606be144240452abf67825688002abbcf9f22ad2",
+  "rows": [
+    {
+      "code": "monde",
+      "count": 74124,
+      "api": 74124,
+      "http": 200,
+      "delta": 0
+    },
+    {
+      "code": "FR",
+      "count": 10947,
+      "api": 10947,
+      "http": 200,
+      "delta": 0
+    },
+    {
+      "code": "US",
+      "count": 30943,
+      "api": 30943,
+      "http": 200,
+      "delta": 0
+    },
+    {
+      "code": "GB",
+      "count": 2872,
+      "api": 2872,
+      "http": 200,
+      "delta": 0
+    },
+    {
+      "code": "DE",
+      "count": 2739,
+      "api": 2739,
+      "http": 200,
+      "delta": 0
+    },
+    {
+      "code": "IT",
+      "count": 2446,
+      "api": 2446,
+      "http": 200,
+      "delta": 0
+    }
+  ]
+}

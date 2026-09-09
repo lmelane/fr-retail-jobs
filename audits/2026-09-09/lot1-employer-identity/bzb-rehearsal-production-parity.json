@@ -1,0 +1,7 @@
+{
+  "sameBeforeHash": true,
+  "sameSourceHashes": true,
+  "sameBusinessDecision": true,
+  "samePostingWitnesses": true,
+  "note": "Unordered plan-construction SELECT returned the same 23 independent posting decisions in a different array order; compared by immutable fromId. Runtime snapshot is sorted and its hash matches exactly."
+}
