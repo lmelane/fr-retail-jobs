@@ -1,0 +1,87 @@
+{
+  "at": "2026-09-09T19:22:17.334Z",
+  "environment": "production",
+  "commit": "c95327efd606fc4902e9ca04eca516c94663cb80",
+  "planHash": "17c9563dc78dce8f30e4809fb9a381655d2c65c515b72e6a040f9b40c6f69ee0",
+  "operations": {
+    "total": 1338,
+    "Job": 1330,
+    "Company": 7,
+    "JobSource": 0,
+    "Source": 1
+  },
+  "result": {
+    "alreadyApplied": false,
+    "written": 1338,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "written": 0,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "allJobs": 77500,
+  "allActive": 74159,
+  "idAndLifecycleConservation": true,
+  "rawConservation": true,
+  "rawRepresentationsPreserved": 1449,
+  "attributionAfter": [
+    {
+      "company": "URBN",
+      "kind": "GROUP",
+      "isActive": true,
+      "jobs": 153
+    },
+    {
+      "company": "Free People",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 392
+    },
+    {
+      "company": "Anthropologie",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 465
+    },
+    {
+      "company": "Terrain",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 41
+    },
+    {
+      "company": "Urban Outfitters",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 325
+    },
+    {
+      "company": "Menus and Venues",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 38
+    },
+    {
+      "company": "Nuuly",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 35
+    }
+  ],
+  "sources": [
+    {
+      "key": "urbn-hub",
+      "maison": "URBN",
+      "tier": "GROUP_OFFICIAL",
+      "status": "PAUSED",
+      "config": {
+        "origin": "https://hub-urbn.icims.com",
+        "employerFromJobPosting": true
+      }
+    }
+  ],
+  "brandObservations": 1296
+}

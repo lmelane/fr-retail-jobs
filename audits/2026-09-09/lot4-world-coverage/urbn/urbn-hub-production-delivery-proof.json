@@ -1,0 +1,42 @@
+{
+  "at": "2026-09-09T19:36:01.787597+00:00",
+  "applicationCommit": "c95327efd606fc4902e9ca04eca516c94663cb80",
+  "applicationMerge": "c95327efd606fc4902e9ca04eca516c94663cb80",
+  "nativeRunId": "ba3d2945-85a8-4146-ac12-42415b8cc91b",
+  "deploymentId": "d32c2136-7267-4cb6-8d61-07923bb1ab43",
+  "startedAt": "2026-09-09T19:24:08.460Z",
+  "finishedAt": "2026-09-09T19:35:02.995Z",
+  "status": "COMPLETED",
+  "sources": {
+    "urbn-hub": {
+      "stats": {
+        "fetched": 1374,
+        "created": 10,
+        "updated": 1364,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": null,
+        "withDescription": 1374,
+        "withCountry": 1374,
+        "withDate": 1374
+      },
+      "enumeration": {
+        "fetched": 1374,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": null
+      }
+    }
+  },
+  "logProof": {
+    "railwayLines": 11,
+    "maxLinesPerSecond": 5,
+    "droppedMessageWarnings": 0,
+    "durableEvents": 10,
+    "persistenceFailures": 0
+  },
+  "globalWorkersRemainPaused": true,
+  "remaining": "FP Movement, Anthro Weddings, Maeve credited to their parent brand (reversible by alias); Reclectic and Menus and Venues identity/perimeter left to the owner; one Urban Outfitters posting held under URBN (legacy FashionJobs attestation)."
+}

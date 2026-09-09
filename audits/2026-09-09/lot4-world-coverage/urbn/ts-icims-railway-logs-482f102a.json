@@ -1,0 +1,206 @@
+[
+ {
+  "timestamp": "2026-09-09T18:22:41.864627391Z",
+  "message": "Starting Container"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.185547756Z",
+  "message": "source_sync_started"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.185555246Z",
+  "message": "source_sync_started"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.185559086Z",
+  "message": "source_sync_started"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.185562186Z",
+  "message": "source_sync_started"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.185591076Z",
+  "message": "run.started"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.185600496Z",
+  "message": "run.sources_selected"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.185913921Z",
+  "message": "ingest.sources_selected"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.185917141Z",
+  "message": "ingest.sources_selected"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.185920631Z",
+  "message": "ingest.sources_selected"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.185923471Z",
+  "message": "ingest.sources_selected"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.185927231Z",
+  "message": "source.enumeration_observed"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.436767665Z",
+  "message": "source.ingest_completed"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.436772935Z",
+  "message": "source_sync_completed"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.460941472Z",
+  "message": "source_sync_started"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:43.499036714Z",
+  "message": "ingest.sources_selected"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:51.475696995Z",
+  "message": "source.enumeration_observed"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:51.732721825Z",
+  "message": "source.enumeration_observed"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:53.371949239Z",
+  "message": "source.ingest_completed"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:53.403357490Z",
+  "message": "source_sync_completed"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:54.971136747Z",
+  "message": "source.ingest_completed"
+ },
+ {
+  "timestamp": "2026-09-09T18:22:54.991655143Z",
+  "message": "source_sync_completed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.338936514Z",
+  "message": "source.enumeration_observed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.338941654Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.339442228Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.339446828Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.340032060Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.340036870Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.340653432Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.340657082Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.341243894Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.341247593Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.341689917Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.341694097Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.343072519Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.343076529Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.343727630Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.343731940Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.344477471Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:06.344482801Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:08.529266032Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:08.797036754Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:16.319915661Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:21.282359481Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:23.323356192Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:27.305542542Z",
+  "message": "job.write_failed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:32.229971496Z",
+  "message": "source.ingest_completed"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:32.253554079Z",
+  "message": "source.purge_refused"
+ },
+ {
+  "timestamp": "2026-09-09T18:30:32.276578260Z",
+  "message": "source_sync_completed"
+ },
+ {
+  "timestamp": "2026-09-09T18:34:53.704885569Z",
+  "message": "source.enumeration_observed"
+ },
+ {
+  "timestamp": "2026-09-09T18:35:11.717773422Z",
+  "message": "Stopping Container"
+ }
+]

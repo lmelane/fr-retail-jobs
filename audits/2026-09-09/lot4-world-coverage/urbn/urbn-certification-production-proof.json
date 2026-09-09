@@ -1,0 +1,47 @@
+{
+  "at": "2026-09-09T19:22:27.383Z",
+  "environment": "production",
+  "commit": "c95327efd606fc4902e9ca04eca516c94663cb80",
+  "aliases": {
+    "planHash": "17cc29c2fa255dffbb0e7176dda425887d2c1da51d35a0f3e4daabf15ab6f44f",
+    "count": 11,
+    "result": {
+      "alreadyApplied": false,
+      "movedJobs": 0,
+      "aliases": 11
+    },
+    "replay": {
+      "alreadyApplied": true,
+      "movedJobs": 0,
+      "aliases": 0
+    }
+  },
+  "certification": {
+    "written": {
+      "sourceKey": "urbn-hub",
+      "sourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "verdict": "VERIFIED",
+      "written": 1
+    },
+    "promoted": {
+      "key": "urbn-hub",
+      "from": "PAUSED",
+      "to": "ACTIVE"
+    }
+  },
+  "sector": {
+    "reviewHash": "96574a2dc47b7ddb2cfd9d056bf47d1f178577f08aae53b3cd6c2bb7350d299b",
+    "result": {
+      "changed": 5,
+      "conceptsChanged": 0,
+      "reviewId": "96574a2dc47b7ddb2cfd9d056bf47d1f178577f08aae53b3cd6c2bb7350d299b",
+      "activeAffected": 1258
+    },
+    "replay": {
+      "changed": 0,
+      "reviewId": null
+    }
+  },
+  "jobCount": 77500,
+  "active": 74159
+}

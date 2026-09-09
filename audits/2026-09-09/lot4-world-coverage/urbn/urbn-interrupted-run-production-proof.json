@@ -1,0 +1,31 @@
+{
+  "phase": "production",
+  "at": "2026-09-09T19:22:28.104Z",
+  "updated": 1,
+  "before": {
+    "status": "RUNNING",
+    "finishedAt": null,
+    "metrics": null
+  },
+  "after": {
+    "status": "INTERRUPTED",
+    "finishedAt": "2026-09-09T18:35:11.717Z",
+    "metrics": {
+      "signal": "CONTAINER_STOPPED_BY_DEPLOYMENT",
+      "closedBy": "ops correction 20260909-LOT4-INTERRUPTED-RUN-TS-ICIMS-v1",
+      "evidence": "Railway deployment log line \"Stopping Container\" at 2026-09-09T18:35:11.717Z (ts-icims-railway-logs-482f102a.json); no run.completed event; last durable event 18:35:10.591Z (urbn-hub write)",
+      "deploymentId": "482f102a-390f-4e57-8b7d-86bfa9d0a574",
+      "completedSources": [
+        "lagardere-duty-free",
+        "aeropostale",
+        "lagardere-travel-retail",
+        "urbn-stores"
+      ],
+      "replacedByCommit": "d825f581d1d9700a4646e4253654c56096ad3e38",
+      "interruptedSources": {
+        "urbn-hub": "563 of 1375 postings written; no SourceRun row"
+      },
+      "replacedByDeployment": "116bd090-b2b0-49e1-bf44-cec428ab96ea"
+    }
+  }
+}

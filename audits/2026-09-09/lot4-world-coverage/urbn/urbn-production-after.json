@@ -1,0 +1,130 @@
+{
+  "at": "2026-09-09T19:22:29.117Z",
+  "byCompany": [
+    {
+      "name": "Anthropologie",
+      "kind": "BRAND",
+      "domain": "anthropologie.com",
+      "parentGroup": "URBN",
+      "sectorCodes": [
+        "FASHION",
+        "HOME_LIFESTYLE",
+        "RETAIL"
+      ],
+      "active": 465
+    },
+    {
+      "name": "Free People",
+      "kind": "BRAND",
+      "domain": "freepeople.com",
+      "parentGroup": "URBN",
+      "sectorCodes": [
+        "FASHION",
+        "RETAIL"
+      ],
+      "active": 392
+    },
+    {
+      "name": "Urban Outfitters",
+      "kind": "BRAND",
+      "domain": "urbanoutfitters.com",
+      "parentGroup": "URBN",
+      "sectorCodes": [
+        "FASHION",
+        "RETAIL"
+      ],
+      "active": 325
+    },
+    {
+      "name": "URBN",
+      "kind": "GROUP",
+      "domain": "urbn.com",
+      "parentGroup": null,
+      "sectorCodes": [
+        "FASHION",
+        "FOOTWEAR",
+        "BEAUTY",
+        "HOME_LIFESTYLE",
+        "RETAIL"
+      ],
+      "active": 153
+    },
+    {
+      "name": "Terrain",
+      "kind": "BRAND",
+      "domain": "shopterrain.com",
+      "parentGroup": "URBN",
+      "sectorCodes": [
+        "HOME_LIFESTYLE",
+        "RETAIL"
+      ],
+      "active": 41
+    },
+    {
+      "name": "Menus and Venues",
+      "kind": "BRAND",
+      "domain": "urbnmenusandvenues.com",
+      "parentGroup": "URBN",
+      "sectorCodes": [],
+      "active": 38
+    },
+    {
+      "name": "Nuuly",
+      "kind": "BRAND",
+      "domain": "nuuly.com",
+      "parentGroup": "URBN",
+      "sectorCodes": [
+        "FASHION"
+      ],
+      "active": 35
+    }
+  ],
+  "sources": [
+    {
+      "key": "urbn-stores",
+      "status": "RETIRED",
+      "maison": "URBN Stores",
+      "tier": "GROUP_OFFICIAL",
+      "config": {
+        "origin": "https://stores-na-urbn.icims.com"
+      },
+      "verifiedJobCount": 906
+    },
+    {
+      "key": "urbn-hub",
+      "status": "ACTIVE",
+      "maison": "URBN",
+      "tier": "GROUP_OFFICIAL",
+      "config": {
+        "origin": "https://hub-urbn.icims.com",
+        "employerFromJobPosting": true
+      },
+      "verifiedJobCount": 1329
+    }
+  ],
+  "storesRepresentations": {
+    "reps": 970,
+    "active": 0,
+    "jobsRedirected": 36
+  },
+  "duplicateActiveIcimsJobs": 0,
+  "aliases": [
+    "URBN → URBN",
+    "Anthropologie → Anthropologie",
+    "Anthro Weddings → Anthropologie",
+    "Maeve → Anthropologie",
+    "Urban Outfitters → Urban Outfitters",
+    "Free People → Free People",
+    "FP Movement → Free People",
+    "Terrain → Terrain",
+    "Nuuly → Nuuly",
+    "Menus and Venues → Menus and Venues",
+    "Reclectic → URBN"
+  ],
+  "interruptedRun": {
+    "status": "INTERRUPTED",
+    "finishedAt": "2026-09-09T18:35:11.717Z"
+  },
+  "activeTotal": 74159,
+  "urbnHubActiveJobs": 1449
+}
