@@ -206,6 +206,20 @@ export type PromoteResult = {
  * had (règles permanentes du plan) : a promoted source must have a config, a
  * DATED robots verdict, and at least one really-parsed offer behind its count.
  */
+/**
+ * An access verdict allows collection when robots.txt allows it (`ALLOWED`) or
+ * when the owner recorded a nominal authorization on the row, e.g.
+ * `ALLOWED (autorisation propriétaire — URBN (autorisation obtenue par Loïc), 2026-09-05)`:
+ * hub-urbn.icims.com publishes `Disallow: /` and the source was activated on that
+ * authorization. The note is part of the verdict and stays on the row; a bare
+ * `ALLOWED (…)` without the word "autorisation" is not a verdict we recognize.
+ */
+export function isAllowedAccessVerdict(verdict: string | null | undefined): boolean {
+  const value = (verdict ?? '').trim();
+  if (value.toUpperCase() === 'ALLOWED') return true;
+  return /^ALLOWED \((?=.*autorisation)[^)]*(\([^)]*\)[^)]*)*\)$/i.test(value);
+}
+
 export async function promoteSource(prisma: PrismaClient, key: string): Promise<PromoteResult> {
   return prisma.$transaction(async tx => {
     await lockSourceWrites(tx, key, true);
@@ -222,7 +236,7 @@ export async function promoteSource(prisma: PrismaClient, key: string): Promise<
     if (!row.robotsVerdict || !row.robotsCheckedAt) {
       throw new Error(`promote: "${key}" has no dated robots verdict — read robots.txt at the source first`);
     }
-    if (row.robotsVerdict.trim().toUpperCase() !== 'ALLOWED') {
+    if (!isAllowedAccessVerdict(row.robotsVerdict)) {
       throw new Error(`promote: "${key}" needs an ALLOWED robots verdict, got "${row.robotsVerdict}"`);
     }
     if (!row.verifiedJobCount || row.verifiedJobCount < 1) {

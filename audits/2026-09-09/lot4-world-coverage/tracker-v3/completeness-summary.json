@@ -1,45 +1,37 @@
 {
   "activeSources": 423,
-  "everCompleteActive": 383,
-  "everCompleteAnyStatus": 387,
+  "everCompleteActive": 395,
+  "everCompleteAnyStatus": 399,
   "everCompleteNowInactive": [
     "ganni",
     "lindex",
     "saltrock",
     "towa"
   ],
-  "latestReceiptComplete": 383,
+  "latestReceiptComplete": 395,
   "categories": {
     "COMPLETE": 381,
-    "STILL_PARTIAL": 38,
-    "RESOLVED_SINCE_BASELINE": 2,
+    "RESOLVED_SINCE_BASELINE": 14,
+    "STILL_PARTIAL": 26,
     "NO_RECEIPT": 2
   },
   "previousDossiersMatchedActive": 40,
   "previousStillPartial": [
-    "aeropostale",
-    "aigle",
     "alberto",
     "attaquer",
     "beiersdorf",
     "bevilles-jewellers",
     "boots",
     "brown-thomas-taleo",
-    "capri-michael-kors",
     "element-6",
     "end-clothing",
     "eram-3",
     "foot-locker-france",
-    "gant",
     "globus",
     "kastner-ohler",
-    "kering",
-    "lacoste",
-    "lagardere-travel-retail",
     "lumentee",
     "luxe-talent",
     "luxexperience",
-    "mango",
     "marc-o-polo",
     "nars",
     "nocibe-eqwa",
@@ -49,16 +41,24 @@
     "pandora-talenthub",
     "psycho-bunny",
     "pvh",
-    "rituals",
     "swatch-group",
-    "the-kooples",
-    "urbn-hub",
-    "urbn-stores",
     "zegna-altamira"
   ],
   "previousResolved": [
+    "aeropostale",
+    "aigle",
     "capri-jimmy-choo",
-    "lagardere-duty-free"
+    "capri-michael-kors",
+    "gant",
+    "kering",
+    "lacoste",
+    "lagardere-duty-free",
+    "lagardere-travel-retail",
+    "mango",
+    "rituals",
+    "the-kooples",
+    "urbn-hub",
+    "urbn-stores"
   ],
   "regressed": [],
   "newPartial": [],
@@ -66,5 +66,5 @@
     "ganni-talentrecruiter",
     "lindex-easycruit"
   ],
-  "toInvestigate": 40
+  "toInvestigate": 28
 }

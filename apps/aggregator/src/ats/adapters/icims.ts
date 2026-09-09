@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { fetchText } from '../../lib/http.js';
 import pLimit from 'p-limit';
-import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
+import { enrichPostingEvidence, postingEvidenceOptions } from '../../lib/postingEvidence.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
@@ -143,8 +143,9 @@ export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<A
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
 
   const limit = pLimit(Math.max(1, Math.min(4, Number(config.detailConcurrency) || 2)));
+  const evidenceOptions = postingEvidenceOptions(config);
   const jobs = await Promise.all(out.map(job => limit(async () => {
-    try { return enrichPostingEvidence(job, await fetchText(job.url)); }
+    try { return enrichPostingEvidence(job, await fetchText(job.url), evidenceOptions); }
     catch (error) { return { ...job, raw: { ...(job.raw as object), detailReadError: String(error) } }; }
   })));
   return { jobs, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredPages !== undefined && pagesRead < declaredPages),

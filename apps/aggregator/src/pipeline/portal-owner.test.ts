@@ -6,7 +6,7 @@ import { sourceIdentityHash } from '../connectors/sourceIdentity.js';
 import { planReviewedPortalOwners, type PortalOwnerReview } from '../remediation/portalOwner.js';
 import { applyRepairPlan, digest } from '../remediation/plan.js';
 const prisma = new PrismaClient();
-beforeEach(async () => { await prisma.job.deleteMany(); await prisma.company.deleteMany(); await prisma.source.deleteMany({where:{key:'owner-fixture'}}); });
+beforeEach(async () => { await prisma.job.deleteMany(); await prisma.company.deleteMany(); await prisma.sourceObservation.deleteMany({where:{sourceKey:'owner-fixture'}}); await prisma.source.deleteMany({where:{key:'owner-fixture'}}); });
 afterAll(async () => { await prisma.job.deleteMany(); await prisma.company.deleteMany(); await prisma.source.deleteMany({where:{key:'owner-fixture'}}); await prisma.$disconnect(); });
 async function fixture() {
  const company=await prisma.company.create({data:{name:'Legacy Brand',canonicalKey:'LEGACY_BRAND',kind:'BRAND',fashionjobsUrl:'resolved:LEGACY_BRAND'}});
@@ -93,4 +93,40 @@ it('refuses a brand posting that names the owner, an off-domain proof or a repea
  await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('Invalid native brand evidence');
  const ok={externalId:'123',targetName:'Other Brand',targetKind:'BRAND' as const,evidence:{url:'https://careers.example.com/job/x/123/',sha256:sha,property:'dept',value:'Other Brand',observedAt}};
  spec.sources[0].postings=[ok,{...ok}];await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('repeated reviewed posting');
+});
+it('accepts per-posting evidence from the declared portal hosts of a vendor-hosted hub, and only from them',async()=>{
+ const {spec}=await fixture();const sha=createHash('sha256').update('page').digest('hex'),observedAt=new Date().toISOString();
+ const onHub={externalId:'123',targetName:'Other Brand',targetKind:'BRAND' as const,targetDomain:'otherbrand.com',evidence:{url:'https://stores-na-example.icims.com/jobs/123/x/job',sha256:sha,property:'jsonld.hiringOrganization.name',value:'Other Brand',observedAt}};
+ spec.sources[0].postings=[onHub];
+ await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('Invalid native brand evidence');
+ spec.sources[0].portalHosts=['Hub-Example.icims.com'];await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('lowercase hostnames');
+ spec.sources[0].portalHosts=['hub-example.icims.com','stores-na-example.icims.com'];
+ const plan=await planReviewedPortalOwners(prisma,spec);expect(plan.ownerRules?.[0]?.postingOwners).toEqual({'123':'OTHER_BRAND'});
+ expect(plan.operations.find(o=>o.entity==='Company'&&(o.patch as any).canonicalKey==='OTHER_BRAND')?.patch).toMatchObject({domain:'otherbrand.com',domainSource:'https://stores-na-example.icims.com/jobs/123/x/job'});
+ spec.sources[0].postings=[onHub,{...onHub,externalId:'124',targetDomain:'www.otherbrand.com'}];await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('Invalid brand domain');
+ spec.sources[0].postings=[onHub,{...onHub,externalId:'124',targetDomain:'elsewhere.com'}];await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('Conflicting brand domains');
+ spec.sources[0].postings=[onHub];
+ expect((plan.evidence as any).sources[0].portalHosts).toEqual(['hub-example.icims.com','stores-na-example.icims.com']);
+ // The official proof of ownership itself must stay on the official domain.
+ spec.sources[0].evidence=[{...spec.sources[0].evidence[0],url:'https://hub-example.icims.com/'}];await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('Invalid official ownership evidence');
+});
+
+it('splits brands out of a correctly owned portal: the owner is re-evaluated per posting and unreviewed postings stay with it',async()=>{
+ const {company,source,job,spec}=await fixture();const sha=createHash('sha256').update('page').digest('hex'),observedAt=new Date().toISOString();
+ const owner=await prisma.company.create({data:{name:'Actual Group',canonicalKey:'ACTUAL_GROUP',kind:'GROUP',fashionjobsUrl:'resolved:ACTUAL_GROUP'}});
+ await prisma.job.updateMany({where:{id:job.id},data:{companyId:owner.id,clusterKey:'ACTUAL_GROUP|finance|paris',fingerprint:'ACTUAL_GROUP|finance|paris'}});
+ const second=await prisma.job.create({data:{companyId:owner.id,externalId:'456',source:'SUCCESSFACTORS',title:'Sales',url:'https://careers.example.com/job/Milan-Sales/456/',fingerprint:'ACTUAL_GROUP|sales',clusterKey:'ACTUAL_GROUP|sales',isActive:true,firstSeenAt:new Date(),lastSeenAt:new Date(),sources:{create:{sourceKey:source.key,externalId:'456',url:'https://careers.example.com/job/Milan-Sales/456/',sourceTier:'EMPLOYER_DIRECT',isActive:true,firstSeenAt:new Date(),lastSeenAt:new Date(),raw:{}}}}});
+ // A stores-route duplicate merged into `second` (redirect) must follow the employer of its canonical posting.
+ const predecessor=await prisma.job.create({data:{companyId:owner.id,externalId:'456',source:'SUCCESSFACTORS',title:'Sales',url:'https://careers.example.com/job/Milan-Sales/456/?in_iframe=1',fingerprint:'ACTUAL_GROUP|sales|dup',clusterKey:'ACTUAL_GROUP|sales',isActive:false,mergedIntoId:second.id,firstSeenAt:new Date(),lastSeenAt:new Date(),events:{create:{type:'MERGED',field:'mergedInto',after:second.id}}}});
+ await prisma.company.delete({where:{id:company.id}});
+ spec.sources[0].fromCompanyIds=[owner.id];
+ await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('Target is listed as a misattributed identity');
+ // A posting that keeps its owner may be attested by another live source: nothing changes for it, so nothing needs review.
+ await prisma.jobSource.create({data:{jobId:job.id,sourceKey:'other-board',externalId:'x-123',url:'https://board.example.org/x-123',sourceTier:'JOBBOARD',isActive:true,firstSeenAt:new Date(),lastSeenAt:new Date(),raw:{}}});
+ spec.sources[0].postings=[{externalId:'456',targetName:'Actual Brand',targetKind:'BRAND',evidence:{url:'https://careers.example.com/job/Milan-Sales/456/',sha256:sha,property:'jsonld.hiringOrganization.name',value:'Actual Brand',observedAt}}];
+ const plan=await planReviewedPortalOwners(prisma,spec);await applyRepairPlan(prisma,plan,digest(plan),'test');
+ expect((await prisma.job.findUniqueOrThrow({where:{id:job.id}})).companyId).toBe(owner.id);
+ const brand=await prisma.job.findUniqueOrThrow({where:{id:second.id},include:{company:true}});expect(brand.company).toMatchObject({name:'Actual Brand',parentGroupId:owner.id});expect(brand.clusterKey).toBe('ACTUAL_BRAND|sales');
+ const redirected=await prisma.job.findUniqueOrThrow({where:{id:predecessor.id}});expect(redirected).toMatchObject({companyId:brand.companyId,mergedIntoId:second.id,isActive:false,clusterKey:'ACTUAL_BRAND|sales'});
+ expect(await applyRepairPlan(prisma,plan,digest(plan),'test')).toMatchObject({alreadyApplied:true,written:0,sourceOwnerContradictions:0});
 });
