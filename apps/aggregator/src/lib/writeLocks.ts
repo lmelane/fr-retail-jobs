@@ -14,3 +14,9 @@ export async function lockCompanyRows(tx: Prisma.TransactionClient, ids: readonl
     await tx.$queryRaw`SELECT 1 AS locked FROM pg_advisory_xact_lock(hashtextextended(${key}, 0))`;
   }
 }
+
+export async function lockEmployerCatalogue(tx: Prisma.TransactionClient, exclusive = false) {
+  const key = 'employer-identity-catalogue-v1';
+  if (exclusive) await tx.$queryRaw`SELECT 1 FROM pg_advisory_xact_lock(hashtextextended(${key}, 0))`;
+  else await tx.$queryRaw`SELECT 1 FROM pg_advisory_xact_lock_shared(hashtextextended(${key}, 0))`;
+}

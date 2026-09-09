@@ -40,7 +40,8 @@ export type Profile = {
 
 export type ProfileOptions = {
   /** Scope + clé de snapshot du périmètre, pour lire sa série. */
-  snapshot?: { scope: SnapshotScope; key: string };
+  snapshot?: { scope: SnapshotScope; key: string; afterDate?: string | null };
+  identityRevision?: string;
   /** Charger les compétences (`skills[]`) — utile sur métier / Maison. */
   skills?: boolean;
   /** Charger les « nouveaux marchés » — Maison seulement. */
@@ -64,7 +65,7 @@ export const getProfile = cached('profile', async (scope: Scope, options: Profil
       byContract(scope),
       options.skills ? topSkills(scope, 20) : Promise.resolve([] as Count[]),
       options.newCities && scope.companyId ? newCities30d(scope.companyId) : Promise.resolve([]),
-      options.snapshot ? series(options.snapshot.scope, options.snapshot.key, 400) : Promise.resolve([] as SnapshotPoint[]),
+      options.snapshot ? series(options.snapshot.scope, options.snapshot.key, 400, options.snapshot.afterDate) : Promise.resolve([] as SnapshotPoint[]),
     ]);
   return {
     scope,

@@ -1,0 +1,61 @@
+{
+  "environment": "fresh production copy restored from before-lot1.dump",
+  "planHash": "005b837cad944e38da22da753d51b996486856542183d7d0f47d8cf9a37838e9",
+  "before": {
+    "jobs": 77322,
+    "active": 74113,
+    "sources": 80348,
+    "events": 21718,
+    "observations": 72178
+  },
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 31,
+    "aliases": 8
+  },
+  "after": {
+    "jobs": 77322,
+    "active": 74113,
+    "sources": 80348,
+    "events": 21749,
+    "observations": 72178
+  },
+  "companies": [
+    {
+      "id": "cmtk1x1ns0072nv2bytyhwuta",
+      "name": "Promod",
+      "kind": "RETAILER",
+      "mergedIntoId": null,
+      "_count": {
+        "jobs": 21
+      }
+    },
+    {
+      "id": "cmtk1xdjg0176nv2b70ayaadr",
+      "name": "Aubade",
+      "kind": "MAISON",
+      "mergedIntoId": null,
+      "_count": {
+        "jobs": 29
+      }
+    },
+    {
+      "id": "cmtlyiz3m076kqf5kegty1y42",
+      "name": "Aubade Paris",
+      "kind": "UNKNOWN",
+      "mergedIntoId": "cmtk1xdjg0176nv2b70ayaadr",
+      "_count": {
+        "jobs": 0
+      }
+    },
+    {
+      "id": "cmtpkx0bb59q9pf5le0vx07cg",
+      "name": "PROMOD - MAGASIN",
+      "kind": "UNKNOWN",
+      "mergedIntoId": "cmtk1x1ns0072nv2bytyhwuta",
+      "_count": {
+        "jobs": 0
+      }
+    }
+  ]
+}

@@ -57,7 +57,7 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
 
         for (let j = i + 1; j < jobs.length; j++) {
           const other = jobs[j];
-          if (absorbed.has(other.id)) continue;
+          if (absorbed.has(other.id) || keeper.companyId !== other.companyId) continue;
           if (hasRequisitionConflict([...keeper.sources, ...other.sources].map(source => source.url))) continue;
 
           const asCandidate = (job: (typeof jobs)[number]): CandidateJob => ({

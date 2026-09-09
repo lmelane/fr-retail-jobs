@@ -1,3 +1,7 @@
+import { EmployerIdentityReviewRequired } from '../identity/errors.js';
+import { normalizedEmployerName } from '../normalize/employerName.js';
+import { lockEmployerCatalogue } from '../lib/writeLocks.js';
+import { resolveEmployer, recordEmployerObservation, type EmployerResolution } from '../identity/resolve.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { lockCompanyRows, lockSourceWrites } from '../lib/writeLocks.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
@@ -78,28 +82,57 @@ export async function upsertDeduplicated(
     assertSourceRunning();
     try {
       return await prisma.$transaction(async tx => {
+        await lockEmployerCatalogue(tx);
         await lockSourceWrites(tx, candidate.sourceKey);
         const source = await tx.source.findUnique({ where: { key: candidate.sourceKey }, select: { status: true } });
         if (source?.status === 'RETIRED') throw new Error(`Source ${candidate.sourceKey} is RETIRED`);
+        // Read identity/observation state only after serializing this upstream
+        // posting; another writer may otherwise create it between lookup and lock.
+        const entryKey = JSON.stringify(['entry', candidate.sourceKey, candidate.externalId]);
+        await tx.$queryRaw`SELECT 1 AS locked FROM pg_advisory_xact_lock(hashtextextended(${entryKey}, 0))`;
+        const resolution = await resolveEmployer(tx, candidate);
+        const resolved = resolution.company ? {
+          ...candidate, company: resolution.company.name,
+          companyId: resolution.company.canonicalKey,
+          canonicalEmployerKey: resolution.company.canonicalKey,
+        } : resolution.newKey ? {
+          ...candidate, company: resolution.newName!, companyId: resolution.newKey,
+          canonicalEmployerKey: resolution.newKey,
+        } : candidate;
         // Source identity protects relocation/renaming; company serializes the
         // matching decision across independent feeds and cluster buckets.
-        for (const key of [JSON.stringify(['entry', candidate.sourceKey, candidate.externalId]), JSON.stringify(['company', candidate.companyId])]) {
-          await tx.$queryRaw`SELECT 1 AS locked FROM pg_advisory_xact_lock(hashtextextended(${key}, 0))`;
-        }
-        const target = await tx.company.findUnique({
-          where: { fashionjobsUrl: `resolved:${candidate.companyId}` }, select: { id: true },
-        });
+        const companyKey = JSON.stringify(['company', resolved.companyId]);
+        await tx.$queryRaw`SELECT 1 AS locked FROM pg_advisory_xact_lock(hashtextextended(${companyKey}, 0))`;
+        const target = resolution.company;
         const current = await tx.jobSource.findUnique({
           where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
           select: { job: { select: { companyId: true } } },
         });
         await lockCompanyRows(tx, [target?.id, current?.job.companyId].filter((id): id is string => !!id));
         assertSourceRunning();
-        const result = await upsertInTransaction(tx, candidate);
+        const result = await upsertInTransaction(tx, resolved, resolution);
         assertSourceRunning(); // Throw inside the transaction so cancellation rolls writes back.
         return result;
       }, { maxWait: 10_000, timeout: 30_000 });
     } catch (error) {
+      if (error instanceof EmployerIdentityReviewRequired) {
+        // The failed canonical write rolled back. Archive the rejected evidence
+        // separately, then surface the error so the run cannot attest absence.
+        await prisma.$transaction(async tx => {
+          if (candidate.raw != null) {
+            const contentHash = createHash('sha256').update(JSON.stringify(candidate.raw)).digest('hex');
+            await tx.sourceObservation.upsert({
+              where: { sourceKey_externalId_contentHash: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, contentHash } },
+              create: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, contentHash, raw: candidate.raw as Prisma.InputJsonValue, pipelineVersion: PIPELINE_VERSION }, update: {},
+            });
+          }
+          await recordEmployerObservation(tx, candidate, null, {
+            company: null, rule: 'REVIEW_REQUIRED', rawEmployerName: error.rawEmployerName,
+            normalizedEmployerName: normalizedEmployerName(error.rawEmployerName),
+          });
+        });
+        throw error;
+      }
       // Retry the entire transaction, never query inside an aborted transaction.
       const code = error instanceof Error && 'code' in error ? error.code : undefined;
       if (attempt >= 2 || (code !== 'P2034' && code !== 'P2002')) throw error;
@@ -110,6 +143,7 @@ export async function upsertDeduplicated(
 async function upsertInTransaction(
   prisma: Prisma.TransactionClient,
   candidate: CandidateJob & { companyId: string },
+  resolution: EmployerResolution,
 ): Promise<UpsertResult> {
   const clusterKey = blockingKey(candidate);
   const now = new Date();
@@ -150,7 +184,7 @@ async function upsertInTransaction(
   // ~5 100 offres de flux de groupe n'avaient aucun groupe (audit A1).
   const parentGroup = findMaison(candidate.company)?.group || resolveCompany(candidate.company).group || null;
 
-  const company = await prisma.company.upsert({
+  const company = resolution.company ?? await prisma.company.upsert({
     where: { fashionjobsUrl: `resolved:${candidate.companyId}` },
     create: {
       name: candidate.company,
@@ -165,16 +199,14 @@ async function upsertInTransaction(
       // catalogue's careers host, never a guess from the name.
       ...(candidate.companyDomain ? { domain: candidate.companyDomain, domainSource: 'source-careers' } : {}),
     },
-    // Re-write the name on every update, not only on create: a Company created
-    // before the "+N" strip (decision D11) shipped keeps its polluted name
-    // forever otherwise ("Cartier +3", "IWC Schaffhausen +3"…), because the old
-    // update left `name` untouched. candidate.company is already the resolved,
-    // stripped display name, and it is identical for every offer of the same
-    // companyId, so this is a stable self-heal — the 40 legacy rows clean up on
-    // their next ingest.
-    update: { name: candidate.company, sector, parentGroup, lastSeenAt: now },
+    // Names and reviewed relationships change through an audited identity decision,
+    // never as a side effect of an offer's spelling.
+    update: { lastSeenAt: now },
     select: { id: true, domain: true },
   });
+
+  if (resolution.company) await prisma.company.update({ where: { id: company.id }, data: { lastSeenAt: now } });
+  await recordEmployerObservation(prisma, candidate, company.id, resolution);
 
   // A Company first created by a group feed (no domain) gets its domain the
   // day its own careers site re-attests it. Fill only when EMPTY: a domain
@@ -216,7 +248,7 @@ async function upsertInTransaction(
   // Only live jobs in the same cluster can absorb this posting. The cluster key
   // is indexed, so this stays a narrow lookup rather than a scan.
   const clusterJobs = await prisma.job.findMany({
-    where: { clusterKey, isActive: true, sources: { none: { sourceKey: candidate.sourceKey } } },
+    where: { companyId: company.id, clusterKey, isActive: true, sources: { none: { sourceKey: candidate.sourceKey } } },
     select: {
       id: true, title: true, countryCode: true, city: true, location: true, postedAt: true, url: true,
       sources: { select: { sourceKey: true, externalId: true, url: true, isActive: true } },

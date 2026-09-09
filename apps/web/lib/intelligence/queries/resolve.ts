@@ -57,7 +57,7 @@ export async function resolveGroup(slug: string): Promise<string | null> {
   return (await groupIndex())[slug] ?? null;
 }
 
-export type ResolvedCompany = { id: string; name: string; sector: string | null; parentGroup: string | null; domain: string | null; careersUrl: string | null };
+export type ResolvedCompany = { id: string; name: string; sector: string | null; parentGroup: string | null; domain: string | null; careersUrl: string | null; identityRevision?: string; identityChangedAt?: string | null };
 
 /**
  * Même règle de slug que `/entreprise/[slug]` (companySlug). En cas
@@ -89,5 +89,25 @@ const companyIndex = cached('company-index', async (): Promise<Record<string, Re
 
 export async function resolveCompany(slug: string): Promise<ResolvedCompany | null> {
   if (!isValidSlug(slug)) return null;
-  return (await companyIndex())[slug] ?? null;
+  const indexed = (await companyIndex())[slug];
+  if (!indexed) return null;
+  // Read redirect/revision fresh: a cached slug index must not retain an old
+  // employer assignment for an hour after a reviewed production repair.
+  let company = await prisma.company.findUnique({ where: { id: indexed.id } });
+  if (!company) return null;
+  const visited = new Set<string>();
+  while (company.mergedIntoId) {
+    if (visited.has(company.id)) throw new Error('Employer redirect cycle');
+    visited.add(company.id);
+    company = await prisma.company.findUniqueOrThrow({ where: { id: company.mergedIntoId } });
+  }
+  const revision = await prisma.dataCorrection.findFirst({
+    where: { entityType: 'Company', OR: [{ entityId: company.id }, { after: { path: ['mergedIntoId'], equals: company.id } }] },
+    orderBy: { createdAt: 'desc' }, select: { planHash: true },
+  });
+  const merge = await prisma.dataCorrection.findFirst({
+    where: { entityType: 'Company', after: { path: ['mergedIntoId'], equals: company.id } },
+    orderBy: { createdAt: 'desc' }, select: { createdAt: true },
+  });
+  return { id: company.id, name: company.name, sector: company.sector, parentGroup: company.parentGroup, domain: company.domain, careersUrl: company.careersUrl, identityRevision: revision?.planHash, identityChangedAt: merge?.createdAt.toISOString().slice(0, 10) ?? null };
 }

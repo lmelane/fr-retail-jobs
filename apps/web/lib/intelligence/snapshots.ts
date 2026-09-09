@@ -46,7 +46,10 @@ async function run<T>(query: Prisma.Sql): Promise<T[]> {
 }
 
 /** Série datée croissante d'un périmètre, sur les `days` derniers jours (défaut : tout). */
-export async function series(scope: SnapshotScope, key: string, days?: number): Promise<SnapshotPoint[]> {
+export async function series(scope: SnapshotScope, key: string, days?: number, afterDate?: string | null): Promise<SnapshotPoint[]> {
+  // A merged employer has a new perimeter. Preserve old snapshots, but do not
+  // compare a partial historical entity with the consolidated entity today.
+  const identityCutover = afterDate ? Prisma.sql`AND date > ${afterDate}::date` : Prisma.empty;
   const since = days ? Prisma.sql`AND date >= (CURRENT_DATE - ${days}::int)` : Prisma.empty;
   const rows = await run<{
     date: string; activeJobs: number; newJobs: number; closedJobs: number; hiringCompanies: number;
@@ -54,7 +57,7 @@ export async function series(scope: SnapshotScope, key: string, days?: number): 
   }>(Prisma.sql`
     SELECT to_char(date, 'YYYY-MM-DD') AS "date", "activeJobs", "newJobs", "closedJobs", "hiringCompanies",
            "medianLifespanDays"::float AS "medianLifespanDays", "reopenedJobs"
-    FROM "MarketSnapshot" WHERE scope = ${scope} AND key = ${key} ${LIVE} ${since} ORDER BY date ASC`);
+    FROM "MarketSnapshot" WHERE scope = ${scope} AND key = ${key} ${LIVE} ${since} ${identityCutover} ORDER BY date ASC`);
   return rows.map((r) => ({
     date: r.date,
     activeJobs: r.activeJobs,

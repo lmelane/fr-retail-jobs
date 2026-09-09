@@ -37,6 +37,11 @@ export const SOURCE_PRIORITY: readonly SourceTier[] = [
 
 export type CandidateJob = NormalizedJob & {
   company: string;
+  /** Exact adapter label before any spelling/identity heuristic. */
+  rawEmployerName?: string;
+  employerLabelOrigin?: string;
+  /** Resolved database identity key; never recompute it from the display name. */
+  canonicalEmployerKey?: string;
   sourceKey: string;
   sourceTier: SourceTier;
   /**
@@ -81,7 +86,7 @@ export function blockingKey(job: CandidateJob): string {
   // un `location` illisible se rangeaient dans le cluster « sans ville »
   // (L'Oréal : 1 782 offres, 461 villes, une seule clé — audit A2, 2026-09-06).
   const city = normalizeLocationString(job.city ?? job.location).city ?? '';
-  return `${resolveCompany(job.company).companyId}|${city}`;
+  return `${job.canonicalEmployerKey ?? resolveCompany(job.company).companyId}|${city}`;
 }
 
 /** Strict identity: company + title + city all match after normalization. */
