@@ -1,0 +1,779 @@
+{
+  "asOf": "2026-09-09T07:14:20.138Z",
+  "scope": "after three reviewed employer merges; candidates are not automatically duplicates",
+  "pairs": [
+    {
+      "a": {
+        "id": "cmtjzhlnt0000oe2b1pugscrp",
+        "name": "Foot Locker"
+      },
+      "b": {
+        "id": "cmtpxur2b00003nxcmcnc6054",
+        "name": "Kids Foot Locker"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 1933,
+      "activeB": 430
+    },
+    {
+      "a": {
+        "id": "cmtk48e6r1bu9ny2bxbq8un50",
+        "name": "Christian Dior Couture"
+      },
+      "b": {
+        "id": "cmtk48ead1bvtny2br5o6wk5j",
+        "name": "Parfums Christian Dior"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 493,
+      "activeB": 257
+    },
+    {
+      "a": {
+        "id": "cmtp3x7uq1hanqq4zt2cwpjve",
+        "name": "Aritzia LP"
+      },
+      "b": {
+        "id": "cmtp3x9qd1i2rqq4zrhu5qavu",
+        "name": "Aritzia"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT",
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 206,
+      "activeB": 348
+    },
+    {
+      "a": {
+        "id": "cmtjw1ejj0141ld2bt20epmki",
+        "name": "L'Oréal"
+      },
+      "b": {
+        "id": "cmtjwf6za08pxo72be8uvm8kn",
+        "name": "L'Oréal Groupe"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT",
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 1804,
+      "activeB": 76
+    },
+    {
+      "a": {
+        "id": "cmtpj2g8y1460pf5lltllly0i",
+        "name": "Swatch"
+      },
+      "b": {
+        "id": "cmtpj2gbr1473pf5l1wfwy9ur",
+        "name": "Swatch Group"
+      },
+      "reasons": [
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 66,
+      "activeB": 32
+    },
+    {
+      "a": {
+        "id": "cmtk1xe9n01a0nv2b2p3qyil0",
+        "name": "Diptyque"
+      },
+      "b": {
+        "id": "cmtlyj6mk07leqf5kn4ipgxhk",
+        "name": "Diptyque paris"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT",
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 154,
+      "activeB": 27
+    },
+    {
+      "a": {
+        "id": "cmtk48edz1bx5ny2bwve7xek3",
+        "name": "LVMH"
+      },
+      "b": {
+        "id": "cmtk48irc1dqany2bt7e36jw9",
+        "name": "Fashion Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 75,
+      "activeB": 25
+    },
+    {
+      "a": {
+        "id": "cmtlyiig305w5qf5kntqzz9kw",
+        "name": "BZB"
+      },
+      "b": {
+        "id": "cmtn5a7sg053rqq5ltoj3513x",
+        "name": "Bizzbee"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 22,
+      "activeB": 22
+    },
+    {
+      "a": {
+        "id": "cmtke2us500d0lp2bu5et2x5u",
+        "name": "L’Occitane en Provence"
+      },
+      "b": {
+        "id": "cmtp1xiqw03ngqq4zikinuk6e",
+        "name": "L’Occitane"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 16,
+      "activeB": 24
+    },
+    {
+      "a": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "b": {
+        "id": "cmtm8oy3h1hbhpv5j1cszq8so",
+        "name": "Air MI"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 740,
+      "activeB": 13
+    },
+    {
+      "a": {
+        "id": "cmtk48g5s1conny2bv651ayg7",
+        "name": "Loewe"
+      },
+      "b": {
+        "id": "cmtk48i0l1di2ny2b5nkl6pdu",
+        "name": "Perfumes Loewe"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 62,
+      "activeB": 11
+    },
+    {
+      "a": {
+        "id": "cmtpu4rhw0tagl35mz8iyzlg0",
+        "name": "MECCA Brands"
+      },
+      "b": {
+        "id": "cmtpu4rro0td7l35mjtu7y2pp",
+        "name": "MECCA Brands NZ"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 167,
+      "activeB": 10
+    },
+    {
+      "a": {
+        "id": "cmtp1vdes01o4qq4zdpcrh599",
+        "name": "Lagardère Duty Free"
+      },
+      "b": {
+        "id": "cmtpu023j04jil35mg4a1g7vf",
+        "name": "Lagardère Travel"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 9,
+      "activeB": 130
+    },
+    {
+      "a": {
+        "id": "cmtkdvvnl1s56nf2b4wguve1b",
+        "name": "LTD INTERNATIONAL"
+      },
+      "b": {
+        "id": "cmtrup1pw4mnupg5mp5zf8mds",
+        "name": "LTD"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 9,
+      "activeB": 8
+    },
+    {
+      "a": {
+        "id": "cmtp2dsp50rjpqq4zsv7dmc4t",
+        "name": "MECCA"
+      },
+      "b": {
+        "id": "cmtpu4rhw0tagl35mz8iyzlg0",
+        "name": "MECCA Brands"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 8,
+      "activeB": 167
+    },
+    {
+      "a": {
+        "id": "cmtp2dsp50rjpqq4zsv7dmc4t",
+        "name": "MECCA"
+      },
+      "b": {
+        "id": "cmtpu4rro0td7l35mjtu7y2pp",
+        "name": "MECCA Brands NZ"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 8,
+      "activeB": 10
+    },
+    {
+      "a": {
+        "id": "cmtk1xktt01jdnv2ba1o5xwx4",
+        "name": "Stella McCartney"
+      },
+      "b": {
+        "id": "cmtpu0ykr086sl35m7swvoori",
+        "name": "Stella McCartney (Japan)"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 23,
+      "activeB": 7
+    },
+    {
+      "a": {
+        "id": "cmtm7vlqt14bnpv5jwkbal0n0",
+        "name": "Donzé-Baume"
+      },
+      "b": {
+        "id": "cmtpj2gbr1473pf5l1wfwy9ur",
+        "name": "Swatch Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 5,
+      "activeB": 32
+    },
+    {
+      "a": {
+        "id": "cmtm7vlqt14bnpv5jwkbal0n0",
+        "name": "Donzé-Baume"
+      },
+      "b": {
+        "id": "cmtpj2ix0154lpf5lvxbmvebf",
+        "name": "Rubattel et Weyermann"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 5,
+      "activeB": 4
+    },
+    {
+      "a": {
+        "id": "cmtpj2gbr1473pf5l1wfwy9ur",
+        "name": "Swatch Group"
+      },
+      "b": {
+        "id": "cmtpj2ix0154lpf5lvxbmvebf",
+        "name": "Rubattel et Weyermann"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 32,
+      "activeB": 4
+    },
+    {
+      "a": {
+        "id": "cmtjw1ejj0141ld2bt20epmki",
+        "name": "L'Oréal"
+      },
+      "b": {
+        "id": "cmtpkwxjp59hcpf5lc3ggp4ii",
+        "name": "L'OREAL GROUP"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 1804,
+      "activeB": 3
+    },
+    {
+      "a": {
+        "id": "cmtjwf6za08pxo72be8uvm8kn",
+        "name": "L'Oréal Groupe"
+      },
+      "b": {
+        "id": "cmtpkwxjp59hcpf5lc3ggp4ii",
+        "name": "L'OREAL GROUP"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 76,
+      "activeB": 3
+    },
+    {
+      "a": {
+        "id": "cmtkdvun31rr6nf2br4o71hap",
+        "name": "GROUPE CHANTELLE LINGERIE"
+      },
+      "b": {
+        "id": "cmtke332p010plp2b807b00bh",
+        "name": "Groupe Chantelle"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 3,
+      "activeB": 37
+    },
+    {
+      "a": {
+        "id": "cmtp8689s3rhiqq4zkjut95yo",
+        "name": "MODELOR COUTURE"
+      },
+      "b": {
+        "id": "cmtp869213rpfqq4zz8l0wssq",
+        "name": "MODELOR SERVICE"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 8,
+      "activeB": 3
+    },
+    {
+      "a": {
+        "id": "cmtm7ud6s1130pv5jovfzvdq6",
+        "name": "Sarenza Studio"
+      },
+      "b": {
+        "id": "cmtm7udvv11bjpv5jpfcafu5v",
+        "name": "Sarenza"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 2,
+      "activeB": 5
+    },
+    {
+      "a": {
+        "id": "cmtn5dgoo0b8pqq5lh5676e8v",
+        "name": "Prada Group"
+      },
+      "b": {
+        "id": "cmtp8686e3rh3qq4z7tykspax",
+        "name": "PRADA"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT",
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 149,
+      "activeB": 2
+    },
+    {
+      "a": {
+        "id": "cmtn7s1lr1rosqq5liqmue7z6",
+        "name": "Levi's"
+      },
+      "b": {
+        "id": "cmtpunkpu2m55l35me77g1x5r",
+        "name": "THA- Levi Strauss (Thailand)"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 1331,
+      "activeB": 2
+    },
+    {
+      "a": {
+        "id": "cmtpukup029apl35mgtskxs6a",
+        "name": "Kering Corporate"
+      },
+      "b": {
+        "id": "cmtpul3f72blvl35mj7oc58ov",
+        "name": "Kering Beaute"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 120,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtp868vg3rmuqq4z150o1s59",
+        "name": "KSI MODE"
+      },
+      "b": {
+        "id": "cmtpw95zy4k0hl35mew33fqog",
+        "name": "KSI"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 1,
+      "activeB": 7
+    },
+    {
+      "a": {
+        "id": "cmtkdvxw01su3nf2but3bkw0q",
+        "name": "DINH VAN"
+      },
+      "b": {
+        "id": "cmtkdvyuw1t4mnf2bpbim5cwq",
+        "name": "DINH VAN PARIS"
+      },
+      "reasons": [
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 1,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtlypqc50l71qf5ka25kzsy3",
+        "name": "Movado Group"
+      },
+      "b": {
+        "id": "cmtlypqm80lalqf5k0vf3uydw",
+        "name": "Movado"
+      },
+      "reasons": [
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 24,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtm7vlqt14bnpv5jwkbal0n0",
+        "name": "Donzé-Baume"
+      },
+      "b": {
+        "id": "cmtpj2hvd14rcpf5lux514kfh",
+        "name": "Micro Crystal"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 5,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtm7vlqt14bnpv5jwkbal0n0",
+        "name": "Donzé-Baume"
+      },
+      "b": {
+        "id": "cmtpj2inp150vpf5lhqvz0rq3",
+        "name": "MOM Le Prélet"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 5,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtm7vlqt14bnpv5jwkbal0n0",
+        "name": "Donzé-Baume"
+      },
+      "b": {
+        "id": "cmtpj2jho15bvpf5l0grcvf65",
+        "name": "CPK Swatch Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 5,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtpj2gbr1473pf5l1wfwy9ur",
+        "name": "Swatch Group"
+      },
+      "b": {
+        "id": "cmtpj2hvd14rcpf5lux514kfh",
+        "name": "Micro Crystal"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 32,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtpj2gbr1473pf5l1wfwy9ur",
+        "name": "Swatch Group"
+      },
+      "b": {
+        "id": "cmtpj2inp150vpf5lhqvz0rq3",
+        "name": "MOM Le Prélet"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 32,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtpj2gbr1473pf5l1wfwy9ur",
+        "name": "Swatch Group"
+      },
+      "b": {
+        "id": "cmtpj2jho15bvpf5l0grcvf65",
+        "name": "CPK Swatch Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 32,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtpj2hvd14rcpf5lux514kfh",
+        "name": "Micro Crystal"
+      },
+      "b": {
+        "id": "cmtpj2inp150vpf5lhqvz0rq3",
+        "name": "MOM Le Prélet"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 1,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtpj2hvd14rcpf5lux514kfh",
+        "name": "Micro Crystal"
+      },
+      "b": {
+        "id": "cmtpj2ix0154lpf5lvxbmvebf",
+        "name": "Rubattel et Weyermann"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 1,
+      "activeB": 4
+    },
+    {
+      "a": {
+        "id": "cmtpj2hvd14rcpf5lux514kfh",
+        "name": "Micro Crystal"
+      },
+      "b": {
+        "id": "cmtpj2jho15bvpf5l0grcvf65",
+        "name": "CPK Swatch Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 1,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtpj2inp150vpf5lhqvz0rq3",
+        "name": "MOM Le Prélet"
+      },
+      "b": {
+        "id": "cmtpj2ix0154lpf5lvxbmvebf",
+        "name": "Rubattel et Weyermann"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 1,
+      "activeB": 4
+    },
+    {
+      "a": {
+        "id": "cmtpj2inp150vpf5lhqvz0rq3",
+        "name": "MOM Le Prélet"
+      },
+      "b": {
+        "id": "cmtpj2jho15bvpf5l0grcvf65",
+        "name": "CPK Swatch Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 1,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtpj2ix0154lpf5lvxbmvebf",
+        "name": "Rubattel et Weyermann"
+      },
+      "b": {
+        "id": "cmtpj2jho15bvpf5l0grcvf65",
+        "name": "CPK Swatch Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 4,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtp8689s3rhiqq4zkjut95yo",
+        "name": "MODELOR COUTURE"
+      },
+      "b": {
+        "id": "cmtpw96v64k7el35m53n2f1ce",
+        "name": "MODELOR"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 8,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtp869213rpfqq4zz8l0wssq",
+        "name": "MODELOR SERVICE"
+      },
+      "b": {
+        "id": "cmtpw96v64k7el35m53n2f1ce",
+        "name": "MODELOR"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 3,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtpkdkdi474apf5l272m6owb",
+        "name": "Ulta Beauty, Inc."
+      },
+      "b": {
+        "id": "cmtpuyimv3pbul35m36fwuuzo",
+        "name": "Ulta Beauty"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 1,
+      "activeB": 10289
+    },
+    {
+      "a": {
+        "id": "cmtpu5x5w0ye8l35mk5a5n19w",
+        "name": "Corporate J. Crew Group"
+      },
+      "b": {
+        "id": "cmtpu5xu50ylbl35mf7yal6t3",
+        "name": "Lynch DC / Cust Care J.Crew"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 23,
+      "activeB": 1
+    },
+    {
+      "a": {
+        "id": "cmtpuc6031nlel35mf3c1vtkn",
+        "name": "SAKS"
+      },
+      "b": {
+        "id": "cmtpuc6a21notl35m4yqt2lbd",
+        "name": "SAKS COM"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE",
+      "activeA": 776,
+      "activeB": 1
+    }
+  ]
+}

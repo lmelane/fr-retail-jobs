@@ -1,0 +1,39 @@
+{
+  "asOf": "2026-09-09T07:25:13.011405+00:00",
+  "services": [
+    {
+      "service": "aggregator",
+      "id": "7d177a35-98b6-4206-a1b8-a4f3eee79458",
+      "status": "SUCCESS",
+      "commit": "0dbcb2f15e7f304a56cf3b3db7bce0f193adc848",
+      "command": "sh apps/aggregator/start.sh",
+      "paused": "1"
+    },
+    {
+      "service": "refresh",
+      "id": "c3fb6363-2599-447c-9d7b-0db6313057cc",
+      "status": "SUCCESS",
+      "commit": "0dbcb2f15e7f304a56cf3b3db7bce0f193adc848",
+      "command": null,
+      "paused": "1"
+    },
+    {
+      "service": "reconcile",
+      "id": "97249fb8-8cda-460f-bc57-952f65be8a29",
+      "status": "SUCCESS",
+      "commit": "0dbcb2f15e7f304a56cf3b3db7bce0f193adc848",
+      "command": null,
+      "paused": "1"
+    },
+    {
+      "service": "web",
+      "id": "9926bbc1-b3d6-4927-9831-13ff1db2df9d",
+      "status": "SUCCESS",
+      "commit": "7643171aacc4be29039032bd5deb7665b994555d",
+      "command": null,
+      "paused": null
+    }
+  ],
+  "webAndSchemaUnchangedInNativeFollowup": true,
+  "executionScope": "Only two explicitly bounded Promod runs executed. The massive ingest, refresh and reconcile remain paused. SUCCESS on those cron images is not evidence of a completed operating cycle."
+}
