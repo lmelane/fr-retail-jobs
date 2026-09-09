@@ -30,3 +30,14 @@ if (!/test/i.test(name)) {
       `so real data cannot be wiped. Point DATABASE_URL at a dedicated test database.`,
   );
 }
+
+// The immutable occupation ledger restricts deleting its Job. Only this guarded
+// disposable test database may truncate it between tests; production repairs
+// retain the ledger. The afterEach also permits existing afterAll cleanup.
+import { beforeEach, afterEach, afterAll } from 'vitest';
+import { PrismaClient } from '@prisma/client';
+const occupationTestDb = new PrismaClient();
+export const clearOccupationLedger = async () => { await occupationTestDb.$executeRaw`TRUNCATE "OccupationObservation"`; };
+beforeEach(clearOccupationLedger);
+afterEach(clearOccupationLedger);
+afterAll(async () => { await occupationTestDb.$disconnect(); });

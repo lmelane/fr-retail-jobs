@@ -1,3 +1,4 @@
+import { getOccupationPresentation } from '@/lib/occupations';
 import type { Metadata } from 'next';
 import { Block, Coverage, IntelPage, JsonLd, Kpi, Mix, PageHead } from '@/components/intelligence/chrome';
 import { BarList } from '@/components/intelligence/charts/bar-list';
@@ -8,7 +9,7 @@ import { share } from '@/lib/intelligence/metrics';
 import { fmtInt, fmtNew, fmtPct } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
-import { functionLabel, OTHER_SECTOR_LABEL, SECTOR_LABELS, SECTOR_SLUGS, SECTORS, UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
+import { OTHER_SECTOR_LABEL, SECTOR_LABELS, SECTOR_SLUGS, SECTORS, UNCLASSIFIED_LABEL } from '@/lib/intelligence/taxonomy';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,6 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
+  const {JOB_FUNCTIONS,FUNCTION_BY_KEY,FAMILY_LABELS,functionLabel}=await getOccupationPresentation();
   const [data, coverage] = await Promise.all([getSectorsList(), getCoverage()]);
   const byKey = new Map(data.rows.map((r) => [r.key, r]));
   const others = data.rows.filter((r) => !(SECTORS as ReadonlyArray<string>).includes(r.key));

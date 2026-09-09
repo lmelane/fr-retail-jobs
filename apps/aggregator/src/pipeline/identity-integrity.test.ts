@@ -110,8 +110,9 @@ describe('transactional identity and source authority', () => {
     expect(await prisma.sourceObservation.count()).toBe(2);
     expect(await prisma.job.findFirstOrThrow()).toMatchObject({ description: 'Corrected', raw: { revision: 2 } });
     expect(await prisma.jobSource.findFirstOrThrow()).toMatchObject({ raw: { revision: 2 } });
-    await prisma.job.deleteMany();
+    await expect(prisma.job.deleteMany()).rejects.toThrow();
     expect(await prisma.sourceObservation.count()).toBe(2);
+    expect(await prisma.occupationObservation.count()).toBeGreaterThan(0);
   });
 
   it('rolls back observations and company creation when the job write fails', async () => {

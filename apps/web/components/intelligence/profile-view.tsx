@@ -1,3 +1,4 @@
+import { getOccupationPresentation } from '@/lib/occupations';
 import Link from 'next/link';
 import { Block, Coverage, Insight, Kpi, Mix, NA } from './chrome';
 import { BarList } from './charts/bar-list';
@@ -10,7 +11,7 @@ import type { Coverage as CoverageData } from '@/lib/intelligence/queries/covera
 import { concentration, indexBase100, median, momentum, repostRate, share, variation } from '@/lib/intelligence/metrics';
 import { fmtDate, fmtDays, fmtIndex, fmtInt, fmtNew, fmtPct, fmtSignedPct, MIN_SAMPLE, NA_FROM, NA_INSUFFICIENT, addDays, windowAvailable, windowFrom } from '@/lib/intelligence/format';
 import { intelPaths } from '@/lib/intelligence/paths';
-import { FAMILY_LABELS, functionLabel, mergeOtherSectors, sectorLabel, seniorityLabel, UNCLASSIFIED_LABEL, type JobFamily } from '@/lib/intelligence/taxonomy';
+import { mergeOtherSectors, sectorLabel, UNCLASSIFIED_LABEL, type JobFamily } from '@/lib/intelligence/taxonomy';
 
 /**
  * Les blocs standard d'un périmètre (pays, ville, métier, Maison, groupe,
@@ -68,8 +69,8 @@ export function ProfileKpis({ profile, coverage, ctx }: { profile: Profile; cove
       )}
       <Kpi label="Durée médiane de publication" value={med.ok ? fmtDays(med.value) : undefined} na={med.ok ? undefined : med.na} level="derived" sub="fermées des 30 derniers jours · ≠ time-to-fill" />
       <Kpi label="Taux de repost" value={repost.ok ? fmtPct(repost.value) : undefined} na={repost.ok ? undefined : repost.na} level="derived" sub={`${fmtInt(h.reopened)} offres ré-ouvertes`} />
-      <Kpi label="Indice base 100" value={lastIdx !== null ? fmtIndex(lastIdx) : undefined} na={idx.ok ? undefined : idx.na.kind === 'none' ? NA_FROM(addDays(coverage.historyStart, 1)) : idx.na} level="derived" sub={`base 100 le ${fmtDate(profile.series[0]?.date ?? coverage.historyStart)}`} />
-      <Kpi label="Momentum · 0-100" value={mom.ok ? String(mom.value.score) : undefined} na={mom.ok ? undefined : mom.na.kind === 'none' ? NA_FROM(addDays(coverage.historyStart, 7)) : mom.na} level="derived" />
+      <Kpi label="Indice base 100" value={lastIdx !== null ? fmtIndex(lastIdx) : undefined} na={idx.ok ? undefined : idx.na} level="derived" sub={profile.series[0] ? `base 100 le ${fmtDate(profile.series[0].date)}` : undefined} />
+      <Kpi label="Momentum · 0-100" value={mom.ok ? String(mom.value.score) : undefined} na={mom.ok ? undefined : mom.na} level="derived" />
     </div>
   );
 }
@@ -95,7 +96,7 @@ export function ProfileSeries({ profile, coverage, title }: { profile: Profile; 
       ) : (
         <p className="na">
           {idx.na.kind === 'none'
-            ? `Courbe disponible à partir du ${fmtDate(addDays(coverage.historyStart, 1))} — les snapshots quotidiens commencent le ${fmtDate(coverage.historyStart)}.`
+            ? 'Aucun historique comparable pour ce périmètre. La courbe apparaîtra après les premiers relevés quotidiens.'
             : idx.na.kind === 'from'
               ? `Courbe disponible à partir du ${fmtDate(idx.na.date)}.`
               : 'n/d — échantillon insuffisant.'}
@@ -105,7 +106,8 @@ export function ProfileSeries({ profile, coverage, title }: { profile: Profile; 
   );
 }
 
-export function ProfileBlocks({ profile, ctx }: { profile: Profile; ctx: ProfileContext }) {
+export async function ProfileBlocks({ profile, ctx }: { profile: Profile; ctx: ProfileContext }) {
+  const {functionLabel,FAMILY_LABELS,seniorityLabel}=await getOccupationPresentation();
   const h = profile.headline;
   const total = h.active;
   const jobs = (extra: Record<string, string | undefined>) => intelPaths.jobs({ ...ctx.jobsParams, ...extra });

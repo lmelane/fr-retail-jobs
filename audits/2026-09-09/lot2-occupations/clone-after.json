@@ -1,0 +1,531 @@
+{
+  "at": "2026-09-09T10:18:09.743Z",
+  "counts": {
+    "jobs": 77352,
+    "active": 74124,
+    "roots": 77329,
+    "familyclassified": 69331,
+    "occupationclassified": 35035,
+    "distincttitles": 41770,
+    "classifiedvariants": 14647,
+    "representedoccupations": 59,
+    "storedmid": 6,
+    "noseniority": 54020,
+    "activeredirects": 0
+  },
+  "statuses": [
+    {
+      "status": "AMBIGUOUS",
+      "n": 64
+    },
+    {
+      "status": "CLASSIFIED",
+      "n": 35035
+    },
+    {
+      "status": "FAMILY_ONLY",
+      "n": 34289
+    },
+    {
+      "status": "NO_RULE",
+      "n": 4736
+    }
+  ],
+  "countries": [
+    {
+      "countryCode": "US",
+      "n": 30943
+    },
+    {
+      "countryCode": "FR",
+      "n": 10947
+    },
+    {
+      "countryCode": null,
+      "n": 4867
+    },
+    {
+      "countryCode": "GB",
+      "n": 2872
+    },
+    {
+      "countryCode": "CA",
+      "n": 2790
+    },
+    {
+      "countryCode": "DE",
+      "n": 2739
+    },
+    {
+      "countryCode": "IT",
+      "n": 2446
+    },
+    {
+      "countryCode": "ES",
+      "n": 2070
+    },
+    {
+      "countryCode": "NL",
+      "n": 1715
+    },
+    {
+      "countryCode": "CN",
+      "n": 1169
+    },
+    {
+      "countryCode": "AU",
+      "n": 1165
+    },
+    {
+      "countryCode": "CH",
+      "n": 1080
+    },
+    {
+      "countryCode": "BE",
+      "n": 597
+    },
+    {
+      "countryCode": "IN",
+      "n": 518
+    },
+    {
+      "countryCode": "JP",
+      "n": 518
+    },
+    {
+      "countryCode": "KR",
+      "n": 486
+    },
+    {
+      "countryCode": "PT",
+      "n": 435
+    },
+    {
+      "countryCode": "SG",
+      "n": 402
+    },
+    {
+      "countryCode": "MX",
+      "n": 391
+    },
+    {
+      "countryCode": "DK",
+      "n": 368
+    },
+    {
+      "countryCode": "HK",
+      "n": 338
+    },
+    {
+      "countryCode": "PL",
+      "n": 325
+    },
+    {
+      "countryCode": "SE",
+      "n": 316
+    },
+    {
+      "countryCode": "AT",
+      "n": 311
+    },
+    {
+      "countryCode": "TH",
+      "n": 268
+    },
+    {
+      "countryCode": "IE",
+      "n": 254
+    },
+    {
+      "countryCode": "TR",
+      "n": 252
+    },
+    {
+      "countryCode": "MY",
+      "n": 246
+    },
+    {
+      "countryCode": "AE",
+      "n": 240
+    },
+    {
+      "countryCode": "BR",
+      "n": 219
+    },
+    {
+      "countryCode": "NO",
+      "n": 201
+    },
+    {
+      "countryCode": "CL",
+      "n": 183
+    },
+    {
+      "countryCode": "GR",
+      "n": 179
+    },
+    {
+      "countryCode": "TW",
+      "n": 163
+    },
+    {
+      "countryCode": "ZA",
+      "n": 157
+    },
+    {
+      "countryCode": "NZ",
+      "n": 141
+    },
+    {
+      "countryCode": "VN",
+      "n": 129
+    },
+    {
+      "countryCode": "CO",
+      "n": 113
+    },
+    {
+      "countryCode": "SA",
+      "n": 111
+    },
+    {
+      "countryCode": "CZ",
+      "n": 100
+    },
+    {
+      "countryCode": "RO",
+      "n": 98
+    },
+    {
+      "countryCode": "IL",
+      "n": 96
+    },
+    {
+      "countryCode": "HU",
+      "n": 91
+    },
+    {
+      "countryCode": "MO",
+      "n": 79
+    },
+    {
+      "countryCode": "MA",
+      "n": 67
+    },
+    {
+      "countryCode": "PR",
+      "n": 63
+    },
+    {
+      "countryCode": "PE",
+      "n": 58
+    },
+    {
+      "countryCode": "PH",
+      "n": 53
+    },
+    {
+      "countryCode": "LU",
+      "n": 50
+    },
+    {
+      "countryCode": "ID",
+      "n": 49
+    },
+    {
+      "countryCode": "FI",
+      "n": 38
+    },
+    {
+      "countryCode": "PA",
+      "n": 38
+    },
+    {
+      "countryCode": "AR",
+      "n": 37
+    },
+    {
+      "countryCode": "EG",
+      "n": 36
+    },
+    {
+      "countryCode": "MC",
+      "n": 36
+    },
+    {
+      "countryCode": "HR",
+      "n": 35
+    },
+    {
+      "countryCode": "TN",
+      "n": 33
+    },
+    {
+      "countryCode": "BG",
+      "n": 29
+    },
+    {
+      "countryCode": "VA",
+      "n": 29
+    },
+    {
+      "countryCode": "GA",
+      "n": 27
+    },
+    {
+      "countryCode": "KY",
+      "n": 26
+    },
+    {
+      "countryCode": "LT",
+      "n": 20
+    },
+    {
+      "countryCode": "SK",
+      "n": 16
+    },
+    {
+      "countryCode": "BH",
+      "n": 15
+    },
+    {
+      "countryCode": "NC",
+      "n": 15
+    },
+    {
+      "countryCode": "SC",
+      "n": 15
+    },
+    {
+      "countryCode": "AL",
+      "n": 12
+    },
+    {
+      "countryCode": "MD",
+      "n": 12
+    },
+    {
+      "countryCode": "MN",
+      "n": 12
+    },
+    {
+      "countryCode": "QA",
+      "n": 10
+    },
+    {
+      "countryCode": "RS",
+      "n": 10
+    },
+    {
+      "countryCode": "SI",
+      "n": 9
+    },
+    {
+      "countryCode": "AZ",
+      "n": 8
+    },
+    {
+      "countryCode": "KH",
+      "n": 8
+    },
+    {
+      "countryCode": "PK",
+      "n": 8
+    },
+    {
+      "countryCode": "UA",
+      "n": 8
+    },
+    {
+      "countryCode": "RU",
+      "n": 7
+    },
+    {
+      "countryCode": "GG",
+      "n": 6
+    },
+    {
+      "countryCode": "LV",
+      "n": 6
+    },
+    {
+      "countryCode": "NE",
+      "n": 6
+    },
+    {
+      "countryCode": "VI",
+      "n": 6
+    },
+    {
+      "countryCode": "AD",
+      "n": 5
+    },
+    {
+      "countryCode": "KZ",
+      "n": 5
+    },
+    {
+      "countryCode": "MV",
+      "n": 5
+    },
+    {
+      "countryCode": "BD",
+      "n": 4
+    },
+    {
+      "countryCode": "JO",
+      "n": 4
+    },
+    {
+      "countryCode": "LS",
+      "n": 4
+    },
+    {
+      "countryCode": "XK",
+      "n": 4
+    },
+    {
+      "countryCode": "JE",
+      "n": 3
+    },
+    {
+      "countryCode": "LA",
+      "n": 3
+    },
+    {
+      "countryCode": "SZ",
+      "n": 3
+    },
+    {
+      "countryCode": "AW",
+      "n": 2
+    },
+    {
+      "countryCode": "BL",
+      "n": 2
+    },
+    {
+      "countryCode": "BS",
+      "n": 2
+    },
+    {
+      "countryCode": "BY",
+      "n": 2
+    },
+    {
+      "countryCode": "DO",
+      "n": 2
+    },
+    {
+      "countryCode": "EE",
+      "n": 2
+    },
+    {
+      "countryCode": "GE",
+      "n": 2
+    },
+    {
+      "countryCode": "KE",
+      "n": 2
+    },
+    {
+      "countryCode": "KW",
+      "n": 2
+    },
+    {
+      "countryCode": "LB",
+      "n": 2
+    },
+    {
+      "countryCode": "MT",
+      "n": 2
+    },
+    {
+      "countryCode": "NA",
+      "n": 2
+    },
+    {
+      "countryCode": "NH",
+      "n": 2
+    },
+    {
+      "countryCode": "OM",
+      "n": 2
+    },
+    {
+      "countryCode": "SD",
+      "n": 2
+    },
+    {
+      "countryCode": "AM",
+      "n": 1
+    },
+    {
+      "countryCode": "BA",
+      "n": 1
+    },
+    {
+      "countryCode": "CR",
+      "n": 1
+    },
+    {
+      "countryCode": "CY",
+      "n": 1
+    },
+    {
+      "countryCode": "EC",
+      "n": 1
+    },
+    {
+      "countryCode": "GU",
+      "n": 1
+    },
+    {
+      "countryCode": "IM",
+      "n": 1
+    },
+    {
+      "countryCode": "ME",
+      "n": 1
+    },
+    {
+      "countryCode": "MF",
+      "n": 1
+    },
+    {
+      "countryCode": "MU",
+      "n": 1
+    },
+    {
+      "countryCode": "NG",
+      "n": 1
+    },
+    {
+      "countryCode": "ST",
+      "n": 1
+    },
+    {
+      "countryCode": "UY",
+      "n": 1
+    }
+  ],
+  "catalogue": {
+    "id": "active",
+    "releaseId": "catwalks-occupations-20260909-v1",
+    "updatedAt": "2026-09-09T10:17:08.371Z",
+    "backfilledAt": "2026-09-09T10:17:08.371Z"
+  },
+  "observations": 77329,
+  "conservation": {
+    "jobIdsHash": "873c62f314ce521a922886e41f2ff6423583005bee920ee3ae833d1812bf99e6",
+    "nonOccupationJobFieldsHash": "54087ef6d3ad3d7bab58afaa3d9d5df1777aee01ac27aceb07e517657607659b",
+    "eventsCount": 21839,
+    "eventsHash": "f6aac73fdb4b9a884b0b9e682ee791c5d9c56f1c516b7d46bc78e5fd65999f31",
+    "jobSourcesCount": 80380,
+    "jobSourcesHash": "5cfd915a56d628a648fbfebd9dfc9b2543ccf27fc5ef2ac35ab2e875aca43e68",
+    "rawPayloadsCount": 72222,
+    "rawPayloadsHash": "7d437cf0223b691b27ea74b0dcc69f0ffd9e8fece006e8ff78d44e1f0415aced",
+    "companiesCount": 1571,
+    "companiesHash": "36d294c1634e5a7d5a67a799de08bfe946e131b0f68d321e827db76d43eb537e"
+  }
+}

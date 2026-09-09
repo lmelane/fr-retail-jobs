@@ -2,7 +2,8 @@ import { cache } from 'react';
 import { prisma, Prisma } from '@catwalks/db';
 import { DatabaseUnavailableError } from '@/lib/jobs';
 import { countryCode } from '@/lib/countries';
-import { familyOf, type JobFamily } from './taxonomy';
+import { getOccupationPresentation } from '../occupations';
+import type { JobFamily } from './taxonomy';
 
 /**
  * FAITS (niveau 1) : des comptes observés dans `Job`, agrégés en SQL
@@ -27,6 +28,7 @@ export type Scope = {
   sector?: string;
   /** Clé de Job.jobFunction. */
   fn?: string;
+  occupation?: string;
 };
 
 export type Count = { key: string; count: number };
@@ -108,6 +110,7 @@ export async function scopeSql(scope: Scope): Promise<Prisma.Sql> {
   if (scope.group) parts.push(Prisma.sql`c."parentGroup" = ${scope.group}`);
   if (scope.sector) parts.push(Prisma.sql`c.sector::text = ${scope.sector}`);
   if (scope.fn) parts.push(Prisma.sql`j."jobFunction" = ${scope.fn}`);
+  if (scope.occupation) parts.push(Prisma.sql`j."occupationCode" = ${scope.occupation}`);
   return Prisma.join(parts, ' AND ');
 }
 
@@ -238,8 +241,9 @@ export async function byContract(scope: Scope = {}): Promise<Count[]> {
 }
 
 /** Famille (retail / atelier / corporate / non classé), dérivée du métier. */
-export function toFamilies(functions: ReadonlyArray<Count>): { key: JobFamily | ''; count: number }[] {
-  const acc = new Map<JobFamily | '', number>([['retail', 0], ['craft', 0], ['corporate', 0], ['', 0]]);
+export async function toFamilies(functions: ReadonlyArray<Count>): Promise<{ key: JobFamily | ''; count: number }[]> {
+  const {familyOf,FAMILY_LABELS}=await getOccupationPresentation();
+  const acc = new Map<JobFamily | '', number>([...Object.keys(FAMILY_LABELS).map(k=>[k,0] as [string,number]),['',0]]);
   for (const f of functions) {
     const fam = familyOf(f.key) ?? '';
     acc.set(fam, (acc.get(fam) ?? 0) + f.count);

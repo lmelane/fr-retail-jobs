@@ -1,4 +1,5 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it,vi } from 'vitest';
+import * as database from '@catwalks/db/occupations';
 import { prisma } from '@catwalks/db';
 import { getJobs, whereClause, getJobStatus, getOfferState, resolveOfferParam } from './jobs';
 import { offerPath } from './offer-url';
@@ -64,6 +65,26 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     await prisma.company.update({ where: { id: `${prefix}0` }, data: { name: `${prefix}0` } });
     expect((await getJobs({ q: 'UniqueSearchTitle', group })).total).toBe(0);
     expect((await getJobs({ q: 'UniqueMaisonLabel', group })).total).toBe(0);
+  });
+  it('keeps literal results while adding a reviewed occupation synonym and stable filter',async()=>{
+    const id=`${prefix}000`,catalogue=await database.loadOccupationTaxonomy(prisma);
+    await prisma.job.update({where:{id},data:{title:'Sales Advisor',...catalogue.classify('Sales Advisor')}});
+    const result=await getJobs({q:'Conseiller de vente',group});
+    expect(result.total).toBe(301); // 300 literal FR titles + one reviewed EN occupation.
+    const precise=await getJobs({occupation:'sales-advisor',group});
+    expect(precise.total).toBe(1);expect(precise.jobs[0].title).toBe('Sales Advisor');
+    expect(precise.jobs[0].occupationLabel).toBe(catalogue.occupations.get('sales-advisor')!.labels.fr);
+    expect(precise.facets.occupations).toEqual([{value:'sales-advisor',label:catalogue.occupations.get('sales-advisor')!.labels.fr,count:1}]);
+    expect((await getJobs({occupation:'unclassified',group})).total).toBe(300);
+    expect((await getJobs({q:'Conseiller de vente Lyon',group})).total).toBe(0);
+    await prisma.job.update({where:{id},data:{title:'Conseiller de vente',occupationCode:null,occupationStatus:'PENDING',occupationReleaseId:null}});
+  });
+  it('returns the same offers when optional occupation presentation is unavailable',async()=>{
+    const spy=vi.spyOn(database,'loadOccupationTaxonomy').mockRejectedValueOnce(new Error('Witness: occupation catalogue unavailable'));
+    try{
+      const result=await getJobs({group});expect(result.total).toBe(301);expect(result.occupationEnrichmentAvailable).toBe(false);
+      expect(result.jobs.every(j=>j.title.length>0)).toBe(true);
+    }finally{spy.mockRestore();}
   });
   it('resolves an absorbed posting for pages, old URLs and the middleware status probe', async () => {
     const target = `${prefix}000`, origin = `${prefix}old-posting`;

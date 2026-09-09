@@ -502,6 +502,17 @@ model Job {
    */
   /** Famille de métier du secteur : retail-client-advisor, atelier-craft, crm-clienteling… */
   jobFunction     String?
+  /** Versioned enrichment; original title and unresolved offers are preserved. */
+  occupationGroup           String?
+  occupationCode            String?
+  rawTitle                  String?
+  normalizedTitle           String?
+  occupationStatus          String                  @default("PENDING")
+  occupationEvidence        Json?
+  occupationSpecializations String[]                @default([])
+  occupationReleaseId       String?
+  occupationRelease         OccupationRelease?      @relation(fields: [occupationReleaseId], references: [id], onDelete: Restrict)
+  occupationObservations    OccupationObservation[]
   /** INTERNSHIP | APPRENTICESHIP | GRADUATE | JUNIOR | MID | SENIOR | MANAGER | DIRECTOR | EXECUTIVE */
   seniority       String?
   /** Métier de boutique (conseil, direction de boutique, VM, opérations) — le Retail Hiring Index. */
@@ -560,6 +571,9 @@ model Job {
   // Intelligence : agrégats par pays / métier / séniorité, et les fenêtres J-7 / J-30.
   @@index([isActive, countryCode])
   @@index([isActive, jobFunction])
+  @@index([isActive, occupationCode])
+  @@index([occupationReleaseId, id])
+  @@index([occupationStatus, isActive])
   @@index([isActive, seniority])
   @@index([firstSeenAt])
   @@index([closedAt])
@@ -846,4 +860,41 @@ model PipelineEvent {
   @@index([runId, sourceKey, at])
   @@index([runId, event, fingerprint])
   @@index([level, at])
+}
+
+
+model OccupationRelease {
+  id           String                  @id
+  contentHash  String                  @unique
+  manifest     Json
+  createdAt    DateTime                @default(now())
+  jobs         Job[]
+  activeStates OccupationState[]
+  observations OccupationObservation[]
+}
+
+
+model OccupationObservation {
+  id        String            @id
+  jobId     String
+  job       Job               @relation(fields: [jobId], references: [id], onDelete: Restrict)
+  releaseId String
+  release   OccupationRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+  inputHash String
+  decision  Json
+  before    Json
+  createdAt DateTime          @default(now())
+
+  @@index([jobId, createdAt])
+  @@index([releaseId, createdAt])
+}
+
+
+model OccupationState {
+  id        String            @id
+  releaseId String
+  release   OccupationRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+  updatedAt DateTime          @updatedAt
+  /** Completed reclassification boundary; old statistical series remain archived. */
+  backfilledAt DateTime?
 }

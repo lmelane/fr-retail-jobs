@@ -29,12 +29,21 @@ export type SnapshotScope =
   | 'group'
   | 'sector'
   | 'function'
+  | 'occupation'
   | 'seniority'
   | 'employmentTerm'
   | 'family'
   | 'ai'
   | 'country-function'
   | 'country-sector';
+
+/** A taxonomy change is a measurement change, not market growth. Retain old
+ * rows but compare only full days after the new release finished replaying. */
+function occupationBoundary(scope:SnapshotScope){
+  return ['function','occupation','family','seniority','country-function'].includes(scope)
+    ? Prisma.sql`AND date > (SELECT "backfilledAt"::date FROM "OccupationState" WHERE id='active')`
+    : Prisma.empty;
+}
 
 async function run<T>(query: Prisma.Sql): Promise<T[]> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
@@ -57,7 +66,7 @@ export async function series(scope: SnapshotScope, key: string, days?: number, a
   }>(Prisma.sql`
     SELECT to_char(date, 'YYYY-MM-DD') AS "date", "activeJobs", "newJobs", "closedJobs", "hiringCompanies",
            "medianLifespanDays"::float AS "medianLifespanDays", "reopenedJobs"
-    FROM "MarketSnapshot" WHERE scope = ${scope} AND key = ${key} ${LIVE} ${since} ${identityCutover} ORDER BY date ASC`);
+    FROM "MarketSnapshot" WHERE scope = ${scope} AND key = ${key} ${LIVE} ${since} ${identityCutover} ${occupationBoundary(scope)} ORDER BY date ASC`);
   return rows.map((r) => ({
     date: r.date,
     activeJobs: r.activeJobs,
@@ -79,7 +88,7 @@ export async function firstSnapshotDate(): Promise<string | null> {
 /** Nombre de jours de snapshot d'un périmètre. */
 export async function snapshotDays(scope: SnapshotScope, key: string): Promise<number> {
   const [row] = await run<{ n: number }>(Prisma.sql`
-    SELECT count(*)::int AS n FROM "MarketSnapshot" WHERE scope = ${scope} AND key = ${key} ${LIVE}`);
+    SELECT count(*)::int AS n FROM "MarketSnapshot" WHERE scope = ${scope} AND key = ${key} ${LIVE} ${occupationBoundary(scope)}`);
   return row?.n ?? 0;
 }
 
@@ -92,11 +101,11 @@ export async function latestAndBefore(scope: SnapshotScope, daysBack: number): P
     key: string; date: string; activeJobs: number; newJobs: number; closedJobs: number; hiringCompanies: number;
     medianLifespanDays: number | null; reopenedJobs: number; isNow: boolean;
   }>(Prisma.sql`
-    WITH last AS (SELECT max(date) AS d FROM "MarketSnapshot" WHERE scope = ${scope} ${LIVE})
+    WITH last AS (SELECT max(date) AS d FROM "MarketSnapshot" WHERE scope = ${scope} ${LIVE} ${occupationBoundary(scope)})
     SELECT key, to_char(date, 'YYYY-MM-DD') AS "date", "activeJobs", "newJobs", "closedJobs", "hiringCompanies",
            "medianLifespanDays"::float AS "medianLifespanDays", "reopenedJobs", (date = last.d) AS "isNow"
     FROM "MarketSnapshot", last
-    WHERE scope = ${scope} ${LIVE} AND (date = last.d OR date = last.d - ${daysBack}::int)`);
+    WHERE scope = ${scope} ${LIVE} ${occupationBoundary(scope)} AND (date = last.d OR date = last.d - ${daysBack}::int)`);
   const byKey = new Map<string, { now?: SnapshotPoint; before?: SnapshotPoint }>();
   for (const r of rows) {
     const point: SnapshotPoint = {

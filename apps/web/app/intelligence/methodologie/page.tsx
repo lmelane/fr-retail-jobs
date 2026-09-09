@@ -1,3 +1,4 @@
+import { getOccupationPresentation } from '@/lib/occupations';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Block, Coverage, IntelPage, JsonLd, LevelTag, PageHead } from '@/components/intelligence/chrome';
@@ -8,11 +9,10 @@ import { fmtDate, fmtInt, fmtPct, MIN_SAMPLE, MIN_SNAPSHOT_DAYS, OBSERVATION_STA
 import { intelPaths } from '@/lib/intelligence/paths';
 import { breadcrumbLd, DATA_LICENSE_NAME, DATA_LICENSE_URL, intelMetadata, webPageLd } from '@/lib/intelligence/seo';
 import { siteUrl } from '@/lib/site-url';
-import { FAMILY_LABELS, JOB_FUNCTIONS, SENIORITIES, SENIORITY_LABELS } from '@/lib/intelligence/taxonomy';
 
 export const dynamic = 'force-dynamic';
 
-const DESCRIPTION = 'Méthodologie Catwalks Intelligence : couverture des sources, fréquence, déduplication (1 offre canonique + N sources), normalisation, taxonomie des 25 métiers, snapshots quotidiens, seuils, définitions fait / dérivé / lecture, limites.';
+const DESCRIPTION = 'Méthodologie Catwalks Intelligence : couverture des sources, fréquence, déduplication (1 offre canonique + N sources), normalisation, référentiel versionné des métiers, snapshots quotidiens, seuils, définitions fait / dérivé / lecture, limites.';
 
 export async function generateMetadata(): Promise<Metadata> {
   return intelMetadata({ subject: 'Méthodologie de l’observatoire', description: DESCRIPTION, path: intelPaths.methodology });
@@ -31,6 +31,7 @@ const KIND_LABELS: Record<string, string> = {
 };
 
 export default async function Page() {
+  const {taxonomy,JOB_FUNCTIONS,FUNCTION_BY_KEY,FAMILY_LABELS,functionLabel}=await getOccupationPresentation();
   const [data, coverage] = await Promise.all([getMethodology(), getCoverage()]);
   const crumbs = [{ name: 'Intelligence', path: intelPaths.home }, { name: 'Méthodologie', path: intelPaths.methodology }];
   const fnCoverage = data.active > 0 ? 1 - data.unclassifiedFunction / data.active : 0;
@@ -58,7 +59,7 @@ export default async function Page() {
                 <dt>Déduplication</dt>
                 <dd>Une même offre vue par le site carrière, le portail du groupe et un jobboard est stockée une seule fois : 1 offre canonique + N sources. Les comptes ne comptent jamais deux fois le même poste.</dd>
                 <dt>Employeur et groupe</dt>
-                <dd>L'offre est créditée à la Maison qui la publie (Cartier, pas Richemont) ; le groupe est lu dans le référentiel des Maisons. Les suffixes juridiques et les entités locales sont retirés du nom.</dd>
+                <dd>L'offre est créditée à la Maison qui la publie (Cartier, pas Richemont) ; le groupe est lu dans le référentiel des Maisons. Les variantes sont rapprochées uniquement avec des preuves d’identité ; les entités distinctes sont conservées.</dd>
                 <dt>Lieu</dt>
                 <dd>Pays normalisé ISO ; ville canonique (segments, exonymes, casse) partagée par la déduplication et l'affichage. Une offre sans pays identifiable est comptée « sans pays ».</dd>
                 <dt>Contrat</dt>
@@ -72,21 +73,20 @@ export default async function Page() {
       <section className="container" style={{ paddingTop: 64 }}>
         <Block id="taxonomie" title="Taxonomie des métiers." level="fact">
           <p className="t-body soft mb-5 max-w-[66ch]">
-            Classification par règles, à l'écriture, depuis le titre, le département et le texte de l'offre ; re-classée à chaque passage quand la version de la taxonomie avance. Couverture actuelle : métier renseigné sur {fmtPct(fnCoverage, 0)} des offres actives, séniorité sur {fmtPct(senCoverage, 0)}. Le reste est « non classé » et affiché comme tel.
+            Référentiel versionné de métiers, variantes et règles contextuelles. Le titre d’origine est conservé ; une ambiguïté ne fait jamais disparaître l’offre. Couverture actuelle des familles professionnelles : {fmtPct(fnCoverage, 0)} des offres actives, séniorité sur {fmtPct(senCoverage, 0)}. La couverture des métiers précis est mesurée séparément sur la page Métiers. Une séniorité absente n’est pas remplacée par « Confirmé ».
           </p>
           <div className="igrid">
             <div className="i8">
               <div className="itable-wrap">
                 <table className="itable">
                   <thead>
-                    <tr><th>Fonction</th><th>Famille</th><th>Règle en une phrase</th></tr>
+                    <tr><th>Fonction</th><th>Famille</th></tr>
                   </thead>
                   <tbody>
                     {JOB_FUNCTIONS.map((f) => (
                       <tr key={f.key}>
                         <td><Link href={intelPaths.fn(f.key)}>{f.label}</Link></td>
                         <td className="muted">{FAMILY_LABELS[f.family]}</td>
-                        <td className="muted">{RULES[f.key]}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -96,8 +96,8 @@ export default async function Page() {
             <div className="i4">
               <p className="t-caption mb-3">Séniorité</p>
               <ul className="grid gap-2">
-                {SENIORITIES.map((s) => (
-                  <li key={s} className="t-body"><span className="muted">{s}</span> — {SENIORITY_LABELS[s]}</li>
+                {[...taxonomy.seniorities.keys()].map((s) => (
+                  <li key={s} className="t-body">{taxonomy.seniorities.get(s)!.labels.fr}</li>
                 ))}
               </ul>
               <p className="t-body2 muted mt-4">« Early careers » = Stage + Alternance + Jeune diplômé. « Executive » = Directeur + Dirigeant. Famille Retail = les six fonctions de boutique ; Atelier = savoir-faire et production ; Corporate = le reste.</p>
@@ -207,31 +207,3 @@ export default async function Page() {
     </IntelPage>
   );
 }
-
-const RULES: Record<string, string> = {
-  'retail-client-advisor': 'Conseiller·ère de vente, client advisor, sales associate, vendeur·se en boutique.',
-  'beauty-advisor': 'Conseiller·ère beauté, beauty advisor, maquilleur·se en point de vente.',
-  'retail-store-management': 'Directeur·rice, responsable ou manager de boutique, department manager.',
-  'retail-area-management': 'Area, district ou regional manager retail, directeur·rice régional·e.',
-  'retail-operations': 'Stock, opérations boutique, caisse, back-office de vente.',
-  'visual-merchandising': 'Visual merchandiser, vitrines, merchandising en boutique.',
-  'merchandising-buying': 'Merchandising produit, achats, planning, allocation.',
-  'wholesale-b2b': 'Wholesale, distribution B2B, comptes clés, travel retail.',
-  'crm-clienteling': 'CRM, clienteling, fidélisation, relation client VIP.',
-  'ecommerce-digital': 'E-commerce, digital, produit web, marketplaces.',
-  'marketing-communication': 'Marketing, communication, presse, événementiel, social media.',
-  'design-creation': 'Création, design, stylisme, direction artistique, image.',
-  'product-development-rd': 'Développement produit, R&D, formulation, modélisme technique.',
-  'atelier-craft': 'Atelier, artisanat, maroquinerie, couture, horlogerie, joaillerie.',
-  'manufacturing-quality': 'Production, industrialisation, qualité, méthodes.',
-  'supply-chain-logistics': 'Supply chain, logistique, planification, entrepôt, transport.',
-  finance: 'Finance, comptabilité, contrôle de gestion, audit, trésorerie.',
-  'hr-talent': 'Ressources humaines, recrutement, formation, paie.',
-  'it-data': 'IT, systèmes, data, ingénierie logicielle, cybersécurité.',
-  'legal-compliance': 'Juridique, conformité, propriété intellectuelle.',
-  'strategy-management': 'Stratégie, direction générale, transformation, PMO.',
-  sustainability: 'Développement durable, RSE, traçabilité, circularité.',
-  'customer-service': 'Service client, relation client à distance, après-vente.',
-  hospitality: 'Hôtellerie, restauration, accueil, conciergerie.',
-  'admin-facilities': 'Administration, assistanat, services généraux, sécurité.',
-};

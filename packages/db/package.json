@@ -5,7 +5,8 @@
   "type": "module",
   "main": "index.ts",
   "exports": {
-    ".": "./index.ts"
+    ".": "./index.ts",
+    "./occupations": "./occupations.ts"
   },
   "scripts": {
     "db:generate": "prisma generate",

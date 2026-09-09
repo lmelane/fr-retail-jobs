@@ -1,0 +1,14 @@
+{
+  "environment": "disposable local test fixtures",
+  "serverRestarted": false,
+  "codeChanged": false,
+  "before": {
+    "total": 2,
+    "label": "Conseiller de vente"
+  },
+  "after": {
+    "total": 2,
+    "label": "Conseil de vente — libellé de validation"
+  },
+  "release": "lot2-data-only-ui-proof"
+}

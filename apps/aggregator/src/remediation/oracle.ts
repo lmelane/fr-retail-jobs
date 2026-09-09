@@ -1,3 +1,5 @@
+import { classifyOccupationContent, occupationState } from '../occupation/persist.js';
+import { loadOccupationTaxonomy } from '@catwalks/db/occupations';
 import type { PrismaClient, Prisma } from '@prisma/client';
 import { postingIdentity, hasRequisitionConflict } from '../dedup/postingIdentity.js';
 import { canonicalJobContent } from '../dedup/upsert.js';
@@ -35,6 +37,7 @@ export async function planOracleRepair(prisma: PrismaClient, evidence: Evidence)
   const byProof = new Map(evidence.results.map(r => [r.id, r]));
   const sourceRow = await prisma.source.findUniqueOrThrow({ where: { key: 'tiffany-oracle' } });
   const trust = await loadTrust(prisma);
+  const occupations = await loadOccupationTaxonomy(prisma);
   const proofBySource = new Map<string, NormalizedJob>();
   const observations: NonNullable<RepairPlan['observations']> = [];
   for (const [identity] of keepers) {
@@ -67,7 +70,7 @@ export async function planOracleRepair(prisma: PrismaClient, evidence: Evidence)
       const oracle = afterSources.find(s => s.jobId === job.id && proofBySource.has(s.id))!;
       const normalized = proofBySource.get(oracle.id)!;
       const candidate = toCandidate(normalized, { key: oracle.sourceKey, company: company.name, tier: 'EMPLOYER_DIRECT' }, company.name, 'ORACLE_HCM', trust);
-      patch = json({ ...canonicalJobContent(candidate),
+      patch = json({ ...canonicalJobContent(candidate, occupations),
         // Coordinates/INSEE inherited from another requisition are not evidence.
         inseeCode: null, adminArea2: null, countryIntegrity: null,
         lastSeenAt: new Date(evidence.at), isActive: true, closedAt: null,
@@ -88,6 +91,10 @@ export async function planOracleRepair(prisma: PrismaClient, evidence: Evidence)
         raw: own.raw, clusterKey: null,
       });
     }
+    if(!assigned && 'title' in patch) Object.assign(patch,occupationState(classifyOccupationContent({
+      title:String(patch.title),department:null,rawTitle:null,
+      sourceKey:String(patch.canonicalSourceKey),externalId:String(patch.canonicalExternalId),
+    },occupations)));
     operations.push({ entity: 'Job', id: job.id, before: json(before), patch, reason: assigned ? `Reproject only requisition ${assigned[0]} from official evidence` : 'Remove duplicate representation from active catalogue; retain ID and all history' });
   }
   const config = { ...(sourceRow.config as Record<string, unknown>), siteNumber: 'CX' };
