@@ -1,4 +1,6 @@
 import { unstable_cache } from 'next/cache';
+import { prisma } from '@catwalks/db';
+import { DatabaseUnavailableError } from '../jobs';
 
 /**
  * Cache de données à 1 h (l'ISR du brief, déplacé au niveau des requêtes).
@@ -16,9 +18,18 @@ import { unstable_cache } from 'next/cache';
 export const INTEL_REVALIDATE_SECONDS = 3600;
 
 export function cached<A extends unknown[], R>(name: string, fn: (...args: A) => Promise<R>): (...args: A) => Promise<R> {
-  return (...args: A) =>
-    unstable_cache(() => fn(...args), ['intelligence-canonical-postings-v2', name, JSON.stringify(args)], {
+  return async (...args: A) => {
+    // Reviewed repairs must invalidate every affected aggregate without a
+    // process restart or waiting an hour. No scan over the Job corpus: this is
+    // an indexed lookup in the append-only correction ledger.
+    let revision: string;
+    try {
+      const latest = await prisma.dataCorrection.findFirst({ orderBy: [{ createdAt: 'desc' }, { id: 'desc' }], select: { id: true } });
+      revision = latest?.id ?? 'initial';
+    } catch (error) { throw new DatabaseUnavailableError(error); }
+    return unstable_cache(() => fn(...args), ['intelligence-canonical-postings-v2', revision, name, JSON.stringify(args)], {
       revalidate: INTEL_REVALIDATE_SECONDS,
       tags: ['intelligence'],
     })();
+  };
 }
