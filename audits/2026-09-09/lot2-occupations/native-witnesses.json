@@ -1,0 +1,526 @@
+[
+  {
+    "id": "cmtlyiii505wrqf5k0bhxhfiv",
+    "title": "Vendeur H/F CDD 35h",
+    "rawTitle": "Vendeur H/F CDD 35h",
+    "department": null,
+    "occupationCode": "sales-advisor",
+    "jobFunction": "retail-client-advisor",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Vendeur H/F CDD 35h",
+      "sourceKey": "bzb",
+      "candidates": [
+        "sales-advisor"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "d05e2802-0595-4693-8588-56d232c268ed",
+      "familyRule": "legacy-title-20",
+      "inputTitle": "Vendeur H/F CDD 35h",
+      "matchedRules": [
+        "sales-advisor-title"
+      ],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiiha05wfqf5kdv30g1yi",
+    "title": "Vendeur H/F - CDI 10h00",
+    "rawTitle": "Vendeur H/F - CDI 10h00",
+    "department": null,
+    "occupationCode": "sales-advisor",
+    "jobFunction": "retail-client-advisor",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Vendeur H/F - CDI 10h00",
+      "sourceKey": "bzb",
+      "candidates": [
+        "sales-advisor"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "df42de1e-8f42-4e5d-a6a3-71583444aa6a",
+      "familyRule": "legacy-title-20",
+      "inputTitle": "Vendeur H/F - CDI 10h00",
+      "matchedRules": [
+        "sales-advisor-title"
+      ],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiili05xzqf5kmo4rmzqj",
+    "title": "Demand & Supply Planner H/F",
+    "rawTitle": "Demand & Supply Planner H/F",
+    "department": null,
+    "occupationCode": null,
+    "jobFunction": "supply-chain-logistics",
+    "occupationStatus": "FAMILY_ONLY",
+    "occupationEvidence": {
+      "reason": "Only a broad family heuristic matched; precise occupation requires review.",
+      "rawTitle": "Demand & Supply Planner H/F",
+      "sourceKey": "bzb",
+      "candidates": [],
+      "confidence": "BROAD_HEURISTIC",
+      "department": null,
+      "externalId": "3d3e8f92-aa3a-4b17-a41b-fa014725585e",
+      "familyRule": "legacy-title-30",
+      "inputTitle": "Demand & Supply Planner H/F",
+      "matchedRules": [],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtn5a8j80567qq5ld285atsu",
+    "title": "Vendeur H/F CDI 7H",
+    "rawTitle": "Vendeur H/F CDI 7H",
+    "department": null,
+    "occupationCode": "sales-advisor",
+    "jobFunction": "retail-client-advisor",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Vendeur H/F CDI 7H",
+      "sourceKey": "bzb",
+      "candidates": [
+        "sales-advisor"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "febdfe76-bccf-4ee1-abb1-9c193c8c1d73",
+      "familyRule": "legacy-title-20",
+      "inputTitle": "Vendeur H/F CDI 7H",
+      "matchedRules": [
+        "sales-advisor-title"
+      ],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiij905x7qf5k3a7zij3z",
+    "title": "Responsable de Magasin H/F",
+    "rawTitle": "Responsable de Magasin H/F",
+    "department": null,
+    "occupationCode": "store-manager",
+    "jobFunction": "retail-store-management",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Responsable de Magasin H/F",
+      "sourceKey": "bzb",
+      "candidates": [
+        "store-manager"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "d9727247-6c0d-4bd9-b4da-7a3cd3bf3869",
+      "familyRule": "legacy-title-17",
+      "inputTitle": "Responsable de Magasin H/F",
+      "matchedRules": [
+        "store-manager-title"
+      ],
+      "seniorityRule": "rank-manager",
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "Migrated title heuristic; not a source-certified experience level.",
+      "seniorityConfidence": "TITLE_HEURISTIC",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiihv05wnqf5ka7upfck6",
+    "title": "CDD Vendeur H/F 24H",
+    "rawTitle": "CDD Vendeur H/F 24H",
+    "department": null,
+    "occupationCode": "sales-advisor",
+    "jobFunction": "retail-client-advisor",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "CDD Vendeur H/F 24H",
+      "sourceKey": "bzb",
+      "candidates": [
+        "sales-advisor"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "0cc31ea0-516c-4941-9c42-ba125964822b",
+      "familyRule": "legacy-title-20",
+      "inputTitle": "CDD Vendeur H/F 24H",
+      "matchedRules": [
+        "sales-advisor-title"
+      ],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiigm05w7qf5kacc7w8dj",
+    "title": "Vendeur H/F - CDI 35h00",
+    "rawTitle": "Vendeur H/F - CDI 35h00",
+    "department": null,
+    "occupationCode": "sales-advisor",
+    "jobFunction": "retail-client-advisor",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Vendeur H/F - CDI 35h00",
+      "sourceKey": "bzb",
+      "candidates": [
+        "sales-advisor"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "24f4d2ae-6b8d-42a0-a085-52522c3e6699",
+      "familyRule": "legacy-title-20",
+      "inputTitle": "Vendeur H/F - CDI 35h00",
+      "matchedRules": [
+        "sales-advisor-title"
+      ],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiils05y3qf5km26wqnws",
+    "title": "Responsable Développement H/F",
+    "rawTitle": "Responsable Développement H/F",
+    "department": null,
+    "occupationCode": null,
+    "jobFunction": null,
+    "occupationStatus": "NO_RULE",
+    "occupationEvidence": {
+      "reason": "No reviewed title/context rule matched; investigate this observed variant.",
+      "rawTitle": "Responsable Développement H/F",
+      "sourceKey": "bzb",
+      "candidates": [],
+      "confidence": "UNRESOLVED",
+      "department": null,
+      "externalId": "aa44cb83-a20b-48c7-b769-8b95d0c1dab7",
+      "familyRule": null,
+      "inputTitle": "Responsable Développement H/F",
+      "matchedRules": [],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiik705xjqf5kl1u61ukl",
+    "title": "Responsable Adjoint de Magasin H/F - La Roche/Yon",
+    "rawTitle": "Responsable Adjoint de Magasin H/F - La Roche/Yon",
+    "department": null,
+    "occupationCode": null,
+    "jobFunction": "retail-store-management",
+    "occupationStatus": "FAMILY_ONLY",
+    "occupationEvidence": {
+      "reason": "Only a broad family heuristic matched; precise occupation requires review.",
+      "rawTitle": "Responsable Adjoint de Magasin H/F - La Roche/Yon",
+      "sourceKey": "bzb",
+      "candidates": [],
+      "confidence": "BROAD_HEURISTIC",
+      "department": null,
+      "externalId": "f2ec1518-2dde-4846-8297-db2ce80ddb63",
+      "familyRule": "legacy-title-17",
+      "inputTitle": "Responsable Adjoint de Magasin H/F - La Roche/Yon",
+      "matchedRules": [],
+      "seniorityRule": "rank-manager",
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "Migrated title heuristic; not a source-certified experience level.",
+      "seniorityConfidence": "TITLE_HEURISTIC",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiigy05wbqf5kruoszcti",
+    "title": "Assistant Chef de Produit H/F CDD",
+    "rawTitle": "Assistant Chef de Produit H/F CDD",
+    "department": null,
+    "occupationCode": null,
+    "jobFunction": "merchandising-buying",
+    "occupationStatus": "FAMILY_ONLY",
+    "occupationEvidence": {
+      "reason": "Only a broad family heuristic matched; precise occupation requires review.",
+      "rawTitle": "Assistant Chef de Produit H/F CDD",
+      "sourceKey": "bzb",
+      "candidates": [],
+      "confidence": "BROAD_HEURISTIC",
+      "department": null,
+      "externalId": "872fc40e-0b67-45ae-bb0e-4f14695888ba",
+      "familyRule": "legacy-title-23",
+      "inputTitle": "Assistant Chef de Produit H/F CDD",
+      "matchedRules": [],
+      "seniorityRule": "rank-junior",
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "Migrated title heuristic; not a source-certified experience level.",
+      "seniorityConfidence": "TITLE_HEURISTIC",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiiky05xrqf5kiqmbhd9k",
+    "title": "Vendeur H/F - CDI 35h",
+    "rawTitle": "Vendeur H/F - CDI 35h",
+    "department": null,
+    "occupationCode": "sales-advisor",
+    "jobFunction": "retail-client-advisor",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Vendeur H/F - CDI 35h",
+      "sourceKey": "bzb",
+      "candidates": [
+        "sales-advisor"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "56b84cb3-9324-4eca-bfec-54a7a22eff40",
+      "familyRule": "legacy-title-20",
+      "inputTitle": "Vendeur H/F - CDI 35h",
+      "matchedRules": [
+        "sales-advisor-title"
+      ],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiiif05wvqf5keamhqvdm",
+    "title": "Vendeur H/F - CDI 7h00",
+    "rawTitle": "Vendeur H/F - CDI 7h00",
+    "department": null,
+    "occupationCode": "sales-advisor",
+    "jobFunction": "retail-client-advisor",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Vendeur H/F - CDI 7h00",
+      "sourceKey": "bzb",
+      "candidates": [
+        "sales-advisor"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "159cddaa-e4d8-420f-b416-845dd725b85b",
+      "familyRule": "legacy-title-20",
+      "inputTitle": "Vendeur H/F - CDI 7h00",
+      "matchedRules": [
+        "sales-advisor-title"
+      ],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiijj05xbqf5kd7e8c8ss",
+    "title": "Vendeur H/F CDI 35H",
+    "rawTitle": "Vendeur H/F CDI 35H",
+    "department": null,
+    "occupationCode": "sales-advisor",
+    "jobFunction": "retail-client-advisor",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Vendeur H/F CDI 35H",
+      "sourceKey": "bzb",
+      "candidates": [
+        "sales-advisor"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "e7d6a641-a118-4552-bae3-8d14c3a6e26f",
+      "familyRule": "legacy-title-20",
+      "inputTitle": "Vendeur H/F CDI 35H",
+      "matchedRules": [
+        "sales-advisor-title"
+      ],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtrsddm404n5pg5mdrn63np5",
+    "title": "Responsable de Magasin H/F",
+    "rawTitle": "Responsable de Magasin H/F",
+    "department": null,
+    "occupationCode": "store-manager",
+    "jobFunction": "retail-store-management",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Responsable de Magasin H/F",
+      "sourceKey": "bzb",
+      "candidates": [
+        "store-manager"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "e66f7dca-79ab-40ee-9ada-8cf448d0f6db",
+      "familyRule": "legacy-title-17",
+      "inputTitle": "Responsable de Magasin H/F",
+      "matchedRules": [
+        "store-manager-title"
+      ],
+      "seniorityRule": "rank-manager",
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "Migrated title heuristic; not a source-certified experience level.",
+      "seniorityConfidence": "TITLE_HEURISTIC",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiil705xvqf5kgfo321xw",
+    "title": "Vendeur CDI 25h H/F",
+    "rawTitle": "Vendeur CDI 25h H/F",
+    "department": null,
+    "occupationCode": "sales-advisor",
+    "jobFunction": "retail-client-advisor",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Vendeur CDI 25h H/F",
+      "sourceKey": "bzb",
+      "candidates": [
+        "sales-advisor"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "f0260bf7-2b93-4ee1-8988-adaabfd0e991",
+      "familyRule": "legacy-title-20",
+      "inputTitle": "Vendeur CDI 25h H/F",
+      "matchedRules": [
+        "sales-advisor-title"
+      ],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiijs05xfqf5klocpdijf",
+    "title": "Vendeur H/F CDD 30H",
+    "rawTitle": "Vendeur H/F CDD 30H",
+    "department": null,
+    "occupationCode": "sales-advisor",
+    "jobFunction": "retail-client-advisor",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Vendeur H/F CDD 30H",
+      "sourceKey": "bzb",
+      "candidates": [
+        "sales-advisor"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "5c90053e-2759-4bc4-b330-6e789480df99",
+      "familyRule": "legacy-title-20",
+      "inputTitle": "Vendeur H/F CDD 30H",
+      "matchedRules": [
+        "sales-advisor-title"
+      ],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtt7w0dz05wtmy014p0e1uk0",
+    "title": "Vendeur H/F - CDI 25h",
+    "rawTitle": "Vendeur H/F - CDI 25h",
+    "department": null,
+    "occupationCode": "sales-advisor",
+    "jobFunction": "retail-client-advisor",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Vendeur H/F - CDI 25h",
+      "sourceKey": "bzb",
+      "candidates": [
+        "sales-advisor"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "a75a7f9a-4510-4946-be50-66f7c6da109c",
+      "familyRule": "legacy-title-20",
+      "inputTitle": "Vendeur H/F - CDI 25h",
+      "matchedRules": [
+        "sales-advisor-title"
+      ],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  },
+  {
+    "id": "cmtlyiiko05xnqf5kgn62updk",
+    "title": "Vendeur H/F CDI 12h",
+    "rawTitle": "Vendeur H/F CDI 12h",
+    "department": null,
+    "occupationCode": "sales-advisor",
+    "jobFunction": "retail-client-advisor",
+    "occupationStatus": "CLASSIFIED",
+    "occupationEvidence": {
+      "reason": "Reviewed occupation rule with explicit title/context evidence.",
+      "rawTitle": "Vendeur H/F CDI 12h",
+      "sourceKey": "bzb",
+      "candidates": [
+        "sales-advisor"
+      ],
+      "confidence": "EXPLICIT_RULE",
+      "department": null,
+      "externalId": "3a332c86-6997-4beb-a299-26de6a2834bc",
+      "familyRule": "legacy-title-20",
+      "inputTitle": "Vendeur H/F CDI 12h",
+      "matchedRules": [
+        "sales-advisor-title"
+      ],
+      "seniorityRule": null,
+      "rawTitleOrigin": "ADAPTER_TITLE_BEFORE_CLEANING",
+      "seniorityReason": "No explicit rank evidence in the observed inputs.",
+      "seniorityConfidence": "UNRESOLVED",
+      "normalizationVersion": 1
+    }
+  }
+]

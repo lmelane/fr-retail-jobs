@@ -1,0 +1,212 @@
+[
+  {
+    "level": "info",
+    "event": "run.started",
+    "message": "run.started",
+    "runId": "6c332b92-09aa-4e0b-b15a-6c4d6473ba66",
+    "eventId": "265e3263-264d-4bfc-9c42-6b747fdef41a",
+    "durable": true,
+    "data": {
+      "command": "classify-jobs",
+      "deploymentId": null,
+      "logSpacingMs": 25,
+      "debugEnabled": true
+    },
+    "emittedAt": "2026-09-09T10:27:37.378Z"
+  },
+  {
+    "level": "info",
+    "event": "command.result",
+    "message": "command.result",
+    "runId": "6c332b92-09aa-4e0b-b15a-6c4d6473ba66",
+    "eventId": "357ef8f3-9d15-4bfd-9255-5874ae317047",
+    "durable": true,
+    "data": {
+      "ok": true,
+      "command": "classify-jobs",
+      "scanned": 77329,
+      "written": 77329,
+      "byFunction": {
+        "retail-client-advisor": 27618,
+        "retail-store-management": 9227,
+        "retail-operations": 5241,
+        "merchandising-buying": 1364,
+        "finance": 1125,
+        "admin-facilities": 365,
+        "strategy-management": 959,
+        "manufacturing-quality": 1280,
+        "product-development-rd": 573,
+        "atelier-craft": 554,
+        "it-data": 1355,
+        "hr-talent": 1208,
+        "(non classé)": 5096,
+        "design-creation": 1484,
+        "crm-clienteling": 368,
+        "supply-chain-logistics": 1472,
+        "marketing-communication": 1830,
+        "sustainability": 88,
+        "customer-service": 786,
+        "visual-merchandising": 905,
+        "retail-area-management": 194,
+        "hospitality": 705,
+        "ecommerce-digital": 897,
+        "beauty-advisor": 5854,
+        "wholesale-b2b": 843,
+        "legal-compliance": 226,
+        "beauty-services": 5018,
+        "health-optical-services": 694
+      },
+      "bySeniority": {
+        "(non renseigné)": 56364,
+        "MANAGER": 11124,
+        "DIRECTOR": 1366,
+        "SENIOR": 7218,
+        "EXECUTIVE": 155,
+        "JUNIOR": 1095,
+        "MID": 7
+      },
+      "unclassified": 5096,
+      "aiRelated": 1545,
+      "releaseId": "catwalks-occupations-20260909-v1",
+      "statuses": {
+        "CLASSIFIED": 36189,
+        "FAMILY_ONLY": 36035,
+        "NO_RULE": 5036,
+        "AMBIGUOUS": 69
+      },
+      "changedDuringRun": 0,
+      "unchanged": 0,
+      "remaining": 0
+    },
+    "emittedAt": "2026-09-09T10:33:39.691Z"
+  },
+  {
+    "level": "info",
+    "event": "run.completed",
+    "message": "run.completed",
+    "runId": "6c332b92-09aa-4e0b-b15a-6c4d6473ba66",
+    "eventId": "5548164e-0c99-4e00-8cf0-a98cc6accfb5",
+    "durable": true,
+    "data": {
+      "command": "classify-jobs",
+      "status": "COMPLETED",
+      "recorded": 157,
+      "printed": 157,
+      "repeated": 0,
+      "debugDisabled": 0,
+      "persistenceFailures": 0,
+      "byEvent": {
+        "run.started": 1,
+        "occupation.batch_completed": 155,
+        "command.result": 1
+      },
+      "counters": {}
+    },
+    "emittedAt": "2026-09-09T10:33:39.717Z"
+  },
+  {
+    "level": "info",
+    "event": "run.started",
+    "message": "run.started",
+    "runId": "c1c99522-5e65-4b53-9b3d-28d363136caf",
+    "eventId": "b8d650e7-54f3-48c2-8827-26b7b2e176d8",
+    "durable": true,
+    "data": {
+      "command": "classify-jobs",
+      "deploymentId": null,
+      "logSpacingMs": 25,
+      "debugEnabled": true
+    },
+    "emittedAt": "2026-09-09T10:33:40.451Z"
+  },
+  {
+    "level": "info",
+    "event": "command.result",
+    "message": "command.result",
+    "runId": "c1c99522-5e65-4b53-9b3d-28d363136caf",
+    "eventId": "babab87e-ced4-494f-b00f-52117498c651",
+    "durable": true,
+    "data": {
+      "ok": true,
+      "command": "classify-jobs",
+      "scanned": 77329,
+      "written": 0,
+      "byFunction": {
+        "retail-client-advisor": 27618,
+        "retail-store-management": 9227,
+        "retail-operations": 5241,
+        "merchandising-buying": 1364,
+        "finance": 1125,
+        "admin-facilities": 365,
+        "strategy-management": 959,
+        "manufacturing-quality": 1280,
+        "product-development-rd": 573,
+        "atelier-craft": 554,
+        "it-data": 1355,
+        "hr-talent": 1208,
+        "(non classé)": 5096,
+        "design-creation": 1484,
+        "crm-clienteling": 368,
+        "supply-chain-logistics": 1472,
+        "marketing-communication": 1830,
+        "sustainability": 88,
+        "customer-service": 786,
+        "visual-merchandising": 905,
+        "retail-area-management": 194,
+        "hospitality": 705,
+        "ecommerce-digital": 897,
+        "beauty-advisor": 5854,
+        "wholesale-b2b": 843,
+        "legal-compliance": 226,
+        "beauty-services": 5018,
+        "health-optical-services": 694
+      },
+      "bySeniority": {
+        "(non renseigné)": 56364,
+        "MANAGER": 11124,
+        "DIRECTOR": 1366,
+        "SENIOR": 7218,
+        "EXECUTIVE": 155,
+        "JUNIOR": 1095,
+        "MID": 7
+      },
+      "unclassified": 5096,
+      "aiRelated": 1545,
+      "releaseId": "catwalks-occupations-20260909-v1",
+      "statuses": {
+        "CLASSIFIED": 36189,
+        "FAMILY_ONLY": 36035,
+        "NO_RULE": 5036,
+        "AMBIGUOUS": 69
+      },
+      "changedDuringRun": 0,
+      "unchanged": 77329,
+      "remaining": 0
+    },
+    "emittedAt": "2026-09-09T10:34:00.450Z"
+  },
+  {
+    "level": "info",
+    "event": "run.completed",
+    "message": "run.completed",
+    "runId": "c1c99522-5e65-4b53-9b3d-28d363136caf",
+    "eventId": "79a39a0b-52e4-4425-8144-356d3aef9b5d",
+    "durable": true,
+    "data": {
+      "command": "classify-jobs",
+      "status": "COMPLETED",
+      "recorded": 157,
+      "printed": 157,
+      "repeated": 0,
+      "debugDisabled": 0,
+      "persistenceFailures": 0,
+      "byEvent": {
+        "run.started": 1,
+        "occupation.batch_completed": 155,
+        "command.result": 1
+      },
+      "counters": {}
+    },
+    "emittedAt": "2026-09-09T10:34:00.475Z"
+  }
+]
