@@ -5,6 +5,7 @@ import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 import { getWafCookie, isWafChallenge, primeWafCookie, WafChallengeError } from './wafToken.js';
 import { detectChallenge } from './responseIntegrity.js';
 import { publicDispatcher } from './publicTransport.js';
+import { sessionHeaders, rememberSessionCookies } from './httpSession.js';
 
 export { WafChallengeError } from './wafToken.js';
 export { detectChallenge, type ChallengeVendor } from './responseIntegrity.js';
@@ -110,12 +111,13 @@ export async function fetchFollowingSafely(
   for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
     signal.throwIfAborted();
     assertPublicUrl(current);
-    const options: RequestInit = { ...request, headers: Object.fromEntries(new Headers(request.headers)),
+    const options: RequestInit = { ...request, headers: Object.fromEntries(await sessionHeaders(current, request.headers ?? {})),
       signal, redirect: 'manual' };
     // Node's fetch and installed undici share the dispatcher protocol, but
     // their separately versioned TypeScript declarations are not assignable.
     Object.assign(options, { dispatcher: publicDispatcher() });
     const response = await fetch(current, options);
+    await rememberSessionCookies(current, response.headers);
 
     // 3xx with a Location -> validate and follow it ourselves.
     if (response.status >= 300 && response.status < 400) {

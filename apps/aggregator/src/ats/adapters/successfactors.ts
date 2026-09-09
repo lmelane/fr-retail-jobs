@@ -6,6 +6,7 @@ import { readPostingEvidence } from '../../lib/postingEvidence.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { microdataDescriptionHtml } from '../../connectors/generic/jsonLdSitemap.js';
 import { assertSourceRunning } from '../../lib/sourceBudget.js';
+import { withHttpSession } from '../../lib/httpSession.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -385,6 +386,10 @@ export function parseSuccessFactorsPagination(html: string, offset = 0): { start
 
 /** One implementation serves both the dispatcher and legacy array consumers. */
 export async function fetchSuccessFactorsResult(config: Record<string, unknown>): Promise<AdapterResult> {
+  return withHttpSession(() => fetchSuccessFactorsInSession(config));
+}
+
+async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Promise<AdapterResult> {
   const origin = String(config.origin ?? '').replace(/\/$/, '');
   if (!origin) throw new Error('SuccessFactors origin missing');
   if (!Number.isSafeInteger(MAX_PAGES) || MAX_PAGES < 1 || MAX_PAGES > 10000) throw new Error('Invalid SAP page budget');

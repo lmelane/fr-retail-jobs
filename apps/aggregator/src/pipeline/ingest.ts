@@ -283,7 +283,19 @@ async function ingestApiSource(
   stats.occupationReleaseId = occupationTaxonomy.manifest.id;
   stats.occupationStatuses = {};
   stats.occupationReleases = {};
-  const { jobs, declaredTotal, truncated, complete } = await fetchAtsJobs(type as never, config);
+  const { jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = await fetchAtsJobs(type as never, config);
+  // One durable source-level event retains the reason behind completeness.
+  // The operational logger stores large proofs in PipelineEvent and prints
+  // only a bounded envelope, preserving the Lot 0 console-rate guarantees.
+  await log.info('source.enumeration_observed', {
+    sourceKey: stats.source, complete: complete ?? null, declaredTotal: declaredTotal ?? null,
+    fetched: jobs.length, truncated: truncated ?? null,
+    enumeration: enumeration ?? null,
+    evidenceStatus: enumeration ? 'RECORDED' : 'ADAPTER_ENUMERATION_EVIDENCE_NOT_IMPLEMENTED',
+  });
+  if (rejectedRows?.length) {
+    await log.warn('source.rows_rejected', { sourceKey: stats.source, count: rejectedRows.length, rejectedRows });
+  }
   stats.complete = complete;
   stats.declaredTotal = declaredTotal;
   stats.truncated = truncated;
