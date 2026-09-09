@@ -163,6 +163,12 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
         const upgraded = await tx.companyAlias.update({ where: { id: legacy.id }, data: { aliasKey: employerAliasKey(a.sourceKey, a.rawName), sourceKey: a.sourceKey, normalizedName, sourceHash: plan.sourceHashes[a.sourceKey], reviewId: plan.batchId } });
         await tx.dataCorrection.create({ data: { batchId: plan.batchId, planHash, commitHash, finding: 'LOT1_EMPLOYER_IDENTITY', entityType: 'CompanyAlias', entityId: legacy.id, before: json(legacy) as Prisma.InputJsonValue, after: json(upgraded) as Prisma.InputJsonValue, evidence: { reviewId: plan.batchId } } });
       } else if (prior && !prior.reviewId) throw new Error('Legacy alias needs an explicit reviewed migration');
+      else if (prior && prior.sourceHash !== plan.sourceHashes[a.sourceKey]) {
+        // Rebinding requires a new reviewed plan; preserve the superseded proof
+        // and alias ID instead of silently inheriting today's configuration.
+        const rebound = await tx.companyAlias.update({ where: { id: prior.id }, data: { sourceHash: plan.sourceHashes[a.sourceKey], reviewId: plan.batchId } });
+        await tx.dataCorrection.create({ data: { batchId: plan.batchId, planHash, commitHash, finding: 'LOT1_EMPLOYER_IDENTITY', entityType: 'CompanyAlias', entityId: prior.id, before: json(prior) as Prisma.InputJsonValue, after: json(rebound) as Prisma.InputJsonValue, evidence: { reviewId: plan.batchId } } });
+      }
       else if (!prior) {
         await tx.companyAlias.create({ data: { aliasKey: employerAliasKey(a.sourceKey, a.rawName), displayName: a.rawName, normalizedName, sourceKey: a.sourceKey, sourceHash: plan.sourceHashes[a.sourceKey], companyId: a.companyId, reviewId: plan.batchId } });
         aliases++;

@@ -50,3 +50,5 @@ For repeatable read-only measurements, run `identity/audit.mts <output-directory
 Company intelligence resolves redirects and the latest correction revision before using its profile cache. Historical snapshots remain intact; comparisons for a merged company start with the first full day after the identity cutover, with an explicit explanation in the page. Summing medians or treating an old partial company count as the current consolidated perimeter would invent historical comparability.
 
 Workday listings without a successful detail and employer field carry an explicit publication hold. Fetch, schema, missing-path and missing-employer failures are distinguished and preserved in RAW. A later successful detail clears only its Workday hold; unrelated holds remain. Incomplete retrieval cannot attest absence.
+
+When a source configuration changes, revalidate the official employer link and create a new repair plan for its existing alias. Applying that explicit decision updates the configuration binding in place and records the previous binding and review in DataCorrection. An unchanged alias is not automatically rebound during ingestion.

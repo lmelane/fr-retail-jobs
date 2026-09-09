@@ -134,6 +134,14 @@ it('does not transfer a reviewed alias when the source key acquires a different 
   await applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789');
   await p.source.create({ data: { key: 'promod', maison: 'Promod', kind: 'talentview', config: { slug: 'different-tenant' }, tier: 'EMPLOYER_DIRECT', tenantKey: 'test:changed-promod', status: 'ACTIVE' } });
   await expect(upsertDeduplicated(p, posting('Promod'))).rejects.toThrow('ALIAS_SOURCE_OR_TENANT_CHANGED');
+  const prior = await p.companyAlias.findFirstOrThrow({ where: { sourceKey: 'promod', normalizedName: 'promod' } });
+  const renewed = await buildEmployerRepair(p, { ...plan, batchId: 'review-renewed-source', merges: [], companies: [], aliases: [{ sourceKey: 'promod', rawName: prior.displayName, companyId: prior.companyId }] });
+  await applyEmployerRepair(p, renewed, digest(renewed), 'abcdef0123456789');
+  const alias = await p.companyAlias.findUniqueOrThrow({ where: { id: prior.id } });
+  expect(alias.reviewId).toBe(renewed.batchId);
+  expect(alias.sourceHash).not.toBe(prior.sourceHash);
+  expect(await p.employerIdentityReview.findUnique({ where: { id: plan.batchId } })).not.toBeNull();
+  await expect(upsertDeduplicated(p, posting('Promod'))).resolves.toBeDefined();
 });
 
 it('rejects a repair if the source configuration changed after its review snapshot', async () => {
