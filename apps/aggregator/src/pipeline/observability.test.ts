@@ -31,3 +31,19 @@ it('correlates source health, all errors and final counts in the durable databas
   expect(health.errors).toBe(5);
   expect(health.canAttestAbsence).toBe(false);
 });
+
+it('closes a run as INTERRUPTED when the container is stopped, once, and never as a healthy completion', async () => {
+  const run = await startObservability(prisma, 'integration-observability-interrupt'); ids.push(run.runId);
+  await log.info('source_sync_started', { sourceKey: 'interrupted-source' });
+  expect(await run.interrupt('SIGTERM')).toBe(true);
+  expect(await run.interrupt('SIGTERM')).toBe(false);
+  const stored = await prisma.pipelineRun.findUniqueOrThrow({ where: { id: run.runId }, include: { events: true } });
+  expect(stored.status).toBe('INTERRUPTED');
+  expect(stored.finishedAt).not.toBeNull();
+  expect(stored.metrics).toMatchObject({ signal: 'SIGTERM' });
+  expect(stored.events.filter(e => e.event === 'run.interrupted')).toHaveLength(1);
+  expect(stored.events.some(e => e.event === 'run.completed')).toBe(false);
+  // A later finish() does not reopen or overwrite the interruption.
+  await run.finish('COMPLETED');
+  expect((await prisma.pipelineRun.findUniqueOrThrow({ where: { id: run.runId } })).status).toBe('INTERRUPTED');
+});

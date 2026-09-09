@@ -14,6 +14,13 @@ export type PortalOwnerReview = {
     targetName: string; identityScope?: 'OFFICIAL_DOMAIN'; targetKind: Exclude<CompanyKind, 'UNKNOWN'>;
     withdrawal?: { reason: 'IDENTITY_CONTRADICTED' | 'OUT_OF_SCOPE'; statement: string };
     officialDomain: string; portalUrl: string;
+    /**
+     * Hosts the reviewed portal serves its posting pages from when they are not
+     * on the official domain (a vendor-hosted hub: `hub-urbn.icims.com` and the
+     * tenant hosts it federates). Per-posting evidence may come from these hosts;
+     * the official evidence proving the portal belongs to the owner never does.
+     */
+    portalHosts?: string[];
     /** Adapter settings the review establishes (e.g. the careersite property naming the brand). Part of the source identity hash afterwards. */
     configPatch?: Record<string, unknown>;
     /**
@@ -23,6 +30,8 @@ export type PortalOwnerReview = {
      */
     postings?: Array<{
       externalId: string; targetName: string; targetKind: Exclude<CompanyKind, 'UNKNOWN'>;
+      /** The brand's own official domain when the native page states it (JSON-LD `sameAs`); recorded for the logo, never guessed from a name. */
+      targetDomain?: string;
       evidence: { url: string; sha256: string; property: string; value: string; observedAt: string };
     }>;
     evidence: { url: string; artifactText: string; sha256: string; statement: string }[];
@@ -52,6 +61,9 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
       if (sourceIdentityHash(source) !== spec.expectedSourceHash) throw new Error(`Source configuration changed: ${source.key}`);
       if (parse(spec.officialDomain).domain !== spec.officialDomain || new URL(spec.portalUrl).protocol !== 'https:') throw new Error('Invalid official domain or portal URL');
       if (!spec.fromCompanyIds.length || !spec.evidence.length) throw new Error('Explicit old identities and official evidence required');
+      const portalHosts = spec.portalHosts ?? [];
+      if (portalHosts.some(h => typeof h !== 'string' || !/^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(h))) throw new Error('portalHosts must be lowercase hostnames');
+      const onPortal = (u: URL) => onDomain(u, spec.officialDomain) || portalHosts.includes(u.hostname);
       for (const e of spec.evidence) {
         const u = new URL(e.url);
         if (u.protocol !== 'https:' || u.username || u.password || !onDomain(u, spec.officialDomain) ||
@@ -69,7 +81,10 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
       const target = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${identity.companyId}` } });
       if (target?.mergedIntoId || (target?.domain && target.domain !== spec.officialDomain)) throw new Error(`Target employer requires a separate identity review: ${identity.companyId}`);
       const targetId = target?.id ?? `cr${createHash('sha256').update(`REVIEWED_OWNER:${identity.companyId}`).digest('hex').slice(0,24)}`;
-      if (spec.fromCompanyIds.includes(targetId)) throw new Error('Target is listed as a misattributed identity');
+      // A portal whose owner is already right may still credit brands the pages
+      // name: the owner is then listed as the identity to re-evaluate per posting,
+      // and every posting without a reviewed brand stays where it is.
+      if (spec.fromCompanyIds.includes(targetId) && !spec.postings?.length) throw new Error('Target is listed as a misattributed identity');
       companyIds.add(targetId); spec.fromCompanyIds.forEach(id => companyIds.add(id));
       if (!reviewedTargets.has(targetId)) {
         reviewedTargets.add(targetId);
@@ -85,13 +100,18 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
       const postingOwners: Record<string, string> = {};
       const brandTargets = new Map<string, { id: string; key: string }>();
       const brandTargetIds = new Set<string>();
+      const brandDomains = new Map<string, string | null>();
       for (const posting of spec.postings ?? []) {
         if (!/^[A-Za-z0-9._:-]{1,80}$/.test(posting.externalId) || posting.externalId in postingOwners) throw new Error(`Invalid or repeated reviewed posting: ${posting.externalId}`);
         if (!(Object.values(CompanyKind) as string[]).includes(posting.targetKind) || (posting.targetKind as string) === 'UNKNOWN' || !normalizedEmployerName(posting.targetName)) throw new Error(`Invalid reviewed brand for posting ${posting.externalId}`);
         const ev = posting.evidence; const u = new URL(ev.url);
-        if (u.protocol !== 'https:' || u.username || u.password || !onDomain(u, spec.officialDomain) || !/^[a-f0-9]{64}$/.test(ev.sha256) || !ev.property.trim() || !ev.value.trim() || !Number.isFinite(Date.parse(ev.observedAt))) throw new Error(`Invalid native brand evidence for posting ${posting.externalId}`);
+        if (u.protocol !== 'https:' || u.username || u.password || !onPortal(u) || !/^[a-f0-9]{64}$/.test(ev.sha256) || !ev.property.trim() || !ev.value.trim() || !Number.isFinite(Date.parse(ev.observedAt))) throw new Error(`Invalid native brand evidence for posting ${posting.externalId}`);
         const brand = resolveCompany(posting.targetName);
         if (brand.companyId === identity.companyId) throw new Error(`Posting ${posting.externalId} names the portal owner; list only distinct brands`);
+        if (posting.targetDomain !== undefined && parse(posting.targetDomain).domain !== posting.targetDomain) throw new Error(`Invalid brand domain for posting ${posting.externalId}`);
+        const knownDomain = brandDomains.get(brand.companyId);
+        if (knownDomain !== undefined && knownDomain !== (posting.targetDomain ?? null)) throw new Error(`Conflicting brand domains for ${posting.targetName}`);
+        brandDomains.set(brand.companyId, posting.targetDomain ?? null);
         let entry = brandTargets.get(brand.companyId);
         if (!entry) {
           const existing = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${brand.companyId}` } });
@@ -100,11 +120,11 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
           if (id === targetId) throw new Error('Brand target collides with the portal owner');
           entry = { id, key: brand.companyId }; brandTargets.set(brand.companyId, entry); brandTargetIds.add(id); companyIds.add(id);
           if (!existing) {
-            operations.push({ entity: 'Company', id, before: null, patch: { name: posting.targetName.trim(), canonicalKey: brand.companyId, kind: posting.targetKind, parentGroup: identity.displayName, parentGroupId: targetId, identityReviewId: review.batchId, fashionjobsUrl: `resolved:${brand.companyId}` },
+            operations.push({ entity: 'Company', id, before: null, patch: { name: posting.targetName.trim(), canonicalKey: brand.companyId, kind: posting.targetKind, parentGroup: identity.displayName, parentGroupId: targetId, identityReviewId: review.batchId, fashionjobsUrl: `resolved:${brand.companyId}`, ...(posting.targetDomain ? { domain: posting.targetDomain, domainSource: ev.url } : {}) },
               reason: `Brand named by the native posting property "${ev.property}" on the reviewed ${spec.officialDomain} portal; parent group is the portal owner.` });
           } else if (!existing.parentGroupId && (!existing.parentGroup || resolveCompany(existing.parentGroup).companyId === identity.companyId)) {
             // A recorded relationship must reference the review that established it (DB check constraint).
-            operations.push({ entity: 'Company', id, before: json(existing), patch: { parentGroup: identity.displayName, parentGroupId: targetId, identityReviewId: review.batchId }, reason: `Existing brand attested on the reviewed ${spec.officialDomain} portal; parent group recorded, identity unchanged.` });
+            operations.push({ entity: 'Company', id, before: json(existing), patch: { parentGroup: identity.displayName, parentGroupId: targetId, identityReviewId: review.batchId, ...(posting.targetDomain && !existing.domain ? { domain: posting.targetDomain, domainSource: ev.url } : {}) }, reason: `Existing brand attested on the reviewed ${spec.officialDomain} portal; parent group recorded, identity unchanged.` });
           }
         }
         postingOwners[posting.externalId] = brand.companyId;
@@ -119,21 +139,39 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
         note: [source.note, `${review.reviewedAt} ${review.batchId}: official owner corrected; ${spec.withdrawal?.statement ?? 'identity certification required before activation.'}`].filter(Boolean).join('\n') }, reason: spec.evidence[0].statement });
       const entries = await tx.jobSource.findMany({ where: { sourceKey: source.key }, include: { job: { omit: { searchText: true }, include: { sources: true } } } });
       const handled = new Set<string>();
+      const moved = new Map<string, { id: string; key: string }>();
+      const rekeyTo = (key: string) => (value: string | null) => value === null ? null : value.includes('|') ? key + value.slice(value.indexOf('|')) : value;
       for (const entry of entries) {
         const { job, ...beforeSource } = entry;
         if (entry.sourceTier !== tier || (spec.withdrawal && entry.isActive)) operations.push({ entity: 'JobSource', id: entry.id, before: json(beforeSource), patch: { sourceTier: tier, ...(spec.withdrawal ? { isActive: false } : {}) }, reason: 'Reviewed portal owner tier and catalogue disposition; RAW and posting identity retained' });
         if (handled.has(job.id) || (!spec.fromCompanyIds.includes(job.companyId) && !(spec.withdrawal && job.companyId === targetId))) continue;
         handled.add(job.id);
-        if (job.sources.some(s => s.sourceKey !== source.key && s.isActive)) throw new Error(`Other active source evidence requires review: ${job.id}`);
         const brandKey = postingOwners[entry.externalId];
         const desired = brandKey ? brandTargets.get(brandKey)! : { id: targetId, key: identity.companyId };
+        // A posting that keeps its employer needs no review; one that changes it must not be attested by another live source.
         if (job.companyId === desired.id && !spec.withdrawal) continue;
+        if (job.sources.some(s => s.sourceKey !== source.key && s.isActive)) throw new Error(`Other active source evidence requires review: ${job.id}`);
         const { sources: _sources, ...beforeJob } = job;
-        const rekey = (value: string | null) => value === null ? null : value.includes('|') ? desired.key + value.slice(value.indexOf('|')) : value;
+        const rekey = rekeyTo(desired.key); moved.set(job.id, desired);
         if (spec.withdrawal && job.isActive && new Date(review.reviewedAt) < job.firstSeenAt) throw new Error(`Withdrawal predates catalogue observation: ${job.id}`);
         const removal = spec.withdrawal ? deactivateJob(job, { kind: 'WITHDRAWN', reason: spec.withdrawal.reason }, new Date(review.reviewedAt)) : null;
         operations.push({ entity: 'Job', id: job.id, before: json(beforeJob), patch: { companyId: desired.id, clusterKey: rekey(job.clusterKey), fingerprint: rekey(job.fingerprint), ...removal?.data },
           reason: spec.withdrawal?.statement ?? (brandKey ? 'Employer corrected to the brand explicitly named by the native posting on the shared portal. No deletion or lifecycle change.' : 'Wrong brand attribution corrected to the attested portal employer. Brand not inferred; no deletion or lifecycle change.') });
+      }
+      // A redirected predecessor (posting merged into a moved job) must keep the
+      // employer of its canonical posting (Job redirect integrity): it follows the move.
+      let frontier = [...moved.keys()];
+      while (frontier.length) {
+        const predecessors = await tx.job.findMany({ where: { mergedIntoId: { in: frontier } }, omit: { searchText: true } });
+        frontier = [];
+        for (const predecessor of predecessors) {
+          const desired = moved.get(predecessor.mergedIntoId!)!;
+          moved.set(predecessor.id, desired); frontier.push(predecessor.id);
+          if (predecessor.companyId === desired.id) continue;
+          const rekey = rekeyTo(desired.key);
+          operations.push({ entity: 'Job', id: predecessor.id, before: json(predecessor), patch: { companyId: desired.id, clusterKey: rekey(predecessor.clusterKey), fingerprint: rekey(predecessor.fingerprint) },
+            reason: 'Redirected predecessor follows the employer of its canonical posting; redirect, RAW and lifecycle unchanged.' });
+        }
       }
       const unreviewed = await tx.jobSource.findFirst({ where: { sourceKey: source.key, isActive: true, job: { isActive: true, companyId: { notIn: [...spec.fromCompanyIds, targetId, ...brandTargetIds] } } }, select: { id: true } });
       if (unreviewed) throw new Error(`Unreviewed employer in shared portal: ${unreviewed.id}`);
@@ -143,7 +181,7 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
       reviewDocument: { statement: 'Reviewed official portal ownership correction; original brand identities and all histories preserved.', reviewedBy: review.reviewer, reviewedAt: review.reviewedAt,
         evidence: review.sources.flatMap(s => s.evidence.map(e => ({ url: e.url, artifactText: e.artifactText, sha256: e.sha256, explanation: e.statement }))) },
       evidence: { reviewId: review.batchId, reviewedAt: review.reviewedAt, reviewer: review.reviewer,
-        sources: review.sources.map(s => ({ sourceKey: s.sourceKey, targetName: s.targetName, identityScope: s.identityScope ?? 'LEGACY_KEY', withdrawal: s.withdrawal ?? null, expectedSourceHash: s.expectedSourceHash, configPatch: s.configPatch ?? null,
+        sources: review.sources.map(s => ({ sourceKey: s.sourceKey, targetName: s.targetName, identityScope: s.identityScope ?? 'LEGACY_KEY', withdrawal: s.withdrawal ?? null, expectedSourceHash: s.expectedSourceHash, configPatch: s.configPatch ?? null, portalHosts: s.portalHosts ?? [],
           brandPostings: (s.postings ?? []).length, brands: [...new Set((s.postings ?? []).map(p => p.targetName))], evidence: s.evidence.map(e => ({ url: e.url, sha256: e.sha256 })) })),
         preservation: 'Original company identities, job IDs, RAW, observations and histories preserved; only explicitly reviewed lifecycle transitions; CORRECTED events retain the decision.' },
       invariants: ['lifecycle', 'source-owners', ...(review.sources.some(s => s.withdrawal) ? ['excluded-identities' as const] : [])],

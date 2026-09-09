@@ -66,3 +66,25 @@ Réconciliation recalculée avec les reçus des trois passes du soir (`source-pr
 | `taleo`, `wordpress`, `radancy`, `eqwa`, `altamira` | 5 (Brown Thomas 70, Luxe Talent 478, NARS 53, Nocibé 285, Zegna 61) | pas de compteur | à instruire, une famille à la fois |
 
 Les corrections « livrées » ne sont déclarées résolues qu'après un reçu complet **par source** à la révision qui les porte ; l'orchestrateur re-sonde chaque famille dès que l'adaptateur change.
+
+## Après le merge de la PR 60 — re-sondages par famille (2026-09-09, 18:35 → 18:56 UTC)
+
+Orchestrateur relancé automatiquement après le merge (`orchestration-plan-probes.json`, révision `d825f58`) : 35 sources re-sondées en quatre familles parallèles (Talentsoft/iCIMS 1 016 s, magnet/taleo/divers 116 s, Workday/Phenom/Eightfold 1 207 s, générique 686 s ; 11 requêtes évitées, 0 échec technique). Réconciliation (`completeness-reconciliation.py`, reçus classés par révision de code puis par heure) :
+
+| | Avant (tracker v4) | Après |
+|---|---|---|
+| Sources actives | 423 | 423 |
+| Dernier reçu complet | 394 | **395** |
+| Dossiers restants | 27 | **26** |
+| Résolus depuis la ligne de base | 13 | **14** (+ `rituals` : 1 122 offres = union des locales, 1 250 représentations déclarées) |
+| Régressions | 0 | 0 |
+| Sans reçu | 2 (`ganni-talentrecruiter`, `lindex-easycruit` : reçus produits par leurs runs de qualification dédiés) | 2 |
+
+Restants par cause mesurée (à la révision `d825f58`) :
+- **Compteur éditeur supérieur au board épuisé** : `foot-locker-france` 2 839 lues / 2 850 déclarées, terminaison `EMPTY_PAGE` (le board rend une page vide avant le total annoncé — le correctif Phenom couvre la page *courte*, pas un total surévalué) ; `pvh` 1 374 / 1 440, toutes les pages listées lues. Critère de résolution : une seconde énumération indépendante (sitemap, total relu à la fin) qui confirme le nombre réellement servi, sinon le dossier reste « non prouvé », jamais « complet ».
+- **Workday à −1** : `nordstrom` 1 303 / 1 304, `swatch-group` 248 / 249 (déficit constant, chiffres qui bougent entre deux sondes : une offre comptée mais non servie). Même critère.
+- Les 22 autres dossiers (générique 15 dont 9 pages de départ sans listing ni sitemap, magnet ×2, taleo, wordpress, radancy, eqwa, altamira) restent dans le backlog avec leurs témoins (`tracker-v5/`).
+
+### Incident du run borné Talentsoft/iCIMS
+
+Le run de validation (`99ae410d`, 5 sources) a été **interrompu à 18:35:11 UTC par l'auto-déploiement de la PR 60** sur le même service (détail, cause racine, corrections de code et de conduite dans `urbn-shared-hub.md` §1). État prouvé avant l'arrêt : `lagardere-travel-retail` 109/109 complet (identifiants RSS corrigés), `lagardere-duty-free` 9/9, `aeropostale` 20, `urbn-stores` 943 complet (DEGRADED : 23 nouvelles annonces refusées par la porte d'identité), `urbn-hub` énumération complète (1 375) mais écriture interrompue (563/1 449). Le run `urbn-hub` sera rejoué après la livraison URBN, avec la garde de non-déploiement.
