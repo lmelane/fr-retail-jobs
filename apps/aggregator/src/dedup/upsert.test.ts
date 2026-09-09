@@ -45,6 +45,17 @@ afterAll(async () => {
 });
 
 describe('upsertDeduplicated — unique-constraint recovery', () => {
+  it('preserves publisher opportunity classification across creation, replay and reconcile', async () => {
+    const base = { company: 'Ganni', title: 'Sales Advisor', location: 'Paris', country: 'FR' };
+    const first = await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1', opportunityType: 'OPEN_APPLICATION' }));
+    const second = await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'group', externalId: '2', opportunityType: 'JOB_OPENING' }));
+    expect(second.jobId).not.toBe(first.jobId);
+    expect((await runReconcile(prisma)).jobsMerged).toBe(0);
+    await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1' }));
+    expect((await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } })).opportunityType).toBe('OPEN_APPLICATION');
+    await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1', opportunityType: 'JOB_OPENING' }));
+    expect(await prisma.jobEvent.findFirst({ where: { jobId: first.jobId, type: 'CHANGED', field: 'opportunityType' } })).toMatchObject({ before: 'OPEN_APPLICATION', after: 'JOB_OPENING' });
+  });
   it('keeps real Wailea requisitions 63681 and 63683 separate across LVMH and Oracle', async () => {
     const base = { company: 'Tiffany & Co.', title: 'Client Advisor - Wailea', city: 'Wailea', country: 'US' };
     const url = (id: string) => `https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/${id}`;

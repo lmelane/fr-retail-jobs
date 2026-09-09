@@ -93,6 +93,8 @@ export type NormalizedJob = {
   /** Apply URL. Canonical selection happens later, at dedup. */
   url: string;
   postedAt?: Date;
+  /** Explicit publisher classification; absent means not classified, never invented. */
+  opportunityType?: 'JOB_OPENING' | 'OPEN_APPLICATION';
   /** Expiry when published, used by the refresh pass to close stale rows. */
   validThrough?: Date;
 

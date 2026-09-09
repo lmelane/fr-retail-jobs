@@ -17,7 +17,7 @@ import { chunk } from '../lib/chunk.js';
 export type JobEventType = 'OPENED' | 'CLOSED' | 'REOPENED' | 'WITHDRAWN' | 'REPUBLISHED' | 'CHANGED';
 
 /** Les champs dont un changement fait un événement. Description, dates, salaire n'en font pas. */
-export const STRUCTURAL_FIELDS = ['title', 'city', 'country', 'companyId', 'jobFunction'] as const;
+export const STRUCTURAL_FIELDS = ['title', 'city', 'country', 'companyId', 'jobFunction', 'opportunityType'] as const;
 export type StructuralField = (typeof STRUCTURAL_FIELDS)[number];
 
 /** Une valeur avant/après est une chaîne bornée : l'événement raconte, il n'archive pas. */

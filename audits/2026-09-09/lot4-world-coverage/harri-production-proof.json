@@ -1,0 +1,187 @@
+{
+  "checkedAt": "2026-09-09T14:21:56.582Z",
+  "applicationCommit": "9fac7d1926cc4fad213705bd6d7bdf0790c2bc69",
+  "mainCommit": "aa2d819509a54e5b2a71ac603e6061f6cfa24fea",
+  "pr": "https://github.com/lmelane/fr-retail-jobs/pull/51",
+  "ci": "https://github.com/lmelane/fr-retail-jobs/actions/runs/34361803729",
+  "backup": {
+    "bytes": 385199683,
+    "sha256": "75089884d3b384cb62d92caa203bcf5ab566f186d2210bd6109161ccbf70c6f5"
+  },
+  "production": {
+    "at": "2026-09-09T14:21:56.582Z",
+    "total": 77390,
+    "active": 74159,
+    "france": 10952,
+    "beforeTotal": 77360,
+    "newJobs": 30,
+    "originalIdsPreserved": true,
+    "rawAndHistoryPreserved": true,
+    "corrected": [
+      {
+        "id": "cmtlyfaen00hpqf5kqvpmbjm9",
+        "wasActive": false,
+        "isActive": false,
+        "employer": "SaltRock GmbH",
+        "withdrawalReason": null,
+        "closedAt": "2026-09-04T08:02:38.356Z"
+      },
+      {
+        "id": "cmtlyfaex00htqf5kr6j9zfdh",
+        "wasActive": false,
+        "isActive": false,
+        "employer": "SaltRock GmbH",
+        "withdrawalReason": null,
+        "closedAt": "2026-09-04T08:02:38.369Z"
+      },
+      {
+        "id": "cmtlyfafm00hxqf5kulhrrvl1",
+        "wasActive": true,
+        "isActive": false,
+        "employer": "SaltRock GmbH",
+        "withdrawalReason": "IDENTITY_CONTRADICTED",
+        "closedAt": null
+      },
+      {
+        "id": "cmtmwlbft00e0so4zkilwgm21",
+        "wasActive": true,
+        "isActive": false,
+        "employer": "SaltRock GmbH",
+        "withdrawalReason": "IDENTITY_CONTRADICTED",
+        "closedAt": null
+      },
+      {
+        "id": "cmtrsc2gy00cbpg5mxoxq6m5h",
+        "wasActive": true,
+        "isActive": false,
+        "employer": "SaltRock GmbH",
+        "withdrawalReason": "IDENTITY_CONTRADICTED",
+        "closedAt": null
+      }
+    ],
+    "harri": {
+      "jobs": 30,
+      "active": 30,
+      "withDate": 30,
+      "withCountry": 30,
+      "employers": [
+        "Saltrock"
+      ]
+    },
+    "onlyExpectedActiveStateChanges": true,
+    "activeStateChanges": [
+      "cmtlyfafm00hxqf5kulhrrvl1",
+      "cmtmwlbft00e0so4zkilwgm21",
+      "cmtrsc2gy00cbpg5mxoxq6m5h"
+    ]
+  },
+  "public": [
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Saltrock",
+      "status": 200,
+      "total": 30,
+      "returned": 25,
+      "at": "2026-09-09T14:21:53.296Z",
+      "ssrHasSaltrock": true
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Saltrock&pays=GB",
+      "status": 200,
+      "total": 30,
+      "returned": 25,
+      "at": "2026-09-09T14:21:53.495Z",
+      "ssrHasSaltrock": true
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Saltrock&pays=FR",
+      "status": 200,
+      "total": 0,
+      "returned": 0,
+      "at": "2026-09-09T14:21:53.652Z",
+      "ssrHasSaltrock": false
+    },
+    {
+      "url": "https://modecareers.com/api/jobs?maison=Saltrock&secteur=FASHION",
+      "status": 200,
+      "total": 30,
+      "returned": 25,
+      "at": "2026-09-09T14:21:53.803Z",
+      "ssrHasSaltrock": true
+    },
+    {
+      "url": "https://modecareers.com/emplois?maison=Saltrock",
+      "status": 200,
+      "at": "2026-09-09T14:21:54.017Z",
+      "ssrHasSaltrock": true
+    }
+  ],
+  "idParity": {
+    "at": "2026-09-09T14:22:19.514Z",
+    "apiUnique": 30,
+    "dbIdsMatch": true,
+    "pageCounts": [
+      25,
+      5
+    ],
+    "ssrFragments": [
+      "emps de travailVilleMaison · SaltrockRéinitialiser30 offresToutes les offres· 30SaltrockhierSales Advisor/KeyholderExeter · Temps pa",
+      " Ocean, North Devon Coast and salty air. For over 30 years, Saltrock; a British, coastal, lifestyle brand, has had holiday, family, "
+    ]
+  },
+  "withdrawalPage": {
+    "url": "https://modecareers.com/offre/cmtlyfafm00hxqf5kulhrrvl1",
+    "status": 410,
+    "withdrawalBanner": true,
+    "noindex": true,
+    "jobPosting": false,
+    "at": "2026-09-09T14:23:35.109Z"
+  },
+  "deployments": [
+    {
+      "service": "aggregator",
+      "id": "b194b67d-89d1-4944-827c-e74f7bdcb4a5",
+      "status": "SUCCESS",
+      "commit": "aa2d819509a54e5b2a71ac603e6061f6cfa24fea",
+      "command": "sh apps/aggregator/start.sh",
+      "paused": "1"
+    },
+    {
+      "service": "refresh",
+      "id": "c304483b-d80b-40cc-88e4-fd73773e2e85",
+      "status": "SUCCESS",
+      "commit": "aa2d819509a54e5b2a71ac603e6061f6cfa24fea",
+      "command": null,
+      "paused": "1"
+    },
+    {
+      "service": "reconcile",
+      "id": "63fa856a-075b-4c35-b710-09544711d473",
+      "status": "SUCCESS",
+      "commit": "aa2d819509a54e5b2a71ac603e6061f6cfa24fea",
+      "command": null,
+      "paused": "1"
+    },
+    {
+      "service": "web",
+      "id": "d7e1a67c-693d-4375-aa24-c3b132954ab5",
+      "status": "SUCCESS",
+      "commit": "aa2d819509a54e5b2a71ac603e6061f6cfa24fea",
+      "command": null,
+      "paused": null
+    }
+  ],
+  "logs": {
+    "lines": 13,
+    "maxPerSecond": 6,
+    "droppedWarnings": 0
+  },
+  "run": {
+    "id": "99470610-1006-4315-ad3d-37cf7c2809c8",
+    "status": "COMPLETED",
+    "revision": "aa2d819509a54e5b2a71ac603e6061f6cfa24fea",
+    "httpRequests": 32,
+    "durableEvents": 11,
+    "persistenceFailures": 0
+  },
+  "note": "Worldwide schedules remain paused. Harri was ingested by one explicitly bounded real Railway run. This proves this portal, not worldwide sector coverage."
+}

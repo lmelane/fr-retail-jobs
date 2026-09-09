@@ -13,6 +13,7 @@ import { KIND_TO_ATS } from '../pipeline/ingest.js';
  */
 
 const URL_CASES: Array<{ url: string; type: string; config: Record<string, unknown> }> = [
+  { url: 'https://candidate.hr-manager.net/vacancies/list.aspx?customer=ganni&uiculture=en', type: 'TALENT_RECRUITER', config: { customer: 'ganni', locale: 'en' } },
   { url: 'https://harri.com/Saltrock-Careers', type: 'HARRI', config: { slug: 'Saltrock-Careers', portalUrl: 'https://harri.com/Saltrock-Careers' } },
   { url: 'https://capri.wd1.myworkdayjobs.com/en-US/Michael_Kors', type: 'WORKDAY', config: { tenant: 'capri', site: 'Michael_Kors' } },
   { url: 'https://hub-urbn.icims.com/jobs/search', type: 'ICIMS', config: { origin: 'https://hub-urbn.icims.com' } },

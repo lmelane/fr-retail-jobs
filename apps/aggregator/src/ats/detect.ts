@@ -23,7 +23,7 @@ const ATS_HOSTS = [
   'personio.com', 'myworkdayjobs.com', 'teamtailor.com', 'workable.com', 'successfactors.com',
   'welcometothejungle.com',
   'ashbyhq.com', 'pinpointhq.com', 'eightfold.ai', 'avature.net', 'flatchr.io',
-  'icims.com', 'oraclecloud.com', 'taleo.net', 'harri.com',
+  'icims.com', 'oraclecloud.com', 'taleo.net', 'harri.com', 'hr-manager.net',
 ];
 
 /**
@@ -222,6 +222,13 @@ function detectionFromUrl(rawUrl: string): AtsDetection | null {
   if (host === 'jobs.ashbyhq.com') {
     const board = parts[0];
     if (board) return { type: 'ASHBY', careersUrl: url.toString(), config: { board }, confidence: 1 };
+  }
+  if (host === 'candidate.hr-manager.net' && url.pathname.toLowerCase() === '/vacancies/list.aspx') {
+    const customer = url.searchParams.get('customer'), locale = url.searchParams.get('uiculture') ?? 'en';
+    if (customer && /^[a-z0-9_-]+$/i.test(customer)) {
+      const portalUrl = `https://candidate.hr-manager.net/vacancies/list.aspx?customer=${encodeURIComponent(customer)}&uiculture=${encodeURIComponent(locale)}`;
+      return { type: 'TALENT_RECRUITER', careersUrl: portalUrl, config: { customer, locale }, confidence: 1 };
+    }
   }
   if (['harri.com', 'www.harri.com'].includes(host) && /^[a-z0-9_-]+$/i.test(parts[0] ?? '') &&
       !['jobs','login','signup','careers','about','privacy','cookie-policy'].includes(parts[0].toLowerCase())) {

@@ -1,0 +1,12 @@
+{
+  "environment": "LOCAL_REPLAY_ONLY",
+  "runId": "5629861a-6fe2-47e6-b4fd-ce6b661e454b",
+  "startedAt": "2026-09-09T15:04:05.728Z",
+  "lastEventAt": "2026-09-09T15:04:24.849Z",
+  "sourcesStarted": 82,
+  "sourcesCompleted": 78,
+  "created": 6,
+  "updated": 138,
+  "rootCause": "Unsupported --only flag ignored by ingest-all; incorrect invocation started global local-clone orchestration",
+  "action": "Process terminated; no production run. Preserve clone then restore fresh backup. Strict command-specific validation before DB/network added."
+}

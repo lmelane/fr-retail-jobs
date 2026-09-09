@@ -154,6 +154,7 @@ export type JobRow = {
   url: string;
   postedAt: Date | null;
   withdrawnAt?: Date | null;
+  opportunityType?: 'JOB_OPENING' | 'OPEN_APPLICATION' | null;
   latitude: number | null;
   longitude: number | null;
   sourceCount: number;
@@ -308,6 +309,7 @@ function toRow(row: {
   programType: string | null; engagementType: string | null; isSeasonal: boolean | null;
   postedAt: Date | null; latitude: number | null; longitude: number | null;
   withdrawnAt?: Date | null;
+  opportunityType?: 'JOB_OPENING' | 'OPEN_APPLICATION' | null;
   sources: { sourceKey: string }[]; description: string | null; postalCode: string | null;
   department: string | null; workTime: string | null; workplaceType: string | null;
   experienceYears: number | null; educationLevel: string | null; salaryMin: number | null;
@@ -333,6 +335,7 @@ function toRow(row: {
     url: row.url,
     postedAt: row.postedAt,
     withdrawnAt: row.withdrawnAt ?? null,
+    opportunityType: row.opportunityType ?? null,
     latitude: row.latitude,
     longitude: row.longitude,
     sourceCount: row.sources.length,

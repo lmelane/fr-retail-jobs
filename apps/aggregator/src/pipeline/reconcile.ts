@@ -68,6 +68,7 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
             location: job.location ?? undefined,
             url: job.url,
             postedAt: job.postedAt ?? undefined,
+            opportunityType: job.opportunityType ?? undefined,
             company: job.clusterKey ?? '',
             // The job's own source key, not an empty string: an empty key on both
             // sides made cannotBeSameOpening fire (same source, different ids) and

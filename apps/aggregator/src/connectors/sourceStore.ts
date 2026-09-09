@@ -51,7 +51,7 @@ export function tenantKeyOf(kind: string, entryUrl: string, careersDomain?: stri
   // that collision is the 17-duplicate catalogue debt this key caught.
   const locator = [
     config.slug, config.account, config.board, config.boardToken,
-    config.company, config.subdomain, config.tenant,
+    config.company, config.customer, config.subdomain, config.tenant,
     // `site` (Lever), `domainName` (DigitalRecruiters), `siteKey` (Magnet):
     // leur absence écrasait toutes les sources Lever sur « jobs.lever.co »
     // et la contrainte tenant en refusait 17 bonnes (attrapé à la promotion).

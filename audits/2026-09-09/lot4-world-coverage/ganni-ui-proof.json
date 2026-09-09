@@ -1,0 +1,16 @@
+[
+  {
+    "name": "desktop",
+    "status": 200,
+    "label": "Candidature spontanée · Publiée il y a 87 mois",
+    "overflow": false,
+    "jobPosting": false
+  },
+  {
+    "name": "mobile",
+    "status": 200,
+    "label": "Candidature spontanée · Publiée il y a 87 mois",
+    "overflow": false,
+    "jobPosting": false
+  }
+]

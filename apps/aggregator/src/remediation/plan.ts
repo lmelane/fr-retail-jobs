@@ -192,6 +192,10 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
         evidence: { ...plan.evidence, ...op.evidence, reason: op.reason } as Prisma.InputJsonValue });
     }
     await tx.dataCorrection.createMany({ data: records });
+    // A current reviewed withdrawal is also a lifecycle transition. Historical
+    // reinterpretations of already-inactive rows remain CORRECTED only.
+    const withdrawals = plan.operations.filter(o => o.entity === 'Job' && o.before?.isActive === true && o.patch.isActive === false && o.patch.withdrawnAt && o.patch.closedAt === null);
+    if (withdrawals.length) await tx.jobEvent.createMany({ data: withdrawals.map(o => ({ jobId: o.id, type: 'WITHDRAWN', at: new Date(String(o.patch.withdrawnAt)) })) });
     await tx.jobEvent.createMany({ data: plan.operations.filter(o => o.entity === 'Job').map(o => ({
       jobId: o.id, type: 'CORRECTED', field: plan.finding, after: plan.batchId,
     })) });

@@ -22,6 +22,10 @@ const base: JobRow = {
 };
 
 describe('jobPostingSchema', () => {
+  it('keeps open applications out of vacancy structured data without excluding the page', () => {
+    expect(jobPostingSchema({ ...base, opportunityType: 'OPEN_APPLICATION' })).toBeNull();
+    expect(jobPostingSchema({ ...base, opportunityType: 'JOB_OPENING' })).not.toBeNull();
+  });
   it('never substitutes discovery for an absent or invalid employer publication date', () => {
     expect(jobPostingSchema({ ...base, postedAt: null })).toBeNull();
     expect(jobPostingSchema({ ...base, postedAt: new Date('invalid') })).toBeNull();

@@ -597,7 +597,7 @@ export function JobCard({
   // Meta : ville · contrat · télétravail — texte, sans icône (DA §4.6).
   const remote = job.workplaceType==='HYBRID'||job.workplaceType==='REMOTE' ? workplaceTypeLabel(job.workplaceType):null;
   const workingTime = workTimeLabel(job.workTime);
-  const meta = [job.city ?? job.location, contract, workingTime, remote].filter(Boolean).join(' · ');
+  const meta = [job.opportunityType === 'OPEN_APPLICATION' ? 'Candidature spontanée' : null, job.city ?? job.location, contract, workingTime, remote].filter(Boolean).join(' · ');
   // Ce qui DISTINGUE ce poste : métier, séniorité, département — l'aperçu de
   // description était le même texte d'entreprise sur 76 % des offres (cf.
   // `lib/job-preview.ts`), donc la liste ne différenciait plus rien.

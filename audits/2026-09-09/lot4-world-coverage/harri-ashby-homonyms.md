@@ -33,3 +33,17 @@ Ce document décrit d’abord le correctif et sa validation locale. Il ne consti
 KENT : le portail Personio est explicitement lié par [KENT Europe](https://www.kenteurope.com/karriere/bewerben/). [Kent Brushes](https://kentbrushes.com/pages/careers) dispose d’une page distincte. Le dossier n’établit pas encore quelle entité le libellé historique KENT était censé représenter : ses 13 offres ne sont donc pas comptées comme 13 erreurs prouvées ni corrigées par analogie.
 
 Le parcours d’énumération complet d’un portail ne prouve ni tous les portails mondiaux du groupe ni toute la couverture sectorielle. Les localisations secondaires et la qualification des autres sources restent au chantier LOT 4.
+
+## Preuve de production — 14 h 22 UTC
+
+[PR 51](https://github.com/lmelane/fr-retail-jobs/pull/51), code `9fac7d1`, fusion `aa2d819`. Les quatre services Railway sont SUCCESS sur cette fusion. Le service agrégateur est revenu à sa commande normale ; les trois traitements planifiés restent en pause pendant la qualification globale.
+
+- Plan d’identité de production : `24841f7ca4a879834583f8f62cfe09f1d8cb185caf6f7d0b663e29a89be46bc7`. Douze corrections documentées couvrent une identité distincte, une source, cinq représentations et cinq offres. Rejeu : zéro écriture.
+- Cinq offres réattribuées, dont trois retirées ; les deux clôtures historiques sont conservées. Tous les identifiants, RAW et événements antérieurs sont conservés.
+- Harri : 30 offres créées par le run Railway `99470610-1006-4315-ad3d-37cf7c2809c8`, zéro erreur. Une nouvelle source activée après preuve officielle et alias revu ; Saltrock existait déjà, ce n’est pas une nouvelle marque découverte.
+- Production : **77 390 offres historiques, 74 159 actives, 10 952 actives en France**. Delta de ce sous-lot : +30 créations et −3 retraits ; aucune suppression.
+- [Filtre Saltrock](https://modecareers.com/emplois?maison=Saltrock) : **30 en base = 30 à l’API = 30 au compteur front**. Les deux pages API (25 + 5) exposent exactement les identifiants attendus. Royaume-Uni : 30 ; France : 0 ; secteur Mode : 30.
+- Page retirée : HTTP 410, noindex, bannière de retrait et aucun JobPosting Google.
+- Journal Railway : 13 lignes, maximum 6/seconde, zéro avertissement de messages supprimés ; 11 événements durables et zéro échec de persistance.
+
+Preuves structurées : [harri-production-proof.json](harri-production-proof.json). Ashby est déployé et sa lecture native est prouvée ; aucun rejeu applicatif de Polène en production n’est revendiqué dans ce sous-lot.
