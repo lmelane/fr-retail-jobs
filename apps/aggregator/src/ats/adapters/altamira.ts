@@ -1,3 +1,4 @@
+import { log } from '../../observability/logger.js';
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
 import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
@@ -110,7 +111,7 @@ export async function fetchAltamiraJobs(config: Record<string, unknown>): Promis
         try {
           return parseAltamiraDetail(row, await fetchText(url), url);
         } catch (error) {
-          console.error(`[altamira] ${url}: ${(error as Error).message.slice(0, 120)}`);
+          await log.error('adapter.detail_failed', `[altamira] ${url}: ${(error as Error).message.slice(0, 120)}`, { error });
           return parseAltamiraDetail(row, '', url);
         }
       }),

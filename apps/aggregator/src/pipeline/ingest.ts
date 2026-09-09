@@ -1,3 +1,4 @@
+import { log } from '../observability/logger.js';
 import { archivePublicationHold } from './publicationHold.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import type { PrismaClient, AtsType } from '@prisma/client';
@@ -285,7 +286,7 @@ async function ingestApiSource(
 
   const type = KIND_TO_ATS[source.kind];
   if (!type) {
-    console.error(`[ingest] ${source.maison}: no adapter for kind "${source.kind}"`);
+    await log.error('source.adapter_missing', `[ingest] ${source.maison}: no adapter for kind "${source.kind}"`);
     stats.errors = 1;
     return stats;
   }
@@ -320,9 +321,7 @@ async function ingestApiSource(
   stats.declaredTotal = declaredTotal;
   stats.truncated = truncated;
   if (truncated) {
-    console.error(
-      `[ingest] ${stats.source}: TRUNCATED — ${jobs.length} collected of ${declaredTotal} declared`,
-    );
+    await log.error('source.listing_truncated', `[ingest] ${stats.source}: TRUNCATED — ${jobs.length} collected of ${declaredTotal} declared`);
   }
 
   stats.fetched = jobs.length;
@@ -353,7 +352,7 @@ async function ingestApiSource(
         stats.complete = false;
       }
       await archivePublicationHold(prisma, stats.source, job);
-      console.warn(`[ingest] ${stats.source}: publication held ${job.externalId}: ${job.publicationHold}`);
+      await log.warn('job.publication_held', { sourceKey: stats.source, connectorId: source.kind, jobId: job.externalId, reason: job.publicationHold, evidence: 'SourceObservation' });
       continue;
     }
     // Group feeds carry the Maison per offer (LVMH: Sephora, Dior…); a
@@ -396,19 +395,17 @@ async function ingestApiSource(
       else if (result.outcome === 'MERGED') stats.merged++;
       else stats.updated++;
     } catch (error) {
+      log.assertHealthy();
       stats.errors++;
-      // briefError, not the raw message: a Prisma failure prints the whole
-      // job.create payload (~90 lines), which flooded the log stream past its
-      // rate cap and dropped other errors we then never saw.
-      if (stats.errors <= 3) console.error(`[ingest] ${stats.source} write failed: ${briefError(error)}`);
+      // Journal every failure, with its upstream posting ID. Console repeats
+      // are aggregated centrally only AFTER durable recording.
+      await log.error('job.write_failed', { sourceKey: stats.source, connectorId: source.kind, jobId: job.externalId, error });
     }
   }
 
-  console.log(
-    `[ingest] ${stats.source}: ${stats.france} FR / ${stats.inSector} in-sector / ${stats.fetched} fetched -> ` +
+  await log.info('source.ingest_completed', `[ingest] ${stats.source}: ${stats.france} FR / ${stats.inSector} in-sector / ${stats.fetched} fetched -> ` +
       `${stats.created} created, ${stats.merged} merged, ${stats.errors} errors` +
-      (skippedOutOfSector > 0 ? ` (${skippedOutOfSector} hors secteur écartées)` : ''),
-  );
+      (skippedOutOfSector > 0 ? ` (${skippedOutOfSector} hors secteur écartées)` : ''));
   assertSourceRunning();
   // Commit progress only after all accepted postings have been persisted.
   if (rotating && stats.errors === 0) {
@@ -419,7 +416,7 @@ async function ingestApiSource(
       progress.reachedEnd === true,
       progress.lastPageDone,
     );
-    console.log(`[ingest] ${stats.source}: rotating crawl page ${startPage} → next run resumes at ${next}`);
+    await log.info('source.cursor_advanced', `[ingest] ${stats.source}: rotating crawl page ${startPage} → next run resumes at ${next}`);
   }
   return stats;
 }
@@ -494,7 +491,7 @@ export async function runIngest(
     try {
       await runGeocode(prisma);
     } catch (error) {
-      console.error('[ingest] geocode pass failed:', error instanceof Error ? error.message : String(error));
+      await log.error('geocode.failed', { error });
     }
   };
 
@@ -524,23 +521,19 @@ export async function runIngest(
       truncated: stats.truncated,
       errors: stats.errors,
     }) || (previous && stats.created + stats.merged + stats.updated < previous.jobs * 0.5)) {
-      console.warn(
-        `[ingest] ${stats.source}: purge REFUSÉE — run non fiable pour attester ` +
+      await log.warn('source.purge_refused', `[ingest] ${stats.source}: purge REFUSÉE — run non fiable pour attester ` +
           `(${stats.fetched} collectées${stats.declaredTotal ? ` sur ${stats.declaredTotal} déclarées` : ''}` +
-          `${stats.truncated ? ', tronqué' : ''}). Les offres non revues survivent.`,
-      );
+          `${stats.truncated ? ', tronqué' : ''}). Les offres non revues survivent.`);
       return;
     }
     try {
       const purged = await purgeStaleForSource(prisma, stats.source, PIPELINE_VERSION);
       if (purged.jobsClosed > 0 || purged.sourcesDeactivated > 0) {
-        console.log(
-          `[ingest] ${stats.source}: generation cleanup closed ${purged.jobsClosed} stale jobs, ` +
-            `deactivated ${purged.sourcesDeactivated} stale sources`,
-        );
+        await log.info('source.purge_completed', `[ingest] ${stats.source}: generation cleanup closed ${purged.jobsClosed} stale jobs, ` +
+            `deactivated ${purged.sourcesDeactivated} stale sources`);
       }
     } catch (error) {
-      console.error(`[ingest] ${stats.source} purge failed: ${briefError(error)}`);
+      await log.error('source.purge_failed', `[ingest] ${stats.source} purge failed: ${briefError(error)}`, { error });
     }
   };
 
@@ -562,24 +555,25 @@ export async function runIngest(
     .filter((source) => KIND_TO_ATS[source.kind])
     .filter((source) => !options.only || source.key === options.only);
   if (apiSources.length > 0) {
-    console.log(`[ingest] ${apiSources.length} API feeds: ${apiSources.map((s) => s.key).join(', ')}`);
+    await log.info('ingest.sources_selected', `[ingest] ${apiSources.length} API feeds: ${apiSources.map((s) => s.key).join(', ')}`);
   }
 
   for (const source of apiSources) {
     try {
       assertSourceRunning();
-      const stats = await ingestApiSource(prisma, source, options.deadlineMs, trust);
+      const stats = await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => ingestApiSource(prisma, source, options.deadlineMs, trust));
       results.push(stats);
-      await purgeQuietly(stats);
+      await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => purgeQuietly(stats));
       await geocodeQuietly();
     } catch (error) {
+      log.assertHealthy();
       results.push({
         source: source.key,
         fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 1,
         withDescription: 0, withDate: 0, withCountry: 0, withUrl: 0,
         errorNote: briefError(error),
       });
-      console.error(`[ingest] ${source.key} failed: ${briefError(error)}`);
+      await log.error('source.ingest_failed', { sourceKey: source.key, connectorId: source.kind, error });
     }
   }
 

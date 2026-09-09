@@ -1,3 +1,4 @@
+import { log } from '../observability/logger.js';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import dns from 'node:dns/promises';
@@ -96,23 +97,23 @@ async function viaHostGate(): Promise<string> {
 export async function runEgressProbe(): Promise<void> {
   if (process.env.EGRESS_PROBE !== '1') return;
 
-  const line = (label: string, value: string) => console.log(`[egress] ${label.padEnd(22)} ${value}`);
+  const line = (label: string, value: string) => log.info('egress.probe', `[egress] ${label.padEnd(22)} ${value}`);
 
-  line('timestamp', new Date().toISOString());
-  line('service', process.env.RAILWAY_SERVICE_NAME ?? '?');
-  line('replica', process.env.RAILWAY_REPLICA_ID ?? '?');
-  line('region', process.env.RAILWAY_REPLICA_REGION ?? process.env.RAILWAY_REGION ?? '?');
-  line('ip publique', await publicIp());
+  await line('timestamp', new Date().toISOString());
+  await line('service', process.env.RAILWAY_SERVICE_NAME ?? '?');
+  await line('replica', process.env.RAILWAY_REPLICA_ID ?? '?');
+  await line('region', process.env.RAILWAY_REPLICA_REGION ?? process.env.RAILWAY_REGION ?? '?');
+  await line('ip publique', await publicIp());
 
   try {
-    line('dns A', (await dns.resolve4(TARGET_HOST)).join(','));
+    await line('dns A', (await dns.resolve4(TARGET_HOST)).join(','));
   } catch (error) {
-    line('dns A', `ÉCHEC ${error instanceof Error ? error.message : String(error)}`);
+    await line('dns A', `ÉCHEC ${error instanceof Error ? error.message : String(error)}`);
   }
 
-  line('curl -4 direct', await curlTimings());
-  line('fetch Node direct', await rawFetch());
-  line('fetch via hostGate', await viaHostGate());
+  await line('curl -4 direct', await curlTimings());
+  await line('fetch Node direct', await rawFetch());
+  await line('fetch via hostGate', await viaHostGate());
 
   /**
    * Test explicite du cold-start : si et seulement si le direct a échoué,
@@ -123,9 +124,9 @@ export async function runEgressProbe(): Promise<void> {
   if (retryable) {
     for (const delay of [5_000, 10_000, 15_000]) {
       await new Promise((resolve) => setTimeout(resolve, delay));
-      line(`retry +${delay / 1000}s`, await rawFetch());
+      await line(`retry +${delay / 1000}s`, await rawFetch());
     }
   } else {
-    line('cold-start', 'non testé (le direct fonctionne déjà)');
+    await line('cold-start', 'non testé (le direct fonctionne déjà)');
   }
 }

@@ -1,3 +1,4 @@
+import { log } from '../observability/logger.js';
 import { assertSourceRunning, sourceSignal, sourceDelay } from './sourceBudget.js';
 import { assertPublicUrl, isPublicHttpUrl, BlockedUrlError } from './ssrf.js';
 import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
@@ -142,6 +143,7 @@ export async function fetchFollowingSafely(
         for (const key of ['content-type', 'content-length', 'transfer-encoding']) headers.delete(key);
         request = { ...request, method: 'GET', body: undefined, headers };
       }
+      log.count('http.redirects');
       current = next;
       continue;
     }
@@ -175,6 +177,8 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       // starting the timer early expired requests before they even began.
       const response = await withHostGate(url, () => {
         assertSourceRunning();
+        log.count('http.attempts');
+        if (i > 0) log.count('http.retries');
         timer = setTimeout(() => controller.abort(), timeoutMs);
         return fetchFollowingSafely(
           url,
@@ -189,6 +193,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
           AbortSignal.any([controller.signal, ...[sourceSignal(), init.signal].filter((s): s is AbortSignal => !!s)]),
         );
       });
+      log.count('http.responses');
       if (isWafChallenge(response)) {
         await response.body?.cancel();
         if (timer) clearTimeout(timer);

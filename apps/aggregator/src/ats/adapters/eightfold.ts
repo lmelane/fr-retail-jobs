@@ -1,3 +1,4 @@
+import { log } from '../../observability/logger.js';
 import pLimit from 'p-limit';
 import { fetchJson, fetchWithRetry } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
@@ -146,9 +147,7 @@ async function openSession(origin: string): Promise<string> {
     await response.body?.cancel();
     return cookies.map((cookie) => cookie.split(';')[0]).join('; ');
   } catch (error) {
-    console.warn(
-      `[eightfold] session cookie unavailable for ${origin} (${error instanceof Error ? error.message : error}); continuing without it`,
-    );
+    await log.warn('adapter.incomplete', `[eightfold] session cookie unavailable for ${origin} (${error instanceof Error ? error.message : error}); continuing without it`);
     return '';
   }
 }

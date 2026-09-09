@@ -1,3 +1,6 @@
+import { startObservability } from './observability/runtime.js';
+import { ObservabilityUnavailableError } from './observability/logger.js';
+import { log } from './observability/logger.js';
 import { summarizeOrchestration } from './lib/runSummary.js';
 import { PrismaClient } from '@prisma/client';
 import { runIngest } from './pipeline/ingest.js';
@@ -40,16 +43,19 @@ import { closeBrowser } from './lib/browser.js';
  * geocode runs after ingest to resolve any new cities for the map.
  */
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({ errorFormat: 'minimal', log: [] });
 const command = process.argv[2] ?? 'ingest';
 
 // Sonde d'egress AVANT tout (hostGate, ingest, DB) — no-op sans EGRESS_PROBE=1.
-await runEgressProbe();
+let fatalFailure = false;
+let observation: Awaited<ReturnType<typeof startObservability>> | undefined;
 
 try {
+  observation = await startObservability(prisma, command);
+  await runEgressProbe();
   if (command === 'health-report') {
     const { buildHealthReport } = await import('./pipeline/healthReport.js');
-    console.log(JSON.stringify(await buildHealthReport(prisma), null, 2));
+    await log.info('health.report', await buildHealthReport(prisma));
   } else if (command === 'ingest') {
     // `ingest --source=<key>` runs one source as a short, independent job (D6).
     const only = process.argv.find((arg) => arg.startsWith('--source='))?.slice('--source='.length);
@@ -76,11 +82,11 @@ try {
      */
     const health = await checkSourceHealth(prisma, stats);
     const alerted = await sendHealthAlert(health);
-    console.log(JSON.stringify({ ok: health.broken === 0, command, sources: stats, geo, health, alerted }, null, 2));
+    await log.info('command.result', { ok: health.broken === 0, command, sources: stats, geo, health, alerted });
 
     if (health.broken > 0) {
       for (const incident of health.incidents) {
-        console.error(`[health] ${incident.source}: ${incident.status} — ${incident.note}`);
+        await log.error('command.failed', `[health] ${incident.source}: ${incident.status} — ${incident.note}`);
       }
       // The data already written is kept; the run is flagged so someone looks.
       process.exitCode = 1;
@@ -128,12 +134,10 @@ try {
 
     // SourceRun already persists each incident. Dumping hundreds of nested
     // records exceeded Railway's 500-lines/s limit and hid the final outcome.
-    console.log(JSON.stringify({ event: 'ingest.completed', command,
-      ...summarizeOrchestration(orchestration), geo, alerted, indexing, heartbeat }));
+    await log.info('ingest.completed', { command,
+      ...summarizeOrchestration(orchestration), geo, alerted, indexing, heartbeat });
     if (orchestration.failed > 0 || orchestration.timedOut > 0) {
-      console.error(
-        `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`,
-      );
+      await log.error('command.failed', `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`);
       process.exitCode = 1;
     }
   } else if (command === 'refresh') {
@@ -158,25 +162,23 @@ try {
         await aiCompanyGuard(prisma);
         snapshot = await runSnapshot(prisma);
       } catch (error) {
+        log.assertHealthy();
+        await log.error('snapshot.failed', { error });
         snapshotError = error instanceof Error ? error.message : String(error);
       }
     }
     // Report honestly: a refused mass-closure or a skipped broken source is an
     // incident the scheduler must show, not a silent ok:true.
-    console.log(
-      JSON.stringify({ ok: !refresh.refused && !snapshotError, command, ...refresh, snapshot, snapshotError }, null, 2),
-    );
+    await log.info('refresh.completed', { ok: !refresh.refused && !snapshotError, command, ...refresh, snapshot, snapshotError });
     if (refresh.refused) {
-      console.error('[refresh] mass-closure guard refused the run — a source is likely broken');
+      await log.error('command.failed', '[refresh] mass-closure guard refused the run — a source is likely broken');
       process.exitCode = 1;
     }
     if (refresh.skippedBrokenSources.length > 0) {
-      console.error(
-        `[refresh] left offers of broken sources open: ${refresh.skippedBrokenSources.join(', ')}`,
-      );
+      await log.error('command.failed', `[refresh] left offers of broken sources open: ${refresh.skippedBrokenSources.join(', ')}`);
     }
     if (snapshotError) {
-      console.error(`[snapshot] failed after refresh: ${snapshotError}`);
+      await log.error('command.failed', `[snapshot] failed after refresh: ${snapshotError}`);
       process.exitCode = 1;
     }
   } else if (command === 'snapshot') {
@@ -192,9 +194,9 @@ try {
       ...(date ? { date: parseDay(date) } : {}),
       ...(backfillFrom ? { backfillFrom: parseDay(backfillFrom) } : {}),
     });
-    console.log(JSON.stringify({ ok: true, command, ...stats }, null, 2));
+    await log.info('command.result', { ok: true, command, ...stats });
   } else if (command === 'reconcile') {
-    console.log(JSON.stringify({ ok: true, command, ...(await runReconcile(prisma)) }, null, 2));
+    await log.info('command.result', { ok: true, command, ...(await runReconcile(prisma)) });
   } else if (command === 'import-sources') {
     /**
      * One-shot seed of the Source table (DEC-3) from data/sources.csv.
@@ -202,21 +204,21 @@ try {
      * dead weight — every runtime consumer reads the table.
      */
     const stats = await importSourcesCsv(prisma);
-    console.log(JSON.stringify({ ok: stats.skippedDuplicateTenant.length === 0, command, ...stats }, null, 2));
+    await log.info('command.result', { ok: stats.skippedDuplicateTenant.length === 0, command, ...stats });
     if (stats.skippedDuplicateTenant.length > 0) process.exitCode = 1;
   } else if (command === 'identity-profile') {
     const { sourceIdentityHash, sourceSubjectKey } = await import('./connectors/sourceIdentity.js');
     const key = process.argv[3];
     if (!key || key.startsWith('--')) throw new Error('identity-profile needs a source key');
     const source = await prisma.source.findUniqueOrThrow({ where: { key } });
-    console.log(JSON.stringify({ sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source) }, null, 2));
+    await log.info('command.result', { sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source) });
   } else if (command === 'review-source-identity') {
     const { readFileSync } = await import('node:fs');
     const { recordSourceIdentityReview } = await import('./connectors/sourceIdentity.js');
     const arg = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
     const record = arg('record'); const artifact = arg('artifact');
     if (!record || !artifact) throw new Error('review-source-identity needs --record=<json> --artifact=<archived evidence file> [--apply]');
-    console.log(JSON.stringify(await recordSourceIdentityReview(prisma, JSON.parse(readFileSync(record, 'utf8')), readFileSync(artifact), process.argv.includes('--apply')), null, 2));
+    await log.info('command.result', await recordSourceIdentityReview(prisma, JSON.parse(readFileSync(record, 'utf8')), readFileSync(artifact), process.argv.includes('--apply')));
   } else if (command === 'promote') {
     /**
      * DRAFT/VALIDATED/PAUSED -> ACTIVE, guarded: config + dated robots verdict
@@ -224,7 +226,7 @@ try {
      */
     const key = process.argv[3];
     if (!key || key.startsWith('--')) throw new Error('promote needs the sourceKey to promote');
-    console.log(JSON.stringify({ ok: true, command, ...(await promoteSource(prisma, key)) }, null, 2));
+    await log.info('command.result', { ok: true, command, ...(await promoteSource(prisma, key)) });
   } else if (command === 'promote-validated') {
     /**
      * C-02 : promotion en lot depuis un rapport de validation-volume. La barre
@@ -238,7 +240,7 @@ try {
     const input = argOf('input');
     if (!report || !input) throw new Error('promote-validated needs --report=<tsv> and --input=<gated csv>');
     const stats = await promoteValidated(prisma, report, input);
-    console.log(JSON.stringify({ ok: stats.failed.length === 0, command, ...stats }, null, 2));
+    await log.info('command.result', { ok: stats.failed.length === 0, command, ...stats });
     if (stats.failed.length > 0) process.exitCode = 1;
   } else if (command === 'retire-source') {
     /**
@@ -252,7 +254,7 @@ try {
     // `--external-prefix=https://` : ne retirer qu'une ROUTE d'une clé qui en
     // porte deux (kering : flux Eightfold vivant + sitemap périmée), voir RetireOptions.
     const externalIdPrefix = process.argv.find((a) => a.startsWith('--external-prefix='))?.slice('--external-prefix='.length);
-    console.log(JSON.stringify({ ok: true, command, externalIdPrefix, ...(await retireSource(prisma, key, { externalIdPrefix })) }, null, 2));
+    await log.info('command.result', { ok: true, command, externalIdPrefix, ...(await retireSource(prisma, key, { externalIdPrefix })) });
   } else if (command === 'separate-fused') {
     /**
      * One-shot repair for audit D-01: splits openings a single source published
@@ -261,7 +263,7 @@ try {
      * and STAY 0 — a non-zero value on a later run means the guard regressed.
      */
     const stats = await separateFusedJobs(prisma);
-    console.log(JSON.stringify({ ok: stats.fusedAfter === 0, command, ...stats }, null, 2));
+    await log.info('command.result', { ok: stats.fusedAfter === 0, command, ...stats });
     if (stats.fusedAfter > 0) process.exitCode = 1;
   } else if (command === 'resolve-domains') {
     /**
@@ -277,7 +279,7 @@ try {
       limit: Number.isFinite(limit) ? limit : 0,
       dryRun: process.argv.includes('--dry-run'),
     });
-    console.log(JSON.stringify({ ok: true, command, ...stats }, null, 2));
+    await log.info('command.result', { ok: true, command, ...stats });
   } else if (command === 'apply-domain-sheet') {
     /**
      * Applique le référentiel de domaines établi à la main (D45) :
@@ -288,7 +290,7 @@ try {
     const file = process.argv.find((a) => a.startsWith('--file='))?.slice('--file='.length)
       ?? 'data/maisons-domaines-loic.tsv';
     const stats = await applyDomainSheet(prisma, file, { apply: process.argv.includes('--apply') });
-    console.log(JSON.stringify({ ok: true, command, file, ...stats }, null, 2));
+    await log.info('command.result', { ok: true, command, file, ...stats });
   } else if (command === 'classify-jobs') {
     /**
      * Rejoue la taxonomie Intelligence (métier, séniorité, retail, IA,
@@ -304,11 +306,11 @@ try {
       dryRun: process.argv.includes('--dry-run'),
       limit: Number.isFinite(limit) ? limit : 0,
     });
-    console.log(JSON.stringify({ ok: true, command, ...stats }, null, 2));
+    await log.info('command.result', { ok: true, command, ...stats });
   } else if (command === 'geocode') {
-    console.log(JSON.stringify({ ok: true, command, ...(await runGeocode(prisma)) }, null, 2));
+    await log.info('command.result', { ok: true, command, ...(await runGeocode(prisma)) });
   } else if (command === 'stats') {
-    console.log(JSON.stringify({ ok: true, ...(await runStats(prisma)) }, null, 2));
+    await log.info('command.result', { ok: true, ...(await runStats(prisma)) });
   } else if (command === 'purge') {
     /**
      * Deletes every job and every company, so the next ingest rebuilds from
@@ -330,16 +332,10 @@ try {
     // again would re-ask the government API for answers we already have.
     const jobs = await prisma.job.deleteMany({});
     const companies = await prisma.company.deleteMany({});
-    console.log(
-      JSON.stringify(
-        { ok: true, command, deletedJobs: jobs.count, deletedCompanies: companies.count },
-        null,
-        2,
-      ),
-    );
+    await log.info('command.result', { ok: true, command, deletedJobs: jobs.count, deletedCompanies: companies.count });
   } else if (command === 'export-companies') {
     const output = process.argv[3] ?? 'companies.csv';
-    console.log(JSON.stringify({ ok: true, ...(await exportCompanies(prisma, output)) }, null, 2));
+    await log.info('command.result', { ok: true, ...(await exportCompanies(prisma, output)) });
   } else if (command === 'discover') {
     /**
      * ATS discovery over a roster of Maisons (decision, 2026-09-02): open each
@@ -362,16 +358,29 @@ try {
       concurrency: Number.isFinite(concurrency) && concurrency > 0 ? concurrency : 3,
       fresh,
     });
-    console.log(JSON.stringify({ ok: true, command, ...result }, null, 2));
+    await log.info('command.result', { ok: true, command, ...result });
   } else {
     throw new Error(`Unknown command: ${command}`);
   }
 } catch (error) {
+  fatalFailure = true;
   // Exit non-zero so Railway marks the cron run as failed instead of silently
   // reporting success on a broken pipeline.
-  console.error(`[${command}]`, error instanceof Error ? error.message : String(error));
   process.exitCode = 1;
+  if (!(error instanceof ObservabilityUnavailableError)) {
+    try { await log.error('command.failed', { command, error }); }
+    catch (loggingError) { if (!(loggingError instanceof ObservabilityUnavailableError)) throw loggingError; }
+  }
 } finally {
-  await closeBrowser();
-  await prisma.$disconnect();
+  try {
+    try { await closeBrowser(); }
+    catch (error) { fatalFailure = true; process.exitCode = 1; await log.error('browser.cleanup_failed', { error }); }
+    await observation?.finish(fatalFailure ? 'FAILED' : process.exitCode ? 'COMPLETED_WITH_ERRORS' : 'COMPLETED');
+  } catch (error) {
+    process.exitCode = 1;
+    if (!(error instanceof ObservabilityUnavailableError)) {
+      try { await log.error('run.finalization_failed', { error }); }
+      catch (loggingError) { if (!(loggingError instanceof ObservabilityUnavailableError)) throw loggingError; }
+    }
+  } finally { await prisma.$disconnect(); }
 }

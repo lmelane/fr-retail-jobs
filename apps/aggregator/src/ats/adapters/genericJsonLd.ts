@@ -1,3 +1,4 @@
+import { log } from '../../observability/logger.js';
 import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
 import { createHash } from 'node:crypto';
@@ -120,7 +121,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
         const is404 = error instanceof Error && / 404 /.test(` ${error.message} `);
         if (is404 && page > 0) reachedEnd = true;
         if (!is404) {
-          console.error(`[generic-listing] ${listingPagedUrl} stopped at page ${page}: ${briefError(error)}`);
+          await log.error('adapter.listing_failed', `[generic-listing] ${listingPagedUrl} stopped at page ${page}: ${briefError(error)}`, { error });
         }
         break;
       }

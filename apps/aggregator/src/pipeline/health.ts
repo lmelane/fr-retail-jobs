@@ -1,3 +1,4 @@
+import { log } from '../observability/logger.js';
 import type { PrismaClient } from '@prisma/client';
 import type { IngestStats } from './ingest.js';
 import { isTrustedForAttestation } from './attestation.js';
@@ -242,6 +243,7 @@ async function recordRun(prisma: PrismaClient, results: SourceHealth[], stats: I
       await prisma.sourceRun.create({
         data: {
           sourceKey: result.source,
+          ...(log.runId() ? { runId: log.runId() } : {}),
           status: result.status,
           jobs: result.jobs,
           previousJobs: result.previous,

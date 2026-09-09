@@ -1,3 +1,4 @@
+import { log } from '../observability/logger.js';
 import { createSign } from 'node:crypto';
 
 /**
@@ -61,13 +62,14 @@ async function getAccessToken(sa: ServiceAccount): Promise<string | null> {
       }),
     });
     if (!response.ok) {
-      console.error('[indexing] token error', response.status, await response.text().catch(() => ''));
+      await log.error('indexing.token_failed', '[indexing] token error', response.status, await response.text().catch(() => ''));
       return null;
     }
     const json = (await response.json()) as { access_token?: string };
     return json.access_token ?? null;
   } catch (error) {
-    console.error('[indexing] token exception', error instanceof Error ? error.message : String(error));
+    log.assertHealthy();
+    await log.error('indexing.token_failed', { error });
     return null;
   }
 }
@@ -92,7 +94,7 @@ export async function submitOfferChanges(
 ): Promise<IndexingResult> {
   const base = siteBase();
   if (!base) {
-    console.warn('[indexing] SITE_URL/NEXT_PUBLIC_SITE_URL not set — nothing submitted (connect the domain first)');
+    await log.warn('indexing.site_unconfigured', '[indexing] SITE_URL/NEXT_PUBLIC_SITE_URL not set — nothing submitted (connect the domain first)');
     return { submitted: 0, failed: 0, skipped: true };
   }
   const urls = [
@@ -113,7 +115,7 @@ export async function submitToGoogleIndex(
 
   const sa = loadCredentials();
   if (!sa) {
-    console.warn(`[indexing] GOOGLE_INDEXING_CREDENTIALS not set — ${urls.length} URL(s) not submitted`);
+    await log.warn('indexing.credentials_unconfigured', `[indexing] GOOGLE_INDEXING_CREDENTIALS not set — ${urls.length} URL(s) not submitted`);
     return { submitted: 0, failed: 0, skipped: true };
   }
 
@@ -124,6 +126,7 @@ export async function submitToGoogleIndex(
   let submitted = 0;
   let failed = 0;
   for (const { url, type } of batch) {
+    log.assertHealthy();
     try {
       const response = await fetch(PUBLISH_URL, {
         method: 'POST',
@@ -133,15 +136,15 @@ export async function submitToGoogleIndex(
       if (response.ok) submitted++;
       else {
         failed++;
-        if (failed <= 3) console.error(`[indexing] ${type} ${url} -> ${response.status}`);
+        await log.error('indexing.url_failed', { url, type, status: response.status });
       }
-    } catch {
+    } catch (error) {
+      log.assertHealthy();
       failed++;
+      await log.error('indexing.url_failed', { url, type, error });
     }
   }
-  console.log(
-    `[indexing] ${submitted} submitted, ${failed} failed` +
-      (urls.length > batch.length ? ` (${urls.length - batch.length} deferred, daily cap)` : ''),
-  );
+  await log.info('indexing.completed', `[indexing] ${submitted} submitted, ${failed} failed` +
+      (urls.length > batch.length ? ` (${urls.length - batch.length} deferred, daily cap)` : ''));
   return { submitted, failed, skipped: false };
 }

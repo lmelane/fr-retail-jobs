@@ -615,6 +615,9 @@ model GeoCache {
  * the cron exits 0, and a Maison simply appears to have stopped hiring.
  */
 model SourceRun {
+  /** Global execution correlation; legacy runs remain explicitly uncorrelated. */
+  runId String?
+  @@index([runId])
   id           String   @id @default(cuid())
   sourceKey    String
   /** OK | DEGRADED | BROKEN | NEW | TIMEOUT | ERROR (L-01: unfinished runs are recorded too). */
@@ -745,4 +748,38 @@ model SourceObservation {
   observedAt DateTime @default(now())
   @@unique([sourceKey, externalId, contentHash])
   @@index([sourceKey, observedAt])
+}
+
+/** Execution identity survives process restarts; unfinished runs remain visibly RUNNING. */
+model PipelineRun {
+  id          String   @id
+  command     String
+  revision    String?
+  startedAt   DateTime @default(now())
+  finishedAt  DateTime?
+  status      String   @default("RUNNING")
+  metrics     Json?
+  events      PipelineEvent[]
+
+  @@index([startedAt])
+  @@index([status, startedAt])
+}
+
+/** Diagnostic occurrences, including repeats. Console aggregation never deletes these. */
+model PipelineEvent {
+  id          String   @id
+  runId       String
+  run         PipelineRun @relation(fields: [runId], references: [id], onDelete: Restrict)
+  at          DateTime @default(now())
+  level       String
+  event       String
+  sourceKey   String?
+  connectorId String?
+  jobId       String?
+  fingerprint String
+  payload     Json
+
+  @@index([runId, sourceKey, at])
+  @@index([runId, event, fingerprint])
+  @@index([level, at])
 }

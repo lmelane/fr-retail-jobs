@@ -1,3 +1,4 @@
+import { log } from '../../observability/logger.js';
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
@@ -283,7 +284,7 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
         try {
           return parseSwatchJobPage(await fetchText(url), url);
         } catch (error) {
-          console.error(`[swatchgroup] ${url}: ${(error as Error).message.slice(0, 120)}`);
+          await log.error('adapter.detail_failed', `[swatchgroup] ${url}: ${(error as Error).message.slice(0, 120)}`, { error });
           return null;
         }
       }),

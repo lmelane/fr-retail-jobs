@@ -1,3 +1,4 @@
+import { log } from '../../observability/logger.js';
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -134,7 +135,7 @@ export async function fetchJobylonJobs(config: Record<string, unknown>): Promise
         } catch (error) {
           // Une page détail en erreur ne coule pas la source : la ligne de liste
           // suffit à annoncer le poste, la description viendra au run suivant.
-          console.error(`[jobylon] ${url}: ${(error as Error).message.slice(0, 120)}`);
+          await log.error('adapter.detail_failed', `[jobylon] ${url}: ${(error as Error).message.slice(0, 120)}`, { error });
           return mergeJobylonJob(row, '', url);
         }
       }),
