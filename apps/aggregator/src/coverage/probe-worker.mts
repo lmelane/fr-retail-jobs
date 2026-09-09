@@ -84,6 +84,8 @@ try {
         ? "FETCH_COMPLETE"
         : "FETCH_PARTIAL_OR_UNPROVEN",
     declaredTotal: result.declaredTotal ?? null,
+    enumeration: result.enumeration ?? null,
+    rejectedRows: result.rejectedRows?.length ?? 0,
     fetched: jobs.length,
     uniqueIds: fetched.size,
     complete: result.complete ?? false,

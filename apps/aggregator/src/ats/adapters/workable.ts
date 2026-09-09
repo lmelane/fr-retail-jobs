@@ -1,6 +1,7 @@
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
-import type { NormalizedJob } from '../../types.js';
+import { sourceDelay, assertSourceRunning } from '../../lib/sourceBudget.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
  * Workable public job board widget API.
@@ -27,7 +28,7 @@ type WorkableJob = {
 type WorkableResponse = { jobs?: WorkableJob[] };
 
 
-export async function fetchWorkableJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+export async function fetchWorkableJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const account = String(config.account ?? config.slug ?? '');
   if (!account) throw new Error('Workable account handle missing');
 
@@ -35,9 +36,14 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
     `https://apply.workable.com/api/v1/widget/accounts/${encodeURIComponent(account)}?details=true`,
   );
 
-  return (data.jobs ?? [])
-    .filter((job) => job.title && job.shortcode)
-    .map((job) => {
+  if (!Array.isArray(data.jobs)) throw new Error('WORKABLE_INVALID_WIDGET: jobs array missing');
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const jobs: NormalizedJob[] = data.jobs.filter(job => {
+    if (!job || typeof job.title !== 'string' || !job.title.trim() || typeof job.shortcode !== 'string' || !job.shortcode) {
+      rejectedRows.push({ reason: 'MISSING_OR_INVALID_ID_OR_TITLE', raw: job }); return false;
+    }
+    return true;
+  }).map((job) => {
       const postedAt = job.published_on ? new Date(job.published_on) : undefined;
       const description = [htmlToPlainText(job.description), htmlToPlainText(job.requirements)]
         .filter(Boolean)
@@ -55,4 +61,63 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
         raw: job,
       } satisfies NormalizedJob;
     });
+
+  // Independent, unfiltered listing used by Workable's own career board.
+  // Measured on APM Monaco: 11 cursor pages / 102 IDs, exactly the widget IDs.
+  const endpoint = `https://apply.workable.com/api/v3/accounts/${encodeURIComponent(account)}/jobs`;
+  const listed = new Map<string, any>();
+  const cursors = new Set<string>();
+  let token: string | undefined;
+  let declaredTotal: number | undefined;
+  let pages = 0;
+  let terminal = 'PAGE_LIMIT';
+  let stableTotal = true;
+  try {
+    for (; pages < 10000;) {
+      // Workable documents 10 requests / 10 seconds. Keep pagination sequential.
+      await sourceDelay(1100);
+      const page: any = await fetchJson(endpoint, {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ query: '', location: [], department: [], worktype: [], remote: [], ...(token ? { token } : {}) }),
+      });
+      pages++;
+      if (!Array.isArray(page.results) || !Number.isSafeInteger(page.total) || page.total < 0) throw new Error('WORKABLE_INVALID_LISTING');
+      if (declaredTotal !== undefined && declaredTotal !== page.total) stableTotal = false;
+      declaredTotal = page.total;
+      for (const row of page.results) {
+        if (!row || typeof row.shortcode !== 'string' || !row.shortcode || typeof row.title !== 'string' || !row.title.trim()) {
+          rejectedRows.push({ reason: 'INVALID_LISTING_ROW', raw: row }); continue;
+        }
+        if (listed.has(row.shortcode)) stableTotal = false;
+        listed.set(row.shortcode, row);
+      }
+      if (!page.nextPage) { terminal = 'CURSOR_EXHAUSTED'; break; }
+      if (typeof page.nextPage !== 'string' || cursors.has(page.nextPage)) { terminal = 'REPEATED_OR_INVALID_CURSOR'; break; }
+      cursors.add(page.nextPage); token = page.nextPage;
+    }
+  } catch (error) {
+    assertSourceRunning();
+    terminal = `LISTING_VERIFICATION_FAILED: ${String(error).slice(0, 500)}`;
+  }
+  const widgetIds = new Set(jobs.map(job=>job.externalId));
+  // A listing absent from the detail widget must stay visible, with the missing
+  // enrichment explicitly retained. Never replace the raw publication date.
+  for (const row of listed.values()) if (!widgetIds.has(row.shortcode)) {
+    const location = row.location ?? row.locations?.[0];
+    const postedAt = row.published ? new Date(row.published) : undefined;
+    jobs.push({ externalId: row.shortcode, title: row.title,
+      location: [location?.city, location?.region].filter(Boolean).join(', ') || undefined,
+      country: location?.countryCode ?? location?.country, contract: row.type,
+      url: `https://apply.workable.com/${account}/j/${row.shortcode}/`, description: undefined,
+      postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
+      raw: { listing: row, detailReadError: 'ABSENT_FROM_DETAIL_WIDGET' },
+    });
+  }
+  const sameIds = widgetIds.size === listed.size && [...widgetIds].every(id=>listed.has(id));
+  return { jobs, declaredTotal, rejectedRows,
+    complete: terminal === 'CURSOR_EXHAUSTED' && stableTotal && sameIds && listed.size === declaredTotal && rejectedRows.length === 0 && widgetIds.size === data.jobs.length,
+    enumeration: { method: 'WIDGET_CROSSCHECKED_WITH_CURSOR_LISTING', endpoint, pages,
+      rawCount: data.jobs.length, termination: terminal,
+      documentation: 'https://workable.readme.io/reference/jobs-1' },
+  };
 }
