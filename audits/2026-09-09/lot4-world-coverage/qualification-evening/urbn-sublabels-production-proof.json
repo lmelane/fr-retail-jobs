@@ -1,0 +1,105 @@
+{
+  "at": "2026-09-09T21:38:56.060Z",
+  "environment": "production",
+  "commit": "8c29b96a0e15670c1e02cbcd6ef63b282f9d1485",
+  "planHash": "7f452bef9f1801e116a2c30e098bcd5954910b8c26bde58f096f908d977b7d0a",
+  "operations": {
+    "total": 206,
+    "Job": 201,
+    "Company": 4,
+    "JobSource": 0,
+    "Source": 1
+  },
+  "result": {
+    "alreadyApplied": false,
+    "written": 206,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "written": 0,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "allJobs": 78351,
+  "allActive": 75010,
+  "idAndLifecycleConservation": true,
+  "rawConservation": true,
+  "rawRepresentationsPreserved": 1459,
+  "attributionAfter": [
+    {
+      "company": "URBN",
+      "kind": "GROUP",
+      "isActive": true,
+      "jobs": 175
+    },
+    {
+      "company": "Maeve",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 6
+    },
+    {
+      "company": "Free People",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 245
+    },
+    {
+      "company": "Anthro Weddings",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 25
+    },
+    {
+      "company": "Anthropologie",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 427
+    },
+    {
+      "company": "Terrain",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 41
+    },
+    {
+      "company": "Urban Outfitters",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 324
+    },
+    {
+      "company": "FP Movement",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 143
+    },
+    {
+      "company": "Menus and Venues",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 38
+    },
+    {
+      "company": "Nuuly",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 35
+    }
+  ],
+  "sources": [
+    {
+      "key": "urbn-hub",
+      "maison": "URBN",
+      "tier": "GROUP_OFFICIAL",
+      "status": "PAUSED",
+      "config": {
+        "origin": "https://hub-urbn.icims.com",
+        "employerFromJobPosting": true
+      }
+    }
+  ],
+  "brandObservations": 1284
+}

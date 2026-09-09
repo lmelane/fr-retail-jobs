@@ -1,0 +1,105 @@
+{
+  "at": "2026-09-09T21:41:03.383Z",
+  "brands": {
+    "URBN": {
+      "db": {
+        "id": "cmtpkx0dp59qspf5lz9252szw",
+        "domain": "urbn.com",
+        "active": 175
+      },
+      "apiTotal": 175,
+      "parity": true,
+      "logoStatus": 404
+    },
+    "Anthropologie": {
+      "db": {
+        "id": "cr655b6e40636c40426a08b97c",
+        "domain": "anthropologie.com",
+        "active": 427
+      },
+      "apiTotal": 427,
+      "parity": true,
+      "logoStatus": 200
+    },
+    "Urban Outfitters": {
+      "db": {
+        "id": "cr88d105073d8cbab03ce8e3ad",
+        "domain": "urbanoutfitters.com",
+        "active": 324
+      },
+      "apiTotal": 324,
+      "parity": true,
+      "logoStatus": 200
+    },
+    "Free People": {
+      "db": {
+        "id": "cr327a650529449cec822a02ef",
+        "domain": "freepeople.com",
+        "active": 245
+      },
+      "apiTotal": 245,
+      "parity": true,
+      "logoStatus": 200
+    },
+    "Terrain": {
+      "db": {
+        "id": "cr885cb8c56387e5d08ce5a70d",
+        "domain": "shopterrain.com",
+        "active": 41
+      },
+      "apiTotal": 41,
+      "parity": true,
+      "logoStatus": 200
+    },
+    "Nuuly": {
+      "db": {
+        "id": "crd8b9169bcbc38f1c16255968",
+        "domain": "nuuly.com",
+        "active": 35
+      },
+      "apiTotal": 35,
+      "parity": true,
+      "logoStatus": 200
+    },
+    "Menus and Venues": {
+      "db": {
+        "id": "crba5319aa0213b50e13f2122c",
+        "domain": "urbnmenusandvenues.com",
+        "active": 38
+      },
+      "apiTotal": 38,
+      "parity": true,
+      "logoStatus": 200
+    },
+    "FP Movement": {
+      "db": {
+        "id": "cr9b98334f7d83dfa1519910b7",
+        "domain": null,
+        "active": 143
+      },
+      "apiTotal": 143,
+      "parity": true,
+      "logoStatus": 400
+    },
+    "Anthro Weddings": {
+      "db": {
+        "id": "cr5537a7fe130986710832d6a4",
+        "domain": null,
+        "active": 25
+      },
+      "apiTotal": 25,
+      "parity": true,
+      "logoStatus": 400
+    },
+    "Maeve": {
+      "db": {
+        "id": "cr01bba755d51739d8d51417ae",
+        "domain": null,
+        "active": 6
+      },
+      "apiTotal": 6,
+      "parity": true,
+      "logoStatus": 400
+    }
+  }
+}

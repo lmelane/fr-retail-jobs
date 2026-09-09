@@ -1,0 +1,31 @@
+{
+  "at": "2026-09-09T21:39:02.951Z",
+  "environment": "production",
+  "certification": {
+    "written": {
+      "sourceKey": "urbn-hub",
+      "sourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "verdict": "VERIFIED",
+      "written": 1
+    },
+    "promoted": {
+      "key": "urbn-hub",
+      "from": "PAUSED",
+      "to": "ACTIVE"
+    },
+    "portalScope": "MULTI_BRAND"
+  },
+  "sector": {
+    "reviewHash": "1338ae2973da945bb322f3546ed78edda07b1846e6f8734cbc97f9a8fc18d360",
+    "result": {
+      "changed": 3,
+      "conceptsChanged": 0,
+      "reviewId": "1338ae2973da945bb322f3546ed78edda07b1846e6f8734cbc97f9a8fc18d360",
+      "activeAffected": 174
+    },
+    "replay": {
+      "changed": 0,
+      "reviewId": null
+    }
+  }
+}

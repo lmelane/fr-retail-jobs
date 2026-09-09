@@ -1,0 +1,105 @@
+{
+  "at": "2026-09-09T21:29:48.005Z",
+  "environment": "clone",
+  "commit": "280f997bca00f702a4c1ed8cbb35792185506b49",
+  "planHash": "7ed80892096ddc14fceb0743c7f79c18f04bd31a4ac3b39ffa51c165a68bca14",
+  "operations": {
+    "total": 206,
+    "Job": 201,
+    "Company": 4,
+    "JobSource": 0,
+    "Source": 1
+  },
+  "result": {
+    "alreadyApplied": false,
+    "written": 206,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "written": 0,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "allJobs": 78351,
+  "allActive": 75010,
+  "idAndLifecycleConservation": true,
+  "rawConservation": true,
+  "rawRepresentationsPreserved": 1459,
+  "attributionAfter": [
+    {
+      "company": "URBN",
+      "kind": "GROUP",
+      "isActive": true,
+      "jobs": 175
+    },
+    {
+      "company": "Maeve",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 6
+    },
+    {
+      "company": "Free People",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 245
+    },
+    {
+      "company": "Anthro Weddings",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 25
+    },
+    {
+      "company": "Anthropologie",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 427
+    },
+    {
+      "company": "Terrain",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 41
+    },
+    {
+      "company": "Urban Outfitters",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 324
+    },
+    {
+      "company": "FP Movement",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 143
+    },
+    {
+      "company": "Menus and Venues",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 38
+    },
+    {
+      "company": "Nuuly",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 35
+    }
+  ],
+  "sources": [
+    {
+      "key": "urbn-hub",
+      "maison": "URBN",
+      "tier": "GROUP_OFFICIAL",
+      "status": "PAUSED",
+      "config": {
+        "origin": "https://hub-urbn.icims.com",
+        "employerFromJobPosting": true
+      }
+    }
+  ],
+  "brandObservations": 1284
+}
