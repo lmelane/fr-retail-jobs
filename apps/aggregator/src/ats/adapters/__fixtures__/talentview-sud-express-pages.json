@@ -1,0 +1,1948 @@
+[
+  {
+    "page": 1,
+    "url": "https://api.talentview.io/funnel/v2/companies/sud-express/campaigns?company_website_id=11&display_mode=list&offset_start=1",
+    "jobs": [
+      {
+        "id": 196956,
+        "slug": "2hoc0f",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-09-08T14:18:19.744Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/aakeCsB5R5ybZdB0MsZo_1788422879719.jpg",
+        "address": {
+          "name": "Rue des Halles, 75001 Paris, France",
+          "lon": 2.3468647,
+          "lat": 48.8595699,
+          "street_number": null,
+          "street": "Rue des Halles",
+          "zipcode": "75001",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195683,
+        "slug": "31fcwg",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-09-08T14:08:07.020Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/rbQWQkzJQxWWz5XaWxc8_1788424332737.jpg",
+        "address": {
+          "name": "215 Rue de Genève, 73100 Aix-les-Bains, France",
+          "lon": 5.912533,
+          "lat": 45.69130879999999,
+          "street_number": "215",
+          "street": "Rue de Genève",
+          "zipcode": "73100",
+          "city": "Aix-les-Bains",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Auvergne-Rhône-Alpes",
+          "administrative_area_level_2": "Savoie",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195687,
+        "slug": "r4mu3i",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-09-08T14:05:28.175Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/XhPF4m9RQveJknwH2zLj_1788428576959.jpg",
+        "address": {
+          "name": "CC Carré Sénart, 3 All. du Préambule, 77127 Lieusaint, France",
+          "lon": 2.5477512,
+          "lat": 48.61430710000001,
+          "street_number": "3",
+          "street": "Allée du Préambule",
+          "zipcode": "77127",
+          "city": "Lieusaint",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Seine-et-Marne",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 191163,
+        "slug": "1ac4at",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-09-08T14:05:12.030Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/GnhQdZyR0CYGIfHwkMHg_1788423067632.jpg",
+        "address": {
+          "name": "55 R. de Lévis, 75017 Paris, France",
+          "lon": 2.3138216,
+          "lat": 48.8834036,
+          "street_number": "55",
+          "street": "Rue de Lévis",
+          "zipcode": "75017",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 191679,
+        "slug": "19o71b",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-09-08T14:03:22.194Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/nm5HtdfpQ3WnQ1GHtWGG_1788421180996.jpg",
+        "address": {
+          "name": "28 Rue de Buci, 75006 Paris, France",
+          "lon": 2.3361816,
+          "lat": 48.8536982,
+          "street_number": "28",
+          "street": "Rue de Buci",
+          "zipcode": "75006",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195692,
+        "slug": "z22kaj",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-09-08T13:47:33.512Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/nm5HtdfpQ3WnQ1GHtWGG_1788421180996.jpg",
+        "address": {
+          "name": "15 Parv. de la Défense, 92092 Puteaux, France",
+          "lon": 2.239401,
+          "lat": 48.89060159999999,
+          "street_number": "15",
+          "street": "Parvis de la Défense",
+          "zipcode": "92092",
+          "city": "Puteaux",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Hauts-de-Seine",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196845,
+        "slug": "yk8fpo",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-09-07T14:56:43.084Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/rbQWQkzJQxWWz5XaWxc8_1788424332737.jpg",
+        "address": {
+          "name": "Toulouse, France",
+          "lon": 1.442848,
+          "lat": 43.6048462,
+          "street_number": null,
+          "street": null,
+          "zipcode": null,
+          "city": "Toulouse",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Occitanie",
+          "administrative_area_level_2": "Haute-Garonne",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196841,
+        "slug": "txxd6q",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-09-07T14:52:23.715Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/rbQWQkzJQxWWz5XaWxc8_1788424332737.jpg",
+        "address": {
+          "name": "Toulouse, France",
+          "lon": 1.442848,
+          "lat": 43.6048462,
+          "street_number": null,
+          "street": null,
+          "zipcode": null,
+          "city": "Toulouse",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Occitanie",
+          "administrative_area_level_2": "Haute-Garonne",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196835,
+        "slug": "8izas9",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-09-07T14:30:57.432Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/XhPF4m9RQveJknwH2zLj_1788428576959.jpg",
+        "address": {
+          "name": "32 Rue Lepic, 75018 Paris, France",
+          "lon": 2.3344199,
+          "lat": 48.8854159,
+          "street_number": "32",
+          "street": "Rue Lepic",
+          "zipcode": "75018",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196826,
+        "slug": "5oroeh",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-09-07T13:59:57.384Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3TIdTPGPTxiyGjk4JfNb_1788422931834.jpg",
+        "address": {
+          "name": "Toulouse, France",
+          "lon": 1.442848,
+          "lat": 43.6048462,
+          "street_number": null,
+          "street": null,
+          "zipcode": null,
+          "city": "Toulouse",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Occitanie",
+          "administrative_area_level_2": "Haute-Garonne",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      }
+    ]
+  },
+  {
+    "page": 2,
+    "url": "https://api.talentview.io/funnel/v2/companies/sud-express/campaigns?company_website_id=11&display_mode=list&offset_start=2",
+    "jobs": [
+      {
+        "id": 196817,
+        "slug": "fljssv",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-09-07T13:08:16.000Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/GnhQdZyR0CYGIfHwkMHg_1788423067632.jpg",
+        "address": {
+          "name": "7 Rue des Clefs, 68000 Colmar, France",
+          "lon": 7.360319800000001,
+          "lat": 48.0779941,
+          "street_number": "7",
+          "street": "Rue des Clefs",
+          "zipcode": "68000",
+          "city": "Colmar",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Grand Est",
+          "administrative_area_level_2": "Haut-Rhin",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196760,
+        "slug": "tnk0e2",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-09-07T08:11:22.087Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/xpHZCZ2oTouYTKNa35yp_1784817584886.png",
+        "address": {
+          "name": "8 Grand Rue Jean Moulin, 34000 Montpellier, France",
+          "lon": 3.8784764,
+          "lat": 43.6086634,
+          "street_number": "8",
+          "street": "Grand Rue Jean Moulin",
+          "zipcode": "34000",
+          "city": "Montpellier",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Occitanie",
+          "administrative_area_level_2": "Hérault",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196758,
+        "slug": "3g3ddz",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-09-07T08:08:55.302Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/nm5HtdfpQ3WnQ1GHtWGG_1788421180996.jpg",
+        "address": {
+          "name": "8 Grand Rue Jean Moulin, 34000 Montpellier, France",
+          "lon": 3.8784764,
+          "lat": 43.6086634,
+          "street_number": "8",
+          "street": "Grand Rue Jean Moulin",
+          "zipcode": "34000",
+          "city": "Montpellier",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Occitanie",
+          "administrative_area_level_2": "Hérault",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196475,
+        "slug": "82ewj5",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-09-02T15:02:48.832Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/nm5HtdfpQ3WnQ1GHtWGG_1788421180996.jpg",
+        "address": {
+          "name": "96 Rue d'Antibes, 06400 Cannes, France",
+          "lon": 7.0241995,
+          "lat": 43.5522962,
+          "street_number": "96",
+          "street": "Rue d'Antibes",
+          "zipcode": "06400",
+          "city": "Cannes",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Provence-Alpes-Côte d'Azur",
+          "administrative_area_level_2": "Alpes-Maritimes",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196287,
+        "slug": "8zf5le",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-09-01T07:20:36.580Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3Ri59d5nRum5wFlIi6Rh_1788422639969.jpg",
+        "address": {
+          "name": "14 Rue du Château, 29120 Pont-l'Abbé, France",
+          "lon": -4.2217325,
+          "lat": 47.8659708,
+          "street_number": "14",
+          "street": "Rue du Château",
+          "zipcode": "29120",
+          "city": "Pont-l'Abbé",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Bretagne",
+          "administrative_area_level_2": "Finistère",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 186742,
+        "slug": "xez0f4",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-31T21:03:49.159Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/GnhQdZyR0CYGIfHwkMHg_1788423067632.jpg",
+        "address": {
+          "name": "Chem. d'Hauconcourt, 57252 Talange, France",
+          "lon": 6.1813858,
+          "lat": 49.2302406,
+          "street_number": null,
+          "street": "Chemin d'Hauconcourt",
+          "zipcode": "57252",
+          "city": "Talange",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Grand Est",
+          "administrative_area_level_2": "Moselle",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 192604,
+        "slug": "9qdiei",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-31T21:00:52.234Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/rbQWQkzJQxWWz5XaWxc8_1788424332737.jpg",
+        "address": {
+          "name": "9 Rue Broussais, 35400 Saint-Malo, France",
+          "lon": -2.0261067,
+          "lat": 48.6484766,
+          "street_number": "9",
+          "street": "Rue Broussais",
+          "zipcode": "35400",
+          "city": "Saint-Malo",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Bretagne",
+          "administrative_area_level_2": "Ille-et-Vilaine",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196264,
+        "slug": "yeghqi",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-31T15:03:01.823Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3TIdTPGPTxiyGjk4JfNb_1788422931834.jpg",
+        "address": {
+          "name": "28 Rue de la Paix, 53000 Laval, France",
+          "lon": -0.7683063,
+          "lat": 48.0709356,
+          "street_number": "28",
+          "street": "Rue de la Paix",
+          "zipcode": "53000",
+          "city": "Laval",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Pays de la Loire",
+          "administrative_area_level_2": "Mayenne",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 192899,
+        "slug": "ypn1kd",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-31T14:36:40.025Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/nm5HtdfpQ3WnQ1GHtWGG_1788421180996.jpg",
+        "address": {
+          "name": "33130 Bègles, France",
+          "lon": -0.5437839999999999,
+          "lat": 44.812023,
+          "street_number": null,
+          "street": null,
+          "zipcode": "33130",
+          "city": "Bègles",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Nouvelle-Aquitaine",
+          "administrative_area_level_2": "Gironde",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 189418,
+        "slug": "joeh6c",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-31T14:32:15.002Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/nm5HtdfpQ3WnQ1GHtWGG_1788421180996.jpg",
+        "address": {
+          "name": "304 Bd de la Plage, 33120 Arcachon, France",
+          "lon": -1.1723378,
+          "lat": 44.6623467,
+          "street_number": "304",
+          "street": "Boulevard de la Plage",
+          "zipcode": "33120",
+          "city": "Arcachon",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Nouvelle-Aquitaine",
+          "administrative_area_level_2": "Gironde",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      }
+    ]
+  },
+  {
+    "page": 3,
+    "url": "https://api.talentview.io/funnel/v2/companies/sud-express/campaigns?company_website_id=11&display_mode=list&offset_start=3",
+    "jobs": [
+      {
+        "id": 192831,
+        "slug": "diz1t4",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-31T14:25:01.347Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/GnhQdZyR0CYGIfHwkMHg_1788423067632.jpg",
+        "address": {
+          "name": "14 Rue Méjanes, 13100 Aix-en-Provence, France",
+          "lon": 5.4487915,
+          "lat": 43.5287391,
+          "street_number": "14",
+          "street": "Rue Méjanes",
+          "zipcode": "13100",
+          "city": "Aix-en-Provence",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Provence-Alpes-Côte d'Azur",
+          "administrative_area_level_2": "Bouches-du-Rhône",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 186426,
+        "slug": "4zl89r",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-31T14:15:40.742Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3Ri59d5nRum5wFlIi6Rh_1788422639969.jpg",
+        "address": {
+          "name": "13 Rue Massena, 06000 Nice, France",
+          "lon": 7.2676025,
+          "lat": 43.6975126,
+          "street_number": "13",
+          "street": "Rue Massena",
+          "zipcode": "06000",
+          "city": "Nice",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Provence-Alpes-Côte d'Azur",
+          "administrative_area_level_2": "Alpes-Maritimes",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 189496,
+        "slug": "p4okwd",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-31T14:14:46.484Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/rbQWQkzJQxWWz5XaWxc8_1788424332737.jpg",
+        "address": {
+          "name": "47 Cr Napoléon, 20000 Ajaccio, France",
+          "lon": 8.737687,
+          "lat": 41.9239709,
+          "street_number": "47",
+          "street": "Cours Napoléon",
+          "zipcode": "20000",
+          "city": "Ajaccio",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Corse",
+          "administrative_area_level_2": "Corse-du-Sud",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 193361,
+        "slug": "8506he",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-31T14:13:18.990Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3TIdTPGPTxiyGjk4JfNb_1788422931834.jpg",
+        "address": {
+          "name": "23 Rue Paradis, 13001 Marseille, France",
+          "lon": 5.3767137,
+          "lat": 43.2938191,
+          "street_number": "23",
+          "street": "Rue Paradis",
+          "zipcode": "13001",
+          "city": "Marseille",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Provence-Alpes-Côte d'Azur",
+          "administrative_area_level_2": "Bouches-du-Rhône",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 192897,
+        "slug": "1uwyop",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-31T13:46:16.115Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/aakeCsB5R5ybZdB0MsZo_1788422879719.jpg",
+        "address": {
+          "name": "11 Rue des Hallebardes, 67000 Strasbourg, France",
+          "lon": 7.7489666,
+          "lat": 48.5819431,
+          "street_number": "11",
+          "street": "Rue des Hallebardes",
+          "zipcode": "67000",
+          "city": "Strasbourg",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Grand Est",
+          "administrative_area_level_2": "Bas-Rhin",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196251,
+        "slug": "jf9dme",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-31T13:30:59.176Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/XhPF4m9RQveJknwH2zLj_1788428576959.jpg",
+        "address": {
+          "name": "Rue de Rennes, 75006 Paris, France",
+          "lon": 2.3288698,
+          "lat": 48.8491398,
+          "street_number": null,
+          "street": "Rue de Rennes",
+          "zipcode": "75006",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196250,
+        "slug": "72ow2p",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-31T13:29:31.047Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/nm5HtdfpQ3WnQ1GHtWGG_1788421180996.jpg",
+        "address": {
+          "name": "Rue de Rennes, 75006 Paris, France",
+          "lon": 2.3288698,
+          "lat": 48.8491398,
+          "street_number": null,
+          "street": "Rue de Rennes",
+          "zipcode": "75006",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196249,
+        "slug": "u2dr8o",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-31T13:21:35.171Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/GnhQdZyR0CYGIfHwkMHg_1788423067632.jpg",
+        "address": {
+          "name": "32 Rue Lepic, 75018 Paris, France",
+          "lon": 2.3344199,
+          "lat": 48.8854159,
+          "street_number": "32",
+          "street": "Rue Lepic",
+          "zipcode": "75018",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196236,
+        "slug": "ma6ztb",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-31T12:42:15.474Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/rbQWQkzJQxWWz5XaWxc8_1788424332737.jpg",
+        "address": {
+          "name": "Juan les Pins, 06160 Antibes, France",
+          "lon": 7.1123854,
+          "lat": 43.5691905,
+          "street_number": null,
+          "street": null,
+          "zipcode": "06160",
+          "city": "Antibes",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Provence-Alpes-Côte d'Azur",
+          "administrative_area_level_2": "Alpes-Maritimes",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 196237,
+        "slug": "ck3wg7",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-31T12:40:46.076Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/aakeCsB5R5ybZdB0MsZo_1788422879719.jpg",
+        "address": {
+          "name": "13 Rue Massena, 06000 Nice, France",
+          "lon": 7.2676025,
+          "lat": 43.6975126,
+          "street_number": "13",
+          "street": "Rue Massena",
+          "zipcode": "06000",
+          "city": "Nice",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Provence-Alpes-Côte d'Azur",
+          "administrative_area_level_2": "Alpes-Maritimes",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      }
+    ]
+  },
+  {
+    "page": 4,
+    "url": "https://api.talentview.io/funnel/v2/companies/sud-express/campaigns?company_website_id=11&display_mode=list&offset_start=4",
+    "jobs": [
+      {
+        "id": 195988,
+        "slug": "yalu2b",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-27T09:32:42.849Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3Ri59d5nRum5wFlIi6Rh_1788422639969.jpg",
+        "address": {
+          "name": "34 Av. de Cournon, 63170 Aubière, France",
+          "lon": 3.1363993,
+          "lat": 45.7531858,
+          "street_number": "34",
+          "street": "Avenue de Cournon",
+          "zipcode": "63170",
+          "city": "Aubière",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Auvergne-Rhône-Alpes",
+          "administrative_area_level_2": "Puy-de-Dôme",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195976,
+        "slug": "2v8k9f",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-27T07:54:35.306Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/GnhQdZyR0CYGIfHwkMHg_1788423067632.jpg",
+        "address": {
+          "name": "12 Rue des Marchands, 67600 Sélestat, France",
+          "lon": 7.4548371,
+          "lat": 48.2592062,
+          "street_number": "12",
+          "street": "Rue des Marchands",
+          "zipcode": "67600",
+          "city": "Sélestat",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Grand Est",
+          "administrative_area_level_2": "Bas-Rhin",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195974,
+        "slug": "i00w8x",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-27T07:53:03.586Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/rbQWQkzJQxWWz5XaWxc8_1788424332737.jpg",
+        "address": {
+          "name": "12 Rue des Marchands, 67600 Sélestat, France",
+          "lon": 7.4548371,
+          "lat": 48.2592062,
+          "street_number": "12",
+          "street": "Rue des Marchands",
+          "zipcode": "67600",
+          "city": "Sélestat",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Grand Est",
+          "administrative_area_level_2": "Bas-Rhin",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195973,
+        "slug": "sp2c8c",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-27T07:50:02.149Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3TIdTPGPTxiyGjk4JfNb_1788422931834.jpg",
+        "address": {
+          "name": "38 Rue des Boulangers, 68100 Mulhouse, France",
+          "lon": 7.336224599999999,
+          "lat": 47.7464159,
+          "street_number": "38",
+          "street": "Rue des Boulangers",
+          "zipcode": "68100",
+          "city": "Mulhouse",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Grand Est",
+          "administrative_area_level_2": "Haut-Rhin",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 189915,
+        "slug": "s8yiqn",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-27T07:48:41.162Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/nm5HtdfpQ3WnQ1GHtWGG_1788421180996.jpg",
+        "address": {
+          "name": "61 Grande Rue, 25000 Besançon, France",
+          "lon": 6.0245334,
+          "lat": 47.237744,
+          "street_number": "61",
+          "street": "Grande Rue",
+          "zipcode": "25000",
+          "city": "Besançon",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Bourgogne-Franche-Comté",
+          "administrative_area_level_2": "Doubs",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195971,
+        "slug": "0jedsb",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-27T07:48:11.743Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/rbQWQkzJQxWWz5XaWxc8_1788424332737.jpg",
+        "address": {
+          "name": "38 Rue des Boulangers, 68100 Mulhouse, France",
+          "lon": 7.336224599999999,
+          "lat": 47.7464159,
+          "street_number": "38",
+          "street": "Rue des Boulangers",
+          "zipcode": "68100",
+          "city": "Mulhouse",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Grand Est",
+          "administrative_area_level_2": "Haut-Rhin",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195934,
+        "slug": "s43uma",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-26T12:46:51.265Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3Ri59d5nRum5wFlIi6Rh_1788422639969.jpg",
+        "address": {
+          "name": "The village parc du couvent, Chem. du Couvent, 38090 Villefontaine, France",
+          "lon": 5.1593521,
+          "lat": 45.6271755,
+          "street_number": null,
+          "street": "Chemin du Couvent",
+          "zipcode": "38090",
+          "city": "Villefontaine",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Auvergne-Rhône-Alpes",
+          "administrative_area_level_2": "Isère",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195901,
+        "slug": "bgm1mo",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-26T09:18:46.736Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/nm5HtdfpQ3WnQ1GHtWGG_1788421180996.jpg",
+        "address": {
+          "name": "Juan les Pins, 06160 Antibes, France",
+          "lon": 7.1123854,
+          "lat": 43.5691905,
+          "street_number": null,
+          "street": null,
+          "zipcode": "06160",
+          "city": "Antibes",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Provence-Alpes-Côte d'Azur",
+          "administrative_area_level_2": "Alpes-Maritimes",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 193245,
+        "slug": "5k7k27",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-25T13:12:48.996Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/XhPF4m9RQveJknwH2zLj_1788428576959.jpg",
+        "address": {
+          "name": "20 Rue Claude Blondeau, 72000 Le Mans, France",
+          "lon": 0.198614,
+          "lat": 48.0066752,
+          "street_number": "20",
+          "street": "Rue Claude Blondeau",
+          "zipcode": "72000",
+          "city": "Le Mans",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Pays de la Loire",
+          "administrative_area_level_2": "Sarthe",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 191769,
+        "slug": "dv1pcb",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-25T08:11:12.005Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/rbQWQkzJQxWWz5XaWxc8_1788424332737.jpg",
+        "address": {
+          "name": "79 Av. du Bac, 94210 Saint-Maur-des-Fossés, France",
+          "lon": 2.5140929,
+          "lat": 48.7937017,
+          "street_number": "79",
+          "street": "Avenue du Bac",
+          "zipcode": "94210",
+          "city": "Saint-Maur-des-Fossés",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Val-de-Marne",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      }
+    ]
+  },
+  {
+    "page": 5,
+    "url": "https://api.talentview.io/funnel/v2/companies/sud-express/campaigns?company_website_id=11&display_mode=list&offset_start=5",
+    "jobs": [
+      {
+        "id": 195774,
+        "slug": "q60bsv",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-08-25T08:06:06.161Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/aakeCsB5R5ybZdB0MsZo_1788422879719.jpg",
+        "address": {
+          "name": "Marques Avenue, 60 Av. Gambetta, 26100 Romans-sur-Isère, France",
+          "lon": 5.0589157,
+          "lat": 45.0465844,
+          "street_number": "60",
+          "street": "Avenue Gambetta",
+          "zipcode": "26100",
+          "city": "Romans-sur-Isère",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Auvergne-Rhône-Alpes",
+          "administrative_area_level_2": "Drôme",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 191302,
+        "slug": "8iw6t0",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-24T13:31:59.012Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3TIdTPGPTxiyGjk4JfNb_1788422931834.jpg",
+        "address": {
+          "name": "283 Rue du Dr Paccard, 74400 Chamonix-Mont-Blanc, France",
+          "lon": 6.8673944,
+          "lat": 45.9206679,
+          "street_number": "283",
+          "street": "Rue du Docteur Paccard",
+          "zipcode": "74400",
+          "city": "Chamonix-Mont-Blanc",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Auvergne-Rhône-Alpes",
+          "administrative_area_level_2": "Haute-Savoie",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195704,
+        "slug": "nyreir",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-24T09:15:25.638Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/rbQWQkzJQxWWz5XaWxc8_1788424332737.jpg",
+        "address": {
+          "name": "5 Rue d'Orléans, 44000 Nantes, France",
+          "lon": -1.5568172,
+          "lat": 47.2146999,
+          "street_number": "5",
+          "street": "Rue d'Orléans",
+          "zipcode": "44000",
+          "city": "Nantes",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Pays de la Loire",
+          "administrative_area_level_2": "Loire-Atlantique",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195703,
+        "slug": "i95szn",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-24T09:13:59.705Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3Ri59d5nRum5wFlIi6Rh_1788422639969.jpg",
+        "address": {
+          "name": "5 Rue d'Orléans, 44000 Nantes, France",
+          "lon": -1.5569523,
+          "lat": 47.21469829999999,
+          "street_number": "5",
+          "street": "Rue d'Orléans",
+          "zipcode": "44000",
+          "city": "Nantes",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Pays de la Loire",
+          "administrative_area_level_2": "Loire-Atlantique",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195697,
+        "slug": "xclud1",
+        "name": "Responsables de Boutique H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-24T08:28:44.588Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/XhPF4m9RQveJknwH2zLj_1788428576959.jpg",
+        "address": {
+          "name": "Rue de Rennes, 75006 Paris, France",
+          "lon": 2.3288698,
+          "lat": 48.8491398,
+          "street_number": null,
+          "street": "Rue de Rennes",
+          "zipcode": "75006",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195696,
+        "slug": "vnybrr",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-24T08:27:06.170Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/aakeCsB5R5ybZdB0MsZo_1788422879719.jpg",
+        "address": {
+          "name": "Bd Poissonnière, 75002 Paris, France",
+          "lon": 2.3445371,
+          "lat": 48.8712713,
+          "street_number": null,
+          "street": "Boulevard Poissonnière",
+          "zipcode": "75002",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195693,
+        "slug": "ykj6ck",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-24T08:26:01.551Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/GnhQdZyR0CYGIfHwkMHg_1788423067632.jpg",
+        "address": {
+          "name": "Paris, France",
+          "lon": 2.3513765,
+          "lat": 48.8575475,
+          "street_number": null,
+          "street": null,
+          "zipcode": null,
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195691,
+        "slug": "n6fhuw",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-24T08:22:39.414Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3Ri59d5nRum5wFlIi6Rh_1788422639969.jpg",
+        "address": {
+          "name": "1 Rue Collignon, 78100 Saint-Germain-en-Laye, France",
+          "lon": 2.0923098,
+          "lat": 48.89710789999999,
+          "street_number": "1",
+          "street": "Rue Collignon",
+          "zipcode": "78100",
+          "city": "Saint-Germain-en-Laye",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Yvelines",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195684,
+        "slug": "ao40qj",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-24T07:47:19.013Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/nm5HtdfpQ3WnQ1GHtWGG_1788421180996.jpg",
+        "address": {
+          "name": "215 Rue de Genève, 73100 Aix-les-Bains, France",
+          "lon": 5.912533,
+          "lat": 45.69130879999999,
+          "street_number": "215",
+          "street": "Rue de Genève",
+          "zipcode": "73100",
+          "city": "Aix-les-Bains",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Auvergne-Rhône-Alpes",
+          "administrative_area_level_2": "Savoie",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 195682,
+        "slug": "tqhl4o",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-24T07:45:21.949Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3TIdTPGPTxiyGjk4JfNb_1788422931834.jpg",
+        "address": {
+          "name": "33 Rue Carnot, 71000 Mâcon, France",
+          "lon": 4.8335928,
+          "lat": 46.3043416,
+          "street_number": "33",
+          "street": "Rue Carnot",
+          "zipcode": "71000",
+          "city": "Mâcon",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Bourgogne-Franche-Comté",
+          "administrative_area_level_2": "Saône-et-Loire",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      }
+    ]
+  },
+  {
+    "page": 6,
+    "url": "https://api.talentview.io/funnel/v2/companies/sud-express/campaigns?company_website_id=11&display_mode=list&offset_start=6",
+    "jobs": [
+      {
+        "id": 195040,
+        "slug": "cniyx8",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-08-13T10:03:44.484Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/GnhQdZyR0CYGIfHwkMHg_1788423067632.jpg",
+        "address": {
+          "name": "The village parc du couvent, Chem. du Couvent, 38090 Villefontaine, France",
+          "lon": 5.1593521,
+          "lat": 45.6271755,
+          "street_number": null,
+          "street": "Chemin du Couvent",
+          "zipcode": "38090",
+          "city": "Villefontaine",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Auvergne-Rhône-Alpes",
+          "administrative_area_level_2": "Isère",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 191162,
+        "slug": "bnl2na",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-07-31T12:05:48.401Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/aakeCsB5R5ybZdB0MsZo_1788422879719.jpg",
+        "address": {
+          "name": "Paris, France",
+          "lon": 2.3513765,
+          "lat": 48.8575475,
+          "street_number": null,
+          "street": null,
+          "zipcode": null,
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 192996,
+        "slug": "pmy24x",
+        "name": "Responsables de Boutique H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-07-29T07:42:59.726Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3Ri59d5nRum5wFlIi6Rh_1788422639969.jpg",
+        "address": {
+          "name": "1 Rue Collignon, 78100 Saint-Germain-en-Laye, France",
+          "lon": 2.0924999,
+          "lat": 48.8970721,
+          "street_number": "1",
+          "street": "Rue Collignon",
+          "zipcode": "78100",
+          "city": "Saint-Germain-en-Laye",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Yvelines",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 192879,
+        "slug": "5c33jw",
+        "name": "Responsables de Boutique H/F",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-07-28T10:07:11.178Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/XhPF4m9RQveJknwH2zLj_1788428576959.jpg",
+        "address": {
+          "name": "11 Rue du Gros Horloge, 76000 Rouen, France",
+          "lon": 1.0934194,
+          "lat": 49.4407696,
+          "street_number": "11",
+          "street": "Rue du Gros Horloge",
+          "zipcode": "76000",
+          "city": "Rouen",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Normandie",
+          "administrative_area_level_2": "Seine-Maritime",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 186719,
+        "slug": "4hk2mn",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-07-24T12:26:16.938Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/nm5HtdfpQ3WnQ1GHtWGG_1788421180996.jpg",
+        "address": {
+          "name": "48 Rue Saint-Jean, 62520 Le Touquet-Paris-Plage, France",
+          "lon": 1.5856304,
+          "lat": 50.5236825,
+          "street_number": "48",
+          "street": "Rue Saint-Jean",
+          "zipcode": "62520",
+          "city": "Le Touquet-Paris-Plage",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Hauts-de-France",
+          "administrative_area_level_2": "Pas-de-Calais",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 191770,
+        "slug": "mhsjig",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Fixed term contract",
+        "last_activation_at": "2026-07-22T08:19:58.613Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/rbQWQkzJQxWWz5XaWxc8_1788424332737.jpg",
+        "address": {
+          "name": "44 Rue de la Grande Chaussée, 59800 Lille, France",
+          "lon": 3.0640762,
+          "lat": 50.6391235,
+          "street_number": "44",
+          "street": "Rue de la Grande Chaussée",
+          "zipcode": "59800",
+          "city": "Lille",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Hauts-de-France",
+          "administrative_area_level_2": "Nord",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 191170,
+        "slug": "wsmbv5",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-07-15T08:33:01.832Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3TIdTPGPTxiyGjk4JfNb_1788422931834.jpg",
+        "address": {
+          "name": "21000 Dijon, France",
+          "lon": 5.0480484,
+          "lat": 47.3301336,
+          "street_number": null,
+          "street": null,
+          "zipcode": "21000",
+          "city": "Dijon",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Bourgogne-Franche-Comté",
+          "administrative_area_level_2": "Côte-d'Or",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 191160,
+        "slug": "lbfqsp",
+        "name": "Conseiller de vente H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-07-15T07:37:07.744Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/GnhQdZyR0CYGIfHwkMHg_1788423067632.jpg",
+        "address": {
+          "name": "109 Rue Saint-Lazare, 75009 Paris, France",
+          "lon": 2.327062499999999,
+          "lat": 48.8754568,
+          "street_number": "109",
+          "street": "Rue Saint-Lazare",
+          "zipcode": "75009",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 191157,
+        "slug": "c0epne",
+        "name": "Responsables de Boutique H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-07-15T07:33:05.244Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/xpHZCZ2oTouYTKNa35yp_1784817584886.png",
+        "address": {
+          "name": "Rue de Rennes, 75006 Paris, France",
+          "lon": 2.3288698,
+          "lat": 48.8491398,
+          "street_number": null,
+          "street": "Rue de Rennes",
+          "zipcode": "75006",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 188967,
+        "slug": "vw4mk7",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-07-03T12:53:21.651Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3Ri59d5nRum5wFlIi6Rh_1788422639969.jpg",
+        "address": {
+          "name": "Parc du, Chem. du Couvent, 38090 Villefontaine, France",
+          "lon": 5.160360700000001,
+          "lat": 45.6262976,
+          "street_number": null,
+          "street": "Chemin du Couvent",
+          "zipcode": "38090",
+          "city": "Villefontaine",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Auvergne-Rhône-Alpes",
+          "administrative_area_level_2": "Isère",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      }
+    ]
+  },
+  {
+    "page": 7,
+    "url": "https://api.talentview.io/funnel/v2/companies/sud-express/campaigns?company_website_id=11&display_mode=list&offset_start=7",
+    "jobs": [
+      {
+        "id": 190126,
+        "slug": "xkx6sm",
+        "name": "Conseiller de vente (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-07-01T08:05:06.753Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/XhPF4m9RQveJknwH2zLj_1788428576959.jpg",
+        "address": {
+          "name": "20 Rue Voltaire, 33000 Bordeaux, France",
+          "lon": -0.5773969999999999,
+          "lat": 44.842754,
+          "street_number": "20",
+          "street": "Rue Voltaire",
+          "zipcode": "33000",
+          "city": "Bordeaux",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Nouvelle-Aquitaine",
+          "administrative_area_level_2": "Gironde",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 185719,
+        "slug": "frk48x",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-06-08T10:17:22.419Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3TIdTPGPTxiyGjk4JfNb_1788422931834.jpg",
+        "address": {
+          "name": "12 Rue du Général Leclerc, 22000 Saint-Brieuc, France",
+          "lon": -2.7598061,
+          "lat": 48.5131484,
+          "street_number": "12",
+          "street": "Rue du Général Leclerc",
+          "zipcode": "22000",
+          "city": "Saint-Brieuc",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Bretagne",
+          "administrative_area_level_2": "Côtes-d'Armor",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 186625,
+        "slug": "0b3x1n",
+        "name": "Responsables de Boutique H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-06-08T10:12:57.511Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/aakeCsB5R5ybZdB0MsZo_1788422879719.jpg",
+        "address": {
+          "name": "143 Rue St Charles, 75015 Paris, France",
+          "lon": 2.2818078,
+          "lat": 48.8422919,
+          "street_number": "143",
+          "street": "Rue Saint Charles",
+          "zipcode": "75015",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 186351,
+        "slug": "ouf2co",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-05-20T09:24:38.387Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/nm5HtdfpQ3WnQ1GHtWGG_1788421180996.jpg",
+        "address": {
+          "name": "96 Rue d'Antibes, 06400 Cannes, France",
+          "lon": 7.0241995,
+          "lat": 43.5522962,
+          "street_number": "96",
+          "street": "Rue d'Antibes",
+          "zipcode": "06400",
+          "city": "Cannes",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Provence-Alpes-Côte d'Azur",
+          "administrative_area_level_2": "Alpes-Maritimes",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 180341,
+        "slug": "ralcn0",
+        "name": "Responsable Boutique (H/F)",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-05-12T09:13:18.771Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/rbQWQkzJQxWWz5XaWxc8_1788424332737.jpg",
+        "address": {
+          "name": "CC Rives d'arcins, Rue de Bègles, 33130 Bègles, France",
+          "lon": -0.5660295,
+          "lat": 44.8174047,
+          "street_number": null,
+          "street": "Rue de Bègles",
+          "zipcode": "33130",
+          "city": "Bègles",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Nouvelle-Aquitaine",
+          "administrative_area_level_2": "Gironde",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 183563,
+        "slug": "wr9rs2",
+        "name": "Responsables de Boutique H/F",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-05-04T10:07:17.059Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/PkLhHEQjQDmiiVGuiqr8_1784816930956.png",
+        "address": {
+          "name": "Rue de Rennes, 75006 Paris, France",
+          "lon": 2.3288698,
+          "lat": 48.8491398,
+          "street_number": null,
+          "street": "Rue de Rennes",
+          "zipcode": "75006",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Île-de-France",
+          "administrative_area_level_2": "Paris",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 178537,
+        "slug": "xy8gks",
+        "name": "Responsable régional(e) Grand Est",
+        "job_type": "Permanent contract",
+        "last_activation_at": "2026-03-13T12:39:35.155Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3Ri59d5nRum5wFlIi6Rh_1788422639969.jpg",
+        "address": {
+          "name": "Meurthe-et-Moselle, France",
+          "lon": 6.094701400000001,
+          "lat": 48.7997007,
+          "street_number": null,
+          "street": null,
+          "zipcode": "54",
+          "city": null,
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": "Grand Est",
+          "administrative_area_level_2": "Meurthe-et-Moselle",
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      },
+      {
+        "id": 1546,
+        "slug": "wtvnf8",
+        "name": "Candidature spontanée",
+        "job_type": "Other",
+        "last_activation_at": "2018-11-12T10:09:46.838Z",
+        "cover_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/cover/3TIdTPGPTxiyGjk4JfNb_1788422931834.jpg",
+        "address": {
+          "name": "52 Rue du Faubourg Poissonnière, 75010 Paris, France",
+          "lon": 2.348229100000026,
+          "lat": 48.8746472,
+          "street_number": "52",
+          "street": "Rue du Faubourg Poissonnière",
+          "zipcode": "75010",
+          "city": "Paris",
+          "country": "France",
+          "iso_country": "FR",
+          "administrative_area_level_1": null,
+          "administrative_area_level_2": null,
+          "administrative_area_level_3": null
+        },
+        "entity": {
+          "id": 47,
+          "name": "Sud express",
+          "color": "#515A53",
+          "logo_url": "https://s3-eu-west-1.amazonaws.com/talentview/uploads/company/logo/z8t3SDzQeaBS49BoY4Px_1579692207362.png"
+        }
+      }
+    ]
+  }
+]

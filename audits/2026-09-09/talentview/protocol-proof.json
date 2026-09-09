@@ -1,0 +1,67 @@
+{
+  "observedAt": "2026-09-09",
+  "officialPortal": "https://sud-express.talentview.io/fr",
+  "officialClient": "https://sud-express.talentview.io/assets/search-3541ce59.js",
+  "clientSha256": "a4e90bbe4a0e3cefe48cd3520ebb7f7ca5802131b5ac0d396cdb834b10a3a01a",
+  "semantics": {
+    "firstPage": 1,
+    "parameter": "offset_start",
+    "increment": 1,
+    "display_mode": "list",
+    "pageSize": 10,
+    "terminal": "response array length < 10",
+    "countryFilter": null,
+    "websites": "every public website returned by vendor endpoint"
+  },
+  "previousProductionRuns": [
+    {
+      "key": "baccarat",
+      "kind": "talentview",
+      "status": "DEGRADED",
+      "ranAt": "2026-09-08T22:03:48.119Z",
+      "fetched": 10,
+      "accepted": 10,
+      "complete": false,
+      "canAttestAbsence": false,
+      "errors": 0,
+      "note": "complétude du balayage non attestée · desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "key": "jules",
+      "kind": "talentview",
+      "status": "DEGRADED",
+      "ranAt": "2026-09-08T22:03:49.311Z",
+      "fetched": 10,
+      "accepted": 10,
+      "complete": false,
+      "canAttestAbsence": false,
+      "errors": 0,
+      "note": "complétude du balayage non attestée · desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "key": "la-redoute-talentview",
+      "kind": "talentview",
+      "status": "DEGRADED",
+      "ranAt": "2026-09-08T22:03:38.156Z",
+      "fetched": 5,
+      "accepted": 5,
+      "complete": false,
+      "canAttestAbsence": false,
+      "errors": 0,
+      "note": "complétude du balayage non attestée · desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "key": "promod",
+      "kind": "talentview",
+      "status": "DEGRADED",
+      "ranAt": "2026-09-08T22:03:50.279Z",
+      "fetched": 10,
+      "accepted": 10,
+      "complete": false,
+      "canAttestAbsence": false,
+      "errors": 0,
+      "note": "complétude du balayage non attestée · desc 100% date 100% pays 100% url 100%"
+    }
+  ],
+  "productionWrites": 0
+}
