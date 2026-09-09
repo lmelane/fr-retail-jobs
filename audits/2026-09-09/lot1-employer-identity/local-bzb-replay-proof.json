@@ -1,0 +1,544 @@
+{
+  "environment": "restored copy; two adapter-to-ingest passes using active real archived RAW",
+  "before": {
+    "jobs": 77322,
+    "active": 74091,
+    "roots": 1567
+  },
+  "after": {
+    "jobs": 77322,
+    "active": 74091,
+    "roots": 1567
+  },
+  "attestations": 88,
+  "results": [
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "0cc31ea0-516c-4941-9c42-ba125964822b",
+      "jobId": "cmtlyiihv05wnqf5ka7upfck6"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "d05e2802-0595-4693-8588-56d232c268ed",
+      "jobId": "cmtlyiii505wrqf5k0bhxhfiv"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "159cddaa-e4d8-420f-b416-845dd725b85b",
+      "jobId": "cmtlyiiif05wvqf5keamhqvdm"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "408dd7fb-9507-4a90-a2ee-f8a911a217d3",
+      "jobId": "cmtlyiiir05wzqf5k4idj2pw7"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "5c90053e-2759-4bc4-b330-6e789480df99",
+      "jobId": "cmtlyiijs05xfqf5klocpdijf"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "d9727247-6c0d-4bd9-b4da-7a3cd3bf3869",
+      "jobId": "cmtlyiij905x7qf5k3a7zij3z"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "e7d6a641-a118-4552-bae3-8d14c3a6e26f",
+      "jobId": "cmtlyiijj05xbqf5kd7e8c8ss"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "6baf1887-6641-4d98-bae3-2f7d1140243c",
+      "jobId": "cmtlyiima05ybqf5kgcgdupqi"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "3d3e8f92-aa3a-4b17-a41b-fa014725585e",
+      "jobId": "cmtlyiili05xzqf5kmo4rmzqj"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "6baf1887-6641-4d98-bae3-2f7d1140243c",
+      "jobId": "cmtlyiima05ybqf5kgcgdupqi"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "678b54bf-a401-4726-a43c-9e9ef3d4fb75",
+      "jobId": "cmtlyiimk05yfqf5kms8c1qvh"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "f2ec1518-2dde-4846-8297-db2ce80ddb63",
+      "jobId": "cmtlyiik705xjqf5kl1u61ukl"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "f0260bf7-2b93-4ee1-8988-adaabfd0e991",
+      "jobId": "cmtlyiil705xvqf5kgfo321xw"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "24f4d2ae-6b8d-42a0-a085-52522c3e6699",
+      "jobId": "cmtlyiigm05w7qf5kacc7w8dj"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "df42de1e-8f42-4e5d-a6a3-71583444aa6a",
+      "jobId": "cmtlyiiha05wfqf5kdv30g1yi"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "56b84cb3-9324-4eca-bfec-54a7a22eff40",
+      "jobId": "cmtlyiiky05xrqf5kiqmbhd9k"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "febdfe76-bccf-4ee1-abb1-9c193c8c1d73",
+      "jobId": "cmtn5a8j80567qq5ld285atsu"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "872fc40e-0b67-45ae-bb0e-4f14695888ba",
+      "jobId": "cmtlyiigy05wbqf5kruoszcti"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "d9727247-6c0d-4bd9-b4da-7a3cd3bf3869",
+      "jobId": "cmtlyiij905x7qf5k3a7zij3z"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "159cddaa-e4d8-420f-b416-845dd725b85b",
+      "jobId": "cmtlyiiif05wvqf5keamhqvdm"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "678b54bf-a401-4726-a43c-9e9ef3d4fb75",
+      "jobId": "cmtlyiimk05yfqf5kms8c1qvh"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "d05e2802-0595-4693-8588-56d232c268ed",
+      "jobId": "cmtlyiii505wrqf5k0bhxhfiv"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "408dd7fb-9507-4a90-a2ee-f8a911a217d3",
+      "jobId": "cmtlyiiir05wzqf5k4idj2pw7"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "3a332c86-6997-4beb-a299-26de6a2834bc",
+      "jobId": "cmtlyiiko05xnqf5kgn62updk"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "febdfe76-bccf-4ee1-abb1-9c193c8c1d73",
+      "jobId": "cmtn5a8j80567qq5ld285atsu"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "15205d03-32c1-4c28-ab68-d405952068ac",
+      "jobId": "cmtlyiim205y7qf5k3th4lz3c"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "872fc40e-0b67-45ae-bb0e-4f14695888ba",
+      "jobId": "cmtlyiigy05wbqf5kruoszcti"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "56b84cb3-9324-4eca-bfec-54a7a22eff40",
+      "jobId": "cmtlyiiky05xrqf5kiqmbhd9k"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "3d3e8f92-aa3a-4b17-a41b-fa014725585e",
+      "jobId": "cmtlyiili05xzqf5kmo4rmzqj"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "aa44cb83-a20b-48c7-b769-8b95d0c1dab7",
+      "jobId": "cmtlyiils05y3qf5km26wqnws"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "24f4d2ae-6b8d-42a0-a085-52522c3e6699",
+      "jobId": "cmtlyiigm05w7qf5kacc7w8dj"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "df42de1e-8f42-4e5d-a6a3-71583444aa6a",
+      "jobId": "cmtlyiiha05wfqf5kdv30g1yi"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "f2ec1518-2dde-4846-8297-db2ce80ddb63",
+      "jobId": "cmtlyiik705xjqf5kl1u61ukl"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "3a332c86-6997-4beb-a299-26de6a2834bc",
+      "jobId": "cmtlyiiko05xnqf5kgn62updk"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "f0260bf7-2b93-4ee1-8988-adaabfd0e991",
+      "jobId": "cmtlyiil705xvqf5kgfo321xw"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "15205d03-32c1-4c28-ab68-d405952068ac",
+      "jobId": "cmtlyiim205y7qf5k3th4lz3c"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "e66f7dca-79ab-40ee-9ada-8cf448d0f6db",
+      "jobId": "cmtrsddm404n5pg5mdrn63np5"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bzb",
+      "externalId": "a75a7f9a-4510-4946-be50-66f7c6da109c",
+      "jobId": "cmtt7w0dz05wtmy014p0e1uk0"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "e66f7dca-79ab-40ee-9ada-8cf448d0f6db",
+      "jobId": "cmtrsddm404n5pg5mdrn63np5"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "e7d6a641-a118-4552-bae3-8d14c3a6e26f",
+      "jobId": "cmtlyiijj05xbqf5kd7e8c8ss"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "5c90053e-2759-4bc4-b330-6e789480df99",
+      "jobId": "cmtlyiijs05xfqf5klocpdijf"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "0cc31ea0-516c-4941-9c42-ba125964822b",
+      "jobId": "cmtlyiihv05wnqf5ka7upfck6"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "a75a7f9a-4510-4946-be50-66f7c6da109c",
+      "jobId": "cmtt7w0dz05wtmy014p0e1uk0"
+    },
+    {
+      "pass": 0,
+      "sourceKey": "bizzbee",
+      "externalId": "aa44cb83-a20b-48c7-b769-8b95d0c1dab7",
+      "jobId": "cmtlyiils05y3qf5km26wqnws"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "0cc31ea0-516c-4941-9c42-ba125964822b",
+      "jobId": "cmtlyiihv05wnqf5ka7upfck6"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "d05e2802-0595-4693-8588-56d232c268ed",
+      "jobId": "cmtlyiii505wrqf5k0bhxhfiv"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "159cddaa-e4d8-420f-b416-845dd725b85b",
+      "jobId": "cmtlyiiif05wvqf5keamhqvdm"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "408dd7fb-9507-4a90-a2ee-f8a911a217d3",
+      "jobId": "cmtlyiiir05wzqf5k4idj2pw7"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "5c90053e-2759-4bc4-b330-6e789480df99",
+      "jobId": "cmtlyiijs05xfqf5klocpdijf"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "d9727247-6c0d-4bd9-b4da-7a3cd3bf3869",
+      "jobId": "cmtlyiij905x7qf5k3a7zij3z"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "e7d6a641-a118-4552-bae3-8d14c3a6e26f",
+      "jobId": "cmtlyiijj05xbqf5kd7e8c8ss"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "6baf1887-6641-4d98-bae3-2f7d1140243c",
+      "jobId": "cmtlyiima05ybqf5kgcgdupqi"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "3d3e8f92-aa3a-4b17-a41b-fa014725585e",
+      "jobId": "cmtlyiili05xzqf5kmo4rmzqj"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "6baf1887-6641-4d98-bae3-2f7d1140243c",
+      "jobId": "cmtlyiima05ybqf5kgcgdupqi"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "678b54bf-a401-4726-a43c-9e9ef3d4fb75",
+      "jobId": "cmtlyiimk05yfqf5kms8c1qvh"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "f2ec1518-2dde-4846-8297-db2ce80ddb63",
+      "jobId": "cmtlyiik705xjqf5kl1u61ukl"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "f0260bf7-2b93-4ee1-8988-adaabfd0e991",
+      "jobId": "cmtlyiil705xvqf5kgfo321xw"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "24f4d2ae-6b8d-42a0-a085-52522c3e6699",
+      "jobId": "cmtlyiigm05w7qf5kacc7w8dj"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "df42de1e-8f42-4e5d-a6a3-71583444aa6a",
+      "jobId": "cmtlyiiha05wfqf5kdv30g1yi"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "56b84cb3-9324-4eca-bfec-54a7a22eff40",
+      "jobId": "cmtlyiiky05xrqf5kiqmbhd9k"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "febdfe76-bccf-4ee1-abb1-9c193c8c1d73",
+      "jobId": "cmtn5a8j80567qq5ld285atsu"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "872fc40e-0b67-45ae-bb0e-4f14695888ba",
+      "jobId": "cmtlyiigy05wbqf5kruoszcti"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "d9727247-6c0d-4bd9-b4da-7a3cd3bf3869",
+      "jobId": "cmtlyiij905x7qf5k3a7zij3z"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "159cddaa-e4d8-420f-b416-845dd725b85b",
+      "jobId": "cmtlyiiif05wvqf5keamhqvdm"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "678b54bf-a401-4726-a43c-9e9ef3d4fb75",
+      "jobId": "cmtlyiimk05yfqf5kms8c1qvh"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "d05e2802-0595-4693-8588-56d232c268ed",
+      "jobId": "cmtlyiii505wrqf5k0bhxhfiv"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "408dd7fb-9507-4a90-a2ee-f8a911a217d3",
+      "jobId": "cmtlyiiir05wzqf5k4idj2pw7"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "3a332c86-6997-4beb-a299-26de6a2834bc",
+      "jobId": "cmtlyiiko05xnqf5kgn62updk"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "febdfe76-bccf-4ee1-abb1-9c193c8c1d73",
+      "jobId": "cmtn5a8j80567qq5ld285atsu"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "15205d03-32c1-4c28-ab68-d405952068ac",
+      "jobId": "cmtlyiim205y7qf5k3th4lz3c"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "872fc40e-0b67-45ae-bb0e-4f14695888ba",
+      "jobId": "cmtlyiigy05wbqf5kruoszcti"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "56b84cb3-9324-4eca-bfec-54a7a22eff40",
+      "jobId": "cmtlyiiky05xrqf5kiqmbhd9k"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "3d3e8f92-aa3a-4b17-a41b-fa014725585e",
+      "jobId": "cmtlyiili05xzqf5kmo4rmzqj"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "aa44cb83-a20b-48c7-b769-8b95d0c1dab7",
+      "jobId": "cmtlyiils05y3qf5km26wqnws"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "24f4d2ae-6b8d-42a0-a085-52522c3e6699",
+      "jobId": "cmtlyiigm05w7qf5kacc7w8dj"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "df42de1e-8f42-4e5d-a6a3-71583444aa6a",
+      "jobId": "cmtlyiiha05wfqf5kdv30g1yi"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "f2ec1518-2dde-4846-8297-db2ce80ddb63",
+      "jobId": "cmtlyiik705xjqf5kl1u61ukl"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "3a332c86-6997-4beb-a299-26de6a2834bc",
+      "jobId": "cmtlyiiko05xnqf5kgn62updk"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "f0260bf7-2b93-4ee1-8988-adaabfd0e991",
+      "jobId": "cmtlyiil705xvqf5kgfo321xw"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "15205d03-32c1-4c28-ab68-d405952068ac",
+      "jobId": "cmtlyiim205y7qf5k3th4lz3c"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "e66f7dca-79ab-40ee-9ada-8cf448d0f6db",
+      "jobId": "cmtrsddm404n5pg5mdrn63np5"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bzb",
+      "externalId": "a75a7f9a-4510-4946-be50-66f7c6da109c",
+      "jobId": "cmtt7w0dz05wtmy014p0e1uk0"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "e66f7dca-79ab-40ee-9ada-8cf448d0f6db",
+      "jobId": "cmtrsddm404n5pg5mdrn63np5"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "e7d6a641-a118-4552-bae3-8d14c3a6e26f",
+      "jobId": "cmtlyiijj05xbqf5kd7e8c8ss"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "5c90053e-2759-4bc4-b330-6e789480df99",
+      "jobId": "cmtlyiijs05xfqf5klocpdijf"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "0cc31ea0-516c-4941-9c42-ba125964822b",
+      "jobId": "cmtlyiihv05wnqf5ka7upfck6"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "a75a7f9a-4510-4946-be50-66f7c6da109c",
+      "jobId": "cmtt7w0dz05wtmy014p0e1uk0"
+    },
+    {
+      "pass": 1,
+      "sourceKey": "bizzbee",
+      "externalId": "aa44cb83-a20b-48c7-b769-8b95d0c1dab7",
+      "jobId": "cmtlyiils05y3qf5km26wqnws"
+    }
+  ]
+}

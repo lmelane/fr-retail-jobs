@@ -1,0 +1,264 @@
+{
+  "environment": "local",
+  "planHash": "25a68e4c457363adca99bf5027985453713990403118344e2bedf9cd8c7a7aef",
+  "before": {
+    "jobs": 77322,
+    "active": 74113,
+    "sources": 80348,
+    "events": 21751,
+    "roots": 1568,
+    "bzbActive": 22
+  },
+  "after": {
+    "jobs": 77322,
+    "active": 74091,
+    "sources": 80348,
+    "events": 21797,
+    "roots": 1567,
+    "bzbActive": 22
+  },
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 23,
+    "aliases": 4
+  },
+  "repeated": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "redirects": [
+    {
+      "id": "cmtn5a7sk053tqq5l6p9h120b",
+      "mergedIntoId": "cmtn5a8j80567qq5ld285atsu",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7t0053xqq5l72y82g4n",
+      "mergedIntoId": "cmtlyiigm05w7qf5kacc7w8dj",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7td0541qq5lz9idpbz7",
+      "mergedIntoId": "cmtlyiigy05wbqf5kruoszcti",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7tp0545qq5l4cw4ruma",
+      "mergedIntoId": "cmtlyiiha05wfqf5kdv30g1yi",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7vc0549qq5l0g4zhxch",
+      "mergedIntoId": "cmtlyiihi05wjqf5k8j5znb8h",
+      "isActive": false,
+      "closedAt": "2026-09-08T02:01:53.604Z",
+      "_count": {
+        "sources": 0,
+        "events": 3
+      }
+    },
+    {
+      "id": "cmtn5a7wa054dqq5lo9od8v2w",
+      "mergedIntoId": "cmtlyiihv05wnqf5ka7upfck6",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7wi054hqq5lmji7rrg2",
+      "mergedIntoId": "cmtlyiii505wrqf5k0bhxhfiv",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7wr054lqq5lilf91gh5",
+      "mergedIntoId": "cmtlyiiif05wvqf5keamhqvdm",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7x0054pqq5lit5fpmr6",
+      "mergedIntoId": "cmtlyiiir05wzqf5k4idj2pw7",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7x9054tqq5l2az8n4w0",
+      "mergedIntoId": "cmtlyiij905x7qf5k3a7zij3z",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7xk054xqq5lfpt27j0j",
+      "mergedIntoId": "cmtlyiijj05xbqf5kd7e8c8ss",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7xs0551qq5l7x8mfa0f",
+      "mergedIntoId": "cmtlyiijs05xfqf5klocpdijf",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7y10555qq5lt1orfn69",
+      "mergedIntoId": "cmtlyiik705xjqf5kl1u61ukl",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7ya0559qq5l1pmmf42t",
+      "mergedIntoId": "cmtlyiiko05xnqf5kgn62updk",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7yk055dqq5lta381gqs",
+      "mergedIntoId": "cmtlyiiky05xrqf5kiqmbhd9k",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7yw055hqq5lqff1a1lf",
+      "mergedIntoId": "cmtlyiil705xvqf5kgfo321xw",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7z5055lqq5ljlkezbks",
+      "mergedIntoId": "cmtlyiili05xzqf5kmo4rmzqj",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7zl055pqq5ljnmc1p17",
+      "mergedIntoId": "cmtlyiils05y3qf5km26wqnws",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a7zv055tqq5lds4jm4n5",
+      "mergedIntoId": "cmtlyiim205y7qf5k3th4lz3c",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a805055xqq5lmgwh6v3p",
+      "mergedIntoId": "cmtlyiima05ybqf5kgcgdupqi",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtn5a80f0561qq5lno01ybmu",
+      "mergedIntoId": "cmtlyiimk05yfqf5kms8c1qvh",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 2
+      }
+    },
+    {
+      "id": "cmtrsddio04mbpg5mhzfot1rs",
+      "mergedIntoId": "cmtrsddm404n5pg5mdrn63np5",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 3
+      }
+    },
+    {
+      "id": "cmtt7vzrd05s5my01c5z8lx2g",
+      "mergedIntoId": "cmtt7w0dz05wtmy014p0e1uk0",
+      "isActive": false,
+      "closedAt": null,
+      "_count": {
+        "sources": 0,
+        "events": 3
+      }
+    }
+  ],
+  "baseCommit": "777e919996304d386e7d026fd0d4234346ac7163",
+  "implementation": "Uncommitted working tree based on baseCommit; production commit is reported separately in the deployment proof."
+}

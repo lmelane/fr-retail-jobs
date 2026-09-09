@@ -1,6 +1,6 @@
 import { companyIdentityWhere } from './company-identity';
 import { unstable_cache } from 'next/cache';
-import { prisma, CompanySector } from '@catwalks/db';
+import { prisma, CompanySector, canonicalJobId } from '@catwalks/db';
 import { expandCompanyTerm } from './groups';
 import { countryCode, rawValuesForCode } from './countries';
 import { searchSummary } from './job-search-query';
@@ -362,8 +362,10 @@ export async function getJobStatus(
 > {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
+    const canonicalId = await canonicalJobId(prisma, id);
+    if (!canonicalId) return { status: 'missing' };
     const row = await prisma.job.findUnique({
-      where: { id },
+      where: { id: canonicalId },
       omit: { raw: true, searchText: true },
       include: {
         company: true,
@@ -394,7 +396,9 @@ export async function getOfferState(param: string): Promise<'active' | 'closed' 
     // The param may be a bare id or slug-id (S-01) — try each candidate, so
     // the middleware's 410 decision works on both URL shapes.
     for (const id of offerIdCandidates(param)) {
-      const row = await prisma.job.findUnique({ where: { id }, select: { isActive: true } });
+      const canonicalId = await canonicalJobId(prisma, id);
+      if (!canonicalId) continue;
+      const row = await prisma.job.findUnique({ where: { id: canonicalId }, select: { isActive: true } });
       if (row) return row.isActive ? 'active' : 'closed';
     }
     return 'missing';

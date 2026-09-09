@@ -104,14 +104,13 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
             Object.assign(keeper, patch);
           }
           keeper.sources.push(...other.sources);
-          // Le perdant n'est pas une fermeture de poste : daté (closedAt) pour
-          // sortir des actives, et tracé MERGED — jamais CLOSED — pour que la
-          // photographie du jour ne le compte pas comme une offre fermée (audit I-2).
+          // Preserve the old ID/URL as a redirect. Consolidation is not a
+          // source closure: keep its original closedAt and every prior event.
           await tx.job.update({
             where: { id: other.id },
             data: {
               isActive: false,
-              closedAt: new Date(),
+              mergedIntoId: keeper.id,
               events: { create: { type: 'MERGED', field: 'mergedInto', after: keeper.id } },
             },
           });
