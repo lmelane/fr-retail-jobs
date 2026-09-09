@@ -1,0 +1,9 @@
+{
+  "deploy": {
+    "preDeployCommand": [
+      "node /migration/node_modules/prisma/build/index.js migrate deploy --schema /migration/prisma/schema.prisma"
+    ],
+    "healthcheckPath": "/api/health",
+    "healthcheckTimeout": 120
+  }
+}
