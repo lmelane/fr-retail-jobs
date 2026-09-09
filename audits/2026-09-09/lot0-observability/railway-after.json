@@ -1,0 +1,116 @@
+{
+  "health": {
+    "rows": 4,
+    "peakRowsPerUtcSecond": 3,
+    "perSecond": {
+      "2026-09-09T05:52:14": 1,
+      "2026-09-09T05:52:15": 3
+    },
+    "events": {
+      "platform_or_plaintext": 1,
+      "run.started": 1,
+      "health.report": 1,
+      "run.completed": 1
+    },
+    "railwayDroppedWarnings": [],
+    "maxSerializedCapturedRowBytes": 1687,
+    "eventIds": [
+      "5a64bae5-3033-48d0-86c9-30137f8dc6ea",
+      "b1f923bf-bf69-4b9d-ac42-c5ac95dd6c67",
+      "4c9e31f0-ae0c-415c-8239-d47828da0265"
+    ],
+    "allRailwayEventIdsFoundInJournal": true,
+    "printedCountMatchesJournalMetrics": true,
+    "repetitionCountMatchesJournalMetrics": true,
+    "persistedCountMatches": true,
+    "unaccountedEvents": 0
+  },
+  "source": {
+    "rows": 9,
+    "peakRowsPerUtcSecond": 5,
+    "perSecond": {
+      "2026-09-09T05:53:34": 1,
+      "2026-09-09T05:53:35": 2,
+      "2026-09-09T05:53:42": 1,
+      "2026-09-09T05:53:43": 5
+    },
+    "events": {
+      "platform_or_plaintext": 1,
+      "run.started": 1,
+      "ingest.sources_selected": 1,
+      "job.publication_held": 1,
+      "source.ingest_completed": 1,
+      "alert.unconfigured": 1,
+      "command.result": 1,
+      "log.repeated": 1,
+      "run.completed": 1
+    },
+    "railwayDroppedWarnings": [],
+    "maxSerializedCapturedRowBytes": 1119,
+    "eventIds": [
+      "01f3ea4e-e062-4053-bc7a-b728b75fc0eb",
+      "20f576d9-fb98-4818-95ea-3c912f478933",
+      "7e4a0ab2-2af2-48c9-a0de-63ffa37e4dce",
+      "fb2eb110-b232-4107-9fc7-0fe9b7dd5fbd",
+      "ddb66f62-3410-4237-88af-db1077142563",
+      "f585ce95-2238-4d4a-9463-65b574fb3216",
+      "64a9baef-9f42-4447-aaa9-fe9d525257fa"
+    ],
+    "allRailwayEventIdsFoundInJournal": true,
+    "printedCountMatchesJournalMetrics": true,
+    "repetitionCountMatchesJournalMetrics": true,
+    "persistedCountMatches": true,
+    "unaccountedEvents": 0
+  },
+  "concurrent": {
+    "rows": 20,
+    "peakRowsPerUtcSecond": 11,
+    "perSecond": {
+      "2026-09-09T05:56:04": 11,
+      "2026-09-09T05:56:05": 2,
+      "2026-09-09T05:56:12": 1,
+      "2026-09-09T05:56:13": 6
+    },
+    "events": {
+      "platform_or_plaintext": 1,
+      "run.started": 1,
+      "run.sources_selected": 1,
+      "source_sync_started": 3,
+      "ingest.sources_selected": 3,
+      "source.ingest_completed": 3,
+      "source_sync_completed": 3,
+      "job.publication_held": 1,
+      "log.repeated": 1,
+      "run.sources_completed": 1,
+      "ingest.completed": 1,
+      "run.completed": 1
+    },
+    "railwayDroppedWarnings": [],
+    "maxSerializedCapturedRowBytes": 857,
+    "eventIds": [
+      "437879f2-f846-4344-a470-5ff67cebbe21",
+      "d8b6ab90-3c26-44cc-848e-791c1a582743",
+      "6beab83f-0320-426f-8005-ebee587e65aa",
+      "e7ab6b8d-7f14-40dc-9f25-6d2332e29d29",
+      "cdda84fa-9b5c-4f2d-bd87-0b2872a01a86",
+      "aad2dbdb-e86b-4d58-8011-517f78b889b3",
+      "502d7037-f2fb-485a-940d-3cefd645b99a",
+      "4ecbb761-7328-49f4-bba1-9a81edbf7e78",
+      "4acf66e0-9505-498e-b561-2dfc2a069380",
+      "de7afe2f-ef97-4015-bfb5-c3e3cb4143ec",
+      "24edc459-545e-49eb-8b2f-19bda9dd152b",
+      "f569b1e9-7830-4816-ae6e-9559cd8f69c8",
+      "368c9cf9-9e22-460e-a575-bb2cc0892919",
+      "a4b264a8-53d9-41b4-8e63-2ecfb29f1495",
+      "e0e7b262-a413-4238-a29f-08c441af9cf4",
+      "6691ad48-b064-49e0-b8f3-681b40367c96",
+      "a7037a1b-87de-4436-bbcf-9b9fd829cc9a",
+      "a873fdaa-13cb-4931-a2a1-cad573a66d9a"
+    ],
+    "allRailwayEventIdsFoundInJournal": true,
+    "printedCountMatchesJournalMetrics": true,
+    "repetitionCountMatchesJournalMetrics": true,
+    "persistedCountMatches": true,
+    "unaccountedEvents": 0
+  }
+}

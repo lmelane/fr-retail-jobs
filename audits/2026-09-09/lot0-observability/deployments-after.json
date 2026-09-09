@@ -1,0 +1,38 @@
+{
+  "asOf": "2026-09-09T05:58:19.880145+00:00",
+  "services": [
+    {
+      "service": "aggregator",
+      "paused": "1",
+      "command": "ingest-all",
+      "startCommand": "sh apps/aggregator/start.sh",
+      "cron": "0 22 * * *",
+      "allConfiguredVariablesUnchanged": true,
+      "deployment": "d5ecbabc-5592-4ea4-b225-d3846894bcf3",
+      "status": "SUCCESS",
+      "commit": "817ed7d6dcdb7a93aa959d32b8de5ad7cb0fd29e"
+    },
+    {
+      "service": "refresh",
+      "paused": "1",
+      "command": "refresh",
+      "startCommand": null,
+      "cron": "0 2 * * *",
+      "allConfiguredVariablesUnchanged": true,
+      "deployment": "cf23f25d-dcb7-4b44-b154-65a4294f3403",
+      "status": "SUCCESS",
+      "commit": "817ed7d6dcdb7a93aa959d32b8de5ad7cb0fd29e"
+    },
+    {
+      "service": "reconcile",
+      "paused": "1",
+      "command": "reconcile",
+      "startCommand": null,
+      "cron": "0 3 * * 1",
+      "allConfiguredVariablesUnchanged": true,
+      "deployment": "0ba48a58-45af-4b34-9193-7a39097dd49b",
+      "status": "SUCCESS",
+      "commit": "817ed7d6dcdb7a93aa959d32b8de5ad7cb0fd29e"
+    }
+  ]
+}

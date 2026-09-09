@@ -1,0 +1,61 @@
+{
+  "checks": [
+    {
+      "eventId": "7e4a0ab2-2af2-48c9-a0de-63ffa37e4dce",
+      "sourceKey": "blackstore",
+      "externalId": "ms1dvqbyh8h4m40ryg",
+      "reason": "APPLICATION_EXPLICITLY_CLOSED",
+      "observationId": "cmtt6gul7001a3ne0gz0rvamg",
+      "contentHash": "57ff90deb4d7c1ee6773ecc9af647f2f0a69d0d73e2de163827ec1c52a2f8b5b",
+      "archived": true
+    },
+    {
+      "eventId": "66e87156-25e3-4f0a-acfe-14c106d9ca2a",
+      "sourceKey": "blackstore",
+      "externalId": "moyjbkjzcw0ijmen6m",
+      "reason": "APPLICATION_EXPLICITLY_CLOSED",
+      "observationId": "cmtt6h4ej003z3ne0it3huz7c",
+      "contentHash": "5c7796e06041de211b57a64fa05a6b45bfdcf3bda27d76d786b17a84f4a8c02b",
+      "archived": true
+    },
+    {
+      "eventId": "288b662c-d2d3-4a51-957b-1c0727d29272",
+      "sourceKey": "blackstore",
+      "externalId": "h8iz168nyuwcq4uy6a",
+      "reason": "APPLICATION_EXPLICITLY_CLOSED",
+      "observationId": "cmttonh5k0056kh011ee0nppi",
+      "contentHash": "566adeaf23a81479b0dae186a19c6c5c42d4ea1ffdac0151622c0f73276a1e07",
+      "archived": true
+    },
+    {
+      "eventId": "303c084d-5bd9-42df-babd-ebdc772c4b17",
+      "sourceKey": "blackstore",
+      "externalId": "ao1unqahodk75amoei",
+      "reason": "APPLICATION_EXPLICITLY_CLOSED",
+      "observationId": "cmtt7xb4t0e1vmy01oo1tr459",
+      "contentHash": "230fc4bb5741a7977048919860850b091cefe1204d53fc99a034e3925dd6fc71",
+      "archived": true
+    },
+    {
+      "eventId": "83a9b7e0-7cd1-4881-ab2d-77287b235568",
+      "sourceKey": "blackstore",
+      "externalId": "ym542l11todyobss4w",
+      "reason": "APPLICATION_EXPLICITLY_CLOSED",
+      "observationId": "cmttonh7e005gkh01p5l1wdbw",
+      "contentHash": "94f8a45c99fbda42b90bbc35d34a341bdcff5b2260bdcc51ca5746e9facc3b92",
+      "archived": true
+    },
+    {
+      "eventId": "13a56b99-9ec0-41e9-882a-bf2275c97d26",
+      "sourceKey": "blackstore",
+      "externalId": "n40on2infm73ha8qbh",
+      "reason": "APPLICATION_EXPLICITLY_CLOSED",
+      "observationId": "cmttonh7w005hkh01x08z6bsh",
+      "contentHash": "4db5944fbdec10dff315430a473ecff84d287758f6f5bf3aedcf3f07ed59d929",
+      "archived": true
+    }
+  ],
+  "allDiagnosticsBackedByRaw": true,
+  "activeRepresentations": 48,
+  "observations": 162
+}
