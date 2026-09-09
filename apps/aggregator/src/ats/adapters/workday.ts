@@ -59,6 +59,7 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   const issues = new Set<string>();
   let pagesRead = 0, rawCount = 0, repeatedIds = 0, withoutPath = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
 
   for (let offset = 0; offset < 5000; offset += 20) {
     const page = await fetchJson<WorkdayPage>(endpoint, {
@@ -86,7 +87,7 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
       // send a candidate to — skip it rather than crash the whole source on
       // `undefined.split`. Richemont's tenant returned such rows, and the throw
       // lost all ~1300 of its offers ("cartier-3 failed: reading 'split'").
-      if (!job.externalPath) { withoutPath += 1; continue; }
+      if (!job.externalPath) { withoutPath += 1; rejectedRows.push({ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: job }); continue; }
       const externalId = job.externalPath.split('/').filter(Boolean).pop() ?? job.externalPath;
       pageIds.push(externalId);
       if (seen.has(externalId)) { repeatedIds += 1; continue; }
@@ -130,22 +131,26 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
   }
   if (repeatedIds) issues.add('REPEATED_IDS_ACROSS_PAGES');
   if (withoutPath) issues.add('ROWS_WITHOUT_EXTERNAL_PATH');
-  const complete = total > 0 && seen.size === total && termination !== 'PAGE_BUDGET_EXHAUSTED' && !issues.has('SOURCE_TOTAL_CHANGED');
+  // Proven when every announced row was read exactly once: a row without a
+  // path is not a posting a candidate can reach — it is REJECTED with its raw
+  // witness, not counted as missing (Nordstrom, 2026-09-09: 1 312 rows read of
+  // 1 312 announced, 3 of them path-less, 1 309 postings — the historical −3).
+  const complete = total > 0 && rawCount === total && repeatedIds === 0 && termination !== 'PAGE_BUDGET_EXHAUSTED' && !issues.has('SOURCE_TOTAL_CHANGED');
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
   const enumeration: AdapterResult['enumeration'] = { method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION', endpoint, pages: pagesRead, rawCount, termination, issues: [...issues],
     scopes: [{ scope: 'jobs', declaredTotal: total || -1, uniqueIds: seen.size, pages: pagesRead, complete }], pageEvidence };
 
   // F-04: `total` is the tenant's own announced count — the truncation signal.
   const declaredTotal = total || undefined;
-  const truncated = termination === 'PAGE_BUDGET_EXHAUSTED' || (total > 0 && seen.size < total);
-  if (config.withDescriptions === false) return { jobs: out.map(job => ({ ...job, publicationHold: 'WORKDAY_LISTING_WITHOUT_EMPLOYER_DETAIL' })), declaredTotal, complete, truncated, enumeration };
+  const truncated = termination === 'PAGE_BUDGET_EXHAUSTED' || (total > 0 && rawCount < total);
+  if (config.withDescriptions === false) return { jobs: out.map(job => ({ ...job, publicationHold: 'WORKDAY_LISTING_WITHOUT_EMPLOYER_DETAIL' })), declaredTotal, complete, truncated, enumeration, rejectedRows };
   return {
     jobs: await attachWorkdayDescriptions(
       out,
       `${origin}/wday/cxs/${tenant}/${site}`,
       Number(config.detailConcurrency ?? 4),
     ),
-    declaredTotal, complete, truncated, enumeration,
+    declaredTotal, complete, truncated, enumeration, rejectedRows,
   };
 }
 
