@@ -268,14 +268,14 @@ export function normalizeRmkItem(item: RmkV2Item, locale: string, origin: string
  * ja_JP, zh_CN too — and fr_FR/de_DE hold postings en_GB does not (5 and 4,
  * measured). Both pages are read; the union is the tenant's locale set.
  */
-async function discoverRmkLocales(origin: string, searchHtml: string): Promise<string[]> {
+async function discoverRmkLocales(origin: string, searchHtml: string): Promise<{ locales: string[]; issues: string[] }> {
   let homeHtml = '';
-  try {
-    homeHtml = await fetchText(`${origin}/`, { headers: HEADERS });
-  } catch {
-    // The search page alone still names at least one locale.
-  }
-  return parseRmkLocales(`${searchHtml}\n${homeHtml}`);
+  const issues: string[] = [];
+  try { homeHtml = await fetchText(`${origin}/`, { headers: HEADERS }); }
+  catch (error) { assertSourceRunning(); issues.push(`LOCALE_DISCOVERY_HOME_FAILED:${String(error).slice(0,300)}`); }
+  const combined = `${searchHtml}\n${homeHtml}`;
+  if (!/(?:[?&]|&amp;)locale=[a-z]{2}_[A-Z]{2}/.test(combined)) issues.push('NO_PUBLISHED_LOCALE_SET_DEFAULT_PROBE_ONLY');
+  return { locales: parseRmkLocales(combined), issues };
 }
 
 /**
@@ -327,17 +327,19 @@ export async function fetchRmkV2Jobs(origin: string, locales: string[]): Promise
       const before = perLocale.size;
       for (let page = 0; page < RMK_MAX_PAGES; page++) {
         const result = await postRmkPage(origin, locale, page);
-        if (!Number.isSafeInteger(result.totalJobs) || result.totalJobs! < 0 || !Array.isArray(result.jobSearchResult)) throw new Error('SAP_RMK_INVALID_LIST_RESPONSE');
+        if (!Number.isSafeInteger(result.totalJobs) || result.totalJobs! < 0 || (result.jobSearchResult == null ? result.totalJobs !== 0 : !Array.isArray(result.jobSearchResult))) throw new Error('SAP_RMK_INVALID_LIST_RESPONSE');
+        // Observed native SAP empty locale response: { totalJobs: 0 }.
+        const records = result.jobSearchResult ?? [];
         if (total === undefined) total = result.totalJobs;
         else if (total !== result.totalJobs) { changed = true; issues.add(`SOURCE_TOTAL_CHANGED:${locale}`); }
-        pages++; scopePages++; rawCount += result.jobSearchResult.length;
-        for (const row of result.jobSearchResult) {
+        pages++; scopePages++; rawCount += records.length;
+        for (const row of records) {
           const job = row.response ? normalizeRmkItem(row.response, locale, origin) : null;
           if (!job) { rejectedRows.push({ reason: `INVALID_RMK_ROW:${locale}`, raw: row }); continue; }
           perLocale.add(job.externalId);
           if (!byId.has(job.externalId)) byId.set(job.externalId, job);
         }
-        if (result.jobSearchResult.length < RMK_PAGE_SIZE || perLocale.size >= total!) break;
+        if (records.length < RMK_PAGE_SIZE || perLocale.size >= total!) break;
       }
       if (perLocale.size >= total! || perLocale.size === before) break;
     }
@@ -379,12 +381,19 @@ export async function fetchSuccessFactorsResult(config: Record<string, unknown>)
   if (!Number.isSafeInteger(MAX_PAGES) || MAX_PAGES < 1 || MAX_PAGES > 10000) throw new Error('Invalid SAP page budget');
   const finish = async (result: AdapterResult): Promise<AdapterResult> => ({ ...result,
     jobs: config.withDescriptions === false ? result.jobs : await attachSuccessFactorsDescriptions(result.jobs, Number(config.detailConcurrency ?? 4)) });
+  const rmk = async (html: string): Promise<AdapterResult> => {
+    const discovery = await discoverRmkLocales(origin, html);
+    const result = await fetchRmkV2Jobs(origin, discovery.locales);
+    return finish({ ...result, complete: result.complete && discovery.issues.length === 0,
+      truncated: result.truncated || discovery.issues.length > 0,
+      enumeration: { ...result.enumeration!, issues: [...(result.enumeration?.issues ?? []), ...discovery.issues] } });
+  };
   const jobs: NormalizedJob[] = [];
   const seenIds = new Set<string>();
   const firstUrl = `${origin}/search/?createNewAlert=false&q=&locationsearch=&startrow=0`;
   const firstHtml = await fetchText(firstUrl, { headers: HEADERS });
   if (config.rmk === true || /rmk-jobs-search/.test(firstHtml)) {
-    return finish(await fetchRmkV2Jobs(origin, await discoverRmkLocales(origin, firstHtml)));
+    return rmk(firstHtml);
   }
   let offset = 0, pages = 0, rawCount = 0, declaredTotal: number | undefined;
   let termination = 'PAGE_BUDGET_EXHAUSTED';
@@ -409,7 +418,7 @@ export async function fetchSuccessFactorsResult(config: Record<string, unknown>)
     if (fresh.length === 0) {
       if (page === 0 && !pagination) {
         // Endpoint failures remain failures, never a silently empty HTML board.
-        return finish(await fetchRmkV2Jobs(origin, await discoverRmkLocales(origin, html)));
+        return rmk(html);
       }
       termination = listing.length ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break;
     }

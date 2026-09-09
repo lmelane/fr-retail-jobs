@@ -54,4 +54,10 @@ describe('SAP enumeration evidence', () => {
     expect(parseMicrodataDetail('<meta content="PUIG, S.L." itemprop="hiringOrganization">')).toMatchObject({ company: 'PUIG, S.L.', employerEvidence: { rawName: 'PUIG, S.L.', path: 'microdata.hiringOrganization' } });
     expect(parseMicrodataDetail('<meta content="A" itemprop="hiringOrganization"><meta content="B" itemprop="hiringOrganization">').company).toBeUndefined();
   });
+  it('recognizes the observed native zero-job locale without accepting a missing list for a nonzero count', async () => {
+    json.mockResolvedValueOnce({ totalJobs: 0 });
+    expect(await fetchRmkV2Jobs('https://jobs.example.com', ['en_US'])).toMatchObject({ jobs: [], complete: true });
+    json.mockResolvedValueOnce({ totalJobs: 10 });
+    await expect(fetchRmkV2Jobs('https://jobs.example.com', ['en_US'])).rejects.toThrow('INVALID_LIST_RESPONSE');
+  });
 });
