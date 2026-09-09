@@ -1,3 +1,4 @@
+import { KIND_TO_ATS as ATS_TYPE } from '../ats/catalogKinds.js';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import pLimit from 'p-limit';
@@ -25,30 +26,7 @@ const OUT_PATH = fileURLToPath(new URL('../../data/sources.validated.csv', impor
 const REJECTS_PATH = fileURLToPath(new URL('../../data/sources.rejected.csv', import.meta.url));
 
 /** kind (as written in the catalogue) -> the AtsType the dispatcher knows. */
-export const ATS_TYPE: Record<string, string> = {
-  successfactors: 'SUCCESSFACTORS',
-  avature: 'AVATURE',
-  eightfold: 'EIGHTFOLD',
-  wttj: 'WTTJ',
-  workday: 'WORKDAY',
-  magnet: 'MAGNET',
-  teamtailor: 'TEAMTAILOR',
-  'smartrecruiters-whitelabel': 'SMARTRECRUITERS',
-  workable: 'WORKABLE',
-  talentview: 'TALENTVIEW',
-  phenom: 'PHENOM',
-  recruitee: 'RECRUITEE',
-  lvmh_algolia: 'LVMH_ALGOLIA',
-  ashby: 'ASHBY',
-  lever: 'LEVER',
-  pinpoint: 'PINPOINT',
-  greenhouse: 'GREENHOUSE',
-  gestmax: 'GENERIC_JSONLD',
-  radancy: 'GENERIC_JSONLD',
-  digitalrecruiters: 'DIGITALRECRUITERS',
-  talentsoft: 'TALENTSOFT',
-  personio: 'PERSONIO',
-};
+export { KIND_TO_ATS as ATS_TYPE } from '../ats/catalogKinds.js';
 
 type Row = { maison: string; kind: string; config: Record<string, unknown>; declared: number };
 
