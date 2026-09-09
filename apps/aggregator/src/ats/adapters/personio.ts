@@ -51,6 +51,8 @@ export async function fetchPersonioJobs(config: Record<string, unknown>): Promis
       // Department is a business unit, not a geographic component.
       location: raw.office ? String(raw.office) : undefined,
       contract: raw.employmentType ? String(raw.employmentType) : undefined,
+      ...(typeof raw.subcompany === 'string' && raw.subcompany.trim() ? { company: raw.subcompany.trim(),
+        employerEvidence: { rawName: raw.subcompany, path: 'raw.subcompany', rule: 'EXPLICIT_PERSONIO_LEGAL_ENTITY' } } : {}),
       description: descriptionOf(raw), url: `https://${host}/job/${raw.id}`,
       // XML createdAt is creation, not an asserted publication. Read datePosted
       // from the actual single JobPosting instead; preserve createdAt in RAW.
@@ -63,7 +65,9 @@ export async function fetchPersonioJobs(config: Record<string, unknown>): Promis
       const html = await fetchText(job.url);
       const enriched = enrichPostingEvidence(job, html);
       const detail = personioDetail(html, job.externalId);
-      return { ...enriched, postedAt: detail.job?.postedAt ?? enriched.postedAt,
+      const employer = job.company ? undefined : detail.job?.employer;
+      return { ...enriched, ...(employer ? { company: employer, employerEvidence: { rawName: employer,
+          path: 'raw.personioDetail.careerSiteSettings.company_name', rule: 'EXPLICIT_PERSONIO_PORTAL_EMPLOYER' } } : {}), postedAt: detail.job?.postedAt ?? enriched.postedAt,
         description: detail.job?.description ?? enriched.description,
         country: enriched.country ?? detail.job?.country,
         city: enriched.city ?? detail.job?.city,

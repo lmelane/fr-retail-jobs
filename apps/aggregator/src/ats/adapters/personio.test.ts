@@ -26,4 +26,15 @@ describe('Personio official XML and job detail evidence',()=>{
   fetch.mockResolvedValueOnce('<workzag-jobs><position><name>Unidentifiable</name></position></workzag-jobs>');
   const r=await fetchPersonioJobs({host:'a.jobs.personio.de'});expect(r.complete).toBe(false);expect(r.rejectedRows).toHaveLength(1);
  });
+ it('passes the asserted legal employer to identity resolution even when a detail fails',async()=>{
+  fetch.mockResolvedValueOnce(xml.replace('<office>', '<subcompany>Hades Mining GmbH</subcompany><office>')).mockRejectedValueOnce(new Error('timeout'));
+  const r=await fetchPersonioJobs({host:'hades.jobs.personio.de'});
+  expect(r.jobs[0]).toMatchObject({company:'Hades Mining GmbH',employerEvidence:{rawName:'Hades Mining GmbH',path:'raw.subcompany'}});
+ });
+ it('uses a portal employer assertion when the XML names no legal entity',async()=>{
+  const model={job:{id:42,name:'Advisor',fields:[]},careerSiteSettings:{company_name:'Pina Earth'}};
+  fetch.mockResolvedValueOnce(xml).mockResolvedValueOnce('<script>self.__next_f.push('+JSON.stringify([1,'5:'+JSON.stringify(model)+'\n'])+')</script>');
+  const r=await fetchPersonioJobs({host:'pina.jobs.personio.de'});
+  expect(r.jobs[0]).toMatchObject({company:'Pina Earth',employerEvidence:{rule:'EXPLICIT_PERSONIO_PORTAL_EMPLOYER'}});
+ });
 });
