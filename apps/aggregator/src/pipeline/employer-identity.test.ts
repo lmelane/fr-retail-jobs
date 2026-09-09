@@ -203,3 +203,28 @@ it('rejects a repair if the source configuration changed after its review snapsh
   await expect(applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789')).rejects.toThrow('Source identity changed since planning');
   expect(await p.employerIdentityReview.count()).toBe(0);
 });
+
+describe('superseding a reviewed alias', () => {
+  it('re-points a reviewed alias only through an explicit new decision, archives the previous binding, and refuses a silent conflict', async () => {
+    const parent = await p.company.create({ data: { name: 'Free People', canonicalKey: 'FREE_PEOPLE', kind: 'BRAND', fashionjobsUrl: 'resolved:FREE_PEOPLE' } });
+    const sub = await p.company.create({ data: { name: 'FP Movement', canonicalKey: 'FP_MOVEMENT', kind: 'BRAND', fashionjobsUrl: 'resolved:FP_MOVEMENT' } });
+    await p.source.create({ data: { key: 'promod', maison: 'URBN', kind: 'icims', config: { origin: 'https://hub.example.com' }, tenantKey: 'icims:hub.example.com', tier: 'GROUP_OFFICIAL', status: 'ACTIVE' } });
+    const base = { ...spec(parent.id, parent.id), merges: [] as { fromId: string; toId: string }[] };
+    const v1 = { ...base, batchId: 'v1', aliases: [{ sourceKey: 'promod', rawName: 'FP Movement', companyId: parent.id }] };
+    const plan1 = await buildEmployerRepair(p, v1); await applyEmployerRepair(p, plan1, digest(plan1), 'abcdef0123456789');
+    const alias = await p.companyAlias.findFirstOrThrow({ where: { sourceKey: 'promod', displayName: 'FP Movement' } });
+    expect(alias.companyId).toBe(parent.id);
+    // Same label, another employer, no explicit supersession: refused.
+    const silent = await buildEmployerRepair(p, { ...base, batchId: 'v2-silent', aliases: [{ sourceKey: 'promod', rawName: 'FP Movement', companyId: sub.id }], companies: [{ id: parent.id }] });
+    await expect(applyEmployerRepair(p, silent, digest(silent), 'abcdef0123456789')).rejects.toThrow('Conflicting alias');
+    const plan2 = await buildEmployerRepair(p, { ...base, batchId: 'v2', aliases: [{ sourceKey: 'promod', rawName: 'FP Movement', companyId: sub.id, supersedesAliasId: alias.id }], companies: [{ id: parent.id }] });
+    const result = await applyEmployerRepair(p, plan2, digest(plan2), 'abcdef0123456789');
+    expect(result.aliases).toBe(1);
+    const after = await p.companyAlias.findUniqueOrThrow({ where: { id: alias.id } });
+    expect(after.companyId).toBe(sub.id); expect(after.reviewId).toBe('v2');
+    const correction = await p.dataCorrection.findFirst({ where: { batchId: 'v2', entityType: 'CompanyAlias', entityId: alias.id } });
+    expect((correction?.before as any).companyId).toBe(parent.id);
+    expect(await applyEmployerRepair(p, plan2, digest(plan2), 'abcdef0123456789')).toMatchObject({ alreadyApplied: true });
+  });
+});
+

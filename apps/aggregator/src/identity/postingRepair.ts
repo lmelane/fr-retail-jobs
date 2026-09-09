@@ -10,7 +10,7 @@ export type PostingMerge = {
   postingId: string;
   witnesses: { sourceId: string; issuerPath: string[]; postingIdPath: string[] }[];
 };
-type SnapshotJob = Prisma.JobGetPayload<{ omit: { searchText: true }; include: { sources: true; events: true } }>;
+type SnapshotJob = Prisma.JobGetPayload<{ omit: { searchText: true; description: true }; include: { sources: { omit: { raw: true } }; events: true } }>;
 
 function scalarAt(raw: unknown, path: string[]): string | undefined {
   if (!path.length || path.some(p => !p || ['__proto__', 'constructor', 'prototype'].includes(p))) return;
@@ -23,7 +23,7 @@ function scalarAt(raw: unknown, path: string[]): string | undefined {
 }
 
 /** Fail closed on any unreviewed member of a consolidation, before writing. */
-export function validatePostingMerges(jobs: SnapshotJob[], decisions: PostingMerge[], employers: Map<string, string>) {
+export function validatePostingMerges(jobs: SnapshotJob[], decisions: PostingMerge[], employers: Map<string, string>, rawOf?: (sourceId: string) => unknown) {
   const byId = new Map(jobs.map(j => [j.id, j]));
   const origins = new Set(decisions.map(m => m.fromId));
   if (origins.size !== decisions.length) throw new Error('Repeated posting merge origin');
@@ -36,7 +36,8 @@ export function validatePostingMerges(jobs: SnapshotJob[], decisions: PostingMer
     for (const w of d.witnesses) {
       const job = [from, to].find(j => j.sources.some(s => s.id === w.sourceId));
       const source = job?.sources.find(s => s.id === w.sourceId);
-      if (!job || !source || scalarAt(source.raw, w.issuerPath) !== d.issuer || scalarAt(source.raw, w.postingIdPath) !== d.postingId) throw new Error(`Invalid posting RAW witness: ${w.sourceId}`);
+      const raw = rawOf ? rawOf(w.sourceId) : (source as { raw?: unknown } | undefined)?.raw;
+      if (!job || !source || scalarAt(raw, w.issuerPath) !== d.issuer || scalarAt(raw, w.postingIdPath) !== d.postingId) throw new Error(`Invalid posting RAW witness: ${w.sourceId}`);
       witnessed.add(job.id);
     }
     if (witnessed.size !== 2) throw new Error('Both posting records require a RAW witness');

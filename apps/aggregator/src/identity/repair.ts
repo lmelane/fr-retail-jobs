@@ -14,7 +14,8 @@ export type EmployerRepairSpec = {
   evidence: { url: string; sha256: string; artifactText: string; explanation: string }[];
   merges: { fromId: string; toId: string }[];
   postingMerges?: PostingMerge[];
-  aliases: { sourceKey: string; rawName: string; companyId: string; legacyAliasId?: string }[];
+  /** `supersedesAliasId`: a REVIEWED alias this decision replaces (same source and label, new employer) — recorded as a correction, never silently overwritten. */
+  aliases: { sourceKey: string; rawName: string; companyId: string; legacyAliasId?: string; supersedesAliasId?: string }[];
   companies?: { id: string; name?: string; kind?: 'MAISON' | 'BRAND' | 'GROUP' | 'RETAILER'; parentGroupId?: string | null }[];
 };
 export type EmployerRepairPlan = EmployerRepairSpec & {
@@ -46,9 +47,20 @@ function validate(spec: EmployerRepairSpec) {
 async function snapshot(tx: Prisma.TransactionClient, ids: string[]) {
   const companies = await tx.company.findMany({ where: { id: { in: ids } }, orderBy: { id: 'asc' }, include: { aliases: { orderBy: { id: 'asc' } } } });
   if (companies.length !== ids.length) throw new Error('Missing company in repair plan');
-  // All offers, including closed ones. Full rows detect edits after planning.
-  const jobs = await tx.job.findMany({ where: { companyId: { in: ids } }, orderBy: { id: 'asc' }, omit: { searchText: true }, include: { sources: { orderBy: { id: 'asc' } }, events: { orderBy: { id: 'asc' } } } });
+  // All offers, including closed ones. Full identity rows detect edits after planning.
+  // Description and source RAW are not identity: they are left out of the snapshot
+  // (Ulta Beauty's 10 289 postings with their pages overflowed the engine's result
+  // string on 2026-09-09) and RAW is read only for the witnesses a merge names.
+  const jobs = await tx.job.findMany({ where: { companyId: { in: ids } }, orderBy: { id: 'asc' }, omit: { searchText: true, description: true }, include: { sources: { orderBy: { id: 'asc' }, omit: { raw: true } }, events: { orderBy: { id: 'asc' } } } });
   return { companies, jobs };
+}
+
+/** RAW of the exact source rows a posting merge cites as witnesses — nothing else is loaded. */
+async function witnessRaw(tx: Prisma.TransactionClient, merges: PostingMerge[]): Promise<Map<string, unknown>> {
+  const ids = [...new Set(merges.flatMap(m => m.witnesses.map(w => w.sourceId)))];
+  if (!ids.length) return new Map();
+  const rows = await tx.jobSource.findMany({ where: { id: { in: ids } }, select: { id: true, raw: true } });
+  return new Map(rows.map(r => [r.id, r.raw]));
 }
 
 export async function buildEmployerRepair(prisma: PrismaClient, spec: EmployerRepairSpec): Promise<EmployerRepairPlan> {
@@ -103,7 +115,8 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
       if (from.parentGroupId && from.parentGroupId !== to.parentGroupId) throw new Error('Parent relationship conflict requires a separate review');
     }
     const postingMerges = plan.postingMerges ?? [];
-    validatePostingMerges(before.jobs, postingMerges, moves);
+    const rawOf = await witnessRaw(tx, postingMerges);
+    validatePostingMerges(before.jobs, postingMerges, moves, id => rawOf.get(id));
     const postingTargets = new Map(postingMerges.map(m => [m.fromId, m.toId]));
     // A collision must be covered by explicit RAW witnesses. Existing redirects
     // are historical IDs, not additional canonical postings.
@@ -118,6 +131,10 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
     for (const a of plan.aliases) {
       const priors = await tx.companyAlias.findMany({ where: { normalizedName: normalizedEmployerName(a.rawName), ...(a.sourceKey === '*' ? {} : { sourceKey: { in: [a.sourceKey, '*'] } }) } });
       for (const prior of priors) {
+        if (a.supersedesAliasId && prior.id === a.supersedesAliasId) {
+          if (!prior.reviewId || prior.sourceKey !== a.sourceKey || !companies.has(prior.companyId)) throw new Error(`Superseded alias must be a reviewed alias of the same source whose employer is in the plan: ${a.sourceKey}/${a.rawName}`);
+          continue;
+        }
         const current = companies.get(prior.companyId)?.mergedIntoId ?? prior.companyId;
         if ((moves.get(current) ?? current) !== a.companyId) throw new Error(`Conflicting alias: ${a.sourceKey}/${a.rawName}`);
       }
@@ -128,7 +145,8 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
     const nativeWitnesses = new Map<string, (typeof plan.evidence)[number]>();
     for (const decision of postingMerges) for (const witness of decision.witnesses) {
       const source = sourcesById.get(witness.sourceId)!;
-      const artifactText = stable(json(source));
+      // The archived witness carries the RAW the decision was judged on (loaded for witnesses only).
+      const artifactText = stable(json({ ...source, raw: rawOf.get(source.id) ?? null }));
       if (!source.url.startsWith('https://')) throw new Error(`Posting witness needs an HTTPS evidence URL: ${source.id}`);
       nativeWitnesses.set(source.id, {
         url: source.url, artifactText, sha256: createHash('sha256').update(artifactText).digest('hex'),
@@ -198,6 +216,14 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
     for (const a of plan.aliases) {
       const normalizedName = normalizedEmployerName(a.rawName);
       const prior = await tx.companyAlias.findUnique({ where: { sourceKey_normalizedName: { sourceKey: a.sourceKey, normalizedName } } });
+      if (a.supersedesAliasId) {
+        // A reviewed decision is replaced by a NEW reviewed decision: the row keeps its id, the previous binding is archived as a correction.
+        if (!prior || prior.id !== a.supersedesAliasId || !prior.reviewId || prior.companyId === a.companyId) throw new Error(`Invalid superseded alias: ${a.sourceKey}/${a.rawName}`);
+        const superseded = await tx.companyAlias.update({ where: { id: prior.id }, data: { companyId: a.companyId, sourceHash: plan.sourceHashes[a.sourceKey], reviewId: plan.batchId } });
+        await tx.dataCorrection.create({ data: { batchId: plan.batchId, planHash, commitHash, finding: 'LOT1_EMPLOYER_IDENTITY', entityType: 'CompanyAlias', entityId: prior.id, before: json(prior) as Prisma.InputJsonValue, after: json(superseded) as Prisma.InputJsonValue, evidence: json({ supersededBy: plan.batchId, previousReview: prior.reviewId, from: prior.companyId, to: a.companyId }) as Prisma.InputJsonValue } });
+        aliases++;
+        continue;
+      }
       if (a.legacyAliasId) {
         const legacy = before.companies.flatMap(c => c.aliases).find(alias => alias.id === a.legacyAliasId);
         if (!legacy || legacy.reviewId || legacy.companyId !== a.companyId || normalizedEmployerName(legacy.displayName) !== normalizedName || (prior && prior.id !== legacy.id)) throw new Error('Invalid legacy alias migration');
