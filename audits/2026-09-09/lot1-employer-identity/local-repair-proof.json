@@ -1,12 +1,12 @@
 {
-  "environment": "restored production copy; working-tree implementation, base commit recorded for local rehearsal only",
-  "planHash": "9744eeb5742905a9e392fc8754eb50387bc0bb44ce6189dfa1022b441db67ad8",
+  "environment": "fresh production copy restored from before-lot1.dump",
+  "planHash": "005b837cad944e38da22da753d51b996486856542183d7d0f47d8cf9a37838e9",
   "before": {
     "jobs": 77322,
     "active": 74113,
     "sources": 80348,
-    "events": 21705,
-    "observations": 72070
+    "events": 21718,
+    "observations": 72178
   },
   "result": {
     "alreadyApplied": false,
@@ -17,8 +17,8 @@
     "jobs": 77322,
     "active": 74113,
     "sources": 80348,
-    "events": 21736,
-    "observations": 72070
+    "events": 21749,
+    "observations": 72178
   },
   "companies": [
     {

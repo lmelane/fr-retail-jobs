@@ -53,12 +53,12 @@ Première répétition sur copie restaurée :
 - **4 liens canoniques vers SMCP**, avec preuve officielle, en conservant Sandro, Maje, Claudie Pierlot, Fursac et SMCP comme cinq identités distinctes ; 4 alias supplémentaires. Aucune offre déplacée pour ce plan.
 - **0 nombre supprimé** : aucune suppression numérique n’est justifiée par les preuves examinées.
 
-Les preuves locales sont dans `local-repair-proof.json`, `local-front-proof.json`, `local-query-timings.json`. Ce ne sont pas des preuves de déploiement. La copie restaurée contient moins d’observations historiques que la production courante ; seules ses propres valeurs avant/après sont comparées.
+Les preuves locales sont dans `local-repair-proof.json`, `local-front-proof.json`, `local-query-timings.json`. Ce ne sont pas des preuves de déploiement. La répétition finale utilise une sauvegarde fraîche intégralement restaurée : 21 718 événements et 72 178 observations avant réparation, tous conservés. La sauvegarde de 359 080 355 octets porte le SHA-256 `ab72d8d55f1db6a3c809339cd45d3983766981a21e244f8b0fc87dce4c1ccf3a`.
 
 ## Travail restant — lot non clôturé
 
 - Examiner les autres paires : même domaine, proximité de nom ou ancien normaliseur ne prouvent pas une fusion. Aucun rapprochement non revu n’est appliqué.
-- Migrer les affectations historiques et les six anciens alias vers des preuves explicites. La table d’alias du code reste un outil historique ; elle ne peut plus justifier une nouvelle transformation à elle seule.
+- Migrer les affectations historiques vers des preuves explicites. Les six anciens alias ont été migrés sur la copie et attendent l’application en production. La table d’alias du code reste un outil historique ; elle ne peut plus justifier une nouvelle transformation à elle seule.
 - Classifier les 1 534 types historiques et étayer les relations parent, sans déduire le type du secteur ou du nom.
 - Étendre la provenance RAW aux chemins des autres adaptateurs ; les données absentes de l’historique ne sont pas recréées artificiellement.
 - Avant reprise massive : mesurer les libellés réellement bloqués par la nouvelle règle et produire leurs décisions. Une revue requise est une erreur explicite de run, qui interdit l’attestation d’absence.
@@ -71,3 +71,5 @@ Validation du code avant livraison : 1 463 tests unitaires agrégateur, 219 test
 Les relations `parentGroupId` et `mergedIntoId` exigent désormais une décision référencée par FK. Les cycles, un parent non GROUP et la mutation des preuves sont refusés par la base. Les profils intelligence résolvent également les anciens IDs, changent de version de cache à la correction et ne présentent pas une fusion de périmètres comme une croissance économique.
 
 Complément avant livraison : les alias sont liés au hash de leur source/tenant/configuration ; un changement invalide la résolution. Les six alias historiques disposent de cinq preuves officielles déjà enregistrées et revalidées, permettant une migration conservant leurs IDs. Les détails Workday manquants/échoués déclenchent une retenue explicite avec diagnostic archivé, sans affectation implicite au groupe.
+
+Répétition finale au code `fe2453d` : 18 alias revus (12 créés + 6 migrés en place), 1 569 racines dont 1 045 avec offres actives, 1 530 racines non classifiées, 159 parents textuels sans FK, 0 offre attachée à une fiche fusionnée. La réapplication de la migration des alias ne produit aucune modification. Six RAW réels permettent un rejeu direct du résolveur sur les chemins examinés ; les autres alias ne sont pas présentés comme des rejeux RAW. Voir `local-alias-proof.json` et `local-resolver-proof.json`.

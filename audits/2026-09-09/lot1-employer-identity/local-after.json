@@ -1,0 +1,5885 @@
+{
+  "asOf": "2026-09-09T07:00:16.864Z",
+  "counts": {
+    "companies": 1571,
+    "aliases": 18,
+    "jobs": 77322,
+    "activeJobs": 74113,
+    "representations": 80348,
+    "events": 21749,
+    "observations": 72178
+  },
+  "health": {
+    "companyRecords": 1571,
+    "canonicalRoots": 1569,
+    "mergedRecords": 2,
+    "rootsWithActiveJobs": 1045,
+    "aliases": 18,
+    "reviewedAliases": 18,
+    "unclassifiedRoots": 1530,
+    "freeTextParentsWithoutRelation": 159,
+    "jobsOnMergedCompanies": 0,
+    "pendingObservations": 0,
+    "legacyObservations": 0,
+    "rules": [],
+    "definitions": {
+      "canonicalRoots": "Catalogue roots, not a count of independently validated employers.",
+      "observations": "Versioned decisions, not distinct jobs. Legacy labels were not archived consistently; no retrospective 100% provenance claim.",
+      "unclassifiedRoots": "Existing UNKNOWN classifications remain visible as review work; no classification is inferred from a name."
+    }
+  },
+  "rawLabelMetrics": {
+    "explicitPaths": 9,
+    "distinctLabels": 582,
+    "sources": 79,
+    "exhaustive": false,
+    "reason": "Only explicit stored paths are measured; legacy Workday detail and unlisted adapter structures are not reconstructed."
+  },
+  "candidatePairs": [
+    {
+      "a": {
+        "id": "cmtjw1ejj0141ld2bt20epmki",
+        "name": "L'Or\u00e9al"
+      },
+      "b": {
+        "id": "cmtjwf6za08pxo72be8uvm8kn",
+        "name": "L'Or\u00e9al Groupe"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT",
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtjw1ejj0141ld2bt20epmki",
+        "name": "L'Or\u00e9al"
+      },
+      "b": {
+        "id": "cmtpkwxjp59hcpf5lc3ggp4ii",
+        "name": "L'OREAL GROUP"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtjw1ejj0141ld2bt20epmki",
+        "name": "L'Or\u00e9al"
+      },
+      "b": {
+        "id": "cmtpwvij600giql5m8iiplvov",
+        "name": "L\u2019Or\u00e9al Professionnel"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtjwf6za08pxo72be8uvm8kn",
+        "name": "L'Or\u00e9al Groupe"
+      },
+      "b": {
+        "id": "cmtpkwxjp59hcpf5lc3ggp4ii",
+        "name": "L'OREAL GROUP"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtjwf6za08pxo72be8uvm8kn",
+        "name": "L'Or\u00e9al Groupe"
+      },
+      "b": {
+        "id": "cmtpwvij600giql5m8iiplvov",
+        "name": "L\u2019Or\u00e9al Professionnel"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpkwxjp59hcpf5lc3ggp4ii",
+        "name": "L'OREAL GROUP"
+      },
+      "b": {
+        "id": "cmtpwvij600giql5m8iiplvov",
+        "name": "L\u2019Or\u00e9al Professionnel"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtjwa11205v4ld2b4be98q45",
+        "name": "Kering"
+      },
+      "b": {
+        "id": "cmtpukup029apl35mgtskxs6a",
+        "name": "Kering Corporate"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtjwa11205v4ld2b4be98q45",
+        "name": "Kering"
+      },
+      "b": {
+        "id": "cmtpukv7e29gal35m2mdy2cja",
+        "name": "Kering Group Operations & Technologies"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtjwa11205v4ld2b4be98q45",
+        "name": "Kering"
+      },
+      "b": {
+        "id": "cmtpul3f72blvl35mj7oc58ov",
+        "name": "Kering Beaute"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpukup029apl35mgtskxs6a",
+        "name": "Kering Corporate"
+      },
+      "b": {
+        "id": "cmtpukv7e29gal35m2mdy2cja",
+        "name": "Kering Group Operations & Technologies"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpukup029apl35mgtskxs6a",
+        "name": "Kering Corporate"
+      },
+      "b": {
+        "id": "cmtpul3f72blvl35mj7oc58ov",
+        "name": "Kering Beaute"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpukv7e29gal35m2mdy2cja",
+        "name": "Kering Group Operations & Technologies"
+      },
+      "b": {
+        "id": "cmtpul3f72blvl35mj7oc58ov",
+        "name": "Kering Beaute"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtjzhlnt0000oe2b1pugscrp",
+        "name": "Foot Locker"
+      },
+      "b": {
+        "id": "cmtpxur2b00003nxcmcnc6054",
+        "name": "Kids Foot Locker"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1xe9n01a0nv2b2p3qyil0",
+        "name": "Diptyque"
+      },
+      "b": {
+        "id": "cmtmoel1n0k3bso5lh4judjcm",
+        "name": "Logo Diptyque"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1xe9n01a0nv2b2p3qyil0",
+        "name": "Diptyque"
+      },
+      "b": {
+        "id": "cmtlyj6mk07leqf5kn4ipgxhk",
+        "name": "Diptyque paris"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT",
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1xktt01jdnv2ba1o5xwx4",
+        "name": "Stella McCartney"
+      },
+      "b": {
+        "id": "cmtlyjuur08xaqf5klhwkbnba",
+        "name": "Stella McCartney Italia S.r.l"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1xktt01jdnv2ba1o5xwx4",
+        "name": "Stella McCartney"
+      },
+      "b": {
+        "id": "cmtlyjuwf08xqqf5k63jvwq7f",
+        "name": "Stella McCartney Limited"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1xktt01jdnv2ba1o5xwx4",
+        "name": "Stella McCartney"
+      },
+      "b": {
+        "id": "cmtlyjuwu08xuqf5kl43ilrhw",
+        "name": "Stella McCartney America Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyjuur08xaqf5klhwkbnba",
+        "name": "Stella McCartney Italia S.r.l"
+      },
+      "b": {
+        "id": "cmtlyjuwf08xqqf5k63jvwq7f",
+        "name": "Stella McCartney Limited"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyjuur08xaqf5klhwkbnba",
+        "name": "Stella McCartney Italia S.r.l"
+      },
+      "b": {
+        "id": "cmtlyjuwu08xuqf5kl43ilrhw",
+        "name": "Stella McCartney America Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyjuwf08xqqf5k63jvwq7f",
+        "name": "Stella McCartney Limited"
+      },
+      "b": {
+        "id": "cmtlyjuwu08xuqf5kl43ilrhw",
+        "name": "Stella McCartney America Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1xktt01jdnv2ba1o5xwx4",
+        "name": "Stella McCartney"
+      },
+      "b": {
+        "id": "cmtpu0ykr086sl35m7swvoori",
+        "name": "Stella McCartney (Japan)"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1xxkp025dnv2b2ssr1yjk",
+        "name": "Versace"
+      },
+      "b": {
+        "id": "cmtlylj4f0chmqf5ki5bcjo6p",
+        "name": "Versace Canada"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1xxkp025dnv2b2ssr1yjk",
+        "name": "Versace"
+      },
+      "b": {
+        "id": "cmtlylj7c0ci6qf5kmfivkt10",
+        "name": "Versace USA, Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1xxkp025dnv2b2ssr1yjk",
+        "name": "Versace"
+      },
+      "b": {
+        "id": "cmtlyljci0cjmqf5krn8qvljx",
+        "name": "Versace Deutschland GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1xxkp025dnv2b2ssr1yjk",
+        "name": "Versace"
+      },
+      "b": {
+        "id": "cmtlyljgg0ckpqf5kw7pafgba",
+        "name": "Versace Suisse SA"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1xxkp025dnv2b2ssr1yjk",
+        "name": "Versace"
+      },
+      "b": {
+        "id": "cmtlyljmv0cmiqf5kjicddtz7",
+        "name": "Versace Japan Co., Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlylj4f0chmqf5ki5bcjo6p",
+        "name": "Versace Canada"
+      },
+      "b": {
+        "id": "cmtlylj7c0ci6qf5kmfivkt10",
+        "name": "Versace USA, Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlylj4f0chmqf5ki5bcjo6p",
+        "name": "Versace Canada"
+      },
+      "b": {
+        "id": "cmtlyljci0cjmqf5krn8qvljx",
+        "name": "Versace Deutschland GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlylj4f0chmqf5ki5bcjo6p",
+        "name": "Versace Canada"
+      },
+      "b": {
+        "id": "cmtlyljgg0ckpqf5kw7pafgba",
+        "name": "Versace Suisse SA"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlylj4f0chmqf5ki5bcjo6p",
+        "name": "Versace Canada"
+      },
+      "b": {
+        "id": "cmtlyljmv0cmiqf5kjicddtz7",
+        "name": "Versace Japan Co., Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlylj7c0ci6qf5kmfivkt10",
+        "name": "Versace USA, Inc."
+      },
+      "b": {
+        "id": "cmtlyljci0cjmqf5krn8qvljx",
+        "name": "Versace Deutschland GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlylj7c0ci6qf5kmfivkt10",
+        "name": "Versace USA, Inc."
+      },
+      "b": {
+        "id": "cmtlyljgg0ckpqf5kw7pafgba",
+        "name": "Versace Suisse SA"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlylj7c0ci6qf5kmfivkt10",
+        "name": "Versace USA, Inc."
+      },
+      "b": {
+        "id": "cmtlyljmv0cmiqf5kjicddtz7",
+        "name": "Versace Japan Co., Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyljci0cjmqf5krn8qvljx",
+        "name": "Versace Deutschland GmbH"
+      },
+      "b": {
+        "id": "cmtlyljgg0ckpqf5kw7pafgba",
+        "name": "Versace Suisse SA"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyljci0cjmqf5krn8qvljx",
+        "name": "Versace Deutschland GmbH"
+      },
+      "b": {
+        "id": "cmtlyljmv0cmiqf5kjicddtz7",
+        "name": "Versace Japan Co., Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyljgg0ckpqf5kw7pafgba",
+        "name": "Versace Suisse SA"
+      },
+      "b": {
+        "id": "cmtlyljmv0cmiqf5kjicddtz7",
+        "name": "Versace Japan Co., Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1xxkp025dnv2b2ssr1yjk",
+        "name": "Versace"
+      },
+      "b": {
+        "id": "cmtlyljbk0cjaqf5kj89hylbo",
+        "name": "Gianni Versace S.r.l."
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1ywiz04tnnv2bym3tmeto",
+        "name": "Canada Goose"
+      },
+      "b": {
+        "id": "cmtlyovkg0kdqqf5k83kywzrp",
+        "name": "Canada Goose Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1ywiz04tnnv2bym3tmeto",
+        "name": "Canada Goose"
+      },
+      "b": {
+        "id": "cmtlyovme0ke9qf5k7o3bce3g",
+        "name": "Canada Goose UK Retail Limited"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1ywiz04tnnv2bym3tmeto",
+        "name": "Canada Goose"
+      },
+      "b": {
+        "id": "cmtlyovmr0kedqf5k72kqog21",
+        "name": "Canada Goose, US Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1ywiz04tnnv2bym3tmeto",
+        "name": "Canada Goose"
+      },
+      "b": {
+        "id": "cmtlyovo50ketqf5ks92xylq9",
+        "name": "Canada Goose Netherlands Retail B.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1ywiz04tnnv2bym3tmeto",
+        "name": "Canada Goose"
+      },
+      "b": {
+        "id": "cmtlyovow0kf1qf5kgf5pzb1z",
+        "name": "Canada Goose Germany Retail GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1ywiz04tnnv2bym3tmeto",
+        "name": "Canada Goose"
+      },
+      "b": {
+        "id": "cmtlyovtf0kg2qf5k7rh4j7jd",
+        "name": "Canada Goose Australia Pty Limited"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1ywiz04tnnv2bym3tmeto",
+        "name": "Canada Goose"
+      },
+      "b": {
+        "id": "cmtlyovz70khuqf5klh50hzcy",
+        "name": "Canada Goose France Retail SAS"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk1ywiz04tnnv2bym3tmeto",
+        "name": "Canada Goose"
+      },
+      "b": {
+        "id": "cmtlyowez0klvqf5k7tmmu48i",
+        "name": "Canada Goose Italy Retail S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovkg0kdqqf5k83kywzrp",
+        "name": "Canada Goose Inc."
+      },
+      "b": {
+        "id": "cmtlyovme0ke9qf5k7o3bce3g",
+        "name": "Canada Goose UK Retail Limited"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovkg0kdqqf5k83kywzrp",
+        "name": "Canada Goose Inc."
+      },
+      "b": {
+        "id": "cmtlyovmr0kedqf5k72kqog21",
+        "name": "Canada Goose, US Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovkg0kdqqf5k83kywzrp",
+        "name": "Canada Goose Inc."
+      },
+      "b": {
+        "id": "cmtlyovo50ketqf5ks92xylq9",
+        "name": "Canada Goose Netherlands Retail B.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovkg0kdqqf5k83kywzrp",
+        "name": "Canada Goose Inc."
+      },
+      "b": {
+        "id": "cmtlyovow0kf1qf5kgf5pzb1z",
+        "name": "Canada Goose Germany Retail GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovkg0kdqqf5k83kywzrp",
+        "name": "Canada Goose Inc."
+      },
+      "b": {
+        "id": "cmtlyovtf0kg2qf5k7rh4j7jd",
+        "name": "Canada Goose Australia Pty Limited"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovkg0kdqqf5k83kywzrp",
+        "name": "Canada Goose Inc."
+      },
+      "b": {
+        "id": "cmtlyovz70khuqf5klh50hzcy",
+        "name": "Canada Goose France Retail SAS"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovkg0kdqqf5k83kywzrp",
+        "name": "Canada Goose Inc."
+      },
+      "b": {
+        "id": "cmtlyowez0klvqf5k7tmmu48i",
+        "name": "Canada Goose Italy Retail S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovme0ke9qf5k7o3bce3g",
+        "name": "Canada Goose UK Retail Limited"
+      },
+      "b": {
+        "id": "cmtlyovmr0kedqf5k72kqog21",
+        "name": "Canada Goose, US Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovme0ke9qf5k7o3bce3g",
+        "name": "Canada Goose UK Retail Limited"
+      },
+      "b": {
+        "id": "cmtlyovo50ketqf5ks92xylq9",
+        "name": "Canada Goose Netherlands Retail B.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovme0ke9qf5k7o3bce3g",
+        "name": "Canada Goose UK Retail Limited"
+      },
+      "b": {
+        "id": "cmtlyovow0kf1qf5kgf5pzb1z",
+        "name": "Canada Goose Germany Retail GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovme0ke9qf5k7o3bce3g",
+        "name": "Canada Goose UK Retail Limited"
+      },
+      "b": {
+        "id": "cmtlyovtf0kg2qf5k7rh4j7jd",
+        "name": "Canada Goose Australia Pty Limited"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovme0ke9qf5k7o3bce3g",
+        "name": "Canada Goose UK Retail Limited"
+      },
+      "b": {
+        "id": "cmtlyovz70khuqf5klh50hzcy",
+        "name": "Canada Goose France Retail SAS"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovme0ke9qf5k7o3bce3g",
+        "name": "Canada Goose UK Retail Limited"
+      },
+      "b": {
+        "id": "cmtlyowez0klvqf5k7tmmu48i",
+        "name": "Canada Goose Italy Retail S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovmr0kedqf5k72kqog21",
+        "name": "Canada Goose, US Inc."
+      },
+      "b": {
+        "id": "cmtlyovo50ketqf5ks92xylq9",
+        "name": "Canada Goose Netherlands Retail B.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovmr0kedqf5k72kqog21",
+        "name": "Canada Goose, US Inc."
+      },
+      "b": {
+        "id": "cmtlyovow0kf1qf5kgf5pzb1z",
+        "name": "Canada Goose Germany Retail GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovmr0kedqf5k72kqog21",
+        "name": "Canada Goose, US Inc."
+      },
+      "b": {
+        "id": "cmtlyovtf0kg2qf5k7rh4j7jd",
+        "name": "Canada Goose Australia Pty Limited"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovmr0kedqf5k72kqog21",
+        "name": "Canada Goose, US Inc."
+      },
+      "b": {
+        "id": "cmtlyovz70khuqf5klh50hzcy",
+        "name": "Canada Goose France Retail SAS"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovmr0kedqf5k72kqog21",
+        "name": "Canada Goose, US Inc."
+      },
+      "b": {
+        "id": "cmtlyowez0klvqf5k7tmmu48i",
+        "name": "Canada Goose Italy Retail S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovo50ketqf5ks92xylq9",
+        "name": "Canada Goose Netherlands Retail B.V."
+      },
+      "b": {
+        "id": "cmtlyovow0kf1qf5kgf5pzb1z",
+        "name": "Canada Goose Germany Retail GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovo50ketqf5ks92xylq9",
+        "name": "Canada Goose Netherlands Retail B.V."
+      },
+      "b": {
+        "id": "cmtlyovtf0kg2qf5k7rh4j7jd",
+        "name": "Canada Goose Australia Pty Limited"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovo50ketqf5ks92xylq9",
+        "name": "Canada Goose Netherlands Retail B.V."
+      },
+      "b": {
+        "id": "cmtlyovz70khuqf5klh50hzcy",
+        "name": "Canada Goose France Retail SAS"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovo50ketqf5ks92xylq9",
+        "name": "Canada Goose Netherlands Retail B.V."
+      },
+      "b": {
+        "id": "cmtlyowez0klvqf5k7tmmu48i",
+        "name": "Canada Goose Italy Retail S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovow0kf1qf5kgf5pzb1z",
+        "name": "Canada Goose Germany Retail GmbH"
+      },
+      "b": {
+        "id": "cmtlyovtf0kg2qf5k7rh4j7jd",
+        "name": "Canada Goose Australia Pty Limited"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovow0kf1qf5kgf5pzb1z",
+        "name": "Canada Goose Germany Retail GmbH"
+      },
+      "b": {
+        "id": "cmtlyovz70khuqf5klh50hzcy",
+        "name": "Canada Goose France Retail SAS"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovow0kf1qf5kgf5pzb1z",
+        "name": "Canada Goose Germany Retail GmbH"
+      },
+      "b": {
+        "id": "cmtlyowez0klvqf5k7tmmu48i",
+        "name": "Canada Goose Italy Retail S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovtf0kg2qf5k7rh4j7jd",
+        "name": "Canada Goose Australia Pty Limited"
+      },
+      "b": {
+        "id": "cmtlyovz70khuqf5klh50hzcy",
+        "name": "Canada Goose France Retail SAS"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovtf0kg2qf5k7rh4j7jd",
+        "name": "Canada Goose Australia Pty Limited"
+      },
+      "b": {
+        "id": "cmtlyowez0klvqf5k7tmmu48i",
+        "name": "Canada Goose Italy Retail S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyovz70khuqf5klh50hzcy",
+        "name": "Canada Goose France Retail SAS"
+      },
+      "b": {
+        "id": "cmtlyowez0klvqf5k7tmmu48i",
+        "name": "Canada Goose Italy Retail S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk20nla07q3nv2buhvgyyas",
+        "name": "Cond\u00e9 Nast"
+      },
+      "b": {
+        "id": "cmtlyqizz0mp2qf5k96kqbr52",
+        "name": "Cond\u00e9 Nast Holdings Limited"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk20nla07q3nv2buhvgyyas",
+        "name": "Cond\u00e9 Nast"
+      },
+      "b": {
+        "id": "cmtlyqjch0msyqf5k52v58bzq",
+        "name": "Cond\u00e9 Nast Germany GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyqizz0mp2qf5k96kqbr52",
+        "name": "Cond\u00e9 Nast Holdings Limited"
+      },
+      "b": {
+        "id": "cmtlyqjch0msyqf5k52v58bzq",
+        "name": "Cond\u00e9 Nast Germany GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk48e6r1bu9ny2bxbq8un50",
+        "name": "Christian Dior Couture"
+      },
+      "b": {
+        "id": "cmtk48ead1bvtny2br5o6wk5j",
+        "name": "Parfums Christian Dior"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk48edz1bx5ny2bwve7xek3",
+        "name": "LVMH"
+      },
+      "b": {
+        "id": "cmtk48irc1dqany2bt7e36jw9",
+        "name": "Fashion Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk48g5s1conny2bv651ayg7",
+        "name": "Loewe"
+      },
+      "b": {
+        "id": "cmtk48i0l1di2ny2b5nkl6pdu",
+        "name": "Perfumes Loewe"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtk4a6hw1qxrny2bb7jwpoi8",
+        "name": "Mo\u00ebt Hennessy Champagne Services"
+      },
+      "b": {
+        "id": "cmtrtbfgg3mm4pg5mao2upd6m",
+        "name": "Mo\u00ebt Hennessy Champagne"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvugw1rofnf2b1b13rupe",
+        "name": "ARLETTIE"
+      },
+      "b": {
+        "id": "cmtkdvwyi1sjpnf2bh2d43ha5",
+        "name": "ARLETTIE PARIS"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT",
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvun31rr6nf2br4o71hap",
+        "name": "GROUPE CHANTELLE LINGERIE"
+      },
+      "b": {
+        "id": "cmtke332p010plp2b807b00bh",
+        "name": "Groupe Chantelle"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvuoz1rs1nf2bqrva17su",
+        "name": "AZZEDINE ALAIA"
+      },
+      "b": {
+        "id": "cmtp5231m2czuqq4zugsqalxv",
+        "name": "Alaia"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvupo1rshnf2b5mz54rmt",
+        "name": "CREATIONS FUSALP"
+      },
+      "b": {
+        "id": "cmtlyicya05h8qf5kra05oe95",
+        "name": "Fusalp"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvutp1ru9nf2bbqeq9stw",
+        "name": "Chloe"
+      },
+      "b": {
+        "id": "cmtm7vjst13grpv5jf7aqs98v",
+        "name": "Chloe Logo"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvuwr1rvinf2bg83fdzpf",
+        "name": "KSI RETAIL"
+      },
+      "b": {
+        "id": "cmtpw95zy4k0hl35mew33fqog",
+        "name": "KSI"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT",
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvuwr1rvinf2bg83fdzpf",
+        "name": "KSI RETAIL"
+      },
+      "b": {
+        "id": "cmtp868vg3rmuqq4z150o1s59",
+        "name": "KSI MODE"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp868vg3rmuqq4z150o1s59",
+        "name": "KSI MODE"
+      },
+      "b": {
+        "id": "cmtpw95zy4k0hl35mew33fqog",
+        "name": "KSI"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvvnl1s56nf2b4wguve1b",
+        "name": "LTD INTERNATIONAL"
+      },
+      "b": {
+        "id": "cmtrup1pw4mnupg5mp5zf8mds",
+        "name": "LTD"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvxip1spqnf2bzqsn7awe",
+        "name": "POIRAY INTERNATIONAL"
+      },
+      "b": {
+        "id": "cmtpw96kt4k50l35m5ickofp2",
+        "name": "POIRAY"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvxv61strnf2blvpva5y3",
+        "name": "Lagard\u00e8re Travel Retail"
+      },
+      "b": {
+        "id": "cmtpu023j04jil35mg4a1g7vf",
+        "name": "Lagard\u00e8re Travel"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT",
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvxv61strnf2blvpva5y3",
+        "name": "Lagard\u00e8re Travel Retail"
+      },
+      "b": {
+        "id": "cmtp1vdes01o4qq4zdpcrh599",
+        "name": "Lagard\u00e8re Duty Free"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp1vdes01o4qq4zdpcrh599",
+        "name": "Lagard\u00e8re Duty Free"
+      },
+      "b": {
+        "id": "cmtpu023j04jil35mg4a1g7vf",
+        "name": "Lagard\u00e8re Travel"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvxw01su3nf2but3bkw0q",
+        "name": "DINH VAN"
+      },
+      "b": {
+        "id": "cmtkdvyuw1t4mnf2bpbim5cwq",
+        "name": "DINH VAN PARIS"
+      },
+      "reasons": [
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdvyfp1t0onf2b16gy3kfe",
+        "name": "MYLO CONCEPT STORE"
+      },
+      "b": {
+        "id": "cmtrup2bo4muhpg5m0gvq0etc",
+        "name": "MYLO CONCEPT"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkdw0hr1tiznf2bth7vfiky",
+        "name": "ELLE INTERNATIONAL"
+      },
+      "b": {
+        "id": "cmtrup3ob4n99pg5mrrljc38t",
+        "name": "ELLE"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtke2us500d0lp2bu5et2x5u",
+        "name": "L\u2019Occitane en Provence"
+      },
+      "b": {
+        "id": "cmtp1xiqw03ngqq4zikinuk6e",
+        "name": "L\u2019Occitane"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtkgqym00xm7mn2bsqf6ewhn",
+        "name": "Cartier"
+      },
+      "b": {
+        "id": "cmtm7vk7813nrpv5jf2vgabx4",
+        "name": "Cartier Logo"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyf5xz00eeqf5kjz375dze",
+        "name": "GOT BAG"
+      },
+      "b": {
+        "id": "cmtptz9fn00a6l35mc1yxvt0b",
+        "name": "GOT B"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyffsi00msqf5k8b23l5c6",
+        "name": "\u00c7al\u0131k Holding"
+      },
+      "b": {
+        "id": "cmtptzb9200gsl35m8fwcy589",
+        "name": "\u00c7al\u0131k"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyfxix0180qf5k84f7vdui",
+        "name": "VF Outdoor, LLC"
+      },
+      "b": {
+        "id": "cmtt7v2fk01b3my01cjgmjmri",
+        "name": "VF Outdoor"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyiig305w5qf5kntqzz9kw",
+        "name": "BZB"
+      },
+      "b": {
+        "id": "cmtn5a7sg053rqq5ltoj3513x",
+        "name": "Bizzbee"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyjv1z08zqqf5kcgokabae",
+        "name": "Stella McCartney (Japan) Limited"
+      },
+      "b": {
+        "id": "cmtpu0ykr086sl35m7swvoori",
+        "name": "Stella McCartney (Japan)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyknr70al8qf5k07aj5ajd",
+        "name": "Orlando Bathing Suit, LLC"
+      },
+      "b": {
+        "id": "cmtpu17sq09isl35mpcwd0cgz",
+        "name": "Orlando Bathing Suit"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyljbk0cjaqf5kj89hylbo",
+        "name": "Gianni Versace S.r.l."
+      },
+      "b": {
+        "id": "cmtrseluu0biupg5m8eyk81p2",
+        "name": "Gianni Versace"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlym2oc0diiqf5ku1pczppi",
+        "name": "B's International"
+      },
+      "b": {
+        "id": "cmtpu1wpq0cqol35mt9czrz1s",
+        "name": "B's"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyppxi0l2hqf5kv0wbx2rg",
+        "name": "MGI Luxury Trading Ltd."
+      },
+      "b": {
+        "id": "cmtrsg8u30kd2pg5m8h440yoe",
+        "name": "MGI Luxury Trading"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyppyf0l2pqf5k7g99aly4",
+        "name": "Movado Group, Inc."
+      },
+      "b": {
+        "id": "cmtlypq9v0l6dqf5kialasi2g",
+        "name": "Movado Group Nederland B.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyppyf0l2pqf5k7g99aly4",
+        "name": "Movado Group, Inc."
+      },
+      "b": {
+        "id": "cmtlypqc50l71qf5ka25kzsy3",
+        "name": "Movado Group"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlypq9v0l6dqf5kialasi2g",
+        "name": "Movado Group Nederland B.V."
+      },
+      "b": {
+        "id": "cmtlypqc50l71qf5ka25kzsy3",
+        "name": "Movado Group"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlypq0s0l3lqf5kof8v6lz7",
+        "name": "MGI Distribution Pte Ltd."
+      },
+      "b": {
+        "id": "cmtrsg8vx0kefpg5mtr1luusj",
+        "name": "MGI Distribution Pte"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlypq180l3pqf5kuja1wria",
+        "name": "Movado Group Private Limited"
+      },
+      "b": {
+        "id": "cmtrsg8ti0kclpg5m5ilxv0tk",
+        "name": "Movado Group Private"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlypqc50l71qf5ka25kzsy3",
+        "name": "Movado Group"
+      },
+      "b": {
+        "id": "cmtlypqm80lalqf5k0vf3uydw",
+        "name": "Movado"
+      },
+      "reasons": [
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlypqdy0l7pqf5ks7h8980u",
+        "name": "Movado Group Deutchland GmbH"
+      },
+      "b": {
+        "id": "cmtrsg96r0kkypg5m3bzak14r",
+        "name": "Movado Group Deutchland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlypqel0l7xqf5khhutmzzx",
+        "name": "MGS Distribution Limited"
+      },
+      "b": {
+        "id": "cmtpu3d9z0l02l35m78zr0vbh",
+        "name": "MGS Distribution"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyqizb0moyqf5ktcsftk5m",
+        "name": "Advance Magazine Publishers Inc."
+      },
+      "b": {
+        "id": "cmtrsgp7y0lvupg5mrhp80j1c",
+        "name": "Advance Magazine Publishers"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyqj260mpqqf5kg0q0cru8",
+        "name": "The Cond\u00e9 Nast Publications Limited"
+      },
+      "b": {
+        "id": "cmtrsgp6q0lvipg5mcqzvspmw",
+        "name": "The Cond\u00e9 Nast Publications"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyqjbp0msqqf5k4nabcraf",
+        "name": "Edizioni Cond\u00e9 Nast S.p.A."
+      },
+      "b": {
+        "id": "cmtrsgp4e0luxpg5musa89zv3",
+        "name": "Edizioni Cond\u00e9 Nast"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyqk520n1qqf5kh7soj978",
+        "name": "Cond\u00e9 Nast Digital Taiwan Co. Ltd"
+      },
+      "b": {
+        "id": "cmtrsgqb10m8apg5mci2jrzoa",
+        "name": "Cond\u00e9 Nast Digital Taiwan"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyqkce0n46qf5k3z6z166r",
+        "name": "Cond\u00e9 Nast Taiwan Publications Limited"
+      },
+      "b": {
+        "id": "cmtrsgqiw0mcrpg5mlauwn6i6",
+        "name": "Cond\u00e9 Nast Taiwan Publications"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtlyqkd50n4iqf5kwzefhtiz",
+        "name": "Interculture Total Media Service Co., Ltd."
+      },
+      "b": {
+        "id": "cmtpu3w370nlgl35mwoziubpq",
+        "name": "Interculture Total Media Service"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm7b3w90r72pv5jgmoe5s3j",
+        "name": "Logo Pierre Fabre"
+      },
+      "b": {
+        "id": "cmtn5ohf00ryrqq5l7babv4xg",
+        "name": "Pierre Fabre"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm7cjxx0tyhpv5jomjk2b74",
+        "name": "Madewell Stores Madewell, Inc."
+      },
+      "b": {
+        "id": "cmtpu5x4x0ydzl35mzx7mn4da",
+        "name": "Madewell Stores Madewell"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm7cjz00tytpv5jaucykxjg",
+        "name": "Corporate J. Crew Group, LLC"
+      },
+      "b": {
+        "id": "cmtpu5x5w0ye8l35mk5a5n19w",
+        "name": "Corporate J. Crew Group"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm7ckhh0u7dpv5jj2zqbok0",
+        "name": "Lynch DC / Cust Care J.Crew Inc."
+      },
+      "b": {
+        "id": "cmtpu5xu50ylbl35mf7yal6t3",
+        "name": "Lynch DC / Cust Care J.Crew"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm7ud6s1130pv5jovfzvdq6",
+        "name": "Sarenza Studio"
+      },
+      "b": {
+        "id": "cmtm7udvv11bjpv5jpfcafu5v",
+        "name": "Sarenza"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm7vjrj13gbpv5jr39bo99f",
+        "name": "Richemont Logo"
+      },
+      "b": {
+        "id": "cmtn69siz11vgqq5lojru10az",
+        "name": "Richemont"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm7vk8613obpv5j9y897ni4",
+        "name": "Jaeger LeCoultre logo"
+      },
+      "b": {
+        "id": "cmtn69t80123tqq5lh099wqef",
+        "name": "Jaeger LeCoultre"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm7vlqt14bnpv5jwkbal0n0",
+        "name": "Donz\u00e9-Baume"
+      },
+      "b": {
+        "id": "cmtpj2gbr1473pf5l1wfwy9ur",
+        "name": "Swatch Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm7vlqt14bnpv5jwkbal0n0",
+        "name": "Donz\u00e9-Baume"
+      },
+      "b": {
+        "id": "cmtpj2hvd14rcpf5lux514kfh",
+        "name": "Micro Crystal"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm7vlqt14bnpv5jwkbal0n0",
+        "name": "Donz\u00e9-Baume"
+      },
+      "b": {
+        "id": "cmtpj2inp150vpf5lhqvz0rq3",
+        "name": "MOM Le Pr\u00e9let"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm7vlqt14bnpv5jwkbal0n0",
+        "name": "Donz\u00e9-Baume"
+      },
+      "b": {
+        "id": "cmtpj2ix0154lpf5lvxbmvebf",
+        "name": "Rubattel et Weyermann"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm7vlqt14bnpv5jwkbal0n0",
+        "name": "Donz\u00e9-Baume"
+      },
+      "b": {
+        "id": "cmtpj2jho15bvpf5l0grcvf65",
+        "name": "CPK Swatch Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpj2gbr1473pf5l1wfwy9ur",
+        "name": "Swatch Group"
+      },
+      "b": {
+        "id": "cmtpj2hvd14rcpf5lux514kfh",
+        "name": "Micro Crystal"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpj2gbr1473pf5l1wfwy9ur",
+        "name": "Swatch Group"
+      },
+      "b": {
+        "id": "cmtpj2inp150vpf5lhqvz0rq3",
+        "name": "MOM Le Pr\u00e9let"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpj2gbr1473pf5l1wfwy9ur",
+        "name": "Swatch Group"
+      },
+      "b": {
+        "id": "cmtpj2ix0154lpf5lvxbmvebf",
+        "name": "Rubattel et Weyermann"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpj2gbr1473pf5l1wfwy9ur",
+        "name": "Swatch Group"
+      },
+      "b": {
+        "id": "cmtpj2jho15bvpf5l0grcvf65",
+        "name": "CPK Swatch Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpj2hvd14rcpf5lux514kfh",
+        "name": "Micro Crystal"
+      },
+      "b": {
+        "id": "cmtpj2inp150vpf5lhqvz0rq3",
+        "name": "MOM Le Pr\u00e9let"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpj2hvd14rcpf5lux514kfh",
+        "name": "Micro Crystal"
+      },
+      "b": {
+        "id": "cmtpj2ix0154lpf5lvxbmvebf",
+        "name": "Rubattel et Weyermann"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpj2hvd14rcpf5lux514kfh",
+        "name": "Micro Crystal"
+      },
+      "b": {
+        "id": "cmtpj2jho15bvpf5l0grcvf65",
+        "name": "CPK Swatch Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpj2inp150vpf5lhqvz0rq3",
+        "name": "MOM Le Pr\u00e9let"
+      },
+      "b": {
+        "id": "cmtpj2ix0154lpf5lvxbmvebf",
+        "name": "Rubattel et Weyermann"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpj2inp150vpf5lhqvz0rq3",
+        "name": "MOM Le Pr\u00e9let"
+      },
+      "b": {
+        "id": "cmtpj2jho15bvpf5l0grcvf65",
+        "name": "CPK Swatch Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpj2ix0154lpf5lvxbmvebf",
+        "name": "Rubattel et Weyermann"
+      },
+      "b": {
+        "id": "cmtpj2jho15bvpf5l0grcvf65",
+        "name": "CPK Swatch Group"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow4n1go9pv5jjuq5uno8",
+        "name": "NIKE, Inc."
+      },
+      "b": {
+        "id": "cmtm8ow561godpv5jioq0amcs",
+        "name": "NIKE Canada Corp."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow4n1go9pv5jjuq5uno8",
+        "name": "NIKE, Inc."
+      },
+      "b": {
+        "id": "cmtm8owbz1gqdpv5jzk5s0e9v",
+        "name": "NIKE Retail France"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow4n1go9pv5jjuq5uno8",
+        "name": "NIKE, Inc."
+      },
+      "b": {
+        "id": "cmtm8owc91gqhpv5jqa283v99",
+        "name": "NIKE Retail Germany"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow4n1go9pv5jjuq5uno8",
+        "name": "NIKE, Inc."
+      },
+      "b": {
+        "id": "cmtm8owhm1gs5pv5jm70jpo7g",
+        "name": "NIKE Retail Italy"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow4n1go9pv5jjuq5uno8",
+        "name": "NIKE, Inc."
+      },
+      "b": {
+        "id": "cmtm8owpd1guppv5j15bqkmn9",
+        "name": "NIKE Retail Spain"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow4n1go9pv5jjuq5uno8",
+        "name": "NIKE, Inc."
+      },
+      "b": {
+        "id": "cmtm8owqf1gv1pv5jzaptvv27",
+        "name": "NIKE Retail Belgium"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow4n1go9pv5jjuq5uno8",
+        "name": "NIKE, Inc."
+      },
+      "b": {
+        "id": "cmtm8oxbd1h21pv5jhmbgddes",
+        "name": "Nike Australia Pty. Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow4n1go9pv5jjuq5uno8",
+        "name": "NIKE, Inc."
+      },
+      "b": {
+        "id": "cmtm8oxhh1h49pv5jqclfah77",
+        "name": "NIKE Retail Services"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow4n1go9pv5jjuq5uno8",
+        "name": "NIKE, Inc."
+      },
+      "b": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow4n1go9pv5jjuq5uno8",
+        "name": "NIKE, Inc."
+      },
+      "b": {
+        "id": "cmtm8oybl1he9pv5jg3vzyzoh",
+        "name": "NIKE Japan Corporation"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow4n1go9pv5jjuq5uno8",
+        "name": "NIKE, Inc."
+      },
+      "b": {
+        "id": "cmtm8oytm1hkhpv5jkgcqamap",
+        "name": "NIKE Retail Switzerland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow561godpv5jioq0amcs",
+        "name": "NIKE Canada Corp."
+      },
+      "b": {
+        "id": "cmtm8owbz1gqdpv5jzk5s0e9v",
+        "name": "NIKE Retail France"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow561godpv5jioq0amcs",
+        "name": "NIKE Canada Corp."
+      },
+      "b": {
+        "id": "cmtm8owc91gqhpv5jqa283v99",
+        "name": "NIKE Retail Germany"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow561godpv5jioq0amcs",
+        "name": "NIKE Canada Corp."
+      },
+      "b": {
+        "id": "cmtm8owhm1gs5pv5jm70jpo7g",
+        "name": "NIKE Retail Italy"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow561godpv5jioq0amcs",
+        "name": "NIKE Canada Corp."
+      },
+      "b": {
+        "id": "cmtm8owpd1guppv5j15bqkmn9",
+        "name": "NIKE Retail Spain"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow561godpv5jioq0amcs",
+        "name": "NIKE Canada Corp."
+      },
+      "b": {
+        "id": "cmtm8owqf1gv1pv5jzaptvv27",
+        "name": "NIKE Retail Belgium"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow561godpv5jioq0amcs",
+        "name": "NIKE Canada Corp."
+      },
+      "b": {
+        "id": "cmtm8oxbd1h21pv5jhmbgddes",
+        "name": "Nike Australia Pty. Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow561godpv5jioq0amcs",
+        "name": "NIKE Canada Corp."
+      },
+      "b": {
+        "id": "cmtm8oxhh1h49pv5jqclfah77",
+        "name": "NIKE Retail Services"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow561godpv5jioq0amcs",
+        "name": "NIKE Canada Corp."
+      },
+      "b": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow561godpv5jioq0amcs",
+        "name": "NIKE Canada Corp."
+      },
+      "b": {
+        "id": "cmtm8oybl1he9pv5jg3vzyzoh",
+        "name": "NIKE Japan Corporation"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow561godpv5jioq0amcs",
+        "name": "NIKE Canada Corp."
+      },
+      "b": {
+        "id": "cmtm8oytm1hkhpv5jkgcqamap",
+        "name": "NIKE Retail Switzerland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owbz1gqdpv5jzk5s0e9v",
+        "name": "NIKE Retail France"
+      },
+      "b": {
+        "id": "cmtm8owc91gqhpv5jqa283v99",
+        "name": "NIKE Retail Germany"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owbz1gqdpv5jzk5s0e9v",
+        "name": "NIKE Retail France"
+      },
+      "b": {
+        "id": "cmtm8owhm1gs5pv5jm70jpo7g",
+        "name": "NIKE Retail Italy"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owbz1gqdpv5jzk5s0e9v",
+        "name": "NIKE Retail France"
+      },
+      "b": {
+        "id": "cmtm8owpd1guppv5j15bqkmn9",
+        "name": "NIKE Retail Spain"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owbz1gqdpv5jzk5s0e9v",
+        "name": "NIKE Retail France"
+      },
+      "b": {
+        "id": "cmtm8owqf1gv1pv5jzaptvv27",
+        "name": "NIKE Retail Belgium"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owbz1gqdpv5jzk5s0e9v",
+        "name": "NIKE Retail France"
+      },
+      "b": {
+        "id": "cmtm8oxbd1h21pv5jhmbgddes",
+        "name": "Nike Australia Pty. Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owbz1gqdpv5jzk5s0e9v",
+        "name": "NIKE Retail France"
+      },
+      "b": {
+        "id": "cmtm8oxhh1h49pv5jqclfah77",
+        "name": "NIKE Retail Services"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owbz1gqdpv5jzk5s0e9v",
+        "name": "NIKE Retail France"
+      },
+      "b": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owbz1gqdpv5jzk5s0e9v",
+        "name": "NIKE Retail France"
+      },
+      "b": {
+        "id": "cmtm8oybl1he9pv5jg3vzyzoh",
+        "name": "NIKE Japan Corporation"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owbz1gqdpv5jzk5s0e9v",
+        "name": "NIKE Retail France"
+      },
+      "b": {
+        "id": "cmtm8oytm1hkhpv5jkgcqamap",
+        "name": "NIKE Retail Switzerland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owc91gqhpv5jqa283v99",
+        "name": "NIKE Retail Germany"
+      },
+      "b": {
+        "id": "cmtm8owhm1gs5pv5jm70jpo7g",
+        "name": "NIKE Retail Italy"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owc91gqhpv5jqa283v99",
+        "name": "NIKE Retail Germany"
+      },
+      "b": {
+        "id": "cmtm8owpd1guppv5j15bqkmn9",
+        "name": "NIKE Retail Spain"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owc91gqhpv5jqa283v99",
+        "name": "NIKE Retail Germany"
+      },
+      "b": {
+        "id": "cmtm8owqf1gv1pv5jzaptvv27",
+        "name": "NIKE Retail Belgium"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owc91gqhpv5jqa283v99",
+        "name": "NIKE Retail Germany"
+      },
+      "b": {
+        "id": "cmtm8oxbd1h21pv5jhmbgddes",
+        "name": "Nike Australia Pty. Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owc91gqhpv5jqa283v99",
+        "name": "NIKE Retail Germany"
+      },
+      "b": {
+        "id": "cmtm8oxhh1h49pv5jqclfah77",
+        "name": "NIKE Retail Services"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owc91gqhpv5jqa283v99",
+        "name": "NIKE Retail Germany"
+      },
+      "b": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owc91gqhpv5jqa283v99",
+        "name": "NIKE Retail Germany"
+      },
+      "b": {
+        "id": "cmtm8oybl1he9pv5jg3vzyzoh",
+        "name": "NIKE Japan Corporation"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owc91gqhpv5jqa283v99",
+        "name": "NIKE Retail Germany"
+      },
+      "b": {
+        "id": "cmtm8oytm1hkhpv5jkgcqamap",
+        "name": "NIKE Retail Switzerland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owhm1gs5pv5jm70jpo7g",
+        "name": "NIKE Retail Italy"
+      },
+      "b": {
+        "id": "cmtm8owpd1guppv5j15bqkmn9",
+        "name": "NIKE Retail Spain"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owhm1gs5pv5jm70jpo7g",
+        "name": "NIKE Retail Italy"
+      },
+      "b": {
+        "id": "cmtm8owqf1gv1pv5jzaptvv27",
+        "name": "NIKE Retail Belgium"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owhm1gs5pv5jm70jpo7g",
+        "name": "NIKE Retail Italy"
+      },
+      "b": {
+        "id": "cmtm8oxbd1h21pv5jhmbgddes",
+        "name": "Nike Australia Pty. Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owhm1gs5pv5jm70jpo7g",
+        "name": "NIKE Retail Italy"
+      },
+      "b": {
+        "id": "cmtm8oxhh1h49pv5jqclfah77",
+        "name": "NIKE Retail Services"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owhm1gs5pv5jm70jpo7g",
+        "name": "NIKE Retail Italy"
+      },
+      "b": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owhm1gs5pv5jm70jpo7g",
+        "name": "NIKE Retail Italy"
+      },
+      "b": {
+        "id": "cmtm8oybl1he9pv5jg3vzyzoh",
+        "name": "NIKE Japan Corporation"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owhm1gs5pv5jm70jpo7g",
+        "name": "NIKE Retail Italy"
+      },
+      "b": {
+        "id": "cmtm8oytm1hkhpv5jkgcqamap",
+        "name": "NIKE Retail Switzerland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owpd1guppv5j15bqkmn9",
+        "name": "NIKE Retail Spain"
+      },
+      "b": {
+        "id": "cmtm8owqf1gv1pv5jzaptvv27",
+        "name": "NIKE Retail Belgium"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owpd1guppv5j15bqkmn9",
+        "name": "NIKE Retail Spain"
+      },
+      "b": {
+        "id": "cmtm8oxbd1h21pv5jhmbgddes",
+        "name": "Nike Australia Pty. Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owpd1guppv5j15bqkmn9",
+        "name": "NIKE Retail Spain"
+      },
+      "b": {
+        "id": "cmtm8oxhh1h49pv5jqclfah77",
+        "name": "NIKE Retail Services"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owpd1guppv5j15bqkmn9",
+        "name": "NIKE Retail Spain"
+      },
+      "b": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owpd1guppv5j15bqkmn9",
+        "name": "NIKE Retail Spain"
+      },
+      "b": {
+        "id": "cmtm8oybl1he9pv5jg3vzyzoh",
+        "name": "NIKE Japan Corporation"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owpd1guppv5j15bqkmn9",
+        "name": "NIKE Retail Spain"
+      },
+      "b": {
+        "id": "cmtm8oytm1hkhpv5jkgcqamap",
+        "name": "NIKE Retail Switzerland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owqf1gv1pv5jzaptvv27",
+        "name": "NIKE Retail Belgium"
+      },
+      "b": {
+        "id": "cmtm8oxbd1h21pv5jhmbgddes",
+        "name": "Nike Australia Pty. Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owqf1gv1pv5jzaptvv27",
+        "name": "NIKE Retail Belgium"
+      },
+      "b": {
+        "id": "cmtm8oxhh1h49pv5jqclfah77",
+        "name": "NIKE Retail Services"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owqf1gv1pv5jzaptvv27",
+        "name": "NIKE Retail Belgium"
+      },
+      "b": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owqf1gv1pv5jzaptvv27",
+        "name": "NIKE Retail Belgium"
+      },
+      "b": {
+        "id": "cmtm8oybl1he9pv5jg3vzyzoh",
+        "name": "NIKE Japan Corporation"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owqf1gv1pv5jzaptvv27",
+        "name": "NIKE Retail Belgium"
+      },
+      "b": {
+        "id": "cmtm8oytm1hkhpv5jkgcqamap",
+        "name": "NIKE Retail Switzerland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oxbd1h21pv5jhmbgddes",
+        "name": "Nike Australia Pty. Ltd."
+      },
+      "b": {
+        "id": "cmtm8oxhh1h49pv5jqclfah77",
+        "name": "NIKE Retail Services"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oxbd1h21pv5jhmbgddes",
+        "name": "Nike Australia Pty. Ltd."
+      },
+      "b": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oxbd1h21pv5jhmbgddes",
+        "name": "Nike Australia Pty. Ltd."
+      },
+      "b": {
+        "id": "cmtm8oybl1he9pv5jg3vzyzoh",
+        "name": "NIKE Japan Corporation"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oxbd1h21pv5jhmbgddes",
+        "name": "Nike Australia Pty. Ltd."
+      },
+      "b": {
+        "id": "cmtm8oytm1hkhpv5jkgcqamap",
+        "name": "NIKE Retail Switzerland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oxhh1h49pv5jqclfah77",
+        "name": "NIKE Retail Services"
+      },
+      "b": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oxhh1h49pv5jqclfah77",
+        "name": "NIKE Retail Services"
+      },
+      "b": {
+        "id": "cmtm8oybl1he9pv5jg3vzyzoh",
+        "name": "NIKE Japan Corporation"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oxhh1h49pv5jqclfah77",
+        "name": "NIKE Retail Services"
+      },
+      "b": {
+        "id": "cmtm8oytm1hkhpv5jkgcqamap",
+        "name": "NIKE Retail Switzerland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "b": {
+        "id": "cmtm8oybl1he9pv5jg3vzyzoh",
+        "name": "NIKE Japan Corporation"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "b": {
+        "id": "cmtm8oytm1hkhpv5jkgcqamap",
+        "name": "NIKE Retail Switzerland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oybl1he9pv5jg3vzyzoh",
+        "name": "NIKE Japan Corporation"
+      },
+      "b": {
+        "id": "cmtm8oytm1hkhpv5jkgcqamap",
+        "name": "NIKE Retail Switzerland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ow4n1go9pv5jjuq5uno8",
+        "name": "NIKE, Inc."
+      },
+      "b": {
+        "id": "cmtm8oy3h1hbhpv5j1cszq8so",
+        "name": "Air MI"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oy381hbdpv5jzsp4t1a8",
+        "name": "NIKE"
+      },
+      "b": {
+        "id": "cmtm8oy3h1hbhpv5j1cszq8so",
+        "name": "Air MI"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owa21gptpv5jwqp16wxo",
+        "name": "NIKE India Technology Center Private Limited"
+      },
+      "b": {
+        "id": "cmtrspy0n1pptpg5mtyi23le1",
+        "name": "NIKE India Technology Center Private"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owyb1gxhpv5jz5y1yy2t",
+        "name": "Nike China Holding HK Limited"
+      },
+      "b": {
+        "id": "cmtrspzc91q8npg5mipjhqect",
+        "name": "Nike China Holding HK"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owyl1gxlpv5ju60x6qfi",
+        "name": "Nike Japan Group LLC"
+      },
+      "b": {
+        "id": "cmtrspzcj1q8rpg5mhwhojfve",
+        "name": "Nike Japan Group"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owz21gxtpv5jtgo1o25p",
+        "name": "Converse Inc."
+      },
+      "b": {
+        "id": "cmtm8ox3b1gz9pv5jmkrgaq3h",
+        "name": "Converse Deutschland GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owz21gxtpv5jtgo1o25p",
+        "name": "Converse Inc."
+      },
+      "b": {
+        "id": "cmtm8ozlu1htlpv5jpyr60y9f",
+        "name": "Converse"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8owz21gxtpv5jtgo1o25p",
+        "name": "Converse Inc."
+      },
+      "b": {
+        "id": "cmtm8p09w1i1hpv5jdzjlyvg0",
+        "name": "Converse Retail UK Ltd"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ox3b1gz9pv5jmkrgaq3h",
+        "name": "Converse Deutschland GmbH"
+      },
+      "b": {
+        "id": "cmtm8ozlu1htlpv5jpyr60y9f",
+        "name": "Converse"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ox3b1gz9pv5jmkrgaq3h",
+        "name": "Converse Deutschland GmbH"
+      },
+      "b": {
+        "id": "cmtm8p09w1i1hpv5jdzjlyvg0",
+        "name": "Converse Retail UK Ltd"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ozlu1htlpv5jpyr60y9f",
+        "name": "Converse"
+      },
+      "b": {
+        "id": "cmtm8p09w1i1hpv5jdzjlyvg0",
+        "name": "Converse Retail UK Ltd"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8ox541gzxpv5j68ld2snr",
+        "name": "NIKE Sourcing (Guangzhou) Co., Ltd."
+      },
+      "b": {
+        "id": "cmtrspzh11qabpg5m8libz2q8",
+        "name": "NIKE Sourcing (Guangzhou)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oxc61h2dpv5jmsaue6rp",
+        "name": "NIKE India Private Limited"
+      },
+      "b": {
+        "id": "cmtrspyeb1pvrpg5mcvhxufhh",
+        "name": "NIKE India Private"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oxcz1h2ppv5jdgpf6kjd",
+        "name": "Nike (Thailand) Ltd."
+      },
+      "b": {
+        "id": "cmtrspzmk1qcepg5ma5gc9br8",
+        "name": "Nike (Thailand)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oxqg1h7lpv5jdtq655bl",
+        "name": "NIKE Sourcing India Private Limited"
+      },
+      "b": {
+        "id": "cmtrspzwm1qftpg5m3potji5s",
+        "name": "NIKE Sourcing India Private"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oyn41hi9pv5jorut827w",
+        "name": "American Converse S.L."
+      },
+      "b": {
+        "id": "cmtrsq0h61qmfpg5mkmceemxm",
+        "name": "American Converse"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oyxa1hltpv5jqwinzohj",
+        "name": "BRS Nike Taiwan, Inc."
+      },
+      "b": {
+        "id": "cmtrsq0ou1qp2pg5mrrk94e9r",
+        "name": "BRS Nike Taiwan"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8oyzz1hmlpv5jrnmdr5zj",
+        "name": "NIKE Global Trading BV"
+      },
+      "b": {
+        "id": "cmtrspyie1pxrpg5meo6pft52",
+        "name": "NIKE Global Trading"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8p0f71i39pv5jj8whg3p9",
+        "name": "Nike Taiwan Limited"
+      },
+      "b": {
+        "id": "cmtrsq1rb1r23pg5m60zp7urc",
+        "name": "Nike Taiwan"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtm8p93s1j2hpv5jnxbp934v",
+        "name": "Lovisa"
+      },
+      "b": {
+        "id": "cmtpubijn1lqrl35mlzn8kffd",
+        "name": "Lovi"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtmkagqn2jqwpv4x29ldqtld",
+        "name": "HAST PARIS"
+      },
+      "b": {
+        "id": "cmtpyv4mn01gz3ncqigpri78n",
+        "name": "Hast"
+      },
+      "reasons": [
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtmws95i0aakso4zzrkmzqjr",
+        "name": "Versace Austria GMBH"
+      },
+      "b": {
+        "id": "cmtrselvk0bj2pg5m0w7ubecu",
+        "name": "Versace Austria"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn5a6a304zqqq5llvh08n5h",
+        "name": "UNIQLO EUROPE LIMITED"
+      },
+      "b": {
+        "id": "cmtptzpyj02cil35mltt03knh",
+        "name": "UNIQLO"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn5dgoo0b8pqq5lh5676e8v",
+        "name": "Prada Group"
+      },
+      "b": {
+        "id": "cmtp8686e3rh3qq4z7tykspax",
+        "name": "PRADA"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT",
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn7s1lr1rosqq5liqmue7z6",
+        "name": "Levi's"
+      },
+      "b": {
+        "id": "cmtpunkpu2m55l35me77g1x5r",
+        "name": "THA- Levi Strauss (Thailand)"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn7sbvi1vosqq5lrj5n5rr8",
+        "name": "THA- Levi Strauss (Thailand) Ltd"
+      },
+      "b": {
+        "id": "cmtpunkpu2m55l35me77g1x5r",
+        "name": "THA- Levi Strauss (Thailand)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn8950f2019qq5l4eeh3swn",
+        "name": "MANGO Nederland BV"
+      },
+      "b": {
+        "id": "cmtn8954c203dqq5lyrujd9xl",
+        "name": "MANGO SUISSE SA"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn8950f2019qq5l4eeh3swn",
+        "name": "MANGO Nederland BV"
+      },
+      "b": {
+        "id": "cmtn89596205lqq5l0deggb1g",
+        "name": "Mango"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn8950f2019qq5l4eeh3swn",
+        "name": "MANGO Nederland BV"
+      },
+      "b": {
+        "id": "cmtn89a4b22h1qq5l0kk153vx",
+        "name": "MANGO HONG KONG LIMITED"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn8954c203dqq5lyrujd9xl",
+        "name": "MANGO SUISSE SA"
+      },
+      "b": {
+        "id": "cmtn89596205lqq5l0deggb1g",
+        "name": "Mango"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn8954c203dqq5lyrujd9xl",
+        "name": "MANGO SUISSE SA"
+      },
+      "b": {
+        "id": "cmtn89a4b22h1qq5l0kk153vx",
+        "name": "MANGO HONG KONG LIMITED"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn89596205lqq5l0deggb1g",
+        "name": "Mango"
+      },
+      "b": {
+        "id": "cmtn89a4b22h1qq5l0kk153vx",
+        "name": "MANGO HONG KONG LIMITED"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn8951b201pqq5lkkbmq6gw",
+        "name": "MANGO MNG, S.A."
+      },
+      "b": {
+        "id": "cmtrt7ar82tvhpg5md2ogtmho",
+        "name": "MANGO MNG"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn8951b201pqq5lkkbmq6gw",
+        "name": "MANGO MNG, S.A."
+      },
+      "b": {
+        "id": "cmtn89596205lqq5l0deggb1g",
+        "name": "Mango"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn8953h202xqq5l0wg4j1gu",
+        "name": "MNG MANGO IRELAND LIMITED"
+      },
+      "b": {
+        "id": "cmtrt7b142tzkpg5mdxmwoi0s",
+        "name": "MNG MANGO IRELAND"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn895pl20dlqq5lcwnaxmwj",
+        "name": "MANGO \u00d6STERRREICH HANDELS. GMBH"
+      },
+      "b": {
+        "id": "cmtrt7cgi2ubxpg5m7jwdt3sj",
+        "name": "MANGO \u00d6STERRREICH HANDELS."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn896gy20r9qq5lnqeobxag",
+        "name": "MANGONOR Com\u00e9rcio de Vestu\u00e1rio S.A"
+      },
+      "b": {
+        "id": "cmtrt7dda2umfpg5mslyds62z",
+        "name": "MANGONOR Com\u00e9rcio de Vestu\u00e1rio"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn899cd224xqq5l615ve4mp",
+        "name": "MANGO NY INC"
+      },
+      "b": {
+        "id": "cmtrt7giq2vr1pg5m1hz6detx",
+        "name": "MANGO NY"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn89br4236lqq5lkbzbe5al",
+        "name": "MANGO GARMENTS ROM. SRL."
+      },
+      "b": {
+        "id": "cmtrt7j6r2wpjpg5mwnnw7tu5",
+        "name": "MANGO GARMENTS ROM."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtn89ca523d9qq5lit8eoc18",
+        "name": "MANGO SVERIGE AB"
+      },
+      "b": {
+        "id": "cmtrt7jpc2wvmpg5m7hob93d8",
+        "name": "MANGO SVERIGE"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnac1tt2sn8qq5l3jk84cel",
+        "name": "FAIR FASHION AGENT INTERNATIONAL"
+      },
+      "b": {
+        "id": "cmtpw96do4k3nl35mii9jtnaj",
+        "name": "FAIR FASHION AGENT"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hsi0a95qq4z8dfzc8go",
+        "name": "Jimmy Choo Spain SL"
+      },
+      "b": {
+        "id": "cmtpu1jq90ao8l35mi3a8soo6",
+        "name": "Jimmy Choo"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hsr0a99qq4za5bd0sn4",
+        "name": "J. Choo Limited"
+      },
+      "b": {
+        "id": "cmtne4hu80aa1qq4zdmgmod1n",
+        "name": "J Choo USA Inc"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hsr0a99qq4za5bd0sn4",
+        "name": "J. Choo Limited"
+      },
+      "b": {
+        "id": "cmtne4hup0aa9qq4zlkknj7mk",
+        "name": "J. Choo Canada Inc"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hsr0a99qq4za5bd0sn4",
+        "name": "J. Choo Limited"
+      },
+      "b": {
+        "id": "cmtne4hxr0abpqq4zvpt12htz",
+        "name": "J Choo Germany GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hsr0a99qq4za5bd0sn4",
+        "name": "J. Choo Limited"
+      },
+      "b": {
+        "id": "cmtrseftp0ai2pg5mlh7v7w8q",
+        "name": "J Choo"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hu80aa1qq4zdmgmod1n",
+        "name": "J Choo USA Inc"
+      },
+      "b": {
+        "id": "cmtne4hup0aa9qq4zlkknj7mk",
+        "name": "J. Choo Canada Inc"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hu80aa1qq4zdmgmod1n",
+        "name": "J Choo USA Inc"
+      },
+      "b": {
+        "id": "cmtne4hxr0abpqq4zvpt12htz",
+        "name": "J Choo Germany GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hu80aa1qq4zdmgmod1n",
+        "name": "J Choo USA Inc"
+      },
+      "b": {
+        "id": "cmtrseftp0ai2pg5mlh7v7w8q",
+        "name": "J Choo"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hup0aa9qq4zlkknj7mk",
+        "name": "J. Choo Canada Inc"
+      },
+      "b": {
+        "id": "cmtne4hxr0abpqq4zvpt12htz",
+        "name": "J Choo Germany GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hup0aa9qq4zlkknj7mk",
+        "name": "J. Choo Canada Inc"
+      },
+      "b": {
+        "id": "cmtrseftp0ai2pg5mlh7v7w8q",
+        "name": "J Choo"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hxr0abpqq4zvpt12htz",
+        "name": "J Choo Germany GmbH"
+      },
+      "b": {
+        "id": "cmtrseftp0ai2pg5mlh7v7w8q",
+        "name": "J Choo"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hsr0a99qq4za5bd0sn4",
+        "name": "J. Choo Limited"
+      },
+      "b": {
+        "id": "cmtpu1jq90ao8l35mi3a8soo6",
+        "name": "Jimmy Choo"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hts0a9tqq4zooekmjte",
+        "name": "Jimmy Choo Florence Srl"
+      },
+      "b": {
+        "id": "cmtrsefvu0ajlpg5ma78q6ri1",
+        "name": "Jimmy Choo Florence"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4htz0a9xqq4z2phm54no",
+        "name": "Itachoo S.r.l."
+      },
+      "b": {
+        "id": "cmtpu1jsf0apdl35mk04nxxgf",
+        "name": "Itachoo"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4huy0aadqq4z399xmbz3",
+        "name": "Michael Kors Japan, LLC"
+      },
+      "b": {
+        "id": "cmtnfq0zm17kyqq4zqj5ndjdd",
+        "name": "Michael Kors"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4huy0aadqq4z399xmbz3",
+        "name": "Michael Kors Japan, LLC"
+      },
+      "b": {
+        "id": "cmtnfq1g617tiqq4zud3w5cba",
+        "name": "Michael Kors Stores LLC"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq0zm17kyqq4zqj5ndjdd",
+        "name": "Michael Kors"
+      },
+      "b": {
+        "id": "cmtnfq1g617tiqq4zud3w5cba",
+        "name": "Michael Kors Stores LLC"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4hwf0ab1qq4z2fg8jljx",
+        "name": "Jimmy Choo Tokyo K.K."
+      },
+      "b": {
+        "id": "cmtrseg0q0amcpg5m2ktzz2ze",
+        "name": "Jimmy Choo Tokyo"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4i1h0ad9qq4zlis5923n",
+        "name": "J Choo (Switzerland) AG"
+      },
+      "b": {
+        "id": "cmtrseg7x0aplpg5m8zdf9l2f",
+        "name": "J Choo (Switzerland)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtne4i3w0aedqq4z8qmhsz9f",
+        "name": "Jimmy Choo (Shanghai) Trading Co. Limited"
+      },
+      "b": {
+        "id": "cmtrsegax0aqppg5mkzcxhot4",
+        "name": "Jimmy Choo (Shanghai) Trading Co."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq10017l2qq4zx329xqc1",
+        "name": "Michael Kors (Germany) GmbH"
+      },
+      "b": {
+        "id": "cmtrsmvej1d6bpg5mmfh3m8f4",
+        "name": "Michael Kors (Germany)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq11g17lqqq4z1y30342j",
+        "name": "Michael Kors (Portugal) lda"
+      },
+      "b": {
+        "id": "cmtrsmvgj1d6wpg5m8fdo2ifk",
+        "name": "Michael Kors (Portugal)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq12717m2qq4z5jo2nsm0",
+        "name": "Michael Kors (Austria) GmbH"
+      },
+      "b": {
+        "id": "cmtrsmvhi1d78pg5mztwhu3y1",
+        "name": "Michael Kors (Austria)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq14j17n6qq4zam179xs7",
+        "name": "Michael Kors (Switzerland) Retail GmbH"
+      },
+      "b": {
+        "id": "cmtnfq2ka18ehqq4ztq6exqb1",
+        "name": "Michael Kors (Switzerland) GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq14j17n6qq4zam179xs7",
+        "name": "Michael Kors (Switzerland) Retail GmbH"
+      },
+      "b": {
+        "id": "cmtrsmvrh1dakpg5myjmefzw9",
+        "name": "Michael Kors (Switzerland)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq2ka18ehqq4ztq6exqb1",
+        "name": "Michael Kors (Switzerland) GmbH"
+      },
+      "b": {
+        "id": "cmtrsmvrh1dakpg5myjmefzw9",
+        "name": "Michael Kors (Switzerland)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq16417o2qq4zxact56oi",
+        "name": "Michael Kors (UK) limited"
+      },
+      "b": {
+        "id": "cmtrsmvmg1d8rpg5mjuur76ft",
+        "name": "Michael Kors (UK)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq1bk17quqq4z75zfxf5l",
+        "name": "Michael Kors (USA) Inc"
+      },
+      "b": {
+        "id": "cmtrsmvwm1dcapg5mu596zm79",
+        "name": "Michael Kors (USA)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq1eo17smqq4zew5o16gj",
+        "name": "Michael Kors (Bucharest Stores) SRL"
+      },
+      "b": {
+        "id": "cmtrsmw131ddppg5mqmsergba",
+        "name": "Michael Kors (Bucharest Stores)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq1t7180hqq4zmodwp1ob",
+        "name": "Michael Kors (Netherlands) BV"
+      },
+      "b": {
+        "id": "cmtrsmwlc1dkcpg5mwpypniju",
+        "name": "Michael Kors (Netherlands)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq1u41811qq4z5let2nkn",
+        "name": "Michael Kors (Sweden) AB"
+      },
+      "b": {
+        "id": "cmtrsmwmj1dkspg5m6q4p5x9r",
+        "name": "Michael Kors (Sweden)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq2531871qq4zjhvwkjny",
+        "name": "Michael Kors (Europe) BV"
+      },
+      "b": {
+        "id": "cmtrsmx0g1dptpg5m5rk92tp9",
+        "name": "Michael Kors (Europe)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtnfq4m51965qq4zpwrd99q8",
+        "name": "Michael Kors (HongKong) Limited"
+      },
+      "b": {
+        "id": "cmtrsmzbp1ej8pg5m6tj5xdhw",
+        "name": "Michael Kors (HongKong)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp22cxr0a7gqq4z2yq4wjhy",
+        "name": "BRUNELLO CUCINELLI"
+      },
+      "b": {
+        "id": "cmtp22cy70a7kqq4zs862c5d5",
+        "name": "BRUNELLO CUCINELLI SPA"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp22cxr0a7gqq4z2yq4wjhy",
+        "name": "BRUNELLO CUCINELLI"
+      },
+      "b": {
+        "id": "cmtp22d0y0a8wqq4zitiwldi9",
+        "name": "BRUNELLO CUCINELLI RETAIL SPAIN S.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp22cxr0a7gqq4z2yq4wjhy",
+        "name": "BRUNELLO CUCINELLI"
+      },
+      "b": {
+        "id": "cmtp22d1k0a98qq4z14m7w1pj",
+        "name": "BRUNELLO CUCINELLI SUISSE SA"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp22cxr0a7gqq4z2yq4wjhy",
+        "name": "BRUNELLO CUCINELLI"
+      },
+      "b": {
+        "id": "cmtp22d240a9kqq4zxhzbmqou",
+        "name": "BRUNELLO CUCINELLI USA INC"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp22cy70a7kqq4zs862c5d5",
+        "name": "BRUNELLO CUCINELLI SPA"
+      },
+      "b": {
+        "id": "cmtp22d0y0a8wqq4zitiwldi9",
+        "name": "BRUNELLO CUCINELLI RETAIL SPAIN S.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp22cy70a7kqq4zs862c5d5",
+        "name": "BRUNELLO CUCINELLI SPA"
+      },
+      "b": {
+        "id": "cmtp22d1k0a98qq4z14m7w1pj",
+        "name": "BRUNELLO CUCINELLI SUISSE SA"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp22cy70a7kqq4zs862c5d5",
+        "name": "BRUNELLO CUCINELLI SPA"
+      },
+      "b": {
+        "id": "cmtp22d240a9kqq4zxhzbmqou",
+        "name": "BRUNELLO CUCINELLI USA INC"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp22d0y0a8wqq4zitiwldi9",
+        "name": "BRUNELLO CUCINELLI RETAIL SPAIN S.L."
+      },
+      "b": {
+        "id": "cmtp22d1k0a98qq4z14m7w1pj",
+        "name": "BRUNELLO CUCINELLI SUISSE SA"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp22d0y0a8wqq4zitiwldi9",
+        "name": "BRUNELLO CUCINELLI RETAIL SPAIN S.L."
+      },
+      "b": {
+        "id": "cmtp22d240a9kqq4zxhzbmqou",
+        "name": "BRUNELLO CUCINELLI USA INC"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp22d1k0a98qq4z14m7w1pj",
+        "name": "BRUNELLO CUCINELLI SUISSE SA"
+      },
+      "b": {
+        "id": "cmtp22d240a9kqq4zxhzbmqou",
+        "name": "BRUNELLO CUCINELLI USA INC"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp22cyf0a7oqq4zdela752d",
+        "name": "BRUNELLO CUCINELLI (ENGLAND) LIMITED"
+      },
+      "b": {
+        "id": "cmtrse7pp09mvpg5mq0g8ahf1",
+        "name": "BRUNELLO CUCINELLI (ENGLAND)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp22d7q0accqq4zoqpwoenk",
+        "name": "BRUNELLO CUCINELLI (MACAU) FASHION CO., LTD"
+      },
+      "b": {
+        "id": "cmtrse83509ucpg5m4nbn95x7",
+        "name": "BRUNELLO CUCINELLI (MACAU) FASHION"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h4z0fhvqq4zb90y3pdw",
+        "name": "New Balance Europe B.V."
+      },
+      "b": {
+        "id": "cmtp25h6e0fifqq4zvel2ucfd",
+        "name": "New Balance France Retail SARL"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h4z0fhvqq4zb90y3pdw",
+        "name": "New Balance Europe B.V."
+      },
+      "b": {
+        "id": "cmtp25h840fj3qq4zr9xr3rju",
+        "name": "New Balance Germany GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h4z0fhvqq4zb90y3pdw",
+        "name": "New Balance Europe B.V."
+      },
+      "b": {
+        "id": "cmtp25h8t0fjfqq4zdp8t3jcb",
+        "name": "New Balance Netherlands BV"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h4z0fhvqq4zb90y3pdw",
+        "name": "New Balance Europe B.V."
+      },
+      "b": {
+        "id": "cmtp25hct0fl7qq4zwb6y1cby",
+        "name": "New Balance"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h4z0fhvqq4zb90y3pdw",
+        "name": "New Balance Europe B.V."
+      },
+      "b": {
+        "id": "cmtp25hd00flbqq4z6jbwcnuv",
+        "name": "New Balance Italy S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h4z0fhvqq4zb90y3pdw",
+        "name": "New Balance Europe B.V."
+      },
+      "b": {
+        "id": "cmtp25hrk0fpnqq4zz2kbcb8p",
+        "name": "New Balance Canada, Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h6e0fifqq4zvel2ucfd",
+        "name": "New Balance France Retail SARL"
+      },
+      "b": {
+        "id": "cmtp25h840fj3qq4zr9xr3rju",
+        "name": "New Balance Germany GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h6e0fifqq4zvel2ucfd",
+        "name": "New Balance France Retail SARL"
+      },
+      "b": {
+        "id": "cmtp25h8t0fjfqq4zdp8t3jcb",
+        "name": "New Balance Netherlands BV"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h6e0fifqq4zvel2ucfd",
+        "name": "New Balance France Retail SARL"
+      },
+      "b": {
+        "id": "cmtp25hct0fl7qq4zwb6y1cby",
+        "name": "New Balance"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h6e0fifqq4zvel2ucfd",
+        "name": "New Balance France Retail SARL"
+      },
+      "b": {
+        "id": "cmtp25hd00flbqq4z6jbwcnuv",
+        "name": "New Balance Italy S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h6e0fifqq4zvel2ucfd",
+        "name": "New Balance France Retail SARL"
+      },
+      "b": {
+        "id": "cmtp25hrk0fpnqq4zz2kbcb8p",
+        "name": "New Balance Canada, Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h840fj3qq4zr9xr3rju",
+        "name": "New Balance Germany GmbH"
+      },
+      "b": {
+        "id": "cmtp25h8t0fjfqq4zdp8t3jcb",
+        "name": "New Balance Netherlands BV"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h840fj3qq4zr9xr3rju",
+        "name": "New Balance Germany GmbH"
+      },
+      "b": {
+        "id": "cmtp25hct0fl7qq4zwb6y1cby",
+        "name": "New Balance"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h840fj3qq4zr9xr3rju",
+        "name": "New Balance Germany GmbH"
+      },
+      "b": {
+        "id": "cmtp25hd00flbqq4z6jbwcnuv",
+        "name": "New Balance Italy S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h840fj3qq4zr9xr3rju",
+        "name": "New Balance Germany GmbH"
+      },
+      "b": {
+        "id": "cmtp25hrk0fpnqq4zz2kbcb8p",
+        "name": "New Balance Canada, Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h8t0fjfqq4zdp8t3jcb",
+        "name": "New Balance Netherlands BV"
+      },
+      "b": {
+        "id": "cmtp25hct0fl7qq4zwb6y1cby",
+        "name": "New Balance"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h8t0fjfqq4zdp8t3jcb",
+        "name": "New Balance Netherlands BV"
+      },
+      "b": {
+        "id": "cmtp25hd00flbqq4z6jbwcnuv",
+        "name": "New Balance Italy S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h8t0fjfqq4zdp8t3jcb",
+        "name": "New Balance Netherlands BV"
+      },
+      "b": {
+        "id": "cmtp25hrk0fpnqq4zz2kbcb8p",
+        "name": "New Balance Canada, Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25hct0fl7qq4zwb6y1cby",
+        "name": "New Balance"
+      },
+      "b": {
+        "id": "cmtp25hd00flbqq4z6jbwcnuv",
+        "name": "New Balance Italy S.R.L."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25hct0fl7qq4zwb6y1cby",
+        "name": "New Balance"
+      },
+      "b": {
+        "id": "cmtp25hrk0fpnqq4zz2kbcb8p",
+        "name": "New Balance Canada, Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25hd00flbqq4z6jbwcnuv",
+        "name": "New Balance Italy S.R.L."
+      },
+      "b": {
+        "id": "cmtp25hrk0fpnqq4zz2kbcb8p",
+        "name": "New Balance Canada, Inc."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25h5x0fi7qq4zljjhxy3x",
+        "name": "New Balance Athletic Shoes (UK) Limited"
+      },
+      "b": {
+        "id": "cmtrsff1b0gpopg5mlo8o4ita",
+        "name": "New Balance Athletic Shoes (UK)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25hh70fnbqq4z52gi7f3s",
+        "name": "Broporma Retail Portugal LDA"
+      },
+      "b": {
+        "id": "cmtrsffg50guzpg5myc3qlde9",
+        "name": "Broporma Retail Portugal"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp25hre0fpjqq4zcdhbi10z",
+        "name": "New Balance Athletics, Inc."
+      },
+      "b": {
+        "id": "cmtrsfflo0gwtpg5mwdtxf1g6",
+        "name": "New Balance Athletics"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp2arf30lucqq4z3wnlay93",
+        "name": "The RealReal, Inc."
+      },
+      "b": {
+        "id": "cmtp2asf60m9cqq4zxqq7fbli",
+        "name": "The RealReal"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp2drv20r5tqq4zke0vhf79",
+        "name": "MECCA Brands Pty Ltd"
+      },
+      "b": {
+        "id": "cmtpu4rhw0tagl35mz8iyzlg0",
+        "name": "MECCA Brands"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp2ds300r9hqq4zn8py7bll",
+        "name": "MECCA Brands NZ Pty Ltd"
+      },
+      "b": {
+        "id": "cmtpu4rro0td7l35mjtu7y2pp",
+        "name": "MECCA Brands NZ"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp2dsp50rjpqq4zsv7dmc4t",
+        "name": "MECCA"
+      },
+      "b": {
+        "id": "cmtpu4rhw0tagl35mz8iyzlg0",
+        "name": "MECCA Brands"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp2dsp50rjpqq4zsv7dmc4t",
+        "name": "MECCA"
+      },
+      "b": {
+        "id": "cmtpu4rro0td7l35mjtu7y2pp",
+        "name": "MECCA Brands NZ"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpu4rhw0tagl35mz8iyzlg0",
+        "name": "MECCA Brands"
+      },
+      "b": {
+        "id": "cmtpu4rro0td7l35mjtu7y2pp",
+        "name": "MECCA Brands NZ"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sjxu1daoqq4z5wh9yc61",
+        "name": "Swarovski Canada Limited"
+      },
+      "b": {
+        "id": "cmtp3sk0w1dbwqq4z4lszwmdi",
+        "name": "Swarovski France S.A."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sjxu1daoqq4z5wh9yc61",
+        "name": "Swarovski Canada Limited"
+      },
+      "b": {
+        "id": "cmtp3sk3z1dd4qq4ztmg1pznk",
+        "name": "Swarovski UK Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sjxu1daoqq4z5wh9yc61",
+        "name": "Swarovski Canada Limited"
+      },
+      "b": {
+        "id": "cmtp3skdu1dhkqq4zs6p5f1lp",
+        "name": "Swarovski Australia Pty."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sjxu1daoqq4z5wh9yc61",
+        "name": "Swarovski Canada Limited"
+      },
+      "b": {
+        "id": "cmtp3ske21dhoqq4zhj9bpepd",
+        "name": "Swarovski Netherlands B.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sjxu1daoqq4z5wh9yc61",
+        "name": "Swarovski Canada Limited"
+      },
+      "b": {
+        "id": "cmtp3skey1di4qq4zh0w3bbt6",
+        "name": "Swarovski North America"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sjxu1daoqq4z5wh9yc61",
+        "name": "Swarovski Canada Limited"
+      },
+      "b": {
+        "id": "cmtp3skie1djoqq4z8560r3vp",
+        "name": "Swarovski"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sjxu1daoqq4z5wh9yc61",
+        "name": "Swarovski Canada Limited"
+      },
+      "b": {
+        "id": "cmtp3skpn1dmkqq4zuua1szg8",
+        "name": "Swarovski Belgium N.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sjxu1daoqq4z5wh9yc61",
+        "name": "Swarovski Canada Limited"
+      },
+      "b": {
+        "id": "cmtp3sl311dskqq4zt5be6uy2",
+        "name": "Swarovski International Holding AG"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sjxu1daoqq4z5wh9yc61",
+        "name": "Swarovski Canada Limited"
+      },
+      "b": {
+        "id": "cmtp3smek1efkqq4zscquo3uu",
+        "name": "Swarovski Hong Kong Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk0w1dbwqq4z4lszwmdi",
+        "name": "Swarovski France S.A."
+      },
+      "b": {
+        "id": "cmtp3sk3z1dd4qq4ztmg1pznk",
+        "name": "Swarovski UK Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk0w1dbwqq4z4lszwmdi",
+        "name": "Swarovski France S.A."
+      },
+      "b": {
+        "id": "cmtp3skdu1dhkqq4zs6p5f1lp",
+        "name": "Swarovski Australia Pty."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk0w1dbwqq4z4lszwmdi",
+        "name": "Swarovski France S.A."
+      },
+      "b": {
+        "id": "cmtp3ske21dhoqq4zhj9bpepd",
+        "name": "Swarovski Netherlands B.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk0w1dbwqq4z4lszwmdi",
+        "name": "Swarovski France S.A."
+      },
+      "b": {
+        "id": "cmtp3skey1di4qq4zh0w3bbt6",
+        "name": "Swarovski North America"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk0w1dbwqq4z4lszwmdi",
+        "name": "Swarovski France S.A."
+      },
+      "b": {
+        "id": "cmtp3skie1djoqq4z8560r3vp",
+        "name": "Swarovski"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk0w1dbwqq4z4lszwmdi",
+        "name": "Swarovski France S.A."
+      },
+      "b": {
+        "id": "cmtp3skpn1dmkqq4zuua1szg8",
+        "name": "Swarovski Belgium N.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk0w1dbwqq4z4lszwmdi",
+        "name": "Swarovski France S.A."
+      },
+      "b": {
+        "id": "cmtp3sl311dskqq4zt5be6uy2",
+        "name": "Swarovski International Holding AG"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk0w1dbwqq4z4lszwmdi",
+        "name": "Swarovski France S.A."
+      },
+      "b": {
+        "id": "cmtp3smek1efkqq4zscquo3uu",
+        "name": "Swarovski Hong Kong Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk3z1dd4qq4ztmg1pznk",
+        "name": "Swarovski UK Ltd."
+      },
+      "b": {
+        "id": "cmtp3skdu1dhkqq4zs6p5f1lp",
+        "name": "Swarovski Australia Pty."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk3z1dd4qq4ztmg1pznk",
+        "name": "Swarovski UK Ltd."
+      },
+      "b": {
+        "id": "cmtp3ske21dhoqq4zhj9bpepd",
+        "name": "Swarovski Netherlands B.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk3z1dd4qq4ztmg1pznk",
+        "name": "Swarovski UK Ltd."
+      },
+      "b": {
+        "id": "cmtp3skey1di4qq4zh0w3bbt6",
+        "name": "Swarovski North America"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk3z1dd4qq4ztmg1pznk",
+        "name": "Swarovski UK Ltd."
+      },
+      "b": {
+        "id": "cmtp3skie1djoqq4z8560r3vp",
+        "name": "Swarovski"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk3z1dd4qq4ztmg1pznk",
+        "name": "Swarovski UK Ltd."
+      },
+      "b": {
+        "id": "cmtp3skpn1dmkqq4zuua1szg8",
+        "name": "Swarovski Belgium N.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk3z1dd4qq4ztmg1pznk",
+        "name": "Swarovski UK Ltd."
+      },
+      "b": {
+        "id": "cmtp3sl311dskqq4zt5be6uy2",
+        "name": "Swarovski International Holding AG"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk3z1dd4qq4ztmg1pznk",
+        "name": "Swarovski UK Ltd."
+      },
+      "b": {
+        "id": "cmtp3smek1efkqq4zscquo3uu",
+        "name": "Swarovski Hong Kong Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skdu1dhkqq4zs6p5f1lp",
+        "name": "Swarovski Australia Pty."
+      },
+      "b": {
+        "id": "cmtp3ske21dhoqq4zhj9bpepd",
+        "name": "Swarovski Netherlands B.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skdu1dhkqq4zs6p5f1lp",
+        "name": "Swarovski Australia Pty."
+      },
+      "b": {
+        "id": "cmtp3skey1di4qq4zh0w3bbt6",
+        "name": "Swarovski North America"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skdu1dhkqq4zs6p5f1lp",
+        "name": "Swarovski Australia Pty."
+      },
+      "b": {
+        "id": "cmtp3skie1djoqq4z8560r3vp",
+        "name": "Swarovski"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skdu1dhkqq4zs6p5f1lp",
+        "name": "Swarovski Australia Pty."
+      },
+      "b": {
+        "id": "cmtp3skpn1dmkqq4zuua1szg8",
+        "name": "Swarovski Belgium N.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skdu1dhkqq4zs6p5f1lp",
+        "name": "Swarovski Australia Pty."
+      },
+      "b": {
+        "id": "cmtp3sl311dskqq4zt5be6uy2",
+        "name": "Swarovski International Holding AG"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skdu1dhkqq4zs6p5f1lp",
+        "name": "Swarovski Australia Pty."
+      },
+      "b": {
+        "id": "cmtp3smek1efkqq4zscquo3uu",
+        "name": "Swarovski Hong Kong Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3ske21dhoqq4zhj9bpepd",
+        "name": "Swarovski Netherlands B.V."
+      },
+      "b": {
+        "id": "cmtp3skey1di4qq4zh0w3bbt6",
+        "name": "Swarovski North America"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3ske21dhoqq4zhj9bpepd",
+        "name": "Swarovski Netherlands B.V."
+      },
+      "b": {
+        "id": "cmtp3skie1djoqq4z8560r3vp",
+        "name": "Swarovski"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3ske21dhoqq4zhj9bpepd",
+        "name": "Swarovski Netherlands B.V."
+      },
+      "b": {
+        "id": "cmtp3skpn1dmkqq4zuua1szg8",
+        "name": "Swarovski Belgium N.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3ske21dhoqq4zhj9bpepd",
+        "name": "Swarovski Netherlands B.V."
+      },
+      "b": {
+        "id": "cmtp3sl311dskqq4zt5be6uy2",
+        "name": "Swarovski International Holding AG"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3ske21dhoqq4zhj9bpepd",
+        "name": "Swarovski Netherlands B.V."
+      },
+      "b": {
+        "id": "cmtp3smek1efkqq4zscquo3uu",
+        "name": "Swarovski Hong Kong Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skey1di4qq4zh0w3bbt6",
+        "name": "Swarovski North America"
+      },
+      "b": {
+        "id": "cmtp3skie1djoqq4z8560r3vp",
+        "name": "Swarovski"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skey1di4qq4zh0w3bbt6",
+        "name": "Swarovski North America"
+      },
+      "b": {
+        "id": "cmtp3skpn1dmkqq4zuua1szg8",
+        "name": "Swarovski Belgium N.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skey1di4qq4zh0w3bbt6",
+        "name": "Swarovski North America"
+      },
+      "b": {
+        "id": "cmtp3sl311dskqq4zt5be6uy2",
+        "name": "Swarovski International Holding AG"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skey1di4qq4zh0w3bbt6",
+        "name": "Swarovski North America"
+      },
+      "b": {
+        "id": "cmtp3smek1efkqq4zscquo3uu",
+        "name": "Swarovski Hong Kong Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skie1djoqq4z8560r3vp",
+        "name": "Swarovski"
+      },
+      "b": {
+        "id": "cmtp3skpn1dmkqq4zuua1szg8",
+        "name": "Swarovski Belgium N.V."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skie1djoqq4z8560r3vp",
+        "name": "Swarovski"
+      },
+      "b": {
+        "id": "cmtp3sl311dskqq4zt5be6uy2",
+        "name": "Swarovski International Holding AG"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skie1djoqq4z8560r3vp",
+        "name": "Swarovski"
+      },
+      "b": {
+        "id": "cmtp3smek1efkqq4zscquo3uu",
+        "name": "Swarovski Hong Kong Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skpn1dmkqq4zuua1szg8",
+        "name": "Swarovski Belgium N.V."
+      },
+      "b": {
+        "id": "cmtp3sl311dskqq4zt5be6uy2",
+        "name": "Swarovski International Holding AG"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skpn1dmkqq4zuua1szg8",
+        "name": "Swarovski Belgium N.V."
+      },
+      "b": {
+        "id": "cmtp3smek1efkqq4zscquo3uu",
+        "name": "Swarovski Hong Kong Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sl311dskqq4zt5be6uy2",
+        "name": "Swarovski International Holding AG"
+      },
+      "b": {
+        "id": "cmtp3smek1efkqq4zscquo3uu",
+        "name": "Swarovski Hong Kong Ltd."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sjyl1dawqq4zb37y74of",
+        "name": "Swarovski Ib\u00e9rica S.A."
+      },
+      "b": {
+        "id": "cmtrsn7qu1en4pg5mzwh46ew2",
+        "name": "Swarovski Ib\u00e9rica"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk2n1dcgqq4z3zhmte6o",
+        "name": "Swarovski (Schweiz) AG"
+      },
+      "b": {
+        "id": "cmtrsn81y1epmpg5m6l4qx7qt",
+        "name": "Swarovski (Schweiz)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sk571ddkqq4zh1sry6bq",
+        "name": "Swarovski Ireland Limited"
+      },
+      "b": {
+        "id": "cmtrsn85u1eqipg5m8g9bbiq0",
+        "name": "Swarovski Ireland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skim1djsqq4zox4c98rl",
+        "name": "Swarovski (Deutschland) GmbH"
+      },
+      "b": {
+        "id": "cmtrsn8my1evopg5mm2r087ec",
+        "name": "Swarovski (Deutschland)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skre1dncqq4z07govslp",
+        "name": "Swarovski GBS Asia"
+      },
+      "b": {
+        "id": "cmtp3slpu1e30qq4zgzgtjqcj",
+        "name": "Swarovski GBS Americas"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skre1dncqq4z07govslp",
+        "name": "Swarovski GBS Asia"
+      },
+      "b": {
+        "id": "cmtrsn9061eyopg5msxj647wn",
+        "name": "Swarovski GBS"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3slpu1e30qq4zgzgtjqcj",
+        "name": "Swarovski GBS Americas"
+      },
+      "b": {
+        "id": "cmtrsn9061eyopg5msxj647wn",
+        "name": "Swarovski GBS"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sktw1dogqq4zttcza7uv",
+        "name": "Swarovski Korea Ltd."
+      },
+      "b": {
+        "id": "cmtrsn93g1eznpg5mxw2pujs2",
+        "name": "Swarovski Korea"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3skzn1dr4qq4zzu4b0t1f",
+        "name": "D. Swarovski Tourism Services GmbH"
+      },
+      "b": {
+        "id": "cmtrsn9bm1f1zpg5m8uoimdxi",
+        "name": "D. Swarovski Tourism"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3smcj1eekqq4z0uuyzs5i",
+        "name": "Swarovski Manufacturing (Thailand) Co., Ltd."
+      },
+      "b": {
+        "id": "cmtrsnbb61fmopg5mal3jz0do",
+        "name": "Swarovski Manufacturing (Thailand)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3smk01ei8qq4zi6nnyv22",
+        "name": "Swarovski Thailand Ltd."
+      },
+      "b": {
+        "id": "cmtrsnbki1fpspg5mjtzc8fbv",
+        "name": "Swarovski Thailand"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3smnt1ejsqq4zdvtai0x6",
+        "name": "Swarovski Hellas S.A."
+      },
+      "b": {
+        "id": "cmtrsnboj1fr1pg5mdo2ffjwa",
+        "name": "Swarovski Hellas"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3sn2t1eq8qq4zyxivpo7v",
+        "name": "Swarovski Mobility GmbH"
+      },
+      "b": {
+        "id": "cmtrsnc611fwspg5mlrcpzdxd",
+        "name": "Swarovski Mobility"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3x7uq1hanqq4zt2cwpjve",
+        "name": "Aritzia LP"
+      },
+      "b": {
+        "id": "cmtp3x9qd1i2rqq4zrhu5qavu",
+        "name": "Aritzia"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT",
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp3x7v21harqq4z4w0ut49g",
+        "name": "United States of Aritzia Inc."
+      },
+      "b": {
+        "id": "cmtp3x9qd1i2rqq4zrhu5qavu",
+        "name": "Aritzia"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp40a0d1njbqq4zox97m6qz",
+        "name": "SAKS & CO LLC"
+      },
+      "b": {
+        "id": "cmtpuc6031nlel35mf3c1vtkn",
+        "name": "SAKS"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp40a0d1njbqq4zox97m6qz",
+        "name": "SAKS & CO LLC"
+      },
+      "b": {
+        "id": "cmtp40fms1pr7qq4zp29qlmwk",
+        "name": "Saks Fifth Avenue"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp40a9f1nnvqq4zl66v3skj",
+        "name": "SAKS COM LLC"
+      },
+      "b": {
+        "id": "cmtpuc6a21notl35m4yqt2lbd",
+        "name": "SAKS COM"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp40c1n1ocrqq4zqhsfh0ss",
+        "name": "HBC INDIA PVT LTD"
+      },
+      "b": {
+        "id": "cmtpuc7sl1o7hl35m1bmg9r85",
+        "name": "HBC INDIA PVT"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6ow3y2v8hqq4z1robd01e",
+        "name": "Coach Stores Limited"
+      },
+      "b": {
+        "id": "cmtp6owj02vetqq4z1pvty6mn",
+        "name": "Coach Stores Germany GmbH"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6ow3y2v8hqq4z1robd01e",
+        "name": "Coach Stores Limited"
+      },
+      "b": {
+        "id": "cmtp6owv12vk5qq4zttxl2gmk",
+        "name": "Coach Stores France SARL"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6ow3y2v8hqq4z1robd01e",
+        "name": "Coach Stores Limited"
+      },
+      "b": {
+        "id": "cmtpuwrrk3kpdl35mc7vg5ben",
+        "name": "Coach"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6owj02vetqq4z1pvty6mn",
+        "name": "Coach Stores Germany GmbH"
+      },
+      "b": {
+        "id": "cmtp6owv12vk5qq4zttxl2gmk",
+        "name": "Coach Stores France SARL"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6owj02vetqq4z1pvty6mn",
+        "name": "Coach Stores Germany GmbH"
+      },
+      "b": {
+        "id": "cmtpuwrrk3kpdl35mc7vg5ben",
+        "name": "Coach"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6owv12vk5qq4zttxl2gmk",
+        "name": "Coach Stores France SARL"
+      },
+      "b": {
+        "id": "cmtpuwrrk3kpdl35mc7vg5ben",
+        "name": "Coach"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6ow4s2v8xqq4zzbsp0n0s",
+        "name": "Coach Korea Limited"
+      },
+      "b": {
+        "id": "cmtrtc42p3muspg5me6xho7w7",
+        "name": "Coach Korea"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6ow5v2v9hqq4zvwrjcbuw",
+        "name": "Coach Stores Puerto Rico, Inc."
+      },
+      "b": {
+        "id": "cmtrtc4p13n1npg5mydxlcbjg",
+        "name": "Coach Stores Puerto Rico"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6owfa2vdhqq4z8vgmi5ry",
+        "name": "Coach Stores Ireland Limited"
+      },
+      "b": {
+        "id": "cmtrtc4bz3my9pg5mapcjg5qx",
+        "name": "Coach Stores Ireland"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6owjt2vf5qq4zbtyyz3wf",
+        "name": "Tapestry Japan, LLC"
+      },
+      "b": {
+        "id": "cmtp6p1s52xnlqq4zm1zqljup",
+        "name": "Tapestry"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6owy12vlpqq4z9pibkork",
+        "name": "Entra\u00eeneur Netherlands B.V."
+      },
+      "b": {
+        "id": "cmtp6owzb2vmdqq4zqm30e2fh",
+        "name": "Entra\u00eeneur Hong Kong Limited"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6owzw2vmhqq4zese328w5",
+        "name": "Coach Shanghai Limited"
+      },
+      "b": {
+        "id": "cmtrtc42d3munpg5m0viy8ppz",
+        "name": "Coach Shanghai"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6ox042vmlqq4zgxd783di",
+        "name": "Coach Stores Austria GmbH"
+      },
+      "b": {
+        "id": "cmtrtc5n63nb3pg5m9ld4fz8i",
+        "name": "Coach Stores Austria"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6ox0y2vn1qq4zlamx8wkr",
+        "name": "Coach Consulting Dongguan Co. Ltd"
+      },
+      "b": {
+        "id": "cmtrtc5oj3nbhpg5mdg9l4gze",
+        "name": "Coach Consulting Dongguan"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6oz632wl9qq4zsz0dggzv",
+        "name": "Coach Management (Shanghai) Co., Ltd."
+      },
+      "b": {
+        "id": "cmtrtc88u3o02pg5mr37q4bxh",
+        "name": "Coach Management (Shanghai)"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6oz6j2wlhqq4ztr2fc5wy",
+        "name": "Coach Operations Singapore Pte. Ltd."
+      },
+      "b": {
+        "id": "cmtrtc89b3o06pg5m2v23wlhu",
+        "name": "Coach Operations Singapore Pte."
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6p1ds2xhdqq4zma61q3i2",
+        "name": "Coach Vietnam Company Limited"
+      },
+      "b": {
+        "id": "cmtrtcapf3oo6pg5mf3dj74b7",
+        "name": "Coach Vietnam Company"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp6p68t2zb9qq4z8jn0lycn",
+        "name": "Coach Leatherware India Private Limited"
+      },
+      "b": {
+        "id": "cmtrtcg0g3q1mpg5ma1thlkre",
+        "name": "Coach Leatherware India Private"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp8689s3rhiqq4zkjut95yo",
+        "name": "MODELOR COUTURE"
+      },
+      "b": {
+        "id": "cmtp869213rpfqq4zz8l0wssq",
+        "name": "MODELOR SERVICE"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp8689s3rhiqq4zkjut95yo",
+        "name": "MODELOR COUTURE"
+      },
+      "b": {
+        "id": "cmtpw96v64k7el35m53n2f1ce",
+        "name": "MODELOR"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtp869213rpfqq4zz8l0wssq",
+        "name": "MODELOR SERVICE"
+      },
+      "b": {
+        "id": "cmtpw96v64k7el35m53n2f1ce",
+        "name": "MODELOR"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpj2g8y1460pf5lltllly0i",
+        "name": "Swatch"
+      },
+      "b": {
+        "id": "cmtpj2gbr1473pf5l1wfwy9ur",
+        "name": "Swatch Group"
+      },
+      "reasons": [
+        "SUFFIX_CANDIDATE"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpjpi0a2fafpf5ln13si0cm",
+        "name": "Nordstrom Inc"
+      },
+      "b": {
+        "id": "cmtpjpt4j2hoypf5lusxkuh9m",
+        "name": "Nordstrom"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpkdkdi474apf5l272m6owb",
+        "name": "Ulta Beauty, Inc."
+      },
+      "b": {
+        "id": "cmtpuyimv3pbul35m36fwuuzo",
+        "name": "Ulta Beauty"
+      },
+      "reasons": [
+        "LEGACY_NORMALIZER_COLLISION",
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpu5x5w0ye8l35mk5a5n19w",
+        "name": "Corporate J. Crew Group"
+      },
+      "b": {
+        "id": "cmtpu5xu50ylbl35mf7yal6t3",
+        "name": "Lynch DC / Cust Care J.Crew"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    },
+    {
+      "a": {
+        "id": "cmtpuc6031nlel35mf3c1vtkn",
+        "name": "SAKS"
+      },
+      "b": {
+        "id": "cmtpuc6a21notl35m4yqt2lbd",
+        "name": "SAKS COM"
+      },
+      "reasons": [
+        "SHARED_DOMAIN_NOT_SUFFICIENT"
+      ],
+      "status": "REVIEW_REQUIRED_NOT_A_MERGE"
+    }
+  ],
+  "candidatePairsWithBothActive": 49
+}

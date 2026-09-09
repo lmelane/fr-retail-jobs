@@ -67,7 +67,12 @@
     }
   ],
   "version": 1,
-  "createdAt": "2026-09-09T06:21:39.103Z",
+  "sourceHashes": {
+    "fashionjobs": "8dc3b3a1b8588c67adf6d70f16e928af6ffce4d2663f89bd1887414280cccc3a",
+    "promod": "110c15f1269afb8e3aa9d31f11ed143b201b0beb2db913debeb52f4252f4f923",
+    "wttj-sector": "0038e97647b4f56d6fb2d763ce257543961ccbbd000c4e2d6c1c173171139583"
+  },
+  "createdAt": "2026-09-09T06:59:48.106Z",
   "companyIds": [
     "cmtk1x1ns0072nv2bytyhwuta",
     "cmtk1xdjg0176nv2b70ayaadr",
@@ -79,7 +84,7 @@
     "promod",
     "wttj-sector"
   ],
-  "beforeHash": "0727f46f28318af27f50011154d06cac13c22d44cdfdc385618a8068126c3443",
+  "beforeHash": "903c3a08570df9ddcbac89d27f7df67cd1ce8087dfa1b06ab2ed32299ad25fcc",
   "jobCount": 62,
   "activeJobCount": 50,
   "sourceCount": 67,
@@ -95,5 +100,5 @@
       "explanation": "Official careers link points to WTTJ /companies/aubade, the identical external organization rx9Ax61 under both company IDs."
     }
   ],
-  "planHash": "9744eeb5742905a9e392fc8754eb50387bc0bb44ce6189dfa1022b441db67ad8"
+  "planHash": "005b837cad944e38da22da753d51b996486856542183d7d0f47d8cf9a37838e9"
 }

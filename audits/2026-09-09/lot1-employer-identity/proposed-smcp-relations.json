@@ -2,7 +2,7 @@
   "batchId": "lot1-smcp-parent-relations-20260909-v1",
   "statement": "Official SMCP careers site explicitly names Sandro, Maje, Claudie Pierlot and Fursac. Link the four existing Maison IDs to the existing SMCP GROUP ID; keep all five identities distinct.",
   "reviewedBy": "Codex / requested Lot 1 evidence review",
-  "reviewedAt": "2026-09-09T06:29:41.012Z",
+  "reviewedAt": "2026-09-09T06:59:48.904Z",
   "merges": [],
   "companies": [
     {
@@ -45,7 +45,10 @@
     }
   ],
   "version": 1,
-  "createdAt": "2026-09-09T06:29:41.166Z",
+  "sourceHashes": {
+    "sandro": "22da98c16cb934c661f1f54b3b7687f16085a623106b1bbacf02deac600dde3b"
+  },
+  "createdAt": "2026-09-09T06:59:49.069Z",
   "companyIds": [
     "cmtk29nb80m1dnv2bg5xl385h",
     "cmtkf06ej0lqap22bicqm90nc",
@@ -56,7 +59,7 @@
   "sourceKeys": [
     "sandro"
   ],
-  "beforeHash": "1bf4122973330a4e79cdb355da951243af471b955f6adfd52707605f636af4cd",
+  "beforeHash": "5933aaa99ff10e4691c06a3d0a8bd6aee6dfe3dec052a615c90215cbb2ed1908",
   "jobCount": 583,
   "activeJobCount": 568,
   "sourceCount": 583,
@@ -67,5 +70,5 @@
       "explanation": "Official group site names all four Maisons separately and presents their recruitment offers."
     }
   ],
-  "planHash": "7e278253ba51118637ae4995f52661b8b81d80e616f312dbf563a0ae4eb2cdee"
+  "planHash": "d6ac57325b1878f18a26b3ccc3fc718e93ecd87984232fea2af9695a856c2fa4"
 }

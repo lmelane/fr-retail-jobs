@@ -1,0 +1,161 @@
+{
+  "environment": "fresh restored production copy",
+  "commit": "fe2453dfcfb0317e868f079601724abe76c53421",
+  "planHash": "a6ced427de896738e90bb39b3a34db05f8fe55b57b0cc4d19bda71f70bd4b216",
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "repeat": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "aliases": [
+    {
+      "id": "cmtt3jq7t00023nx9q656q04n",
+      "sourceKey": "adopt-parfums",
+      "displayName": "Adopt",
+      "companyId": "cmtt3jq6q00003nx9kegbxkdh",
+      "reviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "sourceHash": "a844dbba6ea9ec5c14ab2eb4cdb38bcefe643674146ca0f0fafe625875781166"
+    },
+    {
+      "id": "cmtt3jq8s00043nx9rx9xdfpi",
+      "sourceKey": "adopt-parfums",
+      "displayName": "Adopt Parfums",
+      "companyId": "cmtt3jq6q00003nx9kegbxkdh",
+      "reviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "sourceHash": "a844dbba6ea9ec5c14ab2eb4cdb38bcefe643674146ca0f0fafe625875781166"
+    },
+    {
+      "id": "cmtt3jqmq000c3nx9o2zv25tb",
+      "sourceKey": "riu-paris",
+      "displayName": "RIU Paris",
+      "companyId": "cmtt3jqm9000a3nx9yknve29r",
+      "reviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "sourceHash": "eeb61c609d41cb5c1cc97b9e9fba1ba2c4252384bea06a0c71479a2686b25baf"
+    },
+    {
+      "id": "cmtt3jqrw000k3nx9namrep8q",
+      "sourceKey": "toscane",
+      "displayName": "Toscane",
+      "companyId": "cmtt3jqra000i3nx9khntpmay",
+      "reviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "sourceHash": "e2cb581e541852c539c0aaee43a9eccce2d2a5476aa55120d33110bfc228cb2f"
+    },
+    {
+      "id": "cmtt64pva00013nkjelglr892",
+      "sourceKey": "intersport-france",
+      "displayName": "Intersport",
+      "companyId": "cmtlyfvaf016cqf5k6yvon72v",
+      "reviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "sourceHash": "c021e140a3d95287e1fd67f1d63f0c6d9144016cfc4cb7ba17391351947e029a"
+    },
+    {
+      "id": "cmtt64q4q00093nkjobvhpzut",
+      "sourceKey": "blackstore",
+      "displayName": "Blackstore",
+      "companyId": "cmtt64q3n00073nkj2m32mmvb",
+      "reviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "sourceHash": "8244a14dfdb6a7840ea959d43d911b6019c3c5954f5a6f42ab21f1c527542527"
+    },
+    {
+      "id": "cmttr0h07002q3nwzqbgg3qwd",
+      "sourceKey": "promod",
+      "displayName": "Promod",
+      "companyId": "cmtk1x1ns0072nv2bytyhwuta",
+      "reviewId": "lot1-promod-aubade-20260909-v1",
+      "sourceHash": "110c15f1269afb8e3aa9d31f11ed143b201b0beb2db913debeb52f4252f4f923"
+    },
+    {
+      "id": "cmttr0h09002s3nwzzgylx9ux",
+      "sourceKey": "promod",
+      "displayName": "PROMOD - MAGASIN",
+      "companyId": "cmtk1x1ns0072nv2bytyhwuta",
+      "reviewId": "lot1-promod-aubade-20260909-v1",
+      "sourceHash": "110c15f1269afb8e3aa9d31f11ed143b201b0beb2db913debeb52f4252f4f923"
+    },
+    {
+      "id": "cmttr0h0a002u3nwz7ne9cdla",
+      "sourceKey": "fashionjobs",
+      "displayName": "Promod",
+      "companyId": "cmtk1x1ns0072nv2bytyhwuta",
+      "reviewId": "lot1-promod-aubade-20260909-v1",
+      "sourceHash": "8dc3b3a1b8588c67adf6d70f16e928af6ffce4d2663f89bd1887414280cccc3a"
+    },
+    {
+      "id": "cmttr0h0b002w3nwzdqm0vgd5",
+      "sourceKey": "fashionjobs",
+      "displayName": "PROMOD - MAGASIN",
+      "companyId": "cmtk1x1ns0072nv2bytyhwuta",
+      "reviewId": "lot1-promod-aubade-20260909-v1",
+      "sourceHash": "8dc3b3a1b8588c67adf6d70f16e928af6ffce4d2663f89bd1887414280cccc3a"
+    },
+    {
+      "id": "cmttr0h0c002y3nwzgk0448zo",
+      "sourceKey": "wttj-sector",
+      "displayName": "Aubade",
+      "companyId": "cmtk1xdjg0176nv2b70ayaadr",
+      "reviewId": "lot1-promod-aubade-20260909-v1",
+      "sourceHash": "0038e97647b4f56d6fb2d763ce257543961ccbbd000c4e2d6c1c173171139583"
+    },
+    {
+      "id": "cmttr0h0d00303nwzrc771gkm",
+      "sourceKey": "wttj-sector",
+      "displayName": "Aubade Paris",
+      "companyId": "cmtk1xdjg0176nv2b70ayaadr",
+      "reviewId": "lot1-promod-aubade-20260909-v1",
+      "sourceHash": "0038e97647b4f56d6fb2d763ce257543961ccbbd000c4e2d6c1c173171139583"
+    },
+    {
+      "id": "cmttr0h0e00323nwz2ffwg17h",
+      "sourceKey": "fashionjobs",
+      "displayName": "Aubade",
+      "companyId": "cmtk1xdjg0176nv2b70ayaadr",
+      "reviewId": "lot1-promod-aubade-20260909-v1",
+      "sourceHash": "8dc3b3a1b8588c67adf6d70f16e928af6ffce4d2663f89bd1887414280cccc3a"
+    },
+    {
+      "id": "cmttr0h0f00343nwzp4kw62ox",
+      "sourceKey": "fashionjobs",
+      "displayName": "Aubade Paris",
+      "companyId": "cmtk1xdjg0176nv2b70ayaadr",
+      "reviewId": "lot1-promod-aubade-20260909-v1",
+      "sourceHash": "8dc3b3a1b8588c67adf6d70f16e928af6ffce4d2663f89bd1887414280cccc3a"
+    },
+    {
+      "id": "cmttr0hjv00053nx21dbt10o8",
+      "sourceKey": "sandro",
+      "displayName": "Sandro",
+      "companyId": "cmtk29nb80m1dnv2bg5xl385h",
+      "reviewId": "lot1-smcp-parent-relations-20260909-v1",
+      "sourceHash": "22da98c16cb934c661f1f54b3b7687f16085a623106b1bbacf02deac600dde3b"
+    },
+    {
+      "id": "cmttr0hjw00073nx2fy9cczxz",
+      "sourceKey": "sandro",
+      "displayName": "Maje",
+      "companyId": "cmtkf06ej0lqap22bicqm90nc",
+      "reviewId": "lot1-smcp-parent-relations-20260909-v1",
+      "sourceHash": "22da98c16cb934c661f1f54b3b7687f16085a623106b1bbacf02deac600dde3b"
+    },
+    {
+      "id": "cmttr0hjx00093nx228giyr01",
+      "sourceKey": "sandro",
+      "displayName": "Claudie Pierlot",
+      "companyId": "cr5c9308138c86e24341e51b89",
+      "reviewId": "lot1-smcp-parent-relations-20260909-v1",
+      "sourceHash": "22da98c16cb934c661f1f54b3b7687f16085a623106b1bbacf02deac600dde3b"
+    },
+    {
+      "id": "cmttr0hjy000b3nx2vau5i1ws",
+      "sourceKey": "sandro",
+      "displayName": "Fursac",
+      "companyId": "cr57e9ef0f339cdfa95081d842",
+      "reviewId": "lot1-smcp-parent-relations-20260909-v1",
+      "sourceHash": "22da98c16cb934c661f1f54b3b7687f16085a623106b1bbacf02deac600dde3b"
+    }
+  ]
+}

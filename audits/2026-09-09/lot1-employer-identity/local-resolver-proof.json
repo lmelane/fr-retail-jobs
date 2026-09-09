@@ -1,0 +1,162 @@
+{
+  "asOf": "2026-09-09T07:00:43.151Z",
+  "environment": "restored production copy",
+  "examples": [
+    {
+      "aliasId": "cmttr0h07002q3nwzqbgg3qwd",
+      "sourceKey": "promod",
+      "jobId": "cmtkehsvo006mp22by03vx5ol",
+      "externalId": "195222",
+      "path": "entity.name",
+      "rawName": "Promod",
+      "canonicalEmployerId": "cmtk1x1ns0072nv2bytyhwuta",
+      "canonicalName": "Promod",
+      "rule": "REVIEWED_ALIAS",
+      "reviewId": "lot1-promod-aubade-20260909-v1"
+    },
+    {
+      "aliasId": "cmttr0h09002s3nwzzgylx9ux",
+      "sourceKey": "promod",
+      "jobId": "cmtkehsvg006ip22bqa6vca05",
+      "externalId": "196421",
+      "path": "entity.name",
+      "rawName": "Promod - magasin",
+      "canonicalEmployerId": "cmtk1x1ns0072nv2bytyhwuta",
+      "canonicalName": "Promod",
+      "rule": "REVIEWED_ALIAS",
+      "reviewId": "lot1-promod-aubade-20260909-v1"
+    },
+    {
+      "aliasId": "cmttr0h0a002u3nwz7ne9cdla",
+      "sourceKey": "fashionjobs",
+      "jobId": "cmtpkx0az59q7pf5lzosafi35",
+      "externalId": "11852599",
+      "path": "hiringOrganization.name",
+      "rawName": "PROMOD",
+      "canonicalEmployerId": "cmtk1x1ns0072nv2bytyhwuta",
+      "canonicalName": "Promod",
+      "rule": "REVIEWED_ALIAS",
+      "reviewId": "lot1-promod-aubade-20260909-v1"
+    },
+    {
+      "aliasId": "cmttr0h0b002w3nwzdqm0vgd5",
+      "sourceKey": "fashionjobs",
+      "jobId": "cmtpkx0bi59qbpf5lkbenp7y3",
+      "externalId": "11852598",
+      "path": "hiringOrganization.name",
+      "rawName": "PROMOD - MAGASIN",
+      "canonicalEmployerId": "cmtk1x1ns0072nv2bytyhwuta",
+      "canonicalName": "Promod",
+      "rule": "REVIEWED_ALIAS",
+      "reviewId": "lot1-promod-aubade-20260909-v1"
+    },
+    {
+      "aliasId": "cmttr0h0c002y3nwzgk0448zo",
+      "sourceKey": "wttj-sector",
+      "rawName": "Aubade",
+      "verifiedBinding": true,
+      "rawReplay": "NO_MATCHING_ARCHIVED_FIELD_IN_INSPECTED_PATHS"
+    },
+    {
+      "aliasId": "cmttr0h0d00303nwzrc771gkm",
+      "sourceKey": "wttj-sector",
+      "jobId": "cmtk1xdz10199nv2b5xak2wnl",
+      "externalId": "d21bbc44-9b14-4603-b036-3c826a51ff9f",
+      "path": "organization.name",
+      "rawName": "Aubade Paris",
+      "canonicalEmployerId": "cmtk1xdjg0176nv2b70ayaadr",
+      "canonicalName": "Aubade",
+      "rule": "REVIEWED_ALIAS",
+      "reviewId": "lot1-promod-aubade-20260909-v1"
+    },
+    {
+      "aliasId": "cmttr0h0e00323nwz2ffwg17h",
+      "sourceKey": "fashionjobs",
+      "jobId": "cmtpw96hw4k4jl35m75179thl",
+      "externalId": "12050729",
+      "path": "hiringOrganization.name",
+      "rawName": "AUBADE",
+      "canonicalEmployerId": "cmtk1xdjg0176nv2b70ayaadr",
+      "canonicalName": "Aubade",
+      "rule": "REVIEWED_ALIAS",
+      "reviewId": "lot1-promod-aubade-20260909-v1"
+    },
+    {
+      "aliasId": "cmttr0h0f00343nwzp4kw62ox",
+      "sourceKey": "fashionjobs",
+      "rawName": "Aubade Paris",
+      "verifiedBinding": true,
+      "rawReplay": "NO_MATCHING_ARCHIVED_FIELD_IN_INSPECTED_PATHS"
+    },
+    {
+      "aliasId": "cmttr0hjv00053nx21dbt10o8",
+      "sourceKey": "sandro",
+      "rawName": "Sandro",
+      "verifiedBinding": true,
+      "rawReplay": "NO_MATCHING_ARCHIVED_FIELD_IN_INSPECTED_PATHS"
+    },
+    {
+      "aliasId": "cmttr0hjw00073nx2fy9cczxz",
+      "sourceKey": "sandro",
+      "rawName": "Maje",
+      "verifiedBinding": true,
+      "rawReplay": "NO_MATCHING_ARCHIVED_FIELD_IN_INSPECTED_PATHS"
+    },
+    {
+      "aliasId": "cmttr0hjx00093nx228giyr01",
+      "sourceKey": "sandro",
+      "rawName": "Claudie Pierlot",
+      "verifiedBinding": true,
+      "rawReplay": "NO_MATCHING_ARCHIVED_FIELD_IN_INSPECTED_PATHS"
+    },
+    {
+      "aliasId": "cmttr0hjy000b3nx2vau5i1ws",
+      "sourceKey": "sandro",
+      "rawName": "Fursac",
+      "verifiedBinding": true,
+      "rawReplay": "NO_MATCHING_ARCHIVED_FIELD_IN_INSPECTED_PATHS"
+    },
+    {
+      "aliasId": "cmtt3jqrw000k3nx9namrep8q",
+      "sourceKey": "toscane",
+      "rawName": "Toscane",
+      "verifiedBinding": true,
+      "rawReplay": "NO_MATCHING_ARCHIVED_FIELD_IN_INSPECTED_PATHS"
+    },
+    {
+      "aliasId": "cmtt3jqmq000c3nx9o2zv25tb",
+      "sourceKey": "riu-paris",
+      "rawName": "RIU Paris",
+      "verifiedBinding": true,
+      "rawReplay": "NO_MATCHING_ARCHIVED_FIELD_IN_INSPECTED_PATHS"
+    },
+    {
+      "aliasId": "cmtt64q4q00093nkjobvhpzut",
+      "sourceKey": "blackstore",
+      "rawName": "Blackstore",
+      "verifiedBinding": true,
+      "rawReplay": "NO_MATCHING_ARCHIVED_FIELD_IN_INSPECTED_PATHS"
+    },
+    {
+      "aliasId": "cmtt64pva00013nkjelglr892",
+      "sourceKey": "intersport-france",
+      "rawName": "Intersport",
+      "verifiedBinding": true,
+      "rawReplay": "NO_MATCHING_ARCHIVED_FIELD_IN_INSPECTED_PATHS"
+    },
+    {
+      "aliasId": "cmtt3jq7t00023nx9q656q04n",
+      "sourceKey": "adopt-parfums",
+      "rawName": "Adopt",
+      "verifiedBinding": true,
+      "rawReplay": "NO_MATCHING_ARCHIVED_FIELD_IN_INSPECTED_PATHS"
+    },
+    {
+      "aliasId": "cmtt3jq8s00043nx9rx9xdfpi",
+      "sourceKey": "adopt-parfums",
+      "rawName": "Adopt Parfums",
+      "verifiedBinding": true,
+      "rawReplay": "NO_MATCHING_ARCHIVED_FIELD_IN_INSPECTED_PATHS"
+    }
+  ]
+}
