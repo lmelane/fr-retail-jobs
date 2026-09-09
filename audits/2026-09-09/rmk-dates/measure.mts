@@ -1,0 +1,5 @@
+import{readFileSync,writeFileSync}from'node:fs';import{normalizeRmkItem,parseRmkDate}from'../../../apps/aggregator/src/ats/adapters/successfactors.js';import{digest}from'../../../apps/aggregator/src/remediation/plan.js';
+const data=JSON.parse(readFileSync('backups/remediation-20260909/rmk-dates/before.json','utf8'));
+const rows=data.sources.map((s:any)=>{const r=s.raw;const date=parseRmkDate(r.unifiedStandardStart,r.locale)?.toISOString()??null;const job=data.jobs.find((j:any)=>j.id===s.jobId);return{jobId:s.jobId,sourceId:s.id,sourceKey:s.sourceKey,url:s.url,locale:r.locale,rawDate:r.unifiedStandardStart,rawHash:digest(r),beforeJob:job.postedAt,beforeSource:s.postedAt,after:date,active:job.isActive,changed:s.postedAt!==date};});
+const result={at:data.at,scope:rows.length,changed:rows.filter((r:any)=>r.changed),unparsed:rows.filter((r:any)=>!r.after),unchanged:rows.filter((r:any)=>!r.changed).length};
+writeFileSync('audits/2026-09-09/rmk-dates/measurement.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result,null,2));

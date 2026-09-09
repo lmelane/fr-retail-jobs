@@ -1,0 +1,49 @@
+{
+  "endpoint": "https://jobs.douglas.group/services/recruiting/v1/jobs",
+  "locale": "en_US",
+  "sortBy": "date",
+  "declaredTotal": 8,
+  "returned": 8,
+  "entries": [
+    {
+      "id": "624",
+      "publicationRaw": "9/8/26",
+      "expirationRaw": "9/8/27"
+    },
+    {
+      "id": "940",
+      "publicationRaw": "9/6/26",
+      "expirationRaw": "9/1/27"
+    },
+    {
+      "id": "1000",
+      "publicationRaw": "9/3/26",
+      "expirationRaw": null
+    },
+    {
+      "id": "636",
+      "publicationRaw": "9/1/26",
+      "expirationRaw": "9/1/27"
+    },
+    {
+      "id": "602",
+      "publicationRaw": "8/27/26",
+      "expirationRaw": null
+    },
+    {
+      "id": "920",
+      "publicationRaw": "8/18/26",
+      "expirationRaw": "8/18/27"
+    },
+    {
+      "id": "898",
+      "publicationRaw": "8/14/26",
+      "expirationRaw": "8/14/27"
+    },
+    {
+      "id": "878",
+      "publicationRaw": "8/12/26",
+      "expirationRaw": "8/12/27"
+    }
+  ]
+}

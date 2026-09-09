@@ -1,0 +1,1228 @@
+{
+  "at": "2026-09-08T22:25:56.742Z",
+  "sources": 122,
+  "complete": 122,
+  "failures": [],
+  "rows": [
+    {
+      "key": "margaret-howell",
+      "origin": "https://careers.margarethowell.co.uk",
+      "at": "2026-09-08T22:25:30.021Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 2,
+      "unique": 2,
+      "rawSha256": "a752d8617fc03f6423f1d04039dffd0da94f0cee79b2dae021cbe0798d43c818"
+    },
+    {
+      "key": "normal",
+      "origin": "https://jobs.normal.eu",
+      "at": "2026-09-08T22:25:30.036Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 456,
+      "unique": 456,
+      "rawSha256": "d8444f2aba25a29737ef8c7cdf2d983df308d714a45976aac1b3160363aa485f"
+    },
+    {
+      "key": "oh-my-cream",
+      "origin": "https://careers.ohmycream.com",
+      "at": "2026-09-08T22:25:30.037Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 22,
+      "unique": 22,
+      "rawSha256": "901fb76a752ce7c7a2af15bf6f37f4dd7a5f13b68810fb56ec6740b5470577c5"
+    },
+    {
+      "key": "passage-du-desir",
+      "origin": "https://passagedudesir-1730297136.teamtailor.com",
+      "at": "2026-09-08T22:25:30.506Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 14,
+      "unique": 14,
+      "rawSha256": "869c8479c0c0f3664a69f8fb548323492da1dc4e4640c8d41627b8d2d9b27c64"
+    },
+    {
+      "key": "medik8",
+      "origin": "https://careers.medik8.com",
+      "at": "2026-09-08T22:25:30.549Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 19,
+      "unique": 19,
+      "rawSha256": "0dd13d71010ec486e903034ec42ca1b67004effa54e3071d476a6b0c642148c1"
+    },
+    {
+      "key": "bizzbee",
+      "origin": "https://recrutement.b-z-b.com",
+      "at": "2026-09-08T22:25:30.864Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 19,
+      "unique": 19,
+      "rawSha256": "1267acbcde75469bdeac1114637c4248dc6eab85721fed4b14a5d81084313bae"
+    },
+    {
+      "key": "cove",
+      "origin": "https://cove.teamtailor.com",
+      "at": "2026-09-08T22:25:31.082Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 1,
+      "unique": 1,
+      "rawSha256": "81d0c07320baa2af1547d79462439287e5fb7cce0e2e2c6e7ca7ea9dd3a7efcc"
+    },
+    {
+      "key": "fjallraven",
+      "origin": "https://career.fjallraven.com",
+      "at": "2026-09-08T22:25:31.276Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 1,
+      "unique": 1,
+      "rawSha256": "022ae4be5648a1b1b4cec49fe73ba007176864e36b14b963127146bb5e0fcf80"
+    },
+    {
+      "key": "joy",
+      "origin": "https://joy.teamtailor.com",
+      "at": "2026-09-08T22:25:31.584Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 2,
+      "unique": 2,
+      "rawSha256": "490ad2b57044414aabe13f49d83e2f2635e0ad3c5754df8940c4b265f342a854"
+    },
+    {
+      "key": "aim-n",
+      "origin": "https://career.aimn.com",
+      "at": "2026-09-08T22:25:31.657Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 4,
+      "unique": 4,
+      "rawSha256": "08dba96c161d27a72b21f96a339f5a67925a2b22aafc58f3333648b03414cb9f"
+    },
+    {
+      "key": "akira",
+      "origin": "https://careers.shopakira.com",
+      "at": "2026-09-08T22:25:32.020Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 186,
+      "unique": 186,
+      "rawSha256": "35b3fc830f6b1b16d913b95295b96af4b5c282b23823aff4af3ee3ee7191149e"
+    },
+    {
+      "key": "annoushka",
+      "origin": "https://careers.annoushka.com",
+      "at": "2026-09-08T22:25:32.116Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 3,
+      "unique": 3,
+      "rawSha256": "a6d735189376f82ad17572421aa8f20b4689af1426ebab24881e74422fb45d1d"
+    },
+    {
+      "key": "aroma-zone",
+      "origin": "https://careers.aroma-zone.com",
+      "at": "2026-09-08T22:25:32.755Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 175,
+      "unique": 175,
+      "rawSha256": "1483d6a5033753bf7300c0138ccd8403fc7bcfa8524896d0bc61d5b0e6a9e3d8"
+    },
+    {
+      "key": "b2",
+      "origin": "https://careers.brownsshoes.com",
+      "at": "2026-09-08T22:25:33.000Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 67,
+      "unique": 67,
+      "rawSha256": "8379a74190dc3ea2f34e0f08e1653632141f4c47a2c79d5dfbcbb9a346f159e1"
+    },
+    {
+      "key": "belstaff",
+      "origin": "https://belstaff.teamtailor.com",
+      "at": "2026-09-08T22:25:33.573Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 40,
+      "unique": 40,
+      "rawSha256": "c0480035cd6a916a7b5dee67cc166decbc00a8c8a9165a80df7b25736be2151b"
+    },
+    {
+      "key": "bravissimo",
+      "origin": "https://careers.bravissimo.com",
+      "at": "2026-09-08T22:25:33.698Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 17,
+      "unique": 17,
+      "rawSha256": "b45935275c34c56613f9323b2c93a1907dc4dde0ab32b8022c7434aac34d50da"
+    },
+    {
+      "key": "buff",
+      "origin": "https://work-with-us.buff.com",
+      "at": "2026-09-08T22:25:34.100Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 4,
+      "unique": 4,
+      "rawSha256": "bc0070bbfefc6f9675785a9faca5739d12abdbc04d7f47c72cd72adcb54feeb7"
+    },
+    {
+      "key": "burnt",
+      "origin": "https://careers.burnt.co.za",
+      "at": "2026-09-08T22:25:34.338Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 4,
+      "unique": 4,
+      "rawSha256": "b051a965b16aaf9fa39d063b7ab831cc2e1b4cd11e8ef967a66d0786f410ce6c"
+    },
+    {
+      "key": "bzb",
+      "origin": "https://bzb.teamtailor.com",
+      "at": "2026-09-08T22:25:34.606Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 19,
+      "unique": 19,
+      "rawSha256": "62f5acd54784bc0ac9e55ed1e0b96739d95c9b8078326eae65882f18c2527236"
+    },
+    {
+      "key": "camper",
+      "origin": "https://careers.camper.com",
+      "at": "2026-09-08T22:25:34.868Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 43,
+      "unique": 43,
+      "rawSha256": "fb8f8a39f0cc34839eec81194495fe114df144b6fe1bd97f70435c4f8ea805c0"
+    },
+    {
+      "key": "castore",
+      "origin": "https://careers.castore.com",
+      "at": "2026-09-08T22:25:35.174Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 26,
+      "unique": 26,
+      "rawSha256": "2fd55be3b8644906eec009902bd69a06da26fad87ef4bebcafb20baffbb568cf"
+    },
+    {
+      "key": "club-l-london",
+      "origin": "https://careers.clubllondon.com",
+      "at": "2026-09-08T22:25:35.387Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 18,
+      "unique": 18,
+      "rawSha256": "6c3983ddc4353db7fad3670620ae2781724aaa48bb4e378c7289a9ea28c67562"
+    },
+    {
+      "key": "eurofragrance",
+      "origin": "https://careers.eurofragance.com",
+      "at": "2026-09-08T22:25:35.519Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 40,
+      "unique": 40,
+      "rawSha256": "996929cffbb101b7bd48a9f3680adb209ecdd5bba968579726e78a82281b4f32"
+    },
+    {
+      "key": "faguo",
+      "origin": "https://carriere.faguo-store.com",
+      "at": "2026-09-08T22:25:35.745Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 10,
+      "unique": 10,
+      "rawSha256": "ba795ce2ecb7bd32d050ff8ab550afb792b96e905c09c49aa865d72031dd8f70"
+    },
+    {
+      "key": "fitflop",
+      "origin": "https://careers.fitflop.com",
+      "at": "2026-09-08T22:25:36.156Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 12,
+      "unique": 12,
+      "rawSha256": "4777017745f86a25df5b8ae0422ac78db89479411843e9cdf552733c9f1805ef"
+    },
+    {
+      "key": "frank-darling",
+      "origin": "https://careers.frankdarling.com",
+      "at": "2026-09-08T22:25:36.200Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 33,
+      "unique": 33,
+      "rawSha256": "0e0e62ef13e7e176ce24a0394821db0743d01371de7d039a0bbd3129e370028a"
+    },
+    {
+      "key": "fred-perry",
+      "origin": "https://careers.fredperry.com",
+      "at": "2026-09-08T22:25:36.271Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 19,
+      "unique": 19,
+      "rawSha256": "c08fe54e6252e86067d87d3c03dad25ea6401a240e66ee7e7868ead9f1de08c9"
+    },
+    {
+      "key": "hans-anders",
+      "origin": "https://jobs.hansanders.nl",
+      "at": "2026-09-08T22:25:36.542Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 138,
+      "unique": 138,
+      "rawSha256": "26723542cec32728039a77cd6a661a555270bb5ce2ed1355223fc79e823c4b34"
+    },
+    {
+      "key": "hoff",
+      "origin": "https://careers.thehoffbrand.com",
+      "at": "2026-09-08T22:25:36.680Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 8,
+      "unique": 8,
+      "rawSha256": "0eecaf24c8afc19a56e1c0c2d2ec75246b0252be7b8464812b5d8e34e954c274"
+    },
+    {
+      "key": "sabon",
+      "origin": "https://sabon.teamtailor.com",
+      "at": "2026-09-08T22:25:37.074Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 2,
+      "unique": 2,
+      "rawSha256": "a5b582c8001bd1d31ec69f5d5f08c3b72297613759d7913fe4fe638332beaa8c"
+    },
+    {
+      "key": "indiska",
+      "origin": "https://careers.indiska.com",
+      "at": "2026-09-08T22:25:37.383Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 2,
+      "unique": 2,
+      "rawSha256": "6310f48fdca4eab07c61b951e2c057ec8657c717c8f8c1cb0abb97766bf69557"
+    },
+    {
+      "key": "jewells",
+      "origin": "https://jewells.teamtailor.com",
+      "at": "2026-09-08T22:25:37.504Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 4,
+      "unique": 4,
+      "rawSha256": "2a5b50163873195d66be3c1d51fc8e2a738cdefc8b03031f7a3da220189491ab"
+    },
+    {
+      "key": "katie-loxton",
+      "origin": "https://careers.katieloxton.com",
+      "at": "2026-09-08T22:25:37.600Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 19,
+      "unique": 19,
+      "rawSha256": "dcd910151d31d790dafa02b93643308d8e2deba69de12ea6740b01024d62b617"
+    },
+    {
+      "key": "kicks",
+      "origin": "https://careers.kicks.se",
+      "at": "2026-09-08T22:25:37.656Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 10,
+      "unique": 10,
+      "rawSha256": "a54340a856bfbc9c576bf217e5d546e190875c64f72a7956fe4838b210e1b5bd"
+    },
+    {
+      "key": "killstar",
+      "origin": "https://killstar.teamtailor.com",
+      "at": "2026-09-08T22:25:37.818Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 3,
+      "unique": 3,
+      "rawSha256": "033be3d354b4fdbae4ee6d399099669cba7fd9cab76546f8f3a81e232c3325d4"
+    },
+    {
+      "key": "lager-157",
+      "origin": "https://careers.lager157.com",
+      "at": "2026-09-08T22:25:37.965Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 47,
+      "unique": 47,
+      "rawSha256": "7accd2e941ed29102ab04a9c5be3cc29c97c76160d223d59d1eac975a950f713"
+    },
+    {
+      "key": "lexington",
+      "origin": "https://jobs.lexingtoncompany.com",
+      "at": "2026-09-08T22:25:37.988Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 2,
+      "unique": 2,
+      "rawSha256": "fe3e02911643f150005593a172e65a2479e7b4a180a2115ae9af01e44394ff83"
+    },
+    {
+      "key": "lounge",
+      "origin": "https://careers.lounge.com",
+      "at": "2026-09-08T22:25:38.268Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 15,
+      "unique": 15,
+      "rawSha256": "cfca794ad282a42e558d4bb56822e685f2a97dea0fa86459e04736aed0ec9703"
+    },
+    {
+      "key": "lovisa",
+      "origin": "https://careers.lovisa.com",
+      "at": "2026-09-08T22:25:38.355Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 845,
+      "unique": 845,
+      "rawSha256": "54d3fb1665186bdec8f80dc0daa8e1f63f00568d0d20f2caf7b6386f9f2c4251"
+    },
+    {
+      "key": "luhta",
+      "origin": "https://luhta.teamtailor.com",
+      "at": "2026-09-08T22:25:38.743Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 5,
+      "unique": 5,
+      "rawSha256": "60d0ddc7d162d3916c1b7212431055cde473c1fe38c4e3bd9260a41d31a4107a"
+    },
+    {
+      "key": "maryruth-s",
+      "origin": "https://careers.maryruths.com",
+      "at": "2026-09-08T22:25:38.788Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 3,
+      "unique": 3,
+      "rawSha256": "a0bf8796dc11d10fc79280c5c37f9d7913a3045057f21adf8fd0d3af3c3c7ed1"
+    },
+    {
+      "key": "nude-project",
+      "origin": "https://nudeproject.teamtailor.com",
+      "at": "2026-09-08T22:25:39.309Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 14,
+      "unique": 14,
+      "rawSha256": "e879e15c0e9db0c0008579d7fe3d98f0b42415a06fd1c7d1d70d16c4d0b85269"
+    },
+    {
+      "key": "merkal",
+      "origin": "https://merkal.teamtailor.com",
+      "at": "2026-09-08T22:25:39.745Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 36,
+      "unique": 36,
+      "rawSha256": "a565929ebf607fb5d1cabe904666b84d03122b0ac35774a724db76ab5e3fd7bb"
+    },
+    {
+      "key": "nudie-jeans",
+      "origin": "https://careers.nudiejeans.com",
+      "at": "2026-09-08T22:25:39.752Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 4,
+      "unique": 4,
+      "rawSha256": "b6771f67e8cc22dbc4ff7cbb057f605dec2321f92680833c0cdf9f2819cea3ef"
+    },
+    {
+      "key": "monica-vinader",
+      "origin": "https://careers.monicavinader.com",
+      "at": "2026-09-08T22:25:40.114Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 39,
+      "unique": 39,
+      "rawSha256": "7017cce0233d3c4fc11ae1983c844da8c7c0d88e82b83536280bf7e10c6975f9"
+    },
+    {
+      "key": "oh-polly",
+      "origin": "https://ohpolly.teamtailor.com",
+      "at": "2026-09-08T22:25:40.346Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 12,
+      "unique": 12,
+      "rawSha256": "20600d3fb10c5a3aa09891fecf85103f5bf5218ef600a50cdadf85dad5a19c56"
+    },
+    {
+      "key": "one",
+      "origin": "https://careers.one.com",
+      "at": "2026-09-08T22:25:40.816Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 8,
+      "unique": 8,
+      "rawSha256": "afcafa02b4dd08dd5e1ccafc8fc1df34f1c7735a67fae1aaebbecd658d9b0d25"
+    },
+    {
+      "key": "orlebar-brown",
+      "origin": "https://careers.orlebarbrown.com",
+      "at": "2026-09-08T22:25:41.299Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 14,
+      "unique": 14,
+      "rawSha256": "a6e319622b5a6a75e9f69f6a6d6eefa458e8ddb33395bcb8324fc22706be71fa"
+    },
+    {
+      "key": "printful",
+      "origin": "https://careers.printful.com",
+      "at": "2026-09-08T22:25:41.305Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 7,
+      "unique": 7,
+      "rawSha256": "56f99e00d11c65514b21673a57d68b4279d11d615e79177a3d5dbb8ac57567d8"
+    },
+    {
+      "key": "etam",
+      "origin": "https://career.groupeetam.com",
+      "at": "2026-09-08T22:25:41.661Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 242,
+      "unique": 242,
+      "rawSha256": "e4670fe1ef29e95efc92f3daca571ec41e67537c8cecde068334c926ce92c162"
+    },
+    {
+      "key": "brothers",
+      "origin": "https://brothers.teamtailor.com",
+      "at": "2026-09-08T22:25:41.910Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 13,
+      "unique": 13,
+      "rawSha256": "7e53ecb2651aa1f9a0735ba14b687282477ce450dc5aa0d21a4f84fe3213b58d"
+    },
+    {
+      "key": "cabaia",
+      "origin": "https://cabaia.teamtailor.com",
+      "at": "2026-09-08T22:25:42.390Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 8,
+      "unique": 8,
+      "rawSha256": "fc871559547b4f0e7cf3db79db5eeeab0c11480e5ab23df98d597a2644fdf6b7"
+    },
+    {
+      "key": "cambio",
+      "origin": "https://cambio.teamtailor.com",
+      "at": "2026-09-08T22:25:43.053Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 9,
+      "unique": 9,
+      "rawSha256": "ab174196dfcd2bb9595cf33fcf421e7e3e09f0eda8c4db4780f052aa2f5ac4e8"
+    },
+    {
+      "key": "carla-b",
+      "origin": "https://carla.teamtailor.com",
+      "at": "2026-09-08T22:25:43.924Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 12,
+      "unique": 12,
+      "rawSha256": "0e25fb9ac15ac58b7173c57d2b23480dcba235a226e2285a49bf35a7a19e4c0f"
+    },
+    {
+      "key": "asket",
+      "origin": "https://asket.teamtailor.com",
+      "at": "2026-09-08T22:25:43.982Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 2,
+      "unique": 2,
+      "rawSha256": "06cce6f74df9628ad7e155ac3a7959b5d2b874226c92b73de761a44db91fb572"
+    },
+    {
+      "key": "celio",
+      "origin": "https://celio.teamtailor.com",
+      "at": "2026-09-08T22:25:44.363Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 8,
+      "unique": 8,
+      "rawSha256": "3affb4dc467f5ce32602b12f94003fe99f46bf283303affefe6302b73c7e74e1"
+    },
+    {
+      "key": "mq-marqet",
+      "origin": "https://career.mq.se",
+      "at": "2026-09-08T22:25:44.406Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 9,
+      "unique": 9,
+      "rawSha256": "58d0d782c613a591d9bcb4dc0542f49f1f45416378be7cddb4c9b411bbff403a"
+    },
+    {
+      "key": "horace",
+      "origin": "https://horace.teamtailor.com",
+      "at": "2026-09-08T22:25:44.714Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 18,
+      "unique": 18,
+      "rawSha256": "f18e49b90d85d9947c9301047d1aa3b57863b52c3bc2ced5691cf139afc835c6"
+    },
+    {
+      "key": "damart",
+      "origin": "https://damart.teamtailor.com",
+      "at": "2026-09-08T22:25:44.776Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 2,
+      "unique": 2,
+      "rawSha256": "01815dab3a1e86f7a2618734cbfe62762ea7dab5c8a3dccabe982ffd7dbcf1ee"
+    },
+    {
+      "key": "ephemera",
+      "origin": "https://ephemera.teamtailor.com",
+      "at": "2026-09-08T22:25:45.156Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 24,
+      "unique": 24,
+      "rawSha256": "289cc74045a369a241cc258e6700911f1e6ab4f0a40a9c656d78f247d82067e2"
+    },
+    {
+      "key": "fastrack",
+      "origin": "https://fastrack.teamtailor.com",
+      "at": "2026-09-08T22:25:45.199Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 17,
+      "unique": 17,
+      "rawSha256": "ac8fb901da64a2b7a63ddb790f45050d889c8df00e48c26c0097ce1f7e3c3526"
+    },
+    {
+      "key": "browns-shoes",
+      "origin": "https://brownsshoes.teamtailor.com",
+      "at": "2026-09-08T22:25:45.504Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 67,
+      "unique": 67,
+      "rawSha256": "2427c097489455b4718364fc431db824eba06ed70192dcbb6c4b7c0ade7b067f"
+    },
+    {
+      "key": "georges",
+      "origin": "https://georges.teamtailor.com",
+      "at": "2026-09-08T22:25:45.671Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 11,
+      "unique": 11,
+      "rawSha256": "671ca0666ccd4e23e105885b24aca8d6121154d34a504199a364d53e0c12f62f"
+    },
+    {
+      "key": "glitter",
+      "origin": "https://glitter.teamtailor.com",
+      "at": "2026-09-08T22:25:45.789Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 30,
+      "unique": 30,
+      "rawSha256": "b3dcf432ac4d6505d3f7e1f892f78cfe9b1a366cbed27a38818be4a42fce96a8"
+    },
+    {
+      "key": "loplabbet",
+      "origin": "https://loplabbet.teamtailor.com",
+      "at": "2026-09-08T22:25:45.988Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 1,
+      "unique": 1,
+      "rawSha256": "b25b5d0c0a2771f1e5de9f8560d37fd71b204ae40c35c7bcb34f2b0bd32b7be3"
+    },
+    {
+      "key": "naturkompaniet",
+      "origin": "https://naturkompaniet.teamtailor.com",
+      "at": "2026-09-08T22:25:46.101Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 4,
+      "unique": 4,
+      "rawSha256": "dbf3e3ed3b589ad09c43f452eac71bfd333640d6b4834c79c085cbe24f5855cf"
+    },
+    {
+      "key": "nyx-professional-makeup",
+      "origin": "https://nyx.teamtailor.com",
+      "at": "2026-09-08T22:25:46.168Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 20,
+      "unique": 20,
+      "rawSha256": "62137981fe3b5afdef9c901f982424bd67b3ab55d21d1a2aa8bcc47bf4605b1a"
+    },
+    {
+      "key": "ganni",
+      "origin": "https://ganni.teamtailor.com",
+      "at": "2026-09-08T22:25:46.425Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 11,
+      "unique": 11,
+      "rawSha256": "412ff36cfe4a81265ef762b6929044fbdba7de372ca1d0ee7f7541916733daf6"
+    },
+    {
+      "key": "profil-optik",
+      "origin": "https://profiloptik.teamtailor.com",
+      "at": "2026-09-08T22:25:46.563Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 37,
+      "unique": 37,
+      "rawSha256": "c8c50099974ce4964b01ae34a8aae80f928a20f791bae2a7917a0191b0589816"
+    },
+    {
+      "key": "happy-socks",
+      "origin": "https://happysocks.teamtailor.com",
+      "at": "2026-09-08T22:25:46.656Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 4,
+      "unique": 4,
+      "rawSha256": "138675f5b5fa1269a1708ee9d856043aed1145359ed2fd1f56e68a87135ef0f3"
+    },
+    {
+      "key": "saffron",
+      "origin": "https://saffron.teamtailor.com",
+      "at": "2026-09-08T22:25:46.862Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 2,
+      "unique": 2,
+      "rawSha256": "ec5119ca69e5487c5a295ddd7225b40792b051fed53202f756f7e611a225e1e7"
+    },
+    {
+      "key": "silbon",
+      "origin": "https://silbon.teamtailor.com",
+      "at": "2026-09-08T22:25:46.936Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 71,
+      "unique": 71,
+      "rawSha256": "8b4baf2e91c76acf8028a1591e4855e331e92bf088b0c5f4da2f94ba269a4cee"
+    },
+    {
+      "key": "singularu",
+      "origin": "https://singularu.teamtailor.com",
+      "at": "2026-09-08T22:25:46.990Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 27,
+      "unique": 27,
+      "rawSha256": "db4350558f31b575f4c82fb8eb9cb0d27d7d2b6778f101bca858d435a0082df4"
+    },
+    {
+      "key": "space-nk",
+      "origin": "https://spacenk.teamtailor.com",
+      "at": "2026-09-08T22:25:47.112Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 85,
+      "unique": 85,
+      "rawSha256": "f6e3aa75b137f802de477fa45d2dc70c8b3ec459c839668114ad044a67758bb4"
+    },
+    {
+      "key": "intersport",
+      "origin": "https://intersport.teamtailor.com",
+      "at": "2026-09-08T22:25:47.345Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 4,
+      "unique": 4,
+      "rawSha256": "47057202c88dd92946ce178a9dc10a4d4dd65bcf137c1a6a212f8089aec5aa6e"
+    },
+    {
+      "key": "subset",
+      "origin": "https://subset.teamtailor.com",
+      "at": "2026-09-08T22:25:47.425Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 4,
+      "unique": 4,
+      "rawSha256": "5b7d2cc71af45d561e072964473d5e206ae4475cec34bfcedd4d75d8feaaaf64"
+    },
+    {
+      "key": "j-lindeberg",
+      "origin": "https://jlindeberg.teamtailor.com",
+      "at": "2026-09-08T22:25:47.594Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 12,
+      "unique": 12,
+      "rawSha256": "2889c729f392b59ac90146713bd0da61c009b44f69ce384e1da56f522fe1b4a4"
+    },
+    {
+      "key": "tiger-of-sweden",
+      "origin": "https://tigerofsweden.teamtailor.com",
+      "at": "2026-09-08T22:25:47.685Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 6,
+      "unique": 6,
+      "rawSha256": "ec92b51adaac559477717c61abf41d2a05f77e3b888b2cd49958a8138f34a11d"
+    },
+    {
+      "key": "tom-wood",
+      "origin": "https://tomwood.teamtailor.com",
+      "at": "2026-09-08T22:25:47.726Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 4,
+      "unique": 4,
+      "rawSha256": "6464e9feb656b4d79939ed76a0a1200ca170eb88fe32154ff83bc89db569e445"
+    },
+    {
+      "key": "toteme",
+      "origin": "https://toteme.teamtailor.com",
+      "at": "2026-09-08T22:25:47.962Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 17,
+      "unique": 17,
+      "rawSha256": "9aebde22ef0b49d6102ae40e7d8f39ec734c71339f43ea59f0993ad9781e27ef"
+    },
+    {
+      "key": "trussardi",
+      "origin": "https://trussardi.teamtailor.com",
+      "at": "2026-09-08T22:25:47.973Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 15,
+      "unique": 15,
+      "rawSha256": "ff17109c073803133f09c9b96fb03b2a884d472643baf21eac637cff83fc8bdd"
+    },
+    {
+      "key": "maison-123",
+      "origin": "https://career.maison123.com",
+      "at": "2026-09-08T22:25:48.048Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 60,
+      "unique": 60,
+      "rawSha256": "64fd2177d7d5c61d131f3d90d819c14965628e30d91e2a2624df2842bcd302c6"
+    },
+    {
+      "key": "vitamin-a",
+      "origin": "https://vitamin.teamtailor.com",
+      "at": "2026-09-08T22:25:48.275Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 20,
+      "unique": 20,
+      "rawSha256": "644ebc46817b63299664dbcdc51a19eff94fe010d691b88787d0b479f081a440"
+    },
+    {
+      "key": "vivobarefoot",
+      "origin": "https://vivobarefoot.teamtailor.com",
+      "at": "2026-09-08T22:25:48.361Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 13,
+      "unique": 13,
+      "rawSha256": "b97e1fda367830cf1bacc5e96e5b165961d53eebe457f44cf905ed0943b66fa0"
+    },
+    {
+      "key": "vlisco",
+      "origin": "https://vlisco.teamtailor.com",
+      "at": "2026-09-08T22:25:48.432Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 8,
+      "unique": 8,
+      "rawSha256": "eb7ca9f5ed16b3338af1c9b1f8d362f2490adde75d4a56ab565b7cb80918f492"
+    },
+    {
+      "key": "white-stuff",
+      "origin": "https://whitestuff.teamtailor.com",
+      "at": "2026-09-08T22:25:48.631Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 82,
+      "unique": 82,
+      "rawSha256": "9cc2fb3df2122c33995c9049734cb71a9a85aceff05b92f3940a819d2104379c"
+    },
+    {
+      "key": "loft",
+      "origin": "https://loft.teamtailor.com",
+      "at": "2026-09-08T22:25:48.723Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 62,
+      "unique": 62,
+      "rawSha256": "c8749d75c8cd6f32609ae3ea0d7841cf571b01f28448e15ae665af0897e52ff6"
+    },
+    {
+      "key": "magasin-du-nord",
+      "origin": "https://magasin.teamtailor.com",
+      "at": "2026-09-08T22:25:48.742Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 40,
+      "unique": 40,
+      "rawSha256": "2afc9d484e1d4fe675f1b28eeb7f6bf70fdd7b254c7b75b4d9eca2c12e128554"
+    },
+    {
+      "key": "peak-performance",
+      "origin": "https://peakperformance.teamtailor.com",
+      "at": "2026-09-08T22:25:49.138Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 11,
+      "unique": 11,
+      "rawSha256": "203ee7a4dc39aeab65b912868084f3fa01213e84e3a24116d54242761618a82e"
+    },
+    {
+      "key": "lindex",
+      "origin": "https://lindex.teamtailor.com",
+      "at": "2026-09-08T22:25:49.199Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 7,
+      "unique": 7,
+      "rawSha256": "8ba734ae336a869d9b0bc23d5ea26204dc7d929f74eba0bb38c63d6fa8cef255"
+    },
+    {
+      "key": "multiopticas",
+      "origin": "https://multiopticas.teamtailor.com",
+      "at": "2026-09-08T22:25:49.239Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 85,
+      "unique": 85,
+      "rawSha256": "838c8a60502ef044ff8597f6b6f7033e99ba6585ad8b8cfddc1922335d1a8fec"
+    },
+    {
+      "key": "motel",
+      "origin": "https://jobs.motelrocks.com",
+      "at": "2026-09-08T22:25:49.442Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 1,
+      "unique": 1,
+      "rawSha256": "be618292c7f36efb6e1e864e143f792134ce116d7eaa4ba61d98ffe4c341991d"
+    },
+    {
+      "key": "tropicfeel",
+      "origin": "https://tropicfeel.teamtailor.com",
+      "at": "2026-09-08T22:25:49.456Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 1,
+      "unique": 1,
+      "rawSha256": "d41effb904437550bcb9bec308553ba84ab732a73e073543bd99c30b36814851"
+    },
+    {
+      "key": "klattermusen",
+      "origin": "https://careers.klattermusen.com",
+      "at": "2026-09-08T22:25:49.665Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 2,
+      "unique": 2,
+      "rawSha256": "7087af9480b92f799ee9b9bc0e0c706fcc7e415680f428bff38aec13836c5427"
+    },
+    {
+      "key": "lavish-alice",
+      "origin": "https://lavishalice.teamtailor.com",
+      "at": "2026-09-08T22:25:49.780Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 2,
+      "unique": 2,
+      "rawSha256": "82c43b05672aecf56e207d922e0c7d7e0b5b5ba1b1e97a311b264d07104274b7"
+    },
+    {
+      "key": "dune-london",
+      "origin": "https://careers.dunelondon.com",
+      "at": "2026-09-08T22:25:49.791Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 24,
+      "unique": 24,
+      "rawSha256": "ee48a0b605de090491e906e4f069ce38c2ee0035b843516283d0c5f0afa03074"
+    },
+    {
+      "key": "jojo-maman-bebe",
+      "origin": "https://jojomamanbebe.teamtailor.com",
+      "at": "2026-09-08T22:25:49.967Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 26,
+      "unique": 26,
+      "rawSha256": "e92d23135e4a0bfe4fc00b656a6201f1546583043bf572585ee20bb7733b4f09"
+    },
+    {
+      "key": "pronovias",
+      "origin": "https://careers.pronovias.com",
+      "at": "2026-09-08T22:25:50.038Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 31,
+      "unique": 31,
+      "rawSha256": "0265ba8e0edc9763fe4ffbbe426f17dd3ea0c9975adf0cb882b65482a4bb35c6"
+    },
+    {
+      "key": "galeries-lafayette",
+      "origin": "https://carrieres.groupegalerieslafayette.com",
+      "at": "2026-09-08T22:25:50.093Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 160,
+      "unique": 160,
+      "rawSha256": "1214d813ebbec2c7d1d9e4f595a8450c0243c47807eae6f3243e91ce6ef08687"
+    },
+    {
+      "key": "mr-marvis",
+      "origin": "https://mrmarvis.teamtailor.com",
+      "at": "2026-09-08T22:25:50.270Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 30,
+      "unique": 30,
+      "rawSha256": "e28ba3bdae1dab75182f27a46fbb100269e344532c9fb4b7f3520dcbf192577b"
+    },
+    {
+      "key": "honey-birdette",
+      "origin": "https://honeybirdette.teamtailor.com",
+      "at": "2026-09-08T22:25:50.560Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 53,
+      "unique": 53,
+      "rawSha256": "44b3863a165c47195ad699014ef2297985c7364bd90fd23d7b39837ea63ba399"
+    },
+    {
+      "key": "axel-arigato",
+      "origin": "https://axelarigato.teamtailor.com",
+      "at": "2026-09-08T22:25:50.579Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 2,
+      "unique": 2,
+      "rawSha256": "4aa11396c84287bf39b364cbed167bf7813b3b4b7121fa11dffee78f7e9adeb1"
+    },
+    {
+      "key": "lensa",
+      "origin": "https://lensa.teamtailor.com",
+      "at": "2026-09-08T22:25:50.711Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 3,
+      "unique": 3,
+      "rawSha256": "1d7938b9fc2f3737caed1387f571ef3bc562fd909111e1fea32fd8cc9e0f5da9"
+    },
+    {
+      "key": "lucy-yak",
+      "origin": "https://lucyandyak.teamtailor.com",
+      "at": "2026-09-08T22:25:50.838Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 4,
+      "unique": 4,
+      "rawSha256": "c50d1fb6b37d27b27c38bed1a7b8bc900e343f671cbec13aae46b0627f000e7e"
+    },
+    {
+      "key": "sport-1",
+      "origin": "https://sport1.teamtailor.com",
+      "at": "2026-09-08T22:25:50.963Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 11,
+      "unique": 11,
+      "rawSha256": "add891397a7e578883ad75035f286181752e5fd54cfad598a6005cc734e3a296"
+    },
+    {
+      "key": "john-henric",
+      "origin": "https://johnhenric.teamtailor.com",
+      "at": "2026-09-08T22:25:50.973Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 14,
+      "unique": 14,
+      "rawSha256": "26cf3a7ab6929de265a91acfad1878c501e7ac2eba7c2960fbc6f6b1645603ed"
+    },
+    {
+      "key": "blue-banana",
+      "origin": "https://bluebanana.teamtailor.com",
+      "at": "2026-09-08T22:25:51.088Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 17,
+      "unique": 17,
+      "rawSha256": "e59daa1da524405fa160e26cf0a834f92e150d331bb201a39728913a9e160089"
+    },
+    {
+      "key": "undiz",
+      "origin": "https://undiz.teamtailor.com",
+      "at": "2026-09-08T22:25:51.247Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 48,
+      "unique": 48,
+      "rawSha256": "d5aeb6634ab9c6ddaa49e73f2d6c1102b8fbdf3410e17724aa38dd1244bb20e7"
+    },
+    {
+      "key": "nutrire",
+      "origin": "https://careers.tricoci.com",
+      "at": "2026-09-08T22:25:51.333Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 52,
+      "unique": 52,
+      "rawSha256": "8cb5beef10adee185c9d0e93bc02ccf0c52416dda3bffdffafee3125dd556196"
+    },
+    {
+      "key": "la-casa-de-las-carcasas",
+      "origin": "https://lacasadelascarcasas.teamtailor.com",
+      "at": "2026-09-08T22:25:51.502Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 689,
+      "unique": 689,
+      "rawSha256": "885f8553919194ff86da870abbc407b5d705c1c5c46b059e55aad02db9351a24"
+    },
+    {
+      "key": "chalhoub",
+      "origin": "https://careers.chalhoubgroup.com",
+      "at": "2026-09-08T22:25:51.698Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 138,
+      "unique": 138,
+      "rawSha256": "b319bc41c68bdd4709f4c5ce2f314960be4f1e694601397817bbf40e0fe99c18"
+    },
+    {
+      "key": "ounass",
+      "origin": "https://careers.ounass.com",
+      "at": "2026-09-08T22:25:51.712Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 26,
+      "unique": 26,
+      "rawSha256": "2f22ada9e82c657f119ae78063c41f2bc2fbc29783e860cc3e573d2690e09fa0"
+    },
+    {
+      "key": "loccitane-fr",
+      "origin": "https://jobs-fr.loccitane.com",
+      "at": "2026-09-08T22:25:52.078Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 15,
+      "unique": 15,
+      "rawSha256": "f1882c69ba2607cd3f1d6ba7c9d4ebc682c00b23f6bab1f6e0d5747f5d95da80"
+    },
+    {
+      "key": "ssense",
+      "origin": "https://careers.ssense.com",
+      "at": "2026-09-08T22:25:52.398Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 15,
+      "unique": 15,
+      "rawSha256": "1c3cb3f1123f16aea3b2b10f515c87c12be628895596a03e3d37e13ba7096daa"
+    },
+    {
+      "key": "showroomprive",
+      "origin": "https://talents.showroomprivegroup.com/",
+      "at": "2026-09-08T22:25:52.517Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 30,
+      "unique": 30,
+      "rawSha256": "bdcbf1119577dbb62eb850f591ee4a41a075248a002e9351b248319e22268c57"
+    },
+    {
+      "key": "vivienne-westwood",
+      "origin": "https://viviennewestwood.teamtailor.com",
+      "at": "2026-09-08T22:25:53.045Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 12,
+      "unique": 12,
+      "rawSha256": "76283c725d2f417e93191935de533416dea7069dd69a922535e557a7a5a8dae9"
+    },
+    {
+      "key": "petrol-industries",
+      "origin": "https://careers.petrolindustries.com",
+      "at": "2026-09-08T22:25:53.074Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 2,
+      "unique": 2,
+      "rawSha256": "8d6ebbbb0dca823ea57fad9200b99c908280135c5a921e8cbe0c31fb766b6a01"
+    },
+    {
+      "key": "ackermans",
+      "origin": "https://careers.ackermans.co.za",
+      "at": "2026-09-08T22:25:53.339Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 4,
+      "unique": 4,
+      "rawSha256": "06fb3ec694e7082cf8962b1a9156ca5087b2c118a6e2ff3ee68849a25132a218"
+    },
+    {
+      "key": "soeur",
+      "origin": "https://soeur-1711354805.teamtailor.com/",
+      "at": "2026-09-08T22:25:53.474Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 55,
+      "unique": 55,
+      "rawSha256": "1e52c7860811fda5444d58c7b29bbc001fc7755eac8a9fc9f5c5a88ba133d160"
+    },
+    {
+      "key": "prisma-media",
+      "origin": "https://emploi.prismamedia.com",
+      "at": "2026-09-08T22:25:53.812Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 17,
+      "unique": 17,
+      "rawSha256": "1a3d65e6736d56418e39398ffc6df9724486db9920b66082b85e563d7a0d0a03"
+    },
+    {
+      "key": "karla-otto",
+      "origin": "https://careers.karlaotto.com",
+      "at": "2026-09-08T22:25:54.415Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 11,
+      "unique": 11,
+      "rawSha256": "80acf42c62862d22fa31f1ad66d0f49767e04d4bc208d1e5b771c68b952a95b1"
+    },
+    {
+      "key": "typology",
+      "origin": "https://typology-1732032895.teamtailor.com",
+      "at": "2026-09-08T22:25:54.670Z",
+      "complete": true,
+      "truncated": false,
+      "jobs": 8,
+      "unique": 8,
+      "rawSha256": "b1d5dc17e11de60996f7a1e8e4481d4133294664e33ce6b2380cc343ce1661e8"
+    }
+  ]
+}
