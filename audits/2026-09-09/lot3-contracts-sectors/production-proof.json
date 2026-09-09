@@ -1,0 +1,602 @@
+{
+  "measuredAt": "2026-09-09T11:27:16.731Z",
+  "applicationCommit": "7927024",
+  "applicationMainCommit": "26bb4313d44026d6dc51a220cf2ffcede549b69f",
+  "sectorDataCommit": "19539ba",
+  "sectorDataMainCommit": "9639eb1a31d05ee61d6ad1f30968007ea4d278a3",
+  "before": [
+    {
+      "rows": 77352,
+      "active": 74124,
+      "france": 10947
+    }
+  ],
+  "conservationAfterRepair": [
+    {
+      "rows": 77352,
+      "active": 74124,
+      "france": 10947,
+      "ids": "3861d0168ebcc2549cdd5c1076c8ce07",
+      "unchanged": "abc30980f9104c6db91938f35e475bd3"
+    }
+  ],
+  "after": {
+    "sectors": [
+      {
+        "code": "FASHION",
+        "label": "Mode",
+        "companies": 121,
+        "active": 18562
+      },
+      {
+        "code": "LEATHER_GOODS",
+        "label": "Maroquinerie",
+        "companies": 3,
+        "active": 2504
+      },
+      {
+        "code": "FOOTWEAR",
+        "label": "Chaussures",
+        "companies": 7,
+        "active": 9182
+      },
+      {
+        "code": "JEWELRY",
+        "label": "Joaillerie",
+        "companies": 8,
+        "active": 3329
+      },
+      {
+        "code": "WATCHMAKING",
+        "label": "Horlogerie",
+        "companies": 7,
+        "active": 1091
+      },
+      {
+        "code": "BEAUTY",
+        "label": "Beauté",
+        "companies": 76,
+        "active": 22019
+      },
+      {
+        "code": "FRAGRANCE",
+        "label": "Parfumerie",
+        "companies": 5,
+        "active": 13417
+      },
+      {
+        "code": "EYEWEAR",
+        "label": "Lunetterie",
+        "companies": 1,
+        "active": 71
+      },
+      {
+        "code": "HOME_LIFESTYLE",
+        "label": "Maison & Lifestyle",
+        "companies": 6,
+        "active": 7098
+      },
+      {
+        "code": "WINES_SPIRITS",
+        "label": "Vins & Spiritueux",
+        "companies": 0,
+        "active": 0
+      },
+      {
+        "code": "HOSPITALITY",
+        "label": "Hospitality",
+        "companies": 1,
+        "active": 1105
+      },
+      {
+        "code": "LUXURY_MOBILITY",
+        "label": "Automobile & Mobilité de luxe",
+        "companies": 0,
+        "active": 0
+      },
+      {
+        "code": "ART_DESIGN",
+        "label": "Art & Design",
+        "companies": 0,
+        "active": 0
+      },
+      {
+        "code": "RETAIL",
+        "label": "Retail",
+        "companies": 28,
+        "active": 22294
+      },
+      {
+        "code": "LUXURY_TECH_SERVICES",
+        "label": "Luxury Tech & Services",
+        "companies": 0,
+        "active": 0
+      }
+    ],
+    "pending": [
+      {
+        "companies": 1337,
+        "active": 27108
+      }
+    ],
+    "dims": {
+      "employmentTerm": [
+        {
+          "value": null,
+          "n": 49431
+        },
+        {
+          "value": "PERMANENT",
+          "n": 16796
+        },
+        {
+          "value": "FIXED_TERM",
+          "n": 7761
+        },
+        {
+          "value": "TEMPORARY",
+          "n": 136
+        }
+      ],
+      "workTime": [
+        {
+          "value": "PART_TIME",
+          "n": 26639
+        },
+        {
+          "value": "FULL_TIME",
+          "n": 25356
+        },
+        {
+          "value": null,
+          "n": 22129
+        }
+      ],
+      "programType": [
+        {
+          "value": null,
+          "n": 69694
+        },
+        {
+          "value": "INTERNSHIP",
+          "n": 3548
+        },
+        {
+          "value": "APPRENTICESHIP",
+          "n": 684
+        },
+        {
+          "value": "GRADUATE_PROGRAM",
+          "n": 183
+        },
+        {
+          "value": "VIE",
+          "n": 15
+        }
+      ],
+      "engagementType": [
+        {
+          "value": null,
+          "n": 73914
+        },
+        {
+          "value": "FREELANCE",
+          "n": 110
+        },
+        {
+          "value": "INDEPENDENT_CONTRACTOR",
+          "n": 100
+        }
+      ]
+    },
+    "records": [
+      {
+        "events": 23034,
+        "sources": 80380,
+        "observations": 72222,
+        "occupations": 77347,
+        "corrections": 1195
+      }
+    ]
+  },
+  "sectorCoverage": {
+    "companies": 230,
+    "totalCompanies": 1567,
+    "activeJobs": 47016,
+    "activeTotal": 74124,
+    "activePercent": 63.43,
+    "pendingCompanies": 1337,
+    "pendingActiveJobs": 27108,
+    "newOfficialCompanyReviews": 25,
+    "referenceOnlyCompanyReviews": 205
+  },
+  "employmentRepair": {
+    "written": 1195,
+    "activeAffected": 1166,
+    "offersWithExplicitConflict": 128,
+    "secondPassWritten": 0,
+    "batchId": "lot3-employment-paths-v2-20260909",
+    "planHash": "a0249f4faafa704243a7b908b6dc69db01cfaa847dab32b8684b35d652aa5771",
+    "geographyAndLifecycleViolations": 0
+  },
+  "productionChecks": [
+    {
+      "params": {},
+      "status": 200,
+      "db": 74124,
+      "api": 74124
+    },
+    {
+      "params": {
+        "pays": "FR"
+      },
+      "status": 200,
+      "db": 10947,
+      "api": 10947
+    },
+    {
+      "params": {
+        "pays": "US"
+      },
+      "status": 200,
+      "db": 30943,
+      "api": 30943
+    },
+    {
+      "params": {
+        "pays": "GB"
+      },
+      "status": 200,
+      "db": 2872,
+      "api": 2872
+    },
+    {
+      "params": {
+        "pays": "DE"
+      },
+      "status": 200,
+      "db": 2739,
+      "api": 2739
+    },
+    {
+      "params": {
+        "pays": "IT"
+      },
+      "status": 200,
+      "db": 2446,
+      "api": 2446
+    },
+    {
+      "params": {
+        "secteur": "FASHION"
+      },
+      "status": 200,
+      "db": 18562,
+      "api": 18562
+    },
+    {
+      "params": {
+        "secteur": "LEATHER_GOODS"
+      },
+      "status": 200,
+      "db": 2504,
+      "api": 2504
+    },
+    {
+      "params": {
+        "secteur": "FOOTWEAR"
+      },
+      "status": 200,
+      "db": 9182,
+      "api": 9182
+    },
+    {
+      "params": {
+        "secteur": "JEWELRY"
+      },
+      "status": 200,
+      "db": 3329,
+      "api": 3329
+    },
+    {
+      "params": {
+        "secteur": "WATCHMAKING"
+      },
+      "status": 200,
+      "db": 1091,
+      "api": 1091
+    },
+    {
+      "params": {
+        "secteur": "BEAUTY"
+      },
+      "status": 200,
+      "db": 22019,
+      "api": 22019
+    },
+    {
+      "params": {
+        "secteur": "FRAGRANCE"
+      },
+      "status": 200,
+      "db": 13417,
+      "api": 13417
+    },
+    {
+      "params": {
+        "secteur": "EYEWEAR"
+      },
+      "status": 200,
+      "db": 71,
+      "api": 71
+    },
+    {
+      "params": {
+        "secteur": "HOME_LIFESTYLE"
+      },
+      "status": 200,
+      "db": 7098,
+      "api": 7098
+    },
+    {
+      "params": {
+        "secteur": "WINES_SPIRITS"
+      },
+      "status": 200,
+      "db": 0,
+      "api": 0
+    },
+    {
+      "params": {
+        "secteur": "HOSPITALITY"
+      },
+      "status": 200,
+      "db": 1105,
+      "api": 1105
+    },
+    {
+      "params": {
+        "secteur": "LUXURY_MOBILITY"
+      },
+      "status": 200,
+      "db": 0,
+      "api": 0
+    },
+    {
+      "params": {
+        "secteur": "ART_DESIGN"
+      },
+      "status": 200,
+      "db": 0,
+      "api": 0
+    },
+    {
+      "params": {
+        "secteur": "RETAIL"
+      },
+      "status": 200,
+      "db": 22294,
+      "api": 22294
+    },
+    {
+      "params": {
+        "secteur": "LUXURY_TECH_SERVICES"
+      },
+      "status": 200,
+      "db": 0,
+      "api": 0
+    },
+    {
+      "params": {
+        "secteur": "unclassified"
+      },
+      "status": 200,
+      "db": 27108,
+      "api": 27108
+    },
+    {
+      "params": {
+        "secteur": "INVALID_SECTOR"
+      },
+      "status": 200,
+      "db": 0,
+      "api": 0
+    },
+    {
+      "params": {
+        "employmentTerm": "PERMANENT"
+      },
+      "status": 200,
+      "db": 16796,
+      "api": 16796
+    },
+    {
+      "params": {
+        "employmentTerm": "FIXED_TERM"
+      },
+      "status": 200,
+      "db": 7761,
+      "api": 7761
+    },
+    {
+      "params": {
+        "employmentTerm": "TEMPORARY"
+      },
+      "status": 200,
+      "db": 136,
+      "api": 136
+    },
+    {
+      "params": {
+        "workTime": "PART_TIME"
+      },
+      "status": 200,
+      "db": 26639,
+      "api": 26639
+    },
+    {
+      "params": {
+        "workTime": "FULL_TIME"
+      },
+      "status": 200,
+      "db": 25356,
+      "api": 25356
+    },
+    {
+      "params": {
+        "programType": "INTERNSHIP"
+      },
+      "status": 200,
+      "db": 3548,
+      "api": 3548
+    },
+    {
+      "params": {
+        "programType": "APPRENTICESHIP"
+      },
+      "status": 200,
+      "db": 684,
+      "api": 684
+    },
+    {
+      "params": {
+        "engagementType": "FREELANCE"
+      },
+      "status": 200,
+      "db": 110,
+      "api": 110
+    },
+    {
+      "params": {
+        "pays": "FR",
+        "secteur": "WATCHMAKING"
+      },
+      "status": 200,
+      "db": 556,
+      "api": 556
+    },
+    {
+      "params": {
+        "pays": "FR",
+        "employmentTerm": "PERMANENT"
+      },
+      "status": 200,
+      "db": 5218,
+      "api": 5218
+    },
+    {
+      "params": {
+        "q": "vendeur",
+        "secteur": "FASHION"
+      },
+      "status": 200,
+      "db": 5236,
+      "api": 5236
+    },
+    {
+      "params": {
+        "q": "Cartier",
+        "secteur": "WATCHMAKING"
+      },
+      "status": 200,
+      "db": 157,
+      "api": 157
+    }
+  ],
+  "productionUI": [
+    {
+      "width": 1440,
+      "status": 200,
+      "frenchContracts": true,
+      "watchmakingVisible": true,
+      "bounds": {
+        "x": 347.796875,
+        "y": 246,
+        "width": 260,
+        "height": 320
+      },
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "status": 200,
+      "frenchContracts": true,
+      "watchmakingVisible": true,
+      "bounds": {
+        "x": 24,
+        "y": 426,
+        "width": 260,
+        "height": 320
+      },
+      "overflow": false,
+      "errors": []
+    }
+  ],
+  "nativeValidation": {
+    "runId": "10ac5a5c-6602-4590-9e2a-2f598e687725",
+    "revision": "26bb4313d44026d6dc51a220cf2ffcede549b69f",
+    "status": "COMPLETED",
+    "source": "bzb",
+    "fetched": 18,
+    "accepted": 18,
+    "errors": 0,
+    "captured": 18,
+    "replayMismatches": [],
+    "sameIDs": true,
+    "sameCompanySectors": true,
+    "eventCount": 5
+  },
+  "tests": {
+    "unitPassed": 1491,
+    "integrationPassed": 232,
+    "webPassed": 109,
+    "webExplicitCorpusOnlySkipped": 2,
+    "realCorpusPassed": 4,
+    "e2ePassed": 18,
+    "typechecks": "passed",
+    "build": "passed"
+  },
+  "limitations": [
+    "Sector membership is not exhaustively qualified: 1,337 employers / 27,108 active jobs remain explicit review work.",
+    "The 205 reference-only company reviews are not new official website verifications.",
+    "Historical full replay cannot yet be proved from raw alone when adapter inputs were not retained or source paths are unstudied.",
+    "Native validation covers one real source, not all ATS.",
+    "No load test and no claim of 100% production readiness."
+  ],
+  "railwayFinal": [
+    {
+      "service": "aggregator",
+      "id": "4626bcf1-c012-4305-b3a7-46c9ad5a0274",
+      "status": "SUCCESS",
+      "commit": "26bb4313d44026d6dc51a220cf2ffcede549b69f",
+      "command": "sh apps/aggregator/start.sh",
+      "paused": "1"
+    },
+    {
+      "service": "refresh",
+      "id": "53d345d0-13df-459b-8124-e59cba66b5e5",
+      "status": "SUCCESS",
+      "commit": "26bb4313d44026d6dc51a220cf2ffcede549b69f",
+      "command": null,
+      "paused": "1"
+    },
+    {
+      "service": "reconcile",
+      "id": "4cf84a53-6e70-4238-af5f-141e020df7af",
+      "status": "SUCCESS",
+      "commit": "26bb4313d44026d6dc51a220cf2ffcede549b69f",
+      "command": null,
+      "paused": "1"
+    },
+    {
+      "service": "web",
+      "id": "abd99485-a753-469c-8e76-7759d6beff59",
+      "status": "SUCCESS",
+      "commit": "26bb4313d44026d6dc51a220cf2ffcede549b69f",
+      "command": null,
+      "paused": null
+    }
+  ],
+  "postNativeEmploymentAndSectorCountsUnchanged": true
+}
