@@ -68,10 +68,17 @@ export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult):
   const countProvesCompletion = normalized.declaredTotal !== undefined &&
     Number.isSafeInteger(normalized.declaredTotal) && normalized.declaredTotal >= 0 &&
     unique === normalized.declaredTotal;
+  // A rejected row is an EXPLAINED witness (an expired page still listed in a
+  // sitemap, a Workday row without a path): when the adapter has judged its
+  // enumeration proven, those rows do not un-prove it. Only an adapter that
+  // states nothing falls back to the count, and then any rejection is doubt.
+  // (2026-09-09: PVH 1 374 postings for 1 440 listed pages, Boots 1 489/1 610,
+  // NARS 53/158 were reported partial for pages the adapter had classified.)
+  const provenByAdapter = normalized.complete ?? (countProvesCompletion && !normalized.rejectedRows?.length);
   return {
     ...normalized,
     truncated,
-    complete: !normalized.rejectedRows?.length && unique === normalized.jobs.length && !truncated && (normalized.complete ?? countProvesCompletion),
+    complete: unique === normalized.jobs.length && !truncated && provenByAdapter,
   };
 }
 

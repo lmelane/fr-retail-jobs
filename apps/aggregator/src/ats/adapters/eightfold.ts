@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { log } from '../../observability/logger.js';
 import pLimit from 'p-limit';
 import { fetchJson, fetchWithRetry } from '../../lib/http.js';
@@ -208,29 +209,58 @@ export async function fetchEightfoldJobs(
   const seen = new Set<string>();
   // F-04: the vendor's own announced count — the truncation signal.
   let declaredTotal: number | undefined;
+  /**
+   * Enumeration proof (2026-09-09): Kering read 1 030 of 1 031 announced, run
+   * after run, with no stated cause. Every page is archived (start, ids,
+   * sha256, count); a position repeated across pages (unstable ranking) or
+   * one the mapper rejects is counted and named, so a deficit is explained
+   * rather than flagged.
+   */
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  const issues = new Set<string>();
+  let pagesRead = 0, rawCount = 0, repeatedIds = 0, unmapped = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
 
   for (let page = 0; page < MAX_PAGES; page++) {
     const url = `${origin}/api/pcsx/search?domain=${encodeURIComponent(domain)}&query=&location=&start=${page * PAGE_SIZE}&num=${PAGE_SIZE}`;
     const response = await fetchJson<SearchResponse>(url, { headers });
 
     const positions = response.data?.positions ?? [];
+    pagesRead += 1; rawCount += positions.length;
     let fresh = 0;
+    const pageIds: string[] = [];
 
     for (const position of positions) {
       const job = toNormalized(position, origin);
-      if (!job || seen.has(job.externalId)) continue;
+      if (!job) { unmapped += 1; continue; }
+      pageIds.push(job.externalId);
+      if (seen.has(job.externalId)) { repeatedIds += 1; continue; }
       seen.add(job.externalId);
       jobs.push(job);
       fresh++;
     }
 
     const count = response.data?.count;
-    if (count !== undefined) declaredTotal = count;
-    if (positions.length < PAGE_SIZE || fresh === 0) break;
-    if (count !== undefined && jobs.length >= count) break;
+    if (count !== undefined) {
+      if (declaredTotal === undefined) declaredTotal = count;
+      else if (declaredTotal !== count) issues.add('SOURCE_TOTAL_CHANGED');
+    }
+    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: page * PAGE_SIZE, pagination: null,
+      ids: pageIds, publisherCounter: count === undefined ? '' : `count=${count}`, componentCounters: [`positions=${positions.length}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `unmapped=${unmapped}`] });
+    if (positions.length === 0) { termination = 'EMPTY_PAGE'; break; }
+    if (count !== undefined && seen.size >= count) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
+    if (fresh === 0) { termination = 'REPEATED_PAGE'; break; }
+    // A short page ends the board only when the publisher announces nothing more.
+    if (positions.length < PAGE_SIZE && (count === undefined || rawCount >= count)) { termination = rawCount >= (count ?? 0) && count !== undefined ? 'PUBLISHER_TOTAL_ROWS_READ' : 'SHORT_PAGE'; break; }
   }
+  if (repeatedIds) issues.add('REPEATED_IDS_ACROSS_PAGES');
+  if (unmapped) issues.add('POSITIONS_WITHOUT_ID_OR_TITLE');
+  const complete = declaredTotal !== undefined && seen.size === declaredTotal && termination !== 'PAGE_BUDGET_EXHAUSTED' && !issues.has('SOURCE_TOTAL_CHANGED');
+  if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
+  const truncated = termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredTotal !== undefined && rawCount < declaredTotal);
+  const enumeration: AdapterResult['enumeration'] = { method: 'PUBLISHER_COUNT_JSON_PAGINATION', endpoint: `${origin}/api/pcsx/search?domain=${domain}`, pages: pagesRead, rawCount, termination, issues: [...issues],
+    scopes: [{ scope: 'positions', declaredTotal: declaredTotal ?? -1, uniqueIds: seen.size, pages: pagesRead, complete }], pageEvidence };
 
-  if (config.withDescriptions === false) return { jobs, declaredTotal };
+  if (config.withDescriptions === false) return { jobs, declaredTotal, complete, truncated, enumeration };
 
   // Descriptions come from a per-position endpoint; the listing has none.
   const limit = pLimit(Number(config.detailConcurrency ?? 4));
@@ -259,5 +289,5 @@ export async function fetchEightfoldJobs(
       }),
     ),
   );
-  return { jobs: withDescriptions, declaredTotal };
+  return { jobs: withDescriptions, declaredTotal, complete, truncated, enumeration };
 }

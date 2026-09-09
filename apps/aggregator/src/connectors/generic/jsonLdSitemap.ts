@@ -26,9 +26,22 @@ const USER_AGENT =
 
 const REQUEST_HEADERS = { 'user-agent': USER_AGENT };
 
-/** Extracts <loc> values from a urlset or sitemapindex document. */
+/**
+ * XML character references inside <loc> are part of the document encoding, not
+ * of the URL: `&amp;` is `&`, `&#214;` is `Ö`. Fetching the raw text returned
+ * HTTP 400 on every Oniverse page whose slug carries an accent (191 of 734 on
+ * 2026-09-09) and mangled every Shopify sitemap query string.
+ */
+export function decodeXmlEntities(value: string): string {
+  return value
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
+    .replace(/&(amp|lt|gt|quot|apos);/g, (_, name) => ({ amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" })[name as 'amp']);
+}
+
+/** Extracts <loc> values from a urlset or sitemapindex document (CDATA and entity-encoded values included). */
 export function parseSitemapLocations(xml: string): string[] {
-  return [...xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/gi)].map((m) => m[1]);
+  return [...xml.matchAll(/<loc>\s*(?:<!\[CDATA\[\s*([^\]]+?)\s*\]\]>|([^<\s]+))\s*<\/loc>/gi)].map((m) => decodeXmlEntities((m[1] ?? m[2]).trim()));
 }
 
 /** Gzipped sitemaps are common at scale; fetchText would hand back binary. */
