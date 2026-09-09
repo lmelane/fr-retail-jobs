@@ -1,0 +1,56 @@
+{
+  "at": "2026-09-09T15:45:34.589486+00:00",
+  "applicationCommit": "49dbb5a4de10b76bb6fe587dfe7606f82fa4ce43",
+  "applicationMerge": "bd2f88221e69a508ef2320d1f3e8f48a6c360ee3",
+  "deploymentGuardMerge": "459da3ad486f8aa71d9660e36ef40d05f8fb6bd0",
+  "nativeRunId": "444686d1-7e9a-4913-9c04-e3ee07727ad5",
+  "deploymentId": "cebfab98-a54e-4494-914b-68d2022e9e16",
+  "startedAt": "2026-09-09T15:44:17.613Z",
+  "finishedAt": "2026-09-09T15:44:23.266Z",
+  "status": "COMPLETED",
+  "stats": {
+    "errors": 0,
+    "france": 5,
+    "merged": 0,
+    "source": "ganni-talentrecruiter",
+    "created": 16,
+    "fetched": 16,
+    "updated": 0,
+    "withUrl": 16,
+    "complete": true,
+    "inSector": 16,
+    "withDate": 16,
+    "truncated": false,
+    "withCountry": 9,
+    "declaredTotal": 16,
+    "withDescription": 15,
+    "occupationReleases": {
+      "catwalks-occupations-20260909-v1": 16
+    },
+    "occupationStatuses": {
+      "NO_RULE": 1,
+      "CLASSIFIED": 11,
+      "FAMILY_ONLY": 4
+    },
+    "occupationReleaseId": "catwalks-occupations-20260909-v1"
+  },
+  "nativeIdsMatchProduction": true,
+  "enumeration": {
+    "fetched": 16,
+    "complete": true,
+    "truncated": false,
+    "declaredTotal": 16
+  },
+  "logProof": {
+    "railwayLines": 12,
+    "maxLinesPerSecond": 6,
+    "droppedMessageWarnings": 0,
+    "durableEvents": 11,
+    "persistenceFailures": 0
+  },
+  "purgeRefusedForFirstRun": true,
+  "globalWorkersRemainPaused": true,
+  "source": "ganni-talentrecruiter",
+  "retiredSource": "ganni",
+  "remaining": "Six specific jobs have coordinates but no independently canonicalized country; global location enrichment remains open."
+}

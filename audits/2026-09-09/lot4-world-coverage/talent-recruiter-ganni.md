@@ -1,6 +1,6 @@
-# GANNI / Talent Recruiter — correctif qualifié sur copie de production
+# GANNI / Talent Recruiter — correction livrée et prouvée en production
 
-État au 9 septembre 2026, 15:13 UTC. Ce point de contrôle ne clôture pas le Lot 4. Au moment de sa rédaction, le correctif décrit ici n'est pas encore déployé et la production GANNI n'a pas été modifiée.
+État au 9 septembre 2026, 15:46 UTC. Correctif applicatif PR52 mergé (`bd2f882`), garde de déploiement PR53 mergé (`459da3a`), données GANNI réparées et run natif vérifié en production. Ce point de contrôle ne clôture pas le Lot 4.
 
 ## État avant et cause racine
 
@@ -58,4 +58,22 @@ Le corpus de comparaison des pays comporte 72 098 annonces de 425 flux/passes su
 
 1 583 tests unitaires, 249 tests d'intégration, typecheck des deux applications. Sept tests ciblés supplémentaires vérifient les transitions et preuves de retrait. Build web et inspection du cas réel de candidature spontanée sur desktop/mobile ; HTTP 200, aucun `JobPosting`, libellé visible, aucun débordement horizontal. Les tests de charge sont exclus.
 
-**GO pour la livraison contrôlée de ce correctif ; NO-GO pour déclarer le Lot 4 terminé ou relancer tous les workers.** La preuve après production sera ajoutée après le déploiement et le run ciblé.
+## Preuve après production
+
+Retrait appliqué sous plan `304d439965cca230be70dcd8d5559e183bbf8fa1a8181bbcd6b1098038efe53b` : 23 opérations, replay 0, aucune violation de cycle de vie. L’ancienne source `ganni` est RETIRED. La source `ganni-talentrecruiter` est ACTIVE après qualification 16/16, revue officielle, alias documenté et secteur FASHION revu.
+
+Run Railway `444686d1-7e9a-4913-9c04-e3ee07727ad5`, déploiement ciblé `cebfab98-a54e-4494-914b-68d2022e9e16`, révision `459da3a` : terminé entre 15:44:17 et 15:44:23 UTC. 16 collectées, 16 créées, 0 fusion, 0 erreur. Les identifiants natifs sont exactement ceux enregistrés. Tous les chiffres de la colonne « Après sur copie » sont retrouvés en production : **77 406 lignes totales, 74 164 actives, 10 957 France**, 77 390 identifiants précédents conservés. Les données brutes, événements et employeurs historiques du périmètre corrigé sont inchangés.
+
+Les API publiques GANNI monde, France, Royaume-Uni et FASHION correspondent aux identifiants de la base : respectivement 16, 5, 1 et 16. La candidature spontanée est présente en recherche, sa fiche canonique répond 200 sans `JobPosting`. Le témoin retiré répond 410 sans `JobPosting`. Les URLs par identifiant redirigent normalement vers leur URL canonique.
+
+Observabilité : 17 requêtes, 11 événements durables, 12 lignes Railway, pic de 6 lignes/seconde, aucune perte de logs ni erreur de persistance. Le premier refus de purge est attendu pour une source nouvellement activée. La commande normale `sh apps/aggregator/start.sh` est restaurée dans le déploiement `9a21754f-730e-4598-88b6-e689464d52d3`, SUCCESS ; les trois workers restent `PIPELINE_PAUSED=1`.
+
+| Finding | Fixé ? | Commit / merge | Main ? | Déployé ? | Données réparées ? | Preuve prod |
+|---|---|---|---|---|---|---|
+| GANNI : faux tenant et annonces de démonstration | Oui | `49dbb5a` / `bd2f882` | Oui | Oui | 11 retraits, RAW/historique conservés | `ganni-production-preservation-proof.json` |
+| GANNI : portail officiel absent | Oui | `49dbb5a` / `bd2f882` | Oui | Oui | 16 entrées natives, 5 FR | `ganni-production-delivery-proof.json` |
+| Candidature spontanée balisée comme poste | Oui pour les types explicitement établis | `49dbb5a` / `bd2f882` | Oui | Oui | Type natif conservé | `ganni-public-production-proof.json` |
+| Migration manquante lors du déploiement | Oui | `29d8d2d`, `a0eda8f` / `459da3a` | Oui | Oui | Migration appliquée ; pas de réécriture métier | `schema-production-deployment-proof.json` |
+| Pays de six postes GANNI | Non | — | — | — | Non | Coordonnées présentes, référence géographique à valider |
+
+**GO pour maintenir la source GANNI qualifiée ; NO-GO pour déclarer le Lot 4 terminé ou relancer tous les workers.**
