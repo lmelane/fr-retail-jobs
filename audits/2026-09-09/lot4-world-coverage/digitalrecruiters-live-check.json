@@ -1,0 +1,140 @@
+{
+  "at": "2026-09-09T17:53:27.110Z",
+  "results": {
+    "lacoste": {
+      "jobs": 452,
+      "declaredTotal": 459,
+      "complete": true,
+      "truncated": false,
+      "pages": 5,
+      "rawCount": 459,
+      "termination": "SHORT_PAGE",
+      "issues": [],
+      "scopes": [
+        {
+          "scope": "diffusions",
+          "declaredTotal": 459,
+          "uniqueIds": 459,
+          "pages": 5,
+          "complete": true
+        },
+        {
+          "scope": "announcements",
+          "declaredTotal": 452,
+          "uniqueIds": 452,
+          "pages": 5,
+          "complete": true
+        }
+      ],
+      "rejected": 0,
+      "multiLocationAnnouncements": [
+        {
+          "externalId": "4467265",
+          "title": "Part-Time Sales Associate",
+          "location": "Aventura",
+          "locations": [
+            "Aventura"
+          ]
+        },
+        {
+          "externalId": "3827197",
+          "title": "【JAPAN】Lacoste Osaka Area Sales Associate",
+          "location": "Osaka",
+          "locations": [
+            "Japan",
+            "Osaka"
+          ]
+        },
+        {
+          "externalId": "3827169",
+          "title": "【JAPAN】Lacoste Tokyo Area Sales Associate",
+          "location": "Tokyo",
+          "locations": [
+            "Japan",
+            "Tokyo",
+            "Shinjuku City"
+          ]
+        },
+        {
+          "externalId": "2935039",
+          "title": "【JAPAN】Lacoste Harajuku Sales Associate",
+          "location": "東京",
+          "locations": [
+            "Japan",
+            "東京",
+            "渋谷区"
+          ]
+        }
+      ]
+    },
+    "aigle": {
+      "jobs": 109,
+      "declaredTotal": 110,
+      "complete": true,
+      "truncated": false,
+      "pages": 2,
+      "rawCount": 110,
+      "termination": "SHORT_PAGE",
+      "issues": [],
+      "scopes": [
+        {
+          "scope": "diffusions",
+          "declaredTotal": 110,
+          "uniqueIds": 110,
+          "pages": 2,
+          "complete": true
+        },
+        {
+          "scope": "announcements",
+          "declaredTotal": 109,
+          "uniqueIds": 109,
+          "pages": 2,
+          "complete": true
+        }
+      ],
+      "rejected": 0,
+      "multiLocationAnnouncements": [
+        {
+          "externalId": "2941903",
+          "title": "STAGE - Conseiller de vente - Ile de France F/H",
+          "location": "Île-de-France",
+          "locations": [
+            "Paris",
+            "Île-de-France"
+          ]
+        }
+      ]
+    },
+    "gant": {
+      "error": "HttpStatusError: HTTP 400 for https://api.digitalrecruiters.com/public/v1/careers-site/job-ads?domainName=careers.gant.com&limit=100&page=1&locale=fr_FR"
+    },
+    "the-kooples": {
+      "jobs": 69,
+      "declaredTotal": 69,
+      "complete": true,
+      "truncated": false,
+      "pages": 1,
+      "rawCount": 69,
+      "termination": "SHORT_PAGE",
+      "issues": [],
+      "scopes": [
+        {
+          "scope": "diffusions",
+          "declaredTotal": 69,
+          "uniqueIds": 69,
+          "pages": 1,
+          "complete": true
+        },
+        {
+          "scope": "announcements",
+          "declaredTotal": 69,
+          "uniqueIds": 69,
+          "pages": 1,
+          "complete": true
+        }
+      ],
+      "rejected": 0,
+      "multiLocationAnnouncements": []
+    }
+  }
+}
