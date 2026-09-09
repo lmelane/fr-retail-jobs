@@ -1,0 +1,123 @@
+{
+  "asOf": "2026-09-09T07:11:21.345Z",
+  "counts": {
+    "jobs": 77351,
+    "active": 74145,
+    "sources": 80379,
+    "events": 21789,
+    "observations": 72221
+  },
+  "identity": {
+    "companyRecords": 1571,
+    "canonicalRoots": 1568,
+    "mergedRecords": 3,
+    "rootsWithActiveJobs": 1044,
+    "aliases": 20,
+    "reviewedAliases": 20,
+    "unclassifiedRoots": 1528,
+    "freeTextParentsWithoutRelation": 159,
+    "jobsOnMergedCompanies": 0,
+    "pendingObservations": 0,
+    "legacyObservations": 0,
+    "rules": [
+      {
+        "_count": 53,
+        "rule": "REVIEWED_ALIAS",
+        "labelOrigin": "SOURCE_CATALOGUE_LABEL"
+      }
+    ],
+    "definitions": {
+      "canonicalRoots": "Catalogue roots, not a count of independently validated employers.",
+      "observations": "Versioned decisions, not distinct jobs. Legacy labels were not archived consistently; no retrospective 100% provenance claim.",
+      "unclassifiedRoots": "Existing UNKNOWN classifications remain visible as review work; no classification is inferred from a name."
+    }
+  },
+  "reviewedRoots": 12,
+  "names": [
+    {
+      "id": "cmtk1xdjg0176nv2b70ayaadr",
+      "name": "Aubade",
+      "mergedIntoId": null,
+      "_count": {
+        "jobs": 36
+      }
+    },
+    {
+      "id": "cmtk1x1ns0072nv2bytyhwuta",
+      "name": "Promod",
+      "mergedIntoId": null,
+      "_count": {
+        "jobs": 55
+      }
+    },
+    {
+      "id": "cmtpkx0bb59q9pf5le0vx07cg",
+      "name": "PROMOD - MAGASIN",
+      "mergedIntoId": "cmtk1x1ns0072nv2bytyhwuta",
+      "_count": {
+        "jobs": 0
+      }
+    },
+    {
+      "id": "cmtkdvupo1rshnf2b5mz54rmt",
+      "name": "CREATIONS FUSALP",
+      "mergedIntoId": "cmtlyicya05h8qf5kra05oe95",
+      "_count": {
+        "jobs": 0
+      }
+    },
+    {
+      "id": "cmtlyiz3m076kqf5kegty1y42",
+      "name": "Aubade Paris",
+      "mergedIntoId": "cmtk1xdjg0176nv2b70ayaadr",
+      "_count": {
+        "jobs": 0
+      }
+    },
+    {
+      "id": "cmtlyicya05h8qf5kra05oe95",
+      "name": "Fusalp",
+      "mergedIntoId": null,
+      "_count": {
+        "jobs": 21
+      }
+    }
+  ],
+  "activeByCompany": [
+    {
+      "_count": 53,
+      "companyId": "cmtk1x1ns0072nv2bytyhwuta"
+    },
+    {
+      "_count": 29,
+      "companyId": "cmtk1xdjg0176nv2b70ayaadr"
+    },
+    {
+      "_count": 21,
+      "companyId": "cmtlyicya05h8qf5kra05oe95"
+    }
+  ],
+  "runChanges": {
+    "createdJobs": 29,
+    "events": [
+      {
+        "_count": 6,
+        "type": "CHANGED"
+      },
+      {
+        "_count": 29,
+        "type": "OPENED"
+      },
+      {
+        "_count": 3,
+        "type": "REOPENED"
+      }
+    ]
+  },
+  "legacyPostingIndex": [
+    {
+      "indexname": "Job_companyId_source_externalId_idx",
+      "indexdef": "CREATE INDEX \"Job_companyId_source_externalId_idx\" ON public.\"Job\" USING btree (\"companyId\", source, \"externalId\")"
+    }
+  ]
+}

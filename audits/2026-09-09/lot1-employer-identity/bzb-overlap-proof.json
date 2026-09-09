@@ -1,0 +1,204 @@
+{
+  "environment": "restored production copy",
+  "companyIds": [
+    "cmtn5a7sg053rqq5ltoj3513x",
+    "cmtlyiig305w5qf5kntqzz9kw"
+  ],
+  "jobCount": 47,
+  "activeJobCount": 44,
+  "blocked": "Error: Posting identity collision: cmtlyiigm05w7qf5kacc7w8dj/cmtn5a7t0053xqq5l72y82g4n",
+  "beforeJobs": 77322,
+  "afterJobs": 77322,
+  "reviewWritten": 0,
+  "officialProof": {
+    "url": "https://www.b-z-b.com/actu.html",
+    "sha256": "bbb0ac0a0843a733e9ebaa5a2dc48765500a0a82ee83c36067f7aa14bd9cd705"
+  },
+  "collisions": [
+    {
+      "a": "cmtrsddio04mbpg5mhzfot1rs",
+      "b": "cmtrsddm404n5pg5mdrn63np5",
+      "source": "TEAMTAILOR",
+      "externalId": "e66f7dca-79ab-40ee-9ada-8cf448d0f6db",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7xk054xqq5lfpt27j0j",
+      "b": "cmtlyiijj05xbqf5kd7e8c8ss",
+      "source": "TEAMTAILOR",
+      "externalId": "e7d6a641-a118-4552-bae3-8d14c3a6e26f",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7xs0551qq5l7x8mfa0f",
+      "b": "cmtlyiijs05xfqf5klocpdijf",
+      "source": "TEAMTAILOR",
+      "externalId": "5c90053e-2759-4bc4-b330-6e789480df99",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7wa054dqq5lo9od8v2w",
+      "b": "cmtlyiihv05wnqf5ka7upfck6",
+      "source": "TEAMTAILOR",
+      "externalId": "0cc31ea0-516c-4941-9c42-ba125964822b",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtt7vzrd05s5my01c5z8lx2g",
+      "b": "cmtt7w0dz05wtmy014p0e1uk0",
+      "source": "TEAMTAILOR",
+      "externalId": "a75a7f9a-4510-4946-be50-66f7c6da109c",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7vc0549qq5l0g4zhxch",
+      "b": "cmtlyiihi05wjqf5k8j5znb8h",
+      "source": "TEAMTAILOR",
+      "externalId": "f19bf521-5221-4b47-9d6e-4e211f79f62f",
+      "activeA": false,
+      "activeB": false
+    },
+    {
+      "a": "cmtn5a7zl055pqq5ljnmc1p17",
+      "b": "cmtlyiils05y3qf5km26wqnws",
+      "source": "TEAMTAILOR",
+      "externalId": "aa44cb83-a20b-48c7-b769-8b95d0c1dab7",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7ya0559qq5l1pmmf42t",
+      "b": "cmtlyiiko05xnqf5kgn62updk",
+      "source": "TEAMTAILOR",
+      "externalId": "3a332c86-6997-4beb-a299-26de6a2834bc",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7z5055lqq5ljlkezbks",
+      "b": "cmtlyiili05xzqf5kmo4rmzqj",
+      "source": "TEAMTAILOR",
+      "externalId": "3d3e8f92-aa3a-4b17-a41b-fa014725585e",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a805055xqq5lmgwh6v3p",
+      "b": "cmtlyiima05ybqf5kgcgdupqi",
+      "source": "TEAMTAILOR",
+      "externalId": "6baf1887-6641-4d98-bae3-2f7d1140243c",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7y10555qq5lt1orfn69",
+      "b": "cmtlyiik705xjqf5kl1u61ukl",
+      "source": "TEAMTAILOR",
+      "externalId": "f2ec1518-2dde-4846-8297-db2ce80ddb63",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7yw055hqq5lqff1a1lf",
+      "b": "cmtlyiil705xvqf5kgfo321xw",
+      "source": "TEAMTAILOR",
+      "externalId": "f0260bf7-2b93-4ee1-8988-adaabfd0e991",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7t0053xqq5l72y82g4n",
+      "b": "cmtlyiigm05w7qf5kacc7w8dj",
+      "source": "TEAMTAILOR",
+      "externalId": "24f4d2ae-6b8d-42a0-a085-52522c3e6699",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7tp0545qq5l4cw4ruma",
+      "b": "cmtlyiiha05wfqf5kdv30g1yi",
+      "source": "TEAMTAILOR",
+      "externalId": "df42de1e-8f42-4e5d-a6a3-71583444aa6a",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7yk055dqq5lta381gqs",
+      "b": "cmtlyiiky05xrqf5kiqmbhd9k",
+      "source": "TEAMTAILOR",
+      "externalId": "56b84cb3-9324-4eca-bfec-54a7a22eff40",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7sk053tqq5l6p9h120b",
+      "b": "cmtn5a8j80567qq5ld285atsu",
+      "source": "TEAMTAILOR",
+      "externalId": "febdfe76-bccf-4ee1-abb1-9c193c8c1d73",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7td0541qq5lz9idpbz7",
+      "b": "cmtlyiigy05wbqf5kruoszcti",
+      "source": "TEAMTAILOR",
+      "externalId": "872fc40e-0b67-45ae-bb0e-4f14695888ba",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7zv055tqq5lds4jm4n5",
+      "b": "cmtlyiim205y7qf5k3th4lz3c",
+      "source": "TEAMTAILOR",
+      "externalId": "15205d03-32c1-4c28-ab68-d405952068ac",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7x9054tqq5l2az8n4w0",
+      "b": "cmtlyiij905x7qf5k3a7zij3z",
+      "source": "TEAMTAILOR",
+      "externalId": "d9727247-6c0d-4bd9-b4da-7a3cd3bf3869",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7wr054lqq5lilf91gh5",
+      "b": "cmtlyiiif05wvqf5keamhqvdm",
+      "source": "TEAMTAILOR",
+      "externalId": "159cddaa-e4d8-420f-b416-845dd725b85b",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7x0054pqq5lit5fpmr6",
+      "b": "cmtlyiiir05wzqf5k4idj2pw7",
+      "source": "TEAMTAILOR",
+      "externalId": "408dd7fb-9507-4a90-a2ee-f8a911a217d3",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a80f0561qq5lno01ybmu",
+      "b": "cmtlyiimk05yfqf5kms8c1qvh",
+      "source": "TEAMTAILOR",
+      "externalId": "678b54bf-a401-4726-a43c-9e9ef3d4fb75",
+      "activeA": true,
+      "activeB": true
+    },
+    {
+      "a": "cmtn5a7wi054hqq5lmji7rrg2",
+      "b": "cmtlyiii505wrqf5k0bhxhfiv",
+      "source": "TEAMTAILOR",
+      "externalId": "d05e2802-0595-4693-8588-56d232c268ed",
+      "activeA": true,
+      "activeB": true
+    }
+  ],
+  "interpretation": "The blocker is the application repair guard, not a remaining unique SQL index. A joint posting/employer repair must preserve both source representations and every old Job ID/history while counting each confirmed opening once."
+}

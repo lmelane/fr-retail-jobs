@@ -98,8 +98,9 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
       if ((from.kind === 'GROUP') !== (to.kind === 'GROUP')) throw new Error('A group and its brand cannot be merged');
       if (from.parentGroupId && from.parentGroupId !== to.parentGroupId) throw new Error('Parent relationship conflict requires a separate review');
     }
-    // The old unique(companyId, ATS, externalId) constraint can collide across
-    // feeds. Abort with the two real IDs; never delete a posting to make it fit.
+    // The legacy ATS/externalId tuple can overlap across feeds. Its SQL index
+    // is no longer unique; this is an application guard requiring a separate
+    // posting review before an employer merge can leave overlapping records.
     const keys = new Map<string, string>();
     for (const job of before.jobs) {
       const key = JSON.stringify([moves.get(job.companyId) ?? job.companyId, job.source, job.externalId]);

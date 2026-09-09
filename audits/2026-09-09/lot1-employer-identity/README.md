@@ -1,6 +1,6 @@
 # Lot 1 — identité employeur
 
-État de ce dossier au premier commit : audit mesuré en production, correctif développé et répété sur copie restaurée. Les corrections de production ne sont pas encore appliquées. Le journal de livraison ci-dessous sera complété après déploiement et vérification.
+Le [bilan de livraison](DELIVERY.md) contient l’état actuel et les preuves production. Les sections ci-dessous conservent les mesures et la première répétition qui ont précédé cette livraison.
 
 ## Mesures initiales
 

@@ -20,6 +20,7 @@ try {
       SELECT js.id, js."sourceKey",j."companyId",v.path,v.role,v.value#>>'{}' label
       FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" CROSS JOIN LATERAL (VALUES
         ('hiringOrganization.name','HIRING_ORGANIZATION',js.raw#>'{hiringOrganization,name}'),
+        ('_jobposting.hiringOrganization.name','HIRING_ORGANIZATION',js.raw#>'{_jobposting,hiringOrganization,name}'),
         ('organization.name','ORGANIZATION',js.raw#>'{organization,name}'),
         ('company.name','COMPANY',js.raw#>'{company,name}'),
         ('companyName','COMPANY',js.raw->'companyName'),('company','COMPANY',js.raw->'company'),
@@ -54,7 +55,7 @@ try {
     pair.reasons.push(bucket.split('\0')[0]);pairs.set(key,pair);
   }
   const active = new Map(snapshot.footprint.map(f=>[f.companyId,f.active]));
-  const report = { ...snapshot, rawLabelMetrics: { explicitPaths: 9, distinctLabels: new Set(snapshot.labels.map(l=>l.label)).size, sources: new Set(snapshot.labels.map(l=>l.sourceKey)).size, exhaustive: false, reason: 'Only explicit stored paths are measured; legacy Workday detail and unlisted adapter structures are not reconstructed.' }, candidatePairs:[...pairs.values()], candidatePairsWithBothActive:[...pairs.values()].filter(p=>(active.get(p.a.id)??0)>0&&(active.get(p.b.id)??0)>0).length };
+  const report = { ...snapshot, rawLabelMetrics: { explicitPaths: 10, distinctLabels: new Set(snapshot.labels.map(l=>l.label)).size, sources: new Set(snapshot.labels.map(l=>l.sourceKey)).size, exhaustive: false, reason: 'Only explicit stored paths are measured; legacy Workday detail and unlisted adapter structures are not reconstructed.' }, candidatePairs:[...pairs.values()], candidatePairsWithBothActive:[...pairs.values()].filter(p=>(active.get(p.a.id)??0)>0&&(active.get(p.b.id)??0)>0).length };
   mkdirSync(directory,{recursive:true});writeFileSync(`${directory}/inventory.json`,JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify({counts:report.counts,health:report.health,rawLabelMetrics:report.rawLabelMetrics,candidatePairs:pairs.size,candidatePairsWithBothActive:report.candidatePairsWithBothActive}));
 } finally { await p.$disconnect(); }

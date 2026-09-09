@@ -1,0 +1,74 @@
+{
+  "batchId": "lot1-smcp-parent-relations-20260909-v1",
+  "statement": "Official SMCP careers site explicitly names Sandro, Maje, Claudie Pierlot and Fursac. Link the four existing Maison IDs to the existing SMCP GROUP ID; keep all five identities distinct.",
+  "reviewedBy": "Codex / requested Lot 1 evidence review",
+  "reviewedAt": "2026-09-09T06:59:48.904Z",
+  "merges": [],
+  "aliases": [
+    {
+      "sourceKey": "sandro",
+      "rawName": "Sandro",
+      "companyId": "cmtk29nb80m1dnv2bg5xl385h"
+    },
+    {
+      "sourceKey": "sandro",
+      "rawName": "Maje",
+      "companyId": "cmtkf06ej0lqap22bicqm90nc"
+    },
+    {
+      "sourceKey": "sandro",
+      "rawName": "Claudie Pierlot",
+      "companyId": "cr5c9308138c86e24341e51b89"
+    },
+    {
+      "sourceKey": "sandro",
+      "rawName": "Fursac",
+      "companyId": "cr57e9ef0f339cdfa95081d842"
+    }
+  ],
+  "companies": [
+    {
+      "id": "cmtk29nb80m1dnv2bg5xl385h",
+      "parentGroupId": "crcafaa7a4ec667cf18ea56024"
+    },
+    {
+      "id": "cmtkf06ej0lqap22bicqm90nc",
+      "parentGroupId": "crcafaa7a4ec667cf18ea56024"
+    },
+    {
+      "id": "cr5c9308138c86e24341e51b89",
+      "parentGroupId": "crcafaa7a4ec667cf18ea56024"
+    },
+    {
+      "id": "cr57e9ef0f339cdfa95081d842",
+      "parentGroupId": "crcafaa7a4ec667cf18ea56024"
+    }
+  ],
+  "version": 1,
+  "sourceHashes": {
+    "sandro": "22da98c16cb934c661f1f54b3b7687f16085a623106b1bbacf02deac600dde3b"
+  },
+  "createdAt": "2026-09-09T07:05:02.502Z",
+  "companyIds": [
+    "cmtk29nb80m1dnv2bg5xl385h",
+    "cmtkf06ej0lqap22bicqm90nc",
+    "cr57e9ef0f339cdfa95081d842",
+    "cr5c9308138c86e24341e51b89",
+    "crcafaa7a4ec667cf18ea56024"
+  ],
+  "sourceKeys": [
+    "sandro"
+  ],
+  "beforeHash": "5933aaa99ff10e4691c06a3d0a8bd6aee6dfe3dec052a615c90215cbb2ed1908",
+  "jobCount": 583,
+  "activeJobCount": 568,
+  "sourceCount": 583,
+  "evidence": [
+    {
+      "url": "https://www.smcp.com/fr/talents/offres-d-emploi/",
+      "sha256": "bcfa99bb8723ec78973cae236b0391133b96cfd2411ce5baa8da3ae18df2ab6e",
+      "explanation": "Official group site names all four Maisons separately and presents their recruitment offers."
+    }
+  ],
+  "planHash": "55100c0d923c158193cf8cc5bd827323f80bf066268cb167748746828d38c74d"
+}

@@ -108,6 +108,12 @@ function toNormalized(campaign: Campaign, slug: string): NormalizedJob | null {
   return {
     externalId: String(campaign.id ?? campaign.slug ?? campaign.name),
     title: campaign.name,
+    // An entity may name a business unit (e.g. Promod - magasin), not a
+    // separate company. Preserve its claim for the reviewed alias resolver;
+    // do not create a new employer from this label on its own.
+    employerEvidence: campaign.entity?.name?.trim()
+      ? { rawName: campaign.entity.name, path: 'entity.name', rule: 'ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION' }
+      : undefined,
     location:
       [address?.city, address?.zip_code].filter(Boolean).join(', ') ??
       address?.formatted_address,
