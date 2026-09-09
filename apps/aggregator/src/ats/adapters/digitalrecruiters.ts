@@ -1,10 +1,11 @@
 import pLimit from 'p-limit';
+import { createHash } from 'node:crypto';
 import { fetchJson, fetchText } from '../../lib/http.js';
 import {
   extractJobPostings,
   normalizeJobPosting,
 } from '../../connectors/generic/jsonLdSitemap.js';
-import type { NormalizedJob } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
  * DigitalRecruiters (Cegid) career sites.
@@ -16,8 +17,15 @@ import type { NormalizedJob } from '../../types.js';
  * listing comes from one public API keyed by the careers hostname, which means
  * a new employer costs a config line rather than an adapter.
  *
- * Verified 2026-09-01 on careers.lacoste.com: count 471, items carrying title,
- * contract, location and a URL slug.
+ * NATIVE MODEL (measured on careers.lacoste.com, 2026-09-09, five pages of
+ * 100): the endpoint lists DIFFUSIONS, not announcements. `count` = 460
+ * diffusions, `id` = `<job_ad_id>-<diffusion>`; 453 distinct `job_ad_id`. The
+ * seven extra rows are the SAME announcement broadcast for several locations
+ * ("Japan" / "Tokyo" / "Shinjuku City", or twice for Aventura). One
+ * announcement is one opening: the job keeps `job_ad_id` as its identity, every
+ * diffusion is retained in RAW, the most specific location is displayed, and
+ * the enumeration proof counts diffusions and announcements separately — the
+ * publisher counter is never "corrected" to match the number of jobs.
  *
  * The listing has no description; the detail page supplies it, so callers that
  * need the full text fetch it per offer.
@@ -38,7 +46,7 @@ const HEADERS = {
   accept: 'application/json',
 };
 
-type DrItem = {
+export type DrItem = {
   id?: number | string;
   job_ad_id?: number | string;
   title?: string;
@@ -53,21 +61,28 @@ type DrItem = {
 
 type DrResponse = { count?: number; items?: DrItem[] };
 
-function toNormalized(item: DrItem, domainName: string, locale: string): NormalizedJob | null {
-  if (!item.title) return null;
+/** A diffusion URL of the form `<job_ad_id>/<diffusion_id>-slug` names a specific
+ * location; the bare `<job_ad_id>-slug` form is the announcement-level broadcast. */
+function isLocationSpecific(item: DrItem): boolean {
+  return typeof item.url === 'string' && /^\d+\/\d+-/.test(item.url);
+}
 
-  const id = item.job_ad_id ?? item.id;
-  const path = item.url ? `/${locale.slice(0, 2)}/annonce/${item.url}` : '';
-
+/** One job per announcement: the most specific diffusion is displayed, all are kept. */
+export function normalizeAnnouncement(diffusions: DrItem[], domainName: string, locale: string): NormalizedJob | null {
+  const primary = diffusions.find(isLocationSpecific) ?? diffusions[0];
+  if (!primary?.title) return null;
+  const id = primary.job_ad_id ?? primary.id;
+  const path = primary.url ? `/${locale.slice(0, 2)}/annonce/${primary.url}` : '';
+  const locations = [...new Set(diffusions.map((d) => d.location).filter((x): x is string => !!x))];
   return {
-    externalId: String(id ?? item.url ?? item.title),
-    title: item.title,
-    location: item.location,
+    externalId: String(id ?? primary.url ?? primary.title),
+    title: primary.title,
+    location: primary.location,
     // The API returns no country field; France detection falls back to the city,
     // which the location normaliser already handles.
-    contract: item.contract,
-    url: item.careers_site_url ?? `https://${domainName}${path}`,
-    raw: item,
+    contract: primary.contract,
+    url: primary.careers_site_url ?? `https://${domainName}${path}`,
+    raw: { ...primary, diffusions: diffusions.map((d) => ({ id: d.id, location: d.location, url: d.url })), locations },
   };
 }
 
@@ -119,7 +134,7 @@ async function attachDescriptions(
  */
 export async function fetchDigitalRecruitersJobs(
   config: Record<string, unknown>,
-): Promise<NormalizedJob[]> {
+): Promise<AdapterResult> {
   const domainName = String(config.domainName ?? config.origin ?? '')
     .replace(/^https?:\/\//, '')
     .replace(/\/$/, '');
@@ -129,45 +144,72 @@ export async function fetchDigitalRecruitersJobs(
    * A tenant serves its offers under its own locale; French first (most DR
    * tenants are French), but an empty fr_FR answer must not silence a
    * non-francophone tenant — no offer is dropped for its language (decision,
-   * 2026-09-03). An explicit config.locale skips the fallback.
+   * 2026-09-03). An explicit config.locale skips the fallback. The locale
+   * selects the display language, not a geographic subset: `fr_FR` on Lacoste
+   * lists the worldwide catalogue (Japan, Panama…) and `en_US` answers 400.
    */
   const locales = config.locale ? [String(config.locale)] : ['fr_FR', 'en_US'];
-  let jobs: NormalizedJob[] = [];
+  let result: AdapterResult | undefined;
   for (const locale of locales) {
-    jobs = await fetchAllPages(domainName, locale);
-    if (jobs.length > 0) break;
+    result = await fetchAllPages(domainName, locale);
+    if (result.jobs.length > 0) break;
   }
-
-  if (config.withDescriptions === false) return jobs;
-  return attachDescriptions(jobs, Number(config.detailConcurrency ?? 4));
+  const listing = result!;
+  if (config.withDescriptions === false) return listing;
+  return { ...listing, jobs: await attachDescriptions(listing.jobs, Number(config.detailConcurrency ?? 4)) };
 }
 
-async function fetchAllPages(domainName: string, locale: string): Promise<NormalizedJob[]> {
-  const jobs: NormalizedJob[] = [];
-  const seen = new Set<string>();
+async function fetchAllPages(domainName: string, locale: string): Promise<AdapterResult> {
+  const byAnnouncement = new Map<string, DrItem[]>();
+  const diffusionIds = new Set<string>();
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  const issues = new Set<string>();
+  let declaredTotal: number | undefined, pages = 0, rawCount = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
 
   for (let page = 1; page <= MAX_PAGES; page++) {
     const url = `${ENDPOINT}?domainName=${encodeURIComponent(domainName)}&limit=${PAGE_SIZE}&page=${page}&locale=${encodeURIComponent(locale)}`;
-    const response = await fetchJson<DrResponse>(url, {
-      method: 'POST',
-      headers: HEADERS,
-      body: '{}',
-    });
-
+    const response = await fetchJson<DrResponse>(url, { method: 'POST', headers: HEADERS, body: '{}' });
     const items = response.items ?? [];
-    let fresh = 0;
-
-    for (const item of items) {
-      const job = toNormalized(item, domainName, locale);
-      if (!job || seen.has(job.externalId)) continue;
-      seen.add(job.externalId);
-      jobs.push(job);
-      fresh++;
+    pages++; rawCount += items.length;
+    if (typeof response.count === 'number') {
+      if (declaredTotal === undefined) declaredTotal = response.count;
+      else if (declaredTotal !== response.count) issues.add('SOURCE_TOTAL_CHANGED');
     }
-
-    if (items.length < PAGE_SIZE || fresh === 0) break;
-    if (response.count !== undefined && jobs.length >= response.count) break;
+    const ids: string[] = [];
+    let fresh = 0;
+    for (const item of items) {
+      const announcement = item.job_ad_id ?? item.id;
+      if (!item.title || announcement === undefined || announcement === null) { rejectedRows.push({ reason: 'MISSING_TITLE_OR_ID', raw: item }); continue; }
+      const diffusion = String(item.id ?? `${announcement}:${item.url ?? ''}`);
+      ids.push(diffusion);
+      if (diffusionIds.has(diffusion)) { issues.add('REPEATED_DIFFUSION_ACROSS_PAGES'); continue; }
+      diffusionIds.add(diffusion); fresh++;
+      const key = String(announcement);
+      byAnnouncement.set(key, [...(byAnnouncement.get(key) ?? []), item]);
+    }
+    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: (page - 1) * PAGE_SIZE,
+      pagination: declaredTotal === undefined ? null : { start: (page - 1) * PAGE_SIZE, end: (page - 1) * PAGE_SIZE + items.length, total: declaredTotal },
+      ids, publisherCounter: typeof response.count === 'number' ? String(response.count) : '', componentCounters: [`diffusions=${diffusionIds.size}`, `announcements=${byAnnouncement.size}`] });
+    if (items.length < PAGE_SIZE) { termination = 'SHORT_PAGE'; break; }
+    if (fresh === 0) { termination = 'REPEATED_PAGE'; break; }
+    if (declaredTotal !== undefined && diffusionIds.size >= declaredTotal) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
   }
 
-  return jobs;
+  const jobs = [...byAnnouncement.entries()].map(([, diffusions]) => normalizeAnnouncement(diffusions, domainName, locale)).filter((j): j is NormalizedJob => j !== null);
+  const complete = declaredTotal !== undefined && diffusionIds.size === declaredTotal && issues.size === 0 && rejectedRows.length === 0 && termination !== 'PAGE_BUDGET_EXHAUSTED';
+  if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
+  return {
+    jobs, declaredTotal, rejectedRows, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED',
+    enumeration: {
+      method: 'PUBLISHER_JSON_PAGINATION_WITH_DIFFUSION_COUNT', endpoint: `${ENDPOINT}?domainName=${encodeURIComponent(domainName)}&locale=${encodeURIComponent(locale)}`,
+      pages, rawCount, termination, issues: [...issues],
+      // The publisher counts diffusions; jobs are announcements. Both are stated, neither is adjusted.
+      scopes: [
+        { scope: 'diffusions', declaredTotal: declaredTotal ?? -1, uniqueIds: diffusionIds.size, pages, complete },
+        { scope: 'announcements', declaredTotal: byAnnouncement.size, uniqueIds: byAnnouncement.size, pages, complete },
+      ],
+      pageEvidence,
+    },
+  };
 }
