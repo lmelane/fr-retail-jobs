@@ -182,8 +182,19 @@ type WorkdayDetail = {
  * every offer of the feed inherits the catalogue line's label and 1 300+
  * Richemont offers all read "Cartier".
  */
+/**
+ * The logo alt text names the brand, sometimes with the word "logo" glued to it
+ * ("Cartier Logo", "Richemont Logo", "Logo Pierre Fabre", "Jaeger LeCoultre logo"
+ * — 516 postings on 2026-09-09 whose new spellings the identity gate refused).
+ * The word is the image's, not the employer's.
+ */
+export function brandFromLogoAlt(alt: string | undefined): string | undefined {
+  const name = alt?.replace(/(^|\s)logo(\s|$)/gi, ' ').replace(/\s+/g, ' ').trim();
+  return name && !/^logo$/i.test(name) ? name : undefined;
+}
+
 export function brandFromWorkdayDetail(detail: WorkdayDetail): string | undefined {
-  const alt = detail.jobPostingInfo?.logoImage?.alt?.trim();
+  const alt = brandFromLogoAlt(detail.jobPostingInfo?.logoImage?.alt);
   if (alt) return alt;
   const legal = detail.hiringOrganization?.name?.trim();
   if (!legal) return undefined;

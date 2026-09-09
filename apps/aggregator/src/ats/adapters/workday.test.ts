@@ -65,7 +65,7 @@ describe('fetchWorkdayJobs apply URL', () => {
   });
 });
 
-import { brandFromWorkdayDetail } from './workday.js';
+import { brandFromWorkdayDetail, brandFromLogoAlt } from './workday.js';
 
 /**
  * Audit A-01 — on a group tenant, the offer belongs to its Maison. The detail
@@ -210,4 +210,13 @@ it('holds a replay without a detail path and clears only Workday holds after a s
   expect(retried.publicationHold).toBeUndefined();
   expect(retried.company).toBe('Coach Shanghai Limited 2');
   expect(unrelated.publicationHold).toBe('OTHER_IDENTITY_HOLD');
+});
+
+describe('brandFromLogoAlt — the word "logo" belongs to the image, not the employer', () => {
+  it('strips a leading or trailing "logo" whatever its case, keeps the brand otherwise intact', () => {
+    expect(brandFromLogoAlt('Cartier Logo')).toBe('Cartier'); expect(brandFromLogoAlt('Richemont Logo')).toBe('Richemont');
+    expect(brandFromLogoAlt('Logo Pierre Fabre')).toBe('Pierre Fabre'); expect(brandFromLogoAlt('Jaeger LeCoultre logo')).toBe('Jaeger LeCoultre'); expect(brandFromLogoAlt('HOKA Logo')).toBe('HOKA');
+    expect(brandFromLogoAlt('Van Cleef & Arpels')).toBe('Van Cleef & Arpels');
+  });
+  it('never returns an empty brand', () => { expect(brandFromLogoAlt('Logo')).toBeUndefined(); expect(brandFromLogoAlt('  ')).toBeUndefined(); expect(brandFromLogoAlt(undefined)).toBeUndefined(); });
 });

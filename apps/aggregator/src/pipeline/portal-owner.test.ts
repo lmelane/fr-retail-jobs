@@ -130,3 +130,20 @@ it('splits brands out of a correctly owned portal: the owner is re-evaluated per
  const redirected=await prisma.job.findUniqueOrThrow({where:{id:predecessor.id}});expect(redirected).toMatchObject({companyId:brand.companyId,mergedIntoId:second.id,isActive:false,clusterKey:'ACTUAL_BRAND|sales'});
  expect(await applyRepairPlan(prisma,plan,digest(plan),'test')).toMatchObject({alreadyApplied:true,written:0,sourceOwnerContradictions:0});
 });
+
+it('keeps a sub-label as a distinct brand: the attested related brand is recorded, the group stays the portal owner, no merge',async()=>{
+ const {company,source,job,spec}=await fixture();const sha=createHash('sha256').update('page').digest('hex'),observedAt=new Date().toISOString();
+ const second=await prisma.job.create({data:{companyId:company.id,externalId:'456',source:'SUCCESSFACTORS',title:'Movement',url:'https://careers.example.com/job/Milan-Sales/456/',fingerprint:'LEGACY_BRAND|movement',clusterKey:'LEGACY_BRAND|movement',isActive:true,firstSeenAt:new Date(),lastSeenAt:new Date(),sources:{create:{sourceKey:source.key,externalId:'456',url:'https://careers.example.com/job/Milan-Sales/456/',sourceTier:'EMPLOYER_DIRECT',isActive:true,firstSeenAt:new Date(),lastSeenAt:new Date(),raw:{}}}}});
+ spec.sources[0].postings=[
+  {externalId:'123',targetName:'Free Brand',targetKind:'BRAND',targetDomain:'freebrand.com',evidence:{url:'https://careers.example.com/job/Paris-Finance/123/',sha256:sha,property:'jsonld.hiringOrganization.name',value:'Free Brand',observedAt}},
+  {externalId:'456',targetName:'FB Movement',targetKind:'BRAND',relatedBrandName:'Free Brand',evidence:{url:'https://careers.example.com/job/Milan-Sales/456/',sha256:sha,property:'jsonld.hiringOrganization.name',value:'FB Movement',observedAt}}];
+ const good=spec.sources[0].postings;
+ spec.sources[0].postings=[{...good[1],relatedBrandName:'Unknown Parent'}];await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('attested related brand');
+ spec.sources[0].postings=good;
+ const plan=await planReviewedPortalOwners(prisma,spec);await applyRepairPlan(prisma,plan,digest(plan),'test');
+ const brand=await prisma.job.findUniqueOrThrow({where:{id:job.id},include:{company:true}});const sub=await prisma.job.findUniqueOrThrow({where:{id:second.id},include:{company:true}});
+ expect(brand.company.name).toBe('Free Brand');expect(sub.company.name).toBe('FB Movement');expect(sub.company.id).not.toBe(brand.company.id);
+ expect(sub.company).toMatchObject({parentGroup:'Actual Group',parentGroupId:brand.company.parentGroupId,identityReviewId:plan.batchId});
+ const obs=await prisma.sourceObservation.findFirst({where:{sourceKey:source.key,externalId:'456',raw:{path:['reviewedEmployer','reviewId'],equals:plan.batchId}}});
+ expect((obs?.raw as any).reviewedEmployer).toMatchObject({targetName:'FB Movement',attestedRelatedBrand:'Free Brand',attestedRelatedBrandId:brand.company.id});
+});
