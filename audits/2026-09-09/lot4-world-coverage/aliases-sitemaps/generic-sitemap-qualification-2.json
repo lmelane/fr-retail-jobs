@@ -1,0 +1,83 @@
+{
+ "at": "2026-09-09T20:13:18.032Z",
+ "results": {
+  "oniverse": {
+   "sitemapUrl": "https://careers.oniverse.it/sitemap.xml",
+   "seconds": 298,
+   "postings": 483,
+   "declaredTotal": 734,
+   "complete": false,
+   "truncated": true,
+   "rejected": {
+    "LISTED_PAGE_WITHOUT_JOBPOSTING": 238,
+    "LISTED_PAGE_FETCH_FAILED": 13
+   },
+   "enumeration": {
+    "method": "SITEMAP_URLSET_WITH_DETAIL_READ",
+    "pages": 1,
+    "termination": "LISTED_PAGES_MISSING",
+    "issues": [
+     "PAGE_FETCH_FAILURES=13",
+     "ENUMERATION_NOT_PROVEN"
+    ]
+   },
+   "withDescription": 467,
+   "withDate": 483,
+   "withLocation": 483,
+   "employers": [],
+   "sample": [
+    {
+     "id": "a80a898780a81eb3138b5fb4dfc815a1cd0e936c",
+     "title": "Verkäuferin (m/w/d) | CALZEDONIA Ingolstadt (12-40 Std./W.)",
+     "url": "https://careers.oniverse.it/en-GB/carriere/Verkäuferin_m_w_d_CALZEDONIA_Ingolstadt_12_40_Std_W_136990470.htm"
+    },
+    {
+     "id": "9b177150b43592afda6ec45387e6abd91e8f8d37",
+     "title": "Verkäuferin (m/w/d) | CALZEDONIA Darmstadt (10 - 40 Std./W.)",
+     "url": "https://careers.oniverse.it/en-GB/carriere/Verkäuferin_m_w_d_CALZEDONIA_Darmstadt_20_40_Std_W_144378013.htm"
+    },
+    {
+     "id": "55bbffae8f1d26a462c43966d9d388260651d254",
+     "title": "CUCITRICE/CUCITORE CAMPIONARISTA TEZENIS",
+     "url": "https://careers.oniverse.it/en-GB/carriere/CUCITRICE_CUCITORE_CAMPIONARISTA_TEZENIS_175408117.htm"
+    }
+   ]
+  },
+  "psycho-bunny": {
+   "sitemapUrl": "https://careers.psychobunny.com/jobs-sitemap.xml",
+   "seconds": 164,
+   "postings": 153,
+   "declaredTotal": 153,
+   "complete": true,
+   "truncated": false,
+   "rejected": {},
+   "enumeration": {
+    "method": "SITEMAP_URLSET_WITH_DETAIL_READ",
+    "pages": 1,
+    "termination": "ALL_LISTED_PAGES_READ",
+    "issues": []
+   },
+   "withDescription": 153,
+   "withDate": 153,
+   "withLocation": 153,
+   "employers": [],
+   "sample": [
+    {
+     "id": "fdda8333eb2bc960d5c046493188bcb0e64def85",
+     "title": "Sales Associate",
+     "url": "https://careers.psychobunny.com/job/1754/sales_associate"
+    },
+    {
+     "id": "6e68a14c36921ed30d7a6a572e15ceb8f207fe34",
+     "title": "Sales Associate",
+     "url": "https://careers.psychobunny.com/job/2995/sales_associate"
+    },
+    {
+     "id": "55fa116efe9074f5ba4d8a121c03f1332f4dcdc5",
+     "title": "Sales Associate",
+     "url": "https://careers.psychobunny.com/job/3032/sales_associate"
+    }
+   ]
+  }
+ }
+}

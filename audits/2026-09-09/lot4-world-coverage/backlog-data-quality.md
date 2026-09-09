@@ -29,3 +29,15 @@ Règles communes : aucune valeur n'est forcée, aucune date technique (`date_sta
 | # | Point ouvert | Témoins (production, 2026-09-09 19:50 UTC) | Cause | Critère de résolution |
 |---|---|---|---|---|
 | C1 | La marque Workday (`brandFromWorkdayDetail`, logo puis entité légale) rend des **entités juridiques** comme employeurs : « J Choo » 36, « Franchoo » 4, « Jimmy Choo Tokyo » 3, « Jimmy Choo (Shanghai) Trading Co. » 2, « Itachoo », « J Choo (Switzerland) », « Jimmy Choo Hungary KFT » ; « Michael Kors Stores California » 54, « Michael Kors (USA) » 37, « Michael Kors (Canada) » 37 | `byCompany` de `families-production-before-run.json` | Le repli sur l'entité légale (D45 : ligne « RATTACHÉ », pas une Maison) n'est pas passé par une revue d'identité pour ces tenants | Revue d'identité source-scopée (alias entité → marque, preuve = la page Workday nomme la marque et le site officiel), même mécanisme que D45 ; **aucune fusion par le nom** ; à traiter en lot Capri après le run des familles |
+
+## Kering (Eightfold `kering`) — libellé Maison absent sur 6 offres
+
+| # | Point ouvert | Témoins | Cause | Critère de résolution |
+|---|---|---|---|---|
+| K1 | 6 offres existantes (Saint Laurent ×2, Boucheron, Kering Corporate, Kering Eyewear…) dont le flux ne porte plus la propriété Maison au run du 2026-09-09 19:55 UTC : libellé « Kering » → la porte d'identité refuse le changement Maison → groupe, l'offre garde sa Maison | `families/families-production-failures.json` (`kering`, `EmployerIdentityReviewRequired`, proposed « Kering ») | Propriété `efcustomTextHouse` vide sur ces positions à ce run | Si la propriété revient, rien à faire (ré-attestation normale) ; si elle reste vide sur plusieurs runs, revue nominative : Maison confirmée par la page native ou rattachement au groupe — **jamais par le nom** |
+
+## Workday mono-marque — annonces retenues sans employeur dans le détail
+
+| # | Point ouvert | Témoins (run `a32c515d`, 2026-09-09 20:26 UTC) | Cause | Critère de résolution |
+|---|---|---|---|---|
+| M1 | `mango` : **27 annonces retenues** (`WORKDAY_EMPLOYER_ABSENT_IN_DETAIL`, non résolues → source « non complète ») ; `nordstrom` : 2 | événements `job.publication_held`, archivées en `SourceObservation`, ex. `STORE-MANAGER---MADRID-CENTRO_JR141415-1` | Le détail Workday ne porte ni logo ni entité légale ; la disposition de publication ne connaît pas de règle pour ce motif | Décision de modèle (Loïc) : sur un tenant Workday **mono-marque** (libellé de catalogue = la marque, aucune propriété de marque), une annonce sans employeur dans le détail peut-elle prendre le libellé de catalogue (règle universelle, jamais « si Mango ») ? Jusque-là : retenues, non publiées, non comptées comme erreurs |

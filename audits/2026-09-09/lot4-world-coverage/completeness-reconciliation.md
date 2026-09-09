@@ -82,9 +82,36 @@ Orchestrateur relancé automatiquement après le merge (`orchestration-plan-prob
 
 Restants par cause mesurée (à la révision `d825f58`) :
 - **Compteur éditeur supérieur au board épuisé** : `foot-locker-france` 2 839 lues / 2 850 déclarées, terminaison `EMPTY_PAGE` (le board rend une page vide avant le total annoncé — le correctif Phenom couvre la page *courte*, pas un total surévalué) ; `pvh` 1 374 / 1 440, toutes les pages listées lues. Critère de résolution : une seconde énumération indépendante (sitemap, total relu à la fin) qui confirme le nombre réellement servi, sinon le dossier reste « non prouvé », jamais « complet ».
-- **Workday à −1** : `nordstrom` 1 303 / 1 304, `swatch-group` 248 / 249 (déficit constant, chiffres qui bougent entre deux sondes : une offre comptée mais non servie). Même critère.
+- **Workday à −1 → expliqué (PR 63/64)** : l'adaptateur Workday n'avait aucune preuve de page. Avec la preuve (offset, ids, sha256, total éditeur, ids répétés, lignes sans `externalPath`), `nordstrom` re-sondé le 2026-09-09 19:46 UTC : **1 312 lignes annoncées, 1 312 lues sur 66 pages, 3 lignes sans `externalPath`** (ni identifiant, ni URL ouvrable par un candidat), 1 309 offres. Le « −3 » est nommé : ces lignes deviennent des `rejectedRows` (`ROW_WITHOUT_EXTERNAL_PATH`, RAW conservé) et l'énumération est prouvée quand chaque ligne annoncée a été lue une fois exactement (un id répété entre deux pages refuse toujours la preuve). Critère de clôture du dossier : reçu complet à la révision PR 64 + `SourceRun` complet en production.
+- **`swatch-group` 265 / 267 (adaptateur `swatchgroup`, pas Workday)** : `declaredTotal` = nombre de liens du job-finder Drupal, 2 pages de détail rendent `null` au parseur. Critère : les détails non parsés deviennent des `rejectedRows` avec URL et cause ; complet seulement si 0 rejet non expliqué. Dossier ouvert.
 - Les 22 autres dossiers (générique 15 dont 9 pages de départ sans listing ni sitemap, magnet ×2, taleo, wordpress, radancy, eqwa, altamira) restent dans le backlog avec leurs témoins (`tracker-v5/`).
 
 ### Incident du run borné Talentsoft/iCIMS
 
 Le run de validation (`99ae410d`, 5 sources) a été **interrompu à 18:35:11 UTC par l'auto-déploiement de la PR 60** sur le même service (détail, cause racine, corrections de code et de conduite dans `urbn-shared-hub.md` §1). État prouvé avant l'arrêt : `lagardere-travel-retail` 109/109 complet (identifiants RSS corrigés), `lagardere-duty-free` 9/9, `aeropostale` 20, `urbn-stores` 943 complet (DEGRADED : 23 nouvelles annonces refusées par la porte d'identité), `urbn-hub` énumération complète (1 375) mais écriture interrompue (563/1 449). Le run `urbn-hub` a été rejoué après la livraison URBN (PR 61) avec la garde de non-déploiement : **1 374/1 374, complet, 0 erreur, `SourceRun` OK** (`urbn-shared-hub.md` §5). `urbn-stores` est retirée (sous-ensemble strict du hub) : le périmètre actif passe à 422 sources.
+
+## Après les PR 63, 64 et 66 — les déficits ont une cause (2026-09-09, 20:00 → 20:20 UTC)
+
+Trois corrections communes, chacune vérifiée par re-sondage local de chaque source concernée (reçus à la révision livrée) :
+
+| Correction | Sources vérifiées | Avant → après |
+|---|---|---|
+| **Le répartiteur ne retire plus la preuve d'un adaptateur pour ses lignes rejetées** (une page de sitemap sans `JobPosting`, une ligne Workday sans chemin : des témoins expliqués, toujours présents dans le reçu) | `pvh` 1 375 offres / 1 441 pages listées (66 sans offre), `boots` 1 491 / 1 612 (121), `nars` 53 / 158 (105), `end-clothing` 21 / 22 (1) | partiel → **complet** (toutes les pages listées lues, rejets nommés) |
+| **Eightfold : preuve de page** (ids répétés, positions non lisibles) | `kering` | 1 030 / 1 031 sans cause → **1 033 / 1 033 complet** |
+| **Workday : lignes sans `externalPath` = lignes rejetées** ; **Phenom : ids répétés nommés** ; **Swatch : détails rejetés nommés** | `nordstrom` 1 310 / 1 311 (1 ligne sans chemin — re-sondage à la révision PR 66 en cours), `foot-locker-france` 2 850 entrées servies / 2 850 annoncées, **11 ids répétés** (11 offres jamais servies : preuve refusée, cause nommée), `swatch-group` 259 / 260 (1 fiche rejetée, cause nommée) | déficit muet → déficit expliqué (les deux derniers restent « non prouvés », à juste titre) |
+| **Sitemap `<loc>` décodé** (`&#214;`, `&amp;`) | `oniverse` (qualification locale) | 363 offres et 191 échecs de lecture → **483 offres, 13 échecs** |
+
+Réconciliation : **400 / 423 prouvées** (395 avant ; `nordstrom` 1 308 / 1 309 complet à la révision PR 66, 1 ligne sans chemin rejetée), 21 dossiers restants, 19 résolus depuis la ligne de base, 0 régression.
+
+### Sitemaps d'éditeur trouvés pour 5 sources génériques « en page de départ » (recherche lecture seule + qualification locale)
+
+| Source | Aujourd'hui (page de départ, non prouvé) | Sitemap trouvé | Qualification locale |
+|---|---|---|---|
+| `oniverse` | 21 | `careers.oniverse.it/sitemap.xml` (734 URLs) | **483 offres**, 238 pages sans offre, 13 échecs — à rejouer après décodage des `<loc>` en prod |
+| `psycho-bunny` | 10 | `careers.psychobunny.com/jobs-sitemap.xml` | **153 / 153 complet** |
+| `oska` | 7 | `www.oska.com/jobs-sitemap1.xml` | **35 / 35 complet** (deux locales `/jobs/` et `/de/jobs/` : identité par URL, à vérifier pour doublons) |
+| `bevilles-jewellers` | 23 | `careers.bevilles.com.au/sitemap.xml` | 23 / 23 complet |
+| `alberto` | 8 | `www.alberto-pants.com/sitemap-0.xml` | 6 offres / 80 pages (sitemap général), complet |
+| `attaquer`, `lumentee`, `kastner-oehler`, `marc-o-polo` | — | pas de sitemap d'offres (page unique, boutique, pages institutionnelles) | restent en page de départ, non prouvables |
+
+Patch de configuration (`sitemap-config-patch.mts`, lot `20260909-LOT4-GENERIC-SITEMAP-CONFIG-v1`) : répété sur clone puis appliqué en production avec sauvegarde fraîche, suivi d'un run borné.

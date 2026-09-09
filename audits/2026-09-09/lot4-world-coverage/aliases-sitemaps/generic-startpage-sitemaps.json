@@ -1,0 +1,202 @@
+{
+ "alberto": {
+  "sitemapsWithJobLikeUrls": [
+   {
+    "sitemap": "https://www.alberto-pants.com/sitemap-0.xml",
+    "urls": 80,
+    "jobLike": 6,
+    "sample": [
+     "https://www.alberto-pants.com/en/jobs-and-careers/",
+     "https://www.alberto-pants.com/en/jobs-and-careers/mitarbeiter-versand-lager/"
+    ]
+   }
+  ],
+  "probe": {
+   "url": "https://www.alberto-pants.com/en/jobs-and-careers/",
+   "http": "200",
+   "jobPostingJsonLd": true
+  },
+  "sitemapsScanned": 5
+ },
+ "attaquer": {
+  "sitemapsWithJobLikeUrls": [
+   {
+    "sitemap": "https://attaquercycling.com/sitemap_pages_1.xml?from=154778115&amp;to=718369620337",
+    "urls": 118,
+    "jobLike": 1,
+    "sample": [
+     "https://attaquercycling.com/pages/careers"
+    ]
+   },
+   {
+    "sitemap": "https://attaquercycling.com/sitemap_blogs_1.xml",
+    "urls": 123,
+    "jobLike": 1,
+    "sample": [
+     "https://attaquercycling.com/blogs/news/the-italian-job-behind-the-scenes-of-attaquers-lake-como-shoot"
+    ]
+   }
+  ],
+  "probe": {
+   "url": "https://attaquercycling.com/pages/careers",
+   "http": "200",
+   "jobPostingJsonLd": false
+  },
+  "sitemapsScanned": 8
+ },
+ "bevilles-jewellers": {
+  "sitemapsWithJobLikeUrls": [
+   {
+    "sitemap": "https://careers.bevilles.com.au/sitemap.xml",
+    "urls": 23,
+    "jobLike": 23,
+    "sample": [
+     "https://careers.bevilles.com.au/jobs/australia-wide-management-opportunities-australia-all-australia-qld-brisbane-metro-area-qld",
+     "https://careers.bevilles.com.au/jobs/manager-in-training-chermside-qld-brisbane-metro-area-qld-australia"
+    ]
+   }
+  ],
+  "probe": {
+   "url": "https://careers.bevilles.com.au/jobs/australia-wide-management-opportunities-australia-all-australia-qld-brisbane-metro-area-qld",
+   "http": "200",
+   "jobPostingJsonLd": true
+  },
+  "sitemapsScanned": 3
+ },
+ "kastner-ohler": {
+  "sitemapsWithJobLikeUrls": [
+   {
+    "sitemap": "https://www.kastner-oehler.at/sitemaps/sitemap-shop-home1.xml",
+    "urls": 626,
+    "jobLike": 5,
+    "sample": [
+     "https://www.kastner-oehler.at/asa-selection-essteller-26-5cm-saisons-sand-beige-7413710.html",
+     "https://www.kastner-oehler.at/asa-selection-essteller-coppa-26-5cm-kuroschwarz-schwarz-7348544.html"
+    ]
+   },
+   {
+    "sitemap": "https://www.kastner-oehler.at/sitemaps/sitemap-main1.xml",
+    "urls": 2196,
+    "jobLike": 31,
+    "sample": [
+     "https://www.kastner-oehler.at/shop-home-tisch-bar-porzellan-teller-dessertteller-fruehstuecksteller/",
+     "https://www.kastner-oehler.at/job-karriere/"
+    ]
+   }
+  ],
+  "probe": {
+   "url": "https://www.kastner-oehler.at/asa-selection-essteller-26-5cm-saisons-sand-beige-7413710.html",
+   "http": "200",
+   "jobPostingJsonLd": false
+  },
+  "sitemapsScanned": 9
+ },
+ "lumentee": {
+  "sitemapsWithJobLikeUrls": [],
+  "probe": null,
+  "sitemapsScanned": 3
+ },
+ "marc-o-polo": {
+  "sitemapsWithJobLikeUrls": [
+   {
+    "sitemap": "https://company.marc-o-polo.com/de/sitemap.xml",
+    "urls": 355,
+    "jobLike": 152,
+    "sample": [
+     "https://company.marc-o-polo.com/de/karriere",
+     "https://company.marc-o-polo.com/de/karriere/start-creating-with-us/unsere-jobs"
+    ]
+   },
+   {
+    "sitemap": "https://company.marc-o-polo.com/en/sitemap.xml",
+    "urls": 355,
+    "jobLike": 152,
+    "sample": [
+     "https://company.marc-o-polo.com/en/career",
+     "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs"
+    ]
+   }
+  ],
+  "probe": {
+   "url": "https://company.marc-o-polo.com/de/karriere",
+   "http": "200",
+   "jobPostingJsonLd": false
+  },
+  "sitemapsScanned": 5
+ },
+ "oniverse": {
+  "sitemapsWithJobLikeUrls": [
+   {
+    "sitemap": "https://careers.oniverse.it/sitemap.xml",
+    "urls": 735,
+    "jobLike": 735,
+    "sample": [
+     "https://careers.oniverse.it/en-GB/carriere/&#214;sterreich_157730240.htm",
+     "https://careers.oniverse.it/en-GB/carriere/WINE_SPECIALIST_SIGNORVINO_CASTEL_ROMANO_RM_176025842.htm"
+    ]
+   }
+  ],
+  "probe": {
+   "url": "https://careers.oniverse.it/en-GB/carriere/&#214;sterreich_157730240.htm",
+   "http": "400",
+   "jobPostingJsonLd": false
+  },
+  "sitemapsScanned": 3
+ },
+ "oska": {
+  "sitemapsWithJobLikeUrls": [
+   {
+    "sitemap": "https://www.oska.com/page-sitemap1.xml",
+    "urls": 105,
+    "jobLike": 5,
+    "sample": [
+     "https://www.oska.com/jobs/",
+     "https://www.oska.com/de/jobs/"
+    ]
+   },
+   {
+    "sitemap": "https://www.oska.com/jobs-sitemap1.xml",
+    "urls": 35,
+    "jobLike": 35,
+    "sample": [
+     "https://www.oska.com/jobs/modeberater-stgallen-ch/",
+     "https://www.oska.com/de/jobs/modeberater-stgallen-ch/"
+    ]
+   }
+  ],
+  "probe": {
+   "url": "https://www.oska.com/jobs/",
+   "http": "200",
+   "jobPostingJsonLd": false
+  },
+  "sitemapsScanned": 10
+ },
+ "psycho-bunny": {
+  "sitemapsWithJobLikeUrls": [
+   {
+    "sitemap": "https://careers.psychobunny.com/pages-sitemap.xml",
+    "urls": 2,
+    "jobLike": 2,
+    "sample": [
+     "https://careers.psychobunny.com",
+     "https://careers.psychobunny.com/job-search"
+    ]
+   },
+   {
+    "sitemap": "https://careers.psychobunny.com/jobs-sitemap.xml",
+    "urls": 153,
+    "jobLike": 153,
+    "sample": [
+     "https://careers.psychobunny.com/job/1754/sales_associate?change_lang=en",
+     "https://careers.psychobunny.com/job/2995/sales_associate?change_lang=en"
+    ]
+   }
+  ],
+  "probe": {
+   "url": "https://careers.psychobunny.com",
+   "http": "200",
+   "jobPostingJsonLd": false
+  },
+  "sitemapsScanned": 5
+ }
+}

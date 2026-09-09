@@ -1,0 +1,118 @@
+{
+ "alberto": {
+  "start": "https://www.alberto-pants.com/jobs-and-careers",
+  "robots": "200",
+  "robotsSitemaps": [
+   "https://alberto-pants.com/sitemap-index.xml"
+  ],
+  "sitemapXml": "200",
+  "sitemapIndexEntries": 0,
+  "jobLikeLocs": 0,
+  "cfg": {
+   "startUrl": "https://www.alberto-pants.com/jobs-and-careers"
+  }
+ },
+ "attaquer": {
+  "start": "https://attaquercycling.com/pages/careers",
+  "robots": "200",
+  "robotsSitemaps": [
+   "https://attaquercycling.com/sitemap.xml",
+   "https://attaquercycling.com/sitemap.xml",
+   "https://attaquercycling.com/sitemap.xml"
+  ],
+  "sitemapXml": "200",
+  "sitemapIndexEntries": 5,
+  "jobLikeLocs": 0,
+  "cfg": {
+   "startUrl": "https://attaquercycling.com/pages/careers"
+  }
+ },
+ "bevilles-jewellers": {
+  "start": "https://careers.bevilles.com.au/jobs/search?_gl=1%2A2x44re%2A_gcl_au%2AMjA5MDY4MjgwMi4xNzQ3Nzk1NjAxLjQyMzI4NDQ0Ny4xNzUxNDA5MTczLjE3NTE0MDkxNzM.",
+  "robots": "200",
+  "robotsSitemaps": [
+   "https://careers.bevilles.com.au/sitemap.xml"
+  ],
+  "sitemapXml": "200",
+  "sitemapIndexEntries": 0,
+  "jobLikeLocs": 23,
+  "cfg": {
+   "startUrl": "https://careers.bevilles.com.au/jobs/search?_gl=1%2A2x44re%2A_gcl_au%2AMjA5MDY4MjgwMi4xNzQ3Nzk1NjAxLjQyMzI4NDQ0Ny4xNzUxNDA5MTczLjE3NTE0MDkxNzM."
+  }
+ },
+ "kastner-ohler": {
+  "start": "https://www.kastner-oehler.at/job-karriere/angebot/backoffice-mitarbeiterin-graz-teilzeit/",
+  "robots": "200",
+  "robotsSitemaps": [
+   "https://www.kastner-oehler.at/sitemap.xml"
+  ],
+  "sitemapXml": "200",
+  "sitemapIndexEntries": 6,
+  "jobLikeLocs": 0,
+  "cfg": {
+   "startUrl": "https://www.kastner-oehler.at/job-karriere/angebot/backoffice-mitarbeiterin-graz-teilzeit/"
+  }
+ },
+ "lumentee": {
+  "start": "https://lumentee.com/careers/",
+  "robots": "200",
+  "robotsSitemaps": [
+   "https://lumentee.com/sitemap_index.xml"
+  ],
+  "sitemapXml": "404",
+  "sitemapIndexEntries": null,
+  "jobLikeLocs": null,
+  "cfg": {
+   "startUrl": "https://lumentee.com/careers/"
+  }
+ },
+ "marc-o-polo": {
+  "start": "https://company.marc-o-polo.com/en/career",
+  "robots": "200",
+  "robotsSitemaps": [
+   "https://company.marc-o-polo.com/de/sitemap.xml",
+   "https://company.marc-o-polo.com/en/sitemap.xml"
+  ],
+  "sitemapXml": "200",
+  "sitemapIndexEntries": 2,
+  "jobLikeLocs": 0,
+  "cfg": {
+   "startUrl": "https://company.marc-o-polo.com/en/career"
+  }
+ },
+ "oniverse": {
+  "start": "https://careers.oniverse.it/fr-FR/home",
+  "robots": "200",
+  "robotsSitemaps": [],
+  "sitemapXml": "200",
+  "sitemapIndexEntries": 0,
+  "jobLikeLocs": 735,
+  "cfg": {
+   "startUrl": "https://careers.oniverse.it/fr-FR/home"
+  }
+ },
+ "oska": {
+  "start": "https://www.oska.com/fr/jobs/",
+  "robots": "200",
+  "robotsSitemaps": [
+   "https://www.oska.com/sitemaps.xml"
+  ],
+  "sitemapXml": "200",
+  "sitemapIndexEntries": 6,
+  "jobLikeLocs": 1,
+  "cfg": {
+   "startUrl": "https://www.oska.com/fr/jobs/"
+  }
+ },
+ "psycho-bunny": {
+  "start": "https://careers.psychobunny.com/job-search",
+  "robots": "200",
+  "robotsSitemaps": [],
+  "sitemapXml": "200",
+  "sitemapIndexEntries": 2,
+  "jobLikeLocs": 2,
+  "cfg": {
+   "startUrl": "https://careers.psychobunny.com/job-search"
+  }
+ }
+}

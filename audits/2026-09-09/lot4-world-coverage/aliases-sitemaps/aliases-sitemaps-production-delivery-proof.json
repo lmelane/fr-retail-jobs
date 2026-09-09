@@ -1,0 +1,221 @@
+{
+  "at": "2026-09-09T20:36:59.973360+00:00",
+  "applicationCommit": "3e44e4ba544e2067846a5e55d47e4064840e16b8",
+  "applicationMerge": "3e44e4ba544e2067846a5e55d47e4064840e16b8",
+  "nativeRunId": "a32c515d-e0a4-4d0c-a0b9-2b971d02652a",
+  "deploymentId": "f5ea340f-8101-4792-b35d-433ad731d074",
+  "startedAt": "2026-09-09T20:26:46.863Z",
+  "finishedAt": "2026-09-09T20:36:23.835Z",
+  "status": "COMPLETED_WITH_ERRORS",
+  "sources": {
+    "mango": {
+      "stats": {
+        "fetched": 1627,
+        "created": 56,
+        "updated": 1543,
+        "merged": 1,
+        "errors": 1,
+        "complete": false,
+        "truncated": false,
+        "declaredTotal": 1628,
+        "withDescription": 1600,
+        "withCountry": 1600,
+        "withDate": 1600
+      },
+      "enumeration": {
+        "fetched": 1627,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 1628
+      }
+    },
+    "nordstrom": {
+      "stats": {
+        "fetched": 1303,
+        "created": 108,
+        "updated": 1193,
+        "merged": 0,
+        "errors": 5,
+        "complete": false,
+        "truncated": false,
+        "declaredTotal": 1308,
+        "withDescription": 1301,
+        "withCountry": 1301,
+        "withDate": 1301
+      },
+      "enumeration": {
+        "fetched": 1303,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 1308
+      }
+    },
+    "oska": {
+      "stats": {
+        "fetched": 35,
+        "created": 28,
+        "updated": 7,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 35,
+        "withDescription": 35,
+        "withCountry": 35,
+        "withDate": 35
+      },
+      "enumeration": {
+        "fetched": 35,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 35
+      }
+    },
+    "alberto": {
+      "stats": {
+        "fetched": 6,
+        "created": 4,
+        "updated": 2,
+        "merged": 0,
+        "errors": 74,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 80,
+        "withDescription": 0,
+        "withCountry": 6,
+        "withDate": 6
+      },
+      "enumeration": {
+        "fetched": 6,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 80
+      }
+    },
+    "psycho-bunny": {
+      "stats": {
+        "fetched": 153,
+        "created": 153,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 153,
+        "withDescription": 153,
+        "withCountry": 153,
+        "withDate": 153
+      },
+      "enumeration": {
+        "fetched": 153,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 153
+      }
+    },
+    "capri-michael-kors": {
+      "stats": {
+        "fetched": 512,
+        "created": 7,
+        "updated": 505,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 512,
+        "withDescription": 512,
+        "withCountry": 512,
+        "withDate": 512
+      },
+      "enumeration": {
+        "fetched": 512,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 512
+      }
+    },
+    "bevilles-jewellers": {
+      "stats": {
+        "fetched": 23,
+        "created": 0,
+        "updated": 23,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 23,
+        "withDescription": 23,
+        "withCountry": 23,
+        "withDate": 23
+      },
+      "enumeration": {
+        "fetched": 23,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 23
+      }
+    },
+    "capri-jimmy-choo": {
+      "stats": {
+        "fetched": 51,
+        "created": 1,
+        "updated": 50,
+        "merged": 0,
+        "errors": 0,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 51,
+        "withDescription": 51,
+        "withCountry": 51,
+        "withDate": 51
+      },
+      "enumeration": {
+        "fetched": 51,
+        "complete": true,
+        "truncated": false,
+        "declaredTotal": 51
+      }
+    },
+    "oniverse": {
+      "stats": {
+        "fetched": 482,
+        "created": 398,
+        "updated": 0,
+        "merged": 84,
+        "errors": 252,
+        "complete": false,
+        "truncated": true,
+        "declaredTotal": 734,
+        "withDescription": 466,
+        "withCountry": 418,
+        "withDate": 482
+      },
+      "enumeration": {
+        "fetched": 482,
+        "complete": false,
+        "truncated": true,
+        "declaredTotal": 734
+      }
+    }
+  },
+  "logProof": {
+    "railwayLines": 64,
+    "maxLinesPerSecond": 10,
+    "droppedMessageWarnings": 0,
+    "durableEvents": 88,
+    "persistenceFailures": 0
+  },
+  "globalWorkersRemainPaused": true,
+  "writeFailuresBySource": {
+    "mango": 1,
+    "nordstrom": 5,
+    "oska": 0,
+    "alberto": 74,
+    "psycho-bunny": 0,
+    "capri-michael-kors": 0,
+    "bevilles-jewellers": 0,
+    "capri-jimmy-choo": 0,
+    "oniverse": 252
+  },
+  "remaining": "FP Movement, Anthro Weddings, Maeve credited to their parent brand (reversible by alias); Reclectic and Menus and Venues identity/perimeter left to the owner; one Urban Outfitters posting held under URBN (legacy FashionJobs attestation)."
+}

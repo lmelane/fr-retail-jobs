@@ -1,0 +1,133 @@
+{
+  "at": "2026-09-09T20:24:50.591Z",
+  "environment": "production",
+  "commit": "3e44e4ba544e2067846a5e55d47e4064840e16b8",
+  "batch": "20260909-LOT4-GENERIC-SITEMAP-CONFIG-v1",
+  "sources": {
+    "oniverse": {
+      "before": {
+        "config": {
+          "startUrl": "https://careers.oniverse.it/fr-FR/home"
+        },
+        "hash": "f0af698765b3c25711e9858ce1a35f8a091cbe3ed4472beb11ab18204d3ca2c8",
+        "lastRunJobs": 20,
+        "status": "ACTIVE"
+      },
+      "after": {
+        "config": {
+          "sitemapUrl": "https://careers.oniverse.it/sitemap.xml",
+          "concurrency": 4,
+          "previousStartUrl": "https://careers.oniverse.it/fr-FR/home"
+        },
+        "hash": "d7bedb4d4d3bde2a908ace3466470e3978cb1df3ec139d08602aa27c7c0bf77b"
+      },
+      "qualification": {
+        "postings": 483,
+        "declaredTotal": 734,
+        "complete": false,
+        "rejected": {
+          "LISTED_PAGE_WITHOUT_JOBPOSTING": 238,
+          "LISTED_PAGE_FETCH_FAILED": 13
+        }
+      }
+    },
+    "psycho-bunny": {
+      "before": {
+        "config": {
+          "startUrl": "https://careers.psychobunny.com/job-search"
+        },
+        "hash": "ded18e1d9bd9202fdb81eac2608a35e23b20ee681e8839305a210a4583bd3d08",
+        "lastRunJobs": 10,
+        "status": "ACTIVE"
+      },
+      "after": {
+        "config": {
+          "sitemapUrl": "https://careers.psychobunny.com/jobs-sitemap.xml",
+          "concurrency": 4,
+          "previousStartUrl": "https://careers.psychobunny.com/job-search"
+        },
+        "hash": "c61f37ce15a8c0fa5782a9aab5cf951142fb4ffad222bdfbe0d61776f11bf60f"
+      },
+      "qualification": {
+        "postings": 153,
+        "declaredTotal": 153,
+        "complete": true,
+        "rejected": {}
+      }
+    },
+    "oska": {
+      "before": {
+        "config": {
+          "startUrl": "https://www.oska.com/fr/jobs/"
+        },
+        "hash": "646b96e3e08fbb18be268a2b3bacbf159d7cf61ab19b4b5415e6c181365f87c6",
+        "lastRunJobs": 7,
+        "status": "ACTIVE"
+      },
+      "after": {
+        "config": {
+          "sitemapUrl": "https://www.oska.com/jobs-sitemap1.xml",
+          "concurrency": 4,
+          "previousStartUrl": "https://www.oska.com/fr/jobs/"
+        },
+        "hash": "4c2df1d1bbc0b2c01a8cec6464dbd8c863293214e32bb608e06df81f6bbfb622"
+      },
+      "qualification": {
+        "postings": 35,
+        "declaredTotal": 35,
+        "complete": true,
+        "rejected": {}
+      }
+    },
+    "bevilles-jewellers": {
+      "before": {
+        "config": {
+          "startUrl": "https://careers.bevilles.com.au/jobs/search?_gl=1%2A2x44re%2A_gcl_au%2AMjA5MDY4MjgwMi4xNzQ3Nzk1NjAxLjQyMzI4NDQ0Ny4xNzUxNDA5MTczLjE3NTE0MDkxNzM."
+        },
+        "hash": "1c58fa8da4e31944d14f2dc689f472b14f23e8f76f7383177ad18df58ccb0daa",
+        "lastRunJobs": 24,
+        "status": "ACTIVE"
+      },
+      "after": {
+        "config": {
+          "sitemapUrl": "https://careers.bevilles.com.au/sitemap.xml",
+          "concurrency": 4,
+          "previousStartUrl": "https://careers.bevilles.com.au/jobs/search?_gl=1%2A2x44re%2A_gcl_au%2AMjA5MDY4MjgwMi4xNzQ3Nzk1NjAxLjQyMzI4NDQ0Ny4xNzUxNDA5MTczLjE3NTE0MDkxNzM."
+        },
+        "hash": "031ed2c65b0be2ec578e34e002be42fc96b7a779f3ccc4c80dd2cdb7f3c27e66"
+      },
+      "qualification": {
+        "postings": 23,
+        "declaredTotal": 23,
+        "complete": true,
+        "rejected": {}
+      }
+    },
+    "alberto": {
+      "before": {
+        "config": {
+          "startUrl": "https://www.alberto-pants.com/jobs-and-careers"
+        },
+        "hash": "834db082e239f03ec80d95b2964b77adc1227d58ff95740cf80ac850edbf84d5",
+        "lastRunJobs": 8,
+        "status": "ACTIVE"
+      },
+      "after": {
+        "config": {
+          "sitemapUrl": "https://www.alberto-pants.com/sitemap-0.xml",
+          "concurrency": 4,
+          "previousStartUrl": "https://www.alberto-pants.com/jobs-and-careers"
+        },
+        "hash": "ae6d30901f42691f5b460178537f536fd024c1205b560039eeee92bf4055a51d"
+      },
+      "qualification": {
+        "postings": 6,
+        "declaredTotal": 80,
+        "complete": false,
+        "rejected": {
+          "LISTED_PAGE_WITHOUT_JOBPOSTING": 74
+        }
+      }
+    }
+  }
+}

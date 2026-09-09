@@ -1,0 +1,513 @@
+{
+  "at": "2026-09-09T20:36:58.510Z",
+  "pipelineRun": {
+    "id": "a32c515d-e0a4-4d0c-a0b9-2b971d02652a",
+    "status": "COMPLETED_WITH_ERRORS",
+    "startedAt": "2026-09-09T20:26:46.863Z",
+    "finishedAt": "2026-09-09T20:36:23.835Z",
+    "revision": "3e44e4ba544e2067846a5e55d47e4064840e16b8"
+  },
+  "writeFailures": [],
+  "sourceRuns": [
+    {
+      "sourceKey": "alberto",
+      "status": "DEGRADED",
+      "fetched": 6,
+      "accepted": 6,
+      "declaredTotal": 80,
+      "complete": true,
+      "truncated": false,
+      "errors": 74,
+      "note": "74 erreurs de collecte ou d’écriture · desc 0% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "oska",
+      "status": "OK",
+      "fetched": 35,
+      "accepted": 35,
+      "declaredTotal": 35,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "bevilles-jewellers",
+      "status": "OK",
+      "fetched": 23,
+      "accepted": 23,
+      "declaredTotal": 23,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "status": "OK",
+      "fetched": 51,
+      "accepted": 51,
+      "declaredTotal": 51,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "status": "OK",
+      "fetched": 512,
+      "accepted": 512,
+      "declaredTotal": 512,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "psycho-bunny",
+      "status": "OK",
+      "fetched": 153,
+      "accepted": 153,
+      "declaredTotal": 153,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "oniverse",
+      "status": "DEGRADED",
+      "fetched": 482,
+      "accepted": 482,
+      "declaredTotal": 734,
+      "complete": false,
+      "truncated": true,
+      "errors": 252,
+      "note": "252 erreurs de collecte ou d’écriture · desc 97% date 100% pays 87% url 100%"
+    },
+    {
+      "sourceKey": "nordstrom",
+      "status": "DEGRADED",
+      "fetched": 1303,
+      "accepted": 1301,
+      "declaredTotal": 1308,
+      "complete": false,
+      "truncated": false,
+      "errors": 5,
+      "note": "5 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "mango",
+      "status": "DEGRADED",
+      "fetched": 1627,
+      "accepted": 1600,
+      "declaredTotal": 1628,
+      "complete": false,
+      "truncated": false,
+      "errors": 1,
+      "note": "1 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%"
+    }
+  ],
+  "active": [
+    {
+      "sourceKey": "alberto",
+      "active": 9,
+      "reattested": 6,
+      "created": 4
+    },
+    {
+      "sourceKey": "bevilles-jewellers",
+      "active": 24,
+      "reattested": 23,
+      "created": 0
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "active": 52,
+      "reattested": 51,
+      "created": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "active": 529,
+      "reattested": 512,
+      "created": 7
+    },
+    {
+      "sourceKey": "mango",
+      "active": 1686,
+      "reattested": 1600,
+      "created": 57
+    },
+    {
+      "sourceKey": "nordstrom",
+      "active": 1535,
+      "reattested": 1301,
+      "created": 108
+    },
+    {
+      "sourceKey": "oniverse",
+      "active": 522,
+      "reattested": 482,
+      "created": 482
+    },
+    {
+      "sourceKey": "oska",
+      "active": 35,
+      "reattested": 35,
+      "created": 28
+    },
+    {
+      "sourceKey": "psycho-bunny",
+      "active": 165,
+      "reattested": 153,
+      "created": 153
+    }
+  ],
+  "observations": [
+    {
+      "sourceKey": "alberto",
+      "rule": "LEGACY_UNREVIEWED",
+      "n": 6
+    },
+    {
+      "sourceKey": "bevilles-jewellers",
+      "rule": "LEGACY_UNREVIEWED",
+      "n": 23
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "rule": "REVIEWED_ALIAS",
+      "n": 3
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "rule": "REVIEWED_ALIAS",
+      "n": 311
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "rule": "LEGACY_UNREVIEWED",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "rule": "REVIEWED_ALIAS",
+      "n": 1254
+    },
+    {
+      "sourceKey": "mango",
+      "rule": "LEGACY_UNREVIEWED",
+      "n": 329
+    },
+    {
+      "sourceKey": "nordstrom",
+      "rule": "REVIEWED_ALIAS",
+      "n": 1301
+    },
+    {
+      "sourceKey": "oniverse",
+      "rule": "LEGACY_UNREVIEWED",
+      "n": 482
+    },
+    {
+      "sourceKey": "oska",
+      "rule": "LEGACY_UNREVIEWED",
+      "n": 35
+    },
+    {
+      "sourceKey": "psycho-bunny",
+      "rule": "LEGACY_UNREVIEWED",
+      "n": 153
+    }
+  ],
+  "byCompany": [
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "J Choo",
+      "n": 34
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Franchoo",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Tokyo",
+      "n": 3
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo (Shanghai) Trading Co.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Itachoo",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "J Choo (Switzerland)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Florence",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Hungary KFT",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Michael Kors",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors",
+      "n": 355
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Stores California",
+      "n": 54
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (UK)",
+      "n": 36
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Germany)",
+      "n": 27
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Italy) srl con socio unico",
+      "n": 13
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Spain, S.L.U.",
+      "n": 12
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Europe)",
+      "n": 5
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Switzerland)",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Austria)",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Portugal)",
+      "n": 3
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Netherlands)",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Poland) sp. z. o.o.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Lithuania) UAB",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Hungary) Kft",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Czech Republic) s.r.o.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Canada)",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (USA)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (HongKong)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Sweden)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Yuhanhoesa",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "Mango",
+      "n": 1338
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO TR TEKSTIL TICARET LTD.S",
+      "n": 84
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MNG MANGO BELGIQUE S.P.R.L",
+      "n": 75
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO NY",
+      "n": 75
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO MNG",
+      "n": 19
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO ÖSTERRREICH HANDELS.",
+      "n": 13
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO Polska Sp.z.o.o.",
+      "n": 11
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO MODA D.O.O.",
+      "n": 10
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO LUXEMBOURG S.à.r.l.",
+      "n": 8
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO HUNGARY Kft.",
+      "n": 8
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO GARMENTS HELLAS E.P.E.",
+      "n": 7
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO GARMENTS ROM.",
+      "n": 5
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MNG-MANGO",
+      "n": 5
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO MERITXELL, S.L.U",
+      "n": 5
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO SVERIGE",
+      "n": 4
+    },
+    {
+      "sourceKey": "mango",
+      "name": "Mango Korea",
+      "n": 4
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO (CZ) s.r.o.",
+      "n": 4
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO SL D.O.O.",
+      "n": 3
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MNG MANGO IRELAND",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO BULGARIA EOOD",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO BULGARIA EOOD (EUR)",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO DANMARK APS",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGONOR Comércio de Vestuário",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO NORGE A.S.",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO SLOVENSKO, s.r.o.",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO UKRAINE TOV",
+      "n": 1
+    },
+    {
+      "sourceKey": "nordstrom",
+      "name": "Nordstrom",
+      "n": 1535
+    }
+  ],
+  "activeTotal": 75010
+}
