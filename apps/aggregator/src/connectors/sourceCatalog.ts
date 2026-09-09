@@ -102,6 +102,7 @@ export function loadSourceCatalog(): CatalogSource[] {
  * description included. Everything else falls back to sitemap + JSON-LD.
  */
 const API_KINDS = new Set([
+  'harri',
   'flatchr',
   'jobaffinity-wordpress',
   'greenhouse',

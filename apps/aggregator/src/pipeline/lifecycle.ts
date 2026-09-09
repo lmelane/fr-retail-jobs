@@ -1,6 +1,6 @@
 /** A catalogue decision cannot establish an employer closure. All writers use
  * these transitions so source retirement and a fresh attestation agree. */
-export type WithdrawalReason = 'SOURCE_RETIRED' | 'IDENTITY_CONTRADICTED' | 'OUT_OF_SCOPE' | 'ATTESTATION_MISSING';
+export type WithdrawalReason = 'SOURCE_RETIRED' | 'SOURCE_UNLISTED' | 'IDENTITY_CONTRADICTED' | 'OUT_OF_SCOPE' | 'ATTESTATION_MISSING';
 export type DeactivationDisposition = { kind: 'CLOSED' } | { kind: 'WITHDRAWN'; reason: WithdrawalReason };
 type State = { isActive: boolean; closedAt: Date | null; withdrawnAt: Date | null };
 

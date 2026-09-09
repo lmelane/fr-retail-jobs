@@ -39,3 +39,28 @@ it('invalidates the plan when tenant configuration or archived proof changes',as
  await prisma.source.update({where:{id:source.id},data:{config:{origin:'https://different.example.com'}}});
  await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('Source configuration changed');
 });
+it('separates a proven homonym and withdraws its source while preserving the intended brand and real closure history',async()=>{
+ const {company,source,job,spec}=await fixture();
+ spec.sources[0].targetName='Actual Software Employer';spec.sources[0].targetKind='OTHER';
+ spec.sources[0].withdrawal={reason:'IDENTITY_CONTRADICTED',statement:'The observed portal belongs to a different legal employer, not the reviewed sector brand.'};
+ const plan=await planReviewedPortalOwners(prisma,spec);await applyRepairPlan(prisma,plan,digest(plan),'test');
+ const after=await prisma.job.findUniqueOrThrow({where:{id:job.id},include:{company:true,sources:true}});
+ expect(after.company).toMatchObject({name:'Actual Software Employer',kind:'OTHER'});
+ expect(after).toMatchObject({isActive:false,closedAt:null,withdrawalReason:'IDENTITY_CONTRADICTED',firstSeenAt:job.firstSeenAt});
+ expect(after.withdrawnAt).toEqual(new Date(spec.reviewedAt));expect(after.sources[0]).toMatchObject({isActive:false,raw:{original:'preserve me'}});
+ expect(await prisma.company.findUniqueOrThrow({where:{id:company.id}})).toMatchObject({name:'Legacy Brand',kind:'BRAND',mergedIntoId:null});
+ expect(await prisma.source.findUniqueOrThrow({where:{id:source.id}})).toMatchObject({status:'RETIRED'});
+ expect(await prisma.jobEvent.count({where:{jobId:job.id,type:'CLOSED'}})).toBe(0);
+ expect(await applyRepairPlan(prisma,plan,digest(plan),'test')).toMatchObject({alreadyApplied:true,written:0});
+});
+it('keeps reviewed homonyms distinct even when legacy legal-suffix normalization gives the same key',async()=>{
+ const {company,job,spec}=await fixture();
+ await prisma.company.update({where:{id:company.id},data:{name:'Example',canonicalKey:'EXAMPLE',fashionjobsUrl:'resolved:EXAMPLE',domain:'example.org'}});
+ spec.sources[0].targetName='Example GmbH';spec.sources[0].targetKind='OTHER';spec.sources[0].identityScope='OFFICIAL_DOMAIN';
+ const plan=await planReviewedPortalOwners(prisma,spec);await applyRepairPlan(prisma,plan,digest(plan),'test');
+ const after=await prisma.job.findUniqueOrThrow({where:{id:job.id},include:{company:true}});
+ expect(after.company).toMatchObject({name:'Example GmbH',domain:'example.com',kind:'OTHER'});
+ expect(after.company.canonicalKey).toMatch(/^REVIEWED_[a-f0-9]{64}$/);expect(after.companyId).not.toBe(company.id);
+ expect(await prisma.company.findUniqueOrThrow({where:{id:company.id}})).toMatchObject({name:'Example',domain:'example.org',mergedIntoId:null});
+ expect(await applyRepairPlan(prisma,plan,digest(plan),'test')).toMatchObject({alreadyApplied:true,written:0});
+});

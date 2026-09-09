@@ -18,7 +18,7 @@ export type RepairPlan = {
   reviewDocument?: { statement: string; evidence: Array<{ url: string; artifactText: string; sha256: string; explanation: string }>; reviewedBy: string; reviewedAt: string };
   evidence: Row; invariants: ('oracle' | 'lifecycle' | 'smcp' | 'excluded-identities' | 'source-owners' | 'france-filter')[];
   excludedSourceKeys?: string[];
-  ownerRules?: { sourceKey: string; name: string; departmentMap?: Record<string, string> }[];
+  ownerRules?: { sourceKey: string; name: string; canonicalKey?: string; departmentMap?: Record<string, string>; includeInactive?: boolean }[];
   observations?: { sourceKey: string; externalId: string; raw: Prisma.InputJsonValue; observedAt: string }[];
 };
 
@@ -73,10 +73,10 @@ export async function verifyRepair(prisma: Prisma.TransactionClient, invariants:
   if (invariants.includes('source-owners')) {
     if (!ownerRules.length) throw new Error('Source owner invariant needs reviewed rules');
     for (const rule of ownerRules) {
-      const sources = await prisma.jobSource.findMany({ where: { sourceKey: rule.sourceKey, isActive: true, job: { isActive: true } }, select: { id: true, raw: true, job: { select: { company: { select: { canonicalKey: true } } } } } });
+      const sources = await prisma.jobSource.findMany({ where: { sourceKey: rule.sourceKey, ...(!rule.includeInactive ? { isActive: true, job: { isActive: true } } : {}) }, select: { id: true, raw: true, job: { select: { company: { select: { canonicalKey: true } } } } } });
       for (const source of sources) {
         const name = leverEmployer((source.raw ?? {}) as LeverJob, rule.departmentMap) ?? rule.name;
-        if (source.job.company.canonicalKey !== resolveCompany(name).companyId) throw new Error(`Source owner invariant failed: ${source.id}`);
+        if (source.job.company.canonicalKey !== (rule.canonicalKey ?? resolveCompany(name).companyId)) throw new Error(`Source owner invariant failed: ${source.id}`);
       }
     }
     result.sourceOwnerContradictions = 0;

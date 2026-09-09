@@ -84,3 +84,14 @@ Le run conserve ses 15 événements dans le journal durable, dont les deux preuv
 | Exclusion du catalogue assimilée à une fermeture | Non | Non | Non | Non | 371 corrections historiques avec `closedAt` sans événement CLOSED |
 
 Dernière cause racine identifiée : le retrait d'une source et l'exclusion métier utilisent encore des champs de fermeture. Une lecture de production retrouve **371 offres exclues pour homonymie avec `closedAt` et sans événement `CLOSED`**. L'agrégat des fermetures se base sur `closedAt` : ces exclusions peuvent donc entrer dans les statistiques de fermetures. Il faut séparer retrait de publication et fermeture constatée, conserver les preuves historiques et corriger cette confusion avant clôture du lot. Aucun nouveau cas d'homonymie ne sera traité par cette ancienne procédure.
+
+
+## Second correctif livré : retrait du catalogue ≠ fermeture employeur
+
+PR #50, main `1ccf8cbe6fef5dc25c16f5f73a69a1cb62db80e5`, quatre services Railway SUCCESS. 371 exclusions administratives réparées en production ; aucune modification de visibilité ou perte d’offre. Les 74132 offres actives et les 10952 offres France sont inchangées. Rejeu à zéro écriture, empreintes RAW/historiques/sources identiques. Voir [le rapport](withdrawal-lifecycle.md) et [les preuves de production](withdrawal-production-proof.json).
+
+| Finding | Fixé ? | Commit applicatif | Main ? | Déployé ? | Données réparées ? | Preuve prod |
+|---|---|---|---|---|---|---|
+| Retraits administratifs comptés comme fermetures ; republications comptées comme reposts | Oui pour les écrivains identifiés | 146e6b0 | Oui, 1ccf8cb | Oui, 4 services | Oui, 371 reçus | withdrawal-production-proof.json |
+
+La qualification des autres homonymes, des portails manquants et des flux incomplets continue. Ce checkpoint ne clôture pas le lot 4.

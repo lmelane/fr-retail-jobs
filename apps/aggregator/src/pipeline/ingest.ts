@@ -2,6 +2,7 @@ import { KIND_TO_ATS } from '../ats/catalogKinds.js';
 import { loadOccupationTaxonomy, type CompiledOccupationTaxonomy } from '@catwalks/db/occupations';
 import { log } from '../observability/logger.js';
 import { archivePublicationHold } from './publicationHold.js';
+import { publicationDisposition } from './publicationDisposition.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import type { PrismaClient, AtsType } from '@prisma/client';
 import type { SourceTier } from '../dedup/match.js';
@@ -294,6 +295,7 @@ async function ingestApiSource(
     evidenceStatus: enumeration ? 'RECORDED' : 'ADAPTER_ENUMERATION_EVIDENCE_NOT_IMPLEMENTED',
   });
   if (rejectedRows?.length) {
+    stats.errors += rejectedRows.length;
     await log.warn('source.rows_rejected', { sourceKey: stats.source, count: rejectedRows.length, rejectedRows });
   }
   stats.complete = complete;
@@ -326,7 +328,7 @@ async function ingestApiSource(
     assertSourceRunning();
     if (job.publicationHold) {
       stats.held = (stats.held ?? 0) + 1;
-      if (!['APPLICATION_HTTP_404', 'APPLICATION_HTTP_410', 'APPLICATION_EXPLICITLY_CLOSED'].includes(job.publicationHold)) {
+      if (!publicationDisposition(job.publicationHold)) {
         stats.heldUnresolved = (stats.heldUnresolved ?? 0) + 1;
         stats.complete = false;
       }

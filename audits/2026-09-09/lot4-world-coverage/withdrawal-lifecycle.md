@@ -31,7 +31,11 @@ Voir `withdrawal-local-proof.json` et `withdrawal-ui-proof.json`.
 
 ## Statut de livraison
 
-À ce checkpoint : code implémenté et copie réelle réparée ; migration, déploiement et réparation de production de ce second correctif restent à exécuter et prouver. Le premier correctif Coty/Puig est déjà sur main et déployé, voir `production-remediation-proof.json`.
+**Livré et vérifié en production le 9 septembre à 13:43 UTC.** PR #50 fusionnée ; commit main `1ccf8cbe6fef5dc25c16f5f73a69a1cb62db80e5` ; les quatre services Railway sont en SUCCESS sur cette révision. Migration additive appliquée avant la nouvelle application. Crons globaux toujours en pause.
+
+Production : 77360 offres, 74132 actives, 10952 France avant et après. Les listes complètes des identifiants globaux et actifs ont les mêmes empreintes. Fermetures datées 3206 → 2835 ; retraits 0 → 371. Les 371 lignes corrigées conservent exactement leurs RAW, autres champs, sources rattachées et événements antérieurs. 371 nouveaux reçus immuables. Rejeu : zéro écriture. Trois pages publiques passent du libellé erroné « Expirée » au retrait du catalogue, toujours en 410/noindex sans JobPosting.
+
+Voir `withdrawal-production-proof.json` pour les empreintes, reçus, sauvegarde, révisions et URL témoins. Le précédent correctif Coty/Puig reste documenté dans `production-remediation-proof.json`.
 
 ## Restant à faire
 

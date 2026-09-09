@@ -44,3 +44,24 @@ it('withdraws only the confirmed representation, preserves history, and a newer 
   await db.jobSource.deleteMany({ where: { sourceKey: key } }); await db.job.delete({ where: { id: initial.jobId } });
   await db.sourceObservation.deleteMany({ where: { sourceKey: key } }); await db.source.delete({ where: { key } });
 });
+
+it('honours native isListed=false as withdrawal, preserves evidence and republishes without a repost', async()=>{
+  const { upsertDeduplicated } = await import('../dedup/upsert.js');
+  const { resolveCompany } = await import('../normalize/company.js');
+  const key='ashby-unlisted-witness';
+  await db.source.upsert({where:{key},update:{status:'ACTIVE'},create:{key,maison:'Polène',kind:'ashby',tenantKey:key,tier:'ATS_OFFICIAL',config:{},status:'ACTIVE'}});
+  const input={company:'Polène',companyId:resolveCompany('Polène').companyId,sourceKey:key,externalId:'listed-witness',sourceTier:'ATS_OFFICIAL' as const,atsType:'ASHBY' as const,title:'Client Advisor',url:'https://jobs.ashbyhq.com/polene-paris/listed-witness',raw:{isListed:true}};
+  const {jobId}=await upsertDeduplicated(db,input);
+  await db.jobSource.updateMany({where:{jobId},data:{lastSeenAt:new Date(Date.now()-60000)}});
+  const held={...input,publicationHold:'SOURCE_UNLISTED',publicationWithdrawnAt:new Date(),raw:{isListed:false}};
+  await archivePublicationHold(db,key,held);await archivePublicationHold(db,key,held);
+  expect(await db.job.findUniqueOrThrow({where:{id:jobId}})).toMatchObject({isActive:false,closedAt:null,withdrawalReason:'SOURCE_UNLISTED',reopenedCount:0});
+  expect(await db.jobEvent.count({where:{jobId,type:'CLOSED'}})).toBe(0);
+  expect(await db.jobEvent.count({where:{jobId,type:'WITHDRAWN'}})).toBe(1);
+  expect(await db.sourceObservation.count({where:{sourceKey:key}})).toBe(2);
+  await upsertDeduplicated(db,input);
+  expect(await db.job.findUniqueOrThrow({where:{id:jobId}})).toMatchObject({isActive:true,withdrawnAt:null,withdrawalReason:null,reopenedCount:0});
+  expect(await db.jobEvent.count({where:{jobId,type:'REPUBLISHED'}})).toBe(1);
+  await clearOccupationLedger();await db.jobSource.deleteMany({where:{jobId}});await db.job.delete({where:{id:jobId}});
+  await db.sourceObservation.deleteMany({where:{sourceKey:key}});await db.source.delete({where:{key}});
+});

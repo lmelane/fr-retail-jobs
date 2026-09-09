@@ -10,6 +10,7 @@ import { fetchPersonioJobs } from './adapters/personio.js';
 import { fetchWorkdayJobs } from './adapters/workday.js';
 import { fetchGenericJsonLdJobs } from './adapters/genericJsonLd.js';
 import { fetchAshbyJobs } from './adapters/ashby.js';
+import { fetchHarriJobs } from './adapters/harri.js';
 import { fetchWorkableJobs } from './adapters/workable.js';
 import { fetchWttjJobs } from './adapters/wttj.js';
 import { fetchWttjSectorJobs } from './adapters/wttjSector.js';
@@ -68,7 +69,7 @@ export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult):
   return {
     ...normalized,
     truncated,
-    complete: unique === normalized.jobs.length && !truncated && (normalized.complete ?? countProvesCompletion),
+    complete: !normalized.rejectedRows?.length && unique === normalized.jobs.length && !truncated && (normalized.complete ?? countProvesCompletion),
   };
 }
 
@@ -87,6 +88,7 @@ export const ADAPTERS: Record<string, (config: Record<string, unknown>) => Promi
   PERSONIO: fetchPersonioJobs,
   WORKDAY: fetchWorkdayJobs,
   ASHBY: fetchAshbyJobs,
+  HARRI: fetchHarriJobs,
   WORKABLE: fetchWorkableJobs,
   // Une société (`slug`) ou tout un secteur (`sectors` / `parentSectors` /
   // `organizations`) : même AtsType, même identité d'offre, deux lectures.

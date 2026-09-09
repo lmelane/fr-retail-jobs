@@ -50,6 +50,7 @@ enum DiscoveryStatus {
 }
 
 enum AtsType {
+  HARRI
   FLATCHR
   JOBAFFINITY_WORDPRESS
   PINPOINT

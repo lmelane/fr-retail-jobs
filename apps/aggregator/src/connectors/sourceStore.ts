@@ -37,6 +37,13 @@ export function tenantKeyOf(kind: string, entryUrl: string, careersDomain?: stri
   } catch {
     config = { url: entryUrl };
   }
+  if (kind === 'harri') {
+    const portal = typeof config.portalUrl === 'string' ? new URL(config.portalUrl) : undefined;
+    const slug = typeof config.slug === 'string' ? config.slug : portal?.pathname.split('/').filter(Boolean)[0];
+    if (!slug || !/^[a-z0-9_-]+$/i.test(slug) || (portal && !['harri.com','www.harri.com'].includes(portal.hostname))) throw new Error('Harri tenant requires a native portal slug');
+    if (portal && (portal.protocol !== 'https:' || portal.username || portal.password || portal.pathname.split('/').filter(Boolean)[0]?.toLowerCase() !== slug.toLowerCase())) throw new Error('Harri portal and slug must identify the same tenant');
+    return `harri:${slug.toLowerCase()}`;
+  }
   // Vendor account identifiers first — `slug`/`account`/`board`/`company`
   // NAME the tenant (wttj slug, workable account, greenhouse board, SR
   // company). Then the origin: two SuccessFactors rows differing only by a

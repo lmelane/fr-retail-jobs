@@ -23,7 +23,7 @@ const ATS_HOSTS = [
   'personio.com', 'myworkdayjobs.com', 'teamtailor.com', 'workable.com', 'successfactors.com',
   'welcometothejungle.com',
   'ashbyhq.com', 'pinpointhq.com', 'eightfold.ai', 'avature.net', 'flatchr.io',
-  'icims.com', 'oraclecloud.com', 'taleo.net',
+  'icims.com', 'oraclecloud.com', 'taleo.net', 'harri.com',
 ];
 
 /**
@@ -222,6 +222,11 @@ function detectionFromUrl(rawUrl: string): AtsDetection | null {
   if (host === 'jobs.ashbyhq.com') {
     const board = parts[0];
     if (board) return { type: 'ASHBY', careersUrl: url.toString(), config: { board }, confidence: 1 };
+  }
+  if (['harri.com', 'www.harri.com'].includes(host) && /^[a-z0-9_-]+$/i.test(parts[0] ?? '') &&
+      !['jobs','login','signup','careers','about','privacy','cookie-policy'].includes(parts[0].toLowerCase())) {
+    const portalUrl = `https://harri.com/${parts[0]}`;
+    return { type: 'HARRI', careersUrl: portalUrl, config: { slug: parts[0], portalUrl }, confidence: 1 };
   }
   if (host.endsWith('.teamtailor.com')) {
     return { type: 'TEAMTAILOR', careersUrl: url.toString(), config: { origin: url.origin }, confidence: 1 };
