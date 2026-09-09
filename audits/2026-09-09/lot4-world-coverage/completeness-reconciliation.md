@@ -42,3 +42,27 @@ Les 38 dossiers partagent un trait : leur dernier reçu vient de la révision de
 Mesuré en direct le 2026-09-09 (`digitalrecruiters-live-check.json`). Reste pour clore ces 4 dossiers : reçu à la nouvelle révision, run de production borné qui ré-atteste les offres avec leurs diffusions en RAW, puis mise à jour du tracker.
 
 **Production DigitalRecruiters (18:00 UTC, PR 58 mergée `2031fe3`, workers redéployés, web inchangé — diff vide)** : run Railway borné `562185a0-aedf-4006-aae1-e77aa979e29b` sur `lacoste,aigle,gant,the-kooples` : Lacoste 452 / 459 diffusions, 3 créées, 449 mises à jour ; Aigle 109 / 110, 2 créées ; Gant 108 / 112 ; The Kooples 69 / 69 ; **0 erreur, 4 énumérations complètes**, 26 lignes Railway, 25 événements durables, 0 perte (`dr-production-delivery-proof.json`). Après run (`dr-production-after.json`) : toutes les offres ré-attestées portent leurs diffusions en RAW (452 / 109 / 108 / 69), 9 annonces multi-lieux tracées ; parité API : Aigle 109 = 109, GANT 108 = 108 ; Lacoste 464 actives (12 non re-listées ce run, à la charge du refresh) et The Kooples 71 (2 idem). **Quatre dossiers sur 38 clos au niveau adaptateur et vérifiés en production ; 34 restent.**
+
+## Deuxième et troisième dossiers : Talentsoft (Lagardère) et iCIMS (URBN, Aéropostale)
+
+**Re-sondage des 38 avec le code actuel** (`source-probes-dossiers38`, 2026-09-09 17:5x–18:1x UTC) : 8 complets (Capri/Michael Kors 511/511, Gant, Kering 1 029/1 030 → complet au sens de l'adaptateur, Lacoste, Mango, The Kooples, URBN hub et stores), 30 non prouvés. Trait commun des 30 : **aucune preuve d'énumération publiée par l'adaptateur** (`method` absent) — 16 `generic-listing`, 2 `magnet`, `taleo`, `wordpress`, `radancy`, `eqwa`, `rituals` (1 122 / 1 250 déclarés), `swatchgroup` (248 / 249), `altamira`, `phenom` (Foot Locker 2 836 / 2 847), `workday` Nordstrom (1 307 / 1 309), `talentsoft` Lagardère (129 / 109).
+
+**Talentsoft — cause racine mesurée (PR 59)** : le flux RSS de Lagardère lie `lagardere.com/nous-rejoindre/postuler/offre-2026-10266-502` (hors du board, redirigé vers l'accueil du groupe) sans `idOffre` ; l'identifiant retombait sur le lien entier et ne rencontrait jamais la carte `_10266.aspx` : **20 « offres » de plus aux URLs mortes, 129 pour 109 annoncées**. Correction universelle : identifiant lu dans `idOffre`, puis `_<id>.aspx`, puis la référence `<année>-<id>` ; URL du board conservée à la fusion ; item RSS hors board absent du listing retenu comme ligne rejetée, jamais publié ; preuve d'énumération sur le total annoncé (11 pages, page 12 = page 1). Reçu à la révision corrigée : **109 / 109, 0 rejet, complet** ; Lagardère Duty Free 9 / 9 complet. En production avant le run corrigé : 20 représentations fantômes actives (`externalId` non numérique, URL hors board) — backlog L5.
+
+**iCIMS — preuve par nombre de pages (PR 59)** : le portail n'annonce pas un total d'offres mais « Page 1 of 28 » ; l'adaptateur le lit et le compare aux pages parcourues. Reçus : URBN hub **1 375 offres, 28 / 28 pages**, URBN stores **943, 19 / 19**, Aéropostale (1 page) — complets.
+
+## Après re-sondage complet : 394 / 423 prouvées, 27 dossiers restants, par famille
+
+Réconciliation recalculée avec les reçus des trois passes du soir (`source-probes-dossiers38`, `source-probes-dr`, `source-probes-current`, révisions datées par `git`) : **394 actives complètes au dernier reçu, 27 non prouvées, 13 des 38 dossiers résolus** (Aéropostale, Aigle, Capri ×2, Gant, Kering, Lacoste, Lagardère ×2, Mango, The Kooples, URBN hub et stores), 0 régression.
+
+| Famille | Sources | Ce que le dernier reçu dit | Correction commune |
+|---|---|---|---|
+| `generic-listing` | 16 — 9 en **page de départ** (Alberto, Attaquer, Bevilles, Kastner & Öhler, Lumentee, Marc O'Polo, Oniverse, Oska, Psycho Bunny), 3 en **sitemap** (Boots 1 489, PVH 1 374, END 21), 4 en **liste paginée** (Pandora 903, Beiersdorf 108, LuxExperience 54, Globus 22) | aucune preuve publiée par le connecteur, quel que soit le chemin | livrée ce soir : terminaison nommée et détails comptés pour la liste paginée ; shards / URLs listées / pages sans JobPosting pour le sitemap ; la page de départ dit qu'elle ne peut rien prouver (→ ces 9 acteurs ont besoin d'un vrai listing ou sitemap : dossier par dossier) |
+| `rituals` | 1 (1 122 / 1 250) | même poste servi dans plusieurs locales : le total déclaré compte des représentations | livrée : preuve locale par locale, union = offres |
+| `phenom` | 1 (Foot Locker 2 836 / 2 847) | arrêt sur une page courte avant le total | livrée : lecture jusqu'au total, preuve d'énumération |
+| `workday` | 1 (Nordstrom 1 307 / 1 309) | 2 offres de moins que le total déclaré | à instruire (Capri et Mango sont complets avec le même adaptateur : cas propre à Nordstrom) |
+| `swatchgroup` | 1 (248 / 249) | 1 de moins | à instruire |
+| `magnet` | 2 (Element 6 391, Eram 83) | pas de compteur | à instruire |
+| `taleo`, `wordpress`, `radancy`, `eqwa`, `altamira` | 5 (Brown Thomas 70, Luxe Talent 478, NARS 53, Nocibé 285, Zegna 61) | pas de compteur | à instruire, une famille à la fois |
+
+Les corrections « livrées » ne sont déclarées résolues qu'après un reçu complet **par source** à la révision qui les porte ; l'orchestrateur re-sonde chaque famille dès que l'adaptateur change.

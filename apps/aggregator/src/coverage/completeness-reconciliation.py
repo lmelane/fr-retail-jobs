@@ -4,8 +4,15 @@ Previous 38 dossiers (handoff §6) are matched by source key or maison; nothing 
 import json,glob,csv,pathlib,unicodedata,re,collections
 B=pathlib.Path('backups/lot4-20260909');snap=json.load(open(B/'tracker-snapshot-20260909b.json'))
 sources={s['key']:s for s in snap['sources']};runs={r['sourceKey']:r for r in snap['latestRuns']}
-REVDATES=json.load(open(B/'receipt-revision-dates.json'))
-def rank(r): return (REVDATES.get(r.get('revision')) or 0, r.get('finishedAt') or r.get('startedAt') or '')
+import subprocess
+_REVDATES={}
+def revdate(rev):
+    if not rev: return 0
+    if rev not in _REVDATES:
+        out=subprocess.run(['git','show','-s','--format=%ct',rev],capture_output=True,text=True)
+        _REVDATES[rev]=int(out.stdout.split()[0]) if out.returncode==0 and out.stdout.strip() else 0
+    return _REVDATES[rev]
+def rank(r): return (revdate(r.get('revision')), r.get('finishedAt') or r.get('startedAt') or '')
 latest={};ever=set();all_receipts=collections.defaultdict(list)
 for d in glob.glob(str(B/'source-probes*')):
     for f in glob.glob(d+'/*.receipt.json'):

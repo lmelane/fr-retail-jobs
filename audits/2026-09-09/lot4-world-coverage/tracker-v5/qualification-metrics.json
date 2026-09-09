@@ -1,0 +1,444 @@
+{
+ "generatedAt": "2026-09-09T18:25:05.820490+00:00",
+ "stages": {
+  "portal-extra-domains": {
+   "type": "research",
+   "subjects": 236,
+   "span": {
+    "from": "2026-09-09T11:52:46.644Z",
+    "to": "2026-09-09T12:07:05.053Z",
+    "seconds": 858
+   },
+   "statuses": {
+    "ATS_CANDIDATES_TO_QUALIFY": 102,
+    "NO_CAREER_LINK_ON_PAGES_READ": 77,
+    "CAREER_LINKS_TO_QUALIFY": 21,
+    "WEBSITE_SEARCH_REQUIRED": 35,
+    "RESEARCH_INTERRUPTED": 1
+   },
+   "pagesRead": 726,
+   "failures": 45,
+   "atsCandidates": 496
+  },
+  "portal-extra-portfolios": {
+   "type": "research",
+   "subjects": 68,
+   "span": {
+    "from": "2026-09-09T12:47:14.008Z",
+    "to": "2026-09-09T12:52:01.928Z",
+    "seconds": 288
+   },
+   "statuses": {
+    "ATS_CANDIDATES_TO_QUALIFY": 68
+   },
+   "pagesRead": 449,
+   "failures": 95,
+   "atsCandidates": 369
+  },
+  "portal-hosts": {
+   "type": "research",
+   "subjects": 177,
+   "span": {
+    "from": "2026-09-09T17:54:46.715Z",
+    "to": "2026-09-09T18:10:22.986Z",
+    "seconds": 936
+   },
+   "statuses": {
+    "ATS_CANDIDATES_TO_QUALIFY": 145,
+    "CAREER_LINKS_TO_QUALIFY": 21,
+    "RESEARCH_INTERRUPTED": 2,
+    "NO_CAREER_LINK_ON_PAGES_READ": 6,
+    "WEBSITE_SEARCH_REQUIRED": 3
+   },
+   "pagesRead": 1170,
+   "failures": 32,
+   "atsCandidates": 1379
+  },
+  "portal-multilingual": {
+   "type": "research",
+   "subjects": 244,
+   "span": {
+    "from": "2026-09-09T12:31:52.564Z",
+    "to": "2026-09-09T12:40:42.658Z",
+    "seconds": 530
+   },
+   "statuses": {
+    "ATS_CANDIDATES_TO_QUALIFY": 146,
+    "CAREER_LINKS_TO_QUALIFY": 96,
+    "NO_CAREER_LINK_ON_PAGES_READ": 1,
+    "RESEARCH_INTERRUPTED": 1
+   },
+   "pagesRead": 1902,
+   "failures": 5,
+   "atsCandidates": 991
+  },
+  "portal-portfolios": {
+   "type": "research",
+   "subjects": 112,
+   "span": {
+    "from": "2026-09-09T18:10:37.443Z",
+    "to": "2026-09-09T18:24:53.429Z",
+    "seconds": 856
+   },
+   "statuses": {
+    "ATS_CANDIDATES_TO_QUALIFY": 37,
+    "WEBSITE_SEARCH_REQUIRED": 55,
+    "NO_CAREER_LINK_ON_PAGES_READ": 9,
+    "CAREER_LINKS_TO_QUALIFY": 9,
+    "RESEARCH_INTERRUPTED": 2
+   },
+   "pagesRead": 318,
+   "failures": 64,
+   "atsCandidates": 204
+  },
+  "portal-proactive": {
+   "type": "research",
+   "subjects": 418,
+   "span": {
+    "from": "2026-09-09T11:59:09.095Z",
+    "to": "2026-09-09T12:13:31.514Z",
+    "seconds": 862
+   },
+   "statuses": {
+    "CAREER_LINKS_TO_QUALIFY": 90,
+    "ATS_CANDIDATES_TO_QUALIFY": 152,
+    "WEBSITE_SEARCH_REQUIRED": 150,
+    "NO_CAREER_LINK_ON_PAGES_READ": 26
+   },
+   "pagesRead": 1534,
+   "failures": 65,
+   "atsCandidates": 911
+  },
+  "portal-research": {
+   "type": "research",
+   "subjects": 1653,
+   "span": {
+    "from": "2026-09-09T11:49:26.339Z",
+    "to": "2026-09-09T15:02:20.364Z",
+    "seconds": 11574
+   },
+   "statuses": {
+    "WEBSITE_SEARCH_REQUIRED": 1293,
+    "NO_CAREER_LINK_ON_PAGES_READ": 124,
+    "ATS_CANDIDATES_TO_QUALIFY": 167,
+    "CAREER_LINKS_TO_QUALIFY": 67,
+    "RESEARCH_INTERRUPTED": 2
+   },
+   "pagesRead": 1447,
+   "failures": 124,
+   "atsCandidates": 1255
+  },
+  "portal-unvisited": {
+   "type": "research",
+   "subjects": 241,
+   "span": {
+    "from": "2026-09-09T15:43:02.060Z",
+    "to": "2026-09-09T15:58:15.920Z",
+    "seconds": 914
+   },
+   "statuses": {
+    "ATS_CANDIDATES_TO_QUALIFY": 113,
+    "WEBSITE_SEARCH_REQUIRED": 43,
+    "CAREER_LINKS_TO_QUALIFY": 31,
+    "NO_CAREER_LINK_ON_PAGES_READ": 52,
+    "RESEARCH_INTERRUPTED": 2
+   },
+   "pagesRead": 901,
+   "failures": 61,
+   "atsCandidates": 782
+  },
+  "portal-unvisited-resume": {
+   "type": "research",
+   "subjects": 115,
+   "span": {
+    "from": "2026-09-09T17:47:02.833Z",
+    "to": "2026-09-09T17:54:44.096Z",
+    "seconds": 461
+   },
+   "statuses": {
+    "RESEARCH_INTERRUPTED": 3,
+    "ATS_CANDIDATES_TO_QUALIFY": 48,
+    "NO_CAREER_LINK_ON_PAGES_READ": 26,
+    "WEBSITE_SEARCH_REQUIRED": 18,
+    "CAREER_LINKS_TO_QUALIFY": 20
+   },
+   "pagesRead": 427,
+   "failures": 30,
+   "atsCandidates": 370
+  },
+  "source-probes": {
+   "type": "probe",
+   "sources": 423,
+   "statuses": {
+    "FETCH_PARTIAL_OR_UNPROVEN": 118,
+    "FETCH_COMPLETE": 305
+   },
+   "revisions": {
+    "b8c153f": 423
+   },
+   "span": {
+    "from": "2026-09-09T11:43:12.488Z",
+    "to": "2026-09-09T12:55:47.517Z",
+    "seconds": 4355
+   },
+   "sourceSecondsTotal": 8522,
+   "postingsFetched": 71522
+  },
+  "source-probes-after": {
+   "type": "probe",
+   "sources": 5,
+   "statuses": {
+    "FETCH_PARTIAL_OR_UNPROVEN": 1,
+    "FETCH_COMPLETE": 4
+   },
+   "revisions": {
+    "3f9ddab": 5
+   },
+   "span": {
+    "from": "2026-09-09T11:57:18.993Z",
+    "to": "2026-09-09T11:57:34.052Z",
+    "seconds": 15
+   },
+   "sourceSecondsTotal": 18,
+   "postingsFetched": 243
+  },
+  "source-probes-after-all": {
+   "type": "probe",
+   "sources": 50,
+   "statuses": {
+    "FETCH_COMPLETE": 50
+   },
+   "revisions": {
+    "d12380b": 50
+   },
+   "span": {
+    "from": "2026-09-09T12:01:19.743Z",
+    "to": "2026-09-09T12:02:16.136Z",
+    "seconds": 56
+   },
+   "sourceSecondsTotal": 96,
+   "postingsFetched": 1129
+  },
+  "source-probes-ashby": {
+   "type": "probe",
+   "sources": 1,
+   "statuses": {
+    "FETCH_COMPLETE": 1
+   },
+   "revisions": {
+    "919dea9": 1
+   },
+   "span": {
+    "from": "2026-09-09T13:47:30.725Z",
+    "to": "2026-09-09T13:47:30.992Z",
+    "seconds": 0
+   },
+   "sourceSecondsTotal": 0,
+   "postingsFetched": 79
+  },
+  "source-probes-current": {
+   "type": "probe",
+   "sources": 39,
+   "statuses": {
+    "FETCH_PARTIAL_OR_UNPROVEN": 28,
+    "FETCH_COMPLETE": 11
+   },
+   "revisions": {
+    "f04d1a6": 11,
+    "2031fe3": 10,
+    "6bdc453": 8,
+    "0139352": 2,
+    "ceacf33": 2,
+    "e67e9ea": 3,
+    "a0a96dd": 3
+   },
+   "span": {
+    "from": "2026-09-09T17:50:19.215Z",
+    "to": "2026-09-09T18:23:47.844Z",
+    "seconds": 2009
+   },
+   "sourceSecondsTotal": 3337,
+   "postingsFetched": 17370
+  },
+  "source-probes-dossiers38": {
+   "type": "probe",
+   "sources": 38,
+   "statuses": {
+    "FETCH_PARTIAL_OR_UNPROVEN": 30,
+    "FETCH_COMPLETE": 8
+   },
+   "revisions": {
+    "a0a96dd": 9,
+    "2031fe3": 11,
+    "6bdc453": 9,
+    "f04d1a6": 1,
+    "ceacf33": 3,
+    "e67e9ea": 5
+   },
+   "span": {
+    "from": "2026-09-09T17:50:19.215Z",
+    "to": "2026-09-09T18:19:37.189Z",
+    "seconds": 1758
+   },
+   "sourceSecondsTotal": 3390,
+   "postingsFetched": 17380
+  },
+  "source-probes-dr": {
+   "type": "probe",
+   "sources": 4,
+   "statuses": {
+    "FETCH_COMPLETE": 4
+   },
+   "revisions": {
+    "e67e9ea": 4
+   },
+   "span": {
+    "from": "2026-09-09T17:54:32.761Z",
+    "to": "2026-09-09T17:55:21.438Z",
+    "seconds": 49
+   },
+   "sourceSecondsTotal": 65,
+   "postingsFetched": 738
+  },
+  "source-probes-harri": {
+   "type": "probe",
+   "sources": 1,
+   "statuses": {
+    "FETCH_COMPLETE": 1
+   },
+   "revisions": {
+    "919dea9": 1
+   },
+   "span": {
+    "from": "2026-09-09T13:52:50.136Z",
+    "to": "2026-09-09T13:52:53.903Z",
+    "seconds": 4
+   },
+   "sourceSecondsTotal": 4,
+   "postingsFetched": 30
+  },
+  "source-probes-personio-employer": {
+   "type": "probe",
+   "sources": 24,
+   "statuses": {
+    "FETCH_COMPLETE": 24
+   },
+   "revisions": {
+    "bae127d": 24
+   },
+   "span": {
+    "from": "2026-09-09T12:26:06.504Z",
+    "to": "2026-09-09T12:26:26.421Z",
+    "seconds": 20
+   },
+   "sourceSecondsTotal": 33,
+   "postingsFetched": 263
+  },
+  "source-probes-personio-native": {
+   "type": "probe",
+   "sources": 24,
+   "statuses": {
+    "FETCH_COMPLETE": 24
+   },
+   "revisions": {
+    "538ff33": 24
+   },
+   "span": {
+    "from": "2026-09-09T12:15:36.986Z",
+    "to": "2026-09-09T12:15:58.074Z",
+    "seconds": 21
+   },
+   "sourceSecondsTotal": 36,
+   "postingsFetched": 263
+  },
+  "source-probes-sap-counters": {
+   "type": "probe",
+   "sources": 6,
+   "statuses": {
+    "FETCH_COMPLETE": 5,
+    "FETCH_PARTIAL_OR_UNPROVEN": 1
+   },
+   "revisions": {
+    "46054a7": 6
+   },
+   "span": {
+    "from": "2026-09-09T12:49:03.788Z",
+    "to": "2026-09-09T12:50:35.178Z",
+    "seconds": 91
+   },
+   "sourceSecondsTotal": 161,
+   "postingsFetched": 1800
+  },
+  "source-probes-sap-final": {
+   "type": "probe",
+   "sources": 30,
+   "statuses": {
+    "FETCH_COMPLETE": 25,
+    "FETCH_PARTIAL_OR_UNPROVEN": 5
+   },
+   "revisions": {
+    "e91169d": 15,
+    "a12b757": 15
+   },
+   "span": {
+    "from": "2026-09-09T12:38:28.154Z",
+    "to": "2026-09-09T12:42:39.583Z",
+    "seconds": 251
+   },
+   "sourceSecondsTotal": 489,
+   "postingsFetched": 4097
+  },
+  "source-probes-sap-native": {
+   "type": "probe",
+   "sources": 30,
+   "statuses": {
+    "FETCH_COMPLETE": 23,
+    "FETCH_PARTIAL_OR_UNPROVEN": 5,
+    "FETCH_FAILED": 2
+   },
+   "revisions": {
+    "8461a7e": 30
+   },
+   "span": {
+    "from": "2026-09-09T12:31:07.332Z",
+    "to": "2026-09-09T12:35:21.281Z",
+    "seconds": 254
+   },
+   "sourceSecondsTotal": 494,
+   "postingsFetched": 3960
+  },
+  "source-probes-sap-session": {
+   "type": "probe",
+   "sources": 1,
+   "statuses": {
+    "FETCH_COMPLETE": 1
+   },
+   "revisions": {
+    "a9833ef": 1
+   },
+   "span": {
+    "from": "2026-09-09T12:54:12.467Z",
+    "to": "2026-09-09T12:55:46.462Z",
+    "seconds": 94
+   },
+   "sourceSecondsTotal": 94,
+   "postingsFetched": 1093
+  }
+ },
+ "completeness": {
+  "activeSources": 423,
+  "latestReceiptComplete": 383,
+  "categories": {
+   "COMPLETE": 381,
+   "STILL_PARTIAL": 38,
+   "RESOLVED_SINCE_BASELINE": 2,
+   "NO_RECEIPT": 2
+  },
+  "toInvestigate": 40,
+  "regressed": [],
+  "previousResolved": [
+   "capri-jimmy-choo",
+   "lagardere-duty-free"
+  ]
+ }
+}

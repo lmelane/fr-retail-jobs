@@ -62,7 +62,8 @@ def probe_stage(stage):
                 entry.update({'status': 'SKIPPED_CURRENT', 'receipt': str(receipt), 'receiptRevision': r.get('revision'), 'receiptStatus': r.get('status')}); save(); continue
         if entry.get('status') == 'DONE' and entry.get('revision') == REV: continue
         t0 = time.time()
-        proc = subprocess.run(['python3', 'apps/aggregator/src/coverage/probe-sources.py', stage['snapshot'], str(out), '--concurrency', '1', '--keys', key], capture_output=True, text=True)
+        # --retry: the tool itself skips an existing receipt; the orchestrator already decided this one is stale.
+        proc = subprocess.run(['python3', 'apps/aggregator/src/coverage/probe-sources.py', stage['snapshot'], str(out), '--concurrency', '1', '--retry', '--keys', key], capture_output=True, text=True)
         dt = round(time.time() - t0, 1)
         r = json.load(open(receipt)) if receipt.exists() else None
         ok = proc.returncode == 0 and r is not None and r.get('status') in ('FETCH_COMPLETE', 'FETCH_PARTIAL_OR_UNPROVEN')

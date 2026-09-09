@@ -165,20 +165,34 @@ export async function fetchRitualsJobs(config: Record<string, unknown> = {}): Pr
 
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
-  let declaredTotal = 0;
+  const scopes: NonNullable<NonNullable<AdapterResult['enumeration']>['scopes']> = [];
+  let representations = 0;
   let truncated = false;
 
   for (const language of languages) {
     const { sources, total } = await readLocale(origin, language);
-    if (total !== undefined) declaredTotal += total;
-    if (total !== undefined && sources.length < total) truncated = true;
+    if (total !== undefined) representations += total;
+    const localeComplete = total !== undefined && sources.length >= total;
+    if (!localeComplete) truncated = true;
+    const before = seen.size;
     for (const source of sources) {
       const job = parseRitualsHit(source, origin, language);
       if (!job || seen.has(job.externalId)) continue;
       seen.add(job.externalId);
       jobs.push(job);
     }
+    scopes.push({ scope: `locale:${language}`, declaredTotal: total ?? -1, uniqueIds: seen.size - before, pages: 1, complete: localeComplete });
   }
-
-  return { jobs, declaredTotal, truncated };
+  /**
+   * Chaque locale sert le MÊME catalogue dans sa langue : les 1 250 « hits »
+   * déclarés en 2026-09-09 (fr 252 + …) sont 1 122 postes uniques, un même
+   * `_id` revenant dans plusieurs locales. Le total déclaré est donc un total de
+   * REPRÉSENTATIONS ; le nombre d'offres est l'union. Les deux sont énoncés,
+   * aucun n'est ajusté : `declaredTotal` porte l'union quand chaque locale a été
+   * lue en entier (elle est alors prouvée), la somme sinon.
+   */
+  const complete = !truncated && scopes.every((s) => s.complete);
+  return { jobs, declaredTotal: complete ? seen.size : representations, truncated, complete,
+    enumeration: { method: 'ELASTIC_TOTAL_PER_LOCALE_UNION', endpoint: `${origin}`, pages: scopes.length, rawCount: representations, termination: complete ? 'ALL_LOCALES_COMPLETE' : 'LOCALE_INCOMPLETE', issues: complete ? [] : ['ENUMERATION_NOT_PROVEN'],
+      scopes: [...scopes, { scope: 'union', declaredTotal: representations, uniqueIds: seen.size, pages: scopes.length, complete }] } };
 }

@@ -27,6 +27,8 @@ p = argparse.ArgumentParser()
 p.add_argument('inventory'); p.add_argument('snapshot'); p.add_argument('output')
 p.add_argument('--research', nargs='*', default=[]); p.add_argument('--probes', nargs='*', default=[])
 p.add_argument('--previous-summary', default=None, help='progress-summary.json of the previous tracker, for before/after metrics')
+p.add_argument('--host-provenance', default=None, help='provenance JSON of dedup-unvisited.py: host research records are attributed to the actors that referenced the host')
+p.add_argument('--candidates', default=None, help='candidates.jsonl of qualify-candidates.mts: technical verdict of every detected tenant, attributed to its actors')
 a = p.parse_args()
 out = pathlib.Path(a.output); out.mkdir(parents=True, exist_ok=True)
 rows = json.load(open(a.inventory)); snap = json.load(open(a.snapshot))
@@ -60,6 +62,20 @@ for root in a.research:
     for line in f.read_text().splitlines():
         if line.strip():
             rec = json.loads(line); research[rec['id']].append({**rec, 'pass': root})
+host_actors = {}
+if a.host_provenance:
+    for h in json.load(open(a.host_provenance)): host_actors[h['subjectId']] = h['actors']
+for host_id, actors in host_actors.items():
+    for rec in list(research.get(host_id, [])):
+        for actor in actors: research[actor].append({**rec, 'pass': rec['pass'] + ':host'})
+candidate_by_actor = collections.defaultdict(list)
+if a.candidates:
+    for line in open(a.candidates):
+        if line.strip():
+            c = json.loads(line)
+            for actor in c.get('actors', []):
+                for actor_id in (host_actors.get(actor) or [actor]):
+                    candidate_by_actor[actor_id].append({k: c.get(k) for k in ['tenantKey', 'type', 'careersUrl', 'verdict', 'postings', 'declaredTotal', 'complete', 'employers', 'countries', 'source', 'error']})
 
 # ---------------------------------------------------------------- native receipts (latest per source)
 # The most recent evidence is the receipt produced by the NEWEST adapter code, then the latest
@@ -226,7 +242,7 @@ tracker = []
 for r in rows:
     fj = fj_match(r); ident = identity_block(r); res = research_block(r); portal = portal_block(r, ident, res); srcs = source_blocks(r)
     single = r['candidateCompanyIds'][0] if len(r['candidateCompanyIds']) == 1 else None
-    row = {'id': r['id'], 'labels': r['labels'], 'editions': r['editions'], 'profiles': r['profiles'], 'databaseAt': snap['at'],
+    row = {'id': r['id'], 'labels': r['labels'], 'editions': r['editions'], 'profiles': r['profiles'], 'databaseAt': snap['at'], 'candidateQualification': candidate_by_actor.get(r['id'], []),
            'fashionjobsMatch': fj, 'canonicalIdentity': ident, 'officialPortal': portal, 'portalResearch': res, 'sources': srcs,
            'activation': {'verdict': 'ACTIVE_SOURCE' if any(s['activation']['status'] == 'ACTIVE' for s in srcs) else 'ONLY_PAUSED_OR_RETIRED' if srcs else 'NO_SOURCE',
                           'active': [s['key'] for s in srcs if s['activation']['status'] == 'ACTIVE'], 'paused': [s['key'] for s in srcs if s['activation']['status'] == 'PAUSED'], 'retired': [s['key'] for s in srcs if s['activation']['status'] == 'RETIRED']},
@@ -249,12 +265,12 @@ for s in snap['sources']:
 (out / 'sources-qualification.json').write_text(json.dumps(source_table, ensure_ascii=False, indent=1))
 def cell(v): return "'" + v if isinstance(v, str) and v.startswith(('=', '+', '-', '@')) else v
 with (out / 'fashionjobs-tracker.csv').open('w') as f:
-    w = csv.writer(f); w.writerow(['ID', 'Libellés RAW', 'Éditions', 'Correspondance FashionJobs', 'Entreprises candidates', 'Identité canonique attestée', 'Preuve identité (méthode · domaine · date)', 'Portail officiel confirmé', 'Recherche portail (statut)', 'Pages lues', 'Échecs documentés', 'URLs non visitées', 'Sources BDD (clé:statut)', 'Certification config courante', 'Activation', 'Complétude flux configuré (verdict · date)', 'Couverture mondiale', 'Offres actives (candidat unique)', 'France', 'Motifs non résolus', 'Action restante', 'Dernière vérification BDD'])
+    w = csv.writer(f); w.writerow(['ID', 'Libellés RAW', 'Éditions', 'Correspondance FashionJobs', 'Entreprises candidates', 'Identité canonique attestée', 'Preuve identité (méthode · domaine · date)', 'Portail officiel confirmé', 'Recherche portail (statut)', 'Pages lues', 'Échecs documentés', 'URLs non visitées', 'Sources BDD (clé:statut)', 'Certification config courante', 'Activation', 'Complétude flux configuré (verdict · date)', 'Couverture mondiale', 'Tenants candidats qualifiés (lisibles · offres)', 'Offres actives (candidat unique)', 'France', 'Motifs non résolus', 'Action restante', 'Dernière vérification BDD'])
     for t in tracker:
         proofs = [x for c in t['canonicalIdentity']['companies'] for x in c['proofs'] if x['kind'] == 'EMPLOYER_IDENTITY_REVIEW' or x.get('verdict') == 'CERTIFIED_CURRENT']
         proof_txt = ' | '.join((f"{x['method']} · {x['officialDomain']} · {x['checkedAt'][:10]}" if x['kind'] == 'SOURCE_IDENTITY_REVIEW' else f"employer review {x['reviewId'][:12]} · {x['reviewedAt'][:10]}") for x in proofs)
         comp = ' | '.join(f"{s['key']}: {s['completeness']['verdict']} · {(s['completeness']['measuredAt'] or '')[:10]}" for s in t['sources'])
-        w.writerow([cell(x) for x in [t['id'], ' | '.join(t['labels']), ' | '.join(t['editions']), t['fashionjobsMatch']['verdict'], ' | '.join(c['name'] for c in t['canonicalIdentity']['companies']), t['canonicalIdentity']['verdict'], proof_txt, t['officialPortal']['verdict'] + (' · ' + ' | '.join(c['portalUrl'] for c in t['officialPortal']['confirmed']) if t['officialPortal']['confirmed'] else ''), t['portalResearch']['verdict'], t['portalResearch'].get('pagesRead', 0), len(t['portalResearch'].get('failures', [])), len(t['portalResearch'].get('unvisitedUrls', [])), ' | '.join(f"{s['key']}:{s['activation']['status']}" for s in t['sources']), ' | '.join(f"{s['key']}: {s['certification']['verdict']}" for s in t['sources']), t['activation']['verdict'], comp, t['worldwideCoverage']['verdict'], t['activeJobs'], t['franceJobs'], '; '.join(t['blockingReasons']), t['nextAction'], t['databaseAt']]])
+        w.writerow([cell(x) for x in [t['id'], ' | '.join(t['labels']), ' | '.join(t['editions']), t['fashionjobsMatch']['verdict'], ' | '.join(c['name'] for c in t['canonicalIdentity']['companies']), t['canonicalIdentity']['verdict'], proof_txt, t['officialPortal']['verdict'] + (' · ' + ' | '.join(c['portalUrl'] for c in t['officialPortal']['confirmed']) if t['officialPortal']['confirmed'] else ''), t['portalResearch']['verdict'], t['portalResearch'].get('pagesRead', 0), len(t['portalResearch'].get('failures', [])), len(t['portalResearch'].get('unvisitedUrls', [])), ' | '.join(f"{s['key']}:{s['activation']['status']}" for s in t['sources']), ' | '.join(f"{s['key']}: {s['certification']['verdict']}" for s in t['sources']), t['activation']['verdict'], comp, t['worldwideCoverage']['verdict'], ' | '.join(f"{c['type']} {c['careersUrl']} · {c['postings']}" for c in t['candidateQualification'] if c['verdict'] == 'READABLE_WITH_POSTINGS')[:400], t['activeJobs'], t['franceJobs'], '; '.join(t['blockingReasons']), t['nextAction'], t['databaseAt']]])
 with (out / 'sources-qualification.csv').open('w') as f:
     w = csv.writer(f); w.writerow(['Clé', 'Maison', 'Kind', 'Tenant', 'Statut', 'Certification config courante', 'Méthode · domaine · date', 'Dernier run (statut · offres · date)', 'Complétude flux configuré', 'Mesuré le', 'Compteurs (fetched / uniques / déclaré)', 'Employeurs actifs'])
     for s in source_table:
@@ -271,6 +287,8 @@ after = {
     'activation': dist(tracker, lambda t: t['activation']['verdict']),
     'feedCompleteness': dist(tracker, lambda t: t['feedCompleteness']['verdict']),
     'worldwideCoverage': dist(tracker, lambda t: t['worldwideCoverage']['verdict']),
+    'actorsWithReadableCandidateTenant': sum(1 for t in tracker if any(c['verdict'] == 'READABLE_WITH_POSTINGS' for c in t['candidateQualification'])),
+    'actorsWithOnlyFailedOrEmptyCandidates': sum(1 for t in tracker if t['candidateQualification'] and not any(c['verdict'] in ('READABLE_WITH_POSTINGS', 'ALREADY_CATALOGUED') for c in t['candidateQualification'])),
     'actorsWithUnvisitedUrls': sum(1 for t in tracker if t['portalResearch'].get('unvisitedUrls')),
     'unvisitedUrls': sum(len(t['portalResearch'].get('unvisitedUrls', [])) for t in tracker),
     'actorsWithDocumentedFailures': sum(1 for t in tracker if t['portalResearch'].get('failures')),

@@ -1,0 +1,43 @@
+{
+ "at": "2026-09-09T18:12:16.629Z",
+ "rawCandidates": 6571,
+ "genericSkipped": 2929,
+ "unsupportedOrNoConfig": 836,
+ "invalidTenant": 0,
+ "distinctTenants": 283,
+ "alreadyCatalogued": 54,
+ "alreadyDone": 0,
+ "byType": {
+  "WTTJ": 41,
+  "FLATCHR": 4,
+  "DIGITALRECRUITERS": 8,
+  "RECRUITEE": 5,
+  "LEVER": 26,
+  "WORKDAY": 69,
+  "EIGHTFOLD": 5,
+  "TALENTSOFT": 7,
+  "SUCCESSFACTORS": 29,
+  "SMARTRECRUITERS": 8,
+  "TEAMTAILOR": 20,
+  "GREENHOUSE": 15,
+  "PERSONIO": 5,
+  "PHENOM": 3,
+  "AVATURE": 6,
+  "ICIMS": 20,
+  "ORACLE_HCM": 3,
+  "WORKABLE": 2,
+  "PINPOINT": 5,
+  "TALEO": 1,
+  "TALENT_RECRUITER": 1
+ },
+ "finishedAt": "2026-09-09T18:22:29.743Z",
+ "probedNow": 152,
+ "failedNow": 77,
+ "verdicts": {
+  "READABLE_WITH_POSTINGS": 126,
+  "ALREADY_CATALOGUED": 54,
+  "PROBE_FAILED": 77,
+  "READABLE_EMPTY": 26
+ },
+ "postingsTotal": 20162
+}

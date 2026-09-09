@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
 import { createHash } from 'node:crypto';
 import { fetchText } from '../../lib/http.js';
-import { fetchSitemapUrls, extractJobPostings, normalizeJobPosting } from '../../connectors/generic/jsonLdSitemap.js';
+import { fetchSitemapUrlsDetailed, extractJobPostings, normalizeJobPosting } from '../../connectors/generic/jsonLdSitemap.js';
 import { fetchRssJobs } from '../../connectors/generic/rssFeed.js';
 import { collapseWhitespace, briefError } from '../../lib/normalize.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -87,8 +87,9 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     const origin = new URL(listingPagedUrl).origin;
 
     let reachedEnd = false;
+    let termination = 'PAGE_BUDGET_EXHAUSTED', pagesRead = 0, rawLinks = 0;
     for (let page = 0; page < Number(config.maxPages ?? 400); page++) {
-      if (pastDeadline()) break;
+      if (pastDeadline()) { termination = 'DEADLINE'; break; }
       const sep = listingPagedUrl.includes('?') ? '&' : '?';
       // The end of a paginated listing is signalled one of two ways, and both
       // mean "stop here with what we have", not "fail the source": Michael Page
@@ -120,13 +121,16 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       } catch (error) {
         const is404 = error instanceof Error && / 404 /.test(` ${error.message} `);
         if (is404 && page > 0) reachedEnd = true;
+        termination = is404 && page > 0 ? 'HTTP_404_AFTER_LAST_PAGE' : 'LISTING_FETCH_FAILED';
         if (!is404) {
           await log.error('adapter.listing_failed', `[generic-listing] ${listingPagedUrl} stopped at page ${page}: ${briefError(error)}`, { error });
         }
         break;
       }
+      pagesRead++;
       const pageLinks = [...html.matchAll(linkRe)]
         .map((m) => new URL(m[1], origin).toString().split('#')[0]);
+      rawLinks += pageLinks.length;
       const links = pageLinks.filter(u => !seen.has(u));
       /**
        * Une page de liste sans lien est la fin de la liste — SAUF si c'est une
@@ -143,6 +147,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       if (links.length === 0) {
         // A repeated nonempty page is a broken pager, not proof of the end.
         reachedEnd = pageLinks.length === 0;
+        termination = reachedEnd ? 'EMPTY_PAGE' : 'REPEATED_PAGE';
         break;
       }
       for (const u of links) seen.add(u);
@@ -198,25 +203,38 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
           `pages de détail bloquées ou sans JobPosting`,
       );
     }
-    return { jobs, complete: reachedEnd && detailFailures === 0, truncated: !reachedEnd || detailFailures > 0 };
+    const complete = reachedEnd && detailFailures === 0;
+    return { jobs, declaredTotal: seen.size, complete, truncated: !reachedEnd || detailFailures > 0,
+      enumeration: { method: 'PAGINATED_LISTING_WITH_DETAIL_READ', endpoint: listingPagedUrl, pages: pagesRead, rawCount: rawLinks, termination, issues: complete ? [] : [termination === 'REPEATED_PAGE' ? 'BROKEN_PAGER_REPEATS_LAST_PAGE' : termination, ...(detailFailures ? [`DETAIL_FAILURES=${detailFailures}`] : []), 'ENUMERATION_NOT_PROVEN'].filter((v, i, a) => a.indexOf(v) === i),
+        scopes: [{ scope: 'listedLinks', declaredTotal: seen.size, uniqueIds: seen.size, pages: pagesRead, complete: reachedEnd }, { scope: 'postingsParsed', declaredTotal: seen.size, uniqueIds: jobs.length, pages: pagesRead, complete }] } };
   }
 
   const sitemapUrl = String(config.sitemapUrl ?? '');
   if (sitemapUrl) {
-    const urls = await fetchSitemapUrls(sitemapUrl);
+    const sitemap = await fetchSitemapUrlsDetailed(sitemapUrl);
+    const urls = [...new Set(sitemap.urls)];
     // F-06: an empty sitemap on a catalogued source is the sitemap moving or
     // dying, not zero openings — say so instead of a quiet [].
     if (urls.length === 0) {
       throw new Error(`generic sitemap ${sitemapUrl}: 0 URLs — sitemap moved or empty`);
     }
     const limit = pLimit(Number(config.concurrency ?? 4));
+    /**
+     * Completeness of a sitemap read is the sum of three facts, each counted:
+     * every shard of the index was read; every listed URL was fetched; every
+     * fetched page carried a JobPosting. A listed page that answers without a
+     * JobPosting (expired, moved) is retained as a rejected row, not lost and
+     * not counted as an offer; a fetch failure blocks the proof.
+     */
+    const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+    let fetchFailures = 0;
     const pages = await Promise.all(
       urls.map((url) =>
         limit(async () => {
           try {
             // A browser UA is required here: several boards serve the sitemap to
             // anything but 403 the job pages without one.
-            return parseJobPostings(
+            const parsed = parseJobPostings(
               await fetchText(url, {
                 headers: {
                   'user-agent':
@@ -225,7 +243,11 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
               }),
               url,
             );
-          } catch {
+            if (parsed.length === 0) rejectedRows.push({ reason: 'LISTED_PAGE_WITHOUT_JOBPOSTING', raw: { url } });
+            return parsed;
+          } catch (error) {
+            fetchFailures++;
+            rejectedRows.push({ reason: 'LISTED_PAGE_FETCH_FAILED', raw: { url, error: String(error).slice(0, 200) } });
             return [];
           }
         }),
@@ -238,8 +260,13 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       seen.add(job.externalId);
       return true;
     });
-    // The sitemap reader currently tolerates unreachable shards; it cannot prove completeness.
-    return { jobs, complete: false };
+    const complete = sitemap.failedShards.length === 0 && fetchFailures === 0;
+    const issues = [...(sitemap.failedShards.length ? [`UNREACHABLE_SHARDS=${sitemap.failedShards.length}`] : []), ...(fetchFailures ? [`PAGE_FETCH_FAILURES=${fetchFailures}`] : []), ...(complete ? [] : ['ENUMERATION_NOT_PROVEN'])];
+    return { jobs, declaredTotal: urls.length, complete, truncated: !complete, rejectedRows,
+      enumeration: { method: sitemap.isIndex ? 'SITEMAP_INDEX_WITH_DETAIL_READ' : 'SITEMAP_URLSET_WITH_DETAIL_READ', endpoint: sitemapUrl, pages: sitemap.shards.length, rawCount: sitemap.urls.length, termination: complete ? 'ALL_LISTED_PAGES_READ' : 'LISTED_PAGES_MISSING', issues,
+        scopes: [{ scope: 'shards', declaredTotal: sitemap.shards.length, uniqueIds: sitemap.shards.length - sitemap.failedShards.length, pages: sitemap.shards.length, complete: sitemap.failedShards.length === 0 },
+                 { scope: 'listedUrls', declaredTotal: urls.length, uniqueIds: urls.length - fetchFailures, pages: sitemap.shards.length, complete: fetchFailures === 0 },
+                 { scope: 'postingsParsed', declaredTotal: urls.length, uniqueIds: jobs.length, pages: sitemap.shards.length, complete }] } };
   }
 
   const startUrl = String(config.startUrl ?? '');
@@ -264,5 +291,8 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
   })));
   const byKey = new Map<string, NormalizedJob>();
   for (const job of [...direct, ...pages.flat()]) byKey.set(`${job.externalId}|${job.url}`, job);
-  return { jobs: [...byKey.values()], complete: false, truncated: links.size > 150 };
+  // A start-page link crawl reads what ONE page links to (capped at 150): it
+  // can never prove a board's extent. The evidence says so instead of staying silent.
+  return { jobs: [...byKey.values()], complete: false, truncated: links.size > 150,
+    enumeration: { method: 'START_PAGE_LINK_CRAWL_NO_ENUMERATION_PROOF', endpoint: startUrl, pages: 1, rawCount: links.size, termination: links.size > 150 ? 'LINK_CAP_150' : 'LINKS_EXHAUSTED', issues: ['NO_PUBLISHER_LISTING_OR_SITEMAP', 'ENUMERATION_NOT_PROVEN'] } };
 }

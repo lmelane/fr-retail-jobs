@@ -53,6 +53,11 @@ async function fetchSitemapXml(sitemapUrl: string): Promise<string> {
  * unpredictably.
  */
 export async function fetchSitemapUrls(sitemapUrl: string): Promise<string[]> {
+  return (await fetchSitemapUrlsDetailed(sitemapUrl)).urls;
+}
+
+/** Same read, with the evidence a completeness proof needs: every shard read or failed, named. */
+export async function fetchSitemapUrlsDetailed(sitemapUrl: string): Promise<{ urls: string[]; shards: string[]; failedShards: { url: string; error: string }[]; isIndex: boolean }> {
   const xml = await fetchSitemapXml(sitemapUrl);
   const locations = parseSitemapLocations(xml);
 
@@ -65,19 +70,22 @@ export async function fetchSitemapUrls(sitemapUrl: string): Promise<string[]> {
   const looksLikeSitemap = (url: string) => /sitemap.*\.xml(\.gz)?(\?|$)|\/sitemap\/[^/]+$/i.test(url);
   const isIndex =
     /<sitemapindex[\s>]/i.test(xml) || (locations.length > 0 && locations.every(looksLikeSitemap));
-  if (!isIndex) return locations;
+  if (!isIndex) return { urls: locations, shards: [sitemapUrl], failedShards: [], isIndex: false };
 
+  const failedShards: { url: string; error: string }[] = [];
   const shards = await Promise.all(
     locations.map(async (shard) => {
       try {
         return parseSitemapLocations(await fetchSitemapXml(shard));
-      } catch {
-        // One unreachable shard must not lose the others.
+      } catch (error) {
+        // One unreachable shard must not lose the others — but it is named, so
+        // the caller cannot claim a complete enumeration.
+        failedShards.push({ url: shard, error: String(error).slice(0, 200) });
         return [];
       }
     }),
   );
-  return shards.flat();
+  return { urls: shards.flat(), shards: locations, failedShards, isIndex: true };
 }
 
 type JsonLdNode = Record<string, any>;
