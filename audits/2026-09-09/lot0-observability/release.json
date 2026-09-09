@@ -23,5 +23,6 @@
     "railwayDroppedWarnings": 0,
     "maxMeasuredRowsPerSecond": 11
   },
-  "workersPaused": true
+  "workersPaused": true,
+  "closure": "OPEN_PENDING_FULL_OPERATING_CYCLE"
 }
