@@ -1,4 +1,5 @@
 import pLimit from 'p-limit';
+import { createHash } from 'node:crypto';
 import * as cheerio from 'cheerio';
 import { fetchJson, fetchText } from '../../lib/http.js';
 import { readPostingEvidence } from '../../lib/postingEvidence.js';
@@ -355,7 +356,7 @@ export async function fetchRmkV2Jobs(origin: string, locales: string[]): Promise
 }
 
 /** Counts are read from the publisher's pagination component, never whole-page digits. */
-export function parseSuccessFactorsPagination(html: string): { start: number; end: number; total: number } | null {
+export function parseSuccessFactorsPagination(html: string, offset = 0): { start: number; end: number; total: number } | null {
   const $ = cheerio.load(html, { scriptingEnabled: false });
   const values: Array<{ start: number; end: number; total: number }> = [];
   $('.paginationLabel').each((_, node) => {
@@ -364,10 +365,18 @@ export function parseSuccessFactorsPagination(html: string): { start: number; en
     const total = parts[1]?.replace(/[.,\s\u00a0\u202f]/g, '');
     if (range && total && /^\d+$/.test(total)) values.push({ start: Number(range[1]), end: Number(range[2]), total: Number(total) });
   });
-  if (!values.length) {
-    const label = $('#tile-search-results-label').text().trim();
-    const numbers = label.match(/\d[\d.,\u00a0\u202f]*/g)?.map(x => Number(x.replace(/[.,\u00a0\u202f]/g, '')));
-    if (numbers?.length === 3) values.push({ start: numbers[0], end: numbers[1], total: numbers[2] });
+  if (!values.length && $('#job-tile-list').length) {
+    // The native tile component renders a page COUNT as the second displayed
+    // number ("Showing 101 to 100 of 212"). Translations also reorder tokens.
+    // Read the component's named initialization fields without evaluating JS.
+    const scripts = $('script').map((_, node) => $(node).html() ?? '').get().filter(s => /apiEndpoint:\s*["']tile-search-results["']/.test(s));
+    for (const script of scripts) {
+      const totals = [...script.matchAll(/\bjobRecordsFound\s*:\s*parseInt\(\s*["'](\d+)["']\s*\)/g)].map(m => Number(m[1]));
+      const sizes = [...script.matchAll(/\bjobRecordsPerPage\s*:\s*parseInt\(\s*["'](\d+)["']\s*\)/g)].map(m => Number(m[1]));
+      if (totals.length !== 1 || sizes.length !== 1 || sizes[0] < 1 || !Number.isSafeInteger(offset) || offset < 0) return null;
+      const total = totals[0];
+      values.push({ start: total === 0 ? 0 : offset + 1, end: Math.min(offset + sizes[0], total), total });
+    }
   }
   const valid = values.filter(v => Object.values(v).every(Number.isSafeInteger) && v.start >= 0 && v.end >= v.start && v.total >= v.end);
   if (!valid.length || new Set(valid.map(v => JSON.stringify(v))).size !== 1) return null;
@@ -398,15 +407,22 @@ export async function fetchSuccessFactorsResult(config: Record<string, unknown>)
   let offset = 0, pages = 0, rawCount = 0, declaredTotal: number | undefined;
   let termination = 'PAGE_BUDGET_EXHAUSTED';
   const issues = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   for (let page = 0; page < MAX_PAGES; page++) {
-    const html = page === 0 ? firstHtml : await fetchText(`${origin}/search/?createNewAlert=false&q=&locationsearch=&startrow=${offset}`, { headers: HEADERS });
+    const url = page === 0 ? firstUrl : `${origin}/search/?createNewAlert=false&q=&locationsearch=&startrow=${offset}`;
+    const html = page === 0 ? firstHtml : await fetchText(url, { headers: HEADERS });
     pages++;
-    const pagination = parseSuccessFactorsPagination(html);
+    const pagination = parseSuccessFactorsPagination(html, offset);
     if (pagination) {
       if (declaredTotal === undefined) declaredTotal = pagination.total;
       else if (declaredTotal !== pagination.total) issues.add('SOURCE_TOTAL_CHANGED');
     }
     const listing = parseListing(html, origin);
+    const $ = cheerio.load(html, { scriptingEnabled: false });
+    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset,
+      pagination, ids: listing.map(job => job.externalId),
+      publisherCounter: $('.paginationLabel,#tile-search-results-label').first().text().trim(),
+      componentCounters: [...html.matchAll(/\bjobRecords(?:Found|PerPage)\s*:\s*parseInt\(\s*["']\d+["']\s*\)/g)].map(m => m[0]) });
     rawCount += listing.length;
     const fresh = listing.filter(job => !seenIds.has(job.externalId));
     for (const job of fresh) {
@@ -429,7 +445,7 @@ export async function fetchSuccessFactorsResult(config: Record<string, unknown>)
   const complete = declaredTotal !== undefined && jobs.length === declaredTotal && issues.size === 0;
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
   return finish({ jobs, declaredTotal, complete, truncated: !complete,
-    enumeration: { method: 'PUBLISHER_HTML_PAGINATION', endpoint: firstUrl, pages, rawCount, termination, issues: [...issues] } });
+    enumeration: { method: 'PUBLISHER_HTML_PAGINATION', endpoint: firstUrl, pages, rawCount, termination, issues: [...issues], pageEvidence } });
 }
 
 export async function fetchSuccessFactorsJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {

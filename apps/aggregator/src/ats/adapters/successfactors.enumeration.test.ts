@@ -4,6 +4,7 @@ import { fetchJson, fetchText } from '../../lib/http.js';
 import { fetchRmkV2Jobs, fetchSuccessFactorsResult, parseSuccessFactorsPagination, parseMicrodataDetail } from './successfactors.js';
 const text = vi.mocked(fetchText), json = vi.mocked(fetchJson);
 const listing = (start: number, end: number, total: number) => `<span class="paginationLabel">Results <b>${start} – ${end}</b> of <b>${total}</b></span>` + Array.from({ length: end - start + 1 }, (_, i) => `<a href="/job/Paris-Advisor/${start + i}/">Advisor</a>`).join('');
+const tiles = (label: string, total: number, size: number) => `<span id="tile-search-results-label">${label}</span><ul id="job-tile-list"></ul><script>init({apiEndpoint: "tile-search-results", jobRecordsPerPage: parseInt("${size}"), jobRecordsFound: parseInt("${total}")});</script>`;
 describe('SAP enumeration evidence', () => {
   beforeEach(() => vi.resetAllMocks());
   it('uses the 50-row window declared by the publisher instead of a fixed offset of 25', async () => {
@@ -14,9 +15,24 @@ describe('SAP enumeration evidence', () => {
     expect(r.enumeration).toMatchObject({ pages: 2, termination: 'PUBLISHER_TOTAL_REACHED' });
   });
   it('reads both observed SAP pagination components without counting unrelated page numbers', () => {
-    expect(parseSuccessFactorsPagination('<span id="tile-search-results-label">Showing 1 to 50 of 130 Jobs</span>')).toEqual({ start: 1, end: 50, total: 130 });
+    expect(parseSuccessFactorsPagination(tiles('Showing 1 to 50 of 130 Jobs', 130, 50))).toEqual({ start: 1, end: 50, total: 130 });
     expect(parseSuccessFactorsPagination('<span class="paginationLabel">Ergebnisse <b>1 – 50</b> von <b>1.075</b></span>')).toEqual({ start: 1, end: 50, total: 1075 });
     expect(parseSuccessFactorsPagination('<body>Copyright 2026, 500 employees, 20 jobs</body>')).toBeNull();
+  });
+  it('uses native tile counters across translated labels and the observed count-versus-end display defect', () => {
+    expect(parseSuccessFactorsPagination(tiles('Showing 101 to 100 of 212 Jobs', 212, 100), 100)).toEqual({ start: 101, end: 200, total: 212 });
+    expect(parseSuccessFactorsPagination(tiles('Showing 201 to 12 of 212 Jobs', 212, 100), 200)).toEqual({ start: 201, end: 212, total: 212 });
+    expect(parseSuccessFactorsPagination(tiles('3 İşten 1-3 arasındakiler gösteriliyor', 3, 11))).toEqual({ start: 1, end: 3, total: 3 });
+    expect(parseSuccessFactorsPagination('<span id="tile-search-results-label">3 İşten 1-3 arasındakiler gösteriliyor</span>')).toBeNull();
+    expect(parseSuccessFactorsPagination(tiles('', 0, 11))).toEqual({ start: 0, end: 0, total: 0 });
+  });
+  it('retains page-level counter and ID witnesses for diagnosing repeated or changing results', async () => {
+    text.mockResolvedValueOnce(listing(1, 2, 4)).mockResolvedValueOnce(listing(3, 4, 4));
+    const r = await fetchSuccessFactorsResult({ origin: 'https://jobs.example.com', withDescriptions: false });
+    expect(r.enumeration?.pageEvidence).toEqual([
+      expect.objectContaining({ offset: 0, pagination: { start: 1, end: 2, total: 4 }, ids: ['1', '2'], sha256: expect.stringMatching(/^[a-f0-9]{64}$/) }),
+      expect.objectContaining({ offset: 2, pagination: { start: 3, end: 4, total: 4 }, ids: ['3', '4'] }),
+    ]);
   });
   it('retains all collected postings and records a total that changes during pagination', async () => {
     text.mockResolvedValueOnce(listing(1, 2, 4)).mockResolvedValueOnce(listing(3, 5, 5));

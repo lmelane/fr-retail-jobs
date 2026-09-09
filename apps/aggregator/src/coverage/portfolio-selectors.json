@@ -1,0 +1,10 @@
+[
+ {"file":"LVMH","group":"LVMH","selector":"a[href]","urlPattern":"^https://www\\.lvmh\\.com/en/our-maisons/[^/#]+/[^/#]+$"},
+ {"file":"Richemont","group":"Richemont","selector":"a[href]","urlPattern":"^https://www\\.richemont\\.com/our-maisons/[^/#]+/$"},
+ {"file":"Swatch-Group","group":"Swatch Group","selector":"main a[href] img[alt]","urlPattern":"/companies-brands/[^/]+/[^/]+$","labelAttribute":"alt"},
+ {"file":"OTB","group":"OTB","selector":"a[href]","urlPattern":"/en/(diesel|jil-sander|maison-margiela|marni|viktor-and-rolf|amiri|staff-international|frassineti|stephen|brave-kid)$"},
+ {"file":"Coty","group":"Coty","selector":"main button.no-select"},
+ {"file":"L-Oréal","group":"L’Oréal","selector":"a[href]","urlPattern":"/en/[^/]+-division/[^/]+/$"},
+ {"file":"Tapestry","group":"Tapestry","selector":"a[href]","urlPattern":"/our-brands/#brand-[a-z]+$"},
+ {"file":"Kering","group":"Kering","selector":"a[href]","urlPattern":"/en/houses/[^/]+/[^/]+/$","allowUrlLabel":true}
+]
