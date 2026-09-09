@@ -28,3 +28,16 @@ Les captures et leurs SHA-256 figurent dans `official-captures.json`. Les décis
 - `validate-candidates.mts` : exécution en lecture seule des adaptateurs existants, tous pays.
 
 Avant admission : identité/alias/groupe justifiés, lien officiel vers le tenant, inventaire de tous ses portails pertinents, pagination vérifiée, qualité des champs et dates, correspondance avec les Company existantes, test et témoin réel, certificat SourceIdentityReview, activation puis preuve de production. La complétude d'un tenant n'est pas la complétude mondiale d'une Maison.
+
+
+## Correction du registre par rejeu des archives — 9 septembre 05:28 UTC
+
+Le premier registre chargeait les résultats bruts de recherche, sans réutiliser la réextraction plus précise des liens carrière. Certaines anciennes recherches retenaient des conditions d'offres commerciales et manquaient le véritable lien de recrutement. Le mot « Talent » retenait aussi deux liens de fidélité/connexion Tezenis. Il s'agit de défauts de traitement, pas de preuves d'absence d'un portail.
+
+Les 749 observations ont été rejouées sur leurs archives HTML dont les SHA-256 sont vérifiés avant parsing. Le sélecteur exclut un contexte consommateur lorsqu'il ne porte que le mot Talent. Le registre utilise désormais les liens rejoués pour son classement ; `historicalLinks` et `originalStatus` conservent les premières interprétations, `at` reste la date d'observation, `reprocessedAt` et `extractorVersion` identifient le nouveau traitement. Aucune nouvelle observation distante n'est inventée.
+
+Les états après correction sont : 211 candidats reliés à une source active, 30 identités ambiguës, 12 portails officiels à valider techniquement, **64 avec liens à revoir, 584 recherches incomplètes, 752 sans recherche directe documentée**. Quinze libellés gagnent un lien candidat ; Marc Orian perd un faux lien commercial sans que son portail soit déclaré absent. Le périmètre reste exactement 1 653 libellés / 3 971 profils. Preuve et témoins : `replay-proof.json`.
+
+Parmi les liens récupérés : American Vintage → careers.am-vintage.com ; Karl Lagerfeld → jobs.eu.lever.co/karllagerfeld ; Jimmy Fairly → jimmyfairly.factorial.fr ; Balibaris → balibaris-career.softy.pro ; Zapa → espace Brand Sisters/TalentDetection ; Lancel → lancel.nous-recrutons.fr ; Figaret → WTTJ. Ces liens proviennent de pages employeur archivées ; chaque tenant, identité et inventaire reste à valider avant activation. Un lien de recrutement ne certifie pas à lui seul un ATS supporté ou une couverture mondiale.
+
+Reproduction : exécuter `../../2026-09-08/fashionjobs-coverage/extract-evidence.mts`, puis `build-ledger.mts --private-root=<répertoire backups>`. Les snapshots privés d'origine restent nécessaires pour le rapprochement. Aucun changement de base.

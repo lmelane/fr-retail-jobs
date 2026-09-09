@@ -62,12 +62,14 @@ Le registre `../fashionjobs-portals/ledger.csv` conserve **1 653 libellés, 3 97
 |---|---:|
 | Candidat relié à une source active | 211 |
 | Rapprochement d'identité ambigu | 30 |
-| Recherche commencée, incomplète | 598 |
+| Recherche commencée, incomplète | 584 |
 | Portail officiel, validation technique restante | 12 |
-| Liens carrière à revoir | 50 |
+| Liens carrière à revoir | 64 |
 | Recherche directe non encore documentée | 752 |
 
 Les preuves de marque, le domaine, le portail officiel, la capacité technique du collecteur et la complétude mondiale sont séparés. L'absence de domaine dans la base ne déqualifie pas une marque prouvée par son groupe, notamment les quatre marques SMCP.
+
+Le rapprochement utilisait encore les premiers liens candidats de recherche au lieu des liens réextraits des HTML archivés. Ce défaut du registre est corrigé dans ce lot : 15 acteurs passent à des liens carrière à revoir, un faux candidat est retiré, et les pages de fidélité « Tezenis Talent » sont exclues. Les 749 observations sont rejouées avec vérification de leurs empreintes HTML ; dates et liens originaux restent conservés (`../fashionjobs-portals/replay-proof.json`). Des liens candidats pour American Vintage, Karl Lagerfeld, Jimmy Fairly, Balibaris, Zapa, Lancel et Figaret ressortent ainsi ; ce ne sont pas de nouvelles activations.
 
 Portails notamment retrouvés : Sud Express/TalentView, Aubade/WTTJ, Armor-lux/WeRecruit, Histoire d'Or/THOM, Oniverse (Calzedonia, Intimissimi, Tezenis), Hugo Boss/Phenom, Gérard Darel/Taleez. Leur présence dans cette liste ne vaut pas activation. Aubade/Aubade Paris demande un arbitrage ; le backend actuel Histoire d'Or doit être validé ; le lien Carrières Isabel Marant observé conduit à FashionJobs et la recherche d'une alternative directe reste ouverte.
 
@@ -87,7 +89,7 @@ FashionJobs sert à découvrir les employeurs et les compteurs d'annuaire. Aucun
 | L'Oréal, 406 et pagination officielle | Correctif + lecture réelle validés | `edeae6f` / `66f5b46` | Oui | Image prête | **Aucune nouvelle ingestion** | 1 804 représentations protégées pendant l'échec ; 1 726 IDs en lecture directe ; validation depuis Railway encore requise |
 | Teamtailor, complétude | Correctif + 122 flux validés | `e68837e` / `9763522` | Oui | Image prête | **Aucune nouvelle ingestion** | Les SourceRun historiques sont inchangés ; [lecture directe](../teamtailor/) |
 | TalentView, limitation à la première page | Oui + 5 tenants validés | `d50443f` / `e40d5bf` | Oui | Image prête | **Aucune nouvelle ingestion** | [150 campagnes existantes + Sud Express 68](../talentview/live-validation.json) ; pas de gain net prod revendiqué |
-| Registre mondial FashionJobs | Inventaire conservé ; qualification inachevée | `4387eaf` / `a30364d` | Oui | Dossier versionné | Aucune activation dans ce lot | [1 653 libellés et états](../fashionjobs-portals/ledger.csv) |
+| Registre mondial FashionJobs | Inventaire conservé ; qualification inachevée | `4387eaf` / `a30364d`, puis [PR #35](https://github.com/lmelane/fr-retail-jobs/pull/35) pour le rejeu | Oui pour le registre initial ; voir PR #35 pour le rejeu | Dossier versionné | Aucune activation dans ce lot | [1 653 libellés et états](../fashionjobs-portals/ledger.csv) |
 | Pays manquants, MID, autres ATS, fraîcheur, provenance | **Non soldé** | Pas de correctif global livré | — | — | Non | Populations exactes et critères ci-dessus |
 
 ## E. Architecture retenue et travail prioritaire

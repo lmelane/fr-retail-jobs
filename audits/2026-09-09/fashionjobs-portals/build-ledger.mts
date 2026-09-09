@@ -7,7 +7,12 @@ if(!privateRoot) throw new Error('--private-root=<repository>/backups is require
 const out='audits/2026-09-09/fashionjobs-portals';
 const directory=JSON.parse(readFileSync('audits/2026-09-08/fashionjobs-world/employers.json','utf8'));
 const prod=JSON.parse(readFileSync(`${privateRoot}/remediation-20260909/run-integrity/directory-production.json`,'utf8'));
-const research=['known','profiles'].flatMap(mode=>readFileSync(`${privateRoot}/remediation-20260908/portal-research-${mode}.jsonl`,'utf8').trim().split('\n').map(l=>JSON.parse(l)));
+const reprocessed=JSON.parse(readFileSync('audits/2026-09-08/fashionjobs-coverage/discovery-evidence.json','utf8'));
+const research=['known','profiles'].flatMap(mode=>readFileSync(`${privateRoot}/remediation-20260908/portal-research-${mode}.jsonl`,'utf8').trim().split('\n').map(l=>JSON.parse(l))).map(r=>{
+ const replay=reprocessed.find((p:any)=>p.name===r.name&&p.attemptAt===r.at);
+ if(!replay)throw new Error(`Missing archived-page replay for ${r.name}/${r.at}`);
+ return {...r,historicalLinks:r.links??[],links:replay.links.map((l:any)=>({...l,directCandidate:!l.indirectBoard})),reprocessedAt:replay.reprocessedAt,extractorVersion:replay.extractorVersion};
+});
 const decisions=[...JSON.parse(readFileSync('audits/2026-09-08/fashionjobs-coverage/identity-and-portal-decisions.json','utf8')),...JSON.parse(readFileSync(`${out}/portal-reviews.json`,'utf8'))];
 const keyCache=new Map<string,string[]>();
 const keys=(value:string)=>{let k=keyCache.get(value);if(!k){k=[canonicalCompanyKey(value),canonicalCompanyKey(resolveCompany(value).companyId)].filter(Boolean);keyCache.set(value,k);}return k;};
@@ -36,7 +41,7 @@ const rows=directory.map((entry:any)=>{
   catalogueSources:direct.map((s:any)=>({key:s.key,kind:s.kind,status:s.status,maison:s.maison,careersDomain:s.careersDomain})),
   existingJobs:ids.length===1?prod.counts.find((c:any)=>c.companyId===ids[0])??null:null,
   identityEvidence:evidence,
-  researchObservations:observations.map((r:any)=>({at:r.at,status:r.status,failures:r.failures??[],declaredWebsites:r.declaredWebsites??[],pagesRead:(r.pages??[]).map((p:any)=>({url:p.url,sha256:p.sha256,atsHint:p.atsHint?.type})),links:(r.links??[]).filter((l:any)=>l.directCandidate)})),
+  researchObservations:observations.map((r:any)=>({at:r.at,originalStatus:r.status,status:r.links.some((l:any)=>l.directCandidate)?'ARCHIVED_CAREER_LINKS_TO_REVIEW':r.pages?.length?'NO_CAREER_LINK_FOUND_ON_ARCHIVED_PAGES':r.status,reprocessedAt:r.reprocessedAt,extractorVersion:r.extractorVersion,failures:r.failures??[],declaredWebsites:r.declaredWebsites??[],pagesRead:(r.pages??[]).map((p:any)=>({url:p.url,sha256:p.sha256,atsHint:p.atsHint?.type})),historicalLinks:r.historicalLinks.filter((l:any)=>l.directCandidate),links:(r.links??[]).filter((l:any)=>l.directCandidate)})),
   evidenceLimit:stage==='ACTIVE_SOURCE_CANDIDATE'?'A catalogue relation is not proof of complete global coverage or of every brand on a group portal.':stage==='RESEARCH_INCOMPLETE'?'Previous discovery did not establish a portal; absence of a public portal has NOT been proved.':null};
 });
 rows.sort((a:any,b:any)=>b.franceDirectoryCount-a.franceDirectoryCount||a.discoveryKey.localeCompare(b.discoveryKey));
