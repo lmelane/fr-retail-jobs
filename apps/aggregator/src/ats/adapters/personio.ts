@@ -1,4 +1,5 @@
 import pLimit from 'p-limit';
+import {personioDetail} from './personioDetail.js';
 import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
 import { assertSourceRunning } from '../../lib/sourceBudget.js';
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
@@ -58,7 +59,17 @@ export async function fetchPersonioJobs(config: Record<string, unknown>): Promis
   }
   const limit = pLimit(2);
   const enriched = await Promise.all(jobs.map(job=>limit(async()=>{
-    try { return enrichPostingEvidence(job, await fetchText(job.url)); }
+    try {
+      const html = await fetchText(job.url);
+      const enriched = enrichPostingEvidence(job, html);
+      const detail = personioDetail(html, job.externalId);
+      return { ...enriched, postedAt: detail.job?.postedAt ?? enriched.postedAt,
+        description: detail.job?.description ?? enriched.description,
+        country: enriched.country ?? detail.job?.country,
+        city: enriched.city ?? detail.job?.city,
+        raw: { ...(enriched.raw as object), personioDetail: detail.evidence },
+      };
+    }
     catch (error) {
       assertSourceRunning();
       return { ...job, raw: { ...(job.raw as object), detailReadError: String(error).slice(0,1000) } };
