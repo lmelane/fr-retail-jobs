@@ -1,0 +1,416 @@
+{
+  "reviewer": "Lot 3 / complément documentaire officiel 2026-09-09",
+  "companies": [
+    {
+      "id": "cmtpuyimv3pbul35m36fwuuzo",
+      "canonicalKey": "ULTA_BEAUTY",
+      "codes": [
+        "BEAUTY",
+        "FRAGRANCE",
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.ulta.com/investor/company-information",
+          "statement": "Présentation officielle : distributeur spécialisé de cosmétiques, soins et parfums.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.528956+00:00"
+        },
+        {
+          "code": "FRAGRANCE",
+          "source": "https://www.ulta.com/investor/company-information",
+          "statement": "Présentation officielle : distributeur spécialisé de cosmétiques, soins et parfums.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529125+00:00"
+        },
+        {
+          "code": "RETAIL",
+          "source": "https://www.ulta.com/investor/company-information",
+          "statement": "Présentation officielle : distributeur spécialisé de cosmétiques, soins et parfums.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529127+00:00"
+        }
+      ]
+    },
+    {
+      "id": "cmtpjx4nv2wqjpf5ljaaqw1jm",
+      "canonicalKey": "BOOTS",
+      "codes": [
+        "BEAUTY",
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.boots-uk.com/about-boots-uk/our-purpose-and-values/",
+          "statement": "Présentation officielle : enseigne de santé et beauté, produits de soins et réseau de magasins. La page lie explicitement boots.jobs.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529171+00:00"
+        },
+        {
+          "code": "RETAIL",
+          "source": "https://www.boots-uk.com/about-boots-uk/our-purpose-and-values/",
+          "statement": "Présentation officielle : enseigne de santé et beauté, produits de soins et réseau de magasins. La page lie explicitement boots.jobs.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529172+00:00"
+        }
+      ]
+    },
+    {
+      "id": "cmtp46ok11vbvqq4zlowazudi",
+      "canonicalKey": "H_AND_M_GROUP",
+      "codes": [
+        "FASHION",
+        "FOOTWEAR",
+        "BEAUTY",
+        "HOME_LIFESTYLE"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://hmgroup.com/about-us/business-idea/",
+          "statement": "Le groupe décrit vêtements, chaussures, cosmétiques, textiles et objets pour la maison. Attribution au groupe uniquement, sans propagation automatique aux marques.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529211+00:00"
+        },
+        {
+          "code": "FOOTWEAR",
+          "source": "https://hmgroup.com/about-us/business-idea/",
+          "statement": "Le groupe décrit vêtements, chaussures, cosmétiques, textiles et objets pour la maison. Attribution au groupe uniquement, sans propagation automatique aux marques.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529212+00:00"
+        },
+        {
+          "code": "BEAUTY",
+          "source": "https://hmgroup.com/about-us/business-idea/",
+          "statement": "Le groupe décrit vêtements, chaussures, cosmétiques, textiles et objets pour la maison. Attribution au groupe uniquement, sans propagation automatique aux marques.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529213+00:00"
+        },
+        {
+          "code": "HOME_LIFESTYLE",
+          "source": "https://hmgroup.com/about-us/business-idea/",
+          "statement": "Le groupe décrit vêtements, chaussures, cosmétiques, textiles et objets pour la maison. Attribution au groupe uniquement, sans propagation automatique aux marques.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529214+00:00"
+        }
+      ]
+    },
+    {
+      "id": "cmtp6p1s52xnlqq4zm1zqljup",
+      "canonicalKey": "TAPESTRY",
+      "codes": [
+        "LEATHER_GOODS",
+        "FOOTWEAR"
+      ],
+      "evidence": [
+        {
+          "code": "LEATHER_GOODS",
+          "source": "https://investors.tapestry.com/",
+          "statement": "La stratégie du groupe documente sacs et articles de maroquinerie ainsi que chaussures ; périmètre du groupe, sans propagation automatique aux marques.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529251+00:00"
+        },
+        {
+          "code": "FOOTWEAR",
+          "source": "https://investors.tapestry.com/",
+          "statement": "La stratégie du groupe documente sacs et articles de maroquinerie ainsi que chaussures ; périmètre du groupe, sans propagation automatique aux marques.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529252+00:00"
+        }
+      ]
+    },
+    {
+      "id": "cmtjwf6ge08pfo72b7oqm8q3c",
+      "canonicalKey": "PANDORA",
+      "codes": [
+        "JEWELRY"
+      ],
+      "evidence": [
+        {
+          "code": "JEWELRY",
+          "source": "https://www.pandoragroup.com/about-us",
+          "statement": "Présentation officielle : conception, fabrication et commercialisation de bijoux, notamment en argent et or. Aucune déduction Horlogerie depuis le classement historique combiné.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529291+00:00"
+        }
+      ]
+    },
+    {
+      "id": "cmtpkx0dp59qspf5lz9252szw",
+      "canonicalKey": "URBN",
+      "codes": [
+        "FASHION",
+        "FOOTWEAR",
+        "BEAUTY",
+        "HOME_LIFESTYLE",
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.sec.gov/Archives/edgar/data/912615/000119312526137916/urbn-20260131.htm",
+          "statement": "Déclaration annuelle 2025 déposée en 2026 : portefeuille comprenant vêtements, chaussures, produits de beauté, maison et distribution. Texte consulté via index documentaire du dépôt ; attribution au groupe, pas aux marques individuellement.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529328+00:00"
+        },
+        {
+          "code": "FOOTWEAR",
+          "source": "https://www.sec.gov/Archives/edgar/data/912615/000119312526137916/urbn-20260131.htm",
+          "statement": "Déclaration annuelle 2025 déposée en 2026 : portefeuille comprenant vêtements, chaussures, produits de beauté, maison et distribution. Texte consulté via index documentaire du dépôt ; attribution au groupe, pas aux marques individuellement.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529329+00:00"
+        },
+        {
+          "code": "BEAUTY",
+          "source": "https://www.sec.gov/Archives/edgar/data/912615/000119312526137916/urbn-20260131.htm",
+          "statement": "Déclaration annuelle 2025 déposée en 2026 : portefeuille comprenant vêtements, chaussures, produits de beauté, maison et distribution. Texte consulté via index documentaire du dépôt ; attribution au groupe, pas aux marques individuellement.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529330+00:00"
+        },
+        {
+          "code": "HOME_LIFESTYLE",
+          "source": "https://www.sec.gov/Archives/edgar/data/912615/000119312526137916/urbn-20260131.htm",
+          "statement": "Déclaration annuelle 2025 déposée en 2026 : portefeuille comprenant vêtements, chaussures, produits de beauté, maison et distribution. Texte consulté via index documentaire du dépôt ; attribution au groupe, pas aux marques individuellement.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529331+00:00"
+        },
+        {
+          "code": "RETAIL",
+          "source": "https://www.sec.gov/Archives/edgar/data/912615/000119312526137916/urbn-20260131.htm",
+          "statement": "Déclaration annuelle 2025 déposée en 2026 : portefeuille comprenant vêtements, chaussures, produits de beauté, maison et distribution. Texte consulté via index documentaire du dépôt ; attribution au groupe, pas aux marques individuellement.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529332+00:00"
+        }
+      ]
+    },
+    {
+      "id": "cmtpjpt4j2hoypf5lusxkuh9m",
+      "canonicalKey": "NORDSTROM",
+      "codes": [
+        "FASHION",
+        "FOOTWEAR",
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.nordstrom.com/browse/about?cm_sp=corp-_-corp_AboutUs-_-globalfooternav_aboutus&origin=footer",
+          "statement": "La présentation officielle décrit une enseigne de distribution de mode, vêtements, chaussures et accessoires.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529370+00:00"
+        },
+        {
+          "code": "FOOTWEAR",
+          "source": "https://www.nordstrom.com/browse/about?cm_sp=corp-_-corp_AboutUs-_-globalfooternav_aboutus&origin=footer",
+          "statement": "La présentation officielle décrit une enseigne de distribution de mode, vêtements, chaussures et accessoires.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529371+00:00"
+        },
+        {
+          "code": "RETAIL",
+          "source": "https://www.nordstrom.com/browse/about?cm_sp=corp-_-corp_AboutUs-_-globalfooternav_aboutus&origin=footer",
+          "statement": "La présentation officielle décrit une enseigne de distribution de mode, vêtements, chaussures et accessoires.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529371+00:00"
+        }
+      ]
+    },
+    {
+      "id": "cmtn7s1lr1rosqq5liqmue7z6",
+      "canonicalKey": "LEVI_S",
+      "codes": [
+        "FASHION"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.levistrauss.com/who-we-are/brands/levis/",
+          "statement": "Page officielle de la marque Levi’s : jeans et vêtements. La source décrit précisément la marque, pas tout le portefeuille du groupe.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529409+00:00"
+        }
+      ]
+    },
+    {
+      "id": "cmtpjk6s927a5pf5la87dwntz",
+      "canonicalKey": "RITUALS",
+      "codes": [
+        "BEAUTY",
+        "FRAGRANCE",
+        "HOME_LIFESTYLE"
+      ],
+      "evidence": [
+        {
+          "code": "BEAUTY",
+          "source": "https://www.rituals.com/newsroom/en-WW/about/",
+          "statement": "Présentation officielle : soins du corps, soins de la peau, parfums pour la maison et produits de maison.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529450+00:00"
+        },
+        {
+          "code": "FRAGRANCE",
+          "source": "https://www.rituals.com/newsroom/en-WW/about/",
+          "statement": "Présentation officielle : soins du corps, soins de la peau, parfums pour la maison et produits de maison.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529452+00:00"
+        },
+        {
+          "code": "HOME_LIFESTYLE",
+          "source": "https://www.rituals.com/newsroom/en-WW/about/",
+          "statement": "Présentation officielle : soins du corps, soins de la peau, parfums pour la maison et produits de maison.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529453+00:00"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvv771rzinf2b3bt9vqu4",
+      "canonicalKey": "ADIDAS",
+      "codes": [
+        "FASHION",
+        "FOOTWEAR"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://report.adidas-group.com/2025/en/_assets/downloads/our-company-adidas-ar25.pdf",
+          "statement": "Rapport annuel 2025 : activités de chaussures et vêtements ; la ventilation du chiffre d’affaires distingue ces catégories.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529492+00:00"
+        },
+        {
+          "code": "FOOTWEAR",
+          "source": "https://report.adidas-group.com/2025/en/_assets/downloads/our-company-adidas-ar25.pdf",
+          "statement": "Rapport annuel 2025 : activités de chaussures et vêtements ; la ventilation du chiffre d’affaires distingue ces catégories.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529493+00:00"
+        }
+      ]
+    },
+    {
+      "id": "cmtkdvy3z1swwnf2bo3y8vb22",
+      "canonicalKey": "RALPH_LAUREN",
+      "codes": [
+        "FASHION",
+        "FOOTWEAR",
+        "HOME_LIFESTYLE",
+        "FRAGRANCE",
+        "HOSPITALITY"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://investor.ralphlauren.com/",
+          "statement": "Présentation officielle investisseurs : cinq catégories, vêtements, chaussures/accessoires, maison, parfums et hospitality. Périmètre employeur Ralph Lauren, pas propagation aux autres entités.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529532+00:00"
+        },
+        {
+          "code": "FOOTWEAR",
+          "source": "https://investor.ralphlauren.com/",
+          "statement": "Présentation officielle investisseurs : cinq catégories, vêtements, chaussures/accessoires, maison, parfums et hospitality. Périmètre employeur Ralph Lauren, pas propagation aux autres entités.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529533+00:00"
+        },
+        {
+          "code": "HOME_LIFESTYLE",
+          "source": "https://investor.ralphlauren.com/",
+          "statement": "Présentation officielle investisseurs : cinq catégories, vêtements, chaussures/accessoires, maison, parfums et hospitality. Périmètre employeur Ralph Lauren, pas propagation aux autres entités.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529534+00:00"
+        },
+        {
+          "code": "FRAGRANCE",
+          "source": "https://investor.ralphlauren.com/",
+          "statement": "Présentation officielle investisseurs : cinq catégories, vêtements, chaussures/accessoires, maison, parfums et hospitality. Périmètre employeur Ralph Lauren, pas propagation aux autres entités.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529535+00:00"
+        },
+        {
+          "code": "HOSPITALITY",
+          "source": "https://investor.ralphlauren.com/",
+          "statement": "Présentation officielle investisseurs : cinq catégories, vêtements, chaussures/accessoires, maison, parfums et hospitality. Périmètre employeur Ralph Lauren, pas propagation aux autres entités.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529536+00:00"
+        }
+      ]
+    },
+    {
+      "id": "cmtn76cbr1guhqq5lw7243y4e",
+      "canonicalKey": "PRIMARK",
+      "codes": [
+        "FASHION",
+        "BEAUTY",
+        "HOME_LIFESTYLE",
+        "RETAIL"
+      ],
+      "evidence": [
+        {
+          "code": "FASHION",
+          "source": "https://www.primark.com/en-us/a/inspiration/the-lowdown/primark-us-brand-history",
+          "statement": "Présentation officielle : enseigne de mode, rayons femmes, hommes, enfants, maison et beauté. Aucune fusion avec une autre identité.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529577+00:00"
+        },
+        {
+          "code": "BEAUTY",
+          "source": "https://www.primark.com/en-us/a/inspiration/the-lowdown/primark-us-brand-history",
+          "statement": "Présentation officielle : enseigne de mode, rayons femmes, hommes, enfants, maison et beauté. Aucune fusion avec une autre identité.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529578+00:00"
+        },
+        {
+          "code": "HOME_LIFESTYLE",
+          "source": "https://www.primark.com/en-us/a/inspiration/the-lowdown/primark-us-brand-history",
+          "statement": "Présentation officielle : enseigne de mode, rayons femmes, hommes, enfants, maison et beauté. Aucune fusion avec une autre identité.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529579+00:00"
+        },
+        {
+          "code": "RETAIL",
+          "source": "https://www.primark.com/en-us/a/inspiration/the-lowdown/primark-us-brand-history",
+          "statement": "Présentation officielle : enseigne de mode, rayons femmes, hommes, enfants, maison et beauté. Aucune fusion avec une autre identité.",
+          "confidence": "HIGH",
+          "basis": "OFFICIAL_SOURCE",
+          "checkedAt": "2026-09-09T11:24:15.529580+00:00"
+        }
+      ]
+    }
+  ]
+}
