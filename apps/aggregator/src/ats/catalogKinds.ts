@@ -2,6 +2,7 @@
 export const KIND_TO_ATS: Record<string, string> = {
   harri: "HARRI",
   talentrecruiter: "TALENT_RECRUITER",
+  easycruit: "EASYCRUIT",
   successfactors: "SUCCESSFACTORS",
   avature: "AVATURE",
   eightfold: "EIGHTFOLD",

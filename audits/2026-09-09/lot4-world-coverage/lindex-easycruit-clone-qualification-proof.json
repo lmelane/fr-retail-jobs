@@ -1,0 +1,44 @@
+{
+  "at": "2026-09-09T16:09:30.103Z",
+  "environment": "LOCAL_REPLAY",
+  "commit": "d3ab6920f2834aeb4f07c736587f4d4fd1e9625c",
+  "created": true,
+  "count": 41,
+  "employers": [
+    "Lindex",
+    "Lindex AS",
+    "Lindex Central Europe",
+    "Lindex Lithuania",
+    "Lindex Latvia",
+    "Lindex Eesti OÜ",
+    "Lindex Denmark"
+  ],
+  "countries": {
+    "United Kingdom": 1,
+    "Norge": 20,
+    "Česká republika": 3,
+    "Sverige": 4,
+    "Slovensko": 2,
+    "Lietuva": 4,
+    "Latvija": 5,
+    "Eesti": 1,
+    "Danmark": 1
+  },
+  "aliases": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 7
+  },
+  "aliasPlanHash": "419b4346f7837d1b6c19c10ad2dbcd0cd6b0bb623fe68ea6180055f1916b7343",
+  "certification": {
+    "sourceKey": "lindex-easycruit",
+    "sourceHash": "a6eefa6269ccb766177e57833419eecac44bd2bd02c35fa29ea4e650e9bf9edb",
+    "verdict": "VERIFIED",
+    "written": 1
+  },
+  "promoted": {
+    "key": "lindex-easycruit",
+    "from": "DRAFT",
+    "to": "ACTIVE"
+  }
+}

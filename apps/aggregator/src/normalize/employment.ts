@@ -132,16 +132,24 @@ const PROGRAM_PATTERNS: ReadonlyArray<readonly [ProgramType, RegExp]> = [
  * « Fulltime-Temporary »), pas une mission d'intérim : l'intérim, lui, nomme
  * une agence. « MISSION » seul est écarté (Commission, Émission, « Chef de
  * Mission ») ; une vraie mission d'intérim porte le mot « intérim ».
+ *
+ * Nordique, balte et tchèque (mesuré sur un flux EasyCruit, 2026-09-09) :
+ * « Vikariat » / « Midlertidig » / « Tidsbegränsad » / « Tähtajaline » /
+ * « Terminuota » nomment une durée déterminée ; « Fast » (nb/da),
+ * « Tillsvidareanställning » (sv), « Nuolatinis » (lt), « Pastāvīgs darbs »
+ * (lv), « Tähtajatu » (et) un contrat permanent. « FAST » n'est reconnu
+ * qu'en valeur ENTIÈRE ou suivi de « stilling »/« ansettelse » : le mot
+ * anglais « fast » (« Fast Fashion ») n'est pas un CDI.
  */
 const TERM_PATTERNS: ReadonlyArray<readonly [EmploymentTerm, RegExp]> = [
   ['TEMPORARY', /\bINTERIM\b|INTERIMAIRE|ZERO HEURE|ZERO[ -]HOUR|\bAGENCY WORKER\b|LEIHARBEIT/],
   [
     'FIXED_TERM',
-    /\bCDD\b|DUREE DETERMINEE|FIX(?:ED)?[ -]?TERM|CONTRAT TEMPORAIRE|\bTEMPORARY\b|\bTEMP\b|(?<!UN)BEFRISTET|CONTRATO TEMPORAL/,
+    /\bCDD\b|DUREE DETERMINEE|FIX(?:ED)?[ -]?TERM|CONTRAT TEMPORAIRE|\bTEMPORARY\b|\bTEMP\b|(?<!UN)BEFRISTET|CONTRATO TEMPORAL|\bVIKARIAT\b|\bMIDLERTIDIG\b|TIDSBEGRANSAD|\bTAHTAJALINE\b|\bTERMINUOTA\b/,
   ],
   [
     'PERMANENT',
-    /\bCDI\b|CONTRAT A DUREE INDETERMINEE|\bPERMANENT\b|\bREGULAR\b|UNBEFRISTET|INDEFINID/,
+    /\bCDI\b|CONTRAT A DUREE INDETERMINEE|\bPERMANENT\b|\bREGULAR\b|UNBEFRISTET|INDEFINID|^FAST$|\bFAST (?:STILLING|ANSETTELSE)\b|TILLSVIDARE|\bNUOLATINIS\b|\bPASTAVIGS\b|\bTAHTAJATU\b/,
   ],
 ];
 
@@ -161,10 +169,17 @@ const SEASONAL_PATTERN = /\bSEASONAL\b|SAISONNIER|SAISONNIERE|SAISONNALIER|TRAVA
  * Les deux donnent PART_TIME, mais ils n'ont pas la même autorité : un titre
  * explicite peut détrôner un champ structuré dégradé, une inférence non
  * (décision Loïc, 2026-09-08). L'explicite est donc testé en PREMIER.
+ *
+ * Nordique, balte et tchèque : « Heltid » / « Fulltid » / « Fuldtid »,
+ * « Täiskoht » (et), « Visas etatas » (lt), « Pilna laika » (lv), « Plný
+ * úvazek » et « HPP » (cs, valeur entière) déclarent un temps plein ;
+ * « Deltid », « Osaline tööaeg », « Nepilna laika », « Nepilną darbo dieną »,
+ * « Zkrácený / Částečný úvazek » un temps partiel. « Ved behov » (à la
+ * demande) et « VPP » (emploi secondaire) ne sont pas des rythmes : `null`.
  */
 const WORK_TIME_EXPLICIT: ReadonlyArray<readonly [WorkTime, RegExp]> = [
-  ['FULL_TIME', /FULL[ _-]?TIME|TEMPS[ -]PLEIN|PLEIN[ -]TEMPS|VOLLZEIT|全职/],
-  ['PART_TIME', /PART[ _-]?TIME|TEMPS[ -]PARTIEL|MI[ -]TEMPS|TEILZEIT|兼职/],
+  ['FULL_TIME', /FULL[ _-]?TIME|TEMPS[ -]PLEIN|PLEIN[ -]TEMPS|VOLLZEIT|全职|\bHELTID\b|\bFULLTID\b|\bFULDTID\b|\bTAISKOHT\b|VISAS ETATAS|\bPILNA LAIKA\b|\bPILNS LAIKS\b|PLNY UVAZEK|^HPP$/],
+  ['PART_TIME', /PART[ _-]?TIME|TEMPS[ -]PARTIEL|MI[ -]TEMPS|TEILZEIT|兼职|\bDELTID\b|\bOSALINE\b|NEPILNA LAIKA|NEPILNA DARBO|NEPILNAS ETATAS|ZKRACENY UVAZEK|CASTECNY UVAZEK/],
 ];
 
 /** Un horaire chiffré n'est un temps partiel qu'en dessous de 35 h. */

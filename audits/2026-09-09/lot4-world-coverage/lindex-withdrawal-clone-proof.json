@@ -1,0 +1,24 @@
+{
+  "at": "2026-09-09T15:57:54.289Z",
+  "planHash": "c9cb911e05425d43578a7bf77b7452618d49f696596805f1eec7d8477d33a545",
+  "result": {
+    "alreadyApplied": false,
+    "written": 15,
+    "excludedActiveRepresentations": 0,
+    "lifecycleViolations": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "written": 0,
+    "excludedActiveRepresentations": 0,
+    "lifecycleViolations": 0
+  },
+  "total": 77406,
+  "reviewedJobs": 7,
+  "activeBefore": 7,
+  "activeAfter": 0,
+  "idsPreserved": true,
+  "rawPreserved": true,
+  "historyPreserved": true,
+  "employerPreserved": true
+}
