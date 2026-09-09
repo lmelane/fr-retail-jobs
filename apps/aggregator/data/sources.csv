@@ -22,7 +22,7 @@
 "Audemars Piguet","","smartrecruiters-whitelabel","{""company"": ""audemarspiguet""}","","ALLOWED","86","yes"
 "Polène","","ashby","{""vendor"": ""ashby"", ""slug"": ""polene-paris"", ""board_url"": ""https://jobs.ashbyhq.com/polene-paris"", ""api_url"": ""https://api.ashbyhq.com/posting-api/job-board/polene-paris"", ""method"": ""GET"", ""response_path"": ""jobs[]"", ""id_field"": ""id"", ""discovered_via"": ""https://www.polene-paris.com/blogs/rh/careers""}","","ALLOWED","81","yes"
 "Helena Rubinstein +8","","wttj","{""slug"": ""l-oreal""}","","ALLOWED","62","yes"
-"Maison Margiela","careers.otb.net","successfactors","{""origin"": ""https://careers.otb.net""}","","ALLOWED","60","yes"
+"Maison Margiela","careers.otb.net","successfactors","{""origin"": ""https://careers.otb.net"", ""brandProperty"": ""dept""}","","ALLOWED","60","yes"
 "Egon Zehnder","","workable","{""account"": ""ezrecruiting""}","","ALLOWED","55","yes"
 "Maison 123","career.maison123.com","teamtailor","{""origin"": ""https://career.maison123.com""}","","ALLOWED","52","yes"
 "Soeur","","teamtailor","{""vendor"": ""teamtailor"", ""subdomain"": ""soeur-1711354805"", ""careers_url"": ""https://soeur-1711354805.teamtailor.com/"", ""jobs_url"": ""https://soeur-1711354805.teamtailor.com/jobs""}","","ALLOWED","52","yes"

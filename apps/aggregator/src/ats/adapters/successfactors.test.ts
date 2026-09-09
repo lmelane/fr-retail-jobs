@@ -369,3 +369,40 @@ describe('normalizeRmkItem — l2 : custFullTimePartTime, custOnsiteRemote, unif
     expect(job.contract).toBe('Permanent');
   });
 });
+
+// ---------------------------------------------------------------------------
+// Portails de groupe : la marque employeuse nommée par une propriété du site
+// carrière (OTB : `dept` = Diesel / Marni / Jil Sander, hiringOrganization =
+// « OTB Spa » partout). Opt-in par configuration, jamais deviné.
+// ---------------------------------------------------------------------------
+import { brandPropertyOf, employerFromDetail } from './successfactors.js';
+describe('parseMicrodataDetail — propriétés du site carrière et brandProperty', () => {
+  const html = `
+    <meta itemprop="hiringOrganization" content="OTB Spa">
+    <span data-careersite-propertyid="title">Aushilfe im Verkauf (m/w/d)</span>
+    <span data-careersite-propertyid="department">Retail</span>
+    <span data-careersite-propertyid="dept">Diesel</span>
+    <span data-careersite-propertyid="customfield3">Part Time</span>
+    <span data-careersite-propertyid="description">Very long text that is not a property value</span>`;
+  test('archive toutes les propriétés sauf la description, valeurs verbatim', () => {
+    const d = parseMicrodataDetail(html);
+    expect(d.properties).toEqual({ title: 'Aushilfe im Verkauf (m/w/d)', department: 'Retail', dept: 'Diesel', customfield3: 'Part Time' });
+    expect(d.company).toBe('OTB Spa');
+  });
+  test('sans brandProperty, l’employeur reste la hiringOrganization', () => {
+    expect(employerFromDetail(parseMicrodataDetail(html))).toMatchObject({ company: 'OTB Spa', employerEvidence: { rule: 'EXPLICIT_JOBPOSTING_EMPLOYER' } });
+  });
+  test('avec brandProperty=dept, la marque nommée par la page devient l’employeur, avec sa preuve', () => {
+    expect(employerFromDetail(parseMicrodataDetail(html), 'dept')).toEqual({ company: 'Diesel', employerEvidence: { rawName: 'Diesel', path: 'careersite.dept', rule: 'CONFIGURED_BRAND_PROPERTY' } });
+  });
+  test('propriété absente ou vide : retour au propriétaire du portail, rien n’est déduit du titre', () => {
+    const noDept = html.replace('<span data-careersite-propertyid="dept">Diesel</span>', '');
+    expect(employerFromDetail(parseMicrodataDetail(noDept), 'dept')).toMatchObject({ company: 'OTB Spa' });
+    expect(employerFromDetail(parseMicrodataDetail(`<title>Junior Area Manager MM6 | OTB Spa</title>`), 'dept').company).toBeUndefined();
+  });
+  test('brandProperty est validée', () => {
+    expect(brandPropertyOf({})).toBeUndefined();
+    expect(brandPropertyOf({ brandProperty: 'dept' })).toBe('dept');
+    expect(() => brandPropertyOf({ brandProperty: '<script>' })).toThrow('brandProperty');
+  });
+});

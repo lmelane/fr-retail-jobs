@@ -64,3 +64,33 @@ it('keeps reviewed homonyms distinct even when legacy legal-suffix normalization
  expect(await prisma.company.findUniqueOrThrow({where:{id:company.id}})).toMatchObject({name:'Example',domain:'example.org',mergedIntoId:null});
  expect(await applyRepairPlan(prisma,plan,digest(plan),'test')).toMatchObject({alreadyApplied:true,written:0});
 });
+it('attributes postings to the brands explicitly named on their native pages, leaves the rest to the owner, records observations; replay is idempotent',async()=>{
+ const {company,source,job,spec}=await fixture();
+ const second=await prisma.job.create({data:{companyId:company.id,externalId:'456',source:'SUCCESSFACTORS',title:'Sales Associate',url:'https://careers.example.com/job/Milan-Sales/456/',fingerprint:'LEGACY_BRAND|sales|milan',clusterKey:'LEGACY_BRAND|sales',sources:{create:{sourceKey:source.key,externalId:'456',url:'https://careers.example.com/job/Milan-Sales/456/',sourceTier:'EMPLOYER_DIRECT',raw:{original:'keep'}}}}});
+ const third=await prisma.job.create({data:{companyId:company.id,externalId:'789',source:'SUCCESSFACTORS',title:'Legacy Brand Store Manager',url:'https://careers.example.com/job/Rome-Store/789/',fingerprint:'LEGACY_BRAND|store|rome',clusterKey:'LEGACY_BRAND|store',sources:{create:{sourceKey:source.key,externalId:'789',url:'https://careers.example.com/job/Rome-Store/789/',sourceTier:'EMPLOYER_DIRECT',raw:{original:'keep'}}}}});
+ const sha='a'.repeat(64),observedAt=new Date().toISOString();
+ spec.sources[0].configPatch={brandProperty:'dept'};
+ spec.sources[0].postings=[
+  {externalId:'456',targetName:'Actual Brand',targetKind:'BRAND',evidence:{url:'https://careers.example.com/job/Milan-Sales/456/',sha256:sha,property:'dept',value:'Actual Brand',observedAt}},
+  {externalId:'789',targetName:'Legacy Brand',targetKind:'BRAND',evidence:{url:'https://careers.example.com/job/Rome-Store/789/',sha256:sha,property:'dept',value:'Legacy Brand',observedAt}}];
+ const plan=await planReviewedPortalOwners(prisma,spec);
+ expect(plan.ownerRules?.[0].postingOwners).toEqual({'456':'ACTUAL_BRAND','789':'LEGACY_BRAND'});
+ expect(plan.operations.filter(o=>o.entity==='Job').map(o=>o.id).sort()).toEqual([job.id,second.id].sort());   // 789 already belongs to its attested brand: no operation
+ await applyRepairPlan(prisma,plan,digest(plan),'test');
+ const owner=await prisma.job.findUniqueOrThrow({where:{id:job.id},include:{company:true}});expect(owner.company).toMatchObject({name:'Actual Group',kind:'GROUP'});
+ const brand=await prisma.job.findUniqueOrThrow({where:{id:second.id},include:{company:true,sources:true}});
+ expect(brand.company).toMatchObject({name:'Actual Brand',kind:'BRAND',parentGroup:'Actual Group',parentGroupId:owner.companyId});expect(brand.clusterKey).toBe('ACTUAL_BRAND|sales');expect(brand.sources[0].raw).toEqual({original:'keep'});
+ const kept=await prisma.job.findUniqueOrThrow({where:{id:third.id},include:{company:true}});expect(kept.companyId).toBe(company.id);expect(kept.company).toMatchObject({name:'Legacy Brand',parentGroupId:owner.companyId,mergedIntoId:null});
+ expect((await prisma.source.findUniqueOrThrow({where:{key:source.key}})).config).toMatchObject({origin:'https://careers.example.com',brandProperty:'dept'});
+ expect(await prisma.sourceObservation.count({where:{sourceKey:source.key,externalId:{in:['456','789']}}})).toBe(2);
+ expect(await applyRepairPlan(prisma,plan,digest(plan),'test')).toMatchObject({alreadyApplied:true,written:0,sourceOwnerContradictions:0});
+});
+it('refuses a brand posting that names the owner, an off-domain proof or a repeated posting',async()=>{
+ const {spec}=await fixture();const sha='b'.repeat(64),observedAt=new Date().toISOString();
+ spec.sources[0].postings=[{externalId:'123',targetName:'Actual Group',targetKind:'BRAND',evidence:{url:'https://careers.example.com/job/x/123/',sha256:sha,property:'dept',value:'Actual Group',observedAt}}];
+ await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('names the portal owner');
+ spec.sources[0].postings=[{externalId:'123',targetName:'Other Brand',targetKind:'BRAND',evidence:{url:'https://evil.example.org/123',sha256:sha,property:'dept',value:'Other Brand',observedAt}}];
+ await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('Invalid native brand evidence');
+ const ok={externalId:'123',targetName:'Other Brand',targetKind:'BRAND' as const,evidence:{url:'https://careers.example.com/job/x/123/',sha256:sha,property:'dept',value:'Other Brand',observedAt}};
+ spec.sources[0].postings=[ok,{...ok}];await expect(planReviewedPortalOwners(prisma,spec)).rejects.toThrow('repeated reviewed posting');
+});
