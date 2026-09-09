@@ -1,0 +1,173 @@
+{
+  "commit": "1ccf8cbe6fef5dc25c16f5f73a69a1cb62db80e5",
+  "applicationCommit": "146e6b0ce9b5f7378aa66e2b353f61ddb566bd5f",
+  "pullRequest": "https://github.com/lmelane/fr-retail-jobs/pull/50",
+  "ci": "https://github.com/lmelane/fr-retail-jobs/actions/runs/34357970806",
+  "productionMigration": "20260909230000_catalogue_withdrawal",
+  "before": {
+    "at": "2026-09-09T13:36:45.902Z",
+    "mode": "before",
+    "totals": {
+      "total": 77360,
+      "active": 74132,
+      "france": 10952,
+      "dated_closures": 3206,
+      "withdrawals": 0,
+      "ids": "ef26d283f404b34f29742ac17d5457fc",
+      "active_ids": "f72666f15c8465afafbb45310d4c6d17"
+    },
+    "affected": 371,
+    "otherFieldsHash": "4725a4677fed0c4293c25a607ec84cb6db8cf8558385443427cf9616f8f0267a",
+    "rawHash": "6f8922968bc21d513157319b6476cf9cb0aef699e2d58f67316b4bb1af8a9574",
+    "sourceRowsHash": "00d9ab995db40ae9f402e5ab6a8492fd85ddcf652bf8b3bfc3430882266f5833",
+    "previousEventsHash": "48b44a15c123785b08e42c3edd39a7581b73562a34886434e9734a9a96a8d6a7",
+    "affectedActive": 0,
+    "affectedClosed": 371,
+    "affectedWithdrawn": 0,
+    "corrections": 0
+  },
+  "after": {
+    "at": "2026-09-09T13:43:42.581Z",
+    "mode": "after",
+    "totals": {
+      "total": 77360,
+      "active": 74132,
+      "france": 10952,
+      "dated_closures": 2835,
+      "withdrawals": 371,
+      "ids": "ef26d283f404b34f29742ac17d5457fc",
+      "active_ids": "f72666f15c8465afafbb45310d4c6d17"
+    },
+    "affected": 371,
+    "otherFieldsHash": "4725a4677fed0c4293c25a607ec84cb6db8cf8558385443427cf9616f8f0267a",
+    "rawHash": "6f8922968bc21d513157319b6476cf9cb0aef699e2d58f67316b4bb1af8a9574",
+    "sourceRowsHash": "00d9ab995db40ae9f402e5ab6a8492fd85ddcf652bf8b3bfc3430882266f5833",
+    "previousEventsHash": "48b44a15c123785b08e42c3edd39a7581b73562a34886434e9734a9a96a8d6a7",
+    "affectedActive": 0,
+    "affectedClosed": 0,
+    "affectedWithdrawn": 371,
+    "corrections": 371
+  },
+  "backup": {
+    "bytes": 383990724,
+    "sha256": "69a93e30f992a2c5fb6df2ee9bbddf7a9882390b2fab373d3f8488082a089ade"
+  },
+  "planReview": {
+    "same371TargetsAndPatchesAsValidatedClone": true,
+    "operations": 371,
+    "onlyFieldsChanged": [
+      "closedAt",
+      "withdrawalReason",
+      "withdrawnAt"
+    ],
+    "proofStorage": "One original correction reference per repaired row; original documents remain immutable."
+  },
+  "publicBefore": [
+    {
+      "url": "https://modecareers.com/offre/cmtm780z60leypv5jm5apm7h1",
+      "status": 410,
+      "at": "2026-09-09T13:36:57.159Z",
+      "sha256": "bf73f6600ee077109d8c921a95c386d6fcfb66bc2c9cb7eff3bc14aeecd1944d",
+      "robots": "noindex",
+      "banner": "Expirée Cette offre n’est plus publiée par Via (mobilité).Voir les offres similaires",
+      "jobPosting": false
+    },
+    {
+      "url": "https://modecareers.com/offre/cmtm7807f0l62pv5jriaz0qgp",
+      "status": 410,
+      "at": "2026-09-09T13:36:57.279Z",
+      "sha256": "c050cea9ea0aa38c038232d138694d37002e7db332839beda0a9c12befd321fe",
+      "robots": "noindex",
+      "banner": "Expirée Cette offre n’est plus publiée par Via (mobilité).Voir les offres similaires",
+      "jobPosting": false
+    },
+    {
+      "url": "https://modecareers.com/offre/cmtm780pn0lbypv5j5tf23i8i",
+      "status": 410,
+      "at": "2026-09-09T13:36:57.383Z",
+      "sha256": "93c6b8a66bfbf2153ec4cd2505ef2ecb1ba1353ad6bc1b02c8c012d81b4d802a",
+      "robots": "noindex",
+      "banner": "Expirée Cette offre n’est plus publiée par Via (mobilité).Voir les offres similaires",
+      "jobPosting": false
+    }
+  ],
+  "publicAfter": [
+    {
+      "url": "https://modecareers.com/offre/cmtm780z60leypv5jm5apm7h1",
+      "status": 410,
+      "at": "2026-09-09T13:43:39.272Z",
+      "sha256": "a466426bef30d2d70c324947620d9eea9c88bf3abf3adfd00ed317d4631faed9",
+      "robots": "noindex",
+      "banner": "Retirée Cette offre a été retirée de notre catalogue.Voir les offres similaires",
+      "jobPosting": false
+    },
+    {
+      "url": "https://modecareers.com/offre/cmtm7807f0l62pv5jriaz0qgp",
+      "status": 410,
+      "at": "2026-09-09T13:43:39.424Z",
+      "sha256": "20888fd73f4dd1ab446b8fdbd38df8c295437d2b2e7251f337e7124a79e754c8",
+      "robots": "noindex",
+      "banner": "Retirée Cette offre a été retirée de notre catalogue.Voir les offres similaires",
+      "jobPosting": false
+    },
+    {
+      "url": "https://modecareers.com/offre/cmtm780pn0lbypv5j5tf23i8i",
+      "status": 410,
+      "at": "2026-09-09T13:43:39.500Z",
+      "sha256": "28841103fd83cc5d20312258a96250842443392d41596339e94458e85d49691c",
+      "robots": "noindex",
+      "banner": "Retirée Cette offre a été retirée de notre catalogue.Voir les offres similaires",
+      "jobPosting": false
+    }
+  ],
+  "services": [
+    {
+      "service": "aggregator",
+      "id": "5c68a09b-be01-4e86-905d-a30a928ba057",
+      "status": "SUCCESS",
+      "commit": "1ccf8cbe6fef5dc25c16f5f73a69a1cb62db80e5",
+      "command": "sh apps/aggregator/start.sh",
+      "paused": "1"
+    },
+    {
+      "service": "refresh",
+      "id": "a3b7c039-a087-48ab-8379-3875ac80d948",
+      "status": "SUCCESS",
+      "commit": "1ccf8cbe6fef5dc25c16f5f73a69a1cb62db80e5",
+      "command": null,
+      "paused": "1"
+    },
+    {
+      "service": "reconcile",
+      "id": "24d3b2f5-bb90-4563-be97-720a0aaa6de8",
+      "status": "SUCCESS",
+      "commit": "1ccf8cbe6fef5dc25c16f5f73a69a1cb62db80e5",
+      "command": null,
+      "paused": "1"
+    },
+    {
+      "service": "web",
+      "id": "d3d01b02-4d47-4407-874d-42e65f874360",
+      "status": "SUCCESS",
+      "commit": "1ccf8cbe6fef5dc25c16f5f73a69a1cb62db80e5",
+      "command": null,
+      "paused": null
+    }
+  ],
+  "repair": {
+    "batchId": "20260909-LOT4-WITHDRAWAL-LIFECYCLE-v1",
+    "hash": "41741b8af72643dbf0b82acaac88baaeacf4d1c061b0573d6f4d02e226a5083e",
+    "alreadyApplied": false,
+    "written": 371,
+    "excludedActiveRepresentations": 0,
+    "lifecycleViolations": 0
+  },
+  "replay": {
+    "batchId": "20260909-LOT4-WITHDRAWAL-LIFECYCLE-v1",
+    "hash": "41741b8af72643dbf0b82acaac88baaeacf4d1c061b0573d6f4d02e226a5083e",
+    "alreadyApplied": true,
+    "written": 0,
+    "excludedActiveRepresentations": 0,
+    "lifecycleViolations": 0
+  }
+}
