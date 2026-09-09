@@ -21,3 +21,9 @@ Ce lot ne prétend pas résoudre les pays manquants ou ambigus, ni prouver que t
 La sauvegarde complète de production du 9 septembre 04:55 UTC (`../rmk-dates/production-backup.json`, SHA-256 `cb3ddd9727dc7ae3b56013383c366d3529feef296568f939e49b5533e6046761`) a été restaurée dans une nouvelle base locale isolée. Deux écritures, deux événements CORRECTED et deux lignes DataCorrection ; aucune représentation, donnée RAW, géographie ou ancien événement modifié. Seconde application : zéro écriture. Les compteurs de cette copie passent à 10 936 France pour 10 936 pays canoniques FR, et la vérification de population entière trouve zéro contradiction. Voir `rehearsal-*.json`.
 
 La réparation de production sera appliquée exclusivement depuis le commit propre mergé sur main, après construction de son image, avec le plan/hash revalidé ; les preuves seront ajoutées après exécution.
+
+## Production réparée — 9 septembre 05:19 UTC
+
+PR [#34](https://github.com/lmelane/fr-retail-jobs/pull/34) : commit `67aef77`, merge main `8513d7428cc917c69e7511016139f6fa2cc2c607`, CI aggregator et web réussies. Image Railway `f1f6963d-c084-4629-823a-8366714c5c1d` SUCCESS. Le plan `2dc4fa11a72f302d9269c1460037d260cb3340c6e8b29fd2dbbe46226f6e2abd` a été appliqué depuis ce checkout propre : **2 écritures, 2 événements CORRECTED, 2 lignes DataCorrection**. RAW, représentations, géographie et historique original préservés. Seconde application : zéro écriture.
+
+La production et l'API France comptent maintenant **10 936 offres**, toujours 74 113 au total. Les deux offres de Tourcoing apparaissent désormais avec le filtre France : **0 → 2** pour la requête témoin. Les preuves SQL, d'idempotence et API sont dans `production-*.json` et `front-after.json`. Aucun run global n'a été relancé.

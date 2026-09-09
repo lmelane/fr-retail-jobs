@@ -1,0 +1,37 @@
+{
+  "at": "2026-09-09T04:49:40.511Z",
+  "activeSources": 424,
+  "statuses": {
+    "OK": 178,
+    "DEGRADED": 245,
+    "BROKEN": 1
+  },
+  "canAttestAbsence": 179,
+  "unattestedByImplementation": {
+    "teamtailor": 122,
+    "successfactors": 30,
+    "icims": 3,
+    "personio": 23,
+    "digitalrecruiters": 4,
+    "generic-listing": 16,
+    "recruitee": 22,
+    "workable": 4,
+    "talentview": 4,
+    "taleo": 1,
+    "magnet": 2,
+    "phenom": 1,
+    "jobaffinity-wordpress": 1,
+    "eightfold": 1,
+    "talentsoft": 1,
+    "avature": 1,
+    "wordpress": 1,
+    "radancy": 1,
+    "workday": 2,
+    "eqwa": 1,
+    "ashby": 1,
+    "rituals": 1,
+    "jibe": 1,
+    "altamira": 1
+  },
+  "interpretation": "Latest actual production runs before corrected adapters are ingested; no historical attestation rewritten."
+}

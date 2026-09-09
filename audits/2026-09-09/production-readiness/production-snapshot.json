@@ -1,0 +1,759 @@
+{
+  "at": "2026-09-09T05:20:06.088Z",
+  "metrics": [
+    {
+      "active": 74113,
+      "france": 10936,
+      "canonicalFrance": 10936,
+      "countryMissing": 4868,
+      "franceFlagContradictions": 0,
+      "functionMissing": 5305,
+      "seniorityMID": 53552,
+      "publicationDateMissing": 1411,
+      "futurePublicationDates": 0,
+      "pastValidThrough": 61,
+      "unseen48h": 1348
+    }
+  ],
+  "countries": [
+    {
+      "countryCode": "US",
+      "active": 30943
+    },
+    {
+      "countryCode": "FR",
+      "active": 10936
+    },
+    {
+      "countryCode": null,
+      "active": 4868
+    },
+    {
+      "countryCode": "GB",
+      "active": 2872
+    },
+    {
+      "countryCode": "CA",
+      "active": 2790
+    },
+    {
+      "countryCode": "DE",
+      "active": 2739
+    },
+    {
+      "countryCode": "IT",
+      "active": 2446
+    },
+    {
+      "countryCode": "ES",
+      "active": 2070
+    },
+    {
+      "countryCode": "NL",
+      "active": 1715
+    },
+    {
+      "countryCode": "CN",
+      "active": 1169
+    },
+    {
+      "countryCode": "AU",
+      "active": 1165
+    },
+    {
+      "countryCode": "CH",
+      "active": 1079
+    },
+    {
+      "countryCode": "BE",
+      "active": 597
+    },
+    {
+      "countryCode": "JP",
+      "active": 518
+    },
+    {
+      "countryCode": "IN",
+      "active": 518
+    },
+    {
+      "countryCode": "KR",
+      "active": 486
+    },
+    {
+      "countryCode": "PT",
+      "active": 435
+    },
+    {
+      "countryCode": "SG",
+      "active": 402
+    },
+    {
+      "countryCode": "MX",
+      "active": 391
+    },
+    {
+      "countryCode": "DK",
+      "active": 368
+    },
+    {
+      "countryCode": "HK",
+      "active": 338
+    },
+    {
+      "countryCode": "PL",
+      "active": 325
+    },
+    {
+      "countryCode": "SE",
+      "active": 316
+    },
+    {
+      "countryCode": "AT",
+      "active": 311
+    },
+    {
+      "countryCode": "TH",
+      "active": 268
+    },
+    {
+      "countryCode": "IE",
+      "active": 254
+    },
+    {
+      "countryCode": "TR",
+      "active": 252
+    },
+    {
+      "countryCode": "MY",
+      "active": 246
+    },
+    {
+      "countryCode": "AE",
+      "active": 240
+    },
+    {
+      "countryCode": "BR",
+      "active": 219
+    },
+    {
+      "countryCode": "NO",
+      "active": 201
+    },
+    {
+      "countryCode": "CL",
+      "active": 183
+    },
+    {
+      "countryCode": "GR",
+      "active": 179
+    },
+    {
+      "countryCode": "TW",
+      "active": 163
+    },
+    {
+      "countryCode": "ZA",
+      "active": 157
+    },
+    {
+      "countryCode": "NZ",
+      "active": 141
+    },
+    {
+      "countryCode": "VN",
+      "active": 129
+    },
+    {
+      "countryCode": "CO",
+      "active": 113
+    },
+    {
+      "countryCode": "SA",
+      "active": 111
+    },
+    {
+      "countryCode": "CZ",
+      "active": 100
+    },
+    {
+      "countryCode": "RO",
+      "active": 98
+    },
+    {
+      "countryCode": "IL",
+      "active": 96
+    },
+    {
+      "countryCode": "HU",
+      "active": 91
+    },
+    {
+      "countryCode": "MO",
+      "active": 79
+    },
+    {
+      "countryCode": "MA",
+      "active": 67
+    },
+    {
+      "countryCode": "PR",
+      "active": 63
+    },
+    {
+      "countryCode": "PE",
+      "active": 58
+    },
+    {
+      "countryCode": "PH",
+      "active": 53
+    },
+    {
+      "countryCode": "LU",
+      "active": 50
+    },
+    {
+      "countryCode": "ID",
+      "active": 49
+    },
+    {
+      "countryCode": "FI",
+      "active": 38
+    },
+    {
+      "countryCode": "PA",
+      "active": 38
+    },
+    {
+      "countryCode": "AR",
+      "active": 37
+    },
+    {
+      "countryCode": "MC",
+      "active": 36
+    },
+    {
+      "countryCode": "EG",
+      "active": 36
+    },
+    {
+      "countryCode": "HR",
+      "active": 35
+    },
+    {
+      "countryCode": "TN",
+      "active": 33
+    },
+    {
+      "countryCode": "VA",
+      "active": 29
+    },
+    {
+      "countryCode": "BG",
+      "active": 29
+    },
+    {
+      "countryCode": "GA",
+      "active": 27
+    },
+    {
+      "countryCode": "KY",
+      "active": 26
+    },
+    {
+      "countryCode": "LT",
+      "active": 20
+    },
+    {
+      "countryCode": "SK",
+      "active": 16
+    },
+    {
+      "countryCode": "BH",
+      "active": 15
+    },
+    {
+      "countryCode": "SC",
+      "active": 15
+    },
+    {
+      "countryCode": "NC",
+      "active": 15
+    },
+    {
+      "countryCode": "AL",
+      "active": 12
+    },
+    {
+      "countryCode": "MD",
+      "active": 12
+    },
+    {
+      "countryCode": "MN",
+      "active": 12
+    },
+    {
+      "countryCode": "QA",
+      "active": 10
+    },
+    {
+      "countryCode": "RS",
+      "active": 10
+    },
+    {
+      "countryCode": "SI",
+      "active": 9
+    },
+    {
+      "countryCode": "AZ",
+      "active": 8
+    },
+    {
+      "countryCode": "UA",
+      "active": 8
+    },
+    {
+      "countryCode": "PK",
+      "active": 8
+    },
+    {
+      "countryCode": "KH",
+      "active": 8
+    },
+    {
+      "countryCode": "RU",
+      "active": 7
+    },
+    {
+      "countryCode": "NE",
+      "active": 6
+    },
+    {
+      "countryCode": "LV",
+      "active": 6
+    },
+    {
+      "countryCode": "VI",
+      "active": 6
+    },
+    {
+      "countryCode": "GG",
+      "active": 6
+    },
+    {
+      "countryCode": "AD",
+      "active": 5
+    },
+    {
+      "countryCode": "MV",
+      "active": 5
+    },
+    {
+      "countryCode": "KZ",
+      "active": 5
+    },
+    {
+      "countryCode": "XK",
+      "active": 4
+    },
+    {
+      "countryCode": "JO",
+      "active": 4
+    },
+    {
+      "countryCode": "BD",
+      "active": 4
+    },
+    {
+      "countryCode": "LS",
+      "active": 4
+    },
+    {
+      "countryCode": "LA",
+      "active": 3
+    },
+    {
+      "countryCode": "JE",
+      "active": 3
+    },
+    {
+      "countryCode": "SZ",
+      "active": 3
+    },
+    {
+      "countryCode": "NH",
+      "active": 2
+    },
+    {
+      "countryCode": "MT",
+      "active": 2
+    },
+    {
+      "countryCode": "LB",
+      "active": 2
+    },
+    {
+      "countryCode": "SD",
+      "active": 2
+    },
+    {
+      "countryCode": "KW",
+      "active": 2
+    },
+    {
+      "countryCode": "KE",
+      "active": 2
+    },
+    {
+      "countryCode": "GE",
+      "active": 2
+    },
+    {
+      "countryCode": "EE",
+      "active": 2
+    },
+    {
+      "countryCode": "DO",
+      "active": 2
+    },
+    {
+      "countryCode": "BY",
+      "active": 2
+    },
+    {
+      "countryCode": "BS",
+      "active": 2
+    },
+    {
+      "countryCode": "BL",
+      "active": 2
+    },
+    {
+      "countryCode": "AW",
+      "active": 2
+    },
+    {
+      "countryCode": "OM",
+      "active": 2
+    },
+    {
+      "countryCode": "NA",
+      "active": 2
+    },
+    {
+      "countryCode": "NG",
+      "active": 1
+    },
+    {
+      "countryCode": "AM",
+      "active": 1
+    },
+    {
+      "countryCode": "MU",
+      "active": 1
+    },
+    {
+      "countryCode": "CR",
+      "active": 1
+    },
+    {
+      "countryCode": "MF",
+      "active": 1
+    },
+    {
+      "countryCode": "ME",
+      "active": 1
+    },
+    {
+      "countryCode": "UY",
+      "active": 1
+    },
+    {
+      "countryCode": "EC",
+      "active": 1
+    },
+    {
+      "countryCode": "BA",
+      "active": 1
+    },
+    {
+      "countryCode": "CY",
+      "active": 1
+    },
+    {
+      "countryCode": "IM",
+      "active": 1
+    },
+    {
+      "countryCode": "GU",
+      "active": 1
+    },
+    {
+      "countryCode": "ST",
+      "active": 1
+    }
+  ],
+  "functions": [
+    {
+      "jobFunction": "retail-client-advisor",
+      "active": 26839
+    },
+    {
+      "jobFunction": "beauty-advisor",
+      "active": 10719
+    },
+    {
+      "jobFunction": "retail-store-management",
+      "active": 8494
+    },
+    {
+      "jobFunction": null,
+      "active": 5305
+    },
+    {
+      "jobFunction": "retail-operations",
+      "active": 5018
+    },
+    {
+      "jobFunction": "marketing-communication",
+      "active": 1724
+    },
+    {
+      "jobFunction": "supply-chain-logistics",
+      "active": 1383
+    },
+    {
+      "jobFunction": "design-creation",
+      "active": 1373
+    },
+    {
+      "jobFunction": "manufacturing-quality",
+      "active": 1331
+    },
+    {
+      "jobFunction": "merchandising-buying",
+      "active": 1296
+    },
+    {
+      "jobFunction": "it-data",
+      "active": 1232
+    },
+    {
+      "jobFunction": "hr-talent",
+      "active": 1137
+    },
+    {
+      "jobFunction": "finance",
+      "active": 1077
+    },
+    {
+      "jobFunction": "strategy-management",
+      "active": 930
+    },
+    {
+      "jobFunction": "ecommerce-digital",
+      "active": 893
+    },
+    {
+      "jobFunction": "visual-merchandising",
+      "active": 878
+    },
+    {
+      "jobFunction": "customer-service",
+      "active": 802
+    },
+    {
+      "jobFunction": "wholesale-b2b",
+      "active": 791
+    },
+    {
+      "jobFunction": "hospitality",
+      "active": 709
+    },
+    {
+      "jobFunction": "product-development-rd",
+      "active": 543
+    },
+    {
+      "jobFunction": "atelier-craft",
+      "active": 508
+    },
+    {
+      "jobFunction": "crm-clienteling",
+      "active": 348
+    },
+    {
+      "jobFunction": "admin-facilities",
+      "active": 289
+    },
+    {
+      "jobFunction": "legal-compliance",
+      "active": 213
+    },
+    {
+      "jobFunction": "retail-area-management",
+      "active": 192
+    },
+    {
+      "jobFunction": "sustainability",
+      "active": 89
+    }
+  ],
+  "companyCounts": [
+    {
+      "records": 1571,
+      "distinctCanonicalKeys": 1571,
+      "parentGroupLabels": 37,
+      "withActiveJobs": 1047
+    }
+  ],
+  "missingCanonicalEmployer": [
+    {
+      "active": 0
+    }
+  ],
+  "directCoverage": [
+    {
+      "directActiveJobs": 71343,
+      "directFrance": 8941,
+      "companiesWithDirectActiveJobs": 784
+    }
+  ],
+  "companyKinds": [
+    {
+      "kind": "UNKNOWN",
+      "records": 1534
+    },
+    {
+      "kind": "OTHER",
+      "records": 20
+    },
+    {
+      "kind": "MAISON",
+      "records": 8
+    },
+    {
+      "kind": "RETAILER",
+      "records": 7
+    },
+    {
+      "kind": "GROUP",
+      "records": 2
+    }
+  ],
+  "sourceCounts": [
+    {
+      "status": "ACTIVE",
+      "sources": 424,
+      "implementationKinds": 39
+    },
+    {
+      "status": "PAUSED",
+      "sources": 8,
+      "implementationKinds": 2
+    },
+    {
+      "status": "RETIRED",
+      "sources": 68,
+      "implementationKinds": 9
+    }
+  ],
+  "applicationPoolCandidates": [
+    {
+      "id": "cmtk1x9tg00wznv2btaqsrj5a",
+      "title": "Candidature spontanée",
+      "canonicalSourceKey": "oh-my-cream",
+      "url": "https://careers.ohmycream.com/jobs/5676742-candidature-spontanee"
+    },
+    {
+      "id": "cmtlyj1gk07a3qf5kfkzoxghs",
+      "title": "Candidature Spontanée",
+      "canonicalSourceKey": "naos",
+      "url": "https://careers.naos.com/job/Ouvert-Candidature-Spontan%C3%A9e/1358811055/"
+    },
+    {
+      "id": "cmtk1x6ne00lwnv2bnohf5018",
+      "title": "Candidature Spontanée",
+      "canonicalSourceKey": "wttj-sector",
+      "url": "https://www.welcometothejungle.com/fr/companies/la-rosee/jobs/candidature-spontanee_lyon"
+    },
+    {
+      "id": "cmtk22s3q0bmonv2b9gv6z1c0",
+      "title": "Candidature Spontanée Chef(fe) de Produit Développement et Opérationnel Sénior - H/F",
+      "canonicalSourceKey": "a-derma-4",
+      "url": "https://pierrefabre.wd3.myworkdayjobs.com/External_Career_Site/job/Tarn-81/Candidature-Spontane-Chef-fe--de-Produit-Dveloppement-et-Oprationnel-Snior---H-F_JR106872"
+    },
+    {
+      "id": "cmtpz4aoo04eu3ncqwqeiyzd6",
+      "title": "CANDIDATURE SPONTANÉE - Responsable Adjoint H/F - Paris",
+      "canonicalSourceKey": "wttj-sector",
+      "url": "https://www.welcometothejungle.com/fr/companies/pandora-/jobs/candidature-spontanee-responsable-adjoint-h-f-paris_paris_PANDO_4JjR6rr"
+    },
+    {
+      "id": "cmtpz48qh04e53ncq3t7x5c7t",
+      "title": "CANDIDATURE SPONTANÉE - Responsable de Boutique H/F - Paris",
+      "canonicalSourceKey": "wttj-sector",
+      "url": "https://www.welcometothejungle.com/fr/companies/pandora-/jobs/candidature-spontanee-responsable-de-boutique-h-f-paris_paris_PANDO_ozg962A"
+    },
+    {
+      "id": "cmtp1zcz704h9qq4zxuhrwm6z",
+      "title": "Candidatures spontanées",
+      "canonicalSourceKey": "horace",
+      "url": "https://horace.teamtailor.com/jobs/5747132-candidatures-spontanees"
+    },
+    {
+      "id": "cmtk22s2f0bmgnv2bsnrewdmn",
+      "title": "Candidatures spontanées - Chef(fe) de produit développement Senior - CDI - H/F",
+      "canonicalSourceKey": "a-derma-4",
+      "url": "https://pierrefabre.wd3.myworkdayjobs.com/External_Career_Site/job/Haute-Garonne-31/Candidatures-spontanes---Chef-fe--de-produit-dveloppement-Senior---CDI---H-F_JR111279"
+    },
+    {
+      "id": "cmtlyk2ry09xrqf5kq2ge0zaz",
+      "title": "General Application",
+      "canonicalSourceKey": "jonsson-workwear",
+      "url": "https://job-boards.eu.greenhouse.io/jonssonworkwear/jobs/4048773101"
+    },
+    {
+      "id": "cmtlyq4r50mc3qf5k0fuxvjnf",
+      "title": "General Applications - Product Development",
+      "canonicalSourceKey": "reformation",
+      "url": "https://job-boards.greenhouse.io/reformation/jobs/7723939"
+    },
+    {
+      "id": "cmtlyq4rk0mc7qf5k4g8uxokr",
+      "title": "General Application: You're Good at Everything",
+      "canonicalSourceKey": "reformation",
+      "url": "https://job-boards.greenhouse.io/reformation/jobs/6749039"
+    },
+    {
+      "id": "cmtlygzun02x3qf5k6y54hfxd",
+      "title": "Spontaneous application!",
+      "canonicalSourceKey": "carla-b",
+      "url": "https://carla.teamtailor.com/jobs/1407970-spontaneous-application"
+    },
+    {
+      "id": "cmtlyj1hf07afqf5kqazyibf5",
+      "title": "Spontaneous Application",
+      "canonicalSourceKey": "naos",
+      "url": "https://careers.naos.com/job/Open-Spontaneous-Application/1358810655/"
+    },
+    {
+      "id": "cmtk21qoq0a4cnv2bls9g057s",
+      "title": "Spontaneous Application",
+      "canonicalSourceKey": "marella",
+      "url": "https://jobs.smartrecruiters.com/MaxMaraFashionGroup/744000121759177"
+    },
+    {
+      "id": "cmtp1uggg00raqq4zs8y2toak",
+      "title": "Spontaneous applications - Portugal",
+      "canonicalSourceKey": "la-redoute-talentview",
+      "url": "https://laredoute-talent.talentview.io/jobs/62whej"
+    },
+    {
+      "id": "cmtlyf1z100bcqf5kviuwgjsa",
+      "title": "Unsolicited Applications",
+      "canonicalSourceKey": "tekla",
+      "url": "https://job-boards.eu.greenhouse.io/tekla/jobs/4594167101"
+    }
+  ]
+}

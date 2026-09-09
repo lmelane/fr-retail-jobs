@@ -14,7 +14,7 @@ Le client JavaScript officiel de Sud Express donne le protocole : `offset_start=
 | Jules | 10 | 73 | France, Belgique |
 | Sud Express — candidat non activé | aucune source | 68 (contre 10 par l'ancien adaptateur) | France |
 
-**35 → 150** offres enumerées pour les quatre sources déjà actives. Cela ne signifie pas 115 nouvelles offres nettes en base : d'anciennes représentations peuvent déjà y être conservées. Sud Express ajoute un potentiel direct de 68 offres, sans activation à ce stade. Le tenant La Redoute lu n'expose aucune offre France dans cette photographie ; il faut rechercher les autres portails de la Maison et ne pas confondre tenant exhaustif et couverture mondiale de la marque.
+**35 → 150** campagnes énumérées pour les quatre sources déjà actives. Cela ne signifie pas 115 nouvelles offres nettes en base : d'anciennes représentations peuvent déjà y être conservées. Sud Express ajoute un potentiel direct de 68 campagnes, sans activation à ce stade. Le tenant La Redoute lu n'expose aucune offre France dans cette photographie ; il faut rechercher les autres portails de la Maison et ne pas confondre tenant exhaustif et couverture mondiale de la marque.
 
 `live-validation.json` conserve tous les identifiants, pays, URLs et empreintes. Lecture sans descriptions complètes et **sans écriture de production**, tous les sites publics, aucun filtre France.
 
@@ -27,3 +27,6 @@ Le format AdapterResult porte enfin `complete` et `truncated` ; le même contrô
 ## Validation et statut
 
 Cinq témoins échouent sur l'ancien adaptateur. **1 450 tests unitaires et le typecheck des deux apps passent**. La validation directe finit les cinq tenants sans troncature. La CI et le déploiement sont suivis dans le reçu de livraison. Aucun ingest n'est lancé par ce correctif et les SourceRun historiques ne sont pas réécrits.
+
+
+Qualification : les listes TalentView contiennent aussi des viviers, notamment « Spontaneous applications - Portugal » chez La Redoute. Ces nombres décrivent des campagnes ATS ; ils ne certifient pas autant de postes vacants éligibles à Google Jobs. Une revue distincte est nécessaire avant de qualifier chaque campagne. PR #33 mergée (`e40d5bf`), image Railway construite avec succès ; aucune ingestion de ce lot.
