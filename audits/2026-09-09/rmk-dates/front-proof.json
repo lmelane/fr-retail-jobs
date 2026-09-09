@@ -1,0 +1,23 @@
+{
+  "at": "2026-09-09T04:58:02.409327+00:00",
+  "pages": [
+    {
+      "url": "https://modecareers.com/offre/cmtpiyux20n3fpf5l25xyzokd",
+      "status": 200,
+      "sha256": "fdcf1add37a6330f1440e293fa09f82cfa6f63bea452e73f0e77863fbfb78a23",
+      "expectedDate": "2026-09-03",
+      "jobPostingDate": [
+        "2026-09-03T00:00:00.000Z"
+      ]
+    },
+    {
+      "url": "https://modecareers.com/offre/cmtpiyuzd0n3vpf5l9gudlybl",
+      "status": 200,
+      "sha256": "7072887c5d9f4b04e9014aa237ae565403a9b17c367e65324762e4b33f249cca",
+      "expectedDate": "2026-08-27",
+      "jobPostingDate": [
+        "2026-08-27T00:00:00.000Z"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+[
+  {
+    "label": "ARMOR LUX",
+    "url": "https://careers.werecruit.io/fr/armor-lux",
+    "at": "2026-09-09T04:55:32.398Z",
+    "sha256": "9b1ed757396431d88a6540713412e28385e7ec3c4087b6d65691094bc885d89f",
+    "bytes": 225100,
+    "links": [
+      {
+        "from": "https://careers.werecruit.io/fr/armor-lux",
+        "to": "https://careers.werecruit.io/fr/armor-lux",
+        "label": ""
+      },
+      {
+        "from": "https://careers.werecruit.io/fr/armor-lux",
+        "to": "https://careers.werecruit.io/fr/armor-lux/metiers",
+        "label": "Voir les métiers"
+      },
+      {
+        "from": "https://careers.werecruit.io/fr/armor-lux",
+        "to": "https://careers.werecruit.io/fr/armor-lux/offres/candidature-spontanee-364749",
+        "label": "Candidature spontanée"
+      },
+      {
+        "from": "https://careers.werecruit.io/fr/armor-lux",
+        "to": "https://app.werecruit.io/",
+        "label": "Connexion recruteurs"
+      },
+      {
+        "from": "https://careers.werecruit.io/fr/armor-lux",
+        "to": "https://werecruit.com/?utm_source=site_referent&utm_medium=site_carriere_client&utm_campaign=notoriete",
+        "label": "Logiciel de gestion de candidature et de multidiffusion"
+      }
+    ],
+    "detectedAts": "GENERIC_JSONLD",
+    "detectedPortal": "https://careers.werecruit.io/fr/armor-lux",
+    "productionWrites": 0
+  },
+  {
+    "label": "HISTOIRE D'OR",
+    "url": "https://rejoindre.histoiredor.com/offres-emploi/",
+    "at": "2026-09-09T04:55:32.909Z",
+    "sha256": "677709df36929bbe1a9f26e2f47681bc2d67cab27528fa3d61883f6eba07b5df",
+    "bytes": 329502,
+    "links": [
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/nos-etapes-de-recrutement/",
+        "label": "Nos étapes de recrutement"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/ma-carriere/",
+        "label": "Ma carrière"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "label": "PArcourir les offres d’emploi"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offre-demploi/conseiller-de-vente-h-f-cdd-35h-12/",
+        "label": "Lire la suite"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offre-demploi/conseiller-de-vente-h-f-cdi-35h-3/",
+        "label": "Lire la suite"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offre-demploi/conseiller-de-vente-h-f-cdd-35h-11/",
+        "label": "Lire la suite"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offre-demploi/conseiller-de-vente-h-f-cdd-18h/",
+        "label": "Lire la suite"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offre-demploi/stage-conseiller-de-vente-h-f-3/",
+        "label": "Lire la suite"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offre-demploi/conseiller-de-vente-h-f-cdd-35h-10/",
+        "label": "Lire la suite"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offre-demploi/conseiller-de-vente-h-f-cdi-12h-2/",
+        "label": "Lire la suite"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offre-demploi/conseiller-de-vente-h-f-cdi-35h/",
+        "label": "Lire la suite"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offre-demploi/conseiller-de-vente-h-f-cdd-35h-9/",
+        "label": "Lire la suite"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offre-demploi/cdv-cdi-14h/",
+        "label": "Lire la suite"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offres-emploi/page/2/",
+        "label": "Page suivante"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offres-emploi/page/3/",
+        "label": "3"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/offres-emploi/page/6/",
+        "label": "6"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/mentions-legales/",
+        "label": "Mentions légales"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/sitemaps.xml",
+        "label": "Plan de site"
+      },
+      {
+        "from": "https://rejoindre.histoiredor.com/offres-emploi/",
+        "to": "https://rejoindre.histoiredor.com/wp-content/uploads/2025/12/THOM_Information-RGPD-Traitement-DCP-Candidats_2025.pdf",
+        "label": "Données personnelles"
+      }
+    ],
+    "detectedAts": "GENERIC_JSONLD",
+    "detectedPortal": "https://rejoindre.histoiredor.com/offres-emploi/",
+    "productionWrites": 0
+  },
+  {
+    "label": "AUBADE",
+    "url": "https://aubade.com/",
+    "at": "2026-09-09T04:55:33.135Z",
+    "sha256": "03889f2d2a4f8111a6eeace606ce77fcebb07a57607dd8f921c6d856beb0a8f4",
+    "bytes": 539848,
+    "links": [
+      {
+        "from": "https://aubade.com/",
+        "to": "https://www.welcometothejungle.com/fr/companies/aubade",
+        "label": "Carrières"
+      }
+    ],
+    "detectedAts": "WTTJ",
+    "detectedPortal": "https://aubade.com/",
+    "productionWrites": 0
+  },
+  {
+    "label": "ISABEL MARANT",
+    "url": "https://isabelmarant.com/",
+    "at": "2026-09-09T04:55:33.743Z",
+    "sha256": "5afc2b75dcbd4f127531d8fbb0b1deaacde1e64e0488595cd4d42a18ea296f26",
+    "bytes": 624858,
+    "links": [
+      {
+        "from": "https://isabelmarant.com/",
+        "to": "https://fr.fashionjobs.com/entreprise/isabel-marant,2372,2904.html",
+        "label": "Carrières"
+      }
+    ],
+    "productionWrites": 0
+  },
+  {
+    "label": "SUD EXPRESS",
+    "url": "https://sudexpress.com/",
+    "at": "2026-09-09T04:55:34.758Z",
+    "sha256": "4a32849af79eb164542aef8ab8e8ee52049cea38daede93db2cdd884ed889f0e",
+    "bytes": 828367,
+    "links": [
+      {
+        "from": "https://sudexpress.com/",
+        "to": "https://sud-express.talentview.io/fr",
+        "label": "Join-us"
+      }
+    ],
+    "productionWrites": 0
+  }
+]

@@ -1,0 +1,108 @@
+[
+  {
+    "directoryNames": [
+      "HISTOIRE D'OR"
+    ],
+    "actorType": "ENSEIGNE",
+    "canonicalKey": "HISTOIRE_D_OR",
+    "officialDomain": "histoiredor.com",
+    "parentGroup": "THOM",
+    "portalUrl": "https://rejoindre.histoiredor.com/offres-emploi/",
+    "ats": "WordPress public career portal; application backend still to validate",
+    "verdict": "IDENTITE_ET_PORTAIL_OFFICIEL_CONFIRMES",
+    "evidenceUrls": [
+      "https://rejoindre.histoiredor.com/offres-emploi/",
+      "https://rejoindre.histoiredor.com/le-groupe/"
+    ],
+    "technicalValidation": "PAGINATION_AND_APPLICATION_BACKEND_PENDING",
+    "reviewedAt": "2026-09-09",
+    "evidenceHashes": [
+      "677709df36929bbe1a9f26e2f47681bc2d67cab27528fa3d61883f6eba07b5df"
+    ],
+    "sourceActivated": false,
+    "productionIdentityUpdated": false
+  },
+  {
+    "directoryNames": [
+      "SUD EXPRESS"
+    ],
+    "actorType": "MAISON",
+    "canonicalKey": "SUD_EXPRESS",
+    "officialDomain": "sudexpress.com",
+    "parentGroup": null,
+    "portalUrl": "https://sud-express.talentview.io/fr",
+    "ats": "TalentView",
+    "verdict": "LIEN_OFFICIEL_VERS_PORTAIL_CONFIRME",
+    "evidenceUrls": [
+      "https://sudexpress.com/",
+      "https://sud-express.talentview.io/fr"
+    ],
+    "technicalValidation": "FIRST_PAGE_TRUNCATION_FOUND_AND_FIXED_IN_SEPARATE_PR",
+    "technicalRead": {
+      "before": 10,
+      "after": 68,
+      "complete": true,
+      "evidence": "../talentview/live-validation.json",
+      "productionWrites": 0
+    },
+    "reviewedAt": "2026-09-09",
+    "evidenceHashes": [
+      "4a32849af79eb164542aef8ab8e8ee52049cea38daede93db2cdd884ed889f0e"
+    ],
+    "sourceActivated": false,
+    "productionIdentityUpdated": false
+  },
+  {
+    "directoryNames": [
+      "AUBADE",
+      "AUBADE PARIS"
+    ],
+    "actorType": "MAISON",
+    "canonicalKey": "AUBADE",
+    "officialDomain": "aubade.com",
+    "parentGroup": null,
+    "portalUrl": "https://www.welcometothejungle.com/fr/companies/aubade",
+    "ats": "WTTJ employer board",
+    "verdict": "LIEN_OFFICIEL_VERS_PORTAIL_CONFIRME",
+    "evidenceUrls": [
+      "https://aubade.com/",
+      "https://aubade.welcomekit.co/"
+    ],
+    "technicalValidation": "ENUMERATION_VERIFIED_IDENTITY_DUPLICATE_REVIEW_REQUIRED",
+    "technicalRead": {
+      "fetched": 24,
+      "declaredTotal": 24,
+      "complete": true,
+      "evidence": "candidate-validation.json",
+      "productionWrites": 0
+    },
+    "reviewedAt": "2026-09-09",
+    "evidenceHashes": [
+      "03889f2d2a4f8111a6eeace606ce77fcebb07a57607dd8f921c6d856beb0a8f4"
+    ],
+    "sourceActivated": false,
+    "productionIdentityUpdated": false
+  },
+  {
+    "directoryNames": [
+      "ISABEL MARANT"
+    ],
+    "actorType": "MAISON",
+    "canonicalKey": "ISABEL_MARANT",
+    "officialDomain": "isabelmarant.com",
+    "parentGroup": null,
+    "portalUrl": null,
+    "ats": null,
+    "verdict": "SITE_OFFICIEL_LIEN_FASHIONJOBS_OBSERVE_RECHERCHE_DIRECTE_A_POURSUIVRE",
+    "evidenceUrls": [
+      "https://isabelmarant.com/"
+    ],
+    "technicalValidation": "NO_DIRECT_PORTAL_ESTABLISHED_ON_THIS_PAGE_NOT_PROVEN_ABSENT",
+    "reviewedAt": "2026-09-09",
+    "evidenceHashes": [
+      "5afc2b75dcbd4f127531d8fbb0b1deaacde1e64e0488595cd4d42a18ea296f26"
+    ],
+    "sourceActivated": false,
+    "productionIdentityUpdated": false
+  }
+]
