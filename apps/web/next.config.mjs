@@ -1,4 +1,17 @@
-/** @type {import('next').NextConfig} */
+import { readdirSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+
+// Embed the exact migration contract of this build. A future migration is
+// automatically required; readiness must not rely on a manually maintained
+// shortlist of columns. No database access is needed during the build.
+const migrationRoot = new URL('../../packages/db/prisma/migrations/', import.meta.url);
+const schemaMigrations = readdirSync(migrationRoot, { withFileTypes: true })
+  .filter(entry => entry.isDirectory())
+  .map(entry => ({
+    name: entry.name,
+    checksum: createHash('sha256').update(readFileSync(new URL(`${entry.name}/migration.sql`, migrationRoot))).digest('hex'),
+  })).sort((a, b) => a.name.localeCompare(b.name));
+if (!schemaMigrations.length) throw new Error('A web build requires its migration contract');
 
 /**
  * Content-Security-Policy and companion headers.
@@ -56,6 +69,7 @@ const securityHeaders = [
 ];
 
 const nextConfig = {
+  env: { CATWALKS_SCHEMA_MIGRATIONS: JSON.stringify(schemaMigrations) },
   // The shared db package ships TypeScript, so Next must compile it.
   transpilePackages: ['@catwalks/db'],
   // Railway builds from the repo root; standalone keeps the image small.

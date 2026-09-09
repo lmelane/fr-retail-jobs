@@ -12,6 +12,14 @@ COPY apps/web apps/web
 RUN npx prisma generate --schema packages/db/prisma/schema.prisma
 RUN npm run build -w @catwalks/web
 
+# Only the locked database workspace dependencies are needed by the migration
+# hook. Keep them separate from Next's standalone runtime and other workspaces.
+FROM node:22-alpine AS migration-deps
+WORKDIR /migration
+COPY package.json package-lock.json ./
+COPY packages/db/package.json packages/db/
+RUN npm ci --workspace @catwalks/db --omit=dev
+
 FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
@@ -19,6 +27,8 @@ ENV NODE_ENV=production
 COPY --from=builder --chown=node:node /repo/apps/web/.next/standalone ./
 COPY --from=builder --chown=node:node /repo/apps/web/.next/static ./apps/web/.next/static
 COPY --from=builder --chown=node:node /repo/apps/web/public ./apps/web/public
+COPY --from=migration-deps --chown=node:node /migration/node_modules /migration/node_modules
+COPY --from=builder --chown=node:node /repo/packages/db/prisma /migration/prisma
 USER node
 EXPOSE 3000
 CMD ["node", "apps/web/server.js"]

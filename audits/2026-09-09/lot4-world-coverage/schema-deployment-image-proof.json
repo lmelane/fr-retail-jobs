@@ -1,0 +1,20 @@
+{
+  "image": "catwalks-web-schema-gate",
+  "isolatedDatabase": "catwalks_schema_gate_test",
+  "beforeMigrations": 38,
+  "beforeReadiness": {
+    "status": 503,
+    "body": {
+      "status": "unavailable"
+    }
+  },
+  "afterMigrations": 39,
+  "afterReadiness": {
+    "status": 200,
+    "body": {
+      "status": "ok"
+    }
+  },
+  "migrationReplay": "no pending migrations",
+  "productionDataTouched": false
+}

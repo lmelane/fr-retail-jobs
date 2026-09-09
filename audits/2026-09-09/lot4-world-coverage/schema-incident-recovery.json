@@ -1,0 +1,27 @@
+{
+  "recoveryProbes": [
+    {
+      "path": "/api/health",
+      "httpStatus": 200,
+      "bytes": 15,
+      "checkedAt": "2026-09-09T15:30:26.513119+00:00"
+    },
+    {
+      "path": "/api/jobs?pays=FR&limit=1",
+      "httpStatus": 200,
+      "bytes": 191930,
+      "checkedAt": "2026-09-09T15:30:26.933142+00:00"
+    },
+    {
+      "path": "/emplois?pays=FR",
+      "httpStatus": 200,
+      "bytes": 260843,
+      "checkedAt": "2026-09-09T15:30:27.394095+00:00"
+    }
+  ],
+  "observedDatabaseErrors": 2,
+  "firstObservedError": "2026-09-09T15:22:20.087097859Z",
+  "lastObservedError": "2026-09-09T15:22:40.095577904Z",
+  "migrationApplied": "20260909232000_talent_recruiter_opportunity",
+  "fullOutageDurationKnown": false
+}
