@@ -85,8 +85,14 @@ jobs:
       # du candidat (recherche, fiche, CTAs D18, 404/200/410) sans skip
       # silencieux. Les deux projets Playwright (desktop + Pixel 7) sont
       # chromium ; un seul navigateur à installer.
+      # `--with-deps` runs apt-get update; the runner image ships a Google Chrome
+      # apt source whose metadata intermittently fails with "Hash Sum mismatch"
+      # (2026-09-09, twice in a row). Chromium comes from Playwright's own CDN,
+      # so that source is not needed: drop it before installing.
       - name: Chromium Playwright
-        run: npx playwright install --with-deps chromium
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/google-chrome.list /etc/apt/sources.list.d/google-chrome*.sources
+          npx playwright install --with-deps chromium
         working-directory: apps/web
       - name: Fixtures e2e
         run: npx tsx e2e/seed.ts

@@ -103,3 +103,7 @@ Voir [le diagnostic, la correction et les preuves sur copie fraîche](talent-rec
 ## Nouveau point de contrôle — EasyCruit / Lindex (reprise du 9 septembre, soir)
 
 Voir [le diagnostic, la correction et les preuves de production](easycruit-lindex.md). Faux tenant Teamtailor retiré (7 annonces de démonstration, RAW et identifiants conservés), source officielle EasyCruit qualifiée et ingérée en production (41 postes, 0 France), deux corrections universelles trouvées en la mesurant : variantes officielles de pays CLDR et vocabulaire d'emploi nordique/balte/tchèque. Production après : 77 447 offres, 74 198 actives, 10 957 France ; workers toujours en pause. Sport 1, OTB, Aptar, Personio/Jako/KENT, les 115 investigations interrompues et les 38 dossiers de complétude restent à traiter.
+
+## Point de contrôle — tracker v3 et Sport 1 (9 septembre, soir)
+
+Voir [tracker-qualification.md](tracker-qualification.md) (sept verdicts séparés, avant/après sur données réelles) et [sport1-reachmee.md](sport1-reachmee.md) (11 annonces de démonstration retirées en production, 0 fermeture, portail ReachMee documenté sans activation). Backlog qualité des champs : [backlog-data-quality.md](backlog-data-quality.md). Production après : 77 447 offres, 74 187 actives, 10 957 France ; workers toujours en pause.

@@ -393,8 +393,9 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
   const origin = String(config.origin ?? '').replace(/\/$/, '');
   if (!origin) throw new Error('SuccessFactors origin missing');
   if (!Number.isSafeInteger(MAX_PAGES) || MAX_PAGES < 1 || MAX_PAGES > 10000) throw new Error('Invalid SAP page budget');
+  const brandProperty = brandPropertyOf(config);
   const finish = async (result: AdapterResult): Promise<AdapterResult> => ({ ...result,
-    jobs: config.withDescriptions === false ? result.jobs : await attachSuccessFactorsDescriptions(result.jobs, Number(config.detailConcurrency ?? 4)) });
+    jobs: config.withDescriptions === false ? result.jobs : await attachSuccessFactorsDescriptions(result.jobs, Number(config.detailConcurrency ?? 4), brandProperty) });
   const rmk = async (html: string): Promise<AdapterResult> => {
     const discovery = await discoverRmkLocales(origin, html);
     const result = await fetchRmkV2Jobs(origin, discovery.locales);
@@ -474,6 +475,14 @@ export function parseMicrodataDescription(html: string): string | undefined {
 export type SuccessFactorsDetail = {
   company?: string;
   employerEvidence?: NormalizedJob['employerEvidence'];
+  /**
+   * Every `data-careersite-propertyid` value of the page (description excluded),
+   * kept verbatim. On shared group portals one of them names the employing
+   * brand — OTB publishes it as `dept` ("Diesel", "Marni") while the microdata
+   * hiringOrganization stays "OTB Spa". Which property, if any, carries the
+   * employer is a per-tenant configuration (`brandProperty`), never a guess.
+   */
+  properties?: Record<string, string>;
   title?: string;
   location?: string;
   city?: string;
@@ -527,6 +536,13 @@ export function parseMicrodataDetail(html: string): SuccessFactorsDetail {
     detail.company = employerNames[0];
     detail.employerEvidence = { rawName: employerNames[0], path: 'microdata.hiringOrganization', rule: 'EXPLICIT_JOBPOSTING_EMPLOYER' };
   }
+  const properties: Record<string, string> = {};
+  $('[data-careersite-propertyid]').each((_, node) => {
+    const id = $(node).attr('data-careersite-propertyid')?.trim();
+    const value = $(node).text().replace(/\s+/g, ' ').trim();
+    if (id && id !== 'description' && value && value.length <= 200 && !(id in properties)) properties[id] = value;
+  });
+  if (Object.keys(properties).length) detail.properties = properties;
 
   const address = meta('streetAddress');
   if (address) {
@@ -597,9 +613,31 @@ export function parseMicrodataDetail(html: string): SuccessFactorsDetail {
  * Fills in each posting's exact fields from its detail page. The slug-derived
  * title/location survive only as a fallback when the detail fetch fails.
  */
+/**
+ * `brandProperty` (opt-in, per tenant): the careersite property that names the
+ * employing brand on a shared group portal. When the page carries it, it
+ * outranks the group-wide hiringOrganization as employer evidence; when it
+ * is absent or empty, the posting stays with the portal owner — nothing is
+ * inferred from a title. Reviewed source-scoped aliases map each value to its
+ * canonical company; an unknown value stops at the identity review gate.
+ */
+export function brandPropertyOf(config: Record<string, unknown>): string | undefined {
+  if (config.brandProperty === undefined) return undefined;
+  const name = String(config.brandProperty);
+  if (!/^[a-z][a-z0-9_-]{0,40}$/i.test(name)) throw new Error('SuccessFactors brandProperty must name a careersite property');
+  return name;
+}
+
+export function employerFromDetail(detail: SuccessFactorsDetail, brandProperty?: string): Pick<SuccessFactorsDetail, 'company' | 'employerEvidence'> {
+  const brand = brandProperty ? detail.properties?.[brandProperty] : undefined;
+  if (brand) return { company: brand, employerEvidence: { rawName: brand, path: `careersite.${brandProperty}`, rule: 'CONFIGURED_BRAND_PROPERTY' } };
+  return { company: detail.company, employerEvidence: detail.employerEvidence };
+}
+
 export async function attachSuccessFactorsDescriptions(
   jobs: NormalizedJob[],
   concurrency = 8,
+  brandProperty?: string,
 ): Promise<NormalizedJob[]> {
   const limit = pLimit(concurrency);
 
@@ -609,10 +647,11 @@ export async function attachSuccessFactorsDescriptions(
         try {
           const html = await fetchText(job.url, { headers: HEADERS });
           const detail = parseMicrodataDetail(html);
+          const employer = employerFromDetail(detail, brandProperty);
           return {
             ...job,
-            company: detail.company ?? job.company,
-            employerEvidence: detail.employerEvidence ?? job.employerEvidence,
+            company: employer.company ?? job.company,
+            employerEvidence: employer.employerEvidence ?? job.employerEvidence,
             title: detail.title ?? job.title,
             location: detail.location ?? job.location,
             city: detail.city ?? job.city,
@@ -624,6 +663,8 @@ export async function attachSuccessFactorsDescriptions(
             raw: { ...(job.raw as object), postingEvidence: {
               ...readPostingEvidence(html, job.url).evidence,
               microdataEmployer: detail.employerEvidence ?? null,
+              careersiteProperties: detail.properties ?? null,
+              configuredBrandProperty: brandProperty ?? null,
               visibleDateRaw: cheerio.load(html)('[data-careersite-propertyid="date"]').first().text().trim() || null,
             } },
           };

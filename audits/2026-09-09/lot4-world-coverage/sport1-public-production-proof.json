@@ -1,0 +1,70 @@
+{
+  "at": "2026-09-09T17:11:23.391Z",
+  "environment": "PRODUCTION",
+  "api": {
+    "url": "/api/jobs?maison=Sport 1",
+    "status": 200,
+    "total": 0
+  },
+  "withdrawnWitnesses": [
+    {
+      "id": "cmtlygxyt02phqf5k8276crc1",
+      "httpStatus": 410,
+      "jobPosting": false
+    },
+    {
+      "id": "cmtlygxz302plqf5kbo0devx9",
+      "httpStatus": 410,
+      "jobPosting": false
+    },
+    {
+      "id": "cmtlygxzk02ppqf5kj2y6bcsk",
+      "httpStatus": 410,
+      "jobPosting": false
+    },
+    {
+      "id": "cmtlygxzv02ptqf5koc1r2ovi",
+      "httpStatus": 410,
+      "jobPosting": false
+    },
+    {
+      "id": "cmtlygy0502pxqf5k6tyjvcbh",
+      "httpStatus": 410,
+      "jobPosting": false
+    },
+    {
+      "id": "cmtlygy0d02q1qf5ks6dneg8w",
+      "httpStatus": 410,
+      "jobPosting": false
+    },
+    {
+      "id": "cmtlygy0o02q5qf5kefeevsv2",
+      "httpStatus": 410,
+      "jobPosting": false
+    },
+    {
+      "id": "cmtlygy0z02q9qf5ka50f9rta",
+      "httpStatus": 410,
+      "jobPosting": false
+    },
+    {
+      "id": "cmtlygy1c02qdqf5knxtjshqq",
+      "httpStatus": 410,
+      "jobPosting": false
+    },
+    {
+      "id": "cmtlygy1l02qhqf5ks2cygrmt",
+      "httpStatus": 410,
+      "jobPosting": false
+    },
+    {
+      "id": "cmtlygy1t02qlqf5k4dx31f16",
+      "httpStatus": 410,
+      "jobPosting": false
+    }
+  ],
+  "companyPage": {
+    "path": "/entreprise/sport-1",
+    "httpStatus": 200
+  }
+}
