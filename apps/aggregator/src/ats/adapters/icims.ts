@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { fetchText } from '../../lib/http.js';
 import pLimit from 'p-limit';
 import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
@@ -82,12 +83,28 @@ export function parseIcimsListing(html: string): NormalizedJob[] {
 /** Nombre de pages lues au maximum — 50 × ~48 offres couvre les plus gros portails. */
 const MAX_PAGES = 50;
 
+/**
+ * Le compteur éditeur d'iCIMS n'est pas un total d'offres mais un total de
+ * PAGES : « Page 1 of 28 » dans le bloc `iCIMS_PagingBatch` (mesuré le
+ * 2026-09-09 sur hub-urbn : 28 pages de 50 cartes, 1 353 offres ; Aeropostale
+ * « of 1 », 19 cartes). C'est la seule preuve d'énumération que le portail
+ * publie : on la lit, on la compare aux pages effectivement parcourues, et
+ * une lecture qui s'arrête avant la dernière page annoncée n'est pas complète.
+ */
+export function parseIcimsPageCount(html: string): number | undefined {
+  const match = /Page\s+\d+\s+of\s+(\d+)/i.exec(html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '));
+  return match ? Number(match[1]) : undefined;
+}
+
 export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const origin = String(config.origin ?? '').replace(/\/$/, '');
   if (!origin) throw new Error('iCIMS origin missing');
 
   const out: NormalizedJob[] = [];
   const seen = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  const issues = new Set<string>();
+  let declaredPages: number | undefined, pagesRead = 0, rawCount = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
 
   for (let page = 0; page < MAX_PAGES; page += 1) {
     /**
@@ -101,23 +118,36 @@ export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<A
     const url = `${origin}/jobs/search?ss=1&in_iframe=1&pr=${page}`;
     const html = await fetchText(url);
     const batch = parseIcimsListing(html);
+    pagesRead += 1; rawCount += batch.length;
+    const announced = parseIcimsPageCount(html);
+    if (announced !== undefined) {
+      if (declaredPages === undefined) declaredPages = announced;
+      else if (declaredPages !== announced) issues.add('SOURCE_PAGE_COUNT_CHANGED');
+    }
 
     const fresh = batch.filter((job) => !seen.has(job.externalId));
     for (const job of fresh) {
       seen.add(job.externalId);
       out.push(job);
     }
+    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
+      ids: batch.map((j) => j.externalId), publisherCounter: announced === undefined ? '' : `pages=${announced}`, componentCounters: [`cards=${batch.length}`, `uniqueIds=${seen.size}`] });
 
     // Une page sans offre NOUVELLE termine la lecture : les portails iCIMS
     // rendent la dernière page en boucle plutôt qu'une page vide, donc compter
     // sur un lot vide bouclerait jusqu'à MAX_PAGES pour rien.
-    if (fresh.length === 0) break;
+    if (fresh.length === 0) { termination = batch.length ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break; }
+    if (declaredPages !== undefined && page + 1 >= declaredPages) { termination = 'ANNOUNCED_PAGE_COUNT_REACHED'; break; }
   }
+  const complete = declaredPages !== undefined && pagesRead >= declaredPages && termination !== 'PAGE_BUDGET_EXHAUSTED' && issues.size === 0;
+  if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
 
   const limit = pLimit(Math.max(1, Math.min(4, Number(config.detailConcurrency) || 2)));
   const jobs = await Promise.all(out.map(job => limit(async () => {
     try { return enrichPostingEvidence(job, await fetchText(job.url)); }
     catch (error) { return { ...job, raw: { ...(job.raw as object), detailReadError: String(error) } }; }
   })));
-  return { jobs };
+  return { jobs, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredPages !== undefined && pagesRead < declaredPages),
+    enumeration: { method: 'PUBLISHER_PAGE_COUNT_HTML_PAGINATION', endpoint: `${origin}/jobs/search?ss=1&in_iframe=1`, pages: pagesRead, rawCount, termination, issues: [...issues],
+      scopes: [{ scope: 'pages', declaredTotal: declaredPages ?? -1, uniqueIds: pagesRead, pages: pagesRead, complete }], pageEvidence } };
 }

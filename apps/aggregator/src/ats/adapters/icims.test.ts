@@ -47,3 +47,18 @@ describe('parseIcimsListing', () => {
     expect(parseIcimsListing(CARD + CARD)).toHaveLength(1);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Preuve d'énumération : iCIMS annonce un nombre de PAGES (« Page 1 of 28 »),
+// jamais un total d'offres — mesuré sur hub-urbn (28 × 50, 1 353 offres) et
+// Aeropostale (« of 1 », 19 cartes) le 2026-09-09.
+// ---------------------------------------------------------------------------
+import { vi } from 'vitest';
+import { parseIcimsPageCount } from './icims.js';
+describe('parseIcimsPageCount', () => {
+  it('lit le nombre de pages annoncé dans le bloc de pagination', () => {
+    expect(parseIcimsPageCount('<div class="iCIMS_PagingBatch "> Page <span>1</span> of <span>28</span> , Current Page </div>')).toBe(28);
+    expect(parseIcimsPageCount('<div>Page 1 of 1</div>')).toBe(1);
+    expect(parseIcimsPageCount('<div>no paging</div>')).toBeUndefined();
+  });
+});
