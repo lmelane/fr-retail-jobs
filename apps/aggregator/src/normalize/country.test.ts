@@ -113,6 +113,9 @@ describe('normalizeCountry — formes officielles longues (lot 2)', () => {
 
 
 describe('versioned worldwide country labels', () => {
+  it.each(['Česká republika', 'République tchèque', 'Tschechische Republik', 'Czech Republic', 'Repubblica Ceca'])('resolves the official CLDR alternative %s', raw => {
+    expect(normalizeCountry(raw)).toBe('CZ');
+  });
   it.each(['Frankrig', 'Frankrike', 'Fransa', 'フランス', 'Франция'])('resolves the exact CLDR name %s without an adapter-specific alias', raw => {
     expect(normalizeCountry(raw)).toBe('FR');
   });

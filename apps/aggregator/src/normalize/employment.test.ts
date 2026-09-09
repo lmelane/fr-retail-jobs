@@ -366,3 +366,68 @@ describe('convergence programType avec la taxonomie', () => {
     expect(readEmployment('Marketing Trainee').programType).toBe('INTERNSHIP');
   });
 });
+
+/**
+ * VOCABULAIRE NORDIQUE, BALTE ET TCHÈQUE — mesuré sur le flux EasyCruit de
+ * Lindex (2026-09-09) : 40 offres sur 41 publiaient un contrat et un rythme
+ * structurés (« Fast », « Vikariat », « Heltid », « Deltid », « Nuolatinis »,
+ * « Pastāvīgs darbs », « Tähtajatu », « Visas etatas », « Nepilna laika »…)
+ * et repartaient à `null` faute de vocabulaire. Le dictionnaire est mondial
+ * (D53) : on ajoute des mots, jamais une règle par source.
+ *
+ * Les valeurs ambiguës restent `null` : « Ekstrahjelp » et « Ved behov »
+ * (extra / à la demande) ne nomment ni une durée ni un rythme canonique,
+ * « Na smlouvu » (« sous contrat ») ne tranche pas, « VPP » (emploi secondaire
+ * tchèque) n'est pas un rythme.
+ */
+describe('vocabulaire nordique, balte et tchèque des champs structurés', () => {
+  it.each([
+    ['Fast', 'PERMANENT'],
+    ['Fast stilling', 'PERMANENT'],
+    ['Tillsvidareanställning', 'PERMANENT'],
+    ['Nuolatinis', 'PERMANENT'],
+    ['Pastāvīgs darbs', 'PERMANENT'],
+    ['Tähtajatu', 'PERMANENT'],
+    ['Vikariat', 'FIXED_TERM'],
+    ['Midlertidig', 'FIXED_TERM'],
+    ['Tidsbegränsad anställning', 'FIXED_TERM'],
+    ['Tähtajaline', 'FIXED_TERM'],
+    ['Terminuota', 'FIXED_TERM'],
+  ] as const)('« %s » → employmentTerm %s', (raw, expected) => {
+    expect(readEmployment(raw).employmentTerm).toBe(expected);
+  });
+
+  it.each([
+    ['Heltid', 'FULL_TIME'],
+    ['Fulltid', 'FULL_TIME'],
+    ['Fuldtid', 'FULL_TIME'],
+    ['Täiskoht', 'FULL_TIME'],
+    ['Visas etatas', 'FULL_TIME'],
+    ['Pilna laika', 'FULL_TIME'],
+    ['Plný úvazek', 'FULL_TIME'],
+    ['HPP', 'FULL_TIME'],
+    ['Deltid', 'PART_TIME'],
+    ['Osaline tööaeg', 'PART_TIME'],
+    ['Nepilna laika', 'PART_TIME'],
+    ['Nepilną darbo dieną', 'PART_TIME'],
+    ['Nepilnas etatas', 'PART_TIME'],
+    ['Zkrácený úvazek', 'PART_TIME'],
+    ['Částečný úvazek', 'PART_TIME'],
+  ] as const)('« %s » → workTime %s, preuve EXPLICITE', (raw, expected) => {
+    const out = readEmployment(raw);
+    expect(out.workTime).toBe(expected);
+    expect(out.workTimeEvidence).toBe('EXPLICIT');
+  });
+
+  it.each(['Ekstrahjelp', 'Ved behov', 'Na smlouvu', 'VPP', 'Příležitostná práce'])(
+    '« %s » reste vide : la source ne nomme pas une valeur canonique',
+    (raw) => {
+      expect(readEmployment(raw)).toEqual({});
+    },
+  );
+
+  it('le mot anglais « fast » dans un intitulé ne devient pas un CDI', () => {
+    expect(readEmployment('Fast Fashion Designer').employmentTerm).toBeUndefined();
+    expect(readEmployment('Fast-paced retail environment').employmentTerm).toBeUndefined();
+  });
+});

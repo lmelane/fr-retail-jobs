@@ -1,5 +1,5 @@
 {
-  "version": "country-labels-20260909-v1",
+  "version": "country-labels-20260909-v2",
   "provenance": {
     "standard": "Unicode CLDR via ECMA-402 Intl.DisplayNames",
     "icu": "78.3",
@@ -46,9 +46,62 @@
       "zh"
     ],
     "source": "https://cldr.unicode.org/",
-    "license": "https://www.unicode.org/license.txt"
+    "license": "https://www.unicode.org/license.txt",
+    "territoryVariants": {
+      "package": "cldr-localenames-full",
+      "version": "48.0.0",
+      "source": "https://github.com/unicode-org/cldr-json/tree/48.0.0/cldr-json/cldr-localenames-full",
+      "contentHash": "32b8c9a3d531b42e4d2fee183bfa82160eaf9ffa7994c0e8fa11aaebd4324510",
+      "files": {
+        "ar": "b78c4a11a9ad8358048998bcda2eb49e205d5ab281f85991ed097af7b972c3d7",
+        "bg": "718139be0ba80a32a3637b4b611075abaacced2468f618a5f3ca52481446c1d3",
+        "cs": "8e35c020f86ffd5b9532ad36ef1bc04d73744c85471a70449df666795eadb147",
+        "da": "d6762b0bed0362ff76a3ad52296e51c71ba6ed40113af7b7fc2c0cabb1d68292",
+        "de": "e5b7a831cd70afeaad10a56360c08e2d970e9fe79f254ee8d937a7dfa13686b7",
+        "el": "489974d90d8ccc4647b267467e70cbe9abad3c5995e878a6238a853a3315975c",
+        "en": "158c1d575308f7e46912edbeda435c8fe2ef5dad280798231f3a432e406b1807",
+        "es": "027b9c91d4e923d506b404415648691ef41ebde721aa454cee4d9f7f66b3ea62",
+        "et": "f34c869f0f4d2907c9d2150fb1cb94192053726e696ad4060f6f3eeba90cb45f",
+        "fi": "0d63e08a7b21a66e8cc477f510c5539aa00962346b5a03675ec91d3477cd4cfd",
+        "fr": "42d67b78cb74ffe87380db1d702d06be995c3082d7f711ffd6e75a721133c5e0",
+        "he": "f487b312ed883f3840ea9d3d2b7754023b6897cbd986f77e81d319104531128d",
+        "hi": "f77f9c0c4f8bb7062dfe40edca416beae34e17b89714dabedca2f2b41ed77121",
+        "hr": "bb7f643684b21aff3dd38f09895103f000e6d38124712de9292c885924526d81",
+        "hu": "2315359c90f44c5de51d5466bf70b4b4914924cb4bdbef80d8650f9da071184c",
+        "id": "e3842894fa28f3cab24aba190d1edc93f6a96fab5d25ce6fe6094fe83427b061",
+        "it": "d41462485baabf9b0b70de0092a173a45a7af8c415ace686e6cbe1909baf390f",
+        "ja": "2e9976a1d5e6a02e48b5a5c18987bd6246b0a21369513386bb5874a6887056d2",
+        "ko": "47b2f98d9cbf823068b0594074fe5db7fde80f9baf6a8038bd24ed81aefe7829",
+        "lt": "77e977ef4775a176acc989ee91b86af37102cc0011835b80bebc81b99e72ae43",
+        "lv": "f67bf7a4bfdb101d06facb129bbfafe8615b8f465e46837d512edaf9b5fcbed6",
+        "ms": "6e7b64f79d1a2573a63066e2b5aca9167d80134145b3eea9f3fb960bc3ceabc1",
+        "nb": "4f0634fb6ae7b6717313fdde40f84b4df677f98987652497ad4e19298c5b76ee",
+        "nl": "51f5d8ffc56cee8b610b2857eb491d151ad2866da49eccbd7b9ff0d6461f9b3c",
+        "nn": "9498342396301e8bc1ee4f6da112143af5b67c242d7a7e148f09e79caeed7462",
+        "pl": "ae91e6cb2c761bc158f08ae3bf9a6d495b05914ac945cc6eea1bee2b8b532aab",
+        "pt": "89604c7cd2eecc83c7a7f65129e7e6fe70a04f2d52263345530d714146f99ee8",
+        "ro": "eb7343d8858c2888cc56b076c216e1bbee84ce4efcccc0d41308c62a0a56664a",
+        "ru": "305ba1f9eecb1b0151ab081a111aaa8a5898d38c9d57bfbfa125734e508a2389",
+        "sk": "aa1615793010ed154ba7a6d660039018a18d24f73fd09b5f8b1f7d9b25f081f0",
+        "sl": "800ebf19f1879faa438be80f303ee8d6c3e9c82a7ebc5a262807236f704ddf16",
+        "sr": "5cb0f60de68acf8cc20973ac9fd41b0cd8a582f981031daa80cd1428eb14b4ac",
+        "sv": "8f11c17116f5740ca6f0ccbe404542b65c678033594d1f0f027942131bd981cd",
+        "th": "e4c6fd21ec75686f51e9bf986856cac2d6a4cddefe9065373282a7510bcefcd0",
+        "tr": "4b9b52e756c79f8b4c81e7c2c5bd2c2ba9338f0c80f2dceeee53ba4561d872b5",
+        "uk": "be0b7a34fb070cb4e7749a69eed93e62af6acf7a298437d4eb436ef0163284af",
+        "vi": "1bf0ad4f7286b12b326f9d4387af6d4bcc4e1099a269c2ec9a6c9e5d6db20476",
+        "zh": "18f1426f1e8981a671517a4857a8d4e56060909906c4cfd9b9a43a8a18b9ab6f"
+      },
+      "observations": 465
+    }
   },
   "labels": {
+    "a.s": [
+      "US"
+    ],
+    "abd": [
+      "US"
+    ],
     "abd küçük harici adaları": [
       "UM"
     ],
@@ -406,6 +459,54 @@
     "antígua e barbuda": [
       "AG"
     ],
+    "aotearoa": [
+      "NZ"
+    ],
+    "aotearoa (neuseeland)": [
+      "NZ"
+    ],
+    "aotearoa (nouvelle-zélande)": [
+      "NZ"
+    ],
+    "aotearoa (nueva zelanda)": [
+      "NZ"
+    ],
+    "aotearoa (selandia baru)": [
+      "NZ"
+    ],
+    "aotearoa (új-zéland)": [
+      "NZ"
+    ],
+    "aotearoa da nova zelândia": [
+      "NZ"
+    ],
+    "aotearoa new zealand": [
+      "NZ"
+    ],
+    "aotearoa nieuw-zeeland": [
+      "NZ"
+    ],
+    "aotearoa noua zeelandă": [
+      "NZ"
+    ],
+    "aotearoa nova zelandija": [
+      "NZ"
+    ],
+    "aotearoa novi zeland": [
+      "NZ"
+    ],
+    "aotearoa nya zeeland": [
+      "NZ"
+    ],
+    "aotearoa uus-meremaa": [
+      "NZ"
+    ],
+    "aotearoa yeni zelanda": [
+      "NZ"
+    ],
+    "aotearoa – nový zéland": [
+      "NZ"
+    ],
     "apvienotie arābu emirāti": [
       "AE"
     ],
@@ -508,6 +609,9 @@
     "arábia saudita": [
       "SA"
     ],
+    "as": [
+      "US"
+    ],
     "aserbaidschan": [
       "AZ"
     ],
@@ -516,6 +620,9 @@
     ],
     "aserbajdsjan": [
       "AZ"
+    ],
+    "asv": [
+      "US"
     ],
     "asv mazās aizjūras salas": [
       "UM"
@@ -883,8 +990,14 @@
     "biélorussie": [
       "BY"
     ],
+    "bjelokosna obala": [
+      "CI"
+    ],
     "bjelorusija": [
       "BY"
+    ],
+    "bk": [
+      "GB"
     ],
     "bocvana": [
       "BW"
@@ -932,6 +1045,9 @@
       "BA"
     ],
     "bosna-hersek": [
+      "BA"
+    ],
+    "bosnia": [
       "BA"
     ],
     "bosnia & herzegovina": [
@@ -1092,6 +1208,9 @@
     ],
     "brit virgin-szigetek": [
       "VG"
+    ],
+    "britannia": [
+      "GB"
     ],
     "britanski deviški otoki": [
       "VG"
@@ -1284,6 +1403,9 @@
     ],
     "bồ đào nha": [
       "PT"
+    ],
+    "bờ biển ngà": [
+      "CI"
     ],
     "ca-ri-bê hà lan": [
       "BQ"
@@ -1504,10 +1626,16 @@
     "ciudad del vaticano": [
       "VA"
     ],
+    "coasta de fildeș": [
+      "CI"
+    ],
     "cocos (keeling) adaları": [
       "CC"
     ],
     "cocos (keeling) islands": [
+      "CC"
+    ],
+    "cocos islands": [
       "CC"
     ],
     "cocoseilanden": [
@@ -1550,6 +1678,33 @@
       "KM"
     ],
     "congo": [
+      "CG"
+    ],
+    "congo (drc)": [
+      "CD"
+    ],
+    "congo (rdc)": [
+      "CD"
+    ],
+    "congo (repubblica)": [
+      "CG"
+    ],
+    "congo (republic)": [
+      "CG"
+    ],
+    "congo (republica democrată congo)": [
+      "CD"
+    ],
+    "congo (republica)": [
+      "CG"
+    ],
+    "congo (republiek)": [
+      "CG"
+    ],
+    "congo (republik)": [
+      "CG"
+    ],
+    "congo (república)": [
       "CG"
     ],
     "congo - brazzaville": [
@@ -1639,6 +1794,9 @@
     "corée du sud": [
       "KR"
     ],
+    "costa de marfil": [
+      "CI"
+    ],
     "costa do marfim": [
       "CI"
     ],
@@ -1671,6 +1829,9 @@
     ],
     "croácia": [
       "HR"
+    ],
+    "cseh köztársaság": [
+      "CZ"
     ],
     "csehország": [
       "CZ"
@@ -1705,6 +1866,9 @@
     "czarnogóra": [
       "ME"
     ],
+    "czech republic": [
+      "CZ"
+    ],
     "czechia": [
       "CZ"
     ],
@@ -1720,8 +1884,17 @@
     "côte d’ivoire": [
       "CI"
     ],
+    "cộng hòa congo": [
+      "CG"
+    ],
     "cộng hòa dominica": [
       "DO"
+    ],
+    "cộng hòa dân chủ congo": [
+      "CD"
+    ],
+    "cộng hòa séc": [
+      "CZ"
     ],
     "cộng hòa trung phi": [
       "CF"
@@ -1795,6 +1968,12 @@
     "dei sameinte arabiske emirata": [
       "AE"
     ],
+    "democratische republiek oost-timor": [
+      "TL"
+    ],
+    "demokratiska republiken kongo": [
+      "CD"
+    ],
     "demokratična republika kongo": [
       "CD"
     ],
@@ -1803,6 +1982,12 @@
     ],
     "den centralafrikanske republik": [
       "CF"
+    ],
+    "den demokratiske republik congo (drc)": [
+      "CD"
+    ],
+    "den demokratiske republikken kongo": [
+      "CD"
     ],
     "den dominikanske republik": [
       "DO"
@@ -1818,6 +2003,12 @@
     ],
     "den sentralafrikanske republikken": [
       "CF"
+    ],
+    "den tjekkiske republik": [
+      "CZ"
+    ],
+    "den tsjekkiske republikk": [
+      "CZ"
     ],
     "denemarken": [
       "DK"
@@ -1912,7 +2103,13 @@
     "dominique": [
       "DM"
     ],
+    "doğu timor": [
+      "TL"
+    ],
     "dramblio kaulo krantas": [
+      "CI"
+    ],
+    "dramblio kaulo kranto respublika": [
       "CI"
     ],
     "dschibuti": [
@@ -1969,8 +2166,14 @@
     "džērsija": [
       "JE"
     ],
+    "east timor": [
+      "TL"
+    ],
     "ecuador": [
       "EC"
+    ],
+    "ee. uu.": [
+      "US"
     ],
     "eesti": [
       "EE"
@@ -2069,6 +2272,9 @@
       "CI"
     ],
     "elevandiluurannik": [
+      "CI"
+    ],
+    "elfenbeinküste": [
       "CI"
     ],
     "elfenbeinskysten": [
@@ -2242,6 +2448,9 @@
     "etiópia": [
       "ET"
     ],
+    "eua": [
+      "US"
+    ],
     "faerské ostrovy": [
       "FO"
     ],
@@ -2251,31 +2460,61 @@
     "falkland adaları": [
       "FK"
     ],
+    "falkland adaları (malvinas adaları)": [
+      "FK"
+    ],
     "falkland islands": [
+      "FK"
+    ],
+    "falkland islands (islas malvinas)": [
       "FK"
     ],
     "falkland-szigetek": [
       "FK"
     ],
+    "falkland-szigetek (malvin-szigetek)": [
+      "FK"
+    ],
     "falklandeilanden": [
+      "FK"
+    ],
+    "falklandeilanden (islas malvinas)": [
       "FK"
     ],
     "falklandi saared": [
       "FK"
     ],
+    "falklandi saared (malviini saared)": [
+      "FK"
+    ],
     "falklandinsaaret": [
+      "FK"
+    ],
+    "falklandinsaaret (malvinassaaret)": [
       "FK"
     ],
     "falklandinseln": [
       "FK"
     ],
+    "falklandinseln (malwinen)": [
+      "FK"
+    ],
     "falklandski otoci": [
+      "FK"
+    ],
+    "falklandski otoci (malvini)": [
       "FK"
     ],
     "falklandski otoki": [
       "FK"
     ],
+    "falklandski otoki (malvini)": [
+      "FK"
+    ],
     "falklandské ostrovy": [
+      "FK"
+    ],
+    "falklandské ostrovy (malvíny)": [
       "FK"
     ],
     "falklandsöarna": [
@@ -2284,13 +2523,28 @@
     "falklandsøerne": [
       "FK"
     ],
+    "falklandsøerne (islas malvinas)": [
+      "FK"
+    ],
     "falklandsøyane": [
+      "FK"
+    ],
+    "falklandsøyane (islas malvinas)": [
       "FK"
     ],
     "falklandsøyene": [
       "FK"
     ],
+    "falklandsøyene (islas malvinas)": [
+      "FK"
+    ],
     "falklandy": [
+      "FK"
+    ],
+    "falklandy (malvíny)": [
+      "FK"
+    ],
+    "falklandy (malwiny)": [
       "FK"
     ],
     "farerų salos": [
@@ -2337,6 +2591,9 @@
     ],
     "fiji": [
       "FJ"
+    ],
+    "fildişi sahili": [
+      "CI"
     ],
     "filipiinid": [
       "PH"
@@ -2389,6 +2646,9 @@
     "filipīnas": [
       "PH"
     ],
+    "filistin": [
+      "PS"
+    ],
     "filistin bölgeleri": [
       "PS"
     ],
@@ -2425,7 +2685,13 @@
     "fiyi": [
       "FJ"
     ],
+    "folklando (malvinų) salos": [
+      "FK"
+    ],
     "folklando salos": [
+      "FK"
+    ],
+    "folklenda (malvinu) salas": [
       "FK"
     ],
     "folklenda salas": [
@@ -2661,6 +2927,9 @@
     ],
     "gana": [
       "GH"
+    ],
+    "gb": [
+      "GB"
     ],
     "georgia": [
       "GE"
@@ -3151,6 +3420,9 @@
     "hondūras": [
       "HN"
     ],
+    "hong kong": [
+      "HK"
+    ],
     "hong kong dak tiongkok": [
       "HK"
     ],
@@ -3162,6 +3434,9 @@
     ],
     "hongarije": [
       "HU"
+    ],
+    "hongkong": [
+      "HK"
     ],
     "hongkong kkt": [
       "HK"
@@ -3189,6 +3464,12 @@
     ],
     "hongrie": [
       "HU"
+    ],
+    "honkonga": [
+      "HK"
+    ],
+    "honkongas": [
+      "HK"
     ],
     "horvaatia": [
       "HR"
@@ -3234,6 +3515,9 @@
     ],
     "hırvatistan": [
       "HR"
+    ],
+    "hồng kông": [
+      "HK"
     ],
     "iceland": [
       "IS"
@@ -3290,6 +3574,9 @@
       "HM"
     ],
     "ilhas malvinas": [
+      "FK"
+    ],
+    "ilhas malvinas (ilhas falkland)": [
       "FK"
     ],
     "ilhas marianas do norte": [
@@ -3401,6 +3688,9 @@
       "CK"
     ],
     "insulele falkland": [
+      "FK"
+    ],
+    "insulele falkland (insulele malvine)": [
       "FK"
     ],
     "insulele feroe": [
@@ -3556,6 +3846,9 @@
     "islas malvinas": [
       "FK"
     ],
+    "islas malvinas (islas falkland)": [
+      "FK"
+    ],
     "islas marianas del norte": [
       "MP"
     ],
@@ -3613,6 +3906,9 @@
     "isole falkland": [
       "FK"
     ],
+    "isole falkland (isole malvine)": [
+      "FK"
+    ],
     "isole fær øer": [
       "FO"
     ],
@@ -3658,6 +3954,9 @@
     "israël": [
       "IL"
     ],
+    "istočni timor": [
+      "TL"
+    ],
     "itaalia": [
       "IT"
     ],
@@ -3698,6 +3997,9 @@
       "IT"
     ],
     "ivoorkust": [
+      "CI"
+    ],
+    "ivory coast": [
       "CI"
     ],
     "izland": [
@@ -3796,6 +4098,9 @@
     "jaunzēlande": [
       "NZ"
     ],
+    "jav": [
+      "US"
+    ],
     "jeemen": [
       "YE"
     ],
@@ -3834,6 +4139,9 @@
     ],
     "jižní súdán": [
       "SS"
+    ],
+    "jk": [
+      "GB"
     ],
     "jordaania": [
       "JO"
@@ -4141,6 +4449,12 @@
     "kepulauan falkland": [
       "FK"
     ],
+    "kepulauan falkland (islas malvinas)": [
+      "FK"
+    ],
+    "kepulauan falkland (malvinas)": [
+      "FK"
+    ],
     "kepulauan faroe": [
       "FO"
     ],
@@ -4370,8 +4684,32 @@
     "kongo (brazavila)": [
       "CG"
     ],
+    "kongo (demokratische republik)": [
+      "CD"
+    ],
+    "kongo (demokratična republika kongo)": [
+      "CD"
+    ],
+    "kongo (dr)": [
+      "CD"
+    ],
+    "kongo (drk)": [
+      "CD"
+    ],
     "kongo (kinšasa)": [
       "CD"
+    ],
+    "kongo (rdk)": [
+      "CD"
+    ],
+    "kongo (republik)": [
+      "CG"
+    ],
+    "kongo (republika)": [
+      "CG"
+    ],
+    "kongo (rk)": [
+      "CG"
     ],
     "kongo - brazavil": [
       "CG"
@@ -4385,8 +4723,23 @@
     "kongo - kinşasa": [
       "CD"
     ],
+    "kongo cumhuriyeti": [
+      "CG"
+    ],
+    "kongo demokratik cumhuriyeti": [
+      "CD"
+    ],
+    "kongo demokratinė respublika": [
+      "CD"
+    ],
+    "kongo demokrātiskā republika": [
+      "CD"
+    ],
     "kongo dv": [
       "CD"
+    ],
+    "kongo respublika": [
+      "CG"
     ],
     "kongo vabariik": [
       "CG"
@@ -4407,6 +4760,12 @@
       "CD"
     ],
     "kongon tasavalta": [
+      "CG"
+    ],
+    "kongó (kdk)": [
+      "CD"
+    ],
+    "kongó (köztársaság)": [
       "CG"
     ],
     "kongó – brazzaville": [
@@ -4853,6 +5212,9 @@
     "ma-rốc": [
       "MA"
     ],
+    "macao": [
+      "MO"
+    ],
     "macao sar": [
       "MO"
     ],
@@ -4873,6 +5235,9 @@
     ],
     "macaristan": [
       "HU"
+    ],
+    "macau": [
+      "MO"
     ],
     "macau erihalduspiirkond": [
       "MO"
@@ -4940,7 +5305,19 @@
     "majotta": [
       "YT"
     ],
+    "makao": [
+      "MO"
+    ],
+    "makau": [
+      "MO"
+    ],
     "makau dak tiongkok": [
+      "MO"
+    ],
+    "makav": [
+      "MO"
+    ],
+    "makaó": [
       "MO"
     ],
     "makaó kkt": [
@@ -5540,6 +5917,9 @@
     "mısır": [
       "EG"
     ],
+    "mỹ": [
+      "US"
+    ],
     "na uy": [
       "NO"
     ],
@@ -5903,6 +6283,9 @@
     "nuova zelanda": [
       "NZ"
     ],
+    "nuova zelanda (aotearoa)": [
+      "NZ"
+    ],
     "ny kaledonien": [
       "NC"
     ],
@@ -5996,6 +6379,9 @@
     "ostrov man": [
       "IM"
     ],
+    "osttimor": [
+      "TL"
+    ],
     "otoci heard i mcdonald": [
       "HM"
     ],
@@ -6050,6 +6436,9 @@
     "palav": [
       "PW"
     ],
+    "palestiina": [
+      "PS"
+    ],
     "palestiina alad": [
       "PS"
     ],
@@ -6057,6 +6446,15 @@
       "PS"
     ],
     "palestijnse gebieden": [
+      "PS"
+    ],
+    "palestin": [
+      "PS"
+    ],
+    "palestina": [
+      "PS"
+    ],
+    "palestine": [
       "PS"
     ],
     "palestinian territories": [
@@ -6077,7 +6475,16 @@
     "palestinská území": [
       "PS"
     ],
+    "palestyna": [
+      "PS"
+    ],
+    "palestínska samospráva": [
+      "PS"
+    ],
     "palestínske územia": [
+      "PS"
+    ],
+    "palestīna": [
       "PS"
     ],
     "palestīnas teritorijas": [
@@ -6086,7 +6493,16 @@
     "palesztin autonómia": [
       "PS"
     ],
+    "palesztina": [
+      "PS"
+    ],
+    "palästina": [
+      "PS"
+    ],
     "palästinensische autonomiegebiete": [
+      "PS"
+    ],
+    "palæstina": [
       "PS"
     ],
     "panama": [
@@ -6094,6 +6510,9 @@
     ],
     "panamá": [
       "PA"
+    ],
+    "pantai gading": [
+      "CI"
     ],
     "papoea-nieuw-guinea": [
       "PG"
@@ -6521,6 +6940,9 @@
     "quần đảo falkland": [
       "FK"
     ],
+    "quần đảo falkland (islas malvinas)": [
+      "FK"
+    ],
     "quần đảo faroe": [
       "FO"
     ],
@@ -6547,6 +6969,9 @@
     ],
     "quần đảo åland": [
       "AX"
+    ],
+    "r.-u.": [
+      "GB"
     ],
     "r.a.s. chinoise de hong kong": [
       "HK"
@@ -6593,6 +7018,9 @@
     "regatul unit": [
       "GB"
     ],
+    "regno di eswatini": [
+      "SZ"
+    ],
     "regno unito": [
       "GB"
     ],
@@ -6602,11 +7030,17 @@
     "reino unido": [
       "GB"
     ],
+    "repubblica ceca": [
+      "CZ"
+    ],
     "repubblica centrafricana": [
       "CF"
     ],
     "repubblica dominicana": [
       "DO"
+    ],
+    "republica cehă": [
+      "CZ"
     ],
     "republica centrafricană": [
       "CF"
@@ -6620,6 +7054,12 @@
     "republik afrika tengah": [
       "CF"
     ],
+    "republik ceko": [
+      "CZ"
+    ],
+    "republik czech": [
+      "CZ"
+    ],
     "republik dominica": [
       "DO"
     ],
@@ -6628,6 +7068,12 @@
     ],
     "republik moldau": [
       "MD"
+    ],
+    "republika czeska": [
+      "CZ"
+    ],
+    "republika konga": [
+      "CG"
     ],
     "republika południowej afryki": [
       "ZA"
@@ -6638,13 +7084,31 @@
     "republika środkowoafrykańska": [
       "CF"
     ],
+    "republiken kongo": [
+      "CG"
+    ],
+    "republikken congo": [
+      "CG"
+    ],
+    "republikken kongo": [
+      "CG"
+    ],
     "república centro-africana": [
       "CF"
     ],
     "república centroafricana": [
       "CF"
     ],
+    "república checa": [
+      "CZ"
+    ],
+    "república democrática de timor-leste": [
+      "TL"
+    ],
     "república democrática del congo": [
+      "CD"
+    ],
+    "república democrática do congo": [
       "CD"
     ],
     "república do congo": [
@@ -6652,6 +7116,9 @@
     ],
     "república dominicana": [
       "DO"
+    ],
+    "república tcheca": [
+      "CZ"
     ],
     "reunion": [
       "RE"
@@ -6708,6 +7175,9 @@
       "GQ"
     ],
     "royaume-uni": [
+      "GB"
+    ],
+    "ru": [
       "GB"
     ],
     "ruanda": [
@@ -6782,14 +7252,26 @@
     "république centrafricaine": [
       "CF"
     ],
+    "république de côte d’ivoire": [
+      "CI"
+    ],
     "république dominicaine": [
       "DO"
+    ],
+    "république du congo": [
+      "CG"
+    ],
+    "république tchèque": [
+      "CZ"
     ],
     "réunion": [
       "RE"
     ],
     "rússia": [
       "RU"
+    ],
+    "s.u.a.": [
+      "US"
     ],
     "s:t barthélemy": [
       "BL"
@@ -6814,6 +7296,9 @@
     ],
     "saara ocidental": [
       "EH"
+    ],
+    "sad": [
+      "US"
     ],
     "sahara barat": [
       "EH"
@@ -7688,6 +8173,15 @@
     "středoafrická republika": [
       "CF"
     ],
+    "suazi": [
+      "SZ"
+    ],
+    "suazilandia": [
+      "SZ"
+    ],
+    "suazilândia": [
+      "SZ"
+    ],
     "sud sudan": [
       "SS"
     ],
@@ -7862,7 +8356,19 @@
     "svatý vincenc a grenadiny": [
       "VC"
     ],
+    "svazi": [
+      "SZ"
+    ],
+    "svazijsko": [
+      "SZ"
+    ],
+    "svaziland": [
+      "SZ"
+    ],
     "svazilandas": [
+      "SZ"
+    ],
+    "svazilenda": [
       "SZ"
     ],
     "sveits": [
@@ -7942,6 +8448,15 @@
     ],
     "svédország": [
       "SE"
+    ],
+    "swasiland": [
+      "SZ"
+    ],
+    "swaziland": [
+      "SZ"
+    ],
+    "swazimaa": [
+      "SZ"
     ],
     "sweden": [
       "SE"
@@ -8372,10 +8887,19 @@
     "timor oriental": [
       "TL"
     ],
+    "timor timur": [
+      "TL"
+    ],
     "timor wschodni": [
       "TL"
     ],
     "timor-leste": [
+      "TL"
+    ],
+    "timor-oriental": [
+      "TL"
+    ],
+    "timorul de est": [
       "TL"
     ],
     "tiongkok": [
@@ -8404,6 +8928,9 @@
     ],
     "tonga": [
       "TO"
+    ],
+    "tr-variant": [
+      "TR"
     ],
     "trinidad & tobago": [
       "TT"
@@ -8477,11 +9004,17 @@
     "tschechien": [
       "CZ"
     ],
+    "tschechische republik": [
+      "CZ"
+    ],
     "tsjaad": [
       "TD"
     ],
     "tsjad": [
       "TD"
+    ],
+    "tsjechische republiek": [
+      "CZ"
     ],
     "tsjechië": [
       "CZ"
@@ -8550,6 +9083,9 @@
       "TM"
     ],
     "turecko": [
+      "TR"
+    ],
+    "turkey": [
       "TR"
     ],
     "turki": [
@@ -8699,6 +9235,12 @@
     "tšehhi": [
       "CZ"
     ],
+    "tšehhi vabariik": [
+      "CZ"
+    ],
+    "tšekin tasavalta": [
+      "CZ"
+    ],
     "tšekki": [
       "CZ"
     ],
@@ -8727,6 +9269,9 @@
       "AE"
     ],
     "ujedinjeno kraljevstvo": [
+      "GB"
+    ],
+    "uk": [
       "GB"
     ],
     "ukraina": [
@@ -8800,6 +9345,9 @@
     ],
     "urugwaj": [
       "UY"
+    ],
+    "us": [
+      "US"
     ],
     "usa": [
       "US"
@@ -8957,6 +9505,9 @@
     "vjetnama": [
       "VN"
     ],
+    "vk": [
+      "GB"
+    ],
     "vokietija": [
       "DE"
     ],
@@ -8965,6 +9516,12 @@
     ],
     "volisas ir futūna": [
       "WF"
+    ],
+    "vs": [
+      "US"
+    ],
+    "vzhodni timor": [
+      "TL"
     ],
     "vánoční ostrov": [
       "CX"
@@ -9077,6 +9634,12 @@
     "wilayah selatan prancis": [
       "TF"
     ],
+    "wlk. bryt.": [
+      "GB"
+    ],
+    "wybrzeże kości słoniowej": [
+      "CI"
+    ],
     "wyspa bouveta": [
       "BV"
     ],
@@ -9182,6 +9745,9 @@
     "zapadna sahara": [
       "EH"
     ],
+    "zda": [
+      "US"
+    ],
     "združene države amerike": [
       "US"
     ],
@@ -9212,6 +9778,9 @@
     "ziemsvētku sala": [
       "CX"
     ],
+    "ziloņkaula krasts": [
+      "CI"
+    ],
     "zimbabue": [
       "ZW"
     ],
@@ -9229,6 +9798,9 @@
     ],
     "zjednoczone emiraty arabskie": [
       "AE"
+    ],
+    "zk": [
+      "GB"
     ],
     "zuid-afrika": [
       "ZA"
@@ -9317,6 +9889,9 @@
     "çad": [
       "TD"
     ],
+    "çek cumhuriyeti": [
+      "CZ"
+    ],
     "çekya": [
       "CZ"
     ],
@@ -9328,6 +9903,9 @@
     ],
     "çin makao öi̇b": [
       "MO"
+    ],
+    "é.-u.": [
+      "US"
     ],
     "égypte": [
       "EG"
@@ -9404,6 +9982,9 @@
     "îles malouines": [
       "FK"
     ],
+    "îles malouines (îles falkland)": [
+      "FK"
+    ],
     "îles mariannes du nord": [
       "MP"
     ],
@@ -9455,6 +10036,9 @@
     "østrig": [
       "AT"
     ],
+    "østtimor": [
+      "TL"
+    ],
     "úc": [
       "AU"
     ],
@@ -9469,6 +10053,9 @@
     ],
     "ühendriikide hajasaared": [
       "UM"
+    ],
+    "ük": [
+      "GB"
     ],
     "ürdün": [
       "JO"
@@ -9488,7 +10075,13 @@
     "čehija": [
       "CZ"
     ],
+    "čehijas republika": [
+      "CZ"
+    ],
     "čekija": [
+      "CZ"
+    ],
+    "čekijos respublika": [
       "CZ"
     ],
     "černá hora": [
@@ -9497,7 +10090,13 @@
     "česko": [
       "CZ"
     ],
+    "česká republika": [
+      "CZ"
+    ],
     "češka": [
+      "CZ"
+    ],
+    "češka republika": [
       "CZ"
     ],
     "čierna hora": [
@@ -9523,6 +10122,9 @@
     ],
     "đài loan": [
       "TW"
+    ],
+    "đông timor": [
+      "TL"
     ],
     "đảo bouvet": [
       "BV"
@@ -9692,6 +10294,9 @@
     "αμερικανική σαμόα": [
       "AS"
     ],
+    "ανατολικό τιμόρ": [
+      "TL"
+    ],
     "ανγκουίλα": [
       "AI"
     ],
@@ -9703,6 +10308,9 @@
     ],
     "ανταρκτική": [
       "AQ"
+    ],
+    "αοτεαρόα νέα ζηλανδία": [
+      "NZ"
     ],
     "απομακρυσμένες νησίδες ηπα": [
       "UM"
@@ -9863,6 +10471,9 @@
     "ζιμπάμπουε": [
       "ZW"
     ],
+    "ηβ": [
+      "GB"
+    ],
     "ηνωμένα αραβικά εμιράτα": [
       "AE"
     ],
@@ -9871,6 +10482,9 @@
     ],
     "ηνωμένο βασίλειο": [
       "GB"
+    ],
+    "ηπα": [
+      "US"
     ],
     "ιαπωνία": [
       "JP"
@@ -9950,6 +10564,12 @@
     "κομόρες": [
       "KM"
     ],
+    "κονγκό (δημοκρατία)": [
+      "CG"
+    ],
+    "κονγκό (λδκ)": [
+      "CD"
+    ],
     "κονγκό - κινσάσα": [
       "CD"
     ],
@@ -10018,6 +10638,9 @@
     ],
     "μαδαγασκάρη": [
       "MG"
+    ],
+    "μακάο": [
+      "MO"
     ],
     "μακάο εδπ κίνας": [
       "MO"
@@ -10142,6 +10765,9 @@
     "νήσοι φόκλαντ": [
       "FK"
     ],
+    "νήσοι φόκλαντ (νήσοι μαλβίνας)": [
+      "FK"
+    ],
     "νήσοι χερντ και μακντόναλντ": [
       "HM"
     ],
@@ -10225,6 +10851,9 @@
     ],
     "παλάου": [
       "PW"
+    ],
+    "παλαιστίνη": [
+      "PS"
     ],
     "παλαιστινιακά εδάφη": [
       "PS"
@@ -10310,6 +10939,9 @@
     "σομαλία": [
       "SO"
     ],
+    "σουαζιλάνδη": [
+      "SZ"
+    ],
     "σουδάν": [
       "SD"
     ],
@@ -10370,6 +11002,9 @@
     "τσεχία": [
       "CZ"
     ],
+    "τσεχική δημοκρατία": [
+      "CZ"
+    ],
     "τυνησία": [
       "TN"
     ],
@@ -10393,6 +11028,9 @@
     ],
     "χιλή": [
       "CL"
+    ],
+    "χονγκ κονγκ": [
+      "HK"
     ],
     "χονγκ κονγκ εδπ κίνας": [
       "HK"
@@ -10493,6 +11131,15 @@
     "антигуа і барбуда": [
       "AG"
     ],
+    "аотеароа (нова зеландія)": [
+      "NZ"
+    ],
+    "аотеароа (новая зеландия)": [
+      "NZ"
+    ],
+    "аотеароа нова зеландия": [
+      "NZ"
+    ],
     "аргентина": [
       "AR"
     ],
@@ -10577,6 +11224,9 @@
     "бенін": [
       "BJ"
     ],
+    "берег слонової кістки": [
+      "CI"
+    ],
     "бермуди": [
       "BM"
     ],
@@ -10633,6 +11283,9 @@
     ],
     "бразилія": [
       "BR"
+    ],
+    "британия": [
+      "GB"
     ],
     "британска девичанска острва": [
       "VG"
@@ -10826,6 +11479,9 @@
     "гондурас": [
       "HN"
     ],
+    "гонконг": [
+      "HK"
+    ],
     "гонконг (сар)": [
       "HK"
     ],
@@ -10994,6 +11650,9 @@
     "израиль": [
       "IL"
     ],
+    "източен тимор": [
+      "TL"
+    ],
     "индия": [
       "IN"
     ],
@@ -11029,6 +11688,9 @@
     ],
     "испания": [
       "ES"
+    ],
+    "источни тимор": [
+      "TL"
     ],
     "италия": [
       "IT"
@@ -11162,8 +11824,17 @@
     "конго (бразавил)": [
       "CG"
     ],
+    "конго (дрк)": [
+      "CD"
+    ],
     "конго (киншаса)": [
       "CD"
+    ],
+    "конго (република)": [
+      "CG"
+    ],
+    "конго (республіка)": [
+      "CG"
     ],
     "конго - бразавил": [
       "CG"
@@ -11320,6 +11991,9 @@
     ],
     "майотта": [
       "YT"
+    ],
+    "макао": [
+      "MO"
     ],
     "макао (сар)": [
       "MO"
@@ -11591,6 +12265,9 @@
     "обʼєднані арабські емірати": [
       "AE"
     ],
+    "обала слоноваче": [
+      "CI"
+    ],
     "обала слоноваче (кот д’ивоар)": [
       "CI"
     ],
@@ -11683,6 +12360,9 @@
     ],
     "палау": [
       "PW"
+    ],
+    "палестина": [
+      "PS"
     ],
     "палестинске територије": [
       "PS"
@@ -11780,6 +12460,9 @@
     "реинион": [
       "RE"
     ],
+    "республика конго": [
+      "CG"
+    ],
     "республика корея": [
       "KR"
     ],
@@ -11818,6 +12501,9 @@
     ],
     "русија": [
       "RU"
+    ],
+    "сад": [
+      "US"
     ],
     "салвадор": [
       "SV"
@@ -11867,7 +12553,13 @@
     "саудівська аравія": [
       "SA"
     ],
+    "сащ": [
+      "US"
+    ],
     "свазиленд": [
+      "SZ"
+    ],
+    "свазіленд": [
       "SZ"
     ],
     "свалбард и ян майен": [
@@ -12080,6 +12772,12 @@
     "суринам": [
       "SR"
     ],
+    "східний тимор": [
+      "TL"
+    ],
+    "сша": [
+      "US"
+    ],
     "съединени щати": [
       "US"
     ],
@@ -12138,6 +12836,9 @@
       "TJ"
     ],
     "тимор лесте": [
+      "TL"
+    ],
+    "тимор-лесте": [
       "TL"
     ],
     "тимор-лесте (источни тимор)": [
@@ -12200,6 +12901,9 @@
     "узбекистан": [
       "UZ"
     ],
+    "ук": [
+      "GB"
+    ],
     "украина": [
       "UA"
     ],
@@ -12251,6 +12955,9 @@
     "федеративные штаты микронезии": [
       "FM"
     ],
+    "федеративні штати мікронезії": [
+      "FM"
+    ],
     "фиджи": [
       "FJ"
     ],
@@ -12272,13 +12979,25 @@
     "фиџи": [
       "FJ"
     ],
+    "фокландска (малвинска) острва": [
+      "FK"
+    ],
     "фокландска острва": [
       "FK"
     ],
     "фолкландски острови": [
       "FK"
     ],
+    "фолкландски острови (малвински острови)": [
+      "FK"
+    ],
+    "фолклендские (мальвинские) о-ва": [
+      "FK"
+    ],
     "фолклендские о-ва": [
+      "FK"
+    ],
+    "фолклендські (мальвінські) острови": [
       "FK"
     ],
     "фолклендські острови": [
@@ -12344,8 +13063,14 @@
     "холандија": [
       "NL"
     ],
+    "хонгконг": [
+      "HK"
+    ],
     "хондурас": [
       "HN"
+    ],
+    "хонконг": [
+      "HK"
     ],
     "хонконг, сар на китай": [
       "HK"
@@ -12386,6 +13111,9 @@
     "черногория": [
       "ME"
     ],
+    "чеська республіка": [
+      "CZ"
+    ],
     "чехия": [
       "CZ"
     ],
@@ -12393,6 +13121,12 @@
       "CZ"
     ],
     "чешка": [
+      "CZ"
+    ],
+    "чешка република": [
+      "CZ"
+    ],
+    "чешская республика": [
       "CZ"
     ],
     "чиле": [
@@ -12557,6 +13291,9 @@
     "џибути": [
       "DJ"
     ],
+    "אאוטארואה": [
+      "NZ"
+    ],
     "אוגנדה": [
       "UG"
     ],
@@ -12621,6 +13358,9 @@
       "FO"
     ],
     "איי פוקלנד": [
+      "FK"
+    ],
+    "איי פוקלנד (איי מלווינס)": [
       "FK"
     ],
     "איי פיטקרן": [
@@ -12688,6 +13428,9 @@
     ],
     "ארגנטינה": [
       "AR"
+    ],
+    "ארה״ב": [
+      "US"
     ],
     "ארובה": [
       "AW"
@@ -12863,6 +13606,9 @@
     "הולנד": [
       "NL"
     ],
+    "הונג קונג": [
+      "HK"
+    ],
     "הונג קונג (אזור מנהלי מיוחד של סין)": [
       "HK"
     ],
@@ -12886,6 +13632,9 @@
     ],
     "הרפובליקה המרכז-אפריקאית": [
       "CF"
+    ],
+    "הרפובליקה הצ׳כית": [
+      "CZ"
     ],
     "השטחים הפלסטיניים": [
       "PS"
@@ -13019,6 +13768,9 @@
     "מונקו": [
       "MC"
     ],
+    "מזרח טימור": [
+      "TL"
+    ],
     "מיאנמר (בורמה)": [
       "MM"
     ],
@@ -13036,6 +13788,9 @@
     ],
     "מצרים": [
       "EG"
+    ],
+    "מקאו": [
+      "MO"
     ],
     "מקאו (אזור מנהלי מיוחד של סין)": [
       "MO"
@@ -13090,6 +13845,9 @@
     ],
     "סודן": [
       "SD"
+    ],
+    "סווזילנד": [
+      "SZ"
     ],
     "סומליה": [
       "SO"
@@ -13193,6 +13951,9 @@
     "פלאו": [
       "PW"
     ],
+    "פלסטין": [
+      "PS"
+    ],
     "פנמה": [
       "PA"
     ],
@@ -13223,11 +13984,20 @@
     "קובה": [
       "CU"
     ],
+    "קוט דיוואר": [
+      "CI"
+    ],
     "קולומביה": [
       "CO"
     ],
     "קומורו": [
       "KM"
+    ],
+    "קונגו (הרפובליקה הדמוקרטית של קונגו)": [
+      "CD"
+    ],
+    "קונגו (רפובליקה)": [
+      "CG"
     ],
     "קונגו - ברזאויל": [
       "CG"
@@ -13631,6 +14401,9 @@
     "تيمور - ليشتي": [
       "TL"
     ],
+    "تيمور الشرقية": [
+      "TL"
+    ],
     "جامايكا": [
       "JM"
     ],
@@ -13668,6 +14441,9 @@
       "FO"
     ],
     "جزر فوكلاند": [
+      "FK"
+    ],
+    "جزر فوكلاند - جزر مالفيناس": [
       "FK"
     ],
     "جزر فيرجن الأمريكية": [
@@ -13712,8 +14488,17 @@
     "جمهورية أفريقيا الوسطى": [
       "CF"
     ],
+    "جمهورية التشيك": [
+      "CZ"
+    ],
     "جمهورية الدومينيكان": [
       "DO"
+    ],
+    "جمهورية الكونغو": [
+      "CG"
+    ],
+    "جمهورية الكونغو الديمقراطية": [
+      "CD"
     ],
     "جنوب أفريقيا": [
       "ZA"
@@ -13811,6 +14596,9 @@
     "سنغافورة": [
       "SG"
     ],
+    "سوازيلاند": [
+      "SZ"
+    ],
     "سوريا": [
       "SY"
     ],
@@ -13880,6 +14668,9 @@
     "فرنسا": [
       "FR"
     ],
+    "فلسطين": [
+      "PS"
+    ],
     "فنزويلا": [
       "VE"
     ],
@@ -13918,6 +14709,9 @@
     ],
     "كوبا": [
       "CU"
+    ],
+    "كوت ديفوار": [
+      "CI"
     ],
     "كوراساو": [
       "CW"
@@ -13991,6 +14785,9 @@
     "مقدونيا الشمالية": [
       "MK"
     ],
+    "مكاو": [
+      "MO"
+    ],
     "ملاوي": [
       "MW"
     ],
@@ -14060,6 +14857,9 @@
     "هولندا الكاريبية": [
       "BQ"
     ],
+    "هونغ كونغ": [
+      "HK"
+    ],
     "هونغ كونغ الصينية (منطقة إدارية خاصة)": [
       "HK"
     ],
@@ -14074,6 +14874,9 @@
     ],
     "अफ़गानिस्तान": [
       "AF"
+    ],
+    "अमेरिका": [
+      "US"
     ],
     "अमेरिकी समोआ": [
       "AS"
@@ -14095,6 +14898,9 @@
     ],
     "आइल ऑफ़ मैन": [
       "IM"
+    ],
+    "आइवरी कोस्ट": [
+      "CI"
     ],
     "आइसलैंड": [
       "IS"
@@ -14174,6 +14980,9 @@
     "ओमान": [
       "OM"
     ],
+    "औटेआरोआ न्यूज़ीलैंड": [
+      "NZ"
+    ],
     "कंबोडिया": [
       "KH"
     ],
@@ -14185,6 +14994,12 @@
     ],
     "क़तर": [
       "QA"
+    ],
+    "कांगो (गणराज्य)": [
+      "CG"
+    ],
+    "कांगो (डीआरसी)": [
+      "CD"
     ],
     "कांगो - किंशासा": [
       "CD"
@@ -14293,6 +15108,9 @@
     ],
     "चीन": [
       "CN"
+    ],
+    "चेक गणराज्य": [
+      "CZ"
     ],
     "चेकिया": [
       "CZ"
@@ -14450,6 +15268,9 @@
     "पुर्तगाल": [
       "PT"
     ],
+    "पूर्वी तिमोर": [
+      "TL"
+    ],
     "पेरू": [
       "PE"
     ],
@@ -14468,6 +15289,9 @@
     "फ़िलिपींस": [
       "PH"
     ],
+    "फ़िलिस्तीन": [
+      "PS"
+    ],
     "फ़िलिस्तीनी क्षेत्र": [
       "PS"
     ],
@@ -14475,6 +15299,9 @@
       "FO"
     ],
     "फ़ॉकलैंड द्वीपसमूह": [
+      "FK"
+    ],
+    "फ़ॉकलैंड द्वीपसमूह (इज़्लास माल्विनास)": [
       "FK"
     ],
     "फ़्रांस": [
@@ -14557,6 +15384,9 @@
     ],
     "मंगोलिया": [
       "MN"
+    ],
+    "मकाऊ": [
+      "MO"
     ],
     "मकाऊ (विशेष प्रशासनिक क्षेत्र चीन)": [
       "MO"
@@ -14647,6 +15477,9 @@
     ],
     "यू॰एस॰ वर्जिन द्वीपसमूह": [
       "VI"
+    ],
+    "यू॰के॰": [
+      "GB"
     ],
     "रवांडा": [
       "RW"
@@ -14792,6 +15625,9 @@
     "स्लोवेनिया": [
       "SI"
     ],
+    "स्वाज़ीलैंड": [
+      "SZ"
+    ],
     "स्वालबार्ड और जान मायेन": [
       "SJ"
     ],
@@ -14806,6 +15642,9 @@
     ],
     "हर्ड द्वीप और मैकडोनॉल्ड द्वीपसमूह": [
       "HM"
+    ],
+    "हाँग काँग": [
+      "HK"
     ],
     "हाँग काँग (चीन विशेष प्रशासनिक क्षेत्र)": [
       "HK"
@@ -14851,6 +15690,12 @@
     ],
     "กินี-บิสเซา": [
       "GW"
+    ],
+    "คองโก (สาธารณรัฐ)": [
+      "CG"
+    ],
+    "คองโก (สาธารณรัฐประชาธิปไตย)": [
+      "CD"
     ],
     "คองโก - กินชาซา": [
       "CD"
@@ -14951,6 +15796,9 @@
     "ติมอร์-เลสเต": [
       "TL"
     ],
+    "ติมอร์ตะวันออก": [
+      "TL"
+    ],
     "ตุรกี": [
       "TR"
     ],
@@ -14962,6 +15810,9 @@
     ],
     "ทาจิกิสถาน": [
       "TJ"
+    ],
+    "ทูร์เคีย": [
+      "TR"
     ],
     "นครวาติกัน": [
       "VA"
@@ -15035,6 +15886,9 @@
     "ปารากวัย": [
       "PY"
     ],
+    "ปาเลสไตน์": [
+      "PS"
+    ],
     "ปาเลา": [
       "PW"
     ],
@@ -15095,6 +15949,9 @@
     "มาลี": [
       "ML"
     ],
+    "มาเก๊า": [
+      "MO"
+    ],
     "มาเลเซีย": [
       "MY"
     ],
@@ -15143,6 +16000,9 @@
     "สฟาลบาร์และยานไมเอน": [
       "SJ"
     ],
+    "สวาซิแลนด์": [
+      "SZ"
+    ],
     "สวิตเซอร์แลนด์": [
       "CH"
     ],
@@ -15155,8 +16015,14 @@
     "สหรัฐอเมริกา": [
       "US"
     ],
+    "สหรัฐฯ": [
+      "US"
+    ],
     "สหราชอาณาจักร": [
       "GB"
+    ],
+    "สาธารณรัฐเช็ก": [
+      "CZ"
     ],
     "สาธารณรัฐแอฟริกากลาง": [
       "CF"
@@ -15189,6 +16055,9 @@
       "PN"
     ],
     "หมู่เกาะฟอล์กแลนด์": [
+      "FK"
+    ],
+    "หมู่เกาะฟอล์กแลนด์ (อิสลาส มาลวินาส)": [
       "FK"
     ],
     "หมู่เกาะมาร์แชลล์": [
@@ -15280,6 +16149,9 @@
     ],
     "ฮังการี": [
       "HU"
+    ],
+    "ฮ่องกง": [
+      "HK"
     ],
     "เกรเนดา": [
       "GD"
@@ -15452,6 +16324,9 @@
     "เอสโตเนีย": [
       "EE"
     ],
+    "เอาเตอารัว นิวซีแลนด์": [
+      "NZ"
+    ],
     "เฮติ": [
       "HT"
     ],
@@ -15569,6 +16444,9 @@
     "ไอร์แลนด์": [
       "IE"
     ],
+    "ไอวอรี่โคสต์": [
+      "CI"
+    ],
     "ả rập xê-út": [
       "SA"
     ],
@@ -15581,11 +16459,17 @@
     "アイルランド": [
       "IE"
     ],
+    "アオテアロア・ニュージーランド": [
+      "NZ"
+    ],
     "アゼルバイジャン": [
       "AZ"
     ],
     "アフガニスタン": [
       "AF"
+    ],
+    "アメリカ": [
+      "US"
     ],
     "アメリカ合衆国": [
       "US"
@@ -15803,8 +16687,14 @@
     "コロンビア": [
       "CO"
     ],
+    "コンゴ共和国": [
+      "CG"
+    ],
     "コンゴ共和国(ブラザビル)": [
       "CG"
+    ],
+    "コンゴ民主共和国": [
+      "CD"
     ],
     "コンゴ民主共和国(キンシャサ)": [
       "CD"
@@ -15896,6 +16786,9 @@
     "スロベニア": [
       "SI"
     ],
+    "スワジランド": [
+      "SZ"
+    ],
     "スーダン": [
       "SD"
     ],
@@ -15941,6 +16834,9 @@
     "チェコ": [
       "CZ"
     ],
+    "チェコ共和国": [
+      "CZ"
+    ],
     "チャド": [
       "TD"
     ],
@@ -15952,6 +16848,9 @@
     ],
     "ツバル": [
       "TV"
+    ],
+    "テュルキエ": [
+      "TR"
     ],
     "デンマーク": [
       "DK"
@@ -16061,6 +16960,9 @@
     "パラグアイ": [
       "PY"
     ],
+    "パレスチナ": [
+      "PS"
+    ],
     "パレスチナ自治区": [
       "PS"
     ],
@@ -16080,6 +16982,9 @@
       "FO"
     ],
     "フォークランド諸島": [
+      "FK"
+    ],
+    "フォークランド諸島 (マルビーナス諸島)": [
       "FK"
     ],
     "フランス": [
@@ -16147,6 +17052,9 @@
     ],
     "ポーランド": [
       "PL"
+    ],
+    "マカオ": [
+      "MO"
     ],
     "マダガスカル": [
       "MG"
@@ -16357,6 +17265,12 @@
     ],
     "列支敦士登": [
       "LI"
+    ],
+    "刚果共和国": [
+      "CG"
+    ],
+    "刚果民主共和国": [
+      "CD"
     ],
     "刚果（布）": [
       "CG"
@@ -16595,6 +17509,9 @@
     "尼泊尔": [
       "NP"
     ],
+    "巴勒斯坦": [
+      "PS"
+    ],
     "巴勒斯坦领土": [
       "PS"
     ],
@@ -16667,6 +17584,9 @@
     "捷克": [
       "CZ"
     ],
+    "捷克共和国": [
+      "CZ"
+    ],
     "摩尔多瓦": [
       "MD"
     ],
@@ -16714,6 +17634,9 @@
     ],
     "朝鲜": [
       "KP"
+    ],
+    "東チモール": [
+      "TL"
     ],
     "東ティモール": [
       "TL"
@@ -16796,6 +17719,9 @@
     "澳大利亚": [
       "AU"
     ],
+    "澳门": [
+      "MO"
+    ],
     "爱尔兰": [
       "IE"
     ],
@@ -16848,6 +17774,9 @@
       "GI"
     ],
     "福克兰群岛": [
+      "FK"
+    ],
+    "福克兰群岛（马尔维纳斯群岛）": [
       "FK"
     ],
     "科威特": [
@@ -16988,6 +17917,9 @@
     "诺福克岛": [
       "NF"
     ],
+    "象牙海岸": [
+      "CI"
+    ],
     "贝宁": [
       "BJ"
     ],
@@ -17035,6 +17967,9 @@
     ],
     "韩国": [
       "KR"
+    ],
+    "香港": [
+      "HK"
     ],
     "马尔代夫": [
       "MV"
@@ -17230,6 +18165,9 @@
     ],
     "마요트": [
       "YT"
+    ],
+    "마카오": [
+      "MO"
     ],
     "마카오(중국 특별행정구)": [
       "MO"
@@ -17444,6 +18382,9 @@
     "스발바르제도-얀마웬섬": [
       "SJ"
     ],
+    "스와질란드": [
+      "SZ"
+    ],
     "스웨덴": [
       "SE"
     ],
@@ -17485,6 +18426,9 @@
     ],
     "아메리칸 사모아": [
       "AS"
+    ],
+    "아이보리 코스트": [
+      "CI"
     ],
     "아이슬란드": [
       "IS"
@@ -17642,6 +18586,9 @@
     "체코": [
       "CZ"
     ],
+    "체코 공화국": [
+      "CZ"
+    ],
     "칠레": [
       "CL"
     ],
@@ -17687,10 +18634,16 @@
     "콜롬비아": [
       "CO"
     ],
+    "콩고 공화국": [
+      "CG"
+    ],
     "콩고-브라자빌": [
       "CG"
     ],
     "콩고-킨샤사": [
+      "CD"
+    ],
+    "콩고민주공화국": [
       "CD"
     ],
     "쿠바": [
@@ -17756,6 +18709,9 @@
     "트리니다드 토바고": [
       "TT"
     ],
+    "티모르레스테": [
+      "TL"
+    ],
     "파나마": [
       "PA"
     ],
@@ -17771,6 +18727,9 @@
     "팔라우": [
       "PW"
     ],
+    "팔레스타인": [
+      "PS"
+    ],
     "팔레스타인 지구": [
       "PS"
     ],
@@ -17784,6 +18743,9 @@
       "PT"
     ],
     "포클랜드 제도": [
+      "FK"
+    ],
+    "포클랜드 제도(말비나스 군도)": [
       "FK"
     ],
     "폴란드": [
@@ -17816,11 +18778,17 @@
     "핏케언 제도": [
       "PN"
     ],
+    "한국": [
+      "KR"
+    ],
     "허드 맥도널드 제도": [
       "HM"
     ],
     "헝가리": [
       "HU"
+    ],
+    "홍콩": [
+      "HK"
     ],
     "홍콩(중국 특별행정구)": [
       "HK"

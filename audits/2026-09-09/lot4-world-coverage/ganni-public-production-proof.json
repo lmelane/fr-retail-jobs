@@ -1,0 +1,41 @@
+{
+  "at": "2026-09-09T15:45:18.533Z",
+  "environment": "PRODUCTION",
+  "results": [
+    {
+      "url": "/api/jobs?maison=GANNI",
+      "status": 200,
+      "total": 16,
+      "idsMatched": true
+    },
+    {
+      "url": "/api/jobs?maison=GANNI&pays=FR",
+      "status": 200,
+      "total": 5,
+      "idsMatched": true
+    },
+    {
+      "url": "/api/jobs?maison=GANNI&pays=GB",
+      "status": 200,
+      "total": 1,
+      "idsMatched": true
+    },
+    {
+      "url": "/api/jobs?maison=GANNI&secteur=FASHION",
+      "status": 200,
+      "total": 16,
+      "idsMatched": true
+    }
+  ],
+  "generalSearchKeepsOpenApplication": true,
+  "openApplication": {
+    "id": "cmtu9r2vs002lq6016sgybbuq",
+    "httpStatus": 200,
+    "jobPosting": false
+  },
+  "withdrawn": {
+    "id": "cmtlygvkj02kcqf5k6g949wds",
+    "httpStatus": 410,
+    "jobPosting": false
+  }
+}

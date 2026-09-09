@@ -19,4 +19,4 @@ Image Docker réelle construite et démarrée sur une base PostgreSQL 18 isolée
 Les nouvelles migrations doivent rester compatibles avec la version encore en service (expand/contract). Ce dispositif ne transforme pas une migration destructive en migration sûre et ne prétend pas détecter toute modification SQL manuelle du schéma.
 
 ## État de livraison
-Correction locale testée au moment de ce document. Commit, merge et preuve du hook Railway effectif à compléter après livraison. Aucune réparation GANNI exécutée pour contourner l’incident. Lot 4 global toujours ouvert.
+Livré via PR53 : commits `29d8d2d` et `a0eda8f`, merge `459da3a`, CI `34371179064` verte. Les quatre services sont déployés sur ce merge. Le web `f07adaa6-3fb8-44c6-be6e-c41c02d8dea4` termine sa migration à 15:40:02 UTC, avant le démarrage du serveur à 15:40:16 UTC ; santé publique 200. Preuve du manifeste et des logs relue. Les workers globaux restent en pause. Aucune réparation GANNI n’a été exécutée pour contourner l’incident ; elle a repris après cette validation. Lot 4 global toujours ouvert.

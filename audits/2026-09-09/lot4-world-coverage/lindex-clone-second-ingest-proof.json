@@ -1,0 +1,92 @@
+{
+  "at": "2026-09-09T16:11:00.890Z",
+  "pass": "second",
+  "result": {
+    "total": 1,
+    "ok": 1,
+    "failed": 0,
+    "timedOut": 0,
+    "failures": [],
+    "incidents": []
+  },
+  "sourceRun": {
+    "sourceKey": "lindex-easycruit",
+    "status": "OK",
+    "fetched": 41,
+    "created": null,
+    "updated": null,
+    "merged": null,
+    "accepted": 41,
+    "complete": true,
+    "truncated": false,
+    "errors": 0,
+    "note": "desc 100% date 0% pays 100% url 100%",
+    "ranAt": "2026-09-09T16:11:00.671Z"
+  },
+  "before": {
+    "total": 77447,
+    "active": 74198,
+    "france": 10957,
+    "lindex": 41
+  },
+  "after": {
+    "total": 77447,
+    "active": 74198,
+    "france": 10957,
+    "lindex": 41
+  },
+  "deletedIds": [],
+  "lindex": {
+    "active": 41,
+    "companies": [
+      "cmtlyg3ew01h7qf5ky32oq9vd"
+    ],
+    "countries": {
+      "GB": 1,
+      "NO": 20,
+      "CZ": 3,
+      "SE": 4,
+      "SK": 2,
+      "LT": 4,
+      "LV": 5,
+      "EE": 1,
+      "DK": 1
+    },
+    "withCity": 40,
+    "withDescription": 41,
+    "withPostedAt": 0,
+    "withValidThrough": 0,
+    "languages": {
+      "en": 1,
+      "nb": 20,
+      "cs": 5,
+      "sv": 4,
+      "lt": 4,
+      "lv": 5,
+      "et": 1,
+      "da": 1
+    },
+    "employmentTerm": {
+      "PERMANENT": 1,
+      "null": 40
+    },
+    "workTime": {
+      "FULL_TIME": 1,
+      "null": 40
+    },
+    "opportunityTypes": {
+      "null": 41
+    },
+    "externalIds": 41,
+    "firstSeenPreserved": true
+  },
+  "companies": [
+    {
+      "id": "cmtlyg3ew01h7qf5ky32oq9vd",
+      "name": "Lindex",
+      "canonicalKey": "LINDEX",
+      "kind": "BRAND",
+      "mergedIntoId": null
+    }
+  ]
+}

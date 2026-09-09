@@ -223,6 +223,9 @@ function detectionFromUrl(rawUrl: string): AtsDetection | null {
     const board = parts[0];
     if (board) return { type: 'ASHBY', careersUrl: url.toString(), config: { board }, confidence: 1 };
   }
+  if (/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.easycruit\.com$/.test(host) && host !== 'www.easycruit.com') {
+    return { type: 'EASYCRUIT', careersUrl: url.origin, config: { host }, confidence: 1 };
+  }
   if (host === 'candidate.hr-manager.net' && url.pathname.toLowerCase() === '/vacancies/list.aspx') {
     const customer = url.searchParams.get('customer'), locale = url.searchParams.get('uiculture') ?? 'en';
     if (customer && /^[a-z0-9_-]+$/i.test(customer)) {

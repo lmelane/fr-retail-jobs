@@ -1,0 +1,28 @@
+{
+  "environment": "PRODUCTION",
+  "before": {
+    "total": 77390,
+    "active": 74159,
+    "france": 10952,
+    "idHash": "09b934d0b429fdc707e9ac7374028668"
+  },
+  "after": {
+    "total": 77406,
+    "active": 74164,
+    "france": 10957,
+    "idHash": "637f03442f2896b223f823a89a6e9ce7"
+  },
+  "previousIdsPreserved": 77390,
+  "newJobs": 16,
+  "withdrawnWithProof": 11,
+  "oldRawPreserved": true,
+  "oldHistoriesPreserved": true,
+  "canonicalEmployerUnchanged": true,
+  "recruitedPositions": 15,
+  "openApplications": 1,
+  "FrancePositions": 5,
+  "datedRecruitmentPositions": 15,
+  "describedRecruitmentPositions": 15,
+  "countriesExplicit": 9,
+  "countryEnrichmentRemaining": 6
+}
