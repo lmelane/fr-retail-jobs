@@ -1,0 +1,341 @@
+[
+  {
+    "at": "2026-09-09T04:58:32.786Z",
+    "label": "SUD EXPRESS",
+    "ats": "TALENTVIEW",
+    "config": {
+      "slug": "sud-express"
+    },
+    "complete": false,
+    "truncated": false,
+    "fetched": 10,
+    "unique": 10,
+    "rowsSha256": "18fca136b584916643d95e062e02ce6f59425833daac047bf3ba4fdcc29de2d3",
+    "productionWrites": 0,
+    "rows": [
+      {
+        "id": "196956",
+        "title": "Conseiller de vente (H/F)",
+        "url": "https://sud-express.talentview.io/jobs/2hoc0f",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-09-08T14:18:19.744Z",
+        "descriptionLength": 1147
+      },
+      {
+        "id": "195683",
+        "title": "Responsable Boutique (H/F)",
+        "url": "https://sud-express.talentview.io/jobs/31fcwg",
+        "country": "France",
+        "location": "Aix-les-Bains",
+        "postedAt": "2026-09-08T14:08:07.020Z",
+        "descriptionLength": 2370
+      },
+      {
+        "id": "195687",
+        "title": "Conseiller de vente (H/F)",
+        "url": "https://sud-express.talentview.io/jobs/r4mu3i",
+        "country": "France",
+        "location": "Lieusaint",
+        "postedAt": "2026-09-08T14:05:28.175Z",
+        "descriptionLength": 1184
+      },
+      {
+        "id": "191163",
+        "title": "Conseiller de vente (H/F)",
+        "url": "https://sud-express.talentview.io/jobs/1ac4at",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-09-08T14:05:12.030Z",
+        "descriptionLength": 1142
+      },
+      {
+        "id": "191679",
+        "title": "Conseiller de vente (H/F)",
+        "url": "https://sud-express.talentview.io/jobs/19o71b",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-09-08T14:03:22.194Z",
+        "descriptionLength": 1212
+      },
+      {
+        "id": "195692",
+        "title": "Conseiller de vente H/F",
+        "url": "https://sud-express.talentview.io/jobs/z22kaj",
+        "country": "France",
+        "location": "Puteaux",
+        "postedAt": "2026-09-08T13:47:33.512Z",
+        "descriptionLength": 1125
+      },
+      {
+        "id": "196845",
+        "title": "Responsable Boutique (H/F)",
+        "url": "https://sud-express.talentview.io/jobs/yk8fpo",
+        "country": "France",
+        "location": "Toulouse",
+        "postedAt": "2026-09-07T14:56:43.084Z",
+        "descriptionLength": 2401
+      },
+      {
+        "id": "196841",
+        "title": "Conseiller de vente (H/F)",
+        "url": "https://sud-express.talentview.io/jobs/txxd6q",
+        "country": "France",
+        "location": "Toulouse",
+        "postedAt": "2026-09-07T14:52:23.715Z",
+        "descriptionLength": 1171
+      },
+      {
+        "id": "196835",
+        "title": "Conseiller de vente H/F",
+        "url": "https://sud-express.talentview.io/jobs/8izas9",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-09-07T14:30:57.432Z",
+        "descriptionLength": 1400
+      },
+      {
+        "id": "196826",
+        "title": "Conseiller de vente (H/F)",
+        "url": "https://sud-express.talentview.io/jobs/5oroeh",
+        "country": "France",
+        "location": "Toulouse",
+        "postedAt": "2026-09-07T13:59:57.384Z",
+        "descriptionLength": 1170
+      }
+    ]
+  },
+  {
+    "at": "2026-09-09T04:58:33.968Z",
+    "label": "AUBADE",
+    "ats": "WTTJ",
+    "config": {
+      "slug": "aubade"
+    },
+    "complete": true,
+    "truncated": false,
+    "declaredTotal": 24,
+    "fetched": 24,
+    "unique": 24,
+    "rowsSha256": "9d3ac2ac2283d4537c17e74400eebf72dca026ba69e6d3b0eec95ff9132e2821",
+    "productionWrites": 0,
+    "rows": [
+      {
+        "id": "67fae084-ea71-4cd7-aa5b-ad7c4bf495c4",
+        "title": "Contrôleur de gestion Senior - FP&A & Business Performance - (H/F)",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/controleur-de-gestion-senior-fp-a-business-performance-h-f_paris",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-09-08T15:13:38.000Z",
+        "descriptionLength": 4197
+      },
+      {
+        "id": "7424df51-a47e-4c85-84c3-3f2129a497c7",
+        "title": "Vendeuse en lingerie (H/F) - CDD 25H",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-en-lingerie-h-f-cdd-25h_nantes",
+        "country": "France",
+        "location": "Bègles",
+        "postedAt": "2026-09-08T08:40:02.000Z",
+        "descriptionLength": 789
+      },
+      {
+        "id": "e1e42231-6c0a-4085-b5af-ccfed7f1bb3d",
+        "title": "Responsable Commercial France - OCCITANIE- H/F",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/responsable-commercial-france-occitanie-h-f",
+        "country": "France",
+        "location": "Montpellier",
+        "postedAt": "2026-09-07T13:42:05.000Z",
+        "descriptionLength": 4380
+      },
+      {
+        "id": "1a2345a4-ce63-4a28-a431-7a8afe017b54",
+        "title": "Vendeuse en Grands Magasins Jumelée Aubade - Calida (H/F) - CDD - PR TOURS",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-en-grands-magasins-jumelee-aubade-calida-h-f-cdd-pr-tours_tours",
+        "country": "France",
+        "location": "Tours",
+        "postedAt": "2026-09-04T10:45:54.000Z",
+        "descriptionLength": 1339
+      },
+      {
+        "id": "c054ffb4-4534-4764-b5ea-e62b40598bbf",
+        "title": "Vendeuse en Grands Magasins (H/F) - GL NANTES",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-en-grands-magasins-h-f-gl-nantes_nantes",
+        "country": "France",
+        "location": "Nantes",
+        "postedAt": "2026-09-04T10:29:08.000Z",
+        "descriptionLength": 1167
+      },
+      {
+        "id": "2063895d-90e8-4fca-8bd9-a084fb47851d",
+        "title": "Vendeuse en lingerie (H/F) - CDD 35H",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-en-lingerie-h-f-cdd-35h_paris",
+        "country": "France",
+        "location": "Nantes",
+        "postedAt": "2026-09-04T10:03:31.000Z",
+        "descriptionLength": 789
+      },
+      {
+        "id": "55571839-57a7-48e3-9729-f6bd2a8817f4",
+        "title": "Mécanicienne Lingerie  - (H/F)",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/mecanicienne-lingerie-h-f_paris",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-09-02T14:30:49.000Z",
+        "descriptionLength": 2964
+      },
+      {
+        "id": "1f8fe2e5-591b-4c08-b9e1-6edf7134767d",
+        "title": "Responsable Qualité & Compliance Textile (H/F)",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/responsable-qualite-compliance-textile-h-f_paris",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-08-28T14:03:20.000Z",
+        "descriptionLength": 3945
+      },
+      {
+        "id": "a8026903-8713-46f2-9ec8-7b5ae90fabaf",
+        "title": "Responsable de boutique (H/F) ",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/responsable-de-boutique-h-f_boulogne_AP_od1kV3L",
+        "country": "France",
+        "location": "Pimbo",
+        "postedAt": "2026-08-25T16:23:39.000Z",
+        "descriptionLength": 1766
+      },
+      {
+        "id": "cd0e0e3b-eff0-43b5-af8f-70b4c920494d",
+        "title": "Vendeuse en Lingerie (H/F) - CDI 35H ",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-en-lingerie-h-f_serris_AP_991K5k",
+        "country": "France",
+        "location": "Serris",
+        "postedAt": "2026-08-25T16:21:54.000Z",
+        "descriptionLength": 891
+      },
+      {
+        "id": "8da52023-bbae-4204-9fb2-6866f3bfcd78",
+        "title": "Vendeuse en Grands Magasins jumelée Aubade - Calida (H/F) - CDD",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-en-grands-magasins-jumelee-aubade-calida-h-f-cdd_metz",
+        "country": "France",
+        "location": "Metz",
+        "postedAt": "2026-08-25T16:02:41.000Z",
+        "descriptionLength": 1191
+      },
+      {
+        "id": "1a8dd4c0-dafd-4206-9ba0-f3646cb5fbe0",
+        "title": "Mécanicienne Coupeuse - (H/F) - Alternance",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/mecanicienne-coupeuse-h-f-alternance_paris",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-08-24T15:30:30.000Z",
+        "descriptionLength": 3126
+      },
+      {
+        "id": "3f6f9c66-2dea-4a9d-b08c-710860ffedba",
+        "title": "Vendeuse en lingerie (H/F) - CDI 30H",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-en-lingerie-h-f-cdi-35h_corbeil-essonnes_AP_GPL8OOA",
+        "country": "France",
+        "location": "Corbeil-Essonnes",
+        "postedAt": "2026-08-24T09:45:10.000Z",
+        "descriptionLength": 790
+      },
+      {
+        "id": "60cc4169-fb4b-4bcf-9597-a4d1e4ed24dc",
+        "title": "Gestionnaire relation client - (H/F) - Stage 2 mois",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/gestionnaire-relation-client-h-f-stage-2-mois_paris_AP_Zwj2kxb",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-08-20T13:19:46.000Z",
+        "descriptionLength": 2845
+      },
+      {
+        "id": "85c4036d-0e75-40e6-9d85-1c4ceefb9246",
+        "title": "Gestionnaire relation client - (H/F) - Stage 1 mois",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/gestionnaire-relation-client-h-f-stage-2-mois_paris_AP_6pe9b9x",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-08-20T12:54:10.000Z",
+        "descriptionLength": 2845
+      },
+      {
+        "id": "7087ddb5-92f5-471a-a2bd-2af261e78cad",
+        "title": "Gestionnaire relation client - (H/F) - Stage 6 mois",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/gestionnaire-relation-client-h-f-stage-6-mois_paris_AP_1zZjaAw",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-08-20T12:48:16.000Z",
+        "descriptionLength": 2958
+      },
+      {
+        "id": "9846c9f7-d594-4e05-8c6e-89a995497c6b",
+        "title": "Vendeuse en lingerie (H/F) - CDD 35H",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-en-lingerie-h-f-cdd-35h_bayonne",
+        "country": "France",
+        "location": "Bayonne",
+        "postedAt": "2026-08-19T08:57:20.000Z",
+        "descriptionLength": 817
+      },
+      {
+        "id": "a6f7e8f8-00bc-4956-95e7-9da5d3fba50c",
+        "title": "Vendeuse en Grands Magasins (H/F) - GL RENNES",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-en-grands-magasins-h-f-gl-rennes_rennes",
+        "country": "France",
+        "location": "Rennes",
+        "postedAt": "2026-08-13T09:11:13.000Z",
+        "descriptionLength": 1167
+      },
+      {
+        "id": "37c7ed39-acc3-48ed-b672-87be4d8b8890",
+        "title": "Responsable de boutique (H/F) ",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/responsable-de-boutique-h-f_nimes_AP_LlN5YL6",
+        "country": "France",
+        "location": "Nimes",
+        "postedAt": "2026-08-11T16:12:31.000Z",
+        "descriptionLength": 1756
+      },
+      {
+        "id": "47233931-3ac8-4b87-a986-fb697b79661b",
+        "title": "International Area Manager Junior ",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/customer-care-agent-intern_paris",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-07-23T10:01:40.000Z",
+        "descriptionLength": 3470
+      },
+      {
+        "id": "24c9c3dc-4e26-40f1-8145-ccb9c80db001",
+        "title": "Vendeuse en lingerie (H/F) - CDI 20H",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-en-lingerie-h-f_paris_AP_J3l4YOR",
+        "country": "France",
+        "location": "Paris",
+        "postedAt": "2026-07-21T13:08:50.000Z",
+        "descriptionLength": 788
+      },
+      {
+        "id": "1628f68f-9588-461b-93a5-473caa802f4a",
+        "title": "Vendeuse grands magasins (H/F) - Jumelé Aubade/Calida ",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-grands-magasins-h-f-jumele-aubade-calida_avignon",
+        "country": "France",
+        "location": "Avignon",
+        "postedAt": "2026-07-21T09:03:20.000Z",
+        "descriptionLength": 1530
+      },
+      {
+        "id": "d21bbc44-9b14-4603-b036-3c826a51ff9f",
+        "title": "Vendeuse en Grands Magasins jumelée Aubade - Calida (H/F) - CDD",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-en-grands-magasins-jumelee-aubade-calida-h-f-cdd_tours",
+        "country": "France",
+        "location": "Tours",
+        "postedAt": "2026-07-21T08:10:00.000Z",
+        "descriptionLength": 1261
+      },
+      {
+        "id": "531339a7-731d-4db3-963e-b1dc5e4b99b1",
+        "title": "Vendeuse en Grands Magasins (H/F) - CDD (25h00)",
+        "url": "https://www.welcometothejungle.com/fr/companies/aubade/jobs/vendeuse-en-grands-magasins-h-f-cdi-35h00_nice",
+        "country": "France",
+        "location": "Nice",
+        "postedAt": "2026-07-15T12:06:40.000Z",
+        "descriptionLength": 1429
+      }
+    ]
+  }
+]

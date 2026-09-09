@@ -1,0 +1,26 @@
+{
+  "at": "2026-09-09T05:03:48.296Z",
+  "productionAt": "2026-09-09T04:49:41.351Z",
+  "labels": 1653,
+  "profiles": 3971,
+  "franceLabels": 747,
+  "stages": {
+    "ACTIVE_SOURCE_CANDIDATE": 211,
+    "IDENTITY_MATCH_AMBIGUOUS": 30,
+    "RESEARCH_INCOMPLETE": 598,
+    "OFFICIAL_PORTAL_TECHNICAL_VALIDATION_REQUIRED": 12,
+    "CAREER_LINK_REVIEW_REQUIRED": 50,
+    "RESEARCH_NOT_STARTED": 752
+  },
+  "productionCompanies": 1571,
+  "productionSources": 500,
+  "activeSources": 424,
+  "productionWrites": 0,
+  "activatedByThisLedger": 0,
+  "limits": [
+    "No automatic company creation or identity merge.",
+    "Catalogue presence is not certified world exhaustiveness.",
+    "No missing portal is declared impossible on the basis of an empty discovery result.",
+    "Old research observations are dated and are not silently recertified today."
+  ]
+}

@@ -34,3 +34,14 @@ La fusion, le déploiement et les preuves après production seront consignés ic
 Sauvegarde réelle : 298 512 153 octets, SHA-256 `a80d5ea438ec85a39c187034b28daa17622cb989a73e2421eac2c391bfec25c0`. Restauration sans erreur dans une nouvelle base locale dédiée. Plan appliqué : 26 écritures, 13 événements CORRECTED, aucun RAW ni événement historique modifié ; seconde application : zéro écriture. Voir `rehearsal-proof.json`, `rehearsal-receipt.json`, `rehearsal-idempotence.json`.
 
 Commit applicatif `3231285`, PR https://github.com/lmelane/fr-retail-jobs/pull/29. Les deux contrôles CI du commit applicatif sont verts. Fusion volontairement différée tant que la collecte globale est en cours, pour ne pas déclencher son remplacement par un déploiement automatique. La production n'a pas encore été réparée.
+
+
+## Réparation effectivement livrée le 9 septembre à 04:57 UTC
+
+PR #29 mergée (`0f3f7e0`), puis PR #30 (`9763522`), image collecteur Railway `f96e7616-7db2-4da9-8819-e4277531a60e` construite avec succès. Aucune relance globale.
+
+Après sauvegarde complète vérifiée de 358 928 504 octets (SHA-256 dans `production-backup.json`), le plan fraîchement reconstitué `ae45a23d59d75ed46f25986a04157bfc2b7f57b5eb21cf1874ef08604b443809` a réparé **13 Job + 13 JobSource**, avec **13 événements CORRECTED et 26 lignes de registre immuable**. RAW, historique original et autres champs métier préservés. Deuxième application : **0 écriture**.
+
+Preuve SQL : `production-proof.json`, `production-receipt.json`, `production-idempotence.json`. Les offres actives portant une date future passent de **5 à 0** (`after-metrics.json`). Les 1 411 dates inconnues restent inconnues.
+
+Preuve front : les pages ModeCareers des offres Douglas 1000 et 602 répondent 200 et exposent respectivement `datePosted=2026-09-03` et `2026-08-27` dans leur JobPosting (`front-proof.json`). Cette conformité de la date ne garantit pas l'indexation Google de chaque offre.
