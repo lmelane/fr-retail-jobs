@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { detectionFromUrl, detectFromHtml } from './detect.js';
+import { detectionFromUrl, detectFromHtml, detectAllLinkedAts } from './detect.js';
 import { KIND_TO_ATS } from '../pipeline/ingest.js';
 
 /**
@@ -13,6 +13,10 @@ import { KIND_TO_ATS } from '../pipeline/ingest.js';
  */
 
 const URL_CASES: Array<{ url: string; type: string; config: Record<string, unknown> }> = [
+  { url: 'https://capri.wd1.myworkdayjobs.com/en-US/Michael_Kors', type: 'WORKDAY', config: { tenant: 'capri', site: 'Michael_Kors' } },
+  { url: 'https://hub-urbn.icims.com/jobs/search', type: 'ICIMS', config: { origin: 'https://hub-urbn.icims.com' } },
+  { url: 'https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/jobs', type: 'ORACLE_HCM', config: { siteNumber: 'CX' } },
+  { url: 'https://lde.tbe.taleo.net/lde02/ats/careers/v2/searchResults?org=ARNOTTS&cws=41', type: 'TALEO', config: { origin: 'https://lde.tbe.taleo.net/lde02', org: 'ARNOTTS', cws: [41] } },
   { url: 'https://boards.greenhouse.io/lacoste', type: 'GREENHOUSE', config: { board: 'lacoste' } },
   { url: 'https://jobs.lever.co/allbirds', type: 'LEVER', config: { site: 'allbirds' } },
   { url: 'https://careers.smartrecruiters.com/SMCP', type: 'SMARTRECRUITERS', config: { company: 'SMCP' } },
@@ -77,8 +81,7 @@ describe('detectFromHtml — vendors nommés SANS adaptateur', () => {
    * manquant » — deux conclusions qui commandent deux travaux différents.
    */
   const cases: Array<{ marker: string; vendor: string }> = [
-    { marker: '<script src="https://brand.icims.com/icims2/servlet/icims2"></script>', vendor: 'iCIMS' },
-    { marker: '<a href="https://brand.taleo.net/careersection/ex/joblist.ftl">Jobs</a>', vendor: 'Taleo' },
+    { marker: '<a href="https://brand.taleo.net/careersection/ex/joblist.ftl">Jobs</a>', vendor: 'Taleo Enterprise' },
     { marker: '<iframe src="https://workforcenow.adp.com/mascsr/default/careers"></iframe>', vendor: 'ADP' },
     { marker: '<a href="https://brand.csod.com/ux/ats/careersite/4/home">Careers</a>', vendor: 'Cornerstone' },
     { marker: '<a href="https://brand.gupy.io/">Vagas</a>', vendor: 'Gupy' },
@@ -97,7 +100,7 @@ describe('detectFromHtml — vendors nommés SANS adaptateur', () => {
 
   it('un ATS OUTILLÉ gagne toujours sur un vendor non outillé présent sur la même page', () => {
     const detection = detectFromHtml(
-      '<html><body><a href="https://brand.icims.com/jobs">A</a>' +
+      '<html><body><a href="https://brand.csod.com/jobs">A</a>' +
         '<a href="https://boards.greenhouse.io/brand">B</a></body></html>',
       page,
     );
@@ -171,4 +174,24 @@ describe('official homepage career discovery', () => {
 it('reads root-hosted Flatchr board identity from payload, not the domain slug', () => {
   const html = '<script id="__NEXT_DATA__">'+JSON.stringify({page:'/company/[companySlug]',query:{companySlug:'toscane'},props:{baseUrlPath:'/fr/company'}})+'</script>';
   expect(detectFromHtml(html,'https://toscane.flatchr.io/')).toMatchObject({type:'FLATCHR',config:{listingUrl:'https://toscane.flatchr.io/fr/company/toscane/'}});
+});
+
+
+describe('Lot 4 — candidates preserve global portals without inventing configurations', () => {
+  it('retains all supported portals, coalescing job links on the same board', () => {
+    const html = '<a href="https://a.wd1.myworkdayjobs.com/en-US/External/job/1">A</a>' +
+      '<a href="https://a.wd1.myworkdayjobs.com/External/job/2">B</a>' +
+      '<a href="https://b.icims.com/jobs/search">C</a>';
+    expect(detectAllLinkedAts(html, 'https://brand.com')).toHaveLength(2);
+  });
+  it('does not infer a board from a locale, or TBE from Enterprise', () => {
+    expect(detectionFromUrl('https://a.wd1.myworkdayjobs.com/en-US')).toBeNull();
+    expect(detectionFromUrl('https://a.taleo.net/careersection/ex/joblist.ftl')).toBeNull();
+    expect(detectionFromUrl('https://a.oraclecloud.com/hcmUI/CandidateExperience/en/')).toBeNull();
+  });
+  it('does not recognise lookalike vendor domains or non-HTTP links', () => {
+    expect(detectionFromUrl('https://evilgreenhouse.io/acme')).toBeNull();
+    expect(detectionFromUrl('ftp://boards.greenhouse.io/acme')).toBeNull();
+    expect(detectAllLinkedAts('<a href="https://boards.greenhouse.io.evil.com/acme">Careers</a>', 'https://brand.com')).toEqual([]);
+  });
 });

@@ -1,0 +1,19 @@
+# Qualification mondiale des sources
+
+Ces outils collectent des preuves réelles. Ils ne créent ni entreprise, ni source active, ni offre en production.
+
+1. `snapshot.mts output.json` : photographie transactionnelle de la production en lecture seule. La sortie contient des configurations privées et reste dans `backups/`.
+2. `build-inventory.py snapshot.json output-directory` : rapproche les 1 653 entrées FashionJobs, la base et les référentiels historiques. Une égalité de nom produit un **candidat**, jamais une certification d'identité.
+3. `research-portals.mts input.json output-directory [all|known|profiles]` : recherche les liens carrière publiés, langues et portails régionaux compris. Les profils FashionJobs ne sont lus que pour leurs métadonnées d'identité ; leur HTML et leurs offres ne sont pas archivés. Deux recherches simultanées ; preuves datées et hachées ; échecs conservés ; portails de groupe mutualisés durant la passe. Les limites de parcours produisent des liens restant à lire, jamais un verdict d'absence.
+4. `probe-sources.py snapshot.json output-directory --concurrency 2` : exécute le véritable registre d'adaptateurs, un processus par source, avec délai explicite. Les réponses natives sont conservées sous gzip, séparément des reçus synthétiques. `--keys a,b` sélectionne des sources et `--retry` renouvelle les observations. FashionJobs est refusé pour la collecte des offres.
+5. `compose-inventory.py inventory.json output-directory --research dir1 dir2 --probes dir3 dir4` : rapproche les preuves sans écraser les observations précédentes. Les certifications d'identité, activations et preuves front doivent être ajoutées explicitement ; ce rapprochement ne les invente pas.
+6. `location-audit.py receipts-directory output.json` : inventorie les structures RAW de localisations multiples ; ne leur attribue aucun pays par supposition.
+
+## Sens des résultats
+
+- `FETCH_COMPLETE` : l'adaptateur affirme avoir entièrement énuméré **le flux configuré**. Ce résultat doit être accompagné de sa méthode et de ses compteurs. Il ne prouve ni l'identité de l'employeur, ni tous les portails mondiaux, ni la qualité des descriptions.
+- `FETCH_PARTIAL_OR_UNPROVEN` : conserver les offres et examiner le total, les doublons de pagination, les limites et les langues. Aucune fermeture ne doit être décidée à partir d'une énumération incomplète.
+- `FETCH_FAILED` / `PROCESS_TIMEOUT` : échec technique avec action d'investigation. Cela ne signifie pas zéro offre chez l'employeur.
+- Un nom déclaré par un ATS est une preuve à rapprocher de l'identité métier ; le fonctionnement d'un tenant deviné à partir d'un slug n'est pas une preuve d'appartenance.
+
+Les preuves avant/après doivent identifier le commit et les éventuelles différences de code non commitées. Avant application en production, utiliser une version committée, testée et qualifiée, puis la procédure de revue `SourceIdentityReview` et les plans de correction avec conservation des historiques. Aucun script de découverte ne contourne ce contrôle.

@@ -1,0 +1,277 @@
+{
+  "at": "2026-09-09T11:40:36.175Z",
+  "activeSources": 423,
+  "productionRegistryKinds": 43,
+  "legacyValidationKinds": 22,
+  "legacyValidatorMissedSources": [
+    {
+      "key": "acne-studios-jobylon",
+      "kind": "jobylon",
+      "status": "ACTIVE",
+      "lastRunJobs": 31
+    },
+    {
+      "key": "adopt-parfums",
+      "kind": "flatchr",
+      "status": "ACTIVE",
+      "lastRunJobs": 121
+    },
+    {
+      "key": "aeropostale",
+      "kind": "icims",
+      "status": "ACTIVE",
+      "lastRunJobs": 19
+    },
+    {
+      "key": "alberto",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 8
+    },
+    {
+      "key": "attaquer",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 3
+    },
+    {
+      "key": "bash-talents",
+      "kind": "bashtalents",
+      "status": "ACTIVE",
+      "lastRunJobs": 50
+    },
+    {
+      "key": "beauty-success-geodir",
+      "kind": "geodirectory",
+      "status": "ACTIVE",
+      "lastRunJobs": 109
+    },
+    {
+      "key": "beiersdorf",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 100
+    },
+    {
+      "key": "bevilles-jewellers",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 24
+    },
+    {
+      "key": "blackstore",
+      "kind": "jobaffinity-wordpress",
+      "status": "ACTIVE",
+      "lastRunJobs": 48
+    },
+    {
+      "key": "bloomingdales-oracle",
+      "kind": "oraclehcm",
+      "status": "ACTIVE",
+      "lastRunJobs": 779
+    },
+    {
+      "key": "boots",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 1472
+    },
+    {
+      "key": "brown-thomas-taleo",
+      "kind": "taleo",
+      "status": "ACTIVE",
+      "lastRunJobs": 69
+    },
+    {
+      "key": "dr-martens-tf",
+      "kind": "talentfunnel",
+      "status": "ACTIVE",
+      "lastRunJobs": 149
+    },
+    {
+      "key": "end-clothing",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 21
+    },
+    {
+      "key": "fashionjobs",
+      "kind": "fashionjobs",
+      "status": "PAUSED",
+      "lastRunJobs": 286
+    },
+    {
+      "key": "fenwick-volcanic",
+      "kind": "volcanic",
+      "status": "ACTIVE",
+      "lastRunJobs": 31
+    },
+    {
+      "key": "globus",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 22
+    },
+    {
+      "key": "intersport-france",
+      "kind": "jobaffinity-wordpress",
+      "status": "ACTIVE",
+      "lastRunJobs": 930
+    },
+    {
+      "key": "kastner-ohler",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 4
+    },
+    {
+      "key": "lumentee",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 5
+    },
+    {
+      "key": "luxe-talent",
+      "kind": "wordpress",
+      "status": "ACTIVE",
+      "lastRunJobs": 478
+    },
+    {
+      "key": "luxexperience",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 52
+    },
+    {
+      "key": "marc-o-polo",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 15
+    },
+    {
+      "key": "michael-page-france",
+      "kind": "generic-listing",
+      "status": "RETIRED",
+      "lastRunJobs": 1450
+    },
+    {
+      "key": "nocibe-eqwa",
+      "kind": "eqwa",
+      "status": "ACTIVE",
+      "lastRunJobs": 291
+    },
+    {
+      "key": "oniverse",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 20
+    },
+    {
+      "key": "oska",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 7
+    },
+    {
+      "key": "pandora-talenthub",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 1974
+    },
+    {
+      "key": "psycho-bunny",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 10
+    },
+    {
+      "key": "pvh",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 1358
+    },
+    {
+      "key": "rituals",
+      "kind": "rituals",
+      "status": "ACTIVE",
+      "lastRunJobs": 1123
+    },
+    {
+      "key": "riu-paris",
+      "kind": "flatchr",
+      "status": "ACTIVE",
+      "lastRunJobs": 15
+    },
+    {
+      "key": "rivoli-typesense",
+      "kind": "typesense",
+      "status": "ACTIVE",
+      "lastRunJobs": 47
+    },
+    {
+      "key": "selfridges",
+      "kind": "generic-listing",
+      "status": "ACTIVE",
+      "lastRunJobs": 67
+    },
+    {
+      "key": "swatch-group",
+      "kind": "swatchgroup",
+      "status": "ACTIVE",
+      "lastRunJobs": 275
+    },
+    {
+      "key": "tiffany-oracle",
+      "kind": "oraclehcm",
+      "status": "ACTIVE",
+      "lastRunJobs": 422
+    },
+    {
+      "key": "toscane",
+      "kind": "flatchr",
+      "status": "ACTIVE",
+      "lastRunJobs": 20
+    },
+    {
+      "key": "ulta-jibe",
+      "kind": "jibe",
+      "status": "ACTIVE",
+      "lastRunJobs": 9964
+    },
+    {
+      "key": "urbn-hub",
+      "kind": "icims",
+      "status": "ACTIVE",
+      "lastRunJobs": 1354
+    },
+    {
+      "key": "urbn-stores",
+      "kind": "icims",
+      "status": "ACTIVE",
+      "lastRunJobs": 931
+    },
+    {
+      "key": "wttj-sector",
+      "kind": "wttj-sector",
+      "status": "ACTIVE",
+      "lastRunJobs": 1935
+    },
+    {
+      "key": "zegna-altamira",
+      "kind": "altamira",
+      "status": "ACTIVE",
+      "lastRunJobs": 61
+    }
+  ],
+  "labelsLosingAllCharacters": [
+    {
+      "labels": [
+        "国际名品运用于"
+      ],
+      "oldKey": "",
+      "preserved": [
+        "国际名品运用于"
+      ]
+    }
+  ]
+}

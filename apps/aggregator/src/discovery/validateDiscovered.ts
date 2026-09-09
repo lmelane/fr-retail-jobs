@@ -33,10 +33,7 @@ import type { NormalizedJob } from '../types.js';
 const CSV_PATH = fileURLToPath(new URL('../../data/sources.discovered.csv', import.meta.url));
 const OUT_PATH = fileURLToPath(new URL('../../data/discovery.validation.tsv', import.meta.url));
 
-/** Discovery kinds absent from the catalogue map. */
-const EXTRA_KINDS: Record<string, string> = {
-  'generic-listing': 'GENERIC_JSONLD',
-};
+
 
 /** Rows per kind in the default sample — proportional to the real distribution. */
 const STRATA: Record<string, number> = {
@@ -191,7 +188,7 @@ export async function fetchWithOneRetry(type: string, row: Row): Promise<Normali
 }
 
 async function validateOne(row: Row): Promise<Result> {
-  const type = ATS_TYPE[row.kind] ?? EXTRA_KINDS[row.kind];
+  const type = ATS_TYPE[row.kind];
   if (!type) {
     return { row, jobs: 0, withDescription: 0, withLocation: 0, sampleTitles: '', sampleUrl: '', error: `no adapter for kind "${row.kind}"` };
   }
@@ -239,7 +236,7 @@ async function main(): Promise<void> {
   const targets = (onlyKind
     ? rows.filter((row) => row.kind === onlyKind)
     : all
-      ? rows.filter((row) => ATS_TYPE[row.kind] ?? EXTRA_KINDS[row.kind])
+      ? rows
       : sample(rows, seed)
   ).filter((row) => !excluded.has(row.kind));
 

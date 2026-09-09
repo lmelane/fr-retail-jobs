@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { careerCandidates } from './careerLinks.js';
 import type { AtsType } from '@prisma/client';
 import { fetchText } from '../lib/http.js';
 import { canonicalCompanyKey } from '../lib/normalize.js';
@@ -22,6 +23,7 @@ const ATS_HOSTS = [
   'personio.com', 'myworkdayjobs.com', 'teamtailor.com', 'workable.com', 'successfactors.com',
   'welcometothejungle.com',
   'ashbyhq.com', 'pinpointhq.com', 'eightfold.ai', 'avature.net', 'flatchr.io',
+  'icims.com', 'oraclecloud.com', 'taleo.net',
 ];
 
 /**
@@ -115,9 +117,7 @@ const WIDGET_BACKENDS: ReadonlyArray<{
  * vendor name in `note`, so the catalogue records why the line is waiting.
  */
 const UNADAPTED_VENDORS: ReadonlyArray<{ re: RegExp; name: string }> = [
-  { re: /icims\.com|icims\.js|\.icims\b/i, name: 'iCIMS' },
-  { re: /taleo\.net|taleo\.com|\/careersection\//i, name: 'Taleo' },
-  { re: /oraclecloud\.com|\/hcmUI\/CandidateExperience/i, name: 'Oracle HCM' },
+  { re: /\/careersection\//i, name: 'Taleo Enterprise' },
   { re: /dayforcehcm\.com|dayforce\.com\/candidateportal/i, name: 'Dayforce' },
   { re: /csod\.com|cornerstoneondemand\.com/i, name: 'Cornerstone' },
   { re: /pageuppeople\.com/i, name: 'PageUp' },
@@ -160,10 +160,11 @@ function detectWidgetBackend(html: string, pageUrl: URL): AtsDetection | null {
 function detectionFromUrl(rawUrl: string): AtsDetection | null {
   let url: URL;
   try { url = new URL(rawUrl); } catch { return null; }
+  if (!['https:', 'http:'].includes(url.protocol)) return null;
   const host = url.hostname.toLowerCase();
   const parts = url.pathname.split('/').filter(Boolean);
 
-  if (host.endsWith('greenhouse.io')) {
+  if (host === 'greenhouse.io' || host.endsWith('.greenhouse.io')) {
     const board = url.searchParams.get('for') ?? (parts[0] === 'embed' ? undefined : parts[0]);
     if (board) return { type: 'GREENHOUSE', careersUrl: url.toString(), config: { board }, confidence: 1 };
   }
@@ -185,8 +186,28 @@ function detectionFromUrl(rawUrl: string): AtsDetection | null {
   }
   if (host.endsWith('.myworkdayjobs.com')) {
     const tenant = host.split('.')[0];
-    const site = parts[0];
+    const site = /^[a-z]{2}[-_][a-z]{2}$/i.test(parts[0] ?? '') ? parts[1] : parts[0];
     if (tenant && site) return { type: 'WORKDAY', careersUrl: url.toString(), config: { tenant, site, origin: url.origin }, confidence: 1 };
+  }
+  if (host.endsWith('.icims.com')) {
+    return { type: 'ICIMS', careersUrl: url.toString(), config: { origin: url.origin }, confidence: 1 };
+  }
+  if (host.endsWith('.oraclecloud.com')) {
+    const siteIndex = parts.indexOf('sites');
+    const siteNumber = siteIndex >= 0 ? parts[siteIndex + 1] : undefined;
+    if (parts.includes('CandidateExperience') && siteNumber && /^[a-z0-9_-]+$/i.test(siteNumber)) {
+      return { type: 'ORACLE_HCM', careersUrl: url.toString(), config: { origin: url.origin, siteNumber }, confidence: 1 };
+    }
+  }
+  // Business Edition and Enterprise are different protocols. Only TBE is implemented.
+  if (host.endsWith('.tbe.taleo.net')) {
+    const atsIndex = parts.indexOf('ats');
+    const org = url.searchParams.get('org');
+    const cws = url.searchParams.get('cws');
+    if (atsIndex > 0 && org && cws && /^\d+$/.test(cws)) {
+      const origin = `${url.origin}/${parts.slice(0, atsIndex).join('/')}`;
+      return { type: 'TALEO', careersUrl: url.toString(), config: { origin, org, cws: [Number(cws)] }, confidence: 1 };
+    }
   }
   if (host.endsWith('.flatchr.io') && /^[a-z]{2}(?:-[A-Za-z]{2})?$/.test(parts[0] ?? '') &&
       parts[1] === 'company' && /^[a-z0-9-]+$/i.test(parts[2] ?? '')) {
@@ -216,7 +237,7 @@ function detectionFromUrl(rawUrl: string): AtsDetection | null {
   }
   // Welcome to the Jungle (and its Welcomekit embed): the org slug is the segment
   // after /companies/ — welcometothejungle.com/fr/companies/<slug>[/jobs].
-  if (host.endsWith('welcometothejungle.com')) {
+  if (host === 'welcometothejungle.com' || host.endsWith('.welcometothejungle.com')) {
     const i = parts.indexOf('companies');
     const slug = i >= 0 ? parts[i + 1] : undefined;
     if (slug) return { type: 'WTTJ', careersUrl: url.toString(), config: { slug }, confidence: 1 };
@@ -251,39 +272,11 @@ function registrableDomain(hostname: string): string {
  * evidence before activation.
  */
 function findCareersLinks($: cheerio.CheerioAPI, baseUrl: string): string[] {
-  const baseDomain = registrableDomain(new URL(baseUrl).hostname);
-  const scored: { url: string; score: number }[] = [];
-  const seen = new Set<string>();
-  $('a[href]').each((_, el) => {
-    const href = $(el).attr('href');
-    if (!href) return;
-    const anchorText = $(el).text() || '';
-    if (!CAREERS_LINK_RE.test(anchorText + ' ' + href)) return;
-    try {
-      const abs = new URL(href, baseUrl);
-      if (!['http:', 'https:'].includes(abs.protocol)) return;
-      if (/cookie|privacy|confidential|newsletter/i.test(abs.pathname + ' ' + anchorText)) return;
-      // A strong career link can legitimately lead to an external ATS. Discovery
-      // remains a candidate; SourceIdentityReview decides employer ownership.
-      if (registrableDomain(abs.hostname) !== baseDomain &&
-          !/career|carri[eè]re|recrut|rejoindre|join[ -]us|work[ -]with[ -]us|emplois?|jobs?|vacanc|talents?/i.test(anchorText)) return;
-      const clean = abs.toString();
-      if (seen.has(clean)) return;
-      seen.add(clean);
-      // Prefer a careers subdomain (talents./careers./jobs.) and a careers-y
-      // path. A strong anchor text ("nous rejoindre", "careers") also counts.
-      let score = 0;
-      if (/^(talents?|careers?|jobs|recrut|emploi|hr|rh)\./i.test(abs.hostname)) score += 4;
-      if (/\b(career|carriere|carrière|join-us|join us|nous-rejoindre|nous rejoindre|work-with-us|recrut|hiring)\b/i.test(abs.pathname.replace(/[-_/]/g, ' '))) score += 3;
-      if (/\b(jobs?|emplois?|vacanc|opening|positions?)\b/i.test(abs.pathname.replace(/[-_/]/g, ' '))) score += 2;
-      const t = anchorText.replace(/[-_]/g, ' ');
-      if (/\b(carriere|carrière|career|careers|recrut|rejoindre|rejoins|join us|work with us|emploi|talent)\b/i.test(t)) score += 2;
-      // A loose keyword match ALONE (score 0) is a false positive
-      // ("flash-price-drops" matching "drop") — drop it.
-      if (score > 0) scored.push({ url: clean, score });
-    } catch { /* ignore */ }
-  });
-  return scored.sort((a, b) => b.score - a.score).slice(0, 3).map((s) => s.url);
+  return careerCandidates($.html(), baseUrl).map(link => {
+    const url = new URL(link.to);
+    const score = /^(talents?|careers?|jobs|recrut|emploi|hr|rh)\./i.test(url.hostname) ? 2 : 1;
+    return { url: link.to, score };
+  }).sort((a,b) => b.score-a.score).slice(0,3).map(link=>link.url);
 }
 
 /**
@@ -354,22 +347,34 @@ function findFeedUrl(html: string, baseUrl: string): string | undefined {
 
 /** Every ATS link referenced anywhere in a page's HTML. */
 function atsLinksInHtml(html: string, baseUrl: string): string[] {
-  const $ = cheerio.load(html);
+  const $ = cheerio.load(html, { scriptingEnabled: false });
   const candidates = new Set<string>();
   $('a[href], iframe[src], script[src]').each((_, el) => {
     const raw = $(el).attr('href') ?? $(el).attr('src');
     if (!raw) return;
     try {
       const absolute = new URL(raw, baseUrl).toString();
-      if (ATS_HOSTS.some((host) => new URL(absolute).hostname.includes(host))) candidates.add(absolute);
+      if (ATS_HOSTS.some((host) => (new URL(absolute).hostname === host || new URL(absolute).hostname.endsWith(`.${host}`)))) candidates.add(absolute);
     } catch { /* ignore */ }
   });
   for (const embedded of html.match(/https?:\/\/[^\s\"'<>]+/g) ?? []) {
     try {
-      if (ATS_HOSTS.some((host) => new URL(embedded).hostname.includes(host))) candidates.add(embedded);
+      if (ATS_HOSTS.some((host) => (new URL(embedded).hostname === host || new URL(embedded).hostname.endsWith(`.${host}`)))) candidates.add(embedded);
     } catch { /* ignore */ }
   }
   return [...candidates];
+}
+
+/** All configured ATS candidates, preserving secondary brands/regions for qualification.
+ * A candidate identifies a protocol, not employer ownership or worldwide completeness.
+ */
+export function detectAllLinkedAts(html: string, rawUrl: string): AtsDetection[] {
+  const found = new Map<string, AtsDetection>();
+  for (const candidate of [rawUrl, ...atsLinksInHtml(html, rawUrl)]) {
+    const detected = detectionFromUrl(candidate);
+    if (detected) found.set(`${detected.type}:${JSON.stringify(detected.config)}`, detected);
+  }
+  return [...found.values()];
 }
 
 /**
@@ -383,7 +388,7 @@ export function detectFromHtml(html: string, rawUrl: string): AtsDetection | nul
   try { pageUrl = new URL(rawUrl); } catch { return null; }
   if (pageUrl.hostname.endsWith('.flatchr.io')) {
     try {
-      const payload = JSON.parse(cheerio.load(html)('#__NEXT_DATA__').text());
+      const payload = JSON.parse(cheerio.load(html, { scriptingEnabled: false })('#__NEXT_DATA__').text());
       const base = payload.props?.baseUrlPath;
       const slug = payload.query?.companySlug;
       if (payload.page === '/company/[companySlug]' && /^\/[a-z]{2}\/company$/.test(base ?? '') &&
@@ -488,7 +493,7 @@ export function detectFromHtml(html: string, rawUrl: string): AtsDetection | nul
  * anchor scan misses). Deduped, anchor hits first.
  */
 export function careersLinksInHtml(html: string, baseUrl: string): string[] {
-  const anchors = findCareersLinks(cheerio.load(html), baseUrl);
+  const anchors = findCareersLinks(cheerio.load(html, { scriptingEnabled: false }), baseUrl);
   const raw = careersSubdomainUrlsInHtml(html, baseUrl);
   return [...new Set([...anchors, ...raw])].slice(0, 4);
 }

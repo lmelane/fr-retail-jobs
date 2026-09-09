@@ -5,21 +5,22 @@ import { applyRepairPlan, digest, type RepairPlan } from './plan.js';
 import { planOracleRepair } from './oracle.js';
 import { planSmcpRepair } from './smcp.js';
 import { planExcludedIdentities } from './identities.js';
+import { planReviewedPortalOwners } from './portalOwner.js';
 import { planSourceOwners } from './owners.js';
 
 const prisma = new PrismaClient();
 const [command, ...args] = process.argv.slice(2);
 const arg = (name: string) => { const i = args.indexOf(name); if (i < 0 || !args[i + 1]) throw new Error(`Missing ${name}`); return args[i + 1]; };
 try {
-  if (command === 'plan-oracle' || command === 'plan-smcp' || command === 'plan-identities' || command === 'plan-homonyms' || command === 'plan-owners') {
-    const plan = command === 'plan-oracle'
+  if (command === 'plan-oracle' || command === 'plan-smcp' || command === 'plan-identities' || command === 'plan-homonyms' || command === 'plan-owners' || command === 'plan-portal-owners') {
+    const plan = command === 'plan-portal-owners' ? await planReviewedPortalOwners(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8'))) : command === 'plan-oracle'
       ? await planOracleRepair(prisma, JSON.parse(readFileSync(arg('--evidence'), 'utf8')))
       : command === 'plan-smcp' ? await planSmcpRepair(prisma)
       : command === 'plan-owners' ? await planSourceOwners(prisma)
       : command === 'plan-homonyms' ? await planExcludedIdentities(prisma, JSON.parse(readFileSync(arg('--definitions'), 'utf8')), arg('--batch'))
       : await planExcludedIdentities(prisma);
     writeFileSync(arg('--out'), JSON.stringify(plan, null, 2), { mode: 0o600 });
-    console.log(JSON.stringify({ batchId: plan.batchId, hash: digest(plan), operations: plan.operations.length, evidence: plan.evidence }, null, 2));
+    console.log(JSON.stringify({ batchId: plan.batchId, hash: digest(plan), operations: plan.operations.length, sourceKeys: plan.sourceKeys, finding: plan.finding }, null, 2));
   } else if (command === 'apply') {
     const plan: RepairPlan = JSON.parse(readFileSync(arg('--plan'), 'utf8'));
     const commit = arg('--commit');

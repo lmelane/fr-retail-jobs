@@ -13,7 +13,7 @@ import { fetchAshbyJobs } from './adapters/ashby.js';
 import { fetchWorkableJobs } from './adapters/workable.js';
 import { fetchWttjJobs } from './adapters/wttj.js';
 import { fetchWttjSectorJobs } from './adapters/wttjSector.js';
-import { fetchSuccessFactorsJobs } from './adapters/successfactors.js';
+import { fetchSuccessFactorsResult } from './adapters/successfactors.js';
 import { fetchPhenomJobs } from './adapters/phenom.js';
 import { fetchDigitalRecruitersJobs } from './adapters/digitalrecruiters.js';
 import { fetchTalentsoftJobs } from './adapters/talentsoft.js';
@@ -92,7 +92,7 @@ export const ADAPTERS: Record<string, (config: Record<string, unknown>) => Promi
   // `organizations`) : même AtsType, même identité d'offre, deux lectures.
   WTTJ: (config) =>
     config.sectors || config.parentSectors || config.organizations ? fetchWttjSectorJobs(config) : fetchWttjJobs(config),
-  SUCCESSFACTORS: fetchSuccessFactorsJobs,
+  SUCCESSFACTORS: fetchSuccessFactorsResult,
   PHENOM: fetchPhenomJobs,
   DIGITALRECRUITERS: fetchDigitalRecruitersJobs,
   TALENTSOFT: fetchTalentsoftJobs,

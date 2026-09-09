@@ -1,0 +1,31 @@
+[
+  {
+    "url": "https://hub-urbn.icims.com/jobs/search",
+    "before": null,
+    "unadaptedLabel": "iCIMS"
+  },
+  {
+    "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/jobs",
+    "before": null,
+    "unadaptedLabel": "Oracle HCM"
+  },
+  {
+    "url": "https://capri.wd1.myworkdayjobs.com/en-US/Michael_Kors",
+    "before": {
+      "type": "WORKDAY",
+      "careersUrl": "https://capri.wd1.myworkdayjobs.com/en-US/Michael_Kors",
+      "config": {
+        "tenant": "capri",
+        "site": "en-US",
+        "origin": "https://capri.wd1.myworkdayjobs.com"
+      },
+      "confidence": 1
+    },
+    "unadaptedLabel": null
+  },
+  {
+    "url": "https://lde.tbe.taleo.net/lde02/ats/careers/v2/searchResults?org=ARNOTTS&cws=41",
+    "before": null,
+    "unadaptedLabel": "Taleo"
+  }
+]

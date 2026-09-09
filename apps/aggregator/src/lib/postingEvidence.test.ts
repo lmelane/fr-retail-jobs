@@ -40,3 +40,14 @@ describe('source publication evidence',()=>{
   expect(job.externalId).toBe('123');expect(job.postedAt?.toISOString()).toBe(posting.datePosted);
  });
 });
+
+
+it('enriches missing geography only from one explicit job location, preserving supplied fields',()=>{
+ const place={address:{addressCountry:'DE',addressLocality:'Berlin',postalCode:'10243'}};
+ const one=enrichPostingEvidence({externalId:'123',title:'Advisor',url,raw:{}},html({...posting,jobLocation:place}));
+ expect(one).toMatchObject({country:'DE',city:'Berlin',postalCode:'10243'});
+ const multiple=enrichPostingEvidence({externalId:'123',title:'Advisor',url,raw:{}},html({...posting,jobLocation:[place,{address:{addressCountry:'FR',addressLocality:'Paris'}}]}));
+ expect(multiple.country).toBeUndefined();expect(multiple.city).toBeUndefined();
+ const supplied=enrichPostingEvidence({externalId:'123',title:'Advisor',url,country:'FR',raw:{}},html({...posting,jobLocation:place}));
+ expect(supplied.country).toBe('FR');expect(supplied.city).toBeUndefined();expect(supplied.raw).toMatchObject({postingEvidence:{jobPosting:{jobLocation:place}}});
+});

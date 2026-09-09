@@ -26,6 +26,7 @@
     "p-limit": "^7.1.1",
     "playwright": "1.62.1",
     "tldts": "^7.4.11",
+    "tough-cookie": "6.0.2",
     "undici": "^7.29.0"
   },
   "devDependencies": {

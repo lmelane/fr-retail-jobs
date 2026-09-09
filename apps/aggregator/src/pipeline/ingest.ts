@@ -1,3 +1,4 @@
+import { KIND_TO_ATS } from '../ats/catalogKinds.js';
 import { loadOccupationTaxonomy, type CompiledOccupationTaxonomy } from '@catwalks/db/occupations';
 import { log } from '../observability/logger.js';
 import { archivePublicationHold } from './publicationHold.js';
@@ -221,58 +222,8 @@ export function toCandidate(
 
 
 /** Catalogue `kind` -> the dispatcher's AtsType. */
-export const KIND_TO_ATS: Record<string, string> = {
-  successfactors: 'SUCCESSFACTORS',
-  avature: 'AVATURE',
-  eightfold: 'EIGHTFOLD',
-  wttj: 'WTTJ',
-  /**
-   * Balayage sectoriel WTTJ (w1, 2026-09-06) : même AtsType que `wttj` pour
-   * que la même offre lue par les deux chemins soit UNE identité
-   * (companyId, WTTJ, externalId) — l'adaptateur branche sur la config.
-   */
-  'wttj-sector': 'WTTJ',
-  workday: 'WORKDAY',
-  magnet: 'MAGNET',
-  teamtailor: 'TEAMTAILOR',
-  'smartrecruiters-whitelabel': 'SMARTRECRUITERS',
-  workable: 'WORKABLE',
-  talentview: 'TALENTVIEW',
-  phenom: 'PHENOM',
-  recruitee: 'RECRUITEE',
-  lvmh_algolia: 'LVMH_ALGOLIA',
-  ashby: 'ASHBY',
-  lever: 'LEVER',
-  pinpoint: 'PINPOINT',
-  greenhouse: 'GREENHOUSE',
-  gestmax: 'GENERIC_JSONLD',
-  radancy: 'GENERIC_JSONLD',
-  digitalrecruiters: 'DIGITALRECRUITERS',
-  talentsoft: 'TALENTSOFT',
-  personio: 'PERSONIO',
-  eightfold_kering: 'EIGHTFOLD',
-  wordpress: 'WORDPRESS',
-  fashionjobs: 'FASHIONJOBS',
-  'generic-listing': 'GENERIC_JSONLD',
-  oraclehcm: 'ORACLE_HCM',
-  taleo: 'TALEO',
-  altamira: 'ALTAMIRA',
-  jobylon: 'JOBYLON',
-  rituals: 'RITUALS',
-  talentfunnel: 'TALENT_FUNNEL',
-  bashtalents: 'BASH_TALENTS',
-  eqwa: 'EQWA',
-  geodirectory: 'GEODIRECTORY',
-  typesense: 'TYPESENSE',
-  jibe: 'JIBE',
-  volcanic: 'VOLCANIC',
-  // iCIMS : adaptateur et dispatch existaient, le kind manquait ici — URBN (1 329 + 906) et
-  // Aéropostale (17) ACTIVE n'ont jamais tourné, sans aucun signal (audit A2, 2026-09-06).
-  icims: 'ICIMS',
-  swatchgroup: 'SWATCH_GROUP',
-  flatchr: 'FLATCHR',
-  'jobaffinity-wordpress': 'JOBAFFINITY_WORDPRESS',
-};
+export { KIND_TO_ATS } from '../ats/catalogKinds.js';
+
 
 /**
  * One API-backed catalogue feed: one listing call, then the write-time dedup.
@@ -332,7 +283,19 @@ async function ingestApiSource(
   stats.occupationReleaseId = occupationTaxonomy.manifest.id;
   stats.occupationStatuses = {};
   stats.occupationReleases = {};
-  const { jobs, declaredTotal, truncated, complete } = await fetchAtsJobs(type as never, config);
+  const { jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = await fetchAtsJobs(type as never, config);
+  // One durable source-level event retains the reason behind completeness.
+  // The operational logger stores large proofs in PipelineEvent and prints
+  // only a bounded envelope, preserving the Lot 0 console-rate guarantees.
+  await log.info('source.enumeration_observed', {
+    sourceKey: stats.source, complete: complete ?? null, declaredTotal: declaredTotal ?? null,
+    fetched: jobs.length, truncated: truncated ?? null,
+    enumeration: enumeration ?? null,
+    evidenceStatus: enumeration ? 'RECORDED' : 'ADAPTER_ENUMERATION_EVIDENCE_NOT_IMPLEMENTED',
+  });
+  if (rejectedRows?.length) {
+    await log.warn('source.rows_rejected', { sourceKey: stats.source, count: rejectedRows.length, rejectedRows });
+  }
   stats.complete = complete;
   stats.declaredTotal = declaredTotal;
   stats.truncated = truncated;

@@ -15,6 +15,7 @@ export type Operation = { entity: Entity; id: string; before: Row | null; patch:
 export type RepairPlan = {
   version: 1; batchId: string; finding: string; createdAt: string;
   sourceKeys: string[]; companyIds: string[]; operations: Operation[];
+  reviewDocument?: { statement: string; evidence: Array<{ url: string; artifactText: string; sha256: string; explanation: string }>; reviewedBy: string; reviewedAt: string };
   evidence: Row; invariants: ('oracle' | 'lifecycle' | 'smcp' | 'excluded-identities' | 'source-owners' | 'france-filter')[];
   excludedSourceKeys?: string[];
   ownerRules?: { sourceKey: string; name: string; departmentMap?: Record<string, string> }[];
@@ -130,6 +131,7 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
     const existing = await tx.dataCorrection.findMany({ where: { batchId: plan.batchId }, select: { planHash: true } });
     if (existing.length) {
       if (existing.length !== plan.operations.length || existing.some(r => r.planHash !== hash)) throw new Error('Correction batch evidence mismatch');
+      if (plan.reviewDocument && (await tx.employerIdentityReview.findUnique({ where: { id: plan.batchId } }))?.planHash !== hash) throw new Error('Shared review document mismatch');
       return { alreadyApplied: true, written: 0, ...await verifyRepair(tx, plan.invariants, plan.excludedSourceKeys, plan.ownerRules) };
     }
     // Validate ALL rows before any write, including rows introduced by the plan.
@@ -153,6 +155,15 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
     // already checked and the entire transaction still rolls back on failure.
     const identityOnly = plan.operations.filter(o => o.entity === 'Job' && Object.keys(o.patch).sort().join(',') === 'clusterKey,companyId,fingerprint' && Object.values(o.patch).every(v => typeof v === 'string'));
     const identityIds = new Set(identityOnly.map(o => o.id));
+    if (plan.reviewDocument) {
+      const doc = plan.reviewDocument;
+      if (!doc.statement || !doc.reviewedBy || !Number.isFinite(Date.parse(doc.reviewedAt)) || !doc.evidence.length || doc.evidence.some(e => !e.url.startsWith('https://') || !e.explanation || !e.artifactText || createHash('sha256').update(e.artifactText).digest('hex') !== e.sha256)) throw new Error('Invalid shared review document');
+      // One immutable document per decision; every row points to this review.
+      // Never duplicate archived HTML across hundreds of correction records.
+      await tx.employerIdentityReview.create({ data: { id: plan.batchId, statement: doc.statement,
+        evidence: json(doc.evidence) as Prisma.InputJsonValue, planHash: hash,
+        reviewedBy: doc.reviewedBy, reviewedAt: new Date(doc.reviewedAt) } });
+    }
     for (const op of plan.operations) if (op.entity !== 'Job' || !identityIds.has(op.id)) await write(tx, op);
     for (let offset = 0; offset < identityOnly.length; offset += 500) {
       const updates = JSON.stringify(identityOnly.slice(offset, offset + 500).map(o => ({ id: o.id, ...o.patch })));

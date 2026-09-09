@@ -1,0 +1,117 @@
+{
+  "archivedPagesRead": 2670,
+  "additionalLinkObservations": 3457,
+  "affectedSubjects": 244,
+  "meaning": "Multilingual candidate links, including regional versions of already known portals; not new validated sources.",
+  "examples": [
+    {
+      "id": "fj-35d8c7052a4ffd109bfe",
+      "name": "A.P.C",
+      "page": "https://www.apcstore.de/pages/bewerbung/",
+      "hash": "62795c001c125118cc7884322e528a7aebfd01ef00d670009522278e48e0a029",
+      "from": "https://www.apcstore.de/pages/bewerbung/",
+      "to": "https://www.apc.fr/pages/bewerbung",
+      "label": "Bewerbung"
+    },
+    {
+      "id": "fj-35d8c7052a4ffd109bfe",
+      "name": "A.P.C",
+      "page": "https://www.apcstore.de/pages/bewerbung/",
+      "hash": "62795c001c125118cc7884322e528a7aebfd01ef00d670009522278e48e0a029",
+      "from": "https://www.apcstore.de/pages/bewerbung/",
+      "to": "https://www.apcstore.com/pages/bewerbung",
+      "label": "Bewerbung"
+    },
+    {
+      "id": "fj-35d8c7052a4ffd109bfe",
+      "name": "A.P.C",
+      "page": "https://www.apcstore.de/pages/bewerbung/",
+      "hash": "62795c001c125118cc7884322e528a7aebfd01ef00d670009522278e48e0a029",
+      "from": "https://www.apcstore.de/pages/bewerbung/",
+      "to": "https://www.apcstore.de/pages/bewerbung",
+      "label": "Beitreten"
+    },
+    {
+      "id": "fj-35d8c7052a4ffd109bfe",
+      "name": "A.P.C",
+      "page": "https://www.apcstore.de/pages/bewerbung/",
+      "hash": "62795c001c125118cc7884322e528a7aebfd01ef00d670009522278e48e0a029",
+      "from": "https://www.apcstore.de/pages/bewerbung/",
+      "to": "https://www.apcstore.co.uk/pages/bewerbung",
+      "label": "Bewerbung"
+    },
+    {
+      "id": "fj-35d8c7052a4ffd109bfe",
+      "name": "A.P.C",
+      "page": "https://www.apcstore.de/pages/bewerbung/",
+      "hash": "62795c001c125118cc7884322e528a7aebfd01ef00d670009522278e48e0a029",
+      "from": "https://www.apcstore.de/pages/bewerbung/",
+      "to": "https://www.apcstore.dk/pages/bewerbung",
+      "label": "Bewerbung"
+    },
+    {
+      "id": "fj-66b2b02747b3553029a5",
+      "name": "ALOHAS",
+      "page": "https://careers.alohas.com/connect/login",
+      "hash": "5317cdb0d7a3d1104f976e0bf90c08ca1701839422675c574874aa843d0a613f",
+      "from": "https://careers.alohas.com/connect/login",
+      "to": "https://careers.alohas.com/",
+      "label": "Go to career site"
+    },
+    {
+      "id": "fj-7622dc67bbd102da6285",
+      "name": "AMERICAN VINTAGE",
+      "page": "https://careers.am-vintage.com/de",
+      "hash": "253b9cdd3f3f0d3745764c745fac1ef31150840bdc8194df33ccfcb64d9ceca6",
+      "from": "https://careers.am-vintage.com/de",
+      "to": "https://careers.am-vintage.com/de/annonces",
+      "label": "Unsere Stellenangebote"
+    },
+    {
+      "id": "fj-7622dc67bbd102da6285",
+      "name": "AMERICAN VINTAGE",
+      "page": "https://careers.am-vintage.com/nl",
+      "hash": "c2aa9ce09c8f2c98411978fb51b4f23d162c994e6a0966b696670bc73618810d",
+      "from": "https://careers.am-vintage.com/nl",
+      "to": "https://careers.am-vintage.com/nl/annonces",
+      "label": "Onze vacatures"
+    },
+    {
+      "id": "fj-7622dc67bbd102da6285",
+      "name": "AMERICAN VINTAGE",
+      "page": "https://careers.am-vintage.com/es",
+      "hash": "845f11068719fc9c9eadbbf9fdbae5127cd1d69b0833f460f1296ef729ef1132",
+      "from": "https://careers.am-vintage.com/es",
+      "to": "https://careers.am-vintage.com/es/annonces",
+      "label": "Nuestras ofertas de empleo"
+    },
+    {
+      "id": "fj-7622dc67bbd102da6285",
+      "name": "AMERICAN VINTAGE",
+      "page": "https://careers.am-vintage.com/it",
+      "hash": "c769940f7a094d2c3cf8c6b9b24a3b4b946bb1c794bd34a65cfecd0b791dc2c1",
+      "from": "https://careers.am-vintage.com/it",
+      "to": "https://careers.am-vintage.com/it/annonces",
+      "label": "Le nostre offerte di lavoro"
+    },
+    {
+      "id": "fj-3e14cf092aad6bf06fb1",
+      "name": "AZZEDINE ALAIA",
+      "page": "https://careers.richemont.com/en/jobs/",
+      "hash": "109b67d56adf29facf91c07114f31307951843d86f72b547ddc876dd42ebd894",
+      "from": "https://careers.richemont.com/en/jobs/",
+      "to": "https://careers.richemont.com/it/opportunita-di-lavoro/",
+      "label": "italiano"
+    },
+    {
+      "id": "fj-3e14cf092aad6bf06fb1",
+      "name": "AZZEDINE ALAIA",
+      "page": "https://careers.richemont.com/en/jobs/",
+      "hash": "109b67d56adf29facf91c07114f31307951843d86f72b547ddc876dd42ebd894",
+      "from": "https://careers.richemont.com/en/jobs/",
+      "to": "https://careers.richemont.com/ko/%EC%A0%84%EC%B2%B4-%EC%B1%84%EC%9A%A9-%EA%B3%B5%EA%B3%A0/",
+      "label": "한국어"
+    }
+  ],
+  "sourceWritten": false
+}
