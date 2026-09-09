@@ -180,6 +180,20 @@ describe('runSnapshot — le jour même (live)', () => {
 });
 
 describe('runSnapshot — backfill (reconstruction)', () => {
+  it('an absorbed ID creates neither an opening nor a synthetic closure in reconstructed or live facts', async () => {
+    const c = await prisma.company.create({ data: { name: 'Canonical retailer', canonicalKey: 'retailer', fashionjobsUrl: 'resolved:retailer' } });
+    const target = await prisma.job.create({ data: {
+      companyId: c.id, externalId: 'root', source: 'GENERIC_JSONLD', title: 'Vendeur', url: 'https://x/root', fingerprint: 'root',
+      firstSeenAt: daysAgo(10), lastSeenAt: NOW, isActive: true, countryCode: 'FR',
+    } });
+    await prisma.job.create({ data: {
+      companyId: c.id, externalId: 'alias', source: 'GENERIC_JSONLD', title: 'Vendeur', url: 'https://x/alias', fingerprint: 'alias',
+      firstSeenAt: daysAgo(2), lastSeenAt: daysAgo(1), isActive: false, closedAt: null, countryCode: 'FR', mergedIntoId: target.id,
+      events: { create: { type: 'MERGED', field: 'mergedInto', after: target.id, at: NOW } },
+    } });
+    await runSnapshot(prisma, { now: NOW, backfillFrom: daysAgo(3) });
+    for (let ago = 0; ago <= 3; ago++) expect(await row('global', '', dayBounds(daysAgo(ago)).day)).toMatchObject({ activeJobs: 1, newJobs: 0, closedJobs: 0 });
+  });
   it('reconstruit chaque jour passé depuis firstSeenAt / closedAt, et prend le jour même en live', async () => {
     await scenario();
     const stats = await runSnapshot(prisma, { now: NOW, backfillFrom: daysAgo(3) });

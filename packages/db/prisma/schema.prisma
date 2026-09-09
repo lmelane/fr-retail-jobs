@@ -588,6 +588,7 @@ model DataCorrection {
 
   @@unique([batchId, entityType, entityId])
   @@index([entityType, entityId])
+  @@index([createdAt, id])
 }
 
 model JobEvent {

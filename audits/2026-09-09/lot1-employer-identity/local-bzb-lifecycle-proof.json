@@ -1,0 +1,14 @@
+{
+  "environment": "restored production copy after reviewed consolidation",
+  "at": "2026-09-09T07:49:02.978Z",
+  "oldInvariantFalsePositives": 22,
+  "canonicalLifecycle": {
+    "lifecycleViolations": 0
+  },
+  "bzb": {
+    "preservedRecords": 47,
+    "canonicalRecords": 24,
+    "oldClosedCount": 3,
+    "canonicalClosedCount": 2
+  }
+}

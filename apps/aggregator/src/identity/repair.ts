@@ -93,6 +93,8 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
     const before = await snapshot(tx, plan.companyIds);
     if (digest(before) !== plan.beforeHash) throw new Error('Employer data changed since planning; rebuild and review');
     const companies = new Map(before.companies.map(c => [c.id, c]));
+    const jobsById = new Map(before.jobs.map(j => [j.id, j]));
+    const sourcesById = new Map(before.jobs.flatMap(j => j.sources.map(s => [s.id, s] as const)));
     const moves = new Map(plan.merges.map(m => [m.fromId, m.toId]));
     for (const m of plan.merges) {
       if (companies.get(m.fromId)?.mergedIntoId || companies.get(m.toId)?.mergedIntoId) throw new Error('Merge must join current roots');
@@ -120,7 +122,20 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
         if ((moves.get(current) ?? current) !== a.companyId) throw new Error(`Conflicting alias: ${a.sourceKey}/${a.rawName}`);
       }
     }
-    await tx.employerIdentityReview.create({ data: { id: plan.batchId, statement: plan.statement, evidence: json(plan.evidence) as Prisma.InputJsonValue, planHash, reviewedBy: plan.reviewedBy, reviewedAt: new Date(plan.reviewedAt) } });
+    // Native witnesses must survive the next source refresh, including legacy
+    // representations that predate SourceObservation. Archive the exact reviewed
+    // snapshot in the immutable review, not merely a pointer to mutable RAW.
+    const nativeWitnesses = new Map<string, (typeof plan.evidence)[number]>();
+    for (const decision of postingMerges) for (const witness of decision.witnesses) {
+      const source = sourcesById.get(witness.sourceId)!;
+      const artifactText = stable(json(source));
+      if (!source.url.startsWith('https://')) throw new Error(`Posting witness needs an HTTPS evidence URL: ${source.id}`);
+      nativeWitnesses.set(source.id, {
+        url: source.url, artifactText, sha256: createHash('sha256').update(artifactText).digest('hex'),
+        explanation: `Archived pre-correction representation ${source.id}; source=${source.sourceKey}; externalId=${source.externalId}; issuerPath=${witness.issuerPath.join('.')}; postingIdPath=${witness.postingIdPath.join('.')}. This preserves the stored evidence, not a new source attestation.`,
+      });
+    }
+    await tx.employerIdentityReview.create({ data: { id: plan.batchId, statement: plan.statement, evidence: json([...plan.evidence, ...nativeWitnesses.values()]) as Prisma.InputJsonValue, planHash, reviewedBy: plan.reviewedBy, reviewedAt: new Date(plan.reviewedAt) } });
     let movedJobs = 0;
     for (const job of before.jobs) {
       const companyId = moves.get(job.companyId);
@@ -135,7 +150,7 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
       movedJobs++;
     }
     for (const decision of postingMerges) {
-      const from = before.jobs.find(j => j.id === decision.fromId)!;
+      const from = jobsById.get(decision.fromId)!;
       // One keeper can absorb several reviewed duplicates. Read its current
       // lifecycle to preserve the union of observations through this transaction.
       const to = await tx.job.findUniqueOrThrow({ where: { id: decision.toId }, omit: { searchText: true } });
@@ -201,7 +216,9 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
     }
     const after = await snapshot(tx, plan.companyIds);
     const expected = new Map(before.jobs.map(j => [j.id, { ...j, sources: [...j.sources], events: [...j.events] }]));
-    for (const [fromId, toId] of moves) for (const j of expected.values()) if (j.companyId === fromId) {
+    for (const j of expected.values()) {
+      const toId = moves.get(j.companyId);
+      if (!toId) continue;
       j.companyId = toId;
       const rekey = (v: string | null) => v === null ? null : v.includes('|') ? companies.get(toId)!.canonicalKey + v.slice(v.indexOf('|')) : v;
       j.clusterKey = rekey(j.clusterKey); j.fingerprint = rekey(j.fingerprint)!;
