@@ -1,0 +1,58 @@
+{
+  "at": "2026-09-09T16:32:48.068748+00:00",
+  "applicationCommit": "acab2ba",
+  "applicationMerge": "68cbc4a15474f770a28928ae884bffe023157aa9",
+  "nativeRunId": "3cda97b7-0ef3-4c5b-91ca-5579ea8daa66",
+  "deploymentId": "23437347-535a-4446-81a4-11224c01cdce",
+  "startedAt": "2026-09-09T16:25:35.091Z",
+  "finishedAt": "2026-09-09T16:25:51.169Z",
+  "status": "COMPLETED",
+  "stats": {
+    "errors": 0,
+    "france": 0,
+    "merged": 0,
+    "source": "lindex-easycruit",
+    "created": 41,
+    "fetched": 41,
+    "updated": 0,
+    "withUrl": 41,
+    "complete": true,
+    "inSector": 41,
+    "withDate": 0,
+    "truncated": false,
+    "withCountry": 41,
+    "declaredTotal": null,
+    "withDescription": 41,
+    "occupationReleases": {
+      "catwalks-occupations-20260909-v1": 41
+    },
+    "occupationStatuses": {
+      "NO_RULE": 18,
+      "CLASSIFIED": 1,
+      "FAMILY_ONLY": 22
+    },
+    "occupationReleaseId": "catwalks-occupations-20260909-v1"
+  },
+  "nativeIdsMatchProduction": true,
+  "activeNativePostings": 41,
+  "enumeration": {
+    "fetched": 41,
+    "complete": true,
+    "truncated": false,
+    "declaredTotal": null,
+    "rawCount": 41,
+    "method": "DOCUMENTED_COMPLETE_XML_FEED_AND_DETAILS",
+    "listSha256": "fa14a3d54f29ba3949b938752fd01c4c73239e63d14dcd5cb7cda1fc93b6fca3"
+  },
+  "logProof": {
+    "railwayLines": 12,
+    "maxLinesPerSecond": 7,
+    "droppedMessageWarnings": 0,
+    "durableEvents": 11,
+    "persistenceFailures": 0
+  },
+  "globalWorkersRemainPaused": true,
+  "source": "lindex-easycruit",
+  "retiredSource": "lindex",
+  "remaining": "EasyCruit publishes no publication date: JobPosting markup is not emitted for these postings (no invented datePosted). One posting whose title says Vikariat while the structured field says Fast stays without employmentTerm (contradiction, insufficient trust evidence)."
+}

@@ -1,0 +1,57 @@
+{
+  "at": "2026-09-09T16:33:46.407Z",
+  "environment": "PRODUCTION",
+  "results": [
+    {
+      "url": "/api/jobs?maison=Lindex",
+      "status": 200,
+      "total": 41,
+      "pages": 2,
+      "idsMatched": true
+    },
+    {
+      "url": "/api/jobs?maison=Lindex&pays=NO",
+      "status": 200,
+      "total": 20,
+      "pages": 1,
+      "idsMatched": true
+    },
+    {
+      "url": "/api/jobs?maison=Lindex&pays=FR",
+      "status": 200,
+      "total": 0,
+      "pages": 1,
+      "idsMatched": true
+    },
+    {
+      "url": "/api/jobs?maison=Lindex&pays=CZ",
+      "status": 200,
+      "total": 3,
+      "pages": 1,
+      "idsMatched": true
+    },
+    {
+      "url": "/api/jobs?maison=Lindex&secteur=FASHION",
+      "status": 200,
+      "total": 41,
+      "pages": 2,
+      "idsMatched": true
+    }
+  ],
+  "companyPage": {
+    "path": "/entreprise/lindex",
+    "httpStatus": 200,
+    "offersShown": 41
+  },
+  "freshPosting": {
+    "id": "cmtub8dmq0003o20115yajcz4",
+    "httpStatus": 200,
+    "jobPosting": false,
+    "reason": "EasyCruit publishes no publication date; no datePosted is invented"
+  },
+  "withdrawn": {
+    "id": "cmtlyg3f101h9qf5k5xixoyd8",
+    "httpStatus": 410,
+    "jobPosting": false
+  }
+}

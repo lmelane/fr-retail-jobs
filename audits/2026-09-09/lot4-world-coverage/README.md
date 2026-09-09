@@ -99,3 +99,7 @@ La qualification des autres homonymes, des portails manquants et des flux incomp
 ## Nouveau point de contrôle — Talent Recruiter / GANNI
 
 Voir [le diagnostic, la correction et les preuves sur copie fraîche](talent-recruiter-ganni.md). La première passe automatisée porte désormais sur les 1 653 acteurs ; 278 candidats ATS et 98 ensembles de liens carrière restent à qualifier. Les 1 277 autres lignes nécessitent encore une recherche de site officiel ou de portail. Ces états de discovery ne remplacent pas les preuves d’identité et d’activation.
+
+## Nouveau point de contrôle — EasyCruit / Lindex (reprise du 9 septembre, soir)
+
+Voir [le diagnostic, la correction et les preuves de production](easycruit-lindex.md). Faux tenant Teamtailor retiré (7 annonces de démonstration, RAW et identifiants conservés), source officielle EasyCruit qualifiée et ingérée en production (41 postes, 0 France), deux corrections universelles trouvées en la mesurant : variantes officielles de pays CLDR et vocabulaire d'emploi nordique/balte/tchèque. Production après : 77 447 offres, 74 198 actives, 10 957 France ; workers toujours en pause. Sport 1, OTB, Aptar, Personio/Jako/KENT, les 115 investigations interrompues et les 38 dossiers de complétude restent à traiter.
