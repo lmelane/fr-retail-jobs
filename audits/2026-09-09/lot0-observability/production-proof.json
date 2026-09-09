@@ -1,0 +1,303 @@
+{
+  "asOf": "2026-09-09T05:56:47.641Z",
+  "activeJobs": 74113,
+  "runs": [
+    {
+      "runId": "dd2d7441-f6f5-4e09-9cc2-93f891d40a61",
+      "command": "ingest-all-bounded-validation",
+      "revision": "817ed7d6dcdb7a93aa959d32b8de5ad7cb0fd29e",
+      "startedAt": "2026-09-09T05:56:04.336Z",
+      "finishedAt": "2026-09-09T05:56:13.637Z",
+      "status": "COMPLETED",
+      "metrics": {
+        "byEvent": {
+          "run.started": 1,
+          "run.completed": 1,
+          "ingest.completed": 1,
+          "source_sync_started": 3,
+          "job.publication_held": 6,
+          "run.sources_selected": 1,
+          "run.sources_completed": 1,
+          "source_sync_completed": 3,
+          "ingest.sources_selected": 3,
+          "source.ingest_completed": 3
+        },
+        "printed": 19,
+        "counters": {
+          "http.attempts": 96,
+          "http.responses": 96
+        },
+        "recorded": 23,
+        "repeated": 5,
+        "debugDisabled": 0,
+        "persistenceFailures": 0
+      },
+      "persistedEvents": 23,
+      "recordedCountMatches": true,
+      "errors": [],
+      "held": {
+        "events": 6,
+        "distinctPostings": 6,
+        "reasons": [
+          "APPLICATION_EXPLICITLY_CLOSED"
+        ]
+      },
+      "sourceRuns": [
+        {
+          "runId": "dd2d7441-f6f5-4e09-9cc2-93f891d40a61",
+          "sourceKey": "bellabeat",
+          "status": "OK",
+          "jobs": 1,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%"
+        },
+        {
+          "runId": "dd2d7441-f6f5-4e09-9cc2-93f891d40a61",
+          "sourceKey": "intersport",
+          "status": "OK",
+          "jobs": 4,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%"
+        },
+        {
+          "runId": "dd2d7441-f6f5-4e09-9cc2-93f891d40a61",
+          "sourceKey": "blackstore",
+          "status": "DEGRADED",
+          "jobs": 48,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "6 annonces non publiables archivées (0 non résolues) ; énumération et fermetures attestées · desc 100% date 100% pays 100% url 100%"
+        }
+      ],
+      "summary": [
+        {
+          "eventId": "a7037a1b-87de-4436-bbcf-9b9fd829cc9a",
+          "payload": {
+            "ok": 3,
+            "total": 3,
+            "failed": 0,
+            "failures": [],
+            "timedOut": 0,
+            "incidents": [
+              {
+                "jobs": 48,
+                "note": "6 annonces non publiables archivées (0 non résolues) ; énumération et fermetures attestées",
+                "rates": {
+                  "url": 1,
+                  "date": 1,
+                  "country": 1,
+                  "description": 1
+                },
+                "source": "blackstore",
+                "status": "DEGRADED",
+                "coverage": "desc 100% date 100% pays 100% url 100%",
+                "previous": 48
+              }
+            ]
+          }
+        }
+      ],
+      "report": null,
+      "eventIds": [
+        "437879f2-f846-4344-a470-5ff67cebbe21",
+        "d8b6ab90-3c26-44cc-848e-791c1a582743",
+        "cdda84fa-9b5c-4f2d-bd87-0b2872a01a86",
+        "e7ab6b8d-7f14-40dc-9f25-6d2332e29d29",
+        "6beab83f-0320-426f-8005-ebee587e65aa",
+        "aad2dbdb-e86b-4d58-8011-517f78b889b3",
+        "502d7037-f2fb-485a-940d-3cefd645b99a",
+        "4ecbb761-7328-49f4-bba1-9a81edbf7e78",
+        "4acf66e0-9505-498e-b561-2dfc2a069380",
+        "de7afe2f-ef97-4015-bfb5-c3e3cb4143ec",
+        "24edc459-545e-49eb-8b2f-19bda9dd152b",
+        "f569b1e9-7830-4816-ae6e-9559cd8f69c8",
+        "368c9cf9-9e22-460e-a575-bb2cc0892919",
+        "bdc8d41a-4a6a-48b4-96b3-24b120c053a8",
+        "5c5d3d39-1bf7-483e-9524-8d39c739f52f",
+        "e7ccded4-ba0a-4bd1-a135-29bc4d10d48e",
+        "4c30a5a6-8473-47f4-bfc1-d045c3c94dcd",
+        "e422b37b-41f9-4003-9779-ff3641b8b7be",
+        "a4b264a8-53d9-41b4-8e63-2ecfb29f1495",
+        "e0e7b262-a413-4238-a29f-08c441af9cf4",
+        "6691ad48-b064-49e0-b8f3-681b40367c96",
+        "a7037a1b-87de-4436-bbcf-9b9fd829cc9a",
+        "a873fdaa-13cb-4931-a2a1-cad573a66d9a"
+      ]
+    },
+    {
+      "runId": "9dad65a0-879f-4c90-8d6c-4f4fea45d5a1",
+      "command": "ingest",
+      "revision": "817ed7d6dcdb7a93aa959d32b8de5ad7cb0fd29e",
+      "startedAt": "2026-09-09T05:53:34.884Z",
+      "finishedAt": "2026-09-09T05:53:43.261Z",
+      "status": "COMPLETED",
+      "metrics": {
+        "byEvent": {
+          "run.started": 1,
+          "run.completed": 1,
+          "command.result": 1,
+          "alert.unconfigured": 1,
+          "job.publication_held": 6,
+          "ingest.sources_selected": 1,
+          "source.ingest_completed": 1
+        },
+        "printed": 8,
+        "counters": {
+          "http.attempts": 93,
+          "http.responses": 93
+        },
+        "recorded": 12,
+        "repeated": 5,
+        "debugDisabled": 0,
+        "persistenceFailures": 0
+      },
+      "persistedEvents": 12,
+      "recordedCountMatches": true,
+      "errors": [],
+      "held": {
+        "events": 6,
+        "distinctPostings": 6,
+        "reasons": [
+          "APPLICATION_EXPLICITLY_CLOSED"
+        ]
+      },
+      "sourceRuns": [
+        {
+          "runId": "9dad65a0-879f-4c90-8d6c-4f4fea45d5a1",
+          "sourceKey": "blackstore",
+          "status": "DEGRADED",
+          "jobs": 48,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "6 annonces non publiables archivées (0 non résolues) ; énumération et fermetures attestées · desc 100% date 100% pays 100% url 100%"
+        }
+      ],
+      "summary": [
+        {
+          "eventId": "f585ce95-2238-4d4a-9463-65b574fb3216",
+          "payload": {
+            "ok": true,
+            "geo": {
+              "pending": 0,
+              "lookedUp": 0,
+              "remaining": 0,
+              "jobsLocated": 0
+            },
+            "health": {
+              "ok": 0,
+              "broken": 0,
+              "degraded": 1,
+              "checkedAt": "2026-09-09T05:53:43.176Z",
+              "incidents": [
+                {
+                  "jobs": 48,
+                  "note": "6 annonces non publiables archivées (0 non résolues) ; énumération et fermetures attestées",
+                  "rates": {
+                    "url": 1,
+                    "date": 1,
+                    "country": 1,
+                    "description": 1
+                  },
+                  "source": "blackstore",
+                  "status": "DEGRADED",
+                  "coverage": "desc 100% date 100% pays 100% url 100%",
+                  "previous": 48
+                }
+              ]
+            },
+            "alerted": false,
+            "command": "ingest",
+            "sources": [
+              {
+                "held": 6,
+                "errors": 0,
+                "france": 48,
+                "merged": 0,
+                "source": "blackstore",
+                "created": 0,
+                "fetched": 54,
+                "updated": 48,
+                "withUrl": 48,
+                "complete": true,
+                "inSector": 48,
+                "withDate": 48,
+                "truncated": false,
+                "withCountry": 48,
+                "declaredTotal": 54,
+                "withDescription": 48
+              }
+            ]
+          }
+        }
+      ],
+      "report": null,
+      "eventIds": [
+        "01f3ea4e-e062-4053-bc7a-b728b75fc0eb",
+        "20f576d9-fb98-4818-95ea-3c912f478933",
+        "7e4a0ab2-2af2-48c9-a0de-63ffa37e4dce",
+        "66e87156-25e3-4f0a-acfe-14c106d9ca2a",
+        "288b662c-d2d3-4a51-957b-1c0727d29272",
+        "303c084d-5bd9-42df-babd-ebdc772c4b17",
+        "83a9b7e0-7cd1-4881-ab2d-77287b235568",
+        "13a56b99-9ec0-41e9-882a-bf2275c97d26",
+        "fb2eb110-b232-4107-9fc7-0fe9b7dd5fbd",
+        "ddb66f62-3410-4237-88af-db1077142563",
+        "f585ce95-2238-4d4a-9463-65b574fb3216",
+        "64a9baef-9f42-4447-aaa9-fe9d525257fa"
+      ]
+    },
+    {
+      "runId": "cb2fd25a-fad6-415d-9d0f-b5e5cffc7194",
+      "command": "health-report",
+      "revision": "817ed7d6dcdb7a93aa959d32b8de5ad7cb0fd29e",
+      "startedAt": "2026-09-09T05:52:15.187Z",
+      "finishedAt": "2026-09-09T05:52:15.933Z",
+      "status": "COMPLETED",
+      "metrics": {
+        "byEvent": {
+          "run.started": 1,
+          "health.report": 1,
+          "run.completed": 1
+        },
+        "printed": 3,
+        "counters": {},
+        "recorded": 3,
+        "repeated": 0,
+        "debugDisabled": 0,
+        "persistenceFailures": 0
+      },
+      "persistedEvents": 3,
+      "recordedCountMatches": true,
+      "errors": [],
+      "held": {
+        "events": 0,
+        "distinctPostings": 0,
+        "reasons": []
+      },
+      "sourceRuns": [],
+      "summary": [],
+      "report": {
+        "activeJobs": 74113,
+        "sources": 432,
+        "payloadBytes": 149069,
+        "previousPrettyJsonLines": 8668
+      },
+      "eventIds": [
+        "5a64bae5-3033-48d0-86c9-30137f8dc6ea",
+        "b1f923bf-bf69-4b9d-ac42-c5ac95dd6c67",
+        "4c9e31f0-ae0c-415c-8239-d47828da0265"
+      ]
+    }
+  ],
+  "journalBytes": [
+    {
+      "bytes": 180224
+    }
+  ]
+}

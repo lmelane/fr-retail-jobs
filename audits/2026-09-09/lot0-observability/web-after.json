@@ -1,0 +1,18 @@
+{
+  "note": "Actual catalogue route is /entreprises; /maisons is not an application route. Python urllib receives an edge 403, Node fetch validates these application routes.",
+  "checks": [
+    {
+      "path": "/api/jobs?pays=FR",
+      "status": 200,
+      "total": 10936
+    },
+    {
+      "path": "/emplois?pays=FR",
+      "status": 200
+    },
+    {
+      "path": "/entreprises",
+      "status": 200
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "codeCommit": "2c3bc9a",
+  "mergeCommit": "817ed7d6dcdb7a93aa959d32b8de5ad7cb0fd29e",
+  "pullRequest": "https://github.com/lmelane/fr-retail-jobs/pull/36",
+  "ci": "https://github.com/lmelane/fr-retail-jobs/actions/runs/34316376985",
+  "unit": 1459,
+  "integration": 206,
+  "backup": {
+    "bytes": 358974795,
+    "sha256": "4ea3f436a0a210e3a8fc2918b5938e2ff76502cb91e80c269b7f2305d1b35134"
+  },
+  "migration": "20260909060000_pipeline_observability",
+  "migrationAppliedProduction": true,
+  "dataRepairs": 0,
+  "runtimeProofPending": false,
+  "productionValidation": {
+    "healthReport": true,
+    "singleSource": true,
+    "threeConcurrentSources": true,
+    "full424SourceRun": false,
+    "durableEvents": 38,
+    "unaccountedEvents": 0,
+    "railwayDroppedWarnings": 0,
+    "maxMeasuredRowsPerSecond": 11
+  },
+  "workersPaused": true
+}
