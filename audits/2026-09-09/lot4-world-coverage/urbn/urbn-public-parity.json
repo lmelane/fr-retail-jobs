@@ -1,0 +1,75 @@
+{
+  "at": "2026-09-09T19:36:28.127Z",
+  "brands": {
+    "URBN": {
+      "db": {
+        "id": "cmtpkx0dp59qspf5lz9252szw",
+        "domain": "urbn.com",
+        "active": 153
+      },
+      "apiTotal": 153,
+      "parity": true,
+      "logoStatus": 404
+    },
+    "Anthropologie": {
+      "db": {
+        "id": "cr655b6e40636c40426a08b97c",
+        "domain": "anthropologie.com",
+        "active": 468
+      },
+      "apiTotal": 468,
+      "parity": true,
+      "logoStatus": 200
+    },
+    "Urban Outfitters": {
+      "db": {
+        "id": "cr88d105073d8cbab03ce8e3ad",
+        "domain": "urbanoutfitters.com",
+        "active": 330
+      },
+      "apiTotal": 330,
+      "parity": true,
+      "logoStatus": 200
+    },
+    "Free People": {
+      "db": {
+        "id": "cr327a650529449cec822a02ef",
+        "domain": "freepeople.com",
+        "active": 393
+      },
+      "apiTotal": 393,
+      "parity": true,
+      "logoStatus": 200
+    },
+    "Terrain": {
+      "db": {
+        "id": "cr885cb8c56387e5d08ce5a70d",
+        "domain": "shopterrain.com",
+        "active": 41
+      },
+      "apiTotal": 41,
+      "parity": true,
+      "logoStatus": 200
+    },
+    "Nuuly": {
+      "db": {
+        "id": "crd8b9169bcbc38f1c16255968",
+        "domain": "nuuly.com",
+        "active": 35
+      },
+      "apiTotal": 35,
+      "parity": true,
+      "logoStatus": 200
+    },
+    "Menus and Venues": {
+      "db": {
+        "id": "crba5319aa0213b50e13f2122c",
+        "domain": "urbnmenusandvenues.com",
+        "active": 39
+      },
+      "apiTotal": 39,
+      "parity": true,
+      "logoStatus": 200
+    }
+  }
+}

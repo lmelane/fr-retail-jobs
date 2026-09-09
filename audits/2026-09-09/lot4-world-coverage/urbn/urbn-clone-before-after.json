@@ -1,0 +1,54 @@
+{
+  "at": "2026-09-09T19:10:07.357Z",
+  "byCompany": [
+    {
+      "name": "URBN",
+      "kind": "UNKNOWN",
+      "domain": "urbn.com",
+      "parentGroup": null,
+      "sectorCodes": [
+        "FASHION",
+        "FOOTWEAR",
+        "BEAUTY",
+        "HOME_LIFESTYLE",
+        "RETAIL"
+      ],
+      "active": 1449
+    }
+  ],
+  "sources": [
+    {
+      "key": "urbn-stores",
+      "status": "ACTIVE",
+      "maison": "URBN Stores",
+      "tier": "GROUP_OFFICIAL",
+      "config": {
+        "origin": "https://stores-na-urbn.icims.com"
+      },
+      "verifiedJobCount": 906
+    },
+    {
+      "key": "urbn-hub",
+      "status": "ACTIVE",
+      "maison": "URBN (Urban Outfitters, Anthropologie, Free People)",
+      "tier": "GROUP_OFFICIAL",
+      "config": {
+        "origin": "https://hub-urbn.icims.com"
+      },
+      "verifiedJobCount": 1329
+    }
+  ],
+  "storesRepresentations": {
+    "reps": 970,
+    "active": 970,
+    "jobsRedirected": 0
+  },
+  "duplicateActiveIcimsJobs": 36,
+  "aliases": [],
+  "interruptedRun": {
+    "status": "RUNNING",
+    "finishedAt": null
+  },
+  "activeTotal": 74195,
+  "urbnHubActiveJobs": 1449
+}

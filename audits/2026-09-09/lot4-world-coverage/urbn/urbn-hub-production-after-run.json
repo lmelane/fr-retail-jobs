@@ -1,0 +1,136 @@
+{
+  "at": "2026-09-09T19:35:59.168Z",
+  "sourceRun": {
+    "status": "OK",
+    "fetched": 1374,
+    "accepted": 1374,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false,
+    "errors": 0,
+    "ranAt": "2026-09-09T19:35:02.906Z",
+    "canAttestAbsence": true
+  },
+  "pipelineRun": {
+    "id": "ba3d2945-85a8-4146-ac12-42415b8cc91b",
+    "status": "COMPLETED",
+    "startedAt": "2026-09-09T19:24:08.460Z",
+    "finishedAt": "2026-09-09T19:35:02.995Z",
+    "revision": "c95327efd606fc4902e9ca04eca516c94663cb80"
+  },
+  "writeFailures": 0,
+  "byCompany": [
+    {
+      "name": "Anthropologie",
+      "active": 468,
+      "reattestedThisRun": 458,
+      "createdThisRun": 2
+    },
+    {
+      "name": "Free People",
+      "active": 393,
+      "reattestedThisRun": 388,
+      "createdThisRun": 0
+    },
+    {
+      "name": "Urban Outfitters",
+      "active": 330,
+      "reattestedThisRun": 324,
+      "createdThisRun": 4
+    },
+    {
+      "name": "URBN",
+      "active": 153,
+      "reattestedThisRun": 90,
+      "createdThisRun": 3
+    },
+    {
+      "name": "Terrain",
+      "active": 41,
+      "reattestedThisRun": 41,
+      "createdThisRun": 0
+    },
+    {
+      "name": "Menus and Venues",
+      "active": 39,
+      "reattestedThisRun": 38,
+      "createdThisRun": 1
+    },
+    {
+      "name": "Nuuly",
+      "active": 35,
+      "reattestedThisRun": 35,
+      "createdThisRun": 0
+    }
+  ],
+  "observations": [
+    {
+      "labelOrigin": "jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER",
+      "rule": "REVIEWED_ALIAS",
+      "rawEmployerName": "Anthropologie",
+      "n": 427
+    },
+    {
+      "labelOrigin": "jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER",
+      "rule": "REVIEWED_ALIAS",
+      "rawEmployerName": "Urban Outfitters",
+      "n": 324
+    },
+    {
+      "labelOrigin": "jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER",
+      "rule": "REVIEWED_ALIAS",
+      "rawEmployerName": "Free People",
+      "n": 245
+    },
+    {
+      "labelOrigin": "jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER",
+      "rule": "REVIEWED_ALIAS",
+      "rawEmployerName": "FP Movement",
+      "n": 143
+    },
+    {
+      "labelOrigin": "jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER",
+      "rule": "REVIEWED_ALIAS",
+      "rawEmployerName": "URBN",
+      "n": 74
+    },
+    {
+      "labelOrigin": "jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER",
+      "rule": "REVIEWED_ALIAS",
+      "rawEmployerName": "Terrain",
+      "n": 41
+    },
+    {
+      "labelOrigin": "jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER",
+      "rule": "REVIEWED_ALIAS",
+      "rawEmployerName": "Menus and Venues",
+      "n": 38
+    },
+    {
+      "labelOrigin": "jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER",
+      "rule": "REVIEWED_ALIAS",
+      "rawEmployerName": "Nuuly",
+      "n": 35
+    },
+    {
+      "labelOrigin": "jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER",
+      "rule": "REVIEWED_ALIAS",
+      "rawEmployerName": "Anthro Weddings",
+      "n": 25
+    },
+    {
+      "labelOrigin": "jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER",
+      "rule": "REVIEWED_ALIAS",
+      "rawEmployerName": "Reclectic",
+      "n": 16
+    },
+    {
+      "labelOrigin": "jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER",
+      "rule": "REVIEWED_ALIAS",
+      "rawEmployerName": "Maeve",
+      "n": 6
+    }
+  ],
+  "activeNotReattested": 85,
+  "activeTotal": 74169
+}

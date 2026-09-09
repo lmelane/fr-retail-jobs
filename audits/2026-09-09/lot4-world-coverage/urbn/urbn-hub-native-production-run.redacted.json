@@ -1,0 +1,118 @@
+{
+ "id": "ba3d2945-85a8-4146-ac12-42415b8cc91b",
+ "command": "lot4-urbn-hub-production-validation",
+ "revision": "c95327efd606fc4902e9ca04eca516c94663cb80",
+ "startedAt": "2026-09-09T19:24:08.460Z",
+ "finishedAt": "2026-09-09T19:35:02.995Z",
+ "status": "COMPLETED",
+ "metrics": {
+  "byEvent": {
+   "run.started": 1,
+   "run.completed": 1,
+   "ingest.completed": 1,
+   "source_sync_started": 1,
+   "run.sources_selected": 1,
+   "run.sources_completed": 1,
+   "source_sync_completed": 1,
+   "ingest.sources_selected": 1,
+   "source.ingest_completed": 1,
+   "source.enumeration_observed": 1
+  },
+  "printed": 10,
+  "counters": {
+   "http.attempts": 1402,
+   "http.responses": 1402
+  },
+  "recorded": 10,
+  "repeated": 0,
+  "debugDisabled": 0,
+  "persistenceFailures": 0
+ },
+ "events": [
+  {
+   "at": "2026-09-09T19:35:02.945Z",
+   "event": "ingest.completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:24:08.554Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:35:02.970Z",
+   "event": "run.completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:35:02.919Z",
+   "event": "run.sources_completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:24:08.487Z",
+   "event": "run.sources_selected",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:24:08.464Z",
+   "event": "run.started",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:34:15.840Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "urbn-hub",
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:35:02.872Z",
+   "event": "source.ingest_completed",
+   "sourceKey": null,
+   "stats": null
+  },
+  {
+   "at": "2026-09-09T19:35:02.914Z",
+   "event": "source_sync_completed",
+   "sourceKey": "urbn-hub",
+   "stats": {
+    "errors": 0,
+    "france": 8,
+    "merged": 0,
+    "source": "urbn-hub",
+    "created": 10,
+    "fetched": 1374,
+    "updated": 1364,
+    "withUrl": 1374,
+    "complete": true,
+    "inSector": 1374,
+    "withDate": 1374,
+    "truncated": false,
+    "withCountry": 1374,
+    "declaredTotal": null,
+    "withDescription": 1374,
+    "occupationReleases": {
+     "catwalks-occupations-20260909-v1": 1374
+    },
+    "occupationStatuses": {
+     "NO_RULE": 64,
+     "CLASSIFIED": 342,
+     "FAMILY_ONLY": 968
+    },
+    "occupationReleaseId": "catwalks-occupations-20260909-v1"
+   }
+  },
+  {
+   "at": "2026-09-09T19:24:08.497Z",
+   "event": "source_sync_started",
+   "sourceKey": "urbn-hub",
+   "stats": null
+  }
+ ]
+}

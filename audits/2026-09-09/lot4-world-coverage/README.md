@@ -111,3 +111,5 @@ Voir [tracker-qualification.md](tracker-qualification.md) (sept verdicts sépar�
 ## Point de contrôle — portails partagés, dossiers Personio, réconciliation (9 septembre, soir)
 
 Voir [otb-aptar-shared-portals.md](otb-aptar-shared-portals.md) (attribution par offre sur `careers.otb.net` et `jobs.aptar.com`, 735 opérations en production, run réel 0 erreur), [personio-dossiers.md](personio-dossiers.md) (5 homonymes séparés, 3 retraits revus, 14 variantes juridiques classées sans mutation, 57 offres retirées sans fermeture) et [completeness-reconciliation.md](completeness-reconciliation.md) (385 → 357 expliqué : 2 sources retirées + 26 faux positifs d'ordre de reçus ; liste unique : les 38 dossiers). Production après : 77 447 offres, 74 130 actives avant le run borné ; workers toujours en pause.
+
+- `urbn-shared-hub.md` + `urbn/` — incident du run borné (déploiement pendant un run), `urbn-stores` ⊂ `urbn-hub`, marques créditées d'après le JSON-LD `hiringOrganization` de chaque page (opt-in `employerFromJobPosting`), 36 fusions revues, certification, run borné après livraison (PR 61).

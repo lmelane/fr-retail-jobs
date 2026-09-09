@@ -1,0 +1,139 @@
+{
+ "id": "99ae410d-e6ef-414b-bf03-cf0287edc3b1",
+ "command": "lot4-talentsoft-icims-production-validation",
+ "revision": "01393523b4ee14bb61f18782c0cda63453b3af83",
+ "startedAt": "2026-09-09T18:22:42.609Z",
+ "status": "RUNNING",
+ "events": [
+  {
+   "at": "2026-09-09T18:22:42.721Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null
+  },
+  {
+   "at": "2026-09-09T18:22:42.739Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null
+  },
+  {
+   "at": "2026-09-09T18:22:42.705Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null
+  },
+  {
+   "at": "2026-09-09T18:22:43.477Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null
+  },
+  {
+   "at": "2026-09-09T18:22:42.766Z",
+   "event": "ingest.sources_selected",
+   "sourceKey": null
+  },
+  {
+   "at": "2026-09-09T18:22:42.639Z",
+   "event": "run.sources_selected",
+   "sourceKey": null
+  },
+  {
+   "at": "2026-09-09T18:22:42.614Z",
+   "event": "run.started",
+   "sourceKey": null
+  },
+  {
+   "at": "2026-09-09T18:34:49.425Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "urbn-hub"
+  },
+  {
+   "at": "2026-09-09T18:30:05.132Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "urbn-stores"
+  },
+  {
+   "at": "2026-09-09T18:22:42.998Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "lagardere-duty-free"
+  },
+  {
+   "at": "2026-09-09T18:22:51.710Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "aeropostale"
+  },
+  {
+   "at": "2026-09-09T18:22:51.465Z",
+   "event": "source.enumeration_observed",
+   "sourceKey": "lagardere-travel-retail"
+  },
+  {
+   "at": "2026-09-09T18:22:43.407Z",
+   "event": "source.ingest_completed",
+   "sourceKey": null
+  },
+  {
+   "at": "2026-09-09T18:22:54.961Z",
+   "event": "source.ingest_completed",
+   "sourceKey": null
+  },
+  {
+   "at": "2026-09-09T18:22:53.367Z",
+   "event": "source.ingest_completed",
+   "sourceKey": null
+  },
+  {
+   "at": "2026-09-09T18:30:32.217Z",
+   "event": "source.ingest_completed",
+   "sourceKey": null
+  },
+  {
+   "at": "2026-09-09T18:30:32.227Z",
+   "event": "source.purge_refused",
+   "sourceKey": null
+  },
+  {
+   "at": "2026-09-09T18:30:32.260Z",
+   "event": "source_sync_completed",
+   "sourceKey": "urbn-stores"
+  },
+  {
+   "at": "2026-09-09T18:22:43.425Z",
+   "event": "source_sync_completed",
+   "sourceKey": "lagardere-duty-free"
+  },
+  {
+   "at": "2026-09-09T18:22:53.376Z",
+   "event": "source_sync_completed",
+   "sourceKey": "aeropostale"
+  },
+  {
+   "at": "2026-09-09T18:22:54.984Z",
+   "event": "source_sync_completed",
+   "sourceKey": "lagardere-travel-retail"
+  },
+  {
+   "at": "2026-09-09T18:22:42.649Z",
+   "event": "source_sync_started",
+   "sourceKey": "lagardere-duty-free"
+  },
+  {
+   "at": "2026-09-09T18:22:42.649Z",
+   "event": "source_sync_started",
+   "sourceKey": "aeropostale"
+  },
+  {
+   "at": "2026-09-09T18:22:42.649Z",
+   "event": "source_sync_started",
+   "sourceKey": "lagardere-travel-retail"
+  },
+  {
+   "at": "2026-09-09T18:22:43.437Z",
+   "event": "source_sync_started",
+   "sourceKey": "urbn-hub"
+  },
+  {
+   "at": "2026-09-09T18:22:42.649Z",
+   "event": "source_sync_started",
+   "sourceKey": "urbn-stores"
+  }
+ ]
+}
