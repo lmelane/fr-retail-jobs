@@ -16,7 +16,10 @@ const startedAt = new Date().toISOString();
 const configHash = createHash("sha256")
   .update(JSON.stringify(source.config))
   .digest("hex");
+const worktreeDiff = execFileSync('git', ['diff', 'HEAD', '--', 'apps/aggregator/src', 'apps/aggregator/data', 'packages/db'], { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 });
 const base = {
+  workingTreeDirty: worktreeDiff.length > 0,
+  trackedCodeDiffHash: createHash('sha256').update(worktreeDiff).digest('hex'),
   sourceKey,
   kind: source.kind,
   tenantKey: source.tenantKey,
@@ -50,7 +53,7 @@ try {
   const active = snapshot.sourcePostings.filter(
     (p: any) => p.sourceKey === sourceKey && p.isActive && p.job.isActive,
   );
-  const stored = new Set(active.map((p: any) => p.externalId));
+  const stored = new Set<string>(active.map((p: any) => String(p.externalId)));
   const fetched = new Set(byId.keys());
   const missingInDatabase = [...fetched].filter((id) => !stored.has(id));
   const absentAtSource = [...stored].filter((id) => !fetched.has(id));

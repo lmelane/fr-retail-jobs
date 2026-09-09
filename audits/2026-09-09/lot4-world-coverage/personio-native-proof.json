@@ -1,0 +1,13 @@
+{
+  "at": "2026-09-09T12:15:58.074Z",
+  "sources": 24,
+  "fetched": 263,
+  "completeFeeds": 24,
+  "missingDate": 3,
+  "missingDescription": 0,
+  "missingCountry": 4,
+  "earlierDateMissing": 61,
+  "revision": "538ff338b9fbea12fa3306d6eef49cb757f89b8a",
+  "productionWritten": false,
+  "note": "Counted descriptions may be placeholders; feed completeness is not an identity or content-quality certificate."
+}
