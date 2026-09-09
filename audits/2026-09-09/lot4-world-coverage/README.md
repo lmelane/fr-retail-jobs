@@ -95,3 +95,7 @@ PR #50, main `1ccf8cbe6fef5dc25c16f5f73a69a1cb62db80e5`, quatre services Railway
 | Retraits administratifs comptés comme fermetures ; republications comptées comme reposts | Oui pour les écrivains identifiés | 146e6b0 | Oui, 1ccf8cb | Oui, 4 services | Oui, 371 reçus | withdrawal-production-proof.json |
 
 La qualification des autres homonymes, des portails manquants et des flux incomplets continue. Ce checkpoint ne clôture pas le lot 4.
+
+## Nouveau point de contrôle — Talent Recruiter / GANNI
+
+Voir [le diagnostic, la correction et les preuves sur copie fraîche](talent-recruiter-ganni.md). La première passe automatisée porte désormais sur les 1 653 acteurs ; 278 candidats ATS et 98 ensembles de liens carrière restent à qualifier. Les 1 277 autres lignes nécessitent encore une recherche de site officiel ou de portail. Ces états de discovery ne remplacent pas les preuves d’identité et d’activation.

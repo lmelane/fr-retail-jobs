@@ -1,0 +1,3 @@
+ALTER TYPE "AtsType" ADD VALUE 'TALENT_RECRUITER';
+CREATE TYPE "OpportunityType" AS ENUM ('JOB_OPENING', 'OPEN_APPLICATION');
+ALTER TABLE "Job" ADD COLUMN "opportunityType" "OpportunityType";

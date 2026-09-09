@@ -29,6 +29,7 @@ import { runStats } from './pipeline/stats.js';
 import { exportCompanies } from './export/companies.js';
 import { discoverMaisons } from './discovery/discoverMaisons.js';
 import { closeBrowser } from './lib/browser.js';
+import { validateCliArguments } from './lib/cliArguments.js';
 
 /**
  * Three scheduled entry points, each with its own failure domain so one broken
@@ -43,8 +44,10 @@ import { closeBrowser } from './lib/browser.js';
  * geocode runs after ingest to resolve any new cities for the map.
  */
 
-const prisma = new PrismaClient({ errorFormat: 'minimal', log: [] });
 const command = process.argv[2] ?? 'ingest';
+try { validateCliArguments(command, process.argv.slice(3)); }
+catch (error) { await log.error('command.invalid_arguments', { message: error instanceof Error ? error.message : 'Invalid arguments', workStarted: false }); process.exit(2); }
+const prisma = new PrismaClient({ errorFormat: 'minimal', log: [] });
 
 // Sonde d'egress AVANT tout (hostGate, ingest, DB) — no-op sans EGRESS_PROBE=1.
 let fatalFailure = false;

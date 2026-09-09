@@ -51,6 +51,7 @@ enum DiscoveryStatus {
 
 enum AtsType {
   HARRI
+  TALENT_RECRUITER
   FLATCHR
   JOBAFFINITY_WORDPRESS
   PINPOINT
@@ -342,6 +343,11 @@ model JobSource {
   @@index([sourceKey, isActive])
 }
 
+enum OpportunityType {
+  JOB_OPENING
+  OPEN_APPLICATION
+}
+
 model Job {
   id            String   @id @default(cuid())
   // An absorbed posting retains its ID, content and history. It can never reopen;
@@ -353,6 +359,7 @@ model Job {
   company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   externalId    String
   source        AtsType
+  opportunityType OpportunityType?
   title         String
   location      String?
   /**

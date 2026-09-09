@@ -64,6 +64,8 @@ export function schemaEmploymentTypes(
 }
 
 export function jobPostingSchema(job: JobRow): Record<string, unknown> | null {
+  // A public talent-pool invitation remains accessible, but is not a specific vacancy.
+  if (job.opportunityType === 'OPEN_APPLICATION') return null;
   const datePosted = job.postedAt;
   if (!datePosted || !Number.isFinite(datePosted.getTime())) return null;
   const employmentTypes = schemaEmploymentTypes(job.employmentTerm, job.workTime, job.programType, job.engagementType);

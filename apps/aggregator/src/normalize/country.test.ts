@@ -110,3 +110,15 @@ describe('normalizeCountry — formes officielles longues (lot 2)', () => {
     expect(normalizeCountry('Corée du Sud')).toBe('KR');
   });
 });
+
+
+describe('versioned worldwide country labels', () => {
+  it.each(['Frankrig', 'Frankrike', 'Fransa', 'フランス', 'Франция'])('resolves the exact CLDR name %s without an adapter-specific alias', raw => {
+    expect(normalizeCountry(raw)).toBe('FR');
+  });
+  it('keeps an ambiguous localized label unresolved and never treats a city as a country', () => {
+    expect(normalizeCountry('Kongo')).toBeUndefined();
+    expect(normalizeCountry('Paris')).toBeUndefined();
+    expect(normalizeCountry('San Francisco')).toBeUndefined();
+  });
+});

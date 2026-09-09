@@ -156,7 +156,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
               Matcher mon profil avec Catwalks
             </a>
             <a className="btn btn--lg" href={job.applyUrl} target="_blank" rel="noopener noreferrer">
-              Voir l’offre chez {job.company}
+              {job.opportunityType === 'OPEN_APPLICATION' ? 'Candidater' : 'Voir l’offre'} chez {job.company}
             </a>
           </div>
         </div>

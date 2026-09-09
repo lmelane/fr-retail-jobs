@@ -1,3 +1,4 @@
+import countryLabels from '../../data/country-labels.json' with { type: 'json' };
 /**
  * Pays canonique, en ISO-3166-1 alpha-2.
  *
@@ -129,20 +130,7 @@ const ISO_CODES = new Set([
  * un mauvais pays envoie le candidat sur des offres qui ne le concernent pas.
  */
 /** Libellés Intl (anglais + français) de chaque code, en minuscules → code. Calculé une fois. */
-const INTL_LABELS: Map<string, string> = (() => {
-  const map = new Map<string, string>();
-  for (const locale of ["en", "fr"]) {
-    let names: Intl.DisplayNames;
-    try { names = new Intl.DisplayNames([locale], { type: "region" }); } catch { continue; }
-    for (const code of ISO_CODES) {
-      try {
-        const label = names.of(code);
-        if (label && label !== code) map.set(label.toLowerCase(), code);
-      } catch { /* code sans libellé */ }
-    }
-  }
-  return map;
-})();
+const INTL_LABELS = new Map<string, string>(Object.entries(countryLabels.legacyEnglishFrenchLabels));
 
 export function normalizeCountry(raw?: string | null): string | undefined {
   if (!raw) return undefined;
@@ -177,7 +165,10 @@ export function normalizeCountry(raw?: string | null): string | undefined {
   if (head !== key && LABEL_TO_ISO[head]) return LABEL_TO_ISO[head];
   const viaIntl = INTL_LABELS.get(head) ?? INTL_LABELS.get(key);
   if (viaIntl) return viaIntl;
-  return undefined;
+  // Frozen CLDR reference data: exact names only, with ambiguous labels
+  // retained as multiple candidates rather than an arbitrary country choice.
+  const matches = (countryLabels.labels as Record<string, string[]>)[key.normalize('NFC')];
+  return matches?.length === 1 && ISO_CODES.has(matches[0]) ? matches[0] : undefined;
 }
 
 /**

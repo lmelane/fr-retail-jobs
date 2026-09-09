@@ -10,6 +10,7 @@ import { fetchPersonioJobs } from './adapters/personio.js';
 import { fetchWorkdayJobs } from './adapters/workday.js';
 import { fetchGenericJsonLdJobs } from './adapters/genericJsonLd.js';
 import { fetchAshbyJobs } from './adapters/ashby.js';
+import { fetchTalentRecruiterJobs } from './adapters/talentRecruiter.js';
 import { fetchHarriJobs } from './adapters/harri.js';
 import { fetchWorkableJobs } from './adapters/workable.js';
 import { fetchWttjJobs } from './adapters/wttj.js';
@@ -89,6 +90,7 @@ export const ADAPTERS: Record<string, (config: Record<string, unknown>) => Promi
   WORKDAY: fetchWorkdayJobs,
   ASHBY: fetchAshbyJobs,
   HARRI: fetchHarriJobs,
+  TALENT_RECRUITER: fetchTalentRecruiterJobs,
   WORKABLE: fetchWorkableJobs,
   // Une société (`slug`) ou tout un secteur (`sectors` / `parentSectors` /
   // `organizations`) : même AtsType, même identité d'offre, deux lectures.

@@ -185,6 +185,7 @@ function weeklyHours(title: string): string | undefined {
  * a 35H post would have seen a single "30H" listing.
  */
 export function cannotBeSameOpening(a: CandidateJob, b: CandidateJob): boolean {
+  if (a.opportunityType && b.opportunityType && a.opportunityType !== b.opportunityType) return true;
   if (hasRequisitionConflict([a.url, b.url])) return true;
   // One source never publishes one opening twice. Two rows from the same feed
   // with different ids are two jobs — this alone would have caught Beaumanoir.

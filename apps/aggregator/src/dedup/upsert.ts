@@ -259,7 +259,7 @@ async function upsertInTransaction(
   const clusterJobs = await prisma.job.findMany({
     where: { companyId: company.id, clusterKey, isActive: true, sources: { none: { sourceKey: candidate.sourceKey } } },
     select: {
-      id: true, title: true, countryCode: true, city: true, location: true, postedAt: true, url: true,
+      id: true, title: true, countryCode: true, city: true, location: true, postedAt: true, url: true, opportunityType: true,
       sources: { select: { sourceKey: true, externalId: true, url: true, isActive: true } },
     },
     orderBy: [{ firstSeenAt: 'asc' }, { id: 'asc' }],
@@ -284,6 +284,7 @@ async function upsertInTransaction(
     return isProbableDuplicate(candidate, {
       ...candidate,
       title: job.title,
+      opportunityType: job.opportunityType ?? undefined,
       url: job.url,
       // Use the stored posting's evidence, not the incoming country's/city's
       // values inherited by the spread above.
@@ -309,6 +310,7 @@ export function canonicalJobContent(candidate: CandidateJob, catalogue: Compiled
     externalId: candidate.externalId,
     source: candidate.atsType ?? 'GENERIC_JSONLD' as const,
     title: candidate.title,
+    opportunityType: candidate.opportunityType ?? null,
     description: candidate.description ?? null,
     location: candidate.location ?? null,
     countryCode: country ?? null,
@@ -451,7 +453,7 @@ type Reattestable = Pick<
   ExistingJob,
   | 'title' | 'description' | 'location' | 'city' | 'countryCode' | 'adminArea1' | 'isFrance' | 'postedAt' | 'validThrough'
   | 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType' | 'isSeasonal' | 'workplaceType' | 'salaryMin' | 'salaryMax' | 'salaryCurrency' | 'salaryPeriod'
->;
+> & { opportunityType?: ExistingJob['opportunityType'] };
 
 /**
  * Champs simples : REMPLIS par n'importe quelle source quand ils sont vides,
@@ -463,7 +465,7 @@ type Reattestable = Pick<
  * présentes dans le brut, 5 212 offres sans date.
  */
 const SIMPLE_FIELDS = [
-  'postedAt', 'validThrough', 'language', 'employmentTerm', 'workTime', 'programType', 'engagementType', 'isSeasonal', 'workplaceType',
+  'opportunityType', 'postedAt', 'validThrough', 'language', 'employmentTerm', 'workTime', 'programType', 'engagementType', 'isSeasonal', 'workplaceType',
 ] as const;
 const SALARY_FIELDS = ['salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod'] as const;
 

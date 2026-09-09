@@ -1,0 +1,35 @@
+{
+  "at": "2026-09-09T15:14:35.728Z",
+  "environment": "LOCAL_CLONE",
+  "results": [
+    {
+      "url": "http://localhost:3014/api/jobs?maison=GANNI",
+      "status": 200,
+      "total": 16,
+      "idsMatched": true,
+      "returned": 16
+    },
+    {
+      "url": "http://localhost:3014/api/jobs?maison=GANNI&pays=FR",
+      "status": 200,
+      "total": 5,
+      "idsMatched": true,
+      "returned": 5
+    },
+    {
+      "url": "http://localhost:3014/api/jobs?maison=GANNI&pays=GB",
+      "status": 200,
+      "total": 1,
+      "idsMatched": true,
+      "returned": 1
+    },
+    {
+      "url": "http://localhost:3014/api/jobs?maison=GANNI&secteur=FASHION",
+      "status": 200,
+      "total": 16,
+      "idsMatched": true,
+      "returned": 16
+    }
+  ],
+  "generalSearchKeepsOpenApplication": true
+}

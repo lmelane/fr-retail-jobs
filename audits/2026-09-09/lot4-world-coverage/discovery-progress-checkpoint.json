@@ -1,16 +1,13 @@
 {
-  "rows": 1653,
-  "labels": 1670,
-  "researchStarted": 755,
+  "at": "2026-09-09T15:13:00Z",
+  "benchmarkRows": 1653,
+  "rawLabels": 1670,
+  "automatedResearchRowsCompleted": 1653,
   "statuses": {
-    "PROFILE_ONLY_WEBSITE_SEARCH_REQUIRED": 419,
-    "OFFICIAL_PORTAL_SEARCH_REQUIRED": 102,
-    "ATS_CANDIDATES_TO_QUALIFY": 181,
-    "CAREER_LINKS_TO_QUALIFY": 53,
-    "RESEARCH_NOT_RUN": 898
+    "PROFILE_ONLY_WEBSITE_SEARCH_REQUIRED": 1096,
+    "OFFICIAL_PORTAL_SEARCH_REQUIRED": 181,
+    "ATS_CANDIDATES_TO_QUALIFY": 278,
+    "CAREER_LINKS_TO_QUALIFY": 98
   },
-  "sourcesWithReceipts": 430,
-  "independentNewIdentityCertifications": 0,
-  "newSourceActivations": 0,
-  "note": "Discovery progress only. Explicit reviewer decisions and activation records must be added separately."
+  "meaning": "Discovery candidates, not certified identities. Production certifications and activations are proved separately in production-remediation-proof.json and harri-production-proof.json. GANNI qualification is local until its release proof is published."
 }

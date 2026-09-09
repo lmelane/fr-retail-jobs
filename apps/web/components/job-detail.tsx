@@ -89,7 +89,7 @@ function JobFacts({
 
   return (
     <div className="block rule" style={{ paddingTop: 24 }}>
-      <span className="t-caption green">Détails de l’emploi</span>
+      <span className="t-caption green">{job.opportunityType === 'OPEN_APPLICATION' ? 'Informations de candidature' : 'Détails de l’emploi'}</span>
       <dl className="kv">
         {facts.map(([label, value]) => (
           <div key={label} className="contents">
@@ -111,7 +111,7 @@ export function JobDetail({ job }: { job: JobRow }) {
     job.workplaceType
       ? workplaceTypeLabel(job.workplaceType)
       : null;
-  const meta = [job.city, employmentTerm, remote, job.postedAt ? `Publiée ${relativeDate(job.postedAt)}` : null]
+  const meta = [job.opportunityType === 'OPEN_APPLICATION' ? 'Candidature spontanée' : null, job.city, employmentTerm, remote, job.postedAt ? `Publiée ${relativeDate(job.postedAt)}` : null]
     .filter(Boolean)
     .join(' · ');
 
@@ -147,7 +147,7 @@ export function JobDetail({ job }: { job: JobRow }) {
           Matcher mon profil avec Catwalks <ArrowGlyph />
         </a>
         <a className="btn btn--lg" href={job.applyUrl} target="_blank" rel="noopener noreferrer">
-          Voir l’offre chez {job.company} <OutGlyph />
+          {job.opportunityType === 'OPEN_APPLICATION' ? 'Candidater' : 'Voir l’offre'} chez {job.company} <OutGlyph />
         </a>
       </div>
 
@@ -164,6 +164,10 @@ export function JobDetail({ job }: { job: JobRow }) {
           // HTML at ingest); whitespace-pre-line keeps the source's line breaks
           // and never trusts third-party HTML.
           <div className="prose t-body whitespace-pre-line">{job.description}</div>
+        ) : job.opportunityType === 'OPEN_APPLICATION' ? (
+          <p className="t-body2 muted">
+            Vous pouvez transmettre une candidature spontanée à {job.company} depuis son portail de recrutement.
+          </p>
         ) : (
           <p className="t-body2 muted">
             Cette source ne fournit pas le texte de l’offre. Le bouton « Voir l’offre » mène

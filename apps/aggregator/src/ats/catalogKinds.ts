@@ -1,6 +1,7 @@
 /** One catalogue-to-adapter registry shared by ingestion and qualification. */
 export const KIND_TO_ATS: Record<string, string> = {
   harri: "HARRI",
+  talentrecruiter: "TALENT_RECRUITER",
   successfactors: "SUCCESSFACTORS",
   avature: "AVATURE",
   eightfold: "EIGHTFOLD",
