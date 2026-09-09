@@ -23,6 +23,9 @@ it('corrects the owner without merging the brand or changing jobs, RAW and lifec
  expect(after.company.name).toBe('Actual Group');expect(after.company.kind).toBe('GROUP');expect(after.isActive).toBe(job.isActive);expect(after.closedAt).toBe(job.closedAt);expect(after.firstSeenAt).toEqual(job.firstSeenAt);
  expect(after.sources[0].raw).toEqual(before.raw);expect(after.sources[0].id).toBe(before.id);expect(after.sources[0].sourceTier).toBe('GROUP_OFFICIAL');expect(after.events.some(e=>e.type==='OPENED')).toBe(true);expect(after.events.some(e=>e.type==='CORRECTED')).toBe(true);
  expect((await prisma.company.findUniqueOrThrow({where:{id:company.id}})).mergedIntoId).toBeNull();expect((await prisma.source.findUniqueOrThrow({where:{key:source.key}})).status).toBe('PAUSED');
+ expect(await prisma.employerIdentityReview.count({where:{id:plan.batchId}})).toBe(1);
+ const corrections=await prisma.dataCorrection.findMany({where:{batchId:plan.batchId},select:{evidence:true}});
+ expect(corrections.every(c=>!JSON.stringify(c.evidence).includes('artifactText'))).toBe(true);
  expect(await applyRepairPlan(prisma,plan,digest(plan),'test')).toMatchObject({alreadyApplied:true,written:0});
 });
 it('refuses an unreviewed competing active source instead of forcing reassignment',async()=>{

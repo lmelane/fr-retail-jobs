@@ -45,7 +45,7 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
       if (!reviewedTargets.has(targetId)) {
         reviewedTargets.add(targetId);
         const patch = { name: identity.displayName, canonicalKey: identity.companyId, kind: spec.targetKind, domain: spec.officialDomain,
-          domainSource: spec.evidence[0].url, careersUrl: spec.portalUrl,
+          domainSource: spec.evidence[0].url, careersUrl: spec.portalUrl, identityReviewId: review.batchId,
           ...(target?.parentGroup && resolveCompany(target.parentGroup).companyId === identity.companyId ? { parentGroup: null } : {}) };
         operations.push({ entity: 'Company', id: targetId, before: json(target), patch: target ? patch : { ...patch, fashionjobsUrl: `resolved:${identity.companyId}` }, reason: spec.evidence[0].statement });
       }
@@ -70,7 +70,10 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
     }
     return { version: 1, batchId: review.batchId, finding: 'REVIEWED_PORTAL_OWNER', createdAt: new Date().toISOString(),
       sourceKeys: review.sources.map(s => s.sourceKey), companyIds: [...companyIds], operations,
-      evidence: { reviewedAt: review.reviewedAt, reviewer: review.reviewer, sources: review.sources,
+      reviewDocument: { statement: 'Reviewed official portal ownership correction; original brand identities and all histories preserved.', reviewedBy: review.reviewer, reviewedAt: review.reviewedAt,
+        evidence: review.sources.flatMap(s => s.evidence.map(e => ({ url: e.url, artifactText: e.artifactText, sha256: e.sha256, explanation: e.statement }))) },
+      evidence: { reviewId: review.batchId, reviewedAt: review.reviewedAt, reviewer: review.reviewer,
+        sources: review.sources.map(s => ({ sourceKey: s.sourceKey, targetName: s.targetName, expectedSourceHash: s.expectedSourceHash, evidence: s.evidence.map(e => ({ url: e.url, sha256: e.sha256 })) })),
         preservation: 'Company identities, job IDs, RAW, observations, histories and lifecycle preserved; explicit CORRECTED events.' },
       invariants: ['lifecycle', 'source-owners'], ownerRules: review.sources.map(s => ({ sourceKey: s.sourceKey, name: s.targetName })) };
   }, { isolationLevel: 'RepeatableRead', timeout: 120000 });
