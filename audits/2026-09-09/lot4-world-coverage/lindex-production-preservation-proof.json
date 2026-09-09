@@ -1,0 +1,52 @@
+{
+  "environment": "PRODUCTION",
+  "before": {
+    "total": 77406,
+    "active": 74164,
+    "france": 10957,
+    "idHash": "637f03442f2896b223f823a89a6e9ce7"
+  },
+  "after": {
+    "total": 77447,
+    "active": 74198,
+    "france": 10957,
+    "idHash": "e88d2de651669a8941e42e410ae028a2"
+  },
+  "previousIdsPreserved": 77406,
+  "newJobs": 41,
+  "withdrawnWithProof": 7,
+  "oldRawPreserved": true,
+  "oldHistoriesPreserved": true,
+  "canonicalEmployerUnchanged": true,
+  "nativePostings": 41,
+  "FrancePositions": 0,
+  "countries": {
+    "GB": 1,
+    "NO": 20,
+    "CZ": 3,
+    "SE": 4,
+    "SK": 2,
+    "LT": 4,
+    "LV": 5,
+    "EE": 1,
+    "DK": 1
+  },
+  "describedPostings": 41,
+  "datedPostings": 0,
+  "employmentTerm": {
+    "PERMANENT": 24,
+    "null": 13,
+    "FIXED_TERM": 4
+  },
+  "workTime": {
+    "FULL_TIME": 13,
+    "PART_TIME": 20,
+    "null": 8
+  },
+  "sourceStates": {
+    "lindex": "RETIRED",
+    "lindex-easycruit": "ACTIVE"
+  },
+  "companyKind": "BRAND",
+  "aliases": 7
+}

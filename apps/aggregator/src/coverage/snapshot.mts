@@ -1,6 +1,10 @@
 /** Private, repeatable-read inventory. Never prints source configuration or credentials. */
 import { PrismaClient, Prisma } from "@prisma/client";
 import { writeFileSync } from "node:fs";
+import {
+  sourceIdentityHash,
+  sourceSubjectKey,
+} from "../connectors/sourceIdentity.js";
 const p = new PrismaClient();
 try {
   const output = process.argv[2];
@@ -23,6 +27,9 @@ try {
             parentGroup: true,
             mergedIntoId: true,
             identityReviewId: true,
+            identityReview: {
+              select: { id: true, reviewedAt: true, reviewedBy: true, planHash: true },
+            },
             sectorCodes: true,
             sectorEvidence: true,
             sectorReviewId: true,
@@ -39,7 +46,17 @@ try {
             },
           },
         }),
-        sources: await tx.source.findMany({ orderBy: { key: "asc" } }),
+        // The identity hash and subject key are computed here, by the same
+        // functions the promotion gate uses, so a Python composer never has to
+        // re-implement JS JSON.stringify to compare a review with the current
+        // configuration.
+        sources: (await tx.source.findMany({ orderBy: { key: "asc" } })).map(
+          (source) => ({
+            ...source,
+            identityHash: sourceIdentityHash(source),
+            subjectKey: sourceSubjectKey(source),
+          }),
+        ),
         counts:
           await tx.$queryRaw`SELECT "companyId",count(*)::int world,count(*) FILTER(WHERE "isFrance")::int france FROM "Job" WHERE "isActive" GROUP BY 1`,
         sourceCompanies:

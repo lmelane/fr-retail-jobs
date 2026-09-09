@@ -1,0 +1,19 @@
+# Backlog qualité des champs — points ouverts avec témoins et critères de résolution
+
+Règles communes : aucune valeur n'est forcée, aucune date technique (`date_start`, `date_modified`, première collecte) ne devient une date de publication, aucune correction n'est faite par exception nominative. Un point sort du backlog quand son critère est prouvé sur les données réelles, avant → après.
+
+## Lindex / EasyCruit (source `lindex-easycruit`, 41 offres, livrée le 2026-09-09)
+
+| # | Point ouvert | Témoins (production) | Cause mesurée | Critère de résolution | Ce qu'on ne fera pas |
+|---|---|---|---|---|---|
+| L1 | **Aucune date de publication** : 0/41 `postedAt`, donc 0 `JobPosting` émis | toutes les offres `lindex-easycruit`, ex. `cmtub8dmq0003o20115yajcz4` | Le flux XML ne publie que `date_start` / `date_end` / `date_modified` (dates de campagne, gardées en RAW) ; la page publique native n'a pas de `datePosted` | Une surface officielle (page native, sitemap daté, en-tête) publie une date de **première publication** pour l'offre, lue et prouvée sur ≥ 3 offres ; ou l'éditeur documente que `date_start` est la publication | Utiliser `date_start` ou la première collecte comme `datePosted` |
+| L2 | **Comtés et centres commerciaux dans `city`** | « Rogaland » ×5, « Nordland » ×2, « Akershus », « Innlandet », « Vestland », « Vestfold », « Troms », « Trøndelag », « Møre Og Romsdal » (comtés norvégiens) ; « Maxi Sandnes », « Bluewater », « Manglerud » (centres commerciaux) ; 1 offre sans lieu (`3655529`) | `Location` EasyCruit est un texte libre par offre ; la Norvège n'a pas de table de subdivisions, donc `adminArea1` reste vide (D53) et le libellé tombe dans `city` | Table de subdivisions NO/SE/DK reconnue (porte unique `resolveSubdivision`) : les comtés migrent vers `adminArea1` et `city` redevient nulle quand la source ne nomme pas de ville ; les centres commerciaux restent en `location` brute, jamais en `city` | Déduire une ville d'un centre commercial ou d'un titre (« Lindex Moss Amfi » → Moss) |
+| L3 | **Contradiction titre / champ** : 1 offre sans `employmentTerm` | `3656567` « Assisterende butikksjef for Lindex Kilden - Vikariat », champ `duration=Fast` | TITLE_EXPLICIT (FIXED_TERM) ≠ STRUCTURED (PERMANENT) ; la source est nouvelle, `sourceFieldTrust` n'a pas 30 observations comparables → la chaîne refuse de trancher (D54) | Le verdict `sourceFieldTrust` pour (`lindex-easycruit`, `duration`, `employmentTerm`) atteint `MIN_EVIDENCE` sur plusieurs runs et décide selon la règle générale ; ou la source corrige l'annonce | Ajouter une règle « si Lindex alors le titre gagne » |
+| L4 | Valeurs sans équivalent canonique : 12 durées (« Ekstrahjelp » ×7, « Na smlouvu » ×5), 8 rythmes (« Ved behov » ×4, « Příležitostná práce » ×2, « VPP », 1 vide) | ex. `3652617`, `3654815`, `3656629` | La source n'exprime pas une valeur de la taxonomie mondiale (extra / à la demande / emploi secondaire) | Décision de modèle (Loïc) : une dimension « on-call / casual » est-elle légitime dans le modèle mondial ? Mesurer d'abord le volume sur toutes les sources | Ranger « Ekstrahjelp » dans TEMPORARY ou PART_TIME par approximation |
+
+## Sport 1 (source `sport-1` retirée, portail officiel à zéro offre)
+
+| # | Point ouvert | Témoins | Critère de résolution |
+|---|---|---|---|
+| S1 | Portail officiel ReachMee sans offre le 2026-09-09 ; aucun adaptateur ReachMee | `sport1-browser-proof.json` (« Vi har for tiden ingen ledige stillinger »), `Company.atsConfig` de `cmtlygxyn02pfqf5kej297efs` | Dès qu'une offre réelle apparaît sur `karriere.sport1.no/jobs`, construire et valider l'adaptateur ReachMee sur elle, puis candidat → revue → promotion |
+| S2 | Franchises : zéro sur le portail central ne prouve pas zéro offre chez les franchisés | — | Recherche des canaux de recrutement des magasins franchisés (portails régionaux, annonces locales) avant toute affirmation d'absence |
