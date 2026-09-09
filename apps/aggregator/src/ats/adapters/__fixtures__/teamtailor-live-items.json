@@ -1,0 +1,100 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "feed_url": "https://carrieres.groupegalerieslafayette.com/jobs.json",
+  "next_url": "https://carrieres.groupegalerieslafayette.com/jobs.json?page=2&per_page=100",
+  "items": [
+    {
+      "id": "90577285-1051-4a64-b36a-1e935e20a58d",
+      "title": "Conseiller de vente Espace Luxe F/H",
+      "url": "https://carrieres.groupegalerieslafayette.com/jobs/8041185-conseiller-de-vente-espace-luxe-f-h",
+      "date_published": "2026-07-08T16:34:45+02:00",
+      "content_html": "<p><em>S’émerveiller devant les vitrines, vivre des expériences surprenantes, découvrir les dernières tendances en ligne comme en magasin, cela résonne forcément en vous !</em></p><p><em>Intégrer le Groupe Galeries Lafayette, c’est évoluer dans un univers Lifestyle (Mode, Beauté, Maison, Joaillerie, Horlogerie et Food), reflet d’un commerce joyeux, créatif et engagé.</em></p><p><em>Faire bouger les lignes du commerce et créer l’enchantement auprès de nos clients deviendra votre nouvelle ambition.</em></p><p></p><p>Vous souhaitez exercer votre métier de <strong>Conseiller de Vente</strong> autrement ?</p><p>Venez le vivre au sein des Galeries Lafayette ! 🚀 Nous recherchons plusieurs Conseillers de Vente en CDI 35h à partir de Septembre 2026 pour rejoindre l'équipe de notre nouvel espace Luxe et créateurs.</p><p>De l'accueil à l'encaissement vous êtes garant du parcours client et de sa satisfaction.</p><p>Sur le devant de la scène votre rôle sera :</p><ul><li><p>D'accueillir et d'accompagner nos clients</p></li><li><p>De développer le chiffre d'affaires en réalisant des ventes de produits et de services</p></li><li><p>De procéder à l'encaissement</p></li><li><p>D'assurer la gestion de la surface de vente (merchandising, tenue de rayon, réassort)</p></li><li><p>De garantir la fidélisation de la clientèle</p></li></ul><p>Le tout avec passion !</p><p><strong>VOTRE PROFIL</strong></p><p>Nous aimerions vous rencontrer si :</p><p>Vous avez un <strong>anglais opérationnel </strong>et pouvez communiquer avec aisance à l’oral.</p><p>Vous êtes passionné par la <strong>mode</strong>, à l’affût des <strong>tendances</strong> et sensible aux <strong>créateurs.</strong></p><p><strong>Vous êtes orienté client :</strong> Vous êtes un véritable ambassadeur de notre enseigne, vous savez développer des relations de confiance avec les clients et leur fournir des solutions personnalisées.</p><p><strong>Vous savez vous adapter aux situations et apprenez avec agilité : </strong>Vous adaptez votre approche et votre comportement à chaque situation et vous n'avez pas peur d'accepter de nouveaux défis que vous savez relever avec agilité.</p><p></p><p>Envie de vous projeter sur le long terme ? De nombreuses opportunités d’évolution vous attendent au sein du Groupe Galeries Lafayette.</p><p>📱Si vous souhaitez relever ce challenge à nos côtés, vous serez contacté par nos dénicheurs de talents.</p><p><strong>NOS AVANTAGES</strong></p><p>Et pour finir de vous convaincre💡</p><ul><li><p>Une rémunération fixe sur 13 mois, transparente, cohérente avec votre niveau d’expérience et vos compétences</p></li><li><p>Une rémunération variable mensuelle stimulante</p></li><li><p>Une prime d’intéressement et participation qui récompense équitablement l’effort collectif</p></li><li><p>Une remise sur vos achats au sein du Groupe</p></li><li><p>Une prise en charge avantageuse de vos frais de transports à hauteur de 80%</p></li><li><p>Un accompagnement personnalisé à l’occasion de votre intégration</p></li><li><p>Un parcours de carrière dynamique et diversifié (⅓ des postes pourvus en interne en 2025)</p></li></ul><p></p>",
+      "_jobposting": {
+        "@context": "http://schema.org/",
+        "@type": "JobPosting",
+        "title": "Conseiller de vente Espace Luxe F/H",
+        "description": "<p><em>S’émerveiller devant les vitrines, vivre des expériences surprenantes, découvrir les dernières tendances en ligne comme en magasin, cela résonne forcément en vous !</em></p><p><em>Intégrer le Groupe Galeries Lafayette, c’est évoluer dans un univers Lifestyle (Mode, Beauté, Maison, Joaillerie, Horlogerie et Food), reflet d’un commerce joyeux, créatif et engagé.</em></p><p><em>Faire bouger les lignes du commerce et créer l’enchantement auprès de nos clients deviendra votre nouvelle ambition.</em></p><p></p><p>Vous souhaitez exercer votre métier de <strong>Conseiller de Vente</strong> autrement ?</p><p>Venez le vivre au sein des Galeries Lafayette ! 🚀 Nous recherchons plusieurs Conseillers de Vente en CDI 35h à partir de Septembre 2026 pour rejoindre l'équipe de notre nouvel espace Luxe et créateurs.</p><p>De l'accueil à l'encaissement vous êtes garant du parcours client et de sa satisfaction.</p><p>Sur le devant de la scène votre rôle sera :</p><ul><li><p>D'accueillir et d'accompagner nos clients</p></li><li><p>De développer le chiffre d'affaires en réalisant des ventes de produits et de services</p></li><li><p>De procéder à l'encaissement</p></li><li><p>D'assurer la gestion de la surface de vente (merchandising, tenue de rayon, réassort)</p></li><li><p>De garantir la fidélisation de la clientèle</p></li></ul><p>Le tout avec passion !</p><p><strong>VOTRE PROFIL</strong></p><p>Nous aimerions vous rencontrer si :</p><p>Vous avez un <strong>anglais opérationnel </strong>et pouvez communiquer avec aisance à l’oral.</p><p>Vous êtes passionné par la <strong>mode</strong>, à l’affût des <strong>tendances</strong> et sensible aux <strong>créateurs.</strong></p><p><strong>Vous êtes orienté client :</strong> Vous êtes un véritable ambassadeur de notre enseigne, vous savez développer des relations de confiance avec les clients et leur fournir des solutions personnalisées.</p><p><strong>Vous savez vous adapter aux situations et apprenez avec agilité : </strong>Vous adaptez votre approche et votre comportement à chaque situation et vous n'avez pas peur d'accepter de nouveaux défis que vous savez relever avec agilité.</p><p></p><p>Envie de vous projeter sur le long terme ? De nombreuses opportunités d’évolution vous attendent au sein du Groupe Galeries Lafayette.</p><p>📱Si vous souhaitez relever ce challenge à nos côtés, vous serez contacté par nos dénicheurs de talents.</p><p><strong>NOS AVANTAGES</strong></p><p>Et pour finir de vous convaincre💡</p><ul><li><p>Une rémunération fixe sur 13 mois, transparente, cohérente avec votre niveau d’expérience et vos compétences</p></li><li><p>Une rémunération variable mensuelle stimulante</p></li><li><p>Une prime d’intéressement et participation qui récompense équitablement l’effort collectif</p></li><li><p>Une remise sur vos achats au sein du Groupe</p></li><li><p>Une prise en charge avantageuse de vos frais de transports à hauteur de 80%</p></li><li><p>Un accompagnement personnalisé à l’occasion de votre intégration</p></li><li><p>Un parcours de carrière dynamique et diversifié (⅓ des postes pourvus en interne en 2025)</p></li></ul><p></p>",
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "Groupe Galeries Lafayette",
+          "value": 8041185
+        },
+        "datePosted": "2026-07-08T16:34:45+02:00",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "Groupe Galeries Lafayette",
+          "sameAs": "https://carrieres.groupegalerieslafayette.com"
+        },
+        "baseSalary": {
+          "@type": "MonetaryAmount",
+          "currency": "EUR",
+          "value": {
+            "@type": "QuantitativeValue",
+            "unitText": "YEAR",
+            "minValue": "24270",
+            "maxValue": "26000"
+          }
+        },
+        "jobLocation": [
+          {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": null,
+              "addressLocality": "Bordeaux",
+              "postalCode": null,
+              "addressCountry": "FR",
+              "addressRegion": "Nouvelle-Aquitaine"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b56380d9-80b1-499b-8ba1-79f0f0ec3581",
+      "title": "Employé Service Client F/H",
+      "url": "https://carrieres.groupegalerieslafayette.com/jobs/7246224-employe-service-client-f-h",
+      "date_published": "2026-02-17T15:55:39+01:00",
+      "content_html": "<p><em>S’émerveiller devant les vitrines, vivre des expériences surprenantes, découvrir les dernières tendances en ligne comme en magasin, cela résonne forcément en vous !</em></p><p><em>Intégrer le Groupe Galeries Lafayette, c’est évoluer dans un univers Lifestyle (Mode, Beauté, Maison, Joaillerie, Horlogerie et Food), reflet d’un commerce joyeux, créatif et engagé.</em></p><p><em>Faire bouger les lignes du commerce et créer l’enchantement auprès de nos clients deviendra votre nouvelle ambition.</em><br></p><p><strong>VOTRE RÔLE&nbsp;</strong><br><br><span>Nous recherchons un Employé Service Client H/F à</span><strong> </strong>temps plein en CDI.</p><p>Date de prise de poste : septembre 2026</p><p>Vous souhaitez exercer votre métier d'Employé Service Client autrement ?<br><br>Venez le vivre au sein des Galeries Lafayette !&nbsp;🚀</p><p>De l'accueil à l'encaissement vous êtes garant du parcours client et de sa satisfaction. Sur le devant de la scène votre rôle sera :</p><ul><li><p>D'accueillir et d'accompagner nos clients,</p></li><li><p>De procéder à l'encaissement et aux remboursements</p></li><li><p>De promouvoir auprès de la clientèle les services proposé en magasin et de constituer leurs dossiers,</p></li><li><p>De proposer le programme fidélité et créer les cartes (fidélité, cadeaux, paiement),</p></li><li><p>De mettre en œuvre les procédures relatives aux services à la clientèle et régler les litiges,</p></li><li><p>De s'occuper de la détaxe,</p></li><li><p>D'être en charge du click and collect.</p></li></ul><p>Le tout avec passion !</p><p></p><p><strong>VOTRE PROFIL&nbsp;</strong></p><p>Nous aimerions vous rencontrer si :&nbsp;</p><ul><li><p>Vous êtes orienté client</p></li><li><p>Vous maîtrisez l'anglais (niveau B2 minimum). la pratique d'une autre langue étrangère sera un atout. </p></li><li><p>Vous êtes à l'aise à l'oral</p></li><li><p>Vous êtes un véritable ambassadeur de notre enseigne, vous savez développer des relations de confiance avec les clients et leur fournir des solutions personnalisées</p></li><li><p>Vous savez vous adapter aux situations et apprenez avec agilité.</p></li></ul><p></p><p>Envie de vous projeter sur le long terme ? De nombreuses opportunités d’évolution vous attendent au sein du Groupe Galeries Lafayette.</p><p><strong>📱</strong>Si vous souhaitez relever ce challenge à nos côtés, vous serez contacté par nos dénicheurs de talents. </p><p></p><p><strong>NOS AVANTAGES</strong></p><p>Et pour finir de vous convaincre<strong>💡<br></strong><br>- Une rémunération fixe sur 13 mois, transparente, cohérente avec votre niveau d’expérience et vos compétences</p><p>- Une rémunération variable stimulante</p><p>- Une prime d’intéressement et participation qui récompense équitablement l’effort collectif</p><p>- Une remise sur vos achats au sein du Groupe</p><p>- Une prise en charge avantageuse de vos frais de transports à hauteur de 80%</p><p>- Un accompagnement personnalisé à l’occasion de votre intégration</p><p>- Un parcours de carrière dynamique et diversifié (⅓ des postes pourvus en interne en 2025)</p>",
+      "_jobposting": {
+        "@context": "http://schema.org/",
+        "@type": "JobPosting",
+        "title": "Employé Service Client F/H",
+        "description": "<p><em>S’émerveiller devant les vitrines, vivre des expériences surprenantes, découvrir les dernières tendances en ligne comme en magasin, cela résonne forcément en vous !</em></p><p><em>Intégrer le Groupe Galeries Lafayette, c’est évoluer dans un univers Lifestyle (Mode, Beauté, Maison, Joaillerie, Horlogerie et Food), reflet d’un commerce joyeux, créatif et engagé.</em></p><p><em>Faire bouger les lignes du commerce et créer l’enchantement auprès de nos clients deviendra votre nouvelle ambition.</em><br></p><p><strong>VOTRE RÔLE&nbsp;</strong><br><br><span>Nous recherchons un Employé Service Client H/F à</span><strong> </strong>temps plein en CDI.</p><p>Date de prise de poste : septembre 2026</p><p>Vous souhaitez exercer votre métier d'Employé Service Client autrement ?<br><br>Venez le vivre au sein des Galeries Lafayette !&nbsp;🚀</p><p>De l'accueil à l'encaissement vous êtes garant du parcours client et de sa satisfaction. Sur le devant de la scène votre rôle sera :</p><ul><li><p>D'accueillir et d'accompagner nos clients,</p></li><li><p>De procéder à l'encaissement et aux remboursements</p></li><li><p>De promouvoir auprès de la clientèle les services proposé en magasin et de constituer leurs dossiers,</p></li><li><p>De proposer le programme fidélité et créer les cartes (fidélité, cadeaux, paiement),</p></li><li><p>De mettre en œuvre les procédures relatives aux services à la clientèle et régler les litiges,</p></li><li><p>De s'occuper de la détaxe,</p></li><li><p>D'être en charge du click and collect.</p></li></ul><p>Le tout avec passion !</p><p></p><p><strong>VOTRE PROFIL&nbsp;</strong></p><p>Nous aimerions vous rencontrer si :&nbsp;</p><ul><li><p>Vous êtes orienté client</p></li><li><p>Vous maîtrisez l'anglais (niveau B2 minimum). la pratique d'une autre langue étrangère sera un atout. </p></li><li><p>Vous êtes à l'aise à l'oral</p></li><li><p>Vous êtes un véritable ambassadeur de notre enseigne, vous savez développer des relations de confiance avec les clients et leur fournir des solutions personnalisées</p></li><li><p>Vous savez vous adapter aux situations et apprenez avec agilité.</p></li></ul><p></p><p>Envie de vous projeter sur le long terme ? De nombreuses opportunités d’évolution vous attendent au sein du Groupe Galeries Lafayette.</p><p><strong>📱</strong>Si vous souhaitez relever ce challenge à nos côtés, vous serez contacté par nos dénicheurs de talents. </p><p></p><p><strong>NOS AVANTAGES</strong></p><p>Et pour finir de vous convaincre<strong>💡<br></strong><br>- Une rémunération fixe sur 13 mois, transparente, cohérente avec votre niveau d’expérience et vos compétences</p><p>- Une rémunération variable stimulante</p><p>- Une prime d’intéressement et participation qui récompense équitablement l’effort collectif</p><p>- Une remise sur vos achats au sein du Groupe</p><p>- Une prise en charge avantageuse de vos frais de transports à hauteur de 80%</p><p>- Un accompagnement personnalisé à l’occasion de votre intégration</p><p>- Un parcours de carrière dynamique et diversifié (⅓ des postes pourvus en interne en 2025)</p>",
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "Groupe Galeries Lafayette",
+          "value": 7246224
+        },
+        "datePosted": "2026-02-17T15:55:39+01:00",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "Groupe Galeries Lafayette",
+          "sameAs": "https://carrieres.groupegalerieslafayette.com"
+        },
+        "baseSalary": {
+          "@type": "MonetaryAmount",
+          "currency": "EUR",
+          "value": {
+            "@type": "QuantitativeValue",
+            "unitText": "MONTH",
+            "value": "1870"
+          }
+        },
+        "jobLocation": [
+          {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": null,
+              "addressLocality": "Bordeaux",
+              "postalCode": null,
+              "addressCountry": "FR",
+              "addressRegion": "Nouvelle-Aquitaine"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

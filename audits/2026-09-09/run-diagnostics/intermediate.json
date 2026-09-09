@@ -1,0 +1,169 @@
+{
+  "at": "2026-09-08T22:21:06.916Z",
+  "status": "RUN_IN_PROGRESS",
+  "activeSources": 424,
+  "completedSourceRecords": 403,
+  "families": {
+    "smartrecruiters-whitelabel": {
+      "sources": 45,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "teamtailor": {
+      "sources": 122,
+      "unattested": 122,
+      "technicalErrors": 0
+    },
+    "jobylon": {
+      "sources": 1,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "workday": {
+      "sources": 28,
+      "unattested": 1,
+      "technicalErrors": 0
+    },
+    "flatchr": {
+      "sources": 3,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "icims": {
+      "sources": 1,
+      "unattested": 1,
+      "technicalErrors": 0
+    },
+    "personio": {
+      "sources": 23,
+      "unattested": 23,
+      "technicalErrors": 0
+    },
+    "digitalrecruiters": {
+      "sources": 4,
+      "unattested": 4,
+      "technicalErrors": 0
+    },
+    "greenhouse": {
+      "sources": 61,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "generic-listing": {
+      "sources": 14,
+      "unattested": 13,
+      "technicalErrors": 0
+    },
+    "recruitee": {
+      "sources": 22,
+      "unattested": 22,
+      "technicalErrors": 0
+    },
+    "lever": {
+      "sources": 17,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "workable": {
+      "sources": 4,
+      "unattested": 4,
+      "technicalErrors": 0
+    },
+    "successfactors": {
+      "sources": 29,
+      "unattested": 29,
+      "technicalErrors": 0
+    },
+    "talentview": {
+      "sources": 4,
+      "unattested": 4,
+      "technicalErrors": 0
+    },
+    "talentsoft": {
+      "sources": 6,
+      "unattested": 1,
+      "technicalErrors": 0
+    },
+    "bashtalents": {
+      "sources": 1,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "geodirectory": {
+      "sources": 1,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "jobaffinity-wordpress": {
+      "sources": 2,
+      "unattested": 1,
+      "technicalErrors": 0
+    },
+    "oraclehcm": {
+      "sources": 2,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "taleo": {
+      "sources": 1,
+      "unattested": 1,
+      "technicalErrors": 0
+    },
+    "talentfunnel": {
+      "sources": 1,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "magnet": {
+      "sources": 2,
+      "unattested": 2,
+      "technicalErrors": 0
+    },
+    "volcanic": {
+      "sources": 1,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "wordpress": {
+      "sources": 1,
+      "unattested": 1,
+      "technicalErrors": 0
+    },
+    "wttj": {
+      "sources": 1,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "radancy": {
+      "sources": 1,
+      "unattested": 1,
+      "technicalErrors": 0
+    },
+    "eqwa": {
+      "sources": 1,
+      "unattested": 1,
+      "technicalErrors": 0
+    },
+    "ashby": {
+      "sources": 1,
+      "unattested": 1,
+      "technicalErrors": 0
+    },
+    "typesense": {
+      "sources": 1,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "swatchgroup": {
+      "sources": 1,
+      "unattested": 0,
+      "technicalErrors": 0
+    },
+    "altamira": {
+      "sources": 1,
+      "unattested": 1,
+      "technicalErrors": 0
+    }
+  },
+  "warning": "Counts are provisional. Unattested does not prove missing jobs; zero technical errors does not prove completeness."
+}

@@ -1,0 +1,2807 @@
+{
+  "at": "2026-09-08T22:27:36.803Z",
+  "liveRepresentations": 5180,
+  "activeStoredRepresentations": 5527,
+  "missingFromCapturedFeeds": 347,
+  "olderGenerationMissing": 0,
+  "missingUnseen48h": 214,
+  "rows": [
+    {
+      "id": "cmtlynawx0gooqf5kg22s8sol",
+      "jobId": "cmtlynawx0gonqf5k3lve9fxb",
+      "sourceKey": "silbon",
+      "externalId": "2399a995-3098-4c37-a980-75c1ac00d7fd",
+      "lastSeenAt": "2026-09-07T22:03:39.102Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynazi0gpgqf5k9mrmq3g0",
+      "jobId": "cmtlynazi0gpfqf5kwwfgemd2",
+      "sourceKey": "silbon",
+      "externalId": "76ae0f7f-1b09-49ec-98cd-b854e39b7139",
+      "lastSeenAt": "2026-09-07T22:03:39.194Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynb830groqf5kla6vrku1",
+      "jobId": "cmtlynb830grnqf5k5kpoliys",
+      "sourceKey": "silbon",
+      "externalId": "8d0d2553-72b8-4eb4-975b-62488c63f8bf",
+      "lastSeenAt": "2026-09-07T22:03:39.397Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtmhb50h177mpv4x1yxwhuvv",
+      "jobId": "cmtmhb50h177lpv4x0xputkl2",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "22e38073-b121-47c2-a12e-90f007eadc8d",
+      "lastSeenAt": "2026-09-07T22:09:32.372Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mmd31eu7pv5jwvdchrm4",
+      "jobId": "cmtm8mmd31eu6pv5jslagqdrq",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "c9253704-a775-4016-9bc5-bf75290d77ae",
+      "lastSeenAt": "2026-09-06T13:20:21.451Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mouj1fqzpv5j9m26vbom",
+      "jobId": "cmtm8mouj1fqypv5jirz2ecyd",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "c946928e-f06e-46e3-8112-f5648470495a",
+      "lastSeenAt": "2026-09-06T13:20:24.192Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mo1u1fh3pv5jfxn1j4xu",
+      "jobId": "cmtm8mo1u1fh2pv5j1lcx6dl5",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "cbbb4295-e7b5-437d-8eb6-01597276ec08",
+      "lastSeenAt": "2026-09-06T13:20:23.266Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26kax0il4nv2bfrutsywu",
+      "jobId": "cmtk26kax0il3nv2b93g96e72",
+      "sourceKey": "normal",
+      "externalId": "c00b7292-bc84-4d50-aa06-298fc5704c09",
+      "lastSeenAt": "2026-09-06T13:18:12.537Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26kiu0imlnv2bvpcdx5pk",
+      "jobId": "cmtk26kiu0imknv2bqljz1e8w",
+      "sourceKey": "normal",
+      "externalId": "2b684779-03c2-4419-ba4f-a29e17375de5",
+      "lastSeenAt": "2026-09-06T13:18:12.687Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyiima05ycqf5kkxczze1e",
+      "jobId": "cmtlyiima05ybqf5kgcgdupqi",
+      "sourceKey": "bzb",
+      "externalId": "6baf1887-6641-4d98-bae3-2f7d1140243c",
+      "lastSeenAt": "2026-09-06T13:12:29.269Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtn74pb21eylqq5ljdnhfnl6",
+      "jobId": "cmtn74pb21eykqq5liierr98k",
+      "sourceKey": "lovisa",
+      "externalId": "132f1a68-0013-4913-afee-c8b69948c1cd",
+      "lastSeenAt": "2026-09-07T22:10:33.795Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyijhq0607qf5kgntrfg6v",
+      "jobId": "cmtlyijhq0606qf5kn3nndef3",
+      "sourceKey": "ephemera",
+      "externalId": "2a96d9fa-6c54-4df8-bce0-244f374d6160",
+      "lastSeenAt": "2026-09-06T13:12:29.947Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyhltr03cdqf5kd5lutyaq",
+      "jobId": "cmtlyhltr03ccqf5kp72qpe0p",
+      "sourceKey": "mq-marqet",
+      "externalId": "a6682cda-46a6-4d92-8a5c-f5a505d33b00",
+      "lastSeenAt": "2026-09-06T13:12:08.676Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyikk2063lqf5kvf8wibfy",
+      "jobId": "cmtlyikk2063kqf5kxxowxcq6",
+      "sourceKey": "nyx-professional-makeup",
+      "externalId": "5ed55495-d573-458b-9c7c-9d3792114f2e",
+      "lastSeenAt": "2026-09-07T22:02:19.620Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26gug0hxlnv2b9xvvuort",
+      "jobId": "cmtk26gug0hxknv2bd9x3meen",
+      "sourceKey": "normal",
+      "externalId": "443ae99c-f814-423e-b0a2-eb63d3c3e37b",
+      "lastSeenAt": "2026-09-07T22:07:47.138Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyiw7p06y3qf5kdoo1nnys",
+      "jobId": "cmtlyiw7p06y2qf5kg9pj4par",
+      "sourceKey": "jojo-maman-bebe",
+      "externalId": "49bc3330-59a9-44fa-9967-5c595966217f",
+      "lastSeenAt": "2026-09-06T13:12:46.584Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyhore03n8qf5k39pqhfqn",
+      "jobId": "cmtlyhore03n7qf5ku02pc3zb",
+      "sourceKey": "kicks",
+      "externalId": "81a59663-bc31-4ee0-9242-a4d0cd2f78d4",
+      "lastSeenAt": "2026-09-06T13:12:09.525Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp27y8n0k59qq4ziz0d8lgs",
+      "jobId": "cmtp27y8n0k58qq4zo51kh8bs",
+      "sourceKey": "chalhoub",
+      "externalId": "89c38672-d12a-495c-8ba1-e75a658e8f48",
+      "lastSeenAt": "2026-09-07T22:04:15.875Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyne9m0hbmqf5kcqtiwg6g",
+      "jobId": "cmtlyne9m0hblqf5ky4vps5qy",
+      "sourceKey": "white-stuff",
+      "externalId": "00364191-4f43-462e-8831-b82a1cf134ff",
+      "lastSeenAt": "2026-09-06T13:14:05.945Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyhlu103chqf5k75vyrsf1",
+      "jobId": "cmtlyhlu103cgqf5kqht13dh6",
+      "sourceKey": "mq-marqet",
+      "externalId": "83049c66-784c-4777-8666-4adabbeff8f3",
+      "lastSeenAt": "2026-09-06T13:12:08.684Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyiv9q06sqqf5k6kq6c4x8",
+      "jobId": "cmtlyiv9q06spqf5kr8ifhifo",
+      "sourceKey": "dune-london",
+      "externalId": "29d6b162-e3e4-4725-984b-8106a3265506",
+      "lastSeenAt": "2026-09-06T13:12:45.983Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyf5ab00dbqf5k8636khok",
+      "jobId": "cmtlyf5ab00daqf5kahknyl9w",
+      "sourceKey": "damart",
+      "externalId": "60735ad6-07f5-44e5-99c3-a7b037b8bc33",
+      "lastSeenAt": "2026-09-07T22:01:15.369Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyivce06tmqf5kuo47hx44",
+      "jobId": "cmtlyivce06tlqf5kj2sxu8tt",
+      "sourceKey": "dune-london",
+      "externalId": "c0b1a5df-91d0-4b6f-bcdc-2cc005d16cdd",
+      "lastSeenAt": "2026-09-06T13:12:46.084Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyiw1406wvqf5kqui1adwb",
+      "jobId": "cmtlyiw1406wuqf5k8o1k2z01",
+      "sourceKey": "jojo-maman-bebe",
+      "externalId": "bd2b9ccc-30a4-45a5-985b-2a6a756dd3b8",
+      "lastSeenAt": "2026-09-06T13:12:46.439Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyk6tg0a4pqf5khvodki47",
+      "jobId": "cmtlyk6tg0a4oqf5kfkzfnpc4",
+      "sourceKey": "magasin-du-nord",
+      "externalId": "ef480cb1-ab2c-4e8f-95d8-929c4892c6b3",
+      "lastSeenAt": "2026-09-07T22:02:44.129Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyi0f104hjqf5k58lyxdod",
+      "jobId": "cmtlyi0f104hiqf5k42smgoz0",
+      "sourceKey": "fastrack",
+      "externalId": "631a9e3b-d138-48b2-aa6f-4a1dd7e19c2b",
+      "lastSeenAt": "2026-09-07T22:02:05.632Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyi3gn04q9qf5kcbot28ps",
+      "jobId": "cmtlyi3gn04q8qf5kk7p601m6",
+      "sourceKey": "blue-banana",
+      "externalId": "c22d846a-5b22-4c4e-9446-754872f4c2e5",
+      "lastSeenAt": "2026-09-07T22:02:06.637Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyjqdw08piqf5kk62jk923",
+      "jobId": "cmtlyjqdw08phqf5k77vs07pg",
+      "sourceKey": "glitter",
+      "externalId": "564d0eef-8690-4ebc-9f95-01f329f92e61",
+      "lastSeenAt": "2026-09-06T13:13:00.637Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyk6ui0a55qf5ky2wmgksj",
+      "jobId": "cmtlyk6ui0a54qf5k7jaa2aex",
+      "sourceKey": "magasin-du-nord",
+      "externalId": "5b69120f-76a7-4584-9ad6-18bdeb3020f2",
+      "lastSeenAt": "2026-09-07T22:02:44.175Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21dub0905nv2bguubyn2g",
+      "jobId": "cmtluyw8f02s33nk5wuwhobpx",
+      "sourceKey": "galeries-lafayette",
+      "externalId": "132f93bd-7bb4-4716-ba04-1ace655092ee",
+      "lastSeenAt": "2026-09-06T13:15:26.543Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26igj0i8qnv2bceo7si1p",
+      "jobId": "cmtk26igj0i8pnv2bifd5z4ke",
+      "sourceKey": "normal",
+      "externalId": "207c4030-e383-42b8-9822-f8be3963b9f4",
+      "lastSeenAt": "2026-09-06T13:18:11.603Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26ijc0i99nv2byat0hsx1",
+      "jobId": "cmtlva6jl07kt3nk5tzcg0c3d",
+      "sourceKey": "normal",
+      "externalId": "ef12abff-bce0-4ef0-b1ae-fb7c2211f382",
+      "lastSeenAt": "2026-09-06T13:18:11.641Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyije905zfqf5kq4frzt9p",
+      "jobId": "cmtlyije905zeqf5kn8h565hw",
+      "sourceKey": "ephemera",
+      "externalId": "b3e6fea3-a7eb-499d-b770-d3a7a3e8f9dc",
+      "lastSeenAt": "2026-09-06T13:12:29.871Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyijk2060rqf5k5s0idqsl",
+      "jobId": "cmtlyijk2060qqf5kb0dnaiz9",
+      "sourceKey": "ephemera",
+      "externalId": "53883a89-d26f-44ac-90aa-e435a2fec5fa",
+      "lastSeenAt": "2026-09-06T13:12:29.994Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pgzt1lfkpv5jprfiqvx4",
+      "jobId": "cmtm8pgzt1lfjpv5jqh2kq7qx",
+      "sourceKey": "lovisa",
+      "externalId": "af167c45-29c0-4dbe-a033-74b17f0ea2a8",
+      "lastSeenAt": "2026-09-06T13:21:26.205Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyhvvf0422qf5kmzuvovgs",
+      "jobId": "cmtlyhvvf0421qf5kkmk2ktcl",
+      "sourceKey": "trussardi",
+      "externalId": "701a322c-e632-4a9f-aa3f-3c882398f8d3",
+      "lastSeenAt": "2026-09-06T13:12:12.093Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlygw0002luqf5kl7rnvzb3",
+      "jobId": "cmtlygw0002ltqf5kgz7hrs1t",
+      "sourceKey": "georges",
+      "externalId": "35b38c79-ad98-4a28-a82c-ddef631af2a3",
+      "lastSeenAt": "2026-09-07T22:01:49.644Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlygxlr02opqf5kxt8tvm8i",
+      "jobId": "cmtlygxlr02ooqf5k780sk0jt",
+      "sourceKey": "oh-polly",
+      "externalId": "85cf4596-12b2-4049-a3a6-8039cc26bf00",
+      "lastSeenAt": "2026-09-06T13:12:06.100Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk1x92i00tvnv2bjixb7u6s",
+      "jobId": "cmtk1x92i00tunv2bcz48lqnh",
+      "sourceKey": "prisma-media",
+      "externalId": "551f8986-20a9-449d-a496-4b6b12f650f7",
+      "lastSeenAt": "2026-09-07T22:02:08.452Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyhpgg03qaqf5k89qtsc2o",
+      "jobId": "cmtlyhpgg03q9qf5ksn61bzzy",
+      "sourceKey": "orlebar-brown",
+      "externalId": "88ee66c7-05e9-4780-ac5d-8a2784794de0",
+      "lastSeenAt": "2026-09-06T13:12:09.757Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlb00ai0jfhqq2b7vs89ljn",
+      "jobId": "cmtlb00ah0jfgqq2bd992voek",
+      "sourceKey": "normal",
+      "externalId": "98ea4967-7ec0-4666-8179-b2d346856ea6",
+      "lastSeenAt": "2026-09-06T13:18:10.538Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyilzh06akqf5kj6huqrn9",
+      "jobId": "cmtlyilzh06ajqf5kwk2huxmb",
+      "sourceKey": "toteme",
+      "externalId": "ac14e9f8-92a5-46af-9369-c516a9f88549",
+      "lastSeenAt": "2026-09-07T22:02:20.572Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyim2y06bkqf5keqoa77ru",
+      "jobId": "cmtlyim2y06bjqf5kfi3hc28s",
+      "sourceKey": "toteme",
+      "externalId": "e68e8d62-7398-4595-b301-c9fb0c6ba35f",
+      "lastSeenAt": "2026-09-06T13:12:32.302Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm78o3n0oc0pv5j6b5km425",
+      "jobId": "cmtm78o3n0obzpv5jchp9x1di",
+      "sourceKey": "aroma-zone",
+      "externalId": "45e6fabb-0102-4595-a728-1abec401c6d6",
+      "lastSeenAt": "2026-09-07T22:05:17.963Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26heo0i1jnv2bgdnmm6w0",
+      "jobId": "cmtk26heo0i1inv2bjdocqqmx",
+      "sourceKey": "normal",
+      "externalId": "0f67f4aa-8d39-4d9d-abf7-11ce2d8b5ecc",
+      "lastSeenAt": "2026-09-06T13:18:11.067Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26m200ix5nv2b9qymjfut",
+      "jobId": "cmtlva4fy07jt3nk5j3o8e0ab",
+      "sourceKey": "normal",
+      "externalId": "c31727ce-249e-40d7-931e-3ca1858e405c",
+      "lastSeenAt": "2026-09-07T22:07:49.654Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyk28i09ubqf5ka7tjkixy",
+      "jobId": "cmtlyk28h09uaqf5k5if72soq",
+      "sourceKey": "monica-vinader",
+      "externalId": "4955d84f-8744-4502-a35b-4b64c64205cc",
+      "lastSeenAt": "2026-09-06T13:13:06.558Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyks7c0bb3qf5k0dg8upta",
+      "jobId": "cmtlyks7c0bb2qf5kyqrmsbf3",
+      "sourceKey": "belstaff",
+      "externalId": "c8660697-c556-4784-90c9-d8cc243cb6ad",
+      "lastSeenAt": "2026-09-06T13:13:18.630Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyks840bb7qf5kmufwprpk",
+      "jobId": "cmtlyks840bb6qf5kwrntt87e",
+      "sourceKey": "belstaff",
+      "externalId": "40140f3f-9e12-49cc-b8cf-575a41f61174",
+      "lastSeenAt": "2026-09-06T13:13:18.638Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyksfk0bcvqf5k20nlzpiu",
+      "jobId": "cmtlyksfk0bcuqf5kdn6bx4d9",
+      "sourceKey": "belstaff",
+      "externalId": "1f5cc7f5-19ad-49c5-910c-7ae404e341f5",
+      "lastSeenAt": "2026-09-06T13:13:18.799Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyksg10bczqf5ktbnikvjt",
+      "jobId": "cmtlyksg10bcyqf5kvt1lg4he",
+      "sourceKey": "belstaff",
+      "externalId": "878294c1-2a7f-4248-82bc-06623d00ef5a",
+      "lastSeenAt": "2026-09-06T13:13:18.814Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyjq8708niqf5kiqdzozaw",
+      "jobId": "cmtlyjq8708nhqf5kn0murbe3",
+      "sourceKey": "glitter",
+      "externalId": "76a74c16-d85e-4233-afb7-1a90c5af729b",
+      "lastSeenAt": "2026-09-06T13:13:00.473Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyjrfy08ukqf5k9bgpynzi",
+      "jobId": "cmtlyjrfy08ujqf5kisz64aip",
+      "sourceKey": "singularu",
+      "externalId": "4a2b740d-7df4-4ebf-bd25-f84c9c2f8bbe",
+      "lastSeenAt": "2026-09-07T22:02:40.718Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyjrhv08vcqf5kj48zkje3",
+      "jobId": "cmtlyjrhv08vbqf5knefexew2",
+      "sourceKey": "singularu",
+      "externalId": "a1f5c30c-8c0f-48d8-9556-9b2a08830924",
+      "lastSeenAt": "2026-09-07T22:02:40.789Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtmhb505177ipv4xtzq9be1a",
+      "jobId": "cmtmhb505177hpv4xd9q3ol03",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "8db5724b-ded6-482b-b5e3-696fad87c203",
+      "lastSeenAt": "2026-09-06T13:20:20.290Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mo5p1finpv5jcze26ic1",
+      "jobId": "cmtm8mo5p1fimpv5jhpk24wmx",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "43deb710-c0d7-45d1-a472-415390d0b0bf",
+      "lastSeenAt": "2026-09-06T13:20:23.419Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mout1fr3pv5j6yywriwb",
+      "jobId": "cmtm8mout1fr2pv5jsg222s3d",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "c76c0352-37bd-413d-8fdc-86b791b9bb79",
+      "lastSeenAt": "2026-09-06T13:20:24.202Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mrup1gifpv5jvo6u56rn",
+      "jobId": "cmtm8mrup1giepv5j3lfbsapd",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "ad0570cf-699e-4a35-a19a-1cd7a4123534",
+      "lastSeenAt": "2026-09-06T13:20:26.941Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyl7ds0buyqf5kbv9l9twq",
+      "jobId": "cmtlyl7ds0buxqf5k8tpdcipe",
+      "sourceKey": "undiz",
+      "externalId": "ec096949-12d7-4f06-8af7-907f95eff712",
+      "lastSeenAt": "2026-09-07T22:02:59.508Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyiimk05ygqf5k1vd8lp96",
+      "jobId": "cmtlyiimk05yfqf5kms8c1qvh",
+      "sourceKey": "bzb",
+      "externalId": "678b54bf-a401-4726-a43c-9e9ef3d4fb75",
+      "lastSeenAt": "2026-09-06T13:12:29.277Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyim3d06boqf5kt6oe2j8m",
+      "jobId": "cmtlyim3d06bnqf5kmjl76u4o",
+      "sourceKey": "toteme",
+      "externalId": "5e12610b-5512-4a54-97fa-0a1d8076ab46",
+      "lastSeenAt": "2026-09-06T13:12:32.311Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtrskevq140hpg5m5ox4zbvy",
+      "jobId": "cmtrskevq140gpg5mocmhj4o2",
+      "sourceKey": "normal",
+      "externalId": "5316376c-a33a-4d15-bfd8-df3bf5e2b068",
+      "lastSeenAt": "2026-09-07T22:07:46.256Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26jx90iimnv2ba0nk7p6j",
+      "jobId": "cmtk26jx80iilnv2b9cuzjs1i",
+      "sourceKey": "normal",
+      "externalId": "a818857b-e33c-45c1-8602-6d03f22891c8",
+      "lastSeenAt": "2026-09-07T22:07:48.668Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyhx42047pqf5khzy8l8yn",
+      "jobId": "cmtlyhx42047oqf5klr42pacg",
+      "sourceKey": "fred-perry",
+      "externalId": "3dc2e3d0-76c4-43c5-919d-c87458d73cea",
+      "lastSeenAt": "2026-09-06T13:12:12.085Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynk3b0i8pqf5kwnfs4ajp",
+      "jobId": "cmtlynk3b0i8oqf5k6pfywkm6",
+      "sourceKey": "space-nk",
+      "externalId": "d22af80c-5cf1-4ad0-a30f-a1abd9060901",
+      "lastSeenAt": "2026-09-06T13:14:09.189Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlymke50ffhqf5kixb68ukz",
+      "jobId": "cmtlymke50ffgqf5k805qee0y",
+      "sourceKey": "browns-shoes",
+      "externalId": "a96cc6e3-1910-4c13-902c-6e325278cc47",
+      "lastSeenAt": "2026-09-07T22:03:26.633Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlymkg30fg1qf5kyhdcoijb",
+      "jobId": "cmtlymkg30fg0qf5kr6e3kozg",
+      "sourceKey": "browns-shoes",
+      "externalId": "8c24cfc1-2128-47d9-bfe0-848429c08b8c",
+      "lastSeenAt": "2026-09-07T22:03:26.700Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlymkoj0filqf5kkwjyo48p",
+      "jobId": "cmtlymkoi0fikqf5kagnzacih",
+      "sourceKey": "browns-shoes",
+      "externalId": "d7e5f424-d4bf-451f-a960-13133e614d54",
+      "lastSeenAt": "2026-09-07T22:03:26.936Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlymkov0fipqf5knvzrm9k8",
+      "jobId": "cmtlymkov0fioqf5k0187rh0c",
+      "sourceKey": "browns-shoes",
+      "externalId": "51016312-8554-441d-b6cc-afafa600b387",
+      "lastSeenAt": "2026-09-07T22:03:26.948Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21gyg09awnv2b85116edn",
+      "jobId": "cmtluzgz902zj3nk5uru1t3az",
+      "sourceKey": "galeries-lafayette",
+      "externalId": "1a861298-8f24-4414-8362-70629ce4d064",
+      "lastSeenAt": "2026-09-07T22:05:08.245Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyjqv508qzqf5kzj07o6hj",
+      "jobId": "cmtlyjqv508qyqf5khpjeh2b7",
+      "sourceKey": "mr-marvis",
+      "externalId": "7972979f-8aee-452a-b041-ee5ace9bd2ee",
+      "lastSeenAt": "2026-09-06T13:13:01.063Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtrskeyi141qpg5mrtexgc6f",
+      "jobId": "cmtrskeyi141ppg5mvd354y8c",
+      "sourceKey": "normal",
+      "externalId": "39352671-5140-4812-ae24-e6b2ad9cc119",
+      "lastSeenAt": "2026-09-07T22:07:46.355Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26i6j0i6unv2bid9rvmin",
+      "jobId": "cmtk26i6i0i6tnv2b3snkp3tb",
+      "sourceKey": "normal",
+      "externalId": "0bad4550-89d3-4fd7-9faa-50640d39a5c4",
+      "lastSeenAt": "2026-09-07T22:07:47.917Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyhlu703clqf5k5yx0hhwr",
+      "jobId": "cmtlyhlu703ckqf5kijk0cxjg",
+      "sourceKey": "mq-marqet",
+      "externalId": "9806eb36-a471-488b-88ed-575ce635cc7a",
+      "lastSeenAt": "2026-09-06T13:12:08.694Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk1x3qx00eunv2b3p6wh14x",
+      "jobId": "cmtk1x3qx00etnv2bargwihhb",
+      "sourceKey": "karla-otto",
+      "externalId": "55af9ec9-fa6b-4b54-8257-4ff487457415",
+      "lastSeenAt": "2026-09-06T13:12:08.701Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyhlwl03d9qf5ktj0vk132",
+      "jobId": "cmtlyhlwl03d8qf5kdg9g4ihq",
+      "sourceKey": "mq-marqet",
+      "externalId": "18872e34-0018-42b3-a29a-8f2099934497",
+      "lastSeenAt": "2026-09-06T13:12:08.754Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21gtc09aenv2bg0cm6sse",
+      "jobId": "cmtluzggg02zd3nk59c6n6e9a",
+      "sourceKey": "galeries-lafayette",
+      "externalId": "fd1bba44-bb31-4bad-b474-ca8f338ccf12",
+      "lastSeenAt": "2026-09-06T13:15:27.727Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26jm10igmnv2b8goxngmr",
+      "jobId": "cmtlva8yq07lv3nk5rkoh6g0p",
+      "sourceKey": "normal",
+      "externalId": "fcf2d64e-0e63-4975-97b5-3bb6a078e974",
+      "lastSeenAt": "2026-09-06T13:18:12.219Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyi2vu04osqf5k4gu030uz",
+      "jobId": "cmtlyi2vu04orqf5k8racy1re",
+      "sourceKey": "vitamin-a",
+      "externalId": "110e6558-997a-403a-99cc-6e5f69069d83",
+      "lastSeenAt": "2026-09-06T13:12:16.743Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26ghk0hv8nv2bt6jxsquh",
+      "jobId": "cmtk26ghk0hv7nv2bfswn44mg",
+      "sourceKey": "normal",
+      "externalId": "438f253a-0fa0-47a9-ac23-0c9f05bbebcf",
+      "lastSeenAt": "2026-09-07T22:07:46.113Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26i2t0i66nv2b7jluy6yf",
+      "jobId": "cmtk26i2t0i65nv2bfld2nr9q",
+      "sourceKey": "normal",
+      "externalId": "7a4fa3d1-281b-4280-a81d-0220de069742",
+      "lastSeenAt": "2026-09-06T13:18:11.418Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26it20ib5nv2bu8l9nm5k",
+      "jobId": "cmtk26it20ib4nv2bx643wr1v",
+      "sourceKey": "normal",
+      "externalId": "3c85f91c-1555-4242-b136-2c483f5cb9e9",
+      "lastSeenAt": "2026-09-06T13:18:11.779Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26m4s0ixpnv2b14z18lfe",
+      "jobId": "cmtk26m4r0ixonv2bfk3cejwx",
+      "sourceKey": "normal",
+      "externalId": "d1cbfbec-d2b0-40fe-ab5f-04293e76b2ff",
+      "lastSeenAt": "2026-09-06T13:18:13.539Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26m5s0ixxnv2bq5itqi80",
+      "jobId": "cmtk26m5s0ixwnv2bn8to58l1",
+      "sourceKey": "normal",
+      "externalId": "530d9b6a-7b6e-4888-9e45-c9efae54f7ce",
+      "lastSeenAt": "2026-09-06T13:18:13.566Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm77wo30k5ppv5j48ycty0d",
+      "jobId": "cmtm77wo20k5opv5jza2c65xn",
+      "sourceKey": "hans-anders",
+      "externalId": "64dc294b-1881-4e58-ab89-6abace337676",
+      "lastSeenAt": "2026-09-07T22:04:57.278Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlymjjr0fbcqf5kg6ean85h",
+      "jobId": "cmtlymjjr0fbbqf5k2732ix36",
+      "sourceKey": "b2",
+      "externalId": "51016312-8554-441d-b6cc-afafa600b387",
+      "lastSeenAt": "2026-09-06T13:13:53.465Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26idr0i86nv2bizvqcd90",
+      "jobId": "cmtk26idr0i85nv2byblffz4x",
+      "sourceKey": "normal",
+      "externalId": "c6f5a589-813b-47cf-96b8-a66fad8b2e1d",
+      "lastSeenAt": "2026-09-06T13:18:11.559Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26iex0i8env2bmlxgtx3q",
+      "jobId": "cmtk26iex0i8dnv2brpamnpg2",
+      "sourceKey": "normal",
+      "externalId": "44e8d74f-c28e-483b-b59c-b52bdf5e4c0b",
+      "lastSeenAt": "2026-09-06T13:18:11.577Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26imj0i9wnv2b6o6ib3x5",
+      "jobId": "cmtk26imj0i9vnv2blm843ck3",
+      "sourceKey": "normal",
+      "externalId": "629abc35-603f-43b0-ac1f-0b50f45a8083",
+      "lastSeenAt": "2026-09-07T22:07:48.126Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26ixy0ic1nv2bawi3cljv",
+      "jobId": "cmtk26ixy0ic0nv2bpbvb8wrf",
+      "sourceKey": "normal",
+      "externalId": "e73e0142-6e3f-4c81-8631-fbe51df4854f",
+      "lastSeenAt": "2026-09-06T13:18:11.827Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26j4o0idbnv2bf0u08m9o",
+      "jobId": "cmtk26j4o0idanv2bnp400is6",
+      "sourceKey": "normal",
+      "externalId": "43003ded-f81b-47a6-83fa-72110942e656",
+      "lastSeenAt": "2026-09-06T13:18:11.893Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8p9ko1j88pv5j2wc5gxk8",
+      "jobId": "cmtm8p9ko1j87pv5jvri5sbck",
+      "sourceKey": "lovisa",
+      "externalId": "d2be4743-571a-4632-8e91-a4e8be4dfa31",
+      "lastSeenAt": "2026-09-06T13:21:18.779Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtmp2sil12ipso5l5pqzs9ok",
+      "jobId": "cmtmp2sil12ioso5l7ji84tyy",
+      "sourceKey": "normal",
+      "externalId": "832ddf0e-3aa0-40e1-b263-848b6e756139",
+      "lastSeenAt": "2026-09-07T22:07:48.357Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8p9o11j9gpv5jq2fj6e4h",
+      "jobId": "cmtm8p9o11j9fpv5jvg5n8136",
+      "sourceKey": "lovisa",
+      "externalId": "cde5be8c-3cd0-496e-967d-f7e36b14a591",
+      "lastSeenAt": "2026-09-07T22:10:34.543Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8p9po1ja4pv5j35willmy",
+      "jobId": "cmtm8p9po1ja3pv5juz2fzvpi",
+      "sourceKey": "lovisa",
+      "externalId": "31d93fcc-1572-464a-b7f2-d0fc98b46707",
+      "lastSeenAt": "2026-09-07T22:10:34.579Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8p9px1ja8pv5j3vvwy50w",
+      "jobId": "cmtm8p9px1ja7pv5j4pcqbs9q",
+      "sourceKey": "lovisa",
+      "externalId": "841ea35f-17c5-4a63-890d-89843ce8cd93",
+      "lastSeenAt": "2026-09-07T22:10:34.588Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8p9qt1jakpv5j07qmhmwa",
+      "jobId": "cmtm8p9qt1jajpv5jjji9rpdw",
+      "sourceKey": "lovisa",
+      "externalId": "a9a58510-7978-4051-85d5-73f21a10dfca",
+      "lastSeenAt": "2026-09-06T13:21:19.001Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8p9so1jb8pv5j7pgs2wbs",
+      "jobId": "cmtm8p9so1jb7pv5jyktn387k",
+      "sourceKey": "lovisa",
+      "externalId": "76477f39-8e31-4a96-8d9d-44e3492d2041",
+      "lastSeenAt": "2026-09-06T13:21:19.070Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26mgv0izrnv2bvxo0o4ix",
+      "jobId": "cmtk26mgv0izqnv2b9ro9ubgz",
+      "sourceKey": "normal",
+      "externalId": "5668a144-c4c8-4c41-94ba-a1593821a2b2",
+      "lastSeenAt": "2026-09-07T22:07:49.846Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26jlh0igjnv2bbvo0hvcq",
+      "jobId": "cmtk26jlh0iginv2bt107p5h9",
+      "sourceKey": "normal",
+      "externalId": "c1958947-338c-4bee-9f6f-e7483c491d1c",
+      "lastSeenAt": "2026-09-06T13:18:12.208Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26ktm0ioqnv2bvx5nxa8e",
+      "jobId": "cmtk26ktm0iopnv2beqgsiwmb",
+      "sourceKey": "normal",
+      "externalId": "32ed069e-4bcd-423d-9161-dce6f201159f",
+      "lastSeenAt": "2026-09-06T13:18:12.866Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26lzr0iwrnv2bfhp3olyc",
+      "jobId": "cmtlvaawb07mn3nk50u7vdd4r",
+      "sourceKey": "normal",
+      "externalId": "69117877-c879-45d6-aacc-d42db12540a6",
+      "lastSeenAt": "2026-09-06T13:18:13.442Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyjzmj09goqf5kgx2nb8u6",
+      "jobId": "cmtlyjzmj09gnqf5k0gjh2e3a",
+      "sourceKey": "profil-optik",
+      "externalId": "f3313bc4-3d30-4e01-866a-6bfe98df910f",
+      "lastSeenAt": "2026-09-07T22:02:41.600Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtn5a7zv055uqq5lysc8j2ox",
+      "jobId": "cmtn5a7zv055tqq5lds4jm4n5",
+      "sourceKey": "bizzbee",
+      "externalId": "15205d03-32c1-4c28-ab68-d405952068ac",
+      "lastSeenAt": "2026-09-06T13:12:28.648Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtn5a805055yqq5l22gn2yp6",
+      "jobId": "cmtn5a805055xqq5lmgwh6v3p",
+      "sourceKey": "bizzbee",
+      "externalId": "6baf1887-6641-4d98-bae3-2f7d1140243c",
+      "lastSeenAt": "2026-09-06T13:12:28.657Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtn5a80f0562qq5ln7rrd5k1",
+      "jobId": "cmtn5a80f0561qq5lno01ybmu",
+      "sourceKey": "bizzbee",
+      "externalId": "678b54bf-a401-4726-a43c-9e9ef3d4fb75",
+      "lastSeenAt": "2026-09-06T13:12:28.676Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyim2006bcqf5k9pkjmcjm",
+      "jobId": "cmtlyim2006bbqf5k4ee1gjfx",
+      "sourceKey": "toteme",
+      "externalId": "ae721ff9-ea50-4c19-91cb-700976d208c2",
+      "lastSeenAt": "2026-09-06T13:12:32.285Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyiuqy06r5qf5kvletsjzc",
+      "jobId": "cmtlyiuqy06r4qf5k71oeb98a",
+      "sourceKey": "castore",
+      "externalId": "b288af09-f73e-4cbb-ba59-67d96731bc7d",
+      "lastSeenAt": "2026-09-07T22:02:26.459Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyivet06ueqf5kkctcgsnn",
+      "jobId": "cmtlyives06udqf5ki1j2nrl0",
+      "sourceKey": "dune-london",
+      "externalId": "de32918c-7b6c-4cc6-9951-e43cb62b262c",
+      "lastSeenAt": "2026-09-06T13:12:46.173Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyk0ag09khqf5kskt2ctjs",
+      "jobId": "cmtlyk0ag09kgqf5kv49aar82",
+      "sourceKey": "merkal",
+      "externalId": "5d71e3af-0014-4152-91d9-be4681481552",
+      "lastSeenAt": "2026-09-07T22:02:42.127Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8p9ga1j6wpv5jcmrinhpm",
+      "jobId": "cmtm8p9ga1j6vpv5jqr76va8z",
+      "sourceKey": "lovisa",
+      "externalId": "f3c14a08-ef47-4fb5-a4ce-69b1731ed55c",
+      "lastSeenAt": "2026-09-07T22:10:34.324Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtllnjrs0jmppg2brhx3vqpz",
+      "jobId": "cmtllnjrs0jmopg2bgdyj6oow",
+      "sourceKey": "normal",
+      "externalId": "546e5137-4394-4ca4-93e1-3974d10b0bc4",
+      "lastSeenAt": "2026-09-07T22:07:46.920Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm78mr80nxkpv5jl712bzzb",
+      "jobId": "cmtm78mr80nxjpv5j0z81rvdk",
+      "sourceKey": "aroma-zone",
+      "externalId": "61c6dc16-1cd7-4089-a053-4f5fdf0c3653",
+      "lastSeenAt": "2026-09-07T22:05:16.386Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mm8y1esrpv5jviqtkvqz",
+      "jobId": "cmtm8mm8y1esqpv5j2060yi9i",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "e1246946-b609-4980-93b5-d3e1d28fa5cf",
+      "lastSeenAt": "2026-09-07T22:09:33.207Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk717030e2nnf2b86fb0oex",
+      "jobId": "cmtk717020e2mnf2b30yf1t7s",
+      "sourceKey": "normal",
+      "externalId": "8addfa2f-a57f-4a0e-8674-84033976be8d",
+      "lastSeenAt": "2026-09-07T22:07:46.993Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyk08p09jpqf5khoxy849f",
+      "jobId": "cmtlyk08p09joqf5kg4xwyqsy",
+      "sourceKey": "merkal",
+      "externalId": "e5bc27dd-0f76-48dd-b937-8c6a1856bfab",
+      "lastSeenAt": "2026-09-06T13:13:05.902Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyk2ar09uvqf5kj7q02ipy",
+      "jobId": "cmtlyk2ar09uuqf5k5zy4onbs",
+      "sourceKey": "monica-vinader",
+      "externalId": "52595bd0-726b-48e6-a7f1-80717a4b5b91",
+      "lastSeenAt": "2026-09-06T13:13:06.610Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk1x3ru00eynv2b4vknl76x",
+      "jobId": "cmtk1x3ru00exnv2bk5add3tf",
+      "sourceKey": "karla-otto",
+      "externalId": "20f54d0b-a4b9-407f-95ad-265d8ab188fa",
+      "lastSeenAt": "2026-09-06T13:12:08.711Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlymj9l0f84qf5kaidcdf7t",
+      "jobId": "cmtlymj9l0f83qf5kuhnvzfiq",
+      "sourceKey": "b2",
+      "externalId": "a96cc6e3-1910-4c13-902c-6e325278cc47",
+      "lastSeenAt": "2026-09-06T13:13:53.201Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlymjjd0fb8qf5kzjzzui4g",
+      "jobId": "cmtlymjjd0fb7qf5k768vfft7",
+      "sourceKey": "b2",
+      "externalId": "d7e5f424-d4bf-451f-a960-13133e614d54",
+      "lastSeenAt": "2026-09-06T13:13:53.455Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm78nff0o70pv5jm17zme8w",
+      "jobId": "cmtm78nff0o6zpv5j0pj2qc99",
+      "sourceKey": "aroma-zone",
+      "externalId": "94c01626-f86f-49bc-aa34-4fc6724224cc",
+      "lastSeenAt": "2026-09-06T13:15:35.454Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm78nwa0oawpv5j5388cvi2",
+      "jobId": "cmtm78nwa0oavpv5jkwdozoss",
+      "sourceKey": "aroma-zone",
+      "externalId": "aa2af69f-e0ba-46af-b8f2-2b1e31908189",
+      "lastSeenAt": "2026-09-06T13:15:35.821Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtod6y8k14p1qq4zz4i61vve",
+      "jobId": "cmtod6y8k14p0qq4ztz3kth1o",
+      "sourceKey": "normal",
+      "externalId": "346f2f95-3efa-4479-b3b2-37f8726612a6",
+      "lastSeenAt": "2026-09-07T22:07:49.298Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26gi40hvcnv2boc93r0ve",
+      "jobId": "cmtk26gi40hvbnv2bwj6k9a9j",
+      "sourceKey": "normal",
+      "externalId": "bd03e512-3593-47f5-9987-332b07d13a63",
+      "lastSeenAt": "2026-09-07T22:07:46.131Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26iav0i7mnv2bhumaxj4s",
+      "jobId": "cmtk26iav0i7lnv2belifhay5",
+      "sourceKey": "normal",
+      "externalId": "6789e264-8c21-4de9-aa22-2b4135f100cb",
+      "lastSeenAt": "2026-09-06T13:18:11.516Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtrsnzs71hb1pg5mb2rzt0he",
+      "jobId": "cmtrsnzs71hb0pg5mpk2j6233",
+      "sourceKey": "lovisa",
+      "externalId": "d2f29371-0402-4e4e-b640-87232b0614b6",
+      "lastSeenAt": "2026-09-07T22:10:33.312Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26mj60j07nv2bzumr0u8x",
+      "jobId": "cmtk26mj60j06nv2bm3w0zq6y",
+      "sourceKey": "normal",
+      "externalId": "d30cbf0a-ae5b-4a90-9e4e-3843042014d4",
+      "lastSeenAt": "2026-09-06T13:18:13.689Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26n9m0j51nv2bzynp32c1",
+      "jobId": "cmtk26n9m0j50nv2bqfebul46",
+      "sourceKey": "normal",
+      "externalId": "3b5c4752-26e4-4782-bb37-514672094faf",
+      "lastSeenAt": "2026-09-07T22:07:50.198Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtrsgzzy0nzbpg5mbdqan1wb",
+      "jobId": "cmtrsgzzx0nzapg5mu2h4gf5b",
+      "sourceKey": "galeries-lafayette",
+      "externalId": "a0f7c19f-16e0-4f38-9127-a0ebf72ee286",
+      "lastSeenAt": "2026-09-07T22:05:06.983Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mlr11emnpv5jxl1uyosh",
+      "jobId": "cmtm8mlr11emmpv5j9ibe11xu",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "b943456e-79f9-4164-b968-9267523cdeba",
+      "lastSeenAt": "2026-09-06T13:20:20.789Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mluo1eo3pv5j3r7o8f3e",
+      "jobId": "cmtm8mlun1eo2pv5jn792sw5z",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "4f7760be-173e-417a-86e5-2299600b1bea",
+      "lastSeenAt": "2026-09-07T22:09:32.859Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mmsn1eznpv5jxz1w4h6x",
+      "jobId": "cmtm8mmsn1ezmpv5j9zm55qhw",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "fef01aa1-783e-4d18-9041-400d9ed81b6a",
+      "lastSeenAt": "2026-09-07T22:09:33.689Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mmsw1ezrpv5j1vyv41mc",
+      "jobId": "cmtm8mmsw1ezqpv5j5vvd60fq",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "a9a7c4c8-9b46-4145-95e2-693b471256fb",
+      "lastSeenAt": "2026-09-06T13:20:21.928Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mn1j1f33pv5jmgubm1rr",
+      "jobId": "cmtm8mn1j1f32pv5j7s57ezpm",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "1db45d19-5d50-4416-98d7-3858bee9338e",
+      "lastSeenAt": "2026-09-06T13:20:22.159Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mn411f3zpv5j1rkk3bu4",
+      "jobId": "cmtm8mn411f3ypv5jhhdmxkta",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "5a92d459-24c3-45c2-9465-3284a6c4fb52",
+      "lastSeenAt": "2026-09-07T22:09:34.053Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21t7j0agqnv2bdym1mdvf",
+      "jobId": "cmtk21t7j0agpnv2be8k0mlry",
+      "sourceKey": "etam",
+      "externalId": "74a679cc-f416-40e2-9000-00c7a49c92b1",
+      "lastSeenAt": "2026-09-07T22:05:24.007Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21t850agunv2btqat3bqk",
+      "jobId": "cmtk21t850agtnv2bopvdpdgw",
+      "sourceKey": "etam",
+      "externalId": "ab219a09-a6e5-4803-9748-3d92d27ed426",
+      "lastSeenAt": "2026-09-07T22:05:24.022Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlb00ax0jflqq2b59wnx1mc",
+      "jobId": "cmtlb00ax0jfkqq2b2yujd11k",
+      "sourceKey": "normal",
+      "externalId": "b55dc530-5c83-448c-bbbf-8e5f07fa8de9",
+      "lastSeenAt": "2026-09-06T13:18:10.546Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pbun1jxcpv5jcaa77ayy",
+      "jobId": "cmtm8pbun1jxbpv5jdpt1mcx6",
+      "sourceKey": "lovisa",
+      "externalId": "b1654ed3-efd1-4485-9cd5-19ca8a40fec3",
+      "lastSeenAt": "2026-09-06T13:21:20.927Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pbux1jxgpv5j316u9ek6",
+      "jobId": "cmtm8pbux1jxfpv5jow8nqec7",
+      "sourceKey": "lovisa",
+      "externalId": "e65d7807-6dc1-45af-b669-a608cf29eb6c",
+      "lastSeenAt": "2026-09-06T13:21:20.938Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pbyq1jyspv5jnax086jv",
+      "jobId": "cmtm8pbyq1jyrpv5jeun7gbmq",
+      "sourceKey": "lovisa",
+      "externalId": "89d6bc22-04c4-4788-940b-ad311587ae77",
+      "lastSeenAt": "2026-09-07T22:10:36.584Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynaw90gogqf5kf8wjvb2c",
+      "jobId": "cmtlynaw90gofqf5kl05ejbxs",
+      "sourceKey": "silbon",
+      "externalId": "047003e3-95e8-46d3-9a43-1142ec90d71a",
+      "lastSeenAt": "2026-09-06T13:14:03.342Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynjvs0i6xqf5kbp8smdpf",
+      "jobId": "cmtlynjvs0i6wqf5k06sc4pzj",
+      "sourceKey": "space-nk",
+      "externalId": "3af6a328-d63f-49ac-bb29-901449fbd621",
+      "lastSeenAt": "2026-09-06T13:14:09.024Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynkew0iapqf5kqxsxamtc",
+      "jobId": "cmtlynkew0iaoqf5k270dggf3",
+      "sourceKey": "space-nk",
+      "externalId": "0aa39772-5f5a-4cfe-bb19-208bf8fc9bdc",
+      "lastSeenAt": "2026-09-07T22:03:45.028Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26jo60ih2nv2brvcmf79w",
+      "jobId": "cmtk26jo50ih1nv2bmyg96f17",
+      "sourceKey": "normal",
+      "externalId": "cf445fb4-6ffd-4c36-a608-a5d234b28f76",
+      "lastSeenAt": "2026-09-06T13:18:12.250Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26jt80ihznv2bc4n5t29x",
+      "jobId": "cmtk26jt80ihynv2buvy5zkfv",
+      "sourceKey": "normal",
+      "externalId": "c17972a1-304c-40f4-be87-b259de025aa2",
+      "lastSeenAt": "2026-09-06T13:18:12.317Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtrsnzw61hckpg5m6188sxr0",
+      "jobId": "cmtrsnzw61hcjpg5mltry4bzm",
+      "sourceKey": "lovisa",
+      "externalId": "3dfc84e9-18b9-4936-8d52-c90c29543f36",
+      "lastSeenAt": "2026-09-07T22:10:33.457Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtrsnzyj1hdrpg5md6k7bs0c",
+      "jobId": "cmtrsnzyj1hdqpg5mokmv0vb1",
+      "sourceKey": "lovisa",
+      "externalId": "a73bacc0-6ec1-415e-8673-ab39773f10bc",
+      "lastSeenAt": "2026-09-07T22:10:33.542Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynb5u0gr4qf5k5i324lkz",
+      "jobId": "cmtlynb5u0gr3qf5kd0kyeyvy",
+      "sourceKey": "silbon",
+      "externalId": "dfcd1293-33a3-4203-bc40-6d417d944b40",
+      "lastSeenAt": "2026-09-07T22:03:39.345Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynb6s0grcqf5k15yranp0",
+      "jobId": "cmtlynb6s0grbqf5k2206x80i",
+      "sourceKey": "silbon",
+      "externalId": "b3b73866-666a-42f4-8626-c1f5dfc25f91",
+      "lastSeenAt": "2026-09-07T22:03:39.369Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8moi71fmjpv5jhib84uon",
+      "jobId": "cmtm8moi71fmipv5je1t4e8d8",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "6d01a7a0-e3b5-46e8-94e7-f442321e70c0",
+      "lastSeenAt": "2026-09-06T13:20:23.807Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21dvk090bnv2b063i707z",
+      "jobId": "cmtluyw2k02s13nk5oig6tih8",
+      "sourceKey": "galeries-lafayette",
+      "externalId": "7b82785b-82f1-4ef5-b0a0-c7ee641851dc",
+      "lastSeenAt": "2026-09-06T13:15:26.563Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21f70094inv2b7pdo1r1t",
+      "jobId": "cmtluz70e02wb3nk5mj3jqmqc",
+      "sourceKey": "galeries-lafayette",
+      "externalId": "922f560c-45a5-46a5-a47c-cd1b1b23bb06",
+      "lastSeenAt": "2026-09-07T22:05:07.562Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21f8e094onv2bhfoxzeqr",
+      "jobId": "cmtluz6vt02w93nk5lo95wye4",
+      "sourceKey": "galeries-lafayette",
+      "externalId": "92f84818-0c4e-4dd2-b62f-82b85025db28",
+      "lastSeenAt": "2026-09-07T22:05:07.578Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21fzq097anv2bxckbuzid",
+      "jobId": "cmtluzamn02xh3nk52rb3v0gp",
+      "sourceKey": "galeries-lafayette",
+      "externalId": "0cd11734-70ba-4dd8-b0ec-912cc64ecdd5",
+      "lastSeenAt": "2026-09-07T22:05:07.862Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21gkb099env2bpfpzn4bn",
+      "jobId": "cmtluzeak02yp3nk5y2o2j4dt",
+      "sourceKey": "galeries-lafayette",
+      "externalId": "eb137855-9aa0-41b7-bb9e-13c7f9310018",
+      "lastSeenAt": "2026-09-07T22:05:08.080Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mp0u1ft3pv5j8kzory7k",
+      "jobId": "cmtm8mp0u1ft2pv5ji2q76q5e",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "87336501-f57a-4354-8210-11b8dddaff66",
+      "lastSeenAt": "2026-09-06T13:20:24.367Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlrf84b02d6oc2bgka9p9kj",
+      "jobId": "cmtlrf84b02d5oc2bb88gfs18",
+      "sourceKey": "soeur",
+      "externalId": "8059d072-61b0-4bc6-b697-54fedd945acc",
+      "lastSeenAt": "2026-09-06T13:13:35.860Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk2spgg08h2mr2bmm5trlq4",
+      "jobId": "cmtlv92si071h3nk5oy9xaum6",
+      "sourceKey": "etam",
+      "externalId": "ec096949-12d7-4f06-8af7-907f95eff712",
+      "lastSeenAt": "2026-09-07T22:05:24.774Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pcti1k74pv5jxjf2i8cl",
+      "jobId": "cmtm8pcti1k73pv5jjjhj87ot",
+      "sourceKey": "lovisa",
+      "externalId": "764ee88e-e480-42c7-8fa0-59448f687684",
+      "lastSeenAt": "2026-09-07T22:10:37.264Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mlxf1eozpv5juf35oqdg",
+      "jobId": "cmtm8mlxf1eoypv5jod9c66v4",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "89580176-59ec-451e-a6c6-8e72f3586725",
+      "lastSeenAt": "2026-09-06T13:20:20.973Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mm261eqvpv5jqv806sof",
+      "jobId": "cmtm8mm261equpv5jw0enshr7",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "bc125f84-d99e-4071-b525-d0b640636bde",
+      "lastSeenAt": "2026-09-06T13:20:21.132Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mm2w1er7pv5jga3thtrg",
+      "jobId": "cmtm8mm2w1er6pv5jrxt1r95x",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "bf2088cf-a851-4a91-aaa9-bc455ba45ca2",
+      "lastSeenAt": "2026-09-07T22:09:33.096Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mm3z1erfpv5jfoqbee3u",
+      "jobId": "cmtm8mm3z1erepv5jlig92pux",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "9abecb19-4988-4796-9e79-8c29e4d39593",
+      "lastSeenAt": "2026-09-07T22:09:33.112Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mma11et3pv5j16nbz50t",
+      "jobId": "cmtm8mma11et2pv5j8pm9euiq",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "477b97b8-3b97-4486-b3c1-ccf844c23c98",
+      "lastSeenAt": "2026-09-06T13:20:21.342Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mmdp1eujpv5j2boyesae",
+      "jobId": "cmtm8mmdp1euipv5jc3avo661",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "f2b3023a-5ec0-4854-9dd4-e4e8f311d461",
+      "lastSeenAt": "2026-09-06T13:20:21.470Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyk0b209kpqf5kfzc04wc9",
+      "jobId": "cmtlyk0b209koqf5k31kchx50",
+      "sourceKey": "merkal",
+      "externalId": "dd3f06ec-3123-40b9-bb08-eed294d0e5d0",
+      "lastSeenAt": "2026-09-06T13:13:05.995Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8paag1jgopv5jio3j71pz",
+      "jobId": "cmtm8paag1jgnpv5jzcft174l",
+      "sourceKey": "lovisa",
+      "externalId": "d6c70cea-f0e8-4537-ad11-30251d6bec5e",
+      "lastSeenAt": "2026-09-06T13:21:19.523Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyndxv0h8qqf5kkp34jt9v",
+      "jobId": "cmtlyndxv0h8pqf5kg6nc4gad",
+      "sourceKey": "white-stuff",
+      "externalId": "8ab0ed93-d7e8-41e7-bc6a-ea17acec86da",
+      "lastSeenAt": "2026-09-06T13:14:05.692Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyk6zr0a71qf5kzufo57qd",
+      "jobId": "cmtlyk6zr0a70qf5keorldeyg",
+      "sourceKey": "magasin-du-nord",
+      "externalId": "d2826c57-fcd5-4f18-ad03-58e428f35857",
+      "lastSeenAt": "2026-09-06T13:13:07.633Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyk74o0a8hqf5kgxm41sjx",
+      "jobId": "cmtlyk74o0a8gqf5klm8cufob",
+      "sourceKey": "magasin-du-nord",
+      "externalId": "e3c4ac4f-22e6-46fd-834d-43ad73bc92e6",
+      "lastSeenAt": "2026-09-06T13:13:07.752Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp34lsa19wyqq4zcxhmqmlv",
+      "jobId": "cmtp34lsa19wxqq4zdxja21bf",
+      "sourceKey": "normal",
+      "externalId": "656aea6c-d05d-4d97-ac55-5f742880f460",
+      "lastSeenAt": "2026-09-06T13:18:10.178Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm78kb90narpv5jzpxytjy0",
+      "jobId": "cmtm78kb90naqpv5j6q1a0tfw",
+      "sourceKey": "akira",
+      "externalId": "a2dc5bba-eac9-4c2d-92aa-00eee3d6e582",
+      "lastSeenAt": "2026-09-07T22:05:15.756Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8panq1jkspv5j1zibou4r",
+      "jobId": "cmtm8panq1jkrpv5jxsjxctah",
+      "sourceKey": "lovisa",
+      "externalId": "b08f6d0a-898d-40da-919e-1bf57a65d03d",
+      "lastSeenAt": "2026-09-07T22:10:35.413Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8patd1jmkpv5j6zc98lhn",
+      "jobId": "cmtm8patd1jmjpv5jwzzm29z8",
+      "sourceKey": "lovisa",
+      "externalId": "357d15fe-a799-4467-a8a1-a1c310ea0072",
+      "lastSeenAt": "2026-09-07T22:10:35.573Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mmqh1eyzpv5jnu3qions",
+      "jobId": "cmtm8mmqh1eyypv5jtlpli440",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "64272e46-75ec-4974-bb04-db01e485fdd7",
+      "lastSeenAt": "2026-09-06T13:20:21.867Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mnc51f73pv5jcr6o3ve1",
+      "jobId": "cmtm8mnc51f72pv5j86ax78hi",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "6fc2efc8-0da3-4430-bc9d-b59728d4ec91",
+      "lastSeenAt": "2026-09-06T13:20:22.458Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mne51f7zpv5j8eoxt2cb",
+      "jobId": "cmtm8mne51f7ypv5jhj04r10b",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "d447400b-1542-45bf-8242-b0b23dbfa249",
+      "lastSeenAt": "2026-09-07T22:09:34.376Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mnj71fa3pv5jr88nht2m",
+      "jobId": "cmtm8mnj71fa2pv5jogxyrz7a",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "7ca8cdc1-3b39-4478-b19b-4b5c63df634c",
+      "lastSeenAt": "2026-09-06T13:20:22.688Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mnjg1fa7pv5jzuhnm255",
+      "jobId": "cmtm8mnjg1fa6pv5jg7eko4vd",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "6d72c666-5bff-4425-b0fb-68456572a568",
+      "lastSeenAt": "2026-09-06T13:20:22.696Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm77wtd0k7lpv5jut3icsdf",
+      "jobId": "cmtm77wtd0k7kpv5jni2cw5iy",
+      "sourceKey": "hans-anders",
+      "externalId": "8fa0df72-4b5e-4b54-827a-4ab47c363e4f",
+      "lastSeenAt": "2026-09-07T22:04:57.503Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm77wuy0k8dpv5jj6lah7qt",
+      "jobId": "cmtm77wuy0k8cpv5jbyo8t7jt",
+      "sourceKey": "hans-anders",
+      "externalId": "87bcca0d-96e5-4361-b955-7ae240bd28b7",
+      "lastSeenAt": "2026-09-06T13:15:22.299Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pfd01kxopv5jupmtqc76",
+      "jobId": "cmtm8pfd01kxnpv5jl8dw4i0y",
+      "sourceKey": "lovisa",
+      "externalId": "0bd284f6-9309-46c5-8704-8614fc2855a9",
+      "lastSeenAt": "2026-09-06T13:21:24.573Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm78n820o4gpv5jzamhkokj",
+      "jobId": "cmtm78n820o4fpv5jc77tpgtb",
+      "sourceKey": "aroma-zone",
+      "externalId": "b7ab7406-68b3-4f15-a1ac-4b6cd6054fc5",
+      "lastSeenAt": "2026-09-07T22:05:17.234Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm78niy0o80pv5jzict5ilz",
+      "jobId": "cmtm78niy0o7zpv5jc01zjz6l",
+      "sourceKey": "aroma-zone",
+      "externalId": "7b05685f-f8bf-40e1-bce2-206ecd24983f",
+      "lastSeenAt": "2026-09-07T22:05:17.583Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm77x1q0kbdpv5j3gklo6e5",
+      "jobId": "cmtm77x1q0kbcpv5jj92tgwun",
+      "sourceKey": "hans-anders",
+      "externalId": "2b975b17-a243-4905-8627-9eea629d2bf8",
+      "lastSeenAt": "2026-09-06T13:15:22.563Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm77x250kblpv5j8ry237gw",
+      "jobId": "cmtm77x250kbkpv5jn37f6kmv",
+      "sourceKey": "hans-anders",
+      "externalId": "1734a6e5-07cc-42a7-a17a-40d9d1e9ed7a",
+      "lastSeenAt": "2026-09-07T22:04:57.885Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm77x6f0kdlpv5jnlw3nu1e",
+      "jobId": "cmtm77x6e0kdkpv5j6628sk14",
+      "sourceKey": "hans-anders",
+      "externalId": "bd529028-bac4-4e0b-81aa-ead07fbf5b7b",
+      "lastSeenAt": "2026-09-06T13:15:22.746Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mnvl1ferpv5j0nohdeik",
+      "jobId": "cmtm8mnvk1feqpv5jwspvf8rc",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "d039c366-93f1-48a3-9454-451228905d0f",
+      "lastSeenAt": "2026-09-06T13:20:23.064Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26kod0inpnv2bfugysaqm",
+      "jobId": "cmtk26kod0inonv2bv17lr7w8",
+      "sourceKey": "normal",
+      "externalId": "45f528a3-2742-4fa8-960f-799a05c4aabe",
+      "lastSeenAt": "2026-09-06T13:18:12.798Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26l150iq6nv2b20j38cz7",
+      "jobId": "cmtk26l150iq5nv2bmqbstaus",
+      "sourceKey": "normal",
+      "externalId": "a517bd07-4734-476a-b7ce-5d792dbe5c8d",
+      "lastSeenAt": "2026-09-07T22:07:49.180Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mnws1ff7pv5jkffm6d1i",
+      "jobId": "cmtm8mnws1ff6pv5jl8qnvdnh",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "96e61f7b-fa13-4a6f-80d4-ebceac19a339",
+      "lastSeenAt": "2026-09-06T13:20:23.100Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26lfw0isznv2bv7wftlmt",
+      "jobId": "cmtk26lfw0isynv2ba0ppykhe",
+      "sourceKey": "normal",
+      "externalId": "db1074a7-25db-41cf-a345-e46b0c8a51ad",
+      "lastSeenAt": "2026-09-07T22:07:49.363Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm78mog0nwgpv5jz47876es",
+      "jobId": "cmtm78mog0nwfpv5jvq9zf8n2",
+      "sourceKey": "aroma-zone",
+      "externalId": "fd3efc49-da15-4570-8b43-257e763cce80",
+      "lastSeenAt": "2026-09-07T22:05:16.284Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynawn0gokqf5kjpsjnwfw",
+      "jobId": "cmtlynawn0gojqf5k78lfmnyp",
+      "sourceKey": "silbon",
+      "externalId": "300cc150-70a7-4950-892f-b7817bd786da",
+      "lastSeenAt": "2026-09-07T22:03:39.090Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk1wybf001knv2bs6jd26av",
+      "jobId": "cmtk1wybf001jnv2byzud099e",
+      "sourceKey": "margaret-howell",
+      "externalId": "b64d3a0e-8a87-41ec-83cb-26534a0a9a3c",
+      "lastSeenAt": "2026-09-07T22:01:22.132Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21thn0aijnv2b0qjlo22v",
+      "jobId": "cmtk21thn0aiinv2bmzi8oho1",
+      "sourceKey": "etam",
+      "externalId": "bc149c13-de29-4c8d-b933-19012ed2a001",
+      "lastSeenAt": "2026-09-06T13:15:44.373Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyfo0200tcqf5ktb18yolx",
+      "jobId": "cmtlyfo0200tbqf5kutok8uq0",
+      "sourceKey": "luhta",
+      "externalId": "7db27b0d-b561-4628-af60-7ed73f708754",
+      "lastSeenAt": "2026-09-06T13:11:50.578Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm78mxq0o0kpv5jolzuddde",
+      "jobId": "cmtm78mxp0o0jpv5jyr12qj3a",
+      "sourceKey": "aroma-zone",
+      "externalId": "9dbbdc4a-e1ae-4592-985b-92c0a6569798",
+      "lastSeenAt": "2026-09-06T13:15:34.878Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pbaq1jrwpv5jf4ynj5p9",
+      "jobId": "cmtm8pbaq1jrvpv5jbjne0204",
+      "sourceKey": "lovisa",
+      "externalId": "626b1db2-10e7-4b5a-acb8-b4b21d4467df",
+      "lastSeenAt": "2026-09-06T13:21:20.430Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21tvp0akonv2b49utjeda",
+      "jobId": "cmtk21tvp0aknnv2b5wzi1d6h",
+      "sourceKey": "etam",
+      "externalId": "63d40dec-bdf1-4cb9-99dd-b7d510a2645e",
+      "lastSeenAt": "2026-09-06T13:15:44.523Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk2sq7708k2mr2b7vjy5w2e",
+      "jobId": "cmtk2sq7708k1mr2be078ee3j",
+      "sourceKey": "etam",
+      "externalId": "a4e7ec62-1a0c-4ecb-ac7e-0b638a36df9c",
+      "lastSeenAt": "2026-09-06T13:15:45.246Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyfsc000z4qf5k8evt5566",
+      "jobId": "cmtlyfsc000z3qf5kqcpfhqkf",
+      "sourceKey": "naturkompaniet",
+      "externalId": "1d7c6848-799c-4e35-a83b-d764bb0bcedb",
+      "lastSeenAt": "2026-09-06T13:11:52.923Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pgji1lakpv5jl2rus852",
+      "jobId": "cmtm8pgji1lajpv5j8allx8te",
+      "sourceKey": "lovisa",
+      "externalId": "fbc0407f-db33-499c-9130-2efa01e7a21d",
+      "lastSeenAt": "2026-09-07T22:10:40.364Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtmwuh240eqtso4zlarxp18v",
+      "jobId": "cmtmwuh240eqsso4zs8aaj8bw",
+      "sourceKey": "space-nk",
+      "externalId": "68e2e640-92de-4a4a-a6d0-116268e4d0ea",
+      "lastSeenAt": "2026-09-07T22:03:44.157Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyfvc8016zqf5kzz507eti",
+      "jobId": "cmtlyfvc8016yqf5klmin4p0e",
+      "sourceKey": "intersport",
+      "externalId": "1597f99e-0375-4da5-b121-5f783b99dce9",
+      "lastSeenAt": "2026-09-06T13:11:55.390Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynkco0ia9qf5k07z4cghd",
+      "jobId": "cmtlynkco0ia8qf5klqx71dlj",
+      "sourceKey": "space-nk",
+      "externalId": "2b662442-35b1-414e-a4f6-97137b56c1bd",
+      "lastSeenAt": "2026-09-07T22:03:44.980Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pdb71kcgpv5jfhma67e4",
+      "jobId": "cmtm8pdb71kcfpv5jn1l720gs",
+      "sourceKey": "lovisa",
+      "externalId": "7a740195-c6d7-4602-8638-ab73beb6b288",
+      "lastSeenAt": "2026-09-06T13:21:22.617Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pdbm1kckpv5jsljqump0",
+      "jobId": "cmtm8pdbm1kcjpv5jev0fqujf",
+      "sourceKey": "lovisa",
+      "externalId": "fe840074-9759-4498-a865-ea42657545d2",
+      "lastSeenAt": "2026-09-07T22:10:37.747Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pdtr1ki4pv5jmvynqdpd",
+      "jobId": "cmtm8pdtr1ki3pv5jbqrjv5gd",
+      "sourceKey": "lovisa",
+      "externalId": "42d92314-de9f-4fd0-b765-1d1f5adc5008",
+      "lastSeenAt": "2026-09-07T22:10:38.237Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pduq1kicpv5j0pkj10j8",
+      "jobId": "cmtm8pduq1kibpv5jbrlr7k30",
+      "sourceKey": "lovisa",
+      "externalId": "2ef3636f-bef2-4d42-883d-2e5e68e8b4fa",
+      "lastSeenAt": "2026-09-06T13:21:23.265Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26k3a0ijpnv2bxs1zwpn9",
+      "jobId": "cmtk26k3a0ijonv2bezo44hdv",
+      "sourceKey": "normal",
+      "externalId": "db7359de-16cd-4d2d-a3ad-3df3ea63f0aa",
+      "lastSeenAt": "2026-09-06T13:18:12.434Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtmpuag519jyso5lri6v4aa4",
+      "jobId": "cmtmpuag519jxso5leqd1qrn4",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "0f55a52c-27fa-4a37-956c-18ff9f33d8ab",
+      "lastSeenAt": "2026-09-07T22:09:32.364Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mls91en7pv5jdc8qe37o",
+      "jobId": "cmtm8mls91en6pv5jxehc6p5h",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "d6967151-6d3c-4bbc-b5c2-9fa4cdd71dbc",
+      "lastSeenAt": "2026-09-07T22:09:32.795Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynk3l0i8tqf5krphick5s",
+      "jobId": "cmtlynk3l0i8sqf5k3wrqnyox",
+      "sourceKey": "space-nk",
+      "externalId": "9f8c81a4-e8ab-4755-862c-07899122f133",
+      "lastSeenAt": "2026-09-07T22:03:44.836Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pde11kdgpv5jwiivygx7",
+      "jobId": "cmtm8pde11kdfpv5jumjkquse",
+      "sourceKey": "lovisa",
+      "externalId": "9b73ef1d-4ca1-474d-b317-8162138c3803",
+      "lastSeenAt": "2026-09-07T22:10:37.831Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtoc3b34011eqq4zqf7bldyw",
+      "jobId": "cmtoc3b34011dqq4zmc7gpyt9",
+      "sourceKey": "burnt",
+      "externalId": "33baa37d-ff07-48f1-b6f2-87ef0b750d92",
+      "lastSeenAt": "2026-09-06T13:11:56.153Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlymjbh0f8oqf5kno5ms9h7",
+      "jobId": "cmtlymjbh0f8nqf5k6zzdfzok",
+      "sourceKey": "b2",
+      "externalId": "8c24cfc1-2128-47d9-bfe0-848429c08b8c",
+      "lastSeenAt": "2026-09-06T13:13:53.258Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlymjcm0f90qf5kc42k6ehm",
+      "jobId": "cmtlymjcm0f8zqf5k34knxkg8",
+      "sourceKey": "b2",
+      "externalId": "e1729b59-80d3-4c19-b5de-c92220ef1a98",
+      "lastSeenAt": "2026-09-04T16:07:52.436Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynkga0ib1qf5kouqn98i5",
+      "jobId": "cmtlynkga0ib0qf5kglt3yp2f",
+      "sourceKey": "space-nk",
+      "externalId": "fa9e3b1f-aece-4d63-9a98-724725dd2edc",
+      "lastSeenAt": "2026-09-07T22:03:45.055Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynklg0ibtqf5k2xnvxodv",
+      "jobId": "cmtlynklg0ibsqf5kzm94z44y",
+      "sourceKey": "space-nk",
+      "externalId": "969fcf1f-378f-4c0a-b7a9-c5d684e7467e",
+      "lastSeenAt": "2026-09-07T22:03:45.128Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynecs0hcaqf5k47wxqkm3",
+      "jobId": "cmtlynecs0hc9qf5ko114jppn",
+      "sourceKey": "white-stuff",
+      "externalId": "b9080702-3f95-43d0-82dc-e7f2c9436e53",
+      "lastSeenAt": "2026-09-06T13:14:06.009Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mm7x1esfpv5jelynjtvh",
+      "jobId": "cmtm8mm7x1esepv5jxgfm37tx",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "6704dab7-e6eb-402b-8544-895eaf16269d",
+      "lastSeenAt": "2026-09-06T13:20:21.278Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtn70yro1bk3qq5lguo36swe",
+      "jobId": "cmtn70yro1bk2qq5lvrn80ey8",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "0b074f28-2149-42cb-b62d-faa3c78c6fd8",
+      "lastSeenAt": "2026-09-06T13:20:20.202Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mn161f2zpv5jt3cisf0m",
+      "jobId": "cmtm8mn161f2ypv5jcjxq3uc7",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "809c2f22-7b8a-4cd4-b254-71ccb2884ba8",
+      "lastSeenAt": "2026-09-06T13:20:22.152Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mn821f5jpv5jc2moi7ga",
+      "jobId": "cmtm8mn821f5ipv5jhmbr3q5f",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "5704aef7-6c28-4336-a6f0-40a881e2dee8",
+      "lastSeenAt": "2026-09-06T13:20:22.334Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mmqt1ez3pv5j0obrkej5",
+      "jobId": "cmtm8mmqt1ez2pv5j0jqeg0xv",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "46cfe631-8d53-49a3-a903-4ffea5d2c4d2",
+      "lastSeenAt": "2026-09-06T13:20:21.876Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mmt81ezvpv5jh61xdqrh",
+      "jobId": "cmtm8mmt81ezupv5jd2cz3cbt",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "9b121f24-03ce-489d-8466-307403797333",
+      "lastSeenAt": "2026-09-06T13:20:21.936Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mni31f9jpv5jkr4znwv3",
+      "jobId": "cmtm8mni31f9ipv5jt36djj0w",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "f0db4699-c809-4e4e-ab76-e19503040400",
+      "lastSeenAt": "2026-09-07T22:09:34.523Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynjiy0i3pqf5kbktq9ikz",
+      "jobId": "cmtlynjiy0i3oqf5kx87580k4",
+      "sourceKey": "space-nk",
+      "externalId": "8983ada4-449b-48fd-a7e7-abc227862583",
+      "lastSeenAt": "2026-09-06T13:14:08.702Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtmpxz711cz1so5lq2zp25co",
+      "jobId": "cmtmpxz711cz0so5lrit8sl0k",
+      "sourceKey": "lovisa",
+      "externalId": "09d2df23-4caf-445b-838f-51310d2f6893",
+      "lastSeenAt": "2026-09-07T22:10:33.908Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pf2k1kv0pv5j2it2kiwb",
+      "jobId": "cmtm8pf2k1kuzpv5jtwwi567q",
+      "sourceKey": "lovisa",
+      "externalId": "f2fe8a35-eb54-4a31-9d7d-67e60b193e08",
+      "lastSeenAt": "2026-09-06T13:21:24.323Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pfco1kxkpv5jw3w2f0ae",
+      "jobId": "cmtm8pfco1kxjpv5j9hzod2i5",
+      "sourceKey": "lovisa",
+      "externalId": "a46dbc89-36b4-4293-995c-e5dce04446d8",
+      "lastSeenAt": "2026-09-06T13:21:24.563Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pfjy1kzwpv5jtvgl5281",
+      "jobId": "cmtm8pfjy1kzvpv5j8obee2eo",
+      "sourceKey": "lovisa",
+      "externalId": "81e39cad-f0bb-4c43-b08f-7053b744cf96",
+      "lastSeenAt": "2026-09-06T13:21:24.745Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pdsq1khspv5j92lgiilb",
+      "jobId": "cmtm8pdsq1khrpv5jh864bb7h",
+      "sourceKey": "lovisa",
+      "externalId": "5bd35b03-f778-4110-9979-6bf2eccbc2af",
+      "lastSeenAt": "2026-09-06T09:25:23.603Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pe0f1kjspv5jndqkn8k5",
+      "jobId": "cmtm8pe0f1kjrpv5j4in1a3t2",
+      "sourceKey": "lovisa",
+      "externalId": "44b669fc-af32-40e7-a68b-0b3de1b55c8c",
+      "lastSeenAt": "2026-09-06T13:21:23.384Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pec21kn8pv5jrwq18cjv",
+      "jobId": "cmtm8pec21kn7pv5jtwcndvy1",
+      "sourceKey": "lovisa",
+      "externalId": "4f424610-3338-430f-82e8-db84a6b4c96d",
+      "lastSeenAt": "2026-09-06T13:21:23.652Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mnqm1fcvpv5j81f8nhz1",
+      "jobId": "cmtm8mnqm1fcupv5jaf18nxqz",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "775f584c-7498-44f9-b367-83cbe8124e4d",
+      "lastSeenAt": "2026-09-06T13:20:22.899Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mnxx1ffnpv5jpug26elq",
+      "jobId": "cmtm8mnxx1ffmpv5jjt3y8tga",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "ee147e87-eace-4b44-9227-3dec8605aa32",
+      "lastSeenAt": "2026-09-06T13:20:23.135Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mo2h1fhfpv5jrv7sqvhl",
+      "jobId": "cmtm8mo2h1fhepv5jfz1ddrat",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "a17e0f15-e7d7-441f-9bb6-b556ed70331d",
+      "lastSeenAt": "2026-09-06T13:20:23.301Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mo4j1fi7pv5jpd2nl0mu",
+      "jobId": "cmtm8mo4i1fi6pv5jlxb37ouq",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "ca685fbe-f786-4b23-98b5-e74535cded68",
+      "lastSeenAt": "2026-09-06T13:20:23.384Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8moav1fkfpv5j9oen1txb",
+      "jobId": "cmtm8moav1fkepv5jzuuezbrr",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "461dd949-a14a-4363-8e8d-e833587ea22a",
+      "lastSeenAt": "2026-09-06T13:20:23.609Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8monh1fobpv5jsonhu7d3",
+      "jobId": "cmtm8monh1foapv5j10pl0wmi",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "012f92a7-3895-42d3-854f-bf11a48daebb",
+      "lastSeenAt": "2026-09-06T13:20:23.954Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mons1fofpv5j6c1elwcb",
+      "jobId": "cmtm8mons1foepv5j45pm0yi3",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "04eaf8a8-db55-4477-9029-4849fd034638",
+      "lastSeenAt": "2026-09-06T13:20:23.962Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlym4hq0dxzqf5k7kpjaout",
+      "jobId": "cmtlym4hq0dxyqf5ko4baykv2",
+      "sourceKey": "honey-birdette",
+      "externalId": "e97a388a-cc66-47fa-92df-d0183db323a4",
+      "lastSeenAt": "2026-09-07T22:03:17.559Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pefi1ko8pv5jg2lk6az0",
+      "jobId": "cmtm8pefi1ko7pv5juk97gqv8",
+      "sourceKey": "lovisa",
+      "externalId": "4bf2b9d5-e479-4184-a15c-275c6b00368b",
+      "lastSeenAt": "2026-09-07T22:10:38.619Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtn74p9n1ey5qq5lbwqly488",
+      "jobId": "cmtn74p9n1ey4qq5ljdfd7o95",
+      "sourceKey": "lovisa",
+      "externalId": "92b54d9c-b028-4088-b28a-eccbca068a2d",
+      "lastSeenAt": "2026-09-06T09:25:18.069Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mr9e1gdfpv5jwii4mwsd",
+      "jobId": "cmtm8mr9e1gdepv5jehmdxf06",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "812fae6c-af3c-48a8-88d3-00c84eed5803",
+      "lastSeenAt": "2026-09-07T22:09:37.675Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pa2w1jeopv5j3igesg6s",
+      "jobId": "cmtm8pa2w1jenpv5jq7htwtbh",
+      "sourceKey": "lovisa",
+      "externalId": "1ae0a6a2-9051-49e6-901b-b936484f5021",
+      "lastSeenAt": "2026-09-06T13:21:19.370Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlykset0bcnqf5ksfqbt2sv",
+      "jobId": "cmtlykset0bcmqf5kamfi01sg",
+      "sourceKey": "belstaff",
+      "externalId": "85576e5c-a0e8-4d72-8bfa-a021c78de8e0",
+      "lastSeenAt": "2026-09-06T13:13:18.777Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyksf80bcrqf5k1l6rtpcp",
+      "jobId": "cmtlyksf80bcqqf5kvmtgbhe9",
+      "sourceKey": "belstaff",
+      "externalId": "53be69f2-24da-4e49-8e2d-aaac1b0173ae",
+      "lastSeenAt": "2026-09-06T13:13:18.789Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp1xisn03o7qq4z84loa4cv",
+      "jobId": "cmtp1xisn03o6qq4zjz77k1v1",
+      "sourceKey": "loccitane-fr",
+      "externalId": "9c8471b9-10cc-4469-84af-93092c7233a4",
+      "lastSeenAt": "2026-09-07T22:02:02.840Z",
+      "otherActiveSources": [
+        {
+          "key": "wttj-sector",
+          "lastSeenAt": "2026-09-07T22:26:47.392Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtp1xiu003orqq4zi1dzfsoy",
+      "jobId": "cmtp1xiu003oqqq4zdbbvogqq",
+      "sourceKey": "loccitane-fr",
+      "externalId": "3f9047ac-0d2d-4f67-a9bb-2d3fc8240510",
+      "lastSeenAt": "2026-09-06T13:12:12.329Z",
+      "otherActiveSources": [
+        {
+          "key": "wttj-sector",
+          "lastSeenAt": "2026-09-06T15:28:20.799Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtm8pcrr1k6opv5jtzi9nff4",
+      "jobId": "cmtm8pcrr1k6npv5jcb1k7jcs",
+      "sourceKey": "lovisa",
+      "externalId": "39c0275f-7987-4cbc-8d34-5cb446b90b14",
+      "lastSeenAt": "2026-09-06T13:21:22.032Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyj57a07e2qf5keu9lfahq",
+      "jobId": "cmtlyj57a07e1qf5k7jn5g19u",
+      "sourceKey": "pronovias",
+      "externalId": "07029def-fc08-4fd8-82c4-3e30c3fd489f",
+      "lastSeenAt": "2026-09-06T13:12:50.237Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyj59g07euqf5k96gd79kx",
+      "jobId": "cmtlyj59g07etqf5k1hdaecpl",
+      "sourceKey": "pronovias",
+      "externalId": "be3133b4-1b91-4f98-9d88-fbfc908fb9ef",
+      "lastSeenAt": "2026-09-06T13:12:50.326Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mmio1ewbpv5jw24ncoci",
+      "jobId": "cmtm8mmio1ewapv5jowqzl4ul",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "69d8ba82-25fb-424d-8e88-8adaf85439ba",
+      "lastSeenAt": "2026-09-06T13:20:21.650Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pef01ko4pv5jswau2dr8",
+      "jobId": "cmtm8pef01ko3pv5jkbd34u4w",
+      "sourceKey": "lovisa",
+      "externalId": "5cc7989c-580e-47fb-b8e7-f23d19c67014",
+      "lastSeenAt": "2026-09-07T22:10:38.612Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26gnf0hwbnv2bfif87dx2",
+      "jobId": "cmtk26gnf0hwanv2bxg4903nr",
+      "sourceKey": "normal",
+      "externalId": "839853ff-67ea-490a-a1a9-2ff7893ce86b",
+      "lastSeenAt": "2026-09-07T22:07:47.038Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyi30a04pkqf5kwbjq48kz",
+      "jobId": "cmtlyi30a04pjqf5kf4j0o66k",
+      "sourceKey": "vitamin-a",
+      "externalId": "22c0069b-8866-4693-b9b6-aa34e7208cc9",
+      "lastSeenAt": "2026-09-06T13:12:16.849Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyi3ld04r5qf5kffue8cx4",
+      "jobId": "cmtlyi3lc04r4qf5k4nnfe411",
+      "sourceKey": "blue-banana",
+      "externalId": "513221d6-5e76-4c14-91de-bda1e597f7da",
+      "lastSeenAt": "2026-09-06T13:12:17.435Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyi3kt04r1qf5k6huf7pv3",
+      "jobId": "cmtlyi3kt04r0qf5kdz835zj4",
+      "sourceKey": "blue-banana",
+      "externalId": "bedc750a-bf6e-46f5-a27a-bfd2b881920a",
+      "lastSeenAt": "2026-09-06T13:12:17.425Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk1x94700u3nv2be3lhj41q",
+      "jobId": "cmtk1x94600u2nv2bshfiredd",
+      "sourceKey": "prisma-media",
+      "externalId": "0d2c40c9-b0e1-4e91-b96e-632e5f21e13c",
+      "lastSeenAt": "2026-09-07T22:02:08.721Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlb04bc0kcoqq2b3l849uav",
+      "jobId": "cmtlb04bc0kcnqq2bdendo4iw",
+      "sourceKey": "normal",
+      "externalId": "bc9d7ea4-6cc7-4f81-bd52-435a8b580fd1",
+      "lastSeenAt": "2026-09-06T13:18:13.982Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyhlvt03d1qf5k25qgzr4k",
+      "jobId": "cmtlyhlvt03d0qf5ks03hbw6l",
+      "sourceKey": "mq-marqet",
+      "externalId": "4d3ece10-534f-469d-9b34-898af0bba946",
+      "lastSeenAt": "2026-09-06T13:12:08.734Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26gmv0hw7nv2bqqo67mux",
+      "jobId": "cmtk26gmv0hw6nv2bz52xr4kz",
+      "sourceKey": "normal",
+      "externalId": "abe7f5c0-464d-478f-a8c3-864111579736",
+      "lastSeenAt": "2026-09-06T13:18:10.662Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlygw1902maqf5kta0793bl",
+      "jobId": "cmtlygw1902m9qf5kkoj0joja",
+      "sourceKey": "georges",
+      "externalId": "40924515-db56-478a-9f14-2a7e4693d426",
+      "lastSeenAt": "2026-09-06T13:12:05.642Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pepz1krgpv5j4tie4dq2",
+      "jobId": "cmtm8pepz1krfpv5j5cc7niok",
+      "sourceKey": "lovisa",
+      "externalId": "110f4524-f680-487a-af25-9a805434a88f",
+      "lastSeenAt": "2026-09-07T22:10:38.856Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtod6w0i13z5qq4z4hn1762k",
+      "jobId": "cmtod6w0i13z4qq4zftgrd8b4",
+      "sourceKey": "normal",
+      "externalId": "b8bdbbb4-aa53-425c-825b-247b4b4d36ad",
+      "lastSeenAt": "2026-09-07T22:07:46.611Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyijjq060nqf5ko3cntfwp",
+      "jobId": "cmtlyijjq060mqf5kt8drhrx4",
+      "sourceKey": "ephemera",
+      "externalId": "e5634f23-da4d-4a36-b15d-e283d58247af",
+      "lastSeenAt": "2026-09-07T22:02:20.825Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk1wye1001wnv2bv6n95k44",
+      "jobId": "cmtk1wye1001vnv2bnlqodq57",
+      "sourceKey": "margaret-howell",
+      "externalId": "eff92a29-1cfa-4af9-bed6-fc6dee8df2c4",
+      "lastSeenAt": "2026-09-07T22:01:22.191Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyfcvy00kzqf5k8ihyopw6",
+      "jobId": "cmtlyfcvy00kyqf5kvhn0o8n6",
+      "sourceKey": "annoushka",
+      "externalId": "7c642ff8-72b0-4f7f-a714-fefb06d1d697",
+      "lastSeenAt": "2026-09-06T13:11:48.057Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtn56ouc011uqq5llh9qnsh7",
+      "jobId": "cmtn56ouc011tqq5l79j25oel",
+      "sourceKey": "burnt",
+      "externalId": "554089b8-563b-4e99-8972-5a4b4c288e08",
+      "lastSeenAt": "2026-09-06T13:11:56.220Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp27xly0k1tqq4zvavr8ll5",
+      "jobId": "cmtp27xlx0k1sqq4zy4ftqws8",
+      "sourceKey": "chalhoub",
+      "externalId": "7cd7d7ec-83ea-4530-ac9b-6942e89f2b61",
+      "lastSeenAt": "2026-09-07T22:04:15.359Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mlos1elrpv5j67jbf35p",
+      "jobId": "cmtm8mlos1elqpv5jyjbrj5h0",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "9b22d749-d1c7-4ead-a6f2-4152d8f6135a",
+      "lastSeenAt": "2026-09-07T22:09:32.689Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyl7fy0bvqqf5ksi985ms2",
+      "jobId": "cmtlyl7fy0bvpqf5kyojd5ih2",
+      "sourceKey": "undiz",
+      "externalId": "cf9b3a65-a230-4a5d-b9c5-54df6821aaf7",
+      "lastSeenAt": "2026-09-07T22:02:59.568Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mmzu1f2fpv5jn44x0d5b",
+      "jobId": "cmtm8mmzu1f2epv5j71edjl7h",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "0cf18de3-ed4d-45d3-bbb0-bb8ea94d475b",
+      "lastSeenAt": "2026-09-07T22:09:33.931Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pg431l60pv5jjwahibh2",
+      "jobId": "cmtm8pg431l5zpv5jvpqsa21c",
+      "sourceKey": "lovisa",
+      "externalId": "140bf73c-e239-47e0-9b25-695104762d80",
+      "lastSeenAt": "2026-09-06T13:21:25.346Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyg0jy01cnqf5ktgq4ja1w",
+      "jobId": "cmtlyg0jy01cmqf5k1y6bqt7c",
+      "sourceKey": "burnt",
+      "externalId": "c05180b0-3c1c-41dc-a5e5-bd80443d6f7b",
+      "lastSeenAt": "2026-09-06T13:11:56.186Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyg0ka01crqf5kg90r7ltj",
+      "jobId": "cmtlyg0k901cqqf5ky90kfp51",
+      "sourceKey": "burnt",
+      "externalId": "2a2dc16c-c80f-49e5-8df4-c77603e22e6a",
+      "lastSeenAt": "2026-09-06T13:11:56.199Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyg0ls01d3qf5kwaiuvd7d",
+      "jobId": "cmtlyg0ls01d2qf5kfrw14ab2",
+      "sourceKey": "burnt",
+      "externalId": "cedf89ae-3fb4-48ff-85db-4ce012d5cff0",
+      "lastSeenAt": "2026-09-06T13:11:56.233Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyj52o07ciqf5kh70m6o86",
+      "jobId": "cmtlyj52o07chqf5k2gw6fbtn",
+      "sourceKey": "pronovias",
+      "externalId": "bd928d3a-0ff9-4792-8884-fc29d6f840b0",
+      "lastSeenAt": "2026-09-06T13:12:50.078Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyj52x07cmqf5ktokvj8cw",
+      "jobId": "cmtlyj52x07clqf5kql9n5utx",
+      "sourceKey": "pronovias",
+      "externalId": "b428942c-23e5-4787-a281-25c6e7d8ccde",
+      "lastSeenAt": "2026-09-06T13:12:50.087Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyiva206suqf5kzpjilpfw",
+      "jobId": "cmtlyiva206stqf5ksay5np0f",
+      "sourceKey": "dune-london",
+      "externalId": "c76ddd1a-67e9-4aa7-ab97-174ebfd5f6e8",
+      "lastSeenAt": "2026-09-06T13:12:45.994Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyfre400y2qf5k2kukkdko",
+      "jobId": "cmtlyfre400y1qf5k4lwic0e2",
+      "sourceKey": "lucy-yak",
+      "externalId": "d2c4d7ab-55f0-4429-8b27-c52e543a2b15",
+      "lastSeenAt": "2026-09-06T13:11:52.448Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8moam1fkbpv5ju4xuxmh3",
+      "jobId": "cmtm8moam1fkapv5j2c76ye8n",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "857e7d08-d453-4f1b-909f-1fb912b556ba",
+      "lastSeenAt": "2026-09-06T13:20:23.600Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyk6z10a6tqf5ksc1o9vb9",
+      "jobId": "cmtlyk6z10a6sqf5kzxpgttsq",
+      "sourceKey": "magasin-du-nord",
+      "externalId": "bd56b8ba-892b-43af-b694-d05ce2b05181",
+      "lastSeenAt": "2026-09-06T13:13:07.613Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8ph6o1lh8pv5j00z9l4p9",
+      "jobId": "cmtm8ph6n1lh7pv5jl4u41js4",
+      "sourceKey": "lovisa",
+      "externalId": "1098db3e-1a30-4d97-9027-cdfb5d0d7ade",
+      "lastSeenAt": "2026-09-07T22:10:40.900Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp27wcw0jt1qq4zlox5av8w",
+      "jobId": "cmtp27wcw0jt0qq4zxyxx8umi",
+      "sourceKey": "chalhoub",
+      "externalId": "98250545-587e-43a8-8298-14d4773c0bf8",
+      "lastSeenAt": "2026-09-06T13:14:40.453Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp27web0jthqq4z4raiebfd",
+      "jobId": "cmtp27web0jtgqq4zgr22y81x",
+      "sourceKey": "chalhoub",
+      "externalId": "6900cf00-122d-4184-89e7-b96e1f80aeee",
+      "lastSeenAt": "2026-09-07T22:04:14.448Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp27wel0jtlqq4zatinjny3",
+      "jobId": "cmtp27wel0jtkqq4zue2jd3wo",
+      "sourceKey": "chalhoub",
+      "externalId": "43fba0ed-cc49-446f-bc42-e2c03ef45925",
+      "lastSeenAt": "2026-09-06T09:15:10.398Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp27wi20judqq4z8e5siwei",
+      "jobId": "cmtp27wi20jucqq4z8220n2gs",
+      "sourceKey": "chalhoub",
+      "externalId": "c4e77263-175d-4b24-9629-46a007180eeb",
+      "lastSeenAt": "2026-09-06T04:15:07.019Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyhotq03o0qf5k8iz1x74q",
+      "jobId": "cmtlyhotq03nzqf5k0747no97",
+      "sourceKey": "kicks",
+      "externalId": "0f4ec000-14a2-49bf-95d0-76408aaf3313",
+      "lastSeenAt": "2026-09-06T13:12:09.585Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyhoty03o4qf5k0y0qgo83",
+      "jobId": "cmtlyhoty03o3qf5kyj83qsn5",
+      "sourceKey": "kicks",
+      "externalId": "934f2e97-a6ac-4141-8178-ed03c7643bfa",
+      "lastSeenAt": "2026-09-06T13:12:09.600Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk1x8s800t3nv2bpg3ifdx8",
+      "jobId": "cmtk1x8s800t2nv2bh7wwasxd",
+      "sourceKey": "medik8",
+      "externalId": "77ae002d-7eb3-4f6c-a0a9-2c160092fdae",
+      "lastSeenAt": "2026-09-06T13:12:18.583Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pdvv1kiopv5jfolux68q",
+      "jobId": "cmtm8pdvv1kinpv5jaci4edcn",
+      "sourceKey": "lovisa",
+      "externalId": "7bc06ac8-e14e-4c4e-8cfa-05b3fb519df9",
+      "lastSeenAt": "2026-09-06T13:21:23.301Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pgt31ldopv5jr9t3fjdh",
+      "jobId": "cmtm8pgt31ldnpv5j39xmkzml",
+      "sourceKey": "lovisa",
+      "externalId": "8b60fd45-406c-4391-8c4e-dba2b3a52a83",
+      "lastSeenAt": "2026-09-06T09:25:26.692Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyiim205y8qf5kpbm5k6c9",
+      "jobId": "cmtlyiim205y7qf5k3th4lz3c",
+      "sourceKey": "bzb",
+      "externalId": "15205d03-32c1-4c28-ab68-d405952068ac",
+      "lastSeenAt": "2026-09-06T13:12:29.261Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyku3f0bmpqf5kpxlxt8ym",
+      "jobId": "cmtlyku3f0bmoqf5k89kz523g",
+      "sourceKey": "lager-157",
+      "externalId": "72e33389-5c36-4925-918f-ad67e4dc4178",
+      "lastSeenAt": "2026-09-06T13:13:19.825Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlym4ge0dxbqf5kw0yj9xd0",
+      "jobId": "cmtlym4ge0dxaqf5kosml8s3m",
+      "sourceKey": "honey-birdette",
+      "externalId": "da0825e0-4612-4170-aa5a-81dbb841d252",
+      "lastSeenAt": "2026-09-07T22:03:17.503Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynjlw0i4hqf5klkvb5116",
+      "jobId": "cmtlynjlw0i4gqf5kf7su0jtq",
+      "sourceKey": "space-nk",
+      "externalId": "2f69fbc9-5bff-45f9-835d-4776e348a876",
+      "lastSeenAt": "2026-09-07T22:03:44.353Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtn5eu2g0ei2qq5lbslr14ez",
+      "jobId": "cmtn5eu2g0ei1qq5lsf83ji7b",
+      "sourceKey": "white-stuff",
+      "externalId": "1cff3f53-9fe6-4d33-96a0-6057a1c87909",
+      "lastSeenAt": "2026-09-06T13:14:05.934Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk1x99z00uvnv2bqdeqxnmb",
+      "jobId": "cmtk1x99z00uunv2b9ohzxj9m",
+      "sourceKey": "prisma-media",
+      "externalId": "654e3d99-3ac1-4fa6-8fa4-565cc205360d",
+      "lastSeenAt": "2026-09-07T22:02:08.786Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp27xen0k0hqq4zg1kzhrnl",
+      "jobId": "cmtp27xen0k0gqq4zw96odugj",
+      "sourceKey": "chalhoub",
+      "externalId": "fc4a093a-6a4a-430f-9df0-8d4de4e40673",
+      "lastSeenAt": "2026-09-06T13:14:41.163Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp27xh20k0tqq4zcfo7ox2k",
+      "jobId": "cmtp27xh20k0sqq4zm8aax5xr",
+      "sourceKey": "chalhoub",
+      "externalId": "daa2fce6-166f-4dd2-9c6b-00009480b5c1",
+      "lastSeenAt": "2026-09-06T08:03:13.416Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26gin0hvgnv2bl7vxtu1x",
+      "jobId": "cmtk26gin0hvfnv2b3bnluzgp",
+      "sourceKey": "normal",
+      "externalId": "d6086c3a-1a05-4ad7-b3bb-7f06fe8a5730",
+      "lastSeenAt": "2026-09-07T22:07:46.141Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp27xp60k2dqq4z9bys5gwd",
+      "jobId": "cmtp27xp60k2cqq4ztpgqbhu8",
+      "sourceKey": "chalhoub",
+      "externalId": "4b2b50cb-d6b0-4657-9303-659e45e24f0e",
+      "lastSeenAt": "2026-09-06T13:14:41.660Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mlnr1elbpv5jbslq9lxm",
+      "jobId": "cmtm8mlnr1elapv5jakzg11nf",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "d7250654-5054-40c9-b1bd-003fff47f8a2",
+      "lastSeenAt": "2026-09-06T13:20:20.568Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk1xz5d02etnv2buzo47o35",
+      "jobId": "cmtk1xz5d02esnv2b7wazbkk2",
+      "sourceKey": "maison-123",
+      "externalId": "bc149c13-de29-4c8d-b933-19012ed2a001",
+      "lastSeenAt": "2026-09-06T13:13:34.426Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyghke020eqf5k28baouuo",
+      "jobId": "cmtlyghke020dqf5kdp6m14e2",
+      "sourceKey": "faguo",
+      "externalId": "03adb533-b33d-4fb3-8ce4-9adbcbd1f9e2",
+      "lastSeenAt": "2026-09-06T13:12:00.430Z",
+      "otherActiveSources": [
+        {
+          "key": "wttj-sector",
+          "lastSeenAt": "2026-09-07T22:26:46.884Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtlyjqvg08r3qf5klvvuwjqe",
+      "jobId": "cmtlyjqvg08r2qf5k6s8pztks",
+      "sourceKey": "mr-marvis",
+      "externalId": "cce40ff0-7fe7-47ee-bb42-e84ada855c6b",
+      "lastSeenAt": "2026-09-06T13:13:01.076Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlyjrid08vkqf5k79rj3vht",
+      "jobId": "cmtlyjrid08vjqf5kuqt2i026",
+      "sourceKey": "singularu",
+      "externalId": "f11a5764-dd02-453d-ae02-feede522cbb8",
+      "lastSeenAt": "2026-09-07T22:02:40.809Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk1x8lg00rsnv2bnk4k0iq1",
+      "jobId": "cmtk1x8lg00rrnv2b5yal5t6n",
+      "sourceKey": "medik8",
+      "externalId": "b987a19c-609b-4c86-86a2-4812dd369525",
+      "lastSeenAt": "2026-09-06T13:12:18.454Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26jci0ieunv2b1vifuwa0",
+      "jobId": "cmtk26jci0ietnv2bn1hkxsod",
+      "sourceKey": "normal",
+      "externalId": "a599aa26-13eb-4e53-b5c2-a7c08ec8a12a",
+      "lastSeenAt": "2026-09-07T22:07:48.434Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26jsg0ihvnv2bsgpryvj7",
+      "jobId": "cmtk26jsg0ihunv2b0g0zl5qo",
+      "sourceKey": "normal",
+      "externalId": "6abcd3bc-6762-4f9c-ac8c-98557ecb6f08",
+      "lastSeenAt": "2026-09-06T13:18:12.308Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlymjtl0fdwqf5kev6d73wd",
+      "jobId": "cmtlymjtl0fdvqf5kh30aqrmb",
+      "sourceKey": "b2",
+      "externalId": "a6143b95-4e62-4c64-a18f-5e568fb8dce4",
+      "lastSeenAt": "2026-09-06T13:13:53.685Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynk8z0i9lqf5kr4xtsqpc",
+      "jobId": "cmtlynk8z0i9kqf5ksixq9mrm",
+      "sourceKey": "space-nk",
+      "externalId": "01612c8e-4090-47e9-b265-5eba4f95e5fe",
+      "lastSeenAt": "2026-09-06T13:14:09.261Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pfna1l0wpv5jy5mtdrwu",
+      "jobId": "cmtm8pfna1l0vpv5jir7zd7yj",
+      "sourceKey": "lovisa",
+      "externalId": "eece7729-446f-4f49-aad5-199c25f9c31d",
+      "lastSeenAt": "2026-09-06T13:21:24.829Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynjv90i6tqf5kf5flfx1z",
+      "jobId": "cmtlynjv90i6sqf5kd5phgcpn",
+      "sourceKey": "space-nk",
+      "externalId": "dd535222-e0d0-4f4c-ad5a-00cf8740dcff",
+      "lastSeenAt": "2026-09-06T13:14:09.008Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mndz1f7vpv5jel0f3oq6",
+      "jobId": "cmtm8mndz1f7upv5jvxrv77uy",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "c887a765-2436-43da-9bef-52c803fa2071",
+      "lastSeenAt": "2026-09-06T13:20:22.524Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26gfs0huwnv2bhy8eb1tq",
+      "jobId": "cmtk26gfs0huvnv2bhej3g3px",
+      "sourceKey": "normal",
+      "externalId": "3ab2d769-296c-4520-8af7-d803224f2358",
+      "lastSeenAt": "2026-09-06T13:18:10.109Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp1xisx03obqq4zgfbpfxxb",
+      "jobId": "cmtp1xisx03oaqq4znyvxrks9",
+      "sourceKey": "loccitane-fr",
+      "externalId": "389c979a-21ab-420a-835b-7c9ab0631acb",
+      "lastSeenAt": "2026-09-07T22:02:02.850Z",
+      "otherActiveSources": [
+        {
+          "key": "wttj-sector",
+          "lastSeenAt": "2026-09-07T22:26:47.399Z"
+        }
+      ]
+    },
+    {
+      "id": "cmtk26gh00hv4nv2bsoplj4ix",
+      "jobId": "cmtk26gh00hv3nv2b039r5a0v",
+      "sourceKey": "normal",
+      "externalId": "229557e1-7e40-4269-80f1-c0245ac2280b",
+      "lastSeenAt": "2026-09-06T13:18:10.126Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26gkz0hvwnv2btq1g815p",
+      "jobId": "cmtk26gkz0hvvnv2b0lfxp3ip",
+      "sourceKey": "normal",
+      "externalId": "f1371eb9-05e4-460b-a97d-8256a092476c",
+      "lastSeenAt": "2026-09-06T13:18:10.645Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp1zctg04fmqq4zksu50ezq",
+      "jobId": "cmtp1zctg04flqq4zxsdw3pfl",
+      "sourceKey": "horace",
+      "externalId": "3afb8098-9f0e-409c-9890-f09bd36b4b9f",
+      "lastSeenAt": "2026-09-07T22:02:07.451Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlymkyb0fl9qf5ke362w05w",
+      "jobId": "cmtlymkyb0fl8qf5k68nassaj",
+      "sourceKey": "browns-shoes",
+      "externalId": "a6143b95-4e62-4c64-a18f-5e568fb8dce4",
+      "lastSeenAt": "2026-09-07T22:03:27.230Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlym4hi0dxvqf5kjp873ucx",
+      "jobId": "cmtlym4hi0dxuqf5kxgrnfgsb",
+      "sourceKey": "honey-birdette",
+      "externalId": "4601306b-9666-49fe-a7f4-d862e35abb98",
+      "lastSeenAt": "2026-09-07T22:03:17.550Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtrsf45o0e0tpg5mgsczyv0i",
+      "jobId": "cmtrsf45o0e0spg5mgvfgpp6w",
+      "sourceKey": "silbon",
+      "externalId": "1f1f3fcc-0deb-4838-8c60-55c5e708b251",
+      "lastSeenAt": "2026-09-07T22:03:39.078Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26lfa0isvnv2bu1yza99l",
+      "jobId": "cmtk26lfa0isunv2brzlhn3te",
+      "sourceKey": "normal",
+      "externalId": "42a06054-f024-4aa5-8b36-2cf5b73ef51a",
+      "lastSeenAt": "2026-09-06T13:18:13.180Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk21ujo0aownv2bdk3cg2cp",
+      "jobId": "cmtk21ujo0aovnv2b7olnqgh8",
+      "sourceKey": "etam",
+      "externalId": "42492997-62fa-4a12-bc70-44df5c039427",
+      "lastSeenAt": "2026-09-07T22:05:25.514Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtod6w1b13zhqq4zfiooje8p",
+      "jobId": "cmtod6w1b13zgqq4zestqcu0r",
+      "sourceKey": "normal",
+      "externalId": "98f626ff-0c21-47c5-ae4c-2bdeeab63ba5",
+      "lastSeenAt": "2026-09-07T22:07:46.640Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtp27xb10jztqq4z1hmmkzwz",
+      "jobId": "cmtp27xb10jzsqq4z6zhjr5nc",
+      "sourceKey": "chalhoub",
+      "externalId": "09e35d81-b47c-4974-a38c-991263c39c9f",
+      "lastSeenAt": "2026-09-06T13:14:41.096Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mrfg1gevpv5jwvd50318",
+      "jobId": "cmtm8mrfg1geupv5je1y5r4af",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "b6fe0561-7533-40be-96e5-d8ba2865d901",
+      "lastSeenAt": "2026-09-07T22:09:37.820Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pa031jdwpv5jp8prreho",
+      "jobId": "cmtm8pa031jdvpv5judatp8rm",
+      "sourceKey": "lovisa",
+      "externalId": "06842e8d-e7e9-4636-81e6-a45e4e840425",
+      "lastSeenAt": "2026-09-07T22:10:34.856Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pd6l1kb4pv5jjydeahxi",
+      "jobId": "cmtm8pd6l1kb3pv5jxkehvhpm",
+      "sourceKey": "lovisa",
+      "externalId": "87d23b24-b1c9-424b-b3b9-3eb9f93249cc",
+      "lastSeenAt": "2026-09-06T13:21:22.502Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtlynjxn0i7hqf5kq7cwbj90",
+      "jobId": "cmtlynjxn0i7gqf5kptutcevm",
+      "sourceKey": "space-nk",
+      "externalId": "71396b3d-8636-45bc-8aca-6b2e19d7f39a",
+      "lastSeenAt": "2026-09-06T13:14:09.078Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm78n5f0o3gpv5jj6pmdjjc",
+      "jobId": "cmtm78n5f0o3fpv5j6an3iibs",
+      "sourceKey": "aroma-zone",
+      "externalId": "c1b77b7b-e6b9-4be6-822b-1e4549d9d21f",
+      "lastSeenAt": "2026-09-06T13:15:35.124Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtmx0bno0o0nso4zv2n8jssc",
+      "jobId": "cmtmx0bno0o0mso4z4crmhbd9",
+      "sourceKey": "etam",
+      "externalId": "eabfbcae-0d33-43aa-8655-31ee83c498f1",
+      "lastSeenAt": "2026-09-07T22:05:23.437Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26kk10imtnv2bwx1w26l5",
+      "jobId": "cmtk26kk10imsnv2bcbyalt4k",
+      "sourceKey": "normal",
+      "externalId": "acb14bf9-f85c-46ad-a467-ecec4132fcf9",
+      "lastSeenAt": "2026-09-06T13:18:12.703Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26kxj0ipfnv2bmhr71w7h",
+      "jobId": "cmtlva9or07m53nk5fx0cj2i6",
+      "sourceKey": "normal",
+      "externalId": "ecf545bd-963a-4bcf-bbe4-c645b0073cb4",
+      "lastSeenAt": "2026-09-06T13:18:12.917Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26l1r0iqanv2bcz3ojb9c",
+      "jobId": "cmtk26l1r0iq9nv2bhg0atjcf",
+      "sourceKey": "normal",
+      "externalId": "7a935ecf-3ab0-4963-88b4-b668221fd93c",
+      "lastSeenAt": "2026-09-06T13:18:12.983Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26m060iwvnv2bdx0wmfwl",
+      "jobId": "cmtk26m060iwunv2bpy5oz0bo",
+      "sourceKey": "normal",
+      "externalId": "30bbc771-8751-49ac-b0b0-a08ac6d217ea",
+      "lastSeenAt": "2026-09-06T13:18:13.450Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk26mhf0izvnv2bjkz734n0",
+      "jobId": "cmtk26mhf0izunv2bvur4f6mt",
+      "sourceKey": "normal",
+      "externalId": "d09d3368-b56a-4d78-a673-3511c8099e64",
+      "lastSeenAt": "2026-09-06T09:19:40.485Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8pbsk1jwopv5jndty2pot",
+      "jobId": "cmtm8pbsk1jwnpv5jnu0oo48o",
+      "sourceKey": "lovisa",
+      "externalId": "48fa23e1-b098-4188-a435-185df68b47a8",
+      "lastSeenAt": "2026-09-07T22:10:36.436Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtk2sq3e08jmmr2b6wg6l5r2",
+      "jobId": "cmtk2sq3d08jlmr2bo8136jny",
+      "sourceKey": "etam",
+      "externalId": "cf9b3a65-a230-4a5d-b9c5-54df6821aaf7",
+      "lastSeenAt": "2026-09-07T22:05:25.039Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mlbf1egbpv5jgvnii1m5",
+      "jobId": "cmtm8mlbf1egapv5j3bvn0i8b",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "1c213abf-c58f-4ccc-b939-1a5984c4393d",
+      "lastSeenAt": "2026-09-07T22:09:31.986Z",
+      "otherActiveSources": []
+    },
+    {
+      "id": "cmtm8mltw1enrpv5jaadvfav0",
+      "jobId": "cmtm8mltw1enqpv5julk24k7x",
+      "sourceKey": "la-casa-de-las-carcasas",
+      "externalId": "a7ff9461-a046-47cc-97bd-9be64b245052",
+      "lastSeenAt": "2026-09-07T22:09:32.841Z",
+      "otherActiveSources": []
+    }
+  ],
+  "interpretation": "Inventory of active representations missing from captured feeds, not proof of individual closure. No production data changed. Existing refresh still needs a current trusted source run and the freshness delay."
+}
