@@ -59,3 +59,28 @@ Au moment de ce point de contrôle : corrections commitées sur la branche Lot 4
 - [Coty : portefeuille et lien carrière officiel](https://www.coty.com/our-brands/all-brands).
 - [Puig : portefeuille et activités](https://careers.puig.com/love-brands).
 - [Tough Cookie : implémentation RFC6265 et isolation des jars](https://github.com/salesforce/tough-cookie).
+
+## Livraison du premier lot — production vérifiée
+
+La [PR 49](https://github.com/lmelane/fr-retail-jobs/pull/49) est mergée. Les quatre services Railway sont en `SUCCESS` sur **b09c942ff6d71e43fca263d591f1458339e19a4e**. La commande normale de l'agrégateur a été restaurée et `PIPELINE_PAUSED=1` est maintenu pour l'ingestion mondiale.
+
+Le plan Coty/Puig est désormais appliqué en production : 386 offres réattribuées, dont 377 actives ; 776 corrections traçables ; identifiants, RAW et états d'ouverture inchangés immédiatement après réparation. Trois alias ont été enregistrés, les deux sources existantes recertifiées, et les secteurs des deux groupes documentés. Le rejeu des trois plans produit zéro écriture supplémentaire.
+
+Le véritable worker Railway a ensuite récupéré **131 offres Coty et 227 offres Puig**, deux flux complets, sans erreur. Il conserve les **77 352 identifiants préexistants** et ajoute 8 offres : **77 360 offres conservées, 74 132 actives, 10 952 en France**. Les compteurs API et les pages HTML filtrées concordent : Coty 136, Puig 262, Escada Parfums 0, Jean Paul Gaultier 1. Les compteurs actifs de la base ne sont pas les seuls résultats de cette passe : ils comprennent les autres sources et les offres encore dans leur délai de vérification de fermeture.
+
+Le run conserve ses 15 événements dans le journal durable, dont les deux preuves d'énumération ; aucune erreur de persistance. Railway rapporte 16 lignes, au maximum 7 par seconde, sans avertissement de messages supprimés sur cette exécution ciblée. Toutes les preuves sont regroupées dans `production-remediation-proof.json`.
+
+| Finding | Code corrigé | Main | Déployé | Données réparées | Preuve |
+|---|---|---|---|---|---|
+| Registre ingestion/validation divergent | Oui | Oui | Oui | Sans objet | 423 sources réellement testées, registre partagé |
+| Discovery multilingue / Unicode / portails régionaux | Oui | Oui | Oui | Investigation en cours | Reçus et inventaire datés ; aucune activation automatique |
+| Dates et fiches Personio | Oui | Oui | Oui | Pas encore en production | 24 tenants testés ; revue des identités encore nécessaire |
+| Énumération Workable / Recruitee | Oui | Oui | Oui | Pas encore en production | Passes réelles et rejeu local ; ingestion mondiale suspendue |
+| Énumération SAP / sessions / compteurs traduits | Oui | Oui | Oui | Coty/Puig seulement | Run Railway c38dc263-691c-4e2a-a3a4-19638ac534b3 |
+| Coty/Puig attribués à une seule marque | Oui | Oui | Oui | Oui, 386 offres | Plan, diff, conservation et compteurs publics vérifiés |
+| Preuves d'énumération perdues entre adaptateur et journal | Oui | Oui | Oui | Nouvelles exécutions | Deux événements complets persistés pendant le run Railway |
+| Pays secondaires des offres multi-sites | Non | Non | Non | Non | Analyse des structures RAW à poursuivre |
+| Homonymes Personio et autres portails de groupe | Partiel : contradictions exposées | Oui | Oui | Non | Revue métier/identité indispensable avant reprise |
+| Exclusion du catalogue assimilée à une fermeture | Non | Non | Non | Non | 371 corrections historiques avec `closedAt` sans événement CLOSED |
+
+Dernière cause racine identifiée : le retrait d'une source et l'exclusion métier utilisent encore des champs de fermeture. Une lecture de production retrouve **371 offres exclues pour homonymie avec `closedAt` et sans événement `CLOSED`**. L'agrégat des fermetures se base sur `closedAt` : ces exclusions peuvent donc entrer dans les statistiques de fermetures. Il faut séparer retrait de publication et fermeture constatée, conserver les preuves historiques et corriger cette confusion avant clôture du lot. Aucun nouveau cas d'homonymie ne sera traité par cette ancienne procédure.
