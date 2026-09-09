@@ -1,0 +1,276 @@
+{
+ "batchId": "20260909-LOT4-LEGAL-ENTITY-ALIASES-v2",
+ "statement": "Source-scoped aliases for native labels the offline replay of archived adapter payloads (2026-09-09) would refuse for a new posting. Rule A: canonical key = the source employer; A_QUALIFIER: same after removing an entity code, a country/region or a legal form; B: row of the owner's D45 sheet (sha256 9582c6dbb8066c1448b29f72afa8dd74689f32c6cdc845d87a7f38fd4bcce722) RATTACHÉ to the employer's official domain. No merge, no group/brand equivalence; raw labels stay in every observation. brunello-cucinelli: \"BRUNELLO CUCINELLI SPA\" → BRUNELLO CUCINELLI [A: resolveCompany(\"BRUNELLO CUCINELLI SPA\")=BRUNELLO_CUCINELLI=owner] · estee-lauder-companies: \"The Estée Lauder Companies\" → The Estée Lauder Companies [A: resolveCompany(\"The Estée Lauder Companies\")=THE_ESTEE_LAUDER_COMPANIES=owner] · intersport: \"Intersport Sverige\" → Intersport [A_QUALIFIER: \"Intersport Sverige\" minus code/country/legal form = \"Intersport\" → INTERSPORT = owner] · kicks: \"KICKS Sverige\" → Kicks [A_QUALIFIER: \"KICKS Sverige\" minus code/country/legal form = \"KICKS\" → KICKS = owner] · nike: \"NIKE India Technology Center Private Limited\" → NIKE [B: D45 \"NIKE India Technology Center Private\" RATTACHÉ → nike.com] · nike: \"NIKE Retail France\" → NIKE [A: resolveCompany(\"NIKE Retail France\")=NIKE=owner] · nike: \"NIKE Sourcing (Guangzhou) Co., Ltd.\" → NIKE [B: D45 \"NIKE Sourcing (Guangzhou)\" RATTACHÉ → nike.com] · nike: \"Nike Australia Pty. Ltd.\" → NIKE [A: resolveCompany(\"Nike Australia Pty. Ltd.\")=NIKE=owner] · nike: \"NIKE Korea LLC\" → NIKE [A_QUALIFIER: \"NIKE Korea LLC\" minus code/country/legal form = \"NIKE\" → NIKE = owner] · nike: \"NIKE, Inc.\" → NIKE [A: resolveCompany(\"NIKE, Inc.\")=NIKE=owner] · nike-nke2: \"NIKE Retail Services\" → NIKE [A: resolveCompany(\"NIKE Retail Services\")=NIKE=owner] · normal: \"NORMAL Sweden\" → Normal [A_QUALIFIER: \"NORMAL Sweden\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner] · normal: \"NORMAL France\" → Normal [A: resolveCompany(\"NORMAL France\")=NORMAL=owner] · normal: \"NORMAL Netherlands\" → Normal [A: resolveCompany(\"NORMAL Netherlands\")=NORMAL=owner] · normal: \"NORMAL Austria\" → Normal [A_QUALIFIER: \"NORMAL Austria\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner] · normal: \"NORMAL Portugal\" → Normal [A_QUALIFIER: \"NORMAL Portugal\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner] · normal: \"NORMAL Finland\" → Normal [A_QUALIFIER: \"NORMAL Finland\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner] · normal: \"NORMAL Ireland\" → Normal [A_QUALIFIER: \"NORMAL Ireland\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner] · normal: \"NORMAL Romania\" → Normal [A_QUALIFIER: \"NORMAL Romania\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner] · normal: \"NORMAL Czech Republic\" → Normal [A_QUALIFIER: \"NORMAL Czech Republic\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner] · normal: \"NORMAL Slovakia\" → Normal [A_QUALIFIER: \"NORMAL Slovakia\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner] · passage-du-desir: \"Passage du désir\" → Passage du Desir [A: resolveCompany(\"Passage du désir\")=PASSAGE_DU_DESIR=owner] · stella-mccartney: \"Stella McCartney France S.A.S\" → Stella McCartney [A: resolveCompany(\"Stella McCartney France S.A.S\")=STELLA_MCCARTNEY=owner] · therealreal: \"The RealReal, Inc.\" → The RealReal [A: resolveCompany(\"The RealReal, Inc.\")=THE_REALREAL=owner] · ulta-jibe: \"Ulta Beauty, Inc.\" → Ulta Beauty [A: resolveCompany(\"Ulta Beauty, Inc.\")=ULTA_BEAUTY=owner] · uniqlo-stores: \"UNIQLO EUROPE LIMITED\" → UNIQLO [A: resolveCompany(\"UNIQLO EUROPE LIMITED\")=UNIQLO=owner] · vlisco: \"Vlisco Netherlands B.V.\" → Vlisco [A: resolveCompany(\"Vlisco Netherlands B.V.\")=VLISCO=owner]",
+ "reviewedBy": "Derived from existing decisions (resolveCompany canonical key; D45 sheet by Loïc; offline replay) — Claude, LOT 4 resume",
+ "reviewedAt": "2026-09-09T21:39:47.701Z",
+ "evidence": [
+  {
+   "url": "https://www.brunellocucinelli.com/",
+   "sha256": "698654b93c6c8a1e072d8d432ea9fe1fd25a47fff84f0be6c9ec236aac043ed5",
+   "artifactText": "<archived 62037 chars>",
+   "explanation": "Page naming BRUNELLO CUCINELLI (https://www.brunellocucinelli.com/); the native labels aliased to it are legal entities or qualified spellings of this employer: \"BRUNELLO CUCINELLI SPA\" (A)."
+  },
+  {
+   "url": "https://elcompanies.eightfold.ai",
+   "sha256": "c0ea93c5539bd7437b8b8e84eaec7b112bb323fa10593cbf89b73824f6115d30",
+   "artifactText": "<archived 6920 chars>",
+   "explanation": "Page naming The Estée Lauder Companies (https://elcompanies.eightfold.ai); the native labels aliased to it are legal entities or qualified spellings of this employer: \"The Estée Lauder Companies\" (A)."
+  },
+  {
+   "url": "https://www.intersport.com/",
+   "sha256": "4bf4a4071e57eeb7c6b161bd5f52c168a383ec97ad8d0933f3a61d8f8b5eadef",
+   "artifactText": "<archived 5558 chars>",
+   "explanation": "Page naming Intersport (https://www.intersport.com/); the native labels aliased to it are legal entities or qualified spellings of this employer: \"Intersport Sverige\" (A_QUALIFIER)."
+  },
+  {
+   "url": "https://www.kicks.se/",
+   "sha256": "094507baa87bb3964fbf7e4c8d357a116008054bcb8ddf216f82fc0e64af3177",
+   "artifactText": "<archived 999936 chars>",
+   "explanation": "Page naming Kicks (https://www.kicks.se/); the native labels aliased to it are legal entities or qualified spellings of this employer: \"KICKS Sverige\" (A_QUALIFIER)."
+  },
+  {
+   "url": "https://www.nike.com/",
+   "sha256": "c4bd601d9048910b879c40003fadcbef49c250e446b3e6e49d2592b94ac9b8f3",
+   "artifactText": "<archived 724515 chars>",
+   "explanation": "Page naming NIKE (https://www.nike.com/); the native labels aliased to it are legal entities or qualified spellings of this employer: \"NIKE India Technology Center Private Limited\" (B), \"NIKE Retail France\" (A), \"NIKE Sourcing (Guangzhou) Co., Ltd.\" (B), \"Nike Australia Pty. Ltd.\" (A), \"NIKE Korea LLC\" (A_QUALIFIER), \"NIKE, Inc.\" (A), \"NIKE Retail Services\" (A)."
+  },
+  {
+   "url": "https://www.normal.eu/",
+   "sha256": "cde87460d636ee7e36c0ab0e32f4a903b9f3dce4d850cb17ea93f70a880fd92a",
+   "artifactText": "<archived 19564 chars>",
+   "explanation": "Page naming Normal (https://www.normal.eu/); the native labels aliased to it are legal entities or qualified spellings of this employer: \"NORMAL Sweden\" (A_QUALIFIER), \"NORMAL France\" (A), \"NORMAL Netherlands\" (A), \"NORMAL Austria\" (A_QUALIFIER), \"NORMAL Portugal\" (A_QUALIFIER), \"NORMAL Finland\" (A_QUALIFIER), \"NORMAL Ireland\" (A_QUALIFIER), \"NORMAL Romania\" (A_QUALIFIER), \"NORMAL Czech Republic\" (A_QUALIFIER), \"NORMAL Slovakia\" (A_QUALIFIER)."
+  },
+  {
+   "url": "https://www.passagedudesir.com/",
+   "sha256": "6bfc6c3ed69d69ba04b66c6676092ab56e255cbf908363a3a8f93dddbc470b81",
+   "artifactText": "<archived 1041527 chars>",
+   "explanation": "Page naming Passage du Desir (https://www.passagedudesir.com/); the native labels aliased to it are legal entities or qualified spellings of this employer: \"Passage du désir\" (A)."
+  },
+  {
+   "url": "https://www.stellamccartney.com/",
+   "sha256": "1fb32145aba088688bdd5050198b41b9ca54fa4ba15cff1a7a88956787f3af9a",
+   "artifactText": "<archived 535884 chars>",
+   "explanation": "Page naming Stella McCartney (https://www.stellamccartney.com/); the native labels aliased to it are legal entities or qualified spellings of this employer: \"Stella McCartney France S.A.S\" (A)."
+  },
+  {
+   "url": "https://www.therealreal.com/",
+   "sha256": "97e97f8a22fb326071fe1ec9d2331d07e7fa976f9df5fd466b41961b9dc745da",
+   "artifactText": "<archived 309751 chars>",
+   "explanation": "Page naming The RealReal (https://www.therealreal.com/); the native labels aliased to it are legal entities or qualified spellings of this employer: \"The RealReal, Inc.\" (A)."
+  },
+  {
+   "url": "https://www.ulta.com/",
+   "sha256": "1f7a4ba1b65346aa3506a9a3fe8d7c969a68daf478a37303602967341d126bd7",
+   "artifactText": "<archived 1502416 chars>",
+   "explanation": "Page naming Ulta Beauty (https://www.ulta.com/); the native labels aliased to it are legal entities or qualified spellings of this employer: \"Ulta Beauty, Inc.\" (A)."
+  },
+  {
+   "url": "https://www.uniqlo.com/",
+   "sha256": "7daef5b61c7c491a327cc4cd9617ac9c2dafb0b3022b9201cb76040e1e0d651d",
+   "artifactText": "<archived 1983298 chars>",
+   "explanation": "Page naming UNIQLO (https://www.uniqlo.com/); the native labels aliased to it are legal entities or qualified spellings of this employer: \"UNIQLO EUROPE LIMITED\" (A)."
+  },
+  {
+   "url": "https://www.vlisco.com/",
+   "sha256": "16d8ea3e6efd755d9e5e58869d1296fa5b83108beb349f6f2c9c5a5fb351c5ec",
+   "artifactText": "<archived 892475 chars>",
+   "explanation": "Page naming Vlisco (https://www.vlisco.com/); the native labels aliased to it are legal entities or qualified spellings of this employer: \"Vlisco Netherlands B.V.\" (A)."
+  }
+ ],
+ "merges": [],
+ "aliases": [
+  {
+   "sourceKey": "brunello-cucinelli",
+   "rawName": "BRUNELLO CUCINELLI SPA",
+   "companyId": "cmtp22cxr0a7gqq4z2yq4wjhy"
+  },
+  {
+   "sourceKey": "estee-lauder-companies",
+   "rawName": "The Estée Lauder Companies",
+   "companyId": "cmtnhcuo323w4qq4z28gpi5bo"
+  },
+  {
+   "sourceKey": "intersport",
+   "rawName": "Intersport Sverige",
+   "companyId": "cmtlyfvaf016cqf5k6yvon72v"
+  },
+  {
+   "sourceKey": "kicks",
+   "rawName": "KICKS Sverige",
+   "companyId": "cmtlyhopb03mlqf5k6py3jgor"
+  },
+  {
+   "sourceKey": "nike",
+   "rawName": "NIKE India Technology Center Private Limited",
+   "companyId": "cmtm8oy381hbdpv5jzsp4t1a8"
+  },
+  {
+   "sourceKey": "nike",
+   "rawName": "NIKE Retail France",
+   "companyId": "cmtm8oy381hbdpv5jzsp4t1a8"
+  },
+  {
+   "sourceKey": "nike",
+   "rawName": "NIKE Sourcing (Guangzhou) Co., Ltd.",
+   "companyId": "cmtm8oy381hbdpv5jzsp4t1a8"
+  },
+  {
+   "sourceKey": "nike",
+   "rawName": "Nike Australia Pty. Ltd.",
+   "companyId": "cmtm8oy381hbdpv5jzsp4t1a8"
+  },
+  {
+   "sourceKey": "nike",
+   "rawName": "NIKE Korea LLC",
+   "companyId": "cmtm8oy381hbdpv5jzsp4t1a8"
+  },
+  {
+   "sourceKey": "nike",
+   "rawName": "NIKE, Inc.",
+   "companyId": "cmtm8oy381hbdpv5jzsp4t1a8"
+  },
+  {
+   "sourceKey": "nike-nke2",
+   "rawName": "NIKE Retail Services",
+   "companyId": "cmtm8oy381hbdpv5jzsp4t1a8"
+  },
+  {
+   "sourceKey": "normal",
+   "rawName": "NORMAL Sweden",
+   "companyId": "cmtk26ge70hulnv2b0qav4amw"
+  },
+  {
+   "sourceKey": "normal",
+   "rawName": "NORMAL France",
+   "companyId": "cmtk26ge70hulnv2b0qav4amw"
+  },
+  {
+   "sourceKey": "normal",
+   "rawName": "NORMAL Netherlands",
+   "companyId": "cmtk26ge70hulnv2b0qav4amw"
+  },
+  {
+   "sourceKey": "normal",
+   "rawName": "NORMAL Austria",
+   "companyId": "cmtk26ge70hulnv2b0qav4amw"
+  },
+  {
+   "sourceKey": "normal",
+   "rawName": "NORMAL Portugal",
+   "companyId": "cmtk26ge70hulnv2b0qav4amw"
+  },
+  {
+   "sourceKey": "normal",
+   "rawName": "NORMAL Finland",
+   "companyId": "cmtk26ge70hulnv2b0qav4amw"
+  },
+  {
+   "sourceKey": "normal",
+   "rawName": "NORMAL Ireland",
+   "companyId": "cmtk26ge70hulnv2b0qav4amw"
+  },
+  {
+   "sourceKey": "normal",
+   "rawName": "NORMAL Romania",
+   "companyId": "cmtk26ge70hulnv2b0qav4amw"
+  },
+  {
+   "sourceKey": "normal",
+   "rawName": "NORMAL Czech Republic",
+   "companyId": "cmtk26ge70hulnv2b0qav4amw"
+  },
+  {
+   "sourceKey": "normal",
+   "rawName": "NORMAL Slovakia",
+   "companyId": "cmtk26ge70hulnv2b0qav4amw"
+  },
+  {
+   "sourceKey": "passage-du-desir",
+   "rawName": "Passage du désir",
+   "companyId": "cmtk1x5m100ignv2bspx16mz2"
+  },
+  {
+   "sourceKey": "stella-mccartney",
+   "rawName": "Stella McCartney France S.A.S",
+   "companyId": "cmtk1xktt01jdnv2ba1o5xwx4"
+  },
+  {
+   "sourceKey": "therealreal",
+   "rawName": "The RealReal, Inc.",
+   "companyId": "cmtp2asf60m9cqq4zxqq7fbli"
+  },
+  {
+   "sourceKey": "ulta-jibe",
+   "rawName": "Ulta Beauty, Inc.",
+   "companyId": "cmtpuyimv3pbul35m36fwuuzo"
+  },
+  {
+   "sourceKey": "uniqlo-stores",
+   "rawName": "UNIQLO EUROPE LIMITED",
+   "companyId": "cmtptzpyj02cil35mltt03knh"
+  },
+  {
+   "sourceKey": "vlisco",
+   "rawName": "Vlisco Netherlands B.V.",
+   "companyId": "cmtlyg97h01m1qf5k7g96o1qo"
+  }
+ ],
+ "version": 1,
+ "sourceHashes": {
+  "brunello-cucinelli": "a2bf57f89687e06c6fd8360afbb39939b4f6c9f6651ac620db208e5ce1fcaab1",
+  "estee-lauder-companies": "34862a924b4dac70fea66a0c7b4517564172c1384c938446bbf710de2c211795",
+  "fashionjobs": "8dc3b3a1b8588c67adf6d70f16e928af6ffce4d2663f89bd1887414280cccc3a",
+  "intersport": "a1dc2dfb76b4f48a92beff7c79ae91d6791836454c328e47ccd72eade6ff92b8",
+  "intersport-france": "c021e140a3d95287e1fd67f1d63f0c6d9144016cfc4cb7ba17391351947e029a",
+  "kicks": "1fc8a0b6d44a0df5d41a5067f57e211d30c9e1fe99e3cfead0bfb8844735ec43",
+  "nike": "683630f9667c00f85d76828e99515c5c7e7adea48a994dfe82983842ed940791",
+  "nike-nke2": "920f2c51b9019cf54de49274301901965338af6abec7d3694cc82a05aa4d0a63",
+  "normal": "37ba443a142d87767c1cf69349ddd76a9922ff30b682aa0afeebe45a339685c9",
+  "passage-du-desir": "5c54e871edfd195b0e20bb1071277210880e59fd3d9b853210a8fb4019d83cf1",
+  "stella-mccartney": "14e4c49a2a2d96544d7991128ad561eb9149ca2bf61be7f47937196a6421d6fb",
+  "therealreal": "6b3d875c962b7114a4dfeb1a1831c4c7d0fd2c66d33326c9abdf5390d7dc6d3a",
+  "ulta-jibe": "f2a0f09bf07c2b05afcb685a9706528c65efb552e35fc91758c950da46bf44e0",
+  "uniqlo-graduates": "ba9de190a1bdaecdd3757fa1e8da2e749dd07a8ffe170c9317efb7f0eb656319",
+  "uniqlo-headquarters": "126aec391c31c3900074cf1187c47706938af2f94979e983a56627d1ebcf3cd7",
+  "uniqlo-stores": "ba8910f7bafbde452ecb2123b23931b58139cd729297823134f49f70bbe2f352",
+  "vlisco": "9b4b62250301a4bee97f3c8395422077e4c2b454c1ad94e87d1035ea9fb3c320"
+ },
+ "createdAt": "2026-09-09T21:39:58.446Z",
+ "companyIds": [
+  "cmtk1x5m100ignv2bspx16mz2",
+  "cmtk1xktt01jdnv2ba1o5xwx4",
+  "cmtk26ge70hulnv2b0qav4amw",
+  "cmtlyfvaf016cqf5k6yvon72v",
+  "cmtlyg97h01m1qf5k7g96o1qo",
+  "cmtlyhopb03mlqf5k6py3jgor",
+  "cmtm8oy381hbdpv5jzsp4t1a8",
+  "cmtnhcuo323w4qq4z28gpi5bo",
+  "cmtp22cxr0a7gqq4z2yq4wjhy",
+  "cmtp2asf60m9cqq4zxqq7fbli",
+  "cmtptzpyj02cil35mltt03knh",
+  "cmtpuyimv3pbul35m36fwuuzo"
+ ],
+ "sourceKeys": [
+  "brunello-cucinelli",
+  "estee-lauder-companies",
+  "fashionjobs",
+  "intersport",
+  "intersport-france",
+  "kicks",
+  "nike",
+  "nike-nke2",
+  "normal",
+  "passage-du-desir",
+  "stella-mccartney",
+  "therealreal",
+  "ulta-jibe",
+  "uniqlo-graduates",
+  "uniqlo-headquarters",
+  "uniqlo-stores",
+  "vlisco"
+ ],
+ "beforeHash": "3d8016ba3ef9b5abe13a1df17156ed8165d6dd93545bfaaa69a04be7dbc2e540",
+ "jobCount": 12804,
+ "activeJobCount": 12688,
+ "sourceCount": 12804
+}

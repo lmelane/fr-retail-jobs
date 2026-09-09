@@ -1,0 +1,154 @@
+{
+  "at": "2026-09-09T21:40:32.624Z",
+  "environment": "production",
+  "commit": "8c29b96a0e15670c1e02cbcd6ef63b282f9d1485",
+  "planHash": "445138a76b7377c8fe69a4e0c78e4f8afbf9cb2242bd6098f28e8222367492f6",
+  "aliasesPlanned": 27,
+  "skipped": [
+    {
+      "sourceKey": "new-balance",
+      "kind": "workday",
+      "owner": "New Balance",
+      "rawLabel": "New Balance Europe B.V.",
+      "postings": 10,
+      "rule": "A",
+      "target": "New Balance",
+      "evidence": "resolveCompany(\"New Balance Europe B.V.\")=NEW_BALANCE=owner",
+      "why": "no readable page naming the employer"
+    },
+    {
+      "sourceKey": "swarovski",
+      "kind": "workday",
+      "owner": "Swarovski",
+      "rawLabel": "1570 Swarovski UK Ltd.",
+      "postings": 41,
+      "rule": "A_QUALIFIER",
+      "target": "Swarovski",
+      "evidence": "\"1570 Swarovski UK Ltd.\" minus code/country/legal form = \"Swarovski\" → SWAROVSKI = owner",
+      "why": "no readable page naming the employer"
+    },
+    {
+      "sourceKey": "swarovski",
+      "kind": "workday",
+      "owner": "Swarovski",
+      "rawLabel": "1530 Swarovski (Deutschland) GmbH",
+      "postings": 30,
+      "rule": "A_QUALIFIER",
+      "target": "Swarovski",
+      "evidence": "\"1530 Swarovski (Deutschland) GmbH\" minus code/country/legal form = \"Swarovski\" → SWAROVSKI = owner",
+      "why": "no readable page naming the employer"
+    },
+    {
+      "sourceKey": "swarovski",
+      "kind": "workday",
+      "owner": "Swarovski",
+      "rawLabel": "0780 Swarovski Malaysia",
+      "postings": 2,
+      "rule": "A_QUALIFIER",
+      "target": "Swarovski",
+      "evidence": "\"0780 Swarovski Malaysia\" minus code/country/legal form = \"Swarovski\" → SWAROVSKI = owner",
+      "why": "no readable page naming the employer"
+    },
+    {
+      "sourceKey": "versace",
+      "kind": "workday",
+      "owner": "Versace",
+      "rawLabel": "Versace Deutschland GmbH",
+      "postings": 6,
+      "rule": "A",
+      "target": "Versace",
+      "evidence": "resolveCompany(\"Versace Deutschland GmbH\")=VERSACE=owner",
+      "why": "no readable page naming the employer"
+    }
+  ],
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 27
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "written": [
+    "brunello-cucinelli: BRUNELLO CUCINELLI SPA → BRUNELLO CUCINELLI",
+    "estee-lauder-companies: The Estée Lauder Companies → The Estée Lauder Companies",
+    "intersport: Intersport Sverige → Intersport",
+    "kicks: KICKS Sverige → Kicks",
+    "nike: NIKE India Technology Center Private Limited → NIKE",
+    "nike: NIKE Retail France → NIKE",
+    "nike: NIKE Sourcing (Guangzhou) Co., Ltd. → NIKE",
+    "nike: Nike Australia Pty. Ltd. → NIKE",
+    "nike: NIKE Korea LLC → NIKE",
+    "nike: NIKE, Inc. → NIKE",
+    "nike-nke2: NIKE Retail Services → NIKE",
+    "normal: NORMAL Sweden → Normal",
+    "normal: NORMAL France → Normal",
+    "normal: NORMAL Netherlands → Normal",
+    "normal: NORMAL Austria → Normal",
+    "normal: NORMAL Portugal → Normal",
+    "normal: NORMAL Finland → Normal",
+    "normal: NORMAL Ireland → Normal",
+    "normal: NORMAL Romania → Normal",
+    "normal: NORMAL Czech Republic → Normal",
+    "normal: NORMAL Slovakia → Normal",
+    "passage-du-desir: Passage du désir → Passage du Desir",
+    "stella-mccartney: Stella McCartney France S.A.S → Stella McCartney",
+    "therealreal: The RealReal, Inc. → The RealReal",
+    "ulta-jibe: Ulta Beauty, Inc. → Ulta Beauty",
+    "uniqlo-stores: UNIQLO EUROPE LIMITED → UNIQLO",
+    "vlisco: Vlisco Netherlands B.V. → Vlisco"
+  ],
+  "evidence": [
+    {
+      "url": "https://www.brunellocucinelli.com/",
+      "sha256": "698654b93c6c8a1e072d8d432ea9fe1fd25a47fff84f0be6c9ec236aac043ed5"
+    },
+    {
+      "url": "https://elcompanies.eightfold.ai",
+      "sha256": "c0ea93c5539bd7437b8b8e84eaec7b112bb323fa10593cbf89b73824f6115d30"
+    },
+    {
+      "url": "https://www.intersport.com/",
+      "sha256": "4bf4a4071e57eeb7c6b161bd5f52c168a383ec97ad8d0933f3a61d8f8b5eadef"
+    },
+    {
+      "url": "https://www.kicks.se/",
+      "sha256": "094507baa87bb3964fbf7e4c8d357a116008054bcb8ddf216f82fc0e64af3177"
+    },
+    {
+      "url": "https://www.nike.com/",
+      "sha256": "c4bd601d9048910b879c40003fadcbef49c250e446b3e6e49d2592b94ac9b8f3"
+    },
+    {
+      "url": "https://www.normal.eu/",
+      "sha256": "cde87460d636ee7e36c0ab0e32f4a903b9f3dce4d850cb17ea93f70a880fd92a"
+    },
+    {
+      "url": "https://www.passagedudesir.com/",
+      "sha256": "6bfc6c3ed69d69ba04b66c6676092ab56e255cbf908363a3a8f93dddbc470b81"
+    },
+    {
+      "url": "https://www.stellamccartney.com/",
+      "sha256": "1fb32145aba088688bdd5050198b41b9ca54fa4ba15cff1a7a88956787f3af9a"
+    },
+    {
+      "url": "https://www.therealreal.com/",
+      "sha256": "97e97f8a22fb326071fe1ec9d2331d07e7fa976f9df5fd466b41961b9dc745da"
+    },
+    {
+      "url": "https://www.ulta.com/",
+      "sha256": "1f7a4ba1b65346aa3506a9a3fe8d7c969a68daf478a37303602967341d126bd7"
+    },
+    {
+      "url": "https://www.uniqlo.com/",
+      "sha256": "7daef5b61c7c491a327cc4cd9617ac9c2dafb0b3022b9201cb76040e1e0d651d"
+    },
+    {
+      "url": "https://www.vlisco.com/",
+      "sha256": "16d8ea3e6efd755d9e5e58869d1296fa5b83108beb349f6f2c9c5a5fb351c5ec"
+    }
+  ],
+  "sheetSha": "9582c6dbb8066c1448b29f72afa8dd74689f32c6cdc845d87a7f38fd4bcce722"
+}

@@ -1,0 +1,869 @@
+{
+ "at": "2026-09-09T21:22:51.634Z",
+ "summary": {
+  "labels": 83,
+  "postings": 13959,
+  "byRule": {
+   "LOGO_ALT_OF_DISTINCT_BRAND": {
+    "labels": 5,
+    "postings": 516
+   },
+   "OWNER_REVIEW": {
+    "labels": 30,
+    "postings": 498
+   },
+   "DISTINCT_EXISTING_BRAND": {
+    "labels": 14,
+    "postings": 1117
+   },
+   "A": {
+    "labels": 16,
+    "postings": 10752
+   },
+   "A_QUALIFIER": {
+    "labels": 14,
+    "postings": 172
+   },
+   "B": {
+    "labels": 2,
+    "postings": 79
+   },
+   "LOGO_ALT_OF_OWNER": {
+    "labels": 2,
+    "postings": 825
+   }
+  }
+ },
+ "rows": [
+  {
+   "sourceKey": "a-derma-4",
+   "kind": "workday",
+   "owner": "A-Derma",
+   "rawLabel": "Logo Pierre Fabre",
+   "postings": 245,
+   "rule": "LOGO_ALT_OF_DISTINCT_BRAND",
+   "target": "Pierre Fabre",
+   "evidence": "company \"Pierre Fabre\" exists (group Pierre Fabre)"
+  },
+  {
+   "sourceKey": "aim-n",
+   "kind": "teamtailor",
+   "owner": "Aim'n",
+   "rawLabel": "aim'n Sportswear",
+   "postings": 4,
+   "rule": "OWNER_REVIEW",
+   "target": "Aim'n",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "b2",
+   "kind": "teamtailor",
+   "owner": "B2",
+   "rawLabel": "Browns Shoes",
+   "postings": 66,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "Browns Shoes",
+   "evidence": "company \"Browns Shoes\" exists"
+  },
+  {
+   "sourceKey": "blue-banana",
+   "kind": "teamtailor",
+   "owner": "Blue Banana",
+   "rawLabel": "Blue Banana Brand",
+   "postings": 17,
+   "rule": "OWNER_REVIEW",
+   "target": "Blue Banana",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "brunello-cucinelli",
+   "kind": "workday",
+   "owner": "BRUNELLO CUCINELLI",
+   "rawLabel": "BRUNELLO CUCINELLI SPA",
+   "postings": 8,
+   "rule": "A",
+   "target": "BRUNELLO CUCINELLI",
+   "evidence": "resolveCompany(\"BRUNELLO CUCINELLI SPA\")=BRUNELLO_CUCINELLI=owner"
+  },
+  {
+   "sourceKey": "burnt",
+   "kind": "teamtailor",
+   "owner": "Burnt",
+   "rawLabel": "Burnt Studios",
+   "postings": 4,
+   "rule": "OWNER_REVIEW",
+   "target": "Burnt",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "cal-k-holding",
+   "kind": "successfactors",
+   "owner": "Çalık",
+   "rawLabel": "calikholdi",
+   "postings": 3,
+   "rule": "OWNER_REVIEW",
+   "target": "Çalık",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "carla-b",
+   "kind": "teamtailor",
+   "owner": "CARLA B",
+   "rawLabel": "Carla",
+   "postings": 12,
+   "rule": "OWNER_REVIEW",
+   "target": "CARLA B",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "damiani",
+   "kind": "successfactors",
+   "owner": "Damiani",
+   "rawLabel": "damianispa",
+   "postings": 28,
+   "rule": "OWNER_REVIEW",
+   "target": "Damiani",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "deckers",
+   "kind": "workday",
+   "owner": "Deckers",
+   "rawLabel": "HOKA Logo",
+   "postings": 118,
+   "rule": "LOGO_ALT_OF_DISTINCT_BRAND",
+   "target": "HOKA",
+   "evidence": "company \"HOKA\" exists"
+  },
+  {
+   "sourceKey": "dfs",
+   "kind": "successfactors",
+   "owner": "DFS",
+   "rawLabel": "dfsventure",
+   "postings": 4,
+   "rule": "OWNER_REVIEW",
+   "target": "DFS",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "dr-pierre-ricaud",
+   "kind": "successfactors",
+   "owner": "Dr Pierre Ricaud",
+   "rawLabel": "Groupe Rocher",
+   "postings": 63,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "Groupe Rocher",
+   "evidence": "company \"Groupe Rocher\" exists (group Groupe Rocher)"
+  },
+  {
+   "sourceKey": "drunk-elephant-2",
+   "kind": "successfactors",
+   "owner": "Drunk Elephant",
+   "rawLabel": "Shiseido",
+   "postings": 160,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "SHISEIDO",
+   "evidence": "company \"SHISEIDO\" exists (group Shiseido Group)"
+  },
+  {
+   "sourceKey": "estee-lauder-companies",
+   "kind": "eightfold",
+   "owner": "The Estée Lauder Companies",
+   "rawLabel": "The Estée Lauder Companies",
+   "postings": 8,
+   "rule": "A",
+   "target": "The Estée Lauder Companies",
+   "evidence": "resolveCompany(\"The Estée Lauder Companies\")=THE_ESTEE_LAUDER_COMPANIES=owner"
+  },
+  {
+   "sourceKey": "etam",
+   "kind": "teamtailor",
+   "owner": "Etam",
+   "rawLabel": "Maison 123",
+   "postings": 61,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "Maison 123",
+   "evidence": "company \"Maison 123\" exists (group Groupe Etam)"
+  },
+  {
+   "sourceKey": "etam",
+   "kind": "teamtailor",
+   "owner": "Etam",
+   "rawLabel": "Undiz",
+   "postings": 48,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "Undiz",
+   "evidence": "company \"Undiz\" exists (group Groupe Etam)"
+  },
+  {
+   "sourceKey": "eurofragrance",
+   "kind": "teamtailor",
+   "owner": "Eurofragrance",
+   "rawLabel": "Eurofragance",
+   "postings": 39,
+   "rule": "OWNER_REVIEW",
+   "target": "Eurofragrance",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "huber",
+   "kind": "successfactors",
+   "owner": "HUBER",
+   "rawLabel": "JM Huber Corporation",
+   "postings": 61,
+   "rule": "OWNER_REVIEW",
+   "target": "HUBER",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "intersport",
+   "kind": "teamtailor",
+   "owner": "Intersport",
+   "rawLabel": "Intersport Sverige",
+   "postings": 4,
+   "rule": "A_QUALIFIER",
+   "target": "Intersport",
+   "evidence": "\"Intersport Sverige\" minus code/country/legal form = \"Intersport\" → INTERSPORT = owner"
+  },
+  {
+   "sourceKey": "joy",
+   "kind": "teamtailor",
+   "owner": "Joy",
+   "rawLabel": "Joy Privateaser",
+   "postings": 2,
+   "rule": "OWNER_REVIEW",
+   "target": "Joy",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "karla-otto",
+   "kind": "teamtailor",
+   "owner": "Karla Otto",
+   "rawLabel": "The Independents",
+   "postings": 11,
+   "rule": "OWNER_REVIEW",
+   "target": "Karla Otto",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "katie-loxton",
+   "kind": "teamtailor",
+   "owner": "Katie Loxton",
+   "rawLabel": "Joma Jewellery and Katie Loxton",
+   "postings": 19,
+   "rule": "OWNER_REVIEW",
+   "target": "Katie Loxton",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "kicks",
+   "kind": "teamtailor",
+   "owner": "Kicks",
+   "rawLabel": "KICKS Sverige",
+   "postings": 10,
+   "rule": "A_QUALIFIER",
+   "target": "Kicks",
+   "evidence": "\"KICKS Sverige\" minus code/country/legal form = \"KICKS\" → KICKS = owner"
+  },
+  {
+   "sourceKey": "l-occitane-en-provence-2",
+   "kind": "successfactors",
+   "owner": "L’Occitane en Provence",
+   "rawLabel": "L'Occitane",
+   "postings": 20,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "L’Occitane",
+   "evidence": "company \"L’Occitane\" exists"
+  },
+  {
+   "sourceKey": "lexington",
+   "kind": "teamtailor",
+   "owner": "Lexington",
+   "rawLabel": "The Lexington Company AB",
+   "postings": 2,
+   "rule": "OWNER_REVIEW",
+   "target": "Lexington",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "loccitane-fr",
+   "kind": "teamtailor",
+   "owner": "L’Occitane",
+   "rawLabel": "L'Occitane en Provence - France",
+   "postings": 14,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "L’Occitane en Provence",
+   "evidence": "company \"L’Occitane en Provence\" exists (group L'Occitane)"
+  },
+  {
+   "sourceKey": "luhta",
+   "kind": "teamtailor",
+   "owner": "Luhta",
+   "rawLabel": "Luhta Sportswear Company",
+   "postings": 5,
+   "rule": "OWNER_REVIEW",
+   "target": "Luhta",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "lvmh",
+   "kind": "lvmh_algolia",
+   "owner": "LVMH",
+   "rawLabel": "Groupe Bon Marché",
+   "postings": 45,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "Le Bon Marché",
+   "evidence": "company \"Le Bon Marché\" exists (group LVMH)"
+  },
+  {
+   "sourceKey": "maryruth-s",
+   "kind": "teamtailor",
+   "owner": "MaryRuth's",
+   "rawLabel": "MRO MaryRuth, LLC",
+   "postings": 3,
+   "rule": "OWNER_REVIEW",
+   "target": "MaryRuth's",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "mascot-workwear",
+   "kind": "successfactors",
+   "owner": "MASCOT Workwear",
+   "rawLabel": "Mascot International",
+   "postings": 49,
+   "rule": "OWNER_REVIEW",
+   "target": "MASCOT Workwear",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "mecca",
+   "kind": "workday",
+   "owner": "MECCA",
+   "rawLabel": "MECCA Brands Pty Ltd",
+   "postings": 165,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "MECCA Brands",
+   "evidence": "company \"MECCA Brands\" exists"
+  },
+  {
+   "sourceKey": "motel",
+   "kind": "teamtailor",
+   "owner": "Motel",
+   "rawLabel": "Motel Rocks",
+   "postings": 1,
+   "rule": "OWNER_REVIEW",
+   "target": "Motel",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "new-balance",
+   "kind": "workday",
+   "owner": "New Balance",
+   "rawLabel": "New Balance Europe B.V.",
+   "postings": 10,
+   "rule": "A",
+   "target": "New Balance",
+   "evidence": "resolveCompany(\"New Balance Europe B.V.\")=NEW_BALANCE=owner"
+  },
+  {
+   "sourceKey": "nike",
+   "kind": "workday",
+   "owner": "NIKE",
+   "rawLabel": "NIKE India Technology Center Private Limited",
+   "postings": 69,
+   "rule": "B",
+   "target": "NIKE",
+   "evidence": "D45 \"NIKE India Technology Center Private\" RATTACHÉ → nike.com"
+  },
+  {
+   "sourceKey": "nike",
+   "kind": "workday",
+   "owner": "NIKE",
+   "rawLabel": "NIKE Retail France",
+   "postings": 55,
+   "rule": "A",
+   "target": "NIKE",
+   "evidence": "resolveCompany(\"NIKE Retail France\")=NIKE=owner"
+  },
+  {
+   "sourceKey": "nike",
+   "kind": "workday",
+   "owner": "NIKE",
+   "rawLabel": "NIKE Sourcing (Guangzhou) Co., Ltd.",
+   "postings": 10,
+   "rule": "B",
+   "target": "NIKE",
+   "evidence": "D45 \"NIKE Sourcing (Guangzhou)\" RATTACHÉ → nike.com"
+  },
+  {
+   "sourceKey": "nike",
+   "kind": "workday",
+   "owner": "NIKE",
+   "rawLabel": "Nike Australia Pty. Ltd.",
+   "postings": 23,
+   "rule": "A",
+   "target": "NIKE",
+   "evidence": "resolveCompany(\"Nike Australia Pty. Ltd.\")=NIKE=owner"
+  },
+  {
+   "sourceKey": "nike",
+   "kind": "workday",
+   "owner": "NIKE",
+   "rawLabel": "NIKE Korea LLC",
+   "postings": 20,
+   "rule": "A_QUALIFIER",
+   "target": "NIKE",
+   "evidence": "\"NIKE Korea LLC\" minus code/country/legal form = \"NIKE\" → NIKE = owner"
+  },
+  {
+   "sourceKey": "nike",
+   "kind": "workday",
+   "owner": "NIKE",
+   "rawLabel": "NIKE, Inc.",
+   "postings": 119,
+   "rule": "A",
+   "target": "NIKE",
+   "evidence": "resolveCompany(\"NIKE, Inc.\")=NIKE=owner"
+  },
+  {
+   "sourceKey": "nike-nke2",
+   "kind": "workday",
+   "owner": "NIKE",
+   "rawLabel": "NIKE Retail Services",
+   "postings": 188,
+   "rule": "A",
+   "target": "NIKE",
+   "evidence": "resolveCompany(\"NIKE Retail Services\")=NIKE=owner"
+  },
+  {
+   "sourceKey": "normal",
+   "kind": "teamtailor",
+   "owner": "Normal",
+   "rawLabel": "NORMAL Sweden",
+   "postings": 10,
+   "rule": "A_QUALIFIER",
+   "target": "Normal",
+   "evidence": "\"NORMAL Sweden\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner"
+  },
+  {
+   "sourceKey": "normal",
+   "kind": "teamtailor",
+   "owner": "Normal",
+   "rawLabel": "NORMAL France",
+   "postings": 89,
+   "rule": "A",
+   "target": "Normal",
+   "evidence": "resolveCompany(\"NORMAL France\")=NORMAL=owner"
+  },
+  {
+   "sourceKey": "normal",
+   "kind": "teamtailor",
+   "owner": "Normal",
+   "rawLabel": "NORMAL Netherlands",
+   "postings": 75,
+   "rule": "A",
+   "target": "Normal",
+   "evidence": "resolveCompany(\"NORMAL Netherlands\")=NORMAL=owner"
+  },
+  {
+   "sourceKey": "normal",
+   "kind": "teamtailor",
+   "owner": "Normal",
+   "rawLabel": "NORMAL Hovedkontor Danmark",
+   "postings": 15,
+   "rule": "OWNER_REVIEW",
+   "target": "Normal",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "normal",
+   "kind": "teamtailor",
+   "owner": "Normal",
+   "rawLabel": "NORMAL Austria",
+   "postings": 8,
+   "rule": "A_QUALIFIER",
+   "target": "Normal",
+   "evidence": "\"NORMAL Austria\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner"
+  },
+  {
+   "sourceKey": "normal",
+   "kind": "teamtailor",
+   "owner": "Normal",
+   "rawLabel": "NORMAL Portugal",
+   "postings": 28,
+   "rule": "A_QUALIFIER",
+   "target": "Normal",
+   "evidence": "\"NORMAL Portugal\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner"
+  },
+  {
+   "sourceKey": "normal",
+   "kind": "teamtailor",
+   "owner": "Normal",
+   "rawLabel": "NORMAL Finland",
+   "postings": 5,
+   "rule": "A_QUALIFIER",
+   "target": "Normal",
+   "evidence": "\"NORMAL Finland\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner"
+  },
+  {
+   "sourceKey": "normal",
+   "kind": "teamtailor",
+   "owner": "Normal",
+   "rawLabel": "NORMAL Ireland",
+   "postings": 9,
+   "rule": "A_QUALIFIER",
+   "target": "Normal",
+   "evidence": "\"NORMAL Ireland\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner"
+  },
+  {
+   "sourceKey": "normal",
+   "kind": "teamtailor",
+   "owner": "Normal",
+   "rawLabel": "NORMAL Warehouse Denmark",
+   "postings": 1,
+   "rule": "OWNER_REVIEW",
+   "target": "Normal",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "normal",
+   "kind": "teamtailor",
+   "owner": "Normal",
+   "rawLabel": "NORMAL Romania",
+   "postings": 2,
+   "rule": "A_QUALIFIER",
+   "target": "Normal",
+   "evidence": "\"NORMAL Romania\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner"
+  },
+  {
+   "sourceKey": "normal",
+   "kind": "teamtailor",
+   "owner": "Normal",
+   "rawLabel": "NORMAL Czech Republic",
+   "postings": 2,
+   "rule": "A_QUALIFIER",
+   "target": "Normal",
+   "evidence": "\"NORMAL Czech Republic\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner"
+  },
+  {
+   "sourceKey": "normal",
+   "kind": "teamtailor",
+   "owner": "Normal",
+   "rawLabel": "NORMAL Slovakia",
+   "postings": 1,
+   "rule": "A_QUALIFIER",
+   "target": "Normal",
+   "evidence": "\"NORMAL Slovakia\" minus code/country/legal form = \"NORMAL\" → NORMAL = owner"
+  },
+  {
+   "sourceKey": "nutrire",
+   "kind": "teamtailor",
+   "owner": "Nutrire",
+   "rawLabel": "Tricoci Salon | Spa",
+   "postings": 52,
+   "rule": "OWNER_REVIEW",
+   "target": "Nutrire",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "one",
+   "kind": "teamtailor",
+   "owner": "ONE",
+   "rawLabel": "one.com",
+   "postings": 8,
+   "rule": "OWNER_REVIEW",
+   "target": "ONE",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "passage-du-desir",
+   "kind": "teamtailor",
+   "owner": "Passage du Desir",
+   "rawLabel": "Passage du désir",
+   "postings": 15,
+   "rule": "A",
+   "target": "Passage du Desir",
+   "evidence": "resolveCompany(\"Passage du désir\")=PASSAGE_DU_DESIR=owner"
+  },
+  {
+   "sourceKey": "printful",
+   "kind": "teamtailor",
+   "owner": "Printful",
+   "rawLabel": "FYUL",
+   "postings": 7,
+   "rule": "OWNER_REVIEW",
+   "target": "Printful",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "prisma-media",
+   "kind": "teamtailor",
+   "owner": "Prisma Media",
+   "rawLabel": "Prisma Media Group",
+   "postings": 17,
+   "rule": "OWNER_REVIEW",
+   "target": "Prisma Media",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "pronovias",
+   "kind": "teamtailor",
+   "owner": "Pronovias",
+   "rawLabel": "Pronovias Group",
+   "postings": 33,
+   "rule": "OWNER_REVIEW",
+   "target": "Pronovias",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "richemont",
+   "kind": "workday",
+   "owner": "Richemont",
+   "rawLabel": "Richemont Logo",
+   "postings": 217,
+   "rule": "LOGO_ALT_OF_OWNER",
+   "target": "Richemont",
+   "evidence": "resolveCompany(\"Richemont\")=RICHEMONT=owner"
+  },
+  {
+   "sourceKey": "richemont",
+   "kind": "workday",
+   "owner": "Richemont",
+   "rawLabel": "Jaeger LeCoultre logo",
+   "postings": 5,
+   "rule": "LOGO_ALT_OF_DISTINCT_BRAND",
+   "target": "Jaeger LeCoultre",
+   "evidence": "company \"Jaeger LeCoultre\" exists (group Richemont)"
+  },
+  {
+   "sourceKey": "richemont",
+   "kind": "workday",
+   "owner": "Richemont",
+   "rawLabel": "VanCleef-Aprels",
+   "postings": 111,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "Van Cleef & Arpels",
+   "evidence": "company \"Van Cleef & Arpels\" exists (group Richemont)"
+  },
+  {
+   "sourceKey": "richemont-workday",
+   "kind": "workday",
+   "owner": "Richemont",
+   "rawLabel": "VanCleef-Aprels",
+   "postings": 273,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "Van Cleef & Arpels",
+   "evidence": "company \"Van Cleef & Arpels\" exists (group Richemont)"
+  },
+  {
+   "sourceKey": "richemont-workday",
+   "kind": "workday",
+   "owner": "Richemont",
+   "rawLabel": "Richemont Logo",
+   "postings": 608,
+   "rule": "LOGO_ALT_OF_OWNER",
+   "target": "Richemont",
+   "evidence": "resolveCompany(\"Richemont\")=RICHEMONT=owner"
+  },
+  {
+   "sourceKey": "richemont-workday",
+   "kind": "workday",
+   "owner": "Richemont",
+   "rawLabel": "Jaeger LeCoultre logo",
+   "postings": 28,
+   "rule": "LOGO_ALT_OF_DISTINCT_BRAND",
+   "target": "Jaeger LeCoultre",
+   "evidence": "company \"Jaeger LeCoultre\" exists (group Richemont)"
+  },
+  {
+   "sourceKey": "richemont-workday",
+   "kind": "workday",
+   "owner": "Richemont",
+   "rawLabel": "Cartier Logo",
+   "postings": 120,
+   "rule": "LOGO_ALT_OF_DISTINCT_BRAND",
+   "target": "Cartier",
+   "evidence": "company \"Cartier\" exists (group Richemont)"
+  },
+  {
+   "sourceKey": "saks",
+   "kind": "workday",
+   "owner": "Saks Fifth Avenue",
+   "rawLabel": "186 NEIMAN MARCUS GROUP TECHNOLOGY SERVICES PRIVATE LIMITED (INDIA)",
+   "postings": 13,
+   "rule": "OWNER_REVIEW",
+   "target": "Saks Fifth Avenue",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "showroomprive",
+   "kind": "teamtailor",
+   "owner": "Showroomprive",
+   "rawLabel": "Showroomprive.com",
+   "postings": 30,
+   "rule": "OWNER_REVIEW",
+   "target": "Showroomprive",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "stella-mccartney",
+   "kind": "workday",
+   "owner": "Stella McCartney",
+   "rawLabel": "Stella McCartney France S.A.S",
+   "postings": 1,
+   "rule": "A",
+   "target": "Stella McCartney",
+   "evidence": "resolveCompany(\"Stella McCartney France S.A.S\")=STELLA_MCCARTNEY=owner"
+  },
+  {
+   "sourceKey": "swarovski",
+   "kind": "workday",
+   "owner": "Swarovski",
+   "rawLabel": "1570 Swarovski UK Ltd.",
+   "postings": 41,
+   "rule": "A_QUALIFIER",
+   "target": "Swarovski",
+   "evidence": "\"1570 Swarovski UK Ltd.\" minus code/country/legal form = \"Swarovski\" → SWAROVSKI = owner"
+  },
+  {
+   "sourceKey": "swarovski",
+   "kind": "workday",
+   "owner": "Swarovski",
+   "rawLabel": "0200 Swarovski Global Business Services sp. z o.o.",
+   "postings": 19,
+   "rule": "OWNER_REVIEW",
+   "target": "Swarovski",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "swarovski",
+   "kind": "workday",
+   "owner": "Swarovski",
+   "rawLabel": "1530 Swarovski (Deutschland) GmbH",
+   "postings": 30,
+   "rule": "A_QUALIFIER",
+   "target": "Swarovski",
+   "evidence": "\"1530 Swarovski (Deutschland) GmbH\" minus code/country/legal form = \"Swarovski\" → SWAROVSKI = owner"
+  },
+  {
+   "sourceKey": "swarovski",
+   "kind": "workday",
+   "owner": "Swarovski",
+   "rawLabel": "0210 Swarovski GBS Asia",
+   "postings": 12,
+   "rule": "OWNER_REVIEW",
+   "target": "Swarovski",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "swarovski",
+   "kind": "workday",
+   "owner": "Swarovski",
+   "rawLabel": "0780 Swarovski Malaysia",
+   "postings": 2,
+   "rule": "A_QUALIFIER",
+   "target": "Swarovski",
+   "evidence": "\"0780 Swarovski Malaysia\" minus code/country/legal form = \"Swarovski\" → SWAROVSKI = owner"
+  },
+  {
+   "sourceKey": "tapestry",
+   "kind": "workday",
+   "owner": "Tapestry",
+   "rawLabel": "Coach Hong Kong Limited",
+   "postings": 18,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "Coach",
+   "evidence": "company \"Coach\" exists"
+  },
+  {
+   "sourceKey": "tapestry",
+   "kind": "workday",
+   "owner": "Tapestry",
+   "rawLabel": "Coach Shanghai Limited",
+   "postings": 22,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "Coach Shanghai",
+   "evidence": "company \"Coach Shanghai\" exists"
+  },
+  {
+   "sourceKey": "tapestry",
+   "kind": "workday",
+   "owner": "Tapestry",
+   "rawLabel": "Coach Stores Limited",
+   "postings": 51,
+   "rule": "DISTINCT_EXISTING_BRAND",
+   "target": "Coach",
+   "evidence": "company \"Coach\" exists"
+  },
+  {
+   "sourceKey": "therealreal",
+   "kind": "workday",
+   "owner": "The RealReal",
+   "rawLabel": "The RealReal, Inc.",
+   "postings": 136,
+   "rule": "A",
+   "target": "The RealReal",
+   "evidence": "resolveCompany(\"The RealReal, Inc.\")=THE_REALREAL=owner"
+  },
+  {
+   "sourceKey": "typology",
+   "kind": "teamtailor",
+   "owner": "Typology",
+   "rawLabel": "Good Brands",
+   "postings": 8,
+   "rule": "OWNER_REVIEW",
+   "target": "Typology",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "ulta-jibe",
+   "kind": "jibe",
+   "owner": "Ulta Beauty",
+   "rawLabel": "Ulta Beauty, Inc.",
+   "postings": 9990,
+   "rule": "A",
+   "target": "Ulta Beauty",
+   "evidence": "resolveCompany(\"Ulta Beauty, Inc.\")=ULTA_BEAUTY=owner"
+  },
+  {
+   "sourceKey": "uniqlo-stores",
+   "kind": "workday",
+   "owner": "UNIQLO",
+   "rawLabel": "UNIQLO EUROPE LIMITED",
+   "postings": 20,
+   "rule": "A",
+   "target": "UNIQLO",
+   "evidence": "resolveCompany(\"UNIQLO EUROPE LIMITED\")=UNIQLO=owner"
+  },
+  {
+   "sourceKey": "versace",
+   "kind": "workday",
+   "owner": "Versace",
+   "rawLabel": "Versace Deutschland GmbH",
+   "postings": 6,
+   "rule": "A",
+   "target": "Versace",
+   "evidence": "resolveCompany(\"Versace Deutschland GmbH\")=VERSACE=owner"
+  },
+  {
+   "sourceKey": "vitamin-a",
+   "kind": "teamtailor",
+   "owner": "Vitamin A",
+   "rawLabel": "Vitamin Well Group",
+   "postings": 19,
+   "rule": "OWNER_REVIEW",
+   "target": "Vitamin A",
+   "evidence": ""
+  },
+  {
+   "sourceKey": "vlisco",
+   "kind": "teamtailor",
+   "owner": "Vlisco",
+   "rawLabel": "Vlisco Netherlands B.V.",
+   "postings": 9,
+   "rule": "A",
+   "target": "Vlisco",
+   "evidence": "resolveCompany(\"Vlisco Netherlands B.V.\")=VLISCO=owner"
+  }
+ ]
+}

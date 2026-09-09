@@ -1,0 +1,152 @@
+{
+  "at": "2026-09-09T20:53:42.303Z",
+  "companies": [
+    {
+      "id": "cra1253949509f937aa859b890",
+      "name": "Aptar Group",
+      "canonicalKey": "APTAR_GROUP",
+      "kind": "GROUP",
+      "domain": "aptar.com",
+      "parentGroup": null,
+      "mergedIntoId": null,
+      "sectorCodes": [],
+      "_count": {
+        "jobs": 228
+      }
+    },
+    {
+      "id": "cmtk227go0av0nv2bi28nhs5f",
+      "name": "Aptar Beauty",
+      "canonicalKey": "APTAR_BEAUTY",
+      "kind": "UNKNOWN",
+      "domain": "aptar.com",
+      "parentGroup": null,
+      "mergedIntoId": null,
+      "sectorCodes": [],
+      "_count": {
+        "jobs": 0
+      }
+    }
+  ],
+  "segments": [
+    {
+      "segment": "BEAUTY",
+      "n": 88
+    },
+    {
+      "segment": "PHARMA",
+      "n": 85
+    },
+    {
+      "segment": "UNDETERMINED",
+      "n": 47
+    },
+    {
+      "segment": "CLOSURES_FOOD_HOME",
+      "n": 4
+    }
+  ],
+  "pharmaAndBeauty": 62,
+  "functions": [
+    {
+      "fn": "manufacturing-quality",
+      "n": 63
+    },
+    {
+      "fn": null,
+      "n": 57
+    },
+    {
+      "fn": "supply-chain-logistics",
+      "n": 20
+    },
+    {
+      "fn": "product-development-rd",
+      "n": 15
+    },
+    {
+      "fn": "retail-store-management",
+      "n": 9
+    },
+    {
+      "fn": "hr-talent",
+      "n": 9
+    },
+    {
+      "fn": "finance",
+      "n": 8
+    },
+    {
+      "fn": "atelier-craft",
+      "n": 7
+    },
+    {
+      "fn": "strategy-management",
+      "n": 6
+    },
+    {
+      "fn": "legal-compliance",
+      "n": 5
+    },
+    {
+      "fn": "it-data",
+      "n": 4
+    },
+    {
+      "fn": "ecommerce-digital",
+      "n": 4
+    }
+  ],
+  "countries": [
+    {
+      "countryCode": "US",
+      "n": 94
+    },
+    {
+      "countryCode": "DE",
+      "n": 67
+    },
+    {
+      "countryCode": "FR",
+      "n": 31
+    },
+    {
+      "countryCode": "CZ",
+      "n": 10
+    },
+    {
+      "countryCode": "IT",
+      "n": 7
+    },
+    {
+      "countryCode": "MX",
+      "n": 6
+    },
+    {
+      "countryCode": "BR",
+      "n": 3
+    },
+    {
+      "countryCode": "BH",
+      "n": 3
+    },
+    {
+      "countryCode": "GB",
+      "n": 2
+    },
+    {
+      "countryCode": "CN",
+      "n": 1
+    }
+  ],
+  "pharmaTitles": [
+    {
+      "title": "Senior Program Lead - Strategic Pharma Partnerships",
+      "department": null
+    },
+    {
+      "title": "Associate Manager, Pharmaceutical Development",
+      "department": null
+    }
+  ]
+}
