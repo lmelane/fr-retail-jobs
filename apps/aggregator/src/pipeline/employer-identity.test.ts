@@ -124,6 +124,13 @@ describe('Employer identity evidence and conservation', () => {
     expect(await p.employerIdentityReview.count()).toBe(0);
     await applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789');
     expect(await p.job.count()).toBe(2); expect(await p.job.count({ where: { isActive: true } })).toBe(1);
+    const review = await p.employerIdentityReview.findUniqueOrThrow({ where: { id: plan.batchId } });
+    const artifacts = review.evidence as { artifactText: string; sha256: string }[];
+    for (const source of sources) {
+      const artifact = artifacts.find(e => e.artifactText.includes(source.id))!;
+      expect(JSON.parse(artifact.artifactText)).toEqual(JSON.parse(JSON.stringify(source)));
+      expect(createHash('sha256').update(artifact.artifactText).digest('hex')).toBe(artifact.sha256);
+    }
     await expect(p.$transaction(tx => verifyRepair(tx, ['lifecycle']))).resolves.toEqual({ lifecycleViolations: 0 });
     expect(await p.job.findUniqueOrThrow({ where: { id: old.jobId } })).toMatchObject({ mergedIntoId: current.jobId, isActive: false, closedAt: before.closedAt });
     expect(await p.jobSource.findMany({ orderBy: { id: 'asc' } })).toEqual(sources.map(s => ({ ...s, jobId: current.jobId })));
