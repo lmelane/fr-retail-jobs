@@ -33,11 +33,13 @@ describe('transactional identity and source authority', () => {
     } });
     const first = await upsertDeduplicated(prisma, candidate({ sourceKey: 'retirement-race' }));
     const outcomes = await Promise.all(Array.from({ length: 3 }, () => retireSource(prisma, 'retirement-race')));
-    expect(outcomes.reduce((n, x) => n + x.jobsClosed, 0)).toBe(1);
+    expect(outcomes.reduce((n, x) => n + x.jobsClosed, 0)).toBe(0);
+    expect(outcomes.reduce((n, x) => n + x.jobsWithdrawn, 0)).toBe(1);
     await expect(upsertDeduplicated(prisma, candidate({ sourceKey: 'retirement-race' }))).rejects.toThrow('RETIRED');
     expect(await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } })).toMatchObject({ isActive: false });
     expect(await prisma.jobEvent.count({ where: { jobId: first.jobId, type: 'OPENED' } })).toBe(1);
-    expect(await prisma.jobEvent.count({ where: { jobId: first.jobId, type: 'CLOSED' } })).toBe(1);
+    expect(await prisma.jobEvent.count({ where: { jobId: first.jobId, type: 'CLOSED' } })).toBe(0);
+    expect(await prisma.jobEvent.count({ where: { jobId: first.jobId, type: 'WITHDRAWN' } })).toBe(1);
     expect(await prisma.sourceObservation.count()).toBe(1);
     await prisma.source.delete({ where: { key: 'retirement-race' } });
   });

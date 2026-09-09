@@ -163,6 +163,7 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
         lastSeenAt: new Date(Math.max(from.lastSeenAt.getTime(), to.lastSeenAt.getTime())),
         isActive: from.isActive || to.isActive,
         closedAt: from.isActive || to.isActive ? null : to.closedAt,
+        ...(from.isActive || to.isActive ? { withdrawnAt: null, withdrawalReason: null } : {}),
       };
       await tx.job.update({ where: { id: to.id }, data: patch });
       await tx.job.update({ where: { id: from.id }, data: { isActive: false, mergedIntoId: to.id, events: { create: { type: 'MERGED', field: 'mergedInto', after: to.id } } } });

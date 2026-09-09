@@ -28,6 +28,7 @@ const prisma = new PrismaClient();
 export const FIXTURES = {
   activeJobId: 'e2e-active-1',
   closedJobId: 'e2e-closed-1',
+  withdrawnJobId: 'e2e-withdrawn-1',
 };
 
 async function main() {
@@ -82,8 +83,11 @@ async function main() {
   await job('e2e-active-2', 'Responsable Boutique (H/F)', true);
   await job('e2e-active-3', 'Conseiller de vente (H/F)', true, null);
   await job(FIXTURES.closedJobId, 'Offre expirée — CDI Vendeur', false);
+  await prisma.job.update({ where: { id: FIXTURES.closedJobId }, data: { closedAt: new Date() } });
+  await job(FIXTURES.withdrawnJobId, 'Conseiller — catalogue retiré', false);
+  await prisma.job.update({ where: { id: FIXTURES.withdrawnJobId }, data: { withdrawnAt: new Date(), withdrawalReason: 'SOURCE_RETIRED' } });
 
-  console.log('e2e fixtures seeded: 3 active offers, 1 closed, 1 Maison.');
+  console.log('e2e fixtures seeded: 3 active offers, 1 closed, 1 withdrawn, 1 Maison.');
 }
 
 // No top-level await: the web workspace has no "type": "module", so tsx

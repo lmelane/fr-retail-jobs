@@ -99,6 +99,16 @@ test.describe('offer hygiene — HTTP status (D22/D23)', () => {
     // D22 révisé: the REAL page renders behind the 410 — offer + expired notice.
     await expect(page.getByText(/expirée/i).first()).toBeVisible();
   });
+
+  test('a catalogue withdrawal returns 410 without claiming employer closure', async ({ page }) => {
+    test.skip(!process.env.E2E_SEEDED, 'requires seeded test database');
+    const response = await page.goto('/offre/e2e-withdrawn-1');
+    expect(response?.status()).toBe(410);
+    expect(response?.headers()['x-robots-tag']).toContain('noindex');
+    await expect(page.locator('.banner')).toContainText('Cette offre a été retirée de notre catalogue.');
+    await expect(page.locator('.banner')).not.toContainText('n’est plus publiée');
+    expect(await page.locator('script[type="application/ld+json"]').allTextContents()).not.toContainEqual(expect.stringContaining('JobPosting'));
+  });
 });
 
 test.describe('companies', () => {

@@ -14,7 +14,7 @@ import { chunk } from '../lib/chunk.js';
  *    évitable — le refresh ferme des centaines d'offres d'un coup.
  */
 
-export type JobEventType = 'OPENED' | 'CLOSED' | 'REOPENED' | 'CHANGED';
+export type JobEventType = 'OPENED' | 'CLOSED' | 'REOPENED' | 'WITHDRAWN' | 'REPUBLISHED' | 'CHANGED';
 
 /** Les champs dont un changement fait un événement. Description, dates, salaire n'en font pas. */
 export const STRUCTURAL_FIELDS = ['title', 'city', 'country', 'companyId', 'jobFunction'] as const;

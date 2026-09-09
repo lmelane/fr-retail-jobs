@@ -153,6 +153,7 @@ export type JobRow = {
   sectorCodes?: string[];
   url: string;
   postedAt: Date | null;
+  withdrawnAt?: Date | null;
   latitude: number | null;
   longitude: number | null;
   sourceCount: number;
@@ -306,6 +307,7 @@ function toRow(row: {
   city: string | null; location: string | null; employmentTerm: string | null; url: string;
   programType: string | null; engagementType: string | null; isSeasonal: boolean | null;
   postedAt: Date | null; latitude: number | null; longitude: number | null;
+  withdrawnAt?: Date | null;
   sources: { sourceKey: string }[]; description: string | null; postalCode: string | null;
   department: string | null; workTime: string | null; workplaceType: string | null;
   experienceYears: number | null; educationLevel: string | null; salaryMin: number | null;
@@ -330,6 +332,7 @@ function toRow(row: {
     sectorCodes: (row.company as {sectorCodes?:string[]}).sectorCodes??[],
     url: row.url,
     postedAt: row.postedAt,
+    withdrawnAt: row.withdrawnAt ?? null,
     latitude: row.latitude,
     longitude: row.longitude,
     sourceCount: row.sources.length,

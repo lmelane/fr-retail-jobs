@@ -27,7 +27,7 @@ export async function planExcludedIdentities(prisma: PrismaClient, definitions =
       handledJobs.add(job.id);
       if (job.sources.some(s => s.sourceKey !== source.key && s.isActive)) throw new Error(`Other active employer evidence needs review: ${job.id}`);
       const { sources: _sources, company, ...jobBefore } = job;
-      if (job.isActive) operations.push({ entity: 'Job', id: job.id, before: json(jobBefore), patch: { isActive: false, closedAt: at }, reason: 'Excluded from the sector catalogue; correction event, not employer CLOSED event' });
+      if (job.isActive) operations.push({ entity: 'Job', id: job.id, before: json(jobBefore), patch: { isActive: false, closedAt: null, withdrawnAt: at, withdrawalReason: 'OUT_OF_SCOPE' }, reason: 'Excluded from the sector catalogue; correction event, not employer CLOSED event' });
       if (!companyIds.has(company.id)) {
         const foreignJob = await prisma.job.findFirst({ where: { companyId: company.id, isActive: true, id: { notIn: entries.map(e => e.jobId) } }, select: { id: true } });
         if (foreignJob) throw new Error(`Employer identity also owns an unreviewed active job: ${company.id}/${foreignJob.id}`);

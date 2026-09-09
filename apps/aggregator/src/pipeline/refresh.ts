@@ -4,6 +4,7 @@ import { selectCanonicalSource } from '../dedup/canonical.js';
 import { lockCompanyRows } from '../lib/writeLocks.js';
 import { chunk } from '../lib/chunk.js';
 import { recordEvents } from './jobEvents.js';
+import { deactivateJob, reactivateJob } from './lifecycle.js';
 
 /**
  * REFRESH — lifecycle pass: NEW / UNCHANGED / UPDATED / CLOSED.
@@ -53,6 +54,8 @@ export type RefreshStats = {
   closedSources: number;
   closedJobs: number;
   reopened: number;
+  withdrawn: number;
+  republished: number;
   /** Sources excluded from closure because their last health run was BROKEN. */
   skippedBrokenSources: string[];
   /** True when a mass-closure guard refused the run without closing anything. */
@@ -140,6 +143,8 @@ export async function runRefresh(
       closedSources: 0,
       closedJobs: 0,
       reopened: 0,
+      withdrawn: 0,
+      republished: 0,
       skippedBrokenSources,
       refused: true,
     };
@@ -153,6 +158,7 @@ export async function runRefresh(
   });
   for (const job of revived) candidates.add(job.id);
   const closedSources = { count: 0 }, closedJobs = { count: 0 }, reopened = { count: 0 };
+  let withdrawn = 0, republished = 0;
   for (const ids of chunk([...candidates], 100)) {
     const planned = await prisma.job.findMany({ where: { id: { in: ids } }, select: { id: true, companyId: true } });
     const companies = new Map<string, string[]>();
@@ -171,31 +177,39 @@ export async function runRefresh(
           data: { isActive: false },
         });
         const jobs = await tx.job.findMany({ where: { id: { in: currentIds } }, include: { sources: true } });
-        let closed = 0, opened = 0;
+        let closed = 0, opened = 0, removed = 0, published = 0;
         const now = new Date();
         for (const job of jobs) {
           const owner = selectCanonicalSource(job.sources, job);
           const active = !!owner;
-          const transition = active !== job.isActive;
+          const transition = active ? reactivateJob(job) : deactivateJob(job,
+            // An orphan has no usable attestation. Its absence alone cannot
+            // establish an employer closure; only the trusted stale set can.
+            staleJobIds.has(job.id) ? { kind: 'CLOSED' } : { kind: 'WITHDRAWN', reason: 'ATTESTATION_MISSING' }, now);
           const changedOwner = owner && (job.canonicalSourceKey !== owner.sourceKey ||
             job.canonicalExternalId !== owner.externalId || job.url !== owner.url);
           if (!transition && !changedOwner) continue;
           await tx.job.update({ where: { id: job.id }, data: {
-            ...(transition ? { isActive: active, closedAt: active ? null : now,
-              ...(active ? { reopenedCount: { increment: 1 } } : {}) } : {}),
+            ...transition?.data,
             ...(owner ? { url: owner.url, canonicalTier: owner.sourceTier,
               canonicalSourceKey: owner.sourceKey, canonicalExternalId: owner.externalId } : {}),
           } });
           if (transition) {
-            await recordEvents(tx, [{ jobId: job.id, type: active ? 'REOPENED' : 'CLOSED', at: now }]);
-            if (active) opened++; else closed++;
+            await recordEvents(tx, [{ jobId: job.id, type: transition.type, at: now,
+              ...(transition.type === 'WITHDRAWN' ? { after: 'ATTESTATION_MISSING' } : {}) }]);
+            if (transition.type === 'REOPENED') opened++;
+            else if (transition.type === 'REPUBLISHED') published++;
+            else if (transition.type === 'WITHDRAWN') removed++;
+            else closed++;
           }
         }
-        return { sources: deactivated.count, closed, opened };
+        return { sources: deactivated.count, closed, opened, removed, published };
       }, { maxWait: 10_000, timeout: 30_000 });
       closedSources.count += counts.sources;
       closedJobs.count += counts.closed;
       reopened.count += counts.opened;
+      withdrawn += counts.removed;
+      republished += counts.published;
     }
   }
 
@@ -206,6 +220,8 @@ export async function runRefresh(
     closedSources: closedSources.count,
     closedJobs: closedJobs.count,
     reopened: reopened.count,
+    withdrawn,
+    republished,
     skippedBrokenSources,
     refused: false,
   };
