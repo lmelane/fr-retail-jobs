@@ -32,4 +32,26 @@ Plan de retrait `3eeafaa891abb5f9…` (`sport1-withdrawal-clone-proof.json`) ; e
 
 ## Preuve après production
 
-_Complété après application._
+Ordre suivi : sauvegarde fraîche restaurée et vérifiée → PR 55 mergée (`743f51d`, tracker + preuves) ; les trois workers redéployés dessus, le web volontairement non redéployé (watch paths `apps/web/**`, `packages/db/**` : la PR n'y touche pas, diff vide entre `68cbc4a` et `743f51d` sur ce périmètre) ; garde-fou d'application ajusté pour accepter ce cas précis, jamais un service dont le périmètre a changé → retrait → portail → preuves.
+
+- **Retrait** (17:11 UTC) : plan produit sur la production, patches identiques au clone (`patchesEqualClone: true`), hash `7f05ac504ff9f83b…` ; **23 opérations écrites, rejeu 0**, 0 violation de cycle de vie. Source `sport-1` RETIRED ; onze représentations et offres `WITHDRAWN`, **0 `closedAt` écrit** : retrait administratif, pas fermeture employeur. RAW, événements, employeur inchangés (`sport1-production-preservation-proof.json`).
+- **Portail officiel enregistré, non activé** : `careersUrl https://karriere.sport1.no/`, `discoveryStatus NEEDS_REVIEW`, `atsConfig` avec tenant ReachMee et preuves hachées, `atsType` inchangé UNKNOWN (1 écriture, rejeu 0 ; `sport1-portal-record-production-proof.json`). Aucune source créée, aucun run.
+
+| Mesure | Avant (16:50 UTC) | Après (17:11 UTC) |
+|---|---:|---:|
+| Offres conservées | 77 447 | **77 447** (hash d'identifiants identique) |
+| Actives | 74 198 | **74 187** |
+| France | 10 957 | 10 957 |
+| Sport 1 : démonstration actives | 11 | **0** |
+| Offres Sport 1 natives | 0 | 0 (portail officiel vide) |
+
+Public (`sport1-public-production-proof.json`) : `/api/jobs?maison=Sport 1` total **0** ; les **11 témoins retirés répondent 410 sans `JobPosting`** ; `/entreprise/sport-1` reste servie (200) sans offre.
+
+| Finding | Fixé ? | Commit / merge | Main ? | Déployé ? | Données réparées ? | Preuve prod |
+|---|---|---|---|---|---|---|
+| Sport 1 : faux tenant Teamtailor, 11 annonces de démonstration | Oui | plan générique existant (PR 52) ; preuves `64933ca` / `743f51d` | Oui | Oui (workers) | 11 retraits, 0 fermeture, RAW/historique conservés | `sport1-production-preservation-proof.json` |
+| Sport 1 : portail officiel absent de la base | Documenté, non activé | — | — | — | `careersUrl` + `atsConfig` (candidat ReachMee, 0 offre) | `sport1-portal-record-production-proof.json` |
+| Sport 1 : adaptateur ReachMee | Non (aucune offre réelle pour le valider) | — | — | — | Non | backlog S1 |
+| Sport 1 : canaux des franchisés | Non investigué | — | — | — | Non | backlog S2 |
+
+**GO pour le retrait ; NO-GO pour affirmer que Sport 1 ne recrute pas.**
