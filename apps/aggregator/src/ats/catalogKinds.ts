@@ -51,3 +51,13 @@ export const KIND_TO_ATS: Record<string, string> = {
   flatchr: "FLATCHR",
   "jobaffinity-wordpress": "JOBAFFINITY_WORDPRESS",
 };
+
+
+/** Preferred names live next to the registry; discovery must never invent a kind. */
+export function catalogueKindForAts(type: string): string | null {
+  const preferred = type === 'GENERIC_JSONLD' ? 'generic-listing' : type.toLowerCase();
+  if (KIND_TO_ATS[preferred] === type) return preferred;
+  const candidates = Object.entries(KIND_TO_ATS).filter(([, value]) => value === type);
+  if (candidates.length === 1) return candidates[0][0];
+  return null;
+}

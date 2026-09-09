@@ -6,7 +6,9 @@ import type { PrismaClient } from '@prisma/client';
 import { inspectCareerPage } from '../ats/detect.js';
 import { probeAtsBySlug } from './atsProbe.js';
 import { fetchRenderedHtml } from '../lib/browser.js';
-import { resolveCompany } from '../normalize/company.js';
+import { catalogueKindForAts } from '../ats/catalogKinds.js';
+import { parseCsvLine } from './validateDiscovered.js';
+import { createHash } from 'node:crypto';
 import type { AtsDetection } from '../types.js';
 
 /**
@@ -34,17 +36,6 @@ import type { AtsDetection } from '../types.js';
  */
 
 /** AtsType (WORKDAY) -> the catalogue's kind string (workday). */
-const KIND_FOR_TYPE: Record<string, string> = {
-  WORKDAY: 'workday',
-  GREENHOUSE: 'greenhouse',
-  LEVER: 'lever',
-  SMARTRECRUITERS: 'smartrecruiters-whitelabel',
-  RECRUITEE: 'recruitee',
-  PERSONIO: 'personio',
-  TEAMTAILOR: 'teamtailor',
-  EIGHTFOLD: 'eightfold',
-  GENERIC_JSONLD: 'generic-listing',
-};
 
 export type DiscoveryRow = {
   maison: string;
@@ -57,7 +48,7 @@ type RosterEntry = { name: string; url?: string };
 const dataUrl = (name: string) => fileURLToPath(new URL(`../../data/${name}`, import.meta.url));
 const OUT_PATH = dataUrl('sources.discovered.csv');
 /** One line per Maison already processed (name<TAB>status<TAB>kind), for resume. */
-const PROGRESS_PATH = dataUrl('discovery.progress.tsv');
+const PROGRESS_PATH = dataUrl('discovery.progress.v2.jsonl');
 /** Maisons auto-discovery could NOT resolve — the queue for the manual pass. */
 const UNRESOLVED_PATH = dataUrl('sources.unresolved.csv');
 /**
@@ -95,29 +86,27 @@ function csvCell(value: string): string {
 }
 
 /** Parse a `nom,url` CSV (header optional). Splits on the first comma only. */
-function parseRosterCsv(text: string): RosterEntry[] {
-  const rows: RosterEntry[] = [];
-  for (const raw of text.split(/\r?\n/)) {
-    const line = raw.trim();
-    if (!line) continue;
-    const comma = line.indexOf(',');
-    if (comma === -1) continue;
-    const name = line.slice(0, comma).replace(/^"|"$/g, '').trim();
-    const url = line.slice(comma + 1).replace(/^"|"$/g, '').trim();
-    const lower = name.toLowerCase();
-    if (!name || lower === 'nom' || lower === 'maison') continue; // header
-    rows.push({ name, url: url || undefined });
-  }
-  return rows;
+export function parseRosterCsv(text: string): RosterEntry[] {
+  return text.split(/\r?\n/).filter(line => line.trim()).map(line => {
+    const [name, url] = parseCsvLine(line);
+    return { name: name?.trim(), url: url?.trim() || undefined };
+  }).filter(row => row.name && !['nom', 'maison', 'name'].includes(row.name.toLowerCase()));
 }
 
-/** Names already processed in a previous run (for resume). */
-function loadProcessed(): Set<string> {
+/** Unicode-safe identity of a research task, not a canonical employer identity. */
+export function discoveryTaskKey(row: RosterEntry): string {
+  let url = row.url ?? '';
+  try { const u = new URL(url); u.hash = ''; url = u.toString(); } catch { /* preserve invalid input as evidence */ }
+  return createHash('sha256').update(JSON.stringify([row.name.normalize('NFKC').trim().toLowerCase(), url])).digest('hex');
+}
+
+/** Successful observations expire; failures remain eligible for an explicit next run. */
+export function loadProcessed(now = Date.now()): Set<string> {
   if (!existsSync(PROGRESS_PATH)) return new Set();
   const done = new Set<string>();
-  for (const line of readFileSync(PROGRESS_PATH, 'utf8').split(/\r?\n/)) {
-    const name = line.split('\t')[0];
-    if (name) done.add(name);
+  for (const line of readFileSync(PROGRESS_PATH, 'utf8').split('\n').filter(Boolean)) {
+    const row = JSON.parse(line);
+    if (['ats', 'generic'].includes(row.status) && now - Date.parse(row.checkedAt) < 7 * 86400000) done.add(row.taskKey);
   }
   return done;
 }
@@ -156,14 +145,8 @@ export async function discoverMaisons(options: {
 }): Promise<{ processed: number; discovered: number; skipped: number; unresolved: number; outPath: string }> {
   const concurrency = options.concurrency ?? 3;
 
-  // Skip Maisons the catalogue already serves, whatever their status short of
-  // RETIRED: a PAUSED source is still a known board, not a discovery target.
-  // An empty table is fine here — discovery is how the catalogue gets seeded.
-  const catalogued = await options.prisma.source.findMany({
-    where: { status: { not: 'RETIRED' } },
-    select: { maison: true },
-  });
-  const known = new Set(catalogued.map((s) => resolveCompany(s.maison).companyId));
+  // Company presence does not establish coverage of every regional/brand portal.
+  // Deduplication happens on the exact research task and later on source identity.
   const processed = options.fresh ? new Set<string>() : loadProcessed();
 
   // Prepare output files. The review CSV gets a header once; results are appended
@@ -185,10 +168,9 @@ export async function discoverMaisons(options: {
 
   const roster = parseRosterCsv(readFileSync(options.inputFile, 'utf8'));
   const dead = loadDeadNames();
-  let queue = roster.filter(
+  let queue = [...new Map(roster.map(row => [discoveryTaskKey(row), row])).values()].filter(
     (c) =>
-      !processed.has(c.name) &&
-      !known.has(resolveCompany(c.name).companyId) &&
+      !processed.has(discoveryTaskKey(c)) &&
       !dead.has(c.name.toLowerCase()),
   );
   const skippedKnownOrDone = roster.length - queue.length;
@@ -217,7 +199,9 @@ export async function discoverMaisons(options: {
             detection = await inspectCareerPage(company.url, 2, fetchRenderedHtml);
           }
           if (detection) {
-            kind = KIND_FOR_TYPE[detection.type] ?? detection.type.toLowerCase();
+            const registeredKind = catalogueKindForAts(detection.type);
+            if (!registeredKind) throw new Error(`No unambiguous catalogue kind for ${detection.type}`);
+            kind = registeredKind;
             appendFileSync(OUT_PATH, toCsvLine({ maison: company.name, kind, detection }) + '\n');
             discovered++;
             status = detection.type === 'GENERIC_JSONLD' ? 'generic' : 'ats';
@@ -228,16 +212,16 @@ export async function discoverMaisons(options: {
               `${csvCell(company.name)},${csvCell(company.url ?? '')},${csvCell('no ATS/careers found')}\n`,
             );
           }
-        } catch {
+        } catch (error) {
           unresolved++;
           status = 'error';
           appendFileSync(
             UNRESOLVED_PATH,
-            `${csvCell(company.name)},${csvCell(company.url ?? '')},${csvCell('fetch/timeout/403 error')}\n`,
+            `${csvCell(company.name)},${csvCell(company.url ?? '')},${csvCell(String(error).slice(0, 1500))}\n`,
           );
         }
         // Record progress LAST, so an interrupted Maison re-runs next time.
-        appendFileSync(PROGRESS_PATH, `${company.name}\t${status}\t${kind}\n`);
+        appendFileSync(PROGRESS_PATH, JSON.stringify({ taskKey: discoveryTaskKey(company), name: company.name, url: company.url, status, kind, checkedAt: new Date().toISOString() }) + '\n');
       }),
     ),
   );
