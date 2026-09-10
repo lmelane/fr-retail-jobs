@@ -6,6 +6,7 @@ const certifiedScopes = new Map<string, 'SINGLE_BRAND' | 'MULTI_BRAND'>();
 vi.mock('../connectors/sourceIdentity.js', async (importOriginal) => ({ ...(await importOriginal<typeof import('../connectors/sourceIdentity.js')>()), certifiedPortalScope: async (_p: unknown, key: string) => certifiedScopes.get(key) ?? null }));
 import { resolveEmployer, recordEmployerObservation } from '../identity/resolve.js';
 import { EmployerIdentityReviewRequired } from '../identity/errors.js';
+import { normalizedEmployerName } from '../normalize/employerName.js';
 const prisma = new PrismaClient();
 const SOURCE = 'gate-fixture';
 // EmployerObservation is append-only (database trigger) and references companies: every fixture entity gets a fresh key
@@ -53,6 +54,18 @@ it('keeps the house even when no earlier observation exists for the posting (the
   expect(resolution.company?.id).toBe(house.id); expect(resolution.rule).toBe('GROUP_LABEL_KEPT_HOUSE');
 });
 
+
+/** Workday logo alt, 2026-09-10: the previous observation read "UGG Logo" (the image's word), the posting was held by UGG all along.
+ * The cleaned spelling equals the holder's canonical name: a convergence, not a new identity. Any other new spelling is still refused. */
+it('accepts a new spelling that is exactly the canonical name of the employer already holding the posting', async () => {
+  const { house, base } = await fixture();
+  const withWord = { ...base, company: house.name, companyId: house.canonicalKey, rawEmployerName: `${house.name} Logo`, employerLabelOrigin: 'detail.jobPostingInfo.logoImage.alt:LOGO_ALT' };
+  await recordEmployerObservation(prisma, withWord, house.id, { company: house, rule: 'LEGACY_UNREVIEWED', rawEmployerName: withWord.rawEmployerName, normalizedEmployerName: normalizedEmployerName(withWord.rawEmployerName) });
+  const cleaned = { ...withWord, rawEmployerName: house.name, employerLabelOrigin: 'detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED' };
+  const resolution = await prisma.$transaction(tx => resolveEmployer(tx, cleaned));
+  expect(resolution.company?.id).toBe(house.id); expect(resolution.rule).toBe('LEGACY_UNREVIEWED');
+  await expect(prisma.$transaction(tx => resolveEmployer(tx, { ...withWord, rawEmployerName: `${house.name} Boutique` }))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
+});
 
 /** Mango, 2026-09-10: a portal certified SINGLE_BRAND publishes only entities of its owner — a new legal-entity label is the owner, not a new employer.
  * The certification is mocked (SourceIdentityReview is immutable by trigger: a persisted fixture would block the other files' wipe). */

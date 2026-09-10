@@ -90,7 +90,11 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
         where: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, canonicalEmployerId: { not: null } },
         orderBy: [{ observedAt: 'desc' }, { id: 'desc' }], select: { normalizedEmployerName: true },
       });
-      if (previous && previous.normalizedEmployerName !== normalized) {
+      // A new spelling that IS the canonical name of the employer already holding the posting is a
+      // convergence, not an identity change (Workday logo alt "UGG Logo" → "UGG" on 2026-09-10: the
+      // previous observation carried the image's word, the company never did).
+      const convergesOnCurrent = normalized === normalizedEmployerName(current.name);
+      if (previous && previous.normalizedEmployerName !== normalized && !convergesOnCurrent) {
         throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, current.name);
       }
     }
