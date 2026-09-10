@@ -74,10 +74,20 @@ export async function recordSourceIdentityReview(prisma: PrismaClient, document:
  * a changed configuration invalidates. Returns null unless a current VERIFIED
  * review states SINGLE_BRAND or MULTI_BRAND.
  */
-export async function certifiedPortalScope(prisma: Pick<PrismaClient, 'sourceIdentityReview' | 'source'>, sourceKey: string): Promise<'SINGLE_BRAND' | 'MULTI_BRAND' | null> {
+/**
+ * The certified perimeter of a portal, under the SAME contract as the promotion gate (`assertIdentityReview`):
+ * verdict, configuration hash, subject, tenant, age ≤ 30 days, method, archived artifact and official proof page.
+ * Before 2026-09-10 only the verdict and the hash were checked here, so an expired or malformed review could still
+ * credit every native label to the owner in the ingestion path while the strict gate would have refused it.
+ */
+export function portalScopeOf(source: IdentitySource, review: SourceIdentityReview | null, now = new Date()): 'SINGLE_BRAND' | 'MULTI_BRAND' | null {
+  try { assertIdentityReview(source, review, now); } catch { return null; }
+  return review?.portalScope === 'SINGLE_BRAND' || review?.portalScope === 'MULTI_BRAND' ? review.portalScope : null;
+}
+
+export async function certifiedPortalScope(prisma: Pick<PrismaClient, 'sourceIdentityReview' | 'source'>, sourceKey: string, now = new Date()): Promise<'SINGLE_BRAND' | 'MULTI_BRAND' | null> {
   const source = await prisma.source.findUnique({ where: { key: sourceKey } });
   if (!source) return null;
   const review = await prisma.sourceIdentityReview.findFirst({ where: { sourceKey: source.key }, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
-  if (!review || review.verdict !== 'VERIFIED' || review.sourceHash !== sourceIdentityHash(source)) return null;
-  return review.portalScope === 'SINGLE_BRAND' || review.portalScope === 'MULTI_BRAND' ? review.portalScope : null;
+  return portalScopeOf(source, review, now);
 }

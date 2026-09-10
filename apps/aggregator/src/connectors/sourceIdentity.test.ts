@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import { createHash } from 'node:crypto';
 import type { SourceIdentityReview } from '@prisma/client';
-import { assertIdentityReview, sourceIdentityHash, sourceSubjectKey } from './sourceIdentity.js';
+import { assertIdentityReview, portalScopeOf, sourceIdentityHash, sourceSubjectKey } from './sourceIdentity.js';
 
 const at = new Date('2026-09-08T12:00:00Z');
 const artifactText = 'SMCP careers: https://jobs.smartrecruiters.com/SMCP';
@@ -28,4 +28,17 @@ it('keeps missing, contradicted, expired and name-only evidence out', () => {
 it('requires evidence on the reviewed official domain and an archived artifact', () => {
   expect(() => assertIdentityReview(source, { ...review(), proofUrl: 'https://smcp.com.example.com/' }, at)).toThrow(/official domain/);
   expect(() => assertIdentityReview(source, { ...review(), artifactHash: '' }, at)).toThrow(/archived artifact/);
+});
+
+/** 2026-09-10: the ingestion path read the perimeter with verdict + hash only; an expired or malformed review could still
+ * credit every native label to the portal owner while the promotion gate would have refused it. Same contract now. */
+it('gives a certified perimeter only under the strict contract of the promotion gate', () => {
+  expect(portalScopeOf(source, { ...review(), portalScope: 'SINGLE_BRAND' }, at)).toBe('SINGLE_BRAND');
+  expect(portalScopeOf(source, { ...review(), portalScope: 'MULTI_BRAND' }, at)).toBe('MULTI_BRAND');
+  expect(portalScopeOf(source, review(), at)).toBeNull(); // no perimeter recorded
+  expect(portalScopeOf(source, { ...review(), portalScope: 'SINGLE_BRAND', checkedAt: new Date('2026-01-01') }, at)).toBeNull(); // expired
+  expect(portalScopeOf({ ...source, config: { company: 'Other' } }, { ...review(), portalScope: 'SINGLE_BRAND' }, at)).toBeNull(); // configuration changed
+  expect(portalScopeOf(source, { ...review(), portalScope: 'SINGLE_BRAND', method: 'NAME_MATCH' }, at)).toBeNull(); // name-only evidence
+  expect(portalScopeOf(source, { ...review(), portalScope: 'SINGLE_BRAND', artifactText: 'tampered' }, at)).toBeNull(); // artifact ≠ hash
+  expect(portalScopeOf(source, null, at)).toBeNull();
 });

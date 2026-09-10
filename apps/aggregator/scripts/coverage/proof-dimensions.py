@@ -59,7 +59,13 @@ rows = []
 for key, s in sorted(sources.items()):
     if s['status'] != 'ACTIVE': continue
     rev = reviews.get(key)
-    identity = 'CERTIFIED_CURRENT' if rev and rev.get('verdict') == 'VERIFIED' and rev.get('sourceHash') == s.get('identityHash') else ('CERTIFIED_STALE_CONFIG' if rev and rev.get('verdict') == 'VERIFIED' else 'LEGACY_UNCERTIFIED')
+    # Identity: the strict verdict computed by the snapshot (assertIdentityReview — verdict, hash, subject, tenant, age,
+    # method, artifact, official proof page). Older snapshots without it fall back to verdict + hash, flagged as such.
+    iv = s.get('identityVerdict')
+    if iv is not None:
+        identity = 'CERTIFIED_CURRENT' if iv.get('certified') else ('LEGACY_UNCERTIFIED' if iv.get('reason') == 'NO_REVIEW' else 'REVIEW_NOT_VALID:' + str(iv.get('reason'))[:60])
+    else:
+        identity = ('CERTIFIED_CURRENT_HASH_ONLY' if rev and rev.get('verdict') == 'VERIFIED' and rev.get('sourceHash') == s.get('identityHash') else ('CERTIFIED_STALE_CONFIG' if rev and rev.get('verdict') == 'VERIFIED' else 'LEGACY_UNCERTIFIED'))
     entry = receipts.get(key)
     r = entry[1] if entry else None
     receipt_for_current = bool(entry and entry[0][0] == 1)
@@ -72,6 +78,13 @@ for key, s in sorted(sources.items()):
         receipt_for_current = True
     if not r:
         enumeration = 'NO_RECEIPT'; collection = 'NO_RECEIPT'; deficit = 'UNKNOWN'; gap = None; rejected = None; details = 'NO_RECEIPT'; issues = ''; fetched = None; declared = None
+    elif not receipt_for_current:
+        # A receipt taken under another configuration (Tapestry after partitionFacet, Beiersdorf after linkPattern) describes a
+        # protocol that no longer runs: it is kept for the record but proves nothing about the current source.
+        e = r.get('enumeration') or {}
+        fetched = r.get('uniqueIds') if r.get('uniqueIds') is not None else r.get('fetched'); declared = r.get('declaredTotal'); rejected = r.get('rejectedRows') or 0
+        issues = ','.join(['RECEIPT_NOT_FOR_CURRENT_CONFIG'] + list(e.get('issues') or []))
+        enumeration = 'NOT_PROVEN'; collection = 'NOT_PROVEN'; deficit = 'UNKNOWN'; gap = None; details = 'STALE_RECEIPT'
     else:
         e = r.get('enumeration') or {}
         fetched = r.get('uniqueIds') if r.get('uniqueIds') is not None else r.get('fetched'); declared = r.get('declaredTotal'); rejected = r.get('rejectedRows') or 0

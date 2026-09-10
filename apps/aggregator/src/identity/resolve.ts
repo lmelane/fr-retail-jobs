@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { Prisma } from '@prisma/client';
 import type { CandidateJob } from '../dedup/match.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
+import { resolveCompany } from '../normalize/company.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
 
 type Company = Prisma.CompanyGetPayload<Record<string, never>>;
@@ -61,7 +62,16 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
    */
   if (candidate.rawEmployerName !== undefined && (await certifiedPortalScope(tx, candidate.sourceKey)) === 'SINGLE_BRAND') {
     const owner = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${candidate.companyId}` } });
-    if (owner) return { company: await canonicalEmployer(tx, owner), rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', rawEmployerName, normalizedEmployerName: normalized };
+    if (owner) {
+      const ownerRoot = await canonicalEmployer(tx, owner);
+      // A native label that IS a known distinct employer (its own canonical company, not merged into the owner) is a
+      // contradiction of the certified perimeter, never an entity of the owner: it goes to review like on any portal
+      // (2026-09-10: the rule credited any label, including one naming another brand, to the owner).
+      const named = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${resolveCompany(rawEmployerName).companyId}` } });
+      const namedRoot = named ? await canonicalEmployer(tx, named) : null;
+      if (namedRoot && namedRoot.id !== ownerRoot.id) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, ownerRoot.name);
+      return { company: ownerRoot, rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', rawEmployerName, normalizedEmployerName: normalized };
+    }
   }
   const sourceScopedKey = `SOURCE_${createHash('sha256').update(JSON.stringify([candidate.sourceKey, normalized])).digest('hex')}`;
   const scoped = candidate.rawEmployerName === undefined ? null : await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${sourceScopedKey}` } });
