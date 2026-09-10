@@ -1,7 +1,9 @@
 import '../test/setup-integration.js';
 import { randomUUID } from 'node:crypto';
 import { PrismaClient } from '@prisma/client';
-import { afterAll, beforeEach, expect, it } from 'vitest';
+import { afterAll, beforeEach, expect, it, vi } from 'vitest';
+const certifiedScopes = new Map<string, 'SINGLE_BRAND' | 'MULTI_BRAND'>();
+vi.mock('../connectors/sourceIdentity.js', async (importOriginal) => ({ ...(await importOriginal<typeof import('../connectors/sourceIdentity.js')>()), certifiedPortalScope: async (_p: unknown, key: string) => certifiedScopes.get(key) ?? null }));
 import { resolveEmployer, recordEmployerObservation } from '../identity/resolve.js';
 import { EmployerIdentityReviewRequired } from '../identity/errors.js';
 const prisma = new PrismaClient();
@@ -52,17 +54,18 @@ it('keeps the house even when no earlier observation exists for the posting (the
 });
 
 
-/** Mango, 2026-09-10: a portal certified SINGLE_BRAND publishes only entities of its owner — a new legal-entity label is the owner, not a new employer. */
+/** Mango, 2026-09-10: a portal certified SINGLE_BRAND publishes only entities of its owner — a new legal-entity label is the owner, not a new employer.
+ * The certification is mocked (SourceIdentityReview is immutable by trigger: a persisted fixture would block the other files' wipe). */
 it('credits any native label of a certified SINGLE_BRAND portal to the portal owner, and keeps the raw label in the observation', async () => {
-  const { sourceIdentityHash } = await import('../connectors/sourceIdentity.js');
   const k = randomUUID().slice(0, 8).toUpperCase(), key = `gate-single-${k.toLowerCase()}`;
   const owner = await prisma.company.create({ data: { name: `Mango Fixture ${k}`, canonicalKey: `MANGO_FIXTURE_${k}`, kind: 'BRAND', fashionjobsUrl: `resolved:MANGO_FIXTURE_${k}` } });
-  const source = await prisma.source.create({ data: { key, maison: owner.name, kind: 'workday', tenantKey: `workday:${key}`, tier: 'EMPLOYER_DIRECT', status: 'ACTIVE', config: { tenant: key, site: 'Careers', origin: `https://${key}.wd3.myworkdayjobs.com` } } });
-  await prisma.sourceIdentityReview.create({ data: { id: randomUUID(), sourceKey: key, tenantKey: source.tenantKey, subjectKey: owner.name, sourceHash: sourceIdentityHash(source), verdict: 'VERIFIED', method: 'OFFICIAL_DOMAIN', officialDomain: 'example.com', proofUrl: 'https://example.com/', portalUrl: `https://${key}.wd3.myworkdayjobs.com/Careers`, statement: 'fixture: certified single-brand portal', artifactHash: 'fixture', artifactText: '<html/>', reviewer: 'integration', checkedAt: new Date(), portalScope: 'SINGLE_BRAND' } as any });
   const candidate = { sourceKey: key, externalId: `p-${k}`, title: 'Sales Assistant', url: `https://${key}.wd3.myworkdayjobs.com/Careers/job/x`, source: 'WORKDAY', company: owner.name, companyId: owner.canonicalKey, rawEmployerName: `MANGO NY ${k} LLC`, employerLabelOrigin: 'HIRING_ORGANIZATION_LABEL' } as any;
+  certifiedScopes.set(key, 'SINGLE_BRAND');
   const resolution = await prisma.$transaction(tx => resolveEmployer(tx, candidate));
   expect(resolution.company?.id).toBe(owner.id); expect(resolution.rule).toBe('CERTIFIED_SINGLE_BRAND_PORTAL'); expect(resolution.rawEmployerName).toBe(`MANGO NY ${k} LLC`);
-  // Without the certification (MULTI_BRAND), the same new label is still an identity change to review.
-  await prisma.sourceIdentityReview.create({ data: { id: randomUUID(), sourceKey: key, tenantKey: source.tenantKey, subjectKey: owner.name, sourceHash: sourceIdentityHash(source), verdict: 'VERIFIED', method: 'OFFICIAL_DOMAIN', officialDomain: 'example.com', proofUrl: 'https://example.com/', portalUrl: `https://${key}.wd3.myworkdayjobs.com/Careers`, statement: 'fixture: multi-brand', artifactHash: 'fixture', artifactText: '<html/>', reviewer: 'integration', checkedAt: new Date(), portalScope: 'MULTI_BRAND' } as any });
+  // Without the certification (MULTI_BRAND or none), the same new label is still an identity change to review.
+  certifiedScopes.set(key, 'MULTI_BRAND');
+  await expect(prisma.$transaction(tx => resolveEmployer(tx, candidate))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
+  certifiedScopes.delete(key);
   await expect(prisma.$transaction(tx => resolveEmployer(tx, candidate))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
 });
