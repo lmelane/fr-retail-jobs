@@ -71,7 +71,15 @@ for key, s in sorted(sources.items()):
     else:
         e = r.get('enumeration') or {}
         fetched = r.get('uniqueIds') if r.get('uniqueIds') is not None else r.get('fetched'); declared = r.get('declaredTotal'); rejected = r.get('rejectedRows') or 0
-        issues = ','.join(e.get('issues') or [])
+        issue_list = list(e.get('issues') or [])
+        # Publishers that count DIFFUSIONS (one announcement published on several sites/locales) declare more than the number of
+        # announcements. When the adapter proves both scopes complete, the gap is measured on announcements — the unit we collect —
+        # and the diffusion count is recorded as an explanation, not as missing postings (DigitalRecruiters: aigle 110/109, gant 112/108, lacoste 462/455).
+        scopes = {sc.get('scope'): sc for sc in (e.get('scopes') or []) if isinstance(sc, dict)}
+        if scopes.get('announcements', {}).get('complete') and scopes.get('diffusions', {}).get('complete') and isinstance(declared, int) and isinstance(fetched, int) and declared > fetched:
+            issue_list.append(f"DIFFUSIONS_{scopes['diffusions'].get('declaredTotal')}_FOR_ANNOUNCEMENTS_{scopes['announcements'].get('declaredTotal')}_ALL_READ")
+            declared = scopes['announcements'].get('declaredTotal')
+        issues = ','.join(issue_list)
         proven = bool(r.get('complete')) and not r.get('truncated')
         enumeration = 'EXHAUSTIVE_PROVEN' if proven else ('NOT_PROVEN' if r.get('complete') is not None else 'NO_ADAPTER_PROOF')
         counter_gap = (declared - fetched) if (isinstance(declared, int) and declared >= 0 and isinstance(fetched, int)) else None
