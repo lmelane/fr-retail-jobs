@@ -851,6 +851,29 @@ model SourceObservation {
   @@index([sourceKey, observedAt])
 }
 
+/**
+ * Reviewed sector-perimeter decision for ONE posting of ONE source (Aptar Pharma-only rows, restaurants of a fashion
+ * group…). Collection is never affected: the posting is still read and archived as a SourceObservation. An OUT_OF_SCOPE
+ * decision only withholds PUBLICATION (the posting is withdrawn OUT_OF_SCOPE, never closed as an employer closure) and a
+ * fresh attestation cannot re-open it. UNDETERMINED is recorded, published, and never turned into an exclusion by default.
+ */
+model PostingScopeDecision {
+  id          String   @id @default(cuid())
+  sourceKey   String
+  externalId  String
+  /** IN_SCOPE | OUT_OF_SCOPE | UNDETERMINED */
+  verdict     String
+  /** Rule set that produced the verdict (e.g. aptar-perimeter-v2-20260910). */
+  ruleVersion String
+  reason      String
+  evidence    Json
+  decidedBy   String
+  decidedAt   DateTime
+  createdAt   DateTime @default(now())
+  @@unique([sourceKey, externalId])
+  @@index([sourceKey, verdict])
+}
+
 /** Execution identity survives process restarts; unfinished runs remain visibly RUNNING. */
 model PipelineRun {
   id          String   @id
