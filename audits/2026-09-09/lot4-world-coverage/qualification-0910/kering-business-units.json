@@ -1,0 +1,1752 @@
+[
+ {
+  "R": "R170672",
+  "externalId": "563705892757913",
+  "kind": "PAGE1",
+  "business_unit": "Balenciaga",
+  "name": "BALENCIAGA Store Director | King Of Prussia",
+  "department": "Sales",
+  "keringcomHouse": "Balenciaga",
+  "company": "Balenciaga",
+  "sha256": "8dfc3a76627b42922e5af7d548c9e890e652b2a98e130569408c6890548ec781",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170652",
+  "externalId": "563705892754990",
+  "kind": "PAGE1",
+  "business_unit": "Balenciaga",
+  "name": "BALENCIAGA – Coupeur (F/H)",
+  "department": "Industrial Operations",
+  "keringcomHouse": "Balenciaga",
+  "company": "Balenciaga",
+  "sha256": "4d8918c0a12e1e53f065b31bf20cc6830c975b3ee811d6d7fb17d53168280965",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R167939",
+  "externalId": "563705892278018",
+  "kind": "PAGE1",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Apprentie(e) Talent Acquisition (octobre 2026)",
+  "department": "Human Resources",
+  "keringcomHouse": "Kering",
+  "company": "Kering Corporate",
+  "sha256": "5d1c75eafd94bf15b9a7b93c917f2d2a630fe8ed82edee04be1bda79d5a211b2",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170645",
+  "externalId": "563705892755028",
+  "kind": "PAGE1",
+  "business_unit": "Kering Eyewear",
+  "name": "KERING EYEWEAR Senior DevOps Engineer",
+  "department": "Tech & Digital",
+  "keringcomHouse": "Kering Eyewear",
+  "company": "Kering Eyewear",
+  "sha256": "07d1885f1e3e6e57c6b1ae484c9ac710be65e7603a8794d436773a7f30516c5d",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170642",
+  "externalId": "563705892755030",
+  "kind": "PAGE1",
+  "business_unit": "Kering Eyewear",
+  "name": "KERING EYEWEAR Senior Prototyper",
+  "department": "Industrial Operations",
+  "keringcomHouse": "Kering Eyewear",
+  "company": "Kering Eyewear",
+  "sha256": "614e7f3bb822daab1d2290090369fe097757aede978b31859bc9375967970cda",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R165115",
+  "externalId": "563705891447375",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Finance Industrial Procure to Pay Accountant",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "78f8ba601c5fa7a468481d895bac0b3c1618f210f273e0b7abda034800e40ea2",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R166957",
+  "externalId": "563705891995352",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Record to Report Accountant (Fixed Term)",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "e4545c6d5557052b4b26d917a29623f3533f33e6cf317cb0c2bd81ba37543a15",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R155058",
+  "externalId": "563705887730006",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING - Tech Lead Front",
+  "department": "Sales",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "e2da74b6c54867abcf8d61968c423cafd803a64e885e1c83a1212f9ced73148c",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170164",
+  "externalId": "563705892694815",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Supply Chain & Logistics Business Analyst",
+  "department": "Industrial Operations",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "a1e2deb67de13df022b5492de429963e881fddfc01e5ff7629dbddac57c0b999",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170555",
+  "externalId": "563705892746069",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Fiscaliste France & Joaillerie",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "132d2fab7bfab9fe2587c5432997bce1382179e05fb492e2e7532bf3734bda32",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R144682",
+  "externalId": "563705878409294",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Manager Comptabilité Generale RTR",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "efbe1d8f031024d9bb713cb79d8ecf37b04970250d38230768167818d245e0f8",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R165134",
+  "externalId": "563705891455408",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Assistant/e Learning & Development Operations (stage)",
+  "department": "Human Resources",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "30fef16c5ecab041ebd5bf00f9706e458b18ba916b4ea8be9d315bb649a629fc",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170153",
+  "externalId": "563705892692114",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING After Sales and Front Office Support (Fixed Term)",
+  "department": "Industrial Operations",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "51819b64741771b187f493b94e471d854cae6bd15e78c0076ea1ddf48c4c4197",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R167651",
+  "externalId": "563705892192138",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING People Insights & Analytics Partner",
+  "department": "Human Resources",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "d3599a9ba5a23044fd33e21adca1250e949b9362cda4a672ed9943abc3d87e6e",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168146",
+  "externalId": "563705892317372",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING HR Manager, Kering Corporate",
+  "department": "Human Resources",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "f4101ed633f35d0d21e825b6bab0ccc7ad48f25a0ccc89806502cdb419060569",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R167060",
+  "externalId": "563705892019841",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Senior Real Estate Counsel",
+  "department": "Legal & Compliance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "99e86004e4961581d28d97648c2a3dff173e44ee8832b860492a588a66092518",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169232",
+  "externalId": "563705892560667",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Data Engineer",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "c61cc76b523c643529a638cb8f583534096b2aca42c92149ed05c8cfc7705f60",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169221",
+  "externalId": "563705892557083",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Tech Lead",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "4612e719e5de4eed8cd96ccb96570b2d3d23bfd9ec43781d9783bb37b42bb9d5",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169273",
+  "externalId": "563705892560195",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Investor Relations Manager",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "b3971403eb2eddb6aadecb7389cedf42528d016a0519917299e7e4c52f837b3e",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169025",
+  "externalId": "563705892544395",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Aftersales Manager",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "b8d1c010b313915970b35463407deccf5e23f1f76db5ab65351988e4cfe52d33",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168928",
+  "externalId": "563705892528898",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING AI Product Manger",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "05d9c0d27f544658f2a6dfc26ae88e53fac624dd1aaf7e8cc5bdfc616b374199",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168887",
+  "externalId": "563705892525478",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Logistic Operations Planner",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "e7b1b5da44c7706686e0d393a8f9b9c17e7adc85a5586f7c9e6a082941b2697f",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168653",
+  "externalId": "563705892492110",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Accountant - R2R",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "39fefdf3abefa3397b9919585ebcd60cf3b950abb4f8b9c28cd5a501ee423d06",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168606",
+  "externalId": "563705892415389",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Analyste Reporting Financier & Application IFRS",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "ced65173003dcb42ff253543eafab7cf1bce9c060ba7c075969df7404cd9e73d",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168204",
+  "externalId": "563705892343272",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Cybersecurity Project Manager, Greater China",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "f61e13d0f34f59b51c7a81e50601f060381fddeee455c85388204fbab11d4156",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R166820",
+  "externalId": "563705891955215",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Construction Project Manager",
+  "department": "Architectural Design & Store Planning",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "48a9eb84835e34ef9d57646eff4773893fdb025a0e290d55d543f0408315891c",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R164196",
+  "externalId": "563705891175573",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Property Manager",
+  "department": "Strategy",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "b760ef1379214d2a89b98bea82994b59bbb86b2e033d838cf9535cf1c0a06b2d",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R165857",
+  "externalId": "563705891655804",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING SIGNATURE Senior Client Advisor",
+  "department": "Sales",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "31078b48fda8d1866f6dd4c365650297b9be86c9c7f10b4d2246080ad7d0d94a",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R165003",
+  "externalId": "563705891430919",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Assistant/e Consolidation Budgetaire Sustainability (stage)",
+  "department": "Sustainability",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "5b5048cabb180cfc046f9283504eb674e266a22f031ba8c8a0f4ccf9c2779f8e",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R164733",
+  "externalId": "563705891350322",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Senior Accountant RTR",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "5b5a8286b7e7232423f9afd5ff64979ee9416bd5f74f4e1825caf0cead88de6f",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R164641",
+  "externalId": "563705891300922",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Tax Specialist",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "086b2cc833504d7d83c6aff6c53e12c15655ee4cc0f9f6024204dc33cc790fb5",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R156448",
+  "externalId": "563705888119070",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Tech Lead Back",
+  "department": "Sales",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "39191df1ba57c273c8ea8dc4bb190139719859a5739e3b7f1551518420c34e67",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R161541",
+  "externalId": "563705890157373",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Senior Tech&Digital Cost Manager",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "9a275fa1f3587b211fceb1b3a96feca586ffd51a481b50cf3ca0d3077ac603cd",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R160318",
+  "externalId": "563705889773694",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Network Engineer",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "985f831a9ec344aea9dcc939be69af25f7efb1e806c09c446f53bee65c8f035a",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R156401",
+  "externalId": "563705888107446",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING OPERATIONS Supply Chain & Logistics Customer Service Support L.68/99 (Fixed Term)",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "62553bb8263ee961c8d9c638029eef3592ec42556b07df0cc79702b046642c3b",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R157426",
+  "externalId": "563705888412964",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Media Manager Japan",
+  "department": "Communication & Marketing",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "e63e5b29e384a855744d35238dc2a38a28ed2c5868204b6f850fa9f11fc221fa",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R163319",
+  "externalId": "563705890896456",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Senior Accountant - R2R",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "110a5e2155c36e4f879166520bb40ba023cf9dd2874feea2d1ab92ab9f873828",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R160268",
+  "externalId": "563705889747919",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Assistant Accountant - P2P",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "eccf818bafb4c3d94bac81d18c7ef8c1b4ed2b9c7a66b0f3d6fbcc4764110720",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R157017",
+  "externalId": "563705888317772",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING OPERATIONS Business Planning & Logistics Incident Support L.68/99 (Fixed Term)",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "d34b8f9b00999ab4c1eec3357c9e928cf9797a173c38dd7d4c96db5b14a83132",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169057",
+  "externalId": "563705892546566",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Group Talent Project & Analytics Manager",
+  "department": "Human Resources",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "2dcecfee466b5e581fa17ff83baece0b611622f22d270e84f085f2b854a55785",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168734",
+  "externalId": "563705892513353",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Security Intern",
+  "department": "General Services & Support",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "b27cbb7354de579da08c8c4498e9eea83977a22f330dcd4b19441f6d3c7a5523",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R160098",
+  "externalId": "563705889718698",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING SAP Demand and Release Manager",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "542c77d3b86241a8d004f61ab6bf9251a3f242993af7403ed5a2b5af0a851d2f",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R167508",
+  "externalId": "563705892153811",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Accountant - P2P  (Korean Speaker)",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "b1438aace3e3b10ae5a43e03d3ba62f4df35e524fb60ba8b335456dc8010673e",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": null,
+  "externalId": "563705892513825",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Head of Marketing Effectiveness",
+  "department": "Communication & Marketing",
+  "keringcomHouse": null,
+  "company": null,
+  "sha256": "2164b0fe7e548dc78f78c785d6532474a4bdd429de3c443bf9baf59cd01e9d82",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170251",
+  "externalId": "563705892712053",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Team Manager",
+  "department": "Sales",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "5c27597f6eb8b802418d3ee616581aec447e4f8a9324566ab9b6225f1cd60ebe",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170115",
+  "externalId": "563705892692397",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Cybersecurity Automation Engineer",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "aeb56d6dac5049c18fa153bb7dede2afb73c8929a81af1161116a8fd0dc367b0",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": null,
+  "externalId": "563705892400795",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING ACCOUNTANT",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": null,
+  "sha256": "66cf1b62b377db2ea47104a9b679f645fc85e4aeea098662a435ab4578889379",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": null,
+  "externalId": "563705892294695",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Treasury & Back-Office Analyst",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": null,
+  "sha256": "807cf8f605698e6efc9e430d3508fba89fefdb7c0e2d44c00fa396c4b9a134d6",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168115",
+  "externalId": "563705892316532",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Internal Communication & Employee Engagement Intern",
+  "department": "Communication & Marketing",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "0cae3084aa146952def84efe24800681035b7426f409707ac5938ca3ac6285a4",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168183",
+  "externalId": "563705892346337",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Tax Manager",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "50a013ffe0dc93495d5aa79cc1f85889976a1150a17890b59de057150ab3b07b",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R150034",
+  "externalId": "563705880731075",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Credit Collection Analyst",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "fbe97ac3b83f8ffc5b7c29fbd5f4292d1b7fd4be68d7456ec0c1e608e65b89ac",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170313",
+  "externalId": "563705892718177",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Data Analytics Audit Manager",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "e531fad24ce3696585e85a61078383339395bbe4ef603f105037c0141c4d5f22",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R163082",
+  "externalId": "563705890850008",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING DATA Tech Lead",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "934bf114536c401f8157d609e83d1c812ca36d386834ba30baa113414a606fd0",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170170",
+  "externalId": "563705892693960",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Third Party Risk Management (TPRM) Officer",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "6c135052304f402b248d2517a168e9b3d033b5157f7e99e954356b73c06a28f1",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R165069",
+  "externalId": "563705891445056",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Assistant/e Achats (stage)",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "07f448bfa0bd160c26cd70651cc8b54c6b89434ca983d0a695fb2f43c3147111",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168929",
+  "externalId": "563705892528952",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING AI & LLM Engineer",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "e33b3ca5c439008868db98b3eb7d184cd9b44d1e1e6d65fd4551b6530b4a5771",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169251",
+  "externalId": "563705892558678",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Accountant - O2C",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "e1298b51c08d3c5c0a081140b02b24971fbe1ed7980a2a4ce2deddaea0ff9b82",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R167660",
+  "externalId": "563705892196365",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Transport Operations Senior Specialist",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "d4840f144ce3b74ad5c2800e51515fecb80a51fac61d0f5f30cc086a0866cf77",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170329",
+  "externalId": "563705892715497",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Transport Logistics Financial Controller",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "fa3523dedffb8f90a384b1117d0720965e72e80dd0b1edc26030089bc1e0162e",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R162784",
+  "externalId": "563705890786376",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING SAP AMS Supply Chain Support",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "d1ec294faa38244d41c5bc1adc993d2ce864c94400323ae947d05eb0aea7956b",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170252",
+  "externalId": "563705892712137",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Store Manager",
+  "department": "Sales",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "7ee0e8861e48de6c3f207e98f243e4bd2509dfa62b716e36a18b2947a6e813aa",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169994",
+  "externalId": "563705892689110",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Comptable Fournisseur",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "4db54e89b4c2efb9a46209c62373fd8e26052672743a8d61baeb0a18cfff9954",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170118",
+  "externalId": "563705892692394",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Cybersecurity Vulnerability Engineer",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "9ff7b75e55c648961cb2f2a76e4d86520105fd6313bfc8909b405b95c13e0a30",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170121",
+  "externalId": "563705892692396",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Senior Okta IAM & CIAM Expert",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "a19c1db27ed43c03fbefafaee21dff0ff59a5d9076b04f0eb63f0dc87baa9e38",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170119",
+  "externalId": "563705892692398",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING IAM Transformation & Innovation Lead",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "71a982b20749072d788ce0a6036471ee3b1b82d6196af73281c014b776182e2c",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168090",
+  "externalId": "563705892311404",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Supply Chain Social Auditor",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "57bd5a2841b2cb7e819f51cbff9fadf44b22579f5bae2d48710077bc6f90486f",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170022",
+  "externalId": "563705892679924",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Senior Lease Administrator",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "21523d5292951a33f121dd3ca2903ea262b957fa0137a1d8ea7c6481aebaa721",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169775",
+  "externalId": "563705892638495",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Human Resources Operations Supervisor",
+  "department": "Human Resources",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "7c32b06ba4f6592904716ccbc063a4c13c1f974e624a558c80be65cdcc2ef5a2",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169301",
+  "externalId": "563705892567762",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING BI Developer",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "19248c57aaabc7d1b44c7e0bb825a3de994b141606130e02a3c16452d7e84f8e",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169224",
+  "externalId": "563705892557082",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Full-Stack Developer",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "7a069289dd4a02be739f24a0b4b0369accafa5bb393aae9e8f267b2f91608a71",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169218",
+  "externalId": "563705892556766",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Senior Financial Controller",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "8470e62fac5448c317579b2e9b79fe6a13c517024ad3e382c7d015fae78f8053",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R166968",
+  "externalId": "563705891996629",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Supply Chain Security Expert – Logistics",
+  "department": "General Services & Support",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "c8c15930ab59b1150d2ba722bcb46a89f87a214b0c73571626c762902eab8c51",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168295",
+  "externalId": "563705892398273",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Mutualized Human Resources Manager, Retail",
+  "department": "Human Resources",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "ae7595087f28faa26b0eafd4a2bcbe278455a5947cda3cf7aeceec1bf984f48c",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169118",
+  "externalId": "563705892549944",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING After Sales Specialist (4 months)",
+  "department": "Sales",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "fff776902898c74004b772ad61f40439485af9fdb77da673a5b2a9e389a59467",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169731",
+  "externalId": "563705892623455",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING - Senior Accounting Analyst",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "3c07aa6326d9334f530792e485819c9df2ac6ca6ab3d9603d264098b0922d8be",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169625",
+  "externalId": "563705892600652",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING O2C Accountant",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "4dd7ec0bcc91143a503248d3f00a84fa3cabde2d838b34642a546b95489294cd",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R167745",
+  "externalId": "563705892217476",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Distribution Business Analyst Intern",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "759447b724cb41d3d605c627e1ec719d412660179450f1eaaa1b6fa3be374b59",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169311",
+  "externalId": "563705892567765",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Data Platform Engineer",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "13e18f349319ae6cef4c54db9de87aceea3100eaeeea9465de01922ed51d0998",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R167707",
+  "externalId": "563705892217211",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING SAP Solution Architect",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "5a3cb3c9d819a85a53d62a1455dc43f9633d07d807ec98f2713fa546418c5dd6",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170265",
+  "externalId": "563705892718178",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Cloud Engineer SRE",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "fa5ff01454a7d0695bd4bf025374ef21d6cae444274cc129f0dcc8fea572f800",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168892",
+  "externalId": "563705892525797",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Senior Client Advisor",
+  "department": "Sales",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "4263358406e6240091ef57b669bd7610989e281d7bda5ee0f8358311bbe82bf1",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168182",
+  "externalId": "563705892346443",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING UK Customs Operations Specialist",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "7df4c6bda651fb7c630dd9ba62cab6380bf0829fa1ce01971f8c5934c986fcf8",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169062",
+  "externalId": "563705892547367",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Manager Architecture Sécurité & réseau",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "4a47224a1fd2cc0ccb64fa996580e1388f3c2611569f4f6859469506f6ddd349",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R163017",
+  "externalId": "563705890830817",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING FINANCE Record to Report Accountant (Fixed Term) L.68/99",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "7cacc65671596daaa67168e5080ec7aba82385aaf096a749fd575908d81089bb",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": null,
+  "externalId": "563705892408918",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING HR Operations Specialist",
+  "department": "Human Resources",
+  "keringcomHouse": null,
+  "company": null,
+  "sha256": "e0adaa0de7b5057e699d7f439974a11809a2419466034ed4a1845244013c478e",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": null,
+  "externalId": "563705892045958",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Supply Chain Social Auditor",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": null,
+  "sha256": "6366189d03c38437d0cbc77f2ee80c2f01549f4bf7702c24b98a4ec6470681f8",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169902",
+  "externalId": "563705892663204",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Customer Data Product Owner CDD",
+  "department": "Communication & Marketing",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "f5d5620df3f3f8775e7851ee8b9b488d6d04b71aafd7ebd49a3b5c312ee98517",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169314",
+  "externalId": "563705892567764",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Data Scientist",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "9be3581dca250a1b17c95bfd9886f65d1e3ed565b0afb752aeb219823b40c65f",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R167518",
+  "externalId": "563705892171734",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "02C Accountant KERING",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "44253cc66fdaba490e99262a03085f124a8d15c7d5057c889a4afb4307c3a135",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R167652",
+  "externalId": "563705892245080",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Category Platform Data Analyst",
+  "department": "Industrial Operations",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "c5450e7f7b3a686f379ea50b368f5baf77ca4036f3872e8ea9837d32fe6fff3f",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R167939",
+  "externalId": "563705892278018",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Apprentie(e) Talent Acquisition (octobre 2026)",
+  "department": "Human Resources",
+  "keringcomHouse": "Kering",
+  "company": "Kering Corporate",
+  "sha256": "5d1c75eafd94bf15b9a7b93c917f2d2a630fe8ed82edee04be1bda79d5a211b2",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169226",
+  "externalId": "563705892557081",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Integration Streaming Engineer",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "6b8163ff7692125fb80a4c71ca7d351f8e3c43b5d1d75e6873475e3104ef29d5",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R167973",
+  "externalId": "563705892294694",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Marketing Performance Manager",
+  "department": "Communication & Marketing",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "7ebe77ffe3441c313dfbbf40680be47af9fdf50f1fc8d4bc0930898a369cff0a",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169288",
+  "externalId": "563705892560666",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING AI Engineer",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "52569c2c57b48f0bd8404ac9a85e2f943a69b40dade67e6d9b94b7f7bb17413c",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168161",
+  "externalId": "563705892328241",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING CITES & Export Certificates Intern",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "ec470ba3e018ae780407e5935f020db41a1b95b9770d7851d04e4b8ed343ece4",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168080",
+  "externalId": "563705892310099",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Tax Intern (Curricular)",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "d9315c76cfc492510b661bcd8756a89affa032a51227be95d9cd997dca9948da",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R165870",
+  "externalId": "563705891660861",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Master Data Analyst",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "ee7c541c22227f4cfea714f969ac3355e0ff7a7b6699251c3f8314794d45fc22",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170456",
+  "externalId": "563705892732014",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Gestionnaire De Paie",
+  "department": "Human Resources",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "21be48763deab7c8cbfe592c8d581b02d20847a82c782f3e0ba67e555a191cfb",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170463",
+  "externalId": "563705892731149",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING  Assistant Accountant - P2P",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "ff04218f9eed593f0018737cfd4920aa6448f6f62722c071070040df8ccc715e",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170200",
+  "externalId": "563705892695749",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Customs Operations Export Specialist L.68/99",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "fdd2192755637c3a89d7175a9e18d5decf25d989a7695f4c8ea7da98f3da2670",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R149810",
+  "externalId": "563705880726676",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Supply Chain and Logistics Non-Merchandise Specialist",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "96ad11ad2fc06337ebda1672c6ddf664748acd794fdeb7d4756d4d325129e015",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R167241",
+  "externalId": "563705892084325",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Logistic Customer Service Support (Fixed Term)",
+  "department": "Sales",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "aeaca9f0d27cd918d56d2bda75d6053e1ffc4b544b8aac9e0237d6ff9a0c3260",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170348",
+  "externalId": "563705892716373",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Inventory Control Assistant (Fixed Term)",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "1c51f1c7042b43a9712d7da3f27c8e4d3acc78ef884f5066c9d1a1f9321ff60a",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170562",
+  "externalId": "563705892748251",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Compensation & Benefits Intern",
+  "department": "Human Resources",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "2b80c39d30e5759b223ef6a6ca93423c06c48c166008bac4880ecf1fe34bf610",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170330",
+  "externalId": "563705892715495",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Central Operations Consumables Procurement Specialist",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "264fe2f057661c3305908c05fa0aa88455b096bd09f86c263b4021ca3b1b8af6",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170165",
+  "externalId": "563705892694816",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Regional Finance Internal Control Manager",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "b07ce4e7a1e28468aad26b7c4a3132e21a71170d6c8a2c794619e43a5ccaf4fd",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170162",
+  "externalId": "563705892693357",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING After Sales and Reverse Process Engineer",
+  "department": "Sales",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "d001d9698e899ead2e1e5313cd98d58c0146e099ce7083efeedefa904c65a63e",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168160",
+  "externalId": "563705892328240",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Trade Compliance Intern",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "db5a1803f45c9d0e1ee4c378a0091fadbc6630d20b9e80b5ab3a9edade78bb76",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168326",
+  "externalId": "563705892406163",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Gestionnaire de Paie – Europe Centrale",
+  "department": "Human Resources",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "0e6a8811010c21c1b09b91b8190faeac51575dae93538acaf608cfd76b55e124",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168325",
+  "externalId": "563705892406195",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Coordinateur Paie – Europe Centrale",
+  "department": "Human Resources",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "b00b9db1c9f525e48c73b5c968396a6f4733ade757bd22968e99f9b2e6f326fc",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168891",
+  "externalId": "563705892525798",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Client Advisor",
+  "department": "Sales",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "4efac127dac93912957e968a80c192aaea4300a29077d4ff680d97d64212ae77",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R166964",
+  "externalId": "563705891996628",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Supply Chain Security Expert - Industrial",
+  "department": "General Services & Support",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "937fffcbc9497f35d6ce2d1fdd17c2c9585e71c6c10bc5551af2b9b1a89118a1",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168966",
+  "externalId": "563705892540394",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Organization Development & HR Data Analyst (Temporary Maternity Leave Cover)",
+  "department": "Human Resources",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "db5bfd9dea3c4e6f8d6dc5abe8c11002ffcd16920c41242ef7ff694102f0544a",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R166313",
+  "externalId": "563705891783976",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Head of Clienteling",
+  "department": "Communication & Marketing",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "c656ea8c08aeb84b446cb233c3d3a359a7deaa326e15a1a85121cb0f3fe854d4",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R150838",
+  "externalId": "563705880869104",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Enterprise Cloud Architect",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "e8aa6ce8511b7b0f59d6cb76a83fcf2c1eae450eec7dd2fa16cc165f75fb601f",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R166855",
+  "externalId": "563705891969659",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Supply Chain Intelligence Intern",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "8622c125c96e18a4dee47a0ac5ae900308d813482279f8e16bf6362718a5b341",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R166334",
+  "externalId": "563705891801861",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING O2C Supervisor",
+  "department": "Finance",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "ddd9d9ccac969419d71404165ef8da51c34a022aed6d034ea5b268f3b32169aa",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R166821",
+  "externalId": "563705891955222",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Senior Supply Chain Specialist - Wholesale",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "a390e5ecb7b0d55d7398e3ad99a92cf3aede8a86c50a26f98093c56834fd8a8d",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R164460",
+  "externalId": "563705891286173",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Sys Ops Expert",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "6e25a0f0712820d762ed25a2415901548d99141a0053aa8c733bf22d5674637d",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R168894",
+  "externalId": "563705892525799",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Stock Keeper",
+  "department": "Sales",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "bea19c99d61f0d4fec0ca0cfbd54b5509e132aa348998217ace655691200685a",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169905",
+  "externalId": "563705892667914",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Data Tech Lead",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "2cbccffb11716e4880c356414c3030d62c2fa60bfde42ac817f51acb19e602eb",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169568",
+  "externalId": "563705892595509",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Architecture Framework Lead",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "1fac073d15c76baee31acb51ad5c3e9d5d8989802514305390d253b3b089bf76",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R169267",
+  "externalId": "563705892559753",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Data & AI Culture Lead",
+  "department": "Tech & Digital",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "26acee77221577f83dd06c200b8b0490abdf5edd6d4eb37711c07baf754d6146",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R166951",
+  "externalId": "563705891995353",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Central Operations Packaging Support (Fixed Term)",
+  "department": "Supply Chain",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "485a8476443c7764508bf8189db7f01267fc3226c46d64985d386a899cad007b",
+  "customKeys": [
+   "custom_JD"
+  ]
+ },
+ {
+  "R": "R170500",
+  "externalId": "563705892734408",
+  "kind": "CORP",
+  "business_unit": "Kering Corporate",
+  "name": "KERING Executive Assistant to the CPO",
+  "department": "General Services & Support",
+  "keringcomHouse": null,
+  "company": "Kering Corporate",
+  "sha256": "f82587dd6fb428c97eb7c4c14cad039721ef6471e8445e2d4bafe5a0b834ff98",
+  "customKeys": [
+   "custom_JD"
+  ]
+ }
+]

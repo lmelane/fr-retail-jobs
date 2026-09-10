@@ -1,0 +1,4624 @@
+[
+ {
+  "name": "BAUM",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "benefique",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Clé de Peau Beauté",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Dr. Dennis Gross Skincare",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "EFFECTIM",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Gallinée",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "INOUI",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "ipsa",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "ISSEY MIYAKE PARFUMS",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Max Mara Le Parfum",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "narcisorodriguez",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "sergelutens",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "THE GINZA",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "TORY BURCH BEAUTY",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "ZADIG&VOLTAIRE",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "anessa",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "aqualabel",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "aupres",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "d-program",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "elixir",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "haku",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "IHADA",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "integrate",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "majolica-majorca",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "maquillage",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "prior",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "revital",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "urara",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "INRYU",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "The Collagen",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "perfectcover",
+  "group": "Shiseido",
+  "profileUrl": "https://corp.shiseido.com/en/brands/",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://corp.shiseido.com/en/brands/",
+   "sha256": "a2c6dda5e8fef3cb7d34dfcdaa477ed44267de1c0328e148ac045fba7faf3866",
+   "at": "2026-09-10T06:10:16.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "GLAMGLOW",
+  "group": "Estée Lauder Companies",
+  "profileUrl": "https://www.elcompanies.com/en/our-brands/glamglow",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.elcompanies.com/en/our-brands/glamglow",
+   "sha256": "732f092cdca93071052f75676cec58370551ff346eab62333f55801bce428431",
+   "at": "2026-09-10T06:10:17.449Z",
+   "transport": "BROWSER"
+  },
+  "candidateHosts": [
+   "glamglowmud.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "http://www.glamglowmud.com/",
+    "text": "visit GLAMGLOW website Click Here",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Aramis",
+  "group": "Estée Lauder Companies",
+  "profileUrl": "https://www.elcompanies.com/en/our-brands/aramis",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.elcompanies.com/en/our-brands/aramis",
+   "sha256": "8c250bf746bd5d39cf68ba8681d0db696345d4491169a1e20655d4d192dc1dc8",
+   "at": "2026-09-10T06:10:17.447Z",
+   "transport": "BROWSER"
+  },
+  "candidateHosts": [
+   "cookiepedia.co.uk"
+  ],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "AERIN Beauty",
+  "group": "Estée Lauder Companies",
+  "profileUrl": "https://www.elcompanies.com/en/our-brands/aerin-beauty",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.elcompanies.com/en/our-brands/aerin-beauty",
+   "sha256": "fde7c8fe11a74a2aef9f3f58b63327335964150432b558c2bc5833e31c3792da",
+   "at": "2026-09-10T06:10:17.447Z",
+   "transport": "BROWSER"
+  },
+  "candidateHosts": [
+   "esteelauder.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.esteelauder.com/aerin",
+    "text": "visit AERIN Beauty website Click Here",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "M·A·C",
+  "group": "Estée Lauder Companies",
+  "profileUrl": "https://www.elcompanies.com/en/our-brands/mac",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.elcompanies.com/en/our-brands/mac",
+   "sha256": "5d645394cc763d71c19ca4f1f68c3a797c46b8c268a65d17d913c738c482e255",
+   "at": "2026-09-10T06:10:23.099Z",
+   "transport": "BROWSER"
+  },
+  "candidateHosts": [
+   "maccosmetics.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "http://www.maccosmetics.com/",
+    "text": "Visit M·A·C Website Click Here",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "NIOD",
+  "group": "Estée Lauder Companies",
+  "profileUrl": "https://www.elcompanies.com/en/our-brands/niod",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.elcompanies.com/en/our-brands/niod",
+   "sha256": "1b7a7916b086efbfaa78c3ef2b446150d2cc09b0030fed3f031233c48e29f0ab",
+   "at": "2026-09-10T06:10:23.117Z",
+   "transport": "BROWSER"
+  },
+  "candidateHosts": [
+   "niod.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://niod.com/",
+    "text": "Visit NIOD Website Click Here",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Origins",
+  "group": "Estée Lauder Companies",
+  "profileUrl": "https://www.elcompanies.com/en/our-brands/origins",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.elcompanies.com/en/our-brands/origins",
+   "sha256": "568c11cdfffe245f375eff3b9f0895527d4e81ad8cf2cad66c54cb4ce4fb88d3",
+   "at": "2026-09-10T06:10:23.127Z",
+   "transport": "BROWSER"
+  },
+  "candidateHosts": [
+   "origins.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "http://www.origins.com/",
+    "text": "Visit Origins Website Click Here",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "The Ordinary",
+  "group": "Estée Lauder Companies",
+  "profileUrl": "https://www.elcompanies.com/en/our-brands/the-ordinary",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.elcompanies.com/en/our-brands/the-ordinary",
+   "sha256": "cd27079124e8be1f3137e6c1bc32170fc3f0b18c12436325ca38771fa4d3f1ff",
+   "at": "2026-09-10T06:10:28.976Z",
+   "transport": "BROWSER"
+  },
+  "candidateHosts": [
+   "theordinary.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://theordinary.com/",
+    "text": "Visit The Ordinary Website Click Here",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Church's",
+  "group": "Prada Group",
+  "profileUrl": "https://www.pradagroup.com/en/brands/church-s.html",
+  "listingOnly": false,
+  "status": "READ_FAILED",
+  "error": "Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.pradagroup.com/en/brands/church-s.html\nCall log:\n  - navigating to \"https://www.pradagroup.com/en/brands/church-s.html\", waiting until \"domcontentloaded\"\n"
+ },
+ {
+  "name": "Car Shoe",
+  "group": "Prada Group",
+  "profileUrl": "https://www.pradagroup.com/en/brands/car-shoe.html",
+  "listingOnly": false,
+  "status": "READ_FAILED",
+  "error": "Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.pradagroup.com/en/brands/car-shoe.html\nCall log:\n  - navigating to \"https://www.pradagroup.com/en/brands/car-shoe.html\", waiting until \"domcontentloaded\"\n"
+ },
+ {
+  "name": "Ao Yun",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/ao-yun",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/ao-yun",
+   "sha256": "42615bfe8ad195cb71410317092af020905d08dd5a78c6dc5f13100de60fa37f",
+   "at": "2026-09-10T06:10:51.085Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Ardbeg",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/ardbeg",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/ardbeg",
+   "sha256": "18fc786d3d9e80bb24446df42e4353a3b908e4046827b9c1fb0468755903e899",
+   "at": "2026-09-10T06:10:51.400Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "ardbeg.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.ardbeg.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Armand de Brignac",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/armand-de-brignac",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/armand-de-brignac",
+   "sha256": "d66742b660faf2c3f618fb7b4b9b22f571b1d128b0c483327beb1bd7bcbc86df",
+   "at": "2026-09-10T06:10:51.674Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Belvedere",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/belvedere",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/belvedere",
+   "sha256": "0b779d70c1e5a523e56948adb9a988f26afaccd95667361486e743e0daef87a5",
+   "at": "2026-09-10T06:10:51.925Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "belvederevodka.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.belvederevodka.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.belvederevodka.com/",
+    "text": "Belvedere Vodka",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.belvederevodka.com/en-int/collection/vodka/belvedere-vodka/",
+    "text": "Belvedere Organic Vodka",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.belvederevodka.com/en-int/Formula-1",
+    "text": "PARTNERSHIPBELVEDERE THE OFFICIAL VODKA OF FORMULA 1®",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Bodega Numanthia",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/bodega-numanthia",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/bodega-numanthia",
+   "sha256": "7cefbd9828f5ba1077887420f2c52ad62dfadcb01661bfbb647c20c250fab90c",
+   "at": "2026-09-10T06:10:52.249Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Cheval des Andes",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/cheval-des-andes",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/cheval-des-andes",
+   "sha256": "abf3f2174d4326d80b69768f28f544e3899417cbc4e20d818c4c564bc646bd14",
+   "at": "2026-09-10T06:10:52.580Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Château Cheval Blanc",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/chateau-cheval-blanc",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/chateau-cheval-blanc",
+   "sha256": "7093805226901acfe581b647886399d81942faf59f5605f51085133dbf1eec7e",
+   "at": "2026-09-10T06:10:52.955Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Château Galoupet",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/chateau-galoupet",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/chateau-galoupet",
+   "sha256": "882d73ed348f5e3c8f32cc4f036a0a411153efce162675c89049d32e7c5bc1de",
+   "at": "2026-09-10T06:10:53.213Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "chateaugaloupet.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.chateaugaloupet.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Château d'Yquem",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/chateau-dyquem",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/chateau-dyquem",
+   "sha256": "3ad12c2d46ff782469598c90fb669e90273827f856d1414af9d8060aa6dbb84d",
+   "at": "2026-09-10T06:10:53.493Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Château d’Esclans",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/chateau-desclans",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/chateau-desclans",
+   "sha256": "6be66b0838118dd5cc0bb85a90ed588822cd2d3efe5521fbf5d405ab4de439d1",
+   "at": "2026-09-10T06:10:53.770Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "esclans.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.esclans.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Cloudy Bay",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/cloudy-bay",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/cloudy-bay",
+   "sha256": "33f71f7260ab1d4e28fd24675804f62b2edcb2748213d78123920947d75b1b0f",
+   "at": "2026-09-10T06:10:54.127Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Colgin Cellars",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/colgin-cellars",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/colgin-cellars",
+   "sha256": "83518eafe59065acf5baef91ff96b48929d3833c2609764e22c51081768e78b5",
+   "at": "2026-09-10T06:10:54.409Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "colgincellars.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.colgincellars.com/",
+    "text": "Voir le site",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Dom Pérignon",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/dom-perignon",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/dom-perignon",
+   "sha256": "4ba7e7f474b97f35cdb5e71ddd17e5e1f9248b4bddc5ac6c884b41cc4c3630a6",
+   "at": "2026-09-10T06:10:54.806Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Domaine des Lambrays",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/domaine-des-lambrays",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/domaine-des-lambrays",
+   "sha256": "17273ee97807b75beee748f656166e5482dbcf6ac1d703e2b1ac7747605a780a",
+   "at": "2026-09-10T06:10:55.227Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "lambrays.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.lambrays.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Eminente",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/eminente",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/eminente",
+   "sha256": "f6f756900b1c0b4b67e5f375aea5343b18821dc7416bd696d287f97c77817fcd",
+   "at": "2026-09-10T06:10:55.713Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "eminente.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.eminente.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Marchesi 1824",
+  "group": "Prada Group",
+  "profileUrl": "https://www.pradagroup.com/en/brands/marchesi.html",
+  "listingOnly": false,
+  "status": "READ_FAILED",
+  "error": "Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.pradagroup.com/en/brands/marchesi.html\nCall log:\n  - navigating to \"https://www.pradagroup.com/en/brands/marchesi.html\", waiting until \"domcontentloaded\"\n"
+ },
+ {
+  "name": "Joseph Phelps",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/joseph-phelps",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/joseph-phelps",
+   "sha256": "cb9872734763615089f937bda20030d89693e0b08fcfd416a1883583001267f8",
+   "at": "2026-09-10T06:10:56.082Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Mercier",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/mercier",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/mercier",
+   "sha256": "38dfdecca60636b42f500e36745de2b3ec974978461679b5459130e971dfcc26",
+   "at": "2026-09-10T06:10:56.416Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "champagnemercier.fr"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.champagnemercier.fr/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Minuty",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/minuty",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/minuty",
+   "sha256": "3ab0fe6a6297cfcac54f53f915bd378025a3c9326e34d5721456c005337ad48a",
+   "at": "2026-09-10T06:10:56.509Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "minuty.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://minuty.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Ruinart",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/ruinart",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/ruinart",
+   "sha256": "2a62e0adbf39c3997b030500aac69c57a9b42598d19244c4d4d2834a15f5d551",
+   "at": "2026-09-10T06:10:56.933Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "ruinart.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.ruinart.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Terrazas de los Andes",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/terrazas-de-los-andes",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/terrazas-de-los-andes",
+   "sha256": "b004252e498f7608a158154e4462c69d75cbc37d6ef3732dadf36200dbd2f0d8",
+   "at": "2026-09-10T06:10:57.017Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Veuve Clicquot",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/veuve-clicquot",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/veuve-clicquot",
+   "sha256": "561278aedb508edf3f413d0be20f4d50d874269b9233321deebca48fa0148a78",
+   "at": "2026-09-10T06:10:57.290Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "veuveclicquot.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.veuveclicquot.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 4,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Volcan de mi Tierra",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/volcan-de-mi-tierra",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/volcan-de-mi-tierra",
+   "sha256": "751745d86f076ab02d20e10a3760aa48075a25daf44dc4a98a58af214914c93b",
+   "at": "2026-09-10T06:10:57.481Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "volcan.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.volcan.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Woodinville",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/wines-spirits/woodinville",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/wines-spirits/woodinville",
+   "sha256": "a128fdc1f7efa81b6efb5a604ce3d021d6bf8e2323ea8d0e2ad8494867b68cb6",
+   "at": "2026-09-10T06:10:57.802Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Barton Perreira",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/fashion-leather-good/barton-perreira",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/fashion-leather-good/barton-perreira",
+   "sha256": "b47995e66dee838be3d1a88c0cbfe317c696c010b5bc8ca85420bb9152f14f27",
+   "at": "2026-09-10T06:10:57.978Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "bartonperreira.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://bartonperreira.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Pucci",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/fashion-leather-good/pucci",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/fashion-leather-good/pucci",
+   "sha256": "e6c68cb936b799f027c8f170548f17453262c07e5bee6699eb8abdff340a4e51",
+   "at": "2026-09-10T06:10:58.338Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "pucci.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "http://www.pucci.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Vuarnet",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/fashion-leather-good/vuarnet",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/fashion-leather-good/vuarnet",
+   "sha256": "eddeee3816e523947a9c214dc4ff6d1e942a21d0001955a30a999ad4da7fd263",
+   "at": "2026-09-10T06:10:58.441Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "LVMH Métiers d'Art",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/fashion-leather-good/lvmh-metiers-dart",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/fashion-leather-good/lvmh-metiers-dart",
+   "sha256": "1bbd8ef563d647030727507323bd0b846c00cb33673adf6b3fec472175c020cb",
+   "at": "2026-09-10T06:10:58.646Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "lvmh.cn"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.lvmh.cn/our-maisons/fashion-leather-good/lvmh-metiers-dart",
+    "text": "中文中文",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.lvmh.cn/our-maisons/fashion-leather-good/lvmh-metiers-dart",
+    "text": "中文中文",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.lvmh.cn/our-maisons/fashion-leather-good/lvmh-metiers-dart",
+    "text": "中文中文",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Fenty Beauty by Rihanna",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/perfumes-cosmetics/fenty-beauty-by-rihanna",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/perfumes-cosmetics/fenty-beauty-by-rihanna",
+   "sha256": "f1f9e529978d751b951fea3d127c67c42fc6b0b3780d737b85f132522a7e85ac",
+   "at": "2026-09-10T06:10:58.829Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Kenzo Parfums",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/perfumes-cosmetics/kenzo-parfums",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/perfumes-cosmetics/kenzo-parfums",
+   "sha256": "b9ea6d2182cc9db5df21c1294250d3c854b20631caa1c4d3eb1ab8c88a72aea4",
+   "at": "2026-09-10T06:10:59.168Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Givenchy Parfums",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/perfumes-cosmetics/givenchy-parfums",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/perfumes-cosmetics/givenchy-parfums",
+   "sha256": "69b8fff09a4373c0b64ca77e0f4343a28ddc050d38d29f89318241582e890c09",
+   "at": "2026-09-10T06:10:58.996Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Loewe Perfumes",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/perfumes-cosmetics/loewe-perfumes",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/perfumes-cosmetics/loewe-perfumes",
+   "sha256": "a1e7cd3a1c5b3a3edf49412a041a457e74aea85dd56fc4b89c07cbd41375501d",
+   "at": "2026-09-10T06:10:59.476Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "OLE HENRIKSEN",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/perfumes-cosmetics/ole-henriksen",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/perfumes-cosmetics/ole-henriksen",
+   "sha256": "3e435c37e5bb889b1253c5f487acdca3617aca69a780eea24e8497688814f909",
+   "at": "2026-09-10T06:10:59.569Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Bvlgari",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/watches-jewelry/bulgari",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/watches-jewelry/bulgari",
+   "sha256": "375f0fac70f666ffc8123d09b01602fd864c0d619c4926e4ba4449eb0a7ba3ba",
+   "at": "2026-09-10T06:10:59.886Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Gérald Genta",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/watches-jewelry/gerald-genta",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/watches-jewelry/gerald-genta",
+   "sha256": "0e33f153d0bba44da3c3b03ef3e9f1efe7bafbbfcfbbcb9a8c01a348db4d9b5b",
+   "at": "2026-09-10T06:11:00.218Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "DANIEL ROTH",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/watches-jewelry/daniel-roth",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/watches-jewelry/daniel-roth",
+   "sha256": "7ddc5c0908f76977d42cfc1dfd3ef1c1c5f912119d5363066f4c3c07d105e654",
+   "at": "2026-09-10T06:11:00.074Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "L'Epée 1839",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/watches-jewelry/lepee-1839",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/watches-jewelry/lepee-1839",
+   "sha256": "69d907968841ea67d21c02a24abed10c3956ba6d640f5419310f77d1326de9a7",
+   "at": "2026-09-10T06:11:00.474Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "24S",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/selective-retailing/24s",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/selective-retailing/24s",
+   "sha256": "dbcf4533a5814a4467fd47c22cfc06ca9cd21d301e1dfb16fd64720ccfd62ce6",
+   "at": "2026-09-10T06:11:00.556Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "La Grande Épicerie de Paris",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/selective-retailing/la-grande-epicerie-de-paris",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/selective-retailing/la-grande-epicerie-de-paris",
+   "sha256": "94c4dc1eeaa033078f2fe8f982fa3f0fd7f3894562fa31cf2b2c8df3763e7e2d",
+   "at": "2026-09-10T06:11:00.831Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "lagrandeepicerie.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.lagrandeepicerie.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Le Bon Marché Rive Gauche",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/selective-retailing/le-bon-marche-rive-gauche",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/selective-retailing/le-bon-marche-rive-gauche",
+   "sha256": "840bd25228a026536d32f67648f5133b4d5c6b8daa9f314cc8880fbb74bbdf13",
+   "at": "2026-09-10T06:11:00.919Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "lebonmarche.com",
+   "pinterest.fr"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.lebonmarche.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.pinterest.fr/lebonmarche/",
+    "text": "Pinterest profile Le Bon Marché Rive Gauche",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Samaritaine",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/selective-retailing/samaritaine",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/selective-retailing/samaritaine",
+   "sha256": "f2f4ef953eb61bf41d4cd0c03455746d1135cafb0b49729e38a98ad0e8e1dcdd",
+   "at": "2026-09-10T06:11:01.159Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Les Echos",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/other-activities/les-echos",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/other-activities/les-echos",
+   "sha256": "7a06cabe7be67ca15d5aefd5f23c70bb971e595232f875685c99cd66d0b574f5",
+   "at": "2026-09-10T06:11:01.716Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Belmond",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/other-activities/belmond",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/other-activities/belmond",
+   "sha256": "7c6e218714cfefa973c572b5150c5fd3c5ad9620910f010e8725d6b03dbd505f",
+   "at": "2026-09-10T06:11:01.460Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "pinterest.fr"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.pinterest.fr/belmondtravel/",
+    "text": "Pinterest profile Belmond",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Cova",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/other-activities/cova",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/other-activities/cova",
+   "sha256": "0d45d376fc17bcb8b11201b83d79727df86e3cb276f6329cbaceb2d199c08918",
+   "at": "2026-09-10T06:11:03.142Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "covamilano.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.covamilano.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Connaissance des Arts",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/other-activities/connaissance-des-arts",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/other-activities/connaissance-des-arts",
+   "sha256": "0c80862abc90f0662bf413313bf1a9d7cee867acdb7cce616e1abca10ef40c03",
+   "at": "2026-09-10T06:11:02.597Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "connaissancedesarts.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.connaissancedesarts.com/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Investir",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/other-activities/investir",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/other-activities/investir",
+   "sha256": "042bd74b900d930b390d19b042c676d1ac78da1065824db2df394f823924ae78",
+   "at": "2026-09-10T06:11:04.650Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "investir.fr"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.investir.fr/",
+    "text": "Visit the website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Le Jardin d'Acclimatation",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/other-activities/jardin-dacclimatation",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/other-activities/jardin-dacclimatation",
+   "sha256": "5aff8b491a27ca903d062edea549e59e9bbc39530261bd1b364b14fc4bfb853c",
+   "at": "2026-09-10T06:11:04.739Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Le Parisien",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/other-activities/le-parisien",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/other-activities/le-parisien",
+   "sha256": "e3cd8962a5875aecfdb01be5547e4c0b982e9df366688a3b1abd2ddf5e0f922d",
+   "at": "2026-09-10T06:11:04.985Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Paris Match",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/other-activities/paris-match",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/other-activities/paris-match",
+   "sha256": "dfdef26a0ae3b2e63ad290bcac4ff35177f2ef31710c0d7494e492dfb1d02189",
+   "at": "2026-09-10T06:11:05.122Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "parismatch.com",
+   "pinterest.fr"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.parismatch.com/",
+    "text": "VISIT THE WEBSITE",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.pinterest.fr/parismatch/",
+    "text": "Pinterest profile Paris Match",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Radio Classique",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/other-activities/radio-classique",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/other-activities/radio-classique",
+   "sha256": "de63a30a13207ee8be5200bacc67bac65dc699d76ee180f7d62dffcd10749371",
+   "at": "2026-09-10T06:11:05.336Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Royal Van Lent",
+  "group": "LVMH",
+  "profileUrl": "https://www.lvmh.com/en/our-maisons/other-activities/royal-van-lent",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.lvmh.com/en/our-maisons/other-activities/royal-van-lent",
+   "sha256": "1364a122a34631cb9d8efc6ef51816c9e1542937fc15033d322b8707308f2e52",
+   "at": "2026-09-10T06:11:05.449Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 3,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "A. Lange & Söhne",
+  "group": "Richemont",
+  "profileUrl": "https://www.richemont.com/our-maisons/a-lange-soehne/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.richemont.com/our-maisons/a-lange-soehne/",
+   "sha256": "c651b71756cf44844e9f28aea1e5aad74cb626eac740a06e31350cc146a17ddd",
+   "at": "2026-09-10T06:11:06.305Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "alange-soehne.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.alange-soehne.com/",
+    "text": "Visit A. Lange & Söhne's website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Vhernier",
+  "group": "Richemont",
+  "profileUrl": "https://www.richemont.com/our-maisons/vhernier/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.richemont.com/our-maisons/vhernier/",
+   "sha256": "a5f3c55907dd03e191672b1a03942b53d13a68b6245fb168a4c980e8857808e0",
+   "at": "2026-09-10T06:11:06.232Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "vhernier.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://vhernier.com/",
+    "text": "Visit Vhernier's website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Vacheron Constantin",
+  "group": "Richemont",
+  "profileUrl": "https://www.richemont.com/our-maisons/vacheron-constantin/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.richemont.com/our-maisons/vacheron-constantin/",
+   "sha256": "ada4e32b9ab8174c93cc4095f3f6fb7d742bb759b5306e75c10bc3d6622f2352",
+   "at": "2026-09-10T06:11:06.623Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "vacheron-constantin.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.vacheron-constantin.com/",
+    "text": "Visit Vacheron Constantin's website",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.vacheron-constantin.com/ww/en/maison/art-and-culture.html",
+    "text": "Discover more",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Jaeger-LeCoultre",
+  "group": "Richemont",
+  "profileUrl": "https://www.richemont.com/our-maisons/jaeger-lecoultre/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.richemont.com/our-maisons/jaeger-lecoultre/",
+   "sha256": "493f0dbc8b1962655baa3c5c657727aa9327f9cf38ddc09a51ba8a05600f1a10",
+   "at": "2026-09-10T06:11:06.526Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "jaeger-lecoultre.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.jaeger-lecoultre.com/",
+    "text": "Visit Jaeger-LeCoultre's website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 4,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Alaïa",
+  "group": "Richemont",
+  "profileUrl": "https://www.richemont.com/our-maisons/alaia/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.richemont.com/our-maisons/alaia/",
+   "sha256": "2e911aef8ed7ea2365a1832880cca8da84cc2c7dbe9143ad0e285e8dfe80663c",
+   "at": "2026-09-10T06:11:06.759Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "maison-alaia.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.maison-alaia.com/",
+    "text": "Visit Alaïa's website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Chloé",
+  "group": "Richemont",
+  "profileUrl": "https://www.richemont.com/our-maisons/chloe/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.richemont.com/our-maisons/chloe/",
+   "sha256": "7011c26678b0f0a2aa1e44e60d2f4a2a948d54cd69635372f2364d54b2865b6b",
+   "at": "2026-09-10T06:11:06.880Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "chloe.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.chloe.com/",
+    "text": "Visit Chloé's website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 4,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "GFORE",
+  "group": "Richemont",
+  "profileUrl": "https://www.richemont.com/our-maisons/gfore/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.richemont.com/our-maisons/gfore/",
+   "sha256": "366e331c46347b9e46e06816125c590f7ee2c4d8b90f3874d9c417df2d9bb998",
+   "at": "2026-09-10T06:11:06.909Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "gfore.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.gfore.com/",
+    "text": "Visit G/FORE's website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Gianvito Rossi",
+  "group": "Richemont",
+  "profileUrl": "https://www.richemont.com/our-maisons/gianvito-rossi/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.richemont.com/our-maisons/gianvito-rossi/",
+   "sha256": "0d51b459b32ef12ca5a33b6c82e01933d0f1834314558fa6fdb73971344d34b7",
+   "at": "2026-09-10T06:11:07.032Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "gianvitorossi.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.gianvitorossi.com/",
+    "text": "Visit Gianvito Rossi's website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Peter Millar",
+  "group": "Richemont",
+  "profileUrl": "https://www.richemont.com/our-maisons/peter-millar/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.richemont.com/our-maisons/peter-millar/",
+   "sha256": "9d80ad16ec5bfd088ca0bdd34576915675663bcaa088950246fa0ada0c0759cf",
+   "at": "2026-09-10T06:11:07.146Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "petermillar.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.petermillar.com/",
+    "text": "Visit Peter Millar's website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "TimeVallée",
+  "group": "Richemont",
+  "profileUrl": "https://www.richemont.com/our-maisons/timevallee/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.richemont.com/our-maisons/timevallee/",
+   "sha256": "aaabaff07114f45ada3b625c6404e9e4ae4573ca2eb7f704a35b4bfc8eaa74fa",
+   "at": "2026-09-10T06:11:07.349Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "timevallee.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.timevallee.com/",
+    "text": "Visit TimeVallée's website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 4,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Serapian",
+  "group": "Richemont",
+  "profileUrl": "https://www.richemont.com/our-maisons/serapian/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.richemont.com/our-maisons/serapian/",
+   "sha256": "7fd716fdc361028a4ecc3763abe0263663c57d65224d0df82726cbd0c4752918",
+   "at": "2026-09-10T06:11:07.284Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "serapian.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.serapian.com/",
+    "text": "Visit Serapian's website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Watchfinder & Co.",
+  "group": "Richemont",
+  "profileUrl": "https://www.richemont.com/our-maisons/watchfinder-co/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.richemont.com/our-maisons/watchfinder-co/",
+   "sha256": "fbb9891dae559fe45a6b88f9896cc8cdd37523cb167a1815c56824085c1cf96b",
+   "at": "2026-09-10T06:11:07.527Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "watchfinder.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.watchfinder.com/",
+    "text": "Visit Watchfinder & Co.'s website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Harry Winston",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/watches-jewelry/harry-winston",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/watches-jewelry/harry-winston",
+   "sha256": "7485a647d4645e8577ba7db4f9795c7783ade799e760758cd0c6ab978d82f3d5",
+   "at": "2026-09-10T06:11:07.530Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "harrywinston.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "http://www.harrywinston.com/en",
+    "text": "Harry Winston website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Union Glashütte",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/watches-jewelry/union-glashutte",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/watches-jewelry/union-glashutte",
+   "sha256": "8faa72724fb04dbac2761f777de8d61afc0212a2f6805b996fe4c3dc2819e4ff",
+   "at": "2026-09-10T06:11:07.716Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "union-glashuette.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.union-glashuette.com/en/",
+    "text": "Union Glashütte website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Mido",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/watches-jewelry/mido",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/watches-jewelry/mido",
+   "sha256": "6e2c5cf6aaf6e8a3fcb74647a0df14778b65afd716e6d3c62b783eee3f058a5b",
+   "at": "2026-09-10T06:11:07.844Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "midowatches.com",
+   "g.page"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.midowatches.com/en/",
+    "text": "Mido website",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://g.page/midowatches",
+    "text": "MIDO LTD",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Meco Suisse",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/production/meco-suisse",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/production/meco-suisse",
+   "sha256": "03e241f37f343d40763a67ed203ae5f627fe908e521540cebc8c8d9e381c0f6e",
+   "at": "2026-09-10T06:11:07.897Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "meco.ch"
+  ],
+  "brandLinks": [
+   {
+    "href": "http://www.meco.ch/en/",
+    "text": "Meco website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Jaquet Droz",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/watches-jewelry/jaquet-droz",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/watches-jewelry/jaquet-droz",
+   "sha256": "225c0dc4d7395ef3dfe8425261ce7e09a37c0c521ed526c964a8ef2c785dc96f",
+   "at": "2026-09-10T06:11:07.696Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "jaquet-droz.com",
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "http://www.jaquet-droz.com/en",
+    "text": "Jaquet Droz website",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/kCDB54TrQJrDvjpR6",
+    "text": "Montres Jaquet Droz Ltd",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "CHH Microtechnique",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/production/chh-microtechnique",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/production/chh-microtechnique",
+   "sha256": "55fe6aca79eb7601b482435c237146ae0bfcbaf75935ecab35226062183d82e1",
+   "at": "2026-09-10T06:11:08.016Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "chh-microtechnique.ch",
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "http://www.chh-microtechnique.ch/",
+    "text": "CHH Microtechnique website",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/gev317ACZ25wZ6su9",
+    "text": "CHH-Microtechnique SA",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Rubattel &amp; Weyermann",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/production/rubattel-weyermann",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/production/rubattel-weyermann",
+   "sha256": "11baa24f979adf71a1355b39c8552fc90ef30ee10d5e64a0796fb5cce88c7b56",
+   "at": "2026-09-10T06:11:08.412Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 3,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Manufacture Ruedin",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/production/manufacture-ruedin",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/production/manufacture-ruedin",
+   "sha256": "f441f1241d4eb5554926faf3cadee65c8aa93eca30b84292d724f44c7081cf9b",
+   "at": "2026-09-10T06:11:08.484Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://goo.gl/maps/XLbw7RjVVEhWvQYm6",
+    "text": "Manufacture Ruedin SA",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Nivarox-FAR",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/production/nivarox-far",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/production/nivarox-far",
+   "sha256": "144438d654cbd81b579594cc0762470c3a0e2e6f8e7249b82229d0ef62d3a6a5",
+   "at": "2026-09-10T06:11:08.319Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "nivarox.com",
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "http://www.nivarox.com/",
+    "text": "Nivarox website",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/Dd1Pr3Wnxs7PEuGPA",
+    "text": "Nivarox-FAR S.A.",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Swatch Group Assembly",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/production/swatch-group-assembly",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/production/swatch-group-assembly",
+   "sha256": "6728da50ceaa251866ae1117c8a3b40fef988f8712562c910c27dbe6d44c8785",
+   "at": "2026-09-10T06:11:08.727Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "swatch.com",
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.swatch.com/en-ch/internet-time.html",
+    "text": "2026-09-09T14:07:25+0200",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/MEByN7L4kF7bJFxm7",
+    "text": "The Swatch Group Assembly Ltd",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Dress Your Body",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/production/dress-your-body",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/production/dress-your-body",
+   "sha256": "5889ac552632114990de83669b62870831fd06b722ba6b375169ae87d1ae2b5d",
+   "at": "2026-09-10T06:11:08.801Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://goo.gl/maps/rD5tGDkXFkEzBENn6",
+    "text": "Dress your body Ltd",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Swatch Group Research and Development",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/corporate/swatch-group-research-and-development",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/corporate/swatch-group-research-and-development",
+   "sha256": "8e8d4965ceacf06a21106e7fc7122ababac5b2b61816b95866bd2946a869e510",
+   "at": "2026-09-10T06:11:08.888Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "swatch.com",
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.swatch.com/en-ch/internet-time.html",
+    "text": "2026-09-09T14:07:31+0200",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/kxNg7zwzo26uwsXM8",
+    "text": "The Swatch Group Research and Development Ltd, Division Asulab",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/6ndALtzmL9hDzERGA",
+    "text": "The Swatch Group Research and Development Ltd, Division CDNP",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/6ndALtzmL9hDzERGA",
+    "text": "The Swatch Group Research and Development Ltd, Division Moebius",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/U9fX6SCYGpBt4cFn7",
+    "text": "The Swatch Group Research and Development Ltd",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Novi",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/production/novi",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/production/novi",
+   "sha256": "7e5c3cb957727412983fcd869dd4c361c14f24c19e76b9c5a73bdb149ba0a393",
+   "at": "2026-09-10T06:11:08.542Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://goo.gl/maps/i4W5gy5NM4nUe1tr8",
+    "text": "Novi SA",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "ICB Ingénieurs Conseils en Brevets",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/corporate/icb-ingenieurs-conseils-en-brevets",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/corporate/icb-ingenieurs-conseils-en-brevets",
+   "sha256": "1ef065a0c9c80b2147044ad7ea148472e1adccaf39d8cbfd0ee532f6e5b95cb2",
+   "at": "2026-09-10T06:11:08.967Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://goo.gl/maps/1nqQh3rGUhV4C3Fw6",
+    "text": "ICB Ingénieurs Conseils en Brevets SA",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Swatch Group Services",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/corporate/swatch-group-services",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/corporate/swatch-group-services",
+   "sha256": "b801243e5dc5529c2c1727f674cbeb69fdc09dd6852b2ece0e4ee18e9b405f37",
+   "at": "2026-09-10T06:11:09.000Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "swatch.com",
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.swatch.com/en-ch/internet-time.html",
+    "text": "2026-09-09T11:15:16+0200",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/prNKp5K5nmtAzphA8",
+    "text": "The Swatch Group Services Ltd",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Swatch Group Immeubles",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/corporate/swatch-group-immeubles",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/corporate/swatch-group-immeubles",
+   "sha256": "8e6e30c39c13f0c73e5f7526ff7214b4a6b87c34bed6cce46c9eae5e224bad2e",
+   "at": "2026-09-10T06:11:09.055Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "swatch.com",
+   "swatchimmo.ch",
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.swatch.com/en-ch/internet-time.html",
+    "text": "2026-09-09T14:07:34+0200",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "http://www.swatchimmo.ch/",
+    "text": "Swatch Group Immeubles website",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/QygqaYeS2SN9wMB16",
+    "text": "The Swatch Group Immeubles SA",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Cité du Temps",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/landmarks/cite-du-temps",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/landmarks/cite-du-temps",
+   "sha256": "6c5d3b1c040ac847a5f622c127af6a1ff0855fbaf7f85e51c15d1dfdee41ae06",
+   "at": "2026-09-10T06:11:09.123Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "citedutemps.com",
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "http://www.citedutemps.com/",
+    "text": "Cité du Temps",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.citedutemps.com/",
+    "text": "Cité du temps website",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/MKUQsc3WwHdeNewa6",
+    "text": "Cité du Temps",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Swatch Museum",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/landmarks/swatch-museum",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/landmarks/swatch-museum",
+   "sha256": "546238da4f9f23dd64480fdd2d697b1f7aec962461685470d19fe6573af59e47",
+   "at": "2026-09-10T06:11:09.596Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "swatch.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.swatch.com/en-ch/internet-time.html",
+    "text": "2026-09-09T14:07:37+0200",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.swatch.com/en-ch/planet-swatch.html",
+    "text": "www.swatch.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Omega Museum",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/landmarks/omega-museum",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/landmarks/omega-museum",
+   "sha256": "eb189806e478b32a45781234c9f0f3473168f7dd0d0ab2ce314e0488df23da95",
+   "at": "2026-09-10T06:11:09.250Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "omegawatches.com",
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.omegawatches.com/en-ch/planet-omega/heritage/museum",
+    "text": "Omega Museum website",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/7d8jHqnHviQcZn8VA",
+    "text": "The Omega Museum",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "German Watch Museum Glashütte",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/landmarks/german-watch-museum-glashutte",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/landmarks/german-watch-museum-glashutte",
+   "sha256": "5e1cb88285ea9f68562fdfbcefb966b05efcec3ff7789f1701799fcb27757d70",
+   "at": "2026-09-10T06:11:09.642Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "uhrenmuseum-glashuette.com",
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "http://www.uhrenmuseum-glashuette.com/en/",
+    "text": "German Watch Museum Glashütte",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/2PxoNHtj91FT7rKw5",
+    "text": "German Watch Museum Glashütte – Nicolas G. Hayek",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Luna Rossa",
+  "group": "Prada Group",
+  "profileUrl": "https://www.pradagroup.com/en/brands/luna-rossa.html",
+  "listingOnly": false,
+  "status": "READ_FAILED",
+  "error": "Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.pradagroup.com/en/brands/luna-rossa.html\nCall log:\n  - navigating to \"https://www.pradagroup.com/en/brands/luna-rossa.html\", waiting until \"domcontentloaded\"\n"
+ },
+ {
+  "name": "Longines Museum",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/landmarks/longines-museum",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/landmarks/longines-museum",
+   "sha256": "2af472cafe02ce5883a6b350dbeb68d5d36dfaa087c304424f4c36486cea94fa",
+   "at": "2026-09-10T06:11:09.632Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "longines.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.longines.com/company/museum/longines-museum",
+    "text": "Website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Nicolas G. Hayek Center",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/landmarks/nicolas-g-hayek-center",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/landmarks/nicolas-g-hayek-center",
+   "sha256": "2f3611e41c1084694a7ffdf2f2a3a3090d7aa2fbae9ad8bd2c9982245c8af1a0",
+   "at": "2026-09-10T06:11:09.818Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://goo.gl/maps/U9iq5PzH1u9Yn9nb8",
+    "text": "Nicolas G. Hayek Center",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Tourbillon",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/distribution/tourbillon",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/distribution/tourbillon",
+   "sha256": "b74d73a7907a2e967fd2c1565d9b4573d0e8c71b0987591d745b83fcddee3fba",
+   "at": "2026-09-10T06:11:09.825Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "tourbillon.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.tourbillon.com/en/",
+    "text": "Tourbillon website",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Swatch Art Peace Hotel",
+  "group": "Swatch Group",
+  "profileUrl": "https://www.swatchgroup.com/en/companies-brands/landmarks/swatch-art-peace-hotel",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.swatchgroup.com/en/companies-brands/landmarks/swatch-art-peace-hotel",
+   "sha256": "163f15c72840670611d1c125238126ae11f1124497319d3b5337a8f32653b1ec",
+   "at": "2026-09-10T06:11:09.794Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "swatch.com",
+   "swatch-art-peace-hotel.com",
+   "goo.gl"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.swatch.com/en-ch/internet-time.html",
+    "text": "2026-09-10T08:11:09+0200",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.swatch-art-peace-hotel.com/",
+    "text": "Swatch Art Peace Hotel website",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://goo.gl/maps/1wnK9L8FjNaTRNC99",
+    "text": "Swatch Art Peace Hotel",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Viktor&Rolf",
+  "group": "OTB",
+  "profileUrl": "https://www.otb.net/en/viktor-and-rolf",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.otb.net/en/viktor-and-rolf",
+   "sha256": "c4601abf23f6ec1db58b8c16c78a19223c11d0754e01bd2b476825e485d2c81a",
+   "at": "2026-09-10T06:11:09.986Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "viktor-rolf.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.viktor-rolf.com/",
+    "text": "VISIT viktor-rolf.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "BOURJOIS",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "BOZZANO",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "BRUNO BANANI",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "CALVIN KLEIN",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "CENOURA & BRONZE",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "CHANSON",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "CHLOÉ",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "COVERGIRL",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "DAVID BECKHAM",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "DAVIDOFF",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "ESCADA",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "ETRO",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "GABRIELA SABATINI",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "INFINIMENT COTY PARIS",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "JAWHARA",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "JOOP!",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "JOVAN",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "KYLIE COSMETICS",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "KYLIE SKIN",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "LANCASTER",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "LEGER BY LENA GERCKE",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "MANHATTAN",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "MAX FACTOR",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "MEXX",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "MISS SPORTY",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "MONANGE",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "NAUTICA",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "PAIXAO",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "RISQUÉ",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "VERA WANG",
+  "group": "Coty",
+  "profileUrl": "https://www.coty.com/our-brands/all-brands",
+  "listingOnly": true,
+  "proof": {
+   "url": "https://www.coty.com/our-brands/all-brands",
+   "sha256": "61686a7de7ee9493c1f5a1bfce8d6fd9566bc69ba324408430a7f6e6e8929421",
+   "at": "2026-09-10T06:11:11.131Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Frassineti",
+  "group": "OTB",
+  "profileUrl": "https://www.otb.net/en/frassineti",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.otb.net/en/frassineti",
+   "sha256": "8b774b81ccdcb0cd483f9266fa16fd0606da809f17bbf909e934898de49aa3f6",
+   "at": "2026-09-10T06:11:10.056Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "lafrassineti.it"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.lafrassineti.it/",
+    "text": "www.lafrassineti.it",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Stephen",
+  "group": "OTB",
+  "profileUrl": "https://www.otb.net/en/stephen",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.otb.net/en/stephen",
+   "sha256": "b18675152dc7f13f5a0874b286d6b1475127b44a68313c007f428890927dbe3a",
+   "at": "2026-09-10T06:11:10.335Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "otb-strapi-prod-assets.otb-frame.com"
+  ],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Dr.G",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/consumer-products-division/dr-g/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/consumer-products-division/dr-g/",
+   "sha256": "c696ad009251d90051a1edc106e33a1d831a79708ad0fe2d11e3ee96ef6ab57d",
+   "at": "2026-09-10T06:11:11.437Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "urldefense.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://urldefense.com/v3/__https:/www.instagram.com/dr.g_official_global/__;!!IY5JXqZAIQ!7LiS6Oiu-QalumhjhZjWDk_T9pRLcvL2sr5NTBKzwcKyCnx4GhLnrlRWcvqoLQ1ErBqqWnmUj5f9l781TEDbP1ks$",
+    "text": "Dr.G on Instagram",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://urldefense.com/v3/__https:/www.tiktok.com/@dr.g_global__;!!IY5JXqZAIQ!7LiS6Oiu-QalumhjhZjWDk_T9pRLcvL2sr5NTBKzwcKyCnx4GhLnrlRWcvqoLQ1ErBqqWnmUj5f9l781TJ8bGQV_$",
+    "text": "Dr.G on TikTok",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "L'Oréal Paris",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/consumer-products-division/loreal-paris/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/consumer-products-division/loreal-paris/",
+   "sha256": "38e844e2696e102fc95928389fee7226b056706d7e9232e4373572053b1d1e79",
+   "at": "2026-09-10T06:11:11.453Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "lorealparis.co.in"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.lorealparis.co.in/",
+    "text": "VISIT L'ORÉAL PARIS WEBSITE",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Vogue",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/consumer-products-division/vogue/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/consumer-products-division/vogue/",
+   "sha256": "0e476ca56949eb436a5b41ddb4a46037a66749388dd7f18968fb6c585fdbe304",
+   "at": "2026-09-10T06:11:11.597Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "loreal-finance.com"
+  ],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Thayers",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/consumer-products-division/thayers/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/consumer-products-division/thayers/",
+   "sha256": "471d441a739a9cc7a04eeb82e93b7c4cea623c1b21e4f709013e676bb5b0f2f4",
+   "at": "2026-09-10T06:11:11.465Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "loreal-finance.com"
+  ],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Garnier",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/consumer-products-division/garnier/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/consumer-products-division/garnier/",
+   "sha256": "c2a668f83e516fc05260a876e123db99a4d0e3e91af4b908edf2568b4a6f488b",
+   "at": "2026-09-10T06:11:11.712Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "garnier.fr",
+   "garnier.in"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.garnier.fr/",
+    "text": "Visit garnier.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.garnier.in/",
+    "text": "www.garnier.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.garnier.fr/",
+    "text": "Garnier.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "SEVERAL_CANDIDATES"
+ },
+ {
+  "name": "Maybelline New York",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/consumer-products-division/maybelline-new-york/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/consumer-products-division/maybelline-new-york/",
+   "sha256": "919dd4aa1b6d09037309b9b309313a83c1320c84099fb6876a0ac5ccdd654b34",
+   "at": "2026-09-10T06:11:12.243Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "maybelline.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.maybelline.com/",
+    "text": "Visit maybelline.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "3CE",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/consumer-products-division/3ce/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/consumer-products-division/3ce/",
+   "sha256": "d42cf621d6316f6ae42d4c88ee98093df6d3db4d92223a97824fded305ef51a3",
+   "at": "2026-09-10T06:11:12.252Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "3cecosmetics.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.3cecosmetics.com/",
+    "text": "Visit 3CE.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.3cecosmetics.com/",
+    "text": "Visit 3CE.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Dark & Lovely",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/consumer-products-division/dark-and-lovely/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/consumer-products-division/dark-and-lovely/",
+   "sha256": "663158838ebe8aa110165bc7cc84fccaf0cefad8c78d859eba640cc76852ce58",
+   "at": "2026-09-10T06:11:12.390Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "darkandlovely.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.darkandlovely.com/",
+    "text": "Visit darkandlovely.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Essie",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/consumer-products-division/essie/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/consumer-products-division/essie/",
+   "sha256": "9601d3e9fd520813083074340a7e7ea5fc21c593b55e162b2f33ac087dd8afa8",
+   "at": "2026-09-10T06:11:12.262Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "essie.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.essie.com/",
+    "text": "Visit essie.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.essie.com/",
+    "text": "essie.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Niely",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/consumer-products-division/niely/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/consumer-products-division/niely/",
+   "sha256": "b1dc291bdee5392add99d2f48f4715938d8ec2dc226bec81c126ef2a671ec279",
+   "at": "2026-09-10T06:11:13.470Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "fiquediva.com.br"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.fiquediva.com.br/",
+    "text": "Visit niely.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.fiquediva.com.br/",
+    "text": "Visit niely.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Mixa",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/consumer-products-division/mixa/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/consumer-products-division/mixa/",
+   "sha256": "6cdba1260369fc6013060a8f2cf49834e08252c80aef85ba56341a9124473548",
+   "at": "2026-09-10T06:11:13.453Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "mixa.fr"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.mixa.fr/",
+    "text": "Visit mixa.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.mixa.fr/",
+    "text": "Mixa.fr",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Yves Saint Laurent",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/ysl-beauty/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/ysl-beauty/",
+   "sha256": "db9b2715b3e41e676112e43b9837873414a778a67ff32bfdc577015184e6d716",
+   "at": "2026-09-10T06:11:13.643Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [],
+  "brandLinks": [],
+  "outboundHostsOnPage": 2,
+  "status": "NO_OUTBOUND_LINK_FOR_BRAND"
+ },
+ {
+  "name": "Armani",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/armani/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/armani/",
+   "sha256": "b6f6d07252904dd029e834d0ca32c418f8aef569d11d4cbf6d4abbd5958db8e3",
+   "at": "2026-09-10T06:11:13.766Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "armanibeauty.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.armanibeauty.com/",
+    "text": "Visit armani.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.armanibeauty.com/",
+    "text": "Visit armanibeauty.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Lancôme",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/lancome/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/lancome/",
+   "sha256": "0c9118e3526fda3e206a22370a0134f11d1c11f4c73b757c4141216d46a79bad",
+   "at": "2026-09-10T06:11:13.593Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "lancome.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.lancome.com/lancome-paris/dispatch-page.html",
+    "text": "Visit lancome.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Youth To The People",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/youth-to-the-people/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/youth-to-the-people/",
+   "sha256": "92cbf222411f9fb133ab068673995f0854b8a5d1e5348daf0e09846aa83f6597",
+   "at": "2026-09-10T06:11:13.969Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "youthtothepeople.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.youthtothepeople.com/",
+    "text": "Visit youthtothepeople.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.youthtothepeople.com/",
+    "text": "Visit Youthtothepeople.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Aesop",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/aesop/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/aesop/",
+   "sha256": "839ff6f05daf08d71713d5ee1b3db033666f9f9a498716ed3ffd3ef8df44712d",
+   "at": "2026-09-10T06:11:14.000Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "aesop.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.aesop.com/",
+    "text": "Visit Aesop.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.aesop.com/",
+    "text": "Visit Aesop.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Kiehl's Since 1851",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/kiehl-s/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/kiehl-s/",
+   "sha256": "c0645829746ae3ba6ce42a99d45bde48f6bc00a9378b651a337f5b55d0f61cd6",
+   "at": "2026-09-10T06:11:13.867Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "kiehls.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.kiehls.com/",
+    "text": "Visit Kiehls.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.kiehls.com/skincare-advice/emulsions-in-your-skincare-routine.html",
+    "text": "What Are Emulsions? See More",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.kiehls.com/skincare-advice/glycerin-benefits-for-skin.html",
+    "text": "Glycerin Benefits for Skin See More",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.kiehls.com/skincare-advice/collagen-banking.html",
+    "text": "Collagen Banking See More",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.kiehls.com/skincare-advice/skincare/does-sunscreen-expire.html",
+    "text": "Does Sunscreen Expire? See More",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Atelier Cologne",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/atelier-cologne/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/atelier-cologne/",
+   "sha256": "44e4aa680f357bb85b4254dc04c36b68dc5ebbd194a51a524e4df718b5a3ec0b",
+   "at": "2026-09-10T06:11:14.499Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "ateliercologne.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.ateliercologne.com/us_en/",
+    "text": "Visit ateliercologne.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.ateliercologne.com/us_en/",
+    "text": "Visit ateliercologne.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Jacquemus",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/jacquemus/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/jacquemus/",
+   "sha256": "3333360f0ae502d57afbeaf488105a01b176f243708fdde3a7190b22a2911b89",
+   "at": "2026-09-10T06:11:14.922Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "jacquemus.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.jacquemus.com/en_fr",
+    "text": "Visit Jacquemus.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.jacquemus.com/en_fr",
+    "text": "Visit Jacquemus.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Carita",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/carita/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/carita/",
+   "sha256": "120bd0868ec763ae68016edacf331d8dffab4427ded395cc2ddc922fd5771abe",
+   "at": "2026-09-10T06:11:15.021Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "carita.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.carita.com/",
+    "text": "Discover our universe",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.carita.com/",
+    "text": "Visit carita.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Maison Margiela Fragrances",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/maison-margiela-fragrances/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/maison-margiela-fragrances/",
+   "sha256": "c4f921f7fbf2a6fe71c055504075f5e7c3a73208f43c504fcb58598657f69d02",
+   "at": "2026-09-10T06:11:15.247Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "maisonmargiela-fragrances.eu"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.maisonmargiela-fragrances.eu/",
+    "text": "Visit maisonmargielafragrances.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.maisonmargiela-fragrances.eu/",
+    "text": "maisonmargielafragrances.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Urban Decay",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/urban-decay/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/urban-decay/",
+   "sha256": "759354801ef2932a702d4831dc4cdfaf421cc8329e677d5f5de46ce869a98856",
+   "at": "2026-09-10T06:11:14.936Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "urbandecay.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.urbandecay.com/",
+    "text": "Visit urbandecay.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.urbandecay.com/",
+    "text": "Visit Urbandecay.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Biotherm",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/biotherm/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/biotherm/",
+   "sha256": "fa0c51e446c4f621aaf51aa619df5a7642db6c861a05cc949a78de21b9a4fa81",
+   "at": "2026-09-10T06:11:15.182Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "int.biotherm.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://int.biotherm.com/en_GB/homepage",
+    "text": "Visit Biotherm.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://int.biotherm.com/en_GB/homepage",
+    "text": "Visit Biotherm.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Mugler",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/mugler/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/mugler/",
+   "sha256": "5af97103347c97c7c45b52eaead60161008ab56a0171008fc0dd5c4401d83480",
+   "at": "2026-09-10T06:11:15.391Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "mugler.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.mugler.com/",
+    "text": "Visit mugler.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.mugler.com/",
+    "text": "Visit mugler.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Viktor&Rolf",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/viktor-and-rolf/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/viktor-and-rolf/",
+   "sha256": "deba56aa056950ae849ef45a677f2434c62b37561e04da338466053368019043",
+   "at": "2026-09-10T06:11:15.379Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "intl.viktor-rolf-fragrances.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://intl.viktor-rolf-fragrances.com/int",
+    "text": "Visit Viktor&Rolf Fragrances",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://intl.viktor-rolf-fragrances.com/int",
+    "text": "Visit viktor&rolf.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Azzaro",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/azzaro/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/azzaro/",
+   "sha256": "20a4c87547d34680e584e475403bf431ab74c382a30406c4f0be977bb631de9b",
+   "at": "2026-09-10T06:11:15.898Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "loreal-finance.com"
+  ],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Ralph Lauren Fragrances",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/ralph-lauren-fragrances/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/ralph-lauren-fragrances/",
+   "sha256": "a756da80e489d0149578072626d523ce0af3c4a1f51ffc714a0342df1f0f5236",
+   "at": "2026-09-10T06:11:15.878Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "ralphlaurenfragrances.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.ralphlaurenfragrances.com/",
+    "text": "Visit ralphlaurenfragrances.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.ralphlaurenfragrances.com/",
+    "text": "Visit ralphlaurenfragrances.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "IT Cosmetics",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/it-cosmetics/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/it-cosmetics/",
+   "sha256": "0a0afb7355b9ac6b696507d337c91293bf9ecff945d1c954b41940d883bcc178",
+   "at": "2026-09-10T06:11:16.443Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "itcosmetics.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.itcosmetics.com/",
+    "text": "Discover itcosmetics.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.itcosmetics.com/",
+    "text": "Discover itcosmetics.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Cacharel",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/cacharel/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/cacharel/",
+   "sha256": "53a3583794f07285cea2326ff28a825c6c89d6e1a0af85bca831d5d4cf45def2",
+   "at": "2026-09-10T06:11:16.063Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "loreal-finance.com"
+  ],
+  "brandLinks": [],
+  "outboundHostsOnPage": 1,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Takami",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/takami/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/takami/",
+   "sha256": "04a116b3b73de08b2b31ff03ce74a5b03884bbede628be46ca5caceb7ef9e30b",
+   "at": "2026-09-10T06:11:16.736Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "takami-labo.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.takami-labo.com/",
+    "text": "Visit takami-labo.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.takami-labo.com/",
+    "text": "Visit takami-labo.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Shu Uemura",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/shu-uemura/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/shu-uemura/",
+   "sha256": "4fac2578ec1bd4bcc7fa90d5b3d13012382fb633da44155191269b4f03180b82",
+   "at": "2026-09-10T06:11:16.714Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "shuuemura-usa.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.shuuemura-usa.com/",
+    "text": "Visit shuuemura.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Yue Sai",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/luxe-division/yuesai/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/luxe-division/yuesai/",
+   "sha256": "3d1380c4b5287cc04310f063eaeff0de588d2bc06ef42e82d040c09c432406b4",
+   "at": "2026-09-10T06:11:16.432Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "yuesai.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.yuesai.com/",
+    "text": "Visit yuesai.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.yuesai.com/",
+    "text": "Visit yuesai.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "L'Oréal Professionnel Paris",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/professional-products-division/loreal-professionnel/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/professional-products-division/loreal-professionnel/",
+   "sha256": "982ceb8443c706ee0af6b13f9381792305acb9ed47ffcbcd606538cb1ba6b6c8",
+   "at": "2026-09-10T06:11:16.907Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "lorealprofessionnel.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.lorealprofessionnel.com/",
+    "text": "Visit L'OréalProfessionnel.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.lorealprofessionnel.com/",
+    "text": "Visit L'OréalProfessionnel.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Redken",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/professional-products-division/redken/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/professional-products-division/redken/",
+   "sha256": "6c783e4efa226a57e7d9b0e4122edd3a32abc966b0599beddbd960b2d53fdfec",
+   "at": "2026-09-10T06:11:16.927Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "redken.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.redken.com/",
+    "text": "Visit Redken.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.redken.com/",
+    "text": "Visit Redken.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Matrix",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/professional-products-division/matrix/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/professional-products-division/matrix/",
+   "sha256": "d72bfedaf8e8d47b29dd4fff5ef3415bdd8e45a7d0c71156c431bcc92135674d",
+   "at": "2026-09-10T06:11:16.936Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "matrix.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.matrix.com/",
+    "text": "Visit Matrix.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.matrix.com/",
+    "text": "Matrix.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Biolage",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/professional-products-division/biolage/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/professional-products-division/biolage/",
+   "sha256": "566d2251f5ad267fd16b257e72515a7dc2a1669c8e60057c319bb1da3c45bc3e",
+   "at": "2026-09-10T06:11:17.114Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "biolage.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.biolage.com/collections/shampoo",
+    "text": "Visit Biolage.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.biolage.com/collections/shampoo",
+    "text": "Visit Biolage.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Color Wow",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/professional-products-division/color-wow/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/professional-products-division/color-wow/",
+   "sha256": "89e010b4216a67ea7d37c64300647315277c584ae85551f4ff345ae54daa01fa",
+   "at": "2026-09-10T06:11:17.429Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "colorwowhair.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://colorwowhair.com/",
+    "text": "Visit colorwowhair.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://colorwowhair.com/",
+    "text": "Visit colorwowhair.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Pureology",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/professional-products-division/pureology/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/professional-products-division/pureology/",
+   "sha256": "15b8d8251cc04ca31a8ed1e76e1eba50551b75e62a391d59b3249c5052f36120",
+   "at": "2026-09-10T06:11:17.122Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "pureology.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.pureology.com/",
+    "text": "Visit pureology.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.pureology.com/",
+    "text": "Visit pureology.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Shu Uemura Art of Hair",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/professional-products-division/shu-uemura-art-of-hair/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/professional-products-division/shu-uemura-art-of-hair/",
+   "sha256": "e54bdbdf45f5b30d792ac984abd43a27531e3ee5118905af4e2b0745702113f4",
+   "at": "2026-09-10T06:11:17.527Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "shuuemuraartofhair-usa.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.shuuemuraartofhair-usa.com/",
+    "text": "visit shuuemuraartofhair.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.shuuemuraartofhair-usa.com/",
+    "text": "Visit shuuemuraartofhair.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Pulp Riot",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/professional-products-division/pulp-roit/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/professional-products-division/pulp-roit/",
+   "sha256": "f20695608a81c902834c6649d858a07fa9825d54458d345fd6bcfc03ebee5476",
+   "at": "2026-09-10T06:11:18.032Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "pulpriothair.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.pulpriothair.com/",
+    "text": "Visit Pulproit.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.pulpriothair.com/",
+    "text": "Visit PulpRoit.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Kérastase",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/professional-products-division/kerastase/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/professional-products-division/kerastase/",
+   "sha256": "8e5c93ccb6d351556e6e8d3670e6f02a832f6a124889b18432b32209895cf623",
+   "at": "2026-09-10T06:11:17.473Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "kerastase.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.kerastase.com/",
+    "text": "Visit kerastase.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.kerastase.com/",
+    "text": "Visit Kérastase.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Mizani",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/professional-products-division/mizani/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/professional-products-division/mizani/",
+   "sha256": "a7ba0aeb7f27cc7e7a52e99c3879858de7cf91ed4459c798742816cec0b28a69",
+   "at": "2026-09-10T06:11:17.850Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "mizani.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.mizani.com/",
+    "text": "Visit Mizani.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.mizani.com/",
+    "text": "Mizani.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "La Roche-Posay",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/dermatological-beauty-division/la-roche-posay/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/dermatological-beauty-division/la-roche-posay/",
+   "sha256": "1f6c6c2e010b0dfbf3f971a6fe2865d92aef9464c6d1704e859f56dbdedd1716",
+   "at": "2026-09-10T06:11:18.309Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "laroche-posay.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.laroche-posay.com/",
+    "text": "Visit La Roche-Posay.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.laroche-posay.com/",
+    "text": "Visit La Roche-Posay.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Vichy",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/dermatological-beauty-division/vichy/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/dermatological-beauty-division/vichy/",
+   "sha256": "8e99cd0d2bc94f7451835cd3ac1842e5dbfc7a206479b8c196c0ca9f14d5bf77",
+   "at": "2026-09-10T06:11:18.688Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "vichy.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.vichy.com/",
+    "text": "Visit vichy.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.vichy.com/",
+    "text": "Visit Vichy.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "CeraVe",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/dermatological-beauty-division/cerave/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/dermatological-beauty-division/cerave/",
+   "sha256": "f5b0b0053180a5566a3492ed1da3b660caab68623e082486db25cfda6d9b25c8",
+   "at": "2026-09-10T06:11:18.831Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "cerave.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.cerave.com/",
+    "text": "Visit cerave.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.cerave.com/",
+    "text": "CeraVe on Instagram",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.cerave.com/",
+    "text": "CeraVe on TikTok",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "Skinbetter Science",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/dermatological-beauty-division/skinbetter-science/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/dermatological-beauty-division/skinbetter-science/",
+   "sha256": "6098607d49db00e1e309723b3c4ce6d5974358747204092d0aaea695cf9123c7",
+   "at": "2026-09-10T06:11:18.562Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "skinbetter.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://skinbetter.com/",
+    "text": "Visit skinbetter.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.skinbetter.com/",
+    "text": "Visit skinbetter.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "SkinCeuticals",
+  "group": "L’Oréal",
+  "profileUrl": "https://www.loreal.com/en/dermatological-beauty-division/skinceuticals/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.loreal.com/en/dermatological-beauty-division/skinceuticals/",
+   "sha256": "9db49401bfaf4979b36dac51ec0258b8913a0879df4f53838cd0533d12b86fcd",
+   "at": "2026-09-10T06:11:18.904Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "skinceuticals.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.skinceuticals.com/",
+    "text": "Visit skinceuticals.com",
+    "match": "BRAND_MATCH"
+   },
+   {
+    "href": "https://www.skinceuticals.com/",
+    "text": "Visit Skinceuticals.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "KATE SPADE NEW YORK",
+  "group": "Tapestry",
+  "profileUrl": "https://www.tapestry.com/our-brands/#brand-katespade",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.tapestry.com/our-brands/#brand-katespade",
+   "sha256": "ea919308c17a10a1b0088c1e4bdd296bd2685ce042fcb2e2a938327dfb99ee3d",
+   "at": "2026-09-10T06:11:18.965Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "katespade.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.katespade.com/",
+    "text": "Visit Kate Spade New York",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "dodo",
+  "group": "Kering",
+  "profileUrl": "https://www.kering.com/en/houses/jewelry/dodo/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.kering.com/en/houses/jewelry/dodo/",
+   "sha256": "eda32816e80b3aeb8ffedbcd6cfe964e63c2cba64138b073812a06d34dd5ff18",
+   "at": "2026-09-10T06:11:19.231Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "dodojewels.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.dodojewels.com/",
+    "text": "dodojewels.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "mcqueen",
+  "group": "Kering",
+  "profileUrl": "https://www.kering.com/en/houses/fashion-and-leather-goods/mcqueen/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.kering.com/en/houses/fashion-and-leather-goods/mcqueen/",
+   "sha256": "257a9b8bb9eae2e22ab5faba6311514e83a71909a32160889cf4de4ab5165b27",
+   "at": "2026-09-10T06:11:19.221Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "alexandermcqueen.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.alexandermcqueen.com/",
+    "text": "alexandermcqueen.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 2,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ },
+ {
+  "name": "ginori 1735",
+  "group": "Kering",
+  "profileUrl": "https://www.kering.com/en/houses/others/ginori-1735/",
+  "listingOnly": false,
+  "proof": {
+   "url": "https://www.kering.com/en/houses/others/ginori-1735/",
+   "sha256": "9d0539d87d6cac2e262dfc3b7c76e0459815c87a40c12eb457ff4420fe15622b",
+   "at": "2026-09-10T06:11:19.975Z",
+   "transport": "HTTP"
+  },
+  "candidateHosts": [
+   "ginori1735.com"
+  ],
+  "brandLinks": [
+   {
+    "href": "https://www.ginori1735.com/",
+    "text": "ginori1735.com",
+    "match": "BRAND_MATCH"
+   }
+  ],
+  "outboundHostsOnPage": 3,
+  "status": "OFFICIAL_SITE_LINKED_BY_GROUP"
+ }
+]

@@ -24,9 +24,13 @@ def revision_date(rev):
     try: return subprocess.run(['git', 'show', '-s', '--format=%ct', rev], capture_output=True, text=True, check=True).stdout.strip().rjust(12, '0')
     except Exception: return ''
 
-def config_hash(cfg):
+def config_hashes(cfg):
+    """Both spellings of the configuration fingerprint: the probe worker hashes JSON.stringify(config) (insertion order,
+    no spaces, unicode kept); older tooling hashed a key-sorted serialisation."""
     import hashlib
-    return hashlib.sha256(json.dumps(cfg, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    js = json.dumps(cfg, separators=(',', ':'), ensure_ascii=False)
+    sorted_ = json.dumps(cfg, sort_keys=True, separators=(',', ':'))
+    return {hashlib.sha256(js.encode()).hexdigest(), hashlib.sha256(sorted_.encode()).hexdigest()}
 
 # latest receipt per source for the CURRENT configuration (fallback: latest receipt at all, flagged)
 receipts = {}
@@ -36,8 +40,8 @@ for d in a.probes:
         except Exception: continue
         key = r.get('sourceKey');
         if key not in sources: continue
-        cur = config_hash(sources[key].get('config') or {})
-        rank = (1 if r.get('configHash') == cur else 0, revision_date(r.get('revision')), r.get('finishedAt') or '')
+        cur = config_hashes(sources[key].get('config') or {})
+        rank = (1 if r.get('configHash') in cur else 0, revision_date(r.get('revision')), r.get('finishedAt') or '')
         if key not in receipts or rank > receipts[key][0]: receipts[key] = (rank, r, str(f))
 
 def parity_companies():

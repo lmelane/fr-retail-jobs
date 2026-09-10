@@ -1,0 +1,209 @@
+{
+ "jobs": 78351,
+ "active": 74853,
+ "statuses": [
+  {
+   "status": "ACTIVE",
+   "n": 407
+  },
+  {
+   "status": "PAUSED",
+   "n": 8
+  },
+  {
+   "status": "RETIRED",
+   "n": 88
+  }
+ ],
+ "retired": [
+  {
+   "key": "joy",
+   "status": "RETIRED"
+  },
+  {
+   "key": "b2",
+   "status": "RETIRED"
+  },
+  {
+   "key": "one",
+   "status": "RETIRED"
+  },
+  {
+   "key": "carla-b",
+   "status": "RETIRED"
+  },
+  {
+   "key": "vitamin-a",
+   "status": "RETIRED"
+  },
+  {
+   "key": "huber",
+   "status": "RETIRED"
+  }
+ ],
+ "companies": [
+  {
+   "name": "Kering",
+   "kind": "GROUP",
+   "group": "Kering",
+   "merged": false,
+   "domain": "kering.com",
+   "activeJobs": 120
+  },
+  {
+   "name": "Reclectic",
+   "kind": "BRAND",
+   "group": "URBN",
+   "merged": false,
+   "domain": null,
+   "activeJobs": 16
+  },
+  {
+   "name": "Browns Shoes",
+   "kind": "UNKNOWN",
+   "group": null,
+   "merged": false,
+   "domain": "brownsshoes.com",
+   "activeJobs": 72
+  },
+  {
+   "name": "URBN",
+   "kind": "GROUP",
+   "group": null,
+   "merged": false,
+   "domain": "urbn.com",
+   "activeJobs": 159
+  },
+  {
+   "name": "Van Cleef & Arpels",
+   "kind": "UNKNOWN",
+   "group": "Richemont",
+   "merged": false,
+   "domain": "vancleefarpels.com",
+   "activeJobs": 276
+  },
+  {
+   "name": "Shiseido",
+   "kind": "GROUP",
+   "group": "Shiseido Group",
+   "merged": false,
+   "domain": "shiseido.com",
+   "activeJobs": 169
+  },
+  {
+   "name": "Menus and Venues",
+   "kind": "BRAND",
+   "group": "URBN",
+   "merged": false,
+   "domain": "urbnmenusandvenues.com",
+   "activeJobs": 38
+  },
+  {
+   "name": "Coach",
+   "kind": "UNKNOWN",
+   "group": null,
+   "merged": false,
+   "domain": "coach.com",
+   "activeJobs": 260
+  },
+  {
+   "name": "Groupe Rocher",
+   "kind": "GROUP",
+   "group": null,
+   "merged": false,
+   "domain": "groupe-rocher.com",
+   "activeJobs": 64
+  },
+  {
+   "name": "MECCA",
+   "kind": "UNKNOWN",
+   "group": null,
+   "merged": false,
+   "domain": "mecca.com",
+   "activeJobs": 175
+  },
+  {
+   "name": "Eurofragance",
+   "kind": "UNKNOWN",
+   "group": null,
+   "merged": false,
+   "domain": "eurofragance.com",
+   "activeJobs": 40
+  },
+  {
+   "name": "B2",
+   "kind": "UNKNOWN",
+   "group": null,
+   "merged": false,
+   "domain": null,
+   "activeJobs": 0
+  },
+  {
+   "name": "Kering Corporate",
+   "kind": "UNKNOWN",
+   "group": null,
+   "merged": true,
+   "domain": "kering.com",
+   "activeJobs": 0
+  },
+  {
+   "name": "Dr Pierre Ricaud",
+   "kind": "UNKNOWN",
+   "group": "Groupe Rocher",
+   "merged": false,
+   "domain": "drpierre-ricaud.com",
+   "activeJobs": 0
+  },
+  {
+   "name": "Coach Shanghai",
+   "kind": "UNKNOWN",
+   "group": null,
+   "merged": true,
+   "domain": null,
+   "activeJobs": 0
+  },
+  {
+   "name": "Drunk Elephant",
+   "kind": "UNKNOWN",
+   "group": "Shiseido Group",
+   "merged": false,
+   "domain": "drunkelephant.com",
+   "activeJobs": 0
+  },
+  {
+   "name": "MECCA Brands",
+   "kind": "UNKNOWN",
+   "group": null,
+   "merged": true,
+   "domain": "mecca.com",
+   "activeJobs": 0
+  }
+ ],
+ "aliases": 135,
+ "reviewed": 135,
+ "byBatch": [
+  {
+   "reviewId": "20260910-LOT4-KERING-CORPORATE-v1",
+   "n": 1
+  },
+  {
+   "reviewId": "20260910-LOT4-LEGAL-ENTITY-ALIASES-v3",
+   "n": 34
+  },
+  {
+   "reviewId": "20260910-LOT4-LEGAL-ENTITY-ALIASES-v3b-VCA",
+   "n": 2
+  },
+  {
+   "reviewId": "20260910-LOT4-URBN-RECLECTIC-ALIAS-v3",
+   "n": 1
+  }
+ ],
+ "certifiedScopes": {
+  "mango": "SINGLE_BRAND",
+  "urbn-hub": "MULTI_BRAND",
+  "drunk-elephant-2": "MULTI_BRAND",
+  "dr-pierre-ricaud": "MULTI_BRAND"
+ },
+ "at": "2026-09-10T06:51:21.944Z"
+}

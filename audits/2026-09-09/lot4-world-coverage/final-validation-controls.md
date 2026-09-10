@@ -4,6 +4,8 @@ Tout le reste du LOT 4 se traite sur les preuves archivées. Les contrôles ci-d
 
 ## A. Lectures actuelles (sondes locales, lecture seule, sans base) — une passe par famille
 
+> **Faits le 2026-09-10** (`qualification-2026-09-10.md` §2) : A1 72 sources re-sondées, 407/407 reçus courants ; A2 déficits DigitalRecruiters expliqués (diffusions vs annonces) ; A3 Workday sans « Logo », complets ; A4 Oniverse 484/734, 12 pages encore en échec ; A5 sitemaps complets. A6 : 32 liens réciproques classés (19 plausibles, 7 hors secteur, 6 à lire), aucune activation.
+
 | # | Contrôle | Sources | Pourquoi une lecture actuelle | Critère |
 |---|---|---|---|---|
 | A1 | Re-sonder les sources dont la configuration a changé depuis le dernier reçu | 69 sources sans reçu pour la configuration courante (`tracker-v7`, `receiptForCurrentConfig = false`), dont `aptar-beauty`, `maison-margiela`, les 5 sitemaps | le reçu de preuve est lié à l'empreinte de configuration | reçu complet à la révision courante |
@@ -17,12 +19,12 @@ Tout le reste du LOT 4 se traite sur les preuves archivées. Les contrôles ci-d
 
 | # | Contrôle | Sources | Ce qu'on prouve | Préalable |
 |---|---|---|---|---|
-| B1 | Création débloquée après le lot d'alias v2 | `ulta-jibe`, `nike`, `nike-nke2`, `normal`, `therealreal`, `swarovski`, `uniqlo-stores`, … (sources des règles A/B) | 0 refus d'identité, nouvelles annonces créées | lot v2 appliqué |
+| B1 | Création débloquée après les lots d'alias v2 + v3/v3b et les revues propriétaire | `ulta-jibe`, `nike`, `nike-nke2`, `normal`, `therealreal`, `swarovski`, `uniqlo-stores`, `new-balance`, `versace`, `tapestry`, `mecca`, `etam`, `lvmh`, `richemont`, `richemont-workday`, `drunk-elephant-2`, `dr-pierre-ricaud`, … (33 sources, `tracker-v8/per-source-table.md`) | 0 refus d'identité, nouvelles annonces créées, Shiseido / Groupe Rocher : preuve native par offre archivée pour l'attribution par marque | lots v2/v3/v3b et revues appliqués (10/09) |
 | B2 | Kering : Maison conservée quand le flux omet la Maison | `kering` | 0 refus, observations `GROUP_LABEL_KEPT_HOUSE`, autres champs mis à jour | PR 68 déployée |
-| B3 | URBN sous-libellés | `urbn-hub` | 174 offres créditées à FP Movement / Anthro Weddings / Maeve, 0 refus | revue v2 appliquée |
-| B4 | Workday périmètre certifié | `mango` (si certifié `SINGLE_BRAND`) | 27 annonces retenues publiées avec provenance `portal.certifiedScope` | certification avec périmètre |
+| B3 | URBN sous-libellés + Reclectic | `urbn-hub` | 174 offres FP Movement / Anthro Weddings / Maeve, 16 Reclectic, 0 refus | revues v2 et v3 appliquées |
+| B4 | Workday périmètre certifié | `mango` (certifié `SINGLE_BRAND` le 10/09) | 27 annonces retenues publiées avec provenance `portal.certifiedScope` | fait |
 | B5 | Lignes rejetées ≠ erreurs | `alberto`, `nordstrom`, `mango`, `oniverse` | statuts OK / droit d'attester rétabli, purge possible | PR 67 (déployée) |
-| B6 | **Passe complète contrôlée** (toutes les sources actives, une fois) | 413 sources | réconciliation source → pipeline → base → API → front ; ferme les 85 + n représentations non ré-attestées via le refresh **après** la passe | tous les lots ci-dessus, tracker à jour, feu vert de Loïc |
+| B6 | **Passe complète contrôlée** (toutes les sources actives, une fois) | 407 sources | réconciliation source → pipeline → base → API → front ; ferme les 85 + n représentations non ré-attestées via le refresh **après** la passe | tous les lots ci-dessus, tracker à jour, feu vert de Loïc |
 
 ## C. Contrôles publics (site, cache contourné) — après B6
 
@@ -34,5 +36,6 @@ Tout le reste du LOT 4 se traite sur les preuves archivées. Les contrôles ci-d
 
 ## D. Hors réseau, à faire avant B6
 
-- Décisions de Loïc : URBN Reclectic / Menus & Venues (périmètre), Kering K1 (si la propriété reste absente), Mango `SINGLE_BRAND` (certification), Aptar (options §6 du dossier décisions), revue des 24 libellés `OWNER_REVIEW`, revue des 126 tenants candidats, 212 marques de portefeuille.
+- Décisions de Loïc (mise à jour 10/09 — Reclectic, Kering Corporate, Mango et les libellés décidables sont faits) : Menus & Venues (restauration : périmètre) ; Aptar par offre/site (fiche `tracker-v7/aptar-perimeter-sheet.csv`) ; Tricoci Salon | Spa, Printful/FYUL, Çalık Holding, MaryRuth's (périmètre) ; Saks Global / Neiman Marcus ; les 19 candidats plausibles à lien réciproque ; L'Occitane groupe vs marque.
+- Correctifs d'adaptateur avant run : pager répétant la dernière page (`beiersdorf`, `globus`, `luxexperience`) ; identifiants répétés Workday (`levis`, `foot-locker-france`).
 - Certification d'identité des sources legacy par famille, à partir des observations existantes et des pages officielles archivées (sans réseau quand la page est déjà archivée).

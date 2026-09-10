@@ -1,0 +1,71 @@
+{
+  "at": "2026-09-10T06:36:38.916Z",
+  "environment": "clone",
+  "commit": "201e18b9862c49e23151827589748cc95bff2999",
+  "planHash": "bfe0be083390a04df20ae0307224ebd9dc725aaac47cd7d6e1f93aa93b5df396",
+  "operations": {
+    "total": 466,
+    "Job": 231,
+    "Company": 2,
+    "JobSource": 231,
+    "Source": 2
+  },
+  "result": {
+    "alreadyApplied": false,
+    "written": 466,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "written": 0,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "allJobs": 78351,
+  "allActive": 75010,
+  "idAndLifecycleConservation": true,
+  "rawConservation": true,
+  "rawRepresentationsPreserved": 231,
+  "attributionAfter": [
+    {
+      "company": "Shiseido",
+      "kind": "GROUP",
+      "isActive": true,
+      "jobs": 166
+    },
+    {
+      "company": "Groupe Rocher",
+      "kind": "GROUP",
+      "isActive": false,
+      "jobs": 20
+    },
+    {
+      "company": "Groupe Rocher",
+      "kind": "GROUP",
+      "isActive": true,
+      "jobs": 45
+    }
+  ],
+  "sources": [
+    {
+      "key": "drunk-elephant-2",
+      "maison": "Shiseido",
+      "tier": "GROUP_OFFICIAL",
+      "status": "PAUSED",
+      "config": {
+        "origin": "https://careers.shiseido.com"
+      }
+    },
+    {
+      "key": "dr-pierre-ricaud",
+      "maison": "Groupe Rocher",
+      "tier": "GROUP_OFFICIAL",
+      "status": "PAUSED",
+      "config": {
+        "origin": "https://careers.groupe-rocher.com"
+      }
+    }
+  ],
+  "brandObservations": 0
+}

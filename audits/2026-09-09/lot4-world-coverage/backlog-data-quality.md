@@ -41,3 +41,17 @@ Règles communes : aucune valeur n'est forcée, aucune date technique (`date_sta
 | # | Point ouvert | Témoins (run `a32c515d`, 2026-09-09 20:26 UTC) | Cause | Critère de résolution |
 |---|---|---|---|---|
 | M1 | `mango` : **27 annonces retenues** (`WORKDAY_EMPLOYER_ABSENT_IN_DETAIL`, non résolues → source « non complète ») ; `nordstrom` : 2 | événements `job.publication_held`, archivées en `SourceObservation`, ex. `STORE-MANAGER---MADRID-CENTRO_JR141415-1` | Le détail Workday ne porte ni logo ni entité légale ; la disposition de publication ne connaît pas de règle pour ce motif | Décision de modèle (Loïc) : sur un tenant Workday **mono-marque** (libellé de catalogue = la marque, aucune propriété de marque), une annonce sans employeur dans le détail peut-elle prendre le libellé de catalogue (règle universelle, jamais « si Mango ») ? Jusque-là : retenues, non publiées, non comptées comme erreurs |
+
+## Ajouts du 2026-09-10 (`qualification-2026-09-10.md`)
+
+| # | Point ouvert | Témoins | Cause | Critère de résolution |
+|---|---|---|---|---|
+| S3 | Portails de groupe Shiseido (`drunk-elephant-2`, 166 offres) et Groupe Rocher (`dr-pierre-ricaud`, 45) : offres créditées au **groupe**, pas à la marque | `qualification-0910/group-portals-production-proof.json` ; titres suffixés YVES ROCHER / Petit Bateau / SABON | pages SuccessFactors sans propriété de marque archivée ; un suffixe de titre n'est pas une attestation d'employeur | preuve native par offre archivée au run borné B1, puis revue par marque |
+| S4 | `browns-shoes` : l'offre « Commis d'entrepôt » n'était lue que par la route retirée `b2` | `browns-overlap.json` (73 vs 72 identifiants) | même tableau Teamtailor, deux hôtes | réapparaît au prochain run de `browns-shoes` (même tableau) |
+| P1 | Pager qui répète la dernière page : `beiersdorf`, `globus`, `luxexperience` (énumération non prouvée) | reçus A1 `BROKEN_PAGER_REPEATS_LAST_PAGE` | adaptateur (Taleo/EQWA ?) : condition d'arrêt | correctif + reçu complet |
+| P2 | Identifiants répétés entre pages Workday : `levis` 1 306/1 314, `foot-locker-france` 2 850/2 861 ; `pandora-talenthub` 904/912 (page vide + 8 échecs de détail) | reçus A1 | tri instable côté éditeur ou pagination | cause nommée ou correctif, reçu complet |
+| O1 | `oniverse` : 12 pages du sitemap en échec de lecture persistant (hôte lent) | reçus A4 des 09/09 et 10/09 | délai serveur | relecture avec délai plus long ; sinon écart expliqué et daté |
+| L1' | Deux sociétés `L’Occitane` (24, sans groupe) et `L’Occitane en Provence` (22, groupe L'Occitane), même domaine loccitane.com | `misbound-sources` (lecture seule) | portail groupe `careers-group.loccitane.com` sous clé de marque ; « L'Occitane » = groupe ou marque ? | décision de Loïc : groupe canonique « L'Occitane Group » ou fusion |
+| K2 | Société `Kering` : 46 offres inactives sans source active (route sitemap retirée en D36) | `after-facts-0910` | ré-attestation jamais revenue | inchangé tant que le refresh est gelé ; à observer à B6 |
+| N1 | `saks` : libellé « 186 NEIMAN MARCUS GROUP TECHNOLOGY SERVICES PRIVATE LIMITED (INDIA) » (13 offres) refusé | `refused-labels-decisions.json` | aucune société Neiman Marcus / Saks Global au catalogue | décision de périmètre (Saks Global) puis alias |
+| A2' | Aptar : 169 offres au périmètre indéterminé (indice de site conservé) | `tracker-v7/aptar-perimeter-sheet.csv` | l'offre ne nomme aucune division | décision par site (Loïc) ou preuve native |

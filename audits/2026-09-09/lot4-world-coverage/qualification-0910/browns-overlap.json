@@ -1,0 +1,48 @@
+{
+ "o": {
+  "a_n": 73,
+  "b_n": 72,
+  "same_ext": 72,
+  "same_job": 0,
+  "only_a": 1
+ },
+ "onlyA": [
+  {
+   "externalId": "e1729b59-80d3-4c19-b5de-c92220ef1a98",
+   "title": "Commis d'entrep\u00f4t (quart de jour) / Warehouse Clerk (Day Shift)",
+   "url": "https://careers.brownsshoes.com/jobs/8282005-commis-d-entrepot-quart-de-jour-warehouse-clerk-day-shift"
+  }
+ ],
+ "urls": [
+  {
+   "sourceKey": "b2",
+   "host": "careers.brownsshoes.com",
+   "n": 73
+  },
+  {
+   "sourceKey": "browns-shoes",
+   "host": "brownsshoes.teamtailor.com",
+   "n": 72
+  }
+ ],
+ "src": [
+  {
+   "key": "b2",
+   "config": {
+    "origin": "https://careers.brownsshoes.com"
+   },
+   "createdAt": "2026-09-03T19:37:04.739Z",
+   "tier": "EMPLOYER_DIRECT",
+   "note": "promu par validation-volume (65 offres, 65 avec lieu)"
+  },
+  {
+   "key": "browns-shoes",
+   "config": {
+    "origin": "https://brownsshoes.teamtailor.com"
+   },
+   "createdAt": "2026-09-03T19:39:46.778Z",
+   "tier": "EMPLOYER_DIRECT",
+   "note": "promu par validation-volume (65 offres, 65 avec lieu)"
+  }
+ ]
+}

@@ -1,0 +1,48 @@
+{
+  "at": "2026-09-10T06:50:50.811Z",
+  "environment": "production",
+  "commit": "dc85ba2400120d3fa0b01958438aa747b26c4d21",
+  "planHash": "d770e21cc4242d375c33334b114e0f6e2d562691217fdccf5cc9d7a8da38751b",
+  "operations": 320,
+  "activeJobsBefore": 75010,
+  "activeJobsAfter": 74853,
+  "result": {
+    "alreadyApplied": false,
+    "written": 320,
+    "excludedActiveRepresentations": 0,
+    "lifecycleViolations": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "written": 0,
+    "excludedActiveRepresentations": 0,
+    "lifecycleViolations": 0
+  },
+  "statuses": [
+    {
+      "key": "joy",
+      "status": "RETIRED"
+    },
+    {
+      "key": "b2",
+      "status": "RETIRED"
+    },
+    {
+      "key": "one",
+      "status": "RETIRED"
+    },
+    {
+      "key": "carla-b",
+      "status": "RETIRED"
+    },
+    {
+      "key": "vitamin-a",
+      "status": "RETIRED"
+    },
+    {
+      "key": "huber",
+      "status": "RETIRED"
+    }
+  ],
+  "brownsShoesActive": 72
+}

@@ -1,0 +1,29 @@
+{
+  "at": "2026-09-10T06:47:25.699Z",
+  "environment": "production",
+  "commit": "dc85ba2400120d3fa0b01958438aa747b26c4d21",
+  "planHash": "a683d6eb33d61ece3b4f8962f699bde4ff3a30e3ad7929390f75460c8b547eb0",
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 1
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "aliases": [
+    "URBN → URBN (20260909-LOT4-PORTAL-OWNER-ALIASES-URBN-HUB-v1)",
+    "Anthropologie → Anthropologie (20260909-LOT4-PORTAL-OWNER-ALIASES-URBN-HUB-v1)",
+    "Urban Outfitters → Urban Outfitters (20260909-LOT4-PORTAL-OWNER-ALIASES-URBN-HUB-v1)",
+    "Free People → Free People (20260909-LOT4-PORTAL-OWNER-ALIASES-URBN-HUB-v1)",
+    "Terrain → Terrain (20260909-LOT4-PORTAL-OWNER-ALIASES-URBN-HUB-v1)",
+    "Nuuly → Nuuly (20260909-LOT4-PORTAL-OWNER-ALIASES-URBN-HUB-v1)",
+    "Menus and Venues → Menus and Venues (20260909-LOT4-PORTAL-OWNER-ALIASES-URBN-HUB-v1)",
+    "Reclectic → Reclectic (20260910-LOT4-URBN-RECLECTIC-ALIAS-v3)",
+    "FP Movement → FP Movement (20260909-LOT4-URBN-SUBLABEL-ALIASES-v2)",
+    "Anthro Weddings → Anthro Weddings (20260909-LOT4-URBN-SUBLABEL-ALIASES-v2)",
+    "Maeve → Maeve (20260909-LOT4-URBN-SUBLABEL-ALIASES-v2)"
+  ]
+}
