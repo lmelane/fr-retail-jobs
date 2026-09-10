@@ -1,0 +1,76 @@
+{
+  "workingTreeDirty": true,
+  "trackedCodeDiffHash": "f1b5f00dc21143af4962549037fb18b1b15d527346aa7eb92a7882026f75da1a",
+  "sourceKey": "luxexperience",
+  "kind": "generic-listing",
+  "tenantKey": "generic-listing:career.luxexperience.com/open-positions",
+  "configHash": "4d54001adef280c3243974c723c45c9ca68dbffc1fee9b3fd9b4e462c042abca",
+  "startedAt": "2026-09-10T07:24:00.272Z",
+  "snapshotHash": "705fbce5f829733d2e1b80b8e755570d98162f8c10953587c9ebdb6465096e68",
+  "revision": "e71622434b1cf82db2515bf959a688dd2f9605c3",
+  "finishedAt": "2026-09-10T07:24:06.822Z",
+  "status": "FETCH_COMPLETE",
+  "declaredTotal": 54,
+  "enumeration": {
+    "method": "PAGINATED_LISTING_WITH_DETAIL_READ",
+    "endpoint": "https://career.luxexperience.com/open-positions",
+    "pages": 7,
+    "rawCount": 63,
+    "termination": "PUBLISHER_COUNT_REACHED",
+    "issues": [],
+    "scopes": [
+      {
+        "scope": "publisherCount",
+        "declaredTotal": 54,
+        "uniqueIds": 54,
+        "pages": 7,
+        "complete": true
+      },
+      {
+        "scope": "listedLinks",
+        "declaredTotal": 54,
+        "uniqueIds": 54,
+        "pages": 7,
+        "complete": true
+      },
+      {
+        "scope": "postingsParsed",
+        "declaredTotal": 54,
+        "uniqueIds": 54,
+        "pages": 7,
+        "complete": true
+      }
+    ]
+  },
+  "rejectedRows": 0,
+  "fetched": 54,
+  "uniqueIds": 54,
+  "complete": true,
+  "truncated": false,
+  "duplicates": [],
+  "quality": {
+    "missingId": 0,
+    "missingTitle": 0,
+    "invalidUrl": 0,
+    "missingDescription": 0,
+    "missingLocation": 0,
+    "missingCountry": 0,
+    "missingDate": 0,
+    "missingEmployer": 54
+  },
+  "missingInDatabase": [
+    "f16dd89fa546a7aceccc2bb7179c95246f542e08",
+    "aa1c408ada9ccfe571d283ac262b0cba8ac00676"
+  ],
+  "activeDatabaseAbsentAtSource": [
+    "e0ec334f0aedd92c2d24e70725a0cd274009882b",
+    "5835a6e6c5697febd101f823d6cbe6ed80ab267a",
+    "dd81c51947b654240e04c8878d8bc834d965632c",
+    "972ee0865b887279e1bd31b612106b8ceb438dcf",
+    "28c542c2b95e84ff043d998e6558baf7cd6517a1"
+  ],
+  "activeDatabase": 57,
+  "payloadHash": "c47116d50ae34d6f842762663b3317a90e3c58cd777ab3b1dcf5056ccd2ed994",
+  "companyLabels": [],
+  "note": "Fetch completeness is not proof of employer identity or worldwide portal coverage."
+}

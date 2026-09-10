@@ -1,0 +1,26 @@
+{
+ "postings": 224,
+ "cross": {
+  "PHARMA → UNDETERMINED": 63,
+  "BEAUTY → TRANSVERSAL": 1,
+  "BEAUTY → UNDETERMINED": 58,
+  "PHARMA → OUT_PHARMA_ONLY": 22,
+  "BEAUTY → IN_SCOPE_BEAUTY": 8,
+  "UNDETERMINED → UNDETERMINED": 47,
+  "BEAUTY → OUT_PHARMA_ONLY": 18,
+  "CLOSURES → OUT_OTHER_SEGMENT": 3,
+  "BEAUTY → OUT_OTHER_SEGMENT": 3,
+  "CLOSURES → UNDETERMINED": 1
+ },
+ "dispens": 88,
+ "why": {
+  "PHARMA by \"\"": 13,
+  "PHARMA by \"he Kosmetik, Haushalt, Lebensmittel und Pharma, die das Lebe\"": 44,
+  "BEAUTY by \"parfum\"": 8,
+  "BEAUTY by \"dispens\"": 48,
+  "PHARMA by \"ts en caoutchouc destinés à l’emballage pharmaceutique dans \"": 6,
+  "BEAUTY by \"cosmet\"": 1,
+  "BEAUTY by \"\"": 1,
+  "CLOSURES by \"\"": 1
+ }
+}

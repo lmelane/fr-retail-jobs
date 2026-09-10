@@ -1,0 +1,360 @@
+{
+ "at": "2026-09-10T08:00:38.892Z",
+ "keys": [
+  "mango",
+  "kering",
+  "urbn-hub"
+ ],
+ "companies": [
+  {
+   "company": "Mango",
+   "fromLotSources": 1341,
+   "companyActive": 1349,
+   "api": 1349,
+   "parity": true
+  },
+  {
+   "company": "Anthropologie",
+   "fromLotSources": 433,
+   "companyActive": 433,
+   "api": 433,
+   "parity": true
+  },
+  {
+   "company": "Urban Outfitters",
+   "fromLotSources": 329,
+   "companyActive": 329,
+   "api": 329,
+   "parity": true
+  },
+  {
+   "company": "Free People",
+   "fromLotSources": 247,
+   "companyActive": 247,
+   "api": 247,
+   "parity": true
+  },
+  {
+   "company": "Gucci",
+   "fromLotSources": 236,
+   "companyActive": 236,
+   "api": 236,
+   "parity": true
+  },
+  {
+   "company": "Saint Laurent",
+   "fromLotSources": 219,
+   "companyActive": 219,
+   "api": 219,
+   "parity": true
+  },
+  {
+   "company": "URBN",
+   "fromLotSources": 159,
+   "companyActive": 159,
+   "api": 159,
+   "parity": true
+  },
+  {
+   "company": "Bottega Veneta",
+   "fromLotSources": 151,
+   "companyActive": 151,
+   "api": 151,
+   "parity": true
+  },
+  {
+   "company": "Balenciaga",
+   "fromLotSources": 150,
+   "companyActive": 150,
+   "api": 150,
+   "parity": true
+  },
+  {
+   "company": "FP Movement",
+   "fromLotSources": 144,
+   "companyActive": 144,
+   "api": 144,
+   "parity": true
+  },
+  {
+   "company": "Kering",
+   "fromLotSources": 120,
+   "companyActive": 120,
+   "api": 120,
+   "parity": true
+  },
+  {
+   "company": "MANGO TR TEKSTIL TICARET LTD.S",
+   "fromLotSources": 84,
+   "companyActive": 84,
+   "api": 84,
+   "parity": true
+  },
+  {
+   "company": "Kering Eyewear",
+   "fromLotSources": 77,
+   "companyActive": 77,
+   "api": 77,
+   "parity": true
+  },
+  {
+   "company": "MANGO NY",
+   "fromLotSources": 75,
+   "companyActive": 75,
+   "api": 75,
+   "parity": true
+  },
+  {
+   "company": "MNG MANGO BELGIQUE S.P.R.L",
+   "fromLotSources": 75,
+   "companyActive": 75,
+   "api": 75,
+   "parity": true
+  },
+  {
+   "company": "Boucheron",
+   "fromLotSources": 56,
+   "companyActive": 56,
+   "api": 56,
+   "parity": true
+  },
+  {
+   "company": "Terrain",
+   "fromLotSources": 41,
+   "companyActive": 41,
+   "api": 41,
+   "parity": true
+  },
+  {
+   "company": "Menus and Venues",
+   "fromLotSources": 38,
+   "companyActive": 38,
+   "api": 38,
+   "parity": true
+  },
+  {
+   "company": "Nuuly",
+   "fromLotSources": 37,
+   "companyActive": 37,
+   "api": 37,
+   "parity": true
+  },
+  {
+   "company": "Pomellato",
+   "fromLotSources": 33,
+   "companyActive": 33,
+   "api": 33,
+   "parity": true
+  },
+  {
+   "company": "Anthro Weddings",
+   "fromLotSources": 26,
+   "companyActive": 26,
+   "api": 26,
+   "parity": true
+  },
+  {
+   "company": "Alexander McQueen",
+   "fromLotSources": 23,
+   "companyActive": 23,
+   "api": 23,
+   "parity": true
+  },
+  {
+   "company": "Brioni",
+   "fromLotSources": 19,
+   "companyActive": 19,
+   "api": 19,
+   "parity": true
+  },
+  {
+   "company": "MANGO MNG",
+   "fromLotSources": 19,
+   "companyActive": 19,
+   "api": 19,
+   "parity": true
+  },
+  {
+   "company": "Richard Ginori",
+   "fromLotSources": 16,
+   "companyActive": 16,
+   "api": 16,
+   "parity": true
+  },
+  {
+   "company": "Reclectic",
+   "fromLotSources": 16,
+   "companyActive": 16,
+   "api": 16,
+   "parity": true
+  },
+  {
+   "company": "MANGO ÖSTERRREICH HANDELS.",
+   "fromLotSources": 13,
+   "companyActive": 13,
+   "api": 13,
+   "parity": true
+  },
+  {
+   "company": "MANGO Polska Sp.z.o.o.",
+   "fromLotSources": 11,
+   "companyActive": 11,
+   "api": 11,
+   "parity": true
+  },
+  {
+   "company": "Qeelin",
+   "fromLotSources": 11,
+   "companyActive": 11,
+   "api": 11,
+   "parity": true
+  },
+  {
+   "company": "MANGO MODA D.O.O.",
+   "fromLotSources": 10,
+   "companyActive": 10,
+   "api": 10,
+   "parity": true
+  },
+  {
+   "company": "MANGO HUNGARY Kft.",
+   "fromLotSources": 8,
+   "companyActive": 8,
+   "api": 8,
+   "parity": true
+  },
+  {
+   "company": "MANGO LUXEMBOURG S.à.r.l.",
+   "fromLotSources": 8,
+   "companyActive": 8,
+   "api": 8,
+   "parity": true
+  },
+  {
+   "company": "MANGO GARMENTS HELLAS E.P.E.",
+   "fromLotSources": 7,
+   "companyActive": 7,
+   "api": 7,
+   "parity": true
+  },
+  {
+   "company": "Maeve",
+   "fromLotSources": 6,
+   "companyActive": 6,
+   "api": 6,
+   "parity": true
+  },
+  {
+   "company": "MANGO MERITXELL, S.L.U",
+   "fromLotSources": 5,
+   "companyActive": 5,
+   "api": 5,
+   "parity": true
+  },
+  {
+   "company": "MNG-MANGO",
+   "fromLotSources": 5,
+   "companyActive": 5,
+   "api": 5,
+   "parity": true
+  },
+  {
+   "company": "MANGO GARMENTS ROM.",
+   "fromLotSources": 5,
+   "companyActive": 5,
+   "api": 5,
+   "parity": true
+  },
+  {
+   "company": "Mango Korea",
+   "fromLotSources": 4,
+   "companyActive": 4,
+   "api": 4,
+   "parity": true
+  },
+  {
+   "company": "MANGO SVERIGE",
+   "fromLotSources": 4,
+   "companyActive": 4,
+   "api": 4,
+   "parity": true
+  },
+  {
+   "company": "MANGO (CZ) s.r.o.",
+   "fromLotSources": 4,
+   "companyActive": 4,
+   "api": 4,
+   "parity": true
+  },
+  {
+   "company": "MANGO SL D.O.O.",
+   "fromLotSources": 3,
+   "companyActive": 3,
+   "api": 3,
+   "parity": true
+  },
+  {
+   "company": "MANGONOR Comércio de Vestuário",
+   "fromLotSources": 1,
+   "companyActive": 1,
+   "api": 1,
+   "parity": true
+  },
+  {
+   "company": "MANGO BULGARIA EOOD (EUR)",
+   "fromLotSources": 1,
+   "companyActive": 1,
+   "api": 1,
+   "parity": true
+  },
+  {
+   "company": "MANGO UKRAINE TOV",
+   "fromLotSources": 1,
+   "companyActive": 1,
+   "api": 1,
+   "parity": true
+  },
+  {
+   "company": "MANGO SLOVENSKO, s.r.o.",
+   "fromLotSources": 1,
+   "companyActive": 1,
+   "api": 1,
+   "parity": true
+  },
+  {
+   "company": "MANGO BULGARIA EOOD",
+   "fromLotSources": 1,
+   "companyActive": 1,
+   "api": 1,
+   "parity": true
+  },
+  {
+   "company": "MANGO NORGE A.S.",
+   "fromLotSources": 1,
+   "companyActive": 1,
+   "api": 1,
+   "parity": true
+  },
+  {
+   "company": "Kering Beaute",
+   "fromLotSources": 1,
+   "companyActive": 1,
+   "api": 1,
+   "parity": true
+  },
+  {
+   "company": "MNG MANGO IRELAND",
+   "fromLotSources": 1,
+   "companyActive": 1,
+   "api": 1,
+   "parity": true
+  },
+  {
+   "company": "MANGO DANMARK APS",
+   "fromLotSources": 1,
+   "companyActive": 1,
+   "api": 1,
+   "parity": true
+  }
+ ]
+}

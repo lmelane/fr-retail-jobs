@@ -1,0 +1,146 @@
+{
+  "at": "2026-09-10T09:09:02.322Z",
+  "environment": "production",
+  "certified": [
+    {
+      "key": "etam",
+      "method": "OFFICIAL_DOMAIN",
+      "proofUrl": "https://career.groupeetam.com/",
+      "artifact": "e9d7c3a6e7cc86ea14fbec0786ba44b261584d1817eb08e47729b3fe30f40fb0",
+      "portalScope": "MULTI_BRAND",
+      "labels": [
+        "Maison 123",
+        "Etam",
+        "Undiz",
+        "Groupe ETAM"
+      ],
+      "receipt": "source-probes/etam.receipt.json",
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "etam",
+        "sourceHash": "2957cb51d0e9e76d2f53fa2b6c7302ed930a5bee0b573b7681e0ec4b58040a2f",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "loccitane-fr",
+      "method": "OFFICIAL_DOMAIN",
+      "proofUrl": "https://jobs-fr.loccitane.com/",
+      "artifact": "b27af0cf30051e302514cb67f694b454e0e72a3d77f6d785df4eba3948644632",
+      "portalScope": "SINGLE_BRAND",
+      "labels": [
+        "L'Occitane en Provence - France"
+      ],
+      "receipt": "source-probes/loccitane-fr.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "loccitane-fr",
+        "sourceHash": "ce32fa9e94ddb529ad59286cfc891ca1b372851401eba0a32c4acf5566210e6e",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "l-occitane-en-provence-2",
+      "method": "OFFICIAL_DOMAIN",
+      "proofUrl": "https://careers-group.loccitane.com/",
+      "artifact": "bd0b675c5852160ae35a4caaae45151d73f29862b9787372d29049876f3883a0",
+      "portalScope": "MULTI_BRAND",
+      "labels": [
+        "L'Occitane"
+      ],
+      "receipt": "source-probes-sap-final/l-occitane-en-provence-2.receipt.json",
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "l-occitane-en-provence-2",
+        "sourceHash": "6eb1ff4f73c990fdfdf6e88f0863d4208b34ca14bfee63744ce16bef324eecf6",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "luhta",
+      "method": "OFFICIAL_DOMAIN",
+      "proofUrl": "https://careers.luhta.com/en-GB",
+      "artifact": "1481f182fec48bce5ec9fe4426728b2b62ea085b7f32d8458542e7ef101dbeb0",
+      "portalScope": "MULTI_BRAND",
+      "labels": [
+        "Luhta Sportswear Company"
+      ],
+      "receipt": "source-probes/luhta.receipt.json",
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "luhta",
+        "sourceHash": "9662f63b898cbcb6d3c150ebb4fcf8a459a5fa56497a27679647daf5179f8c95",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "typology",
+      "method": "OFFICIAL_LINK",
+      "proofUrl": "https://www.typology.com/rejoindre-lequipe",
+      "artifact": "7d32a82644777322b1d8887f344218aa5c41c7c3a52311e9e87c98f90ab4cbe0",
+      "portalScope": "SINGLE_BRAND",
+      "labels": [
+        "Good Brands"
+      ],
+      "receipt": "source-probes-current/typology.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "typology",
+        "sourceHash": "f0025dc2a71615da0337cc610b9022ef46e73ba66c11e51011ef666a823d05df",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "new-balance",
+      "method": "OFFICIAL_LINK",
+      "proofUrl": "https://jobs.newbalance.com/global/en/job/R40964/Visual-Merchandising-Manager-Retail-EMEA",
+      "artifact": "a170b660343a01e88d8ba625dce11368d76c2a6d0d9d2f5b899ca2295efbb99e",
+      "portalScope": "MULTI_BRAND",
+      "labels": [
+        "New Balance Europe B.V.",
+        "New Balance Athletic Shoes (UK) Limited",
+        "New Balance Germany GmbH",
+        "New Balance Netherlands BV",
+        "New Balance France Retail SARL",
+        "Broporma Retail SLU",
+        "New Balance Belgium Retail BVBA",
+        "New Balance France SARL"
+      ],
+      "receipt": "source-probes-current/new-balance.receipt.json",
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "new-balance",
+        "sourceHash": "7df6d727c3128e57a9989fdcf1deb970a9563e281ce93f5e2c46226d8acf1ac7",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "showroomprive",
+      "method": "OFFICIAL_LINK",
+      "proofUrl": "https://www.showroomprive.com/",
+      "artifact": "3a73dcc8cc317bcc2da2d9522c78fcf87d5ef25dce793b915ee000c12f063a93",
+      "portalScope": "SINGLE_BRAND",
+      "labels": [
+        "Showroomprive.com"
+      ],
+      "receipt": "source-probes-current/showroomprive.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "showroomprive",
+        "sourceHash": "0e04472092596386a735d65aefa539625c1457bc8fc8aec0322f3d7c44e034d8",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    }
+  ],
+  "uncertified": {
+    "versace": "versace.com and capriholdings.com unreadable (WAF) even rendered — owner capture needed",
+    "swarovski": "swarovski.com and swarovskigroup.com unreadable (WAF) even rendered — owner capture needed"
+  }
+}

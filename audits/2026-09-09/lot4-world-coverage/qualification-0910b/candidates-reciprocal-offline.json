@@ -1,0 +1,2171 @@
+[
+ {
+  "tenantKey": "digitalrecruiters:careers.am-vintage.com",
+  "type": "DIGITALRECRUITERS",
+  "postings": 37,
+  "complete": true,
+  "declaredTotal": 37,
+  "labels": [
+   "AMERICAN VINTAGE"
+  ],
+  "labelCount": 1,
+  "portalHost": "careers.am-vintage.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-7622dc67bbd102da6285",
+   "name": "AMERICAN VINTAGE",
+   "from": "https://americanvintage-store.com/",
+   "to": "https://careers.am-vintage.com/en",
+   "fromHash": "dabaaf2878fae7d7a8386f5b24a82ea97236c647ad4d07c775c49a250e0499de",
+   "fromRoot": "americanvintage-store.com"
+  },
+  "names": [
+   "AMERICAN VINTAGE"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "flatchr:armandthiery.flatchr.io/fr/company/armandthiery",
+  "type": "FLATCHR",
+  "postings": 203,
+  "complete": true,
+  "declaredTotal": 203,
+  "labels": [
+   "ARMAND THIERY"
+  ],
+  "labelCount": 1,
+  "portalHost": "armandthiery.flatchr.io",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-3a31c7eca66d9d1e5a68",
+   "name": "ARMAND THIERY",
+   "from": "https://www.armandthiery.fr/",
+   "to": "https://armandthiery.flatchr.io/fr/company/armandthiery/",
+   "fromHash": "f4d380c356e36d2f504d1f8acda7acee418bed834e1a422739b73fa942267fd6",
+   "fromRoot": "armandthiery.fr"
+  },
+  "names": [
+   "ARMAND THIERY"
+  ],
+  "countries": [
+   [
+    "France",
+    200
+   ],
+   [
+    "Monaco",
+    2
+   ],
+   [
+    "Belgique",
+    1
+   ]
+  ]
+ },
+ {
+  "tenantKey": "lever:arcteryx.com",
+  "type": "LEVER",
+  "postings": 298,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "ARC'TERYX"
+  ],
+  "labelCount": 1,
+  "portalHost": "jobs.lever.co",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-d6662fecd17928bfb408",
+   "name": "ARC'TERYX",
+   "from": "https://arcteryx.com/fr/fr/careers/retail-opportunities",
+   "to": "https://jobs.lever.co/arcteryx.com?department=Retail%20Stores",
+   "fromHash": "a74d2d3fe428abb8dd45cd101d916d237c63b46a36ed6da8460c9bcaa227af73",
+   "fromRoot": "arcteryx.com"
+  },
+  "names": [
+   "ARC'TERYX"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "successfactors:jobs.boardriders.eu",
+  "type": "SUCCESSFACTORS",
+  "postings": 44,
+  "complete": true,
+  "declaredTotal": 44,
+  "labels": [
+   "BOARDRIDERS",
+   "www.boardriders.com",
+   "jobs.boardriders.eu"
+  ],
+  "labelCount": 3,
+  "portalHost": "jobs.boardriders.eu",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-40a71589b79c2050c4e8",
+   "name": "BOARDRIDERS",
+   "from": "https://www.boardriders.com/fr-fr/carriere-corporate/",
+   "to": "https://jobs.boardriders.eu/search/?createNewAlert=false&q=&optionsFacetsDD_country=&optionsFacetsDD_city=&optionsFacetsDD_customfield2=Retail",
+   "fromHash": "c82757ec8585285f2c40aefffc7a16c8500ef3d36b79e27274ad4b6ced4485be",
+   "fromRoot": "boardriders.com"
+  },
+  "names": [
+   "BOARDRIDERS"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:knitwellgroup/us_distribution_center",
+  "type": "WORKDAY",
+  "postings": 18,
+  "complete": true,
+  "declaredTotal": 18,
+  "labels": [
+   "CHICO'S OUTLET",
+   "SOMA",
+   "CHICO'S",
+   "TALBOTS",
+   "jobs.knitwellgroup.com",
+   "jobs.chicos.com"
+  ],
+  "labelCount": 6,
+  "portalHost": "knitwellgroup.wd1.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-0671120d2d97c7ac98de",
+   "name": "CHICO'S OUTLET",
+   "from": "https://jobs.knitwellgroup.com/chicos-fas",
+   "to": "https://knitwellgroup.wd1.myworkdayjobs.com/US_Distribution_Center/login",
+   "fromHash": "89878a1be5771061149a26e64857702df3c7864c2df67fe89e9d6966d23a5896",
+   "fromRoot": "knitwellgroup.com"
+  },
+  "names": [
+   "CHICO'S OUTLET",
+   "SOMA",
+   "CHICO'S"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:knitwellgroup/us_corporate_jobs",
+  "type": "WORKDAY",
+  "postings": 94,
+  "complete": true,
+  "declaredTotal": 94,
+  "labels": [
+   "CHICO'S OUTLET",
+   "SOMA",
+   "CHICO'S",
+   "TALBOTS",
+   "jobs.knitwellgroup.com",
+   "jobs.chicos.com"
+  ],
+  "labelCount": 6,
+  "portalHost": "knitwellgroup.wd1.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-0671120d2d97c7ac98de",
+   "name": "CHICO'S OUTLET",
+   "from": "https://jobs.knitwellgroup.com/chicos-fas",
+   "to": "https://knitwellgroup.wd1.myworkdayjobs.com/US_Corporate_Jobs/login",
+   "fromHash": "89878a1be5771061149a26e64857702df3c7864c2df67fe89e9d6966d23a5896",
+   "fromRoot": "knitwellgroup.com"
+  },
+  "names": [
+   "CHICO'S OUTLET",
+   "SOMA",
+   "CHICO'S"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:knitwellgroup/us_retail_jobs",
+  "type": "WORKDAY",
+  "postings": 2019,
+  "complete": false,
+  "declaredTotal": 2000,
+  "labels": [
+   "CHICO'S OUTLET",
+   "SOMA",
+   "CHICO'S",
+   "TALBOTS",
+   "jobs.knitwellgroup.com",
+   "jobs.chicos.com"
+  ],
+  "labelCount": 6,
+  "portalHost": "knitwellgroup.wd1.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-0671120d2d97c7ac98de",
+   "name": "CHICO'S OUTLET",
+   "from": "https://jobs.knitwellgroup.com/chicos-fas",
+   "to": "https://knitwellgroup.wd1.myworkdayjobs.com/US_Retail_Jobs/login",
+   "fromHash": "89878a1be5771061149a26e64857702df3c7864c2df67fe89e9d6966d23a5896",
+   "fromRoot": "knitwellgroup.com"
+  },
+  "names": [
+   "CHICO'S OUTLET",
+   "SOMA",
+   "CHICO'S"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:vfc/vfc_careers",
+  "type": "WORKDAY",
+  "postings": 1267,
+  "complete": true,
+  "declaredTotal": 1267,
+  "labels": [
+   "EASTPAK",
+   "VF CORPORATION",
+   "KIPLING",
+   "NAPAPIJRI",
+   "careers.eastpak.eu",
+   "careers.napapijri.eu"
+  ],
+  "labelCount": 6,
+  "portalHost": "vfc.wd5.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-6b750053adc2bb1da69c",
+   "name": "EASTPAK",
+   "from": "https://www.vfcorporation.careers/emea-internship-program/",
+   "to": "https://vfc.wd5.myworkdayjobs.com/en-US/vfc_careers?Location_Country=187134fccb084a0ea9b4b95f23890dbe&Location_Country=a04ea128f43a42e59b1e6a19e8f0b374&workerSubType=fac9552bb6d910c0b25bded93509fe7f",
+   "fromHash": "5b65e4c50219a3834fda02713f6d9c44d6b943d73b6d9df6492233ce3dabec1d",
+   "fromRoot": "vfcorporation.careers"
+  },
+  "names": [
+   "EASTPAK",
+   "VF CORPORATION",
+   "KIPLING"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "successfactors:careers.goyard.com",
+  "type": "SUCCESSFACTORS",
+  "postings": 16,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "GOYARD",
+   "careers.goyard.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "careers.goyard.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "GOYARD"
+  ],
+  "countries": [
+   [
+    "France",
+    7
+   ]
+  ]
+ },
+ {
+  "tenantKey": "digitalrecruiters:recrutement.ks-groupe.com",
+  "type": "DIGITALRECRUITERS",
+  "postings": 61,
+  "complete": true,
+  "declaredTotal": 95,
+  "labels": [
+   "KSI MODE",
+   "KSI RETAIL"
+  ],
+  "labelCount": 2,
+  "portalHost": "recrutement.ks-groupe.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-f67a8e7305f2be95a8f0",
+   "name": "KSI MODE",
+   "from": "https://ks-groupe.com/",
+   "to": "https://recrutement.ks-groupe.com/fr",
+   "fromHash": "96039271cedef953f08b85c2f0ff6b64e7d6496370ee5aaab1df5146345a8df9",
+   "fromRoot": "ks-groupe.com"
+  },
+  "names": [
+   "KSI MODE",
+   "KSI RETAIL"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "teamtailor:lafeemaraboutee.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 21,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "LA FEE MARABOUTEE"
+  ],
+  "labelCount": 1,
+  "portalHost": "lafeemaraboutee.teamtailor.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-5cf0b50a87e625881be4",
+   "name": "LA FEE MARABOUTEE",
+   "from": "https://lafeemaraboutee.fr/",
+   "to": "https://lafeemaraboutee.teamtailor.com/",
+   "fromHash": "f8a42368b735edda158ff2922381f919360353ff5d21222bd53237033684ca08",
+   "fromRoot": "lafeemaraboutee.fr"
+  },
+  "names": [
+   "LA FEE MARABOUTEE"
+  ],
+  "countries": [
+   [
+    "FR",
+    21
+   ]
+  ]
+ },
+ {
+  "tenantKey": "successfactors:www.careers.laprairiegroup.ch",
+  "type": "SUCCESSFACTORS",
+  "postings": 27,
+  "complete": true,
+  "declaredTotal": 27,
+  "labels": [
+   "LA PRAIRIE GROUP",
+   "www.careers.laprairiegroup.ch"
+  ],
+  "labelCount": 2,
+  "portalHost": "www.careers.laprairiegroup.ch",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-97f7a6adafb68f399d48",
+   "name": "LA PRAIRIE GROUP",
+   "from": "https://www.laprairie.com/fr-fr/",
+   "to": "https://www.careers.laprairiegroup.ch/",
+   "fromHash": "7a41f63233603b0259f66444c8eb8d0a9920398012307fd21a3e67b5400d7168",
+   "fromRoot": "laprairie.com"
+  },
+  "names": [
+   "LA PRAIRIE GROUP"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "recruitee:lagarderetravelretail",
+  "type": "RECRUITEE",
+  "postings": 1,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "LAGARDÈRE TRAVEL RETAIL FRANCE",
+   "www.lagardere-tr.nl"
+  ],
+  "labelCount": 2,
+  "portalHost": "lagarderetravelretail.recruitee.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "LAGARDÈRE TRAVEL RETAIL FRANCE"
+  ],
+  "countries": [
+   [
+    "België",
+    1
+   ]
+  ]
+ },
+ {
+  "tenantKey": "talentsoft:lagardere-recrute-travelretailde.talent-soft.com",
+  "type": "TALENTSOFT",
+  "postings": 10,
+  "complete": true,
+  "declaredTotal": 10,
+  "labels": [
+   "LAGARDÈRE TRAVEL RETAIL FRANCE",
+   "www.lagardere-tr.nl"
+  ],
+  "labelCount": 2,
+  "portalHost": "lagardere-recrute-travelretailde.talent-soft.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-ea5dbb85d2fd681fa421",
+   "name": "LAGARDÈRE TRAVEL RETAIL FRANCE",
+   "from": "https://www.lagardere-tr.com/en/join-us/join-us",
+   "to": "https://lagardere-recrute-travelretailde.talent-soft.com/startseite.aspx?LCID=1031",
+   "fromHash": "964d7254814d0f9cbc7eb3f2f887be1cce0191261c757232b765d4ddce7d0bf8",
+   "fromRoot": "lagardere-tr.com"
+  },
+  "names": [
+   "LAGARDÈRE TRAVEL RETAIL FRANCE"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:galderma/external",
+  "type": "WORKDAY",
+  "postings": 355,
+  "complete": true,
+  "declaredTotal": 355,
+  "labels": [
+   "GALDERMA"
+  ],
+  "labelCount": 1,
+  "portalHost": "galderma.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-ef7c99ccb15df2e85b62",
+   "name": "GALDERMA",
+   "from": "https://www.galderma.com/careers",
+   "to": "https://galderma.wd3.myworkdayjobs.com/External",
+   "fromHash": "34898b01d6f8ad4e42d5f567143da332100a0f412375cfc0cd1677c2042d277f",
+   "fromRoot": "galderma.com"
+  },
+  "names": [
+   "GALDERMA"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "digitalrecruiters:talents.luxuryofretail.com",
+  "type": "DIGITALRECRUITERS",
+  "postings": 19,
+  "complete": true,
+  "declaredTotal": 19,
+  "labels": [
+   "LUXURY OF RETAIL"
+  ],
+  "labelCount": 1,
+  "portalHost": "talents.luxuryofretail.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "LUXURY OF RETAIL"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:luxexperience/luxexperience_careers",
+  "type": "WORKDAY",
+  "postings": 55,
+  "complete": true,
+  "declaredTotal": 55,
+  "labels": [
+   "LUXEXPERIENCE"
+  ],
+  "labelCount": 1,
+  "portalHost": "luxexperience.wd103.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-33825a2da95256c7cc55",
+   "name": "LUXEXPERIENCE",
+   "from": "https://career.luxexperience.com/open-positions/job-detail/customer-care-specialist-english-f-m-d-mytheresa-r-17299-1",
+   "to": "https://luxexperience.wd103.myworkdayjobs.com/LuxExperience_Careers/job/Leipzig/Customer-Care-Specialist---English--f-m-d---MYTHERESA_R-17299/apply/applyManually",
+   "fromHash": "55f4afab383e94db69e250dcafceb6f2721cbdc96c2e50f947f5ae9260831329",
+   "fromRoot": "luxexperience.com"
+  },
+  "names": [
+   "LUXEXPERIENCE"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "greenhouse:onrunning",
+  "type": "GREENHOUSE",
+  "postings": 312,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "On",
+   "ON RUNNING",
+   "culture.on.com"
+  ],
+  "labelCount": 3,
+  "portalHost": "boards.greenhouse.io",
+  "officialSites": [
+   "on.com"
+  ],
+  "reciprocal": {
+   "actor": "fj-976878f120a3e2ed85c8",
+   "name": "On",
+   "from": "https://culture.on.com/jobs/8168899/",
+   "to": "https://boards.greenhouse.io/onrunning/jobs/8168899?gh_jid=8168899",
+   "fromHash": "4021aa61d7d372888852764d3efdc313a69c126444f98375758b3d6adb994f2a",
+   "fromRoot": "on.com"
+  },
+  "names": [
+   "On",
+   "ON RUNNING"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "teamtailor:moto.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 68,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "OH POLLY"
+  ],
+  "labelCount": 1,
+  "portalHost": "moto.teamtailor.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "OH POLLY"
+  ],
+  "countries": [
+   [
+    "GB",
+    68
+   ]
+  ]
+ },
+ {
+  "tenantKey": "greenhouse:smcp",
+  "type": "GREENHOUSE",
+  "postings": 55,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "SANDRO",
+   "www.smcp.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "boards.greenhouse.io",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "SANDRO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "greenhouse:shinolaretail",
+  "type": "GREENHOUSE",
+  "postings": 13,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "SHINOLA"
+  ],
+  "labelCount": 1,
+  "portalHost": "job-boards.greenhouse.io",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-6034cb9a8d2507f1859d",
+   "name": "SHINOLA",
+   "from": "https://www.shinola.com/pages/careers",
+   "to": "https://job-boards.greenhouse.io/shinolaretail",
+   "fromHash": "4356577005a411367afecd4651808ca0427a89845604b676b4f998dfeb397542",
+   "fromRoot": "shinola.com"
+  },
+  "names": [
+   "SHINOLA"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "teamtailor:soeur-1711354805.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 39,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "SOEUR",
+   "soeur-1711354805.teamtailor.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "soeur-1711354805.teamtailor.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-47d4f60a2267cbf70fb3",
+   "name": "SOEUR",
+   "from": "https://soeur.fr/",
+   "to": "https://soeur-1711354805.teamtailor.com/",
+   "fromHash": "55134f185183ea323ae6b55729d0000a1609c0f39eaf5d27d9580ab414dc7ea7",
+   "fromRoot": "soeur.fr"
+  },
+  "names": [
+   "SOEUR"
+  ],
+  "countries": [
+   [
+    "FR",
+    29
+   ],
+   [
+    "IT",
+    3
+   ],
+   [
+    "BE",
+    3
+   ],
+   [
+    "US",
+    1
+   ],
+   [
+    "GB",
+    1
+   ]
+  ]
+ },
+ {
+  "tenantKey": "workday:fastretailing/graduates_au_uniqlo",
+  "type": "WORKDAY",
+  "postings": 2,
+  "complete": true,
+  "declaredTotal": 2,
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/graduates_au_Uniqlo",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_us_uniqlo",
+  "type": "WORKDAY",
+  "postings": 14,
+  "complete": true,
+  "declaredTotal": 14,
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_us_Uniqlo",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_us_gu",
+  "type": "WORKDAY",
+  "postings": 2,
+  "complete": true,
+  "declaredTotal": 2,
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_us_GU",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_hkm_uniqlo",
+  "type": "WORKDAY",
+  "postings": 6,
+  "complete": true,
+  "declaredTotal": 6,
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_hkm_Uniqlo",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_hk_gu",
+  "type": "WORKDAY",
+  "postings": 2,
+  "complete": true,
+  "declaredTotal": 2,
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_hk_GU",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_ph_uniqlo",
+  "type": "WORKDAY",
+  "postings": 3,
+  "complete": true,
+  "declaredTotal": 3,
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_ph_Uniqlo",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_my_uniqlo",
+  "type": "WORKDAY",
+  "postings": 7,
+  "complete": true,
+  "declaredTotal": 7,
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_my_Uniqlo",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_id_uniqlo",
+  "type": "WORKDAY",
+  "postings": 6,
+  "complete": true,
+  "declaredTotal": 6,
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_id_Uniqlo",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_th_uniqlo",
+  "type": "WORKDAY",
+  "postings": 2,
+  "complete": true,
+  "declaredTotal": 2,
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_th_Uniqlo",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarter_roles_vn_uniqlo",
+  "type": "WORKDAY",
+  "postings": 12,
+  "complete": true,
+  "declaredTotal": 12,
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/headquarter_roles_vn_Uniqlo",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/retail_us_uniqlo",
+  "type": "WORKDAY",
+  "postings": 337,
+  "complete": true,
+  "declaredTotal": 337,
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/retail_us_Uniqlo",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/retail_us_gu",
+  "type": "WORKDAY",
+  "postings": 6,
+  "complete": true,
+  "declaredTotal": 6,
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/retail_us_GU",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/retail_us_theory",
+  "type": "WORKDAY",
+  "postings": 6,
+  "complete": true,
+  "declaredTotal": 6,
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/retail_us_Theory",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/eu_theory",
+  "type": "WORKDAY",
+  "postings": 18,
+  "complete": true,
+  "declaredTotal": 18,
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/EU_Theory/",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fastretailing/store_staff_au_uniqlo",
+  "type": "WORKDAY",
+  "postings": 33,
+  "complete": true,
+  "declaredTotal": 33,
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-46faadd51edce87c2843",
+   "name": "UNIQLO",
+   "from": "https://www.fastretailing.com/employment/en/",
+   "to": "https://fastretailing.wd3.myworkdayjobs.com/store_staff_au_Uniqlo",
+   "fromHash": "8b8c75c65f49bf9e76d76ef23efa91ca842d64676825a75c42086a75ba759154",
+   "fromRoot": "fastretailing.com"
+  },
+  "names": [
+   "UNIQLO"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:skechers/one-career-site",
+  "type": "WORKDAY",
+  "postings": 1722,
+  "complete": true,
+  "declaredTotal": 1722,
+  "labels": [
+   "SKECHERS",
+   "careers.skechers.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "skechers.wd5.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "SKECHERS"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "icims:menusandvenues-na-urbn.icims.com",
+  "type": "ICIMS",
+  "postings": 38,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "URBN"
+  ],
+  "labelCount": 1,
+  "portalHost": "menusandvenues-na-urbn.icims.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "URBN"
+  ],
+  "countries": [
+   [
+    "US",
+    38
+   ]
+  ]
+ },
+ {
+  "tenantKey": "icims:homeoffice-eu-urbn.icims.com",
+  "type": "ICIMS",
+  "postings": 30,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "URBN"
+  ],
+  "labelCount": 1,
+  "portalHost": "homeoffice-eu-urbn.icims.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "URBN"
+  ],
+  "countries": [
+   [
+    "UK",
+    30
+   ]
+  ]
+ },
+ {
+  "tenantKey": "teamtailor:yseparis.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 11,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "YSÉ",
+   "yseparis.teamtailor.com"
+  ],
+  "labelCount": 2,
+  "portalHost": "yseparis.teamtailor.com",
+  "officialSites": [],
+  "reciprocal": {
+   "actor": "fj-da50da8234f6c8ce2a01",
+   "name": "YSÉ",
+   "from": "https://yse-paris.com/fr-fr",
+   "to": "https://yseparis.teamtailor.com/",
+   "fromHash": "5d096ed4e9d6779da2557c111877a90c960d564fbc166e0dc7d3adecc721aecf",
+   "fromRoot": "yse-paris.com"
+  },
+  "names": [
+   "YSÉ"
+  ],
+  "countries": [
+   [
+    "FR",
+    11
+   ]
+  ]
+ },
+ {
+  "tenantKey": "oraclehcm:hcml.fa.us2.oraclecloud.com",
+  "type": "ORACLE_HCM",
+  "postings": 3586,
+  "complete": false,
+  "declaredTotal": 3591,
+  "labels": [
+   "AERIE",
+   "AMERICAN EAGLE"
+  ],
+  "labelCount": 2,
+  "portalHost": "hcml.fa.us2.oraclecloud.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "AERIE",
+   "AMERICAN EAGLE"
+  ],
+  "countries": [
+   [
+    "US",
+    3035
+   ],
+   [
+    "MX",
+    312
+   ],
+   [
+    "CA",
+    239
+   ]
+  ]
+ },
+ {
+  "tenantKey": "workday:aesop/aesopcareers",
+  "type": "WORKDAY",
+  "postings": 5,
+  "complete": true,
+  "declaredTotal": 5,
+  "labels": [
+   "AESOP",
+   "www.aesop.com",
+   "aesop.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 3,
+  "portalHost": "aesop.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "AESOP"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "teamtailor:astridmiyu.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 42,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "ASTRID & MIYU"
+  ],
+  "labelCount": 1,
+  "portalHost": "astridmiyu.teamtailor.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "ASTRID & MIYU"
+  ],
+  "countries": [
+   [
+    "GB",
+    29
+   ],
+   [
+    "US",
+    10
+   ],
+   [
+    "IE",
+    2
+   ],
+   [
+    "NL",
+    1
+   ]
+  ]
+ },
+ {
+  "tenantKey": "teamtailor:career.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 12,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "ASTRID & MIYU",
+   "www.teamtailor.com",
+   "soeur-1711354805.teamtailor.com",
+   "cabaia.teamtailor.com"
+  ],
+  "labelCount": 4,
+  "portalHost": "career.teamtailor.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "ASTRID & MIYU"
+  ],
+  "countries": [
+   [
+    "SE",
+    4
+   ],
+   [
+    "US",
+    3
+   ],
+   [
+    "GB",
+    1
+   ],
+   [
+    "ES",
+    1
+   ],
+   [
+    "AU",
+    1
+   ]
+  ]
+ },
+ {
+  "tenantKey": "oraclehcm:elhr.fa.us2.oraclecloud.com",
+  "type": "ORACLE_HCM",
+  "postings": 250,
+  "complete": true,
+  "declaredTotal": 250,
+  "labels": [
+   "BOSCOV'S"
+  ],
+  "labelCount": 1,
+  "portalHost": "elhr.fa.us2.oraclecloud.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "BOSCOV'S"
+  ],
+  "countries": [
+   [
+    "US",
+    250
+   ]
+  ]
+ },
+ {
+  "tenantKey": "lever:brooksrunning",
+  "type": "LEVER",
+  "postings": 59,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "BROOKS"
+  ],
+  "labelCount": 1,
+  "portalHost": "jobs.lever.co",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "BROOKS"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "personio:calidagroupdgtl",
+  "type": "PERSONIO",
+  "postings": 3,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "CALIDA"
+  ],
+  "labelCount": 1,
+  "portalHost": "calidagroupdgtl.jobs.personio.de",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "CALIDA"
+  ],
+  "countries": [
+   [
+    "DE",
+    3
+   ]
+  ]
+ },
+ {
+  "tenantKey": "icims:stores-eu-urbn.icims.com",
+  "type": "ICIMS",
+  "postings": 126,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "URBN"
+  ],
+  "labelCount": 1,
+  "portalHost": "stores-eu-urbn.icims.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "URBN"
+  ],
+  "countries": [
+   [
+    "UK",
+    61
+   ],
+   [
+    "DE",
+    24
+   ],
+   [
+    "NL",
+    9
+   ],
+   [
+    "FR",
+    8
+   ],
+   [
+    "BE",
+    7
+   ]
+  ]
+ },
+ {
+  "tenantKey": "workable:charlotte-tilbury",
+  "type": "WORKABLE",
+  "postings": 252,
+  "complete": true,
+  "declaredTotal": 252,
+  "labels": [
+   "CAROLINA HERRERA",
+   "Puig"
+  ],
+  "labelCount": 2,
+  "portalHost": "apply.workable.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "CAROLINA HERRERA"
+  ],
+  "countries": [
+   [
+    "United Kingdom",
+    81
+   ],
+   [
+    "United States",
+    73
+   ],
+   [
+    "Germany",
+    33
+   ],
+   [
+    "Ireland",
+    12
+   ],
+   [
+    "Spain",
+    11
+   ]
+  ]
+ },
+ {
+  "tenantKey": "workday:columbiasportswearcompany/csc_careers",
+  "type": "WORKDAY",
+  "postings": 223,
+  "complete": true,
+  "declaredTotal": 223,
+  "labels": [
+   "COLUMBIA"
+  ],
+  "labelCount": 1,
+  "portalHost": "columbiasportswearcompany.wd5.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "COLUMBIA"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:davidyurman/davidyurmancareers",
+  "type": "WORKDAY",
+  "postings": 22,
+  "complete": true,
+  "declaredTotal": 22,
+  "labels": [
+   "DAVID YURMAN",
+   "David Yurman"
+  ],
+  "labelCount": 2,
+  "portalHost": "davidyurman.wd1.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "DAVID YURMAN"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "greenhouse:fahertybrand",
+  "type": "GREENHOUSE",
+  "postings": 123,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "FAHERTY"
+  ],
+  "labelCount": 1,
+  "portalHost": "boards.greenhouse.io",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "FAHERTY"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "teamtailor:footasylum.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 104,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "FOOTASYLUM"
+  ],
+  "labelCount": 1,
+  "portalHost": "footasylum.teamtailor.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "FOOTASYLUM"
+  ],
+  "countries": [
+   [
+    "GB",
+    104
+   ]
+  ]
+ },
+ {
+  "tenantKey": "workday:vfc/icebreaker_careers",
+  "type": "WORKDAY",
+  "postings": 23,
+  "complete": true,
+  "declaredTotal": 23,
+  "labels": [
+   "ICEBREAKER"
+  ],
+  "labelCount": 1,
+  "portalHost": "vfc.wd5.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "ICEBREAKER"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:kbi/kontoor",
+  "type": "WORKDAY",
+  "postings": 139,
+  "complete": true,
+  "declaredTotal": 139,
+  "labels": [
+   "LEE"
+  ],
+  "labelCount": 1,
+  "portalHost": "kbi.wd5.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "LEE"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "successfactors:jobs.soliver-group.com",
+  "type": "SUCCESSFACTORS",
+  "postings": 101,
+  "complete": true,
+  "declaredTotal": 101,
+  "labels": [
+   "LIEBESKIND BERLIN",
+   "S.OLIVER"
+  ],
+  "labelCount": 2,
+  "portalHost": "jobs.soliver-group.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "LIEBESKIND BERLIN",
+   "S.OLIVER"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:fabletics/fabletics",
+  "type": "WORKDAY",
+  "postings": 442,
+  "complete": true,
+  "declaredTotal": 442,
+  "labels": [
+   "FABLETICS"
+  ],
+  "labelCount": 1,
+  "portalHost": "fabletics.wd1.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "FABLETICS"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:wwwinc/www",
+  "type": "WORKDAY",
+  "postings": 227,
+  "complete": true,
+  "declaredTotal": 227,
+  "labels": [
+   "MERRELL",
+   "SAUCONY",
+   "WOLVERINE"
+  ],
+  "labelCount": 3,
+  "portalHost": "wwwinc.wd1.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "MERRELL",
+   "SAUCONY",
+   "WOLVERINE"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "greenhouse:revloncorporate",
+  "type": "GREENHOUSE",
+  "postings": 50,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "REVLON"
+  ],
+  "labelCount": 1,
+  "portalHost": "job-boards.greenhouse.io",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "REVLON"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "greenhouse:revlonmanufacturing",
+  "type": "GREENHOUSE",
+  "postings": 27,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "REVLON"
+  ],
+  "labelCount": 1,
+  "portalHost": "job-boards.greenhouse.io",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "REVLON"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "successfactors:careers.thebodyshop.com",
+  "type": "SUCCESSFACTORS",
+  "postings": 83,
+  "complete": true,
+  "declaredTotal": 83,
+  "labels": [
+   "THE BODY SHOP"
+  ],
+  "labelCount": 1,
+  "portalHost": "careers.thebodyshop.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "THE BODY SHOP"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:jcrew/jcrewcareers",
+  "type": "WORKDAY",
+  "postings": 1047,
+  "complete": true,
+  "declaredTotal": 1047,
+  "labels": [
+   "MADEWELL"
+  ],
+  "labelCount": 1,
+  "portalHost": "jcrew.wd1.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "MADEWELL"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:oxford/tommybahamaus",
+  "type": "WORKDAY",
+  "postings": 341,
+  "complete": true,
+  "declaredTotal": 341,
+  "labels": [
+   "TOMMY BAHAMA"
+  ],
+  "labelCount": 1,
+  "portalHost": "oxford.wd5.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "TOMMY BAHAMA"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "successfactors:careers.underarmour.com",
+  "type": "SUCCESSFACTORS",
+  "postings": 456,
+  "complete": true,
+  "declaredTotal": 456,
+  "labels": [
+   "UNDER ARMOUR"
+  ],
+  "labelCount": 1,
+  "portalHost": "careers.underarmour.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "UNDER ARMOUR"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:yeticoolers/yeti",
+  "type": "WORKDAY",
+  "postings": 89,
+  "complete": true,
+  "declaredTotal": 89,
+  "labels": [
+   "YETI"
+  ],
+  "labelCount": 1,
+  "portalHost": "yeticoolers.wd5.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "YETI"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "oraclehcm:fa-evdi-saasfaprod1.fa.ocs.oraclecloud.com",
+  "type": "ORACLE_HCM",
+  "postings": 886,
+  "complete": true,
+  "declaredTotal": 886,
+  "labels": [
+   "WARBY PARKER"
+  ],
+  "labelCount": 1,
+  "portalHost": "fa-evdi-saasfaprod1.fa.ocs.oraclecloud.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "WARBY PARKER"
+  ],
+  "countries": [
+   [
+    "US",
+    882
+   ],
+   [
+    "CA",
+    4
+   ]
+  ]
+ },
+ {
+  "tenantKey": "greenhouse:sprintersportses",
+  "type": "GREENHOUSE",
+  "postings": 43,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "SPRINTER"
+  ],
+  "labelCount": 1,
+  "portalHost": "job-boards.eu.greenhouse.io",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "SPRINTER"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "icims:careers-nautica.icims.com",
+  "type": "ICIMS",
+  "postings": 11,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "NAUTICA"
+  ],
+  "labelCount": 1,
+  "portalHost": "careers-nautica.icims.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [],
+  "countries": [
+   [
+    "US",
+    11
+   ]
+  ]
+ },
+ {
+  "tenantKey": "icims:uk-earlyassociatecareers-lw.icims.com",
+  "type": "ICIMS",
+  "postings": 6,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "WALMART"
+  ],
+  "labelCount": 1,
+  "portalHost": "uk-earlyassociatecareers-lw.icims.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "WALMART"
+  ],
+  "countries": [
+   [
+    "UNAVAILABLE",
+    6
+   ]
+  ]
+ },
+ {
+  "tenantKey": "workday:aig/early_careers",
+  "type": "WORKDAY",
+  "postings": 37,
+  "complete": true,
+  "declaredTotal": 37,
+  "labels": [
+   "WALMART"
+  ],
+  "labelCount": 1,
+  "portalHost": "aig.wd1.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "WALMART"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:perkinscoie/perkinscoieexternal",
+  "type": "WORKDAY",
+  "postings": 57,
+  "complete": true,
+  "declaredTotal": 57,
+  "labels": [
+   "WALMART"
+  ],
+  "labelCount": 1,
+  "portalHost": "perkinscoie.wd115.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "WALMART"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:nbn/nbncareers",
+  "type": "WORKDAY",
+  "postings": 61,
+  "complete": true,
+  "declaredTotal": 61,
+  "labels": [
+   "WALMART"
+  ],
+  "labelCount": 1,
+  "portalHost": "nbn.wd3.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "WALMART"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "greenhouse:thirdbridge",
+  "type": "GREENHOUSE",
+  "postings": 128,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "WALMART"
+  ],
+  "labelCount": 1,
+  "portalHost": "job-boards.eu.greenhouse.io",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "WALMART"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:ryan/ryancareers",
+  "type": "WORKDAY",
+  "postings": 107,
+  "complete": true,
+  "declaredTotal": 107,
+  "labels": [
+   "WALMART"
+  ],
+  "labelCount": 1,
+  "portalHost": "ryan.wd1.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "WALMART"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "workday:ryan/students-graduates",
+  "type": "WORKDAY",
+  "postings": 19,
+  "complete": true,
+  "declaredTotal": 19,
+  "labels": [
+   "WALMART"
+  ],
+  "labelCount": 1,
+  "portalHost": "ryan.wd1.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "WALMART"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "teamtailor:intersportdanmark.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 14,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "INTERSPORT"
+  ],
+  "labelCount": 1,
+  "portalHost": "intersportdanmark.teamtailor.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "INTERSPORT"
+  ],
+  "countries": [
+   [
+    "DK",
+    14
+   ]
+  ]
+ },
+ {
+  "tenantKey": "workday:pru/careers",
+  "type": "WORKDAY",
+  "postings": 168,
+  "complete": true,
+  "declaredTotal": 168,
+  "labels": [
+   "WALMART"
+  ],
+  "labelCount": 1,
+  "portalHost": "pru.wd5.myworkdayjobs.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "WALMART"
+  ],
+  "countries": []
+ },
+ {
+  "tenantKey": "talentrecruiter:samsoe",
+  "type": "TALENT_RECRUITER",
+  "postings": 36,
+  "complete": true,
+  "declaredTotal": 36,
+  "labels": [
+   "SAMSOE SAMSOE"
+  ],
+  "labelCount": 1,
+  "portalHost": "candidate.hr-manager.net",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "SAMSOE SAMSOE"
+  ],
+  "countries": [
+   [
+    "Danmark",
+    3
+   ]
+  ]
+ },
+ {
+  "tenantKey": "icims:supplychain-na-urbn.icims.com",
+  "type": "ICIMS",
+  "postings": 63,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "URBN"
+  ],
+  "labelCount": 1,
+  "portalHost": "supplychain-na-urbn.icims.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "URBN"
+  ],
+  "countries": [
+   [
+    "US",
+    63
+   ]
+  ]
+ },
+ {
+  "tenantKey": "icims:homeoffice-na-urbn.icims.com",
+  "type": "ICIMS",
+  "postings": 175,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "URBN"
+  ],
+  "labelCount": 1,
+  "portalHost": "homeoffice-na-urbn.icims.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "URBN"
+  ],
+  "countries": [
+   [
+    "US",
+    174
+   ],
+   [
+    "IN",
+    1
+   ]
+  ]
+ },
+ {
+  "tenantKey": "teamtailor:chalhoubgroup.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 142,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "careers.chalhoubgroup.com"
+  ],
+  "labelCount": 1,
+  "portalHost": "chalhoubgroup.teamtailor.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [],
+  "countries": [
+   [
+    "AE",
+    66
+   ],
+   [
+    "SA",
+    40
+   ],
+   [
+    "EG",
+    24
+   ],
+   [
+    "BH",
+    6
+   ],
+   [
+    "JO",
+    3
+   ]
+  ]
+ },
+ {
+  "tenantKey": "teamtailor:fredperry.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 19,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "careers.fredperry.com"
+  ],
+  "labelCount": 1,
+  "portalHost": "fredperry.teamtailor.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [],
+  "countries": [
+   [
+    "GB",
+    10
+   ],
+   [
+    "DE",
+    5
+   ],
+   [
+    "NL",
+    2
+   ],
+   [
+    "FR",
+    2
+   ]
+  ]
+ },
+ {
+  "tenantKey": "smartrecruiters-whitelabel:acetate",
+  "type": "SMARTRECRUITERS",
+  "postings": 27,
+  "complete": true,
+  "declaredTotal": 27,
+  "labels": [
+   "www.aceandtate.com"
+  ],
+  "labelCount": 1,
+  "portalHost": "jobs.smartrecruiters.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [],
+  "countries": [
+   [
+    "nl",
+    14
+   ],
+   [
+    "de",
+    9
+   ],
+   [
+    "gb",
+    2
+   ],
+   [
+    "at",
+    1
+   ],
+   [
+    "ch",
+    1
+   ]
+  ]
+ },
+ {
+  "tenantKey": "digitalrecruiters:careers.mf-brands.com",
+  "type": "DIGITALRECRUITERS",
+  "postings": 675,
+  "complete": true,
+  "declaredTotal": 687,
+  "labels": [
+   "careers.mf-brands.com"
+  ],
+  "labelCount": 1,
+  "portalHost": "careers.mf-brands.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [],
+  "countries": []
+ },
+ {
+  "tenantKey": "digitalrecruiters:creativejob.balenciaga.com",
+  "type": "DIGITALRECRUITERS",
+  "postings": 1,
+  "complete": true,
+  "declaredTotal": 1,
+  "labels": [
+   "creativejob.balenciaga.com"
+  ],
+  "labelCount": 1,
+  "portalHost": "creativejob.balenciaga.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [],
+  "countries": []
+ },
+ {
+  "tenantKey": "successfactors:sapcareerssite.pandoragroup.com",
+  "type": "SUCCESSFACTORS",
+  "postings": 826,
+  "complete": true,
+  "declaredTotal": 826,
+  "labels": [
+   "sapcareerssite.pandoragroup.com"
+  ],
+  "labelCount": 1,
+  "portalHost": "sapcareerssite.pandoragroup.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [],
+  "countries": []
+ },
+ {
+  "tenantKey": "icims:hub-eu-urbn.icims.com",
+  "type": "ICIMS",
+  "postings": 156,
+  "complete": true,
+  "declaredTotal": null,
+  "labels": [
+   "URBN"
+  ],
+  "labelCount": 1,
+  "portalHost": "hub-eu-urbn.icims.com",
+  "officialSites": [],
+  "reciprocal": null,
+  "names": [
+   "URBN"
+  ],
+  "countries": [
+   [
+    "UK",
+    91
+   ],
+   [
+    "DE",
+    24
+   ],
+   [
+    "NL",
+    9
+   ],
+   [
+    "FR",
+    8
+   ],
+   [
+    "BE",
+    7
+   ]
+  ]
+ }
+]

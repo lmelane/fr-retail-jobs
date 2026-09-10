@@ -1,0 +1,76 @@
+{
+ "_note": "Bounded production lots of 2026-09-10 (owner brief): only sources whose identity is certified for the current configuration. Each lot: fresh backup → deploy guard → bounded run from the cron egress → after-run facts (ids, rejects, attachments, public counters). No merge during a run.",
+ "L1-B2-B3-B4": {
+  "keys": [
+   "mango",
+   "kering",
+   "urbn-hub"
+  ],
+  "proves": "B4 Mango SINGLE_BRAND (27 held postings published with portal.certifiedScope) · B2 Kering (0 refusal, GROUP_LABEL_KEPT_HOUSE / REVIEWED_ALIAS) · B3 URBN (FP Movement 143 / Anthro Weddings 25 / Maeve 6 / Reclectic 16, 0 refusal)"
+ },
+ "L2-B1-small": {
+  "keys": [
+   "aim-n",
+   "blue-banana",
+   "burnt",
+   "damiani",
+   "dfs",
+   "eurofragrance",
+   "karla-otto",
+   "katie-loxton",
+   "lexington",
+   "motel",
+   "normal",
+   "prisma-media",
+   "pronovias",
+   "mascot-workwear",
+   "nutrire",
+   "drunk-elephant-2",
+   "dr-pierre-ricaud",
+   "maison-margiela"
+  ],
+  "proves": "B1: creation unblocked after aliases v3 and the owner reviews (Shiseido, Groupe Rocher, OTB, Tricoci) — 0 identity refusal, new postings created"
+ },
+ "L3-B1-groups": {
+  "keys": [
+   "a-derma-4",
+   "deckers",
+   "mecca",
+   "tapestry",
+   "richemont",
+   "richemont-workday",
+   "lvmh"
+  ],
+  "proves": "B1 on the group / Workday portals: aliases v3 (Coach entities, MECCA Brands, VanCleef-Aprels, Groupe Bon Marché), Workday 'Logo' labels gone, 0 refusal"
+ },
+ "L4-B5": {
+  "keys": [
+   "nordstrom",
+   "alberto",
+   "oniverse"
+  ],
+  "proves": "B5: rejected rows are not errors (statuses OK/DEGRADED with rejected counters, right to attest), Oniverse's 12 unread pages measured from the prod egress"
+ },
+ "excluded_uncertified": {
+  "keys": [
+   "etam",
+   "l-occitane-en-provence-2",
+   "loccitane-fr",
+   "luhta",
+   "new-balance",
+   "showroomprive",
+   "swarovski",
+   "typology",
+   "versace"
+  ],
+  "why": "no reciprocal link readable from the official site (403 anti-bot: newbalance.com, swarovski.com, versace.com; site unreachable: groupeetam.com; JS-only or no careers link found: loccitane.com, luhta.com, typology.com, showroomprive.com) — not ingested until certified"
+ },
+ "L5-B1-B4-recheck": {
+  "keys": [
+   "mango",
+   "normal",
+   "nutrire"
+  ],
+  "proves": "after the Mango single-brand repair, aliases v4 and the deploy of PR 75: 0 identity refusal on the three portals, Mango proven complete (distinct path-less rows), all postings under one employer per portal"
+ }
+}

@@ -1,0 +1,32 @@
+{
+  "at": "2026-09-10T07:47:19.828Z",
+  "environment": "production",
+  "written": {
+    "sourceKey": "nutrire",
+    "sourceHash": "9ffd96792633a64024ca002877eea5a8ea07a7bff663f107d7c674a64b09c60f",
+    "verdict": "VERIFIED",
+    "written": 1
+  },
+  "promoted": {
+    "key": "nutrire",
+    "from": "PAUSED",
+    "to": "ACTIVE"
+  },
+  "after": {
+    "status": "ACTIVE",
+    "maison": "Tricoci"
+  },
+  "sector": {
+    "reviewHash": "c20be007927e24c7b3259e205992166574f7cd4eb1439a0c8f9bd66d5256239d",
+    "result": {
+      "changed": 1,
+      "conceptsChanged": 0,
+      "reviewId": "c20be007927e24c7b3259e205992166574f7cd4eb1439a0c8f9bd66d5256239d",
+      "activeAffected": 52
+    },
+    "replay": {
+      "changed": 0,
+      "reviewId": null
+    }
+  }
+}

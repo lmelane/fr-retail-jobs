@@ -1,0 +1,18 @@
+{
+  "at": "2026-09-10T07:47:27.139Z",
+  "environment": "production",
+  "reviewHash": "c74ef756a9e4a7877b01261b801c8faf0bcd87286d30ff1866e66d08fc4c4ad0",
+  "result": {
+    "changed": 1,
+    "conceptsChanged": 0,
+    "reviewId": "c74ef756a9e4a7877b01261b801c8faf0bcd87286d30ff1866e66d08fc4c4ad0",
+    "activeAffected": 7
+  },
+  "replay": {
+    "changed": 0,
+    "reviewId": null
+  },
+  "sectorCodes": [
+    "FASHION"
+  ]
+}

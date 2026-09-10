@@ -1,0 +1,207 @@
+{
+ "at": "2026-09-10T08:07:08.231Z",
+ "keys": [
+  "aim-n",
+  "blue-banana",
+  "burnt",
+  "damiani",
+  "dfs",
+  "eurofragrance",
+  "karla-otto",
+  "katie-loxton",
+  "lexington",
+  "motel",
+  "normal",
+  "prisma-media",
+  "pronovias",
+  "mascot-workwear",
+  "nutrire",
+  "drunk-elephant-2",
+  "dr-pierre-ricaud",
+  "maison-margiela"
+ ],
+ "companies": [
+  {
+   "company": "Normal",
+   "fromLotSources": 524,
+   "companyActive": 524,
+   "api": 524,
+   "parity": true
+  },
+  {
+   "company": "Shiseido",
+   "fromLotSources": 168,
+   "companyActive": 171,
+   "api": 171,
+   "parity": true
+  },
+  {
+   "company": "Diesel",
+   "fromLotSources": 85,
+   "companyActive": 85,
+   "api": 85,
+   "parity": true
+  },
+  {
+   "company": "Groupe Rocher",
+   "fromLotSources": 71,
+   "companyActive": 89,
+   "api": 89,
+   "parity": true
+  },
+  {
+   "company": "Tricoci",
+   "fromLotSources": 52,
+   "companyActive": 52,
+   "api": 52,
+   "parity": true
+  },
+  {
+   "company": "MASCOT Workwear",
+   "fromLotSources": 50,
+   "companyActive": 50,
+   "api": 50,
+   "parity": true
+  },
+  {
+   "company": "Eurofragance",
+   "fromLotSources": 41,
+   "companyActive": 41,
+   "api": 41,
+   "parity": true
+  },
+  {
+   "company": "Pronovias",
+   "fromLotSources": 37,
+   "companyActive": 37,
+   "api": 37,
+   "parity": true
+  },
+  {
+   "company": "Maison Margiela",
+   "fromLotSources": 28,
+   "companyActive": 28,
+   "api": 28,
+   "parity": true
+  },
+  {
+   "company": "Damiani",
+   "fromLotSources": 28,
+   "companyActive": 28,
+   "api": 28,
+   "parity": true
+  },
+  {
+   "company": "Blue Banana",
+   "fromLotSources": 21,
+   "companyActive": 21,
+   "api": 21,
+   "parity": true
+  },
+  {
+   "company": "Prisma Media",
+   "fromLotSources": 20,
+   "companyActive": 20,
+   "api": 20,
+   "parity": true
+  },
+  {
+   "company": "Katie Loxton",
+   "fromLotSources": 19,
+   "companyActive": 19,
+   "api": 19,
+   "parity": true
+  },
+  {
+   "company": "OTB",
+   "fromLotSources": 17,
+   "companyActive": 17,
+   "api": 17,
+   "parity": true
+  },
+  {
+   "company": "Karla Otto",
+   "fromLotSources": 14,
+   "companyActive": 14,
+   "api": 14,
+   "parity": true
+  },
+  {
+   "company": "Marni",
+   "fromLotSources": 14,
+   "companyActive": 14,
+   "api": 14,
+   "parity": true
+  },
+  {
+   "company": "Jil Sander",
+   "fromLotSources": 11,
+   "companyActive": 11,
+   "api": 11,
+   "parity": true
+  },
+  {
+   "company": "Burnt",
+   "fromLotSources": 10,
+   "companyActive": 10,
+   "api": 10,
+   "parity": true
+  },
+  {
+   "company": "NORMAL Norway",
+   "fromLotSources": 8,
+   "companyActive": 8,
+   "api": 8,
+   "parity": true
+  },
+  {
+   "company": "NORMAL Butikker Danmark",
+   "fromLotSources": 5,
+   "companyActive": 5,
+   "api": 5,
+   "parity": true
+  },
+  {
+   "company": "Staff International",
+   "fromLotSources": 4,
+   "companyActive": 4,
+   "api": 4,
+   "parity": true
+  },
+  {
+   "company": "Aim'n",
+   "fromLotSources": 4,
+   "companyActive": 4,
+   "api": 4,
+   "parity": true
+  },
+  {
+   "company": "DFS",
+   "fromLotSources": 4,
+   "companyActive": 4,
+   "api": 4,
+   "parity": true
+  },
+  {
+   "company": "Lexington",
+   "fromLotSources": 2,
+   "companyActive": 2,
+   "api": 2,
+   "parity": true
+  },
+  {
+   "company": "Brave Kid",
+   "fromLotSources": 1,
+   "companyActive": 1,
+   "api": 1,
+   "parity": true
+  },
+  {
+   "company": "Motel",
+   "fromLotSources": 1,
+   "companyActive": 1,
+   "api": 1,
+   "parity": true
+  }
+ ]
+}

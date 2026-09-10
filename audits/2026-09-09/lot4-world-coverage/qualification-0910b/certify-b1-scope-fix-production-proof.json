@@ -1,0 +1,200 @@
+{
+  "at": "2026-09-10T08:00:47.824Z",
+  "environment": "production",
+  "results": [
+    {
+      "key": "aim-n",
+      "action": "RECERTIFIED_SINGLE_BRAND",
+      "labels": [
+        "aim'n Sportswear"
+      ],
+      "receipt": "source-probes/aim-n.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "aim-n",
+        "sourceHash": "92f5ef344dabf0e90883f2ac4cb6cb5f989114d19f77e588fb65b590b93ff317",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "blue-banana",
+      "action": "RECERTIFIED_SINGLE_BRAND",
+      "labels": [
+        "Blue Banana Brand"
+      ],
+      "receipt": "source-probes/blue-banana.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "blue-banana",
+        "sourceHash": "e1ca592762806ed47c4888197fcd622ffca99c3dce7078cd438886c8a662e942",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "burnt",
+      "action": "RECERTIFIED_SINGLE_BRAND",
+      "labels": [
+        "Burnt Studios"
+      ],
+      "receipt": "source-probes/burnt.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "burnt",
+        "sourceHash": "5c8105ca998ebf0218115eaf45f1d31093755cfbf4103bea281d9a82fda146f9",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "damiani",
+      "action": "RECERTIFIED_SINGLE_BRAND",
+      "labels": [
+        "damianispa"
+      ],
+      "receipt": "source-probes-sap-final/damiani.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "damiani",
+        "sourceHash": "e30776849457c27190624abc9779753c2dd1b140e70f9babb6e7d1b0441bf33c",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "dfs",
+      "action": "RECERTIFIED_SINGLE_BRAND",
+      "labels": [
+        "dfsventure"
+      ],
+      "receipt": "source-probes-sap-final/dfs.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "dfs",
+        "sourceHash": "b98ea846fd2b443e94ad38c9f0e7b555ddcfa4c4ade3b5b8ad398840283086e8",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "eurofragrance",
+      "action": "KEPT_MULTI_BRAND",
+      "labels": [
+        "Eurofragance"
+      ]
+    },
+    {
+      "key": "karla-otto",
+      "action": "KEPT_MULTI_BRAND",
+      "labels": [
+        "The Independents"
+      ]
+    },
+    {
+      "key": "katie-loxton",
+      "action": "RECERTIFIED_SINGLE_BRAND",
+      "labels": [
+        "Joma Jewellery and Katie Loxton"
+      ],
+      "receipt": "source-probes/katie-loxton.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "katie-loxton",
+        "sourceHash": "73c62dd708f1a18583ccce6e6fa544f8e13b32bc20afb78c8849ce23e51105d9",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "lexington",
+      "action": "RECERTIFIED_SINGLE_BRAND",
+      "labels": [
+        "The Lexington Company AB"
+      ],
+      "receipt": "source-probes/lexington.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "lexington",
+        "sourceHash": "85f335da8b0359042f5e750f74343012d8a0ea728487a3b92607072bb0a66563",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "mascot-workwear",
+      "action": "RECERTIFIED_SINGLE_BRAND",
+      "labels": [
+        "Mascot International"
+      ],
+      "receipt": "source-probes-sap-final/mascot-workwear.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "mascot-workwear",
+        "sourceHash": "eaf5fd28129b6201bd80a6521970454aecb3a3c10027bb617de1ce965ff87ee3",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "motel",
+      "action": "RECERTIFIED_SINGLE_BRAND",
+      "labels": [
+        "Motel Rocks"
+      ],
+      "receipt": "source-probes/motel.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "motel",
+        "sourceHash": "c1e7d8d34be7ad9d71f071a8584ddf1075e963a43ac334aee4ecf6547cbe26bf",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "normal",
+      "action": "RECERTIFIED_SINGLE_BRAND",
+      "labels": [
+        "NORMAL Norway",
+        "NORMAL Sweden",
+        "NORMAL France",
+        "NORMAL Butikker Danmark",
+        "NORMAL Netherlands",
+        "NORMAL Italy",
+        "NORMAL Spain",
+        "NORMAL Hovedkontor Danmark",
+        "NORMAL Austria",
+        "NORMAL Portugal",
+        "NORMAL Finland",
+        "NORMAL Ireland",
+        "NORMAL Warehouse Denmark",
+        "NORMAL Romania",
+        "NORMAL Czech Republic",
+        "NORMAL Slovakia"
+      ],
+      "receipt": "source-probes/normal.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "normal",
+        "sourceHash": "37ba443a142d87767c1cf69349ddd76a9922ff30b682aa0afeebe45a339685c9",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "pronovias",
+      "action": "RECERTIFIED_SINGLE_BRAND",
+      "labels": [
+        "Pronovias Group"
+      ],
+      "receipt": "source-probes/pronovias.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "pronovias",
+        "sourceHash": "2374d58871a2b708f542e10f1ecef6a64229f434dca80c1b0bd9bfb66a13997c",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    }
+  ]
+}

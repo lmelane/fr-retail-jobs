@@ -1,0 +1,67 @@
+[
+ {
+  "key": "typology",
+  "url": "https://www.typology.com/rejoindre-lequipe",
+  "sha256": "7d32a82644777322b1d8887f344218aa5c41c7c3a52311e9e87c98f90ab4cbe0",
+  "bytes": 94933,
+  "transport": "HTTP",
+  "contains": "typology-1732032895.teamtailor.com",
+  "found": true
+ },
+ {
+  "key": "new-balance",
+  "url": "https://jobs.newbalance.com/global/en/job/R40964/Visual-Merchandising-Manager-Retail-EMEA",
+  "sha256": "a170b660343a01e88d8ba625dce11368d76c2a6d0d9d2f5b899ca2295efbb99e",
+  "bytes": 123272,
+  "transport": "HTTP",
+  "contains": "newbalance.wd1.myworkdayjobs.com",
+  "found": true
+ },
+ {
+  "key": "luhta",
+  "url": "https://careers.luhta.com/en-GB",
+  "sha256": "1481f182fec48bce5ec9fe4426728b2b62ea085b7f32d8458542e7ef101dbeb0",
+  "bytes": 59190,
+  "transport": "HTTP",
+  "contains": "teamtailor",
+  "found": true
+ },
+ {
+  "key": "luhta",
+  "url": "https://www.luhta.com/en/",
+  "sha256": "3499f12380644c8a185c1a5d7d698b526755eb7974be97a351c9fcb7da350174",
+  "bytes": 115221,
+  "transport": "HTTP",
+  "contains": "careers.luhta.com",
+  "found": false
+ },
+ {
+  "key": "showroomprive",
+  "url": "https://www.showroomprive.com/",
+  "sha256": "3a73dcc8cc317bcc2da2d9522c78fcf87d5ef25dce793b915ee000c12f063a93",
+  "bytes": 134131,
+  "transport": "HTTP",
+  "contains": "showroomprivegroup.com",
+  "found": true
+ },
+ {
+  "key": "typology",
+  "url": "https://www.typology.com/conditions-generales-de-vente",
+  "sha256": "4c1adcc136e601b4e1790320b99eedfc292c395e7732fe3c000a112b4f66d5f1",
+  "bytes": 100169,
+  "transport": "HTTP",
+  "contains": "Good Brands SAS",
+  "found": true,
+  "note": "pointed by Loïc (job page) / legal notice of typology.com: \"Le présent site Typology.com est édité par la société Good Brands SAS\""
+ },
+ {
+  "key": "typology",
+  "url": "https://typology-1732032895.teamtailor.com/fr/jobs/8318640-conseiller-de-vente-expert-beaute-h-f-grands-magasins-cdi-cdd",
+  "sha256": "76c5733bd1eab575be02e5a4ad46462b9cf933cf9656ace2b340b4d612c69dc5",
+  "bytes": 56548,
+  "transport": "HTTP",
+  "contains": "Good Brands",
+  "found": true,
+  "note": "pointed by Loïc (job page) / legal notice of typology.com: \"Le présent site Typology.com est édité par la société Good Brands SAS\""
+ }
+]

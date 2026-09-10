@@ -1,0 +1,26 @@
+{
+  "at": "2026-09-10T08:54:35.696Z",
+  "environment": "clone",
+  "configBefore": {
+    "site": "Tapestry_Careers",
+    "origin": "https://tapestry.wd108.myworkdayjobs.com",
+    "tenant": "tapestry"
+  },
+  "configAfter": {
+    "site": "Tapestry_Careers",
+    "origin": "https://tapestry.wd108.myworkdayjobs.com",
+    "tenant": "tapestry",
+    "partitionFacet": "Brand"
+  },
+  "alreadySet": false,
+  "hashBefore": "427820bdac6ed1ef0b514396057f0171e114992914522a3ebd0800bf604928d2",
+  "hashAfter": "6f44f5c136cdfd93889bf557987b64842dc9bbff107bb5e06e8ecb110e652c9e",
+  "scopeBefore": null,
+  "scopeAfter": "MULTI_BRAND",
+  "written": {
+    "sourceKey": "tapestry",
+    "sourceHash": "6f44f5c136cdfd93889bf557987b64842dc9bbff107bb5e06e8ecb110e652c9e",
+    "verdict": "VERIFIED",
+    "written": 1
+  }
+}
