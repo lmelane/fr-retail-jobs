@@ -93,7 +93,15 @@ Sources réellement porteuses de l'identifiant instable, par URL : `psycho-bunny
 - Les 19 groupes « même source, plusieurs `externalId` » **ne prouvent pas non plus une instabilité entre runs** : ils prouvent que la source a produit deux identifiants pour une même URL, ce qui peut venir d'un identifiant recalculé, mais aussi d'une page couvrant deux postes réels, ou d'une pagination qui sert deux fois la même offre. La cause reste à établir.
 
 **État exact : les 44 groupes (91 lignes `Job`, 47 en excès) restent DANS le périmètre d'investigation, cause NON INSTRUITE, aucune fusion.** La réconciliation a séparé deux *formes* — même source avec plusieurs identifiants (19 groupes) et plusieurs sources sur une page (25 groupes) — mais une forme n'est pas une cause, et aucune des deux ne justifie une fusion sans avoir établi l'identité des annonces.
-**Prochaine action** : instruire `psycho-bunny` (12 groupes, le cas le plus fourni) sur son RAW archivé — comparer titre, ville, contenu et dérivation de l'`externalId` entre les deux lignes d'une même URL — pour établir si ce sont deux annonces distinctes ou une seule vue deux fois. Puis appliquer la même lecture aux 25 groupes multi-sources. **Ce dossier reste dans P2.**
+### `psycho-bunny` instruit (12 groupes) — une hypothèse réfutée, la cause pas encore close
+
+Mesuré sur le RAW archivé des 12 groupes : **même URL, même titre, même ville, même structure JSON-LD**, mais **deux dates de première vue** (3 puis 9 septembre) et deux `externalId` distincts. La description diffère entre les deux lignes.
+
+**Ce qui est établi** : l'adaptateur dérive `externalId = sha1(pageUrl)` (`genericJsonLd.ts` : « Stable, compact identity for the (source, externalId) unique key »). C'est **stable par construction** — deux identifiants pour une même URL sont donc impossibles par ce chemin. Vérifié : le premier id, `5e8d21cd821683e4`, **est exactement** `sha1('https://careers.psychobunny.com/job/3539/sales_associate')`.
+
+**Donc mon hypothèse « identifiant instable recalculé sur un contenu qui bouge » est RÉFUTÉE.** Le second identifiant (`9b574617adbfece0`) vient d'une **URL différente** de celle finalement stockée. Six variantes plausibles ont été testées (paramètres UTM, `http`, casse, ancre, slash final, page de recherche) : **aucune ne produit ce hash**. Je n'ai pas identifié cette URL et je ne la devine pas.
+
+**État exact : cause partiellement établie, dossier ouvert.** **Prochaine action** : retrouver l'URL source du second identifiant en relisant le sitemap archivé de la source (`jobs-sitemap.xml`) et les pages effectivement visitées lors du run du 9 septembre — hors ligne si les archives le permettent, sinon par une lecture bornée du sitemap. Aucune fusion avant d'avoir identifié cette URL : si elle désigne une **autre** annonce, les deux lignes sont légitimes. Puis appliquer la même lecture aux 25 groupes multi-sources. **Ce dossier reste dans P2.**
 
 ## 6. Les 52 offres WTTJ sous source PAUSED — qualifiées sans réactiver les crons
 
@@ -124,7 +132,21 @@ Sources réellement porteuses de l'identifiant instable, par URL : `psycho-bunny
 
 **Ce qui est bloquant** : retirer 583 offres françaises est une décision de périmètre produit (~5 % du catalogue France), pas un choix technique. Je ne la prends pas seul.
 
-**Prochaine action** : détacher d'abord les **172** (sans effet visible, aucune décision requise), puis appliquer aux 585 la décision du propriétaire.
+**Les 172 sont DÉTACHÉES** (production, 2026-09-10 22:44 UTC) — `p2-repairs-proof/p3-fj-prod.json` :
+
+| Résultat de `deactivateSources` | Valeur |
+|---|---:|
+| Attestations détachées | **172** |
+| `jobsClosed` | **0** |
+| `jobsWithdrawn` | **0** |
+| `jobsKept` | **172** |
+| URLs canoniques réassignées | 15 |
+
+Aucune fermeture employeur, aucun retrait d'offre : les 172 gardent leur source officielle et restent publiées. Vérifié après : attestations FashionJobs **757 → 585**, doublement attestées **172 → 0**, offres actives **79 516 inchangées**, **0 offre orpheline**, **0 fermeture**, **0 offre sans URL**, retenues réelles **740 inchangées**, parité **0 écart**. Rejeu : **0 offre à traiter**.
+
+**Effet de bord mesuré et déclaré** : les URLs dupliquées passent de **44 à 45**. La réassignation d'URL canonique a fait pointer une URL WTTJ vers une autre offre Hermès du même lot — deux postes de titres différents (« Conseiller de Ventes », « Chargé(e) Service Après-Vente ») partagent désormais une URL. Ce groupe rejoint le dossier des doublons, il ne le clôt pas.
+
+**Prochaine action** : appliquer aux 585 la décision du propriétaire.
 
 ---
 

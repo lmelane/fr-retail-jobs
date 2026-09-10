@@ -1,6 +1,6 @@
 {
  "summary": {
-  "at": "2026-09-10T22:38:00.158Z",
+  "at": "2026-09-10T22:45:13.888Z",
   "isolation": "repeatable read",
   "definition": "A hold is a STATE: the latest hold event for a (source, externalId) that is NOT published today. Event counts are history and prove nothing about the current state.",
   "scope": "all sources",
