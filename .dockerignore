@@ -7,8 +7,6 @@ build/
 .env.*
 !.env.example
 *.csv
-!apps/aggregator/data/*.csv
-!apps/aggregator/data/discovery/*.csv
 *.html
 *.xml
 !apps/web/app/sitemap.xml/
@@ -20,3 +18,6 @@ build/
 **/playwright-report/
 backups/
 audits/
+
+# Curated nested application references and explicit import seeds.
+!apps/aggregator/data/**/*.csv

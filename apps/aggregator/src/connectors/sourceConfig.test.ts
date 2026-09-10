@@ -4,7 +4,7 @@ import { normalizeSourceConfig } from './sourceConfig.js';
 /**
  * Regression for the live "Teamtailor origin missing" / "startUrl required"
  * failures: the config carried the value under a synonym the adapter did not
- * read. These are the exact shapes from data/sources.csv.
+ * read. These are the exact shapes from data/seeds/sources.csv.
  */
 describe('normalizeSourceConfig', () => {
   it('resolves Showroomprive: careers_url -> origin, jobs_url -> listingUrl', () => {

@@ -1,0 +1,152 @@
+[
+  {
+    "from": "apps/aggregator/data/a-intelligence-rapport.md",
+    "to": "audits/legacy-aggregator-reports/a-intelligence-rapport.md",
+    "sha256": "0f74ebec0d6d070f9c4927d8dca21b3ae4f0db850019f6026ec28ef9632c72c7",
+    "bytes": 11404
+  },
+  {
+    "from": "apps/aggregator/data/audit-a1-canonicite.md",
+    "to": "audits/legacy-aggregator-reports/audit-a1-canonicite.md",
+    "sha256": "8edce9239930900104e5072fd1b3833a66cb2f3f928b858d7f551f7d89894dde",
+    "bytes": 36131
+  },
+  {
+    "from": "apps/aggregator/data/audit-a2-architecture.md",
+    "to": "audits/legacy-aggregator-reports/audit-a2-architecture.md",
+    "sha256": "aeecacea39a97686c41a879e87323a49b252ade6b517320bf9244a590f9c8a3c",
+    "bytes": 25075
+  },
+  {
+    "from": "apps/aggregator/data/audit-a3-cadence.md",
+    "to": "audits/legacy-aggregator-reports/audit-a3-cadence.md",
+    "sha256": "8260add6000257da008779927da17010421bccd0263d6b37a8cce2d4d399323b",
+    "bytes": 29553
+  },
+  {
+    "from": "apps/aggregator/data/audit-a4-offres.md",
+    "to": "audits/legacy-aggregator-reports/audit-a4-offres.md",
+    "sha256": "652f22071671c813284f096dc7beb1730ededc58d20dc83abafae4600c845718",
+    "bytes": 41430
+  },
+  {
+    "from": "apps/aggregator/data/audit-a5-liens-morts.md",
+    "to": "audits/legacy-aggregator-reports/audit-a5-liens-morts.md",
+    "sha256": "8e66f2e2688ad55ad2e7d7f39254e4a5ca0197205846d4163c3f118b6f973a9f",
+    "bytes": 20859
+  },
+  {
+    "from": "apps/aggregator/data/audit-i-chiffres.md",
+    "to": "audits/legacy-aggregator-reports/audit-i-chiffres.md",
+    "sha256": "2f75f5f7d405dc12836e9fe65732b51d657de3f1c0bb34da3fbdde6db1234707",
+    "bytes": 19104
+  },
+  {
+    "from": "apps/aggregator/data/audit-i-historisation.md",
+    "to": "audits/legacy-aggregator-reports/audit-i-historisation.md",
+    "sha256": "72fee0517149f49f1b57a50d8868dffdf03bf374e3a82aca23ccf9d20d8220b1",
+    "bytes": 17109
+  },
+  {
+    "from": "apps/aggregator/data/audit-i-seo-perf-secu.md",
+    "to": "audits/legacy-aggregator-reports/audit-i-seo-perf-secu.md",
+    "sha256": "687597308cebdfef7420c0e3ddda19242cc15a6f92a0b53dceeb16e26d1b7eb4",
+    "bytes": 21461
+  },
+  {
+    "from": "apps/aggregator/data/audit-i-taxonomie.md",
+    "to": "audits/legacy-aggregator-reports/audit-i-taxonomie.md",
+    "sha256": "a74c99c46ead47c8e8424594a2a92a3816a640210eb6580e6712fc1bea397a05",
+    "bytes": 36473
+  },
+  {
+    "from": "apps/aggregator/data/audit-ux-a-design.md",
+    "to": "audits/legacy-aggregator-reports/audit-ux-a-design.md",
+    "sha256": "0083a33c0a99a4abffa869ddd0ef18430373a9cd3f7131c8e4d0bb11afc5167f",
+    "bytes": 30569
+  },
+  {
+    "from": "apps/aggregator/data/audit-ux-b-technique.md",
+    "to": "audits/legacy-aggregator-reports/audit-ux-b-technique.md",
+    "sha256": "d0604f66cb9beafc29df0130de779d3b1e4d76fa4621b5b8a5a3a53f05c604a0",
+    "bytes": 30917
+  },
+  {
+    "from": "apps/aggregator/data/g1-rapport.md",
+    "to": "audits/legacy-aggregator-reports/g1-rapport.md",
+    "sha256": "7ff8c0009cd525bf316fb5e91426fcdc07dd446cc4a990dea03bd34116c0ef6b",
+    "bytes": 24151
+  },
+  {
+    "from": "apps/aggregator/data/g2-rapport.md",
+    "to": "audits/legacy-aggregator-reports/g2-rapport.md",
+    "sha256": "d63606df99d8b2c784c76f02874c2c574ad04985869441a7c4683cf45b63a767",
+    "bytes": 18831
+  },
+  {
+    "from": "apps/aggregator/data/g3-rapport.md",
+    "to": "audits/legacy-aggregator-reports/g3-rapport.md",
+    "sha256": "3087a95cec32af4599fb274ea4a13dacb5e6aeed518a02fe44570fcc2afffa35",
+    "bytes": 19757
+  },
+  {
+    "from": "apps/aggregator/data/g4-rapport.md",
+    "to": "audits/legacy-aggregator-reports/g4-rapport.md",
+    "sha256": "1923af648c5777fd61bac6138c9167bc39dd0749275bc10f631334d16660cc45",
+    "bytes": 14139
+  },
+  {
+    "from": "apps/aggregator/data/g5-rapport.md",
+    "to": "audits/legacy-aggregator-reports/g5-rapport.md",
+    "sha256": "3ef0063eaf2adec3c942e185c5731db9ac3e62162031972ef165594002994ebd",
+    "bytes": 14588
+  },
+  {
+    "from": "apps/aggregator/data/g6-rapport.md",
+    "to": "audits/legacy-aggregator-reports/g6-rapport.md",
+    "sha256": "f1308f0391fa29581cf0832ca4d4bf1a7455a63033777c46927f8f9d2458daa8",
+    "bytes": 17755
+  },
+  {
+    "from": "apps/aggregator/data/g7-rapport.md",
+    "to": "audits/legacy-aggregator-reports/g7-rapport.md",
+    "sha256": "2e4b50b07d3fb53700a74e43135feebac1a9a7fe91dc98582c9d01a43bcd6f95",
+    "bytes": 13599
+  },
+  {
+    "from": "apps/aggregator/data/l2-rapport.md",
+    "to": "audits/legacy-aggregator-reports/l2-rapport.md",
+    "sha256": "583dbe3d96db980ecd02d947af93ec2e83f3307aace1d6e43dcb1979e9197cec",
+    "bytes": 15619
+  },
+  {
+    "from": "apps/aggregator/data/l4-rapport.md",
+    "to": "audits/legacy-aggregator-reports/l4-rapport.md",
+    "sha256": "0ce439c9b30c13eb3d0334c30c7f8069614730932a76e51e022c95fc42fda624",
+    "bytes": 17206
+  },
+  {
+    "from": "apps/aggregator/data/w-intelligence-rapport.md",
+    "to": "audits/legacy-aggregator-reports/w-intelligence-rapport.md",
+    "sha256": "013374214fc037b21ae2400e29aa07aeda6717db51e9ef855b530e59c0fae182",
+    "bytes": 10107
+  },
+  {
+    "from": "apps/aggregator/data/w1-rapport.md",
+    "to": "audits/legacy-aggregator-reports/w1-rapport.md",
+    "sha256": "4766113c78944901b04d85e5286f22c94a702ef05dbdcecdaab044887059ef48",
+    "bytes": 17031
+  },
+  {
+    "from": "apps/aggregator/data/xlsx-bilan.md",
+    "to": "audits/legacy-aggregator-reports/xlsx-bilan.md",
+    "sha256": "d2ebdbf37297e31eac17f4163414219951d628f64dc264d7a8ad3ac6a1aa917e",
+    "bytes": 2437
+  },
+  {
+    "from": "README.md",
+    "to": "audits/legacy-aggregator-reports/project-readme-before-20260910.md",
+    "sha256": "e1310814ecfdc837b4e8bb6edb25e4f77f20290328d686558bbaffa2ac0774f5",
+    "bytes": 7320
+  }
+]

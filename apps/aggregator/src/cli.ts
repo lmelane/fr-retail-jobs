@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import { startObservability } from './observability/runtime.js';
 import { ObservabilityUnavailableError } from './observability/logger.js';
 import { log } from './observability/logger.js';
@@ -204,7 +205,7 @@ try {
     await log.info('command.result', { ok: true, command, ...(await runReconcile(prisma)) });
   } else if (command === 'import-sources') {
     /**
-     * One-shot seed of the Source table (DEC-3) from data/sources.csv.
+     * One-shot seed of the Source table (DEC-3) from data/seeds/sources.csv.
      * Idempotent: re-running updates, never duplicates. After this, the CSV is
      * dead weight — every runtime consumer reads the table.
      */
@@ -232,21 +233,6 @@ try {
     const key = process.argv[3];
     if (!key || key.startsWith('--')) throw new Error('promote needs the sourceKey to promote');
     await log.info('command.result', { ok: true, command, ...(await promoteSource(prisma, key)) });
-  } else if (command === 'promote-validated') {
-    /**
-     * C-02 : promotion en lot depuis un rapport de validation-volume. La barre
-     * du plan par ligne : ≥ 1 offre parsée AVEC lieu, verdict robots lu à la
-     * source et daté, tenant unique. Usage :
-     *   promote-validated --report=data/validation.generiques.tsv --input=data/sources.gated.csv
-     */
-    const { promoteValidated } = await import('./discovery/promoteValidated.js');
-    const argOf = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
-    const report = argOf('report');
-    const input = argOf('input');
-    if (!report || !input) throw new Error('promote-validated needs --report=<tsv> and --input=<gated csv>');
-    const stats = await promoteValidated(prisma, report, input);
-    await log.info('command.result', { ok: stats.failed.length === 0, command, ...stats });
-    if (stats.failed.length > 0) process.exitCode = 1;
   } else if (command === 'retire-source') {
     /**
      * Cleans up after a catalogue line is removed (a robots-forbidden route, an
@@ -293,7 +279,7 @@ try {
      */
     const { applyDomainSheet } = await import('./pipeline/applyDomainSheet.js');
     const file = process.argv.find((a) => a.startsWith('--file='))?.slice('--file='.length)
-      ?? 'data/maisons-domaines-loic.tsv';
+      ?? fileURLToPath(new URL('../data/imports/maisons-domaines-loic.tsv', import.meta.url));
     const stats = await applyDomainSheet(prisma, file, { apply: process.argv.includes('--apply') });
     await log.info('command.result', { ok: true, command, file, ...stats });
   } else if (command === 'occupation-review-queue') {
@@ -342,28 +328,6 @@ try {
     await log.info('command.result', { ok: true, command, ...(await runGeocode(prisma)) });
   } else if (command === 'stats') {
     await log.info('command.result', { ok: true, ...(await runStats(prisma)) });
-  } else if (command === 'purge') {
-    /**
-     * Deletes every job and every company, so the next ingest rebuilds from
-     * scratch.
-     *
-     * Needed because rows written by earlier code cannot be repaired in place:
-     * offers ingested before the adapters fetched descriptions have none, and
-     * offers written before Company.sector existed all read "UNKNOWN". Both
-     * were visible in the UI as empty postings and a wall of UNKNOWN, and
-     * neither is a display bug — the data itself is from an older pipeline.
-     *
-     * Guarded by an explicit argument: this is not something to run by
-     * accident, and there is no undo.
-     */
-    if (process.argv[3] !== '--yes') {
-      throw new Error('purge deletes ALL jobs and companies. Re-run with: purge --yes');
-    }
-    // JobSource cascades from Job; GeoCache is kept, since geocoding a city
-    // again would re-ask the government API for answers we already have.
-    const jobs = await prisma.job.deleteMany({});
-    const companies = await prisma.company.deleteMany({});
-    await log.info('command.result', { ok: true, command, deletedJobs: jobs.count, deletedCompanies: companies.count });
   } else if (command === 'export-companies') {
     const output = process.argv[3] ?? 'companies.csv';
     await log.info('command.result', { ok: true, ...(await exportCompanies(prisma, output)) });
@@ -371,19 +335,22 @@ try {
     /**
      * ATS discovery over a roster of Maisons (decision, 2026-09-02): open each
      * Maison's site in a browser, detect its ATS (following the careers link one
-     * hop), and write confirmed sources to data/sources.discovered.csv for HUMAN
+     * hop), and write source candidates to the explicit output directory for HUMAN
      * REVIEW — never straight into sources.csv. Resumable: a re-run skips what is
      * already processed. `--input=<nom,url.csv>` (required), `--limit=<n>` caps
      * this run, `--fresh` restarts from scratch, `--concurrency=<n>`.
      */
     const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
     const inputFile = arg('input');
-    if (!inputFile) throw new Error('discover needs --input=<nom,url CSV>');
+    const outputDir = arg('output-dir');
+    if (!inputFile || !outputDir) throw new Error('discover needs --input=<CSV> --output-dir=<run directory>');
     const limit = Number(arg('limit') ?? 0);
     const concurrency = Number(arg('concurrency') ?? 3);
     const fresh = process.argv.includes('--fresh');
     const result = await discoverMaisons({
       inputFile,
+      outputDir,
+      deadList: arg('dead-list'),
       prisma,
       limit: Number.isFinite(limit) ? limit : 0,
       concurrency: Number.isFinite(concurrency) && concurrency > 0 ? concurrency : 3,

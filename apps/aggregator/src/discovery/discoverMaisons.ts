@@ -1,5 +1,5 @@
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { dirname, resolve, relative, isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pLimit from 'p-limit';
 import type { PrismaClient } from '@prisma/client';
@@ -7,7 +7,7 @@ import { inspectCareerPage } from '../ats/detect.js';
 import { probeAtsBySlug } from './atsProbe.js';
 import { fetchRenderedHtml } from '../lib/browser.js';
 import { catalogueKindForAts } from '../ats/catalogKinds.js';
-import { parseCsvLine } from './validateDiscovered.js';
+import { parseCsvLine } from '../lib/csv.js';
 import { createHash } from 'node:crypto';
 import type { AtsDetection } from '../types.js';
 
@@ -45,29 +45,13 @@ export type DiscoveryRow = {
 
 type RosterEntry = { name: string; url?: string };
 
-const dataUrl = (name: string) => fileURLToPath(new URL(`../../data/${name}`, import.meta.url));
-const OUT_PATH = dataUrl('sources.discovered.csv');
-/** One line per Maison already processed (name<TAB>status<TAB>kind), for resume. */
-const PROGRESS_PATH = dataUrl('discovery.progress.v2.jsonl');
-/** Maisons auto-discovery could NOT resolve — the queue for the manual pass. */
-const UNRESOLVED_PATH = dataUrl('sources.unresolved.csv');
-/**
- * Domains proven dead by the reachability sweep — each line carries its
- * evidence (cause, the resolvers that confirmed a DNS death: 1.1.1.1+8.8.8.8,
- * never the system resolver alone — see the poisoned-cache incident) and its
- * check date. Excluded from discovery runs (decision Loïc, 2026-09-03), but a
- * dead domain is not dead forever: past DEAD_RECHECK_DAYS the entry expires
- * and the Maison re-enters the queue, so a resurrected brand is found again
- * without anyone remembering to run anything.
- */
-const DEAD_PATH = dataUrl('unresolved.dead.tsv');
 const DEAD_RECHECK_DAYS = Number(process.env.DEAD_RECHECK_DAYS ?? 30);
 
-export function loadDeadNames(now = new Date()): Set<string> {
-  if (!existsSync(DEAD_PATH)) return new Set();
+export function loadDeadNames(file: string | undefined, now = new Date()): Set<string> {
+  if (!file) return new Set();
   const cutoff = now.getTime() - DEAD_RECHECK_DAYS * 86_400_000;
   const dead = new Set<string>();
-  for (const line of readFileSync(DEAD_PATH, 'utf8').split(/\r?\n/).slice(1)) {
+  for (const line of readFileSync(file, 'utf8').split(/\r?\n/).slice(1)) {
     const [name, , , , , checkedAt] = line.split('\t');
     if (!name) continue;
     // No date (legacy line) or a stale check: the verdict has expired.
@@ -101,10 +85,10 @@ export function discoveryTaskKey(row: RosterEntry): string {
 }
 
 /** Successful observations expire; failures remain eligible for an explicit next run. */
-export function loadProcessed(now = Date.now()): Set<string> {
-  if (!existsSync(PROGRESS_PATH)) return new Set();
+export function loadProcessed(progressPath: string, now = Date.now()): Set<string> {
+  if (!existsSync(progressPath)) return new Set();
   const done = new Set<string>();
-  for (const line of readFileSync(PROGRESS_PATH, 'utf8').split('\n').filter(Boolean)) {
+  for (const line of readFileSync(progressPath, 'utf8').split('\n').filter(Boolean)) {
     const row = JSON.parse(line);
     if (['ats', 'generic'].includes(row.status) && now - Date.parse(row.checkedAt) < 7 * 86400000) done.add(row.taskKey);
   }
@@ -131,9 +115,25 @@ function toCsvLine(row: DiscoveryRow): string {
   ].join(',');
 }
 
+/** Discovery outputs must not accumulate in the checked-in application tree. */
+export function discoveryOutputDirectory(directory: string): string {
+  if (!directory?.trim()) throw new Error('Discovery requires an explicit output directory');
+  const output = resolve(directory);
+  const application = fileURLToPath(new URL('../../', import.meta.url));
+  const within = relative(application, output);
+  if (within === '' || (!within.startsWith('..' + '/') && within !== '..' && !isAbsolute(within))) {
+    throw new Error('Discovery output must be outside apps/aggregator');
+  }
+  return output;
+}
+
 export async function discoverMaisons(options: {
   /** A `nom,url` CSV roster (required at scale — the world list). */
   inputFile: string;
+  /** Required run directory outside application/reference files. */
+  outputDir: string;
+  /** Optional dated DNS evidence; no implicit historical deny-list. */
+  deadList?: string;
   /** For the already-catalogued check — the Source table is the catalogue (DEC-3). */
   prisma: PrismaClient;
   /** Cap the number of Maisons processed this run; 0 = all remaining. */
@@ -143,11 +143,15 @@ export async function discoverMaisons(options: {
   /** Re-process everything, ignoring the resume log. */
   fresh?: boolean;
 }): Promise<{ processed: number; discovered: number; skipped: number; unresolved: number; outPath: string }> {
+  const output = discoveryOutputDirectory(options.outputDir);
+  const OUT_PATH = resolve(output, 'sources.discovered.csv');
+  const PROGRESS_PATH = resolve(output, 'progress.jsonl');
+  const UNRESOLVED_PATH = resolve(output, 'sources.unresolved.csv');
   const concurrency = options.concurrency ?? 3;
 
   // Company presence does not establish coverage of every regional/brand portal.
   // Deduplication happens on the exact research task and later on source identity.
-  const processed = options.fresh ? new Set<string>() : loadProcessed();
+  const processed = options.fresh ? new Set<string>() : loadProcessed(PROGRESS_PATH);
 
   // Prepare output files. The review CSV gets a header once; results are appended
   // as they resolve, so a crash keeps everything found so far.
@@ -167,7 +171,7 @@ export async function discoverMaisons(options: {
   if (options.fresh) writeFileSync(PROGRESS_PATH, '', 'utf8');
 
   const roster = parseRosterCsv(readFileSync(options.inputFile, 'utf8'));
-  const dead = loadDeadNames();
+  const dead = loadDeadNames(options.deadList);
   let queue = [...new Map(roster.map(row => [discoveryTaskKey(row), row])).values()].filter(
     (c) =>
       !processed.has(discoveryTaskKey(c)) &&

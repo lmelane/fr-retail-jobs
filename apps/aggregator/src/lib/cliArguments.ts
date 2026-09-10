@@ -1,4 +1,4 @@
-type CommandOptions = { values?: string[]; flags?: string[]; positional?: 'required' | 'optional' };
+type CommandOptions = { values?: string[]; flags?: string[]; positional?: 'required' | 'optional'; requiredValues?: string[] };
 /** Commands declare their accepted scope before any database or network work.
  * Unknown/empty flags must never turn a bounded request into a global run. */
 const COMMANDS: Record<string, CommandOptions> = {
@@ -7,7 +7,6 @@ const COMMANDS: Record<string, CommandOptions> = {
   snapshot: { values: ['date','backfill-from'] }, 'import-sources': {},
   'identity-profile': { positional: 'required' }, promote: { positional: 'required' },
   'review-source-identity': { values: ['record','artifact'], flags: ['apply'] },
-  'promote-validated': { values: ['report','input'] },
   'retire-source': { positional: 'required', values: ['external-prefix'] },
   'separate-fused': {}, 'resolve-domains': { values: ['limit'], flags: ['dry-run'] },
   'apply-domain-sheet': { values: ['file'], flags: ['apply'] },
@@ -15,9 +14,9 @@ const COMMANDS: Record<string, CommandOptions> = {
   'occupation-preview': { values: ['file','output'] },
   'occupation-activate': { values: ['file','output','review','commit'], flags: ['apply'] },
   'classify-jobs': { values: ['limit','expected-release'], flags: ['all','dry-run'] },
-  geocode: {}, stats: {}, purge: { flags: ['yes'] },
+  geocode: {}, stats: {},
   'export-companies': { positional: 'optional' },
-  discover: { values: ['input','limit','concurrency'], flags: ['fresh'] },
+  discover: { values: ['input','output-dir','dead-list','limit','concurrency'], requiredValues: ['input','output-dir'], flags: ['fresh'] },
 };
 
 export function validateCliArguments(command: string, args: string[]): void {
@@ -40,5 +39,6 @@ export function validateCliArguments(command: string, args: string[]): void {
       if (!Number.isSafeInteger(value) || value < (name === 'concurrency' ? 1 : 0)) throw new Error('Invalid numeric limit');
     }
   }
+  for (const name of spec.requiredValues ?? []) if (!seen.has(name)) throw new Error(`Missing required --${name}=value`);
   if (spec.positional === 'required' && positionals !== 1) throw new Error('A source key is required');
 }

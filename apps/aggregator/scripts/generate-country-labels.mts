@@ -7,7 +7,7 @@ import { resolve } from 'node:path';
 import { createHash } from 'node:crypto';
 import { parseArgs } from 'node:util';
 import { normalizeCountry } from '../src/normalize/country.js';
-const file=fileURLToPath(new URL('../data/country-labels.json',import.meta.url));
+const file=fileURLToPath(new URL('../data/reference/country-labels.json',import.meta.url));
 const previous=JSON.parse(readFileSync(file,'utf8'));
 const {values}=parseArgs({options:{write:{type:'boolean'},'cldr-dir':{type:'string'},version:{type:'string'}}});
 if(process.versions.icu!==previous.provenance.icu || process.versions.cldr!==previous.provenance.cldr) throw Error(`Reference runtime required: ICU ${previous.provenance.icu}, CLDR ${previous.provenance.cldr}; review a new release before changing them`);

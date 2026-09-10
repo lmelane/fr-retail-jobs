@@ -30,7 +30,7 @@ try {
       const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
       if (!/^[a-f0-9]{40}$/.test(commit) || commit !== head) throw new Error('Production repair must run the identified committed checkout');
       execFileSync('git', ['merge-base', '--is-ancestor', commit, 'origin/main']);
-      const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=all', '--', 'apps/aggregator/src', 'packages/db', 'package.json', 'package-lock.json', 'apps/aggregator/package.json', 'apps/aggregator/data/maisons.csv'], { encoding: 'utf8' }).trim();
+      const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=all', '--', 'apps/aggregator/src', 'packages/db', 'package.json', 'package-lock.json', 'apps/aggregator/package.json', 'apps/aggregator/data/reference/maisons.csv'], { encoding: 'utf8' }).trim();
       if (dirty) throw new Error('Production repair requires clean committed application code, schema and reference data');
     }
     console.log(JSON.stringify({ batchId: plan.batchId, hash: digest(plan), ...await applyRepairPlan(prisma, plan, arg('--sha'), commit) }, null, 2));

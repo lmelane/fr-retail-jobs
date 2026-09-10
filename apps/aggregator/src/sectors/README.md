@@ -6,9 +6,9 @@ Use a JSON manifest with `reviewer`, optional `concepts` (code, slug, labels.fr/
 
 1. Resolve the employer through the Lot 1 procedure. Keep sources and occupations separate.
 2. Prepare evidence and an exact canonical employer ID. For a new employer, create its identity first; offers remain visible while sector evidence is pending.
-3. `npx tsx apps/aggregator/src/sectors/cli.mts preview manifest.json reviewed-plan.json`
+3. `npx tsx apps/aggregator/scripts/sectors/cli.mts preview manifest.json reviewed-plan.json`
 4. Inspect the complete before/after plan. Unknown concepts, evidence gaps and duplicate memberships are rejected.
-5. `npx tsx apps/aggregator/src/sectors/cli.mts apply reviewed-plan.json FULL_MERGED_COMMIT_SHA`
+5. `npx tsx apps/aggregator/scripts/sectors/cli.mts apply reviewed-plan.json FULL_MERGED_COMMIT_SHA`
 6. Reapply: zero writes. Read counts through DB/API and queue unresolved memberships with `cli.mts queue pending.json`.
 
 No application deployment is needed for another reviewed membership, concept or translation. Changing the meaning/slug of an existing concept is forbidden; introduce a new concept and review the transition. Definitions and reviews cannot be deleted. A merge of employers must first review the union of proven memberships for the surviving identity; a DB guard prevents silently discarding a sector.

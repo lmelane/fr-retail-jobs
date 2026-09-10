@@ -11,7 +11,7 @@ it('rejects unsupported scope flags instead of widening an ingestion run', () =>
 it('preserves valid operational commands and rejects ambiguous values', () => {
   expect(() => validateCliArguments('retire-source',['source-key','--external-prefix=https://'])).not.toThrow();
   expect(() => validateCliArguments('export-companies',['output.csv'])).not.toThrow();
-  expect(() => validateCliArguments('discover',['--input=roster.csv','--limit=50','--concurrency=2','--fresh'])).not.toThrow();
+  expect(() => validateCliArguments('discover',['--input=roster.csv','--output-dir=/tmp/discovery','--limit=50','--concurrency=2','--fresh'])).not.toThrow();
   for (const args of [['--limit=NaN'],['--limit=-1'],['--limit=2.5']]) expect(() => validateCliArguments('classify-jobs',args)).toThrow();
   expect(() => validateCliArguments('promote',[])).toThrow();
 });
@@ -22,4 +22,9 @@ it('fails the actual CLI before observability, database or egress initialization
   const records=result.stdout.trim().split('\n').map(line=>JSON.parse(line));
   expect(records).toHaveLength(1); expect(records[0]).toMatchObject({event:'command.invalid_arguments',durable:false,data:{workStarted:false}});
   expect(result.stdout).toContain('Unsupported option'); expect(result.stdout).not.toContain('run.started');
+});
+
+it('requires isolated discovery output and rejects retired unsafe commands', () => {
+  expect(() => validateCliArguments('discover',['--input=roster.csv'])).toThrow();
+  for (const command of ['purge', 'promote-validated']) expect(() => validateCliArguments(command,[])).toThrow();
 });

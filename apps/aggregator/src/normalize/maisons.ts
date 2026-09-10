@@ -11,7 +11,7 @@ import type { Sector } from './sector.js';
  * list will ever hold the long tail of independent French houses, so the data
  * drives the filter rather than the other way round.
  *
- * data/maisons.csv is built from sources that were actually fetched — the LVMH
+ * data/reference/maisons.csv is built from sources that were actually fetched — the LVMH
  * jobhub API, catwalks.io, the Fédération de la Haute Couture, the Comité Colbert,
  * the GFF façonniers directory and group brand pages — each row carrying its
  * origin and a confidence level.
@@ -26,7 +26,7 @@ export type MaisonEntry = {
   confidence: 'HIGH' | 'MEDIUM' | 'LOW';
 };
 
-const CSV_PATH = fileURLToPath(new URL('../../data/maisons.csv', import.meta.url));
+const CSV_PATH = fileURLToPath(new URL('../../data/reference/maisons.csv', import.meta.url));
 
 /** Minimal RFC-4180 row parser: fields may be quoted and contain commas. */
 function parseCsvLine(line: string): string[] {

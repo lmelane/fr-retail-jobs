@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { loadMaisons, findMaison } from './maisons.js';
 
 /**
- * Behaviour these tests pin down (BDD): data/maisons.csv ships with CRLF line
+ * Behaviour these tests pin down (BDD): data/reference/maisons.csv ships with CRLF line
  * endings, so a naive split on '\n' leaves a trailing '\r' on the last field of
  * every non-final row. That made `confidence` read as "HIGH\r", which is neither
  * 'HIGH' nor a value any consumer can compare against. The parser must strip the

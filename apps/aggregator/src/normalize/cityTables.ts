@@ -14,8 +14,8 @@ import { fileURLToPath } from 'node:url';
  *   mesuré en prod le 2026-09-06).
  */
 
-const EXONYMS_PATH = fileURLToPath(new URL('../../data/villes-exonymes.csv', import.meta.url));
-const NON_PLACES_PATH = fileURLToPath(new URL('../../data/villes-non-lieux.csv', import.meta.url));
+const EXONYMS_PATH = fileURLToPath(new URL('../../data/reference/villes-exonymes.csv', import.meta.url));
+const NON_PLACES_PATH = fileURLToPath(new URL('../../data/reference/villes-non-lieux.csv', import.meta.url));
 
 export type Exonym = { display: string; onlyForCountry?: string };
 

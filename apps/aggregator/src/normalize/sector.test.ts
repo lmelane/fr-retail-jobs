@@ -38,7 +38,7 @@ describe('classifySector — ambiguous brand tokens no longer admit out-of-verti
 
 describe('classifySector — real fashion / luxury houses stay in scope', () => {
   it('keeps verified reference-list houses in scope', () => {
-    // Read from data/maisons.csv: real rows across every core segment.
+    // Read from data/reference/maisons.csv: real rows across every core segment.
     expect(verdict('Sephora').inScope).toBe(true);
     expect(verdict('Louis Vuitton').inScope).toBe(true);
     expect(verdict('Cartier').inScope).toBe(true);

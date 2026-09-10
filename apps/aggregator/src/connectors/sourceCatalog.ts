@@ -1,9 +1,10 @@
+import { parseCsvLine } from '../lib/csv.js';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import type { SourceTier } from '../dedup/match.js';
 
 /**
- * The verified source catalogue, loaded from data/sources.csv.
+ * Explicit import seed loaded from data/seeds/sources.csv; not the active catalogue.
  *
  * Kept as data rather than code because the list grows by discovery, not by
  * engineering: adding a house that runs Teamtailor or Phenom is a CSV row, and
@@ -42,33 +43,9 @@ export type CatalogSource = {
   jobCount: number;
 };
 
-const CSV_PATH = fileURLToPath(new URL('../../data/sources.csv', import.meta.url));
+const CSV_PATH = fileURLToPath(new URL('../../data/seeds/sources.csv', import.meta.url));
 
-/** Minimal RFC-4180 row parser: fields may be quoted and contain commas. */
-function parseCsvLine(line: string): string[] {
-  const fields: string[] = [];
-  let current = '';
-  let inQuotes = false;
 
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    if (char === '"') {
-      if (inQuotes && line[i + 1] === '"') {
-        current += '"';
-        i++;
-      } else {
-        inQuotes = !inQuotes;
-      }
-    } else if (char === ',' && !inQuotes) {
-      fields.push(current);
-      current = '';
-    } else {
-      current += char;
-    }
-  }
-  fields.push(current);
-  return fields;
-}
 
 let cache: CatalogSource[] | null = null;
 

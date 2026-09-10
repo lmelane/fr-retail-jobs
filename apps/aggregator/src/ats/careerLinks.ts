@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import { readFileSync } from 'node:fs';
 
-const signals = JSON.parse(readFileSync(new URL('../../data/discovery-career-signals.json', import.meta.url), 'utf8')) as {
+const signals = JSON.parse(readFileSync(new URL('../../data/reference/discovery-career-signals.json', import.meta.url), 'utf8')) as {
   words: string[]; phrases: string[]; unsegmented: string[]; conditionalWords: string[];
   consumerPatterns: string[]; excludedPatterns: string[]; urlPatterns: string[]; conditionalUrlPatterns: string[];
 };

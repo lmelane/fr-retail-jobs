@@ -1,0 +1,1391 @@
+{
+  "at": "2026-09-10T11:15:14.513993+00:00",
+  "baseCommit": "72f2a6575aae56e5afed1f12b1a9f838880819b8",
+  "scope": "Local cleanup; no ingestion, production mutation, cron change or deployment",
+  "counts": {
+    "obsoleteToolsRemoved": 96,
+    "maintainedToolFilesMoved": 32,
+    "dataFilesReorganized": 74,
+    "historicalReportsMovedPreviously": 24,
+    "historicalOutputsMoved": 64,
+    "applicationFilesAfter": 431
+  },
+  "checks": {
+    "allMovesAccountedFor": true,
+    "allDataContentsPreserved": true,
+    "preexistingDeveloperFilesPreserved": 3,
+    "pythonSyntax": "PASS",
+    "localDocumentationLinks": "PASS",
+    "requiredReferences": "PASS",
+    "layoutNegativeWitness": "PASS: accidental data export rejected",
+    "countryReference": "PASS: 251 codes / 6232 labels; no rewrite",
+    "typecheck": "PASS: aggregator, maintained scripts, web",
+    "aggregatorUnit": {
+      "passed": 1694
+    },
+    "aggregatorIntegration": {
+      "passed": 265,
+      "database": "dedicated local test database"
+    },
+    "webUnit": {
+      "passed": 98
+    },
+    "webDatabase": {
+      "passed": 14,
+      "repeatPassed": 14,
+      "database": "dedicated local test database"
+    },
+    "realCorpusWebTests": {
+      "notRun": 4,
+      "reason": "Separate opt-in corpus suite; not part of this cleanup validation"
+    },
+    "dockerBuild": {
+      "status": "PASS",
+      "previousFailure": "Local Colima disk full; repaired without deleting data",
+      "proof": "docker-recovery.json",
+      "imageId": "sha256:dd274b44c338afa2c75d165d327f1fbe699662eca2789a5ecd0f585efda4b421"
+    },
+    "gitDiffWhitespace": "PASS"
+  },
+  "behaviourChanges": [
+    "Removed obsolete purge and promote-validated CLI commands; current reviewed promotion is retained",
+    "Discovery requires --input and --output-dir; no outputs inside apps/aggregator; optional explicit --dead-list",
+    "Discovery progress is scoped to the output directory",
+    "apply-domain-sheet default is resolved relative to the module rather than the shell directory",
+    "Scripts are checked by TypeScript and CI layout validation",
+    "Web test review identity is unique per execution, respecting immutable review history"
+  ],
+  "notFixedByCleanup": [
+    "Certification validator divergence",
+    "Legacy source identity certification backlog",
+    "Tracker current-proof defects",
+    "Worldwide completeness and public parity backlog",
+    "Private operational release wrappers still need repository integration"
+  ],
+  "moves": [
+    {
+      "from": "apps/aggregator/src/coverage/location-audit.py",
+      "to": "apps/aggregator/scripts/coverage/location-audit.py",
+      "sha256": "1aa24519e73b22f3591aeafc8351e16633c1e5597ca52aadd0b5aafdd5c58c0e",
+      "bytes": 1473
+    },
+    {
+      "from": "apps/aggregator/src/coverage/build-inventory.py",
+      "to": "apps/aggregator/scripts/coverage/build-inventory.py",
+      "sha256": "4e479eca4f10f7304e85249fe0f5981d2e329f05484c757544229c98e81f397e",
+      "bytes": 5972
+    },
+    {
+      "from": "apps/aggregator/src/coverage/proof-dimensions.py",
+      "to": "apps/aggregator/scripts/coverage/proof-dimensions.py",
+      "sha256": "e46c150ab130dcd8619b4f2098daf8e1b95efb739c74e7a1e56ce14fe62fefd6",
+      "bytes": 10688
+    },
+    {
+      "from": "apps/aggregator/src/coverage/extract-portfolios.mts",
+      "to": "apps/aggregator/scripts/coverage/extract-portfolios.mts",
+      "sha256": "8d7306656800672e98a1581738de088ae169e78739141b5ffb3abf7f2a25563b",
+      "bytes": 2337
+    },
+    {
+      "from": "apps/aggregator/src/coverage/probe-sources.py",
+      "to": "apps/aggregator/scripts/coverage/probe-sources.py",
+      "sha256": "b0d1b34f4f0c1acc0eda22fb37b55fd921995d1a48ea04a957162ea387e1528f",
+      "bytes": 3346
+    },
+    {
+      "from": "apps/aggregator/src/coverage/probe-worker.mts",
+      "to": "apps/aggregator/scripts/coverage/probe-worker.mts",
+      "sha256": "941f5eb693d800613213a14ac7ac11660795ee76a21ecbe14fdb2b0e8cac2ea0",
+      "bytes": 5002
+    },
+    {
+      "from": "apps/aggregator/src/coverage/per-source-table.py",
+      "to": "apps/aggregator/scripts/coverage/per-source-table.py",
+      "sha256": "171656441a5e2925ba024064c4a65c6726bc66f7792c3519017b77a4cdcb33f8",
+      "bytes": 3675
+    },
+    {
+      "from": "apps/aggregator/src/coverage/dedup-unvisited.py",
+      "to": "apps/aggregator/scripts/coverage/dedup-unvisited.py",
+      "sha256": "05e4544b43beba13b3c4e7360ddd548efe0cefe4c3d22c2f0873b44e35c706d6",
+      "bytes": 2350
+    },
+    {
+      "from": "apps/aggregator/src/coverage/compose-inventory.py",
+      "to": "apps/aggregator/scripts/coverage/compose-inventory.py",
+      "sha256": "765d29251d4c71740f5ad9c1912686dfed8049468455b2baa4548f0f153da817",
+      "bytes": 4248
+    },
+    {
+      "from": "apps/aggregator/src/coverage/research-portals.mts",
+      "to": "apps/aggregator/scripts/coverage/research-portals.mts",
+      "sha256": "a8cd893e971818924544de8be3ee39706a56edc0f404266fd03a4bb25dacaee7",
+      "bytes": 8403
+    },
+    {
+      "from": "apps/aggregator/src/coverage/candidates-review-sheet.py",
+      "to": "apps/aggregator/scripts/coverage/candidates-review-sheet.py",
+      "sha256": "29a27784e507cc1b3a640a073b78e37083452e20030f7a45eb46db6a05ec04a5",
+      "bytes": 3254
+    },
+    {
+      "from": "apps/aggregator/src/coverage/metrics-summary.py",
+      "to": "apps/aggregator/scripts/coverage/metrics-summary.py",
+      "sha256": "40477ce50fd326ba2df3b0231299da3d997c6dc9f974d6452873d8f82d847363",
+      "bytes": 2651
+    },
+    {
+      "from": "apps/aggregator/src/coverage/snapshot.mts",
+      "to": "apps/aggregator/scripts/coverage/snapshot.mts",
+      "sha256": "b19ae0c9f44631ff546717dc7e8cd03bc3add01e3e58ba07abd460d586cba0e5",
+      "bytes": 4381
+    },
+    {
+      "from": "apps/aggregator/src/coverage/orchestrate.py",
+      "to": "apps/aggregator/scripts/coverage/orchestrate.py",
+      "sha256": "62bad14cdb29cc712dc9a89944924ce0492b165f3d6bc1ba62c323173ce81fe1",
+      "bytes": 8226
+    },
+    {
+      "from": "apps/aggregator/src/coverage/qualify-tracker.py",
+      "to": "apps/aggregator/scripts/coverage/qualify-tracker.py",
+      "sha256": "b83c19b5249618cf375eab11c47f2c89537695213ae95c5fffc9e0798b60cb9f",
+      "bytes": 28388
+    },
+    {
+      "from": "apps/aggregator/src/coverage/README.md",
+      "to": "apps/aggregator/scripts/coverage/README.md",
+      "sha256": "e7ea97fbf41fb1c6a4d3f528e86fc40967d842a6d2ace5b98531539ebf622f01",
+      "bytes": 5981
+    },
+    {
+      "from": "apps/aggregator/src/coverage/compose-portfolio-input.py",
+      "to": "apps/aggregator/scripts/coverage/compose-portfolio-input.py",
+      "sha256": "5e0ee8c654427392cdd84aaa476b3910f7f71b82d45ddc29f8ffbc5a2c75874c",
+      "bytes": 3014
+    },
+    {
+      "from": "apps/aggregator/src/coverage/completeness-reconciliation.py",
+      "to": "apps/aggregator/scripts/coverage/completeness-reconciliation.py",
+      "sha256": "db102628a4aa991e9924cf086df10a6652c8c9c3c88c74f370bf3031dd5d3426",
+      "bytes": 6122
+    },
+    {
+      "from": "apps/aggregator/src/coverage/qualify-candidates.mts",
+      "to": "apps/aggregator/scripts/coverage/qualify-candidates.mts",
+      "sha256": "c78b04b88faf341739d154c8a3646e02d48c0d9617de75fd9bb96a57164bcbb6",
+      "bytes": 7610
+    },
+    {
+      "from": "apps/aggregator/src/coverage/portfolio-selectors.json",
+      "to": "apps/aggregator/scripts/coverage/portfolio-selectors.json",
+      "sha256": "f0e71d364a6b1fa5f2c79262d7d4b5c97de6ac8f243c879e96d0c9555bf0e75d",
+      "bytes": 994
+    },
+    {
+      "from": "apps/aggregator/src/coverage/candidates-prescreen.py",
+      "to": "apps/aggregator/scripts/coverage/candidates-prescreen.py",
+      "sha256": "42d9715d9340075c89e8b586d9f89db3618dbb5bc919cd58153299fd068d21b9",
+      "bytes": 4070
+    },
+    {
+      "from": "apps/aggregator/data/xlsx-validation.tsv",
+      "to": "audits/legacy-aggregator-data/xlsx-validation.tsv",
+      "sha256": "d0f6e318588f3e1eead00d008d22fd6494c990e01354df833a8ccd93cfe7b7ec",
+      "bytes": 1602
+    },
+    {
+      "from": "apps/aggregator/data/j3.sample.tsv",
+      "to": "audits/legacy-aggregator-data/j3.sample.tsv",
+      "sha256": "6ee66bb0e5d4fb5fb2178b23a1788a38afa03f5aa408f69103f1419f3e56ff25",
+      "bytes": 23877
+    },
+    {
+      "from": "apps/aggregator/data/w1-wttj-sector-flbl.json",
+      "to": "audits/legacy-aggregator-data/w1-wttj-sector-flbl.json",
+      "sha256": "62acfb314f015dfdd0b99f06f8e1bbb68f677b26e34b36e31185b4768bbc8e2c",
+      "bytes": 21351
+    },
+    {
+      "from": "apps/aggregator/data/xlsx-generic.tsv",
+      "to": "audits/legacy-aggregator-data/xlsx-generic.tsv",
+      "sha256": "14f12ed964e6853ff8a8f23fc5006306e610220915d41271cebbc0ba47ceb07f",
+      "bytes": 593
+    },
+    {
+      "from": "apps/aggregator/data/maisons.csv",
+      "to": "apps/aggregator/data/reference/maisons.csv",
+      "sha256": "b49b9136ef880162a9ffd95c2c7616069c761c1bbd6529d7855efb0d92465ade",
+      "bytes": 72273
+    },
+    {
+      "from": "apps/aggregator/data/tenants.detection.tsv",
+      "to": "audits/legacy-aggregator-data/tenants.detection.tsv",
+      "sha256": "92f985682203eb51a56cbee5ffb6b46b6e28505b20690e5f63975dfb0e004fa4",
+      "bytes": 19889
+    },
+    {
+      "from": "apps/aggregator/data/maisons_monde_input.csv",
+      "to": "apps/aggregator/data/imports/maisons_monde_input.csv",
+      "sha256": "d1557fc5d8d4fddeea757969599ee957bb2265bc779868bfd56b3ba0697dc3ff",
+      "bytes": 570924
+    },
+    {
+      "from": "apps/aggregator/data/UNICODE-LICENSE.txt",
+      "to": "apps/aggregator/data/reference/UNICODE-LICENSE.txt",
+      "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96",
+      "bytes": 1995
+    },
+    {
+      "from": "apps/aggregator/data/j3.no-adapter.tsv",
+      "to": "audits/legacy-aggregator-data/j3.no-adapter.tsv",
+      "sha256": "9b9d1ce7ed7e8002d706845393a0def82cf34683b4d42b63c4c6ba01943a62e9",
+      "bytes": 4421
+    },
+    {
+      "from": "apps/aggregator/data/A-TROUVER-loic.csv",
+      "to": "audits/legacy-aggregator-data/A-TROUVER-loic.csv",
+      "sha256": "8a9f5c1b8ba93531811fc94f2d1684a8370bbf22a1a6f135a17cf5912bcd7c16",
+      "bytes": 16213
+    },
+    {
+      "from": "apps/aggregator/data/unresolved.reachability.tsv",
+      "to": "audits/legacy-aggregator-data/unresolved.reachability.tsv",
+      "sha256": "c94220701299d5196d31046aeb6209fe9d0a94abf1a5a139f6d1f27069db76c3",
+      "bytes": 642937
+    },
+    {
+      "from": "apps/aggregator/data/GROSSES-ENSEIGNES-MANQUANTES.csv",
+      "to": "audits/legacy-aggregator-data/GROSSES-ENSEIGNES-MANQUANTES.csv",
+      "sha256": "d8f2e66e3a91c95571e5b1312642efc191cc4c1b2c5869fcf6de302d8cf55f18",
+      "bytes": 4076
+    },
+    {
+      "from": "apps/aggregator/data/sources.validated.csv",
+      "to": "audits/legacy-aggregator-data/sources.validated.csv",
+      "sha256": "7c5464f713491a851999439f0510e3fe8e42d4b37c3ea8f83956ce65251bdae4",
+      "bytes": 18475
+    },
+    {
+      "from": "apps/aggregator/data/discovery-career-signals.json",
+      "to": "apps/aggregator/data/reference/discovery-career-signals.json",
+      "sha256": "8b864e1bce2274606efcc2d071019727c2a3136b96bb9f2ba4db2b8d4e43bea2",
+      "bytes": 1810
+    },
+    {
+      "from": "apps/aggregator/data/xlsx-detection.tsv",
+      "to": "audits/legacy-aggregator-data/xlsx-detection.tsv",
+      "sha256": "3b2b66fd5d4fc53e15d375e573f9cb49109004370a7e499e6cd97b03a57b5d26",
+      "bytes": 6297
+    },
+    {
+      "from": "apps/aggregator/data/j3.progress.tsv",
+      "to": "audits/legacy-aggregator-data/j3.progress.tsv",
+      "sha256": "200cbd3003d13242f7cbe9113f7631bfd49c4e9830f84719322d13b54b77b1bb",
+      "bytes": 234099
+    },
+    {
+      "from": "apps/aggregator/data/villes-exonymes.csv",
+      "to": "apps/aggregator/data/reference/villes-exonymes.csv",
+      "sha256": "0b95bd19c5022d74b2d363b606328e22d1a81585cb6fee4153de8d6c6285a39c",
+      "bytes": 11346
+    },
+    {
+      "from": "apps/aggregator/data/sources.gated.csv",
+      "to": "audits/legacy-aggregator-data/sources.gated.csv",
+      "sha256": "26d95c7e22ce788558ec70a9498d3fdd8215240ca4cac16534cdc403f65ef31d",
+      "bytes": 155753
+    },
+    {
+      "from": "apps/aggregator/data/manual-review.priorite1-sans-nom.tsv",
+      "to": "audits/legacy-aggregator-data/manual-review.priorite1-sans-nom.tsv",
+      "sha256": "26f88fb3ce525c44e929b8f4fd7f3f9f36b9856fed05b0b07f6f1463099f9fa5",
+      "bytes": 25742
+    },
+    {
+      "from": "apps/aggregator/data/a5-probe-old.json",
+      "to": "audits/legacy-aggregator-data/a5-probe-old.json",
+      "sha256": "f63b6e1c1232fc2a0f9b2c4a0f6c69ea7450e3bccf1064672bc9149bf870ae13",
+      "bytes": 6549
+    },
+    {
+      "from": "apps/aggregator/data/w1-wttj-sector-core.json",
+      "to": "audits/legacy-aggregator-data/w1-wttj-sector-core.json",
+      "sha256": "6bf3c3788a47dbf64fd1dea08f7a873c2b2fc5d7eedb3da97bc7f1a7fbf4d148",
+      "bytes": 19504
+    },
+    {
+      "from": "apps/aggregator/data/xlsx-validation2.tsv",
+      "to": "audits/legacy-aggregator-data/xlsx-validation2.tsv",
+      "sha256": "8e7100c742389f06d0e8374d93bdadcd534606dbf6bc72aa3079e7a526772b2a",
+      "bytes": 1379
+    },
+    {
+      "from": "apps/aggregator/data/unresolved.timeouts-recheck.tsv",
+      "to": "audits/legacy-aggregator-data/unresolved.timeouts-recheck.tsv",
+      "sha256": "18155bae6a4d2089960ca22bf9fad8fb6a638860f6148fd19743e6900db38e61",
+      "bytes": 5418
+    },
+    {
+      "from": "apps/aggregator/data/tenants.detection.progress.tsv",
+      "to": "audits/legacy-aggregator-data/tenants.detection.progress.tsv",
+      "sha256": "02328209fd65b462cf31e6405ec3ba335e3044a37f5fefec105bae6ff4768923",
+      "bytes": 9686
+    },
+    {
+      "from": "apps/aggregator/data/unresolved.reachability2.tsv",
+      "to": "audits/legacy-aggregator-data/unresolved.reachability2.tsv",
+      "sha256": "66c95b3d7e42ddeb66cd7df83edc6d5e3e2a1bb35abe46e4541e84a0da73c26f",
+      "bytes": 397860
+    },
+    {
+      "from": "apps/aggregator/data/deadhost.rescue.tsv",
+      "to": "audits/legacy-aggregator-data/deadhost.rescue.tsv",
+      "sha256": "6555555a2680137b001606573cbf90eb14d571cc473dea5587a368b62d7fdaae",
+      "bytes": 8797
+    },
+    {
+      "from": "apps/aggregator/data/j3.run.log",
+      "to": "backups/cleanup-20260910/legacy-data/j3.run.log",
+      "sha256": "f32d2009ded18460c4d7652d4cbaf555a410b837b970354311dd368c6078267b",
+      "bytes": 11585
+    },
+    {
+      "from": "apps/aggregator/data/validation.ats-gated.tsv",
+      "to": "audits/legacy-aggregator-data/validation.ats-gated.tsv",
+      "sha256": "eda849932a1c00fd484e402dbc2d1745b5c05830505ea8956c81ff31b2bdcbc4",
+      "bytes": 66148
+    },
+    {
+      "from": "apps/aggregator/data/unresolved.reachability3.tsv",
+      "to": "audits/legacy-aggregator-data/unresolved.reachability3.tsv",
+      "sha256": "0ac3f9ff2f008ffaf1f8c8b30a520e85a82e1e9b83487d7f300ac91d6bdc0735",
+      "bytes": 207494
+    },
+    {
+      "from": "apps/aggregator/data/baseline-apres-run1-2026-09-06.json",
+      "to": "audits/legacy-aggregator-data/baseline-apres-run1-2026-09-06.json",
+      "sha256": "572548127eb0e11705ca56edb3a188511e3b5f6ae91e88eaf5caa3b4d9923e93",
+      "bytes": 330
+    },
+    {
+      "from": "apps/aggregator/data/discovery.validation.tsv",
+      "to": "audits/legacy-aggregator-data/discovery.validation.tsv",
+      "sha256": "cf1b756e163f07f5f9fb3499e7f6a9b72a81ee1964dd8915ead49018f9a00fc1",
+      "bytes": 7019
+    },
+    {
+      "from": "apps/aggregator/data/unresolved.dead.tsv",
+      "to": "audits/legacy-aggregator-data/unresolved.dead.tsv",
+      "sha256": "ca35bfc05d65624db2dded2256fb1a204ecaa6ca87f5ca15c538ccc29ca097a4",
+      "bytes": 102004
+    },
+    {
+      "from": "apps/aggregator/data/recolte2-validation.tsv",
+      "to": "audits/legacy-aggregator-data/recolte2-validation.tsv",
+      "sha256": "3e43ce7275c827682001ac049b08e626be130e15d90b7b9c43711a92c951cae0",
+      "bytes": 1180
+    },
+    {
+      "from": "apps/aggregator/data/maisons-domaines-loic.tsv",
+      "to": "apps/aggregator/data/imports/maisons-domaines-loic.tsv",
+      "sha256": "9582c6dbb8066c1448b29f72afa8dd74689f32c6cdc845d87a7f38fd4bcce722",
+      "bytes": 81271
+    },
+    {
+      "from": "apps/aggregator/data/sources.manual-review.tsv",
+      "to": "audits/legacy-aggregator-data/sources.manual-review.tsv",
+      "sha256": "f3af1943f106c9366ebb8ea03067e507c20fd74c2e11139391c9158f313e916a",
+      "bytes": 199599
+    },
+    {
+      "from": "apps/aggregator/data/Catwalks_Global_Direct_Job_Portals_A-Z_2026-09-05.xlsx",
+      "to": "audits/legacy-aggregator-data/Catwalks_Global_Direct_Job_Portals_A-Z_2026-09-05.xlsx",
+      "sha256": "442c8228212447704c23fc917680141f0d8baf174b625433cd5dddff370629c7",
+      "bytes": 47204
+    },
+    {
+      "from": "apps/aggregator/data/validation.generiques.tsv",
+      "to": "audits/legacy-aggregator-data/validation.generiques.tsv",
+      "sha256": "91f6b2ede20bd4d69b7a42ceb0daeae759bf4ba1fcf213065e9f76864cc95e77",
+      "bytes": 21201
+    },
+    {
+      "from": "apps/aggregator/data/manual-review.scored.tsv",
+      "to": "audits/legacy-aggregator-data/manual-review.scored.tsv",
+      "sha256": "2b325da9bd72d4914ce178461660b4aaa21f67bba68db638093e5e6e8149b6f6",
+      "bytes": 118214
+    },
+    {
+      "from": "apps/aggregator/data/villes-non-lieux.csv",
+      "to": "apps/aggregator/data/reference/villes-non-lieux.csv",
+      "sha256": "7ae50beb5d7fd5ec90611eda12f97e2a82c6cb6339647e7470891249dd893b3f",
+      "bytes": 7275
+    },
+    {
+      "from": "apps/aggregator/data/loic-validation.tsv",
+      "to": "audits/legacy-aggregator-data/loic-validation.tsv",
+      "sha256": "33bf9d0d626a8398efb971662951b797919e9ce2780216afb33d7f87d14e99c1",
+      "bytes": 684
+    },
+    {
+      "from": "apps/aggregator/data/discovery.progress.tsv",
+      "to": "audits/legacy-aggregator-data/discovery.progress.tsv",
+      "sha256": "8ea3c3baf6e73c160b22d069897d4343a636bf5f880dc4ebaa14a3654f351ba9",
+      "bytes": 588390
+    },
+    {
+      "from": "apps/aggregator/data/sources.discovered.csv",
+      "to": "audits/legacy-aggregator-data/sources.discovered.csv",
+      "sha256": "eb4b44bfbff4422906f5e4246d93a45d11a6d022037ea7c9f489fb4123ef6cb9",
+      "bytes": 313478
+    },
+    {
+      "from": "apps/aggregator/data/recolte2-detection.tsv",
+      "to": "audits/legacy-aggregator-data/recolte2-detection.tsv",
+      "sha256": "d34f5ec506f3cb95cfb9238c4ac3b63089d2ddf634d6eac7dcadcbb4b9486246",
+      "bytes": 2615
+    },
+    {
+      "from": "apps/aggregator/data/domaines_officiels_maisons.xlsx",
+      "to": "audits/legacy-aggregator-data/domaines_officiels_maisons.xlsx",
+      "sha256": "3c4538041f4daccaa437c5ab5193b42c31265147df7caf2a02457bfbfe31a64b",
+      "bytes": 44081
+    },
+    {
+      "from": "apps/aggregator/data/sources.unresolved.csv",
+      "to": "audits/legacy-aggregator-data/sources.unresolved.csv",
+      "sha256": "8f1099db5744a274503d69e91ca4128ffe69d0b0d47b803ee09b8d355cafb76e",
+      "bytes": 896256
+    },
+    {
+      "from": "apps/aggregator/data/access-verdicts.csv",
+      "to": "audits/legacy-aggregator-data/access-verdicts.csv",
+      "sha256": "49d4a826d9dca998ef26c39005238801e954b9b9f43177dca87b08295f5d0f28",
+      "bytes": 3928
+    },
+    {
+      "from": "apps/aggregator/data/baseline-avant-correctifs.json",
+      "to": "audits/legacy-aggregator-data/baseline-avant-correctifs.json",
+      "sha256": "aca794924083f6cf62fb7ec1cce0748a1fe782abe2f58b4db956980c0834e384",
+      "bytes": 332
+    },
+    {
+      "from": "apps/aggregator/data/baseline-2026-09-06T1434.json",
+      "to": "audits/legacy-aggregator-data/baseline-2026-09-06T1434.json",
+      "sha256": "3712369bb4f8a16702cae9e34c37b4654a1ff8b8caf78398b6818887bd6e2c13",
+      "bytes": 322
+    },
+    {
+      "from": "apps/aggregator/data/country-labels.json",
+      "to": "apps/aggregator/data/reference/country-labels.json",
+      "sha256": "0a904f978fab4d6d7cdf9d065d6b8f2107764f48ad27b40081121e1d081c9d74",
+      "bytes": 292271
+    },
+    {
+      "from": "apps/aggregator/data/sources.dead.tsv",
+      "to": "audits/legacy-aggregator-data/sources.dead.tsv",
+      "sha256": "2edeb9c8e8536d7e9f56c9c5ae0a0f794fd6b09d6dc6687a59c8fbc3a5691350",
+      "bytes": 4486
+    },
+    {
+      "from": "apps/aggregator/data/export-maisons-etat.csv",
+      "to": "apps/aggregator/data/imports/export-maisons-etat.csv",
+      "sha256": "c9d9573d7d81d8f2a70281103372e23b3cef4b5e83e0c6c2bd1a42cbcebfdc8a",
+      "bytes": 966984
+    },
+    {
+      "from": "apps/aggregator/data/maisons-sans-domaine.csv",
+      "to": "audits/legacy-aggregator-data/maisons-sans-domaine.csv",
+      "sha256": "dc69671e8ff47982e71bc656849e52aa69443f4ca126bcb461a52a8f65496a2f",
+      "bytes": 24463
+    },
+    {
+      "from": "apps/aggregator/data/a5-probe-stale.json",
+      "to": "audits/legacy-aggregator-data/a5-probe-stale.json",
+      "sha256": "ade1a2e322d20e43c22418f2324fdd6b4a8fc090191f24302391b02908b54977",
+      "bytes": 10659
+    },
+    {
+      "from": "apps/aggregator/data/a5-probe-main.json",
+      "to": "audits/legacy-aggregator-data/a5-probe-main.json",
+      "sha256": "363fe0eae5f9bdb1481a44a91dd5af1b6ca7cf91e27f2d3d2253d42e8ea6751a",
+      "bytes": 71376
+    },
+    {
+      "from": "apps/aggregator/data/baseline-2026-09-06T1415.json",
+      "to": "audits/legacy-aggregator-data/baseline-2026-09-06T1415.json",
+      "sha256": "6ccfd4d0910029a73d0003c86ad05bee22fa9b71dc726bfe700124e080edd28d",
+      "bytes": 323
+    },
+    {
+      "from": "apps/aggregator/data/sources.rejected.csv",
+      "to": "audits/legacy-aggregator-data/sources.rejected.csv",
+      "sha256": "0a54bf5779c3ffe0f972e0829b59ee437f97ce616d32fbdf84d8a45540b6178b",
+      "bytes": 8643
+    },
+    {
+      "from": "apps/aggregator/data/sources.csv",
+      "to": "apps/aggregator/data/seeds/sources.csv",
+      "sha256": "51cc588a6148e64f34942300f47a5cb37faa1d7a9e7e7bc3c937c5166617d1d6",
+      "bytes": 13118
+    },
+    {
+      "from": "apps/aggregator/data/discovery/out6.csv",
+      "to": "audits/legacy-aggregator-data/discovery/out6.csv",
+      "sha256": "e3b717b4989497d91ab30ed839d9fa8cdd0ef1b9f66d83299f9e243a927a87fd",
+      "bytes": 108548
+    },
+    {
+      "from": "apps/aggregator/data/discovery/out7.csv",
+      "to": "audits/legacy-aggregator-data/discovery/out7.csv",
+      "sha256": "ede2c28127c7336950c4a7deefbc8da8b66a872a517b253d909f13a23e53fefb",
+      "bytes": 73153
+    },
+    {
+      "from": "apps/aggregator/data/discovery/out5.csv",
+      "to": "audits/legacy-aggregator-data/discovery/out5.csv",
+      "sha256": "0e5c0b7984bd4b79983a36a57498ff7eccb36ce85ac2b6181dc6164820f4c664",
+      "bytes": 46143
+    },
+    {
+      "from": "apps/aggregator/data/discovery/out4.csv",
+      "to": "audits/legacy-aggregator-data/discovery/out4.csv",
+      "sha256": "af955cdd0cd444ec92d02e59f25a54f73b988652ba71708cc5ee4d71b1091a97",
+      "bytes": 17550
+    },
+    {
+      "from": "apps/aggregator/data/discovery/out1.csv",
+      "to": "audits/legacy-aggregator-data/discovery/out1.csv",
+      "sha256": "bea9d337894a1cdbbd40f9139bc87e7434bab8ff89822e617d7ff68a7ffec7f9",
+      "bytes": 26099
+    },
+    {
+      "from": "apps/aggregator/data/discovery/out3.csv",
+      "to": "audits/legacy-aggregator-data/discovery/out3.csv",
+      "sha256": "98508daf8d094dd77743ee129311729f1eb21c4a9407bbbf2e075f5a62c04f22",
+      "bytes": 61672
+    },
+    {
+      "from": "apps/aggregator/data/discovery/out2.csv",
+      "to": "audits/legacy-aggregator-data/discovery/out2.csv",
+      "sha256": "7780988ecf7bb19f70da0b258d7669dfd101c11959a9ee3223add7b7174858e4",
+      "bytes": 19627
+    },
+    {
+      "from": "apps/aggregator/data/discovery/lot-web-2026-09-10.md",
+      "to": "audits/legacy-aggregator-data/discovery/lot-web-2026-09-10.md",
+      "sha256": "f148251b71357ffe0679e2057b8f7aa8eb61eb888884bbf04ffe3ec127dd4207",
+      "bytes": 18562
+    },
+    {
+      "from": "apps/aggregator/data/discovery/out8.csv",
+      "to": "audits/legacy-aggregator-data/discovery/out8.csv",
+      "sha256": "ed3178cbffa8b95b209578f1665fbaf8f83821f8ecca82d44459ebd71a312e42",
+      "bytes": 56557
+    },
+    {
+      "from": "apps/aggregator/data/discovery/batches/batch2.json",
+      "to": "audits/legacy-aggregator-data/discovery/batches/batch2.json",
+      "sha256": "3396190dc6de7fea644f7ee3c8b887cbec4d2e4e95be09800d634ac85ab9782f",
+      "bytes": 7973
+    },
+    {
+      "from": "apps/aggregator/data/discovery/batches/batch3.json",
+      "to": "audits/legacy-aggregator-data/discovery/batches/batch3.json",
+      "sha256": "ef765d6d34ab2e12d0a66f095b38f2399768a0df73aefb5c96753b34c8661292",
+      "bytes": 7913
+    },
+    {
+      "from": "apps/aggregator/data/discovery/batches/batch8.json",
+      "to": "audits/legacy-aggregator-data/discovery/batches/batch8.json",
+      "sha256": "80e90f977526a52f0c3f255ac17905dd7751779f17e2293e6a85d51e087c57cb",
+      "bytes": 5177
+    },
+    {
+      "from": "apps/aggregator/data/discovery/batches/batch4.json",
+      "to": "audits/legacy-aggregator-data/discovery/batches/batch4.json",
+      "sha256": "ee2378a2b1293804a5cf6e940fae2c087a11e8824e84c066c62547d79eaf6758",
+      "bytes": 8043
+    },
+    {
+      "from": "apps/aggregator/data/discovery/batches/batch5.json",
+      "to": "audits/legacy-aggregator-data/discovery/batches/batch5.json",
+      "sha256": "9fbe1f6c08837fb1d4ec73d1e21cbdaed393eeb53873ea94d3208c0ce2b2a206",
+      "bytes": 8330
+    },
+    {
+      "from": "apps/aggregator/data/discovery/batches/batch6.json",
+      "to": "audits/legacy-aggregator-data/discovery/batches/batch6.json",
+      "sha256": "3e1a66df84c4c1291c0beda7f1dc36320ca64915f539431a4d23e13955244cc7",
+      "bytes": 7820
+    },
+    {
+      "from": "apps/aggregator/data/discovery/batches/batch7.json",
+      "to": "audits/legacy-aggregator-data/discovery/batches/batch7.json",
+      "sha256": "689000015ced718d418d734d136313d9340932a12e794563fc7f6562053af871",
+      "bytes": 7684
+    },
+    {
+      "from": "apps/aggregator/data/discovery/batches/batch1.json",
+      "to": "audits/legacy-aggregator-data/discovery/batches/batch1.json",
+      "sha256": "81bfe6ffeee3cc898c00e98d7eaaee04c2c3d58307574229c0998bcdb2cee908",
+      "bytes": 7750
+    },
+    {
+      "from": "apps/aggregator/src/sectors/cli.mts",
+      "to": "apps/aggregator/scripts/sectors/cli.mts",
+      "sha256": "6af4e126f686def7c724b1a9f4bd06ad35c47c10c4a8d0939c1908fa494a72ad",
+      "bytes": 2471
+    },
+    {
+      "from": "apps/aggregator/src/identity/cli.mts",
+      "to": "apps/aggregator/scripts/identity/cli.mts",
+      "sha256": "ab041c4ad099c224e35f3e6ef332ffb49c3f863c49f50a364b639455ea51d2f6",
+      "bytes": 1302
+    },
+    {
+      "from": "apps/aggregator/src/identity/audit.mts",
+      "to": "apps/aggregator/scripts/identity/audit.mts",
+      "sha256": "846b5ddcf644adf11c7f283fe1de0fcd8dee9a28228a71367bce411583a9f345",
+      "bytes": 5371
+    },
+    {
+      "from": "apps/aggregator/src/enrich/backfill-employment.mts",
+      "to": "apps/aggregator/scripts/enrich/backfill-employment.mts",
+      "sha256": "6ffc69bf90533d2b7a89523615aba43f8022b2ddcb14a3f10e09203793bc22d6",
+      "bytes": 6597
+    },
+    {
+      "from": "apps/aggregator/src/trust/audit-country-corrections.mts",
+      "to": "apps/aggregator/scripts/trust/audit-country-corrections.mts",
+      "sha256": "a85813e373fc0cca0b9f0c1cb8130f242cb38fbc64abbd2a93050815749fa399",
+      "bytes": 6818
+    },
+    {
+      "from": "apps/aggregator/src/trust/backfill-workplace.mts",
+      "to": "apps/aggregator/scripts/trust/backfill-workplace.mts",
+      "sha256": "627f3b78b65208735bb08d6be41b32dafd2264ebe7a08f06cf29c10e785f3019",
+      "bytes": 8870
+    },
+    {
+      "from": "apps/aggregator/src/trust/backfill-geography.mts",
+      "to": "apps/aggregator/scripts/trust/backfill-geography.mts",
+      "sha256": "a6989211a2245de256a956fe6b88dfd1eb9c9d794d847ef32976bb1aea57db30",
+      "bytes": 9524
+    },
+    {
+      "from": "apps/aggregator/src/trust/audit-description.mts",
+      "to": "apps/aggregator/scripts/trust/audit-description.mts",
+      "sha256": "9bd5f7a8fb5c4810865d0f375740a8bbc02085d7ac24e8e934b66f31e88ece13",
+      "bytes": 6291
+    },
+    {
+      "from": "apps/aggregator/src/trust/dryrun-geography.mts",
+      "to": "apps/aggregator/scripts/trust/dryrun-geography.mts",
+      "sha256": "6c18f0101af5d1d1520d673e72e24e60b6e4f38d1562222c97ccfc62d489d1f3",
+      "bytes": 7135
+    },
+    {
+      "from": "apps/aggregator/src/trust/measure.mts",
+      "to": "apps/aggregator/scripts/trust/measure.mts",
+      "sha256": "a14efae74b2ae288de951e24c382be88cd41071db16a91c6ee92849d8149fb78",
+      "bytes": 4800
+    },
+    {
+      "from": "apps/aggregator/src/trust/apply-precedence.mts",
+      "to": "apps/aggregator/scripts/trust/apply-precedence.mts",
+      "sha256": "c6f67f05b754aef923c217df5c8eb34fb5e1710f1cdfe4197aab023f20f49c31",
+      "bytes": 7885
+    }
+  ],
+  "removedTools": [
+    {
+      "path": "apps/aggregator/src/discovery/g3-ulta.mts",
+      "sha256": "204760744de4e9e25a9db27daa3798908a5a960f45378a6b2f4ca61a15193186",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/migrateWorkdayKeys.mts",
+      "sha256": "4874b914534d0965e67d24f141f56626ee61b5d3ace9ec9eda76a38a4955a07e",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/runTiming.mts",
+      "sha256": "b950d12155f523c84a819e47f54bca87e22871fb26acc4eb2978bc0f683e31e3",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a3-sourceRuns.mts",
+      "sha256": "8a966a268582b7437be856da8a1c9eadceda6b89c8a1448dc64f8c5498d49715",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/ops-heal-country.mts",
+      "sha256": "507181fd96b4e6d2736d0d0fe8102ed4c0ce5662e15619acb463e062942ff64e",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/l4-export.mts",
+      "sha256": "9f1206bb9dc29f26284d16cb6ee469e56bb808d05e21a553bea72e25c320980d",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/l2-ulta-loreal-check.mts",
+      "sha256": "759a2eb32d2e75d25173ec074c2d840326b21d35eb43e9a94d6d482193c45a5b",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/ops-merge-company.mts",
+      "sha256": "1b995c1406876efcf73df952dfc6a2f235552b57390fcf54fd61923bf8ee8b82",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a2-csvdrift.mts",
+      "sha256": "6ddc9cc577dffd9408a9e99019b1427f072b2f8c749985d9850355d4a47cca71",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g3-pvh-full.mts",
+      "sha256": "35569cd2b15769ac43e666353a6cd81c28ca8b6f1addd3f845e5e2d02f367bf8",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g2-nocibe.mts",
+      "sha256": "8e24c9e2b2865788fae8d2d22069584ef618cad6095d6a0ac40b4c3413a9d2a9",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a5-probe.mts",
+      "sha256": "33946c6dc0ff78d69435c1eea02d644c01cf2a46c36051fbef2f4cd892116f0a",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g1-validate.mts",
+      "sha256": "c13a87897ac8e1e84fb264f79fd7a2550b9416e2f10c51f296e5ee51578180d9",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a3-newness.mts",
+      "sha256": "d310592ef4334c1fa2c8aee272505193bee6671c273b8c3515c6405e9b8ae8ee",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/ops-pause-wttj.mts",
+      "sha256": "91e0afa457a3af5f4759b02d777e763f9e62767d8087ea8eb3bce483c89bc25c",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g4-rituals-locales.mts",
+      "sha256": "a35ca17e81ada700becb7542936beb484d2b2e01c41546d5d390d123bd7b92f1",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g3-pvh-waf-measure.mts",
+      "sha256": "ab7b8795eae8090df6c697782735a0b13014ecd498a65763d8aa46cb9703b5af",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g5-taleo.mts",
+      "sha256": "25ec560bc95f42510690742bb2e887c659ed5c43032ed372da7a8d3cac7d9758",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g3-fenwick.mts",
+      "sha256": "1c5089e25f86e6e2f8ab22400ed6f32123aed371a74359f4ec870a6c598d1b22",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/w1-wttj-sector.mts",
+      "sha256": "711036a0a5e73f5e9f13df34469ed7e2cac82ca0d53bbdec93331902fc76d55d",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g2-measureGeneric.mts",
+      "sha256": "3330f25620724ccc21681227a3da24e8ea55987a6c7b61a51b91c7264122b205",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g3-adapters.mts",
+      "sha256": "d13abc1e65d35562e7f5b4448c60b1369f58ad375f219711bb74092b1c1a1b5b",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/shot2.mts",
+      "sha256": "63edb8a40c6d9a69423b6efe8e802e2856733892654cce1f029d1783823a828a",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/shot3.mts",
+      "sha256": "6dd50a03debcce4ef1f17899f0d1b7b1933c5a27e77636030bd3ece98d35ff20",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/probeDescriptiveTenants.ts",
+      "sha256": "b45b8fa75edcdc0fea18d406e67e5d9130af7dab2330e5b994f3bf0f61cc8cb1",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/l2-measure.mts",
+      "sha256": "7a31c4018cf9f97ad83fca1147cc3de57730975e74bbd63240e8e8f3844ae45b",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a3-runTiming.mts",
+      "sha256": "db3a7176774fc8fb3430a2953716e7ad06a53a9c3939c8e02e1740d58548c8a4",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/j3Probe.ts",
+      "sha256": "ff6214597c3c16703f5d81662937e066f8fd34921de897389cdeeb689941afac",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a5-sql.mts",
+      "sha256": "0fe90136c867df123a035636af9019b525d6ad28cb0b5c928b91eb53f7e682f6",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a4-contract.mts",
+      "sha256": "9a916e6897d2112c5a7afbb172a44dc451af7d400c0bb494b15222414aa08ad4",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a4-net3.mts",
+      "sha256": "6d8a2fe2c540eb36b1682c26f564ee0d753409e2e6df4ce03f45784c67740045",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/ops-close-stale-source.mts",
+      "sha256": "7bbb7858f1d8b541f8ed869f6c30cf3faa8e2cf60e5fc8dc64838e6cfb262148",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a4-net2.mts",
+      "sha256": "9643a21369aeb9c88110b7752eb4c36ede3f57dc7141a211200c25145522bf2b",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/addFoundSources.mts",
+      "sha256": "ad6d3799d64fe913ec4f7e75d3f4af658f955f05978b1f8c6bf14a695fbb7ea5",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g5-oraclehcm.mts",
+      "sha256": "6082f4e272f20b7bf940001da854c83a93e720f0ed27f1d4b4d8040600c87011",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g6-readSources.mts",
+      "sha256": "1d2eb099f75f815005c325ab349f4ad75d80095b45f2f51ef928ad27ff24ac88",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g2-measureSF.mts",
+      "sha256": "d7d90c4d16f6fe5783df0819308f59c7135315ce7e83c90d72320c6217c74d73",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g5-ralphlauren.mts",
+      "sha256": "5d1b78f8e482b3bdf7ced7687972704744e7d5c49199eff94a6230758148bef9",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a4-net1.mts",
+      "sha256": "36bfc47abaabbbddbec81f6a752762518799b4193fa1c91974a97ae630ab60e7",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g4-drmartens.mts",
+      "sha256": "40310741bd605cea455db4752500b9ae51ea9820f095472ead24b5ef47ac62b5",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/promoteValidated.ts",
+      "sha256": "5642332fa4105e162966f1b5247a67f668518e019df062eb7ab5b40c82f0e106",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a4-sfparse.mts",
+      "sha256": "ecc7ae2f10601e05053e53565f7344f0f0729d8e505387c7d8fd73faf7382455",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/l4-explore.mts",
+      "sha256": "db7f26445c53f983e0fa7d350c71c67cb5a6b69a36dfe5c6087ff1cfb0ffe2e2",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g5-rl-debug.mts",
+      "sha256": "49140510c021875a668fe790862eacb3915d866db42c2dce8700072b274aa343",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/shot.mts",
+      "sha256": "fd0f37db336c7cf58683ac6e0055e38b00748b885b96749a82472d430c30d527",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a4-fetch.mts",
+      "sha256": "b0d5a40ce4f5614979c16ff232e6946efe9485d03f8045334ba3407da30c415e",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/baseline.mts",
+      "sha256": "b1c73ad4f71292a66895a8b5da52ee07d751960bd5732c74391a364854074b17",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a4-sql.mts",
+      "sha256": "f001833844bd3553bd891999f543240d5b624bd4ca456986a054331b4fbe6249",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a4-loreal-desc.mts",
+      "sha256": "9e9653b50ff0a6540dfb71187e3d0af8d4fd6a7b3ac60678b818a0b93450d79e",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g1-swatch.mts",
+      "sha256": "4b45d77550c4ccf62419c5e5a4a0a8a4d87350fd253efcaf6ddc5e5424a228c5",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g3-boots.mts",
+      "sha256": "78ef69a6d5e596ada64a63857fe252ada268dbec2bf2d93325c411b3a479f633",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/l2-sr-probe.mts",
+      "sha256": "dedbe12dd02990786013095eac8237f6370ffd174551759e2da0d73bd9b11b0c",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a4-country.mts",
+      "sha256": "8bde57d4395d92ddd4ed9423708fea264a561eb8add8186da884eeef50bd8a78",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a3-tailSources.mts",
+      "sha256": "289f0659f66e556a8647e9aa6f132140004d53c2749e4488a2d4cecf5075635c",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g3-pvh.mts",
+      "sha256": "a9fa0b5766e733a8e542f80646e202181b391dd23ed0cc3f4e48532fe91957e4",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/ops-heal-country2.mts",
+      "sha256": "925a0619613935fdbba26a0a9af23d7b96c3d5ff3460cbf10287b3e7f616f864",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a5-lvmh-feed.mts",
+      "sha256": "08675d16c1e6ac1914c0786818f9aafb948d4ca8f90dfe34c971d01fb468a65d",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/validateDiscovered.ts",
+      "sha256": "037b17f9bfb40827787a44d91c5635b9d99bcb8f22e9a144a43a1e132454f690",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/l2-eightfold-probe.mts",
+      "sha256": "32fa143d41ffe901540bcacb9bd638ac8e32416ac35ac020e520b6c03500b9cb",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g2-rivoli.mts",
+      "sha256": "59eb4c0f29fa6e2bf00ad334fa555f835cc9ac21699277680e826ea6a0b68531",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a2-http404.mts",
+      "sha256": "48f3f9d508647d417bc7bbc3da934483d8ef4aaa8e130dc4d114f78dc4640a62",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/sniffEndpoints.mts",
+      "sha256": "d25d6a4c5e1bb7867424e81ca7af57a7f5b0360285bb0e06a3a5bf47372597b6",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/ops-footlocker-brandtag.mts",
+      "sha256": "4f1a37a4c75b656f7ef44bc1a337fe0024edc59b9addc014788fd61d7f77c4a3",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g4-rituals.mts",
+      "sha256": "35f8fcc67320701d89dfcb871502bc301c7c9966f8e114cdc9bc60581c7d0d97",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/l2-workday-probe.mts",
+      "sha256": "ab98c0c36db45170107de96f6ebed5d12e3512b528b84be7c96745d72dbc84f9",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g4-asos.mts",
+      "sha256": "bc3a414473c434d85be718438811eaf7836ff0def65e0af89843318a30d68973",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a3-whoWrites.mts",
+      "sha256": "dfbcd65731b76b6c7e89c02c5bb0cff35f1f5e2f056975cbf77246d8ab08af5c",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a3-liveCheck.mts",
+      "sha256": "5cdf2a9756b870e3bd8e865f63d14c1788455d44749b18cd5374e4f153801d1f",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g2-douglas.mts",
+      "sha256": "f2b032ca9dd5eb51929a1231e9f70fc46cb5a0ae6970a95e24a4bc792b3fc337",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/ops-manual-domains.mts",
+      "sha256": "4063e7644d0614d451e1648a08c6363f6e35f6c05747459441b2e87e961e7286",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g4-bash.mts",
+      "sha256": "6fe3ef271bfd47e8dea89a303ba28193c5f70f506596170730751e32ecde853e",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/ops-heal-closedat.mts",
+      "sha256": "7bbb7858f1d8b541f8ed869f6c30cf3faa8e2cf60e5fc8dc64838e6cfb262148",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g3-selfridges.mts",
+      "sha256": "bb9f827771ddc3d2f9ef131bedb4d34f8353a5c5b5a0f80a26c3a751a35c7911",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a3-doubleRoutes.mts",
+      "sha256": "3356b93bcbff5f2f2df506cb431cbf7abcfe4ca539e3313858d8eb79fc2ae9af",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/l2-sf-lvmh-taleo-probe.mts",
+      "sha256": "d3c62adc066d0018538ae9fa51b222f9523dde24f219387fbd34c48e0dae7b60",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a5-sample.mts",
+      "sha256": "5b6657bcad1ebd720e0916c5f61df2c561e1f17d9a6abb66f0973ab181e68ab1",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g6-readRuns.mts",
+      "sha256": "d6537764d978c8014ac73a7c90099879c9bcf576efab24177a3f6775f79305da",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/l2-sources.mts",
+      "sha256": "79018f25d0eb1cddb5f8a64f35b1df5a28323dde2f3168d028a5ad3f876ae596",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a2-clusterdrift.mts",
+      "sha256": "df61d4f4796cbdf06f21cd5376436b907a06c81416973510ac143777ec707430",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g7-check.mts",
+      "sha256": "5cbee2dc9ac74256cf4fe523c78aa37cab947be76d4ac8582285ca649d17e6c4",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g2-beautysuccess.mts",
+      "sha256": "57a006a383ccdbf53985fe57f971232246186e20246f29bb2dfc32ac43d2cda6",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g2-measureAdapters.mts",
+      "sha256": "1b66444312b738be9224f76e9e46ae8488e94821e24489f2b8a405798ab645b2",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/ops-drop-company-snapshot.mts",
+      "sha256": "9bcb5767dbfdbddd33fc5db58fca1d6354dca1cb41cc248b12606d61bb49a670",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a2-sql.mts",
+      "sha256": "b9ba7466211cb2552a3d8d4d1a1819b24628fa96385390c2ad4f7eac28554e16",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a3-dbLatency.mts",
+      "sha256": "4e8a46190713a179fdfea6f20368a7b4f61d44b578b94e62e23121f339dbab6d",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g1-acne.mts",
+      "sha256": "bdd1553a3e3ee93e703ae2e7ca1b65dc5b84f455fa93d7ffb3fb4d980cba81f2",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g6-measure.mts",
+      "sha256": "a281e8e13ed4e67d7beafcae2ac7f2e2df05a303dd4b3eeff44d0c6174085b16",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/l4-simulate.mts",
+      "sha256": "c24c886217ceadf1009093001e10a429a97e2dd72eceacf51ee00757656c563b",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/a4-phenom.mts",
+      "sha256": "f4ce52cb4d7cd328906df099662588fa78b49e4529060b72eba70f5205911c86",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/gateDiscovered.ts",
+      "sha256": "1ffe5c478a98cb38802ea0104555aa13523d1e84d4eaae320639bb64f67e0e28",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/identityScore.ts",
+      "sha256": "4eebead190a219a2fa95407c9b7912d6226e4fae2d724242405ea0d76dc9d110",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/discovery/g1-swatch-adapter.mts",
+      "sha256": "b322f5e02965699e250816a0568f0557e24873f858bad93b86e131ca06fdcf41",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/checkelc.ts",
+      "sha256": "068dde4c939ab41265cd59ba72abb0a8f5f3f3596edf859b20107950e779fd0e",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/runval.ts",
+      "sha256": "81e224e9e585acca5f6cba9bd43aea1f98c4c1653855fe61c82feab7e6778067",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/pipeline/validateSources.ts",
+      "sha256": "7ca7740696e3a1b6d1402379b15b3e14f89079b8771297e1d336d281fee6aa81",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    },
+    {
+      "path": "apps/aggregator/src/enrich/dryrun-employment.mts",
+      "sha256": "392f9f2ca860e69577c968b88b8126eccfdfa2d97047c86e5cf810c6224af582",
+      "recovery": "Git history when tracked; private cleanup archive otherwise"
+    }
+  ],
+  "rootCleanup": {
+    "at": "2026-09-10T12:04:42.910894+00:00",
+    "scope": "Repository root and historical presentation artifacts; application logic, database files and active development work preserved",
+    "movedDocuments": [
+      {
+        "from": "DISCOVERY.md",
+        "to": "audits/legacy-project-files/DISCOVERY.md",
+        "sha256": "4df8119b9a29072d99f4b29db9fa694ca9ee5ef24d50ae5781baae6af902050a"
+      },
+      {
+        "from": "PIPELINE.md",
+        "to": "audits/legacy-project-files/PIPELINE.md",
+        "sha256": "6395652da17905f3ebcacba78f698111e78405f86fe88605850f730e605ebcba"
+      },
+      {
+        "from": "PLAN-DEV-A-Z.md",
+        "to": "audits/legacy-project-files/PLAN-DEV-A-Z.md",
+        "sha256": "366c86556b5f860ae8b500578d6ad58417c7c38071c08eb266133bba33cb9b53"
+      },
+      {
+        "from": "PLAN_REFONTE.md",
+        "to": "audits/legacy-project-files/PLAN_REFONTE.md",
+        "sha256": "28d3c3bcead5df1c4def7c47a18bb7fcb882a721902f30a4b8ee28fe9e61c2d2"
+      },
+      {
+        "from": "PR_REFONTE.md",
+        "to": "audits/legacy-project-files/PR_REFONTE.md",
+        "sha256": "d8446077261d06b2d1aa841270ae695d05680c3ede0d2227de11f02e35628557"
+      },
+      {
+        "from": "intelligence_business.md",
+        "to": "audits/legacy-project-files/intelligence_business.md",
+        "sha256": "5f85826564e57944a17857b5ddb17938729bb83a219f301432bc749f87784b6c"
+      },
+      {
+        "from": "HANDOFF_LOT4_2026-09-09.md",
+        "to": "audits/legacy-project-files/HANDOFF_LOT4_2026-09-09.md",
+        "sha256": "b7c3af07a3b9fba12fe6e83f0dc4241653357c3368342bb6687b9e84767603fc"
+      }
+    ],
+    "removedArtifacts": [
+      {
+        "from": "AUDIT-2026-09-03.html",
+        "archiveEntry": "AUDIT-2026-09-03.html",
+        "sha256": "b2748527a0fc99993eac16d06d1a9a6bfb05661d64cb5570ce229db76bbf6d2d",
+        "bytes": 86668
+      },
+      {
+        "from": "AUDIT-REGISTRE.html",
+        "archiveEntry": "AUDIT-REGISTRE.html",
+        "sha256": "8062b29ff3f139e242a575e57c2de70eec4882ffa248d0c8b12a65b2600c588b",
+        "bytes": 40828
+      },
+      {
+        "from": "audit-fashion-atlas.html",
+        "archiveEntry": "AUDIT-2026-09-03.html",
+        "sha256": "b2748527a0fc99993eac16d06d1a9a6bfb05661d64cb5570ce229db76bbf6d2d",
+        "bytes": 86668
+      },
+      {
+        "from": "audit-src-snapshot.tgz",
+        "archiveEntry": "audit-src-snapshot.tgz",
+        "sha256": "c9d4164d436657ce4eea7469d3fff76556d171680fb377aaf0dac29663b867f5",
+        "bytes": 1348253
+      },
+      {
+        "from": "Maisons_Marques_Monde.xlsx",
+        "archiveEntry": "Maisons_Marques_Monde.xlsx",
+        "sha256": "7bb58763c4f18a13a03d98ae12942f0f2dc5b58ff6a3b1dd57f28e166bbf9a02",
+        "bytes": 1713109
+      },
+      {
+        "from": "catwalks-build.code-workspace",
+        "archiveEntry": "catwalks-build.code-workspace",
+        "sha256": "b054942f2b3935dd58a3803f043c31dd8e1befdd9ceadf10f2121bb28c49f529",
+        "bytes": 269
+      },
+      {
+        "from": "design_2.md",
+        "archiveEntry": "design_2.md",
+        "sha256": "45fb6112e51e10871a0cd3feb4988a3e17eefee5f5be2f59809a343010f90458",
+        "bytes": 57917
+      },
+      {
+        "from": "export-maisons-etat-verifie.csv",
+        "archiveEntry": "export-maisons-etat-verifie.csv",
+        "sha256": "bdf8edc4d19402b0f8b8b425de13341430f926c0f303239d013ea7c927a782bc",
+        "bytes": 998950
+      },
+      {
+        "from": "index_1.html",
+        "archiveEntry": "index_1.html",
+        "sha256": "5c01c315d311e31f9df95f415ce44fa4182fb1a4c84c624bb3d91539cb7be484",
+        "bytes": 29788
+      },
+      {
+        "from": "maisons-enrichies-grandes-marques.csv",
+        "archiveEntry": "maisons-enrichies-grandes-marques.csv",
+        "sha256": "a59473bac03df0be058269aaeab815529140c686c1aae7ced06bd56b4cdafe46",
+        "bytes": 195466
+      },
+      {
+        "from": "mode careers.svg",
+        "archiveEntry": "mode careers.svg",
+        "sha256": "165ec332d63fe5b07f6ffb52ba91e6171fa8f00a835550db23f7e85fa1bb6072",
+        "bytes": 13284
+      },
+      {
+        "from": "prod.css",
+        "archiveEntry": "prod.css",
+        "sha256": "a6bfa0c5bec77f62f3e09c26fa46d7846162a3ad66c7e1172ba47954f1faaa57",
+        "bytes": 35342
+      },
+      {
+        "from": "Claude outputs/audit-fashion-atlas.html",
+        "archiveEntry": "AUDIT-2026-09-03.html",
+        "sha256": "b2748527a0fc99993eac16d06d1a9a6bfb05661d64cb5570ce229db76bbf6d2d",
+        "bytes": 86668
+      },
+      {
+        "from": "fashion-atlas-maquettes/emplois.html",
+        "archiveEntry": "fashion-atlas-maquettes/emplois.html",
+        "sha256": "6fbd90963b51590d7477bbdb22ba47154cce73b90cdb90e8358149de3337ff3f",
+        "bytes": 41228
+      },
+      {
+        "from": "fashion-atlas-maquettes/maisons.html",
+        "archiveEntry": "fashion-atlas-maquettes/maisons.html",
+        "sha256": "89b81d63813f907678e1b16c57235290bef4193e082759adbc29a8508b649cb2",
+        "bytes": 38708
+      },
+      {
+        "from": "fashion-atlas-maquettes/home.html",
+        "archiveEntry": "fashion-atlas-maquettes/home.html",
+        "sha256": "c614962ddae921916445ee1dcbee1e50f48f4427529dbc3668151f3ac9744b57",
+        "bytes": 42344
+      },
+      {
+        "from": "fashion-atlas-maquettes/offre.html",
+        "archiveEntry": "fashion-atlas-maquettes/offre.html",
+        "sha256": "7591538b383ac5afe559a2dfb074b4360b181e0cff150cd59bf963304e8e92c8",
+        "bytes": 37720
+      },
+      {
+        "from": "fashion-atlas-maquettes/maison.html",
+        "archiveEntry": "fashion-atlas-maquettes/maison.html",
+        "sha256": "4a4d6a7b3bee02c987f1a5cbf98fb55304e6f353f348ec23faa15904f6630d94",
+        "bytes": 38132
+      },
+      {
+        "from": "fashion-atlas-maquettes/matching.html",
+        "archiveEntry": "fashion-atlas-maquettes/matching.html",
+        "sha256": "57c8504d9791a89c2f9026823224352cce704bee0cf711c878f4c5a2043e8ea8",
+        "bytes": 35769
+      },
+      {
+        "from": "fashion-atlas-maquettes/etats.html",
+        "archiveEntry": "fashion-atlas-maquettes/etats.html",
+        "sha256": "07b33f611f2e193cf6db79a89e6973727709c5fbbd25a59a28ed9b20870ca271",
+        "bytes": 35706
+      }
+    ],
+    "removedExactFontDuplicates": [
+      {
+        "from": "FFModern-Regular.woff2",
+        "retainedAt": "apps/web/public/fonts/display/FFModern-Regular.woff2",
+        "sha256": "f9e6aca65b76e221bcf754d9b906dcde9dec479b8f2243950a0ee6fb5fda66e0"
+      },
+      {
+        "from": "Mona-Sans-Regular.woff2",
+        "retainedAt": "apps/web/public/fonts/sans/FASans-Regular.woff2",
+        "sha256": "421c52b35bda6a0fa9f0eb2dc0f80ddc44002f321edb7832823e98325948e82d"
+      },
+      {
+        "from": "Mona-Sans-RegularItalic.woff2",
+        "retainedAt": "apps/web/public/fonts/sans/FASans-Italic.woff2",
+        "sha256": "9a9938ef37d536cef8ed7b6224ecd325ce8a46d385f3ca9d32922037d449b9f2"
+      },
+      {
+        "from": "Mona-Sans-Medium.woff2",
+        "retainedAt": "apps/web/public/fonts/sans/FASans-Medium.woff2",
+        "sha256": "24129d5cc90518c253b0478c7723e7ba79f22a8e6993cbec4b3479fcd0c1c714"
+      }
+    ],
+    "privateRecoveryArchive": "backups/cleanup-20260910/root-cleanup/legacy-project-artifacts.zip",
+    "archiveSha256": "b6b132ff3ef5f55cf18ec79f389a107a79594cc5d217821773f3401219719470",
+    "archiveBytes": 3362174,
+    "removedOsNoise": [],
+    "preserved": [
+      ".env",
+      ".git",
+      ".claude",
+      "node_modules",
+      "apps",
+      "packages",
+      "docs",
+      "audits",
+      "backups including PostgreSQL data and production dumps"
+    ],
+    "productionChanges": false,
+    "rootFilesRemoved": 23,
+    "rootDirectoriesRemoved": [
+      "Claude outputs",
+      "fashion-atlas-maquettes"
+    ]
+  }
+}
