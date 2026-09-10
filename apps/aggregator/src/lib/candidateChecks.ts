@@ -68,7 +68,8 @@ export function classifyLabel(label: string, maison: string): LabelClass {
   const ownerKey = resolveCompany(maison).companyId, ownerNorm = normalizedEmployerName(maison);
   if (resolveCompany(label).companyId === ownerKey || normalizedEmployerName(label) === ownerNorm) return 'OWNER';
   const words = normalizedEmployerName(stripLegalSuffix(label)).split(/[^\p{L}\p{N}]+/u).filter(Boolean);
-  const owner = ownerNorm.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+  // The Maison's own legal form is not part of its name either: "VF Outdoor, LLC" is an entity of "VF Corporation" (VF, 2026-09-10).
+  const owner = normalizedEmployerName(stripLegalSuffix(maison)).split(/[^\p{L}\p{N}]+/u).filter(Boolean);
   if (owner.length && owner.every((w) => words.includes(w))) return 'OWNER_ENTITY';
   return 'OTHER';
 }

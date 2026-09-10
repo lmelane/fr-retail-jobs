@@ -47,11 +47,14 @@ describe('native labels against the catalogued Maison', () => {
     expect(classifyLabel('UNIQLO Massachusetts LLC', 'Uniqlo')).toBe('OWNER_ENTITY');
     expect(classifyLabel("L'IMPERTINENTE - Ysé", 'Ysé')).toBe('OWNER_ENTITY');
     expect(classifyLabel('UNIQLO EUROPE LIMITED FRENCH BRANCH', 'UNIQLO')).toBe('OWNER_ENTITY');
+    expect(classifyLabel('VF Outdoor, LLC', 'VF Corporation')).toBe('OWNER_ENTITY'); expect(classifyLabel('VF International S.a.g.l.', 'VF Corporation')).toBe('OWNER_ENTITY');
+    expect(classifyLabel('Link Theory (UK) Ltd. FRENCH BRANCH', 'Theory')).toBe('OWNER_ENTITY');
   });
   it('OTHER: another brand on the same portal is never an entity of the owner', () => {
     expect(classifyLabel('GU USA LLC', 'Uniqlo')).toBe('OTHER');
     expect(classifyLabel('Kate Spade', 'Coach')).toBe('OTHER');
     expect(classifyLabel('Beiersdorf', 'La Prairie')).toBe('OTHER');
+    expect(classifyLabel('Icebreaker New Zealand Limited', 'VF Corporation')).toBe('OTHER');
   });
   it('the perimeter verdict follows the worst label; a board without labels is NO_NATIVE_LABEL', () => {
     expect(scopeEvidence(new Map([['UNIQLO USA LLC', 13], ['GU USA LLC', 1]]), 'Uniqlo')).toMatchObject({ verdict: 'LABELS_OUTSIDE_OWNER', other: ['GU USA LLC (1)'] });

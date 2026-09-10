@@ -215,6 +215,8 @@ it('holds a replay without a detail path and clears only Workday holds after a s
 describe('brandFromLogoAlt — the word "logo" belongs to the image, not the employer', () => {
   it('strips a leading or trailing "logo" whatever its case, keeps the brand otherwise intact', () => {
     expect(brandFromLogoAlt('Cartier Logo')).toBe('Cartier'); expect(brandFromLogoAlt('Richemont Logo')).toBe('Richemont');
+    // KnitWell (2026-09-10): a file-name-like alt with underscores and image dimensions — the brand is Off The Rax, never the token.
+    expect(brandFromLogoAlt('Off_The_Rax_LOGO300x300')).toBe('Off The Rax'); expect(brandFromLogoAlt('LOGO300x300')).toBeUndefined(); expect(brandFromLogoAlt('Dr. Jart+ Logo')).toBe('Dr. Jart+');
     expect(brandFromLogoAlt('Logo Pierre Fabre')).toBe('Pierre Fabre'); expect(brandFromLogoAlt('Jaeger LeCoultre logo')).toBe('Jaeger LeCoultre'); expect(brandFromLogoAlt('HOKA Logo')).toBe('HOKA');
     expect(brandFromLogoAlt('Van Cleef & Arpels')).toBe('Van Cleef & Arpels');
   });
