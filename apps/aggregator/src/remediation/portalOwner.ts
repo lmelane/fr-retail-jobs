@@ -113,7 +113,8 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
       const brandDomains = new Map<string, string | null>();
       const relatedBrands = new Map<string, { id: string; name: string }>();
       for (const posting of spec.postings ?? []) {
-        if (!/^[A-Za-z0-9._:-]{1,80}$/.test(posting.externalId) || posting.externalId in postingOwners) throw new Error(`Invalid or repeated reviewed posting: ${posting.externalId}`);
+        // Workday ids are the last path segment of the posting (title slug + requisition): up to ~120 characters on Saks (2026-09-10).
+        if (!/^[A-Za-z0-9._:-]{1,200}$/.test(posting.externalId) || posting.externalId in postingOwners) throw new Error(`Invalid or repeated reviewed posting: ${posting.externalId}`);
         if (!(Object.values(CompanyKind) as string[]).includes(posting.targetKind) || (posting.targetKind as string) === 'UNKNOWN' || !normalizedEmployerName(posting.targetName)) throw new Error(`Invalid reviewed brand for posting ${posting.externalId}`);
         const ev = posting.evidence; const u = new URL(ev.url);
         if (u.protocol !== 'https:' || u.username || u.password || !onPortal(u) || !/^[a-f0-9]{64}$/.test(ev.sha256) || !ev.property.trim() || !ev.value.trim() || !Number.isFinite(Date.parse(ev.observedAt))) throw new Error(`Invalid native brand evidence for posting ${posting.externalId}`);
