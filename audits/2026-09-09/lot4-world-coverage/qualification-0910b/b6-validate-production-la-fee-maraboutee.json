@@ -1,0 +1,42 @@
+{
+ "key": "la-fee-maraboutee",
+ "status": "DRAFT",
+ "kind": "teamtailor",
+ "ats": "TEAMTAILOR",
+ "request": {
+  "origin": "https://lafeemaraboutee.teamtailor.com",
+  "path": "/"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T13:16:40.828Z",
+ "robotsPresent": true,
+ "fetched": 19,
+ "parsed": 19,
+ "declaredTotal": null,
+ "complete": true,
+ "truncated": false,
+ "enumeration": null,
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  [
+   "la fée maraboutée",
+   19
+  ]
+ ],
+ "countries": [
+  [
+   "FR",
+   19
+  ]
+ ],
+ "sampleTitles": [
+  "Conseiller/ère de vente — Pau, Sud Ouest, 64000",
+  "Responsable boutique — La Rochelle, Sud Ouest, 17000",
+  "Conseiller/ère de vente — Dijon, Rhône Alpes, 21000",
+  "Conseiller/ère de vente — Besançon, Rhône Alpes, 25000",
+  "Conseiller/ère de vente — Villeneuve-d'Ascq, Nord, 59650"
+ ],
+ "seconds": 0,
+ "written": true
+}

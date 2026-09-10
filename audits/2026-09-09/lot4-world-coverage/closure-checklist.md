@@ -1,4 +1,4 @@
-# LOT 4 — checklist de clôture (état au 2026-09-10, ~12:45 UTC)
+# LOT 4 — checklist de clôture (état au 2026-09-10, ~14:30 UTC)
 
 Deux fins distinctes : **la fin de la passe B6** (sources admissibles activées, ingérées, visibles) et **la fin du lot complet** (critères du brief `brief.md` : discovery mondiale, qualification, intégration, complétude, audit final). Chaque ligne porte un statut — **terminé** (prouvé en production ou par preuve archivée), **restant** (travail identifié, non bloqué), **bloqué** (dépend d'une décision de Loïc, d'un accès ou d'une information externe) — et le nombre de dossiers concernés.
 
@@ -16,6 +16,12 @@ Deux fins distinctes : **la fin de la passe B6** (sources admissibles activées,
 | `SINGLE_BRAND` : tout libellé natif crédité au propriétaire | terminé (PR 81) | règle de porte | un libellé nommant un employeur canonique distinct est refusé ; test d'intégration |
 | Reçus anciens / de configuration différente comptés comme preuves | terminé (PR 81) / **restant** : un run de production postérieur à la certification courante doit valoir reçu (Saks, Tapestry) | 3 sources | tracker v10 : reçu non courant ⇒ NOT_PROVEN ; correctif du repli « run de production » à livrer |
 | Attestation d'absence par partition (source partitionnée) | **restant** | 1 source (Tapestry : 97 offres dé-listées non fermables) | `attestation.ts` : scope par partition |
+| Arrêt immédiat sur erreur dans les chaînes de production | terminé | 3 chaînes (`b6-batch.sh`, `b6-certify-existing.sh`, `b6-repair-chain.sh`) + `lot-run-chain.sh` | plus de pipe masquant, `set -eu`, arrêt sur déploiement non SUCCESS, pas de restauration sur run en cours |
+| Commit déployé vérifié après chaque run borné | terminé | `run-lot.sh` (révision = origin/main, COMPLETED, 0 échec, 0 run non attestant) | `lot-<lot>-after-run.json`, L12 et L13 |
+| Verdict d'accès explicite (ALLOWED lu ≠ NO_ROBOTS ≠ UNREACHABLE) | terminé (PR 84) | lib + 10 tests ; 9 sources relues : ALLOWED HTTP 200 | `b6-retro-controls.md` |
+| Board exact + périmètre confrontés aux libellés à la certification | terminé (PR 84 + `b6-integrate.mts`) | 9 sources relues 9/9 ; 3 sites UNIQLO EU certifiés sous ce contrôle | `b6-retro-controls.md`, `b6-integrate-production-certify-*-proof.json` |
+| Sauvegarde fraîche restaurée sur clone avant la première mutation | terminé (procédure) ; rétrospectivement : dump de 1–12 min avant, hors étape | toutes les chaînes | `*-backup-proof.json` |
+| Propriétaire d'un portail SINGLE_BRAND = Maison du catalogue (pas le libellé) | terminé (PR 84, déployé `3b7fc0d`) | règle de porte + test d'intégration | Ysé / On / La Prairie réparés |
 
 ## B. Identités et périmètre (dossiers du second brief)
 
@@ -37,9 +43,9 @@ Deux fins distinctes : **la fin de la passe B6** (sources admissibles activées,
 |---|---|---:|---|
 | Périmètre admissible explicite | terminé (brouillon), **restant** (validation par tenant) | 33 tenants avec lien réciproque archivé | `b6-candidates-sector.md` : IN 28 (3 592 offres), MULTI 1 (VF, 1 267), doublon 1 (Luxexperience/YNAP), OUT 1 (Galderma), REVIEW 2 (KS Groupe, Lagardère TR) |
 | Rapprochement du rapport de découverte web avec la BDD | terminé (outil + première passe) | 65 lignes : déjà couvertes 10 · config/attribution 10 · nouveaux acteurs 21 · nouvelle source d'un acteur existant 3 · investigation 21 | `audits/2026-09-10/discovery-web/reconciliation.md` ; catégories du rapport corrigées (Swarovski, Pandora couverts ; Douglas = même portail sous un autre hôte) |
-| Certification d'identité des candidats retenus | **restant** | 0 / 33 | méthode B1 sur la page archivée, périmètre par libellés natifs |
-| Enregistrement DRAFT → revue → promotion | **restant** | 0 | `registerSourceCandidate`, `SourceIdentityReview`, `promoteSource` |
-| Ingestion bornée + chaîne source → BDD → API → front | **restant** | 0 | `run-lot.sh` + `lot-public-check.mts` par lot |
+| Certification d'identité des candidats retenus | partiel | 11 / 33 tenants (8 lot n°1 + Arc'teryx + 2 UNIQLO US/AU en cours) ; `headquarters_us_Uniqlo` refusé SINGLE_BRAND (GU) | méthode B1 + board exact + libellés natifs (`b6-integrate.mts certify`) |
+| Enregistrement DRAFT → revue → promotion | partiel | 9 sources ACTIVE (lot n°1 + Arc'teryx) ; lot n°2 en cours | `b6-integrate-production-*-proof.json` |
+| Ingestion bornée + chaîne source → BDD → API → front | partiel | L11 (299), L12 (955 lues = écrites = publiées, parité 9/9) ; L13 en cours | `lot-L12-b6-batch1-after-run.json`, `lot-L12-b6-retro-volumes.md` |
 | Doublons évités | terminé pour les cas connus | Luxexperience/YNAP, Browns/Farfetch, Douglas | à recompter à la fin de la passe |
 
 ## D. Lot complet — au-delà de B6
@@ -51,7 +57,8 @@ Deux fins distinctes : **la fin de la passe B6** (sources admissibles activées,
 | Collecte complète prouvée | partiel | 384 complètes / 11 non prouvées / 10 expliquées (tracker v9, avec la réserve des reçus non courants) | Oniverse (16 pages), Tapestry (résiduel sous plafond), Eightfold second balayage |
 | Visibilité front prouvée | partiel | parités par lot 100 % (L1–L7), 0 consolidée dans le tracker | intégrer les parités ; traiter les 640 offres sans source opérante |
 | Audit final C1–C3 consolidé | **restant** | — | après la passe B6 |
-| Tableau final Acteur × Source (identité · périmètre · collecte · ingestion · visibilité · commit · déployé · réparé · preuves · restant) | **restant** | 405 sources + nouvelles | généré depuis la BDD + preuves, jamais composé |
+| Inventaire de suivi unique (1 653 FashionJobs + web + portefeuilles + B6 + sociétés + sources, dénominateurs explicites) | terminé (régénérable) | 2 498 acteurs dédupliqués, 512 sources | `inventory-unique/` (`unified-inventory.mts`, `inventory-readme.py`) |
+| Tableau final Acteur × Source (identité · périmètre · collecte · ingestion · visibilité · commit · déployé · réparé · preuves · restant) | terminé (générateur) / **restant** (relecture front complète) | 422 sources ACTIVE/PAUSED | `final-table.mts` → `final-table.md` ; généré depuis la BDD + preuves, jamais composé |
 | Reprise des crons | **bloqué** (décision Loïc, D57) | 3 crons | après audit final |
 
 ## Compteurs réels (production, 2026-09-10)

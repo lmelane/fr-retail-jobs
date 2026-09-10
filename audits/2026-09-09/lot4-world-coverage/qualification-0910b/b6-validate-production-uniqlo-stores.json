@@ -1,0 +1,218 @@
+{
+ "at": "2026-09-10T13:55:22.569Z",
+ "key": "uniqlo-stores",
+ "status": "ACTIVE",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/store_staff_eu_Uniqlo/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T13:55:09.626Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 110,
+ "parsed": 110,
+ "declaredTotal": 110,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 110,
+    "uniqueIds": 110,
+    "pages": 6,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 1,
+ "labels": [
+  {
+   "label": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+   "n": 30,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+   "n": 26,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED",
+   "n": 23,
+   "class": "OWNER"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+   "n": 17,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED ITALIAN BRANCH",
+   "n": 5,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED BELGIAN BRANCH",
+   "n": 3,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED DENMARK BRANCH",
+   "n": 2,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "(catalogue label)",
+   "n": 1,
+   "class": "CATALOGUE"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED POLISH BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED SWEDISH BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  }
+ ],
+ "countries": [
+  [
+   "France",
+   30
+  ],
+  [
+   "Germany",
+   26
+  ],
+  [
+   "United Kingdom",
+   23
+  ],
+  [
+   "Spain",
+   17
+  ],
+  [
+   "Italy",
+   5
+  ],
+  [
+   "Belgium",
+   3
+  ],
+  [
+   "Denmark",
+   2
+  ],
+  [
+   "(none)",
+   1
+  ],
+  [
+   "Poland",
+   1
+  ],
+  [
+   "Netherlands",
+   1
+  ],
+  [
+   "Sweden",
+   1
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Uniqlo",
+  "ownerKey": "UNIQLO",
+  "labels": [
+   {
+    "label": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+    "n": 30,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+    "n": 26,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED",
+    "n": 23,
+    "class": "OWNER"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+    "n": 17,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED ITALIAN BRANCH",
+    "n": 5,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED BELGIAN BRANCH",
+    "n": 3,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED DENMARK BRANCH",
+    "n": 2,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "(catalogue label)",
+    "n": 1,
+    "class": "CATALOGUE"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED POLISH BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED SWEDISH BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 109,
+ "withDescription": 109,
+ "sampleTitles": [
+  "Mitarbeiter:in Warenannahme / Lager (m/w/d) / Stockroom Associate 32-40 h/Woche, UNIQLO Alexanderplatz, Berlin — Berlin, Germany",
+  "Temporary Sales/Stockroom Assistant - UNIQLO 311 Oxford Street — London, United Kingdom",
+  "Loss Prevention Associate - UNIQLO Trafford Center — Manchester, United Kingdom",
+  "Temporary Sales Assistant - UNIQLO Bullring — Birmingham, United Kingdom",
+  "Coordinateur(trice) administratif RH en magasin (Temps partiel - 4 jours/semaine) — Lyon, France"
+ ],
+ "seconds": 13,
+ "written": false,
+ "sourceUpdatedAt": "2026-09-08T22:07:00.718Z"
+}

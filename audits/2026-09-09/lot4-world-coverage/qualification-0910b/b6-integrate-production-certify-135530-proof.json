@@ -1,0 +1,76 @@
+{
+  "at": "2026-09-10T13:55:30.015Z",
+  "environment": "production",
+  "step": "certify",
+  "proofs": [
+    {
+      "key": "uniqlo-stores",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/en-US/store_staff_eu_Uniqlo",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "uniqlo-stores",
+          "sourceHash": "ba8910f7bafbde452ecb2123b23931b58139cd729297823134f49f70bbe2f352",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "uniqlo-stores",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/store_staff_eu_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-04T16:52:05.591Z",
+        "verifiedJobCount": 109
+      }
+    },
+    {
+      "key": "uniqlo-headquarters",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/en-US/headquarters_eu_Uniqlo",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "uniqlo-headquarters",
+          "sourceHash": "126aec391c31c3900074cf1187c47706938af2f94979e983a56627d1ebcf3cd7",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "uniqlo-headquarters",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/headquarters_eu_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-04T13:56:17.954Z",
+        "verifiedJobCount": 20
+      }
+    },
+    {
+      "key": "uniqlo-graduates",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/graduates_eu_Uniqlo",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "uniqlo-graduates",
+          "sourceHash": "ba9de190a1bdaecdd3757fa1e8da2e749dd07a8ffe170c9317efb7f0eb656319",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "uniqlo-graduates",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/graduates_eu_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-04T16:52:07.171Z",
+        "verifiedJobCount": 11
+      }
+    }
+  ]
+}

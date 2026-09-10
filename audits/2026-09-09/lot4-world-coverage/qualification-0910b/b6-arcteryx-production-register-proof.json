@@ -1,0 +1,46 @@
+{
+  "at": "2026-09-10T13:01:52.810Z",
+  "environment": "production",
+  "step": "register",
+  "result": {
+    "created": true,
+    "source": {
+      "id": "cmtvjdxzr00003ng4d0kr883l",
+      "key": "arcteryx",
+      "maison": "Arc'teryx",
+      "careersDomain": "jobs.lever.co",
+      "kind": "lever",
+      "config": {
+        "site": "arcteryx.com"
+      },
+      "jobUrlPattern": null,
+      "status": "DRAFT",
+      "tier": "EMPLOYER_DIRECT",
+      "tenantKey": "lever:arcteryx.com",
+      "robotsVerdict": null,
+      "robotsCheckedAt": null,
+      "verifiedJobCount": null,
+      "lastRunAt": null,
+      "lastRunStatus": null,
+      "lastRunJobs": null,
+      "descriptionRate": null,
+      "dateRate": null,
+      "countryRate": null,
+      "urlRate": null,
+      "note": null,
+      "createdAt": "2026-09-10T13:01:52.599Z",
+      "updatedAt": "2026-09-10T13:01:52.599Z"
+    }
+  },
+  "after": {
+    "key": "arcteryx",
+    "status": "DRAFT",
+    "tenantKey": "lever:arcteryx.com",
+    "robotsVerdict": null,
+    "robotsCheckedAt": null,
+    "verifiedJobCount": null,
+    "config": {
+      "site": "arcteryx.com"
+    }
+  }
+}

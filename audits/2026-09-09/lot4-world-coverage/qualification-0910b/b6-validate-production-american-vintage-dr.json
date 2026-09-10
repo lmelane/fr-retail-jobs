@@ -1,0 +1,94 @@
+{
+ "key": "american-vintage-dr",
+ "status": "DRAFT",
+ "kind": "digitalrecruiters",
+ "ats": "DIGITALRECRUITERS",
+ "request": {
+  "origin": "https://careers.am-vintage.com",
+  "path": "/"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T13:16:34.146Z",
+ "robotsPresent": true,
+ "fetched": 34,
+ "parsed": 34,
+ "declaredTotal": 34,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_JSON_PAGINATION_WITH_DIFFUSION_COUNT",
+  "termination": "SHORT_PAGE",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "diffusions",
+    "declaredTotal": 34,
+    "uniqueIds": 34,
+    "pages": 1,
+    "complete": true
+   },
+   {
+    "scope": "announcements",
+    "declaredTotal": 34,
+    "uniqueIds": 34,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  [
+   "(catalogue label)",
+   34
+  ]
+ ],
+ "countries": [
+  [
+   "France",
+   19
+  ],
+  [
+   "Deutschland",
+   4
+  ],
+  [
+   "España",
+   3
+  ],
+  [
+   "United States",
+   3
+  ],
+  [
+   "Luxembourg",
+   1
+  ],
+  [
+   "United Kingdom",
+   1
+  ],
+  [
+   "Netherlands",
+   1
+  ],
+  [
+   "États-Unis",
+   1
+  ],
+  [
+   "Switzerland",
+   1
+  ]
+ ],
+ "sampleTitles": [
+  "Conseiller(ère) de vente 20h - CDI — Saint-Laurent-du-Var, Provence-Alpes-Côte d'Azur, 06700",
+  "Coordinateur(rice) projets - Planification Retail — Signes, Provence-Alpes-Côte d'Azur, 83870",
+  "Responsable corner GL Luxembourg 40h - CDD Terme imprécis — Luxembourg, Luxembourg, 1661",
+  "Conseiller(ère) de vente 35h - CDI — Pont-Sainte-Marie, Grand Est, 10150",
+  "Responsable de Boutique — Pont-Sainte-Marie, Grand Est, 10150"
+ ],
+ "seconds": 4,
+ "written": true
+}

@@ -1,0 +1,666 @@
+{
+ "at": "2026-09-10T13:40:45.750Z",
+ "rows": [
+  {
+   "key": "armand-thiery-flatchr",
+   "maison": "Armand Thiery",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T13:16:25.757Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://armandthiery.flatchr.io/fr/company/armandthiery/",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.armandthiery.fr/",
+    "artifactHashOk": true,
+    "reference": "armandthiery.flatchr.io/fr/company/armandthiery",
+    "exact": true,
+    "tenantKey": "flatchr:armandthiery.flatchr.io/fr/company/armandthiery",
+    "portalUrl": "https://armandthiery.flatchr.io/fr/company/armandthiery"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "Armand Thiery ×198"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "Armand Thiery 198"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "Armand Thiery resolved:ARMAND_THIERY active 200"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 198
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L12-b6-batch1",
+    "expectedCommit": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "successOn": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "executed": true,
+    "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "runStatus": "COMPLETED",
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T13:16:24.896Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:16:50.707Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T13:16:53.335Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 12
+   }
+  },
+  {
+   "key": "on-running",
+   "maison": "On",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T13:16:27.488Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://boards-api.greenhouse.io/v1/boards/onrunning/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://culture.on.com/jobs/8168899/",
+    "artifactHashOk": true,
+    "reference": "boards.greenhouse.io/onrunning",
+    "exact": true,
+    "tenantKey": "greenhouse:onrunning",
+    "portalUrl": "https://job-boards.greenhouse.io/onrunning"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "(catalogue label) ×309"
+    ],
+    "evidence": "NO_NATIVE_LABEL",
+    "other": [],
+    "credited": [
+     "On 309 [source-scoped key]"
+    ],
+    "misattributed": [
+     "On (309)"
+    ],
+    "homonymCompanies": [
+     "On resolved:SOURCE_447ff2da7caf1f92cf077783fc6575bdb1527b5562fa0b5f06b73a5d45cfb44f active 309"
+    ],
+    "rules": {
+     "LEGACY_UNREVIEWED": 309
+    },
+    "consistent": false
+   },
+   "deployment": {
+    "lot": "L12-b6-batch1",
+    "expectedCommit": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "successOn": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "executed": true,
+    "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "runStatus": "COMPLETED",
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T13:16:24.896Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:16:50.707Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T13:16:53.335Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 12
+   }
+  },
+  {
+   "key": "boardriders",
+   "maison": "Boardriders",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T13:16:28.748Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://jobs.boardriders.eu/",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.boardriders.com/fr-fr/carriere-corporate/",
+    "artifactHashOk": true,
+    "reference": "jobs.boardriders.eu",
+    "exact": true,
+    "tenantKey": "successfactors:jobs.boardriders.eu",
+    "portalUrl": "https://jobs.boardriders.eu"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "Boardriders ×44"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "Boardriders 44"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "Boardriders resolved:BOARDRIDERS active 86"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 44
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L12-b6-batch1",
+    "expectedCommit": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "successOn": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "executed": true,
+    "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "runStatus": "COMPLETED",
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T13:16:24.896Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:16:50.707Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T13:16:53.335Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 12
+   }
+  },
+  {
+   "key": "american-vintage-dr",
+   "maison": "American Vintage",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T13:16:34.146Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://careers.am-vintage.com/",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://americanvintage-store.com/",
+    "artifactHashOk": true,
+    "reference": "careers.am-vintage.com",
+    "exact": true,
+    "tenantKey": "digitalrecruiters:careers.am-vintage.com",
+    "portalUrl": "https://careers.am-vintage.com"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "(catalogue label) ×34"
+    ],
+    "evidence": "NO_NATIVE_LABEL",
+    "other": [],
+    "credited": [
+     "American Vintage 34"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "American Vintage resolved:AMERICAN_VINTAGE active 41"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 34
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L12-b6-batch1",
+    "expectedCommit": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "successOn": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "executed": true,
+    "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "runStatus": "COMPLETED",
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T13:16:24.896Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:16:50.707Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T13:16:53.335Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 12
+   }
+  },
+  {
+   "key": "yse-paris",
+   "maison": "Ysé",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T13:16:39.352Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://yseparis.teamtailor.com/",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://yse-paris.com/fr-fr",
+    "artifactHashOk": true,
+    "reference": "yseparis.teamtailor.com",
+    "exact": true,
+    "tenantKey": "teamtailor:yseparis.teamtailor.com",
+    "portalUrl": "https://yseparis.teamtailor.com"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "L'IMPERTINENTE - Ysé ×11"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "L'IMPERTINENTE - Ysé 11 [source-scoped key]"
+    ],
+    "misattributed": [
+     "L'IMPERTINENTE - Ysé (11)"
+    ],
+    "homonymCompanies": [
+     "Ysé resolved:YSE active 12"
+    ],
+    "rules": {
+     "LEGACY_UNREVIEWED": 11
+    },
+    "consistent": false
+   },
+   "deployment": {
+    "lot": "L12-b6-batch1",
+    "expectedCommit": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "successOn": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "executed": true,
+    "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "runStatus": "COMPLETED",
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T13:16:24.896Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:16:50.707Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T13:16:53.335Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 12
+   }
+  },
+  {
+   "key": "la-fee-maraboutee",
+   "maison": "La Fée Maraboutée",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T13:16:40.828Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://lafeemaraboutee.teamtailor.com/",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://lafeemaraboutee.fr/",
+    "artifactHashOk": true,
+    "reference": "lafeemaraboutee.teamtailor.com",
+    "exact": true,
+    "tenantKey": "teamtailor:lafeemaraboutee.teamtailor.com",
+    "portalUrl": "https://lafeemaraboutee.teamtailor.com"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "la fée maraboutée ×19"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "LA FEE MARABOUTEE 19"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 19
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L12-b6-batch1",
+    "expectedCommit": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "successOn": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "executed": true,
+    "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "runStatus": "COMPLETED",
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T13:16:24.896Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:16:50.707Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T13:16:53.335Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 12
+   }
+  },
+  {
+   "key": "shinola-retail",
+   "maison": "Shinola",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T13:16:42.170Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://boards-api.greenhouse.io/v1/boards/shinolaretail/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.shinola.com/pages/careers",
+    "artifactHashOk": true,
+    "reference": "job-boards.greenhouse.io/shinolaretail",
+    "exact": true,
+    "tenantKey": "greenhouse:shinolaretail",
+    "portalUrl": "https://job-boards.greenhouse.io/shinolaretail"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "(catalogue label) ×14"
+    ],
+    "evidence": "NO_NATIVE_LABEL",
+    "other": [],
+    "credited": [
+     "Shinola 14"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "Shinola resolved:SHINOLA active 23"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 14
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L12-b6-batch1",
+    "expectedCommit": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "successOn": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "executed": true,
+    "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "runStatus": "COMPLETED",
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T13:16:24.896Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:16:50.707Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T13:16:53.335Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 12
+   }
+  },
+  {
+   "key": "la-prairie",
+   "maison": "La Prairie",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T13:16:43.297Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://www.careers.laprairiegroup.ch/",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.laprairie.com/fr-fr/",
+    "artifactHashOk": true,
+    "reference": "www.careers.laprairiegroup.ch",
+    "exact": true,
+    "tenantKey": "successfactors:www.careers.laprairiegroup.ch",
+    "portalUrl": "https://www.careers.laprairiegroup.ch"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "La Prairie ×27"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "La Prairie 27 [source-scoped key]"
+    ],
+    "misattributed": [
+     "La Prairie (27)"
+    ],
+    "homonymCompanies": [
+     "La Prairie resolved:SOURCE_26fb5371c78e25b3ac42ed63b93abef5c3e407d01c0d03b496c066bf9b96fb5c active 27"
+    ],
+    "rules": {
+     "LEGACY_UNREVIEWED": 27
+    },
+    "consistent": false
+   },
+   "deployment": {
+    "lot": "L12-b6-batch1",
+    "expectedCommit": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "successOn": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "executed": true,
+    "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "runStatus": "COMPLETED",
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T13:16:24.896Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:16:50.707Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T13:16:53.335Z",
+      "lastBackup": "before-lot-L11-arcteryx-production.dump",
+      "minutesBefore": 12
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 12
+   }
+  },
+  {
+   "key": "arcteryx",
+   "maison": "Arc'teryx",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T13:01:54.387Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://api.lever.co/v0/postings/arcteryx.com",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://arcteryx.com/fr/fr/careers/retail-opportunities",
+    "artifactHashOk": true,
+    "reference": "jobs.lever.co/arcteryx.com",
+    "exact": true,
+    "tenantKey": "lever:arcteryx.com",
+    "portalUrl": "https://jobs.lever.co/arcteryx.com"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "(catalogue label) ×299"
+    ],
+    "evidence": "NO_NATIVE_LABEL",
+    "other": [],
+    "credited": [
+     "ARC'TERYX 299"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "ARC'TERYX resolved:ARC_TERYX active 303"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 299
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L11-arcteryx",
+    "expectedCommit": "01cd6265b73b1b1db1ae5c9a52daf5808b0e76b8",
+    "successOn": "01cd6265b73b1b1db1ae5c9a52daf5808b0e76b8",
+    "executed": true,
+    "runRevision": "01cd6265b73b1b1db1ae5c9a52daf5808b0e76b8",
+    "runStatus": "COMPLETED",
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T13:01:52.810Z",
+      "lastBackup": "before-lot-L10-beiersdorf-production.dump",
+      "minutesBefore": 1
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:02:02.019Z",
+      "lastBackup": "before-lot-L10-beiersdorf-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T13:02:03.152Z",
+      "lastBackup": "before-lot-L10-beiersdorf-production.dump",
+      "minutesBefore": 2
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 2
+   }
+  }
+ ]
+}

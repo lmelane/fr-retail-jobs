@@ -1,0 +1,42 @@
+{
+ "key": "yse-paris",
+ "status": "DRAFT",
+ "kind": "teamtailor",
+ "ats": "TEAMTAILOR",
+ "request": {
+  "origin": "https://yseparis.teamtailor.com",
+  "path": "/"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T13:16:39.352Z",
+ "robotsPresent": true,
+ "fetched": 11,
+ "parsed": 11,
+ "declaredTotal": null,
+ "complete": true,
+ "truncated": false,
+ "enumeration": null,
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  [
+   "L'IMPERTINENTE - Ysé",
+   11
+  ]
+ ],
+ "countries": [
+  [
+   "FR",
+   11
+  ]
+ ],
+ "sampleTitles": [
+  "Responsable de Boutique (H/F) - CDI - 39H - Paris — Paris, Île-de-France",
+  "Conseiller.ère de vente - CDI - 16h - Charonne — Paris, Île-de-France, 75011",
+  "Conseiller.ère de vente - CDI - 35h - Aix-en-Provence — Aix-en-Provence, Provence-Alpes-Côte d'Azur, 13100",
+  "Conseiller.ère de vente (H/F) - CDI - 24h - Aix — Aix-en-Provence, Provence-Alpes-Côte d'Azur, 13100",
+  "Conseiller.ère de vente (H/F) - CDD 4 mois - 35h — Lyon, Auvergne-Rhône-Alpes, 69002"
+ ],
+ "seconds": 1,
+ "written": true
+}

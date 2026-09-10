@@ -1,0 +1,54 @@
+{
+ "key": "boardriders",
+ "status": "DRAFT",
+ "kind": "successfactors",
+ "ats": "SUCCESSFACTORS",
+ "request": {
+  "origin": "https://jobs.boardriders.eu",
+  "path": "/"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T13:16:28.748Z",
+ "robotsPresent": true,
+ "fetched": 44,
+ "parsed": 44,
+ "declaredTotal": 44,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_HTML_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": []
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  [
+   "Boardriders",
+   44
+  ]
+ ],
+ "countries": [
+  [
+   "FR",
+   36
+  ],
+  [
+   "ES",
+   7
+  ],
+  [
+   "PT",
+   1
+  ]
+ ],
+ "sampleTitles": [
+  "Stagiaire Assistant(e) Marketing H/F - Billabong — SAINT JEAN DE LUZ, FR",
+  "Responsable Web-merchandising & Marketing H/F — SAINT JEAN DE LUZ, FR",
+  "Coordinateur Web-merchandising & CRM (H/F) — SAINT JEAN DE LUZ, FR",
+  "Vendeur 20h H/F - Bordeaux (33)- Quiksilver — BORDEAUX, FR",
+  "Vendeur - 35H - H/F - Saint-Laurent Du Var - BOARDRIDERS — ST LAURENT DU VAR, FR"
+ ],
+ "seconds": 5,
+ "written": true
+}

@@ -1,0 +1,218 @@
+{
+ "at": "2026-09-10T13:55:28.318Z",
+ "key": "uniqlo-graduates",
+ "status": "ACTIVE",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/graduates_eu_Uniqlo/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T13:55:26.639Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 11,
+ "parsed": 11,
+ "declaredTotal": 11,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 11,
+    "uniqueIds": 11,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED",
+   "n": 1,
+   "class": "OWNER"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED BELGIAN BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED ITALIAN BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED SWEDISH BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LTD. LUXEMBOURG BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED POLISH BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED DENMARK BRANCH",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  }
+ ],
+ "countries": [
+  [
+   "France",
+   1
+  ],
+  [
+   "United Kingdom",
+   1
+  ],
+  [
+   "Germany",
+   1
+  ],
+  [
+   "Belgium",
+   1
+  ],
+  [
+   "Italy",
+   1
+  ],
+  [
+   "Netherlands",
+   1
+  ],
+  [
+   "Spain",
+   1
+  ],
+  [
+   "Sweden",
+   1
+  ],
+  [
+   "Luxembourg",
+   1
+  ],
+  [
+   "Poland",
+   1
+  ],
+  [
+   "Denmark",
+   1
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Uniqlo",
+  "ownerKey": "UNIQLO",
+  "labels": [
+   {
+    "label": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED",
+    "n": 1,
+    "class": "OWNER"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED BELGIAN BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED ITALIAN BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED SWEDISH BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LTD. LUXEMBOURG BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED POLISH BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO EUROPE LIMITED DENMARK BRANCH",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 11,
+ "withDescription": 11,
+ "sampleTitles": [
+  "UNIQLO Management Candidate Graduate Programme - France 2027 — Paris, France",
+  "UNIQLO Management Candidate Graduate Scheme - UK 2027 — London, United Kingdom",
+  "UNIQLO Management Candidate Graduate Programme - Germany 2027 — Berlin, Germany",
+  "UNIQLO Management Candidate Graduate Programme - Belgium 2027 — Bruxelles, Belgium",
+  "UNIQLO Management Candidate Graduate Programme - Italy 2027 — Milan, Italy"
+ ],
+ "seconds": 2,
+ "written": false,
+ "sourceUpdatedAt": "2026-09-08T22:03:54.804Z"
+}
