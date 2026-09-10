@@ -52,8 +52,33 @@ type Board = {
 };
 
 /** State shared by every board of one source: postings, ids, evidence, rejects. */
+/**
+ * Tenant store coding in `locationsText` (Saks, 2026-09-10: "NM_0114_Houston", "SF_0669_NAPLES FL",
+ * "BG_9066_BG CORPORATE", "O5_0842_BUCKHEAD" — 701 of 747 postings): the prefix is the banner, the
+ * tenant's own attribution of the posting. Opt-in per Source: `brandFromLocationPrefix: { map: { NM:
+ * "Neiman Marcus", … }, otherwise?: "Group name" }`. A posting without a mapped prefix takes `otherwise`
+ * when set (the group, for corporate/remote rows) and stays unattributed here otherwise.
+ */
+type LocationPrefixRule = { map: Record<string, string>; otherwise?: string };
+export const LOCATION_PREFIX_RULE = 'LOCATION_CODE_PREFIX';
+export const LOCATION_PREFIX_OTHERWISE_RULE = 'LOCATION_CODE_PREFIX_ABSENT';
+export function locationPrefixRule(config: Record<string, unknown>): LocationPrefixRule | undefined {
+  const raw = config.brandFromLocationPrefix as { map?: unknown; otherwise?: unknown } | undefined;
+  if (!raw || typeof raw !== 'object' || !raw.map || typeof raw.map !== 'object') return undefined;
+  const map = Object.fromEntries(Object.entries(raw.map as Record<string, unknown>).filter(([k, v]) => /^[A-Z0-9]{1,6}$/.test(k) && typeof v === 'string' && v.trim()).map(([k, v]) => [k, String(v).trim()]));
+  if (!Object.keys(map).length) return undefined;
+  return { map, ...(typeof raw.otherwise === 'string' && raw.otherwise.trim() ? { otherwise: raw.otherwise.trim() } : {}) };
+}
+export function brandFromLocationPrefix(locationsText: string | undefined, rule: LocationPrefixRule): { brand: string; prefix: string | null } | undefined {
+  const m = /^([A-Z0-9]{1,6})_/.exec(locationsText?.trim() ?? '');
+  const prefix = m?.[1];
+  if (prefix && rule.map[prefix]) return { brand: rule.map[prefix]!, prefix };
+  return rule.otherwise ? { brand: rule.otherwise, prefix: null } : undefined;
+}
+
 type Shared = {
   endpoint: string; origin: string; site: string;
+  prefixRule?: LocationPrefixRule;
   out: NormalizedJob[]; seen: Set<string>; pageEvidence: PageEvidence[]; issues: Set<string>;
   rejectedRows: NonNullable<AdapterResult['rejectedRows']>; pathlessRows: Set<string>;
 };
@@ -109,7 +134,20 @@ function toJob(shared: Shared, board: Board, job: WorkdayPosting, externalId: st
     url: `${shared.origin.replace(/\/$/, '')}/${shared.site}${job.externalPath}`,
     raw: job,
   };
-  if (!board.partition) return base;
+  if (!board.partition) {
+    if (!shared.prefixRule) return base;
+    const attributed = brandFromLocationPrefix(job.locationsText, shared.prefixRule);
+    if (!attributed) return base;
+    // The tenant's store code names the banner; the code stays in the raw row for replay.
+    return {
+      ...base,
+      company: attributed.brand,
+      employerEvidence: attributed.prefix
+        ? { rawName: attributed.brand, path: 'listing.locationsText.prefix', rule: LOCATION_PREFIX_RULE }
+        : { rawName: attributed.brand, path: 'listing.locationsText.prefix', rule: LOCATION_PREFIX_OTHERWISE_RULE },
+      raw: { ...job, locationPrefix: attributed.prefix },
+    };
+  }
   // The partition value is the tenant's own attribution of the posting (Tapestry
   // 2026-09-10: facet "Brand" = Coach 1 514 · Kate Spade 502 · Tapestry 69, while the
   // legal entity of 1 570 of them reads "Tapestry, Inc."). It is the employer; the
@@ -241,7 +279,7 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
   const origin = String(config.origin ?? '');
   if (!tenant || !site || !origin) throw new Error('Workday tenant/site/origin missing');
   const endpoint = `${origin}/wday/cxs/${encodeURIComponent(tenant)}/${encodeURIComponent(site)}/jobs`;
-  const shared: Shared = { endpoint, origin, site, out: [], seen: new Set(), pageEvidence: [], issues: new Set(), rejectedRows: [], pathlessRows: new Set() };
+  const shared: Shared = { endpoint, origin, site, prefixRule: locationPrefixRule(config), out: [], seen: new Set(), pageEvidence: [], issues: new Set(), rejectedRows: [], pathlessRows: new Set() };
   const { out, seen, pageEvidence, issues, rejectedRows } = shared;
 
   /**
@@ -401,7 +439,8 @@ export async function attachWorkdayDescriptions(
           if (!info) return { ...job, raw: { ...(job.raw as Record<string, unknown>), detail }, publicationHold: 'WORKDAY_DETAIL_SCHEMA_INVALID' };
           // A posting read on a partition board already carries the tenant's own attribution (facet value):
           // the detail supplies text, dates and country, never a second employer claim.
-          const partitioned = job.employerEvidence?.rule === PARTITION_RULE ? job.employerEvidence : undefined;
+          // …the same holds for a banner read from the tenant's store code (listing.locationsText.prefix).
+          const partitioned = job.employerEvidence?.path.startsWith('listing.') ? job.employerEvidence : undefined;
           const employer = partitioned ? job.company : brandFromWorkdayDetail(detail);
           if (!employer) return { ...job, raw: { ...(job.raw as Record<string, unknown>), detail }, publicationHold: 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL' };
           return {

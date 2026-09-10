@@ -4,6 +4,7 @@ import { loadOccupationTaxonomy, type CompiledOccupationTaxonomy } from '@catwal
 import { log } from '../observability/logger.js';
 import { archivePublicationHold } from './publicationHold.js';
 import { publicationDisposition } from './publicationDisposition.js';
+import { applyScopeExclusion, loadScopeExclusions } from './scopeDecisions.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import type { PrismaClient, AtsType } from '@prisma/client';
 import type { SourceTier } from '../dedup/match.js';
@@ -340,8 +341,11 @@ async function ingestApiSource(
   // Postings whose page names no employer may take the portal owner only on a
   // portal whose perimeter is certified SINGLE_BRAND for this configuration.
   const scope = jobs.some(j => j.publicationHold === 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL') ? await certifiedPortalScope(prisma, stats.source) : null;
+  // Reviewed sector-perimeter exclusions (PostingScopeDecision OUT_OF_SCOPE): the posting is still
+  // collected and archived, its publication is withheld and its representation withdrawn OUT_OF_SCOPE.
+  const scopeExclusions = await loadScopeExclusions(prisma, stats.source);
   for (const rawJob of jobs) {
-    const job = employerFromCertifiedScope(rawJob, sourceDef.company, scope);
+    const job = applyScopeExclusion(employerFromCertifiedScope(rawJob, sourceDef.company, scope), scopeExclusions);
     assertSourceRunning();
     if (job.publicationHold) {
       stats.held = (stats.held ?? 0) + 1;
