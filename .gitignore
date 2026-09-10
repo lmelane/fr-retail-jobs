@@ -64,5 +64,3 @@ Capture*.png
 !audits/legacy-aggregator-data/*.csv
 !audits/legacy-aggregator-data/**/*.html
 !audits/legacy-aggregator-data/**/*.xml
-!audits/legacy-aggregator-data/**/*.xlsx
-!audits/legacy-aggregator-data/*.xlsx

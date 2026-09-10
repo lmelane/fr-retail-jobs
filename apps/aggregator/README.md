@@ -191,6 +191,17 @@ Les deux fixtures Saks déjà présentes sont conservées à l’identique. Le d
 | Preuve publique | Contrôle API/front lié aux mêmes IDs et instant | Un simple HTTP 200 |
 | Archives privées et sauvegardes | `backups/`, accès local contrôlé | Git ou README public |
 
+### Racine du dépôt nettoyée
+
+La racine conserve les applications, packages, documentation, archives, dépendances et fichiers de configuration. **23 fichiers et deux dossiers historiques ont été retirés de la racine** : audits HTML répétés, anciens plans, maquettes, exports, copies de polices et ancien fichier workspace pointant vers d’autres projets.
+
+- Les sept documents historiques suivis par Git sont conservés dans `audits/legacy-project-files/`, dont l’ancien handoff. Ils décrivent leur époque ; leurs commandes et chiffres ne remplacent pas ce README.
+- Les 20 autres artefacts historiques et les deux classeurs des anciennes archives sont regroupés dans une archive privée vérifiée : `backups/cleanup-20260910/root-cleanup/legacy-project-artifacts.zip`. `RESTORE-INDEX.json` et `WORKBOOK-RESTORE-INDEX.json` conservent les chemins et empreintes ; les trois copies identiques du même audit HTML n’occupent qu’une entrée.
+- Les quatre polices à la racine étaient identiques aux fichiers actifs dans `apps/web/public/fonts/` ; seules les copies inutiles ont été supprimées.
+- `.env`, Git, réglages locaux, dépendances, code et sauvegardes PostgreSQL sont conservés. Les quelque 55 Go de `backups/` incluent un répertoire PostgreSQL de 34 Go et des dumps : leur rétention est un sujet distinct, aucun n’a été supprimé comme « fichier temporaire ».
+
+Le contrôle `npm run check:layout -w @catwalks/aggregator` vérifie maintenant **la racine du dépôt et l’application**. Il refuse de nouveaux rapports ou exports non classés à la racine. Un nouveau fichier d’infrastructure légitime exige une mise à jour explicite de cette convention. Les preuves de conservation figurent dans le [reçu de nettoyage](../../audits/2026-09-10/cleanup/manifest.json).
+
 ### Arborescence de travail
 
 ```text
@@ -273,6 +284,15 @@ Les trois fichiers recréés dans `data/discovery` ont été retirés de l’app
 
 **Règle de travail :** `data/` contient uniquement `reference/`, `imports/`, `seeds/` et son README. Les livraisons de recherche vont dans `audits/<date>/<sujet>/` et sont reliées depuis ce README ; les brouillons et sorties privées vont dans `backups/`. Ne pas recréer `data/discovery`.
 
+### Documentation technique maintenue
+
+- [Architecture et règles de livraison](../../docs/architecture/production-foundations.md) : responsabilités, autorité des données, migrations, readiness et limites actuelles.
+- [Identité des employeurs et des sources](../../docs/employer-identity.md) : certification, règles de résolution, commandes de réparation, alias et preuves de conservation.
+
+Toute modification de ces mécanismes ou commandes doit mettre à jour le document concerné dans la même PR.
+
+Ces deux documents ont été réécrits le 10 septembre 2026 après comparaison au code. Ils décrivent les mécanismes et leurs limites ; les chiffres et l’avancement restent dans ce README. L’ancienne procédure de six migrations et les chemins `src/identity/*.mts` ne sont plus les consignes courantes.
+
 ### Éléments du LOT 4
 
 - [Brief complet et critères de sortie](../../audits/2026-09-09/lot4-world-coverage/brief.md).
@@ -319,3 +339,28 @@ Périmètre : qualifier les candidats issus de la recherche web et vérifier les
 8. **Remise au développeur du LOT 4.** Un tableau par acteur/source indiquant identité, périmètre, configuration, collecte, détails, ingestion et visibilité, chacun avec preuve datée. Fournir également nouveautés réelles, doublons évités, alias créés, offres collectées/publiées/rejetées et écarts restants. Séparer code corrigé, commit, main, déploiement et données réparées. Ce bilan alimente la suite du LOT 4 sans annoncer une couverture mondiale non démontrée.
 
 **Organisation :** état courant dans ce README ; preuves datées dans `audits/` ; RAW et brouillons privés dans `backups/`. Ne pas recréer `data/discovery`, un nouveau fichier « master » ou un handoff concurrent. Les variations d’acteurs/alias restent des données ; pas de branches de code propres à chaque Maison. Aucune offre ne disparaît faute de canonisation et aucune fusion ambiguë n’est forcée.
+
+## 11. Reprise du 10 septembre 2026 (après-midi) — état courant et prochaines actions
+
+**Responsable unique : le développeur LOT 4.** Le nettoyage de la matinée est commité et déployé tel quel (PR 79, `eb72236`) après re-vérification (1 694 tests, typecheck application + scripts, `check:layout`, préflight Docker). Crons gelés ; aucune reprise globale.
+
+### Corrigé et déployé depuis ce diagnostic
+
+| Défaut (§ 3–4) | Correctif | Preuve |
+|---|---|---|
+| Périmètre `SINGLE_BRAND` lu avec verdict + hash seulement dans l’ingestion | `portalScopeOf()` applique le validateur strict de la promotion (âge, méthode, artefact, page officielle) — PR 82 | `sourceIdentity.test.ts` |
+| `SINGLE_BRAND` créditait tout libellé natif au propriétaire | un libellé qui nomme un employeur canonique distinct est refusé (revue) ; une entité fusionnée reste le propriétaire — PR 82 | `identity-gate.test.ts` |
+| Reçus de configuration non courante comptés comme preuves | `snapshot.mts` porte le verdict strict d’identité ; `proof-dimensions.py` / `qualify-tracker.py` le lisent ; reçu non courant ⇒ `NOT_PROVEN` / `STALE_RECEIPT` — PR 82 | recalcul sur photographie du 10/09 : identité 45/405, énumération 391 → 389, collecte 384 → 382 (Tapestry, Beiersdorf) |
+| Collecte et publication confondues (Aptar Pharma, restauration URBN) | `PostingScopeDecision` : décision par offre (verdict, règle, motif, preuve) ; OUT_OF_SCOPE ⇒ retenue archivée + retrait `OUT_OF_SCOPE`, jamais une clôture, jamais ré-attesté — PR 78 | run L8 aptar-beauty : 38 retraits, 0 clôture, collecte intacte |
+| Attribution par entité juridique sur un tenant qui code l’enseigne | Workday `brandFromLocationPrefix` (Saks : NM/SF/BG/O5) — PR 78 ; revue propriétaire par code de lieu | `workday.locationPrefix.test.ts` (747 lignes réelles) |
+| Plafond `total` Workday (2 000) et attribution par facette | `partitionFacet` — PR 76 ; Tapestry 2 086 offres attribuées (L7) | `qualification-2026-09-10-b.md` § 7.2 |
+
+### En cours ou restant
+
+- **Saks / Exemplar Luxury Group — fait** : revue propriétaire (1 621 opérations), re-certification MULTI_BRAND, run borné L9 (742/746 complet, 0 refus) : Neiman Marcus 420 · Saks Fifth Avenue 189 · groupe 133 · Bergdorf Goodman 66 · Saks OFF 5TH 27, parité 5/5 (`qualification-2026-09-10-b.md` § 7.2).
+- **Rapprochement du rapport de découverte web** : outil `scripts/coverage/reconcile-discovery.mts` (lecture seule, BDD courante) ; résultat `audits/2026-09-10/discovery-web/reconciliation.md` — 65 lignes : déjà couvertes 10, configuration/attribution 10, nouveaux acteurs 21, nouvelle source d’un acteur existant 3, investigation 21. Swarovski et Pandora sont couverts (sources ACTIVE), Douglas est le même portail sous un autre hôte.
+- **Certification par volume — fait** : les dix sources du § 5 sont certifiées (2 SINGLE_BRAND, 8 MULTI_BRAND dont 2 par défaut faute de libellés dans les reçus) → **56 sources actives certifiées sous le contrat strict** (tracker v10 : `audits/2026-09-09/lot4-world-coverage/tracker-v10/`). `wttj-sector` reste à traiter comme un board, pas comme un portail d'employeur.
+- **Périmètre B6** : `audits/2026-09-09/lot4-world-coverage/b6-candidates-sector.md` (33 tenants : 28 dans le périmètre, VF multimarque, Luxexperience doublon YNAP, Galderma hors périmètre, 2 en revue) ; rien n’est activé sans certification + décision sectorielle + ingestion bornée + parité front.
+- **Décisions de Loïc** : Menus & Venues (recommandation : hors périmètre, exclusion de publication sans retrait — script prêt, `--owner-go`), captures officielles Versace / Swarovski, reprise des crons.
+- **Attestation d’absence par partition** (Tapestry : 97 offres dé-listées non fermables tant que la source n’atteste pas) — à construire dans `attestation.ts`.
+- **Checklist de clôture** : `audits/2026-09-09/lot4-world-coverage/closure-checklist.md` (terminé / restant / bloqué, fin de passe B6 ≠ fin du lot).

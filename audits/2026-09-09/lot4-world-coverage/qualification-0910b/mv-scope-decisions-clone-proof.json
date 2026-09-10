@@ -1,0 +1,317 @@
+{
+  "at": "2026-09-10T11:03:53.022Z",
+  "environment": "clone",
+  "rule": "sector-perimeter-hospitality-v1-20260910",
+  "postings": 38,
+  "active": 38,
+  "bySource": {
+    "urbn-hub": 38
+  },
+  "pageSha": "0e1e7043d9a769bf14e1d003bba4c4e72b6a66ffbd2df0d7d0ddc0797dddde98",
+  "rows": [
+    {
+      "jobId": "cmtpultxs2hk0l35mg9jucxay",
+      "sourceKey": "urbn-hub",
+      "externalId": "28277",
+      "title": "Terrain Cafe | Devon | Host",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpultgt2hfal35mad661zmz",
+      "sourceKey": "urbn-hub",
+      "externalId": "28694",
+      "title": "Associate Manager | Doylestown",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpult6d2hcbl35mehwimpcc",
+      "sourceKey": "urbn-hub",
+      "externalId": "28975",
+      "title": "Terrain Events | Bartender | Wayland",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtuhzgng03q8p901yz47azbs",
+      "sourceKey": "urbn-hub",
+      "externalId": "29128",
+      "title": "Terrain Cafe | Wayland | Host",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulsyq2h9vl35m7kd9kaqt",
+      "sourceKey": "urbn-hub",
+      "externalId": "29129",
+      "title": "Terrain Cafe | Wayland | Dishwasher",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpuls942h21l35mgxd3wz4m",
+      "sourceKey": "urbn-hub",
+      "externalId": "29464",
+      "title": "Pizzeria Vetri | Art Museum| Line Cook",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulrsi2gwpl35mfxtuxsqm",
+      "sourceKey": "urbn-hub",
+      "externalId": "29625",
+      "title": "Pizzeria Vetri | Art Museum | Service Assistant",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulqp02gjil35mxoxaketv",
+      "sourceKey": "urbn-hub",
+      "externalId": "29997",
+      "title": "Terrain Cafe | Wayland | Line Cook",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulpxm2g2ll35mhd87caaf",
+      "sourceKey": "urbn-hub",
+      "externalId": "30260",
+      "title": "Terrain Cafe| Doylestown | Dishwasher",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulpf82fsll35mrqcw5cdx",
+      "sourceKey": "urbn-hub",
+      "externalId": "30411",
+      "title": "Temporary Assistant Restaurant Manager",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulpem2fs6l35mj4e3fyk1",
+      "sourceKey": "urbn-hub",
+      "externalId": "30414",
+      "title": "Junior Sous Chef",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulpea2frzl35m18c1sssi",
+      "sourceKey": "urbn-hub",
+      "externalId": "30415",
+      "title": "Pizzeria Vetri | King of Prussia | Line Cook",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulohh2f8al35mf2i5rjjp",
+      "sourceKey": "urbn-hub",
+      "externalId": "30680",
+      "title": "Pizzeria Vetri | King of Prussia | Service Assistant",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpuloh52f83l35moalto8ba",
+      "sourceKey": "urbn-hub",
+      "externalId": "30681",
+      "title": "Pizzeria Vetri | Devon | Server",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulogt2f7vl35m8jbuo9f7",
+      "sourceKey": "urbn-hub",
+      "externalId": "30682",
+      "title": "Pizzeria Vetri | Devon | Service Assistant",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulob52f4dl35mn01jalw8",
+      "sourceKey": "urbn-hub",
+      "externalId": "30721",
+      "title": "Pizzeria Vetri | King of Prussia | Server",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulnwq2evil35moigl9sbs",
+      "sourceKey": "urbn-hub",
+      "externalId": "30829",
+      "title": "Terrain Events | Server | Devon",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulnec2ek6l35mnxxtpcbb",
+      "sourceKey": "urbn-hub",
+      "externalId": "30937",
+      "title": "Chef De Cuisine | Wayland",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulms12e5vl35mbb01qioy",
+      "sourceKey": "urbn-hub",
+      "externalId": "31066",
+      "title": "Pizzeria Vetri | King of Prussia | Dishwasher",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulmk32e07l35m7zcgy8ez",
+      "sourceKey": "urbn-hub",
+      "externalId": "31114",
+      "title": "Terrain Cafe | Devon | Bartender",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulm382dowl35mcxx783t4",
+      "sourceKey": "urbn-hub",
+      "externalId": "31221",
+      "title": "Terrain Cafe | Devon | Server",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpullbr2d7sl35mun4ma2zl",
+      "sourceKey": "urbn-hub",
+      "externalId": "31384",
+      "title": "Terrain Cafe | Service Assistant | Glen Mills",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpullaz2d7ll35mtk7jpowz",
+      "sourceKey": "urbn-hub",
+      "externalId": "31385",
+      "title": "Terrain Cafe | Host | Glen Mills",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulla92d7dl35mqyh5la6d",
+      "sourceKey": "urbn-hub",
+      "externalId": "31386",
+      "title": "Terrain Cafe | Westport | Service Assistant",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpull882d62l35mn6o6rc6l",
+      "sourceKey": "urbn-hub",
+      "externalId": "31398",
+      "title": "Terrain Cafe | Wayland | Prep Cook",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpull4l2d3kl35mjkso8dyy",
+      "sourceKey": "urbn-hub",
+      "externalId": "31426",
+      "title": "Terrain Cafe | Wayland | Server",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpull3k2d30l35ms385ndge",
+      "sourceKey": "urbn-hub",
+      "externalId": "31431",
+      "title": "Terrain Cafe | Bartender | Wayland",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpull2k2d2al35mh0iv09xa",
+      "sourceKey": "urbn-hub",
+      "externalId": "31437",
+      "title": "Terrain Cafe | Wayland | Service Assistant",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpull1h2d1ll35mezjzb529",
+      "sourceKey": "urbn-hub",
+      "externalId": "31444",
+      "title": "Pizzeria Vetri | Devon | Line Cook",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpull022d0zl35mr544dbk1",
+      "sourceKey": "urbn-hub",
+      "externalId": "31452",
+      "title": "Terrain Events | Server | Doylestown",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulkmz2cszl35mxa16zes9",
+      "sourceKey": "urbn-hub",
+      "externalId": "31531",
+      "title": "Gatehouse | Philadelphia | Line Cook",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulkms2cssl35mae904cyl",
+      "sourceKey": "urbn-hub",
+      "externalId": "31533",
+      "title": "Gatehouse | Prep Cook/Dishwasher",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtpulklh2crxl35mo2pzxnyh",
+      "sourceKey": "urbn-hub",
+      "externalId": "31540",
+      "title": "Assistant Restaurant Manager | Devon",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtrsyjtx288ypg5mtjxyp6uu",
+      "sourceKey": "urbn-hub",
+      "externalId": "31590",
+      "title": "Terrain Events | Server | Glen Mills",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtrsyjsf288kpg5mdcx720us",
+      "sourceKey": "urbn-hub",
+      "externalId": "31596",
+      "title": "Terrain Events | Server | Wayland",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtt8yaqz3kiqmy01iilqsf46",
+      "sourceKey": "urbn-hub",
+      "externalId": "31645",
+      "title": "Terrain Cafe | Devon | Host",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtufu9vo03f6o101unbkj8cw",
+      "sourceKey": "urbn-hub",
+      "externalId": "31676",
+      "title": "Terrain Cafe | Wayland | Host",
+      "isActive": true,
+      "company": "Menus and Venues"
+    },
+    {
+      "jobId": "cmtufu9uw03f0o101o0hq1lk6",
+      "sourceKey": "urbn-hub",
+      "externalId": "31677",
+      "title": "Terrain Cafe | Wayland | Dishwasher",
+      "isActive": true,
+      "company": "Menus and Venues"
+    }
+  ]
+}

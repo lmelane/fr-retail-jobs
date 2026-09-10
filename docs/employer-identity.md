@@ -1,75 +1,104 @@
-# Employer identity decisions
+# Identité des employeurs et des sources
 
-The employer ID is `Company.id`. A source key identifies a connector/tenant; an ATS identifies software. Neither is a Maison. `Company.kind` and `Company.sector` answer different questions. `parentGroupId` is a reviewed relationship to a separate GROUP record, never an alias.
+Relecture du code : **10 septembre 2026**, révision `6ac43ec` et modifications locales de nettoyage. Documentation technique liée au [README de l’agrégateur](../apps/aggregator/README.md), qui reste l’unique état de pilotage. Les nombres de sources certifiées, alias et offres doivent provenir de mesures datées ; ils ne sont pas figés ici.
 
-## Resolution boundary
+## Objets à ne pas confondre
 
-`toCandidate` preserves `rawEmployerName` and its origin before the historical name normalizer. Workday also preserves the full detail response and the original field used (`logoImage.alt` or `hiringOrganization.name`). `normalizedEmployerName` performs Unicode NFKC, whitespace and case normalization only. It does not remove numbers, punctuation, countries, legal forms or words such as Maison/Retail.
+| Objet | Identité et rôle |
+|---|---|
+| Maison, marque, enseigne ou groupe | `Company.id`, `canonicalKey`, `Company.kind` |
+| Parent groupe | `Company.parentGroupId`, relation revue vers une société GROUP ; pas un alias |
+| Secteurs | `Company.sectorCodes` et référentiel `SectorConcept` ; indépendants du type d’employeur et des familles métier |
+| Source carrière | `Source.key`, configuration et `tenantKey` ; un groupe peut publier plusieurs Maisons sur un même portail |
+| ATS | Protocole et adaptateur ; son nom ne prouve pas l’identité de l’employeur |
+| Offre native | Représentation `JobSource` identifiée par source et identifiant externe |
+| Offre canonique | `Job`, distinct de ses représentations et de l’identité de l’employeur |
 
-`identity/resolve.ts` looks up a reviewed `CompanyAlias` in the exact source scope, bound to the reviewed source/tenant/configuration hash. Global aliases cannot justify ingestion. A changed source binding fails explicitly. A reviewed alias points to a stable Company ID. Merged IDs are retained as redirects. The resolved canonical key, rather than a display-name heuristic, controls matching.
+L’objectif est une attribution fidèle à l’organisation réelle. Deux noms proches, un domaine partagé ou un ATS commun ne suffisent pas à fusionner des sociétés. Une entité juridique différente ne signifie pas automatiquement une marque publique différente. Garder les libellés natifs permet de préserver ces distinctions.
 
-Historical assignments remain explicitly `LEGACY_UNREVIEWED`. This is not an evidence-backed confidence level. A new posting cannot acquire a different employer name by the old stripping rules without a review, nor can an unreviewed new source adopt an existing employer merely by name. A changed RAW label on an existing posting also needs review; the observation is read after serializing writes to that posting. Such writes raise `EmployerIdentityReviewRequired`; RAW and a `REVIEW_REQUIRED` observation are archived after rollback. Ingest counts the error, so the source run cannot attest absence/close missing offers. A new unaliased identity uses a stable key scoped to its source and normalized label, preventing cross-source homonyms from becoming implicit company merges.
+## Certification d’un portail
 
-`EmployerObservation` records the original label, origin, normalized label, canonical ID, rule, alias/review ID and RAW hash per version. Missing historical evidence is not reconstructed from a canonical label. Reviews and observations are append-only in PostgreSQL. Company names and parent relationships no longer change as a side effect of ingesting one offer.
+[registerSourceCandidate](../apps/aggregator/src/connectors/sourceCandidate.ts) crée un candidat en DRAFT, refuse les collisions de tenant et ne remplace pas une configuration opérationnelle. Son succès n’est pas une preuve officielle.
 
-Both ingest and weekly reconciliation require the same actual `Job.companyId` before comparing postings. A historical cluster-key collision is insufficient. An employer merge does not authorize posting consolidation. An explicit posting decision additionally needs matching native issuer and requisition witnesses in the two archived RAW representations.
+Dans [sourceIdentity.ts](../apps/aggregator/src/connectors/sourceIdentity.ts) :
 
-## Reviewed repairs
+- `sourceIdentityHash()` lie clé, propriétaire déclaré, kind, configuration, domaine carrière, tenant et tier.
+- `requireSourceIdentity()` sélectionne la dernière revue, y compris une contradiction, puis appelle `assertIdentityReview()`.
+- Le validateur strict exige VERIFIED, le bon sujet/source/tenant/hash, une vérification datant de moins de 30 jours, une méthode admise, un auteur, une déclaration et un artefact dont le contenu correspond au SHA-256. Les URLs et le domaine officiel sont également contrôlés.
+- Ces validations contrôlent la cohérence du dossier. Elles ne remplacent pas l’examen de la preuve officielle ni une observation actuelle du portail.
+- La promotion vérifie aussi la configuration, le verdict d’accès daté et au moins une offre réellement vérifiée. Un portail sans offre peut être documenté sans activation.
 
-Use `src/identity/cli.mts`:
+**Dette ouverte :** `certifiedPortalScope()` vérifie la dernière revue VERIFIED et son hash mais ne réexécute pas le validateur strict complet. `loadActiveSources()` ne revalide pas les dossiers des sources déjà ACTIVE. Ne pas documenter ces deux chemins comme apportant la même garantie que la promotion.
 
+Depuis la racine, avec des accès explicitement configurés pour l’environnement choisi :
+
+```sh
+node --import tsx apps/aggregator/src/cli.ts identity-profile SOURCE_KEY
+node --import tsx apps/aggregator/src/cli.ts review-source-identity --record=/chemin/revue.json --artifact=/chemin/preuve.txt
 ```
-node --import tsx apps/aggregator/src/identity/cli.mts plan spec.json plan.json
-node --import tsx apps/aggregator/src/identity/cli.mts apply plan.json EXPECTED_SHA256 DEPLOYED_COMMIT
+
+La seconde commande valide sans enregistrer. L’enregistrement exige `--apply` ; l’activation est une commande distincte `promote SOURCE_KEY`, après les préconditions et la revue du lot. Aucun de ces exemples ne constitue un feu vert pour une exécution en production.
+
+## Résolution effective d’un employeur
+
+Le pipeline conserve `rawEmployerName`, son origine et le RAW. [normalizedEmployerName](../apps/aggregator/src/normalize/employerName.ts) applique NFKC, espaces et casse ; il ne supprime pas automatiquement les nombres, pays, suffixes juridiques ou mots comme Retail.
+
+[resolveEmployer](../apps/aggregator/src/identity/resolve.ts) applique les chemins suivants, dont certains restent hérités :
+
+| Règle | Comportement du code relu |
+|---|---|
+| `REVIEWED_ALIAS` | Alias revu dans la portée exacte de la source et lié à son hash. Les conflits de racines ou une liaison modifiée déclenchent une revue. Un alias global ne suffit pas à autoriser l’ingestion. |
+| `CERTIFIED_SINGLE_BRAND_PORTAL` | Sans alias prioritaire, un libellé natif peut être rattaché au propriétaire trouvé pour le portail SINGLE_BRAND. **Le chemin actuel couvre aussi des libellés explicites nouveaux, pas seulement un champ employeur absent : limite à corriger.** |
+| `GROUP_LABEL_KEPT_HOUSE` | Une offre déjà connue peut garder sa Maison quand le libellé devient celui de son groupe enregistré. L’omission est tracée ; ce n’est pas une autorisation générale de deviner une Maison depuis un groupe. |
+| Convergence de libellé | Un nouveau libellé égal au nom canonique de l’employeur déjà attribué peut converger sans être traité comme un changement d’identité. L’ancien document affirmait à tort que toute variation exigeait une nouvelle revue. |
+| `REVIEWED_MERGE` / `LEGACY_UNREVIEWED` | Les affectations historiques et redirections restent utilisables sous leurs contrôles. `LEGACY_UNREVIEWED` n’est pas un niveau de confiance attesté. |
+| `REVIEW_REQUIRED` | Un conflit non résolu peut lever `EmployerIdentityReviewRequired`. Les preuves de refus sont conservées ; le refus doit rester visible dans la mesure d’ingestion. |
+
+Lorsqu’une nouvelle identité non aliasée est admissible, sa clé peut être construite à partir de la source et du libellé normalisé. Ce mécanisme évite une fusion implicite d’homonymes entre sources ; il ne certifie pas cette identité.
+
+[recordEmployerObservation](../apps/aggregator/src/identity/resolve.ts) enregistre libellé brut, origine, forme normalisée, employeur canonique, règle, IDs de revue/alias et hash RAW. Le hash d’observation permet un rejeu sans créer une nouvelle preuve identique. Une valeur canonique ancienne ne doit pas servir à reconstruire artificiellement un RAW manquant.
+
+Pour Workday, les erreurs de détail et l’absence d’employeur ont des retenues distinctes. Le [pipeline](../apps/aggregator/src/pipeline/ingest.ts) peut lever la retenue spécifique d’employeur absent lorsqu’un périmètre SINGLE_BRAND est disponible. Les autres retenues ne deviennent pas des offres publiables du seul fait de cette exception. La limite du validateur de périmètre ci-dessus s’applique aussi à ce chemin.
+
+## Réparer sans effacer l’historique
+
+Les outils maintenus sont maintenant dans **`scripts/identity/`**, et non `src/identity/*.mts`. Le module métier reste dans [repair.ts](../apps/aggregator/src/identity/repair.ts).
+
+```sh
+node --import tsx apps/aggregator/scripts/identity/cli.mts plan /chemin/spec.json /chemin/plan.json
+node --import tsx apps/aggregator/scripts/identity/cli.mts apply /chemin/plan.json EXPECTED_SHA256 DEPLOYED_COMMIT
 ```
 
-The specification contains:
+Le plan est préparé et revu avant application. La spécification `EmployerRepairSpec` contient `batchId`, déclaration, auteur/date, preuves HTTPS avec texte archivé et SHA-256, fusions explicites d’IDs, alias source-scopés et éventuelles modifications de sociétés. `postingMerges` est une décision distincte, avec ses témoins natifs. Le module applique des verrous, vérifie le hash du plan, l’état avant et les hashes des sources, puis journalise les corrections.
 
-- a dated review and explicit identity statement;
-- official/structured evidence: URL, exact archived text and matching SHA-256, explanation of the association;
-- explicit `fromId → toId` decisions; never a fuzzy name predicate;
-- scoped raw aliases;
-- optional canonical name/kind and parent relationships.
+Trois opérations sur alias sont à distinguer :
 
-The plan captures all affected companies, predecessor redirects, offers (including closed ones), representations and events. Its hash and expected before-state must match at application time. A catalogue lock drains identity writes before the atomic transaction. Source/company locks follow the same ordering as ingestion. Conflicting ATS posting IDs abort with the two job IDs unless the plan includes a separately witnessed posting consolidation; records are never deleted or silently fused.
+- création d’un alias prouvé vers une racine canonique ;
+- migration explicite d’un alias historique via `legacyAliasId` ;
+- remplacement d’une décision précédente via `supersedesAliasId`, avec nouvelle preuve et correction enregistrée.
 
-Changes produce append-only `DataCorrection` entries and `CORRECTED` job events. Old Company rows survive. Alias owners and predecessor redirects are flattened when roots are merged again. Every existing Job ID, RAW payload and prior event must survive unchanged. In an explicit posting consolidation only the reviewed JobSource ownership, posting redirect/activity and canonical first/last observation envelope may change, in addition to employer fields. Postconditions reconstruct these exact changes and compare all remaining fields. Counts alone are insufficient: postconditions compare individual rows and histories. Re-applying the same reviewed batch is idempotent; changing its content is rejected.
+Une configuration source modifiée impose une revue explicite ; l’ingestion ne doit pas relier silencieusement un ancien alias au nouveau tenant. Un lot déjà appliqué avec le même hash est un rejeu sans modification ; un même identifiant de lot avec un contenu différent est refusé.
 
-Take a current database backup, rehearse on a restored copy, run regressions, commit/review/merge and deploy before applying to production. Compare front results, counts and old URLs with the repaired DB. Do not resume a massive ingestion while outstanding review blocks are unmeasured. A compensating repair must use the preserved before-state and an explicit new review; never edit old audit evidence.
+**Limite de la preuve avant/après :** le snapshot actuel de réparation omet `description`, `searchText` et les RAW généraux des JobSources. Les RAW des témoins de fusion sont chargés séparément. Ne pas affirmer, comme l’ancien document, que le hash du plan compare à lui seul tous les champs et tous les RAW de toutes les offres. Les contrôles de conservation doivent couvrir les propriétés du lot réellement modifié.
 
-## Front and monitoring
+Le paramètre de commit est contrôlé et enregistré par le code ; fournir un hash ne prouve pas que ce commit est réellement déployé. La vérification du déploiement reste une étape opérationnelle indépendante. Sauvegarde fraîche, restauration sur clone, répétition, tests et preuves avant/après restent nécessaires pour une réparation de production.
 
-Directory search, filters and the indexed results query recognize reviewed aliases and historical names. Old Maison URLs redirect to the canonical profile. Indexed text search expands aliases to canonical names before its trigram prefilter; adding an unindexed OR on the entire Job table would cause a scan of the corpus.
+## Fusions, parentés et limites du modèle
 
-`health-report` exposes root/redirect counts, reviewed versus legacy aliases, unclassified roots, unlinked parent labels, jobs incorrectly attached to merged companies, and versioned identity observations. Root count is a catalogue count, not a claim that every employer has been independently validated.
+Une fusion d’employeurs conserve les anciens IDs et redirections. Elle n’autorise pas une consolidation de postings : une collision doit être justifiée par `postingMerges` et des témoins du même émetteur/requisition, ou l’opération échoue. `Job.mergedIntoId` conserve l’offre absorbée et son ancienne URL ; une fusion ne doit pas inventer une fermeture employeur.
 
-Legacy aliases can be migrated in place only through an explicit reviewed plan with the original alias ID and unchanged target and normalized label. The six pre-existing aliases have five archived official source reviews, revalidated against the current source configuration before preparing their migration. Historical free-text parent values still require their own evidence. The old name-only `ops-merge-company.mts` procedure is disabled.
+Le modèle actuel représente un parent **groupe** canonique. Il ne représente pas toute hiérarchie arbitraire marque → sous-marque → concept commercial. Une relation non représentable doit rester explicitement documentée ; ne pas fusionner les entités pour contourner cette limite.
 
-For repeatable read-only measurements, run `identity/audit.mts <output-directory>`. It reports candidate pairs separately from proven merges and labels its RAW coverage as non-exhaustive.
+L’[audit d’identité](../apps/aggregator/scripts/identity/audit.mts) est disponible en lecture seule :
 
-Company intelligence resolves redirects and the latest correction revision before using its profile cache. Historical snapshots remain intact; comparisons for a merged company start with the first full day after the identity cutover, with an explicit explanation in the page. Summing medians or treating an old partial company count as the current consolidated perimeter would invent historical comparability.
+```sh
+node --import tsx apps/aggregator/scripts/identity/audit.mts /chemin/prive/audit-identite
+```
 
-Workday listings without a successful detail and employer field carry an explicit publication hold. Fetch, schema, missing-path and missing-employer failures are distinguished and preserved in RAW. A later successful detail clears only its Workday hold; unrelated holds remain. Incomplete retrieval cannot attest absence.
+Il produit des candidats de similarité `REVIEW_REQUIRED_NOT_A_MERGE`, pas des fusions approuvées. Sa couverture des chemins RAW est partielle. Il ne consomme pas un registre complet de décisions durables « distinctes » : la non-récurrence de toutes les fausses alertes n’est donc pas démontrée.
 
-When a source configuration changes, revalidate the official employer link and create a new repair plan for its existing alias. Applying that explicit decision updates the configuration binding in place and records the previous binding and review in DataCorrection. An unchanged alias is not automatically rebound during ingestion.
+## Critères de validation d’un lot
 
-TalentView passes the native `entity.name` claim to the reviewed resolver while retaining the configured employer as the unresolved candidate. An operational unit is not automatically a new Company. Teamtailor passes its explicit `_jobposting.hiringOrganization.name` and field provenance. Both preserve RAW before normalization; the audit inventories those native paths.
+Mesurer les libellés bruts, entreprises canoniques, alias, candidats doublons, fusions réellement prouvées et offres réattribuées. Vérifier les anciennes URLs, les représentations conservées, les événements, les résultats de recherche et les pages employeur. [health.ts](../apps/aggregator/src/identity/health.ts) fournit des indicateurs utiles ; un nombre de racines n’est pas un nombre d’employeurs indépendamment certifiés.
 
-
-## Business identity and recurrence
-
-The objective is fidelity to the employer’s organization, not fewer catalogue rows. Group, brand, retailer, hiring legal entity and operational unit are different concepts. A shared domain, parent or ATS does not authorize their merger. Preserve separate employers when that reflects the business. A verified rebrand can justify an alias/redirect; posting equality is reviewed independently of that business decision.
-
-Business review has three legitimate outcomes: the same identity with proven aliases; distinct identities with any separately proven organizational relationship; or insufficient evidence with the precise missing evidence recorded. A different legal entity is not automatically a different public brand, and a common public brand does not erase the hiring legal entity. Keep each claim at its own level. Never remove a legal/geographic/retail suffix to decide equivalence. A reorganization can require a new dated decision; an earlier distinction is not an assertion that two businesses can never change.
-
-Acceptance is accurate attribution and preserved organizational meaning, not zero similarity candidates. As of the 2026-09-09 production review, `audit.mts` still emits `REVIEW_REQUIRED_NOT_A_MERGE` for all similarity candidates and does not consume durable DISTINCT decisions. Persisting and reusing these evidence-backed decisions remains open work; the present detector must not be represented as a complete non-recurrence mechanism. No new merger follows merely from appearing in its report.
-
-`Job.mergedIntoId` preserves an absorbed posting and its old public URL. PostgreSQL forbids an active redirect, sources owned by a redirect, a missing MERGED event, cycles, a change of redirect target, and cross-employer redirects. Canonical lifecycle checks follow the target. Consolidation retains the prior closedAt on the absorbed row; it does not invent a source closure. Ingestion finds moved source representations by their existing stable IDs, so a replay cannot reactivate the absorbed row. Reconciliation writes the same redirect relation.
-
-The FashionJobs directory importer updates discovery metadata only. It never rewrites an existing employer name or canonical key, follows an existing employer redirect, archives each distinct raw observation in EmployerObservation, and surfaces changed labels as REVIEW_REQUIRED. A directory observation is not an official identity verification. No FashionJobs job offers are fetched by this workflow.
-
-Lifecycle invariants and market statistics use canonical posting roots. A preserved redirect without closedAt is valid, not an undated source closure. Live and reconstructed snapshots exclude absorbed IDs; recorded historical snapshots are retained. Closed counts and market opening windows also exclude absorbed IDs. A merger must never fabricate a closure from lastSeenAt, and the legacy date repair tool is restricted to canonical records.
-
-Cached intelligence aggregates include the latest committed DataCorrection ID in their cache key. A reviewed correction therefore invalidates the aggregate across instances without a manual cache flush, process restart or one-hour wait. The lookup uses a dedicated ledger index; failure to read the revision is surfaced as database unavailability instead of serving an obsolete pre-correction result.
-
-A posting review archives each complete native witness representation (including RAW, source ID, ownership and observation dates) with a SHA-256 in EmployerIdentityReview. It does not depend on a JobSource RAW staying unchanged or on every legacy source already having SourceObservation history. These archives are explicitly stored evidence, not new attestations from the employer.
+Distinguer systématiquement identité du portail, attribution des offres, complétude du flux, ingestion et visibilité publique. Les preuves et leur date restent dans `audits/`, les RAW et sauvegardes dans `backups/`, et le bilan courant dans le README. Cette documentation ne remplace ni une revue métier ni la preuve après en production.

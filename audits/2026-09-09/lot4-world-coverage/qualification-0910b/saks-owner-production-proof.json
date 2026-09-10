@@ -1,0 +1,83 @@
+{
+  "at": "2026-09-10T12:29:22.033Z",
+  "environment": "production",
+  "commit": "92c01dbf85a87122bc87254d93cc6af3d1bd2381",
+  "planHash": "a1017d7992f5827bf25a5ba31ac7646815089f4cb5b435cd1269ee5cb8a93d1c",
+  "operations": {
+    "total": 1621,
+    "Job": 807,
+    "Company": 5,
+    "JobSource": 808
+  },
+  "result": {
+    "alreadyApplied": false,
+    "written": 1621,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "written": 0,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "companies": [
+    {
+      "company": "Neiman Marcus",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 400
+    },
+    {
+      "company": "Saks Fifth Avenue",
+      "kind": "UNKNOWN",
+      "isActive": true,
+      "jobs": 183
+    },
+    {
+      "company": "Exemplar Luxury Group",
+      "kind": "GROUP",
+      "isActive": true,
+      "jobs": 128
+    },
+    {
+      "company": "Bergdorf Goodman",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 60
+    },
+    {
+      "company": "Saks OFF 5TH",
+      "kind": "BRAND",
+      "isActive": true,
+      "jobs": 26
+    },
+    {
+      "company": "Exemplar Luxury Group",
+      "kind": "GROUP",
+      "isActive": false,
+      "jobs": 11
+    }
+  ],
+  "sources": [
+    {
+      "key": "saks",
+      "maison": "Exemplar Luxury Group",
+      "status": "PAUSED",
+      "config": {
+        "site": "careers_at_saks",
+        "origin": "https://saks.wd1.myworkdayjobs.com",
+        "tenant": "saks",
+        "brandFromLocationPrefix": {
+          "map": {
+            "BG": "Bergdorf Goodman",
+            "NM": "Neiman Marcus",
+            "O5": "Saks OFF 5TH",
+            "SF": "Saks Fifth Avenue"
+          },
+          "otherwise": "Exemplar Luxury Group"
+        }
+      }
+    }
+  ]
+}

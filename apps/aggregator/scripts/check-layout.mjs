@@ -4,6 +4,15 @@ import { fileURLToPath } from 'node:url';
 
 const app = fileURLToPath(new URL('../', import.meta.url));
 const errors = [];
+const repo = fileURLToPath(new URL('../../../', import.meta.url));
+const repositoryEntries = new Set(['.git', '.github', '.gitignore', '.gitattributes', '.dockerignore',
+  '.claude', '.codex', '.vscode', '.idea', '.editorconfig', '.openai', '.env', '.env.example',
+  'README.md', 'CLAUDE.md', 'AGENTS.md', 'LICENSE', 'LICENSE.md', 'NOTICE',
+  'package.json', 'package-lock.json', 'apps', 'packages', 'docs', 'audits', 'backups', 'node_modules']);
+for (const entry of readdirSync(repo)) {
+  if (!repositoryEntries.has(entry) && !entry.startsWith('.env.'))
+    errors.push(`Unclassified repository root entry: ${entry}; put reports in audits/, private outputs in backups/, or explicitly review new infrastructure files`);
+}
 const walk = (directory) => readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
   const path = join(directory, entry.name);
   return entry.isDirectory() ? walk(path) : [path];

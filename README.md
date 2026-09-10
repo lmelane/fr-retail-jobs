@@ -11,7 +11,10 @@ Il rassemble l’état vérifié, le diagnostic de certification, les priorités
 | `apps/aggregator` | Collecte, identité, normalisation, cycle de vie |
 | `apps/web` | Recherche, filtres, pages et SEO |
 | `packages/db` | Schéma et migrations partagés |
+| `docs` | Documentation technique maintenue : architecture et identité |
 | `audits` | Rapports et preuves historiques |
 | `backups` | Archives privées locales, exclues de Git |
 
 Les règles de travail et décisions historiques restent dans [CLAUDE.md](CLAUDE.md). L’ancien README est conservé dans [les archives](audits/legacy-aggregator-reports/project-readme-before-20260910.md).
+
+Les anciens plans et le handoff sont rangés dans `audits/legacy-project-files/`. Les anciens rendus HTML, maquettes et exports ont été retirés de la racine et conservés dans une archive privée. Pour éviter leur retour : `npm run check:layout -w @catwalks/aggregator`.

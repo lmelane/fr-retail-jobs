@@ -1,0 +1,40 @@
+{
+ "activeSources": 405,
+ "note": "Each dimension is separate. An explained deficit is not a complete collection; a rejected row stays in the gap. Receipts are the latest for the CURRENT configuration when one exists.",
+ "identity": {
+  "LEGACY_UNCERTIFIED": 349,
+  "CERTIFIED_CURRENT": 56
+ },
+ "enumeration": {
+  "EXHAUSTIVE_PROVEN": 389,
+  "NOT_PROVEN": 16
+ },
+ "collection": {
+  "COMPLETE": 381,
+  "INCOMPLETE_EXPLAINED": 11,
+  "NOT_PROVEN": 13
+ },
+ "deficit": {
+  "NONE": 393,
+  "EXPLAINED": 11,
+  "UNKNOWN": 1
+ },
+ "details": {
+  "COMPLETE": 239,
+  "PARTIAL": 166
+ },
+ "ingestionInSync": 159,
+ "ingestionRunStatus": {
+  "RUN_OK": 211,
+  "RUN_DEGRADED": 190,
+  "RUN_NEW": 3,
+  "RUN_BROKEN": 1
+ },
+ "visibility": {
+  "LIVE_CONTROL_REQUIRED": 405
+ },
+ "receiptsForCurrentConfig": 404,
+ "allFiveProven": 0,
+ "collectionCompleteAndDetailsComplete": 227,
+ "gapTotalPostings": 642
+}
