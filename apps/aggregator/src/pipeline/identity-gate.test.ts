@@ -7,6 +7,7 @@ vi.mock('../connectors/sourceIdentity.js', async (importOriginal) => ({ ...(awai
 import { resolveEmployer, recordEmployerObservation } from '../identity/resolve.js';
 import { EmployerIdentityReviewRequired } from '../identity/errors.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
+import { resolveCompany } from '../normalize/company.js';
 const prisma = new PrismaClient();
 const SOURCE = 'gate-fixture';
 // EmployerObservation is append-only (database trigger) and references companies: every fixture entity gets a fresh key
@@ -91,4 +92,34 @@ it('credits any native label of a certified SINGLE_BRAND portal to the portal ow
   const merged = await prisma.$transaction(tx => resolveEmployer(tx, { ...candidate, externalId: `p-${k}-3`, rawEmployerName: entity.name }));
   expect(merged.company?.id).toBe(owner.id); expect(merged.rule).toBe('CERTIFIED_SINGLE_BRAND_PORTAL');
   certifiedScopes.delete(key);
+});
+
+/** Ysé, 2026-09-10: Teamtailor labels the posting with the legal entity, the candidate's companyId derives from that label, and the certified owner lookup missed → a duplicate employer "L'IMPERTINENTE - Ysé" beside "Ysé". */
+it('on a certified SINGLE_BRAND portal the owner is the catalogued Maison, never the label: found under its canonical key, or created there', async () => {
+  const k = randomUUID().slice(0, 8).toUpperCase(), key = `gate-cat-${k.toLowerCase()}`, keyNew = `gate-new-${k.toLowerCase()}`;
+  await prisma.source.createMany({ data: [
+    { key, maison: `Yse Fixture ${k}`, kind: 'teamtailor', config: { origin: `https://${key}.teamtailor.com` }, tier: 'EMPLOYER_DIRECT', tenantKey: `teamtailor:${key}.teamtailor.com`, status: 'ACTIVE' },
+    { key: keyNew, maison: `Prairie Fixture ${k}`, kind: 'teamtailor', config: { origin: `https://${keyNew}.teamtailor.com` }, tier: 'EMPLOYER_DIRECT', tenantKey: `teamtailor:${keyNew}.teamtailor.com`, status: 'ACTIVE' },
+  ] });
+  try {
+    const owner = await prisma.company.create({ data: { name: `Yse Fixture ${k}`, canonicalKey: `YSE_FIXTURE_${k}`, kind: 'BRAND', fashionjobsUrl: `resolved:YSE_FIXTURE_${k}` } });
+    const label = `L'IMPERTINENTE - Yse Fixture ${k}`;
+    const candidate = { sourceKey: key, externalId: `p-${k}`, title: 'Conseillère de vente', url: `https://${key}.teamtailor.com/jobs/1`, source: 'TEAMTAILOR', company: resolveCompany(label).displayName, companyId: resolveCompany(label).companyId, rawEmployerName: label, employerLabelOrigin: 'jsonld:HIRING_ORGANIZATION' } as any;
+    expect(candidate.companyId).not.toBe(owner.canonicalKey); // the label-derived key is NOT the owner's key — that is the whole point
+    certifiedScopes.set(key, 'SINGLE_BRAND');
+    const found = await prisma.$transaction(tx => resolveEmployer(tx, candidate));
+    expect(found.company?.id).toBe(owner.id); expect(found.rule).toBe('CERTIFIED_SINGLE_BRAND_PORTAL'); expect(found.rawEmployerName).toBe(label);
+    // New actor: the owner does not exist yet → created under the canonical key of the catalogued Maison, with its name — never a source-scoped key.
+    const labelNew = `Prairie Holding ${k} - Prairie Fixture ${k}`;
+    certifiedScopes.set(keyNew, 'SINGLE_BRAND');
+    const created = await prisma.$transaction(tx => resolveEmployer(tx, { ...candidate, sourceKey: keyNew, externalId: `p-${k}-new`, company: resolveCompany(labelNew).displayName, companyId: resolveCompany(labelNew).companyId, rawEmployerName: labelNew }));
+    expect(created.company).toBeNull(); expect(created.rule).toBe('CERTIFIED_SINGLE_BRAND_PORTAL');
+    expect(created.newKey).toBe(`PRAIRIE_FIXTURE_${k}`); expect(created.newName).toBe(`Prairie Fixture ${k}`);
+    // Without the certification the same label is still an identity change to review (unchanged contract).
+    certifiedScopes.delete(keyNew);
+    await expect(prisma.$transaction(tx => resolveEmployer(tx, { ...candidate, sourceKey: keyNew, externalId: `p-${k}-new2`, company: resolveCompany(labelNew).displayName, companyId: resolveCompany(labelNew).companyId, rawEmployerName: labelNew }))).resolves.toMatchObject({ rule: 'LEGACY_UNREVIEWED', newKey: expect.stringMatching(/^SOURCE_/) });
+  } finally {
+    certifiedScopes.delete(key); certifiedScopes.delete(keyNew);
+    await prisma.source.deleteMany({ where: { key: { in: [key, keyNew] } } });
+  }
 });

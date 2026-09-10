@@ -1,0 +1,88 @@
+{
+ "jobs": [
+  {
+   "absolute_url": "https://boards.greenhouse.io/onrunning/jobs/8071276?gh_jid=8071276",
+   "location": {
+    "name": "London"
+   },
+   "id": 8071276,
+   "updated_at": "2026-09-04T02:52:57-04:00",
+   "title": "Agentic AI Platform Engineer",
+   "company_name": "On",
+   "first_published": "2026-07-17T08:19:22-04:00",
+   "content": "&lt;p&gt;-&lt;/p&gt;",
+   "offices": [
+    {
+     "id": 84317,
+     "name": "HQ London",
+     "location": "London, England, United Kingdom",
+     "child_ids": [],
+     "parent_id": 44238
+    }
+   ]
+  },
+  {
+   "absolute_url": "https://boards.greenhouse.io/onrunning/jobs/7764845?gh_jid=7764845",
+   "location": {
+    "name": "Melbourne"
+   },
+   "id": 7764845,
+   "updated_at": "2026-09-04T02:52:57-04:00",
+   "title": "Area Lead, Oceania",
+   "company_name": "On",
+   "first_published": "2026-03-29T09:09:32-04:00",
+   "content": "&lt;p&gt;&lt;strong&gt;In Summary&lt;/strong&gt;&lt;/p&gt;\n&lt;p&gt;The Area Lead is responsible for supporting multiple retail Store Leaders across Australia in guiding the business and people strategy to deliver premium consumer experience in the region. Through authentic connection, you will be t",
+   "offices": [
+    {
+     "id": 67546,
+     "name": "Australia",
+     "location": null,
+     "child_ids": [],
+     "parent_id": null
+    }
+   ]
+  },
+  {
+   "absolute_url": "https://boards.greenhouse.io/onrunning/jobs/8119272?gh_jid=8119272",
+   "location": {
+    "name": "Paris"
+   },
+   "id": 8119272,
+   "updated_at": "2026-09-04T02:52:57-04:00",
+   "title": "Area Lead, South Europe ",
+   "company_name": "On",
+   "first_published": "2026-08-10T10:11:32-04:00",
+   "content": "&lt;p&gt;-&lt;/p&gt;",
+   "offices": [
+    {
+     "id": 44233,
+     "name": "France",
+     "location": null,
+     "child_ids": [],
+     "parent_id": null
+    }
+   ]
+  },
+  {
+   "absolute_url": "https://boards.greenhouse.io/onrunning/jobs/8079104?gh_jid=8079104",
+   "location": {
+    "name": "Amsterdam"
+   },
+   "id": 8079104,
+   "updated_at": "2026-09-08T08:37:47-04:00",
+   "title": "Associate Store Leader, Amsterdam",
+   "company_name": "On",
+   "first_published": "2026-07-22T08:13:46-04:00",
+   "content": "&lt;p&gt;-&lt;/p&gt;",
+   "offices": [
+    {
+     "id": 68014,
+     "name": "Netherlands",
+     "location": null,
+     "child_ids": [],
+     "parent_id": null
+    }
+   ]
+  }
+ ]
+}
