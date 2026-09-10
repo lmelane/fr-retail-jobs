@@ -7,7 +7,6 @@ import type { AdapterResult, NormalizedJob } from '../../types.js';
 // externalPath is optional in practice: some tenants (Richemont) return rows
 // without it, and treating it as always-present crashed the whole source.
 type WorkdayPosting = { title: string; externalPath?: string; locationsText?: string; postedOn?: string; bulletFields?: string[] };
-type WorkdayPage = { total?: number; jobPostings?: WorkdayPosting[] };
 
 /**
  * Locale demandé à Workday, liste ET détail. Le transport commun envoie fr-FR
@@ -35,13 +34,100 @@ export function locationFromBullets(bullets?: string[]): string | undefined {
   return bullets?.map((b) => b.trim()).find((b) => b.length > 1 && !REQUISITION_ID.test(b));
 }
 
-export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise<AdapterResult> {
-  const tenant = String(config.tenant ?? '');
-  const site = String(config.site ?? '');
-  const origin = String(config.origin ?? '');
-  if (!tenant || !site || !origin) throw new Error('Workday tenant/site/origin missing');
-  const endpoint = `${origin}/wday/cxs/${encodeURIComponent(tenant)}/${encodeURIComponent(site)}/jobs`;
-  const out: NormalizedJob[] = [];
+type WorkdayFacetValue = { descriptor?: string; id?: string; count?: number };
+type WorkdayFacet = { facetParameter?: string; descriptor?: string; values?: WorkdayFacetValue[] };
+type WorkdayPage = { total?: number; jobPostings?: WorkdayPosting[]; facets?: WorkdayFacet[] };
+
+type Scope = NonNullable<NonNullable<AdapterResult['enumeration']>['scopes']>[number];
+type PageEvidence = NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']>[number];
+
+/** One board to enumerate: the whole site, or one value of the partition facet. */
+type Board = {
+  appliedFacets: Record<string, string[]>;
+  scope: string;
+  /** Set when the board is one value of a partition facet: every posting read on it carries that value as its employer. */
+  partition?: { parameter: string; value: string; id: string };
+  /** The whole site, read AFTER the partitions: postings that carry no value of the facet (Tapestry: 6 of 2 091). */
+  remainder?: boolean;
+};
+
+/** State shared by every board of one source: postings, ids, evidence, rejects. */
+type Shared = {
+  endpoint: string; origin: string; site: string;
+  out: NormalizedJob[]; seen: Set<string>; pageEvidence: PageEvidence[]; issues: Set<string>;
+  rejectedRows: NonNullable<AdapterResult['rejectedRows']>; pathlessRows: Set<string>;
+};
+
+type BoardResult = {
+  scope: string; total: number; uniqueIds: number; pages: number; rawCount: number; repeatedIds: number; withoutPath: number;
+  /** Ids of this board already read on an EARLIER board: a posting cannot belong to two partition values. */
+  overlap: number;
+  /** Postings this board added to the source (on the remainder board: postings outside every partition). */
+  fresh: number; termination: string; complete: boolean;
+};
+
+const PARTITION_RULE = 'PARTITION_FACET_VALUE';
+
+async function readPage(shared: Shared, board: Board, offset: number): Promise<WorkdayPage> {
+  return fetchJson<WorkdayPage>(shared.endpoint, {
+    method: 'POST',
+    /**
+     * `accept-language` fixé à en-US : le transport commun envoie fr-FR par
+     * défaut, et un tenant dont le site carrière n'est pas traduit en
+     * français répond 500 à cette seule en-tête — mesuré le 2026-09-05 sur
+     * nordstrom.wd501 (200 en en-US, 500 en fr-FR, body identique). en-US est
+     * le locale que tout site Workday sert ; la langue des offres, elle,
+     * vient du tenant, pas de l'en-tête.
+     */
+    headers: { 'content-type': 'application/json', ...EN_US },
+    body: JSON.stringify({ appliedFacets: board.appliedFacets, limit: 20, offset, searchText: '' }),
+  });
+}
+
+function toJob(shared: Shared, board: Board, job: WorkdayPosting, externalId: string): NormalizedJob {
+  const base: NormalizedJob = {
+    externalId,
+    title: job.title,
+    /**
+     * Not every tenant fills `locationsText`. Capri (Versace, Michael Kors,
+     * Jimmy Choo) leaves it empty and puts the site in `bulletFields[0]`
+     * instead — measured 2026-09-04: 621 offers, ALL with a location on the
+     * page, ALL location-less once parsed. An offer with no location is
+     * unusable for a candidate, so fall back to the first bullet field,
+     * which is where Workday's own UI reads the location from. The last
+     * bullet is the requisition id (R_778886), never a place: it is
+     * excluded so an id is never displayed as a city.
+     */
+    location: job.locationsText || locationFromBullets(job.bulletFields),
+    postedAt: postedAtFromWorkday(job.postedOn),
+    // The public career URL is {origin}/{site}{externalPath}, joined by
+    // string — NOT new URL(externalPath, `${origin}/${site}/`), which
+    // silently DROPS the /{site}/ segment because externalPath is an
+    // absolute path ("/job/…") that overrides the base path. That produced
+    // `${origin}/job/…` on every Richemont/Cartier offer → a 404 on every
+    // apply link. Verified: `${origin}/${site}${externalPath}` → 200.
+    url: `${shared.origin.replace(/\/$/, '')}/${shared.site}${job.externalPath}`,
+    raw: job,
+  };
+  if (!board.partition) return base;
+  // The partition value is the tenant's own attribution of the posting (Tapestry
+  // 2026-09-10: facet "Brand" = Coach 1 514 · Kate Spade 502 · Tapestry 69, while the
+  // legal entity of 1 570 of them reads "Tapestry, Inc."). It is the employer; the
+  // legal entity and the logo stay in the detail for replay.
+  return {
+    ...base,
+    company: board.partition.value,
+    employerEvidence: { rawName: board.partition.value, path: `listing.facets.${board.partition.parameter}`, rule: PARTITION_RULE },
+    raw: { ...job, facet: board.partition },
+  };
+}
+
+/**
+ * Enumerate one board page by page, with the second sweep when an unstable sort
+ * repeated ids. Postings go to the shared list unless an earlier board already
+ * read them (overlap, counted and named, never pushed twice).
+ */
+async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult> {
   /**
    * Workday reports `total` ONLY on the first page — every later page returns
    * total: 0. Comparing against it each time stops the loop at 40 of 1088, so
@@ -54,33 +140,28 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
    * `externalPath`, or a total that the board simply never serves — instead of
    * an unexplained −1.
    */
-  let total = 0;
-  const seen = new Set<string>();
-  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
-  const issues = new Set<string>();
-  let pagesRead = 0, rawCount = 0, repeatedIds = 0, withoutPath = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
-  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
-  const pathlessRows = new Set<string>();
+  let total = 0, totalChanged = false;
+  const local = new Set<string>();
+  const localPathless = new Set<string>();
+  let pages = 0, rawCount = 0, repeatedIds = 0, overlap = 0, fresh = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+  const suffix = board.partition ? `&${board.partition.parameter}=${encodeURIComponent(board.partition.id)}` : '';
+  const take = (job: WorkdayPosting, externalId: string): boolean => {
+    if (local.has(externalId)) return false;
+    local.add(externalId);
+    // The remainder board re-reads what the partitions read: expected, not an overlap.
+    if (shared.seen.has(externalId)) { if (!board.remainder) overlap += 1; return true; }
+    shared.seen.add(externalId); fresh += 1;
+    shared.out.push(toJob(shared, board, job, externalId));
+    return true;
+  };
 
   for (let offset = 0; offset < 5000; offset += 20) {
-    const page = await fetchJson<WorkdayPage>(endpoint, {
-      method: 'POST',
-      /**
-       * `accept-language` fixé à en-US : le transport commun envoie fr-FR par
-       * défaut, et un tenant dont le site carrière n'est pas traduit en
-       * français répond 500 à cette seule en-tête — mesuré le 2026-09-05 sur
-       * nordstrom.wd501 (200 en en-US, 500 en fr-FR, body identique). en-US est
-       * le locale que tout site Workday sert ; la langue des offres, elle,
-       * vient du tenant, pas de l'en-tête.
-       */
-      headers: { 'content-type': 'application/json', ...EN_US },
-      body: JSON.stringify({ appliedFacets: {}, limit: 20, offset, searchText: '' }),
-    });
+    const page = await readPage(shared, board, offset);
     const postings = page.jobPostings ?? [];
-    pagesRead += 1; rawCount += postings.length;
+    pages += 1; rawCount += postings.length;
     if (page.total) {
       if (!total) total = page.total;
-      else if (page.total !== total) issues.add('SOURCE_TOTAL_CHANGED');
+      else if (page.total !== total) { totalChanged = true; shared.issues.add('SOURCE_TOTAL_CHANGED'); }
     }
     const pageIds: string[] = [];
     for (const job of postings) {
@@ -91,47 +172,23 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
       if (!job.externalPath) {
         // A path-less row has no id: the same row served twice (unstable sort — Mango, 2026-09-10: {"bulletFields":["Fix-Term"]}
         // read on two pages) is one announced row, not two. Distinct rows are told apart by their content.
-        rejectedRows.push({ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: job });
-        pathlessRows.add(createHash('sha256').update(JSON.stringify(job)).digest('hex'));
-        withoutPath = pathlessRows.size;
+        // Every occurrence is a witness in the rejects; the COUNT of announced rows is by distinct content.
+        const hash = createHash('sha256').update(JSON.stringify(job)).digest('hex');
+        shared.rejectedRows.push({ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: job });
+        shared.pathlessRows.add(hash); localPathless.add(hash);
         continue;
       }
       const externalId = job.externalPath.split('/').filter(Boolean).pop() ?? job.externalPath;
       pageIds.push(externalId);
-      if (seen.has(externalId)) { repeatedIds += 1; continue; }
-      seen.add(externalId);
-      out.push({
-        externalId,
-        title: job.title,
-        /**
-         * Not every tenant fills `locationsText`. Capri (Versace, Michael Kors,
-         * Jimmy Choo) leaves it empty and puts the site in `bulletFields[0]`
-         * instead — measured 2026-09-04: 621 offers, ALL with a location on the
-         * page, ALL location-less once parsed. An offer with no location is
-         * unusable for a candidate, so fall back to the first bullet field,
-         * which is where Workday's own UI reads the location from. The last
-         * bullet is the requisition id (R_778886), never a place: it is
-         * excluded so an id is never displayed as a city.
-         */
-        location: job.locationsText || locationFromBullets(job.bulletFields),
-        postedAt: postedAtFromWorkday(job.postedOn),
-        // The public career URL is {origin}/{site}{externalPath}, joined by
-        // string — NOT new URL(externalPath, `${origin}/${site}/`), which
-        // silently DROPS the /{site}/ segment because externalPath is an
-        // absolute path ("/job/…") that overrides the base path. That produced
-        // `${origin}/job/…` on every Richemont/Cartier offer → a 404 on every
-        // apply link. Verified: `${origin}/${site}${externalPath}` → 200.
-        url: `${origin.replace(/\/$/, '')}/${site}${job.externalPath}`,
-        raw: job,
-      });
+      if (!take(job, externalId)) repeatedIds += 1;
     }
-    pageEvidence.push({ url: `${endpoint}#offset=${offset}`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
-      ids: pageIds, publisherCounter: page.total ? `total=${page.total}` : '', componentCounters: [`rows=${postings.length}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `withoutPath=${withoutPath}`] });
+    shared.pageEvidence.push({ url: `${shared.endpoint}#offset=${offset}${suffix}`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
+      ids: pageIds, publisherCounter: page.total ? `total=${page.total}` : '', componentCounters: [`rows=${postings.length}`, `uniqueIds=${local.size}`, `repeated=${repeatedIds}`, `withoutPath=${localPathless.size}`, ...(board.partition ? [`partition=${board.scope}`] : [])] });
     if (postings.length === 0) { termination = 'EMPTY_PAGE'; break; }
     // The announced total counts ROWS (a path-less row included): once that many
     // rows are read the board is exhausted, whether or not every row was a
     // usable posting. Completeness below is judged on unique usable ids.
-    if (total && rawCount >= total) { termination = seen.size >= total ? 'PUBLISHER_TOTAL_REACHED' : 'PUBLISHER_TOTAL_ROWS_READ'; break; }
+    if (total && rawCount >= total) { termination = local.size >= total ? 'PUBLISHER_TOTAL_REACHED' : 'PUBLISHER_TOTAL_ROWS_READ'; break; }
     // A short page ends the board unless the publisher still announces more:
     // then the next offset is read, so a shortened page in the middle of the
     // board does not pass for its end.
@@ -147,47 +204,100 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
    * The board is proven only when every announced row is then accounted for — as a
    * unique posting or as a rejected path-less row; the repetition stays named.
    */
-  if (total > 0 && repeatedIds > 0 && seen.size + withoutPath < total && termination !== 'PAGE_BUDGET_EXHAUSTED' && !issues.has('SOURCE_TOTAL_CHANGED')) {
-    for (let offset = 10, sweepPages = 0; offset < total && seen.size + withoutPath < total && sweepPages < 250; offset += 20, sweepPages += 1) {
-      const page = await fetchJson<WorkdayPage>(endpoint, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', ...EN_US },
-        body: JSON.stringify({ appliedFacets: {}, limit: 20, offset, searchText: '' }),
-      });
+  if (total > 0 && repeatedIds > 0 && local.size + localPathless.size < total && termination !== 'PAGE_BUDGET_EXHAUSTED' && !totalChanged) {
+    for (let offset = 10, sweepPages = 0; offset < total && local.size + localPathless.size < total && sweepPages < 250; offset += 20, sweepPages += 1) {
+      const page = await readPage(shared, board, offset);
       const postings = page.jobPostings ?? [];
-      pagesRead += 1;
+      pages += 1;
       const pageIds: string[] = [];
-      let fresh = 0;
+      let freshInSweep = 0;
       for (const job of postings) {
         // Path-less rows were already counted (and rejected) by the first sweep; they carry no id to reconcile.
         if (!job.externalPath) continue;
         const externalId = job.externalPath.split('/').filter(Boolean).pop() ?? job.externalPath;
         pageIds.push(externalId);
-        if (seen.has(externalId)) continue;
-        seen.add(externalId); fresh += 1;
-        out.push({ externalId, title: job.title, location: job.locationsText || locationFromBullets(job.bulletFields), postedAt: postedAtFromWorkday(job.postedOn), url: `${origin.replace(/\/$/, '')}/${site}${job.externalPath}`, raw: job });
+        if (take(job, externalId)) freshInSweep += 1;
       }
-      pageEvidence.push({ url: `${endpoint}#offset=${offset}&sweep=2`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
-        ids: pageIds, publisherCounter: '', componentCounters: [`sweep=2`, `rows=${postings.length}`, `uniqueIds=${seen.size}`, `freshInSweep=${fresh}`] });
+      shared.pageEvidence.push({ url: `${shared.endpoint}#offset=${offset}&sweep=2${suffix}`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
+        ids: pageIds, publisherCounter: '', componentCounters: [`sweep=2`, `rows=${postings.length}`, `uniqueIds=${local.size}`, `freshInSweep=${freshInSweep}`] });
       if (postings.length === 0) break;
     }
-    if (seen.size + withoutPath >= total) { termination = 'SECOND_SWEEP_RECONCILED'; issues.add('RECONCILED_BY_SECOND_SWEEP'); }
+    if (local.size + localPathless.size >= total) { termination = 'SECOND_SWEEP_RECONCILED'; shared.issues.add('RECONCILED_BY_SECOND_SWEEP'); }
   }
-  if (repeatedIds) issues.add('REPEATED_IDS_ACROSS_PAGES');
-  if (withoutPath) issues.add('ROWS_WITHOUT_EXTERNAL_PATH');
+  if (repeatedIds) shared.issues.add('REPEATED_IDS_ACROSS_PAGES');
+  if (localPathless.size) shared.issues.add('ROWS_WITHOUT_EXTERNAL_PATH');
   // Proven when every announced row is accounted for exactly once — as a unique
   // posting, or as a REJECTED path-less row with its raw witness (Nordstrom,
   // 2026-09-09: 1 312 rows read of 1 312 announced, 3 of them path-less, 1 309
   // postings — the historical −3). A repetition across pages only passes when the
   // second sweep has reconciled every announced row.
-  const complete = total > 0 && seen.size + withoutPath === total && (repeatedIds === 0 || termination === 'SECOND_SWEEP_RECONCILED') && termination !== 'PAGE_BUDGET_EXHAUSTED' && !issues.has('SOURCE_TOTAL_CHANGED');
+  const complete = total > 0 && local.size + localPathless.size === total && (repeatedIds === 0 || termination === 'SECOND_SWEEP_RECONCILED') && termination !== 'PAGE_BUDGET_EXHAUSTED' && !totalChanged;
+  return { scope: board.scope, total, uniqueIds: local.size, pages, rawCount, repeatedIds, withoutPath: localPathless.size, overlap, fresh, termination, complete };
+}
+
+export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise<AdapterResult> {
+  const tenant = String(config.tenant ?? '');
+  const site = String(config.site ?? '');
+  const origin = String(config.origin ?? '');
+  if (!tenant || !site || !origin) throw new Error('Workday tenant/site/origin missing');
+  const endpoint = `${origin}/wday/cxs/${encodeURIComponent(tenant)}/${encodeURIComponent(site)}/jobs`;
+  const shared: Shared = { endpoint, origin, site, out: [], seen: new Set(), pageEvidence: [], issues: new Set(), rejectedRows: [], pathlessRows: new Set() };
+  const { out, seen, pageEvidence, issues, rejectedRows } = shared;
+
+  /**
+   * Partition by a facet (2026-09-10, Tapestry). Workday's `total` is CAPPED at
+   * 2 000 on that tenant: pages are still served at offsets 2 000, 2 080 and 2 100
+   * while the three values of the facet "Brand" enumerate 2 085 distinct postings
+   * with no overlap. Read per facet value, each board stays under the cap, the
+   * source total is the sum of the boards, and every posting carries the tenant's
+   * own attribution as its employer. Opt-in per Source (`partitionFacet`): the
+   * facet must exist on the tenant; when it does not, the whole site is read as
+   * before and the absence is named.
+   */
+  const partitionFacet = typeof config.partitionFacet === 'string' && config.partitionFacet.trim() ? config.partitionFacet.trim() : undefined;
+  let publisherTotal = 0;
+  let boards: Board[] = [{ appliedFacets: {}, scope: 'jobs' }];
+  if (partitionFacet) {
+    const first = await readPage(shared, boards[0]!, 0);
+    publisherTotal = first.total ?? 0;
+    const facet = first.facets?.find((f) => f.facetParameter === partitionFacet);
+    const values = (facet?.values ?? []).filter((v): v is Required<WorkdayFacetValue> => Boolean(v.id && v.descriptor));
+    pageEvidence.push({ url: `${endpoint}#facets`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(first)).digest('hex'), offset: 0, pagination: null,
+      ids: [], publisherCounter: publisherTotal ? `total=${publisherTotal}` : '', componentCounters: values.map((v) => `${partitionFacet}=${v.descriptor}:${v.count ?? ''}`) });
+    // The site itself is read last: a posting that carries no value of the facet belongs to no partition
+    // (Tapestry: 6 postings, career-fair and corporate rows without a brand) and keeps the detail-based attribution.
+    if (values.length) boards = [...values.map((v): Board => ({ appliedFacets: { [partitionFacet]: [v.id] }, scope: `${partitionFacet}=${v.descriptor}`, partition: { parameter: partitionFacet, value: v.descriptor, id: v.id } })), { appliedFacets: {}, scope: 'jobs:unpartitioned', remainder: true }];
+    else issues.add('PARTITION_FACET_ABSENT');
+  }
+  const results: BoardResult[] = [];
+  for (const board of boards) results.push(await enumerateBoard(shared, board));
+  const partitioned = Boolean(boards[0]?.partition);
+  const partitions = results.filter((r) => r.scope !== 'jobs:unpartitioned');
+  const remainder = partitioned ? results.find((r) => r.scope === 'jobs:unpartitioned') : undefined;
+  const unpartitioned = remainder?.fresh ?? 0;
+  const total = partitions.reduce((sum, r) => sum + r.total, 0) + unpartitioned;
+  const pagesRead = results.reduce((sum, r) => sum + r.pages, 0) + (partitionFacet ? 1 : 0);
+  const rawCount = results.reduce((sum, r) => sum + r.rawCount, 0);
+  const overlap = partitions.reduce((sum, r) => sum + r.overlap, 0);
+  const capped = partitioned && publisherTotal > 0 && total > publisherTotal;
+  if (partitioned) {
+    if (capped) issues.add('PUBLISHER_TOTAL_CAPPED');
+    if (overlap) issues.add('PARTITION_OVERLAP');
+    if (unpartitioned) issues.add(`UNPARTITIONED_POSTINGS=${unpartitioned}`);
+    // Under a capped site total, postings without a facet value beyond the cap are unobservable: not provable.
+    if (capped && unpartitioned) issues.add('UNPARTITIONED_UNDER_CAP');
+  }
+  const failing = partitions.find((r) => !r.complete) ?? (remainder && !remainder.complete ? remainder : undefined);
+  const complete = !failing && overlap === 0 && !(capped && unpartitioned > 0);
+  const termination = partitioned ? (failing ? failing.termination : overlap ? 'PARTITION_OVERLAP' : capped && unpartitioned ? 'UNPARTITIONED_UNDER_CAP' : 'PARTITIONS_RECONCILED') : results[0]!.termination;
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
-  const enumeration: AdapterResult['enumeration'] = { method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION', endpoint, pages: pagesRead, rawCount, termination, issues: [...issues],
-    scopes: [{ scope: 'jobs', declaredTotal: total || -1, uniqueIds: seen.size, pages: pagesRead, complete }], pageEvidence };
+  const boardScopes: Scope[] = results.map((r) => ({ scope: r.scope, declaredTotal: r.scope === 'jobs:unpartitioned' ? r.fresh : r.total || -1, uniqueIds: r.scope === 'jobs:unpartitioned' ? r.fresh : r.uniqueIds, pages: r.pages, complete: r.complete }));
+  const enumeration: AdapterResult['enumeration'] = { method: partitioned ? 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION_PARTITIONED' : 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION', endpoint, pages: pagesRead, rawCount, termination, issues: [...issues],
+    scopes: partitioned ? [{ scope: 'jobs', declaredTotal: total || -1, uniqueIds: seen.size, pages: pagesRead, complete }, ...boardScopes] : boardScopes, pageEvidence };
 
   // F-04: `total` is the tenant's own announced count — the truncation signal.
   const declaredTotal = total || undefined;
-  const truncated = termination === 'PAGE_BUDGET_EXHAUSTED' || (total > 0 && rawCount < total);
+  const truncated = partitions.some((r) => r.termination === 'PAGE_BUDGET_EXHAUSTED' || (r.total > 0 && r.rawCount < r.total));
   if (config.withDescriptions === false) return { jobs: out.map(job => ({ ...job, publicationHold: 'WORKDAY_LISTING_WITHOUT_EMPLOYER_DETAIL' })), declaredTotal, complete, truncated, enumeration, rejectedRows };
   return {
     jobs: await attachWorkdayDescriptions(
@@ -289,7 +399,10 @@ export async function attachWorkdayDescriptions(
           const detail = await fetchJson<WorkdayDetail>(`${cxsBase}${path}`, { headers: { ...EN_US } });
           const info = detail.jobPostingInfo;
           if (!info) return { ...job, raw: { ...(job.raw as Record<string, unknown>), detail }, publicationHold: 'WORKDAY_DETAIL_SCHEMA_INVALID' };
-          const employer = brandFromWorkdayDetail(detail);
+          // A posting read on a partition board already carries the tenant's own attribution (facet value):
+          // the detail supplies text, dates and country, never a second employer claim.
+          const partitioned = job.employerEvidence?.rule === PARTITION_RULE ? job.employerEvidence : undefined;
+          const employer = partitioned ? job.company : brandFromWorkdayDetail(detail);
           if (!employer) return { ...job, raw: { ...(job.raw as Record<string, unknown>), detail }, publicationHold: 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL' };
           return {
             ...job,
@@ -313,7 +426,7 @@ export async function attachWorkdayDescriptions(
             // the alt, without the image's word "logo" (bounded lot L3, 2026-09-10: 136
             // postings refused as "HOKA Logo", "Richemont Logo", "Logo Pierre Fabre" while
             // `company` already carried the cleaned brand).
-            employerEvidence: brandFromLogoAlt(info.logoImage?.alt)
+            employerEvidence: partitioned ? partitioned : brandFromLogoAlt(info.logoImage?.alt)
               ? { rawName: brandFromLogoAlt(info.logoImage?.alt)!, path: 'detail.jobPostingInfo.logoImage.alt', rule: /(^|\s)logo(\s|$)/i.test(info.logoImage!.alt!) ? 'LOGO_ALT_WORD_REMOVED' : 'LOGO_ALT' }
               : detail.hiringOrganization?.name?.trim()
                 ? { rawName: detail.hiringOrganization.name, path: 'detail.hiringOrganization.name', rule: /^[A-Z]{0,2}\d+\s+/.test(detail.hiringOrganization.name.trim()) ? 'LEADING_ENTITY_CODE_REMOVED' : 'HIRING_ORGANIZATION_LABEL' }
