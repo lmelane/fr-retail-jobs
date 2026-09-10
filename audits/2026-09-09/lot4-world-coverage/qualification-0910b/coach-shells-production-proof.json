@@ -1,0 +1,50 @@
+{
+  "at": "2026-09-10T12:11:48.935Z",
+  "environment": "production",
+  "commit": "6ac43ec2e641518bca42b381eb36ab40f7cb679b",
+  "planHash": "62075308caa7b576b86b81be1589275de862398c3a4e079191a40320ed829b7c",
+  "merged": [
+    "Coach Consulting Dongguan (0 jobs, 0 active)",
+    "Coach Consulting Dongguan Co. Ltd (0 jobs, 0 active)",
+    "Coach Hong Kong Limited - Macau Branch (2 jobs, 2 active)",
+    "Coach Korea (1 jobs, 1 active)",
+    "Coach Korea Limited (0 jobs, 0 active)",
+    "Coach Leatherware India Private (0 jobs, 0 active)",
+    "Coach Leatherware India Private Limited (0 jobs, 0 active)",
+    "Coach Malaysia SDN. BHD. (1 jobs, 1 active)",
+    "Coach Management (Shanghai) (0 jobs, 0 active)",
+    "Coach Management (Shanghai) Co., Ltd. (0 jobs, 0 active)",
+    "Coach Netherlands B.V. - Taiwan Branch (0 jobs, 0 active)",
+    "Coach New Zealand (0 jobs, 0 active)",
+    "Coach Operations Singapore Pte. (0 jobs, 0 active)",
+    "Coach Operations Singapore Pte. Ltd. (0 jobs, 0 active)",
+    "Coach Shanghai Limited (0 jobs, 0 active)",
+    "Coach Shanghai Limited 2 (0 jobs, 0 active)",
+    "Coach Singapore Pte. (0 jobs, 0 active)",
+    "Coach Stores Australie (0 jobs, 0 active)",
+    "Coach Stores Austria (2 jobs, 2 active)",
+    "Coach Stores Austria GmbH (0 jobs, 0 active)",
+    "Coach Stores France SARL (0 jobs, 0 active)",
+    "Coach Stores Germany GmbH (0 jobs, 0 active)",
+    "Coach Stores Ireland (0 jobs, 0 active)",
+    "Coach Stores Ireland Limited (0 jobs, 0 active)",
+    "Coach Stores Limited (0 jobs, 0 active)",
+    "Coach Stores Puerto Rico (1 jobs, 1 active)",
+    "Coach Stores Puerto Rico, Inc. (0 jobs, 0 active)",
+    "Coach Vietnam Company (0 jobs, 0 active)",
+    "Coach Vietnam Company Limited (0 jobs, 0 active)"
+  ],
+  "skipped": [],
+  "activeBefore": 75457,
+  "activeAfter": 75457,
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 7,
+    "aliases": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  }
+}

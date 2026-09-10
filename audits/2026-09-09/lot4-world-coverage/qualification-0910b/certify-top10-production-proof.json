@@ -1,0 +1,195 @@
+{
+  "at": "2026-09-10T12:35:25.075Z",
+  "environment": "production",
+  "results": [
+    {
+      "key": "ulta-jibe",
+      "method": "OFFICIAL_LINK",
+      "proofUrl": "https://ulta.com/",
+      "artifact": "6c66e065f8a055c5a30a951d882507d2b76e31c3ad402eae67b4db079c4492de",
+      "portalScope": "SINGLE_BRAND",
+      "labels": [
+        "Ulta Beauty, Inc."
+      ],
+      "labelCount": 1,
+      "receipt": "source-probes/ulta-jibe.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "ulta-jibe",
+        "sourceHash": "f2a0f09bf07c2b05afcb685a9706528c65efb552e35fc91758c950da46bf44e0",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "pandora-talenthub",
+      "method": "OFFICIAL_LINK",
+      "proofUrl": "https://pandoragroup.com/",
+      "artifact": "e4b03ea4d35a475e141a98e016760f9de58909e0113249020b97497644f4f556",
+      "portalScope": "MULTI_BRAND",
+      "labels": [],
+      "labelCount": 0,
+      "receipt": "source-probes-pagerfix/pandora-talenthub.receipt.json",
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "pandora-talenthub",
+        "sourceHash": "b42d50e3c0f4920d19da3dd4e7f1442c55cd4475eee31364911499d362319662",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "l-oreal-professionnel",
+      "method": "OFFICIAL_LINK",
+      "proofUrl": "https://loreal.com/careers",
+      "artifact": "c1ceabb62cb7904d8486fc1c41381afd381bac26d26a98dc9bfa65b7dd73790b",
+      "portalScope": "MULTI_BRAND",
+      "labels": [],
+      "labelCount": 0,
+      "receipt": "source-probes-current/l-oreal-professionnel.receipt.json",
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "l-oreal-professionnel",
+        "sourceHash": "aeaaa94914431d191081a4cb19f2fad864d6a4a8fffb407ecf42e314ef52367d",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "hm-group",
+      "method": "OFFICIAL_LINK",
+      "proofUrl": "https://hmgroup.com/career",
+      "artifact": "5eaa0d9d77e7f0604ed7d529771147b91d7ed949d8b30ab347ef219a4de9b489",
+      "portalScope": "MULTI_BRAND",
+      "labels": [],
+      "labelCount": 0,
+      "receipt": "source-probes/hm-group.receipt.json",
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "hm-group",
+        "sourceHash": "2705c7a7d1c10f3c583150187e6fc4888faafa1289392557c7d0f7d74ceeb07f",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "estee-lauder-companies",
+      "method": "OFFICIAL_LINK",
+      "proofUrl": "https://elcompanies.com/",
+      "artifact": "64b9db21b0ad57a63661bbf7c4e928b1241d963735a2ab970eeb0cf3c347c6ec",
+      "portalScope": "MULTI_BRAND",
+      "labels": [
+        "Estée Lauder Companies",
+        "Le Labo",
+        "MAC",
+        "Aveda",
+        "Estée Lauder - Brand",
+        "Tom Ford",
+        "Jo Malone London",
+        "Bobbi Brown Cosmetics"
+      ],
+      "labelCount": 19,
+      "receipt": "source-probes/estee-lauder-companies.receipt.json",
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "estee-lauder-companies",
+        "sourceHash": "34862a924b4dac70fea66a0c7b4517564172c1384c938446bbf710de2c211795",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "beiersdorf",
+      "method": "OFFICIAL_DOMAIN",
+      "proofUrl": "https://beiersdorf.com/",
+      "artifact": "4f06a890e9fb01e04cedf6d0d8025bb881b5cfa8b90cd2f098d278377c0e6eed",
+      "portalScope": "MULTI_BRAND",
+      "labels": [],
+      "labelCount": 0,
+      "receipt": "source-probes-pagerfix/beiersdorf.receipt.json",
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "beiersdorf",
+        "sourceHash": "5d3eeb92f23f1a1e2c578f6f5b3c336451ef68026b2866050f7367fa362551fb",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "boots",
+      "method": "OFFICIAL_LINK",
+      "proofUrl": "https://www.boots.com/sitemap",
+      "artifact": "97f8ef8d680a206f59eecf609f15865efa862113a126a46abd1a5d10c3a73e80",
+      "portalScope": "MULTI_BRAND",
+      "labels": [],
+      "labelCount": 0,
+      "receipt": "source-probes-current/boots.receipt.json",
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "boots",
+        "sourceHash": "ef4287ea7ca28d58b0e56f9dabe0c2c204de6168bc539e5681b1ca7d4cbe5e9d",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "foot-locker-france",
+      "method": "OFFICIAL_LINK",
+      "proofUrl": "https://www.footlocker-inc.com/",
+      "artifact": "ae785d1456ff316469e3fa8efa406b55c6a7db26636afb8fb6df169efbcf76d7",
+      "portalScope": "MULTI_BRAND",
+      "labels": [
+        "Kids Foot Locker",
+        "Foot Locker",
+        "Champs Sports",
+        "WSS",
+        "Foot Locker, Inc."
+      ],
+      "labelCount": 5,
+      "receipt": "source-probes-pagerfix/foot-locker-france.receipt.json",
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "foot-locker-france",
+        "sourceHash": "a7521fae0fd734e42ff0a01034e4bb0b1fb910cc074e7877d02bf9ccad3546ce",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "nordstrom",
+      "method": "OFFICIAL_LINK",
+      "proofUrl": "https://careers.nordstrom.com/",
+      "artifact": "03dd68b86b4afc5ff67a1c936d660108846462f55d709b476b33f50063a89478",
+      "portalScope": "SINGLE_BRAND",
+      "labels": [
+        "Nordstrom Inc"
+      ],
+      "labelCount": 1,
+      "receipt": "source-probes-current/nordstrom.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "nordstrom",
+        "sourceHash": "2c022a3add2d60d9927964fd94a3187148ae45fdf5d16791b0cd2df7445a2cbe",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "pvh",
+      "method": "OFFICIAL_DOMAIN",
+      "proofUrl": "https://careers.pvh.com/",
+      "artifact": "2ec452198f2ec0155e601e3afd0077d83e685b0ad6d0b893f25a7f88ccd09762",
+      "portalScope": "MULTI_BRAND",
+      "labels": [],
+      "labelCount": 0,
+      "receipt": "source-probes-current/pvh.receipt.json",
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "pvh",
+        "sourceHash": "62fa56ec9ece54e88450e3dde715a77b3ba480d3b7551e97220abc5ecf9b4024",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "at": "2026-09-10T12:17:27.283Z",
+  "pipelineRun": {
+    "id": "54da984b-b714-4ce4-acb2-9a3da9467f00",
+    "status": "COMPLETED",
+    "startedAt": "2026-09-10T12:16:54.924Z",
+    "finishedAt": "2026-09-10T12:17:22.863Z",
+    "revision": "eb72236a947000a5aadfa270dda33fa7e89ed344"
+  },
+  "writeFailures": [],
+  "sourceRuns": [
+    {
+      "sourceKey": "aptar-beauty",
+      "status": "DEGRADED",
+      "fetched": 216,
+      "accepted": 178,
+      "declaredTotal": 216,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "38 annonces non publiables archivées (0 non résolues) ; énumération et fermetures attestées · desc 99% date 100% pays 99% url 100%"
+    }
+  ],
+  "active": [
+    {
+      "sourceKey": "aptar-beauty",
+      "active": 190,
+      "reattested": 178,
+      "created": 3
+    }
+  ],
+  "observations": [
+    {
+      "sourceKey": "aptar-beauty",
+      "rule": "REVIEWED_ALIAS",
+      "n": 178
+    }
+  ],
+  "byCompany": [
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "J Choo",
+      "n": 34
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Franchoo",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Tokyo",
+      "n": 3
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo (Shanghai) Trading Co.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "J Choo (Switzerland)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Florence",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Hungary KFT",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Itachoo",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Michael Kors",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors",
+      "n": 355
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Stores California",
+      "n": 54
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (UK)",
+      "n": 36
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Germany)",
+      "n": 27
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Italy) srl con socio unico",
+      "n": 13
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Spain, S.L.U.",
+      "n": 12
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Europe)",
+      "n": 5
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Switzerland)",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Austria)",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Portugal)",
+      "n": 3
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Netherlands)",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Poland) sp. z. o.o.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Lithuania) UAB",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Hungary) Kft",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Czech Republic) s.r.o.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Canada)",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (HongKong)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Sweden)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (USA)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Yuhanhoesa",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "Mango",
+      "n": 1697
+    },
+    {
+      "sourceKey": "nordstrom",
+      "name": "Nordstrom",
+      "n": 1575
+    }
+  ],
+  "activeTotal": 75423
+}

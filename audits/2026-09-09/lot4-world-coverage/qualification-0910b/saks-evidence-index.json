@@ -1,0 +1,31 @@
+[
+ {
+  "url": "https://careers.saksglobal.com/us/en",
+  "sha256": "bf2207b65b741e52e1d36498063d9aa944fc361cb1e25cfa7cff57e3f04e0371",
+  "bytes": 139906,
+  "title": ""
+ },
+ {
+  "url": "https://www.saksglobal.com/our-brands",
+  "sha256": "4b27d22484077587e6a07718236e41264da455cdda1f8791908a030699f248a7",
+  "bytes": 24146,
+  "title": "Exemplar Luxury Group | Company",
+  "links_wd1": []
+ },
+ {
+  "url": "https://www.saksglobal.com/",
+  "sha256": "5b374a68041910b2d68e61ebd3ff80ce07e08fe801fc3bcff0b7425c7906c06e",
+  "bytes": 18175,
+  "title": "Exemplar Luxury Group | Home",
+  "links_wd1": []
+ },
+ {
+  "url": "https://careers.saksglobal.com/us/en/job/R-108463/Selling-Advisor-Contemporary",
+  "sha256": "68ae8dc51f7409fbea25cacadd7343bf5f3b8b2c6e0ffc494c34ed552ec5211b",
+  "bytes": 86275,
+  "title": "",
+  "links_wd1": [
+   "https://saks.wd1.myworkdayjobs.com/careers_at_saks/job/SF_0668_BRICKELL-CITY-CENTRE-FL/Selling-Advisor---Contemporary_R-108463"
+  ]
+ }
+]

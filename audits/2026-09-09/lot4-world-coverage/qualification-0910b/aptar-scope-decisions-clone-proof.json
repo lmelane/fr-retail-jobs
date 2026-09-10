@@ -1,0 +1,1149 @@
+{
+  "at": "2026-09-10T11:02:50.686Z",
+  "environment": "clone",
+  "rule": "aptar-perimeter-v2-20260910",
+  "sheetRows": 224,
+  "representations": 228,
+  "counts": {
+    "UNDETERMINED": 176,
+    "OUT_OF_SCOPE": 40,
+    "IN_SCOPE": 8
+  },
+  "stored": [
+    {
+      "verdict": "IN_SCOPE",
+      "n": 8
+    },
+    {
+      "verdict": "OUT_OF_SCOPE",
+      "n": 40
+    },
+    {
+      "verdict": "UNDETERMINED",
+      "n": 176
+    }
+  ],
+  "outOfScopeActive": 40,
+  "written": [
+    {
+      "externalId": "1432782933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1405738533",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1428453033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1392659033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1395543733",
+      "verdict": "IN_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1399454033",
+      "verdict": "IN_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1418751033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1426628233",
+      "verdict": "IN_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1392847533",
+      "verdict": "IN_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1418462833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1390458233",
+      "verdict": "IN_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1398635633",
+      "verdict": "IN_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1287935201",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1428498233",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1406137333",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1434497533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1434753133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1434284833",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1424837033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424835933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424836633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424834733",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424836733",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424836133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1217875601",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1217876101",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1217875201",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1390502533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1259989301",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1393426933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1389642833",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1429673633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1406140133",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1399876433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1423478533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1427923833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1418346033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1428910733",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1431890933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1425977633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1425977933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424366033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1371610633",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1384798933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1420289833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1409626833",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1435410833",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1425032033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424836533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1425032533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424836233",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424836433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1405021433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1404204133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1426375033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1413716233",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1393628133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1433765733",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1255154001",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1434444533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1423883233",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1205556701",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1285851201",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1427060733",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1434997933",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1395502333",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1426559533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424002333",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1423939333",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1427040033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1429219433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1399865133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1435450133",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1392023833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1404815133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1391647633",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1423165833",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1276751001",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1435367733",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1405768533",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1405768633",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1365533633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1281096001",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "994593001",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "994592701",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1280713701",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1431204133",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1410567233",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1429973833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1429751033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1413502933",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1418869833",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1413503133",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1429084633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1433003833",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1418259533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1425977033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1407149333",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1434270833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "982274601",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1383345033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1094871801",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1427601933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1422339233",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1403934333",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1432552433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1418778433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1412447133",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1370567033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1421451833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1418634933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1418629233",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1413729533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1417520733",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1417520833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1175115301",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1368214433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1418022433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "716305301",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1407122833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1410566733",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1415392333",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1390119733",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1388539433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1397473633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1397472533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1409504633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1388493133",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1258223501",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1426785133",
+      "verdict": "IN_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1234296001",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1421205633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1421215733",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424366433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1425689933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1433699833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1215099201",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1415592933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1189084901",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1269949501",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1366028133",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1282662201",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1279478401",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1383375233",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1251153801",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1414403333",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1431893333",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1405857533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1431391233",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1423746233",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1433082433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1423987833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1367038033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "660048101",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1373296733",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1383803633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424517533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1428073433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1418020933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1380582333",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1418531233",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1389357133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1277416901",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1418593833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1402860433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1435219633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1418075833",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1379824633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1393628533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1393628433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1212878401",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1426757033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1428911133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1388548633",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1427592033",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1424394133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1293846301",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "975893801",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1404421033",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1426549633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1414527533",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1419031033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1420368433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1427046133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1413434533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1394296133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1433496533",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1434605733",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1417436533",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1420460533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1417781133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1393628033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1407149733",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1417375033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1415436633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1418382833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1416096133",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1416134033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1397200533",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1101695701",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1429146233",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1388540433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1416444633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1414224533",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1293550101",
+      "verdict": "IN_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1381819933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1390688933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1411573733",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1434141433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "998819601",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1427601633",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1413830433",
+      "verdict": "OUT_OF_SCOPE",
+      "active": true
+    },
+    {
+      "externalId": "1380582433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1152144901",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1424156833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1423993033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1426114133",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1418795833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1429535833",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1417822333",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1409691933",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1431001033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1420280433",
+      "verdict": "UNDETERMINED",
+      "active": true
+    },
+    {
+      "externalId": "1401782033",
+      "verdict": "UNDETERMINED",
+      "active": true
+    }
+  ]
+}

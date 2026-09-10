@@ -1,0 +1,1285 @@
+{
+ "at": "2026-09-10T12:14:31.638Z",
+ "report": "audits/2026-09-10/discovery-web/2026-09-10-decouverte-web-lots1-2.md",
+ "rows": 65,
+ "counts": {
+  "ALREADY_COVERED": 10,
+  "CONFIG_OR_ATTRIBUTION": 10,
+  "NEW_ACTOR": 21,
+  "INVESTIGATION": 21,
+  "NEW_SOURCE_EXISTING_ACTOR": 3
+ },
+ "bySection": {
+  "1. Nouveaux acteurs — portail carrière documenté": {
+   "ALREADY_COVERED": 6,
+   "CONFIG_OR_ATTRIBUTION": 3,
+   "NEW_ACTOR": 12,
+   "INVESTIGATION": 7,
+   "NEW_SOURCE_EXISTING_ACTOR": 1
+  },
+  "2. Nouvelles sources pour acteurs déjà référencés": {
+   "CONFIG_OR_ATTRIBUTION": 7,
+   "INVESTIGATION": 14,
+   "NEW_ACTOR": 9,
+   "ALREADY_COVERED": 4,
+   "NEW_SOURCE_EXISTING_ACTOR": 2
+  }
+ },
+ "items": [
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Swarovski",
+   "reportPresence": "absent vérifié",
+   "officialSite": "swarovski.com",
+   "portalHosts": [
+    "swarovski.wd3.myworkdayjobs.com"
+   ],
+   "ats": "Workday — tenant swarovski, site swarovski",
+   "reportAction": "Ajouter maison + source Workday (prêt à brancher)",
+   "verdict": "ALREADY_COVERED",
+   "companies": [
+    {
+     "name": "Swarovski",
+     "kind": "UNKNOWN",
+     "domain": "swarovski.com",
+     "active": 182
+    }
+   ],
+   "nearNames": [
+    "Swarovski Canada Limited",
+    "Swarovski Ibérica S.A.",
+    "Swarovski France S.A.",
+    "Swarovski (Schweiz) AG"
+   ],
+   "portalSources": [
+    "swarovski [ACTIVE] swarovski.wd3.myworkdayjobs.com"
+   ],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Pandora",
+   "reportPresence": "absent vérifié",
+   "officialSite": "pandoragroup.com",
+   "portalHosts": [
+    "careers.pandoragroup.com"
+   ],
+   "ats": "Portail Paradox devant SAP SuccessFactors (career2.successfactors.eu, company=pandoraas)",
+   "reportAction": "Scraper portail Paradox ou flux SuccessFactors",
+   "verdict": "ALREADY_COVERED",
+   "companies": [
+    {
+     "name": "Pandora",
+     "kind": "UNKNOWN",
+     "domain": "pandoragroup.com",
+     "active": 2101
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [
+    "pandora-talenthub [ACTIVE] careers.pandoragroup.com"
+   ],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Douglas Group",
+   "reportPresence": "absent vérifié",
+   "officialSite": "douglas.group",
+   "portalHosts": [
+    "careers.douglas.group"
+   ],
+   "ats": "SuccessFactors career55.sapsf.eu, company=DOUGLAS",
+   "reportAction": "1 source groupe couvre Douglas + Nocibé",
+   "verdict": "CONFIG_OR_ATTRIBUTION",
+   "companies": [
+    {
+     "name": "Douglas",
+     "kind": "UNKNOWN",
+     "domain": "douglas.group",
+     "active": 151
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": [
+    "douglas-sf [ACTIVE] jobs.douglas.group"
+   ]
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Laboratoires Expanscience",
+   "reportPresence": "absent vérifié",
+   "officialSite": "expanscience.com",
+   "portalHosts": [
+    "expanscience.wd3.myworkdayjobs.com"
+   ],
+   "ats": "Workday — tenant expanscience, site Expanscience_Careers",
+   "reportAction": "Ajouter maison + source Workday",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Maria Galland Paris",
+   "reportPresence": "absent vérifié",
+   "officialSite": "mariagalland.com",
+   "portalHosts": [
+    "mariagalland.softgarden.io"
+   ],
+   "ats": "softgarden — tenant mariagalland",
+   "reportAction": "Adaptateur softgarden à créer",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Groupe Léa Nature",
+   "reportPresence": "absent vérifié",
+   "officialSite": "leanature.com",
+   "portalHosts": [
+    "job.recrutement-leanature.com"
+   ],
+   "ats": "Cegid DigitalRecruiters",
+   "reportAction": "Réutiliser l'adaptateur DIGITALRECRUITERS existant",
+   "verdict": "CONFIG_OR_ATTRIBUTION",
+   "companies": [],
+   "nearNames": [
+    "Groupe Courir",
+    "L'Oréal Groupe",
+    "Groupe Clarins",
+    "Le Bon Marché"
+   ],
+   "portalSources": [],
+   "actorSources": [
+    "groupe-chantelle [ACTIVE] groupechantelle-recrute.talent-soft.com",
+    "groupe-printemps [ACTIVE] printemps-career.talent-soft.com",
+    "dr-pierre-ricaud [ACTIVE] careers.groupe-rocher.com"
+   ]
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Laboratoire SVR",
+   "reportPresence": "absent vérifié",
+   "officialSite": "fr.svr.com",
+   "portalHosts": [
+    "kreskcosmetics.com"
+   ],
+   "ats": "Aucun ATS — page WordPress renvoyant vers HelloWork et JobTeaser",
+   "reportAction": "Source primaire = page entreprise HelloWork",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "CWF",
+   "reportPresence": "absent vérifié",
+   "officialSite": "groupecwf.com",
+   "portalHosts": [
+    "careers.werecruit.io"
+   ],
+   "ats": "WeRecruit — tenant groupe-cwf",
+   "reportAction": "Ajouter source WeRecruit ; rattacher les marques CWF",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Smallable",
+   "reportPresence": "absent vérifié",
+   "officialSite": "smallable.com",
+   "portalHosts": [
+    "welcometothejungle.com"
+   ],
+   "ats": "Welcome to the Jungle — slug smallable",
+   "reportAction": "Ajouter via adaptateur WTTJ existant",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Damiani Group",
+   "reportPresence": "absent vérifié",
+   "officialSite": "damianigroup.com",
+   "portalHosts": [
+    "careers.damianigroup.com"
+   ],
+   "ats": "SuccessFactors career55.sapsf.eu, company=damianispa",
+   "reportAction": "Ajouter via adaptateur SUCCESSFACTORS",
+   "verdict": "ALREADY_COVERED",
+   "companies": [
+    {
+     "name": "Damiani",
+     "kind": "UNKNOWN",
+     "domain": "damianigroup.com",
+     "active": 28
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [
+    "damiani [ACTIVE] careers.damianigroup.com"
+   ],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Watches of Switzerland Group",
+   "reportPresence": "absent vérifié",
+   "officialSite": "thewosgroupplc.com",
+   "portalHosts": [
+    "usacareers.thewosgroup.com"
+   ],
+   "ats": "eArcu",
+   "reportAction": "Priorité faible (pas de France)",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Selfridges",
+   "reportPresence": "absent vérifié",
+   "officialSite": "selfridges.com",
+   "portalHosts": [
+    "jobsearch.selfridges.com"
+   ],
+   "ats": "Tribepad",
+   "reportAction": "Adaptateur Tribepad à créer",
+   "verdict": "ALREADY_COVERED",
+   "companies": [
+    {
+     "name": "Selfridges",
+     "kind": "UNKNOWN",
+     "domain": "selfridges.com",
+     "active": 69
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [
+    "selfridges [ACTIVE] jobsearch.selfridges.com"
+   ],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Liberty London",
+   "reportPresence": "absent vérifié",
+   "officialSite": "libertylondon.com",
+   "portalHosts": [
+    "libertylondon.com"
+   ],
+   "ats": "Teamtailor",
+   "reportAction": "Adaptateur Teamtailor existant",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [
+    "LIBERTY'S MAGAZINE"
+   ],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Fenwick",
+   "reportPresence": "absent vérifié",
+   "officialSite": "fenwick.co.uk",
+   "portalHosts": [
+    "careers.fenwick.co.uk"
+   ],
+   "ats": "Eploy (assets /db_assets/production/1936/)",
+   "reportAction": "Adaptateur Eploy à créer",
+   "verdict": "CONFIG_OR_ATTRIBUTION",
+   "companies": [
+    {
+     "name": "Fenwick",
+     "kind": "UNKNOWN",
+     "domain": "fenwick.co.uk",
+     "active": 31
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": [
+    "fenwick-volcanic [ACTIVE] www.careers.fenwick.co.uk"
+   ]
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Fortnum & Mason",
+   "reportPresence": "absent vérifié",
+   "officialSite": "fortnumandmason.com",
+   "portalHosts": [
+    "careers.fortnumandmason.com"
+   ],
+   "ats": "Eploy (assets /db_assets/production/2844/)",
+   "reportAction": "Adaptateur Eploy",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "KaDeWe Group",
+   "reportPresence": "absent vérifié",
+   "officialSite": "kadewe.de",
+   "portalHosts": [
+    "kadewe-kadewe.career.softgarden.de"
+   ],
+   "ats": "softgarden ×3 (33 offres KaDeWe, 40 Alsterhaus)",
+   "reportAction": "3 boards softgarden",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Galeria",
+   "reportPresence": "absent vérifié",
+   "officialSite": "galeria.de",
+   "portalHosts": [
+    "karriere.galeria.de"
+   ],
+   "ats": "rexx probable (~198-204 offres) — à confirmer",
+   "reportAction": "Confirmer rexx en navigateur",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "El Corte Inglés",
+   "reportPresence": "absent vérifié",
+   "officialSite": "elcorteingles.es",
+   "portalHosts": [
+    "empleo.elcorteingles.es"
+   ],
+   "ats": "Portail maison (SPA Angular)",
+   "reportAction": "Scraper la SPA ou son API JSON",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Macy's Inc",
+   "reportPresence": "absent vérifié",
+   "officialSite": "macys.com / bloomingdales.com",
+   "portalHosts": [
+    "macysjobs.com"
+   ],
+   "ats": "Oracle Cloud HCM — tenant ebwh.fa.us2.oraclecloud.com, site CX_1001",
+   "reportAction": "Adaptateur ORACLE_HCM existant",
+   "verdict": "NEW_SOURCE_EXISTING_ACTOR",
+   "companies": [
+    {
+     "name": "Bloomingdale's",
+     "kind": "UNKNOWN",
+     "domain": "bloomingdales.com",
+     "active": 791
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "SSENSE",
+   "reportPresence": "absent vérifié",
+   "officialSite": "ssense.com",
+   "portalHosts": [
+    "careers.ssense.com"
+   ],
+   "ats": "Teamtailor",
+   "reportAction": "Adaptateur Teamtailor existant",
+   "verdict": "ALREADY_COVERED",
+   "companies": [
+    {
+     "name": "SSENSE",
+     "kind": "UNKNOWN",
+     "domain": "ssense.com",
+     "active": 15
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [
+    "ssense [ACTIVE] careers.ssense.com"
+   ],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Lane Crawford",
+   "reportPresence": "absent vérifié",
+   "officialSite": "lanecrawford.com",
+   "portalHosts": [
+    "careers.lanecrawford.com.hk"
+   ],
+   "ats": "SAP SuccessFactors (careersite 6216f8cc)",
+   "reportAction": "Ajouter careersite SF",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [
+    "Everlane"
+   ],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Chalhoub Group",
+   "reportPresence": "absent vérifié",
+   "officialSite": "chalhoubgroup.com",
+   "portalHosts": [
+    "careers.chalhoubgroup.com"
+   ],
+   "ats": "Teamtailor",
+   "reportAction": "Source groupe Teamtailor",
+   "verdict": "ALREADY_COVERED",
+   "companies": [
+    {
+     "name": "Chalhoub Group",
+     "kind": "UNKNOWN",
+     "domain": "chalhoubgroup.com",
+     "active": 148
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [
+    "chalhoub [ACTIVE] careers.chalhoubgroup.com"
+   ],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Citizen",
+   "reportPresence": "absent vérifié",
+   "officialSite": "citizenwatch-global.com",
+   "portalHosts": [
+    "citizen.co.jp"
+   ],
+   "ats": "Pas d'ATS tiers détecté",
+   "reportAction": "Hors périmètre France ; archiver",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [
+    "CITIZENS OF HUMANITY"
+   ],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Beymen",
+   "reportPresence": "A-TROUVER → résolu",
+   "officialSite": "beymengroup.com",
+   "portalHosts": [
+    "jobs.flowq.com"
+   ],
+   "ats": "FlowQ (ATS turc), tenant beymengroup",
+   "reportAction": "Connecteur FlowQ à créer",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Vakko",
+   "reportPresence": "A-TROUVER → résolu",
+   "officialSite": "vakko.com.tr",
+   "portalHosts": [
+    "vakko.talentics.app"
+   ],
+   "ats": "Talentics (ATS turc, backend Firebase)",
+   "reportAction": "Connecteur Talentics à créer",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Al Tayer Group",
+   "reportPresence": "absent vérifié",
+   "officialSite": "altayer.com",
+   "portalHosts": [
+    "altayer.com"
+   ],
+   "ats": "Oracle Cloud HCM — tenant hchx.fa.em2.oraclecloud.com, site CX_1",
+   "reportAction": "Adaptateur ORACLE_HCM ; vérifier présence Ounass dans les offres",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Namshi",
+   "reportPresence": "absent vérifié",
+   "officialSite": "namshi.com",
+   "portalHosts": [
+    "careers.smartrecruiters.com"
+   ],
+   "ats": "SmartRecruiters — slug Namshi",
+   "reportAction": "Adaptateur SMARTRECRUITERS existant",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Joyce Boutique",
+   "reportPresence": "absent vérifié",
+   "officialSite": "joyce.com",
+   "portalHosts": [
+    "joyce.com"
+   ],
+   "ats": "Portail propre",
+   "reportAction": "Scraper la page careers",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "1. Nouveaux acteurs — portail carrière documenté",
+   "actor": "Kirna Zabête",
+   "reportPresence": "absent vérifié",
+   "officialSite": "kirnazabete.com",
+   "portalHosts": [
+    "kirnazabete.com"
+   ],
+   "ats": "Page Shopify",
+   "reportAction": "Scraper la page",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Rolex",
+   "reportPresence": "NON_RESOLUE → résolu navigateur",
+   "officialSite": "rolex.com",
+   "portalHosts": [
+    "carrieres-rolex.com"
+   ],
+   "ats": "SAP SuccessFactors jobs2web — company=rolexsa",
+   "reportAction": "Ajouter via adaptateur SUCCESSFACTORS",
+   "verdict": "CONFIG_OR_ATTRIBUTION",
+   "companies": [
+    {
+     "name": "Rolex",
+     "kind": "UNKNOWN",
+     "domain": "rolex.com",
+     "active": 213
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": [
+    "rolex [ACTIVE] www.carrieres-rolex.com"
+   ]
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "La Rinascente",
+   "reportPresence": "A-TROUVER (anti-bot) → résolu navigateur",
+   "officialSite": "rinascente.it",
+   "portalHosts": [
+    "rinascente.intervieweb.it"
+   ],
+   "ats": "Intervieweb / In-recruiting — tenant rinascente",
+   "reportAction": "Adaptateur Intervieweb à créer (couvre aussi Cyrillus)",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Breuninger",
+   "reportPresence": "A-TROUVER → résolu navigateur",
+   "officialSite": "e-breuninger.de",
+   "portalHosts": [
+    "e-breuninger.de"
+   ],
+   "ats": "Portail maison (pas softgarden — le sg_cookie_optin n'est que le cookie manager)",
+   "reportAction": "Ajouter via JSON maison",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Jelmoli",
+   "reportPresence": "A-TROUVER → résolu navigateur",
+   "officialSite": "jelmoli.ch (erreur SSL)",
+   "portalHosts": [
+    "jobs.sps.swiss",
+    "jobs.jelmoli.ch"
+   ],
+   "ats": "Plateforme ABA Services jobportal (portal UUID baa7d421-…)",
+   "reportAction": "Source groupe SPS ; vérifier filtre société Jelmoli",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "David Jones",
+   "reportPresence": "ATS_A_TROUVER → résolu navigateur",
+   "officialSite": "davidjones.com.au",
+   "portalHosts": [
+    "careers.davidjones.com.au"
+   ],
+   "ats": "PageUp People (les contrôleurs « greenhouse » n'étaient que des champs de formulaire)",
+   "reportAction": "Adaptateur PageUp à créer",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Chow Tai Fook",
+   "reportPresence": "NON_RESOLUE → résolu navigateur",
+   "officialSite": "chowtaifook.com",
+   "portalHosts": [
+    "chowtaifook.com"
+   ],
+   "ats": "SAP SuccessFactors (OData SFOData.JobRequisitionPosting) exposé via AEM",
+   "reportAction": "Scraper le JSON AEM ou cibler le tenant SF",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Farfetch",
+   "reportPresence": "ATS_A_TROUVER → résolu",
+   "officialSite": "farfetch.com",
+   "portalHosts": [
+    "jobs.lever.co"
+   ],
+   "ats": "Lever — board farfetch",
+   "reportAction": "Rattacher la fiche Farfetch au board Lever (Browns déjà actif dessus)",
+   "verdict": "CONFIG_OR_ATTRIBUTION",
+   "companies": [
+    {
+     "name": "Farfetch",
+     "kind": "RETAILER",
+     "domain": null,
+     "active": 52
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": [
+    "browns [ACTIVE] www.brownsfashion.com"
+   ]
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "END.",
+   "reportPresence": "A-TROUVER → résolu",
+   "officialSite": "endclothing.com",
+   "portalHosts": [
+    "careers.endclothing.com"
+   ],
+   "ats": "Breezy HR",
+   "reportAction": "Adaptateur Breezy à créer",
+   "verdict": "ALREADY_COVERED",
+   "companies": [
+    {
+     "name": "END.",
+     "kind": "UNKNOWN",
+     "domain": "endclothing.com",
+     "active": 22
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [
+    "end-clothing [ACTIVE] careers.endclothing.com"
+   ],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Nordstrom",
+   "reportPresence": "ECHEC_CONFIG → réparable",
+   "officialSite": "nordstrom.com",
+   "portalHosts": [
+    "nordstrom.wd501.myworkdayjobs.com"
+   ],
+   "ats": "Workday — tenant nordstrom, site nordstrom_careers",
+   "reportAction": "Réparer la fiche (l'échec précédent est caduc)",
+   "verdict": "ALREADY_COVERED",
+   "companies": [
+    {
+     "name": "Nordstrom",
+     "kind": "UNKNOWN",
+     "domain": "nordstrom.com",
+     "active": 1575
+    },
+    {
+     "name": "Nordstrom Inc",
+     "kind": "UNKNOWN",
+     "domain": "nordstrom.com",
+     "active": 0
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [
+    "nordstrom [ACTIVE] nordstrom.wd501.myworkdayjobs.com"
+   ],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Harrods",
+   "reportPresence": "NON_RESOLUE → portail trouvé",
+   "officialSite": "harrods.com",
+   "portalHosts": [
+    "harrodscareers.com"
+   ],
+   "ats": "SmartRecruiters (footer attesté), front custom ; 112 offres",
+   "reportAction": "Scraper HTML + identifier l'UUID SmartRecruiters",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Harvey Nichols",
+   "reportPresence": "ECHEC_CONFIG → réparable",
+   "officialSite": "harveynichols.com",
+   "portalHosts": [
+    "careers.harveynichols.com"
+   ],
+   "ats": "Teamtailor confirmé",
+   "reportAction": "Réparer la config existante",
+   "verdict": "CONFIG_OR_ATTRIBUTION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Groupe IDKIDS",
+   "reportPresence": "NON_RESOLUE → résolu",
+   "officialSite": "corporate.idkids.com",
+   "portalHosts": [
+    "idkids.talentview.io"
+   ],
+   "ats": "Talentview — tenant idkids",
+   "reportAction": "Adaptateur TALENTVIEW existant ; surveiller le périmètre post-redressement",
+   "verdict": "CONFIG_OR_ATTRIBUTION",
+   "companies": [],
+   "nearNames": [
+    "Groupe Courir",
+    "L'Oréal Groupe",
+    "Groupe Clarins",
+    "Le Bon Marché"
+   ],
+   "portalSources": [],
+   "actorSources": [
+    "groupe-chantelle [ACTIVE] groupechantelle-recrute.talent-soft.com",
+    "groupe-printemps [ACTIVE] printemps-career.talent-soft.com",
+    "dr-pierre-ricaud [ACTIVE] careers.groupe-rocher.com"
+   ]
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Jacadi Paris",
+   "reportPresence": "NON_RESOLUE → résolu",
+   "officialSite": "jacadi.fr",
+   "portalHosts": [
+    "jacadi.postule.fr"
+   ],
+   "ats": "Talentview — iframe talentview.io/iframe/p6hlo9",
+   "reportAction": "Ajouter la source ; re-vérifier après cession",
+   "verdict": "NEW_SOURCE_EXISTING_ACTOR",
+   "companies": [
+    {
+     "name": "JACADI",
+     "kind": "UNKNOWN",
+     "domain": "jacadi.fr",
+     "active": 0
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Tape à l'œil",
+   "reportPresence": "NON_RESOLUE → résolu",
+   "officialSite": "taokids.com",
+   "portalHosts": [
+    "t-a-o.talentview.io"
+   ],
+   "ats": "Talentview — tenant t-a-o",
+   "reportAction": "Adaptateur TALENTVIEW existant",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [
+    "Tapestry Japan, LLC",
+    "Tapestry (Cambodge) Company Ltd",
+    "Tapestry",
+    "Tapestry (Cambodia) Company"
+   ],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Grain de Malice",
+   "reportPresence": "ATS_A_TROUVER → résolu",
+   "officialSite": "graindemalice.fr",
+   "portalHosts": [
+    "recrutement.graindemalice.fr"
+   ],
+   "ats": "Teamtailor confirmé (assets teamtailor-cdn)",
+   "reportAction": "Adaptateur Teamtailor existant",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Cyrillus",
+   "reportPresence": "NON_RESOLUE → résolu",
+   "officialSite": "cyrillus.fr",
+   "portalHosts": [
+    "inrecruitingfr.intervieweb.it"
+   ],
+   "ats": "Intervieweb / In-recruiting — tenant cyrillus",
+   "reportAction": "Adaptateur Intervieweb à créer",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "The Body Shop",
+   "reportPresence": "NON_RESOLUE → portail trouvé",
+   "officialSite": "thebodyshop.com",
+   "portalHosts": [
+    "careers.thebodyshop.com"
+   ],
+   "ats": "SuccessFactors CSB",
+   "reportAction": "Remplacer la source ; confirmer traitement France",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Bucherer",
+   "reportPresence": "VENDOR_SANS_ADAPTATEUR",
+   "officialSite": "bucherer.com",
+   "portalHosts": [
+    "recruitingapp-2840.umantis.com",
+    "tourneau.hire.trakstar.com"
+   ],
+   "ats": "Umantis (EU) / Trakstar Hire (US)",
+   "reportAction": "Adaptateur Umantis à créer ; documenter parenté Rolex",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Saks Global",
+   "reportPresence": "présence à vérifier (backlog N1)",
+   "officialSite": "saksfifthavenue.com",
+   "portalHosts": [
+    "careers.saksglobal.com"
+   ],
+   "ats": "Phenom — tenant canvas SFAVUS",
+   "reportAction": "1 portail groupe couvre les 4 enseignes",
+   "verdict": "NEW_SOURCE_EXISTING_ACTOR",
+   "companies": [
+    {
+     "name": "SAKS & CO LLC",
+     "kind": "UNKNOWN",
+     "domain": "saksfifthavenue.com",
+     "active": 0
+    },
+    {
+     "name": "Saks Fifth Avenue",
+     "kind": "UNKNOWN",
+     "domain": "saksfifthavenue.com",
+     "active": 1
+    }
+   ],
+   "nearNames": [
+    "SAKS COM LLC",
+    "SAKS",
+    "SAKS COM"
+   ],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Manor",
+   "reportPresence": "NON_RESOLUE → résolu",
+   "officialSite": "manor.ch",
+   "portalHosts": [
+    "careers.manor.ch"
+   ],
+   "ats": "SuccessFactors — company=manorag",
+   "reportAction": "Adaptateur SUCCESSFACTORS existant",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Globus",
+   "reportPresence": "NON_RESOLUE → résolu",
+   "officialSite": "globus.ch",
+   "portalHosts": [
+    "jobs.globus.ch"
+   ],
+   "ats": "rexx systems (copyright dans le HTML)",
+   "reportAction": "Adaptateur rexx à créer",
+   "verdict": "ALREADY_COVERED",
+   "companies": [
+    {
+     "name": "Globus",
+     "kind": "UNKNOWN",
+     "domain": "globus.ch",
+     "active": 23
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [
+    "globus [ACTIVE] jobs.globus.ch"
+   ],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Coin",
+   "reportPresence": "NON_RESOLUE → résolu",
+   "officialSite": "coin.it",
+   "portalHosts": [
+    "coin.it"
+   ],
+   "ats": "Allibo (widget joblink.allibo.com/ats2/Widget)",
+   "reportAction": "Documenter le widget Allibo",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Groupe Bogart",
+   "reportPresence": "présence à vérifier (la ligne « bogart man » = autre société sud-africaine)",
+   "officialSite": "groupe-bogart.com",
+   "portalHosts": [
+    "bogart.talentfinder.be"
+   ],
+   "ats": "Talentfinder (division retail Belgique)",
+   "reportAction": "Créer la maison ; source BE ; France = candidature spontanée",
+   "verdict": "CONFIG_OR_ATTRIBUTION",
+   "companies": [],
+   "nearNames": [
+    "Groupe Courir",
+    "L'Oréal Groupe",
+    "Groupe Clarins",
+    "Le Bon Marché"
+   ],
+   "portalSources": [],
+   "actorSources": [
+    "groupe-chantelle [ACTIVE] groupechantelle-recrute.talent-soft.com",
+    "groupe-printemps [ACTIVE] printemps-career.talent-soft.com",
+    "dr-pierre-ricaud [ACTIVE] careers.groupe-rocher.com"
+   ]
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Lush",
+   "reportPresence": "A_VERIFIER_IDENTITE",
+   "officialSite": "lush.com",
+   "portalHosts": [
+    "job-boards.greenhouse.io"
+   ],
+   "ats": "Greenhouse — board lush",
+   "reportAction": "Valider l'identité ; chercher le canal France/Europe",
+   "verdict": "ALREADY_COVERED",
+   "companies": [
+    {
+     "name": "LUSH |",
+     "kind": "UNKNOWN",
+     "domain": "lush.com",
+     "active": 222
+    }
+   ],
+   "nearNames": [],
+   "portalSources": [
+    "lush [ACTIVE] job-boards.greenhouse.io"
+   ],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Kith",
+   "reportPresence": "A-TROUVER → résolu",
+   "officialSite": "kith.com",
+   "portalHosts": [
+    "kith.wd1.myworkdayjobs.com"
+   ],
+   "ats": "Workday — tenant kith",
+   "reportAction": "Adaptateur Workday existant",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Revolve",
+   "reportPresence": "A-TROUVER → résolu",
+   "officialSite": "revolve.com",
+   "portalHosts": [
+    "revolve.com"
+   ],
+   "ats": "ADP Workforce Now (cid 02835ad7-…)",
+   "reportAction": "Scraper board ADP (JS) ; FWRD couvert par cette source",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Beams",
+   "reportPresence": "A-TROUVER → résolu",
+   "officialSite": "beams.co.jp",
+   "portalHosts": [
+    "beams.co.jp"
+   ],
+   "ats": "Portail propre + mynavi corp88221",
+   "reportAction": "Scraper /recruit/",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "United Arrows",
+   "reportPresence": "A-TROUVER → résolu",
+   "officialSite": "united-arrows.co.jp",
+   "portalHosts": [
+    "recruit.united-arrows.co.jp"
+   ],
+   "ats": "Portail propre + recop.jp",
+   "reportAction": "Scraper le portail",
+   "verdict": "CONFIG_OR_ATTRIBUTION",
+   "companies": [],
+   "nearNames": [
+    "United Colors of Benetton",
+    "United States of Aritzia Inc."
+   ],
+   "portalSources": [],
+   "actorSources": [
+    "united-colors-of-benetton [ACTIVE] jobs.smartrecruiters.com"
+   ]
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "ABC-Mart",
+   "reportPresence": "A-TROUVER → résolu",
+   "officialSite": "abc-mart.net",
+   "portalHosts": [
+    "abc-mart-saiyou.net"
+   ],
+   "ats": "Portail propre + job finder /jobfind-pc/",
+   "reportAction": "Explorer /jobfind-pc/",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Mephisto",
+   "reportPresence": "A-TROUVER → résolu",
+   "officialSite": "mephisto.com",
+   "portalHosts": [
+    "mephisto.com"
+   ],
+   "ats": "Page Shopify propriétaire (offres réelles)",
+   "reportAction": "Scraper la page",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Le Tanneur",
+   "reportPresence": "A-TROUVER → résolu négativement",
+   "officialSite": "letanneur.com",
+   "portalHosts": [
+    "carrieres.letanneur.com"
+   ],
+   "ats": "FashionJobs/HelloWork",
+   "reportAction": "Retirer l'URL morte ; job boards",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [
+    "LE TANNEUR & CIE"
+   ],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Isetan Mitsukoshi",
+   "reportPresence": "NON_RESOLUE → portail trouvé",
+   "officialSite": "mistore.jp",
+   "portalHosts": [
+    "imhds.co.jp"
+   ],
+   "ats": "HTML groupe + mynavi ×4",
+   "reportAction": "Scraper ; clarifier périmètre groupe",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Takashimaya",
+   "reportPresence": "NON_RESOLUE → portail trouvé",
+   "officialSite": "takashimaya.co.jp",
+   "portalHosts": [
+    "takashimaya.co.jp"
+   ],
+   "ats": "Portail maison",
+   "reportAction": "Scraper corp/recruit",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Shinsegae",
+   "reportPresence": "NON_RESOLUE → portail trouvé",
+   "officialSite": "shinsegae.com",
+   "portalHosts": [
+    "job.shinsegae.com"
+   ],
+   "ats": "Portail groupe (JS coréen)",
+   "reportAction": "Scraper portail groupe",
+   "verdict": "INVESTIGATION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "Apparel Group",
+   "reportPresence": "NON_RESOLUE",
+   "officialSite": "apparelgroup.com",
+   "portalHosts": [
+    "apparelgroup.com"
+   ],
+   "ats": "Oracle Cloud HCM — tenant ediu.fa.em2.oraclecloud.com, site CX_1",
+   "reportAction": "Adaptateur ORACLE_HCM",
+   "verdict": "NEW_ACTOR",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  },
+  {
+   "section": "2. Nouvelles sources pour acteurs déjà référencés",
+   "actor": "J.M. Weston",
+   "reportPresence": "déjà référencé (sans ATS)",
+   "officialSite": "jmweston.com",
+   "portalHosts": [
+    "eu.jmweston.com"
+   ],
+   "ats": "Blog Shopify (offres réelles : vendeur CDI Paris, stages)",
+   "reportAction": "Mettre à jour la fiche : portail = /blogs/talents",
+   "verdict": "CONFIG_OR_ATTRIBUTION",
+   "companies": [],
+   "nearNames": [],
+   "portalSources": [],
+   "actorSources": []
+  }
+ ]
+}

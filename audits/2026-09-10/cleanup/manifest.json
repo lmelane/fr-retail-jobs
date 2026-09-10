@@ -403,7 +403,12 @@
       "from": "apps/aggregator/data/Catwalks_Global_Direct_Job_Portals_A-Z_2026-09-05.xlsx",
       "to": "audits/legacy-aggregator-data/Catwalks_Global_Direct_Job_Portals_A-Z_2026-09-05.xlsx",
       "sha256": "442c8228212447704c23fc917680141f0d8baf174b625433cd5dddff370629c7",
-      "bytes": 47204
+      "bytes": 47204,
+      "currentLocation": {
+        "archive": "backups/cleanup-20260910/root-cleanup/legacy-project-artifacts.zip",
+        "entry": "audits/legacy-aggregator-data/Catwalks_Global_Direct_Job_Portals_A-Z_2026-09-05.xlsx"
+      },
+      "status": "Subsequently archived during root cleanup; original move retained as history"
     },
     {
       "from": "apps/aggregator/data/validation.generiques.tsv",
@@ -451,7 +456,12 @@
       "from": "apps/aggregator/data/domaines_officiels_maisons.xlsx",
       "to": "audits/legacy-aggregator-data/domaines_officiels_maisons.xlsx",
       "sha256": "3c4538041f4daccaa437c5ab5193b42c31265147df7caf2a02457bfbfe31a64b",
-      "bytes": 44081
+      "bytes": 44081,
+      "currentLocation": {
+        "archive": "backups/cleanup-20260910/root-cleanup/legacy-project-artifacts.zip",
+        "entry": "audits/legacy-aggregator-data/domaines_officiels_maisons.xlsx"
+      },
+      "status": "Subsequently archived during root cleanup; original move retained as history"
     },
     {
       "from": "apps/aggregator/data/sources.unresolved.csv",
@@ -1367,8 +1377,8 @@
       }
     ],
     "privateRecoveryArchive": "backups/cleanup-20260910/root-cleanup/legacy-project-artifacts.zip",
-    "archiveSha256": "b6b132ff3ef5f55cf18ec79f389a107a79594cc5d217821773f3401219719470",
-    "archiveBytes": 3362174,
+    "archiveSha256": "07505699f64ce7ef6119aaf6f8fa2ecc8f7bfbbb342405fb9db1fe3ab22461f1",
+    "archiveBytes": 3458836,
     "removedOsNoise": [],
     "preserved": [
       ".env",
@@ -1386,6 +1396,47 @@
     "rootDirectoriesRemoved": [
       "Claude outputs",
       "fashion-atlas-maquettes"
+    ],
+    "archivedWorkbooks": [
+      {
+        "from": "audits/legacy-aggregator-data/Catwalks_Global_Direct_Job_Portals_A-Z_2026-09-05.xlsx",
+        "archiveEntry": "audits/legacy-aggregator-data/Catwalks_Global_Direct_Job_Portals_A-Z_2026-09-05.xlsx",
+        "sha256": "442c8228212447704c23fc917680141f0d8baf174b625433cd5dddff370629c7",
+        "bytes": 47204
+      },
+      {
+        "from": "audits/legacy-aggregator-data/domaines_officiels_maisons.xlsx",
+        "archiveEntry": "audits/legacy-aggregator-data/domaines_officiels_maisons.xlsx",
+        "sha256": "3c4538041f4daccaa437c5ab5193b42c31265147df7caf2a02457bfbfe31a64b",
+        "bytes": 44081
+      }
+    ],
+    "archivedDocumentationVersions": [
+      {
+        "from": "docs/architecture/production-foundations.md",
+        "archiveEntry": "documentation-before-update/docs/architecture/production-foundations.md",
+        "sha256": "04f6289cac40223df8c1b38ddb0db357a233af72588ce4a72e0e977818a71577"
+      },
+      {
+        "from": "docs/employer-identity.md",
+        "archiveEntry": "documentation-before-update/docs/employer-identity.md",
+        "sha256": "c5dfeb32f3475bce7667f0a647cb03af30dd15534b1676c7f22ce7e36da58b8b"
+      }
     ]
+  },
+  "documentationUpdate": {
+    "at": "2026-09-10T12:13:35.812364+00:00",
+    "codeRevision": "6ac43ec2e641518bca42b381eb36ab40f7cb679b",
+    "files": [
+      "docs/architecture/production-foundations.md",
+      "docs/employer-identity.md"
+    ],
+    "productionRechecked": false,
+    "checks": {
+      "relativeLinks": "PASS",
+      "referencedCommandPaths": "PASS",
+      "comparisonToCode": "Source lifecycle, validators, employer resolver, repair snapshots, worker startup, web readiness and current migration directory reviewed",
+      "applicationCodeChanged": false
+    }
   }
 }

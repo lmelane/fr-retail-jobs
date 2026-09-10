@@ -72,7 +72,12 @@ for key, s in sorted(sources.items()):
     run0 = runs.get(key)
     # No probe receipt for the current configuration: a production SourceRun taken after the configuration
     # was last updated is the receipt for that configuration (adapter flags, no per-posting quality counters).
-    if not receipt_for_current and run0 and run0.get('ranAt') and run0['ranAt'] >= (s.get('updatedAt') or '') and run0.get('complete') is not None:
+    # `Source.updatedAt` moves at every run (statistics are written on the row), so "run after the last update" almost never
+    # holds. A production run taken AFTER the certification of the CURRENT configuration (review hash = current hash) ran under
+    # that configuration by construction: it is the receipt for it (Tapestry after partitionFacet, Saks after brandFromLocationPrefix).
+    iv0 = s.get('identityVerdict') or {}
+    certified_at = (rev or {}).get('checkedAt') if iv0.get('certified') else None
+    if not receipt_for_current and run0 and run0.get('ranAt') and run0.get('complete') is not None and (run0['ranAt'] >= (s.get('updatedAt') or '') or (certified_at and run0['ranAt'] >= certified_at)):
         r = {'complete': run0.get('complete'), 'truncated': run0.get('truncated'), 'fetched': run0.get('fetched'), 'uniqueIds': run0.get('fetched'), 'declaredTotal': run0.get('declaredTotal'), 'rejectedRows': None,
              'enumeration': {'issues': ['PRODUCTION_RUN_RECEIPT'] + ([] if run0.get('complete') else ['ENUMERATION_NOT_PROVEN'])}, 'quality': None, 'revision': 'production-run', 'finishedAt': run0['ranAt'], 'productionRun': True}
         receipt_for_current = True

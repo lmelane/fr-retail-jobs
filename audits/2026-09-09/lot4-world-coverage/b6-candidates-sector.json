@@ -1,0 +1,501 @@
+[
+ {
+  "tenantKey": "workday:knitwellgroup/us_retail_jobs",
+  "type": "WORKDAY",
+  "postings": 2019,
+  "officialPage": "https://jobs.knitwellgroup.com/chicos-fas",
+  "portalHost": "knitwellgroup.wd1.myworkdayjobs.com",
+  "labels": [
+   "CHICO'S OUTLET",
+   "SOMA",
+   "CHICO'S",
+   "TALBOTS",
+   "jobs.knitwellgroup.com",
+   "jobs.chicos.com"
+  ],
+  "labelCount": 6,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "KnitWell Group : Chico's, Soma, White House Black Market, Talbots — prêt-à-porter et lingerie (knitwellgroup.com, jobs.knitwellgroup.com archivés)"
+ },
+ {
+  "tenantKey": "workday:vfc/vfc_careers",
+  "type": "WORKDAY",
+  "postings": 1267,
+  "officialPage": "https://www.vfcorporation.careers/emea-internship-program/",
+  "portalHost": "vfc.wd5.myworkdayjobs.com",
+  "labels": [
+   "EASTPAK",
+   "VF CORPORATION",
+   "KIPLING",
+   "NAPAPIJRI",
+   "careers.eastpak.eu",
+   "careers.napapijri.eu"
+  ],
+  "labelCount": 6,
+  "sectorVerdict": "IN_MULTI",
+  "sector": "FASHION",
+  "basis": "VF Corporation : Eastpak, Kipling, Napapijri, The North Face, Timberland, Vans, Dickies — habillement/chaussure/bagagerie ; portail MULTI_BRAND, attribution par marque à prouver par offre (libellés natifs)"
+ },
+ {
+  "tenantKey": "workday:galderma/external",
+  "type": "WORKDAY",
+  "postings": 355,
+  "officialPage": "https://www.galderma.com/careers",
+  "portalHost": "galderma.wd3.myworkdayjobs.com",
+  "labels": [
+   "GALDERMA"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "OUT",
+  "sector": "DERMATOLOGY_PHARMA",
+  "basis": "Galderma : dermatologie médicale et esthétique (Cetaphil, Restylane, injectables) — pharma/dispositifs, hors périmètre beauté grand public ; à trancher si Loïc inclut la dermo-cosmétique"
+ },
+ {
+  "tenantKey": "workday:fastretailing/retail_us_uniqlo",
+  "type": "WORKDAY",
+  "postings": 337,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "greenhouse:onrunning",
+  "type": "GREENHOUSE",
+  "postings": 312,
+  "officialPage": "https://culture.on.com/jobs/8168899/",
+  "portalHost": "boards.greenhouse.io",
+  "labels": [
+   "On",
+   "ON RUNNING",
+   "culture.on.com"
+  ],
+  "labelCount": 3,
+  "sectorVerdict": "IN",
+  "sector": "SPORTSWEAR_FOOTWEAR",
+  "basis": "On : chaussures et vêtements de running (on.com) — sportswear, même périmètre que Nike/adidas déjà au catalogue"
+ },
+ {
+  "tenantKey": "lever:arcteryx.com",
+  "type": "LEVER",
+  "postings": 298,
+  "officialPage": "https://arcteryx.com/fr/fr/careers/retail-opportunities",
+  "portalHost": "jobs.lever.co",
+  "labels": [
+   "ARC'TERYX"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN",
+  "sector": "OUTDOOR_APPAREL",
+  "basis": "Arc'teryx : vêtements et équipement outdoor premium (arcteryx.com/careers archivé)"
+ },
+ {
+  "tenantKey": "flatchr:armandthiery.flatchr.io/fr/company/armandthiery",
+  "type": "FLATCHR",
+  "postings": 203,
+  "officialPage": "https://www.armandthiery.fr/",
+  "portalHost": "armandthiery.flatchr.io",
+  "labels": [
+   "ARMAND THIERY"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Armand Thiery : prêt-à-porter homme/femme, 200 offres France (armandthiery.fr archivé)"
+ },
+ {
+  "tenantKey": "workday:knitwellgroup/us_corporate_jobs",
+  "type": "WORKDAY",
+  "postings": 94,
+  "officialPage": "https://jobs.knitwellgroup.com/chicos-fas",
+  "portalHost": "knitwellgroup.wd1.myworkdayjobs.com",
+  "labels": [
+   "CHICO'S OUTLET",
+   "SOMA",
+   "CHICO'S",
+   "TALBOTS",
+   "jobs.knitwellgroup.com",
+   "jobs.chicos.com"
+  ],
+  "labelCount": 6,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "KnitWell Group : Chico's, Soma, White House Black Market, Talbots — prêt-à-porter et lingerie (knitwellgroup.com, jobs.knitwellgroup.com archivés)"
+ },
+ {
+  "tenantKey": "digitalrecruiters:recrutement.ks-groupe.com",
+  "type": "DIGITALRECRUITERS",
+  "postings": 61,
+  "officialPage": "https://ks-groupe.com/",
+  "portalHost": "recrutement.ks-groupe.com",
+  "labels": [
+   "KSI MODE",
+   "KSI RETAIL"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "REVIEW",
+  "sector": "FASHION_RETAIL_FRANCHISE",
+  "basis": "KS Groupe (KSI Mode, KSI Retail) : distributeur multimarque/franchisé de prêt-à-porter — à confirmer sur ks-groupe.com (enseignes exploitées)"
+ },
+ {
+  "tenantKey": "workday:luxexperience/luxexperience_careers",
+  "type": "WORKDAY",
+  "postings": 55,
+  "officialPage": "https://career.luxexperience.com/open-positions/job-detail/customer-care-specialist-english-f-m-d-mytheresa-r-17299-1",
+  "portalHost": "luxexperience.wd103.myworkdayjobs.com",
+  "labels": [
+   "LUXEXPERIENCE"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN_DUP",
+  "sector": "LUXURY_ECOMMERCE",
+  "basis": "Luxexperience (Mytheresa + YNAP) : déjà couvert par la source YNAP (décision Loïc D35 « YNAP seul, pas Mytheresa ») — doublon de route probable, à réconcilier avant toute activation"
+ },
+ {
+  "tenantKey": "successfactors:jobs.boardriders.eu",
+  "type": "SUCCESSFACTORS",
+  "postings": 44,
+  "officialPage": "https://www.boardriders.com/fr-fr/carriere-corporate/",
+  "portalHost": "jobs.boardriders.eu",
+  "labels": [
+   "BOARDRIDERS",
+   "www.boardriders.com",
+   "jobs.boardriders.eu"
+  ],
+  "labelCount": 3,
+  "sectorVerdict": "IN",
+  "sector": "SURF_APPAREL",
+  "basis": "Boardriders : Quiksilver, Billabong, Roxy, DC Shoes — habillement/sportswear (boardriders.com/carriere-corporate archivé)"
+ },
+ {
+  "tenantKey": "teamtailor:soeur-1711354805.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 39,
+  "officialPage": "https://soeur.fr/",
+  "portalHost": "soeur-1711354805.teamtailor.com",
+  "labels": [
+   "SOEUR",
+   "soeur-1711354805.teamtailor.com"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "IN",
+  "sector": "FASHION",
+  "basis": "Soeur : prêt-à-porter féminin (soeur.fr archivé)"
+ },
+ {
+  "tenantKey": "digitalrecruiters:careers.am-vintage.com",
+  "type": "DIGITALRECRUITERS",
+  "postings": 37,
+  "officialPage": "https://americanvintage-store.com/",
+  "portalHost": "careers.am-vintage.com",
+  "labels": [
+   "AMERICAN VINTAGE"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN",
+  "sector": "FASHION",
+  "basis": "American Vintage : prêt-à-porter (americanvintage-store.com archivé)"
+ },
+ {
+  "tenantKey": "workday:fastretailing/store_staff_au_uniqlo",
+  "type": "WORKDAY",
+  "postings": 33,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "successfactors:www.careers.laprairiegroup.ch",
+  "type": "SUCCESSFACTORS",
+  "postings": 27,
+  "officialPage": "https://www.laprairie.com/fr-fr/",
+  "portalHost": "www.careers.laprairiegroup.ch",
+  "labels": [
+   "LA PRAIRIE GROUP",
+   "www.careers.laprairiegroup.ch"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "IN",
+  "sector": "BEAUTY",
+  "basis": "La Prairie Group : cosmétique de luxe (laprairie.com archivé) — beauté, dans le périmètre"
+ },
+ {
+  "tenantKey": "teamtailor:lafeemaraboutee.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 21,
+  "officialPage": "https://lafeemaraboutee.fr/",
+  "portalHost": "lafeemaraboutee.teamtailor.com",
+  "labels": [
+   "LA FEE MARABOUTEE"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN",
+  "sector": "FASHION",
+  "basis": "La Fée Maraboutée : prêt-à-porter (lafeemaraboutee.fr archivé)"
+ },
+ {
+  "tenantKey": "workday:knitwellgroup/us_distribution_center",
+  "type": "WORKDAY",
+  "postings": 18,
+  "officialPage": "https://jobs.knitwellgroup.com/chicos-fas",
+  "portalHost": "knitwellgroup.wd1.myworkdayjobs.com",
+  "labels": [
+   "CHICO'S OUTLET",
+   "SOMA",
+   "CHICO'S",
+   "TALBOTS",
+   "jobs.knitwellgroup.com",
+   "jobs.chicos.com"
+  ],
+  "labelCount": 6,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "KnitWell Group : Chico's, Soma, White House Black Market, Talbots — prêt-à-porter et lingerie (knitwellgroup.com, jobs.knitwellgroup.com archivés)"
+ },
+ {
+  "tenantKey": "workday:fastretailing/eu_theory",
+  "type": "WORKDAY",
+  "postings": 18,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_us_uniqlo",
+  "type": "WORKDAY",
+  "postings": 14,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "greenhouse:shinolaretail",
+  "type": "GREENHOUSE",
+  "postings": 13,
+  "officialPage": "https://www.shinola.com/pages/careers",
+  "portalHost": "job-boards.greenhouse.io",
+  "labels": [
+   "SHINOLA"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN",
+  "sector": "WATCHES_LEATHER",
+  "basis": "Shinola : montres, maroquinerie (shinola.com archivé)"
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarter_roles_vn_uniqlo",
+  "type": "WORKDAY",
+  "postings": 12,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "teamtailor:yseparis.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "postings": 11,
+  "officialPage": "https://yse-paris.com/fr-fr",
+  "portalHost": "yseparis.teamtailor.com",
+  "labels": [
+   "YSÉ",
+   "yseparis.teamtailor.com"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "IN",
+  "sector": "LINGERIE",
+  "basis": "Ysé : lingerie (yse-paris.com archivé)"
+ },
+ {
+  "tenantKey": "talentsoft:lagardere-recrute-travelretailde.talent-soft.com",
+  "type": "TALENTSOFT",
+  "postings": 10,
+  "officialPage": "https://www.lagardere-tr.com/en/join-us/join-us",
+  "portalHost": "lagardere-recrute-travelretailde.talent-soft.com",
+  "labels": [
+   "LAGARDÈRE TRAVEL RETAIL FRANCE",
+   "www.lagardere-tr.nl"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "REVIEW",
+  "sector": "TRAVEL_RETAIL",
+  "basis": "Lagardère Travel Retail : commerce de voyage (duty free, mode et beauté en aéroport, mais aussi presse et restauration) — périmètre par offre à qualifier, comme Aptar"
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_my_uniqlo",
+  "type": "WORKDAY",
+  "postings": 7,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_hkm_uniqlo",
+  "type": "WORKDAY",
+  "postings": 6,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_id_uniqlo",
+  "type": "WORKDAY",
+  "postings": 6,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "workday:fastretailing/retail_us_gu",
+  "type": "WORKDAY",
+  "postings": 6,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "workday:fastretailing/retail_us_theory",
+  "type": "WORKDAY",
+  "postings": 6,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_ph_uniqlo",
+  "type": "WORKDAY",
+  "postings": 3,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "workday:fastretailing/graduates_au_uniqlo",
+  "type": "WORKDAY",
+  "postings": 2,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_us_gu",
+  "type": "WORKDAY",
+  "postings": 2,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_hk_gu",
+  "type": "WORKDAY",
+  "postings": 2,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO",
+   "fastretailing.wd3.myworkdayjobs.com"
+  ],
+  "labelCount": 2,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ },
+ {
+  "tenantKey": "workday:fastretailing/headquarters_th_uniqlo",
+  "type": "WORKDAY",
+  "postings": 2,
+  "officialPage": "https://www.fastretailing.com/employment/en/",
+  "portalHost": "fastretailing.wd3.myworkdayjobs.com",
+  "labels": [
+   "UNIQLO"
+  ],
+  "labelCount": 1,
+  "sectorVerdict": "IN",
+  "sector": "FASHION_RETAIL",
+  "basis": "Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant"
+ }
+]
