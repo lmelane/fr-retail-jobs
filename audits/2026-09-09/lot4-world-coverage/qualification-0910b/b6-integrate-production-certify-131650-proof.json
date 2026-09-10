@@ -1,0 +1,175 @@
+{
+  "at": "2026-09-10T13:16:50.707Z",
+  "environment": "production",
+  "step": "certify",
+  "proofs": [
+    {
+      "key": "armand-thiery-flatchr",
+      "step": "certify",
+      "result": {
+        "written": {
+          "sourceKey": "armand-thiery-flatchr",
+          "sourceHash": "a2180437fd506bd870918321a50df215a9ba5f3fce13142a8578dc74cabeb3d8",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "armand-thiery-flatchr",
+        "status": "DRAFT",
+        "tenantKey": "flatchr:armandthiery.flatchr.io/fr/company/armandthiery",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:25.757Z",
+        "verifiedJobCount": 198
+      }
+    },
+    {
+      "key": "on-running",
+      "step": "certify",
+      "result": {
+        "written": {
+          "sourceKey": "on-running",
+          "sourceHash": "ede2740cc1e381979813a508dbf5c259d5322c73d079776cf236e641c344672f",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "on-running",
+        "status": "DRAFT",
+        "tenantKey": "greenhouse:onrunning",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:27.488Z",
+        "verifiedJobCount": 309
+      }
+    },
+    {
+      "key": "boardriders",
+      "step": "certify",
+      "result": {
+        "written": {
+          "sourceKey": "boardriders",
+          "sourceHash": "2e4f2f084e73fdd8096d520f9a709d8ef071e1e4bef07e8a12451eb13b51266c",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "boardriders",
+        "status": "DRAFT",
+        "tenantKey": "successfactors:jobs.boardriders.eu",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:28.748Z",
+        "verifiedJobCount": 44
+      }
+    },
+    {
+      "key": "american-vintage-dr",
+      "step": "certify",
+      "result": {
+        "written": {
+          "sourceKey": "american-vintage-dr",
+          "sourceHash": "17a7ec7e59e4eb4d5b03db1af002098b517dd47667e1b1ebd04bf6ba0af68838",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "american-vintage-dr",
+        "status": "DRAFT",
+        "tenantKey": "digitalrecruiters:careers.am-vintage.com",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:34.146Z",
+        "verifiedJobCount": 34
+      }
+    },
+    {
+      "key": "yse-paris",
+      "step": "certify",
+      "result": {
+        "written": {
+          "sourceKey": "yse-paris",
+          "sourceHash": "66bc52dfae772299c0c826363aa157bafd90c04e7398857549346ec4edec9827",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "yse-paris",
+        "status": "DRAFT",
+        "tenantKey": "teamtailor:yseparis.teamtailor.com",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:39.352Z",
+        "verifiedJobCount": 11
+      }
+    },
+    {
+      "key": "la-fee-maraboutee",
+      "step": "certify",
+      "result": {
+        "written": {
+          "sourceKey": "la-fee-maraboutee",
+          "sourceHash": "c340d8b2a6d67075092b0bea42631cfc92c5ddaee09df7d47f67b4971e4d009f",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "la-fee-maraboutee",
+        "status": "DRAFT",
+        "tenantKey": "teamtailor:lafeemaraboutee.teamtailor.com",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:40.828Z",
+        "verifiedJobCount": 19
+      }
+    },
+    {
+      "key": "shinola-retail",
+      "step": "certify",
+      "result": {
+        "written": {
+          "sourceKey": "shinola-retail",
+          "sourceHash": "7f4bd651ec58afc6322d91b77f6507e87765c699b572cf2150364408a2099882",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "shinola-retail",
+        "status": "DRAFT",
+        "tenantKey": "greenhouse:shinolaretail",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:42.170Z",
+        "verifiedJobCount": 14
+      }
+    },
+    {
+      "key": "la-prairie",
+      "step": "certify",
+      "result": {
+        "written": {
+          "sourceKey": "la-prairie",
+          "sourceHash": "6006b30ee9be4b74b2d6edd8ce0a439c9da54ae5e2fbfba23da03ed092c63f7a",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "la-prairie",
+        "status": "DRAFT",
+        "tenantKey": "successfactors:www.careers.laprairiegroup.ch",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:43.297Z",
+        "verifiedJobCount": 27
+      }
+    }
+  ]
+}

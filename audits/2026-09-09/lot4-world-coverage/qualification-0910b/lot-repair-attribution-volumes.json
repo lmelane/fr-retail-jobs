@@ -1,0 +1,111 @@
+{
+ "at": "2026-09-10T13:49:48.571Z",
+ "lot": "repair-attribution",
+ "since": "2026-09-10T13:44:45.000Z",
+ "keys": [
+  "yse-paris",
+  "on-running",
+  "la-prairie"
+ ],
+ "activeTotal": 76426,
+ "sources": [
+  {
+   "key": "yse-paris",
+   "maison": "Ysé",
+   "status": "ACTIVE",
+   "run": null,
+   "collected": null,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 11,
+   "createdSince": 0,
+   "reattestedSince": 0,
+   "inactiveRepresentations": 0,
+   "published": 11,
+   "companies": [
+    {
+     "name": "Ysé",
+     "n": 11,
+     "key": "resolved:YSE"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {},
+   "completeness": "NO_RUN"
+  },
+  {
+   "key": "on-running",
+   "maison": "On",
+   "status": "ACTIVE",
+   "run": null,
+   "collected": null,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 309,
+   "createdSince": 0,
+   "reattestedSince": 0,
+   "inactiveRepresentations": 0,
+   "published": 309,
+   "companies": [
+    {
+     "name": "On",
+     "n": 309,
+     "key": "resolved:ON"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {},
+   "completeness": "NO_RUN"
+  },
+  {
+   "key": "la-prairie",
+   "maison": "La Prairie",
+   "status": "ACTIVE",
+   "run": null,
+   "collected": null,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 27,
+   "createdSince": 0,
+   "reattestedSince": 0,
+   "inactiveRepresentations": 0,
+   "published": 27,
+   "companies": [
+    {
+     "name": "La Prairie",
+     "n": 27,
+     "key": "resolved:LA_PRAIRIE"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {},
+   "completeness": "NO_RUN"
+  }
+ ],
+ "front": [
+  {
+   "company": "La Prairie",
+   "dbActive": 27,
+   "apiTotal": 27,
+   "parity": true
+  },
+  {
+   "company": "On",
+   "dbActive": 309,
+   "apiTotal": 309,
+   "parity": true
+  },
+  {
+   "company": "Ysé",
+   "dbActive": 23,
+   "apiTotal": 23,
+   "parity": true
+  }
+ ]
+}

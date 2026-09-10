@@ -1,0 +1,403 @@
+{
+ "at": "2026-09-10T13:39:11.060Z",
+ "lot": "L12-b6-retro",
+ "since": "2026-09-10T13:00:00.000Z",
+ "keys": [
+  "armand-thiery-flatchr",
+  "on-running",
+  "boardriders",
+  "american-vintage-dr",
+  "yse-paris",
+  "la-fee-maraboutee",
+  "shinola-retail",
+  "la-prairie",
+  "arcteryx"
+ ],
+ "activeTotal": 76426,
+ "sources": [
+  {
+   "key": "armand-thiery-flatchr",
+   "maison": "Armand Thiery",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T13:21:55.633Z",
+    "fetched": 198,
+    "accepted": 198,
+    "declaredTotal": 198,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 198,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 198,
+   "createdSince": 198,
+   "reattestedSince": 198,
+   "inactiveRepresentations": 0,
+   "published": 198,
+   "companies": [
+    {
+     "name": "Armand Thiery",
+     "n": 198,
+     "key": "resolved:ARMAND_THIERY"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 198
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "on-running",
+   "maison": "On",
+   "status": "ACTIVE",
+   "run": {
+    "status": "DEGRADED",
+    "at": "2026-09-10T13:22:05.979Z",
+    "fetched": 309,
+    "accepted": 309,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 309,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 309,
+   "createdSince": 309,
+   "reattestedSince": 309,
+   "inactiveRepresentations": 0,
+   "published": 309,
+   "companies": [
+    {
+     "name": "On",
+     "n": 309,
+     "key": "resolved:SOURCE_447ff2da7caf1f92cf077783fc6575bdb1527b5562fa0b5f06b73a5d45cfb44f"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "LEGACY_UNREVIEWED": 309
+   },
+   "completeness": "COMPLETE_FLAG_ONLY (no total declared by the publisher: one document or an exhausted pagination)"
+  },
+  {
+   "key": "boardriders",
+   "maison": "Boardriders",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T13:21:52.016Z",
+    "fetched": 44,
+    "accepted": 44,
+    "declaredTotal": 44,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 44,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 44,
+   "createdSince": 44,
+   "reattestedSince": 44,
+   "inactiveRepresentations": 0,
+   "published": 44,
+   "companies": [
+    {
+     "name": "Boardriders",
+     "n": 44,
+     "key": "resolved:BOARDRIDERS"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 44
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "american-vintage-dr",
+   "maison": "American Vintage",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T13:21:51.887Z",
+    "fetched": 34,
+    "accepted": 34,
+    "declaredTotal": 34,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 34,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 34,
+   "createdSince": 34,
+   "reattestedSince": 34,
+   "inactiveRepresentations": 0,
+   "published": 34,
+   "companies": [
+    {
+     "name": "American Vintage",
+     "n": 34,
+     "key": "resolved:AMERICAN_VINTAGE"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 34
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "yse-paris",
+   "maison": "Ysé",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T13:21:45.223Z",
+    "fetched": 11,
+    "accepted": 11,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 11,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 11,
+   "createdSince": 11,
+   "reattestedSince": 11,
+   "inactiveRepresentations": 0,
+   "published": 11,
+   "companies": [
+    {
+     "name": "L'IMPERTINENTE - Ysé",
+     "n": 11,
+     "key": "resolved:SOURCE_3c4722028bc4d2fac874939a346841e69dde3b8298e0faacbfc85b83084ea615"
+    }
+   ],
+   "labelNotMaison": [
+    "L'IMPERTINENTE - Ysé (11, source-scoped key)"
+   ],
+   "identityRules": {
+    "LEGACY_UNREVIEWED": 11
+   },
+   "completeness": "COMPLETE_FLAG_ONLY (no total declared by the publisher: one document or an exhausted pagination)"
+  },
+  {
+   "key": "la-fee-maraboutee",
+   "maison": "La Fée Maraboutée",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T13:21:45.584Z",
+    "fetched": 19,
+    "accepted": 19,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 19,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 19,
+   "createdSince": 19,
+   "reattestedSince": 19,
+   "inactiveRepresentations": 0,
+   "published": 19,
+   "companies": [
+    {
+     "name": "LA FEE MARABOUTEE",
+     "n": 19,
+     "key": "resolved:LA_FEE_MARABOUTEE"
+    }
+   ],
+   "labelNotMaison": [
+    "LA FEE MARABOUTEE (19)"
+   ],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 19
+   },
+   "completeness": "COMPLETE_FLAG_ONLY (no total declared by the publisher: one document or an exhausted pagination)"
+  },
+  {
+   "key": "shinola-retail",
+   "maison": "Shinola",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T13:21:45.125Z",
+    "fetched": 14,
+    "accepted": 14,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 14,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 14,
+   "createdSince": 14,
+   "reattestedSince": 14,
+   "inactiveRepresentations": 0,
+   "published": 14,
+   "companies": [
+    {
+     "name": "Shinola",
+     "n": 14,
+     "key": "resolved:SHINOLA"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 14
+   },
+   "completeness": "COMPLETE_FLAG_ONLY (no total declared by the publisher: one document or an exhausted pagination)"
+  },
+  {
+   "key": "la-prairie",
+   "maison": "La Prairie",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T13:21:48.543Z",
+    "fetched": 27,
+    "accepted": 27,
+    "declaredTotal": 27,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 27,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 27,
+   "createdSince": 27,
+   "reattestedSince": 27,
+   "inactiveRepresentations": 0,
+   "published": 27,
+   "companies": [
+    {
+     "name": "La Prairie",
+     "n": 27,
+     "key": "resolved:SOURCE_26fb5371c78e25b3ac42ed63b93abef5c3e407d01c0d03b496c066bf9b96fb5c"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "LEGACY_UNREVIEWED": 27
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "arcteryx",
+   "maison": "Arc'teryx",
+   "status": "ACTIVE",
+   "run": {
+    "status": "OK",
+    "at": "2026-09-10T13:22:07.056Z",
+    "fetched": 299,
+    "accepted": 299,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 299,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 299,
+   "createdSince": 299,
+   "reattestedSince": 299,
+   "inactiveRepresentations": 0,
+   "published": 299,
+   "companies": [
+    {
+     "name": "ARC'TERYX",
+     "n": 299,
+     "key": "resolved:ARC_TERYX"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 299
+   },
+   "completeness": "COMPLETE_FLAG_ONLY (no total declared by the publisher: one document or an exhausted pagination)"
+  }
+ ],
+ "front": [
+  {
+   "company": "American Vintage",
+   "dbActive": 41,
+   "apiTotal": 41,
+   "parity": true
+  },
+  {
+   "company": "ARC'TERYX",
+   "dbActive": 303,
+   "apiTotal": 303,
+   "parity": true
+  },
+  {
+   "company": "Armand Thiery",
+   "dbActive": 200,
+   "apiTotal": 200,
+   "parity": true
+  },
+  {
+   "company": "Boardriders",
+   "dbActive": 86,
+   "apiTotal": 86,
+   "parity": true
+  },
+  {
+   "company": "LA FEE MARABOUTEE",
+   "dbActive": 19,
+   "apiTotal": 19,
+   "parity": true
+  },
+  {
+   "company": "La Prairie",
+   "dbActive": 27,
+   "apiTotal": 27,
+   "parity": true
+  },
+  {
+   "company": "On",
+   "dbActive": 309,
+   "apiTotal": 309,
+   "parity": true
+  },
+  {
+   "company": "Shinola",
+   "dbActive": 23,
+   "apiTotal": 23,
+   "parity": true
+  },
+  {
+   "company": "L'IMPERTINENTE - Ysé",
+   "dbActive": 11,
+   "apiTotal": 11,
+   "parity": true
+  }
+ ]
+}

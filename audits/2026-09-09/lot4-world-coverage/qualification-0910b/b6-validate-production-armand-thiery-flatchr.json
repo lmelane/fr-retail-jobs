@@ -1,0 +1,50 @@
+{
+ "key": "armand-thiery-flatchr",
+ "status": "DRAFT",
+ "kind": "flatchr",
+ "ats": "FLATCHR",
+ "request": {
+  "origin": "https://armandthiery.flatchr.io",
+  "path": "/fr/company/armandthiery/"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T13:16:25.757Z",
+ "robotsPresent": true,
+ "fetched": 198,
+ "parsed": 198,
+ "declaredTotal": 198,
+ "complete": true,
+ "truncated": false,
+ "enumeration": null,
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  [
+   "Armand Thiery",
+   198
+  ]
+ ],
+ "countries": [
+  [
+   "France",
+   195
+  ],
+  [
+   "Monaco",
+   2
+  ],
+  [
+   "Belgique",
+   1
+  ]
+ ],
+ "sampleTitles": [
+  "Vendeur H/F CDI — RN, N 3, Centre Commercial Carrefour, 77410 Claye-Souilly, France",
+  "Vendeur H/F CDD — 119 Rue Sainte-Catherine, 33000 Bordeaux, France",
+  "Vendeur/euse Edji CDD — CCommercial Mérignac Soleil, 17 Av. de la Somme, 33700 Mérignac, France",
+  "Vendeur H/F CDI — 20 All. des Fleurs, 01100 Arbent, France",
+  "Vendeur H/F CDD — Rue du 18 Juin, 17138 Puilboreau, France"
+ ],
+ "seconds": 1,
+ "written": true
+}

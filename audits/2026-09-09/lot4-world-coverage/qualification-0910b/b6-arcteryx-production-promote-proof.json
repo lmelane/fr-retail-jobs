@@ -1,0 +1,21 @@
+{
+  "at": "2026-09-10T13:02:03.152Z",
+  "environment": "production",
+  "step": "promote",
+  "result": {
+    "key": "arcteryx",
+    "from": "DRAFT",
+    "to": "ACTIVE"
+  },
+  "after": {
+    "key": "arcteryx",
+    "status": "ACTIVE",
+    "tenantKey": "lever:arcteryx.com",
+    "robotsVerdict": "ALLOWED",
+    "robotsCheckedAt": "2026-09-10T13:01:54.387Z",
+    "verifiedJobCount": 299,
+    "config": {
+      "site": "arcteryx.com"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+ "key": "shinola-retail",
+ "status": "DRAFT",
+ "kind": "greenhouse",
+ "ats": "GREENHOUSE",
+ "request": {
+  "origin": "https://boards-api.greenhouse.io",
+  "path": "/v1/boards/shinolaretail/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T13:16:42.170Z",
+ "robotsPresent": true,
+ "fetched": 14,
+ "parsed": 14,
+ "declaredTotal": null,
+ "complete": true,
+ "truncated": false,
+ "enumeration": null,
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  [
+   "(catalogue label)",
+   14
+  ]
+ ],
+ "countries": [
+  [
+   "(none)",
+   14
+  ]
+ ],
+ "sampleTitles": [
+  "Shinola Barista - Canfield Store, Detroit — Detroit, MI",
+  "Shinola Retail Assistant Store Manager - Ann Arbor — Ann Arbor, MI",
+  "Shinola Retail Key Holder - Great Lakes Crossing Outlets — Auburn Hills, MI",
+  "Shinola Retail Key Holder - San Francisco — San Francisco, CA",
+  "Shinola Retail Key Holder - Tysons Corner - PT — Tysons, VA"
+ ],
+ "seconds": 0,
+ "written": true
+}

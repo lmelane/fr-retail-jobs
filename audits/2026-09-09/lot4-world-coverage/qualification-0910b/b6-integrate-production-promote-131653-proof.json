@@ -1,0 +1,143 @@
+{
+  "at": "2026-09-10T13:16:53.335Z",
+  "environment": "production",
+  "step": "promote",
+  "proofs": [
+    {
+      "key": "armand-thiery-flatchr",
+      "step": "promote",
+      "result": {
+        "key": "armand-thiery-flatchr",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "armand-thiery-flatchr",
+        "status": "ACTIVE",
+        "tenantKey": "flatchr:armandthiery.flatchr.io/fr/company/armandthiery",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:25.757Z",
+        "verifiedJobCount": 198
+      }
+    },
+    {
+      "key": "on-running",
+      "step": "promote",
+      "result": {
+        "key": "on-running",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "on-running",
+        "status": "ACTIVE",
+        "tenantKey": "greenhouse:onrunning",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:27.488Z",
+        "verifiedJobCount": 309
+      }
+    },
+    {
+      "key": "boardriders",
+      "step": "promote",
+      "result": {
+        "key": "boardriders",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "boardriders",
+        "status": "ACTIVE",
+        "tenantKey": "successfactors:jobs.boardriders.eu",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:28.748Z",
+        "verifiedJobCount": 44
+      }
+    },
+    {
+      "key": "american-vintage-dr",
+      "step": "promote",
+      "result": {
+        "key": "american-vintage-dr",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "american-vintage-dr",
+        "status": "ACTIVE",
+        "tenantKey": "digitalrecruiters:careers.am-vintage.com",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:34.146Z",
+        "verifiedJobCount": 34
+      }
+    },
+    {
+      "key": "yse-paris",
+      "step": "promote",
+      "result": {
+        "key": "yse-paris",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "yse-paris",
+        "status": "ACTIVE",
+        "tenantKey": "teamtailor:yseparis.teamtailor.com",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:39.352Z",
+        "verifiedJobCount": 11
+      }
+    },
+    {
+      "key": "la-fee-maraboutee",
+      "step": "promote",
+      "result": {
+        "key": "la-fee-maraboutee",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "la-fee-maraboutee",
+        "status": "ACTIVE",
+        "tenantKey": "teamtailor:lafeemaraboutee.teamtailor.com",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:40.828Z",
+        "verifiedJobCount": 19
+      }
+    },
+    {
+      "key": "shinola-retail",
+      "step": "promote",
+      "result": {
+        "key": "shinola-retail",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "shinola-retail",
+        "status": "ACTIVE",
+        "tenantKey": "greenhouse:shinolaretail",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:42.170Z",
+        "verifiedJobCount": 14
+      }
+    },
+    {
+      "key": "la-prairie",
+      "step": "promote",
+      "result": {
+        "key": "la-prairie",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "la-prairie",
+        "status": "ACTIVE",
+        "tenantKey": "successfactors:www.careers.laprairiegroup.ch",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T13:16:43.297Z",
+        "verifiedJobCount": 27
+      }
+    }
+  ]
+}

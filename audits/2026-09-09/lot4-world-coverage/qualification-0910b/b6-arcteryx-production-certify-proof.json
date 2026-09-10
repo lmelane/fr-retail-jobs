@@ -1,0 +1,25 @@
+{
+  "at": "2026-09-10T13:02:02.019Z",
+  "environment": "production",
+  "step": "certify",
+  "result": {
+    "written": {
+      "sourceKey": "arcteryx",
+      "sourceHash": "193246f16616635f09697d51f9148ad017dd34434537494f8e7faab1f51eb1df",
+      "verdict": "VERIFIED",
+      "written": 1
+    },
+    "scope": "SINGLE_BRAND"
+  },
+  "after": {
+    "key": "arcteryx",
+    "status": "DRAFT",
+    "tenantKey": "lever:arcteryx.com",
+    "robotsVerdict": "ALLOWED",
+    "robotsCheckedAt": "2026-09-10T13:01:54.387Z",
+    "verifiedJobCount": 299,
+    "config": {
+      "site": "arcteryx.com"
+    }
+  }
+}

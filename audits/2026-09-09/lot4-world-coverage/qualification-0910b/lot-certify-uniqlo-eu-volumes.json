@@ -1,0 +1,324 @@
+{
+ "at": "2026-09-10T13:55:34.611Z",
+ "lot": "certify-uniqlo-eu",
+ "since": "2026-09-01T00:00:00.000Z",
+ "keys": [
+  "uniqlo-stores",
+  "uniqlo-headquarters",
+  "uniqlo-graduates"
+ ],
+ "activeTotal": 76426,
+ "sources": [
+  {
+   "key": "uniqlo-stores",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "OK",
+    "at": "2026-09-08T22:07:00.715Z",
+    "fetched": 107,
+    "accepted": 107,
+    "declaredTotal": 107,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 107,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 109,
+   "createdSince": 109,
+   "reattestedSince": 109,
+   "inactiveRepresentations": 8,
+   "published": 109,
+   "companies": [
+    {
+     "name": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+     "n": 33,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_FRENCH_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+     "n": 27,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_GERMAN_BRANCH"
+    },
+    {
+     "name": "UNIQLO",
+     "n": 20,
+     "key": "resolved:UNIQLO"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+     "n": 17,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_SPANISH_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED ITALIAN BRANCH",
+     "n": 4,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_ITALIAN_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED BELGIAN BRANCH",
+     "n": 3,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_BELGIAN_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED DENMARK BRANCH",
+     "n": 2,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_DENMARK_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_NETHERLANDS_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED POLISH BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_POLISH_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED SWEDISH BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_SWEDISH_BRANCH"
+    }
+   ],
+   "labelNotMaison": [
+    "UNIQLO EUROPE LIMITED FRENCH BRANCH (33)",
+    "UNIQLO EUROPE LIMITED GERMAN BRANCH (27)",
+    "UNIQLO EUROPE LIMITED SPANISH BRANCH (17)",
+    "UNIQLO EUROPE LIMITED ITALIAN BRANCH (4)",
+    "UNIQLO EUROPE LIMITED BELGIAN BRANCH (3)",
+    "UNIQLO EUROPE LIMITED DENMARK BRANCH (2)",
+    "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH (1)",
+    "UNIQLO EUROPE LIMITED POLISH BRANCH (1)",
+    "UNIQLO EUROPE LIMITED SWEDISH BRANCH (1)"
+   ],
+   "identityRules": {},
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "uniqlo-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "OK",
+    "at": "2026-09-08T22:04:27.709Z",
+    "fetched": 22,
+    "accepted": 22,
+    "declaredTotal": 22,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 22,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 22,
+   "createdSince": 22,
+   "reattestedSince": 22,
+   "inactiveRepresentations": 2,
+   "published": 22,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 11,
+     "key": "resolved:UNIQLO"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+     "n": 7,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_FRENCH_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+     "n": 2,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_GERMAN_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED DENMARK BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_DENMARK_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_SPANISH_BRANCH"
+    }
+   ],
+   "labelNotMaison": [
+    "UNIQLO EUROPE LIMITED FRENCH BRANCH (7)",
+    "UNIQLO EUROPE LIMITED GERMAN BRANCH (2)",
+    "UNIQLO EUROPE LIMITED DENMARK BRANCH (1)",
+    "UNIQLO EUROPE LIMITED SPANISH BRANCH (1)"
+   ],
+   "identityRules": {},
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "uniqlo-graduates",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "OK",
+    "at": "2026-09-08T22:03:54.801Z",
+    "fetched": 11,
+    "accepted": 11,
+    "declaredTotal": 11,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 11,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 11,
+   "createdSince": 11,
+   "reattestedSince": 11,
+   "inactiveRepresentations": 0,
+   "published": 11,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 1,
+     "key": "resolved:UNIQLO"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED BELGIAN BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_BELGIAN_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED DENMARK BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_DENMARK_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_FRENCH_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_GERMAN_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED ITALIAN BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_ITALIAN_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_NETHERLANDS_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED POLISH BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_POLISH_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_SPANISH_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LIMITED SWEDISH BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LIMITED_SWEDISH_BRANCH"
+    },
+    {
+     "name": "UNIQLO EUROPE LTD. LUXEMBOURG BRANCH",
+     "n": 1,
+     "key": "resolved:UNIQLO_EUROPE_LTD_LUXEMBOURG_BRANCH"
+    }
+   ],
+   "labelNotMaison": [
+    "UNIQLO EUROPE LIMITED BELGIAN BRANCH (1)",
+    "UNIQLO EUROPE LIMITED DENMARK BRANCH (1)",
+    "UNIQLO EUROPE LIMITED FRENCH BRANCH (1)",
+    "UNIQLO EUROPE LIMITED GERMAN BRANCH (1)",
+    "UNIQLO EUROPE LIMITED ITALIAN BRANCH (1)",
+    "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH (1)",
+    "UNIQLO EUROPE LIMITED POLISH BRANCH (1)",
+    "UNIQLO EUROPE LIMITED SPANISH BRANCH (1)",
+    "UNIQLO EUROPE LIMITED SWEDISH BRANCH (1)",
+    "UNIQLO EUROPE LTD. LUXEMBOURG BRANCH (1)"
+   ],
+   "identityRules": {},
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  }
+ ],
+ "front": [
+  {
+   "company": "UNIQLO",
+   "dbActive": 32,
+   "apiTotal": 32,
+   "parity": true
+  },
+  {
+   "company": "UNIQLO EUROPE LIMITED BELGIAN BRANCH",
+   "dbActive": 4,
+   "apiTotal": 4,
+   "parity": true
+  },
+  {
+   "company": "UNIQLO EUROPE LIMITED DENMARK BRANCH",
+   "dbActive": 4,
+   "apiTotal": 4,
+   "parity": true
+  },
+  {
+   "company": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+   "dbActive": 41,
+   "apiTotal": 41,
+   "parity": true
+  },
+  {
+   "company": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+   "dbActive": 30,
+   "apiTotal": 30,
+   "parity": true
+  },
+  {
+   "company": "UNIQLO EUROPE LIMITED ITALIAN BRANCH",
+   "dbActive": 5,
+   "apiTotal": 5,
+   "parity": true
+  },
+  {
+   "company": "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH",
+   "dbActive": 2,
+   "apiTotal": 2,
+   "parity": true
+  },
+  {
+   "company": "UNIQLO EUROPE LIMITED POLISH BRANCH",
+   "dbActive": 2,
+   "apiTotal": 2,
+   "parity": true
+  },
+  {
+   "company": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+   "dbActive": 19,
+   "apiTotal": 19,
+   "parity": true
+  },
+  {
+   "company": "UNIQLO EUROPE LIMITED SWEDISH BRANCH",
+   "dbActive": 2,
+   "apiTotal": 2,
+   "parity": true
+  },
+  {
+   "company": "UNIQLO EUROPE LTD. LUXEMBOURG BRANCH",
+   "dbActive": 1,
+   "apiTotal": 1,
+   "parity": true
+  }
+ ]
+}

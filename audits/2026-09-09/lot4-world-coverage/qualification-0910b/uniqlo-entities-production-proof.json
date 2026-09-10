@@ -1,0 +1,38 @@
+{
+  "at": "2026-09-10T14:00:55.258Z",
+  "environment": "production",
+  "commit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+  "planHash": "5516adcc3fd2d7337e2473d656aaac4142076d37fd570994439c0436af540361",
+  "merged": [
+    "UNIQLO EUROPE LIMITED (0 jobs, 0 active)",
+    "UNIQLO EUROPE LIMITED BELGIAN BRANCH (4 jobs, 4 active)",
+    "UNIQLO EUROPE LIMITED DENMARK BRANCH (4 jobs, 4 active)",
+    "UNIQLO EUROPE LIMITED FRENCH BRANCH (41 jobs, 41 active)",
+    "UNIQLO EUROPE LIMITED GERMAN BRANCH (30 jobs, 30 active)",
+    "UNIQLO EUROPE LIMITED ITALIAN BRANCH (5 jobs, 5 active)",
+    "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH (2 jobs, 2 active)",
+    "UNIQLO EUROPE LIMITED POLISH BRANCH (2 jobs, 2 active)",
+    "UNIQLO EUROPE LIMITED SPANISH BRANCH (19 jobs, 19 active)",
+    "UNIQLO EUROPE LIMITED SWEDISH BRANCH (2 jobs, 2 active)",
+    "UNIQLO EUROPE LTD. LUXEMBOURG BRANCH (1 jobs, 1 active)"
+  ],
+  "skipped": [],
+  "before": {
+    "active": 76426,
+    "uniqlo": 32
+  },
+  "after": {
+    "active": 76426,
+    "uniqlo": 142
+  },
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 110,
+    "aliases": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  }
+}

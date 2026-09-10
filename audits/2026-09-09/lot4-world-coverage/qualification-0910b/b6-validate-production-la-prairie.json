@@ -1,0 +1,74 @@
+{
+ "key": "la-prairie",
+ "status": "DRAFT",
+ "kind": "successfactors",
+ "ats": "SUCCESSFACTORS",
+ "request": {
+  "origin": "https://www.careers.laprairiegroup.ch",
+  "path": "/"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T13:16:43.297Z",
+ "robotsPresent": true,
+ "fetched": 27,
+ "parsed": 27,
+ "declaredTotal": 27,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_HTML_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": []
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  [
+   "La Prairie",
+   27
+  ]
+ ],
+ "countries": [
+  [
+   "CH",
+   10
+  ],
+  [
+   "GB",
+   6
+  ],
+  [
+   "FR",
+   5
+  ],
+  [
+   "DE",
+   2
+  ],
+  [
+   "AT",
+   1
+  ],
+  [
+   "TW",
+   1
+  ],
+  [
+   "IE",
+   1
+  ],
+  [
+   "AU",
+   1
+  ]
+ ],
+ "sampleTitles": [
+  "Global Brand Manager (skincare product development a must) — Zurich, CH, 8008",
+  "Assistant(e) Chef de Produit Opérationnel - Janvier 2027 - Stage 6 mois — Paris, FR, 75013",
+  "Beauty Consultant - Manchester Selfridges Exchange — Manchester, GB, M3 1BD",
+  "Temporary Demand Planner & Business Analyst - Travel Retail EMEA & A — Zurich, CH, 8008",
+  "Assistant(e) E-commerce et marketing digital - Janvier 2027 - Stage 6 mois — Paris, FR, 75013"
+ ],
+ "seconds": 3,
+ "written": true
+}

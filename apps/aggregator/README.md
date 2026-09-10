@@ -355,6 +355,20 @@ Périmètre : qualifier les candidats issus de la recherche web et vérifier les
 | Attribution par entité juridique sur un tenant qui code l’enseigne | Workday `brandFromLocationPrefix` (Saks : NM/SF/BG/O5) — PR 78 ; revue propriétaire par code de lieu | `workday.locationPrefix.test.ts` (747 lignes réelles) |
 | Plafond `total` Workday (2 000) et attribution par facette | `partitionFacet` — PR 76 ; Tapestry 2 086 offres attribuées (L7) | `qualification-2026-09-10-b.md` § 7.2 |
 
+### Procédure B6 sécurisée (validée par Loïc, 2026-09-10 après-midi) — les cinq points
+
+| Point | Ce qui manquait | Ce qui est en place | Preuve |
+|---|---|---|---|
+| Arrêt immédiat sur erreur | chaînes `cmd \| grep \| tail` (exit code de `tail`), attente de déploiement non bloquante | `b6-batch.sh`, `b6-certify-existing.sh`, `b6-repair-chain.sh` : `set -eu`, une étape = une commande journalisée, arrêt et extrait d'erreur ; `lot-run-chain.sh` sort en erreur si le déploiement attendu n'est pas SUCCESS et ne restaure jamais par-dessus un run encore en cours | journaux `backups/lot4-20260909/b6-<lot>/`, `repair-<nom>/` |
+| Commit déployé vérifié | le run pouvait tourner sur une autre image | `run-lot.sh` relit révision du `PipelineRun` = `origin/main`, statut COMPLETED, 0 échec d'écriture, 0 `SourceRun` non attestant | `lot-<lot>-after-run.json` |
+| Verdict d'accès explicite | `robots.txt` absent ou injoignable pouvait valoir ALLOWED | `src/lib/candidateChecks.ts` : ALLOWED / DISALLOWED **lus** (statut HTTP + sha256), NO_ROBOTS (404/410), UNREACHABLE (401/403/429/5xx/réseau) ; seul un ALLOWED lu est promouvable | 10 tests ; note de la source ; `b6-validate-<phase>-<clé>.json` |
+| Board exact et périmètre prouvés | `mustContain` libre ; périmètre déclaré sans confrontation aux libellés | certification refusée si la page officielle ne nomme pas le board **configuré** (référence dérivée de la config) ou si les libellés natifs lus contredisent SINGLE_BRAND (`classifyLabel` OWNER / OWNER_ENTITY / OTHER) ; l'énoncé de revue cite la référence et les libellés | `b6-integrate.mts certify` ; `b6-retro-controls.md` |
+| Sauvegarde avant la première mutation | dump pris avant le run, pas avant register/certify/promote | dump frais **restauré sur le clone** avant toute mutation de production ; répétition sur le clone (ingestion bornée locale incluse) puis production | `b6-<lot>-backup-proof.json`, `repair-<nom>-backup-proof.json` |
+
+Volumes désormais séparés par `lot-volumes.mts` : collectées → retenues (holds / refus d'identité / échecs d'écriture / hors périmètre) → écrites → publiées BDD → API publique, avec un verdict de complétude indépendant de l'activation. Contrôle rétrospectif des 9 sources B6 déjà intégrées : accès, board, déploiement conformes 9/9 ; **3 défauts d'attribution trouvés et réparés** (Ysé publié sous son entité juridique en doublon ; On et La Prairie sous une clé « source-scoped ») — cause racine corrigée dans la porte (PR 84 : propriétaire d'un portail SINGLE_BRAND = Maison du catalogue, création sous clé canonique), réparation sous protocole (347 offres déplacées, rejeu 0). Détail : `audits/2026-09-09/lot4-world-coverage/qualification-2026-09-10-b.md` § 7.5.
+
+**Inventaire de suivi unique** : `audits/2026-09-09/lot4-world-coverage/inventory-unique/` (généré par `scripts/coverage/unified-inventory.mts` + `inventory-readme.py`) réconcilie les 1 653 libellés FashionJobs, le rapprochement web (65), les marques de portefeuille (275), les candidats B6 (33 tenants), les sociétés actives et la table `Source`, avec les dénominateurs de chaque jeu et une ligne par acteur dédupliqué. Tableau final par source : `scripts/coverage/final-table.mts`.
+
 ### En cours ou restant
 
 - **Saks / Exemplar Luxury Group — fait** : revue propriétaire (1 621 opérations), re-certification MULTI_BRAND, run borné L9 (742/746 complet, 0 refus) : Neiman Marcus 420 · Saks Fifth Avenue 189 · groupe 133 · Bergdorf Goodman 66 · Saks OFF 5TH 27, parité 5/5 (`qualification-2026-09-10-b.md` § 7.2).

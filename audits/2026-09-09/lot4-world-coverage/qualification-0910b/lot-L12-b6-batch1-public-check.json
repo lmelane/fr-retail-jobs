@@ -1,0 +1,79 @@
+{
+ "at": "2026-09-10T13:22:20.177Z",
+ "keys": [
+  "armand-thiery-flatchr",
+  "on-running",
+  "boardriders",
+  "american-vintage-dr",
+  "yse-paris",
+  "la-fee-maraboutee",
+  "shinola-retail",
+  "la-prairie",
+  "arcteryx"
+ ],
+ "companies": [
+  {
+   "company": "On",
+   "fromLotSources": 309,
+   "companyActive": 309,
+   "api": 309,
+   "parity": true
+  },
+  {
+   "company": "ARC'TERYX",
+   "fromLotSources": 299,
+   "companyActive": 303,
+   "api": 303,
+   "parity": true
+  },
+  {
+   "company": "Armand Thiery",
+   "fromLotSources": 198,
+   "companyActive": 200,
+   "api": 200,
+   "parity": true
+  },
+  {
+   "company": "Boardriders",
+   "fromLotSources": 44,
+   "companyActive": 86,
+   "api": 86,
+   "parity": true
+  },
+  {
+   "company": "American Vintage",
+   "fromLotSources": 34,
+   "companyActive": 41,
+   "api": 41,
+   "parity": true
+  },
+  {
+   "company": "La Prairie",
+   "fromLotSources": 27,
+   "companyActive": 27,
+   "api": 27,
+   "parity": true
+  },
+  {
+   "company": "LA FEE MARABOUTEE",
+   "fromLotSources": 19,
+   "companyActive": 19,
+   "api": 19,
+   "parity": true
+  },
+  {
+   "company": "Shinola",
+   "fromLotSources": 14,
+   "companyActive": 23,
+   "api": 23,
+   "parity": true
+  },
+  {
+   "company": "L'IMPERTINENTE - Ysé",
+   "fromLotSources": 11,
+   "companyActive": 11,
+   "api": 11,
+   "parity": true
+  }
+ ]
+}

@@ -1,0 +1,343 @@
+{
+  "at": "2026-09-10T13:16:24.896Z",
+  "environment": "production",
+  "step": "register",
+  "proofs": [
+    {
+      "key": "armand-thiery-flatchr",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvjwlpw00003njckxm8wtxw",
+          "key": "armand-thiery-flatchr",
+          "maison": "Armand Thiery",
+          "careersDomain": "armandthiery.flatchr.io",
+          "kind": "flatchr",
+          "config": {
+            "listingUrl": "https://armandthiery.flatchr.io/fr/company/armandthiery/"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "ATS_OFFICIAL",
+          "tenantKey": "flatchr:armandthiery.flatchr.io/fr/company/armandthiery",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T13:16:23.157Z",
+          "updatedAt": "2026-09-10T13:16:23.157Z"
+        }
+      },
+      "after": {
+        "key": "armand-thiery-flatchr",
+        "status": "DRAFT",
+        "tenantKey": "flatchr:armandthiery.flatchr.io/fr/company/armandthiery",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "on-running",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvjwlxv00013njc6svpemf2",
+          "key": "on-running",
+          "maison": "On",
+          "careersDomain": "boards.greenhouse.io",
+          "kind": "greenhouse",
+          "config": {
+            "board": "onrunning"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "ATS_OFFICIAL",
+          "tenantKey": "greenhouse:onrunning",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T13:16:23.444Z",
+          "updatedAt": "2026-09-10T13:16:23.444Z"
+        }
+      },
+      "after": {
+        "key": "on-running",
+        "status": "DRAFT",
+        "tenantKey": "greenhouse:onrunning",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "boardriders",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvjwm4c00023njcor0jckva",
+          "key": "boardriders",
+          "maison": "Boardriders",
+          "careersDomain": "jobs.boardriders.eu",
+          "kind": "successfactors",
+          "config": {
+            "origin": "https://jobs.boardriders.eu"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "EMPLOYER_DIRECT",
+          "tenantKey": "successfactors:jobs.boardriders.eu",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T13:16:23.677Z",
+          "updatedAt": "2026-09-10T13:16:23.677Z"
+        }
+      },
+      "after": {
+        "key": "boardriders",
+        "status": "DRAFT",
+        "tenantKey": "successfactors:jobs.boardriders.eu",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "american-vintage-dr",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvjwmav00033njcgcdir4nw",
+          "key": "american-vintage-dr",
+          "maison": "American Vintage",
+          "careersDomain": "careers.am-vintage.com",
+          "kind": "digitalrecruiters",
+          "config": {
+            "domainName": "careers.am-vintage.com"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "EMPLOYER_DIRECT",
+          "tenantKey": "digitalrecruiters:careers.am-vintage.com",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T13:16:23.911Z",
+          "updatedAt": "2026-09-10T13:16:23.911Z"
+        }
+      },
+      "after": {
+        "key": "american-vintage-dr",
+        "status": "DRAFT",
+        "tenantKey": "digitalrecruiters:careers.am-vintage.com",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "yse-paris",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvjwmh700043njc1l7wdc9q",
+          "key": "yse-paris",
+          "maison": "Ysé",
+          "careersDomain": "yseparis.teamtailor.com",
+          "kind": "teamtailor",
+          "config": {
+            "origin": "https://yseparis.teamtailor.com"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "ATS_OFFICIAL",
+          "tenantKey": "teamtailor:yseparis.teamtailor.com",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T13:16:24.140Z",
+          "updatedAt": "2026-09-10T13:16:24.140Z"
+        }
+      },
+      "after": {
+        "key": "yse-paris",
+        "status": "DRAFT",
+        "tenantKey": "teamtailor:yseparis.teamtailor.com",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "la-fee-maraboutee",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvjwmnq00053njcn6pexa65",
+          "key": "la-fee-maraboutee",
+          "maison": "La Fée Maraboutée",
+          "careersDomain": "lafeemaraboutee.teamtailor.com",
+          "kind": "teamtailor",
+          "config": {
+            "origin": "https://lafeemaraboutee.teamtailor.com"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "ATS_OFFICIAL",
+          "tenantKey": "teamtailor:lafeemaraboutee.teamtailor.com",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T13:16:24.374Z",
+          "updatedAt": "2026-09-10T13:16:24.374Z"
+        }
+      },
+      "after": {
+        "key": "la-fee-maraboutee",
+        "status": "DRAFT",
+        "tenantKey": "teamtailor:lafeemaraboutee.teamtailor.com",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "shinola-retail",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvjwmro00063njcz8gfvk2i",
+          "key": "shinola-retail",
+          "maison": "Shinola",
+          "careersDomain": "job-boards.greenhouse.io",
+          "kind": "greenhouse",
+          "config": {
+            "board": "shinolaretail"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "ATS_OFFICIAL",
+          "tenantKey": "greenhouse:shinolaretail",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T13:16:24.516Z",
+          "updatedAt": "2026-09-10T13:16:24.516Z"
+        }
+      },
+      "after": {
+        "key": "shinola-retail",
+        "status": "DRAFT",
+        "tenantKey": "greenhouse:shinolaretail",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "la-prairie",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvjwmy200073njch05rjdlo",
+          "key": "la-prairie",
+          "maison": "La Prairie",
+          "careersDomain": "www.careers.laprairiegroup.ch",
+          "kind": "successfactors",
+          "config": {
+            "origin": "https://www.careers.laprairiegroup.ch"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "EMPLOYER_DIRECT",
+          "tenantKey": "successfactors:www.careers.laprairiegroup.ch",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T13:16:24.746Z",
+          "updatedAt": "2026-09-10T13:16:24.746Z"
+        }
+      },
+      "after": {
+        "key": "la-prairie",
+        "status": "DRAFT",
+        "tenantKey": "successfactors:www.careers.laprairiegroup.ch",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    }
+  ]
+}
