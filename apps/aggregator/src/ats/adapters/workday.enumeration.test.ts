@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { readFileSync } from 'node:fs';
 vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn(), fetchText: vi.fn() }));
 import { fetchJson } from '../../lib/http.js';
 import { fetchWorkdayJobs } from './workday.js';
@@ -17,13 +18,41 @@ describe('Workday — enumeration proof against the announced total', () => {
     expect(r.enumeration).toMatchObject({ pages: 2, termination: 'PUBLISHER_TOTAL_REACHED', issues: [] });
     expect(r.enumeration?.pageEvidence?.map((p) => p.publisherCounter)).toEqual(['total=25', '']);
   });
-  it('names a posting repeated across pages as the cause of a missing one, and does not claim completeness', async () => {
-    vi.mocked(fetchJson).mockResolvedValueOnce(page(Array.from({ length: 20 }, (_, i) => i), 25)).mockResolvedValueOnce(page([19, 20, 21, 22, 23], 0));
+  it('names a posting repeated across pages, re-reads the board on a shifted grid, and still refuses completeness when the missing posting never surfaces', async () => {
+    vi.mocked(fetchJson)
+      .mockResolvedValueOnce(page(Array.from({ length: 20 }, (_, i) => i), 25)).mockResolvedValueOnce(page([19, 20, 21, 22, 23], 0))
+      // second sweep, offset 10: the shifted page shows the same rows — posting 24 is never served by the tenant
+      .mockResolvedValueOnce(page([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 0));
     const r = await fetchWorkdayJobs(config);
     // Every announced row was read (not truncated) yet one announced posting never appeared: not proven.
-    expect(r.jobs).toHaveLength(24); expect(r.complete).toBe(false); expect(r.truncated).toBe(false); expect(fetchJson).toHaveBeenCalledTimes(2);
-    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['REPEATED_IDS_ACROSS_PAGES', 'ENUMERATION_NOT_PROVEN'])); expect(r.enumeration?.termination).toBe('PUBLISHER_TOTAL_ROWS_READ');
+    expect(r.jobs).toHaveLength(24); expect(r.complete).toBe(false); expect(r.truncated).toBe(false); expect(fetchJson).toHaveBeenCalledTimes(3);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['REPEATED_IDS_ACROSS_PAGES', 'ENUMERATION_NOT_PROVEN'])); expect(r.enumeration?.issues).not.toContain('RECONCILED_BY_SECOND_SWEEP');
+    expect(r.enumeration?.termination).toBe('PUBLISHER_TOTAL_ROWS_READ');
     expect(r.enumeration?.pageEvidence?.[1]?.componentCounters).toContain('repeated=1');
+    expect(r.enumeration?.pageEvidence?.[2]?.componentCounters).toContain('sweep=2');
+  });
+  it("Levi's (2026-09-10): a posting that slid between two page boundaries is caught by the shifted grid — every announced row accounted for, board proven, repetition still named", async () => {
+    vi.mocked(fetchJson)
+      .mockResolvedValueOnce(page(Array.from({ length: 20 }, (_, i) => i), 25)).mockResolvedValueOnce(page([19, 20, 21, 22, 23], 0))
+      // second sweep, offset 10: the shifted page contains posting 24
+      .mockResolvedValueOnce(page([10, 11, 12, 13, 14, 15, 16, 17, 18, 24, 20, 21, 22, 23], 0));
+    const r = await fetchWorkdayJobs(config);
+    expect(r.jobs).toHaveLength(25); expect(r.complete).toBe(true); expect(r.truncated).toBe(false); expect(fetchJson).toHaveBeenCalledTimes(3);
+    expect(r.enumeration?.termination).toBe('SECOND_SWEEP_RECONCILED');
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['REPEATED_IDS_ACROSS_PAGES', 'RECONCILED_BY_SECOND_SWEEP'])); expect(r.enumeration?.issues).not.toContain('ENUMERATION_NOT_PROVEN');
+    expect(r.enumeration?.pageEvidence?.[2]?.componentCounters).toContain('freshInSweep=1');
+    expect(r.jobs.map((j) => j.externalId)).toContain('Sales_24');
+  });
+  it("parses the real Levi's Workday page shape (recorded 2026-09-10): announced total, ids from externalPath, public URL under the site", async () => {
+    const real = JSON.parse(readFileSync(new URL('./fixtures/lot4-workday-levis-offset0.json', import.meta.url), 'utf8'));
+    vi.mocked(fetchJson).mockResolvedValueOnce(real).mockResolvedValueOnce({ total: 0, jobPostings: [] });
+    const r = await fetchWorkdayJobs({ tenant: 'levistraussandco', site: 'External', origin: 'https://levistraussandco.wd5.myworkdayjobs.com', withDescriptions: false });
+    expect(r.declaredTotal).toBe(real.total); expect(r.jobs).toHaveLength(3); expect(r.complete).toBe(false);
+    for (const [i, job] of r.jobs.entries()) {
+      expect(job.externalId).toBe(String(real.jobPostings[i].externalPath).split('/').filter(Boolean).pop());
+      expect(job.url).toBe(`https://levistraussandco.wd5.myworkdayjobs.com/External${real.jobPostings[i].externalPath}`);
+      expect(job.title).toBe(real.jobPostings[i].title);
+    }
   });
   it('keeps reading a short page while the publisher announces more, and counts rows without a path', async () => {
     vi.mocked(fetchJson).mockResolvedValueOnce(page(Array.from({ length: 20 }, (_, i) => i), 41)).mockResolvedValueOnce({ total: 0, jobPostings: [...[20, 21, 22].map(posting), { title: 'No path' } as any] }).mockResolvedValueOnce(page(Array.from({ length: 17 }, (_, i) => 23 + i), 0));

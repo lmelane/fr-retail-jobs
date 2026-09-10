@@ -1,0 +1,136 @@
+{
+ "page1": {
+  "totalCount": 5,
+  "count": 4,
+  "jobs": [
+   {
+    "data": {
+     "slug": "71489",
+     "language": "fr-fr",
+     "languages": [
+      "fr-fr"
+     ],
+     "req_id": "71489",
+     "title": "Assistant Gérant / Assistant Manager",
+     "location_name": "Anjou QC",
+     "city": "Anjou",
+     "state": "Quebec",
+     "country": "Canada",
+     "country_code": "CA",
+     "postal_code": "H1M1W9",
+     "latitude": 45.6006624,
+     "longitude": -73.5644021,
+     "tags4": [
+      "Foot Locker"
+     ],
+     "posted_date": "2026-08-04T15:51:00+0000",
+     "description": "Vue d'Ensemble Les grandes marques reflètent la culture. Les meilleures contribuent à la façonner. Chez Foot Locker, nous sommes ancrés dans le sport, propulsés par le style et guidés par les communau"
+    }
+   },
+   {
+    "data": {
+     "slug": "71906",
+     "language": "en-us",
+     "languages": [
+      "en-us"
+     ],
+     "req_id": "71906",
+     "title": "Sales Lead",
+     "location_name": "Philadelphia PA",
+     "city": "Philadelphia",
+     "state": "Pennsylvania",
+     "country": "United States",
+     "country_code": "US",
+     "postal_code": "19137",
+     "latitude": 39.99567649999999,
+     "longitude": -75.0911491,
+     "tags4": [
+      "Kids Foot Locker"
+     ],
+     "posted_date": "2026-09-04T18:16:00+0000",
+     "description": "Overview Great brands reflect culture. The best ones help shape it. At Foot Locker, we’re rooted in sport, powered by style, and driven by the communities that move both. From Foot Locker and Kids Foo"
+    }
+   },
+   {
+    "data": {
+     "slug": "71909",
+     "language": "en-us",
+     "languages": [
+      "en-us"
+     ],
+     "req_id": "71909",
+     "title": "Sales Lead",
+     "location_name": "Philadelphia PA",
+     "city": "Philadelphia",
+     "state": "Pennsylvania",
+     "country": "United States",
+     "country_code": "US",
+     "postal_code": "19141",
+     "latitude": 40.0396942,
+     "longitude": -75.1449155,
+     "tags4": [
+      "Foot Locker"
+     ],
+     "posted_date": "2026-09-04T18:25:00+0000",
+     "description": "Overview Great brands reflect culture. The best ones help shape it. At Foot Locker, we’re rooted in sport, powered by style, and driven by the communities that move both. From Foot Locker and Kids Foo"
+    }
+   }
+  ]
+ },
+ "page2": {
+  "totalCount": 5,
+  "count": 4,
+  "jobs": [
+   {
+    "data": {
+     "slug": "71489",
+     "language": "en-us",
+     "languages": [
+      "en-us"
+     ],
+     "req_id": "71489",
+     "title": "Assistant Gérant / Assistant Manager",
+     "location_name": "Anjou QC",
+     "city": "Anjou",
+     "state": "Quebec",
+     "country": "Canada",
+     "country_code": "CA",
+     "postal_code": "H1M1W9",
+     "latitude": 45.6006624,
+     "longitude": -73.5644021,
+     "tags4": [
+      "Foot Locker"
+     ],
+     "posted_date": "2026-08-04T15:51:00+0000",
+     "description": "Overview Les grandes marques reflètent la culture. Les meilleures contribuent à la façonner. Chez Foot Locker, nous sommes ancrés dans le sport, propulsés par le style et guidés par les communautés qu"
+    }
+   },
+   {
+    "data": {
+     "slug": "71188",
+     "language": "en-us",
+     "languages": [
+      "en-us"
+     ],
+     "req_id": "71188",
+     "title": "Assistant Gérant / Assistant Manager",
+     "location_name": "Montreal QC",
+     "city": "Montreal",
+     "state": "Quebec",
+     "country": "Canada",
+     "country_code": "CA",
+     "postal_code": "H1N1E9",
+     "latitude": 45.5906052,
+     "longitude": -73.5392012,
+     "tags4": [
+      "Foot Locker"
+     ],
+     "posted_date": "2026-07-10T21:00:00+0000",
+     "description": "Overview Les grandes marques reflètent la culture. Les meilleures contribuent à la façonner. Chez Foot Locker, nous sommes ancrés dans le sport, propulsés par le style et guidés par les communautés qu"
+    }
+   }
+  ]
+ },
+ "recordedAt": "2026-09-10",
+ "source": "https://careers.footlocker.com/api/jobs?limit=100&page=N (pages 1 and 7)"
+}

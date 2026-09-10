@@ -42,3 +42,25 @@ describe('Phenom — énumération prouvée contre le total éditeur', () => {
     expect(r.enumeration?.pageEvidence).toHaveLength(3); expect(r.enumeration?.termination).toBe('EMPTY_PAGE'); expect(r.enumeration?.pageEvidence?.[1]?.componentCounters).toContain('repeated=1');
   });
 });
+
+describe('Phenom — variantes de langue (Foot Locker, réponses réelles du 2026-09-10)', () => {
+  it('une même réquisition servie dans une seconde langue est une ligne annoncée et comptée, pas un identifiant répété : énumération prouvée', async () => {
+    const { readFileSync } = await import('node:fs');
+    const real = JSON.parse(readFileSync(new URL('./fixtures/lot4-phenom-footlocker-language-variant.json', import.meta.url), 'utf8'));
+    vi.mocked(fetchJson).mockResolvedValueOnce(real.page1).mockResolvedValueOnce(real.page2);
+    const r = await fetchPhenomJobs({ origin: 'https://careers.footlocker.com' });
+    // page 1: req 71489 (fr-fr) + 2 others ; page 2: req 71489 (en-us) + 1 other → 4 requisitions, 1 language variant, 5 announced
+    expect(r.declaredTotal).toBe(5); expect(r.jobs).toHaveLength(4); expect(r.complete).toBe(true); expect(r.truncated).toBe(false);
+    expect(r.enumeration?.issues).toEqual(['LANGUAGE_VARIANTS_DEDUPLICATED']); expect(r.enumeration?.termination).toBe('PUBLISHER_TOTAL_REACHED');
+    expect(r.jobs.filter((j) => j.externalId === '71489')).toHaveLength(1);
+    expect(r.enumeration?.scopes?.find((s) => s.scope === 'languageVariants')).toMatchObject({ declaredTotal: 1 });
+  });
+  it('la même réquisition servie deux fois dans la MÊME langue reste un identifiant répété qui refuse la preuve', async () => {
+    const { readFileSync } = await import('node:fs');
+    const real = JSON.parse(readFileSync(new URL('./fixtures/lot4-phenom-footlocker-language-variant.json', import.meta.url), 'utf8'));
+    const sameLanguage = { ...real.page2, jobs: [{ data: { ...real.page1.jobs[0].data } }, ...real.page2.jobs.slice(1)] };
+    vi.mocked(fetchJson).mockResolvedValueOnce(real.page1).mockResolvedValueOnce(sameLanguage).mockResolvedValueOnce({ totalCount: 5, jobs: [] });
+    const r = await fetchPhenomJobs({ origin: 'https://careers.footlocker.com' });
+    expect(r.jobs).toHaveLength(4); expect(r.complete).toBe(false); expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['REPEATED_IDS_ACROSS_PAGES', 'ENUMERATION_NOT_PROVEN']));
+  });
+});
