@@ -1,4 +1,4 @@
-import countryLabels from '../../data/country-labels.json' with { type: 'json' };
+import countryLabels from '../../data/reference/country-labels.json' with { type: 'json' };
 /**
  * Pays canonique, en ISO-3166-1 alpha-2.
  *

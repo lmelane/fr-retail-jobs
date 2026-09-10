@@ -9,9 +9,8 @@
  * with no openings. Live, that surfaced as "Teamtailor origin missing" on
  * Showroomprive/Soeur, whose config carried `careers_url` but not `origin`.
  *
- * validateSources already resolved these synonyms, but only in its own pass;
- * the live ingest read the raw config and failed. This is the shared resolver so
- * both agree, and no working source is lost to a wording difference.
+ * Qualification and ingestion share this resolver, so a supported spelling
+ * cannot silently turn a working source into an empty result.
  */
 
 /** Config key aliases, so one agent's wording does not lose a working source. */

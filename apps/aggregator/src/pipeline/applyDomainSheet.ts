@@ -3,7 +3,7 @@ import type { PrismaClient } from '@prisma/client';
 
 /**
  * Applique le référentiel de domaines établi à la main par Loïc
- * (`data/maisons-domaines-loic.tsv`, 652 Maisons, 2026-09-07).
+ * (`data/imports/maisons-domaines-loic.tsv`, 652 Maisons, 2026-09-07).
  *
  * Trois statuts, trois traitements — c'est la distinction qui compte :
  *

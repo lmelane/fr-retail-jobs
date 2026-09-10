@@ -1,0 +1,493 @@
+{
+  "at": "2026-09-10T10:57:16.213Z",
+  "totals": [
+    {
+      "total": 78912,
+      "active": 75457,
+      "france": 11131
+    }
+  ],
+  "catalogStatus": {
+    "ACTIVE": 405,
+    "RETIRED": 90,
+    "PAUSED": 8
+  },
+  "activeSources": 405,
+  "certified": 45,
+  "neverReviewed": 360,
+  "reviewedInvalid": [],
+  "distinctActiveJobsByCertification": {
+    "UNCERTIFIED_ONLY": 57378,
+    "CERTIFIED_ONLY": 16996,
+    "NO_ACTIVE_CATALOG_SOURCE": 640,
+    "MIXED": 443
+  },
+  "activeJobsWithAtLeastOneCertifiedActiveSource": 17439,
+  "sourcesNeverReviewedButWithEmployerAliasReview": 23,
+  "families": {
+    "jibe": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 10290,
+      "uncertifiedRepresentations": 10290
+    },
+    "workday": {
+      "sources": 34,
+      "certified": 8,
+      "activeRepresentations": 15904,
+      "uncertifiedRepresentations": 9150
+    },
+    "generic-listing": {
+      "sources": 17,
+      "certified": 0,
+      "activeRepresentations": 6181,
+      "uncertifiedRepresentations": 6181
+    },
+    "smartrecruiters-whitelabel": {
+      "sources": 45,
+      "certified": 0,
+      "activeRepresentations": 5146,
+      "uncertifiedRepresentations": 5146
+    },
+    "teamtailor": {
+      "sources": 112,
+      "certified": 17,
+      "activeRepresentations": 5387,
+      "uncertifiedRepresentations": 4312
+    },
+    "successfactors": {
+      "sources": 28,
+      "certified": 10,
+      "activeRepresentations": 4143,
+      "uncertifiedRepresentations": 3037
+    },
+    "avature": {
+      "sources": 2,
+      "certified": 0,
+      "activeRepresentations": 2908,
+      "uncertifiedRepresentations": 2908
+    },
+    "phenom": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 2859,
+      "uncertifiedRepresentations": 2859
+    },
+    "eightfold": {
+      "sources": 2,
+      "certified": 0,
+      "activeRepresentations": 2569,
+      "uncertifiedRepresentations": 2569
+    },
+    "greenhouse": {
+      "sources": 61,
+      "certified": 0,
+      "activeRepresentations": 2222,
+      "uncertifiedRepresentations": 2222
+    },
+    "wttj-sector": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 2002,
+      "uncertifiedRepresentations": 2002
+    },
+    "rituals": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 1245,
+      "uncertifiedRepresentations": 1245
+    },
+    "oraclehcm": {
+      "sources": 2,
+      "certified": 0,
+      "activeRepresentations": 1215,
+      "uncertifiedRepresentations": 1215
+    },
+    "digitalrecruiters": {
+      "sources": 4,
+      "certified": 0,
+      "activeRepresentations": 752,
+      "uncertifiedRepresentations": 752
+    },
+    "recruitee": {
+      "sources": 22,
+      "certified": 0,
+      "activeRepresentations": 639,
+      "uncertifiedRepresentations": 639
+    },
+    "lever": {
+      "sources": 17,
+      "certified": 0,
+      "activeRepresentations": 517,
+      "uncertifiedRepresentations": 517
+    },
+    "magnet": {
+      "sources": 2,
+      "certified": 0,
+      "activeRepresentations": 492,
+      "uncertifiedRepresentations": 492
+    },
+    "wordpress": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 478,
+      "uncertifiedRepresentations": 478
+    },
+    "talentsoft": {
+      "sources": 6,
+      "certified": 0,
+      "activeRepresentations": 343,
+      "uncertifiedRepresentations": 343
+    },
+    "eqwa": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 321,
+      "uncertifiedRepresentations": 321
+    },
+    "swatchgroup": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 293,
+      "uncertifiedRepresentations": 293
+    },
+    "workable": {
+      "sources": 4,
+      "certified": 0,
+      "activeRepresentations": 280,
+      "uncertifiedRepresentations": 280
+    },
+    "personio": {
+      "sources": 14,
+      "certified": 0,
+      "activeRepresentations": 186,
+      "uncertifiedRepresentations": 186
+    },
+    "talentfunnel": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 153,
+      "uncertifiedRepresentations": 153
+    },
+    "geodirectory": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 110,
+      "uncertifiedRepresentations": 110
+    },
+    "ashby": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 83,
+      "uncertifiedRepresentations": 83
+    },
+    "talentview": {
+      "sources": 4,
+      "certified": 0,
+      "activeRepresentations": 80,
+      "uncertifiedRepresentations": 80
+    },
+    "taleo": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 76,
+      "uncertifiedRepresentations": 76
+    },
+    "altamira": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 64,
+      "uncertifiedRepresentations": 64
+    },
+    "bashtalents": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 57,
+      "uncertifiedRepresentations": 57
+    },
+    "radancy": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 54,
+      "uncertifiedRepresentations": 54
+    },
+    "typesense": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 47,
+      "uncertifiedRepresentations": 47
+    },
+    "jobylon": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 31,
+      "uncertifiedRepresentations": 31
+    },
+    "volcanic": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 31,
+      "uncertifiedRepresentations": 31
+    },
+    "icims": {
+      "sources": 2,
+      "certified": 1,
+      "activeRepresentations": 1497,
+      "uncertifiedRepresentations": 21
+    },
+    "wttj": {
+      "sources": 1,
+      "certified": 0,
+      "activeRepresentations": 10,
+      "uncertifiedRepresentations": 10
+    },
+    "flatchr": {
+      "sources": 3,
+      "certified": 3,
+      "activeRepresentations": 156,
+      "uncertifiedRepresentations": 0
+    },
+    "jobaffinity-wordpress": {
+      "sources": 2,
+      "certified": 2,
+      "activeRepresentations": 978,
+      "uncertifiedRepresentations": 0
+    },
+    "talentrecruiter": {
+      "sources": 1,
+      "certified": 1,
+      "activeRepresentations": 16,
+      "uncertifiedRepresentations": 0
+    },
+    "easycruit": {
+      "sources": 1,
+      "certified": 1,
+      "activeRepresentations": 41,
+      "uncertifiedRepresentations": 0
+    },
+    "lvmh_algolia": {
+      "sources": 1,
+      "certified": 1,
+      "activeRepresentations": 6078,
+      "uncertifiedRepresentations": 0
+    },
+    "harri": {
+      "sources": 1,
+      "certified": 1,
+      "activeRepresentations": 30,
+      "uncertifiedRepresentations": 0
+    }
+  },
+  "uncertifiedTop": [
+    {
+      "source": "ulta-jibe",
+      "name": "Ulta Beauty",
+      "kind": "jibe",
+      "activeJobs": 10290,
+      "hasEmployerAliasReview": true
+    },
+    {
+      "source": "foot-locker-france",
+      "name": "Foot Locker France",
+      "kind": "phenom",
+      "activeJobs": 2859,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "pandora-talenthub",
+      "name": "Pandora",
+      "kind": "generic-listing",
+      "activeJobs": 2077,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "wttj-sector",
+      "name": "Welcome to the Jungle (Mode · Luxe · Beauté)",
+      "kind": "wttj-sector",
+      "activeJobs": 2002,
+      "hasEmployerAliasReview": true
+    },
+    {
+      "source": "l-oreal-professionnel",
+      "name": "L'Oréal (toutes Maisons)",
+      "kind": "avature",
+      "activeJobs": 1804,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "hm-group",
+      "name": "H&M Group",
+      "kind": "smartrecruiters-whitelabel",
+      "activeJobs": 1706,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "boots",
+      "name": "Boots",
+      "kind": "generic-listing",
+      "activeJobs": 1608,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "nordstrom",
+      "name": "Nordstrom",
+      "kind": "workday",
+      "activeJobs": 1575,
+      "hasEmployerAliasReview": true
+    },
+    {
+      "source": "estee-lauder-companies",
+      "name": "The Estée Lauder Companies",
+      "kind": "eightfold",
+      "activeJobs": 1457,
+      "hasEmployerAliasReview": true
+    },
+    {
+      "source": "pvh",
+      "name": "PVH",
+      "kind": "generic-listing",
+      "activeJobs": 1397,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "levis",
+      "name": "Levi's",
+      "kind": "workday",
+      "activeJobs": 1333,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "rituals",
+      "name": "Rituals",
+      "kind": "rituals",
+      "activeJobs": 1245,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "adidas",
+      "name": "adidas",
+      "kind": "successfactors",
+      "activeJobs": 1142,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "parfums-chanel",
+      "name": "Chanel",
+      "kind": "workday",
+      "activeJobs": 1120,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "kering",
+      "name": "Kering (toutes Maisons)",
+      "kind": "eightfold",
+      "activeJobs": 1112,
+      "hasEmployerAliasReview": true
+    },
+    {
+      "source": "ralph-lauren-avature",
+      "name": "Ralph Lauren",
+      "kind": "avature",
+      "activeJobs": 1104,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "primark",
+      "name": "Primark",
+      "kind": "smartrecruiters-whitelabel",
+      "activeJobs": 966,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "lovisa",
+      "name": "Lovisa",
+      "kind": "teamtailor",
+      "activeJobs": 893,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "nike",
+      "name": "Nike",
+      "kind": "workday",
+      "activeJobs": 834,
+      "hasEmployerAliasReview": true
+    },
+    {
+      "source": "saks",
+      "name": "Saks Fifth Avenue",
+      "kind": "workday",
+      "activeJobs": 797,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "bloomingdales-oracle",
+      "name": "Bloomingdale's",
+      "kind": "oraclehcm",
+      "activeJobs": 791,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "la-casa-de-las-carcasas",
+      "name": "La casa de las Carcasas",
+      "kind": "teamtailor",
+      "activeJobs": 745,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "sandro",
+      "name": "SMCP (toutes Maisons)",
+      "kind": "smartrecruiters-whitelabel",
+      "activeJobs": 568,
+      "hasEmployerAliasReview": true
+    },
+    {
+      "source": "aritzia",
+      "name": "Aritzia",
+      "kind": "workday",
+      "activeJobs": 554,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "capri-michael-kors",
+      "name": "Michael Kors",
+      "kind": "workday",
+      "activeJobs": 529,
+      "hasEmployerAliasReview": true
+    },
+    {
+      "source": "swarovski",
+      "name": "Swarovski",
+      "kind": "workday",
+      "activeJobs": 527,
+      "hasEmployerAliasReview": true
+    },
+    {
+      "source": "oniverse",
+      "name": "Oniverse (Calzedonia)",
+      "kind": "generic-listing",
+      "activeJobs": 524,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "crocs",
+      "name": "Crocs",
+      "kind": "successfactors",
+      "activeJobs": 512,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "luxe-talent",
+      "name": "Luxe Talent",
+      "kind": "wordpress",
+      "activeJobs": 478,
+      "hasEmployerAliasReview": false
+    },
+    {
+      "source": "lacoste",
+      "name": "Lacoste",
+      "kind": "digitalrecruiters",
+      "activeJobs": 464,
+      "hasEmployerAliasReview": false
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "at": "2026-09-10T11:57:44.745369+00:00",
+  "cause": "Colima container-data disk capped at 40 GiB; 98% used, 790 MiB available",
+  "remediation": "Graceful local container stop, persistent Colima disk extension from 40 to 60 GiB, restore previously running containers",
+  "colimaDiskGiBBefore": 40,
+  "colimaDiskGiBAfter": 60,
+  "dockerFreeGiBAfterBuild": 14.69,
+  "hostFreeGiBAfterBuild": 26.9,
+  "preservation": {
+    "originalContainers": 18,
+    "originalRunningContainersRestored": 13,
+    "originalStoppedContainersKeptStopped": 5,
+    "allContainerImagesAndMountsPreserved": true,
+    "allOriginallyHealthyContainersHealthy": true,
+    "volumesDeleted": 0,
+    "imagesDeleted": 0,
+    "restoredLocalWebHealth": 200
+  },
+  "build": {
+    "status": "PASS",
+    "tag": "catwalks-aggregator:local",
+    "imageId": "sha256:dd274b44c338afa2c75d165d327f1fbe699662eca2789a5ecd0f585efda4b421",
+    "architecture": "arm64",
+    "localOnly": true,
+    "log": "backups/cleanup-20260910/docker-build-recovered.log"
+  },
+  "smokeChecks": {
+    "runtimeReferences": {
+      "country": "FR",
+      "maisonReferences": 734,
+      "seedSources": 83,
+      "city": "Londres"
+    },
+    "chromium": {
+      "node": "v24.18.1",
+      "chromium": "151.0.7922.34",
+      "launched": true
+    },
+    "cliScopeGuard": "PASS: rejected before ingestion",
+    "diskPreflight": "PASS: actual measurements and negative refusal witness"
+  },
+  "prevention": {
+    "command": "npm run build:local -w @catwalks/aggregator",
+    "checkOnly": "npm run build:local -w @catwalks/aggregator -- --check",
+    "minimumDockerFreeGiB": 12,
+    "minimumHostFreeGiB": 8,
+    "probeImage": "alpine:latest already installed; --pull=never",
+    "automaticDeletion": false
+  },
+  "productionChanges": false,
+  "reference": "https://github.com/abiosoft/colima/blob/main/docs/FAQ.md#how-can-disk-size-be-increased",
+  "notes": [
+    "Image built and tested on local arm64, not deployed to production",
+    "npm install reports 2 moderate advisories; no dependency changes made in this disk repair"
+  ]
+}

@@ -16,7 +16,7 @@
  * Une seule chaîne d'analyse sert la clé de dédup (`normalizeLocationString`)
  * et la ville affichée (`displayCity`, `cityFromLocation`) : découpage en
  * segments, rejet de ce qui n'est pas une ville, exonyme (table
- * `data/villes-exonymes.csv`), casse. Ce qui n'est pas une ville rend
+ * `data/reference/villes-exonymes.csv`), casse. Ce qui n'est pas une ville rend
  * `undefined` : le lieu brut reste dans `location`, mieux vaut aucune ville
  * qu'une fausse.
  */

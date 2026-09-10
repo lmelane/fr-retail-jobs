@@ -273,7 +273,7 @@ async function ingestApiSource(
   // Resolve config-key synonyms before the adapter reads it: a discovery batch
   // may have written `careers_url` where the Teamtailor adapter expects
   // `origin`, and the unrecognised key fetched nothing — the live "origin
-  // missing" failures. validateSources already did this; now the ingest agrees.
+  // missing" failures. qualification and ingestion use the same resolver.
   // The deadline rides along so a slow crawler (FashionJobs) stops gracefully.
   config = { ...normalizeSourceConfig(config), deadlineMs };
 

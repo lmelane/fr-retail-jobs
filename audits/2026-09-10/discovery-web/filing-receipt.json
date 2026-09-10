@@ -1,0 +1,32 @@
+{
+  "at": "2026-09-10T11:44:07.205339+00:00",
+  "status": "Research document only; database reconciliation and official ownership validation required before import",
+  "contentChanged": false,
+  "moves": [
+    {
+      "from": "apps/aggregator/data/discovery/2026-09-10-decouverte-web-lots1-2.md",
+      "to": "audits/2026-09-10/discovery-web/2026-09-10-decouverte-web-lots1-2.md",
+      "sha256": "c0420f9bd6ad56f35a59fb59925755d1f8f517bfc136af2a73c008af02e82aa7",
+      "bytes": 28660
+    },
+    {
+      "from": "apps/aggregator/data/discovery/lot-web-2026-09-10-lot2.md",
+      "to": "backups/cleanup-20260910/discovery-drafts/lot-web-2026-09-10-lot2.md",
+      "sha256": "64222e56b610673c9eb4d63db7740a22ea51877178be744ff499a505f4ea5705",
+      "bytes": 14413
+    },
+    {
+      "from": "apps/aggregator/data/discovery/lot-web-2026-09-10.md",
+      "to": "backups/cleanup-20260910/discovery-drafts/lot-web-2026-09-10.md",
+      "sha256": "209b26f06f6506a5e9459b74d3cb407715cc5fd2b4fd0cc5ed42572306132950",
+      "bytes": 354
+    }
+  ],
+  "findings": [
+    "Report claims absent actors based on historical CSV search, not the current database",
+    "Production snapshot of 2026-09-10 already contains Swarovski, Pandora and Douglas sources",
+    "Report summary says 26 new sources while section 2 contains 36 actor rows; developer message says 37",
+    "No new canonical actor or source activation certified by this document"
+  ],
+  "productionActions": []
+}

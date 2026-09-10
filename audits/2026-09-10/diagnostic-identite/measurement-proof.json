@@ -1,0 +1,15 @@
+{
+  "scope": "Read-only production transaction; local code and archived evidence audit. No ingestion, deployment or production mutation.",
+  "snapshotAt": "2026-09-10T10:57:16.213Z",
+  "commitInspected": "72f2a6575aae56e5afed1f12b1a9f838880819b8",
+  "privateSnapshot": "backups/diagnostic-20260910/production-audit-private.json",
+  "snapshotSha256": "fa5a1b5d9ff6b0dd42e3512b480026936327cfc050b5170c1da679ed528905ac",
+  "strictValidation": "assertIdentityReview on latest SourceIdentityReview for each source, at snapshot time",
+  "jobCounting": "Each active Job counted once; active JobSource intersected with Source.status=ACTIVE; four disjoint certification buckets.",
+  "limits": [
+    "45 valid records validate the recorded artifact and contract; semantic correctness of all archived official pages not re-reviewed individually.",
+    "337 sources without a portal review or reviewed employer alias in DB may have research pages in archives; absence of a DB review is not proof of absence of research.",
+    "Per-source and partial-evidence job counts overlap; only the four global buckets are additive.",
+    "No claim that uncertified sources or active jobs on paused sources are necessarily wrong."
+  ]
+}

@@ -10,15 +10,8 @@ build/
 # Local Claude Code state
 .claude/
 
-# Scratch data and one-off probes
-# Scratch CSV exports, but NOT the reference list: data/maisons.csv is the
-# 713-house source of truth the sector filter reads at runtime.
+# Generated exports stay private; curated application data is versioned below.
 *.csv
-!apps/aggregator/data/*.csv
-# Discovery output lives one level deeper; the negation above stops at data/,
-# so it needs its own. These CSVs are hours of agent work and were briefly
-# living only in /tmp, which the OS clears on reboot.
-!apps/aggregator/data/discovery/*.csv
 *.html
 *.xml
 # …mais jamais les ROUTES Next nommées sitemap.xml (leçon : la route index a
@@ -62,4 +55,14 @@ fashion-atlas.svg
 fashionatlas.svg
 index_1.html
 Capture*.png
-apps/aggregator/checkelc.ts
+
+# Curated nested application references and explicit import seeds.
+!apps/aggregator/data/**/*.csv
+
+# Immutable historical exports moved out of the application.
+!audits/legacy-aggregator-data/**/*.csv
+!audits/legacy-aggregator-data/*.csv
+!audits/legacy-aggregator-data/**/*.html
+!audits/legacy-aggregator-data/**/*.xml
+!audits/legacy-aggregator-data/**/*.xlsx
+!audits/legacy-aggregator-data/*.xlsx

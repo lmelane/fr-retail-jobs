@@ -13,10 +13,12 @@
     "stats": "tsx src/cli.ts stats",
     "health:report": "tsx src/cli.ts health-report",
     "export:companies": "tsx src/cli.ts export-companies",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.scripts.json",
     "test:unit": "vitest run --exclude 'src/pipeline/**' --exclude 'src/dedup/**'",
     "test:integration": "vitest run src/pipeline src/dedup",
-    "test": "npm run test:unit && npm run test:integration"
+    "test": "npm run test:unit && npm run test:integration",
+    "check:layout": "node scripts/check-layout.mjs",
+    "build:local": "node scripts/build-local.mjs"
   },
   "dependencies": {
     "@catwalks/db": "*",

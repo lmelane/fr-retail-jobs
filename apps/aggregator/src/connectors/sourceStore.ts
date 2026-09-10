@@ -144,7 +144,7 @@ export type ImportStats = {
 };
 
 /**
- * One-shot import of data/sources.csv into the Source table.
+ * One-shot import of data/seeds/sources.csv into the Source table.
  *
  * Seed only: existing operational rows remain authoritative and are never
  * overwritten by an undated CSV. New rows arrive DRAFT without fabricated
