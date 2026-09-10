@@ -1,0 +1,30 @@
+{
+  "at": "2026-09-10T06:41:00.540Z",
+  "environment": "clone",
+  "commit": "201e18b9862c49e23151827589748cc95bff2999",
+  "planHash": "1d64a305193bcd4bc0cb9952504c7f64611cd710312833167b4b070e316f6c35",
+  "aliasesPlanned": 2,
+  "merges": 0,
+  "renames": [],
+  "skipped": [],
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 2
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "written": [
+    "richemont-workday: VanCleef-Aprels → Van Cleef & Arpels",
+    "richemont: VanCleef-Aprels → Van Cleef & Arpels"
+  ],
+  "evidence": [
+    {
+      "url": "https://richemont.com/",
+      "sha256": "f730544eeba7347e5cbc40206af254d86d6400c5e81d3cf1dc36281eec396c18"
+    }
+  ]
+}

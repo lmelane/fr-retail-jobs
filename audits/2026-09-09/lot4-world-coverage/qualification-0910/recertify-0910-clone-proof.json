@@ -1,0 +1,60 @@
+{
+  "at": "2026-09-10T06:44:30.828Z",
+  "environment": "clone",
+  "sources": [
+    {
+      "key": "urbn-hub",
+      "maison": "URBN",
+      "statusBefore": "PAUSED",
+      "statusAfter": "ACTIVE",
+      "sourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "written": {
+        "sourceKey": "urbn-hub",
+        "sourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+        "verdict": "VERIFIED",
+        "written": 1
+      },
+      "promoted": {
+        "key": "urbn-hub",
+        "from": "PAUSED",
+        "to": "ACTIVE"
+      }
+    },
+    {
+      "key": "drunk-elephant-2",
+      "maison": "Shiseido",
+      "statusBefore": "PAUSED",
+      "statusAfter": "ACTIVE",
+      "sourceHash": "7f3b74ecb137609d0ed0f7909c71c22c6f0ee997a77f055ab81c5527b31ffcb6",
+      "written": {
+        "sourceKey": "drunk-elephant-2",
+        "sourceHash": "7f3b74ecb137609d0ed0f7909c71c22c6f0ee997a77f055ab81c5527b31ffcb6",
+        "verdict": "VERIFIED",
+        "written": 1
+      },
+      "promoted": {
+        "key": "drunk-elephant-2",
+        "from": "PAUSED",
+        "to": "ACTIVE"
+      }
+    },
+    {
+      "key": "dr-pierre-ricaud",
+      "maison": "Groupe Rocher",
+      "statusBefore": "PAUSED",
+      "statusAfter": "ACTIVE",
+      "sourceHash": "4cd66121664912a9ed103d12bbd323284fc4f2c8ae4c05864488d9f0d851ca72",
+      "written": {
+        "sourceKey": "dr-pierre-ricaud",
+        "sourceHash": "4cd66121664912a9ed103d12bbd323284fc4f2c8ae4c05864488d9f0d851ca72",
+        "verdict": "VERIFIED",
+        "written": 1
+      },
+      "promoted": {
+        "key": "dr-pierre-ricaud",
+        "from": "PAUSED",
+        "to": "ACTIVE"
+      }
+    }
+  ]
+}

@@ -1,0 +1,652 @@
+[
+ {
+  "rule": "A",
+  "source": "new-balance",
+  "label": "New Balance Europe B.V.",
+  "target": "New Balance",
+  "postings": 10,
+  "best": {
+   "scope": "SOURCE_PORTAL_RENDERED",
+   "url": "https://newbalance.wd1.myworkdayjobs.com/Careers-UK",
+   "sha256": "5f7be26a19e161e40d2549a847dbb35d900037bfc48756e63932c0cbc9747e81",
+   "kind": "ALL_TOKENS",
+   "excerpt": "ay like and save your cart. continue if you're ok with this, or read more in our privacy policy. decline accept cookies new balance careers sign in search for jobs search filters location type d'horaire categorie d'emploi more search for jobs page is loaded 90 jobs found jump to selected job details ecommerce operation"
+  }
+ },
+ {
+  "rule": "A",
+  "source": "versace",
+  "label": "Versace Deutschland GmbH",
+  "target": "Versace",
+  "postings": 6,
+  "best": {
+   "scope": "SOURCE_PORTAL_RENDERED",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace",
+   "sha256": "86240071991efda911d823c4c0fd7603588beaae60940caf5e59408c977b48bb",
+   "kind": "ALL_TOKENS",
+   "excerpt": "rechercher des emplois acceder directement au contenu principal for a copy of the versace california consumer privacy policy act for applicants, employees, and non-employee workers, please click here. refuser accepter les cookies francais (‏france) connexion rechercher des emplois "
+  }
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "mecca",
+  "label": "MECCA Brands Pty Ltd",
+  "target": "MECCA Brands",
+  "postings": 165,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://mecca.com/",
+   "sha256": "9a19a8cf9352fda5e2478a483e9930f6d19d8f1672af59ef2e07dab39d172ecb",
+   "kind": "ALL_TOKENS",
+   "excerpt": "mecca australia | the best in makeup, skincare, hair & fragrance skip to main content new too faced: just peachy! shop now pa"
+  }
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "drunk-elephant-2",
+  "label": "Shiseido",
+  "target": "SHISEIDO",
+  "postings": 160,
+  "best": {
+   "scope": "TARGET_OFFICIAL_SITE",
+   "url": "https://shiseido.com/",
+   "sha256": "a8cb0a7313034744b79cdf75ae248cbc52964a3274f5593926190b620d08fa1c",
+   "kind": "FULL_LABEL",
+   "excerpt": "shiseido | skincare, makeup & suncare from japan --> skip to main content last day to shop the event &nbsp; &nbsp;&nbsp;&nbsp; -"
+  }
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "richemont",
+  "label": "VanCleef-Aprels",
+  "target": "Van Cleef & Arpels",
+  "postings": 111,
+  "best": null
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "richemont-workday",
+  "label": "VanCleef-Aprels",
+  "target": "Van Cleef & Arpels",
+  "postings": 273,
+  "best": null
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "dr-pierre-ricaud",
+  "label": "Groupe Rocher",
+  "target": "Groupe Rocher",
+  "postings": 63,
+  "best": {
+   "scope": "TARGET_OFFICIAL_SITE",
+   "url": "https://groupe-rocher.com/",
+   "sha256": "1b0b3d55fda35b9779a505e33533eeaec4bba9a9ede0351d43af62602d98481b",
+   "kind": "FULL_LABEL",
+   "excerpt": "reconnect people to nature | groupe rocher aller au contenu principal entreprise a mission site du groupe espace fournisseurs espace presse switch language fr en "
+  }
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "b2",
+  "label": "Browns Shoes",
+  "target": "Browns Shoes",
+  "postings": 66,
+  "best": {
+   "scope": "TARGET_OFFICIAL_SITE",
+   "url": "https://brownsshoes.com/",
+   "sha256": "021f478eb2ed2659262b207fdf366b3fb6684384b06ec7bcf83b65b4c4f8efef",
+   "kind": "FULL_LABEL",
+   "excerpt": "browns shoes: shoes, boots, and sandals for women, men and kids skip to main content your fall ugg era starts now | secure your pair"
+  }
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "etam",
+  "label": "Maison 123",
+  "target": "Maison 123",
+  "postings": 61,
+  "best": {
+   "scope": "SOURCE_PORTAL",
+   "url": "https://career.groupeetam.com",
+   "sha256": "39b150a4a9a2f928d476ba63cbaeb24ce52b170c993f98d8c888275428cb4e43",
+   "kind": "FULL_LABEL",
+   "excerpt": "joindre ? nos metiers nos opportunites espace collaborateur connexion en tant que collaborateur groupe etam groupe etam maison 123 etam undiz espace candidat connexion a connect accueil etam-groupe.com partager la page facebook x linkedin bienvenue d"
+  }
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "tapestry",
+  "label": "Coach Stores Limited",
+  "target": "Coach",
+  "postings": 51,
+  "best": {
+   "scope": "SOURCE_PORTAL_RENDERED",
+   "url": "https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers",
+   "sha256": "1f6273f026b51334003cde0ee30fa53cc971f1123802cf2e406ba49ed1b690d2",
+   "kind": "ALL_TOKENS",
+   "excerpt": "edo - entraineur) posted on offre publiee aujourd'hui jr_00001312 lead supervisor i locations lynnwood, usa(alderwood - coach) posted on offre publiee aujourd'hui jr15130 assistant store manager i locations lynnwood, usa(alderwood - coach) posted on offre publiee aujourd'hui jr15129 lead supervisor locations terengganu"
+  }
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "etam",
+  "label": "Undiz",
+  "target": "Undiz",
+  "postings": 48,
+  "best": {
+   "scope": "SOURCE_PORTAL",
+   "url": "https://career.groupeetam.com",
+   "sha256": "39b150a4a9a2f928d476ba63cbaeb24ce52b170c993f98d8c888275428cb4e43",
+   "kind": "FULL_LABEL",
+   "excerpt": "tiers nos opportunites espace collaborateur connexion en tant que collaborateur groupe etam groupe etam maison 123 etam undiz espace candidat connexion a connect accueil etam-groupe.com partager la page facebook x linkedin bienvenue dans le grou"
+  }
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "tapestry",
+  "label": "Coach Shanghai Limited",
+  "target": "Coach Shanghai",
+  "postings": 22,
+  "best": {
+   "scope": "SOURCE_PORTAL_RENDERED",
+   "url": "https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers",
+   "sha256": "1f6273f026b51334003cde0ee30fa53cc971f1123802cf2e406ba49ed1b690d2",
+   "kind": "ALL_TOKENS",
+   "excerpt": "edo - entraineur) posted on offre publiee aujourd'hui jr_00001312 lead supervisor i locations lynnwood, usa(alderwood - coach) posted on offre publiee aujourd'hui jr15130 assistant store manager i locations lynnwood, usa(alderwood - coach) posted on offre publiee aujourd'hui jr15129 lead supervisor locations terengganu"
+  }
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "l-occitane-en-provence-2",
+  "label": "L'Occitane",
+  "target": "L’Occitane",
+  "postings": 20,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://loccitane.com/",
+   "sha256": "d9f6f4d2050c8808a6b1826857601106b5716cd7f47a01710561b90c20e0129d",
+   "kind": "FULL_LABEL",
+   "excerpt": "change location - l'occitane en provence global.browsertoolscheck.javascript welcome to l'occitane looks like you're in france ship to france americ"
+  }
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "tapestry",
+  "label": "Coach Hong Kong Limited",
+  "target": "Coach",
+  "postings": 18,
+  "best": {
+   "scope": "SOURCE_PORTAL_RENDERED",
+   "url": "https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers",
+   "sha256": "1f6273f026b51334003cde0ee30fa53cc971f1123802cf2e406ba49ed1b690d2",
+   "kind": "ALL_TOKENS",
+   "excerpt": "edo - entraineur) posted on offre publiee aujourd'hui jr_00001312 lead supervisor i locations lynnwood, usa(alderwood - coach) posted on offre publiee aujourd'hui jr15130 assistant store manager i locations lynnwood, usa(alderwood - coach) posted on offre publiee aujourd'hui jr15129 lead supervisor locations terengganu"
+  }
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "loccitane-fr",
+  "label": "L'Occitane en Provence - France",
+  "target": "L’Occitane en Provence",
+  "postings": 14,
+  "best": {
+   "scope": "SOURCE_PORTAL",
+   "url": "https://jobs-fr.loccitane.com",
+   "sha256": "b27af0cf30051e302514cb67f694b454e0e72a3d77f6d785df4eba3948644632",
+   "kind": "FULL_LABEL",
+   "excerpt": "travailler chez l'occitane en provence - l'occitane en provence - france passer au contenu principal ce site web utilise des cookies pour vous garantir la meilleure experience. l'occitane en p"
+  }
+ },
+ {
+  "rule": "DISTINCT_EXISTING_BRAND",
+  "source": "lvmh",
+  "label": "Groupe Bon Marché",
+  "target": "Le Bon Marché",
+  "postings": 45,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://lvmh.com/",
+   "sha256": "4a4f50ceae82f79dc1e893119a6cda46f698b16722fed0928420af67ced23a45",
+   "kind": "ALL_TOKENS",
+   "excerpt": "lective retailing home selective retailing back popular searches sephora maisons 24s dfs la grande epicerie de paris le bon marche rive gauche samaritaine sephora home selective retailing other activities home other activities back popular sea"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "huber",
+  "label": "JM Huber Corporation",
+  "target": "HUBER",
+  "postings": 61,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://huber.com/",
+   "sha256": "22f1917f111084221f1949248b21fa0ad09cad4214c4e0dda78cac3c44f4908b",
+   "kind": "ALL_TOKENS",
+   "excerpt": "industrial products and engineered materials solutions pmc | huber skip to content logo main menu search for: search about show submenu company overview our vision, purpose and principle"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "mascot-workwear",
+  "label": "Mascot International",
+  "target": "MASCOT Workwear",
+  "postings": 49,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://mascot.dk/",
+   "sha256": "5311b0eaa6453db16fe88f29157472a6bef04080e9c13b77b5325d2b29783ad2",
+   "kind": "FULL_LABEL",
+   "excerpt": "j profiltøj firmalogo udtalelser e-procurement mascot® mobile showroom en global arbejdstøjsløsning kataloger om mascot mascot international jobs tested to work socialt og miljømæssigt ansvar showrooms messer sponsorater kontakt mascot forhandler deutschland d"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "nutrire",
+  "label": "Tricoci Salon | Spa",
+  "target": "Nutrire",
+  "postings": 52,
+  "best": {
+   "scope": "SOURCE_PORTAL",
+   "url": "https://careers.tricoci.com",
+   "sha256": "746fb3f4c25daf973a3d6e3980254278d4d87bea14550683277cd3bed5d8b127",
+   "kind": "FULL_LABEL",
+   "excerpt": "join us at 13 chicagoland locations for hair trends & spa wellness - tricoci salon | spa skip to main content this website uses cookies to ensure you get the best experience. tricoci salon | spa and our selec"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "eurofragrance",
+  "label": "Eurofragance",
+  "target": "Eurofragrance",
+  "postings": 39,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://eurofragance.com/",
+   "sha256": "8f2b6ce1edf16ef1d4289c8bbee8bc3e37237e9b66175691bf992a0ed4adcfd7",
+   "kind": "FULL_LABEL",
+   "excerpt": "eurofragance | all the resources of a large perfume house skip to main content skip to footer customers suppliers talent newsroom co"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "pronovias",
+  "label": "Pronovias Group",
+  "target": "Pronovias",
+  "postings": 33,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://pronovias.com/",
+   "sha256": "ff2a1ae772a1d1c013e58ea334decef3352c6bcc8b0c5a595b8745d591036f41",
+   "kind": "FULL_LABEL",
+   "excerpt": "e map share your wedding pictures book your appointment change country choose your country usa country copyright © 2026 pronovias group all rights reserved 0 --> 0 --> join the pronovias world we would love to drop you the occasional email on latest trend"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "showroomprive",
+  "label": "Showroomprive.com",
+  "target": "Showroomprive",
+  "postings": 30,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://showroomprive.com/",
+   "sha256": "3a73dcc8cc317bcc2da2d9522c78fcf87d5ef25dce793b915ee000c12f063a93",
+   "kind": "FULL_LABEL",
+   "excerpt": "nos produits deafiline&nbsp; (*) par rapport au prix de vente conseille certains visuels sont generes en ia &copy;&nbsp;showroomprive.com&nbsp;2026 showroomprive adhere au code deontologique de la fevad showroomprive se soucie de votre vie privee showroompr"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "swarovski",
+  "label": "1570 Swarovski UK Ltd.",
+  "target": "Swarovski",
+  "postings": 41,
+  "best": {
+   "scope": "SOURCE_PORTAL_RENDERED",
+   "url": "https://swarovski.wd3.myworkdayjobs.com/swarovski",
+   "sha256": "b774554253fbeff787e0c70b326dd4aebd69a68582de0d79627943f5f0147ee7",
+   "kind": "ALL_TOKENS",
+   "excerpt": "rechercher des emplois acceder directement au contenu principal politique en matiere de cookies&nbsp; &nbsp; swarovski international holding ag (« swarovski ») utilise des cookies strictement necessaires au fonctionnement de ce portail de recrutement ou pour vous permettre de postuler a l'aide des fonctionna"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "swarovski",
+  "label": "1530 Swarovski (Deutschland) GmbH",
+  "target": "Swarovski",
+  "postings": 30,
+  "best": {
+   "scope": "SOURCE_PORTAL_RENDERED",
+   "url": "https://swarovski.wd3.myworkdayjobs.com/swarovski",
+   "sha256": "b774554253fbeff787e0c70b326dd4aebd69a68582de0d79627943f5f0147ee7",
+   "kind": "ALL_TOKENS",
+   "excerpt": "rechercher des emplois acceder directement au contenu principal politique en matiere de cookies&nbsp; &nbsp; swarovski international holding ag (« swarovski ») utilise des cookies strictement necessaires au fonctionnement de ce portail de recrutement ou pour vous permettre de postuler a l'aide des fonctionna"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "damiani",
+  "label": "damianispa",
+  "target": "Damiani",
+  "postings": 28,
+  "best": {
+   "scope": "SOURCE_PORTAL_RENDERED",
+   "url": "https://careers.damianigroup.com",
+   "sha256": "81747accd0f63b1b20c38e4fc3cd37b723a8ffd63c4b857e72792912efcf10d2",
+   "kind": "FULL_LABEL",
+   "excerpt": "damianispa jobs we use cookies to give you the best possible experience, including those necessary for the operation of this website. your cookie preferences will be stored in the local memory of your"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "swarovski",
+  "label": "0200 Swarovski Global Business Services sp. z o.o.",
+  "target": "Swarovski",
+  "postings": 19,
+  "best": {
+   "scope": "SOURCE_PORTAL_RENDERED",
+   "url": "https://swarovski.wd3.myworkdayjobs.com/swarovski",
+   "sha256": "b774554253fbeff787e0c70b326dd4aebd69a68582de0d79627943f5f0147ee7",
+   "kind": "ALL_TOKENS",
+   "excerpt": "rechercher des emplois acceder directement au contenu principal politique en matiere de cookies&nbsp; &nbsp; swarovski international holding ag (« swarovski ») utilise des cookies strictement necessaires au fonctionnement de ce portail de recrutement ou pour vous permettre de postuler a l'aide des fonctionna"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "vitamin-a",
+  "label": "Vitamin Well Group",
+  "target": "Vitamin A",
+  "postings": 19,
+  "best": {
+   "scope": "SOURCE_PORTAL",
+   "url": "https://vitamin.teamtailor.com",
+   "sha256": "c1c1f9a38d5f7976c71d1779ba166fbecf59ab289100c020f1c8728c4fe0c4ed",
+   "kind": "FULL_LABEL",
+   "excerpt": "join our team - vitamin well group skip to main content this website uses cookies to ensure you get the best experience. vitamin well group and our select"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "blue-banana",
+  "label": "Blue Banana Brand",
+  "target": "Blue Banana",
+  "postings": 17,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://bluebananabrand.com/",
+   "sha256": "c01a98733b0c6ad447c6935a5df3346eb17210b39bcd9232a2c8888e5ad49bbd",
+   "kind": "FULL_LABEL",
+   "excerpt": "blue banana brand - sudaderas, camisetas y hoodies consentement details [#iabv2settings#] a propos des cookies ce site web utilise des co"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "prisma-media",
+  "label": "Prisma Media Group",
+  "target": "Prisma Media",
+  "postings": 17,
+  "best": {
+   "scope": "SOURCE_PORTAL",
+   "url": "https://emploi.prismamedia.com/jobs",
+   "sha256": "6598693f4b3c0d7f7c9261c0c07a4245c4551a7a6a4661732d3ac5ee08cf3636",
+   "kind": "FULL_LABEL",
+   "excerpt": "offres d'emploi – rejoignez nos equipes - prisma media group passer au contenu principal ce site web utilise des cookies pour vous garantir la meilleure experience. prisma media gr"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "katie-loxton",
+  "label": "Joma Jewellery and Katie Loxton",
+  "target": "Katie Loxton",
+  "postings": 19,
+  "best": {
+   "scope": "SOURCE_PORTAL",
+   "url": "https://careers.katieloxton.com",
+   "sha256": "e412e56fff6288d80aea5d9748ebe10b48ba183a1c292b7f8e89ed334a9c06b4",
+   "kind": "FULL_LABEL",
+   "excerpt": "careers - joma jewellery and katie loxton this website uses cookies to ensure you get the best experience. joma jewellery and katie loxton and our selected partn"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "normal",
+  "label": "NORMAL Hovedkontor Danmark",
+  "target": "Normal",
+  "postings": 15,
+  "best": {
+   "scope": "SOURCE_PORTAL",
+   "url": "https://jobs.normal.eu",
+   "sha256": "bbd4d18eb51dc5bbd2aa47faad901223415aaa24da195a5416e18e763b9f2818",
+   "kind": "FULL_LABEL",
+   "excerpt": " menu start jobs employee log in as employee normal group normal group normal butikker danmark normal warehouse denmark normal hovedkontor danmark normal finland normal france all group companies candidate log in to connect homepage normal.eu share page facebook x l"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "carla-b",
+  "label": "Carla",
+  "target": "CARLA B",
+  "postings": 12,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://carlabruni.com/",
+   "sha256": "d5eac4c4deccfa36ab71aceaf866a53863b185d4b5be10724d9698a681781c9e",
+   "kind": "FULL_LABEL",
+   "excerpt": "vinyle nouvel album disponible cd edition digisleeve - 13 titres shop vinyle avec lithographie numerotee, dedicacee par carla bruni shop vinyle 14 titres cd livre-disque edition limitee 17 titres shop shop clips your lady la mort des amants un g"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "swarovski",
+  "label": "0210 Swarovski GBS Asia",
+  "target": "Swarovski",
+  "postings": 12,
+  "best": {
+   "scope": "SOURCE_PORTAL_RENDERED",
+   "url": "https://swarovski.wd3.myworkdayjobs.com/swarovski",
+   "sha256": "b774554253fbeff787e0c70b326dd4aebd69a68582de0d79627943f5f0147ee7",
+   "kind": "ALL_TOKENS",
+   "excerpt": "rechercher des emplois acceder directement au contenu principal politique en matiere de cookies&nbsp; &nbsp; swarovski international holding ag (« swarovski ») utilise des cookies strictement necessaires au fonctionnement de ce portail de recrutement ou pour vous permettre de postuler a l'aide des fonctionna"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "karla-otto",
+  "label": "The Independents",
+  "target": "Karla Otto",
+  "postings": 11,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://karlaotto.com/about",
+   "sha256": "08301154457e2bc3d1bde8366911803bee41da5d484cfb7286191ac20b33e0e4",
+   "kind": "FULL_LABEL",
+   "excerpt": "lled approach to culture and community enables us to take brands to brave new territories. discover our portfolio about the independents the independents is a global group of industry leaders across luxury and lifestyle, comprising atelier athem, atelier l"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "one",
+  "label": "one.com",
+  "target": "ONE",
+  "postings": 8,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://one.com/",
+   "sha256": "39f972909e72ab06af9131fc6b2f281839bab708cc1e7032598f45d983740ccd",
+   "kind": "FULL_LABEL",
+   "excerpt": "noms de domaine | hebergement | e-mail | wordpress | one.com offres et prix aide 24h/24, 7j/7 obtenez de l&#x27;aide demarrez une conversation le moyen le plus rapide de nous conta"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "typology",
+  "label": "Good Brands",
+  "target": "Typology",
+  "postings": 8,
+  "best": {
+   "scope": "SOURCE_PORTAL",
+   "url": "https://typology-1732032895.teamtailor.com",
+   "sha256": "31daca11079c04ee8ea85dc8ec96b2a097822402d5c436d1f9d9b1bd32ef5edc",
+   "kind": "FULL_LABEL",
+   "excerpt": "join the team at typology - good brands skip to main content this website uses cookies to ensure you get the best experience. good brands and our selected part"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "saks",
+  "label": "186 NEIMAN MARCUS GROUP TECHNOLOGY SERVICES PRIVATE LIMITED (INDIA)",
+  "target": "Saks Fifth Avenue",
+  "postings": 13,
+  "best": null
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "luhta",
+  "label": "Luhta Sportswear Company",
+  "target": "Luhta",
+  "postings": 5,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://luhta.com/",
+   "sha256": "c639c2e94af20d30b6143a8569838c2bf42f416cab5aba55fa03779c0afcd798",
+   "kind": "FULL_LABEL",
+   "excerpt": "peak pet pour les professionnels luhta home pour les professionnels agences commerciales service photo qui sommes-nous? luhta sportswear company luhta.com durabilite la declaration d'accessibilite garantie legale fiche produit relative aux qualites et caracteristi"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "aim-n",
+  "label": "aim'n Sportswear",
+  "target": "Aim'n",
+  "postings": 4,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://aimn.com/",
+   "sha256": "002355fa01a5f87a5f5e1d375e6157785a1c4c0523c0a79ca0ef17d50df86fa5",
+   "kind": "FULL_LABEL",
+   "excerpt": "aim'n sportswear | by women, for women! &ndash; aim'n skip to content pause slideshow play slideshow free size exchange free express shi"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "burnt",
+  "label": "Burnt Studios",
+  "target": "Burnt",
+  "postings": 4,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://burnt.co.za/",
+   "sha256": "5512cfa109b2f613d3c78041eebc6676e88725e3332629c057279acda9f477c0",
+   "kind": "FULL_LABEL",
+   "excerpt": "burnt studios® - premium activewear – burnt sa skip to content free shipping on orders over r1250 new | alpine collection. shop now s"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "printful",
+  "label": "FYUL",
+  "target": "Printful",
+  "postings": 7,
+  "best": null
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "cal-k-holding",
+  "label": "calikholdi",
+  "target": "Çalık",
+  "postings": 3,
+  "best": null
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "maryruth-s",
+  "label": "MRO MaryRuth, LLC",
+  "target": "MaryRuth's",
+  "postings": 3,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://maryruths.com/",
+   "sha256": "e4db816bca4a5cae1eecf63985ae851e659db8dc5c2aae61b77fbc7d145da13b",
+   "kind": "FULL_LABEL",
+   "excerpt": "r healthcare professional about potential interactions or other possible complications before using any product. © 2025 mro maryruth, llc. all rights reserved. terms of service | privacy policy | accessibility | prop-65 | your privacy choices | do not sell "
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "joy",
+  "label": "Joy Privateaser",
+  "target": "Joy",
+  "postings": 2,
+  "best": {
+   "scope": "SOURCE_PORTAL",
+   "url": "https://joy.teamtailor.com",
+   "sha256": "9a4c8bd621392049fd1b7bed95f28e7872729ecc3cc2ab97b0e6f8c345f32518",
+   "kind": "FULL_LABEL",
+   "excerpt": "es-tu pret(e) a rejoindre une aventure qui a du sens ? - joy privateaser passer au contenu principal ce site web utilise des cookies pour vous garantir la meilleure experience. joy privateaser"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "lexington",
+  "label": "The Lexington Company AB",
+  "target": "Lexington",
+  "postings": 2,
+  "best": {
+   "scope": "SOURCE_PORTAL",
+   "url": "https://jobs.lexingtoncompany.com",
+   "sha256": "893b4ae242c1c8af923b42bca90d2724332f6ffcabc941df42b1a2349af511c1",
+   "kind": "FULL_LABEL",
+   "excerpt": "shape your future at the lexington company ab - the lexington company ab skip to main content this website uses cookies to ensure you get the best experience. the le"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "swarovski",
+  "label": "0780 Swarovski Malaysia",
+  "target": "Swarovski",
+  "postings": 2,
+  "best": {
+   "scope": "SOURCE_PORTAL_RENDERED",
+   "url": "https://swarovski.wd3.myworkdayjobs.com/swarovski",
+   "sha256": "b774554253fbeff787e0c70b326dd4aebd69a68582de0d79627943f5f0147ee7",
+   "kind": "ALL_TOKENS",
+   "excerpt": "rechercher des emplois acceder directement au contenu principal politique en matiere de cookies&nbsp; &nbsp; swarovski international holding ag (« swarovski ») utilise des cookies strictement necessaires au fonctionnement de ce portail de recrutement ou pour vous permettre de postuler a l'aide des fonctionna"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "motel",
+  "label": "Motel Rocks",
+  "target": "Motel",
+  "postings": 1,
+  "best": {
+   "scope": "OWNER_OFFICIAL_SITE",
+   "url": "https://motelrocks.com/",
+   "sha256": "68c88040d2aad6b43ef8f8908fb5806131687a6df83a1b883f761a736a1ac3a4",
+   "kind": "FULL_LABEL",
+   "excerpt": "vintage & printed women's fashion & clothes - motel rocks – motelrocks-com-eur please ensure javascript is enabled for purposes of website accessibility skip to main content ena"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "normal",
+  "label": "NORMAL Warehouse Denmark",
+  "target": "Normal",
+  "postings": 1,
+  "best": {
+   "scope": "SOURCE_PORTAL",
+   "url": "https://jobs.normal.eu",
+   "sha256": "bbd4d18eb51dc5bbd2aa47faad901223415aaa24da195a5416e18e763b9f2818",
+   "kind": "FULL_LABEL",
+   "excerpt": "-target=\"button\" > career menu start jobs employee log in as employee normal group normal group normal butikker danmark normal warehouse denmark normal hovedkontor danmark normal finland normal france all group companies candidate log in to connect homepage normal"
+  }
+ },
+ {
+  "rule": "OWNER_REVIEW",
+  "source": "dfs",
+  "label": "dfsventure",
+  "target": "DFS",
+  "postings": 4,
+  "best": null
+ }
+]

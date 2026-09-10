@@ -1,0 +1,393 @@
+{
+ "source": {
+  "maison": "Mango",
+  "config": {
+   "site": "Mango_Work_Your_Passion",
+   "origin": "https://mango.wd3.myworkdayjobs.com",
+   "tenant": "mango"
+  },
+  "careersDomain": "mango.wd3.myworkdayjobs.com",
+  "robotsVerdict": "ALLOWED",
+  "robotsCheckedAt": "2026-09-04T13:51:24.679Z"
+ },
+ "observationLabels": [
+  {
+   "rawEmployerName": "MANGO MNG, S.A.",
+   "rule": "REVIEWED_ALIAS",
+   "postings": 587
+  },
+  {
+   "rawEmployerName": "MANGO MNG, S.A.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 568
+  },
+  {
+   "rawEmployerName": "MANGO FRANCE, S.A.R.L.",
+   "rule": "REVIEWED_ALIAS",
+   "postings": 318
+  },
+  {
+   "rawEmployerName": "MANGO FRANCE, S.A.R.L.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 295
+  },
+  {
+   "rawEmployerName": "MNG-MANGO U.K. LIMITED",
+   "rule": "REVIEWED_ALIAS",
+   "postings": 115
+  },
+  {
+   "rawEmployerName": "MNG-MANGO U.K. LIMITED",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 109
+  },
+  {
+   "rawEmployerName": "MANGO  ITALIA S.r.l.",
+   "rule": "REVIEWED_ALIAS",
+   "postings": 95
+  },
+  {
+   "rawEmployerName": "MANGO  ITALIA S.r.l.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 93
+  },
+  {
+   "rawEmployerName": "Mango Deutschland GMBH",
+   "rule": "REVIEWED_ALIAS",
+   "postings": 81
+  },
+  {
+   "rawEmployerName": "Mango Deutschland GMBH",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 80
+  },
+  {
+   "rawEmployerName": "MANGO TR TEKSTIL TICARET LTD.S",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 76
+  },
+  {
+   "rawEmployerName": "MANGO NY INC",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 75
+  },
+  {
+   "rawEmployerName": "MNG MANGO BELGIQUE S.P.R.L",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 70
+  },
+  {
+   "rawEmployerName": "MANGO Nederland BV",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 34
+  },
+  {
+   "rawEmployerName": "MANGO SINGAPORE GARMENTS PTE, LTD",
+   "rule": "REVIEWED_ALIAS",
+   "postings": 26
+  },
+  {
+   "rawEmployerName": "MANGO SINGAPORE GARMENTS PTE, LTD",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 24
+  },
+  {
+   "rawEmployerName": "MANGO FRANCE, S.A.R.L.",
+   "rule": "REVIEW_REQUIRED",
+   "postings": 23
+  },
+  {
+   "rawEmployerName": "MANGO MNG, S.A.",
+   "rule": "REVIEW_REQUIRED",
+   "postings": 19
+  },
+  {
+   "rawEmployerName": "MANGO ÖSTERRREICH HANDELS. GMBH",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 13
+  },
+  {
+   "rawEmployerName": "MANGO Polska Sp.z.o.o.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 11
+  },
+  {
+   "rawEmployerName": "MANGO SUISSE SA",
+   "rule": "REVIEWED_ALIAS",
+   "postings": 11
+  },
+  {
+   "rawEmployerName": "MNG MANGO IRELAND LIMITED",
+   "rule": "REVIEWED_ALIAS",
+   "postings": 11
+  },
+  {
+   "rawEmployerName": "MANGO SUISSE SA",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 10
+  },
+  {
+   "rawEmployerName": "MANGONOR Comércio de Vestuário S.A",
+   "rule": "REVIEWED_ALIAS",
+   "postings": 10
+  },
+  {
+   "rawEmployerName": "MANGO MODA D.O.O.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 10
+  },
+  {
+   "rawEmployerName": "MANGONOR Comércio de Vestuário S.A",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 9
+  },
+  {
+   "rawEmployerName": "MNG MANGO IRELAND LIMITED",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 9
+  },
+  {
+   "rawEmployerName": "MANGO HUNGARY Kft.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 8
+  },
+  {
+   "rawEmployerName": "MANGO LUXEMBOURG S.à.r.l.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 8
+  },
+  {
+   "rawEmployerName": "MANGO GARMENTS HELLAS E.P.E.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 6
+  },
+  {
+   "rawEmployerName": "MNG-MANGO U.K. LIMITED",
+   "rule": "REVIEW_REQUIRED",
+   "postings": 6
+  },
+  {
+   "rawEmployerName": "MANGO GARMENTS ROM. SRL.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 5
+  },
+  {
+   "rawEmployerName": "MANGO MERITXELL, S.L.U",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 5
+  },
+  {
+   "rawEmployerName": "MANGO SVERIGE AB",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 4
+  },
+  {
+   "rawEmployerName": "Mango Korea, Ltd",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 4
+  },
+  {
+   "rawEmployerName": "MANGO (CZ) s.r.o.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 4
+  },
+  {
+   "rawEmployerName": "MANGO HONG KONG LIMITED",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 4
+  },
+  {
+   "rawEmployerName": "MANGO SL D.O.O.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 3
+  },
+  {
+   "rawEmployerName": "MANGO  ITALIA S.r.l.",
+   "rule": "REVIEW_REQUIRED",
+   "postings": 2
+  },
+  {
+   "rawEmployerName": "MANGO SINGAPORE GARMENTS PTE, LTD",
+   "rule": "REVIEW_REQUIRED",
+   "postings": 2
+  },
+  {
+   "rawEmployerName": "MNG MANGO IRELAND LIMITED",
+   "rule": "REVIEW_REQUIRED",
+   "postings": 2
+  },
+  {
+   "rawEmployerName": "MANGO BULGARIA EOOD",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 1
+  },
+  {
+   "rawEmployerName": "MANGO NORGE A.S.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 1
+  },
+  {
+   "rawEmployerName": "MANGO SLOVENSKO, s.r.o.",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 1
+  },
+  {
+   "rawEmployerName": "MANGO SUISSE SA",
+   "rule": "REVIEW_REQUIRED",
+   "postings": 1
+  },
+  {
+   "rawEmployerName": "MANGO UKRAINE TOV",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 1
+  },
+  {
+   "rawEmployerName": "Mango Deutschland GMBH",
+   "rule": "REVIEW_REQUIRED",
+   "postings": 1
+  },
+  {
+   "rawEmployerName": "MANGO DANMARK APS",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 1
+  },
+  {
+   "rawEmployerName": "MANGO BULGARIA EOOD (EUR)",
+   "rule": "LEGACY_UNREVIEWED",
+   "postings": 1
+  },
+  {
+   "rawEmployerName": "MANGONOR Comércio de Vestuário S.A",
+   "rule": "REVIEW_REQUIRED",
+   "postings": 1
+  }
+ ],
+ "rawEmployers": [
+  {
+   "org": "MANGO MNG, S.A.",
+   "logo": null,
+   "n": 587
+  },
+  {
+   "org": "MANGO FRANCE, S.A.R.L.",
+   "logo": null,
+   "n": 318
+  },
+  {
+   "org": "MNG-MANGO U.K. LIMITED",
+   "logo": null,
+   "n": 115
+  },
+  {
+   "org": "MANGO  ITALIA S.r.l.",
+   "logo": null,
+   "n": 95
+  },
+  {
+   "org": null,
+   "logo": null,
+   "n": 86
+  },
+  {
+   "org": "Mango Deutschland GMBH",
+   "logo": null,
+   "n": 81
+  },
+  {
+   "org": "MANGO TR TEKSTIL TICARET LTD.S",
+   "logo": null,
+   "n": 76
+  },
+  {
+   "org": "MANGO NY INC",
+   "logo": null,
+   "n": 75
+  },
+  {
+   "org": "MNG MANGO BELGIQUE S.P.R.L",
+   "logo": null,
+   "n": 70
+  },
+  {
+   "org": "MANGO Nederland BV",
+   "logo": null,
+   "n": 34
+  },
+  {
+   "org": "MANGO SINGAPORE GARMENTS PTE, LTD",
+   "logo": null,
+   "n": 26
+  },
+  {
+   "org": "MANGO ÖSTERRREICH HANDELS. GMBH",
+   "logo": null,
+   "n": 13
+  },
+  {
+   "org": "MNG MANGO IRELAND LIMITED",
+   "logo": null,
+   "n": 11
+  },
+  {
+   "org": "MANGO Polska Sp.z.o.o.",
+   "logo": null,
+   "n": 11
+  },
+  {
+   "org": "MANGO SUISSE SA",
+   "logo": null,
+   "n": 11
+  },
+  {
+   "org": "MANGONOR Comércio de Vestuário S.A",
+   "logo": null,
+   "n": 10
+  },
+  {
+   "org": "MANGO MODA D.O.O.",
+   "logo": null,
+   "n": 10
+  },
+  {
+   "org": "MANGO HUNGARY Kft.",
+   "logo": null,
+   "n": 8
+  },
+  {
+   "org": "MANGO LUXEMBOURG S.à.r.l.",
+   "logo": null,
+   "n": 8
+  },
+  {
+   "org": "MANGO GARMENTS HELLAS E.P.E.",
+   "logo": null,
+   "n": 6
+  },
+  {
+   "org": "MANGO MERITXELL, S.L.U",
+   "logo": null,
+   "n": 5
+  },
+  {
+   "org": "MANGO GARMENTS ROM. SRL.",
+   "logo": null,
+   "n": 5
+  },
+  {
+   "org": "MANGO SVERIGE AB",
+   "logo": null,
+   "n": 4
+  },
+  {
+   "org": "MANGO HONG KONG LIMITED",
+   "logo": null,
+   "n": 4
+  },
+  {
+   "org": "Mango Korea, Ltd",
+   "logo": null,
+   "n": 4
+  }
+ ],
+ "heldNoEmployer": 54
+}

@@ -1,0 +1,28 @@
+{
+  "at": "2026-09-10T06:36:28.739Z",
+  "environment": "clone",
+  "commit": "201e18b9862c49e23151827589748cc95bff2999",
+  "planHash": "f6c3f7b822e8f532b2909899fb56e4cb17c3f0e5ede54e2be6f6644b9d7a0ba3",
+  "postingsBefore": 120,
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 120,
+    "aliases": 1
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "after": {
+    "keringKind": "GROUP",
+    "keringJobs": 166,
+    "corporateMergedInto": "cmtjwa11205v4ld2b4be98q45",
+    "alias": {
+      "reviewId": "20260910-LOT4-KERING-CORPORATE-v1",
+      "company": {
+        "name": "Kering"
+      }
+    }
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "at": "2026-09-10T06:38:37.938Z",
+  "environment": "clone",
+  "commit": "201e18b9862c49e23151827589748cc95bff2999",
+  "planHash": "047d4477bb45092101a2dfc2a9d13bbd8540b519da630a47fe79a996d2470bb3",
+  "aliasesPlanned": 34,
+  "merges": 2,
+  "renames": [
+    {
+      "id": "cmtlyk0vv09n7qf5k812hyz8w",
+      "name": "Eurofragance"
+    }
+  ],
+  "skipped": [
+    {
+      "source": "richemont-workday",
+      "label": "VanCleef-Aprels",
+      "why": "no official page prints the label or its distinctive tokens",
+      "best": null
+    },
+    {
+      "source": "richemont",
+      "label": "VanCleef-Aprels",
+      "why": "no official page prints the label or its distinctive tokens",
+      "best": null
+    }
+  ],
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 194,
+    "aliases": 34
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "written": [
+    "new-balance: New Balance Europe B.V. → New Balance",
+    "versace: Versace Deutschland GmbH → Versace",
+    "mecca: MECCA Brands Pty Ltd → MECCA",
+    "etam: Maison 123 → Maison 123",
+    "etam: Undiz → Undiz",
+    "tapestry: Coach Stores Limited → Coach",
+    "tapestry: Coach Hong Kong Limited → Coach",
+    "tapestry: Coach Shanghai Limited → Coach",
+    "lvmh: Groupe Bon Marché → Le Bon Marché",
+    "l-occitane-en-provence-2: L'Occitane → L’Occitane",
+    "loccitane-fr: L'Occitane en Provence - France → L’Occitane en Provence",
+    "mascot-workwear: Mascot International → MASCOT Workwear",
+    "swarovski: 1570 Swarovski UK Ltd. → Swarovski",
+    "swarovski: 1530 Swarovski (Deutschland) GmbH → Swarovski",
+    "swarovski: 0200 Swarovski Global Business Services sp. z o.o. → Swarovski",
+    "swarovski: 0210 Swarovski GBS Asia → Swarovski",
+    "swarovski: 0780 Swarovski Malaysia → Swarovski",
+    "eurofragrance: Eurofragance → Eurofragance",
+    "pronovias: Pronovias Group → Pronovias",
+    "showroomprive: Showroomprive.com → Showroomprive",
+    "damiani: damianispa → Damiani",
+    "normal: NORMAL Hovedkontor Danmark → Normal",
+    "normal: NORMAL Warehouse Denmark → Normal",
+    "katie-loxton: Joma Jewellery and Katie Loxton → Katie Loxton",
+    "blue-banana: Blue Banana Brand → Blue Banana",
+    "prisma-media: Prisma Media Group → Prisma Media",
+    "karla-otto: The Independents → Karla Otto",
+    "typology: Good Brands → Typology",
+    "luhta: Luhta Sportswear Company → Luhta",
+    "aim-n: aim'n Sportswear → Aim'n",
+    "burnt: Burnt Studios → Burnt",
+    "dfs: dfsventure → DFS",
+    "lexington: The Lexington Company AB → Lexington",
+    "motel: Motel Rocks → Motel"
+  ],
+  "evidence": [
+    {
+      "url": "https://newbalance.wd1.myworkdayjobs.com/Careers-UK",
+      "sha256": "5f7be26a19e161e40d2549a847dbb35d900037bfc48756e63932c0cbc9747e81"
+    },
+    {
+      "url": "https://capri.wd1.myworkdayjobs.com/Versace",
+      "sha256": "86240071991efda911d823c4c0fd7603588beaae60940caf5e59408c977b48bb"
+    },
+    {
+      "url": "https://mecca.com/",
+      "sha256": "9a19a8cf9352fda5e2478a483e9930f6d19d8f1672af59ef2e07dab39d172ecb"
+    },
+    {
+      "url": "https://career.groupeetam.com",
+      "sha256": "39b150a4a9a2f928d476ba63cbaeb24ce52b170c993f98d8c888275428cb4e43"
+    },
+    {
+      "url": "https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers",
+      "sha256": "1f6273f026b51334003cde0ee30fa53cc971f1123802cf2e406ba49ed1b690d2"
+    },
+    {
+      "url": "https://lvmh.com/",
+      "sha256": "4a4f50ceae82f79dc1e893119a6cda46f698b16722fed0928420af67ced23a45"
+    },
+    {
+      "url": "https://loccitane.com/",
+      "sha256": "d9f6f4d2050c8808a6b1826857601106b5716cd7f47a01710561b90c20e0129d"
+    },
+    {
+      "url": "https://jobs-fr.loccitane.com",
+      "sha256": "b27af0cf30051e302514cb67f694b454e0e72a3d77f6d785df4eba3948644632"
+    },
+    {
+      "url": "https://mascot.dk/",
+      "sha256": "5311b0eaa6453db16fe88f29157472a6bef04080e9c13b77b5325d2b29783ad2"
+    },
+    {
+      "url": "https://swarovski.wd3.myworkdayjobs.com/swarovski",
+      "sha256": "b774554253fbeff787e0c70b326dd4aebd69a68582de0d79627943f5f0147ee7"
+    },
+    {
+      "url": "https://eurofragance.com/",
+      "sha256": "8f2b6ce1edf16ef1d4289c8bbee8bc3e37237e9b66175691bf992a0ed4adcfd7"
+    },
+    {
+      "url": "https://pronovias.com/",
+      "sha256": "ff2a1ae772a1d1c013e58ea334decef3352c6bcc8b0c5a595b8745d591036f41"
+    },
+    {
+      "url": "https://showroomprive.com/",
+      "sha256": "3a73dcc8cc317bcc2da2d9522c78fcf87d5ef25dce793b915ee000c12f063a93"
+    },
+    {
+      "url": "https://careers.damianigroup.com",
+      "sha256": "81747accd0f63b1b20c38e4fc3cd37b723a8ffd63c4b857e72792912efcf10d2"
+    },
+    {
+      "url": "https://jobs.normal.eu",
+      "sha256": "bbd4d18eb51dc5bbd2aa47faad901223415aaa24da195a5416e18e763b9f2818"
+    },
+    {
+      "url": "https://careers.katieloxton.com",
+      "sha256": "e412e56fff6288d80aea5d9748ebe10b48ba183a1c292b7f8e89ed334a9c06b4"
+    },
+    {
+      "url": "https://bluebananabrand.com/",
+      "sha256": "c01a98733b0c6ad447c6935a5df3346eb17210b39bcd9232a2c8888e5ad49bbd"
+    },
+    {
+      "url": "https://emploi.prismamedia.com/jobs",
+      "sha256": "6598693f4b3c0d7f7c9261c0c07a4245c4551a7a6a4661732d3ac5ee08cf3636"
+    },
+    {
+      "url": "https://karlaotto.com/about",
+      "sha256": "08301154457e2bc3d1bde8366911803bee41da5d484cfb7286191ac20b33e0e4"
+    },
+    {
+      "url": "https://typology-1732032895.teamtailor.com",
+      "sha256": "31daca11079c04ee8ea85dc8ec96b2a097822402d5c436d1f9d9b1bd32ef5edc"
+    },
+    {
+      "url": "https://luhta.com/",
+      "sha256": "c639c2e94af20d30b6143a8569838c2bf42f416cab5aba55fa03779c0afcd798"
+    },
+    {
+      "url": "https://aimn.com/",
+      "sha256": "002355fa01a5f87a5f5e1d375e6157785a1c4c0523c0a79ca0ef17d50df86fa5"
+    },
+    {
+      "url": "https://burnt.co.za/",
+      "sha256": "5512cfa109b2f613d3c78041eebc6676e88725e3332629c057279acda9f477c0"
+    },
+    {
+      "url": "https://careers.dfs.com",
+      "sha256": "4302d9e644dc75f1fc04a531ef5d3e8237353817fb5eec84ceda516151b3a0a2"
+    },
+    {
+      "url": "https://jobs.lexingtoncompany.com",
+      "sha256": "893b4ae242c1c8af923b42bca90d2724332f6ffcabc941df42b1a2349af511c1"
+    },
+    {
+      "url": "https://motelrocks.com/",
+      "sha256": "68c88040d2aad6b43ef8f8908fb5806131687a6df83a1b883f761a736a1ac3a4"
+    }
+  ]
+}

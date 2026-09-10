@@ -1,0 +1,322 @@
+[
+ {
+  "tenantKey": "digitalrecruiters:careers.am-vintage.com",
+  "type": "DIGITALRECRUITERS",
+  "portal": "https://careers.am-vintage.com/en",
+  "postings": 37,
+  "labels": "AMERICAN VINTAGE",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "wttj-sector:arlettie-paris",
+  "type": "WTTJ",
+  "portal": "https://www.welcometothejungle.com/fr/companies/arlettie-paris/jobs/candidatures-spontanees/",
+  "postings": 16,
+  "labels": "ARLETTIE | ARLETTIE PARIS",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "lever:arcteryx.com",
+  "type": "LEVER",
+  "portal": "https://jobs.lever.co/arcteryx.com?department=Retail%20Stores",
+  "postings": 298,
+  "labels": "ARC'TERYX",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workday:knitwellgroup/us_distribution_center",
+  "type": "WORKDAY",
+  "portal": "https://knitwellgroup.wd1.myworkdayjobs.com/US_Distribution_Center/login",
+  "postings": 18,
+  "labels": "CHICO'S OUTLET | SOMA | CHICO'S | TALBOTS",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workday:knitwellgroup/us_corporate_jobs",
+  "type": "WORKDAY",
+  "portal": "https://knitwellgroup.wd1.myworkdayjobs.com/US_Corporate_Jobs/login",
+  "postings": 94,
+  "labels": "CHICO'S OUTLET | SOMA | CHICO'S | TALBOTS",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workday:knitwellgroup/us_retail_jobs",
+  "type": "WORKDAY",
+  "portal": "https://knitwellgroup.wd1.myworkdayjobs.com/US_Retail_Jobs/login",
+  "postings": 2019,
+  "labels": "CHICO'S OUTLET | SOMA | CHICO'S | TALBOTS",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "digitalrecruiters:recrutement.ks-groupe.com",
+  "type": "DIGITALRECRUITERS",
+  "portal": "https://recrutement.ks-groupe.com/fr",
+  "postings": 61,
+  "labels": "KSI MODE | KSI RETAIL",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "digitalrecruiters:talents.luxuryofretail.com",
+  "type": "DIGITALRECRUITERS",
+  "portal": "https://talents.luxuryofretail.com/fr",
+  "postings": 19,
+  "labels": "LUXURY OF RETAIL",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "greenhouse:onrunning",
+  "type": "GREENHOUSE",
+  "portal": "https://boards.greenhouse.io/onrunning/jobs/8180988?gh_jid=8180988",
+  "postings": 312,
+  "labels": "On | ON RUNNING | culture.on.com",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workday:skechers/one-career-site",
+  "type": "WORKDAY",
+  "portal": "https://skechers.wd5.myworkdayjobs.com/One-career-site/job/Shibuya-13-Japan/_JR114532/apply",
+  "postings": 1722,
+  "labels": "SKECHERS | careers.skechers.com",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "teamtailor:yseparis.teamtailor.com",
+  "type": "TEAMTAILOR",
+  "portal": "https://yseparis.teamtailor.com//",
+  "postings": 11,
+  "labels": "YSÉ | yseparis.teamtailor.com",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "oraclehcm:hcml.fa.us2.oraclecloud.com",
+  "type": "ORACLE_HCM",
+  "portal": "https://hcml.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/AEO-Careers/",
+  "postings": 3586,
+  "labels": "AERIE | AMERICAN EAGLE",
+  "sectorPlausibility": "A_LIRE",
+  "why": "tenant Oracle HCM non nommé (3 586 offres) — identité à lire sur la page",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workable:charlotte-tilbury",
+  "type": "WORKABLE",
+  "portal": "https://apply.workable.com/charlotte-tilbury/",
+  "postings": 252,
+  "labels": "CAROLINA HERRERA | Puig",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workday:columbiasportswearcompany/csc_careers",
+  "type": "WORKDAY",
+  "portal": "https://columbiasportswearcompany.wd5.myworkdayjobs.com/CSC_Careers",
+  "postings": 223,
+  "labels": "COLUMBIA",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "successfactors:jobs.soliver-group.com",
+  "type": "SUCCESSFACTORS",
+  "portal": "https://jobs.soliver-group.com/?locale=en_US",
+  "postings": 101,
+  "labels": "LIEBESKIND BERLIN | S.OLIVER",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "pinpoint:riverisland.pinpointhq.com",
+  "type": "PINPOINT",
+  "portal": "https://riverisland.pinpointhq.com/?scroll_to=#our-values",
+  "postings": 0,
+  "labels": "RIVER ISLAND",
+  "sectorPlausibility": "A_LIRE",
+  "why": "0 offre lue",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "pinpoint:riverislandsm.pinpointhq.com",
+  "type": "PINPOINT",
+  "portal": "https://riverislandsm.pinpointhq.com/?scroll_to=socials",
+  "postings": 0,
+  "labels": "RIVER ISLAND",
+  "sectorPlausibility": "A_LIRE",
+  "why": "0 offre lue",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "pinpoint:skims.pinpointhq.com",
+  "type": "PINPOINT",
+  "portal": "https://skims.pinpointhq.com//",
+  "postings": 0,
+  "labels": "SKIMS",
+  "sectorPlausibility": "A_LIRE",
+  "why": "0 offre lue",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workday:jcrew/jcrewcareers",
+  "type": "WORKDAY",
+  "portal": "https://jcrew.wd1.myworkdayjobs.com/en-US/JCrewCareers/introduceYourself",
+  "postings": 1047,
+  "labels": "MADEWELL",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "oraclehcm:fa-evdi-saasfaprod1.fa.ocs.oraclecloud.com",
+  "type": "ORACLE_HCM",
+  "portal": "https://fa-evdi-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/WarbyParkerCareers/n",
+  "postings": 886,
+  "labels": "WARBY PARKER",
+  "sectorPlausibility": "A_LIRE",
+  "why": "tenant Oracle HCM non nommé (886) — idem",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "greenhouse:sprintersportses",
+  "type": "GREENHOUSE",
+  "portal": "https://job-boards.eu.greenhouse.io/sprintersportses/jobs/4967494101",
+  "postings": 43,
+  "labels": "SPRINTER",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "icims:uk-earlyassociatecareers-lw.icims.com",
+  "type": "ICIMS",
+  "portal": "https://uk-earlyassociatecareers-lw.icims.com/jobs/10938/2027---first-year-spring-scheme----london/job/",
+  "postings": 6,
+  "labels": "WALMART",
+  "sectorPlausibility": "A_LIRE",
+  "why": "hub iCIMS « lw » (6) — employeur à confirmer",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workday:aig/early_careers",
+  "type": "WORKDAY",
+  "portal": "https://aig.wd1.myworkdayjobs.com/en-US/early_careers/job/Shanghai/Underwriter--Trade-Credit_JR2603060/apply/autofillWithResume/",
+  "postings": 37,
+  "labels": "WALMART",
+  "sectorPlausibility": "HORS_SECTEUR",
+  "why": "AIG (assurance)",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workday:perkinscoie/perkinscoieexternal",
+  "type": "WORKDAY",
+  "portal": "https://perkinscoie.wd115.myworkdayjobs.com/en-US/perkinscoieexternal/job/Chicago-IL/XMLNAME-2027-2L-Summer-Associate---Real-Estate_R0006474?workerSubType=182b17dd4e07109cd1dde8742cae32f8\\",
+  "postings": 57,
+  "labels": "WALMART",
+  "sectorPlausibility": "HORS_SECTEUR",
+  "why": "Perkins Coie (cabinet d’avocats)",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workday:nbn/nbncareers",
+  "type": "WORKDAY",
+  "portal": "https://nbn.wd3.myworkdayjobs.com/nbncareers/job/Australia/Expression-of-Interest---nbn-2027-Graduate-Program_238935-1?utm_source=forage\\",
+  "postings": 61,
+  "labels": "WALMART",
+  "sectorPlausibility": "HORS_SECTEUR",
+  "why": "NBN Co (télécoms)",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "greenhouse:thirdbridge",
+  "type": "GREENHOUSE",
+  "portal": "https://job-boards.eu.greenhouse.io/thirdbridge/jobs/4858749101?gh_jid=4858749101\\u0026gh_src=yzw6jo62teu\\",
+  "postings": 128,
+  "labels": "WALMART",
+  "sectorPlausibility": "HORS_SECTEUR",
+  "why": "Third Bridge (recherche financière)",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workday:ryan/ryancareers",
+  "type": "WORKDAY",
+  "portal": "https://ryan.wd1.myworkdayjobs.com/en-US/RyanCareers/job/Consultant--Personal-Property-Tax_R0020060-2?utm_source=forage\\",
+  "postings": 107,
+  "labels": "WALMART",
+  "sectorPlausibility": "HORS_SECTEUR",
+  "why": "Ryan LLC (fiscalité)",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workday:ryan/students-graduates",
+  "type": "WORKDAY",
+  "portal": "https://ryan.wd1.myworkdayjobs.com/en-US/Students-Graduates/introduceYourself?utm_source=forage\\u0026utm_medium=referral\\",
+  "postings": 19,
+  "labels": "WALMART",
+  "sectorPlausibility": "HORS_SECTEUR",
+  "why": "Ryan LLC (fiscalité)",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "workday:pru/careers",
+  "type": "WORKDAY",
+  "portal": "https://pru.wd5.myworkdayjobs.com/en-US/Careers/introduceYourself?utm_source=forage\\",
+  "postings": 168,
+  "labels": "WALMART",
+  "sectorPlausibility": "HORS_SECTEUR",
+  "why": "Prudential (assurance)",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "smartrecruiters-whitelabel:acetate",
+  "type": "SMARTRECRUITERS",
+  "portal": "https://jobs.smartrecruiters.com/AceTate/744000139268649-opticien-weekend?oga=true\\",
+  "postings": 27,
+  "labels": "www.aceandtate.com",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "digitalrecruiters:careers.mf-brands.com",
+  "type": "DIGITALRECRUITERS",
+  "portal": "https://careers.mf-brands.com/en/annonces",
+  "postings": 675,
+  "labels": "careers.mf-brands.com",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ },
+ {
+  "tenantKey": "digitalrecruiters:creativejob.balenciaga.com",
+  "type": "DIGITALRECRUITERS",
+  "portal": "https://creativejob.balenciaga.com/fr/annonce/1129363-candidature-spontanee-spontaneous-application-75007-paris",
+  "postings": 1,
+  "labels": "creativejob.balenciaga.com",
+  "sectorPlausibility": "PLAUSIBLE",
+  "why": "acteur mode/luxe/beauté/retail d’après le tenant et ses libellés",
+  "status": "CANDIDAT — revue périmètre/groupe par le propriétaire avant toute activation"
+ }
+]

@@ -1,0 +1,19 @@
+{
+  "at": "2026-09-10T06:36:27.581Z",
+  "environment": "clone",
+  "sourceHash": "4d98dcbcbfb4b773c86d42edad819a03b872be27a8ed12dfb15d27a9ff135ce0",
+  "scopeBefore": null,
+  "scopeAfter": "SINGLE_BRAND",
+  "written": {
+    "sourceKey": "mango",
+    "sourceHash": "4d98dcbcbfb4b773c86d42edad819a03b872be27a8ed12dfb15d27a9ff135ce0",
+    "verdict": "VERIFIED",
+    "written": 1
+  },
+  "evidence": {
+    "talent": "f2f8380bd3af72dd95076aef326f8ed9764b20dd0d81e0dbd9e6b6037cd995c5",
+    "jobs": "ba73ed10ed371581814847f2c37e6794f0f707bca8533d8e8d253a16afa50036",
+    "bundle": "a8ad55db274711beba4c6077decc3a1b416950ca67bf22db873708171f8c1682",
+    "portal": "d8fa1728f07ffbb89a14abebd95dcc870850589ccb51233a36dac2cc6e99487f"
+  }
+}
