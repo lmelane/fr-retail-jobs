@@ -1,0 +1,136 @@
+{
+ "at": "2026-09-10T22:11:55.958Z",
+ "target": "production",
+ "apply": true,
+ "talentsoft": {
+  "candidates": 102,
+  "planned": 102,
+  "sample": [
+   {
+    "id": "cmtt7w4g106gbmy01f8s6g981",
+    "sourceKey": "lagardere-travel-retail",
+    "externalId": "10345",
+    "from": {
+     "location": "Stage, Malakoff",
+     "city": "Malakoff"
+    },
+    "to": {
+     "location": "Malakoff"
+    }
+   },
+   {
+    "id": "cmtt7w64106h6my01lyyqdhby",
+    "sourceKey": "lagardere-travel-retail",
+    "externalId": "9901",
+    "from": {
+     "location": "CDI, Nice",
+     "city": "Nice"
+    },
+    "to": {
+     "location": "Nice"
+    }
+   },
+   {
+    "id": "cmtt7w64g06hhmy0150ltxuuw",
+    "sourceKey": "lagardere-travel-retail",
+    "externalId": "10378",
+    "from": {
+     "location": "CDI, Levallois PERRET",
+     "city": "Levallois-Perret"
+    },
+    "to": {
+     "location": "Levallois PERRET"
+    }
+   },
+   {
+    "id": "cmtt7w65s06i9my01fa3ir7tk",
+    "sourceKey": "lagardere-travel-retail",
+    "externalId": "10386",
+    "from": {
+     "location": "Stage, Malakoff",
+     "city": "Malakoff"
+    },
+    "to": {
+     "location": "Malakoff"
+    }
+   },
+   {
+    "id": "cmtt7w66a06ijmy01ckcb1a90",
+    "sourceKey": "lagardere-travel-retail",
+    "externalId": "10266",
+    "from": {
+     "location": "CDI, Nice",
+     "city": "Nice"
+    },
+    "to": {
+     "location": "Nice"
+    }
+   }
+  ],
+  "applied": 102
+ },
+ "uniqlo": {
+  "candidates": 2,
+  "planned": 2,
+  "plan": [
+   {
+    "id": "cmtvnlslg0059lh017co1owjf",
+    "from": {
+     "postedAt": null,
+     "location": null
+    },
+    "to": {
+     "postedAt": "2026-07-29T00:00:00.000Z"
+    },
+    "countryInRaw": null,
+    "descriptionInRaw": true
+   },
+   {
+    "id": "cmtvnlsn6005llh018aruuu8k",
+    "from": {
+     "postedAt": null,
+     "location": null
+    },
+    "to": {
+     "postedAt": "2026-05-26T00:00:00.000Z"
+    },
+    "countryInRaw": null,
+    "descriptionInRaw": true
+   }
+  ],
+  "applied": 2
+ },
+ "ulta": {
+  "target": {
+   "id": "cmtpuyimv3pbul35m36fwuuzo",
+   "name": "Ulta Beauty"
+  },
+  "legalEntity": {
+   "id": "cmtpkdkdi474apf5l272m6owb",
+   "name": "Ulta Beauty, Inc."
+  },
+  "jobsToMove": 1,
+  "activeAmongThem": 1,
+  "plan": {
+   "batchId": "p2-ulta-legal-form-2026-09-10",
+   "beforeHash": "b9caf5f4ff82f031d1e6e884a07a67a874701821d6bfcb991f40a7ead6539924",
+   "jobCount": 10290,
+   "activeJobCount": 10290,
+   "companyIds": [
+    "cmtpkdkdi474apf5l272m6owb",
+    "cmtpuyimv3pbul35m36fwuuzo"
+   ]
+  },
+  "result": {
+   "alreadyApplied": false,
+   "movedJobs": 1,
+   "aliases": 0
+  },
+  "replay": {
+   "alreadyApplied": true,
+   "movedJobs": 0,
+   "aliases": 0
+  },
+  "applied": true
+ }
+}

@@ -95,7 +95,20 @@ export function talentsoftItemToJob(item: RssItem): NormalizedJob | null {
     ? []
     : (Array.isArray(item.category) ? item.category : [item.category]).map((c) => String(c).trim()).filter(Boolean);
   const contract = categories.find((c) => CONTRACT_CATEGORY.test(c));
-  const places = categories.filter((c) => c !== contract && !JOB_FAMILY_CATEGORY.test(c));
+  /**
+   * The PLACE is the last category, never "everything that is not the contract".
+   *
+   * Filtering out job families by their slash was not enough: tenants also publish families with no slash at all
+   * ("Marketing", "Management de boutiques"), which then landed in the location — the very defect this fix was
+   * meant to remove. Verified across every archived row that carries categories: the shape is consistently
+   * [job family, contract, place], so the place is the last entry once the contract is set aside. When the feed
+   * gives only a family and a contract, there is no place, and none is invented.
+   */
+  const withoutContract = categories.filter((c) => c !== contract);
+  // [family, contract, place] -> the place is what follows the contract. With no category after it, the feed
+  // named no place: the leading family is not one, and inventing a location from it is exactly the old defect.
+  const contractIndex = contract ? categories.indexOf(contract) : -1;
+  const places = contractIndex >= 0 ? categories.slice(contractIndex + 1) : withoutContract;
 
   return {
     externalId: externalIdFromLink(link, title),

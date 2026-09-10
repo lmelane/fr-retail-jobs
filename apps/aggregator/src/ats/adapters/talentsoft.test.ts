@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { talentsoftItemToJob, listingCards } from './talentsoft.js';
+import { cleanPlace } from '../../lib/normalize.js';
 
 /**
  * Parsing the TalentSoft RSS <item> shape, verified live against Longchamp's
@@ -70,6 +71,33 @@ describe('talentsoftItemToJob', () => {
     const job = talentsoftItemToJob({ ...item, category: ['CDI', 'Stagira'] });
     expect(job?.contract).toBe('CDI');
     expect(job?.location).toBe('Stagira');
+  });
+
+  /**
+   * The three shapes met in production, exercised through the ADAPTER and then through the production
+   * normalisation (`cleanPlace`) — the path an ingest actually takes. Testing the repair script proved nothing
+   * about this path: `cleanPlace` only tidies whitespace and rejects markup, so anything the adapter lets
+   * through is stored verbatim. If the adapter emits "Stage" as a place, the database keeps "Stage".
+   */
+  it('never lets a contract word reach the stored place, on the three real shapes', () => {
+    const shapes = [
+      { name: 'job family first (Lagardère)', category: ['Commerce / Vente / Relations Clients', 'Stage', 'Malakoff'], place: 'Malakoff', contract: 'Stage' },
+      { name: 'family without a slash (Printemps)', category: ['Marketing', 'Stage', 'Paris'], place: 'Paris', contract: 'Stage' },
+      { name: 'family without a slash (retail)', category: ['Management de boutiques', 'CDI', 'Nice'], place: 'Nice', contract: 'CDI' },
+      { name: 'contract only, no place at all', category: ['Marketing', 'Stage'], place: undefined, contract: 'Stage' },
+    ];
+    for (const s of shapes) {
+      const job = talentsoftItemToJob({ ...item, category: s.category });
+      expect(job?.contract, s.name).toBe(s.contract);
+      // What the pipeline would store, through the real normaliser.
+      const storedLocation = cleanPlace(job?.location);
+      const storedCity = cleanPlace(job?.city);
+      for (const stored of [storedLocation, storedCity]) {
+        if (stored !== undefined) expect(stored, `${s.name}: stored place must not be a contract`).not.toMatch(/^(cdi|cdd|stage|alternance|apprentissage|int[ée]rim)\b/i);
+      }
+      if (s.place) expect(storedLocation, s.name).toBe(s.place);
+      else expect(storedLocation, `${s.name}: no place available means no place stored`).toBeUndefined();
+    }
   });
 
   it('handles a single category (contract only, no city)', () => {

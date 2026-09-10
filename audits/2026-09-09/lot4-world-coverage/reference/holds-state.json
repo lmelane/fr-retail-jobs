@@ -1,0 +1,23 @@
+{
+ "summary": {
+  "at": "2026-09-10T22:38:00.158Z",
+  "isolation": "repeatable read",
+  "definition": "A hold is a STATE: the latest hold event for a (source, externalId) that is NOT published today. Event counts are history and prove nothing about the current state.",
+  "scope": "all sources",
+  "representationsEverHeld": 775,
+  "heldNow": 740,
+  "publishedDespiteAPastHold": 35,
+  "heldByReason": {
+   "WORKDAY_EMPLOYER_ABSENT_IN_DETAIL": 695,
+   "SCOPE_OUT_OF_PERIMETER": 38,
+   "APPLICATION_EXPLICITLY_CLOSED": 6,
+   "WORKDAY_DETAIL_FETCH_FAILED": 1
+  },
+  "heldBySource": {
+   "vf-corporation": 695,
+   "aptar-beauty": 38,
+   "blackstore": 6,
+   "knitwell-us-retail": 1
+  }
+ }
+}

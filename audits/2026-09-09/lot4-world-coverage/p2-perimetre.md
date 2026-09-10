@@ -2,7 +2,8 @@
 
 > **STATUT : réparations instruites EXÉCUTÉES et vérifiées en production le 2026-09-10 à 22:11–22:14 UTC.**
 > Talentsoft **102**, UNIQLO **2**, Ulta **1** — sous protocole complet : sauvegarde fraîche (494 Mo, sha256 `e0737aa4…6660`) → restauration sur clone (la restauration EST la preuve) → répétition sur clone neuf → application ciblée en production → contrôles avant/après → **rejeu à 0**.
-> **Résultat vérifié** : 0 `location` pollué (101 avant), 0 offre UNIQLO non datée (2 avant), parité Ulta **10 290 = 10 290**, offres actives **79 516 inchangées**, **820 retenues de publication intactes**, **aucune date inventée** (chaque `postedAt` écrit égale exactement son `raw_date`). Publication vérifiée : **441/441**, plus aucun écart.
+> **Résultat vérifié** : 0 `location` pollué (101 avant), 0 offre UNIQLO non datée **et 0 sans description** (2 et 2 avant), parité Ulta **10 290 = 10 290**, offres actives **79 516 inchangées**, **740 retenues réelles inchangées** (état par identifiant et motif, pas un compteur d'événements), **aucune date inventée** (chaque `postedAt` écrit égale exactement son `raw_date`). Publication vérifiée : **441/441**, plus aucun écart.
+> Traçabilité complète — script appliqué, empreinte, identifiants, avant/après : **`p2-repairs-proof/`**.
 > **Restent ouverts dans P2** : doublons sur identifiant instable (cause à instruire), FashionJobs 172 détachables, et les dossiers bloqués par une décision ou un jeton.
 
 Toutes les mesures ci-dessous sont prises en **REPEATABLE READ**, niveau lu dans la transaction et asserté. Crons gelés, catalogue non étendu.
@@ -87,12 +88,12 @@ Sources réellement porteuses de l'identifiant instable, par URL : `psycho-bunny
 
 > **Deux erreurs de ma première passe, corrigées par cette réconciliation.** (a) Je citais « ~25 offres » depuis un listing tronqué par `LIMIT 15` : un extrait n'est pas un total, le chiffre exact est **22**. (b) J'accusais `lvmh` et `tiffany-oracle` d'identifiants instables : la mesure discriminante (même source, plusieurs `externalId` pour une même URL) les innocente — elles sont `instable=false`, leurs doublons viennent d'une attestation multi-sources. **Une URL dupliquée ne prouve pas un identifiant instable.**
 
-**Traitement retenu, différencié** :
-- Les doublons `hermes` / `wttj-sector` **se résorbent par le dossier PAUSED** (§ 6) : c'est le même fait vu deux fois, pas un défaut d'adaptateur.
-- Les doublons `fashionjobs` **se résorbent par le dossier FashionJobs** (§ 7).
-- Restent **22 offres en excès** sur 19 URLs, portées par 5 sources (ci-dessus) : un `externalId` doit être **stable entre runs**, c'est la condition de la déduplication (D26).
+**Traitement retenu, différencié — et les 44 groupes restent TOUS dans le périmètre d'investigation** :
+- Les **25 groupes multi-sources ne sont PAS classés « normaux »**. Ils contiennent **50 lignes `Job`**, c'est-à-dire des offres canoniques distinctes partageant une URL — pas simplement plusieurs attestations d'un même `Job`. Tant que l'identité des annonces n'est pas établie (même poste ? mêmes boutiques ? une page qui couvre plusieurs postes ?), **aucune fusion**. À instruire au même titre que les 19 autres.
+- Les 19 groupes « même source, plusieurs `externalId` » **ne prouvent pas non plus une instabilité entre runs** : ils prouvent que la source a produit deux identifiants pour une même URL, ce qui peut venir d'un identifiant recalculé, mais aussi d'une page couvrant deux postes réels, ou d'une pagination qui sert deux fois la même offre. La cause reste à établir.
 
-**État exact : mesuré et réconcilié, cause NON INSTRUITE, donc non corrigé.** Savoir que la même source a produit deux identifiants pour une même URL ne dit pas encore *pourquoi* — hash recalculé sur un contenu qui bouge, pagination qui renvoie deux fois la même offre sous deux clés, ou identifiant dérivé d'un champ instable. **Prochaine action** : instruire la dérivation d'`externalId` de `psycho-bunny` (12 URLs, le cas le plus fourni) sur son RAW archivé, établir la cause, puis la corriger avant tout `reconcile`. **Ce dossier reste dans P2.**
+**État exact : les 44 groupes (91 lignes `Job`, 47 en excès) restent DANS le périmètre d'investigation, cause NON INSTRUITE, aucune fusion.** La réconciliation a séparé deux *formes* — même source avec plusieurs identifiants (19 groupes) et plusieurs sources sur une page (25 groupes) — mais une forme n'est pas une cause, et aucune des deux ne justifie une fusion sans avoir établi l'identité des annonces.
+**Prochaine action** : instruire `psycho-bunny` (12 groupes, le cas le plus fourni) sur son RAW archivé — comparer titre, ville, contenu et dérivation de l'`externalId` entre les deux lignes d'une même URL — pour établir si ce sont deux annonces distinctes ou une seule vue deux fois. Puis appliquer la même lecture aux 25 groupes multi-sources. **Ce dossier reste dans P2.**
 
 ## 6. Les 52 offres WTTJ sous source PAUSED — qualifiées sans réactiver les crons
 
@@ -127,6 +128,22 @@ Sources réellement porteuses de l'identifiant instable, par URL : `psycho-bunny
 
 ---
 
+## Retenues de publication — l'état, pas le compteur
+
+Un `COUNT(*)` d'événements `job.publication_held` **ne peut que croître** : il serait resté identique même si toutes les offres retenues avaient été publiées. Il ne prouvait donc rien. La preuve est désormais l'**état courant** de chaque représentation retenue (`scripts/coverage/holds-state.mts`, `reference/holds-state.csv` par identifiant) :
+
+| Motif | Retenues réelles | Source |
+|---|---:|---|
+| `WORKDAY_EMPLOYER_ABSENT_IN_DETAIL` | 695 | vf-corporation |
+| `SCOPE_OUT_OF_PERIMETER` | 38 | aptar-beauty |
+| `APPLICATION_EXPLICITLY_CLOSED` | 6 | blackstore |
+| `WORKDAY_DETAIL_FETCH_FAILED` | 1 | knitwell-us-retail |
+| **Total retenu aujourd'hui** | **740** | |
+
+Conforme aux décisions gravées : les **695 VF** restent tenues et jamais créditées, Aptar 38 hors périmètre. **UNIQLO n'apparaît dans aucune retenue** — les réparations n'ont donc levé aucune retenue, et c'est vérifiable par identifiant, non déduit d'un total.
+
+**Ce que la mesure d'état a révélé et que le compteur cachait** : **35 représentations sont publiées malgré une retenue passée** (Mango 27, Tapestry 5, Nordstrom 3), toutes `WORKDAY_EMPLOYER_ABSENT_IN_DETAIL` ou `WORKDAY_DETAIL_FETCH_FAILED`. Elles sont créditées à des Maisons cohérentes avec leur source, et 28 portent une observation d'identité — la retenue a donc été levée par un run ultérieur ayant trouvé l'employeur, ce qui est le comportement voulu. **Les 7 sans observation (Tapestry 5, Nordstrom 2) sont un point à instruire, pas une anomalie prouvée.**
+
 ## Ce qui reste ouvert — état exact, opération restante, blocage
 
 **Exécuté et vérifié en production (2026-09-10 22:11–22:14 UTC)** : Talentsoft 102 · UNIQLO 2 · Ulta 1. Sauvegarde `e0737aa4…6660` restaurée sur clone (preuve), répétition sur clone neuf, application ciblée, contrôles avant/après, **rejeu à 0**. Offres actives **79 516 inchangées**, retenues **820 intactes**, parité **441/441**.
@@ -142,6 +159,7 @@ Sources réellement porteuses de l'identifiant instable, par URL : `psycho-bunny
 | `element-6` — RAW vides | qualifié | 5 | rejeu ciblé de ces 5 identifiants | aucun | **P2** |
 | 301 sans champ de date | qualifié | 301 | comparer un RAW daté et un non daté par source, hors ligne | aucun | **P2** |
 | Refus d'identité sur libellés actifs | mesuré | 20 libellés | revue d'alias | aucun | **P2** |
+| Retenues levées sans observation | mesuré | 7 (Tapestry 5, Nordstrom 2) | vérifier l'attribution de ces 7 représentations | aucun | **P2** |
 | WTTJ sous PAUSED | qualifié, sous contrôle | 52 | trancher au premier run complet | **décision de reprise des crons** | **P2** |
 
 **Aucun de ces dossiers n'est reclassé en P3.** Les blocages sont propres à leur dossier : le refus du jeton Railway n'empêche ni l'observation Fenwick, ni l'instruction des doublons, ni le détachement des 172 ; l'arbitrage FashionJobs n'empêche rien d'autre que les 585.
