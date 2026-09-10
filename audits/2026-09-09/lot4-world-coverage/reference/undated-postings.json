@@ -1,0 +1,704 @@
+{
+ "summary": {
+  "at": "2026-09-10T20:26:58.689Z",
+  "isolation": "repeatable read",
+  "scope": {
+   "undatedActivePostings": 1452,
+   "excludedOpenApplication": 0,
+   "sourcesConcerned": 10
+  },
+  "note": "An OPEN_APPLICATION posting legitimately has no JobPosting schema (it is not a specific vacancy) and is excluded from the defect.",
+  "byVerdict": {
+   "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD": 7,
+   "NO_PUBLICATION_DATE_ONLY_VACANCY_OR_VALIDITY_DATES": 1,
+   "RAW_EMPTY_ARCHIVING_OR_COLLECTION": 1,
+   "PARSING_DEFECT_PROVEN_OFFLINE": 1
+  },
+  "postingsByVerdict": {
+   "PARSING_DEFECT_PROVEN_OFFLINE": 2,
+   "RAW_EMPTY_ARCHIVING_OR_COLLECTION": 5,
+   "NO_PUBLICATION_DATE_ONLY_VACANCY_OR_VALIDITY_DATES": 41,
+   "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD": 1404
+  },
+  "top": [
+   {
+    "sourceKey": "ralph-lauren-avature",
+    "undated": 1103,
+    "active": 1104,
+    "datedShare": 0.1,
+    "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+    "rawKeys": [
+     "source",
+     "reference",
+     "department"
+    ]
+   },
+   {
+    "sourceKey": "l-oreal-professionnel",
+    "undated": 128,
+    "active": 1804,
+    "datedShare": 92.9,
+    "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+    "rawKeys": [
+     "source"
+    ]
+   },
+   {
+    "sourceKey": "adidas",
+    "undated": 63,
+    "active": 1142,
+    "datedShare": 94.5,
+    "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+    "rawKeys": [
+     "slug",
+     "source",
+     "postingEvidence"
+    ]
+   },
+   {
+    "sourceKey": "urbn-hub",
+    "undated": 59,
+    "active": 1476,
+    "datedShare": 96,
+    "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+    "rawKeys": [
+     "source",
+     "reference"
+    ]
+   },
+   {
+    "sourceKey": "lindex-easycruit",
+    "undated": 41,
+    "active": 41,
+    "datedShare": 0,
+    "verdict": "NO_PUBLICATION_DATE_ONLY_VACANCY_OR_VALIDITY_DATES",
+    "rawKeys": [
+     "detail",
+     "listing",
+     "fieldEvidence",
+     "postingEvidence"
+    ]
+   },
+   {
+    "sourceKey": "fenwick-volcanic",
+    "undated": 31,
+    "active": 31,
+    "datedShare": 0,
+    "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+    "rawKeys": [
+     "id",
+     "title",
+     "summary",
+     "user_id",
+     "end_date",
+     "job_type",
+     "referral",
+     "job_title",
+     "video_url",
+     "salary_low",
+     "start_date",
+     "cached_slug"
+    ]
+   },
+   {
+    "sourceKey": "brown-thomas-taleo",
+    "undated": 12,
+    "active": 76,
+    "datedShare": 84.2,
+    "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+    "rawKeys": [
+     "source"
+    ]
+   },
+   {
+    "sourceKey": "zegna-altamira",
+    "undated": 8,
+    "active": 64,
+    "datedShare": 87.5,
+    "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+    "rawKeys": [
+     "team",
+     "source",
+     "locations",
+     "postingEvidence"
+    ]
+   },
+   {
+    "sourceKey": "element-6",
+    "undated": 5,
+    "active": 403,
+    "datedShare": 98.8,
+    "verdict": "RAW_EMPTY_ARCHIVING_OR_COLLECTION",
+    "rawKeys": []
+   },
+   {
+    "sourceKey": "uniqlo-hkm-headquarters",
+    "undated": 2,
+    "active": 6,
+    "datedShare": 66.7,
+    "verdict": "PARSING_DEFECT_PROVEN_OFFLINE",
+    "rawKeys": [
+     "title",
+     "detail",
+     "postedOn",
+     "timeType",
+     "bulletFields",
+     "externalPath"
+    ]
+   }
+  ]
+ },
+ "sources": [
+  {
+   "sourceKey": "ralph-lauren-avature",
+   "maison": "Ralph Lauren",
+   "kind": "avature",
+   "status": "ACTIVE",
+   "activePostings": 1104,
+   "undated": 1103,
+   "datedShare": 0.1,
+   "rawSampled": 1103,
+   "rawWithPublicationDate": 0,
+   "rawWithOtherTemporalField": 0,
+   "rawEmpty": 0,
+   "rawKeys": [
+    "source",
+    "reference",
+    "department"
+   ],
+   "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+   "examples": [
+    {
+     "externalId": "67544",
+     "jobId": "cmtpunhk32km4l35mwm08qy7e",
+     "rawKeys": [
+      "source",
+      "reference",
+      "department"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "66679",
+     "jobId": "cmtpunhva2ks2l35mvsirokbv",
+     "rawKeys": [
+      "source",
+      "reference",
+      "department"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "67874",
+     "jobId": "cmtpuni032kufl35m1v1o8si1",
+     "rawKeys": [
+      "source",
+      "reference",
+      "department"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    }
+   ]
+  },
+  {
+   "sourceKey": "l-oreal-professionnel",
+   "maison": "L'Oréal (toutes Maisons)",
+   "kind": "avature",
+   "status": "ACTIVE",
+   "activePostings": 1804,
+   "undated": 128,
+   "datedShare": 92.9,
+   "rawSampled": 128,
+   "rawWithPublicationDate": 0,
+   "rawWithOtherTemporalField": 0,
+   "rawEmpty": 48,
+   "rawKeys": [
+    "source"
+   ],
+   "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+   "examples": [
+    {
+     "externalId": "254880",
+     "jobId": "cmtkhgpuu16rqmn2bcjj1yh08",
+     "rawKeys": [
+      "source"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "254366",
+     "jobId": "cmtma0gwi226dpv5jp8spmz6b",
+     "rawKeys": [
+      "source"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "255139",
+     "jobId": "cmts98mfm01ezln5mfn2hesmn",
+     "rawKeys": [
+      "source"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    }
+   ]
+  },
+  {
+   "sourceKey": "adidas",
+   "maison": "adidas",
+   "kind": "successfactors",
+   "status": "ACTIVE",
+   "activePostings": 1142,
+   "undated": 63,
+   "datedShare": 94.5,
+   "rawSampled": 63,
+   "rawWithPublicationDate": 0,
+   "rawWithOtherTemporalField": 0,
+   "rawEmpty": 0,
+   "rawKeys": [
+    "slug",
+    "source",
+    "postingEvidence"
+   ],
+   "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+   "examples": [
+    {
+     "externalId": "1425687133",
+     "jobId": "cmtp4owpf273lqq4zarpurrue",
+     "rawKeys": [
+      "slug",
+      "source"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "1413069333",
+     "jobId": "cmtp4nsp7247dqq4zuwwpkvfr",
+     "rawKeys": [
+      "slug",
+      "source"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "1432105233",
+     "jobId": "cmtp4nwat24vhqq4zlnobesed",
+     "rawKeys": [
+      "slug",
+      "source"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    }
+   ]
+  },
+  {
+   "sourceKey": "urbn-hub",
+   "maison": "URBN",
+   "kind": "icims",
+   "status": "ACTIVE",
+   "activePostings": 1476,
+   "undated": 59,
+   "datedShare": 96,
+   "rawSampled": 59,
+   "rawWithPublicationDate": 0,
+   "rawWithOtherTemporalField": 0,
+   "rawEmpty": 36,
+   "rawKeys": [
+    "source",
+    "reference"
+   ],
+   "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+   "examples": [
+    {
+     "externalId": "30618",
+     "jobId": "cmtpucnmy1sail35membt7a35",
+     "rawKeys": [],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "26808",
+     "jobId": "cmtpucr6o1tt2l35m63gmh04k",
+     "rawKeys": [],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "31147",
+     "jobId": "cmtpucm9z1roal35m23lfs0n4",
+     "rawKeys": [],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    }
+   ]
+  },
+  {
+   "sourceKey": "lindex-easycruit",
+   "maison": "Lindex",
+   "kind": "easycruit",
+   "status": "ACTIVE",
+   "activePostings": 41,
+   "undated": 41,
+   "datedShare": 0,
+   "rawSampled": 41,
+   "rawWithPublicationDate": 0,
+   "rawWithOtherTemporalField": 41,
+   "rawEmpty": 0,
+   "rawKeys": [
+    "detail",
+    "listing",
+    "fieldEvidence",
+    "postingEvidence"
+   ],
+   "verdict": "NO_PUBLICATION_DATE_ONLY_VACANCY_OR_VALIDITY_DATES",
+   "examples": [
+    {
+     "externalId": "3473393",
+     "jobId": "cmtub8dmq0003o20115yajcz4",
+     "rawKeys": [
+      "detail",
+      "listing",
+      "fieldEvidence",
+      "postingEvidence"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": [
+      "detail.@_date_end=2026-09-30",
+      "detail.@_date_start=2026-08-19",
+      "listing.@_date_end=2026-09-30",
+      "listing.@_date_start=2026-08-19"
+     ]
+    },
+    {
+     "externalId": "3648631",
+     "jobId": "cmtub8doa0009o2014vakotq9",
+     "rawKeys": [
+      "detail",
+      "listing",
+      "fieldEvidence",
+      "postingEvidence"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": [
+      "detail.@_date_end=2026-09-15",
+      "detail.@_date_start=2026-07-22",
+      "listing.@_date_end=2026-09-15",
+      "listing.@_date_start=2026-07-22"
+     ]
+    },
+    {
+     "externalId": "3652139",
+     "jobId": "cmtub8dp3000fo201lv84b2id",
+     "rawKeys": [
+      "detail",
+      "listing",
+      "fieldEvidence",
+      "postingEvidence"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": [
+      "detail.@_date_end=2026-09-13",
+      "detail.@_date_start=2026-08-10",
+      "listing.@_date_end=2026-09-13",
+      "listing.@_date_start=2026-08-10"
+     ]
+    }
+   ]
+  },
+  {
+   "sourceKey": "fenwick-volcanic",
+   "maison": "Fenwick",
+   "kind": "volcanic",
+   "status": "ACTIVE",
+   "activePostings": 31,
+   "undated": 31,
+   "datedShare": 0,
+   "rawSampled": 31,
+   "rawWithPublicationDate": 0,
+   "rawWithOtherTemporalField": 0,
+   "rawEmpty": 0,
+   "rawKeys": [
+    "id",
+    "title",
+    "summary",
+    "user_id",
+    "end_date",
+    "job_type",
+    "referral",
+    "job_title",
+    "video_url",
+    "salary_low",
+    "start_date",
+    "cached_slug"
+   ],
+   "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+   "examples": [
+    {
+     "externalId": "6017970",
+     "jobId": "cmtpivvjv07yupf5l63dvx2ls",
+     "rawKeys": [
+      "id",
+      "title",
+      "summary",
+      "user_id",
+      "end_date",
+      "job_type",
+      "referral",
+      "job_title",
+      "video_url",
+      "salary_low",
+      "start_date",
+      "cached_slug"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "6008680",
+     "jobId": "cmtpivvkd07yypf5ltximsha3",
+     "rawKeys": [
+      "id",
+      "title",
+      "summary",
+      "user_id",
+      "end_date",
+      "job_type",
+      "referral",
+      "job_title",
+      "video_url",
+      "salary_low",
+      "start_date",
+      "cached_slug"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "6004064",
+     "jobId": "cmtpivvlw07zapf5lqarvwhdg",
+     "rawKeys": [
+      "id",
+      "title",
+      "summary",
+      "user_id",
+      "end_date",
+      "job_type",
+      "referral",
+      "job_title",
+      "video_url",
+      "salary_low",
+      "start_date",
+      "cached_slug"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    }
+   ]
+  },
+  {
+   "sourceKey": "brown-thomas-taleo",
+   "maison": "Brown Thomas Arnotts",
+   "kind": "taleo",
+   "status": "ACTIVE",
+   "activePostings": 76,
+   "undated": 12,
+   "datedShare": 84.2,
+   "rawSampled": 12,
+   "rawWithPublicationDate": 0,
+   "rawWithOtherTemporalField": 0,
+   "rawEmpty": 0,
+   "rawKeys": [
+    "source"
+   ],
+   "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+   "examples": [
+    {
+     "externalId": "7815",
+     "jobId": "cmtpixe890finpf5l1uh9wfgm",
+     "rawKeys": [
+      "source"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "7543",
+     "jobId": "cmtpixe8w0fiypf5lxsl3xl8w",
+     "rawKeys": [
+      "source"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "6788",
+     "jobId": "cmtpixe520fgzpf5lc1okc2rr",
+     "rawKeys": [
+      "source"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    }
+   ]
+  },
+  {
+   "sourceKey": "zegna-altamira",
+   "maison": "Zegna",
+   "kind": "altamira",
+   "status": "ACTIVE",
+   "activePostings": 64,
+   "undated": 8,
+   "datedShare": 87.5,
+   "rawSampled": 8,
+   "rawWithPublicationDate": 0,
+   "rawWithOtherTemporalField": 0,
+   "rawEmpty": 0,
+   "rawKeys": [
+    "team",
+    "source",
+    "locations",
+    "postingEvidence"
+   ],
+   "verdict": "UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD",
+   "examples": [
+    {
+     "externalId": "272432342",
+     "jobId": "cmtpixe840fijpf5l6w0kx6vu",
+     "rawKeys": [
+      "team",
+      "source",
+      "locations",
+      "postingEvidence"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "272174954",
+     "jobId": "cmtpixedj0fkqpf5lx1826s8x",
+     "rawKeys": [
+      "team",
+      "source",
+      "locations"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "270303948",
+     "jobId": "cmtpixer30fr8pf5l1cbdz2go",
+     "rawKeys": [
+      "team",
+      "source",
+      "locations"
+     ],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    }
+   ]
+  },
+  {
+   "sourceKey": "element-6",
+   "maison": "Element +6",
+   "kind": "magnet",
+   "status": "ACTIVE",
+   "activePostings": 403,
+   "undated": 5,
+   "datedShare": 98.8,
+   "rawSampled": 5,
+   "rawWithPublicationDate": 0,
+   "rawWithOtherTemporalField": 0,
+   "rawEmpty": 5,
+   "rawKeys": [],
+   "verdict": "RAW_EMPTY_ARCHIVING_OR_COLLECTION",
+   "examples": [
+    {
+     "externalId": "11426-MTYzMjI",
+     "jobId": "cmtlv9pw307dz3nk587gatbds",
+     "rawKeys": [],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "11426-MTY5NzI",
+     "jobId": "cmtlv9p4o07dp3nk560if2ko5",
+     "rawKeys": [],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "11426-MTY5Mjc",
+     "jobId": "cmtlv9nl807d33nk54bijv36e",
+     "rawKeys": [],
+     "publicationDateEvidence": [],
+     "otherTemporalFields": []
+    }
+   ]
+  },
+  {
+   "sourceKey": "uniqlo-hkm-headquarters",
+   "maison": "Uniqlo",
+   "kind": "workday",
+   "status": "ACTIVE",
+   "activePostings": 6,
+   "undated": 2,
+   "datedShare": 66.7,
+   "rawSampled": 2,
+   "rawWithPublicationDate": 2,
+   "rawWithOtherTemporalField": 0,
+   "rawEmpty": 0,
+   "rawKeys": [
+    "title",
+    "detail",
+    "postedOn",
+    "timeType",
+    "bulletFields",
+    "externalPath"
+   ],
+   "verdict": "PARSING_DEFECT_PROVEN_OFFLINE",
+   "examples": [
+    {
+     "externalId": "Part-Time-Clerk--Store-Operations-Support--Japanese-N1-_R00000004175992",
+     "jobId": "cmtvnlsn6005llh018aruuu8k",
+     "rawKeys": [
+      "title",
+      "detail",
+      "postedOn",
+      "timeType",
+      "bulletFields",
+      "externalPath"
+     ],
+     "publicationDateEvidence": [
+      "detail.jobPostingInfo.startDate=2026-05-26"
+     ],
+     "otherTemporalFields": []
+    },
+    {
+     "externalId": "Part-Time-Clerk--HR-Compensation---Benefit-Team_R00000004162321",
+     "jobId": "cmtvnlslg0059lh017co1owjf",
+     "rawKeys": [
+      "title",
+      "detail",
+      "postedOn",
+      "timeType",
+      "bulletFields",
+      "externalPath"
+     ],
+     "publicationDateEvidence": [
+      "detail.jobPostingInfo.startDate=2026-07-29"
+     ],
+     "otherTemporalFields": []
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,91 @@
+{
+ "at": "2026-09-10T20:39:35.704Z",
+ "summary": {
+  "detailsRead": 6,
+  "withJsonLd": 0,
+  "withJobPosting": 0,
+  "withDatePostedLiteral": 0,
+  "withParsedDatePosted": 0,
+  "withAnyVisibleDate": 6
+ },
+ "rows": [
+  {
+   "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/JobDetailCorporate?jobId=67979",
+   "archived": {
+    "file": "detail-94b7d43f1a2e.html",
+    "bytes": 71823,
+    "sha256": "437913ea6144e17cf004a6475b46c12910f7d03f7051f95850034e4631228434"
+   },
+   "jsonLdDatePosted": null,
+   "hasJsonLd": false,
+   "hasJobPosting": false,
+   "datePostedLiteral": false,
+   "anyDateShape": true
+  },
+  {
+   "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/JobDetailCorporate?jobId=68234",
+   "archived": {
+    "file": "detail-f542eee80d7d.html",
+    "bytes": 73467,
+    "sha256": "8515a9de4becb7ce0322252cfafa637f37fdb7578390969e7ceb195c8c9b746b"
+   },
+   "jsonLdDatePosted": null,
+   "hasJsonLd": false,
+   "hasJobPosting": false,
+   "datePostedLiteral": false,
+   "anyDateShape": true
+  },
+  {
+   "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/JobDetailCorporate?jobId=68127",
+   "archived": {
+    "file": "detail-45c8e01a51a4.html",
+    "bytes": 91851,
+    "sha256": "57871d787bf674086e34a347054a0d44a1d07287be1183cb492c30518dbcd2e8"
+   },
+   "jsonLdDatePosted": null,
+   "hasJsonLd": false,
+   "hasJobPosting": false,
+   "datePostedLiteral": false,
+   "anyDateShape": true
+  },
+  {
+   "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/JobDetailCorporate?jobId=67457",
+   "archived": {
+    "file": "detail-1d23efbd2532.html",
+    "bytes": 75087,
+    "sha256": "99b38ea11ad8ac36bc6be3d4b652551aa8b5534d51e792ae59c3302b41247edf"
+   },
+   "jsonLdDatePosted": null,
+   "hasJsonLd": false,
+   "hasJobPosting": false,
+   "datePostedLiteral": false,
+   "anyDateShape": true
+  },
+  {
+   "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/JobDetailCorporate?jobId=67570",
+   "archived": {
+    "file": "detail-a83e48417d34.html",
+    "bytes": 87715,
+    "sha256": "bb18e18c8638d53be5ed01e41fb620516ac6d74fce6e19b12c9fae51079e5b16"
+   },
+   "jsonLdDatePosted": null,
+   "hasJsonLd": false,
+   "hasJobPosting": false,
+   "datePostedLiteral": false,
+   "anyDateShape": true
+  },
+  {
+   "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/JobDetailCorporate?jobId=68771",
+   "archived": {
+    "file": "detail-5834a3b7a70c.html",
+    "bytes": 73837,
+    "sha256": "2ab7f4d252236e8262f748dae1a998134e12214efc9ffc5f78e77a06423e5e8a"
+   },
+   "jsonLdDatePosted": null,
+   "hasJsonLd": false,
+   "hasJobPosting": false,
+   "datePostedLiteral": false,
+   "anyDateShape": true
+  }
+ ]
+}

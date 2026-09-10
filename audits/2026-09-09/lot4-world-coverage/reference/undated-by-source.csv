@@ -1,0 +1,11 @@
+sourceKey,maison,kind,status,activePostings,undated,datedShare,rawSampled,rawWithPublicationDate,rawWithOtherTemporalField,rawEmpty,verdict
+ralph-lauren-avature,Ralph Lauren,avature,ACTIVE,1104,1103,0.1,1103,0,0,0,UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD
+l-oreal-professionnel,L'Oréal (toutes Maisons),avature,ACTIVE,1804,128,92.9,128,0,0,48,UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD
+adidas,adidas,successfactors,ACTIVE,1142,63,94.5,63,0,0,0,UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD
+urbn-hub,URBN,icims,ACTIVE,1476,59,96,59,0,0,36,UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD
+lindex-easycruit,Lindex,easycruit,ACTIVE,41,41,0,41,0,41,0,NO_PUBLICATION_DATE_ONLY_VACANCY_OR_VALIDITY_DATES
+fenwick-volcanic,Fenwick,volcanic,ACTIVE,31,31,0,31,0,0,0,UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD
+brown-thomas-taleo,Brown Thomas Arnotts,taleo,ACTIVE,76,12,84.2,12,0,0,0,UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD
+zegna-altamira,Zegna,altamira,ACTIVE,64,8,87.5,8,0,0,0,UNDECIDABLE_OFFLINE_RAW_HAS_NO_DATE_FIELD
+element-6,Element +6,magnet,ACTIVE,403,5,98.8,5,0,0,5,RAW_EMPTY_ARCHIVING_OR_COLLECTION
+uniqlo-hkm-headquarters,Uniqlo,workday,ACTIVE,6,2,66.7,2,2,0,0,PARSING_DEFECT_PROVEN_OFFLINE

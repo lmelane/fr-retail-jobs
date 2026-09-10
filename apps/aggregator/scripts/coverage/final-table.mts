@@ -26,6 +26,11 @@ const p = new PrismaClient({ log: [] });
 try {
   const db: any = await p.$transaction(async (tx) => {
     await tx.$executeRaw`SET TRANSACTION READ ONLY`;
+    // READ ONLY forbids writing; it does not give a stable read. At `read committed` (the Prisma/PostgreSQL default,
+    // measured in production) each statement re-snapshots, so these dozen queries would mix states once writes resume.
+    // REPEATABLE READ pins one snapshot for the whole transaction; the level is asserted, never assumed.
+    const iso: any[] = await tx.$queryRaw`SELECT current_setting('transaction_isolation') AS level`;
+    const clock: any[] = await tx.$queryRaw`SELECT now() AS at`;
     const runs: any[] = await tx.$queryRaw`SELECT id, command, status, revision, "startedAt", "finishedAt" FROM "PipelineRun" ORDER BY "startedAt" DESC`;
     const lastSourceRun: any[] = await tx.$queryRaw`SELECT DISTINCT ON ("sourceKey") "sourceKey", status, fetched, accepted, "declaredTotal", complete, truncated, errors, note, "ranAt" FROM "SourceRun" ORDER BY "sourceKey", "ranAt" DESC`;
     // The observation window is EXPLICIT and reported with the table: "aucun sur 7 j" used to mean both "no rejection"
@@ -39,8 +44,11 @@ try {
     const attribution: any[] = await tx.$queryRaw`SELECT o."sourceKey", o.rule, COUNT(*)::int n FROM (SELECT DISTINCT ON (eo."sourceKey", eo."externalId") eo."sourceKey", eo."externalId", eo.rule FROM "EmployerObservation" eo JOIN "JobSource" js ON js."sourceKey"=eo."sourceKey" AND js."externalId"=eo."externalId" JOIN "Job" j ON j.id=js."jobId" WHERE js."isActive" AND j."isActive" ORDER BY eo."sourceKey", eo."externalId", eo."observedAt" DESC, eo.id DESC) o GROUP BY 1,2`;
     /** The real denominator of attribution: EVERY active representation, observed or not. */
     const representations: any[] = await tx.$queryRaw`SELECT js."sourceKey", COUNT(*)::int n FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" WHERE js."isActive" AND j."isActive" GROUP BY 1`;
-    return { runs, lastSourceRun, rejected, review, scope, companies, attribution, representations };
-  });
+    /** Active postings per company, read INSIDE the snapshot: it is the database side of the parity comparison. */
+    const dbActiveByCompany: any[] = await tx.$queryRaw`SELECT c.name, COUNT(*)::int n FROM "Job" j JOIN "Company" c ON c.id=j."companyId" WHERE j."isActive" GROUP BY 1`;
+    return { at: clock[0].at as Date, isolation: iso[0].level as string, runs, lastSourceRun, rejected, review, scope, companies, attribution, representations, dbActiveByCompany };
+  }, { isolationLevel: 'RepeatableRead' });
+  if (db.isolation !== 'repeatable read') throw new Error(`final-table requires REPEATABLE READ for a common snapshot; got "${db.isolation}"`);
   const runFor = (at: Date) => db.runs.find((r: any) => new Date(r.startedAt) <= at && (!r.finishedAt || new Date(r.finishedAt) >= new Date(at.getTime() - 60_000)));
   const apiTotals = new Map<string, number | null>();
   if (API) {
@@ -48,8 +56,7 @@ try {
     for (let i = 0; i < names.length; i += 4) await Promise.all(names.slice(i, i + 4).map(async (name) => { const t = await fetch(`https://modecareers.com/api/jobs?maison=${encodeURIComponent(name)}&limit=1&_=${Date.now()}`, { headers: { 'cache-control': 'no-cache', 'user-agent': 'Mozilla/5.0 final-table' } }).then((x) => x.json()).then((d: any) => d.total as number).catch(() => null); apiTotals.set(name, t); }));
   }
   const companyActive = new Map<string, number>(); for (const c of db.companies) companyActive.set(c.name, (companyActive.get(c.name) ?? 0) + 0);
-  const dbActiveByCompany: any[] = API ? await p.$queryRaw`SELECT c.name, COUNT(*)::int n FROM "Job" j JOIN "Company" c ON c.id=j."companyId" WHERE j."isActive" GROUP BY 1` : [];
-  for (const r of dbActiveByCompany) companyActive.set(r.name, r.n);
+  for (const r of db.dbActiveByCompany) companyActive.set(r.name, r.n);
   const stateRows: any[] = [];
   const rows = sources.filter((s) => s.status === 'ACTIVE' || s.status === 'PAUSED').sort((a, b) => Number(b.activePostings) - Number(a.activePostings) || a.sourceKey.localeCompare(b.sourceKey)).map((s) => {
     const run = db.lastSourceRun.find((r: any) => r.sourceKey === s.sourceKey);
@@ -102,7 +109,9 @@ try {
     `| Attribution employeur prouvée (100 % des représentations actives sous une décision revue) | ${count((r) => r.attribution === 'proven')} | ${part(count((r) => r.attribution === 'proven'))} | ${count((r) => String(r.attribution).startsWith('non vérifiée'))} sans observation |`,
     `| Publication vérifiée (compteur API publique = base pour chaque société nourrie)${API ? '' : ' — non relue dans cette génération'} | ${API ? count((r) => r.published) : '—'} | ${API ? part(count((r) => r.published)) : '—'} | ${API ? 0 : N} |`,
     `| Les cinq à la fois | ${count((r) => r.official && r.operational && r.exhaustive && r.attribution === 'proven' && (API ? r.published : true))} | — | — |`, '',
-    'La ligne « Publication vérifiée » ne compare que des COMPTEURS. L\'égalité des identifiants, la visibilité réelle des fiches et l\'éligibilité Google Jobs sont mesurées séparément par `public-visibility.mts` : un compteur juste ne prouve pas qu\'une offre est atteignable.', ''].join('\n');
+    '**Ce que « Publication vérifiée » signifie exactement, et ce qu\'elle ne dit pas.** Pour chaque source, on prend les sociétés qu\'elle nourrit réellement (offres actives) et, pour chacune, on compare **deux nombres** : le total d\'offres actives de cette société dans la base, et le `total` renvoyé par `GET /api/jobs?maison=<nom>` sur le site public. La source compte comme vérifiée si **toutes** ses sociétés sont à égalité. Le compte est donc *par source*, mais le prédicat porte sur *ses sociétés* — une société nourrie par deux sources fait échouer les deux.',
+    '',
+    'Limites à ne pas franchir en lisant ce chiffre : (a) il ne compare que des **compteurs** — deux ensembles différents de même cardinalité passeraient ; (b) le côté base est lu dans l\'instantané de la transaction, le côté API par des appels HTTP **postérieurs**, donc les deux nombres n\'appartiennent pas au même instant (sans écriture concurrente, crons gelés, l\'écart est nul ; il ne le serait plus après reprise des crons) ; (c) la comparaison se fait **par nom de société**, pas par identifiant ; (d) elle ne dit rien de l\'atteignabilité d\'une fiche ni de son indexabilité. L\'égalité des identifiants, la visibilité réelle et l\'éligibilité Google Jobs sont mesurées séparément par `public-visibility.mts`.', ''].join('\n');
   const mdWithSummary = md.replace('\n| Acteur | Source |', summary + '\n| Acteur | Source |');
   writeFileSync(outFile, mdWithSummary + '\n');
   console.log(`${rows.length} rows → ${outFile}`);

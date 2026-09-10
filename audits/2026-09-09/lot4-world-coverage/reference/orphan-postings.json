@@ -1,0 +1,351 @@
+{
+ "summary": {
+  "at": "2026-09-10T20:20:52.191Z",
+  "isolation": "repeatable read",
+  "activePostings": 79516,
+  "controlA": {
+   "definition": "no active representation under a source with status ACTIVE (PAUSED does not count as operating)",
+   "postings": 637
+  },
+  "controlB": {
+   "definition": "no active representation under a source with status ACTIVE or PAUSED",
+   "postings": 0
+  },
+  "difference": {
+   "postings": 637,
+   "meaning": "postings whose only live attestation is a PAUSED source — they pass control B and fail control A",
+   "bySource": [
+    {
+     "pausedSource": "fashionjobs",
+     "maison": "FashionJobs",
+     "kind": "fashionjobs",
+     "postings": 585,
+     "oldest": "2026-09-02T09:11:46.295Z",
+     "newestSeen": "2026-09-07T23:07:25.031Z",
+     "note": "User decision 2026-09-08: FashionJobs is only employer-discovery and aggregate-count evidence; stop collecting its job offers. Preserve historical jobs, RAW and events. Recruit directly from official "
+    },
+    {
+     "pausedSource": "hermes",
+     "maison": "Hermès",
+     "kind": "wttj",
+     "postings": 39,
+     "oldest": "2026-09-02T09:33:30.769Z",
+     "newestSeen": "2026-09-06T15:33:04.656Z",
+     "note": "D39 2026-09-06 : couverte par wttj-sector ; quelques offres non re-listées par le balayage → PAUSED le temps que le refresh les ferme, puis retire-source"
+    },
+    {
+     "pausedSource": "a-p-c",
+     "maison": "a.p.c",
+     "kind": "wttj",
+     "postings": 4,
+     "oldest": "2026-09-03T20:07:25.815Z",
+     "newestSeen": "2026-09-06T15:25:54.499Z",
+     "note": "D39 2026-09-06 : couverte par wttj-sector ; quelques offres non re-listées par le balayage → PAUSED le temps que le refresh les ferme, puis retire-source"
+    },
+    {
+     "pausedSource": "helena-rubinstein-8",
+     "maison": "Helena Rubinstein +8",
+     "kind": "wttj",
+     "postings": 3,
+     "oldest": "2026-09-02T12:08:15.346Z",
+     "newestSeen": "2026-09-06T15:34:43.598Z",
+     "note": "D39 2026-09-06 : couverte par wttj-sector ; quelques offres non re-listées par le balayage → PAUSED le temps que le refresh les ferme, puis retire-source"
+    },
+    {
+     "pausedSource": "monsieur-tshirt",
+     "maison": "Monsieur Tshirt",
+     "kind": "wttj",
+     "postings": 3,
+     "oldest": "2026-09-03T20:05:46.621Z",
+     "newestSeen": "2026-09-06T09:12:26.101Z",
+     "note": "D39 2026-09-06 : couverte par wttj-sector ; quelques offres non re-listées par le balayage → PAUSED le temps que le refresh les ferme, puis retire-source"
+    },
+    {
+     "pausedSource": "sessun",
+     "maison": "Sessùn",
+     "kind": "wttj",
+     "postings": 2,
+     "oldest": "2026-09-02T16:45:55.529Z",
+     "newestSeen": "2026-09-06T13:13:07.444Z",
+     "note": "D39 2026-09-06 : couverte par wttj-sector ; quelques offres non re-listées par le balayage → PAUSED le temps que le refresh les ferme, puis retire-source"
+    },
+    {
+     "pausedSource": "clarins-wttj",
+     "maison": "Clarins",
+     "kind": "wttj",
+     "postings": 1,
+     "oldest": "2026-09-06T00:04:18.708Z",
+     "newestSeen": "2026-09-06T13:11:55.018Z",
+     "note": "D39 2026-09-06 : couverte par wttj-sector ; quelques offres non re-listées par le balayage → PAUSED le temps que le refresh les ferme, puis retire-source"
+    },
+    {
+     "pausedSource": "pied-de-biche",
+     "maison": "Pied de Biche",
+     "kind": "wttj",
+     "postings": 1,
+     "oldest": "2026-09-03T20:05:39.307Z",
+     "newestSeen": "2026-09-06T09:12:23.926Z",
+     "note": "D39 2026-09-06 : couverte par wttj-sector ; quelques offres non re-listées par le balayage → PAUSED le temps que le refresh les ferme, puis retire-source"
+    }
+   ]
+  },
+  "failingBoth": {
+   "postings": 0,
+   "sampled": 0
+  },
+  "equivalence": "THE TWO CONTROLS DIFFER: quoting one for the other would hide an open dossier"
+ },
+ "sampleFailingBoth": [],
+ "differenceIdentifiers": [
+  {
+   "id": "cmtlyi8vq059cqf5k3tp5wka1",
+   "company": "A.P.C.",
+   "title": "STAGE - ASSISTANT(E) RH EUROPE PAIE (H/F) - 6 Mois",
+   "paused_source": "a-p-c",
+   "externalId": "062c2b5a-62b7-4b46-b5e8-2c9af304848e",
+   "firstSeenAt": "2026-09-03T20:07:25.815Z",
+   "lastSeenAt": "2026-09-06T15:25:49.602Z",
+   "postedAt": "2026-09-01T09:30:44.000Z"
+  },
+  {
+   "id": "cmtlyi8w8059gqf5k3nhb4n75",
+   "company": "A.P.C.",
+   "title": "STAGE / Juriste Droit des affaires et Propriété Intellectuelle (H/F)",
+   "paused_source": "a-p-c",
+   "externalId": "4be7824c-581c-4e29-bc0e-3466afd4273d",
+   "firstSeenAt": "2026-09-03T20:07:25.832Z",
+   "lastSeenAt": "2026-09-06T15:25:49.994Z",
+   "postedAt": "2026-08-31T14:03:13.000Z"
+  },
+  {
+   "id": "cmtlyi8xy059uqf5kxmt5sa8d",
+   "company": "A.P.C.",
+   "title": "STAGE - ASSISTANT APPROVISIONNEMENT ET GESTION DES STOCKS (H/F) – 6 MOIS",
+   "paused_source": "a-p-c",
+   "externalId": "c5d4837d-e259-4df2-987c-f5a561743e59",
+   "firstSeenAt": "2026-09-03T20:07:25.894Z",
+   "lastSeenAt": "2026-09-06T15:25:51.193Z",
+   "postedAt": "2026-08-03T13:46:14.000Z"
+  },
+  {
+   "id": "cmtlyi95205b2qf5k7wdo242o",
+   "company": "A.P.C.",
+   "title": "STAGE - ASSISTANT CHEF DE PROJET MARKETING (H/F)",
+   "paused_source": "a-p-c",
+   "externalId": "e59c5c64-051f-43ee-8528-26031fcc01fc",
+   "firstSeenAt": "2026-09-03T20:07:26.150Z",
+   "lastSeenAt": "2026-09-06T15:25:54.499Z",
+   "postedAt": "2026-07-14T16:02:20.000Z"
+  },
+  {
+   "id": "cmtp1ukyb00wzqq4zgsxoyfnq",
+   "company": "Groupe Clarins",
+   "title": "CDI - Juriste IT, Digital & Data H/F/X",
+   "paused_source": "clarins-wttj",
+   "externalId": "7a6d4654-7e9c-43ff-b6bb-638428ce7abf",
+   "firstSeenAt": "2026-09-06T00:04:18.708Z",
+   "lastSeenAt": "2026-09-06T13:11:55.018Z",
+   "postedAt": "2026-08-31T15:20:32.000Z"
+  },
+  {
+   "id": "cmtjvn7nb000dld2bpqgvttl4",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H",
+   "paused_source": "fashionjobs",
+   "externalId": "12031378",
+   "firstSeenAt": "2026-09-02T09:11:46.295Z",
+   "lastSeenAt": "2026-09-07T23:07:21.996Z",
+   "postedAt": "2026-08-31T08:05:09.000Z"
+  },
+  {
+   "id": "cmtjvn80n000uld2bq8s42sjm",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H",
+   "paused_source": "fashionjobs",
+   "externalId": "12024788",
+   "firstSeenAt": "2026-09-02T09:11:46.775Z",
+   "lastSeenAt": "2026-09-07T23:07:23.131Z",
+   "postedAt": "2026-08-28T17:05:10.000Z"
+  },
+  {
+   "id": "cmtjvn80r0013ld2btpdmljvs",
+   "company": "Groupe Courir",
+   "title": "Floor Manager - F/H",
+   "paused_source": "fashionjobs",
+   "externalId": "12024439",
+   "firstSeenAt": "2026-09-02T09:11:46.779Z",
+   "lastSeenAt": "2026-09-07T23:07:23.475Z",
+   "postedAt": "2026-08-28T14:05:50.000Z"
+  },
+  {
+   "id": "cmtjvn80t0016ld2b3lqn7bvp",
+   "company": "Groupe Courir",
+   "title": "Chargé(e) de Stock - F/H",
+   "paused_source": "fashionjobs",
+   "externalId": "12024787",
+   "firstSeenAt": "2026-09-02T09:11:46.781Z",
+   "lastSeenAt": "2026-09-07T23:07:23.141Z",
+   "postedAt": "2026-08-28T17:05:09.000Z"
+  },
+  {
+   "id": "cmtjvn8dr001pld2bp62u68pd",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H",
+   "paused_source": "fashionjobs",
+   "externalId": "12021174",
+   "firstSeenAt": "2026-09-02T09:11:47.248Z",
+   "lastSeenAt": "2026-09-07T23:07:24.133Z",
+   "postedAt": "2026-08-27T15:04:48.000Z"
+  },
+  {
+   "id": "cmtjvn8dr001sld2b4ze4e06c",
+   "company": "Groupe Courir",
+   "title": "Chargé(e) de Stock - F/H",
+   "paused_source": "fashionjobs",
+   "externalId": "12021175",
+   "firstSeenAt": "2026-09-02T09:11:47.248Z",
+   "lastSeenAt": "2026-09-07T23:07:24.125Z",
+   "postedAt": "2026-08-27T15:04:48.000Z"
+  },
+  {
+   "id": "cmtjvn8s5002dld2bdrv3qydp",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H",
+   "paused_source": "fashionjobs",
+   "externalId": "12018999",
+   "firstSeenAt": "2026-09-02T09:11:47.766Z",
+   "lastSeenAt": "2026-09-07T23:07:24.940Z",
+   "postedAt": "2026-08-27T08:04:39.000Z"
+  },
+  {
+   "id": "cmtlusvm5003j3nk5d9lldvs8",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H",
+   "paused_source": "fashionjobs",
+   "externalId": "12050813",
+   "firstSeenAt": "2026-09-02T09:17:05.052Z",
+   "lastSeenAt": "2026-09-06T14:15:28.102Z",
+   "postedAt": "2026-09-04T13:07:43.000Z"
+  },
+  {
+   "id": "cmtk1x8bo00qznv2bpw6ele83",
+   "company": "Jonak",
+   "title": "Responsable de Boutique - la Défense",
+   "paused_source": "fashionjobs",
+   "externalId": "12001530",
+   "firstSeenAt": "2026-09-02T12:07:31.428Z",
+   "lastSeenAt": "2026-09-06T14:15:27.525Z",
+   "postedAt": "2026-09-03T08:19:41.000Z"
+  },
+  {
+   "id": "cmtlv85op06nn3nk5atz861bo",
+   "company": "Petit Bateau",
+   "title": "CDI 35H - Vendeur (h/f) - Petit Bateau à The Village Outlet Villefontaine !",
+   "paused_source": "fashionjobs",
+   "externalId": "11866594",
+   "firstSeenAt": "2026-09-02T12:07:57.313Z",
+   "lastSeenAt": "2026-09-06T13:13:37.930Z",
+   "postedAt": "2026-08-17T11:16:41.671Z"
+  },
+  {
+   "id": "cmtk2abeb0p10nv2b0nq0e1pj",
+   "company": "Hermès",
+   "title": "CDD - Charge(e) de Recouvrement Des Ijss H/F",
+   "paused_source": "fashionjobs",
+   "externalId": "11949397",
+   "firstSeenAt": "2026-09-02T12:17:41.939Z",
+   "lastSeenAt": "2026-09-06T15:32:53.743Z",
+   "postedAt": "2026-09-04T12:22:50.000Z"
+  },
+  {
+   "id": "cmtlvhsqf0bkb3nk5yg7ytoyp",
+   "company": "LTD",
+   "title": "Stockiste H/F à Paris",
+   "paused_source": "fashionjobs",
+   "externalId": "12031452",
+   "firstSeenAt": "2026-09-02T17:42:26.753Z",
+   "lastSeenAt": "2026-09-07T23:07:21.744Z",
+   "postedAt": "2026-08-31T09:28:04.000Z"
+  },
+  {
+   "id": "cmtlvhtj00bkt3nk5ckbi2h53",
+   "company": "LTD",
+   "title": "Conseiller de Vente H/F à Paris",
+   "paused_source": "fashionjobs",
+   "externalId": "12031450",
+   "firstSeenAt": "2026-09-02T17:42:26.773Z",
+   "lastSeenAt": "2026-09-07T23:07:21.755Z",
+   "postedAt": "2026-08-31T09:26:20.000Z"
+  },
+  {
+   "id": "cmtlvhuiu0bld3nk5913xtncs",
+   "company": "VAILLANT STUDIO",
+   "title": "Stage - Assistant(e) Presse & VIP",
+   "paused_source": "fashionjobs",
+   "externalId": "12031430",
+   "firstSeenAt": "2026-09-02T17:42:26.919Z",
+   "lastSeenAt": "2026-09-07T23:07:21.885Z",
+   "postedAt": "2026-08-31T08:53:40.000Z"
+  },
+  {
+   "id": "cmtlvhvtp0blz3nk5mlwyvwav",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "Conseiller de Vente (H/F) - CDI 35h - BHV Marais",
+   "paused_source": "fashionjobs",
+   "externalId": "12024735",
+   "firstSeenAt": "2026-09-02T17:42:28.665Z",
+   "lastSeenAt": "2026-09-07T23:07:23.427Z",
+   "postedAt": "2026-08-28T15:01:29.000Z"
+  },
+  {
+   "id": "cmtlvhx2g0bmp3nk5tczy0d6y",
+   "company": "MANPOWER COUTURE MODE ET LUXE",
+   "title": "Patronnier Chargé de Placement Lectra Diamino (H/F)",
+   "paused_source": "fashionjobs",
+   "externalId": "12024360",
+   "firstSeenAt": "2026-09-02T17:42:28.869Z",
+   "lastSeenAt": "2026-09-07T23:07:23.546Z",
+   "postedAt": "2026-08-28T13:03:27.000Z"
+  },
+  {
+   "id": "cmtlvhvw80bm13nk5gzx8s5rr",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "Conseiller(e) de Vente (H/F) - CDD 35h - Printemps Haussmann Homme",
+   "paused_source": "fashionjobs",
+   "externalId": "12024305",
+   "firstSeenAt": "2026-09-02T17:42:29.091Z",
+   "lastSeenAt": "2026-09-07T23:07:23.668Z",
+   "postedAt": "2026-08-28T09:54:12.000Z"
+  },
+  {
+   "id": "cmtlvhvys0bm33nk5y9m2ztlq",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "Conseiller(e) de Vente - CDI 35h (H/F) - Paris Victor Hugo",
+   "paused_source": "fashionjobs",
+   "externalId": "12024304",
+   "firstSeenAt": "2026-09-02T17:42:29.102Z",
+   "lastSeenAt": "2026-09-07T23:07:23.678Z",
+   "postedAt": "2026-08-28T09:52:39.000Z"
+  },
+  {
+   "id": "cmtlvhqdh0bj33nk5szarpcjy",
+   "company": "REPETTO",
+   "title": "Conseiller(Ère) de Vente CDI 14h Lundi-Mardi",
+   "paused_source": "fashionjobs",
+   "externalId": "12007677",
+   "firstSeenAt": "2026-09-02T17:42:29.204Z",
+   "lastSeenAt": "2026-09-07T23:07:23.786Z",
+   "postedAt": "2026-08-28T08:36:05.000Z"
+  },
+  {
+   "id": "cmtlvhqfx0bj53nk5ooqli4ij",
+   "company": "REPETTO",
+   "title": "Conseiller de Vente H/F - Rue du Four",
+   "paused_source": "fashionjobs",
+   "externalId": "12007430",
+   "firstSeenAt": "2026-09-02T17:42:29.215Z",
+   "lastSeenAt": "2026-09-07T23:07:23.798Z",
+   "postedAt": "2026-08-28T08:35:59.000Z"
+  }
+ ]
+}
