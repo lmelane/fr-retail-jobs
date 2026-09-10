@@ -1,6 +1,6 @@
-# Sources ACTIVE non certifiées — familles de traitement (2026-09-10T18:19Z)
+# Sources ACTIVE non certifiées — familles de traitement (2026-09-10T19:15Z)
 
-Dénominateur : **344 sources ACTIVE** dont la configuration courante n'a pas de revue d'identité valide, sur **432 actives** (88 certifiées au contrat strict). Une source = une famille, première règle qui s'applique dans l'ordre D → G → A → B → C → E. Généré par `scripts/coverage/uncertified-families.mts` (lecture seule, aucune collecte) ; liste complète avec les indices dans `uncertified-sources.csv`.
+Dénominateur : **343 sources ACTIVE** dont la configuration courante n'a pas de revue d'identité valide, sur **433 actives** (90 certifiées au contrat strict). Une source = une famille, première règle qui s'applique dans l'ordre D → G → A → B → C → E. Généré par `scripts/coverage/uncertified-families.mts` (lecture seule, aucune collecte) ; liste complète avec les indices dans `uncertified-sources.csv`.
 
 **Ce que le pré-tri compare** : le domaine enregistrable (`tldts`, comme la porte de promotion) — un hôte d'ATS mutualisé (`*.myworkdayjobs.com`, `*.teamtailor.com`, `boards.greenhouse.io`, `jobs.lever.co`, `*.talent-soft.com`, `*.successfactors.*`…) n'est jamais « sur le domaine officiel » ; le domaine officiel d'une Maison = `Company.domain` de sa société canonique (`Source.maison` → `sourceSubjectKey` → `Company.fashionjobsUrl = resolved:<id>`, fusions suivies) ou l'`officialDomain` d'une revue VERIFIED existante du même tenant ; un lien archivé ne vaut que depuis une page de ce domaine, et il vise le TENANT (sur un hôte partagé, `jobs.smartrecruiters.com/<société>`, `jobs.lever.co/<site>`, `welcometothejungle.com/…/companies/<slug>`), pas l'hôte ; une société nourrie est légitime si elle EST la société canonique de la Maison, y est fusionnée, ou porte un alias revu pour cette source (`CompanyAlias.reviewId`).
 
@@ -9,10 +9,10 @@ Dénominateur : **344 sources ACTIVE** dont la configuration courante n'a pas de
 | Portail de groupe (plusieurs sociétés canoniques nourries, ou tier GROUP_OFFICIAL) | 30 | 9421 | aucun technique : il faut une certification MULTI_BRAND et un alias revu par libellé (la porte refuse chaque libellé sans alias) | comme Saks / KnitWell : `b6-aliases.mts <clone|production> <clés>` (libellé → Maison, page officielle archivée) puis `b6-certify-existing.sh <nom> <clés>` avec périmètre MULTI_BRAND |
 | Homonymie suspecte (société nourrie ≠ Maison cataloguée et ni fusionnée ni alias revu ; ou nourrie par cette seule source sans domaine ni lien officiel vérifié) | 26 | 1510 | l'identité peut être fausse (cas loft, vitamin-a, one) : rien ne se certifie avant l'audit | audit hors ligne sur les indices (pays, titres, hôte) ; mauvais tenant → `retire-source <clé>` (D27) ; même employeur → alias/fusion revus puis B ou C |
 | Portail hébergé sur le domaine officiel de la Maison (domaine enregistrable identique, hôte non mutualisé) | 83 | 9858 | aucun | `b6-certify-existing.sh <nom> <clés>` par lots de 10–15 (méthode OFFICIAL_DOMAIN : page du portail hébergée), libellés lus à la validation |
-| Lien réciproque archivé DEPUIS une page du domaine officiel vers le portail du tenant | 13 | 463 | aucun | `b6-certify-existing.sh <nom> <clés>` par lots (méthode OFFICIAL_LINK depuis la page archivée ; dump, clone, validation réelle, certification) |
+| Lien réciproque archivé DEPUIS une page du domaine officiel vers le portail du tenant | 12 | 333 | aucun | `b6-certify-existing.sh <nom> <clés>` par lots (méthode OFFICIAL_LINK depuis la page archivée ; dump, clone, validation réelle, certification) |
 | Jobboard, balayage sectoriel ou cabinet | 3 | 2490 | décision : identité de board, pas de portail employeur | décision Loïc sur le flux B ; identité de board documentée |
 | Aucune provenance officielle vérifiée (ni domaine, ni lien depuis le domaine officiel) | 189 | 8610 | recherche à mener ; les liens archivés depuis d'autres pages sont des pistes, pas des preuves | `research-portals.mts <input.json> <dossier>` ciblé sur la Maison (pistes : colonne unverifiedLinks), puis C ; sinon documenter le blocage daté |
-| **Total** | **344** | **32352** | | |
+| **Total** | **343** | **32222** | | |
 
 ## Homonymie suspecte — toutes les sources, avec les indices lisibles hors ligne (FED_NOT_MAISON 2 · SOLE_FEEDER_NO_PROOF 24)
 
@@ -99,11 +99,10 @@ Dénominateur : **344 sources ACTIVE** dont la configuration courante n'a pas de
 | akira | AKIRA | teamtailor | careers.shopakira.com | 187 | AKIRA (US, 1, 1) | shopakira.com | — | — |
 | aroma-zone | Aroma-Zone | teamtailor | careers.aroma-zone.com | 184 | Aroma-Zone (FR, 2, 2) | aroma-zone.com | — | — |
 
-### Lien réciproque archivé DEPUIS une page du domaine officiel vers le portail du tenant (13)
+### Lien réciproque archivé DEPUIS une page du domaine officiel vers le portail du tenant (12)
 
 | Source | Maison | ATS | Hôte | Offres | Société nourrie (pays principal, nb pays, nb sources) | Domaine officiel connu | Lien vérifié depuis | Pistes non vérifiées |
 |---|---|---|---|---:|---|---|---|---|
-| lagardere-travel-retail | Lagardère Travel Retail | talentsoft | lagardere-recrute.talent-soft.com | 130 | Lagardère Travel (FR, 2, 1) | lagardere-tr.com | www.lagardere-tr.com | www.lagardere-tr.nl |
 | soeur | Soeur | teamtailor | soeur-1711354805.teamtailor.com | 56 | Soeur (FR, 7, 1) | soeur.fr | soeur.fr | — |
 | promod | Promod | talentview | promodjob.talentview.io | 54 | Promod (FR, 2, 2) | promod.com | promod.com | — |
 | amiri | AMIRI | lever | jobs.lever.co | 43 | AMIRI (US, 4, 1) | amiri.com | amiri.com | — |
@@ -113,6 +112,7 @@ Dénominateur : **344 sources ACTIVE** dont la configuration courante n'a pas de
 | club-monaco | Club Monaco | greenhouse | boards.greenhouse.io | 24 | Club Monaco (CA, 1, 1) | clubmonaco.com | clubmonaco.com | — |
 | ami-paris | AMI Paris | recruitee | amiparis.recruitee.com | 23 | AMI Paris (FR, 4, 2) | amiparis.com | www.amiparis.com | — |
 | closed | CLOSED | personio | closed.jobs.personio.de | 14 | CLOSED (—, 0, 1) | closed.com | closed.com | — |
+| vivienne-westwood | Vivienne Westwood | teamtailor | viviennewestwood.teamtailor.com | 12 | Vivienne Westwood (GB, 2, 2) | viviennewestwood.com | www.viviennewestwood.com | — |
 
 ### Jobboard, balayage sectoriel ou cabinet (3)
 
