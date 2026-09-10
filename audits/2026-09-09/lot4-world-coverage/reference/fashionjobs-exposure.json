@@ -1,0 +1,1092 @@
+{
+ "summary": {
+  "at": "2026-09-10T21:38:53.670Z",
+  "isolation": "repeatable read",
+  "rule": "FashionJobs discovers actors; it never supplies postings.",
+  "postingsAttachedToFashionJobs": 757,
+  "alsoAttestedByAnActiveOfficialSource": {
+   "postings": 172,
+   "treatment": "detach the FashionJobs representation — the posting keeps its official attestation and stays published"
+  },
+  "dependingOnFashionJobsAlone": {
+   "postings": 585,
+   "companies": 186,
+   "treatment": "ADMINISTRATIVE withdrawal (D27 retire-source semantics): RAW, identifiers and history preserved; MUST NOT be recorded as an employer closing the vacancy"
+  },
+  "withFrenchScope": 583,
+  "topCompanies": [
+   {
+    "company": "ALAIN AFFLELOU",
+    "attached": 83,
+    "onlyFashionJobs": 83
+   },
+   {
+    "company": "Groupe Courir",
+    "attached": 34,
+    "onlyFashionJobs": 24
+   },
+   {
+    "company": "SINTEL",
+    "attached": 19,
+    "onlyFashionJobs": 19
+   },
+   {
+    "company": "ISABEL MARANT",
+    "attached": 17,
+    "onlyFashionJobs": 17
+   },
+   {
+    "company": "DARJEELING",
+    "attached": 15,
+    "onlyFashionJobs": 15
+   },
+   {
+    "company": "Parfums Christian Dior",
+    "attached": 27,
+    "onlyFashionJobs": 14
+   },
+   {
+    "company": "KRYS",
+    "attached": 12,
+    "onlyFashionJobs": 12
+   },
+   {
+    "company": "ZADIG & VOLTAIRE",
+    "attached": 10,
+    "onlyFashionJobs": 10
+   },
+   {
+    "company": "INDITEX",
+    "attached": 10,
+    "onlyFashionJobs": 10
+   },
+   {
+    "company": "LTD INTERNATIONAL",
+    "attached": 9,
+    "onlyFashionJobs": 9
+   },
+   {
+    "company": "OPTIC 2000",
+    "attached": 9,
+    "onlyFashionJobs": 9
+   },
+   {
+    "company": "Mango",
+    "attached": 11,
+    "onlyFashionJobs": 8
+   }
+  ]
+ },
+ "byCompany": [
+  {
+   "name": "ALAIN AFFLELOU",
+   "total": 83,
+   "only_fj": 83
+  },
+  {
+   "name": "Groupe Courir",
+   "total": 34,
+   "only_fj": 24
+  },
+  {
+   "name": "SINTEL",
+   "total": 19,
+   "only_fj": 19
+  },
+  {
+   "name": "ISABEL MARANT",
+   "total": 17,
+   "only_fj": 17
+  },
+  {
+   "name": "DARJEELING",
+   "total": 15,
+   "only_fj": 15
+  },
+  {
+   "name": "Parfums Christian Dior",
+   "total": 27,
+   "only_fj": 14
+  },
+  {
+   "name": "KRYS",
+   "total": 12,
+   "only_fj": 12
+  },
+  {
+   "name": "ZADIG & VOLTAIRE",
+   "total": 10,
+   "only_fj": 10
+  },
+  {
+   "name": "INDITEX",
+   "total": 10,
+   "only_fj": 10
+  },
+  {
+   "name": "LTD INTERNATIONAL",
+   "total": 9,
+   "only_fj": 9
+  },
+  {
+   "name": "OPTIC 2000",
+   "total": 9,
+   "only_fj": 9
+  },
+  {
+   "name": "Mango",
+   "total": 11,
+   "only_fj": 8
+  },
+  {
+   "name": "PERCASSI",
+   "total": 8,
+   "only_fj": 8
+  },
+  {
+   "name": "MODELOR COUTURE",
+   "total": 8,
+   "only_fj": 8
+  },
+  {
+   "name": "LA BOUTIQUE DU COIFFEUR",
+   "total": 8,
+   "only_fj": 8
+  },
+  {
+   "name": "LTD",
+   "total": 8,
+   "only_fj": 8
+  },
+  {
+   "name": "KSI",
+   "total": 7,
+   "only_fj": 7
+  },
+  {
+   "name": "Printemps",
+   "total": 7,
+   "only_fj": 7
+  },
+  {
+   "name": "MANPOWER COUTURE MODE ET LUXE",
+   "total": 7,
+   "only_fj": 7
+  },
+  {
+   "name": "Cheval Blanc",
+   "total": 10,
+   "only_fj": 6
+  },
+  {
+   "name": "DEPECH'MODE",
+   "total": 6,
+   "only_fj": 6
+  },
+  {
+   "name": "RIM PARFUM",
+   "total": 6,
+   "only_fj": 6
+  },
+  {
+   "name": "REPETTO",
+   "total": 6,
+   "only_fj": 6
+  },
+  {
+   "name": "LVMH Perfumes & Cosmetics",
+   "total": 5,
+   "only_fj": 5
+  },
+  {
+   "name": "GRANDVISION",
+   "total": 5,
+   "only_fj": 5
+  },
+  {
+   "name": "MINIMEPARIS",
+   "total": 5,
+   "only_fj": 5
+  },
+  {
+   "name": "DJULA",
+   "total": 5,
+   "only_fj": 5
+  },
+  {
+   "name": "CONFIDENTIEL",
+   "total": 5,
+   "only_fj": 5
+  },
+  {
+   "name": "SHOWROOM GROUP",
+   "total": 5,
+   "only_fj": 5
+  },
+  {
+   "name": "Morgan",
+   "total": 8,
+   "only_fj": 4
+  },
+  {
+   "name": "ARC'TERYX",
+   "total": 7,
+   "only_fj": 4
+  },
+  {
+   "name": "MANPOWER CABINET DE RECRUTEMENT COMMERCE MODE LUXE",
+   "total": 4,
+   "only_fj": 4
+  },
+  {
+   "name": "CAMELEONS RH",
+   "total": 4,
+   "only_fj": 4
+  },
+  {
+   "name": "LFP EMPLOI MODE",
+   "total": 4,
+   "only_fj": 4
+  },
+  {
+   "name": "CONCEPT RECRUTEMENT",
+   "total": 4,
+   "only_fj": 4
+  },
+  {
+   "name": "HUGO BOSS",
+   "total": 4,
+   "only_fj": 4
+  },
+  {
+   "name": "PIMKIE",
+   "total": 4,
+   "only_fj": 4
+  },
+  {
+   "name": "Christian Dior Couture",
+   "total": 20,
+   "only_fj": 3
+  },
+  {
+   "name": "Hermès",
+   "total": 15,
+   "only_fj": 3
+  },
+  {
+   "name": "Aubade",
+   "total": 6,
+   "only_fj": 3
+  },
+  {
+   "name": "Balmain",
+   "total": 4,
+   "only_fj": 3
+  },
+  {
+   "name": "MODELOR SERVICE",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "GROUPE CHANTELLE LINGERIE",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "YVES ROCHER",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "AURÉLIE BIDERMANN",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "VALERIAN HUGHES PARIS",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "OCARAT",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "CHILDREN WORLDWIDE FASHION C.W.F",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "NACH",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "SUNGLASS HUT",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "MINOÏ",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "L'OREAL GROUP",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "LE TANNEUR & CIE",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "LANCEL",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "THE FRANKIE SHOP",
+   "total": 3,
+   "only_fj": 3
+  },
+  {
+   "name": "Petit Bateau",
+   "total": 10,
+   "only_fj": 2
+  },
+  {
+   "name": "APM Monaco",
+   "total": 3,
+   "only_fj": 2
+  },
+  {
+   "name": "POIRAY",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "AGATHA",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "ARABIAN OUD",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "ARLETTIE PARIS",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "Boardriders",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "EXE WORLDWIDE",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "FRANCOISE",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "FRENCH TEX",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "Fusalp",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "GAS BIJOUX",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "GOYARD",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "IRIDESCENCE BIJOUX",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "ISTITUTO MARANGONI PARIS",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "JULIETTE HAS A GUN",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "LEFTIES",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "LE TEMPS DES CERISES",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "LUMYA STUDIO",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "NIKE",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "ODAEL",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "PACO RABANNE MODE",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "360 TALENT LONDON",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "POSTURE FASHION AGENCY",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "PRADA",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "PROTOTEXTILE",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "REDLINE",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "Shiseido",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "VAILLANT STUDIO",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "VANESSA BRUNO",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "VARIOUS ARCHIVES",
+   "total": 2,
+   "only_fj": 2
+  },
+  {
+   "name": "Aroma-Zone",
+   "total": 15,
+   "only_fj": 1
+  },
+  {
+   "name": "FROM FUTURE",
+   "total": 4,
+   "only_fj": 1
+  },
+  {
+   "name": "Jonak",
+   "total": 2,
+   "only_fj": 1
+  },
+  {
+   "name": "Ralph Lauren",
+   "total": 2,
+   "only_fj": 1
+  },
+  {
+   "name": "LA MODE VINTAGE",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "FAIR FASHION AGENT",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "LANVIN",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "LA RÉPONSE D",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "LAURE DE SAGAZAN",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "LAURENCE BRAS",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "LE COQ SPORTIF",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "ZAPA (GROUPE BRAND SISTERS)",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "LEMAIRE",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "LESAGE PARIS",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "ETERNEL PARISIEN",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "AKHO",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "L'HOMME INVISIBLE",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "LIPAULT (GROUPE SAMSONITE)",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "ELSA SCHIAPARELLI",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "ELLE",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "DUMEBI",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "ZIMMERMANN",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "LUNAS",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "FATHER AND SONS",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "LAB DIP",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "FASHION EXPERT",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "LA BRUNE ET LA BLONDE",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "ALBYA",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "THE ROOM",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "THEUNISSEN",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "THOMAS SABO",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "GUESS",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "GALDERMA",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "TRESSÉ",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "UNIVERS PRESSE",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "IZAC",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "JACK GOMME",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "JAMINI",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "Jean Paul Gaultier",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "JM.ATELSON",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "Jules",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "JULES & JENN",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "KSI MODE",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "DO YOU SPEAK FRANÇAIS ?",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MAISON BM",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MAISON MONTAGUT",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "DINH VAN PARIS",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MANG PRODUCTION",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "DINH VAN",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "DEVRED 1902",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "Marella",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MAX MARA",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MIDNIGHT THEORY",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MIMI & COOKIE",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "DEELUXE",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "CROSSMODE PARIS",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MIRA BELLEPARIS",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MODELOR",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "COUTURE & RETAIL CAMÉLÉONS RH",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "CONSCIOUS LOVE",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MODESIGN",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "CLAIRE'S",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MOSSI",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MPTW INTERNATIONAL",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MUM OF",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "MYLO CONCEPT",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "CITIZENS OF HUMANITY",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "New Balance",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "ZUHAIR MURAD",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "NOUKTAH",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "V DE VINSTER",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "CÉLESTE MOGADOR",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "Vestiaire Collective",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "PARAMOUR",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "CARVEN",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "C&A",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "PERRIER COMMUNICATION",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "BRUN STUDIO - ARTIST DESIGNER",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "BLUE BOX",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "Vivienne Westwood",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "WEILL",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "WOOYOUNGMI",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "PR CONSULTING PARIS",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "AXENTIA",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "WOP WORLD OF POP",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "AGNÈS B.",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "ATELIER DIANA MARTINEZ",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "ATELIER 19.6",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "SAMSOE SAMSOE",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "SAS LA RUCHE SKINCARE",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "SEPTIÈME LARGEUR CHAUSSEUR",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "58 FACETTES",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "SH PARIS",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "SIGAL",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "AMOREPACIFIC",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "SOPHIE D'AGON",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "STEPHANE HUMBERT LUCAS",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "TARATATA BIJOUX",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "TEDDY SMITH",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "THALGO",
+   "total": 1,
+   "only_fj": 1
+  },
+  {
+   "name": "Le Bon Marché",
+   "total": 17,
+   "only_fj": 0
+  },
+  {
+   "name": "Louis Vuitton",
+   "total": 13,
+   "only_fj": 0
+  },
+  {
+   "name": "Kenzo",
+   "total": 8,
+   "only_fj": 0
+  },
+  {
+   "name": "Celine",
+   "total": 8,
+   "only_fj": 0
+  },
+  {
+   "name": "Promod",
+   "total": 4,
+   "only_fj": 0
+  },
+  {
+   "name": "Sessùn",
+   "total": 4,
+   "only_fj": 0
+  },
+  {
+   "name": "Polène",
+   "total": 3,
+   "only_fj": 0
+  },
+  {
+   "name": "Kitsuné",
+   "total": 3,
+   "only_fj": 0
+  },
+  {
+   "name": "Eric Bompard",
+   "total": 3,
+   "only_fj": 0
+  },
+  {
+   "name": "Sud Express",
+   "total": 3,
+   "only_fj": 0
+  },
+  {
+   "name": "AMI Paris",
+   "total": 2,
+   "only_fj": 0
+  },
+  {
+   "name": "Sézane",
+   "total": 2,
+   "only_fj": 0
+  },
+  {
+   "name": "LVMH Fragrance Brands",
+   "total": 1,
+   "only_fj": 0
+  },
+  {
+   "name": "Urban Outfitters",
+   "total": 1,
+   "only_fj": 0
+  },
+  {
+   "name": "Loro Piana",
+   "total": 1,
+   "only_fj": 0
+  },
+  {
+   "name": "Fred",
+   "total": 1,
+   "only_fj": 0
+  }
+ ]
+}

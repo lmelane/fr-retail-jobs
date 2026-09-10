@@ -32,6 +32,46 @@ describe('talentsoftItemToJob', () => {
     expect(job?.description).not.toContain('<b>');
   });
 
+  /**
+   * Real Lagardère raw, read in production on 2026-09-10: the FIRST category is the job family, not the contract.
+   * Taking categories by position pushed the contract into the location — 102 postings across five talentsoft
+   * sources stored "Stage, Malakoff" / "CDI, Nice", and two cities canonicalised to "Cdi" and "Apprentissage".
+   */
+  it('reads the contract wherever it sits, never as part of the location (Lagardère: family first)', () => {
+    const job = talentsoftItemToJob({
+      link: 'https://www.lagardere.com/nous-rejoindre/postuler/offre-2026-10345-502',
+      category: ['Commerce / Vente / Relations Clients', 'Stage', 'Malakoff'],
+      title: '2026-10345 - Stage - Assistant.e Commercial.e et Administratif.ve H/F',
+      pubDate: 'Mon, 07 Sep 2026 22:07:21 Z',
+    });
+    expect(job?.contract).toBe('Stage');
+    expect(job?.location).toBe('Malakoff');
+    expect(job?.location).not.toMatch(/stage/i);
+  });
+
+  it('keeps the German tenant location clean (Lagardère DE)', () => {
+    const job = talentsoftItemToJob({
+      link: 'https://www.lagardere.com/nous-rejoindre/postuler/offre-2026-11002-502',
+      category: ['Commerce / Vente / Relations Clients', 'CDI', 'Frankfurt am Main'],
+      title: '2026-11002 - Verkäufer (m/w/d)',
+      pubDate: 'Tue, 08 Sep 2026 09:00:00 Z',
+    });
+    expect(job?.contract).toBe('CDI');
+    expect(job?.location).toBe('Frankfurt am Main');
+  });
+
+  it('still reads the Longchamp shape, where the contract does come first', () => {
+    const job = talentsoftItemToJob({ ...item, category: ['CDI', 'Nice'] });
+    expect(job?.contract).toBe('CDI');
+    expect(job?.location).toBe('Nice');
+  });
+
+  it('a city is not mistaken for a contract because of its letters', () => {
+    const job = talentsoftItemToJob({ ...item, category: ['CDI', 'Stagira'] });
+    expect(job?.contract).toBe('CDI');
+    expect(job?.location).toBe('Stagira');
+  });
+
   it('handles a single category (contract only, no city)', () => {
     const job = talentsoftItemToJob({ ...item, category: 'Stage' });
     expect(job?.contract).toBe('Stage');
