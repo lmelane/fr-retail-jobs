@@ -444,7 +444,30 @@ export async function attachWorkdayDescriptions(
           // …the same holds for a banner read from the tenant's store code (listing.locationsText.prefix).
           const partitioned = job.employerEvidence?.path.startsWith('listing.') ? job.employerEvidence : undefined;
           const employer = partitioned ? job.company : brandFromWorkdayDetail(detail);
-          if (!employer) return { ...job, raw: { ...(job.raw as Record<string, unknown>), detail }, publicationHold: 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL' };
+          /**
+           * An absent EMPLOYER does not invalidate the FACTS the same detail carries.
+           *
+           * This branch used to return the listing untouched, so a detail without an employer also dropped its
+           * date, country, location and description — two concerns wrongly coupled: WHO hires, and WHAT the
+           * posting says. Measured on uniqlo-hkm-headquarters (2026-09-10): two postings kept
+           * `jobPostingInfo.startDate` in their archived raw while `postedAt`, `countryCode`, `city` and
+           * `description` were all null, purely because their detail carried no employer label.
+           * The hold is what protects the identity — it is kept, unchanged, and the posting stays unpublished
+           * until an employer is proven. But the descriptive fields are now applied: they come from the same
+           * archived document and are not a claim about the employer.
+           */
+          if (!employer) return {
+            ...job,
+            raw: { ...(job.raw as Record<string, unknown>), detail },
+            publicationHold: 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL',
+            description: htmlToPlainText(info.jobDescription) || job.description,
+            country: info.country?.descriptor ?? job.country,
+            location: info.location || job.location,
+            postedAt: info.startDate ? new Date(info.startDate) : job.postedAt,
+            validThrough: info.endDate ? new Date(info.endDate) : job.validThrough,
+            workingTime: info.timeType || job.workingTime,
+            remote: info.remoteType || job.remote,
+          };
           return {
             ...job,
             publicationHold: job.publicationHold?.startsWith('WORKDAY_') ? undefined : job.publicationHold,

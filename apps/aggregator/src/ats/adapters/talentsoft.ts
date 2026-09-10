@@ -37,6 +37,14 @@ import type { AdapterResult, NormalizedJob } from '../../types.js';
 /** LCID 1036 is TalentSoft's code for French; the feed is the same shape in any locale. */
 const FRENCH_LCID = 1036;
 
+/**
+ * A category that names a CONTRACT, in the vocabulary these tenants publish. Anchored so that a city containing
+ * the letters (e.g. "Cdiville") is not mistaken for one, and kept to what was actually observed in the feeds.
+ */
+const CONTRACT_CATEGORY = /^(cdi|cdd|stage|alternance|apprentissage|int[ée]rim|freelance|vie|v\.i\.e\.?|temps (plein|partiel)|contrat pro\w*|professionnalisation)\b/i;
+/** A category that names a JOB FAMILY: Talentsoft writes it with slashes ("Commerce / Vente / Relations Clients"). */
+const JOB_FAMILY_CATEGORY = /\s\/\s/;
+
 export type RssItem = {
   link?: string;
   title?: string;
@@ -73,12 +81,21 @@ export function talentsoftItemToJob(item: RssItem): NormalizedJob | null {
   const title = item.title?.trim();
   if (!link || !title) return null;
 
-  // The feed lists the contract type and the city as separate <category> tags;
-  // the first is the contract (CDI/CDD/Stage…), the rest describe the location.
+  /**
+   * The feed lists several <category> tags, and their ORDER is not a contract.
+   *
+   * The code assumed "first = contract, rest = location". Measured on production raw (2026-09-10), Lagardère
+   * publishes `["Commerce / Vente / Relations Clients", "Stage", "Malakoff"]`: the first tag is the JOB FAMILY,
+   * so the contract slid into the location and 102 postings across five talentsoft sources ended up with a
+   * location like "Stage, Malakoff" or "CDI, Nice" — and two cities canonicalised to "Cdi" and "Apprentissage".
+   * Each value is therefore sorted by WHAT IT IS, the same rule the HTML card path already follows: a contract
+   * word is a contract, whatever its position; anything left describes the place.
+   */
   const categories = item.category === undefined
     ? []
     : (Array.isArray(item.category) ? item.category : [item.category]).map((c) => String(c).trim()).filter(Boolean);
-  const [contract, ...places] = categories;
+  const contract = categories.find((c) => CONTRACT_CATEGORY.test(c));
+  const places = categories.filter((c) => c !== contract && !JOB_FAMILY_CATEGORY.test(c));
 
   return {
     externalId: externalIdFromLink(link, title),
@@ -139,8 +156,9 @@ export function listingCards(html: string, origin: string): NormalizedJob[] {
       .filter(Boolean);
 
     const date = cells.find((v) => /^\d{2}\/\d{2}\/\d{4}$/.test(v));
+    // Same sorting rule as the RSS path: a contract word is a contract wherever it sits, and never the place.
     const place = cells
-      .filter((v) => !/^r[ée]f\b/i.test(v) && !/^\d{2}\/\d{2}\/\d{4}$/.test(v))
+      .filter((v) => !/^r[ée]f\b/i.test(v) && !/^\d{2}\/\d{2}\/\d{4}$/.test(v) && !CONTRACT_CATEGORY.test(v))
       .pop();
     const postedAt = date
       ? new Date(`${date.slice(6, 10)}-${date.slice(3, 5)}-${date.slice(0, 2)}T00:00:00Z`)

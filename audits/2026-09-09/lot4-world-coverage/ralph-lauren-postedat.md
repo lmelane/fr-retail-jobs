@@ -26,19 +26,41 @@ Mesuré sur les deux listes : **0 date au format `jj-Mmm-aaaa`**, 0 date sous un
 
 **L'élément qui tranche** : les listes contiennent un contrôle de tri `data-sortBy="postedDate"`, libellé « Sort jobs by Posted date ». **Le board Avature connaît donc une date de publication et permet de trier dessus, mais ne l'expose sur aucune carte ni sur aucune fiche publique.**
 
-## Verdict
+## Verdict — énoncé strictement à la mesure des preuves
 
-**Absence réelle sur les surfaces publiques collectées — ce n'est ni un défaut de collecte, ni d'archivage, ni de parsing, ni de transformation.**
+**Ce qui est établi : aucune date de publication n'a été trouvée sur les surfaces inspectées** — 2 listes, 8 fiches de détail, 2 surfaces triées, toutes archivées avec leur empreinte.
 
-- Pas un défaut de **parsing** : il n'y a rien à lire. `DATE_MARKER` n'échoue pas sur un format inattendu, il n'y a aucune date sur la carte, et aucune sur la fiche.
-- Pas un défaut de **collecte** : les deux surfaces que l'adaptateur lit (liste et détail) ont été relues directement et archivées ; elles ne portent pas la donnée.
-- Pas un défaut d'**archivage** : le RAW appauvri (`source`/`reference`/`department`) est une conséquence, pas la cause — la donnée n'existe pas en amont.
+**Ce qui n'est PAS établi, et que la version précédente de ce document affirmait à tort :**
 
-**Nuance à conserver, et elle est importante** : la date *existe* dans Avature (le tri en atteste). Elle n'est pas publiée sur les surfaces publiques. Dire « limite éditeur » serait donc imprécis : la formulation exacte est **« le tenant ne publie pas la date de publication sur les surfaces publiques accessibles, bien que son ATS la détienne »**.
+- ❌ « Le tenant ne publie la date **nulle part** ». Je n'ai inspecté qu'un sous-ensemble de surfaces. Le portail Avature expose d'autres routes (recherche JSON, flux, pages de liste paramétrées) qui n'ont pas toutes été sollicitées, et **je n'ai pas reproduit les requêtes réellement émises par le portail** — les deux paramètres de tri testés sont une hypothèse de ma part sur son fonctionnement, pas une capture de son trafic.
+- ❌ « L'adaptateur est définitivement hors de cause ». L'adaptateur ne cherche la date que par le littéral `"datePosted"` (`avature.ts`, mode portail), et son propre commentaire note qu'« Avature expose la ville dans des champs structurés plutôt que dans son JSON-LD, qui reste vide ». **Un champ structuré de date non lu reste une hypothèse ouverte.**
 
-## Portée de cette conclusion — ce qu'elle ne couvre pas
+**Ce qui reste donc le plus probable, sans être prouvé** : le gabarit de ce board n'affiche pas la date sur la carte ni sur la fiche. La liste porte un tri `data-sortBy="postedDate"`, ce qui indique que **l'ATS détient une date** ; les deux surfaces triées que j'ai demandées n'en ont affiché aucune, mais cela ne prouve pas qu'aucune route ne l'expose.
 
-L'observation porte sur **2 listes et 6 fiches**, pas sur les 1 103 offres. Elle établit que **le gabarit du board** n'expose pas la date, ce qui est cohérent avec 1 103 offres non datées sur 1 104. Elle ne prouve pas offre par offre. L'offre unique qui *est* datée (1 sur 1 104) n'a pas été expliquée et reste un point ouvert.
+## Chemin réseau de cette observation — à corriger avant toute conclusion ferme
+
+**Ces requêtes ont été émises depuis le poste local, PAS depuis l'egress de production.** D36 autorise le local pour vérifier un adaptateur, mais deux faits l'affaiblissent ici :
+
+1. Le journal montre `waf.bootstrap_completed` — **le site est derrière un WAF**, franchi par amorçage navigateur. Un WAF peut servir un contenu différent selon l'origine.
+2. La production collecte depuis l'egress Railway, dont l'IP diffère (D32 : « une cause réseau ne se grave que sur une mesure prise dans le processus réel »).
+
+**Vérification complémentaire nécessaire, et strictement bornée** : rejouer *uniquement* la lecture d'une liste et d'une fiche depuis l'egress de production, pour confirmer que le contenu servi est le même. Aucune recollecte de l'ensemble.
+
+> **Blocage externe, daté — 2026-09-10 21:4x UTC.** La sonde a été écrite (`backups/lot4-20260909/p2-rl-egress-probe.py` : deux pages, lecture pure, aucune écriture en base, aucune ingestion, restauration de la commande normale prévue). Elle **n'a pas pu être exécutée** : le jeton Railway de cette session est **en lecture seule** sur le service — la mutation de `startCommand` renvoie **HTTP 403**, alors que la lecture du même service répond normalement. Vérifié après l'échec : la commande de production est intacte (`sh apps/aggregator/start.sh`), aucun effet de bord.
+> **Prochaine action** : rejouer cette sonde avec un jeton autorisé à poser une commande bornée, ou depuis toute exécution disposant de l'egress de production. Tant qu'elle n'a pas tourné, **la conclusion de ce dossier reste locale**, et le doute WAF/origine reste ouvert.
+
+## L'unique offre datée : ce que la mesure dit
+
+`jobId=2888`, `postedAt = 2026-08-31T08:47:19Z` — avec une **heure précise**, signature d'un `datePosted` ISO, non d'une carte.
+
+Mesure structurante : **c'est la seule offre dont l'`externalId` a 4 chiffres** ; les 1 103 non datées en ont **toutes 5**.
+
+| Longueur de l'`externalId` | Offres | Datées |
+|---|---:|---:|
+| 4 caractères | 1 | **1** |
+| 5 caractères | 1 103 | **0** |
+
+La différence est donc **structurelle, pas aléatoire** — ce qui écarte l'idée d'un board qui publierait la date de façon intermittente. Sa fiche relue aujourd'hui ne porte ni JSON-LD ni `datePosted` ; son RAW n'a pas de `department`, contrairement aux autres. Elle a donc été lue par un chemin différent, à un moment où ce littéral existait. **Je ne peux pas l'établir davantage sans état historique, et je ne l'invente pas.** (Le marqueur « expired » relevé sur sa page est un faux positif : c'est un message d'expiration de **session**, vérifié.)
 
 ## Suite : ce qui doit être fait, et ce qui ne doit pas l'être
 

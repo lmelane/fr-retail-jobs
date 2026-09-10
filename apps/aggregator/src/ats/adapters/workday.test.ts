@@ -197,6 +197,51 @@ it('distinguishes a successful detail without any employer field from a fetch fa
   expect(job.publicationHold).toBe('WORKDAY_EMPLOYER_ABSENT_IN_DETAIL');
 });
 
+/**
+ * Non-regression for the UNIQLO HK/Macau defect (2026-09-10): a detail WITHOUT an employer used to be dropped
+ * whole, so the posting also lost the date, country, location and description the SAME document carried.
+ * Two postings of uniqlo-hkm-headquarters kept `jobPostingInfo.startDate` in their archived raw while postedAt,
+ * countryCode, city and description were all null. Identity and facts are distinct concerns: the hold stays
+ * (nothing is published without a proven employer), the descriptive fields are applied.
+ */
+it('applies the detail facts even when the employer is absent, and keeps the hold', async () => {
+  mockJson.mockResolvedValueOnce({
+    jobPostingInfo: {
+      jobDescription: '<p>Part-Time Clerk duties</p>',
+      startDate: '2026-07-29',
+      endDate: '2026-10-29',
+      country: { descriptor: 'Hong Kong' },
+      location: 'Hong Kong-Tsim Sha Tsui-UQHK',
+      timeType: 'Part time',
+    },
+  } as never);
+  const [job] = await attachWorkdayDescriptions(
+    [{ externalId: 'R00000004162321', title: 'Part-Time Clerk', url: 'https://uniqlo.example/job/x', raw: { externalPath: '/job/x', postedOn: 'Posted 30+ Days Ago' } }],
+    'https://uniqlo.example/wday/cxs/uniqlo/jobs',
+  );
+  // The identity guard is untouched: no employer claimed, posting still held.
+  expect(job.publicationHold).toBe('WORKDAY_EMPLOYER_ABSENT_IN_DETAIL');
+  expect(job.company).toBeUndefined();
+  // …but the facts of the very same document are no longer thrown away.
+  expect(job.postedAt?.toISOString().slice(0, 10)).toBe('2026-07-29');
+  expect(job.validThrough?.toISOString().slice(0, 10)).toBe('2026-10-29');
+  expect(job.country).toBe('Hong Kong');
+  expect(job.location).toBe('Hong Kong-Tsim Sha Tsui-UQHK');
+  expect(job.workingTime).toBe('Part time');
+  expect(job.description).toMatch(/Part-Time Clerk duties/);
+});
+
+it('does not invent a date when the employer-less detail has none', async () => {
+  mockJson.mockResolvedValueOnce({ jobPostingInfo: { jobDescription: 'No dates here' } } as never);
+  const [job] = await attachWorkdayDescriptions(
+    [{ externalId: 'y', title: 'Clerk', url: 'https://example.com/job/y', raw: { externalPath: '/job/y', postedOn: 'Posted 30+ Days Ago' } }],
+    'https://example.com/wday/cxs/group/jobs',
+  );
+  expect(job.publicationHold).toBe('WORKDAY_EMPLOYER_ABSENT_IN_DETAIL');
+  expect(job.postedAt).toBeUndefined();
+  expect(job.validThrough).toBeUndefined();
+});
+
 it('holds a replay without a detail path and clears only Workday holds after a successful retry', async () => {
   const base = { externalId: 'x', title: 'Sales Associate', url: 'https://example.com/job/x' };
   const [missing] = await attachWorkdayDescriptions([base], 'https://example.com/wday/cxs/group/jobs');
