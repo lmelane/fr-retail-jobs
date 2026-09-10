@@ -470,6 +470,18 @@ Les 349 autres : **41** Lindex (le RAW n'a que des dates de *vacance*, que l'ada
 
 **Décision `validThrough` (propriétaire, 2026-09-10)** : **ne pas dériver** de date de fin. La proposition « `published_at` + 3 mois » a été mesurée avant d'être tranchée : elle ne débloque **aucune** des 1 452 offres visées (elles n'ont pas de `published_at` — c'est `datePosted` qui manque), et elle affirmerait à Google et au candidat une date limite que l'employeur n'a jamais donnée. Google **recommande** `validThrough` sans l'exiger : les 71 787 offres qui ont `datePosted` sans date de fin sont déjà valides. Le code reste donc conforme à sa conception (`job-posting-schema.ts` : « afficher la page n'établit pas une nouvelle date limite de candidature »). Mesuré au passage : **135 offres actives portent un `validThrough` déjà dépassé** — ce sont de **vraies** dates limites d'employeurs, échues pendant le gel du refresh, qui les aurait fermées ; conséquence du gel, pas défaut de code.
 
+**7. Réparations P2 exécutées — données réparées, cause corrigée, résultat vérifié, dossiers ouverts.** Preuves complètes (script appliqué, empreinte `4270b524…1e80c`, identifiants, avant/après) : `audits/2026-09-09/lot4-world-coverage/p2-repairs-proof/`.
+
+| | Données réparées | Cause corrigée dans le chemin réel | Résultat vérifié |
+|---|---|---|---|
+| **Talentsoft** | **102** offres : `location` nettoyé, 2 villes fausses corrigées | **oui** — l'adaptateur lit le lieu **après le contrat** dans les catégories (structure `[métier, contrat, lieu]` observée sur toutes les lignes archivées). Le premier correctif ne filtrait que les métiers **avec slash** et laissait passer « Marketing » et « Management de boutiques » : trouvé par un test qui exerce l'adaptateur **et** `cleanPlace`, le chemin réel d'ingestion | 101 → **0** pollué ; 18 tests dont les 3 cas réels + « aucun lieu disponible ⇒ aucun lieu stocké » |
+| **UNIQLO** | **2** offres : date **et description** (784 et 829 caractères) | **oui** — un détail sans employeur n'est plus rejeté en bloc ; la retenue est conservée, les faits sont appliqués | 2 → **0** non datée, 2 → **0** sans description ; chaque `postedAt` = son `raw_date` exact ; `countryCode` laissé nul car absent du RAW |
+| **Ulta** | **1** offre : fusion de l'entité juridique | **oui** — par le mécanisme de **revue d'identité**, avec preuve officielle archivée ; la base refuse toute écriture directe (`Company_identity_relationship_review`) | parité **10 290 = 10 290** ; tableau final **441/441** ; rejeu `alreadyApplied` |
+
+**Dossiers encore ouverts, dans P2** : doublons (44 groupes, 91 lignes `Job` — **tous** dans le périmètre, cause non instruite, aucune fusion) · FashionJobs 172 + 585 · Fenwick 31 · `element-6` 5 · 301 sans champ de date · 20 libellés en refus · 7 retenues levées sans observation · WTTJ 52 · sonde egress Ralph Lauren.
+
+**Retenues : l'état, pas le compteur.** Un `COUNT(*)` d'événements ne peut que croître et serait resté identique même si tout avait été publié. `scripts/coverage/holds-state.mts` mesure l'état courant par identifiant et motif : **740 retenues réelles** (VF 695, Aptar 38, blackstore 6, KnitWell 1), inchangées, et **UNIQLO n'y figure pas**. La mesure a aussi révélé **35 représentations publiées malgré une retenue passée** — invisible au compteur.
+
 ### En cours ou restant
 
 - **Saks / Exemplar Luxury Group — fait** : revue propriétaire (1 621 opérations), re-certification MULTI_BRAND, run borné L9 (742/746 complet, 0 refus) : Neiman Marcus 420 · Saks Fifth Avenue 189 · groupe 133 · Bergdorf Goodman 66 · Saks OFF 5TH 27, parité 5/5 (`qualification-2026-09-10-b.md` § 7.2).

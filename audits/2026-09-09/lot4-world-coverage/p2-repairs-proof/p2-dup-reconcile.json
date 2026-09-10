@@ -1,0 +1,211 @@
+{
+ "at": "2026-09-10T22:00:05.383Z",
+ "isolation": "repeatable read",
+ "totals": {
+  "duplicated_urls": 44,
+  "jobs_on_those_urls": 91,
+  "excess_jobs": 47
+ },
+ "byCause": [
+  {
+   "cause": "SEVERAL_SOURCES_SAME_PAGE (multi-source attestation)",
+   "urls": 25,
+   "jobs": 50,
+   "excess": 25
+  },
+  {
+   "cause": "SAME_SOURCE_SEVERAL_EXTERNAL_IDS (unstable identifier — our defect)",
+   "urls": 19,
+   "jobs": 41,
+   "excess": 22
+  }
+ ],
+ "bySource": [
+  {
+   "sourceKey": "hermes",
+   "urls": 22,
+   "jobs": 24,
+   "external_ids": 24,
+   "has_unstable_ids": true
+  },
+  {
+   "sourceKey": "psycho-bunny",
+   "urls": 12,
+   "jobs": 24,
+   "external_ids": 24,
+   "has_unstable_ids": true
+  },
+  {
+   "sourceKey": "wttj-sector",
+   "urls": 22,
+   "jobs": 22,
+   "external_ids": 22,
+   "has_unstable_ids": false
+  },
+  {
+   "sourceKey": "alberto",
+   "urls": 3,
+   "jobs": 8,
+   "external_ids": 8,
+   "has_unstable_ids": true
+  },
+  {
+   "sourceKey": "lvmh",
+   "urls": 4,
+   "jobs": 4,
+   "external_ids": 4,
+   "has_unstable_ids": false
+  },
+  {
+   "sourceKey": "tiffany-oracle",
+   "urls": 4,
+   "jobs": 4,
+   "external_ids": 4,
+   "has_unstable_ids": false
+  },
+  {
+   "sourceKey": "fashionjobs",
+   "urls": 2,
+   "jobs": 3,
+   "external_ids": 3,
+   "has_unstable_ids": true
+  },
+  {
+   "sourceKey": "kastner-ohler",
+   "urls": 1,
+   "jobs": 3,
+   "external_ids": 3,
+   "has_unstable_ids": true
+  },
+  {
+   "sourceKey": "element-6",
+   "urls": 1,
+   "jobs": 1,
+   "external_ids": 1,
+   "has_unstable_ids": false
+  },
+  {
+   "sourceKey": "aroma-zone",
+   "urls": 1,
+   "jobs": 1,
+   "external_ids": 1,
+   "has_unstable_ids": false
+  }
+ ],
+ "unstable": [
+  {
+   "url": "https://www.alberto-pants.com/jobs-and-careers/mitarbeiter-versand-lager/",
+   "sourceKey": "alberto",
+   "ids": 4,
+   "external_ids": "030c5186ec1a3439a0573e8f32db189b96c367c5 | 3f1ea4bef772191484575deb822ddaa511fec915 | cd838403d6e51b770d7271443ff97555403fb4bb | f19e680c4b0e4d0231960aea6e79ec33ce4adff1"
+  },
+  {
+   "url": "https://www.kastner-oehler.at/job-karriere/angebot/backoffice-mitarbeiterin-graz-teilzeit/",
+   "sourceKey": "kastner-ohler",
+   "ids": 3,
+   "external_ids": "2198325d7da2e73ace96931ea4acb31106e2bd16 | 61fcbe9dc0bf9bad6a5f1ed109a694131c0406ba | fc9817a97ec733ff17cb221f0feba4d2f0a29022"
+  },
+  {
+   "url": "https://careers.psychobunny.com/job/3540/key_holder",
+   "sourceKey": "psycho-bunny",
+   "ids": 2,
+   "external_ids": "3cfe4bde3792be1516674ccb237d9c11439524c6 | f5aa81e10ead1c4485431960bee78d177bd1719e"
+  },
+  {
+   "url": "https://careers.psychobunny.com/job/3541/sales_associate",
+   "sourceKey": "psycho-bunny",
+   "ids": 2,
+   "external_ids": "703d60aa2f4d9cd03af7a37f47fc7d0537dbe797 | 8913e58ec09faefd6a9ed612ab5b1fdb50c1a74e"
+  },
+  {
+   "url": "https://careers.psychobunny.com/job/3542/sales_associate",
+   "sourceKey": "psycho-bunny",
+   "ids": 2,
+   "external_ids": "1dcae028cec4f6f979fa629cc7007e56f970a387 | a86ca262e04f638f9537785fca33a2cbc4c3493d"
+  },
+  {
+   "url": "https://careers.psychobunny.com/job/3543/key_holder",
+   "sourceKey": "psycho-bunny",
+   "ids": 2,
+   "external_ids": "09d0af5d52fbb03db47c7936e673ccbd33e73bff | 976a1a4ce605c4dfd76a639849ccf964dca7173e"
+  },
+  {
+   "url": "https://careers.psychobunny.com/job/3544/key_holder",
+   "sourceKey": "psycho-bunny",
+   "ids": 2,
+   "external_ids": "5c050eec691fd76e826586ab14ce4155c1724fd5 | 8a26b0c425f8b932c7f9ee5ff31b9c7ff160c41b"
+  },
+  {
+   "url": "https://careers.psychobunny.com/job/3545/sales_associate",
+   "sourceKey": "psycho-bunny",
+   "ids": 2,
+   "external_ids": "0852e76e12e057cd8539b7845a00a8d1ed5bd0a4 | ecf8acc7a5e552a16d59ed7ad2bcb447030eceee"
+  },
+  {
+   "url": "https://careers.psychobunny.com/job/3546/sales_associate",
+   "sourceKey": "psycho-bunny",
+   "ids": 2,
+   "external_ids": "ab26bc4f2e6e08ce467356878e09bc758006740d | c1dd2ba9041ad3bc449b101e45480f3747c2c5d8"
+  },
+  {
+   "url": "https://careers.psychobunny.com/job/3547/store_manager",
+   "sourceKey": "psycho-bunny",
+   "ids": 2,
+   "external_ids": "b9a2c4e9a35d9e06b06b920fe1afc2eff4f5749d | f4d6ded290a0d317373f6f7e201266a4048edc4a"
+  },
+  {
+   "url": "https://careers.psychobunny.com/job/3548/store_manager_montreal_eaton_centre",
+   "sourceKey": "psycho-bunny",
+   "ids": 2,
+   "external_ids": "88b3e0b6cf97e6ce4a2b4f89d1960a1574ec2f99 | b719c846c8eace70add04a8111e884a8fce0c564"
+  },
+  {
+   "url": "https://careers.psychobunny.com/job/3550/key_holder",
+   "sourceKey": "psycho-bunny",
+   "ids": 2,
+   "external_ids": "a22c5bc59da20d1418a23c1fe3d64660e86d13de | bef51b488937c8151105093daaefce3827b78405"
+  },
+  {
+   "url": "https://careers.psychobunny.com/job/3551/store_manager",
+   "sourceKey": "psycho-bunny",
+   "ids": 2,
+   "external_ids": "0aab3f15e3da65a9869e051c0a784ed5b5e6f15e | dfe3bcaccce6e1b4e48c7fc78159f8846882688c"
+  },
+  {
+   "url": "https://www.alberto-pants.com/en/jobs-and-careers/werkstudent-aushilfe-versand-lager/",
+   "sourceKey": "alberto",
+   "ids": 2,
+   "external_ids": "3aa52094df63036abaa5b87eee3c99e3604713ba | bde84cec54a9eaf854aced6b7ce645825e574932"
+  },
+  {
+   "url": "https://www.alberto-pants.com/jobs-and-careers/werkstudent-aushilfe-versand-lager/",
+   "sourceKey": "alberto",
+   "ids": 2,
+   "external_ids": "150dabc72f6dc1d6a69b9867fe81a39ea8ecaf80 | 423b936fa4117e5943367b188d849b50c68bbbee"
+  },
+  {
+   "url": "https://www.welcometothejungle.com/fr/companies/hermes/jobs/cdd-bilingual-client-advisor-german-english-hermes-com-europe-w-m_paris_HERMS_YLgpbGY",
+   "sourceKey": "hermes",
+   "ids": 2,
+   "external_ids": "af0bc9a4-37fb-49f1-9949-4ce4acafdba5 | f47d688c-8e2f-48fc-b77b-e72563a041aa"
+  },
+  {
+   "url": "https://careers.aroma-zone.com/jobs/8205108-charge-e-de-recrutement-expert-e-retail",
+   "sourceKey": "fashionjobs",
+   "ids": 2,
+   "external_ids": "11962485 | 11962486"
+  },
+  {
+   "url": "https://www.welcometothejungle.com/fr/companies/hermes/jobs/cdd-conseiller-de-ventes-cuir-h-f-magasin-du-faubourg-st-honore_paris_HERMS_PDrobNP",
+   "sourceKey": "hermes",
+   "ids": 2,
+   "external_ids": "16bb9289-88f0-4dba-a180-a28b39c34087 | ee04c199-2c63-4d67-bac9-bc8177c7cbf4"
+  },
+  {
+   "url": "https://careers.psychobunny.com/job/3539/sales_associate",
+   "sourceKey": "psycho-bunny",
+   "ids": 2,
+   "external_ids": "5e8d21cd821683e457004261b77172d82f90d3d3 | 9b574617adbfece01ceb7b080dd9e6e2701191de"
+  }
+ ]
+}

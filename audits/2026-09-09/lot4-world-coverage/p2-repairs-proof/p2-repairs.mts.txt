@@ -1,0 +1,155 @@
+import { PrismaClient } from '@prisma/client';
+import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { cleanPlace } from '../../apps/aggregator/src/lib/normalize.js';
+import { htmlToPlainText } from '../../apps/aggregator/src/lib/html.js';
+import { buildEmployerRepair, applyEmployerRepair } from '../../apps/aggregator/src/identity/repair.js';
+import { digest } from '../../apps/aggregator/src/remediation/plan.js';
+/**
+ * The three P2 repairs whose CAUSE is proven, corrected and deployed. Offline, from the ARCHIVED raw only —
+ * no collection. Idempotent: a second run must change 0 row (the replay proof).
+ *
+ *   1. TALENTSOFT — `location` keeps the contract ("Stage, Malakoff"). The categories are in the archived raw, so
+ *      the fixed rule is replayed on them. Only `location` (and `city` when it canonicalises to a contract word)
+ *      is rewritten; the contract itself is NOT written — employment dimensions come from their own pipeline and
+ *      rewriting them here would bypass sourceFieldTrust (D54).
+ *   2. UNIQLO — a detail without an employer was dropped whole, losing postedAt/country/location/description that
+ *      the SAME archived document carries. Only fields actually present in the raw are filled; nothing is invented.
+ *      The publication hold is NOT touched.
+ *   3. ULTA — "Ulta Beauty, Inc." is the legal form of "Ulta Beauty" (D37). Identity merge: the posting keeps its
+ *      id, url and firstSeenAt, only its companyId changes. No deletion.
+ *
+ * usage: p2-repairs.mts <clone|production> [--apply]
+ */
+const target = process.argv[2];
+if (!['clone', 'production'].includes(target ?? '')) { console.error('usage: p2-repairs.mts <clone|production> [--apply]'); process.exit(2); }
+const APPLY = process.argv.includes('--apply');
+
+/** Same vocabulary as the adapter fix, kept in sync deliberately: a contract word is never a place. */
+const CONTRACT = /^(cdi|cdd|stage|alternance|apprentissage|int[ée]rim|freelance|vie|v\.i\.e\.?|temps (plein|partiel)|contrat pro\w*|professionnalisation)\b/i;
+
+const p = new PrismaClient({ log: [] });
+const out: any = { at: new Date().toISOString(), target, apply: APPLY, talentsoft: {}, uniqlo: {}, ulta: {} };
+try {
+  // ---------------------------------------------------------------- 1. TALENTSOFT
+  const tsRows: any[] = await p.$queryRaw`
+    SELECT j.id, j.location, j.city, js."sourceKey", js."externalId"
+    FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId" JOIN "Source" s ON s.key = js."sourceKey"
+    WHERE js."isActive" AND j."isActive" AND s.kind = 'talentsoft'
+      AND (j.location ~* '^(cdi|cdd|stage|alternance|apprentissage|int[ée]rim)' OR j.city ~* '^(cdi|cdd|stage|alternance|apprentissage|int[ée]rim)$')`;
+  /**
+   * The repair STRIPS the contract prefix; it does not rebuild the location from the categories.
+   *
+   * Measured on the 102 candidates: most rows have `raw.rss.category` NULL — they came through the HTML card
+   * path, which archives no categories. On the few rows that do have them, rebuilding produced a WRONG place
+   * ("Management de boutiques, Nice", "Marketing, Malakoff"): those tenants publish a job family that carries no
+   * slash, so it survived the family filter. Removing the leading contract is the only transformation the stored
+   * value justifies on its own — everything else would be guessed.
+   */
+  const tsPlan = tsRows.map((r) => {
+    const location = String(r.location ?? '');
+    const isContract = CONTRACT.test(location);
+    /**
+     * Three shapes, three outcomes — the third was found by the clone rehearsal, which kept re-planning one row
+     * for ever (groupe-printemps 6106: location "Stage", no comma, so there is no place to extract).
+     *   "Stage, Malakoff" -> "Malakoff"   : strip the contract prefix
+     *   "Malakoff"        -> unchanged    : nothing to do
+     *   "Stage"           -> NULL         : the value is a contract, not a place, and no place is available.
+     *                                       Clearing a wrong value is legitimate; inventing one would not be.
+     */
+    const newLocation = isContract ? (location.includes(',') ? location.replace(/^[^,]+,\s*/, '').trim() : null) : undefined;
+    // A city that canonicalised to a contract word is re-derived from the cleaned location, never invented.
+    const cityIsContract = r.city && CONTRACT.test(String(r.city));
+    const newCity = cityIsContract ? (newLocation ? (cleanPlace(newLocation) ?? null) : null) : undefined;
+    return { id: r.id, sourceKey: r.sourceKey, externalId: r.externalId, from: { location: r.location, city: r.city },
+      to: { ...(newLocation !== undefined && newLocation !== r.location ? { location: newLocation } : {}), ...(newCity !== undefined && newCity !== r.city ? { city: newCity } : {}) } };
+  }).filter((x) => Object.keys(x.to).length > 0);
+  out.talentsoft = { candidates: tsRows.length, planned: tsPlan.length, sample: tsPlan.slice(0, 5) };
+  if (APPLY) {
+    let n = 0;
+    for (const row of tsPlan) {
+      await p.job.update({ where: { id: row.id }, data: row.to as any });
+      n++;
+    }
+    out.talentsoft.applied = n;
+  }
+
+  // ---------------------------------------------------------------- 2. UNIQLO
+  /**
+   * The selection covers EVERY field the dropped detail could have lost, not only the date.
+   *
+   * The first version filtered on `postedAt IS NULL` alone, so its "replay yields 0" proved nothing about the
+   * other fields — and indeed the description stayed NULL while the archive held 1 001 and 971 characters of real
+   * content. A repair must select on the DEFECT (a detail present but not applied), never on one symptom.
+   */
+  const uqRows: any[] = await p.$queryRaw`
+    SELECT j.id, j."postedAt", j."countryCode", j.city, j.location, j.description,
+           js.raw#>>'{detail,jobPostingInfo,startDate}' AS start_date,
+           js.raw#>>'{detail,jobPostingInfo,country,descriptor}' AS country,
+           js.raw#>>'{detail,jobPostingInfo,location}' AS raw_location,
+           js.raw#>>'{detail,jobPostingInfo,timeType}' AS raw_time_type,
+           js.raw#>>'{detail,jobPostingInfo,jobDescription}' AS raw_desc
+    FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
+    WHERE js."sourceKey" = 'uniqlo-hkm-headquarters' AND js."isActive" AND j."isActive"
+      AND js.raw#>'{detail,jobPostingInfo}' IS NOT NULL
+      AND (j."postedAt" IS NULL OR j.description IS NULL OR j."countryCode" IS NULL OR j.location IS NULL)`;
+  // Only fields the archive actually carries are filled, through the SAME converter production uses.
+  const uqPlan = uqRows.map((r) => {
+    const desc = r.description === null && r.raw_desc ? (htmlToPlainText(r.raw_desc) || undefined) : undefined;
+    return { id: r.id,
+      from: { postedAt: r.postedAt, location: r.location, countryCode: r.countryCode, hasDescription: r.description !== null },
+      to: { ...(r.postedAt === null && r.start_date ? { postedAt: new Date(r.start_date) } : {}),
+            ...(r.location === null && r.raw_location ? { location: r.raw_location } : {}),
+            ...(desc ? { description: desc } : {}) },
+      countryInRaw: r.country ?? null, rawDescriptionChars: r.raw_desc?.length ?? 0, convertedChars: desc?.length ?? 0 };
+  }).filter((x) => Object.keys(x.to).length > 0);
+  out.uniqlo = { candidates: uqRows.length, planned: uqPlan.length, plan: uqPlan };
+  if (APPLY) {
+    for (const row of uqPlan) await p.job.update({ where: { id: row.id }, data: row.to });
+    out.uniqlo.applied = uqPlan.length;
+  }
+
+  // ---------------------------------------------------------------- 3. ULTA
+  const [target_, legal]: any[] = await Promise.all([
+    p.company.findFirst({ where: { name: 'Ulta Beauty', mergedIntoId: null }, select: { id: true, name: true } }),
+    p.company.findFirst({ where: { name: 'Ulta Beauty, Inc.', mergedIntoId: null }, select: { id: true, name: true } }),
+  ]);
+  const ultaJobs = legal ? await p.job.findMany({ where: { companyId: legal.id }, select: { id: true, isActive: true } }) : [];
+  out.ulta = { target: target_, legalEntity: legal, jobsToMove: ultaJobs.length, activeAmongThem: ultaJobs.filter((j: any) => j.isActive).length };
+  /**
+   * The merge goes through the REVIEWED repair mechanism, never a direct write.
+   *
+   * The clone rehearsal caught this: a plain `company.update({ mergedIntoId })` is refused by the database check
+   * `Company_identity_relationship_review` — a merge requires an `identityReviewId`, i.e. a traced, reviewed
+   * decision. That guard is the point, not an obstacle: buildEmployerRepair snapshots the identity, hashes it,
+   * and applyEmployerRepair applies it atomically under that hash (the same path as the 209 merges of D45).
+   */
+  if (target_ && legal) {
+    const spec = {
+      batchId: `p2-ulta-legal-form-${new Date().toISOString().slice(0, 10)}`,
+      reviewedBy: 'loic.melane.pro@gmail.com',
+      reviewedAt: new Date().toISOString(),
+      statement: 'D37: a legal form is not a Maison identity. "Ulta Beauty, Inc." is the legal entity of "Ulta Beauty" (same source ulta-jibe, same domain ulta.com); its single active posting is merged into the canonical Maison. No deletion: id, url and firstSeenAt are preserved.',
+      evidence: [(() => {
+        // The official Ulta site itself, archived: its copyright names the legal entity of the Maison.
+        const artifactText = readFileSync('backups/lot4-20260909/p2-ulta-evidence.txt', 'utf8');
+        return { url: 'https://www.ulta.com/company/about-us/', artifactText,
+          sha256: createHash('sha256').update(artifactText).digest('hex'),
+          explanation: 'The official Ulta Beauty site carries "© Ulta Beauty, Inc." — the legal entity behind the Maison. A legal form is not a separate employer identity (D37).' };
+      })()],
+      merges: [{ fromId: legal.id, toId: target_.id }],
+      aliases: [],
+    } as any;
+    const plan = await buildEmployerRepair(p, spec);
+    out.ulta.plan = { batchId: plan.batchId, beforeHash: plan.beforeHash, jobCount: plan.jobCount, activeJobCount: plan.activeJobCount, companyIds: plan.companyIds };
+    if (APPLY) {
+      const commit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+      out.ulta.result = await applyEmployerRepair(p, plan, digest(plan), commit);
+      // Replay under the same hash: a reviewed decision must be idempotent (0 further change).
+      out.ulta.replay = await applyEmployerRepair(p, plan, digest(plan), commit);
+      out.ulta.applied = true;
+    }
+  }
+  console.log(JSON.stringify(out, null, 1));
+} finally { await p.$disconnect(); }

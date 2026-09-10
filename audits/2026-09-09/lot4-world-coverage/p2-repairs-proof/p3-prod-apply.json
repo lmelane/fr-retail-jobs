@@ -1,0 +1,57 @@
+{
+ "at": "2026-09-10T22:35:29.787Z",
+ "target": "production",
+ "apply": true,
+ "talentsoft": {
+  "candidates": 0,
+  "planned": 0,
+  "sample": [],
+  "applied": 0
+ },
+ "uniqlo": {
+  "candidates": 2,
+  "planned": 2,
+  "plan": [
+   {
+    "id": "cmtvnlslg0059lh017co1owjf",
+    "from": {
+     "postedAt": "2026-07-29T00:00:00.000Z",
+     "location": null,
+     "countryCode": null,
+     "hasDescription": false
+    },
+    "to": {
+     "description": "Job Description:\n• Provide administrative and clerical support to the team\n• Assist general HR functions such as recruitment, maintain and update employee records, personnel filing and database administration.\n• Ensure daily operations are running smoothly by coordinating with internal and external parties\n• Participate in any ad hoc tasks as assigned\n\n Requirements:\n• Degree in Human Resources Management or a related discipline\n• Year 2 & Year 3 university students are preferable\n• Able to work independently and proactively\n• Good command of both written and spoken English & Chinese\n• Proficiency in MS Word, Excel & Chinese word processing\n• Workday Day : Monday to Friday (3-4 days per week)\n• Working Hour : 09:00 - 18:00 (4-8hrs per day)\n• Immediate available is preferred"
+    },
+    "countryInRaw": null,
+    "rawDescriptionChars": 1001,
+    "convertedChars": 784
+   },
+   {
+    "id": "cmtvnlsn6005llh018aruuu8k",
+    "from": {
+     "postedAt": "2026-05-26T00:00:00.000Z",
+     "location": null,
+     "countryCode": null,
+     "hasDescription": false
+    },
+    "to": {
+     "description": "Responsibilities:\n• To provide clerical support to administration duties\n• To maintain the general filing system and file all correspondence\n• Translate regular documents and act as a Japanese / Chinese interpreter\n• Act as a communication channel between store operations and internal departments\n• Perform as a part of operations team to provide advice and support to store operations\n• To assists with and support other ad-hoc duties as assigned\n\n Requirements:\n• University degree or above in any discipline\n• Working experience with customer services is an advantage\n• Excellent spoken and written Japanese / Mandarin / English\n• Good telephone manner, interpersonal and organization skills\n• Working Day : Prefer Tuesday & Wednesday\n• Working Hour : 09:00 – 18:00 ( 4-8 hours per day )\n• Immediate availability is preferred"
+    },
+    "countryInRaw": null,
+    "rawDescriptionChars": 971,
+    "convertedChars": 829
+   }
+  ],
+  "applied": 2
+ },
+ "ulta": {
+  "target": {
+   "id": "cmtpuyimv3pbul35m36fwuuzo",
+   "name": "Ulta Beauty"
+  },
+  "legalEntity": null,
+  "jobsToMove": 0,
+  "activeAmongThem": 0
+ }
+}
