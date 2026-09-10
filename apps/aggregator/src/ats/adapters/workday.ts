@@ -382,7 +382,9 @@ type WorkdayDetail = {
  * The word is the image's, not the employer's.
  */
 export function brandFromLogoAlt(alt: string | undefined): string | undefined {
-  const name = alt?.replace(/(^|\s)logo(\s|$)/gi, ' ').replace(/\s+/g, ' ').trim();
+  // The alt may be a file-name-like token: "Off_The_Rax_LOGO300x300" (KnitWell, 2026-09-10) — underscores separate words and the
+  // image word may carry its dimensions. Only the word "logo" (with optional WxH) is removed; every other word is the brand.
+  const name = alt?.replace(/_+/g, ' ').replace(/(^|\s)logo(?:\s*\d+\s*x\s*\d+)?(?=\s|$)/gi, ' ').replace(/\s+/g, ' ').trim();
   return name && !/^logo$/i.test(name) ? name : undefined;
 }
 
