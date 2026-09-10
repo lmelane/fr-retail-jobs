@@ -1,7 +1,8 @@
 import { fetchJson } from '../../lib/http.js';
 import type { AdapterResult } from '../../types.js';
 
-export type LeverJob = { id: string; text: string; hostedUrl: string; createdAt?: number; descriptionPlain?: string; categories?: { location?: string; commitment?: string; department?: string } };
+/** `country` (ISO-2) and `workplaceType` ("hybrid" | "remote" | "on-site" | "unspecified") are served by the public postings API — read since 2026-09-10 (Arc'teryx: 299 postings, 0 % country before). */
+export type LeverJob = { id: string; text: string; hostedUrl: string; createdAt?: number; descriptionPlain?: string; country?: string; workplaceType?: string; categories?: { location?: string; commitment?: string; department?: string; allLocations?: string[] } };
 
 /** Exact, tenant-reviewed department mapping; an unknown department stays unresolved. */
 export function leverEmployer(job: LeverJob, mapping: unknown): string | undefined {
@@ -49,6 +50,9 @@ export async function fetchLeverJobs(config: Record<string, unknown>): Promise<A
     title: job.text,
     company: leverEmployer(job, config.employerByDepartment),
     location: job.categories?.location,
+    // The API states the country itself (ISO-2): the boundary keeps it instead of guessing from "Seoul" or "Paris".
+    country: job.country || undefined,
+    remote: job.workplaceType && job.workplaceType !== 'unspecified' ? job.workplaceType : undefined,
     contract: job.categories?.commitment,
     description: job.descriptionPlain,
     url: job.hostedUrl,

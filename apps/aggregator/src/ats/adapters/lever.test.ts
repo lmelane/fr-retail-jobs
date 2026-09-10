@@ -35,3 +35,22 @@ describe('Lever enumeration', () => {
     expect(await fetchLeverJobs({ site: 'acme', maxPages: 1 })).toMatchObject({ complete: false, truncated: true });
   });
 });
+
+import { readFileSync } from 'node:fs';
+describe('Lever — real Arc\'teryx postings (api.lever.co, 2026-09-10)', () => {
+  it('keeps the country the API states (ISO-2) and the workplace type, next to the location text', async () => {
+    const rows = JSON.parse(readFileSync(new URL('./fixtures/lot4-lever-arcteryx-sample.json', import.meta.url), 'utf8'));
+    network.mockResolvedValueOnce(rows);
+    const { jobs, complete } = await fetchLeverJobs({ site: 'arcteryx.com' });
+    expect(complete).toBe(true);
+    expect(jobs.map((j) => [j.country, j.remote, j.location])).toEqual([
+      ['CA', 'hybrid', 'North Vancouver, BC (Corporate)'], ['CA', 'hybrid', 'North Vancouver, BC (Corporate)'], ['KR', 'hybrid', 'Seoul'],
+    ]);
+    expect(jobs[0]!.raw).toMatchObject({ country: 'CA', workplaceType: 'hybrid' });
+  });
+  it('leaves country and workplace empty when the API does not state them, never guessed from the location', async () => {
+    network.mockResolvedValueOnce([{ id: 'x', text: 'Job', hostedUrl: 'https://jobs.lever.co/acme/x', workplaceType: 'unspecified', categories: { location: 'Paris' } }]);
+    const { jobs } = await fetchLeverJobs({ site: 'acme' });
+    expect(jobs[0]!.country).toBeUndefined(); expect(jobs[0]!.remote).toBeUndefined(); expect(jobs[0]!.location).toBe('Paris');
+  });
+});
