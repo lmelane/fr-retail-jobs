@@ -2,6 +2,7 @@
 import { PrismaClient, Prisma } from "@prisma/client";
 import { writeFileSync } from "node:fs";
 import {
+  assertIdentityReview,
   sourceIdentityHash,
   sourceSubjectKey,
 } from "../../src/connectors/sourceIdentity.js";
@@ -50,13 +51,20 @@ try {
         // functions the promotion gate uses, so a Python composer never has to
         // re-implement JS JSON.stringify to compare a review with the current
         // configuration.
-        sources: (await tx.source.findMany({ orderBy: { key: "asc" } })).map(
-          (source) => ({
-            ...source,
-            identityHash: sourceIdentityHash(source),
-            subjectKey: sourceSubjectKey(source),
-          }),
-        ),
+        // Strict identity verdict per source, by the SAME validator as the promotion gate (assertIdentityReview:
+        // verdict, hash, subject, tenant, age, method, artifact, official proof page). Python composers read this
+        // verdict instead of re-implementing a subset of the contract.
+        sources: await (async () => {
+          const latest = new Map<string, Awaited<ReturnType<typeof tx.sourceIdentityReview.findFirst>>>();
+          for (const r of await tx.sourceIdentityReview.findMany({ orderBy: [{ createdAt: "desc" }, { id: "desc" }], distinct: ["sourceKey"] })) latest.set(r.sourceKey, r);
+          return (await tx.source.findMany({ orderBy: { key: "asc" } })).map((source) => {
+            const review = latest.get(source.key) ?? null;
+            let identityVerdict: { certified: boolean; reason: string | null; reviewId: string | null; portalScope: string | null };
+            try { assertIdentityReview(source, review); identityVerdict = { certified: true, reason: null, reviewId: review!.id, portalScope: review!.portalScope ?? null }; }
+            catch (e) { identityVerdict = { certified: false, reason: review ? String(e instanceof Error ? e.message : e) : 'NO_REVIEW', reviewId: review?.id ?? null, portalScope: null }; }
+            return { ...source, identityHash: sourceIdentityHash(source), subjectKey: sourceSubjectKey(source), identityVerdict };
+          });
+        })(),
         counts:
           await tx.$queryRaw`SELECT "companyId",count(*)::int world,count(*) FILTER(WHERE "isFrance")::int france FROM "Job" WHERE "isActive" GROUP BY 1`,
         sourceCompanies:

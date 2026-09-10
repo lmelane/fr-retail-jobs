@@ -81,4 +81,14 @@ it('credits any native label of a certified SINGLE_BRAND portal to the portal ow
   await expect(prisma.$transaction(tx => resolveEmployer(tx, candidate))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
   certifiedScopes.delete(key);
   await expect(prisma.$transaction(tx => resolveEmployer(tx, candidate))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
+  // A native label that IS a known distinct employer contradicts the certified perimeter: review, never absorbed by the owner.
+  const other = await prisma.company.create({ data: { name: `Kate Fixture ${k}`, canonicalKey: `KATE_FIXTURE_${k}`, kind: 'BRAND', fashionjobsUrl: `resolved:KATE_FIXTURE_${k}` } });
+  certifiedScopes.set(key, 'SINGLE_BRAND');
+  await expect(prisma.$transaction(tx => resolveEmployer(tx, { ...candidate, externalId: `p-${k}-2`, rawEmployerName: other.name }))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
+  // …while a label whose company was MERGED into the owner (a legal entity) is still the owner.
+  const mergeReview = await prisma.employerIdentityReview.create({ data: { id: randomUUID(), statement: 'fixture: the legal entity is merged into the owner', evidence: [], planHash: 'fixture', reviewedBy: 'integration', reviewedAt: new Date() } });
+  const entity = await prisma.company.create({ data: { name: `Mango Fixture ${k} NY LLC`, canonicalKey: `MANGO_FIXTURE_${k}_NY_LLC`, kind: 'BRAND', fashionjobsUrl: `resolved:MANGO_FIXTURE_${k}_NY_LLC`, mergedIntoId: owner.id, identityReviewId: mergeReview.id } });
+  const merged = await prisma.$transaction(tx => resolveEmployer(tx, { ...candidate, externalId: `p-${k}-3`, rawEmployerName: entity.name }));
+  expect(merged.company?.id).toBe(owner.id); expect(merged.rule).toBe('CERTIFIED_SINGLE_BRAND_PORTAL');
+  certifiedScopes.delete(key);
 });

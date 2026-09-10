@@ -103,6 +103,13 @@ for root in a.probes:
 # ---------------------------------------------------------------- per-source verdicts (shared by both tables)
 def certify(source):
     rev = reviews.get(source['key'])
+    iv = source.get('identityVerdict')
+    if iv is not None and rev:
+        # Strict verdict computed by the snapshot with the promotion-gate validator; the fields below stay for the record.
+        strict = 'CERTIFIED_CURRENT' if iv.get('certified') else ('VERIFIED_FOR_SUPERSEDED_CONFIGURATION' if 'configuration' in str(iv.get('reason')) else 'VERIFIED_EXPIRED' if 'within 30 days' in str(iv.get('reason')) else 'REVIEW_NOT_VALID')
+        return {'verdict': strict, 'configurationCurrent': rev['sourceHash'] == source['identityHash'] and rev['subjectKey'] == source['subjectKey'], 'ageDays': age_days(rev['checkedAt']),
+                'review': {k: rev[k] for k in ['id', 'verdict', 'method', 'officialDomain', 'proofUrl', 'portalUrl', 'artifactHash', 'checkedAt', 'reviewer'] if k in rev},
+                'reason': None if strict == 'CERTIFIED_CURRENT' else f'Strict validator: {iv.get("reason")}'}
     if not rev:
         return {'verdict': 'RETIRED_UNCERTIFIED' if source['status'] == 'RETIRED' else 'LEGACY_UNCERTIFIED',
                 'review': None, 'reason': 'No SourceIdentityReview recorded for this source; it predates the review gate.'}
