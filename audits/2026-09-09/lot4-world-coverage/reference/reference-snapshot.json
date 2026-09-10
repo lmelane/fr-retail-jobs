@@ -1,6 +1,6 @@
 {
  "summary": {
-  "at": "2026-09-10T19:29:49.796Z",
+  "at": "2026-09-10T20:21:56.718Z",
   "definition": "One read-only transaction; every count below shares this instant.",
   "perimeters": {
    "liveDefinition": "ACTIVE + PAUSED (the sources that may still write)",
@@ -44,7 +44,10 @@
    "unit": "canonical Job rows with isActive = true",
    "activeTotal": 79516,
    "underLiveSource": 79516,
-   "underNoLiveSource": 0
+   "underNoLiveSource": 0,
+   "underActiveSourceOnly": 78879,
+   "withoutActiveSource": 637,
+   "onlyAttestedByPausedSource": 637
   },
   "representations": {
    "unit": "active (source, externalId) links under an ACTIVE/PAUSED source; a multi-source posting appears several times",

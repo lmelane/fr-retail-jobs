@@ -1,7 +1,17 @@
 /**
- * ONE dated reference measurement for LOT 4, taken in a SINGLE read-only transaction so that every number below shares the
- * same instant and the same denominator — the defect this replaces was two reports of the same afternoon disagreeing
+ * ONE dated reference measurement for LOT 4 — the defect this replaces was two reports of the same afternoon disagreeing
  * (344 uncertified "of 432 active, 88 certified" at 18:19Z vs 90 certified of 433 at 18:46Z) because each took its own snapshot.
+ *
+ * THE SNAPSHOT GUARANTEE, and what actually provides it.
+ * `SET TRANSACTION READ ONLY` forbids writing; it says NOTHING about what this transaction reads. Measured in production
+ * on 2026-09-10: an unqualified prisma.$transaction runs at `read committed`, where EVERY statement takes a fresh
+ * snapshot — so a multi-statement report silently mixes states as soon as concurrent writes resume (i.e. the moment the
+ * crons are unfrozen). Read-only is therefore not the guarantee; the isolation level is.
+ * This transaction runs at REPEATABLE READ: PostgreSQL takes ONE snapshot at the first statement and every later
+ * statement in the transaction reads that same snapshot, whatever commits meanwhile. `snapshotTakenAt` below is read
+ * INSIDE the transaction and is the instant the whole report describes.
+ * Consequence to respect: every count that must be mutually consistent has to be read INSIDE this transaction. A number
+ * fetched afterwards (the public API, a second connection) belongs to a different instant and is labelled as such.
  *
  * What it separates, deliberately:
  *   • certification: the SAME predicate as the promotion gate (assertIdentityReview on the current config) — never a second logic;
@@ -27,6 +37,9 @@ const p = new PrismaClient({ log: [] });
 try {
   const db: any = await p.$transaction(async (tx) => {
     await tx.$executeRaw`SET TRANSACTION READ ONLY`;
+    // Proof, inside the transaction, of the level that actually provides the snapshot — asserted below, never assumed.
+    const iso: any[] = await tx.$queryRaw`SELECT current_setting('transaction_isolation') AS level`;
+    // `now()` is the transaction start time in PostgreSQL, i.e. the instant of the snapshot this whole report reads.
     const clock: any[] = await tx.$queryRaw`SELECT now() AS at`;
     // careersDomain and tier are part of sourceIdentityHash: omitting them makes every hash differ and every source look uncertified.
     const sources = await tx.source.findMany({ select: { id: true, key: true, maison: true, kind: true, status: true, tenantKey: true, config: true, careersDomain: true, tier: true } });
@@ -36,6 +49,12 @@ try {
     const runs: any[] = await tx.$queryRaw`SELECT DISTINCT ON ("sourceKey") "sourceKey", status, fetched, accepted, "declaredTotal", complete, truncated, errors, "ranAt" FROM "SourceRun" ORDER BY "sourceKey", "ranAt" DESC`;
     const activeTotal = await tx.job.count({ where: { isActive: true } });
     const underLive: any[] = await tx.$queryRaw`SELECT COUNT(DISTINCT j.id)::int n FROM "Job" j JOIN "JobSource" js ON js."jobId"=j.id JOIN "Source" s ON s.key=js."sourceKey" WHERE j."isActive" AND js."isActive" AND s.status IN ('ACTIVE','PAUSED')`;
+    /**
+     * The HISTORICAL control (README "640"): a PAUSED source does not count as operating. It is strictly stronger than
+     * `underLive` and must be reported next to it — reporting only the weaker one turned an open dossier into a "0".
+     * Detail per source and identifiers: scripts/coverage/orphan-postings.mts.
+     */
+    const underActiveOnly: any[] = await tx.$queryRaw`SELECT COUNT(DISTINCT j.id)::int n FROM "Job" j JOIN "JobSource" js ON js."jobId"=j.id JOIN "Source" s ON s.key=js."sourceKey" WHERE j."isActive" AND js."isActive" AND s.status = 'ACTIVE'`;
     const postingsBySource: any[] = await tx.$queryRaw`SELECT js."sourceKey", COUNT(*)::int n FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" WHERE js."isActive" AND j."isActive" GROUP BY 1`;
     /** Representations of active postings, and the LATEST identity decision for each, so attribution has a real denominator. */
     const attribution: any[] = await tx.$queryRaw`SELECT t."sourceKey", COUNT(*)::int total, COUNT(o.rule)::int observed,
@@ -43,8 +62,11 @@ try {
       FROM (SELECT js."sourceKey", js."externalId" FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" JOIN "Source" s ON s.key=js."sourceKey" WHERE js."isActive" AND j."isActive" AND s.status IN ('ACTIVE','PAUSED')) t
       LEFT JOIN LATERAL (SELECT eo.rule FROM "EmployerObservation" eo WHERE eo."sourceKey"=t."sourceKey" AND eo."externalId"=t."externalId" ORDER BY eo."observedAt" DESC, eo.id DESC LIMIT 1) o ON true
       GROUP BY 1`;
-    return { at: clock[0].at as Date, sources, reviews, runs, activeTotal, underLive: underLive[0].n as number, postingsBySource, attribution };
-  });
+    return { at: clock[0].at as Date, isolation: iso[0].level as string, sources, reviews, runs, activeTotal, underLive: underLive[0].n as number, underActiveOnly: underActiveOnly[0].n as number, postingsBySource, attribution };
+  }, { isolationLevel: 'RepeatableRead' });
+  // The guarantee is asserted, not documented and hoped for: a downgrade (a Prisma default change, another caller)
+  // must fail the report rather than silently produce numbers taken at different instants.
+  if (db.isolation !== 'repeatable read') throw new Error(`reference-snapshot requires REPEATABLE READ for a common snapshot; got "${db.isolation}"`);
 
   /** Reviews are keyed by sourceKey (schema.prisma: SourceIdentityReview.sourceKey); the newest one wins. */
   const reviewBySource = new Map<string, any>();
@@ -99,8 +121,13 @@ try {
     postings: {
       unit: 'canonical Job rows with isActive = true',
       activeTotal: db.activeTotal,
+      // TWO controls, deliberately both reported. They are NOT interchangeable: the ACTIVE-only one is the historical
+      // "640" dossier, and it is strictly stronger. See scripts/coverage/orphan-postings.mts for identifiers/reasons.
       underLiveSource: db.underLive,
       underNoLiveSource: db.activeTotal - db.underLive,
+      underActiveSourceOnly: db.underActiveOnly,
+      withoutActiveSource: db.activeTotal - db.underActiveOnly,
+      onlyAttestedByPausedSource: db.underLive - db.underActiveOnly,
     },
     representations: {
       unit: 'active (source, externalId) links under an ACTIVE/PAUSED source; a multi-source posting appears several times',

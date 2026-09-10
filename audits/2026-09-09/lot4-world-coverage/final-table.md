@@ -1,10 +1,10 @@
-# LOT 4 — tableau final par source (généré le 2026-09-10T19:20Z, 441 sources ACTIVE/PAUSED)
+# LOT 4 — tableau final par source (généré le 2026-09-10T20:22Z, 441 sources ACTIVE/PAUSED)
 
 Généré par `apps/aggregator/scripts/coverage/final-table.mts` depuis la base de production (lecture seule) et l'inventaire unique. Une ligne = une source ; « Acteur » = les sociétés réellement créditées par la source (une source peut en nourrir plusieurs). « Commit » / « Déploiement » = la révision et l'état du run de pipeline qui a écrit la source en dernier. Aucune ligne ne prouve la couverture mondiale de l'acteur.
 
-**Fenêtre d'observation des rejets, retenues et refus d'identité : 7 jours, du 2026-09-03T19:20Z au 2026-09-10T19:20Z.** Un événement antérieur n'est pas absent, il est hors fenêtre. Les colonnes « Collecte » et « Publication » décrivent l'état courant, sans fenêtre.
+**Fenêtre d'observation des rejets, retenues et refus d'identité : 7 jours, du 2026-09-03T20:22Z au 2026-09-10T20:22Z.** Un événement antérieur n'est pas absent, il est hors fenêtre. Les colonnes « Collecte » et « Publication » décrivent l'état courant, sans fenêtre.
 
-## Les cinq états, sur les 441 sources ACTIVE/PAUSED (mesure du 2026-09-10T19:21Z)
+## Les cinq états, sur les 441 sources ACTIVE/PAUSED (mesure du 2026-09-10T20:23Z)
 
 Dénominateur : les sources ACTIVE/PAUSED de cette génération. « Non vérifiée » n'est jamais compté comme un succès ni comme un échec : c'est une absence de preuve, comptée à part.
 
@@ -17,7 +17,9 @@ Dénominateur : les sources ACTIVE/PAUSED de cette génération. « Non vérifi�
 | Publication vérifiée (compteur API publique = base pour chaque société nourrie) | 440 | 99,8 % (440/441) | 0 |
 | Les cinq à la fois | 25 | — | — |
 
-La ligne « Publication vérifiée » ne compare que des COMPTEURS. L'égalité des identifiants, la visibilité réelle des fiches et l'éligibilité Google Jobs sont mesurées séparément par `public-visibility.mts` : un compteur juste ne prouve pas qu'une offre est atteignable.
+**Ce que « Publication vérifiée » signifie exactement, et ce qu'elle ne dit pas.** Pour chaque source, on prend les sociétés qu'elle nourrit réellement (offres actives) et, pour chacune, on compare **deux nombres** : le total d'offres actives de cette société dans la base, et le `total` renvoyé par `GET /api/jobs?maison=<nom>` sur le site public. La source compte comme vérifiée si **toutes** ses sociétés sont à égalité. Le compte est donc *par source*, mais le prédicat porte sur *ses sociétés* — une société nourrie par deux sources fait échouer les deux.
+
+Limites à ne pas franchir en lisant ce chiffre : (a) il ne compare que des **compteurs** — deux ensembles différents de même cardinalité passeraient ; (b) le côté base est lu dans l'instantané de la transaction, le côté API par des appels HTTP **postérieurs**, donc les deux nombres n'appartiennent pas au même instant (sans écriture concurrente, crons gelés, l'écart est nul ; il ne le serait plus après reprise des crons) ; (c) la comparaison se fait **par nom de société**, pas par identifiant ; (d) elle ne dit rien de l'atteignabilité d'une fiche ni de son indexabilité. L'égalité des identifiants, la visibilité réelle et l'éligibilité Google Jobs sont mesurées séparément par `public-visibility.mts`.
 
 | Acteur | Source | Cinq états | Identité | Périmètre | Collecte | Rejets/blocages | Publication | Commit | Déploiement | Preuve prod | Restant |
 |---|---|---|---|---|---|---|---|---|---|---|---|

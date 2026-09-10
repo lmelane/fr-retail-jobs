@@ -407,7 +407,7 @@ Le contrôle de gel est désormais un outil du dépôt, `scripts/ops/read-crons.
 
 **Garde de déploiement (`scripts/ops/deploy-guard.py`) — défaut corrigé.** Elle portait dans son code une exception nominative pour un run du 2026-09-09 (`… 99ae410d`) : un run réapparaissant sous cet identifiant — restauration depuis un dump, commande rejouée — aurait été laissé passer **en silence**, alors que la garde existe précisément parce qu'un déploiement pendant un run l'a tué en pleine écriture (incident du 2026-09-09 18:35 UTC). L'exemption se passe désormais explicitement, `--allow-running <id>`, et un run exempté reste **affiché**, jamais masqué. Quatre comportements vérifiés : aucun run → autorisé ; run en vol sans exemption → **refusé** ; exemption explicite → autorisé et rapporté ; exempter un run n'en exempte pas un autre. Le fichier `backups/lot4-20260909/deploy-guard.py` devient un relais sans logique propre, pour que les 21 chaînes figées continuent de fonctionner sans qu'existent deux gardes divergentes.
 
-**La mesure de référence** — `scripts/coverage/reference-snapshot.mts`, une **seule transaction en lecture seule**, donc tous les chiffres partagent le même instant. C'est le correctif du défaut de fond : deux rapports du même après-midi annonçaient « 344 non certifiées sur 432 actives, 88 certifiées » (18:19Z) et « 90 certifiées sur 433 » (18:46Z) — deux photographies différentes lues comme un même état. Le prédicat de certification est **celui de la porte de promotion** (`assertIdentityReview`, même ordre `createdAt desc` : une contradiction ultérieure prime), jamais une seconde logique.
+**La mesure de référence** — `scripts/coverage/reference-snapshot.mts`, une seule transaction, **en REPEATABLE READ** (voir § LOT P2 point 1 : la lecture seule seule ne garantissait rien, cette formulation d'origine était inexacte), donc tous les chiffres partagent le même instantané. C'est le correctif du défaut de fond : deux rapports du même après-midi annonçaient « 344 non certifiées sur 432 actives, 88 certifiées » (18:19Z) et « 90 certifiées sur 433 » (18:46Z) — deux photographies différentes lues comme un même état. Le prédicat de certification est **celui de la porte de promotion** (`assertIdentityReview`, même ordre `createdAt desc` : une contradiction ultérieure prime), jamais une seconde logique.
 
 | Indicateur (2026-09-10 19:11Z) | Valeur | Dénominateur explicite |
 |---|---:|---|
@@ -433,6 +433,30 @@ Le contrôle de gel est désormais un outil du dépôt, `scripts/ops/read-crons.
 > **Défaut ouvert — 1 452 offres actives sans `postedAt`, donc sans JSON-LD `JobPosting`, donc inéligibles Google Jobs** alors que leur page répond 200 sans `noindex`. Concentré à 76 % sur une source : `ralph-lauren-avature`, **1 103 offres sur 1 104 non datées** (les autres sources Avature datent 95 % de leurs offres : L'Oréal 1 676/1 804, adidas 1 079/1 142). Le RAW archivé de cette source ne conserve que `source`, `reference`, `department` : **il ne permet pas de trancher hors ligne**. L'adaptateur exige un format strict `Posted 01-Oct-2026` (`DATE_MARKER`) et perd la date en silence sinon — même motif que le défaut L'Oréal corrigé le 2026-09-05. **Ce n'est donc pas qualifié de limite éditeur** : le test discriminant (lire une carte réelle du board Ralph Lauren et comparer au marqueur) demande une collecte, hors périmètre de ce lot, et est la première action de P2.
 
 **Ce que ce lot ne prouve pas** : les 416 sociétés non échantillonnées par le contrôle de visibilité sont **non vérifiées**, pas conformes ; les 353 sources sans observation d'identité restent sans preuve d'attribution ; la cause du défaut Ralph Lauren reste à établir par observation.
+
+### LOT P2 — précisions de référence exigées avant réparation (10 septembre, 20:20Z)
+
+**1. La garantie d'instantané : « lecture seule » ne la fournit pas.** `SET TRANSACTION READ ONLY` interdit d'écrire ; il ne dit rien de ce que la transaction *lit*. **Mesuré en production** : une `prisma.$transaction` non qualifiée tourne en **`read committed`**, où *chaque requête* prend un nouvel instantané — un rapport en une douzaine de requêtes mélangerait donc des états dès la reprise des écritures. L'affirmation « tous les chiffres partagent le même instant » du bilan P1 était donc **fausse en droit** (juste en fait, les crons étant gelés). Corrigé : `reference-snapshot.mts`, `final-table.mts` et `orphan-postings.mts` tournent en **REPEATABLE READ** — PostgreSQL fige un instantané à la première requête et toutes les suivantes le relisent, quels que soient les commits entre-temps. Le niveau est **lu dans la transaction et asserté** : un retour à `read committed` fait échouer le rapport au lieu de produire des chiffres d'instants différents. Corollaire respecté : tout compteur devant être cohérent est lu *dans* la transaction (le total par société de la parité y a été rapatrié) ; ce qui vient d'ailleurs (l'API publique) est daté à part.
+
+**2. Les trois périmètres, définis et non plus seulement dénombrés** (2026-09-10 20:19Z) :
+
+| Population | Définition exacte | Taille | Offres | Composition |
+|---|---|---:|---:|---|
+| Certifiées | `assertIdentityReview` passe sur la **configuration courante** (le prédicat de la porte de promotion) | 90 | 47 851 | **toutes ACTIVE** ; périmètre SINGLE_BRAND 46 · MULTI_BRAND 32 · non renseigné 12 ; méthode OFFICIAL_LINK 54 · OFFICIAL_DOMAIN 36 |
+| ACTIVE non certifiées | statut ACTIVE et **aucune revue enregistrée** (0 revue périmée : la totalité est `NOT_REVIEWED`) | 343 | 32 222 | tier EMPLOYER_DIRECT 188 · ATS_OFFICIAL 144 · GROUP_OFFICIAL 8 · SPECIALIST_JOBBOARD 3 |
+| PAUSED | statut PAUSED : la source **n'est plus collectée** mais ses offres restent publiées | 8 | 1 513 | 7 sources WTTJ (756) couvertes par `wttj-sector`, en attente d'une fermeture par le refresh — **gelé depuis le 6 septembre** ; plus `fashionjobs` (757) |
+
+**3. « Publication vérifiée 440/441 » — ce que la mesure dit, et ce qu'elle ne dit pas.** Pour chaque source, on prend les sociétés qu'elle nourrit et on compare **deux nombres** : offres actives de la société en base, et `total` de `GET /api/jobs?maison=<nom>`. La source passe si **toutes** ses sociétés sont à égalité — le compte est *par source*, le prédicat porte sur *ses sociétés*, donc une société en écart fait échouer toutes les sources qui la nourrissent. Limites, désormais imprimées dans le tableau : compteurs seuls (deux ensembles distincts de même taille passeraient) · côté base dans l'instantané, côté API par des appels **postérieurs** (deux instants différents) · comparaison **par nom**, pas par identifiant · rien sur l'atteignabilité ni l'indexabilité.
+
+**4. Les 640 « sans source opérante » : les deux contrôles ne sont PAS équivalents.** Mon « zéro sans source vivante » ne clôt pas ce dossier, et le tenir pour tel l'aurait fait disparaître.
+
+| Contrôle | Définition | Résultat (20:20Z) |
+|---|---|---:|
+| **A** — historique (§ « 640 ») | aucune représentation active sous une source **ACTIVE** ; une source PAUSED **n'est pas** opérante | **637** |
+| **B** — bilan P1 | aucune représentation active sous une source **ACTIVE ou PAUSED** | **0** |
+| Différence | offres dont la **seule attestation vivante est une source PAUSED** | **637** |
+
+Motifs, par identifiants (`reference/orphan-postings.csv`, 638 lignes) : **585 sur `fashionjobs`** — source de **découverte d'acteurs uniquement**, qui ne doit jamais fournir d'offres — et 52 sur sept sources WTTJ couvertes par `wttj-sector`, en attente du refresh. **Aucune offre n'échoue les deux contrôles.** Le mouvement 640 → 637 est intégralement expliqué : **3 offres fermées** depuis le 2026-09-09 sous une source PAUSED, rien d'autre. B est strictement plus faible que A ; la référence publie désormais **les deux**.
 
 ### En cours ou restant
 
