@@ -1,0 +1,30 @@
+{
+  "at": "2026-09-10T15:37:35.198Z",
+  "environment": "production",
+  "step": "certify",
+  "proofs": [
+    {
+      "key": "chico-s",
+      "step": "certify",
+      "result": {
+        "boardReference": "knitwellgroup.wd1.myworkdayjobs.com/Canada_Jobs",
+        "scopeVerdict": "LABELS_OUTSIDE_OWNER",
+        "written": {
+          "sourceKey": "chico-s",
+          "sourceHash": "19fd640cc9f559c96e841d1e2c1e426bff7c7030404f2dfa67e5ea7b8a1604e6",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "MULTI_BRAND"
+      },
+      "after": {
+        "key": "chico-s",
+        "status": "ACTIVE",
+        "tenantKey": "workday:knitwellgroup/canada_jobs",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-03T19:37:09.984Z",
+        "verifiedJobCount": 9
+      }
+    }
+  ]
+}

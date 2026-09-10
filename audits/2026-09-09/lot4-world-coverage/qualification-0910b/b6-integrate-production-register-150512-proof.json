@@ -1,0 +1,95 @@
+{
+  "at": "2026-09-10T15:05:12.688Z",
+  "environment": "production",
+  "step": "register",
+  "proofs": [
+    {
+      "key": "uniqlo-us-headquarters",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnsjr80000msqc7v9b2q10",
+          "key": "uniqlo-us-headquarters",
+          "maison": "Uniqlo",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "headquarters_us_Uniqlo",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/headquarters_us_uniqlo",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T15:05:12.452Z",
+          "updatedAt": "2026-09-10T15:05:12.452Z"
+        }
+      },
+      "after": {
+        "key": "uniqlo-us-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_us_uniqlo",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "uniqlo-vn-headquarters",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnsjw40001msqcbclc9vca",
+          "key": "uniqlo-vn-headquarters",
+          "maison": "Uniqlo",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "headquarter_roles_vn_Uniqlo",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/headquarter_roles_vn_uniqlo",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T15:05:12.629Z",
+          "updatedAt": "2026-09-10T15:05:12.629Z"
+        }
+      },
+      "after": {
+        "key": "uniqlo-vn-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarter_roles_vn_uniqlo",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "at": "2026-09-10T17:03:45.713Z",
+  "environment": "production",
+  "step": "register",
+  "proofs": [
+    {
+      "key": "knitwell-us-retail",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvs101d0000ms7c3nopxlni",
+          "key": "knitwell-us-retail",
+          "maison": "KnitWell Group",
+          "careersDomain": "knitwellgroup.wd1.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "US_Retail_Jobs",
+            "origin": "https://knitwellgroup.wd1.myworkdayjobs.com",
+            "tenant": "knitwellgroup"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:knitwellgroup/us_retail_jobs",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T17:03:45.265Z",
+          "updatedAt": "2026-09-10T17:03:45.265Z"
+        }
+      },
+      "after": {
+        "key": "knitwell-us-retail",
+        "status": "DRAFT",
+        "tenantKey": "workday:knitwellgroup/us_retail_jobs",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "knitwell-us-corporate",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvs108i0001ms7cqjp82tgp",
+          "key": "knitwell-us-corporate",
+          "maison": "KnitWell Group",
+          "careersDomain": "knitwellgroup.wd1.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "US_Corporate_Jobs",
+            "origin": "https://knitwellgroup.wd1.myworkdayjobs.com",
+            "tenant": "knitwellgroup"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:knitwellgroup/us_corporate_jobs",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T17:03:45.522Z",
+          "updatedAt": "2026-09-10T17:03:45.522Z"
+        }
+      },
+      "after": {
+        "key": "knitwell-us-corporate",
+        "status": "DRAFT",
+        "tenantKey": "workday:knitwellgroup/us_corporate_jobs",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "knitwell-us-distribution",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvs10c80002ms7c7o5rdz61",
+          "key": "knitwell-us-distribution",
+          "maison": "KnitWell Group",
+          "careersDomain": "knitwellgroup.wd1.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "US_Distribution_Center",
+            "origin": "https://knitwellgroup.wd1.myworkdayjobs.com",
+            "tenant": "knitwellgroup"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:knitwellgroup/us_distribution_center",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T17:03:45.656Z",
+          "updatedAt": "2026-09-10T17:03:45.656Z"
+        }
+      },
+      "after": {
+        "key": "knitwell-us-distribution",
+        "status": "DRAFT",
+        "tenantKey": "workday:knitwellgroup/us_distribution_center",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    }
+  ]
+}

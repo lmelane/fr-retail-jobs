@@ -1,0 +1,78 @@
+{
+ "at": "2026-09-10T14:46:33.749Z",
+ "key": "uniqlo-au-stores",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/store_staff_au_Uniqlo/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T14:46:29.437Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 33,
+ "parsed": 33,
+ "declaredTotal": 33,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 33,
+    "uniqueIds": 33,
+    "pages": 2,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "UNIQLO AUSTRALIA PTY LTD.",
+   "n": 33,
+   "class": "OWNER"
+  }
+ ],
+ "countries": [
+  [
+   "Australia",
+   33
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Uniqlo",
+  "ownerKey": "UNIQLO",
+  "labels": [
+   {
+    "label": "UNIQLO AUSTRALIA PTY LTD.",
+    "n": 33,
+    "class": "OWNER"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 33,
+ "withDescription": 33,
+ "sampleTitles": [
+  "NOW HIRING: UNIQLO Epping– Store Associates (Full-time) — Melbourne, Australia",
+  "NOW HIRING: UNIQLO Macquarie – Store Associates (Full-time) — Sydney, Australia",
+  "NOW HIRING: UNIQLO Chermside - Store Associates (Full/Part-time) — Brisbane City, Australia",
+  "NOW HIRING: UNIQLO Macarthur - Store Associate (Full-time) — Sydney, Australia",
+  "NOW HIRING: UNIQLO Hurstville - Store Associate (Full-time) — Sydney, Australia"
+ ],
+ "seconds": 4,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T14:45:25.871Z"
+}

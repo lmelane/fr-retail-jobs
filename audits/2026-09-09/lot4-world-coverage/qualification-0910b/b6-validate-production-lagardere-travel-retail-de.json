@@ -1,0 +1,85 @@
+{
+ "at": "2026-09-10T18:34:28.636Z",
+ "key": "lagardere-travel-retail-de",
+ "status": "DRAFT",
+ "kind": "talentsoft",
+ "ats": "TALENTSOFT",
+ "request": {
+  "origin": "https://lagardere-recrute-travelretailde.talent-soft.com",
+  "path": "/"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T18:34:28.288Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "bytes": 0
+ },
+ "fetched": 10,
+ "parsed": 10,
+ "declaredTotal": 10,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "ANNOUNCED_TOTAL_HTML_PAGINATION_WITH_RSS_ENRICHMENT",
+  "termination": "ANNOUNCED_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "listing",
+    "declaredTotal": 10,
+    "uniqueIds": 10,
+    "pages": 1,
+    "complete": true
+   },
+   {
+    "scope": "rss",
+    "declaredTotal": 10,
+    "uniqueIds": 10,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "(catalogue label)",
+   "n": 10,
+   "class": "CATALOGUE"
+  }
+ ],
+ "countries": [
+  [
+   "(none)",
+   10
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Lagardère Travel Retail",
+  "ownerKey": "LAGARDERE_TRAVEL",
+  "labels": [
+   {
+    "label": "(catalogue label)",
+    "n": 10,
+    "class": "CATALOGUE"
+   }
+  ],
+  "verdict": "NO_NATIVE_LABEL",
+  "other": []
+ },
+ "withCountry": 0,
+ "withDescription": 10,
+ "sampleTitles": [
+  "2026-10403 - Senior Category Manager (m/w/d) — CDI, Frankfurt am Main",
+  "2026-10402 - Mitarbeiter Zahlungsverkehr (m/w/d) — CDI, Frankfurt am Main",
+  "2026-10401 - Stellvertretende Teamleitung Finanz- und Rechnungswesen (m/w/d) — CDI, Leinfelden-Echterdingen",
+  "2026-10400 - Stellvertretende Teamleitung Finanz- und Rechnungswesen (m/w/d) — CDI, Frankfurt am Main",
+  "2026-10399 - Teamleitung Finanz- und Rechnungswesen (m/w/d) — CDI, Leinfelden-Echterdingen"
+ ],
+ "seconds": 0,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T18:34:27.204Z"
+}

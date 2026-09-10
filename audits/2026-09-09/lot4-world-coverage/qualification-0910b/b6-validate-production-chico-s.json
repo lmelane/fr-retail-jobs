@@ -1,0 +1,105 @@
+{
+ "at": "2026-09-10T15:37:30.880Z",
+ "key": "chico-s",
+ "status": "ACTIVE",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://knitwellgroup.wd1.myworkdayjobs.com",
+  "path": "/wday/cxs/knitwellgroup/Canada_Jobs/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T15:37:28.299Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "9011744c77494cfc832c51f4e9658902db16a5abd039c48b6ea43581f45e06a9",
+  "bytes": 471
+ },
+ "fetched": 10,
+ "parsed": 10,
+ "declaredTotal": 10,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 10,
+    "uniqueIds": 10,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "Talbots",
+   "n": 6,
+   "class": "OTHER"
+  },
+  {
+   "label": "Soma",
+   "n": 2,
+   "class": "OTHER"
+  },
+  {
+   "label": "Chico's Outlet",
+   "n": 2,
+   "class": "OWNER_ENTITY"
+  }
+ ],
+ "countries": [
+  [
+   "United States of America",
+   6
+  ],
+  [
+   "Canada",
+   4
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Chico's",
+  "ownerKey": "CHICO_S",
+  "labels": [
+   {
+    "label": "Talbots",
+    "n": 6,
+    "class": "OTHER"
+   },
+   {
+    "label": "Soma",
+    "n": 2,
+    "class": "OTHER"
+   },
+   {
+    "label": "Chico's Outlet",
+    "n": 2,
+    "class": "OWNER_ENTITY"
+   }
+  ],
+  "verdict": "LABELS_OUTSIDE_OWNER",
+  "other": [
+   "Talbots (6)",
+   "Soma (2)"
+  ]
+ },
+ "withCountry": 10,
+ "withDescription": 10,
+ "sampleTitles": [
+  "Assistant Manager — Store 5212-Park Meadows-Soma-Lone Tree, CO 80124",
+  "Sales Associate — Store 00811 Bayview Village, ON-North York,ON M2K1E6",
+  "Sales Lead — Store 5212-Park Meadows-Soma-Lone Tree, CO 80124",
+  "Sales Associate — Store 1513-Robinson Town Centre-Chico's-Pittsburgh, PA 15205",
+  "Sales Lead — Store 1513-Robinson Town Centre-Chico's-Pittsburgh, PA 15205"
+ ],
+ "seconds": 3,
+ "written": false,
+ "sourceUpdatedAt": "2026-09-08T22:03:47.269Z"
+}

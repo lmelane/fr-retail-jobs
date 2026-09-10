@@ -1,0 +1,114 @@
+{
+ "at": "2026-09-10T15:08:46.462Z",
+ "lot": "L15-b6-batch4",
+ "since": "2026-09-10T15:00:27.000Z",
+ "keys": [
+  "uniqlo-us-headquarters",
+  "uniqlo-vn-headquarters"
+ ],
+ "activeTotal": 76896,
+ "sources": [
+  {
+   "key": "uniqlo-us-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T15:08:15.623Z",
+    "fetched": 14,
+    "accepted": 14,
+    "declaredTotal": 14,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 14,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 14,
+   "createdSince": 14,
+   "reattestedSince": 14,
+   "inactiveRepresentations": 0,
+   "published": 14,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 13,
+     "key": "resolved:UNIQLO"
+    },
+    {
+     "name": "GU",
+     "n": 1,
+     "key": "resolved:GU"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "REVIEWED_ALIAS": 14
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "uniqlo-vn-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T15:08:14.893Z",
+    "fetched": 12,
+    "accepted": 12,
+    "declaredTotal": 12,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 12,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 12,
+   "createdSince": 12,
+   "reattestedSince": 12,
+   "inactiveRepresentations": 0,
+   "published": 12,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 8,
+     "key": "resolved:UNIQLO"
+    },
+    {
+     "name": "Fast Retailing",
+     "n": 4,
+     "key": "resolved:FAST_RETAILING"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "REVIEWED_ALIAS": 12
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  }
+ ],
+ "front": [
+  {
+   "company": "UNIQLO",
+   "dbActive": 566,
+   "apiTotal": 566,
+   "parity": true
+  },
+  {
+   "company": "GU",
+   "dbActive": 9,
+   "apiTotal": 9,
+   "parity": true
+  },
+  {
+   "company": "Fast Retailing",
+   "dbActive": 13,
+   "apiTotal": 13,
+   "parity": true
+  }
+ ]
+}

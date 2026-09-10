@@ -1,0 +1,36 @@
+{
+ "at": "2026-09-10T18:33:05+00:00",
+ "lot": "repair-loft-homonym",
+ "commit": "a845b6bbbcda4c21408993957266be576c919670",
+ "dirty": [
+  "M apps/aggregator/scripts/coverage/final-table.mts",
+  " M apps/aggregator/src/lib/candidateChecks.test.ts",
+  " M apps/aggregator/src/lib/candidateChecks.ts",
+  "?? apps/aggregator/scripts/coverage/uncertified-families.mts"
+ ],
+ "scripts": {
+  "b6-batch.sh": "ca83f9d7a67fb505b43360841cf810e89922348e3fe67f0dc13569b6ae773a84",
+  "b6-certify-existing.sh": "da2e3a6722e8d79572bad3909cadd4bd028eac0bbce82c65f5e5791cece94773",
+  "b6-repair-chain.sh": "b9d829777125c962019256dca45a8dce375a9940ccf97a0d074f702dca930675",
+  "run-lot.sh": "3180356549cfc25da7fce825c0f062b9df274445bbd72faea88fcd1a4d905391",
+  "lot-run-chain.sh": "b390efb608e0a69b4aef2cc6395e7aeba434d008495bb71e66e6e6eb571b05f4",
+  "validate-lot-railway.py": "c00958d992893637b09466da4f20de134fd1cf1d75a2259b634015d0d791307e",
+  "deploy-guard.py": "3c512a908ac550e8ad824af1e5e8f8e7104ab1b20a998b9a221742d99c112e5b",
+  "backup-0910.py": "3f8964d97a1f35834c2b9b82c246d7fc01efad19434d64a42eb5accee95af377",
+  "restore-clone-from-dump.py": "b18b6b6f8583aa7d9bc0247183d58ac904ee82a527b332b2b9e073db059e5fd7",
+  "b6-integrate.mts": "b3ef5d9419d39c676cbf431548300831c3a649dabfef231fc8b39e83fcfbb4e8",
+  "b6-aliases.mts": "59fdf12df7bb8e1c62c11acb1aa089cabe254c0311a4f3d341ba2cee88dfbcc3",
+  "b6-lib.mts": "f97c26d8600060024e34aa039b233ee728cb73537d50b1090392dd752bee1b97",
+  "b6-specs.json": "ce9e0d841cfffef82a905a4cda850812d77050330afc488dc62d259ea8a964e9",
+  "lot-volumes.mts": "e752f6ce6b51bf722e6ac5fc1abc103c3f6dd1cac234d44fd7032102e56fa711",
+  "lot-verify.mts": "729d9b6c1fd6f56ce5fdb3436876677d03148f3a936b150fa4dd1a2dd7c47bb6",
+  "lot-after-run.mts": "847871eeb28209031ba4668d3df29cfc88ebec02de247321de2d0fcd0a865ffb",
+  "lot-run-proof.mts": "cecf521ed243dd35283863cbafb4cab2542c01361f35c3e1f02e90a39b435ba0",
+  "b6-retro-controls.mts": "bcc9a99f62d0446addf55b137dbb963394eaa2239915c2e32fb17f9ba07bb27b"
+ },
+ "repo": {
+  "apps/aggregator/scripts/coverage/validate-candidate.mts": "785260ada25a17c86459525b3eeb5ff8e64f07c302a4ede01cfd1badd0cf805e",
+  "apps/aggregator/src/lib/candidateChecks.ts": "fa5493286e19f6322a4c680012dc552788e2bd239b046ff2fe0ae006ef4e566c",
+  "apps/aggregator/src/lib/robotsVerdict.ts": "5a40240570cb8f657a0a034579287a43cb19767546c4a69e03c029a91312972d"
+ }
+}

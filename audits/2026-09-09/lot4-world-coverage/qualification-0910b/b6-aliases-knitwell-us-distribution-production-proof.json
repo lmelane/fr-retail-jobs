@@ -1,0 +1,25 @@
+{
+  "at": "2026-09-10T17:09:43.399Z",
+  "environment": "production",
+  "key": "knitwell-us-distribution",
+  "commit": "a845b6bbbcda4c21408993957266be576c919670",
+  "planHash": "1637e4ff7afe723818728de433266b230c04ba20b09dde0d9ada3c866d06cbe1",
+  "aliases": [
+    {
+      "sourceKey": "knitwell-us-distribution",
+      "rawName": "KnitWell",
+      "companyId": "cmtvs8loh0010msh9jc64dg7z",
+      "company": "KnitWell Group"
+    }
+  ],
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 1
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  }
+}

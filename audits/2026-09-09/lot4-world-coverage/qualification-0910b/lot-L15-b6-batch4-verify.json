@@ -1,0 +1,97 @@
+{
+ "at": "2026-09-10T17:48:04.191Z",
+ "lot": "L15-b6-batch4",
+ "run": {
+  "id": "09e6d126-b200-4641-b4dd-97008e967b1d",
+  "status": "COMPLETED",
+  "revision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+  "startedAt": "2026-09-10T15:08:12.291Z",
+  "finishedAt": "2026-09-10T15:08:15.721Z"
+ },
+ "sources": [
+  {
+   "key": "uniqlo-us-headquarters",
+   "enumeration": {
+    "declaredTotal": 14,
+    "fetched": 14,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] uniqlo-us-headquarters: purge REFUSÉE — run non fiable pour attester (14 collectées sur 14 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "uniqlo-us-headquarters",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "UNIQLO USA LLC",
+     "n": 13
+    },
+    {
+     "sourceKey": "uniqlo-us-headquarters",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "GU USA LLC",
+     "n": 1
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "uniqlo-us-headquarters",
+    "status": "NEW",
+    "fetched": 14,
+    "accepted": 14,
+    "declaredTotal": 14,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "uniqlo-vn-headquarters",
+   "enumeration": {
+    "declaredTotal": 12,
+    "fetched": 12,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] uniqlo-vn-headquarters: purge REFUSÉE — run non fiable pour attester (12 collectées sur 12 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "uniqlo-vn-headquarters",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "UNIQLO VIETNAM CO., LTD.",
+     "n": 8
+    },
+    {
+     "sourceKey": "uniqlo-vn-headquarters",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "FAST RETAILING (VIETNAM) MANAGEMENT CONSULTING COMPANY LIMITED",
+     "n": 4
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "uniqlo-vn-headquarters",
+    "status": "NEW",
+    "fetched": 12,
+    "accepted": 12,
+    "declaredTotal": 12,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  }
+ ]
+}

@@ -1,0 +1,68 @@
+{
+ "at": "2026-09-10T18:20:16.617Z",
+ "lot": "L17-b6-vf",
+ "since": "2026-09-10T17:50:45.000Z",
+ "keys": [
+  "vf-corporation"
+ ],
+ "activeTotal": 79506,
+ "sources": [
+  {
+   "key": "vf-corporation",
+   "maison": "VF Corporation",
+   "status": "ACTIVE",
+   "run": {
+    "status": "DEGRADED",
+    "at": "2026-09-10T18:19:51.178Z",
+    "fetched": 1273,
+    "accepted": 578,
+    "declaredTotal": 1273,
+    "complete": false,
+    "truncated": false
+   },
+   "collected": 1273,
+   "held": 695,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "reviewRequiredExpected": 0,
+   "scopeDecisions": {},
+   "written": 578,
+   "createdSince": 578,
+   "reattestedSince": 578,
+   "inactiveRepresentations": 0,
+   "published": 578,
+   "companies": [
+    {
+     "name": "VF Corporation",
+     "n": 570,
+     "key": "resolved:VF"
+    },
+    {
+     "name": "Icebreaker",
+     "n": 8,
+     "key": "resolved:ICEBREAKER"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "REVIEWED_ALIAS": 578
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL; ATTESTATION_WITHHELD (695 held)",
+   "rejectedRows": 0
+  }
+ ],
+ "front": [
+  {
+   "company": "VF Corporation",
+   "dbActive": 570,
+   "apiTotal": 570,
+   "parity": true
+  },
+  {
+   "company": "Icebreaker",
+   "dbActive": 8,
+   "apiTotal": 8,
+   "parity": true
+  }
+ ]
+}

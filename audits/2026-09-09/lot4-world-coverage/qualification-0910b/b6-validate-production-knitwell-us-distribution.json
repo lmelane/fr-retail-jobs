@@ -1,0 +1,80 @@
+{
+ "at": "2026-09-10T17:09:35.327Z",
+ "key": "knitwell-us-distribution",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://knitwellgroup.wd1.myworkdayjobs.com",
+  "path": "/wday/cxs/knitwellgroup/US_Distribution_Center/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T17:09:30.110Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "9011744c77494cfc832c51f4e9658902db16a5abd039c48b6ea43581f45e06a9",
+  "bytes": 471
+ },
+ "fetched": 17,
+ "parsed": 17,
+ "declaredTotal": 18,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_ROWS_READ",
+  "issues": [
+   "ROWS_WITHOUT_EXTERNAL_PATH"
+  ],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 18,
+    "uniqueIds": 17,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 1,
+ "held": 0,
+ "labels": [
+  {
+   "label": "KnitWell",
+   "n": 17,
+   "class": "OWNER_ENTITY"
+  }
+ ],
+ "countries": [
+  [
+   "United States of America",
+   17
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "KnitWell Group",
+  "ownerKey": "KNITWELL_GROUP",
+  "labels": [
+   {
+    "label": "KnitWell",
+    "n": 17,
+    "class": "OWNER_ENTITY"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 17,
+ "withDescription": 17,
+ "sampleTitles": [
+  "Assistant Manager — Store 5212-Park Meadows-Soma-Lone Tree, CO 80124",
+  "Sales Associate — Store 5318-Trenholm Plaza-Soma-Columbia, SC 29206",
+  "Sales Lead — Store 1120-Las Americas Premium Outlets-Chico's-San Diego, CA 92173",
+  "Sales Associate — Store 5212-Park Meadows-Soma-Lone Tree, CO 80124",
+  "Sales Lead — Store 5212-Park Meadows-Soma-Lone Tree, CO 80124"
+ ],
+ "seconds": 5,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T17:03:45.656Z"
+}

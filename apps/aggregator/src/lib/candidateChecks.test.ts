@@ -49,6 +49,8 @@ describe('native labels against the catalogued Maison', () => {
     expect(classifyLabel('UNIQLO EUROPE LIMITED FRENCH BRANCH', 'UNIQLO')).toBe('OWNER_ENTITY');
     expect(classifyLabel('VF Outdoor, LLC', 'VF Corporation')).toBe('OWNER_ENTITY'); expect(classifyLabel('VF International S.a.g.l.', 'VF Corporation')).toBe('OWNER_ENTITY');
     expect(classifyLabel('Link Theory (UK) Ltd. FRENCH BRANCH', 'Theory')).toBe('OWNER_ENTITY');
+    // A shorter form of the Maison is the Maison; a generic word alone is not.
+    expect(classifyLabel('KnitWell', 'KnitWell Group')).toBe('OWNER_ENTITY'); expect(classifyLabel('Group', 'KnitWell Group')).toBe('OTHER'); expect(classifyLabel('Retail', 'Lagardère Travel Retail')).toBe('OTHER');
   });
   it('OTHER: another brand on the same portal is never an entity of the owner', () => {
     expect(classifyLabel('GU USA LLC', 'Uniqlo')).toBe('OTHER');

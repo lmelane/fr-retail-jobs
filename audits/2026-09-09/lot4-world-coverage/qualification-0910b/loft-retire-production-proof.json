@@ -1,0 +1,48 @@
+{
+  "at": "2026-09-10T15:32:58.445Z",
+  "environment": "production",
+  "commit": "a845b6bbbcda4c21408993957266be576c919670",
+  "evidence": {
+    "boardPage": {
+      "file": "b6-evidence/loft.teamtailor.com_.html",
+      "sha256": "756bed0bc9037321d31b7dd4c61777a61c6acd309a0307a77ff16e032cdc3e1e"
+    },
+    "inventory": {
+      "file": "loft-homonym-proof.json",
+      "sha256": "6e436c123fb7b50c53fd3bfc96da1fa9f1aa01633166759f5ef68aab578fdcde",
+      "activeTitles": 62,
+      "countries": [
+        "BR",
+        null
+      ]
+    }
+  },
+  "before": {
+    "active": 76896,
+    "loftCompanyActive": 62,
+    "loftSourceRows": 64,
+    "status": "ACTIVE"
+  },
+  "result": {
+    "sourceKey": "loft",
+    "sourcesDeactivated": 62,
+    "jobsClosed": 0,
+    "jobsWithdrawn": 62,
+    "jobsKept": 0,
+    "urlsReassigned": 0
+  },
+  "replay": {
+    "sourceKey": "loft",
+    "sourcesDeactivated": 0,
+    "jobsClosed": 0,
+    "jobsWithdrawn": 0,
+    "jobsKept": 0,
+    "urlsReassigned": 0
+  },
+  "after": {
+    "active": 76834,
+    "loftCompanyActive": 0,
+    "loftSourceRows": 64,
+    "status": "RETIRED"
+  }
+}

@@ -1,0 +1,90 @@
+{
+ "at": "2026-09-10T15:05:15.426Z",
+ "key": "uniqlo-us-headquarters",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/headquarters_us_Uniqlo/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T15:05:13.391Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 14,
+ "parsed": 14,
+ "declaredTotal": 14,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 14,
+    "uniqueIds": 14,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "UNIQLO USA LLC",
+   "n": 13,
+   "class": "OWNER"
+  },
+  {
+   "label": "GU USA LLC",
+   "n": 1,
+   "class": "OTHER"
+  }
+ ],
+ "countries": [
+  [
+   "United States of America",
+   14
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Uniqlo",
+  "ownerKey": "UNIQLO",
+  "labels": [
+   {
+    "label": "UNIQLO USA LLC",
+    "n": 13,
+    "class": "OWNER"
+   },
+   {
+    "label": "GU USA LLC",
+    "n": 1,
+    "class": "OTHER"
+   }
+  ],
+  "verdict": "LABELS_OUTSIDE_OWNER",
+  "other": [
+   "GU USA LLC (1)"
+  ]
+ },
+ "withCountry": 14,
+ "withDescription": 14,
+ "sampleTitles": [
+  "Campus Recruiter — New York, NY",
+  "Warehouse Automation & Maintenance Manager — Phillipsburg, NJ",
+  "Product Marketing Manager — New York, NY",
+  "Store Development Management — New York, NY",
+  "Payroll Manager — New Jersey-Lyndhurst"
+ ],
+ "seconds": 2,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T15:05:12.452Z"
+}

@@ -1,0 +1,78 @@
+{
+ "at": "2026-09-10T14:56:59.859Z",
+ "key": "fast-retailing-id-headquarters",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/headquarters_id_Uniqlo/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T14:56:58.903Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 6,
+ "parsed": 6,
+ "declaredTotal": 6,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 6,
+    "uniqueIds": 6,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "PT. FAST RETAILING INDONESIA",
+   "n": 6,
+   "class": "OWNER_ENTITY"
+  }
+ ],
+ "countries": [
+  [
+   "Indonesia",
+   6
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Fast Retailing",
+  "ownerKey": "FAST_RETAILING",
+  "labels": [
+   {
+    "label": "PT. FAST RETAILING INDONESIA",
+    "n": 6,
+    "class": "OWNER_ENTITY"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 6,
+ "withDescription": 6,
+ "sampleTitles": [
+  "Global Trade Manager — Jakarta",
+  "Sustainability Lead — Jakarta",
+  "Merchandising & Planning — Jakarta",
+  "Product Marketing — Jakarta",
+  "Corporate Planning – Senior Analyst — Jakarta"
+ ],
+ "seconds": 1,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T14:56:40.469Z"
+}

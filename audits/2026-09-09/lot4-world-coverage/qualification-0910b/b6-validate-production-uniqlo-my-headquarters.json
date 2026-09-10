@@ -1,0 +1,78 @@
+{
+ "at": "2026-09-10T14:56:42.393Z",
+ "key": "uniqlo-my-headquarters",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/headquarters_my_Uniqlo/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T14:56:41.366Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 7,
+ "parsed": 7,
+ "declaredTotal": 7,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 7,
+    "uniqueIds": 7,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "UNIQLO (MALAYSIA) SDN BHD",
+   "n": 7,
+   "class": "OWNER_ENTITY"
+  }
+ ],
+ "countries": [
+  [
+   "Malaysia",
+   7
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Uniqlo",
+  "ownerKey": "UNIQLO",
+  "labels": [
+   {
+    "label": "UNIQLO (MALAYSIA) SDN BHD",
+    "n": 7,
+    "class": "OWNER_ENTITY"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 7,
+ "withDescription": 7,
+ "sampleTitles": [
+  "Finance Operations Intern — Kuala Lumpur",
+  "HRBP (Human Resources) Intern — Kuala Lumpur",
+  "IT Operations Intern — Kuala Lumpur",
+  "Learning & Development Intern — Kuala Lumpur",
+  "Legal Intern — Kuala Lumpur"
+ ],
+ "seconds": 1,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T14:56:39.038Z"
+}

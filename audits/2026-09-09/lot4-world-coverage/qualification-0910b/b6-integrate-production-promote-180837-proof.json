@@ -1,0 +1,24 @@
+{
+  "at": "2026-09-10T18:08:37.998Z",
+  "environment": "production",
+  "step": "promote",
+  "proofs": [
+    {
+      "key": "vf-corporation",
+      "step": "promote",
+      "result": {
+        "key": "vf-corporation",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "vf-corporation",
+        "status": "ACTIVE",
+        "tenantKey": "workday:vfc/vfc_careers",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T18:03:38.901Z",
+        "verifiedJobCount": 1271
+      }
+    }
+  ]
+}

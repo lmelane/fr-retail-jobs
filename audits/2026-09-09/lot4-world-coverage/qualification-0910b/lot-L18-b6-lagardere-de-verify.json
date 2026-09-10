@@ -1,0 +1,85 @@
+{
+ "at": "2026-09-10T18:38:21.419Z",
+ "lot": "L18-b6-lagardere-de",
+ "run": {
+  "id": "33d0a20d-13c1-4372-9d52-835f1efd747e",
+  "status": "COMPLETED",
+  "revision": "a845b6bbbcda4c21408993957266be576c919670",
+  "startedAt": "2026-09-10T18:37:47.066Z",
+  "finishedAt": "2026-09-10T18:38:00.369Z"
+ },
+ "sources": [
+  {
+   "key": "lagardere-travel-retail",
+   "enumeration": {
+    "declaredTotal": 109,
+    "fetched": 109,
+    "complete": true,
+    "truncated": false,
+    "method": "ANNOUNCED_TOTAL_HTML_PAGINATION_WITH_RSS_ENRICHMENT",
+    "termination": "ANNOUNCED_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": null,
+   "observations": [
+    {
+     "sourceKey": "lagardere-travel-retail",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Lagardère Travel Retail",
+     "n": 109
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "lagardere-travel-retail",
+    "status": "OK",
+    "fetched": 109,
+    "accepted": 109,
+    "declaredTotal": 109,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "lagardere-travel-retail-de",
+   "enumeration": {
+    "declaredTotal": 10,
+    "fetched": 10,
+    "complete": true,
+    "truncated": false,
+    "method": "ANNOUNCED_TOTAL_HTML_PAGINATION_WITH_RSS_ENRICHMENT",
+    "termination": "ANNOUNCED_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] lagardere-travel-retail-de: purge REFUSÉE — run non fiable pour attester (10 collectées sur 10 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "lagardere-travel-retail-de",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Lagardère Travel Retail",
+     "n": 10
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "lagardere-travel-retail-de",
+    "status": "NEW",
+    "fetched": 10,
+    "accepted": 10,
+    "declaredTotal": 10,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  }
+ ]
+}

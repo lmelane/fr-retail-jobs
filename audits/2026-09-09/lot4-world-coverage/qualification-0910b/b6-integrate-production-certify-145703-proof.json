@@ -1,0 +1,260 @@
+{
+  "at": "2026-09-10T14:57:03.129Z",
+  "environment": "production",
+  "step": "certify",
+  "proofs": [
+    {
+      "key": "uniqlo-my-headquarters",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/headquarters_my_Uniqlo",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "uniqlo-my-headquarters",
+          "sourceHash": "328fe5ced51724825a0490b5a0b5ef968e96319dea3c64e68d2536e4eb26e403",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "uniqlo-my-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_my_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:41.366Z",
+        "verifiedJobCount": 7
+      }
+    },
+    {
+      "key": "uniqlo-hkm-headquarters",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/headquarters_hkm_Uniqlo",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "uniqlo-hkm-headquarters",
+          "sourceHash": "90130675ae92c3c1570a03d902075e3d20c342f40c1cf18bf0feaf5795a8ff4c",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "uniqlo-hkm-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_hkm_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:43.128Z",
+        "verifiedJobCount": 6
+      }
+    },
+    {
+      "key": "uniqlo-th-headquarters",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/headquarters_th_Uniqlo",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "uniqlo-th-headquarters",
+          "sourceHash": "d557d7eb6d0acc44d366a2a378b1e35445192b61d21b617ce86feb2cac74f9d8",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "uniqlo-th-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_th_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:44.789Z",
+        "verifiedJobCount": 2
+      }
+    },
+    {
+      "key": "uniqlo-au-graduates",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/graduates_au_Uniqlo",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "uniqlo-au-graduates",
+          "sourceHash": "84d91ddc2c9eca105a7ee3166ee84b42d477757016e1f889e36282350db76bf7",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "uniqlo-au-graduates",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/graduates_au_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:46.328Z",
+        "verifiedJobCount": 2
+      }
+    },
+    {
+      "key": "gu-us-retail",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/retail_us_GU",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "gu-us-retail",
+          "sourceHash": "7250d2d551e41bd167418a63ca8d6dd619341759f3da0d282710ab0ee2327c02",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "gu-us-retail",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/retail_us_gu",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:47.979Z",
+        "verifiedJobCount": 5
+      }
+    },
+    {
+      "key": "gu-us-headquarters",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/headquarters_us_GU",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "gu-us-headquarters",
+          "sourceHash": "4f282f5287c4837f9dadd37f4d08ffb78bb01442ba39c0451be286aefdd8ce65",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "gu-us-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_us_gu",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:49.626Z",
+        "verifiedJobCount": 2
+      }
+    },
+    {
+      "key": "gu-hk-headquarters",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/headquarters_hk_GU",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "gu-hk-headquarters",
+          "sourceHash": "77736cb9eabc70dea02aa1488fac99309706a47ee1289dffbbff59ade0ce70d3",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "gu-hk-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_hk_gu",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:51.220Z",
+        "verifiedJobCount": 2
+      }
+    },
+    {
+      "key": "theory-eu",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/EU_Theory",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "theory-eu",
+          "sourceHash": "f614a8e023827f813c601174e8b9b669201f3559b896c0326eda0c1fe42044cc",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "theory-eu",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/eu_theory",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:52.651Z",
+        "verifiedJobCount": 18
+      }
+    },
+    {
+      "key": "theory-us-retail",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/retail_us_Theory",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "theory-us-retail",
+          "sourceHash": "c5bd1b6dfdbf046a19e2ae4c0ad4830c0a0ca411917d2ceb629f99a809fab794",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "theory-us-retail",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/retail_us_theory",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:55.344Z",
+        "verifiedJobCount": 6
+      }
+    },
+    {
+      "key": "fast-retailing-ph-headquarters",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/headquarters_ph_Uniqlo",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "fast-retailing-ph-headquarters",
+          "sourceHash": "e4677c7699efb6807144d99e51bdbc3b783a689ae6b5668e4b11f102a593ff8d",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "fast-retailing-ph-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_ph_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:57.017Z",
+        "verifiedJobCount": 3
+      }
+    },
+    {
+      "key": "fast-retailing-id-headquarters",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/headquarters_id_Uniqlo",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "fast-retailing-id-headquarters",
+          "sourceHash": "41d28cbc1a4b44a1315f4383b62804510c3214b2ca958b16e3afc969a87a7e3b",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "fast-retailing-id-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_id_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:58.903Z",
+        "verifiedJobCount": 6
+      }
+    }
+  ]
+}

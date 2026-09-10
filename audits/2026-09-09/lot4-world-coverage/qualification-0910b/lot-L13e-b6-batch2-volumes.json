@@ -1,0 +1,299 @@
+{
+ "at": "2026-09-10T14:51:07.632Z",
+ "lot": "L13e-b6-batch2",
+ "since": "2026-09-10T14:39:55.000Z",
+ "keys": [
+  "uniqlo-us-retail",
+  "uniqlo-au-stores",
+  "on-running",
+  "shinola-retail",
+  "uniqlo-stores",
+  "uniqlo-headquarters",
+  "uniqlo-graduates"
+ ],
+ "activeTotal": 76813,
+ "sources": [
+  {
+   "key": "uniqlo-us-retail",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:50:56.646Z",
+    "fetched": 347,
+    "accepted": 347,
+    "declaredTotal": 347,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 347,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 347,
+   "createdSince": 347,
+   "reattestedSince": 347,
+   "inactiveRepresentations": 0,
+   "published": 347,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 346,
+     "key": "resolved:UNIQLO"
+    },
+    {
+     "name": "GU",
+     "n": 1,
+     "key": "resolved:GU"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "REVIEWED_ALIAS": 347
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "uniqlo-au-stores",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:49:40.367Z",
+    "fetched": 33,
+    "accepted": 33,
+    "declaredTotal": 33,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 33,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 33,
+   "createdSince": 33,
+   "reattestedSince": 33,
+   "inactiveRepresentations": 0,
+   "published": 33,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 33,
+     "key": "resolved:UNIQLO"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 33
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "on-running",
+   "maison": "On",
+   "status": "ACTIVE",
+   "run": {
+    "status": "DEGRADED",
+    "at": "2026-09-10T14:49:48.492Z",
+    "fetched": 309,
+    "accepted": 309,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 309,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 309,
+   "createdSince": 0,
+   "reattestedSince": 309,
+   "inactiveRepresentations": 0,
+   "published": 309,
+   "companies": [
+    {
+     "name": "On",
+     "n": 309,
+     "key": "resolved:ON"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 309
+   },
+   "completeness": "COMPLETE_FLAG_ONLY (no total declared by the publisher: one document or an exhausted pagination)"
+  },
+  {
+   "key": "shinola-retail",
+   "maison": "Shinola",
+   "status": "ACTIVE",
+   "run": {
+    "status": "OK",
+    "at": "2026-09-10T14:49:32.907Z",
+    "fetched": 14,
+    "accepted": 14,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 14,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 14,
+   "createdSince": 0,
+   "reattestedSince": 14,
+   "inactiveRepresentations": 0,
+   "published": 14,
+   "companies": [
+    {
+     "name": "Shinola",
+     "n": 14,
+     "key": "resolved:SHINOLA"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {},
+   "completeness": "COMPLETE_FLAG_ONLY (no total declared by the publisher: one document or an exhausted pagination)"
+  },
+  {
+   "key": "uniqlo-stores",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "OK",
+    "at": "2026-09-10T14:49:54.465Z",
+    "fetched": 110,
+    "accepted": 110,
+    "declaredTotal": 110,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 110,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 116,
+   "createdSince": 7,
+   "reattestedSince": 110,
+   "inactiveRepresentations": 8,
+   "published": 116,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 116,
+     "key": "resolved:UNIQLO"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 87,
+    "REVIEWED_ALIAS": 23
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "uniqlo-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "OK",
+    "at": "2026-09-10T14:49:38.659Z",
+    "fetched": 20,
+    "accepted": 20,
+    "declaredTotal": 20,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 20,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 22,
+   "createdSince": 0,
+   "reattestedSince": 20,
+   "inactiveRepresentations": 2,
+   "published": 22,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 22,
+     "key": "resolved:UNIQLO"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 20
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "uniqlo-graduates",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "OK",
+    "at": "2026-09-10T14:49:35.752Z",
+    "fetched": 11,
+    "accepted": 11,
+    "declaredTotal": 11,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 11,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 11,
+   "createdSince": 0,
+   "reattestedSince": 11,
+   "inactiveRepresentations": 0,
+   "published": 11,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 11,
+     "key": "resolved:UNIQLO"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 11
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  }
+ ],
+ "front": [
+  {
+   "company": "On",
+   "dbActive": 309,
+   "apiTotal": 309,
+   "parity": true
+  },
+  {
+   "company": "Shinola",
+   "dbActive": 23,
+   "apiTotal": 23,
+   "parity": true
+  },
+  {
+   "company": "UNIQLO",
+   "dbActive": 528,
+   "apiTotal": 528,
+   "parity": true
+  },
+  {
+   "company": "GU",
+   "dbActive": 1,
+   "apiTotal": 1,
+   "parity": true
+  }
+ ]
+}

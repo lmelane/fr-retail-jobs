@@ -1,0 +1,315 @@
+{
+ "at": "2026-09-10T17:20:42.010Z",
+ "lot": "L16-b6-knitwell",
+ "since": "2026-09-10T16:48:36.000Z",
+ "keys": [
+  "knitwell-us-retail",
+  "knitwell-us-corporate",
+  "knitwell-us-distribution",
+  "chico-s"
+ ],
+ "activeTotal": 78928,
+ "sources": [
+  {
+   "key": "knitwell-us-retail",
+   "maison": "KnitWell Group",
+   "status": "ACTIVE",
+   "run": {
+    "status": "DEGRADED",
+    "at": "2026-09-10T17:20:13.084Z",
+    "fetched": 1999,
+    "accepted": 1998,
+    "declaredTotal": 2000,
+    "complete": false,
+    "truncated": false
+   },
+   "collected": 1999,
+   "held": 1,
+   "writeFailed": 1,
+   "reviewRequired": 1,
+   "reviewRequiredExpected": 1,
+   "scopeDecisions": {},
+   "written": 1997,
+   "createdSince": 1997,
+   "reattestedSince": 1997,
+   "inactiveRepresentations": 0,
+   "published": 1997,
+   "companies": [
+    {
+     "name": "LOFT",
+     "n": 420,
+     "key": "resolved:LOFT"
+    },
+    {
+     "name": "Chico's",
+     "n": 331,
+     "key": "resolved:CHICO_S"
+    },
+    {
+     "name": "White House Black Market",
+     "n": 331,
+     "key": "resolved:WHITE_HOUSE_BLACK_MARKET"
+    },
+    {
+     "name": "Lane Bryant",
+     "n": 248,
+     "key": "resolved:LANE_BRYANT"
+    },
+    {
+     "name": "Soma",
+     "n": 245,
+     "key": "resolved:SOMA"
+    },
+    {
+     "name": "Talbots",
+     "n": 214,
+     "key": "resolved:TALBOTS"
+    },
+    {
+     "name": "Ann Taylor",
+     "n": 205,
+     "key": "resolved:ANN_TAYLOR"
+    },
+    {
+     "name": "Haven Well Within",
+     "n": 2,
+     "key": "resolved:HAVEN_WELL_WITHIN"
+    },
+    {
+     "name": "Off The Rax",
+     "n": 1,
+     "key": "resolved:OFF_THE_RAX"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "REVIEWED_ALIAS": 1997,
+    "REVIEW_REQUIRED": 1
+   },
+   "completeness": "INCOMPLETE_EXPLAINED (1 of 2000 declared rows rejected by the adapter: {\"ROW_WITHOUT_EXTERNAL_PATH\":1}); ATTESTATION_WITHHELD (1 held)",
+   "rejectedRows": 1
+  },
+  {
+   "key": "knitwell-us-corporate",
+   "maison": "KnitWell Group",
+   "status": "ACTIVE",
+   "run": {
+    "status": "DEGRADED",
+    "at": "2026-09-10T17:13:47.547Z",
+    "fetched": 100,
+    "accepted": 100,
+    "declaredTotal": 101,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 100,
+   "held": 0,
+   "writeFailed": 1,
+   "reviewRequired": 1,
+   "reviewRequiredExpected": 1,
+   "scopeDecisions": {},
+   "written": 99,
+   "createdSince": 99,
+   "reattestedSince": 99,
+   "inactiveRepresentations": 0,
+   "published": 99,
+   "companies": [
+    {
+     "name": "KnitWell Group",
+     "n": 20,
+     "key": "resolved:KNITWELL_GROUP"
+    },
+    {
+     "name": "Talbots",
+     "n": 14,
+     "key": "resolved:TALBOTS"
+    },
+    {
+     "name": "White House Black Market",
+     "n": 13,
+     "key": "resolved:WHITE_HOUSE_BLACK_MARKET"
+    },
+    {
+     "name": "Soma",
+     "n": 13,
+     "key": "resolved:SOMA"
+    },
+    {
+     "name": "LOFT",
+     "n": 11,
+     "key": "resolved:LOFT"
+    },
+    {
+     "name": "Chico's",
+     "n": 11,
+     "key": "resolved:CHICO_S"
+    },
+    {
+     "name": "Ann Taylor",
+     "n": 9,
+     "key": "resolved:ANN_TAYLOR"
+    },
+    {
+     "name": "Lane Bryant",
+     "n": 8,
+     "key": "resolved:LANE_BRYANT"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "REVIEWED_ALIAS": 99,
+    "REVIEW_REQUIRED": 1
+   },
+   "completeness": "INCOMPLETE_EXPLAINED (1 of 101 declared rows rejected by the adapter: {\"ROW_WITHOUT_EXTERNAL_PATH\":1})",
+   "rejectedRows": 1
+  },
+  {
+   "key": "knitwell-us-distribution",
+   "maison": "KnitWell Group",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T17:13:35.507Z",
+    "fetched": 17,
+    "accepted": 17,
+    "declaredTotal": 18,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 17,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "reviewRequiredExpected": 0,
+   "scopeDecisions": {},
+   "written": 17,
+   "createdSince": 17,
+   "reattestedSince": 17,
+   "inactiveRepresentations": 0,
+   "published": 17,
+   "companies": [
+    {
+     "name": "KnitWell Group",
+     "n": 17,
+     "key": "resolved:KNITWELL_GROUP"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "REVIEWED_ALIAS": 17
+   },
+   "completeness": "INCOMPLETE_EXPLAINED (1 of 18 declared rows rejected by the adapter: {\"ROW_WITHOUT_EXTERNAL_PATH\":1})",
+   "rejectedRows": 1
+  },
+  {
+   "key": "chico-s",
+   "maison": "Chico's",
+   "status": "ACTIVE",
+   "run": {
+    "status": "OK",
+    "at": "2026-09-10T17:13:28.222Z",
+    "fetched": 10,
+    "accepted": 10,
+    "declaredTotal": 10,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 10,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "reviewRequiredExpected": 0,
+   "scopeDecisions": {},
+   "written": 11,
+   "createdSince": 0,
+   "reattestedSince": 10,
+   "inactiveRepresentations": 2,
+   "published": 11,
+   "companies": [
+    {
+     "name": "Talbots",
+     "n": 7,
+     "key": "resolved:TALBOTS"
+    },
+    {
+     "name": "Soma",
+     "n": 2,
+     "key": "resolved:SOMA"
+    },
+    {
+     "name": "Chico's",
+     "n": 2,
+     "key": "resolved:CHICO_S"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "REVIEWED_ALIAS": 10
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL",
+   "rejectedRows": 0
+  }
+ ],
+ "front": [
+  {
+   "company": "Talbots",
+   "dbActive": 232,
+   "apiTotal": 232,
+   "parity": true
+  },
+  {
+   "company": "Soma",
+   "dbActive": 250,
+   "apiTotal": 250,
+   "parity": true
+  },
+  {
+   "company": "Chico's",
+   "dbActive": 339,
+   "apiTotal": 339,
+   "parity": true
+  },
+  {
+   "company": "KnitWell Group",
+   "dbActive": 37,
+   "apiTotal": 37,
+   "parity": true
+  },
+  {
+   "company": "White House Black Market",
+   "dbActive": 344,
+   "apiTotal": 344,
+   "parity": true
+  },
+  {
+   "company": "LOFT",
+   "dbActive": 430,
+   "apiTotal": 430,
+   "parity": true
+  },
+  {
+   "company": "Ann Taylor",
+   "dbActive": 214,
+   "apiTotal": 214,
+   "parity": true
+  },
+  {
+   "company": "Lane Bryant",
+   "dbActive": 256,
+   "apiTotal": 256,
+   "parity": true
+  },
+  {
+   "company": "Haven Well Within",
+   "dbActive": 2,
+   "apiTotal": 2,
+   "parity": true
+  },
+  {
+   "company": "Off The Rax",
+   "dbActive": 1,
+   "apiTotal": 1,
+   "parity": true
+  }
+ ]
+}

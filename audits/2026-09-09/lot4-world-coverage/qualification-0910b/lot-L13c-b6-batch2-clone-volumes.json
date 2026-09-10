@@ -1,0 +1,92 @@
+{
+ "at": "2026-09-10T14:31:32.833Z",
+ "lot": "L13c-b6-batch2-clone",
+ "since": "2026-09-10T14:25:50.000Z",
+ "keys": [
+  "uniqlo-us-retail",
+  "uniqlo-au-stores"
+ ],
+ "activeTotal": 76806,
+ "sources": [
+  {
+   "key": "uniqlo-us-retail",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:31:15.171Z",
+    "fetched": 347,
+    "accepted": 347,
+    "declaredTotal": 347,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 347,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 347,
+   "createdSince": 347,
+   "reattestedSince": 347,
+   "inactiveRepresentations": 0,
+   "published": 347,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 346,
+     "key": "resolved:UNIQLO"
+    },
+    {
+     "name": "GU",
+     "n": 1,
+     "key": "resolved:GU"
+    }
+   ],
+   "labelNotMaison": [
+    "GU (1)"
+   ],
+   "identityRules": {
+    "REVIEWED_ALIAS": 347
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "uniqlo-au-stores",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:30:09.923Z",
+    "fetched": 33,
+    "accepted": 33,
+    "declaredTotal": 33,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 33,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 33,
+   "createdSince": 33,
+   "reattestedSince": 33,
+   "inactiveRepresentations": 0,
+   "published": 33,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 33,
+     "key": "resolved:UNIQLO"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 33
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  }
+ ],
+ "front": []
+}

@@ -1,0 +1,96 @@
+{
+ "at": "2026-09-10T18:38:23.478Z",
+ "lot": "L18-b6-lagardere-de",
+ "since": "2026-09-10T18:30:12.000Z",
+ "keys": [
+  "lagardere-travel-retail-de",
+  "lagardere-travel-retail"
+ ],
+ "activeTotal": 79516,
+ "sources": [
+  {
+   "key": "lagardere-travel-retail-de",
+   "maison": "Lagardère Travel Retail",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T18:37:47.808Z",
+    "fetched": 10,
+    "accepted": 10,
+    "declaredTotal": 10,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 10,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "reviewRequiredExpected": 0,
+   "scopeDecisions": {},
+   "written": 10,
+   "createdSince": 10,
+   "reattestedSince": 10,
+   "inactiveRepresentations": 0,
+   "published": 10,
+   "companies": [
+    {
+     "name": "Lagardère Travel Retail",
+     "n": 10,
+     "key": "resolved:LAGARDERE_TRAVEL_RETAIL"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 10
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL",
+   "rejectedRows": 0
+  },
+  {
+   "key": "lagardere-travel-retail",
+   "maison": "Lagardère Travel Retail",
+   "status": "ACTIVE",
+   "run": {
+    "status": "OK",
+    "at": "2026-09-10T18:38:00.272Z",
+    "fetched": 109,
+    "accepted": 109,
+    "declaredTotal": 109,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 109,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "reviewRequiredExpected": 0,
+   "scopeDecisions": {},
+   "written": 130,
+   "createdSince": 0,
+   "reattestedSince": 109,
+   "inactiveRepresentations": 0,
+   "published": 130,
+   "companies": [
+    {
+     "name": "Lagardère Travel Retail",
+     "n": 130,
+     "key": "resolved:LAGARDERE_TRAVEL_RETAIL"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 109
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL",
+   "rejectedRows": 0
+  }
+ ],
+ "front": [
+  {
+   "company": "Lagardère Travel Retail",
+   "dbActive": 140,
+   "apiTotal": 140,
+   "parity": true
+  }
+ ]
+}

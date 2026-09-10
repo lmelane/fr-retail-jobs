@@ -1,0 +1,398 @@
+{
+ "at": "2026-09-10T17:49:24.827Z",
+ "lot": "L16-b6-knitwell",
+ "run": {
+  "id": "ba7997e6-0f71-432c-89dc-94749694fc18",
+  "status": "COMPLETED_WITH_ERRORS",
+  "revision": "a845b6bbbcda4c21408993957266be576c919670",
+  "startedAt": "2026-09-10T17:13:23.302Z",
+  "finishedAt": "2026-09-10T17:20:13.181Z"
+ },
+ "sources": [
+  {
+   "key": "chico-s",
+   "enumeration": {
+    "declaredTotal": 10,
+    "fetched": 10,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": null,
+   "observations": [
+    {
+     "sourceKey": "chico-s",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Talbots",
+     "n": 6
+    },
+    {
+     "sourceKey": "chico-s",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Chico's Outlet",
+     "n": 2
+    },
+    {
+     "sourceKey": "chico-s",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Soma",
+     "n": 2
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "chico-s",
+    "status": "OK",
+    "fetched": 10,
+    "accepted": 10,
+    "declaredTotal": 10,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "knitwell-us-corporate",
+   "enumeration": {
+    "declaredTotal": 101,
+    "fetched": 100,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_ROWS_READ",
+    "issues": [
+     "ROWS_WITHOUT_EXTERNAL_PATH"
+    ]
+   },
+   "rejected": {
+    "count": 1,
+    "failures": 0,
+    "reasons": {
+     "ROW_WITHOUT_EXTERNAL_PATH": 1
+    },
+    "rows": [
+     {
+      "raw": {
+       "bulletFields": [
+        "R-2034531"
+       ]
+      },
+      "reason": "ROW_WITHOUT_EXTERNAL_PATH"
+     }
+    ]
+   },
+   "holds": [],
+   "writeFailures": [
+    {
+     "externalId": "Technical-Designer--LOFT---Bottoms_R-2031418",
+     "error": "EmployerIdentityReviewRequired",
+     "rawEmployerName": "N23 Premium Brands Opco LLC",
+     "message": "Employer identity needs evidence: source=knitwell-us-corporate externalId=Technical-Designer--LOFT---Bottoms_R-2031418 raw=\"N23 Premium Bran"
+    }
+   ],
+   "purgeRefused": "[ingest] knitwell-us-corporate: purge REFUSÉE — run non fiable pour attester (100 collectées sur 101 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "knitwell-us-corporate",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "KnitWell Group",
+     "n": 20
+    },
+    {
+     "sourceKey": "knitwell-us-corporate",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Talbots",
+     "n": 14
+    },
+    {
+     "sourceKey": "knitwell-us-corporate",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Soma",
+     "n": 13
+    },
+    {
+     "sourceKey": "knitwell-us-corporate",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "White House Black Market",
+     "n": 13
+    },
+    {
+     "sourceKey": "knitwell-us-corporate",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Loft",
+     "n": 11
+    },
+    {
+     "sourceKey": "knitwell-us-corporate",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Ann Taylor",
+     "n": 9
+    },
+    {
+     "sourceKey": "knitwell-us-corporate",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Lane Bryant",
+     "n": 8
+    },
+    {
+     "sourceKey": "knitwell-us-corporate",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Chico's",
+     "n": 6
+    },
+    {
+     "sourceKey": "knitwell-us-corporate",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Chico's Outlet",
+     "n": 4
+    },
+    {
+     "sourceKey": "knitwell-us-corporate",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Chico's FAS",
+     "n": 1
+    },
+    {
+     "sourceKey": "knitwell-us-corporate",
+     "rule": "REVIEW_REQUIRED",
+     "rawEmployerName": "N23 Premium Brands Opco LLC",
+     "n": 1
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "knitwell-us-corporate",
+    "status": "DEGRADED",
+    "fetched": 100,
+    "accepted": 100,
+    "declaredTotal": 101,
+    "complete": true,
+    "truncated": false,
+    "errors": 1
+   },
+   "verdict": "EXPLAINED_GAPS"
+  },
+  {
+   "key": "knitwell-us-distribution",
+   "enumeration": {
+    "declaredTotal": 18,
+    "fetched": 17,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_ROWS_READ",
+    "issues": [
+     "ROWS_WITHOUT_EXTERNAL_PATH"
+    ]
+   },
+   "rejected": {
+    "count": 1,
+    "failures": 0,
+    "reasons": {
+     "ROW_WITHOUT_EXTERNAL_PATH": 1
+    },
+    "rows": [
+     {
+      "raw": {
+       "bulletFields": [
+        "R-2034531"
+       ]
+      },
+      "reason": "ROW_WITHOUT_EXTERNAL_PATH"
+     }
+    ]
+   },
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] knitwell-us-distribution: purge REFUSÉE — run non fiable pour attester (17 collectées sur 18 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "knitwell-us-distribution",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "KnitWell",
+     "n": 17
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "knitwell-us-distribution",
+    "status": "NEW",
+    "fetched": 17,
+    "accepted": 17,
+    "declaredTotal": 18,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "EXPLAINED_GAPS"
+  },
+  {
+   "key": "knitwell-us-retail",
+   "enumeration": {
+    "declaredTotal": 2000,
+    "fetched": 1999,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_ROWS_READ",
+    "issues": [
+     "ROWS_WITHOUT_EXTERNAL_PATH"
+    ]
+   },
+   "rejected": {
+    "count": 1,
+    "failures": 0,
+    "reasons": {
+     "ROW_WITHOUT_EXTERNAL_PATH": 1
+    },
+    "rows": [
+     {
+      "raw": {
+       "bulletFields": [
+        "R-2035075"
+       ]
+      },
+      "reason": "ROW_WITHOUT_EXTERNAL_PATH"
+     }
+    ]
+   },
+   "holds": [
+    {
+     "externalId": "Store-Manager--Tyrone-Square-Mall_R-2034868",
+     "reason": "WORKDAY_DETAIL_FETCH_FAILED"
+    }
+   ],
+   "writeFailures": [
+    {
+     "externalId": "Regional-Asset-Protection-Leader_R-2033786-1",
+     "error": "EmployerIdentityReviewRequired",
+     "rawEmployerName": "A00 Premium Brands Services LLC",
+     "message": "Employer identity needs evidence: source=knitwell-us-retail externalId=Regional-Asset-Protection-Leader_R-2033786-1 raw=\"A00 Premium Brands "
+    }
+   ],
+   "purgeRefused": "[ingest] knitwell-us-retail: purge REFUSÉE — run non fiable pour attester (1999 collectées sur 2000 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "LOFT",
+     "n": 319
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "White House Black Market",
+     "n": 287
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Lane Bryant",
+     "n": 248
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Soma",
+     "n": 245
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Chico's",
+     "n": 242
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Talbots",
+     "n": 171
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Ann Taylor Factory",
+     "n": 115
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "LOFT Outlet",
+     "n": 97
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Ann Taylor",
+     "n": 90
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Chico's Outlet",
+     "n": 79
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "White House Black Market Outlet",
+     "n": 44
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Talbots Outlet",
+     "n": 43
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Chico's FAS, Inc. paying for Chico's Retail Operations, Inc.",
+     "n": 10
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Rhode Island - LOFT",
+     "n": 4
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Haven Well Within",
+     "n": 2
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "Off The Rax",
+     "n": 1
+    },
+    {
+     "sourceKey": "knitwell-us-retail",
+     "rule": "REVIEW_REQUIRED",
+     "rawEmployerName": "A00 Premium Brands Services LLC",
+     "n": 1
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "knitwell-us-retail",
+    "status": "DEGRADED",
+    "fetched": 1999,
+    "accepted": 1998,
+    "declaredTotal": 2000,
+    "complete": false,
+    "truncated": false,
+    "errors": 1
+   },
+   "verdict": "EXPLAINED_GAPS"
+  }
+ ]
+}

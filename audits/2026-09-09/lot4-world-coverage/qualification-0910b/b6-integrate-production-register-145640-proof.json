@@ -1,0 +1,491 @@
+{
+  "at": "2026-09-10T14:56:40.528Z",
+  "environment": "production",
+  "step": "register",
+  "proofs": [
+    {
+      "key": "uniqlo-my-headquarters",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnhjlp0000msnuyg5ace2f",
+          "key": "uniqlo-my-headquarters",
+          "maison": "Uniqlo",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "headquarters_my_Uniqlo",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/headquarters_my_uniqlo",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:56:39.038Z",
+          "updatedAt": "2026-09-10T14:56:39.038Z"
+        }
+      },
+      "after": {
+        "key": "uniqlo-my-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_my_uniqlo",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "uniqlo-hkm-headquarters",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnhjqt0001msnuqb6tzayb",
+          "key": "uniqlo-hkm-headquarters",
+          "maison": "Uniqlo",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "headquarters_hkm_Uniqlo",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/headquarters_hkm_uniqlo",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:56:39.222Z",
+          "updatedAt": "2026-09-10T14:56:39.222Z"
+        }
+      },
+      "after": {
+        "key": "uniqlo-hkm-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_hkm_uniqlo",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "uniqlo-th-headquarters",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnhjuq0002msnugxz5yxz7",
+          "key": "uniqlo-th-headquarters",
+          "maison": "Uniqlo",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "headquarters_th_Uniqlo",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/headquarters_th_uniqlo",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:56:39.363Z",
+          "updatedAt": "2026-09-10T14:56:39.363Z"
+        }
+      },
+      "after": {
+        "key": "uniqlo-th-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_th_uniqlo",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "uniqlo-au-graduates",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnhjyh0003msnut4gc5ik9",
+          "key": "uniqlo-au-graduates",
+          "maison": "Uniqlo",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "graduates_au_Uniqlo",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/graduates_au_uniqlo",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:56:39.497Z",
+          "updatedAt": "2026-09-10T14:56:39.497Z"
+        }
+      },
+      "after": {
+        "key": "uniqlo-au-graduates",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/graduates_au_uniqlo",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "gu-us-retail",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnhk290004msnu363qtvn8",
+          "key": "gu-us-retail",
+          "maison": "GU",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "retail_us_GU",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/retail_us_gu",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:56:39.633Z",
+          "updatedAt": "2026-09-10T14:56:39.633Z"
+        }
+      },
+      "after": {
+        "key": "gu-us-retail",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/retail_us_gu",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "gu-us-headquarters",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnhk620005msnudj3eehbv",
+          "key": "gu-us-headquarters",
+          "maison": "GU",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "headquarters_us_GU",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/headquarters_us_gu",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:56:39.771Z",
+          "updatedAt": "2026-09-10T14:56:39.771Z"
+        }
+      },
+      "after": {
+        "key": "gu-us-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_us_gu",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "gu-hk-headquarters",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnhk9u0006msnu1nxessfg",
+          "key": "gu-hk-headquarters",
+          "maison": "GU",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "headquarters_hk_GU",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/headquarters_hk_gu",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:56:39.906Z",
+          "updatedAt": "2026-09-10T14:56:39.906Z"
+        }
+      },
+      "after": {
+        "key": "gu-hk-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_hk_gu",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "theory-eu",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnhkdr0007msnuqtfs1r70",
+          "key": "theory-eu",
+          "maison": "Theory",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "eu_Theory",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/eu_theory",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:56:40.047Z",
+          "updatedAt": "2026-09-10T14:56:40.047Z"
+        }
+      },
+      "after": {
+        "key": "theory-eu",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/eu_theory",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "theory-us-retail",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnhkhm0008msnuo3za4urt",
+          "key": "theory-us-retail",
+          "maison": "Theory",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "retail_us_Theory",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/retail_us_theory",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:56:40.186Z",
+          "updatedAt": "2026-09-10T14:56:40.186Z"
+        }
+      },
+      "after": {
+        "key": "theory-us-retail",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/retail_us_theory",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "fast-retailing-ph-headquarters",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnhkll0009msnu3ge4fqg1",
+          "key": "fast-retailing-ph-headquarters",
+          "maison": "Fast Retailing",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "headquarters_ph_Uniqlo",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/headquarters_ph_uniqlo",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:56:40.329Z",
+          "updatedAt": "2026-09-10T14:56:40.329Z"
+        }
+      },
+      "after": {
+        "key": "fast-retailing-ph-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_ph_uniqlo",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "fast-retailing-id-headquarters",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvnhkph000amsnuofx4x7ev",
+          "key": "fast-retailing-id-headquarters",
+          "maison": "Fast Retailing",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "headquarters_id_Uniqlo",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/headquarters_id_uniqlo",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:56:40.469Z",
+          "updatedAt": "2026-09-10T14:56:40.469Z"
+        }
+      },
+      "after": {
+        "key": "fast-retailing-id-headquarters",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/headquarters_id_uniqlo",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    }
+  ]
+}

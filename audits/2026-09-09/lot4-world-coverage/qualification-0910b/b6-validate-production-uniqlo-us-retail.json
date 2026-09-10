@@ -1,0 +1,170 @@
+{
+ "at": "2026-09-10T14:46:28.463Z",
+ "key": "uniqlo-us-retail",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/retail_us_Uniqlo/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T14:45:26.713Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 347,
+ "parsed": 347,
+ "declaredTotal": 347,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 347,
+    "uniqueIds": 347,
+    "pages": 18,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "UNIQLO USA LLC",
+   "n": 225,
+   "class": "OWNER"
+  },
+  {
+   "label": "UNIQLO Massachusetts LLC",
+   "n": 32,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO Florida LLC",
+   "n": 25,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO Virginia LLC",
+   "n": 19,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO New Jersey LLC",
+   "n": 17,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO Pennsylvania LLC",
+   "n": 9,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO Illinois LLC",
+   "n": 9,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO California LLC",
+   "n": 8,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "UNIQLO Washington LLC",
+   "n": 2,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "GU USA LLC",
+   "n": 1,
+   "class": "OTHER"
+  }
+ ],
+ "countries": [
+  [
+   "United States of America",
+   347
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Uniqlo",
+  "ownerKey": "UNIQLO",
+  "labels": [
+   {
+    "label": "UNIQLO USA LLC",
+    "n": 225,
+    "class": "OWNER"
+   },
+   {
+    "label": "UNIQLO Massachusetts LLC",
+    "n": 32,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO Florida LLC",
+    "n": 25,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO Virginia LLC",
+    "n": 19,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO New Jersey LLC",
+    "n": 17,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO Pennsylvania LLC",
+    "n": 9,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO Illinois LLC",
+    "n": 9,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO California LLC",
+    "n": 8,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "UNIQLO Washington LLC",
+    "n": 2,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "GU USA LLC",
+    "n": 1,
+    "class": "OTHER"
+   }
+  ],
+  "verdict": "LABELS_OUTSIDE_OWNER",
+  "other": [
+   "GU USA LLC (1)"
+  ]
+ },
+ "withCountry": 347,
+ "withDescription": 347,
+ "sampleTitles": [
+  "UNIQLO Seasonal Retail Sales Associate - Tacoma Mall — UNIQLO WA Tacoma mall(UQUS)",
+  "UNIQLO Seasonal Retail Sales Associate - Southcenter Mall — UNIQLO WA Southcenter(UQUS)",
+  "UNIQLO Seasonal Retail Sales Associate - Issaquah Commons — UNIQLO WA Issaquah Commons(UQUS)",
+  "UNIQLO Seasonal Retail Sales Associate - Alderwood Mall — UNIQLO WA Alderwood Mall(UQUS)",
+  "UNIQLO Seasonal Retail Sales Associate - Pine Street — UNIQLO WA Pine Street(UQUS)"
+ ],
+ "seconds": 62,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T14:45:25.688Z"
+}

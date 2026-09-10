@@ -1,0 +1,79 @@
+{
+  "at": "2026-09-10T14:46:37.568Z",
+  "environment": "production",
+  "key": "uniqlo-us-retail",
+  "commit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+  "planHash": "6e89fee4daa771cd3660552c6dfe1b270d7631cf7e3c220e2726f42d57b9b151",
+  "aliases": [
+    {
+      "sourceKey": "uniqlo-us-retail",
+      "rawName": "UNIQLO USA LLC",
+      "companyId": "cmtptzpyj02cil35mltt03knh",
+      "company": "UNIQLO"
+    },
+    {
+      "sourceKey": "uniqlo-us-retail",
+      "rawName": "UNIQLO Massachusetts LLC",
+      "companyId": "cmtptzpyj02cil35mltt03knh",
+      "company": "UNIQLO"
+    },
+    {
+      "sourceKey": "uniqlo-us-retail",
+      "rawName": "UNIQLO Florida LLC",
+      "companyId": "cmtptzpyj02cil35mltt03knh",
+      "company": "UNIQLO"
+    },
+    {
+      "sourceKey": "uniqlo-us-retail",
+      "rawName": "UNIQLO Virginia LLC",
+      "companyId": "cmtptzpyj02cil35mltt03knh",
+      "company": "UNIQLO"
+    },
+    {
+      "sourceKey": "uniqlo-us-retail",
+      "rawName": "UNIQLO New Jersey LLC",
+      "companyId": "cmtptzpyj02cil35mltt03knh",
+      "company": "UNIQLO"
+    },
+    {
+      "sourceKey": "uniqlo-us-retail",
+      "rawName": "UNIQLO Pennsylvania LLC",
+      "companyId": "cmtptzpyj02cil35mltt03knh",
+      "company": "UNIQLO"
+    },
+    {
+      "sourceKey": "uniqlo-us-retail",
+      "rawName": "UNIQLO Illinois LLC",
+      "companyId": "cmtptzpyj02cil35mltt03knh",
+      "company": "UNIQLO"
+    },
+    {
+      "sourceKey": "uniqlo-us-retail",
+      "rawName": "UNIQLO California LLC",
+      "companyId": "cmtptzpyj02cil35mltt03knh",
+      "company": "UNIQLO"
+    },
+    {
+      "sourceKey": "uniqlo-us-retail",
+      "rawName": "UNIQLO Washington LLC",
+      "companyId": "cmtptzpyj02cil35mltt03knh",
+      "company": "UNIQLO"
+    },
+    {
+      "sourceKey": "uniqlo-us-retail",
+      "rawName": "GU USA LLC",
+      "companyId": "cmtvn4l8e0000ms5btdhs9j9z",
+      "company": "GU"
+    }
+  ],
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 10
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  }
+}

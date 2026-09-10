@@ -1,0 +1,79 @@
+{
+ "at": "2026-09-10T14:56:51.908Z",
+ "key": "gu-hk-headquarters",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/headquarters_hk_GU/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T14:56:51.220Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 2,
+ "parsed": 2,
+ "declaredTotal": 2,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 2,
+    "uniqueIds": 2,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "GU HONG KONG APPAREL LIMITED",
+   "n": 2,
+   "class": "OWNER_ENTITY"
+  }
+ ],
+ "countries": [
+  [
+   "(none)",
+   1
+  ],
+  [
+   "Hong Kong",
+   1
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "GU",
+  "ownerKey": "GU",
+  "labels": [
+   {
+    "label": "GU HONG KONG APPAREL LIMITED",
+    "n": 2,
+    "class": "OWNER_ENTITY"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 1,
+ "withDescription": 2,
+ "sampleTitles": [
+  "Officer/Senior Officer, Retail Marketing — ",
+  "Part Time Clerk, Marketing — Hong Kong-Tsim Sha Tsui-GUHK"
+ ],
+ "seconds": 1,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T14:56:39.906Z"
+}

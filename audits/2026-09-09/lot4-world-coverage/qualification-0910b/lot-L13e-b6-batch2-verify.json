@@ -1,0 +1,456 @@
+{
+ "at": "2026-09-10T17:48:02.705Z",
+ "lot": "L13e-b6-batch2",
+ "run": {
+  "id": "b489aba0-6ba7-4ff0-9795-16d74cc8244a",
+  "status": "COMPLETED",
+  "revision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+  "startedAt": "2026-09-10T14:49:31.824Z",
+  "finishedAt": "2026-09-10T14:50:56.745Z"
+ },
+ "sources": [
+  {
+   "key": "on-running",
+   "enumeration": {
+    "declaredTotal": null,
+    "fetched": 309,
+    "complete": true,
+    "truncated": false,
+    "method": null,
+    "termination": null,
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": null,
+   "observations": [
+    {
+     "sourceKey": "on-running",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "On",
+     "n": 309
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "on-running",
+    "status": "DEGRADED",
+    "fetched": 309,
+    "accepted": 309,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "EXPLAINED_GAPS"
+  },
+  {
+   "key": "shinola-retail",
+   "enumeration": {
+    "declaredTotal": null,
+    "fetched": 14,
+    "complete": true,
+    "truncated": false,
+    "method": null,
+    "termination": null,
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": null,
+   "observations": [],
+   "problems": [],
+   "run": {
+    "sourceKey": "shinola-retail",
+    "status": "OK",
+    "fetched": 14,
+    "accepted": 14,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "EXPLAINED_GAPS"
+  },
+  {
+   "key": "uniqlo-au-stores",
+   "enumeration": {
+    "declaredTotal": 33,
+    "fetched": 33,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] uniqlo-au-stores: purge REFUSÉE — run non fiable pour attester (33 collectées sur 33 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "uniqlo-au-stores",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO AUSTRALIA PTY LTD.",
+     "n": 33
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "uniqlo-au-stores",
+    "status": "NEW",
+    "fetched": 33,
+    "accepted": 33,
+    "declaredTotal": 33,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "uniqlo-graduates",
+   "enumeration": {
+    "declaredTotal": 11,
+    "fetched": 11,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": null,
+   "observations": [
+    {
+     "sourceKey": "uniqlo-graduates",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED BELGIAN BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-graduates",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED DENMARK BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-graduates",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-graduates",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-graduates",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED ITALIAN BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-graduates",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-graduates",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-graduates",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED SWEDISH BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-graduates",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LTD. LUXEMBOURG BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-graduates",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED POLISH BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-graduates",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED",
+     "n": 1
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "uniqlo-graduates",
+    "status": "OK",
+    "fetched": 11,
+    "accepted": 11,
+    "declaredTotal": 11,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "uniqlo-headquarters",
+   "enumeration": {
+    "declaredTotal": 20,
+    "fetched": 20,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": null,
+   "observations": [
+    {
+     "sourceKey": "uniqlo-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED",
+     "n": 10
+    },
+    {
+     "sourceKey": "uniqlo-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+     "n": 6
+    },
+    {
+     "sourceKey": "uniqlo-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+     "n": 2
+    },
+    {
+     "sourceKey": "uniqlo-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED DENMARK BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+     "n": 1
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "uniqlo-headquarters",
+    "status": "OK",
+    "fetched": 20,
+    "accepted": 20,
+    "declaredTotal": 20,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "uniqlo-stores",
+   "enumeration": {
+    "declaredTotal": 110,
+    "fetched": 110,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": null,
+   "observations": [
+    {
+     "sourceKey": "uniqlo-stores",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+     "n": 30
+    },
+    {
+     "sourceKey": "uniqlo-stores",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+     "n": 26
+    },
+    {
+     "sourceKey": "uniqlo-stores",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+     "n": 17
+    },
+    {
+     "sourceKey": "uniqlo-stores",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED ITALIAN BRANCH",
+     "n": 5
+    },
+    {
+     "sourceKey": "uniqlo-stores",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED BELGIAN BRANCH",
+     "n": 3
+    },
+    {
+     "sourceKey": "uniqlo-stores",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED DENMARK BRANCH",
+     "n": 2
+    },
+    {
+     "sourceKey": "uniqlo-stores",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-stores",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED POLISH BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-stores",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Uniqlo",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-stores",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED SWEDISH BRANCH",
+     "n": 1
+    },
+    {
+     "sourceKey": "uniqlo-stores",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "UNIQLO EUROPE LIMITED",
+     "n": 23
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "uniqlo-stores",
+    "status": "OK",
+    "fetched": 110,
+    "accepted": 110,
+    "declaredTotal": 110,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "uniqlo-us-retail",
+   "enumeration": {
+    "declaredTotal": 347,
+    "fetched": 347,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] uniqlo-us-retail: purge REFUSÉE — run non fiable pour attester (347 collectées sur 347 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "uniqlo-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "UNIQLO USA LLC",
+     "n": 225
+    },
+    {
+     "sourceKey": "uniqlo-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "UNIQLO Massachusetts LLC",
+     "n": 32
+    },
+    {
+     "sourceKey": "uniqlo-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "UNIQLO Florida LLC",
+     "n": 25
+    },
+    {
+     "sourceKey": "uniqlo-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "UNIQLO Virginia LLC",
+     "n": 19
+    },
+    {
+     "sourceKey": "uniqlo-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "UNIQLO New Jersey LLC",
+     "n": 17
+    },
+    {
+     "sourceKey": "uniqlo-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "UNIQLO Pennsylvania LLC",
+     "n": 9
+    },
+    {
+     "sourceKey": "uniqlo-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "UNIQLO Illinois LLC",
+     "n": 9
+    },
+    {
+     "sourceKey": "uniqlo-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "UNIQLO California LLC",
+     "n": 8
+    },
+    {
+     "sourceKey": "uniqlo-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "UNIQLO Washington LLC",
+     "n": 2
+    },
+    {
+     "sourceKey": "uniqlo-us-retail",
+     "rule": "REVIEWED_ALIAS",
+     "rawEmployerName": "GU USA LLC",
+     "n": 1
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "uniqlo-us-retail",
+    "status": "NEW",
+    "fetched": 347,
+    "accepted": 347,
+    "declaredTotal": 347,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  }
+ ]
+}

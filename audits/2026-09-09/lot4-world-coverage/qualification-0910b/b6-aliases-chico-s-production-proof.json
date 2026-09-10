@@ -1,0 +1,37 @@
+{
+  "at": "2026-09-10T15:37:34.087Z",
+  "environment": "production",
+  "key": "chico-s",
+  "commit": "a845b6bbbcda4c21408993957266be576c919670",
+  "planHash": "2218c82915a025b2d43dbf42a23136211436ac0b71d0ff6d7c15cb2757687759",
+  "aliases": [
+    {
+      "sourceKey": "chico-s",
+      "rawName": "Talbots",
+      "companyId": "cmtlygfhc01y9qf5kvq0ggi25",
+      "company": "Talbots"
+    },
+    {
+      "sourceKey": "chico-s",
+      "rawName": "Soma",
+      "companyId": "cmtndwnrq01ihqq4z66sly7oj",
+      "company": "Soma"
+    },
+    {
+      "sourceKey": "chico-s",
+      "rawName": "Chico's Outlet",
+      "companyId": "cmtvoy43q0000ms02cehcsx07",
+      "company": "Chico's"
+    }
+  ],
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 3
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  }
+}

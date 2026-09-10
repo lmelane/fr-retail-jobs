@@ -1,0 +1,330 @@
+{
+ "at": "2026-09-10T17:48:42.513Z",
+ "lot": "L12-b6-batch1",
+ "run": {
+  "id": "5f38d940-1358-4da7-a2c5-7dc63082b1b4",
+  "status": "COMPLETED",
+  "revision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+  "startedAt": "2026-09-10T13:21:43.699Z",
+  "finishedAt": "2026-09-10T13:22:07.147Z"
+ },
+ "sources": [
+  {
+   "key": "american-vintage-dr",
+   "enumeration": {
+    "declaredTotal": 34,
+    "fetched": 34,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_JSON_PAGINATION_WITH_DIFFUSION_COUNT",
+    "termination": "SHORT_PAGE",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] american-vintage-dr: purge REFUSÉE — run non fiable pour attester (34 collectées sur 34 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "american-vintage-dr",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "American Vintage",
+     "n": 34
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "american-vintage-dr",
+    "status": "NEW",
+    "fetched": 34,
+    "accepted": 34,
+    "declaredTotal": 34,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "arcteryx",
+   "enumeration": {
+    "declaredTotal": null,
+    "fetched": 299,
+    "complete": true,
+    "truncated": false,
+    "method": null,
+    "termination": null,
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": null,
+   "observations": [],
+   "problems": [],
+   "run": {
+    "sourceKey": "arcteryx",
+    "status": "OK",
+    "fetched": 299,
+    "accepted": 299,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "armand-thiery-flatchr",
+   "enumeration": {
+    "declaredTotal": 198,
+    "fetched": 198,
+    "complete": true,
+    "truncated": false,
+    "method": null,
+    "termination": null,
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] armand-thiery-flatchr: purge REFUSÉE — run non fiable pour attester (198 collectées sur 198 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "armand-thiery-flatchr",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Armand Thiery",
+     "n": 198
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "armand-thiery-flatchr",
+    "status": "NEW",
+    "fetched": 198,
+    "accepted": 198,
+    "declaredTotal": 198,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "boardriders",
+   "enumeration": {
+    "declaredTotal": 44,
+    "fetched": 44,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_HTML_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] boardriders: purge REFUSÉE — run non fiable pour attester (44 collectées sur 44 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "boardriders",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Boardriders",
+     "n": 44
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "boardriders",
+    "status": "NEW",
+    "fetched": 44,
+    "accepted": 44,
+    "declaredTotal": 44,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "la-fee-maraboutee",
+   "enumeration": {
+    "declaredTotal": null,
+    "fetched": 19,
+    "complete": true,
+    "truncated": false,
+    "method": null,
+    "termination": null,
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] la-fee-maraboutee: purge REFUSÉE — run non fiable pour attester (19 collectées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "la-fee-maraboutee",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "la fée maraboutée",
+     "n": 19
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "la-fee-maraboutee",
+    "status": "NEW",
+    "fetched": 19,
+    "accepted": 19,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "la-prairie",
+   "enumeration": {
+    "declaredTotal": 27,
+    "fetched": 27,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_HTML_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] la-prairie: purge REFUSÉE — run non fiable pour attester (27 collectées sur 27 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "la-prairie",
+     "rule": "LEGACY_UNREVIEWED",
+     "rawEmployerName": "La Prairie",
+     "n": 27
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "la-prairie",
+    "status": "NEW",
+    "fetched": 27,
+    "accepted": 27,
+    "declaredTotal": 27,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "on-running",
+   "enumeration": {
+    "declaredTotal": null,
+    "fetched": 309,
+    "complete": true,
+    "truncated": false,
+    "method": null,
+    "termination": null,
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] on-running: purge REFUSÉE — run non fiable pour attester (309 collectées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "on-running",
+     "rule": "LEGACY_UNREVIEWED",
+     "rawEmployerName": "On",
+     "n": 309
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "on-running",
+    "status": "DEGRADED",
+    "fetched": 309,
+    "accepted": 309,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "shinola-retail",
+   "enumeration": {
+    "declaredTotal": null,
+    "fetched": 14,
+    "complete": true,
+    "truncated": false,
+    "method": null,
+    "termination": null,
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] shinola-retail: purge REFUSÉE — run non fiable pour attester (14 collectées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "shinola-retail",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Shinola",
+     "n": 14
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "shinola-retail",
+    "status": "NEW",
+    "fetched": 14,
+    "accepted": 14,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "yse-paris",
+   "enumeration": {
+    "declaredTotal": null,
+    "fetched": 11,
+    "complete": true,
+    "truncated": false,
+    "method": null,
+    "termination": null,
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] yse-paris: purge REFUSÉE — run non fiable pour attester (11 collectées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "yse-paris",
+     "rule": "LEGACY_UNREVIEWED",
+     "rawEmployerName": "L'IMPERTINENTE - Ysé",
+     "n": 11
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "yse-paris",
+    "status": "NEW",
+    "fetched": 11,
+    "accepted": 11,
+    "declaredTotal": null,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  }
+ ]
+}

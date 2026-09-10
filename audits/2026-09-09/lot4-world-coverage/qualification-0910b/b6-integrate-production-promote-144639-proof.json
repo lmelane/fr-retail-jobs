@@ -1,0 +1,41 @@
+{
+  "at": "2026-09-10T14:46:39.576Z",
+  "environment": "production",
+  "step": "promote",
+  "proofs": [
+    {
+      "key": "uniqlo-us-retail",
+      "step": "promote",
+      "result": {
+        "key": "uniqlo-us-retail",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "uniqlo-us-retail",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/retail_us_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:45:26.713Z",
+        "verifiedJobCount": 347
+      }
+    },
+    {
+      "key": "uniqlo-au-stores",
+      "step": "promote",
+      "result": {
+        "key": "uniqlo-au-stores",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "uniqlo-au-stores",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/store_staff_au_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:46:29.437Z",
+        "verifiedJobCount": 33
+      }
+    }
+  ]
+}

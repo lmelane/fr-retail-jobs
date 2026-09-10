@@ -1,99 +1,99 @@
 {
- "at": "2026-09-10T14:00:07.956Z",
- "activePostings": 76426,
+ "at": "2026-09-10T18:45:01.525Z",
+ "activePostings": 79516,
  "denominators": {
   "FASHIONJOBS": 1653,
   "WEB_DISCOVERY": 65,
   "PORTFOLIO": 275,
   "B6_CANDIDATE_TENANTS": 33,
-  "DB_ACTIVE_COMPANIES": 999,
-  "SOURCES": 512,
+  "DB_ACTIVE_COMPANIES": 1000,
+  "SOURCES": 532,
   "SOURCES_BY_STATUS": {
-   "ACTIVE": 414,
-   "RETIRED": 90,
+   "ACTIVE": 433,
+   "RETIRED": 91,
    "PAUSED": 8
   }
  },
  "actorsAfterDedup": {
-  "union": 2498,
+  "union": 2488,
   "bySet": {
-   "FASHIONJOBS": 1633,
+   "FASHIONJOBS": 1629,
    "WEB_DISCOVERY": 65,
    "PORTFOLIO": 266,
-   "B6_CANDIDATE": 17,
-   "DB_ACTIVE_COMPANY": 997,
-   "SOURCE_MAISON": 497,
-   "FED_BY_SOURCE": 997
+   "B6_CANDIDATE": 20,
+   "DB_ACTIVE_COMPANY": 998,
+   "SOURCE_MAISON": 502,
+   "FED_BY_SOURCE": 998
   },
-  "fashionjobsOnly": 1208,
-  "fashionjobsWithActiveSource": 263,
-  "fashionjobsWithoutSource": 1370,
+  "fashionjobsOnly": 1198,
+  "fashionjobsWithActiveSource": 269,
+  "fashionjobsWithoutSource": 1360,
   "webDiscoveryWithActiveSource": 12,
   "portfolioWithActiveSource": 99,
   "withActiveSource": 858,
-  "withOnlyCertifiedActiveSources": 189,
+  "withOnlyCertifiedActiveSources": 195,
   "withActivePostingsButNoActiveSource": 156,
   "fashionjobsStages": {
-   "RESEARCH_NOT_STARTED": 742,
+   "RESEARCH_NOT_STARTED": 741,
    "RESEARCH_INCOMPLETE": 583,
-   "ACTIVE_SOURCE_CANDIDATE": 203,
+   "ACTIVE_SOURCE_CANDIDATE": 200,
    "CAREER_LINK_REVIEW_REQUIRED": 64,
    "IDENTITY_MATCH_AMBIGUOUS": 29,
    "OFFICIAL_PORTAL_TECHNICAL_VALIDATION_REQUIRED": 12
   },
   "nextActions": {
-   "recherche de portail officiel à mener": 1301,
-   "certifier la configuration courante des sources actives": 669,
-   "contrôle live (collecte → publication) et couverture mondiale à prouver": 189,
+   "recherche de portail officiel à mener": 1292,
+   "certifier la configuration courante des sources actives": 663,
+   "contrôle live (collecte → publication) et couverture mondiale à prouver": 195,
    "marque de portefeuille : portail à rechercher": 158,
    "sans source active : acteur nourri par une source retirée/pausée ou historique": 112,
-   "revue manuelle (lien carrière / identité ambiguë)": 57,
+   "revue manuelle (lien carrière / identité ambiguë)": 56,
    "qualifier le portail candidat (identité + validation réelle)": 10,
    "B6 : certifier et activer le tenant candidat": 2
   }
  },
  "sources": {
   "identity": {
-   "LEGACY_UNCERTIFIED": 346,
-   "CERTIFIED_CURRENT": 68
+   "LEGACY_UNCERTIFIED": 343,
+   "CERTIFIED_CURRENT": 90
   },
   "scope": {
-   "none": 358,
-   "SINGLE_BRAND": 32,
-   "MULTI_BRAND": 24
+   "none": 355,
+   "SINGLE_BRAND": 46,
+   "MULTI_BRAND": 32
   },
   "productionRunCompleteness": {
-   "NOT_PROVEN": 193,
-   "PROVEN_BY_DECLARED_TOTAL": 119,
+   "NOT_PROVEN": 196,
+   "PROVEN_BY_DECLARED_TOTAL": 135,
    "COMPLETE_FLAG_ONLY": 102
   },
   "receiptEnumeration": {
-   "EXHAUSTIVE_PROVEN": 389,
-   "NOT_PROVEN": 16,
-   "NO_RECEIPT": 9
+   "EXHAUSTIVE_PROVEN": 388,
+   "NO_RECEIPT": 29,
+   "NOT_PROVEN": 16
   },
   "receiptCollection": {
-   "COMPLETE": 381,
+   "COMPLETE": 380,
+   "NO_RECEIPT": 29,
    "NOT_PROVEN": 13,
-   "INCOMPLETE_EXPLAINED": 11,
-   "NO_RECEIPT": 9
+   "INCOMPLETE_EXPLAINED": 11
   },
   "verdict": {
-   "RECEIPT_COMPLETE_PRODUCTION_RUN_DUE": 254,
-   "PROVEN_BY_DECLARED_TOTAL": 119,
+   "RECEIPT_COMPLETE_PRODUCTION_RUN_DUE": 253,
+   "PROVEN_BY_DECLARED_TOTAL": 135,
    "RECEIPT_COMPLETE": 16,
-   "NOT_PROVEN": 11,
+   "NOT_PROVEN": 15,
    "INCOMPLETE_EXPLAINED": 9,
    "COMPLETE_FLAG_ONLY": 5
   },
   "lastRunStatus": {
-   "OK": 213,
-   "DEGRADED": 190,
-   "NEW": 10,
+   "OK": 214,
+   "DEGRADED": 192,
+   "NEW": 26,
    "BROKEN": 1
   },
-  "feedingSeveralActors": 42,
-  "activePostingsUnderActiveSources": 76962
+  "feedingSeveralActors": 45,
+  "activePostingsUnderActiveSources": 80073
  },
  "method": "Deduplication key: reviewed CompanyAlias or merged spelling → root canonicalKey, else resolveCompany(name).companyId. Sets keep their own denominator; a row lists every set naming the actor. Sources are attached to the actor of their catalogued maison and to every actor they feed (active postings). Nothing is merged or written by this tool."
 }

@@ -1,0 +1,31 @@
+{
+  "at": "2026-09-10T15:05:23.061Z",
+  "environment": "production",
+  "key": "uniqlo-vn-headquarters",
+  "commit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+  "planHash": "96418877305bffc5b7251484affc396db46e90ad03df01c77746b067c6ba0fa7",
+  "aliases": [
+    {
+      "sourceKey": "uniqlo-vn-headquarters",
+      "rawName": "UNIQLO VIETNAM CO., LTD.",
+      "companyId": "cmtptzpyj02cil35mltt03knh",
+      "company": "UNIQLO"
+    },
+    {
+      "sourceKey": "uniqlo-vn-headquarters",
+      "rawName": "FAST RETAILING (VIETNAM) MANAGEMENT CONSULTING COMPANY LIMITED",
+      "companyId": "cmtvnlqdu001hlh01zaj04vfn",
+      "company": "Fast Retailing"
+    }
+  ],
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 2
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  }
+}

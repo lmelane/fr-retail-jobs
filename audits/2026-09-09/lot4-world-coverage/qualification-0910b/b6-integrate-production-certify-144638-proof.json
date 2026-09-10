@@ -1,0 +1,53 @@
+{
+  "at": "2026-09-10T14:46:38.701Z",
+  "environment": "production",
+  "step": "certify",
+  "proofs": [
+    {
+      "key": "uniqlo-us-retail",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/retail_us_Uniqlo",
+        "scopeVerdict": "LABELS_OUTSIDE_OWNER",
+        "written": {
+          "sourceKey": "uniqlo-us-retail",
+          "sourceHash": "3bfe0cae27f75be25f59a8c3709919408210fed021b56e86bbc368e9b3ff985c",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "MULTI_BRAND"
+      },
+      "after": {
+        "key": "uniqlo-us-retail",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/retail_us_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:45:26.713Z",
+        "verifiedJobCount": 347
+      }
+    },
+    {
+      "key": "uniqlo-au-stores",
+      "step": "certify",
+      "result": {
+        "boardReference": "fastretailing.wd3.myworkdayjobs.com/store_staff_au_Uniqlo",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "uniqlo-au-stores",
+          "sourceHash": "a54901f50738c8007a13d3fac000764f54c4b576b27814339b98c9cffbd24970",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "uniqlo-au-stores",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/store_staff_au_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:46:29.437Z",
+        "verifiedJobCount": 33
+      }
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "at": "2026-09-10T18:34:27.306Z",
+  "environment": "production",
+  "step": "register",
+  "proofs": [
+    {
+      "key": "lagardere-travel-retail-de",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvv9n2c0000mst26i4qlonr",
+          "key": "lagardere-travel-retail-de",
+          "maison": "Lagardère Travel Retail",
+          "careersDomain": "lagardere-recrute-travelretailde.talent-soft.com",
+          "kind": "talentsoft",
+          "config": {
+            "origin": "https://lagardere-recrute-travelretailde.talent-soft.com"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "EMPLOYER_DIRECT",
+          "tenantKey": "talentsoft:lagardere-recrute-travelretailde.talent-soft.com",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T18:34:27.204Z",
+          "updatedAt": "2026-09-10T18:34:27.204Z"
+        }
+      },
+      "after": {
+        "key": "lagardere-travel-retail-de",
+        "status": "DRAFT",
+        "tenantKey": "talentsoft:lagardere-recrute-travelretailde.talent-soft.com",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    }
+  ]
+}

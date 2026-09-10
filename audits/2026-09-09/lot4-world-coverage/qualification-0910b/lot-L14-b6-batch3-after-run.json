@@ -1,0 +1,422 @@
+{
+  "at": "2026-09-10T15:00:24.815Z",
+  "pipelineRun": {
+    "id": "0a9f419d-873b-45f6-af82-9df8959fffa7",
+    "status": "COMPLETED",
+    "startedAt": "2026-09-10T14:59:52.554Z",
+    "finishedAt": "2026-09-10T14:59:59.680Z",
+    "revision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec"
+  },
+  "writeFailures": [],
+  "sourceRuns": [
+    {
+      "sourceKey": "gu-hk-headquarters",
+      "status": "NEW",
+      "fetched": 2,
+      "accepted": 2,
+      "declaredTotal": 2,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 50% url 100%"
+    },
+    {
+      "sourceKey": "uniqlo-th-headquarters",
+      "status": "NEW",
+      "fetched": 2,
+      "accepted": 2,
+      "declaredTotal": 2,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "gu-us-headquarters",
+      "status": "NEW",
+      "fetched": 2,
+      "accepted": 2,
+      "declaredTotal": 2,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "uniqlo-au-graduates",
+      "status": "NEW",
+      "fetched": 2,
+      "accepted": 2,
+      "declaredTotal": 2,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "fast-retailing-ph-headquarters",
+      "status": "NEW",
+      "fetched": 3,
+      "accepted": 3,
+      "declaredTotal": 3,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "gu-us-retail",
+      "status": "NEW",
+      "fetched": 5,
+      "accepted": 5,
+      "declaredTotal": 5,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "fast-retailing-id-headquarters",
+      "status": "NEW",
+      "fetched": 6,
+      "accepted": 6,
+      "declaredTotal": 6,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "theory-us-retail",
+      "status": "NEW",
+      "fetched": 6,
+      "accepted": 6,
+      "declaredTotal": 6,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "uniqlo-hkm-headquarters",
+      "status": "NEW",
+      "fetched": 6,
+      "accepted": 6,
+      "declaredTotal": 6,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 67% date 67% pays 67% url 100%"
+    },
+    {
+      "sourceKey": "uniqlo-my-headquarters",
+      "status": "NEW",
+      "fetched": 7,
+      "accepted": 7,
+      "declaredTotal": 7,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "theory-eu",
+      "status": "NEW",
+      "fetched": 18,
+      "accepted": 18,
+      "declaredTotal": 18,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    }
+  ],
+  "active": [
+    {
+      "sourceKey": "fast-retailing-id-headquarters",
+      "active": 6,
+      "reattested": 6,
+      "created": 6
+    },
+    {
+      "sourceKey": "fast-retailing-ph-headquarters",
+      "active": 3,
+      "reattested": 3,
+      "created": 3
+    },
+    {
+      "sourceKey": "gu-hk-headquarters",
+      "active": 2,
+      "reattested": 2,
+      "created": 2
+    },
+    {
+      "sourceKey": "gu-us-headquarters",
+      "active": 2,
+      "reattested": 2,
+      "created": 2
+    },
+    {
+      "sourceKey": "gu-us-retail",
+      "active": 5,
+      "reattested": 5,
+      "created": 5
+    },
+    {
+      "sourceKey": "theory-eu",
+      "active": 18,
+      "reattested": 18,
+      "created": 18
+    },
+    {
+      "sourceKey": "theory-us-retail",
+      "active": 6,
+      "reattested": 6,
+      "created": 6
+    },
+    {
+      "sourceKey": "uniqlo-au-graduates",
+      "active": 2,
+      "reattested": 2,
+      "created": 2
+    },
+    {
+      "sourceKey": "uniqlo-hkm-headquarters",
+      "active": 6,
+      "reattested": 6,
+      "created": 6
+    },
+    {
+      "sourceKey": "uniqlo-my-headquarters",
+      "active": 7,
+      "reattested": 7,
+      "created": 7
+    },
+    {
+      "sourceKey": "uniqlo-th-headquarters",
+      "active": 2,
+      "reattested": 2,
+      "created": 2
+    }
+  ],
+  "observations": [
+    {
+      "sourceKey": "fast-retailing-id-headquarters",
+      "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+      "n": 6
+    },
+    {
+      "sourceKey": "fast-retailing-ph-headquarters",
+      "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+      "n": 3
+    },
+    {
+      "sourceKey": "gu-hk-headquarters",
+      "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+      "n": 2
+    },
+    {
+      "sourceKey": "gu-us-headquarters",
+      "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+      "n": 2
+    },
+    {
+      "sourceKey": "gu-us-retail",
+      "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+      "n": 5
+    },
+    {
+      "sourceKey": "theory-eu",
+      "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+      "n": 18
+    },
+    {
+      "sourceKey": "theory-us-retail",
+      "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+      "n": 6
+    },
+    {
+      "sourceKey": "uniqlo-au-graduates",
+      "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+      "n": 2
+    },
+    {
+      "sourceKey": "uniqlo-hkm-headquarters",
+      "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+      "n": 6
+    },
+    {
+      "sourceKey": "uniqlo-my-headquarters",
+      "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+      "n": 7
+    },
+    {
+      "sourceKey": "uniqlo-th-headquarters",
+      "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+      "n": 2
+    }
+  ],
+  "byCompany": [
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "J Choo",
+      "n": 34
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Franchoo",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Tokyo",
+      "n": 3
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo (Shanghai) Trading Co.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "J Choo (Switzerland)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Florence",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Hungary KFT",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Itachoo",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Michael Kors",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors",
+      "n": 355
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Stores California",
+      "n": 54
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (UK)",
+      "n": 36
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Germany)",
+      "n": 27
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Italy) srl con socio unico",
+      "n": 13
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Spain, S.L.U.",
+      "n": 12
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Europe)",
+      "n": 5
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Switzerland)",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Austria)",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Portugal)",
+      "n": 3
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Netherlands)",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Poland) sp. z. o.o.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Lithuania) UAB",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Hungary) Kft",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Czech Republic) s.r.o.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Canada)",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (HongKong)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Sweden)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (USA)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Yuhanhoesa",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "Mango",
+      "n": 1697
+    },
+    {
+      "sourceKey": "nordstrom",
+      "name": "Nordstrom",
+      "n": 1575
+    }
+  ],
+  "activeTotal": 76870
+}

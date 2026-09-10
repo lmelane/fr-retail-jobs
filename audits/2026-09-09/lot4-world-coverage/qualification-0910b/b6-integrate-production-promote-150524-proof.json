@@ -1,0 +1,41 @@
+{
+  "at": "2026-09-10T15:05:24.994Z",
+  "environment": "production",
+  "step": "promote",
+  "proofs": [
+    {
+      "key": "uniqlo-us-headquarters",
+      "step": "promote",
+      "result": {
+        "key": "uniqlo-us-headquarters",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "uniqlo-us-headquarters",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/headquarters_us_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T15:05:13.391Z",
+        "verifiedJobCount": 14
+      }
+    },
+    {
+      "key": "uniqlo-vn-headquarters",
+      "step": "promote",
+      "result": {
+        "key": "uniqlo-vn-headquarters",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "uniqlo-vn-headquarters",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/headquarter_roles_vn_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T15:05:16.119Z",
+        "verifiedJobCount": 12
+      }
+    }
+  ]
+}

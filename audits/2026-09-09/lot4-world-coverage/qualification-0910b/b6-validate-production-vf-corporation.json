@@ -1,0 +1,394 @@
+{
+ "at": "2026-09-10T18:08:29.647Z",
+ "key": "vf-corporation",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://vfc.wd5.myworkdayjobs.com",
+  "path": "/wday/cxs/vfc/vfc_careers/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T18:03:38.901Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "d7ec8bfddbf3c15f09fbe160a233911be6028d1d0c3f0c81056e5c16fec84dce",
+  "bytes": 1475
+ },
+ "fetched": 1271,
+ "parsed": 1271,
+ "declaredTotal": 1271,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 1271,
+    "uniqueIds": 1271,
+    "pages": 64,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 692,
+ "labels": [
+  {
+   "label": "(catalogue label)",
+   "n": 692,
+   "class": "CATALOGUE"
+  },
+  {
+   "label": "VF Outdoor, LLC",
+   "n": 471,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Outdoor Canada, Co.",
+   "n": 18,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF International S.a.g.l.",
+   "n": 11,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "Icebreaker New Zealand Limited",
+   "n": 8,
+   "class": "OTHER"
+  },
+  {
+   "label": "VF Vietnam Sourcing Limited",
+   "n": 8,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF China Limited Shanghai Branch",
+   "n": 7,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Northern Europe Services",
+   "n": 6,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Apparel España SLU",
+   "n": 6,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Singapore Overseas Services Pte. Ltd.",
+   "n": 6,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Corporation",
+   "n": 5,
+   "class": "OWNER"
+  },
+  {
+   "label": "VF Brands Malaysia Sdn Bhd",
+   "n": 5,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF (J) France SAS",
+   "n": 4,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Services, LLC",
+   "n": 3,
+   "class": "OWNER"
+  },
+  {
+   "label": "VF Northern Europe Ltd.",
+   "n": 3,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Germany Services GMBH",
+   "n": 3,
+   "class": "OWNER"
+  },
+  {
+   "label": "VF Korea Limited Liability Company",
+   "n": 2,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Northern Europe Services Ltd Ireland Branch",
+   "n": 2,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Italia Srl",
+   "n": 2,
+   "class": "OWNER"
+  },
+  {
+   "label": "VF Asia Sourcing Limited, Bangladesh Liaison Office",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Polska Distribution Sp zo o",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF New Zealand",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Brands Taiwan Limited",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Shanghai Enterprise Company",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Hong Kong Limited",
+   "n": 1,
+   "class": "OWNER"
+  },
+  {
+   "label": "VF Taiwan Limited",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "VF Australia Pty Ltd",
+   "n": 1,
+   "class": "OWNER"
+  },
+  {
+   "label": "VF (Cambodia) Sourcing Co., Ltd.",
+   "n": 1,
+   "class": "OWNER_ENTITY"
+  }
+ ],
+ "countries": [
+  [
+   "(none)",
+   692
+  ],
+  [
+   "United States of America",
+   479
+  ],
+  [
+   "Canada",
+   18
+  ],
+  [
+   "Switzerland",
+   11
+  ],
+  [
+   "United Kingdom",
+   9
+  ],
+  [
+   "New Zealand",
+   9
+  ],
+  [
+   "Vietnam",
+   8
+  ],
+  [
+   "China",
+   8
+  ],
+  [
+   "Singapore",
+   7
+  ],
+  [
+   "Spain",
+   6
+  ],
+  [
+   "Malaysia",
+   5
+  ],
+  [
+   "France",
+   4
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "VF Corporation",
+  "ownerKey": "VF",
+  "labels": [
+   {
+    "label": "(catalogue label)",
+    "n": 692,
+    "class": "CATALOGUE"
+   },
+   {
+    "label": "VF Outdoor, LLC",
+    "n": 471,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Outdoor Canada, Co.",
+    "n": 18,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF International S.a.g.l.",
+    "n": 11,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "Icebreaker New Zealand Limited",
+    "n": 8,
+    "class": "OTHER"
+   },
+   {
+    "label": "VF Vietnam Sourcing Limited",
+    "n": 8,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF China Limited Shanghai Branch",
+    "n": 7,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Northern Europe Services",
+    "n": 6,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Apparel España SLU",
+    "n": 6,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Singapore Overseas Services Pte. Ltd.",
+    "n": 6,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Corporation",
+    "n": 5,
+    "class": "OWNER"
+   },
+   {
+    "label": "VF Brands Malaysia Sdn Bhd",
+    "n": 5,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF (J) France SAS",
+    "n": 4,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Services, LLC",
+    "n": 3,
+    "class": "OWNER"
+   },
+   {
+    "label": "VF Northern Europe Ltd.",
+    "n": 3,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Germany Services GMBH",
+    "n": 3,
+    "class": "OWNER"
+   },
+   {
+    "label": "VF Korea Limited Liability Company",
+    "n": 2,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Northern Europe Services Ltd Ireland Branch",
+    "n": 2,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Italia Srl",
+    "n": 2,
+    "class": "OWNER"
+   },
+   {
+    "label": "VF Asia Sourcing Limited, Bangladesh Liaison Office",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Polska Distribution Sp zo o",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF New Zealand",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Brands Taiwan Limited",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Shanghai Enterprise Company",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Hong Kong Limited",
+    "n": 1,
+    "class": "OWNER"
+   },
+   {
+    "label": "VF Taiwan Limited",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "VF Australia Pty Ltd",
+    "n": 1,
+    "class": "OWNER"
+   },
+   {
+    "label": "VF (Cambodia) Sourcing Co., Ltd.",
+    "n": 1,
+    "class": "OWNER_ENTITY"
+   }
+  ],
+  "verdict": "LABELS_OUTSIDE_OWNER",
+  "other": [
+   "Icebreaker New Zealand Limited (8)"
+  ]
+ },
+ "withCountry": 579,
+ "withDescription": 579,
+ "sampleTitles": [
+  "Vans: Planner, DTC — USCA > USA > California > Costa Mesa HQ - VAN",
+  "Vendedor 35h Kipling - Barcelona — EMEA > ESP > Barcelona > Diagonal Concession - KIP",
+  "Vans: Marketplace Planner, Footwear — USCA > USA > California > Costa Mesa HQ - VAN",
+  "Vans: Senior Account Executive — USCA > USA > Georgia > Remote",
+  "Vans: Manager, Wholesale Planning — USCA > USA > California > Costa Mesa HQ - VAN"
+ ],
+ "seconds": 291,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T18:03:37.514Z"
+}
