@@ -403,6 +403,8 @@ Objectif : fiabiliser les mesures et figer le périmètre restant, sans réaudit
 
 **Environnement vérifié à 19:07–19:08Z** : tree propre et aligné sur `origin/main` (`50b8095`) ; 42 migrations locales = 42 appliquées en production, 0 en attente, 0 inconnue, 0 en échec ; les trois workers portent le sentinel de gel `0 0 29 2 *`, `PIPELINE_PAUSED=1`, aucune `INGEST_ONLY_KEYS` résiduelle ; déploiements SUCCESS ; **aucun run en cours**.
 
+Le contrôle de gel est désormais un outil du dépôt, `scripts/ops/read-crons.py` (**lecture seule**, sort en échec si un cron n'est pas gelé, si `PIPELINE_PAUSED` n'est pas posé ou si une `INGEST_ONLY_KEYS` traîne) — il ne dépend plus de `backups/`, et il est distinct de la mutation `freeze-crons.py`.
+
 **La mesure de référence** — `scripts/coverage/reference-snapshot.mts`, une **seule transaction en lecture seule**, donc tous les chiffres partagent le même instant. C'est le correctif du défaut de fond : deux rapports du même après-midi annonçaient « 344 non certifiées sur 432 actives, 88 certifiées » (18:19Z) et « 90 certifiées sur 433 » (18:46Z) — deux photographies différentes lues comme un même état. Le prédicat de certification est **celui de la porte de promotion** (`assertIdentityReview`, même ordre `createdAt desc` : une contradiction ultérieure prime), jamais une seconde logique.
 
 | Indicateur (2026-09-10 19:11Z) | Valeur | Dénominateur explicite |
