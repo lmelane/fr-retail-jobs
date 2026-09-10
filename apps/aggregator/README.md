@@ -383,19 +383,52 @@ Volumes désormais séparés par `lot-volumes.mts` : collectées → retenues (h
 | Homonyme retiré | 1 | `loft` (proptech brésilienne sous la marque LOFT) : 62 offres retirées D27 | — |
 | Non activés | — | Soeur et Luxexperience (doublons), Galderma (hors périmètre), KS Groupe (cabinet d'intérim : **arbitrage Loïc**) | — |
 
-**Ce qui reste pour clore le LOT 4** (dénominateurs explicites ; `inventory-unique/uncertified-families.md`, pré-tri généré, pas une certification) :
+**Ce qui reste pour clore le LOT 4** — mesuré le **2026-09-10 à 19:11Z**, même instant que la référence ci-dessous (`inventory-unique/uncertified-families.md`, pré-tri généré, pas une certification) :
 
 | Famille | Sources | Offres actives | Blocage réel | Prochaine action (mécanismes existants) |
 |---|---:|---:|---|---|
 | Portails de groupe non certifiés | 30 | 9 421 | aucun technique ; alias par libellé à revoir | `b6-aliases.mts` + `b6-certify-existing.sh` (méthode Saks / KnitWell), par lots |
 | Homonymie suspecte | 26 | 1 510 | l'identité peut être fausse (cas `loft`) | audit hors ligne des titres / pays / hôtes archivés ; `retire-source` ou alias, puis certification |
 | Portail sur le domaine officiel de la Maison | 83 | 9 858 | aucun | `b6-certify-existing.sh` par lots de 10–15 (OFFICIAL_DOMAIN) |
-| Lien réciproque officiel déjà archivé | 13 | 463 | aucun | `b6-certify-existing.sh` (OFFICIAL_LINK) |
+| Lien réciproque officiel déjà archivé | 12 | 333 | aucun | `b6-certify-existing.sh` (OFFICIAL_LINK) |
 | Jobboards / balayage sectoriel / cabinet | 3 | 2 490 | identité de board : décision Loïc | — |
 | Aucun lien officiel archivé | 189 | 8 610 | recherche à mener ; quelques sites illisibles (WAF) | `research-portals.mts` ciblé, puis certification ; blocage daté sinon |
-| **Total non certifié** | **344 / 432 actives** | 32 352 | | |
+| **Total non certifié** | **343 / 433 actives** | 32 222 | | |
 
 Autres dossiers ouverts : attestation d'absence par partition (Tapestry, 97 offres dé-listées) ; `wttj-sector` (identité de board) ; 640 offres sans source opérante (conservation / retrait) ; Menus & Venues, Versace, Swarovski (décisions Loïc / sites illisibles) ; reprise des crons (décision Loïc, distincte de cette clôture). Le tableau final par source avec les **cinq états** (officielle · opérationnelle · exhaustive · attribution · publication) est `final-table.md`, régénérable.
+
+### LOT P1 (10 septembre, soir) — une référence mesurable avant toute reprise de production
+
+Objectif : fiabiliser les mesures et figer le périmètre restant, sans réaudit complet et sans aucune ingestion. Aucune donnée de production n'a été mutée ; crons gelés.
+
+**Environnement vérifié à 19:07–19:08Z** : tree propre et aligné sur `origin/main` (`50b8095`) ; 42 migrations locales = 42 appliquées en production, 0 en attente, 0 inconnue, 0 en échec ; les trois workers portent le sentinel de gel `0 0 29 2 *`, `PIPELINE_PAUSED=1`, aucune `INGEST_ONLY_KEYS` résiduelle ; déploiements SUCCESS ; **aucun run en cours**.
+
+**La mesure de référence** — `scripts/coverage/reference-snapshot.mts`, une **seule transaction en lecture seule**, donc tous les chiffres partagent le même instant. C'est le correctif du défaut de fond : deux rapports du même après-midi annonçaient « 344 non certifiées sur 432 actives, 88 certifiées » (18:19Z) et « 90 certifiées sur 433 » (18:46Z) — deux photographies différentes lues comme un même état. Le prédicat de certification est **celui de la porte de promotion** (`assertIdentityReview`, même ordre `createdAt desc` : une contradiction ultérieure prime), jamais une seconde logique.
+
+| Indicateur (2026-09-10 19:11Z) | Valeur | Dénominateur explicite |
+|---|---:|---|
+| Sources | 433 ACTIVE · 8 PAUSED · 91 RETIRED | 532 lignes `Source` |
+| Certifiées au contrat strict | 90 | 441 ACTIVE/PAUSED |
+| Non certifiées (= 433 − 90 des ACTIVE) | 343 | familles : 30 G · 26 A · 83 B · 12 C · 3 D · 189 E = **343**, 32 222 offres |
+| Offres actives | 79 516 | dont **0** sans source ACTIVE/PAUSED |
+| Représentations actives | 81 586 | 2 070 de plus que les offres : **2 047 offres multi-sources** (unité distincte, jamais confondue) |
+| Dernier run par source | OK 222 · DEGRADED 192 · NEW 26 · BROKEN 1 | 441 ; **0 source sans aucun run** |
+| Attribution employeur | PROUVÉE 40 · partielle 27 · observée sans revue 21 · **non observée 353** | 441 |
+
+**Deux périmètres coexistent et ne se contredisent pas** : `unified-inventory.mts` compte les **ACTIVE seules** (433), la référence et `final-table.mts` comptent **ACTIVE + PAUSED** (441). Le pont est imprimé dans la référence : les 8 sources PAUSED apportent 8 runs OK (214 + 8 = 222) et 1 513 représentations (80 073 + 1 513 = 81 586). Un rapport qui cite l'un de ces chiffres doit citer son périmètre.
+
+**Quatre défauts de mesure corrigés, chacun prouvé avant correction :**
+
+1. **Un défaut ouvert arrondi à « 100 % ».** La synthèse affichait « Publication vérifiée 440 | 100 % » alors que 440 lignes sur 441 passaient : `Math.round(100 × 440 / 441) = 100` effaçait le seul défaut ouvert (`ulta-jibe`, société résiduelle « Ulta Beauty, Inc. », 1 offre). Corrigé par `src/coverage/reporting.ts` (`share`) : **99,8 % (440/441)**, et « 100 % » est réservé à l'unanimité. Testé, y compris 9999/10000 → 99,9 %.
+2. **Le dénominateur de l'attribution était tronqué.** Le taux ne portait que sur les représentations *observées* (26 265 sur 81 586). Les 353 sources sans aucune observation apparaissaient comme « no observation » dans la même colonne qu'un échec mesuré. Corrigé : le dénominateur est **toute** représentation active, et `NOT_VERIFIED` est un état distinct — jamais un succès, jamais un échec. Effet : attribution prouvée **58 → 40**, « les cinq états à la fois » **33 → 25**. Les deux implémentations indépendantes (référence SQL et tableau final) donnent désormais exactement 40 / 353 / 27 / 21.
+3. **Fenêtre glissante non datée.** « aucun sur 7 j » confondait « aucun rejet » et « rejets hors fenêtre ». La fenêtre est désormais **datée dans l'en-tête du tableau** et dans chaque cellule.
+4. **Le CSV de référence servait une colonne `sourceKey` vide** (en-tête `sourceKey`, champ `key`) — corrigé et re-généré.
+
+**Point 4 du lot — quatre questions séparées, là où un seul compteur servait de preuve** (`scripts/coverage/public-visibility.mts`, échantillon explicite, jamais un load test) : parité des compteurs · égalité des identifiants · visibilité réelle de la fiche · éligibilité Google Jobs. Sur les 25 sociétés les plus fournies, 2 fiches échantillonnées chacune : compteurs **25/25**, identifiants **25/25**, fiches joignables **25/25**, éligibilité **24/25**. La séparation a immédiatement trouvé ce que le compteur masquait :
+
+> **Défaut ouvert — 1 452 offres actives sans `postedAt`, donc sans JSON-LD `JobPosting`, donc inéligibles Google Jobs** alors que leur page répond 200 sans `noindex`. Concentré à 76 % sur une source : `ralph-lauren-avature`, **1 103 offres sur 1 104 non datées** (les autres sources Avature datent 95 % de leurs offres : L'Oréal 1 676/1 804, adidas 1 079/1 142). Le RAW archivé de cette source ne conserve que `source`, `reference`, `department` : **il ne permet pas de trancher hors ligne**. L'adaptateur exige un format strict `Posted 01-Oct-2026` (`DATE_MARKER`) et perd la date en silence sinon — même motif que le défaut L'Oréal corrigé le 2026-09-05. **Ce n'est donc pas qualifié de limite éditeur** : le test discriminant (lire une carte réelle du board Ralph Lauren et comparer au marqueur) demande une collecte, hors périmètre de ce lot, et est la première action de P2.
+
+**Ce que ce lot ne prouve pas** : les 416 sociétés non échantillonnées par le contrôle de visibilité sont **non vérifiées**, pas conformes ; les 353 sources sans observation d'identité restent sans preuve d'attribution ; la cause du défaut Ralph Lauren reste à établir par observation.
 
 ### En cours ou restant
 

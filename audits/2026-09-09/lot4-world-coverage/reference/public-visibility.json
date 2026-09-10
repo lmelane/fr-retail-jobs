@@ -1,0 +1,840 @@
+{
+ "summary": {
+  "at": "2026-09-10T19:13:40.822Z",
+  "base": "https://modecareers.com",
+  "scope": {
+   "companiesInDatabase": 1000,
+   "companiesChecked": 25,
+   "selection": "the 25 companies with the most active postings",
+   "detailSamplesPerCompany": 2,
+   "note": "a sampled verification, not a load test; unchecked companies are reported as unchecked, never as passing"
+  },
+  "counterParity": {
+   "EQUAL": 25
+  },
+  "identifierEquality": {
+   "SUBSET_OF_DB": 25
+  },
+  "detailVisibility": {
+   "REACHABLE": 25
+  },
+  "googleJobsEligibility": {
+   "ELIGIBLE": 24,
+   "NO_JOBPOSTING_JSONLD": 1
+  }
+ },
+ "results": [
+  {
+   "company": "Ulta Beauty",
+   "dbActive": 10289,
+   "apiTotal": 10289,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt9hyiq65olmy01wyhe9nei",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt9goap5zezmy015un5ekeu",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Sephora",
+   "dbActive": 2474,
+   "apiTotal": 2474,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtv9d3yq052mqr01qfhr1p75",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtv9d3vj052aqr01a29ubvm2",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Pandora",
+   "dbActive": 2101,
+   "apiTotal": 2101,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt9g0nr5t1ymy01zd3xebjg",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt9foty5oxqmy01xs71loab",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Foot Locker",
+   "dbActive": 1933,
+   "apiTotal": 1933,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt99s7w4najmy01idssrcyz",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt99lnp4l47my01q3ni5t5y",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "L'Oréal",
+   "dbActive": 1804,
+   "apiTotal": 1804,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmts98unu040iln5m812cegcc",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmts98txv03sdln5m8gen9ngj",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "H&M Group",
+   "dbActive": 1706,
+   "apiTotal": 1706,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt8gca92ebkmy01hvpyst29",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt8gc9p2eb6my01v1wxy2du",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Mango",
+   "dbActive": 1705,
+   "apiTotal": 1705,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtvb0utq01nlp901m6traows",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtvb0usv01nfp901zs5lg8oz",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Boots",
+   "dbActive": 1608,
+   "apiTotal": 1608,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt8ywi43p9hmy014trdo4u6",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt8ywhi3p9bmy01o2cr1138",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Nordstrom",
+   "dbActive": 1575,
+   "apiTotal": 1575,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtvaox230081qp01jafaihfj",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtvaowz7007nqp01sya114a8",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Coach",
+   "dbActive": 1545,
+   "apiTotal": 1545,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtvbixer0albpd01p8cuej3u",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtvbixdt0al5pd014er1xwha",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "PVH",
+   "dbActive": 1397,
+   "apiTotal": 1397,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt8wvxe3kgvmy01vz98hd9k",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt8wvwo3kgpmy01xqfyfufx",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Levi's",
+   "dbActive": 1331,
+   "apiTotal": 1331,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt8rv8v388hmy01y1148o6b",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt8rv7x3887my01dv2uf3c8",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Rituals",
+   "dbActive": 1245,
+   "apiTotal": 1245,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtuih0qe03w9pe01hefp9dck",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtuigyhk03lvpe016tfzigvz",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "adidas",
+   "dbActive": 1142,
+   "apiTotal": 1142,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt8iw5i2nbmmy01uv0unpx1",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt8iw4w2nbgmy010gyegegz",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Chanel",
+   "dbActive": 1120,
+   "apiTotal": 1120,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt8mfre2twomy01j4t26xdo",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt8mfq82twcmy01xtvb1mf7",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Ralph Lauren",
+   "dbActive": 1105,
+   "apiTotal": 1105,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "NO_JOBPOSTING_JSONLD",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt8rmyc37wxmy014bvtpn26",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": false,
+      "missing": [
+       "title",
+       "description",
+       "datePosted",
+       "hiringOrganization",
+       "jobLocation"
+      ]
+     }
+    },
+    {
+     "id": "cmtt8rmsu37vjmy01682bgp3x",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": false,
+      "missing": [
+       "title",
+       "description",
+       "datePosted",
+       "hiringOrganization",
+       "jobLocation"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "company": "Primark",
+   "dbActive": 966,
+   "apiTotal": 966,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt8cx3b2671my011wxpqujf",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt8cx2w266rmy01hcchzi5g",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Lovisa",
+   "dbActive": 893,
+   "apiTotal": 893,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt8b9pd217imy01mh70vu13",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt8b7k520s8my01vwwxz0bo",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Intersport",
+   "dbActive": 879,
+   "apiTotal": 879,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt6gaap04bw3nnjvrc65aae",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt6g9jh04bn3nnj434yakrj",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Richemont",
+   "dbActive": 838,
+   "apiTotal": 838,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtvbho4m03ospd01ae92ibzq",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtvbho3j03ompd01wfxa95yd",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Bloomingdale's",
+   "dbActive": 791,
+   "apiTotal": 791,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt8bk8621snmy01umm2z8p5",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt8bk7k21shmy01pmggd10h",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "NIKE",
+   "dbActive": 740,
+   "apiTotal": 740,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt8exbh29ldmy01389i833o",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt8ex0w29i7my01gnrgfocr",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "La casa de las Carcasas",
+   "dbActive": 689,
+   "apiTotal": 689,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt88xex1su1my01y1sd2lfe",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt88xea1stvmy016ghj46o8",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Hermès",
+   "dbActive": 668,
+   "apiTotal": 668,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtt93e6b3vwrmy01leezll2m",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtt93e5s3vwhmy01mq51oorh",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  },
+  {
+   "company": "Louis Vuitton",
+   "dbActive": 642,
+   "apiTotal": 642,
+   "counterParity": "EQUAL",
+   "identifierEquality": "SUBSET_OF_DB",
+   "detailVisibility": "REACHABLE",
+   "googleEligibility": "ELIGIBLE",
+   "sampled": 2,
+   "details": [
+    {
+     "id": "cmtv9cugp04cfqr01djigrn3i",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    },
+    {
+     "id": "cmtv9cu2904bcqr01sg6beufm",
+     "status": 200,
+     "reachable": true,
+     "noindex": false,
+     "jsonLd": {
+      "present": true,
+      "missing": []
+     }
+    }
+   ]
+  }
+ ]
+}
