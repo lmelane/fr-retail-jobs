@@ -129,13 +129,50 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
     // board does not pass for its end.
     if (postings.length < 20 && !total) { termination = 'SHORT_PAGE'; break; }
   }
+  /**
+   * Second sweep (2026-09-10). An unstable sort can serve the same posting on two
+   * consecutive pages while another posting slides between two page boundaries and
+   * is never served (Levi's: 1 314 rows announced and read, 7 repeated, 1 306 unique).
+   * When every announced row was read but repeated ids left announced postings
+   * unseen, the board is re-read on a grid shifted by half a page: a posting that
+   * fell between two boundaries of the first grid sits inside a page of the second.
+   * The board is proven only when every announced row is then accounted for — as a
+   * unique posting or as a rejected path-less row; the repetition stays named.
+   */
+  if (total > 0 && repeatedIds > 0 && seen.size + withoutPath < total && termination !== 'PAGE_BUDGET_EXHAUSTED' && !issues.has('SOURCE_TOTAL_CHANGED')) {
+    for (let offset = 10, sweepPages = 0; offset < total && seen.size + withoutPath < total && sweepPages < 250; offset += 20, sweepPages += 1) {
+      const page = await fetchJson<WorkdayPage>(endpoint, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', ...EN_US },
+        body: JSON.stringify({ appliedFacets: {}, limit: 20, offset, searchText: '' }),
+      });
+      const postings = page.jobPostings ?? [];
+      pagesRead += 1;
+      const pageIds: string[] = [];
+      let fresh = 0;
+      for (const job of postings) {
+        // Path-less rows were already counted (and rejected) by the first sweep; they carry no id to reconcile.
+        if (!job.externalPath) continue;
+        const externalId = job.externalPath.split('/').filter(Boolean).pop() ?? job.externalPath;
+        pageIds.push(externalId);
+        if (seen.has(externalId)) continue;
+        seen.add(externalId); fresh += 1;
+        out.push({ externalId, title: job.title, location: job.locationsText || locationFromBullets(job.bulletFields), postedAt: postedAtFromWorkday(job.postedOn), url: `${origin.replace(/\/$/, '')}/${site}${job.externalPath}`, raw: job });
+      }
+      pageEvidence.push({ url: `${endpoint}#offset=${offset}&sweep=2`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
+        ids: pageIds, publisherCounter: '', componentCounters: [`sweep=2`, `rows=${postings.length}`, `uniqueIds=${seen.size}`, `freshInSweep=${fresh}`] });
+      if (postings.length === 0) break;
+    }
+    if (seen.size + withoutPath >= total) { termination = 'SECOND_SWEEP_RECONCILED'; issues.add('RECONCILED_BY_SECOND_SWEEP'); }
+  }
   if (repeatedIds) issues.add('REPEATED_IDS_ACROSS_PAGES');
   if (withoutPath) issues.add('ROWS_WITHOUT_EXTERNAL_PATH');
-  // Proven when every announced row was read exactly once: a row without a
-  // path is not a posting a candidate can reach — it is REJECTED with its raw
-  // witness, not counted as missing (Nordstrom, 2026-09-09: 1 312 rows read of
-  // 1 312 announced, 3 of them path-less, 1 309 postings — the historical −3).
-  const complete = total > 0 && rawCount === total && repeatedIds === 0 && termination !== 'PAGE_BUDGET_EXHAUSTED' && !issues.has('SOURCE_TOTAL_CHANGED');
+  // Proven when every announced row is accounted for exactly once — as a unique
+  // posting, or as a REJECTED path-less row with its raw witness (Nordstrom,
+  // 2026-09-09: 1 312 rows read of 1 312 announced, 3 of them path-less, 1 309
+  // postings — the historical −3). A repetition across pages only passes when the
+  // second sweep has reconciled every announced row.
+  const complete = total > 0 && seen.size + withoutPath === total && (repeatedIds === 0 || termination === 'SECOND_SWEEP_RECONCILED') && termination !== 'PAGE_BUDGET_EXHAUSTED' && !issues.has('SOURCE_TOTAL_CHANGED');
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
   const enumeration: AdapterResult['enumeration'] = { method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION', endpoint, pages: pagesRead, rawCount, termination, issues: [...issues],
     scopes: [{ scope: 'jobs', declaredTotal: total || -1, uniqueIds: seen.size, pages: pagesRead, complete }], pageEvidence };

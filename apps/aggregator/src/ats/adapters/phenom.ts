@@ -36,6 +36,8 @@ const HEADERS = { 'user-agent': USER_AGENT, accept: 'application/json' };
 type PhenomJobData = {
   slug?: string;
   req_id?: string;
+  /** Locale of this entry ("en-us", "fr-fr"): the same requisition may be served once per language. */
+  language?: string;
   title?: string;
   description?: string;
   city?: string;
@@ -148,7 +150,8 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
   const seen = new Set<string>();
   let declaredTotal: number | undefined;
   const issues = new Set<string>();
-  let pages = 0, rawCount = 0, withoutData = 0, repeatedIds = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+  let pages = 0, rawCount = 0, withoutData = 0, repeatedIds = 0, languageVariants = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+  const languageOf = new Map<string, string>();
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
 
   for (let page = 1; page <= MAX_PAGES; page++) {
@@ -169,14 +172,24 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
       // 2 839 identifiants distincts — 11 offres revenaient sur deux pages
       // (pagination instable) et 11 autres n'ont donc jamais été servies. Le
       // doublon est compté et nommé ; il refuse la preuve, il ne la remplace pas.
-      if (seen.has(job.externalId)) { repeatedIds++; continue; }
+      if (seen.has(job.externalId)) {
+        // Foot Locker, 2026-09-10 (29 real pages): the 11 "repeated" ids were the
+        // SAME requisition served in a second LANGUAGE (fr-fr then en-us, en-us then
+        // nl-be) — totalCount 2 861 sums the language counts, 2 850 requisitions.
+        // A language variant is a row the publisher announced and we accounted
+        // for, not a posting lost to an unstable sort; the two stay distinct.
+        const language = String(entry.data.language ?? '');
+        if (language && languageOf.get(job.externalId) && languageOf.get(job.externalId) !== language) { languageVariants++; continue; }
+        repeatedIds++; continue;
+      }
       seen.add(job.externalId);
+      languageOf.set(job.externalId, String(entry.data.language ?? ''));
       jobs.push(job);
       fresh++;
     }
     const pageTotal = response.totalCount ?? response.count;
     pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: (page - 1) * PAGE_SIZE, pagination: null,
-      ids: pageIds, publisherCounter: pageTotal === undefined ? '' : `total=${pageTotal}`, componentCounters: [`entries=${batch.length}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `withoutData=${withoutData}`] });
+      ids: pageIds, publisherCounter: pageTotal === undefined ? '' : `total=${pageTotal}`, componentCounters: [`entries=${batch.length}`, `languageVariants=${languageVariants}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `withoutData=${withoutData}`] });
 
     const total = response.totalCount ?? response.count;
     if (total !== undefined) {
@@ -184,7 +197,7 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
       else if (declaredTotal !== total) issues.add('SOURCE_TOTAL_CHANGED');
     }
 
-    if (total !== undefined && jobs.length >= total) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
+    if (total !== undefined && jobs.length + languageVariants >= total) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
     // A page that adds nothing new is the end of the board (or a loop).
     if (fresh === 0) { termination = batch.length ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break; }
     /**
@@ -197,11 +210,13 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
   }
 
   if (repeatedIds) issues.add('REPEATED_IDS_ACROSS_PAGES');
-  const complete = declaredTotal !== undefined && jobs.length === declaredTotal && issues.size === 0;
+  if (languageVariants) issues.add('LANGUAGE_VARIANTS_DEDUPLICATED');
+  // Proven when every announced entry is accounted for: a distinct requisition, or a language variant of one already kept.
+  const complete = declaredTotal !== undefined && jobs.length + languageVariants === declaredTotal && repeatedIds === 0 && !issues.has('SOURCE_TOTAL_CHANGED') && termination !== 'PAGE_BUDGET_EXHAUSTED';
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
-  return { jobs, declaredTotal, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredTotal !== undefined && jobs.length < declaredTotal),
+  return { jobs, declaredTotal, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredTotal !== undefined && jobs.length + languageVariants < declaredTotal),
     enumeration: { method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION', endpoint: `${origin}/api/jobs`, pages, rawCount, termination, issues: [...issues],
-      pageEvidence, scopes: [{ scope: 'jobs', declaredTotal: declaredTotal ?? -1, uniqueIds: jobs.length, pages, complete }, { scope: 'entriesWithoutData', declaredTotal: withoutData, uniqueIds: withoutData, pages, complete: true }] } };
+      pageEvidence, scopes: [{ scope: 'jobs', declaredTotal: declaredTotal ?? -1, uniqueIds: jobs.length, pages, complete }, { scope: 'languageVariants', declaredTotal: languageVariants, uniqueIds: languageVariants, pages, complete: true }, { scope: 'entriesWithoutData', declaredTotal: withoutData, uniqueIds: withoutData, pages, complete: true }] } };
 }
 
 /**

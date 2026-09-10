@@ -8,6 +8,27 @@ import { fetchRssJobs } from '../../connectors/generic/rssFeed.js';
 import { collapseWhitespace, briefError } from '../../lib/normalize.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
+/**
+ * The publisher's own count of listed postings, read on a listing page: a data
+ * attribute (`data-result-count="135"` — Beiersdorf) or a visible counter
+ * ("54 open positions" — Luxexperience). `marker`, when configured, is a LITERAL
+ * prefix immediately followed by the number (data, never a regex — audit R-02).
+ * Returns undefined when no counter is printed: nothing is invented.
+ */
+export function parseListingCount(html: string, marker?: unknown): number | undefined {
+  const literal = typeof marker === 'string' && marker.trim() ? marker.trim() : null;
+  if (literal) {
+    const i = html.indexOf(literal);
+    const m = i >= 0 ? /^\s*"?\s*(\d[\d\s.,]*)/.exec(html.slice(i + literal.length, i + literal.length + 40)) : null;
+    return m ? Number(m[1].replace(/[\s.,]/g, '')) : undefined;
+  }
+  const attr = /data-(?:result-count|total-count|total|count|results)="(\d+)"/i.exec(html);
+  if (attr) return Number(attr[1]);
+  const text = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ');
+  const visible = /(\d{1,3}(?:[\s.,]\d{3})*|\d+)\s*(?:open positions?|open roles?|job openings?|positions?|jobs?|vacancies|vacatures?|offres?(?: d'emploi)?|postes?|stellen(?:angebote)?|résultats?|results?)\b/i.exec(text);
+  return visible ? Number(visible[1].replace(/[\s.,]/g, '')) : undefined;
+}
+
 function flattenJsonLd(value: unknown): any[] {
   if (Array.isArray(value)) return value.flatMap(flattenJsonLd);
   if (value && typeof value === 'object' && '@graph' in (value as any)) return flattenJsonLd((value as any)['@graph']);
@@ -81,13 +102,30 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     // The pattern comes from a CSV column — data, not code. Escaped so a
     // crafted catalogue value can never become an arbitrary regex (audit R-02);
     // every existing pattern is a literal path fragment anyway.
-    const escaped = linkPattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const linkRe = new RegExp(`href="([^"]*${escaped}[^"]*)"`, 'g');
+    // Several literal fragments may be given, separated by "|" (Beiersdorf lists
+    // English postings under career/jobs/ and German-only ones under
+    // karriere/jobs/ — 109 + 26 of the 135 the board announces). Each fragment
+    // is escaped; the separator never becomes regex syntax from the fragments.
+    const escaped = linkPattern.split('|').map((f) => f.trim()).filter(Boolean).map((f) => f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+    const linkRe = new RegExp(`href="([^"]*(?:${escaped})[^"]*)"`, 'g');
     const seen = new Set<string>();
     const origin = new URL(listingPagedUrl).origin;
 
     let reachedEnd = false;
     let termination = 'PAGE_BUDGET_EXHAUSTED', pagesRead = 0, rawLinks = 0;
+    /**
+     * Enumeration proof for a paginated listing (2026-09-10). Three real boards
+     * defeated "a repeated page is a broken pager": Beiersdorf answers every page
+     * past the 14th with the last five links, Globus serves the same single page
+     * whatever the page number, Luxexperience repeats its 6th page. What proves the
+     * board is the PUBLISHER'S OWN COUNT when the page carries one
+     * (`data-result-count="135"`, "54 open positions"; `config.countPattern` may
+     * name another marker): every announced link seen = complete. Without a count,
+     * a byte-identical second page is an unpaginated listing read in full; a
+     * repeated page with new links still missing stays a broken pager.
+     */
+    let publisherCount: number | undefined;
+    let previousPageSha = '';
     for (let page = 0; page < Number(config.maxPages ?? 400); page++) {
       if (pastDeadline()) { termination = 'DEADLINE'; break; }
       const sep = listingPagedUrl.includes('?') ? '&' : '?';
@@ -128,10 +166,24 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
         break;
       }
       pagesRead++;
+      const pageSha = createHash('sha256').update(html).digest('hex');
+      if (publisherCount === undefined) publisherCount = parseListingCount(html, config.countPattern);
       const pageLinks = [...html.matchAll(linkRe)]
         .map((m) => new URL(m[1], origin).toString().split('#')[0]);
       rawLinks += pageLinks.length;
       const links = pageLinks.filter(u => !seen.has(u));
+      // A byte-identical page. Once the publisher's count is met it is the clamped
+      // end of the board; on the SECOND page of a listing that never paginated it
+      // is an unpaginated listing read in full (Globus); anywhere else it is a
+      // pager stuck on a page while announced links are still missing.
+      if (page > 0 && pageSha === previousPageSha) {
+        const countMet = publisherCount !== undefined && seen.size >= publisherCount;
+        if (countMet) { reachedEnd = true; termination = 'PUBLISHER_COUNT_REACHED'; }
+        else if (page === 1 && publisherCount === undefined) { reachedEnd = true; termination = 'IDENTICAL_PAGE'; }
+        else { reachedEnd = false; termination = 'REPEATED_PAGE'; }
+        break;
+      }
+      previousPageSha = pageSha;
       /**
        * Une page de liste sans lien est la fin de la liste — SAUF si c'est une
        * page de challenge servie au milieu du balayage. Mesuré le 2026-09-06
@@ -145,9 +197,13 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
         );
       }
       if (links.length === 0) {
-        // A repeated nonempty page is a broken pager, not proof of the end.
-        reachedEnd = pageLinks.length === 0;
-        termination = reachedEnd ? 'EMPTY_PAGE' : 'REPEATED_PAGE';
+        // A repeated nonempty page is a broken pager, not proof of the end —
+        // unless every link the publisher announces has already been seen
+        // (Beiersdorf clamps page 15+ to its last five links after all 135;
+        // Luxexperience repeats its 6th page after its 54).
+        const countMet = publisherCount !== undefined && seen.size >= publisherCount;
+        reachedEnd = pageLinks.length === 0 || countMet;
+        termination = pageLinks.length === 0 ? 'EMPTY_PAGE' : countMet ? 'PUBLISHER_COUNT_REACHED' : 'REPEATED_PAGE';
         break;
       }
       for (const u of links) seen.add(u);
@@ -203,10 +259,18 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
           `pages de détail bloquées ou sans JobPosting`,
       );
     }
-    const complete = reachedEnd && detailFailures === 0;
-    return { jobs, declaredTotal: seen.size, complete, truncated: !reachedEnd || detailFailures > 0,
-      enumeration: { method: 'PAGINATED_LISTING_WITH_DETAIL_READ', endpoint: listingPagedUrl, pages: pagesRead, rawCount: rawLinks, termination, issues: complete ? [] : [termination === 'REPEATED_PAGE' ? 'BROKEN_PAGER_REPEATS_LAST_PAGE' : termination, ...(detailFailures ? [`DETAIL_FAILURES=${detailFailures}`] : []), 'ENUMERATION_NOT_PROVEN'].filter((v, i, a) => a.indexOf(v) === i),
-        scopes: [{ scope: 'listedLinks', declaredTotal: seen.size, uniqueIds: seen.size, pages: pagesRead, complete: reachedEnd }, { scope: 'postingsParsed', declaredTotal: seen.size, uniqueIds: jobs.length, pages: pagesRead, complete }] } };
+    // Below the publisher's own count, the listing is not proven even when its
+    // pager ended cleanly: the links the board announces and never lists are a
+    // named gap (Beiersdorf with the English-only pattern: 109 of 135).
+    const belowCount = publisherCount !== undefined && seen.size < publisherCount;
+    const complete = reachedEnd && detailFailures === 0 && !belowCount;
+    const issues = complete ? [] : [termination === 'REPEATED_PAGE' ? 'BROKEN_PAGER_REPEATS_LAST_PAGE' : termination, ...(belowCount ? [`LINKS_BELOW_PUBLISHER_COUNT=${seen.size}/${publisherCount}`] : []), ...(detailFailures ? [`DETAIL_FAILURES=${detailFailures}`] : []), 'ENUMERATION_NOT_PROVEN'].filter((v, i, a) => a.indexOf(v) === i);
+    return { jobs, declaredTotal: publisherCount ?? seen.size, complete, truncated: !reachedEnd || detailFailures > 0 || belowCount,
+      enumeration: { method: 'PAGINATED_LISTING_WITH_DETAIL_READ', endpoint: listingPagedUrl, pages: pagesRead, rawCount: rawLinks, termination, issues,
+        scopes: [
+          ...(publisherCount !== undefined ? [{ scope: 'publisherCount', declaredTotal: publisherCount, uniqueIds: seen.size, pages: pagesRead, complete: seen.size >= publisherCount }] : []),
+          { scope: 'listedLinks', declaredTotal: publisherCount ?? seen.size, uniqueIds: seen.size, pages: pagesRead, complete: reachedEnd && !belowCount },
+          { scope: 'postingsParsed', declaredTotal: seen.size, uniqueIds: jobs.length, pages: pagesRead, complete }] } };
   }
 
   const sitemapUrl = String(config.sitemapUrl ?? '');
