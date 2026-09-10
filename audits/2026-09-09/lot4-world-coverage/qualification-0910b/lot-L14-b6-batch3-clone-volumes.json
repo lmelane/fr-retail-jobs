@@ -1,0 +1,418 @@
+{
+ "at": "2026-09-10T14:56:38.456Z",
+ "lot": "L14-b6-batch3-clone",
+ "since": "2026-09-10T14:51:07.000Z",
+ "keys": [
+  "uniqlo-my-headquarters",
+  "uniqlo-hkm-headquarters",
+  "uniqlo-th-headquarters",
+  "uniqlo-au-graduates",
+  "gu-us-retail",
+  "gu-us-headquarters",
+  "gu-hk-headquarters",
+  "theory-eu",
+  "theory-us-retail",
+  "fast-retailing-ph-headquarters",
+  "fast-retailing-id-headquarters"
+ ],
+ "activeTotal": 76870,
+ "sources": [
+  {
+   "key": "uniqlo-my-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:56:29.744Z",
+    "fetched": 7,
+    "accepted": 7,
+    "declaredTotal": 7,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 7,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 7,
+   "createdSince": 7,
+   "reattestedSince": 7,
+   "inactiveRepresentations": 0,
+   "published": 7,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 7,
+     "key": "resolved:UNIQLO"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 7
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "uniqlo-hkm-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:56:29.255Z",
+    "fetched": 6,
+    "accepted": 6,
+    "declaredTotal": 6,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 6,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 6,
+   "createdSince": 6,
+   "reattestedSince": 6,
+   "inactiveRepresentations": 0,
+   "published": 6,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 6,
+     "key": "resolved:UNIQLO"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 6
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "uniqlo-th-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:56:25.926Z",
+    "fetched": 2,
+    "accepted": 2,
+    "declaredTotal": 2,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 2,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 2,
+   "createdSince": 2,
+   "reattestedSince": 2,
+   "inactiveRepresentations": 0,
+   "published": 2,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 2,
+     "key": "resolved:UNIQLO"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 2
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "uniqlo-au-graduates",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:56:25.616Z",
+    "fetched": 2,
+    "accepted": 2,
+    "declaredTotal": 2,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 2,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 2,
+   "createdSince": 2,
+   "reattestedSince": 2,
+   "inactiveRepresentations": 0,
+   "published": 2,
+   "companies": [
+    {
+     "name": "UNIQLO",
+     "n": 2,
+     "key": "resolved:UNIQLO"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 2
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "gu-us-retail",
+   "maison": "GU",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:56:27.462Z",
+    "fetched": 5,
+    "accepted": 5,
+    "declaredTotal": 5,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 5,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 5,
+   "createdSince": 5,
+   "reattestedSince": 5,
+   "inactiveRepresentations": 0,
+   "published": 5,
+   "companies": [
+    {
+     "name": "GU",
+     "n": 5,
+     "key": "resolved:GU"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 5
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "gu-us-headquarters",
+   "maison": "GU",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:56:26.008Z",
+    "fetched": 2,
+    "accepted": 2,
+    "declaredTotal": 2,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 2,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 2,
+   "createdSince": 2,
+   "reattestedSince": 2,
+   "inactiveRepresentations": 0,
+   "published": 2,
+   "companies": [
+    {
+     "name": "GU",
+     "n": 2,
+     "key": "resolved:GU"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 2
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "gu-hk-headquarters",
+   "maison": "GU",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:56:25.693Z",
+    "fetched": 2,
+    "accepted": 2,
+    "declaredTotal": 2,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 2,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 2,
+   "createdSince": 2,
+   "reattestedSince": 2,
+   "inactiveRepresentations": 0,
+   "published": 2,
+   "companies": [
+    {
+     "name": "GU",
+     "n": 2,
+     "key": "resolved:GU"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 2
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "theory-eu",
+   "maison": "Theory",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:56:31.350Z",
+    "fetched": 18,
+    "accepted": 18,
+    "declaredTotal": 18,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 18,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 18,
+   "createdSince": 18,
+   "reattestedSince": 18,
+   "inactiveRepresentations": 0,
+   "published": 18,
+   "companies": [
+    {
+     "name": "Theory",
+     "n": 18,
+     "key": "resolved:THEORY"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 18
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "theory-us-retail",
+   "maison": "Theory",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:56:28.188Z",
+    "fetched": 6,
+    "accepted": 6,
+    "declaredTotal": 6,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 6,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 6,
+   "createdSince": 6,
+   "reattestedSince": 6,
+   "inactiveRepresentations": 0,
+   "published": 6,
+   "companies": [
+    {
+     "name": "Theory",
+     "n": 6,
+     "key": "resolved:THEORY"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 6
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "fast-retailing-ph-headquarters",
+   "maison": "Fast Retailing",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:56:26.559Z",
+    "fetched": 3,
+    "accepted": 3,
+    "declaredTotal": 3,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 3,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 3,
+   "createdSince": 3,
+   "reattestedSince": 3,
+   "inactiveRepresentations": 0,
+   "published": 3,
+   "companies": [
+    {
+     "name": "Fast Retailing",
+     "n": 3,
+     "key": "resolved:FAST_RETAILING"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 3
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  },
+  {
+   "key": "fast-retailing-id-headquarters",
+   "maison": "Fast Retailing",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T14:56:28.060Z",
+    "fetched": 6,
+    "accepted": 6,
+    "declaredTotal": 6,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 6,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "scopeDecisions": {},
+   "written": 6,
+   "createdSince": 6,
+   "reattestedSince": 6,
+   "inactiveRepresentations": 0,
+   "published": 6,
+   "companies": [
+    {
+     "name": "Fast Retailing",
+     "n": 6,
+     "key": "resolved:FAST_RETAILING"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 6
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL"
+  }
+ ],
+ "front": []
+}

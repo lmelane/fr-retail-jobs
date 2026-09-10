@@ -1,0 +1,51 @@
+{
+  "at": "2026-09-10T18:03:37.631Z",
+  "environment": "production",
+  "step": "register",
+  "proofs": [
+    {
+      "key": "vf-corporation",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvu5zu20000mscudli2h76u",
+          "key": "vf-corporation",
+          "maison": "VF Corporation",
+          "careersDomain": "vfc.wd5.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "vfc_careers",
+            "origin": "https://vfc.wd5.myworkdayjobs.com",
+            "tenant": "vfc"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:vfc/vfc_careers",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T18:03:37.514Z",
+          "updatedAt": "2026-09-10T18:03:37.514Z"
+        }
+      },
+      "after": {
+        "key": "vf-corporation",
+        "status": "DRAFT",
+        "tenantKey": "workday:vfc/vfc_careers",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    }
+  ]
+}

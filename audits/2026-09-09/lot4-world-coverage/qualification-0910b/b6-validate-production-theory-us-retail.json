@@ -1,0 +1,98 @@
+{
+ "at": "2026-09-10T14:56:56.298Z",
+ "key": "theory-us-retail",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/retail_us_Theory/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T14:56:55.344Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 6,
+ "parsed": 6,
+ "declaredTotal": 6,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 6,
+    "uniqueIds": 6,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "Theory Gansevoort LLC",
+   "n": 3,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "Theory Spring Street LLC",
+   "n": 2,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "Theory Holdings LLC",
+   "n": 1,
+   "class": "OWNER"
+  }
+ ],
+ "countries": [
+  [
+   "United States of America",
+   6
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Theory",
+  "ownerKey": "THEORY",
+  "labels": [
+   {
+    "label": "Theory Gansevoort LLC",
+    "n": 3,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "Theory Spring Street LLC",
+    "n": 2,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "Theory Holdings LLC",
+    "n": 1,
+    "class": "OWNER"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 6,
+ "withDescription": 6,
+ "sampleTitles": [
+  "Key Holder — San Francisco, CA",
+  "Sales Associate (PT) — Theory Gansevoort(LTUS)",
+  "Support Associate (Stock) — Theory Gansevoort(LTUS)",
+  "Key Holder - Meatpacking | Gansevoort — Theory Gansevoort(LTUS)",
+  "Key Holder - NYC — Theory Greene St(LTUS)"
+ ],
+ "seconds": 1,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T14:56:40.186Z"
+}

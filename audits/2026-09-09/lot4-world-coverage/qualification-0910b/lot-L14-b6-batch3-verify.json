@@ -1,0 +1,433 @@
+{
+ "at": "2026-09-10T17:48:03.437Z",
+ "lot": "L14-b6-batch3",
+ "run": {
+  "id": "0a9f419d-873b-45f6-af82-9df8959fffa7",
+  "status": "COMPLETED",
+  "revision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+  "startedAt": "2026-09-10T14:59:52.554Z",
+  "finishedAt": "2026-09-10T14:59:59.680Z"
+ },
+ "sources": [
+  {
+   "key": "fast-retailing-id-headquarters",
+   "enumeration": {
+    "declaredTotal": 6,
+    "fetched": 6,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] fast-retailing-id-headquarters: purge REFUSÉE — run non fiable pour attester (6 collectées sur 6 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "fast-retailing-id-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "PT. FAST RETAILING INDONESIA",
+     "n": 6
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "fast-retailing-id-headquarters",
+    "status": "NEW",
+    "fetched": 6,
+    "accepted": 6,
+    "declaredTotal": 6,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "fast-retailing-ph-headquarters",
+   "enumeration": {
+    "declaredTotal": 3,
+    "fetched": 3,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] fast-retailing-ph-headquarters: purge REFUSÉE — run non fiable pour attester (3 collectées sur 3 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "fast-retailing-ph-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Fast Retailing Philippines, Inc.",
+     "n": 3
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "fast-retailing-ph-headquarters",
+    "status": "NEW",
+    "fetched": 3,
+    "accepted": 3,
+    "declaredTotal": 3,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "gu-hk-headquarters",
+   "enumeration": {
+    "declaredTotal": 2,
+    "fetched": 2,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] gu-hk-headquarters: purge REFUSÉE — run non fiable pour attester (2 collectées sur 2 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "gu-hk-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "GU HONG KONG APPAREL LIMITED",
+     "n": 2
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "gu-hk-headquarters",
+    "status": "NEW",
+    "fetched": 2,
+    "accepted": 2,
+    "declaredTotal": 2,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "gu-us-headquarters",
+   "enumeration": {
+    "declaredTotal": 2,
+    "fetched": 2,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] gu-us-headquarters: purge REFUSÉE — run non fiable pour attester (2 collectées sur 2 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "gu-us-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "GU USA LLC",
+     "n": 2
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "gu-us-headquarters",
+    "status": "NEW",
+    "fetched": 2,
+    "accepted": 2,
+    "declaredTotal": 2,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "gu-us-retail",
+   "enumeration": {
+    "declaredTotal": 5,
+    "fetched": 5,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] gu-us-retail: purge REFUSÉE — run non fiable pour attester (5 collectées sur 5 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "gu-us-retail",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "GU USA LLC",
+     "n": 5
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "gu-us-retail",
+    "status": "NEW",
+    "fetched": 5,
+    "accepted": 5,
+    "declaredTotal": 5,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "theory-eu",
+   "enumeration": {
+    "declaredTotal": 18,
+    "fetched": 18,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] theory-eu: purge REFUSÉE — run non fiable pour attester (18 collectées sur 18 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "theory-eu",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Link Theory (UK) Ltd.",
+     "n": 15
+    },
+    {
+     "sourceKey": "theory-eu",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Link Theory (UK) Ltd. FRENCH BRANCH",
+     "n": 3
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "theory-eu",
+    "status": "NEW",
+    "fetched": 18,
+    "accepted": 18,
+    "declaredTotal": 18,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "theory-us-retail",
+   "enumeration": {
+    "declaredTotal": 6,
+    "fetched": 6,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] theory-us-retail: purge REFUSÉE — run non fiable pour attester (6 collectées sur 6 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "theory-us-retail",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Theory Gansevoort LLC",
+     "n": 3
+    },
+    {
+     "sourceKey": "theory-us-retail",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Theory Spring Street LLC",
+     "n": 2
+    },
+    {
+     "sourceKey": "theory-us-retail",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Theory Holdings LLC",
+     "n": 1
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "theory-us-retail",
+    "status": "NEW",
+    "fetched": 6,
+    "accepted": 6,
+    "declaredTotal": 6,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "uniqlo-au-graduates",
+   "enumeration": {
+    "declaredTotal": 2,
+    "fetched": 2,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] uniqlo-au-graduates: purge REFUSÉE — run non fiable pour attester (2 collectées sur 2 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "uniqlo-au-graduates",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO AUSTRALIA PTY LTD.",
+     "n": 2
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "uniqlo-au-graduates",
+    "status": "NEW",
+    "fetched": 2,
+    "accepted": 2,
+    "declaredTotal": 2,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "uniqlo-hkm-headquarters",
+   "enumeration": {
+    "declaredTotal": 6,
+    "fetched": 6,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] uniqlo-hkm-headquarters: purge REFUSÉE — run non fiable pour attester (6 collectées sur 6 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "uniqlo-hkm-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO HONG KONG, LIMITED",
+     "n": 4
+    },
+    {
+     "sourceKey": "uniqlo-hkm-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "Uniqlo",
+     "n": 2
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "uniqlo-hkm-headquarters",
+    "status": "NEW",
+    "fetched": 6,
+    "accepted": 6,
+    "declaredTotal": 6,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "uniqlo-my-headquarters",
+   "enumeration": {
+    "declaredTotal": 7,
+    "fetched": 7,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] uniqlo-my-headquarters: purge REFUSÉE — run non fiable pour attester (7 collectées sur 7 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "uniqlo-my-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO (MALAYSIA) SDN BHD",
+     "n": 7
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "uniqlo-my-headquarters",
+    "status": "NEW",
+    "fetched": 7,
+    "accepted": 7,
+    "declaredTotal": 7,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  },
+  {
+   "key": "uniqlo-th-headquarters",
+   "enumeration": {
+    "declaredTotal": 2,
+    "fetched": 2,
+    "complete": true,
+    "truncated": false,
+    "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+    "termination": "PUBLISHER_TOTAL_REACHED",
+    "issues": []
+   },
+   "rejected": null,
+   "holds": [],
+   "writeFailures": [],
+   "purgeRefused": "[ingest] uniqlo-th-headquarters: purge REFUSÉE — run non fiable pour attester (2 collectées sur 2 déclarées). Les offres non revues survivent.",
+   "observations": [
+    {
+     "sourceKey": "uniqlo-th-headquarters",
+     "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+     "rawEmployerName": "UNIQLO (THAILAND) COMPANY LIMITED",
+     "n": 2
+    }
+   ],
+   "problems": [],
+   "run": {
+    "sourceKey": "uniqlo-th-headquarters",
+    "status": "NEW",
+    "fetched": 2,
+    "accepted": 2,
+    "declaredTotal": 2,
+    "complete": true,
+    "truncated": false,
+    "errors": 0
+   },
+   "verdict": "CLEAN"
+  }
+ ]
+}

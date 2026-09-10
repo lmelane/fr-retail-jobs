@@ -54,6 +54,7 @@ export async function readRobots(origin: string, path: string, fetchImpl: typeof
 }
 
 export type LabelClass = 'CATALOGUE' | 'OWNER' | 'OWNER_ENTITY' | 'OTHER';
+const GENERIC_WORDS = new Set(['group', 'groupe', 'holding', 'holdings', 'company', 'companies', 'brands', 'brand', 'international', 'retail', 'stores', 'store', 'inc', 'corp', 'corporation', 'the', 'and', 'of']);
 export const CATALOGUE_LABEL = '(catalogue label)';
 
 /**
@@ -71,6 +72,9 @@ export function classifyLabel(label: string, maison: string): LabelClass {
   // The Maison's own legal form is not part of its name either: "VF Outdoor, LLC" is an entity of "VF Corporation" (VF, 2026-09-10).
   const owner = normalizedEmployerName(stripLegalSuffix(maison)).split(/[^\p{L}\p{N}]+/u).filter(Boolean);
   if (owner.length && owner.every((w) => words.includes(w))) return 'OWNER_ENTITY';
+  // A shorter form of the Maison ("KnitWell" for "KnitWell Group", "Chico's" for "Chico's FAS") is the Maison too — provided the
+  // label keeps at least one distinctive word (a generic word alone, "Group", never is).
+  if (words.length && words.every((w) => owner.includes(w)) && words.some((w) => !GENERIC_WORDS.has(w))) return 'OWNER_ENTITY';
   return 'OTHER';
 }
 

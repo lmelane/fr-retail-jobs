@@ -1,6 +1,80 @@
 {
- "at": "2026-09-10T13:40:45.750Z",
+ "at": "2026-09-10T18:47:48.494Z",
  "rows": [
+  {
+   "key": "arcteryx",
+   "maison": "Arc'teryx",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T13:01:54.387Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://api.lever.co/v0/postings/arcteryx.com",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://arcteryx.com/fr/fr/careers/retail-opportunities",
+    "artifactHashOk": true,
+    "reference": "jobs.lever.co/arcteryx.com",
+    "exact": true,
+    "tenantKey": "lever:arcteryx.com",
+    "portalUrl": "https://jobs.lever.co/arcteryx.com"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "(catalogue label) ×299"
+    ],
+    "evidence": "NO_NATIVE_LABEL",
+    "other": [],
+    "credited": [
+     "ARC'TERYX 299"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "ARC'TERYX resolved:ARC_TERYX active 303"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 299
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L12-b6-batch1",
+    "expectedCommit": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "successOn": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "executed": true,
+    "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T13:01:52.810Z",
+      "lastBackup": "before-lot-L10-beiersdorf-production.dump",
+      "minutesBefore": 1
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:02:02.019Z",
+      "lastBackup": "before-lot-L10-beiersdorf-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T13:02:03.152Z",
+      "lastBackup": "before-lot-L10-beiersdorf-production.dump",
+      "minutesBefore": 2
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 2
+   }
+  },
   {
    "key": "armand-thiery-flatchr",
    "maison": "Armand Thiery",
@@ -47,6 +121,7 @@
     "executed": true,
     "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
     "runStatus": "COMPLETED",
+    "verifiedOffline": true,
     "ok": true
    },
    "backup": {
@@ -102,26 +177,26 @@
     "evidence": "NO_NATIVE_LABEL",
     "other": [],
     "credited": [
-     "On 309 [source-scoped key]"
+     "On 309"
     ],
-    "misattributed": [
-     "On (309)"
-    ],
+    "misattributed": [],
     "homonymCompanies": [
-     "On resolved:SOURCE_447ff2da7caf1f92cf077783fc6575bdb1527b5562fa0b5f06b73a5d45cfb44f active 309"
+     "On resolved:ON active 309"
     ],
     "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 309,
      "LEGACY_UNREVIEWED": 309
     },
-    "consistent": false
+    "consistent": true
    },
    "deployment": {
-    "lot": "L12-b6-batch1",
-    "expectedCommit": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
-    "successOn": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "lot": "L13e-b6-batch2",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
     "executed": true,
-    "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
     "runStatus": "COMPLETED",
+    "verifiedOffline": true,
     "ok": true
    },
    "backup": {
@@ -195,6 +270,7 @@
     "executed": true,
     "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
     "runStatus": "COMPLETED",
+    "verifiedOffline": true,
     "ok": true
    },
    "backup": {
@@ -268,6 +344,7 @@
     "executed": true,
     "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
     "runStatus": "COMPLETED",
+    "verifiedOffline": true,
     "ok": true
    },
    "backup": {
@@ -323,18 +400,16 @@
     "evidence": "SINGLE_BRAND_CONSISTENT",
     "other": [],
     "credited": [
-     "L'IMPERTINENTE - Ysé 11 [source-scoped key]"
+     "Ysé 11"
     ],
-    "misattributed": [
-     "L'IMPERTINENTE - Ysé (11)"
-    ],
+    "misattributed": [],
     "homonymCompanies": [
-     "Ysé resolved:YSE active 12"
+     "Ysé resolved:YSE active 23"
     ],
     "rules": {
      "LEGACY_UNREVIEWED": 11
     },
-    "consistent": false
+    "consistent": true
    },
    "deployment": {
     "lot": "L12-b6-batch1",
@@ -343,6 +418,7 @@
     "executed": true,
     "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
     "runStatus": "COMPLETED",
+    "verifiedOffline": true,
     "ok": true
    },
    "backup": {
@@ -414,6 +490,7 @@
     "executed": true,
     "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
     "runStatus": "COMPLETED",
+    "verifiedOffline": true,
     "ok": true
    },
    "backup": {
@@ -481,12 +558,13 @@
     "consistent": true
    },
    "deployment": {
-    "lot": "L12-b6-batch1",
-    "expectedCommit": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
-    "successOn": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "lot": "L13e-b6-batch2",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
     "executed": true,
-    "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
     "runStatus": "COMPLETED",
+    "verifiedOffline": true,
     "ok": true
    },
    "backup": {
@@ -542,18 +620,16 @@
     "evidence": "SINGLE_BRAND_CONSISTENT",
     "other": [],
     "credited": [
-     "La Prairie 27 [source-scoped key]"
+     "La Prairie 27"
     ],
-    "misattributed": [
-     "La Prairie (27)"
-    ],
+    "misattributed": [],
     "homonymCompanies": [
-     "La Prairie resolved:SOURCE_26fb5371c78e25b3ac42ed63b93abef5c3e407d01c0d03b496c066bf9b96fb5c active 27"
+     "La Prairie resolved:LA_PRAIRIE active 27"
     ],
     "rules": {
      "LEGACY_UNREVIEWED": 27
     },
-    "consistent": false
+    "consistent": true
    },
    "deployment": {
     "lot": "L12-b6-batch1",
@@ -562,6 +638,7 @@
     "executed": true,
     "runRevision": "129b1f795a0ab648fc8d02c1e51d0347f04b2f29",
     "runStatus": "COMPLETED",
+    "verifiedOffline": true,
     "ok": true
    },
    "backup": {
@@ -590,71 +667,1947 @@
    }
   },
   {
-   "key": "arcteryx",
-   "maison": "Arc'teryx",
+   "key": "uniqlo-stores",
+   "maison": "Uniqlo",
    "status": "ACTIVE",
    "access": {
     "stored": "ALLOWED",
-    "storedAt": "2026-09-10T13:01:54.387Z",
+    "storedAt": "2026-09-04T16:52:05.591Z",
     "now": "ALLOWED",
     "httpStatus": 200,
-    "target": "https://api.lever.co/v0/postings/arcteryx.com",
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/store_staff_eu_Uniqlo/jobs",
     "explicit": true
    },
    "board": {
-    "proofUrl": "https://arcteryx.com/fr/fr/careers/retail-opportunities",
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
     "artifactHashOk": true,
-    "reference": "jobs.lever.co/arcteryx.com",
+    "reference": "fastretailing.wd3.myworkdayjobs.com/en-US/store_staff_eu_Uniqlo",
     "exact": true,
-    "tenantKey": "lever:arcteryx.com",
-    "portalUrl": "https://jobs.lever.co/arcteryx.com"
+    "tenantKey": "workday:fastretailing/store_staff_eu_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/store_staff_eu_Uniqlo"
    },
    "perimeter": {
     "certified": "SINGLE_BRAND",
     "labelsRead": [
-     "(catalogue label) ×299"
+     "UNIQLO EUROPE LIMITED FRENCH BRANCH ×30",
+     "UNIQLO EUROPE LIMITED GERMAN BRANCH ×26",
+     "UNIQLO EUROPE LIMITED ×23",
+     "UNIQLO EUROPE LIMITED SPANISH BRANCH ×17",
+     "UNIQLO EUROPE LIMITED ITALIAN BRANCH ×5",
+     "UNIQLO EUROPE LIMITED BELGIAN BRANCH ×3",
+     "UNIQLO EUROPE LIMITED DENMARK BRANCH ×2",
+     "(catalogue label) ×1",
+     "UNIQLO EUROPE LIMITED POLISH BRANCH ×1",
+     "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH ×1",
+     "UNIQLO EUROPE LIMITED SWEDISH BRANCH ×1"
     ],
-    "evidence": "NO_NATIVE_LABEL",
+    "evidence": "SINGLE_BRAND_CONSISTENT",
     "other": [],
     "credited": [
-     "ARC'TERYX 299"
+     "UNIQLO 116"
     ],
     "misattributed": [],
     "homonymCompanies": [
-     "ARC'TERYX resolved:ARC_TERYX active 303"
+     "UNIQLO resolved:UNIQLO active 566"
     ],
     "rules": {
-     "CERTIFIED_SINGLE_BRAND_PORTAL": 299
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 87,
+     "REVIEWED_ALIAS": 23
     },
     "consistent": true
    },
    "deployment": {
-    "lot": "L11-arcteryx",
-    "expectedCommit": "01cd6265b73b1b1db1ae5c9a52daf5808b0e76b8",
-    "successOn": "01cd6265b73b1b1db1ae5c9a52daf5808b0e76b8",
+    "lot": "L13e-b6-batch2",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
     "executed": true,
-    "runRevision": "01cd6265b73b1b1db1ae5c9a52daf5808b0e76b8",
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
     "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:55:30.015Z",
+      "lastBackup": "before-certify-uniqlo-eu-production.dump",
+      "minutesBefore": 2
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 2
+   }
+  },
+  {
+   "key": "uniqlo-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-04T13:56:17.954Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/headquarters_eu_Uniqlo/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/en-US/headquarters_eu_Uniqlo",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/headquarters_eu_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_eu_Uniqlo"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "UNIQLO EUROPE LIMITED ×10",
+     "UNIQLO EUROPE LIMITED FRENCH BRANCH ×6",
+     "UNIQLO EUROPE LIMITED GERMAN BRANCH ×2",
+     "UNIQLO EUROPE LIMITED DENMARK BRANCH ×1",
+     "UNIQLO EUROPE LIMITED SPANISH BRANCH ×1"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "UNIQLO 22"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "UNIQLO resolved:UNIQLO active 566"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 20
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L13e-b6-batch2",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:55:30.015Z",
+      "lastBackup": "before-certify-uniqlo-eu-production.dump",
+      "minutesBefore": 2
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 2
+   }
+  },
+  {
+   "key": "uniqlo-graduates",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-04T16:52:07.171Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/graduates_eu_Uniqlo/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/graduates_eu_Uniqlo",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/graduates_eu_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/graduates_eu_Uniqlo"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "UNIQLO EUROPE LIMITED FRENCH BRANCH ×1",
+     "UNIQLO EUROPE LIMITED ×1",
+     "UNIQLO EUROPE LIMITED GERMAN BRANCH ×1",
+     "UNIQLO EUROPE LIMITED BELGIAN BRANCH ×1",
+     "UNIQLO EUROPE LIMITED ITALIAN BRANCH ×1",
+     "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH ×1",
+     "UNIQLO EUROPE LIMITED SPANISH BRANCH ×1",
+     "UNIQLO EUROPE LIMITED SWEDISH BRANCH ×1",
+     "UNIQLO EUROPE LTD. LUXEMBOURG BRANCH ×1",
+     "UNIQLO EUROPE LIMITED POLISH BRANCH ×1",
+     "UNIQLO EUROPE LIMITED DENMARK BRANCH ×1"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "UNIQLO 11"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "UNIQLO resolved:UNIQLO active 566"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 11
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L13e-b6-batch2",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "certify",
+      "at": "2026-09-10T13:55:30.015Z",
+      "lastBackup": "before-certify-uniqlo-eu-production.dump",
+      "minutesBefore": 2
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 2
+   }
+  },
+  {
+   "key": "uniqlo-us-retail",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:45:26.713Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/retail_us_Uniqlo/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/retail_us_Uniqlo",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/retail_us_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/retail_us_Uniqlo"
+   },
+   "perimeter": {
+    "certified": "MULTI_BRAND",
+    "labelsRead": [
+     "UNIQLO USA LLC ×225",
+     "UNIQLO Massachusetts LLC ×32",
+     "UNIQLO Florida LLC ×25",
+     "UNIQLO Virginia LLC ×19",
+     "UNIQLO New Jersey LLC ×17",
+     "UNIQLO Pennsylvania LLC ×9",
+     "UNIQLO Illinois LLC ×9",
+     "UNIQLO California LLC ×8",
+     "UNIQLO Washington LLC ×2",
+     "GU USA LLC ×1"
+    ],
+    "evidence": "LABELS_OUTSIDE_OWNER",
+    "other": [
+     "GU USA LLC (1)"
+    ],
+    "credited": [
+     "UNIQLO 346",
+     "GU 1"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "UNIQLO resolved:UNIQLO active 566"
+    ],
+    "rules": {
+     "REVIEWED_ALIAS": 347
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L13e-b6-batch2",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
     "ok": true
    },
    "backup": {
     "mutations": [
      {
       "step": "register",
-      "at": "2026-09-10T13:01:52.810Z",
-      "lastBackup": "before-lot-L10-beiersdorf-production.dump",
-      "minutesBefore": 1
+      "at": "2026-09-10T14:45:25.929Z",
+      "lastBackup": "before-b6-L13e-b6-batch2-production.dump",
+      "minutesBefore": 4
      },
      {
       "step": "certify",
-      "at": "2026-09-10T13:02:02.019Z",
-      "lastBackup": "before-lot-L10-beiersdorf-production.dump",
+      "at": "2026-09-10T14:46:38.701Z",
+      "lastBackup": "before-b6-L13e-b6-batch2-production.dump",
+      "minutesBefore": 5
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:46:39.576Z",
+      "lastBackup": "before-b6-L13e-b6-batch2-production.dump",
+      "minutesBefore": 5
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 5
+   }
+  },
+  {
+   "key": "uniqlo-au-stores",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:46:29.437Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/store_staff_au_Uniqlo/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/store_staff_au_Uniqlo",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/store_staff_au_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/store_staff_au_Uniqlo"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "UNIQLO AUSTRALIA PTY LTD. ×33"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "UNIQLO 33"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "UNIQLO resolved:UNIQLO active 566"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 33
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L13e-b6-batch2",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T14:45:25.929Z",
+      "lastBackup": "before-b6-L13e-b6-batch2-production.dump",
+      "minutesBefore": 4
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T14:46:38.701Z",
+      "lastBackup": "before-b6-L13e-b6-batch2-production.dump",
+      "minutesBefore": 5
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:46:39.576Z",
+      "lastBackup": "before-b6-L13e-b6-batch2-production.dump",
+      "minutesBefore": 5
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 5
+   }
+  },
+  {
+   "key": "uniqlo-my-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:56:41.366Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/headquarters_my_Uniqlo/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/headquarters_my_Uniqlo",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/headquarters_my_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_my_Uniqlo"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "UNIQLO (MALAYSIA) SDN BHD ×7"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "UNIQLO 7"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "UNIQLO resolved:UNIQLO active 566"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 7
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L14-b6-batch3",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T14:56:40.528Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T14:57:03.129Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:57:05.201Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 3
+   }
+  },
+  {
+   "key": "uniqlo-hkm-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:56:43.128Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/headquarters_hkm_Uniqlo/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/headquarters_hkm_Uniqlo",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/headquarters_hkm_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_hkm_Uniqlo"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "UNIQLO HONG KONG, LIMITED ×4",
+     "(catalogue label) ×2"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "UNIQLO 6"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "UNIQLO resolved:UNIQLO active 566"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 6
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L14-b6-batch3",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T14:56:40.528Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T14:57:03.129Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:57:05.201Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 3
+   }
+  },
+  {
+   "key": "uniqlo-th-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:56:44.789Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/headquarters_th_Uniqlo/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/headquarters_th_Uniqlo",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/headquarters_th_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_th_Uniqlo"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "UNIQLO (THAILAND) COMPANY LIMITED ×2"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "UNIQLO 2"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "UNIQLO resolved:UNIQLO active 566"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 2
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L14-b6-batch3",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T14:56:40.528Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T14:57:03.129Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:57:05.201Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 3
+   }
+  },
+  {
+   "key": "uniqlo-au-graduates",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:56:46.328Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/graduates_au_Uniqlo/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/graduates_au_Uniqlo",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/graduates_au_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/graduates_au_Uniqlo"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "UNIQLO AUSTRALIA PTY LTD. ×2"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "UNIQLO 2"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "UNIQLO resolved:UNIQLO active 566"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 2
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L14-b6-batch3",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T14:56:40.528Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T14:57:03.129Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:57:05.201Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 3
+   }
+  },
+  {
+   "key": "gu-us-retail",
+   "maison": "GU",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:56:47.979Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/retail_us_GU/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/retail_us_GU",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/retail_us_gu",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/retail_us_GU"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "GU USA LLC ×5"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "GU 5"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "GU resolved:GU active 9"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 5
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L14-b6-batch3",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T14:56:40.528Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T14:57:03.129Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:57:05.201Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 3
+   }
+  },
+  {
+   "key": "gu-us-headquarters",
+   "maison": "GU",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:56:49.626Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/headquarters_us_GU/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/headquarters_us_GU",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/headquarters_us_gu",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_us_GU"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "GU USA LLC ×2"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "GU 2"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "GU resolved:GU active 9"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 2
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L14-b6-batch3",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T14:56:40.528Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T14:57:03.129Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:57:05.201Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 3
+   }
+  },
+  {
+   "key": "gu-hk-headquarters",
+   "maison": "GU",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:56:51.220Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/headquarters_hk_GU/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/headquarters_hk_GU",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/headquarters_hk_gu",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_hk_GU"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "GU HONG KONG APPAREL LIMITED ×2"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "GU 2"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "GU resolved:GU active 9"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 2
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L14-b6-batch3",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T14:56:40.528Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T14:57:03.129Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:57:05.201Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 3
+   }
+  },
+  {
+   "key": "theory-eu",
+   "maison": "Theory",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:56:52.651Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/eu_Theory/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/EU_Theory",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/eu_theory",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/eu_Theory"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "Link Theory (UK) Ltd. ×15",
+     "Link Theory (UK) Ltd. FRENCH BRANCH ×3"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "Theory 18"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "Theory resolved:THEORY active 24"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 18
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L14-b6-batch3",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T14:56:40.528Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T14:57:03.129Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:57:05.201Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 3
+   }
+  },
+  {
+   "key": "theory-us-retail",
+   "maison": "Theory",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:56:55.344Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/retail_us_Theory/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/retail_us_Theory",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/retail_us_theory",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/retail_us_Theory"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "Theory Gansevoort LLC ×3",
+     "Theory Spring Street LLC ×2",
+     "Theory Holdings LLC ×1"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "Theory 6"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "Theory resolved:THEORY active 24"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 6
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L14-b6-batch3",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T14:56:40.528Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T14:57:03.129Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:57:05.201Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 3
+   }
+  },
+  {
+   "key": "fast-retailing-ph-headquarters",
+   "maison": "Fast Retailing",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:56:57.017Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/headquarters_ph_Uniqlo/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/headquarters_ph_Uniqlo",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/headquarters_ph_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_ph_Uniqlo"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "Fast Retailing Philippines, Inc. ×3"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "Fast Retailing 3"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "Fast Retailing resolved:FAST_RETAILING active 13"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 3
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L14-b6-batch3",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T14:56:40.528Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T14:57:03.129Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:57:05.201Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 3
+   }
+  },
+  {
+   "key": "fast-retailing-id-headquarters",
+   "maison": "Fast Retailing",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T14:56:58.903Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/headquarters_id_Uniqlo/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/headquarters_id_Uniqlo",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/headquarters_id_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_id_Uniqlo"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "PT. FAST RETAILING INDONESIA ×6"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "Fast Retailing 6"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "Fast Retailing resolved:FAST_RETAILING active 13"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 6
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L14-b6-batch3",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T14:56:40.528Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T14:57:03.129Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T14:57:05.201Z",
+      "lastBackup": "before-b6-L14-b6-batch3-production.dump",
+      "minutesBefore": 3
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 3
+   }
+  },
+  {
+   "key": "uniqlo-us-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T15:05:13.391Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/headquarters_us_Uniqlo/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/headquarters_us_Uniqlo",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/headquarters_us_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/headquarters_us_Uniqlo"
+   },
+   "perimeter": {
+    "certified": "MULTI_BRAND",
+    "labelsRead": [
+     "UNIQLO USA LLC ×13",
+     "GU USA LLC ×1"
+    ],
+    "evidence": "LABELS_OUTSIDE_OWNER",
+    "other": [
+     "GU USA LLC (1)"
+    ],
+    "credited": [
+     "UNIQLO 13",
+     "GU 1"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "UNIQLO resolved:UNIQLO active 566"
+    ],
+    "rules": {
+     "REVIEWED_ALIAS": 14
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L15-b6-batch4",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T15:05:12.688Z",
+      "lastBackup": "before-b6-L15-b6-batch4-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T15:05:24.096Z",
+      "lastBackup": "before-b6-L15-b6-batch4-production.dump",
       "minutesBefore": 2
      },
      {
       "step": "promote",
-      "at": "2026-09-10T13:02:03.152Z",
-      "lastBackup": "before-lot-L10-beiersdorf-production.dump",
+      "at": "2026-09-10T15:05:24.994Z",
+      "lastBackup": "before-b6-L15-b6-batch4-production.dump",
+      "minutesBefore": 2
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 2
+   }
+  },
+  {
+   "key": "uniqlo-vn-headquarters",
+   "maison": "Uniqlo",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T15:05:16.119Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/headquarter_roles_vn_Uniqlo/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.fastretailing.com/employment/en/",
+    "artifactHashOk": true,
+    "reference": "fastretailing.wd3.myworkdayjobs.com/headquarter_roles_vn_Uniqlo",
+    "exact": true,
+    "tenantKey": "workday:fastretailing/headquarter_roles_vn_uniqlo",
+    "portalUrl": "https://fastretailing.wd3.myworkdayjobs.com/headquarter_roles_vn_Uniqlo"
+   },
+   "perimeter": {
+    "certified": "MULTI_BRAND",
+    "labelsRead": [
+     "UNIQLO VIETNAM CO., LTD. ×8",
+     "FAST RETAILING (VIETNAM) MANAGEMENT CONSULTING COMPANY LIMITED ×4"
+    ],
+    "evidence": "LABELS_OUTSIDE_OWNER",
+    "other": [
+     "FAST RETAILING (VIETNAM) MANAGEMENT CONSULTING COMPANY LIMITED (4)"
+    ],
+    "credited": [
+     "UNIQLO 8",
+     "Fast Retailing 4"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "UNIQLO resolved:UNIQLO active 566"
+    ],
+    "rules": {
+     "REVIEWED_ALIAS": 12
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L15-b6-batch4",
+    "expectedCommit": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "successOn": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "executed": true,
+    "runRevision": "3b7fc0da31373c5bdea93dd043feaf8da9c45fec",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T15:05:12.688Z",
+      "lastBackup": "before-b6-L15-b6-batch4-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T15:05:24.096Z",
+      "lastBackup": "before-b6-L15-b6-batch4-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T15:05:24.994Z",
+      "lastBackup": "before-b6-L15-b6-batch4-production.dump",
+      "minutesBefore": 2
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 2
+   }
+  },
+  {
+   "key": "chico-s",
+   "maison": "Chico's",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-03T19:37:09.984Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://knitwellgroup.wd1.myworkdayjobs.com/wday/cxs/knitwellgroup/Canada_Jobs/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://jobs.knitwellgroup.com/chicos-fas",
+    "artifactHashOk": true,
+    "reference": "knitwellgroup.wd1.myworkdayjobs.com/Canada_Jobs",
+    "exact": true,
+    "tenantKey": "workday:knitwellgroup/canada_jobs",
+    "portalUrl": "https://knitwellgroup.wd1.myworkdayjobs.com/Canada_Jobs"
+   },
+   "perimeter": {
+    "certified": "MULTI_BRAND",
+    "labelsRead": [
+     "Talbots ×6",
+     "Soma ×2",
+     "Chico's Outlet ×2"
+    ],
+    "evidence": "LABELS_OUTSIDE_OWNER",
+    "other": [
+     "Talbots (6)",
+     "Soma (2)"
+    ],
+    "credited": [
+     "Talbots 7",
+     "Chico's 2",
+     "Soma 2"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "Chico's resolved:CHICO_S active 339"
+    ],
+    "rules": {
+     "REVIEWED_ALIAS": 10
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L16-b6-knitwell",
+    "expectedCommit": "a845b6bbbcda4c21408993957266be576c919670",
+    "successOn": "a845b6bbbcda4c21408993957266be576c919670",
+    "executed": true,
+    "runRevision": "a845b6bbbcda4c21408993957266be576c919670",
+    "runStatus": "COMPLETED_WITH_ERRORS",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "certify",
+      "at": "2026-09-10T15:37:35.198Z",
+      "lastBackup": "before-certify-chico-s-production.dump",
+      "minutesBefore": 2
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 2
+   }
+  },
+  {
+   "key": "knitwell-us-retail",
+   "maison": "KnitWell Group",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T17:03:47.142Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://knitwellgroup.wd1.myworkdayjobs.com/wday/cxs/knitwellgroup/US_Retail_Jobs/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://jobs.knitwellgroup.com/chicos-fas",
+    "artifactHashOk": true,
+    "reference": "knitwellgroup.wd1.myworkdayjobs.com/US_Retail_Jobs",
+    "exact": true,
+    "tenantKey": "workday:knitwellgroup/us_retail_jobs",
+    "portalUrl": "https://knitwellgroup.wd1.myworkdayjobs.com/US_Retail_Jobs"
+   },
+   "perimeter": {
+    "certified": "MULTI_BRAND",
+    "labelsRead": [
+     "LOFT ×319",
+     "White House Black Market ×287",
+     "Lane Bryant ×249",
+     "Soma ×245",
+     "Chico's ×242",
+     "Talbots ×171",
+     "Ann Taylor Factory ×115",
+     "LOFT Outlet ×96",
+     "Ann Taylor ×90",
+     "Chico's Outlet ×79",
+     "White House Black Market Outlet ×44",
+     "Talbots Outlet ×43",
+     "Chico's FAS, Inc. paying for Chico's Retail Operations, Inc. ×10",
+     "Rhode Island - LOFT ×4",
+     "Haven Well Within ×2",
+     "A00 Premium Brands Services LLC ×1",
+     "Off The Rax ×1"
+    ],
+    "evidence": "LABELS_OUTSIDE_OWNER",
+    "other": [
+     "LOFT (319)",
+     "White House Black Market (287)",
+     "Lane Bryant (249)",
+     "Soma (245)",
+     "Chico's (242)",
+     "Talbots (171)",
+     "Ann Taylor Factory (115)",
+     "LOFT Outlet (96)",
+     "Ann Taylor (90)",
+     "Chico's Outlet (79)",
+     "White House Black Market Outlet (44)",
+     "Talbots Outlet (43)",
+     "Chico's FAS, Inc. paying for Chico's Retail Operations, Inc. (10)",
+     "Rhode Island - LOFT (4)",
+     "Haven Well Within (2)",
+     "A00 Premium Brands Services LLC (1)",
+     "Off The Rax (1)"
+    ],
+    "credited": [
+     "LOFT 420",
+     "Chico's 331",
+     "White House Black Market 331",
+     "Lane Bryant 248",
+     "Soma 245",
+     "Talbots 214",
+     "Ann Taylor 205",
+     "Haven Well Within 2",
+     "Off The Rax 1"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "KnitWell Group resolved:KNITWELL_GROUP active 37"
+    ],
+    "rules": {
+     "REVIEWED_ALIAS": 1997,
+     "REVIEW_REQUIRED": 1
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L16-b6-knitwell",
+    "expectedCommit": "a845b6bbbcda4c21408993957266be576c919670",
+    "successOn": "a845b6bbbcda4c21408993957266be576c919670",
+    "executed": true,
+    "runRevision": "a845b6bbbcda4c21408993957266be576c919670",
+    "runStatus": "COMPLETED_WITH_ERRORS",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T17:03:45.713Z",
+      "lastBackup": "before-b6-L16-b6-knitwell-164838-production.dump",
+      "minutesBefore": 14
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T17:09:44.813Z",
+      "lastBackup": "before-b6-L16-b6-knitwell-164838-production.dump",
+      "minutesBefore": 20
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T17:09:45.873Z",
+      "lastBackup": "before-b6-L16-b6-knitwell-164838-production.dump",
+      "minutesBefore": 20
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 20
+   }
+  },
+  {
+   "key": "knitwell-us-corporate",
+   "maison": "KnitWell Group",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T17:09:13.360Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://knitwellgroup.wd1.myworkdayjobs.com/wday/cxs/knitwellgroup/US_Corporate_Jobs/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://jobs.knitwellgroup.com/chicos-fas",
+    "artifactHashOk": true,
+    "reference": "knitwellgroup.wd1.myworkdayjobs.com/US_Corporate_Jobs",
+    "exact": true,
+    "tenantKey": "workday:knitwellgroup/us_corporate_jobs",
+    "portalUrl": "https://knitwellgroup.wd1.myworkdayjobs.com/US_Corporate_Jobs"
+   },
+   "perimeter": {
+    "certified": "MULTI_BRAND",
+    "labelsRead": [
+     "KnitWell Group ×20",
+     "Talbots ×14",
+     "White House Black Market ×13",
+     "Soma ×13",
+     "Loft ×11",
+     "Ann Taylor ×9",
+     "Lane Bryant ×8",
+     "Chico's ×6",
+     "Chico's Outlet ×4",
+     "Chico's FAS ×1",
+     "N23 Premium Brands Opco LLC ×1"
+    ],
+    "evidence": "LABELS_OUTSIDE_OWNER",
+    "other": [
+     "Talbots (14)",
+     "White House Black Market (13)",
+     "Soma (13)",
+     "Loft (11)",
+     "Ann Taylor (9)",
+     "Lane Bryant (8)",
+     "Chico's (6)",
+     "Chico's Outlet (4)",
+     "Chico's FAS (1)",
+     "N23 Premium Brands Opco LLC (1)"
+    ],
+    "credited": [
+     "KnitWell Group 20",
+     "Talbots 14",
+     "White House Black Market 13",
+     "Soma 13",
+     "LOFT 11",
+     "Chico's 11",
+     "Ann Taylor 9",
+     "Lane Bryant 8"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "KnitWell Group resolved:KNITWELL_GROUP active 37"
+    ],
+    "rules": {
+     "REVIEWED_ALIAS": 99,
+     "REVIEW_REQUIRED": 1
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L16-b6-knitwell",
+    "expectedCommit": "a845b6bbbcda4c21408993957266be576c919670",
+    "successOn": "a845b6bbbcda4c21408993957266be576c919670",
+    "executed": true,
+    "runRevision": "a845b6bbbcda4c21408993957266be576c919670",
+    "runStatus": "COMPLETED_WITH_ERRORS",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T17:03:45.713Z",
+      "lastBackup": "before-b6-L16-b6-knitwell-164838-production.dump",
+      "minutesBefore": 14
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T17:09:44.813Z",
+      "lastBackup": "before-b6-L16-b6-knitwell-164838-production.dump",
+      "minutesBefore": 20
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T17:09:45.873Z",
+      "lastBackup": "before-b6-L16-b6-knitwell-164838-production.dump",
+      "minutesBefore": 20
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 20
+   }
+  },
+  {
+   "key": "knitwell-us-distribution",
+   "maison": "KnitWell Group",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T17:09:30.110Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://knitwellgroup.wd1.myworkdayjobs.com/wday/cxs/knitwellgroup/US_Distribution_Center/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://jobs.knitwellgroup.com/chicos-fas",
+    "artifactHashOk": true,
+    "reference": "knitwellgroup.wd1.myworkdayjobs.com/US_Distribution_Center",
+    "exact": true,
+    "tenantKey": "workday:knitwellgroup/us_distribution_center",
+    "portalUrl": "https://knitwellgroup.wd1.myworkdayjobs.com/US_Distribution_Center"
+   },
+   "perimeter": {
+    "certified": "MULTI_BRAND",
+    "labelsRead": [
+     "KnitWell ×17"
+    ],
+    "evidence": "SINGLE_BRAND_CONSISTENT",
+    "other": [],
+    "credited": [
+     "KnitWell Group 17"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "KnitWell Group resolved:KNITWELL_GROUP active 37"
+    ],
+    "rules": {
+     "REVIEWED_ALIAS": 17
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L16-b6-knitwell",
+    "expectedCommit": "a845b6bbbcda4c21408993957266be576c919670",
+    "successOn": "a845b6bbbcda4c21408993957266be576c919670",
+    "executed": true,
+    "runRevision": "a845b6bbbcda4c21408993957266be576c919670",
+    "runStatus": "COMPLETED_WITH_ERRORS",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T17:03:45.713Z",
+      "lastBackup": "before-b6-L16-b6-knitwell-164838-production.dump",
+      "minutesBefore": 14
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T17:09:44.813Z",
+      "lastBackup": "before-b6-L16-b6-knitwell-164838-production.dump",
+      "minutesBefore": 20
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T17:09:45.873Z",
+      "lastBackup": "before-b6-L16-b6-knitwell-164838-production.dump",
+      "minutesBefore": 20
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 20
+   }
+  },
+  {
+   "key": "vf-corporation",
+   "maison": "VF Corporation",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T18:03:38.901Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://vfc.wd5.myworkdayjobs.com/wday/cxs/vfc/vfc_careers/jobs",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.vfcorporation.careers/emea-internship-program/",
+    "artifactHashOk": true,
+    "reference": "vfc.wd5.myworkdayjobs.com/en-US/vfc_careers",
+    "exact": true,
+    "tenantKey": "workday:vfc/vfc_careers",
+    "portalUrl": "https://vfc.wd5.myworkdayjobs.com/vfc_careers"
+   },
+   "perimeter": {
+    "certified": "MULTI_BRAND",
+    "labelsRead": [
+     "(catalogue label) ×692",
+     "VF Outdoor, LLC ×471",
+     "VF Outdoor Canada, Co. ×18",
+     "VF International S.a.g.l. ×11",
+     "Icebreaker New Zealand Limited ×8",
+     "VF Vietnam Sourcing Limited ×8",
+     "VF China Limited Shanghai Branch ×7",
+     "VF Northern Europe Services ×6",
+     "VF Apparel España SLU ×6",
+     "VF Singapore Overseas Services Pte. Ltd. ×6",
+     "VF Corporation ×5",
+     "VF Brands Malaysia Sdn Bhd ×5",
+     "VF (J) France SAS ×4",
+     "VF Services, LLC ×3",
+     "VF Northern Europe Ltd. ×3",
+     "VF Germany Services GMBH ×3",
+     "VF Korea Limited Liability Company ×2",
+     "VF Northern Europe Services Ltd Ireland Branch ×2",
+     "VF Italia Srl ×2",
+     "VF Asia Sourcing Limited, Bangladesh Liaison Office ×1",
+     "VF Polska Distribution Sp zo o ×1",
+     "VF New Zealand ×1",
+     "VF Brands Taiwan Limited ×1",
+     "VF Shanghai Enterprise Company ×1",
+     "VF Hong Kong Limited ×1",
+     "VF Taiwan Limited ×1",
+     "VF Australia Pty Ltd ×1",
+     "VF (Cambodia) Sourcing Co., Ltd. ×1"
+    ],
+    "evidence": "LABELS_OUTSIDE_OWNER",
+    "other": [
+     "Icebreaker New Zealand Limited (8)"
+    ],
+    "credited": [
+     "VF Corporation 570",
+     "Icebreaker 8"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "VF Corporation resolved:VF active 570"
+    ],
+    "rules": {
+     "REVIEWED_ALIAS": 578
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L17-b6-vf",
+    "expectedCommit": "a845b6bbbcda4c21408993957266be576c919670",
+    "successOn": "a845b6bbbcda4c21408993957266be576c919670",
+    "executed": true,
+    "runRevision": "a845b6bbbcda4c21408993957266be576c919670",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T18:03:37.631Z",
+      "lastBackup": "before-b6-L17-b6-vf-173611-production.dump",
+      "minutesBefore": 25
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T18:08:36.978Z",
+      "lastBackup": "before-b6-L17-b6-vf-173611-production.dump",
+      "minutesBefore": 30
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T18:08:37.998Z",
+      "lastBackup": "before-b6-L17-b6-vf-173611-production.dump",
+      "minutesBefore": 30
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 30
+   }
+  },
+  {
+   "key": "lagardere-travel-retail",
+   "maison": "Lagardère Travel Retail",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-02T00:00:00.000Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://lagardere-recrute.talent-soft.com/",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.lagardere-tr.com/en/join-us/join-us",
+    "artifactHashOk": true,
+    "reference": "lagardere-recrute.talent-soft.com",
+    "exact": true,
+    "tenantKey": "talentsoft:lagardere-recrute.talent-soft.com",
+    "portalUrl": "https://lagardere-recrute.talent-soft.com"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "(catalogue label) ×109"
+    ],
+    "evidence": "NO_NATIVE_LABEL",
+    "other": [],
+    "credited": [
+     "Lagardère Travel Retail 130"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "Lagardère Travel Retail resolved:LAGARDERE_TRAVEL_RETAIL active 140"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 109,
+     "LEGACY_UNREVIEWED": 109
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L18-b6-lagardere-de",
+    "expectedCommit": "a845b6bbbcda4c21408993957266be576c919670",
+    "successOn": "a845b6bbbcda4c21408993957266be576c919670",
+    "executed": true,
+    "runRevision": "a845b6bbbcda4c21408993957266be576c919670",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "certify",
+      "at": "2026-09-10T18:30:10.411Z",
+      "lastBackup": "before-certify-lagardere-fr-182600-production.dump",
+      "minutesBefore": 2
+     }
+    ],
+    "allPreceded": true,
+    "maxMinutesGap": 2
+   }
+  },
+  {
+   "key": "lagardere-travel-retail-de",
+   "maison": "Lagardère Travel Retail",
+   "status": "ACTIVE",
+   "access": {
+    "stored": "ALLOWED",
+    "storedAt": "2026-09-10T18:34:28.288Z",
+    "now": "ALLOWED",
+    "httpStatus": 200,
+    "target": "https://lagardere-recrute-travelretailde.talent-soft.com/",
+    "explicit": true
+   },
+   "board": {
+    "proofUrl": "https://www.lagardere-tr.com/en/join-us/join-us",
+    "artifactHashOk": true,
+    "reference": "lagardere-recrute-travelretailde.talent-soft.com",
+    "exact": true,
+    "tenantKey": "talentsoft:lagardere-recrute-travelretailde.talent-soft.com",
+    "portalUrl": "https://lagardere-recrute-travelretailde.talent-soft.com"
+   },
+   "perimeter": {
+    "certified": "SINGLE_BRAND",
+    "labelsRead": [
+     "(catalogue label) ×10"
+    ],
+    "evidence": "NO_NATIVE_LABEL",
+    "other": [],
+    "credited": [
+     "Lagardère Travel Retail 10"
+    ],
+    "misattributed": [],
+    "homonymCompanies": [
+     "Lagardère Travel Retail resolved:LAGARDERE_TRAVEL_RETAIL active 140"
+    ],
+    "rules": {
+     "CERTIFIED_SINGLE_BRAND_PORTAL": 10
+    },
+    "consistent": true
+   },
+   "deployment": {
+    "lot": "L18-b6-lagardere-de",
+    "expectedCommit": "a845b6bbbcda4c21408993957266be576c919670",
+    "successOn": "a845b6bbbcda4c21408993957266be576c919670",
+    "executed": true,
+    "runRevision": "a845b6bbbcda4c21408993957266be576c919670",
+    "runStatus": "COMPLETED",
+    "verifiedOffline": true,
+    "ok": true
+   },
+   "backup": {
+    "mutations": [
+     {
+      "step": "register",
+      "at": "2026-09-10T18:34:27.306Z",
+      "lastBackup": "before-b6-L18-b6-lagardere-de-183014-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "certify",
+      "at": "2026-09-10T18:34:30.051Z",
+      "lastBackup": "before-b6-L18-b6-lagardere-de-183014-production.dump",
+      "minutesBefore": 2
+     },
+     {
+      "step": "promote",
+      "at": "2026-09-10T18:34:30.971Z",
+      "lastBackup": "before-b6-L18-b6-lagardere-de-183014-production.dump",
       "minutesBefore": 2
      }
     ],

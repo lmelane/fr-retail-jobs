@@ -1,0 +1,287 @@
+{
+  "at": "2026-09-10T17:20:37.996Z",
+  "pipelineRun": {
+    "id": "ba7997e6-0f71-432c-89dc-94749694fc18",
+    "status": "COMPLETED_WITH_ERRORS",
+    "startedAt": "2026-09-10T17:13:23.302Z",
+    "finishedAt": "2026-09-10T17:20:13.181Z",
+    "revision": "a845b6bbbcda4c21408993957266be576c919670"
+  },
+  "writeFailures": [
+    {
+      "_count": 1,
+      "sourceKey": "knitwell-us-corporate"
+    },
+    {
+      "_count": 1,
+      "sourceKey": "knitwell-us-retail"
+    }
+  ],
+  "sourceRuns": [
+    {
+      "sourceKey": "chico-s",
+      "status": "OK",
+      "fetched": 10,
+      "accepted": 10,
+      "declaredTotal": 10,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "knitwell-us-distribution",
+      "status": "NEW",
+      "fetched": 17,
+      "accepted": 17,
+      "declaredTotal": 18,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "knitwell-us-corporate",
+      "status": "DEGRADED",
+      "fetched": 100,
+      "accepted": 100,
+      "declaredTotal": 101,
+      "complete": true,
+      "truncated": false,
+      "errors": 1,
+      "note": "1 erreurs de collecte ou d’écriture · 1 lignes rejetées avec motif (ROW_WITHOUT_EXTERNAL_PATH=1) · desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "knitwell-us-retail",
+      "status": "DEGRADED",
+      "fetched": 1999,
+      "accepted": 1998,
+      "declaredTotal": 2000,
+      "complete": false,
+      "truncated": false,
+      "errors": 1,
+      "note": "1 erreurs de collecte ou d’écriture · 1 lignes rejetées avec motif (ROW_WITHOUT_EXTERNAL_PATH=1) · desc 100% date 100% pays 100% url 100%"
+    }
+  ],
+  "active": [
+    {
+      "sourceKey": "chico-s",
+      "active": 11,
+      "reattested": 10,
+      "created": 0
+    },
+    {
+      "sourceKey": "knitwell-us-corporate",
+      "active": 99,
+      "reattested": 99,
+      "created": 99
+    },
+    {
+      "sourceKey": "knitwell-us-distribution",
+      "active": 17,
+      "reattested": 17,
+      "created": 17
+    },
+    {
+      "sourceKey": "knitwell-us-retail",
+      "active": 1997,
+      "reattested": 1997,
+      "created": 1997
+    }
+  ],
+  "observations": [
+    {
+      "sourceKey": "chico-s",
+      "rule": "REVIEWED_ALIAS",
+      "n": 10
+    },
+    {
+      "sourceKey": "knitwell-us-corporate",
+      "rule": "REVIEWED_ALIAS",
+      "n": 99
+    },
+    {
+      "sourceKey": "knitwell-us-corporate",
+      "rule": "REVIEW_REQUIRED",
+      "n": 1
+    },
+    {
+      "sourceKey": "knitwell-us-distribution",
+      "rule": "REVIEWED_ALIAS",
+      "n": 17
+    },
+    {
+      "sourceKey": "knitwell-us-retail",
+      "rule": "REVIEWED_ALIAS",
+      "n": 1997
+    },
+    {
+      "sourceKey": "knitwell-us-retail",
+      "rule": "REVIEW_REQUIRED",
+      "n": 1
+    }
+  ],
+  "byCompany": [
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "J Choo",
+      "n": 34
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Franchoo",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Tokyo",
+      "n": 3
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo (Shanghai) Trading Co.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "J Choo (Switzerland)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Florence",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Hungary KFT",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Itachoo",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Michael Kors",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors",
+      "n": 355
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Stores California",
+      "n": 54
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (UK)",
+      "n": 36
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Germany)",
+      "n": 27
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Italy) srl con socio unico",
+      "n": 13
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Spain, S.L.U.",
+      "n": 12
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Europe)",
+      "n": 5
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Switzerland)",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Austria)",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Portugal)",
+      "n": 3
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Netherlands)",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Poland) sp. z. o.o.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Lithuania) UAB",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Hungary) Kft",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Czech Republic) s.r.o.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Canada)",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (HongKong)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Sweden)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (USA)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Yuhanhoesa",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "Mango",
+      "n": 1697
+    },
+    {
+      "sourceKey": "nordstrom",
+      "name": "Nordstrom",
+      "n": 1575
+    }
+  ],
+  "activeTotal": 78928
+}

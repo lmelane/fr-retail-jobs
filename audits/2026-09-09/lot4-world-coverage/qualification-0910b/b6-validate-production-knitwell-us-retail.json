@@ -1,0 +1,258 @@
+{
+ "at": "2026-09-10T17:09:11.876Z",
+ "key": "knitwell-us-retail",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://knitwellgroup.wd1.myworkdayjobs.com",
+  "path": "/wday/cxs/knitwellgroup/US_Retail_Jobs/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T17:03:47.142Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "9011744c77494cfc832c51f4e9658902db16a5abd039c48b6ea43581f45e06a9",
+  "bytes": 471
+ },
+ "fetched": 1998,
+ "parsed": 1998,
+ "declaredTotal": 2000,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_ROWS_READ",
+  "issues": [
+   "ROWS_WITHOUT_EXTERNAL_PATH"
+  ],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 2000,
+    "uniqueIds": 1998,
+    "pages": 100,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 2,
+ "held": 0,
+ "labels": [
+  {
+   "label": "LOFT",
+   "n": 319,
+   "class": "OTHER"
+  },
+  {
+   "label": "White House Black Market",
+   "n": 287,
+   "class": "OTHER"
+  },
+  {
+   "label": "Lane Bryant",
+   "n": 249,
+   "class": "OTHER"
+  },
+  {
+   "label": "Soma",
+   "n": 245,
+   "class": "OTHER"
+  },
+  {
+   "label": "Chico's",
+   "n": 242,
+   "class": "OTHER"
+  },
+  {
+   "label": "Talbots",
+   "n": 171,
+   "class": "OTHER"
+  },
+  {
+   "label": "Ann Taylor Factory",
+   "n": 115,
+   "class": "OTHER"
+  },
+  {
+   "label": "LOFT Outlet",
+   "n": 96,
+   "class": "OTHER"
+  },
+  {
+   "label": "Ann Taylor",
+   "n": 90,
+   "class": "OTHER"
+  },
+  {
+   "label": "Chico's Outlet",
+   "n": 79,
+   "class": "OTHER"
+  },
+  {
+   "label": "White House Black Market Outlet",
+   "n": 44,
+   "class": "OTHER"
+  },
+  {
+   "label": "Talbots Outlet",
+   "n": 43,
+   "class": "OTHER"
+  },
+  {
+   "label": "Chico's FAS, Inc. paying for Chico's Retail Operations, Inc.",
+   "n": 10,
+   "class": "OTHER"
+  },
+  {
+   "label": "Rhode Island - LOFT",
+   "n": 4,
+   "class": "OTHER"
+  },
+  {
+   "label": "Haven Well Within",
+   "n": 2,
+   "class": "OTHER"
+  },
+  {
+   "label": "A00 Premium Brands Services LLC",
+   "n": 1,
+   "class": "OTHER"
+  },
+  {
+   "label": "Off The Rax",
+   "n": 1,
+   "class": "OTHER"
+  }
+ ],
+ "countries": [
+  [
+   "United States of America",
+   1998
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "KnitWell Group",
+  "ownerKey": "KNITWELL_GROUP",
+  "labels": [
+   {
+    "label": "LOFT",
+    "n": 319,
+    "class": "OTHER"
+   },
+   {
+    "label": "White House Black Market",
+    "n": 287,
+    "class": "OTHER"
+   },
+   {
+    "label": "Lane Bryant",
+    "n": 249,
+    "class": "OTHER"
+   },
+   {
+    "label": "Soma",
+    "n": 245,
+    "class": "OTHER"
+   },
+   {
+    "label": "Chico's",
+    "n": 242,
+    "class": "OTHER"
+   },
+   {
+    "label": "Talbots",
+    "n": 171,
+    "class": "OTHER"
+   },
+   {
+    "label": "Ann Taylor Factory",
+    "n": 115,
+    "class": "OTHER"
+   },
+   {
+    "label": "LOFT Outlet",
+    "n": 96,
+    "class": "OTHER"
+   },
+   {
+    "label": "Ann Taylor",
+    "n": 90,
+    "class": "OTHER"
+   },
+   {
+    "label": "Chico's Outlet",
+    "n": 79,
+    "class": "OTHER"
+   },
+   {
+    "label": "White House Black Market Outlet",
+    "n": 44,
+    "class": "OTHER"
+   },
+   {
+    "label": "Talbots Outlet",
+    "n": 43,
+    "class": "OTHER"
+   },
+   {
+    "label": "Chico's FAS, Inc. paying for Chico's Retail Operations, Inc.",
+    "n": 10,
+    "class": "OTHER"
+   },
+   {
+    "label": "Rhode Island - LOFT",
+    "n": 4,
+    "class": "OTHER"
+   },
+   {
+    "label": "Haven Well Within",
+    "n": 2,
+    "class": "OTHER"
+   },
+   {
+    "label": "A00 Premium Brands Services LLC",
+    "n": 1,
+    "class": "OTHER"
+   },
+   {
+    "label": "Off The Rax",
+    "n": 1,
+    "class": "OTHER"
+   }
+  ],
+  "verdict": "LABELS_OUTSIDE_OWNER",
+  "other": [
+   "LOFT (319)",
+   "White House Black Market (287)",
+   "Lane Bryant (249)",
+   "Soma (245)",
+   "Chico's (242)",
+   "Talbots (171)",
+   "Ann Taylor Factory (115)",
+   "LOFT Outlet (96)",
+   "Ann Taylor (90)",
+   "Chico's Outlet (79)",
+   "White House Black Market Outlet (44)",
+   "Talbots Outlet (43)",
+   "Chico's FAS, Inc. paying for Chico's Retail Operations, Inc. (10)",
+   "Rhode Island - LOFT (4)",
+   "Haven Well Within (2)",
+   "A00 Premium Brands Services LLC (1)",
+   "Off The Rax (1)"
+  ]
+ },
+ "withCountry": 1998,
+ "withDescription": 1998,
+ "sampleTitles": [
+  "Sales Associate — Store 5288-Legacy Village-Soma-Lyndhurst, OH 44124",
+  "Sales Associate-ANN — Store 1304-City Place @ the Promenade-ANN-Edgewater, NJ 07020",
+  "PT Sales Lead, Cross Creek Mall — Store 3597-Cross Creek Mall-WHBM-Fayetteville, NC 28303",
+  "Sales Lead, Natick Collection — Store 5215-Natick Collection-Soma-Natick, MA 01760",
+  "Sales Associate, The Westchester — Store 5253-The Westchester-Soma-White Plains, NY 10601"
+ ],
+ "seconds": 325,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T17:03:45.265Z"
+}

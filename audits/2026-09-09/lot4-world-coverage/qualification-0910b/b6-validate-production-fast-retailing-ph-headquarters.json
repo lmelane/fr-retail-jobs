@@ -1,0 +1,76 @@
+{
+ "at": "2026-09-10T14:56:58.152Z",
+ "key": "fast-retailing-ph-headquarters",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/headquarters_ph_Uniqlo/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T14:56:57.017Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 3,
+ "parsed": 3,
+ "declaredTotal": 3,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 3,
+    "uniqueIds": 3,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "Fast Retailing Philippines, Inc.",
+   "n": 3,
+   "class": "OWNER_ENTITY"
+  }
+ ],
+ "countries": [
+  [
+   "Philippines",
+   3
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Fast Retailing",
+  "ownerKey": "FAST_RETAILING",
+  "labels": [
+   {
+    "label": "Fast Retailing Philippines, Inc.",
+    "n": 3,
+    "class": "OWNER_ENTITY"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 3,
+ "withDescription": 3,
+ "sampleTitles": [
+  "IT Manager — Store Support Center",
+  "Marketing Manager — Store Support Center",
+  "IT Manager — Store Support Center"
+ ],
+ "seconds": 1,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T14:56:40.329Z"
+}

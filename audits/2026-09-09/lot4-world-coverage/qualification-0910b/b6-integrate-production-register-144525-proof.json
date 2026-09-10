@@ -1,0 +1,95 @@
+{
+  "at": "2026-09-10T14:45:25.929Z",
+  "environment": "production",
+  "step": "register",
+  "proofs": [
+    {
+      "key": "uniqlo-us-retail",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvn341k0000ms2u16bcyu24",
+          "key": "uniqlo-us-retail",
+          "maison": "Uniqlo",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "retail_us_Uniqlo",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/retail_us_uniqlo",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:45:25.688Z",
+          "updatedAt": "2026-09-10T14:45:25.688Z"
+        }
+      },
+      "after": {
+        "key": "uniqlo-us-retail",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/retail_us_uniqlo",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    },
+    {
+      "key": "uniqlo-au-stores",
+      "step": "register",
+      "result": {
+        "created": true,
+        "source": {
+          "id": "cmtvn346m0001ms2uubuqldtt",
+          "key": "uniqlo-au-stores",
+          "maison": "Uniqlo",
+          "careersDomain": "fastretailing.wd3.myworkdayjobs.com",
+          "kind": "workday",
+          "config": {
+            "site": "store_staff_au_Uniqlo",
+            "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+            "tenant": "fastretailing"
+          },
+          "jobUrlPattern": null,
+          "status": "DRAFT",
+          "tier": "GROUP_OFFICIAL",
+          "tenantKey": "workday:fastretailing/store_staff_au_uniqlo",
+          "robotsVerdict": null,
+          "robotsCheckedAt": null,
+          "verifiedJobCount": null,
+          "lastRunAt": null,
+          "lastRunStatus": null,
+          "lastRunJobs": null,
+          "descriptionRate": null,
+          "dateRate": null,
+          "countryRate": null,
+          "urlRate": null,
+          "note": null,
+          "createdAt": "2026-09-10T14:45:25.871Z",
+          "updatedAt": "2026-09-10T14:45:25.871Z"
+        }
+      },
+      "after": {
+        "key": "uniqlo-au-stores",
+        "status": "DRAFT",
+        "tenantKey": "workday:fastretailing/store_staff_au_uniqlo",
+        "robotsVerdict": null,
+        "robotsCheckedAt": null,
+        "verifiedJobCount": null
+      }
+    }
+  ]
+}

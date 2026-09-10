@@ -1,0 +1,92 @@
+{
+ "at": "2026-09-10T14:56:54.599Z",
+ "key": "theory-eu",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/eu_Theory/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T14:56:52.651Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 18,
+ "parsed": 18,
+ "declaredTotal": 18,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 18,
+    "uniqueIds": 18,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "Link Theory (UK) Ltd.",
+   "n": 15,
+   "class": "OWNER_ENTITY"
+  },
+  {
+   "label": "Link Theory (UK) Ltd. FRENCH BRANCH",
+   "n": 3,
+   "class": "OWNER_ENTITY"
+  }
+ ],
+ "countries": [
+  [
+   "United Kingdom",
+   15
+  ],
+  [
+   "France",
+   3
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Theory",
+  "ownerKey": "THEORY",
+  "labels": [
+   {
+    "label": "Link Theory (UK) Ltd.",
+    "n": 15,
+    "class": "OWNER_ENTITY"
+   },
+   {
+    "label": "Link Theory (UK) Ltd. FRENCH BRANCH",
+    "n": 3,
+    "class": "OWNER_ENTITY"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 18,
+ "withDescription": 18,
+ "sampleTitles": [
+  "Sales Associate — Theory Regent Street(LTEU)",
+  "Conseiller De Vente - CDD — TW Printemps(LTFR)",
+  "superviseur•e — TW Printemps(LTFR)",
+  "Supervisor — Theory Regent Street(LTEU)",
+  "CRM & eCommerce Specialist — Link Theory UK Ltd London Showroom"
+ ],
+ "seconds": 2,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T14:56:40.047Z"
+}

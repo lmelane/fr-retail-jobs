@@ -1,0 +1,15 @@
+# Vérification hors ligne du lot L14-b6-batch3 (run COMPLETED 3b7fc0d)
+
+| Source | Énumération (annoncées / lues, méthode, fin) | Lignes rejetées (motifs) | Retenues (id : motif) | Échecs d'écriture (id : erreur, libellé) | Règles d'identité | Verdict | Problèmes |
+|---|---|---|---|---|---|---|---|
+| fast-retailing-id-headquarters | 6 / 6, PUBLISHER_TOTAL_COUNT_JSON_PAGINATION, PUBLISHER_TOTAL_REACHED | 0 | 0 | 0 | CERTIFIED_SINGLE_BRAND_PORTAL 6 | **CLEAN** | — |
+| fast-retailing-ph-headquarters | 3 / 3, PUBLISHER_TOTAL_COUNT_JSON_PAGINATION, PUBLISHER_TOTAL_REACHED | 0 | 0 | 0 | CERTIFIED_SINGLE_BRAND_PORTAL 3 | **CLEAN** | — |
+| gu-hk-headquarters | 2 / 2, PUBLISHER_TOTAL_COUNT_JSON_PAGINATION, PUBLISHER_TOTAL_REACHED | 0 | 0 | 0 | CERTIFIED_SINGLE_BRAND_PORTAL 2 | **CLEAN** | — |
+| gu-us-headquarters | 2 / 2, PUBLISHER_TOTAL_COUNT_JSON_PAGINATION, PUBLISHER_TOTAL_REACHED | 0 | 0 | 0 | CERTIFIED_SINGLE_BRAND_PORTAL 2 | **CLEAN** | — |
+| gu-us-retail | 5 / 5, PUBLISHER_TOTAL_COUNT_JSON_PAGINATION, PUBLISHER_TOTAL_REACHED | 0 | 0 | 0 | CERTIFIED_SINGLE_BRAND_PORTAL 5 | **CLEAN** | — |
+| theory-eu | 18 / 18, PUBLISHER_TOTAL_COUNT_JSON_PAGINATION, PUBLISHER_TOTAL_REACHED | 0 | 0 | 0 | CERTIFIED_SINGLE_BRAND_PORTAL 18 | **CLEAN** | — |
+| theory-us-retail | 6 / 6, PUBLISHER_TOTAL_COUNT_JSON_PAGINATION, PUBLISHER_TOTAL_REACHED | 0 | 0 | 0 | CERTIFIED_SINGLE_BRAND_PORTAL 6 | **CLEAN** | — |
+| uniqlo-au-graduates | 2 / 2, PUBLISHER_TOTAL_COUNT_JSON_PAGINATION, PUBLISHER_TOTAL_REACHED | 0 | 0 | 0 | CERTIFIED_SINGLE_BRAND_PORTAL 2 | **CLEAN** | — |
+| uniqlo-hkm-headquarters | 6 / 6, PUBLISHER_TOTAL_COUNT_JSON_PAGINATION, PUBLISHER_TOTAL_REACHED | 0 | 0 | 0 | CERTIFIED_SINGLE_BRAND_PORTAL 6 | **CLEAN** | — |
+| uniqlo-my-headquarters | 7 / 7, PUBLISHER_TOTAL_COUNT_JSON_PAGINATION, PUBLISHER_TOTAL_REACHED | 0 | 0 | 0 | CERTIFIED_SINGLE_BRAND_PORTAL 7 | **CLEAN** | — |
+| uniqlo-th-headquarters | 2 / 2, PUBLISHER_TOTAL_COUNT_JSON_PAGINATION, PUBLISHER_TOTAL_REACHED | 0 | 0 | 0 | CERTIFIED_SINGLE_BRAND_PORTAL 2 | **CLEAN** | — |

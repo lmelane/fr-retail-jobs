@@ -1,0 +1,30 @@
+{
+  "at": "2026-09-10T18:34:30.051Z",
+  "environment": "production",
+  "step": "certify",
+  "proofs": [
+    {
+      "key": "lagardere-travel-retail-de",
+      "step": "certify",
+      "result": {
+        "boardReference": "lagardere-recrute-travelretailde.talent-soft.com",
+        "scopeVerdict": "NO_NATIVE_LABEL",
+        "written": {
+          "sourceKey": "lagardere-travel-retail-de",
+          "sourceHash": "c0411b73cf42b13f57e26f44eda7b0f80f0de97795317e0681fc2a77070f71d7",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "SINGLE_BRAND"
+      },
+      "after": {
+        "key": "lagardere-travel-retail-de",
+        "status": "DRAFT",
+        "tenantKey": "talentsoft:lagardere-recrute-travelretailde.talent-soft.com",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T18:34:28.288Z",
+        "verifiedJobCount": 10
+      }
+    }
+  ]
+}

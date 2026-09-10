@@ -1,0 +1,50 @@
+{
+ "at": "2026-09-10T18:34:26.451Z",
+ "lot": "L18-b6-lagardere-de-clone",
+ "since": "2026-09-10T18:30:12.000Z",
+ "keys": [
+  "lagardere-travel-retail-de"
+ ],
+ "activeTotal": 79516,
+ "sources": [
+  {
+   "key": "lagardere-travel-retail-de",
+   "maison": "Lagardère Travel Retail",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T18:34:20.107Z",
+    "fetched": 10,
+    "accepted": 10,
+    "declaredTotal": 10,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 10,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "reviewRequiredExpected": 0,
+   "scopeDecisions": {},
+   "written": 10,
+   "createdSince": 10,
+   "reattestedSince": 10,
+   "inactiveRepresentations": 0,
+   "published": 10,
+   "companies": [
+    {
+     "name": "Lagardère Travel Retail",
+     "n": 10,
+     "key": "resolved:LAGARDERE_TRAVEL_RETAIL"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "CERTIFIED_SINGLE_BRAND_PORTAL": 10
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL",
+   "rejectedRows": 0
+  }
+ ],
+ "front": []
+}

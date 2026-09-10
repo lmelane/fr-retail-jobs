@@ -1,0 +1,205 @@
+{
+ "at": "2026-09-10T16:48:36.781Z",
+ "lot": "L16-clone-check",
+ "since": "2026-09-10T16:30:00.000Z",
+ "keys": [
+  "knitwell-us-retail",
+  "knitwell-us-corporate",
+  "knitwell-us-distribution"
+ ],
+ "activeTotal": 78928,
+ "sources": [
+  {
+   "key": "knitwell-us-retail",
+   "maison": "KnitWell Group",
+   "status": "ACTIVE",
+   "run": {
+    "status": "DEGRADED",
+    "at": "2026-09-10T16:45:44.203Z",
+    "fetched": 1998,
+    "accepted": 1997,
+    "declaredTotal": 2000,
+    "complete": false,
+    "truncated": false
+   },
+   "collected": 1998,
+   "held": 1,
+   "writeFailed": 1,
+   "reviewRequired": 1,
+   "reviewRequiredExpected": 1,
+   "scopeDecisions": {},
+   "written": 1996,
+   "createdSince": 1996,
+   "reattestedSince": 1996,
+   "inactiveRepresentations": 0,
+   "published": 1996,
+   "companies": [
+    {
+     "name": "LOFT",
+     "n": 419,
+     "key": "resolved:LOFT"
+    },
+    {
+     "name": "White House Black Market",
+     "n": 331,
+     "key": "resolved:WHITE_HOUSE_BLACK_MARKET"
+    },
+    {
+     "name": "Chico's",
+     "n": 331,
+     "key": "resolved:CHICO_S"
+    },
+    {
+     "name": "Lane Bryant",
+     "n": 249,
+     "key": "resolved:LANE_BRYANT"
+    },
+    {
+     "name": "Soma",
+     "n": 245,
+     "key": "resolved:SOMA"
+    },
+    {
+     "name": "Talbots",
+     "n": 213,
+     "key": "resolved:TALBOTS"
+    },
+    {
+     "name": "Ann Taylor",
+     "n": 205,
+     "key": "resolved:ANN_TAYLOR"
+    },
+    {
+     "name": "Haven Well Within",
+     "n": 2,
+     "key": "resolved:HAVEN_WELL_WITHIN"
+    },
+    {
+     "name": "Off The Rax",
+     "n": 1,
+     "key": "resolved:OFF_THE_RAX"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "REVIEWED_ALIAS": 1996,
+    "REVIEW_REQUIRED": 1
+   },
+   "completeness": "INCOMPLETE_EXPLAINED (2 of 2000 declared rows rejected by the adapter: {\"ROW_WITHOUT_EXTERNAL_PATH\":2}); ATTESTATION_WITHHELD (1 held)",
+   "rejectedRows": 2
+  },
+  {
+   "key": "knitwell-us-corporate",
+   "maison": "KnitWell Group",
+   "status": "ACTIVE",
+   "run": {
+    "status": "DEGRADED",
+    "at": "2026-09-10T16:40:02.450Z",
+    "fetched": 99,
+    "accepted": 99,
+    "declaredTotal": 100,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 99,
+   "held": 0,
+   "writeFailed": 1,
+   "reviewRequired": 1,
+   "reviewRequiredExpected": 1,
+   "scopeDecisions": {},
+   "written": 98,
+   "createdSince": 98,
+   "reattestedSince": 98,
+   "inactiveRepresentations": 0,
+   "published": 98,
+   "companies": [
+    {
+     "name": "KnitWell Group",
+     "n": 20,
+     "key": "resolved:KNITWELL_GROUP"
+    },
+    {
+     "name": "Talbots",
+     "n": 14,
+     "key": "resolved:TALBOTS"
+    },
+    {
+     "name": "Soma",
+     "n": 13,
+     "key": "resolved:SOMA"
+    },
+    {
+     "name": "White House Black Market",
+     "n": 13,
+     "key": "resolved:WHITE_HOUSE_BLACK_MARKET"
+    },
+    {
+     "name": "LOFT",
+     "n": 11,
+     "key": "resolved:LOFT"
+    },
+    {
+     "name": "Chico's",
+     "n": 10,
+     "key": "resolved:CHICO_S"
+    },
+    {
+     "name": "Ann Taylor",
+     "n": 9,
+     "key": "resolved:ANN_TAYLOR"
+    },
+    {
+     "name": "Lane Bryant",
+     "n": 8,
+     "key": "resolved:LANE_BRYANT"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "REVIEWED_ALIAS": 98,
+    "REVIEW_REQUIRED": 1
+   },
+   "completeness": "INCOMPLETE_EXPLAINED (1 of 100 declared rows rejected by the adapter: {\"ROW_WITHOUT_EXTERNAL_PATH\":1})",
+   "rejectedRows": 1
+  },
+  {
+   "key": "knitwell-us-distribution",
+   "maison": "KnitWell Group",
+   "status": "ACTIVE",
+   "run": {
+    "status": "NEW",
+    "at": "2026-09-10T16:39:45.354Z",
+    "fetched": 17,
+    "accepted": 17,
+    "declaredTotal": 18,
+    "complete": true,
+    "truncated": false
+   },
+   "collected": 17,
+   "held": 0,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "reviewRequiredExpected": 0,
+   "scopeDecisions": {},
+   "written": 17,
+   "createdSince": 17,
+   "reattestedSince": 17,
+   "inactiveRepresentations": 0,
+   "published": 17,
+   "companies": [
+    {
+     "name": "KnitWell Group",
+     "n": 17,
+     "key": "resolved:KNITWELL_GROUP"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "REVIEWED_ALIAS": 17
+   },
+   "completeness": "INCOMPLETE_EXPLAINED (1 of 18 declared rows rejected by the adapter: {\"ROW_WITHOUT_EXTERNAL_PATH\":1})",
+   "rejectedRows": 1
+  }
+ ],
+ "front": []
+}

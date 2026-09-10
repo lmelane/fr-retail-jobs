@@ -1,0 +1,58 @@
+{
+  "at": "2026-09-10T17:09:45.873Z",
+  "environment": "production",
+  "step": "promote",
+  "proofs": [
+    {
+      "key": "knitwell-us-retail",
+      "step": "promote",
+      "result": {
+        "key": "knitwell-us-retail",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "knitwell-us-retail",
+        "status": "ACTIVE",
+        "tenantKey": "workday:knitwellgroup/us_retail_jobs",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T17:03:47.142Z",
+        "verifiedJobCount": 1998
+      }
+    },
+    {
+      "key": "knitwell-us-corporate",
+      "step": "promote",
+      "result": {
+        "key": "knitwell-us-corporate",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "knitwell-us-corporate",
+        "status": "ACTIVE",
+        "tenantKey": "workday:knitwellgroup/us_corporate_jobs",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T17:09:13.360Z",
+        "verifiedJobCount": 100
+      }
+    },
+    {
+      "key": "knitwell-us-distribution",
+      "step": "promote",
+      "result": {
+        "key": "knitwell-us-distribution",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "knitwell-us-distribution",
+        "status": "ACTIVE",
+        "tenantKey": "workday:knitwellgroup/us_distribution_center",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T17:09:30.110Z",
+        "verifiedJobCount": 17
+      }
+    }
+  ]
+}

@@ -369,6 +369,34 @@ Volumes désormais séparés par `lot-volumes.mts` : collectées → retenues (h
 
 **Inventaire de suivi unique** : `audits/2026-09-09/lot4-world-coverage/inventory-unique/` (généré par `scripts/coverage/unified-inventory.mts` + `inventory-readme.py`) réconcilie les 1 653 libellés FashionJobs, le rapprochement web (65), les marques de portefeuille (275), les candidats B6 (33 tenants), les sociétés actives et la table `Source`, avec les dénominateurs de chaque jeu et une ligne par acteur dédupliqué. Tableau final par source : `scripts/coverage/final-table.mts`.
 
+### Fin de la passe B6 (10 septembre, soir) et travaux restant pour clore le LOT 4
+
+**Passe B6 — terminée pour le périmètre engagé** (33 tenants qualifiés au matin) : 27 nouvelles sources activées et 6 sources existantes certifiées sous la procédure sécurisée, toutes avec dump frais → clone → production → run borné → volumes séparés → vérification hors ligne par identifiant et motif → parité API. Détail : `audits/2026-09-09/lot4-world-coverage/qualification-2026-09-10-b.md` § 7.5 à 7.10 ; preuves dans `qualification-0910b/`.
+
+| Tenant / acteur | Sources | Résultat | Écart explicite (non résolu) |
+|---|---:|---|---|
+| Lot n°1 (Armand Thiery, On, Boardriders, American Vintage, Ysé, La Fée Maraboutée, Shinola, La Prairie) + Arc'teryx | 9 | 955 offres publiées, parité 9/9 ; 3 défauts d'attribution trouvés par le contrôle rétrospectif et réparés (347 offres) | Greenhouse : pays absent quand le bureau n'a pas d'adresse (On 218/309) |
+| Fast Retailing (UNIQLO, GU, Theory, Fast Retailing) | 16 (3 certifiées + 13 activées) | UNIQLO 566 · Theory 24 · Fast Retailing 13 · GU 9 ; 11 entités juridiques fusionnées ; 14 alias revus | — |
+| KnitWell Group (LOFT, WHBM, Chico's, Lane Bryant, Soma, Talbots, Ann Taylor, Haven Well Within, Off The Rax) | 4 (1 certifiée + 3 activées) | 2 116 collectées, 2 113 publiées, 27 alias revus, parité 9/9 | 2 libellés d'entité laissés en revue (2 offres, non publiées) ; 1 ligne sans chemin par site ; la source n'atteste pas l'absence tant que les libellés ne sont pas résolus |
+| VF Corporation (+ Icebreaker) | 1 | MULTI_BRAND, 578 publiées sur 1 273 collectées, parité 2/2 | **695 offres sans employeur dans le détail : archivées, tenues, non publiées** (décision Loïc : jamais créditées au groupe pour publier) |
+| Lagardère Travel Retail | 2 (1 certifiée + DE activée) | acteur unifié (130 offres rapatriées de l'orthographe « Lagardère Travel ») | Talentsoft : aucun pays ni employeur dans la liste (à vérifier sur le détail avant de qualifier de limite éditeur) |
+| Homonyme retiré | 1 | `loft` (proptech brésilienne sous la marque LOFT) : 62 offres retirées D27 | — |
+| Non activés | — | Soeur et Luxexperience (doublons), Galderma (hors périmètre), KS Groupe (cabinet d'intérim : **arbitrage Loïc**) | — |
+
+**Ce qui reste pour clore le LOT 4** (dénominateurs explicites ; `inventory-unique/uncertified-families.md`, pré-tri généré, pas une certification) :
+
+| Famille | Sources | Offres actives | Blocage réel | Prochaine action (mécanismes existants) |
+|---|---:|---:|---|---|
+| Portails de groupe non certifiés | 30 | 9 421 | aucun technique ; alias par libellé à revoir | `b6-aliases.mts` + `b6-certify-existing.sh` (méthode Saks / KnitWell), par lots |
+| Homonymie suspecte | 26 | 1 510 | l'identité peut être fausse (cas `loft`) | audit hors ligne des titres / pays / hôtes archivés ; `retire-source` ou alias, puis certification |
+| Portail sur le domaine officiel de la Maison | 83 | 9 858 | aucun | `b6-certify-existing.sh` par lots de 10–15 (OFFICIAL_DOMAIN) |
+| Lien réciproque officiel déjà archivé | 13 | 463 | aucun | `b6-certify-existing.sh` (OFFICIAL_LINK) |
+| Jobboards / balayage sectoriel / cabinet | 3 | 2 490 | identité de board : décision Loïc | — |
+| Aucun lien officiel archivé | 189 | 8 610 | recherche à mener ; quelques sites illisibles (WAF) | `research-portals.mts` ciblé, puis certification ; blocage daté sinon |
+| **Total non certifié** | **344 / 432 actives** | 32 352 | | |
+
+Autres dossiers ouverts : attestation d'absence par partition (Tapestry, 97 offres dé-listées) ; `wttj-sector` (identité de board) ; 640 offres sans source opérante (conservation / retrait) ; Menus & Venues, Versace, Swarovski (décisions Loïc / sites illisibles) ; reprise des crons (décision Loïc, distincte de cette clôture). Le tableau final par source avec les **cinq états** (officielle · opérationnelle · exhaustive · attribution · publication) est `final-table.md`, régénérable.
+
 ### En cours ou restant
 
 - **Saks / Exemplar Luxury Group — fait** : revue propriétaire (1 621 opérations), re-certification MULTI_BRAND, run borné L9 (742/746 complet, 0 refus) : Neiman Marcus 420 · Saks Fifth Avenue 189 · groupe 133 · Bergdorf Goodman 66 · Saks OFF 5TH 27, parité 5/5 (`qualification-2026-09-10-b.md` § 7.2).

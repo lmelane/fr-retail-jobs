@@ -1,0 +1,24 @@
+{
+  "at": "2026-09-10T18:34:30.971Z",
+  "environment": "production",
+  "step": "promote",
+  "proofs": [
+    {
+      "key": "lagardere-travel-retail-de",
+      "step": "promote",
+      "result": {
+        "key": "lagardere-travel-retail-de",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "lagardere-travel-retail-de",
+        "status": "ACTIVE",
+        "tenantKey": "talentsoft:lagardere-recrute-travelretailde.talent-soft.com",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T18:34:28.288Z",
+        "verifiedJobCount": 10
+      }
+    }
+  ]
+}

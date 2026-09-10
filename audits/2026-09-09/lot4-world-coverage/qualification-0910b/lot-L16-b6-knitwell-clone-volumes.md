@@ -1,0 +1,5 @@
+| Source | Maison | Collectées | Retenues (holds / refus identité / échecs écriture / hors périmètre) | Écrites (actives) | Publiées (BDD) | Sociétés créditées | Complétude |
+|---|---|---:|---|---:|---:|---|---|
+| knitwell-us-retail | KnitWell Group | 1999 | 1 / 1 (1 attendus : libellés laissés en revue) / 1 / 0 | 1997 | 1997 | LOFT 419, White House Black Market 331, Chico's 331, Lane Bryant 249, Soma 245, Talbots 214, Ann Taylor 205, Haven Well Within 2, Off The Rax 1 | INCOMPLETE_EXPLAINED (1 of 2000 declared rows rejected by the adapter: {"ROW_WITHOUT_EXTERNAL_PATH":1}); ATTESTATION_WITHHELD (1 held) |
+| knitwell-us-corporate | KnitWell Group | 100 | 0 / 1 (1 attendus : libellés laissés en revue) / 1 / 0 | 99 | 99 | KnitWell Group 20, Talbots 14, White House Black Market 13, Soma 13, Chico's 11, LOFT 11, Ann Taylor 9, Lane Bryant 8 | INCOMPLETE_EXPLAINED (1 of 101 declared rows rejected by the adapter: {"ROW_WITHOUT_EXTERNAL_PATH":1}) |
+| knitwell-us-distribution | KnitWell Group | 17 | 0 / 0 / 0 / 0 | 17 | 17 | KnitWell Group 17 | INCOMPLETE_EXPLAINED (1 of 18 declared rows rejected by the adapter: {"ROW_WITHOUT_EXTERNAL_PATH":1}) |

@@ -1,0 +1,447 @@
+{
+ "at": "2026-09-10T15:25:39.327Z",
+ "company": [
+  {
+   "id": "cmtlyme0p0em2qf5k3jw9prng",
+   "name": "LOFT",
+   "fashionjobsUrl": "resolved:LOFT",
+   "kind": "UNKNOWN",
+   "domain": "loft.com",
+   "parentGroup": null,
+   "sector": "RETAIL",
+   "createdAt": "2026-09-03T20:10:39.098Z"
+  }
+ ],
+ "bySource": [
+  {
+   "sourceKey": "loft",
+   "src_active": false,
+   "job_active": false,
+   "n": 2
+  },
+  {
+   "sourceKey": "loft",
+   "src_active": true,
+   "job_active": true,
+   "n": 62
+  }
+ ],
+ "titles": [
+  {
+   "title": "Account Manager | Pleno",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8254592-account-manager-pleno"
+  },
+  {
+   "title": "AIops Engineer",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7525322-aiops-engineer"
+  },
+  {
+   "title": "AI Scientist",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7015043-ai-scientist"
+  },
+  {
+   "title": "Analista Contábil",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8273459-analista-contabil"
+  },
+  {
+   "title": "Analista de Corporate Development",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8167787-analista-de-corporate-development"
+  },
+  {
+   "title": "Analista de Crédito Imobiliário",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7317483-analista-de-credito-imobiliario"
+  },
+  {
+   "title": "Analista de Eventos",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8191152-analista-de-eventos"
+  },
+  {
+   "title": "Analista de Excelência do Cliente | Osasco",
+   "countryCode": "BR",
+   "city": "Osasco",
+   "url": "https://loft.teamtailor.com/jobs/8224978-analista-de-excelencia-do-cliente-osasco"
+  },
+  {
+   "title": "Analista de Gestão Orçamentária e Governança | Pleno",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8250329-analista-de-gestao-orcamentaria-e-governanca-pleno"
+  },
+  {
+   "title": "Analista de Implantação",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8157737-analista-de-implantacao"
+  },
+  {
+   "title": "Analista de Planejamento Financeiro | Finance",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7660995-analista-de-planejamento-financeiro-finance"
+  },
+  {
+   "title": "Analista de Planejamento Senior",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8255851-analista-de-planejamento-senior"
+  },
+  {
+   "title": "Analista de Planejamento Senior | Control Desk",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8325106-analista-de-planejamento-senior-control-desk"
+  },
+  {
+   "title": "Analista de Políticas de Crédito | Full Remote | Pleno/Senior",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8151682-analista-de-politicas-de-credito-full-remote-pleno-senior"
+  },
+  {
+   "title": "Analista de Pré-Vendas | Inbound | SDR",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8316497-analista-de-pre-vendas-inbound-sdr"
+  },
+  {
+   "title": "Analista de Suporte ao Cliente | CRM",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8303283-analista-de-suporte-ao-cliente-crm"
+  },
+  {
+   "title": "Analista de Treinamento",
+   "countryCode": "BR",
+   "city": "Osasco",
+   "url": "https://loft.teamtailor.com/jobs/8273123-analista-de-treinamento"
+  },
+  {
+   "title": "Analista Operação Automação Senior",
+   "countryCode": "BR",
+   "city": "Osasco",
+   "url": "https://loft.teamtailor.com/jobs/8294337-analista-operacao-automacao-senior"
+  },
+  {
+   "title": "Analista Senior de Dados I Inteligência Comercial",
+   "countryCode": null,
+   "city": null,
+   "url": "https://loft.teamtailor.com/jobs/8325777-analista-senior-de-dados-i-inteligencia-comercial"
+  },
+  {
+   "title": "Assistente de Ativação",
+   "countryCode": "BR",
+   "city": "Curitiba",
+   "url": "https://loft.teamtailor.com/jobs/8164728-assistente-de-ativacao"
+  },
+  {
+   "title": "Assistente de Renovação",
+   "countryCode": "BR",
+   "city": "Curitiba",
+   "url": "https://loft.teamtailor.com/jobs/8164727-assistente-de-renovacao"
+  },
+  {
+   "title": "Banco de Talentos | PCD",
+   "countryCode": null,
+   "city": null,
+   "url": "https://loft.teamtailor.com/jobs/6531408-banco-de-talentos-pcd"
+  },
+  {
+   "title": "BDR | Outbound",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8236817-bdr-outbound"
+  },
+  {
+   "title": "Business Operations Analyst",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8267235-business-operations-analyst"
+  },
+  {
+   "title": "Consultor Comercial | Assessorias Imobiliárias | Interior de São Paulo",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8041482-consultor-comercial-assessorias-imobiliarias-interior-de-sao-paulo"
+  },
+  {
+   "title": "Coordenador(a) de Operações de Inadimplência",
+   "countryCode": "BR",
+   "city": "Osasco",
+   "url": "https://loft.teamtailor.com/jobs/8205193-coordenador-a-de-operacoes-de-inadimplencia"
+  },
+  {
+   "title": "Coordenador(a) de Remuneração e Benefícios",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8200873-coordenador-a-de-remuneracao-e-beneficios"
+  },
+  {
+   "title": "Coordenador de Account Management | Inside Sales | São Paulo",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8185290-coordenador-de-account-management-inside-sales-sao-paulo"
+  },
+  {
+   "title": "Coordenador de Relacionamento com Cliente | Osasco",
+   "countryCode": null,
+   "city": null,
+   "url": "https://loft.teamtailor.com/jobs/8105152-coordenador-de-relacionamento-com-cliente-osasco"
+  },
+  {
+   "title": "Data Engineering Manager | Data Platform",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8223688-data-engineering-manager-data-platform"
+  },
+  {
+   "title": "Data Engineer Jr.",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8250522-data-engineer-jr"
+  },
+  {
+   "title": "DESIGN MANAGER | FULL REMOTE",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8082894-design-manager-full-remote"
+  },
+  {
+   "title": "Diretor(a) de Produto",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7046815-diretor-a-de-produto"
+  },
+  {
+   "title": "Engineering Manager | Plataforma",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8098267-engineering-manager-plataforma"
+  },
+  {
+   "title": "Especialista de Novos Negócios",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7816904-especialista-de-novos-negocios"
+  },
+  {
+   "title": "Especialista de Performance | People",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8098158-especialista-de-performance-people"
+  },
+  {
+   "title": "Especialista de Processos e Melhoria Contínua",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8207658-especialista-de-processos-e-melhoria-continua"
+  },
+  {
+   "title": "Especialista de Treinamentos Comerciais",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8230190-especialista-de-treinamentos-comerciais"
+  },
+  {
+   "title": "Especialista em Engajamento | Revenue Ops",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8182994-especialista-em-engajamento-revenue-ops"
+  },
+  {
+   "title": "Executivo de Contas Comerciais - Field Sales (Campo ) - Niterói",
+   "countryCode": null,
+   "city": null,
+   "url": "https://loft.teamtailor.com/jobs/8262616-executivo-de-contas-comerciais-field-sales-campo-niteroi"
+  },
+  {
+   "title": "FP&A Manager",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7725900-fp-a-manager"
+  },
+  {
+   "title": "Gerente Comercial Regional de Crédito Imobiliário | RJ",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7781952-gerente-comercial-regional-de-credito-imobiliario-rj"
+  },
+  {
+   "title": "Gerente Comercial Regional | São Paulo",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7340445-gerente-comercial-regional-sao-paulo"
+  },
+  {
+   "title": "Gerente de Atendimento",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7960203-gerente-de-atendimento"
+  },
+  {
+   "title": "Head de Novos Produtos & Negócios",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8250270-head-de-novos-produtos-negocios"
+  },
+  {
+   "title": "HRBP Specialist | Tech, Data & Credit",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8176413-hrbp-specialist-tech-data-credit"
+  },
+  {
+   "title": "Key Account Manager | Maringá",
+   "countryCode": "BR",
+   "city": "Maringá",
+   "url": "https://loft.teamtailor.com/jobs/7289565-key-account-manager-maringa"
+  },
+  {
+   "title": "Líder de Treinamento",
+   "countryCode": "BR",
+   "city": "Osasco",
+   "url": "https://loft.teamtailor.com/jobs/8183779-lider-de-treinamento"
+  },
+  {
+   "title": "Operador de Cobrança | Exclusiva para PCD's",
+   "countryCode": "BR",
+   "city": "Curitiba",
+   "url": "https://loft.teamtailor.com/jobs/6306337-operador-de-cobranca-exclusiva-para-pcd-s"
+  },
+  {
+   "title": "Pessoa Supervisora de Pré-Vendas | Inbound",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8268411-pessoa-supervisora-de-pre-vendas-inbound"
+  },
+  {
+   "title": "Pessoa Supervisora de Vendas | Inside Sales",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7618409-pessoa-supervisora-de-vendas-inside-sales"
+  },
+  {
+   "title": "Product Marketing Manager Sênior",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8269038-product-marketing-manager-senior"
+  },
+  {
+   "title": "Senior Operations Automation Analyst",
+   "countryCode": "BR",
+   "city": "Curitiba",
+   "url": "https://loft.teamtailor.com/jobs/7792414-senior-operations-automation-analyst"
+  },
+  {
+   "title": "Senior Revenue & Pricing Analyst",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/8126446-senior-revenue-pricing-analyst"
+  },
+  {
+   "title": "Senior Software Engineer | AI",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/6596760-senior-software-engineer-ai"
+  },
+  {
+   "title": "Senior Software Engineer | AI (Vaga afirmativa para mulheres)",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7837256-senior-software-engineer-ai-vaga-afirmativa-para-mulheres"
+  },
+  {
+   "title": "Senior Tax Analyst",
+   "countryCode": null,
+   "city": null,
+   "url": "https://loft.teamtailor.com/jobs/7996921-senior-tax-analyst"
+  },
+  {
+   "title": "Software Engineer | Back-End | Remote Work",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7014637-software-engineer-back-end-remote-work"
+  },
+  {
+   "title": "Software Engineer | Front End | Remote Work",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7014678-software-engineer-front-end-remote-work"
+  },
+  {
+   "title": "Software Engineer | Full Stack | Growth",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7044998-software-engineer-full-stack-growth"
+  },
+  {
+   "title": "Software Engineer | Full Stack | Remote Work",
+   "countryCode": "BR",
+   "city": "São Paulo",
+   "url": "https://loft.teamtailor.com/jobs/7014721-software-engineer-full-stack-remote-work"
+  },
+  {
+   "title": "Transformation Specialist",
+   "countryCode": null,
+   "city": null,
+   "url": "https://loft.teamtailor.com/jobs/7061742-transformation-specialist"
+  }
+ ],
+ "others": [
+  {
+   "name": "Chico's Outlet",
+   "key": "resolved:CHICO_S_OUTLET",
+   "domain": "chicos.com",
+   "active": 2
+  },
+  {
+   "name": "Lagardère Duty Free",
+   "key": "resolved:LAGARDERE_DUTY_FREE",
+   "domain": "lagardere-tr.com",
+   "active": 9
+  },
+  {
+   "name": "Lagardère Travel",
+   "key": "resolved:LAGARDERE_TRAVEL",
+   "domain": "lagardere-tr.com",
+   "active": 130
+  },
+  {
+   "name": "Lagardère Travel Retail",
+   "key": "resolved:LAGARDERE_TRAVEL_RETAIL",
+   "domain": "lagardere-tr.com",
+   "active": 0
+  },
+  {
+   "name": "Theory",
+   "key": "resolved:THEORY",
+   "domain": null,
+   "active": 24
+  },
+  {
+   "name": "VF Outdoor",
+   "key": "resolved:VF_OUTDOOR",
+   "domain": null,
+   "active": 1
+  },
+  {
+   "name": "VF Outdoor, LLC",
+   "key": "resolved:VF_OUTDOOR_LLC",
+   "domain": null,
+   "active": 0
+  }
+ ]
+}

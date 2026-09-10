@@ -1,0 +1,181 @@
+{
+  "at": "2026-09-10T18:08:35.489Z",
+  "environment": "production",
+  "key": "vf-corporation",
+  "commit": "a845b6bbbcda4c21408993957266be576c919670",
+  "planHash": "6f414abeb52da027d3b51d16ac85399cbef9bd1aba74f1ec8e7a816c35f671f7",
+  "aliases": [
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Outdoor, LLC",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Outdoor Canada, Co.",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF International S.a.g.l.",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "Icebreaker New Zealand Limited",
+      "companyId": "cmtvuca3b0001mszuve6zbutq",
+      "company": "Icebreaker"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Vietnam Sourcing Limited",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF China Limited Shanghai Branch",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Northern Europe Services",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Apparel España SLU",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Singapore Overseas Services Pte. Ltd.",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Corporation",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Brands Malaysia Sdn Bhd",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF (J) France SAS",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Services, LLC",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Northern Europe Ltd.",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Germany Services GMBH",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Korea Limited Liability Company",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Northern Europe Services Ltd Ireland Branch",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Italia Srl",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Asia Sourcing Limited, Bangladesh Liaison Office",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Polska Distribution Sp zo o",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF New Zealand",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Brands Taiwan Limited",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Shanghai Enterprise Company",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Hong Kong Limited",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Taiwan Limited",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF Australia Pty Ltd",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "rawName": "VF (Cambodia) Sourcing Co., Ltd.",
+      "companyId": "cmtvuca070000mszu6b5itjo8",
+      "company": "VF Corporation"
+    }
+  ],
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 27
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  }
+}

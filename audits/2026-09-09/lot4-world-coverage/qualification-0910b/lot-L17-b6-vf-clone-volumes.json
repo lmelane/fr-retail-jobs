@@ -1,0 +1,55 @@
+{
+ "at": "2026-09-10T18:03:36.722Z",
+ "lot": "L17-b6-vf-clone",
+ "since": "2026-09-10T17:50:45.000Z",
+ "keys": [
+  "vf-corporation"
+ ],
+ "activeTotal": 79507,
+ "sources": [
+  {
+   "key": "vf-corporation",
+   "maison": "VF Corporation",
+   "status": "ACTIVE",
+   "run": {
+    "status": "DEGRADED",
+    "at": "2026-09-10T18:03:30.702Z",
+    "fetched": 1272,
+    "accepted": 579,
+    "declaredTotal": 1272,
+    "complete": false,
+    "truncated": false
+   },
+   "collected": 1272,
+   "held": 693,
+   "writeFailed": 0,
+   "reviewRequired": 0,
+   "reviewRequiredExpected": 0,
+   "scopeDecisions": {},
+   "written": 579,
+   "createdSince": 579,
+   "reattestedSince": 579,
+   "inactiveRepresentations": 0,
+   "published": 579,
+   "companies": [
+    {
+     "name": "VF Corporation",
+     "n": 571,
+     "key": "resolved:VF"
+    },
+    {
+     "name": "Icebreaker",
+     "n": 8,
+     "key": "resolved:ICEBREAKER"
+    }
+   ],
+   "labelNotMaison": [],
+   "identityRules": {
+    "REVIEWED_ALIAS": 579
+   },
+   "completeness": "PROVEN_BY_DECLARED_TOTAL; ATTESTATION_WITHHELD (693 held)",
+   "rejectedRows": 0
+  }
+ ],
+ "front": []
+}

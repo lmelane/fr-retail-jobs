@@ -1,0 +1,76 @@
+{
+  "at": "2026-09-10T17:09:44.813Z",
+  "environment": "production",
+  "step": "certify",
+  "proofs": [
+    {
+      "key": "knitwell-us-retail",
+      "step": "certify",
+      "result": {
+        "boardReference": "knitwellgroup.wd1.myworkdayjobs.com/US_Retail_Jobs",
+        "scopeVerdict": "LABELS_OUTSIDE_OWNER",
+        "written": {
+          "sourceKey": "knitwell-us-retail",
+          "sourceHash": "93234f12a4d711f64f8a041eefe6e38d4d84117a6ca6f3c39c59d9f480241b82",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "MULTI_BRAND"
+      },
+      "after": {
+        "key": "knitwell-us-retail",
+        "status": "DRAFT",
+        "tenantKey": "workday:knitwellgroup/us_retail_jobs",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T17:03:47.142Z",
+        "verifiedJobCount": 1998
+      }
+    },
+    {
+      "key": "knitwell-us-corporate",
+      "step": "certify",
+      "result": {
+        "boardReference": "knitwellgroup.wd1.myworkdayjobs.com/US_Corporate_Jobs",
+        "scopeVerdict": "LABELS_OUTSIDE_OWNER",
+        "written": {
+          "sourceKey": "knitwell-us-corporate",
+          "sourceHash": "7db4f4bf632de439468e9b225f9c9ff694603ecb8b9f84af1a31afe37a1e67db",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "MULTI_BRAND"
+      },
+      "after": {
+        "key": "knitwell-us-corporate",
+        "status": "DRAFT",
+        "tenantKey": "workday:knitwellgroup/us_corporate_jobs",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T17:09:13.360Z",
+        "verifiedJobCount": 100
+      }
+    },
+    {
+      "key": "knitwell-us-distribution",
+      "step": "certify",
+      "result": {
+        "boardReference": "knitwellgroup.wd1.myworkdayjobs.com/US_Distribution_Center",
+        "scopeVerdict": "SINGLE_BRAND_CONSISTENT",
+        "written": {
+          "sourceKey": "knitwell-us-distribution",
+          "sourceHash": "0e73785eae5634e42af6304365efcf3ad78150459aef6c712f290b7081013c21",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "MULTI_BRAND"
+      },
+      "after": {
+        "key": "knitwell-us-distribution",
+        "status": "DRAFT",
+        "tenantKey": "workday:knitwellgroup/us_distribution_center",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T17:09:30.110Z",
+        "verifiedJobCount": 17
+      }
+    }
+  ]
+}

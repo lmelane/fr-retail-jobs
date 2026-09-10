@@ -1,0 +1,32 @@
+{
+  "at": "2026-09-10T18:25:57.421Z",
+  "environment": "production",
+  "commit": "a845b6bbbcda4c21408993957266be576c919670",
+  "planHash": "1f8ff14a270f57dc7e7c725fea237aa3f0d91667fd46e2ca922700d70dfe98eb",
+  "fed": [
+    {
+      "sourceKey": "lagardere-travel-retail",
+      "n": 130
+    }
+  ],
+  "before": {
+    "active": 79506,
+    "ltr": 0,
+    "travel": 130
+  },
+  "after": {
+    "active": 79506,
+    "ltr": 130,
+    "travel": 0
+  },
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 130,
+    "aliases": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "at": "2026-09-10T14:57:05.201Z",
+  "environment": "production",
+  "step": "promote",
+  "proofs": [
+    {
+      "key": "uniqlo-my-headquarters",
+      "step": "promote",
+      "result": {
+        "key": "uniqlo-my-headquarters",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "uniqlo-my-headquarters",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/headquarters_my_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:41.366Z",
+        "verifiedJobCount": 7
+      }
+    },
+    {
+      "key": "uniqlo-hkm-headquarters",
+      "step": "promote",
+      "result": {
+        "key": "uniqlo-hkm-headquarters",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "uniqlo-hkm-headquarters",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/headquarters_hkm_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:43.128Z",
+        "verifiedJobCount": 6
+      }
+    },
+    {
+      "key": "uniqlo-th-headquarters",
+      "step": "promote",
+      "result": {
+        "key": "uniqlo-th-headquarters",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "uniqlo-th-headquarters",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/headquarters_th_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:44.789Z",
+        "verifiedJobCount": 2
+      }
+    },
+    {
+      "key": "uniqlo-au-graduates",
+      "step": "promote",
+      "result": {
+        "key": "uniqlo-au-graduates",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "uniqlo-au-graduates",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/graduates_au_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:46.328Z",
+        "verifiedJobCount": 2
+      }
+    },
+    {
+      "key": "gu-us-retail",
+      "step": "promote",
+      "result": {
+        "key": "gu-us-retail",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "gu-us-retail",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/retail_us_gu",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:47.979Z",
+        "verifiedJobCount": 5
+      }
+    },
+    {
+      "key": "gu-us-headquarters",
+      "step": "promote",
+      "result": {
+        "key": "gu-us-headquarters",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "gu-us-headquarters",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/headquarters_us_gu",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:49.626Z",
+        "verifiedJobCount": 2
+      }
+    },
+    {
+      "key": "gu-hk-headquarters",
+      "step": "promote",
+      "result": {
+        "key": "gu-hk-headquarters",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "gu-hk-headquarters",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/headquarters_hk_gu",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:51.220Z",
+        "verifiedJobCount": 2
+      }
+    },
+    {
+      "key": "theory-eu",
+      "step": "promote",
+      "result": {
+        "key": "theory-eu",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "theory-eu",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/eu_theory",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:52.651Z",
+        "verifiedJobCount": 18
+      }
+    },
+    {
+      "key": "theory-us-retail",
+      "step": "promote",
+      "result": {
+        "key": "theory-us-retail",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "theory-us-retail",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/retail_us_theory",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:55.344Z",
+        "verifiedJobCount": 6
+      }
+    },
+    {
+      "key": "fast-retailing-ph-headquarters",
+      "step": "promote",
+      "result": {
+        "key": "fast-retailing-ph-headquarters",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "fast-retailing-ph-headquarters",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/headquarters_ph_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:57.017Z",
+        "verifiedJobCount": 3
+      }
+    },
+    {
+      "key": "fast-retailing-id-headquarters",
+      "step": "promote",
+      "result": {
+        "key": "fast-retailing-id-headquarters",
+        "from": "DRAFT",
+        "to": "ACTIVE"
+      },
+      "after": {
+        "key": "fast-retailing-id-headquarters",
+        "status": "ACTIVE",
+        "tenantKey": "workday:fastretailing/headquarters_id_uniqlo",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T14:56:58.903Z",
+        "verifiedJobCount": 6
+      }
+    }
+  ]
+}

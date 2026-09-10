@@ -1,0 +1,75 @@
+{
+ "at": "2026-09-10T14:56:47.171Z",
+ "key": "uniqlo-au-graduates",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/graduates_au_Uniqlo/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T14:56:46.328Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 2,
+ "parsed": 2,
+ "declaredTotal": 2,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 2,
+    "uniqueIds": 2,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "UNIQLO AUSTRALIA PTY LTD.",
+   "n": 2,
+   "class": "OWNER"
+  }
+ ],
+ "countries": [
+  [
+   "Australia",
+   2
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Uniqlo",
+  "ownerKey": "UNIQLO",
+  "labels": [
+   {
+    "label": "UNIQLO AUSTRALIA PTY LTD.",
+    "n": 2,
+    "class": "OWNER"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 2,
+ "withDescription": 2,
+ "sampleTitles": [
+  "UNIQLO (Australia) Management Trainee - Internship Program 2026 — Melbourne",
+  "UNIQLO (Australia) Management Candidate (UMC) Graduate Program - 2027 Intake — Melbourne"
+ ],
+ "seconds": 1,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T14:56:39.497Z"
+}

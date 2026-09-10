@@ -1,0 +1,191 @@
+{
+ "at": "2026-09-10T17:09:28.990Z",
+ "key": "knitwell-us-corporate",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://knitwellgroup.wd1.myworkdayjobs.com",
+  "path": "/wday/cxs/knitwellgroup/US_Corporate_Jobs/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T17:09:13.360Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "9011744c77494cfc832c51f4e9658902db16a5abd039c48b6ea43581f45e06a9",
+  "bytes": 471
+ },
+ "fetched": 100,
+ "parsed": 100,
+ "declaredTotal": 101,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_ROWS_READ",
+  "issues": [
+   "ROWS_WITHOUT_EXTERNAL_PATH"
+  ],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 101,
+    "uniqueIds": 100,
+    "pages": 6,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 1,
+ "held": 0,
+ "labels": [
+  {
+   "label": "KnitWell Group",
+   "n": 20,
+   "class": "OWNER"
+  },
+  {
+   "label": "Talbots",
+   "n": 14,
+   "class": "OTHER"
+  },
+  {
+   "label": "White House Black Market",
+   "n": 13,
+   "class": "OTHER"
+  },
+  {
+   "label": "Soma",
+   "n": 13,
+   "class": "OTHER"
+  },
+  {
+   "label": "Loft",
+   "n": 11,
+   "class": "OTHER"
+  },
+  {
+   "label": "Ann Taylor",
+   "n": 9,
+   "class": "OTHER"
+  },
+  {
+   "label": "Lane Bryant",
+   "n": 8,
+   "class": "OTHER"
+  },
+  {
+   "label": "Chico's",
+   "n": 6,
+   "class": "OTHER"
+  },
+  {
+   "label": "Chico's Outlet",
+   "n": 4,
+   "class": "OTHER"
+  },
+  {
+   "label": "Chico's FAS",
+   "n": 1,
+   "class": "OTHER"
+  },
+  {
+   "label": "N23 Premium Brands Opco LLC",
+   "n": 1,
+   "class": "OTHER"
+  }
+ ],
+ "countries": [
+  [
+   "United States of America",
+   100
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "KnitWell Group",
+  "ownerKey": "KNITWELL_GROUP",
+  "labels": [
+   {
+    "label": "KnitWell Group",
+    "n": 20,
+    "class": "OWNER"
+   },
+   {
+    "label": "Talbots",
+    "n": 14,
+    "class": "OTHER"
+   },
+   {
+    "label": "White House Black Market",
+    "n": 13,
+    "class": "OTHER"
+   },
+   {
+    "label": "Soma",
+    "n": 13,
+    "class": "OTHER"
+   },
+   {
+    "label": "Loft",
+    "n": 11,
+    "class": "OTHER"
+   },
+   {
+    "label": "Ann Taylor",
+    "n": 9,
+    "class": "OTHER"
+   },
+   {
+    "label": "Lane Bryant",
+    "n": 8,
+    "class": "OTHER"
+   },
+   {
+    "label": "Chico's",
+    "n": 6,
+    "class": "OTHER"
+   },
+   {
+    "label": "Chico's Outlet",
+    "n": 4,
+    "class": "OTHER"
+   },
+   {
+    "label": "Chico's FAS",
+    "n": 1,
+    "class": "OTHER"
+   },
+   {
+    "label": "N23 Premium Brands Opco LLC",
+    "n": 1,
+    "class": "OTHER"
+   }
+  ],
+  "verdict": "LABELS_OUTSIDE_OWNER",
+  "other": [
+   "Talbots (14)",
+   "White House Black Market (13)",
+   "Soma (13)",
+   "Loft (11)",
+   "Ann Taylor (9)",
+   "Lane Bryant (8)",
+   "Chico's (6)",
+   "Chico's Outlet (4)",
+   "Chico's FAS (1)",
+   "N23 Premium Brands Opco LLC (1)"
+  ]
+ },
+ "withCountry": 100,
+ "withDescription": 100,
+ "sampleTitles": [
+  "Assistant Merchant, Outlets (Chico's) — Corporate FAS Retail Services - Fort Myers, FL 33928",
+  "Assistant Merchant, Wovens (WHBM) — Corporate FAS Retail Services - Fort Myers, FL 33928",
+  "Merchandise Planner — Times Square Tower-ANN-New York, NY 10036",
+  "Asst Merchandiser — Times Square Tower-ANN-New York, NY 10036",
+  "Associate Manager, Social Media — Corporate FAS Retail Services - Fort Myers, FL 33928"
+ ],
+ "seconds": 16,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T17:03:45.522Z"
+}

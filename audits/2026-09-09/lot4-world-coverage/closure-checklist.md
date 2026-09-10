@@ -1,4 +1,4 @@
-# LOT 4 — checklist de clôture (état au 2026-09-10, ~14:30 UTC)
+# LOT 4 — checklist de clôture (état au 2026-09-10, ~18:45 UTC)
 
 Deux fins distinctes : **la fin de la passe B6** (sources admissibles activées, ingérées, visibles) et **la fin du lot complet** (critères du brief `brief.md` : discovery mondiale, qualification, intégration, complétude, audit final). Chaque ligne porte un statut — **terminé** (prouvé en production ou par preuve archivée), **restant** (travail identifié, non bloqué), **bloqué** (dépend d'une décision de Loïc, d'un accès ou d'une information externe) — et le nombre de dossiers concernés.
 
@@ -43,17 +43,17 @@ Deux fins distinctes : **la fin de la passe B6** (sources admissibles activées,
 |---|---|---:|---|
 | Périmètre admissible explicite | terminé (brouillon), **restant** (validation par tenant) | 33 tenants avec lien réciproque archivé | `b6-candidates-sector.md` : IN 28 (3 592 offres), MULTI 1 (VF, 1 267), doublon 1 (Luxexperience/YNAP), OUT 1 (Galderma), REVIEW 2 (KS Groupe, Lagardère TR) |
 | Rapprochement du rapport de découverte web avec la BDD | terminé (outil + première passe) | 65 lignes : déjà couvertes 10 · config/attribution 10 · nouveaux acteurs 21 · nouvelle source d'un acteur existant 3 · investigation 21 | `audits/2026-09-10/discovery-web/reconciliation.md` ; catégories du rapport corrigées (Swarovski, Pandora couverts ; Douglas = même portail sous un autre hôte) |
-| Certification d'identité des candidats retenus | partiel | 11 / 33 tenants (8 lot n°1 + Arc'teryx + 2 UNIQLO US/AU en cours) ; `headquarters_us_Uniqlo` refusé SINGLE_BRAND (GU) | méthode B1 + board exact + libellés natifs (`b6-integrate.mts certify`) |
-| Enregistrement DRAFT → revue → promotion | partiel | 9 sources ACTIVE (lot n°1 + Arc'teryx) ; lot n°2 en cours | `b6-integrate-production-*-proof.json` |
-| Ingestion bornée + chaîne source → BDD → API → front | partiel | L11 (299), L12 (955 lues = écrites = publiées, parité 9/9) ; L13 en cours | `lot-L12-b6-batch1-after-run.json`, `lot-L12-b6-retro-volumes.md` |
-| Doublons évités | terminé pour les cas connus | Luxexperience/YNAP, Browns/Farfetch, Douglas | à recompter à la fin de la passe |
+| Certification d'identité des candidats retenus | **terminé pour le périmètre engagé** | 27 nouvelles sources + 6 existantes certifiées (Fast Retailing 16, KnitWell 4, VF 1, Lagardère 2, lot n°1 9 + Arc'teryx) ; non activés : Soeur / Luxexperience (doublons), Galderma (hors périmètre), KS Groupe (arbitrage) | `b6-integrate.mts certify` (board exact + libellés natifs), `b6-aliases.mts` (MULTI_BRAND) |
+| Enregistrement DRAFT → revue → promotion | terminé (passe B6) | 27 sources activées sous dump frais → clone → production | `b6-integrate-production-*-proof.json`, `b6-aliases-*-production-proof.json` |
+| Ingestion bornée + chaîne source → BDD → API → front | terminé (passe B6) | L11–L18 : parité API 100 % sur chaque lot ; volumes séparés et vérification hors ligne par identifiant et motif (0 problème, écarts expliqués listés) | `lot-L1*-volumes.md`, `lot-L1*-verify.md` |
+| Doublons évités | terminé | Luxexperience/YNAP, Soeur, Browns/Farfetch, Douglas, knitwell-ca = chico-s ; homonyme `loft` retiré (62 offres) | `loft-retire-production-proof.json` |
 
 ## D. Lot complet — au-delà de B6
 
 | Critère du brief | Statut | Dossiers | Détail |
 |---|---|---:|---|
 | Discovery mondiale : candidats rapprochés et classés | partiel | 65 rapprochés / 21 en investigation | Japon/Corée/Chine sans ATS structuré : documentés, non activés |
-| Qualification des 405 sources actives (identité) | partiel | 45 certifiées / 360 non | priorité par volume (README §5 : dix sources = 26 697 offres) |
+| Qualification des sources actives (identité) | partiel | 88 certifiées / 344 non (432 actives) — pré-tri par familles : 30 portails de groupe · 26 homonymies suspectes · 83 domaine officiel · 13 lien réciproque vérifié · 3 boards · 189 recherche | `inventory-unique/uncertified-families.md` ; mécanismes existants par famille |
 | Collecte complète prouvée | partiel | 384 complètes / 11 non prouvées / 10 expliquées (tracker v9, avec la réserve des reçus non courants) | Oniverse (16 pages), Tapestry (résiduel sous plafond), Eightfold second balayage |
 | Visibilité front prouvée | partiel | parités par lot 100 % (L1–L7), 0 consolidée dans le tracker | intégrer les parités ; traiter les 640 offres sans source opérante |
 | Audit final C1–C3 consolidé | **restant** | — | après la passe B6 |

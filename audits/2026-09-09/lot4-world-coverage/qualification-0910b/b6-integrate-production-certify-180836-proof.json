@@ -1,0 +1,30 @@
+{
+  "at": "2026-09-10T18:08:36.978Z",
+  "environment": "production",
+  "step": "certify",
+  "proofs": [
+    {
+      "key": "vf-corporation",
+      "step": "certify",
+      "result": {
+        "boardReference": "vfc.wd5.myworkdayjobs.com/en-US/vfc_careers",
+        "scopeVerdict": "LABELS_OUTSIDE_OWNER",
+        "written": {
+          "sourceKey": "vf-corporation",
+          "sourceHash": "83466dc7ef0d5d9fda89e9af71a375a27cb2d36abe20e0b5f005ff600a35081e",
+          "verdict": "VERIFIED",
+          "written": 1
+        },
+        "scope": "MULTI_BRAND"
+      },
+      "after": {
+        "key": "vf-corporation",
+        "status": "DRAFT",
+        "tenantKey": "workday:vfc/vfc_careers",
+        "robotsVerdict": "ALLOWED",
+        "robotsCheckedAt": "2026-09-10T18:03:38.901Z",
+        "verifiedJobCount": 1271
+      }
+    }
+  ]
+}

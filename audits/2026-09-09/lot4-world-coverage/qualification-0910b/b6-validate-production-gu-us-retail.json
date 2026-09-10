@@ -1,0 +1,78 @@
+{
+ "at": "2026-09-10T14:56:48.897Z",
+ "key": "gu-us-retail",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/retail_us_GU/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T14:56:47.979Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 5,
+ "parsed": 5,
+ "declaredTotal": 5,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 5,
+    "uniqueIds": 5,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 0,
+ "labels": [
+  {
+   "label": "GU USA LLC",
+   "n": 5,
+   "class": "OWNER"
+  }
+ ],
+ "countries": [
+  [
+   "United States of America",
+   5
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "GU",
+  "ownerKey": "GU",
+  "labels": [
+   {
+    "label": "GU USA LLC",
+    "n": 5,
+    "class": "OWNER"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 5,
+ "withDescription": 5,
+ "sampleTitles": [
+  "Loss Prevention Agent — GU NY SOHO(GUUS)",
+  "HR Generalist: GU Store — GU NY SOHO(GUUS)",
+  "GU In-Store Visual Merchandising Lead (IMD/VMD) — GU NY SOHO(GUUS)",
+  "Loss Prevention Supervisor — GU NY SOHO(GUUS)",
+  "Customer Service Associate — GU NY SOHO(GUUS)"
+ ],
+ "seconds": 1,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T14:56:39.633Z"
+}

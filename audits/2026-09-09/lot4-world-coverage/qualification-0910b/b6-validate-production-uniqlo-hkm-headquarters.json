@@ -1,0 +1,92 @@
+{
+ "at": "2026-09-10T14:56:44.059Z",
+ "key": "uniqlo-hkm-headquarters",
+ "status": "DRAFT",
+ "kind": "workday",
+ "ats": "WORKDAY",
+ "request": {
+  "origin": "https://fastretailing.wd3.myworkdayjobs.com",
+  "path": "/wday/cxs/fastretailing/headquarters_hkm_Uniqlo/jobs"
+ },
+ "robotsVerdict": "ALLOWED",
+ "robotsCheckedAt": "2026-09-10T14:56:43.128Z",
+ "robots": {
+  "verdict": "ALLOWED",
+  "httpStatus": 200,
+  "sha256": "16194fb115a13523839898ff8795e6db9d61d87fd0f53df0343401199486b70c",
+  "bytes": 8111
+ },
+ "fetched": 6,
+ "parsed": 6,
+ "declaredTotal": 6,
+ "complete": true,
+ "truncated": false,
+ "enumeration": {
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_REACHED",
+  "issues": [],
+  "scopes": [
+   {
+    "scope": "jobs",
+    "declaredTotal": 6,
+    "uniqueIds": 6,
+    "pages": 1,
+    "complete": true
+   }
+  ]
+ },
+ "rejectedRows": 0,
+ "held": 2,
+ "labels": [
+  {
+   "label": "UNIQLO HONG KONG, LIMITED",
+   "n": 4,
+   "class": "OWNER"
+  },
+  {
+   "label": "(catalogue label)",
+   "n": 2,
+   "class": "CATALOGUE"
+  }
+ ],
+ "countries": [
+  [
+   "Hong Kong",
+   4
+  ],
+  [
+   "(none)",
+   2
+  ]
+ ],
+ "scopeEvidence": {
+  "maison": "Uniqlo",
+  "ownerKey": "UNIQLO",
+  "labels": [
+   {
+    "label": "UNIQLO HONG KONG, LIMITED",
+    "n": 4,
+    "class": "OWNER"
+   },
+   {
+    "label": "(catalogue label)",
+    "n": 2,
+    "class": "CATALOGUE"
+   }
+  ],
+  "verdict": "SINGLE_BRAND_CONSISTENT",
+  "other": []
+ },
+ "withCountry": 4,
+ "withDescription": 4,
+ "sampleTitles": [
+  "Senior Officer/Assistant Manager, Data Analytics (Voice of Customer) — Hong Kong-Tsim Sha Tsui-UQHK",
+  "Manager, Information Security Office — Hong Kong-Tsim Sha Tsui-UQHK",
+  "Part Time Clerk, HR BP & Recruitment (3 months Contract) — ",
+  "Assistant Manager, Product Marketing — Hong Kong-Tsim Sha Tsui-UQHK",
+  "Part Time Clerk, Store Operations Support (Japanese N1) — "
+ ],
+ "seconds": 1,
+ "written": true,
+ "sourceUpdatedAt": "2026-09-10T14:56:39.222Z"
+}
