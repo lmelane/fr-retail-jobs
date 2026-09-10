@@ -147,7 +147,9 @@ Cause exacte, `workday.ts` : leur détail ne porte **aucun employeur** (`raw_cou
 
 La retenue est **conservée** — rien n'est publié sans employeur prouvé — mais les champs factuels du même document sont désormais appliqués. **Test de non-régression vérifié en échec sur l'ancien code** (`git stash` : 1 failed / 20 passed), plus un second test prouvant qu'**aucune date n'est inventée** quand le détail sans employeur n'en porte pas.
 
-**État exact** : cause corrigée et testée ; **les 2 offres ne sont pas encore réparées**. **Prochaine action** : rejeu borné de la source sous protocole (sauvegarde, clone, production, rejeu 0), reporté en **P3**.
+**État exact : RÉPARÉ ET VÉRIFIÉ** (2026-09-10 22:11 UTC), sous protocole complet avec rejeu à 0.
+
+Contrôle après, offre par offre : les 6 offres de la source sont datées, et **chaque `postedAt` écrit égale exactement son `raw_date`** — aucune date inventée. Les deux offres réparées conservent `countryCode` et `city` **nuls**, car leur détail ne les porte pas : seuls les champs réellement présents dans l'archive ont été remplis. Les 820 retenues de publication sont intactes.
 
 ## Décision de réparation, pour l'ensemble des 1 452
 

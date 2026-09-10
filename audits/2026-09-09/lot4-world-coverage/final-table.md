@@ -1,10 +1,10 @@
-# LOT 4 — tableau final par source (généré le 2026-09-10T20:22Z, 441 sources ACTIVE/PAUSED)
+# LOT 4 — tableau final par source (généré le 2026-09-10T22:13Z, 441 sources ACTIVE/PAUSED)
 
 Généré par `apps/aggregator/scripts/coverage/final-table.mts` depuis la base de production (lecture seule) et l'inventaire unique. Une ligne = une source ; « Acteur » = les sociétés réellement créditées par la source (une source peut en nourrir plusieurs). « Commit » / « Déploiement » = la révision et l'état du run de pipeline qui a écrit la source en dernier. Aucune ligne ne prouve la couverture mondiale de l'acteur.
 
-**Fenêtre d'observation des rejets, retenues et refus d'identité : 7 jours, du 2026-09-03T20:22Z au 2026-09-10T20:22Z.** Un événement antérieur n'est pas absent, il est hors fenêtre. Les colonnes « Collecte » et « Publication » décrivent l'état courant, sans fenêtre.
+**Fenêtre d'observation des rejets, retenues et refus d'identité : 7 jours, du 2026-09-03T22:13Z au 2026-09-10T22:13Z.** Un événement antérieur n'est pas absent, il est hors fenêtre. Les colonnes « Collecte » et « Publication » décrivent l'état courant, sans fenêtre.
 
-## Les cinq états, sur les 441 sources ACTIVE/PAUSED (mesure du 2026-09-10T20:23Z)
+## Les cinq états, sur les 441 sources ACTIVE/PAUSED (mesure du 2026-09-10T22:14Z)
 
 Dénominateur : les sources ACTIVE/PAUSED de cette génération. « Non vérifiée » n'est jamais compté comme un succès ni comme un échec : c'est une absence de preuve, comptée à part.
 
@@ -14,7 +14,7 @@ Dénominateur : les sources ACTIVE/PAUSED de cette génération. « Non vérifi�
 | Collecte opérationnelle (dernier run OK/NEW/DEGRADED, offres actives) | 440 | 99,8 % (440/441) | 0 sans aucun run |
 | Collecte exhaustive prouvée en production (annoncées = lues, attestation non retenue) | 135 | 30,6 % (135/441) | — |
 | Attribution employeur prouvée (100 % des représentations actives sous une décision revue) | 40 | 9,1 % (40/441) | 353 sans observation |
-| Publication vérifiée (compteur API publique = base pour chaque société nourrie) | 440 | 99,8 % (440/441) | 0 |
+| Publication vérifiée (compteur API publique = base pour chaque société nourrie) | 441 | 100 % (441/441) | 0 |
 | Les cinq à la fois | 25 | — | — |
 
 **Ce que « Publication vérifiée » signifie exactement, et ce qu'elle ne dit pas.** Pour chaque source, on prend les sociétés qu'elle nourrit réellement (offres actives) et, pour chacune, on compare **deux nombres** : le total d'offres actives de cette société dans la base, et le `total` renvoyé par `GET /api/jobs?maison=<nom>` sur le site public. La source compte comme vérifiée si **toutes** ses sociétés sont à égalité. Le compte est donc *par source*, mais le prédicat porte sur *ses sociétés* — une société nourrie par deux sources fait échouer les deux.
@@ -23,7 +23,7 @@ Limites à ne pas franchir en lisant ce chiffre : (a) il ne compare que des **co
 
 | Acteur | Source | Cinq états | Identité | Périmètre | Collecte | Rejets/blocages | Publication | Commit | Déploiement | Preuve prod | Restant |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Ulta Beauty / Ulta Beauty, Inc. | ulta-jibe (jibe) | officielle ✓ · opérationnelle ✓ · exhaustive ✗ · attribution non vérifiée (0 / 10290 observées) · publication ✗ | certifiée (SINGLE_BRAND, 2026-09-10) | SINGLE_BRAND | DEGRADED 2026-09-08 : 9964 lues / 9966 annoncées, tronquée · RECEIPT_COMPLETE_2026-09-09_PRODUCTION_RUN_DUE | aucun depuis le 2026-09-03 | 10290 actives : Ulta Beauty 10289, Ulta Beauty, Inc. 1 | non enregistré (run antérieur à PipelineRun) | run 2026-09-08 hors registre | NON (1/10290) | run de production à rejouer ; couverture mondiale de l'acteur non prouvée par ce flux |
+| Ulta Beauty | ulta-jibe (jibe) | officielle ✓ · opérationnelle ✓ · exhaustive ✗ · attribution non vérifiée (0 / 10290 observées) · publication ✓ | certifiée (SINGLE_BRAND, 2026-09-10) | SINGLE_BRAND | DEGRADED 2026-09-08 : 9964 lues / 9966 annoncées, tronquée · RECEIPT_COMPLETE_2026-09-09_PRODUCTION_RUN_DUE | aucun depuis le 2026-09-03 | 10290 actives : Ulta Beauty 10290 | non enregistré (run antérieur à PipelineRun) | run 2026-09-08 hors registre | front = BDD | run de production à rejouer ; couverture mondiale de l'acteur non prouvée par ce flux |
 | Sephora / Louis Vuitton | lvmh (lvmh_algolia) | officielle ✓ · opérationnelle ✓ · exhaustive ✓ · attribution 45 / 6078 prouvées, 270 non observées · publication ✓ | certifiée (MULTI_BRAND, 2026-09-10) | MULTI_BRAND | OK 2026-09-10 : 5808 lues / 5808 annoncées · PROVEN_BY_DECLARED_TOTAL | aucun depuis le 2026-09-03 | 6078 actives : Sephora 2454, Louis Vuitton 642, Christian Dior Couture 495, Tiffany & Co. 450 (+47) | c275888 | COMPLETED_WITH_ERRORS 2026-09-10T08:32Z | front = BDD | couverture mondiale de l'acteur non prouvée par ce flux |
 | Foot Locker / Champs Sports | foot-locker-france (phenom) | officielle ✓ · opérationnelle ✓ · exhaustive ✗ · attribution non vérifiée (0 / 2859 observées) · publication ✓ | certifiée (MULTI_BRAND, 2026-09-10) | MULTI_BRAND | DEGRADED 2026-09-08 : 2842 lues / 2853 annoncées, tronquée · INCOMPLETE_EXPLAINED (EXPLAINED) | aucun depuis le 2026-09-03 | 2859 actives : Foot Locker 1933, Champs Sports 487, Kids Foot Locker 430, WSS 9 | non enregistré (run antérieur à PipelineRun) | run 2026-09-08 hors registre | front = BDD | écart expliqué, non résorbé ; couverture mondiale de l'acteur non prouvée par ce flux |
 | Coach / Kate Spade | tapestry (workday) | officielle ✓ · opérationnelle ✓ · exhaustive ✗ · attribution 2086 / 2183 prouvées, 97 non observées · publication ✓ | certifiée (MULTI_BRAND, 2026-09-10) | MULTI_BRAND | DEGRADED 2026-09-10 : 2091 lues / 2091 annoncées · NOT_PROVEN (incomplete) | publication_held 15 ; write_failed 1815 ; identité à revoir 1815 | 2183 actives : Coach 1545, Kate Spade 502, Tapestry 136 | 899b9f1 | COMPLETED 2026-09-10T09:41Z | front = BDD | complétude à prouver ; écarts à traiter ; couverture mondiale de l'acteur non prouvée par ce flux |

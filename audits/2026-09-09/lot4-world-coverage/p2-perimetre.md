@@ -1,5 +1,10 @@
 # LOT P2 — le périmètre initial, dossier par dossier (2026-09-10, 21:37–21:40 UTC)
 
+> **STATUT : réparations instruites EXÉCUTÉES et vérifiées en production le 2026-09-10 à 22:11–22:14 UTC.**
+> Talentsoft **102**, UNIQLO **2**, Ulta **1** — sous protocole complet : sauvegarde fraîche (494 Mo, sha256 `e0737aa4…6660`) → restauration sur clone (la restauration EST la preuve) → répétition sur clone neuf → application ciblée en production → contrôles avant/après → **rejeu à 0**.
+> **Résultat vérifié** : 0 `location` pollué (101 avant), 0 offre UNIQLO non datée (2 avant), parité Ulta **10 290 = 10 290**, offres actives **79 516 inchangées**, **820 retenues de publication intactes**, **aucune date inventée** (chaque `postedAt` écrit égale exactement son `raw_date`). Publication vérifiée : **441/441**, plus aucun écart.
+> **Restent ouverts dans P2** : doublons sur identifiant instable (cause à instruire), FashionJobs 172 détachables, et les dossiers bloqués par une décision ou un jeton.
+
 Toutes les mesures ci-dessous sont prises en **REPEATABLE READ**, niveau lu dans la transaction et asserté. Crons gelés, catalogue non étendu.
 
 Chaque dossier porte : **résultat · preuve · traitement appliqué ou explicitement retenu · état exact · prochaine action**. « Non réparé » n'y signifie jamais « résolu ».
@@ -32,7 +37,7 @@ En revanche, **20 libellés font encore l'objet d'un refus d'identité sur des o
 
 **Correctif appliqué** (`talentsoft.ts`) : chaque catégorie est triée par **ce qu'elle est**, la règle que le chemin HTML suivait déjà ; ce chemin reçoit la même garde. **Tests** : cartes réelles FR et DE, gabarit Longchamp (où le contrat est bien premier), et une ville dont les lettres ressemblent à un contrat (« Stagira »). 17 tests verts.
 
-**État exact** : cause corrigée et déployable ; **les 102 offres existantes ne sont pas encore réparées**. **Prochaine action** : réparation hors ligne depuis le RAW archivé (les catégories y sont), sous sauvegarde et répétition sur clone — aucune recollecte nécessaire.
+**État exact : RÉPARÉ ET VÉRIFIÉ** (2026-09-10 22:11 UTC). 102 offres traitées sous protocole complet, rejeu à 0, **0 `location` pollué** en production (101 avant). Cas limite trouvé par la répétition sur clone : `location = "Stage"` sans virgule n'a aucun lieu à extraire → la valeur est **vidée** (effacer une valeur fausse est légitime, en inventer une ne l'est pas).
 
 ## 3. Ulta — l'unique écart base/API
 
@@ -47,7 +52,10 @@ En revanche, **20 libellés font encore l'objet d'un refus d'identité sur des o
 
 **Traitement retenu** : **fusion d'identité** vers `ULTA_BEAUTY`, mécanisme existant (comme les 209 fusions de D45 : id, URL et `firstSeenAt` conservés, seul le préfixe de clé de cluster change). Ce n'est pas une suppression : l'offre est conservée, elle change de rattachement.
 
-**État exact** : non réparé dans ce lot. **Prochaine action** : fusion sous protocole (dump frais → clone → production → rejeu 0), avec la vérification de parité avant/après. C'est la seule ligne de parité en écart des 441.
+**État exact : RÉPARÉ ET VÉRIFIÉ** (2026-09-10 22:11 UTC). Fusion appliquée par le mécanisme de **revue d'identité** (`buildEmployerRepair`/`applyEmployerRepair`), avec preuve officielle archivée (page `ulta.com` portant « © Ulta Beauty, Inc. », sha256 `1a06e23a…a903`). Rejeu `alreadyApplied: true`, 0 changement.
+**Parité rétablie et mesurée : base 10 290 = API 10 290.** Le tableau final passe à **441/441 sans aucun écart**.
+
+> **La répétition sur clone a prouvé son utilité ici.** Ma première version écrivait `mergedIntoId` directement : la base l'a **refusée** (`Company_identity_relationship_review`), car une fusion exige un `identityReviewId` — une décision revue et tracée. La garde a fonctionné exactement comme prévu, et le correctif a été de passer par le mécanisme de revue, pas de contourner la contrainte.
 
 ## 4. isFrance / countryCode — cohérence vérifiée, dossier clos
 
@@ -69,20 +77,22 @@ Reste distinct et non traité ici : **4 885 offres sans `countryCode`** (6,1 %),
 
 **Résultat : 44 URLs portent plusieurs offres canoniques actives, soit 47 offres en excès** — visibles par le candidat (même page, plusieurs cartes).
 
-| Cause | URLs | Offres en excès | Nature |
-|---|---:|---:|---|
-| `psycho-bunny` | 12 | 12 | `externalId` en **hash instable** entre runs : la même offre entre deux fois |
-| `hermes` / `wttj-sector` | 42 | 42 → en fait 1 par URL | même offre sous la source **PAUSED** et sous le balayage sectoriel |
-| `alberto`, `kastner-ohler` | 4 | 5 | identifiant instable côté adaptateur |
-| `fashionjobs` (Aroma-Zone) | 1 | 1 | **deux identifiants FashionJobs** pour la même offre |
-| `lvmh`, `tiffany-oracle` | 8 | 8 | à instruire |
+| Cause (agrégat complet, sans LIMIT) | URLs | Offres | Excès |
+|---|---:|---:|---:|
+| **Même source, plusieurs `externalId` sur la MÊME url** — identifiant instable, défaut chez nous | **19** | 41 | **22** |
+| Plusieurs sources attestant la même page — attestation multi-sources, normale | **25** | 50 | 25 |
+| **Total** | **44** | **91** | **47** |
+
+Sources réellement porteuses de l'identifiant instable, par URL : `psycho-bunny` 12 · `alberto` 3 · `hermes` 2 · `kastner-ohler` 1 · `fashionjobs` 1.
+
+> **Deux erreurs de ma première passe, corrigées par cette réconciliation.** (a) Je citais « ~25 offres » depuis un listing tronqué par `LIMIT 15` : un extrait n'est pas un total, le chiffre exact est **22**. (b) J'accusais `lvmh` et `tiffany-oracle` d'identifiants instables : la mesure discriminante (même source, plusieurs `externalId` pour une même URL) les innocente — elles sont `instable=false`, leurs doublons viennent d'une attestation multi-sources. **Une URL dupliquée ne prouve pas un identifiant instable.**
 
 **Traitement retenu, différencié** :
 - Les doublons `hermes` / `wttj-sector` **se résorbent par le dossier PAUSED** (§ 6) : c'est le même fait vu deux fois, pas un défaut d'adaptateur.
 - Les doublons `fashionjobs` **se résorbent par le dossier FashionJobs** (§ 7).
-- Restent **~25 offres** sur identifiant instable (`psycho-bunny`, `alberto`, `kastner-ohler`, `lvmh`, `tiffany-oracle`) : un `externalId` doit être **stable entre runs**, c'est la condition de la déduplication (D26).
+- Restent **22 offres en excès** sur 19 URLs, portées par 5 sources (ci-dessus) : un `externalId` doit être **stable entre runs**, c'est la condition de la déduplication (D26).
 
-**État exact** : mesuré, non corrigé. **Prochaine action** : corriger la dérivation d'`externalId` de ces adaptateurs (cause), puis `reconcile` sur les offres concernées (données) — dans cet ordre.
+**État exact : mesuré et réconcilié, cause NON INSTRUITE, donc non corrigé.** Savoir que la même source a produit deux identifiants pour une même URL ne dit pas encore *pourquoi* — hash recalculé sur un contenu qui bouge, pagination qui renvoie deux fois la même offre sous deux clés, ou identifiant dérivé d'un champ instable. **Prochaine action** : instruire la dérivation d'`externalId` de `psycho-bunny` (12 URLs, le cas le plus fourni) sur son RAW archivé, établir la cause, puis la corriger avant tout `reconcile`. **Ce dossier reste dans P2.**
 
 ## 6. Les 52 offres WTTJ sous source PAUSED — qualifiées sans réactiver les crons
 
@@ -117,18 +127,21 @@ Reste distinct et non traité ici : **4 885 offres sans `countryCode`** (6,1 %),
 
 ---
 
-## Ce qui reste ouvert après P2, explicitement
+## Ce qui reste ouvert — état exact, opération restante, blocage
 
-| Dossier | État | Volume | Prochaine action | Reporté vers |
-|---|---|---:|---|---|
-| Talentsoft — réparation des données | cause corrigée + testée, données non réparées | 102 offres | réparation hors ligne depuis le RAW, sous protocole | **P3** |
-| UNIQLO — réparation des données | cause corrigée + testée (test vérifié en échec sur l'ancien code), données non réparées | 2 offres | rejeu de la source, sous protocole | **P3** |
-| Ulta — fusion d'identité | mesuré, non réparé | 1 offre | fusion sous protocole, parité avant/après | **P3** |
-| Doublons sur identifiant instable | mesuré, non corrigé | ~25 offres | corriger l'`externalId` des 5 adaptateurs, puis `reconcile` | **P3** |
-| Refus d'identité sur libellés actifs | mesuré | 20 libellés | revue d'alias, avec la famille G | **P3** |
-| WTTJ sous PAUSED | qualifié, sous contrôle | 52 offres | trancher au premier run complet après reprise des crons | dépend d'une **décision propriétaire** |
-| FashionJobs — 172 détachables | instruit | 172 offres | détachement, sans effet visible | **P3** |
-| FashionJobs — 585 dépendantes | instruit, **bloqué** | 585 offres (583 FR) | retrait administratif | **décision propriétaire** |
-| Ralph Lauren — egress | sonde écrite, **bloquée** (jeton en lecture seule, HTTP 403) | 1 103 offres | rejouer la sonde avec un jeton autorisé | **P3** |
-| Ralph Lauren — offre datée unique | caractérisée (seul `externalId` à 4 chiffres), inexpliquée | 1 offre | sans objet tant que l'egress n'est pas vérifié | **P3** |
-| Offres sans `postedAt` restantes | qualifiées par source | 306 indécidables + 5 RAW vides | voir § dédié du dossier Ralph Lauren | **P3** |
+**Exécuté et vérifié en production (2026-09-10 22:11–22:14 UTC)** : Talentsoft 102 · UNIQLO 2 · Ulta 1. Sauvegarde `e0737aa4…6660` restaurée sur clone (preuve), répétition sur clone neuf, application ciblée, contrôles avant/après, **rejeu à 0**. Offres actives **79 516 inchangées**, retenues **820 intactes**, parité **441/441**.
+
+| Dossier | État exact | Volume | Opération restante | Blocage | Lot |
+|---|---|---:|---|---|---|
+| Doublons — identifiant instable | réconcilié (19 URLs / 22 offres, 5 sources), **cause non instruite** | 22 | instruire la dérivation d'`externalId` de `psycho-bunny` sur son RAW, puis corriger la cause, puis `reconcile` | aucun | **P2** |
+| FashionJobs — 172 détachables | instruit, non exécuté | 172 | détachement via `deactivateSources` (`WITHDRAWN`), sans effet visible | aucun | **P2** |
+| FashionJobs — 585 dépendantes | instruit | 585 (583 FR) | retrait administratif | **décision propriétaire** | **P2** |
+| Ralph Lauren — vérification egress | sonde écrite, non exécutée | 1 103 | rejouer la sonde bornée depuis l'egress | **jeton Railway en lecture seule (HTTP 403)** | **P2** |
+| Ralph Lauren — offre datée unique | caractérisée (seul `externalId` à 4 chiffres), inexpliquée | 1 | dépend de la vérification egress | idem | **P2** |
+| Fenwick — 31/31 non datées | qualifié (gabarit, pas résidu) | 31 | observation ciblée du board Volcanic | aucun | **P2** |
+| `element-6` — RAW vides | qualifié | 5 | rejeu ciblé de ces 5 identifiants | aucun | **P2** |
+| 301 sans champ de date | qualifié | 301 | comparer un RAW daté et un non daté par source, hors ligne | aucun | **P2** |
+| Refus d'identité sur libellés actifs | mesuré | 20 libellés | revue d'alias | aucun | **P2** |
+| WTTJ sous PAUSED | qualifié, sous contrôle | 52 | trancher au premier run complet | **décision de reprise des crons** | **P2** |
+
+**Aucun de ces dossiers n'est reclassé en P3.** Les blocages sont propres à leur dossier : le refus du jeton Railway n'empêche ni l'observation Fenwick, ni l'instruction des doublons, ni le détachement des 172 ; l'arbitrage FashionJobs n'empêche rien d'autre que les 585.
