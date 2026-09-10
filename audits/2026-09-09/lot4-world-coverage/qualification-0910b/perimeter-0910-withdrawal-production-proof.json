@@ -1,0 +1,32 @@
+{
+  "at": "2026-09-10T07:47:23.473Z",
+  "environment": "production",
+  "commit": "c2758888aabe91cc890724e537cdae335a2d2553",
+  "batchId": "20260910-LOT4-PERIMETER-WITHDRAWAL-v1",
+  "planHash": "6739191f6a69ce9c7c85323e47f5de1beec2c5674c60313c3392b1e4bae3661f",
+  "operations": 16,
+  "activeJobsBefore": 74853,
+  "activeJobsAfter": 74846,
+  "result": {
+    "alreadyApplied": false,
+    "written": 16,
+    "excludedActiveRepresentations": 0,
+    "lifecycleViolations": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "written": 0,
+    "excludedActiveRepresentations": 0,
+    "lifecycleViolations": 0
+  },
+  "statuses": [
+    {
+      "key": "maryruth-s",
+      "status": "RETIRED"
+    },
+    {
+      "key": "cal-k-holding",
+      "status": "RETIRED"
+    }
+  ]
+}

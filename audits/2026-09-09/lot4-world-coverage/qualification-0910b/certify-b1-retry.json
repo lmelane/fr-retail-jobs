@@ -1,0 +1,605 @@
+[
+ {
+  "key": "etam",
+  "maison": "Etam",
+  "kind": "teamtailor",
+  "portalHost": "career.groupeetam.com",
+  "officialDomain": "groupeetam.com",
+  "ownerDomain": null,
+  "pages": [
+   {
+    "url": "https://career.groupeetam.com/",
+    "status": 200,
+    "transport": "HTTP",
+    "sha256": "e9d7c3a6e7cc86ea14fbec0786ba44b261584d1817eb08e47729b3fe30f40fb0",
+    "onOfficial": true,
+    "onOwner": false,
+    "isPortalItself": true,
+    "linksPortal": true,
+    "match": "https://career.groupeetam.com/jobs.rss",
+    "ownerLink": null,
+    "careerLinks": [
+     "https://assets-aws.teamtailor-cdn.com/assets/careersite-82f75d0c.css",
+     "https://career.groupeetam.com/jobs.rss",
+     "https://career.groupeetam.com/cookie-policy",
+     "https://career.groupeetam.com/",
+     "https://career.groupeetam.com/pages/copie-de-nos-metiers",
+     "https://career.groupeetam.com/pages/nos-metiers",
+     "https://career.groupeetam.com/jobs",
+     "https://career.groupeetam.com",
+     "https://career.maison123.com",
+     "https://career.etam.com",
+     "https://career.undiz.com",
+     "https://career.groupeetam.com/connect/login"
+    ],
+    "title": "Bienvenue dans le Groupe Etam - Groupe ETAM"
+   },
+   {
+    "url": "https://www.groupeetam.com/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.groupeetam.com/en/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.groupeetam.com/fr/nous-rejoindre/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.groupeetam.com/en/join-us/",
+    "status": null,
+    "failed": true
+   }
+  ],
+  "reciprocal": null,
+  "selfHosted": {
+   "url": "https://career.groupeetam.com/",
+   "sha256": "e9d7c3a6e7cc86ea14fbec0786ba44b261584d1817eb08e47729b3fe30f40fb0",
+   "transport": "HTTP",
+   "title": "Bienvenue dans le Groupe Etam - Groupe ETAM"
+  }
+ },
+ {
+  "key": "loccitane-fr",
+  "maison": "L'Occitane",
+  "kind": "teamtailor",
+  "portalHost": "jobs-fr.loccitane.com",
+  "officialDomain": "loccitane.com",
+  "ownerDomain": null,
+  "pages": [
+   {
+    "url": "https://jobs-fr.loccitane.com/",
+    "status": 200,
+    "transport": "HTTP",
+    "sha256": "b27af0cf30051e302514cb67f694b454e0e72a3d77f6d785df4eba3948644632",
+    "onOfficial": true,
+    "onOwner": false,
+    "isPortalItself": true,
+    "linksPortal": true,
+    "match": "https://jobs-fr.loccitane.com/jobs.rss",
+    "ownerLink": null,
+    "careerLinks": [
+     "https://assets-aws.teamtailor-cdn.com/assets/packs/css/careersite-bb816264.css",
+     "https://jobs-fr.loccitane.com/jobs.rss",
+     "https://jobs-fr.loccitane.com/cookie-policy",
+     "https://jobs-fr.loccitane.com/",
+     "https://jobs-fr.loccitane.com/jobs",
+     "https://jobs-fr.loccitane.com/sso_login",
+     "https://jobs-fr.loccitane.com",
+     "https://jobs-ukie.loccitane.com",
+     "https://jobs-fr.loccitane.com/connect/login",
+     "https://jobs-fr.loccitane.com/connect",
+     "#jobs",
+     "https://jobs-fr.loccitane.com/jobs/8333550-conseiller-e-de-vente"
+    ],
+    "title": "Travailler chez L'Occitane en Provence - L'Occitane en Provence - France"
+   },
+   {
+    "url": "https://group.loccitane.com/",
+    "status": 200,
+    "transport": "HTTP",
+    "sha256": "2806cf094e0b68fb62dc8fbf568a4752cabc9fa3acb201e4fd39cce2364cbccd",
+    "onOfficial": true,
+    "onOwner": false,
+    "isPortalItself": false,
+    "linksPortal": false,
+    "match": null,
+    "ownerLink": null,
+    "careerLinks": [
+     "https://careers.loccitane.com/"
+    ],
+    "title": "Group L'OCCITANE"
+   },
+   {
+    "url": "https://group.loccitane.com/careers",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://group.loccitane.com/join-us",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://fr.loccitane.com/",
+    "transport": "BROWSER",
+    "sha256": "f0d6314cafe4af948a38242c52e7819bb0ef7555ebe6619a15dec66b6386d39a",
+    "onOfficial": true,
+    "onOwner": false,
+    "isPortalItself": false,
+    "linksPortal": false,
+    "match": null,
+    "ownerLink": null,
+    "careerLinks": [],
+    "title": ""
+   }
+  ],
+  "reciprocal": null,
+  "selfHosted": {
+   "url": "https://jobs-fr.loccitane.com/",
+   "sha256": "b27af0cf30051e302514cb67f694b454e0e72a3d77f6d785df4eba3948644632",
+   "transport": "HTTP",
+   "title": "Travailler chez L'Occitane en Provence - L'Occitane en Provence - France"
+  }
+ },
+ {
+  "key": "l-occitane-en-provence-2",
+  "maison": "L’Occitane en Provence +2",
+  "kind": "successfactors",
+  "portalHost": "careers-group.loccitane.com",
+  "officialDomain": "loccitane.com",
+  "ownerDomain": null,
+  "pages": [
+   {
+    "url": "https://careers-group.loccitane.com/",
+    "status": 200,
+    "transport": "HTTP",
+    "sha256": "bd0b675c5852160ae35a4caaae45151d73f29862b9787372d29049876f3883a0",
+    "onOfficial": true,
+    "onOwner": false,
+    "isPortalItself": true,
+    "linksPortal": true,
+    "match": "https://careers-group.loccitane.com/platform/bootstrap/3.4.8_NES/css/bootstrap.min.css",
+    "ownerLink": null,
+    "careerLinks": [
+     "https://careers-group.loccitane.com/platform/bootstrap/3.4.8_NES/css/bootstrap.min.css",
+     "https://careers.loccitane.com/?locale=en_US",
+     "https://group.loccitane.com/why-join-loccitane",
+     "https://group.loccitane.com/careers/career-areas",
+     "https://careers-group.loccitane.com/?locale=de_DE",
+     "https://careers-group.loccitane.com/?locale=en_CA",
+     "https://careers-group.loccitane.com/?locale=en_GB",
+     "https://careers-group.loccitane.com/?locale=en_US",
+     "https://careers-group.loccitane.com/?locale=fr_FR"
+    ],
+    "title": ""
+   },
+   {
+    "url": "https://group.loccitane.com/",
+    "status": 200,
+    "transport": "HTTP",
+    "sha256": "2806cf094e0b68fb62dc8fbf568a4752cabc9fa3acb201e4fd39cce2364cbccd",
+    "onOfficial": true,
+    "onOwner": false,
+    "isPortalItself": false,
+    "linksPortal": false,
+    "match": null,
+    "ownerLink": null,
+    "careerLinks": [
+     "https://careers.loccitane.com/"
+    ],
+    "title": "Group L'OCCITANE"
+   },
+   {
+    "url": "https://group.loccitane.com/careers",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://group.loccitane.com/join-us",
+    "status": null,
+    "failed": true
+   }
+  ],
+  "reciprocal": null,
+  "selfHosted": {
+   "url": "https://careers-group.loccitane.com/",
+   "sha256": "bd0b675c5852160ae35a4caaae45151d73f29862b9787372d29049876f3883a0",
+   "transport": "HTTP",
+   "title": ""
+  }
+ },
+ {
+  "key": "showroomprive",
+  "maison": "Showroomprive",
+  "kind": "teamtailor",
+  "portalHost": "talents.showroomprivegroup.com",
+  "officialDomain": "showroomprive.com",
+  "ownerDomain": "showroomprivegroup.com",
+  "pages": [
+   {
+    "url": "https://talents.showroomprivegroup.com/",
+    "status": 200,
+    "transport": "HTTP",
+    "sha256": "0ec0a067b9ccc64210204ab636e8ca85e16b527d92df8fdfcd32d8acb22e9510",
+    "onOfficial": false,
+    "onOwner": true,
+    "isPortalItself": true,
+    "linksPortal": true,
+    "match": "https://talents.showroomprivegroup.com/jobs.rss",
+    "ownerLink": "https://talents.showroomprivegroup.com/jobs.rss",
+    "careerLinks": [
+     "https://assets-aws.teamtailor-cdn.com/assets/careersite-82f75d0c.css",
+     "https://talents.showroomprivegroup.com/jobs.rss",
+     "https://assets-aws.teamtailor-cdn.com/assets/careersite/Inter-latin-basic-1cec9a00.woff2",
+     "https://talents.showroomprivegroup.com/cookie-policy",
+     "https://talents.showroomprivegroup.com/",
+     "https://talents.showroomprivegroup.com/jobs",
+     "https://talents.showroomprivegroup.com/stories",
+     "https://talents.showroomprivegroup.com/sso_login",
+     "https://talents.showroomprivegroup.com/connect/login",
+     "https://talents.showroomprivegroup.com/connect",
+     "#jobs",
+     "https://talents.showroomprivegroup.com/jobs/7515197-juriste-senior-pole-donnees-personnelles-it-ia-h-f-x"
+    ],
+    "title": "Talents - Showroomprive.com"
+   },
+   {
+    "url": "https://talents.showroomprivegroup.com/jobs",
+    "status": 200,
+    "transport": "HTTP",
+    "sha256": "b926304482024e6e35886752d7d787ce815bdbd2ba56568c6e4b707f218a5def",
+    "onOfficial": false,
+    "onOwner": true,
+    "isPortalItself": true,
+    "linksPortal": true,
+    "match": "https://talents.showroomprivegroup.com/jobs.rss",
+    "ownerLink": "https://talents.showroomprivegroup.com/jobs.rss",
+    "careerLinks": [
+     "https://assets-aws.teamtailor-cdn.com/assets/careersite-82f75d0c.css",
+     "https://talents.showroomprivegroup.com/jobs.rss",
+     "https://assets-aws.teamtailor-cdn.com/assets/careersite/Inter-latin-basic-1cec9a00.woff2",
+     "https://talents.showroomprivegroup.com/cookie-policy",
+     "https://talents.showroomprivegroup.com/",
+     "https://talents.showroomprivegroup.com/jobs",
+     "https://talents.showroomprivegroup.com/stories",
+     "https://talents.showroomprivegroup.com/sso_login",
+     "https://talents.showroomprivegroup.com/connect/login",
+     "/jobs",
+     "https://talents.showroomprivegroup.com/jobs/7515197-juriste-senior-pole-donnees-personnelles-it-ia-h-f-x",
+     "https://talents.showroomprivegroup.com/jobs/6263266-key-account-manager-sport-h-f-x"
+    ],
+    "title": "Offres d'emploi disponibles - Showroomprive.com"
+   },
+   {
+    "url": "https://www.showroomprivegroup.com/",
+    "status": 200,
+    "transport": "HTTP",
+    "sha256": "24e55eccb72c9001f9bf70f892f30e0460ea22704c98294c911f6c55aaf9f0eb",
+    "onOfficial": false,
+    "onOwner": true,
+    "isPortalItself": false,
+    "linksPortal": true,
+    "match": "https://talents.showroomprivegroup.com/",
+    "ownerLink": "https://showroomprivegroup.com/xmlrpc.php",
+    "careerLinks": [
+     "https://talents.showroomprivegroup.com/",
+     "https://showroomprivegroup.com/talents",
+     "https://talents.showroomprivegroup.com/jobs"
+    ],
+    "title": "Groupe Showroomprivé |"
+   }
+  ],
+  "reciprocal": {
+   "url": "https://www.showroomprivegroup.com/",
+   "sha256": "24e55eccb72c9001f9bf70f892f30e0460ea22704c98294c911f6c55aaf9f0eb",
+   "match": "https://talents.showroomprivegroup.com/",
+   "transport": "HTTP",
+   "hop": "OWNER"
+  },
+  "selfHosted": null
+ },
+ {
+  "key": "versace",
+  "maison": "Versace",
+  "kind": "workday",
+  "portalHost": "capri.wd1.myworkdayjobs.com",
+  "officialDomain": "versace.com",
+  "ownerDomain": "capriholdings.com",
+  "pages": [
+   {
+    "url": "https://www.versace.com/us/en/careers/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.versace.com/us/en/careers.html",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.versace.com/international/en/careers/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.versace.com/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.capriholdings.com/careers/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.capriholdings.com/careers/default.aspx",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.capriholdings.com/",
+    "transport": "BROWSER",
+    "sha256": "98beb190d06fb37b9c338e9087660edf0008672d70fc735146db9bce7e9735b8",
+    "onOfficial": false,
+    "onOwner": true,
+    "isPortalItself": false,
+    "linksPortal": false,
+    "match": null,
+    "ownerLink": "https://www.capriholdings.com/overview/default.aspx",
+    "careerLinks": [
+     "https://www.capriholdings.com/people/Join-Us/default.aspx"
+    ],
+    "title": "Capri Holdings Limited - Investor Relations"
+   }
+  ],
+  "reciprocal": null,
+  "selfHosted": null
+ },
+ {
+  "key": "swarovski",
+  "maison": "Swarovski",
+  "kind": "workday",
+  "portalHost": "swarovski.wd3.myworkdayjobs.com",
+  "officialDomain": "swarovski.com",
+  "ownerDomain": "swarovskigroup.com",
+  "pages": [
+   {
+    "url": "https://www.swarovski.com/en-GB/s-careers/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.swarovski.com/en-US/s-careers/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.swarovski.com/en-GB/careers/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.swarovski.com/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.swarovskigroup.com/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.swarovskigroup.com/S/careers.en.html",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.swarovskigroup.com/S/jobs.en.html",
+    "status": null,
+    "failed": true
+   }
+  ],
+  "reciprocal": null,
+  "selfHosted": null
+ },
+ {
+  "key": "new-balance",
+  "maison": "New Balance",
+  "kind": "workday",
+  "portalHost": "newbalance.wd1.myworkdayjobs.com",
+  "officialDomain": "newbalance.com",
+  "ownerDomain": null,
+  "pages": [
+   {
+    "url": "https://jobs.newbalance.com/",
+    "status": 200,
+    "transport": "BROWSER",
+    "sha256": "7191e1bc3168e0d34e04695b7bf9b5275924f103998c647cd8886070dce78a57",
+    "onOfficial": true,
+    "onOwner": false,
+    "isPortalItself": false,
+    "linksPortal": false,
+    "match": null,
+    "ownerLink": null,
+    "careerLinks": [
+     "https://cdn.phenompeople.com/CareerConnectResources/common/js/globalplatform/1781270809227_globalstyles.css",
+     "https://cdn.phenompeople.com/CareerConnectResources/pp/NEBAGLOBAL/images/NBHQ_01HERO_DESKTOP_LookingSWDusk_np_01_RB-1768417359059.jpg",
+     "https://jobs.newbalance.com/global/en",
+     "https://cdn.phenompeople.com/CareerConnectResources/prod/NEBAGLOBAL/en_global/desktop/assets/images/favicon.ico",
+     "https://cdn.phenompeople.com/CareerConnectResources/prod/NEBAGLOBAL/en_global/desktop/assets/images/h/apple-touch-icon.png",
+     "https://cdn.phenompeople.com/CareerConnectResources/prod/NEBAGLOBAL/en_global/desktop/assets/images/m/apple-touch-icon.png",
+     "https://cdn.phenompeople.com/CareerConnectResources/prod/NEBAGLOBAL/en_global/desktop/assets/images/l/apple-touch-icon-precomposed.png",
+     "https://cdn.phenompeople.com/CareerConnectResources/prod/NEBAGLOBAL/en_global/desktop/assets/images/l/apple-touch-icon.png",
+     "https://cdn.phenompeople.com/CareerConnectResources/prod/NEBAGLOBAL/en_global/desktop/assets/images/l/splash.png",
+     "https://jobs.newbalance.com/us/en/",
+     "https://cdn.phenompeople.com/CareerConnectResources/NEBAGLOBAL/canvas/dstenantcss/main1758201639000.css",
+     "https://cdn.phenompeople.com/CareerConnectResources/platform/css/ph-ui-platform-1786344368936.css"
+    ],
+    "title": "Careers at New Balance | New Balance"
+   },
+   {
+    "url": "https://www.newbalance.com/careers/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.newbalance.com/careers.html",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.newbalance.com/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.newbalance.co.uk/careers/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.newbalance.co.uk/",
+    "status": null,
+    "failed": true
+   }
+  ],
+  "reciprocal": null,
+  "selfHosted": null
+ },
+ {
+  "key": "luhta",
+  "maison": "Luhta",
+  "kind": "teamtailor",
+  "portalHost": "luhta.teamtailor.com",
+  "officialDomain": "luhta.com",
+  "ownerDomain": "lfashiongroup.com",
+  "pages": [
+   {
+    "url": "https://www.luhta.com/",
+    "status": 200,
+    "transport": "HTTP",
+    "sha256": "6c96d555a7fd07f31fdd65a6a45d2d459f9fcc39e49c4721565ed4892308729a",
+    "onOfficial": true,
+    "onOwner": false,
+    "isPortalItself": false,
+    "linksPortal": false,
+    "match": null,
+    "ownerLink": null,
+    "careerLinks": [],
+    "title": "La maison nordique de marques dédiées aux sports, aux activités extérieures et bien plus | Luhta.com"
+   },
+   {
+    "url": "https://www.luhta.com/en/",
+    "status": 200,
+    "transport": "HTTP",
+    "sha256": "d93395d9635bd94d4fdebab4c95f4b508882a345d06862911d687b69c16374fd",
+    "onOfficial": true,
+    "onOwner": false,
+    "isPortalItself": false,
+    "linksPortal": false,
+    "match": null,
+    "ownerLink": null,
+    "careerLinks": [
+     "https://careers.luhta.com/en-GB"
+    ],
+    "title": "Nordic house of brands for sports, outdoors and more | Luhta.com"
+   },
+   {
+    "url": "https://www.luhta.com/en/careers",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.luhta.fi/",
+    "status": 200,
+    "transport": "HTTP",
+    "sha256": "19150061e9858ad0158d28e131657817629e566f65db242cd7347bb1760cf789",
+    "onOfficial": false,
+    "onOwner": false,
+    "isPortalItself": false,
+    "linksPortal": false,
+    "match": null,
+    "ownerLink": null,
+    "careerLinks": [
+     "https://careers.luhta.com/"
+    ],
+    "title": "Luhta® FI Official Site | Luhta.com"
+   },
+   {
+    "url": "https://www.lfashiongroup.com/",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.lfashiongroup.com/en/careers",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.lfashiongroup.com/en/work-with-us",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.lfashiongroup.com/fi/ura",
+    "status": null,
+    "failed": true
+   }
+  ],
+  "reciprocal": null,
+  "selfHosted": null
+ },
+ {
+  "key": "typology",
+  "maison": "Typology",
+  "kind": "teamtailor",
+  "portalHost": "typology-1732032895.teamtailor.com",
+  "officialDomain": "typology.com",
+  "ownerDomain": null,
+  "pages": [
+   {
+    "url": "https://www.typology.com/careers",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.typology.com/en/careers",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.typology.com/fr/carrieres",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.typology.com/jobs",
+    "status": null,
+    "failed": true
+   },
+   {
+    "url": "https://www.typology.com/",
+    "status": 200,
+    "transport": "HTTP",
+    "sha256": "956abfd441e13a13ca348c0fabb9cf1174d2107da1bea9237b1459b90583132d",
+    "onOfficial": true,
+    "onOwner": false,
+    "isPortalItself": false,
+    "linksPortal": false,
+    "match": null,
+    "ownerLink": null,
+    "careerLinks": [
+     "/rejoindre-lequipe"
+    ],
+    "title": "Soins pour la peau naturels, végan et Made in France — Typology"
+   }
+  ],
+  "reciprocal": null,
+  "selfHosted": null
+ }
+]

@@ -1,0 +1,56 @@
+{
+  "at": "2026-09-10T07:47:17.667Z",
+  "environment": "production",
+  "commit": "c2758888aabe91cc890724e537cdae335a2d2553",
+  "planHash": "fb2491c5af148f9307cfa4479d0c3bc85b9ea9ecf5efd920d92f2d956692e925",
+  "operations": {
+    "total": 55,
+    "Job": 53,
+    "Company": 1,
+    "JobSource": 0,
+    "Source": 1
+  },
+  "result": {
+    "alreadyApplied": false,
+    "written": 55,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "written": 0,
+    "sourceOwnerContradictions": 0,
+    "lifecycleViolations": 0
+  },
+  "allJobs": 78351,
+  "allActive": 74853,
+  "idAndLifecycleConservation": true,
+  "rawConservation": true,
+  "rawRepresentationsPreserved": 53,
+  "attributionAfter": [
+    {
+      "company": "Tricoci",
+      "kind": "RETAILER",
+      "isActive": false,
+      "jobs": 1
+    },
+    {
+      "company": "Tricoci",
+      "kind": "RETAILER",
+      "isActive": true,
+      "jobs": 52
+    }
+  ],
+  "sources": [
+    {
+      "key": "nutrire",
+      "maison": "Tricoci",
+      "tier": "EMPLOYER_DIRECT",
+      "status": "PAUSED",
+      "config": {
+        "origin": "https://careers.tricoci.com"
+      }
+    }
+  ],
+  "brandObservations": 0
+}

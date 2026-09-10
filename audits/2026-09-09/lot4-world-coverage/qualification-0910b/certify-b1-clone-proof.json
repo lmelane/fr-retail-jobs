@@ -1,0 +1,471 @@
+{
+  "at": "2026-09-10T07:46:39.234Z",
+  "environment": "clone",
+  "certified": [
+    "a-derma-4",
+    "aim-n",
+    "blue-banana",
+    "burnt",
+    "damiani",
+    "deckers",
+    "dfs",
+    "eurofragrance",
+    "karla-otto",
+    "katie-loxton",
+    "lexington",
+    "lvmh",
+    "mascot-workwear",
+    "mecca",
+    "motel",
+    "normal",
+    "prisma-media",
+    "pronovias",
+    "richemont",
+    "richemont-workday",
+    "tapestry"
+  ],
+  "alreadyCertified": [
+    "dr-pierre-ricaud",
+    "drunk-elephant-2",
+    "maison-margiela"
+  ],
+  "notCertified": [
+    "etam",
+    "l-occitane-en-provence-2",
+    "loccitane-fr",
+    "luhta",
+    "new-balance",
+    "showroomprive",
+    "swarovski",
+    "typology",
+    "versace"
+  ],
+  "details": [
+    {
+      "key": "a-derma-4",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 1,
+      "allOwner": false,
+      "proofUrl": "https://pierre-fabre.com/",
+      "artifactBytes": 2221382,
+      "reduction": "SCRIPTS_STYLES_STRIPPED",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "a-derma-4",
+        "sourceHash": "5d62c250067e7ffc7041553409fc348049ae23cc69d7b8faa47fb990a9fc68d4",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "aim-n",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://aimn.com/",
+      "artifactBytes": 582346,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "aim-n",
+        "sourceHash": "92f5ef344dabf0e90883f2ac4cb6cb5f989114d19f77e588fb65b590b93ff317",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "blue-banana",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://bluebananabrand.com/",
+      "artifactBytes": 2639521,
+      "reduction": "SCRIPTS_STYLES_STRIPPED",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "blue-banana",
+        "sourceHash": "e1ca592762806ed47c4888197fcd622ffca99c3dce7078cd438886c8a662e942",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "burnt",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://burnt.co.za/",
+      "artifactBytes": 1313422,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "burnt",
+        "sourceHash": "5c8105ca998ebf0218115eaf45f1d31093755cfbf4103bea281d9a82fda146f9",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "damiani",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://damianigroup.com/careers",
+      "artifactBytes": 127309,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "damiani",
+        "sourceHash": "e30776849457c27190624abc9779753c2dd1b140e70f9babb6e7d1b0441bf33c",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "deckers",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 4,
+      "allOwner": false,
+      "proofUrl": "https://deckers.com/",
+      "artifactBytes": 59336,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "deckers",
+        "sourceHash": "d8b7e7be85f5d188ed39bc0e059fa645ca6aabfe94b758ddd3447645a99396c4",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "dfs",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://dfs.com/",
+      "artifactBytes": 1637373,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "dfs",
+        "sourceHash": "b98ea846fd2b443e94ad38c9f0e7b555ddcfa4c4ade3b5b8ad398840283086e8",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "dr-pierre-ricaud",
+      "action": "ALREADY_CERTIFIED"
+    },
+    {
+      "key": "drunk-elephant-2",
+      "action": "ALREADY_CERTIFIED"
+    },
+    {
+      "key": "etam",
+      "action": "NOT_CERTIFIED_NO_RECIPROCAL_LINK"
+    },
+    {
+      "key": "eurofragrance",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://eurofragance.com/",
+      "artifactBytes": 807936,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "eurofragrance",
+        "sourceHash": "5b22921410144c2d6877abac6d4dec0e39cd96726a87abaf0a2158d56a762bb2",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "karla-otto",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://karlaotto.com/",
+      "artifactBytes": 53179,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "karla-otto",
+        "sourceHash": "4b427fe38f67c3db33a18c3d555738c31955ff54cf7965c0991b57571a86ecc1",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "katie-loxton",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://katieloxton.com/",
+      "artifactBytes": 838902,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "katie-loxton",
+        "sourceHash": "73c62dd708f1a18583ccce6e6fa544f8e13b32bc20afb78c8849ce23e51105d9",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "l-occitane-en-provence-2",
+      "action": "NOT_CERTIFIED_NO_RECIPROCAL_LINK"
+    },
+    {
+      "key": "lexington",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://lexingtoncompany.com/",
+      "artifactBytes": 142111,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "lexington",
+        "sourceHash": "85f335da8b0359042f5e750f74343012d8a0ea728487a3b92607072bb0a66563",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "loccitane-fr",
+      "action": "NOT_CERTIFIED_NO_RECIPROCAL_LINK"
+    },
+    {
+      "key": "luhta",
+      "action": "NOT_CERTIFIED_NO_RECIPROCAL_LINK"
+    },
+    {
+      "key": "lvmh",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://lvmh.com/",
+      "artifactBytes": 1974791,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "lvmh",
+        "sourceHash": "ecf5a983a3af55a3b24d467f94e58a6e684ef0ffb782684f218a13c4bb4a4422",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "maison-margiela",
+      "action": "ALREADY_CERTIFIED"
+    },
+    {
+      "key": "mascot-workwear",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://mascotworkwear.com/",
+      "artifactBytes": 43371,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "mascot-workwear",
+        "sourceHash": "eaf5fd28129b6201bd80a6521970454aecb3a3c10027bb617de1ce965ff87ee3",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "mecca",
+      "action": "CERTIFIED",
+      "portalScope": "SINGLE_BRAND",
+      "labels": 2,
+      "allOwner": true,
+      "proofUrl": "https://mecca.com/careers",
+      "artifactBytes": 624425,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "mecca",
+        "sourceHash": "3bd3b27b87cf693878c2c4a44d0e717d10e40802ed3edfc3e534dfc0945e379f",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "motel",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://motelrocks.com/",
+      "artifactBytes": 721422,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "motel",
+        "sourceHash": "c1e7d8d34be7ad9d71f071a8584ddf1075e963a43ac334aee4ecf6547cbe26bf",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "new-balance",
+      "action": "NOT_CERTIFIED_NO_RECIPROCAL_LINK"
+    },
+    {
+      "key": "normal",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://normal.eu/",
+      "artifactBytes": 117229,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "normal",
+        "sourceHash": "37ba443a142d87767c1cf69349ddd76a9922ff30b682aa0afeebe45a339685c9",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "prisma-media",
+      "action": "CERTIFIED",
+      "portalScope": "SINGLE_BRAND",
+      "labels": 1,
+      "allOwner": true,
+      "proofUrl": "https://prismamedia.com/",
+      "artifactBytes": 68957,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "prisma-media",
+        "sourceHash": "4a0c0f534fb18f97f17b0e1e4a6a9b9a47cd9dffb00c7b409a83429a4ed313f2",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "pronovias",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 0,
+      "allOwner": false,
+      "proofUrl": "https://pronovias.com/",
+      "artifactBytes": 251021,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "pronovias",
+        "sourceHash": "2374d58871a2b708f542e10f1ecef6a64229f434dca80c1b0bd9bfb66a13997c",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "richemont",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 14,
+      "allOwner": false,
+      "proofUrl": "https://richemont.com/",
+      "artifactBytes": 143510,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "richemont",
+        "sourceHash": "3995a9934e7033ef87524247b47362a0dcc6510afad2494abef00ab6065940bc",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "richemont-workday",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 19,
+      "allOwner": false,
+      "proofUrl": "https://richemont.com/",
+      "artifactBytes": 143510,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "richemont-workday",
+        "sourceHash": "02611d0f5ee97f5d3e55efd162f29da2a45d4c133421fd50fb26f777d8004dcb",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "showroomprive",
+      "action": "NOT_CERTIFIED_NO_RECIPROCAL_LINK"
+    },
+    {
+      "key": "swarovski",
+      "action": "NOT_CERTIFIED_NO_RECIPROCAL_LINK"
+    },
+    {
+      "key": "tapestry",
+      "action": "CERTIFIED",
+      "portalScope": "MULTI_BRAND",
+      "labels": 27,
+      "allOwner": false,
+      "proofUrl": "https://tapestry.com/careers",
+      "artifactBytes": 74276,
+      "reduction": "FULL_PAGE",
+      "scopeBefore": null,
+      "scopeAfter": "MULTI_BRAND",
+      "written": {
+        "sourceKey": "tapestry",
+        "sourceHash": "427820bdac6ed1ef0b514396057f0171e114992914522a3ebd0800bf604928d2",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    },
+    {
+      "key": "typology",
+      "action": "NOT_CERTIFIED_NO_RECIPROCAL_LINK"
+    },
+    {
+      "key": "versace",
+      "action": "NOT_CERTIFIED_NO_RECIPROCAL_LINK"
+    }
+  ]
+}

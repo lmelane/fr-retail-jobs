@@ -1,0 +1,56 @@
+{
+  "at": "2026-09-10T08:16:57.354Z",
+  "environment": "clone",
+  "commit": "7077cc7e31ea2ad625f7f2c165a222888c1f776f",
+  "planHash": "fc26349256ac6e67087c5d9a354881d0327a4ca5107fa05261c525339a83e069",
+  "sourceHash": "4d98dcbcbfb4b773c86d42edad819a03b872be27a8ed12dfb15d27a9ff135ce0",
+  "labels": 32,
+  "aliasesPlanned": 23,
+  "merges": [
+    "MANGO TR TEKSTIL TICARET LTD.S (84)",
+    "MANGO NY (75)",
+    "MNG MANGO BELGIQUE S.P.R.L (75)",
+    "MANGO MNG (19)",
+    "MANGO ÖSTERRREICH HANDELS. (13)",
+    "MANGO Polska Sp.z.o.o. (11)",
+    "MANGO MODA D.O.O. (10)",
+    "MANGO LUXEMBOURG S.à.r.l. (8)",
+    "MANGO HUNGARY Kft. (8)",
+    "MANGO GARMENTS HELLAS E.P.E. (7)",
+    "MANGO MNG, S.A. (5)",
+    "MANGO MERITXELL, S.L.U (5)",
+    "MNG-MANGO (5)",
+    "MANGO GARMENTS ROM. (5)",
+    "Mango Korea (4)",
+    "MANGO SVERIGE (4)",
+    "MANGO (CZ) s.r.o. (4)",
+    "MANGO SL D.O.O. (3)",
+    "MANGO BULGARIA EOOD (1)",
+    "MANGO UKRAINE TOV (1)",
+    "MANGONOR Comércio de Vestuário (1)",
+    "MANGO DANMARK APS (1)",
+    "MANGO NORGE A.S. (1)",
+    "MANGO SLOVENSKO, s.r.o. (1)",
+    "MNG MANGO IRELAND (1)",
+    "MANGO BULGARIA EOOD (EUR) (1)"
+  ],
+  "skipped": [],
+  "mangoActiveBefore": 1349,
+  "mangoActiveAfter": 1697,
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 353,
+    "aliases": 23
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "companiesOnPortalAfter": [
+    {
+      "name": "Mango",
+      "n": 1689
+    }
+  ]
+}

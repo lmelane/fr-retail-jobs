@@ -1,0 +1,46 @@
+{
+  "at": "2026-09-10T07:44:02.900Z",
+  "environment": "clone",
+  "commit": "c2758888aabe91cc890724e537cdae335a2d2553",
+  "planHash": "1cd43ee00e250391e3bf79933afb1bf9ca07ea0878ccd2eae8af3713758974b5",
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 1
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "loccitaneKind": "GROUP",
+  "printfulAlias": {
+    "reviewId": "20260910-LOT4-PERIMETER-IDENTITIES-v1",
+    "company": {
+      "name": "Printful"
+    }
+  },
+  "beiersdorf": {
+    "before": {
+      "config": {
+        "maxPages": 40,
+        "pageParam": "page",
+        "pageStart": 1,
+        "listingUrl": "https://www.beiersdorf.com/ajax/Jobboard/JobResultAjax?db=web&contextItemId={213FB95D-4545-426C-9F6A-7CD5753A00EA}&lang=en",
+        "linkPattern": "career/jobs/"
+      },
+      "hash": "62e6cc5fbb24ca92aae7788fbb2abf86a951b4fe0208ac3bb7ab7e993c565772"
+    },
+    "after": {
+      "config": {
+        "maxPages": 40,
+        "pageParam": "page",
+        "pageStart": 1,
+        "listingUrl": "https://www.beiersdorf.com/ajax/Jobboard/JobResultAjax?db=web&contextItemId={213FB95D-4545-426C-9F6A-7CD5753A00EA}&lang=en",
+        "linkPattern": "career/jobs/|karriere/jobs/",
+        "previousLinkPattern": "career/jobs/"
+      },
+      "hash": "5d3eeb92f23f1a1e2c578f6f5b3c336451ef68026b2866050f7367fa362551fb"
+    }
+  }
+}

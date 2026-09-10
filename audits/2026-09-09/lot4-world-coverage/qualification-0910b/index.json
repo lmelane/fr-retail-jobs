@@ -1,0 +1,29 @@
+[
+ {
+  "url": "https://www.tapestry.com/our-brands/",
+  "sha256": "23948e74006ab95fc08530bb35557f7f35a80d35399ccb8078daa6c4d90059bf",
+  "bytes": 67371,
+  "file": "23948e74006ab95fc08530bb35557f7f35a80d35399ccb8078daa6c4d90059bf.html",
+  "coach": 3,
+  "kateSpade": 3,
+  "tapestryInc": 2
+ },
+ {
+  "url": "https://www.tapestry.com/careers/",
+  "sha256": "8a38fcd676e6e8e1edf3a2f4401833d4e88e4a0571cc051d193808285f447245",
+  "bytes": 74267,
+  "file": "8a38fcd676e6e8e1edf3a2f4401833d4e88e4a0571cc051d193808285f447245.html",
+  "coach": 2,
+  "kateSpade": 2,
+  "tapestryInc": 3
+ },
+ {
+  "url": "https://tapestry.wd108.myworkdayjobs.com/wday/cxs/tapestry/Tapestry_Careers/jobs#facets",
+  "sha256": "79de30cb6437b5ae6b4ad7e39c2bec31b364c3ee0fde87380220ec32ded63f0a",
+  "bytes": 91701,
+  "file": "79de30cb6437b5ae6b4ad7e39c2bec31b364c3ee0fde87380220ec32ded63f0a.json",
+  "coach": 494,
+  "kateSpade": 178,
+  "tapestryInc": 0
+ }
+]

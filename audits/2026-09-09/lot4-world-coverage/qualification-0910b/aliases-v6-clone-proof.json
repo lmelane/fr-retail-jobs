@@ -1,0 +1,22 @@
+{
+  "at": "2026-09-10T09:30:35.484Z",
+  "environment": "clone",
+  "commit": "899b9f198184c134ce955530cb11e99d8d0c05d4",
+  "planHash": "6ccfc12ea17fb3722df02634bfa208e6d6bc38dbe79d7c644b0b8fe307c2d2ae",
+  "inventory": "Coach 1514 · Kate Spade 502 · Tapestry 69",
+  "result": {
+    "alreadyApplied": false,
+    "movedJobs": 0,
+    "aliases": 3
+  },
+  "replay": {
+    "alreadyApplied": true,
+    "movedJobs": 0,
+    "aliases": 0
+  },
+  "written": [
+    "tapestry: Coach → Coach",
+    "tapestry: Kate Spade → Kate Spade",
+    "tapestry: Tapestry → Tapestry"
+  ]
+}

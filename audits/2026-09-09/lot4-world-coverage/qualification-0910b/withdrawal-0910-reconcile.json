@@ -1,0 +1,2788 @@
+{
+ "withdrawn": [
+  {
+   "jobId": "cmtlyjlxj08c1qf5k7bquudjh",
+   "company": "HUBER",
+   "title": "Sr. Cost Accountant",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1411968500",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjea0f9jqf5kol2ezt3i",
+   "company": "B2",
+   "title": "Associé(e) aux ventes à temps plein / Full-Time Sales Associate - Browns Carrefour Laval",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "f7b1e85f-e94a-4e76-a4f4-0d4901dbf0ac",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlygzr902w3qf5ka9maow2y",
+   "company": "CARLA B",
+   "title": "Säljchef",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "carla-b",
+     "externalId": "eaec3121-83f0-4e47-a97f-b0dc6cf77b2b",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlygztf02wrqf5kz8in9yqy",
+   "company": "CARLA B",
+   "title": "Monteringstekniker",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "carla-b",
+     "externalId": "feea3a0b-ed7a-4184-b327-eeff61bef9e5",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyg4nh01jsqf5kezgjpol3",
+   "company": "ONE",
+   "title": "Head of Engineering Academy",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "one",
+     "externalId": "c771ad50-a336-4d3d-a042-58080eeba4d5",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymj7o0f7fqf5k574mlz0n",
+   "company": "B2",
+   "title": "Part-Time Stock Associate - B2 Toronto Eaton Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "c22fce2f-0dd2-4269-9c97-b64bd754e5c3",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymj800f7jqf5kth5aikol",
+   "company": "B2",
+   "title": "Part-Time Cashier - B2 Toronto Eaton Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "5c674d79-d04f-4247-88bf-7e3a86653b7f",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymj8d0f7nqf5kyqxt2wj7",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - B2 Toronto Eaton Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "24e88a1f-cb08-4e51-9dbc-61b5a8d6c3ce",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymj9b0f7zqf5kmjghsc4r",
+   "company": "B2",
+   "title": "Associé(e) aux ventes à temps plein / Full-Time Sales Associate - B2 Fairview Pointe Claire",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "98004276-d0d5-4c86-a3f8-e06906939b26",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjbw0f8rqf5k8qd3wjt1",
+   "company": "B2",
+   "title": "Préposé à la Marchandise à temps-partiel - Ville de Québec",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "c3f36869-9d35-4bdd-8e34-7d3769ba8b77",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjcm0f8zqf5k34knxkg8",
+   "company": "B2",
+   "title": "Commis d'entrepôt (quart de jour) / Warehouse Clerk (Day Shift)",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "e1729b59-80d3-4c19-b5de-c92220ef1a98",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjd10f93qf5kqf57ysio",
+   "company": "B2",
+   "title": "Caissier(ère) à temps-plein / Full-Time Cashier - Browns Rue Sainte-Catherine",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "64de4c2a-e605-4d7d-807f-64e36e270d03",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjem0f9nqf5k97z1lq9c",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Outlet CrossIron Mills",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "f0de0d16-5186-4e87-94a1-25e36c33c673",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjfr0f9zqf5k5i3pgqdr",
+   "company": "B2",
+   "title": "Part-Time Cashier - Browns Hillcrest Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "9348232f-4810-4035-8289-e37296f15685",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjg60fa3qf5k7que8oj6",
+   "company": "B2",
+   "title": "Analyste, Habilitation & Gouvernance en IA/AI Enablement & Governance Analyst",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "163db298-6e98-4133-8b4d-6c70b72b8efb",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjgk0fa7qf5kdloymz9f",
+   "company": "B2",
+   "title": "Part-Time Cashier - Browns West Edmonton Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "425f6762-2fdd-4662-a724-0914afb41315",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjgw0fabqf5k17s27vpy",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Park Royal Shopping Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "8b656c68-3a6e-4def-b149-6ccb76658a1d",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjhs0fanqf5kykthj7sq",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Upper Canada Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "ff9c5006-3c23-4696-be32-3e48e424dadb",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjin0fazqf5kjcx7c4z5",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Richmond Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "b527c247-793f-49c9-abcd-8e34d5a5d8f3",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjiz0fb3qf5k17kl9n2e",
+   "company": "B2",
+   "title": "Part-Time Cashier - B2 Yorkdale Shopping Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "4abff1f8-5021-4f81-8d22-e1a61816b478",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjlm0fbrqf5ki1gcn0zv",
+   "company": "B2",
+   "title": "Full-Time Management In Training - Browns Fairview Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "d66c0556-cfaf-474c-99aa-ab1e49951c5b",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjn00fc3qf5kpxqa5lpe",
+   "company": "B2",
+   "title": "Associé(e) aux ventes – Parcours accéléré vers la gestion - Browns Ville de Québec",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "ca78d261-dadd-4ee0-8b43-c3e075545e10",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjny0fcbqf5k0hgu60yp",
+   "company": "B2",
+   "title": "Associé(e) aux Ventes à temps partiel - Ville de Québec",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "679328cc-398c-4b64-8d17-3e9a5aaef443",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjnm0fc7qf5k6l9psz5y",
+   "company": "B2",
+   "title": "Full-Time Management In Training - Browns Sherway Gardens",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "faba7cdf-2d56-4472-89cc-e593d5b496fd",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjoi0fcjqf5ktbb3g17p",
+   "company": "B2",
+   "title": "Part-Time Cashier - Browns Outlet McArthur Glen",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "68d602dc-2195-4dae-8de4-947b24d245a5",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjos0fcnqf5ke5jyxuvt",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Outlet McArthur Glen",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "5c5635ab-ec06-4843-8585-b3b153df7f21",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjq10fczqf5k866caoqy",
+   "company": "B2",
+   "title": "Associé(e) aux ventes à temps plein / Full-Time Sales Associate - B2 Centre Eaton Montréal",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "8581ee95-0c3c-4ae5-abee-6f5dc3b1144c",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjqh0fd3qf5kkqzcfp4r",
+   "company": "B2",
+   "title": "Associé(e) aux ventes à temps plein / Full-Time Sales Associate - Browns/B2 Carrefour Laval",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "95b0ffb2-1376-468a-9e6f-36afdfc5cf0c",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjsi0fdnqf5k9belgr81",
+   "company": "B2",
+   "title": "Planificateur(trice) de marchandises - femmes/Merchandise Planner - Women's",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "8d6f2978-ac7d-4e5c-8b51-2334bf869cb9",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymju60fdzqf5k9lybqwem",
+   "company": "B2",
+   "title": "Coordonnateur(trice) de cuisine/Kitchen Coordinator",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "3d89d01c-11f8-4f05-b5cf-11db34b02874",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjuw0fe7qf5ks28po058",
+   "company": "B2",
+   "title": "Associé(e) aux ventes à temps plein - Ville de Québec",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "49c089c3-c2ca-40b2-be49-67ada03840fc",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjvf0febqf5kq3w0w9mx",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Toronto Eaton Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "732d421e-02cd-48e6-b95e-d8173635e52d",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjvy0fefqf5kegmj76he",
+   "company": "B2",
+   "title": "Full-Time Sales Associate - Browns Toronto Eaton Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "20050f44-47d4-488d-b2d9-37b2f297f342",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjlyp08cdqf5kbf5gypo6",
+   "company": "HUBER",
+   "title": "Technical Manager",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1421781200",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjm1i08ddqf5kkgs1bm84",
+   "company": "HUBER",
+   "title": "Packaging Operator",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1417975100",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymj920f7vqf5kqnlhk2k8",
+   "company": "B2",
+   "title": "Full-Time Sales Associate - Greater Vancouver Area",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "2666cf7e-94cd-4450-a9f7-e7dbe625a7f4",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtrsd4k103kppg5mer8drokw",
+   "company": "Vitamin A",
+   "title": "Social Media Lead HQ - Vitamin Well Group",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "036dcbb8-957d-4b51-9b1d-1f46380fbe66",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtrsd4l503l6pg5mi00vswg3",
+   "company": "Vitamin A",
+   "title": "Export Coordinator - Vitamin Well Group",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "a23de7ec-1be8-40d8-908a-ecb4b1650bf0",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyg4o701k0qf5ka4vh6hmv",
+   "company": "ONE",
+   "title": "Customer Service Representative – EU Support",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "one",
+     "externalId": "fe17f682-b3f7-4a68-85db-ee1f9a7e96a0",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2s004nzqf5kkxfwvgo3",
+   "company": "Vitamin A",
+   "title": "Group Accounting & Reporting Manager - Vitamin Well Group",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "0967b546-cb7a-4d35-98d3-d35f493b46e0",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2wz04ozqf5kovy33o9k",
+   "company": "Vitamin A",
+   "title": "Operations Specialist - Vitamin Well Switzerland",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "51d178e4-ef40-4bfe-ad78-9b9c829b8c5c",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjsy0fdrqf5kqn793hlc",
+   "company": "B2",
+   "title": "Associé(e) aux ventes à temps plein / Full-Time Sales Associate - Greater Montreal",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "5eb11353-8751-4409-aa5b-9b83ff317ffb",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymj9l0f83qf5kuhnvzfiq",
+   "company": "B2",
+   "title": "Full-Time Sales Associate - Browns Square One Shopping Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "a96cc6e3-1910-4c13-902c-6e325278cc47",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjb20f8jqf5kcs63ulad",
+   "company": "B2",
+   "title": "Part-Time Stock Associate - Browns Bloor Street",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "8cb8ef1a-48bd-43a6-ae58-9ca6fec5a63e",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjjd0fb7qf5k768vfft7",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - B2 Yorkdale Shopping Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "d7e5f424-d4bf-451f-a960-13133e614d54",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjbh0f8nqf5k6zzdfzok",
+   "company": "B2",
+   "title": "Part-Time Cashier - Browns Bloor Street",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "8c24cfc1-2128-47d9-bfe0-848429c08b8c",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymja10f87qf5kg8yji1ng",
+   "company": "B2",
+   "title": "Développeur(se) de solutions IA - AI Solutions Developer",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "f90b8454-56f9-4f31-a502-ae2eeb614654",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2tc04obqf5kbh9hiy8s",
+   "company": "Vitamin A",
+   "title": "Global Quality Specialist - Vitamin Well I NOCCO I Barebells",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "cbca9f4b-4155-49c2-a37c-d424550b28b1",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjlu408apqf5kruu27459",
+   "company": "HUBER",
+   "title": "Anwendungstechniker (m/w/d) - Kunststofftechnik / Labor",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1416039900",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjdp0f9bqf5kiyogqo2l",
+   "company": "B2",
+   "title": "Part-Time Cashier - Browns Outlet Collection at Niagara",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "d0ff0719-6b21-45d3-9fa7-6f66ee8e7cbf",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjid0favqf5kr6tsdsrf",
+   "company": "B2",
+   "title": "Part-Time Cashier - Browns Richmond Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "995d5f20-f6e1-4db4-8c31-f37a81090295",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjl60fbnqf5ks234gu54",
+   "company": "B2",
+   "title": "Full-Time Sales Associate - Browns Metropolis at Metrotown",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "84250b9b-6051-49d1-be16-b8e1ba0b7f87",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjhg0fajqf5kuomcsqut",
+   "company": "B2",
+   "title": "Part-Time Cashier - Browns Upper Canada Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "d924c64c-b537-49c6-bdd3-a47d06f3d2d3",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymji20farqf5k00hx1c57",
+   "company": "B2",
+   "title": "Management In Training - Browns Upper Canada Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "cc7d0995-74a0-40b3-8fb6-251ce0693ac7",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjo80fcfqf5kjcindhs8",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Oakridge Park",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "e74dddcb-3dac-4bc1-8ef2-af4bbccf824b",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjp20fcrqf5ko0fe5sl4",
+   "company": "B2",
+   "title": "Full-Time Sales Associate - Browns Outlet McArthur Glen",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "0b69cbba-931d-4b3f-925a-8b0c283263af",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjly0fbvqf5kmbal9v51",
+   "company": "B2",
+   "title": "Caissier(ère) à temps plein/ Full-Time Cashier - Browns/B2 Carrefour Laval",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "cf216eb1-7295-498b-b93b-87cd4954eb2c",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjff0f9vqf5km1jbbnpz",
+   "company": "B2",
+   "title": "Part-Time Cashier - Browns Fairview Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "8abce78e-88c9-41e2-ad26-45b0bfaabc6b",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjrw0fdjqf5ks71u6vy1",
+   "company": "B2",
+   "title": "Part-Time Stock Associate - Browns Toronto Eaton Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "fd3542c7-54e4-4a47-81e0-f552ffd7e91e",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7y1di0ho7my01kfbc7vab",
+   "company": "B2",
+   "title": "Part-Time Stock Associate - Browns Masonville Place",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "af380c52-7374-451e-84e8-ab2d8b796ff7",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7y1e20hohmy01q8vyoqzo",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Masonville Place",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "bcb84861-8c7a-45ac-a4e8-63fb83a262fd",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7y1ep0hormy01k9r8r15j",
+   "company": "B2",
+   "title": "Coordonnateur(trice) des comptes fournisseurs - Accounts Payable Coordinator",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "6d5b976c-c909-43f7-ad1b-d5d874f45130",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7y1bp0hndmy01brg7ekk0",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Fairview Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "ac68d16e-68c2-4896-91b7-fcbf210e7eac",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7wkm109y2my018qoujs0k",
+   "company": "HUBER",
+   "title": "EHS Specialist",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1404628600",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7y1ca0hnnmy01vwcfv0f7",
+   "company": "B2",
+   "title": "Part-Time Cashier - Browns Square One Shopping Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "543d695a-7178-4acd-a431-f1fd9c4ca2ad",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7wkmj09ycmy01tywvfwlb",
+   "company": "HUBER",
+   "title": "Mechanical Associate",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1398220300",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7y1cy0hnxmy01qnpvkta3",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Square One Shopping Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "60ff2fac-4900-497e-9f35-f1390acb4e80",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtne5w1b0d08qq4zfcmyd7xk",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Halifax Shopping Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "2573202a-678d-4947-9821-104fc70f4937",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymj8p0f7rqf5kxnb2nn22",
+   "company": "B2",
+   "title": "Full-Time Sales Associate - B2 Toronto Eaton Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "88b8793e-3cac-42bc-beeb-a107a870d8f2",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjh60fafqf5k48gpoohs",
+   "company": "B2",
+   "title": "Part-Time Cashier - Park Royal Shopping Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "d40d6f97-2d63-4ee7-aa12-066c9e9b40c3",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyextd007hqf5k9xwpclok",
+   "company": "Joy",
+   "title": "Senior RevOps Specialist",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "joy",
+     "externalId": "178cbcda-f2e1-4950-873d-e8e495aacb63",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyg4n401joqf5kivkph0c1",
+   "company": "ONE",
+   "title": "Full Stack Engineer – Incident Response & Application Stability",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "one",
+     "externalId": "b7c2323c-e0f1-4dd4-9cdf-1c92e8e008a2",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyg4nw01jwqf5kkooj1z4b",
+   "company": "ONE",
+   "title": "Head of CIO Commercial Development Hub",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "one",
+     "externalId": "61780fe6-825b-487d-bc6b-9f5e7b1929de",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyg4oh01k4qf5k9mm3uswx",
+   "company": "ONE",
+   "title": "Customer Service Manager - English Support",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "one",
+     "externalId": "5612b534-b7f7-4ab0-967f-304ec1eb2d1e",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlygzqt02vzqf5klvuojtw2",
+   "company": "CARLA B",
+   "title": "Säljare",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "carla-b",
+     "externalId": "a54a46f0-d696-4b2e-908a-10ae0c79593c",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlygzrj02w7qf5kldvjvcju",
+   "company": "CARLA B",
+   "title": "Carla Chaufför",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "carla-b",
+     "externalId": "850cf2d5-1a26-4b63-b1e6-4a5c47797072",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlygzrt02wbqf5k333ht26x",
+   "company": "CARLA B",
+   "title": "Interim Product Designer",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "carla-b",
+     "externalId": "3fefbd3f-9944-4506-b2db-aee8f32df2bd",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlygzt102wnqf5k1bylof0l",
+   "company": "CARLA B",
+   "title": "Lackeringsförberedare",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "carla-b",
+     "externalId": "9aa5fba1-fad4-4002-891d-a2bb9fbbae93",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlygzu902wzqf5kzkpdx1bh",
+   "company": "CARLA B",
+   "title": "Annonsproducent",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "carla-b",
+     "externalId": "87ecec9c-ff95-4cac-b0d7-c039b96f86e0",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2v504onqf5k6o6o1f9o",
+   "company": "Vitamin A",
+   "title": "Merchandiser Kalmar - Barebells I NOCCO I Vitamin Well I NOBE",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "8eabaa73-b1ba-4b9f-8c75-b25bc17ca223",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2vu04orqf5k8racy1re",
+   "company": "Vitamin A",
+   "title": "Marketing Activation Manager - Vitamin Well Sverige",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "110e6558-997a-403a-99cc-6e5f69069d83",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2wh04ovqf5klb0edv52",
+   "company": "Vitamin A",
+   "title": "Modern Workplace Specialist - Vitamin Well Group",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "ad7dde39-1a44-4c76-a7cb-7e484228dcda",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2zp04pfqf5k0vqjwaod",
+   "company": "Vitamin A",
+   "title": "Supply Chain Manager (m/f/d) in Hamburg - Barebells I Vitamin Well I NOCCO",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "3d653aeb-030b-4220-9dd7-a17529ea2276",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjltv08alqf5km0uk70wz",
+   "company": "HUBER",
+   "title": "Logistics Manager",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1406174400",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjlun08axqf5kzxrmasyc",
+   "company": "HUBER",
+   "title": "Packaging Operator - Bulk",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1426355600",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjlv608b5qf5kwmujiitm",
+   "company": "HUBER",
+   "title": "Ultrafine Mill Operator",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1425953800",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjlwl08bpqf5kafhf7oqt",
+   "company": "HUBER",
+   "title": "Process Operator I",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1412491400",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjlwv08btqf5kz5m1iswi",
+   "company": "HUBER",
+   "title": "EMSR Techniker Instandhaltung (m/w/d)",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1357588400",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjlx408bxqf5k2v7ubdhk",
+   "company": "HUBER",
+   "title": "Territory Manager, Northern California",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1411846300",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjly908c9qf5khky4uhdf",
+   "company": "HUBER",
+   "title": "Electrician II",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1352791600",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjlzx08ctqf5ksux0b2r9",
+   "company": "HUBER",
+   "title": "Quality Technician",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1419326000",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjm0b08cxqf5kcx9deynr",
+   "company": "HUBER",
+   "title": "[Senior] HR Business Partner",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1358051900",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjm0x08d5qf5kiaza2jmi",
+   "company": "HUBER",
+   "title": "Electrician",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1374863900",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjm1v08dhqf5krgssbbay",
+   "company": "HUBER",
+   "title": "Shipping Lead",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1417356300",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2sx04o7qf5kdhzc7kiu",
+   "company": "Vitamin A",
+   "title": "Social Marketing Activation Barebells – Vitamin Well Spain",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "f44f8284-2302-4f02-952f-42d1c603dd78",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjmh0fbzqf5k04get2tt",
+   "company": "B2",
+   "title": "Représentant(e) du service clientèle (Saisonnier - Temps partiel)/Customer Care Representative (Seasonal - Part-Time)",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "a8e2c44b-fdc5-428f-a205-5f2c6f591b10",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtmo6tmv06wuso5lh15msfpr",
+   "company": "HUBER",
+   "title": "Entry Operator",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1406869500",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtmo6tm106wqso5lea8g3ks9",
+   "company": "HUBER",
+   "title": "Quality Assurance Technician",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1336056900",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2sf04o3qf5k6ha5n24b",
+   "company": "Vitamin A",
+   "title": "Fullstack Engineer - Vitamin Well Group",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "0bdf6abe-1c70-4887-b0de-dab5fd5cd0ac",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2xo04p3qf5k6ozhlwpi",
+   "company": "Vitamin A",
+   "title": "Customer Service Specialist (m/f/d) in Hamburg - Barebells I Vitamin Well I NOCCO",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "1dc7f101-1948-4b95-97da-5d1d2f0a64f0",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7vpqk04dimy01skkl6muu",
+   "company": "Vitamin A",
+   "title": "Product Owner - Vitamin Well Group",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "19aa1c67-3574-4711-ba3f-cff96328ad78",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyg4or01k8qf5kc48bou05",
+   "company": "ONE",
+   "title": "Danish-speaking Sales Representative",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "one",
+     "externalId": "5cf6399b-615b-42df-8794-7e2ad6dbc824",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyg4p501kcqf5k9nn93urr",
+   "company": "ONE",
+   "title": "Customer Service Representative - group.one brands",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "one",
+     "externalId": "2c5b033b-2f4e-45c3-80c3-3d6021437e11",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7v21r018amy01i66gq2ae",
+   "company": "ONE",
+   "title": "Client Manager",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "one",
+     "externalId": "493f81e8-88f3-467a-9b96-8eda21c17c04",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyextw007lqf5k6wy23mzy",
+   "company": "Joy",
+   "title": "Account Executive 🇪🇸 Spanish Market",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "joy",
+     "externalId": "39df76b4-d43d-4580-8943-4b1a07fcd1b1",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmto3n7aj073bqq4znsf18ghq",
+   "company": "HUBER",
+   "title": "Director of Operations",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1400467800",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtoc96fz074xqq4zqz93op7l",
+   "company": "HUBER",
+   "title": "Strander Operator",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1353349900",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtoc96gf0751qq4ztcxmyfob",
+   "company": "HUBER",
+   "title": "Packaging Operator",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1422893400",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjlux08b1qf5kf8xufh2w",
+   "company": "HUBER",
+   "title": "EHS Specialist",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1426343400",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtmo6twc06xmso5lbfix7r9t",
+   "company": "HUBER",
+   "title": "Process Engineer",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1395077000",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjlzp08cpqf5kzr7i92bl",
+   "company": "HUBER",
+   "title": "Formulation Manager",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1345628200",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjltj08ahqf5kzm33tmm9",
+   "company": "HUBER",
+   "title": "Maintenance III",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1416178000",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjlwa08blqf5kcptmef6k",
+   "company": "HUBER",
+   "title": "Sr. Tax Accountant",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1394744700",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtmo6u8d06yhso5lgmdmr1i8",
+   "company": "HUBER",
+   "title": "R&D Leader",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1409060600",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtrsdtz307atpg5m6d010tmq",
+   "company": "HUBER",
+   "title": "Maintenance Technician",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1403987600",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtrsdu2107d6pg5ms1ikxu28",
+   "company": "HUBER",
+   "title": "Electrical Engineer",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1419672900",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7wkna09ynmy010uw8yzqz",
+   "company": "HUBER",
+   "title": "People & Culture Assistant",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1424153900",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7wkr10a0emy01sdeodky4",
+   "company": "HUBER",
+   "title": "EHS Specialist",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1409490900",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7wl480a30my0170uj7d3z",
+   "company": "HUBER",
+   "title": "Finishing Forklift/Strapper II",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1410061400",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7wl4q0a36my01hrzlzied",
+   "company": "HUBER",
+   "title": "Lube Tech",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1371423100",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7wkhs09wqmy01sfekvjll",
+   "company": "HUBER",
+   "title": "Shipper/Tarper",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1427478400",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtt7wki909wwmy016cslfzd7",
+   "company": "HUBER",
+   "title": "Vice President, Tax",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1427606900",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlygzun02x3qf5k6y54hfxd",
+   "company": "CARLA B",
+   "title": "Spontaneous application!",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "carla-b",
+     "externalId": "d113b36c-cac4-4926-b455-12c47811daf2",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlygzq002vvqf5k1ymahniv",
+   "company": "CARLA B",
+   "title": "Spontanansökan - Produktion (Kungsängen)",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "carla-b",
+     "externalId": "d198e562-ae68-44a2-a1d2-ac691362a455",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlygzs502wfqf5k3nc7tt8s",
+   "company": "CARLA B",
+   "title": "Marketing Intern",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "carla-b",
+     "externalId": "92c00f2e-3d14-40b2-85a7-d9bd28e261be",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlygzsl02wjqf5k6kcws8x7",
+   "company": "CARLA B",
+   "title": "Tech Lead",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "carla-b",
+     "externalId": "b0e1d3db-b786-4512-906b-2e21f855a663",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtn5845302aiqq5lm0htyufw",
+   "company": "CARLA B",
+   "title": "Bristkontrollant",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "carla-b",
+     "externalId": "13e0006a-f1ea-4741-92b7-a13d42adbc29",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjjr0fbbqf5k2732ix36",
+   "company": "B2",
+   "title": "Full-Time Sales Associate - B2 Yorkdale Shopping Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "51016312-8554-441d-b6cc-afafa600b387",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjkf0fbfqf5kkf7sqgo8",
+   "company": "B2",
+   "title": "Coordonnateur(trice) de la qualité des données EDI et ERP/EDI & ERP Data Quality Coordinator",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "0f6f976b-143a-4a95-8721-8bca26a20481",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi31704pnqf5k2wkw9jay",
+   "company": "Vitamin A",
+   "title": "Tax Manager - Vitamin Well Group",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "e838f229-70b3-4f18-a9bd-40da9c7563fc",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2y504p7qf5kdu1bjool",
+   "company": "Vitamin A",
+   "title": "Sales Analyst, North America - Barebells & NOCCO",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "b730cf02-6619-459c-96e2-7a09d2874dcd",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2tz04ofqf5krbapsvp3",
+   "company": "Vitamin A",
+   "title": "Student – Events & Sampling Crew | Vitamin Well, Barebells & NOCCO",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "68c421fc-532f-498b-9cb5-229776ed82f4",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2ug04ojqf5kcgxhm26b",
+   "company": "Vitamin A",
+   "title": "Social Marketing Activation - Vitamin Well Spain",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "c96ebc98-f26f-4665-8721-27dbbdfac04d",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2r104nvqf5ka2iab9dg",
+   "company": "Vitamin A",
+   "title": "Produktionsledare – In-house Studio | Vitamin Well Group",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "35cb389e-d915-47bd-84a5-8dfff2752519",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi2z604pbqf5kqdi13iwh",
+   "company": "Vitamin A",
+   "title": "Area Sales Manager Großhandel/GFGH & Foodservice (m/f/d) Nord- oder Süddeutschland - Barebells I Vitamin Well I NOCCO",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "7ffc0973-ad28-4590-948e-2f45b50ed609",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyi30a04pjqf5kf4j0o66k",
+   "company": "Vitamin A",
+   "title": "Marketing Assistant - Vitamin Well Sverige",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "22c0069b-8866-4693-b9b6-aa34e7208cc9",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtn59djg03pzqq5ly8ocu4nc",
+   "company": "Vitamin A",
+   "title": "Fältsäljare Värmland (Karlstad) - Barebells I NOCCO I Vitamin Well I NÅBE",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "4356897b-6133-426f-9336-ae983a2e381b",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtn59dmj03quqq5ly5onr0wk",
+   "company": "Vitamin A",
+   "title": "Communications Coordinator - Vitamin Well Group",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "vitamin-a",
+     "externalId": "544298b9-9599-4e4d-83c3-07a5fa37845c",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjm0l08d1qf5kaipklhe2",
+   "company": "HUBER",
+   "title": "Strategic Accounts Business Development & Strategic Account Manager",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1351603600",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjm1808d9qf5kqhq0s6h4",
+   "company": "HUBER",
+   "title": "Senior Analyst, Financial Analysis & Strategic Planning",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1417648600",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjm2308dlqf5k45dic3ds",
+   "company": "HUBER",
+   "title": "[Sr.] Project / Process Engineer",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1344216600",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlyjm2f08dpqf5kleanwrw7",
+   "company": "HUBER",
+   "title": "Global Human Resources Leader",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "huber",
+     "externalId": "1417203900",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjaf0f8bqf5kruovoh9f",
+   "company": "B2",
+   "title": "Représentant(e) du service clientèle (Saisonnier - Temps plein)/Customer Care Representative (Seasonal - Full-Time)",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "ec991915-e2a2-4ed7-9d33-0cb31cff973a",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjc70f8vqf5kul32yvcb",
+   "company": "B2",
+   "title": "Caissier(ère) à temps-partiel - Ville de Québec",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "3c717427-1e3f-49d5-a4ec-c39b591ac416",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjul0fe3qf5kbrbntcmw",
+   "company": "B2",
+   "title": "Part-Time Cashier - Browns Toronto Eaton Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "10f62e33-731d-4049-8813-1067024f8418",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjdz0f9fqf5koozod2p1",
+   "company": "B2",
+   "title": "Associé(e) aux Ventes à temps partiel / Part-Time Sales Associate - Browns Mail Champlain",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "0fe18256-1a4c-4ec5-b5db-4b73557ce19b",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjez0f9rqf5kuh1qgyup",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Midtown Plaza",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "0ded777b-0e07-479d-8194-49c0d5c03f84",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjdg0f97qf5knjwy71v6",
+   "company": "B2",
+   "title": "Associé(e) d'entrepôt à temps partiel - Fin de semaine / Part-Time Weekend Warehouse Associate",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "96efd7e2-b04f-47a6-bb28-359cfbad88a1",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjr20fdbqf5k0jidzelw",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns West Edmonton Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "4a1d5462-a048-407b-851a-95066685149e",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjrb0fdfqf5kqc05do1q",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Markville Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "810628e6-25f2-4053-8b3d-d753ffc34c40",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymj700f77qf5k1pas08kh",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Mapleview Shopping Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "c9968f02-4509-416b-8b72-2e59b0b7a463",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymj7b0f7bqf5ko69170fj",
+   "company": "B2",
+   "title": "Part-Time Cashier - Browns Markville Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "bd541a0d-3004-450c-93ce-d113998ca36d",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjpe0fcvqf5kx22vj0mp",
+   "company": "B2",
+   "title": "Associé(e) aux ventes à temps plein / Full-Time Sales Associate - Browns Premium Outlets Montréal",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "d55c0382-b55f-4879-98a8-5b23d653bc78",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjqu0fd7qf5kepl3bivm",
+   "company": "B2",
+   "title": "Part-Time Sales Associate - Browns Southcentre Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "90dcee98-8d55-403b-80f5-8a80a570cd15",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjtl0fdvqf5kh30aqrmb",
+   "company": "B2",
+   "title": "Coordonnateur(trice) des comptes fournisseurs - Accounts Payable Coordinator",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "a6143b95-4e62-4c64-a18f-5e568fb8dce4",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjar0f8fqf5kq0j00w19",
+   "company": "B2",
+   "title": "Management In Training - Browns Lime Ridge Mall",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "684995b2-1109-4338-9913-dcb4ed037f64",
+     "isActive": false
+    }
+   ]
+  },
+  {
+   "jobId": "cmtlymjkw0fbjqf5kbyzq1kh1",
+   "company": "B2",
+   "title": "Full-Time Sales Associate - B2 Square One Shopping Centre",
+   "isActive": false,
+   "withdrawalReason": "SOURCE_RETIRED",
+   "sources": [
+    {
+     "sourceKey": "b2",
+     "externalId": "52aafdb8-9b50-4990-adcc-f39c2cfb456e",
+     "isActive": false
+    }
+   ]
+  }
+ ],
+ "b2": [
+  {
+   "externalId": "24e88a1f-cb08-4e51-9dbc-61b5a8d6c3ce",
+   "b2job": "cmtlymj8d0f7nqf5kyqxt2wj7",
+   "brownsjob": "cmtlymkd60ff0qf5knq3cd5jz",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "ec991915-e2a2-4ed7-9d33-0cb31cff973a",
+   "b2job": "cmtlymjaf0f8bqf5kruovoh9f",
+   "brownsjob": "cmtlymkex0ffoqf5kyu2t2xe2",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "3c717427-1e3f-49d5-a4ec-c39b591ac416",
+   "b2job": "cmtlymjc70f8vqf5kul32yvcb",
+   "brownsjob": "cmtlymkgo0fg8qf5kabwsuj3a",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "3d89d01c-11f8-4f05-b5cf-11db34b02874",
+   "b2job": "cmtlymju60fdzqf5k9lybqwem",
+   "brownsjob": "cmtlymkz20flcqf5kat4tpl3h",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "f0de0d16-5186-4e87-94a1-25e36c33c673",
+   "b2job": "cmtlymjem0f9nqf5k97z1lq9c",
+   "brownsjob": "cmtlymkj30fh0qf5k4lm7m9eb",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "425f6762-2fdd-4662-a724-0914afb41315",
+   "b2job": "cmtlymjgk0fa7qf5kdloymz9f",
+   "brownsjob": "cmtlymkl50fhkqf5k26c09wub",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "679328cc-398c-4b64-8d17-3e9a5aaef443",
+   "b2job": "cmtlymjny0fcbqf5k0hgu60yp",
+   "brownsjob": "cmtlymksd0fjoqf5kfvumimpw",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "68d602dc-2195-4dae-8de4-947b24d245a5",
+   "b2job": "cmtlymjoi0fcjqf5ktbb3g17p",
+   "brownsjob": "cmtlymktd0fjwqf5ktwtrqome",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "0fe18256-1a4c-4ec5-b5db-4b73557ce19b",
+   "b2job": "cmtlymjdz0f9fqf5koozod2p1",
+   "brownsjob": "cmtlymkij0fgsqf5ks5krbwpf",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "0ded777b-0e07-479d-8194-49c0d5c03f84",
+   "b2job": "cmtlymjez0f9rqf5kuh1qgyup",
+   "brownsjob": "cmtlymkjb0fh4qf5kgha81ccg",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "8b656c68-3a6e-4def-b149-6ccb76658a1d",
+   "b2job": "cmtlymjgw0fabqf5k17s27vpy",
+   "brownsjob": "cmtlymkll0fhoqf5kxkis41jl",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "ff9c5006-3c23-4696-be32-3e48e424dadb",
+   "b2job": "cmtlymjhs0fanqf5kykthj7sq",
+   "brownsjob": "cmtlymkmp0fi0qf5k2fre6oiv",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "51016312-8554-441d-b6cc-afafa600b387",
+   "b2job": "cmtlymjjr0fbbqf5k2732ix36",
+   "brownsjob": "cmtlymkov0fioqf5k0187rh0c",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "5eb11353-8751-4409-aa5b-9b83ff317ffb",
+   "b2job": "cmtlymjsy0fdrqf5kqn793hlc",
+   "brownsjob": "cmtlymkxm0fl4qf5k9mxhyniw",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "732d421e-02cd-48e6-b95e-d8173635e52d",
+   "b2job": "cmtlymjvf0febqf5kq3w0w9mx",
+   "brownsjob": "cmtlyml0j0floqf5kjeorrlqa",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "98004276-d0d5-4c86-a3f8-e06906939b26",
+   "b2job": "cmtlymj9b0f7zqf5kmjghsc4r",
+   "brownsjob": "cmtlymkdw0ffcqf5kwwybh68m",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "a96cc6e3-1910-4c13-902c-6e325278cc47",
+   "b2job": "cmtlymj9l0f83qf5kuhnvzfiq",
+   "brownsjob": "cmtlymke50ffgqf5k805qee0y",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "8cb8ef1a-48bd-43a6-ae58-9ca6fec5a63e",
+   "b2job": "cmtlymjb20f8jqf5kcs63ulad",
+   "brownsjob": "cmtlymkfp0ffwqf5kbk6789du",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "d7e5f424-d4bf-451f-a960-13133e614d54",
+   "b2job": "cmtlymjjd0fb7qf5k768vfft7",
+   "brownsjob": "cmtlymkoi0fikqf5kagnzacih",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "c22fce2f-0dd2-4269-9c97-b64bd754e5c3",
+   "b2job": "cmtlymj7o0f7fqf5k574mlz0n",
+   "brownsjob": "cmtlymkcj0fesqf5k4duixihk",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "8c24cfc1-2128-47d9-bfe0-848429c08b8c",
+   "b2job": "cmtlymjbh0f8nqf5k6zzdfzok",
+   "brownsjob": "cmtlymkg30fg0qf5kr6e3kozg",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "e1729b59-80d3-4c19-b5de-c92220ef1a98",
+   "b2job": "cmtlymjcm0f8zqf5k34knxkg8",
+   "brownsjob": null,
+   "brownsactive": null,
+   "companyId": null,
+   "company": null
+  },
+  {
+   "externalId": "4a1d5462-a048-407b-851a-95066685149e",
+   "b2job": "cmtlymjr20fdbqf5k0jidzelw",
+   "brownsjob": "cmtlymkvv0fkoqf5k25q3i49r",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "810628e6-25f2-4053-8b3d-d753ffc34c40",
+   "b2job": "cmtlymjrb0fdfqf5kqc05do1q",
+   "brownsjob": "cmtlymkw80fksqf5ken8ay158",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "49c089c3-c2ca-40b2-be49-67ada03840fc",
+   "b2job": "cmtlymjuw0fe7qf5ks28po058",
+   "brownsjob": "cmtlymkzv0flkqf5kyj4kr4kf",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "c9968f02-4509-416b-8b72-2e59b0b7a463",
+   "b2job": "cmtlymj700f77qf5k1pas08kh",
+   "brownsjob": "cmtlymkbz0fekqf5kbxy37zjh",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "995d5f20-f6e1-4db4-8c31-f37a81090295",
+   "b2job": "cmtlymjid0favqf5kr6tsdsrf",
+   "brownsjob": "cmtlymkne0fi8qf5kic023o5f",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "9348232f-4810-4035-8289-e37296f15685",
+   "b2job": "cmtlymjfr0f9zqf5k5i3pgqdr",
+   "brownsjob": "cmtlymkk70fhcqf5kz087jfvg",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "4abff1f8-5021-4f81-8d22-e1a61816b478",
+   "b2job": "cmtlymjiz0fb3qf5k17kl9n2e",
+   "brownsjob": "cmtlymko60figqf5ku9hzue5u",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "ca78d261-dadd-4ee0-8b43-c3e075545e10",
+   "b2job": "cmtlymjn00fc3qf5kpxqa5lpe",
+   "brownsjob": "cmtlymkrl0fjgqf5kykcr9581",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "e74dddcb-3dac-4bc1-8ef2-af4bbccf824b",
+   "b2job": "cmtlymjo80fcfqf5kjcindhs8",
+   "brownsjob": "cmtlymksu0fjsqf5kf3y8emmt",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "0b69cbba-931d-4b3f-925a-8b0c283263af",
+   "b2job": "cmtlymjp20fcrqf5ko0fe5sl4",
+   "brownsjob": "cmtlymku30fk4qf5kebmgc9lg",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "d55c0382-b55f-4879-98a8-5b23d653bc78",
+   "b2job": "cmtlymjpe0fcvqf5kx22vj0mp",
+   "brownsjob": "cmtlymkud0fk8qf5k5wmpr1py",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "90dcee98-8d55-403b-80f5-8a80a570cd15",
+   "b2job": "cmtlymjqu0fd7qf5kepl3bivm",
+   "brownsjob": "cmtlymkvm0fkkqf5kaobxd2un",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "2573202a-678d-4947-9821-104fc70f4937",
+   "b2job": "cmtne5w1b0d08qq4zfcmyd7xk",
+   "brownsjob": "cmtne5x9x0d5sqq4zhca2hyfq",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "5c674d79-d04f-4247-88bf-7e3a86653b7f",
+   "b2job": "cmtlymj800f7jqf5kth5aikol",
+   "brownsjob": "cmtlymkcu0fewqf5kx8mlv8j3",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "88b8793e-3cac-42bc-beeb-a107a870d8f2",
+   "b2job": "cmtlymj8p0f7rqf5kxnb2nn22",
+   "brownsjob": "cmtlymkdf0ff4qf5kn8wm9x03",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "684995b2-1109-4338-9913-dcb4ed037f64",
+   "b2job": "cmtlymjar0f8fqf5kq0j00w19",
+   "brownsjob": "cmtlymkf80ffsqf5ks63xzymj",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "c3f36869-9d35-4bdd-8e34-7d3769ba8b77",
+   "b2job": "cmtlymjbw0f8rqf5k8qd3wjt1",
+   "brownsjob": "cmtlymkgd0fg4qf5krova9aee",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "8abce78e-88c9-41e2-ad26-45b0bfaabc6b",
+   "b2job": "cmtlymjff0f9vqf5km1jbbnpz",
+   "brownsjob": "cmtlymkjs0fh8qf5k94gl7dmv",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "d40d6f97-2d63-4ee7-aa12-066c9e9b40c3",
+   "b2job": "cmtlymjh60fafqf5k48gpoohs",
+   "brownsjob": "cmtlymklw0fhsqf5kydlijtfq",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "52aafdb8-9b50-4990-adcc-f39c2cfb456e",
+   "b2job": "cmtlymjkw0fbjqf5kbyzq1kh1",
+   "brownsjob": "cmtlymkpt0fiwqf5kfuhgzwtc",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "95b0ffb2-1376-468a-9e6f-36afdfc5cf0c",
+   "b2job": "cmtlymjqh0fd3qf5kkqzcfp4r",
+   "brownsjob": "cmtlymkvc0fkgqf5k6i7ssq2b",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "fd3542c7-54e4-4a47-81e0-f552ffd7e91e",
+   "b2job": "cmtlymjrw0fdjqf5ks71u6vy1",
+   "brownsjob": "cmtlymkwp0fkwqf5k366ij4oy",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "10f62e33-731d-4049-8813-1067024f8418",
+   "b2job": "cmtlymjul0fe3qf5kbrbntcmw",
+   "brownsjob": "cmtlymkzk0flgqf5kfsxlmhtj",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "163db298-6e98-4133-8b4d-6c70b72b8efb",
+   "b2job": "cmtlymjg60fa3qf5k7que8oj6",
+   "brownsjob": "cmtlymkko0fhgqf5k9xkp9bh6",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "b527c247-793f-49c9-abcd-8e34d5a5d8f3",
+   "b2job": "cmtlymjin0fazqf5kjcx7c4z5",
+   "brownsjob": "cmtlymknr0ficqf5k2v5x1kex",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "0f6f976b-143a-4a95-8721-8bca26a20481",
+   "b2job": "cmtlymjkf0fbfqf5kkf7sqgo8",
+   "brownsjob": "cmtlymkpc0fisqf5k07tua4wf",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "d66c0556-cfaf-474c-99aa-ab1e49951c5b",
+   "b2job": "cmtlymjlm0fbrqf5ki1gcn0zv",
+   "brownsjob": "cmtlymkqf0fj4qf5k7nn9xp6c",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "96efd7e2-b04f-47a6-bb28-359cfbad88a1",
+   "b2job": "cmtlymjdg0f97qf5knjwy71v6",
+   "brownsjob": "cmtlymkhs0fgkqf5kzh3xovm6",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "5c5635ab-ec06-4843-8585-b3b153df7f21",
+   "b2job": "cmtlymjos0fcnqf5ke5jyxuvt",
+   "brownsjob": "cmtlymktr0fk0qf5ksj1jn5cs",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "bd541a0d-3004-450c-93ce-d113998ca36d",
+   "b2job": "cmtlymj7b0f7bqf5ko69170fj",
+   "brownsjob": "cmtlymkc90feoqf5k78opcy6k",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "f90b8454-56f9-4f31-a502-ae2eeb614654",
+   "b2job": "cmtlymja10f87qf5kg8yji1ng",
+   "brownsjob": "cmtlymkee0ffkqf5kli51wn69",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "2666cf7e-94cd-4450-a9f7-e7dbe625a7f4",
+   "b2job": "cmtlymj920f7vqf5kqnlhk2k8",
+   "brownsjob": "cmtlymkdm0ff8qf5km44jglkv",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "64de4c2a-e605-4d7d-807f-64e36e270d03",
+   "b2job": "cmtlymjd10f93qf5kqf57ysio",
+   "brownsjob": "cmtlymkhe0fggqf5k4ni3axhe",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "d0ff0719-6b21-45d3-9fa7-6f66ee8e7cbf",
+   "b2job": "cmtlymjdp0f9bqf5kiyogqo2l",
+   "brownsjob": "cmtlymki80fgoqf5kh9138gqr",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "84250b9b-6051-49d1-be16-b8e1ba0b7f87",
+   "b2job": "cmtlymjl60fbnqf5ks234gu54",
+   "brownsjob": "cmtlymkq20fj0qf5kev5762hr",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "d924c64c-b537-49c6-bdd3-a47d06f3d2d3",
+   "b2job": "cmtlymjhg0fajqf5kuomcsqut",
+   "brownsjob": "cmtlymkm70fhwqf5klabbdpri",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "cc7d0995-74a0-40b3-8fb6-251ce0693ac7",
+   "b2job": "cmtlymji20farqf5k00hx1c57",
+   "brownsjob": "cmtlymkn60fi4qf5kuzcgq1am",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "8d6f2978-ac7d-4e5c-8b51-2334bf869cb9",
+   "b2job": "cmtlymjsi0fdnqf5k9belgr81",
+   "brownsjob": "cmtlymkxb0fl0qf5k2d5ieomq",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "a6143b95-4e62-4c64-a18f-5e568fb8dce4",
+   "b2job": "cmtlymjtl0fdvqf5kh30aqrmb",
+   "brownsjob": "cmtlymkyb0fl8qf5k68nassaj",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "20050f44-47d4-488d-b2d9-37b2f297f342",
+   "b2job": "cmtlymjvy0fefqf5kegmj76he",
+   "brownsjob": "cmtlyml100flsqf5kjafwmrfy",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "f7b1e85f-e94a-4e76-a4f4-0d4901dbf0ac",
+   "b2job": "cmtlymjea0f9jqf5kol2ezt3i",
+   "brownsjob": "cmtlymkiu0fgwqf5k6o82ry2t",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "cf216eb1-7295-498b-b93b-87cd4954eb2c",
+   "b2job": "cmtlymjly0fbvqf5kmbal9v51",
+   "brownsjob": "cmtlymkqs0fj8qf5k0703xmxz",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "a8e2c44b-fdc5-428f-a205-5f2c6f591b10",
+   "b2job": "cmtlymjmh0fbzqf5k04get2tt",
+   "brownsjob": "cmtlymkr90fjcqf5kxff2hqvw",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "8581ee95-0c3c-4ae5-abee-6f5dc3b1144c",
+   "b2job": "cmtlymjq10fczqf5k866caoqy",
+   "brownsjob": "cmtlymkuw0fkcqf5kz8ojaw80",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "ac68d16e-68c2-4896-91b7-fcbf210e7eac",
+   "b2job": "cmtt7y1bp0hndmy01brg7ekk0",
+   "brownsjob": "cmtt7y1ij0hpumy014hqdxy3y",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "543d695a-7178-4acd-a431-f1fd9c4ca2ad",
+   "b2job": "cmtt7y1ca0hnnmy01vwcfv0f7",
+   "brownsjob": "cmtt7y1j30hq4my01mkjtgxec",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "60ff2fac-4900-497e-9f35-f1390acb4e80",
+   "b2job": "cmtt7y1cy0hnxmy01qnpvkta3",
+   "brownsjob": "cmtt7y1jo0hqemy01zr6kivff",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "faba7cdf-2d56-4472-89cc-e593d5b496fd",
+   "b2job": "cmtlymjnm0fc7qf5k6l9psz5y",
+   "brownsjob": "cmtlymks10fjkqf5kqf9ijo1o",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "af380c52-7374-451e-84e8-ab2d8b796ff7",
+   "b2job": "cmtt7y1di0ho7my01kfbc7vab",
+   "brownsjob": "cmtt7y1k80hqomy01n555l80k",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "bcb84861-8c7a-45ac-a4e8-63fb83a262fd",
+   "b2job": "cmtt7y1e20hohmy01q8vyoqzo",
+   "brownsjob": "cmtt7y1ku0hqymy017tnhjopj",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  },
+  {
+   "externalId": "6d5b976c-c909-43f7-ad1b-d5d874f45130",
+   "b2job": "cmtt7y1ep0hormy01k9r8r15j",
+   "brownsjob": "cmtt7y1lk0hr8my0142l7bevi",
+   "brownsactive": true,
+   "companyId": "cmtlymkbu0feiqf5k498s8x1u",
+   "company": "Browns Shoes"
+  }
+ ]
+}

@@ -1,0 +1,386 @@
+{
+  "at": "2026-09-10T07:58:06.706Z",
+  "pipelineRun": {
+    "id": "4bf9a57d-40f7-42c8-b261-3f8f619796cd",
+    "status": "COMPLETED",
+    "startedAt": "2026-09-10T07:50:24.837Z",
+    "finishedAt": "2026-09-10T07:58:00.709Z",
+    "revision": "c2758888aabe91cc890724e537cdae335a2d2553"
+  },
+  "writeFailures": [],
+  "sourceRuns": [
+    {
+      "sourceKey": "mango",
+      "status": "DEGRADED",
+      "fetched": 1623,
+      "accepted": 1623,
+      "declaredTotal": 1624,
+      "complete": false,
+      "truncated": false,
+      "errors": 0,
+      "note": "complétude du balayage non attestée · desc 98% date 98% pays 98% url 100%"
+    },
+    {
+      "sourceKey": "urbn-hub",
+      "status": "OK",
+      "fetched": 1379,
+      "accepted": 1379,
+      "declaredTotal": null,
+      "complete": true,
+      "truncated": false,
+      "errors": 0,
+      "note": "desc 100% date 100% pays 100% url 100%"
+    },
+    {
+      "sourceKey": "kering",
+      "status": "DEGRADED",
+      "fetched": 1025,
+      "accepted": 1025,
+      "declaredTotal": 1026,
+      "complete": false,
+      "truncated": false,
+      "errors": 0,
+      "note": "complétude du balayage non attestée · desc 99% date 100% pays 100% url 100%"
+    }
+  ],
+  "active": [
+    {
+      "sourceKey": "kering",
+      "active": 1112,
+      "reattested": 1025,
+      "created": 7
+    },
+    {
+      "sourceKey": "mango",
+      "active": 1689,
+      "reattested": 1623,
+      "created": 3
+    },
+    {
+      "sourceKey": "urbn-hub",
+      "active": 1476,
+      "reattested": 1379,
+      "created": 17
+    }
+  ],
+  "observations": [
+    {
+      "sourceKey": "kering",
+      "rule": "REVIEWED_ALIAS",
+      "n": 111
+    },
+    {
+      "sourceKey": "kering",
+      "rule": "LEGACY_UNREVIEWED",
+      "n": 16
+    },
+    {
+      "sourceKey": "kering",
+      "rule": "GROUP_LABEL_KEPT_HOUSE",
+      "n": 4
+    },
+    {
+      "sourceKey": "mango",
+      "rule": "REVIEWED_ALIAS",
+      "n": 1248
+    },
+    {
+      "sourceKey": "mango",
+      "rule": "LEGACY_UNREVIEWED",
+      "n": 354
+    },
+    {
+      "sourceKey": "urbn-hub",
+      "rule": "REVIEWED_ALIAS",
+      "n": 1379
+    }
+  ],
+  "byCompany": [
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "J Choo",
+      "n": 34
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Franchoo",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Tokyo",
+      "n": 3
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo (Shanghai) Trading Co.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Itachoo",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "J Choo (Switzerland)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Florence",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Jimmy Choo Hungary KFT",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "name": "Michael Kors",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors",
+      "n": 355
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Stores California",
+      "n": 54
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (UK)",
+      "n": 36
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Germany)",
+      "n": 27
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Italy) srl con socio unico",
+      "n": 13
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Spain, S.L.U.",
+      "n": 12
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Europe)",
+      "n": 5
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Switzerland)",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Austria)",
+      "n": 4
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Portugal)",
+      "n": 3
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Netherlands)",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Poland) sp. z. o.o.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Lithuania) UAB",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Hungary) Kft",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Czech Republic) s.r.o.",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Canada)",
+      "n": 2
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (USA)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (HongKong)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors (Sweden)",
+      "n": 1
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "name": "Michael Kors Yuhanhoesa",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "Mango",
+      "n": 1341
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO TR TEKSTIL TICARET LTD.S",
+      "n": 84
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MNG MANGO BELGIQUE S.P.R.L",
+      "n": 75
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO NY",
+      "n": 75
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO MNG",
+      "n": 19
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO ÖSTERRREICH HANDELS.",
+      "n": 13
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO Polska Sp.z.o.o.",
+      "n": 11
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO MODA D.O.O.",
+      "n": 10
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO LUXEMBOURG S.à.r.l.",
+      "n": 8
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO HUNGARY Kft.",
+      "n": 8
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO GARMENTS HELLAS E.P.E.",
+      "n": 7
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO GARMENTS ROM.",
+      "n": 5
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MNG-MANGO",
+      "n": 5
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO MERITXELL, S.L.U",
+      "n": 5
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO SVERIGE",
+      "n": 4
+    },
+    {
+      "sourceKey": "mango",
+      "name": "Mango Korea",
+      "n": 4
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO (CZ) s.r.o.",
+      "n": 4
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO SL D.O.O.",
+      "n": 3
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MNG MANGO IRELAND",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO BULGARIA EOOD",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO BULGARIA EOOD (EUR)",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO DANMARK APS",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGONOR Comércio de Vestuário",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO NORGE A.S.",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO SLOVENSKO, s.r.o.",
+      "n": 1
+    },
+    {
+      "sourceKey": "mango",
+      "name": "MANGO UKRAINE TOV",
+      "n": 1
+    },
+    {
+      "sourceKey": "nordstrom",
+      "name": "Nordstrom",
+      "n": 1535
+    }
+  ],
+  "activeTotal": 74873
+}

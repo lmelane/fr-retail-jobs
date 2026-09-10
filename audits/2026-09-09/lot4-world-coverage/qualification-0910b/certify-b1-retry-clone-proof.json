@@ -1,0 +1,28 @@
+{
+  "at": "2026-09-10T09:08:28.546Z",
+  "environment": "clone",
+  "certified": [
+    {
+      "key": "typology",
+      "method": "OFFICIAL_LINK",
+      "proofUrl": "https://www.typology.com/rejoindre-lequipe",
+      "artifact": "7d32a82644777322b1d8887f344218aa5c41c7c3a52311e9e87c98f90ab4cbe0",
+      "portalScope": "SINGLE_BRAND",
+      "labels": [
+        "Good Brands"
+      ],
+      "receipt": "source-probes-current/typology.receipt.json",
+      "scopeAfter": "SINGLE_BRAND",
+      "written": {
+        "sourceKey": "typology",
+        "sourceHash": "f0025dc2a71615da0337cc610b9022ef46e73ba66c11e51011ef666a823d05df",
+        "verdict": "VERIFIED",
+        "written": 1
+      }
+    }
+  ],
+  "uncertified": {
+    "versace": "versace.com and capriholdings.com unreadable (WAF) even rendered — owner capture needed",
+    "swarovski": "swarovski.com and swarovskigroup.com unreadable (WAF) even rendered — owner capture needed"
+  }
+}

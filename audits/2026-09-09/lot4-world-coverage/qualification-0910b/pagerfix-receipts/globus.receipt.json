@@ -1,0 +1,62 @@
+{
+  "workingTreeDirty": true,
+  "trackedCodeDiffHash": "f1b5f00dc21143af4962549037fb18b1b15d527346aa7eb92a7882026f75da1a",
+  "sourceKey": "globus",
+  "kind": "generic-listing",
+  "tenantKey": "generic-listing:jobs.globus.ch/offre-emplois.html",
+  "configHash": "00b6ea74ad843883e425762f4804e5501c2d2b4ee0c272fe7589e6ff9458f1bd",
+  "startedAt": "2026-09-10T07:23:49.123Z",
+  "snapshotHash": "705fbce5f829733d2e1b80b8e755570d98162f8c10953587c9ebdb6465096e68",
+  "revision": "e71622434b1cf82db2515bf959a688dd2f9605c3",
+  "finishedAt": "2026-09-10T07:23:51.550Z",
+  "status": "FETCH_COMPLETE",
+  "declaredTotal": 22,
+  "enumeration": {
+    "method": "PAGINATED_LISTING_WITH_DETAIL_READ",
+    "endpoint": "https://jobs.globus.ch/offre-emplois.html",
+    "pages": 2,
+    "rawCount": 44,
+    "termination": "IDENTICAL_PAGE",
+    "issues": [],
+    "scopes": [
+      {
+        "scope": "listedLinks",
+        "declaredTotal": 22,
+        "uniqueIds": 22,
+        "pages": 2,
+        "complete": true
+      },
+      {
+        "scope": "postingsParsed",
+        "declaredTotal": 22,
+        "uniqueIds": 22,
+        "pages": 2,
+        "complete": true
+      }
+    ]
+  },
+  "rejectedRows": 0,
+  "fetched": 22,
+  "uniqueIds": 22,
+  "complete": true,
+  "truncated": false,
+  "duplicates": [],
+  "quality": {
+    "missingId": 0,
+    "missingTitle": 0,
+    "invalidUrl": 0,
+    "missingDescription": 0,
+    "missingLocation": 0,
+    "missingCountry": 0,
+    "missingDate": 0,
+    "missingEmployer": 22
+  },
+  "missingInDatabase": [],
+  "activeDatabaseAbsentAtSource": [
+    "acf4a6646645fa9e6cff75aab77d854138c52386"
+  ],
+  "activeDatabase": 23,
+  "payloadHash": "46c258e0a0194908a2f72f8abf3ac69c56c043ffe70a42864d25ec4ae6875804",
+  "companyLabels": [],
+  "note": "Fetch completeness is not proof of employer identity or worldwide portal coverage."
+}
