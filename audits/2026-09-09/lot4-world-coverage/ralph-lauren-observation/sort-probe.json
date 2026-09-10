@@ -1,0 +1,23 @@
+{
+ "at": "2026-09-10T20:50:55.260Z",
+ "rows": [
+  {
+   "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate?sortBy=postedDate",
+   "file": "sort-83463a3557.html",
+   "sha256": "a083724764f80b4e45cc29337e3dffffbd862c8a7136414363399f6318b69151",
+   "cards": 6,
+   "markerDates": 0,
+   "isoDates": 0,
+   "relative": 0
+  },
+  {
+   "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate?3_66_3=&sortBy=postedDate&sortOrder=desc",
+   "file": "sort-712529e200.html",
+   "sha256": "46775a5abab54784567df031dfb82964ec1b8aad4c6073d10209bb4a34c0f4d9",
+   "cards": 6,
+   "markerDates": 0,
+   "isoDates": 0,
+   "relative": 0
+  }
+ ]
+}

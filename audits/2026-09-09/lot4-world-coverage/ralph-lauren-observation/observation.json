@@ -1,0 +1,44 @@
+{
+ "at": "2026-09-10T20:28:37.823Z",
+ "origin": "https://careers.ralphlauren.com",
+ "lists": [
+  {
+   "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate",
+   "archived": {
+    "file": "list-en-US-CareersCorporate-SearchJobsCorporate.html",
+    "bytes": 133928,
+    "sha256": "ce0f061627b6a31806b9c2eb7054bd37a9e9884c5fc0f523a4387ef6f8de8773"
+   },
+   "parsedJobs": 0,
+   "cardsWhereAdapterReadADate": 0,
+   "adapterMarkerOccurrencesInHtml": 0,
+   "anyDateShapeInHtml": false,
+   "dateWordOccurrencesInHtml": 19,
+   "sampleJobUrls": []
+  },
+  {
+   "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsRetail",
+   "archived": {
+    "file": "list-en-US-CareersCorporate-SearchJobsRetail.html",
+    "bytes": 142496,
+    "sha256": "7e9eddb3c2fa60cb34da8dd21d3fa56add94cba0d340de987eb58587afa544ea"
+   },
+   "parsedJobs": 0,
+   "cardsWhereAdapterReadADate": 0,
+   "adapterMarkerOccurrencesInHtml": 0,
+   "anyDateShapeInHtml": false,
+   "dateWordOccurrencesInHtml": 19,
+   "sampleJobUrls": []
+  }
+ ],
+ "details": [],
+ "verdict": {
+  "listsRead": 2,
+  "cardsParsed": 0,
+  "cardsWhereAdapterReadADate": 0,
+  "detailsRead": 0,
+  "detailsWithJsonLdDatePosted": 0,
+  "detailsWithJobPostingJsonLd": 0,
+  "reading": "No publication date found on the cards NOR on the detail pages observed — consistent with a real absence, to be stated only for the postings actually covered by this observation"
+ }
+}
