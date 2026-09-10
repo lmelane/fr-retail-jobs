@@ -1,0 +1,20 @@
+{
+ "at": "2026-09-10T22:44:03.223Z",
+ "target": "production",
+ "apply": true,
+ "planned": 172,
+ "sample": [
+  "cmtk48ec41bwfny2b58zrxr7l",
+  "cmtk1xazt0106nv2bbby19pli",
+  "cmtlvegac09rt3nk5bwbttq86",
+  "cmtmaft882j1fpv5jhuwiftdg",
+  "cmtmkaguo2jrqpv4x5p4wq43i"
+ ],
+ "result": {
+  "sourcesDeactivated": 172,
+  "jobsClosed": 0,
+  "jobsWithdrawn": 0,
+  "jobsKept": 172,
+  "urlsReassigned": 15
+ }
+}
