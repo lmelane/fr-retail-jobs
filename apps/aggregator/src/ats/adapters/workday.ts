@@ -60,6 +60,7 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
   const issues = new Set<string>();
   let pagesRead = 0, rawCount = 0, repeatedIds = 0, withoutPath = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
   const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const pathlessRows = new Set<string>();
 
   for (let offset = 0; offset < 5000; offset += 20) {
     const page = await fetchJson<WorkdayPage>(endpoint, {
@@ -87,7 +88,14 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
       // send a candidate to — skip it rather than crash the whole source on
       // `undefined.split`. Richemont's tenant returned such rows, and the throw
       // lost all ~1300 of its offers ("cartier-3 failed: reading 'split'").
-      if (!job.externalPath) { withoutPath += 1; rejectedRows.push({ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: job }); continue; }
+      if (!job.externalPath) {
+        // A path-less row has no id: the same row served twice (unstable sort — Mango, 2026-09-10: {"bulletFields":["Fix-Term"]}
+        // read on two pages) is one announced row, not two. Distinct rows are told apart by their content.
+        rejectedRows.push({ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: job });
+        pathlessRows.add(createHash('sha256').update(JSON.stringify(job)).digest('hex'));
+        withoutPath = pathlessRows.size;
+        continue;
+      }
       const externalId = job.externalPath.split('/').filter(Boolean).pop() ?? job.externalPath;
       pageIds.push(externalId);
       if (seen.has(externalId)) { repeatedIds += 1; continue; }
@@ -301,8 +309,12 @@ export async function attachWorkdayDescriptions(
             remote: info.remoteType || job.remote,
             // Group tenants: credit the offer to its Maison, not the feed label.
             company: employer,
-            employerEvidence: info.logoImage?.alt?.trim()
-              ? { rawName: info.logoImage.alt, path: 'detail.jobPostingInfo.logoImage.alt', rule: 'LOGO_ALT' }
+            // The evidence label is the one the identity gate matches: the brand read from
+            // the alt, without the image's word "logo" (bounded lot L3, 2026-09-10: 136
+            // postings refused as "HOKA Logo", "Richemont Logo", "Logo Pierre Fabre" while
+            // `company` already carried the cleaned brand).
+            employerEvidence: brandFromLogoAlt(info.logoImage?.alt)
+              ? { rawName: brandFromLogoAlt(info.logoImage?.alt)!, path: 'detail.jobPostingInfo.logoImage.alt', rule: /(^|\s)logo(\s|$)/i.test(info.logoImage!.alt!) ? 'LOGO_ALT_WORD_REMOVED' : 'LOGO_ALT' }
               : detail.hiringOrganization?.name?.trim()
                 ? { rawName: detail.hiringOrganization.name, path: 'detail.hiringOrganization.name', rule: /^[A-Z]{0,2}\d+\s+/.test(detail.hiringOrganization.name.trim()) ? 'LEADING_ENTITY_CODE_REMOVED' : 'HIRING_ORGANIZATION_LABEL' }
                 : job.employerEvidence,

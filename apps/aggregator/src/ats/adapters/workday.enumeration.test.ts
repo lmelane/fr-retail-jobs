@@ -67,6 +67,17 @@ describe('Workday — enumeration proof against the announced total', () => {
     const r = await fetchWorkdayJobs(config);
     expect(r.jobs).toHaveLength(17); expect(r.declaredTotal).toBe(20); expect(r.complete).toBe(true); expect(r.truncated).toBe(false); expect(r.rejectedRows).toHaveLength(3);
   });
+  it('Mango (2026-09-10): the same path-less row served on two pages is ONE announced row — reconciled by the second sweep, proven', async () => {
+    const pathless = { title: 'Fix-Term', bulletFields: ['Fix-Term'] } as any;
+    // 25 announced: 19 postings + the path-less row on page 1; page 2 repeats posting 18 and the same path-less row, and misses posting 23; the shifted sweep finds it.
+    vi.mocked(fetchJson)
+      .mockResolvedValueOnce({ total: 25, jobPostings: [...Array.from({ length: 19 }, (_, i) => posting(i)), pathless] })
+      .mockResolvedValueOnce({ total: 0, jobPostings: [posting(18), posting(19), posting(20), posting(21), posting(22), pathless] })
+      .mockResolvedValueOnce({ total: 0, jobPostings: [posting(10), posting(11), posting(12), posting(13), posting(14), posting(15), posting(16), posting(17), posting(18), posting(19), posting(20), posting(21), posting(22), posting(23)] });
+    const r = await fetchWorkdayJobs(config);
+    expect(r.jobs).toHaveLength(24); expect(r.rejectedRows).toHaveLength(2); expect(r.complete).toBe(true);
+    expect(r.enumeration?.termination).toBe('SECOND_SWEEP_RECONCILED'); expect(r.enumeration?.issues).not.toContain('ENUMERATION_NOT_PROVEN');
+  });
   it('without an announced total, a short page ends the board and nothing is proven', async () => {
     vi.mocked(fetchJson).mockResolvedValueOnce(page([1, 2, 3]));
     const r = await fetchWorkdayJobs(config);

@@ -1,4 +1,4 @@
-import { sourceIdentityHash } from '../connectors/sourceIdentity.js';
+import { sourceIdentityHash, certifiedPortalScope } from '../connectors/sourceIdentity.js';
 import { EmployerIdentityReviewRequired } from './errors.js';
 import { createHash } from 'node:crypto';
 import { Prisma } from '@prisma/client';
@@ -9,7 +9,7 @@ import { PIPELINE_VERSION } from '../pipeline/version.js';
 type Company = Prisma.CompanyGetPayload<Record<string, never>>;
 export type EmployerResolution = {
   company: Company | null;
-  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE';
+  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE' | 'CERTIFIED_SINGLE_BRAND_PORTAL';
   rawEmployerName: string;
   normalizedEmployerName: string;
   aliasId?: string;
@@ -52,6 +52,17 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
     company: roots[aliases.indexOf(alias)]!, rule: 'REVIEWED_ALIAS', rawEmployerName,
     normalizedEmployerName: normalized, aliasId: alias.id, reviewId: alias.reviewId!,
   };
+  /**
+   * A portal certified SINGLE_BRAND (identity review with `portalScope`, current configuration): every native employer
+   * label read on it is an entity of the owner — legal entities, country branches, shared-services companies (Mango on
+   * 2026-09-10: 50 labels, all Mango entities, 26 of them still displayed as separate employers). Such a label is credited
+   * to the portal owner; the raw label stays in the observation. A reviewed alias above still outranks this rule, and a
+   * MULTI_BRAND or uncertified portal is untouched: there, a new label remains an identity change to review.
+   */
+  if (candidate.rawEmployerName !== undefined && (await certifiedPortalScope(tx, candidate.sourceKey)) === 'SINGLE_BRAND') {
+    const owner = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${candidate.companyId}` } });
+    if (owner) return { company: await canonicalEmployer(tx, owner), rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', rawEmployerName, normalizedEmployerName: normalized };
+  }
   const sourceScopedKey = `SOURCE_${createHash('sha256').update(JSON.stringify([candidate.sourceKey, normalized])).digest('hex')}`;
   const scoped = candidate.rawEmployerName === undefined ? null : await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${sourceScopedKey}` } });
   const company = scoped ?? await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${candidate.companyId}` } });
@@ -79,7 +90,11 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
         where: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, canonicalEmployerId: { not: null } },
         orderBy: [{ observedAt: 'desc' }, { id: 'desc' }], select: { normalizedEmployerName: true },
       });
-      if (previous && previous.normalizedEmployerName !== normalized) {
+      // A new spelling that IS the canonical name of the employer already holding the posting is a
+      // convergence, not an identity change (Workday logo alt "UGG Logo" → "UGG" on 2026-09-10: the
+      // previous observation carried the image's word, the company never did).
+      const convergesOnCurrent = normalized === normalizedEmployerName(current.name);
+      if (previous && previous.normalizedEmployerName !== normalized && !convergesOnCurrent) {
         throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, current.name);
       }
     }
