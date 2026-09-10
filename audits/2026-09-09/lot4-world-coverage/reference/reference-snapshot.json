@@ -1,6 +1,6 @@
 {
  "summary": {
-  "at": "2026-09-10T20:21:56.718Z",
+  "at": "2026-09-10T21:08:33.121Z",
   "definition": "One read-only transaction; every count below shares this instant.",
   "perimeters": {
    "liveDefinition": "ACTIVE + PAUSED (the sources that may still write)",
