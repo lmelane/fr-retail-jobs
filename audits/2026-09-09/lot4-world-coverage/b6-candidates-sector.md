@@ -37,3 +37,23 @@ Verdicts : IN 28 · IN_MULTI 1 (VF) · IN_DUP 1 (Luxexperience/YNAP) · OUT 1 (G
 | `workday:fastretailing/headquarters_us_gu` | 2 | **IN** | FASHION_RETAIL | existant | à planifier | Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant |
 | `workday:fastretailing/headquarters_hk_gu` | 2 | **IN** | FASHION_RETAIL | existant | à planifier | Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant |
 | `workday:fastretailing/headquarters_th_uniqlo` | 2 | **IN** | FASHION_RETAIL | existant | à planifier | Fast Retailing : UNIQLO, GU, Theory — prêt-à-porter (fastretailing.com/employment archivé) ; 13 sites Workday régionaux du même tenant |
+
+## Mise à jour du 2026-09-10 (après-midi, procédure sécurisée) — état par tenant
+
+| Tenant | Décision | Base | Lot |
+|---|---|---|---|
+| `workday:fastretailing/retail_us_uniqlo` | **MULTI_BRAND** (SINGLE_BRAND refusé par le contrôle de périmètre : `GU USA LLC` ×1 parmi 347) → 10 alias revus (9 entités UNIQLO → UNIQLO, GU USA LLC → GU) | libellés lus le 10/09 14:14 UTC | L13 (`uniqlo-us-retail`) |
+| `workday:fastretailing/store_staff_au_uniqlo` | SINGLE_BRAND (UNIQLO AUSTRALIA PTY LTD. ×33) | idem | L13 (`uniqlo-au-stores`) |
+| `fastretailing` sites EU (`store_staff_eu`, `headquarters_eu`, `graduates_eu`) | sources existantes certifiées SINGLE_BRAND ; 11 entités « UNIQLO EUROPE LIMITED … BRANCH » fusionnées dans UNIQLO (32 → 142) | `certify-uniqlo-eu`, `uniqlo-entities-*-proof.json` | fait |
+| `headquarters_my/hkm/th_Uniqlo`, `graduates_au_Uniqlo` | SINGLE_BRAND UNIQLO (entités UNIQLO lues) | lecture réelle 14:20 UTC | L14 |
+| `retail_us_GU`, `headquarters_us_GU`, `headquarters_hk_GU` | SINGLE_BRAND **GU** (nouvel acteur, marque Fast Retailing nommée sur la page officielle) | idem | L14 |
+| `eu_Theory`, `retail_us_Theory` | SINGLE_BRAND **Theory** (Link Theory (UK) Ltd., Theory Holdings/Gansevoort/Spring Street LLC) | idem | L14 |
+| `headquarters_ph_Uniqlo`, `headquarters_id_Uniqlo` | SINGLE_BRAND **Fast Retailing** (les libellés nomment l'entité du groupe : Fast Retailing Philippines, PT. Fast Retailing Indonesia — D58) | idem | L14 |
+| `headquarters_us_Uniqlo` (UNIQLO USA + GU USA), `headquarter_roles_vn_Uniqlo` (UNIQLO VIETNAM + FAST RETAILING (VIETNAM)) | MULTI_BRAND avec alias revus | idem | L15 |
+| `workday:knitwellgroup/us_retail_jobs` (1 999 / 2 000), `us_corporate_jobs` (99), `us_distribution_center` (18) | MULTI_BRAND, alias par libellé natif : LOFT (+Outlet, « Rhode Island - LOFT »), White House Black Market (+Outlet), Lane Bryant, Soma, Chico's (+Outlet, « Chico's FAS »), Talbots (+Outlet), Haven Well Within (identité propre), Ann Taylor (+Factory), KnitWell Group / KnitWell ; **3 libellés laissés en revue** (A00 Premium Brands Services LLC, N23 Premium Brands Opco LLC, `Off_The_Rax_LOGO300x300` — artefact d'alt de logo, règle d'adaptateur étendue) ; 1 ligne sans chemin (`ROWS_WITHOUT_EXTERNAL_PATH`) ; un site `Canada_Jobs` supplémentaire lié depuis la même page | lecture réelle 14:30 UTC, page `jobs.knitwellgroup.com/chicos-fas` (sha `89878a1b…`) | L16 (à lancer) |
+| `workday:vfc/vfc_careers` (1 267) | MULTI_BRAND, alias par marque à établir sur les libellés lus | lecture en cours | à planifier |
+| `digitalrecruiters:recrutement.ks-groupe.com` (61) | **KS Groupe est un cabinet de recrutement / sociétés d'intérim (KSI Mode, KSI Retail) spécialisé beauté-mode-retail** (ks-groupe.com/qui-sommes-nous : « au service de ses clients depuis plus de 30 ans ») : flux B (cabinet), offres de clients anonymes publiées sous le nom de l'agence → **arbitrage métier** (Michael Page avait été retiré pour volume hors secteur ; ici 100 % secteur) | pages archivées `b6-evidence/ks-groupe.com_*.html` | non activé |
+| `talentsoft:lagardere-recrute-travelretailde.talent-soft.com` (10) | nouvelle source régionale (DE) de l'acteur existant Lagardère Travel Retail ; la page officielle join-us lie ce tenant à côté du tenant FR catalogué | artefact `964d7254…` | spec `lagardere-travel-retail-de` (lot suivant) |
+| `teamtailor:soeur-…` | doublon de la source `soeur` ACTIVE | — | aucun |
+| `workday:luxexperience/luxexperience_careers` | doublon de route YNAP (décision D35) | — | aucun |
+| `workday:galderma/external` | hors périmètre (dermatologie médicale) | — | aucun |
