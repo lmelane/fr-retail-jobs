@@ -61,17 +61,24 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
    * MULTI_BRAND or uncertified portal is untouched: there, a new label remains an identity change to review.
    */
   if (candidate.rawEmployerName !== undefined && (await certifiedPortalScope(tx, candidate.sourceKey)) === 'SINGLE_BRAND') {
-    const owner = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${candidate.companyId}` } });
-    if (owner) {
-      const ownerRoot = await canonicalEmployer(tx, owner);
-      // A native label that IS a known distinct employer (its own canonical company, not merged into the owner) is a
-      // contradiction of the certified perimeter, never an entity of the owner: it goes to review like on any portal
-      // (2026-09-10: the rule credited any label, including one naming another brand, to the owner).
-      const named = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${resolveCompany(rawEmployerName).companyId}` } });
-      const namedRoot = named ? await canonicalEmployer(tx, named) : null;
-      if (namedRoot && namedRoot.id !== ownerRoot.id) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, ownerRoot.name);
-      return { company: ownerRoot, rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', rawEmployerName, normalizedEmployerName: normalized };
-    }
+    // The owner is the Maison CATALOGUED for the source, never the label: Teamtailor publishes the legal entity as the
+    // hiring organisation ("L'IMPERTINENTE - Ysé", 2026-09-10), the candidate's companyId then derives from that label,
+    // and an owner lookup by that key missed — the certified portal created a duplicate employer beside "Ysé".
+    const catalogued = await tx.source.findUnique({ where: { key: candidate.sourceKey }, select: { maison: true } });
+    const ownerIdentity = resolveCompany(catalogued?.maison?.trim() || candidate.company);
+    const owner = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${ownerIdentity.companyId}` } });
+    const ownerRoot = owner ? await canonicalEmployer(tx, owner) : null;
+    // A native label that IS a known distinct employer (its own canonical company, not merged into the owner) is a
+    // contradiction of the certified perimeter, never an entity of the owner: it goes to review like on any portal
+    // (2026-09-10: the rule credited any label, including one naming another brand, to the owner).
+    const named = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${resolveCompany(rawEmployerName).companyId}` } });
+    const namedRoot = named ? await canonicalEmployer(tx, named) : null;
+    if (namedRoot && namedRoot.id !== ownerRoot?.id) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, ownerRoot?.name ?? ownerIdentity.displayName);
+    if (ownerRoot) return { company: ownerRoot, rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', rawEmployerName, normalizedEmployerName: normalized };
+    // A certified owner that does not exist yet (new actor) is created under its CANONICAL key with the catalogued name:
+    // the certification is the identity review, so a source-scoped key — meant for unreviewed labels — would only
+    // manufacture a second employer the day another source of the same Maison arrives.
+    return { company: null, rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', rawEmployerName, normalizedEmployerName: normalized, newKey: ownerIdentity.companyId, newName: catalogued?.maison?.trim() || ownerIdentity.displayName };
   }
   const sourceScopedKey = `SOURCE_${createHash('sha256').update(JSON.stringify([candidate.sourceKey, normalized])).digest('hex')}`;
   const scoped = candidate.rawEmployerName === undefined ? null : await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${sourceScopedKey}` } });
