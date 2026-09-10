@@ -60,6 +60,7 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
   const issues = new Set<string>();
   let pagesRead = 0, rawCount = 0, repeatedIds = 0, withoutPath = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
   const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const pathlessRows = new Set<string>();
 
   for (let offset = 0; offset < 5000; offset += 20) {
     const page = await fetchJson<WorkdayPage>(endpoint, {
@@ -87,7 +88,14 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
       // send a candidate to — skip it rather than crash the whole source on
       // `undefined.split`. Richemont's tenant returned such rows, and the throw
       // lost all ~1300 of its offers ("cartier-3 failed: reading 'split'").
-      if (!job.externalPath) { withoutPath += 1; rejectedRows.push({ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: job }); continue; }
+      if (!job.externalPath) {
+        // A path-less row has no id: the same row served twice (unstable sort — Mango, 2026-09-10: {"bulletFields":["Fix-Term"]}
+        // read on two pages) is one announced row, not two. Distinct rows are told apart by their content.
+        rejectedRows.push({ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: job });
+        pathlessRows.add(createHash('sha256').update(JSON.stringify(job)).digest('hex'));
+        withoutPath = pathlessRows.size;
+        continue;
+      }
       const externalId = job.externalPath.split('/').filter(Boolean).pop() ?? job.externalPath;
       pageIds.push(externalId);
       if (seen.has(externalId)) { repeatedIds += 1; continue; }
