@@ -219,4 +219,19 @@ describe('brandFromLogoAlt — the word "logo" belongs to the image, not the emp
     expect(brandFromLogoAlt('Van Cleef & Arpels')).toBe('Van Cleef & Arpels');
   });
   it('never returns an empty brand', () => { expect(brandFromLogoAlt('Logo')).toBeUndefined(); expect(brandFromLogoAlt('  ')).toBeUndefined(); expect(brandFromLogoAlt(undefined)).toBeUndefined(); });
+  it('gives the identity gate the same cleaned brand as the company (lot L3 refused "HOKA Logo" while company read "HOKA")', async () => {
+    mockJson.mockResolvedValueOnce({ jobPostingInfo: { jobDescription: 'Role', logoImage: { alt: 'HOKA Logo' } }, hiringOrganization: { name: 'Deckers Outdoor Corporation' } } as never);
+    const [job] = await attachWorkdayDescriptions([{ externalId: 'x', title: 'Sales Associate', url: 'https://example.com/job/x', raw: { externalPath: '/job/x' } }], 'https://example.com/wday/cxs/deckers/jobs');
+    expect(job.company).toBe('HOKA');
+    expect(job.employerEvidence).toEqual({ rawName: 'HOKA', path: 'detail.jobPostingInfo.logoImage.alt', rule: 'LOGO_ALT_WORD_REMOVED' });
+  });
+  it('keeps LOGO_ALT verbatim when the alt is the brand alone, and falls back to the legal entity when the alt is only "Logo"', async () => {
+    mockJson.mockResolvedValueOnce({ jobPostingInfo: { jobDescription: 'Role', logoImage: { alt: 'Panerai' } }, hiringOrganization: { name: 'C170 Officine Panerai' } } as never);
+    const [brand] = await attachWorkdayDescriptions([{ externalId: 'a', title: 'T', url: 'https://example.com/job/a', raw: { externalPath: '/job/a' } }], 'https://example.com/wday/cxs/r/jobs');
+    expect(brand.employerEvidence).toEqual({ rawName: 'Panerai', path: 'detail.jobPostingInfo.logoImage.alt', rule: 'LOGO_ALT' });
+    mockJson.mockResolvedValueOnce({ jobPostingInfo: { jobDescription: 'Role', logoImage: { alt: 'Logo' } }, hiringOrganization: { name: 'C170 Officine Panerai' } } as never);
+    const [legal] = await attachWorkdayDescriptions([{ externalId: 'b', title: 'T', url: 'https://example.com/job/b', raw: { externalPath: '/job/b' } }], 'https://example.com/wday/cxs/r/jobs');
+    expect(legal.company).toBe('Officine Panerai');
+    expect(legal.employerEvidence).toEqual({ rawName: 'C170 Officine Panerai', path: 'detail.hiringOrganization.name', rule: 'LEADING_ENTITY_CODE_REMOVED' });
+  });
 });

@@ -309,8 +309,12 @@ export async function attachWorkdayDescriptions(
             remote: info.remoteType || job.remote,
             // Group tenants: credit the offer to its Maison, not the feed label.
             company: employer,
-            employerEvidence: info.logoImage?.alt?.trim()
-              ? { rawName: info.logoImage.alt, path: 'detail.jobPostingInfo.logoImage.alt', rule: 'LOGO_ALT' }
+            // The evidence label is the one the identity gate matches: the brand read from
+            // the alt, without the image's word "logo" (bounded lot L3, 2026-09-10: 136
+            // postings refused as "HOKA Logo", "Richemont Logo", "Logo Pierre Fabre" while
+            // `company` already carried the cleaned brand).
+            employerEvidence: brandFromLogoAlt(info.logoImage?.alt)
+              ? { rawName: brandFromLogoAlt(info.logoImage?.alt)!, path: 'detail.jobPostingInfo.logoImage.alt', rule: /(^|\s)logo(\s|$)/i.test(info.logoImage!.alt!) ? 'LOGO_ALT_WORD_REMOVED' : 'LOGO_ALT' }
               : detail.hiringOrganization?.name?.trim()
                 ? { rawName: detail.hiringOrganization.name, path: 'detail.hiringOrganization.name', rule: /^[A-Z]{0,2}\d+\s+/.test(detail.hiringOrganization.name.trim()) ? 'LEADING_ENTITY_CODE_REMOVED' : 'HIRING_ORGANIZATION_LABEL' }
                 : job.employerEvidence,
