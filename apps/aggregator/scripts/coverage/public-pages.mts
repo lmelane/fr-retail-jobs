@@ -43,7 +43,13 @@ const STATES: Array<{ state: string; sql: Prisma.Sql; expectHttp: number[]; expe
   { state: 'active, échéance dépassée', sql: Prisma.sql`j."isActive" AND j."validThrough" IS NOT NULL AND j."validThrough" < now()`,
     expectHttp: [200], expectSchema: 'NO',
     why: 'visible si voulu, AUCUN JobPosting : une échéance passée annonce un poste clos. Date de la source conservée telle quelle' },
-  { state: 'multilocalisation (plusieurs LIEUX)', sql: Prisma.sql`j."isActive" AND j.location LIKE '%;%'`,
+  /**
+   * Le prédicat doit isoler les offres qui énumèrent plusieurs lieux RÉELS : un libellé « Lehi, Utah; Remote »
+   * n'a qu'un lieu une fois le télétravail écarté, et l'échantillonner ne démontrait pas la multilocalisation.
+   */
+  { state: 'multilocalisation (plusieurs LIEUX)', sql: Prisma.sql`j."isActive" AND j.location LIKE '%;%'
+      AND array_length(array_remove(array(SELECT btrim(x) FROM unnest(string_to_array(j.location, ';')) x
+        WHERE btrim(x) !~* '^(remote|virtual|anywhere|télétravail)$'), ''), 1) > 1`,
     expectHttp: [200], expectSchema: 'EITHER',
     why: 'un jobLocation par lieu réellement énuméré, cohérent avec la page — et jamais l\'agrégat trompeur de la colonne city' },
   { state: 'télétravail total (REMOTE)', sql: Prisma.sql`j."isActive" AND j."workplaceType" = 'REMOTE'`,
@@ -144,8 +150,13 @@ async function inspect(id: string) {
       hasJobLocation: Boolean(posting.jobLocation), directApply: posting.directApply ?? null,
       /** Scénarios 3 et 4 : la forme du lieu, telle qu'elle est servie. */
       jobLocationCount: Array.isArray(posting.jobLocation) ? posting.jobLocation.length : posting.jobLocation ? 1 : 0,
+      /**
+       * Les localités RÉELLEMENT émises. La clé absente est omise, pas rendue `null` : une première version
+       * mappait l'absence sur `null` et donnait à lire « localités=[null] » sur les offres distantes, comme si
+       * une localité vide était publiée. Le balisage servi ne porte tout simplement pas la clé.
+       */
       jobLocationLocalities: (Array.isArray(posting.jobLocation) ? posting.jobLocation : posting.jobLocation ? [posting.jobLocation] : [])
-        .map((pl: any) => pl?.address?.addressLocality ?? null),
+        .flatMap((pl: any) => (pl?.address?.addressLocality ? [pl.address.addressLocality] : [])),
       jobLocationType: posting.jobLocationType ?? null,
       applicantLocationRequirements: posting.applicantLocationRequirements ?? null,
       employmentType: posting.employmentType ?? null, identifier: Boolean(posting.identifier),
@@ -249,10 +260,14 @@ try {
    */
   const [vocabulary]: any[] = await p.$queryRaw`
     SELECT count(*) FILTER (WHERE (SELECT count(*) FROM "JobSource" s WHERE s."jobId" = j.id AND s."isActive") > 1)::int multi_source,
-           count(*) FILTER (WHERE j.location LIKE '%;%')::int multi_location,
+           -- Multilocalisation = plusieurs lieux RÉELS, télétravail écarté (« Lehi, Utah; Remote » n'a qu'un lieu).
+           count(*) FILTER (WHERE j.location LIKE '%;%'
+             AND array_length(array_remove(array(SELECT btrim(x) FROM unnest(string_to_array(j.location, ';')) x
+               WHERE btrim(x) !~* '^(remote|virtual|anywhere|télétravail)$'), ''), 1) > 1)::int multi_location,
            count(*) FILTER (WHERE j."workplaceType" = 'REMOTE')::int remote,
            count(*) FILTER (WHERE j."workplaceType" = 'REMOTE' AND j."countryCode" IS NOT NULL)::int remote_with_known_country,
-           count(*) FILTER (WHERE j.location LIKE '%;%' AND j.location ILIKE '%remote%')::int multi_location_and_remote
+           count(*) FILTER (WHERE j.location LIKE '%;%' AND j.location ILIKE '%remote%')::int multi_location_and_remote,
+           count(*) FILTER (WHERE j.location LIKE '%;%')::int enumerating_labels
     FROM "Job" j WHERE j."isActive"`;
 
   /**
@@ -280,6 +295,7 @@ try {
       remote: vocabulary.remote,
       remoteWithKnownCountry: vocabulary.remote_with_known_country,
       multiLocationAndRemote: vocabulary.multi_location_and_remote,
+      enumeratingLabels: vocabulary.enumerating_labels,
       note: 'multi-sources ≠ multilocalisation ≠ télétravail. Trois notions, trois mesures.',
     },
     googlePresence: 'NON MESURÉE — ne peut pas l\'être depuis ce script, et ne se déduit pas du balisage.',
