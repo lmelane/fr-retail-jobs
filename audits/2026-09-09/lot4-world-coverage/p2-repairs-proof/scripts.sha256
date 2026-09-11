@@ -4,3 +4,6 @@ c81b80a8fa26c7dfdedf7a98203eaf85544df04e07b394ae428445ea95269c3d  backups/lot4-2
 939fc43859788e2f1039fd3adc17aeec1dc15575d480d342341654997cc6854f  backups/lot4-20260909/p4-lifted-7.mts
 1ce7ec7f09ad5a4befb85c900359a40aef42d70a4b61d089f75728b662a0cd6a  backups/lot4-20260909/p4-lifted-28.mts
 48382fc1bbdf373f29e83ae889ab3529ee9ad7ae7b75b6df67f6709daa45ca42  backups/lot4-20260909/p5-fj-withdraw.mts
+d47e80c44c9f431f48a90d63d2c8a0762398ce226833000bba849cf62453dc04  apps/aggregator/scripts/ops/replay-integration.mts
+787f909f9b2f484086033148cb1f3ff6ad087a346a23ccc6a908bee609c18d47  apps/aggregator/scripts/ops/gate.mts
+9b90a18f0d2628e6ab75b82eb68b72d6a44d6af1094f5c4f7ad42d5cdd857308  apps/aggregator/scripts/ops/mutation.sh

@@ -1,0 +1,36 @@
+import { PrismaClient } from '@prisma/client';
+import { writeFileSync } from 'node:fs';
+/**
+ * CLONE ONLY: create the gaps the integration replay is meant to repair.
+ *
+ * The three chosen families are already fully consistent with their archives (1 471 postings examined, 0 missing
+ * field), which is the right state — but it means the real write path cannot be exercised on them as they stand.
+ * So the clone gets real, known gaps: fields are NULLed on identified postings, and the identifiers are recorded
+ * so the repair can be checked posting by posting rather than by a count.
+ *
+ * Refuses to run anywhere but the clone: the guard is the database name, not a promise.
+ *
+ * usage: p8-seed-gaps.mts <family> <count>
+ */
+const family = process.argv[2] ?? 'recruitee';
+const count = Number(process.argv[3] ?? 25);
+const p = new PrismaClient();
+try {
+  const [{ current_database: db }]: any[] = await p.$queryRaw`SELECT current_database()`;
+  if (!/replay|clone|test/.test(db)) throw new Error(`refusing: ${db} is not a clone/replay/test database`);
+
+  const rows: any[] = await p.$queryRaw`
+    SELECT j.id, js."sourceKey", j.title, j.location, j."postedAt"
+    FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId" JOIN "Source" s ON s.key = js."sourceKey"
+    WHERE js."isActive" AND j."isActive" AND s.kind = ${family} AND s.status = 'ACTIVE'
+      AND js.raw IS NOT NULL AND j."postedAt" IS NOT NULL
+    ORDER BY j.id LIMIT ${count}`;
+
+  // The values are kept so the repair can be compared with the truth, not merely with "not null".
+  const before = rows.map((r) => ({ id: r.id, sourceKey: r.sourceKey, title: r.title, location: r.location, postedAt: r.postedAt }));
+  for (const r of rows) await p.job.update({ where: { id: r.id }, data: { postedAt: null, location: null } });
+
+  const file = `backups/lot4-20260909/p8-integration/gaps-${family}.json`;
+  writeFileSync(file, JSON.stringify({ at: new Date().toISOString(), database: db, family, before }, null, 1));
+  console.log(JSON.stringify({ database: db, family, gapsCreated: rows.length, file, ids: rows.map((r) => r.id) }, null, 1));
+} finally { await p.$disconnect(); }

@@ -7,10 +7,11 @@
  *
  * Three things are checked, on the evidence the chain has just produced — never on a promise:
  *
- *   1. REPLAY IS EMPTY. The rehearsal was applied twice; the second run must have changed nothing. A mutation
- *      that keeps finding work is not idempotent, and applying it to production would leave an unknown state.
- *   2. PERIMETER CONFORMITY. What the mutation announced it would touch (the perimeter manifest) must match what
- *      the rehearsal actually did. A mutation that touches more than it declared cannot be audited afterwards.
+ *   1. REPLAY IS EMPTY. The second rehearsal pass must report an EXPLICIT, empty set of touched identifiers.
+ *      Review on 2026-09-11 showed a replay log of `{}` clearing the gate: "no counter" was read as "no write",
+ *      turning missing evidence into a pass. Silence now blocks.
+ *   2. PERIMETER CONFORMITY, BY IDENTIFIER. Every identifier actually touched must have been declared. The check
+ *      compared NUMBERS, so a mutation declaring A,B and touching C,D cleared the gate; it now compares SETS.
  *   3. BUSINESS INVARIANTS. The dossier-independent ones this catalogue has already paid for:
  *        · no posting is CLOSED by a withdrawal (an administrative removal is never an employer closure);
  *        · no active posting loses every live attestation;
@@ -43,6 +44,22 @@ const lastJson = (text: string | null): any => {
   try { return JSON.parse(text); } catch { return null; }
 };
 
+/**
+ * The identifiers a run declares it touched. `undefined` means the run did not say — which is NOT "none".
+ * That distinction is the whole point: an absent declaration blocks, an explicit empty list passes.
+ *
+ * CONTRACT for a mutation script: on `--apply`, print `touchedIds` alongside the manifest.
+ */
+const touchedIds = (node: any): string[] | undefined => {
+  if (!node || typeof node !== 'object') return undefined;
+  if (Array.isArray(node.touchedIds)) return node.touchedIds.map(String);
+  for (const v of Object.values(node)) {
+    const found = touchedIds(v);
+    if (found !== undefined) return found;
+  }
+  return undefined;
+};
+
 /** Every numeric "applied"/"planned" field a mutation may report, whatever its shape. */
 const counts = (node: any, key: RegExp, acc: number[] = []): number[] => {
   if (!node || typeof node !== 'object') return acc;
@@ -56,34 +73,37 @@ const counts = (node: any, key: RegExp, acc: number[] = []): number[] => {
 // ─────────────────────────────────────────────────────────── 1. Replay is empty
 {
   const replay = lastJson(read(phase === 'production' ? 'prod-replay.log' : 'clone-replay.log'));
+  const ids = touchedIds(replay);
   if (!replay) checks.push({ id: 'replay-empty', verdict: 'UNVERIFIABLE', detail: `no parsable ${phase} replay output` });
+  else if (ids === undefined) checks.push({ id: 'replay-empty', verdict: 'UNVERIFIABLE', detail: 'the replay declared no `touchedIds`: it cannot be shown to have written nothing (a missing declaration is not zero)' });
+  else if (ids.length) checks.push({ id: 'replay-empty', verdict: 'BLOCK', detail: `replay still touched ${ids.length} identifier(s): ${ids.slice(0, 5).join(', ')} — the mutation is not idempotent` });
   else {
-    const applied = counts(replay, /^(applied|jobsWithdrawn|jobsClosed|sourcesDeactivated|movedJobs)$/i);
-    const worked = applied.filter((n) => n > 0);
+    const worked = counts(replay, /^(applied|jobsWithdrawn|jobsClosed|sourcesDeactivated|movedJobs)$/i).filter((n) => n > 0);
     checks.push(worked.length
-      ? { id: 'replay-empty', verdict: 'BLOCK', detail: `replay still changed rows: ${worked.join(', ')} — the mutation is not idempotent` }
-      : { id: 'replay-empty', verdict: 'PASS', detail: `replay changed nothing (${applied.length} counters at 0)` });
+      ? { id: 'replay-empty', verdict: 'BLOCK', detail: `replay declared no identifier but reported counters ${worked.join(', ')} — the two contradict each other` }
+      : { id: 'replay-empty', verdict: 'PASS', detail: 'replay declared an explicitly empty set of touched identifiers' });
   }
 }
 
-// ─────────────────────────────────────────────────────────── 2. Perimeter conformity
+// ─────────────────────────────────────────────────────────── 2. Perimeter conformity, by IDENTIFIER
 {
   const perimeter = lastJson(read('perimeter.log'));
   const apply = lastJson(read(phase === 'production' ? 'prod-apply.log' : 'clone-apply.log'));
   const manifestFile = perimeter?.manifestFile ?? apply?.manifestFile;
-  if (!manifestFile || !existsSync(manifestFile)) {
-    checks.push({ id: 'perimeter-declared', verdict: 'BLOCK', detail: 'the mutation declared no perimeter manifest — the identifiers it touches must be listed BEFORE the write' });
-  } else {
-    const manifest = JSON.parse(readFileSync(manifestFile, 'utf8'));
-    const ids: string[] = [...(manifest.withdrawIds ?? []), ...(manifest.detachIds ?? []), ...(manifest.ids ?? [])];
-    const announced = Number(manifest.totals ? Object.values(manifest.totals).find((v) => typeof v === 'number') : ids.length);
-    if (!ids.length) checks.push({ id: 'perimeter-declared', verdict: 'BLOCK', detail: 'the perimeter manifest lists no identifier' });
-    else {
-      const applied = Math.max(0, ...counts(apply, /^(applied|sourcesDeactivated)$/i));
-      checks.push(applied > ids.length
-        ? { id: 'perimeter-conform', verdict: 'BLOCK', detail: `touched ${applied} rows for ${ids.length} declared identifiers` }
-        : { id: 'perimeter-conform', verdict: 'PASS', detail: `${ids.length} identifiers declared, ${applied} rows touched (announced ${announced})` });
-    }
+  const declared: string[] | null = manifestFile && existsSync(manifestFile)
+    ? (() => { const m = JSON.parse(readFileSync(manifestFile, 'utf8')); return [...(m.withdrawIds ?? []), ...(m.detachIds ?? []), ...(m.ids ?? [])].map(String); })()
+    : null;
+  const actual = touchedIds(apply);
+  if (declared === null) checks.push({ id: 'perimeter-declared', verdict: 'BLOCK', detail: 'the mutation declared no perimeter manifest — the identifiers it will touch must be listed BEFORE the write' });
+  else if (!declared.length) checks.push({ id: 'perimeter-declared', verdict: 'BLOCK', detail: 'the perimeter manifest lists no identifier' });
+  else if (actual === undefined) checks.push({ id: 'perimeter-conform', verdict: 'UNVERIFIABLE', detail: 'the apply declared no `touchedIds`: the rows it wrote cannot be compared with the perimeter' });
+  else {
+    // Set inclusion, not cardinality: a run touching C,D for a declared A,B has the same count and is wrong.
+    const declaredSet = new Set(declared);
+    const outside = actual.filter((id) => !declaredSet.has(id));
+    checks.push(outside.length
+      ? { id: 'perimeter-conform', verdict: 'BLOCK', detail: `${outside.length} identifier(s) touched outside the declared perimeter: ${outside.slice(0, 5).join(', ')}` }
+      : { id: 'perimeter-conform', verdict: 'PASS', detail: `${actual.length} identifier(s) touched, all among the ${declared.length} declared` });
   }
 }
 

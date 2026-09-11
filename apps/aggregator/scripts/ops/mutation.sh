@@ -39,6 +39,9 @@
 #   <state.mts>     read-only; prints the measurable state; run identically before and after
 #   --dry-run       stops after the gate: everything is rehearsed and checked, production is never written
 set -eu
+# Every step runs in the pipeline's timezone: a date without a zone suffix is parsed in the process's local time,
+# so a replay on another host silently produces different instants (measured: 2 hours off on WordPress dates).
+export TZ="${CATWALKS_PIPELINE_TZ:-Europe/Paris}"
 cd "$(git rev-parse --show-toplevel)"
 NAME="$1"; MUTATION="$2"; STATE="$3"; shift 3
 DRY_RUN=0
@@ -66,8 +69,10 @@ archive() {
 }
 trap archive EXIT
 
-# (a) A step's identity = its inputs. Any edit to the mutation, the state script or this procedure invalidates it.
-fingerprint() { shasum -a 256 "$MUTATION" "$STATE" "$0" 2>/dev/null | shasum -a 256 | cut -d' ' -f1; }
+# (a) A step's identity = its inputs, and THE VALIDATOR IS ONE OF THEM. The fingerprint covered the mutation,
+# the state script and this procedure but NOT gate.mts, so editing the validator left every earlier proof
+# "valid" — exactly the scenario the reception asks to exercise. Editing any of the four now invalidates.
+fingerprint() { shasum -a 256 "$MUTATION" "$STATE" "$0" "$GATE" 2>/dev/null | shasum -a 256 | cut -d' ' -f1; }
 BASE_FP=$(fingerprint)
 
 step() {

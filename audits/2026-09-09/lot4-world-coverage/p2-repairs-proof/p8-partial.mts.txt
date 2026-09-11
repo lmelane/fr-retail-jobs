@@ -1,0 +1,15 @@
+import { PrismaClient } from '@prisma/client';
+import { writeFileSync, readFileSync } from 'node:fs';
+// SCENARIO 2: interrupt AFTER a partial write, then resume to the expected result.
+// Half the gaps are repaired, then the process dies mid-way — exactly what a killed container does.
+const family = process.argv[2] ?? 'recruitee';
+const p = new PrismaClient();
+try {
+  const [{ current_database: db }]: any[] = await p.$queryRaw`SELECT current_database()`;
+  if (!/replay|clone|test/.test(db)) throw new Error(`refusing: ${db} is not a clone`);
+  const { before } = JSON.parse(readFileSync(`backups/lot4-20260909/p8-integration/gaps-${family}.json`,'utf8'));
+  const half = before.slice(0, Math.floor(before.length/2));
+  for (const b of half) await p.job.update({ where: { id: b.id }, data: { location: b.location, postedAt: b.postedAt } });
+  writeFileSync(`backups/lot4-20260909/p8-integration/partial-${family}.json`, JSON.stringify({ repaired: half.map((h:any)=>h.id) }, null, 1));
+  console.log(JSON.stringify({ database: db, family, repairedBeforeCrash: half.length, remaining: before.length-half.length }, null, 1));
+} finally { await p.$disconnect(); }
