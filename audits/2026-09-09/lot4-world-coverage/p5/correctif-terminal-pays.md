@@ -124,3 +124,96 @@ chaque offre étant nommée dans le fichier.)*
 | **3 937 offres physiques sans pays** | inéligibles, **visibles**. Remplir le pays est un sujet de donnée géographique (le normaliseur `resolveGeography` existe côté ingestion), hors périmètre de ce correctif |
 | **142 conflits** | inéligibles, visibles. Chaque identifiant est nommé ; la résolution demande soit une preuve de pays par segment, soit une table ville → pays que nous n'avons pas |
 | « Indianapolis, IN » sous `IN` | accepté faute de contradiction démontrable — cohérent avec D54 |
+
+---
+
+# Addendum — preuve INDÉPENDANTE du pays pour les codes ambigus (2026-09-11)
+
+## Le défaut restant : une validation circulaire
+
+La règle précédente considérait `suffix === countryCode` comme « pas de conflit ». **C'est circulaire** quand le
+`countryCode` a lui-même été déduit de ce suffixe : « El Segundo, CA » sous le pays `CA` se confirmait tout seul.
+
+**Mesuré** : **1 936 offres** ont un suffixe ambigu égal à leur code pays, et **aucune** ne porte de nom de pays
+écrit en toutes lettres dans son `raw`. Vérifié sur échantillon — ces lignes n'ont **aucune clé pays** dans leur
+payload : le `countryCode` vient bien du seul suffixe.
+
+## La règle imposée
+
+Un code **ambigu** (à la fois code pays ISO et subdivision US/CA) exige une preuve **indépendante du suffixe** :
+
+| Preuve acceptée | Pourquoi elle est indépendante |
+|---|---|
+| `countryIntegrity` renseignée et non douteuse | c'est le jugement de la chaîne d'ingestion, construit en D54 pour exactement cette question |
+| Le libellé **nomme le pays en toutes lettres** | « Germany », « United States » ne sont pas le suffixe à deux lettres |
+| Un **code postal** | le suffixe ne le produit pas |
+| Le pays n'est **pas ambigu** (`FR`, `IT`, `GB`…) | il n'est subdivision de rien : la question ne se pose pas |
+
+**Ne valent PAS preuve** : le suffixe lui-même, ni le fait qu'un `countryCode` existe en base.
+
+Sans preuve : **page visible, aucun `JobPosting`**, motif `AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF`.
+Aucune ville ni pays inventé. **Aucune table mondiale des villes construite** — la règle réutilise la
+connaissance `COLLIDING_CODES` déjà portée par le normaliseur d'ingestion.
+
+> `countryIntegrity` est **vide en production** (0 valeur sur 78 932). La règle la lit malgré tout : dès qu'une
+> ingestion la renseignera, le verdict suivra **sans nouveau correctif**. La remplir serait une écriture de
+> production, hors périmètre P5.
+
+## Le test « Indianapolis, IN » est RETIRÉ comme comportement conforme
+
+Conformément à l'arbitrage : `IN` peut désigner l'Indiana, et la coïncidence entre suffixe et pays n'est pas une
+preuve que le pays est l'Inde.
+
+## Tests terminaux — les six exigés, plus quatre gardes
+
+| # | Cas | Résultat |
+|---|---|---|
+| **A** | « El Segundo, CA » sous `CA`, sans preuve | `AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF`, **aucun balisage** |
+| **B** | « Indianapolis, IN » sous `IN`, sans preuve | idem |
+| **C** | « Berlin, Germany » sous `DE` | **balisage autorisé**, `addressCountry: DE` |
+| **D** | « Seattle, WA, United States » sous `US` | **balisage autorisé**, `addressCountry: US` |
+| **E** | multilocalisation US prouvée indépendamment | **3** `jobLocation`, tous `addressCountry: US` |
+| **F** | même libellé, pays issu du seul suffixe (`WA` sous `WA`) | **aucun balisage** |
+| + | code postal | vaut preuve |
+| + | pays non ambigu (`FR`, `IT`) | aucune preuve exigée |
+| + | `countryIntegrity` posée | honorée |
+| + | « Seattle, WA » sous `DE` | reste un **conflit**, pas une absence de preuve |
+
+**129 tests web verts**, typecheck 0 erreur.
+
+## Après — vérifié sur les pages SERVIES
+
+| | |
+|---|---|
+| Fiches conformes | **33 / 33**, 0 échec |
+| Cas A (`cmtk0fwif07hus32b25d6ob8k`, « El Segundo, CA » / `CA`) | HTTP **200** · `JobPosting` **0** · `addressCountry:"CA"` **0** |
+| Cas A bis (`cmtk0fxca07k2s32byonfzntz`, « Costa Mesa, CA » / `CA`) | HTTP **200** · `JobPosting` **0** · `addressCountry:"CA"` **0** |
+
+### Mesures exigées, par identifiants
+
+| Mesure | Offres |
+|---|---:|
+| codes collisionnants **avec** preuve indépendante | **4 501** |
+| codes collisionnants **sans** provenance suffisante | **4 342** |
+| offres **nouvellement inéligibles** par ce correctif | **4 342** (71 961 → 67 794 éligibles, soit −4 167 net après recoupement des motifs) |
+| offres **restant balisées** après preuve indépendante | **67 794** |
+
+### Dénominateurs corrigés
+
+| Mesure | Offres |
+|---|---:|
+| `visibleOnModeCareers` | **78 932** |
+| `googleEligible` *(porte technique Mode Careers)* | **67 794** |
+| `googleIneligible` | **11 138** |
+
+Par motif : `AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF` **4 342** · `PHYSICAL_LOCATION_WITHOUT_COUNTRY` 3 937 ·
+`NO_REAL_POSTED_DATE` 1 450 · `NO_USABLE_LOCATION` 779 · `DESCRIPTION_TOO_THIN` 477 · `VALID_THROUGH_EXPIRED` 257 ·
+`LOCATION_COUNTRY_CONFLICT` 142 · `REMOTE_WITHOUT_ELIGIBILITY_COUNTRY` 23 · `MULTI_LOCATION_COUNTRY_NOT_PROVEN` 11 ·
+`OPEN_APPLICATION` 1.
+
+## Restant, déclaré
+
+Les **4 342** offres à code ambigu sans provenance restent **visibles et inéligibles**, identifiants nommés. Leur
+résolution passe par le renseignement de `countryIntegrity` à l'ingestion — donc par P7, pas par P5.
+
+**P5 est clos.**

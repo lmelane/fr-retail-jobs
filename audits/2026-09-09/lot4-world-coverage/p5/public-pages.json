@@ -1,13 +1,29 @@
 {
- "at": "2026-09-11T13:40:43.656Z",
+ "at": "2026-09-11T14:32:45.010Z",
  "base": "https://modecareers.com",
  "boundedTo": "3 fiches par état, 11 états — contrôle BORNÉ, non exhaustif",
  "visibleOnModeCareers": 78932,
  "markupEmitted": 12,
- "googleEligible": 71961,
+ "googleEligible": 67794,
  "googleEligibleMeaning": "Conforme à la porte technique actuelle de Mode Careers. Ni une garantie d'apparition dans Google Jobs, ni une promesse d'acceptation par Google.",
  "descriptionThresholdOrigin": "Le seuil de 100 caractères est une règle conservatrice interne de Mode Careers, pas un seuil fourni par Google.",
  "googleIneligibleByReason": [
+  {
+   "reason": "AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF",
+   "postings": 4342,
+   "sampleIds": [
+    "cmtjwf6bp0a7xld2bnithyhup",
+    "cmtk01dzi0047kc47y4g4g3l6",
+    "cmtk0fqck06qvs32b4l7bfx1d",
+    "cmtk0fwif07hus32b25d6ob8k",
+    "cmtk0fx1i07j7s32bmm03mfh8",
+    "cmtk0fxca07k2s32byonfzntz",
+    "cmtk0fxgz07kis32bet0obzxn",
+    "cmtk0fxi907kms32bq6t0leko",
+    "cmtk0fxjm07kqs32bkbkksj4s",
+    "cmtk0fyhd07n4s32b4yenzfil"
+   ]
+  },
   {
    "reason": "PHYSICAL_LOCATION_WITHOUT_COUNTRY",
    "postings": 3937,
@@ -144,8 +160,40 @@
    ]
   }
  ],
- "googleIneligibleTotal": 6971,
+ "googleIneligibleTotal": 11138,
  "locationMeasures": [
+  {
+   "measure": "CODE_AMBIGU_AVEC_PREUVE_INDEPENDANTE",
+   "postings": 4501,
+   "sampleIds": [
+    "cmtjzhlo20002oe2bpxvh5rck",
+    "cmtjzhlp5000eoe2bjtroay97",
+    "cmtjzhlpp000moe2bhockseix",
+    "cmtjzhlr30016oe2begzqr3wn",
+    "cmtjzhlul002moe2b85v2yx2e",
+    "cmtjzhly6003xoe2bevcvb0uh",
+    "cmtjzhlzo004hoe2byc87iy8t",
+    "cmtjzhm4t0064oe2bxrdl25vg",
+    "cmtjzhm6j006woe2b60oux3ny",
+    "cmtjzhm7f007coe2bb8wsvp5o"
+   ]
+  },
+  {
+   "measure": "CODE_AMBIGU_SANS_PROVENANCE_SUFFISANTE",
+   "postings": 4342,
+   "sampleIds": [
+    "cmtjwf6bp0a7xld2bnithyhup",
+    "cmtk01dzi0047kc47y4g4g3l6",
+    "cmtk0fqck06qvs32b4l7bfx1d",
+    "cmtk0fwif07hus32b25d6ob8k",
+    "cmtk0fx1i07j7s32bmm03mfh8",
+    "cmtk0fxca07k2s32byonfzntz",
+    "cmtk0fxgz07kis32bet0obzxn",
+    "cmtk0fxi907kms32bq6t0leko",
+    "cmtk0fxjm07kqs32bkbkksj4s",
+    "cmtk0fyhd07n4s32b4yenzfil"
+   ]
+  },
   {
    "measure": "PHYSIQUE_AVEC_VILLE_SANS_PAYS",
    "postings": 3937,
