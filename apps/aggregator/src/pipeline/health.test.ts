@@ -41,30 +41,40 @@ describe('checkSourceHealth', () => {
   });
 
   /**
-   * Révisé le 2026-09-11 (P4). Une énumération INCONNUE n'est plus traitée comme une incomplétude prouvée.
+   * Révisé deux fois le 2026-09-11.
    *
-   * Ce que l'ancienne règle produisait, mesuré en production : **149 sources sur 440** ne déclarent aucun total
-   * (teamtailor 113, recruitee 22, personio 14). Les refuser toutes gelait **186 sources portant 20 503
-   * représentations vivantes**, dont aucune offre ne pouvait plus se fermer — et marquait 216 sources DEGRADED
-   * alors qu'elles lisaient parfaitement leur board.
+   * D'abord : une énumération INCONNUE n'est plus traitée comme une incomplétude PROUVÉE — 149 sources sur 440
+   * ne déclarent aucun total (teamtailor 113, recruitee 22, personio 14) et étaient marquées DEGRADED alors
+   * qu'elles lisaient parfaitement leur board.
    *
-   * L'arbitrage retombe sur le VOLUME DE RÉFÉRENCE : avec un run productif derrière soi, l'effondrement est la
-   * preuve disponible ; sans aucune référence, rien n'autorise à faire disparaître une offre.
+   * Ensuite, sur arbitrage du propriétaire : une énumération inconnue **ne ferme rien**, même avec un volume de
+   * référence stable. Un volume stable ne prouve pas que le même périmètre a été parcouru. Elle reste suivie et
+   * mesurée, sans droit de fermeture.
    */
-  it('grants attestation to an unmeasured enumeration ONLY when a reference volume exists', async () => {
-    // Premier run : aucune référence, donc aucun droit d'attester, et aucun incident non plus.
+  it('never grants attestation to an unmeasured enumeration, reference volume or not', async () => {
+    // Premier run : aucune référence. Aucun droit d'attester, et aucun incident non plus.
     const first = await checkSourceHealth(prisma, [{ ...stat('legacy-adapter', 100), complete: undefined }]);
     expect(first.degraded).toBe(0);
     const firstRun = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'legacy-adapter' }, orderBy: { ranAt: 'desc' } });
     expect(firstRun.complete).toBeNull();
     expect(firstRun.canAttestAbsence).toBe(false);
 
-    // Second run, volume stable : la référence existe, la source peut fermer ses offres disparues.
+    // Second run, volume parfaitement stable : toujours aucun droit de fermer. Le volume n'est pas une preuve.
     const second = await checkSourceHealth(prisma, [{ ...stat('legacy-adapter', 100), complete: undefined }]);
     expect(second.degraded).toBe(0);
     const secondRun = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'legacy-adapter' }, orderBy: { ranAt: 'desc' } });
     expect(secondRun.complete).toBeNull();
-    expect(secondRun.canAttestAbsence).toBe(true);
+    expect(secondRun.canAttestAbsence).toBe(false);
+  });
+
+  it('grants attestation when the adapter demonstrates the end of its traversal', async () => {
+    // Un PREMIER run n'atteste jamais (`result.previous === null`) : il n'a aucun passé. Il en faut donc deux,
+    // et c'est bien la démonstration de parcours — non le volume — qui ouvre le droit au second.
+    await checkSourceHealth(prisma, [stat('proven-adapter', 100)]);
+    await checkSourceHealth(prisma, [stat('proven-adapter', 100)]);
+    const run = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'proven-adapter' }, orderBy: { ranAt: 'desc' } });
+    expect(run.complete).toBe(true);
+    expect(run.canAttestAbsence).toBe(true);
   });
 
   it('still refuses attestation when an unmeasured enumeration collapses against its reference', async () => {

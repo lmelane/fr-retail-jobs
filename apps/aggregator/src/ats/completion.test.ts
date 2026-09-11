@@ -22,8 +22,16 @@ describe('adapter completion evidence', () => {
     // A bare array declares nothing at all. That is UNKNOWN; calling it "proven incomplete" was the defect.
     expect(normalizeAdapterResult([job])).toMatchObject({ complete: undefined, enumerationVerdict: 'UNKNOWN' });
   });
-  it('recognizes matching unique identities and a declared total', () => {
-    expect(normalizeAdapterResult({ jobs: [job], declaredTotal: 1 }).complete).toBe(true);
+  it('a matching count is NOT a proof of traversal — only the adapter\'s demonstration is', () => {
+    /**
+     * Revised 2026-09-11 on the owner's ruling. A declared total that is reached says how many the source
+     * announces, not that the sweep reached the end of the listing — and a 90 % coverage attests nothing at all
+     * about the postings sitting in the 10 % never read. The ratio may now only REFUTE.
+     */
+    expect(normalizeAdapterResult({ jobs: [job], declaredTotal: 1 }))
+      .toMatchObject({ complete: undefined, enumerationVerdict: 'UNKNOWN' });
+    expect(normalizeAdapterResult({ jobs: [job], declaredTotal: 1, complete: true }))
+      .toMatchObject({ complete: true, enumerationVerdict: 'PROVEN' });
   });
   it('rejects zero totals manufactured from a missing header on a nonempty response', () => {
     expect(normalizeAdapterResult({ jobs: [job], declaredTotal: 0 }).complete).toBe(false);
