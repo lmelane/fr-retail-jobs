@@ -1,0 +1,4112 @@
+{
+ "at": "2026-09-11T06:13:02.538Z",
+ "target": "production",
+ "apply": true,
+ "decision": "FashionJobs is discovery-only; it leaves the offer circuit. Withdrawal is ADMINISTRATIVE, never an employer closure.",
+ "totals": {
+  "attachedToFashionJobs": 585,
+  "withdrawDependingOnFashionJobsAlone": 585,
+  "detachKeepingAnotherSource": 0,
+  "frenchAmongWithdrawn": 583
+ },
+ "withdrawIds": [
+  "cmtp868kk3rjkqq4zvh61jnjr",
+  "cmtnjjqi3332vqq4zq0w7085e",
+  "cmtohktu72zohqq4z0mb88pqe",
+  "cmtnjjqq73355qq4z8xee6egt",
+  "cmtmkagst2jrmpv4xyx37wcmm",
+  "cmtmkagq42jqqpv4xi5qlco17",
+  "cmtp868z63ro1qq4zlf3j8sgm",
+  "cmtpgj87n3dwjqq4znx75g6uu",
+  "cmtpgj8713dw7qq4zfaxz8r3e",
+  "cmtpgj8783dwbqq4zwfipkbfr",
+  "cmtpgj87g3dwfqq4z1rchtl0g",
+  "cmtpgj87u3dwnqq4zawdtzut1",
+  "cmtpgj89s3dxnqq4zvc2w0o1e",
+  "cmtpgj89j3dxjqq4znrxl9ucb",
+  "cmtpgj89c3dxfqq4zu0ehnagn",
+  "cmtpgj8953dxbqq4zjkfxmog4",
+  "cmtpgj88y3dx7qq4zujulkd1t",
+  "cmtpgj88s3dx3qq4zxqcl7mv4",
+  "cmtpgj88l3dwzqq4zqutftxfb",
+  "cmtpgj88e3dwvqq4zdpl1urca",
+  "cmtpgj8863dwrqq4z0gkkc8w0",
+  "cmtpgj7pf3dojqq4z9gq9jkwp",
+  "cmtpgj7pn3donqq4ze8t06qv9",
+  "cmtpgj7pu3dorqq4z2lti58ri",
+  "cmtpgj7q53dovqq4zi941looz",
+  "cmtpgj7qe3dozqq4zckp192za",
+  "cmtpgj7qn3dp3qq4zr1chnej9",
+  "cmtpgj7qx3dp7qq4zj0l4hnx4",
+  "cmtpgj7r53dpbqq4zwtd88cis",
+  "cmtpgj7rc3dpfqq4zghnrl9sq",
+  "cmtpgj7rk3dpjqq4zneubtkbl",
+  "cmtpgj7rs3dpnqq4zj3ir5tlm",
+  "cmtpgj7s03dprqq4zyq3fam8m",
+  "cmtpgj7s73dpvqq4z0umshzpe",
+  "cmtpgj7sf3dpzqq4zgn2a8wmg",
+  "cmtpgj7sm3dq3qq4zujtj9w6s",
+  "cmtpgj7su3dq7qq4zyochom1u",
+  "cmtpgj7t13dqbqq4znmjm2rp4",
+  "cmtpgj7t93dqfqq4zvbplkcqz",
+  "cmtpgj7ti3dqjqq4zcc4sn7xf",
+  "cmtpgj7ts3dqnqq4zcftb528v",
+  "cmtpgj7u23dqrqq4zwdm8fin3",
+  "cmtpgj7ue3dqvqq4zya541j64",
+  "cmtpgj7uo3dqzqq4zoqi5vk43",
+  "cmtpgj7ux3dr3qq4zyofbvdqm",
+  "cmtpgj7v83dr7qq4zty1qevom",
+  "cmtpgj7vg3drbqq4zo0gp8545",
+  "cmtpgj7vs3drfqq4z63b2dj7i",
+  "cmtpgj7w33drjqq4zuwn3t8d9",
+  "cmtpgj7wc3drnqq4zrxxqr4l2",
+  "cmtpgj7wk3drrqq4zhdoqr6oq",
+  "cmtpgj7ws3drvqq4znzseo8gr",
+  "cmtpgj7wz3drzqq4z0bjeg1d1",
+  "cmtpgj7x73ds3qq4ziv8enx9e",
+  "cmtpgj7xg3ds7qq4zl9atj35m",
+  "cmtpgj7xo3dsbqq4zugdj6n66",
+  "cmtpgj7xu3dsfqq4zre36wjxa",
+  "cmtpgj7y33dsjqq4zd2h9cifx",
+  "cmtpgj7yb3dsnqq4zx8ocdlpr",
+  "cmtpgj7ym3dsrqq4zshbp4jor",
+  "cmtpgj7yv3dsvqq4z4jequxxw",
+  "cmtpgj7z93dszqq4z1zkicc2h",
+  "cmtpgj7zg3dt3qq4zvq1945a6",
+  "cmtpgj7zn3dt7qq4zzx43xrdx",
+  "cmtpgj8003dtbqq4zby2v6wha",
+  "cmtpgj80a3dtfqq4zteg89wcd",
+  "cmtpgj80l3dtjqq4zz5kojvg2",
+  "cmtpgj80u3dtnqq4zza73ngcf",
+  "cmtpgj8163dtrqq4zhzomslmn",
+  "cmtpgj81f3dtvqq4zrb5e1y7b",
+  "cmtpgj81q3dtzqq4zb94w0cyp",
+  "cmtpgj8223du3qq4zh25fntk5",
+  "cmtpgj82b3du7qq4z6vlgloer",
+  "cmtpgj82i3dubqq4zjkwp1teh",
+  "cmtpgj82p3dufqq4zkawe7fx4",
+  "cmtpgj82y3dujqq4zqj22i5ov",
+  "cmtpgj8373dunqq4z9l9od1vg",
+  "cmtpgj83i3durqq4z8sohly6f",
+  "cmtpgj83z3duvqq4z5phe7jqw",
+  "cmtpgj84b3duzqq4z1eefvhru",
+  "cmtpgj84i3dv3qq4zt82v6qnu",
+  "cmtpgj84r3dv7qq4zxslkusbk",
+  "cmtpgj84y3dvbqq4zr54hedhs",
+  "cmtpgj8563dvfqq4z1mv8smcw",
+  "cmtpgj85f3dvjqq4zaf8rhxf8",
+  "cmtpgj85s3dvnqq4z2glo6osw",
+  "cmtpgj8633dvrqq4z5ljugswa",
+  "cmtpgj86b3dvvqq4zwq6afged",
+  "cmtpgj86k3dvzqq4z47b5e2mp",
+  "cmtpgj86t3dw3qq4z30tdiwzs",
+  "cmtnjjqs5335wqq4zg061i181",
+  "cmtoykdp02sviqq4z9jvsq1lb",
+  "cmtoykdmm2subqq4zye3vqq0r",
+  "cmtpw96qp4k6il35mlneq0137",
+  "cmtrup1ov4mncpg5ms33finh8",
+  "cmtrup1p64mnhpg5mmywkhvls",
+  "cmtpkx0n759s8pf5l5402fp1o",
+  "cmtpkx0ox59skpf5li9oehl1b",
+  "cmtpkx0ob59sgpf5l0tly305w",
+  "cmtpkx0nr59scpf5laxl7xqz3",
+  "cmtnjjqfe332kqq4zkmx8ghs7",
+  "cmtnjjqf5332gqq4ziv8300oo",
+  "cmtpkx05b59p1pf5lwd2dx642",
+  "cmtnjjr5v33ajqq4zsqfu9n27",
+  "cmtp868yx3rnxqq4zcjfxr2w2",
+  "cmtpw96ih4k4nl35mduiud513",
+  "cmtp868xy3rnmqq4ztnoc2ob5",
+  "cmtpw96hw4k4jl35m75179thl",
+  "cmtnjjqr7335lqq4zpyaqwpeu",
+  "cmtnjjqqy335hqq4zh8rx6cxt",
+  "cmtnjjqqg3359qq4znzm015sn",
+  "cmtohktuh2zolqq4zhr5u4abi",
+  "cmtnjjqw13371qq4zkjuzvn1d",
+  "cmtpw96gp4k48l35maf8g8w5m",
+  "cmtpw96fw4k44l35mtbvys7eo",
+  "cmtnjjqbq331cqq4zir28ke8y",
+  "cmtpkwxko59hipf5lvdpbt8d7",
+  "cmtpkwxla59hmpf5lkaa7r5kh",
+  "cmtrup1zt4msdpg5m5xdhhrtd",
+  "cmto0cpin2ynpqq4z9syk9m8k",
+  "cmtp8690c3rolqq4zr0k518y8",
+  "cmtrup2cp4muypg5mmyiyrs0a",
+  "cmtrup2cz4mv3pg5mteqi530h",
+  "cmtrup2d94mv8pg5meeir18op",
+  "cmtpw96hl4k4fl35mc8e47msw",
+  "cmtrup1wp4mr8pg5m428xavhv",
+  "cmtpkx07e59pgpf5l2o0iutiu",
+  "cmtpkx0x259tdpf5le7awm74v",
+  "cmtpkx0wj59t9pf5ljvb87alj",
+  "cmtpkwy2u59i9pf5ly01x19an",
+  "cmtpkx02e59olpf5lsby2z339",
+  "cmtpkx06v59pcpf5l2p5hnia2",
+  "cmtpw96iu4k4rl35mgcbnw1up",
+  "cmtoykdmf2su7qq4z49c39h8p",
+  "cmtnac1p82slfqq5lf5q43fad",
+  "cmtpkx0ew59r2pf5lmlqy8wtr",
+  "cmtpkwz9d59n8pf5l8o8d6rkq",
+  "cmtpkwxum59hwpf5lrntlvcus",
+  "cmtnac1rs2smiqq5lnec5j1nu",
+  "cmtpkx0pz59sspf5ls3pmp8yj",
+  "cmtnjjq99330oqq4zdakuif2h",
+  "cmtp868pc3rl0qq4zrg1vfk7h",
+  "cmtp868pl3rl4qq4zh94x3m4l",
+  "cmtnjjq9j330sqq4zq1wn2yni",
+  "cmtnjjqvq336xqq4znq2g63qa",
+  "cmtoykdlo2strqq4zpc8kbjih",
+  "cmtrup29l4mubpg5mqy3izsvn",
+  "cmtnjjqum336iqq4zjlbsr6za",
+  "cmto0cpj12yntqq4zza4k09nr",
+  "cmtp868q03rlcqq4z3alxrl8n",
+  "cmtrup2dk4mvdpg5mdkt98qhd",
+  "cmtp869013rohqq4zlunmjxxl",
+  "cmtnjjqzc338dqq4z73qqo77b",
+  "cmto0cpi72ynlqq4z97nyhi8f",
+  "cmtnjjqc0331gqq4z43fbpe7g",
+  "cmtnjjqyv3385qq4z1zmj8uht",
+  "cmtnjjqz43389qq4zl7y541bl",
+  "cmtnjjqzk338hqq4z7ugr4q1a",
+  "cmtnjjqzs338lqq4zqa5jogv7",
+  "cmtnjjr06338pqq4zesrm16w8",
+  "cmtnjjr0g338tqq4z9rwoiea4",
+  "cmtnjjr0n338xqq4zmzq9gu7t",
+  "cmtnjjr0v3391qq4zwba8hd4m",
+  "cmtnjjr133395qq4zzvd5xeis",
+  "cmtnjjr8y33btqq4zlgekzdqj",
+  "cmtnjjr8r33bpqq4z5s35xcd9",
+  "cmtnjjr8j33blqq4zlied5vpi",
+  "cmtnjjqwv337dqq4zefpach7o",
+  "cmtnac1dh2sioqq5lre4f3yrw",
+  "cmtnac1oj2sl3qq5lg5e5mphm",
+  "cmtoykdgk2srfqq4zdc15dm7p",
+  "cmtoykdg22sr7qq4z8qya7dlv",
+  "cmtoykdhb2srvqq4ze5zv56zs",
+  "cmtnac1cm2sicqq5lxyhq5xvp",
+  "cmtnac1q22slrqq5ljw2xyqe4",
+  "cmtrup1oh4mn7pg5m0z38v8lp",
+  "cmtoykd162sp0qq4z7v7az6ui",
+  "cmtnjjqnl334gqq4zq1pf8znk",
+  "cmtlvhy4i0bnb3nk5k9opzkte",
+  "cmtnjjqoa334nqq4z5fujwdtp",
+  "cmtlvhyax0bnd3nk5u76h4bg6",
+  "cmtlvhy1v0bn93nk5qse8i0e8",
+  "cmtrup2hw4mwopg5mk9pbl429",
+  "cmtnjjqe23324qq4zetenqagi",
+  "cmtnjjqp2334uqq4z0bpthw86",
+  "cmtnjjqsd3360qq4zfbf8nvkz",
+  "cmtrup1sk4mp7pg5muwhi7r30",
+  "cmtlvhyy10bnp3nk5e5v2vkoc",
+  "cmtnjjr6p33azqq4zx420x7px",
+  "cmtnac1tx2snaqq5l27feiub4",
+  "cmtpw96qf4k6el35m00nzm04e",
+  "cmtp868vs3rn0qq4zhlyzpdt0",
+  "cmtoykdnp2suvqq4z5v3mgr2w",
+  "cmtoykdnx2suzqq4zxllx13m8",
+  "cmtpkwyst59kwpf5lkng8fx9d",
+  "cmtpkwyte59l0pf5lk4rji8y2",
+  "cmtnjjr24339lqq4zmjzvfuti",
+  "cmtnjjqu9336eqq4z3lweel2s",
+  "cmtp868ny3rkgqq4zy4fb3glm",
+  "cmtpkx0g959repf5lbrh98su4",
+  "cmtoykdm12stzqq4zjyov24tg",
+  "cmtmkagr92jr6pv4xb8f853n1",
+  "cmtpkwyyf59lzpf5lhywq1k25",
+  "cmtpkwyxu59lvpf5ld2goqh1v",
+  "cmtpkx09g59pvpf5lagol08oy",
+  "cmtpkwyw859ljpf5lgtgndn26",
+  "cmtpkx08e59pnpf5loekm4wzs",
+  "cmtpkx08x59prpf5ljdpawt5t",
+  "cmtpkx0a059pzpf5lrewzyt0b",
+  "cmtnjjr1c3399qq4z018qlh83",
+  "cmtnac1am2shhqq5ly690l2ug",
+  "cmtnjjr1k339dqq4zgyndnuys",
+  "cmtm7nvx410mmpv5jrx24hv19",
+  "cmtnac1b22shoqq5lw14frpcl",
+  "cmtjvn80t0016ld2b3lqn7bvp",
+  "cmtjvn8dr001sld2b4ze4e06c",
+  "cmtlusvm5003j3nk5d9lldvs8",
+  "cmtjvn8dr001pld2bp62u68pd",
+  "cmtp868xb3rneqq4z740mrzoi",
+  "cmtpw96p44k60l35mw09yih0s",
+  "cmtm7g1zw0zyspv5j82f2hb16",
+  "cmtjvn80n000uld2bq8s42sjm",
+  "cmtm7g4sx102lpv5ji0wpsddn",
+  "cmtoykd3g2splqq4z80tmd3x1",
+  "cmtm7g9pg1096pv5jxmwwu912",
+  "cmtjvn8s5002dld2bdrv3qydp",
+  "cmtm7g2cx0zz8pv5jr4fkll1t",
+  "cmtm7g63b104fpv5j4ixfz63p",
+  "cmtp868lh3rjuqq4zowsiv6qg",
+  "cmtm7n3l110bzpv5j6comed56",
+  "cmtnac1tn2sn6qq5lnwndr21l",
+  "cmtm7g4px102hpv5jirvpt9sy",
+  "cmtn5tu6m0xxoqq5l6izr3nuw",
+  "cmtp868wz3rnaqq4z11881bsy",
+  "cmtjvn7nb000dld2bpqgvttl4",
+  "cmtjvn80r0013ld2btpdmljvs",
+  "cmtoykd3p2sppqq4zp28uzhvl",
+  "cmtoykdaz2sqrqq4z1qkc9wb7",
+  "cmtk2abeb0p10nv2b0nq0e1pj",
+  "cmtnac0yt2sdvqq5lmj2ammyd",
+  "cmtohktvj2zp1qq4zq1x2mu0x",
+  "cmtohktv92zoxqq4z4t6lm0be",
+  "cmtoykdmv2sufqq4z0zujodd1",
+  "cmtp868tt3rm9qq4z66yqw9ao",
+  "cmtpkwxi759h3pf5lok02j8ez",
+  "cmtpkwxgq59grpf5labncb4ht",
+  "cmtpkwxho59gzpf5l6q5n2jr9",
+  "cmtpkwxit59h7pf5la8uku2jd",
+  "cmtpkwxh659gvpf5l38vt74la",
+  "cmtpkwxe059g7pf5lvf1yfz3u",
+  "cmtpkwxel59gbpf5lttpea5jq",
+  "cmtpkwxf359gfpf5lvnk4f1tf",
+  "cmtpkwxfm59gjpf5lh5e2d3c0",
+  "cmtpkwxg659gnpf5lniy3j8zh",
+  "cmtp868p13rkwqq4z28aa53pk",
+  "cmtp868os3rksqq4zj2e2035u",
+  "cmtnac1cy2sigqq5ldemlbstt",
+  "cmtnac1gv2sjsqq5lfjkm1t4y",
+  "cmtnac1gi2sjoqq5lnd609fgg",
+  "cmtnac1g52sjkqq5lftffmvnt",
+  "cmtnac1ft2sjgqq5l3pzjqk5a",
+  "cmtnjjqxb337hqq4zgl9xxjoy",
+  "cmtnac1bj2shwqq5lkm8wq3mi",
+  "cmtnac1br2si0qq5ld5ue1huk",
+  "cmtnac1c02si4qq5lyjrkbv7h",
+  "cmtnac1cd2si8qq5lfmqr37d5",
+  "cmtnac1d72sikqq5l9c6wh71y",
+  "cmtnac1dr2sisqq5lamvgs34h",
+  "cmtnac1e42siwqq5l4kn3bub1",
+  "cmtnac1ej2sj0qq5lmgkekx4w",
+  "cmtnac1et2sj4qq5lxmhto75e",
+  "cmtnac1f32sj8qq5llp86sfvn",
+  "cmtnac1fg2sjcqq5lmeeyej8q",
+  "cmtrup1rn4mospg5mvh3rrkbs",
+  "cmtrup1s84mp2pg5m7475gl5e",
+  "cmtoykdga2srbqq4zi9myscvk",
+  "cmtp8690l3ropqq4zi9bhf3zi",
+  "cmtoykd3y2sptqq4zzv2xi6m6",
+  "cmtnjjr3p33a1qq4z12d5uyya",
+  "cmtrup1ve4mqopg5mlzcr5tei",
+  "cmtk1x8bo00qznv2bpw6ele83",
+  "cmtnjjqd7331wqq4z9pcj21v3",
+  "cmtrup1z54ms3pg5m41lxa4an",
+  "cmtrup20d4msnpg5m17qrljup",
+  "cmtrup20n4msspg5mtea3j2sv",
+  "cmtpgj7nj3dnrqq4zy8xeu2lh",
+  "cmtpgj7p23dofqq4zimq3hnbd",
+  "cmtpgj7oq3dobqq4ztedbgtkz",
+  "cmtpgj7oh3do7qq4zp2mz6nlt",
+  "cmtpgj7o93do3qq4zisw0hy2i",
+  "cmtpgj7nr3dnvqq4zokq2eh3v",
+  "cmtpgj7o13dnzqq4z7w3g6g7i",
+  "cmtpgj7na3dnnqq4zwxf354l8",
+  "cmtpgj7mv3dnjqq4zj35gzkh3",
+  "cmtpgj7mm3dnfqq4zh1hb3all",
+  "cmtpgj7mc3dnbqq4zo29wyec0",
+  "cmtpgj7lp3dn7qq4zp425k785",
+  "cmtnjjqyl3381qq4zsirfy7z6",
+  "cmtrup1tl4mprpg5mesvyvk1n",
+  "cmtnac1ad2shdqq5l5e6nu1s7",
+  "cmtrup1u24mq1pg5mhl2226o8",
+  "cmtrup1ua4mq6pg5mzds1xgh2",
+  "cmtrup1tt4mpwpg5m7u9ya12n",
+  "cmtoykd452spxqq4zxkhq4osv",
+  "cmtp868vi3rmwqq4zdp4u1xhh",
+  "cmtrup1wz4mrdpg5mb0ahh7lq",
+  "cmtpkwyzd59m7pf5lyv72ou8z",
+  "cmtpkx0jx59ropf5lnheleyfu",
+  "cmtpkwyzu59mbpf5lyizf7t3h",
+  "cmtpkx0kg59rspf5lkrugompe",
+  "cmtpkx0de59qqpf5lo6y96k70",
+  "cmtpkwz0b59mfpf5lqwk99kwt",
+  "cmtpkwycw59jopf5lfl0zg75r",
+  "cmtpkwyyv59m3pf5lrz7tbjkv",
+  "cmtnjjqdj3320qq4zfxtj4810",
+  "cmtpw96kk4k4yl35mhxk9gdcg",
+  "cmtnac1v92snqqq5l447hf1fz",
+  "cmtmkagsa2jrepv4xgykbu6wg",
+  "cmtmkagsi2jripv4xkrv01xez",
+  "cmtpw96la4k56l35m3h5n66xz",
+  "cmtnjjq8x330kqq4zkkjr80em",
+  "cmtnjjr6f33avqq4zj8l3f7tg",
+  "cmtnjjqxi337lqq4za78hpawg",
+  "cmtp868xo3rniqq4zldkitsm4",
+  "cmtpkx0cy59qmpf5l86velt7z",
+  "cmtpkx0cg59qipf5lqj0wdqsz",
+  "cmtnac1ug2sniqq5l62x8ibhf",
+  "cmtoykdho2ss2qq4z0jeys7b7",
+  "cmtrup1tc4mpmpg5mj2mp1h26",
+  "cmtrup1t24mphpg5mfc70uqge",
+  "cmtrup1st4mpcpg5mox8j39hd",
+  "cmtpkx0ah59q3pf5lfsxctshw",
+  "cmtpkx1m659uqpf5lybqoou5b",
+  "cmtpw96o04k5tl35m5by3ak5z",
+  "cmtpw96n24k5ll35mad1un915",
+  "cmtpw96ln4k5al35mdnr0v7ni",
+  "cmtnac1s22smmqq5l7zdwx3xt",
+  "cmtrup1uh4mqbpg5mm0fgwbw7",
+  "cmtrup1vo4mqtpg5m9s3bzi71",
+  "cmtpkx0lp59s0pf5lqcva5tf6",
+  "cmtpkwxk159hepf5l9o4hbh1a",
+  "cmtpkx06e59p8pf5lyknlqlhl",
+  "cmtrup49t4ng8pg5m7irlgp68",
+  "cmtlvhsqf0bkb3nk5yg7ytoyp",
+  "cmtlvhtj00bkt3nk5ckbi2h53",
+  "cmtlvhvgm0blt3nk54eovg1jl",
+  "cmtrup1q24mnwpg5mv8jpa62s",
+  "cmtrup1qb4mo1pg5m3abm2jti",
+  "cmtrup1re4monpg5mzqxj2ui5",
+  "cmtrup1rw4moxpg5maiql4n8w",
+  "cmtp868483rgdqq4z6dme1pdc",
+  "cmtp8684k3rghqq4zuxydg007",
+  "cmtp868503rglqq4zy3vtsp2p",
+  "cmtp8685d3rgpqq4zyli8umta",
+  "cmtp8685p3rgtqq4z96kvpeqq",
+  "cmtp868613rgxqq4zs5uk5q1j",
+  "cmtp8686a3rh1qq4zc6tbpk2i",
+  "cmtp8683i3rg5qq4zpysk1yyj",
+  "cmtp8683v3rg9qq4zz17wvfh4",
+  "cmtrup2044msipg5mnaryvnne",
+  "cmtoykdlu2stvqq4zbkv4e2ev",
+  "cmtoykdnd2sunqq4zyk8cm79x",
+  "cmtpkx0zq59txpf5lmgdwxsz8",
+  "cmtpkx0z459ttpf5lj7yk74c2",
+  "cmtpkx0xk59thpf5l8kcxx1v7",
+  "cmtpkx0y359tlpf5lg8sogwyd",
+  "cmtpkx0yl59tppf5lsqc7t20t",
+  "cmtrup1zg4ms8pg5mjv6mqfbk",
+  "cmtrup2du4mvipg5mexl5lk1y",
+  "cmtpkx1lr59umpf5l9dcj64zq",
+  "cmtpkwxdh59g3pf5lg5nvpytc",
+  "cmtpkwy7g59impf5lpa7rayxg",
+  "cmtpkwy7z59iqpf5ltagec972",
+  "cmtpkwy8i59iupf5lr11m8bz6",
+  "cmtpkx0fu59rapf5lpxnnxyru",
+  "cmtpkwzuv59o1pf5l03iaxv0n",
+  "cmtpkx0fc59r6pf5lgkmde67p",
+  "cmtnjjqcj331oqq4zn6dcmf6v",
+  "cmtrup4914nfypg5mudkdzi3y",
+  "cmtrup48l4nftpg5me3vb31ic",
+  "cmtnjjqsl3364qq4znl5mfjm9",
+  "cmtrup49g4ng3pg5mmgsx1ngt",
+  "cmtlvhx2g0bmp3nk5tczy0d6y",
+  "cmtoykdl02stfqq4zzdnoq2g3",
+  "cmtrup4804nfjpg5mzdlhb9s7",
+  "cmtoykdju2sszqq4zkmwluqkp",
+  "cmtoykdkr2stbqq4zoz9su24b",
+  "cmtoykdk02st3qq4z4xtq6u8c",
+  "cmtoykdk72st7qq4zlxzxkgb8",
+  "cmtmkagg92jonpv4xvge8ea67",
+  "cmtrup48a4nfopg5mjexig4al",
+  "cmtp868hh3rixqq4zid1yywj7",
+  "cmtp868zu3rodqq4z65330oeo",
+  "cmtrup28c4mtrpg5mhn4i2ypy",
+  "cmtrup2814mtmpg5m1cx15vu2",
+  "cmtrup2974mu6pg5m3ttfye51",
+  "cmtrup28l4mtwpg5mdy5g5j2t",
+  "cmtrup28v4mu1pg5mmhn95t5a",
+  "cmtp868zn3ro9qq4zwp0f6lv2",
+  "cmtnjjq8h330gqq4zl4tz35l5",
+  "cmtp868zf3ro5qq4zzt54edbl",
+  "cmtoykdn62sujqq4z7m4ju9b7",
+  "cmtpw96vb4k7gl35mqr807iaz",
+  "cmtp8691r3rp9qq4z1nb78qjp",
+  "cmtp8692b3rplqq4z1xua3p47",
+  "cmtp8691y3rpdqq4zuarz0w5y",
+  "cmtp8691j3rp5qq4zrv0ycxdl",
+  "cmtp8691b3rp1qq4zr6qvvvj9",
+  "cmtp868ae3rhsqq4z281x2kfu",
+  "cmtp8689x3rhkqq4z2cub4xaw",
+  "cmtp868a63rhoqq4z6b3b8hqv",
+  "cmtp8692p3rptqq4zrz0h8py3",
+  "cmtp8692i3rppqq4zrxj5vvp2",
+  "cmtp869243rphqq4zo94yrzgm",
+  "cmtnjjql1333pqq4z4h12knv9",
+  "cmtpw96mo4k5hl35moitdrtu5",
+  "cmtoykdpm2svsqq4zr0e9yo68",
+  "cmtoykdm92su3qq4ztsr5advd",
+  "cmtnac1r12sm7qq5lv4ke603h",
+  "cmtrup2gr4mw4pg5mhy5ebuog",
+  "cmtp868y83rnqqq4z17dltdqo",
+  "cmtohktv22zotqq4z4mnbkxrr",
+  "cmtrup2bt4mujpg5m5az9wcey",
+  "cmtnjjqxy337tqq4zw86k8j0r",
+  "cmtnjjqxq337pqq4zeihxwzn2",
+  "cmtnjjr1t339hqq4z5q913vs3",
+  "cmtpkwyen59k0pf5ls9zwn56h",
+  "cmtpkwzud59nxpf5lz7fglvd2",
+  "cmtpkwy9059iypf5lohxiz1i3",
+  "cmtp868uz3rmpqq4zfu5tb4ja",
+  "cmtlvhvnp0blx3nk525xx5yoq",
+  "cmtnjjqru335sqq4zk1duem4h",
+  "cmtnjjqpt3351qq4z6dyuebx0",
+  "cmtoykdgx2srnqq4zrcby5ncs",
+  "cmtoykdh32srrqq4zvqjvpcw9",
+  "cmtpgj8ah3dxzqq4zbld5pfx7",
+  "cmtpgj8bc3dyfqq4zd6x2k899",
+  "cmtpgj8b23dybqq4ztb08u84w",
+  "cmtpgj8an3dy3qq4znw57sisx",
+  "cmtpgj8bp3dynqq4zvt0hgvlj",
+  "cmtpgj8av3dy7qq4za610dult",
+  "cmtpgj8bi3dyjqq4zfv5s5yld",
+  "cmtpgj8a23dxrqq4z7phm9m8q",
+  "cmtpgj8a93dxvqq4zsj6v63sd",
+  "cmtrup1ph4mnmpg5mkzqrbkjq",
+  "cmtrup1pq4mnrpg5mcj0ojvpz",
+  "cmtnjjqn33348qq4z6vll6zuc",
+  "cmtmkagki2jplpv4xuxkwfcfp",
+  "cmtmkaglm2jptpv4x4mvq71yc",
+  "cmtmkagl62jpppv4x40rckhfa",
+  "cmtnjjqaq3314qq4z5vuj6kb3",
+  "cmtnjjqa73310qq4zrado9gk0",
+  "cmtnjjq9v330wqq4zif9wfu5k",
+  "cmtp869663rqoqq4zpn3x2buc",
+  "cmtp868e03ri8qq4zk5jd96n8",
+  "cmtp868eg3ricqq4zsvwj2roa",
+  "cmtp868ew3rigqq4zvjp8co8d",
+  "cmtp868ff3rikqq4z8ii08qqu",
+  "cmtmkagie2jp6pv4xxn3pc6ai",
+  "cmtmkagiu2jpapv4xm6cbqpvb",
+  "cmtmkagjb2jpepv4xms5egmfb",
+  "cmtoykdiv2sslqq4z4etps6fk",
+  "cmtrup2jl4mxdpg5mk5xas5w5",
+  "cmtoykdl72stjqq4zvc50d8x9",
+  "cmtrup2k34mxnpg5mp6kj08wc",
+  "cmtrup2ju4mxipg5mlrrti0au",
+  "cmtp8682m3rg1qq4zt7pbwhq5",
+  "cmtnjjr4933a9qq4zivmfcfqn",
+  "cmtnjjr4033a5qq4zamemozmz",
+  "cmtnjjqc9331kqq4zjemhavlj",
+  "cmtlv85op06nn3nk5atz861bo",
+  "cmtmo8fc50a42so5lxh7kv6n7",
+  "cmtpkwyam59j8pf5lf3cm7kko",
+  "cmtpkwycd59jkpf5l04raa639",
+  "cmtpkwybt59jgpf5lshxy8ub2",
+  "cmtpkwyb459jcpf5lxu7f0jcb",
+  "cmtpw96l04k52l35mxu2rizok",
+  "cmtnjjqqo335dqq4znj5z92v2",
+  "cmtrup2c54muopg5m4myq34dv",
+  "cmtrup2cg4mutpg5m953xj6b6",
+  "cmtp8686m3rh5qq4znisqhj6c",
+  "cmtp868703rh9qq4zpvaa80nu",
+  "cmtp868u43rmdqq4zm2pjzu5y",
+  "cmtnjjqwl3379qq4z7dq88dws",
+  "cmtp868ic3rj4qq4zo7mj7e06",
+  "cmtnjjqew332cqq4zckj2pxhj",
+  "cmtoykd1m2sp4qq4zypgryfbe",
+  "cmtoykd522sq5qq4zjdaqgqjo",
+  "cmtnrub562y77qq4zzaoc2x0n",
+  "cmtnjjqw93375qq4z9o92cccb",
+  "cmtoykdqb2sw3qq4z3qhbzv32",
+  "cmtoykdq42svzqq4zq096h8gq",
+  "cmtoykdi62ssaqq4zxv04tggz",
+  "cmtrup2zt4n0zpg5mvylk3dnu",
+  "cmtrup3044n14pg5mim2cqvby",
+  "cmtlvhqfx0bj53nk5ooqli4ij",
+  "cmtlvhql20bj73nk5m3cls51r",
+  "cmtohkttr2zodqq4ztjvhqapi",
+  "cmtmkagej2jo8pv4xoa0u4x7k",
+  "cmtlvhqdh0bj33nk5szarpcjy",
+  "cmtpw96pu4k67l35mm2vmkcl6",
+  "cmtp8697o3rr4qq4zyoe3g2mn",
+  "cmtp869763rqwqq4z18z9yqdu",
+  "cmtp8697f3rr0qq4zwe1hcwsz",
+  "cmtp8697w3rr8qq4zoixdzw8g",
+  "cmtp869843rrcqq4zsmzgk3fz",
+  "cmtp8698c3rrgqq4zm5duhts9",
+  "cmtohktvs2zp5qq4z3chhio0l",
+  "cmtnjjqii332zqq4zm93cdeoc",
+  "cmtp868ps3rl8qq4zpgqrixy3",
+  "cmtpkwye259jwpf5lj5ad4ifs",
+  "cmtpkx0pf59sopf5lwqcny772",
+  "cmtpkwz0u59mjpf5lzu8rccky",
+  "cmtpkwz1d59mnpf5l02b39yxz",
+  "cmtpkwyxb59lrpf5l5hu3dibo",
+  "cmtpkwyws59lnpf5l7rzyzr38",
+  "cmtpkx0kz59rwpf5l36gzhwjc",
+  "cmtp8690u3rotqq4zpzx96uma",
+  "cmtoykdj52sspqq4z58jk9rrg",
+  "cmtnjjqy9337xqq4zqg4is0g0",
+  "cmtp8693n3rq5qq4ztyu2hjnc",
+  "cmtp8693a3rq1qq4z5k2cmgiu",
+  "cmtp8692x3rpxqq4zd82974hp",
+  "cmtoykd4j2sq1qq4z291s49sw",
+  "cmtp8694a3rqdqq4zeeheujbk",
+  "cmtp8693y3rq9qq4z2hgv574m",
+  "cmtp868no3rkcqq4zilsij1ri",
+  "cmtnjjqit3333qq4z3veydhfg",
+  "cmtp868r53rlmqq4zkz70apjd",
+  "cmtp868ri3rlqqq4zlfltrymb",
+  "cmtp868rv3rluqq4zrcbt5t36",
+  "cmtp868s63rlyqq4z1ybk60mi",
+  "cmtp868sj3rm2qq4zcyc8yv63",
+  "cmtp868ug3rmhqq4zxg4slm63",
+  "cmtnjjqek3328qq4zuqxjiyv6",
+  "cmtp8694w3rqhqq4zo6zar0bv",
+  "cmtp868my3rk4qq4zhpw4do1o",
+  "cmtp868nd3rk8qq4z82pyhaip",
+  "cmtmkagfa2jogpv4xk5ktgjj6",
+  "cmtoykdot2sveqq4znlfppkfh",
+  "cmtrup2jb4mx8pg5mow6c6n23",
+  "cmtp8689m3rhgqq4zgj2wwmfu",
+  "cmtp869133roxqq4z83zaxzzl",
+  "cmtnac12f2seaqq5lxckxy32t",
+  "cmtrup2eg4mvrpg5mk86ds21a",
+  "cmtnac1hw2sk8qq5lm2umd376",
+  "cmtrup1vz4mqypg5mplpkbcdw",
+  "cmtrup1wf4mr3pg5mjorx8bmd",
+  "cmtrup2hj4mwjpg5mjtyzbf2t",
+  "cmtrup2h94mwepg5mlesey5yh",
+  "cmtrup2gi4mvzpg5mykcyewqg",
+  "cmtpkx0qh59swpf5llmtr5ilo",
+  "cmtrup1qj4mo6pg5m2dcorp82",
+  "cmtrup47b4nfapg5mj1vcodug",
+  "cmtrup1yu4mrypg5momjo7yhy",
+  "cmtlvhuiu0bld3nk5913xtncs",
+  "cmtnjjr2n339tqq4zrunvwh3k",
+  "cmtnjjr2c339pqq4z92h3i5bc",
+  "cmtnjjr3c339xqq4zip8a4sfd",
+  "cmtmkagcx2jnopv4xpysc7nmc",
+  "cmtmkagci2jnkpv4xdxioarj3",
+  "cmtp868oj3rkoqq4z98z74o7c",
+  "cmtp868o83rkkqq4z8t8yqs1c",
+  "cmtnjjr6933arqq4zz7ckqs98",
+  "cmtp8696s3rqsqq4z26a6htbj",
+  "cmtnac1vh2snuqq5lkaif0vmx",
+  "cmtnjjqhj332rqq4zsmmhn15n",
+  "cmtp868uq3rmlqq4zd11c5two",
+  "cmtrup2h04mw9pg5mnlhbzni0",
+  "cmtpkwz2f59mvpf5l9gld2ihd",
+  "cmtpkwz1v59mrpf5lptd4fnza",
+  "cmtpkx0ed59qypf5ldlamgu4d",
+  "cmtlvhw1b0bm53nk5i0luasf2",
+  "cmtrup1yk4mrtpg5maxmjtt2z",
+  "cmtpw96nh4k5pl35mcnnswupz",
+  "cmtlvhvys0bm33nk5y9m2ztlq",
+  "cmtlvhvtp0blz3nk5mlwyvwav",
+  "cmtnjjqml3340qq4zkkurv3xe",
+  "cmtnjjqmw3344qq4zyqdggc0n",
+  "cmtnjjqnc334cqq4zwctwtqi7",
+  "cmtlvhvw80bm13nk5gzx8s5rr",
+  "cmtnjjqmc333wqq4zpuhwn1zs",
+  "cmtrup2iq4mx0pg5mloe05xpg",
+  "cmtnjjqcr331sqq4zdymjvynn",
+  "cmtnac12n2seeqq5l9gkbgku3"
+ ],
+ "detachIds": [],
+ "withdrawRows": [
+  {
+   "id": "cmtp868kk3rjkqq4zvh61jnjr",
+   "externalId": "11837863",
+   "company": "360 TALENT LONDON",
+   "title": "Client Advisor - Luxury Beauty & Fragrances"
+  },
+  {
+   "id": "cmtnjjqi3332vqq4zq0w7085e",
+   "externalId": "11845736",
+   "company": "360 TALENT LONDON",
+   "title": "Sales Advisor - CDI 35h"
+  },
+  {
+   "id": "cmtohktu72zohqq4z0mb88pqe",
+   "externalId": "12025007",
+   "company": "58 FACETTES",
+   "title": "Customer Success"
+  },
+  {
+   "id": "cmtnjjqq73355qq4z8xee6egt",
+   "externalId": "12019575",
+   "company": "AGATHA",
+   "title": "Designer Bijoux Junior H/F"
+  },
+  {
+   "id": "cmtmkagst2jrmpv4xyx37wcmm",
+   "externalId": "12046335",
+   "company": "AGATHA",
+   "title": "Stage - Assistant.e Ressources Humaines H/F"
+  },
+  {
+   "id": "cmtmkagq42jqqpv4xi5qlco17",
+   "externalId": "12046353",
+   "company": "AGNÈS B.",
+   "title": "Vendeur.se"
+  },
+  {
+   "id": "cmtp868z63ro1qq4zlf3j8sgm",
+   "externalId": "11984882",
+   "company": "AKHO",
+   "title": "Stage / Assistant Modéliste & Production"
+  },
+  {
+   "id": "cmtpgj87n3dwjqq4znx75g6uu",
+   "externalId": "12046583",
+   "company": "ALAIN AFFLELOU",
+   "title": "Directeur de Magasin (H/F)"
+  },
+  {
+   "id": "cmtpgj8713dw7qq4zfaxz8r3e",
+   "externalId": "12046586",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj8783dwbqq4zwfipkbfr",
+   "externalId": "12046585",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj87g3dwfqq4z1rchtl0g",
+   "externalId": "12046584",
+   "company": "ALAIN AFFLELOU",
+   "title": "Responsable Opticien(-ne) / Amberieu-en-Bugey"
+  },
+  {
+   "id": "cmtpgj87u3dwnqq4zawdtzut1",
+   "externalId": "12046582",
+   "company": "ALAIN AFFLELOU",
+   "title": "Poste Audioprothésiste (H/F) CDI mi Temps Bourgoin / Octobre 26"
+  },
+  {
+   "id": "cmtpgj89s3dxnqq4zvc2w0o1e",
+   "externalId": "12046573",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj89j3dxjqq4znrxl9ucb",
+   "externalId": "12046574",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien (ne) / CDI 35h / Amberieu-en-Bugey"
+  },
+  {
+   "id": "cmtpgj89c3dxfqq4zu0ehnagn",
+   "externalId": "12046575",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé - Franchise (H/F)"
+  },
+  {
+   "id": "cmtpgj8953dxbqq4zjkfxmog4",
+   "externalId": "12046576",
+   "company": "ALAIN AFFLELOU",
+   "title": "Vente Fdc Corners Audio Secteur Secteur Bouches du Rhône"
+  },
+  {
+   "id": "cmtpgj88y3dx7qq4zujulkd1t",
+   "externalId": "12046577",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste – Création de Centre en Franchise Aire Sur l'Adour (H"
+  },
+  {
+   "id": "cmtpgj88s3dx3qq4zxqcl7mv4",
+   "externalId": "12046578",
+   "company": "ALAIN AFFLELOU",
+   "title": "CDI Périphérie de Lyon -Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj88l3dwzqq4zqutftxfb",
+   "externalId": "12046579",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste - Création de Centre en Franchise Secteur Annemasse ("
+  },
+  {
+   "id": "cmtpgj88e3dwvqq4zdpl1urca",
+   "externalId": "12046580",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé - Franchise (H/F)"
+  },
+  {
+   "id": "cmtpgj8863dwrqq4z0gkkc8w0",
+   "externalId": "12046581",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé - Franchise (H/F)"
+  },
+  {
+   "id": "cmtpgj7pf3dojqq4z9gq9jkwp",
+   "externalId": "12046667",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj7pn3donqq4ze8t06qv9",
+   "externalId": "12046666",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj7pu3dorqq4z2lti58ri",
+   "externalId": "12046665",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj7q53dovqq4zi941looz",
+   "externalId": "12046664",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj7qe3dozqq4zckp192za",
+   "externalId": "12046663",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj7qn3dp3qq4zr1chnej9",
+   "externalId": "12046662",
+   "company": "ALAIN AFFLELOU",
+   "title": "Assistant Commercial et Administratif en Audioprothèse H/F Audiokb Tem"
+  },
+  {
+   "id": "cmtpgj7qx3dp7qq4zj0l4hnx4",
+   "externalId": "12046661",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj7r53dpbqq4zwtd88cis",
+   "externalId": "12046660",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien en Alternance - Licence (H/F)"
+  },
+  {
+   "id": "cmtpgj7rc3dpfqq4zghnrl9sq",
+   "externalId": "12046659",
+   "company": "ALAIN AFFLELOU",
+   "title": "Assistant(e) Opticien(ne) – Alternance Bts ol"
+  },
+  {
+   "id": "cmtpgj7rk3dpjqq4zneubtkbl",
+   "externalId": "12046658",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste - Secteur Brignoles - Aix (H/F)"
+  },
+  {
+   "id": "cmtpgj7rs3dpnqq4zj3ir5tlm",
+   "externalId": "12046657",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj7s03dprqq4zyq3fam8m",
+   "externalId": "12046656",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj7s73dpvqq4z0umshzpe",
+   "externalId": "12046655",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj7sf3dpzqq4zgn2a8wmg",
+   "externalId": "12046654",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj7sm3dq3qq4zujtj9w6s",
+   "externalId": "12046653",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj7su3dq7qq4zyochom1u",
+   "externalId": "12046652",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj7t13dqbqq4znmjm2rp4",
+   "externalId": "12046651",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj7t93dqfqq4zvbplkcqz",
+   "externalId": "12046650",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj7ti3dqjqq4zcc4sn7xf",
+   "externalId": "12046649",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj7ts3dqnqq4zcftb528v",
+   "externalId": "12046648",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj7u23dqrqq4zwdm8fin3",
+   "externalId": "12046647",
+   "company": "ALAIN AFFLELOU",
+   "title": "Monteur-Vendeur / Conseiller Optique (H/F)"
+  },
+  {
+   "id": "cmtpgj7ue3dqvqq4zya541j64",
+   "externalId": "12046646",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj7uo3dqzqq4zoqi5vk43",
+   "externalId": "12046645",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj7ux3dr3qq4zyofbvdqm",
+   "externalId": "12046643",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste de - CDI Lunel(H/F)"
+  },
+  {
+   "id": "cmtpgj7v83dr7qq4zty1qevom",
+   "externalId": "12046642",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste de - CDI Nîmes (H/F)"
+  },
+  {
+   "id": "cmtpgj7vg3drbqq4zo0gp8545",
+   "externalId": "12046641",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste - Drom Com (H/F)"
+  },
+  {
+   "id": "cmtpgj7vs3drfqq4z63b2dj7i",
+   "externalId": "12046640",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste - Création Corner en Franchise Secteur Lyon/Morestel "
+  },
+  {
+   "id": "cmtpgj7w33drjqq4zuwn3t8d9",
+   "externalId": "12046639",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste – Création de Centre en Franchise Aire Sur l'Adour (H"
+  },
+  {
+   "id": "cmtpgj7wc3drnqq4zrxxqr4l2",
+   "externalId": "12046638",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste - Création de Centre en Franchise Secteur Sarlat (H/F"
+  },
+  {
+   "id": "cmtpgj7wk3drrqq4zhdoqr6oq",
+   "externalId": "12046637",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste de – Création de Centre en Franchise Secteur Briançon"
+  },
+  {
+   "id": "cmtpgj7ws3drvqq4znzseo8gr",
+   "externalId": "12046636",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste – Projet Création de Centre en Franchise Secteur Oyon"
+  },
+  {
+   "id": "cmtpgj7wz3drzqq4z0bjeg1d1",
+   "externalId": "12046635",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste – Projet Création de Centre en Franchise Secteur Thon"
+  },
+  {
+   "id": "cmtpgj7x73ds3qq4ziv8enx9e",
+   "externalId": "12046634",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste – Projet Création de Centre en Franchise Secteur Gap "
+  },
+  {
+   "id": "cmtpgj7xg3ds7qq4zl9atj35m",
+   "externalId": "12046633",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste de - Franchise Guadeloupe (H/F)"
+  },
+  {
+   "id": "cmtpgj7xo3dsbqq4zugdj6n66",
+   "externalId": "12046632",
+   "company": "ALAIN AFFLELOU",
+   "title": "Centre à Reprendre en Franchise (H/F) Langon"
+  },
+  {
+   "id": "cmtpgj7xu3dsfqq4zre36wjxa",
+   "externalId": "12046629",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste - Création Centre en Franchise (H/F)"
+  },
+  {
+   "id": "cmtpgj7y33dsjqq4zd2h9cifx",
+   "externalId": "12046627",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste -Reprise de Centre en Franchise (H/F)"
+  },
+  {
+   "id": "cmtpgj7yb3dsnqq4zx8ocdlpr",
+   "externalId": "12046626",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste - Création Franchise (H/F) Projet 2 Corners Nord Lyon"
+  },
+  {
+   "id": "cmtpgj7ym3dsrqq4zshbp4jor",
+   "externalId": "12046625",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste -Projet 2 Corners en Franchise (H/F)"
+  },
+  {
+   "id": "cmtpgj7yv3dsvqq4z4jequxxw",
+   "externalId": "12046624",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste -Création Corner Franchise (H/F)"
+  },
+  {
+   "id": "cmtpgj7z93dszqq4z1zkicc2h",
+   "externalId": "12046622",
+   "company": "ALAIN AFFLELOU",
+   "title": "Offre Poste CDI Audioprothésiste -Valence (H/F) Septembre 2026"
+  },
+  {
+   "id": "cmtpgj7zg3dt3qq4zvq1945a6",
+   "externalId": "12046621",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste - Création de Centre en Franchise Agen / Lot et Garon"
+  },
+  {
+   "id": "cmtpgj7zn3dt7qq4zzx43xrdx",
+   "externalId": "12046619",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj8003dtbqq4zby2v6wha",
+   "externalId": "12046618",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj80a3dtfqq4zteg89wcd",
+   "externalId": "12046617",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj80l3dtjqq4zz5kojvg2",
+   "externalId": "12046616",
+   "company": "ALAIN AFFLELOU",
+   "title": "Vendeur / Conseiller Optique - Franchise (H/F)"
+  },
+  {
+   "id": "cmtpgj80u3dtnqq4zza73ngcf",
+   "externalId": "12046615",
+   "company": "ALAIN AFFLELOU",
+   "title": "Monteur-Vendeur / Conseiller Optique - Franchise (H/F)"
+  },
+  {
+   "id": "cmtpgj8163dtrqq4zhzomslmn",
+   "externalId": "12046614",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste H/F"
+  },
+  {
+   "id": "cmtpgj81f3dtvqq4zrb5e1y7b",
+   "externalId": "12046613",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj81q3dtzqq4zb94w0cyp",
+   "externalId": "12046612",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien en Alternance (H/F)"
+  },
+  {
+   "id": "cmtpgj8223du3qq4zh25fntk5",
+   "externalId": "12046611",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste H/F"
+  },
+  {
+   "id": "cmtpgj82b3du7qq4z6vlgloer",
+   "externalId": "12046610",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste H/F"
+  },
+  {
+   "id": "cmtpgj82i3dubqq4zjkwp1teh",
+   "externalId": "12046609",
+   "company": "ALAIN AFFLELOU",
+   "title": "Vendeur / Conseiller Optique - Franchise (H/F)"
+  },
+  {
+   "id": "cmtpgj82p3dufqq4zkawe7fx4",
+   "externalId": "12046608",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj82y3dujqq4zqj22i5ov",
+   "externalId": "12046607",
+   "company": "ALAIN AFFLELOU",
+   "title": "Monteur-Vendeur / Conseiller Optique (H/F)"
+  },
+  {
+   "id": "cmtpgj8373dunqq4z9l9od1vg",
+   "externalId": "12046605",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj83i3durqq4z8sohly6f",
+   "externalId": "12046604",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj83z3duvqq4z5phe7jqw",
+   "externalId": "12046603",
+   "company": "ALAIN AFFLELOU",
+   "title": "Hote (Sse)Accueil Clientèle Magasin,Vente Solaire, Gestion Flux Stock"
+  },
+  {
+   "id": "cmtpgj84b3duzqq4z1eefvhru",
+   "externalId": "12046602",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj84i3dv3qq4zt82v6qnu",
+   "externalId": "12046601",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj84r3dv7qq4zxslkusbk",
+   "externalId": "12046600",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj84y3dvbqq4zr54hedhs",
+   "externalId": "12046599",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj8563dvfqq4z1mv8smcw",
+   "externalId": "12046598",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien(ne) Diplômé(e) – CDD / CDI – Saint-Nazaire / Trignac"
+  },
+  {
+   "id": "cmtpgj85f3dvjqq4zaf8rhxf8",
+   "externalId": "12046597",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste H/F"
+  },
+  {
+   "id": "cmtpgj85s3dvnqq4z2glo6osw",
+   "externalId": "12046595",
+   "company": "ALAIN AFFLELOU",
+   "title": "Audioprothésiste (H/F)"
+  },
+  {
+   "id": "cmtpgj8633dvrqq4z5ljugswa",
+   "externalId": "12046594",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj86b3dvvqq4zwq6afged",
+   "externalId": "12046589",
+   "company": "ALAIN AFFLELOU",
+   "title": "Monteur-Vendeur / Conseiller Optique (H/F)"
+  },
+  {
+   "id": "cmtpgj86k3dvzqq4z47b5e2mp",
+   "externalId": "12046588",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtpgj86t3dw3qq4z30tdiwzs",
+   "externalId": "12046587",
+   "company": "ALAIN AFFLELOU",
+   "title": "Opticien Diplômé (H/F)"
+  },
+  {
+   "id": "cmtnjjqs5335wqq4zg061i181",
+   "externalId": "12019511",
+   "company": "ALBYA",
+   "title": "Conseiller.e de Vente Senior H/F"
+  },
+  {
+   "id": "cmtoykdp02sviqq4z9jvsq1lb",
+   "externalId": "12024303",
+   "company": "AMOREPACIFIC",
+   "title": "Stage - Innisfree - Assistant(e) Chef(fe) de Produit H/F"
+  },
+  {
+   "id": "cmtoykdmm2subqq4zye3vqq0r",
+   "externalId": "12024339",
+   "company": "APM Monaco",
+   "title": "APM Monaco - Conseiller de Vente H/F - CDI PT - Lille Printemps"
+  },
+  {
+   "id": "cmtpw96qp4k6il35mlneq0137",
+   "externalId": "12050414",
+   "company": "APM Monaco",
+   "title": "APM Monaco - Conseiller de Vente H/F - CDD FT - Deauville"
+  },
+  {
+   "id": "cmtrup1ov4mncpg5ms33finh8",
+   "externalId": "11970110",
+   "company": "ARABIAN OUD",
+   "title": "Conseiller de Vente IDF (Multi-Sites)"
+  },
+  {
+   "id": "cmtrup1p64mnhpg5mmywkhvls",
+   "externalId": "11970088",
+   "company": "ARABIAN OUD",
+   "title": "Store Manager IDF (Multi-Sites)"
+  },
+  {
+   "id": "cmtpkx0n759s8pf5l5402fp1o",
+   "externalId": "11849715",
+   "company": "ARC'TERYX",
+   "title": "Product Guide (Sales Associate) Saisonnier – CDD 35h (H/F/d) – la Sama"
+  },
+  {
+   "id": "cmtpkx0ox59skpf5li9oehl1b",
+   "externalId": "11849711",
+   "company": "ARC'TERYX",
+   "title": "Product Guide (Sales Associate) Saisonnier – CDD 24h (H/F/d) – la Made"
+  },
+  {
+   "id": "cmtpkx0ob59sgpf5l0tly305w",
+   "externalId": "11849713",
+   "company": "ARC'TERYX",
+   "title": "Product Guide (Sales Associate) Saisonnier – CDD 24h (H/F/d) – le Mara"
+  },
+  {
+   "id": "cmtpkx0nr59scpf5laxl7xqz3",
+   "externalId": "11849714",
+   "company": "ARC'TERYX",
+   "title": "Product Guide (Sales Associate) Saisonnier – CDD 35h (H/F/d) – la Made"
+  },
+  {
+   "id": "cmtnjjqfe332kqq4zkmx8ghs7",
+   "externalId": "11706367",
+   "company": "ARLETTIE PARIS",
+   "title": "Directeur-Rice Artistique (DA) Junior"
+  },
+  {
+   "id": "cmtnjjqf5332gqq4ziv8300oo",
+   "externalId": "11795472",
+   "company": "ARLETTIE PARIS",
+   "title": "Chargé(e) de Développement Marketing International"
+  },
+  {
+   "id": "cmtpkx05b59p1pf5lwd2dx642",
+   "externalId": "11962485",
+   "company": "Aroma-Zone",
+   "title": "Chargé(e) de Recrutement Expert(e) Retail"
+  },
+  {
+   "id": "cmtnjjr5v33ajqq4zsqfu9n27",
+   "externalId": "12019042",
+   "company": "ATELIER 19.6",
+   "title": "Assistant Studio"
+  },
+  {
+   "id": "cmtp868yx3rnxqq4zcjfxr2w2",
+   "externalId": "11984825",
+   "company": "ATELIER DIANA MARTINEZ",
+   "title": "Design Graphique & Visual Content – Mode"
+  },
+  {
+   "id": "cmtpw96ih4k4nl35mduiud513",
+   "externalId": "12050641",
+   "company": "Aubade",
+   "title": "Vendeur(se) Lingerie (H/F) - CDD 35h"
+  },
+  {
+   "id": "cmtp868xy3rnmqq4ztnoc2ob5",
+   "externalId": "11984900",
+   "company": "Aubade",
+   "title": "Vendeur(se) Lingerie (H/F) - CDD 28h"
+  },
+  {
+   "id": "cmtpw96hw4k4jl35m75179thl",
+   "externalId": "12050729",
+   "company": "Aubade",
+   "title": "Vendeuse en Grands Magasins - (H/F) - GL Nantes"
+  },
+  {
+   "id": "cmtnjjqr7335lqq4zpyaqwpeu",
+   "externalId": "12019547",
+   "company": "AURÉLIE BIDERMANN",
+   "title": "Stage - Assistant (e) E-Shop H/F"
+  },
+  {
+   "id": "cmtnjjqqy335hqq4zh8rx6cxt",
+   "externalId": "12019548",
+   "company": "AURÉLIE BIDERMANN",
+   "title": "Assistant(e) Contrôle Qualité / Achats ab et Assistant(e) Stocks H/F"
+  },
+  {
+   "id": "cmtnjjqqg3359qq4znzm015sn",
+   "externalId": "12019557",
+   "company": "AURÉLIE BIDERMANN",
+   "title": "Assistant (e) Retail H/F"
+  },
+  {
+   "id": "cmtohktuh2zolqq4zhr5u4abi",
+   "externalId": "12024278",
+   "company": "AXENTIA",
+   "title": "Conseiller Commercial Junior H/F"
+  },
+  {
+   "id": "cmtnjjqw13371qq4zkjuzvn1d",
+   "externalId": "12019485",
+   "company": "Balmain",
+   "title": "CDD - Conseiller.e de Vente 14h - la Vallée Village H/F"
+  },
+  {
+   "id": "cmtpw96gp4k48l35maf8g8w5m",
+   "externalId": "12050750",
+   "company": "Balmain",
+   "title": "Développeur.se PAP Jersey Sportswear H/F H/F H/F"
+  },
+  {
+   "id": "cmtpw96fw4k44l35mtbvys7eo",
+   "externalId": "12050751",
+   "company": "Balmain",
+   "title": "Développeur.se PAP Denim H/F"
+  },
+  {
+   "id": "cmtnjjqbq331cqq4zir28ke8y",
+   "externalId": "11908505",
+   "company": "BLUE BOX",
+   "title": "Responsable Merchandising & Identité Visuelle (H/F)"
+  },
+  {
+   "id": "cmtpkwxko59hipf5lvdpbt8d7",
+   "externalId": "11971347",
+   "company": "Boardriders",
+   "title": "Stagiaire E-Commerce & CRM f/h"
+  },
+  {
+   "id": "cmtpkwxla59hmpf5lkaa7r5kh",
+   "externalId": "11971346",
+   "company": "Boardriders",
+   "title": "Responsable Web-Merchandising & Marketing H/F"
+  },
+  {
+   "id": "cmtrup1zt4msdpg5m5xdhhrtd",
+   "externalId": "12031364",
+   "company": "BRUN STUDIO - ARTIST DESIGNER",
+   "title": "Assistant·e Éditorial·e — Communication Digitale & Réseaux Sociaux"
+  },
+  {
+   "id": "cmto0cpin2ynpqq4z9syk9m8k",
+   "externalId": "11845503",
+   "company": "C&A",
+   "title": "Visual Merchandiser Manager"
+  },
+  {
+   "id": "cmtp8690c3rolqq4zr0k518y8",
+   "externalId": "11984828",
+   "company": "CAMELEONS RH",
+   "title": "Des Consultants RH H/F/x"
+  },
+  {
+   "id": "cmtrup2cp4muypg5mmyiyrs0a",
+   "externalId": "12030338",
+   "company": "CAMELEONS RH",
+   "title": "Stockiste Matières Premieres H/F"
+  },
+  {
+   "id": "cmtrup2cz4mv3pg5mteqi530h",
+   "externalId": "12030337",
+   "company": "CAMELEONS RH",
+   "title": "Modeliste Homme H/F"
+  },
+  {
+   "id": "cmtrup2d94mv8pg5meeir18op",
+   "externalId": "12030336",
+   "company": "CAMELEONS RH",
+   "title": "Des Mécaniciens Modèles Flou et/ou Tailleur H/F"
+  },
+  {
+   "id": "cmtpw96hl4k4fl35mc8e47msw",
+   "externalId": "12050733",
+   "company": "CARVEN",
+   "title": "Conseiller de Vente - F/H"
+  },
+  {
+   "id": "cmtrup1wp4mr8pg5m428xavhv",
+   "externalId": "12031402",
+   "company": "CÉLESTE MOGADOR",
+   "title": "Chef·fe de Projet E-Commerce International & Optimisation Shopify"
+  },
+  {
+   "id": "cmtpkx07e59pgpf5l2o0iutiu",
+   "externalId": "11959296",
+   "company": "Cheval Blanc",
+   "title": "Commis de Rang - Plage"
+  },
+  {
+   "id": "cmtpkx0x259tdpf5le7awm74v",
+   "externalId": "11847673",
+   "company": "Cheval Blanc",
+   "title": "Stagiaire Marketing (H/F)"
+  },
+  {
+   "id": "cmtpkx0wj59t9pf5ljvb87alj",
+   "externalId": "11847674",
+   "company": "Cheval Blanc",
+   "title": "Stagiaire Sales (H/F)"
+  },
+  {
+   "id": "cmtpkwy2u59i9pf5ly01x19an",
+   "externalId": "11970723",
+   "company": "Cheval Blanc",
+   "title": "Réceptionniste Tournant H/F"
+  },
+  {
+   "id": "cmtpkx02e59olpf5lsby2z339",
+   "externalId": "11962551",
+   "company": "Cheval Blanc",
+   "title": "Agent de Maintenance (H/F)"
+  },
+  {
+   "id": "cmtpkx06v59pcpf5l2p5hnia2",
+   "externalId": "11959298",
+   "company": "Cheval Blanc",
+   "title": "Gouvernant (H/F)"
+  },
+  {
+   "id": "cmtpw96iu4k4rl35mgcbnw1up",
+   "externalId": "12050548",
+   "company": "CHILDREN WORLDWIDE FASHION C.W.F",
+   "title": "Responsable de Concession - CDI - 35h - Vélizy"
+  },
+  {
+   "id": "cmtoykdmf2su7qq4z49c39h8p",
+   "externalId": "12024349",
+   "company": "CHILDREN WORLDWIDE FASHION C.W.F",
+   "title": "Responsable de Magasin - Lvv"
+  },
+  {
+   "id": "cmtnac1p82slfqq5lf5q43fad",
+   "externalId": "12052508",
+   "company": "CHILDREN WORLDWIDE FASHION C.W.F",
+   "title": "Chargé de Trade Marketing H/F"
+  },
+  {
+   "id": "cmtpkx0ew59r2pf5lmlqy8wtr",
+   "externalId": "10976398",
+   "company": "Christian Dior Couture",
+   "title": "CDI - Vendeur(Euse) - Roissy Charles de Gaulle F/H"
+  },
+  {
+   "id": "cmtpkwz9d59n8pf5l8o8d6rkq",
+   "externalId": "11736473",
+   "company": "Christian Dior Couture",
+   "title": "CDD - Conseiller de Vente - Roissy (F/H)"
+  },
+  {
+   "id": "cmtpkwxum59hwpf5lrntlvcus",
+   "externalId": "11970729",
+   "company": "Christian Dior Couture",
+   "title": "Store Operations Manager - F/H - CDI - st Tropez & Courchevel"
+  },
+  {
+   "id": "cmtnac1rs2smiqq5lnec5j1nu",
+   "externalId": "12050955",
+   "company": "CITIZENS OF HUMANITY",
+   "title": "Showroom Assistant – Fashion Week Internship"
+  },
+  {
+   "id": "cmtpkx0pz59sspf5ls3pmp8yj",
+   "externalId": "11148618",
+   "company": "CLAIRE'S",
+   "title": "Sales Assistant"
+  },
+  {
+   "id": "cmtnjjq99330oqq4zdakuif2h",
+   "externalId": "12021532",
+   "company": "CONCEPT RECRUTEMENT",
+   "title": "Assistant Store Manager (H/F) – Premium – CDD - Parly"
+  },
+  {
+   "id": "cmtp868pc3rl0qq4zrg1vfk7h",
+   "externalId": "11985231",
+   "company": "CONCEPT RECRUTEMENT",
+   "title": "Conseiller de Vente Anglais Courant (H/F) - CDI- Parfumerie de Niche -"
+  },
+  {
+   "id": "cmtp868pl3rl4qq4zh94x3m4l",
+   "externalId": "11985230",
+   "company": "CONCEPT RECRUTEMENT",
+   "title": "Conseiller de Vente Trilingue Anglais/Arabe Lit (H/F) - Luxe- CDI - Pa"
+  },
+  {
+   "id": "cmtnjjq9j330sqq4zq1wn2yni",
+   "externalId": "12021531",
+   "company": "CONCEPT RECRUTEMENT",
+   "title": "Bartender (H/F) - Restaurant Premium - CDD - Saint-Tropez"
+  },
+  {
+   "id": "cmtnjjqvq336xqq4znq2g63qa",
+   "externalId": "12019489",
+   "company": "CONFIDENTIEL",
+   "title": "Responsable Corner (H/F) - Parly 2 - CDI 35h"
+  },
+  {
+   "id": "cmtoykdlo2strqq4zpc8kbjih",
+   "externalId": "12024359",
+   "company": "CONFIDENTIEL",
+   "title": "Styliste Senior – Consultante/Freelance"
+  },
+  {
+   "id": "cmtrup29l4mubpg5mqy3izsvn",
+   "externalId": "12030491",
+   "company": "CONFIDENTIEL",
+   "title": "Responsable Magasin"
+  },
+  {
+   "id": "cmtnjjqum336iqq4zjlbsr6za",
+   "externalId": "12019497",
+   "company": "CONFIDENTIEL",
+   "title": "Responsable de Boutique (H/F)"
+  },
+  {
+   "id": "cmto0cpj12yntqq4zza4k09nr",
+   "externalId": "12019010",
+   "company": "CONFIDENTIEL",
+   "title": "Coordinateur Réseau Retail Joaillerie H/F"
+  },
+  {
+   "id": "cmtp868q03rlcqq4z3alxrl8n",
+   "externalId": "11985218",
+   "company": "CONSCIOUS LOVE",
+   "title": "Stage Community Manager & Commercial"
+  },
+  {
+   "id": "cmtrup2dk4mvdpg5mdkt98qhd",
+   "externalId": "12030335",
+   "company": "COUTURE & RETAIL CAMÉLÉONS RH",
+   "title": "Des Coupeurs H/F"
+  },
+  {
+   "id": "cmtp869013rohqq4zlunmjxxl",
+   "externalId": "11984865",
+   "company": "CROSSMODE PARIS",
+   "title": "Volunteer at Sino-French Fashion Week (Paris Fashion Week)"
+  },
+  {
+   "id": "cmtnjjqzc338dqq4z73qqo77b",
+   "externalId": "12019460",
+   "company": "DARJEELING",
+   "title": "Vendeur(se) / Conseiller(Ère) de Vente - Darjeeling Lyon Part Dieu - C"
+  },
+  {
+   "id": "cmto0cpi72ynlqq4z97nyhi8f",
+   "externalId": "12019013",
+   "company": "DARJEELING",
+   "title": "Responsable de Boutique - Darjeeling Nice Cap 3000 CDI- 35h H/F"
+  },
+  {
+   "id": "cmtnjjqc0331gqq4z43fbpe7g",
+   "externalId": "12021225",
+   "company": "DARJEELING",
+   "title": "Assistant(e) Chef(fe) de Projets CRM & E-Commerce Darjeeling Lingerie "
+  },
+  {
+   "id": "cmtnjjqyv3385qq4z1zmj8uht",
+   "externalId": "12019463",
+   "company": "DARJEELING",
+   "title": "Conseiller(Ère) de Vente - Darjeeling Passage du Havre Paris - CDI- 35"
+  },
+  {
+   "id": "cmtnjjqz43389qq4zl7y541bl",
+   "externalId": "12019461",
+   "company": "DARJEELING",
+   "title": "Vendeur(se) / Conseiller(Ère) de Vente - Darjeeling Grenoble - CDI 35h"
+  },
+  {
+   "id": "cmtnjjqzk338hqq4z7ugr4q1a",
+   "externalId": "12019459",
+   "company": "DARJEELING",
+   "title": "Vendeur(se) / Conseiller(Ère) de Vente - Darjeeling Lyon Part Dieu - C"
+  },
+  {
+   "id": "cmtnjjqzs338lqq4zqa5jogv7",
+   "externalId": "12019458",
+   "company": "DARJEELING",
+   "title": "Vendeur(se)/Conseiller(Ère) de Vente - Darjeeling Villefranche Sur Saô"
+  },
+  {
+   "id": "cmtnjjr06338pqq4zesrm16w8",
+   "externalId": "12019457",
+   "company": "DARJEELING",
+   "title": "Vendeur(se) / Conseiller(Ère) de Vente - Lyon Ecully - CDI 26h H/F"
+  },
+  {
+   "id": "cmtnjjr0g338tqq4z9rwoiea4",
+   "externalId": "12019456",
+   "company": "DARJEELING",
+   "title": "Vendeur(se) / Conseiller(Ère) de Vente - Darjeeling Chambourcy - CDI -"
+  },
+  {
+   "id": "cmtnjjr0n338xqq4zmzq9gu7t",
+   "externalId": "12019455",
+   "company": "DARJEELING",
+   "title": "Vendeur(se) / Conseiller(Ère) de Vente - Darjeeling Rennes Cesson CDD "
+  },
+  {
+   "id": "cmtnjjr0v3391qq4zwba8hd4m",
+   "externalId": "12019454",
+   "company": "DARJEELING",
+   "title": "Vendeur(se) / Conseiller(Ère) de Vente - Darjeeling Brest Jaurès - CDD"
+  },
+  {
+   "id": "cmtnjjr133395qq4zzvd5xeis",
+   "externalId": "12019453",
+   "company": "DARJEELING",
+   "title": "*Vendeur(se) / Conseiller(Ère) de Vente - Darjeeling Parly - CDI- 7h H"
+  },
+  {
+   "id": "cmtnjjr8y33btqq4zlgekzdqj",
+   "externalId": "12019014",
+   "company": "DARJEELING",
+   "title": "Vendeur.se / Conseiller.Ère de Vente - Darjeeling Angers - CDI 28h H/F"
+  },
+  {
+   "id": "cmtnjjr8r33bpqq4z5s35xcd9",
+   "externalId": "12019015",
+   "company": "DARJEELING",
+   "title": "Vendeur(se) / Conseiller(Ère) de Vente - Darjeeling Nantes Beaulieu - "
+  },
+  {
+   "id": "cmtnjjr8j33blqq4zlied5vpi",
+   "externalId": "12019016",
+   "company": "DARJEELING",
+   "title": "Vendeur(se) / Conseiller(Ère) de Vente - Vannes - CDD 2 Mois - 35h H/F"
+  },
+  {
+   "id": "cmtnjjqwv337dqq4zefpach7o",
+   "externalId": "12019476",
+   "company": "DEELUXE",
+   "title": "Offre de Stage – Assistant(e) Marketing Digital & E-Commerce"
+  },
+  {
+   "id": "cmtnac1dh2sioqq5lre4f3yrw",
+   "externalId": "12052549",
+   "company": "DEPECH'MODE",
+   "title": "Stockiste - Renfort Rentrée - Courte ou Longue Durée Paris"
+  },
+  {
+   "id": "cmtnac1oj2sl3qq5lg5e5mphm",
+   "externalId": "12052515",
+   "company": "DEPECH'MODE",
+   "title": "H/F Sales & CRM Specialist – Maison de Luxe - CDI"
+  },
+  {
+   "id": "cmtoykdgk2srfqq4zdc15dm7p",
+   "externalId": "12024756",
+   "company": "DEPECH'MODE",
+   "title": "Vendeur(se) Confirmé(e) – Maison de Luxe"
+  },
+  {
+   "id": "cmtoykdg22sr7qq4z8qya7dlv",
+   "externalId": "12024758",
+   "company": "DEPECH'MODE",
+   "title": "Styliste Confirmé(e) – Prêt-À-Porter Féminin Premium"
+  },
+  {
+   "id": "cmtoykdhb2srvqq4ze5zv56zs",
+   "externalId": "12024750",
+   "company": "DEPECH'MODE",
+   "title": "Patronnier(Ère) Lectra – Maison de Luxe"
+  },
+  {
+   "id": "cmtnac1cm2sicqq5lxyhq5xvp",
+   "externalId": "12052552",
+   "company": "DEPECH'MODE",
+   "title": "Conseiller(Ère) de Vente - Renfort Rentrée - Courte ou Longue Durée Pa"
+  },
+  {
+   "id": "cmtnac1q22slrqq5ljw2xyqe4",
+   "externalId": "12052073",
+   "company": "DEVRED 1902",
+   "title": "Collabortaeur(Trice) de Vente"
+  },
+  {
+   "id": "cmtrup1oh4mn7pg5m0z38v8lp",
+   "externalId": "12031462",
+   "company": "DINH VAN",
+   "title": "Assistant.e Graphisme & Direction Artistique"
+  },
+  {
+   "id": "cmtoykd162sp0qq4z7v7az6ui",
+   "externalId": "12007444",
+   "company": "DINH VAN PARIS",
+   "title": "Conseiller(ère) de Vente en Joaillerie"
+  },
+  {
+   "id": "cmtnjjqnl334gqq4zq1pf8znk",
+   "externalId": "12020109",
+   "company": "DJULA",
+   "title": "Stage Assistante Marketing & Communication 360°"
+  },
+  {
+   "id": "cmtlvhy4i0bnb3nk5k9opzkte",
+   "externalId": "12020072",
+   "company": "DJULA",
+   "title": "Stage Assistante Marketing & Communication 360°"
+  },
+  {
+   "id": "cmtnjjqoa334nqq4z5fujwdtp",
+   "externalId": "12020102",
+   "company": "DJULA",
+   "title": "Stagiaire Logistique & Gestion Des Stocks"
+  },
+  {
+   "id": "cmtlvhyax0bnd3nk5u76h4bg6",
+   "externalId": "12020091",
+   "company": "DJULA",
+   "title": "Stagiaire Logistique & Gestion Des Stocks"
+  },
+  {
+   "id": "cmtlvhy1v0bn93nk5qse8i0e8",
+   "externalId": "12020103",
+   "company": "DJULA",
+   "title": "Stage Assistante Marketing & Communication 360°"
+  },
+  {
+   "id": "cmtrup2hw4mwopg5mk9pbl429",
+   "externalId": "12026943",
+   "company": "DO YOU SPEAK FRANÇAIS ?",
+   "title": "Stage Vente"
+  },
+  {
+   "id": "cmtnjjqe23324qq4zetenqagi",
+   "externalId": "12021207",
+   "company": "DUMEBI",
+   "title": "Stage - Studio Assistant"
+  },
+  {
+   "id": "cmtnjjqp2334uqq4z0bpthw86",
+   "externalId": "12020073",
+   "company": "ELLE",
+   "title": "EMEA India Marketing Assistant -Internship H/F"
+  },
+  {
+   "id": "cmtnjjqsd3360qq4zfbf8nvkz",
+   "externalId": "12019510",
+   "company": "ELSA SCHIAPARELLI",
+   "title": "Stagiaire Assistant.e Maille RTW (H/F/x)"
+  },
+  {
+   "id": "cmtrup1sk4mp7pg5muwhi7r30",
+   "externalId": "12031444",
+   "company": "ETERNEL PARISIEN",
+   "title": "Coordination & Suivi Des Opérations (6 Mois)"
+  },
+  {
+   "id": "cmtlvhyy10bnp3nk5e5v2vkoc",
+   "externalId": "12019035",
+   "company": "EXE WORLDWIDE",
+   "title": "Stagiaire Création de Contenu (H/F) – Marque de Bijoux Tech - 2 Mois"
+  },
+  {
+   "id": "cmtnjjr6p33azqq4zx420x7px",
+   "externalId": "12019036",
+   "company": "EXE WORLDWIDE",
+   "title": "Stagiaire Création de Contenu (H/F) – Marque de Bijoux Tech - 2 Mois"
+  },
+  {
+   "id": "cmtnac1tx2snaqq5l27feiub4",
+   "externalId": "12050810",
+   "company": "FAIR FASHION AGENT",
+   "title": "Assistant(e) Business Development & Fashion Wholesale – Stage"
+  },
+  {
+   "id": "cmtpw96qf4k6el35m00nzm04e",
+   "externalId": "12050416",
+   "company": "FASHION EXPERT",
+   "title": "Conseiller(Ère) de Vente Luxe Bilingue Russe H/F"
+  },
+  {
+   "id": "cmtp868vs3rn0qq4zhlyzpdt0",
+   "externalId": "11984928",
+   "company": "FATHER AND SONS",
+   "title": "Assistant(e) Styliste"
+  },
+  {
+   "id": "cmtoykdnp2suvqq4z5v3mgr2w",
+   "externalId": "12024321",
+   "company": "FRANCOISE",
+   "title": "Assistant Designer"
+  },
+  {
+   "id": "cmtoykdnx2suzqq4zxllx13m8",
+   "externalId": "12024320",
+   "company": "FRANCOISE",
+   "title": "Assistant Studio"
+  },
+  {
+   "id": "cmtpkwyst59kwpf5lkng8fx9d",
+   "externalId": "11966979",
+   "company": "FRENCH TEX",
+   "title": "Moniteur/Chef d'Équipe (H/F)"
+  },
+  {
+   "id": "cmtpkwyte59l0pf5lk4rji8y2",
+   "externalId": "11966977",
+   "company": "FRENCH TEX",
+   "title": "Piqueur / Piqueuse en Confection (H/F)"
+  },
+  {
+   "id": "cmtnjjr24339lqq4zmjzvfuti",
+   "externalId": "11902567",
+   "company": "FROM FUTURE",
+   "title": "Responsable Boutique (H/F) - CDI 39h - One Nation"
+  },
+  {
+   "id": "cmtnjjqu9336eqq4z3lweel2s",
+   "externalId": "12019499",
+   "company": "Fusalp",
+   "title": "Responsable de Boutique (H/F)"
+  },
+  {
+   "id": "cmtp868ny3rkgqq4zy4fb3glm",
+   "externalId": "11985295",
+   "company": "Fusalp",
+   "title": "Stagiaire - Assistant(e) Qualite Matieres et Innovation"
+  },
+  {
+   "id": "cmtpkx0g959repf5lbrh98su4",
+   "externalId": "11852695",
+   "company": "GALDERMA",
+   "title": "Directeur Régional H/F - Division Esthétique - Secteur Nord France Par"
+  },
+  {
+   "id": "cmtoykdm12stzqq4zjyov24tg",
+   "externalId": "12024353",
+   "company": "GAS BIJOUX",
+   "title": "Stage - Assistant(e) Gestion Produit & Opérations Produit (H/F)"
+  },
+  {
+   "id": "cmtmkagr92jr6pv4xb8f853n1",
+   "externalId": "12046339",
+   "company": "GAS BIJOUX",
+   "title": "CDD - Responsable Marketing Digital"
+  },
+  {
+   "id": "cmtpkwyyf59lzpf5lhywq1k25",
+   "externalId": "11741554",
+   "company": "GOYARD",
+   "title": "Wrapper - f/m"
+  },
+  {
+   "id": "cmtpkwyxu59lvpf5ld2goqh1v",
+   "externalId": "11741555",
+   "company": "GOYARD",
+   "title": "IT Support Technician - m/f"
+  },
+  {
+   "id": "cmtpkx09g59pvpf5lagol08oy",
+   "externalId": "11959226",
+   "company": "GRANDVISION",
+   "title": "Opticien Lunetier (H/F) - Selestat"
+  },
+  {
+   "id": "cmtpkwyw859ljpf5lgtgndn26",
+   "externalId": "11966959",
+   "company": "GRANDVISION",
+   "title": "Opticien Lunetier (H/F) - st Quentin"
+  },
+  {
+   "id": "cmtpkx08e59pnpf5loekm4wzs",
+   "externalId": "11959228",
+   "company": "GRANDVISION",
+   "title": "Monteur Vendeur - Franchise - Isle Sur la Sorgue"
+  },
+  {
+   "id": "cmtpkx08x59prpf5ljdpawt5t",
+   "externalId": "11959227",
+   "company": "GRANDVISION",
+   "title": "Opticien(ne) - Franchise - Isle Sur la Sorgue"
+  },
+  {
+   "id": "cmtpkx0a059pzpf5lrewzyt0b",
+   "externalId": "11959223",
+   "company": "GRANDVISION",
+   "title": "Alternance Opticien (H/F) Licence - st Quentin"
+  },
+  {
+   "id": "cmtnjjr1c3399qq4z018qlh83",
+   "externalId": "12019452",
+   "company": "GROUPE CHANTELLE LINGERIE",
+   "title": "Vendeur(se) / Conseiller(Ère) de Vente - Val d'Europe - CDI 35h H/F"
+  },
+  {
+   "id": "cmtnac1am2shhqq5ly690l2ug",
+   "externalId": "12052561",
+   "company": "GROUPE CHANTELLE LINGERIE",
+   "title": "Agent Méthodes H/F"
+  },
+  {
+   "id": "cmtnjjr1k339dqq4zgyndnuys",
+   "externalId": "12019451",
+   "company": "GROUPE CHANTELLE LINGERIE",
+   "title": "Vendeur(se) / Conseiller(Ère) de Vente - Nantes Atlantis - CDI 25h H/F"
+  },
+  {
+   "id": "cmtm7nvx410mmpv5jrx24hv19",
+   "externalId": "12052560",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtnac1b22shoqq5lw14frpcl",
+   "externalId": "12052559",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtjvn80t0016ld2b3lqn7bvp",
+   "externalId": "12024787",
+   "company": "Groupe Courir",
+   "title": "Chargé(e) de Stock - F/H"
+  },
+  {
+   "id": "cmtjvn8dr001sld2b4ze4e06c",
+   "externalId": "12021175",
+   "company": "Groupe Courir",
+   "title": "Chargé(e) de Stock - F/H"
+  },
+  {
+   "id": "cmtlusvm5003j3nk5d9lldvs8",
+   "externalId": "12050813",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtjvn8dr001pld2bp62u68pd",
+   "externalId": "12021174",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtp868xb3rneqq4z740mrzoi",
+   "externalId": "11984905",
+   "company": "Groupe Courir",
+   "title": "CDD - Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtpw96p44k60l35mw09yih0s",
+   "externalId": "12050470",
+   "company": "Groupe Courir",
+   "title": "Outlet - Responsable d'Equipe - F/H"
+  },
+  {
+   "id": "cmtm7g1zw0zyspv5j82f2hb16",
+   "externalId": "11785837",
+   "company": "Groupe Courir",
+   "title": "Responsable de Magasin Adjoint - F/H"
+  },
+  {
+   "id": "cmtjvn80n000uld2bq8s42sjm",
+   "externalId": "12024788",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtm7g4sx102lpv5ji0wpsddn",
+   "externalId": "11531875",
+   "company": "Groupe Courir",
+   "title": "CDD - Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtoykd3g2splqq4z80tmd3x1",
+   "externalId": "12024786",
+   "company": "Groupe Courir",
+   "title": "CDD - Chargé(e) de Stock - F/H"
+  },
+  {
+   "id": "cmtm7g9pg1096pv5jxmwwu912",
+   "externalId": "11872003",
+   "company": "Groupe Courir",
+   "title": "Responsable de Magasin - F/H"
+  },
+  {
+   "id": "cmtjvn8s5002dld2bdrv3qydp",
+   "externalId": "12018999",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtm7g2cx0zz8pv5jr4fkll1t",
+   "externalId": "11750457",
+   "company": "Groupe Courir",
+   "title": "Directrice - Directeur de Magasin Adjoint - F/H"
+  },
+  {
+   "id": "cmtm7g63b104fpv5j4ixfz63p",
+   "externalId": "12050816",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtp868lh3rjuqq4zowsiv6qg",
+   "externalId": "11986169",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtm7n3l110bzpv5j6comed56",
+   "externalId": "11823197",
+   "company": "Groupe Courir",
+   "title": "Responsable de Magasin - F/H"
+  },
+  {
+   "id": "cmtnac1tn2sn6qq5lnwndr21l",
+   "externalId": "12050811",
+   "company": "Groupe Courir",
+   "title": "Floor Manager - F/H"
+  },
+  {
+   "id": "cmtm7g4px102hpv5jirvpt9sy",
+   "externalId": "11986171",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtn5tu6m0xxoqq5l6izr3nuw",
+   "externalId": "12050812",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtp868wz3rnaqq4z11881bsy",
+   "externalId": "11984906",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtjvn7nb000dld2bpqgvttl4",
+   "externalId": "12031378",
+   "company": "Groupe Courir",
+   "title": "Vendeuse / Vendeur - F/H"
+  },
+  {
+   "id": "cmtjvn80r0013ld2btpdmljvs",
+   "externalId": "12024439",
+   "company": "Groupe Courir",
+   "title": "Floor Manager - F/H"
+  },
+  {
+   "id": "cmtoykd3p2sppqq4zp28uzhvl",
+   "externalId": "12024785",
+   "company": "GUESS",
+   "title": "Conseiller(e) de Vente - Printemps Lille CDD 21h"
+  },
+  {
+   "id": "cmtoykdaz2sqrqq4z1qkc9wb7",
+   "externalId": "12024763",
+   "company": "Hermès",
+   "title": "CDD (Octobre - Décembre) - Conseiller de Vente H/F - Magasin de Lyon"
+  },
+  {
+   "id": "cmtk2abeb0p10nv2b0nq0e1pj",
+   "externalId": "11949397",
+   "company": "Hermès",
+   "title": "CDD - Charge(e) de Recouvrement Des Ijss H/F"
+  },
+  {
+   "id": "cmtnac0yt2sdvqq5lmj2ammyd",
+   "externalId": "11962512",
+   "company": "Hermès",
+   "title": "CDD - Chargé d'Accueil H/F - Lille"
+  },
+  {
+   "id": "cmtohktvj2zp1qq4zq1x2mu0x",
+   "externalId": "12024269",
+   "company": "HUGO BOSS",
+   "title": "Conseiller de Vente - CDI 35h - Roppenheim (H/F)"
+  },
+  {
+   "id": "cmtohktv92zoxqq4z4t6lm0be",
+   "externalId": "12024270",
+   "company": "HUGO BOSS",
+   "title": "Stockiste - CDD 35h - Roppenheim (H/F)"
+  },
+  {
+   "id": "cmtoykdmv2sufqq4z0zujodd1",
+   "externalId": "12024327",
+   "company": "HUGO BOSS",
+   "title": "Stockiste (H/F) - 35h - Lyon Jacobins"
+  },
+  {
+   "id": "cmtp868tt3rm9qq4z66yqw9ao",
+   "externalId": "11985204",
+   "company": "HUGO BOSS",
+   "title": "Vendeur (H/F) - CDI 21h- Store Carré Sénart"
+  },
+  {
+   "id": "cmtpkwxi759h3pf5lok02j8ez",
+   "externalId": "11972592",
+   "company": "INDITEX",
+   "title": "Rejoins Nos Magasins a Caen"
+  },
+  {
+   "id": "cmtpkwxgq59grpf5labncb4ht",
+   "externalId": "11972596",
+   "company": "INDITEX",
+   "title": "Rejoins Nos Magasins de Pau"
+  },
+  {
+   "id": "cmtpkwxho59gzpf5l6q5n2jr9",
+   "externalId": "11972593",
+   "company": "INDITEX",
+   "title": "Rejoins Nos Magasins au Havre"
+  },
+  {
+   "id": "cmtpkwxit59h7pf5la8uku2jd",
+   "externalId": "11972591",
+   "company": "INDITEX",
+   "title": "Rejoins Nos Magasins Sur Toulouse"
+  },
+  {
+   "id": "cmtpkwxh659gvpf5l38vt74la",
+   "externalId": "11972595",
+   "company": "INDITEX",
+   "title": "Rejoins Nos Magasins de Reims"
+  },
+  {
+   "id": "cmtpkwxe059g7pf5lvf1yfz3u",
+   "externalId": "11972606",
+   "company": "INDITEX",
+   "title": "Rejoins Nos Magasins de Montpellier"
+  },
+  {
+   "id": "cmtpkwxel59gbpf5lttpea5jq",
+   "externalId": "11972601",
+   "company": "INDITEX",
+   "title": "Rejoins Nos Magasins de Best"
+  },
+  {
+   "id": "cmtpkwxf359gfpf5lvnk4f1tf",
+   "externalId": "11972600",
+   "company": "INDITEX",
+   "title": "Rejoins Nos Magasins de Rouen"
+  },
+  {
+   "id": "cmtpkwxfm59gjpf5lh5e2d3c0",
+   "externalId": "11972599",
+   "company": "INDITEX",
+   "title": "Rejoins Nos Magasins de Metz"
+  },
+  {
+   "id": "cmtpkwxg659gnpf5lniy3j8zh",
+   "externalId": "11972598",
+   "company": "INDITEX",
+   "title": "Rejoins Nos Magasins de Clermont Ferrand"
+  },
+  {
+   "id": "cmtp868p13rkwqq4z28aa53pk",
+   "externalId": "11985232",
+   "company": "IRIDESCENCE BIJOUX",
+   "title": "Stage - Assistant(e) Marketing"
+  },
+  {
+   "id": "cmtp868os3rksqq4zj2e2035u",
+   "externalId": "11985233",
+   "company": "IRIDESCENCE BIJOUX",
+   "title": "Stage - Business Developer"
+  },
+  {
+   "id": "cmtnac1cy2sigqq5ldemlbstt",
+   "externalId": "12052551",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e Relations Célébrités & Influence"
+  },
+  {
+   "id": "cmtnac1gv2sjsqq5lfjkm1t4y",
+   "externalId": "12052538",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e Production Qualité"
+  },
+  {
+   "id": "cmtnac1gi2sjoqq5lnd609fgg",
+   "externalId": "12052540",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant(e) Chef de Produit et Production Bijoux"
+  },
+  {
+   "id": "cmtnac1g52sjkqq5lftffmvnt",
+   "externalId": "12052541",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Indirect E-Commerce Assistant"
+  },
+  {
+   "id": "cmtnac1ft2sjgqq5l3pzjqk5a",
+   "externalId": "12052542",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e Showroom / Business Analyst"
+  },
+  {
+   "id": "cmtnjjqxb337hqq4zgl9xxjoy",
+   "externalId": "12019475",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Sales And Stylist Advisor"
+  },
+  {
+   "id": "cmtnac1bj2shwqq5lkm8wq3mi",
+   "externalId": "12052556",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e Styliste Etoile / Préco"
+  },
+  {
+   "id": "cmtnac1br2si0qq5ld5ue1huk",
+   "externalId": "12052555",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e Retail Training"
+  },
+  {
+   "id": "cmtnac1c02si4qq5lyjrkbv7h",
+   "externalId": "12052554",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e Retail"
+  },
+  {
+   "id": "cmtnac1cd2si8qq5lfmqr37d5",
+   "externalId": "12052553",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e Presse"
+  },
+  {
+   "id": "cmtnac1d72sikqq5l9c6wh71y",
+   "externalId": "12052550",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e Achats Tissus Collection"
+  },
+  {
+   "id": "cmtnac1dr2sisqq5lamvgs34h",
+   "externalId": "12052548",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e Collection Merchandiser PAP"
+  },
+  {
+   "id": "cmtnac1e42siwqq5l4kn3bub1",
+   "externalId": "12052547",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e Collection Merchandiser Accessoires"
+  },
+  {
+   "id": "cmtnac1ej2sj0qq5lmgkekx4w",
+   "externalId": "12052546",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e Chef de Produit Chaussures"
+  },
+  {
+   "id": "cmtnac1et2sj4qq5lxmhto75e",
+   "externalId": "12052545",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e Chef de Produit Maroquinerie"
+  },
+  {
+   "id": "cmtnac1f32sj8qq5llp86sfvn",
+   "externalId": "12052544",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e E-Commerce - Online Client Experience & Omnichanne"
+  },
+  {
+   "id": "cmtnac1fg2sjcqq5lmeeyej8q",
+   "externalId": "12052543",
+   "company": "ISABEL MARANT",
+   "title": "Stage - Assistant.e E-Commerce Global"
+  },
+  {
+   "id": "cmtrup1rn4mospg5mvh3rrkbs",
+   "externalId": "12031448",
+   "company": "ISTITUTO MARANGONI PARIS",
+   "title": "Stage 6 Mois - Événementiel et Administratif – Services Carrières Étud"
+  },
+  {
+   "id": "cmtrup1s84mp2pg5m7475gl5e",
+   "externalId": "12031445",
+   "company": "ISTITUTO MARANGONI PARIS",
+   "title": "Stage 6 Mois/Septembre 2026 - Customer Care- H/F"
+  },
+  {
+   "id": "cmtoykdga2srbqq4zi9myscvk",
+   "externalId": "12024757",
+   "company": "IZAC",
+   "title": "Directeur Commercial Whosales"
+  },
+  {
+   "id": "cmtp8690l3ropqq4zi9bhf3zi",
+   "externalId": "11871970",
+   "company": "JACK GOMME",
+   "title": "Responsable Marketing & Communication"
+  },
+  {
+   "id": "cmtoykd3y2sptqq4zzv2xi6m6",
+   "externalId": "12024784",
+   "company": "JAMINI",
+   "title": "Stage - Conseillère de Vente"
+  },
+  {
+   "id": "cmtnjjr3p33a1qq4z12d5uyya",
+   "externalId": "12019160",
+   "company": "Jean Paul Gaultier",
+   "title": "Alternance - Assistant(e) Production, Image & Events"
+  },
+  {
+   "id": "cmtrup1ve4mqopg5mlzcr5tei",
+   "externalId": "12031403",
+   "company": "JM.ATELSON",
+   "title": "Stage Conseiller(e) de Vente"
+  },
+  {
+   "id": "cmtk1x8bo00qznv2bpw6ele83",
+   "externalId": "12001530",
+   "company": "Jonak",
+   "title": "Responsable de Boutique - la Défense"
+  },
+  {
+   "id": "cmtnjjqd7331wqq4z9pcj21v3",
+   "externalId": "12021213",
+   "company": "Jules",
+   "title": "Stage Assistant Chef de Produit H/F"
+  },
+  {
+   "id": "cmtrup1z54ms3pg5m41lxa4an",
+   "externalId": "12031368",
+   "company": "JULES & JENN",
+   "title": "Stage Photographe / Graphiste Mode Responsable H/F"
+  },
+  {
+   "id": "cmtrup20d4msnpg5m17qrljup",
+   "externalId": "11923263",
+   "company": "JULIETTE HAS A GUN",
+   "title": "DA Image"
+  },
+  {
+   "id": "cmtrup20n4msspg5mtea3j2sv",
+   "externalId": "11923247",
+   "company": "JULIETTE HAS A GUN",
+   "title": "Graphiste Print et Digital"
+  },
+  {
+   "id": "cmtpgj7nj3dnrqq4zy8xeu2lh",
+   "externalId": "12046944",
+   "company": "KRYS",
+   "title": "Opticien H/F - Krys Strasbourg"
+  },
+  {
+   "id": "cmtpgj7p23dofqq4zimq3hnbd",
+   "externalId": "12046938",
+   "company": "KRYS",
+   "title": "Opticien H/F Krys j. Torrilhon - Ecully(69)"
+  },
+  {
+   "id": "cmtpgj7oq3dobqq4ztedbgtkz",
+   "externalId": "12046939",
+   "company": "KRYS",
+   "title": "Krys Saint‑Herblain Recrute un(e) Opticien(ne) Diplômé(e)"
+  },
+  {
+   "id": "cmtpgj7oh3do7qq4zp2mz6nlt",
+   "externalId": "12046940",
+   "company": "KRYS",
+   "title": "Opticien"
+  },
+  {
+   "id": "cmtpgj7o93do3qq4zisw0hy2i",
+   "externalId": "12046941",
+   "company": "KRYS",
+   "title": "Opticien H/F - Cdl Jougne"
+  },
+  {
+   "id": "cmtpgj7nr3dnvqq4zokq2eh3v",
+   "externalId": "12046943",
+   "company": "KRYS",
+   "title": "Opticien H/F"
+  },
+  {
+   "id": "cmtpgj7o13dnzqq4z7w3g6g7i",
+   "externalId": "12046942",
+   "company": "KRYS",
+   "title": "Monteur-Vendeur H/F"
+  },
+  {
+   "id": "cmtpgj7na3dnnqq4zwxf354l8",
+   "externalId": "12046945",
+   "company": "KRYS",
+   "title": "Opticien H/F - Krys Périgueux"
+  },
+  {
+   "id": "cmtpgj7mv3dnjqq4zj35gzkh3",
+   "externalId": "12046946",
+   "company": "KRYS",
+   "title": "Directeur de Magasin H/F"
+  },
+  {
+   "id": "cmtpgj7mm3dnfqq4zh1hb3all",
+   "externalId": "12046947",
+   "company": "KRYS",
+   "title": "Opticien en Alternance"
+  },
+  {
+   "id": "cmtpgj7mc3dnbqq4zo29wyec0",
+   "externalId": "12046948",
+   "company": "KRYS",
+   "title": "Opticien en Alternance H/F"
+  },
+  {
+   "id": "cmtpgj7lp3dn7qq4zp425k785",
+   "externalId": "12046949",
+   "company": "KRYS",
+   "title": "Vendeur/Collaborateur Polyvalent"
+  },
+  {
+   "id": "cmtnjjqyl3381qq4zsirfy7z6",
+   "externalId": "12019465",
+   "company": "KSI",
+   "title": "Conseiller(Ère) de Vente PAP Grand Magasin Tours"
+  },
+  {
+   "id": "cmtrup1tl4mprpg5mesvyvk1n",
+   "externalId": "12031436",
+   "company": "KSI",
+   "title": "Conseiller(Ère) de Vente Boutique Renfort Braderie"
+  },
+  {
+   "id": "cmtnac1ad2shdqq5l5e6nu1s7",
+   "externalId": "12052562",
+   "company": "KSI",
+   "title": "Conseiller(Ère) de Vente Boutique PAP Ribeauvillé"
+  },
+  {
+   "id": "cmtrup1u24mq1pg5mhl2226o8",
+   "externalId": "12031434",
+   "company": "KSI",
+   "title": "Conseiller(Ère) de Vente Luxe Grand Magasin Strasbourg"
+  },
+  {
+   "id": "cmtrup1ua4mq6pg5mzds1xgh2",
+   "externalId": "12031433",
+   "company": "KSI",
+   "title": "Conseiller(Ère) de Vente Maroquinerie Grand Magasin Rennes"
+  },
+  {
+   "id": "cmtrup1tt4mpwpg5m7u9ya12n",
+   "externalId": "12031435",
+   "company": "KSI",
+   "title": "Conseiller(Ère) de Vente Boutique Joaillerie Chalon"
+  },
+  {
+   "id": "cmtoykd452spxqq4zxkhq4osv",
+   "externalId": "12024777",
+   "company": "KSI",
+   "title": "Vendeur(se) PAP Luxe"
+  },
+  {
+   "id": "cmtp868vi3rmwqq4zdp4u1xhh",
+   "externalId": "11984938",
+   "company": "KSI MODE",
+   "title": "Mécanicien.ne Modèle Cuir H/F"
+  },
+  {
+   "id": "cmtrup1wz4mrdpg5mb0ahh7lq",
+   "externalId": "12031401",
+   "company": "LAB DIP",
+   "title": "Stage Assistant(e) Commercial(e)"
+  },
+  {
+   "id": "cmtpkwyzd59m7pf5lyv72ou8z",
+   "externalId": "11615891",
+   "company": "LA BOUTIQUE DU COIFFEUR",
+   "title": "Conseiller de Vente H/F"
+  },
+  {
+   "id": "cmtpkx0jx59ropf5lnheleyfu",
+   "externalId": "11145096",
+   "company": "LA BOUTIQUE DU COIFFEUR",
+   "title": "Coiffeur, Conseiller de Vente H/F"
+  },
+  {
+   "id": "cmtpkwyzu59mbpf5lyizf7t3h",
+   "externalId": "11738729",
+   "company": "LA BOUTIQUE DU COIFFEUR",
+   "title": "Conseiller de Vente H/F"
+  },
+  {
+   "id": "cmtpkx0kg59rspf5lkrugompe",
+   "externalId": "11846937",
+   "company": "LA BOUTIQUE DU COIFFEUR",
+   "title": "Conseiller de Vente H/F"
+  },
+  {
+   "id": "cmtpkx0de59qqpf5lo6y96k70",
+   "externalId": "11851813",
+   "company": "LA BOUTIQUE DU COIFFEUR",
+   "title": "Responsable de Magasin H/F"
+  },
+  {
+   "id": "cmtpkwz0b59mfpf5lqwk99kwt",
+   "externalId": "10983193",
+   "company": "LA BOUTIQUE DU COIFFEUR",
+   "title": "Conseiller de Vente H/F"
+  },
+  {
+   "id": "cmtpkwycw59jopf5lfl0zg75r",
+   "externalId": "11745772",
+   "company": "LA BOUTIQUE DU COIFFEUR",
+   "title": "Conseiller de Vente H/F"
+  },
+  {
+   "id": "cmtpkwyyv59m3pf5lrz7tbjkv",
+   "externalId": "11738728",
+   "company": "LA BOUTIQUE DU COIFFEUR",
+   "title": "Conseiller de Vente H/F"
+  },
+  {
+   "id": "cmtnjjqdj3320qq4zfxtj4810",
+   "externalId": "12021208",
+   "company": "LA BRUNE ET LA BLONDE",
+   "title": "Assistant(e) ADV / Office Manager"
+  },
+  {
+   "id": "cmtpw96kk4k4yl35mhxk9gdcg",
+   "externalId": "12050512",
+   "company": "LA MODE VINTAGE",
+   "title": "Stage - Assistant(e) Communication Digitale"
+  },
+  {
+   "id": "cmtnac1v92snqqq5l447hf1fz",
+   "externalId": "12050776",
+   "company": "LANCEL",
+   "title": "Conseiller de Vente (H/F) - Contrat à Durée Déterminée"
+  },
+  {
+   "id": "cmtmkagsa2jrepv4xgykbu6wg",
+   "externalId": "12046337",
+   "company": "LANCEL",
+   "title": "Stage - Conseiller de Vente (H/F)"
+  },
+  {
+   "id": "cmtmkagsi2jripv4xkrv01xez",
+   "externalId": "12046336",
+   "company": "LANCEL",
+   "title": "Stage - Assistant Service Client E-Commerce/Retail (H/F)"
+  },
+  {
+   "id": "cmtpw96la4k56l35m3h5n66xz",
+   "externalId": "12050500",
+   "company": "LANVIN",
+   "title": "Stage - Assistant(e) RTW Collection Merchandising (H/F)"
+  },
+  {
+   "id": "cmtnjjq8x330kqq4zkkjr80em",
+   "externalId": "12022540",
+   "company": "LA RÉPONSE D",
+   "title": "Stage - Créateur.Ice de Contenu"
+  },
+  {
+   "id": "cmtnjjr6f33avqq4zj8l3f7tg",
+   "externalId": "12019038",
+   "company": "LAURE DE SAGAZAN",
+   "title": "Chargée de Clientèle - Conseillère Style"
+  },
+  {
+   "id": "cmtnjjqxi337lqq4za78hpawg",
+   "externalId": "12019474",
+   "company": "LAURENCE BRAS",
+   "title": "Stage - Assistant(e) E-Commerce"
+  },
+  {
+   "id": "cmtp868xo3rniqq4zldkitsm4",
+   "externalId": "11984904",
+   "company": "LE COQ SPORTIF",
+   "title": "Assistant(e) Design / Studio Création"
+  },
+  {
+   "id": "cmtpkx0cy59qmpf5l86velt7z",
+   "externalId": "11958795",
+   "company": "LEFTIES",
+   "title": "Assistant.e Magasin H/F Lefties Rosny"
+  },
+  {
+   "id": "cmtpkx0cg59qipf5lqj0wdqsz",
+   "externalId": "11958796",
+   "company": "LEFTIES",
+   "title": "Adjoint.e Magasin Lefties Rosny H/F"
+  },
+  {
+   "id": "cmtnac1ug2sniqq5l62x8ibhf",
+   "externalId": "12050783",
+   "company": "LEMAIRE",
+   "title": "Assistant E-Commerce (H/F)"
+  },
+  {
+   "id": "cmtoykdho2ss2qq4z0jeys7b7",
+   "externalId": "12024737",
+   "company": "LESAGE PARIS",
+   "title": "Brodeur(se)"
+  },
+  {
+   "id": "cmtrup1tc4mpmpg5mj2mp1h26",
+   "externalId": "11970486",
+   "company": "LE TANNEUR & CIE",
+   "title": "Assistant(e) Demand Planning - Alt 24 Mois"
+  },
+  {
+   "id": "cmtrup1t24mphpg5mfc70uqge",
+   "externalId": "11970503",
+   "company": "LE TANNEUR & CIE",
+   "title": "Vendeur(Euse) en Articles de Maroquinerie - Paris 09"
+  },
+  {
+   "id": "cmtrup1st4mpcpg5mox8j39hd",
+   "externalId": "11972420",
+   "company": "LE TANNEUR & CIE",
+   "title": "Stockiste Flagship"
+  },
+  {
+   "id": "cmtpkx0ah59q3pf5lfsxctshw",
+   "externalId": "11958802",
+   "company": "LE TEMPS DES CERISES",
+   "title": "Responsable de Magasin"
+  },
+  {
+   "id": "cmtpkx1m659uqpf5lybqoou5b",
+   "externalId": "11382507",
+   "company": "LE TEMPS DES CERISES",
+   "title": "Responsable de Magasin (H/F)"
+  },
+  {
+   "id": "cmtpw96o04k5tl35m5by3ak5z",
+   "externalId": "12050478",
+   "company": "LFP EMPLOI MODE",
+   "title": "Vendeur/se Pop-up PAP Haut de Gamme 21h la Vallée Village"
+  },
+  {
+   "id": "cmtpw96n24k5ll35mad1un915",
+   "externalId": "12050482",
+   "company": "LFP EMPLOI MODE",
+   "title": "Vendeur/se Pop-up PAP Sportswear Haut de Gamme Week-End /14h la Vallée"
+  },
+  {
+   "id": "cmtpw96ln4k5al35mdnr0v7ni",
+   "externalId": "12050497",
+   "company": "LFP EMPLOI MODE",
+   "title": "Stockiste H/F – Ouverture Pop-up Luxe - Marne la Vallee"
+  },
+  {
+   "id": "cmtnac1s22smmqq5l7zdwx3xt",
+   "externalId": "12050825",
+   "company": "LFP EMPLOI MODE",
+   "title": "Conseiller(Ère) de Vente H/F – Pop-up Luxe 35h la Vallée Village"
+  },
+  {
+   "id": "cmtrup1uh4mqbpg5mm0fgwbw7",
+   "externalId": "12031431",
+   "company": "L'HOMME INVISIBLE",
+   "title": "Stage - Communication et Marketing Digital"
+  },
+  {
+   "id": "cmtrup1vo4mqtpg5m9s3bzi71",
+   "externalId": "11994287",
+   "company": "LIPAULT (GROUPE SAMSONITE)",
+   "title": "Social Media Assistant - Stage 4 à 6 Mois"
+  },
+  {
+   "id": "cmtpkx0lp59s0pf5lqcva5tf6",
+   "externalId": "11846872",
+   "company": "L'OREAL GROUP",
+   "title": "Responsable Comptable"
+  },
+  {
+   "id": "cmtpkwxk159hepf5l9o4hbh1a",
+   "externalId": "11971990",
+   "company": "L'OREAL GROUP",
+   "title": "Stage 6 Mois - à Partir de Janvier 2027 – Contrôle de Gestion Industri"
+  },
+  {
+   "id": "cmtpkx06e59p8pf5lyknlqlhl",
+   "externalId": "11961905",
+   "company": "L'OREAL GROUP",
+   "title": "CDD Technicien de Laboratoire Microbiologie (H/F) – Usine de Caudry 59"
+  },
+  {
+   "id": "cmtrup49t4ng8pg5m7irlgp68",
+   "externalId": "12018367",
+   "company": "LTD",
+   "title": "Responsable Adjoint de Boutique - Mode - H/F"
+  },
+  {
+   "id": "cmtlvhsqf0bkb3nk5yg7ytoyp",
+   "externalId": "12031452",
+   "company": "LTD",
+   "title": "Stockiste H/F à Paris"
+  },
+  {
+   "id": "cmtlvhtj00bkt3nk5ckbi2h53",
+   "externalId": "12031450",
+   "company": "LTD",
+   "title": "Conseiller de Vente H/F à Paris"
+  },
+  {
+   "id": "cmtlvhvgm0blt3nk54eovg1jl",
+   "externalId": "12018366",
+   "company": "LTD",
+   "title": "Stockiste Luxe (H/F) – Saint-Tropez"
+  },
+  {
+   "id": "cmtrup1q24mnwpg5mv8jpa62s",
+   "externalId": "12031458",
+   "company": "LTD",
+   "title": "Mécanicien Cuir H/F à Pantin"
+  },
+  {
+   "id": "cmtrup1qb4mo1pg5m3abm2jti",
+   "externalId": "12031457",
+   "company": "LTD",
+   "title": "Modéliste Lectra Gradation H/F à Paris"
+  },
+  {
+   "id": "cmtrup1re4monpg5mzqxj2ui5",
+   "externalId": "12031449",
+   "company": "LTD",
+   "title": "Buisness Analyst H/F à Paris"
+  },
+  {
+   "id": "cmtrup1rw4moxpg5maiql4n8w",
+   "externalId": "12031447",
+   "company": "LTD",
+   "title": "Business Analyst - H/F"
+  },
+  {
+   "id": "cmtp868483rgdqq4z6dme1pdc",
+   "externalId": "11987139",
+   "company": "LTD INTERNATIONAL",
+   "title": "Conseiller(Ère) de Vente - Haute Parfumerie - H/F"
+  },
+  {
+   "id": "cmtp8684k3rghqq4zuxydg007",
+   "externalId": "11987136",
+   "company": "LTD INTERNATIONAL",
+   "title": "Retoucheur / Essayeur H/F"
+  },
+  {
+   "id": "cmtp868503rglqq4zy3vtsp2p",
+   "externalId": "11987135",
+   "company": "LTD INTERNATIONAL",
+   "title": "Acheteur Tissus H/F"
+  },
+  {
+   "id": "cmtp8685d3rgpqq4zyli8umta",
+   "externalId": "11987133",
+   "company": "LTD INTERNATIONAL",
+   "title": "Responsable Achat / Approvisionneur – H/F à Paris"
+  },
+  {
+   "id": "cmtp8685p3rgtqq4z96kvpeqq",
+   "externalId": "11987132",
+   "company": "LTD INTERNATIONAL",
+   "title": "Contrôleur de Gestion - H/F"
+  },
+  {
+   "id": "cmtp868613rgxqq4zs5uk5q1j",
+   "externalId": "11987131",
+   "company": "LTD INTERNATIONAL",
+   "title": "Comptable - H/F"
+  },
+  {
+   "id": "cmtp8686a3rh1qq4zc6tbpk2i",
+   "externalId": "11987130",
+   "company": "LTD INTERNATIONAL",
+   "title": "Magasinier H/F"
+  },
+  {
+   "id": "cmtp8683i3rg5qq4zpysk1yyj",
+   "externalId": "11987141",
+   "company": "LTD INTERNATIONAL",
+   "title": "Conseiller de Vente - Horlogerie Luxe - H/F"
+  },
+  {
+   "id": "cmtp8683v3rg9qq4zz17wvfh4",
+   "externalId": "11987140",
+   "company": "LTD INTERNATIONAL",
+   "title": "Floor Manager - Parfum Luxe - H/F"
+  },
+  {
+   "id": "cmtrup2044msipg5mnaryvnne",
+   "externalId": "12031362",
+   "company": "LUMYA STUDIO",
+   "title": "[Stage ou Alternance] Community Management - Création de Contenus"
+  },
+  {
+   "id": "cmtoykdlu2stvqq4zbkv4e2ev",
+   "externalId": "12024355",
+   "company": "LUMYA STUDIO",
+   "title": "[Stage ou Alternance] Créateur de Contenu Junior Vidéaste / Réseaux So"
+  },
+  {
+   "id": "cmtoykdnd2sunqq4zyk8cm79x",
+   "externalId": "12024325",
+   "company": "LUNAS",
+   "title": "Assistant(e) / Gestionnaire de Production Textile"
+  },
+  {
+   "id": "cmtpkx0zq59txpf5lmgdwxsz8",
+   "externalId": "11847652",
+   "company": "LVMH Perfumes & Cosmetics",
+   "title": "Stage - Assistant(e) Campus Manager & Talent Acquisition - Janvier 202"
+  },
+  {
+   "id": "cmtpkx0z459ttpf5lj7yk74c2",
+   "externalId": "11847653",
+   "company": "LVMH Perfumes & Cosmetics",
+   "title": "Stage - Assistant(e) Communication, Learning HR & Evènementiel - Janvi"
+  },
+  {
+   "id": "cmtpkx0xk59thpf5l8kcxx1v7",
+   "externalId": "11847657",
+   "company": "LVMH Perfumes & Cosmetics",
+   "title": "Stage - Assistant(e) Marketing Opérationnel - Janvier 2027 - F/H"
+  },
+  {
+   "id": "cmtpkx0y359tlpf5lg8sogwyd",
+   "externalId": "11847655",
+   "company": "LVMH Perfumes & Cosmetics",
+   "title": "Stage - Assistant(e) Contrôle de Gestion - Janvier 2027 - F/H"
+  },
+  {
+   "id": "cmtpkx0yl59tppf5lsqc7t20t",
+   "externalId": "11847654",
+   "company": "LVMH Perfumes & Cosmetics",
+   "title": "Stage - Assistant(e) Formation RH France - Janvier 2027 - F/H"
+  },
+  {
+   "id": "cmtrup1zg4ms8pg5mjv6mqfbk",
+   "externalId": "12031366",
+   "company": "MAISON BM",
+   "title": "Stage - Assistant(e) Service Client"
+  },
+  {
+   "id": "cmtrup2du4mvipg5mexl5lk1y",
+   "externalId": "11919152",
+   "company": "MAISON MONTAGUT",
+   "title": "Conseiller(Ère) de Vente (H/F) – Paris – CDI 24h"
+  },
+  {
+   "id": "cmtpkx1lr59umpf5l9dcj64zq",
+   "externalId": "11727905",
+   "company": "Mango",
+   "title": "Multifunctional Sales Associate"
+  },
+  {
+   "id": "cmtpkwxdh59g3pf5lg5nvpytc",
+   "externalId": "11856196",
+   "company": "Mango",
+   "title": "Directeur/Rice Adjoint/e, CDI 35h"
+  },
+  {
+   "id": "cmtpkwy7g59impf5lpa7rayxg",
+   "externalId": "11970577",
+   "company": "Mango",
+   "title": "Cashier"
+  },
+  {
+   "id": "cmtpkwy7z59iqpf5ltagec972",
+   "externalId": "11970576",
+   "company": "Mango",
+   "title": "Vendeur/Euse Polyvalent, CDI 35h"
+  },
+  {
+   "id": "cmtpkwy8i59iupf5lr11m8bz6",
+   "externalId": "11970574",
+   "company": "Mango",
+   "title": "Cashier"
+  },
+  {
+   "id": "cmtpkx0fu59rapf5lpxnnxyru",
+   "externalId": "11731049",
+   "company": "Mango",
+   "title": "Multifunctional Sales Associate"
+  },
+  {
+   "id": "cmtpkwzuv59o1pf5l03iaxv0n",
+   "externalId": "11734195",
+   "company": "Mango",
+   "title": "Responsable Adjoint/e, CDI 35h"
+  },
+  {
+   "id": "cmtpkx0fc59r6pf5lgkmde67p",
+   "externalId": "11956857",
+   "company": "Mango",
+   "title": "Multifunctional Sales Associate"
+  },
+  {
+   "id": "cmtnjjqcj331oqq4zn6dcmf6v",
+   "externalId": "12019012",
+   "company": "MANG PRODUCTION",
+   "title": "Stage - Chef.fe de Projet Marketing"
+  },
+  {
+   "id": "cmtrup4914nfypg5mudkdzi3y",
+   "externalId": "12018988",
+   "company": "MANPOWER CABINET DE RECRUTEMENT COMMERCE MODE LUXE",
+   "title": "Responsable de Magasin F/H"
+  },
+  {
+   "id": "cmtrup48l4nftpg5me3vb31ic",
+   "externalId": "12018989",
+   "company": "MANPOWER CABINET DE RECRUTEMENT COMMERCE MODE LUXE",
+   "title": "Responsable de Magasin F/H"
+  },
+  {
+   "id": "cmtnjjqsl3364qq4znl5mfjm9",
+   "externalId": "12019509",
+   "company": "MANPOWER CABINET DE RECRUTEMENT COMMERCE MODE LUXE",
+   "title": "Responsable de Magasin F/H"
+  },
+  {
+   "id": "cmtrup49g4ng3pg5mmgsx1ngt",
+   "externalId": "12018987",
+   "company": "MANPOWER CABINET DE RECRUTEMENT COMMERCE MODE LUXE",
+   "title": "Responsable de Magasin F/H"
+  },
+  {
+   "id": "cmtlvhx2g0bmp3nk5tczy0d6y",
+   "externalId": "12024360",
+   "company": "MANPOWER COUTURE MODE ET LUXE",
+   "title": "Patronnier Chargé de Placement Lectra Diamino (H/F)"
+  },
+  {
+   "id": "cmtoykdl02stfqq4zzdnoq2g3",
+   "externalId": "12024368",
+   "company": "MANPOWER COUTURE MODE ET LUXE",
+   "title": "Modéliste Lectra Polyvalent Flou/Tailleur (H/F)"
+  },
+  {
+   "id": "cmtrup4804nfjpg5mzdlhb9s7",
+   "externalId": "12018998",
+   "company": "MANPOWER COUTURE MODE ET LUXE",
+   "title": "Première Main Hautement Qualifiée Tailleur hc"
+  },
+  {
+   "id": "cmtoykdju2sszqq4zkmwluqkp",
+   "externalId": "12024378",
+   "company": "MANPOWER COUTURE MODE ET LUXE",
+   "title": "Technicien Produit Textile Tailleur Senior (H/F)"
+  },
+  {
+   "id": "cmtoykdkr2stbqq4zoz9su24b",
+   "externalId": "12024372",
+   "company": "MANPOWER COUTURE MODE ET LUXE",
+   "title": "Modéliste Lectra Flou (H/F)"
+  },
+  {
+   "id": "cmtoykdk02st3qq4z4xtq6u8c",
+   "externalId": "12024377",
+   "company": "MANPOWER COUTURE MODE ET LUXE",
+   "title": "Première Main Hautement Qualifié Flou (H/F)"
+  },
+  {
+   "id": "cmtoykdk72st7qq4zlxzxkgb8",
+   "externalId": "12024374",
+   "company": "MANPOWER COUTURE MODE ET LUXE",
+   "title": "Chargé de Développement Produit Normalisation Maille (H/F)"
+  },
+  {
+   "id": "cmtmkagg92jonpv4xvge8ea67",
+   "externalId": "12007416",
+   "company": "Marella",
+   "title": "Conseiller(e)s de Vente Pour Flagship Marella Madeleine"
+  },
+  {
+   "id": "cmtrup48a4nfopg5mjexig4al",
+   "externalId": "12018991",
+   "company": "MAX MARA",
+   "title": "Stage Assistant(e) Administratif(ve)"
+  },
+  {
+   "id": "cmtp868hh3rixqq4zid1yywj7",
+   "externalId": "11986307",
+   "company": "MIDNIGHT THEORY",
+   "title": "Stagiaire en Communication Digitale & Création de Contenu"
+  },
+  {
+   "id": "cmtp868zu3rodqq4z65330oeo",
+   "externalId": "11984866",
+   "company": "MIMI & COOKIE",
+   "title": "Stage - Assistant Style et Modélisme H/F"
+  },
+  {
+   "id": "cmtrup28c4mtrpg5mhn4i2ypy",
+   "externalId": "12030495",
+   "company": "MINIMEPARIS",
+   "title": "Stage - Assistant Community Manager"
+  },
+  {
+   "id": "cmtrup2814mtmpg5m1cx15vu2",
+   "externalId": "12030496",
+   "company": "MINIMEPARIS",
+   "title": "Stage - Atelier / Broderie / Couture"
+  },
+  {
+   "id": "cmtrup2974mu6pg5m3ttfye51",
+   "externalId": "12030492",
+   "company": "MINIMEPARIS",
+   "title": "Stage - Ecommerce Fashion & Accessoires"
+  },
+  {
+   "id": "cmtrup28l4mtwpg5mdy5g5j2t",
+   "externalId": "12030494",
+   "company": "MINIMEPARIS",
+   "title": "Stage Vente / Conseils/ Gestion Boutique"
+  },
+  {
+   "id": "cmtrup28v4mu1pg5mmhn95t5a",
+   "externalId": "12030493",
+   "company": "MINIMEPARIS",
+   "title": "Assistant Commercial/ SAV"
+  },
+  {
+   "id": "cmtp868zn3ro9qq4zwp0f6lv2",
+   "externalId": "11984877",
+   "company": "MINOÏ",
+   "title": "Stage - Assistant(e) Polyvalente"
+  },
+  {
+   "id": "cmtnjjq8h330gqq4zl4tz35l5",
+   "externalId": "12022555",
+   "company": "MINOÏ",
+   "title": "Stage - Assistant(e) Polyvalente"
+  },
+  {
+   "id": "cmtp868zf3ro5qq4zzt54edbl",
+   "externalId": "11984878",
+   "company": "MINOÏ",
+   "title": "Assistant(e) Concept Store – Vente & Marketing"
+  },
+  {
+   "id": "cmtoykdn62sujqq4z7m4ju9b7",
+   "externalId": "12024326",
+   "company": "MIRA BELLEPARIS",
+   "title": "Assistant(e) Communication & Événementiel"
+  },
+  {
+   "id": "cmtpw96vb4k7gl35mqr807iaz",
+   "externalId": "11934661",
+   "company": "MODELOR",
+   "title": "Vendeur(se) Luxe Confirmé(e) Bilingue H/F"
+  },
+  {
+   "id": "cmtp8691r3rp9qq4z1nb78qjp",
+   "externalId": "11871935",
+   "company": "MODELOR COUTURE",
+   "title": "Finisseur (H/F/NB)"
+  },
+  {
+   "id": "cmtp8692b3rplqq4z1xua3p47",
+   "externalId": "11871932",
+   "company": "MODELOR COUTURE",
+   "title": "Couturier/e Tailleur (H/F/NB)"
+  },
+  {
+   "id": "cmtp8691y3rpdqq4zuarz0w5y",
+   "externalId": "11871934",
+   "company": "MODELOR COUTURE",
+   "title": "Developpeur Produit - Collection (H/F/NB)"
+  },
+  {
+   "id": "cmtp8691j3rp5qq4zrv0ycxdl",
+   "externalId": "11871936",
+   "company": "MODELOR COUTURE",
+   "title": "Responsable Industrialisation Technique Cuir (H/F)"
+  },
+  {
+   "id": "cmtp8691b3rp1qq4zr6qvvvj9",
+   "externalId": "11871937",
+   "company": "MODELOR COUTURE",
+   "title": "Retoucheur (H/F/NB)"
+  },
+  {
+   "id": "cmtp868ae3rhsqq4z281x2kfu",
+   "externalId": "11453713",
+   "company": "MODELOR COUTURE",
+   "title": "Mécanicien Modèles Flou Confirmé (H/F)"
+  },
+  {
+   "id": "cmtp8689x3rhkqq4z2cub4xaw",
+   "externalId": "11512979",
+   "company": "MODELOR COUTURE",
+   "title": "Développeur Textile et Teintures"
+  },
+  {
+   "id": "cmtp868a63rhoqq4z6b3b8hqv",
+   "externalId": "11512870",
+   "company": "MODELOR COUTURE",
+   "title": "Mécanicien(ne) Modèle / Première Main – Atelier Luxe"
+  },
+  {
+   "id": "cmtp8692p3rptqq4zrz0h8py3",
+   "externalId": "11871930",
+   "company": "MODELOR SERVICE",
+   "title": "Coupeur (H/F/NB)"
+  },
+  {
+   "id": "cmtp8692i3rppqq4zrxj5vvp2",
+   "externalId": "11871931",
+   "company": "MODELOR SERVICE",
+   "title": "Couturier/e Flou (H/F/NB)"
+  },
+  {
+   "id": "cmtp869243rphqq4zo94yrzgm",
+   "externalId": "11871933",
+   "company": "MODELOR SERVICE",
+   "title": "Developpeur Produit - Normalisation (H/F/NB)"
+  },
+  {
+   "id": "cmtnjjql1333pqq4z4h12knv9",
+   "externalId": "12021083",
+   "company": "MODESIGN",
+   "title": "Stagiaire Assistant(e) Communication"
+  },
+  {
+   "id": "cmtpw96mo4k5hl35moitdrtu5",
+   "externalId": "12050487",
+   "company": "Morgan",
+   "title": "Vendeur 26h (H/F)"
+  },
+  {
+   "id": "cmtoykdpm2svsqq4zr0e9yo68",
+   "externalId": "12024294",
+   "company": "Morgan",
+   "title": "Vendeur 25h (H/F)"
+  },
+  {
+   "id": "cmtoykdm92su3qq4ztsr5advd",
+   "externalId": "12024350",
+   "company": "Morgan",
+   "title": "Vendeur 25h (H/F)"
+  },
+  {
+   "id": "cmtnac1r12sm7qq5lv4ke603h",
+   "externalId": "12051307",
+   "company": "Morgan",
+   "title": "Vendeur 35h CDI (H/F)"
+  },
+  {
+   "id": "cmtrup2gr4mw4pg5mhy5ebuog",
+   "externalId": "12029037",
+   "company": "MOSSI",
+   "title": "Stage Haute Couture Française"
+  },
+  {
+   "id": "cmtp868y83rnqqq4z17dltdqo",
+   "externalId": "11882325",
+   "company": "MPTW INTERNATIONAL",
+   "title": "Stage - Sales Representative Assistant"
+  },
+  {
+   "id": "cmtohktv22zotqq4z4mnbkxrr",
+   "externalId": "12024271",
+   "company": "MUM OF",
+   "title": "Stage"
+  },
+  {
+   "id": "cmtrup2bt4mujpg5m5az9wcey",
+   "externalId": "12030363",
+   "company": "MYLO CONCEPT",
+   "title": "Responsable Point de Vente, Expérience Client, Entreprenariat & Web Ma"
+  },
+  {
+   "id": "cmtnjjqxy337tqq4zw86k8j0r",
+   "externalId": "12019468",
+   "company": "NACH",
+   "title": "Stage - Assistant(e) Marketing d’Influence & E-Commerce"
+  },
+  {
+   "id": "cmtnjjqxq337pqq4zeihxwzn2",
+   "externalId": "12019471",
+   "company": "NACH",
+   "title": "Stage Assistant(e) Commercial(e) BTOB"
+  },
+  {
+   "id": "cmtnjjr1t339hqq4z5q913vs3",
+   "externalId": "12019450",
+   "company": "NACH",
+   "title": "Stage Graphiste"
+  },
+  {
+   "id": "cmtpkwyen59k0pf5ls9zwn56h",
+   "externalId": "11617947",
+   "company": "New Balance",
+   "title": "Superviseur de Magasin (35 Heures) - Paris le Marais"
+  },
+  {
+   "id": "cmtpkwzud59nxpf5lz7fglvd2",
+   "externalId": "11963517",
+   "company": "NIKE",
+   "title": "Coach Nike (Responsable de Rayon) – h / f CDI"
+  },
+  {
+   "id": "cmtpkwy9059iypf5lohxiz1i3",
+   "externalId": "11969610",
+   "company": "NIKE",
+   "title": "Athlete Nike (Vendeur.se en Magasin) – h / f CDD 25h"
+  },
+  {
+   "id": "cmtp868uz3rmpqq4zfu5tb4ja",
+   "externalId": "11984995",
+   "company": "NOUKTAH",
+   "title": "Stage Design Accessoire et Produit"
+  },
+  {
+   "id": "cmtlvhvnp0blx3nk525xx5yoq",
+   "externalId": "12019516",
+   "company": "OCARAT",
+   "title": "Stage - Assistant Chef de Produits Bijoux H/F"
+  },
+  {
+   "id": "cmtnjjqru335sqq4zk1duem4h",
+   "externalId": "12019512",
+   "company": "OCARAT",
+   "title": "Stage - Assistant Approvisionnements H/F"
+  },
+  {
+   "id": "cmtnjjqpt3351qq4z6dyuebx0",
+   "externalId": "12019997",
+   "company": "OCARAT",
+   "title": "Stage - Conseiller de Vente Luxe H/F"
+  },
+  {
+   "id": "cmtoykdgx2srnqq4zrcby5ncs",
+   "externalId": "12024752",
+   "company": "ODAEL",
+   "title": "Stage - Conseiller(e) de Vente 2 Mois"
+  },
+  {
+   "id": "cmtoykdh32srrqq4zvqjvpcw9",
+   "externalId": "12024751",
+   "company": "ODAEL",
+   "title": "Stage - Assistant(e) Couture/Upcycling 2 Mois/Asap"
+  },
+  {
+   "id": "cmtpgj8ah3dxzqq4zbld5pfx7",
+   "externalId": "12046570",
+   "company": "OPTIC 2000",
+   "title": "Opticien Diplômé H/F"
+  },
+  {
+   "id": "cmtpgj8bc3dyfqq4zd6x2k899",
+   "externalId": "12046566",
+   "company": "OPTIC 2000",
+   "title": "Opticien Diplômé H/F"
+  },
+  {
+   "id": "cmtpgj8b23dybqq4ztb08u84w",
+   "externalId": "12046567",
+   "company": "OPTIC 2000",
+   "title": "Opticien(ne) Diplômé(e) H/F"
+  },
+  {
+   "id": "cmtpgj8an3dy3qq4znw57sisx",
+   "externalId": "12046569",
+   "company": "OPTIC 2000",
+   "title": "Audioprothésiste H/F"
+  },
+  {
+   "id": "cmtpgj8bp3dynqq4zvt0hgvlj",
+   "externalId": "12046564",
+   "company": "OPTIC 2000",
+   "title": "Opticien(ne) Diplômé(e) ou Monteur-Vendeur H/F"
+  },
+  {
+   "id": "cmtpgj8av3dy7qq4za610dult",
+   "externalId": "12046568",
+   "company": "OPTIC 2000",
+   "title": "Opticien Diplômé H/F"
+  },
+  {
+   "id": "cmtpgj8bi3dyjqq4zfv5s5yld",
+   "externalId": "12046565",
+   "company": "OPTIC 2000",
+   "title": "Opticien Diplômé H/F"
+  },
+  {
+   "id": "cmtpgj8a23dxrqq4z7phm9m8q",
+   "externalId": "12046572",
+   "company": "OPTIC 2000",
+   "title": "Opticien Diplômé H/F"
+  },
+  {
+   "id": "cmtpgj8a93dxvqq4zsj6v63sd",
+   "externalId": "12046571",
+   "company": "OPTIC 2000",
+   "title": "Audioprothésiste H/F"
+  },
+  {
+   "id": "cmtrup1ph4mnmpg5mkzqrbkjq",
+   "externalId": "12031461",
+   "company": "PACO RABANNE MODE",
+   "title": "Stage - Assistant(e) Développement RTW (H/F)"
+  },
+  {
+   "id": "cmtrup1pq4mnrpg5mcj0ojvpz",
+   "externalId": "12031460",
+   "company": "PACO RABANNE MODE",
+   "title": "Assembleur Mesh (H/F) - 1 Mois"
+  },
+  {
+   "id": "cmtnjjqn33348qq4z6vll6zuc",
+   "externalId": "11980030",
+   "company": "PARAMOUR",
+   "title": "Chef(fe) de Projet / Assistant(e) de Production"
+  },
+  {
+   "id": "cmtmkagki2jplpv4xuxkwfcfp",
+   "externalId": "12049735",
+   "company": "Parfums Christian Dior",
+   "title": "Stage Janvier 2027 – Développement Packaging Nouveauté F/H"
+  },
+  {
+   "id": "cmtmkaglm2jptpv4x4mvq71yc",
+   "externalId": "12049733",
+   "company": "Parfums Christian Dior",
+   "title": "Stage Janvier 2027 - Ingénieur Management de Projet & Gestion de la De"
+  },
+  {
+   "id": "cmtmkagl62jpppv4x40rckhfa",
+   "externalId": "12049734",
+   "company": "Parfums Christian Dior",
+   "title": "Stage – Contrôleur de Gestion Brand Animation – Janvier 2027"
+  },
+  {
+   "id": "cmtnjjqaq3314qq4z5vuj6kb3",
+   "externalId": "11912606",
+   "company": "Parfums Christian Dior",
+   "title": "Chef de Projet E-Retail Maquillage International - CDD (7 Mois)"
+  },
+  {
+   "id": "cmtnjjqa73310qq4zrado9gk0",
+   "externalId": "11912607",
+   "company": "Parfums Christian Dior",
+   "title": "Internship – Social Media Project Assistant – January 2027 (6 Months) "
+  },
+  {
+   "id": "cmtnjjq9v330wqq4zif9wfu5k",
+   "externalId": "11912608",
+   "company": "Parfums Christian Dior",
+   "title": "Stage – Assistant(e) Performance Média International – Janvier 2027 (6"
+  },
+  {
+   "id": "cmtp869663rqoqq4zpn3x2buc",
+   "externalId": "11872002",
+   "company": "Parfums Christian Dior",
+   "title": "Stage - Assistant(e) Chef de Projets Animation Client Prives Interntio"
+  },
+  {
+   "id": "cmtp868e03ri8qq4zk5jd96n8",
+   "externalId": "11876139",
+   "company": "Parfums Christian Dior",
+   "title": "Stage - Assistante Chef de Projet Evenementiel Interne - Janvier 2027"
+  },
+  {
+   "id": "cmtp868eg3ricqq4zsvwj2roa",
+   "externalId": "11876138",
+   "company": "Parfums Christian Dior",
+   "title": "Stage – E-Commerce - Janvier 2027"
+  },
+  {
+   "id": "cmtp868ew3rigqq4zvjp8co8d",
+   "externalId": "11876137",
+   "company": "Parfums Christian Dior",
+   "title": "Stage - Assistant(e) Chef de Projet E-Retail International - Janvier 2"
+  },
+  {
+   "id": "cmtp868ff3rikqq4z8ii08qqu",
+   "externalId": "11876136",
+   "company": "Parfums Christian Dior",
+   "title": "Stage - Assistant(e) Chef de Projet Visuel Merchanding Travel Retail E"
+  },
+  {
+   "id": "cmtmkagie2jp6pv4xxn3pc6ai",
+   "externalId": "12049739",
+   "company": "Parfums Christian Dior",
+   "title": "Stage Finance – Assistant(e) Controle de Gestion Marches & Capex – Jan"
+  },
+  {
+   "id": "cmtmkagiu2jpapv4xm6cbqpvb",
+   "externalId": "12049738",
+   "company": "Parfums Christian Dior",
+   "title": "Stage – Charge(e) de Projet Surete – Janvier 2027"
+  },
+  {
+   "id": "cmtmkagjb2jpepv4xms5egmfb",
+   "externalId": "12049737",
+   "company": "Parfums Christian Dior",
+   "title": "Stagiaire Juriste Propriété Intellectuelle (H/F) - Janvier 2027"
+  },
+  {
+   "id": "cmtoykdiv2sslqq4z4etps6fk",
+   "externalId": "12024444",
+   "company": "PERCASSI",
+   "title": "Vendeur(se) (F/H/X) – CDI Temps Plein - Lego Metz"
+  },
+  {
+   "id": "cmtrup2jl4mxdpg5mk5xas5w5",
+   "externalId": "11803190",
+   "company": "PERCASSI",
+   "title": "Vendeur(se) (F/H/X) – CDI Temps Partiel 25h - Lego Grenoble"
+  },
+  {
+   "id": "cmtoykdl72stjqq4zvc50d8x9",
+   "externalId": "12024365",
+   "company": "PERCASSI",
+   "title": "Responsable de Magasin Flagship (F/H/X) - CDI - Victoria's Secret Lyon"
+  },
+  {
+   "id": "cmtrup2k34mxnpg5mp6kj08wc",
+   "externalId": "11803188",
+   "company": "PERCASSI",
+   "title": "Vendeur(se) (F/H/X) – CDI Temps Partiel 10h - Lego Grenoble"
+  },
+  {
+   "id": "cmtrup2ju4mxipg5mlrrti0au",
+   "externalId": "11803189",
+   "company": "PERCASSI",
+   "title": "Vendeur(se) (F/H/X) – CDI Temps Partiel 15h - Lego Grenoble"
+  },
+  {
+   "id": "cmtp8682m3rg1qq4zt7pbwhq5",
+   "externalId": "11988707",
+   "company": "PERCASSI",
+   "title": "Responsable Adjoint(e) de Magasin (F/H/X) - CDI 35h - Lego - Carré Sén"
+  },
+  {
+   "id": "cmtnjjr4933a9qq4zivmfcfqn",
+   "externalId": "12019079",
+   "company": "PERCASSI",
+   "title": "Vendeur(se) (F/H/X) – CDI Temps Partiel 20h - Victoria's Secret Lyon"
+  },
+  {
+   "id": "cmtnjjr4033a5qq4zamemozmz",
+   "externalId": "12019080",
+   "company": "PERCASSI",
+   "title": "Visuel Merchandising Superviseur (F/H/X) - CDI - Victoria's Secret For"
+  },
+  {
+   "id": "cmtnjjqc9331kqq4zjemhavlj",
+   "externalId": "12021223",
+   "company": "PERRIER COMMUNICATION",
+   "title": "Assistant Presse"
+  },
+  {
+   "id": "cmtlv85op06nn3nk5atz861bo",
+   "externalId": "11866594",
+   "company": "Petit Bateau",
+   "title": "CDI 35H - Vendeur (h/f) - Petit Bateau à The Village Outlet Villefonta"
+  },
+  {
+   "id": "cmtmo8fc50a42so5lxh7kv6n7",
+   "externalId": "12050427",
+   "company": "Petit Bateau",
+   "title": "CDD 17.30H - Vendeur (h/f/x) - Petit Bateau Aix en Provence"
+  },
+  {
+   "id": "cmtpkwyam59j8pf5lf3cm7kko",
+   "externalId": "11969227",
+   "company": "PIMKIE",
+   "title": "Vendeur CDI Temps Partiel H/F"
+  },
+  {
+   "id": "cmtpkwycd59jkpf5l04raa639",
+   "externalId": "11969224",
+   "company": "PIMKIE",
+   "title": "Vendeur H/F"
+  },
+  {
+   "id": "cmtpkwybt59jgpf5lshxy8ub2",
+   "externalId": "11969225",
+   "company": "PIMKIE",
+   "title": "Vendeur H/F"
+  },
+  {
+   "id": "cmtpkwyb459jcpf5lxu7f0jcb",
+   "externalId": "11969226",
+   "company": "PIMKIE",
+   "title": "Responsable Magasin Poitiers cv H/F"
+  },
+  {
+   "id": "cmtpw96l04k52l35mxu2rizok",
+   "externalId": "12050508",
+   "company": "POIRAY",
+   "title": "Stage Conseiller de Vente H/F"
+  },
+  {
+   "id": "cmtnjjqqo335dqq4znj5z92v2",
+   "externalId": "12019550",
+   "company": "POIRAY",
+   "title": "Stage - Assistant (e) Presse"
+  },
+  {
+   "id": "cmtrup2c54muopg5m4myq34dv",
+   "externalId": "12030362",
+   "company": "POSTURE FASHION AGENCY",
+   "title": "Assistant(e) Marketing / Commercial"
+  },
+  {
+   "id": "cmtrup2cg4mutpg5m953xj6b6",
+   "externalId": "12030361",
+   "company": "POSTURE FASHION AGENCY",
+   "title": "Assistant RP"
+  },
+  {
+   "id": "cmtp8686m3rh5qq4znisqhj6c",
+   "externalId": "11772610",
+   "company": "PRADA",
+   "title": "Prada Client Advisor CDD (H/F) Paris"
+  },
+  {
+   "id": "cmtp868703rh9qq4zpvaa80nu",
+   "externalId": "11873670",
+   "company": "PRADA",
+   "title": "Prada Stock Assistant CDD (H/F) Paris"
+  },
+  {
+   "id": "cmtp868u43rmdqq4zm2pjzu5y",
+   "externalId": "11985202",
+   "company": "PR CONSULTING PARIS",
+   "title": "Stage - Assistant(e) Attaché de Presse"
+  },
+  {
+   "id": "cmtnjjqwl3379qq4z7dq88dws",
+   "externalId": "12019479",
+   "company": "Printemps",
+   "title": "Gestionnaire de Flux H/F"
+  },
+  {
+   "id": "cmtp868ic3rj4qq4zo7mj7e06",
+   "externalId": "11986189",
+   "company": "Printemps",
+   "title": "CDD - Assistant Studio Photo/Recuperation Visuelle H/F"
+  },
+  {
+   "id": "cmtnjjqew332cqq4zckj2pxhj",
+   "externalId": "12021202",
+   "company": "Printemps",
+   "title": "Stage - Gestionnaire Des Flux H/F"
+  },
+  {
+   "id": "cmtoykd1m2sp4qq4zypgryfbe",
+   "externalId": "12025006",
+   "company": "Printemps",
+   "title": "Assistant Manager Des Ventes H/F"
+  },
+  {
+   "id": "cmtoykd522sq5qq4zjdaqgqjo",
+   "externalId": "11750282",
+   "company": "Printemps",
+   "title": "Stage - Assistant E-Trade et E-Merchandising H/F"
+  },
+  {
+   "id": "cmtnrub562y77qq4zzaoc2x0n",
+   "externalId": "12052575",
+   "company": "Printemps",
+   "title": "Conseiller Clientèle H/F"
+  },
+  {
+   "id": "cmtnjjqw93375qq4z9o92cccb",
+   "externalId": "12019481",
+   "company": "Printemps",
+   "title": "Conseiller de Vente Horlogerie H/F"
+  },
+  {
+   "id": "cmtoykdqb2sw3qq4z3qhbzv32",
+   "externalId": "12024290",
+   "company": "PROTOTEXTILE",
+   "title": "Statigaire Modeliste"
+  },
+  {
+   "id": "cmtoykdq42svzqq4zq096h8gq",
+   "externalId": "12024291",
+   "company": "PROTOTEXTILE",
+   "title": "Stagiaire Mécanicien Modèle"
+  },
+  {
+   "id": "cmtoykdi62ssaqq4zxv04tggz",
+   "externalId": "12024734",
+   "company": "Ralph Lauren",
+   "title": "Manager (H/F) - Miramas"
+  },
+  {
+   "id": "cmtrup2zt4n0zpg5mvylk3dnu",
+   "externalId": "12024755",
+   "company": "REDLINE",
+   "title": "Stage - Assistant(e) Des Réseaux Sociaux Chinois"
+  },
+  {
+   "id": "cmtrup3044n14pg5mim2cqvby",
+   "externalId": "12024754",
+   "company": "REDLINE",
+   "title": "Offre de Stage – Commercial(e) Dans le Luxe"
+  },
+  {
+   "id": "cmtlvhqfx0bj53nk5ooqli4ij",
+   "externalId": "12007430",
+   "company": "REPETTO",
+   "title": "Conseiller de Vente H/F - Rue du Four"
+  },
+  {
+   "id": "cmtlvhql20bj73nk5m3cls51r",
+   "externalId": "12007428",
+   "company": "REPETTO",
+   "title": "Conseiller(Ère) de Vente Passy"
+  },
+  {
+   "id": "cmtohkttr2zodqq4ztjvhqapi",
+   "externalId": "12007426",
+   "company": "REPETTO",
+   "title": "Développeur(se) Produit Textile H/F"
+  },
+  {
+   "id": "cmtmkagej2jo8pv4xoa0u4x7k",
+   "externalId": "12007427",
+   "company": "REPETTO",
+   "title": "Premier(Ère) Vendeur(Euse) - Rue du Four"
+  },
+  {
+   "id": "cmtlvhqdh0bj33nk5szarpcjy",
+   "externalId": "12007677",
+   "company": "REPETTO",
+   "title": "Conseiller(Ère) de Vente CDI 14h Lundi-Mardi"
+  },
+  {
+   "id": "cmtpw96pu4k67l35mm2vmkcl6",
+   "externalId": "12050464",
+   "company": "REPETTO",
+   "title": "Stage - Assistant(e) Presse et Communication"
+  },
+  {
+   "id": "cmtp8697o3rr4qq4zyoe3g2mn",
+   "externalId": "11984086",
+   "company": "RIM PARFUM",
+   "title": "Stage Communication & Contenu Podcast — 2 Mois"
+  },
+  {
+   "id": "cmtp869763rqwqq4z18z9yqdu",
+   "externalId": "11984088",
+   "company": "RIM PARFUM",
+   "title": "Stage Communication 2 Mois"
+  },
+  {
+   "id": "cmtp8697f3rr0qq4zwe1hcwsz",
+   "externalId": "11984087",
+   "company": "RIM PARFUM",
+   "title": "Stage Communication 2 Mois"
+  },
+  {
+   "id": "cmtp8697w3rr8qq4zoixdzw8g",
+   "externalId": "11984085",
+   "company": "RIM PARFUM",
+   "title": "Stage Communication & Contenu Podcast — 2 Mois"
+  },
+  {
+   "id": "cmtp869843rrcqq4zsmzgk3fz",
+   "externalId": "11984084",
+   "company": "RIM PARFUM",
+   "title": "Stage Communication & Contenu Podcast — 2 Mois"
+  },
+  {
+   "id": "cmtp8698c3rrgqq4zm5duhts9",
+   "externalId": "11984083",
+   "company": "RIM PARFUM",
+   "title": "Stage Communication 2 Mois"
+  },
+  {
+   "id": "cmtohktvs2zp5qq4z3chhio0l",
+   "externalId": "12024046",
+   "company": "SAMSOE SAMSOE",
+   "title": "Store Manager"
+  },
+  {
+   "id": "cmtnjjqii332zqq4zm93cdeoc",
+   "externalId": "12021182",
+   "company": "SAS LA RUCHE SKINCARE",
+   "title": "Assistante Branding, Création de Contenu et Communication Digitale"
+  },
+  {
+   "id": "cmtp868ps3rl8qq4zpgqrixy3",
+   "externalId": "11985228",
+   "company": "SEPTIÈME LARGEUR CHAUSSEUR",
+   "title": "Conseiller de Vente (H/F) – Samedi – Étudiant"
+  },
+  {
+   "id": "cmtpkwye259jwpf5lj5ad4ifs",
+   "externalId": "11746801",
+   "company": "Shiseido",
+   "title": "CDD - Attaché Commercial Make-up Artist (H/F)"
+  },
+  {
+   "id": "cmtpkx0pf59sopf5lwqcny772",
+   "externalId": "11847825",
+   "company": "Shiseido",
+   "title": "Chef de Groupe Marketing Développement Parfums CDI H/F"
+  },
+  {
+   "id": "cmtpkwz0u59mjpf5lzu8rccky",
+   "externalId": "11225934",
+   "company": "SHOWROOM GROUP",
+   "title": "Key Account Manager Sport - H/F/x"
+  },
+  {
+   "id": "cmtpkwz1d59mnpf5l02b39yxz",
+   "externalId": "11225929",
+   "company": "SHOWROOM GROUP",
+   "title": "Key Account Manager Prêt-À-Porter Homme - H/F/x"
+  },
+  {
+   "id": "cmtpkwyxb59lrpf5l5hu3dibo",
+   "externalId": "11966562",
+   "company": "SHOWROOM GROUP",
+   "title": "Sales Analyst Marketplace (Stage 6 Mois) - H/F/x"
+  },
+  {
+   "id": "cmtpkwyws59lnpf5l7rzyzr38",
+   "externalId": "11966563",
+   "company": "SHOWROOM GROUP",
+   "title": "Chargé de Production Travel (CDD 7 Mois) - H/F/x"
+  },
+  {
+   "id": "cmtpkx0kz59rwpf5l36gzhwjc",
+   "externalId": "11727780",
+   "company": "SHOWROOM GROUP",
+   "title": "Sales Analyst (Stage 6 Mois) - H/F/x"
+  },
+  {
+   "id": "cmtp8690u3rotqq4zpzx96uma",
+   "externalId": "11871867",
+   "company": "SH PARIS",
+   "title": "Unique Intership Opportunity"
+  },
+  {
+   "id": "cmtoykdj52sspqq4z58jk9rrg",
+   "externalId": "12024440",
+   "company": "SIGAL",
+   "title": "Stage – Préparation de Commandes & Logistique"
+  },
+  {
+   "id": "cmtnjjqy9337xqq4zqg4is0g0",
+   "externalId": "12019467",
+   "company": "SINTEL",
+   "title": "Coordinateur Administratif Atelier Luxe H/F"
+  },
+  {
+   "id": "cmtp8693n3rq5qq4ztyu2hjnc",
+   "externalId": "11872019",
+   "company": "SINTEL",
+   "title": "Assistant Pôle Tertiaire H/F"
+  },
+  {
+   "id": "cmtp8693a3rq1qq4z5k2cmgiu",
+   "externalId": "11872020",
+   "company": "SINTEL",
+   "title": "Assistant Pôle Retail H/F"
+  },
+  {
+   "id": "cmtp8692x3rpxqq4zd82974hp",
+   "externalId": "11872027",
+   "company": "SINTEL",
+   "title": "Préparateur de Commandes Caces 1 H/F Cergy"
+  },
+  {
+   "id": "cmtoykd4j2sq1qq4z291s49sw",
+   "externalId": "12024771",
+   "company": "SINTEL",
+   "title": "Conseiller de Vente Cosmétiques H/F Aix en Provence"
+  },
+  {
+   "id": "cmtp8694a3rqdqq4zeeheujbk",
+   "externalId": "11872010",
+   "company": "SINTEL",
+   "title": "Conseiller Service Client Bilingue Allemand & Anglais Luxe H/F"
+  },
+  {
+   "id": "cmtp8693y3rq9qq4z2hgv574m",
+   "externalId": "11872012",
+   "company": "SINTEL",
+   "title": "Conseiller Service Client Bilingue Italien & Anglais Luxe H/F"
+  },
+  {
+   "id": "cmtp868no3rkcqq4zilsij1ri",
+   "externalId": "11985391",
+   "company": "SINTEL",
+   "title": "Chef de Produit / Développeur Cuir PAP Luxe H/F"
+  },
+  {
+   "id": "cmtnjjqit3333qq4z3veydhfg",
+   "externalId": "12021180",
+   "company": "SINTEL",
+   "title": "Styliste Tailleur Luxe H/F"
+  },
+  {
+   "id": "cmtp868r53rlmqq4zkz70apjd",
+   "externalId": "11985209",
+   "company": "SINTEL",
+   "title": "Chef de Produit Chaine et Trame Luxe H/F"
+  },
+  {
+   "id": "cmtp868ri3rlqqq4zlfltrymb",
+   "externalId": "11985208",
+   "company": "SINTEL",
+   "title": "Chef de Produit Maille Confirmé H/F"
+  },
+  {
+   "id": "cmtp868rv3rluqq4zrcbt5t36",
+   "externalId": "11985207",
+   "company": "SINTEL",
+   "title": "Chef de Produit / Développeur Confirmé PAP Luxe H/F"
+  },
+  {
+   "id": "cmtp868s63rlyqq4z1ybk60mi",
+   "externalId": "11985206",
+   "company": "SINTEL",
+   "title": "Développeur Matières & Trims Luxe H/F"
+  },
+  {
+   "id": "cmtp868sj3rm2qq4zcyc8yv63",
+   "externalId": "11985205",
+   "company": "SINTEL",
+   "title": "Développeur Produit Cuir & Fourrure PAP Luxe F/H"
+  },
+  {
+   "id": "cmtp868ug3rmhqq4zxg4slm63",
+   "externalId": "11985193",
+   "company": "SINTEL",
+   "title": "Acheteur Composants / Fournitures PAP Luxe H/F"
+  },
+  {
+   "id": "cmtnjjqek3328qq4zuqxjiyv6",
+   "externalId": "12021203",
+   "company": "SINTEL",
+   "title": "Assistante de Direction Bilingue Anglais Luxe H/F"
+  },
+  {
+   "id": "cmtp8694w3rqhqq4zo6zar0bv",
+   "externalId": "11872009",
+   "company": "SINTEL",
+   "title": "Conseiller Service Client Bilingue Néerlandais & Anglais Luxe H/F"
+  },
+  {
+   "id": "cmtp868my3rk4qq4zhpw4do1o",
+   "externalId": "11985393",
+   "company": "SINTEL",
+   "title": "Développeur Composants PAP Luxe H/F"
+  },
+  {
+   "id": "cmtp868nd3rk8qq4z82pyhaip",
+   "externalId": "11985392",
+   "company": "SINTEL",
+   "title": "Technicien / Développeur Maille PAP Luxe H/F"
+  },
+  {
+   "id": "cmtmkagfa2jogpv4xk5ktgjj6",
+   "externalId": "12019009",
+   "company": "SOPHIE D'AGON",
+   "title": "Stage en Marketing & Communication"
+  },
+  {
+   "id": "cmtoykdot2sveqq4znlfppkfh",
+   "externalId": "12024792",
+   "company": "STEPHANE HUMBERT LUCAS",
+   "title": "Social Media & Influence Assistant – Apprenticeship"
+  },
+  {
+   "id": "cmtrup2jb4mx8pg5mow6c6n23",
+   "externalId": "11177356",
+   "company": "SUNGLASS HUT",
+   "title": "Conseiller de Vente H/F - Solaris - Aéroport Charles de Gaulle"
+  },
+  {
+   "id": "cmtp8689m3rhgqq4zgj2wwmfu",
+   "externalId": "11453254",
+   "company": "SUNGLASS HUT",
+   "title": "Responsable Adjoint Magasin (H/F)"
+  },
+  {
+   "id": "cmtp869133roxqq4z83zaxzzl",
+   "externalId": "11177533",
+   "company": "SUNGLASS HUT",
+   "title": "Prochaine Ouverture Solaris – Store Manager H/F | Nouveau Challenge"
+  },
+  {
+   "id": "cmtnac12f2seaqq5lxckxy32t",
+   "externalId": "11966981",
+   "company": "TARATATA BIJOUX",
+   "title": "Agent(e) Commercial(e) Multimarques – Taratata Bijoux"
+  },
+  {
+   "id": "cmtrup2eg4mvrpg5mk86ds21a",
+   "externalId": "11803591",
+   "company": "TEDDY SMITH",
+   "title": "Directeur E-Commerce & Marketing Digital (H/F)"
+  },
+  {
+   "id": "cmtnac1hw2sk8qq5lm2umd376",
+   "externalId": "12052528",
+   "company": "THALGO",
+   "title": "Assistant(e) Cheffe de Produit"
+  },
+  {
+   "id": "cmtrup1vz4mqypg5mplpkbcdw",
+   "externalId": "12027853",
+   "company": "THE FRANKIE SHOP",
+   "title": "Alternance - Production Assistant"
+  },
+  {
+   "id": "cmtrup1wf4mr3pg5mjorx8bmd",
+   "externalId": "12027852",
+   "company": "THE FRANKIE SHOP",
+   "title": "Technicien.ne Produit"
+  },
+  {
+   "id": "cmtrup2hj4mwjpg5mjtyzbf2t",
+   "externalId": "12027851",
+   "company": "THE FRANKIE SHOP",
+   "title": "Assistant(e) Cheffe de Produit"
+  },
+  {
+   "id": "cmtrup2h94mwepg5mlesey5yh",
+   "externalId": "12029035",
+   "company": "THE ROOM",
+   "title": "Stage Vente - Vintage Luxe"
+  },
+  {
+   "id": "cmtrup2gi4mvzpg5mykcyewqg",
+   "externalId": "12029038",
+   "company": "THEUNISSEN",
+   "title": "Stage - Assistant Studio (Modeliste / Styliste)"
+  },
+  {
+   "id": "cmtpkx0qh59swpf5llmtr5ilo",
+   "externalId": "11144709",
+   "company": "THOMAS SABO",
+   "title": "Conseiller(e) de Vente H/F en CDD - 35h - Roppenheim The Style Outlets"
+  },
+  {
+   "id": "cmtrup1qj4mo6pg5m2dcorp82",
+   "externalId": "12031453",
+   "company": "TRESSÉ",
+   "title": "Chargé(e) Expérience Client et SAV"
+  },
+  {
+   "id": "cmtrup47b4nfapg5mj1vcodug",
+   "externalId": "12019001",
+   "company": "UNIVERS PRESSE",
+   "title": "Stage - Assistant.e Attaché.e de Presse"
+  },
+  {
+   "id": "cmtrup1yu4mrypg5momjo7yhy",
+   "externalId": "12031369",
+   "company": "VAILLANT STUDIO",
+   "title": "Content Creation And Brand Visual Internship"
+  },
+  {
+   "id": "cmtlvhuiu0bld3nk5913xtncs",
+   "externalId": "12031430",
+   "company": "VAILLANT STUDIO",
+   "title": "Stage - Assistant(e) Presse & VIP"
+  },
+  {
+   "id": "cmtnjjr2n339tqq4zrunvwh3k",
+   "externalId": "12019343",
+   "company": "VALERIAN HUGHES PARIS",
+   "title": "Création et Fabication en Maroquinerie"
+  },
+  {
+   "id": "cmtnjjr2c339pqq4z92h3i5bc",
+   "externalId": "12019349",
+   "company": "VALERIAN HUGHES PARIS",
+   "title": "Stylisme/Design de Mode"
+  },
+  {
+   "id": "cmtnjjr3c339xqq4zip8a4sfd",
+   "externalId": "12019332",
+   "company": "VALERIAN HUGHES PARIS",
+   "title": "Acessoires e Stylisme"
+  },
+  {
+   "id": "cmtmkagcx2jnopv4xpysc7nmc",
+   "externalId": "12010804",
+   "company": "VANESSA BRUNO",
+   "title": "Conseiller de Vente - Temps Partiel (H/F)"
+  },
+  {
+   "id": "cmtmkagci2jnkpv4xdxioarj3",
+   "externalId": "12007391",
+   "company": "VANESSA BRUNO",
+   "title": "Responsable de Point de Vente (H/F)"
+  },
+  {
+   "id": "cmtp868oj3rkoqq4z98z74o7c",
+   "externalId": "11985250",
+   "company": "VARIOUS ARCHIVES",
+   "title": "Assistant(e) E-Commerce"
+  },
+  {
+   "id": "cmtp868o83rkkqq4z8t8yqs1c",
+   "externalId": "11985258",
+   "company": "VARIOUS ARCHIVES",
+   "title": "Stage Community Manager - Réseaux Sociaux"
+  },
+  {
+   "id": "cmtnjjr6933arqq4zz7ckqs98",
+   "externalId": "12019039",
+   "company": "V DE VINSTER",
+   "title": "Assistant(e) Commerciale"
+  },
+  {
+   "id": "cmtp8696s3rqsqq4z26a6htbj",
+   "externalId": "11970115",
+   "company": "Vestiaire Collective",
+   "title": "Authentication Associate"
+  },
+  {
+   "id": "cmtnac1vh2snuqq5lkaif0vmx",
+   "externalId": "12050763",
+   "company": "Vivienne Westwood",
+   "title": "Conseiller.Ère de Vente H/F"
+  },
+  {
+   "id": "cmtnjjqhj332rqq4zsmmhn15n",
+   "externalId": "12021192",
+   "company": "WEILL",
+   "title": "Directeur/Directrice de Boutique"
+  },
+  {
+   "id": "cmtp868uq3rmlqq4zd11c5two",
+   "externalId": "11985192",
+   "company": "WOOYOUNGMI",
+   "title": "Conseiller(e) de Vente H/F"
+  },
+  {
+   "id": "cmtrup2h04mw9pg5mnlhbzni0",
+   "externalId": "12029036",
+   "company": "WOP WORLD OF POP",
+   "title": "Stage- Conseiller de Ventes"
+  },
+  {
+   "id": "cmtpkwz2f59mvpf5l9gld2ihd",
+   "externalId": "11319441",
+   "company": "YVES ROCHER",
+   "title": "CDD - Conseiller(e) Esthecien(ne) H/F"
+  },
+  {
+   "id": "cmtpkwz1v59mrpf5lptd4fnza",
+   "externalId": "11740807",
+   "company": "YVES ROCHER",
+   "title": "CDD - Dpo & AI Protection Officer - Niveau Confirmé - H/F/x - Groupe R"
+  },
+  {
+   "id": "cmtpkx0ed59qypf5ldlamgu4d",
+   "externalId": "11296576",
+   "company": "YVES ROCHER",
+   "title": "CDI - Directeur Trésorerie & Assurances - Petit Bateau"
+  },
+  {
+   "id": "cmtlvhw1b0bm53nk5i0luasf2",
+   "externalId": "12019071",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "Conseiller(e) de Vente (H/F) - CDD 35h - Grenelle"
+  },
+  {
+   "id": "cmtrup1yk4mrtpg5maxmjtt2z",
+   "externalId": "12031372",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "Conseiller(e) de Vente (H/F) - CDI 35h - la Vallée Village"
+  },
+  {
+   "id": "cmtpw96nh4k5pl35mcnnswupz",
+   "externalId": "12050479",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "Conseiller(e) de Vente (H/F) - CDD 35h - Galeries Lafayette Lyon"
+  },
+  {
+   "id": "cmtlvhvys0bm33nk5y9m2ztlq",
+   "externalId": "12024304",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "Conseiller(e) de Vente - CDI 35h (H/F) - Paris Victor Hugo"
+  },
+  {
+   "id": "cmtlvhvtp0blz3nk5mlwyvwav",
+   "externalId": "12024735",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "Conseiller de Vente (H/F) - CDI 35h - BHV Marais"
+  },
+  {
+   "id": "cmtnjjqml3340qq4zkkurv3xe",
+   "externalId": "12020440",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "Responsable Adjoint de Boutique (H/F) - Roubaix - CDI"
+  },
+  {
+   "id": "cmtnjjqmw3344qq4zyqdggc0n",
+   "externalId": "12020216",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "Conseiller(e) de Vente (H/F) - CDI 35h - Roubaix"
+  },
+  {
+   "id": "cmtnjjqnc334cqq4zwctwtqi7",
+   "externalId": "12020204",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "Superviseur H/F - Roubaix"
+  },
+  {
+   "id": "cmtlvhvw80bm13nk5gzx8s5rr",
+   "externalId": "12024305",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "Conseiller(e) de Vente (H/F) - CDD 35h - Printemps Haussmann Homme"
+  },
+  {
+   "id": "cmtnjjqmc333wqq4zpuhwn1zs",
+   "externalId": "12020498",
+   "company": "ZADIG & VOLTAIRE",
+   "title": "CDI - Responsable Adjoint (H/F) - One Nation"
+  },
+  {
+   "id": "cmtrup2iq4mx0pg5mloe05xpg",
+   "externalId": "11052171",
+   "company": "ZAPA (GROUPE BRAND SISTERS)",
+   "title": "Conseiller(Ère) de Vente (H/F) - CDI 14h - Pompe Paris 16ème"
+  },
+  {
+   "id": "cmtnjjqcr331sqq4zdymjvynn",
+   "externalId": "12021222",
+   "company": "ZIMMERMANN",
+   "title": "Conseiller de Vente H/F - la Vallée Village - CDI"
+  },
+  {
+   "id": "cmtnac12n2seeqq5l9gkbgku3",
+   "externalId": "12019043",
+   "company": "ZUHAIR MURAD",
+   "title": "Couturier/Ère"
+  }
+ ]
+}

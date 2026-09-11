@@ -1,7 +1,3 @@
-import { log } from '../../observability/logger.js';
-import { fetchRenderedHtml } from '../../lib/browser.js';
-import { extractJobPostings, normalizeJobPosting } from '../../connectors/generic/jsonLdSitemap.js';
-import { createHash } from 'node:crypto';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -29,35 +25,11 @@ import type { NormalizedJob } from '../../types.js';
  * reads only the newest slice, which is all an incremental cron needs — the
  * listing is date-sorted, the database keeps what earlier runs wrote, and the
  * refresh pass closes what disappears.
+ *
+ * All of the above is kept as the record of what this feed WAS. Since 2026-09-11 it supplies no postings at all
+ * (see the owner decision below); only the access notes remain useful, for the actor-discovery circuit.
  */
 
-const ORIGIN = 'https://fr.fashionjobs.com';
-
-/** ~27 offers per listing page; 40 pages ≈ the newest 1,000 offers. */
-const DEFAULT_MAX_PAGES = Number(process.env.FASHIONJOBS_MAX_PAGES ?? 40);
-
-/** Cloudflare's tolerance, measured: back-to-back pages trip it. */
-const PAGE_DELAY_MS = 4_000;
-const DETAIL_DELAY_MS = 2_500;
-const BLOCKED_RETRY_MS = 60_000;
-
-const CARD_LINK = /href="(https:\/\/fr\.fashionjobs\.com\/emploi\/[^"]+,\d+\.html)"/g;
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-/** One rendered fetch with a single patient retry when the shield answers. */
-async function renderPatiently(url: string): Promise<string | null> {
-  for (let attempt = 0; attempt < 2; attempt++) {
-    const html = await fetchRenderedHtml(url);
-    // Cloudflare's block page is small and titled; a real page is neither.
-    const blocked = html.length < 40_000 && /cloudflare|attention required|just a moment/i.test(html);
-    if (!blocked) return html;
-    await sleep(BLOCKED_RETRY_MS);
-  }
-  return null;
-}
 
 /**
  * A rotating crawl reports back where it got to, so the ingest layer can move
@@ -74,93 +46,31 @@ export type CrawlProgress = {
   lastPageDone?: number;
 };
 
+
 /**
- * Reads FashionJobs offers, newest first.
+ * OWNER DECISION, 2026-09-11: FashionJobs is EXCLUSIVELY a discovery source for Maisons, groups and retailers.
+ * It is out of the offer circuit, entirely and permanently.
  *
- * `config.maxPages` bounds the listing sweep (default 40); pass ~300 for a
- * one-off full harvest. `config.maxJobs` caps detail fetches. `config.startPage`
- * (1-based) resumes a rotating crawl partway through the listing, and
- * `config.progress` (a mutable object) receives `reachedEnd`.
+ * The guard lives HERE, at the only door through which postings could re-enter, rather than only in the catalogue:
+ * a `Source` row can be re-created, `sources.csv` re-imported (it rewrites config at every boot), a config copied,
+ * or an older execution path replayed — each of those would silently refeed the circuit. Refusing at the adapter
+ * makes every one of those routes fail loudly instead.
+ *
+ * What is NOT touched: `connectors/fashionjobs/companyDirectory.ts` and `pipeline/discoverFashionJobs.ts`, the
+ * actor-discovery circuit, which stays fully usable — and the Maisons already discovered through it keep their
+ * place in the inventory.
  */
+export class FashionjobsOffersWithdrawn extends Error {
+  constructor() {
+    super('FashionJobs is a discovery-only source (owner decision 2026-09-11): it must never supply postings. ' +
+      'Actor discovery stays available through connectors/fashionjobs/companyDirectory.ts.');
+    this.name = 'FashionjobsOffersWithdrawn';
+  }
+}
+
 export async function fetchFashionjobsJobs(
   config: Record<string, unknown> = {},
 ): Promise<NormalizedJob[]> {
-  const maxPages = Number(config.maxPages ?? DEFAULT_MAX_PAGES);
-  const maxJobs = Number(config.maxJobs ?? 0);
-  const startPage = Math.max(1, Number(config.startPage) || 1);
-  const progress = (config.progress ?? {}) as CrawlProgress;
-  // A soft wall-clock budget: Cloudflare forces this crawl to be slow (a pause
-  // between every page and every detail), so even the newest 40 pages overrun a
-  // 20-minute window. Rather than be cut mid-flight and lose the run, it stops
-  // itself before the deadline with what it fetched — the listing is date-sorted
-  // and the database keeps prior runs, so coverage accumulates across the day.
-  const deadlineMs = Number(config.deadlineMs) || 0;
-  const pastDeadline = () => deadlineMs > 0 && Date.now() >= deadlineMs;
-
-  const detailUrls: string[] = [];
-  const seen = new Set<string>();
-
-  // Crawl a window [startPage, startPage + maxPages) of the listing.
-  for (let page = startPage; page < startPage + maxPages; page++) {
-    if (pastDeadline()) break;
-    const url = page === 1 ? `${ORIGIN}/s/` : `${ORIGIN}/s/${page}.html`;
-    const html = await renderPatiently(url);
-    if (html === null) {
-      // The shield held through the retry. Keep what we have rather than
-      // failing the run — but say so, loudly enough for the health check.
-      await log.error('adapter.listing_blocked', `[fashionjobs] listing page ${page} blocked twice; stopping the sweep here`);
-      break;
-    }
-
-    const links = [...html.matchAll(CARD_LINK)]
-      .map((match) => match[1])
-      .filter((link) => !seen.has(link));
-    // An empty page is the end of the board: mark it so the cursor wraps to 1.
-    if (links.length === 0) {
-      progress.reachedEnd = true;
-      break;
-    }
-    for (const link of links) {
-      seen.add(link);
-      detailUrls.push(link);
-    }
-    progress.lastPageDone = page;
-    if (maxJobs > 0 && detailUrls.length >= maxJobs) break;
-    await sleep(PAGE_DELAY_MS);
-  }
-
-  const targets = maxJobs > 0 ? detailUrls.slice(0, maxJobs) : detailUrls;
-  const jobs: NormalizedJob[] = [];
-
-  // Sequential on purpose: this host blocks bursts, and one browser tab
-  // working calmly through the list is what it tolerates.
-  for (const url of targets) {
-    if (pastDeadline()) break;
-    await sleep(DETAIL_DELAY_MS);
-    let html: string | null;
-    try {
-      html = await renderPatiently(url);
-    } catch {
-      continue;
-    }
-    if (!html) continue;
-
-    const [posting] = extractJobPostings(html);
-    if (!posting) continue;
-    const job = normalizeJobPosting(posting, url);
-    if (!job) continue;
-
-    const organization = (posting.hiringOrganization as { name?: string } | undefined)?.name;
-    jobs.push({
-      ...job,
-      // The numeric id from the URL is FashionJobs' own posting id — stable
-      // across title edits, unlike a URL hash.
-      externalId: url.match(/,(\d+)\.html$/)?.[1] ?? createHash('sha1').update(url).digest('hex'),
-      // The EMPLOYER, not the board: dedup and the reference list key on it.
-      company: organization,
-      url,
-    });
-  }
-
-  return jobs;
+  throw new FashionjobsOffersWithdrawn();
 }
+
