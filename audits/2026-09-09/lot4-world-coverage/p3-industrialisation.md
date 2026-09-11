@@ -34,15 +34,17 @@ Vérifié : syntaxe shell valide, `check-layout` conforme.
 
 **Les 43 libellés en refus d'identité** (2 269 offres actives) sont instruits sur archives, sans aucune écriture.
 
-| Constat | Libellés |
-|---|---:|
-| Crédit **cohérent** avec le libellé natif | **38** |
-| Libellé de **groupe** crédité à une Maison | **5** |
-| **Offres mal attribuées** | **0** |
+| Constat | Libellés | Niveau de preuve |
+|---|---:|---|
+| Crédit dont le nom **ressemble** au libellé natif | 38 | **comparaison de chaînes** — indice, pas preuve |
+| Libellé de **groupe** crédité à une Maison | 5 | 3 inspectés offre par offre, conformes D11/D37 |
+| **Offres dont l'attribution est démontrée** | **inconnu** | aucune vérification par preuve native sur les 2 269 |
 
-Les 5 « incohérents » sont conformes aux règles gravées, vérifié offre par offre : « J Choo Germany GmbH » → **Jimmy Choo** (entité juridique → Maison, D37) ; « Kering » → **Kering Eyewear** sur une offre dont le titre porte « KERING EYEWEAR » (D11 : une offre de groupe est créditée à la marque de tête). « Coach » → Coach, « Nordstrom Inc » → Nordstrom, « NORMAL Butikker Danmark » → Normal.
-
-**Conclusion : le refus porte sur le libellé natif rencontré à la validation, jamais sur l'attribution finale.** Ce sont des observations à solder par la revue d'alias, **pas des offres mal attribuées** — ce que j'avais avancé sans preuve le 10 septembre, et qui est désormais établi sur les 43.
+> **Ce que je ne peux PAS affirmer, et que ce document affirmait à tort** : « zéro offre mal attribuée sur les 2 269 ». La ressemblance des noms (« Coach » → Coach) est un **indice de cohérence**, pas une démonstration : elle ne consulte aucune preuve native de l'offre. Et les 5 cas de libellé de groupe n'ont été inspectés qu'à hauteur de **3 offres**, sur 43 libellés et 2 269 offres.
+>
+> **Ce qui est établi** : sur les cas inspectés, l'attribution suit une règle gravée — « J Choo Germany GmbH » → **Jimmy Choo** (entité juridique → Maison, D37) ; « Kering » → **Kering Eyewear** sur une offre dont le titre porte « KERING EYEWEAR » (D11). Aucune contradiction observée.
+>
+> **Ce qui reste ouvert** : l'attribution des 2 269 offres n'est pas démontrée. **Aucune réparation ni retrait n'est engagé sur cette seule incertitude.** Condition de résolution : confronter chaque libellé à la preuve native de l'offre (logo, entité juridique, facette du tenant), par la revue d'alias, non par comparaison de noms.
 
 ## Livrable 3 — un dossier fermé par la preuve, sans réparation possible
 
@@ -50,6 +52,42 @@ Les 5 « incohérents » sont conformes aux règles gravées, vérifié offre pa
 
 **État : bloqué sur une recollecte, pas sur une analyse.** Condition de résolution : un run de la source qui réarchive son RAW.
 
-## Ce que P3 n'a pas encore
+## Scénarios exécutés, et leurs résultats
 
-La procédure commune est écrite et vérifiée statiquement, mais **elle n'a pas encore piloté une mutation de bout en bout** — les deux dossiers instruits ce jour n'en demandaient aucune. Sa validation en conditions réelles reste à faire, sur le premier dossier P2 qui exigera une écriture.
+`mutation.sh` a été **exercé sur des clones réels**, jamais sur la production. Chaque ligne ci-dessous est une exécution, pas une intention.
+
+| Scénario | Commande | Résultat observé |
+|---|---|---|
+| **Arrêt sur périmètre non déclaré** | chaîne complète, dossier sans identifiants | **`exit=10`**, `gate BLOCKED`, motif « the perimeter manifest lists no identifier ». **`prod-apply` jamais atteint** |
+| **Arrêt sur périmètre dépassé** (données réelles) | mutation touchant 60 lignes pour 20 déclarées | **`exit=10`**, deux motifs : « replay still changed rows: 60 » et « touched 60 rows for 20 declared identifiers » |
+| **Invalidation par modification** | script de mutation édité, `RESUME=1` | **8 étapes `redo (inputs changed since its last proof)`** — un marqueur `.ok` aurait réutilisé des preuves périmées |
+| **Reprise stable** | `RESUME=1`, rien de modifié | **8 étapes `skip (same inputs, proven at …)`**, 2 s au lieu de ~4 min |
+| **Preuves malgré l'échec** | après chaque arrêt | logs et empreintes archivés dans `p2-repairs-proof/`, **aucune empreinte `prod-apply`** |
+| **Parcours nominal jusqu'à la porte** | `--dry-run` | 8 étapes vertes, `gate passed, production deliberately not written` |
+| **Blocage unitaire des 6 invariants** | `src/ops/gate.test.ts` | **7 tests verts**, chacun vérifiant un `exit 1` : rejeu non vide, périmètre dépassé, fermeture pendant un retrait, perte d'attestation, périmètre absent, contrôle non évaluable |
+
+### Trois défauts de ma propre procédure, trouvés par ces exécutions
+
+L'exécution a corrigé ce que la relecture n'avait pas vu :
+
+1. **Le nom du dump était recalculé à chaque invocation** — `restore-clone` voyait des arguments différents à la reprise et cherchait un dump inexistant. Le scénario « interruption et reprise » **échouait**. Le nom est désormais mémorisé.
+2. **Un nom mémorisé était réutilisé même quand la sauvegarde était invalidée** — or `backup-0910.py` refuse (à juste titre) d'écraser un dump existant. La condition exige maintenant que l'empreinte de l'étape `backup` soit elle-même valide, sinon un **nouveau** dump est pris : « la sauvegarde précède toute écriture » reste vrai.
+3. **Le test de la porte ne tournait pas en CI** (`vitest.config.ts` ne couvre que `src/**`) et dépendait du répertoire courant. Déplacé dans `src/ops/`, chemins résolus depuis le fichier : **7 tests désormais exécutés à chaque CI**.
+
+## Consolidation des exécutables
+
+`scripts/ops/db.py` remplace les runners qui vivaient dans `backups/` : la **logique** (quelle base, lecture seule imposée par le serveur, construction de l'URL) est versionnée ; **les identifiants restent hors du dépôt**, dans un fichier d'accès local désigné par `CATWALKS_DB_ACCESS`. Vérifié sur les cibles `readonly` et `clone`.
+
+Restent volontairement dehors : les **dumps** (données de production), les **fichiers d'accès** (secrets) et les archives privées.
+
+## La faiblesse CI, corrigée à sa cause
+
+La PR 96 a pu être mergée avec le contrôle `aggregator` en échec parce que **`main` n'avait aucune protection de branche** — rien ne s'y opposait. Corriger l'assertion 83 → 82 ne réglait pas cela.
+
+Posé sur `main` : contrôles requis **`aggregator` et `web`**, `strict` (la révision doit être à jour avec `main`), **`enforce_admins`** (aucun contournement, y compris par moi), force-push et suppression interdits.
+
+## Ce qui reste non démontré
+
+`mutation.sh` **n'a pas encore écrit en production**. Les scénarios ci-dessus couvrent le parcours nominal, la reprise, l'invalidation, l'arrêt bloquant et la conservation des preuves — mais la phase `prod-apply` → `after` → `gate-after` n'a jamais été franchie, faute de mutation légitime à faire. Elle le sera au premier dossier qui en exigera une.
+
+**Statut : prototype exercé, non encore qualifié pour l'exploitation.**

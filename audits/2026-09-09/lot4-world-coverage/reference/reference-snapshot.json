@@ -1,6 +1,6 @@
 {
  "summary": {
-  "at": "2026-09-11T05:55:48.945Z",
+  "at": "2026-09-11T06:33:39.386Z",
   "definition": "One read-only transaction; every count below shares this instant.",
   "perimeters": {
    "liveDefinition": "ACTIVE + PAUSED (the sources that may still write)",
@@ -10,31 +10,31 @@
     "lastRunOk": 214
    },
    "pausedOnly": {
-    "sources": 8,
-    "representations": 1341,
-    "lastRunOk": 8
+    "sources": 7,
+    "representations": 756,
+    "lastRunOk": 7
    }
   },
   "sources": {
    "denominator": 532,
    "byStatus": {
     "ACTIVE": 433,
-    "RETIRED": 91,
-    "PAUSED": 8
+    "RETIRED": 92,
+    "PAUSED": 7
    },
-   "live": 441,
+   "live": 440,
    "certification": {
-    "NOT_REVIEWED": 351,
+    "NOT_REVIEWED": 350,
     "CERTIFIED": 90
    },
    "collectionLastRun": {
-    "OK": 222,
+    "OK": 221,
     "DEGRADED": 192,
     "NEW": 26,
     "BROKEN": 1
    },
    "attribution": {
-    "NOT_OBSERVED": 353,
+    "NOT_OBSERVED": 352,
     "PROVEN": 40,
     "PARTIAL": 27,
     "OBSERVED_NONE_REVIEWED": 21
@@ -42,29 +42,29 @@
   },
   "postings": {
    "unit": "canonical Job rows with isActive = true",
-   "activeTotal": 79516,
-   "underLiveSource": 79516,
+   "activeTotal": 78932,
+   "underLiveSource": 78932,
    "underNoLiveSource": 0,
    "underActiveSourceOnly": 78879,
-   "withoutActiveSource": 637,
-   "onlyAttestedByPausedSource": 637
+   "withoutActiveSource": 53,
+   "onlyAttestedByPausedSource": 53
   },
   "representations": {
    "unit": "active (source, externalId) links under an ACTIVE/PAUSED source; a multi-source posting appears several times",
-   "denominator": 81414,
+   "denominator": 80829,
    "observed": 26265,
    "reviewed": 13410,
-   "multiSourceExcess": 1898,
+   "multiSourceExcess": 1897,
    "byCertification": {
     "CERTIFIED": 47851,
-    "NOT_REVIEWED": 33563,
+    "NOT_REVIEWED": 32978,
     "REVIEW_NOT_CURRENT": 0
    },
    "byAttribution": {
     "PROVEN": 4398,
     "PARTIAL": 18521,
     "OBSERVED_NONE_REVIEWED": 5023,
-    "NOT_OBSERVED": 53472,
+    "NOT_OBSERVED": 52887,
     "NO_ACTIVE_REPRESENTATION": 0
    }
   }
@@ -696,27 +696,6 @@
    "runErrors": null,
    "activePostings": 609,
    "representations": 609,
-   "representationsObserved": 0,
-   "representationsReviewed": 0,
-   "attribution": "NOT_OBSERVED"
-  },
-  {
-   "key": "fashionjobs",
-   "maison": "FashionJobs",
-   "kind": "fashionjobs",
-   "status": "PAUSED",
-   "certification": "NOT_REVIEWED",
-   "portalScope": null,
-   "reviewedAt": null,
-   "collection": "OK",
-   "lastRunAt": "2026-09-07T23:07:25.102Z",
-   "fetched": null,
-   "declaredTotal": null,
-   "complete": null,
-   "truncated": null,
-   "runErrors": null,
-   "activePostings": 585,
-   "representations": 585,
    "representationsObserved": 0,
    "representationsReviewed": 0,
    "attribution": "NOT_OBSERVED"
@@ -9887,6 +9866,27 @@
    "reviewedAt": null,
    "collection": "OK",
    "lastRunAt": "2026-09-06T13:11:46.245Z",
+   "fetched": null,
+   "declaredTotal": null,
+   "complete": null,
+   "truncated": null,
+   "runErrors": null,
+   "activePostings": 0,
+   "representations": 0,
+   "representationsObserved": 0,
+   "representationsReviewed": 0,
+   "attribution": "NO_ACTIVE_REPRESENTATION"
+  },
+  {
+   "key": "fashionjobs",
+   "maison": "FashionJobs",
+   "kind": "fashionjobs",
+   "status": "RETIRED",
+   "certification": "NOT_REVIEWED",
+   "portalScope": null,
+   "reviewedAt": null,
+   "collection": "OK",
+   "lastRunAt": "2026-09-07T23:07:25.102Z",
    "fetched": null,
    "declaredTotal": null,
    "complete": null,
