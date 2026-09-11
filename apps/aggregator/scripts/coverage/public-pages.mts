@@ -229,19 +229,21 @@ try {
              -- Un code ambigu exige une preuve INDÉPENDANTE du suffixe (correctif terminal du 2026-09-11).
              AND ("countryCode" NOT IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY')
                   OR (
-             -- Un pays NON ambigu n'exige pas de preuve supplémentaire.
              "countryCode" NOT IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY')
-             -- La colonne prévue en D54 porte le jugement de la chaîne, quand elle est renseignée.
-             OR ("countryIntegrity" IS NOT NULL AND "countryIntegrity" NOT IN ('AMBIGUOUS','UNVERIFIED'))
-             -- Un code postal est une information que le suffixe ne produit pas.
-             OR btrim(coalesce("postalCode", '')) <> ''
-             -- Le libellé nomme le pays EN TOUTES LETTRES : indépendant du suffixe à deux lettres.
-             OR coalesce(location, '') ~* ('\\m(' || CASE "countryCode"
+             OR (coalesce("countryIntegrity", '') IN ('RAW_COUNTRY_CODE','RAW_COUNTRY','VERIFIED'))
+             OR coalesce(location, '') ~* ('\m(' || CASE "countryCode"
                   WHEN 'US' THEN 'United States|USA' WHEN 'CA' THEN 'Canada' WHEN 'DE' THEN 'Germany|Deutschland|Allemagne'
                   WHEN 'IN' THEN 'India|Inde' WHEN 'NL' THEN 'Netherlands|Pays-Bas|Nederland' WHEN 'IL' THEN 'Israel'
                   WHEN 'AR' THEN 'Argentina|Argentine' WHEN 'CO' THEN 'Colombia|Colombie' WHEN 'ID' THEN 'Indonesia'
                   WHEN 'MA' THEN 'Morocco|Maroc' WHEN 'PA' THEN 'Panama' WHEN 'MT' THEN 'Malta|Malte'
-                  WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\\M')
+                  WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\M')
+             OR (btrim(coalesce("postalCode", '')) <> '' AND btrim("postalCode") ~ CASE "countryCode"
+                  WHEN 'US' THEN '^[0-9]{5}(-[0-9]{4})?$' WHEN 'CA' THEN '^[A-Za-z][0-9][A-Za-z][ -]?[0-9][A-Za-z][0-9]$'
+                  WHEN 'DE' THEN '^[0-9]{5}$' WHEN 'NL' THEN '^[0-9]{4} ?[A-Za-z]{2}$' WHEN 'IN' THEN '^[0-9]{6}$'
+                  WHEN 'PA' THEN '^[0-9]{4}$' WHEN 'MT' THEN '^[A-Za-z]{3} ?[0-9]{4}$' WHEN 'MD' THEN '^(MD-?)?[0-9]{4}$'
+                  WHEN 'ID' THEN '^[0-9]{5}$' WHEN 'IL' THEN '^[0-9]{5}([0-9]{2})?$' WHEN 'SK' THEN '^[0-9]{3} ?[0-9]{2}$'
+                  WHEN 'AR' THEN '^[A-Za-z]?[0-9]{4}[A-Za-z]{0,3}$' WHEN 'CO' THEN '^[0-9]{6}$' WHEN 'MA' THEN '^[0-9]{5}$'
+                  WHEN 'TN' THEN '^[0-9]{4}$' ELSE 'zzzzNOMATCHzzzz' END)
            ))
              -- Le libellé ne doit pas contredire ce pays : « Seattle, WA » n'est pas au Canada.
              AND NOT EXISTS (
@@ -274,62 +276,51 @@ try {
       SELECT 'REMOTE_SANS_PAYS_ELIGIBILITE', id FROM active
         WHERE "workplaceType" = 'REMOTE' AND "countryCode" IS NULL
       UNION ALL
-      -- Les quatre mesures du correctif terminal : preuve indépendante, ou pas.
-      SELECT 'CODE_AMBIGU_AVEC_PREUVE_INDEPENDANTE', id FROM active
-        WHERE "countryCode" IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY')
-          AND (
-             -- Un pays NON ambigu n'exige pas de preuve supplémentaire.
-             "countryCode" NOT IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY')
-             -- La colonne prévue en D54 porte le jugement de la chaîne, quand elle est renseignée.
-             OR ("countryIntegrity" IS NOT NULL AND "countryIntegrity" NOT IN ('AMBIGUOUS','UNVERIFIED'))
-             -- Un code postal est une information que le suffixe ne produit pas.
-             OR btrim(coalesce("postalCode", '')) <> ''
-             -- Le libellé nomme le pays EN TOUTES LETTRES : indépendant du suffixe à deux lettres.
-             OR coalesce(location, '') ~* ('\\m(' || CASE "countryCode"
-                  WHEN 'US' THEN 'United States|USA' WHEN 'CA' THEN 'Canada' WHEN 'DE' THEN 'Germany|Deutschland|Allemagne'
-                  WHEN 'IN' THEN 'India|Inde' WHEN 'NL' THEN 'Netherlands|Pays-Bas|Nederland' WHEN 'IL' THEN 'Israel'
-                  WHEN 'AR' THEN 'Argentina|Argentine' WHEN 'CO' THEN 'Colombia|Colombie' WHEN 'ID' THEN 'Indonesia'
-                  WHEN 'MA' THEN 'Morocco|Maroc' WHEN 'PA' THEN 'Panama' WHEN 'MT' THEN 'Malta|Malte'
-                  WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\\M')
-           )
-      UNION ALL
-      SELECT 'CODE_AMBIGU_SANS_PROVENANCE_SUFFISANTE', id FROM active
-        WHERE "countryCode" IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY')
-          AND NOT (
-             -- Un pays NON ambigu n'exige pas de preuve supplémentaire.
-             "countryCode" NOT IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY')
-             -- La colonne prévue en D54 porte le jugement de la chaîne, quand elle est renseignée.
-             OR ("countryIntegrity" IS NOT NULL AND "countryIntegrity" NOT IN ('AMBIGUOUS','UNVERIFIED'))
-             -- Un code postal est une information que le suffixe ne produit pas.
-             OR btrim(coalesce("postalCode", '')) <> ''
-             -- Le libellé nomme le pays EN TOUTES LETTRES : indépendant du suffixe à deux lettres.
-             OR coalesce(location, '') ~* ('\\m(' || CASE "countryCode"
-                  WHEN 'US' THEN 'United States|USA' WHEN 'CA' THEN 'Canada' WHEN 'DE' THEN 'Germany|Deutschland|Allemagne'
-                  WHEN 'IN' THEN 'India|Inde' WHEN 'NL' THEN 'Netherlands|Pays-Bas|Nederland' WHEN 'IL' THEN 'Israel'
-                  WHEN 'AR' THEN 'Argentina|Argentine' WHEN 'CO' THEN 'Colombia|Colombie' WHEN 'ID' THEN 'Indonesia'
-                  WHEN 'MA' THEN 'Morocco|Maroc' WHEN 'PA' THEN 'Panama' WHEN 'MT' THEN 'Malta|Malte'
-                  WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\\M')
-           )
-      UNION ALL
       SELECT 'MULTILOCALISEE_AVEC_UN_SEUL_PAYS_APPLIQUE', id FROM active
         WHERE location LIKE '%;%' AND "countryCode" IS NOT NULL
           AND array_length(array_remove(array(SELECT btrim(x) FROM unnest(string_to_array(location, ';')) x
             WHERE btrim(x) !~* '^(remote|virtual|anywhere|télétravail)$'), ''), 1) > 1
       UNION ALL
-      -- La MÊME expression que le motif d'inéligibilité : un suffixe qui n'est ni le pays déclaré, ni une
-      -- subdivision de ce pays. Une première version comptait tout suffixe collisionnant et annonçait 6 464
-      -- conflits là où il y en a 142 — « Berlin, DE » sous le pays DE n'en est pas un.
-      SELECT 'CONFLIT_SEGMENT_CONTRE_COUNTRYCODE', id FROM active
-        WHERE "countryCode" IS NOT NULL
-          AND EXISTS (
-            SELECT 1 FROM unnest(string_to_array(coalesce(location, city), ';')) seg
-            CROSS JOIN LATERAL (SELECT upper(btrim(replace(split_part(seg, ',', 2), '.', ''))) AS suffix) x
-            WHERE length(x.suffix) = 2
-              AND x.suffix IN ('CA','WA','OR','NY','MA','PA','VA','DE','ME','AR','MD','MI','OH','RI','VT','WI','WY',
-                               'IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','NV','CO','CT','IL','MN','ND','OK','NH')
-              AND x.suffix <> "countryCode"
-              AND NOT ("countryCode" = 'US' AND x.suffix IN ('AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC','PR'))
-              AND NOT ("countryCode" = 'CA' AND x.suffix IN ('AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT')))
+      -- LES QUATRE TYPES DE PREUVE, comptés SÉPARÉMENT : un groupe agrégé « avec preuve » cacherait PAR QUOI le
+      -- pays est réellement établi. L'ordre suit la force de la preuve, et chaque offre n'est comptée qu'une fois.
+      SELECT 'COUNTRY_INTEGRITY_VERIFIED', id FROM active
+        WHERE "countryCode" IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY') AND (coalesce("countryIntegrity", '') IN ('RAW_COUNTRY_CODE','RAW_COUNTRY','VERIFIED'))
+      UNION ALL
+      SELECT 'COUNTRY_SPELLED_OUT', id FROM active
+        WHERE "countryCode" IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY') AND NOT (coalesce("countryIntegrity", '') IN ('RAW_COUNTRY_CODE','RAW_COUNTRY','VERIFIED')) AND (coalesce(location, '') ~* ('\m(' || CASE "countryCode"
+            WHEN 'US' THEN 'United States|USA' WHEN 'CA' THEN 'Canada' WHEN 'DE' THEN 'Germany|Deutschland|Allemagne'
+            WHEN 'IN' THEN 'India|Inde' WHEN 'NL' THEN 'Netherlands|Pays-Bas|Nederland' WHEN 'IL' THEN 'Israel'
+            WHEN 'AR' THEN 'Argentina|Argentine' WHEN 'CO' THEN 'Colombia|Colombie' WHEN 'ID' THEN 'Indonesia'
+            WHEN 'MA' THEN 'Morocco|Maroc' WHEN 'PA' THEN 'Panama' WHEN 'MT' THEN 'Malta|Malte'
+            WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\M'))
+      UNION ALL
+      SELECT 'POSTAL_COUNTRY_VALIDATED', id FROM active
+        WHERE "countryCode" IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY') AND NOT (coalesce("countryIntegrity", '') IN ('RAW_COUNTRY_CODE','RAW_COUNTRY','VERIFIED')) AND NOT (coalesce(location, '') ~* ('\m(' || CASE "countryCode"
+            WHEN 'US' THEN 'United States|USA' WHEN 'CA' THEN 'Canada' WHEN 'DE' THEN 'Germany|Deutschland|Allemagne'
+            WHEN 'IN' THEN 'India|Inde' WHEN 'NL' THEN 'Netherlands|Pays-Bas|Nederland' WHEN 'IL' THEN 'Israel'
+            WHEN 'AR' THEN 'Argentina|Argentine' WHEN 'CO' THEN 'Colombia|Colombie' WHEN 'ID' THEN 'Indonesia'
+            WHEN 'MA' THEN 'Morocco|Maroc' WHEN 'PA' THEN 'Panama' WHEN 'MT' THEN 'Malta|Malte'
+            WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\M')) AND (btrim(coalesce("postalCode", '')) <> '' AND btrim("postalCode") ~ CASE "countryCode"
+            WHEN 'US' THEN '^[0-9]{5}(-[0-9]{4})?$' WHEN 'CA' THEN '^[A-Za-z][0-9][A-Za-z][ -]?[0-9][A-Za-z][0-9]$'
+            WHEN 'DE' THEN '^[0-9]{5}$' WHEN 'NL' THEN '^[0-9]{4} ?[A-Za-z]{2}$' WHEN 'IN' THEN '^[0-9]{6}$'
+            WHEN 'PA' THEN '^[0-9]{4}$' WHEN 'MT' THEN '^[A-Za-z]{3} ?[0-9]{4}$' WHEN 'MD' THEN '^(MD-?)?[0-9]{4}$'
+            WHEN 'ID' THEN '^[0-9]{5}$' WHEN 'IL' THEN '^[0-9]{5}([0-9]{2})?$' WHEN 'SK' THEN '^[0-9]{3} ?[0-9]{2}$'
+            WHEN 'AR' THEN '^[A-Za-z]?[0-9]{4}[A-Za-z]{0,3}$' WHEN 'CO' THEN '^[0-9]{6}$' WHEN 'MA' THEN '^[0-9]{5}$'
+            WHEN 'TN' THEN '^[0-9]{4}$' ELSE 'zzzzNOMATCHzzzz' END)
+      UNION ALL
+      SELECT 'NO_INDEPENDENT_PROOF', id FROM active
+        WHERE "countryCode" IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY') AND NOT (coalesce("countryIntegrity", '') IN ('RAW_COUNTRY_CODE','RAW_COUNTRY','VERIFIED')) AND NOT (coalesce(location, '') ~* ('\m(' || CASE "countryCode"
+            WHEN 'US' THEN 'United States|USA' WHEN 'CA' THEN 'Canada' WHEN 'DE' THEN 'Germany|Deutschland|Allemagne'
+            WHEN 'IN' THEN 'India|Inde' WHEN 'NL' THEN 'Netherlands|Pays-Bas|Nederland' WHEN 'IL' THEN 'Israel'
+            WHEN 'AR' THEN 'Argentina|Argentine' WHEN 'CO' THEN 'Colombia|Colombie' WHEN 'ID' THEN 'Indonesia'
+            WHEN 'MA' THEN 'Morocco|Maroc' WHEN 'PA' THEN 'Panama' WHEN 'MT' THEN 'Malta|Malte'
+            WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\M')) AND NOT (btrim(coalesce("postalCode", '')) <> '' AND btrim("postalCode") ~ CASE "countryCode"
+            WHEN 'US' THEN '^[0-9]{5}(-[0-9]{4})?$' WHEN 'CA' THEN '^[A-Za-z][0-9][A-Za-z][ -]?[0-9][A-Za-z][0-9]$'
+            WHEN 'DE' THEN '^[0-9]{5}$' WHEN 'NL' THEN '^[0-9]{4} ?[A-Za-z]{2}$' WHEN 'IN' THEN '^[0-9]{6}$'
+            WHEN 'PA' THEN '^[0-9]{4}$' WHEN 'MT' THEN '^[A-Za-z]{3} ?[0-9]{4}$' WHEN 'MD' THEN '^(MD-?)?[0-9]{4}$'
+            WHEN 'ID' THEN '^[0-9]{5}$' WHEN 'IL' THEN '^[0-9]{5}([0-9]{2})?$' WHEN 'SK' THEN '^[0-9]{3} ?[0-9]{2}$'
+            WHEN 'AR' THEN '^[A-Za-z]?[0-9]{4}[A-Za-z]{0,3}$' WHEN 'CO' THEN '^[0-9]{6}$' WHEN 'MA' THEN '^[0-9]{5}$'
+            WHEN 'TN' THEN '^[0-9]{4}$' ELSE 'zzzzNOMATCHzzzz' END)
     )
     SELECT measure, count(*)::int postings, (array_agg(id ORDER BY id))[1:10] AS sample_ids FROM m GROUP BY 1 ORDER BY 2 DESC`;
 
@@ -363,19 +354,21 @@ try {
         (location LIKE '%;%' AND "countryCode" IS NULL) AS multi_not_proven,
         ("countryCode" IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY')
           AND NOT (
-             -- Un pays NON ambigu n'exige pas de preuve supplémentaire.
              "countryCode" NOT IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY')
-             -- La colonne prévue en D54 porte le jugement de la chaîne, quand elle est renseignée.
-             OR ("countryIntegrity" IS NOT NULL AND "countryIntegrity" NOT IN ('AMBIGUOUS','UNVERIFIED'))
-             -- Un code postal est une information que le suffixe ne produit pas.
-             OR btrim(coalesce("postalCode", '')) <> ''
-             -- Le libellé nomme le pays EN TOUTES LETTRES : indépendant du suffixe à deux lettres.
-             OR coalesce(location, '') ~* ('\\m(' || CASE "countryCode"
+             OR (coalesce("countryIntegrity", '') IN ('RAW_COUNTRY_CODE','RAW_COUNTRY','VERIFIED'))
+             OR coalesce(location, '') ~* ('\m(' || CASE "countryCode"
                   WHEN 'US' THEN 'United States|USA' WHEN 'CA' THEN 'Canada' WHEN 'DE' THEN 'Germany|Deutschland|Allemagne'
                   WHEN 'IN' THEN 'India|Inde' WHEN 'NL' THEN 'Netherlands|Pays-Bas|Nederland' WHEN 'IL' THEN 'Israel'
                   WHEN 'AR' THEN 'Argentina|Argentine' WHEN 'CO' THEN 'Colombia|Colombie' WHEN 'ID' THEN 'Indonesia'
                   WHEN 'MA' THEN 'Morocco|Maroc' WHEN 'PA' THEN 'Panama' WHEN 'MT' THEN 'Malta|Malte'
-                  WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\\M')
+                  WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\M')
+             OR (btrim(coalesce("postalCode", '')) <> '' AND btrim("postalCode") ~ CASE "countryCode"
+                  WHEN 'US' THEN '^[0-9]{5}(-[0-9]{4})?$' WHEN 'CA' THEN '^[A-Za-z][0-9][A-Za-z][ -]?[0-9][A-Za-z][0-9]$'
+                  WHEN 'DE' THEN '^[0-9]{5}$' WHEN 'NL' THEN '^[0-9]{4} ?[A-Za-z]{2}$' WHEN 'IN' THEN '^[0-9]{6}$'
+                  WHEN 'PA' THEN '^[0-9]{4}$' WHEN 'MT' THEN '^[A-Za-z]{3} ?[0-9]{4}$' WHEN 'MD' THEN '^(MD-?)?[0-9]{4}$'
+                  WHEN 'ID' THEN '^[0-9]{5}$' WHEN 'IL' THEN '^[0-9]{5}([0-9]{2})?$' WHEN 'SK' THEN '^[0-9]{3} ?[0-9]{2}$'
+                  WHEN 'AR' THEN '^[A-Za-z]?[0-9]{4}[A-Za-z]{0,3}$' WHEN 'CO' THEN '^[0-9]{6}$' WHEN 'MA' THEN '^[0-9]{5}$'
+                  WHEN 'TN' THEN '^[0-9]{4}$' ELSE 'zzzzNOMATCHzzzz' END)
            )) AS ambiguous_without_proof,
         ("validThrough" IS NOT NULL AND "validThrough" < now()) AS valid_through_expired,
         (url NOT LIKE 'http%') AS no_apply_path
