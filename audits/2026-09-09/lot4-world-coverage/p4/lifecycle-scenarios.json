@@ -1,0 +1,741 @@
+{
+ "at": "2026-09-11T11:27:53.577Z",
+ "database": "catwalks_lot4_replay_20260909d",
+ "summary": {
+  "total": 8,
+  "passed": 8,
+  "failed": 0
+ },
+ "scenarios": [
+  {
+   "name": "aucune fermeture abusive — run BROKEN",
+   "expectation": "les 3 offres restent actives, aucun closedAt, aucun withdrawnAt",
+   "before": {
+    "jobs": [
+     {
+      "id": "cmtwvgw0r0001aegtidh79w47",
+      "externalId": "p4-nofail-broken-0",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgw140005aegt8o1e06jc",
+      "externalId": "p4-nofail-broken-1",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgw170009aegtpoitynfm",
+      "externalId": "p4-nofail-broken-2",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgw110003aegttacw8mhr",
+      "externalId": "p4-nofail-broken-0",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgw150007aegttleqhp66",
+      "externalId": "p4-nofail-broken-1",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgw19000baegtdm926olm",
+      "externalId": "p4-nofail-broken-2",
+      "isActive": true
+     }
+    ]
+   },
+   "after": {
+    "jobs": [
+     {
+      "id": "cmtwvgw0r0001aegtidh79w47",
+      "externalId": "p4-nofail-broken-0",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgw140005aegt8o1e06jc",
+      "externalId": "p4-nofail-broken-1",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgw170009aegtpoitynfm",
+      "externalId": "p4-nofail-broken-2",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgw110003aegttacw8mhr",
+      "externalId": "p4-nofail-broken-0",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgw150007aegttleqhp66",
+      "externalId": "p4-nofail-broken-1",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgw19000baegtdm926olm",
+      "externalId": "p4-nofail-broken-2",
+      "isActive": true
+     }
+    ]
+   },
+   "events": [],
+   "verdict": "PASS"
+  },
+  {
+   "name": "aucune fermeture abusive — run TIMEOUT",
+   "expectation": "les 3 offres restent actives, aucun closedAt, aucun withdrawnAt",
+   "before": {
+    "jobs": [
+     {
+      "id": "cmtwvgw8k000eaegt5h1ieeox",
+      "externalId": "p4-nofail-timeout-0",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgw8n000iaegt5z0i2x81",
+      "externalId": "p4-nofail-timeout-1",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgw8p000maegtojh67hme",
+      "externalId": "p4-nofail-timeout-2",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgw8m000gaegtpzv6f054",
+      "externalId": "p4-nofail-timeout-0",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgw8o000kaegtabbkmooz",
+      "externalId": "p4-nofail-timeout-1",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgw8q000oaegt8q56bz27",
+      "externalId": "p4-nofail-timeout-2",
+      "isActive": true
+     }
+    ]
+   },
+   "after": {
+    "jobs": [
+     {
+      "id": "cmtwvgw8k000eaegt5h1ieeox",
+      "externalId": "p4-nofail-timeout-0",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgw8n000iaegt5z0i2x81",
+      "externalId": "p4-nofail-timeout-1",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgw8p000maegtojh67hme",
+      "externalId": "p4-nofail-timeout-2",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgw8m000gaegtpzv6f054",
+      "externalId": "p4-nofail-timeout-0",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgw8o000kaegtabbkmooz",
+      "externalId": "p4-nofail-timeout-1",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgw8q000oaegt8q56bz27",
+      "externalId": "p4-nofail-timeout-2",
+      "isActive": true
+     }
+    ]
+   },
+   "events": [],
+   "verdict": "PASS"
+  },
+  {
+   "name": "aucune fermeture abusive — run CHALLENGED",
+   "expectation": "les 3 offres restent actives, aucun closedAt, aucun withdrawnAt",
+   "before": {
+    "jobs": [
+     {
+      "id": "cmtwvgwdx000raegt5vogmh9w",
+      "externalId": "p4-nofail-challenged-0",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwdz000vaegtgz4wj6ts",
+      "externalId": "p4-nofail-challenged-1",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwe1000zaegtarl3t01t",
+      "externalId": "p4-nofail-challenged-2",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgwdy000taegt4bhn2hqm",
+      "externalId": "p4-nofail-challenged-0",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgwe0000xaegto27vx4it",
+      "externalId": "p4-nofail-challenged-1",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgwe30011aegt7010wkne",
+      "externalId": "p4-nofail-challenged-2",
+      "isActive": true
+     }
+    ]
+   },
+   "after": {
+    "jobs": [
+     {
+      "id": "cmtwvgwdx000raegt5vogmh9w",
+      "externalId": "p4-nofail-challenged-0",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwdz000vaegtgz4wj6ts",
+      "externalId": "p4-nofail-challenged-1",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwe1000zaegtarl3t01t",
+      "externalId": "p4-nofail-challenged-2",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgwdy000taegt4bhn2hqm",
+      "externalId": "p4-nofail-challenged-0",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgwe0000xaegto27vx4it",
+      "externalId": "p4-nofail-challenged-1",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgwe30011aegt7010wkne",
+      "externalId": "p4-nofail-challenged-2",
+      "isActive": true
+     }
+    ]
+   },
+   "events": [],
+   "verdict": "PASS"
+  },
+  {
+   "name": "aucune fermeture abusive — run ERROR",
+   "expectation": "les 3 offres restent actives, aucun closedAt, aucun withdrawnAt",
+   "before": {
+    "jobs": [
+     {
+      "id": "cmtwvgwjc0014aegtitgfmxrt",
+      "externalId": "p4-nofail-error-0",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwje0018aegtiozrzwsl",
+      "externalId": "p4-nofail-error-1",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwjg001caegtat9d3g91",
+      "externalId": "p4-nofail-error-2",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgwjd0016aegtwpqwvnwu",
+      "externalId": "p4-nofail-error-0",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgwjf001aaegthyy1g4fw",
+      "externalId": "p4-nofail-error-1",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgwjh001eaegtcvx0jyri",
+      "externalId": "p4-nofail-error-2",
+      "isActive": true
+     }
+    ]
+   },
+   "after": {
+    "jobs": [
+     {
+      "id": "cmtwvgwjc0014aegtitgfmxrt",
+      "externalId": "p4-nofail-error-0",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwje0018aegtiozrzwsl",
+      "externalId": "p4-nofail-error-1",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwjg001caegtat9d3g91",
+      "externalId": "p4-nofail-error-2",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgwjd0016aegtwpqwvnwu",
+      "externalId": "p4-nofail-error-0",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgwjf001aaegthyy1g4fw",
+      "externalId": "p4-nofail-error-1",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgwjh001eaegtcvx0jyri",
+      "externalId": "p4-nofail-error-2",
+      "isActive": true
+     }
+    ]
+   },
+   "events": [],
+   "verdict": "PASS"
+  },
+  {
+   "name": "fermeture propagée — run fiable qui ne liste plus les offres",
+   "expectation": "les 3 offres fermées, closedAt daté, withdrawnAt nul, un événement CLOSED chacune",
+   "before": {
+    "jobs": [
+     {
+      "id": "cmtwvgwoq001haegtlw4n9efi",
+      "externalId": "p4-close-0",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwor001laegt7qexex4v",
+      "externalId": "p4-close-1",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwot001paegtlnjgqwkw",
+      "externalId": "p4-close-2",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgwor001jaegtcrele4xv",
+      "externalId": "p4-close-0",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgwot001naegtxhgtr3iy",
+      "externalId": "p4-close-1",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgwou001raegt1mdg0393",
+      "externalId": "p4-close-2",
+      "isActive": true
+     }
+    ]
+   },
+   "after": {
+    "jobs": [
+     {
+      "id": "cmtwvgwoq001haegtlw4n9efi",
+      "externalId": "p4-close-0",
+      "isActive": false,
+      "closedAt": "2026-09-11T11:27:52.617Z",
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwor001laegt7qexex4v",
+      "externalId": "p4-close-1",
+      "isActive": false,
+      "closedAt": "2026-09-11T11:27:52.617Z",
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwot001paegtlnjgqwkw",
+      "externalId": "p4-close-2",
+      "isActive": false,
+      "closedAt": "2026-09-11T11:27:52.617Z",
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgwor001jaegtcrele4xv",
+      "externalId": "p4-close-0",
+      "isActive": false
+     },
+     {
+      "id": "cmtwvgwot001naegtxhgtr3iy",
+      "externalId": "p4-close-1",
+      "isActive": false
+     },
+     {
+      "id": "cmtwvgwou001raegt1mdg0393",
+      "externalId": "p4-close-2",
+      "isActive": false
+     }
+    ]
+   },
+   "events": [
+    {
+     "jobId": "cmtwvgwoq001haegtlw4n9efi",
+     "type": "CLOSED",
+     "after": null
+    },
+    {
+     "jobId": "cmtwvgwor001laegt7qexex4v",
+     "type": "CLOSED",
+     "after": null
+    },
+    {
+     "jobId": "cmtwvgwot001paegtlnjgqwkw",
+     "type": "CLOSED",
+     "after": null
+    }
+   ],
+   "verdict": "PASS"
+  },
+  {
+   "name": "réouverture propagée — la même identité réapparaît",
+   "expectation": "offres réactivées, closedAt effacé, reopenedCount à 1, aucune représentation en double, un événement REOPENED",
+   "before": {
+    "jobs": [
+     {
+      "id": "cmtwvgwuu001xaegtzczqek34",
+      "externalId": "p4-reopen-0",
+      "isActive": false,
+      "closedAt": "2026-09-11T11:27:52.834Z",
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgwuw0021aegtnsqwub3t",
+      "externalId": "p4-reopen-1",
+      "isActive": false,
+      "closedAt": "2026-09-11T11:27:52.834Z",
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgwuv001zaegtt6gow18b",
+      "externalId": "p4-reopen-0",
+      "isActive": false
+     },
+     {
+      "id": "cmtwvgwux0023aegtu3jpaa22",
+      "externalId": "p4-reopen-1",
+      "isActive": false
+     }
+    ]
+   },
+   "after": {
+    "jobs": [
+     {
+      "id": "cmtwvgwuu001xaegtzczqek34",
+      "externalId": "p4-reopen-0",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 1
+     },
+     {
+      "id": "cmtwvgwuw0021aegtnsqwub3t",
+      "externalId": "p4-reopen-1",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 1
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgwuv001zaegtt6gow18b",
+      "externalId": "p4-reopen-0",
+      "isActive": true
+     },
+     {
+      "id": "cmtwvgwux0023aegtu3jpaa22",
+      "externalId": "p4-reopen-1",
+      "isActive": true
+     }
+    ]
+   },
+   "events": [
+    {
+     "jobId": "cmtwvgwuu001xaegtzczqek34",
+     "type": "CLOSED",
+     "after": null
+    },
+    {
+     "jobId": "cmtwvgwuw0021aegtnsqwub3t",
+     "type": "CLOSED",
+     "after": null
+    },
+    {
+     "jobId": "cmtwvgwuu001xaegtzczqek34",
+     "type": "REOPENED",
+     "after": null
+    },
+    {
+     "jobId": "cmtwvgwuw0021aegtnsqwub3t",
+     "type": "REOPENED",
+     "after": null
+    }
+   ],
+   "verdict": "PASS"
+  },
+  {
+   "name": "retrait ≠ fermeture — offre sans attestation vivante",
+   "expectation": "withdrawnAt daté avec ATTESTATION_MISSING, closedAt NUL : notre incapacité n'est pas une décision employeur",
+   "before": null,
+   "after": {
+    "jobs": [
+     {
+      "id": "cmtwvgx55002aaegtigbbg277",
+      "externalId": "p4-orphan-0",
+      "isActive": false,
+      "closedAt": null,
+      "withdrawnAt": "2026-09-11T11:27:53.195Z",
+      "withdrawalReason": "ATTESTATION_MISSING",
+      "reopenedCount": 0
+     },
+     {
+      "id": "cmtwvgx57002eaegt4q92bl6v",
+      "externalId": "p4-orphan-1",
+      "isActive": false,
+      "closedAt": null,
+      "withdrawnAt": "2026-09-11T11:27:53.195Z",
+      "withdrawalReason": "ATTESTATION_MISSING",
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgx56002caegt87q7m5fk",
+      "externalId": "p4-orphan-0",
+      "isActive": false
+     },
+     {
+      "id": "cmtwvgx58002gaegtyt3a4bpk",
+      "externalId": "p4-orphan-1",
+      "isActive": false
+     }
+    ]
+   },
+   "events": [
+    {
+     "jobId": "cmtwvgx55002aaegtigbbg277",
+     "type": "WITHDRAWN",
+     "after": "ATTESTATION_MISSING"
+    },
+    {
+     "jobId": "cmtwvgx57002eaegt4q92bl6v",
+     "type": "WITHDRAWN",
+     "after": "ATTESTATION_MISSING"
+    }
+   ],
+   "verdict": "PASS"
+  },
+  {
+   "name": "republication après retrait — aucune date employeur inventée",
+   "expectation": "offre réactivée, reopenedCount reste à 0, événement REPUBLISHED et non REOPENED",
+   "before": {
+    "jobs": [
+     {
+      "id": "cmtwvgxas002laegt5uu69sl9",
+      "externalId": "p4-republish-0",
+      "isActive": false,
+      "closedAt": null,
+      "withdrawnAt": "2026-09-11T11:27:53.409Z",
+      "withdrawalReason": "ATTESTATION_MISSING",
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgxat002naegtd0nqhd8v",
+      "externalId": "p4-republish-0",
+      "isActive": false
+     }
+    ]
+   },
+   "after": {
+    "jobs": [
+     {
+      "id": "cmtwvgxas002laegt5uu69sl9",
+      "externalId": "p4-republish-0",
+      "isActive": true,
+      "closedAt": null,
+      "withdrawnAt": null,
+      "withdrawalReason": null,
+      "reopenedCount": 0
+     }
+    ],
+    "representations": [
+     {
+      "id": "cmtwvgxat002naegtd0nqhd8v",
+      "externalId": "p4-republish-0",
+      "isActive": true
+     }
+    ]
+   },
+   "events": [
+    {
+     "jobId": "cmtwvgxas002laegt5uu69sl9",
+     "type": "WITHDRAWN",
+     "after": "ATTESTATION_MISSING"
+    },
+    {
+     "jobId": "cmtwvgxas002laegt5uu69sl9",
+     "type": "REPUBLISHED",
+     "after": null
+    }
+   ],
+   "verdict": "PASS"
+  }
+ ]
+}

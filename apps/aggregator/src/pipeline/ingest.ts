@@ -350,8 +350,21 @@ async function ingestApiSource(
     if (job.publicationHold) {
       stats.held = (stats.held ?? 0) + 1;
       if (!publicationDisposition(job.publicationHold)) {
+        /**
+         * UNE RETENUE EST UN DÉFAUT DE CETTE OFFRE-LÀ, PAS DE L'ÉNUMÉRATION DE LA SOURCE.
+         *
+         * Avant le 2026-09-11, cette branche posait `stats.complete = false`, ce qui retirait à la source
+         * entière son droit d'attester l'absence. Mesuré en production : **187 sources portant 20 796
+         * représentations vivantes** avaient lu tout ce qu'elles déclaraient et ne pouvaient plus fermer une
+         * seule offre à cause de **766 pages défectueuses** — tapestry, 5 retenues sur 2 091 offres lues ;
+         * vf-corporation, 695 sur 1 273 ; intersport-france, 63 sur 993.
+         *
+         * On a bien VU cette offre dans le listing : elle est comptée dans l'énumération. Ce qu'on n'a pas su
+         * exploiter, c'est le contenu de sa page. Les deux questions sont distinctes (`pipeline/enumeration.ts`),
+         * et l'offre retenue est suivie nommément dans `SourceObservation` — elle n'est ni publiée, ni perdue,
+         * ni transformée en fermeture employeur.
+         */
         stats.heldUnresolved = (stats.heldUnresolved ?? 0) + 1;
-        stats.complete = false;
       }
       await archivePublicationHold(prisma, stats.source, job);
       await log.warn('job.publication_held', { sourceKey: stats.source, connectorId: source.kind, jobId: job.externalId, reason: job.publicationHold, evidence: 'SourceObservation' });

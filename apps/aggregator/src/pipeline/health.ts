@@ -90,7 +90,11 @@ export async function checkSourceHealth(
       continue;
     }
     if (stat.held) {
-      results.push({ ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN', note: `${stat.held} annonces non publiables archivées (${stat.heldUnresolved ?? 0} non résolues) ; ${stat.complete ? 'énumération et fermetures attestées' : 'aucune attestation d’absence'}` });
+      // `complete` est désormais à trois valeurs : on nomme laquelle, au lieu de rendre « inconnu » comme un refus.
+      const enumeration = stat.complete === true ? 'énumération prouvée'
+        : stat.complete === false ? 'énumération réfutée : aucune attestation d’absence'
+        : 'énumération inconnue : l’attestation dépend du volume de référence';
+      results.push({ ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN', note: `${stat.held} annonces non publiables archivées (${stat.heldUnresolved ?? 0} non résolues) ; ${enumeration}` });
       continue;
     }
     if (stat.truncated) {
@@ -103,8 +107,16 @@ export async function checkSourceHealth(
       results.push({ ...base, status: 'BROKEN', note: 'premier run sans offre exploitable' });
       continue;
     }
-    if (jobs > 0 && stat.complete !== true) {
-      results.push({ ...base, status: 'DEGRADED', note: 'complétude du balayage non attestée' });
+    /**
+     * Une énumération RÉFUTÉE est un défaut : le balayage n'a pas atteint la fin, on le dit.
+     *
+     * Une énumération INCONNUE n'en est pas un. Mesuré le 2026-09-11 : **149 sources sur 440** ne déclarent aucun
+     * total (teamtailor 113, recruitee 22, personio 14) — les marquer DEGRADED faisait passer 216 sources pour
+     * dégradées alors qu'elles lisaient parfaitement leur board, et noyait les vraies pannes dans le bruit du
+     * digest. Le droit d'attester reste arbitré séparément par `isTrustedForAttestation`.
+     */
+    if (jobs > 0 && stat.complete === false) {
+      results.push({ ...base, status: 'DEGRADED', note: 'énumération réfutée : le balayage n’a pas atteint la fin du listing' });
       continue;
     }
 
@@ -253,9 +265,20 @@ async function recordRun(prisma: PrismaClient, results: SourceHealth[], stats: I
           declaredTotal: stat.declaredTotal ?? null,
           truncated: stat.truncated ?? false,
           errors: stat.errors,
+          /**
+           * `previous` est passé à la porte, et non plus seulement vérifié à côté.
+           *
+           * Depuis le 2026-09-11 la porte a besoin de savoir s'il existe un VOLUME DE RÉFÉRENCE : c'est ce qui
+           * autorise une énumération inconnue (149 sources sur 440 ne déclarent aucun total) et ce qui interdit
+           * d'attester quand il n'y a ni total déclaré ni run productif derrière soi. Le garder hors de l'appel
+           * rendait la règle inapplicable et faisait diverger deux endroits qui jugent la même chose.
+           *
+           * La comparaison d'effondrement sur `result.jobs` est CONSERVÉE en plus : elle porte sur ce que le run
+           * a réellement écrit, là où `fetched` compte ce qu'il a lu, et elle a déjà attrapé de vraies pannes.
+           */
           canAttestAbsence: result.previous !== null && isTrustedForAttestation({
             status: result.status, complete: stat.complete, errors: stat.errors, truncated: stat.truncated,
-            declaredTotal: stat.declaredTotal, fetched: stat.fetched,
+            declaredTotal: stat.declaredTotal, fetched: stat.fetched, previous: result.previous,
           }) && !(result.previous != null && result.previous > 0 && result.jobs < result.previous * COLLAPSE_RATIO),
           // The coverage rates ride along on EVERY run, incident or not: they
           // are the trend the next regression gets caught against. Columns
