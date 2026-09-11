@@ -1,0 +1,821 @@
+{
+ "at": "2026-09-11T12:24:25.815Z",
+ "base": "https://modecareers.com",
+ "boundedTo": "8 pages × 25",
+ "journeys": [
+  {
+   "journey": "monde (aucun filtre)",
+   "query": {},
+   "apiUrl": "https://modecareers.com/api/jobs",
+   "apiError": null,
+   "database": {
+    "total": 78932,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 78932,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 3158
+   },
+   "counterMatchesDatabase": true,
+   "facet": null,
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "France",
+   "query": {
+    "pays": "FR"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?pays=FR",
+   "apiError": null,
+   "database": {
+    "total": 10831,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 10831,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 434
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "countries",
+    "value": "FR",
+    "count": 10831,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "pays IT",
+   "query": {
+    "pays": "IT"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?pays=IT",
+   "apiError": null,
+   "database": {
+    "total": 2622,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 2622,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 105
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "countries",
+    "value": "IT",
+    "count": 2622,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "pays US",
+   "query": {
+    "pays": "US"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?pays=US",
+   "apiError": null,
+   "database": {
+    "total": 34509,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 34509,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 1381
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "countries",
+    "value": "US",
+    "count": 34509,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "pays GB",
+   "query": {
+    "pays": "GB"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?pays=GB",
+   "apiError": null,
+   "database": {
+    "total": 3093,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 3093,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 124
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "countries",
+    "value": "GB",
+    "count": 3093,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "maison Ulta Beauty",
+   "query": {
+    "maison": "Ulta Beauty"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?maison=Ulta+Beauty",
+   "apiError": null,
+   "database": {
+    "total": 10290,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 10290,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 412
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "maisons",
+    "value": "Ulta Beauty",
+    "count": 10290,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "maison Sephora",
+   "query": {
+    "maison": "Sephora"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?maison=Sephora",
+   "apiError": null,
+   "database": {
+    "total": 2474,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 2474,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 99
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "maisons",
+    "value": "Sephora",
+    "count": 2474,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "maison Foot Locker",
+   "query": {
+    "maison": "Foot Locker"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?maison=Foot+Locker",
+   "apiError": null,
+   "database": {
+    "total": 1933,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 1933,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 78
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "maisons",
+    "value": "Foot Locker",
+    "count": 1933,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "métier sales-advisor",
+   "query": {
+    "metier": "sales-advisor"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?metier=sales-advisor",
+   "apiError": null,
+   "database": {
+    "total": 18235,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 18235,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 730
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "occupations",
+    "value": "sales-advisor",
+    "count": 18235,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "métier beauty-consultant",
+   "query": {
+    "metier": "beauty-consultant"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?metier=beauty-consultant",
+   "apiError": null,
+   "database": {
+    "total": 5188,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 5188,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 208
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "occupations",
+    "value": "beauty-consultant",
+    "count": 5188,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "métier non canonisé",
+   "query": {
+    "metier": "unclassified"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?metier=unclassified",
+   "apiError": null,
+   "database": {
+    "total": 41548,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 41548,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 1662
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "occupations",
+    "value": "unclassified",
+    "count": 41548,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "contrat PERMANENT",
+   "query": {
+    "employmentTerm": "PERMANENT"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?employmentTerm=PERMANENT",
+   "apiError": null,
+   "database": {
+    "total": 17240,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 17240,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 690
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "contracts",
+    "value": "PERMANENT",
+    "count": 17240,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "contrat FIXED_TERM",
+   "query": {
+    "employmentTerm": "FIXED_TERM"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?employmentTerm=FIXED_TERM",
+   "apiError": null,
+   "database": {
+    "total": 8013,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 8013,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 321
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "contracts",
+    "value": "FIXED_TERM",
+    "count": 8013,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "rythme PART_TIME",
+   "query": {
+    "workTime": "PART_TIME"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?workTime=PART_TIME",
+   "apiError": null,
+   "database": {
+    "total": 29552,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 29552,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 1183
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "workTimes",
+    "value": "PART_TIME",
+    "count": 29552,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "secteur RETAIL",
+   "query": {
+    "secteur": "RETAIL"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?secteur=RETAIL",
+   "apiError": null,
+   "database": {
+    "total": 22675,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 22675,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 907
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "sectors",
+    "value": "RETAIL",
+    "count": 22675,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "secteur BEAUTY",
+   "query": {
+    "secteur": "BEAUTY"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?secteur=BEAUTY",
+   "apiError": null,
+   "database": {
+    "total": 21110,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 21110,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 845
+   },
+   "counterMatchesDatabase": true,
+   "facet": {
+    "kind": "sectors",
+    "value": "BEAUTY",
+    "count": 21110,
+    "matchesCounter": true
+   },
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "ville Paris",
+   "query": {
+    "ville": "Paris"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?ville=Paris",
+   "apiError": null,
+   "database": {
+    "total": 3619,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 3619,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 145
+   },
+   "counterMatchesDatabase": true,
+   "facet": null,
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "ville New York",
+   "query": {
+    "ville": "New York"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?ville=New+York",
+   "apiError": null,
+   "database": {
+    "total": 1919,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 1919,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 77
+   },
+   "counterMatchesDatabase": true,
+   "facet": null,
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "France + PERMANENT",
+   "query": {
+    "pays": "FR",
+    "employmentTerm": "PERMANENT"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?pays=FR&employmentTerm=PERMANENT",
+   "apiError": null,
+   "database": {
+    "total": 5315,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 5315,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 213
+   },
+   "counterMatchesDatabase": true,
+   "facet": null,
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "secteur + maison + pays",
+   "query": {
+    "secteur": "BEAUTY",
+    "maison": "Sephora",
+    "pays": "FR"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?secteur=BEAUTY&maison=Sephora&pays=FR",
+   "apiError": null,
+   "database": {
+    "total": 0,
+    "idsCompared": 0
+   },
+   "api": {
+    "total": 0,
+    "idsCompared": 0,
+    "pagesRead": 1,
+    "pagesAvailable": 0
+   },
+   "counterMatchesDatabase": true,
+   "facet": null,
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "métier non canonisé + France",
+   "query": {
+    "metier": "unclassified",
+    "pays": "FR"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?metier=unclassified&pays=FR",
+   "apiError": null,
+   "database": {
+    "total": 5520,
+    "idsCompared": 200
+   },
+   "api": {
+    "total": 5520,
+    "idsCompared": 200,
+    "pagesRead": 8,
+    "pagesAvailable": 221
+   },
+   "counterMatchesDatabase": true,
+   "facet": null,
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "frontière : pays inexistant",
+   "query": {
+    "pays": "ZZ"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?pays=ZZ",
+   "apiError": null,
+   "database": {
+    "total": 0,
+    "idsCompared": 0
+   },
+   "api": {
+    "total": 0,
+    "idsCompared": 0,
+    "pagesRead": 1,
+    "pagesAvailable": 0
+   },
+   "counterMatchesDatabase": true,
+   "facet": null,
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "frontière : secteur invalide",
+   "query": {
+    "secteur": "NOT_A_SECTOR"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?secteur=NOT_A_SECTOR",
+   "apiError": null,
+   "database": {
+    "total": 0,
+    "idsCompared": 0
+   },
+   "api": {
+    "total": 0,
+    "idsCompared": 0,
+    "pagesRead": 1,
+    "pagesAvailable": 0
+   },
+   "counterMatchesDatabase": true,
+   "facet": null,
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "frontière : métier inexistant",
+   "query": {
+    "metier": "metier-qui-nexiste-pas"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?metier=metier-qui-nexiste-pas",
+   "apiError": null,
+   "database": {
+    "total": 0,
+    "idsCompared": 0
+   },
+   "api": {
+    "total": 0,
+    "idsCompared": 0,
+    "pagesRead": 1,
+    "pagesAvailable": 0
+   },
+   "counterMatchesDatabase": true,
+   "facet": null,
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  },
+  {
+   "journey": "frontière : maison inexistante",
+   "query": {
+    "maison": "Maison Qui N Existe Pas"
+   },
+   "apiUrl": "https://modecareers.com/api/jobs?maison=Maison+Qui+N+Existe+Pas",
+   "apiError": null,
+   "database": {
+    "total": 0,
+    "idsCompared": 0
+   },
+   "api": {
+    "total": 0,
+    "idsCompared": 0,
+    "pagesRead": 1,
+    "pagesAvailable": 0
+   },
+   "counterMatchesDatabase": true,
+   "facet": null,
+   "identifierGaps": {
+    "onlyInDatabase": [],
+    "onlyInDatabaseCount": 0,
+    "onlyInApi": [],
+    "onlyInApiCount": 0
+   },
+   "scope": "les 200 premiers identifiants de chaque côté, même ordre"
+  }
+ ],
+ "populations": [
+  {
+   "population": "sans ville",
+   "postings": 3813,
+   "expectation": "absentes de toute valeur de la facette villes"
+  },
+  {
+   "population": "sans contrat",
+   "postings": 53587,
+   "expectation": "absentes de toute valeur de la facette contrats"
+  },
+  {
+   "population": "sans métier canonique",
+   "postings": 41548,
+   "expectation": "regroupées sous la valeur explicite « unclassified », jamais versées dans un vrai métier"
+  },
+  {
+   "population": "télétravail REMOTE",
+   "postings": 362,
+   "expectation": "population mesurée ; aucun filtre public dédié à ce jour"
+  },
+  {
+   "population": "multilocalisation (plusieurs sources actives)",
+   "postings": 1889,
+   "expectation": "une seule occurrence dans les résultats : une offre canonique, N représentations"
+  }
+ ],
+ "facetClosure": [
+  {
+   "facet": "contracts",
+   "sum": 25345,
+   "withoutValue": 53587,
+   "total": 78932,
+   "closes": true,
+   "capped": false
+  },
+  {
+   "facet": "occupations",
+   "sum": 78932,
+   "withoutValue": 0,
+   "total": 78932,
+   "closes": true,
+   "capped": false,
+   "unclassifiedValue": 41548,
+   "unclassifiedInDatabase": 41548
+  },
+  {
+   "facet": "cities",
+   "sum": 21134,
+   "withoutValue": 3813,
+   "total": 78932,
+   "closes": null,
+   "capped": true,
+   "note": "facette plafonnée à 60 valeurs : la somme ne peut pas boucler, ce n'est pas un écart"
+  }
+ ],
+ "duplication": {
+  "idsReturned": 200,
+  "duplicateIds": [],
+  "multiSourcePostingsAmongThem": 0,
+  "note": "Une offre attestée par plusieurs sources est UNE offre canonique : elle doit apparaître une seule fois."
+ }
+}

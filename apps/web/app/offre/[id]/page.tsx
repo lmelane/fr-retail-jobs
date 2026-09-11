@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { JobDetail } from '@/components/job-detail';
 import { resolveOfferParam, getSimilarJobs, getCompanyAside } from '@/lib/jobs';
 import { frNumber, employmentTermLabel } from '@/lib/format';
+import { safeJsonLd } from '@/lib/safe-json-ld';
 import { offerPath } from '@/lib/offer-url';
 import { companySlug } from '@/lib/company-slug';
 import { jobPostingSchema } from '@/lib/job-posting-schema';
@@ -11,25 +12,6 @@ import { siteUrl } from '@/lib/site-url';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
-
-/**
- * Serialize JSON-LD safely for inline injection.
- *
- * JSON.stringify escapes quotes but NOT "<" (so "</script>" would end the tag)
- * nor the JS line separators U+2028/U+2029 (valid in JSON, fatal in a script).
- * The values come from untrusted third-party ATS feeds, so a title or
- * description containing "</script>" could otherwise inject markup (stored XSS).
- * Escapes are written with \u so this source stays ASCII.
- */
-function safeJsonLd(data: unknown): string {
-  // Built from a string so this source carries no literal U+2028/U+2029
-  // (those are line terminators and would break the file itself).
-  const dangerous = new RegExp('[<\\u2028\\u2029]', 'g');
-  return JSON.stringify(data).replace(
-    dangerous,
-    (ch) => '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0'),
-  );
-}
 
 /**
  * One offer, on its own URL.
