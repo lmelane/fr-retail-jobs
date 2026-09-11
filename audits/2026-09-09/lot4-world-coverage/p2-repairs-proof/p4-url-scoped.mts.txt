@@ -1,0 +1,43 @@
+import { PrismaClient } from '@prisma/client';
+import { readFileSync } from 'node:fs';
+/**
+ * Scoped to the EXACT postings my detachment touched — the identifiers are in the archived run output, so the
+ * perimeter is the operation's own, not "everything that ever had an inactive FashionJobs row" (which returned
+ * 268 postings and mixed in earlier history).
+ *
+ * Two questions, separately:
+ *   A. does each posting still carry a canonical owner (source key + external id + url)?
+ *   B. does the canonical URL belong to the SAME advert — i.e. is it the url of a source row of THIS posting?
+ */
+const p = new PrismaClient();
+try {
+  /**
+   * PERIMETER, stated honestly: the detachment left no dated trace (deactivateSources records a JobEvent only when
+   * a posting is withdrawn or closed, and here jobsWithdrawn was 0 by design), and my run archived only 5 of the
+   * 172 identifiers. The exact 172 are therefore NOT recoverable after the fact. This check runs on the 268
+   * postings matching the detachment predicate — a SUPERSET containing the 172 plus earlier FashionJobs
+   * deactivations. A superset is acceptable here because the question is "is any of these pointing at the wrong
+   * advert", and checking more than necessary cannot hide a problem.
+   */
+  const planned: string[] = JSON.parse(readFileSync('backups/lot4-20260909/p3-fj-planned-ids.json', 'utf8'));
+  const rows: any[] = await p.$queryRaw`
+    SELECT j.id, j.url, j.title, c.name company, j."canonicalSourceKey" ck, j."canonicalExternalId" ce,
+           (SELECT COUNT(*)::int FROM "JobSource" x WHERE x."jobId" = j.id AND x."isActive") live_sources,
+           (SELECT string_agg(x."sourceKey" || ':' || x."isActive", ', ') FROM "JobSource" x WHERE x."jobId" = j.id) attest,
+           EXISTS (SELECT 1 FROM "JobSource" x WHERE x."jobId" = j.id AND x."isActive" AND x.url = j.url) url_is_a_live_source_url,
+           (SELECT x."sourceKey" FROM "JobSource" x WHERE x."jobId" = j.id AND x."isActive" AND x.url = j.url LIMIT 1) url_owner
+    FROM "Job" j JOIN "Company" c ON c.id = j."companyId"
+    WHERE j.id = ANY(${planned})`;
+  const report = rows.map((r) => ({
+    jobId: r.id, company: r.company, title: String(r.title).slice(0, 55), url: String(r.url).slice(-60),
+    canonical: r.ck ? `${r.ck}:${String(r.ce).slice(0, 20)}` : null, liveSources: r.live_sources,
+    urlBelongsToALiveSourceOfThisPosting: r.url_is_a_live_source_url, urlOwner: r.url_owner, attest: r.attest,
+    verdict: !r.ck ? 'NO_CANONICAL_OWNER'
+      : r.live_sources === 0 ? 'NO_LIVE_SOURCE'
+      : !r.url_is_a_live_source_url ? 'URL_NOT_FROM_A_LIVE_SOURCE_OF_THIS_POSTING'
+      : 'CONSISTENT',
+  }));
+  const tally = report.reduce((m: any, r) => { m[r.verdict] = (m[r.verdict] ?? 0) + 1; return m; }, {});
+  console.log(JSON.stringify({ scope: planned.length, found: rows.length, byVerdict: tally,
+    problems: report.filter((r) => r.verdict !== 'CONSISTENT') }, null, 1));
+} finally { await p.$disconnect(); }

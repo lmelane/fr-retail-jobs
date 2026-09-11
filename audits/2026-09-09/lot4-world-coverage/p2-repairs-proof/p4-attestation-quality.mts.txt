@@ -1,0 +1,53 @@
+import { PrismaClient } from '@prisma/client';
+import { assertIdentityReview } from '../../apps/aggregator/src/connectors/sourceIdentity.js';
+/**
+ * My detachment predicate was "another ACTIVE source, not fashionjobs". That says the source is CATALOGUED and
+ * still collecting; it says nothing about the source being OFFICIAL for this advert, nor about the attestation
+ * being valid. This qualifies the attestation that was kept, using the rules and evidence already available:
+ *
+ *   • certification: the promotion gate's own predicate on the current configuration (assertIdentityReview);
+ *   • tier: EMPLOYER_DIRECT / ATS_OFFICIAL / GROUP_OFFICIAL are employer-side; SPECIALIST_JOBBOARD is not;
+ *   • liveness: the source's last run actually produced output;
+ *   • the advert link: the kept source carries its own url for THIS posting (it attests this advert, not the page).
+ */
+const p = new PrismaClient();
+try {
+  const rows: any[] = await p.$queryRaw`
+    SELECT j.id, c.name company, left(j.title, 50) title,
+           x."sourceKey", x.url AS source_url, s.status, s.tier::text tier, s.kind, s.maison,
+           s.key, s."tenantKey", s.config, s."careersDomain",
+           (SELECT r.id FROM "SourceIdentityReview" r WHERE r."sourceKey" = s.key ORDER BY r."createdAt" DESC, r.id DESC LIMIT 1) review_id,
+           (SELECT run.status::text FROM "SourceRun" run WHERE run."sourceKey" = s.key ORDER BY run."ranAt" DESC LIMIT 1) last_run
+    FROM "Job" j JOIN "Company" c ON c.id = j."companyId"
+    JOIN "JobSource" x ON x."jobId" = j.id AND x."isActive" AND x."sourceKey" <> 'fashionjobs'
+    JOIN "Source" s ON s.key = x."sourceKey" AND s.status = 'ACTIVE'
+    WHERE j."isActive" AND EXISTS (SELECT 1 FROM "JobSource" f WHERE f."jobId" = j.id AND f."sourceKey" = 'fashionjobs' AND NOT f."isActive")`;
+
+  const reviews = await p.sourceIdentityReview.findMany({ orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
+  const latest = new Map<string, any>();
+  for (const r of reviews) if (!latest.has(r.sourceKey)) latest.set(r.sourceKey, r);
+
+  const EMPLOYER_TIERS = ['EMPLOYER_DIRECT', 'ATS_OFFICIAL', 'GROUP_OFFICIAL'];
+  const byJob = new Map<string, any[]>();
+  for (const r of rows) (byJob.get(r.id) ?? byJob.set(r.id, []).get(r.id)!).push(r);
+
+  const report = [...byJob.entries()].map(([jobId, srcs]) => {
+    const qualified = srcs.map((r: any) => {
+      let certified = false;
+      const review = latest.get(r.sourceKey);
+      if (review) { try { assertIdentityReview({ key: r.key, maison: r.maison, kind: r.kind, config: r.config, careersDomain: r.careersDomain, tenantKey: r.tenantKey, tier: r.tier } as any, review); certified = true; } catch { certified = false; } }
+      return { sourceKey: r.sourceKey, tier: r.tier, certified, employerSide: EMPLOYER_TIERS.includes(r.tier),
+        lastRun: r.last_run, hasOwnUrl: !!r.source_url, company: r.company };
+    });
+    const best = qualified.find((q) => q.certified && q.employerSide) ?? qualified.find((q) => q.employerSide) ?? qualified[0];
+    return { jobId, company: srcs[0].company, kept: qualified,
+      verdict: !best ? 'NO_KEPT_SOURCE'
+        : best.certified && best.employerSide ? 'CERTIFIED_EMPLOYER_SIDE'
+        : best.employerSide ? 'EMPLOYER_SIDE_NOT_CERTIFIED'
+        : 'NOT_EMPLOYER_SIDE' };
+  });
+  const tally = report.reduce((m: any, r) => { m[r.verdict] = (m[r.verdict] ?? 0) + 1; return m; }, {});
+  const tiers = report.reduce((m: any, r) => { for (const k of r.kept) m[k.tier] = (m[k.tier] ?? 0) + 1; return m; }, {});
+  console.log(JSON.stringify({ postings: report.length, byVerdict: tally, keptTiers: tiers,
+    notEmployerSide: report.filter((r) => r.verdict === 'NOT_EMPLOYER_SIDE').slice(0, 10) }, null, 1));
+} finally { await p.$disconnect(); }
