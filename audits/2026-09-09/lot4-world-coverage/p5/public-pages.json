@@ -1,15 +1,93 @@
 {
- "at": "2026-09-11T12:27:14.701Z",
+ "at": "2026-09-11T12:57:11.976Z",
  "base": "https://modecareers.com",
- "boundedTo": "3 fiches par état, 8 états — contrôle BORNÉ, non exhaustif",
- "threeSeparateNotions": {
-  "visibleOnModeCareers": 78932,
-  "eligibleForJobPostingMarkup": 77482,
-  "visibleButNotEligible": 1450,
-  "withRealExpiry": 5700,
-  "expiredExpiryStillActive": 257,
-  "note": "La présence RÉELLE dans Google Jobs n'est pas mesurée ici et ne peut pas l'être depuis ce script."
+ "boundedTo": "3 fiches par état, 11 états — contrôle BORNÉ, non exhaustif",
+ "visibleOnModeCareers": 78932,
+ "markupEmitted": 21,
+ "googleEligible": 75853,
+ "googleIneligibleByReason": [
+  {
+   "reason": "NO_REAL_POSTED_DATE",
+   "postings": 1450,
+   "sampleIds": [
+    "cmtk0fpdo06h4s32bqdvrp33z",
+    "cmtk0fpe006h8s32bfj0idqs9",
+    "cmtk0fpea06hcs32bd1scql27",
+    "cmtk0fpfa06hss32b455z0cjz",
+    "cmtk0fpxd06ncs32brxcgdigq",
+    "cmtk0fq7j06pps32bpi5vq0wg",
+    "cmtk0fqbl06qns32b1h958cty",
+    "cmtk0fr5306vls32bfm9elzqd",
+    "cmtk0fr6y06vvs32bv0l0r94r",
+    "cmtk0frba06wns32bet7tp425"
+   ]
+  },
+  {
+   "reason": "NO_USABLE_LOCATION",
+   "postings": 939,
+   "sampleIds": [
+    "cmtjzhs4t02jooe2b5wz2h990",
+    "cmtk0fpfa06hss32b455z0cjz",
+    "cmtk0fpkg06jrs32bum01qmgo",
+    "cmtk0fpq206ljs32b4g4wd3eg",
+    "cmtk0fqgv06rqs32bscunro4a",
+    "cmtk0frbz06wrs32bk4notbxj",
+    "cmtk0frol06yps32bq876aff6",
+    "cmtk0fs8j071is32be3l9271u",
+    "cmtk0fstf074cs32bo7hkxtzj",
+    "cmtk0fsu7074gs32bkfpu6dj7"
+   ]
+  },
+  {
+   "reason": "DESCRIPTION_TOO_THIN",
+   "postings": 477,
+   "sampleIds": [
+    "cmtk0g2xj07xxs32buq6je3zn",
+    "cmtk1xq0701vqnv2be1awe0ra",
+    "cmtk1xq4n01wenv2b4jv6k02r",
+    "cmtk1xqdh01xunv2b5j6xtst4",
+    "cmtk1xql701yynv2bu3q78ulz",
+    "cmtk26n2b0j3nnv2b1qv1bnl3",
+    "cmtk3fu630reuny2bg81lvj15",
+    "cmtk3fzmm0srany2bd7jp10rm",
+    "cmtk48wtp1hdwny2bkmiowjgl",
+    "cmtk49o1m1n1sny2bleidw8ah"
+   ]
+  },
+  {
+   "reason": "VALID_THROUGH_EXPIRED",
+   "postings": 257,
+   "sampleIds": [
+    "cmtk1x7ep00mynv2b1el1hv8l",
+    "cmtk1x7jh00ninv2b33p7wx18",
+    "cmtk20oqx07wonv2bg9ngzv1c",
+    "cmtk227wk0axqnv2b7rcd38sj",
+    "cmtk239v30cpknv2bto4mcy8s",
+    "cmtk2abeb0p10nv2b0nq0e1pj",
+    "cmtk6y5z708nanf2bl1md402x",
+    "cmtkntfi70a6qo52b4yy1m9yl",
+    "cmtkoe3km01dcmr2b59mwzga3",
+    "cmtlv81rc06m53nk5mcjmfpa6"
+   ]
+  },
+  {
+   "reason": "OPEN_APPLICATION",
+   "postings": 1,
+   "sampleIds": [
+    "cmtu9r2vs002lq6016sgybbuq"
+   ]
+  }
+ ],
+ "googleIneligibleTotal": 3079,
+ "vocabulary": {
+  "multiSource": 1889,
+  "multiLocation": 59,
+  "remote": 362,
+  "remoteWithKnownCountry": 339,
+  "multiLocationAndRemote": 9,
+  "note": "multi-sources ≠ multilocalisation ≠ télétravail. Trois notions, trois mesures."
  },
+ "googlePresence": "NON MESURÉE — ne peut pas l'être depuis ce script, et ne se déduit pas du balisage.",
  "states": [
   {
    "state": "active avec date",
@@ -39,6 +117,12 @@
       "hasHiringOrganization": true,
       "hasJobLocation": true,
       "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Marcianise"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
       "employmentType": [
        "TEMPORARY",
        "INTERN"
@@ -73,6 +157,12 @@
       "hasHiringOrganization": true,
       "hasJobLocation": true,
       "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Pantin"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
       "employmentType": [
        "FULL_TIME"
       ],
@@ -106,6 +196,12 @@
       "hasHiringOrganization": true,
       "hasJobLocation": true,
       "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Pantin"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
       "employmentType": [
        "FULL_TIME"
       ],
@@ -194,14 +290,51 @@
    ]
   },
   {
-   "state": "active sans description",
-   "expectation": "visible ; le balisage dépend de la date, pas de la description",
+   "state": "datée mais description incomplète",
+   "expectation": "visible, AUCUN JobPosting : une description incomplète ne mérite pas de balisage, même datée",
    "expectHttp": [
     200
    ],
-   "expectSchema": "EITHER",
+   "expectSchema": "NO",
    "sampled": 3,
    "checks": [
+    {
+     "id": "cmtk0g2xj07xxs32buq6je3zn",
+     "databasePostedAt": "2026-07-01T00:00:00.000Z",
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/director-marketing-ud-cmtk0g2xj07xxs32buq6je3zn",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/director-marketing-ud-cmtk0g2xj07xxs32buq6je3zn",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-07-01T00:00:00.000Z",
+      "validThrough": null,
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "El Segundo"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
+      "employmentType": null,
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 40188,
+     "httpOk": true,
+     "schemaOk": false,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "FAIL"
+    },
     {
      "id": "cmtk1xq0701vqnv2be1awe0ra",
      "databasePostedAt": "2026-09-01T22:37:53.999Z",
@@ -221,6 +354,12 @@
       "hasHiringOrganization": true,
       "hasJobLocation": true,
       "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Los Angeles"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
       "employmentType": [
        "FULL_TIME"
       ],
@@ -230,10 +369,10 @@
      "dangerous": [],
      "bytes": 39322,
      "httpOk": true,
-     "schemaOk": true,
+     "schemaOk": false,
      "dateInvented": false,
      "expiryInvented": false,
-     "verdict": "PASS"
+     "verdict": "FAIL"
     },
     {
      "id": "cmtk1xq4n01wenv2b4jv6k02r",
@@ -254,6 +393,12 @@
       "hasHiringOrganization": true,
       "hasJobLocation": true,
       "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Los Angeles"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
       "employmentType": [
        "FULL_TIME"
       ],
@@ -263,30 +408,294 @@
      "dangerous": [],
      "bytes": 39223,
      "httpOk": true,
+     "schemaOk": false,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "FAIL"
+    }
+   ]
+  },
+  {
+   "state": "active, échéance dépassée",
+   "expectation": "visible si voulu, AUCUN JobPosting : une échéance passée annonce un poste clos. Date de la source conservée telle quelle",
+   "expectHttp": [
+    200
+   ],
+   "expectSchema": "NO",
+   "sampled": 3,
+   "checks": [
+    {
+     "id": "cmtk1x7ep00mynv2b1el1hv8l",
+     "databasePostedAt": "2026-08-23T02:00:00.000Z",
+     "databaseValidThrough": "2026-09-06T22:00:00.000Z",
+     "redirectedTo": "/offre/gestionnaire-systemes-d-informations-h-f-cmtk1x7ep00mynv2b1el1hv8l",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/gestionnaire-systemes-d-informations-h-f-cmtk1x7ep00mynv2b1el1hv8l",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-08-23T02:00:00.000Z",
+      "validThrough": "2026-09-06T22:00:00.000Z",
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Saint-Imier"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
+      "employmentType": null,
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 50240,
+     "httpOk": true,
+     "schemaOk": false,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "FAIL"
+    },
+    {
+     "id": "cmtk1x7jh00ninv2b33p7wx18",
+     "databasePostedAt": "2026-08-11T02:00:00.000Z",
+     "databaseValidThrough": "2026-09-06T22:00:00.000Z",
+     "redirectedTo": "/offre/responsable-d-atelier-assemblage-sequentiel-h-f-cmtk1x7jh00ninv2b33p7wx18",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/responsable-d-atelier-assemblage-sequentiel-h-f-cmtk1x7jh00ninv2b33p7wx18",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-08-11T02:00:00.000Z",
+      "validThrough": "2026-09-06T22:00:00.000Z",
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Plan-les-Ouates"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
+      "employmentType": null,
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 47040,
+     "httpOk": true,
+     "schemaOk": false,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "FAIL"
+    },
+    {
+     "id": "cmtk20oqx07wonv2bg9ngzv1c",
+     "databasePostedAt": "2026-08-10T00:00:00.000Z",
+     "databaseValidThrough": "2026-09-10T00:00:00.000Z",
+     "redirectedTo": "/offre/visual-editing-intern-vanity-fair-italy-cmtk20oqx07wonv2bg9ngzv1c",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/visual-editing-intern-vanity-fair-italy-cmtk20oqx07wonv2bg9ngzv1c",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-08-10T00:00:00.000Z",
+      "validThrough": "2026-09-10T00:00:00.000Z",
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Via Bordoni N Milano"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
+      "employmentType": [
+       "INTERN",
+       "FULL_TIME"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 50121,
+     "httpOk": true,
+     "schemaOk": false,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "FAIL"
+    }
+   ]
+  },
+  {
+   "state": "multilocalisation (plusieurs LIEUX)",
+   "expectation": "un jobLocation par lieu réellement énuméré, cohérent avec la page — et jamais l'agrégat trompeur de la colonne city",
+   "expectHttp": [
+    200
+   ],
+   "expectSchema": "EITHER",
+   "sampled": 3,
+   "checks": [
+    {
+     "id": "cmtlyf0vi00a8qf5kpnnh0mg2",
+     "databasePostedAt": "2026-06-12T20:52:17.000Z",
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/manager-of-sales-compensation-cmtlyf0vi00a8qf5kpnnh0mg2",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/manager-of-sales-compensation-cmtlyf0vi00a8qf5kpnnh0mg2",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-06-12T20:52:17.000Z",
+      "validThrough": null,
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Lehi"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
+      "employmentType": null,
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 59197,
+     "httpOk": true,
      "schemaOk": true,
      "dateInvented": false,
      "expiryInvented": false,
      "verdict": "PASS"
     },
     {
-     "id": "cmtk1xqdh01xunv2b5j6xtst4",
-     "databasePostedAt": "2026-06-24T21:42:03.742Z",
+     "id": "cmtlygz1i02t9qf5k39cssacx",
+     "databasePostedAt": "2026-09-03T13:48:44.000Z",
      "databaseValidThrough": null,
-     "redirectedTo": "/offre/import-export-coordinator-cmtk1xqdh01xunv2b5j6xtst4",
+     "redirectedTo": "/offre/account-executive-existing-business-cmtlygz1i02t9qf5k39cssacx",
      "jsonLdBreakout": false,
      "status": 200,
-     "location": "/offre/import-export-coordinator-cmtk1xqdh01xunv2b5j6xtst4",
+     "location": "/offre/account-executive-existing-business-cmtlygz1i02t9qf5k39cssacx",
      "robots": null,
      "hasJobPosting": true,
      "unparsableBlocks": 0,
      "schema": {
-      "datePosted": "2026-06-24T21:42:03.742Z",
+      "datePosted": "2026-09-03T13:48:44.000Z",
       "validThrough": null,
       "hasTitle": true,
-      "hasDescription": false,
+      "hasDescription": true,
       "hasHiringOrganization": true,
       "hasJobLocation": true,
       "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "New York"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
+      "employmentType": null,
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 62250,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtlygz1s02tdqf5k4dw2wid2",
+     "databasePostedAt": "2026-07-10T20:55:21.000Z",
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/business-development-associate-cmtlygz1s02tdqf5k4dw2wid2",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/business-development-associate-cmtlygz1s02tdqf5k4dw2wid2",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-07-10T20:55:21.000Z",
+      "validThrough": null,
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "New York"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
+      "employmentType": null,
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 61934,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    }
+   ]
+  },
+  {
+   "state": "télétravail total (REMOTE)",
+   "expectation": "jobLocationType TELECOMMUTE, et applicantLocationRequirements quand la restriction est connue",
+   "expectHttp": [
+    200
+   ],
+   "expectSchema": "EITHER",
+   "sampled": 3,
+   "checks": [
+    {
+     "id": "cmtjzhnl900rkoe2bc9j9coud",
+     "databasePostedAt": "2026-06-05T17:24:42.000Z",
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/sr-project-manager-construction-remote-cmtjzhnl900rkoe2bc9j9coud",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/sr-project-manager-construction-remote-cmtjzhnl900rkoe2bc9j9coud",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-06-05T17:24:42.000Z",
+      "validThrough": null,
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       null
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
       "employmentType": [
        "FULL_TIME"
       ],
@@ -294,7 +703,85 @@
       "titleVisibleOnPage": true
      },
      "dangerous": [],
-     "bytes": 39325,
+     "bytes": 69382,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtjzhpc701fnoe2b54llqxtq",
+     "databasePostedAt": "2026-07-15T23:23:32.000Z",
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/lead-engineer-pricing-technology-retail-cmtjzhpc701fnoe2b54llqxtq",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/lead-engineer-pricing-technology-retail-cmtjzhpc701fnoe2b54llqxtq",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-07-15T23:23:32.000Z",
+      "validThrough": null,
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       null
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
+      "employmentType": [
+       "FULL_TIME"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 66471,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtjzhryc02hooe2bigmmx4uh",
+     "databasePostedAt": "2026-08-25T21:01:42.000Z",
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/sr-engineer-merchandise-technology-planning-and-allocation-cmtjzhryc02hooe2bigmmx4uh",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/sr-engineer-merchandise-technology-planning-and-allocation-cmtjzhryc02hooe2bigmmx4uh",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-08-25T21:01:42.000Z",
+      "validThrough": null,
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       null
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
+      "employmentType": [
+       "FULL_TIME"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 62509,
      "httpOk": true,
      "schemaOk": true,
      "dateInvented": false,
@@ -477,6 +964,12 @@
       "hasHiringOrganization": true,
       "hasJobLocation": true,
       "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Langueux"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
       "employmentType": [
        "PART_TIME"
       ],
@@ -510,6 +1003,12 @@
       "hasHiringOrganization": true,
       "hasJobLocation": true,
       "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Bègles"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
       "employmentType": null,
       "identifier": true,
       "titleVisibleOnPage": true
@@ -541,6 +1040,12 @@
       "hasHiringOrganization": true,
       "hasJobLocation": true,
       "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Roubaix"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
       "employmentType": [
        "TEMPORARY"
       ],
@@ -558,7 +1063,7 @@
    ]
   },
   {
-   "state": "multi-sources",
+   "state": "multi-sources (plusieurs JobSource)",
    "expectation": "une offre canonique : une seule fiche, un seul lien canonique",
    "expectHttp": [
     200
@@ -585,6 +1090,12 @@
       "hasHiringOrganization": true,
       "hasJobLocation": true,
       "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Marcianise"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
       "employmentType": [
        "TEMPORARY",
        "INTERN"
@@ -619,6 +1130,12 @@
       "hasHiringOrganization": true,
       "hasJobLocation": true,
       "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Pantin"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
       "employmentType": [
        "FULL_TIME"
       ],
@@ -652,6 +1169,12 @@
       "hasHiringOrganization": true,
       "hasJobLocation": true,
       "directApply": false,
+      "jobLocationCount": 1,
+      "jobLocationLocalities": [
+       "Pantin"
+      ],
+      "jobLocationType": null,
+      "applicantLocationRequirements": null,
       "employmentType": [
        "FULL_TIME"
       ],
@@ -740,5 +1263,241 @@
    ]
   }
  ],
- "failures": []
+ "failures": [
+  {
+   "state": "datée mais description incomplète",
+   "id": "cmtk0g2xj07xxs32buq6je3zn",
+   "databasePostedAt": "2026-07-01T00:00:00.000Z",
+   "databaseValidThrough": null,
+   "redirectedTo": "/offre/director-marketing-ud-cmtk0g2xj07xxs32buq6je3zn",
+   "jsonLdBreakout": false,
+   "status": 200,
+   "location": "/offre/director-marketing-ud-cmtk0g2xj07xxs32buq6je3zn",
+   "robots": null,
+   "hasJobPosting": true,
+   "unparsableBlocks": 0,
+   "schema": {
+    "datePosted": "2026-07-01T00:00:00.000Z",
+    "validThrough": null,
+    "hasTitle": true,
+    "hasDescription": true,
+    "hasHiringOrganization": true,
+    "hasJobLocation": true,
+    "directApply": false,
+    "jobLocationCount": 1,
+    "jobLocationLocalities": [
+     "El Segundo"
+    ],
+    "jobLocationType": null,
+    "applicantLocationRequirements": null,
+    "employmentType": null,
+    "identifier": true,
+    "titleVisibleOnPage": true
+   },
+   "dangerous": [],
+   "bytes": 40188,
+   "httpOk": true,
+   "schemaOk": false,
+   "dateInvented": false,
+   "expiryInvented": false,
+   "verdict": "FAIL"
+  },
+  {
+   "state": "datée mais description incomplète",
+   "id": "cmtk1xq0701vqnv2be1awe0ra",
+   "databasePostedAt": "2026-09-01T22:37:53.999Z",
+   "databaseValidThrough": null,
+   "redirectedTo": "/offre/accounts-payable-manager-cmtk1xq0701vqnv2be1awe0ra",
+   "jsonLdBreakout": false,
+   "status": 200,
+   "location": "/offre/accounts-payable-manager-cmtk1xq0701vqnv2be1awe0ra",
+   "robots": null,
+   "hasJobPosting": true,
+   "unparsableBlocks": 0,
+   "schema": {
+    "datePosted": "2026-09-01T22:37:53.999Z",
+    "validThrough": null,
+    "hasTitle": true,
+    "hasDescription": false,
+    "hasHiringOrganization": true,
+    "hasJobLocation": true,
+    "directApply": false,
+    "jobLocationCount": 1,
+    "jobLocationLocalities": [
+     "Los Angeles"
+    ],
+    "jobLocationType": null,
+    "applicantLocationRequirements": null,
+    "employmentType": [
+     "FULL_TIME"
+    ],
+    "identifier": true,
+    "titleVisibleOnPage": true
+   },
+   "dangerous": [],
+   "bytes": 39322,
+   "httpOk": true,
+   "schemaOk": false,
+   "dateInvented": false,
+   "expiryInvented": false,
+   "verdict": "FAIL"
+  },
+  {
+   "state": "datée mais description incomplète",
+   "id": "cmtk1xq4n01wenv2b4jv6k02r",
+   "databasePostedAt": "2026-06-25T00:33:55.832Z",
+   "databaseValidThrough": null,
+   "redirectedTo": "/offre/brand-graphic-designer-cmtk1xq4n01wenv2b4jv6k02r",
+   "jsonLdBreakout": false,
+   "status": 200,
+   "location": "/offre/brand-graphic-designer-cmtk1xq4n01wenv2b4jv6k02r",
+   "robots": null,
+   "hasJobPosting": true,
+   "unparsableBlocks": 0,
+   "schema": {
+    "datePosted": "2026-06-25T00:33:55.832Z",
+    "validThrough": null,
+    "hasTitle": true,
+    "hasDescription": false,
+    "hasHiringOrganization": true,
+    "hasJobLocation": true,
+    "directApply": false,
+    "jobLocationCount": 1,
+    "jobLocationLocalities": [
+     "Los Angeles"
+    ],
+    "jobLocationType": null,
+    "applicantLocationRequirements": null,
+    "employmentType": [
+     "FULL_TIME"
+    ],
+    "identifier": true,
+    "titleVisibleOnPage": true
+   },
+   "dangerous": [],
+   "bytes": 39223,
+   "httpOk": true,
+   "schemaOk": false,
+   "dateInvented": false,
+   "expiryInvented": false,
+   "verdict": "FAIL"
+  },
+  {
+   "state": "active, échéance dépassée",
+   "id": "cmtk1x7ep00mynv2b1el1hv8l",
+   "databasePostedAt": "2026-08-23T02:00:00.000Z",
+   "databaseValidThrough": "2026-09-06T22:00:00.000Z",
+   "redirectedTo": "/offre/gestionnaire-systemes-d-informations-h-f-cmtk1x7ep00mynv2b1el1hv8l",
+   "jsonLdBreakout": false,
+   "status": 200,
+   "location": "/offre/gestionnaire-systemes-d-informations-h-f-cmtk1x7ep00mynv2b1el1hv8l",
+   "robots": null,
+   "hasJobPosting": true,
+   "unparsableBlocks": 0,
+   "schema": {
+    "datePosted": "2026-08-23T02:00:00.000Z",
+    "validThrough": "2026-09-06T22:00:00.000Z",
+    "hasTitle": true,
+    "hasDescription": true,
+    "hasHiringOrganization": true,
+    "hasJobLocation": true,
+    "directApply": false,
+    "jobLocationCount": 1,
+    "jobLocationLocalities": [
+     "Saint-Imier"
+    ],
+    "jobLocationType": null,
+    "applicantLocationRequirements": null,
+    "employmentType": null,
+    "identifier": true,
+    "titleVisibleOnPage": true
+   },
+   "dangerous": [],
+   "bytes": 50240,
+   "httpOk": true,
+   "schemaOk": false,
+   "dateInvented": false,
+   "expiryInvented": false,
+   "verdict": "FAIL"
+  },
+  {
+   "state": "active, échéance dépassée",
+   "id": "cmtk1x7jh00ninv2b33p7wx18",
+   "databasePostedAt": "2026-08-11T02:00:00.000Z",
+   "databaseValidThrough": "2026-09-06T22:00:00.000Z",
+   "redirectedTo": "/offre/responsable-d-atelier-assemblage-sequentiel-h-f-cmtk1x7jh00ninv2b33p7wx18",
+   "jsonLdBreakout": false,
+   "status": 200,
+   "location": "/offre/responsable-d-atelier-assemblage-sequentiel-h-f-cmtk1x7jh00ninv2b33p7wx18",
+   "robots": null,
+   "hasJobPosting": true,
+   "unparsableBlocks": 0,
+   "schema": {
+    "datePosted": "2026-08-11T02:00:00.000Z",
+    "validThrough": "2026-09-06T22:00:00.000Z",
+    "hasTitle": true,
+    "hasDescription": true,
+    "hasHiringOrganization": true,
+    "hasJobLocation": true,
+    "directApply": false,
+    "jobLocationCount": 1,
+    "jobLocationLocalities": [
+     "Plan-les-Ouates"
+    ],
+    "jobLocationType": null,
+    "applicantLocationRequirements": null,
+    "employmentType": null,
+    "identifier": true,
+    "titleVisibleOnPage": true
+   },
+   "dangerous": [],
+   "bytes": 47040,
+   "httpOk": true,
+   "schemaOk": false,
+   "dateInvented": false,
+   "expiryInvented": false,
+   "verdict": "FAIL"
+  },
+  {
+   "state": "active, échéance dépassée",
+   "id": "cmtk20oqx07wonv2bg9ngzv1c",
+   "databasePostedAt": "2026-08-10T00:00:00.000Z",
+   "databaseValidThrough": "2026-09-10T00:00:00.000Z",
+   "redirectedTo": "/offre/visual-editing-intern-vanity-fair-italy-cmtk20oqx07wonv2bg9ngzv1c",
+   "jsonLdBreakout": false,
+   "status": 200,
+   "location": "/offre/visual-editing-intern-vanity-fair-italy-cmtk20oqx07wonv2bg9ngzv1c",
+   "robots": null,
+   "hasJobPosting": true,
+   "unparsableBlocks": 0,
+   "schema": {
+    "datePosted": "2026-08-10T00:00:00.000Z",
+    "validThrough": "2026-09-10T00:00:00.000Z",
+    "hasTitle": true,
+    "hasDescription": true,
+    "hasHiringOrganization": true,
+    "hasJobLocation": true,
+    "directApply": false,
+    "jobLocationCount": 1,
+    "jobLocationLocalities": [
+     "Via Bordoni N Milano"
+    ],
+    "jobLocationType": null,
+    "applicantLocationRequirements": null,
+    "employmentType": [
+     "INTERN",
+     "FULL_TIME"
+    ],
+    "identifier": true,
+    "titleVisibleOnPage": true
+   },
+   "dangerous": [],
+   "bytes": 50121,
+   "httpOk": true,
+   "schemaOk": false,
+   "dateInvented": false,
+   "expiryInvented": false,
+   "verdict": "FAIL"
+  }
+ ]
 }
