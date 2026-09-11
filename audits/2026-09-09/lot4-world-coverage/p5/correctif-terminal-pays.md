@@ -217,3 +217,93 @@ Les **4 342** offres à code ambigu sans provenance restent **visibles et inéli
 résolution passe par le renseignement de `countryIntegrity` à l'ingestion — donc par P7, pas par P5.
 
 **P5 est clos.**
+
+---
+
+# Hotfix terminal — le code postal ne prouve pas à lui seul le pays (2026-09-11)
+
+## Le défaut
+
+`if (job.postalCode?.trim()) return true` était trop permissif. Un code postal est bien **indépendant du
+suffixe**, mais sa simple **présence** ne dit rien du pays auquel il appartient.
+
+Les deux cas qui devaient rester refusés l'étaient donc à tort acceptés :
+« El Segundo, CA » / pays `CA` / ZIP **90245**, et « Indianapolis, IN » / pays `IN` / ZIP **46204**.
+
+## La règle
+
+`postalCodeConfirms()` exige que le **format** soit connu pour le pays déclaré **et qu'il corresponde** :
+
+| Pays | Format | Le ZIP 90245 le confirme-t-il ? |
+|---|---|---|
+| `US` | `12345` ou `12345-6789` | oui |
+| `CA` | `A1A 1A1` | **non** — d'où le refus |
+| `IN` | 6 chiffres | **non** (90245 en a 5) |
+| `DE` | 5 chiffres | oui, mais `contradictsCountry` s'exécute avant |
+
+Un format **inconnu ne confirme rien** : on refuse le balisage plutôt que de publier un pays sur une présomption.
+**Aucune table postale mondiale n'est construite** — seuls les formats nécessaires pour trancher les codes
+ambigus sont encodés.
+
+`countryIntegrity` passe à une **liste POSITIVE explicite** : `RAW_COUNTRY_CODE`, `RAW_COUNTRY`, `VERIFIED`. La
+liste négative précédente (« toute valeur autre que AMBIGUOUS ou UNVERIFIED ») était ouverte : un verdict futur
+inconnu, ou une valeur écrite par erreur, aurait valu preuve **par défaut**.
+
+## Tests discriminants
+
+| # | Cas | Résultat |
+|---|---|---|
+| **A** | El Segundo, CA / `CA` / ZIP US 90245 | **aucun JobPosting** |
+| **B** | Indianapolis, IN / `IN` / ZIP US 46204 | **aucun JobPosting** |
+| **C** | Berlin / `DE` / code postal compatible `10115` | **balisage autorisé** |
+| **D** | code postal **incompatible** (`K1A 0B1` sous `DE`) | **aucun balisage** |
+| + | code postal canadien valide sous `CA` | accepté |
+| + | verdict `countryIntegrity` inconnu | ne prouve rien ; seuls les trois verdicts de la liste prouvent |
+
+**133 tests web verts.**
+
+## Les codes ambigus, par TYPE DE PREUVE RÉEL
+
+| Type de preuve | Offres |
+|---|---:|
+| `COUNTRY_INTEGRITY_VERIFIED` | **0** — la colonne est vide en production |
+| `COUNTRY_SPELLED_OUT` | **0** |
+| `POSTAL_COUNTRY_VALIDATED` | **1 633** |
+| `NO_INDEPENDENT_PROOF` | **7 210** |
+| **Total** | **8 843** = exactement le nombre de codes ambigus en base |
+
+Les quatre groupes sont **exhaustifs et disjoints**. Le « 4 501 avec preuve » agrégé annoncé précédemment était
+**gonflé par la règle postale permissive** : le chiffre réel est **1 633**.
+
+> **Piège SQL trouvé en mesurant** : `NOT (col IN (...))` vaut **NULL** quand `col` est NULL. Toutes les lignes à
+> `countryIntegrity` vide — soit la totalité — étaient silencieusement exclues des quatre groupes, qui rendaient
+> zéro. Rendu NULL-safe par `coalesce`.
+
+## Dénominateurs actualisés
+
+| Mesure | Offres |
+|---|---:|
+| `visibleOnModeCareers` | **78 932** |
+| `googleEligible` *(porte technique Mode Careers)* | **65 099** |
+| `googleIneligible` | **13 833** |
+
+Motifs : `AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF` **7 210** · `PHYSICAL_LOCATION_WITHOUT_COUNTRY` 3 937 ·
+`NO_REAL_POSTED_DATE` 1 450 · `NO_USABLE_LOCATION` 779 · `DESCRIPTION_TOO_THIN` 477 · `VALID_THROUGH_EXPIRED` 257 ·
+`LOCATION_COUNTRY_CONFLICT` 142 · `REMOTE_WITHOUT_ELIGIBILITY_COUNTRY` 23 ·
+`MULTI_LOCATION_COUNTRY_NOT_PROVEN` 11 · `OPEN_APPLICATION` 1.
+
+## Vérifié sur les pages servies
+
+**33 / 33 conformes, 0 échec.** Cas A en direct :
+
+| Offre | HTTP | `JobPosting` | `addressCountry:"CA"` |
+|---|---|---|---|
+| `cmtk0fwif07hus32b25d6ob8k` (« El Segundo, CA ») | **200** | **0** | **0** |
+| `cmtk0fxca07k2s32byonfzntz` (« Costa Mesa, CA ») | **200** | **0** | **0** |
+
+## P5 EST CLOS
+
+Les **7 210** offres sans provenance restent **visibles et inéligibles**. Leur résolution exige que
+`countryIntegrity` soit réellement **persistée** par la chaîne d'ingestion — et cela ne se produira **pas tout
+seul** : `resolveGeography` produit bien `method` et `sourcePath`, mais cette provenance **n'est pas écrite en
+base aujourd'hui**. Le chantier est décrit dans le prérequis P7.
