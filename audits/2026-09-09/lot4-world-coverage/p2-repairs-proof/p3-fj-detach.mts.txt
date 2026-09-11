@@ -1,0 +1,35 @@
+import { PrismaClient } from '@prisma/client';
+import { deactivateSources } from '../../apps/aggregator/src/pipeline/deactivateSources.js';
+/**
+ * Detach the FashionJobs representations of postings that ALSO carry a live official attestation.
+ *
+ * FashionJobs discovers actors; it never supplies postings (owner rule). These 172 postings keep an ACTIVE
+ * official source, so removing the FashionJobs attestation changes nothing the candidate sees — which is exactly
+ * why this half needs no arbitration, unlike the 585 that depend on FashionJobs alone (untouched here).
+ *
+ * The disposition is WITHDRAWN, never CLOSED: `deactivateSources` distinguishes the two and counts them
+ * separately, so an administrative withdrawal is never recorded as an employer closing a vacancy. RAW,
+ * identifiers and history are preserved.
+ *
+ * usage: p3-fj-detach.mts <clone|production> [--apply]
+ */
+const target = process.argv[2];
+if (!['clone', 'production'].includes(target ?? '')) { console.error('usage: p3-fj-detach.mts <clone|production> [--apply]'); process.exit(2); }
+const APPLY = process.argv.includes('--apply');
+
+const p = new PrismaClient({ log: [] });
+try {
+  /** The postings to detach: attested by fashionjobs AND by at least one ACTIVE non-fashionjobs source. */
+  const ids: any[] = await p.$queryRaw`
+    SELECT j.id FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
+    WHERE js."sourceKey" = 'fashionjobs' AND js."isActive" AND j."isActive"
+      AND EXISTS (SELECT 1 FROM "JobSource" js2 JOIN "Source" s2 ON s2.key = js2."sourceKey"
+                  WHERE js2."jobId" = j.id AND js2."isActive" AND s2.status = 'ACTIVE' AND js2."sourceKey" <> 'fashionjobs')`;
+  const jobIds = ids.map((r: any) => r.id);
+  const out: any = { at: new Date().toISOString(), target, apply: APPLY, planned: jobIds.length, sample: jobIds.slice(0, 5) };
+  if (APPLY && jobIds.length) {
+    // Scoped by BOTH the source and the exact job set: no other FashionJobs representation is touched.
+    out.result = await deactivateSources(p, { sourceKey: 'fashionjobs' }, { kind: 'WITHDRAWN', reason: 'DISCOVERY_ONLY_SOURCE_NOT_A_POSTING_SOURCE' }, { id: { in: jobIds } });
+  }
+  console.log(JSON.stringify(out, null, 1));
+} finally { await p.$disconnect(); }

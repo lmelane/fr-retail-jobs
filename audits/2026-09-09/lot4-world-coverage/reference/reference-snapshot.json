@@ -1,6 +1,6 @@
 {
  "summary": {
-  "at": "2026-09-10T22:13:23.813Z",
+  "at": "2026-09-10T22:50:37.331Z",
   "definition": "One read-only transaction; every count below shares this instant.",
   "perimeters": {
    "liveDefinition": "ACTIVE + PAUSED (the sources that may still write)",
@@ -11,7 +11,7 @@
    },
    "pausedOnly": {
     "sources": 8,
-    "representations": 1513,
+    "representations": 1341,
     "lastRunOk": 8
    }
   },
@@ -51,20 +51,20 @@
   },
   "representations": {
    "unit": "active (source, externalId) links under an ACTIVE/PAUSED source; a multi-source posting appears several times",
-   "denominator": 81586,
+   "denominator": 81414,
    "observed": 26265,
    "reviewed": 13410,
-   "multiSourceExcess": 2070,
+   "multiSourceExcess": 1898,
    "byCertification": {
     "CERTIFIED": 47851,
-    "NOT_REVIEWED": 33735,
+    "NOT_REVIEWED": 33563,
     "REVIEW_NOT_CURRENT": 0
    },
    "byAttribution": {
     "PROVEN": 4398,
     "PARTIAL": 18521,
     "OBSERVED_NONE_REVIEWED": 5023,
-    "NOT_OBSERVED": 53644,
+    "NOT_OBSERVED": 53472,
     "NO_ACTIVE_REPRESENTATION": 0
    }
   }
@@ -659,27 +659,6 @@
    "attribution": "NOT_OBSERVED"
   },
   {
-   "key": "fashionjobs",
-   "maison": "FashionJobs",
-   "kind": "fashionjobs",
-   "status": "PAUSED",
-   "certification": "NOT_REVIEWED",
-   "portalScope": null,
-   "reviewedAt": null,
-   "collection": "OK",
-   "lastRunAt": "2026-09-07T23:07:25.102Z",
-   "fetched": null,
-   "declaredTotal": null,
-   "complete": null,
-   "truncated": null,
-   "runErrors": null,
-   "activePostings": 757,
-   "representations": 757,
-   "representationsObserved": 0,
-   "representationsReviewed": 0,
-   "attribution": "NOT_OBSERVED"
-  },
-  {
    "key": "la-casa-de-las-carcasas",
    "maison": "La casa de las Carcasas",
    "kind": "teamtailor",
@@ -717,6 +696,27 @@
    "runErrors": null,
    "activePostings": 609,
    "representations": 609,
+   "representationsObserved": 0,
+   "representationsReviewed": 0,
+   "attribution": "NOT_OBSERVED"
+  },
+  {
+   "key": "fashionjobs",
+   "maison": "FashionJobs",
+   "kind": "fashionjobs",
+   "status": "PAUSED",
+   "certification": "NOT_REVIEWED",
+   "portalScope": null,
+   "reviewedAt": null,
+   "collection": "OK",
+   "lastRunAt": "2026-09-07T23:07:25.102Z",
+   "fetched": null,
+   "declaredTotal": null,
+   "complete": null,
+   "truncated": null,
+   "runErrors": null,
+   "activePostings": 585,
+   "representations": 585,
    "representationsObserved": 0,
    "representationsReviewed": 0,
    "attribution": "NOT_OBSERVED"

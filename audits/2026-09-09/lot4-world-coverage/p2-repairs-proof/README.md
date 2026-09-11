@@ -20,6 +20,17 @@ Ce dossier conserve ce qu'une PR ne remplace pas : la **version exacte du script
 
 Les dumps restent dans `backups/` (gitignoré) : ils contiennent des données de production. **La restauration sur clone est la preuve** que chaque sauvegarde existe et est exploitable — les deux ont été restaurées avant application.
 
+## Le détachement FashionJobs (172) — et sa limite de traçabilité
+
+| Élément | Valeur |
+|---|---|
+| Script appliqué | `p3-fj-detach.mts.txt` · sha256 `3d38f30b2838fc4a89eab8771b92c825d51ba53290e711f5adfcf06c5f270c43` |
+| Résultat production | `p3-fj-prod.json` — 172 détachées, `jobsClosed 0`, `jobsWithdrawn 0`, `jobsKept 172`, 15 URLs réassignées |
+| Contrôles postérieurs | `p4-url-scoped.mts.txt` (`c81b80a8…9c3d`), `p4-attestation-quality.mts.txt` (`5d1803d4…d7b3`) |
+| Périmètre vérifié | `p4-detachment-perimeter-268.json` — **268 identifiants, un SUR-ENSEMBLE** |
+
+> **Limite déclarée** : l'exécution n'a archivé que **5 identifiants sur 172**, et `deactivateSources` n'écrit un `JobEvent` que si l'offre est fermée ou retirée — ici `jobsWithdrawn = 0` par construction. **Aucune trace datée n'existe**, donc les 172 exacts ne sont pas reconstituables. Les contrôles portent sur les 268 offres du prédicat (les 172 + des désactivations antérieures). **Correctif pour les prochaines mutations : archiver la liste complète des identifiants avant application.**
+
 ## Les identifiants traités et les résultats
 
 | Fichier | Contenu |
@@ -39,7 +50,8 @@ Les dumps restent dans `backups/` (gitignoré) : ils contiennent des données de
 | UNIQLO offres sans description | 2 | **0** |
 | Parité Ulta (base / API) | 10 290 / 10 289 | **10 290 / 10 290** |
 | Offres actives | 79 516 | **79 516** |
-| Retenues **réelles** (état, pas compteur) | 740 | **740** |
+| Retenues **réelles** (écriture refusée, aucune ligne créée) | 702 | **702** |
+| *dont écrites puis désactivées, comptées à tort comme retenues* | *38 (Aptar)* | *reclassées cycle de vie* |
 | Parité du tableau final | 440/441 | **441/441** |
 
 Le rejeu complet du script ne modifie **aucune ligne**.
