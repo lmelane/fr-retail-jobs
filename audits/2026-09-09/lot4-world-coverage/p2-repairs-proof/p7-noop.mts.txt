@@ -1,0 +1,16 @@
+import { PrismaClient } from '@prisma/client';
+import { writeFileSync } from 'node:fs';
+// A REAL mutation script that finds nothing to do: the FashionJobs withdrawal, already applied.
+// It exercises the whole chain (perimeter manifest, apply, replay) without changing a single row anywhere.
+const target = process.argv[2];
+if (!['clone','production'].includes(target ?? '')) { console.error('usage: <clone|production> [--apply]'); process.exit(2); }
+const p = new PrismaClient();
+try {
+  const rows: any[] = await p.$queryRaw`
+    SELECT j.id FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId"
+    WHERE js."sourceKey"='fashionjobs' AND NOT js."isActive" LIMIT 20`;
+  const ids = rows.map((r) => r.id);
+  const file = `backups/lot4-20260909/p7-perimeter-${target}.json`;
+  writeFileSync(file, JSON.stringify({ at: new Date().toISOString(), target, ids, totals: { planned: ids.length } }, null, 1));
+  console.log(JSON.stringify({ manifestFile: file, planned: ids.length, applied: 0 }, null, 1));
+} finally { await p.$disconnect(); }

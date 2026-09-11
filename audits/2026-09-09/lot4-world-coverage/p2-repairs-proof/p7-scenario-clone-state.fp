@@ -1,0 +1,1 @@
+97a819237d395c9683600801ccf58b4e302d36475ce26e882b867c1759f19f2a python3 apps/aggregator/scripts/ops/db.py clone npx tsx backups/lot4-20260909/p7-state.mts

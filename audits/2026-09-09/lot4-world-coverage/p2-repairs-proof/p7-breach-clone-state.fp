@@ -1,0 +1,1 @@
+9d518d7dddd5a8f7d086968c559ad00f38dc07504a90855c49cae0a8f624872e python3 backups/lot4-20260909/run-local-d.py npx tsx backups/lot4-20260909/p7-state.mts
