@@ -1,0 +1,18 @@
+import { PrismaClient } from '@prisma/client';
+// SCENARIO 4: a validator SHARED by the pipeline is re-evaluated on the same archives.
+// `assertIdentityReview` is the promotion gate's own check — the same function certify/promote call. Re-running
+// it over the stored reviews shows which certifications still hold and which have become stale.
+import { assertIdentityReview } from '../../apps/aggregator/src/connectors/sourceIdentity.js';
+const p = new PrismaClient();
+try {
+  const sources = await p.source.findMany({ where: { status: 'ACTIVE' }, select: { key: true, maison: true, kind: true, config: true, careersDomain: true, tenantKey: true, tier: true } });
+  const reviews = await p.sourceIdentityReview.findMany({ orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
+  const latest = new Map<string, any>(); for (const r of reviews) if (!latest.has(r.sourceKey)) latest.set(r.sourceKey, r);
+  let certified = 0, stale = 0, none = 0; const staleKeys: string[] = [];
+  for (const s of sources) {
+    const r = latest.get(s.key);
+    if (!r) { none++; continue; }
+    try { assertIdentityReview(s as any, r); certified++; } catch { stale++; staleKeys.push(s.key); }
+  }
+  console.log(JSON.stringify({ evaluated: sources.length, certified, stale, noReview: none, staleKeys: staleKeys.slice(0, 5) }, null, 1));
+} finally { await p.$disconnect(); }

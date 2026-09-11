@@ -1,0 +1,25 @@
+import { PrismaClient } from '@prisma/client';
+// SCENARIO 3: change a REAL source configuration used by the pipeline, and see what it invalidates.
+// The identity review is bound to the configuration by sourceIdentityHash: changing the config must make the
+// existing certification stop applying — that is the guarantee, not a file hash.
+import { assertIdentityReview, sourceIdentityHash } from '../../apps/aggregator/src/connectors/sourceIdentity.js';
+const key = process.argv[2] ?? 'damart';
+const apply = process.argv.includes('--apply');
+const p = new PrismaClient();
+try {
+  const [{ current_database: db }]: any[] = await p.$queryRaw`SELECT current_database()`;
+  if (!/replay|clone|test/.test(db)) throw new Error(`refusing: ${db} is not a clone`);
+  const before = await p.source.findUniqueOrThrow({ where: { key }, select: { key: true, maison: true, kind: true, config: true, careersDomain: true, tenantKey: true, tier: true, status: true } });
+  const review = await p.sourceIdentityReview.findFirst({ where: { sourceKey: key }, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
+  const verdict = (src: any) => { if (!review) return 'NO_REVIEW'; try { assertIdentityReview(src, review); return 'CERTIFIED'; } catch (e) { return `INVALID: ${(e as Error).message.replace(/^promote: /, '').slice(0, 60)}`; } };
+  const out: any = { database: db, key, hashBefore: sourceIdentityHash(before as any), verdictBefore: verdict(before) };
+  if (apply) {
+    // A real configuration change: the tenant's own setting, exactly what an operator would edit.
+    const config = { ...(before.config as any), maxPages: ((before.config as any)?.maxPages ?? 1) + 1 };
+    await p.source.update({ where: { key }, data: { config } });
+    const after = await p.source.findUniqueOrThrow({ where: { key }, select: { key: true, maison: true, kind: true, config: true, careersDomain: true, tenantKey: true, tier: true, status: true } });
+    out.configAfter = config; out.hashAfter = sourceIdentityHash(after as any); out.verdictAfter = verdict(after);
+    out.hashChanged = out.hashBefore !== out.hashAfter;
+  }
+  console.log(JSON.stringify(out, null, 1));
+} finally { await p.$disconnect(); }

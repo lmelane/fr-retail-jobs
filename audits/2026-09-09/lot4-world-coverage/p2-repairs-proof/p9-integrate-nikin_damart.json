@@ -1,0 +1,108 @@
+{
+ "at": "2026-09-11T08:26:30.003Z",
+ "database": "catwalks_lot4_replay_20260909d",
+ "keys": [
+  "nikin",
+  "damart"
+ ],
+ "cassette": 2,
+ "before": [
+  {
+   "sourceKey": "damart",
+   "postings": 4
+  },
+  {
+   "sourceKey": "nikin",
+   "postings": 3
+  }
+ ],
+ "after": [
+  {
+   "sourceKey": "damart",
+   "postings": 4,
+   "dated": 4,
+   "described": 4
+  },
+  {
+   "sourceKey": "nikin",
+   "postings": 3,
+   "dated": 3,
+   "described": 3
+  }
+ ],
+ "run": {
+  "total": 2,
+  "ok": 2,
+  "failed": 0,
+  "timedOut": 0,
+  "failures": [],
+  "incidents": []
+ },
+ "touchedIds": [
+  "cmtwoz9c90007e2sei08zzeb7",
+  "cmtlyf5ab00daqf5kahknyl9w",
+  "cmtlyf59t00d6qf5koorb3896",
+  "cmtrsc18w009wpg5mu8vaxts0",
+  "cmtlyf07f009lqf5koani8rhz",
+  "cmtlyf06x009hqf5k8tjhuchh",
+  "cmtt7usfu007mmy01ovovwrpw"
+ ],
+ "rows": [
+  {
+   "sourceKey": "damart",
+   "externalId": "23c876df-ef4e-48ad-9be8-84e1b84f6697",
+   "id": "cmtwoz9c90007e2sei08zzeb7",
+   "title": "Range Manager Assistant Apprentice (Level 4)",
+   "postedAt": "2026-09-09T07:43:56.000Z",
+   "location": "Bingley, BD97 1AD"
+  },
+  {
+   "sourceKey": "damart",
+   "externalId": "60735ad6-07f5-44e5-99c3-a7b037b8bc33",
+   "id": "cmtlyf5ab00daqf5kahknyl9w",
+   "title": "Warehouse Operative - Fixed Term",
+   "postedAt": "2026-08-18T14:01:01.000Z",
+   "location": "Keighley, BD20 6TT"
+  },
+  {
+   "sourceKey": "damart",
+   "externalId": "66684d6c-5bc0-4546-84c2-fa9c75fc9b5f",
+   "id": "cmtlyf59t00d6qf5koorb3896",
+   "title": "Executive Assistant",
+   "postedAt": "2026-09-03T15:36:43.000Z",
+   "location": "Bingley, BD97 1AD"
+  },
+  {
+   "sourceKey": "damart",
+   "externalId": "9b5ea7f1-d7cd-460c-91db-338c8b2d2fac",
+   "id": "cmtrsc18w009wpg5mu8vaxts0",
+   "title": "Digital Marketing Executive",
+   "postedAt": "2026-09-07T14:44:38.000Z",
+   "location": "Bingley, BD97 1AD"
+  },
+  {
+   "sourceKey": "nikin",
+   "externalId": "2016082",
+   "id": "cmtlyf07f009lqf5koani8rhz",
+   "title": "Spontanbewerbung",
+   "postedAt": "2025-02-06T10:54:02.000Z",
+   "location": "Homeoffice"
+  },
+  {
+   "sourceKey": "nikin",
+   "externalId": "2728472",
+   "id": "cmtlyf06x009hqf5k8tjhuchh",
+   "title": "Freelance Outdoor Fotograf*in (Projekt- oder Stundenbasis)",
+   "postedAt": "2026-09-01T06:36:39.000Z",
+   "location": "Homeoffice"
+  },
+  {
+   "sourceKey": "nikin",
+   "externalId": "2738338",
+   "id": "cmtt7usfu007mmy01ovovwrpw",
+   "title": "Weihnachtsmarkt-Verkäufer*in Bern vom 19.11.26 bis 27.12.26",
+   "postedAt": "2026-09-08T10:07:23.000Z",
+   "location": "Bern, Bern, Schweiz"
+  }
+ ]
+}
