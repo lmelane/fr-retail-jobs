@@ -164,20 +164,84 @@ function hasIndependentCountryProof(job: JobRow, country: string, locality: stri
   if (!COUNTRY_CODES_THAT_ARE_ALSO_SUBDIVISIONS.has(country)) return true;
 
   /**
-   * `countryIntegrity` porte le jugement de la chaîne d'ingestion : `OK` (ou tout verdict non douteux) vaut
-   * preuve. Vide, elle ne prouve rien — mais elle ne réfute rien non plus, et les critères suivants s'appliquent.
+   * `countryIntegrity` : **liste positive explicite**. Seuls ces verdicts autorisent le balisage.
+   *
+   * Une première version acceptait « toute valeur différente de AMBIGUOUS ou UNVERIFIED » — une liste NÉGATIVE,
+   * donc ouverte : un verdict futur inconnu, ou une valeur écrite par erreur, aurait valu preuve par défaut.
    */
   const integrity = (job as { countryIntegrity?: string | null }).countryIntegrity;
-  if (integrity && integrity !== 'AMBIGUOUS' && integrity !== 'UNVERIFIED') return true;
+  if (integrity && COUNTRY_INTEGRITY_PROVING.has(integrity)) return true;
 
   // Le libellé nomme le pays en toutes lettres : indépendant du suffixe à deux lettres.
   const label = `${job.location ?? ''} ${locality ?? ''}`;
   if (spellsOutCountry(label, country)) return true;
 
-  // Un code postal est une information que le suffixe ne fournit pas.
-  if (job.postalCode?.trim()) return true;
+  /**
+   * Le code postal ne vaut preuve que si son FORMAT est compatible avec le pays déclaré. Sa simple présence ne
+   * prouve rien : « El Segundo, CA » avec le ZIP américain `90245` sous le pays `CA` publierait le Canada sur la
+   * foi d'un code postal qui, précisément, n'est pas canadien.
+   */
+  if (postalCodeConfirms(job.postalCode, country)) return true;
 
   return false;
+}
+
+/**
+ * Les verdicts de `countryIntegrity` qui PROUVENT le pays. Liste positive : tout le reste ne prouve rien.
+ *
+ * Les valeurs sont celles que la chaîne géographique produit lorsqu'elle a établi le pays par une preuve
+ * indépendante du libellé (`RAW_COUNTRY_CODE`, `RAW_COUNTRY` — un champ pays déclaré par l'ATS). Voir
+ * `resolveGeography` (apps/aggregator/src/normalize/geography.ts) : `method` y porte cette provenance.
+ */
+const COUNTRY_INTEGRITY_PROVING: ReadonlySet<string> = new Set([
+  'RAW_COUNTRY_CODE', // la source a déclaré un code pays dans un champ dédié
+  'RAW_COUNTRY',      // la source a déclaré un nom de pays dans un champ dédié
+  'VERIFIED',         // verdict de revue explicite
+]);
+
+/**
+ * Les formats de code postal qui IDENTIFIENT un pays sans ambiguïté, pour les seuls codes collisionnants.
+ *
+ * On ne construit pas une table postale mondiale (ce serait hors périmètre P5, et l'arbitrage l'exclut) : on
+ * n'encode que ce qui permet de TRANCHER les cas ambigus. Un format qui ne correspond pas au pays déclaré ne
+ * prouve rien — il ne réfute pas non plus formellement, mais en l'absence de preuve on refuse.
+ *
+ * Le cas décisif : `90245` est un ZIP à 5 chiffres, format des États-Unis ; le Canada utilise `A1A 1A1`. Ce code
+ * postal ne peut donc pas confirmer un pays `CA`, et « El Segundo, CA » reste non prouvé.
+ */
+const POSTAL_FORMATS: Readonly<Record<string, RegExp>> = {
+  US: /^\d{5}(?:-\d{4})?$/,
+  CA: /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/,
+  DE: /^\d{5}$/,
+  NL: /^\d{4}\s?[A-Za-z]{2}$/,
+  IN: /^\d{6}$/,
+  PA: /^\d{4}$/,
+  MT: /^[A-Za-z]{3}\s?\d{4}$/,
+  MD: /^(?:MD-?)?\d{4}$/,
+  ID: /^\d{5}$/,
+  IL: /^\d{5}(?:\d{2})?$/,
+  SK: /^\d{3}\s?\d{2}$/,
+  AR: /^[A-Za-z]?\d{4}[A-Za-z]{0,3}$/,
+  CO: /^\d{6}$/,
+  MA: /^\d{5}$/,
+  TN: /^\d{4}$/,
+};
+
+/**
+ * Le code postal confirme-t-il le pays déclaré ?
+ *
+ * Exige que le format soit CONNU pour ce pays et qu'il corresponde. Un format inconnu ne confirme rien : on
+ * préfère refuser le balisage plutôt que de publier un pays sur une présomption.
+ *
+ * Le piège que cela ferme : `DE` (Allemagne) et `US` partagent le format à 5 chiffres. Un ZIP `90245` correspond
+ * donc formellement aussi à l'Allemagne — raison pour laquelle ce test seul ne suffit jamais à publier un pays
+ * qui serait contredit par ailleurs ; `contradictsCountry` s'exécute AVANT lui.
+ */
+function postalCodeConfirms(postalCode: string | null | undefined, country: string): boolean {
+  const code = postalCode?.trim();
+  if (!code) return false;
+  const format = POSTAL_FORMATS[country];
+  return format ? format.test(code) : false;
 }
 
 /**
