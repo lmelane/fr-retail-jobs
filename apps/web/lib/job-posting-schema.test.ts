@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { jobPostingSchema, schemaEmploymentTypes } from './job-posting-schema';
+import { jobPostingSchema, markupIneligibility, schemaEmploymentTypes } from './job-posting-schema';
 import type { JobRow } from './jobs';
 
 /**
@@ -13,7 +13,12 @@ const base: JobRow = {
   id: 'ck123', title: 'Vendeur', company: 'Cartier', companyDomain: 'cartier.com', group: 'Richemont',
   city: 'PARIS', location: 'Paris, France', employmentTerm: 'PERMANENT', sector: 'LUXURY',
   url: 'https://x/1', postedAt: new Date('2026-08-20T00:00:00Z'), latitude: null, longitude: null,
-  sourceCount: 1, sources: ['cartier'], description: 'desc', applyUrl: 'https://x/1',
+  sourceCount: 1, sources: ['cartier'],
+  // Une description RÉELLE : depuis le 2026-09-11 un fragment ne suffit plus à mériter un balisage
+  // (`DESCRIPTION_TOO_THIN`). Le décor doit donc porter une annonce plausible, pas le mot « desc ».
+  description: 'Nous recherchons un vendeur pour notre boutique parisienne. Vous accueillez la clientèle, '
+    + 'conseillez sur nos collections et participez à la tenue du point de vente.',
+  applyUrl: 'https://x/1',
   postalCode: null, department: null, jobFunction: null, seniority: null, workTime: null, workplaceType: null,
   programType: null, engagementType: null, isSeasonal: null,
   experienceYears: null, educationLevel: null, salaryMin: null, salaryMax: null,
@@ -37,9 +42,21 @@ describe('jobPostingSchema', () => {
     expect(JSON.parse(JSON.stringify(schema))).not.toHaveProperty('validThrough');
   });
 
-  it('does not extend an explicit expired deadline when the page is rendered', () => {
-    const schema = jobPostingSchema({ ...base, validThrough: new Date('2026-08-01T00:00:00Z') })!;
-    expect(schema.validThrough).toBe('2026-08-01T00:00:00.000Z');
+  /**
+   * Révisé le 2026-09-11 (arbitrage du propriétaire). Une échéance DÉPASSÉE annonce au moteur un poste clos :
+   * la page peut rester visible, mais **aucun balisage n'est émis**. Auparavant le `validThrough` périmé était
+   * publié tel quel — honnête sur la date, mais trompeur sur l'offre. Mesuré : 257 offres actives concernées,
+   * dates réelles venues des sources, qu'aucun run ne peut rafraîchir tant que les crons sont gelés.
+   */
+  it('émet AUCUN balisage quand l\'échéance de la source est dépassée', () => {
+    expect(jobPostingSchema({ ...base, validThrough: new Date('2026-08-01T00:00:00Z') },
+      new Date('2026-09-11T00:00:00Z'))).toBeNull();
+  });
+
+  it('publie une échéance encore future telle que la source la donne', () => {
+    const schema = jobPostingSchema({ ...base, validThrough: new Date('2026-12-01T00:00:00Z') },
+      new Date('2026-09-11T00:00:00Z'))!;
+    expect(schema.validThrough).toBe('2026-12-01T00:00:00.000Z');
   });
 
   it('prefers the source datePosted and a still-future validThrough', () => {
@@ -124,5 +141,86 @@ describe('schemaEmploymentTypes', () => {
 
   it('rend un tableau vide plutôt qu’une supposition', () => {
     expect(schemaEmploymentTypes(null, null)).toEqual([]);
+  });
+});
+
+/**
+ * LES QUATRE SCÉNARIOS DE RÉCEPTION (P5, bloc final du 2026-09-11).
+ *
+ * Ils portent sur la distinction que le lot impose : **visible sur Mode Careers** et **éligible au balisage** sont
+ * deux questions différentes. Une page peut rester servie sans qu'aucun `JobPosting` ne soit émis.
+ *
+ * Les motifs sont testés par `markupIneligibility`, la MÊME fonction que celle qui garde `jobPostingSchema` :
+ * un contrôle qui réimplémenterait ces conditions finirait par en diverger.
+ */
+describe('éligibilité au balisage — quatre scénarios de réception', () => {
+  const NOW = new Date('2026-09-11T12:00:00Z');
+
+  it('1. offre datée mais sans description complète → visible, AUCUN JobPosting', () => {
+    // Mesuré en production : 124 offres actives sans description, 353 sous le seuil, sur 78 932.
+    for (const description of [null, '', 'Vendeur H/F', 'Poste à pourvoir.']) {
+      const job = { ...base, description } as JobRow;
+      expect(markupIneligibility(job, NOW)).toContain('DESCRIPTION_TOO_THIN');
+      expect(jobPostingSchema(job, NOW)).toBeNull();
+    }
+    // La date seule ne suffit plus : c'était exactement le défaut du compte de 77 482.
+    expect(base.postedAt).not.toBeNull();
+  });
+
+  it('2. offre active avec validThrough passé → visible si voulu, AUCUN JobPosting', () => {
+    const job = { ...base, validThrough: new Date('2026-09-06T16:00:00Z') } as JobRow;
+    expect(markupIneligibility(job, NOW)).toContain('VALID_THROUGH_EXPIRED');
+    expect(jobPostingSchema(job, NOW)).toBeNull();
+    // La date de la source n'est ni réécrite ni prolongée : elle reste ce qu'elle est.
+    expect(job.validThrough?.toISOString()).toBe('2026-09-06T16:00:00.000Z');
+  });
+
+  it('3. offre à PLUSIEURS lieux physiques → tableau jobLocation cohérent avec la source', () => {
+    /**
+     * Cas réel mesuré : « Hong Kong; Shanghai, Shanghai, China; Shenzhen Shi, Guangdong, China ». La colonne
+     * `city` a agrégé ces noms en « China Hong Kong Shanghai » — qui n'est pas une ville et ne doit pas être
+     * publiée comme `addressLocality`. Le balisage repart donc du libellé énuméré.
+     */
+    const job = { ...base, city: 'China Hong Kong Shanghai', countryCode: 'CN',
+      location: 'Hong Kong; Shanghai, Shanghai, China; Shenzhen Shi, Guangdong, China' } as JobRow;
+    const schema = jobPostingSchema(job, NOW)!;
+    const places = schema.jobLocation as Array<Record<string, any>>;
+    expect(Array.isArray(places)).toBe(true);
+    expect(places).toHaveLength(3);
+    expect(places.map((pl) => pl.address.addressLocality)).toEqual([
+      'Hong Kong', 'Shanghai, Shanghai, China', 'Shenzhen Shi, Guangdong, China',
+    ]);
+    // L'agrégat trompeur n'apparaît nulle part.
+    expect(JSON.stringify(schema)).not.toContain('China Hong Kong Shanghai');
+    // Un seul lieu reste un objet, pas un tableau : on ne change pas la forme sans raison.
+    expect(Array.isArray(jobPostingSchema(base, NOW)!.jobLocation)).toBe(false);
+  });
+
+  it('4. offre 100 % distante → TELECOMMUTE et restriction géographique quand elle est connue', () => {
+    const job = { ...base, workplaceType: 'REMOTE', city: 'New York', countryCode: 'US',
+      location: 'New York, US' } as JobRow;
+    const schema = jobPostingSchema(job, NOW)!;
+    expect(schema.jobLocationType).toBe('TELECOMMUTE');
+    expect(schema.applicantLocationRequirements).toEqual({ '@type': 'Country', name: 'US' });
+    // Le rattachement nommé par la source est conservé : c'est une information vraie.
+    expect((schema.jobLocation as any).address.addressLocality).toBe('New York');
+  });
+
+  it('4b. distante sans pays connu → TELECOMMUTE sans restriction inventée', () => {
+    // On n'invente pas une restriction géographique : son absence est une absence, pas un « monde entier ».
+    const job = { ...base, workplaceType: 'REMOTE', city: null, countryCode: null, location: null } as JobRow;
+    // Sans lieu ni pays, l'offre n'est pas localisable du tout : pas de balisage.
+    expect(markupIneligibility(job, NOW)).toContain('NO_USABLE_LOCATION');
+    expect(jobPostingSchema(job, NOW)).toBeNull();
+  });
+
+  it('nomme chaque motif d\'inéligibilité séparément, et ne cumule rien à tort', () => {
+    expect(markupIneligibility(base, NOW)).toEqual([]);
+    expect(markupIneligibility({ ...base, postedAt: null } as JobRow, NOW)).toEqual(['NO_REAL_POSTED_DATE']);
+    expect(markupIneligibility({ ...base, company: '' } as JobRow, NOW)).toEqual(['NO_HIRING_ORGANIZATION']);
+    expect(markupIneligibility({ ...base, url: 'mailto:rh@example.com' } as JobRow, NOW)).toEqual(['NO_APPLY_PATH']);
+    // Plusieurs défauts → plusieurs motifs, chacun nommé.
+    expect(markupIneligibility({ ...base, postedAt: null, description: '' } as JobRow, NOW))
+      .toEqual(['NO_REAL_POSTED_DATE', 'DESCRIPTION_TOO_THIN']);
   });
 });
