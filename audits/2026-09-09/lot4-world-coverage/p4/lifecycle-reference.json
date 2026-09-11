@@ -1,0 +1,842 @@
+{
+ "at": "2026-09-11T11:01:39.078Z",
+ "isolation": "repeatable read",
+ "states": {
+  "total": 83070,
+  "active": 78932,
+  "closed": 2772,
+  "withdrawn": 1344,
+  "inactive_undated": 22,
+  "active_but_closed_dated": 0,
+  "ever_reopened": 212,
+  "reopen_events": 212
+ },
+ "freshness": [
+  {
+   "bucket": 0,
+   "representations": 5437,
+   "jobs": 5416
+  },
+  {
+   "bucket": 1,
+   "representations": 20774,
+   "jobs": 20546
+  },
+  {
+   "bucket": 2,
+   "representations": 54618,
+   "jobs": 53524
+  }
+ ],
+ "stalestSources": [
+  {
+   "sourceKey": "helena-rubinstein-8",
+   "representations": 72,
+   "newest_observation": "2026-09-06T13:13:56.078Z",
+   "oldest_observation": "2026-09-06T13:13:55.353Z",
+   "hours_since_newest": 118
+  },
+  {
+   "sourceKey": "sessun",
+   "representations": 36,
+   "newest_observation": "2026-09-06T13:13:07.444Z",
+   "oldest_observation": "2026-09-06T04:10:24.396Z",
+   "hours_since_newest": 118
+  },
+  {
+   "sourceKey": "clarins-wttj",
+   "representations": 6,
+   "newest_observation": "2026-09-06T13:11:55.045Z",
+   "oldest_observation": "2026-09-06T13:11:54.958Z",
+   "hours_since_newest": 118
+  },
+  {
+   "sourceKey": "hermes",
+   "representations": 609,
+   "newest_observation": "2026-09-06T13:20:45.150Z",
+   "oldest_observation": "2026-09-06T13:20:38.338Z",
+   "hours_since_newest": 118
+  },
+  {
+   "sourceKey": "monsieur-tshirt",
+   "representations": 7,
+   "newest_observation": "2026-09-06T14:24:08.127Z",
+   "oldest_observation": "2026-09-06T09:12:26.076Z",
+   "hours_since_newest": 117
+  },
+  {
+   "sourceKey": "a-p-c",
+   "representations": 20,
+   "newest_observation": "2026-09-06T14:24:14.366Z",
+   "oldest_observation": "2026-09-06T14:24:14.149Z",
+   "hours_since_newest": 117
+  },
+  {
+   "sourceKey": "pied-de-biche",
+   "representations": 6,
+   "newest_observation": "2026-09-06T14:24:08.368Z",
+   "oldest_observation": "2026-09-06T09:12:23.926Z",
+   "hours_since_newest": 117
+  },
+  {
+   "sourceKey": "l-oreal-professionnel",
+   "representations": 1804,
+   "newest_observation": "2026-09-08T05:54:40.722Z",
+   "oldest_observation": "2026-09-04T17:41:55.684Z",
+   "hours_since_newest": 77
+  },
+  {
+   "sourceKey": "apivita",
+   "representations": 11,
+   "newest_observation": "2026-09-08T22:03:49.731Z",
+   "oldest_observation": "2026-09-06T13:12:03.819Z",
+   "hours_since_newest": 61
+  },
+  {
+   "sourceKey": "aime-leon-dore",
+   "representations": 12,
+   "newest_observation": "2026-09-08T22:03:55.158Z",
+   "oldest_observation": "2026-09-08T22:03:54.942Z",
+   "hours_since_newest": 61
+  },
+  {
+   "sourceKey": "ackermans",
+   "representations": 4,
+   "newest_observation": "2026-09-08T22:03:33.453Z",
+   "oldest_observation": "2026-09-08T22:03:33.384Z",
+   "hours_since_newest": 61
+  },
+  {
+   "sourceKey": "adidas",
+   "representations": 1142,
+   "newest_observation": "2026-09-08T22:22:15.359Z",
+   "oldest_observation": "2026-09-06T09:29:48.625Z",
+   "hours_since_newest": 61
+  },
+  {
+   "sourceKey": "akira",
+   "representations": 187,
+   "newest_observation": "2026-09-08T22:08:20.681Z",
+   "oldest_observation": "2026-09-07T22:05:15.756Z",
+   "hours_since_newest": 61
+  },
+  {
+   "sourceKey": "adopt-parfums",
+   "representations": 121,
+   "newest_observation": "2026-09-08T22:07:00.590Z",
+   "oldest_observation": "2026-09-08T22:06:53.840Z",
+   "hours_since_newest": 61
+  },
+  {
+   "sourceKey": "apm-monaco",
+   "representations": 98,
+   "newest_observation": "2026-09-08T22:06:29.219Z",
+   "oldest_observation": "2026-09-06T13:14:18.172Z",
+   "hours_since_newest": 61
+  },
+  {
+   "sourceKey": "abercrombie",
+   "representations": 8,
+   "newest_observation": "2026-09-08T22:03:44.466Z",
+   "oldest_observation": "2026-09-08T22:03:44.324Z",
+   "hours_since_newest": 61
+  },
+  {
+   "sourceKey": "annoushka",
+   "representations": 4,
+   "newest_observation": "2026-09-08T22:03:33.687Z",
+   "oldest_observation": "2026-09-06T13:11:48.057Z",
+   "hours_since_newest": 61
+  },
+  {
+   "sourceKey": "agency",
+   "representations": 4,
+   "newest_observation": "2026-09-08T22:03:33.895Z",
+   "oldest_observation": "2026-09-08T22:03:33.837Z",
+   "hours_since_newest": 61
+  },
+  {
+   "sourceKey": "aritzia",
+   "representations": 554,
+   "newest_observation": "2026-09-08T22:15:50.874Z",
+   "oldest_observation": "2026-09-07T22:10:21.985Z",
+   "hours_since_newest": 61
+  },
+  {
+   "sourceKey": "amiri",
+   "representations": 43,
+   "newest_observation": "2026-09-08T22:05:09.014Z",
+   "oldest_observation": "2026-09-08T22:05:07.483Z",
+   "hours_since_newest": 61
+  }
+ ],
+ "attestation": [
+  {
+   "status": "OK",
+   "sources": 311,
+   "may_attest": 213,
+   "may_not_attest": 98
+  },
+  {
+   "status": "DEGRADED",
+   "sources": 216,
+   "may_attest": 3,
+   "may_not_attest": 213
+  },
+  {
+   "status": "NEW",
+   "sources": 26,
+   "may_attest": 0,
+   "may_not_attest": 26
+  },
+  {
+   "status": "BROKEN",
+   "sources": 1,
+   "may_attest": 0,
+   "may_not_attest": 1
+  }
+ ],
+ "unverifiable": [
+  {
+   "sourceKey": "ulta-jibe",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:49:47.078Z",
+   "declaredTotal": 9966,
+   "fetched": 9964,
+   "complete": false,
+   "truncated": true,
+   "live_representations": 10290,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "foot-locker-france",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:43:10.959Z",
+   "declaredTotal": 2853,
+   "fetched": 2842,
+   "complete": false,
+   "truncated": true,
+   "live_representations": 2859,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "tapestry",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-10T09:41:05.854Z",
+   "declaredTotal": 2091,
+   "fetched": 2091,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 2183,
+   "days_since_last_attempt": 1
+  },
+  {
+   "sourceKey": "pandora-talenthub",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:48:29.048Z",
+   "declaredTotal": null,
+   "fetched": 1974,
+   "complete": false,
+   "truncated": true,
+   "live_representations": 2077,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "knitwell-us-retail",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-10T17:20:13.084Z",
+   "declaredTotal": 2000,
+   "fetched": 1999,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 1997,
+   "days_since_last_attempt": 1
+  },
+  {
+   "sourceKey": "l-oreal-professionnel",
+   "source_status": "ACTIVE",
+   "last_run_status": "BROKEN",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:35:05.614Z",
+   "declaredTotal": null,
+   "fetched": 0,
+   "complete": null,
+   "truncated": false,
+   "live_representations": 1804,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "boots",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:35:12.481Z",
+   "declaredTotal": null,
+   "fetched": 1472,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 1608,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "nordstrom",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-10T08:59:13.860Z",
+   "declaredTotal": 1299,
+   "fetched": 1299,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 1575,
+   "days_since_last_attempt": 1
+  },
+  {
+   "sourceKey": "pvh",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:33:08.266Z",
+   "declaredTotal": null,
+   "fetched": 1358,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 1397,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "adidas",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:22:15.374Z",
+   "declaredTotal": null,
+   "fetched": 1069,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 1142,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "kering",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-10T07:58:00.612Z",
+   "declaredTotal": 1026,
+   "fetched": 1025,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 1112,
+   "days_since_last_attempt": 1
+  },
+  {
+   "sourceKey": "intersport-france",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:20:21.716Z",
+   "declaredTotal": 993,
+   "fetched": 993,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 930,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "lovisa",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:16:22.162Z",
+   "declaredTotal": null,
+   "fetched": 845,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 893,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "la-casa-de-las-carcasas",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:15:15.927Z",
+   "declaredTotal": null,
+   "fetched": 689,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 745,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "hermes",
+   "source_status": "PAUSED",
+   "last_run_status": "OK",
+   "canAttestAbsence": null,
+   "last_attempt": "2026-09-06T13:20:45.190Z",
+   "declaredTotal": null,
+   "fetched": null,
+   "complete": null,
+   "truncated": null,
+   "live_representations": 609,
+   "days_since_last_attempt": 5
+  },
+  {
+   "sourceKey": "vf-corporation",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-10T18:19:51.178Z",
+   "declaredTotal": 1273,
+   "fetched": 1273,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 578,
+   "days_since_last_attempt": 1
+  },
+  {
+   "sourceKey": "oniverse",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-10T08:58:52.477Z",
+   "declaredTotal": 734,
+   "fetched": 483,
+   "complete": false,
+   "truncated": true,
+   "live_representations": 524,
+   "days_since_last_attempt": 1
+  },
+  {
+   "sourceKey": "crocs",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:11:07.141Z",
+   "declaredTotal": null,
+   "fetched": 390,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 512,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "luxe-talent",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:13:14.603Z",
+   "declaredTotal": null,
+   "fetched": 478,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 478,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "element-6",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:11:09.613Z",
+   "declaredTotal": null,
+   "fetched": 387,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 403,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "nike-nke2",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:15:54.443Z",
+   "declaredTotal": 325,
+   "fetched": 324,
+   "complete": false,
+   "truncated": true,
+   "live_representations": 348,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "uniqlo-us-retail",
+   "source_status": "ACTIVE",
+   "last_run_status": "NEW",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-10T14:50:56.646Z",
+   "declaredTotal": 347,
+   "fetched": 347,
+   "complete": true,
+   "truncated": false,
+   "live_representations": 347,
+   "days_since_last_attempt": 1
+  },
+  {
+   "sourceKey": "nocibe-eqwa",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:10:04.023Z",
+   "declaredTotal": null,
+   "fetched": 291,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 321,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "swatch-group",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-09T19:47:51.662Z",
+   "declaredTotal": 61,
+   "fetched": 61,
+   "complete": true,
+   "truncated": false,
+   "live_representations": 293,
+   "days_since_last_attempt": 2
+  },
+  {
+   "sourceKey": "etam",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:08:30.855Z",
+   "declaredTotal": null,
+   "fetched": 242,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 251,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "avolta",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:09:33.235Z",
+   "declaredTotal": null,
+   "fetched": 246,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 248,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "rolex",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:09:03.678Z",
+   "declaredTotal": null,
+   "fetched": 209,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 213,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "armand-thiery-flatchr",
+   "source_status": "ACTIVE",
+   "last_run_status": "NEW",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-10T13:21:55.633Z",
+   "declaredTotal": 198,
+   "fetched": 198,
+   "complete": true,
+   "truncated": false,
+   "live_representations": 198,
+   "days_since_last_attempt": 1
+  },
+  {
+   "sourceKey": "akira",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:08:20.700Z",
+   "declaredTotal": null,
+   "fetched": 186,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 187,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "aroma-zone",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:08:20.679Z",
+   "declaredTotal": null,
+   "fetched": 175,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 184,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "galeries-lafayette",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:08:09.043Z",
+   "declaredTotal": null,
+   "fetched": 160,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 169,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "douglas-sf",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:07:20.671Z",
+   "declaredTotal": null,
+   "fetched": 136,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 151,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "decjuba",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:08:21.955Z",
+   "declaredTotal": null,
+   "fetched": 149,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 150,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "prada-group",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:05:48.511Z",
+   "declaredTotal": null,
+   "fetched": 54,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 149,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "chalhoub",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:07:01.276Z",
+   "declaredTotal": null,
+   "fetched": 138,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 148,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "hans-anders",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:07:54.401Z",
+   "declaredTotal": null,
+   "fetched": 138,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 144,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "burberry",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:08:15.712Z",
+   "declaredTotal": null,
+   "fetched": 133,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 142,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "sezane",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:06:53.291Z",
+   "declaredTotal": null,
+   "fetched": 115,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 118,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "boggi-milano",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-08T22:06:31.969Z",
+   "declaredTotal": null,
+   "fetched": 100,
+   "complete": false,
+   "truncated": false,
+   "live_representations": 105,
+   "days_since_last_attempt": 3
+  },
+  {
+   "sourceKey": "knitwell-us-corporate",
+   "source_status": "ACTIVE",
+   "last_run_status": "DEGRADED",
+   "canAttestAbsence": false,
+   "last_attempt": "2026-09-10T17:13:47.547Z",
+   "declaredTotal": 101,
+   "fetched": 100,
+   "complete": true,
+   "truncated": false,
+   "live_representations": 99,
+   "days_since_last_attempt": 1
+  }
+ ],
+ "holds": [
+  {
+   "reason": null,
+   "observations": 106744,
+   "distinct_postings": 76727,
+   "sources": 455,
+   "oldest": "2026-09-06T13:19:45.290Z",
+   "newest": "2026-09-10T18:37:57.230Z",
+   "oldest_age_days": 5
+  },
+  {
+   "reason": "WORKDAY_EMPLOYER_ABSENT_IN_DETAIL",
+   "observations": 760,
+   "distinct_postings": 728,
+   "sources": 4,
+   "oldest": "2026-09-09T19:52:03.098Z",
+   "newest": "2026-09-10T18:19:51.015Z",
+   "oldest_age_days": 2
+  },
+  {
+   "reason": "APPLICATION_EXPLICITLY_CLOSED",
+   "observations": 110,
+   "distinct_postings": 49,
+   "sources": 2,
+   "oldest": "2026-09-08T21:18:54.121Z",
+   "newest": "2026-09-09T05:56:13.500Z",
+   "oldest_age_days": 3
+  },
+  {
+   "reason": "SCOPE_OUT_OF_PERIMETER",
+   "observations": 38,
+   "distinct_postings": 38,
+   "sources": 1,
+   "oldest": "2026-09-10T12:17:17.128Z",
+   "newest": "2026-09-10T12:17:22.541Z",
+   "oldest_age_days": 1
+  },
+  {
+   "reason": "APPLICATION_TEMPLATE_EXPIRY_CONTRADICTION",
+   "observations": 24,
+   "distinct_postings": 12,
+   "sources": 1,
+   "oldest": "2026-09-08T21:19:00.319Z",
+   "newest": "2026-09-08T22:20:19.617Z",
+   "oldest_age_days": 3
+  },
+  {
+   "reason": "APPLICATION_HTTP_404",
+   "observations": 16,
+   "distinct_postings": 8,
+   "sources": 1,
+   "oldest": "2026-09-08T21:24:13.699Z",
+   "newest": "2026-09-08T22:20:21.709Z",
+   "oldest_age_days": 3
+  },
+  {
+   "reason": "WORKDAY_DETAIL_FETCH_FAILED",
+   "observations": 3,
+   "distinct_postings": 3,
+   "sources": 2,
+   "oldest": "2026-09-09T19:54:26.406Z",
+   "newest": "2026-09-10T17:18:58.093Z",
+   "oldest_age_days": 2
+  }
+ ],
+ "heldAlsoPublished": {
+  "held_postings": 77492,
+  "also_published_and_active": 75411
+ },
+ "withdrawals": [
+  {
+   "withdrawalReason": "DISCOVERY_ONLY_SOURCE_NOT_A_POSTING_SOURCE",
+   "postings": 584,
+   "oldest": "2026-09-11T06:13:02.884Z",
+   "newest": "2026-09-11T06:15:10.119Z"
+  },
+  {
+   "withdrawalReason": "OUT_OF_SCOPE",
+   "postings": 432,
+   "oldest": "2026-09-08T17:23:51.899Z",
+   "newest": "2026-09-10T12:17:22.550Z"
+  },
+  {
+   "withdrawalReason": "SOURCE_RETIRED",
+   "postings": 316,
+   "oldest": "2026-09-09T15:09:20.442Z",
+   "newest": "2026-09-10T15:32:58.097Z"
+  },
+  {
+   "withdrawalReason": "IDENTITY_CONTRADICTED",
+   "postings": 12,
+   "oldest": "2026-09-09T14:04:24.841Z",
+   "newest": "2026-09-09T17:37:31.215Z"
+  }
+ ],
+ "events": [
+  {
+   "type": "OPENED",
+   "n": 11999,
+   "oldest": "2026-09-06T15:25:57.147Z",
+   "newest": "2026-09-10T18:37:47.758Z"
+  },
+  {
+   "type": "CLOSED",
+   "n": 1528,
+   "oldest": "2026-09-08T02:01:53.604Z",
+   "newest": "2026-09-09T02:03:45.997Z"
+  },
+  {
+   "type": "WITHDRAWN",
+   "n": 970,
+   "oldest": "2026-09-09T15:09:20.442Z",
+   "newest": "2026-09-11T06:15:10.119Z"
+  },
+  {
+   "type": "REOPENED",
+   "n": 212,
+   "oldest": "2026-09-07T22:01:50.424Z",
+   "newest": "2026-09-10T12:17:21.522Z"
+  }
+ ]
+}

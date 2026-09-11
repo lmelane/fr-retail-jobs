@@ -40,12 +40,39 @@ describe('checkSourceHealth', () => {
     expect(run.canAttestAbsence).toBe(false);
   });
 
-  it('does not grant attestation to an adapter that never measured completion', async () => {
-    await checkSourceHealth(prisma, [stat('legacy-adapter', 100)]);
-    const report = await checkSourceHealth(prisma, [{ ...stat('legacy-adapter', 100), complete: undefined }]);
-    expect(report.degraded).toBe(1);
-    const run = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'legacy-adapter' }, orderBy: { ranAt: 'desc' } });
-    expect(run.complete).toBeNull();
+  /**
+   * Révisé le 2026-09-11 (P4). Une énumération INCONNUE n'est plus traitée comme une incomplétude prouvée.
+   *
+   * Ce que l'ancienne règle produisait, mesuré en production : **149 sources sur 440** ne déclarent aucun total
+   * (teamtailor 113, recruitee 22, personio 14). Les refuser toutes gelait **186 sources portant 20 503
+   * représentations vivantes**, dont aucune offre ne pouvait plus se fermer — et marquait 216 sources DEGRADED
+   * alors qu'elles lisaient parfaitement leur board.
+   *
+   * L'arbitrage retombe sur le VOLUME DE RÉFÉRENCE : avec un run productif derrière soi, l'effondrement est la
+   * preuve disponible ; sans aucune référence, rien n'autorise à faire disparaître une offre.
+   */
+  it('grants attestation to an unmeasured enumeration ONLY when a reference volume exists', async () => {
+    // Premier run : aucune référence, donc aucun droit d'attester, et aucun incident non plus.
+    const first = await checkSourceHealth(prisma, [{ ...stat('legacy-adapter', 100), complete: undefined }]);
+    expect(first.degraded).toBe(0);
+    const firstRun = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'legacy-adapter' }, orderBy: { ranAt: 'desc' } });
+    expect(firstRun.complete).toBeNull();
+    expect(firstRun.canAttestAbsence).toBe(false);
+
+    // Second run, volume stable : la référence existe, la source peut fermer ses offres disparues.
+    const second = await checkSourceHealth(prisma, [{ ...stat('legacy-adapter', 100), complete: undefined }]);
+    expect(second.degraded).toBe(0);
+    const secondRun = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'legacy-adapter' }, orderBy: { ranAt: 'desc' } });
+    expect(secondRun.complete).toBeNull();
+    expect(secondRun.canAttestAbsence).toBe(true);
+  });
+
+  it('still refuses attestation when an unmeasured enumeration collapses against its reference', async () => {
+    await checkSourceHealth(prisma, [{ ...stat('legacy-collapse', 100), complete: undefined }]);
+    await checkSourceHealth(prisma, [{ ...stat('legacy-collapse', 100), complete: undefined }]);
+    // Chute de 90 % : la seule preuve disponible dit que le balayage n'a pas vu le board.
+    await checkSourceHealth(prisma, [{ ...stat('legacy-collapse', 10), complete: undefined }]);
+    const run = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'legacy-collapse' }, orderBy: { ranAt: 'desc' } });
     expect(run.canAttestAbsence).toBe(false);
   });
   it('measures accepted postings, and records coverage even on the first run', async () => {

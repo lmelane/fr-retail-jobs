@@ -1,3 +1,4 @@
+import type { EnumerationVerdict } from './pipeline/enumeration.js';
 import type { AtsType } from '@prisma/client';
 
 export type DiscoveredCompany = {
@@ -121,6 +122,14 @@ export type AdapterResult = {
     pageEvidence?: Array<{ url: string; checkedAt: string; sha256: string; offset: number; pagination: { start: number; end: number; total: number } | null; ids: string[]; publisherCounter: string; componentCounters: string[] }> };
   /** Invalid source rows are retained for diagnosis, never silently counted as a complete feed. */
   rejectedRows?: Array<{ reason: string; raw: unknown }>;
-  /** Explicit proof of enumeration completion; absence is unknown, not complete. */
+  /**
+   * Explicit proof of enumeration completion; absence is unknown, not complete.
+   *
+   * On the way IN (an adapter's own claim) this is `true` or absent. On the way OUT of
+   * `normalizeAdapterResult` it carries the three-valued verdict flattened: `true` proven, `false` refuted,
+   * `undefined` unknown — the distinction the whole freshness chain depends on.
+   */
   complete?: boolean;
+  /** The verdict in full, set by `normalizeAdapterResult`; adapters never provide it. */
+  enumerationVerdict?: EnumerationVerdict;
 };

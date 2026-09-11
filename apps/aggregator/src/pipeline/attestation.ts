@@ -55,6 +55,18 @@ const NEVER_ATTESTS: ReadonlySet<RunStatus> = new Set<RunStatus>([
 
 export type AttestationInput = {
   status: RunStatus;
+  /**
+   * Le verdict d'énumération, en booléen : `true` prouvé, `false` réfuté, **`undefined` inconnu**.
+   *
+   * La distinction `false` / `undefined` est la correction du 2026-09-11. Auparavant `complete !== true`
+   * refusait, donc une source qui ne DÉCLARE pas son total était traitée comme une source dont on avait PROUVÉ
+   * l'incomplétude : 187 sources portant 20 796 représentations ne pouvaient plus fermer une seule offre
+   * (boots, pvh, adidas… 70 adaptateurs sur 101 ne déclarent aucun total).
+   *
+   * `undefined` laisse donc passer cette porte-ci, et l'arbitrage retombe sur la garde d'effondrement plus bas,
+   * qui est la seule preuve disponible quand la source ne déclare rien — et qui a déjà attrapé de vraies
+   * pannes (L'Oréal 1 711 → 0). Voir `pipeline/enumeration.ts`.
+   */
   complete?: boolean;
   errors?: number;
   /** Le total que la SOURCE elle-même annonce pour son listing, si elle l'annonce. */
@@ -76,7 +88,9 @@ export type AttestationInput = {
  * une suppression dans notre catalogue.
  */
 export function isTrustedForAttestation(run: AttestationInput): boolean {
-  if (run.complete !== true || NEVER_ATTESTS.has(run.status) || (run.errors ?? 0) > 0) return false;
+  // Une incomplétude PROUVÉE refuse ; une énumération inconnue (`undefined`) laisse passer et sera arbitrée par
+  // la couverture et l'effondrement ci-dessous. « On ne sait pas » n'est pas « on sait que non ».
+  if (run.complete === false || NEVER_ATTESTS.has(run.status) || (run.errors ?? 0) > 0) return false;
 
   // Le balayage s'est arrêté sur un plafond : par construction, il n'a pas
   // atteint la fin du board.
@@ -88,11 +102,32 @@ export function isTrustedForAttestation(run: AttestationInput): boolean {
     if (fetched / run.declaredTotal < ATTESTATION_MIN_COVERAGE) return false;
   }
 
-  // Effondrement inexpliqué face au dernier run productif.
-  if (run.previous && run.previous > 0) {
-    const fetched = run.fetched ?? 0;
-    if (fetched < run.previous * COLLAPSE_RATIO) return false;
+  /**
+   * Effondrement inexpliqué face au dernier run productif.
+   *
+   * `fetched` INCONNU n'est pas `fetched = 0`. Mesuré le 2026-09-11 : **98 sources** dont le dernier run
+   * précède l'ajout de cette colonne (runs des 5–6 septembre) portent `fetched: null` avec un volume
+   * parfaitement stable par ailleurs (`jobs` 20, `previousJobs` 20). Les compter à zéro y lisait un
+   * effondrement de 100 % qui n'a jamais eu lieu.
+   *
+   * Quand `fetched` manque, la comparaison ne peut pas se faire ici. Ce n'est pas un trou dans la garde : en
+   * exécution, `health.ts` applique SA propre comparaison d'effondrement sur `result.jobs` — qui n'est jamais
+   * nul — en plus de cette porte. La garde reste donc entière sur le chemin réel ; seules les lignes archivées
+   * sans la colonne cessent d'être lues comme un effondrement inventé.
+   */
+  if (run.previous && run.previous > 0 && run.fetched != null) {
+    if (run.fetched < run.previous * COLLAPSE_RATIO) return false;
   }
+
+  /**
+   * Le dernier trou, ouvert par l'acceptation d'`undefined` : une source qui ne DÉCLARE pas son total et n'a
+   * AUCUN run productif derrière elle n'offre aucune preuve du tout. Laisser passer ce cas donnerait le droit de
+   * faire disparaître des offres sur la foi de rien.
+   *
+   * Une énumération inconnue exige donc au moins une référence : soit un total déclaré (vérifié plus haut), soit
+   * un run précédent auquel se comparer. `PROVEN` s'en passe, puisqu'il porte sa propre preuve.
+   */
+  if (run.complete !== true && !run.declaredTotal && !run.previous) return false;
 
   return true;
 }

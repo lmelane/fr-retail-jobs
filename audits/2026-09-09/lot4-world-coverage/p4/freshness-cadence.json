@@ -1,0 +1,789 @@
+{
+ "at": "2026-09-11T11:23:55.306Z",
+ "lifespan": [
+  {
+   "kind": "workday",
+   "closed_postings": 437,
+   "median_days": 3,
+   "p90_days": 5
+  },
+  {
+   "kind": "smartrecruiters-whitelabel",
+   "closed_postings": 402,
+   "median_days": 3,
+   "p90_days": 5
+  },
+  {
+   "kind": "lvmh_algolia",
+   "closed_postings": 287,
+   "median_days": 6,
+   "p90_days": 7
+  },
+  {
+   "kind": "fashionjobs",
+   "closed_postings": 234,
+   "median_days": 2,
+   "p90_days": 4
+  },
+  {
+   "kind": "successfactors",
+   "closed_postings": 166,
+   "median_days": 3,
+   "p90_days": 4
+  },
+  {
+   "kind": "teamtailor",
+   "closed_postings": 160,
+   "median_days": 1,
+   "p90_days": 4
+  },
+  {
+   "kind": "eightfold",
+   "closed_postings": 127,
+   "median_days": 4,
+   "p90_days": 4
+  },
+  {
+   "kind": "avature",
+   "closed_postings": 86,
+   "median_days": 2,
+   "p90_days": 3
+  },
+  {
+   "kind": "greenhouse",
+   "closed_postings": 66,
+   "median_days": 4,
+   "p90_days": 5
+  },
+  {
+   "kind": "wttj-sector",
+   "closed_postings": 59,
+   "median_days": 5,
+   "p90_days": 7
+  }
+ ],
+ "orphanCanonical": {
+  "total": 8346,
+  "active_without_canonical_key": 4604,
+  "inactive_without_canonical_key": 3742
+ },
+ "turnover": [
+  {
+   "kind": "generic-listing",
+   "run_pairs": 198,
+   "sources": 18,
+   "avg_volume_delta_pct": "114.62",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "digitalrecruiters",
+   "run_pairs": 87,
+   "sources": 4,
+   "avg_volume_delta_pct": "56.68",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "eightfold",
+   "run_pairs": 74,
+   "sources": 3,
+   "avg_volume_delta_pct": "9.39",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "talentsoft",
+   "run_pairs": 228,
+   "sources": 6,
+   "avg_volume_delta_pct": "5.11",
+   "median_interval_hours": 3
+  },
+  {
+   "kind": "talentview",
+   "run_pairs": 136,
+   "sources": 4,
+   "avg_volume_delta_pct": "3.18",
+   "median_interval_hours": 3
+  },
+  {
+   "kind": "workday",
+   "run_pairs": 566,
+   "sources": 34,
+   "avg_volume_delta_pct": "1.79",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "teamtailor",
+   "run_pairs": 2574,
+   "sources": 123,
+   "avg_volume_delta_pct": "1.03",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "successfactors",
+   "run_pairs": 730,
+   "sources": 31,
+   "avg_volume_delta_pct": "0.76",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "smartrecruiters-whitelabel",
+   "run_pairs": 929,
+   "sources": 46,
+   "avg_volume_delta_pct": "0.75",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "lvmh_algolia",
+   "run_pairs": 23,
+   "sources": 1,
+   "avg_volume_delta_pct": "0.6",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "recruitee",
+   "run_pairs": 453,
+   "sources": 22,
+   "avg_volume_delta_pct": "0.54",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "greenhouse",
+   "run_pairs": 1427,
+   "sources": 84,
+   "avg_volume_delta_pct": "0.46",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "radancy",
+   "run_pairs": 43,
+   "sources": 1,
+   "avg_volume_delta_pct": "0.44",
+   "median_interval_hours": 3
+  },
+  {
+   "kind": "wttj",
+   "run_pairs": 1216,
+   "sources": 40,
+   "avg_volume_delta_pct": "0.43",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "personio",
+   "run_pairs": 430,
+   "sources": 24,
+   "avg_volume_delta_pct": "0.43",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "lever",
+   "run_pairs": 442,
+   "sources": 24,
+   "avg_volume_delta_pct": "0.42",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "magnet",
+   "run_pairs": 78,
+   "sources": 2,
+   "avg_volume_delta_pct": "0.39",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "ashby",
+   "run_pairs": 48,
+   "sources": 1,
+   "avg_volume_delta_pct": "0.24",
+   "median_interval_hours": 2
+  },
+  {
+   "kind": "workable",
+   "run_pairs": 155,
+   "sources": 4,
+   "avg_volume_delta_pct": "0.23",
+   "median_interval_hours": 3
+  },
+  {
+   "kind": "phenom",
+   "run_pairs": 26,
+   "sources": 1,
+   "avg_volume_delta_pct": "0.15",
+   "median_interval_hours": 4
+  },
+  {
+   "kind": "wordpress",
+   "run_pairs": 31,
+   "sources": 1,
+   "avg_volume_delta_pct": "0",
+   "median_interval_hours": 4
+  }
+ ],
+ "attestability": [
+  {
+   "kind": "teamtailor",
+   "sources": 113,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 14
+  },
+  {
+   "kind": "greenhouse",
+   "sources": 63,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 63
+  },
+  {
+   "kind": "workday",
+   "sources": 53,
+   "declares_a_total": 53,
+   "truncated": 1,
+   "may_attest_archived": 31
+  },
+  {
+   "kind": "smartrecruiters-whitelabel",
+   "sources": 45,
+   "declares_a_total": 45,
+   "truncated": 0,
+   "may_attest_archived": 45
+  },
+  {
+   "kind": "successfactors",
+   "sources": 30,
+   "declares_a_total": 11,
+   "truncated": 0,
+   "may_attest_archived": 9
+  },
+  {
+   "kind": "recruitee",
+   "sources": 22,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "lever",
+   "sources": 18,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 18
+  },
+  {
+   "kind": "generic-listing",
+   "sources": 17,
+   "declares_a_total": 6,
+   "truncated": 4,
+   "may_attest_archived": 5
+  },
+  {
+   "kind": "personio",
+   "sources": 14,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "wttj",
+   "sources": 8,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "talentsoft",
+   "sources": 7,
+   "declares_a_total": 7,
+   "truncated": 0,
+   "may_attest_archived": 6
+  },
+  {
+   "kind": "digitalrecruiters",
+   "sources": 5,
+   "declares_a_total": 5,
+   "truncated": 0,
+   "may_attest_archived": 4
+  },
+  {
+   "kind": "talentview",
+   "sources": 4,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "workable",
+   "sources": 4,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "flatchr",
+   "sources": 4,
+   "declares_a_total": 4,
+   "truncated": 0,
+   "may_attest_archived": 3
+  },
+  {
+   "kind": "eightfold",
+   "sources": 2,
+   "declares_a_total": 2,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "avature",
+   "sources": 2,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "magnet",
+   "sources": 2,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "jobaffinity-wordpress",
+   "sources": 2,
+   "declares_a_total": 2,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "icims",
+   "sources": 2,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 2
+  },
+  {
+   "kind": "oraclehcm",
+   "sources": 2,
+   "declares_a_total": 2,
+   "truncated": 0,
+   "may_attest_archived": 2
+  },
+  {
+   "kind": "phenom",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 1,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "easycruit",
+   "sources": 1,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "jobylon",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "typesense",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "eqwa",
+   "sources": 1,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "ashby",
+   "sources": 1,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "talentrecruiter",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "bashtalents",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "swatchgroup",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "wordpress",
+   "sources": 1,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "rituals",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "taleo",
+   "sources": 1,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "lvmh_algolia",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "jibe",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 1,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "altamira",
+   "sources": 1,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "wttj-sector",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "volcanic",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "geodirectory",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "talentfunnel",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 1
+  },
+  {
+   "kind": "radancy",
+   "sources": 1,
+   "declares_a_total": 0,
+   "truncated": 0,
+   "may_attest_archived": 0
+  },
+  {
+   "kind": "harri",
+   "sources": 1,
+   "declares_a_total": 1,
+   "truncated": 0,
+   "may_attest_archived": 0
+  }
+ ],
+ "detail": [
+  {
+   "kind": "generic-listing",
+   "sources": 17,
+   "avg_description_rate": "0.819",
+   "avg_date_rate": "1"
+  },
+  {
+   "kind": "lever",
+   "sources": 18,
+   "avg_description_rate": "0.88",
+   "avg_date_rate": "1"
+  },
+  {
+   "kind": "personio",
+   "sources": 14,
+   "avg_description_rate": "0.929",
+   "avg_date_rate": "1"
+  },
+  {
+   "kind": "digitalrecruiters",
+   "sources": 5,
+   "avg_description_rate": "0.941",
+   "avg_date_rate": "1"
+  },
+  {
+   "kind": "smartrecruiters-whitelabel",
+   "sources": 45,
+   "avg_description_rate": "0.955",
+   "avg_date_rate": "1"
+  },
+  {
+   "kind": "successfactors",
+   "sources": 30,
+   "avg_description_rate": "0.976",
+   "avg_date_rate": "0.999"
+  },
+  {
+   "kind": "greenhouse",
+   "sources": 63,
+   "avg_description_rate": "0.985",
+   "avg_date_rate": "1"
+  },
+  {
+   "kind": "recruitee",
+   "sources": 22,
+   "avg_description_rate": "0.989",
+   "avg_date_rate": "1"
+  },
+  {
+   "kind": "workday",
+   "sources": 53,
+   "avg_description_rate": "0.99",
+   "avg_date_rate": "0.993"
+  },
+  {
+   "kind": "teamtailor",
+   "sources": 113,
+   "avg_description_rate": "0.997",
+   "avg_date_rate": "1"
+  },
+  {
+   "kind": "wttj",
+   "sources": 8,
+   "avg_description_rate": "1",
+   "avg_date_rate": "1"
+  },
+  {
+   "kind": "talentview",
+   "sources": 4,
+   "avg_description_rate": "1",
+   "avg_date_rate": "1"
+  },
+  {
+   "kind": "talentsoft",
+   "sources": 7,
+   "avg_description_rate": "1",
+   "avg_date_rate": "1"
+  },
+  {
+   "kind": "workable",
+   "sources": 4,
+   "avg_description_rate": "1",
+   "avg_date_rate": "1"
+  },
+  {
+   "kind": "flatchr",
+   "sources": 4,
+   "avg_description_rate": "1",
+   "avg_date_rate": "1"
+  }
+ ],
+ "activeAge": [
+  {
+   "kind": "workday",
+   "active_postings": 18850,
+   "median_age_days": 5,
+   "p90_age_days": 7
+  },
+  {
+   "kind": "jibe",
+   "active_postings": 10290,
+   "median_age_days": 5,
+   "p90_age_days": 5
+  },
+  {
+   "kind": "generic-listing",
+   "active_postings": 6220,
+   "median_age_days": 5,
+   "p90_age_days": 5
+  },
+  {
+   "kind": "lvmh_algolia",
+   "active_postings": 6078,
+   "median_age_days": 9,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "teamtailor",
+   "active_postings": 5355,
+   "median_age_days": 7,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "smartrecruiters-whitelabel",
+   "active_postings": 5146,
+   "median_age_days": 7,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "successfactors",
+   "active_postings": 4180,
+   "median_age_days": 5,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "avature",
+   "active_postings": 2908,
+   "median_age_days": 9,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "phenom",
+   "active_postings": 2859,
+   "median_age_days": 9,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "eightfold",
+   "active_postings": 2569,
+   "median_age_days": 7,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "greenhouse",
+   "active_postings": 2545,
+   "median_age_days": 7,
+   "p90_age_days": 8
+  },
+  {
+   "kind": "wttj-sector",
+   "active_postings": 2002,
+   "median_age_days": 7,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "icims",
+   "active_postings": 1497,
+   "median_age_days": 5,
+   "p90_age_days": 5
+  },
+  {
+   "kind": "rituals",
+   "active_postings": 1245,
+   "median_age_days": 5,
+   "p90_age_days": 5
+  },
+  {
+   "kind": "oraclehcm",
+   "active_postings": 1215,
+   "median_age_days": 5,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "jobaffinity-wordpress",
+   "active_postings": 940,
+   "median_age_days": 3,
+   "p90_age_days": 3
+  },
+  {
+   "kind": "lever",
+   "active_postings": 816,
+   "median_age_days": 7,
+   "p90_age_days": 8
+  },
+  {
+   "kind": "digitalrecruiters",
+   "active_postings": 786,
+   "median_age_days": 7,
+   "p90_age_days": 8
+  },
+  {
+   "kind": "wttj",
+   "active_postings": 766,
+   "median_age_days": 9,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "recruitee",
+   "active_postings": 639,
+   "median_age_days": 8,
+   "p90_age_days": 8
+  },
+  {
+   "kind": "magnet",
+   "active_postings": 492,
+   "median_age_days": 9,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "wordpress",
+   "active_postings": 478,
+   "median_age_days": 9,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "flatchr",
+   "active_postings": 354,
+   "median_age_days": 1,
+   "p90_age_days": 3
+  },
+  {
+   "kind": "talentsoft",
+   "active_postings": 353,
+   "median_age_days": 7,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "eqwa",
+   "active_postings": 321,
+   "median_age_days": 5,
+   "p90_age_days": 5
+  },
+  {
+   "kind": "swatchgroup",
+   "active_postings": 293,
+   "median_age_days": 5,
+   "p90_age_days": 5
+  },
+  {
+   "kind": "workable",
+   "active_postings": 280,
+   "median_age_days": 9,
+   "p90_age_days": 9
+  },
+  {
+   "kind": "personio",
+   "active_postings": 186,
+   "median_age_days": 8,
+   "p90_age_days": 8
+  },
+  {
+   "kind": "talentfunnel",
+   "active_postings": 153,
+   "median_age_days": 5,
+   "p90_age_days": 5
+  },
+  {
+   "kind": "geodirectory",
+   "active_postings": 110,
+   "median_age_days": 5,
+   "p90_age_days": 5
+  }
+ ]
+}

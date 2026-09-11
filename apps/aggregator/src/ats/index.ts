@@ -2,6 +2,7 @@ import { fetchJobaffinityWordpressJobs } from './adapters/jobaffinityWordpress.j
 import { fetchFlatchrJobs } from './adapters/flatchr.js';
 import type { AtsType } from '@prisma/client';
 import type { AdapterResult, NormalizedJob } from '../types.js';
+import { ENUMERATION_MIN_COVERAGE, enumerationVerdict, verdictToComplete } from '../pipeline/enumeration.js';
 import { fetchGreenhouseJobs } from './adapters/greenhouse.js';
 import { fetchLeverJobs } from './adapters/lever.js';
 import { fetchSmartRecruitersJobs } from './adapters/smartrecruiters.js';
@@ -62,23 +63,43 @@ export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown
 
 export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult): AdapterResult {
   const normalized = toResult(result);
-  const truncated = normalized.truncated ??
-    (normalized.declaredTotal !== undefined && normalized.jobs.length < normalized.declaredTotal);
   const unique = new Set(normalized.jobs.map(job => job.externalId)).size;
-  const countProvesCompletion = normalized.declaredTotal !== undefined &&
-    Number.isSafeInteger(normalized.declaredTotal) && normalized.declaredTotal >= 0 &&
-    unique === normalized.declaredTotal;
-  // A rejected row is an EXPLAINED witness (an expired page still listed in a
-  // sitemap, a Workday row without a path): when the adapter has judged its
-  // enumeration proven, those rows do not un-prove it. Only an adapter that
-  // states nothing falls back to the count, and then any rejection is doubt.
-  // (2026-09-09: PVH 1 374 postings for 1 440 listed pages, Boots 1 489/1 610,
-  // NARS 53/158 were reported partial for pages the adapter had classified.)
-  const provenByAdapter = normalized.complete ?? (countProvesCompletion && !normalized.rejectedRows?.length);
+
+  /**
+   * `truncated` reste dérivé du total déclaré, MAIS avec la même tolérance que le reste de la chaîne : une unité
+   * d'écart sur 1 026 n'est pas une troncature (kering, 1 025/1 026 — la source publie une offre pendant le
+   * balayage). Auparavant tout écart, même d'une unité, déclarait le listing tronqué.
+   */
+  const declared = normalized.declaredTotal;
+  const truncated = normalized.truncated ??
+    (declared !== undefined && declared > 0 && unique / declared < ENUMERATION_MIN_COVERAGE);
+
+  /**
+   * A rejected row is an EXPLAINED witness (an expired page still listed in a sitemap, a Workday row without a
+   * path). `enumerationVerdict` decides what weight it carries: an adapter that judged its own enumeration keeps
+   * its proof, an adapter that states nothing sees the row as doubt.
+   */
+  const unreadableRows = normalized.rejectedRows?.length ?? 0;
+
+  /**
+   * Le verdict à TROIS valeurs remplace le booléen dont l'absence de réponse valait « non ». `UNKNOWN` devient
+   * `undefined`, jamais `false` : une source qui ne déclare pas son total n'est pas une source dont on a prouvé
+   * l'incomplétude. Voir `pipeline/enumeration.ts` pour les 187 sources que cette confusion avait figées.
+   */
+  const verdict = enumerationVerdict({
+    adapterProvesCompletion: normalized.complete,
+    declaredTotal: declared,
+    uniqueCollected: unique,
+    truncated,
+    unreadableRows,
+  });
+
   return {
     ...normalized,
     truncated,
-    complete: unique === normalized.jobs.length && !truncated && provenByAdapter,
+    // Un doublon d'identifiant dans le lot signifie qu'on ne sait pas ce qu'on a lu : la preuve tombe.
+    complete: unique === normalized.jobs.length ? verdictToComplete(verdict) : false,
+    enumerationVerdict: unique === normalized.jobs.length ? verdict : 'REFUTED',
   };
 }
 
