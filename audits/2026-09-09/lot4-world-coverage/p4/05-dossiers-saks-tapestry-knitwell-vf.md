@@ -22,19 +22,37 @@ Saks ferme donc ses offres disparues normalement. Il sert de **contrôle négati
 rien, ce qui montre qu'il n'élargit pas le droit d'attester par principe mais seulement là où le refus n'était
 pas fondé. *(Saks n'apparaît pas dans les 186 sources « gagnées » — c'est attendu, pas une régression.)*
 
-## Tapestry — le cas d'école de l'item 6
+## Tapestry — la retenue est corrigée, mais le parcours reste NON PROUVÉ
 
 | | |
 |---|---|
 | Dernier run | `DEGRADED`, **2 091 collectées sur 2 091 déclarées**, 0 erreur, non tronqué |
-| Énumération | archivée `complete: false` → recalculée **`PROVEN`** |
-| Droit d'attester | **non** avant · **oui** après |
-| Retenues | **5** (`WORKDAY_EMPLOYER_ABSENT_IN_DETAIL`) sur 2 091 offres, soit 0,24 % |
+| Énumération | **`REFUTED`** — l'adaptateur déclare lui-même `ENUMERATION_NOT_PROVEN` |
+| Terminaison archivée | `UNPARTITIONED_UNDER_CAP` |
+| Droit d'attester | **non**, avant comme après |
+| Retenues | **5** (`WORKDAY_EMPLOYER_ABSENT_IN_DETAIL`) — **ne bloquent plus l'énumération** |
 | Représentations vivantes | 2 183 |
 
-**Cinq pages défectueuses sur 2 091 privaient 2 183 représentations de toute possibilité de fermeture.** La
-source avait lu son board en entier ; c'est le contenu de cinq annonces qui n'était pas exploitable. Les deux
-questions sont désormais distinctes.
+Deux choses distinctes, et il fallait les séparer pour voir la seconde.
+
+**La retenue est corrigée** : les 5 pages défectueuses n'affectent plus l'énumération de la source. C'était bien
+un défaut, et il est réparé.
+
+**Mais le parcours n'est pas démontré pour autant**, et c'est l'adaptateur qui le dit. Les partitions se recollent
+parfaitement — Coach 1 515/1 515, Kate Spade 502/502, Tapestry 69/69, résiduel 5/5, somme exactement égale au
+total déclaré de 2 091. Le problème est ailleurs : **le compteur du site Workday plafonne à 2 000**, et les
+5 offres sans valeur de facette ne sont atteignables **que** par le balayage du site. Leur portée rapporte
+`complete: true` parce que les lignes qu'on lui a servies ont été lues entièrement — cela ne dit rien sur
+l'existence d'autres offres hors facette au-delà du plafond.
+
+> **Piste examinée puis REJETÉE le 2026-09-11.** J'ai d'abord élargi la règle Workday pour accepter « résiduel
+> complet = parcours prouvé », ce qui rendait Tapestry `PROVEN`. Le test `workday.partition.test.ts` l'a réfuté :
+> son décor sert 2 000 lignes sur 2 085, **87 offres de marque restent invisibles**, et chaque partition rapporte
+> néanmoins `complete: true`. La complétude d'une partition ne prouve donc pas la couverture du site. Correctif
+> annulé, refus de l'adaptateur conservé.
+
+Tapestry est donc un **dossier ouvert honnête** : 5 offres de son board sont inatteignables, et on ne ferme rien
+sur cette source tant que ce n'est pas résolu (une facette couvrant ces 5 offres, ou un plafond relevé).
 
 Les 5 offres retenues restent suivies : `DETAIL_INCOMPLETE`, état `NEEDS_REVIEW`, première retenue le 2026-09-10,
 dernière tentative le 2026-09-10, **dernière observation fiable le 2026-09-08** (leur représentation était
@@ -46,10 +64,14 @@ manquant est lu ou qu'une revue d'identité autorise le propriétaire du portail
 | | |
 |---|---|
 | Dernier run | `DEGRADED`, **1 273 collectées sur 1 273 déclarées**, 0 erreur, non tronqué |
-| Énumération | archivée `complete: false` → recalculée **`PROVEN`** |
+| Énumération | **`PROVEN`** — terminaison archivée `SECOND_SWEEP_RECONCILED` |
 | Droit d'attester | **non** avant · **oui** après |
 | Retenues | **695** (`WORKDAY_EMPLOYER_ABSENT_IN_DETAIL`) sur 1 273, soit 54,6 % |
 | Représentations vivantes | 578 |
+
+Le parcours est **réellement démontré** ici, et non déduit d'un ratio : le second balayage réconcilie les
+identifiants répétés entre pages (`SECOND_SWEEP_RECONCILED`). C'est ce qui autorise VF à fermer, là où Tapestry
+ne peut pas.
 
 C'est le cas extrême : **plus de la moitié des annonces de VF ne nomment pas leur employeur dans le détail**. La
 décision de Loïc du 2026-09-10 reste appliquée telle quelle — *« les 695 offres VF sans employeur sont archivées

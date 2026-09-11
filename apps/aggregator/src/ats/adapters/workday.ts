@@ -322,9 +322,20 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
     if (capped) issues.add('PUBLISHER_TOTAL_CAPPED');
     if (overlap) issues.add('PARTITION_OVERLAP');
     if (unpartitioned) issues.add(`UNPARTITIONED_POSTINGS=${unpartitioned}`);
-    // Under a capped site total, postings without a facet value beyond the cap are unobservable: not provable.
-    if (capped && unpartitioned) issues.add('UNPARTITIONED_UNDER_CAP');
   }
+  /**
+   * Under a capped site total, postings without a facet value beyond the cap are unobservable: not provable.
+   *
+   * Tempting shortcut, examined and REJECTED on 2026-09-11: "the residual sweep reported complete, so we saw
+   * everything". It proves nothing. The residual is reachable ONLY through the capped site listing, so its
+   * `complete: true` says the rows it was SERVED were fully read — never that no further unbranded posting
+   * exists beyond the cap. The fixture of `workday.partition.test.ts` is exactly that case: the site serves
+   * 2 000 of 2 085 rows, 87 branded postings stay invisible, and each partition still reports complete.
+   *
+   * So Tapestry stays NOT PROVEN, and that is the honest answer: 5 postings of its board are unreachable. It is
+   * reported as an open dossier rather than forced to PROVEN.
+   */
+  if (capped && unpartitioned) issues.add('UNPARTITIONED_UNDER_CAP');
   const failing = partitions.find((r) => !r.complete) ?? (remainder && !remainder.complete ? remainder : undefined);
   const complete = !failing && overlap === 0 && !(capped && unpartitioned > 0);
   const termination = partitioned ? (failing ? failing.termination : overlap ? 'PARTITION_OVERLAP' : capped && unpartitioned ? 'UNPARTITIONED_UNDER_CAP' : 'PARTITIONS_RECONCILED') : results[0]!.termination;

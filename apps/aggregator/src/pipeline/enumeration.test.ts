@@ -7,15 +7,21 @@ import { isTrustedForAttestation } from './attestation.js';
  * Les cas sont les runs RÉELLEMENT archivés en production, mesurés le 2026-09-11 (lecture seule) : chaque
  * assertion porte les chiffres du `SourceRun` concerné, pas un exemple inventé.
  */
-describe('verdict d\'énumération', () => {
-  it('PROUVE une source qui a lu tout ce qu\'elle déclare (tapestry 2 091/2 091)', () => {
-    expect(enumerationVerdict({ declaredTotal: 2091, uniqueCollected: 2091, truncated: false })).toBe('PROVEN');
+describe('verdict d\'énumération — seul un PARCOURS DÉMONTRÉ prouve', () => {
+  it('un total déclaré ATTEINT ne prouve rien à lui seul : il faut la démonstration du parcours', () => {
+    // Règle imposée le 2026-09-11. Un compteur atteint dit combien la source annonce, pas qu'on soit allé au bout.
+    expect(enumerationVerdict({ declaredTotal: 2091, uniqueCollected: 2091, truncated: false })).toBe('UNKNOWN');
+    // Avec la démonstration de l'adaptateur, c'est PROUVÉ — tapestry et VF restent PROVEN par ce chemin.
+    expect(enumerationVerdict({ declaredTotal: 2091, uniqueCollected: 2091, adapterProvesCompletion: true })).toBe('PROVEN');
+    expect(enumerationVerdict({ declaredTotal: 1273, uniqueCollected: 1273, adapterProvesCompletion: true })).toBe('PROVEN');
   });
 
-  it('PROUVE une unité d\'écart sur un total déclaré (kering 1 025/1 026, knitwell 1 999/2 000)', () => {
-    // Le défaut : `unique === declaredTotal` refusait la complétude sur une lecture à 99,9 %.
-    expect(enumerationVerdict({ declaredTotal: 1026, uniqueCollected: 1025 })).toBe('PROVEN');
-    expect(enumerationVerdict({ declaredTotal: 2000, uniqueCollected: 1999 })).toBe('PROVEN');
+  it('une unité d\'écart n\'est ni une troncature ni une preuve (kering 1 025/1 026)', () => {
+    // Le ratio ne REFUTE pas (on est au-dessus du seuil) mais ne PROUVE pas non plus.
+    expect(enumerationVerdict({ declaredTotal: 1026, uniqueCollected: 1025 })).toBe('UNKNOWN');
+    expect(enumerationVerdict({ declaredTotal: 2000, uniqueCollected: 1999 })).toBe('UNKNOWN');
+    // Le parcours démontré tranche, malgré l'écart d'une unité au compteur.
+    expect(enumerationVerdict({ declaredTotal: 1026, uniqueCollected: 1025, adapterProvesCompletion: true })).toBe('PROVEN');
   });
 
   it('dit INCONNU quand la source ne déclare aucun total (boots 1 472, pvh 1 358, adidas 1 069)', () => {
@@ -42,6 +48,14 @@ describe('verdict d\'énumération', () => {
     // Total déclaré atteint, mais l'adaptateur n'affirme rien et une ligne n'a pas pu être lue : elle peut
     // contenir n'importe quoi. C'est du doute, pas une preuve d'incomplétude.
     expect(enumerationVerdict({ declaredTotal: 40, uniqueCollected: 40, unreadableRows: 1 })).toBe('UNKNOWN');
+  });
+
+  it('un ATS SANS total est PROVEN dès que son protocole démontre la fin (teamtailor, recruitee, personio)', () => {
+    // Teamtailor : `next_url: null` sur la dernière page. Recruitee / Personio : endpoint unique servi en entier.
+    expect(enumerationVerdict({ uniqueCollected: 37, adapterProvesCompletion: true })).toBe('PROVEN');
+    // Le même ATS sans démonstration de fin (plafond de pages atteint, continuation encore présente) : rien.
+    expect(enumerationVerdict({ uniqueCollected: 4000, truncated: true })).toBe('REFUTED');
+    expect(enumerationVerdict({ uniqueCollected: 4000 })).toBe('UNKNOWN');
   });
 
   it('mais un adaptateur qui AFFIRME son énumération a qualifié ses propres rejets : sa preuve tient', () => {
@@ -72,23 +86,28 @@ describe('verdict d\'énumération', () => {
   });
 });
 
-describe('le verdict nourrit le droit d\'attester sans l\'affaiblir', () => {
-  it('rend son droit d\'attester à une source qui a tout lu (tapestry)', () => {
-    const complete = verdictToComplete(enumerationVerdict({ declaredTotal: 2091, uniqueCollected: 2091 }));
+describe('SEULE une énumération PROUVÉE autorise une fermeture', () => {
+  it('rend son droit d\'attester à une source dont le parcours est démontré (tapestry, VF)', () => {
+    const complete = verdictToComplete(enumerationVerdict({ declaredTotal: 2091, uniqueCollected: 2091, adapterProvesCompletion: true }));
+    expect(complete).toBe(true);
     expect(isTrustedForAttestation({ status: 'OK', complete, declaredTotal: 2091, fetched: 2091, errors: 0, previous: 2086 })).toBe(true);
+    // VF : 1 273/1 273 parcourues, 695 retenues qui ne concernent que certaines offres.
+    const vf = verdictToComplete(enumerationVerdict({ declaredTotal: 1273, uniqueCollected: 1273, adapterProvesCompletion: true }));
+    expect(isTrustedForAttestation({ status: 'DEGRADED', complete: vf, declaredTotal: 1273, fetched: 1273, errors: 0 })).toBe(true);
   });
 
-  it('laisse INCONNU passer la porte, l\'effondrement restant le seul arbitre (boots)', () => {
+  it('REFUSE toute fermeture sur une énumération INCONNUE, même avec un volume de référence stable (boots)', () => {
     const complete = verdictToComplete(enumerationVerdict({ uniqueCollected: 1472 }));
-    // Volume stable face au dernier run productif : la source peut attester.
-    expect(isTrustedForAttestation({ status: 'OK', complete, fetched: 1472, errors: 0, previous: 1419 })).toBe(true);
-    // Effondrement : refusé, alors même que l'énumération est « inconnue ».
+    expect(complete).toBeUndefined();
+    // Un volume stable ne prouve pas que le même périmètre a été parcouru : 1 472 offres peuvent être d'autres.
+    expect(isTrustedForAttestation({ status: 'OK', complete, fetched: 1472, errors: 0, previous: 1419 })).toBe(false);
     expect(isTrustedForAttestation({ status: 'OK', complete, fetched: 400, errors: 0, previous: 1419 })).toBe(false);
   });
 
-  it('garde bloquée une source effondrée dont l\'énumération est pourtant PROUVÉE (swatch-group 61/61, 275 avant)', () => {
-    // Contre-exemple à préserver : une chute de 78 % n'est pas une journée d'expirations.
-    const complete = verdictToComplete(enumerationVerdict({ declaredTotal: 61, uniqueCollected: 61 }));
+  it('garde bloquée une source effondrée dont le parcours est pourtant démontré (swatch-group 61/61, 275 avant)', () => {
+    // Contre-exemple à préserver : une chute de 78 % n'est pas une journée d'expirations. L'effondrement est un
+    // indicateur de régression, et il REFUSE — il ne prouve jamais rien dans l'autre sens.
+    const complete = verdictToComplete(enumerationVerdict({ declaredTotal: 61, uniqueCollected: 61, adapterProvesCompletion: true }));
     expect(complete).toBe(true);
     expect(isTrustedForAttestation({ status: 'OK', complete, declaredTotal: 61, fetched: 61, errors: 0, previous: 275 })).toBe(false);
   });
@@ -103,34 +122,33 @@ describe('le verdict nourrit le droit d\'attester sans l\'affaiblir', () => {
   });
 });
 
-describe('le trou ouvert par l\'acceptation d\'INCONNU est fermé', () => {
-  it('refuse une énumération inconnue SANS aucune référence — ni total déclaré, ni run précédent', () => {
-    // Sinon un premier run d'une source qui ne déclare rien gagnerait le droit de faire disparaître des offres
-    // sur la foi de rien du tout.
+describe('aucune référence ne remplace une preuve de parcours', () => {
+  it('refuse une énumération inconnue, avec ou sans référence', () => {
     expect(isTrustedForAttestation({ status: 'OK', complete: undefined, fetched: 40, errors: 0 })).toBe(false);
     expect(isTrustedForAttestation({ status: 'OK', complete: undefined, fetched: 40, errors: 0, previous: null })).toBe(false);
+    // Un run précédent existe : cela ne prouve toujours pas que le périmètre a été parcouru.
+    expect(isTrustedForAttestation({ status: 'OK', complete: undefined, fetched: 1472, errors: 0, previous: 1419 })).toBe(false);
+    // Un total déclaré couvert à 98 % : les 2 % non lus ne sont pas attestés.
+    expect(isTrustedForAttestation({ status: 'OK', complete: undefined, declaredTotal: 1000, fetched: 980, errors: 0 })).toBe(false);
   });
 
   it('accepte une énumération PROUVÉE sans run précédent : elle porte sa propre preuve', () => {
     expect(isTrustedForAttestation({ status: 'OK', complete: true, fetched: 40, errors: 0 })).toBe(true);
   });
-
-  it('accepte une énumération inconnue dès qu\'une référence existe', () => {
-    expect(isTrustedForAttestation({ status: 'OK', complete: undefined, fetched: 1472, errors: 0, previous: 1419 })).toBe(true);
-    expect(isTrustedForAttestation({ status: 'OK', complete: undefined, declaredTotal: 1000, fetched: 980, errors: 0 })).toBe(true);
-  });
 });
 
 describe('un `fetched` INCONNU n\'est pas un `fetched` à zéro', () => {
   it('ne lit pas un effondrement dans une ligne archivée sans la colonne (98 sources, runs du 5-6 septembre)', () => {
-    // a-p-c : jobs 20, previousJobs 20, volume parfaitement stable — mais `fetched` est null, la colonne
-    // n'existait pas encore. Compter null à 0 y lisait une chute de 100 % qui n'a jamais eu lieu.
-    expect(isTrustedForAttestation({ status: 'OK', complete: undefined, fetched: undefined, previous: 20 })).toBe(true);
+    // a-p-c : jobs 20, previousJobs 20, volume stable — mais `fetched` est null, la colonne n'existait pas.
+    // Compter null à 0 y lisait une chute de 100 % qui n'a jamais eu lieu. Avec un parcours démontré, la source
+    // peut attester ; sans lui, elle ne peut pas — et c'est l'énumération qui décide, pas la colonne manquante.
+    expect(isTrustedForAttestation({ status: 'OK', complete: true, fetched: undefined, previous: 20 })).toBe(true);
+    expect(isTrustedForAttestation({ status: 'OK', complete: undefined, fetched: undefined, previous: 20 })).toBe(false);
   });
 
-  it('garde l\'effondrement dès que `fetched` est réellement connu', () => {
-    expect(isTrustedForAttestation({ status: 'OK', complete: undefined, fetched: 0, previous: 20 })).toBe(false);
-    expect(isTrustedForAttestation({ status: 'OK', complete: undefined, fetched: 9, previous: 20 })).toBe(false);
-    expect(isTrustedForAttestation({ status: 'OK', complete: undefined, fetched: 11, previous: 20 })).toBe(true);
+  it('garde l\'effondrement dès que `fetched` est réellement connu, parcours démontré ou non', () => {
+    expect(isTrustedForAttestation({ status: 'OK', complete: true, fetched: 0, previous: 20 })).toBe(false);
+    expect(isTrustedForAttestation({ status: 'OK', complete: true, fetched: 9, previous: 20 })).toBe(false);
+    expect(isTrustedForAttestation({ status: 'OK', complete: true, fetched: 11, previous: 20 })).toBe(true);
   });
 });

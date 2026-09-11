@@ -82,9 +82,13 @@ export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult):
   const unreadableRows = normalized.rejectedRows?.length ?? 0;
 
   /**
-   * Le verdict à TROIS valeurs remplace le booléen dont l'absence de réponse valait « non ». `UNKNOWN` devient
-   * `undefined`, jamais `false` : une source qui ne déclare pas son total n'est pas une source dont on a prouvé
-   * l'incomplétude. Voir `pipeline/enumeration.ts` pour les 187 sources que cette confusion avait figées.
+   * Le verdict à TROIS valeurs. `UNKNOWN` devient `undefined`, jamais `false` : une source qui ne déclare pas son
+   * total n'est pas une source dont on a prouvé l'incomplétude.
+   *
+   * `normalized.complete` est la DÉMONSTRATION DE PARCOURS de l'adaptateur, et c'est la seule voie vers `PROVEN`
+   * depuis la règle du 2026-09-11 : Teamtailor la produit quand le feed rend `next_url: null`, Recruitee et
+   * Personio parce que leur endpoint unique est servi en entier, Workday et SuccessFactors quand tous les totaux
+   * ou toutes les partitions sont atteints. Un ratio ne prouve plus rien.
    */
   const verdict = enumerationVerdict({
     adapterProvesCompletion: normalized.complete,

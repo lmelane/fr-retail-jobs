@@ -5,8 +5,25 @@
  * peut donc pas montrer ce que le correctif change. Ce script rejoue la décision, et seulement la décision, sur
  * les mêmes lignes archivées :
  *
- *   AVANT   `complete !== true` refuse            → « inconnu » traité comme « prouvé incomplet »
- *   APRÈS   `complete === false` refuse           → « inconnu » arbitré par couverture et effondrement
+ *   AVANT   `complete !== true` refuse, et « inconnu » était confondu avec « prouvé incomplet »
+ *   APRÈS   **seul un PARCOURS DÉMONTRÉ** autorise une fermeture (règle imposée le 2026-09-11)
+ *
+ * LA DÉMONSTRATION DE PARCOURS EST LUE À LA SOURCE, pas reconstituée. Les adaptateurs archivent leur propre
+ * verdict d'énumération dans `PipelineEvent` (`source.enumeration_observed`) : la terminaison
+ * (`PUBLISHER_TOTAL_REACHED`, `SECOND_SWEEP_RECONCILED`, `FULL_RESPONSE`, `PARTITIONS_RECONCILED`…), les
+ * anomalies (`ENUMERATION_NOT_PROVEN`, `UNPARTITIONED_UNDER_CAP`) et le drapeau `complete` de l'adaptateur.
+ * C'est cette trace — et non la colonne `SourceRun.complete`, qui mélange démonstration et ratio sous l'ancienne
+ * règle — qui dit si le parcours a réellement été mené à son terme.
+ *
+ * Une source dont aucun événement d'énumération n'est archivé reste `UNKNOWN` : l'absence de trace n'est pas une
+ * démonstration. Le chiffre publié est donc un PLANCHER du droit d'attester.
+ *
+ * LIMITE MAJEURE, MESURÉE ET DÉCLARÉE : l'événement `source.enumeration_observed` n'existe que depuis le
+ * 2026-09-09 et n'est archivé que pour **87 sources sur 440**. Les 353 autres n'ont jamais consigné leur preuve
+ * de parcours — non parce qu'elles ne l'ont pas menée, mais parce que la trace n'existait pas au moment de leur
+ * dernier run. Elles ne pourront attester qu'après un nouveau run, ce qui est la conséquence CORRECTE de la
+ * règle : on ne ferme pas sur une preuve absente. Le rejeu sépare donc trois groupes — preuve archivée
+ * favorable, preuve archivée défavorable, aucune preuve — et ne les additionne jamais.
  *
  * Le verdict d'énumération est recalculé depuis les colonnes stockées (`declaredTotal`, `fetched`, `truncated`,
  * `errors`), avec la fonction maintenue — jamais une copie de sa logique.
@@ -50,6 +67,14 @@ try {
         SELECT js."sourceKey", COUNT(*)::int representations
         FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
         WHERE js."isActive" AND j."isActive" GROUP BY 1
+      ), enumeration AS (
+        -- La trace d'énumération la plus récente par source : la démonstration de parcours de l'adaptateur.
+        SELECT DISTINCT ON (payload->>'sourceKey') payload->>'sourceKey' AS source_key,
+               payload->'enumeration'->>'termination' AS termination,
+               payload->'enumeration'->'issues' AS issues,
+               payload->>'complete' AS adapter_complete
+        FROM "PipelineEvent" WHERE event = 'source.enumeration_observed'
+        ORDER BY payload->>'sourceKey', at DESC
       ), unresolved_holds AS (
         -- Les retenues SANS disposition sont celles qui posaient complete = false pour toute la source.
         SELECT "sourceKey", COUNT(DISTINCT "externalId")::int held
@@ -61,9 +86,11 @@ try {
       )
       SELECT l."sourceKey", l.representations, r.status, r.complete, r.truncated, r.errors,
              r."declaredTotal", r.fetched, r.jobs, r."previousJobs", r."canAttestAbsence", r."ranAt",
-             COALESCE(h.held, 0)::int unresolved_holds
+             COALESCE(h.held, 0)::int unresolved_holds,
+             e.termination, e.issues, e.adapter_complete
       FROM live l
       LEFT JOIN last_run r ON r."sourceKey" = l."sourceKey"
+      LEFT JOIN enumeration e ON e.source_key = l."sourceKey"
       LEFT JOIN unresolved_holds h ON h."sourceKey" = l."sourceKey"
       ORDER BY l.representations DESC`;
     return { at, rows };
@@ -95,7 +122,17 @@ try {
      * preuves stockées. C'est une sous-estimation assumée — un adaptateur qui affirmait sa complétude sans total
      * déclaré ressortira « inconnu » ici.
      */
-    const verdict = enumerationVerdict({ declaredTotal: declared, uniqueCollected: unique, truncated, unreadableRows: r.errors ?? 0 });
+    /**
+     * La démonstration de parcours, lue dans la trace de l'adaptateur :
+     *   · `ENUMERATION_NOT_PROVEN` parmi les anomalies → l'adaptateur dit lui-même ne pas l'avoir prouvée ;
+     *   · `adapter_complete = 'true'` → il l'affirme ;
+     *   · aucune trace → on ne sait pas, et l'absence de trace n'est pas une démonstration.
+     */
+    const issues: string[] = Array.isArray(r.issues) ? r.issues.map(String) : [];
+    const archivedDemonstration = issues.includes('ENUMERATION_NOT_PROVEN') ? false
+      : r.adapter_complete === 'true' ? true : undefined;
+    const verdict = enumerationVerdict({ adapterProvesCompletion: archivedDemonstration,
+      declaredTotal: declared, uniqueCollected: unique, truncated, unreadableRows: r.errors ?? 0 });
 
     const before = trustedBefore({ status, complete: r.complete, errors: r.errors, truncated,
       declaredTotal: declared, fetched: unique, previous: r.previousJobs });
@@ -111,9 +148,40 @@ try {
   const lost = decided.filter((d) => d.trustedBefore && !d.trustedAfter);
   const stillBlocked = decided.filter((d) => !d.trustedAfter);
 
+  /**
+   * Les groupes de preuve, EXHAUSTIFS et disjoints — le contrôle de cohérence plus bas le vérifie.
+   *
+   * `proven` est défini par le VERDICT, pas par la présence d'une trace : une source dont l'adaptateur affirme
+   * `complete: true` dans `SourceRun` sans qu'un événement d'énumération ait été archivé est tout de même
+   * `PROVEN` (l'événement n'existe que depuis le 2026-09-09). Un premier découpage par `termination != null`
+   * laissait 16 sources prouvées hors de tous les groupes, et le total ne se recollait pas.
+   */
+  const proven = decided.filter((d) => d.recomputedVerdict === 'PROVEN');
+  const withEvidence = decided.filter((d) => d.termination != null);
+  const disproven = withEvidence.filter((d) => d.recomputedVerdict !== 'PROVEN');
+  const noEvidence = decided.filter((d) => d.termination == null);
+
   const report = {
     at,
     denominators: { sourcesWithLivePostings: rows.length, liveRepresentations: rows.reduce((n, r) => n + r.representations, 0) },
+    evidenceGroups: {
+      withArchivedEnumerationEvidence: { sources: withEvidence.length, representations: withEvidence.reduce((n, d) => n + d.representations, 0) },
+      demonstratedTraversal: { sources: proven.length, representations: proven.reduce((n, d) => n + d.representations, 0),
+        mayAttest: proven.filter((d) => d.trustedAfter).length,
+        mayAttestRepresentations: proven.filter((d) => d.trustedAfter).reduce((n, d) => n + d.representations, 0),
+        /** Prouvées mais SANS trace d'énumération archivée : l'adaptateur l'affirme dans SourceRun seulement. */
+        provenWithoutArchivedTrace: proven.filter((d) => d.termination == null).length,
+        rows: proven.map((d) => ({ sourceKey: d.sourceKey, representations: d.representations, termination: d.termination,
+          mayAttest: d.trustedAfter, status: d.status, errors: d.errors, unresolvedHolds: d.unresolved_holds })) },
+      evidenceRefusesTraversal: { sources: disproven.length, representations: disproven.reduce((n, d) => n + d.representations, 0),
+        rows: disproven.map((d) => ({ sourceKey: d.sourceKey, representations: d.representations, termination: d.termination, issues: d.issues })) },
+      /** Contrôle de cohérence : personne ne doit attester hors du groupe « parcours démontré ». */
+      attestingWithoutDemonstration: decided.filter((d) => d.trustedAfter && d.recomputedVerdict !== 'PROVEN')
+        .map((d) => ({ sourceKey: d.sourceKey, representations: d.representations, recomputedVerdict: d.recomputedVerdict,
+          termination: d.termination ?? null, adapterComplete: d.adapter_complete ?? null, archivedComplete: d.complete })),
+      noArchivedEvidence: { sources: noEvidence.length, representations: noEvidence.reduce((n, d) => n + d.representations, 0),
+        note: 'L\'événement source.enumeration_observed n\'existe que depuis le 2026-09-09 : ces sources doivent rejouer pour prouver leur parcours.' },
+    },
     before: { mayAttest: decided.filter((d) => d.trustedBefore).length,
               representations: decided.filter((d) => d.trustedBefore).reduce((n, d) => n + d.representations, 0) },
     after: { mayAttest: decided.filter((d) => d.trustedAfter).length,
@@ -127,17 +195,21 @@ try {
     lost: { sources: lost.length, rows: lost.map((d) => ({ sourceKey: d.sourceKey, status: d.status, archivedComplete: d.complete, recomputedVerdict: d.recomputedVerdict })) },
     stillBlocked: { sources: stillBlocked.length, representations: stillBlocked.reduce((n, d) => n + d.representations, 0),
       byReason: stillBlocked.reduce((acc: Record<string, number>, d) => {
+        const issues: string[] = Array.isArray(d.issues) ? d.issues.map(String) : [];
         const why = ['BROKEN', 'ERROR', 'TIMEOUT', 'CHALLENGED', 'NEW'].includes(d.status ?? 'NEW') ? `run ${d.status ?? 'NEW'}`
           : (d.errors ?? 0) > 0 ? 'erreurs de collecte'
           : d.truncated ? 'listing tronqué'
+          : issues.includes('ENUMERATION_NOT_PROVEN') ? `parcours non prouvé par l'adaptateur (${d.termination})`
           : d.recomputedVerdict === 'REFUTED' ? 'couverture sous le seuil'
           : d.previousJobs && (d.fetched ?? 0) < d.previousJobs * 0.5 ? 'effondrement du volume'
-          : 'énumération inconnue sans référence';
+          : d.termination ? `aucune démonstration de parcours (${d.termination})`
+          : 'aucune trace d\'énumération archivée';
         acc[why] = (acc[why] ?? 0) + 1; return acc;
       }, {}),
-      rows: stillBlocked.slice(0, 40).map((d) => ({ sourceKey: d.sourceKey, representations: d.representations,
+      rows: stillBlocked.map((d) => ({ sourceKey: d.sourceKey, representations: d.representations,
         status: d.status, errors: d.errors, truncated: d.truncated, declaredTotal: d.declaredTotal, fetched: d.fetched,
-        previousJobs: d.previousJobs, recomputedVerdict: d.recomputedVerdict })) },
+        previousJobs: d.previousJobs, recomputedVerdict: d.recomputedVerdict,
+        termination: d.termination ?? null, adapterComplete: d.adapter_complete ?? null, issues: d.issues ?? null })) },
   };
 
   const json = JSON.stringify(report, (_k, v) => (v instanceof Date ? v.toISOString() : v), 1);

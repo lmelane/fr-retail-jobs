@@ -37,10 +37,10 @@ agrégeait trois questions distinctes dans un booléen dont l'absence de répons
 
 | Fichier | Changement |
 |---|---|
-| `src/pipeline/enumeration.ts` **(nouveau)** | verdict à **trois valeurs** `PROVEN` / `UNKNOWN` / `REFUTED`, avec l'ordre de priorité (troncature → refus d'adaptateur → total à 0 contredit → affirmation d'adaptateur → couverture → doute) |
+| `src/pipeline/enumeration.ts` **(nouveau)** | verdict à **trois valeurs** `PROVEN` / `UNKNOWN` / `REFUTED`. Ordre : troncature → refus d'adaptateur → total à 0 contredit → **démonstration de parcours** → couverture (qui ne peut que réfuter) → doute. **Un ratio ne produit plus `PROVEN`.** |
 | `src/pipeline/unverifiable.ts` **(nouveau)** | classement des situations par **nature**, délais admis par nature, état / action suivante / condition de résolution |
 | `src/ats/index.ts` | `normalizeAdapterResult` produit le verdict ; `truncated` tolère la même marge de 0,9 que le reste de la chaîne |
-| `src/pipeline/attestation.ts` | `complete === false` refuse (au lieu de `!== true`) ; `fetched` absent n'est plus lu comme zéro ; **nouvelle garde** : une énumération inconnue exige une référence (total déclaré ou run précédent) |
+| `src/pipeline/attestation.ts` | **`complete !== true` refuse** : seul un parcours démontré autorise une fermeture ; `fetched` absent n'est plus lu comme zéro ; les seuils 0,9 et 0,5 ne servent plus qu'à refuser |
 | `src/pipeline/ingest.ts` | une retenue **n'affecte plus** l'énumération de la source |
 | `src/pipeline/health.ts` | `DEGRADED` réservé à une énumération **réfutée** ; `previous` passé à la porte d'attestation au lieu d'être vérifié à côté ; le motif nomme laquelle des trois valeurs s'applique |
 | `src/types.ts` | `AdapterResult.enumerationVerdict`, et le contrat « absence = inconnu » enfin honoré |
@@ -49,32 +49,72 @@ agrégeait trois questions distinctes dans un booléen dont l'absence de répons
 
 | Fichier | Tests | Ce qu'ils verrouillent |
 |---|---:|---|
-| `src/pipeline/enumeration.test.ts` | 20 | les trois verdicts sur les **runs réellement archivés** ; que `UNKNOWN` ne devienne jamais `false` ; que les contre-exemples (`swatch-group`, `ulta-jibe`, `l-oreal-professionnel`) restent bloqués ; que le trou « inconnu sans référence » soit fermé ; que `fetched` absent ne soit pas zéro |
+| `src/pipeline/enumeration.test.ts` | 22 | les trois verdicts sur les **runs réellement archivés** ; que `UNKNOWN` ne devienne jamais `false` ; que les contre-exemples (`swatch-group`, `ulta-jibe`, `l-oreal-professionnel`) restent bloqués ; que le trou « inconnu sans référence » soit fermé ; que `fetched` absent ne soit pas zéro |
 | `src/pipeline/unverifiable.test.ts` | 10 | le classement par nature et non par libellé ; qu'un motif inconnu tombe au plus prudent ; que l'ancienneté l'emporte sur la nature ; qu'une **tentative échouée ne remplace jamais** une dernière observation fiable |
 | `src/pipeline/health.test.ts` | +2 révisés | qu'une énumération inconnue n'attest qu'**avec** une référence, et qu'un effondrement la refuse quand même |
-| `src/ats/completion.test.ts`, `normalizeAdapterResult.test.ts` | révisés | le passage de `false` à `undefined` là où il n'y avait jamais de preuve d'incomplétude, avec le motif écrit dans le test |
+| `src/pipeline/closure-requires-proven.test.ts` **(nouveau)** | 4 | les quatre cas bornés exigés, **sur le chemin réel** (`checkSourceHealth` puis `runRefresh`) |
+| `src/ats/completion.test.ts`, `normalizeAdapterResult.test.ts` | révisés | qu'un compteur atteint **ne prouve pas** la complétude ; que seule la démonstration de l'adaptateur le fasse |
 
-**Total : 1 748 tests unitaires + 302 d'intégration verts, typecheck 0 erreur** (sources et scripts).
+**Total : 1 748 tests unitaires + 307 d'intégration verts, typecheck 0 erreur** (sources et scripts).
 
 ## 5. Résultats sur archives et clones
 
-### Effet du correctif, rejoué sur les runs archivés (`attestation-replay.mts`)
+### Effet de la règle, rejoué sur les runs archivés (`attestation-replay.mts`)
 
-| | Sources | Représentations vivantes |
+> **Règle imposée le 2026-09-11, après un premier correctif jugé trop permissif.** La distinction
+> `PROVEN` / `UNKNOWN` / `REFUTED` était juste, sa conséquence ne l'était pas : `UNKNOWN` obtenait le droit de
+> fermer dès qu'un volume de référence existait. Or un volume stable ne prouve pas que **le même périmètre** a été
+> parcouru, et une couverture de 90 % n'atteste rien sur les offres situées dans les 10 % non lus.
+> **Seule une énumération `PROVEN` — un parcours démontré — produit désormais `canAttestAbsence = true`.**
+
+La démonstration de parcours est lue **à la source** : les adaptateurs archivent leur propre verdict
+d'énumération (terminaison, anomalies, drapeau `complete`), et c'est cette trace — non un ratio — qui décide.
+
+| Groupe de preuve | Sources | Représentations |
 |---|---:|---:|
-| Avant | 216 | 39 034 |
-| **Après** | **402** | **59 537** |
-| **Gagnées** | **186** | **20 503** |
-| **Perdues** | **0** | **0** |
-| Encore bloquées | 38 | 21 292 |
+| **Parcours démontré** (`PROVEN`) | **83** | 24 047 |
+| ⤷ dont **autorisées à fermer** | **53** | **20 737** |
+| ⤷ dont prouvées sans trace archivée (affirmation dans `SourceRun` seule) | 20 | — |
+| Preuve archivée **défavorable** (l'adaptateur refuse lui-même) | 3 | 3 819 |
+| **Aucune trace d'énumération archivée** | 374 | 60 946 |
 
-*Dénominateur : 440 sources portant des offres vivantes, 80 829 représentations actives.*
+| | Sources pouvant fermer | Représentations couvertes |
+|---|---:|---:|
+| Avant (règle du matin, trop permissive) | 216 | 39 034 |
+| **Après (parcours démontré exigé)** | **53** | **20 737** |
+| **Perdues** | **165** | — |
 
-**Aucune source ne perd son droit d'attester** : le correctif élargit là où le refus n'était pas fondé, il ne
-restreint rien.
+*Dénominateurs : 440 sources portant des offres vivantes, 80 829 représentations actives.*
 
-Les 38 restantes, chacune pour un motif nommé : `run NEW` 26 · `listing tronqué` 6 · `erreurs de collecte` 3 ·
-`run BROKEN` 1 · `effondrement du volume` 1 · `couverture sous le seuil` 1.
+**Le gain de 186 sources annoncé le matin est retiré.** Il reposait sur l'acceptation d'`UNKNOWN`, c'est-à-dire
+sur des fermetures qui n'étaient pas prouvées. La sécurité des fermetures prime : **165 sources perdent un droit
+qu'elles n'auraient jamais dû avoir**, et c'est le résultat attendu de la règle, non une régression.
+
+**Contrôle de cohérence exécuté : 0 source n'atteste hors du groupe « parcours démontré ».** Le champ
+`attestingWithoutDemonstration` du rapport le vérifie et reste vide.
+
+Motifs de blocage des 387 restantes : `aucune trace d'énumération archivée` 340 · `run NEW` 26 ·
+`effondrement du volume` 8 · `listing tronqué` 6 · `erreurs de collecte` 3 ·
+`parcours non prouvé par l'adaptateur` 2 (Tapestry, Kering) · `run BROKEN` 1 ·
+`aucune démonstration de parcours` 1 · `couverture sous le seuil` 1.
+
+> **Limite majeure, mesurée et déclarée.** L'événement `source.enumeration_observed` n'existe que depuis le
+> 2026-09-09 et n'est archivé que pour **87 sources sur 440**. Les autres n'ont jamais consigné leur preuve de
+> parcours — non parce qu'elles ne l'ont pas mené, mais parce que la trace n'existait pas lors de leur dernier
+> run. Elles ne pourront attester qu'après un nouveau run. C'est la conséquence **correcte** de la règle : on ne
+> ferme pas sur une preuve absente.
+
+### Les quatre cas bornés exigés, sur le chemin réel — 4/4 PASS
+
+`src/pipeline/closure-requires-proven.test.ts` : `checkSourceHealth` calcule `canAttestAbsence` comme en
+production, puis `runRefresh` — la fonction de clôture — décide. Aucun prédicat testé en isolation.
+
+| Cas | Attendu | Obtenu |
+|---|---|---|
+| **1.** `UNKNOWN`, même volume (3 → 3) mais ensemble d'identifiants **différent** | aucune fermeture | `canAttestAbsence: false` ; les 3 offres absentes restent **actives**, `closedAt` et `withdrawnAt` nuls |
+| **2.** `UNKNOWN` à **60 %** du volume précédent (100 → 60) | aucune fermeture malgré le franchissement du seuil de 50 % | `canAttestAbsence: false` ; aucune offre fermée ni retirée |
+| **3.** Total déclaré **100**, **90** identifiants lus | aucune fermeture sans preuve de fin | verdict `UNKNOWN`, `canAttestAbsence: false`, offres actives |
+| **4.** ATS **sans total**, pagination parcourue jusqu'à sa fin | `PROVEN`, fermeture autorisée | `complete: true`, `canAttestAbsence: true`, offres fermées avec `closedAt` et `withdrawnAt` nul |
 
 ### Scénarios exécutés sur clone avec le VRAI `runRefresh` — 8/8 PASS
 
@@ -101,8 +141,12 @@ Détail et dénominateurs : [03-cadences-mesurees.md](03-cadences-mesurees.md).
 - **Durée de vie observée des offres fermées** : médiane 1–6 j, **p90 ≤ 7 j** selon la famille (2 604 offres).
   Limite déclarée : l'historique disponible est court (base reconstruite début septembre, crons gelés depuis le
   9), donc aucune durée > 9 jours ne peut apparaître. Les seuils retenus n'en dépendent pas.
-- **Fenêtre de péremption** : **48 h**, inchangée et justifiée (intervalle réel 3–4 h → une douzaine d'occasions
-  de ré-attester avant toute fermeture ; invariant `cadence.test.ts` respecté).
+- **Fenêtre de péremption** : **48 h**, justifiée par la combinaison réellement prévue — intervalle
+  d'ingestion **24 h** (`INGEST_INTERVAL_HOURS`, verrouillé par `cadence.test.ts`), donc **2 occasions** de
+  ré-attester et la marge d'**un run quotidien manqué** ; et 48 h ≥ les **36 h** exigées par l'invariant L-01
+  pour la seule source à rotation (`fashionjobs`, 282 pages / 300 par run × 24 h × 1,5). *La première version de
+  ce rapport invoquait « une douzaine d'occasions » déduites d'un intervalle de 3–4 h : c'était l'intervalle
+  historique des runs de septembre, incohérent avec la cadence retenue. Corrigé.*
 - **Fréquence de contrôle** : **24 h suffit partout**, aucune mesure ne justifie moins ; les deux familles à fort
   renouvellement doivent être dans **chaque** run.
 - **Ce qui est différencié n'est pas la fenêtre mais le DROIT de l'appliquer**, source par source.
@@ -126,10 +170,11 @@ employeur (archivées et tenues, jamais créditées au groupe) est **appliquée 
 
 | | Avant | Après |
 |---|---:|---:|
-| Sources pouvant attester l'absence | 216 / 440 | **402 / 440** |
-| Représentations vivantes sous une source qui peut fermer | 39 034 / 80 829 (48,3 %) | **59 537 / 80 829 (73,7 %)** |
-| Sources bloquées sans motif fondé | 186 | **0** |
-| Sources bloquées **pour un motif nommé** | 38 | **38** *(inchangé — c'est voulu)* |
+| Sources pouvant attester l'absence | 216 / 440 | **53 / 440** |
+| Représentations vivantes sous une source qui peut fermer | 39 034 / 80 829 (48,3 %) | **20 737 / 80 829 (25,7 %)** |
+| Sources fermant sur une preuve **non fondée** | 216 | **0** |
+| Sources bloquées **pour un motif nommé** | 224 | **387** *(dont 340 faute de trace d'énumération archivée)* |
+| Sources au parcours **démontré** | non mesuré | **83** |
 | Situations invérifiables avec état, ancienneté, action et condition de levée | **0** | **1 062** |
 | Offres produisant un `DEGRADED` sans défaut | 216 sources | **0** |
 | Écritures de production | — | **0** |
@@ -172,7 +217,9 @@ indéfiniment sans traitement.
 | Finding | État avant | Cause | Correction | Test | Résultat | Production modifiée ? | Preuve | Statut |
 |---|---|---|---|---|---|---|---|---|
 | Une retenue bloque toute la source | `tapestry` 5 retenues / 2 091 lues → 2 183 représentations infermables | `ingest.ts:354` posait `stats.complete = false` | la retenue n'affecte plus l'énumération de la source | `enumeration.test.ts`, `unverifiable.test.ts` | 4 sources débloquées par ce seul motif ; 2 761 représentations (Tapestry + VF) | **non** | `hold-blast-radius.json`, `attestation-replay.json` | **corrigé** |
-| « Inconnu » traité comme « prouvé incomplet » | 149 sources sur 440 ne déclarent aucun total ; `recruitee` et `personio` avaient **0** source pouvant fermer | `complete` booléen dont l'absence valait `false` | verdict à trois valeurs + `complete === false` refuse | `enumeration.test.ts` (20), `health.test.ts` | **186 sources / 20 503 représentations** retrouvent le droit d'attester, **0 perdue** | **non** | `attestation-replay.json` | **corrigé** |
+| « Inconnu » traité comme « prouvé incomplet » | 149 sources sur 440 ne déclarent aucun total ; `recruitee` et `personio` avaient **0** source pouvant fermer | `complete` booléen dont l'absence valait `false` | verdict à trois valeurs ; `UNKNOWN` cesse d'être confondu avec une incomplétude prouvée | `enumeration.test.ts` (22), `health.test.ts` | la distinction est portée ; le DROIT DE FERMER, lui, est traité à la ligne suivante | **non** | `attestation-replay.json` | **corrigé** |
+| `UNKNOWN` obtenait le droit de fermer sur un volume de référence | un volume stable ou > 50 % du précédent, ou une couverture de 90 %, suffisaient — or aucun des deux ne prouve que le **même périmètre** a été parcouru | la porte acceptait `complete !== false` puis se rabattait sur des ratios | **seul `PROVEN` autorise une fermeture** ; les seuils 0,5 et 0,9 ne peuvent plus que REFUSER | `closure-requires-proven.test.ts` (4 cas bornés sur le chemin réel) | **53 sources / 20 737 représentations** peuvent fermer, **165 perdent** un droit non fondé ; **0 source n'atteste hors parcours démontré** | **non** | `attestation-replay.json`, `evidenceGroups` | **corrigé** |
+| Tapestry : 5 offres hors facette sous un plafond de site | `UNPARTITIONED_UNDER_CAP` | le compteur du site plafonne à 2 000 ; le résiduel n'est atteignable que par lui | aucune — le refus de l'adaptateur est **juste** et conservé | `workday.partition.test.ts` | Tapestry reste **non prouvée** : 5 offres de son board sont inatteignables | **non** | `attestation-replay.json` | **dossier ouvert, honnête** |
 | Une unité d'écart refusait la complétude | `kering` 1 025/1 026 | `unique === declaredTotal` exigé | seuil de couverture 0,9, cohérent avec le reste de la chaîne | `normalizeAdapterResult.test.ts` | `kering`, `knitwell` passent `PROVEN` | **non** | `attestation-replay.json` | **corrigé** |
 | `fetched` absent lu comme zéro | 98 sources, volume stable, lues comme effondrées à 100 % | colonne ajoutée après ces runs | `fetched != null` exigé pour comparer | `enumeration.test.ts` | 7 sources vérifiées débloquées (`hermes`, `a-p-c`…) | **non** | `attestation-replay.json` | **corrigé** |
 | Santé confondue avec énumération | 216 sources `DEGRADED` sans défaut | `health.ts` : `complete !== true` → DEGRADED | `DEGRADED` réservé à une énumération **réfutée** | `health.test.ts` | le digest cesse de noyer les vraies pannes | **non** | code + tests | **corrigé** |
@@ -192,17 +239,20 @@ indéfiniment sans traitement.
 **Fréquences de contrôle** — 24 h pour toutes les familles ; `generic-listing` et `digitalrecruiters` dans chaque
 run (renouvellement mesuré 114,6 % et 56,7 %). Aucune mesure ne justifie une fréquence inférieure à 24 h.
 
-**Délais et conditions de fermeture** — 48 h de silence **et** un run dont l'énumération est `PROVEN`, ou
-`UNKNOWN` avec un volume de référence stable (≥ 50 % du dernier run productif). Jamais sur un run BROKEN, ERROR,
-TIMEOUT, CHALLENGED, NEW, tronqué, en erreur, ou sous 90 % d'un total déclaré.
+**Délais et conditions de fermeture** — 48 h de silence **et** un run dont l'énumération est `PROVEN`, c'est-à-dire
+dont le **parcours est démontré** : fin d'endpoint, fin de pagination, ou toutes les partitions lues. `UNKNOWN` ne
+ferme rien, avec ou sans volume de référence. Jamais sur un run BROKEN, ERROR, TIMEOUT, CHALLENGED, NEW, tronqué,
+en erreur, sous 90 % d'un total déclaré, ou dont le volume s'est effondré sous la moitié du dernier run productif
+— ces deux derniers seuils restant des **indicateurs de santé qui refusent**, jamais des preuves de disparition.
 
 **Conditions de réouverture** — la **même identité** (`sourceKey` + `externalId`) réapparaît dans un listing :
 l'offre est réactivée sans doublon. `reopenedCount` s'incrémente **seulement** si `closedAt` était posé ; un
 retour après retrait administratif produit `REPUBLISHED` et laisse le compteur intact.
 
-**Runs incomplets ou dégradés** — ils ne ferment rien. `DEGRADED` signale un défaut sans retirer le droit
-d'attester ; le droit se perd sur une énumération réfutée, une erreur de collecte, une troncature, un effondrement
-ou un statut d'échec. Une offre non revue par un run non fiable **survit telle quelle**.
+**Runs incomplets ou dégradés** — ils ne ferment rien. `DEGRADED` signale un défaut sans retirer à lui seul le
+droit d'attester ; le droit s'obtient uniquement par un parcours démontré, et se perd sur une énumération réfutée,
+une erreur de collecte, une troncature, un effondrement ou un statut d'échec. Une offre non revue par un run non
+fiable **survit telle quelle**.
 
 ## GO / NO-GO pour P5
 
@@ -210,18 +260,24 @@ ou un statut d'échec. Une offre non revue par un run non fiable **survit telle 
 
 - les six critères de validation du lot sont démontrés sur archives réelles et sur clone avec les fonctions de
   production, jamais avec un script parallèle ;
-- le gain est mesuré avec ses dénominateurs (**186 sources / 20 503 représentations**, **0 perdue**), et les
+- la règle métier imposée est tenue : **seul un parcours démontré ferme**, mesuré avec ses dénominateurs
+  (**53 sources / 20 737 représentations**, **0 source n'attestant hors parcours démontré**), et les
   contre-exemples qui devaient rester bloqués le restent tous (`swatch-group`, `ulta-jibe`,
-  `l-oreal-professionnel`, `knitwell` ×3) ;
+  `l-oreal-professionnel`, `knitwell` ×3, `tapestry`, `kering`) ;
+- **le gain de 186 sources annoncé le matin est retiré**, sans tentative de le préserver : il reposait sur des
+  fermetures non prouvées. 165 sources perdent un droit qu'elles n'auraient pas dû avoir ;
 - les situations encore invérifiables ne sont **pas déclarées conformes** : elles ont un état, une ancienneté, une
   action suivante et une condition de levée, et 38 sont explicitement en retard ;
-- 1 748 tests unitaires + 302 d'intégration verts, typecheck 0 erreur, aucune écriture de production.
+- **1 748 tests unitaires + 307 d'intégration verts**, typecheck 0 erreur, aucune écriture de production.
 
 **Ce que P4 ne clôt pas, et qui doit être porté par la suite :**
 
-1. **La reprise des crons reste une décision de Loïc** (D57). Sans elle, le correctif est prouvé mais non
-   *exercé* en production : aucune fermeture réelle n'a pu être observée. C'est la limite la plus importante de
-   ce lot, et elle n'est pas technique.
+1. **La reprise des crons reste une décision de Loïc** (D57), et elle devient la condition du retour à une
+   couverture normale des fermetures : **340 sources sur 440 n'ont aucune trace d'énumération archivée** (le
+   journal `source.enumeration_observed` n'existe que depuis le 2026-09-09) et ne pourront prouver leur parcours
+   qu'après un nouveau run. Tant que les crons sont gelés, le catalogue ne ferme donc presque plus rien — ce qui
+   est sûr, mais fait vieillir les offres expirées. C'est la limite la plus importante du lot, et elle n'est pas
+   technique.
 2. **4 604 offres actives sans rang canonique** — dossier ouvert, hors périmètre P4.
 3. **22 offres inactives sans date de sortie** — irréparables sans inventer une preuve.
 4. Les dossiers résiduels de P2 restent suivis séparément.

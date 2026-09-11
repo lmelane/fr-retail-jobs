@@ -94,23 +94,40 @@ catalogue : elle n'est pas le facteur limitant de la fraîcheur.
 
 ### Fenêtre de péremption (au bout de combien de silence une offre peut être fermée)
 
-La règle générique reste **48 h** (`REFRESH_STALE_HOURS`), et elle est justifiée : avec un intervalle réel de
-3–4 h entre runs, 48 h laisse passer une douzaine d'occasions de ré-attester avant toute fermeture. L'invariant
-de cadence déjà testé (`cadence.test.ts`) l'exige : `staleHours ≥ ceil(pages/fenêtre) × intervalle × 1,5`.
+**Correction du 2026-09-11.** Une première version justifiait les 48 h par « une douzaine d'occasions de
+ré-attester » déduites de l'intervalle *historique* de 3–4 h entre runs. C'était incohérent : la cadence retenue
+est **24 h** (D36), et l'intervalle de 3–4 h mesuré plus haut décrit les runs de septembre, avant le gel. La
+justification correcte est celle-ci, et c'est la combinaison réellement prévue :
+
+| Terme | Valeur | Source |
+|---|---:|---|
+| Intervalle d'ingestion retenu | **24 h** | `INGEST_INTERVAL_HOURS`, verrouillé par `cadence.test.ts` |
+| Fenêtre de péremption | **48 h** | `REFRESH_STALE_HOURS` |
+| Occasions de ré-attester avant fermeture | **2** | 48 / 24 |
+| Marge absorbée | **un run manqué entier** | 2 × 24 h = 48 h |
+| Exigence de l'invariant L-01 | **36 h** pour `fashionjobs` | `ceil(282 pages / 300 par run) × 24 h × 1,5` |
+
+La fenêtre de 48 h est donc tenue parce qu'elle couvre **un run quotidien manqué** (et non douze passages), et
+qu'elle dépasse les 36 h exigées par la seule source à rotation du catalogue. Mesuré :
+`requiredStaleHours('fashionjobs') = 36 ≤ 48`.
 
 **Ce qui est différencié n'est pas la fenêtre, c'est le DROIT de l'appliquer.** Une fenêtre courte sur une source
 qui ne prouve pas son énumération fermerait des offres qu'elle n'a pas lues ; c'est pourquoi la fenêtre est
 uniforme et le **droit d'attester** est, lui, conditionné source par source :
 
+**Règle imposée le 2026-09-11 : seul un PARCOURS DÉMONTRÉ ferme.** Un volume stable ou une couverture de 90 % ne
+prouvent pas que le même périmètre a été parcouru — l'offre disparue est justement celle qu'on n'a pas vue.
+
 | Condition sur le dernier run | Peut fermer par le silence ? | Justification mesurée |
 |---|---|---|
-| Énumération `PROVEN` (total déclaré couvert à ≥ 90 %, ou adaptateur qui l'affirme) | **oui** | 2 091/2 091 sur `tapestry` : on a vu la fin du listing |
-| Énumération `UNKNOWN` **avec** une référence (run précédent ou total déclaré) | **oui**, sous garde d'effondrement | 149 sources sur 440 ne déclarent aucun total ; les refuser toutes gelait 20 503 représentations |
-| Énumération `UNKNOWN` **sans** aucune référence | **non** | rien à comparer : fermer reviendrait à supprimer sur la foi de rien |
-| Énumération `REFUTED` (tronquée, couverture < 90 %, total à 0 contredit) | **non** | `ulta-jibe` s'arrête sur un plafond de pages : l'absence n'y prouve rien |
+| Énumération `PROVEN` — **parcours démontré** : fin d'endpoint, fin de pagination, ou toutes les partitions | **oui** | `vf-corporation` : `SECOND_SWEEP_RECONCILED` ; Teamtailor : `next_url: null` ; Recruitee / Personio : endpoint unique servi en entier |
+| Énumération `UNKNOWN`, **avec ou sans** volume de référence | **non** | un volume identique peut être composé d'offres entièrement différentes |
+| Total déclaré atteint **sans** démonstration de parcours | **non** | le compteur dit combien la source annonce, pas qu'on soit allé au bout |
+| Couverture ≥ 90 % **sans** démonstration | **non** | les 10 % non lus ne sont pas attestés |
+| Énumération `REFUTED` (tronquée, couverture < 90 %, total à 0 contredit, refus de l'adaptateur) | **non** | `ulta-jibe` s'arrête sur un plafond de pages ; `tapestry` : 5 offres hors facette sous un plafond de site |
 | Run BROKEN / ERROR / TIMEOUT / CHALLENGED / NEW | **non** | `l-oreal-professionnel` : 0 offre rendue **sans erreur levée** |
 | Erreurs de collecte > 0 | **non** | `knitwell-us-retail` : 1 999/2 000 lues mais une erreur |
-| Volume < 50 % du dernier run productif | **non** | `swatch-group` 275 → 61 : une chute de 78 % n'est pas une journée d'expirations |
+| Volume < 50 % du dernier run productif | **non** | `swatch-group` 275 → 61 — **indicateur de régression**, qui refuse mais ne prouve jamais dans l'autre sens |
 
 ### Fréquence de contrôle par famille
 

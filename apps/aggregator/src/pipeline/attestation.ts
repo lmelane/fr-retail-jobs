@@ -56,16 +56,15 @@ const NEVER_ATTESTS: ReadonlySet<RunStatus> = new Set<RunStatus>([
 export type AttestationInput = {
   status: RunStatus;
   /**
-   * Le verdict d'énumération, en booléen : `true` prouvé, `false` réfuté, **`undefined` inconnu**.
+   * Le verdict d'énumération, en booléen : `true` PROUVÉ, `false` RÉFUTÉ, `undefined` INCONNU.
    *
-   * La distinction `false` / `undefined` est la correction du 2026-09-11. Auparavant `complete !== true`
-   * refusait, donc une source qui ne DÉCLARE pas son total était traitée comme une source dont on avait PROUVÉ
-   * l'incomplétude : 187 sources portant 20 796 représentations ne pouvaient plus fermer une seule offre
-   * (boots, pvh, adidas… 70 adaptateurs sur 101 ne déclarent aucun total).
+   * **Seul `true` peut autoriser une fermeture** (règle imposée le 2026-09-11). `true` ne s'obtient que par un
+   * PARCOURS DÉMONTRÉ — fin d'endpoint, fin de pagination, ou toutes les partitions lues ; jamais par un ratio.
+   * Voir `pipeline/enumeration.ts`.
    *
-   * `undefined` laisse donc passer cette porte-ci, et l'arbitrage retombe sur la garde d'effondrement plus bas,
-   * qui est la seule preuve disponible quand la source ne déclare rien — et qui a déjà attrapé de vraies
-   * pannes (L'Oréal 1 711 → 0). Voir `pipeline/enumeration.ts`.
+   * `false` et `undefined` refusent tous deux la fermeture, mais ne disent pas la même chose et ne se traitent
+   * pas pareil : `false` est un défaut à corriger, `undefined` est un parcours à démontrer. Le registre des
+   * invérifiables les sépare.
    */
   complete?: boolean;
   errors?: number;
@@ -88,15 +87,27 @@ export type AttestationInput = {
  * une suppression dans notre catalogue.
  */
 export function isTrustedForAttestation(run: AttestationInput): boolean {
-  // Une incomplétude PROUVÉE refuse ; une énumération inconnue (`undefined`) laisse passer et sera arbitrée par
-  // la couverture et l'effondrement ci-dessous. « On ne sait pas » n'est pas « on sait que non ».
-  if (run.complete === false || NEVER_ATTESTS.has(run.status) || (run.errors ?? 0) > 0) return false;
+  /**
+   * LA PORTE PRINCIPALE, ET ELLE EST FERMÉE PAR DÉFAUT : **seule une énumération PROUVÉE autorise à faire
+   * disparaître une offre non revue.** (Règle imposée par le propriétaire le 2026-09-11.)
+   *
+   * Ce que la version précédente faisait, et qui était faux : elle acceptait `undefined` puis se rabattait sur
+   * la couverture (0,9) et l'effondrement (0,5). Or ni l'un ni l'autre ne prouve qu'on a parcouru le même
+   * périmètre — 90 % de couverture n'atteste RIEN sur les offres situées dans les 10 % non lus, et un volume
+   * stable peut être composé d'offres entièrement différentes.
+   *
+   * Les deux seuils restent utilisés ci-dessous, mais uniquement pour REFUSER : ce sont des indicateurs de santé
+   * et de régression, jamais une preuve de disparition.
+   */
+  if (run.complete !== true) return false;
+
+  if (NEVER_ATTESTS.has(run.status) || (run.errors ?? 0) > 0) return false;
 
   // Le balayage s'est arrêté sur un plafond : par construction, il n'a pas
   // atteint la fin du board.
   if (run.truncated) return false;
 
-  // La source annonce un total : on exige d'en avoir vu l'essentiel.
+  // Indicateur de santé : sous cette couverture d'un total déclaré, on refuse — même parcours démontré.
   if (run.declaredTotal && run.declaredTotal > 0) {
     const fetched = run.fetched ?? 0;
     if (fetched / run.declaredTotal < ATTESTATION_MIN_COVERAGE) return false;
@@ -118,16 +129,6 @@ export function isTrustedForAttestation(run: AttestationInput): boolean {
   if (run.previous && run.previous > 0 && run.fetched != null) {
     if (run.fetched < run.previous * COLLAPSE_RATIO) return false;
   }
-
-  /**
-   * Le dernier trou, ouvert par l'acceptation d'`undefined` : une source qui ne DÉCLARE pas son total et n'a
-   * AUCUN run productif derrière elle n'offre aucune preuve du tout. Laisser passer ce cas donnerait le droit de
-   * faire disparaître des offres sur la foi de rien.
-   *
-   * Une énumération inconnue exige donc au moins une référence : soit un total déclaré (vérifié plus haut), soit
-   * un run précédent auquel se comparer. `PROVEN` s'en passe, puisqu'il porte sa propre preuve.
-   */
-  if (run.complete !== true && !run.declaredTotal && !run.previous) return false;
 
   return true;
 }
