@@ -59,9 +59,11 @@ describe('tenantKeyOf', () => {
 describe('importSourcesCsv', () => {
   it('seeds drafts without invented proof and is idempotent', async () => {
     const first = await importSourcesCsv(prisma);
-    // 83 rows: the verified catalogue after the tenant consolidation (D-28)
-    // removed the 17 duplicate rows that re-fetched the same group feed.
-    expect(first.imported).toBe(83);
+    // 82 rows: the verified catalogue after the tenant consolidation (D-28) removed the 17 duplicate rows that
+    // re-fetched the same group feed, and after FashionJobs left the seed entirely (owner decision 2026-09-11:
+    // discovery-only, never a posting source — the seed is re-imported at every boot, so leaving the row there
+    // would have rewritten its config back into the catalogue).
+    expect(first.imported).toBe(82);
     expect(first.skippedDuplicateTenant).toEqual([]);
 
     const again = await importSourcesCsv(prisma);
