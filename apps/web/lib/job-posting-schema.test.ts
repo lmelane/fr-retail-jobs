@@ -224,3 +224,26 @@ describe('éligibilité au balisage — quatre scénarios de réception', () => 
       .toEqual(['NO_REAL_POSTED_DATE', 'DESCRIPTION_TOO_THIN']);
   });
 });
+
+describe('« Remote » n\'est jamais publié comme un lieu', () => {
+  const NOW = new Date('2026-09-11T12:00:00Z');
+
+  it('retire le segment « Remote » d\'une énumération de lieux', () => {
+    // Cas réel mesuré sur les pages servies : « Lehi, Utah, United States; Remote » publiait
+    // `addressLocality: "Remote"` — une ville qui n'existe pas. Le télétravail se dit par `jobLocationType`.
+    const job = { ...base, city: null, countryCode: 'US', location: 'Lehi, Utah, United States; Remote' } as JobRow;
+    const schema = jobPostingSchema(job, NOW)!;
+    expect(JSON.stringify(schema)).not.toContain('"Remote"');
+    // Un seul lieu réel subsiste : la forme redevient un objet, et la localité est celle de la source.
+    expect(Array.isArray(schema.jobLocation)).toBe(false);
+    expect((schema.jobLocation as any).address.addressLocality).toBe('Lehi, Utah, United States');
+  });
+
+  it('n\'émet aucune localité vide quand la source n\'en donne pas', () => {
+    const job = { ...base, city: null, countryCode: 'US', location: 'Remote' } as JobRow;
+    const schema = jobPostingSchema(job, NOW)!;
+    const address = (schema.jobLocation as any).address;
+    expect(address).not.toHaveProperty('addressLocality');
+    expect(address.addressCountry).toBe('US');
+  });
+});

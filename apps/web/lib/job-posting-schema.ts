@@ -135,6 +135,12 @@ function physicalPlaces(job: JobRow, country: string | null): Array<Record<strin
   const raw = job.location?.trim();
   const segments = raw?.includes(';')
     ? raw.split(';').map((s) => s.trim()).filter(Boolean)
+        /**
+         * « Remote » n'est pas un LIEU. Mesuré sur les pages servies : « Lehi, Utah, United States; Remote »
+         * publiait `addressLocality: "Remote"`, ce qui annonce à Google une ville qui n'existe pas. Le télétravail
+         * est porté par `jobLocationType`, jamais par une adresse.
+         */
+        .filter((segment) => !/^(remote|télétravail|teletravail|virtual|anywhere)$/i.test(segment))
     : [];
   if (segments.length > 1) {
     return segments.map((segment) => ({
@@ -147,13 +153,18 @@ function physicalPlaces(job: JobRow, country: string | null): Array<Record<strin
       },
     }));
   }
-  if (!job.city?.trim() && !country) return [];
+  /**
+   * Un seul lieu subsiste après filtrage (ou aucune énumération) : on repart de la ville canonique, et à défaut
+   * du segment restant — jamais de l'agrégat de `city` quand le libellé énumérait.
+   */
+  const locality = job.city?.trim() || segments[0];
+  if (!locality && !country) return [];
   return [{
     '@type': 'Place',
     address: {
       '@type': 'PostalAddress',
-      addressLocality: job.city ?? undefined,
-      postalCode: job.postalCode ?? undefined,
+      ...(locality ? { addressLocality: locality } : {}),
+      ...(job.postalCode ? { postalCode: job.postalCode } : {}),
       // Canonical code of what the source said — NEVER a default.
       ...(country ? { addressCountry: country } : {}),
     },
