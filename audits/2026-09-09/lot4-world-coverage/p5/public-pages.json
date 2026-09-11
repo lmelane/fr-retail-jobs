@@ -1,0 +1,744 @@
+{
+ "at": "2026-09-11T12:27:14.701Z",
+ "base": "https://modecareers.com",
+ "boundedTo": "3 fiches par état, 8 états — contrôle BORNÉ, non exhaustif",
+ "threeSeparateNotions": {
+  "visibleOnModeCareers": 78932,
+  "eligibleForJobPostingMarkup": 77482,
+  "visibleButNotEligible": 1450,
+  "withRealExpiry": 5700,
+  "expiredExpiryStillActive": 257,
+  "note": "La présence RÉELLE dans Google Jobs n'est pas mesurée ici et ne peut pas l'être depuis ce script."
+ },
+ "states": [
+  {
+   "state": "active avec date",
+   "expectation": "visible et éligible : une vraie date de publication existe",
+   "expectHttp": [
+    200
+   ],
+   "expectSchema": "YES",
+   "sampled": 3,
+   "checks": [
+    {
+     "id": "cmtjwf5lt0a6pld2b0svktjso",
+     "databasePostedAt": "2026-06-04T14:41:57.591Z",
+     "databaseValidThrough": "2026-11-06T22:00:49.000Z",
+     "redirectedTo": "/offre/assistente-alla-clientela-kiabi-marcianise-cmtjwf5lt0a6pld2b0svktjso",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/assistente-alla-clientela-kiabi-marcianise-cmtjwf5lt0a6pld2b0svktjso",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-06-04T14:41:57.591Z",
+      "validThrough": "2026-11-06T22:00:49.000Z",
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "employmentType": [
+       "TEMPORARY",
+       "INTERN"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 44452,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtjwf5mn0a6tld2bltqx0428",
+     "databasePostedAt": "2026-08-27T00:03:11.000Z",
+     "databaseValidThrough": "2026-11-25T00:03:11.000Z",
+     "redirectedTo": "/offre/cdi-expert-fonctionnel-erp-achats-approvisionnement-h-f-cmtjwf5mn0a6tld2bltqx0428",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/cdi-expert-fonctionnel-erp-achats-approvisionnement-h-f-cmtjwf5mn0a6tld2bltqx0428",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-08-27T00:03:11.000Z",
+      "validThrough": "2026-11-25T00:03:11.000Z",
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "employmentType": [
+       "FULL_TIME"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 53858,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtjwf5n40a6xld2bq7psj1ap",
+     "databasePostedAt": "2026-08-19T00:02:47.000Z",
+     "databaseValidThrough": "2026-11-17T00:02:47.000Z",
+     "redirectedTo": "/offre/cdi-chef-de-projet-moa-h-f-cmtjwf5n40a6xld2bq7psj1ap",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/cdi-chef-de-projet-moa-h-f-cmtjwf5n40a6xld2bq7psj1ap",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-08-19T00:02:47.000Z",
+      "validThrough": "2026-11-17T00:02:47.000Z",
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "employmentType": [
+       "FULL_TIME"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 60135,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    }
+   ]
+  },
+  {
+   "state": "active SANS date",
+   "expectation": "visible mais NON éligible : aucune date réelle, et on n'en invente pas",
+   "expectHttp": [
+    200
+   ],
+   "expectSchema": "NO",
+   "sampled": 3,
+   "checks": [
+    {
+     "id": "cmtk0fpdo06h4s32bqdvrp33z",
+     "databasePostedAt": null,
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/marketing-graduate-professional-products-division-cmtk0fpdo06h4s32bqdvrp33z",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/marketing-graduate-professional-products-division-cmtk0fpdo06h4s32bqdvrp33z",
+     "robots": null,
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 49579,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtk0fpe006h8s32bfj0idqs9",
+     "databasePostedAt": null,
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/nordic-data-analytics-manager-cmtk0fpe006h8s32bfj0idqs9",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/nordic-data-analytics-manager-cmtk0fpe006h8s32bfj0idqs9",
+     "robots": null,
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 44858,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtk0fpea06hcs32bd1scql27",
+     "databasePostedAt": null,
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/retail-activation-manager-consumer-products-division-cmtk0fpea06hcs32bd1scql27",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/retail-activation-manager-consumer-products-division-cmtk0fpea06hcs32bd1scql27",
+     "robots": null,
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 49665,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    }
+   ]
+  },
+  {
+   "state": "active sans description",
+   "expectation": "visible ; le balisage dépend de la date, pas de la description",
+   "expectHttp": [
+    200
+   ],
+   "expectSchema": "EITHER",
+   "sampled": 3,
+   "checks": [
+    {
+     "id": "cmtk1xq0701vqnv2be1awe0ra",
+     "databasePostedAt": "2026-09-01T22:37:53.999Z",
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/accounts-payable-manager-cmtk1xq0701vqnv2be1awe0ra",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/accounts-payable-manager-cmtk1xq0701vqnv2be1awe0ra",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-09-01T22:37:53.999Z",
+      "validThrough": null,
+      "hasTitle": true,
+      "hasDescription": false,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "employmentType": [
+       "FULL_TIME"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 39322,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtk1xq4n01wenv2b4jv6k02r",
+     "databasePostedAt": "2026-06-25T00:33:55.832Z",
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/brand-graphic-designer-cmtk1xq4n01wenv2b4jv6k02r",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/brand-graphic-designer-cmtk1xq4n01wenv2b4jv6k02r",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-06-25T00:33:55.832Z",
+      "validThrough": null,
+      "hasTitle": true,
+      "hasDescription": false,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "employmentType": [
+       "FULL_TIME"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 39223,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtk1xqdh01xunv2b5j6xtst4",
+     "databasePostedAt": "2026-06-24T21:42:03.742Z",
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/import-export-coordinator-cmtk1xqdh01xunv2b5j6xtst4",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/import-export-coordinator-cmtk1xqdh01xunv2b5j6xtst4",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-06-24T21:42:03.742Z",
+      "validThrough": null,
+      "hasTitle": true,
+      "hasDescription": false,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "employmentType": [
+       "FULL_TIME"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 39325,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    }
+   ]
+  },
+  {
+   "state": "fermée (closedAt)",
+   "expectation": "410 Gone + noindex, et AUCUN JobPosting : baliser une offre fermée est trompeur",
+   "expectHttp": [
+    410
+   ],
+   "expectSchema": "NO",
+   "sampled": 3,
+   "checks": [
+    {
+     "id": "cmtjvn8ds001vld2b29wnyvdb",
+     "databasePostedAt": "2026-08-28T12:39:12.031Z",
+     "databaseValidThrough": null,
+     "redirectedTo": null,
+     "jsonLdBreakout": false,
+     "status": 410,
+     "location": null,
+     "robots": "noindex",
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 51741,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtjvn8s40026ld2bwm2hxnng",
+     "databasePostedAt": "2026-08-26T16:26:09.097Z",
+     "databaseValidThrough": null,
+     "redirectedTo": null,
+     "jsonLdBreakout": false,
+     "status": 410,
+     "location": null,
+     "robots": "noindex",
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 45578,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtjvn8s6002gld2bkrzm0qmn",
+     "databasePostedAt": "2026-08-26T14:08:28.639Z",
+     "databaseValidThrough": null,
+     "redirectedTo": null,
+     "jsonLdBreakout": false,
+     "status": 410,
+     "location": null,
+     "robots": "noindex",
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 45815,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    }
+   ]
+  },
+  {
+   "state": "retirée (withdrawnAt)",
+   "expectation": "retrait administratif : la page sort de l'index, sans prétendre à une fermeture employeur",
+   "expectHttp": [
+    410
+   ],
+   "expectSchema": "NO",
+   "sampled": 3,
+   "checks": [
+    {
+     "id": "cmtjvn7nb000dld2bpqgvttl4",
+     "databasePostedAt": "2026-08-31T08:05:09.000Z",
+     "databaseValidThrough": "2026-09-30T22:00:00.000Z",
+     "redirectedTo": null,
+     "jsonLdBreakout": false,
+     "status": 410,
+     "location": null,
+     "robots": "noindex",
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 45136,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtjvn80n000uld2bq8s42sjm",
+     "databasePostedAt": "2026-08-28T17:05:10.000Z",
+     "databaseValidThrough": "2026-09-27T22:00:00.000Z",
+     "redirectedTo": null,
+     "jsonLdBreakout": false,
+     "status": 410,
+     "location": null,
+     "robots": "noindex",
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 45234,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtjvn80r0013ld2btpdmljvs",
+     "databasePostedAt": "2026-08-28T14:05:50.000Z",
+     "databaseValidThrough": "2026-09-27T22:00:00.000Z",
+     "redirectedTo": null,
+     "jsonLdBreakout": false,
+     "status": 410,
+     "location": null,
+     "robots": "noindex",
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 45760,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    }
+   ]
+  },
+  {
+   "state": "fusionnée / redirigée",
+   "expectation": "l'identifiant doit mener à l'offre survivante, jamais à une page morte sans explication",
+   "expectHttp": [
+    200,
+    301,
+    302,
+    308,
+    410
+   ],
+   "expectSchema": "EITHER",
+   "sampled": 3,
+   "checks": [
+    {
+     "id": "cmtn5a7sk053tqq5l6p9h120b",
+     "databasePostedAt": "2026-09-04T07:54:29.000Z",
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/vendeur-h-f-cdi-7h-cmtn5a8j80567qq5ld285atsu",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/vendeur-h-f-cdi-7h-cmtn5a8j80567qq5ld285atsu",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-09-04T07:54:29.000Z",
+      "validThrough": null,
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "employmentType": [
+       "PART_TIME"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 52209,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtn5a7t0053xqq5l72y82g4n",
+     "databasePostedAt": "2026-08-27T13:53:52.000Z",
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/vendeur-h-f-cdi-35h00-cmtlyiigm05w7qf5kacc7w8dj",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/vendeur-h-f-cdi-35h00-cmtlyiigm05w7qf5kacc7w8dj",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-08-27T13:53:52.000Z",
+      "validThrough": null,
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "employmentType": null,
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 52136,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtn5a7td0541qq5lz9idpbz7",
+     "databasePostedAt": "2026-08-27T13:47:34.000Z",
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/assistant-chef-de-produit-h-f-cdd-cmtlyiigy05wbqf5kruoszcti",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/assistant-chef-de-produit-h-f-cdd-cmtlyiigy05wbqf5kruoszcti",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-08-27T13:47:34.000Z",
+      "validThrough": null,
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "employmentType": [
+       "TEMPORARY"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 53773,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    }
+   ]
+  },
+  {
+   "state": "multi-sources",
+   "expectation": "une offre canonique : une seule fiche, un seul lien canonique",
+   "expectHttp": [
+    200
+   ],
+   "expectSchema": "EITHER",
+   "sampled": 3,
+   "checks": [
+    {
+     "id": "cmtjwf5lt0a6pld2b0svktjso",
+     "databasePostedAt": "2026-06-04T14:41:57.591Z",
+     "databaseValidThrough": "2026-11-06T22:00:49.000Z",
+     "redirectedTo": "/offre/assistente-alla-clientela-kiabi-marcianise-cmtjwf5lt0a6pld2b0svktjso",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/assistente-alla-clientela-kiabi-marcianise-cmtjwf5lt0a6pld2b0svktjso",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-06-04T14:41:57.591Z",
+      "validThrough": "2026-11-06T22:00:49.000Z",
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "employmentType": [
+       "TEMPORARY",
+       "INTERN"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 44452,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtjwf5mn0a6tld2bltqx0428",
+     "databasePostedAt": "2026-08-27T00:03:11.000Z",
+     "databaseValidThrough": "2026-11-25T00:03:11.000Z",
+     "redirectedTo": "/offre/cdi-expert-fonctionnel-erp-achats-approvisionnement-h-f-cmtjwf5mn0a6tld2bltqx0428",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/cdi-expert-fonctionnel-erp-achats-approvisionnement-h-f-cmtjwf5mn0a6tld2bltqx0428",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-08-27T00:03:11.000Z",
+      "validThrough": "2026-11-25T00:03:11.000Z",
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "employmentType": [
+       "FULL_TIME"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 53858,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtjwf5n40a6xld2bq7psj1ap",
+     "databasePostedAt": "2026-08-19T00:02:47.000Z",
+     "databaseValidThrough": "2026-11-17T00:02:47.000Z",
+     "redirectedTo": "/offre/cdi-chef-de-projet-moa-h-f-cmtjwf5n40a6xld2bq7psj1ap",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/cdi-chef-de-projet-moa-h-f-cmtjwf5n40a6xld2bq7psj1ap",
+     "robots": null,
+     "hasJobPosting": true,
+     "unparsableBlocks": 0,
+     "schema": {
+      "datePosted": "2026-08-19T00:02:47.000Z",
+      "validThrough": "2026-11-17T00:02:47.000Z",
+      "hasTitle": true,
+      "hasDescription": true,
+      "hasHiringOrganization": true,
+      "hasJobLocation": true,
+      "directApply": false,
+      "employmentType": [
+       "FULL_TIME"
+      ],
+      "identifier": true,
+      "titleVisibleOnPage": true
+     },
+     "dangerous": [],
+     "bytes": 60135,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    }
+   ]
+  },
+  {
+   "state": "description avec balisage HTML",
+   "expectation": "le HTML d'une source externe ne doit jamais être rendu comme du balisage actif",
+   "expectHttp": [
+    200
+   ],
+   "expectSchema": "EITHER",
+   "sampled": 3,
+   "checks": [
+    {
+     "id": "cmtk0fpfa06hss32b455z0cjz",
+     "databasePostedAt": null,
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/jr-product-manager-kiehl-s-cmtk0fpfa06hss32b455z0cjz",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/jr-product-manager-kiehl-s-cmtk0fpfa06hss32b455z0cjz",
+     "robots": null,
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 43124,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtk0frol06yps32bq876aff6",
+     "databasePostedAt": null,
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/dermo-business-partner-bydgoszcz-cmtk0frol06yps32bq876aff6",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/dermo-business-partner-bydgoszcz-cmtk0frol06yps32bq876aff6",
+     "robots": null,
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 46753,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtk0frpz06yws32bekgzuhb1",
+     "databasePostedAt": null,
+     "databaseValidThrough": null,
+     "redirectedTo": "/offre/media-manager-cpd-cmtk0frpz06yws32bekgzuhb1",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/media-manager-cpd-cmtk0frpz06yws32bekgzuhb1",
+     "robots": null,
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 54957,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    }
+   ]
+  }
+ ],
+ "failures": []
+}
