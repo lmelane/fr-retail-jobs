@@ -1,0 +1,23 @@
+import { PrismaClient } from '@prisma/client';
+import { readFileSync } from 'node:fs';
+// Did the replay restore the TRUE values? Compare field by field against what was recorded before the gaps.
+const family = process.argv[2] ?? 'recruitee';
+const p = new PrismaClient();
+try {
+  const { before } = JSON.parse(readFileSync(`backups/lot4-20260909/p8-integration/gaps-${family}.json`,'utf8'));
+  const ids = before.map((b:any)=>b.id);
+  const now: any[] = await p.$queryRaw`SELECT id, title, location, "postedAt" FROM "Job" WHERE id = ANY(${ids})`;
+  const byId = new Map(now.map((r:any)=>[r.id,r]));
+  let exact=0, differs=0, missing=0; const diffs:any[]=[];
+  for (const b of before) {
+    const a:any = byId.get(b.id); if(!a){missing++;continue;}
+    // Only the fields the replay actually claims to repair are judged. A field deliberately excluded (because the
+    // archive cannot reproduce it) must not be counted as a failed repair — that would measure the wrong thing.
+    const fields = (process.argv[3] ?? 'location,postedAt').split(',');
+    const same = (f:string) => f === 'postedAt'
+      ? String(a.postedAt&&new Date(a.postedAt).toISOString()) === String(b.postedAt&&new Date(b.postedAt).toISOString())
+      : String(a[f]) === String(b[f]);
+    if (fields.every(same)) exact++; else { differs++; if(diffs.length<4) diffs.push({id:b.id, was:{loc:b.location,date:b.postedAt}, now:{loc:a.location,date:a.postedAt}}); }
+  }
+  console.log(JSON.stringify({ family, checked: before.length, restoredExactly: exact, differ: differs, missingRows: missing, samples: diffs }, null, 1));
+} finally { await p.$disconnect(); }

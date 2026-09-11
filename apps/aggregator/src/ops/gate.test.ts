@@ -41,8 +41,8 @@ const manifest = (dir: string, ids: string[]) => {
 
 const cleanChain = (dir: string, file: string) => ({
   'perimeter.log': JSON.stringify({ manifestFile: file, planned: 2 }, null, 1),
-  'clone-apply.log': JSON.stringify({ manifestFile: file, applied: 2, jobsWithdrawn: 2, jobsClosed: 0 }, null, 1),
-  'clone-replay.log': JSON.stringify({ manifestFile: file, applied: 0, jobsWithdrawn: 0, jobsClosed: 0 }, null, 1),
+  'clone-apply.log': JSON.stringify({ manifestFile: file, applied: 2, touchedIds: ['a', 'b'], jobsWithdrawn: 2, jobsClosed: 0 }, null, 1),
+  'clone-replay.log': JSON.stringify({ manifestFile: file, applied: 0, touchedIds: [], jobsWithdrawn: 0, jobsClosed: 0 }, null, 1),
   'before.log': JSON.stringify({ active: 100, without_active_source: 5 }, null, 1),
   'clone-state.log': JSON.stringify({ active: 98, without_active_source: 5 }, null, 1),
 });
@@ -61,11 +61,11 @@ describe('the mutation gate blocks the chain', () => {
     const dir = mkdtempSync(join(tmpdir(), 'gate-')); dirs.push(dir);
     const file = manifest(dir, ['a', 'b']);
     const files = cleanChain(dir, file);
-    files['clone-replay.log'] = JSON.stringify({ manifestFile: file, applied: 3, jobsWithdrawn: 0, jobsClosed: 0 }, null, 1);
+    files['clone-replay.log'] = JSON.stringify({ manifestFile: file, applied: 3, touchedIds: ['a', 'b', 'z'], jobsWithdrawn: 0, jobsClosed: 0 }, null, 1);
     for (const [n, b] of Object.entries(files)) writeFileSync(join(dir, n), b);
     const r = runGate(dir);
     expect(r.exitCode).toBe(1);
-    expect(r.stderr).toMatch(/replay still changed rows/);
+    expect(r.stderr).toMatch(/replay still touched \d+ identifier/);
     expect(r.stderr).toMatch(/not idempotent/);
   });
 
@@ -73,18 +73,18 @@ describe('the mutation gate blocks the chain', () => {
     const dir = mkdtempSync(join(tmpdir(), 'gate-')); dirs.push(dir);
     const file = manifest(dir, ['a', 'b']);
     const files = cleanChain(dir, file);
-    files['clone-apply.log'] = JSON.stringify({ manifestFile: file, applied: 9, jobsWithdrawn: 9, jobsClosed: 0 }, null, 1);
+    files['clone-apply.log'] = JSON.stringify({ manifestFile: file, applied: 9, touchedIds: ['a', 'b', 'x1', 'x2'], jobsWithdrawn: 9, jobsClosed: 0 }, null, 1);
     for (const [n, b] of Object.entries(files)) writeFileSync(join(dir, n), b);
     const r = runGate(dir);
     expect(r.exitCode).toBe(1);
-    expect(r.stderr).toMatch(/touched 9 rows for 2 declared identifiers/);
+    expect(r.stderr).toMatch(/touched outside the declared perimeter/);
   });
 
   it('BLOCKS when a withdrawal closed postings — an administrative removal is never an employer closure', () => {
     const dir = mkdtempSync(join(tmpdir(), 'gate-')); dirs.push(dir);
     const file = manifest(dir, ['a', 'b']);
     const files = cleanChain(dir, file);
-    files['clone-apply.log'] = JSON.stringify({ manifestFile: file, applied: 2, jobsWithdrawn: 1, jobsClosed: 1 }, null, 1);
+    files['clone-apply.log'] = JSON.stringify({ manifestFile: file, applied: 2, touchedIds: ['a', 'b'], jobsWithdrawn: 1, jobsClosed: 1 }, null, 1);
     for (const [n, b] of Object.entries(files)) writeFileSync(join(dir, n), b);
     const r = runGate(dir);
     expect(r.exitCode).toBe(1);
@@ -105,14 +105,40 @@ describe('the mutation gate blocks the chain', () => {
   it('BLOCKS when the mutation declared no perimeter at all', () => {
     const dir = makeLogs({
       'perimeter.log': JSON.stringify({ planned: 2 }, null, 1),
-      'clone-apply.log': JSON.stringify({ applied: 2, jobsWithdrawn: 2, jobsClosed: 0 }, null, 1),
-      'clone-replay.log': JSON.stringify({ applied: 0 }, null, 1),
+      'clone-apply.log': JSON.stringify({ applied: 2, touchedIds: ['a', 'b'], jobsWithdrawn: 2, jobsClosed: 0 }, null, 1),
+      'clone-replay.log': JSON.stringify({ applied: 0, touchedIds: [] }, null, 1),
       'before.log': JSON.stringify({ without_active_source: 5 }, null, 1),
       'clone-state.log': JSON.stringify({ without_active_source: 5 }, null, 1),
     });
     const r = runGate(dir);
     expect(r.exitCode).toBe(1);
     expect(r.stderr).toMatch(/declared no perimeter manifest/);
+  });
+
+  it('BLOCKS a replay that reports no touchedIds — a missing declaration is not zero', () => {
+    // Reported by review 2026-09-11: a replay log of `{}` cleared the gate, because "no counter" was read as
+    // "no write". Missing evidence must never become a pass.
+    const dir = mkdtempSync(join(tmpdir(), 'gate-')); dirs.push(dir);
+    const file = manifest(dir, ['a', 'b']);
+    const files = cleanChain(dir, file);
+    files['clone-replay.log'] = '{\n}\n';
+    for (const [n, b] of Object.entries(files)) writeFileSync(join(dir, n), b);
+    const r = runGate(dir);
+    expect(r.exitCode).toBe(1);
+    expect(r.stderr).toMatch(/declared no `touchedIds`/);
+  });
+
+  it('BLOCKS identifiers outside the perimeter even when the COUNT matches', () => {
+    // Reported by review 2026-09-11: declaring A,B and touching C,D cleared the gate because only numbers were
+    // compared. Set inclusion is the only honest check.
+    const dir = mkdtempSync(join(tmpdir(), 'gate-')); dirs.push(dir);
+    const file = manifest(dir, ['A', 'B']);
+    const files = cleanChain(dir, file);
+    files['clone-apply.log'] = JSON.stringify({ manifestFile: file, applied: 2, touchedIds: ['C', 'D'], jobsWithdrawn: 2, jobsClosed: 0 }, null, 1);
+    for (const [n, b] of Object.entries(files)) writeFileSync(join(dir, n), b);
+    const r = runGate(dir);
+    expect(r.exitCode).toBe(1);
+    expect(r.stderr).toMatch(/touched outside the declared perimeter: C, D/);
   });
 
   it('treats a check it cannot evaluate as BLOCKING, never as a pass', () => {
