@@ -28,3 +28,37 @@ donc des offres sur la foi de droits périmés — exactement ce que la règle i
 
 Cet ordre renforce D36 (« ingest complet d'abord, refresh ensuite »), pour une raison supplémentaire : ce n'est
 plus seulement une question de fraîcheur des attestations, mais de **validité de la règle** qui les a produites.
+
+---
+
+## Prérequis ajouté le 2026-09-11 — `countryIntegrity` doit être PERSISTÉE
+
+**Ne pas supposer qu'une ingestion remplira `countryIntegrity` automatiquement.** Le diagnostic est net :
+`resolveGeography` (apps/aggregator/src/normalize/geography.ts) produit bien `method` et `sourcePath` — la
+provenance du pays — mais `dedup/upsert.ts` n'en garde que `countryCode`. **La provenance est calculée puis
+jetée**, et la colonne `countryIntegrity` est vide : **0 valeur sur 78 932 offres actives**.
+
+Conséquence mesurée : **7 210 offres** à code pays ambigu n'ont aucune provenance exploitable et restent
+inéligibles au balisage. Elles ne redeviendront éligibles que lorsque leur verdict positif sera **démontré**.
+
+### À faire pendant P6/P7, sans mutation de production
+
+1. **définir** les verdicts positifs et négatifs autorisés pour `countryIntegrity` — la liste positive est déjà
+   fixée côté web (`RAW_COUNTRY_CODE`, `RAW_COUNTRY`, `VERIFIED`) ; la chaîne d'ingestion doit produire
+   exactement ces valeurs ;
+2. **persister** le verdict issu du chemin géographique réel (`resolveGeography().method`), et non un drapeau
+   recalculé ailleurs ;
+3. **transmettre** `countryIntegrity` dans le `JobRow` réellement utilisé par la fiche — il ne le porte pas
+   aujourd'hui, la règle web le lit via un accès élargi ;
+4. **tester le chemin complet** ingestion → base → `JobRow` → `JobPosting` **sur clone** ;
+5. **vérifier que le test ne repose pas sur un objet synthétique enrichi à la main** : le verdict doit venir
+   d'une ingestion réelle, pas d'un décor de test qui pose le champ.
+
+### Lors de P7 seulement, après accord explicite
+
+1. ingestion complète du sous-ensemble admis ;
+2. vérification des `countryIntegrity`, `complete` et `canAttestAbsence` **recalculés** ;
+3. `refresh` seulement après validation.
+
+**Une offre ne redevient Google-éligible que si son verdict positif est effectivement démontré. Les 7 210 offres
+ne doivent pas redevenir éligibles en bloc.**
