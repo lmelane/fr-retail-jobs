@@ -1,11 +1,29 @@
 {
- "at": "2026-09-11T13:12:49.456Z",
+ "at": "2026-09-11T13:40:43.656Z",
  "base": "https://modecareers.com",
  "boundedTo": "3 fiches par état, 11 états — contrôle BORNÉ, non exhaustif",
  "visibleOnModeCareers": 78932,
- "markupEmitted": 15,
- "googleEligible": 75853,
+ "markupEmitted": 12,
+ "googleEligible": 71961,
+ "googleEligibleMeaning": "Conforme à la porte technique actuelle de Mode Careers. Ni une garantie d'apparition dans Google Jobs, ni une promesse d'acceptation par Google.",
+ "descriptionThresholdOrigin": "Le seuil de 100 caractères est une règle conservatrice interne de Mode Careers, pas un seuil fourni par Google.",
  "googleIneligibleByReason": [
+  {
+   "reason": "PHYSICAL_LOCATION_WITHOUT_COUNTRY",
+   "postings": 3937,
+   "sampleIds": [
+    "cmtk0fpd306gws32bqdj7z3kc",
+    "cmtk0fpdf06h0s32by3vzhpof",
+    "cmtk0fpdo06h4s32bqdvrp33z",
+    "cmtk0fpe006h8s32bfj0idqs9",
+    "cmtk0fpea06hcs32bd1scql27",
+    "cmtk0fpei06hgs32bsifb9z7f",
+    "cmtk0fpeq06hks32b4maq17uo",
+    "cmtk0fpf106hos32bkm32bts2",
+    "cmtk0fpfi06hws32b9b7znljp",
+    "cmtk0fpfr06i0s32byg7vwr0c"
+   ]
+  },
   {
    "reason": "NO_REAL_POSTED_DATE",
    "postings": 1450,
@@ -24,18 +42,18 @@
   },
   {
    "reason": "NO_USABLE_LOCATION",
-   "postings": 939,
+   "postings": 779,
    "sampleIds": [
     "cmtjzhs4t02jooe2b5wz2h990",
     "cmtk0fpfa06hss32b455z0cjz",
-    "cmtk0fpkg06jrs32bum01qmgo",
     "cmtk0fpq206ljs32b4g4wd3eg",
-    "cmtk0fqgv06rqs32bscunro4a",
-    "cmtk0frbz06wrs32bk4notbxj",
     "cmtk0frol06yps32bq876aff6",
-    "cmtk0fs8j071is32be3l9271u",
     "cmtk0fstf074cs32bo7hkxtzj",
-    "cmtk0fsu7074gs32bkfpu6dj7"
+    "cmtk0fsvv074os32bdulcok1t",
+    "cmtk0fswq074ss32bcuhw4exp",
+    "cmtk0ft8n076as32b7dpg3jev",
+    "cmtk0fv1807cvs32blzophw79",
+    "cmtk0fv2o07czs32b5ahlz430"
    ]
   },
   {
@@ -71,6 +89,54 @@
    ]
   },
   {
+   "reason": "LOCATION_COUNTRY_CONFLICT",
+   "postings": 142,
+   "sampleIds": [
+    "cmtk1xrqo020knv2b5ootz3rz",
+    "cmtk1yci8038xnv2btftfswoi",
+    "cmtk1yct203axnv2bkd7wbtib",
+    "cmtk1ycua03b5nv2bck2dk7qi",
+    "cmtk1yd6p03ddnv2bewqwx99p",
+    "cmtk1ydcj03ednv2b470hmwgj",
+    "cmtk1ydd303ehnv2bvq6wdpkl",
+    "cmtk1ydg803f1nv2bjheandb6",
+    "cmtk1ynhb04glnv2btl6r4bi0",
+    "cmtk1ynik04gsnv2b8q9fyvbz"
+   ]
+  },
+  {
+   "reason": "REMOTE_WITHOUT_ELIGIBILITY_COUNTRY",
+   "postings": 23,
+   "sampleIds": [
+    "cmtk276tj0jepnv2bc4vch150",
+    "cmtk2777c0jf9nv2bzazybywd",
+    "cmtk27c4h0jkmnv2be5owyj7g",
+    "cmtk283dw0k40nv2bsw491vyc",
+    "cmtk284td0k4tnv2brlqmqova",
+    "cmtk286lk0k5tnv2b9qugj5te",
+    "cmtk28g6a0kaqnv2bpoojkey2",
+    "cmtlyeycv007zqf5ke0xii7i3",
+    "cmtlyeydf0083qf5kebhcild0",
+    "cmtlyfuxb015tqf5k56lm225g"
+   ]
+  },
+  {
+   "reason": "MULTI_LOCATION_COUNTRY_NOT_PROVEN",
+   "postings": 11,
+   "sampleIds": [
+    "cmtlygz1i02t9qf5k39cssacx",
+    "cmtlygz1s02tdqf5k4dw2wid2",
+    "cmtlygz2b02thqf5kxh3h7d0a",
+    "cmtlygz2m02tlqf5kinahtb2c",
+    "cmtlygz4u02u5qf5kxi4vv9xr",
+    "cmtlyjc6h082zqf5k0edbejh1",
+    "cmtlyjcaw083rqf5kymb1wk6z",
+    "cmtlynhz20hurqf5krd1a700x",
+    "cmtlyni160hv7qf5k93se3vch",
+    "cmtlypryb0ll4qf5kfioy7mke"
+   ]
+  },
+  {
    "reason": "OPEN_APPLICATION",
    "postings": 1,
    "sampleIds": [
@@ -78,7 +144,73 @@
    ]
   }
  ],
- "googleIneligibleTotal": 3079,
+ "googleIneligibleTotal": 6971,
+ "locationMeasures": [
+  {
+   "measure": "PHYSIQUE_AVEC_VILLE_SANS_PAYS",
+   "postings": 3937,
+   "sampleIds": [
+    "cmtk0fpd306gws32bqdj7z3kc",
+    "cmtk0fpdf06h0s32by3vzhpof",
+    "cmtk0fpdo06h4s32bqdvrp33z",
+    "cmtk0fpe006h8s32bfj0idqs9",
+    "cmtk0fpea06hcs32bd1scql27",
+    "cmtk0fpei06hgs32bsifb9z7f",
+    "cmtk0fpeq06hks32b4maq17uo",
+    "cmtk0fpf106hos32bkm32bts2",
+    "cmtk0fpfi06hws32b9b7znljp",
+    "cmtk0fpfr06i0s32byg7vwr0c"
+   ]
+  },
+  {
+   "measure": "CONFLIT_SEGMENT_CONTRE_COUNTRYCODE",
+   "postings": 142,
+   "sampleIds": [
+    "cmtk1xrqo020knv2b5ootz3rz",
+    "cmtk1yci8038xnv2btftfswoi",
+    "cmtk1yct203axnv2bkd7wbtib",
+    "cmtk1ycua03b5nv2bck2dk7qi",
+    "cmtk1yd6p03ddnv2bewqwx99p",
+    "cmtk1ydcj03ednv2b470hmwgj",
+    "cmtk1ydd303ehnv2bvq6wdpkl",
+    "cmtk1ydg803f1nv2bjheandb6",
+    "cmtk1ynhb04glnv2btl6r4bi0",
+    "cmtk1ynik04gsnv2b8q9fyvbz"
+   ]
+  },
+  {
+   "measure": "MULTILOCALISEE_AVEC_UN_SEUL_PAYS_APPLIQUE",
+   "postings": 45,
+   "sampleIds": [
+    "cmtlyi3xf04rtqf5kv170qhg5",
+    "cmtlyjc24081rqf5k7tie197w",
+    "cmtlyjc30081zqf5k3s3l7q4m",
+    "cmtlyjc730833qf5kj7474zob",
+    "cmtlypreb0lh0qf5k23fw9fid",
+    "cmtlyprwy0lksqf5k7ke13de8",
+    "cmtlyps4y0lmcqf5ku76bqfny",
+    "cmtlyps5c0lmgqf5kd6m14muu",
+    "cmtlypsc60lnkqf5k6jfy6n9w",
+    "cmtlypsen0lo0qf5kynd6qpgq"
+   ]
+  },
+  {
+   "measure": "REMOTE_SANS_PAYS_ELIGIBILITE",
+   "postings": 23,
+   "sampleIds": [
+    "cmtk276tj0jepnv2bc4vch150",
+    "cmtk2777c0jf9nv2bzazybywd",
+    "cmtk27c4h0jkmnv2be5owyj7g",
+    "cmtk283dw0k40nv2bsw491vyc",
+    "cmtk284td0k4tnv2brlqmqova",
+    "cmtk286lk0k5tnv2b9qugj5te",
+    "cmtk28g6a0kaqnv2bpoojkey2",
+    "cmtlyeycv007zqf5ke0xii7i3",
+    "cmtlyeydf0083qf5kebhcild0",
+    "cmtlyfuxb015tqf5k56lm225g"
+   ]
+  }
+ ],
  "vocabulary": {
   "multiSource": 1889,
   "multiLocation": 51,
@@ -450,38 +582,11 @@
      "status": 200,
      "location": "/offre/area-manager-hotel-sales-cmtlyi3xf04rtqf5kv170qhg5",
      "robots": null,
-     "hasJobPosting": true,
+     "hasJobPosting": false,
      "unparsableBlocks": 0,
-     "schema": {
-      "datePosted": "2026-09-03T18:56:08.000Z",
-      "validThrough": null,
-      "hasTitle": true,
-      "hasDescription": true,
-      "hasHiringOrganization": true,
-      "hasJobLocation": true,
-      "directApply": false,
-      "jobLocationCount": 8,
-      "jobLocationLocalities": [
-       "Los Angeles",
-       "Portland",
-       "San Diego",
-       "San Francisco",
-       "Scotland",
-       "Scottsdale, AZ",
-       "Seattle",
-       "United States"
-      ],
-      "jobLocationType": "TELECOMMUTE",
-      "applicantLocationRequirements": {
-       "@type": "Country",
-       "name": "US"
-      },
-      "employmentType": null,
-      "identifier": true,
-      "titleVisibleOnPage": true
-     },
+     "schema": null,
      "dangerous": [],
-     "bytes": 66034,
+     "bytes": 50543,
      "httpOk": true,
      "schemaOk": true,
      "dateInvented": false,
@@ -497,31 +602,11 @@
      "status": 200,
      "location": "/offre/account-executive-public-relations-cmtlyjc24081rqf5k7tie197w",
      "robots": null,
-     "hasJobPosting": true,
+     "hasJobPosting": false,
      "unparsableBlocks": 0,
-     "schema": {
-      "datePosted": "2026-02-09T03:22:41.000Z",
-      "validThrough": null,
-      "hasTitle": true,
-      "hasDescription": true,
-      "hasHiringOrganization": true,
-      "hasJobLocation": true,
-      "directApply": false,
-      "jobLocationCount": 4,
-      "jobLocationLocalities": [
-       "Waltham, MA",
-       "San Francisco, CA",
-       "New York, NY",
-       "Seattle, WA, or San Diego, CA"
-      ],
-      "jobLocationType": null,
-      "applicantLocationRequirements": null,
-      "employmentType": null,
-      "identifier": true,
-      "titleVisibleOnPage": true
-     },
+     "schema": null,
      "dangerous": [],
-     "bytes": 61911,
+     "bytes": 49038,
      "httpOk": true,
      "schemaOk": true,
      "dateInvented": false,
@@ -537,30 +622,11 @@
      "status": 200,
      "location": "/offre/account-manager-cmtlyjc30081zqf5k3s3l7q4m",
      "robots": null,
-     "hasJobPosting": true,
+     "hasJobPosting": false,
      "unparsableBlocks": 0,
-     "schema": {
-      "datePosted": "2026-08-28T20:40:13.000Z",
-      "validThrough": null,
-      "hasTitle": true,
-      "hasDescription": true,
-      "hasHiringOrganization": true,
-      "hasJobLocation": true,
-      "directApply": false,
-      "jobLocationCount": 3,
-      "jobLocationLocalities": [
-       "San Francisco, CA",
-       "Seattle, WA",
-       "or San Diego, CA"
-      ],
-      "jobLocationType": null,
-      "applicantLocationRequirements": null,
-      "employmentType": null,
-      "identifier": true,
-      "titleVisibleOnPage": true
-     },
+     "schema": null,
      "dangerous": [],
-     "bytes": 60898,
+     "bytes": 48582,
      "httpOk": true,
      "schemaOk": true,
      "dateInvented": false,
