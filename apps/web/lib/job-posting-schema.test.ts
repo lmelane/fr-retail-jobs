@@ -335,29 +335,89 @@ describe('cohérence pays / localisation', () => {
   });
 });
 
-describe('un suffixe qui REDIT le pays n\'est pas un conflit', () => {
+/**
+ * PREUVE INDÉPENDANTE DU PAYS POUR LES CODES AMBIGUS (dernier correctif P5, 2026-09-11).
+ *
+ * `suffix === countryCode` ne prouve rien quand le `countryCode` a lui-même été déduit de ce suffixe : c'est une
+ * validation circulaire. Mesuré : **1 936 offres** sont dans ce cas, et **aucune** ne porte de nom de pays écrit
+ * en toutes lettres dans son `raw` — leur pays vient donc bien du seul suffixe.
+ *
+ * Le test qui acceptait « Indianapolis, IN » sous le pays IN est RETIRÉ comme comportement conforme : IN peut
+ * désigner l'Indiana, et la coïncidence suffixe/pays n'est pas une preuve que le pays est l'Inde.
+ */
+describe('preuve indépendante du pays pour un code ambigu', () => {
   const NOW = new Date('2026-09-11T12:00:00Z');
 
-  it('« Berlin, DE » sous le pays DE est cohérent : DE y désigne l\'Allemagne', () => {
-    /**
-     * Mesuré avant cette distinction : 1 792 offres étaient signalées en conflit, dont **665 « …, DE » sous le
-     * pays DE**. Les refuser aurait supprimé le balisage de centaines d'offres parfaitement correctes.
-     */
-    const job = { ...base, city: 'Berlin, DE', countryCode: 'DE', location: 'Berlin, DE' } as JobRow;
-    expect(markupIneligibility(job, NOW)).toEqual([]);
-    const address = (jobPostingSchema(job, NOW)!.jobLocation as any).address;
-    expect(address.addressCountry).toBe('DE');
+  it('A. « El Segundo, CA » sous le pays CA, sans preuve indépendante → AUCUN JobPosting', () => {
+    const job = { ...base, city: 'El Segundo', countryCode: 'CA', location: 'El Segundo, CA',
+      postalCode: null } as JobRow;
+    expect(markupIneligibility(job, NOW)).toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
+    expect(jobPostingSchema(job, NOW)).toBeNull();
   });
 
-  it('mais « Seattle, WA » sous le pays DE reste un conflit', () => {
+  it('B. « Indianapolis, IN » sous le pays IN, sans preuve indépendante → AUCUN JobPosting', () => {
+    const job = { ...base, city: 'Indianapolis', countryCode: 'IN', location: 'Indianapolis, IN',
+      postalCode: null } as JobRow;
+    expect(markupIneligibility(job, NOW)).toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
+    expect(jobPostingSchema(job, NOW)).toBeNull();
+  });
+
+  it('C. « Berlin, DE » avec le pays nommé en toutes lettres → balisage autorisé, addressCountry DE', () => {
+    // Le libellé porte « Germany » : une information indépendante du suffixe à deux lettres.
+    const job = { ...base, city: 'Berlin', countryCode: 'DE', location: 'Berlin, Germany',
+      postalCode: null } as JobRow;
+    expect(markupIneligibility(job, NOW)).toEqual([]);
+    expect((jobPostingSchema(job, NOW)!.jobLocation as any).address.addressCountry).toBe('DE');
+  });
+
+  it('D. « Seattle, WA » avec le pays US fourni indépendamment → balisage autorisé, addressCountry US', () => {
+    const job = { ...base, city: 'Seattle, WA', countryCode: 'US', location: 'Seattle, WA, United States',
+      postalCode: null } as JobRow;
+    expect(markupIneligibility(job, NOW)).toEqual([]);
+    expect((jobPostingSchema(job, NOW)!.jobLocation as any).address.addressCountry).toBe('US');
+  });
+
+  it('E. multilocalisation américaine, pays US prouvé indépendamment → un lieu par site, tous sous US', () => {
+    const job = { ...base, city: null, countryCode: 'US', postalCode: null,
+      location: 'New York, NY, United States; Seattle, WA, United States; Boston, MA, United States' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toEqual([]);
+    const places = jobPostingSchema(job, NOW)!.jobLocation as Array<Record<string, any>>;
+    expect(places).toHaveLength(3);
+    expect(places.every((pl) => pl.address.addressCountry === 'US')).toBe(true);
+  });
+
+  it('F. même libellé, mais le pays ne vient QUE du suffixe ambigu → aucun balisage', () => {
+    // « Seattle, WA » sous `WA` : le suffixe et le pays coïncident, et rien d'autre ne l'atteste.
+    const job = { ...base, city: 'Seattle', countryCode: 'WA', location: 'Seattle, WA',
+      postalCode: null } as JobRow;
+    expect(markupIneligibility(job, NOW)).toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
+    expect(jobPostingSchema(job, NOW)).toBeNull();
+  });
+
+  it('« Seattle, WA » sous le pays DE reste un CONFLIT, pas une simple absence de preuve', () => {
     const job = { ...base, city: 'Seattle, WA', countryCode: 'DE', location: 'Seattle, WA' } as JobRow;
     expect(markupIneligibility(job, NOW)).toContain('LOCATION_COUNTRY_CONFLICT');
   });
 
-  it('« Indianapolis, IN » sous le pays IN (Inde) est accepté faute de preuve du contraire', () => {
-    // Cas honnête à déclarer : le suffixe redit le pays déclaré, donc aucune contradiction n'est DÉMONTRABLE ici.
-    // Trancher « Indianapolis est aux États-Unis » demanderait une table ville→pays que nous n'avons pas (D54).
-    const job = { ...base, city: 'Indianapolis, IN', countryCode: 'IN', location: 'Indianapolis, IN' } as JobRow;
+  it('un code postal vaut preuve indépendante : le suffixe ne le produit pas', () => {
+    const job = { ...base, city: 'Berlin', countryCode: 'DE', location: 'Berlin, DE',
+      postalCode: '10115' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toEqual([]);
+  });
+
+  it('un pays NON ambigu n\'exige aucune preuve supplémentaire (FR, IT…)', () => {
+    // `FR` n'est subdivision de rien : la question de la circularité ne se pose pas.
+    expect(markupIneligibility({ ...base, countryCode: 'FR' } as JobRow, NOW)).toEqual([]);
+    expect(markupIneligibility({ ...base, city: 'Milano', countryCode: 'IT', location: 'Milano' } as JobRow, NOW)).toEqual([]);
+  });
+
+  it('countryIntegrity, quand elle est renseignée, vaut preuve — la règle la lit déjà', () => {
+    /**
+     * La colonne existe (D54) mais reste vide en production. La règle la consulte : dès qu'une ingestion la
+     * renseignera, le verdict suivra sans nouveau correctif.
+     */
+    const job = { ...base, city: 'El Segundo', countryCode: 'CA', location: 'El Segundo, CA',
+      postalCode: null, countryIntegrity: 'VERIFIED' } as JobRow & { countryIntegrity: string };
     expect(markupIneligibility(job, NOW)).toEqual([]);
   });
 });
