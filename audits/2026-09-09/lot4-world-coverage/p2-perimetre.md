@@ -181,7 +181,7 @@ Conforme aux décisions gravées : les **695 VF** restent tenues et jamais créd
 | `element-6` — RAW vides | qualifié | 5 | rejeu ciblé de ces 5 identifiants | aucun | **P2** |
 | 301 sans champ de date | qualifié | 301 | comparer un RAW daté et un non daté par source, hors ligne | aucun | **P2** |
 | Refus d'identité sur libellés actifs | mesuré | 20 libellés | revue d'alias | aucun | **P2** |
-| Retenues levées sans observation | mesuré | 7 (Tapestry 5, Nordstrom 2) | vérifier l'attribution de ces 7 représentations | aucun | **P2** |
+| Retenues « levées » — **instruit** | 35 | Mango 27 = **levée réelle justifiée** (retenue antérieure, `CERTIFIED_SINGLE_BRAND_PORTAL`) ; Tapestry 5 + Nordstrom 3 = **aucune levée**, retenue postérieure à la publication, ré-attestation impossible (détail absent) | attendre un run complet lisant leur détail ; traiter le `LEGACY_UNREVIEWED` Nordstrom par la revue d'alias | dépend d'un run complet | **P2** |
 | WTTJ sous PAUSED | qualifié, sous contrôle | 52 | trancher au premier run complet | **décision de reprise des crons** | **P2** |
 
 **Aucun de ces dossiers n'est reclassé en P3.** Les blocages sont propres à leur dossier : le refus du jeton Railway n'empêche ni l'observation Fenwick, ni l'instruction des doublons, ni le détachement des 172 ; l'arbitrage FashionJobs n'empêche rien d'autre que les 585.

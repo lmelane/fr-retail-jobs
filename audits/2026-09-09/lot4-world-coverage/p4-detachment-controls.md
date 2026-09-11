@@ -78,7 +78,21 @@ La présence d'une observation d'identité **ne suffit pas** à valider les 28 q
 | tapestry | 5 | 0 |
 | nordstrom | 3 | 1 |
 
-**Les 7 sans observation sont prioritaires** ; **les 28 autres ne sont pas automatiquement conformes**. Dossier **ouvert dans P2**, aucune conclusion tirée.
+### Chaîne établie — deux familles, et une seule levée réelle
+
+Le discriminant n'est pas la présence d'une observation, c'est **l'ORDRE** entre la retenue et la dernière observation de l'offre.
+
+| Famille | Offres | Retenue vs dernière vue | Règle d'identité | Lecture |
+|---|---:|---|---|---|
+| **Mango** | **27** | retenue **antérieure** (27/27) | `CERTIFIED_SINGLE_BRAND_PORTAL` | **Levée réelle et justifiée** : un run ultérieur a trouvé l'employeur sur un portail certifié mono-marque. Chaîne complète : retenue → preuve recevable → levée → publication |
+| **Tapestry** | **5** | retenue **postérieure** (5/5) | aucune | **Aucune levée** |
+| **Nordstrom** | **3** | retenue **postérieure** (3/3) | 1 × `LEGACY_UNREVIEWED`, 2 sans | **Aucune levée** |
+
+**Les 8 de Tapestry et Nordstrom ne sont donc pas des retenues contournées.** Ce sont des offres publiées le 6 septembre que les runs des 9 et 10 n'ont **pas pu ré-attester** (`has_detail: false` sur les 7 examinés) et qui **restent publiées faute d'attestation d'absence** — conforme à la règle « seul un run complet et fiable peut attester une absence » (D51). Une retenue postérieure à la publication **n'est pas** une autorisation de publier : c'est un échec de ré-attestation.
+
+**Ce qui reste ouvert** : l'unique observation `LEGACY_UNREVIEWED` de Nordstrom est une **attribution historique, pas une preuve revue** — à traiter avec la revue d'alias. Et les 8 offres devront être tranchées par le premier run complet capable de lire leur détail.
+
+Les 27 Mango sont, elles, **validées par la chaîne complète**, non par la seule présence d'une observation.
 
 ## F. Distinction demandée
 

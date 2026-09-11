@@ -1,0 +1,21 @@
+import { PrismaClient } from '@prisma/client';
+// The 28 published-after-hold that DO carry an observation: is the hold posterior to publication (same shape as
+// the 7), or was a hold genuinely lifted? An observation alone proves nothing — the ORDER does.
+const p = new PrismaClient();
+try {
+  const r: any[] = await p.$queryRaw`
+    SELECT js."sourceKey", COUNT(*)::int n,
+           COUNT(*) FILTER (WHERE h.last_hold > js."lastSeenAt")::int hold_after_last_seen,
+           COUNT(*) FILTER (WHERE h.last_hold <= js."lastSeenAt")::int hold_before_last_seen,
+           COUNT(*) FILTER (WHERE o.latest_rule IS NOT NULL)::int with_observation,
+           string_agg(DISTINCT o.latest_rule, ', ') rules
+    FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId"
+    JOIN LATERAL (SELECT MAX(e.at) last_hold FROM "PipelineEvent" e WHERE e.event='job.publication_held'
+                  AND e."sourceKey"=js."sourceKey" AND e."jobId"=js."externalId") h ON h.last_hold IS NOT NULL
+    LEFT JOIN LATERAL (SELECT eo.rule latest_rule FROM "EmployerObservation" eo
+                       WHERE eo."sourceKey"=js."sourceKey" AND eo."externalId"=js."externalId"
+                       ORDER BY eo."observedAt" DESC LIMIT 1) o ON true
+    WHERE js."isActive" AND j."isActive"
+    GROUP BY 1 ORDER BY 2 DESC`;
+  console.log(JSON.stringify(r, null, 1));
+} finally { await p.$disconnect(); }

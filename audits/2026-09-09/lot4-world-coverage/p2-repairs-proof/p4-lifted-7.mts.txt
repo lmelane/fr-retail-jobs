@@ -1,0 +1,25 @@
+import { PrismaClient } from '@prisma/client';
+// The 7 representations published after a hold WITHOUT an identity observation: link hold -> evidence ->
+// lifting -> publication, or state what is missing. No conclusion drawn from absence alone.
+const p = new PrismaClient();
+try {
+  const r: any[] = await p.$queryRaw`
+    SELECT js."sourceKey", js."externalId", j.id, c.name company, left(j.title,50) title,
+           j."firstSeenAt", js."lastSeenAt",
+           (SELECT e.at FROM "PipelineEvent" e WHERE e.event='job.publication_held'
+              AND e."sourceKey"=js."sourceKey" AND e."jobId"=js."externalId" ORDER BY e.at DESC LIMIT 1) last_hold_at,
+           (SELECT COALESCE(e.payload#>>'{data,reason}', e.payload#>>'{reason}') FROM "PipelineEvent" e
+              WHERE e.event='job.publication_held' AND e."sourceKey"=js."sourceKey" AND e."jobId"=js."externalId"
+              ORDER BY e.at DESC LIMIT 1) hold_reason,
+           js.raw#>>'{detail,jobPostingInfo,logoImage,alt}' logo_alt,
+           js.raw#>>'{detail,hiringOrganization,name}' hiring_org,
+           (js.raw#>'{detail,jobPostingInfo}') IS NOT NULL has_detail
+    FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" JOIN "Company" c ON c.id=j."companyId"
+    WHERE js."isActive" AND j."isActive"
+      AND EXISTS (SELECT 1 FROM "PipelineEvent" e WHERE e.event='job.publication_held'
+                  AND e."sourceKey"=js."sourceKey" AND e."jobId"=js."externalId")
+      AND NOT EXISTS (SELECT 1 FROM "EmployerObservation" eo
+                      WHERE eo."sourceKey"=js."sourceKey" AND eo."externalId"=js."externalId")
+    ORDER BY js."sourceKey"`;
+  console.log(JSON.stringify(r, null, 1));
+} finally { await p.$disconnect(); }
