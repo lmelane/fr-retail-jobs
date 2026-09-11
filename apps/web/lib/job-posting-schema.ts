@@ -89,6 +89,11 @@ export type MarkupIneligibility =
   | 'LOCATION_COUNTRY_CONFLICT'
   /** Multilocalisation dont le pays de chaque lieu n'est pas démontré, ou qui couvre plusieurs pays. */
   | 'MULTI_LOCATION_COUNTRY_NOT_PROVEN'
+  /**
+   * Le pays est un code AMBIGU dont la seule justification est le suffixe du libellé lui-même : une validation
+   * circulaire. « El Segundo, CA » sous le pays `CA` ne prouve pas le Canada — `CA` y est la Californie.
+   */
+  | 'AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF'
   | 'VALID_THROUGH_EXPIRED'  // l'échéance de la source est passée : le poste se présente comme clos
   | 'NO_APPLY_PATH';         // aucun chemin de candidature exploitable
 
@@ -130,6 +135,87 @@ const US_MARKERS = /\b(?:USA|U\.S\.A?\.?|United States)\b/i;
 function collidingSuffix(segment: string): string | null {
   const tail = segment.split(',').pop()?.trim().replace(/\./g, '').toUpperCase() ?? '';
   return tail.length === 2 && COUNTRY_CODES_THAT_ARE_ALSO_SUBDIVISIONS.has(tail) ? tail : null;
+}
+
+/**
+ * LA PREUVE DU PAYS EST-ELLE INDÉPENDANTE DU LIBELLÉ ? (correctif terminal P5, 2026-09-11)
+ *
+ * La règle précédente acceptait `suffix === country` comme « pas de conflit ». C'est une **validation
+ * circulaire** quand le `countryCode` a lui-même été déduit de ce suffixe : « El Segundo, CA » sous le pays `CA`
+ * se confirmait tout seul, et publiait une ville californienne au Canada.
+ *
+ * Mesuré en production : **1 936 offres** sont dans ce cas (suffixe ambigu égal au pays), et **aucune** ne porte
+ * de nom de pays écrit en toutes lettres dans son `raw` — leur `countryCode` vient donc bien du seul suffixe.
+ *
+ * La preuve indépendante retenue, avec ce dont la page dispose réellement :
+ *
+ *   · `countryIntegrity` — la colonne prévue en D54 pour porter exactement ce jugement. Elle est vide
+ *     aujourd'hui, mais la règle la lit : dès qu'une ingestion la renseignera, le verdict suivra sans nouveau
+ *     correctif ;
+ *   · un libellé qui NOMME le pays en toutes lettres (« …, United States », « …, Germany ») — indépendant du
+ *     suffixe à deux lettres ;
+ *   · un code postal, que le suffixe ne produit pas ;
+ *   · un pays NON ambigu : `FR`, `IT`, `GB`… ne sont subdivision de rien, la question ne se pose pas.
+ *
+ * Ce qui n'est PAS une preuve : le suffixe lui-même, ni le fait qu'un `countryCode` existe en base.
+ */
+function hasIndependentCountryProof(job: JobRow, country: string, locality: string | undefined): boolean {
+  // Un pays qui n'est pas un code collisionnant n'a pas besoin de preuve supplémentaire.
+  if (!COUNTRY_CODES_THAT_ARE_ALSO_SUBDIVISIONS.has(country)) return true;
+
+  /**
+   * `countryIntegrity` porte le jugement de la chaîne d'ingestion : `OK` (ou tout verdict non douteux) vaut
+   * preuve. Vide, elle ne prouve rien — mais elle ne réfute rien non plus, et les critères suivants s'appliquent.
+   */
+  const integrity = (job as { countryIntegrity?: string | null }).countryIntegrity;
+  if (integrity && integrity !== 'AMBIGUOUS' && integrity !== 'UNVERIFIED') return true;
+
+  // Le libellé nomme le pays en toutes lettres : indépendant du suffixe à deux lettres.
+  const label = `${job.location ?? ''} ${locality ?? ''}`;
+  if (spellsOutCountry(label, country)) return true;
+
+  // Un code postal est une information que le suffixe ne fournit pas.
+  if (job.postalCode?.trim()) return true;
+
+  return false;
+}
+
+/**
+ * Le libellé nomme-t-il le pays EN TOUTES LETTRES ? On ne reconnaît que les formes longues, jamais le code à
+ * deux lettres — sinon on retomberait sur la circularité qu'on cherche à éliminer.
+ */
+const SPELLED_OUT: Readonly<Record<string, RegExp>> = {
+  US: /\b(?:United States|USA|U\.S\.A\.)\b/i,
+  CA: /\bCanada\b/i,
+  DE: /\b(?:Germany|Deutschland|Allemagne)\b/i,
+  IN: /\b(?:India|Inde)\b/i,
+  MA: /\b(?:Morocco|Maroc)\b/i,
+  NE: /\b(?:Niger)\b/i,
+  LA: /\b(?:Laos)\b/i,
+  PA: /\b(?:Panama)\b/i,
+  ID: /\b(?:Indonesia|Indonésie)\b/i,
+  IL: /\b(?:Israel|Israël)\b/i,
+  NL: /\b(?:Netherlands|Pays-Bas|Nederland)\b/i,
+  SK: /\b(?:Slovakia|Slovaquie)\b/i,
+  AR: /\b(?:Argentina|Argentine)\b/i,
+  CO: /\b(?:Colombia|Colombie)\b/i,
+  MT: /\b(?:Malta|Malte)\b/i,
+  MO: /\b(?:Macao|Macau)\b/i,
+  AL: /\b(?:Albania|Albanie)\b/i,
+  GA: /\b(?:Gabon)\b/i,
+  MD: /\b(?:Moldova|Moldavie)\b/i,
+  ME: /\b(?:Montenegro|Monténégro)\b/i,
+  MS: /\b(?:Montserrat)\b/i,
+  MN: /\b(?:Mongolia|Mongolie)\b/i,
+  SC: /\b(?:Seychelles)\b/i,
+  SD: /\b(?:Sudan|Soudan)\b/i,
+  TN: /\b(?:Tunisia|Tunisie)\b/i,
+  VA: /\b(?:Vatican)\b/i,
+  KY: /\b(?:Cayman)\b/i,
+  NC: /\b(?:New Caledonia|Nouvelle-Calédonie)\b/i,
+};
+function spellsOutCountry(label: string, country: string): boolean {
+  return SPELLED_OUT[country]?.test(label) ?? false;
 }
 
 /**
@@ -262,6 +348,10 @@ function resolveLocation(job: JobRow): LocationOutcome {
     if (segments.some((segment) => contradictsCountry(segment, country))) {
       return { ok: false, reason: 'LOCATION_COUNTRY_CONFLICT' };
     }
+    // Un pays ambigu justifié par le seul suffixe ne prouve rien, même répété sur plusieurs segments.
+    if (!hasIndependentCountryProof(job, country, segments[0])) {
+      return { ok: false, reason: 'AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF' };
+    }
     // Un libellé qui nomme plusieurs pays ne peut pas partager un pays commun.
     const namesUs = segments.some((segment) => US_MARKERS.test(segment));
     if (namesUs && country !== 'US') return { ok: false, reason: 'LOCATION_COUNTRY_CONFLICT' };
@@ -286,6 +376,10 @@ function resolveLocation(job: JobRow): LocationOutcome {
      */
     if (!country) return { ok: false, reason: 'REMOTE_WITHOUT_ELIGIBILITY_COUNTRY' };
     const locality = job.city?.trim() || segments[0];
+    /** Le pays d'ÉLIGIBILITÉ doit être prouvé lui aussi : un `CA` tiré d'un suffixe ne dit pas « Canada ». */
+    if (!hasIndependentCountryProof(job, country, locality)) {
+      return { ok: false, reason: 'AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF' };
+    }
     return { ok: true, properties: {
       jobLocationType: 'TELECOMMUTE',
       applicantLocationRequirements: { '@type': 'Country', name: country },
@@ -306,6 +400,13 @@ function resolveLocation(job: JobRow): LocationOutcome {
   /** Et le libellé ne doit pas contredire ce pays — « Seattle, WA » n'est pas au Canada. */
   if (locality && contradictsCountry(locality, country)) {
     return { ok: false, reason: 'LOCATION_COUNTRY_CONFLICT' };
+  }
+  /**
+   * Et le pays ne doit pas se justifier par le suffixe qu'on cherche justement à vérifier — « El Segundo, CA »
+   * sous `CA`, « Indianapolis, IN » sous `IN`.
+   */
+  if (!hasIndependentCountryProof(job, country, locality)) {
+    return { ok: false, reason: 'AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF' };
   }
   return { ok: true, properties: { jobLocation: { '@type': 'Place', address: {
     '@type': 'PostalAddress',
