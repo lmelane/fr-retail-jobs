@@ -1,0 +1,66 @@
+import { PrismaClient } from '@prisma/client';
+import { writeFileSync } from 'node:fs';
+import { deactivateSources } from '../../apps/aggregator/src/pipeline/deactivateSources.js';
+/**
+ * Owner decision (2026-09-11): FashionJobs is EXCLUSIVELY a discovery source for Maisons, groups and retailers.
+ * It leaves the offer circuit entirely. WTTJ remains an authorised offer source.
+ *
+ * This withdraws the postings that depend on FashionJobs ALONE — administratively, never as an employer closure:
+ * `deactivateSources` with disposition WITHDRAWN records a WITHDRAWN JobEvent (never CLOSED) and counts
+ * jobsWithdrawn separately from jobsClosed. Identifiers, RAW and history are preserved; nothing is deleted.
+ *
+ * Postings that also carry another admissible source (including WTTJ) keep it and stay published; their
+ * FashionJobs attestation is detached so no retained datum or link depends on FashionJobs any more.
+ *
+ * The FULL identifier list is written BEFORE any mutation — the previous run archived only 5 of 172 and the exact
+ * perimeter became unrecoverable.
+ *
+ * usage: p5-fj-withdraw.mts <clone|production> [--apply]
+ */
+const target = process.argv[2];
+if (!['clone', 'production'].includes(target ?? '')) { console.error('usage: p5-fj-withdraw.mts <clone|production> [--apply]'); process.exit(2); }
+const APPLY = process.argv.includes('--apply');
+const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+
+const p = new PrismaClient({ log: [] });
+try {
+  /** Measured immediately before application, in one snapshot, split by what happens to each posting. */
+  const rows: any[] = await p.$transaction(async (tx) => {
+    await tx.$executeRaw`SET TRANSACTION READ ONLY`;
+    return tx.$queryRaw`
+      SELECT j.id, js."externalId", c.name company, left(j.title, 70) title, j.url, j."isFrance",
+             EXISTS (SELECT 1 FROM "JobSource" x JOIN "Source" s ON s.key = x."sourceKey"
+                     WHERE x."jobId" = j.id AND x."isActive" AND s.status = 'ACTIVE' AND x."sourceKey" <> 'fashionjobs') AS has_other_live,
+             (SELECT string_agg(DISTINCT x."sourceKey" || ':' || s.status, ', ')
+              FROM "JobSource" x JOIN "Source" s ON s.key = x."sourceKey"
+              WHERE x."jobId" = j.id AND x."isActive" AND x."sourceKey" <> 'fashionjobs') AS other_sources
+      FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId" JOIN "Company" c ON c.id = j."companyId"
+      WHERE js."sourceKey" = 'fashionjobs' AND js."isActive" AND j."isActive"
+      ORDER BY has_other_live, c.name`;
+  }, { isolationLevel: 'RepeatableRead' });
+
+  const withdraw = rows.filter((r: any) => !r.has_other_live);
+  const detachOnly = rows.filter((r: any) => r.has_other_live);
+  const manifest = {
+    at: new Date().toISOString(), target, apply: APPLY,
+    decision: 'FashionJobs is discovery-only; it leaves the offer circuit. Withdrawal is ADMINISTRATIVE, never an employer closure.',
+    totals: { attachedToFashionJobs: rows.length, withdrawDependingOnFashionJobsAlone: withdraw.length, detachKeepingAnotherSource: detachOnly.length,
+      frenchAmongWithdrawn: withdraw.filter((r: any) => r.isFrance).length },
+    withdrawIds: withdraw.map((r: any) => r.id),
+    detachIds: detachOnly.map((r: any) => r.id),
+    withdrawRows: withdraw.map((r: any) => ({ id: r.id, externalId: r.externalId, company: r.company, title: r.title })),
+  };
+  const file = `backups/lot4-20260909/p5-fj-perimeter-${target}-${stamp}.json`;
+  writeFileSync(file, JSON.stringify(manifest, null, 1));
+
+  const out: any = { manifestFile: file, ...manifest.totals };
+  if (APPLY) {
+    // 1. Postings that keep another admissible source: detach the FashionJobs attestation only.
+    if (detachOnly.length) out.detachResult = await deactivateSources(p, { sourceKey: 'fashionjobs' },
+      { kind: 'WITHDRAWN', reason: 'DISCOVERY_ONLY_SOURCE_NOT_A_POSTING_SOURCE' }, { id: { in: detachOnly.map((r: any) => r.id) } });
+    // 2. Postings depending on FashionJobs alone: administrative withdrawal (WITHDRAWN, never CLOSED).
+    if (withdraw.length) out.withdrawResult = await deactivateSources(p, { sourceKey: 'fashionjobs' },
+      { kind: 'WITHDRAWN', reason: 'DISCOVERY_ONLY_SOURCE_NOT_A_POSTING_SOURCE' }, { id: { in: withdraw.map((r: any) => r.id) } });
+  }
+  console.log(JSON.stringify(out, null, 1));
+} finally { await p.$disconnect(); }

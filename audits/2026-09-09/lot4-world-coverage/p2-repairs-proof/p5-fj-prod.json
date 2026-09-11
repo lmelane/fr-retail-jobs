@@ -1,0 +1,14 @@
+{
+ "manifestFile": "backups/lot4-20260909/p5-fj-perimeter-production-2026-09-11T06-13-02-163Z.json",
+ "attachedToFashionJobs": 585,
+ "withdrawDependingOnFashionJobsAlone": 585,
+ "detachKeepingAnotherSource": 0,
+ "frenchAmongWithdrawn": 583,
+ "withdrawResult": {
+  "sourcesDeactivated": 585,
+  "jobsClosed": 0,
+  "jobsWithdrawn": 584,
+  "jobsKept": 1,
+  "urlsReassigned": 0
+ }
+}
