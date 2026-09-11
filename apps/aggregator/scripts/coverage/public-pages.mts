@@ -205,7 +205,10 @@ try {
    *
    *   visibleOnModeCareers     la page est servie
    *   markupEmitted            un JobPosting est réellement émis
-   *   googleEligible           toutes les conditions requises sont réunies
+   *   googleEligible           **conforme à la porte technique actuelle de Mode Careers** — et RIEN de plus :
+   *                            ce n'est ni une garantie d'apparition dans Google Jobs, ni une promesse
+   *                            d'acceptation par Google. Notre porte est volontairement plus stricte que la
+   *                            documentation sur certains points (le seuil de description est notre choix).
    *   googleIneligibleByReason le détail des refus, par motif ET par identifiants
    *
    * Les conditions sont celles de `markupIneligibility` (apps/web/lib/job-posting-schema.ts), reproduites en SQL
@@ -220,10 +223,61 @@ try {
              AND btrim(coalesce(title, '')) <> ''
              AND length(btrim(coalesce(description, ''))) >= 100
              AND btrim(coalesce((SELECT c.name FROM "Company" c WHERE c.id = "Job"."companyId"), '')) <> ''
-             AND (btrim(coalesce(city, '')) <> '' OR "countryCode" IS NOT NULL)
+             -- Une adresse physique exige un PAYS établi (correctif du 2026-09-11) : une ville seule ne suffit
+             -- pas, et le pays ne se devine pas depuis elle.
+             AND "countryCode" IS NOT NULL
+             -- Le libellé ne doit pas contredire ce pays : « Seattle, WA » n'est pas au Canada.
+             AND NOT EXISTS (
+           SELECT 1 FROM unnest(string_to_array(coalesce(location, city), ';')) seg
+           CROSS JOIN LATERAL (SELECT upper(btrim(replace(split_part(seg, ',', 2), '.', ''))) AS suffix) x
+           WHERE length(x.suffix) = 2
+             AND x.suffix IN ('CA','WA','OR','NY','MA','PA','VA','DE','ME','AR','MD','MI','OH','RI','VT','WI','WY',
+                              'IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','NV','CO','CT','IL','MN','ND','OK','NH')
+             -- Pas un conflit si le suffixe REDIT le pays, ni s'il est une subdivision DE ce pays.
+             AND x.suffix <> "countryCode"
+             AND NOT ("countryCode" = 'US' AND x.suffix IN ('AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC','PR'))
+             AND NOT ("countryCode" = 'CA' AND x.suffix IN ('AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT'))
+         )
+             -- Une multilocalisation exige un pays commun établi et non contredit.
+             AND NOT (location LIKE '%;%' AND "countryCode" IS NULL)
              AND ("validThrough" IS NULL OR "validThrough" >= now())
              AND url LIKE 'http%')::int google_eligible
     FROM "Job"`;
+
+  /**
+   * LES QUATRE MESURES DE LOCALISATION EXIGÉES, par identifiants (correctif terminal P5).
+   *
+   * Elles ne se déduisent pas les unes des autres et sont donc comptées séparément.
+   */
+  const locationMeasures: any[] = await p.$queryRaw`
+    WITH active AS (SELECT * FROM "Job" WHERE "isActive"), m AS (
+      SELECT 'PHYSIQUE_AVEC_VILLE_SANS_PAYS' AS measure, id FROM active
+        WHERE "workplaceType" IS DISTINCT FROM 'REMOTE' AND btrim(coalesce(city, '')) <> '' AND "countryCode" IS NULL
+      UNION ALL
+      SELECT 'REMOTE_SANS_PAYS_ELIGIBILITE', id FROM active
+        WHERE "workplaceType" = 'REMOTE' AND "countryCode" IS NULL
+      UNION ALL
+      SELECT 'MULTILOCALISEE_AVEC_UN_SEUL_PAYS_APPLIQUE', id FROM active
+        WHERE location LIKE '%;%' AND "countryCode" IS NOT NULL
+          AND array_length(array_remove(array(SELECT btrim(x) FROM unnest(string_to_array(location, ';')) x
+            WHERE btrim(x) !~* '^(remote|virtual|anywhere|télétravail)$'), ''), 1) > 1
+      UNION ALL
+      -- La MÊME expression que le motif d'inéligibilité : un suffixe qui n'est ni le pays déclaré, ni une
+      -- subdivision de ce pays. Une première version comptait tout suffixe collisionnant et annonçait 6 464
+      -- conflits là où il y en a 142 — « Berlin, DE » sous le pays DE n'en est pas un.
+      SELECT 'CONFLIT_SEGMENT_CONTRE_COUNTRYCODE', id FROM active
+        WHERE "countryCode" IS NOT NULL
+          AND EXISTS (
+            SELECT 1 FROM unnest(string_to_array(coalesce(location, city), ';')) seg
+            CROSS JOIN LATERAL (SELECT upper(btrim(replace(split_part(seg, ',', 2), '.', ''))) AS suffix) x
+            WHERE length(x.suffix) = 2
+              AND x.suffix IN ('CA','WA','OR','NY','MA','PA','VA','DE','ME','AR','MD','MI','OH','RI','VT','WI','WY',
+                               'IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','NV','CO','CT','IL','MN','ND','OK','NH')
+              AND x.suffix <> "countryCode"
+              AND NOT ("countryCode" = 'US' AND x.suffix IN ('AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC','PR'))
+              AND NOT ("countryCode" = 'CA' AND x.suffix IN ('AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT')))
+    )
+    SELECT measure, count(*)::int postings, (array_agg(id ORDER BY id))[1:10] AS sample_ids FROM m GROUP BY 1 ORDER BY 2 DESC`;
 
   /** Les motifs de refus, avec leurs identifiants : un chiffre sans identifiants n'est pas cherchable. */
   const reasons: any[] = await p.$queryRaw`
@@ -237,7 +291,22 @@ try {
         (btrim(coalesce(title, '')) = '') AS no_title,
         (length(btrim(coalesce(description, ''))) < 100) AS description_too_thin,
         (btrim(coalesce(company_name, '')) = '') AS no_hiring_organization,
-        (btrim(coalesce(city, '')) = '' AND "countryCode" IS NULL) AS no_usable_location,
+        (btrim(coalesce(city, '')) = '' AND "countryCode" IS NULL AND location IS NULL) AS no_usable_location,
+        ("workplaceType" IS DISTINCT FROM 'REMOTE' AND btrim(coalesce(city, '')) <> '' AND "countryCode" IS NULL) AS physical_without_country,
+        ("workplaceType" = 'REMOTE' AND "countryCode" IS NULL) AS remote_without_country,
+        -- Plus de garde sur les seuls pays non-US : l'expression sait qu'un suffixe d'État est cohérent avec son pays.
+        ("countryCode" IS NOT NULL AND EXISTS (
+           SELECT 1 FROM unnest(string_to_array(coalesce(location, city), ';')) seg
+           CROSS JOIN LATERAL (SELECT upper(btrim(replace(split_part(seg, ',', 2), '.', ''))) AS suffix) x
+           WHERE length(x.suffix) = 2
+             AND x.suffix IN ('CA','WA','OR','NY','MA','PA','VA','DE','ME','AR','MD','MI','OH','RI','VT','WI','WY',
+                              'IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','NV','CO','CT','IL','MN','ND','OK','NH')
+             -- Pas un conflit si le suffixe REDIT le pays, ni s'il est une subdivision DE ce pays.
+             AND x.suffix <> "countryCode"
+             AND NOT ("countryCode" = 'US' AND x.suffix IN ('AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC','PR'))
+             AND NOT ("countryCode" = 'CA' AND x.suffix IN ('AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT'))
+         )) AS country_conflict,
+        (location LIKE '%;%' AND "countryCode" IS NULL) AS multi_not_proven,
         ("validThrough" IS NOT NULL AND "validThrough" < now()) AS valid_through_expired,
         (url NOT LIKE 'http%') AS no_apply_path
       FROM active
@@ -247,6 +316,10 @@ try {
       ('OPEN_APPLICATION', open_application), ('NO_REAL_POSTED_DATE', no_real_posted_date),
       ('NO_TITLE', no_title), ('DESCRIPTION_TOO_THIN', description_too_thin),
       ('NO_HIRING_ORGANIZATION', no_hiring_organization), ('NO_USABLE_LOCATION', no_usable_location),
+      ('PHYSICAL_LOCATION_WITHOUT_COUNTRY', physical_without_country),
+      ('REMOTE_WITHOUT_ELIGIBILITY_COUNTRY', remote_without_country),
+      ('LOCATION_COUNTRY_CONFLICT', country_conflict),
+      ('MULTI_LOCATION_COUNTRY_NOT_PROVEN', multi_not_proven),
       ('VALID_THROUGH_EXPIRED', valid_through_expired), ('NO_APPLY_PATH', no_apply_path)
     ) AS r(reason, hit)
     WHERE hit GROUP BY reason ORDER BY 2 DESC`;
@@ -286,9 +359,13 @@ try {
     /** Les quatre mesures, nommées pour ce qu'elles sont. Jamais additionnées, jamais confondues. */
     visibleOnModeCareers: counts.visible_on_mode_careers,
     markupEmitted: markupEmittedOnSample,
+    /** Nommé sans ambiguïté : c'est NOTRE porte, pas un verdict de Google. */
     googleEligible: counts.google_eligible,
+    googleEligibleMeaning: 'Conforme à la porte technique actuelle de Mode Careers. Ni une garantie d\'apparition dans Google Jobs, ni une promesse d\'acceptation par Google.',
+    descriptionThresholdOrigin: 'Le seuil de 100 caractères est une règle conservatrice interne de Mode Careers, pas un seuil fourni par Google.',
     googleIneligibleByReason: reasons.map((r: any) => ({ reason: r.reason, postings: r.postings, sampleIds: r.sample_ids })),
     googleIneligibleTotal: counts.visible_on_mode_careers - counts.google_eligible,
+    locationMeasures: locationMeasures.map((m: any) => ({ measure: m.measure, postings: m.postings, sampleIds: m.sample_ids })),
     vocabulary: {
       multiSource: vocabulary.multi_source,
       multiLocation: vocabulary.multi_location,
@@ -314,9 +391,11 @@ try {
   }
   console.log(`\nvisibleOnModeCareers ${report.visibleOnModeCareers}`);
   console.log(`markupEmitted (sur les ${markupSampleSize} fiches contrôlées) ${report.markupEmitted}`);
-  console.log(`googleEligible       ${report.googleEligible}`);
+  console.log(`googleEligible       ${report.googleEligible}  (porte technique Mode Careers, pas un verdict Google)`);
   console.log(`googleIneligible     ${report.googleIneligibleTotal}`);
   for (const r of report.googleIneligibleByReason) console.log(`   ${r.reason.padEnd(24)} ${String(r.postings).padStart(6)}`);
+  console.log('\n--- localisation, mesures par identifiants ---');
+  for (const m of report.locationMeasures) console.log(`   ${m.measure.padEnd(42)} ${String(m.postings).padStart(6)}`);
   console.log(`\nvocabulaire : multi-sources ${report.vocabulary.multiSource} · multilocalisation ${report.vocabulary.multiLocation} · télétravail ${report.vocabulary.remote} (dont pays connu ${report.vocabulary.remoteWithKnownCountry})`);
   console.log(`présence dans Google : ${report.googlePresence}`);
   if (failed.length) process.exit(1);

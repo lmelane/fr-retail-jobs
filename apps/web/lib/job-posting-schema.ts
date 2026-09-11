@@ -66,10 +66,10 @@ export function schemaEmploymentTypes(
 /**
  * La longueur minimale d'une description pour qu'un `JobPosting` ait un sens.
  *
- * Google exige une description complète du poste. Un fragment de quelques mots n'en est pas une : baliser une
- * page quasi vide, c'est promettre au moteur un contenu qui n'existe pas. Le seuil est volontairement bas — il
- * écarte les fragments, pas les annonces brèves. Mesuré : 124 offres actives sans aucune description, 353 sous
- * ce seuil, sur 78 932.
+ * **Ce seuil est une règle CONSERVATRICE INTERNE de Mode Careers, pas un chiffre fourni par Google.** Google
+ * exige une description complète du poste, sans en donner de longueur minimale. 100 caractères est notre choix :
+ * il écarte les fragments (« Vendeur H/F », « Poste à pourvoir. ») sans écarter une annonce brève légitime.
+ * Mesuré : 124 offres actives sans aucune description, 353 sous ce seuil, sur 78 932.
  */
 const MIN_DESCRIPTION_LENGTH = 100;
 
@@ -80,9 +80,86 @@ export type MarkupIneligibility =
   | 'NO_TITLE'
   | 'DESCRIPTION_TOO_THIN'   // absente ou réduite à un fragment
   | 'NO_HIRING_ORGANIZATION'
-  | 'NO_USABLE_LOCATION'     // ni lieu physique, ni télétravail avec pays connu
+  | 'NO_USABLE_LOCATION'     // aucun lieu du tout : ni adresse, ni télétravail localisable
+  /** Une adresse physique sans pays établi : `addressCountry` est requis, et on ne le devine pas. */
+  | 'PHYSICAL_LOCATION_WITHOUT_COUNTRY'
+  /** Un poste totalement distant sans aucun pays d'éligibilité connu. */
+  | 'REMOTE_WITHOUT_ELIGIBILITY_COUNTRY'
+  /** Le libellé de lieu contredit le `countryCode` canonique — « San Francisco, CA » sous le pays Canada. */
+  | 'LOCATION_COUNTRY_CONFLICT'
+  /** Multilocalisation dont le pays de chaque lieu n'est pas démontré, ou qui couvre plusieurs pays. */
+  | 'MULTI_LOCATION_COUNTRY_NOT_PROVEN'
   | 'VALID_THROUGH_EXPIRED'  // l'échéance de la source est passée : le poste se présente comme clos
   | 'NO_APPLY_PATH';         // aucun chemin de candidature exploitable
+
+/**
+ * Les codes qui sont À LA FOIS un code pays ISO 3166-1 et une subdivision américaine ou canadienne.
+ *
+ * C'est le cœur du correctif du 2026-09-11 : « San Francisco, CA; Seattle, WA; or San Diego, CA » portait
+ * `countryCode = CA`, et le générateur publiait ces villes américaines sous `addressCountry: 'CA'` — le Canada.
+ * Dans un `JobPosting`, `addressCountry` est un PAYS ; l'abréviation d'un état ne l'est pas.
+ *
+ * La liste vient de la même connaissance que `COLLIDING_CODES` du normaliseur géographique (D53), où elle avait
+ * déjà envoyé 474 offres d'« Amsterdam, NH » à Terre-Neuve-et-Labrador.
+ */
+const COUNTRY_CODES_THAT_ARE_ALSO_SUBDIVISIONS = new Set([
+  'CA', 'IN', 'AL', 'GA', 'KY', 'NC', 'SC', 'SD', 'NE', 'TN', 'MO', 'LA', 'MT',
+  'ID', 'MS', 'PA', 'VA', 'DE', 'ME', 'AR', 'MD', 'MA', 'NV', 'CO', 'CT', 'IL',
+  'MN', 'NL', 'ND', 'OM', 'OK', 'SK', 'PE', 'NU', 'WA', 'NH', 'MI', 'OH', 'RI', 'VT', 'WI', 'WY',
+]);
+
+/** Les codes d'États américains, pour reconnaître qu'un suffixe est COHÉRENT avec un pays déclaré `US`. */
+const US_SUBDIVISION_CODES = new Set([
+  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD',
+  'MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC',
+  'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC','PR',
+]);
+
+/** Les codes de provinces canadiennes, même usage. */
+const CA_SUBDIVISION_CODES = new Set(['AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT']);
+
+/** Les suffixes d'un libellé qui désignent sans ambiguïté les États-Unis. */
+const US_MARKERS = /\b(?:USA|U\.S\.A?\.?|United States)\b/i;
+
+/**
+ * Le suffixe à deux lettres d'un segment, quand il collisionne avec un code pays. « Seattle, WA » → `WA`.
+ *
+ * Sert à DÉTECTER un conflit, jamais à conclure que le pays est les États-Unis : une abréviation d'état n'est pas
+ * une preuve de pays, et la déduire serait exactement le raccourci que ce correctif supprime.
+ */
+function collidingSuffix(segment: string): string | null {
+  const tail = segment.split(',').pop()?.trim().replace(/\./g, '').toUpperCase() ?? '';
+  return tail.length === 2 && COUNTRY_CODES_THAT_ARE_ALSO_SUBDIVISIONS.has(tail) ? tail : null;
+}
+
+/**
+ * Le libellé CONTREDIT-il le pays canonique ?
+ *
+ * Il y a conflit quand le suffixe est une subdivision d'un AUTRE pays que celui déclaré. « Seattle, WA » sous le
+ * pays `CA` est un conflit ; « Berlin, DE » sous le pays `DE` n'en est pas un — `DE` y désigne l'Allemagne, le
+ * suffixe et le pays disent la même chose.
+ *
+ * Mesuré avant cette distinction : 1 792 offres étaient signalées en conflit, dont **665 « …, DE » sous le pays
+ * DE** et d'autres cas identiques — des libellés parfaitement cohérents. Signaler ceux-là aurait supprimé le
+ * balisage de centaines d'offres correctes.
+ */
+function contradictsCountry(segment: string, country: string): boolean {
+  const suffix = collidingSuffix(segment);
+  if (!suffix) return false;
+  // Le suffixe REDIT le pays déclaré : aucune contradiction (« Berlin, DE » sous DE).
+  if (suffix === country) return false;
+  /**
+   * Le pays déclaré est celui dont ce suffixe EST une subdivision : cohérent. « Seattle, WA » sous `US` est
+   * juste — WA est l'État de Washington, et le pays le confirme. C'est le cas normal du catalogue américain.
+   */
+  if (country === 'US' && US_SUBDIVISION_CODES.has(suffix)) return false;
+  if (country === 'CA' && CA_SUBDIVISION_CODES.has(suffix)) return false;
+  /**
+   * Reste un suffixe qui n'est ni le pays déclaré, ni une subdivision de ce pays : « Seattle, WA » sous `DE`,
+   * « San Francisco, CA » sous… le Canada. La localisation n'est pas prouvée.
+   */
+  return true;
+}
 
 /**
  * Toutes les raisons pour lesquelles cette offre n'est pas éligible au balisage. Vide = éligible.
@@ -103,13 +180,12 @@ export function markupIneligibility(job: JobRow, now: Date = new Date()): Markup
   if (!job.description || job.description.trim().length < MIN_DESCRIPTION_LENGTH) reasons.push('DESCRIPTION_TOO_THIN');
   if (!job.company?.trim()) reasons.push('NO_HIRING_ORGANIZATION');
   /**
-   * Un lieu exploitable = une adresse physique (ville ou pays), OU un télétravail dont on connaît au moins le
-   * pays, qui devient alors `applicantLocationRequirements`. Une offre sans l'un ni l'autre ne peut pas être
-   * localisée, et Google refuse un `JobPosting` sans `jobLocation` ni `jobLocationType`.
+   * La localisation est jugée par `resolveLocation`, la MÊME fonction que celle qui construit les propriétés du
+   * balisage : la porte et le rendu ne peuvent pas divergir. Elle rend soit des lieux au pays établi, soit un
+   * motif nommé — pays absent, conflit avec le libellé, ou pays non démontré sur une multilocalisation.
    */
-  const country = countryCode(job.countryCode);
-  const physical = Boolean(job.city?.trim() || country);
-  if (!physical) reasons.push('NO_USABLE_LOCATION');
+  const location = resolveLocation(job);
+  if (!location.ok) reasons.push(location.reason);
   /**
    * Une échéance DÉPASSÉE annonce au moteur un poste clos. Tant qu'un run fiable n'a pas confirmé une nouvelle
    * échéance ou la fermeture, la page peut rester visible mais ne doit porter aucun balisage. On ne réécrit ni la
@@ -121,79 +197,123 @@ export function markupIneligibility(job: JobRow, now: Date = new Date()): Markup
 }
 
 /**
- * Les lieux réellement énumérés par la source.
+ * LA LOCALISATION DU BALISAGE — soit des lieux dont le pays est ÉTABLI, soit un refus nommé.
  *
- * Le modèle ne porte qu'UNE ville canonique par offre (`Job.city`), mais le libellé brut de la source
- * (`Job.location`) énumère parfois plusieurs lieux séparés par « ; » — « Hong Kong; Shanghai, Shanghai, China;
- * Shenzhen Shi, Guangdong, China ». Dans ce cas la colonne `city` a agrégé les noms en une chaîne qui n'est pas
- * une ville (« China Hong Kong Shanghai »), et publier CELLE-LÀ comme `addressLocality` serait faux.
+ * Une seule fonction, appelée par la porte d'éligibilité ET par le générateur : deux expressions de cette règle
+ * finiraient par divergir, et c'est précisément une divergence de ce genre qui a laissé publier des villes
+ * américaines sous `addressCountry: 'CA'`.
  *
- * On repart donc du libellé quand il énumère, et on n'invente rien : chaque segment devient un `Place` avec ce
- * que le segment dit, pas plus.
+ * Les quatre situations que la version précédente traitait mal :
+ *
+ *   1. le `countryCode` global était appliqué à TOUS les segments d'une multilocalisation, sans vérifier qu'il
+ *      leur correspond — « San Francisco, CA; Seattle, WA » sous le pays Canada ;
+ *   2. une ville SANS pays suffisait à déclarer la localisation conforme — or `addressCountry` est requis ;
+ *   3. un poste distant devenait éligible par sa ville seule, sans pays d'éligibilité ;
+ *   4. des segments qui ne sont pas des villes (« or San Diego, CA », « Scotland », « United States ») étaient
+ *      publiés comme `addressLocality`.
+ *
+ * Le principe retenu : **on ne publie que ce qui est prouvé, et on refuse en nommant le motif.** Jamais de pays
+ * déduit d'une abréviation d'état, jamais de conjonction transformée en nom de ville.
  */
-function physicalPlaces(job: JobRow, country: string | null): Array<Record<string, unknown>> {
-  const raw = job.location?.trim();
-  const segments = raw?.includes(';')
-    ? raw.split(';').map((s) => s.trim()).filter(Boolean)
-        /**
-         * « Remote » n'est pas un LIEU. Mesuré sur les pages servies : « Lehi, Utah, United States; Remote »
-         * publiait `addressLocality: "Remote"`, ce qui annonce à Google une ville qui n'existe pas. Le télétravail
-         * est porté par `jobLocationType`, jamais par une adresse.
-         */
-        .filter((segment) => !/^(remote|télétravail|teletravail|virtual|anywhere)$/i.test(segment))
-    : [];
-  if (segments.length > 1) {
-    return segments.map((segment) => ({
-      '@type': 'Place',
-      address: {
-        '@type': 'PostalAddress',
-        // Le segment tel que la source l'écrit : on ne tente pas d'en extraire une ville, ce serait deviner.
-        addressLocality: segment,
-        ...(country ? { addressCountry: country } : {}),
-      },
-    }));
-  }
-  /**
-   * Un seul lieu subsiste après filtrage (ou aucune énumération) : on repart de la ville canonique, et à défaut
-   * du segment restant — jamais de l'agrégat de `city` quand le libellé énumérait.
-   */
-  const locality = job.city?.trim() || segments[0];
-  if (!locality && !country) return [];
-  return [{
-    '@type': 'Place',
-    address: {
-      '@type': 'PostalAddress',
-      ...(locality ? { addressLocality: locality } : {}),
-      ...(job.postalCode ? { postalCode: job.postalCode } : {}),
-      // Canonical code of what the source said — NEVER a default.
-      ...(country ? { addressCountry: country } : {}),
-    },
-  }];
+type LocationOutcome =
+  | { ok: true; properties: Record<string, unknown> }
+  | { ok: false; reason: MarkupIneligibility };
+
+/** Les segments d'un libellé qui énumère plusieurs lieux, télétravail écarté. */
+function enumeratedSegments(location: string | null | undefined): string[] {
+  const raw = location?.trim();
+  if (!raw?.includes(';')) return [];
+  return raw.split(';')
+    .map((segment) => segment.trim())
+    /**
+     * « Remote » n'est pas un LIEU. Mesuré sur les pages servies : « Lehi, Utah, United States; Remote »
+     * publiait `addressLocality: "Remote"`, ce qui annonce à Google une ville qui n'existe pas. Le télétravail
+     * est porté par `jobLocationType`, jamais par une adresse.
+     */
+    .filter((segment) => segment && !/^(remote|télétravail|teletravail|virtual|anywhere)$/i.test(segment));
 }
 
 /**
- * `jobLocation`, `jobLocationType` et `applicantLocationRequirements`, selon ce que la source fournit.
+ * Un segment est-il publiable comme `addressLocality` ?
  *
- * Pour une offre totalement distante, Google demande `jobLocationType: 'TELECOMMUTE'` et, quand la restriction
- * géographique est connue, `applicantLocationRequirements`. Le pays normalisé est la seule restriction dont on
- * dispose réellement — on ne fabrique pas une région ou un état qui ne serait pas dans la donnée.
+ * Refusé : une conjonction laissée par l'énumération (« or San Diego, CA »), et un nom qui désigne un pays ou un
+ * territoire entier plutôt qu'une localité (« United States », « Scotland »). Publier ceux-là comme localité
+ * annoncerait à Google une ville qui n'existe pas.
  */
-function locationProperties(job: JobRow, country: string | null): Record<string, unknown> {
-  const places = physicalPlaces(job, country);
-  const single = places.length === 1 ? places[0] : undefined;
-  const jobLocation = places.length > 1 ? places : single;
+function publishableLocality(segment: string): boolean {
+  if (/^\s*(?:or|and|ou|et)\b/i.test(segment)) return false;
+  if (!segment.includes(',') && /^(united states|usa|scotland|england|wales|united kingdom|france|canada|europe|emea|apac|latam|worldwide|global)$/i.test(segment.trim())) return false;
+  return true;
+}
 
-  if (job.workplaceType !== 'REMOTE') return { jobLocation };
+function resolveLocation(job: JobRow): LocationOutcome {
+  const country = countryCode(job.countryCode);
+  const segments = enumeratedSegments(job.location);
+  const remote = job.workplaceType === 'REMOTE';
 
-  return {
-    jobLocationType: 'TELECOMMUTE',
+  // ── Multilocalisation ───────────────────────────────────────────────────────
+  if (segments.length > 1) {
     /**
-     * Un poste distant garde son `jobLocation` quand la source nomme un rattachement : Google l'accepte et c'est
-     * une information vraie. Ce qui serait faux, c'est de prétendre un lieu que la source ne donne pas.
+     * Chaque lieu doit avoir SON pays prouvé, ou appartenir à un ensemble dont le pays commun est établi. Or le
+     * modèle ne porte qu'un `countryCode` global. On ne peut donc admettre une multilocalisation que si rien ne
+     * contredit ce pays commun — et un suffixe d'état qui collisionne avec un code pays EST une contradiction.
      */
-    ...(jobLocation ? { jobLocation } : {}),
-    ...(country ? { applicantLocationRequirements: { '@type': 'Country', name: country } } : {}),
-  };
+    if (!country) return { ok: false, reason: 'MULTI_LOCATION_COUNTRY_NOT_PROVEN' };
+    if (segments.some((segment) => contradictsCountry(segment, country))) {
+      return { ok: false, reason: 'LOCATION_COUNTRY_CONFLICT' };
+    }
+    // Un libellé qui nomme plusieurs pays ne peut pas partager un pays commun.
+    const namesUs = segments.some((segment) => US_MARKERS.test(segment));
+    if (namesUs && country !== 'US') return { ok: false, reason: 'LOCATION_COUNTRY_CONFLICT' };
+    const publishable = segments.filter(publishableLocality);
+    if (publishable.length !== segments.length) return { ok: false, reason: 'MULTI_LOCATION_COUNTRY_NOT_PROVEN' };
+
+    const places = publishable.map((segment) => ({
+      '@type': 'Place',
+      address: { '@type': 'PostalAddress', addressLocality: segment, addressCountry: country },
+    }));
+    return { ok: true, properties: {
+      jobLocation: places.length > 1 ? places : places[0],
+      ...(remote ? { jobLocationType: 'TELECOMMUTE', applicantLocationRequirements: { '@type': 'Country', name: country } } : {}),
+    } };
+  }
+
+  // ── Poste totalement distant ────────────────────────────────────────────────
+  if (remote) {
+    /**
+     * Un pays d'éligibilité RÉEL est exigé. Une ville seule ne suffit pas : elle ne dit pas depuis où l'on peut
+     * candidater, et c'est justement ce que `applicantLocationRequirements` doit porter.
+     */
+    if (!country) return { ok: false, reason: 'REMOTE_WITHOUT_ELIGIBILITY_COUNTRY' };
+    const locality = job.city?.trim() || segments[0];
+    return { ok: true, properties: {
+      jobLocationType: 'TELECOMMUTE',
+      applicantLocationRequirements: { '@type': 'Country', name: country },
+      // Le rattachement nommé par la source est conservé : c'est une information vraie.
+      jobLocation: { '@type': 'Place', address: {
+        '@type': 'PostalAddress',
+        ...(locality && publishableLocality(locality) ? { addressLocality: locality } : {}),
+        addressCountry: country,
+      } },
+    } };
+  }
+
+  // ── Un seul lieu physique ───────────────────────────────────────────────────
+  const locality = job.city?.trim() || segments[0];
+  if (!locality && !country) return { ok: false, reason: 'NO_USABLE_LOCATION' };
+  /** `addressCountry` est requis : une ville sans pays n'est pas une localisation structurée fiable. */
+  if (!country) return { ok: false, reason: 'PHYSICAL_LOCATION_WITHOUT_COUNTRY' };
+  /** Et le libellé ne doit pas contredire ce pays — « Seattle, WA » n'est pas au Canada. */
+  if (locality && contradictsCountry(locality, country)) {
+    return { ok: false, reason: 'LOCATION_COUNTRY_CONFLICT' };
+  }
+  return { ok: true, properties: { jobLocation: { '@type': 'Place', address: {
+    '@type': 'PostalAddress',
+    ...(locality && publishableLocality(locality) ? { addressLocality: locality } : {}),
+    ...(job.postalCode ? { postalCode: job.postalCode } : {}),
+    // Canonical code of what the source said — NEVER a default.
+    addressCountry: country,
+  } } } };
 }
 
 export function jobPostingSchema(job: JobRow, now: Date = new Date()): Record<string, unknown> | null {
@@ -230,7 +350,8 @@ export function jobPostingSchema(job: JobRow, now: Date = new Date()): Record<st
      * des adresses. Mesuré : 1 889 offres multi-sources contre 59 offres dont le libellé énumère réellement
      * plusieurs lieux (séparés par « ; »).
      */
-    ...locationProperties(job, country),
+    // Les propriétés de lieu, prouvées : la porte a déjà refusé tout ce qui ne l'était pas.
+    ...(resolveLocation(job) as { ok: true; properties: Record<string, unknown> }).properties,
     baseSalary:
       job.salaryCurrency && (job.salaryMin !== null || job.salaryMax !== null)
         ? {

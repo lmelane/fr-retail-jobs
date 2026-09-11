@@ -91,9 +91,15 @@ describe('jobPostingSchema', () => {
     const it_ = jobPostingSchema({ ...base, countryCode: 'IT' }) as typeof fr;
     expect(it_.jobLocation.address.addressCountry).toBe('IT');
 
-    // Unknown country: the field is OMITTED — a Milan offer must never say FR.
-    const unknown = jobPostingSchema({ ...base, countryCode: null }) as typeof fr;
-    expect('addressCountry' in unknown.jobLocation.address).toBe(false);
+    /**
+     * Pays inconnu : le champ n'était qu'OMIS — une offre de Milan ne disait jamais FR, ce qui était déjà juste.
+     * Renforcé le 2026-09-11 : `addressCountry` est **requis** pour publier une adresse physique. Sans pays
+     * établi, la page reste visible mais **aucun balisage n'est émis** — une localisation sans pays n'est pas
+     * une localisation structurée fiable, et le pays ne se devine pas depuis la ville.
+     */
+    expect(jobPostingSchema({ ...base, countryCode: null })).toBeNull();
+    expect(markupIneligibility({ ...base, countryCode: null } as JobRow))
+      .toContain('PHYSICAL_LOCATION_WITHOUT_COUNTRY');
   });
 
   it('declares the aggregator honestly: identifier + directApply false', () => {
@@ -206,11 +212,18 @@ describe('éligibilité au balisage — quatre scénarios de réception', () => 
     expect((schema.jobLocation as any).address.addressLocality).toBe('New York');
   });
 
-  it('4b. distante sans pays connu → TELECOMMUTE sans restriction inventée', () => {
+  it('4b. distante sans pays d\'éligibilité → AUCUN balisage, et aucune restriction inventée', () => {
     // On n'invente pas une restriction géographique : son absence est une absence, pas un « monde entier ».
     const job = { ...base, workplaceType: 'REMOTE', city: null, countryCode: null, location: null } as JobRow;
-    // Sans lieu ni pays, l'offre n'est pas localisable du tout : pas de balisage.
-    expect(markupIneligibility(job, NOW)).toContain('NO_USABLE_LOCATION');
+    expect(markupIneligibility(job, NOW)).toContain('REMOTE_WITHOUT_ELIGIBILITY_COUNTRY');
+    expect(jobPostingSchema(job, NOW)).toBeNull();
+  });
+
+  it('4c. distante avec une VILLE mais sans pays → aucun balisage : la ville ne suffit pas', () => {
+    // Point 6 de l'arbitrage : une offre REMOTE ne devient pas éligible grâce à sa ville seule. `applicantLocation-
+    // Requirements` doit dire depuis OÙ l'on peut candidater, et une ville ne le dit pas.
+    const job = { ...base, workplaceType: 'REMOTE', city: 'New York', countryCode: null, location: 'New York' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toContain('REMOTE_WITHOUT_ELIGIBILITY_COUNTRY');
     expect(jobPostingSchema(job, NOW)).toBeNull();
   });
 
@@ -245,5 +258,106 @@ describe('« Remote » n\'est jamais publié comme un lieu', () => {
     const address = (schema.jobLocation as any).address;
     expect(address).not.toHaveProperty('addressLocality');
     expect(address.addressCountry).toBe('US');
+  });
+});
+
+/**
+ * COHÉRENCE PAYS / LOCALISATION (correctif terminal P5, 2026-09-11).
+ *
+ * Dans un `JobPosting`, `addressCountry` est un PAYS. L'abréviation d'un état ne l'est pas — et « CA » est à la
+ * fois la Californie et le Canada. Les cas ci-dessous sont ceux réellement mesurés en production.
+ */
+describe('cohérence pays / localisation', () => {
+  const NOW = new Date('2026-09-11T12:00:00Z');
+
+  it('1. « San Francisco, CA; Seattle, WA; or San Diego, CA » sous countryCode=CA → jamais publié au Canada', () => {
+    const job = { ...base, city: 'San Francisco', countryCode: 'CA',
+      location: 'San Francisco, CA; Seattle, WA; or San Diego, CA' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toContain('LOCATION_COUNTRY_CONFLICT');
+    const schema = jobPostingSchema(job, NOW);
+    expect(schema).toBeNull();
+    // Et surtout : aucune de ces villes américaines n'est publiée sous le pays Canada.
+    expect(JSON.stringify(schema)).not.toContain('"CA"');
+  });
+
+  it('2. « New York, N.Y.; Washington, D.C. » sans countryCode → aucun balisage tant que le pays n\'est pas prouvé', () => {
+    const job = { ...base, city: 'New York', countryCode: null,
+      location: 'New York, N.Y.; Washington, D.C.' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toContain('MULTI_LOCATION_COUNTRY_NOT_PROVEN');
+    expect(jobPostingSchema(job, NOW)).toBeNull();
+  });
+
+  it('5. multilocalisation dont le pays commun est établi → un jobLocation par lieu, avec CE pays', () => {
+    const job = { ...base, city: 'New York', countryCode: 'US',
+      location: 'New York, NY; Seattle, WA; Boston, MA' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toEqual([]);
+    const places = jobPostingSchema(job, NOW)!.jobLocation as Array<Record<string, any>>;
+    expect(places).toHaveLength(3);
+    expect(places.map((pl) => pl.address.addressLocality)).toEqual(['New York, NY', 'Seattle, WA', 'Boston, MA']);
+    // Chaque lieu porte le pays réellement établi, le même pour tous puisqu'ils y appartiennent.
+    expect(places.every((pl) => pl.address.addressCountry === 'US')).toBe(true);
+  });
+
+  it('refuse une multilocalisation dont un segment n\'est pas publiable comme localité', () => {
+    // « or San Diego, CA » est une conjonction laissée par l'énumération, pas un nom de ville ; « Scotland » et
+    // « United States » désignent un territoire entier. On ne les transforme pas en addressLocality.
+    for (const location of [
+      'San Francisco, CA; Seattle, WA; or San Diego, CA',
+      'Edinburgh; Scotland',
+      'Portland; United States',
+    ]) {
+      const job = { ...base, countryCode: 'US', city: null, location } as JobRow;
+      const reasons = markupIneligibility(job, NOW);
+      expect(reasons.length).toBeGreaterThan(0);
+      expect(jobPostingSchema(job, NOW)).toBeNull();
+    }
+  });
+
+  it('refuse une multilocalisation qui nomme un pays contredisant le countryCode canonique', () => {
+    const job = { ...base, countryCode: 'FR', city: null,
+      location: 'Portland, OR, United States; Seattle, WA, United States' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toContain('LOCATION_COUNTRY_CONFLICT');
+    expect(jobPostingSchema(job, NOW)).toBeNull();
+  });
+
+  it('un lieu unique dont le suffixe contredit le pays est refusé (« Seattle, WA » sous CA)', () => {
+    const job = { ...base, city: 'Seattle, WA', countryCode: 'CA', location: 'Seattle, WA' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toContain('LOCATION_COUNTRY_CONFLICT');
+    expect(jobPostingSchema(job, NOW)).toBeNull();
+  });
+
+  it('mais accepte le MÊME libellé quand le pays le confirme', () => {
+    const job = { ...base, city: 'Seattle, WA', countryCode: 'US', location: 'Seattle, WA' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toEqual([]);
+    const address = (jobPostingSchema(job, NOW)!.jobLocation as any).address;
+    expect(address.addressLocality).toBe('Seattle, WA');
+    expect(address.addressCountry).toBe('US');
+  });
+});
+
+describe('un suffixe qui REDIT le pays n\'est pas un conflit', () => {
+  const NOW = new Date('2026-09-11T12:00:00Z');
+
+  it('« Berlin, DE » sous le pays DE est cohérent : DE y désigne l\'Allemagne', () => {
+    /**
+     * Mesuré avant cette distinction : 1 792 offres étaient signalées en conflit, dont **665 « …, DE » sous le
+     * pays DE**. Les refuser aurait supprimé le balisage de centaines d'offres parfaitement correctes.
+     */
+    const job = { ...base, city: 'Berlin, DE', countryCode: 'DE', location: 'Berlin, DE' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toEqual([]);
+    const address = (jobPostingSchema(job, NOW)!.jobLocation as any).address;
+    expect(address.addressCountry).toBe('DE');
+  });
+
+  it('mais « Seattle, WA » sous le pays DE reste un conflit', () => {
+    const job = { ...base, city: 'Seattle, WA', countryCode: 'DE', location: 'Seattle, WA' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toContain('LOCATION_COUNTRY_CONFLICT');
+  });
+
+  it('« Indianapolis, IN » sous le pays IN (Inde) est accepté faute de preuve du contraire', () => {
+    // Cas honnête à déclarer : le suffixe redit le pays déclaré, donc aucune contradiction n'est DÉMONTRABLE ici.
+    // Trancher « Indianapolis est aux États-Unis » demanderait une table ville→pays que nous n'avons pas (D54).
+    const job = { ...base, city: 'Indianapolis, IN', countryCode: 'IN', location: 'Indianapolis, IN' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toEqual([]);
   });
 });
