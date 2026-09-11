@@ -1,0 +1,27 @@
+import { installOfflineTransport, cassetteSize } from '../../apps/aggregator/scripts/ops/offline-transport.js';
+import { PrismaClient } from '@prisma/client';
+/**
+ * ONLINE, once per source: run the REAL adapter and save every response it makes.
+ * Nothing is written to any database here — only the cassette. The adapter is the production one, reached through
+ * the production dispatch table, so what gets recorded is exactly what an ingest would receive.
+ *
+ * usage: p9-record.mts <sourceKey>
+ */
+const key = process.argv[2];
+if (!key) { console.error('usage: p9-record.mts <sourceKey>'); process.exit(2); }
+const dir = `backups/lot4-20260909/cassettes/${key}`;
+installOfflineTransport({ mode: 'record', dir });
+
+const p = new PrismaClient();
+try {
+  const source = await p.source.findUniqueOrThrow({ where: { key }, select: { key: true, kind: true, config: true, maison: true } });
+  // The production dispatch table itself — no local copy of "which adapter for which kind".
+  const { ADAPTERS } = await import('../../apps/aggregator/src/ats/index.js');
+  const { KIND_TO_ATS } = await import('../../apps/aggregator/src/ats/catalogKinds.js');
+  const type = KIND_TO_ATS[source.kind];
+  const adapter = ADAPTERS[type];
+  if (!adapter) throw new Error(`no adapter for kind ${source.kind} (ats ${type})`);
+  const result = await adapter(source.config as Record<string, unknown>);
+  const jobs = Array.isArray(result) ? result : result.jobs;
+  console.log(JSON.stringify({ key, kind: source.kind, atsType: type, jobsRead: jobs.length, responsesRecorded: cassetteSize(dir), dir }, null, 1));
+} finally { await p.$disconnect(); }

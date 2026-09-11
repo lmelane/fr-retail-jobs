@@ -1,0 +1,79 @@
+import { installOfflineTransport, cassetteSize } from '../../apps/aggregator/scripts/ops/offline-transport.js';
+import { PrismaClient } from '@prisma/client';
+import { writeFileSync, mkdirSync } from 'node:fs';
+/**
+ * The REAL integration path, run offline on a clone.
+ *
+ * The transport is the ONLY thing replaced: `globalThis.fetch` serves recorded responses. Everything above runs
+ * exactly as in production — the ATS adapter for the family, the normalisers, the identity gate, the scope rules,
+ * dedup and the upsert — because it is the production `ingestAllBySource` that is called here, not a copy.
+ *
+ * That is the difference with the earlier `replay-integration.mts`, which selected existing postings, rebuilt a
+ * few fields from its own table and wrote them with `job.update`: it demonstrated a field repair, not an
+ * integration, and it drifted from the adapter's own choices.
+ *
+ * Scope: the sources named in INGEST_ONLY_KEYS. Clone only — the guard is the database name.
+ *
+ * usage: p9-integrate.mts <keys,comma> [--crash-after=N]
+ *   --crash-after=N   abort the process after N postings have been written, to exercise a real partial write
+ */
+const keys = (process.argv[2] ?? '').split(',').filter(Boolean);
+if (!keys.length) { console.error('usage: p9-integrate.mts <keys,comma> [--crash-after=N]'); process.exit(2); }
+const crashAfter = Number((process.argv.find((a) => a.startsWith('--crash-after=')) ?? '--crash-after=0').split('=')[1]);
+
+// Cassettes are per source; the transport serves whichever request matches, so one directory holds them all.
+const dir = 'backups/lot4-20260909/cassettes/all';
+mkdirSync(dir, { recursive: true });
+for (const k of keys) {
+  const { readdirSync, copyFileSync, existsSync } = await import('node:fs');
+  const src = `backups/lot4-20260909/cassettes/${k}`;
+  if (existsSync(src)) for (const f of readdirSync(src)) copyFileSync(`${src}/${f}`, `${dir}/${f}`);
+}
+installOfflineTransport({ mode: 'replay', dir });
+
+const p = new PrismaClient({ log: [] });
+try {
+  const [{ current_database: db }]: any[] = await p.$queryRaw`SELECT current_database()`;
+  if (!/replay|clone|test/.test(db)) throw new Error(`refusing: ${db} is not a clone`);
+
+  const before: any[] = await p.$queryRaw`
+    SELECT js."sourceKey", COUNT(*)::int postings FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
+    WHERE js."sourceKey" = ANY(${keys}) AND js."isActive" AND j."isActive" GROUP BY 1`;
+
+  /**
+   * A real partial write: the process dies MID-INGEST, as a killed container would.
+   *
+   * The ingest persists through `$transaction`, not through `job.update`, so the kill is placed there — after N
+   * committed transactions the process exits with 137 (SIGKILL's code). An earlier attempt hooked `job.update`
+   * and never fired: the run completed normally and proved nothing.
+   */
+  if (crashAfter > 0) {
+    let committed = 0;
+    const realTx = (p as any).$transaction.bind(p);
+    (p as any).$transaction = async (...args: any[]) => {
+      const r = await realTx(...args);
+      if (++committed >= crashAfter) { console.error(`SIMULATED CRASH after ${committed} committed transactions`); process.exit(137); }
+      return r;
+    };
+  }
+
+  process.env.INGEST_ONLY_KEYS = keys.join(',');
+  process.env.EGRESS_PROBE = '0';
+  const { ingestAllBySource } = await import('../../apps/aggregator/src/pipeline/ingestOrchestrator.js');
+  const result = await ingestAllBySource(p as any);
+
+  const after: any[] = await p.$queryRaw`
+    SELECT js."sourceKey", COUNT(*)::int postings,
+           COUNT(*) FILTER (WHERE j."postedAt" IS NOT NULL)::int dated,
+           COUNT(*) FILTER (WHERE j.description IS NOT NULL)::int described
+    FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
+    WHERE js."sourceKey" = ANY(${keys}) AND js."isActive" AND j."isActive" GROUP BY 1`;
+  const ids: any[] = await p.$queryRaw`
+    SELECT js."sourceKey", js."externalId", j.id, j.title, j."postedAt", j.location
+    FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
+    WHERE js."sourceKey" = ANY(${keys}) AND js."isActive" AND j."isActive" ORDER BY js."sourceKey", js."externalId"`;
+
+  const out = { at: new Date().toISOString(), database: db, keys, cassette: cassetteSize(dir), before, after, run: result, touchedIds: ids.map((r) => r.id), rows: ids };
+  writeFileSync(`backups/lot4-20260909/p9-integrate-${keys.join('_')}.json`, JSON.stringify(out, null, 1));
+  console.log(JSON.stringify({ ...out, rows: undefined }, null, 1));
+} finally { await p.$disconnect(); }

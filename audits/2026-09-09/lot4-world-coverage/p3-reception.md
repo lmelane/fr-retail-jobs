@@ -1,12 +1,34 @@
-# P3 — réception sur les cinq scénarios
+# P3 — essais de réparation sur archives (réception NON obtenue)
 
-Exécutés sur **clones réels**, avec de **vraies écritures**, à partir des archives disponibles. Aucune mutation de production, crons gelés.
+> **STATUT CORRIGÉ (2026-09-11).** Ce document présentait cinq critères « conformes ». **Ils ne le sont pas** : les scénarios ont exercé `replay-integration.mts`, un **outil parallèle écrit pour la réception**, et non le processus d'intégration que P3 doit industrialiser.
+>
+> `replay-integration.mts` sélectionne des offres **déjà présentes**, reconstruit des champs depuis sa **propre table `PATHS`**, et écrit directement par `p.job.update`. Il n'appelle **ni les adaptateurs ATS, ni les contrôles d'identité, de configuration et de périmètre, ni le mécanisme d'écriture du pipeline**. Réutiliser `cleanPlace` et `cleanTitle` ne revient pas à réutiliser le pipeline.
+>
+> La duplication s'est manifestée d'elle-même : sur Flatchr, j'ai dû **ouvrir l'adaptateur pour recopier ses choix** dans ma table — preuve que j'avais réimplémenté la transformation au lieu de l'appeler.
+>
+> **Ce qui est démontré : une réparation de champs sur archives.** Ce qui ne l'est pas : configuration d'une source → validation → certification → promotion → ingestion → offres créées ou rapprochées.
 
-## Tableau de réception
+## Portée réelle des cinq essais
+
+| Critère P3 | Ce qui a été exercé | Portée |
+|---|---|---|
+| Parcours nominal d'intégration | champs d'offres existantes restaurés sur 2 familles | réparation testée ; **intégration non démontrée** |
+| Interruption et reprise | un **autre script** prépare un état partiel, puis le réparateur complète | état partiel testé ; **le vrai parcours n'est jamais interrompu** |
+| Changement de configuration | **un commentaire ajouté dans `gate.mts`** | sensibilité de l'empreinte testée ; **aucune configuration de source modifiée** |
+| Correction d'un validateur | chemins modifiés dans ma table `PATHS` parallèle | correction de mon outil ; **pas des contrôles partagés du pipeline** |
+| Absence de double écriture | mon remplissage ne réécrit pas ce qu'il a rempli | idempotence de ce remplissage ; **pas celle de l'ingestion** |
+
+## Ce qui reste acquis, à ne pas refaire
+
+- Les **deux contre-exemples de la porte** sont corrigés et verrouillés par des tests : un rejeu sans `touchedIds` est `UNVERIFIABLE`, des identifiants hors périmètre sont bloqués par comparaison d'**ensembles**.
+- Les **restaurations de champs sur clone** sont de vrais essais avec de vraies écritures — conservés sous leur intitulé exact : *test de réparation sur archives*.
+- **Ne pas avoir écrit en production n'est pas un défaut** de cette réception.
+
+## Tableau initial (conservé pour mémoire, verdicts invalidés)
 
 | Critère attendu | Résultat obtenu | Preuve | Conforme |
 |---|---|---|---|
-| **Parcours nominal** sur plusieurs familles ATS, par configuration et preuves, sans script par Maison | `recruitee` **20/20** champs restaurés à la valeur exacte (lieu + date) ; `flatchr` **20/20** (lieu). Une seule table `PATHS` ; ajouter une famille = **une ligne**, jamais un script | `replay-integration.mts`, exécutions sur clone | **oui** |
+| ~~Parcours nominal~~ (invalidé : outil parallèle) | `recruitee` **20/20** champs restaurés à la valeur exacte (lieu + date) ; `flatchr` **20/20** (lieu). Une seule table `PATHS` ; ajouter une famille = **une ligne**, jamais un script | `replay-integration.mts`, exécutions sur clone | **oui** |
 | **Interruption et reprise** après écriture partielle | 10 réparées, interruption, reprise traitant **uniquement les 10 restantes** (aucune ré-écriture), résultat final **20/20** exact | `p8-partial.mts` puis rejeu | **oui** |
 | **Changement de configuration** : les étapes dépendantes sont invalidées, les résultats valides réutilisables | Sans modification : **8 étapes `skip`** (2 s). Après modification du validateur : **8 étapes `redo (inputs changed)`** | `mutation.sh`, empreinte couvrant mutation + état + procédure + **`gate.mts`** | **oui** |
 | **Correction d'un validateur** rejouée hors ligne ; une ancienne validation n'est pas acceptée par erreur | Chemins Flatchr corrigés (`formatted_address`, `flatchr.ts:81`) et rejoués sur les **mêmes archives** → lieu exact. L'empreinte incluant `gate.mts`, toute validation antérieure est invalidée | exécutions successives sur clone | **oui** |
