@@ -120,8 +120,17 @@ def execute(service):
         raise RuntimeError(f'refus : commit déployé {st["commit"]} ≠ attendu {commit}')
     if manifest != st['startCommand'] or manifest == s['normalCommand']:
         raise RuntimeError('refus : la commande déployée n\'est pas la commande bornée posée')
-    if f'INGEST_ONLY_KEYS={expected_keys} ' not in (manifest or ''):
-        raise RuntimeError('refus : la commande déployée ne porte pas exactement l\'allowlist attendue')
+    # Le périmètre est porté par INGEST_ONLY_KEYS pour une ingestion, par REFRESH_ONLY_KEYS pour un refresh —
+    # un refresh ne collecte rien, il ne peut donc pas porter la variable d'ingestion. Exiger le nom de
+    # l'ingestion refusait TOUT refresh conforme : la garde n'avait jamais été exercée sur ce chemin.
+    # Ce qui compte n'est pas le nom de la variable, c'est que le périmètre déployé soit EXACTEMENT l'attendu ;
+    # on accepte donc l'un ou l'autre, et un seul à la fois — porter les deux serait un état incohérent.
+    bounds = [v for v in ('INGEST_ONLY_KEYS', 'REFRESH_ONLY_KEYS') if f'{v}={expected_keys} ' in (manifest or '')]
+    if not bounds:
+        raise RuntimeError('refus : la commande déployée ne porte pas exactement l\'allowlist attendue '
+                           f'({expected_keys}) via INGEST_ONLY_KEYS ou REFRESH_ONLY_KEYS')
+    if len(bounds) > 1:
+        raise RuntimeError('refus : la commande déployée porte À LA FOIS INGEST_ONLY_KEYS et REFRESH_ONLY_KEYS')
     return api('mutation($input:DeploymentInstanceExecutionCreateInput!)'
                '{deploymentInstanceExecutionCreate(input:$input)}',
                {'input': {'serviceInstanceId': s['instance']}})
