@@ -288,3 +288,74 @@ describe('runRefresh — allowlist de reprise', () => {
     expect(result.closedJobs).toBe(2);
   });
 });
+
+/**
+ * PARITÉ PRÉVISUALISATION / MUTATION — le manifeste figé est la seule liste que le refresh touche.
+ *
+ * Sans lui, la revue et l'exécution feraient deux calculs indépendants : l'état peut bouger entre les deux, et
+ * la mutation toucherait des offres que personne n'a examinées. Ces tests exercent le VRAI `runRefresh` sur
+ * une base réelle, pas un objet simulé.
+ */
+describe('runRefresh — manifeste figé', () => {
+  it('ne touche QUE les lignes du manifeste, même si d\'autres sont périmées et fermables', async () => {
+    const c = await company();
+    const inManifest = await job(c.id, 'vague', 'dans-le-manifeste', 72);
+    await job(c.id, 'vague', 'hors-manifeste', 72);   // périmée, même source, même droit
+    await recordHealth('vague', 'OK', 10);
+
+    const target = await prisma.jobSource.findFirstOrThrow({ where: { externalId: 's-dans-le-manifeste' } });
+    const result = await runRefresh(prisma, { onlyKeys: ['vague'], manifestJobSourceIds: [target.id] });
+
+    expect(result.closedJobs).toBe(1);
+    expect((await prisma.job.findFirstOrThrow({ where: { id: inManifest.id } })).isActive).toBe(false);
+    // La ligne hors manifeste est INTACTE : le périmètre par identifiant a tenu.
+    const outside = await prisma.job.findFirstOrThrow({ where: { externalId: 'hors-manifeste' } });
+    expect(outside.isActive).toBe(true);
+    expect(outside.closedAt).toBeNull();
+  });
+
+  /** Un manifeste VIDE ne signifie pas « aucune borne » : il signifie « rien à désactiver ». */
+  it('un manifeste vide ne ferme rien, même avec des offres périmées', async () => {
+    const c = await company();
+    await job(c.id, 'vague', 'perimee', 72);
+    await recordHealth('vague', 'OK', 10);
+
+    const result = await runRefresh(prisma, { onlyKeys: ['vague'], manifestJobSourceIds: [] });
+
+    expect(result.closedJobs).toBe(0);
+    expect((await prisma.job.findFirstOrThrow({ where: { externalId: 'perimee' } })).isActive).toBe(true);
+  });
+
+  /** Une ligne du manifeste appartenant à une source hors allowlist ne passe pas : les deux bornes se cumulent. */
+  it('manifeste et allowlist se cumulent, ils ne se remplacent pas', async () => {
+    const c = await company();
+    await job(c.id, 'hors-vague', 'intruse', 72);
+    await recordHealth('hors-vague', 'OK', 10);
+
+    const intruder = await prisma.jobSource.findFirstOrThrow({ where: { externalId: 's-intruse' } });
+    const result = await runRefresh(prisma, { onlyKeys: ['vague'], manifestJobSourceIds: [intruder.id] });
+
+    expect(result.closedJobs).toBe(0);
+    expect((await prisma.job.findFirstOrThrow({ where: { externalId: 'intruse' } })).isActive).toBe(true);
+  });
+
+  /**
+   * LE CAS QUI COMPTE POUR LA PARITÉ : une offre attestée par une source HORS périmètre reste ouverte, et la
+   * conséquence annoncée par la prévisualisation (`JOB_KEPT_BY_ANOTHER_SOURCE`) est bien celle produite.
+   */
+  it('une autre source active hors allowlist maintient l\'offre ouverte', async () => {
+    const c = await company();
+    const j = await job(c.id, 'vague', 'partagee', 72);
+    await prisma.jobSource.create({ data: { jobId: j.id, sourceKey: 'hors-vague', sourceTier: 'ATS_OFFICIAL',
+      externalId: 's-partagee-2', url: 'https://x/partagee', isActive: true, lastSeenAt: new Date() } });
+    await recordHealth('vague', 'OK', 10);
+
+    const target = await prisma.jobSource.findFirstOrThrow({ where: { externalId: 's-partagee' } });
+    const result = await runRefresh(prisma, { onlyKeys: ['vague'], manifestJobSourceIds: [target.id] });
+
+    // La représentation est désactivée, mais l'offre survit : exactement la conséquence prévue.
+    expect(result.closedJobs).toBe(0);
+    expect((await prisma.job.findFirstOrThrow({ where: { id: j.id } })).isActive).toBe(true);
+    expect((await prisma.jobSource.findFirstOrThrow({ where: { id: target.id } })).isActive).toBe(false);
+  });
+});
