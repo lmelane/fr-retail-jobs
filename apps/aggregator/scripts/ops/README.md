@@ -18,6 +18,34 @@ the previous one, the procedure drifted, and no chain could be diffed against an
 | [`db.py`](db.py) | Which database, read-only or not, how the URL is built — `production` / `readonly` / `clone` / `test`. Secrets come from a host-local file named by `CATWALKS_DB_ACCESS`. |
 | [`read-crons.py`](read-crons.py), [`running-pipeline-runs.mts`](running-pipeline-runs.mts) | Read the frozen cron schedules and any run still in flight. |
 
+## Un cycle P7 borné : ingestion, preuve, manifeste, refresh
+
+Un cycle ne se déclare pas terminé parce qu'il a tourné : chaque étape doit avoir produit sa preuve, et le
+refresh ne touche que ce qui a été revu.
+
+| | |
+|---|---|
+| [`ingest-preflight.py`](ingest-preflight.py) | Impose les étapes 1 à 8 et **refuse en exit 1** : commit figé, arbre propre, aucun run en vol, les **deux** services vérifiés séparément (`DEPLOYED_AT_COMMIT` / `SAME_CODE_FOR_THIS_SERVICE` démontré par le diff / `STALE_CODE`), allowlist exacte, sauvegarde **restaurée** et comparée sur six grandeurs, canaux d'alerte **testés par émission réelle**. |
+| [`bounded-ingest.sh`](bounded-ingest.sh) | Une ingestion bornée, sans aucun tube — le code de sortie d'un tube est celui de sa dernière commande. Pose la commande bornée, attend le SUCCESS sur CE commit, exécute, attend un statut **terminal** (restaurer plus tôt tuerait le run), restaure, contrôle les variables et les crons. |
+| [`bounded-command.py`](bounded-command.py), [`bounded-refresh-command.py`](bounded-refresh-command.py) | Les commandes de démarrage, échappées par `shlex` — assemblées en shell elles se cassent en silence, et une commande malformée qui se déploie remplace la commande normale par quelque chose qui échoue. Le refresh y embarque le **manifeste en clair**. |
+| [`cycle-contracts.mts`](cycle-contracts.mts) | Les deux contrats d'un cycle, lus sur la base : `canonicalObservedIds = persistés ∪ retenus ∪ échecs ∪ rejets ∪ erreurs`. Tout est corrélé au **même `runId`** — une retenue historique n'est pas une retenue du cycle. |
+| [`refresh-preview.mts`](refresh-preview.mts) | Ce que le refresh ferait, par identifiant, sur le planificateur **commun**. Lit `canonicalIds`, jamais `ids`. |
+| [`freeze-manifest.mts`](freeze-manifest.mts) | Fige et hache le plan. **Refuse** une entrée d'une source non recevable, un état n'autorisant pas la désactivation, une ligne déjà inactive. |
+| [`bounded-refresh.sh`](bounded-refresh.sh) | Le refresh borné. **Refuse de démarrer si `INGEST_ONLY_KEYS` est posé** : un refresh ne collecte rien. Un manifeste vide arrête la chaîne en succès. |
+| [`refresh-audit.mts`](refresh-audit.mts) | `touchedIds` = manifeste par **ensembles**, conséquences offre par offre, invariants, retenues, runs orphelins. |
+| [`refresh-parity.mts`](refresh-parity.mts) | Les dix situations qui comptent, contre le **vrai** `runRefresh` sur clone — dont « état modifié après le manifeste » et « ligne hors manifeste ». |
+| [`cycle-compare.mts`](cycle-compare.mts) | Cycle 1 contre cycle 2, **par identifiant**. Seule l'intersection des absences des deux cycles peut fonder une fermeture. |
+| [`record-employer-alias.mts`](record-employer-alias.mts) | Une décision d'identité : libellé **exact**, portée **source**, preuve archivée dont le sha256 est vérifié. Refuse un alias global. |
+
+### Ce qu'une absence exige
+
+Une absence n'est jamais déduite d'un `lastSeenAt` ancien — ce serait une preuve de **non-ré-attestation**.
+Elle exige que l'identifiant ne figure pas dans l'ensemble **réellement observé**, lu dans
+`pageEvidence[].canonicalIds` et corrélé au run par `runId`. Et cet ensemble doit parler le même langage que la
+base : mesuré le 2026-09-12, un adaptateur archivait des *diffusions* là où la base stocke des *annonces* —
+recouvrement nul, 37 offres vivantes déclarées absentes.
+
+
 ## Integrating a source, and proving it
 
 The five reception scenarios of P3 run on **archives and clones**, never against production, and never with a
