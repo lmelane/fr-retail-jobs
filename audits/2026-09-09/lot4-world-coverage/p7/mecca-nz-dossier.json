@@ -69,5 +69,68 @@
     "jobs": 184,
     "activeJobs": 173
   },
-  "production": null
+  "production": {
+    "appliedAt": "2026-09-12T10:47Z",
+    "commit": "171eda28a233b764dedaed986f9a77c614b95a19",
+    "planHashAtBuild": "fc28d1c33f773b76701262b6e8a19232581ae2852d22e61c8833f7baafedede8",
+    "planHashStoredInReview": "a845811a35a261b7b4cc23d7559b8ea2793f6d6122cbf5df9165b04e944cb0e4",
+    "backup": {
+      "file": "before-p7-run-20260912T104251Z-production.dump",
+      "bytes": 496200698,
+      "sha256Prefix": "f33b666c77487261",
+      "restoreProven": true,
+      "restoredCounts": {
+        "activeJobs": 79048,
+        "allJobs": 83186,
+        "jobSources": 86368,
+        "sourcesActive": 433,
+        "sourcesPaused": 7,
+        "activeWithClosedAt": 0,
+        "withCountryIntegrity": 1745
+      },
+      "matchesProduction": true
+    },
+    "applied": {
+      "alreadyApplied": false,
+      "movedJobs": 0,
+      "aliases": 1
+    },
+    "secondPass": "refus idempotent de la fonction maintenue : « Batch already applied with different content ». Le plan embarque l'état, qui a changé après la fusion, donc son empreinte diffère. Rien n'a été écrit au second passage — vérifié : un seul alias créé dans la fenêtre.",
+    "verified": {
+      "aliasScoped": "mecca / mecca brands nz pty ltd",
+      "reviewId": "20260912-P7-MECCA-BRANDS-NZ-PTY-LTD",
+      "reviewer": "loic.melane.pro@gmail.com",
+      "evidenceStored": {
+        "url": "https://www.mecca.com/en-nz/privacy-policy",
+        "sha256": "b838d7a91d4a98543dc31f9edd8c5f738ad66eb7ffbcfa5f029b8ff5107e6b73",
+        "artifactChars": 581136
+      },
+      "companyMerged": "MECCA Brands NZ Pty Ltd → MECCA",
+      "aliasesCreatedInWindow": 1,
+      "jobSourcesBefore": {
+        "total": 196,
+        "active": 193
+      },
+      "jobSourcesAfter": {
+        "total": 196,
+        "active": 193
+      },
+      "jobsBefore": {
+        "jobs": 196,
+        "active": 193,
+        "closed": 3
+      },
+      "jobsAfter": {
+        "jobs": 196,
+        "active": 193,
+        "closed": 3
+      },
+      "holdsBefore": 0,
+      "holdsAfter": 0,
+      "globalActiveJobs": 79048,
+      "globalActiveWithClosedAt": 0,
+      "noClosure": true,
+      "noOtherAliasAccepted": true
+    }
+  }
 }
