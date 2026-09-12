@@ -71,3 +71,39 @@ describe('canonicalIdContract — chaque offre écrite doit figurer dans la preu
     expect(canonicalIdContract(result({ candidateExternalIds: [], canonicalObservedIds: [] })).satisfied).toBe(true);
   });
 });
+
+/**
+ * LE CONTRAT EST BIDIRECTIONNEL — une disposition ne peut pas être orpheline.
+ *
+ * Déclarer un identifiant « rejeté » sans qu'il figure dans l'ensemble observé, c'est excuser une ligne que
+ * le balayage n'a jamais vue. Sans ce contrôle, n'importe quel adaptateur pourrait faire disparaître un trou
+ * de sa preuve en le rebaptisant.
+ */
+describe('canonicalIdContract — une disposition doit porter sur une ligne observée', () => {
+  it('le contre-exemple : rejectedIds = [b] alors que b n\'est pas observé → contrat ROMPU', () => {
+    const r = canonicalIdContract(result({
+      canonicalObservedIds: ['a'], candidateExternalIds: ['a'], rejectedIds: ['b'],
+    }));
+    expect(r.satisfied).toBe(false);
+    expect(r.violations.join(' ')).toMatch(/« b » présenté comme rejeté sans figurer/);
+  });
+
+  it.each([
+    ['heldIds', 'retenu'],
+    ['writeFailedIds', 'refusé à l\'écriture'],
+    ['collectionErrorIds', 'erreur de collecte'],
+  ])('%s orpheline rompt aussi le contrat', (field, label) => {
+    const r = canonicalIdContract(result({
+      canonicalObservedIds: ['a'], candidateExternalIds: ['a'], [field]: ['fantome'],
+    } as any));
+    expect(r.satisfied).toBe(false);
+    expect(r.violations.join(' ')).toMatch(new RegExp(`« fantome » présenté comme ${label}`));
+  });
+
+  it('la même disposition, portant sur une ligne RÉELLEMENT observée, satisfait le contrat', () => {
+    const r = canonicalIdContract(result({
+      canonicalObservedIds: ['a', 'b'], candidateExternalIds: ['a'], rejectedIds: ['b'],
+    }));
+    expect(r).toEqual({ satisfied: true, violations: [] });
+  });
+});

@@ -311,10 +311,12 @@ describe('fetchWorkdayJobs — identifiants canoniques dans la preuve', () => {
   });
 
   /**
-   * Une ligne SANS `externalPath` n'a aucun identifiant : elle ne peut pas figurer dans la preuve canonique.
-   * Elle est rejetée avec son motif et comptée dans `withoutPath` — jamais confondue avec une disparition.
+   * A. Une ligne SANS `externalPath` n'a aucun identifiant : elle ne peut pas figurer dans la preuve canonique,
+   * et il est INTERDIT d'en fabriquer un depuis le titre ou un hachage. Conséquence : le parcours peut être
+   * complet alors que l'attestation d'absence est refusée — un identifiant historique disparu pourrait être
+   * précisément cette ligne anonyme.
    */
-  it('une ligne sans externalPath n\'entre pas dans canonicalIds et reste un rejet motivé', async () => {
+  it('A. une ligne sans externalPath : offre identifiable produite, mais absence NON attestable', async () => {
     mockJson.mockResolvedValueOnce({
       total: 2,
       jobPostings: [
@@ -330,8 +332,32 @@ describe('fetchWorkdayJobs — identifiants canoniques dans la preuve', () => {
 
     const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
     expect(canonical).toEqual(['Vendeur_R-123']);
+    expect(r.jobs.map((j) => j.externalId)).toEqual(['Vendeur_R-123']);   // l'offre identifiable est produite
     expect(r.rejectedRows?.some((x) => x.reason === 'ROW_WITHOUT_EXTERNAL_PATH')).toBe(true);
-    // Le contrat tient : l'unique offre écrite figure bien dans la preuve.
     expect(r.enumeration?.canonicalIdViolations).toBeUndefined();
+    // LE VERDICT QUI MANQUAIT : le parcours ne suffit pas, l'absence n'est pas démontrable.
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(false);
+  });
+
+  /** B. Toutes les lignes identifiables : la preuve d'absence est exploitable. */
+  it('B. toutes les lignes ont un externalPath : preuve canonique exploitable', async () => {
+    mockJson.mockResolvedValueOnce({
+      total: 1, jobPostings: [{ title: 'Vendeur', externalPath: '/job/Paris/Vendeur_R-123' }],
+    } as never);
+    const r = await fetchWorkdayJobs({
+      tenant: 'mecca', site: 'careers', origin: 'https://mecca.wd3.myworkdayjobs.com', withDescriptions: false,
+    });
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+  });
+
+  /** C. Board réellement vide, terminaison prouvée : preuve vide mais EXPLOITABLE. */
+  it('C. board vide et terminaison prouvée : preuve canonique vide mais exploitable', async () => {
+    mockJson.mockResolvedValueOnce({ total: 0, jobPostings: [] } as never);
+    const r = await fetchWorkdayJobs({
+      tenant: 'mecca', site: 'careers', origin: 'https://mecca.wd3.myworkdayjobs.com', withDescriptions: false,
+    });
+    expect(r.jobs).toEqual([]);
+    expect(r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? [])).toEqual([]);
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
   });
 });

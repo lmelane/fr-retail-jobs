@@ -101,3 +101,45 @@ describe('Talent Recruiter — identifiants canoniques', () => {
     expect(r.enumeration?.termination).toBe('DECLARED_TOTAL_REACHED');
   });
 });
+
+/**
+ * UNE LIGNE OBSERVÉE PUIS REJETÉE N'EST PAS UNE LIGNE ABSENTE.
+ *
+ * L'identifiant entre dans la preuve AVANT les validations : sinon une JobSource historique portant ce même
+ * identifiant paraîtrait absente au refresh, donc serait fermée — alors que la source la publie toujours.
+ */
+describe('Talent Recruiter — rejets identifiables observés avant validation', () => {
+  it('A. Id présent, titre absent : observé, non produit, rejeté, contrat satisfait', async () => {
+    api.mockResolvedValue(feed([position(1), { ...position(123), Name: '' }]));
+    const r = await fetchTalentRecruiterJobs({ customer: 'ganni' });
+
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(canonical).toContain('123');                                  // observé
+    expect(r.jobs.map((j) => j.externalId)).not.toContain('123');        // non produit
+    expect(r.rejectedRows?.find((x) => (x as { canonicalId?: string }).canonicalId === '123')?.reason)
+      .toBe('INVALID_POSTING_ID_TITLE_EMPLOYER_OR_URL');                 // rejeté avec motif
+    expect(r.enumeration?.canonicalIdViolations).toBeUndefined();        // contrat satisfait
+  });
+
+  it('B. Id présent, URL incohérente : même résultat, motif d\'URL', async () => {
+    api.mockResolvedValue(feed([position(1),
+      { ...position(123), AdvertisementUrlSecure: 'https://candidate.hr-manager.net/x?ProjectId=999' }]));
+    const r = await fetchTalentRecruiterJobs({ customer: 'ganni' });
+
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(canonical).toContain('123');
+    expect(r.jobs.map((j) => j.externalId)).not.toContain('123');
+    expect(r.rejectedRows?.find((x) => (x as { canonicalId?: string }).canonicalId === '123')?.reason)
+      .toBe('POSTING_URL_IDENTITY_MISMATCH');
+    expect(r.enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  /** Une ligne sans identifiant exploitable ne peut être ni observée ni disposée : la preuve tombe. */
+  it('une ligne SANS Id exploitable rend l\'énumération non probante', async () => {
+    api.mockResolvedValue(feed([position(1), { ...position(2), Id: 0 }]));
+    const r = await fetchTalentRecruiterJobs({ customer: 'ganni' });
+
+    expect(r.enumeration?.issues).toContain('ROW_WITHOUT_CANONICAL_ID');
+    expect(r.complete).toBe(false);
+  });
+});

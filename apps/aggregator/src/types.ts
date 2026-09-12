@@ -126,7 +126,19 @@ export type AdapterResult = {
      */
     blockers?: string[];
     /** Les offres écrites qu'aucun identifiant canonique observé ne couvre : le contrat est rompu, la preuve tombe. */
-    canonicalIdViolations?: string[]; scopes?: Array<{ scope: string; declaredTotal: number; uniqueIds: number; pages: number; complete: boolean }>;
+    canonicalIdViolations?: string[];
+    /**
+     * DEUX PROPRIÉTÉS DISTINCTES, et la première peut être vraie quand la seconde est fausse.
+     *
+     * `canonicalAbsenceProofUsable = false` dit : « j'ai peut-être lu tout le listing, mais certaines lignes
+     * observées n'ont AUCUN identifiant exploitable — je ne peux donc pas affirmer qu'un identifiant
+     * historique a disparu, il pourrait être l'une d'elles ». Cas mesuré : une ligne Workday sans
+     * `externalPath`. Les offres identifiables du run sont ingérées normalement ; seule l'attestation
+     * d'absence est refusée pour ce cycle.
+     */
+    canonicalAbsenceProofUsable?: boolean;
+    /** Le parcours du listing a-t-il été mené à son terme ? Indépendant de l'exploitabilité ci-dessus. */
+    enumerationTraversalComplete?: boolean; scopes?: Array<{ scope: string; declaredTotal: number; uniqueIds: number; pages: number; complete: boolean }>;
     pageEvidence?: Array<{ url: string; checkedAt: string; sha256: string; offset: number; pagination: { start: number; end: number; total: number } | null;
       /**
        * Les identifiants tels que la SOURCE les pagine — sa propre unité de compte. Chez DigitalRecruiters

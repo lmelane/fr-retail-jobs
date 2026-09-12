@@ -212,6 +212,9 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
         // read on two pages) is one announced row, not two. Distinct rows are told apart by their content.
         // Every occurrence is a witness in the rejects; the COUNT of announced rows is by distinct content.
         const hash = createHash('sha256').update(JSON.stringify(job)).digest('hex');
+        // Aucun identifiant canonique n'est FABRIQUÉ à partir du titre ou d'un hachage : ce serait
+        // inventer une preuve. La ligne est archivée telle quelle, et le cycle perd le droit d'attester
+        // une absence — un identifiant historique disparu pourrait être précisément celle-ci.
         shared.rejectedRows.push({ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: job });
         shared.pathlessRows.add(hash); localPathless.add(hash);
         continue;
@@ -350,7 +353,20 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
   const termination = partitioned ? (failing ? failing.termination : overlap ? 'PARTITION_OVERLAP' : capped && unpartitioned ? 'UNPARTITIONED_UNDER_CAP' : 'PARTITIONS_RECONCILED') : results[0]!.termination;
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
   const boardScopes: Scope[] = results.map((r) => ({ scope: r.scope, declaredTotal: r.scope === 'jobs:unpartitioned' ? r.fresh : r.total || -1, uniqueIds: r.scope === 'jobs:unpartitioned' ? r.fresh : r.uniqueIds, pages: r.pages, complete: r.complete }));
+  /**
+   * DEUX PROPRIÉTÉS DISTINCTES, et c'est ici qu'elles se séparent.
+   *
+   * Une ligne sans `externalPath` a bien été OBSERVÉE, mais elle n'a aucun identifiant canonique : on ne peut
+   * pas la nommer dans la preuve, et on refuse d'en FABRIQUER un depuis le titre ou un hachage — ce serait
+   * inventer. Conséquence : le parcours du listing peut être complet (`enumerationTraversalComplete`) alors
+   * qu'une absence n'y est pas démontrable (`canonicalAbsenceProofUsable`), puisqu'un identifiant historique
+   * disparu pourrait être précisément l'une de ces lignes anonymes.
+   *
+   * Les offres identifiables du run sont ingérées normalement : seule l'attestation d'absence est refusée.
+   */
+  const canonicalAbsenceProofUsable = shared.pathlessRows.size === 0;
   const enumeration: AdapterResult['enumeration'] = { method: partitioned ? 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION_PARTITIONED' : 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION', endpoint, pages: pagesRead, rawCount, termination, issues: [...issues],
+    enumerationTraversalComplete: complete, canonicalAbsenceProofUsable,
     scopes: partitioned ? [{ scope: 'jobs', declaredTotal: total || -1, uniqueIds: seen.size, pages: pagesRead, complete }, ...boardScopes] : boardScopes, pageEvidence };
 
   // F-04: `total` is the tenant's own announced count — the truncation signal.

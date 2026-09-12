@@ -12,10 +12,12 @@
  * recouvrement, c'est aussi bien « 20 % d'offres disparues » que « 20 % d'identifiants cassés ». Le ratio ne
  * distingue pas les deux ; seule la structure le fait.
  *
- * LA RÈGLE, donc, en deux invariants :
- *   1. tout `job.externalId` écrit DOIT figurer dans les identifiants canoniques observés ;
- *   2. tout identifiant canonique observé qui ne devient pas une offre DOIT avoir une disposition NOMMÉE —
- *      retenu, refusé à l'écriture, rejeté avec motif, ou erreur de collecte.
+ * LA RÈGLE, donc, en trois inclusions — le contrat est BIDIRECTIONNEL :
+ *   1. `candidateExternalIds ⊆ canonicalObservedIds` : toute offre produite a été vue ;
+ *   2. `disposedIds ⊆ canonicalObservedIds` : une disposition porte sur une ligne réellement vue — sinon un
+ *      adaptateur pourrait faire disparaître un trou de sa preuve en le rebaptisant « rejet » ;
+ *   3. `canonicalObservedIds ⊆ candidateExternalIds ∪ disposedIds` : toute ligne vue devient une offre ou dit
+ *      POURQUOI elle n'en devient pas une.
  *
  * Un manquement n'est pas un avertissement : c'est l'aveu que l'ensemble observé ne peut pas servir de
  * référence, donc que cette source ne peut prouver aucune absence (`UNVERIFIABLE`).
@@ -68,7 +70,28 @@ export function canonicalIdContract(result: AdapterEnumerationResult): ContractV
     }
   }
 
-  // Invariant 2 — un identifiant vu mais non publié doit dire POURQUOI.
+  /**
+   * Invariant 2 — UNE DISPOSITION NE PEUT PAS ÊTRE ORPHELINE.
+   *
+   * Déclarer `rejectedIds = ['b']` alors que `b` ne figure pas dans l'ensemble observé, c'est excuser un
+   * identifiant que le balayage n'a jamais vu. Sans ce contrôle, n'importe quel adaptateur pourrait faire
+   * disparaître un trou de sa preuve en le rebaptisant « rejet ». La disposition doit donc porter sur une
+   * ligne RÉELLEMENT observée, sinon le contrat tombe.
+   */
+  const dispositions: Array<[string, readonly string[]]> = [
+    ['retenu', result.heldIds], ['refusé à l\'écriture', result.writeFailedIds],
+    ['rejeté', result.rejectedIds], ['erreur de collecte', result.collectionErrorIds],
+  ];
+  for (const [label, ids] of dispositions) {
+    for (const id of ids) {
+      if (!observed.has(id)) {
+        violations.push(`identifiant « ${id} » présenté comme ${label} sans figurer dans les identifiants observés`);
+        if (violations.length >= MAX_NAMED) return { satisfied: false, violations };
+      }
+    }
+  }
+
+  // Invariant 3 — un identifiant vu mais non publié doit dire POURQUOI.
   const disposed = new Set([
     ...result.heldIds, ...result.writeFailedIds, ...result.rejectedIds, ...result.collectionErrorIds,
   ]);

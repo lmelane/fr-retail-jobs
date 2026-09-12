@@ -56,6 +56,15 @@ export type EnumerationEvidence = {
   canonicalContractDeclared: boolean;
   /** Le contrat est déclaré mais violé — l'adaptateur l'a dit lui-même (`CANONICAL_ID_CONTRACT_BROKEN`). */
   canonicalContractBroken: boolean;
+  /**
+   * L'adaptateur a-t-il observé des lignes SANS identifiant canonique exploitable ?
+   *
+   * `false` signifie : « le parcours est peut-être complet, mais un identifiant historique disparu pourrait
+   * être l'une de ces lignes anonymes ». Le parcours et l'exploitabilité de la preuve sont deux propriétés
+   * distinctes — la première peut être vraie quand la seconde est fausse (ligne Workday sans `externalPath`).
+   * `undefined` = l'adaptateur ne se prononce pas, on ne présume rien de défavorable.
+   */
+  canonicalAbsenceProofUsable?: boolean;
 };
 
 export type Representation = {
@@ -68,12 +77,22 @@ export type Representation = {
   held: boolean;
   /** L'écriture de cette offre a-t-elle échoué (refus d'identité) pendant ce cycle ? */
   writeFailed: boolean;
+  /** L'adaptateur a-t-il REFUSÉ cette ligne (titre manquant, URL incohérente…) tout en l'observant ? */
+  rejected?: boolean;
 };
 
 export type RepresentationState =
   | 'PRESENT_AND_REATTESTED'
   | 'PRESENT_BUT_HELD'
   | 'PRESENT_BUT_WRITE_FAILED'
+  /**
+   * VUE par le balayage, mais refusée par l'adaptateur lui-même (titre manquant, URL incohérente…).
+   *
+   * L'essentiel : ce n'est PAS une absence. L'identifiant est là, la source publie toujours la ligne — c'est
+   * nous qui n'avons pas su en faire une offre. La présenter comme « ré-attestée » serait faux aussi : rien
+   * n'a été écrit. Cet état ne désactive rien, ne ferme rien, et conserve le motif du rejet.
+   */
+  | 'PRESENT_BUT_REJECTED'
   | 'ABSENT_FROM_PROVEN_ENUMERATION'
   | 'UNVERIFIABLE';
 
@@ -118,6 +137,9 @@ export function sourceEligibility(run: SourceRunFacts | undefined, evidence: Enu
       reasons.push('l\'adaptateur ne déclare pas le contrat canonique sur tout le parcours : aucune absence n\'y est démontrable');
     } else if (evidence.canonicalContractBroken) {
       reasons.push('contrat canonique déclaré mais rompu : la preuve ne décrit pas ce que la source a écrit');
+    } else if (evidence.canonicalAbsenceProofUsable === false) {
+      reasons.push('des lignes observées n\'ont aucun identifiant canonique : une absence pourrait être l\'une '
+        + 'd\'elles, donc aucune ne peut être prouvée pour ce cycle');
     }
   }
   return { eligible: reasons.length === 0, reasons };
@@ -170,6 +192,7 @@ export function representationState(
     // Vue par le balayage. Si elle n'a pas été publiée, la cause est nommée — jamais « absente ».
     if (rep.writeFailed) return 'PRESENT_BUT_WRITE_FAILED';
     if (rep.held) return 'PRESENT_BUT_HELD';
+    if (rep.rejected) return 'PRESENT_BUT_REJECTED';
     return 'PRESENT_AND_REATTESTED';
   }
   return 'ABSENT_FROM_PROVEN_ENUMERATION';

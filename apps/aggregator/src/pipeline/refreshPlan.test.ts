@@ -253,3 +253,56 @@ describe('E. board vide prouvé — de sourceEligibility à planRefresh', () => 
     expect(deactivations).toEqual([]);
   });
 });
+
+/**
+ * D. UNE LIGNE VUE PUIS REJETÉE NE SE FERME JAMAIS.
+ *
+ * L'identifiant est dans la preuve : la source le publie toujours, c'est nous qui n'avons pas su en faire une
+ * offre. La présenter comme absente fermerait une offre vivante ; la présenter comme ré-attestée mentirait sur
+ * ce qui a été écrit. D'où un état distinct, qui ne mute rien.
+ */
+describe('PRESENT_BUT_REJECTED — vue, non persistée, jamais fermée', () => {
+  it('une représentation historique face à une ligne vue mais rejetée n\'est pas ABSENTE', () => {
+    const observed = new Set(['123']);
+    const state = representationState(rep({ externalId: '123', rejected: true }), observed, true);
+    expect(state).toBe('PRESENT_BUT_REJECTED');
+    expect(state).not.toBe('ABSENT_FROM_PROVEN_ENUMERATION');
+  });
+
+  it('et le plan ne la désactive pas, donc ne ferme rien', () => {
+    const r = rep({ jobSourceId: 'JS1', externalId: '123', rejected: true });
+    const { deactivations, jobs } = planRefresh([r], new Map([['JS1', 'PRESENT_BUT_REJECTED']]),
+      new Map([['J1', ['JS1']]]));
+    expect(deactivations).toEqual([]);
+    expect(jobs.size).toBe(0);
+  });
+
+  /** Les dispositions ont une priorité : un refus d'écriture prime sur un rejet d'adaptateur. */
+  it('un refus d\'écriture reste distinct d\'un rejet d\'adaptateur', () => {
+    const observed = new Set(['123']);
+    expect(representationState(rep({ externalId: '123', rejected: true, writeFailed: true }), observed, true))
+      .toBe('PRESENT_BUT_WRITE_FAILED');
+  });
+});
+
+/**
+ * PARCOURS COMPLET ≠ PREUVE D'ABSENCE EXPLOITABLE.
+ *
+ * Une ligne Workday sans `externalPath` est observée mais anonyme. Le listing peut avoir été lu en entier et,
+ * pourtant, aucun identifiant historique ne peut être déclaré disparu : il pourrait être cette ligne-là.
+ */
+describe('canonicalAbsenceProofUsable — deux propriétés distinctes', () => {
+  it('des lignes sans identifiant rendent la source non recevable, même parcours complet', () => {
+    const r = sourceEligibility(run(), evidence({ canonicalAbsenceProofUsable: false }));
+    expect(r.eligible).toBe(false);
+    expect(r.reasons.join(' ')).toMatch(/aucun identifiant canonique/);
+  });
+
+  it('toutes les lignes identifiables : la preuve est exploitable', () => {
+    expect(sourceEligibility(run(), evidence({ canonicalAbsenceProofUsable: true })).eligible).toBe(true);
+  });
+
+  it('un adaptateur qui ne se prononce pas ne se voit rien présumer de défavorable', () => {
+    expect(sourceEligibility(run(), evidence({ canonicalAbsenceProofUsable: undefined })).eligible).toBe(true);
+  });
+});

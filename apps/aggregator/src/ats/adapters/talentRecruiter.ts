@@ -66,16 +66,31 @@ export async function fetchTalentRecruiterJobs(config: Record<string, unknown>):
     total ??= data.PositionCountSearch; rawCount += data.Items.length;
     const ids: string[] = [];
     for (const p of data.Items) {
-      if (!p || !Number.isSafeInteger(p.Id) || p.Id <= 0 || typeof p.Name !== 'string' || !p.Name.trim() || p.CustomerAlias?.toLowerCase() !== customer.toLowerCase() || !p.CustomerName || !(p.AdvertisementUrlSecure || p.AdvertisementUrl)) {
+      /**
+       * L'IDENTIFIANT ENTRE DANS LA PREUVE AVANT LES VALIDATIONS.
+       *
+       * Une ligne dotée d'un `Id` exploitable a été OBSERVÉE, quoi qu'il advienne ensuite : titre manquant,
+       * employeur absent, URL incohérente. La valider d'abord la faisait sortir de la boucle sans figurer dans
+       * `canonicalIds` — et une JobSource historique portant ce même identifiant aurait alors paru ABSENTE,
+       * donc fermée, alors que la source la publie toujours.
+       *
+       * Le contrat étant bidirectionnel, la disposition qui suit porte bien sur une ligne observée.
+       */
+      const identifiable = !!p && Number.isSafeInteger(p.Id) && p.Id > 0;
+      if (identifiable) ids.push(String(p!.Id));
+      if (!p || !identifiable || typeof p.Name !== 'string' || !p.Name.trim() || p.CustomerAlias?.toLowerCase() !== customer.toLowerCase() || !p.CustomerName || !(p.AdvertisementUrlSecure || p.AdvertisementUrl)) {
         // Un identifiant exploitable fait du rejet une DISPOSITION nommée, jamais un trou dans la preuve.
         rejectedRows.push({reason:'INVALID_POSTING_ID_TITLE_EMPLOYER_OR_URL',raw:p ? publicPosition(p) : p,
-          ...(p && Number.isSafeInteger(p.Id) && p.Id > 0 ? {canonicalId:String(p.Id)} : {})}); continue;
+          ...(identifiable ? {canonicalId:String(p!.Id)} : {})});
+        // Une ligne SANS identifiant exploitable ne peut être ni observée ni disposée : la source ne peut
+        // alors attester aucune absence pour ce cycle.
+        if (!identifiable) issues.push('ROW_WITHOUT_CANONICAL_ID');
+        continue;
       }
       try {
         const parsed = new URL(p.AdvertisementUrlSecure || p.AdvertisementUrl!);
         if (parsed.protocol !== 'https:' || parsed.username || parsed.password || parsed.hostname !== 'candidate.hr-manager.net' || parsed.searchParams.get('ProjectId') !== String(p.Id)) throw new Error('URL_IDENTITY_MISMATCH');
       } catch { rejectedRows.push({reason:'POSTING_URL_IDENTITY_MISMATCH',raw:publicPosition(p),canonicalId:String(p.Id)}); continue; }
-      ids.push(String(p.Id));
       if (positions.has(p.Id)) issues.push(`REPEATED_POSTING_ID:${p.Id}`);
       else positions.set(p.Id, publicPosition(p));
     }
