@@ -177,12 +177,17 @@ function hasIndependentCountryProof(job: JobRow, country: string, locality: stri
   if (spellsOutCountry(label, country)) return true;
 
   /**
-   * Le code postal ne vaut preuve que si son FORMAT est compatible avec le pays déclaré. Sa simple présence ne
-   * prouve rien : « El Segundo, CA » avec le ZIP américain `90245` sous le pays `CA` publierait le Canada sur la
-   * foi d'un code postal qui, précisément, n'est pas canadien.
+   * LE CODE POSTAL NE PROUVE PAS LE PAYS — il peut seulement le RÉFUTER (H-GEO-01, 2026-09-11).
+   *
+   * Une version intermédiaire acceptait « format compatible = preuve ». C'était encore trop permissif : la
+   * compatibilité de format ne démontre pas que ce format identifie EXCLUSIVEMENT ce pays. `DE` et `US`
+   * partagent tous deux le format à cinq chiffres, de même que `ID`, `IL` et `MA` — un code à cinq chiffres sous
+   * un suffixe ambigu `DE` passait donc pour une preuve de l'Allemagne alors qu'il est tout aussi cohérent avec
+   * les États-Unis.
+   *
+   * Le code postal reste utilisé comme GARDE DE CONTRADICTION (voir `postalCodeContradicts`) : `90245` ne peut
+   * pas appartenir au Canada, `46204` ne peut pas appartenir à l'Inde. Réfuter est sûr ; prouver ne l'est pas.
    */
-  if (postalCodeConfirms(job.postalCode, country)) return true;
-
   return false;
 }
 
@@ -228,20 +233,19 @@ const POSTAL_FORMATS: Readonly<Record<string, RegExp>> = {
 };
 
 /**
- * Le code postal confirme-t-il le pays déclaré ?
+ * Le code postal CONTREDIT-il le pays déclaré ?
  *
- * Exige que le format soit CONNU pour ce pays et qu'il corresponde. Un format inconnu ne confirme rien : on
- * préfère refuser le balisage plutôt que de publier un pays sur une présomption.
+ * Un code postal ne prouve jamais un pays (des formats se recouvrent), mais il peut en RÉFUTER un : `90245` est
+ * un ZIP à cinq chiffres et le Canada utilise `A1A 1A1`, donc ce code ne peut pas être canadien. De même `46204`
+ * ne peut pas être indien (l'Inde utilise six chiffres).
  *
- * Le piège que cela ferme : `DE` (Allemagne) et `US` partagent le format à 5 chiffres. Un ZIP `90245` correspond
- * donc formellement aussi à l'Allemagne — raison pour laquelle ce test seul ne suffit jamais à publier un pays
- * qui serait contredit par ailleurs ; `contradictsCountry` s'exécute AVANT lui.
+ * Un format INCONNU pour ce pays ne contredit rien : on ne réfute que sur une connaissance qu'on a.
  */
-function postalCodeConfirms(postalCode: string | null | undefined, country: string): boolean {
+export function postalCodeContradicts(postalCode: string | null | undefined, country: string): boolean {
   const code = postalCode?.trim();
   if (!code) return false;
   const format = POSTAL_FORMATS[country];
-  return format ? format.test(code) : false;
+  return format ? !format.test(code) : false;
 }
 
 /**
@@ -463,6 +467,10 @@ function resolveLocation(job: JobRow): LocationOutcome {
   if (!country) return { ok: false, reason: 'PHYSICAL_LOCATION_WITHOUT_COUNTRY' };
   /** Et le libellé ne doit pas contredire ce pays — « Seattle, WA » n'est pas au Canada. */
   if (locality && contradictsCountry(locality, country)) {
+    return { ok: false, reason: 'LOCATION_COUNTRY_CONFLICT' };
+  }
+  /** Le code postal ne prouve pas le pays, mais il peut le réfuter : `90245` n'est pas un code canadien. */
+  if (postalCodeContradicts(job.postalCode, country)) {
     return { ok: false, reason: 'LOCATION_COUNTRY_CONFLICT' };
   }
   /**

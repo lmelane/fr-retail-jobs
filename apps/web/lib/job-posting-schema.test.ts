@@ -408,57 +408,70 @@ describe('preuve indépendante du pays pour un code ambigu', () => {
 });
 
 /**
- * HOTFIX TERMINAL — un code postal non vide ne prouve pas le pays (2026-09-11).
+ * H-GEO-01 — un format postal COMPATIBLE n'est pas une preuve du pays (2026-09-11).
  *
- * La condition `if (job.postalCode?.trim()) return true;` était trop permissive : un code postal est bien
- * indépendant du suffixe, mais sa simple PRÉSENCE ne dit pas qu'il appartient au pays déclaré.
+ * Deux versions successives ont été trop permissives ici, et la seconde était subtile :
+ *
+ *   1. « le code postal est non vide » → preuve. Faux : sa présence ne dit rien du pays.
+ *   2. « le format correspond au pays déclaré » → preuve. Faux aussi : la compatibilité de format ne démontre
+ *      pas que ce format identifie EXCLUSIVEMENT ce pays. `DE`, `US`, `ID`, `IL` et `MA` partagent tous le
+ *      format à cinq chiffres — un code à cinq chiffres sous un suffixe ambigu `DE` passait pour une preuve de
+ *      l'Allemagne alors qu'il est tout aussi cohérent avec les États-Unis.
+ *
+ * Le code postal est donc retiré de la preuve POSITIVE. Il reste une garde de CONTRADICTION : réfuter est sûr
+ * (« 90245 ne peut pas être canadien »), prouver ne l'est pas.
  */
-describe('le code postal ne prouve le pays que si son format le confirme', () => {
+describe('H-GEO-01 — le code postal réfute, il ne prouve pas', () => {
   const NOW = new Date('2026-09-11T12:00:00Z');
 
-  it('A. El Segundo, CA / pays CA / ZIP américain 90245 → AUCUN JobPosting', () => {
-    // 90245 est un ZIP à 5 chiffres (format US). Le Canada utilise « A1A 1A1 » : ce code ne peut pas confirmer CA.
-    const job = { ...base, city: 'El Segundo', countryCode: 'CA', location: 'El Segundo, CA',
-      postalCode: '90245' } as JobRow;
-    expect(markupIneligibility(job, NOW)).toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
-    expect(jobPostingSchema(job, NOW)).toBeNull();
-  });
-
-  it('B. Indianapolis, IN / pays IN / ZIP américain 46204 → AUCUN JobPosting', () => {
-    // L'Inde utilise 6 chiffres ; 46204 en a 5. Le code postal ne confirme donc pas IN.
-    const job = { ...base, city: 'Indianapolis', countryCode: 'IN', location: 'Indianapolis, IN',
-      postalCode: '46204' } as JobRow;
-    expect(markupIneligibility(job, NOW)).toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
-    expect(jobPostingSchema(job, NOW)).toBeNull();
-  });
-
-  it('C. Berlin / pays DE / code postal compatible avec DE → balisage autorisé', () => {
+  it('A. code ambigu DE + code postal à cinq chiffres + aucune autre preuve → AUCUN JobPosting', () => {
+    // 10115 est un code postal allemand valide. Il est AUSSI un ZIP américain valide : il ne prouve rien.
     const job = { ...base, city: 'Berlin', countryCode: 'DE', location: 'Berlin, DE',
       postalCode: '10115' } as JobRow;
-    expect(markupIneligibility(job, NOW)).toEqual([]);
-    expect((jobPostingSchema(job, NOW)!.jobLocation as any).address.postalCode).toBe('10115');
-  });
-
-  it('D. code postal INCOMPATIBLE avec le pays → aucun balisage', () => {
-    // Un code postal canadien sous un pays allemand : le format ne correspond pas, rien n'est prouvé.
-    const job = { ...base, city: 'Berlin', countryCode: 'DE', location: 'Berlin, DE',
-      postalCode: 'K1A 0B1' } as JobRow;
     expect(markupIneligibility(job, NOW)).toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
     expect(jobPostingSchema(job, NOW)).toBeNull();
   });
 
-  it('un code postal canadien VALIDE confirme bien le Canada', () => {
+  it('B. codes ambigus ID, IL et MA + code postal à cinq chiffres + aucune autre preuve → AUCUN JobPosting', () => {
+    for (const country of ['ID', 'IL', 'MA']) {
+      const job = { ...base, city: 'Ville', countryCode: country, location: `Ville, ${country}`,
+        postalCode: '12345' } as JobRow;
+      expect(markupIneligibility(job, NOW)).toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
+      expect(jobPostingSchema(job, NOW)).toBeNull();
+    }
+  });
+
+  it('C. CA avec un code postal canadien COMPATIBLE mais aucune preuve pays → AUCUN JobPosting', () => {
+    // « M5V 3L9 » est bien canadien, mais la compatibilité n'établit pas l'identité géographique.
     const job = { ...base, city: 'Toronto', countryCode: 'CA', location: 'Toronto, CA',
       postalCode: 'M5V 3L9' } as JobRow;
+    expect(markupIneligibility(job, NOW)).toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
+    expect(jobPostingSchema(job, NOW)).toBeNull();
+  });
+
+  it('D. CA avec countryIntegrity RAW_COUNTRY → balisage autorisé, code postal publié en complément', () => {
+    const job = { ...base, city: 'Toronto', countryCode: 'CA', location: 'Toronto, Canada',
+      postalCode: 'M5V 3L9', countryIntegrity: 'RAW_COUNTRY' } as JobRow & { countryIntegrity: string };
     expect(markupIneligibility(job, NOW)).toEqual([]);
+    const address = (jobPostingSchema(job, NOW)!.jobLocation as any).address;
+    expect(address.addressCountry).toBe('CA');
+    // Le code postal reste une donnée complémentaire publiée, il n'est simplement plus une preuve.
+    expect(address.postalCode).toBe('M5V 3L9');
+  });
+
+  it('E. code postal INCOMPATIBLE avec le pays déclaré → AUCUN JobPosting, même avec une preuve pays', () => {
+    // 90245 est un ZIP américain : il ne peut pas être canadien. La contradiction l'emporte sur la preuve.
+    const job = { ...base, city: 'El Segundo', countryCode: 'CA', location: 'El Segundo, Canada',
+      postalCode: '90245', countryIntegrity: 'RAW_COUNTRY' } as JobRow & { countryIntegrity: string };
+    expect(markupIneligibility(job, NOW)).toContain('LOCATION_COUNTRY_CONFLICT');
+    expect(jobPostingSchema(job, NOW)).toBeNull();
   });
 
   it('countryIntegrity suit une liste POSITIVE : un verdict inconnu ne prouve rien', () => {
-    const withUnknownVerdict = { ...base, city: 'El Segundo', countryCode: 'CA', location: 'El Segundo, CA',
+    const unknown = { ...base, city: 'El Segundo', countryCode: 'CA', location: 'El Segundo, CA',
       postalCode: null, countryIntegrity: 'SOMETHING_NEW' } as JobRow & { countryIntegrity: string };
-    expect(markupIneligibility(withUnknownVerdict, NOW)).toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
+    expect(markupIneligibility(unknown, NOW)).toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
 
-    // Seuls les verdicts de la liste positive prouvent.
     for (const verdict of ['RAW_COUNTRY_CODE', 'RAW_COUNTRY', 'VERIFIED']) {
       const job = { ...base, city: 'El Segundo', countryCode: 'CA', location: 'El Segundo, CA',
         postalCode: null, countryIntegrity: verdict } as JobRow & { countryIntegrity: string };
