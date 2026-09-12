@@ -41,16 +41,44 @@ describe('persistenceContract — l\'égalité des ensembles, par identifiant', 
   });
 
   /**
-   * Sens 2 — LE PLUS DANGEREUX : une JobSource active que la preuve n'a pas vue paraîtrait absente au refresh
-   * suivant, et serait fermée à tort. C'est exactement le défaut American Vintage, vu depuis la persistance.
+   * LA DISTINCTION QUE LA PREMIÈRE VERSION MANQUAIT, et qui décide de tout.
+   *
+   * Une JobSource active absente de la preuve peut être une VRAIE disparition — le cas normal, et ce que le
+   * refresh existe pour fermer — ou un défaut de vocabulaire. Les traiter pareil rendait tout board vivant
+   * « non conforme » et interdisait toute fermeture, à jamais.
+   *
+   * Ce qui les sépare : le sens inverse. Mesuré sur MECCA — 181 observés, 181 présents en base, 12 stockés non
+   * observés, vus pour la dernière fois du 8 au 10 septembre. De vraies disparitions.
    */
-  it('une JobSource ACTIVE absente de la preuve rompt le contrat', () => {
+  it('une JobSource absente de la preuve est une DISPARITION, pas une violation, si le vocabulaire est partagé', () => {
     const r = persistenceContract(sets({
-      canonicalObservedIds: ['a'], persistedJobSourceExternalIds: ['a', 'invisible'],
+      canonicalObservedIds: ['a'], persistedJobSourceExternalIds: ['a', 'disparue'],
+    }));
+    expect(r.satisfied).toBe(true);
+    expect(r.absenceProvable).toBe(true);
+    // Elle reste NOMMÉE : c'est une candidate à fermeture, que le refresh examinera.
+    expect(r.persistedNotObserved).toEqual(['disparue']);
+  });
+
+  it('le cas réel MECCA : 181 observés tous en base, 12 stockés non observés → contrat SATISFAIT', () => {
+    const observed = Array.from({ length: 181 }, (_, i) => `obs-${i}`);
+    const gone = Array.from({ length: 12 }, (_, i) => `partie-${i}`);
+    const r = persistenceContract(sets({
+      canonicalObservedIds: observed, persistedJobSourceExternalIds: [...observed, ...gone],
+    }));
+    expect(r.satisfied).toBe(true);
+    expect(r.persistedNotObserved).toHaveLength(12);
+  });
+
+  /** AUCUN recouvrement dans le sens observé → base : là, c'est bien le vocabulaire qui est en cause. */
+  it('aucun identifiant observé n\'existant en base : contrat ROMPU (american-vintage-dr)', () => {
+    const r = persistenceContract(sets({
+      canonicalObservedIds: ['4594925-72559621', '4589143-51323249'],
+      persistedJobSourceExternalIds: ['4459569', '4472375'],
     }));
     expect(r.satisfied).toBe(false);
-    expect(r.persistedNotObserved).toEqual(['invisible']);
     expect(r.absenceProvable).toBe(false);
+    expect(r.violations.join(' ')).toMatch(/ne produisent pas le même identifiant/);
   });
 
   /**
@@ -76,5 +104,6 @@ describe('persistenceContract — l\'égalité des ensembles, par identifiant', 
       canonicalObservedIds: ['a', ...refused], persistedJobSourceExternalIds: ['a'], writeFailedIds: refused,
     }));
     expect(r.satisfied).toBe(true);
+    expect(r.persistedNotObserved).toEqual([]);
   });
 });
