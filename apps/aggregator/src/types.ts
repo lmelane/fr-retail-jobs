@@ -118,7 +118,13 @@ export type AdapterResult = {
   declaredTotal?: number;
   truncated?: boolean;
   /** Source enumeration proof, persisted alongside the adapter payload in qualification receipts. */
-  enumeration?: { method: string; endpoint: string; pages: number; rawCount: number; termination: string; documentation?: string; issues?: string[]; scopes?: Array<{ scope: string; declaredTotal: number; uniqueIds: number; pages: number; complete: boolean }>;
+  enumeration?: { method: string; endpoint: string; pages: number; rawCount: number; termination: string; documentation?: string; issues?: string[];
+    /**
+     * Les motifs qui réfutent réellement le PARCOURS, séparés des défauts d'offre (`enumerationIssues.ts`).
+     * Sans cette séparation dans la preuve, un lecteur ne peut pas distinguer « deux descriptions manquantes »
+     * de « pagination incohérente » — or la première n'empêche pas de fermer, la seconde l'interdit.
+     */
+    blockers?: string[]; scopes?: Array<{ scope: string; declaredTotal: number; uniqueIds: number; pages: number; complete: boolean }>;
     pageEvidence?: Array<{ url: string; checkedAt: string; sha256: string; offset: number; pagination: { start: number; end: number; total: number } | null; ids: string[]; publisherCounter: string; componentCounters: string[] }> };
   /** Invalid source rows are retained for diagnosis, never silently counted as a complete feed. */
   rejectedRows?: Array<{ reason: string; raw: unknown }>;
