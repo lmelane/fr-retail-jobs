@@ -26,19 +26,70 @@ const p = new PrismaClient({ log: [] });
 try {
   const problems: string[] = [];
 
-  /** Ce que la mutation a RÉELLEMENT désactivé pendant la fenêtre du run. */
+  /**
+   * Ce que la mutation a RÉELLEMENT désactivé.
+   *
+   * `JobSource` n'a PAS de colonne `updatedAt` : la requête d'origine ne pouvait pas s'exécuter (`42703`), et
+   * l'audit mourait APRÈS la mutation — le pire moment, puisque la mutation restait alors non vérifiée.
+   *
+   * Une fenêtre de temps aurait de toute façon été le mauvais instrument : elle ramasse ce qu'un autre
+   * processus a touché dans les mêmes secondes. Le manifeste NOMME les lignes ; on interroge donc exactement
+   * celles-là, plus l'ensemble des lignes inactives des sources du périmètre — pour détecter aussi ce qui a
+   * été désactivé HORS manifeste, qui est le vrai danger.
+   */
+  const manifestIds = manifest.entries.map((e) => e.jobSourceId);
   const touched: any[] = await p.$queryRaw(Prisma.sql`
-    SELECT id, "sourceKey", "externalId", "jobId" FROM "JobSource"
-    WHERE NOT "isActive" AND "updatedAt" >= ${since}`);
+    SELECT js.id, js."sourceKey", js."externalId", js."jobId" FROM "JobSource" js
+    JOIN "Job" j ON j.id = js."jobId"
+    WHERE NOT js."isActive" AND js."sourceKey" = ANY(${manifest.allowedSourceKeys})
+      AND (
+        -- ce que CE run a fermé : la fermeture de l'offre date de la fenêtre du run…
+        j."closedAt" >= ${since}
+        -- …ou la ligne du manifeste est bien inactive, même si son offre survit par une autre source.
+        OR js.id = ANY(${manifestIds})
+      )`);
   const parity = compareTouched(manifest, touched.map((t) => t.id));
-  if (!parity.equal) {
-    if (parity.missing.length) problems.push(`${parity.missing.length} ligne(s) du manifeste NON touchée(s)`);
-    if (parity.unexpected.length) problems.push(`${parity.unexpected.length} ligne(s) touchée(s) HORS manifeste : `
+
+  /**
+   * LE MANIFESTE EST UN PLAFOND, PAS UN PLANCHER.
+   *
+   * `runRefresh` cumule trois conditions : allowlist ET manifeste ET `lastSeenAt < cutoff` (48 h). Une ligne
+   * du manifeste encore FRAÎCHE n'est donc pas désactivée — et c'est le comportement voulu : la ré-attestation
+   * récente prime, une offre re-vue il y a dix heures ne se ferme pas.
+   *
+   * Exiger que TOUTE ligne du manifeste soit touchée reviendrait à demander au refresh d'ignorer sa propre
+   * garde de fraîcheur. On sépare donc deux constats qui n'ont pas la même gravité :
+   *  · non touchée ET fraîche  → attendu, expliqué, jamais un problème ;
+   *  · non touchée ET périmée  → là, il manque une mutation, et c'est un défaut.
+   * Une ligne touchée HORS manifeste reste toujours un problème : c'est le plafond qui aurait fui.
+   */
+  const staleHours = Number(arg('stale-hours') ?? 48);
+  const cutoff = new Date(Date.now() - staleHours * 3_600_000);
+  const freshness: any[] = parity.missing.length ? await p.$queryRaw(Prisma.sql`
+    SELECT id, "sourceKey", "externalId", "lastSeenAt" FROM "JobSource" WHERE id = ANY(${parity.missing})`) : [];
+  const untouchedBecauseFresh = freshness.filter((f) => f.lastSeenAt >= cutoff);
+  const untouchedUnexplained = freshness.filter((f) => f.lastSeenAt < cutoff);
+
+  if (untouchedUnexplained.length) {
+    problems.push(`${untouchedUnexplained.length} ligne(s) du manifeste NON touchée(s) alors qu'elles sont périmées : `
+      + untouchedUnexplained.map((f) => `${f.sourceKey}/${f.externalId}`).slice(0, 5).join(', '));
+  }
+  if (parity.unexpected.length) {
+    problems.push(`${parity.unexpected.length} ligne(s) touchée(s) HORS manifeste : `
       + parity.unexpected.slice(0, 5).join(', '));
   }
 
-  /** Les conséquences réelles, offre par offre, comparées à celles annoncées. */
-  const jobIds = [...new Set(manifest.entries.map((e) => e.jobId))];
+  /**
+   * Les conséquences réelles, offre par offre, comparées à celles annoncées.
+   *
+   * Une offre dont la ligne n'a pas été désactivée (parce qu'encore fraîche) n'a évidemment pas fermé : la
+   * comparer à la conséquence prévue signalerait le même fait une seconde fois, sous un nom plus alarmant.
+   * On n'évalue donc que les offres dont TOUTES les lignes du manifeste ont effectivement été touchées.
+   */
+  const untouchedIds = new Set(freshness.map((f) => f.id));
+  const jobIds = [...new Set(manifest.entries
+    .filter((e) => !untouchedIds.has(e.jobSourceId))
+    .map((e) => e.jobId))];
   const jobs: any[] = jobIds.length ? await p.$queryRaw(Prisma.sql`
     SELECT id, "isActive", "closedAt", "withdrawnAt", "reopenedCount" FROM "Job" WHERE id = ANY(${jobIds})`) : [];
   const byJob = new Map(jobs.map((j) => [j.id, j]));
