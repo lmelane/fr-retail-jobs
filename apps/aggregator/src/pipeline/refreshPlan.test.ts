@@ -10,7 +10,7 @@ const run = (over: Partial<Parameters<typeof sourceEligibility>[0] & object> = {
 });
 const evidence = (over: Partial<Parameters<typeof sourceEligibility>[1] & object> = {}) => ({
   sourceKey: 's', runId: 'run-1', termination: 'DECLARED_TOTAL_REACHED',
-  observedIds: ['a', 'b'], idsUnavailable: false, declaresCanonical: true, ...over,
+  canonicalSet: ['a', 'b'], canonicalContractDeclared: true, canonicalContractBroken: false, ...over,
 });
 
 describe('sourceEligibility — dérivée des FAITS du dernier run', () => {
@@ -39,20 +39,28 @@ describe('sourceEligibility — dérivée des FAITS du dernier run', () => {
     expect(r.reasons.join(' ')).toMatch(/autre cycle/);
   });
 
-  /**
-   * Mesuré : `beiersdorf` n'archive AUCUN identifiant. Une absence n'y est donc pas démontrable — mais les deux
-   * causes possibles ne disent pas la même chose et le motif rendu les sépare.
-   */
-  it('refuse un adaptateur qui n\'archive pas encore d\'identifiants canoniques', () => {
-    const r = sourceEligibility(run(), evidence({ idsUnavailable: true, observedIds: [], declaresCanonical: false }));
+  /** A. Mesuré sur `beiersdorf` : le contrat n'est pas déclaré, donc aucune absence n'y est démontrable. */
+  it('A. contrat NON déclaré : source non recevable', () => {
+    const r = sourceEligibility(run(), evidence({ canonicalContractDeclared: false, canonicalSet: [] }));
     expect(r.eligible).toBe(false);
-    expect(r.reasons.join(' ')).toMatch(/pas encore d'identifiants canoniques/);
+    expect(r.reasons.join(' ')).toMatch(/ne déclare pas le contrat canonique/);
   });
 
-  it('refuse une preuve qui DÉCLARE des identifiants canoniques mais n\'en archive aucun : contrat rompu', () => {
-    const r = sourceEligibility(run(), evidence({ idsUnavailable: true, observedIds: [], declaresCanonical: true }));
+  /** C. Contrat déclaré mais rompu — l'adaptateur l'a constaté lui-même. */
+  it('C. contrat déclaré mais ROMPU : source non recevable', () => {
+    const r = sourceEligibility(run(), evidence({ canonicalContractBroken: true }));
     expect(r.eligible).toBe(false);
-    expect(r.reasons.join(' ')).toMatch(/contrat rompu/);
+    expect(r.reasons.join(' ')).toMatch(/contrat canonique déclaré mais rompu/);
+  });
+
+  /**
+   * D. LA CONTRADICTION CORRIGÉE : un board réellement vide, dont la terminaison est démontrée, est une preuve
+   * VALIDE. « La source ne publie plus rien » est même la seule preuve qui justifie de fermer tout un board.
+   * La cardinalité de l'ensemble ne décide donc jamais de la disponibilité du contrat.
+   */
+  it('D. contrat déclaré, ensemble VIDE, board réellement vide et terminaison probante : RECEVABLE', () => {
+    const r = sourceEligibility(run(), evidence({ canonicalSet: [], termination: 'FULL_XML_DOCUMENT' }));
+    expect(r).toEqual({ eligible: true, reasons: [] });
   });
 
   it('refuse une terminaison non probante', () => {
@@ -201,5 +209,47 @@ describe('identifiersComparable — ce qu\'il garantit, et ce qu\'il ne garantit
     const observed = new Set(['legacy-1', ...Array.from({ length: 99 }, (_, i) => `nouveau/${i + 2}`)]);
     // Documenté comme une LIMITE assumée de cette fonction, pas comme un comportement souhaitable.
     expect(identifiersComparable(observed, stored)).toBe(true);
+  });
+});
+
+/**
+ * E. LE PARCOURS COMPLET, de la recevabilité au plan — pas seulement `normalizeAdapterResult`.
+ *
+ * Un board réellement vide, prouvé, doit rendre ses anciennes représentations ABSENTES et non INVÉRIFIABLES :
+ * c'est précisément le cas où fermer est justifié. Traiter l'ensemble vide comme une indisponibilité aurait
+ * rendu ce board éternellement infermable — la contradiction que ce test verrouille.
+ */
+describe('E. board vide prouvé — de sourceEligibility à planRefresh', () => {
+  it('une JobSource ancienne face à un board vide PROUVÉ est ABSENT, puis candidate à fermeture', () => {
+    const facts = run();
+    const proof = evidence({ canonicalSet: [], termination: 'FULL_XML_DOCUMENT' });
+
+    // 1. la source est recevable : le contrat est déclaré, la terminaison démontrée
+    const verdict = sourceEligibility(facts, proof);
+    expect(verdict.eligible).toBe(true);
+
+    // 2. l'ancienne représentation n'est PAS dans l'ensemble observé — qui est vide, et c'est une preuve
+    const old = rep({ jobSourceId: 'JS-vieille', externalId: 'partie-depuis-longtemps' });
+    const state = representationState(old, new Set(proof.canonicalSet), verdict.eligible);
+    expect(state).toBe('ABSENT_FROM_PROVEN_ENUMERATION');
+
+    // 3. et le plan la désactive, fermant l'offre faute d'autre attestation
+    const { deactivations, jobs } = planRefresh([old], new Map([[old.jobSourceId, state]]),
+      new Map([[old.jobId, [old.jobSourceId]]]));
+    expect(deactivations.map((d) => d.jobSourceId)).toEqual(['JS-vieille']);
+    expect(jobs.get(old.jobId)).toBe('JOB_CANDIDATE_FOR_CLOSURE');
+  });
+
+  it('le même board vide, mais contrat NON déclaré : INVÉRIFIABLE et aucune mutation', () => {
+    const verdict = sourceEligibility(run(), evidence({ canonicalSet: [], canonicalContractDeclared: false }));
+    expect(verdict.eligible).toBe(false);
+
+    const old = rep({ jobSourceId: 'JS-vieille', externalId: 'inconnue' });
+    const state = representationState(old, null, verdict.eligible);
+    expect(state).toBe('UNVERIFIABLE');
+
+    const { deactivations } = planRefresh([old], new Map([[old.jobSourceId, state]]),
+      new Map([[old.jobId, [old.jobSourceId]]]));
+    expect(deactivations).toEqual([]);
   });
 });

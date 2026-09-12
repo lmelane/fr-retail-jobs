@@ -32,16 +32,30 @@ export type SourceRunFacts = {
   ranAt: Date;
 };
 
-/** La preuve d'énumération du MÊME cycle, avec les identifiants réellement observés. */
+/**
+ * La preuve d'énumération du MÊME cycle, avec les identifiants réellement observés.
+ *
+ * TROIS NOTIONS SÉPARÉES, et la cardinalité n'en décide AUCUNE. Les confondre créait une contradiction :
+ * un board réellement vide, dont la terminaison est démontrée, était traité comme un contrat rompu — alors
+ * que « la source ne publie plus rien » est une preuve parfaitement valide, et même la seule qui justifie de
+ * fermer tout un board.
+ */
 export type EnumerationEvidence = {
   sourceKey: string;
   runId: string | null;
   termination: string | null;
-  observedIds: string[];
-  /** La propriété `canonicalIds` est-elle déclarée par l'adaptateur ? Distinct de « le tableau est vide ». */
-  declaresCanonical?: boolean;
-  /** Vrai quand la preuve n'énumère aucun identifiant : on ne peut alors rien conclure d'une absence. */
-  idsUnavailable: boolean;
+  /** L'ensemble observé. Vide est une VALEUR légitime, pas une indisponibilité. */
+  canonicalSet: string[];
+  /**
+   * L'adaptateur DÉCLARE-t-il le contrat canonique sur TOUTES les pages du parcours ?
+   *
+   * Une déclaration partielle (certaines pages seulement) n'est pas un contrat : les pages muettes peuvent
+   * porter des offres qu'on prendrait alors pour disparues. Elle vaut donc contrat ROMPU, jamais contrat
+   * complet.
+   */
+  canonicalContractDeclared: boolean;
+  /** Le contrat est déclaré mais violé — l'adaptateur l'a dit lui-même (`CANONICAL_ID_CONTRACT_BROKEN`). */
+  canonicalContractBroken: boolean;
 };
 
 export type Representation = {
@@ -93,9 +107,18 @@ export function sourceEligibility(run: SourceRunFacts | undefined, evidence: Enu
     if (evidence.runId !== run.runId) reasons.push(`preuve d'énumération d'un autre cycle (${evidence.runId} ≠ ${run.runId})`);
     if (!evidence.termination) reasons.push('terminaison absente');
     else if (!PROVING_TERMINATIONS.has(evidence.termination)) reasons.push(`terminaison non probante : ${evidence.termination}`);
-    if (evidence.idsUnavailable) reasons.push(evidence.declaresCanonical === false
-      ? 'l\'adaptateur n\'archive pas encore d\'identifiants canoniques : aucune absence n\'y est démontrable'
-      : 'la preuve déclare des identifiants canoniques mais n\'en archive aucun : contrat rompu');
+    /**
+     * LA DISPONIBILITÉ DU CONTRAT NE SE LIT PAS SUR LA TAILLE DE L'ENSEMBLE.
+     *
+     * `canonicalSet` vide est une valeur légitime : un board réellement vide, dont la terminaison est
+     * démontrée, PROUVE que plus rien n'y est publié. C'est même la seule preuve qui justifie de fermer tout
+     * un board. Seule l'absence — ou la rupture — du CONTRAT rend une absence indémontrable.
+     */
+    if (!evidence.canonicalContractDeclared) {
+      reasons.push('l\'adaptateur ne déclare pas le contrat canonique sur tout le parcours : aucune absence n\'y est démontrable');
+    } else if (evidence.canonicalContractBroken) {
+      reasons.push('contrat canonique déclaré mais rompu : la preuve ne décrit pas ce que la source a écrit');
+    }
   }
   return { eligible: reasons.length === 0, reasons };
 }

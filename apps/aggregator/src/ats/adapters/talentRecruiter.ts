@@ -67,17 +67,25 @@ export async function fetchTalentRecruiterJobs(config: Record<string, unknown>):
     const ids: string[] = [];
     for (const p of data.Items) {
       if (!p || !Number.isSafeInteger(p.Id) || p.Id <= 0 || typeof p.Name !== 'string' || !p.Name.trim() || p.CustomerAlias?.toLowerCase() !== customer.toLowerCase() || !p.CustomerName || !(p.AdvertisementUrlSecure || p.AdvertisementUrl)) {
-        rejectedRows.push({reason:'INVALID_POSTING_ID_TITLE_EMPLOYER_OR_URL',raw:p ? publicPosition(p) : p}); continue;
+        // Un identifiant exploitable fait du rejet une DISPOSITION nommée, jamais un trou dans la preuve.
+        rejectedRows.push({reason:'INVALID_POSTING_ID_TITLE_EMPLOYER_OR_URL',raw:p ? publicPosition(p) : p,
+          ...(p && Number.isSafeInteger(p.Id) && p.Id > 0 ? {canonicalId:String(p.Id)} : {})}); continue;
       }
       try {
         const parsed = new URL(p.AdvertisementUrlSecure || p.AdvertisementUrl!);
         if (parsed.protocol !== 'https:' || parsed.username || parsed.password || parsed.hostname !== 'candidate.hr-manager.net' || parsed.searchParams.get('ProjectId') !== String(p.Id)) throw new Error('URL_IDENTITY_MISMATCH');
-      } catch { rejectedRows.push({reason:'POSTING_URL_IDENTITY_MISMATCH',raw:publicPosition(p)}); continue; }
+      } catch { rejectedRows.push({reason:'POSTING_URL_IDENTITY_MISMATCH',raw:publicPosition(p),canonicalId:String(p.Id)}); continue; }
       ids.push(String(p.Id));
       if (positions.has(p.Id)) issues.push(`REPEATED_POSTING_ID:${p.Id}`);
       else positions.set(p.Id, publicPosition(p));
     }
-    pageEvidence.push({url,checkedAt:new Date().toISOString(),sha256:createHash('sha256').update(JSON.stringify(data)).digest('hex'),offset:skip,ids,
+    /**
+     * `ids` EST l'identifiant canonique chez TalentRecruiter : `String(p.Id)` alimente à la fois cette preuve
+     * et `NormalizedJob.externalId`. On le déclare explicitement — sans la propriété, aucune absence n'est
+     * démontrable sur cette source. Les deux offres sans description restent dedans : elles ont été VUES, et
+     * un défaut de contenu n'est pas une disparition.
+     */
+    pageEvidence.push({url,checkedAt:new Date().toISOString(),sha256:createHash('sha256').update(JSON.stringify(data)).digest('hex'),offset:skip,ids,canonicalIds:ids,
       pagination:{start:skip+1,end:skip+data.Items.length,total:data.PositionCountSearch},publisherCounter:String(data.PositionCountCustomer),
       componentCounters:[`customer=${data.PositionCountCustomer}`,`search=${data.PositionCountSearch}`,`list=${data.PositionCountList}`,`skipped=${data.PositionCountSkipped}`]});
     if (issues.length || rejectedRows.length) break;

@@ -221,7 +221,16 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
       if (!take(job, externalId)) repeatedIds += 1;
     }
     shared.pageEvidence.push({ url: `${shared.endpoint}#offset=${offset}${suffix}`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
-      ids: pageIds, publisherCounter: page.total ? `total=${page.total}` : '', componentCounters: [`rows=${postings.length}`, `uniqueIds=${local.size}`, `repeated=${repeatedIds}`, `withoutPath=${localPathless.size}`, ...(board.partition ? [`partition=${board.scope}`] : [])] });
+      /**
+       * `ids` EST déjà l'identifiant canonique chez Workday : `externalPath.split('/').pop()` alimente à la
+       * fois `take()` — donc `NormalizedJob.externalId` — et cette preuve. On le DÉCLARE explicitement plutôt
+       * que de laisser un lecteur le supposer : sans la propriété, la source ne peut prouver aucune absence.
+       *
+       * Une ligne SANS `externalPath` n'a pas d'identifiant : elle est rejetée avec son motif, et ne peut donc
+       * pas figurer ici. Son absence est comptée dans `withoutPath`, jamais confondue avec une disparition.
+       */
+      ids: pageIds, canonicalIds: pageIds,
+      publisherCounter: page.total ? `total=${page.total}` : '', componentCounters: [`rows=${postings.length}`, `uniqueIds=${local.size}`, `repeated=${repeatedIds}`, `withoutPath=${localPathless.size}`, ...(board.partition ? [`partition=${board.scope}`] : [])] });
     if (postings.length === 0) { termination = 'EMPTY_PAGE'; break; }
     // The announced total counts ROWS (a path-less row included): once that many
     // rows are read the board is exhausted, whether or not every row was a
@@ -257,7 +266,7 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
         if (take(job, externalId)) freshInSweep += 1;
       }
       shared.pageEvidence.push({ url: `${shared.endpoint}#offset=${offset}&sweep=2${suffix}`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
-        ids: pageIds, publisherCounter: '', componentCounters: [`sweep=2`, `rows=${postings.length}`, `uniqueIds=${local.size}`, `freshInSweep=${freshInSweep}`] });
+        ids: pageIds, canonicalIds: pageIds, publisherCounter: '', componentCounters: [`sweep=2`, `rows=${postings.length}`, `uniqueIds=${local.size}`, `freshInSweep=${freshInSweep}`] });
       if (postings.length === 0) break;
     }
     if (local.size + localPathless.size >= total) { termination = 'SECOND_SWEEP_RECONCILED'; shared.issues.add('RECONCILED_BY_SECOND_SWEEP'); }

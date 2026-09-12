@@ -282,3 +282,56 @@ describe('brandFromLogoAlt — the word "logo" belongs to the image, not the emp
     expect(legal.employerEvidence).toEqual({ rawName: 'C170 Officine Panerai', path: 'detail.hiringOrganization.name', rule: 'LEADING_ENTITY_CODE_REMOVED' });
   });
 });
+
+/**
+ * LE CONTRAT CANONIQUE — MECCA et les autres tenants Workday.
+ *
+ * `ids` EST déjà l'identifiant canonique : `externalPath.split('/').pop()` alimente à la fois `take()`, donc
+ * `NormalizedJob.externalId`, et la preuve de page. La correction consiste à le DÉCLARER, jamais à le
+ * recalculer par un autre chemin — deux expressions finiraient par diverger.
+ */
+describe('fetchWorkdayJobs — identifiants canoniques dans la preuve', () => {
+  it('déclare canonicalIds, exactement les externalId écrits', async () => {
+    mockJson.mockResolvedValueOnce({
+      total: 2,
+      jobPostings: [
+        { title: 'Zone Manager', externalPath: '/job/Ponsonby/Zone-Manager_R015582' },
+        { title: 'Host', externalPath: '/job/Queenstown/Host_R014994' },
+      ],
+    } as never);
+
+    const r = await fetchWorkdayJobs({
+      tenant: 'mecca', site: 'careers', origin: 'https://mecca.wd3.myworkdayjobs.com', withDescriptions: false,
+    });
+
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(canonical).toEqual(['Zone-Manager_R015582', 'Host_R014994']);
+    expect(r.jobs.map((j) => j.externalId).sort()).toEqual([...canonical].sort());
+    expect(r.enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  /**
+   * Une ligne SANS `externalPath` n'a aucun identifiant : elle ne peut pas figurer dans la preuve canonique.
+   * Elle est rejetée avec son motif et comptée dans `withoutPath` — jamais confondue avec une disparition.
+   */
+  it('une ligne sans externalPath n\'entre pas dans canonicalIds et reste un rejet motivé', async () => {
+    mockJson.mockResolvedValueOnce({
+      total: 2,
+      jobPostings: [
+        { title: 'Vendeur', externalPath: '/job/Paris/Vendeur_R-123' },
+        { title: 'Ghost row', locationsText: 'Nowhere' },
+      ],
+    } as never);
+
+    const r = await fetchWorkdayJobs({
+      tenant: 'richemont', site: 'richemont', origin: 'https://richemont.wd3.myworkdayjobs.com',
+      withDescriptions: false,
+    });
+
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(canonical).toEqual(['Vendeur_R-123']);
+    expect(r.rejectedRows?.some((x) => x.reason === 'ROW_WITHOUT_EXTERNAL_PATH')).toBe(true);
+    // Le contrat tient : l'unique offre écrite figure bien dans la preuve.
+    expect(r.enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+});

@@ -127,10 +127,21 @@ export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult):
    *  · propriété PRÉSENTE → le contrat est vérifié systématiquement, tableau vide compris.
    */
   const evidencePages = normalized.enumeration?.pageEvidence ?? [];
-  const declaresCanonical = evidencePages.some(pe => Object.hasOwn(pe, 'canonicalIds'));
+  /**
+   * UN CONTRAT PARTIEL N'EST PAS UN CONTRAT. Si certaines pages déclarent `canonicalIds` et d'autres non, les
+   * pages muettes peuvent porter des offres qu'on prendrait ensuite pour disparues. `some()` aurait suffi à
+   * déclarer le contrat « présent » et à faire fermer ces offres-là : la règle est donc `every()`, et une
+   * déclaration partielle vaut contrat ROMPU.
+   */
+  const declaringPages = evidencePages.filter(pe => Object.hasOwn(pe, 'canonicalIds'));
+  const declaresCanonical = evidencePages.length > 0 && declaringPages.length === evidencePages.length;
+  const partialContract = declaringPages.length > 0 && declaringPages.length < evidencePages.length;
   const canonical = evidencePages.flatMap(pe => pe.canonicalIds ?? []);
   let contractBroken: string[] = [];
-  if (declaresCanonical) {
+  if (partialContract) {
+    contractBroken = [`contrat canonique PARTIEL : ${declaringPages.length} page(s) sur ${evidencePages.length} `
+      + 'le déclarent — les pages muettes rendraient leurs offres faussement absentes'];
+  } else if (declaresCanonical) {
     const contract = canonicalIdContract({
       /**
        * Ce sont les identifiants de SORTIE D'ADAPTATEUR, pas encore des `JobSource` persistées. Le contrat

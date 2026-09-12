@@ -78,3 +78,32 @@ describe('normalizeAdapterResult — présence du contrat lue sur la PROPRIÉTÉ
     expect(r.enumeration?.canonicalIdViolations?.join(' ')).toMatch(/orpheline/);
   });
 });
+
+/**
+ * B. UN CONTRAT PARTIEL N'EST PAS UN CONTRAT.
+ *
+ * Si une page déclare `canonicalIds` et l'autre non, les offres de la page muette n'apparaissent nulle part
+ * dans la preuve — et seraient prises pour disparues au refresh suivant. `some()` les aurait condamnées ;
+ * `every()` refuse le contrat.
+ */
+describe('normalizeAdapterResult — contrat PARTIEL', () => {
+  it('canonicalIds sur une page parmi deux : contrat REFUTED', () => {
+    const r = normalizeAdapterResult(result([job('a'), job('b')], [
+      page({ ids: ['a'], canonicalIds: ['a'] }),
+      page({ ids: ['b'] }),  // muette : ses offres seraient invisibles dans la preuve
+    ]));
+    expect(r.complete).toBe(false);
+    expect(r.enumerationVerdict).toBe('REFUTED');
+    expect(r.enumeration?.issues).toContain('CANONICAL_ID_CONTRACT_BROKEN');
+    expect(r.enumeration?.canonicalIdViolations?.join(' ')).toMatch(/PARTIEL : 1 page\(s\) sur 2/);
+  });
+
+  it('toutes les pages déclarent : contrat complet', () => {
+    const r = normalizeAdapterResult(result([job('a'), job('b')], [
+      page({ ids: ['a'], canonicalIds: ['a'] }),
+      page({ ids: ['b'], canonicalIds: ['b'] }),
+    ]));
+    expect(r.complete).toBe(true);
+    expect(r.enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+});
