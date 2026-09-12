@@ -1,3 +1,4 @@
+import {enumerationComplete,enumerationBlockers} from '../enumerationIssues.js';
 import { createHash } from 'node:crypto';
 import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
@@ -123,7 +124,7 @@ export async function fetchTalentRecruiterJobs(config: Record<string, unknown>):
           description:description ? 'NATIVE_ADVERTISEMENT_CONTENT' : 'NO_CONTENT_PUBLISHED'}},
     };
   })));
-  return {jobs,rejectedRows,declaredTotal:total,complete:terminated&&!issues.length&&!rejectedRows.length,
+  return {jobs,rejectedRows,declaredTotal:total,complete:enumerationComplete(terminated,issues,rejectedRows),
     enumeration:{method:'DOCUMENTED_SKIP_TAKE_AND_NATIVE_COUNTERS',endpoint:`${API}/${customer}/positionlist/json/`,documentation:DOCUMENTATION,
-      pages:pageEvidence.length,rawCount,termination:terminated?'DECLARED_TOTAL_REACHED':'INCOMPLETE',issues,pageEvidence}};
+      pages:pageEvidence.length,rawCount,termination:terminated?'DECLARED_TOTAL_REACHED':'INCOMPLETE',blockers:enumerationBlockers(issues),issues,pageEvidence}};
 }

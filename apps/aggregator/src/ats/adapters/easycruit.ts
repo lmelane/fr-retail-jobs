@@ -1,3 +1,4 @@
+import {enumerationComplete,enumerationBlockers} from '../enumerationIssues.js';
 import { createHash } from 'node:crypto';
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
 import pLimit from 'p-limit';
@@ -79,8 +80,8 @@ export async function fetchEasycruitJobs(config: Record<string, unknown>): Promi
     catch(error) {assertSourceRunning();publicPageError=String(error).slice(0,500);issues.push(`PUBLIC_PAGE_READ_FAILED:${entry.id}`);}
     return {...job,raw:{...(job.raw as object),publicPageError}};
   })));
-  return {jobs,rejectedRows,complete:!issues.length&&!rejectedRows.length,
+  return {jobs,rejectedRows,complete:enumerationComplete(true,issues,rejectedRows),
     enumeration:{method:'DOCUMENTED_COMPLETE_XML_FEED_AND_DETAILS',endpoint,documentation:DOCUMENTATION,pages:1,rawCount:vacancies.length,
-      termination:'FULL_XML_DOCUMENT',issues,pageEvidence:[{url:endpoint,checkedAt:new Date().toISOString(),sha256:createHash('sha256').update(xml).digest('hex'),offset:0,
+      termination:'FULL_XML_DOCUMENT',blockers:enumerationBlockers(issues),issues,pageEvidence:[{url:endpoint,checkedAt:new Date().toISOString(),sha256:createHash('sha256').update(xml).digest('hex'),offset:0,
         ids:[...seen],pagination:null,publisherCounter:'NOT_PUBLISHED',componentCounters:[`xmlVacancies=${vacancies.length}`,`uniqueIds=${seen.size}`]}]}};
 }
