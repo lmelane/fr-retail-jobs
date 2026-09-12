@@ -64,3 +64,4 @@ Capture*.png
 !audits/legacy-aggregator-data/*.csv
 !audits/legacy-aggregator-data/**/*.html
 !audits/legacy-aggregator-data/**/*.xml
+__pycache__/
