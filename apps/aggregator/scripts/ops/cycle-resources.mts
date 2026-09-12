@@ -34,11 +34,18 @@ if (!run) {
 
 const wallMs = run.finishedAt && run.startedAt ? run.finishedAt.getTime() - run.startedAt.getTime() : null;
 
-/** Les bornes PAR SOURCE : début et fin lus sur les événements, donc le temps réellement passé par source. */
+/**
+ * Les bornes PAR SOURCE : début et fin lus sur les événements, donc le temps réellement passé par source.
+ *
+ * Les noms d'événements sont ceux que le pipeline émet RÉELLEMENT, relevés sur un run : `source_sync_started`
+ * et `source_sync_completed`, en tirets bas. La première version de ce programme interrogeait
+ * `source.started` / `source.completed` — des noms plausibles qui n'existent pas — et rendait donc des durées
+ * `null` sans jamais se plaindre. Une requête qui ne ramène rien n'est pas une mesure de zéro.
+ */
 const perSource: any[] = await prisma.$queryRaw(Prisma.sql`
   SELECT "sourceKey",
-         min(at) FILTER (WHERE event = 'source.started')   AS started,
-         max(at) FILTER (WHERE event IN ('source.completed','source.failed','source.timed_out','source.challenged')) AS ended,
+         min(at) FILTER (WHERE event IN ('source_sync_started','source.started')) AS started,
+         max(at) FILTER (WHERE event IN ('source_sync_completed','source.completed','source.failed','source.timed_out','source.challenged')) AS ended,
          count(*) FILTER (WHERE event = 'source.rows_rejected')   AS rejected_events,
          count(*) FILTER (WHERE event = 'job.write_failed')       AS write_failed,
          count(*) FILTER (WHERE event = 'job.publication_held')   AS held,
@@ -76,6 +83,16 @@ const sources = perSource.map((s) => {
 
 const totalFetched = sources.reduce((a, s) => a + (s.fetched ?? 0), 0);
 
+/**
+ * Une mesure absente doit se VOIR. Si aucune source n'a de bornes alors que le run en a traité, la requête
+ * ne correspond plus aux événements émis — c'est le défaut qui a produit des `null` silencieux — et il faut
+ * le dire au lieu de rendre un rapport d'apparence complète.
+ */
+const measured = sources.filter((s) => s.durationMs != null).length;
+const measurementWarning = sources.length > 0 && measured === 0
+  ? 'AUCUNE borne par source trouvée : les noms d\'événements interrogés ne correspondent pas à ceux émis'
+  : null;
+
 console.log(JSON.stringify({
   run: {
     id: run.id, command: run.command, status: run.status, revision: run.revision,
@@ -95,6 +112,7 @@ console.log(JSON.stringify({
     memory: 'non enregistré par le pipeline ; le lire ici décrirait cet hôte, pas le conteneur du run',
     dbConnections: 'idem — la mesure doit venir du processus réel (leçon D32)',
   },
+  measurementWarning,
   metrics: run.metrics ?? null,
 }, null, 1));
 
