@@ -1,0 +1,108 @@
+{
+  "at": "2026-09-12T20:27:14.782Z",
+  "eligibleCycle1": [
+    "mecca",
+    "ganni-talentrecruiter",
+    "american-vintage-dr"
+  ],
+  "eligibleCycle2": [
+    "mecca",
+    "ganni-talentrecruiter",
+    "american-vintage-dr"
+  ],
+  "eligibleBoth": [
+    "mecca",
+    "ganni-talentrecruiter",
+    "american-vintage-dr"
+  ],
+  "states": {
+    "cycle1": {
+      "PRESENT_AND_REATTESTED": 227,
+      "ABSENT_FROM_PROVEN_ENUMERATION": 21
+    },
+    "cycle2": {
+      "PRESENT_AND_REATTESTED": 227,
+      "ABSENT_FROM_PROVEN_ENUMERATION": 8
+    }
+  },
+  "seen": {
+    "heldCycle1": 0,
+    "heldCycle2": 0,
+    "writeFailedCycle1": 0,
+    "writeFailedCycle2": 0,
+    "unverifiableCycle1": {},
+    "unverifiableCycle2": {}
+  },
+  "absences": {
+    "cycle1Only": 13,
+    "cycle2Only": 0,
+    "confirmedBoth": 8,
+    "confirmedBySource": {
+      "american-vintage-dr": 6,
+      "ganni-talentrecruiter": 2
+    },
+    "reappearedSample": [
+      "ganni-talentrecruiter/144686",
+      "mecca/Distribution-Team-Leader---Day-Shift_R014990",
+      "mecca/Maxima-Chermside---Zone-Manager_R015163-1",
+      "mecca/MECCA-Albury---Skin-Specialist_R015189",
+      "mecca/MECCA-Bayfair---Host_R015287",
+      "mecca/MECCA-Bourke-Street---Flagship-Assistant-Manager_R015545-1",
+      "mecca/MECCA-Burwood---Zone-Manager_R015094",
+      "mecca/MECCA-Camberwell---Store-Operations-Manager_R015562",
+      "mecca/MECCA-Castle-Towers---Zone-Manager_R015214",
+      "mecca/MECCA-Kotara---Zone-Manager_R014823"
+    ],
+    "newlyAbsentSample": []
+  },
+  "closureCandidates": [
+    {
+      "sourceKey": "american-vintage-dr",
+      "externalId": "4516931",
+      "jobId": "cmtvk3n9b0147ph01nyiqujae",
+      "consequence": "JOB_CANDIDATE_FOR_CLOSURE"
+    },
+    {
+      "sourceKey": "american-vintage-dr",
+      "externalId": "4522689",
+      "jobId": "cmtvk3n6o0139ph01r68hyh70",
+      "consequence": "JOB_CANDIDATE_FOR_CLOSURE"
+    },
+    {
+      "sourceKey": "american-vintage-dr",
+      "externalId": "4553457",
+      "jobId": "cmtk1xck1015nnv2bjq48k8l4",
+      "consequence": "JOB_KEPT_BY_ANOTHER_SOURCE"
+    },
+    {
+      "sourceKey": "american-vintage-dr",
+      "externalId": "4555473",
+      "jobId": "cmtvk3mzy0103ph01jz7ixg56",
+      "consequence": "JOB_CANDIDATE_FOR_CLOSURE"
+    },
+    {
+      "sourceKey": "american-vintage-dr",
+      "externalId": "4573163",
+      "jobId": "cmtk1xcdx014nnv2bd3qy6g7h",
+      "consequence": "JOB_KEPT_BY_ANOTHER_SOURCE"
+    },
+    {
+      "sourceKey": "american-vintage-dr",
+      "externalId": "4587897",
+      "jobId": "cmtt92wnf3u8emy012ch53swh",
+      "consequence": "JOB_KEPT_BY_ANOTHER_SOURCE"
+    },
+    {
+      "sourceKey": "ganni-talentrecruiter",
+      "externalId": "144681",
+      "jobId": "cmtu9r2st0023q601erl8oi1h",
+      "consequence": "JOB_CANDIDATE_FOR_CLOSURE"
+    },
+    {
+      "sourceKey": "ganni-talentrecruiter",
+      "externalId": "144688",
+      "jobId": "cmtu9r2ts0029q601ryewxx53",
+      "consequence": "JOB_CANDIDATE_FOR_CLOSURE"
+    }
+  ]
+}
