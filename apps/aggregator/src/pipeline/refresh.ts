@@ -54,6 +54,14 @@ export type RefreshOptions = {
    * aucune autre source ne peut fermer quoi que ce soit, même active, même digne d'attester.
    */
   onlyKeys?: string[];
+  /**
+   * Le MANIFESTE FIGÉ : la liste exacte des `JobSource` que cette mutation a le droit de désactiver.
+   *
+   * Quand il est fourni, le refresh ne CHERCHE plus les lignes périmées — il applique celles qui ont été
+   * revues. Sans cela, la prévisualisation et l'exécution feraient deux calculs indépendants, et l'état peut
+   * bouger entre les deux : la mutation toucherait des offres que personne n'a examinées.
+   */
+  manifestJobSourceIds?: string[];
 };
 
 /**
@@ -129,6 +137,13 @@ export async function runRefresh(
    * absente de la liste ne peut être ni désactivée ni fermée, quel que soit son statut ou son ancienneté.
    */
   const allowed = options.onlyKeys?.length ? { sourceKey: { in: options.onlyKeys } } : {};
+  /**
+   * Le manifeste borne les lignes par IDENTIFIANT, en plus de l'allowlist par source. Les deux se cumulent :
+   * une ligne doit appartenir à une source autorisée ET figurer au manifeste. Un manifeste VIDE ne signifie
+   * pas « aucune borne » — il signifie « rien à désactiver », et `in: []` le traduit exactement.
+   */
+  const manifested = options.manifestJobSourceIds !== undefined
+    ? { id: { in: options.manifestJobSourceIds } } : {};
 
   // Which source listings are stale AND belong to a source that is not broken.
   // A broken source's listings are left active so its offers are not closed.
@@ -137,6 +152,7 @@ export async function runRefresh(
       isActive: true,
       lastSeenAt: { lt: cutoff },
       ...allowed,
+      ...manifested,
       ...(skipped.size ? { sourceKey: { notIn: skippedBrokenSources } } : {}),
     },
     select: { id: true, jobId: true },
@@ -211,9 +227,11 @@ export async function runRefresh(
         // `allowed` est répété ICI parce que c'est cette requête qui ÉCRIT : la planification plus haut ne
         // fait que choisir les candidats. Le filtre posé à un seul des deux endroits laisserait le périmètre
         // fuir au moment de la mutation — l'endroit précis où il compte.
+        // `manifested` est répété ICI comme `allowed` : c'est cette requête qui ÉCRIT. Posé au seul endroit
+        // de la planification, le périmètre fuirait au moment de la mutation.
         const deactivated = await tx.jobSource.updateMany({
           where: { jobId: { in: currentIds }, isActive: true, lastSeenAt: { lt: cutoff },
-            ...allowed,
+            ...allowed, ...manifested,
             ...(skipped.size ? { sourceKey: { notIn: skippedBrokenSources } } : {}) },
           data: { isActive: false },
         });
