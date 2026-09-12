@@ -24,6 +24,7 @@ import hashlib
 import json
 import os
 import pathlib
+import shutil
 import subprocess
 import sys
 import time
@@ -60,6 +61,26 @@ def sh(cmd, **kw):
 
 def fail(message):
     problems.append(message)
+
+
+# Il faut de la place pour DEUX choses, pas une : le dump (~500 Mo compressé) et la base clone restaurée
+# (~2,5 Go décompressés, dans le volume Docker, sur le même disque). Le plancher couvre les deux, avec marge.
+MIN_FREE_BYTES = 8 * 1024**3
+
+
+def disk_refusal(free_bytes: int, required: int = MIN_FREE_BYTES) -> str | None:
+    """Le motif de refus si la place manque, `None` si elle suffit.
+
+    Fonction PURE, donc réellement testable : le défaut du 2026-09-12 (dump tronqué, `pg_restore` cassé sur
+    « unexpected block ID (0) ») n'a été vu qu'en production faute d'un contrôle exécutable hors ligne.
+    """
+    if free_bytes >= required:
+        return None
+    return (
+        f'espace disque insuffisant : {free_bytes / 1024**3:.1f} Gio libres, '
+        f'{required / 1024**3:.0f} Gio requis (dump + clone restauré). '
+        'Purger les dumps périmés de backups/ et les bases catwalks_p7_preflight_* avant de relancer.'
+    )
 
 
 # ── 1. le commit à exécuter, figé ────────────────────────────────────────────────────────────────────────
@@ -183,6 +204,17 @@ if not dump.is_absolute():
     dump = ROOT / dump
 clone_db = arg('clone-db', f'catwalks_p7_preflight_{stamp.lower().replace("t", "_").replace("z", "")}')
 
+# ── 5a. l'espace disque, AVANT d'écrire quoi que ce soit ─────────────────────────────────────────────────
+#
+# Une sauvegarde tronquée n'est pas une sauvegarde : le 2026-09-12, le disque plein a produit un dump
+# incomplet, `pg_restore` a échoué sur « unexpected block ID (0) », et le préflight n'a refusé qu'APRÈS avoir
+# interrogé la production et écrit 146 Mo inutilisables. La place se vérifie donc AVANT la première écriture.
+free_bytes = shutil.disk_usage(ROOT).free
+facts['diskFree'] = {'bytes': free_bytes, 'required': MIN_FREE_BYTES}
+refusal = disk_refusal(free_bytes)
+if refusal:
+    fail(refusal)
+
 if not flag('skip-backup'):
     script = ROOT / 'backups' / 'lot4-20260909' / f'backup-p7-run-{stamp}.py'
     script.write_text(
@@ -248,6 +280,16 @@ else:
                         fail(f'restauration ≠ production sur {k} : {restored.get(k)} vs {produced.get(k)}')
                 if restored.get('activeWithClosedAt', 1) != 0:
                     fail('violation : offre active portant closedAt dans la sauvegarde')
+
+                # La base clone a fini son office : elle a PROUVÉ que le dump se restaure. La garder ne prouve
+                # rien de plus et coûte ~2,5 Go par run — c'est cette accumulation (25 bases, 48 Gio) qui a
+                # rempli le disque et fait échouer un rejeu. On ne la supprime QUE si la comparaison est
+                # passée : un clone dont la restauration a échoué doit rester inspectable.
+                if not problems:
+                    sh(['docker', 'exec', CLONE_CONTAINER, 'rm', '-f', f'/tmp/{clone_db}.dump'])
+                    d = sh(['docker', 'exec', CLONE_CONTAINER, 'psql', '-U', CLONE_USER, '-d', 'postgres',
+                            '-c', f'DROP DATABASE IF EXISTS {clone_db};'])
+                    facts['restore']['cloneDropped'] = d.returncode == 0
 
 # ── 8. les canaux d'alerte, TESTÉS ───────────────────────────────────────────────────────────────────────
 channels = {}

@@ -25,7 +25,7 @@ refresh ne touche que ce qui a été revu.
 
 | | |
 |---|---|
-| [`ingest-preflight.py`](ingest-preflight.py) | Impose les étapes 1 à 8 et **refuse en exit 1** : commit figé, arbre propre, aucun run en vol, les **deux** services vérifiés séparément (`DEPLOYED_AT_COMMIT` / `SAME_CODE_FOR_THIS_SERVICE` démontré par le diff / `STALE_CODE`), allowlist exacte, sauvegarde **restaurée** et comparée sur six grandeurs, canaux d'alerte **testés par émission réelle**. |
+| [`ingest-preflight.py`](ingest-preflight.py) | Impose les étapes 1 à 8 et **refuse en exit 1** : commit figé, arbre propre, aucun run en vol, les **deux** services vérifiés séparément (`DEPLOYED_AT_COMMIT` / `SAME_CODE_FOR_THIS_SERVICE` démontré par le diff / `STALE_CODE`), allowlist exacte, sauvegarde **restaurée** et comparée sur six grandeurs, canaux d'alerte **testés par émission réelle**. Refuse aussi **avant la première écriture** si le disque n'a pas 8 Gio libres — le dump *et* le clone restauré tiennent sur le même disque — et **rend** la base clone une fois qu'elle a prouvé la restauration (jamais si la comparaison a échoué : ce clone-là doit rester inspectable). |
 | [`bounded-ingest.sh`](bounded-ingest.sh) | Une ingestion bornée, sans aucun tube — le code de sortie d'un tube est celui de sa dernière commande. Pose la commande bornée, attend le SUCCESS sur CE commit, exécute, attend un statut **terminal** (restaurer plus tôt tuerait le run), restaure, contrôle les variables et les crons. |
 | [`bounded-command.py`](bounded-command.py), [`bounded-refresh-command.py`](bounded-refresh-command.py) | Les commandes de démarrage, échappées par `shlex` — assemblées en shell elles se cassent en silence, et une commande malformée qui se déploie remplace la commande normale par quelque chose qui échoue. Le refresh y embarque le **manifeste en clair**. |
 | [`cycle-contracts.mts`](cycle-contracts.mts) | Les deux contrats d'un cycle, lus sur la base : `canonicalObservedIds = persistés ∪ retenus ∪ échecs ∪ rejets ∪ erreurs`. Tout est corrélé au **même `runId`** — une retenue historique n'est pas une retenue du cycle. |
@@ -44,6 +44,17 @@ Elle exige que l'identifiant ne figure pas dans l'ensemble **réellement observ�
 `pageEvidence[].canonicalIds` et corrélé au run par `runId`. Et cet ensemble doit parler le même langage que la
 base : mesuré le 2026-09-12, un adaptateur archivait des *diffusions* là où la base stocke des *annonces* —
 recouvrement nul, 37 offres vivantes déclarées absentes.
+
+### Ce que le protocole consomme, et pourquoi il doit le rendre
+
+Chaque préflight écrit un dump (~500 Mo) **et** restaure une base clone (~2,5 Go) — sur le même disque. Rien ne
+les rendait : le 2026-09-12, 73 dumps (32 Gio) et 25 bases clones (48 Gio) avaient laissé **146 Mo** libres, le
+dump est sorti **tronqué**, et `pg_restore` a rendu `found unexpected block ID (0)`. Le préflight a refusé — la
+garde a tenu — mais après avoir interrogé la production pour rien.
+
+Deux conséquences, toutes deux dans le code : la place est exigée **avant** la première écriture, et le clone
+est **rendu** dès qu'il a prouvé ce qu'on lui demandait. Une sauvegarde tronquée n'est pas une sauvegarde, et
+on ne l'apprend qu'à la restauration.
 
 
 ## Integrating a source, and proving it
