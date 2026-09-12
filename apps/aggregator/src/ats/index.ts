@@ -1,3 +1,4 @@
+import { canonicalIdContract } from './canonicalIdContract.js';
 import { fetchJobaffinityWordpressJobs } from './adapters/jobaffinityWordpress.js';
 import { fetchFlatchrJobs } from './adapters/flatchr.js';
 import type { AtsType } from '@prisma/client';
@@ -98,12 +99,82 @@ export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult):
     unreadableRows,
   });
 
+  /**
+   * LE CONTRAT DES IDENTIFIANTS CANONIQUES, vérifié ici pour TOUS les adaptateurs qui archivent des
+   * identifiants canoniques.
+   *
+   * Une offre écrite qui ne figure pas dans la preuve signifie que les deux chemins ne produisent pas le même
+   * identifiant : elle paraîtrait absente au refresh suivant. Mesuré le 2026-09-12 sur
+   * `american-vintage-dr` — 37 offres vivantes, aucune dans la preuve, parce que celle-ci énumérait des
+   * diffusions et la base des annonces. La conséquence doit être la PERTE de la preuve d'exhaustivité, jamais
+   * une fausse absence : une source qui ne sait pas nommer ce qu'elle a vu ne peut rien faire disparaître.
+   *
+   * Un adaptateur qui n'archive PAS de `canonicalIds` n'est pas jugé ici : il ne prouvera simplement aucune
+   * absence, la prévisualisation le classant `UNVERIFIABLE` (cas beiersdorf).
+   */
+  /**
+   * LA PRÉSENCE DU CONTRAT SE LIT SUR LA PROPRIÉTÉ, JAMAIS SUR SON CONTENU.
+   *
+   * Déduire le contrat de `canonical.length > 0` créait précisément le trou que le contrat doit couvrir : un
+   * adaptateur qui DÉCLARE `canonicalIds` mais rend un tableau vide alors qu'il a écrit des offres échappait à
+   * toute vérification, et sa preuve restait « complète ». Un tableau vide n'est pas une absence de contrat :
+   * c'est un contrat ROMPU.
+   *
+   * Deux situations distinctes, deux traitements :
+   *  · propriété ABSENTE de tous les `pageEvidence` → l'adaptateur n'implémente pas encore le contrat. On
+   *    n'invente aucune preuve : la source ne pourra prouver aucune absence (`UNVERIFIABLE` à la
+   *    prévisualisation), mais son exhaustivité de PARCOURS n'est pas mise en cause pour autant ;
+   *  · propriété PRÉSENTE → le contrat est vérifié systématiquement, tableau vide compris.
+   */
+  const evidencePages = normalized.enumeration?.pageEvidence ?? [];
+  /**
+   * UN CONTRAT PARTIEL N'EST PAS UN CONTRAT. Si certaines pages déclarent `canonicalIds` et d'autres non, les
+   * pages muettes peuvent porter des offres qu'on prendrait ensuite pour disparues. `some()` aurait suffi à
+   * déclarer le contrat « présent » et à faire fermer ces offres-là : la règle est donc `every()`, et une
+   * déclaration partielle vaut contrat ROMPU.
+   */
+  const declaringPages = evidencePages.filter(pe => Object.hasOwn(pe, 'canonicalIds'));
+  const declaresCanonical = evidencePages.length > 0 && declaringPages.length === evidencePages.length;
+  const partialContract = declaringPages.length > 0 && declaringPages.length < evidencePages.length;
+  const canonical = evidencePages.flatMap(pe => pe.canonicalIds ?? []);
+  let contractBroken: string[] = [];
+  if (partialContract) {
+    contractBroken = [`contrat canonique PARTIEL : ${declaringPages.length} page(s) sur ${evidencePages.length} `
+      + 'le déclarent — les pages muettes rendraient leurs offres faussement absentes'];
+  } else if (declaresCanonical) {
+    const contract = canonicalIdContract({
+      /**
+       * Ce sont les identifiants de SORTIE D'ADAPTATEUR, pas encore des `JobSource` persistées. Le contrat
+       * démontre ici « sortie de l'adaptateur ↔ preuve d'énumération » ; la correspondance avec ce qui est
+       * réellement écrit en base relève du contrat de PERSISTANCE, construit séparément.
+       */
+      candidateExternalIds: normalized.jobs.map(job => job.externalId),
+      canonicalObservedIds: canonical,
+      // Les offres retenues ont bien été VUES : leur disposition est nommée par le motif de retenue.
+      heldIds: normalized.jobs.filter(job => job.publicationHold).map(job => job.externalId),
+      writeFailedIds: [],
+      rejectedIds: normalized.rejectedRows?.flatMap(r => {
+        // Un rejet dont l'identifiant canonique est connu est une DISPOSITION, pas un trou.
+        const id = (r as { canonicalId?: string }).canonicalId;
+        return id ? [id] : [];
+      }) ?? [],
+      collectionErrorIds: [],
+    });
+    if (!contract.satisfied) contractBroken = contract.violations;
+  }
+
+  const idsCoherent = unique === normalized.jobs.length && contractBroken.length === 0;
+
   return {
     ...normalized,
     truncated,
-    // Un doublon d'identifiant dans le lot signifie qu'on ne sait pas ce qu'on a lu : la preuve tombe.
-    complete: unique === normalized.jobs.length ? verdictToComplete(verdict) : false,
-    enumerationVerdict: unique === normalized.jobs.length ? verdict : 'REFUTED',
+    // Un doublon d'identifiant dans le lot, ou une offre écrite absente de la preuve, signifie qu'on ne sait pas
+    // ce qu'on a lu : la preuve tombe.
+    complete: idsCoherent ? verdictToComplete(verdict) : false,
+    enumerationVerdict: idsCoherent ? verdict : 'REFUTED',
+    ...(contractBroken.length ? { enumeration: { ...normalized.enumeration!,
+      issues: [...(normalized.enumeration?.issues ?? []), 'CANONICAL_ID_CONTRACT_BROKEN'],
+      canonicalIdViolations: contractBroken.slice(0, 20) } } : {}),
   };
 }
 

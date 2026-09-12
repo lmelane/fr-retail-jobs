@@ -67,6 +67,18 @@ function isLocationSpecific(item: DrItem): boolean {
   return typeof item.url === 'string' && /^\d+\/\d+-/.test(item.url);
 }
 
+/**
+ * L'identifiant CANONIQUE d'une annonce — la seule expression, partagée par l'offre écrite et par la preuve.
+ *
+ * Dupliquer ce calcul ailleurs suffirait à les faire diverger en silence : la preuve énumérerait un vocabulaire
+ * et la base un autre, et une absence deviendrait indémontrable (ou, pire, faussement démontrée).
+ */
+export function announcementExternalId(diffusions: DrItem[]): string | null {
+  const primary = diffusions.find(isLocationSpecific) ?? diffusions[0];
+  if (!primary?.title) return null;
+  return String(primary.job_ad_id ?? primary.id ?? primary.url ?? primary.title);
+}
+
 /** One job per announcement: the most specific diffusion is displayed, all are kept. */
 export function normalizeAnnouncement(diffusions: DrItem[], domainName: string, locale: string): NormalizedJob | null {
   const primary = diffusions.find(isLocationSpecific) ?? diffusions[0];
@@ -75,7 +87,7 @@ export function normalizeAnnouncement(diffusions: DrItem[], domainName: string, 
   const path = primary.url ? `/${locale.slice(0, 2)}/annonce/${primary.url}` : '';
   const locations = [...new Set(diffusions.map((d) => d.location).filter((x): x is string => !!x))];
   return {
-    externalId: String(id ?? primary.url ?? primary.title),
+    externalId: announcementExternalId(diffusions)!,
     title: primary.title,
     location: primary.location,
     // The API returns no country field; France detection falls back to the city,
@@ -177,10 +189,25 @@ async function fetchAllPages(domainName: string, locale: string): Promise<Adapte
       else if (declaredTotal !== response.count) issues.add('SOURCE_TOTAL_CHANGED');
     }
     const ids: string[] = [];
+    const pageAnnouncements: string[] = [];
     let fresh = 0;
     for (const item of items) {
       const announcement = item.job_ad_id ?? item.id;
-      if (!item.title || announcement === undefined || announcement === null) { rejectedRows.push({ reason: 'MISSING_TITLE_OR_ID', raw: item }); continue; }
+      /**
+       * UNE LIGNE OBSERVÉE AVEC UN IDENTIFIANT EXPLOITABLE ENTRE DANS LA PREUVE, même si elle ne produit pas
+       * d'offre. Auparavant un rejet (titre absent) sortait de la boucle AVANT d'être enregistré : la ligne
+       * avait bien été vue, son identifiant existait, et la preuve l'ignorait — donc l'offre correspondante,
+       * si elle existait en base, aurait paru absente.
+       *
+       * Le rejet reste un rejet : son identifiant est porté par `canonicalId`, ce qui en fait une DISPOSITION
+       * nommée pour le contrat, avec son motif exact conservé.
+       */
+      if (announcement !== undefined && announcement !== null) pageAnnouncements.push(String(announcement));
+      if (!item.title || announcement === undefined || announcement === null) {
+        rejectedRows.push({ reason: 'MISSING_TITLE_OR_ID', raw: item,
+          ...(announcement !== undefined && announcement !== null ? { canonicalId: String(announcement) } : {}) });
+        continue;
+      }
       const diffusion = String(item.id ?? `${announcement}:${item.url ?? ''}`);
       ids.push(diffusion);
       if (diffusionIds.has(diffusion)) { issues.add('REPEATED_DIFFUSION_ACROSS_PAGES'); continue; }
@@ -188,9 +215,14 @@ async function fetchAllPages(domainName: string, locale: string): Promise<Adapte
       const key = String(announcement);
       byAnnouncement.set(key, [...(byAnnouncement.get(key) ?? []), item]);
     }
+    /**
+     * `ids` porte les DIFFUSIONS, l'unité que le publieur pagine. `canonicalIds` porte les ANNONCES, l'unité
+     * que la base stocke — et c'est le seul ensemble auquel une absence puisse être comparée.
+     */
     pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: (page - 1) * PAGE_SIZE,
       pagination: declaredTotal === undefined ? null : { start: (page - 1) * PAGE_SIZE, end: (page - 1) * PAGE_SIZE + items.length, total: declaredTotal },
-      ids, publisherCounter: typeof response.count === 'number' ? String(response.count) : '', componentCounters: [`diffusions=${diffusionIds.size}`, `announcements=${byAnnouncement.size}`] });
+      ids, canonicalIds: [...new Set(pageAnnouncements)],
+      publisherCounter: typeof response.count === 'number' ? String(response.count) : '', componentCounters: [`diffusions=${diffusionIds.size}`, `announcements=${byAnnouncement.size}`] });
     if (items.length < PAGE_SIZE) { termination = 'SHORT_PAGE'; break; }
     if (fresh === 0) { termination = 'REPEATED_PAGE'; break; }
     if (declaredTotal !== undefined && diffusionIds.size >= declaredTotal) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }

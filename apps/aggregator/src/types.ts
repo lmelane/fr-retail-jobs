@@ -124,10 +124,48 @@ export type AdapterResult = {
      * Sans cette séparation dans la preuve, un lecteur ne peut pas distinguer « deux descriptions manquantes »
      * de « pagination incohérente » — or la première n'empêche pas de fermer, la seconde l'interdit.
      */
-    blockers?: string[]; scopes?: Array<{ scope: string; declaredTotal: number; uniqueIds: number; pages: number; complete: boolean }>;
-    pageEvidence?: Array<{ url: string; checkedAt: string; sha256: string; offset: number; pagination: { start: number; end: number; total: number } | null; ids: string[]; publisherCounter: string; componentCounters: string[] }> };
+    blockers?: string[];
+    /** Les offres écrites qu'aucun identifiant canonique observé ne couvre : le contrat est rompu, la preuve tombe. */
+    canonicalIdViolations?: string[];
+    /**
+     * DEUX PROPRIÉTÉS DISTINCTES, et la première peut être vraie quand la seconde est fausse.
+     *
+     * `canonicalAbsenceProofUsable = false` dit : « j'ai peut-être lu tout le listing, mais certaines lignes
+     * observées n'ont AUCUN identifiant exploitable — je ne peux donc pas affirmer qu'un identifiant
+     * historique a disparu, il pourrait être l'une d'elles ». Cas mesuré : une ligne Workday sans
+     * `externalPath`. Les offres identifiables du run sont ingérées normalement ; seule l'attestation
+     * d'absence est refusée pour ce cycle.
+     */
+    canonicalAbsenceProofUsable?: boolean;
+    /** Le parcours du listing a-t-il été mené à son terme ? Indépendant de l'exploitabilité ci-dessus. */
+    enumerationTraversalComplete?: boolean; scopes?: Array<{ scope: string; declaredTotal: number; uniqueIds: number; pages: number; complete: boolean }>;
+    pageEvidence?: Array<{ url: string; checkedAt: string; sha256: string; offset: number; pagination: { start: number; end: number; total: number } | null;
+      /**
+       * Les identifiants tels que la SOURCE les pagine — sa propre unité de compte. Chez DigitalRecruiters
+       * c'est la « diffusion » (une par lieu) là où une offre est une « annonce » : les deux sont légitimes et
+       * l'adaptateur les déclare tous deux dans `scopes`.
+       */
+      ids: string[];
+      /**
+       * Les identifiants CANONIQUES, produits par le même chemin que `CandidateJob.externalId` et donc que
+       * `JobSource.externalId`. C'est le SEUL ensemble comparable à la base, et donc le seul par lequel une
+       * absence puisse être prouvée.
+       *
+       * Pourquoi le champ existe séparément : `ids` ne se compare pas toujours à la base. Mesuré le
+       * 2026-09-12 — la preuve de `american-vintage-dr` énumérait 31 diffusions (`4594925-72559621`) quand la
+       * base stocke 37 annonces (`4459569`) : recouvrement NUL, et 37 offres vivantes déclarées absentes.
+       * Absent = la source ne permet pas de prouver une absence (`UNVERIFIABLE`), jamais « rien n'a été vu ».
+       */
+      canonicalIds?: string[];
+      publisherCounter: string; componentCounters: string[] }> };
   /** Invalid source rows are retained for diagnosis, never silently counted as a complete feed. */
-  rejectedRows?: Array<{ reason: string; raw: unknown }>;
+  rejectedRows?: Array<{ reason: string; raw: unknown;
+    /**
+     * L'identifiant CANONIQUE de la ligne rejetée, quand il est exploitable. Une ligne vue puis rejetée est une
+     * DISPOSITION nommée pour le contrat des identifiants — sans lui, elle manquerait à la preuve et l'offre
+     * correspondante paraîtrait absente.
+     */
+    canonicalId?: string }>;
   /**
    * Explicit proof of enumeration completion; absence is unknown, not complete.
    *

@@ -68,3 +68,44 @@ describe('DigitalRecruiters — annonces et diffusions', () => {
     expect(j.location).toBe('Japan'); expect(j.externalId).toBe('5'); expect((j.raw as any).locations).toEqual(['Japan']);
   });
 });
+
+/**
+ * LA PREUVE CANONIQUE — le défaut mesuré le 2026-09-12 sur `american-vintage-dr`.
+ *
+ * La preuve n'archivait que les DIFFUSIONS (`4594925-72559621`) là où la base stocke les ANNONCES
+ * (`4459569`) : recouvrement NUL, et 37 offres vivantes déclarées absentes au refresh. Les deux unités sont
+ * légitimes — c'est de ne pas archiver la seconde qui était le défaut.
+ */
+describe('DigitalRecruiters — identifiants canoniques dans la preuve', () => {
+  it('archive les ANNONCES à côté des diffusions, et elles correspondent aux externalId écrits', async () => {
+    const rows = [item('3827169', '62445899', 'Japan', false), item('3827169', '100956485', 'Tokyo'), item('2935039', '1', 'Paris')];
+    vi.mocked(fetchJson).mockResolvedValueOnce(page(3, rows));
+    const r = await fetchDigitalRecruitersJobs({ domainName: 'careers.x.com' });
+
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    const written = r.jobs.map((j) => j.externalId);
+    expect([...new Set(canonical)].sort()).toEqual(['2935039', '3827169']);
+    expect(written.sort()).toEqual(['2935039', '3827169']);
+    // Les diffusions restent archivées : l'unité que le publieur pagine n'est pas perdue.
+    expect(r.enumeration!.pageEvidence![0]!.ids).toHaveLength(3);
+    expect(written.every((id) => canonical.includes(id))).toBe(true);
+  });
+
+  /**
+   * UNE LIGNE VUE PUIS REJETÉE reste dans la preuve, avec son identifiant : sinon l'offre correspondante,
+   * si elle existe en base, paraîtrait absente. Le rejet est une DISPOSITION nommée, pas un trou.
+   */
+  it('une annonce sans titre est observée ET rejetée avec son identifiant canonique', async () => {
+    const sansTitre = { id: '999-1', job_ad_id: 999, location: 'Paris', url: '999/1-x' };
+    vi.mocked(fetchJson).mockResolvedValueOnce(page(2, [item('2935039', '1', 'Paris'), sansTitre]));
+    const r = await fetchDigitalRecruitersJobs({ domainName: 'careers.x.com' });
+
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(canonical).toContain('999');                       // observée : elle a bien été vue
+    expect(r.jobs.map((j) => j.externalId)).not.toContain('999'); // mais pas publiée
+    const rejected = r.rejectedRows!.find((x) => (x as { canonicalId?: string }).canonicalId === '999');
+    expect(rejected?.reason).toBe('MISSING_TITLE_OR_ID');     // avec son motif exact
+    // Et le contrat ne voit donc AUCUN identifiant observé sans disposition.
+    expect(r.enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+});

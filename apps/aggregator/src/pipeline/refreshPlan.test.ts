@@ -10,7 +10,7 @@ const run = (over: Partial<Parameters<typeof sourceEligibility>[0] & object> = {
 });
 const evidence = (over: Partial<Parameters<typeof sourceEligibility>[1] & object> = {}) => ({
   sourceKey: 's', runId: 'run-1', termination: 'DECLARED_TOTAL_REACHED',
-  observedIds: ['a', 'b'], idsUnavailable: false, ...over,
+  canonicalSet: ['a', 'b'], canonicalContractDeclared: true, canonicalContractBroken: false, ...over,
 });
 
 describe('sourceEligibility — dérivée des FAITS du dernier run', () => {
@@ -39,11 +39,28 @@ describe('sourceEligibility — dérivée des FAITS du dernier run', () => {
     expect(r.reasons.join(' ')).toMatch(/autre cycle/);
   });
 
-  /** Mesuré : `beiersdorf` n'archive AUCUN identifiant. Une absence n'y est donc pas démontrable. */
-  it('refuse une source dont la preuve n\'archive aucun identifiant', () => {
-    const r = sourceEligibility(run(), evidence({ idsUnavailable: true, observedIds: [] }));
+  /** A. Mesuré sur `beiersdorf` : le contrat n'est pas déclaré, donc aucune absence n'y est démontrable. */
+  it('A. contrat NON déclaré : source non recevable', () => {
+    const r = sourceEligibility(run(), evidence({ canonicalContractDeclared: false, canonicalSet: [] }));
     expect(r.eligible).toBe(false);
-    expect(r.reasons.join(' ')).toMatch(/aucun identifiant/);
+    expect(r.reasons.join(' ')).toMatch(/ne déclare pas le contrat canonique/);
+  });
+
+  /** C. Contrat déclaré mais rompu — l'adaptateur l'a constaté lui-même. */
+  it('C. contrat déclaré mais ROMPU : source non recevable', () => {
+    const r = sourceEligibility(run(), evidence({ canonicalContractBroken: true }));
+    expect(r.eligible).toBe(false);
+    expect(r.reasons.join(' ')).toMatch(/contrat canonique déclaré mais rompu/);
+  });
+
+  /**
+   * D. LA CONTRADICTION CORRIGÉE : un board réellement vide, dont la terminaison est démontrée, est une preuve
+   * VALIDE. « La source ne publie plus rien » est même la seule preuve qui justifie de fermer tout un board.
+   * La cardinalité de l'ensemble ne décide donc jamais de la disponibilité du contrat.
+   */
+  it('D. contrat déclaré, ensemble VIDE, board réellement vide et terminaison probante : RECEVABLE', () => {
+    const r = sourceEligibility(run(), evidence({ canonicalSet: [], termination: 'FULL_XML_DOCUMENT' }));
+    expect(r).toEqual({ eligible: true, reasons: [] });
   });
 
   it('refuse une terminaison non probante', () => {
@@ -166,5 +183,126 @@ describe('identifiersComparable — un recouvrement nul est une incomparabilité
   it('des ensembles vides ne se comparent pas', () => {
     expect(identifiersComparable(new Set(), ['a'])).toBe(false);
     expect(identifiersComparable(new Set(['a']), [])).toBe(false);
+  });
+});
+
+/**
+ * LA DÉRIVE PARTIELLE — pourquoi la protection ne peut PAS venir d'un ratio.
+ *
+ * 1 identifiant à l'ancien format, 99 au nouveau : un seuil de recouvrement aurait déclaré les ensembles
+ * comparables et produit 99 fausses absences. C'est le CONTRAT DE LA SOURCE
+ * (`ats/canonicalIdContract.ts`) qui refuse ce cas, en exigeant que CHAQUE offre écrite figure dans la preuve —
+ * pas une proportion d'entre elles.
+ *
+ * `identifiersComparable` ne répond qu'à une question plus modeste, et le dit : « cet ensemble décrit-il ce
+ * board ? ». Il attrape le vocabulaire entièrement étranger ; il n'a jamais vocation à mesurer une dérive
+ * partielle, et ne doit donc pas être pris pour la garde qui le fait.
+ */
+describe('identifiersComparable — ce qu\'il garantit, et ce qu\'il ne garantit pas', () => {
+  it('une disposition nommée compte comme une correspondance : l\'offre a bien été traitée', () => {
+    // Vue puis retenue : le vocabulaire est partagé, même si l'identifiant n'est pas dans `observed`.
+    expect(identifiersComparable(new Set(['autre']), ['retenue-1'], new Set(['retenue-1']))).toBe(true);
+  });
+
+  it('dérive PARTIELLE : non détectée ici — c\'est le contrat de la source qui la refuse', () => {
+    const stored = ['legacy-1', ...Array.from({ length: 99 }, (_, i) => `legacy-${i + 2}`)];
+    const observed = new Set(['legacy-1', ...Array.from({ length: 99 }, (_, i) => `nouveau/${i + 2}`)]);
+    // Documenté comme une LIMITE assumée de cette fonction, pas comme un comportement souhaitable.
+    expect(identifiersComparable(observed, stored)).toBe(true);
+  });
+});
+
+/**
+ * E. LE PARCOURS COMPLET, de la recevabilité au plan — pas seulement `normalizeAdapterResult`.
+ *
+ * Un board réellement vide, prouvé, doit rendre ses anciennes représentations ABSENTES et non INVÉRIFIABLES :
+ * c'est précisément le cas où fermer est justifié. Traiter l'ensemble vide comme une indisponibilité aurait
+ * rendu ce board éternellement infermable — la contradiction que ce test verrouille.
+ */
+describe('E. board vide prouvé — de sourceEligibility à planRefresh', () => {
+  it('une JobSource ancienne face à un board vide PROUVÉ est ABSENT, puis candidate à fermeture', () => {
+    const facts = run();
+    const proof = evidence({ canonicalSet: [], termination: 'FULL_XML_DOCUMENT' });
+
+    // 1. la source est recevable : le contrat est déclaré, la terminaison démontrée
+    const verdict = sourceEligibility(facts, proof);
+    expect(verdict.eligible).toBe(true);
+
+    // 2. l'ancienne représentation n'est PAS dans l'ensemble observé — qui est vide, et c'est une preuve
+    const old = rep({ jobSourceId: 'JS-vieille', externalId: 'partie-depuis-longtemps' });
+    const state = representationState(old, new Set(proof.canonicalSet), verdict.eligible);
+    expect(state).toBe('ABSENT_FROM_PROVEN_ENUMERATION');
+
+    // 3. et le plan la désactive, fermant l'offre faute d'autre attestation
+    const { deactivations, jobs } = planRefresh([old], new Map([[old.jobSourceId, state]]),
+      new Map([[old.jobId, [old.jobSourceId]]]));
+    expect(deactivations.map((d) => d.jobSourceId)).toEqual(['JS-vieille']);
+    expect(jobs.get(old.jobId)).toBe('JOB_CANDIDATE_FOR_CLOSURE');
+  });
+
+  it('le même board vide, mais contrat NON déclaré : INVÉRIFIABLE et aucune mutation', () => {
+    const verdict = sourceEligibility(run(), evidence({ canonicalSet: [], canonicalContractDeclared: false }));
+    expect(verdict.eligible).toBe(false);
+
+    const old = rep({ jobSourceId: 'JS-vieille', externalId: 'inconnue' });
+    const state = representationState(old, null, verdict.eligible);
+    expect(state).toBe('UNVERIFIABLE');
+
+    const { deactivations } = planRefresh([old], new Map([[old.jobSourceId, state]]),
+      new Map([[old.jobId, [old.jobSourceId]]]));
+    expect(deactivations).toEqual([]);
+  });
+});
+
+/**
+ * D. UNE LIGNE VUE PUIS REJETÉE NE SE FERME JAMAIS.
+ *
+ * L'identifiant est dans la preuve : la source le publie toujours, c'est nous qui n'avons pas su en faire une
+ * offre. La présenter comme absente fermerait une offre vivante ; la présenter comme ré-attestée mentirait sur
+ * ce qui a été écrit. D'où un état distinct, qui ne mute rien.
+ */
+describe('PRESENT_BUT_REJECTED — vue, non persistée, jamais fermée', () => {
+  it('une représentation historique face à une ligne vue mais rejetée n\'est pas ABSENTE', () => {
+    const observed = new Set(['123']);
+    const state = representationState(rep({ externalId: '123', rejected: true }), observed, true);
+    expect(state).toBe('PRESENT_BUT_REJECTED');
+    expect(state).not.toBe('ABSENT_FROM_PROVEN_ENUMERATION');
+  });
+
+  it('et le plan ne la désactive pas, donc ne ferme rien', () => {
+    const r = rep({ jobSourceId: 'JS1', externalId: '123', rejected: true });
+    const { deactivations, jobs } = planRefresh([r], new Map([['JS1', 'PRESENT_BUT_REJECTED']]),
+      new Map([['J1', ['JS1']]]));
+    expect(deactivations).toEqual([]);
+    expect(jobs.size).toBe(0);
+  });
+
+  /** Les dispositions ont une priorité : un refus d'écriture prime sur un rejet d'adaptateur. */
+  it('un refus d\'écriture reste distinct d\'un rejet d\'adaptateur', () => {
+    const observed = new Set(['123']);
+    expect(representationState(rep({ externalId: '123', rejected: true, writeFailed: true }), observed, true))
+      .toBe('PRESENT_BUT_WRITE_FAILED');
+  });
+});
+
+/**
+ * PARCOURS COMPLET ≠ PREUVE D'ABSENCE EXPLOITABLE.
+ *
+ * Une ligne Workday sans `externalPath` est observée mais anonyme. Le listing peut avoir été lu en entier et,
+ * pourtant, aucun identifiant historique ne peut être déclaré disparu : il pourrait être cette ligne-là.
+ */
+describe('canonicalAbsenceProofUsable — deux propriétés distinctes', () => {
+  it('des lignes sans identifiant rendent la source non recevable, même parcours complet', () => {
+    const r = sourceEligibility(run(), evidence({ canonicalAbsenceProofUsable: false }));
+    expect(r.eligible).toBe(false);
+    expect(r.reasons.join(' ')).toMatch(/aucun identifiant canonique/);
+  });
+
+  it('toutes les lignes identifiables : la preuve est exploitable', () => {
+    expect(sourceEligibility(run(), evidence({ canonicalAbsenceProofUsable: true })).eligible).toBe(true);
+  });
+
+  it('un adaptateur qui ne se prononce pas ne se voit rien présumer de défavorable', () => {
+    expect(sourceEligibility(run(), evidence({ canonicalAbsenceProofUsable: undefined })).eligible).toBe(true);
   });
 });

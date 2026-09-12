@@ -212,6 +212,9 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
         // read on two pages) is one announced row, not two. Distinct rows are told apart by their content.
         // Every occurrence is a witness in the rejects; the COUNT of announced rows is by distinct content.
         const hash = createHash('sha256').update(JSON.stringify(job)).digest('hex');
+        // Aucun identifiant canonique n'est FABRIQUÉ à partir du titre ou d'un hachage : ce serait
+        // inventer une preuve. La ligne est archivée telle quelle, et le cycle perd le droit d'attester
+        // une absence — un identifiant historique disparu pourrait être précisément celle-ci.
         shared.rejectedRows.push({ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: job });
         shared.pathlessRows.add(hash); localPathless.add(hash);
         continue;
@@ -221,7 +224,16 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
       if (!take(job, externalId)) repeatedIds += 1;
     }
     shared.pageEvidence.push({ url: `${shared.endpoint}#offset=${offset}${suffix}`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
-      ids: pageIds, publisherCounter: page.total ? `total=${page.total}` : '', componentCounters: [`rows=${postings.length}`, `uniqueIds=${local.size}`, `repeated=${repeatedIds}`, `withoutPath=${localPathless.size}`, ...(board.partition ? [`partition=${board.scope}`] : [])] });
+      /**
+       * `ids` EST déjà l'identifiant canonique chez Workday : `externalPath.split('/').pop()` alimente à la
+       * fois `take()` — donc `NormalizedJob.externalId` — et cette preuve. On le DÉCLARE explicitement plutôt
+       * que de laisser un lecteur le supposer : sans la propriété, la source ne peut prouver aucune absence.
+       *
+       * Une ligne SANS `externalPath` n'a pas d'identifiant : elle est rejetée avec son motif, et ne peut donc
+       * pas figurer ici. Son absence est comptée dans `withoutPath`, jamais confondue avec une disparition.
+       */
+      ids: pageIds, canonicalIds: pageIds,
+      publisherCounter: page.total ? `total=${page.total}` : '', componentCounters: [`rows=${postings.length}`, `uniqueIds=${local.size}`, `repeated=${repeatedIds}`, `withoutPath=${localPathless.size}`, ...(board.partition ? [`partition=${board.scope}`] : [])] });
     if (postings.length === 0) { termination = 'EMPTY_PAGE'; break; }
     // The announced total counts ROWS (a path-less row included): once that many
     // rows are read the board is exhausted, whether or not every row was a
@@ -257,7 +269,7 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
         if (take(job, externalId)) freshInSweep += 1;
       }
       shared.pageEvidence.push({ url: `${shared.endpoint}#offset=${offset}&sweep=2${suffix}`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
-        ids: pageIds, publisherCounter: '', componentCounters: [`sweep=2`, `rows=${postings.length}`, `uniqueIds=${local.size}`, `freshInSweep=${freshInSweep}`] });
+        ids: pageIds, canonicalIds: pageIds, publisherCounter: '', componentCounters: [`sweep=2`, `rows=${postings.length}`, `uniqueIds=${local.size}`, `freshInSweep=${freshInSweep}`] });
       if (postings.length === 0) break;
     }
     if (local.size + localPathless.size >= total) { termination = 'SECOND_SWEEP_RECONCILED'; shared.issues.add('RECONCILED_BY_SECOND_SWEEP'); }
@@ -341,7 +353,20 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
   const termination = partitioned ? (failing ? failing.termination : overlap ? 'PARTITION_OVERLAP' : capped && unpartitioned ? 'UNPARTITIONED_UNDER_CAP' : 'PARTITIONS_RECONCILED') : results[0]!.termination;
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
   const boardScopes: Scope[] = results.map((r) => ({ scope: r.scope, declaredTotal: r.scope === 'jobs:unpartitioned' ? r.fresh : r.total || -1, uniqueIds: r.scope === 'jobs:unpartitioned' ? r.fresh : r.uniqueIds, pages: r.pages, complete: r.complete }));
+  /**
+   * DEUX PROPRIÉTÉS DISTINCTES, et c'est ici qu'elles se séparent.
+   *
+   * Une ligne sans `externalPath` a bien été OBSERVÉE, mais elle n'a aucun identifiant canonique : on ne peut
+   * pas la nommer dans la preuve, et on refuse d'en FABRIQUER un depuis le titre ou un hachage — ce serait
+   * inventer. Conséquence : le parcours du listing peut être complet (`enumerationTraversalComplete`) alors
+   * qu'une absence n'y est pas démontrable (`canonicalAbsenceProofUsable`), puisqu'un identifiant historique
+   * disparu pourrait être précisément l'une de ces lignes anonymes.
+   *
+   * Les offres identifiables du run sont ingérées normalement : seule l'attestation d'absence est refusée.
+   */
+  const canonicalAbsenceProofUsable = shared.pathlessRows.size === 0;
   const enumeration: AdapterResult['enumeration'] = { method: partitioned ? 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION_PARTITIONED' : 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION', endpoint, pages: pagesRead, rawCount, termination, issues: [...issues],
+    enumerationTraversalComplete: complete, canonicalAbsenceProofUsable,
     scopes: partitioned ? [{ scope: 'jobs', declaredTotal: total || -1, uniqueIds: seen.size, pages: pagesRead, complete }, ...boardScopes] : boardScopes, pageEvidence };
 
   // F-04: `total` is the tenant's own announced count — the truncation signal.

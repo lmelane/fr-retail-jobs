@@ -282,3 +282,82 @@ describe('brandFromLogoAlt — the word "logo" belongs to the image, not the emp
     expect(legal.employerEvidence).toEqual({ rawName: 'C170 Officine Panerai', path: 'detail.hiringOrganization.name', rule: 'LEADING_ENTITY_CODE_REMOVED' });
   });
 });
+
+/**
+ * LE CONTRAT CANONIQUE — MECCA et les autres tenants Workday.
+ *
+ * `ids` EST déjà l'identifiant canonique : `externalPath.split('/').pop()` alimente à la fois `take()`, donc
+ * `NormalizedJob.externalId`, et la preuve de page. La correction consiste à le DÉCLARER, jamais à le
+ * recalculer par un autre chemin — deux expressions finiraient par diverger.
+ */
+describe('fetchWorkdayJobs — identifiants canoniques dans la preuve', () => {
+  it('déclare canonicalIds, exactement les externalId écrits', async () => {
+    mockJson.mockResolvedValueOnce({
+      total: 2,
+      jobPostings: [
+        { title: 'Zone Manager', externalPath: '/job/Ponsonby/Zone-Manager_R015582' },
+        { title: 'Host', externalPath: '/job/Queenstown/Host_R014994' },
+      ],
+    } as never);
+
+    const r = await fetchWorkdayJobs({
+      tenant: 'mecca', site: 'careers', origin: 'https://mecca.wd3.myworkdayjobs.com', withDescriptions: false,
+    });
+
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(canonical).toEqual(['Zone-Manager_R015582', 'Host_R014994']);
+    expect(r.jobs.map((j) => j.externalId).sort()).toEqual([...canonical].sort());
+    expect(r.enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  /**
+   * A. Une ligne SANS `externalPath` n'a aucun identifiant : elle ne peut pas figurer dans la preuve canonique,
+   * et il est INTERDIT d'en fabriquer un depuis le titre ou un hachage. Conséquence : le parcours peut être
+   * complet alors que l'attestation d'absence est refusée — un identifiant historique disparu pourrait être
+   * précisément cette ligne anonyme.
+   */
+  it('A. une ligne sans externalPath : offre identifiable produite, mais absence NON attestable', async () => {
+    mockJson.mockResolvedValueOnce({
+      total: 2,
+      jobPostings: [
+        { title: 'Vendeur', externalPath: '/job/Paris/Vendeur_R-123' },
+        { title: 'Ghost row', locationsText: 'Nowhere' },
+      ],
+    } as never);
+
+    const r = await fetchWorkdayJobs({
+      tenant: 'richemont', site: 'richemont', origin: 'https://richemont.wd3.myworkdayjobs.com',
+      withDescriptions: false,
+    });
+
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(canonical).toEqual(['Vendeur_R-123']);
+    expect(r.jobs.map((j) => j.externalId)).toEqual(['Vendeur_R-123']);   // l'offre identifiable est produite
+    expect(r.rejectedRows?.some((x) => x.reason === 'ROW_WITHOUT_EXTERNAL_PATH')).toBe(true);
+    expect(r.enumeration?.canonicalIdViolations).toBeUndefined();
+    // LE VERDICT QUI MANQUAIT : le parcours ne suffit pas, l'absence n'est pas démontrable.
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(false);
+  });
+
+  /** B. Toutes les lignes identifiables : la preuve d'absence est exploitable. */
+  it('B. toutes les lignes ont un externalPath : preuve canonique exploitable', async () => {
+    mockJson.mockResolvedValueOnce({
+      total: 1, jobPostings: [{ title: 'Vendeur', externalPath: '/job/Paris/Vendeur_R-123' }],
+    } as never);
+    const r = await fetchWorkdayJobs({
+      tenant: 'mecca', site: 'careers', origin: 'https://mecca.wd3.myworkdayjobs.com', withDescriptions: false,
+    });
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+  });
+
+  /** C. Board réellement vide, terminaison prouvée : preuve vide mais EXPLOITABLE. */
+  it('C. board vide et terminaison prouvée : preuve canonique vide mais exploitable', async () => {
+    mockJson.mockResolvedValueOnce({ total: 0, jobPostings: [] } as never);
+    const r = await fetchWorkdayJobs({
+      tenant: 'mecca', site: 'careers', origin: 'https://mecca.wd3.myworkdayjobs.com', withDescriptions: false,
+    });
+    expect(r.jobs).toEqual([]);
+    expect(r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? [])).toEqual([]);
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+  });
+});

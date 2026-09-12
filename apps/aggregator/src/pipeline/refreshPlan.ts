@@ -32,14 +32,39 @@ export type SourceRunFacts = {
   ranAt: Date;
 };
 
-/** La preuve d'énumération du MÊME cycle, avec les identifiants réellement observés. */
+/**
+ * La preuve d'énumération du MÊME cycle, avec les identifiants réellement observés.
+ *
+ * TROIS NOTIONS SÉPARÉES, et la cardinalité n'en décide AUCUNE. Les confondre créait une contradiction :
+ * un board réellement vide, dont la terminaison est démontrée, était traité comme un contrat rompu — alors
+ * que « la source ne publie plus rien » est une preuve parfaitement valide, et même la seule qui justifie de
+ * fermer tout un board.
+ */
 export type EnumerationEvidence = {
   sourceKey: string;
   runId: string | null;
   termination: string | null;
-  observedIds: string[];
-  /** Vrai quand la preuve n'énumère aucun identifiant : on ne peut alors rien conclure d'une absence. */
-  idsUnavailable: boolean;
+  /** L'ensemble observé. Vide est une VALEUR légitime, pas une indisponibilité. */
+  canonicalSet: string[];
+  /**
+   * L'adaptateur DÉCLARE-t-il le contrat canonique sur TOUTES les pages du parcours ?
+   *
+   * Une déclaration partielle (certaines pages seulement) n'est pas un contrat : les pages muettes peuvent
+   * porter des offres qu'on prendrait alors pour disparues. Elle vaut donc contrat ROMPU, jamais contrat
+   * complet.
+   */
+  canonicalContractDeclared: boolean;
+  /** Le contrat est déclaré mais violé — l'adaptateur l'a dit lui-même (`CANONICAL_ID_CONTRACT_BROKEN`). */
+  canonicalContractBroken: boolean;
+  /**
+   * L'adaptateur a-t-il observé des lignes SANS identifiant canonique exploitable ?
+   *
+   * `false` signifie : « le parcours est peut-être complet, mais un identifiant historique disparu pourrait
+   * être l'une de ces lignes anonymes ». Le parcours et l'exploitabilité de la preuve sont deux propriétés
+   * distinctes — la première peut être vraie quand la seconde est fausse (ligne Workday sans `externalPath`).
+   * `undefined` = l'adaptateur ne se prononce pas, on ne présume rien de défavorable.
+   */
+  canonicalAbsenceProofUsable?: boolean;
 };
 
 export type Representation = {
@@ -52,12 +77,22 @@ export type Representation = {
   held: boolean;
   /** L'écriture de cette offre a-t-elle échoué (refus d'identité) pendant ce cycle ? */
   writeFailed: boolean;
+  /** L'adaptateur a-t-il REFUSÉ cette ligne (titre manquant, URL incohérente…) tout en l'observant ? */
+  rejected?: boolean;
 };
 
 export type RepresentationState =
   | 'PRESENT_AND_REATTESTED'
   | 'PRESENT_BUT_HELD'
   | 'PRESENT_BUT_WRITE_FAILED'
+  /**
+   * VUE par le balayage, mais refusée par l'adaptateur lui-même (titre manquant, URL incohérente…).
+   *
+   * L'essentiel : ce n'est PAS une absence. L'identifiant est là, la source publie toujours la ligne — c'est
+   * nous qui n'avons pas su en faire une offre. La présenter comme « ré-attestée » serait faux aussi : rien
+   * n'a été écrit. Cet état ne désactive rien, ne ferme rien, et conserve le motif du rejet.
+   */
+  | 'PRESENT_BUT_REJECTED'
   | 'ABSENT_FROM_PROVEN_ENUMERATION'
   | 'UNVERIFIABLE';
 
@@ -91,7 +126,21 @@ export function sourceEligibility(run: SourceRunFacts | undefined, evidence: Enu
     if (evidence.runId !== run.runId) reasons.push(`preuve d'énumération d'un autre cycle (${evidence.runId} ≠ ${run.runId})`);
     if (!evidence.termination) reasons.push('terminaison absente');
     else if (!PROVING_TERMINATIONS.has(evidence.termination)) reasons.push(`terminaison non probante : ${evidence.termination}`);
-    if (evidence.idsUnavailable) reasons.push('la preuve n\'archive aucun identifiant : une absence n\'y est pas démontrable');
+    /**
+     * LA DISPONIBILITÉ DU CONTRAT NE SE LIT PAS SUR LA TAILLE DE L'ENSEMBLE.
+     *
+     * `canonicalSet` vide est une valeur légitime : un board réellement vide, dont la terminaison est
+     * démontrée, PROUVE que plus rien n'y est publié. C'est même la seule preuve qui justifie de fermer tout
+     * un board. Seule l'absence — ou la rupture — du CONTRAT rend une absence indémontrable.
+     */
+    if (!evidence.canonicalContractDeclared) {
+      reasons.push('l\'adaptateur ne déclare pas le contrat canonique sur tout le parcours : aucune absence n\'y est démontrable');
+    } else if (evidence.canonicalContractBroken) {
+      reasons.push('contrat canonique déclaré mais rompu : la preuve ne décrit pas ce que la source a écrit');
+    } else if (evidence.canonicalAbsenceProofUsable === false) {
+      reasons.push('des lignes observées n\'ont aucun identifiant canonique : une absence pourrait être l\'une '
+        + 'd\'elles, donc aucune ne peut être prouvée pour ce cycle');
+    }
   }
   return { eligible: reasons.length === 0, reasons };
 }
@@ -103,24 +152,34 @@ export function sourceEligibility(run: SourceRunFacts | undefined, evidence: Enu
  * « la source ne l'a plus listée » et « notre run ne l'a pas ré-écrite ».
  */
 /**
- * LES IDENTIFIANTS OBSERVÉS PARLENT-ILS LE MÊME LANGAGE QUE CEUX STOCKÉS ?
+ * LES IDENTIFIANTS OBSERVÉS SONT-ILS COMPARABLES À CEUX STOCKÉS ?
  *
- * Mesuré le 2026-09-12, et c'est le défaut qui aurait fermé des offres vivantes : `american-vintage-dr`
- * archive des identifiants COMPOSITES (`4589457-125350751`) là où la base stocke l'identifiant simple
- * (`4459569`). Comparés tels quels, **100 % des offres paraissaient absentes** — alors que la source venait
- * d'en lire 31 sans une erreur.
+ * Le contrôle ne repose PAS sur un taux de recouvrement. Un ratio ne distingue pas « 20 % d'offres disparues »
+ * de « 20 % d'identifiants cassés », et « un seul recouvrement suffit » laisserait passer 1 ancien format
+ * contre 99 nouveaux — soit 99 fausses absences.
  *
- * Les cinq autres sources correspondent à 84–89 %, l'écart étant les absences réelles. Un recouvrement NUL
- * n'est donc pas une disparition de masse : c'est un vocabulaire différent, et la seule conclusion honnête est
- * « je ne peux pas comparer ».
+ * La règle est structurelle et vient du contrat imposé à la source (`ats/canonicalIdContract.ts`) : chaque
+ * offre STOCKÉE de cette source doit figurer dans l'ensemble observé, OU avoir une disposition nommée. Une
+ * offre stockée que la preuve ne mentionne ni comme vue ni comme disposée signale que les deux chemins ne
+ * produisent pas le même identifiant : on ne peut alors rien conclure.
  *
- * Le seuil est délibérément très bas (une seule correspondance suffit) : il ne mesure pas la qualité de la
- * collecte, il détecte l'incomparabilité. Un board réellement vidé à 100 % existe — mais il aurait alors lu
- * zéro offre, et sa recevabilité tomberait ailleurs.
+ * Le cas mesuré : `american-vintage-dr` archivait des diffusions (`4594925-72559621`) là où la base stocke des
+ * annonces (`4459569`). AUCUNE des 37 offres stockées n'apparaissait — ce n'est pas 37 disparitions, c'est un
+ * vocabulaire différent.
  */
-export function identifiersComparable(observed: ReadonlySet<string>, stored: readonly string[]): boolean {
-  if (observed.size === 0 || stored.length === 0) return false;
-  return stored.some((id) => observed.has(id));
+export function identifiersComparable(
+  observed: ReadonlySet<string>,
+  stored: readonly string[],
+  disposed: ReadonlySet<string> = new Set(),
+): boolean {
+  if (stored.length === 0) return false;
+  if (observed.size === 0) return false;
+  /**
+   * Si AUCUNE offre stockée n'est ni observée ni disposée, l'ensemble observé ne décrit pas ce board : les
+   * identifiants sont incomparables. Dès qu'une seule l'est, le vocabulaire est partagé et l'écart restant
+   * s'interprète offre par offre — c'est là que le contrat de la source, lui, exige l'exhaustivité.
+   */
+  return stored.some((id) => observed.has(id) || disposed.has(id));
 }
 
 export function representationState(
@@ -133,6 +192,7 @@ export function representationState(
     // Vue par le balayage. Si elle n'a pas été publiée, la cause est nommée — jamais « absente ».
     if (rep.writeFailed) return 'PRESENT_BUT_WRITE_FAILED';
     if (rep.held) return 'PRESENT_BUT_HELD';
+    if (rep.rejected) return 'PRESENT_BUT_REJECTED';
     return 'PRESENT_AND_REATTESTED';
   }
   return 'ABSENT_FROM_PROVEN_ENUMERATION';
