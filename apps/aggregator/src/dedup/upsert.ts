@@ -17,6 +17,7 @@ import { findMaison } from '../normalize/maisons.js';
 import { resolveCompany } from '../normalize/company.js';
 import { countryFromLocation, normalizeCountry } from '../normalize/country.js';
 import { resolveGeography } from '../normalize/geography.js';
+import { countryIntegrityOf } from '../normalize/countryIntegrity.js';
 import { cityFromLocation, displayCity } from '../normalize/location.js';
 import { isFranceJob } from '../lib/france.js';
 import { detectLanguage } from '../lib/language.js';
@@ -303,7 +304,7 @@ async function upsertInTransaction(
 
 /** Complete projection of one authoritative observation; shared by creation and reviewed repairs. */
 export function canonicalJobContent(candidate: CandidateJob, catalogue: CompiledOccupationTaxonomy) {
-  const country = countryOf(candidate);
+  const { countryCode: country, countryIntegrity } = countryWithProvenance(candidate);
   const clusterKey = blockingKey(candidate);
   const taxonomy = classifyOccupationContent(candidate,catalogue);
   return {
@@ -314,6 +315,8 @@ export function canonicalJobContent(candidate: CandidateJob, catalogue: Compiled
     description: candidate.description ?? null,
     location: candidate.location ?? null,
     countryCode: country ?? null,
+    /** La provenance du pays, PERSISTÉE — jusqu'ici calculée puis jetée (0 valeur sur 78 932 offres). */
+    countryIntegrity,
     adminArea1: adminArea1Of(candidate, country) ?? null,
     isFrance: isFranceJob(country ?? candidate.country, candidate.location),
     city: cityOf(candidate) ?? null,
@@ -388,14 +391,38 @@ async function createJob(
  * (audit du 2026-09-08).
  */
 function countryOf(candidate: CandidateJob): string | undefined {
+  return countryWithProvenance(candidate).countryCode;
+}
+
+/**
+ * Le pays retenu ET la preuve qui l'a produit, résolus ENSEMBLE.
+ *
+ * Les deux ne peuvent pas être calculés séparément : `countryOf` retient d'abord `normalizeCountry(country)`,
+ * qui peut différer de ce que `resolveGeography` aurait choisi. Un verdict dérivé indépendamment décrirait
+ * alors un pays qui n'est pas celui qu'on écrit — une preuve qui ne porte pas sur la valeur stockée n'est pas
+ * une preuve. Le verdict n'est donc émis que lorsque le pays retenu est bien celui que la provenance établit.
+ */
+function countryWithProvenance(candidate: CandidateJob): {
+  countryCode: string | undefined;
+  countryIntegrity: string | null;
+} {
   const geo = resolveGeography({
     rawCountry: candidate.country,
     location: candidate.location,
     city: candidate.city,
   });
+  const countryCode = retainedCountryOf(candidate, geo.countryCode);
+  // La preuve ne vaut que pour le pays effectivement retenu.
+  const countryIntegrity = countryCode && countryCode === geo.countryCode
+    ? countryIntegrityOf(geo, candidate.country)
+    : null;
+  return { countryCode, countryIntegrity };
+}
+
+function retainedCountryOf(candidate: CandidateJob, resolved: string | undefined): string | undefined {
   return (
     normalizeCountry(candidate.country) ??
-    geo.countryCode ??
+    resolved ??
     countryFromLocation(candidate.location) ??
     // Un lieu que les signaux français reconnaissent (code postal, département,
     // région) sans pays nommé est en France : 440 offres actives « Paris (75) »
@@ -451,7 +478,7 @@ type ExistingJob = Prisma.JobGetPayload<{ include: { sources: true }; omit: { se
  */
 type Reattestable = Pick<
   ExistingJob,
-  | 'title' | 'description' | 'location' | 'city' | 'countryCode' | 'adminArea1' | 'isFrance' | 'postedAt' | 'validThrough'
+  | 'title' | 'description' | 'location' | 'city' | 'countryCode' | 'countryIntegrity' | 'adminArea1' | 'isFrance' | 'postedAt' | 'validThrough'
   | 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType' | 'isSeasonal' | 'workplaceType' | 'salaryMin' | 'salaryMax' | 'salaryCurrency' | 'salaryPeriod'
 > & { opportunityType?: ExistingJob['opportunityType'] };
 
@@ -475,10 +502,23 @@ export function reattestationFields(
   hasAuthority: boolean,
 ): Partial<Reattestable> {
   const out: Partial<Reattestable> = {};
-  const country = countryOf(candidate);
+  const { countryCode: country, countryIntegrity } = countryWithProvenance(candidate);
   const maySetGeography = hasAuthority || (!existing.countryCode && !existing.city && !existing.location);
   if (maySetGeography) {
     if (country && country !== existing.countryCode) out.countryCode = country;
+    /**
+     * La provenance suit le pays, et doit pouvoir être POSÉE **et EFFACÉE**.
+     *
+     * Même raison que pour `adminArea1` : une source qui cesse de publier son champ pays ne doit pas laisser
+     * derrière elle une preuve périmée qui continuerait d'autoriser le balisage. Sans le chemin d'effacement,
+     * le verdict ne serait qu'un acquis de backfill — donc temporaire, et faux dès la régression suivante.
+     *
+     * On n'écrit QUE lorsque le candidat porte une géographie exploitable : une source muette ne détruit pas
+     * ce qu'une autre a établi.
+     */
+    if ((candidate.country || candidate.location) && countryIntegrity !== (existing.countryIntegrity ?? null)) {
+      out.countryIntegrity = countryIntegrity;
+    }
     if (country) {
       const isFrance = isFranceJob(country, candidate.location);
       if (isFrance !== existing.isFrance) out.isFrance = isFrance;

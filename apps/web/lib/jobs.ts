@@ -189,6 +189,16 @@ export type JobRow = {
   validThrough: Date | null;
   /** Code pays ISO-2 tel que stocke ; libelle via lib/countries. */
   countryCode: string | null;
+  /**
+   * La PROVENANCE du pays, telle que l'ingestion l'a établie — le verdict qui autorise (ou non) le balisage
+   * sous un code ambigu (`CA`, `IN`, `DE`…). Liste positive fermée : `RAW_COUNTRY_CODE`, `RAW_COUNTRY`,
+   * `VERIFIED`. `null` = aucune preuve, et le balisage exige alors une autre preuve indépendante ou refuse.
+   *
+   * Porté explicitement par la ligne : `markupIneligibility` le lisait via un accès élargi
+   * (`job as { countryIntegrity?: string }`), qui compile même si la colonne n'est jamais sélectionnée — le
+   * champ aurait pu rester absent sans qu'aucun type ne s'en plaigne.
+   */
+  countryIntegrity: string | null;
   /** ISO-639-1 language of the posting text, when detected at ingest. */
   language: string | null;
   /** Our first sighting, separate from the employer's publication date. */
@@ -314,7 +324,7 @@ function toRow(row: {
   department: string | null; workTime: string | null; workplaceType: string | null;
   experienceYears: number | null; educationLevel: string | null; salaryMin: number | null;
   salaryMax: number | null; salaryCurrency: string | null; salaryPeriod: string | null;
-  validThrough: Date | null; countryCode: string | null; language: string | null; firstSeenAt: Date;
+  validThrough: Date | null; countryCode: string | null; countryIntegrity: string | null; language: string | null; firstSeenAt: Date;
   jobFunction: string | null; seniority: string | null;
   occupationCode?: string | null; occupationStatus?: string;
 }, taxonomy: OptionalOccupationPresentation): JobRow {
@@ -361,6 +371,7 @@ function toRow(row: {
     salaryPeriod: row.salaryPeriod,
     validThrough: row.validThrough,
     countryCode: row.countryCode,
+    countryIntegrity: row.countryIntegrity,
     language: row.language,
     firstSeenAt: row.firstSeenAt,
   };

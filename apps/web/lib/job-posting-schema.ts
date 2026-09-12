@@ -169,7 +169,7 @@ function hasIndependentCountryProof(job: JobRow, country: string, locality: stri
    * Une première version acceptait « toute valeur différente de AMBIGUOUS ou UNVERIFIED » — une liste NÉGATIVE,
    * donc ouverte : un verdict futur inconnu, ou une valeur écrite par erreur, aurait valu preuve par défaut.
    */
-  const integrity = (job as { countryIntegrity?: string | null }).countryIntegrity;
+  const integrity = job.countryIntegrity;
   if (integrity && COUNTRY_INTEGRITY_PROVING.has(integrity)) return true;
 
   // Le libellé nomme le pays en toutes lettres : indépendant du suffixe à deux lettres.
@@ -198,7 +198,7 @@ function hasIndependentCountryProof(job: JobRow, country: string, locality: stri
  * indépendante du libellé (`RAW_COUNTRY_CODE`, `RAW_COUNTRY` — un champ pays déclaré par l'ATS). Voir
  * `resolveGeography` (apps/aggregator/src/normalize/geography.ts) : `method` y porte cette provenance.
  */
-const COUNTRY_INTEGRITY_PROVING: ReadonlySet<string> = new Set([
+export const COUNTRY_INTEGRITY_PROVING: ReadonlySet<string> = new Set([
   'RAW_COUNTRY_CODE', // la source a déclaré un code pays dans un champ dédié
   'RAW_COUNTRY',      // la source a déclaré un nom de pays dans un champ dédié
   'VERIFIED',         // verdict de revue explicite

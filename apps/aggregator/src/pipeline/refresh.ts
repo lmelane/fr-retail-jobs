@@ -47,7 +47,37 @@ export type RefreshOptions = {
   staleHours?: number;
   maxCloseRatio?: number;
   minCloseForGuard?: number;
+  /**
+   * Les seules sources dont le silence peut fermer une offre, pendant une reprise bornée.
+   *
+   * `undefined` = comportement historique (toute source active). Une liste = **périmètre technique fermé** :
+   * aucune autre source ne peut fermer quoi que ce soit, même active, même digne d'attester.
+   */
+  onlyKeys?: string[];
 };
+
+/**
+ * LE PÉRIMÈTRE AUTORISÉ DU REFRESH — sa propre liste, jamais déduite du statut ACTIVE.
+ *
+ * L'ingestion a `INGEST_ONLY_KEYS` depuis D36 ; le refresh n'avait rien : il prenait TOUTE `JobSource` active
+ * (`where: { isActive: true }`). Pendant une reprise bornée, un refresh lancé après l'ingestion d'une vague de
+ * 9 sources aurait donc pu fermer des offres appartenant aux 431 autres — dont les 385 en publication retenue
+ * et les 5 suspendues, qui n'ont précisément pas tourné et dont le silence ne prouve rien.
+ *
+ * Le statut ACTIVE ne peut PAS servir de périmètre : il dit qu'une source est au catalogue, pas qu'elle vient
+ * de démontrer son exhaustivité. C'est exactement la confusion que le registre P6 a défaite.
+ *
+ * Une clé inconnue est une ERREUR, jamais un silence : une faute de frappe qui réduirait le périmètre sans
+ * prévenir est plus dangereuse qu'un arrêt.
+ */
+export function refreshScope(keys: string[], raw = process.env.REFRESH_ONLY_KEYS): string[] | undefined {
+  const wanted = (raw ?? '').split(',').map((k) => k.trim()).filter(Boolean);
+  if (wanted.length === 0) return undefined;
+  const known = new Set(keys);
+  const unknown = wanted.filter((k) => !known.has(k));
+  if (unknown.length > 0) throw new Error(`REFRESH_ONLY_KEYS : clés inconnues — ${unknown.join(', ')}`);
+  return wanted;
+}
 
 export type RefreshStats = {
   checked: number;
@@ -94,12 +124,19 @@ export async function runRefresh(
   const skipped = await brokenSourceKeys(prisma, cutoff);
   const skippedBrokenSources = [...skipped];
 
+  /**
+   * Le périmètre autorisé, quand une reprise bornée en impose un. `in` est un filtre FERMÉ : une source
+   * absente de la liste ne peut être ni désactivée ni fermée, quel que soit son statut ou son ancienneté.
+   */
+  const allowed = options.onlyKeys?.length ? { sourceKey: { in: options.onlyKeys } } : {};
+
   // Which source listings are stale AND belong to a source that is not broken.
   // A broken source's listings are left active so its offers are not closed.
   const staleSources = await prisma.jobSource.findMany({
     where: {
       isActive: true,
       lastSeenAt: { lt: cutoff },
+      ...allowed,
       ...(skipped.size ? { sourceKey: { notIn: skippedBrokenSources } } : {}),
     },
     select: { id: true, jobId: true },
@@ -171,8 +208,12 @@ export async function runRefresh(
           where: { id: { in: jobIds }, companyId }, select: { id: true },
         });
         const currentIds = currentJobs.map(job => job.id);
+        // `allowed` est répété ICI parce que c'est cette requête qui ÉCRIT : la planification plus haut ne
+        // fait que choisir les candidats. Le filtre posé à un seul des deux endroits laisserait le périmètre
+        // fuir au moment de la mutation — l'endroit précis où il compte.
         const deactivated = await tx.jobSource.updateMany({
           where: { jobId: { in: currentIds }, isActive: true, lastSeenAt: { lt: cutoff },
+            ...allowed,
             ...(skipped.size ? { sourceKey: { notIn: skippedBrokenSources } } : {}) },
           data: { isActive: false },
         });
