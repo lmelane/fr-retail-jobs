@@ -237,13 +237,6 @@ try {
                   WHEN 'AR' THEN 'Argentina|Argentine' WHEN 'CO' THEN 'Colombia|Colombie' WHEN 'ID' THEN 'Indonesia'
                   WHEN 'MA' THEN 'Morocco|Maroc' WHEN 'PA' THEN 'Panama' WHEN 'MT' THEN 'Malta|Malte'
                   WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\M')
-             OR (btrim(coalesce("postalCode", '')) <> '' AND btrim("postalCode") ~ CASE "countryCode"
-                  WHEN 'US' THEN '^[0-9]{5}(-[0-9]{4})?$' WHEN 'CA' THEN '^[A-Za-z][0-9][A-Za-z][ -]?[0-9][A-Za-z][0-9]$'
-                  WHEN 'DE' THEN '^[0-9]{5}$' WHEN 'NL' THEN '^[0-9]{4} ?[A-Za-z]{2}$' WHEN 'IN' THEN '^[0-9]{6}$'
-                  WHEN 'PA' THEN '^[0-9]{4}$' WHEN 'MT' THEN '^[A-Za-z]{3} ?[0-9]{4}$' WHEN 'MD' THEN '^(MD-?)?[0-9]{4}$'
-                  WHEN 'ID' THEN '^[0-9]{5}$' WHEN 'IL' THEN '^[0-9]{5}([0-9]{2})?$' WHEN 'SK' THEN '^[0-9]{3} ?[0-9]{2}$'
-                  WHEN 'AR' THEN '^[A-Za-z]?[0-9]{4}[A-Za-z]{0,3}$' WHEN 'CO' THEN '^[0-9]{6}$' WHEN 'MA' THEN '^[0-9]{5}$'
-                  WHEN 'TN' THEN '^[0-9]{4}$' ELSE 'zzzzNOMATCHzzzz' END)
            ))
              -- Le libellé ne doit pas contredire ce pays : « Seattle, WA » n'est pas au Canada.
              AND NOT EXISTS (
@@ -294,13 +287,11 @@ try {
             WHEN 'MA' THEN 'Morocco|Maroc' WHEN 'PA' THEN 'Panama' WHEN 'MT' THEN 'Malta|Malte'
             WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\M'))
       UNION ALL
-      SELECT 'POSTAL_COUNTRY_VALIDATED', id FROM active
-        WHERE "countryCode" IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY') AND NOT (coalesce("countryIntegrity", '') IN ('RAW_COUNTRY_CODE','RAW_COUNTRY','VERIFIED')) AND NOT (coalesce(location, '') ~* ('\m(' || CASE "countryCode"
-            WHEN 'US' THEN 'United States|USA' WHEN 'CA' THEN 'Canada' WHEN 'DE' THEN 'Germany|Deutschland|Allemagne'
-            WHEN 'IN' THEN 'India|Inde' WHEN 'NL' THEN 'Netherlands|Pays-Bas|Nederland' WHEN 'IL' THEN 'Israel'
-            WHEN 'AR' THEN 'Argentina|Argentine' WHEN 'CO' THEN 'Colombia|Colombie' WHEN 'ID' THEN 'Indonesia'
-            WHEN 'MA' THEN 'Morocco|Maroc' WHEN 'PA' THEN 'Panama' WHEN 'MT' THEN 'Malta|Malte'
-            WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\M')) AND (btrim(coalesce("postalCode", '')) <> '' AND btrim("postalCode") ~ CASE "countryCode"
+      -- RENOMMÉ (H-GEO-01) : la compatibilité de format n'établit pas l'identité du pays — DE, US, ID, IL et MA
+      -- partagent le format à cinq chiffres. Ce groupe est un SIGNAL DE COHÉRENCE, plus une preuve, et il
+      -- n'entre plus à lui seul dans googleEligible. Il est volontairement RECOUVRANT, non partitionnant.
+      SELECT 'POSTAL_FORMAT_COMPATIBLE', id FROM active
+        WHERE "countryCode" IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY') AND (btrim(coalesce("postalCode", '')) <> '' AND btrim("postalCode") ~ CASE "countryCode"
             WHEN 'US' THEN '^[0-9]{5}(-[0-9]{4})?$' WHEN 'CA' THEN '^[A-Za-z][0-9][A-Za-z][ -]?[0-9][A-Za-z][0-9]$'
             WHEN 'DE' THEN '^[0-9]{5}$' WHEN 'NL' THEN '^[0-9]{4} ?[A-Za-z]{2}$' WHEN 'IN' THEN '^[0-9]{6}$'
             WHEN 'PA' THEN '^[0-9]{4}$' WHEN 'MT' THEN '^[A-Za-z]{3} ?[0-9]{4}$' WHEN 'MD' THEN '^(MD-?)?[0-9]{4}$'
@@ -308,19 +299,15 @@ try {
             WHEN 'AR' THEN '^[A-Za-z]?[0-9]{4}[A-Za-z]{0,3}$' WHEN 'CO' THEN '^[0-9]{6}$' WHEN 'MA' THEN '^[0-9]{5}$'
             WHEN 'TN' THEN '^[0-9]{4}$' ELSE 'zzzzNOMATCHzzzz' END)
       UNION ALL
+      -- La partition PREUVE reste : intégrité, pays en toutes lettres, ou rien. Le groupe POSTAL ci-dessus est
+      -- un signal transversal, compté à part et volontairement RECOUVRANT — il ne partitionne plus.
       SELECT 'NO_INDEPENDENT_PROOF', id FROM active
         WHERE "countryCode" IN ('CA','IN','AL','GA','KY','NC','SC','SD','NE','TN','MO','LA','MT','ID','MS','PA','VA','DE','ME','AR','MD','MA','NV','CO','CT','IL','MN','NL','ND','OK','SK','PE','NU','WA','NH','MI','OH','RI','VT','WI','WY','OR','NY') AND NOT (coalesce("countryIntegrity", '') IN ('RAW_COUNTRY_CODE','RAW_COUNTRY','VERIFIED')) AND NOT (coalesce(location, '') ~* ('\m(' || CASE "countryCode"
             WHEN 'US' THEN 'United States|USA' WHEN 'CA' THEN 'Canada' WHEN 'DE' THEN 'Germany|Deutschland|Allemagne'
             WHEN 'IN' THEN 'India|Inde' WHEN 'NL' THEN 'Netherlands|Pays-Bas|Nederland' WHEN 'IL' THEN 'Israel'
             WHEN 'AR' THEN 'Argentina|Argentine' WHEN 'CO' THEN 'Colombia|Colombie' WHEN 'ID' THEN 'Indonesia'
             WHEN 'MA' THEN 'Morocco|Maroc' WHEN 'PA' THEN 'Panama' WHEN 'MT' THEN 'Malta|Malte'
-            WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\M')) AND NOT (btrim(coalesce("postalCode", '')) <> '' AND btrim("postalCode") ~ CASE "countryCode"
-            WHEN 'US' THEN '^[0-9]{5}(-[0-9]{4})?$' WHEN 'CA' THEN '^[A-Za-z][0-9][A-Za-z][ -]?[0-9][A-Za-z][0-9]$'
-            WHEN 'DE' THEN '^[0-9]{5}$' WHEN 'NL' THEN '^[0-9]{4} ?[A-Za-z]{2}$' WHEN 'IN' THEN '^[0-9]{6}$'
-            WHEN 'PA' THEN '^[0-9]{4}$' WHEN 'MT' THEN '^[A-Za-z]{3} ?[0-9]{4}$' WHEN 'MD' THEN '^(MD-?)?[0-9]{4}$'
-            WHEN 'ID' THEN '^[0-9]{5}$' WHEN 'IL' THEN '^[0-9]{5}([0-9]{2})?$' WHEN 'SK' THEN '^[0-9]{3} ?[0-9]{2}$'
-            WHEN 'AR' THEN '^[A-Za-z]?[0-9]{4}[A-Za-z]{0,3}$' WHEN 'CO' THEN '^[0-9]{6}$' WHEN 'MA' THEN '^[0-9]{5}$'
-            WHEN 'TN' THEN '^[0-9]{4}$' ELSE 'zzzzNOMATCHzzzz' END)
+            WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\M'))
     )
     SELECT measure, count(*)::int postings, (array_agg(id ORDER BY id))[1:10] AS sample_ids FROM m GROUP BY 1 ORDER BY 2 DESC`;
 
@@ -362,13 +349,6 @@ try {
                   WHEN 'AR' THEN 'Argentina|Argentine' WHEN 'CO' THEN 'Colombia|Colombie' WHEN 'ID' THEN 'Indonesia'
                   WHEN 'MA' THEN 'Morocco|Maroc' WHEN 'PA' THEN 'Panama' WHEN 'MT' THEN 'Malta|Malte'
                   WHEN 'TN' THEN 'Tunisia|Tunisie' WHEN 'SK' THEN 'Slovakia|Slovaquie' ELSE 'zzzzNOMATCHzzzz' END || ')\M')
-             OR (btrim(coalesce("postalCode", '')) <> '' AND btrim("postalCode") ~ CASE "countryCode"
-                  WHEN 'US' THEN '^[0-9]{5}(-[0-9]{4})?$' WHEN 'CA' THEN '^[A-Za-z][0-9][A-Za-z][ -]?[0-9][A-Za-z][0-9]$'
-                  WHEN 'DE' THEN '^[0-9]{5}$' WHEN 'NL' THEN '^[0-9]{4} ?[A-Za-z]{2}$' WHEN 'IN' THEN '^[0-9]{6}$'
-                  WHEN 'PA' THEN '^[0-9]{4}$' WHEN 'MT' THEN '^[A-Za-z]{3} ?[0-9]{4}$' WHEN 'MD' THEN '^(MD-?)?[0-9]{4}$'
-                  WHEN 'ID' THEN '^[0-9]{5}$' WHEN 'IL' THEN '^[0-9]{5}([0-9]{2})?$' WHEN 'SK' THEN '^[0-9]{3} ?[0-9]{2}$'
-                  WHEN 'AR' THEN '^[A-Za-z]?[0-9]{4}[A-Za-z]{0,3}$' WHEN 'CO' THEN '^[0-9]{6}$' WHEN 'MA' THEN '^[0-9]{5}$'
-                  WHEN 'TN' THEN '^[0-9]{4}$' ELSE 'zzzzNOMATCHzzzz' END)
            )) AS ambiguous_without_proof,
         ("validThrough" IS NOT NULL AND "validThrough" < now()) AS valid_through_expired,
         (url NOT LIKE 'http%') AS no_apply_path
