@@ -88,6 +88,12 @@ spec = importlib.util.spec_from_file_location('railway_service', OPS / 'railway-
 railway = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(railway)
 
+# Le périmètre de code de chaque service : ce qui, modifié, exige un redéploiement de CE service.
+SERVICE_PATHS = {
+    'aggregator': ('apps/aggregator/', 'packages/db/', 'data/'),
+    'web': ('apps/web/', 'packages/db/'),
+}
+
 deployments = {}
 for service in ('aggregator', 'web'):
     try:
@@ -98,8 +104,34 @@ for service in ('aggregator', 'web'):
     deployments[service] = st
     if st['status'] != 'SUCCESS':
         fail(f'{service} : déploiement {st["status"]}, attendu SUCCESS')
-    if st['commit'] != commit:
-        fail(f'{service} : commit déployé {str(st["commit"])[:12]} ≠ {commit[:12]}')
+
+    if st['commit'] == commit:
+        st['codeVerdict'] = 'DEPLOYED_AT_COMMIT'
+        continue
+
+    # Le service tourne sur un commit ANTÉRIEUR. Ce n'est un problème que si SON code a changé entre les deux.
+    #
+    # Railway ne redéploie un service que lorsque son périmètre est touché : `catwalks-web` ne bouge donc pas
+    # pour un commit qui ne modifie que `apps/aggregator`. Exiger l'égalité stricte des SHA refuserait un état
+    # parfaitement conforme — et, pire, pousserait à redéployer sans raison. Le critère juste n'est pas
+    # « même SHA » mais « même CODE pour ce service », et cela se DÉMONTRE par le diff.
+    diff = sh(['git', 'diff', '--name-only', f'{st["commit"]}..{commit}'], cwd=ROOT)
+    if diff.returncode:
+        fail(f'{service} : diff {str(st["commit"])[:12]}..{commit[:12]} illisible — le commit déployé est-il '
+             f'présent localement ? ({diff.stderr.strip()[:120]})')
+        st['codeVerdict'] = 'UNVERIFIABLE'
+        continue
+    touched = [f for f in diff.stdout.splitlines() if f.strip().startswith(SERVICE_PATHS[service])]
+    st['commitBehind'] = st['commit']
+    st['filesTouchedInScope'] = touched
+    if touched:
+        st['codeVerdict'] = 'STALE_CODE'
+        fail(f'{service} : déployé sur {str(st["commit"])[:12]}, et {len(touched)} fichier(s) de son '
+             f'périmètre ont changé depuis — ex. {touched[:3]}')
+    else:
+        # Conforme : l'image déployée contient, à l'identique, le code de ce service au commit retenu.
+        st['codeVerdict'] = 'SAME_CODE_FOR_THIS_SERVICE'
+
 facts['deployments'] = deployments
 
 # La commande de démarrage de l'aggregator doit être la commande NORMALE avant qu'on pose la commande bornée.
