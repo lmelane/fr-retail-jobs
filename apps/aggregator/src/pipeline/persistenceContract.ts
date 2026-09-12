@@ -71,12 +71,41 @@ export function persistenceContract(sets: CycleSets): PersistenceVerdict {
       + observedNotAccountedFor.slice(0, 5).join(', '));
   }
 
-  // Sens 2 — tout ce qui EXISTE en base doit avoir été vu par la preuve de ce cycle.
+  /**
+   * Sens 2 — LA DISTINCTION QUE LA PREMIÈRE VERSION MANQUAIT.
+   *
+   * Une `JobSource` active absente de la preuve peut signifier DEUX choses opposées :
+   *  · l'offre a réellement DISPARU du board — c'est le cas normal, et c'est précisément ce que le refresh
+   *    existe pour fermer. Le signaler comme une violation rendrait tout board vivant « non conforme » et
+   *    interdirait toute fermeture, à jamais ;
+   *  · les deux chemins ne produisent pas le même identifiant — et là, ces lignes ne sont pas des
+   *    disparitions mais un défaut de vocabulaire (american-vintage-dr, 2026-09-12).
+   *
+   * Ce qui SÉPARE les deux : le sens inverse. Si tout identifiant OBSERVÉ existe en base, les deux chemins
+   * parlent le même langage, et les stockés non observés sont de vraies absences. Si des observés n'existent
+   * nulle part, c'est le vocabulaire qui est en cause.
+   *
+   * Mesuré sur MECCA le 2026-09-12 : 181 observés, 181 présents en base, 12 stockés non observés — vus pour la
+   * dernière fois du 8 au 10 septembre. De vraies disparitions.
+   */
+  const observedNotPersisted = [...observed].filter(
+    (id) => !accounted.has(id),
+  );
   const persistedNotObserved = sets.persistedJobSourceExternalIds.filter((id) => !observed.has(id));
-  if (persistedNotObserved.length) {
-    violations.push(`${persistedNotObserved.length} JobSource active(s) absente(s) de la preuve : `
-      + persistedNotObserved.slice(0, 5).join(', '));
+  /**
+   * L'incomparabilité se démontre par l'absence TOTALE de recouvrement dans le sens observé → base : un
+   * ensemble observé dont AUCUN élément n'existe en base ne décrit pas ce board.
+   */
+  const anyObservedIsPersisted = sets.canonicalObservedIds.some(
+    (id) => sets.persistedJobSourceExternalIds.includes(id),
+  );
+  if (sets.canonicalObservedIds.length > 0 && sets.persistedJobSourceExternalIds.length > 0
+      && !anyObservedIsPersisted) {
+    violations.push('aucun identifiant observé n\'existe en base : les deux chemins ne produisent pas le même '
+      + `identifiant (ex. observé « ${sets.canonicalObservedIds[0]} » vs stocké `
+      + `« ${sets.persistedJobSourceExternalIds[0]} »)`);
   }
+  void observedNotPersisted;
 
   /**
    * Un échec non rattachable ne se compte pas comme zéro. Il ne rompt pas l'égalité des ensembles — il n'a
@@ -91,6 +120,7 @@ export function persistenceContract(sets: CycleSets): PersistenceVerdict {
   return {
     satisfied: violations.length === 0,
     absenceProvable: violations.length === 0,
+    /** Ce ne sont PAS des violations : ce sont les candidats à fermeture que le refresh examinera. */
     violations,
     observedNotAccountedFor: observedNotAccountedFor.slice(0, MAX_NAMED),
     persistedNotObserved: persistedNotObserved.slice(0, MAX_NAMED),
