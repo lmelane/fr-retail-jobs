@@ -3,7 +3,7 @@ import { reattestationFields } from './upsert.js';
 import type { CandidateJob } from './match.js';
 
 const base = { sourceKey: 'hermes', sourceTier: 'EMPLOYER_DIRECT', externalId: 'H1', company: 'Hermès', url: 'https://x/1', raw: {} } as CandidateJob;
-const existing = { title: 'Apply Now', description: 'court', location: null, city: null, countryCode: 'France', adminArea1: null, isFrance: true, postedAt: null, validThrough: null, language: null, employmentTerm: null, workTime: null, programType: null, engagementType: null, isSeasonal: null, workplaceType: null, salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null };
+const existing = { title: 'Apply Now', description: 'court', location: null, city: null, countryCode: 'France', countryIntegrity: null, adminArea1: null, isFrance: true, postedAt: null, validThrough: null, language: null, employmentTerm: null, workTime: null, programType: null, engagementType: null, isSeasonal: null, workplaceType: null, salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null };
 
 /**
  * Mesuré en prod le 2026-09-06 : après le premier run avec les normalisations
@@ -140,5 +140,50 @@ describe('France filter follows the retained canonical country', () => {
       { ...existing, countryCode: 'BE', isFrance: true }, false)).toEqual({ isFrance: false });
     expect(reattestationFields({ ...base, title: existing.title },
       { ...existing, countryCode: null, isFrance: false }, false)).toEqual({});
+  });
+});
+
+/**
+ * `countryIntegrity` — la PROVENANCE du pays, posée ET effacée par la ré-attestation.
+ *
+ * Sans le chemin d'effacement, une source qui cesse de publier son champ pays laisserait derrière elle une
+ * preuve périmée qui continuerait d'autoriser le balisage. Le correctif ne vivrait qu'en backfill — donc
+ * temporaire, comme le rappelle D54 : « un correctif qui n'existe que dans le backfill est temporaire ».
+ */
+describe('reattestationFields — countryIntegrity', () => {
+  it('POSE le verdict quand la source déclare le pays en toutes lettres', () => {
+    const out = reattestationFields(
+      { ...base, title: 'Vendeur', country: 'Germany', location: 'Hamburg' },
+      { ...existing, countryCode: 'DE', countryIntegrity: null, location: 'Hamburg' },
+      true,
+    );
+    expect(out.countryIntegrity).toBe('RAW_COUNTRY');
+  });
+
+  it('EFFACE le verdict quand la source cesse de déclarer le pays', () => {
+    const out = reattestationFields(
+      { ...base, title: 'Vendeur', country: undefined, location: 'Hamburg, DE' },
+      { ...existing, countryCode: 'DE', countryIntegrity: 'RAW_COUNTRY', location: 'Hamburg, DE' },
+      true,
+    );
+    expect(out.countryIntegrity).toBeNull();
+  });
+
+  it('un code AMBIGU nu déclaré ne pose aucun verdict — H-GEO-01 tient dans la chaîne d\'écriture', () => {
+    const out = reattestationFields(
+      { ...base, title: 'Vendeur', country: 'CA', location: 'Toronto, CA' },
+      { ...existing, countryCode: 'CA', countryIntegrity: null, location: 'Toronto, CA' },
+      true,
+    );
+    expect(out.countryIntegrity).toBeUndefined(); // rien à écrire : déjà null
+  });
+
+  it('une source MUETTE (ni pays ni lieu) ne détruit pas la preuve établie par une autre', () => {
+    const out = reattestationFields(
+      { ...base, title: 'Vendeur', country: undefined, location: undefined },
+      { ...existing, countryCode: 'DE', countryIntegrity: 'RAW_COUNTRY', location: 'Hamburg' },
+      true,
+    );
+    expect(out.countryIntegrity).toBeUndefined();
   });
 });

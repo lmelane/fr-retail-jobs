@@ -19,7 +19,7 @@ import { runEgressProbe } from './pipeline/egressProbe.js';
  * catalogue at Google at once (the per-run cap in googleIndexing also guards it).
  */
 const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 * 1000);
-import { runRefresh } from './pipeline/refresh.js';
+import { runRefresh, refreshScope } from './pipeline/refresh.js';
 import { parseDay, runSnapshot, type SnapshotStats } from './pipeline/snapshot.js';
 import { runReconcile } from './pipeline/reconcile.js';
 import { separateFusedJobs } from './pipeline/separateFused.js';
@@ -147,7 +147,16 @@ try {
       process.exitCode = 1;
     }
   } else if (command === 'refresh') {
-    const refresh = await runRefresh(prisma);
+    /**
+     * Le refresh a SON périmètre autorisé (`REFRESH_ONLY_KEYS`), distinct de celui de l'ingestion.
+     *
+     * Les clés connues sont lues dans le CATALOGUE (`Source`), pas dans les JobSource actives : une clé doit
+     * pouvoir être nommée même si aucune de ses offres n'est active. Une clé inconnue arrête la commande.
+     */
+    const catalogue = await prisma.source.findMany({ select: { key: true } });
+    const onlyKeys = refreshScope(catalogue.map((s) => s.key));
+    if (onlyKeys) await log.info('refresh.scoped', { sources: onlyKeys.length, keys: onlyKeys.join(',') });
+    const refresh = await runRefresh(prisma, onlyKeys ? { onlyKeys } : {});
     /**
      * D38 : la photographie du jour se prend APRÈS les fermetures, pour que
      * `closedJobs` et la durée de publication médiane reflètent ce refresh.

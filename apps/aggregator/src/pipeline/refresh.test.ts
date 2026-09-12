@@ -230,3 +230,61 @@ describe('runRefresh', () => {
     expect(await prisma.job.count({ where: { isActive: true } })).toBe(10);
   });
 });
+
+/**
+ * LE PÉRIMÈTRE BORNÉ D'UNE REPRISE (P7).
+ *
+ * Pendant une reprise, seules quelques sources sont ré-ingérées. Sans périmètre technique, le refresh prendrait
+ * TOUTE `JobSource` active et fermerait les offres des autres — dont les 385 en publication retenue, qui n'ont
+ * pas tourné et dont le silence ne prouve donc rien. Le statut ACTIVE ne peut pas servir de périmètre.
+ */
+describe('runRefresh — allowlist de reprise', () => {
+  it('ne ferme QUE les offres des sources autorisées, même si les autres sont périmées et dignes d\'attester', async () => {
+    const c = await company();
+    await job(c.id, 'vague', 'dans-la-vague', 72);      // périmée, DANS le périmètre
+    await job(c.id, 'hors-vague', 'hors-de-la-vague', 72); // périmée aussi, HORS périmètre
+    // Les deux sources ont un droit de fermer parfaitement valide : seul le périmètre les sépare.
+    await recordHealth('vague', 'OK', 10);
+    await recordHealth('hors-vague', 'OK', 10);
+
+    const result = await runRefresh(prisma, { onlyKeys: ['vague'] });
+
+    expect(result.closedJobs).toBe(1);
+    const inWave = await prisma.job.findFirst({ where: { externalId: 'dans-la-vague' } });
+    const outside = await prisma.job.findFirst({ where: { externalId: 'hors-de-la-vague' } });
+    expect(inWave!.isActive).toBe(false);
+    // L'offre hors périmètre est INTACTE : ni fermée, ni retirée, ni sa source désactivée.
+    expect(outside!.isActive).toBe(true);
+    expect(outside!.closedAt).toBeNull();
+    expect(outside!.withdrawnAt).toBeNull();
+    const outsideSource = await prisma.jobSource.findFirst({ where: { sourceKey: 'hors-vague' } });
+    expect(outsideSource!.isActive).toBe(true);
+  });
+
+  it('une offre attestée par une source hors périmètre ne se ferme pas quand celle de la vague se tait', async () => {
+    const c = await company();
+    const j = await job(c.id, 'vague', 'partagee', 72);
+    // La seconde source, hors périmètre, l'atteste encore : l'offre doit vivre.
+    await prisma.jobSource.create({ data: { jobId: j.id, sourceKey: 'hors-vague', sourceTier: 'ATS_OFFICIAL',
+      externalId: 's-partagee-2', url: 'https://x/partagee', isActive: true, lastSeenAt: new Date() } });
+    await recordHealth('vague', 'OK', 10);
+    await recordHealth('hors-vague', 'OK', 10);
+
+    const result = await runRefresh(prisma, { onlyKeys: ['vague'] });
+
+    expect(result.closedJobs).toBe(0);
+    expect((await prisma.job.findFirst({ where: { externalId: 'partagee' } }))!.isActive).toBe(true);
+  });
+
+  it('sans allowlist, le comportement historique est inchangé', async () => {
+    const c = await company();
+    await job(c.id, 'vague', 'a', 72);
+    await job(c.id, 'hors-vague', 'b', 72);
+    await recordHealth('vague', 'OK', 10);
+    await recordHealth('hors-vague', 'OK', 10);
+
+    const result = await runRefresh(prisma);
+
+    expect(result.closedJobs).toBe(2);
+  });
+});

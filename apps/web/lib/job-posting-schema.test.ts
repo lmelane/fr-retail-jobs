@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { jobPostingSchema, markupIneligibility, schemaEmploymentTypes } from './job-posting-schema';
+import { jobPostingSchema, markupIneligibility, schemaEmploymentTypes, COUNTRY_INTEGRITY_PROVING } from './job-posting-schema';
 import type { JobRow } from './jobs';
 
 /**
@@ -12,6 +12,8 @@ import type { JobRow } from './jobs';
 const base: JobRow = {
   id: 'ck123', title: 'Vendeur', company: 'Cartier', companyDomain: 'cartier.com', group: 'Richemont',
   city: 'PARIS', location: 'Paris, France', employmentTerm: 'PERMANENT', sector: 'LUXURY',
+  // Aucune preuve de provenance par défaut : c'est l'état conservateur, et celui de la production.
+  countryIntegrity: null,
   url: 'https://x/1', postedAt: new Date('2026-08-20T00:00:00Z'), latitude: null, longitude: null,
   sourceCount: 1, sources: ['cartier'],
   // Une description RÉELLE : depuis le 2026-09-11 un fragment ne suffit plus à mériter un balisage
@@ -451,7 +453,7 @@ describe('H-GEO-01 — le code postal réfute, il ne prouve pas', () => {
 
   it('D. CA avec countryIntegrity RAW_COUNTRY → balisage autorisé, code postal publié en complément', () => {
     const job = { ...base, city: 'Toronto', countryCode: 'CA', location: 'Toronto, Canada',
-      postalCode: 'M5V 3L9', countryIntegrity: 'RAW_COUNTRY' } as JobRow & { countryIntegrity: string };
+      postalCode: 'M5V 3L9', countryIntegrity: 'RAW_COUNTRY' } as JobRow;
     expect(markupIneligibility(job, NOW)).toEqual([]);
     const address = (jobPostingSchema(job, NOW)!.jobLocation as any).address;
     expect(address.addressCountry).toBe('CA');
@@ -462,20 +464,80 @@ describe('H-GEO-01 — le code postal réfute, il ne prouve pas', () => {
   it('E. code postal INCOMPATIBLE avec le pays déclaré → AUCUN JobPosting, même avec une preuve pays', () => {
     // 90245 est un ZIP américain : il ne peut pas être canadien. La contradiction l'emporte sur la preuve.
     const job = { ...base, city: 'El Segundo', countryCode: 'CA', location: 'El Segundo, Canada',
-      postalCode: '90245', countryIntegrity: 'RAW_COUNTRY' } as JobRow & { countryIntegrity: string };
+      postalCode: '90245', countryIntegrity: 'RAW_COUNTRY' } as JobRow;
     expect(markupIneligibility(job, NOW)).toContain('LOCATION_COUNTRY_CONFLICT');
     expect(jobPostingSchema(job, NOW)).toBeNull();
   });
 
   it('countryIntegrity suit une liste POSITIVE : un verdict inconnu ne prouve rien', () => {
     const unknown = { ...base, city: 'El Segundo', countryCode: 'CA', location: 'El Segundo, CA',
-      postalCode: null, countryIntegrity: 'SOMETHING_NEW' } as JobRow & { countryIntegrity: string };
+      postalCode: null, countryIntegrity: 'SOMETHING_NEW' } as JobRow;
     expect(markupIneligibility(unknown, NOW)).toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
 
     for (const verdict of ['RAW_COUNTRY_CODE', 'RAW_COUNTRY', 'VERIFIED']) {
       const job = { ...base, city: 'El Segundo', countryCode: 'CA', location: 'El Segundo, CA',
-        postalCode: null, countryIntegrity: verdict } as JobRow & { countryIntegrity: string };
+        postalCode: null, countryIntegrity: verdict } as JobRow;
       expect(markupIneligibility(job, NOW)).toEqual([]);
     }
+  });
+});
+
+/**
+ * LE CONTRAT ENTRE LES DEUX CÔTÉS DE LA CHAÎNE.
+ *
+ * L'ingestion ÉCRIT `countryIntegrity` (apps/aggregator/src/normalize/countryIntegrity.ts) et cette page le
+ * LIT. Si les deux listes divergent, l'écart est silencieux : l'ingestion écrirait un verdict que la page
+ * ignore (des offres prouvées resteraient inéligibles), ou la page accepterait un verdict que l'ingestion
+ * n'écrit jamais (une règle morte qu'on croit active). Aucun typecheck ne le verrait — les deux modules
+ * appartiennent à des workspaces différents.
+ */
+describe('countryIntegrity — le contrat partagé avec la chaîne d\'ingestion', () => {
+  const NOW = new Date('2026-09-11T12:00:00Z');
+
+  it('la liste positive lue par le web est exactement celle que l\'ingestion écrit', () => {
+    // Recopiée littéralement depuis apps/aggregator/src/normalize/countryIntegrity.ts, à dessein : ce test
+    // échoue le jour où l'une des deux bouge sans l'autre, ce qui est précisément son objet.
+    expect([...COUNTRY_INTEGRITY_PROVING].sort())
+      .toEqual(['RAW_COUNTRY', 'RAW_COUNTRY_CODE', 'VERIFIED']);
+  });
+
+  it('la liste est FERMÉE : aucun verdict hors contrat ne prouve', () => {
+    for (const verdict of ['AMBIGUOUS', 'UNVERIFIED', 'POSTAL_FORMAT_COMPATIBLE', 'LOCATION_COUNTRY_NAME',
+      'LOCATION_ADMIN1_SUFFIX', 'LOCATION_COUNTRY_PREFIX']) {
+      const job = { ...base, city: 'Toronto', countryCode: 'CA', location: 'Toronto, CA',
+        postalCode: null, countryIntegrity: verdict } as JobRow;
+      expect(markupIneligibility(job, NOW)).toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
+    }
+  });
+});
+
+/**
+ * LA CHAÎNE COMPLÈTE, sur des lignes RÉELLEMENT écrites par une ingestion.
+ *
+ * Les valeurs sont recopiées de la base du clone après le run du 2026-09-12 (`replay-ingest.mts` sur les
+ * sources beiersdorf / american-vintage-dr / mecca) — pas fabriquées pour le test. C'est la consigne : le
+ * verdict doit venir d'une ingestion réelle, jamais d'un décor auquel on ajoute le champ à la main.
+ */
+describe('countryIntegrity — lignes réelles issues de l\'ingestion du clone', () => {
+  const NOW = new Date('2026-09-12T00:00:00Z');
+  /** Une offre Beiersdorf de Hambourg, telle qu'elle est stockée après le run. */
+  const hamburg = {
+    ...base, company: 'Beiersdorf', language: 'de', city: 'Hambourg', countryCode: 'DE',
+    location: 'Hamburg', postalCode: null,
+    description: 'Wir suchen eine Werkstudentin oder einen Werkstudenten für unser Team in Hamburg. '
+      + 'Du unterstützt bei der Analyse, der Aufbereitung von Daten und der Vorbereitung von Präsentationen.',
+  } as JobRow;
+
+  it('« Hamburg » sous DE, prouvé par le champ pays de la source (« Germany ») → balisage autorisé', () => {
+    expect(markupIneligibility({ ...hamburg, countryIntegrity: 'RAW_COUNTRY' }, NOW)).toEqual([]);
+  });
+
+  it('la MÊME offre sans verdict reste refusée : c\'est la preuve qui décide, jamais le pays', () => {
+    expect(markupIneligibility({ ...hamburg, countryIntegrity: null }, NOW))
+      .toContain('AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF');
+  });
+
+  it('un pays NON ambigu n\'a jamais eu besoin d\'un verdict', () => {
+    expect(markupIneligibility({ ...base, countryCode: 'FR', countryIntegrity: null }, NOW)).toEqual([]);
   });
 });
