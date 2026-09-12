@@ -30,8 +30,11 @@ import time
 import urllib.parse
 import urllib.request
 
-ROOT = pathlib.Path(__file__).resolve().parents[3]
+# scripts/ops/ingest-preflight.py → ops → scripts → aggregator → apps → RACINE : quatre niveaux, pas trois.
+# Un cran de trop produisait `apps/backups/…`, et le préflight mourait au moment d'écrire la sauvegarde.
+ROOT = pathlib.Path(__file__).resolve().parents[4]
 OPS = pathlib.Path(__file__).resolve().parent
+assert (ROOT / '.git').exists(), f'racine du dépôt mal résolue : {ROOT}'
 CLONE_CONTAINER = os.environ.get('P7_CLONE_CONTAINER', 'catwalks-lot4-replay-pg18')
 CLONE_USER = os.environ.get('P7_CLONE_USER', 'catwalks_lot4')
 PG_DUMP = os.environ.get('PG_DUMP', '/opt/homebrew/opt/libpq/bin/pg_dump')
@@ -173,7 +176,11 @@ if expected:
 
 # ── 5–7. sauvegarde, restauration, comparaison ───────────────────────────────────────────────────────────
 stamp = time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())
-dump = pathlib.Path(arg('dump', f'backups/lot4-20260909/before-p7-run-{stamp}-production.dump'))
+# Les chemins sont ancrés sur la RACINE du dépôt, jamais sur le répertoire de l'appelant : le préflight doit
+# produire le même résultat qu'il soit lancé depuis la racine ou depuis `apps/aggregator`.
+dump = pathlib.Path(arg('dump') or (ROOT / 'backups' / 'lot4-20260909' / f'before-p7-run-{stamp}-production.dump'))
+if not dump.is_absolute():
+    dump = ROOT / dump
 clone_db = arg('clone-db', f'catwalks_p7_preflight_{stamp.lower().replace("t", "_").replace("z", "")}')
 
 if not flag('skip-backup'):
