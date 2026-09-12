@@ -1,0 +1,73 @@
+{
+  "batchId": "20260912-P7-MECCA-BRANDS-NZ-PTY-LTD",
+  "planHash": "ef5157ebdadf004e772d6cf0f66ed4b9533163b1d8e0e93d6bfc7a11a858954e",
+  "commit": "2d733475bde7114b350f6f9d2a6a3b7f1ed5c879",
+  "reviewedBy": "loic.melane.pro@gmail.com",
+  "reviewedAt": "2026-09-12T10:00:00.000Z",
+  "decision": {
+    "sourceKey": "mecca",
+    "rawNameExact": "MECCA Brands NZ Pty Ltd",
+    "targetCompany": "MECCA",
+    "merge": "MECCA Brands NZ Pty Ltd -> MECCA",
+    "scope": "cette source et ce libelle exact uniquement",
+    "noGlobalAlias": true,
+    "noPatternGeneralisation": true,
+    "otherNovelLegalLabelsStayHeld": true
+  },
+  "evidence": {
+    "url": "https://www.mecca.com/en-nz/privacy-policy",
+    "artifactFile": "backups/lot4-20260909/p7-mecca-nz-evidence/privacy-nz.html",
+    "artifactBytes": 581156,
+    "sha256OfRawFile": "b838d7a91d4a98543dc31f9edd8c5f738ad66eb7ffbcfa5f029b8ff5107e6b73",
+    "sha256OfSanitizedText": "b838d7a91d4a98543dc31f9edd8c5f738ad66eb7ffbcfa5f029b8ff5107e6b73",
+    "section": "2. Who is MECCA?",
+    "quote": "when we refer to MECCA in this privacy policy, we mean: MECCA Brands Pty Ltd (ACN 077 859 931); MECCA Brands NZ Pty Ltd (ACN 126 675 401); MECCA Brands Distribution Pty Ltd (ACN 609 957 155); MECCA Brands IP Pty Ltd (ACN 609 957 100); MBIP Nominees Pty Ltd (ACN 609 957 137); and all other related bodies corporate and subsidiaries",
+    "why": "C'est la source elle-meme qui declare l'appartenance de l'entite neo-zelandaise au groupe MECCA. La preuve n'est pas une deduction a partir du nom."
+  },
+  "portalCertification": {
+    "verdict": "VERIFIED",
+    "portalScope": "SINGLE_BRAND",
+    "checkedAt": "2026-09-10",
+    "portalUrl": "https://mecca.wd3.myworkdayjobs.com/careers",
+    "proofUrl": "https://mecca.com/careers",
+    "whyAliasStillNeeded": "Le portail est certifie SINGLE_BRAND, mais « MECCA Brands NZ Pty Ltd » existait deja comme societe distincte : la garde de contradiction du perimetre certifie refuse alors le libelle, et seule une revue explicite le leve."
+  },
+  "precedent": {
+    "label": "MECCA Brands Pty Ltd",
+    "reviewId": "20260910-LOT4-LEGAL-ENTITY-ALIASES-v3"
+  },
+  "clone": {
+    "before": {
+      "aliases": [
+        "mecca brands pty ltd"
+      ],
+      "companies": [
+        "MECCA",
+        "MECCA Brands",
+        "MECCA Brands NZ",
+        "MECCA Brands NZ Pty Ltd",
+        "MECCA Brands Pty Ltd"
+      ]
+    },
+    "applied": {
+      "alreadyApplied": false,
+      "movedJobs": 0,
+      "aliases": 1
+    },
+    "after": {
+      "aliases": [
+        "mecca brands nz pty ltd",
+        "mecca brands pty ltd"
+      ],
+      "mergedCompanies": [
+        "MECCA Brands NZ Pty Ltd",
+        "MECCA Brands"
+      ]
+    },
+    "secondPass": "idempotent : origine deja fusionnee signalee, aucune ecriture nouvelle",
+    "companiesTouched": 3,
+    "jobs": 184,
+    "activeJobs": 173
+  },
+  "production": null
+}
