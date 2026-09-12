@@ -10,7 +10,7 @@ import { canonicalIdContract, type AdapterEnumerationResult } from './canonicalI
  * canonique observé qui ne devient pas une offre DOIT avoir une disposition NOMMÉE.
  */
 const result = (over: Partial<AdapterEnumerationResult> = {}): AdapterEnumerationResult => ({
-  jobExternalIds: ['a', 'b'],
+  candidateExternalIds: ['a', 'b'],
   canonicalObservedIds: ['a', 'b'],
   heldIds: [], writeFailedIds: [], rejectedIds: [], collectionErrorIds: [],
   ...over,
@@ -25,8 +25,8 @@ describe('canonicalIdContract — chaque offre écrite doit figurer dans la preu
    * LE CAS QUI IMPORTE : une offre écrite mais ABSENTE de la preuve signifie que les deux chemins ne
    * produisent pas le même identifiant. Sans ce contrôle, elle paraîtrait absente au refresh suivant.
    */
-  it('refuse une offre écrite qui ne figure pas dans les identifiants observés', () => {
-    const r = canonicalIdContract(result({ jobExternalIds: ['a', 'b', 'fantome'] }));
+  it('refuse une offre produite qui ne figure pas dans les identifiants observés', () => {
+    const r = canonicalIdContract(result({ candidateExternalIds: ['a', 'b', 'fantome'] }));
     expect(r.satisfied).toBe(false);
     expect(r.violations.join(' ')).toMatch(/fantome/);
   });
@@ -54,20 +54,20 @@ describe('canonicalIdContract — chaque offre écrite doit figurer dans la preu
   it('1 ancien format + 99 nouveaux : le contrat REFUSE, là où un seuil de recouvrement aurait accepté', () => {
     const stored = ['legacy-1', ...Array.from({ length: 99 }, (_, i) => `legacy-${i + 2}`)];
     const observed = ['legacy-1', ...Array.from({ length: 99 }, (_, i) => `nouveau/${i + 2}-slug`)];
-    const r = canonicalIdContract(result({ jobExternalIds: stored, canonicalObservedIds: observed }));
+    const r = canonicalIdContract(result({ candidateExternalIds: stored, canonicalObservedIds: observed }));
     expect(r.satisfied).toBe(false);
     // Les 99 offres écrites absentes de la preuve sont nommées, pas noyées dans un ratio.
     expect(r.violations.length).toBeGreaterThanOrEqual(99);
   });
 
   /** Une preuve sans identifiants canoniques ne permet aucune conclusion — elle n'est pas « vide ». */
-  it('refuse une preuve dépourvue d\'identifiants canoniques alors que des offres ont été écrites', () => {
+  it('refuse une preuve dépourvue d\'identifiants canoniques alors que des offres ont été produites', () => {
     const r = canonicalIdContract(result({ canonicalObservedIds: [] }));
     expect(r.satisfied).toBe(false);
     expect(r.violations.join(' ')).toMatch(/aucun identifiant canonique/);
   });
 
   it('un run qui n\'écrit rien et n\'observe rien est cohérent', () => {
-    expect(canonicalIdContract(result({ jobExternalIds: [], canonicalObservedIds: [] })).satisfied).toBe(true);
+    expect(canonicalIdContract(result({ candidateExternalIds: [], canonicalObservedIds: [] })).satisfied).toBe(true);
   });
 });

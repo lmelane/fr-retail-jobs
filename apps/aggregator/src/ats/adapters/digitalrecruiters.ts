@@ -193,12 +193,23 @@ async function fetchAllPages(domainName: string, locale: string): Promise<Adapte
     let fresh = 0;
     for (const item of items) {
       const announcement = item.job_ad_id ?? item.id;
-      if (!item.title || announcement === undefined || announcement === null) { rejectedRows.push({ reason: 'MISSING_TITLE_OR_ID', raw: item }); continue; }
+      /**
+       * UNE LIGNE OBSERVÉE AVEC UN IDENTIFIANT EXPLOITABLE ENTRE DANS LA PREUVE, même si elle ne produit pas
+       * d'offre. Auparavant un rejet (titre absent) sortait de la boucle AVANT d'être enregistré : la ligne
+       * avait bien été vue, son identifiant existait, et la preuve l'ignorait — donc l'offre correspondante,
+       * si elle existait en base, aurait paru absente.
+       *
+       * Le rejet reste un rejet : son identifiant est porté par `canonicalId`, ce qui en fait une DISPOSITION
+       * nommée pour le contrat, avec son motif exact conservé.
+       */
+      if (announcement !== undefined && announcement !== null) pageAnnouncements.push(String(announcement));
+      if (!item.title || announcement === undefined || announcement === null) {
+        rejectedRows.push({ reason: 'MISSING_TITLE_OR_ID', raw: item,
+          ...(announcement !== undefined && announcement !== null ? { canonicalId: String(announcement) } : {}) });
+        continue;
+      }
       const diffusion = String(item.id ?? `${announcement}:${item.url ?? ''}`);
       ids.push(diffusion);
-      // L'annonce est VUE dès qu'elle apparaît, même si cette diffusion-là est un doublon : sinon
-      // elle manquerait à la preuve et paraîtrait absente.
-      pageAnnouncements.push(String(announcement));
       if (diffusionIds.has(diffusion)) { issues.add('REPEATED_DIFFUSION_ACROSS_PAGES'); continue; }
       diffusionIds.add(diffusion); fresh++;
       const key = String(announcement);

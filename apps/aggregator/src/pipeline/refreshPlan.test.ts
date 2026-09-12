@@ -10,7 +10,7 @@ const run = (over: Partial<Parameters<typeof sourceEligibility>[0] & object> = {
 });
 const evidence = (over: Partial<Parameters<typeof sourceEligibility>[1] & object> = {}) => ({
   sourceKey: 's', runId: 'run-1', termination: 'DECLARED_TOTAL_REACHED',
-  observedIds: ['a', 'b'], idsUnavailable: false, ...over,
+  observedIds: ['a', 'b'], idsUnavailable: false, declaresCanonical: true, ...over,
 });
 
 describe('sourceEligibility — dérivée des FAITS du dernier run', () => {
@@ -39,11 +39,20 @@ describe('sourceEligibility — dérivée des FAITS du dernier run', () => {
     expect(r.reasons.join(' ')).toMatch(/autre cycle/);
   });
 
-  /** Mesuré : `beiersdorf` n'archive AUCUN identifiant. Une absence n'y est donc pas démontrable. */
-  it('refuse une source dont la preuve n\'archive aucun identifiant', () => {
-    const r = sourceEligibility(run(), evidence({ idsUnavailable: true, observedIds: [] }));
+  /**
+   * Mesuré : `beiersdorf` n'archive AUCUN identifiant. Une absence n'y est donc pas démontrable — mais les deux
+   * causes possibles ne disent pas la même chose et le motif rendu les sépare.
+   */
+  it('refuse un adaptateur qui n\'archive pas encore d\'identifiants canoniques', () => {
+    const r = sourceEligibility(run(), evidence({ idsUnavailable: true, observedIds: [], declaresCanonical: false }));
     expect(r.eligible).toBe(false);
-    expect(r.reasons.join(' ')).toMatch(/aucun identifiant/);
+    expect(r.reasons.join(' ')).toMatch(/pas encore d'identifiants canoniques/);
+  });
+
+  it('refuse une preuve qui DÉCLARE des identifiants canoniques mais n\'en archive aucun : contrat rompu', () => {
+    const r = sourceEligibility(run(), evidence({ idsUnavailable: true, observedIds: [], declaresCanonical: true }));
+    expect(r.eligible).toBe(false);
+    expect(r.reasons.join(' ')).toMatch(/contrat rompu/);
   });
 
   it('refuse une terminaison non probante', () => {

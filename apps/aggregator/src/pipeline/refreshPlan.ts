@@ -38,6 +38,8 @@ export type EnumerationEvidence = {
   runId: string | null;
   termination: string | null;
   observedIds: string[];
+  /** La propriété `canonicalIds` est-elle déclarée par l'adaptateur ? Distinct de « le tableau est vide ». */
+  declaresCanonical?: boolean;
   /** Vrai quand la preuve n'énumère aucun identifiant : on ne peut alors rien conclure d'une absence. */
   idsUnavailable: boolean;
 };
@@ -91,7 +93,9 @@ export function sourceEligibility(run: SourceRunFacts | undefined, evidence: Enu
     if (evidence.runId !== run.runId) reasons.push(`preuve d'énumération d'un autre cycle (${evidence.runId} ≠ ${run.runId})`);
     if (!evidence.termination) reasons.push('terminaison absente');
     else if (!PROVING_TERMINATIONS.has(evidence.termination)) reasons.push(`terminaison non probante : ${evidence.termination}`);
-    if (evidence.idsUnavailable) reasons.push('la preuve n\'archive aucun identifiant : une absence n\'y est pas démontrable');
+    if (evidence.idsUnavailable) reasons.push(evidence.declaresCanonical === false
+      ? 'l\'adaptateur n\'archive pas encore d\'identifiants canoniques : aucune absence n\'y est démontrable'
+      : 'la preuve déclare des identifiants canoniques mais n\'en archive aucun : contrat rompu');
   }
   return { eligible: reasons.length === 0, reasons };
 }

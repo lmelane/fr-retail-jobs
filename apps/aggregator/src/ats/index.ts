@@ -112,16 +112,41 @@ export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult):
    * Un adaptateur qui n'archive PAS de `canonicalIds` n'est pas jugé ici : il ne prouvera simplement aucune
    * absence, la prévisualisation le classant `UNVERIFIABLE` (cas beiersdorf).
    */
-  const canonical = normalized.enumeration?.pageEvidence?.flatMap(pe => pe.canonicalIds ?? []);
+  /**
+   * LA PRÉSENCE DU CONTRAT SE LIT SUR LA PROPRIÉTÉ, JAMAIS SUR SON CONTENU.
+   *
+   * Déduire le contrat de `canonical.length > 0` créait précisément le trou que le contrat doit couvrir : un
+   * adaptateur qui DÉCLARE `canonicalIds` mais rend un tableau vide alors qu'il a écrit des offres échappait à
+   * toute vérification, et sa preuve restait « complète ». Un tableau vide n'est pas une absence de contrat :
+   * c'est un contrat ROMPU.
+   *
+   * Deux situations distinctes, deux traitements :
+   *  · propriété ABSENTE de tous les `pageEvidence` → l'adaptateur n'implémente pas encore le contrat. On
+   *    n'invente aucune preuve : la source ne pourra prouver aucune absence (`UNVERIFIABLE` à la
+   *    prévisualisation), mais son exhaustivité de PARCOURS n'est pas mise en cause pour autant ;
+   *  · propriété PRÉSENTE → le contrat est vérifié systématiquement, tableau vide compris.
+   */
+  const evidencePages = normalized.enumeration?.pageEvidence ?? [];
+  const declaresCanonical = evidencePages.some(pe => Object.hasOwn(pe, 'canonicalIds'));
+  const canonical = evidencePages.flatMap(pe => pe.canonicalIds ?? []);
   let contractBroken: string[] = [];
-  if (canonical && canonical.length > 0) {
+  if (declaresCanonical) {
     const contract = canonicalIdContract({
-      jobExternalIds: normalized.jobs.map(job => job.externalId),
+      /**
+       * Ce sont les identifiants de SORTIE D'ADAPTATEUR, pas encore des `JobSource` persistées. Le contrat
+       * démontre ici « sortie de l'adaptateur ↔ preuve d'énumération » ; la correspondance avec ce qui est
+       * réellement écrit en base relève du contrat de PERSISTANCE, construit séparément.
+       */
+      candidateExternalIds: normalized.jobs.map(job => job.externalId),
       canonicalObservedIds: canonical,
       // Les offres retenues ont bien été VUES : leur disposition est nommée par le motif de retenue.
       heldIds: normalized.jobs.filter(job => job.publicationHold).map(job => job.externalId),
       writeFailedIds: [],
-      rejectedIds: [],
+      rejectedIds: normalized.rejectedRows?.flatMap(r => {
+        // Un rejet dont l'identifiant canonique est connu est une DISPOSITION, pas un trou.
+        const id = (r as { canonicalId?: string }).canonicalId;
+        return id ? [id] : [];
+      }) ?? [],
       collectionErrorIds: [],
     });
     if (!contract.satisfied) contractBroken = contract.violations;

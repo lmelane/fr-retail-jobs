@@ -22,8 +22,15 @@
  */
 
 export type AdapterEnumerationResult = {
-  /** Les identifiants des offres réellement écrites — ce que `JobSource.externalId` contiendra. */
-  jobExternalIds: readonly string[];
+  /**
+   * Les identifiants de SORTIE D'ADAPTATEUR — les `CandidateJob.externalId` produits par ce balayage.
+   *
+   * Ce ne sont PAS encore des `JobSource` persistées : l'écriture peut encore refuser une ligne (identité),
+   * la retenir, ou échouer. Ce contrat démontre donc « sortie de l'adaptateur ↔ preuve d'énumération ». La
+   * correspondance avec ce qui existe réellement en base relève du contrat de PERSISTANCE, qui compare les
+   * mêmes ensembles au niveau du cycle d'ingestion.
+   */
+  candidateExternalIds: readonly string[];
   /** Les identifiants canoniques que la preuve d'énumération archive. */
   canonicalObservedIds: readonly string[];
   /** Dispositions explicites d'un identifiant observé qui n'est pas publié. */
@@ -41,17 +48,22 @@ const MAX_NAMED = 200;
 export function canonicalIdContract(result: AdapterEnumerationResult): ContractVerdict {
   const violations: string[] = [];
   const observed = new Set(result.canonicalObservedIds);
-  const written = new Set(result.jobExternalIds);
+  const written = new Set(result.candidateExternalIds);
 
+  /**
+   * Une preuve canonique VIDE alors que l'adaptateur a produit des offres est un contrat ROMPU, pas une absence
+   * de contrat : les identifiants existent d'un côté et manquent de l'autre. C'est le cas que masquait la
+   * détection par `canonical.length > 0`.
+   */
   if (written.size > 0 && observed.size === 0) {
-    violations.push(`${written.size} offre(s) écrite(s) alors que la preuve n'archive aucun identifiant canonique`);
+    violations.push(`${written.size} offre(s) produite(s) alors que la preuve n'archive aucun identifiant canonique`);
     return { satisfied: false, violations };
   }
 
   // Invariant 1 — une offre écrite doit avoir été vue par le balayage qui l'atteste.
   for (const id of written) {
     if (!observed.has(id)) {
-      violations.push(`offre écrite « ${id} » absente des identifiants canoniques observés`);
+      violations.push(`offre produite « ${id} » absente des identifiants canoniques observés`);
       if (violations.length >= MAX_NAMED) return { satisfied: false, violations };
     }
   }

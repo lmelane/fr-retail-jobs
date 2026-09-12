@@ -147,7 +147,13 @@ export type AdapterResult = {
       canonicalIds?: string[];
       publisherCounter: string; componentCounters: string[] }> };
   /** Invalid source rows are retained for diagnosis, never silently counted as a complete feed. */
-  rejectedRows?: Array<{ reason: string; raw: unknown }>;
+  rejectedRows?: Array<{ reason: string; raw: unknown;
+    /**
+     * L'identifiant CANONIQUE de la ligne rejetée, quand il est exploitable. Une ligne vue puis rejetée est une
+     * DISPOSITION nommée pour le contrat des identifiants — sans lui, elle manquerait à la preuve et l'offre
+     * correspondante paraîtrait absente.
+     */
+    canonicalId?: string }>;
   /**
    * Explicit proof of enumeration completion; absence is unknown, not complete.
    *
