@@ -1,27 +1,27 @@
 {
- "at": "2026-09-11T14:54:32.103Z",
+ "at": "2026-09-12T07:36:04.999Z",
  "base": "https://modecareers.com",
  "boundedTo": "3 fiches par état, 11 états — contrôle BORNÉ, non exhaustif",
  "visibleOnModeCareers": 78932,
  "markupEmitted": 12,
- "googleEligible": 65099,
+ "googleEligible": 63411,
  "googleEligibleMeaning": "Conforme à la porte technique actuelle de Mode Careers. Ni une garantie d'apparition dans Google Jobs, ni une promesse d'acceptation par Google.",
  "descriptionThresholdOrigin": "Le seuil de 100 caractères est une règle conservatrice interne de Mode Careers, pas un seuil fourni par Google.",
  "googleIneligibleByReason": [
   {
    "reason": "AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF",
-   "postings": 7210,
+   "postings": 8843,
    "sampleIds": [
     "cmtjwf6bp0a7xld2bnithyhup",
+    "cmtjzhlo20002oe2bpxvh5rck",
+    "cmtjzhlp5000eoe2bjtroay97",
     "cmtjzhlpp000moe2bhockseix",
-    "cmtjzhmbc008foe2bmboiwmhm",
-    "cmtjzhmc0008qoe2b6v7zquyz",
-    "cmtjzhmff00aaoe2bqkp385wb",
-    "cmtjzhmqi00eqoe2b2flkkj0o",
-    "cmtjzhn3v00k2oe2b0szy09wh",
-    "cmtjzhn6600kxoe2b0lqbww42",
-    "cmtjzhn9900m5oe2bjuy37ecb",
-    "cmtjzhnii00qgoe2bidsz8vuy"
+    "cmtjzhlr30016oe2begzqr3wn",
+    "cmtjzhlul002moe2b85v2yx2e",
+    "cmtjzhly6003xoe2bevcvb0uh",
+    "cmtjzhlzo004hoe2byc87iy8t",
+    "cmtjzhm4t0064oe2bxrdl25vg",
+    "cmtjzhm6j006woe2b60oux3ny"
    ]
   },
   {
@@ -90,18 +90,18 @@
   },
   {
    "reason": "VALID_THROUGH_EXPIRED",
-   "postings": 257,
+   "postings": 321,
    "sampleIds": [
+    "cmtk1x79o00m6nv2b8z1hdarq",
+    "cmtk1x7bb00minv2bcs2xbm66",
     "cmtk1x7ep00mynv2b1el1hv8l",
+    "cmtk1x7ii00nenv2b3o7fpn55",
     "cmtk1x7jh00ninv2b33p7wx18",
+    "cmtk1x7kk00nmnv2b7hi4ko0p",
+    "cmtk1z3n5058lnv2bpy1ad44u",
     "cmtk20oqx07wonv2bg9ngzv1c",
     "cmtk227wk0axqnv2b7rcd38sj",
-    "cmtk239v30cpknv2bto4mcy8s",
-    "cmtk2abeb0p10nv2b0nq0e1pj",
-    "cmtk6y5z708nanf2bl1md402x",
-    "cmtkntfi70a6qo52b4yy1m9yl",
-    "cmtkoe3km01dcmr2b59mwzga3",
-    "cmtlv81rc06m53nk5mcjmfpa6"
+    "cmtk229mh0b5anv2bn2rnk0oy"
    ]
   },
   {
@@ -160,22 +160,22 @@
    ]
   }
  ],
- "googleIneligibleTotal": 13833,
+ "googleIneligibleTotal": 15521,
  "locationMeasures": [
   {
    "measure": "NO_INDEPENDENT_PROOF",
-   "postings": 7210,
+   "postings": 8843,
    "sampleIds": [
     "cmtjwf6bp0a7xld2bnithyhup",
+    "cmtjzhlo20002oe2bpxvh5rck",
+    "cmtjzhlp5000eoe2bjtroay97",
     "cmtjzhlpp000moe2bhockseix",
-    "cmtjzhmbc008foe2bmboiwmhm",
-    "cmtjzhmc0008qoe2b6v7zquyz",
-    "cmtjzhmff00aaoe2bqkp385wb",
-    "cmtjzhmqi00eqoe2b2flkkj0o",
-    "cmtjzhn3v00k2oe2b0szy09wh",
-    "cmtjzhn6600kxoe2b0lqbww42",
-    "cmtjzhn9900m5oe2bjuy37ecb",
-    "cmtjzhnii00qgoe2bidsz8vuy"
+    "cmtjzhlr30016oe2begzqr3wn",
+    "cmtjzhlul002moe2b85v2yx2e",
+    "cmtjzhly6003xoe2bevcvb0uh",
+    "cmtjzhlzo004hoe2byc87iy8t",
+    "cmtjzhm4t0064oe2bxrdl25vg",
+    "cmtjzhm6j006woe2b60oux3ny"
    ]
   },
   {
@@ -195,7 +195,7 @@
    ]
   },
   {
-   "measure": "POSTAL_COUNTRY_VALIDATED",
+   "measure": "POSTAL_FORMAT_COMPATIBLE",
    "postings": 1633,
    "sampleIds": [
     "cmtjzhlo20002oe2bpxvh5rck",
@@ -535,6 +535,46 @@
    "sampled": 3,
    "checks": [
     {
+     "id": "cmtk1x79o00m6nv2b8z1hdarq",
+     "databasePostedAt": "2026-09-01T02:00:00.000Z",
+     "databaseValidThrough": "2026-09-11T22:00:00.000Z",
+     "redirectedTo": "/offre/horloger-restaurateur-regleur-h-f-cmtk1x79o00m6nv2b8z1hdarq",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/horloger-restaurateur-regleur-h-f-cmtk1x79o00m6nv2b8z1hdarq",
+     "robots": null,
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 41091,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
+     "id": "cmtk1x7bb00minv2bcs2xbm66",
+     "databasePostedAt": "2026-08-29T02:00:00.000Z",
+     "databaseValidThrough": "2026-09-11T22:00:00.000Z",
+     "redirectedTo": "/offre/charge-d-industrialisation-prototypes-h-f-cmtk1x7bb00minv2bcs2xbm66",
+     "jsonLdBreakout": false,
+     "status": 200,
+     "location": "/offre/charge-d-industrialisation-prototypes-h-f-cmtk1x7bb00minv2bcs2xbm66",
+     "robots": null,
+     "hasJobPosting": false,
+     "unparsableBlocks": 0,
+     "schema": null,
+     "dangerous": [],
+     "bytes": 43762,
+     "httpOk": true,
+     "schemaOk": true,
+     "dateInvented": false,
+     "expiryInvented": false,
+     "verdict": "PASS"
+    },
+    {
      "id": "cmtk1x7ep00mynv2b1el1hv8l",
      "databasePostedAt": "2026-08-23T02:00:00.000Z",
      "databaseValidThrough": "2026-09-06T22:00:00.000Z",
@@ -548,46 +588,6 @@
      "schema": null,
      "dangerous": [],
      "bytes": 43790,
-     "httpOk": true,
-     "schemaOk": true,
-     "dateInvented": false,
-     "expiryInvented": false,
-     "verdict": "PASS"
-    },
-    {
-     "id": "cmtk1x7jh00ninv2b33p7wx18",
-     "databasePostedAt": "2026-08-11T02:00:00.000Z",
-     "databaseValidThrough": "2026-09-06T22:00:00.000Z",
-     "redirectedTo": "/offre/responsable-d-atelier-assemblage-sequentiel-h-f-cmtk1x7jh00ninv2b33p7wx18",
-     "jsonLdBreakout": false,
-     "status": 200,
-     "location": "/offre/responsable-d-atelier-assemblage-sequentiel-h-f-cmtk1x7jh00ninv2b33p7wx18",
-     "robots": null,
-     "hasJobPosting": false,
-     "unparsableBlocks": 0,
-     "schema": null,
-     "dangerous": [],
-     "bytes": 42293,
-     "httpOk": true,
-     "schemaOk": true,
-     "dateInvented": false,
-     "expiryInvented": false,
-     "verdict": "PASS"
-    },
-    {
-     "id": "cmtk20oqx07wonv2bg9ngzv1c",
-     "databasePostedAt": "2026-08-10T00:00:00.000Z",
-     "databaseValidThrough": "2026-09-10T00:00:00.000Z",
-     "redirectedTo": "/offre/visual-editing-intern-vanity-fair-italy-cmtk20oqx07wonv2bg9ngzv1c",
-     "jsonLdBreakout": false,
-     "status": 200,
-     "location": "/offre/visual-editing-intern-vanity-fair-italy-cmtk20oqx07wonv2bg9ngzv1c",
-     "robots": null,
-     "hasJobPosting": false,
-     "unparsableBlocks": 0,
-     "schema": null,
-     "dangerous": [],
-     "bytes": 43471,
      "httpOk": true,
      "schemaOk": true,
      "dateInvented": false,
