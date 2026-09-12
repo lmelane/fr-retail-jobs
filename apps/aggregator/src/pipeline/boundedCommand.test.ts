@@ -1,5 +1,16 @@
 import { describe, it, expect } from 'vitest';
 import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
+
+/**
+ * Le chemin est résolu depuis CE FICHIER, jamais depuis le répertoire courant.
+ *
+ * `test:unit` s'exécute depuis la racine du dépôt et `test:integration` depuis `apps/aggregator` : un chemin
+ * relatif au cwd fonctionne dans l'un et se dédouble dans l'autre (`apps/aggregator/apps/aggregator/…`). La CI
+ * l'a vu, ma vérification locale non — je n'avais lancé vitest que depuis la racine.
+ */
+const SCRIPT = resolve(dirname(fileURLToPath(import.meta.url)), '../../scripts/ops/bounded-command.py');
 
 /**
  * LA COMMANDE BORNÉE — ce qui la rend sûre doit être vérifié, pas relu.
@@ -9,7 +20,7 @@ import { execFileSync } from 'node:child_process';
  * un état borné inutilisable. Et une commande qui oublierait son allowlist lancerait les 440 sources.
  */
 const build = (runName: string, keys: string) =>
-  execFileSync('python3', ['apps/aggregator/scripts/ops/bounded-command.py', runName, keys], { encoding: 'utf8' });
+  execFileSync('python3', [SCRIPT, runName, keys], { encoding: 'utf8' });
 
 describe('bounded-command — la commande de démarrage d\'une ingestion bornée', () => {
   const keys = 'mecca,beiersdorf';
