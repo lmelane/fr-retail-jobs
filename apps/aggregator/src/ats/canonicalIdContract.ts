@@ -1,0 +1,70 @@
+/**
+ * LE CONTRAT DES IDENTIFIANTS CANONIQUES — imposé à la source, jamais compensé par un seuil.
+ *
+ * Une absence ne peut être prouvée qu'en comparant l'ensemble OBSERVÉ à l'ensemble STOCKÉ. Cela n'a de sens que
+ * si les deux parlent le même langage. Or ils divergeaient : mesuré le 2026-09-12, la preuve de
+ * `american-vintage-dr` énumérait 31 « diffusions » (`4594925-72559621`) quand la base stocke 37 « annonces »
+ * (`4459569`) — recouvrement NUL, et 37 offres vivantes déclarées absentes.
+ *
+ * POURQUOI PAS UN SEUIL DE RECOUVREMENT. « Un seul identifiant commun suffit » détecte le cas extrême à 0 %,
+ * mais laisse passer la dérive partielle : 1 identifiant à l'ancien format et 99 au nouveau produiraient
+ * 99 fausses absences en paraissant « comparables ». Et tout seuil chiffré serait arbitraire : 80 % de
+ * recouvrement, c'est aussi bien « 20 % d'offres disparues » que « 20 % d'identifiants cassés ». Le ratio ne
+ * distingue pas les deux ; seule la structure le fait.
+ *
+ * LA RÈGLE, donc, en deux invariants :
+ *   1. tout `job.externalId` écrit DOIT figurer dans les identifiants canoniques observés ;
+ *   2. tout identifiant canonique observé qui ne devient pas une offre DOIT avoir une disposition NOMMÉE —
+ *      retenu, refusé à l'écriture, rejeté avec motif, ou erreur de collecte.
+ *
+ * Un manquement n'est pas un avertissement : c'est l'aveu que l'ensemble observé ne peut pas servir de
+ * référence, donc que cette source ne peut prouver aucune absence (`UNVERIFIABLE`).
+ */
+
+export type AdapterEnumerationResult = {
+  /** Les identifiants des offres réellement écrites — ce que `JobSource.externalId` contiendra. */
+  jobExternalIds: readonly string[];
+  /** Les identifiants canoniques que la preuve d'énumération archive. */
+  canonicalObservedIds: readonly string[];
+  /** Dispositions explicites d'un identifiant observé qui n'est pas publié. */
+  heldIds: readonly string[];
+  writeFailedIds: readonly string[];
+  rejectedIds: readonly string[];
+  collectionErrorIds: readonly string[];
+};
+
+export type ContractVerdict = { satisfied: boolean; violations: string[] };
+
+/** Combien de violations sont nommées au plus : au-delà, le message resterait illisible. */
+const MAX_NAMED = 200;
+
+export function canonicalIdContract(result: AdapterEnumerationResult): ContractVerdict {
+  const violations: string[] = [];
+  const observed = new Set(result.canonicalObservedIds);
+  const written = new Set(result.jobExternalIds);
+
+  if (written.size > 0 && observed.size === 0) {
+    violations.push(`${written.size} offre(s) écrite(s) alors que la preuve n'archive aucun identifiant canonique`);
+    return { satisfied: false, violations };
+  }
+
+  // Invariant 1 — une offre écrite doit avoir été vue par le balayage qui l'atteste.
+  for (const id of written) {
+    if (!observed.has(id)) {
+      violations.push(`offre écrite « ${id} » absente des identifiants canoniques observés`);
+      if (violations.length >= MAX_NAMED) return { satisfied: false, violations };
+    }
+  }
+
+  // Invariant 2 — un identifiant vu mais non publié doit dire POURQUOI.
+  const disposed = new Set([
+    ...result.heldIds, ...result.writeFailedIds, ...result.rejectedIds, ...result.collectionErrorIds,
+  ]);
+  for (const id of observed) {
+    if (written.has(id) || disposed.has(id)) continue;
+    violations.push(`identifiant observé « ${id} » sans offre ni disposition explicite`);
+    if (violations.length >= MAX_NAMED) return { satisfied: false, violations };
+  }
+
+  return { satisfied: violations.length === 0, violations };
+}

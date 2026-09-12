@@ -1,3 +1,4 @@
+import { canonicalIdContract } from './canonicalIdContract.js';
 import { fetchJobaffinityWordpressJobs } from './adapters/jobaffinityWordpress.js';
 import { fetchFlatchrJobs } from './adapters/flatchr.js';
 import type { AtsType } from '@prisma/client';
@@ -98,12 +99,46 @@ export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult):
     unreadableRows,
   });
 
+  /**
+   * LE CONTRAT DES IDENTIFIANTS CANONIQUES, vérifié ici pour TOUS les adaptateurs qui archivent des
+   * identifiants canoniques.
+   *
+   * Une offre écrite qui ne figure pas dans la preuve signifie que les deux chemins ne produisent pas le même
+   * identifiant : elle paraîtrait absente au refresh suivant. Mesuré le 2026-09-12 sur
+   * `american-vintage-dr` — 37 offres vivantes, aucune dans la preuve, parce que celle-ci énumérait des
+   * diffusions et la base des annonces. La conséquence doit être la PERTE de la preuve d'exhaustivité, jamais
+   * une fausse absence : une source qui ne sait pas nommer ce qu'elle a vu ne peut rien faire disparaître.
+   *
+   * Un adaptateur qui n'archive PAS de `canonicalIds` n'est pas jugé ici : il ne prouvera simplement aucune
+   * absence, la prévisualisation le classant `UNVERIFIABLE` (cas beiersdorf).
+   */
+  const canonical = normalized.enumeration?.pageEvidence?.flatMap(pe => pe.canonicalIds ?? []);
+  let contractBroken: string[] = [];
+  if (canonical && canonical.length > 0) {
+    const contract = canonicalIdContract({
+      jobExternalIds: normalized.jobs.map(job => job.externalId),
+      canonicalObservedIds: canonical,
+      // Les offres retenues ont bien été VUES : leur disposition est nommée par le motif de retenue.
+      heldIds: normalized.jobs.filter(job => job.publicationHold).map(job => job.externalId),
+      writeFailedIds: [],
+      rejectedIds: [],
+      collectionErrorIds: [],
+    });
+    if (!contract.satisfied) contractBroken = contract.violations;
+  }
+
+  const idsCoherent = unique === normalized.jobs.length && contractBroken.length === 0;
+
   return {
     ...normalized,
     truncated,
-    // Un doublon d'identifiant dans le lot signifie qu'on ne sait pas ce qu'on a lu : la preuve tombe.
-    complete: unique === normalized.jobs.length ? verdictToComplete(verdict) : false,
-    enumerationVerdict: unique === normalized.jobs.length ? verdict : 'REFUTED',
+    // Un doublon d'identifiant dans le lot, ou une offre écrite absente de la preuve, signifie qu'on ne sait pas
+    // ce qu'on a lu : la preuve tombe.
+    complete: idsCoherent ? verdictToComplete(verdict) : false,
+    enumerationVerdict: idsCoherent ? verdict : 'REFUTED',
+    ...(contractBroken.length ? { enumeration: { ...normalized.enumeration!,
+      issues: [...(normalized.enumeration?.issues ?? []), 'CANONICAL_ID_CONTRACT_BROKEN'],
+      canonicalIdViolations: contractBroken.slice(0, 20) } } : {}),
   };
 }
 

@@ -103,24 +103,34 @@ export function sourceEligibility(run: SourceRunFacts | undefined, evidence: Enu
  * « la source ne l'a plus listée » et « notre run ne l'a pas ré-écrite ».
  */
 /**
- * LES IDENTIFIANTS OBSERVÉS PARLENT-ILS LE MÊME LANGAGE QUE CEUX STOCKÉS ?
+ * LES IDENTIFIANTS OBSERVÉS SONT-ILS COMPARABLES À CEUX STOCKÉS ?
  *
- * Mesuré le 2026-09-12, et c'est le défaut qui aurait fermé des offres vivantes : `american-vintage-dr`
- * archive des identifiants COMPOSITES (`4589457-125350751`) là où la base stocke l'identifiant simple
- * (`4459569`). Comparés tels quels, **100 % des offres paraissaient absentes** — alors que la source venait
- * d'en lire 31 sans une erreur.
+ * Le contrôle ne repose PAS sur un taux de recouvrement. Un ratio ne distingue pas « 20 % d'offres disparues »
+ * de « 20 % d'identifiants cassés », et « un seul recouvrement suffit » laisserait passer 1 ancien format
+ * contre 99 nouveaux — soit 99 fausses absences.
  *
- * Les cinq autres sources correspondent à 84–89 %, l'écart étant les absences réelles. Un recouvrement NUL
- * n'est donc pas une disparition de masse : c'est un vocabulaire différent, et la seule conclusion honnête est
- * « je ne peux pas comparer ».
+ * La règle est structurelle et vient du contrat imposé à la source (`ats/canonicalIdContract.ts`) : chaque
+ * offre STOCKÉE de cette source doit figurer dans l'ensemble observé, OU avoir une disposition nommée. Une
+ * offre stockée que la preuve ne mentionne ni comme vue ni comme disposée signale que les deux chemins ne
+ * produisent pas le même identifiant : on ne peut alors rien conclure.
  *
- * Le seuil est délibérément très bas (une seule correspondance suffit) : il ne mesure pas la qualité de la
- * collecte, il détecte l'incomparabilité. Un board réellement vidé à 100 % existe — mais il aurait alors lu
- * zéro offre, et sa recevabilité tomberait ailleurs.
+ * Le cas mesuré : `american-vintage-dr` archivait des diffusions (`4594925-72559621`) là où la base stocke des
+ * annonces (`4459569`). AUCUNE des 37 offres stockées n'apparaissait — ce n'est pas 37 disparitions, c'est un
+ * vocabulaire différent.
  */
-export function identifiersComparable(observed: ReadonlySet<string>, stored: readonly string[]): boolean {
-  if (observed.size === 0 || stored.length === 0) return false;
-  return stored.some((id) => observed.has(id));
+export function identifiersComparable(
+  observed: ReadonlySet<string>,
+  stored: readonly string[],
+  disposed: ReadonlySet<string> = new Set(),
+): boolean {
+  if (stored.length === 0) return false;
+  if (observed.size === 0) return false;
+  /**
+   * Si AUCUNE offre stockée n'est ni observée ni disposée, l'ensemble observé ne décrit pas ce board : les
+   * identifiants sont incomparables. Dès qu'une seule l'est, le vocabulaire est partagé et l'écart restant
+   * s'interprète offre par offre — c'est là que le contrat de la source, lui, exige l'exhaustivité.
+   */
+  return stored.some((id) => observed.has(id) || disposed.has(id));
 }
 
 export function representationState(

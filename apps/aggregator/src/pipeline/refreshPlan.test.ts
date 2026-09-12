@@ -168,3 +168,29 @@ describe('identifiersComparable — un recouvrement nul est une incomparabilité
     expect(identifiersComparable(new Set(['a']), [])).toBe(false);
   });
 });
+
+/**
+ * LA DÉRIVE PARTIELLE — pourquoi la protection ne peut PAS venir d'un ratio.
+ *
+ * 1 identifiant à l'ancien format, 99 au nouveau : un seuil de recouvrement aurait déclaré les ensembles
+ * comparables et produit 99 fausses absences. C'est le CONTRAT DE LA SOURCE
+ * (`ats/canonicalIdContract.ts`) qui refuse ce cas, en exigeant que CHAQUE offre écrite figure dans la preuve —
+ * pas une proportion d'entre elles.
+ *
+ * `identifiersComparable` ne répond qu'à une question plus modeste, et le dit : « cet ensemble décrit-il ce
+ * board ? ». Il attrape le vocabulaire entièrement étranger ; il n'a jamais vocation à mesurer une dérive
+ * partielle, et ne doit donc pas être pris pour la garde qui le fait.
+ */
+describe('identifiersComparable — ce qu\'il garantit, et ce qu\'il ne garantit pas', () => {
+  it('une disposition nommée compte comme une correspondance : l\'offre a bien été traitée', () => {
+    // Vue puis retenue : le vocabulaire est partagé, même si l'identifiant n'est pas dans `observed`.
+    expect(identifiersComparable(new Set(['autre']), ['retenue-1'], new Set(['retenue-1']))).toBe(true);
+  });
+
+  it('dérive PARTIELLE : non détectée ici — c\'est le contrat de la source qui la refuse', () => {
+    const stored = ['legacy-1', ...Array.from({ length: 99 }, (_, i) => `legacy-${i + 2}`)];
+    const observed = new Set(['legacy-1', ...Array.from({ length: 99 }, (_, i) => `nouveau/${i + 2}`)]);
+    // Documenté comme une LIMITE assumée de cette fonction, pas comme un comportement souhaitable.
+    expect(identifiersComparable(observed, stored)).toBe(true);
+  });
+});
