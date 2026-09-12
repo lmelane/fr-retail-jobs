@@ -31,7 +31,8 @@ refresh ne touche que ce qui a été revu.
 | [`cycle-contracts.mts`](cycle-contracts.mts) | Les deux contrats d'un cycle, lus sur la base : `canonicalObservedIds = persistés ∪ retenus ∪ échecs ∪ rejets ∪ erreurs`. Tout est corrélé au **même `runId`** — une retenue historique n'est pas une retenue du cycle. |
 | [`refresh-preview.mts`](refresh-preview.mts) | Ce que le refresh ferait, par identifiant, sur le planificateur **commun**. Lit `canonicalIds`, jamais `ids`. |
 | [`freeze-manifest.mts`](freeze-manifest.mts) | Fige et hache le plan. **Refuse** une entrée d'une source non recevable, un état n'autorisant pas la désactivation, une ligne déjà inactive. |
-| [`bounded-refresh.sh`](bounded-refresh.sh) | Le refresh borné. **Refuse de démarrer si `INGEST_ONLY_KEYS` est posé** : un refresh ne collecte rien. Un manifeste vide arrête la chaîne en succès. |
+| [`bounded-refresh.sh`](bounded-refresh.sh) | Le refresh borné. **Refuse de démarrer si `INGEST_ONLY_KEYS` est posé** : un refresh ne collecte rien. Un manifeste vide arrête la chaîne en succès. La commande déployée est bornée **deux fois** : `REFRESH_ONLY_KEYS` *et* la liste explicite des `JobSource` du manifeste. |
+| [`railway-service.py`](railway-service.py) `execute` | Refuse de déclencher une exécution si le déploiement n'est pas SUCCESS, si le commit diffère, si la commande déployée n'est pas celle qu'on a posée, si le périmètre déployé n'est pas **exactement** l'allowlist attendue (via `INGEST_ONLY_KEYS` **ou** `REFRESH_ONLY_KEYS`), ou s'il porte **les deux** — un état incohérent n'est pas deux fois plus sûr. Sans cette garde, un `execute` lancé après un redéploiement automatique relancerait le pipeline **complet** en production. Contre-exemples en test : [`src/ops/executeGuard.test.ts`](../../src/ops/executeGuard.test.ts). |
 | [`refresh-audit.mts`](refresh-audit.mts) | `touchedIds` = manifeste par **ensembles**, conséquences offre par offre, invariants, retenues, runs orphelins. |
 | [`refresh-parity.mts`](refresh-parity.mts) | Les dix situations qui comptent, contre le **vrai** `runRefresh` sur clone — dont « état modifié après le manifeste » et « ligne hors manifeste ». |
 | [`cycle-compare.mts`](cycle-compare.mts) | Cycle 1 contre cycle 2, **par identifiant**. Seule l'intersection des absences des deux cycles peut fonder une fermeture. |
@@ -44,6 +45,21 @@ Elle exige que l'identifiant ne figure pas dans l'ensemble **réellement observ�
 `pageEvidence[].canonicalIds` et corrélé au run par `runId`. Et cet ensemble doit parler le même langage que la
 base : mesuré le 2026-09-12, un adaptateur archivait des *diffusions* là où la base stocke des *annonces* —
 recouvrement nul, 37 offres vivantes déclarées absentes.
+
+### Une garde qui refuse un état conforme est un défaut, pas une sécurité
+
+Mesuré le 2026-09-12 : la garde d'`execute` exigeait `INGEST_ONLY_KEYS` dans la commande déployée. Or un
+refresh porte `REFRESH_ONLY_KEYS` — **un refresh ne collecte rien**, il ne peut donc pas porter la variable
+d'ingestion. La garde était **inatteignable pour un refresh, par construction** : elle n'avait jamais été
+exercée sur ce chemin, et elle a bloqué net le premier refresh conforme.
+
+Elle a échoué du bon côté — rien n'a été muté, la commande normale a été restaurée, l'état vérifié inchangé
+(79 049 offres actives avant comme après). Mais une garde qui refuse le conforme finit par être contournée
+« juste cette fois », et c'est alors la garde elle-même qu'on perd.
+
+La règle qui en sort : **ce qui compte n'est pas le nom de la variable, c'est que le périmètre déployé soit
+exactement l'attendu** — et toute garde doit être exercée par un contre-exemple sur *chacun* des chemins
+qu'elle prétend protéger, sans quoi elle n'est vérifiée que sur celui qu'on a essayé.
 
 ### Ce que le protocole consomme, et pourquoi il doit le rendre
 
