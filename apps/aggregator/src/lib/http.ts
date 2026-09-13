@@ -2,6 +2,8 @@ import { log } from '../observability/logger.js';
 import { assertSourceRunning, sourceSignal, sourceDelay } from './sourceBudget.js';
 import { assertPublicUrl, isPublicHttpUrl, BlockedUrlError } from './ssrf.js';
 import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
+import { rateLimitKeyFor } from './rateLimitKey.js';
+import { record429, noteRequest, BenchmarkStoppedOn429Error } from '../observability/rateLimitSignal.js';
 import { getWafCookie, isWafChallenge, primeWafCookie, WafChallengeError } from './wafToken.js';
 import { detectChallenge } from './responseIntegrity.js';
 import { publicDispatcher } from './publicTransport.js';
@@ -186,6 +188,9 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         // Télémétrie PAR HÔTE : posée au point de passage unique de toute requête sortante, pour que le
         // compte soit total et non celui d'un chemin particulier.
         recordAttempt(url, i > 0);
+        // La pression par clé de tenant, alimentée par les VRAIES tentatives : c'est elle qui situe la limite
+        // quand un 429 tombe.
+        noteRequest(rateLimitKeyFor(url));
         startedAt = Date.now();
         timer = setTimeout(() => controller.abort(), timeoutMs);
         return fetchFollowingSafely(
@@ -251,16 +256,35 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
        * limiter parks itself. Retry-After is honoured when the host names it.
        */
       if (response.status === 429) {
-        const asked = Number(response.headers.get('retry-after'));
-        const waitMs = Number.isFinite(asked) && asked > 0 ? asked * 1000 : 20_000 * (i + 1);
+        const raw = response.headers?.get('retry-after') ?? null;
+        // `Retry-After` accepte des SECONDES ou une DATE HTTP : ne lire que le nombre ignorerait la moitié de
+        // la norme, et rendrait NaN sur les hôtes qui datent leur réponse.
+        const asSeconds = Number(raw);
+        const asDate = raw ? Date.parse(raw) : NaN;
+        const askedMs = Number.isFinite(asSeconds) && asSeconds > 0 ? asSeconds * 1000
+          : Number.isFinite(asDate) ? Math.max(0, asDate - Date.now()) : 0;
+        const waitMs = Math.min(askedMs > 0 ? askedMs : 20_000 * (i + 1), 90_000);
+        // Le cooldown est posé sur la CLÉ DE TENANT : toutes ses sources attendent, pas seulement ce worker.
+        reportThrottle(url, askedMs > 0 ? askedMs : null);
+        const { shouldStop, hit } = record429({
+          rateLimitKey: rateLimitKeyFor(url), host: (() => { try { return new URL(url).hostname; } catch { return url; } })(),
+          sourceKey: process.env.CURRENT_SOURCE_KEY ?? null, url: url.slice(0, 200),
+          attempt: i + 1, retryAfterRaw: raw, appliedDelayMs: waitMs, activeConcurrency: 0,
+        });
         if (timer) clearTimeout(timer);
-        await sourceDelay(Math.min(waitMs, 90_000));
+        // Un passage de MESURE s'arrête ici : continuer à pousser après avoir trouvé la limite n'apprend rien
+        // et sollicite un portail tiers pour rien.
+        if (shouldStop) throw new BenchmarkStoppedOn429Error(hit);
+        await sourceDelay(waitMs);
         continue;
       }
     } catch (error) {
       assertSourceRunning();
       init.signal?.throwIfAborted();
       // A blocked URL will never become fetchable — do not waste retries on it.
+      // L'arrêt d'un passage de MESURE est délibéré : le re-tenter reviendrait à ignorer la décision d'arrêt
+      // — et à continuer de solliciter un portail qui vient de nous refuser.
+      if (error instanceof BenchmarkStoppedOn429Error) { if (timer) clearTimeout(timer); throw error; }
       if (error instanceof BlockedUrlError || error instanceof WafChallengeError || error instanceof HttpStatusError) {
         if (timer) clearTimeout(timer);
         throw error;
