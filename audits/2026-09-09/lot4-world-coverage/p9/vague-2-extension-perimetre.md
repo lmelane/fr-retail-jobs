@@ -65,3 +65,69 @@ dossier.
 
 Les 7 dossiers reçoivent chacun un verdict final. Un dossier non recevable est **exclu avec motif exact**, et
 **jamais remplacé en silence** par un autre après le gel.
+
+
+---
+
+# Résultats de la qualification (2026-09-14)
+
+## Deux dossiers renvoyés à des décisions ANTÉRIEURES, non rouvertes
+
+| Dossier | Verdict antérieur | Ce qu'il dit |
+|---|---|---|
+| **GALDERMA** | `sectorVerdict: OUT` | « dermatologie médicale et esthétique (Cetaphil, Restylane, injectables) — pharma/dispositifs, hors périmètre beauté grand public ; **à trancher si Loïc inclut la dermo-cosmétique** » |
+| **KSI MODE** | `sectorVerdict: REVIEW` | « KS Groupe (KSI Mode, KSI Retail) : distributeur multimarque/franchisé de prêt-à-porter — à confirmer » |
+
+Ces verdicts existaient avant P9. **Verdict : `EXCLU — HORS SECTEUR (décision antérieure)`** pour Galderma,
+**`BLOQUÉ — DÉCISION PROPRIÉTAIRE`** pour KSI Mode. Aucun des deux n'est rouvert de ma propre initiative.
+
+## Hugo Boss et Skechers : le portail est prouvé, l'ADAPTATEUR ne suffit pas
+
+| | Hugo Boss | Skechers |
+|---|---|---|
+| Portail | `careers.hugoboss.com` | `careers.skechers.com` |
+| Depuis | `group.hugoboss.com/en/career` (redirection officielle) | `about.skechers.com/careers/` |
+| ATS | Phenom (tenant `HUBOGLOBAL`) | Phenom |
+| Domaine officiel | ✔ | ✔ |
+
+Les deux sont sur leur propre domaine, et Phenom est une famille **déjà maîtrisée** — Foot Locker en tire
+2 842 offres. L'hypothèse « configuration + preuve, sans code » était donc raisonnable.
+
+**Elle est fausse, et c'est mesuré :**
+
+```
+careers.footlocker.com/api/jobs?limit=5&page=1  ->  HTTP 200
+careers.hugoboss.com/api/jobs?limit=5&page=1    ->  HTTP 500
+careers.skechers.com/api/jobs?limit=5&page=1    ->  HTTP 500
+```
+
+**Phenom n'est pas une API uniforme** : chaque tenant déploie sa propre variante. L'adaptateur actuel encode
+le dialecte de Foot Locker.
+
+**Verdict : `BLOQUÉ — NOUVELLE VARIANTE ATS À DÉVELOPPER` (catégorie F).** Le développement s'isole et
+n'empêche aucun autre dossier — c'est précisément la règle du brief §8.
+
+*Ce que ce constat évite* : configurer les deux sources « comme Foot Locker » les aurait fait entrer BROKEN au
+catalogue, avec deux Maisons majeures affichant zéro offre.
+
+## Zadig & Voltaire, Armor Lux, Gérard Darel
+
+Aucun lien carrière lisible depuis la page d'accueil (HTTP 200, aucun `href` correspondant). Le portail reste
+à établir — recherche à mener, pas un refus.
+
+**Verdict provisoire : `BLOQUÉ — PORTAIL OFFICIEL NON ÉTABLI`**, condition de reprise : identifier le portail
+carrière officiel et le prouver par page archivée.
+
+## État de la vague 2
+
+| Verdict | Dossiers |
+|---|--:|
+| `EXCLU — SOURCE_DÉJÀ_COUVERTE` (au réexamen, avant gel) | 5 |
+| `EXCLU — HORS SECTEUR (décision antérieure)` | 1 (Galderma) |
+| `BLOQUÉ — DÉCISION PROPRIÉTAIRE` | 1 (KSI Mode) |
+| `BLOQUÉ — NOUVELLE VARIANTE ATS` | 2 (Hugo Boss, Skechers) |
+| `BLOQUÉ — PORTAIL NON ÉTABLI` | 3 (Zadig & Voltaire, Armor Lux, Gérard Darel) |
+
+**Aucune offre unique ajoutée par cette vague en l'état.** Le vivier « le plus proche de l'intégration » ne
+contenait aucun dossier intégrable sans travail supplémentaire — c'est le fait mesuré, et il oriente la suite
+bien mieux qu'un dossier facile choisi ailleurs.
