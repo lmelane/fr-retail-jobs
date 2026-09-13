@@ -16,6 +16,7 @@
  */
 
 import { assertSourceRunning, sourceDelay, sourceSignal } from './sourceBudget.js';
+import { rateLimitKeyFor } from './rateLimitKey.js';
 
 type HostState = {
   /** Requests in flight to this host right now. */
@@ -45,12 +46,18 @@ function stateFor(host: string): HostState {
   return state;
 }
 
+/**
+ * LA CLÉ DU BUDGET — le tenant, pas le nom d'hôte.
+ *
+ * Mesuré en P8 : `urbn-hub` éclate en HUIT sous-domaines iCIMS d'un même client, à qui la porte accordait
+ * huit budgets séparés — soit huit fois la cadence qu'un seul client devrait obtenir. À l'inverse, quatre
+ * sources Fast Retailing partagent un hostname et donc, déjà, un budget.
+ *
+ * On garde donc le hostname pour le DIAGNOSTIC (latences, statuts, télémétrie) et on limite sur le TENANT.
+ * Le repli reste le hostname : conservateur, il protège autant qu'avant et jamais moins.
+ */
 function hostOf(url: string): string {
-  try {
-    return new URL(url).host;
-  } catch {
-    return url;
-  }
+  return rateLimitKeyFor(url);
 }
 
 /**
