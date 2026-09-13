@@ -1,0 +1,168 @@
+{
+  "corpusLabel": "T2-INVALIDATED-BY-CONCURRENT-DEPLOYMENT",
+  "validForCapacity": false,
+  "invalidatedReason": "CONCURRENT_DEPLOYMENT",
+  "pipelineRunStatus": "INTERRUPTED",
+  "pipelineRunId": "73fd3afd-8992-4ebb-bc3b-640aa5d1a9bc",
+  "commit": "5339b73ea541968d2bd830391fb3b8b798cc89fc",
+  "runName": "p7-bounded-ingest-20260913T085602Z",
+  "startedAt": "2026-09-13T09:00:13Z",
+  "finishedAt": "2026-09-13T09:02:51Z",
+  "durationSeconds": 88.8,
+  "signal": "SIGTERM",
+  "deploymentIdThatKilledIt": "915ff568",
+  "deployedCommitThatKilledIt": "a86e162",
+  "incompleteSources": [
+    "knitwell-us-retail",
+    "nordstrom"
+  ],
+  "perSource": [
+    {
+      "source": "knitwell-us-retail",
+      "status": "DEGRADED",
+      "fetched": 1999,
+      "errors": 1,
+      "complete": false,
+      "truncated": false
+    },
+    {
+      "source": "mango",
+      "status": "OK",
+      "fetched": 1627,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "nordstrom",
+      "status": "DEGRADED",
+      "fetched": 1299,
+      "errors": 0,
+      "complete": false,
+      "truncated": false
+    },
+    {
+      "source": "urbn-hub",
+      "status": "OK",
+      "fetched": 1370,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "richemont-workday",
+      "status": "OK",
+      "fetched": 1362,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "saks",
+      "status": "OK",
+      "fetched": 742,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "deckers",
+      "status": "OK",
+      "fetched": 409,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "uniqlo-us-retail",
+      "status": "OK",
+      "fetched": 345,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "jean-paul-gaultier-5",
+      "status": "OK",
+      "fetched": 227,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "aptar-beauty",
+      "status": "DEGRADED",
+      "fetched": 227,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "mecca",
+      "status": "OK",
+      "fetched": 181,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "beiersdorf",
+      "status": "OK",
+      "fetched": 135,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "lagardere-travel-retail",
+      "status": "OK",
+      "fetched": 109,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "dr-pierre-ricaud",
+      "status": "OK",
+      "fetched": 64,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "lindex-easycruit",
+      "status": "OK",
+      "fetched": 41,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "saltrock-harri",
+      "status": "OK",
+      "fetched": 32,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "american-vintage-dr",
+      "status": "OK",
+      "fetched": 31,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    },
+    {
+      "source": "ganni-talentrecruiter",
+      "status": "OK",
+      "fetched": 15,
+      "errors": 0,
+      "complete": true,
+      "truncated": false
+    }
+  ],
+  "note": "Déploiement a86e162 déclenché pendant le run : SIGTERM à 88,8 s d'une collecte prévue ~15 min. knitwell-us-retail et nordstrom incomplets. NE JAMAIS entrer dans une moyenne avec un T2 valide. Preuves conservables : sonde front sous charge réelle, gestion SIGTERM, 0 run orphelin, métriques d'interruption préservées.",
+  "originalRecordSha256": "34640e28d4d5bcd8f35b5f5071450d6e74cdb13c0ba2851f0fc9da8968f5265c",
+  "originalRecordPath": "backups/lot4-20260909/p7-run-20260913T085602Z/record.json"
+}

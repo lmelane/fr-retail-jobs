@@ -1,0 +1,23 @@
+# Contrôles pré-fusion — bootstrap manuel (la PR contient safe-merge.sh lui-même)
+date: 2026-09-13T09:47:28Z
+
+## 1. Runs de production en vol
+NONE
+
+## 2. Variables de périmètre
+{
+ "INGEST_ONLY_KEYS": null,
+ "REFRESH_ONLY_KEYS": null,
+ "PIPELINE_PAUSED": "1",
+ "PIPELINE_CMD": "ingest-all"
+}
+
+## 3. Commande déployée + état des services
+  catwalks-aggregator: SUCCESS 5339b73e | bornée=False
+  catwalks-web: SUCCESS bc225661 | bornée=False
+
+## 4. Runner borné local actif ?
+  processus bornés = 0
+
+## 5. Arbre Git
+  (vide = propre)
