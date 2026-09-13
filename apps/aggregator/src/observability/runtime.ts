@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import type { PrismaClient, Prisma } from '@prisma/client';
 import { OperationalLogger, installLogger, redact } from './logger.js';
+import { startResourceSampling } from './resources.js';
 
 export type RunStatus = 'COMPLETED' | 'COMPLETED_WITH_ERRORS' | 'FAILED';
 
@@ -48,15 +49,29 @@ export async function startObservability(prisma: PrismaClient, command: string) 
   /** Closes the run as INTERRUPTED (idempotent). Exposed so a test can exercise it without a real signal. */
   async function interrupt(signal: string): Promise<boolean> {
     detach();
-    try { return await close('INTERRUPTED', { signal, deploymentId: process.env.RAILWAY_DEPLOYMENT_ID ?? null }); }
+    try { return await closeWithResources('INTERRUPTED', { signal, deploymentId: process.env.RAILWAY_DEPLOYMENT_ID ?? null }); }
     catch { return false; }
+  }
+
+  /**
+   * L'échantillonnage des ressources tourne PENDANT le run, dans ce processus — c'est la seule mesure qui
+   * décrive le conteneur qui travaille (leçon D32 : un environnement voisin n'est pas la source). Il est
+   * `unref` et tolérant : un échantillon manqué ne doit jamais faire échouer un run.
+   */
+  const resources = startResourceSampling(prisma);
+
+  async function closeWithResources(status: RunStatus | 'INTERRUPTED', extra: Record<string, unknown> = {}) {
+    let report: unknown = null;
+    try { report = await resources.stop(); }
+    catch (error) { report = { unavailable: `échantillonnage indisponible : ${(error as Error).message.slice(0, 120)}` }; }
+    return close(status, { ...extra, resources: report });
   }
 
   return {
     runId, logger, interrupt,
     async finish(status: RunStatus) {
       detach();
-      await close(status);
+      await closeWithResources(status);
     },
   };
 }
