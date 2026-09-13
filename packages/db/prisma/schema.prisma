@@ -7,7 +7,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/** What kind of actor this is (a Maison, a group, an agency…). */
+/**
+ * What kind of actor this is (a Maison, a group, an agency…).
+ */
 enum CompanyKind {
   UNKNOWN
   MAISON
@@ -23,7 +25,6 @@ enum CompanyKind {
 
 /**
  * Which segment of the vertical the employer belongs to.
- *
  * Distinct from CompanyKind on purpose: Cartier is a MAISON *and*
  * JEWELRY_WATCHES, and the front end filters on the segment. Reusing `kind` for
  * both would force one to be wrong.
@@ -97,7 +98,6 @@ enum AtsType {
 
 /**
  * Lifecycle of a catalogue source (DEC-3, décision Loïc 2026-09-03).
- *
  * DRAFT      discovered/imported, identity or volume not yet proven
  * VALIDATED  proven (≥1 parsed offer, identity anchored) but not yet ingested
  * ACTIVE     in the ingest rotation
@@ -114,7 +114,6 @@ enum SourceStatus {
 
 /**
  * The source catalogue, in base (DEC-3) — replaces data/sources.csv at runtime.
- *
  * A CSV had no lifecycle: removing a line left its offers orphaned forever
  * (the « Cartier +3 » incident), promotion was a hand edit, and nothing
  * recorded per-source quality. Here every source carries its status, its dated
@@ -122,47 +121,65 @@ enum SourceStatus {
  * columns.
  */
 model Source {
-  id            String       @id @default(cuid())
-  /** Stable key, referenced by JobSource.sourceKey and SourceRun.sourceKey. */
-  key           String       @unique
-  /** Displayed employer/board name ("Cartier", "Richemont (toutes Maisons)"). */
-  maison        String
-  careersDomain String?
-  /** Adapter family: workday, greenhouse, generic-listing… */
-  kind          String
+  id               String       @id @default(cuid())
+  /**
+   * Stable key, referenced by JobSource.sourceKey and SourceRun.sourceKey.
+   */
+  key              String       @unique
+  /**
+   * Displayed employer/board name ("Cartier", "Richemont (toutes Maisons)").
+   */
+  maison           String
+  careersDomain    String?
+  /**
+   * Adapter family: workday, greenhouse, generic-listing…
+   */
+  kind             String
   /**
    * Adapter config (origin, listingUrl, sitemapUrl…). For legacy sitemap rows
    * this is `{ "url": "<entry url>" }`.
    */
-  config        Json
-  /** Shape of a job URL for sitemap filtering, as observed. */
-  jobUrlPattern String?
-  status        SourceStatus @default(DRAFT)
-  /** Dedup tier: EMPLOYER_DIRECT | GROUP_OFFICIAL | ATS_OFFICIAL | SPECIALIST_JOBBOARD | AGGREGATOR */
-  tier          String
+  config           Json
+  /**
+   * Shape of a job URL for sitemap filtering, as observed.
+   */
+  jobUrlPattern    String?
+  status           SourceStatus @default(DRAFT)
+  /**
+   * Dedup tier: EMPLOYER_DIRECT | GROUP_OFFICIAL | ATS_OFFICIAL | SPECIALIST_JOBBOARD | AGGREGATOR
+   */
+  tier             String
   /**
    * One row per ATS tenant (unicité par tenant): `kind:normalized-locator`.
    * Two Maisons resolving to the same board must arbitrate BEFORE import —
    * shared-tenant duplicates are how one group feed got catalogued twice.
    */
-  tenantKey     String       @unique
-  robotsVerdict String?
-  /** When the robots verdict was last read at the source — a verdict ages. */
-  robotsCheckedAt DateTime?
-  /** Jobs counted when the source was last verified/promoted. */
+  tenantKey        String       @unique
+  robotsVerdict    String?
+  /**
+   * When the robots verdict was last read at the source — a verdict ages.
+   */
+  robotsCheckedAt  DateTime?
+  /**
+   * Jobs counted when the source was last verified/promoted.
+   */
   verifiedJobCount Int?
-  /** Denormalized last-run summary, so the catalogue is readable in one query. */
-  lastRunAt     DateTime?
-  lastRunStatus String?
-  lastRunJobs   Int?
-  /** Last-run field-coverage rates, 0..1 (audit L-02 — queryable, not a note). */
-  descriptionRate Float?
-  dateRate      Float?
-  countryRate   Float?
-  urlRate       Float?
-  note          String?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  /**
+   * Denormalized last-run summary, so the catalogue is readable in one query.
+   */
+  lastRunAt        DateTime?
+  lastRunStatus    String?
+  lastRunJobs      Int?
+  /**
+   * Last-run field-coverage rates, 0..1 (audit L-02 — queryable, not a note).
+   */
+  descriptionRate  Float?
+  dateRate         Float?
+  countryRate      Float?
+  urlRate          Float?
+  note             String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
 
   identityReviews SourceIdentityReview[]
 
@@ -170,7 +187,9 @@ model Source {
   @@index([kind])
 }
 
-/** Append-only identity decisions. A working feed is not an employer proof. */
+/**
+ * Append-only identity decisions. A working feed is not an employer proof.
+ */
 model SourceIdentityReview {
   id             String   @id @default(cuid())
   sourceKey      String
@@ -188,7 +207,9 @@ model SourceIdentityReview {
   reviewer       String
   checkedAt      DateTime
   createdAt      DateTime @default(now())
-  /** Reviewed perimeter of the portal for THIS configuration: SINGLE_BRAND (every posting belongs to the certified employer) or MULTI_BRAND. Null = not reviewed. */
+  /**
+   * Reviewed perimeter of the portal for THIS configuration: SINGLE_BRAND (every posting belongs to the certified employer) or MULTI_BRAND. Null = not reviewed.
+   */
   portalScope    String?
   source         Source   @relation(fields: [sourceKey], references: [key], onDelete: Restrict, onUpdate: Restrict)
 
@@ -196,58 +217,65 @@ model SourceIdentityReview {
 }
 
 model Company {
-  id                   String          @id @default(cuid())
-  name                 String
-  canonicalKey         String
-  kind                 CompanyKind     @default(UNKNOWN)
-  /** Legacy classification retained as source evidence; never a canonical filter. */
-  sector               CompanySector   @default(UNKNOWN)
-  sectorCodes          String[]        @default([])
-  sectorEvidence       Json?
-  sectorReviewId       String?
-  sectorReview         SectorReview?   @relation(fields: [sectorReviewId], references: [id], onDelete: Restrict)
+  id                    String                  @id @default(cuid())
+  name                  String
+  canonicalKey          String
+  kind                  CompanyKind             @default(UNKNOWN)
+  /**
+   * Legacy classification retained as source evidence; never a canonical filter.
+   */
+  sector                CompanySector           @default(UNKNOWN)
+  sectorCodes           String[]                @default([])
+  sectorEvidence        Json?
+  sectorReviewId        String?
+  sectorReview          SectorReview?           @relation(fields: [sectorReviewId], references: [id], onDelete: Restrict)
   /**
    * Parent group, from the 728-house reference list: Sandro and Maje both sit
    * under SMCP, Dior under LVMH.
-   *
    * Stored so a search for "sandro" reaches offers a group portal published
    * under "SMCP", and so the group is a filter of its own. The reference list
    * held this from the start and nothing was reading it.
    */
-  parentGroup          String?
-  /** Reviewed relationship. A group is an entity, never an alias for its brands. */
-  parentGroupId        String?
-  parent               Company? @relation("CompanyGroup", fields: [parentGroupId], references: [id], onDelete: Restrict)
-  children             Company[] @relation("CompanyGroup")
-  /** Reviewed identity merge: preserve the old ID and URL instead of deleting it. */
-  mergedIntoId         String?
-  mergedInto           Company? @relation("CompanyMerge", fields: [mergedIntoId], references: [id], onDelete: Restrict)
-  mergedFrom           Company[] @relation("CompanyMerge")
-  identityReviewId     String?
-  identityReview       EmployerIdentityReview? @relation(fields: [identityReviewId], references: [id], onDelete: Restrict)
+  parentGroup           String?
+  /**
+   * Reviewed relationship. A group is an entity, never an alias for its brands.
+   */
+  parentGroupId         String?
+  parent                Company?                @relation("CompanyGroup", fields: [parentGroupId], references: [id], onDelete: Restrict)
+  children              Company[]               @relation("CompanyGroup")
+  /**
+   * Reviewed identity merge: preserve the old ID and URL instead of deleting it.
+   */
+  mergedIntoId          String?
+  mergedInto            Company?                @relation("CompanyMerge", fields: [mergedIntoId], references: [id], onDelete: Restrict)
+  mergedFrom            Company[]               @relation("CompanyMerge")
+  identityReviewId      String?
+  identityReview        EmployerIdentityReview? @relation(fields: [identityReviewId], references: [id], onDelete: Restrict)
   /**
    * Site officiel de la Maison, hôte nu (`hermes.com`, `dior.com`), lu à une
    * source qui la NOMME — jamais deviné depuis le nom : un nom devine souvent
    * le domaine réel d'une AUTRE entreprise, et le logo affiché ment. Null =
    * inconnu, et le site montre l'initiale plutôt qu'un logo faux.
    */
-  domain               String?
-  /** D'où vient `domain` : `source-careers` (catalogue) | `wikidata` (P856) | `manual`. */
-  domainSource         String?
-  fashionjobsUrl       String          @unique
-  fashionjobsSlug      String?
+  domain                String?
+  /**
+   * D'où vient `domain` : `source-careers` (catalogue) | `wikidata` (P856) | `manual`.
+   */
+  domainSource          String?
+  fashionjobsUrl        String                  @unique
+  fashionjobsSlug       String?
   fashionjobsOfferCount Int?
-  careersUrl           String?
-  atsType               AtsType         @default(UNKNOWN)
+  careersUrl            String?
+  atsType               AtsType                 @default(UNKNOWN)
   atsConfig             Json?
-  discoveryStatus       DiscoveryStatus @default(PENDING)
+  discoveryStatus       DiscoveryStatus         @default(PENDING)
   discoveryNote         String?
-  firstSeenAt           DateTime        @default(now())
-  lastSeenAt            DateTime        @default(now())
+  firstSeenAt           DateTime                @default(now())
+  lastSeenAt            DateTime                @default(now())
   lastAtsDiscoveryAt    DateTime?
   lastJobSyncAt         DateTime?
-  createdAt             DateTime        @default(now())
-  updatedAt             DateTime        @updatedAt
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
   jobs                  Job[]
   aliases               CompanyAlias[]
 
@@ -260,44 +288,52 @@ model Company {
 }
 
 model CompanyAlias {
-  id          String   @id @default(cuid())
-  aliasKey    String   @unique
-  displayName String
-  companyId   String
-  company     Company  @relation(fields: [companyId], references: [id], onDelete: Restrict)
-  /** Explicit scope: a homonym in another source is not the same employer. */
-  sourceKey   String   @default("*")
+  id             String                  @id @default(cuid())
+  aliasKey       String                  @unique
+  displayName    String
+  companyId      String
+  company        Company                 @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  /**
+   * Explicit scope: a homonym in another source is not the same employer.
+   */
+  sourceKey      String                  @default("*")
   normalizedName String?
-  /** Hash of the reviewed source/tenant configuration, not just its mutable key. */
-  sourceHash String?
-  reviewId    String?
-  review      EmployerIdentityReview? @relation(fields: [reviewId], references: [id], onDelete: Restrict)
-  createdAt   DateTime @default(now())
+  /**
+   * Hash of the reviewed source/tenant configuration, not just its mutable key.
+   */
+  sourceHash     String?
+  reviewId       String?
+  review         EmployerIdentityReview? @relation(fields: [reviewId], references: [id], onDelete: Restrict)
+  createdAt      DateTime                @default(now())
 
   @@unique([sourceKey, normalizedName])
 }
 
-/** Immutable evidence for a reviewed alias/merge/group relationship. */
+/**
+ * Immutable evidence for a reviewed alias/merge/group relationship.
+ */
 model EmployerIdentityReview {
-  id          String @id
-  statement   String
-  evidence    Json
-  planHash    String
-  reviewedBy  String
-  reviewedAt  DateTime
-  createdAt   DateTime @default(now())
-  aliases     CompanyAlias[]
-  companies   Company[]
+  id         String         @id
+  statement  String
+  evidence   Json
+  planHash   String
+  reviewedBy String
+  reviewedAt DateTime
+  createdAt  DateTime       @default(now())
+  aliases    CompanyAlias[]
+  companies  Company[]
 }
 
-/** What the adapter said, and the exact identity decision used for that revision. */
+/**
+ * What the adapter said, and the exact identity decision used for that revision.
+ */
 model EmployerObservation {
-  id                     String @id @default(cuid())
+  id                     String   @id @default(cuid())
   sourceKey              String
   externalId             String
   observationHash        String
   rawEmployerName        String
-  labelOrigin            String @default("LEGACY_UNSPECIFIED")
+  labelOrigin            String   @default("LEGACY_UNSPECIFIED")
   normalizedEmployerName String
   canonicalEmployerId    String?
   rule                   String
@@ -314,31 +350,37 @@ model EmployerObservation {
 
 /**
  * Where a canonical Job was seen. One row per (job, source).
- *
  * This is the whole point of the aggregator: the same opening reaches us from the
  * Maison's careers site, the group portal and a jobboard, and Catwalks keeps ONE
  * Job carrying N JobSource rows — never three listings.
- *
  * A lower-priority source stays attached even when it is not canonical: it is what
  * detects an edit or a closure when the canonical source is slow to update.
  */
 model JobSource {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   jobId       String
-  job         Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  /** Registry key: 'richemont', 'wttj', 'fashionjobs'… */
+  job         Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  /**
+   * Registry key: 'richemont', 'wttj', 'fashionjobs'…
+   */
   sourceKey   String
-  /** EMPLOYER_DIRECT | GROUP_OFFICIAL | ATS_OFFICIAL | SPECIALIST_JOBBOARD | AGGREGATOR */
+  /**
+   * EMPLOYER_DIRECT | GROUP_OFFICIAL | ATS_OFFICIAL | SPECIALIST_JOBBOARD | AGGREGATOR
+   */
   sourceTier  String
-  /** Identifier as this source knows it. */
+  /**
+   * Identifier as this source knows it.
+   */
   externalId  String
-  /** Apply URL at THIS source; the canonical one lives on Job.url. */
+  /**
+   * Apply URL at THIS source; the canonical one lives on Job.url.
+   */
   url         String
   title       String?
   postedAt    DateTime?
-  firstSeenAt DateTime @default(now())
-  lastSeenAt  DateTime @default(now())
-  isActive    Boolean  @default(true)
+  firstSeenAt DateTime  @default(now())
+  lastSeenAt  DateTime  @default(now())
+  isActive    Boolean   @default(true)
   raw         Json?
 
   @@unique([sourceKey, externalId])
@@ -352,33 +394,31 @@ enum OpportunityType {
 }
 
 model Job {
-  id            String   @id @default(cuid())
+  id               String           @id @default(cuid())
   // An absorbed posting retains its ID, content and history. It can never reopen;
   // its source representations and public URL resolve to the canonical posting.
-  mergedIntoId  String?
-  mergedInto    Job?     @relation("JobRedirect", fields: [mergedIntoId], references: [id], onDelete: NoAction)
-  mergedJobs    Job[]    @relation("JobRedirect")
-  companyId     String
-  company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  externalId    String
-  source        AtsType
-  opportunityType OpportunityType?
-  title         String
-  location      String?
+  mergedIntoId     String?
+  mergedInto       Job?             @relation("JobRedirect", fields: [mergedIntoId], references: [id], onDelete: NoAction)
+  mergedJobs       Job[]            @relation("JobRedirect")
+  companyId        String
+  company          Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  externalId       String
+  source           AtsType
+  opportunityType  OpportunityType?
+  title            String
+  location         String?
   /**
    * Le code ISO 3166-1 alpha-2 du pays — `FR`, `US`, `GB`, `JP`. Jamais un
    * libellé libre : la normalisation a lieu à l'écriture (`normalizeCountry`).
    * Nommée `countryCode` et non `country` parce qu'elle stocke précisément un
    * code, pas un « pays » au sens large (renommage atomique du 2026-09-08).
    */
-  countryCode   String?
+  countryCode      String?
   /**
    * Le pays stocké est-il une donnée sur laquelle on peut compter ?
-   *
    * `null` = rien de suspect. `AMBIGUOUS` = la valeur est CONSERVÉE mais on
    * sait qu'elle peut être fausse : *valeur legacy conservée ≠ valeur prouvée*
    * (décision Loïc, 2026-09-08).
-   *
    * Le cas mesuré : `CA` désigne à la fois le Canada et la Californie, et la
    * base contient les deux sous ce code — « Toronto, CA » et « Los Angeles,
    * CA ». La chaîne refuse de trancher sans preuve indépendante ; ce drapeau
@@ -386,29 +426,28 @@ model Job {
    * certain. Il disparaît de lui-même dès qu'une preuve apparaît.
    */
   countryIntegrity String?
-  isFrance      Boolean  @default(false)
+  isFrance         Boolean          @default(false)
 
   // Geo, for the Leaflet map. Sources give a city and usually a postcode but
   // never coordinates, so these are resolved via the French government's
   // Adresse API (api-adresse.data.gouv.fr — free, no key, 50 req/s/IP).
-  city          String?
+  city       String?
   /**
    * La première subdivision administrative du pays : California, Île-de-France,
    * Ontario, Tokyo. Modèle mondial validé le 2026-09-08.
-   *
    * PAS de colonne `continent` : « Europe », « Asia Pacific » (le champ
    * `geographicArea` de certaines sources) sont des macro-régions BUSINESS,
    * dérivables du pays le jour où le besoin existe. Les mettre ici mélangerait
    * deux niveaux conceptuels.
    */
-  adminArea1    String?
+  adminArea1 String?
   /**
    * Le second niveau (comté, département). Nullable et VOLONTAIREMENT vide :
    * aucune source du catalogue ne le fournit aujourd'hui, et on ne remplit pas
    * artificiellement une colonne pour la justifier.
    */
-  adminArea2    String?
-  postalCode    String?
+  adminArea2 String?
+  postalCode String?
   /**
    * Code commune INSEE — identifiant national français, conservé parce qu'il
    * est une clé de jointure stable (contrairement à un nom de ville), mais qui
@@ -416,106 +455,116 @@ model Job {
    * sont françaises. Les futurs identifiants nationaux le rejoindront dans une
    * structure `locationIdentifiers` plutôt qu'en ajoutant une colonne par pays.
    */
-  inseeCode     String?
-  latitude      Float?
-  longitude     Float?
+  inseeCode  String?
+  latitude   Float?
+  longitude  Float?
 
   /**
    * LES CINQ DIMENSIONS D'EMPLOI — mondiales, indépendantes et CUMULABLES.
-   *
    * Elles remplacent `contract` + `workingTime`, qui mélangeaient quatre
    * concepts dans un champ unique et imposaient une grille juridique FRANÇAISE
    * (CDI/CDD/STAGE) à un catalogue mondial : un « Permanent » britannique n'est
    * pas un CDI, et un `CONTRACTOR` américain n'est pas un freelance.
-   *
    * Deux mesures ont imposé la séparation (2026-09-08) :
-   *  · `employment_type_code` sert « parttime_fixed_term » (225 offres) —
-   *    DEUX dimensions dans une seule valeur, dont une était forcément écrasée ;
-   *  · 2 359 offres Sephora sont « CDD » ET « Seasonal » : les deux sont vraies
-   *    en même temps, donc `isSeasonal` ne peut pas être une valeur de durée.
-   *
+   * · `employment_type_code` sert « parttime_fixed_term » (225 offres) —
+   * DEUX dimensions dans une seule valeur, dont une était forcément écrasée ;
+   * · 2 359 offres Sephora sont « CDD » ET « Seasonal » : les deux sont vraies
+   * en même temps, donc `isSeasonal` ne peut pas être une valeur de durée.
    * Règle : « le faible volume décide si on EXPOSE une dimension, pas si on
    * POLLUE la taxonomie canonique. » `engagementType` (0,3 % des offres) reste
    * une colonne nullable propre, sans index ni facette.
-   *
    * « CDI » n'est plus une valeur : c'est le LIBELLÉ français de PERMANENT,
    * produit par la couche de localisation du site.
    */
-  /** DURÉE : PERMANENT | FIXED_TERM | TEMPORARY. null = la source ne le dit pas. */
-  rawContract String?
-  rawWorkingTime String?
-  /** Input and resolution trace, not a substitute for the retained canonical field. */
+  /**
+   * /** DURÉE : PERMANENT | FIXED_TERM | TEMPORARY. null = la source ne le dit pas.
+   */
+  rawContract        String?
+  rawWorkingTime     String?
+  /**
+   * Input and resolution trace, not a substitute for the retained canonical field.
+   */
   employmentEvidence Json?
-  employmentTerm String?
-  /** RYTHME : FULL_TIME | PART_TIME. */
-  workTime       String?
-  /** DISPOSITIF : INTERNSHIP | APPRENTICESHIP | GRADUATE_PROGRAM | VIE. */
-  programType    String?
+  employmentTerm     String?
+  /**
+   * RYTHME : FULL_TIME | PART_TIME.
+   */
+  workTime           String?
+  /**
+   * DISPOSITIF : INTERNSHIP | APPRENTICESHIP | GRADUATE_PROGRAM | VIE.
+   */
+  programType        String?
   /**
    * NATURE JURIDIQUE : EMPLOYEE | FREELANCE | INDEPENDENT_CONTRACTOR.
    * `EMPLOYEE` exige une preuve positive — il n'est jamais déduit de l'absence
    * de freelance, ce qui reviendrait à inventer une donnée.
    */
-  engagementType String?
+  engagementType     String?
   /**
    * Poste saisonnier — caractéristique INDÉPENDANTE de la durée : 2 414 offres
    * sont à la fois FIXED_TERM et saisonnières.
    */
-  isSeasonal     Boolean?
+  isSeasonal         Boolean?
   /**
    * Le MODE DE TRAVAIL, en taxonomie mondiale : ONSITE | HYBRID | REMOTE.
    * `null` = les sources ne le publient pas — jamais « sur site » par défaut.
-   *
    * A remplacé `remote`, qui portait le vocabulaire PROPRIÉTAIRE de Welcome to
    * the Jungle (`punctual`, `fulltime`, `unknown`) directement dans le modèle
    * mondial, et stockait « unknown » comme une VALEUR sur 648 offres.
-   *
    * ONSITE se définit comme « poste principalement rattaché au site, même si un
    * télétravail occasionnel est autorisé » — c'est pourquoi le `punctual` de
    * WTTJ (« télétravail ponctuel autorisé ») y tombe sans prétendre que le
    * télétravail est interdit. La valeur brute reste traçable dans `raw`.
    */
-  workplaceType String?
-  experienceYears Int?
-  educationLevel  String?
+  workplaceType      String?
+  experienceYears    Int?
+  educationLevel     String?
 
   // Compensation, when the source publishes it (Pinpoint, WTTJ, TalentView,
   // Teamtailor). Stored as a band because that is how postings state it.
-  salaryMin     Int?
-  salaryMax     Int?
+  salaryMin      Int?
+  salaryMax      Int?
   salaryCurrency String?
-  salaryPeriod  String?
+  salaryPeriod   String?
 
-  /** Function or department: "Retail", "Marketing"… */
-  department    String?
-  /** Expiry when published; drives the refresh pass. */
-  validThrough  DateTime?
+  /**
+   * Function or department: "Retail", "Marketing"…
+   */
+  department   String?
+  /**
+   * Expiry when published; drives the refresh pass.
+   */
+  validThrough DateTime?
 
-  description   String?
+  description      String?
   /**
    * ISO-639-1 language of the posting text ("fr", "en", "de"…), declared by the
    * source when it says so, else detected from the text. Nothing filters on it
    * at ingest — every language is kept (decision, 2026-09-03); it exists for
    * display, filtering and translation on the jobboard side.
    */
-  language      String?
-  url           String
-  postedAt      DateTime?
-  firstSeenAt   DateTime @default(now())
-  lastSeenAt    DateTime @default(now())
-  isActive      Boolean  @default(true)
+  language         String?
+  url              String
+  postedAt         DateTime?
+  firstSeenAt      DateTime  @default(now())
+  lastSeenAt       DateTime  @default(now())
+  isActive         Boolean   @default(true)
   /**
    * Cycle de vie (Catwalks Intelligence, D38) : quand le refresh a fermé
    * l'offre — effacé si une source la re-liste (ré-ouverture). Avec
    * `firstSeenAt`, c'est la durée de publication observée ; « durée de
    * publication » ≠ time-to-fill, la méthodologie le dit.
    */
-  closedAt      DateTime?
-  /** Catalogue withdrawal is not evidence that the employer closed the role. */
-  withdrawnAt   DateTime?
+  closedAt         DateTime?
+  /**
+   * Catalogue withdrawal is not evidence that the employer closed the role.
+   */
+  withdrawnAt      DateTime?
   withdrawalReason String?
-  /** Nombre de ré-ouvertures : une offre qui revient plusieurs fois est un signal de repost. */
-  reopenedCount Int      @default(0)
+  /**
+   * Nombre de ré-ouvertures : une offre qui revient plusieurs fois est un signal de repost.
+   */
+  reopenedCount    Int       @default(0)
 
   /**
    * Taxonomie Intelligence, classée à l'ÉCRITURE depuis titre / département /
@@ -523,9 +572,13 @@ model Job {
    * quand `taxonomyVersion` est en retard — l'auto-guérison, comme le pays et
    * la ville. Null = non classé (compté comme tel, jamais deviné).
    */
-  /** Famille de métier du secteur : retail-client-advisor, atelier-craft, crm-clienteling… */
-  jobFunction     String?
-  /** Versioned enrichment; original title and unresolved offers are preserved. */
+  /**
+   * /** Famille de métier du secteur : retail-client-advisor, atelier-craft, crm-clienteling…
+   */
+  jobFunction               String?
+  /**
+   * Versioned enrichment; original title and unresolved offers are preserved.
+   */
   occupationGroup           String?
   occupationCode            String?
   rawTitle                  String?
@@ -536,20 +589,27 @@ model Job {
   occupationReleaseId       String?
   occupationRelease         OccupationRelease?      @relation(fields: [occupationReleaseId], references: [id], onDelete: Restrict)
   occupationObservations    OccupationObservation[]
-  /** INTERNSHIP | APPRENTICESHIP | GRADUATE | JUNIOR | MID | SENIOR | MANAGER | DIRECTOR | EXECUTIVE */
-  seniority       String?
-  /** Métier de boutique (conseil, direction de boutique, VM, opérations) — le Retail Hiring Index. */
-  isRetail        Boolean?
-  /** L'annonce parle d'IA / machine learning — l'AI Hiring Index. */
-  isAiRelated     Boolean  @default(false)
-  /** Compétences, outils, langues, concepts extraits du texte (dictionnaire canonique). */
-  skills          String[] @default([])
-  taxonomyVersion Int      @default(0)
-  fingerprint   String
+  /**
+   * INTERNSHIP | APPRENTICESHIP | GRADUATE | JUNIOR | MID | SENIOR | MANAGER | DIRECTOR | EXECUTIVE
+   */
+  seniority                 String?
+  /**
+   * Métier de boutique (conseil, direction de boutique, VM, opérations) — le Retail Hiring Index.
+   */
+  isRetail                  Boolean?
+  /**
+   * L'annonce parle d'IA / machine learning — l'AI Hiring Index.
+   */
+  isAiRelated               Boolean                 @default(false)
+  /**
+   * Compétences, outils, langues, concepts extraits du texte (dictionnaire canonique).
+   */
+  skills                    String[]                @default([])
+  taxonomyVersion           Int                     @default(0)
+  fingerprint               String
 
   /**
    * Generation of the pipeline that wrote this row.
-   *
    * Rows written by an older pipeline cannot be repaired in place — offers
    * ingested before the adapters fetched descriptions have none to restore,
    * and sectors written before classification all read UNKNOWN. Each ingest
@@ -557,7 +617,7 @@ model Job {
    * so a schema-level fix ships as a version bump instead of a manual purge
    * someone must remember to run.
    */
-  pipelineVersion Int    @default(0)
+  pipelineVersion Int @default(0)
 
   /**
    * Blocking key of the dedup cluster: resolvedCompanyId|CITY.
@@ -566,19 +626,23 @@ model Job {
    * rather than cleaning them up afterwards.
    */
   clusterKey    String?
-  /** Tier of the source that owns Job.url, so a better source can take over. */
+  /**
+   * Tier of the source that owns Job.url, so a better source can take over.
+   */
   canonicalTier String?
 
-  sources       JobSource[]
-  canonicalSourceKey String?
+  sources             JobSource[]
+  canonicalSourceKey  String?
   canonicalExternalId String?
-  /** Maintained by database triggers, including company renames. Partial GIN index in SQL migration. */
-  searchText String @default("")
-  events        JobEvent[]
+  /**
+   * Maintained by database triggers, including company renames. Partial GIN index in SQL migration.
+   */
+  searchText          String      @default("")
+  events              JobEvent[]
 
-  raw           Json?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  raw       Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([companyId, source, externalId])
   @@index([mergedIntoId])
@@ -609,7 +673,9 @@ model Job {
  * trois ans, de rejouer le marché : la liste des offres se remplace, son
  * histoire ne se reconstruit pas.
  */
-/** Append-only correction evidence; no cascading FK can erase this history. */
+/**
+ * Append-only correction evidence; no cascading FK can erase this history.
+ */
 model DataCorrection {
   id         String   @id @default(cuid())
   batchId    String
@@ -632,9 +698,13 @@ model JobEvent {
   id     String   @id @default(cuid())
   jobId  String
   job    Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  /** OPENED | CLOSED | REOPENED | CHANGED */
+  /**
+   * OPENED | CLOSED | REOPENED | CHANGED
+   */
   type   String
-  /** Pour CHANGED : le champ (title, city, country, companyId, jobFunction). */
+  /**
+   * Pour CHANGED : le champ (title, city, country, companyId, jobFunction).
+   */
   field  String?
   before String?
   after  String?
@@ -649,24 +719,33 @@ model JobEvent {
  * par (jour, périmètre, clé) : global, pays, ville, société, groupe, secteur,
  * métier, séniorité, contrat, et les croisements pays×métier / pays×secteur
  * qui servent la carte. Idempotente : recalculer un jour ré-écrit ses lignes.
- *
  * Les comparaisons J-7 / J-30 / M-12 lisent cette table, jamais Job — les
  * offres se ferment et se suppriment, la photographie reste.
  */
 model MarketSnapshot {
   id                 String   @id @default(cuid())
   date               DateTime @db.Date
-  /** global | country | city | company | group | sector | function | seniority | employmentTerm | country-function | country-sector */
+  /**
+   * global | country | city | company | group | sector | function | seniority | employmentTerm | country-function | country-sector
+   */
   scope              String
-  /** '' pour global ; ISO-2 ; 'FR|Paris' ; id de société ; nom de groupe ; clé de métier… */
+  /**
+   * '' pour global ; ISO-2 ; 'FR|Paris' ; id de société ; nom de groupe ; clé de métier…
+   */
   key                String
   activeJobs         Int
-  /** Offres vues pour la première fois ce jour-là. */
+  /**
+   * Offres vues pour la première fois ce jour-là.
+   */
   newJobs            Int
-  /** Offres fermées ce jour-là. */
+  /**
+   * Offres fermées ce jour-là.
+   */
   closedJobs         Int
   hiringCompanies    Int
-  /** Médiane des jours de publication des offres fermées ce jour-là (null si aucune). */
+  /**
+   * Médiane des jours de publication des offres fermées ce jour-là (null si aucune).
+   */
   medianLifespanDays Float?
   reopenedJobs       Int      @default(0)
   /**
@@ -685,74 +764,81 @@ model MarketSnapshot {
 
 /**
  * Geocoding cache, keyed by the raw location string as a source wrote it.
- *
  * Cities repeat constantly across offers — Courir alone posts dozens of roles in
  * the same towns — so resolving per offer would waste tens of thousands of calls
  * on a handful of distinct places. `resolved = false` records a lookup that found
  * nothing, so a bad string is not retried on every run.
  */
 model GeoCache {
-  id          String   @id @default(cuid())
-  /** Normalized lookup key (uppercase city, plus postcode when available). */
-  queryKey    String   @unique
-  city        String?
-  postalCode  String?
-  inseeCode   String?
-  latitude    Float?
-  longitude   Float?
-  resolved    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String   @id @default(cuid())
+  /**
+   * Normalized lookup key (uppercase city, plus postcode when available).
+   */
+  queryKey   String   @unique
+  city       String?
+  postalCode String?
+  inseeCode  String?
+  latitude   Float?
+  longitude  Float?
+  resolved   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([resolved])
 }
 
 /**
  * One row per source per ingest run.
- *
  * Exists so a source that silently stops producing is an incident rather than a
  * quiet zero. Vendors rotate public keys and move listing paths without notice,
  * and the failure mode is always the same: the adapter returns an empty array,
  * the cron exits 0, and a Maison simply appears to have stopped hiring.
  */
 model SourceRun {
-  /** Global execution correlation; legacy runs remain explicitly uncorrelated. */
-  runId String?
-  @@index([runId])
-  id           String   @id @default(cuid())
-  sourceKey    String
-  /** OK | DEGRADED | BROKEN | NEW | TIMEOUT | ERROR (L-01: unfinished runs are recorded too). */
-  status       String
-  jobs         Int
-  /** What the source held before this run; null on its first. */
-  previousJobs Int?
-  /** Explicit lifecycle evidence. Null denotes an unmeasured legacy run. */
-  fetched      Int?
-  accepted     Int?
-  declaredTotal Int?
-  truncated    Boolean?
-  errors       Int?
+  /**
+   * Global execution correlation; legacy runs remain explicitly uncorrelated.
+   */
+  runId            String?
+  id               String   @id @default(cuid())
+  sourceKey        String
+  /**
+   * OK | DEGRADED | BROKEN | NEW | TIMEOUT | ERROR (L-01: unfinished runs are recorded too).
+   */
+  status           String
+  jobs             Int
+  /**
+   * What the source held before this run; null on its first.
+   */
+  previousJobs     Int?
+  /**
+   * Explicit lifecycle evidence. Null denotes an unmeasured legacy run.
+   */
+  fetched          Int?
+  accepted         Int?
+  declaredTotal    Int?
+  truncated        Boolean?
+  errors           Int?
   canAttestAbsence Boolean?
-  complete     Boolean?
-  note         String?
+  complete         Boolean?
+  note             String?
   /**
    * Field-coverage rates of this run, 0..1 (audit L-02): a source can keep its
    * volume while silently losing a field (the Eightfold descriptions). Columns,
    * not a note string, so trends are queryable.
    */
-  descriptionRate Float?
-  dateRate     Float?
-  countryRate  Float?
-  urlRate      Float?
-  ranAt        DateTime @default(now())
+  descriptionRate  Float?
+  dateRate         Float?
+  countryRate      Float?
+  urlRate          Float?
+  ranAt            DateTime @default(now())
 
+  @@index([runId])
   @@index([sourceKey, ranAt])
   @@index([status, ranAt])
 }
 
 /**
  * Where a rotating crawl should resume next run.
- *
  * A source too large and too slow to sweep inside one run (FashionJobs behind
  * Cloudflare, ~282 listing pages) advances through its listing across runs
  * instead of always re-reading the first pages: each run crawls a window from
@@ -763,7 +849,9 @@ model SourceRun {
  */
 model SourceCursor {
   sourceKey String   @id
-  /** The listing page the next run should start from (1-based). */
+  /**
+   * The listing page the next run should start from (1-based).
+   */
   nextPage  Int      @default(1)
   updatedAt DateTime @updatedAt
 
@@ -772,43 +860,56 @@ model SourceCursor {
 
 /**
  * La FIABILITÉ D'UNE PREUVE, mesurée puis jugée — `sourceFieldTrust` (2026-09-08).
- *
  * Née du constat qu'un champ « structuré » n'est pas automatiquement une source
  * de vérité : PVH déclarait `employmentType: FULL_TIME` sur 1 372 offres, dont
  * 485 dont le titre disait « Part-Time ».
- *
  * Le moteur est GÉNÉRIQUE : aucune source n'est nommée dans le code. Si demain
  * une autre source se comporte pareil, la même mesure la détecte sans qu'on
  * ajoute une règle. PVH n'est qu'une observation parmi d'autres.
- *
  * Le grain est `source × chemin × dimension`, jamais la source seule : un champ
  * peut être faux pour le rythme sans rien dire de sa fiabilité ailleurs.
  */
 model SourceFieldTrust {
-  id             String   @id @default(cuid())
-  /** Clé du catalogue (`pvh`, `fashionjobs`…). */
-  source         String
-  /** Chemin dans le payload (`employmentType`, `tags1[0]`) — pas la valeur. */
-  path           String
-  /** Dimension jugée : employmentTerm | workTime | programType | engagementType. */
-  dimension      String
+  id        String @id @default(cuid())
+  /**
+   * Clé du catalogue (`pvh`, `fashionjobs`…).
+   */
+  source    String
+  /**
+   * Chemin dans le payload (`employmentType`, `tags1[0]`) — pas la valeur.
+   */
+  path      String
+  /**
+   * Dimension jugée : employmentTerm | workTime | programType | engagementType.
+   */
+  dimension String
 
-  /** TRUSTED | DEGRADED | UNTRUSTED | INSUFFICIENT_EVIDENCE. */
-  level          String
-  /** Offres où les DEUX preuves se prononcent — le dénominateur, pas le total. */
-  eligibleCount  Int
-  agreementCount Int
+  /**
+   * TRUSTED | DEGRADED | UNTRUSTED | INSUFFICIENT_EVIDENCE.
+   */
+  level              String
+  /**
+   * Offres où les DEUX preuves se prononcent — le dénominateur, pas le total.
+   */
+  eligibleCount      Int
+  agreementCount     Int
   contradictionCount Int
   contradictionRate  Float
-  /** La phrase qui explique le verdict, lisible sans relire le code. */
-  reason         String
-  /** Quelle logique a produit ce verdict — pour pouvoir rejouer. */
-  evaluatorVersion String
-  /** Dernière offre observée pour ce triplet : un verdict doit pouvoir vieillir. */
-  observedAt     DateTime
-  evaluatedAt    DateTime @default(now())
+  /**
+   * La phrase qui explique le verdict, lisible sans relire le code.
+   */
+  reason             String
+  /**
+   * Quelle logique a produit ce verdict — pour pouvoir rejouer.
+   */
+  evaluatorVersion   String
+  /**
+   * Dernière offre observée pour ce triplet : un verdict doit pouvoir vieillir.
+   */
+  observedAt         DateTime
+  evaluatedAt        DateTime @default(now())
 
-  history        SourceFieldTrustObservation[]
+  history SourceFieldTrustObservation[]
 
   @@unique([source, path, dimension])
   @@index([level])
@@ -816,7 +917,6 @@ model SourceFieldTrust {
 
 /**
  * L'HISTORIQUE des observations — il n'expire JAMAIS.
- *
  * Le verdict opérationnel peut retomber à INSUFFICIENT_EVIDENCE après 60 jours
  * de silence (une source peut réparer son flux), mais la mémoire de son
  * comportement passé reste : c'est ce qui permet d'expliquer une dégradation
@@ -824,31 +924,106 @@ model SourceFieldTrust {
  * opérationnel peut expirer ; l'observation historique, non. »
  */
 model SourceFieldTrustObservation {
-  id             String   @id @default(cuid())
-  trustId        String
-  trust          SourceFieldTrust @relation(fields: [trustId], references: [id], onDelete: Cascade)
-  level          String
-  eligibleCount  Int
+  id                 String           @id @default(cuid())
+  trustId            String
+  trust              SourceFieldTrust @relation(fields: [trustId], references: [id], onDelete: Cascade)
+  level              String
+  eligibleCount      Int
   contradictionCount Int
   contradictionRate  Float
-  evaluatorVersion String
-  observedAt     DateTime
-  recordedAt     DateTime @default(now())
+  evaluatorVersion   String
+  observedAt         DateTime
+  recordedAt         DateTime         @default(now())
 
   @@index([trustId, recordedAt])
 }
 
-/** Distinct observed payloads; retained independently of live Job/JobSource rows. */
+/**
+ * Distinct observed payloads; retained independently of live Job/JobSource rows.
+ */
 model SourceObservation {
-  id String @id @default(cuid())
-  sourceKey String
-  externalId String
-  contentHash String
-  raw Json
+  id              String   @id @default(cuid())
+  sourceKey       String
+  externalId      String
+  contentHash     String
+  raw             Json
   pipelineVersion Int
-  observedAt DateTime @default(now())
+  observedAt      DateTime @default(now())
+
   @@unique([sourceKey, externalId, contentHash])
   @@index([sourceKey, observedAt])
+  /**
+   * Balayage de rétention par date : sans lui, la sélection des lignes éligibles scanne toute la table.
+   */
+  @@index([observedAt])
+}
+
+/**
+ * LA MÉTADONNÉE D'AUDIT QUI SURVIT À LA PURGE — décision propriétaire du 2026-09-13.
+ * Une `SourceObservation` archivée puis supprimée du chaud laisse ici tout ce qui permet de PROUVER qu'elle a
+ * existé et de la retrouver : identité de l'offre, instant d'observation, empreinte du contenu, et le pointeur
+ * vers l'archive avec son sha256.
+ * Sans cette table, une purge rendrait une preuve de P1 à P7 irrécupérable *en silence* — rien en base ne
+ * dirait qu'une observation a manqué. Ce n'est donc pas un journal d'exploitation : c'est la continuité de la
+ * chaîne de preuve, et elle n'est jamais purgée.
+ */
+model ObservationArchiveRef {
+  id                   String   @id @default(cuid())
+  sourceKey            String
+  externalId           String
+  /**
+   * Le run qui a produit l'observation ; `null` pour les lignes antérieures à sa traçabilité.
+   */
+  runId                String?
+  observedAt           DateTime
+  contentHash          String
+  /**
+   * Ce que la chaîne a fait de cette observation : ARCHIVED_AND_PURGED aujourd'hui, extensible.
+   */
+  disposition          String
+  /**
+   * L'ensemble canonique auquel l'observation se rattache (preuve d'absence P7).
+   */
+  canonicalSetRef      String?
+  /**
+   * Où retrouver les octets.
+   */
+  archiveUri           String
+  archiveSha256        String
+  archiveFormatVersion Int
+  archivedAt           DateTime @default(now())
+
+  @@unique([sourceKey, externalId, contentHash])
+  @@index([archiveUri])
+  @@index([observedAt])
+}
+
+/**
+ * LE MANIFESTE D'UNE ARCHIVE, IMMUABLE. Une ligne par partition (date × runId × sourceKey).
+ * Il porte ce qu'on peut affirmer d'une archive SANS la relire entièrement : combien de lignes, quelle
+ * période, quelle taille, quelle empreinte, quel format. La purge refuse de supprimer tant que ces valeurs ne
+ * concordent pas avec le lot réel — un manifeste peut annoncer le bon compte et couvrir une autre période.
+ */
+model ObservationArchiveManifest {
+  id            String    @id @default(cuid())
+  day           String
+  runId         String
+  sourceKey     String
+  rowCount      Int
+  periodStart   DateTime
+  periodEnd     DateTime
+  sizeBytes     BigInt
+  sha256        String
+  formatVersion Int
+  archiveUri    String
+  /**
+   * Étapes franchies et verdict, pour qu'un refus se rapporte au lieu de se deviner.
+   */
+  verifiedAt    DateTime?
+  createdAt     DateTime  @default(now())
+
+  @@unique([day, runId, sourceKey])
+  @@index([createdAt])
 }
 
 /**
@@ -861,40 +1036,49 @@ model PostingScopeDecision {
   id          String   @id @default(cuid())
   sourceKey   String
   externalId  String
-  /** IN_SCOPE | OUT_OF_SCOPE | UNDETERMINED */
+  /**
+   * IN_SCOPE | OUT_OF_SCOPE | UNDETERMINED
+   */
   verdict     String
-  /** Rule set that produced the verdict (e.g. aptar-perimeter-v2-20260910). */
+  /**
+   * Rule set that produced the verdict (e.g. aptar-perimeter-v2-20260910).
+   */
   ruleVersion String
   reason      String
   evidence    Json
   decidedBy   String
   decidedAt   DateTime
   createdAt   DateTime @default(now())
+
   @@unique([sourceKey, externalId])
   @@index([sourceKey, verdict])
 }
 
-/** Execution identity survives process restarts; unfinished runs remain visibly RUNNING. */
+/**
+ * Execution identity survives process restarts; unfinished runs remain visibly RUNNING.
+ */
 model PipelineRun {
-  id          String   @id
-  command     String
-  revision    String?
-  startedAt   DateTime @default(now())
-  finishedAt  DateTime?
-  status      String   @default("RUNNING")
-  metrics     Json?
-  events      PipelineEvent[]
+  id         String          @id
+  command    String
+  revision   String?
+  startedAt  DateTime        @default(now())
+  finishedAt DateTime?
+  status     String          @default("RUNNING")
+  metrics    Json?
+  events     PipelineEvent[]
 
   @@index([startedAt])
   @@index([status, startedAt])
 }
 
-/** Diagnostic occurrences, including repeats. Console aggregation never deletes these. */
+/**
+ * Diagnostic occurrences, including repeats. Console aggregation never deletes these.
+ */
 model PipelineEvent {
-  id          String   @id
+  id          String      @id
   runId       String
   run         PipelineRun @relation(fields: [runId], references: [id], onDelete: Restrict)
-  at          DateTime @default(now())
+  at          DateTime    @default(now())
   level       String
   event       String
   sourceKey   String?
@@ -908,7 +1092,6 @@ model PipelineEvent {
   @@index([level, at])
 }
 
-
 model OccupationRelease {
   id           String                  @id
   contentHash  String                  @unique
@@ -918,7 +1101,6 @@ model OccupationRelease {
   activeStates OccupationState[]
   observations OccupationObservation[]
 }
-
 
 model OccupationObservation {
   id        String            @id
@@ -935,31 +1117,38 @@ model OccupationObservation {
   @@index([releaseId, createdAt])
 }
 
-
 model OccupationState {
-  id        String            @id
-  releaseId String
-  release   OccupationRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
-  updatedAt DateTime          @updatedAt
-  /** Completed reclassification boundary; old statistical series remain archived. */
+  id           String            @id
+  releaseId    String
+  release      OccupationRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+  updatedAt    DateTime          @updatedAt
+  /**
+   * Completed reclassification boundary; old statistical series remain archived.
+   */
   backfilledAt DateTime?
 }
 
-/** Data-managed business verticals, independent of occupation families. */
+/**
+ * Data-managed business verticals, independent of occupation families.
+ */
 model SectorConcept {
-  code String @id
-  slug String @unique
-  labels Json
+  code       String @id
+  slug       String @unique
+  labels     Json
   definition String
-  position Int
+  position   Int
 }
-/** Immutable reviewed transition. The complete previous membership is retained. */
+
+/**
+ * Immutable reviewed transition. The complete previous membership is retained.
+ */
 model SectorReview {
-  id String @id
-  manifest Json
-  before Json
-  reviewer String
-  createdAt DateTime @default(now())
+  id        String    @id
+  manifest  Json
+  before    Json
+  reviewer  String
+  createdAt DateTime  @default(now())
   companies Company[]
-  @@index([createdAt,id])
+
+  @@index([createdAt, id])
 }
