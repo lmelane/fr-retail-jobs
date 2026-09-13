@@ -3,6 +3,7 @@ import { assertSourceRunning, sourceSignal } from './sourceBudget.js';
 import { createPublicBrowserProxy } from './browserProxy.js';
 import { assertPublicUrl, isPublicHttpUrl } from './ssrf.js';
 import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
+import { CRAWLER_IDENTITY } from './crawlerIdentity.js';
 
 /**
  * FashionJobs sits behind Cloudflare: plain `fetch` gets HTTP 403 on every path,
@@ -14,8 +15,18 @@ import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 const navigationTimeoutMs = Number(process.env.BROWSER_TIMEOUT_MS ?? 45_000);
 const settleMs = Number(process.env.BROWSER_SETTLE_MS ?? 4_000);
 
+/**
+ * L'identité du collecteur DANS le navigateur automatisé (D62) — elle vaut sur tous les modes de collecte,
+ * pas seulement sur le transport HTTP : une identité vraie sur un chemin et absente sur un autre n'en est pas
+ * une, et c'est précisément le chemin navigateur qu'un éditeur voit le moins bien.
+ *
+ * Le préfixe Chrome reste : ces pages exigent un moteur réel et certaines refusent un UA non navigateur — on
+ * ne prétend pas ne pas être un navigateur, on ajoute QUI le pilote. Le jeton `CatwalksBot/1.0` et l'URL
+ * d'information rendent l'opérateur identifiable et joignable dans les journaux de l'éditeur.
+ */
 const BROWSER_USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) '
+  + `Chrome/126.0.0.0 Safari/537.36 ${CRAWLER_IDENTITY}`;
 
 let browserPromise: Promise<Browser> | null = null;
 let proxy: Awaited<ReturnType<typeof createPublicBrowserProxy>> | null = null;
