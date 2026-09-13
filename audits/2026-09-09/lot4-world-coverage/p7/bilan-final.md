@@ -25,7 +25,7 @@ Les trois familles exigées sont couvertes, une source chacune, trois ATS sans c
 
 ## Code final
 
-`d3e5a966` — tout le code des deux cycles est sur `main` et déployé. Aucune branche P7 restante, aucune PR P7
+`d3e5a966` pour les deux cycles ; `6a945094` après l'addendum terminal (garde des 5 % exécutoire, instrumentation des ressources, réconciliation du sitemap). Tout est sur `main` et déployé. Aucune branche P7 restante, aucune PR P7
 ouverte. Service web légitimement sur son propre commit (`SAME_CODE_FOR_THIS_SERVICE` : aucun fichier
 `apps/web/` ni `packages/db/` touché).
 
@@ -99,10 +99,46 @@ fermeture **re-confirmée chez le publieur après le cycle 2** (6/6), contrats s
 
 Aucun septième identifiant. Aucune autre source. Le seuil global de 5 % est **inchangé**.
 
-> **Constat de méthode** : le ratio de 5 % est *calculé et affiché* par la prévisualisation mais **lu par
-> aucun code** — c'est un indicateur, pas une barrière. La vraie barrière est le **manifeste figé**, qui refuse
-> une source non recevable, tout état autre que `ABSENT_FROM_PROVEN_ENUMERATION`, et toute ligne déjà inactive.
-> L'exception n'a donc contourné aucune garde : elle a emprunté le chemin normal.
+> **Constat de méthode, et sa correction.** Pendant les deux cycles, le ratio de 5 % était *calculé et affiché*
+> par la prévisualisation mais **lu par aucun code** — un indicateur, pas une barrière. La vraie barrière était
+> le **manifeste figé** (source non recevable, état autre que `ABSENT_FROM_PROVEN_ENUMERATION`, ligne déjà
+> inactive). L'exception n'a donc contourné aucune garde : elle a emprunté le chemin normal.
+>
+> **La garde est désormais réelle** (addendum terminal, ci-dessous). Conséquence à énoncer clairement : le plan
+> du cycle 1 valait **7,26 %** — avec la garde en place, il aurait été **refusé** sans dérogation. Ses
+> 21 absences ont néanmoins été vérifiées une par une chez les publieurs, et l'audit conclut `problems: []`.
+
+## Addendum terminal — la garde des 5 % rendue exécutoire
+
+La politique vit maintenant dans `freeze-manifest.mts`, la dernière chose produite avant la mutation et ce que
+la mutation consomme.
+
+**Deux précisions qui changent le résultat :**
+
+1. On compte des **fermetures d'offre**, jamais des désactivations de représentation. Désactiver la
+   représentation d'une source pendant qu'une autre atteste encore l'offre ne ferme rien pour le candidat —
+   cas réel : American Vintage, 6 représentations, **3** fermetures. Les compter aurait gonflé le ratio et fait
+   refuser une opération inoffensive.
+2. Le **dénominateur** (`perimeterLiveJobs`) est écrit dans le verdict pour être relu. C'est par lui qu'on
+   truque un ratio sans mentir sur le numérateur.
+
+Les sept scénarios, exercés contre le **programme réel sur clone restauré** :
+
+| # | Cas | Verdict | Motif rendu |
+|--:|---|---|---|
+| 1 | 2 % sans dérogation | **autorisé** | — |
+| 2 | 10 % sans dérogation | **REFUS** | « ratio 10 % > 5 % et aucune dérogation » |
+| 3 | dérogation exacte | **autorisé** | dérogation appliquée |
+| 4 | identifiant non approuvé au plan | **REFUS** | l'identifiant est nommé |
+| 5a | plan réduit après approbation | **REFUS** | « fractionner est interdit » |
+| 5b | conséquence modifiée | **REFUS** | approuvé vs présenté |
+| 5c | `planHash` différent | **REFUS** | « plan régénéré ou modifié » |
+| 6 | 10 représentations, Jobs conservés | **autorisé** | **0 fermeture** comptée |
+| 7 | ancien comportement rétabli | **les tests échouent** | contre-exemple vérifié |
+
+> **Défaut évité en vérifiant plutôt qu'en supposant** : le champ est `perimeterLiveJobs`, pas `perimeter`. Le
+> nom plausible aurait rendu `undefined`, donc un dénominateur nul, donc un refus permanent — une garde qui
+> refuse tout est aussi inutilisable qu'une garde absente.
 
 ## Le manifeste est un PLAFOND, pas un plancher
 
@@ -128,9 +164,39 @@ intactes.**
 | Mutation refresh | 1,0 s | 0,3 s |
 | Préflight (dump + restauration + comparaison) | ~4 min | ~3,5 min |
 
-Mémoire et connexions Postgres : **non mesurées**, et déclarées telles. Le pipeline ne les enregistre pas, et
-les lire depuis ce poste décrirait cet hôte, pas le conteneur du run (leçon D32). Rien n'a été comblé par du
-plausible.
+### Mémoire, CPU et connexions — mesurées DANS le conteneur (passe du 2026-09-13)
+
+Une instrumentation a été ajoutée puis **déployée** (`6a945094`), et une ingestion bornée de mesure exécutée
+sur les mêmes trois sources, sans refresh. Les chiffres viennent du processus qui travaille — les lire depuis
+un poste local aurait décrit cet hôte, pas le service (leçon D32).
+
+Run `fcb326e3`, 6 échantillons, 3/3 sources OK, 227 offres, **0 changement** (idempotence vérifiée).
+
+| Grandeur | Avant | Pic | Après |
+|---|--:|--:|--:|
+| Mémoire RSS | 175,6 Mo | **344,1 Mo** | 240,9 Mo |
+| Heap utilisé | 42,4 Mo | — | 63,5 Mo |
+| Connexions Postgres (total) | 12 | **14** | 14 |
+| dont actives | 1 | — | 2 |
+| dont `idle` | 11 | — | 12 |
+| dont `idle in transaction` | 0 | — | 0 |
+| **En attente réelle (verrou / E-S)** | **0** | **0** | **0** |
+| Requête active la plus longue | 0 s | 0 s | 0 s |
+
+**Limite mémoire du conteneur : 24,0 Go** (lue dans le cgroup). Le pic de 344 Mo en représente **1,4 %** —
+c'est cette échelle qui rend le chiffre interprétable, et c'est pourquoi la limite est lue plutôt que supposée.
+
+CPU du run : **4,36 s utilisateur + 0,55 s système** pour 28,1 s de processus.
+**Redémarrage : aucun** — `processCoveredWindow: true`, le processus qui écrit le rapport est celui qui a
+commencé. **OOM : `null`, pas `false`** — un processus tué par l'OOM killer ne peut pas rapporter sa propre
+mort ; l'absence d'OOM se lit sur un run qui se termine, pas sur une case cochée par le mourant.
+
+> **Deux pièges corrigés dans la MESURE, pas dans le système.** La première lecture annonçait **13 connexions
+> « en attente » sur 14** et une requête d'âge **négatif**. Les deux venaient de la requête : `Client/ClientRead`
+> est un pool au repos qui attend que le *client* parle — pas une contention — et la sonde était elle-même la
+> session active la plus récente, son `query_start` tombant après le `now()` de la même instruction. Filtrées
+> (`state = 'active'`, hors `Client`/`Timeout`/`Activity`, `pid <> pg_backend_pid()`), les valeurs justes sont
+> **0 en attente** et **0 s**. Publier « 13 en attente » aurait déclenché une chasse à un problème inexistant.
 
 ## Rollback — démontré, pas affirmé
 
@@ -151,21 +217,67 @@ après mutation : 79 033). Les trois offres fermées y figurent `isActive=t, clo
 | Invariants | 0 offre active avec `closedAt` · 0 offre orpheline · 0 retenue perdue · 0 `closedAt`+`withdrawnAt` |
 | Sources de catégorie B | **0 fermeture**, 2 014 représentations intactes |
 
+### Réconciliation du sitemap — par identifiant, toutes tranches lues
+
+`public-chain-reconcile.mts`, lecture seule, sur les **19 identifiants de P7** (16 fermés + 3 conservés).
+**17 tranches de sitemap, 80 700 URL, aucune illisible** — lire une seule tranche aurait rendu « absent du
+sitemap » indistinguable de « absent de la tranche regardée ». L'API est paginée jusqu'au bout, pour la même
+raison : s'arrêter à la première page inventerait des absences (41 offres American Vintage sur 2 pages de 25).
+
+| Catégorie | n | Base | API | Sitemap | Fiche | JobPosting | Statut |
+|---|--:|---|---|---|--:|---|---|
+| Fermées pendant P7 | 16 | FERMÉE | absente | **absente** | **410** | absent | **CONFORME** |
+| Conservées par une autre source | 3 | ACTIVE | présente | **présente** | **200** | présent (2/3) | **CONFORME** |
+
+**19/19 conformes · 0 écart.** Aucune URL d'offre fermée ne reste publiée comme offre active ; aucune offre
+active attendue n'est absente. Le seul actif sans `JobPosting` est le cas H-GEO-01 ci-dessous — un pays sans
+preuve indépendante, correctement non compté comme défaut de fermeture.
+
 ## État final des neuf sources
 
-| Source | C1 | C2 | Contrat adapt. | Contrat persist. | Complete | CanAttest | Refresh C1 | Refresh C2 | Ajouts | Absences | Fermetures | Conservées | Décision | Motif | Condition future |
-|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|--:|--:|--:|--:|---|---|---|
-| `mecca` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 12 | 0 | 0 | 12 | 12 | 0 | **VALIDÉE P7** | deux cycles complets, 12/12 vérifiées à l'API Workday | — |
-| `ganni-talentrecruiter` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 1 | 0 | 0 | 3 | 1 | 0 | **VALIDÉE P7** | deux cycles complets, 3/3 absentes du flux officiel | 2 fermetures retenues par la garde de fraîcheur (48 h) — se feront au prochain cycle |
-| `american-vintage-dr` | exclu | ✓ | ✓ | ✓ | ✓ | ✓ | 0 | 6 | 0 | 6 | 3 | 3 | **VALIDÉE P7** | exception propriétaire appliquée après confirmation sur deux cycles | — |
-| `dr-pierre-ricaud` | — | — | ✗ | n/a | ✓ | ✗ | — | — | 0 | n/d | 0 | 0 | **COLLECTE VALIDÉE, REFRESH EXCLU** | SuccessFactors n'émet pas `canonicalIds` | émettre `canonicalIds`, puis deux cycles |
-| `lagardere-travel-retail` | — | — | ✗ | n/a | ✓ | ✗ | — | — | 0 | n/d | 0 | 0 | **COLLECTE VALIDÉE, REFRESH EXCLU** | Talentsoft idem | idem |
-| `urbn-hub` | — | — | ✗ | n/a | ✓ | ✗ | — | — | 0 | n/d | 0 | 0 | **COLLECTE VALIDÉE, REFRESH EXCLU** | iCIMS idem | idem |
-| `beiersdorf` | — | — | ✗ | n/a | ✓ | ✗ | — | — | 0 | n/d | 0 | 0 | **COLLECTE VALIDÉE, REFRESH EXCLU** | generic-listing idem | idem |
-| `lindex-easycruit` | — | — | ✗ | n/a | ✓ | ✗ | — | — | 0 | n/d | 0 | 0 | **COLLECTE VALIDÉE, REFRESH EXCLU** | EasyCruit idem | idem |
-| `saltrock-harri` | — | — | ✗ | n/a | ✓ | ✗ | — | — | 0 | n/d | 0 | 0 | **COLLECTE VALIDÉE, REFRESH EXCLU** | Harri idem | idem |
+> **Correction de terminologie.** Une version antérieure de ce tableau portait « C1 = exclu » pour American
+> Vintage. C'était faux, et de la pire façon : cela laissait croire qu'elle n'avait pas participé au cycle 1.
+> Elle y a **ingéré, satisfait ses deux contrats et produit sa preuve** ; seul son **refresh** a été retenu,
+> par décision du propriétaire, en attendant l'intersection du cycle 2. Ingestion, preuve et refresh sont donc
+> désormais trois colonnes distinctes par cycle — les confondre revenait à confondre *collecter* et *muter*.
+
+| Source | Ingestion C1 | Preuve C1 | Refresh C1 | Ingestion C2 | Preuve C2 | Refresh C2 | Contrat adapt. | Contrat persist. | Complete | CanAttest | Ajouts | Absences | Fermetures | Conservées | Décision | Motif | Condition future |
+|---|:-:|:-:|---|:-:|:-:|---|:-:|:-:|:-:|:-:|--:|--:|--:|--:|---|---|---|
+| `mecca` | ✓ | ✓ | 12 désactivations, 12 fermetures | ✓ | ✓ | 0 (rien à fermer) | ✓ | ✓ | ✓ | ✓ | 0 | 12 | 12 | 0 | **VALIDÉE P7** | deux cycles complets ; 12/12 absentes de l'API Workday, 2 témoins rendus | — |
+| `ganni-talentrecruiter` | ✓ | ✓ | 1 désactivation, 1 fermeture | ✓ | ✓ | 0 — 2 retenues par la garde de fraîcheur | ✓ | ✓ | ✓ | ✓ | 0 | 3 | 1 | 0 | **VALIDÉE P7** | deux cycles complets ; 3/3 absentes du flux `positionlist`, 2 témoins présents | 2 fermetures `ABSENCE_PROUVÉE_FERMETURE_RETENUE_PAR_LA_GARDE` (revues à 10,9 h, seuil 48 h) — au prochain cycle |
+| `american-vintage-dr` | ✓ | ✓ | **retenu par décision propriétaire** (attente de l'intersection C2) | ✓ | ✓ | 6 représentations : 3 fermetures, 3 Jobs conservés | ✓ | ✓ | ✓ | ✓ | 0 | 6 | 3 | 3 | **VALIDÉE P7** | exception propriétaire appliquée après confirmation sur deux cycles et re-confirmation chez le publieur | — |
+| `dr-pierre-ricaud` | — | — | exclu | — | — | exclu | ✗ | n/a | ✓ | ✗ | 0 | n/d | 0 | 0 | **COLLECTE VALIDÉE, REFRESH EXCLU** | SuccessFactors n'émet pas `canonicalIds` | émettre `canonicalIds`, puis deux cycles |
+| `lagardere-travel-retail` | — | — | exclu | — | — | exclu | ✗ | n/a | ✓ | ✗ | 0 | n/d | 0 | 0 | **COLLECTE VALIDÉE, REFRESH EXCLU** | Talentsoft idem | idem |
+| `urbn-hub` | — | — | exclu | — | — | exclu | ✗ | n/a | ✓ | ✗ | 0 | n/d | 0 | 0 | **COLLECTE VALIDÉE, REFRESH EXCLU** | iCIMS idem | idem |
+| `beiersdorf` | — | — | exclu | — | — | exclu | ✗ | n/a | ✓ | ✗ | 0 | n/d | 0 | 0 | **COLLECTE VALIDÉE, REFRESH EXCLU** | generic-listing idem | idem |
+| `lindex-easycruit` | — | — | exclu | — | — | exclu | ✗ | n/a | ✓ | ✗ | 0 | n/d | 0 | 0 | **COLLECTE VALIDÉE, REFRESH EXCLU** | EasyCruit idem | idem |
+| `saltrock-harri` | — | — | exclu | — | — | exclu | ✗ | n/a | ✓ | ✗ | 0 | n/d | 0 | 0 | **COLLECTE VALIDÉE, REFRESH EXCLU** | Harri idem | idem |
 
 Aucune source « à voir ».
+
+### Concordance des totaux avec les paragraphes et les fichiers de preuve
+
+Vérifiée ligne à ligne, parce qu'un tableau qui ne recoupe pas son propre texte fait douter des deux :
+
+| Grandeur | Tableau | Paragraphes | Fichier de preuve |
+|---|--:|--:|---|
+| Offres collectées, chaque cycle | 181 + 15 + 31 = **227** | 227 | `record.json` des deux runs |
+| Absences de l'intersection | 6 + 2 = **8** | 8 | `p7-cycle2/intersection.json` |
+| Fermetures totales P7 | 12 + 1 + 3 = **16** | 13 (C1) + 3 (C2) = 16 | `refresh-audit` des deux cycles |
+| Offres conservées par une autre source | **3** | 3 | manifeste C2 (`kept: 3`) |
+| Manifeste C2 : fermetures *planifiées* | **5** | 3 *réalisées* | `manifest.json` C2 |
+| Offres actives | 79 049 − 16 = **79 033** | 79 033 | `production-counts.mts` |
+| Identifiants réconciliés | 16 + 3 = **19** | 19/19 conformes | `public-chain-reconcile` |
+
+**L'écart 5 planifiées / 3 réalisées au cycle 2 n'est pas une incohérence, c'est la garde de fraîcheur.** Le
+manifeste est un plafond : il autorise 5 fermetures, `runRefresh` en réalise 3 et laisse les 2 lignes GANNI
+revues il y a 10,9 h. Un tableau qui n'afficherait que « 3 » masquerait le fait qu'un plan plus large a été
+revu et volontairement non exécuté en totalité.
+
+Les 21 absences du cycle 1 se répartissent en 18 candidates à fermeture et 3 conservées ; 15 seulement sont
+entrées au manifeste (les sources recevables du refresh C1), et 13 ont été mutées — les 2 autres retenues par
+la même garde. Aucun de ces nombres ne se déduit d'un autre : ils sont mesurés séparément, et les rapprocher
+est précisément ce qui permet de voir qu'ils se tiennent.
 
 ## Défauts trouvés et corrigés pendant P7
 
@@ -180,6 +292,9 @@ Chacun aurait produit une affirmation fausse d'apparence crédible.
 | 5 | `absent-ids` lisant `pageEvidence` sur `SourceRun` | plantage ; le champ vit sur `PipelineEvent` | 21 absences nommées et vérifiées |
 | 6 | `cycle-resources` interrogeant `source.started` (inexistant) | durées et débits `null` **en silence** | durées par source mesurées + `measurementWarning` |
 | 7 | Deux tests sous `src/pipeline/`, exclu de `test:unit` | tests sans base gardés derrière la suite Docker | unitaires 1 839 → **1 852** |
+| 8 | Garde des 5 % **affichée mais lue par personne** | on croyait protégé ce qui ne l'était pas | 7 scénarios sur clone, dont le contre-exemple |
+| 9 | `wait_event_type IS NOT NULL` comptait le pool au repos | **« 13 connexions en attente sur 14 »** — une chasse à un problème inexistant | filtré : **0 en attente** |
+| 10 | La sonde se mesurait elle-même | âge de requête **négatif** (−0,0008 s) | `pid <> pg_backend_pid()` → **0 s** |
 
 ## Reste ouvert — hors périmètre P7, signalé
 
@@ -194,3 +309,7 @@ Chacun aurait produit une affirmation fausse d'apparence crédible.
 
 `INGEST_ONLY_KEYS` **null** · `REFRESH_ONLY_KEYS` **null** · `PIPELINE_PAUSED=1` · commande normale restaurée ·
 les **trois** crons gelés sur `0 0 29 2 *`. Aucun cron réactivé.
+
+Trois gardes ont refusé pendant l'addendum, et chacune avait raison : arbre Git non propre (un outil non
+encore versionné), HEAD ≠ commit déployé, déploiement encore `BUILDING`. Aucune n'a été contournée ; la cause
+a été corrigée à chaque fois, puis l'étape rejouée.

@@ -60,6 +60,20 @@ describe('mesure des ressources — depuis le processus qui tourne', () => {
     if (report.samples < 2) expect(report.notes.join(' ')).toContain('moins de deux échantillons');
   });
 
+  it('la requête d\'attente exclut Client/Timeout/Activity et sa propre sonde', async () => {
+    // Deux pièges mesurés en production : `Client/ClientRead` (un pool au repos) comptait comme « en attente »
+    // — 13 sur 14 — et la sonde elle-même produisait un âge NÉGATIF, étant la session active la plus récente.
+    const { readFileSync } = await import('node:fs');
+    const { fileURLToPath } = await import('node:url');
+    const { dirname, resolve } = await import('node:path');
+    const src = readFileSync(
+      resolve(dirname(fileURLToPath(import.meta.url)), '../observability/resources.ts'), 'utf8');
+    expect(src).toContain("NOT IN ('Client', 'Timeout', 'Activity')");
+    expect(src).toContain('pid <> pg_backend_pid()');
+    // L'attente ne se compte que sur une session ACTIVE : une session idle n'attend pas un verrou.
+    expect(src).toMatch(/state = 'active' AND wait_event_type IS NOT NULL/);
+  });
+
   it('la limite mémoire est un nombre positif ou null — jamais une valeur par défaut inventée', async () => {
     const limit = await readMemoryLimitBytes();
     expect(limit === null || (typeof limit === 'number' && limit > 0)).toBe(true);
