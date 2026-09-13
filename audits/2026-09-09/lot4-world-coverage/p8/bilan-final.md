@@ -20,7 +20,7 @@ acceptent de servir.
 
 | Passage | Sources | Offres | Mur | 429 | Verdict |
 |---|--:|--:|--:|--:|---|
-| T0 (validation de la chaîne) | 3 | — | — | 0 | `validForCapacity: true` |
+| T0 (validation de la chaîne) | 3 | 227 | 34,0 s | 0 | `validForCapacity: true` |
 | T1 corrigé, passe 1 | 9 | 1 976 | 580,8 s | 0 | `true` |
 | T1 corrigé, passe 2 | 9 | 1 977 | 401,6 s | 0 | `true` |
 | T2, passe 1 | 18 | 10 281 | 1 379,8 s | 82 | `false` — 4 refus d'identité |
