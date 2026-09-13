@@ -6,6 +6,7 @@ import { getWafCookie, isWafChallenge, primeWafCookie, WafChallengeError } from 
 import { detectChallenge } from './responseIntegrity.js';
 import { publicDispatcher } from './publicTransport.js';
 import { sessionHeaders, rememberSessionCookies } from './httpSession.js';
+import { recordAttempt, recordResponse, recordFailure } from '../observability/httpTelemetry.js';
 
 export { WafChallengeError } from './wafToken.js';
 export { detectChallenge, type ChallengeVendor } from './responseIntegrity.js';
@@ -170,6 +171,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
     assertSourceRunning();
     const controller = new AbortController();
     let timer: ReturnType<typeof setTimeout> | undefined;
+    let startedAt = 0;
     try {
       // Every request passes through the per-host gate — the global politeness
       // that stops us throttling a shared host (ELC, Richemont, Beaumanoir…) in
@@ -181,6 +183,10 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         assertSourceRunning();
         log.count('http.attempts');
         if (i > 0) log.count('http.retries');
+        // Télémétrie PAR HÔTE : posée au point de passage unique de toute requête sortante, pour que le
+        // compte soit total et non celui d'un chemin particulier.
+        recordAttempt(url, i > 0);
+        startedAt = Date.now();
         timer = setTimeout(() => controller.abort(), timeoutMs);
         return fetchFollowingSafely(
           url,
@@ -196,6 +202,9 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         );
       });
       log.count('http.responses');
+      // `headers` peut manquer sur une réponse simulée : la télémétrie ne doit JAMAIS faire échouer une
+      // requête réelle pour une grandeur accessoire. Sans en-tête, la taille est simplement inconnue.
+      recordResponse(url, response.status, Date.now() - startedAt, response.headers?.get('content-length') ?? null);
       if (isWafChallenge(response)) {
         await response.body?.cancel();
         if (timer) clearTimeout(timer);
@@ -257,6 +266,9 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         throw error;
       }
       lastError = error;
+      // Un abandon par le contrôleur de délai est un TIMEOUT ; le reste est une erreur réseau. Les confondre
+      // masquerait le seul symptôme qui distingue un hôte lent d'un hôte cassé.
+      recordFailure(url, controller.signal.aborted ? 'timeout' : 'error');
     } finally {
       if (timer) clearTimeout(timer);
     }

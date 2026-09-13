@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import type { PrismaClient, Prisma } from '@prisma/client';
 import { OperationalLogger, installLogger, redact } from './logger.js';
 import { startResourceSampling } from './resources.js';
+import { snapshotHosts, resetHosts } from './httpTelemetry.js';
 
 export type RunStatus = 'COMPLETED' | 'COMPLETED_WITH_ERRORS' | 'FAILED';
 
@@ -59,12 +60,18 @@ export async function startObservability(prisma: PrismaClient, command: string) 
    * `unref` et tolérant : un échantillon manqué ne doit jamais faire échouer un run.
    */
   const resources = startResourceSampling(prisma);
+  // Un second passage dans le MÊME processus hériterait des compteurs du premier : on repart de zéro.
+  resetHosts();
+  const runStartedAt = Date.now();
 
   async function closeWithResources(status: RunStatus | 'INTERRUPTED', extra: Record<string, unknown> = {}) {
     let report: unknown = null;
     try { report = await resources.stop(); }
     catch (error) { report = { unavailable: `échantillonnage indisponible : ${(error as Error).message.slice(0, 120)}` }; }
-    return close(status, { ...extra, resources: report });
+    let hosts: unknown = null;
+    try { hosts = snapshotHosts((Date.now() - runStartedAt) / 1000); }
+    catch (error) { hosts = { unavailable: (error as Error).message.slice(0, 120) }; }
+    return close(status, { ...extra, resources: report, httpByHost: hosts });
   }
 
   return {
