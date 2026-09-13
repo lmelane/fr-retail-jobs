@@ -116,7 +116,7 @@ python3 "$OPS/read-crons.py" > "$LOG/crons-after.json" 2>&1 || true
 VERDICT_ID_ARG=""
 [ -n "$RUN_ID" ] && VERDICT_ID_ARG="--run-id=$RUN_ID"
 python3 "$OPS/db.py" readonly npx tsx "$OPS/run-verdict.mts" $VERDICT_ID_ARG --command="$RUN_NAME" \
-  --expect-command="$RUN_NAME" --expect-commit="$COMMIT" \
+  --expect-command="$RUN_NAME" --expect-commit="$COMMIT" --expect-sources="$KEYS" \
   --out="$LOG/verdict.json" > "$LOG/verdict.log" 2>&1 || true
 python3 "$OPS/railway-service.py" variables aggregator > "$LOG/variables-after.json" 2>&1 || true
 

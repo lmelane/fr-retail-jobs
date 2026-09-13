@@ -108,10 +108,30 @@ export async function withHostGate<T>(url: string, task: () => Promise<T>): Prom
  * Report that a host throttled us (403/405/429/5xx): grow its gap so subsequent
  * requests to it slow down. Called by fetchWithRetry on a soft-block status.
  */
-export function reportThrottle(url: string): void {
+export function reportThrottle(url: string, retryAfterMs?: number | null): void {
   const state = stateFor(hostOf(url));
   state.gapMs = Math.min(MAX_GAP_MS, Math.max(state.gapMs, BASE_GAP_MS) * 2);
-  state.nextAllowedAt = Math.max(state.nextAllowedAt, Date.now() + state.gapMs);
+  /**
+   * LE COOLDOWN APPARTIENT À LA CLÉ DE LIMITATION, pas au worker qui a pris le 429.
+   *
+   * `stateFor(hostOf(url))` résout désormais la `rateLimitKey` : toutes les sources du même tenant partagent
+   * donc `nextAllowedAt`, et une source qui se fait refuser fait attendre les autres du tenant — pendant
+   * qu'un tenant différent continue sans pénalité. C'est la propriété que H1 a rendue nécessaire : trois 429
+   * y ont été absorbés par re-tentative, chaque worker repartant de son côté.
+   *
+   * `Retry-After` prime quand l'hôte le nomme : il sait mieux que notre backoff. On prend le MAXIMUM, jamais
+   * le minimum — plusieurs 429 rapprochés ne doivent jamais RACCOURCIR un cooldown déjà posé.
+   */
+  const jitter = Math.floor(Math.random() * 250);
+  const asked = typeof retryAfterMs === 'number' && Number.isFinite(retryAfterMs) && retryAfterMs > 0
+    ? Math.min(retryAfterMs, MAX_GAP_MS) : 0;
+  const until = Date.now() + Math.max(state.gapMs, asked) + jitter;
+  state.nextAllowedAt = Math.max(state.nextAllowedAt, until);
+}
+
+/** Le cooldown courant d'une clé, en ms — pour les preuves et les tests. */
+export function cooldownRemainingMs(url: string): number {
+  return Math.max(0, stateFor(hostOf(url)).nextAllowedAt - Date.now());
 }
 
 /** Report a clean success: let the host's gap decay back toward the base. */
