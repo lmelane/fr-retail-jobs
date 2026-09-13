@@ -1,4 +1,7 @@
-# P9 · VAGUE 1 — bilan
+# P9 · VAGUE 1 — CHECKPOINT DE DIAGNOSTIC
+
+> **La vague 1 est OUVERTE.** Ce document est un point d'étape, pas une clôture : la constitution des
+> preuves EST le travail de P9, et les 16 dossiers doivent obtenir un verdict final.
 
 > 2026-09-13. Périmètre gelé avant exécution (`vague-1-perimetre.json`, commit `6252dbb`). Crons gelés du
 > début à la fin, aucune purge, aucune extension non bornée. **Aucune mutation de production.**
@@ -89,7 +92,10 @@ une comparaison de chaînes.
 Ordre de grandeur honnête : cette étape est le vrai coût d'une vague de certification, et l'inventaire ne
 l'avait pas exposé.
 
-## Ce que P9 doit en conclure pour la suite
+## Ce que P9 en conclut, et qui NE clôt rien
+
+> Décision propriétaire du 2026-09-13 : la constitution des preuves est le travail, pas un préalable à
+> arbitrer. La vague se poursuit jusqu'au verdict final des 16 dossiers.
 
 La famille `B_OFFICIAL_DOMAIN_PORTAL` **n'est pas** « 83 sources prêtes à certifier ». C'est 83 sources dont
 le portail est sur le bon domaine et **pour lesquelles la preuve reste à constituer**. La reclasser
