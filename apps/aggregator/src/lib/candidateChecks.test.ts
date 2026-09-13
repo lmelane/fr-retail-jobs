@@ -31,8 +31,35 @@ describe('request target per kind', () => {
     expect(requestTarget('workday', { origin: 'https://fastretailing.wd3.myworkdayjobs.com', tenant: 'fastretailing', site: 'retail_us_Uniqlo' })).toEqual({ origin: 'https://fastretailing.wd3.myworkdayjobs.com', path: '/wday/cxs/fastretailing/retail_us_Uniqlo/jobs' });
     expect(requestTarget('digitalrecruiters', { domainName: 'careers.am-vintage.com' })).toEqual({ origin: 'https://careers.am-vintage.com', path: '/' });
   });
+  /**
+   * Two kinds the default branch could not resolve, found by P9 on real catalogued sources:
+   *
+   * · `recruitee` configures a `subdomain` and the adapter builds `https://<subdomain>.recruitee.com`
+   *   (`recruitee.ts`) — the default branch never looked at `subdomain`, so `kult-olymp-hades` threw ;
+   * · `rituals` carries NO string key at all (only a list of locales) and its adapter falls back to a
+   *   `DEFAULT_ORIGIN` (`rituals.ts`) — nothing in the config could be read.
+   *
+   * Both origins are derived from what the ADAPTER really requests, never from the catalogue page: the whole
+   * point of this function is that robots is read on the host we actually call.
+   */
+  it('recruitee: the subdomain is the host the adapter calls', () => {
+    expect(requestTarget('recruitee', { subdomain: 'kult-olymp-hades' }))
+      .toEqual({ origin: 'https://kult-olymp-hades.recruitee.com', path: '/api/offers/' });
+  });
+
+  it('rituals: falls back to the adapter\'s own default origin when the config carries none', () => {
+    expect(requestTarget('rituals', {})).toEqual({ origin: 'https://careers.rituals.com', path: '/api/v1/jobs/' });
+  });
+
+  it('rituals: an explicit origin still wins over the default', () => {
+    expect(requestTarget('rituals', { origin: 'https://careers.example.com' }))
+      .toEqual({ origin: 'https://careers.example.com', path: '/api/v1/jobs/' });
+  });
+
   it('refuses a configuration with nothing to request', () => {
     expect(() => requestTarget('generic-listing', {})).toThrow(/no request origin/);
+    // Le repli d'un kind ne doit pas devenir un repli GÉNÉRAL : un kind inconnu sans origine reste refusé.
+    expect(() => requestTarget('recruitee', {})).toThrow(/no request origin/);
   });
 });
 

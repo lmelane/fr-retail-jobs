@@ -20,6 +20,19 @@ export function requestTarget(kind: string, config: Record<string, unknown>): { 
     case 'workday': return { origin: str('origin'), path: `/wday/cxs/${str('tenant')}/${str('site')}/jobs` };
     case 'teamtailor': { const u = new URL(str('jobs_url') || str('origin') || `https://${str('subdomain')}.teamtailor.com/jobs`); return { origin: u.origin, path: u.pathname || '/jobs' }; }
     case 'digitalrecruiters': return { origin: `https://${str('domainName') || str('domain')}`, path: '/' };
+    // `recruitee.ts` construit `https://<subdomain>.recruitee.com/api/offers/` : le sous-domaine EST l'hôte
+    // appelé. Sans ce cas, la branche par défaut ne trouvait aucune origine et refusait une source valide.
+    case 'recruitee': {
+      const sub = str('subdomain');
+      // Pas de `break` : dans un `switch` il sort du bloc SANS atteindre `default`, et la fonction rendrait
+      // `undefined` au lieu de refuser. Un refus qui ne refuse pas est pire que l'absence de contrôle.
+      if (sub) return { origin: `https://${sub}.recruitee.com`, path: '/api/offers/' };
+      throw new Error(`${kind}: no request origin in the configuration (subdomain)`);
+    }
+    // `rituals.ts` porte son propre `DEFAULT_ORIGIN` et sa configuration ne contient que des locales : aucune
+    // clé de chaîne à lire. On reprend le défaut de l'adaptateur — jamais une URL de catalogue, qui n'est pas
+    // l'hôte réellement appelé et ferait lire robots au mauvais endroit.
+    case 'rituals': return { origin: str('origin') || 'https://careers.rituals.com', path: '/api/v1/jobs/' };
     default: {
       const candidate = str('origin') || str('listingUrl') || str('jobs_url') || str('sitemapUrl') || str('careers_url') || (str('domainName') || str('domain') ? `https://${str('domainName') || str('domain')}` : '');
       if (!candidate) throw new Error(`${kind}: no request origin in the configuration (origin / listingUrl / jobs_url / sitemapUrl / domainName)`);
