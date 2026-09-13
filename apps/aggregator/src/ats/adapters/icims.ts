@@ -3,6 +3,7 @@ import { fetchText } from '../../lib/http.js';
 import pLimit from 'p-limit';
 import { enrichPostingEvidence, postingEvidenceOptions } from '../../lib/postingEvidence.js';
 import { htmlToPlainText } from '../../lib/html.js';
+import { crashPointReached, CRASH_POINTS } from '../../lib/crashInjection.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -145,6 +146,12 @@ export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<A
   const limit = pLimit(Math.max(1, Math.min(4, Number(config.detailConcurrency) || 2)));
   const evidenceOptions = postingEvidenceOptions(config);
   const jobs = await Promise.all(out.map(job => limit(async () => {
+    // POINT D'INJECTION du scénario B : le pool de détails est intégralement consommé AVANT toute
+    // persistance, c'est donc ici — et nulle part ailleurs — qu'une interruption se distingue d'une écriture
+    // partielle. Inerte sauf `P8_CRASH_AT=DURING_DETAIL_POOL` ; voir `lib/crashInjection.ts`.
+    if (crashPointReached(CRASH_POINTS.DURING_DETAIL_POOL)) {
+      process.kill(process.pid, 'SIGKILL');
+    }
     try { return enrichPostingEvidence(job, await fetchText(job.url), evidenceOptions); }
     catch (error) { return { ...job, raw: { ...(job.raw as object), detailReadError: String(error) } }; }
   })));

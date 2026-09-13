@@ -17,7 +17,15 @@
 # `PIPELINE_PAUSED` n'est pas touché : la commande bornée n'est pas le point d'entrée du cron, elle appelle
 # directement l'orchestrateur — la pause ne la concerne pas et reste donc en place pour les crons.
 #
-# usage: bounded-ingest.sh <commit-sha40> <keys,comma> [--skip-backup --dump=<path>]
+# usage: bounded-ingest.sh <commit-sha40> <keys,comma> [--concurrency=<n>] [--skip-backup --dump=<path>]
+#
+# `--stop-on-first-429` arme l'arrêt franc DANS LE CONTENEUR. Une variable exportée dans le shell local
+# n'y arrive jamais : le 2026-09-13, trois passages ont été conduits en croyant la garde armée alors
+# qu'elle ne l'était pas, et T2 a encaissé 82 réponses 429 sans s'arrêter.
+#
+# `--concurrency=<n>` sert le passage A/B de P8. Elle est portée par la COMMANDE déployée (donc visible dans
+# le manifeste, donc attribuable au run, donc retirée avec la restauration), jamais par une variable de
+# service — qui survivrait au passage et s'appliquerait en silence aux runs suivants.
 set -eu
 
 cd "$(dirname "$0")/../../../.."
@@ -26,6 +34,20 @@ R=backups/lot4-20260909
 COMMIT="${1:-}"; KEYS="${2:-}"; shift 2 || true
 [ -n "$COMMIT" ] && [ -n "$KEYS" ] || { echo "usage: bounded-ingest.sh <commit-sha40> <keys,comma>"; exit 2; }
 
+# La concurrence est extraite AVANT le préflight : le reste des arguments lui est transmis inchangé.
+CONCURRENCY=""
+STOP429=""
+REST=""
+for arg in "$@"; do
+  case "$arg" in
+    --concurrency=*) CONCURRENCY="${arg#--concurrency=}" ;;
+    --stop-on-first-429) STOP429="--stop-on-first-429" ;;
+    *) REST="$REST $arg" ;;
+  esac
+done
+# shellcheck disable=SC2086
+set -- $REST
+
 STAMP=$(date -u +%Y%m%dT%H%M%SZ)
 LOG="$R/p7-run-$STAMP"
 mkdir -p "$LOG"
@@ -33,7 +55,7 @@ RUN_NAME="p7-bounded-ingest-$STAMP"
 
 # L'empreinte du runner lui-même : ce qui a été exécuté doit être identifiable, pas seulement nommé.
 RUNNER_SHA=$(cat "$OPS/bounded-ingest.sh" "$OPS/ingest-preflight.py" "$OPS/railway-service.py" | shasum -a 256 | cut -d' ' -f1)
-echo "$STAMP runner=$RUNNER_SHA commit=$COMMIT keys=$KEYS"
+echo "$STAMP runner=$RUNNER_SHA commit=$COMMIT keys=$KEYS concurrency=${CONCURRENCY:-défaut} stop429=${STOP429:-non}"
 
 export DEPLOY_COMMIT="$COMMIT"
 export INGEST_KEYS="$KEYS"
@@ -55,7 +77,7 @@ echo "$(date -u +%H:%M:%S) état avant capturé"
 # La commande est assemblée par `bounded-command.py` : elle contient du JavaScript avec guillemets et `$`, que
 # le shell casserait en silence. Les canaux d'alerte y sont retirés de l'exécution — testés au préflight, un
 # digest émis par un run de 9 sources annoncerait faussement l'état des 431 autres.
-BOUNDED=$(python3 "$OPS/bounded-command.py" "$RUN_NAME" "$KEYS")
+BOUNDED=$(python3 "$OPS/bounded-command.py" "$RUN_NAME" "$KEYS" $CONCURRENCY $STOP429)
 
 echo "$(date -u +%H:%M:%S) pose de la commande bornée + déploiement"
 python3 "$OPS/railway-service.py" set-command aggregator "$BOUNDED" > "$LOG/set-command.json" 2>&1
@@ -120,13 +142,19 @@ python3 "$OPS/db.py" readonly npx tsx "$OPS/run-verdict.mts" $VERDICT_ID_ARG --c
   --out="$LOG/verdict.json" > "$LOG/verdict.log" 2>&1 || true
 python3 "$OPS/railway-service.py" variables aggregator > "$LOG/variables-after.json" 2>&1 || true
 
-python3 - "$LOG" "$COMMIT" "$KEYS" "$RUNNER_SHA" "$STARTED" "$FINISHED" "$STAMP" <<'PY'
+python3 - "$LOG" "$COMMIT" "$KEYS" "$RUNNER_SHA" "$STARTED" "$FINISHED" "$STAMP" "${CONCURRENCY:-}" "${STOP429:-}" <<'PY'
 import json, pathlib, sys
-log, commit, keys, runner, started, finished, stamp = sys.argv[1:8]
+log, commit, keys, runner, started, finished, stamp, concurrency, stop429 = sys.argv[1:10]
 d = pathlib.Path(log)
 record = {
     'runName': f'p7-bounded-ingest-{stamp}',
     'commit': commit, 'keys': keys.split(','), 'runnerSha256': runner,
+    # `null` = le défaut du CODE s'applique. On ne recopie pas « 4 » ici : le jour où le défaut change, un
+    # enregistrement qui l'aurait figé mentirait sur ce qui a réellement tourné.
+    'sourceConcurrency': int(concurrency) if concurrency else None,
+    # La POSTURE 429 du run, enregistrée : un passage qu'on relit doit dire lui-même s'il se serait arrêté
+    # au premier 429 ou s'il les a encaissés. Trois passages ont été décrits à tort comme « garde armée ».
+    'stopOnFirst429': bool(stop429),
     'startedAt': started, 'finishedAt': finished,
     'preflight': json.loads((d / 'preflight.json').read_text()) if (d / 'preflight.json').exists() else None,
     'after': json.loads((d / 'after.json').read_text()) if (d / 'after.json').exists() else None,

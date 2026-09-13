@@ -64,7 +64,19 @@ const sources = perSource.map((s) => {
   };
 });
 
-/** Ce que le cycle a réellement écrit : créations et ré-attestations, distinguées par `firstSeenAt`. */
+/**
+ * Ce que le cycle a réellement écrit : créations et ré-attestations, distinguées par `firstSeenAt`.
+ *
+ * ATTENTION — LIMITE DE VALIDITÉ, mesurée dans ce lot. `lastSeenAt` est MUTABLE : un run ultérieur sur la
+ * même source l'avance, et ses écritures se retrouvent attribuées à CE run-ci. Le 2026-09-13, la première
+ * réconciliation de H1 a ainsi compté 345 « ré-attestations H1 » qui étaient 345 écritures de T2 — le chiffre
+ * était juste par coïncidence, la méthode fausse.
+ *
+ * Ces deux compteurs ne sont donc valides que lus AVANT tout run ultérieur touchant les mêmes sources. Passé
+ * ce point ils sont irrécupérables : les événements durables portent des COMPTES, pas les identifiants écrits.
+ * `reattestationValidity` ci-dessous porte ce constat dans le rapport, pour qu'il ne se relise pas comme une
+ * preuve par ensembles d'identifiants — ce qu'il n'est pas.
+ */
 const written: any[] = await prisma.$queryRaw(Prisma.sql`
   SELECT js."sourceKey",
          count(*) FILTER (WHERE js."firstSeenAt" >= ${run.startedAt})::int AS created,
@@ -80,6 +92,26 @@ for (const s of sources) {
 
 const totalFetched = sources.reduce((a, s) => a + (s.fetched ?? 0), 0);
 const hosts: any[] = Array.isArray(m.httpByHost) ? m.httpByHost : [];
+
+/**
+ * `created`/`reattested` sont-ils encore ATTRIBUABLES à ce run ? On le DEMANDE à la base plutôt que de le
+ * supposer : un run postérieur sur l'une de ces sources a écrasé `lastSeenAt`, donc les compteurs lui
+ * appartiennent en partie. C'est la garde qui manquait quand H1 a été réconcilié à tort.
+ */
+const laterRuns: any[] = await prisma.$queryRaw(Prisma.sql`
+  SELECT DISTINCT sr."runId", pr."startedAt", pr.command
+  FROM "SourceRun" sr JOIN "PipelineRun" pr ON pr.id = sr."runId"
+  WHERE sr."sourceKey" = ANY(${sources.map((s) => s.sourceKey)})
+    AND pr."startedAt" > ${run.startedAt}
+  ORDER BY pr."startedAt"`);
+const reattestationValidity = laterRuns.length === 0
+  ? { attributable: true, overwrittenBy: [] }
+  : {
+      attributable: false,
+      reason: 'des runs POSTÉRIEURS ont touché ces sources : `lastSeenAt` étant mutable, une partie des '
+        + 'ré-attestations comptées ici leur appartient. Compteurs non attribuables à ce run.',
+      overwrittenBy: laterRuns.map((r) => ({ runId: r.runId, command: r.command, startedAt: r.startedAt?.toISOString?.() ?? r.startedAt })),
+    };
 
 const report = {
   run: {
@@ -99,6 +131,7 @@ const report = {
     rejected: sources.reduce((a, s) => a + s.rejected, 0),
     offersPerSecond: wallMs && wallMs > 0 ? Number((totalFetched / (wallMs / 1000)).toFixed(2)) : null,
   },
+  reattestationValidity,
   http: {
     counters: m.counters ?? {},
     byHost: hosts,
