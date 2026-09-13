@@ -2,6 +2,62 @@
 
 > 2026-09-13, commit déployé `85ce223`, crons gelés.
 > Passe 1 : run `687c482a`, 13:42:20 → 14:05:26 UTC, **1 379,8 s** (23 min).
+> Passe 2 : run `4d8ba33f`, 14:19:20 → 14:30:36 UTC, **675,5 s** (11 min).
+
+## Les deux passes, côte à côte
+
+| | Passe 1 | Passe 2 |
+|---|--:|--:|
+| Mur | 1 379,8 s | **675,5 s** (−51 %) |
+| Offres collectées | 10 281 | **10 281** |
+| **Créations d'identité** | 591 | **1** |
+| Ré-attestations | 9 648 | 10 238 |
+| Échecs d'écriture | 4 | **4** *(les mêmes)* |
+| Retenues (`aptar-beauty`) | 38 | **38** |
+| Erreurs · timeouts | 0 · 0 | 0 · 0 |
+| **429** | 82 | **39** |
+| Débit observé | 7,45 off/s | 15,22 off/s |
+| RSS pic | 758 Mo | 951 Mo |
+| Requête la plus longue | 4,56 s | 2,96 s |
+
+**16 sources sur 18 rendent EXACTEMENT le même volume.** Les deux écarts sont des mouvements réels du board
+entre les passes — `urbn-hub` +1, `nordstrom` −1 — et non une instabilité du pipeline : le total identique de
+10 281 est une **coïncidence de compensation**, pas une preuve, et il est rapporté comme telle.
+
+**Une seule création d'identité sur la seconde passe** : le corpus était déjà entièrement écrit. Ce n'est pas
+« zéro changement » — c'est 10 238 ré-attestations écrites et une offre réellement nouvelle.
+
+Le mur divisé par deux tient au même effet qu'en T1 : les 591 créations de la première passe (résolution
+d'identité, insertion, indexation) coûtent, la seconde ne fait que ré-attester. **Aucune de ces deux valeurs
+n'est « la » durée du corpus** — un premier passage et un passage idempotent mesurent deux régimes différents,
+et P8 doit retenir les deux.
+
+### Les 429 tombent de 82 à 39, sur les mêmes tenants
+
+| Tenant Workday | Passe 1 | Passe 2 |
+|---|--:|--:|
+| `mango.wd3` | 35 | 19 |
+| `richemont.wd3` | 28 | 11 |
+| `knitwellgroup.wd1` | 8 | 3 |
+| `nordstrom.wd501` | 7 | 2 |
+| `saks.wd1` | 4 | 4 |
+| `deckers.wd5` · `fastretailing.wd3` · `mecca.wd3` | 0 | **0** |
+
+Les trois tenants sous ~430 requêtes restent à **zéro** sur les deux passes : le seuil par tenant est
+**reproductible**. La baisse de moitié suit la baisse du travail d'écriture — le même nombre de requêtes
+(10 829 contre 10 871) produit deux fois moins de refus quand elles sont mieux étalées.
+
+**39 retries pour 39 × 429 : tous absorbés à nouveau, 0 erreur finale, 0 timeout, 0 perte.**
+
+### Les 4 mêmes échecs, aux 4 mêmes offres
+
+`saks` (Neiman Marcus ×2, Bergdorf Goodman) et `knitwell-us-retail` (A00 Premium Brands Services LLC)
+échouent **à l'identique** sur les deux passes. La porte d'identité est **déterministe** : elle ne cède pas au
+second essai. C'est la propriété qu'on attend d'une garde — un refus qui s'use serait pire qu'aucun refus.
+
+---
+
+## Détail de la passe 1
 
 ## Le verdict terminal : NON RECEVABLE comme mesure, et c'est correct
 
