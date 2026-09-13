@@ -57,6 +57,14 @@ export type IngestStats = {
   occupationReleases?: Record<string,number>;
   /** Bounded original cause, persisted in SourceRun rather than lost with logs. */
   errorNote?: string;
+  /**
+   * Chronométrage PAR PHASE (P8) : `fetchMs` est le temps passé DEHORS (listing + détails), `upsertMs` le
+   * temps cumulé passé à normaliser, dédupliquer et écrire. Leur somme est inférieure à la durée de la source
+   * — le reste est l'orchestration —, et c'est leur RAPPORT qui dit où corriger : attendre le réseau et peiner
+   * à écrire se soignent à des endroits opposés.
+   */
+  fetchMs?: number;
+  upsertMs?: number;
   /** Rows the adapter rejected with a reason (failures are also counted in `errors`; explained rejections are not). */
   rejected?: number;
   rejectedReasons?: Record<string, number>;
@@ -291,7 +299,15 @@ async function ingestApiSource(
   stats.occupationReleaseId = occupationTaxonomy.manifest.id;
   stats.occupationStatuses = {};
   stats.occupationReleases = {};
+  /**
+   * PHASE 1 — la COLLECTE (réseau) : listing + détails, tout ce que l'adaptateur va chercher dehors.
+   * Chronométrée séparément de l'écriture parce que la question de P8 — où passe le temps — n'a pas de réponse
+   * sur un total : un pipeline qui attend le réseau et un pipeline qui peine à écrire se corrigent à des
+   * endroits opposés, et les confondre enverrait optimiser la mauvaise moitié.
+   */
+  const fetchStartedAt = Date.now();
   const { jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = await fetchAtsJobs(type as never, config);
+  stats.fetchMs = Date.now() - fetchStartedAt;
   // One durable source-level event retains the reason behind completeness.
   // The operational logger stores large proofs in PipelineEvent and prints
   // only a bounded envelope, preserving the Lot 0 console-rate guarantees.
@@ -402,11 +418,14 @@ async function ingestApiSource(
 
     try {
       // The catalogue feed carries its real vendor ATS (WORKDAY, GREENHOUSE…).
+      // PHASE 2 — l'ÉCRITURE : normalisation, identité, déduplication, upsert. Cumulée offre par offre.
+      const upsertStartedAt = Date.now();
       const result = await upsertDeduplicated(
         prisma,
         toCandidate(job, sourceDef, employer, type as AtsType, trust),
         occupationTaxonomy,
       );
+      stats.upsertMs = (stats.upsertMs ?? 0) + (Date.now() - upsertStartedAt);
       stats.occupationStatuses[result.occupationStatus] = (stats.occupationStatuses[result.occupationStatus] ?? 0) + 1;
       stats.occupationReleases[result.occupationReleaseId] = (stats.occupationReleases[result.occupationReleaseId] ?? 0) + 1;
       if (result.outcome === 'CREATED') stats.created++;
