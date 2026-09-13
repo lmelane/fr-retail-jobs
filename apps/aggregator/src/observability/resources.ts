@@ -67,13 +67,27 @@ export type ResourceReport = {
 /** L'état des connexions, demandé à Postgres — la seule autorité sur ses propres connexions. */
 export async function sampleDatabase(prisma: PrismaClient): Promise<ResourceSample['db']> {
   try {
+    /**
+     * Deux pièges mesurés le 2026-09-13, tous deux dans la REQUÊTE, pas dans la base :
+     *
+     * · `wait_event_type IS NOT NULL` comptait 13 connexions « en attente » sur 14 — alarmant, et faux : ce
+     *   sont des connexions `idle` en `Client/ClientRead`, c'est-à-dire un pool au repos qui attend que le
+     *   CLIENT parle. Une attente de pool, celle qui compte, est une session ACTIVE bloquée sur un verrou ou
+     *   une entrée-sortie ; `Client/*` et `Timeout/*` n'en sont pas.
+     *
+     * · la requête de sonde est elle-même la session `active` la plus récente : son `query_start` tombe après
+     *   le `now()` de la même instruction, d'où un âge NÉGATIF (−0,0008 s). On l'exclut par `pid <> pg_backend_pid()`
+     *   plutôt que de rogner à zéro — masquer une valeur absurde empêche de voir qu'on mesure la mauvaise chose.
+     */
     const rows: any[] = await prisma.$queryRawUnsafe(`
       SELECT count(*)::int AS total,
              count(*) FILTER (WHERE state = 'active')::int AS active,
              count(*) FILTER (WHERE state = 'idle')::int AS idle,
              count(*) FILTER (WHERE state = 'idle in transaction')::int AS idle_in_transaction,
-             count(*) FILTER (WHERE wait_event_type IS NOT NULL)::int AS waiting,
-             coalesce(max(extract(epoch FROM (now() - query_start))) FILTER (WHERE state = 'active'), 0)::float AS longest
+             count(*) FILTER (WHERE state = 'active' AND wait_event_type IS NOT NULL
+                              AND wait_event_type NOT IN ('Client', 'Timeout', 'Activity'))::int AS waiting,
+             coalesce(max(extract(epoch FROM (now() - query_start)))
+                      FILTER (WHERE state = 'active' AND pid <> pg_backend_pid()), 0)::float AS longest
       FROM pg_stat_activity WHERE datname = current_database()`);
     const r = rows[0] ?? {};
     return {
