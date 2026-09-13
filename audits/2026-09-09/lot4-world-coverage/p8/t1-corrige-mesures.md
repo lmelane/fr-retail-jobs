@@ -1,108 +1,120 @@
 # P8 · T1 CORRIGÉ — le même corpus, sous la protection par tenant
 
 > 2026-09-13, commit déployé `85ce223`, crons gelés, `P8_STOP_ON_FIRST_429=1` armé.
-> Passe 1 : run `5a5cc452`, 12:59:03 → 13:08:43 UTC. Verdict terminal `COMPLETED`,
-> `validForCapacity: true`, `problems: []`, 9/9 sources `OK complete=true truncated=false errors=0`.
+> Passe 1 : run `5a5cc452`, 12:59:03 → 13:08:43 UTC. Passe 2 : run `8dd68ca2`, 13:15:47 → 13:22:29 UTC.
+> Les deux : `COMPLETED`, `validForCapacity: true`, `problems: []`, 9/9 sources `OK complete=true
+> truncated=false errors=0`.
 
-## Ce que cette reprise mesure, et pourquoi elle existe
+## Ce que cette reprise mesure
 
-T1 (référence) a tourné **avant** la protection par tenant. La porte de politesse y voyait les huit
+T1 (référence) a tourné **avant** la protection par tenant : la porte de politesse voyait les huit
 sous-domaines iCIMS d'URBN comme huit hôtes distincts et leur accordait **huit budgets séparés** pour un
-tenant unique. La reprise mesure le même corpus, aux mêmes clés, sous la clé de tenant `tenant:urbn.icims`.
+tenant unique. La reprise mesure le même corpus, aux mêmes clés, sous `tenant:urbn.icims`.
 
-**Un ralentissement d'URBN n'est donc pas une régression** : l'ancienne vitesse tenait à un privilège
-qui n'aurait pas dû exister. Ce qu'il faut vérifier n'est pas « est-ce plus rapide », mais « le coût est-il
-localisé là où la protection agit, et nulle part ailleurs ».
+## Le résultat, et pourquoi il ne conclut PAS
 
-## Le mur, et où il se déplace
-
-| | T1 référence | T1 corrigé (passe 1) | Écart |
+| Run | Mur | `urbn-hub` | Part d'URBN |
 |---|--:|--:|--:|
-| **Mur** | 452,7 s | **580,8 s** | **+28,3 %** |
-| `urbn-hub` | 440,0 s | **556,0 s** | **+26,4 %** |
-| Les 8 autres sources cumulées | ~95,7 s | ~158,5 s | — ¹ |
-| Offres collectées | 1 978 | 1 976 | −2 ² |
-| Requêtes HTTP | 2 077 | 2 076 | −1 |
-| Hôtes observés | 19 | 19 | 0 |
-| **429 · timeouts** | 0 · 0 | **0 · 0** | inchangé |
-| Retries | 0 | 1 ³ | +1 |
-| Erreurs · write failures · retenues | 0 · 0 · 0 | **0 · 0 · 0** | inchangé |
+| T1 référence, passe 1 | 452,7 s | 440,0 s | 97,2 % |
+| T1 référence, passe 2 | 424,6 s | 411,4 s | 96,9 % |
+| **T1 corrigé, passe 1** | **580,8 s** | 556,0 s | 95,7 % |
+| **T1 corrigé, passe 2** | **401,6 s** | 389,4 s | 97,0 % |
 
-¹ Les durées par source se recouvrent (4 sources en parallèle) : leur somme n'est pas additive et ne se
-compare pas au mur. Elle est donnée pour situer, pas pour conclure.
-² 1 976 contre 1 978 : le board a bougé entre les deux mesures. Aucune offre n'est perdue — 0 rejet, 0 retenue,
-0 échec d'écriture.
-³ Un retry sur `www.beiersdorf.de`, 1 erreur réseau absorbée. Sans rapport avec la protection par tenant.
-
-**L'essentiel du surcoût est dans `urbn-hub`, exactement là où la protection agit.**
-
-## La signature d'un budget PARTAGÉ, sous-domaine par sous-domaine
-
-| Sous-domaine iCIMS | Requêtes | T1 référence | T1 corrigé | Écart |
-|---|--:|--:|--:|--:|
-| `stores-na-urbn.icims.com` | 924 | 2,10 req/s | 1,59 req/s | **−24 %** |
-| `homeoffice-na-urbn.icims.com` | 178 | 0,40 | 0,31 | −23 % |
-| `stores-eu-urbn.icims.com` | 136 | 0,31 | 0,23 | −26 % |
-| `supplychain-na-urbn.icims.com` | 60 | 0,14 | 0,10 | −29 % |
-| `menusandvenues-na-urbn.icims.com` | 39 | 0,09 | 0,07 | −22 % |
-| `homeoffice-eu-urbn.icims.com` | 30 | 0,07 | 0,05 | −29 % |
-| `hub-urbn.icims.com` | 28 | 0,06 | 0,05 | −17 % |
-| `supplychain-eu-urbn.icims.com` | 1 | — | — | échantillon de 1 |
-
-**Les huit ralentissent ENSEMBLE, de 17 à 29 %.** C'est la signature recherchée : sous huit budgets séparés,
-seul l'hôte saturé aurait ralenti. Le ralentissement solidaire est la preuve d'un budget unique.
-
-**Limite de lecture, nommée** : chaque `requestsPerSecond` est calculé sur la fenêtre propre de son hôte. Ces
-taux **ne s'additionnent pas** en un « débit tenant » — les sommes 3,17 → 2,40 req/s ne sont pas une grandeur
-physique et ne sont pas utilisées ici comme telle. Ce qui porte la conclusion, c'est le mur et la solidarité
-des écarts.
-
-## Ce qui n'a PAS bougé — la protection est-elle restée locale ?
-
-| Hôte hors URBN | Requêtes | p50 |
+| | Avant protection | Après protection |
 |---|--:|--:|
-| `mecca.wd3.myworkdayjobs.com` | 191 | 243 ms |
-| `www.beiersdorf.com` | 123 | 152 ms |
-| `lagardere-recrute.talent-soft.com` | 101 | 125 ms |
-| `lindex.easycruit.com` | 83 | 328 ms |
-| `careers.groupe-rocher.com` | 71 | 83 ms |
+| Moyenne des deux passes | 438,6 s | 491,2 s |
+| **Étendue entre passes** | 28,1 s (**6,6 %**) | 179,2 s (**44,6 %**) |
 
-**Aucun hôte hors URBN n'est affecté.** La clé de tenant regroupe ce qu'elle doit regrouper et rien d'autre :
-`mecca` reste seule sous `tenant:mecca.workday`, les hôtes inconnus gardent leur repli conservateur par nom
-d'hôte. Le coût est ciblé.
+**Aucune conclusion de coût n'est recevable sur ces données.** La passe 2 corrigée (401,6 s) est plus RAPIDE
+que les deux passes de référence. Deux passes dont l'étendue vaut 44,6 % ne peuvent pas départager un écart de
+moyenne de 12 % : l'intervalle des deux mesures corrigées **contient** entièrement celui de la référence.
 
-## Ressources — non limitantes À CE PALIER, à revalider
+### L'erreur de méthode, nommée
 
-| Grandeur | Passe 1 | Marge |
-|---|--:|---|
-| RSS pic | 651 Mo | **2,7 %** de 24 Go |
-| CPU (user + system) | 116,5 s sur 580,8 s de mur | **20 %** |
-| Connexions DB (pic) | 15, dont 1 en attente | large |
-| Requête la plus longue | 2,85 s | à surveiller ⁴ |
-| Échecs de persistance | **0** | — |
-| `oomObserved` | `null` *(non observé, pas « aucun »)* | — |
-| Fenêtre de process couverte | `true`, 117 échantillons | — |
+Après la seule passe 1, j'ai conclu « la protection coûte +28,3 % de mur ». **C'était faux**, et faux d'une
+manière instructive : la passe 1 était l'extrémité haute d'une distribution que je prenais pour une valeur.
 
-⁴ 2,85 s contre 0,72 s en T1 : la requête la plus longue a quadruplé. Sur un run 28 % plus long, ce n'est pas
-proportionnel. **Ce n'est pas un verdict, c'est un point à revalider en T2**, où le volume est cinq fois
-supérieur — c'est là que la question devient décidable, pas ici.
+J'avais étayé cette conclusion par une « signature de budget partagé » — les huit sous-domaines ralentissant
+ensemble de 17 à 29 %. La passe 2 réfute la lecture : entre les deux passes corrigées, **tous** les hôtes
+voient leur `requestsPerSecond` monter d'environ 45 %, **y compris ceux qui n'ont rien à voir avec URBN**,
+alors que leur latence est inchangée :
 
-## Écritures — et la limite qui les rend lisibles
+| Hôte | p50 passe 1 | p50 passe 2 | req/s passe 1 | req/s passe 2 |
+|---|--:|--:|--:|--:|
+| `stores-na-urbn.icims.com` | 523 ms | 504 ms | 1,59 | 2,30 |
+| `mecca.wd3.myworkdayjobs.com` | 243 ms | 348 ms | 0,33 | 0,48 |
+| `careers.groupe-rocher.com` | 83 ms | 84 ms | 0,12 | 0,18 |
+| `www.beiersdorf.com` | 152 ms | 155 ms | 0,21 | 0,31 |
+| `lagardere-recrute.talent-soft.com` | 125 ms | 122 ms | 0,17 | 0,25 |
 
-**Créations d'identité : 0. Ré-attestations écrites : 1 976.** Le corpus entier est ré-attesté, aucune identité
-nouvelle n'est fabriquée. Ce n'est pas « zéro changement » : c'est un volume d'écriture quantifié.
+**`requestsPerSecond` est calculé sur la fenêtre du RUN, pas sur l'activité de l'hôte.** Un run plus court
+relève mécaniquement le taux de tous les hôtes. Le « ralentissement solidaire des huit sous-domaines » était
+donc un artefact du mur, pas la preuve d'un budget partagé — la même grandeur bouge pareillement sur des
+hôtes qu'aucune clé de tenant ne regroupe.
 
-`reattestationValidity.attributable: true` — vérifié en base au moment de la lecture : **aucun run postérieur
-n'avait touché ces sources**. C'est la garde qui manquait quand H1 a été réconcilié à tort, en attribuant à H1
-345 écritures qui appartenaient à T2. Le rapport la porte désormais comme une donnée, pas comme une précaution
-de lecture.
+*La règle qui en sort : une grandeur dérivée du mur ne peut pas servir à expliquer le mur.*
 
-## Verdict de la passe 1
+## Ce qui est réellement établi
 
-La protection par tenant **coûte 28 % de mur sur ce corpus, et ce coût est entièrement localisé sur URBN**.
-Elle n'a dégradé aucun autre hôte, n'a produit aucun 429, aucun timeout, aucune perte d'offre et aucune
-création d'identité parasite. Le corpus reste complet : 9/9 sources `complete`, aucune tronquée.
+| Fait | Statut |
+|---|---|
+| Les deux passes corrigées sont saines : 9/9 `complete`, non tronquées | **PROUVÉ** |
+| **0 · 429**, **0 timeout** sur les deux passes | **PROUVÉ** |
+| 0 erreur, 0 échec d'écriture, 0 offre retenue, 0 rejet | **PROUVÉ** |
+| 0 création d'identité sur les deux passes (`firstSeenAt`, immuable) | **PROUVÉ** |
+| Volumes stables : 1 976 / 1 977 offres, 2 076 requêtes, 19 hôtes | **PROUVÉ** |
+| Aucun portail sur-sollicité sous la clé de tenant | **PROUVÉ** |
+| **Coût en temps de la protection par tenant** | **NON ÉTABLI** — variance trop élevée |
+| Débit par tenant `tenant:urbn.icims` | **NON MESURABLE** avec l'instrument actuel |
 
-**Ce n'est pas une régression de performance : c'est la restitution d'un budget que huit sous-domaines se
-partageaient sans y avoir droit.** Le débit précédent n'était pas soutenable — il était emprunté à un tenant
-unique qui ne nous l'avait jamais concédé.
+La protection est **sûre** — elle ne casse rien, ne perd rien, ne déclenche aucun 429. Son **coût** reste
+inconnu. Ces deux verdicts sont distincts et ne se remplacent pas l'un l'autre.
+
+## Ressources — non limitantes à ce palier, à revalider en T2
+
+| Grandeur | Passe 1 | Passe 2 |
+|---|--:|--:|
+| RSS pic | 651 Mo (2,7 % de 24 Go) | 599 Mo |
+| Connexions DB (pic) | 15, dont 1 en attente | 15 |
+| **Requête la plus longue** | **2,85 s** | **0,047 s** |
+| Échecs de persistance | 0 | 0 |
+| `oomObserved` | `null` *(non observé ≠ aucun)* | `null` |
+
+**La requête à 2,85 s de la passe 1 ne se reproduit pas** : 0,047 s en passe 2, soit soixante fois moins. Un
+événement unique, pas une tendance — et un de plus qui montre que la passe 1 était atypique. Le point reste
+ouvert pour T2, où le volume est cinq fois supérieur.
+
+## Écritures — et la contamination que la garde a détectée
+
+| | Créations | Ré-attestations |
+|---|--:|--:|
+| Passe 1, lue **avant** la passe 2 | 0 | 1 976 |
+| Passe 1, relue **après** la passe 2 | 0 | **1 977** ← contaminé |
+| Passe 2 | 0 | 1 977 |
+
+La relecture de la passe 1 rend maintenant 1 977 au lieu de 1 976 : **une écriture de la passe 2 s'est
+ajoutée au compte de la passe 1**. `reattestationValidity.attributable` vaut désormais `false` pour la passe 1
+et nomme le run fautif (`p7-bounded-ingest-20260913T131018Z`).
+
+C'est exactement le défaut qui avait fait attribuer à H1 345 écritures appartenant à T2 — sauf qu'ici la garde
+l'a **détecté au lieu de le laisser passer**, sur un écart d'une seule ligne qu'aucune relecture humaine
+n'aurait remarqué.
+
+**`created` survit à la contamination** : il dérive de `firstSeenAt`, immuable. 0 création sur les deux
+passes est un fait solide.
+
+**Limite d'exploitation, assumée** : la garde n'est pas déployée (commit `85ce223` la précède ; elle vit sur
+`p8-ab-concurrency`). Les compteurs de la passe 2 n'ont donc **pas** été qualifiés à chaud, et le seront à la
+prochaine lecture — après un run qui les aura contaminés à leur tour. Pour T2, la lecture du rapport doit se
+faire **entre les deux passes**, pas après.
+
+## Verdict de T1 corrigé
+
+La protection par tenant est **sûre et sans perte**, sur deux passes saines. Son **coût en temps n'est pas
+mesurable** avec deux passes d'une telle variance, et la « preuve » que j'en avais tirée après la passe 1
+était un artefact de calcul.
+
+Mesurer ce coût exigerait soit plus de passes, soit un instrument de débit indépendant du mur. **Aucun des
+deux n'est nécessaire pour P8** : ce que le lot doit établir, c'est que la capacité réelle est soutenable —
+et l'absence de 429, de timeout et de perte sur quatre passes le dit déjà. Le coût exact de la protection est
+une question ouverte, pas un préalable.
