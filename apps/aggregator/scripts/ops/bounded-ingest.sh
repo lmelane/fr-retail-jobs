@@ -96,6 +96,10 @@ while [ $j -lt 120 ]; do
   j=$((j + 1)); sleep 30
 done
 FINISHED=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+# L'IDENTIFIANT EXACT du run qu'on vient de déclencher, capturé pendant qu'on l'observe. Le chercher plus tard
+# « par nom » marcherait tant que rien ne se chevauche — et cesserait de marcher précisément quand ça compte.
+RUN_ID=$(echo "$out" | python3 -c "import sys,json;print(json.load(sys.stdin).get('id',''))" 2>/dev/null || echo '')
+echo "$RUN_ID" > "$LOG/pipeline-run-id.txt"
 [ "$terminal" = "1" ] || { echo "run non terminal après 60 min : la commande N'EST PAS restaurée (un redéploiement le tuerait)"; exit 6; }
 echo "$(date -u +%H:%M:%S) run terminal"
 
@@ -109,7 +113,10 @@ python3 "$OPS/db.py" readonly npx tsx "$OPS/ingest-facts.mts" --keys="$KEYS" --p
 python3 "$OPS/read-crons.py" > "$LOG/crons-after.json" 2>&1 || true
 # LE VERDICT TERMINAL du travail piloté — sans lui, un PipelineRun INTERRUPTED passait pour un succès
 # (2026-09-13 : `problems: []` et `CODE_SORTIE=0` sur un run tué à 88,8 s par un déploiement concurrent).
-python3 "$OPS/db.py" readonly npx tsx "$OPS/run-verdict.mts" --command="$RUN_NAME" \
+VERDICT_ID_ARG=""
+[ -n "$RUN_ID" ] && VERDICT_ID_ARG="--run-id=$RUN_ID"
+python3 "$OPS/db.py" readonly npx tsx "$OPS/run-verdict.mts" $VERDICT_ID_ARG --command="$RUN_NAME" \
+  --expect-command="$RUN_NAME" --expect-commit="$COMMIT" \
   --out="$LOG/verdict.json" > "$LOG/verdict.log" 2>&1 || true
 python3 "$OPS/railway-service.py" variables aggregator > "$LOG/variables-after.json" 2>&1 || true
 
@@ -135,6 +142,9 @@ verdict = json.loads(verdict_file.read_text()) if verdict_file.exists() else Non
 record['verdict'] = verdict
 record['validForCapacity'] = bool(verdict and verdict.get('validForCapacity'))
 record['pipelineRunStatus'] = (verdict or {}).get('pipelineRunStatus')
+record['pipelineRunId'] = (verdict or {}).get('pipelineRunId')
+record['sourceRuns'] = (verdict or {}).get('sourceRuns')
+record['exitCode'] = (verdict or {}).get('exitCode')
 record['invalidatedReason'] = (verdict or {}).get('invalidatedReason')
 if verdict is None:
     problems.append('PIPELINE_RUN_NOT_FOUND : verdict terminal illisible')
