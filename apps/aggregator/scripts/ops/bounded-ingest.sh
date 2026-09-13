@@ -107,6 +107,10 @@ python3 "$OPS/db.py" readonly npx tsx "$OPS/ingest-facts.mts" --keys="$KEYS" --p
   --before="$LOG/before.json" --since="$STARTED" --command="$RUN_NAME" \
   --out="$LOG/after.json" > "$LOG/after.log" 2>&1
 python3 "$OPS/read-crons.py" > "$LOG/crons-after.json" 2>&1 || true
+# LE VERDICT TERMINAL du travail piloté — sans lui, un PipelineRun INTERRUPTED passait pour un succès
+# (2026-09-13 : `problems: []` et `CODE_SORTIE=0` sur un run tué à 88,8 s par un déploiement concurrent).
+python3 "$OPS/db.py" readonly npx tsx "$OPS/run-verdict.mts" --command="$RUN_NAME" \
+  --out="$LOG/verdict.json" > "$LOG/verdict.log" 2>&1 || true
 python3 "$OPS/railway-service.py" variables aggregator > "$LOG/variables-after.json" 2>&1 || true
 
 python3 - "$LOG" "$COMMIT" "$KEYS" "$RUNNER_SHA" "$STARTED" "$FINISHED" "$STAMP" <<'PY'
@@ -122,15 +126,28 @@ record = {
     'cronsAfter': json.loads((d / 'crons-after.json').read_text()) if (d / 'crons-after.json').exists() else None,
     'variablesAfter': json.loads((d / 'variables-after.json').read_text()) if (d / 'variables-after.json').exists() else None,
 }
-(d / 'record.json').write_text(json.dumps(record, indent=2))
 v = record.get('variablesAfter') or {}
 problems = []
+# Le verdict terminal PRIME : la chaîne peut s'être parfaitement déroulée sur un run qui, lui, a été
+# interrompu ou a échoué. Le succès du wrapper n'est pas celui du travail.
+verdict_file = d / 'verdict.json'
+verdict = json.loads(verdict_file.read_text()) if verdict_file.exists() else None
+record['verdict'] = verdict
+record['validForCapacity'] = bool(verdict and verdict.get('validForCapacity'))
+record['pipelineRunStatus'] = (verdict or {}).get('pipelineRunStatus')
+record['invalidatedReason'] = (verdict or {}).get('invalidatedReason')
+if verdict is None:
+    problems.append('PIPELINE_RUN_NOT_FOUND : verdict terminal illisible')
+else:
+    problems.extend(verdict.get('problems') or [])
 if v.get('INGEST_ONLY_KEYS'): problems.append(f"INGEST_ONLY_KEYS résiduel : {v['INGEST_ONLY_KEYS']}")
 if v.get('REFRESH_ONLY_KEYS'): problems.append(f"REFRESH_ONLY_KEYS présent : {v['REFRESH_ONLY_KEYS']}")
 for name, s in ((record.get('cronsAfter') or {}).get('services') or {}).items():
     if isinstance(s, dict) and s.get('cronSchedule') != '0 0 29 2 *':
         problems.append(f"cron dégelé sur {name} : {s.get('cronSchedule')}")
-print(json.dumps({'record': str(d / 'record.json'), 'problems': problems}, indent=1))
+(d / 'record.json').write_text(json.dumps(record, indent=2))
+print(json.dumps({'record': str(d / 'record.json'), 'validForCapacity': record['validForCapacity'],
+                  'pipelineRunStatus': record['pipelineRunStatus'], 'problems': problems}, indent=1))
 sys.exit(1 if problems else 0)
 PY
 
