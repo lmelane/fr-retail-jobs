@@ -20,10 +20,41 @@
  * Pour un hôte dédié, c'est l'hôte lui-même. Pour un ATS mutualisé, c'est l'identifiant du tenant : c'est lui
  * qui distingue une Maison d'une autre sur `boards.greenhouse.io` ou `api.smartrecruiters.com`.
  */
-export function boardReferenceFor(kind: string, config: Record<string, unknown>): string {
+export function boardReferenceFor(
+  kind: string,
+  config: Record<string, unknown>,
+  context?: { maison?: string },
+): string {
   const str = (k: string) => (typeof config[k] === 'string' ? String(config[k]).trim() : '');
   const host = (value: string) => { try { return new URL(value).hostname; } catch { return value; } };
 
+  const reference = referenceFrom(kind, config, str, host);
+
+  /**
+   * UNE RÉFÉRENCE ÉGALE AU NOM DE LA MAISON NE PROUVE RIEN.
+   *
+   * Mesuré sur `primark` : `mustContain = "Primark"` a été « prouvé » par le fichier de police
+   * `PrimarkBasis-Bold.woff2` sur le site de Primark. Une page officielle contient toujours le nom de sa
+   * Maison — la chercher est circulaire, et aurait certifié le board sans jamais l'avoir vu.
+   *
+   * La référence doit DISCRIMINER : un identifiant de tenant, un hôte, quelque chose qui n'apparaîtrait pas
+   * sur la page si le board n'y était pas lié.
+   */
+  const maison = context?.maison?.trim().toLowerCase();
+  if (maison && reference.trim().toLowerCase() === maison) {
+    throw new Error(
+      `${kind}: la référence « ${reference} » est le nom de la Maison — preuve circulaire, référence non discriminante`,
+    );
+  }
+  return reference;
+}
+
+function referenceFrom(
+  kind: string,
+  config: Record<string, unknown>,
+  str: (k: string) => string,
+  host: (v: string) => string,
+): string {
   switch (kind) {
     case 'greenhouse': return str('board');
     case 'lever': return str('site');
@@ -32,6 +63,10 @@ export function boardReferenceFor(kind: string, config: Record<string, unknown>)
     case 'teamtailor': return str('subdomain') || host(str('jobs_url') || str('origin'));
     case 'workday': return str('tenant') || host(str('origin'));
     case 'digitalrecruiters': return str('domainName') || str('domain');
+    // `rituals` ne porte aucune clé de chaîne (seulement des locales) : son adaptateur part de son propre
+    // défaut. Même écart que celui corrigé dans `requestTarget` — les deux doivent nommer le MÊME hôte, sans
+    // quoi on prouverait un board qu'on n'appelle pas.
+    case 'rituals': return host(str('origin') || 'https://careers.rituals.com');
     default: {
       // Hôte dédié : l'origine configurée est elle-même la référence. Un portail sur le domaine de la Maison
       // se prouve alors par sa propre mention sur le site — ce qui reste une preuve, pas une tautologie :

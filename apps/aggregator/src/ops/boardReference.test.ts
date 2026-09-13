@@ -31,11 +31,23 @@ describe('référence de board dérivée de la configuration', () => {
     expect(boardReferenceFor('generic-listing', { sitemapUrl: 'https://careers.psychobunny.com/jobs-sitemap.xml' }))
       .toBe('careers.psychobunny.com');
     expect(boardReferenceFor('rituals', { origin: 'https://careers.rituals.com' })).toBe('careers.rituals.com');
+    // Config sans aucune clé de chaîne : la référence vient du défaut de l'adaptateur, comme `requestTarget`.
+    expect(boardReferenceFor('rituals', {})).toBe('careers.rituals.com');
   });
 
   it('teamtailor : le sous-domaine s\'il existe, sinon l\'hôte du flux', () => {
     expect(boardReferenceFor('teamtailor', { subdomain: 'lovisa' })).toBe('lovisa');
     expect(boardReferenceFor('teamtailor', { origin: 'https://careers.lovisa.com' })).toBe('careers.lovisa.com');
+  });
+
+  it('un tenant qui est le NOM de la Maison ne peut pas servir de preuve — il serait circulaire', () => {
+    // Mesuré sur `primark` : `mustContain = "Primark"` a été « prouvé » par le fichier de police
+    // `PrimarkBasis-Bold.woff2` sur le site de Primark. Une page officielle contient toujours le nom de sa
+    // Maison : chercher ce nom ne prouve RIEN sur le board. La référence doit être discriminante.
+    expect(() => boardReferenceFor('smartrecruiters-whitelabel', { company: 'Primark' }, { maison: 'Primark' }))
+      .toThrow(/circulaire|discriminant/i);
+    // Le même tenant reste valable pour une Maison qui ne porte pas ce nom.
+    expect(boardReferenceFor('smartrecruiters-whitelabel', { company: 'Primark' }, { maison: 'Penneys' })).toBe('Primark');
   });
 
   it('REFUSE quand rien n\'est dérivable — on ne cherche pas une chaîne inventée', () => {

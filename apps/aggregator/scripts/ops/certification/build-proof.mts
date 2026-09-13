@@ -19,7 +19,7 @@
  *          [--sector=<code>] [--out-dir=<dossier>]
  */
 import { PrismaClient } from '@prisma/client';
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { portalProof } from '../../../src/certification/portalProof.js';
 import { boardReferenceFor } from '../../../src/certification/boardReference.js';
@@ -44,7 +44,7 @@ const source = await prisma.source.findUniqueOrThrow({
 const config = (source.config ?? {}) as Record<string, unknown>;
 
 // La référence à trouver est DÉRIVÉE de la configuration : on ne peut pas prouver un board qu'on n'appelle pas.
-const mustContain = boardReferenceFor(source.kind, config);
+const mustContain = boardReferenceFor(source.kind, config, { maison: source.maison });
 const officialDomain = arg('official-domain') ?? new URL(officialUrl).hostname.replace(/^www\./, '');
 
 let httpStatus = 0;
@@ -81,7 +81,22 @@ const draftSpec = proof.verdict === 'PROVEN' ? {
 } : null;
 
 const record = { key, verdict: proof.verdict, reason: proof.reason, mustContain, officialDomain, proof, draftSpec };
-writeFileSync(join(outDir, `${key}.proof.json`), JSON.stringify(record, null, 2));
+
+/**
+ * Un dossier PROUVÉ ne se perd pas parce qu'une tentative ultérieure a échoué.
+ *
+ * Défaut mesuré sur `rituals` : une seconde URL rendant 404 a écrasé le dossier de la première, avec un
+ * `sha256: null` — l'archive survivait (nommée par son hachage) mais le dossier qui la citait avait disparu.
+ * Une tentative qui échoue ne doit jamais détruire une preuve acquise.
+ */
+const recordPath = join(outDir, `${key}.proof.json`);
+const previous = existsSync(recordPath) ? JSON.parse(readFileSync(recordPath, 'utf8')) : null;
+if (previous?.verdict === 'PROVEN' && proof.verdict !== 'PROVEN') {
+  writeFileSync(join(outDir, `${key}.attempt-${proof.collectedAt.replace(/[:.]/g, '')}.json`), JSON.stringify(record, null, 2));
+  console.error(`${key}: tentative ${proof.verdict} conservée à part — le dossier PROUVÉ existant n'est pas écrasé`);
+} else {
+  writeFileSync(recordPath, JSON.stringify(record, null, 2));
+}
 console.log(JSON.stringify({ key, verdict: proof.verdict, reason: proof.reason, sha256: proof.sha256, mustContain }, null, 1));
 
 await prisma.$disconnect();
