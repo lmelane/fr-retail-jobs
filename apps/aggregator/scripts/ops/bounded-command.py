@@ -20,9 +20,14 @@ Ce que la commande garantit, et qui n'est pas cosmétique :
     garde d'exécution) et surtout PERSISTANTE — oubliée après le passage, elle s'appliquerait en silence à
     tous les runs suivants. Portée par la commande, elle disparaît avec la restauration.
     Absente, on n'écrit RIEN : le défaut appartient au code (`ingestOrchestrator.ts`), et un « 4 » explicite
-    masquerait un futur changement de ce défaut.
+    masquerait un futur changement de ce défaut ;
+  · `P8_STOP_ON_FIRST_429=1` — OPTIONNEL (`--stop-on-first-429`), l'arrêt franc du passage à la première
+    réponse 429. Même raison que ci-dessus, apprise à la dure : `export P8_STOP_ON_FIRST_429=1` dans le shell
+    LOCAL n'atteint jamais le conteneur Railway, où le run s'exécute. Le 2026-09-13, trois passages ont été
+    conduits en croyant la garde armée ; elle ne l'était pas, et T2 a encaissé 82 réponses 429 sans s'arrêter.
+    **Une garde qu'on croit armée est pire qu'une garde absente : elle fait relire un run comme sûr.**
 
-usage: bounded-command.py <run-name> <keys,comma> [concurrence]
+usage: bounded-command.py <run-name> <keys,comma> [concurrence] [--stop-on-first-429]
 """
 import shlex
 import sys
@@ -67,17 +72,25 @@ def concurrency_clause(concurrency: str | None) -> str:
     return f'INGEST_SOURCE_CONCURRENCY={value} '
 
 
-def bounded_command(run_name: str, keys: str, concurrency: str | None = None) -> str:
+def bounded_command(run_name: str, keys: str, concurrency: str | None = None,
+                    stop_on_first_429: bool = False) -> str:
     body = SCRIPT.format(run_name=run_name)
     return (
         'env -u BREVO_API_KEY -u GOOGLE_INDEXING_CREDENTIALS -u HEALTHCHECK_PING_URL '
         f'EGRESS_PROBE=0 INGEST_ONLY_KEYS={keys} ' + concurrency_clause(concurrency) +
+        ('P8_STOP_ON_FIRST_429=1 ' if stop_on_first_429 else '') +
         'node --import tsx --input-type=module -e ' + shlex.quote(body)
     )
 
 
 if __name__ == '__main__':
-    if len(sys.argv) not in (3, 4):
+    args = sys.argv[1:]
+    stop429 = '--stop-on-first-429' in args
+    args = [a for a in args if a != '--stop-on-first-429']
+    if len(args) not in (2, 3):
         print(__doc__, file=sys.stderr)
         sys.exit(2)
-    print(bounded_command(sys.argv[1], sys.argv[2], sys.argv[3] if len(sys.argv) == 4 else None), end='')
+    # Une concurrence ABSENTE vaut « aucune consigne » ; une concurrence VIDE reste une erreur. Le drapeau
+    # `--stop-on-first-429` étant positionnel-indépendant, on n'a jamais besoin d'un argument creux pour
+    # l'atteindre — donc pas de sentinelle silencieuse qui avalerait une valeur mal formée.
+    print(bounded_command(args[0], args[1], args[2] if len(args) == 3 else None, stop429), end='')

@@ -22,9 +22,12 @@ import { dirname, resolve } from 'node:path';
  */
 const OPS = resolve(dirname(fileURLToPath(import.meta.url)), '../../scripts/ops');
 
-function build(runName: string, keys: string, concurrency?: string): string {
+function build(runName: string, keys: string, concurrency?: string, stopOn429 = false): string {
+  // `--stop-on-first-429` est un DRAPEAU, pas un positionnel : on peut le demander sans inventer une
+  // concurrence, donc sans sentinelle vide qui avalerait au passage une valeur mal formée.
   const args = [`${OPS}/bounded-command.py`, runName, keys];
   if (concurrency !== undefined) args.push(concurrency);
+  if (stopOn429) args.push('--stop-on-first-429');
   return execFileSync('python3', args, { encoding: 'utf8' });
 }
 
@@ -64,6 +67,25 @@ describe('commande bornée — la concurrence est portée par la commande', () =
     try { execFileSync('python3', [`${OPS}/bounded-command.py`, 'r', KEYS, '64'], { stdio: 'pipe' }); }
     catch (e: any) { status = e.status ?? -1; }
     expect(status).not.toBe(0);
+  });
+
+  it('l\'arrêt sur premier 429 est PORTÉ par la commande quand il est demandé', () => {
+    // Défaut mesuré le 2026-09-13 : `export P8_STOP_ON_FIRST_429=1` dans le shell LOCAL n'atteint jamais le
+    // conteneur Railway, où le run s'exécute réellement. Trois passages ont été décrits comme « arrêt 429
+    // armé » alors qu'aucune garde n'était active — et T2 a encaissé 82 réponses 429 sans s'arrêter.
+    // Une garde qu'on CROIT armée est pire qu'une garde absente : elle fait relire un run comme sûr.
+    const cmd = build('run-429', KEYS, undefined, true);
+    expect(cmd).toContain('P8_STOP_ON_FIRST_429=1 ');
+    expect(cmd.indexOf('P8_STOP_ON_FIRST_429=1')).toBeLessThan(cmd.indexOf('node '));
+  });
+
+  it('sans demande explicite, la commande ne porte AUCUN arrêt 429', () => {
+    expect(build('run-plain', KEYS)).not.toContain('P8_STOP_ON_FIRST_429');
+  });
+
+  it('le drapeau est lu par le code qui l\'applique — nom vérifié, pas recopié', () => {
+    const src = execFileSync('cat', [resolve(OPS, '../../src/observability/rateLimitSignal.ts')], { encoding: 'utf8' });
+    expect(src).toContain("process.env.P8_STOP_ON_FIRST_429 === '1'");
   });
 
   it('les canaux d\'alerte restent retirés, quelle que soit la concurrence', () => {
