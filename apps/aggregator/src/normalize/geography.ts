@@ -211,6 +211,20 @@ export const COLLIDING_CODES = new Set([
   // 474 offres d'Amsterdam (« Amsterdam, NH, nl » → Terre-Neuve-et-Labrador) :
   // NL Pays-Bas · NB — · NS — · PE Pérou · SK Slovaquie · MB — · NT — · NU Niue
   'NL', 'PE', 'SK', 'NU',
+  /*
+   * `AZ` — Arizona ET Azerbaïdjan. MANQUANT jusqu'au 14/09/2026, trouvé par
+   * mutation au quatrième tour d'audit D-435 : c'était le SEUL état américain
+   * qui soit un code pays ISO valide sans figurer dans cette liste.
+   *
+   * Conséquence mesurée : « Florence, AZ » rendait l'Azerbaïdjan — Florence
+   * est une ville réelle de l'Arizona. Exactement le défaut des six cas
+   * d'origine (Indianapolis → Inde, Richmond → Vatican).
+   *
+   * La complétude de cette liste se vérifie, elle ne se suppose pas : tout
+   * état de `US_STATES` qui normalise vers un pays doit y figurer. Un témoin
+   * l'exige désormais.
+   */
+  'AZ',
 ]);
 
 /**

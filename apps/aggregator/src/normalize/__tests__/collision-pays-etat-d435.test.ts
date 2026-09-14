@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { countryFromLocation } from '../country.js';
+import { countryFromLocation, normalizeCountry } from '../country.js';
+import { COLLIDING_CODES, US_STATES } from '../geography.js';
 
 /**
  * D-435 LOT 1 — UN CODE D'ÉTAT N'EST PAS UN CODE PAYS.
@@ -148,6 +149,33 @@ describe('un code d’État américain ne devient pas un pays (D-435)', () => {
     expect(countryFromLocation('Florence (KY)')).toBeUndefined();
     expect(countryFromLocation('Richmond (VA)')).toBeUndefined();
     expect(countryFromLocation('North Little Rock (AR)')).toBeUndefined();
+  });
+
+  it('COLLIDING_CODES est EXHAUSTIF : aucun État US n’est un pays oublié', () => {
+    /*
+     * CE TÉMOIN NE VÉRIFIE PAS UN CAS, IL VÉRIFIE UNE PROPRIÉTÉ.
+     *
+     * Le quatrième tour d'audit a trouvé, par mutation, que `AZ` manquait à
+     * `COLLIDING_CODES` : « Florence, AZ » rendait l'Azerbaïdjan, alors que
+     * Florence est une ville réelle de l'Arizona. Un seul code manquant, et le
+     * défaut des six cas d'origine se rejouait entier.
+     *
+     * Lister les codes un par un aurait reproduit le problème : une liste
+     * écrite à la main ne dit pas quand elle devient incomplète. Ce témoin
+     * DÉRIVE l'attendu des données — tout état américain qui normalise vers un
+     * pays DOIT figurer dans la liste — et échouera donc tout seul si une
+     * table évolue, sans que personne n'ait à y penser.
+     */
+    const manquants = Object.keys(US_STATES).filter(
+      (code) => normalizeCountry(code) && !COLLIDING_CODES.has(code),
+    );
+    expect(
+      manquants,
+      `ces États US sont des codes pays ISO absents de COLLIDING_CODES : ${manquants.join(', ')}`,
+    ).toEqual([]);
+
+    // Le cas qui a révélé le trou, gravé explicitement.
+    expect(countryFromLocation('Florence, AZ')).toBeUndefined();
   });
 
   it('dans « XX-YY », un suffixe qui nomme un pays lève l’ambiguïté du préfixe', () => {
