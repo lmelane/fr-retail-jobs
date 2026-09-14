@@ -330,6 +330,27 @@ export type JobsResult = {
  * ~32,000 offers: filtering for Marseille returned "no results" while Marseille
  * jobs sat unread at row 900.
  */
+/**
+ * Un critère de facette qui CONSERVE les offres dont la valeur est inconnue.
+ *
+ * Rend soit `{}` (pas de filtre demandé), soit un `OR` à deux branches :
+ *   - la valeur fait partie des valeurs cochées  → correspondance confirmée ;
+ *   - la valeur est NULL                         → non précisée, conservée.
+ *
+ * Une valeur RENSEIGNÉE mais absente des valeurs cochées reste exclue : c'est
+ * l'incompatibilité connue, et elle doit continuer d'exclure.
+ *
+ * Le `OR` est BORNÉ à cette dimension. Placé au niveau de la requête, il
+ * annulerait les autres critères — dont le pays.
+ */
+function critereTolerantAuxInconnus(
+  colonne: 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType',
+  valeurs: string[] | undefined,
+): Array<Record<string, unknown>> {
+  if (!valeurs?.length) return [];
+  return [{ OR: [{ [colonne]: { in: valeurs } }, { [colonne]: null }] }];
+}
+
 export function whereClause(filters: JobFilters) {
   const terms = (filters.q ?? '').trim().split(/\s+/).filter(Boolean);
 
@@ -426,6 +447,22 @@ export function whereClause(filters: JobFilters) {
             },
           ]
         : []),
+      /*
+       * LES CRITÈRES DE FACETTE VIVENT DANS CE MÊME `AND`, et c'est
+       * impératif : deux clés `AND` dans un littéral s'écrasent, exactement
+       * comme le décrit le commentaire d'ouverture de ce bloc. Une version
+       * intermédiaire de ce correctif en avait créé un SECOND — elle aurait
+       * supprimé la recherche texte et les filtres ci-dessus.
+       *
+       * Même piège pour `OR` : plusieurs clés `OR` au même niveau ne
+       * survivent pas. Chaque dimension apporte donc son propre objet
+       * `{ OR: [...] }` dans ce tableau, où ils s'additionnent.
+       */
+      ...critereTolerantAuxInconnus('language', filters.languages),
+      ...critereTolerantAuxInconnus('employmentTerm', filters.employmentTerms),
+      ...critereTolerantAuxInconnus('workTime', filters.workTimes),
+      ...critereTolerantAuxInconnus('programType', filters.programTypes),
+      ...critereTolerantAuxInconnus('engagementType', filters.engagementTypes),
     ],
     ...(filters.jobFunction ? { jobFunction: filters.jobFunction } : {}),
     // Case-insensitive: the facet value is canonical ("Paris") but the column
@@ -434,11 +471,38 @@ export function whereClause(filters: JobFilters) {
     ...(filters.remote ? { workplaceType: 'REMOTE' } : {}),
     // `in` : union des valeurs d'une même dimension (cocher CDI ET CDD montre
     // les deux), intersection entre dimensions différentes.
-    ...(filters.languages?.length ? { language: { in: filters.languages } } : {}),
-    ...(filters.employmentTerms?.length ? { employmentTerm: { in: filters.employmentTerms } } : {}),
-    ...(filters.workTimes?.length ? { workTime: { in: filters.workTimes } } : {}),
-    ...(filters.programTypes?.length ? { programType: { in: filters.programTypes } } : {}),
-    ...(filters.engagementTypes?.length ? { engagementType: { in: filters.engagementTypes } } : {}),
+    /*
+     * ── LES CRITÈRES INCONNUS NE FONT PLUS DISPARAÎTRE UNE OFFRE ──────────
+     *
+     * RÈGLE PRODUIT (CEO) : « une information inconnue reste accessible ; une
+     * incompatibilité connue reste excluante ; une inconnue n'est jamais
+     * comptée comme une confirmation. »
+     *
+     * LE DÉFAUT. `{ in: [...] }` sur une colonne nullable n'est jamais VRAI
+     * quand la valeur est NULL — c'est le comportement normal de SQL, pas une
+     * anomalie de PostgreSQL. L'offre sortait donc du résultat, du compteur et
+     * de la pagination, sans que rien ne le signale.
+     *
+     * MESURÉ EN PRODUCTION le 14/09/2026, recherche « France + CDI + temps
+     * partiel » sur 11 026 offres actives françaises :
+     *
+     *     1 016  les deux critères renseignés et correspondants
+     *       161  temps partiel OK, contrat inconnu      ← exclues
+     *     1 636  CDI OK, temps de travail inconnu       ← exclues
+     *     1 334  les deux inconnus                      ← exclues
+     *     5 453  temps PLEIN — incompatibilité connue   ← exclues à juste titre
+     *
+     * On masquait donc trois fois plus d'offres qu'on n'en montrait. Ces
+     * 3 131 offres ne sont PAS « compatibles » : elles ne présentent aucune
+     * incompatibilité connue sur ces colonnes, et leur correspondance reste
+     * NON CONFIRMÉE. C'est pourquoi elles restent accessibles sans jamais
+     * être présentées ni comptées comme des correspondances certaines.
+     *
+     * CRITÈRE PAR CRITÈRE, JAMAIS GLOBALEMENT. Un `OR <colonne> IS NULL`
+     * appliqué à la requête entière annulerait les autres contraintes — le
+     * périmètre géographique compris. Chaque dimension porte donc son propre
+     * `OR`, à l'intérieur du `AND` qui relie les dimensions entre elles.
+     */
     ...(Object.keys(company).length ? { company } : {}),
     ...(filters.source ? { sources: { some: { sourceKey: filters.source, isActive: true } } } : {}),
   };
