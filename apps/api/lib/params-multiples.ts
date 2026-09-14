@@ -9,7 +9,8 @@
  * Mesuré en production le 14/09/2026, puis reproduit après un premier
  * correctif incomplet : rendre `parseFilters` multi-valeurs ne suffisait pas,
  * l'annuaire continuait de rendre 297 Maisons sur `FR+US` (US seul) au lieu
- * de 640. Les deux moitiés du chemin doivent être corrigées, et c'est
+ * de 511 (343 + 297 = 640 avec les doublons ; 129 Maisons recrutent dans les
+ * deux pays). Les deux moitiés du chemin doivent être corrigées, et c'est
  * précisément ce qui rendait le défaut difficile à voir : chacune, lue seule,
  * paraissait correcte.
  */

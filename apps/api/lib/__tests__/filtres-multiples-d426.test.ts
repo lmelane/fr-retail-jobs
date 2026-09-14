@@ -8,7 +8,9 @@ import { parseCompanyFilters } from '../companies.js';
  * Le défaut mesuré en production le 14/09/2026, avant d'écrire une ligne :
  * `GET /api/companies?pays=FR&pays=US` rendait **297** Maisons, c'est-à-dire
  * exactement `pays=US` seul (FR seul : 343, US seul : 297). L'union attendue
- * est 640. Deux causes superposées, toutes deux côté serveur :
+ * est 511 (343 + 297 = 640 avec les doublons ; 129 Maisons recrutent dans les
+ * DEUX pays et ne se comptent qu'une fois). Deux causes superposées, toutes
+ * deux côté serveur :
  *
  *   1. `Object.fromEntries(searchParams)` dans la route ne garde qu'une valeur
  *      par clé — la dernière gagne, en silence ;

@@ -60,14 +60,42 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
   union(filters.engagementTypes, (v) => Prisma.sql`j."engagementType" = ${v}`);
   if (filters.source) conditions.push(Prisma.sql`EXISTS (
     SELECT 1 FROM "JobSource" src WHERE src."jobId" = j.id AND src."isActive" AND src."sourceKey" = ${filters.source})`);
-  const queryTerms = (filters.q ?? '').trim().split(/\s+/).filter(Boolean);
+  /*
+   * AUDIT 14/09/2026 — le nombre de TERMES est borné, pas seulement la
+   * longueur de `q`.
+   *
+   * `q` était limité à 200 caractères mais découpé sans plafond : « a b c d… »
+   * donne 100 termes, et CHAQUE terme coûte une requête SQL dédiée sur
+   * `Company` (ligne ~70, toutes lancées en parallèle) plus ses clauses
+   * `ILIKE`. Une seule URL publique pouvait donc déclencher 100 requêtes
+   * concurrentes, et le moteur n'a aucun plafond par IP — seule la clé le
+   * protège, et le site la porte légitimement.
+   *
+   * 8 termes dépassent largement une recherche d'emploi réelle. Les termes
+   * au-delà sont IGNORÉS, pas refusés : une recherche bavarde doit rendre des
+   * résultats, pas une erreur.
+   */
+  const MAX_TERMES = 8;
+  const queryTerms = (filters.q ?? '').trim().split(/\s+/).filter(Boolean).slice(0, MAX_TERMES);
   const prefilters: Prisma.Sql[]=[],literalConditions: Prisma.Sql[]=[];
   let matchCte=Prisma.empty,matchJoin=Prisma.empty;
   // Resolve the small employer registry first. Putting a Company OR directly
   // beside the searchText prefilter prevents the trigram index from narrowing
   // the large Job table. Canonical names keep that prefilter a superset.
+  /*
+   * AUDIT 14/09/2026 — `LIMIT` ajouté : cette requête était non bornée.
+   *
+   * Chaque nom rendu devient une clause `ILIKE` supplémentaire dans le
+   * préfiltre ET dans la condition littérale, POUR CHAQUE TERME. Sans limite,
+   * un terme générique qui matche des centaines d'alias faisait enfler la
+   * requête finale sans aucun plafond — et le nombre d'alias par Maison n'est
+   * borné nulle part en base.
+   *
+   * 20 noms suffisent : au-delà, le préfiltre est déjà si large qu'il
+   * n'écarte plus rien, donc les clauses supplémentaires coûtent sans servir.
+   */
   const aliasNames = await Promise.all(queryTerms.map(term => prisma.$queryRaw<{ name: string }[]>(Prisma.sql`
-    SELECT c.name FROM "Company" c WHERE ${companyAliasSql(term, 'contains')}`)));
+    SELECT c.name FROM "Company" c WHERE ${companyAliasSql(term, 'contains')} LIMIT 20`)));
   for (const [index, term] of queryTerms.entries()) {
     const pattern = `%${term}%`;
     // Indexed prefilter is a superset. Keep the original field-level predicate
