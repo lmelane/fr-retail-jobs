@@ -36,7 +36,20 @@ describe('identité du crawler (D62)', () => {
    */
   it('nomme l\'opérateur, et le contenu à publier est rédigé', () => {
     expect(BOT_INFO_URL).toBe('https://catwalks.io/bot');
-    expect(existsSync(resolve(SRC, '../../web/app/bot/page.tsx'))).toBe(true);
+    /*
+     * D-420 (14/09/2026) — la page vivait dans `apps/web`, le rendu Mode
+     * Careers, supprimé. Elle n'a pas disparu : elle est servie par
+     * catwalks.io, LE domaine que `BOT_INFO_URL` annonce (vérifié en
+     * production : 200). Le préalable de D62 est donc mieux rempli qu'avant,
+     * puisque la page est enfin sur le domaine qu'elle prétend désigner.
+     *
+     * Ce dépôt ne peut plus vérifier son existence sur disque : elle est dans
+     * un AUTRE dépôt. Ce qui reste vérifiable ici — et qui était le vrai objet
+     * du témoin — c'est que l'URL annoncée désigne l'OPÉRATEUR (catwalks.io),
+     * jamais un tiers dont on emprunterait l'identité (D62). Que le domaine la
+     * serve se mesure en ligne, par `botInfoUrlIsServed`.
+     */
+    expect(new URL(BOT_INFO_URL).hostname).toBe('catwalks.io');
   });
 
   it('n\'emprunte JAMAIS l\'identité d\'un tiers', () => {

@@ -4,7 +4,7 @@ WORKDIR /repo
 COPY package.json package-lock.json* ./
 COPY packages/db/package.json packages/db/
 COPY apps/aggregator/package.json apps/aggregator/
-COPY apps/web/package.json apps/web/
+COPY apps/api/package.json apps/api/
 RUN npm ci --workspaces --include-workspace-root
 COPY packages/db packages/db
 # Includes data/reference/maisons.csv — the 713-house reference list the sector filter

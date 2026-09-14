@@ -12,9 +12,9 @@
     "ingest": "npm run ingest -w @catwalks/aggregator",
     "refresh": "npm run refresh -w @catwalks/aggregator",
     "reconcile": "npm run reconcile -w @catwalks/aggregator",
-    "web:dev": "npm run dev -w @catwalks/web",
-    "web:build": "npm run build -w @catwalks/web",
-    "typecheck": "npm run typecheck -w @catwalks/aggregator && npm run typecheck -w @catwalks/web"
+    "api:dev": "npm run dev -w @catwalks/api",
+    "api:build": "npm run build -w @catwalks/api",
+    "typecheck": "npm run typecheck -w @catwalks/aggregator && npm run typecheck -w @catwalks/api"
   },
   "allowScripts": {
     "prisma@6.19.3": true,
