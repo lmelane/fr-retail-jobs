@@ -1,0 +1,17 @@
+{
+ "key": "goyard-successfactors",
+ "maison": "Goyard",
+ "kind": "successfactors",
+ "tier": "EMPLOYER_DIRECT",
+ "config": {
+  "origin": "https://careers.goyard.com"
+ },
+ "careersDomain": "careers.goyard.com",
+ "evidenceFile": "audits/2026-09-09/lot4-world-coverage/p10/vagues/preuves/goyard-successfactors.html",
+ "officialDomain": "goyard.com",
+ "proofUrl": "https://www.goyard.com/fr/carrieres",
+ "portalUrl": "https://careers.goyard.com/",
+ "portalScope": "SINGLE_BRAND",
+ "statement": "La page carrieres officielle goyard.com/fr/carrieres charge les ressources du portail careers.goyard.com ; page archivee et hachee le 2026-09-14.",
+ "cassette": "/tmp/p10-cassettes/goyard"
+}

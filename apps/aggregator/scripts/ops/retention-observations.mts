@@ -18,13 +18,18 @@
  *
  * usage:
  *   db.py <cible> npx tsx scripts/ops/retention-observations.mts --archive-dir=<dir> [--cutoff-days=14]
- *        [--now=<iso>] [--limit=<n>] [--sample=<n>] [--apply] [--out=<f.json>]
+ *        [--now=<iso>] [--limit=<n>] [--sample=<n>] [--remote] [--apply] [--out=<f.json>]
+ *
+ * `--remote` envoie l'archive au stockage objet configuré ET la RELIT DEPUIS LE DISTANT avant de vérifier :
+ * c'est la seule façon de prouver que ce qui autorise la purge est bien ce qui vit chez le fournisseur, et
+ * non le tampon local qui vient d'être écrit. Sans configuration, l'option ÉCHOUE — jamais de repli muet.
  */
 import { PrismaClient, Prisma } from '@prisma/client';
 import { createHash } from 'node:crypto';
 import { gzipSync, gunzipSync } from 'node:zlib';
 import { mkdirSync, writeFileSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { objectStoreFromEnv, objectStoreConfigured, type ObjectStore } from '../../src/retention/objectStore.js';
 import {
   retentionVerdict, cutoffDate, partitionOf, archiveObjectKey,
   ARCHIVE_FORMAT_VERSION, HOT_RETENTION_DAYS,
@@ -41,6 +46,22 @@ const now = arg('now') ? new Date(arg('now')!) : new Date();
 const limit = Number(arg('limit') ?? 5000);
 const sampleSize = Number(arg('sample') ?? 5);
 const apply = has('apply');
+const remote = has('remote');
+
+/**
+ * Le stockage distant est construit MAINTENANT, avant toute lecture de données : si la configuration manque,
+ * la chaîne s'arrête ici, et non après avoir archivé localement en croyant avoir archivé au loin.
+ */
+let store: ObjectStore | null = null;
+if (remote) {
+  if (!objectStoreConfigured()) {
+    console.error('--remote demandé mais le stockage objet n\'est pas configuré.');
+    console.error(String((() => { try { objectStoreFromEnv(); return ''; } catch (e) { return (e as Error).message; } })()));
+    process.exit(2);
+  }
+  store = objectStoreFromEnv();
+  console.error(`stockage distant : ${JSON.stringify(store.describe())}`);
+}
 
 const prisma = new PrismaClient();
 const cutoff = cutoffDate(now, cutoffDays);
@@ -86,6 +107,7 @@ for (const [objectKey, { partition, rows }] of groups) {
   let manifest: ArchiveManifest | null = null;
   let restored: ObservationRow[] | null = null;
   let pointersRecorded = false;
+  let remoteUri: string | null = null;
 
   try {
     // ── 1. créer l'archive. Le RAW n'est PAS recopié quand il est inchangé : la contrainte unique
@@ -103,9 +125,25 @@ for (const [objectKey, { partition, rows }] of groups) {
 
     // ── 2 et 3. compter, puis empreindre les OCTETS RÉELLEMENT ÉCRITS (relus du disque quand on applique) :
     //    empreindre le tampon en mémoire ne prouverait pas que l'écriture a abouti.
-    const bytes = apply ? readFileSync(path) : gz;
+    /**
+     * Les octets qui font foi sont ceux RELUS, jamais le tampon en mémoire : empreindre ce qu'on vient de
+     * calculer ne prouve pas que l'écriture a abouti. En mode distant, la relecture se fait CHEZ LE
+     * FOURNISSEUR — c'est là que l'archive devra être retrouvée le jour où on en aura besoin.
+     */
+    let bytes: Uint8Array = gz;
+    if (remote && apply) {
+      await store!.put(objectKey, gz, 'application/gzip');
+      const head = await store!.head(objectKey);
+      if (!head || head.size !== gz.length) {
+        throw new Error(`relecture distante : taille ${head?.size ?? 'absente'} ≠ ${gz.length} envoyés`);
+      }
+      bytes = await store!.get(objectKey);
+      remoteUri = store!.uri(objectKey);
+    } else if (apply) {
+      bytes = readFileSync(path);
+    }
     sha256 = createHash('sha256').update(bytes).digest('hex');
-    const sizeBytes = apply ? statSync(path).size : gz.length;
+    const sizeBytes = bytes.length;
     archivedBytes += sizeBytes;
 
     const times = rows.map((r) => r.observedAt.getTime());
@@ -115,6 +153,16 @@ for (const [objectKey, { partition, rows }] of groups) {
       periodEnd: new Date(Math.max(...times)).toISOString(),
       sizeBytes, sha256, formatVersion: ARCHIVE_FORMAT_VERSION,
     };
+
+    /**
+     * Le manifeste voyage AVEC l'archive, au même préfixe : une archive retrouvée sans son manifeste ne dit
+     * ni combien de lignes elle porte, ni quelle empreinte elle devait avoir — donc elle ne se vérifie pas.
+     * Il part APRÈS l'archive : un manifeste présent devant une archive absente serait un mensonge durable.
+     */
+    if (remote && apply) {
+      const manifestKey = objectKey.replace(/\.jsonl\.gz$/, '.manifest.json');
+      await store!.put(manifestKey, Buffer.from(JSON.stringify(manifest, null, 1), 'utf8'), 'application/json');
+    }
 
     // ── 5. RESTAURER un échantillon : relire l'archive et vérifier que ce qui revient appartient au lot.
     const decoded = gunzipSync(bytes).toString('utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
@@ -132,7 +180,7 @@ for (const [objectKey, { partition, rows }] of groups) {
             day: partition.day, runId: partition.runId, sourceKey: partition.sourceKey,
             rowCount: manifest!.rowCount, periodStart: new Date(manifest!.periodStart), periodEnd: new Date(manifest!.periodEnd),
             sizeBytes: BigInt(manifest!.sizeBytes), sha256: manifest!.sha256,
-            formatVersion: manifest!.formatVersion, archiveUri: objectKey, verifiedAt: new Date(),
+            formatVersion: manifest!.formatVersion, archiveUri: remoteUri ?? objectKey, verifiedAt: new Date(),
           },
           update: {
             rowCount: manifest!.rowCount, sizeBytes: BigInt(manifest!.sizeBytes),
@@ -145,9 +193,9 @@ for (const [objectKey, { partition, rows }] of groups) {
             create: {
               sourceKey: r.sourceKey, externalId: r.externalId, runId: partition.runId === 'unknown-run' ? null : partition.runId,
               observedAt: r.observedAt, contentHash: r.contentHash, disposition: 'ARCHIVED_AND_PURGED',
-              archiveUri: objectKey, archiveSha256: manifest!.sha256, archiveFormatVersion: manifest!.formatVersion,
+              archiveUri: remoteUri ?? objectKey, archiveSha256: manifest!.sha256, archiveFormatVersion: manifest!.formatVersion,
             },
-            update: { archiveUri: objectKey, archiveSha256: manifest!.sha256 },
+            update: { archiveUri: remoteUri ?? objectKey, archiveSha256: manifest!.sha256 },
           });
         }
       });

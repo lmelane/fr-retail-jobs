@@ -12,6 +12,7 @@ usage:
   railway-service.py status <service>            état du dernier déploiement (statut, commit, commande)
   railway-service.py set-command <service> <cmd> pose la commande de démarrage ET redéploie le commit DEPLOY_COMMIT
   railway-service.py execute <service>           déclenche une exécution sur l'instance déployée
+  railway-service.py variable-names <service>    les NOMS de toutes les variables posées (jamais les valeurs)
   railway-service.py variables <service>         les variables de périmètre et de pause, telles qu'elles sont
 """
 import json
@@ -30,6 +31,10 @@ SERVICES = {
         'instance': 'b4f28077-95f1-4dd5-ba21-83398a616c99',
         'normalCommand': 'sh apps/aggregator/start.sh',
     },
+    # Les deux crons secondaires : pas d'exécution bornée ici (elle passe par l'aggregator), mais leurs
+    # variables doivent être lisibles — « aucune variable résiduelle » porte sur les TROIS services.
+    'refresh': {'id': 'ddc5dece-7865-4cfa-b71e-8d139e2e1ea5', 'instance': None, 'normalCommand': None},
+    'reconcile': {'id': '85d0e5ba-992a-467e-9ddd-0dc25be1d74c', 'instance': None, 'normalCommand': None},
     'web': {
         'id': None,  # résolu par nom : le service web n'a pas d'exécution bornée, seulement un état à lire
         'instance': None,
@@ -85,6 +90,24 @@ def variables(service):
     v = api(q, {'project': PROJECT, 'env': ENV, 'service': s['id']})['variables']
     watched = ['INGEST_ONLY_KEYS', 'REFRESH_ONLY_KEYS', 'PIPELINE_PAUSED', 'PIPELINE_CMD']
     return {k: v.get(k) for k in watched}
+
+
+def variable_names(service):
+    """
+    Les NOMS des variables posées sur un service — JAMAIS leurs valeurs.
+
+    `variables()` ne projette que les quatre qui pilotent périmètre et pause : utile pour décider, inutile
+    pour constater. Or « aucune variable résiduelle » et « les credentials de stockage sont-ils posés »
+    portent sur l'ENSEMBLE des clés, pas sur une liste écrite à l'avance.
+
+    Les valeurs ne sortent jamais d'ici : une preuve d'exploitation ne doit pas pouvoir devenir une fuite de
+    secret parce qu'on a voulu vérifier qu'un secret existait.
+    """
+    s = SERVICES[service]
+    q = ('query($project:String!,$env:String!,$service:String!)'
+         '{variables(projectId:$project,environmentId:$env,serviceId:$service)}')
+    v = api(q, {'project': PROJECT, 'env': ENV, 'service': s['id']})['variables']
+    return sorted(v.keys())
 
 
 def set_command(service, command):
@@ -143,6 +166,8 @@ if __name__ == '__main__':
         print(json.dumps(status(service), indent=1))
     elif mode == 'variables':
         print(json.dumps(variables(service), indent=1))
+    elif mode == 'variable-names':
+        print(json.dumps(variable_names(service), indent=1))
     elif mode == 'set-command':
         print(json.dumps(set_command(service, sys.argv[3]), indent=1))
     elif mode == 'execute':

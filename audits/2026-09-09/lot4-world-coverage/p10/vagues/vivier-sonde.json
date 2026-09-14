@@ -1,0 +1,619 @@
+{
+ "resume": {
+  "sondes": 60,
+  "portailTrouve": 16,
+  "avecAtsReconnu": 15,
+  "avecAdaptateurExistant": 15,
+  "sansPortail": 44,
+  "parAts": {
+   "GENERIC_JSONLD": 9,
+   "SUCCESSFACTORS": 2,
+   "WORKDAY": 2,
+   "DIGITALRECRUITERS": 1,
+   "PHENOM": 1,
+   "AUCUN": 1
+  }
+ },
+ "candidats": [
+  {
+   "acteur": "ALAIN AFFLELOU",
+   "domaine": "alainafflelouoptico.es",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "SINTEL",
+   "domaine": "sintel-recrutement.fr",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "ISABEL MARANT",
+   "domaine": "isabelmarant.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "DARJEELING",
+   "domaine": "darjeeling.fr",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "KRYS",
+   "domaine": "krys.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "INDITEX",
+   "domaine": "inditex.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "ZADIG & VOLTAIRE",
+   "domaine": "zadig-et-voltaire.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "OPTIC 2000",
+   "domaine": "optic2000.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "LA BOUTIQUE DU COIFFEUR",
+   "domaine": "laboutiqueducoiffeur.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "MODELOR COUTURE",
+   "domaine": "modelor.fr",
+   "urlTrouvee": "https://recrutement.modelor.fr/",
+   "statut": 200,
+   "ats": "GENERIC_JSONLD",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS GENERIC_JSONLD détecté"
+  },
+  {
+   "acteur": "PERCASSI",
+   "domaine": "percassi.com",
+   "urlTrouvee": "https://www.percassi.com/careers/",
+   "statut": 200,
+   "ats": "GENERIC_JSONLD",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS GENERIC_JSONLD détecté"
+  },
+  {
+   "acteur": "KSI",
+   "domaine": "ks-groupe.com",
+   "urlTrouvee": "https://recrutement.ks-groupe.com/fr",
+   "statut": 200,
+   "ats": "DIGITALRECRUITERS",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS DIGITALRECRUITERS détecté"
+  },
+  {
+   "acteur": "DEPECH'MODE",
+   "domaine": "depechmode-paris.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "REPETTO",
+   "domaine": "repetto.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "DJULA",
+   "domaine": "djula.fr",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "GRANDVISION",
+   "domaine": "grandvision.com",
+   "urlTrouvee": "https://www.essilorluxottica.com/en/careers/",
+   "statut": 200,
+   "ats": "GENERIC_JSONLD",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS GENERIC_JSONLD détecté"
+  },
+  {
+   "acteur": "CAMELEONS RH",
+   "domaine": "cameleonsrh.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "CONCEPT RECRUTEMENT",
+   "domaine": "concept-recrutement.fr",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "HUGO BOSS",
+   "domaine": "hugoboss.com",
+   "urlTrouvee": "https://careers.hugoboss.com/global/en",
+   "statut": 200,
+   "ats": "PHENOM",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS PHENOM détecté"
+  },
+  {
+   "acteur": "PIMKIE",
+   "domaine": "pimkie.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "AURÉLIE BIDERMANN",
+   "domaine": "aureliebidermann.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "CHILDREN WORLDWIDE FASHION C.W.F",
+   "domaine": "cwf.fr",
+   "urlTrouvee": "https://www.groupecwf.com/carrieres/",
+   "statut": 200,
+   "ats": "GENERIC_JSONLD",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS GENERIC_JSONLD détecté"
+  },
+  {
+   "acteur": "GROUPE CHANTELLE LINGERIE",
+   "domaine": "groupechantelle.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "L'OREAL GROUP",
+   "domaine": "loreal.com",
+   "urlTrouvee": "https://www.loreal.com/en/careers/",
+   "statut": 200,
+   "ats": "GENERIC_JSONLD",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS GENERIC_JSONLD détecté"
+  },
+  {
+   "acteur": "LANCEL",
+   "domaine": "lancel.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "MODELOR SERVICE",
+   "domaine": "modelor.fr",
+   "urlTrouvee": "https://recrutement.modelor.fr/",
+   "statut": 200,
+   "ats": "GENERIC_JSONLD",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS GENERIC_JSONLD détecté"
+  },
+  {
+   "acteur": "NACH",
+   "domaine": "nachbijoux.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "OCARAT",
+   "domaine": "ocarat.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "SUNGLASS HUT",
+   "domaine": "sunglasshut.com",
+   "urlTrouvee": "https://careers.sunglasshut.com/vacancies/vacancy-search-results.aspx",
+   "statut": 200,
+   "ats": "GENERIC_JSONLD",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS GENERIC_JSONLD détecté"
+  },
+  {
+   "acteur": "VALERIAN HUGHES PARIS",
+   "domaine": "valerianhughes.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "YVES ROCHER",
+   "domaine": "yves-rocher.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "360 TALENT LONDON",
+   "domaine": "360talentlondon.com",
+   "urlTrouvee": "https://jobs.360talentlondon.com/",
+   "statut": 200,
+   "ats": "GENERIC_JSONLD",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS GENERIC_JSONLD détecté"
+  },
+  {
+   "acteur": "AGATHA",
+   "domaine": "agatha.fr",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "ARLETTIE PARIS",
+   "domaine": "arlettie.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "GAS BIJOUX",
+   "domaine": "gasbijoux.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "GOYARD",
+   "domaine": "goyard.com",
+   "urlTrouvee": "https://careers.goyard.com/",
+   "statut": 200,
+   "ats": "SUCCESSFACTORS",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS SUCCESSFACTORS détecté"
+  },
+  {
+   "acteur": "IRIDESCENCE BIJOUX",
+   "domaine": "iridescence-bijoux.fr",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "LE TEMPS DES CERISES",
+   "domaine": "letempsdescerises.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "LEFTIES",
+   "domaine": "lefties.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "POIRAY",
+   "domaine": "poiray.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "PRADA",
+   "domaine": "pradagroup.com",
+   "urlTrouvee": "https://jobs.pradagroup.com/",
+   "statut": 200,
+   "ats": "SUCCESSFACTORS",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS SUCCESSFACTORS détecté"
+  },
+  {
+   "acteur": "VANESSA BRUNO",
+   "domaine": "vanessabruno.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "VARIOUS ARCHIVES",
+   "domaine": "variousarchives.com",
+   "urlTrouvee": "https://variousarchives.com/careers",
+   "statut": 200,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": true,
+   "note": "page de recrutement sans ATS reconnu"
+  },
+  {
+   "acteur": "58 FACETTES",
+   "domaine": "58facettes.fr",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "AGNÈS B.",
+   "domaine": "agnesb.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "AMOREPACIFIC",
+   "domaine": "amorepacific.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "ATELIER 19.6",
+   "domaine": "atelier19six.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "BLUE BOX",
+   "domaine": "blue-box.fr",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "C&A",
+   "domaine": "c-and-a.com",
+   "urlTrouvee": "https://www.c-and-a.com/fr/fr/shop?showCountrySelector=true",
+   "statut": 200,
+   "ats": "GENERIC_JSONLD",
+   "adaptateurExistant": true,
+   "indiceRecrutement": false,
+   "note": "ATS GENERIC_JSONLD détecté"
+  },
+  {
+   "acteur": "CARVEN",
+   "domaine": "carven.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "CITIZENS OF HUMANITY",
+   "domaine": "citizensofhumanity.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "CLAIRE'S",
+   "domaine": "claires.com",
+   "urlTrouvee": "https://claires.wd12.myworkdayjobs.com/Claires",
+   "statut": 200,
+   "ats": "WORKDAY",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS WORKDAY détecté"
+  },
+  {
+   "acteur": "DEELUXE",
+   "domaine": "deeluxe.fr",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "DEVRED 1902",
+   "domaine": "devred.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "DINH VAN PARIS",
+   "domaine": "dinhvan.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "ELSA SCHIAPARELLI",
+   "domaine": "schiaparelli.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "FATHER AND SONS",
+   "domaine": "fatherandsons.fr",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "GALDERMA",
+   "domaine": "galderma.com",
+   "urlTrouvee": "https://www.galderma.com/careers",
+   "statut": 200,
+   "ats": "WORKDAY",
+   "adaptateurExistant": true,
+   "indiceRecrutement": true,
+   "note": "ATS WORKDAY détecté"
+  },
+  {
+   "acteur": "GUESS",
+   "domaine": "guess.com",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  },
+  {
+   "acteur": "IZAC",
+   "domaine": "izac.fr",
+   "urlTrouvee": null,
+   "statut": 0,
+   "ats": null,
+   "adaptateurExistant": false,
+   "indiceRecrutement": false,
+   "note": "aucune forme usuelle ne répond — portail à établir, jamais à inventer (D33)"
+  }
+ ]
+}

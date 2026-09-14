@@ -1,0 +1,17 @@
+{
+  "at": "2026-09-14T08:40:43.984Z",
+  "mode": "APPLY",
+  "policy": {
+    "hotRetentionDays": 3,
+    "cutoff": "2026-09-11T08:40:43.951Z",
+    "formatVersion": 1
+  },
+  "eligible": 0,
+  "partitions": 0,
+  "authorised": 0,
+  "refused": 0,
+  "deleted": 0,
+  "archivedBytes": 0,
+  "hotRowsAfter": 25554,
+  "results": []
+}

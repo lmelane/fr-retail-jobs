@@ -1,0 +1,13 @@
+{
+ "sourceKey": "goyard-successfactors",
+ "acteur": "GOYARD",
+ "officialDomain": "goyard.com",
+ "proofUrl": "https://www.goyard.com/fr/carrieres",
+ "finalUrl": "https://careers.goyard.com/?locale=fr_FR",
+ "httpStatus": 200,
+ "mustContain": "careers.goyard.com",
+ "verdict": "PROVEN",
+ "sha256": "bc53926499dd1a8d6328df83c9f9ad1fb7763dac1c9981e2343970dc84a9a1f4",
+ "excerpt": ", initial-scale=1.0\" /> <link type=\"text/css\" class=\"keepscript\" rel=\"stylesheet\" href=\"https://careers.goyard.com/platform/bootstrap/3.4.8_NES/css/bootstrap.min.css\" /> <link type=\"text/css\" rel=\"styleshee",
+ "at": "2026-09-14T09:02:25.910Z"
+}
