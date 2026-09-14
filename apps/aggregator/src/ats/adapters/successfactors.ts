@@ -8,6 +8,7 @@ import { microdataDescriptionHtml } from '../../connectors/generic/jsonLdSitemap
 import { assertSourceRunning } from '../../lib/sourceBudget.js';
 import { withHttpSession } from '../../lib/httpSession.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /**
  * SAP SuccessFactors (RMK) career sites.
@@ -31,7 +32,7 @@ import type { AdapterResult, NormalizedJob } from '../../types.js';
 const MAX_PAGES = Number(process.env.SF_MAX_PAGES ?? 10000);
 
 const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+  CRAWLER_IDENTITY;
 
 const HEADERS = { 'user-agent': USER_AGENT };
 

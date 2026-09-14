@@ -76,10 +76,24 @@ describe('normalisation d\'une offre CareerConnect réelle', () => {
   });
 
   it('reprend titre, pays et date sans les inventer', () => {
-    const j = parseCareerConnectJob(jobs[0], 'https://careers.hugoboss.com')!;
+    const j = parseCareerConnectJob(jobs[0], 'https://careers.hugoboss.com', { localePath: 'global/en' })!;
     expect(j.title).toBe(jobs[0].title);
     expect(j.country).toBeTruthy();
     expect(j.url).toContain('careers.hugoboss.com');
+  });
+
+  it('l\'URL publique porte le PRÉFIXE DE LOCALE — sans lui, le site redirige vers l\'accueil', () => {
+    // Mesuré sur 19 offres Hugo Boss : `/job/<id>/<slug>` rend HTTP 200 mais redirige silencieusement vers
+    // `/global/en`. Un « 200 » n'est pas une preuve : la page doit porter l'identifiant de l'offre.
+    // Vérifié : `/global/en/job/144427/x` la porte, `/job/HUBOGLOBAL…` non.
+    const j = parseCareerConnectJob(jobs[0], 'https://careers.hugoboss.com', { localePath: 'global/en' })!;
+    expect(j.url).toContain('/global/en/job/');
+    expect(j.url).toContain(String(jobs[0].jobId));
+  });
+
+  it('sans locale déclarée, l\'URL n\'est PAS fabriquée : une destination fausse est pire qu\'absente', () => {
+    const j = parseCareerConnectJob(jobs[0], 'https://careers.hugoboss.com')!;
+    expect(j.url).toBe('');
   });
 
   it('REFUSE une entrée sans identifiant — jamais d\'offre sans identité', () => {

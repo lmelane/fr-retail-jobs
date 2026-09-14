@@ -1,6 +1,7 @@
 import { fetchJson, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /**
  * LVMH's public job index — Sephora, Louis Vuitton, Dior, Tiffany and 49 other
@@ -41,7 +42,7 @@ const MAX_PAGES = Number(process.env.LVMH_MAX_PAGES ?? 120);
 const LISTING_URL = 'https://www.lvmh.com/join-us/our-job-offers';
 
 const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+  CRAWLER_IDENTITY;
 
 type LvmhHit = {
   objectID?: string | number;

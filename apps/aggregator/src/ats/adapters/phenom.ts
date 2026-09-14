@@ -3,6 +3,7 @@ import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { employmentTermsFrom } from '../../normalize/employment.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /**
  * Phenom People career sites.
@@ -29,7 +30,7 @@ const PAGE_SIZE = 100;
 const MAX_PAGES = Number(process.env.PHENOM_MAX_PAGES ?? 80);
 
 const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+  CRAWLER_IDENTITY;
 
 const HEADERS = { 'user-agent': USER_AGENT, accept: 'application/json' };
 
@@ -148,7 +149,10 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
 
   // Le dialecte est lu AVANT toute requête : un tenant CareerConnect ne doit jamais recevoir la requête
   // Foot Locker, qui lui rend 500 et ferait diagnostiquer une source cassée.
-  if (phenomDialect(config) === 'CAREER_CONNECT_WIDGETS') return fetchCareerConnectJobs(origin);
+  if (phenomDialect(config) === 'CAREER_CONNECT_WIDGETS') {
+    // Le préfixe de locale du portail : sans lui l'URL publique redirige vers l'accueil (mesuré).
+    return fetchCareerConnectJobs(origin, typeof config.localePath === 'string' ? config.localePath : undefined);
+  }
 
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
@@ -305,7 +309,11 @@ function slugify(title: string): string {
  *
  * La liste ne porte AUCUNE URL : l'adresse publique est dérivée du gabarit Phenom `/job/<id>/<slug>`.
  */
-export function parseCareerConnectJob(data: CareerConnectJob, origin: string): NormalizedJob | null {
+export function parseCareerConnectJob(
+  data: CareerConnectJob,
+  origin: string,
+  options: { localePath?: string } = {},
+): NormalizedJob | null {
   const externalId = data.jobSeqNo ? String(data.jobSeqNo) : '';
   if (!externalId || !data.title) return null;
 
@@ -328,7 +336,20 @@ export function parseCareerConnectJob(data: CareerConnectJob, origin: string): N
     longitude: num(data.longitude),
     description: htmlToPlainText(data.descriptionTeaser),
     department: data.category,
-    url: `${origin}/job/${data.jobId ?? externalId}/${slugify(data.title)}`,
+    /**
+     * L'URL publique EXIGE le préfixe de locale du portail.
+     *
+     * Mesuré sur 19 offres Hugo Boss : `/job/<id>/<slug>` rend HTTP 200 et redirige SILENCIEUSEMENT vers
+     * `/global/en` — le candidat qui clique « Postuler » atterrit sur une recherche générique. La forme qui
+     * sert la fiche est `/<locale>/job/<jobId>/<slug>`, vérifiée sur les deux tenants
+     * (`/global/en/job/144427/x` et `/fr/fr/job/JR119278/…` portent bien leur identifiant).
+     *
+     * Sans locale déclarée on ne fabrique RIEN : une destination fausse est pire qu'une absente, et un `200`
+     * qui redirige ne se distingue d'une vraie fiche qu'en cherchant l'identifiant dans la page.
+     */
+    url: options.localePath
+      ? `${origin}/${options.localePath.replace(/^\/|\/$/g, '')}/job/${data.jobId ?? externalId}/${slugify(data.title)}`
+      : '',
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
     raw: data as unknown as Record<string, unknown>,
   };
@@ -341,7 +362,7 @@ export function parseCareerConnectJob(data: CareerConnectJob, origin: string): N
  * observés page par page, terminaison nommée. Sans cela une source ne peut pas attester une absence (P7), et
  * un dialecte qui collecte sans prouver serait un recul déguisé en ajout.
  */
-async function fetchCareerConnectJobs(origin: string): Promise<AdapterResult> {
+async function fetchCareerConnectJobs(origin: string, localePath?: string): Promise<AdapterResult> {
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
   const issues = new Set<string>();
@@ -373,7 +394,7 @@ async function fetchCareerConnectJobs(origin: string): Promise<AdapterResult> {
     const pageIds: string[] = [];
 
     for (const entry of batch) {
-      const job = parseCareerConnectJob(entry, origin);
+      const job = parseCareerConnectJob(entry, origin, { localePath });
       if (!job) continue;
       pageIds.push(job.externalId);
       // Un identifiant déjà vu est COMPTÉ et nommé, jamais écrasé en silence : c'est ce compte qui refuse la

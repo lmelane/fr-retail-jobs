@@ -6,6 +6,7 @@ import {
   normalizeJobPosting,
 } from '../../connectors/generic/jsonLdSitemap.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /**
  * DigitalRecruiters (Cegid) career sites.
@@ -38,7 +39,7 @@ const PAGE_SIZE = 100;
 const MAX_PAGES = Number(process.env.DR_MAX_PAGES ?? 60);
 
 const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+  CRAWLER_IDENTITY;
 
 const HEADERS = {
   'user-agent': USER_AGENT,

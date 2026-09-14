@@ -2,6 +2,7 @@ import { fetchWithRetry, fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { employmentTermsFrom } from '../../normalize/employment.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /**
  * Jibe (iCIMS Attract) — portails « habillés » devant iCIMS, ex. careers.ulta.com.
@@ -29,7 +30,7 @@ const PAGE_SIZE = 100;
 const MAX_PAGES = 200;
 
 const BROWSER_UA =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+  CRAWLER_IDENTITY;
 
 export type JibeJob = {
   slug?: string;
