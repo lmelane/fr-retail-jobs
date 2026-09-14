@@ -41,10 +41,17 @@ describe('projeterListe', () => {
     expect(p.jobs[1].workplaceTypeLabel).toBeNull();
   });
 
-  it('conserve total, pagination et facettes à l’identique', () => {
+  it('conserve total et pagination, et libelle les facettes à dimensions et pays', () => {
     const r = resultat([ligne({})]);
-    const { jobs: _j, ...enveloppe } = projeterListe(r);
-    const { jobs: _k, ...attendue } = r;
+    r.facets.contracts = [{ value: 'PERMANENT', count: 3 }];
+    r.facets.countries = [{ value: 'FR', count: 3 }, { value: 'XQ', count: 1 }];
+    const { jobs: _j, facets, ...enveloppe } = projeterListe(r);
+    const { jobs: _k, facets: _f, ...attendue } = r;
     expect(enveloppe).toEqual(attendue);
+    expect(facets.contracts).toEqual([{ value: 'PERMANENT', count: 3, label: 'CDI' }]);
+    expect(facets.countries[0]).toEqual({ value: 'FR', count: 3, label: 'France' });
+    // Un code hors table garde son code en libellé : jamais un texte inventé.
+    expect(facets.countries[1].label).toBe('XQ');
+    expect(facets.cities).toEqual(r.facets.cities);
   });
 });
