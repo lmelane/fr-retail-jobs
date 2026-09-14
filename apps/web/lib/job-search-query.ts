@@ -26,6 +26,9 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
   if (filters.occupation) conditions.push(filters.occupation==='unclassified'?Prisma.sql`j."occupationCode" IS NULL`:Prisma.sql`j."occupationCode" = ${filters.occupation}`);
   if (filters.jobFunction) conditions.push(Prisma.sql`j."jobFunction" = ${filters.jobFunction}`);
   if (filters.city) conditions.push(Prisma.sql`j.city ILIKE ${filters.city}`);
+  // « lieu » résolu en ville (D-418 §3) : large — égalité, préfixe, ou présence
+  // dans `location`. Miroir exact de `whereClause`.
+  if (filters.cityLoose) conditions.push(Prisma.sql`(j.city ILIKE ${filters.cityLoose} OR j.city ILIKE ${`${filters.cityLoose}%`} OR j.location ILIKE ${`%${filters.cityLoose}%`})`);
   if (filters.employmentTerm) conditions.push(Prisma.sql`j."employmentTerm" = ${filters.employmentTerm}`);
   if (filters.maison) conditions.push(companyIdentitySql(filters.maison));
   if (filters.group) conditions.push(Prisma.sql`c."parentGroup" = ${filters.group}`);

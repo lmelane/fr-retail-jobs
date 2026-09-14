@@ -1,3 +1,4 @@
+import { resolveLieu } from './lieu';
 import { getSectorPresentation, sectorWhere } from './sectors';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { companyIdentityWhere } from './company-identity';
@@ -67,6 +68,12 @@ export type JobFilters = {
   programType?: string;
   engagementType?: string;
   city?: string;
+  /**
+   * Ville en correspondance LARGE (égalité, préfixe, ou présence dans
+   * `location`), issue du champ « lieu » résolu par `resolveLieu` (D-418 §3).
+   * `city`, lui, reste l'égalité stricte de la facette et de l'autocomplétion.
+   */
+  cityLoose?: string;
   group?: string;
   maison?: string;
   source?: string;
@@ -99,13 +106,21 @@ export function parseFilters(params: Record<string, string | string[] | undefine
   // open. `pays=<code>` (e.g. FR, IT) narrows to that country; `pays=monde` is
   // still accepted as an explicit "all countries" for shared/legacy links.
   const rawCountry = one('pays');
-  const country = rawCountry === undefined || rawCountry === 'monde' ? undefined : rawCountry;
+  const paysExplicite = rawCountry === undefined || rawCountry === 'monde' ? undefined : rawCountry;
+
+  // `lieu` (D-418 §3) : ce qu'une personne tape — ville, pays, code. Résolu
+  // ici, côté moteur. Un `pays` ou une `ville` explicites gardent la main :
+  // ce sont les facettes, plus précises qu'une saisie libre.
+  const lieu = resolveLieu(one('lieu'));
+  const country = paysExplicite ?? (lieu && 'country' in lieu ? lieu.country : undefined);
+  const cityLoose = one('ville') === undefined && lieu && 'cityLoose' in lieu ? lieu.cityLoose : undefined;
 
   return {
     q: one('q'),
     occupation: one('metier'),
     jobFunction: one('fonction'),
     city: one('ville'),
+    cityLoose,
     /**
      * Le paramètre technique porte le nom de la DIMENSION, pas un mot français :
      * la base est mondiale, et « contrat » y désignait une grille juridique qui
@@ -265,6 +280,17 @@ export function whereClause(filters: JobFilters) {
     // Case-insensitive: the facet value is canonical ("Paris") but the column
     // holds mixed spellings ("PARIS", "Paris"), so an exact match dropped half.
     ...(filters.city ? { city: { equals: filters.city, mode: 'insensitive' as const } } : {}),
+    // Même règle large que `searchSummary` : égalité, préfixe, ou présence
+    // dans `location` — les deux chemins ne doivent jamais diverger.
+    ...(filters.cityLoose
+      ? {
+          OR: [
+            { city: { equals: filters.cityLoose, mode: 'insensitive' as const } },
+            { city: { startsWith: filters.cityLoose, mode: 'insensitive' as const } },
+            { location: { contains: filters.cityLoose, mode: 'insensitive' as const } },
+          ],
+        }
+      : {}),
     ...(filters.employmentTerm ? { employmentTerm: filters.employmentTerm } : {}),
     ...(filters.workTime ? { workTime: filters.workTime } : {}),
     ...(filters.programType ? { programType: filters.programType } : {}),
