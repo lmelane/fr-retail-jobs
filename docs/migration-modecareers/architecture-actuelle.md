@@ -104,6 +104,18 @@ Tableau de référence complet (p50/p95/p99, 4xx/5xx, timeouts, connexions
 DB) : **à produire en phase 2**, une fois les logs `x-request-id` en place.
 Les cinq tirs ci-dessus sont indicatifs, pas une baseline.
 
+**Coût du paramètre `lieu` (14/09/2026, apps/web local sur la base de
+production, 5 tirs chacun, cache contourné)** : `ville=Paris` (égalité
+stricte) 0,28 à 0,58 s · `lieu=Paris` (large) 0,33 à 0,41 s · `lieu=Lyon`
+0,27 à 0,36 s · `lieu=France` (pays) 0,33 à 0,47 s · `q=vendeuse` 0,53 à
+0,56 s. À 83 431 offres actives, la correspondance large sur `city` et
+`location` (sans index) ne coûte pas plus que l'égalité stricte ; l'index
+trigram sur ces deux colonnes (audit sécurité H2) se pose quand le seuil
+§5.6 (p95 > 800 ms) est franchi, pas avant. Mesure rejouable :
+`apps/web/scripts/mesure-f1-url-candidature.mjs` (index) et les tirs curl
+ci-dessus. Le même script a compté **0** URL de candidature hors http(s)
+sur 83 431 offres actives (audit H1).
+
 ---
 
 ## 3. Schéma des flux
