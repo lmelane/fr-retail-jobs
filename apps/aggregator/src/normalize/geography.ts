@@ -84,7 +84,12 @@ export type GeographyInput = {
  * Le code seul ne tranche jamais : c'est sa POSITION (suffixe d'un libellé de
  * lieu, après une ville) qui en fait une subdivision.
  */
-const US_STATES: Record<string, string> = {
+/**
+ * EXPORTÉE depuis D-435 — `country.ts` a besoin de savoir si un code est un
+ * État américain, pour distinguer « Louisville, KY » (adresse US) de
+ * « Berlin, DE » (pays). Partagée, jamais recopiée : deux listes divergent.
+ */
+export const US_STATES: Record<string, string> = {
   AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California',
   CO: 'Colorado', CT: 'Connecticut', DE: 'Delaware', DC: 'District of Columbia',
   FL: 'Florida', GA: 'Georgia', HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois',
@@ -180,7 +185,19 @@ function upper(raw: string): string {
  * Sans cette garde, l'audit a mesuré : « Berlin, DE » → Delaware (567 offres
  * allemandes), « Jakarta, ID » → Idaho, « Hamburg, HH, de » → Delaware.
  */
-const COLLIDING_CODES = new Set([
+/**
+ * EXPORTÉE depuis D-435 (14/09/2026) — et c'est délibéré.
+ *
+ * `countryFromLocation` (`country.ts`) lit elle aussi un suffixe à deux
+ * lettres, et n'avait AUCUNE garde : « North Little Rock, AR » y devenait
+ * l'Argentine. Elle a besoin de la même liste.
+ *
+ * Elle est PARTAGÉE plutôt que recopiée : deux listes de codes ambigus
+ * divergent toujours, et l'audit du 14/09 avait déjà relevé une telle
+ * divergence entre `COLLIDING_CODES` (29 codes) et `AMBIGUOUS_CODES` (43).
+ * Une seule liste, un seul endroit à corriger.
+ */
+export const COLLIDING_CODES = new Set([
   // Chacun est À LA FOIS un état/province et un code pays ISO 3166-1 :
   // CA Canada · IN Inde · AL Albanie · GA Gabon · KY Cayman · NC Nouvelle-Calédonie
   // SC Seychelles · SD Soudan · NE Niger · TN Tunisie · MO Macao · LA Laos

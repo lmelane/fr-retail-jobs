@@ -1,4 +1,5 @@
 import countryLabels from '../../data/reference/country-labels.json' with { type: 'json' };
+import { COLLIDING_CODES, US_STATES } from './geography.js';
 /**
  * Pays canonique, en ISO-3166-1 alpha-2.
  *
@@ -181,12 +182,111 @@ export function normalizeCountry(raw?: string | null): string | undefined {
  * « US-OH », puis chaque segment ; jamais une devinette : sans pays reconnu,
  * undefined.
  */
+/** Les codes d'États américains, dérivés de la table partagée. */
+const US_STATE_CODES = new Set(Object.keys(US_STATES));
+
 export function countryFromLocation(location?: string | null): string | undefined {
   if (!location) return undefined;
   const segments = location.split(/[,|/·;]/).map((s) => s.trim()).filter(Boolean);
+
+  /**
+   * D-435 (14/09/2026) — LA GARDE DE COLLISION, QUI MANQUAIT ICI.
+   *
+   * Mesuré en production : 176 offres portaient un code d'ÉTAT AMÉRICAIN dans
+   * le champ PAYS. Indianapolis en Inde, Florence aux Îles Caïmans, Richmond
+   * au Vatican — et AUCUNE n'était signalée (`countryIntegrity` nul).
+   *
+   * CE QUI A RENDU CE DÉFAUT POSSIBLE. `geography.ts` porte une garde soignée
+   * qui, faute de preuve indépendante, S'ABSTIENT — le bon comportement. Mais
+   * `upsert.ts` appelle ENSUITE cette fonction en repli, et elle lisait le
+   * dernier segment sans aucune garde : elle DÉFAISAIT l'abstention prudente
+   * de la fonction précédente.
+   *
+   * **Une chaîne de résolution ne vaut que par son maillon le plus permissif.**
+   *
+   * CE QUE CETTE GARDE FAIT, ET NE FAIT PAS. Le CEO : « ne PAS remplacer
+   * globalement MA, IN, IL, CA par des États américains ; ces codes peuvent
+   * désigner autre chose dans une autre source ».
+   *
+   * Elle n'affirme donc JAMAIS « c'est un État ». Elle REFUSE DE CONCLURE
+   * quand les deux conditions sont réunies : le libellé a la forme d'une
+   * adresse (« Ville, XX ») ET le code collisionne avec un pays. Le pays sera
+   * posé par une preuve indépendante — un champ déclaré, une géolocalisation —
+   * ou il restera vide. Une case vide se répare ; un pays faux ne se voit pas.
+   *
+   * « Casablanca, Maroc », « Mumbai, India », « Paris, FR » ne sont pas
+   * touchés : le nom en toutes lettres et les codes non collisionnants
+   * passent comme avant.
+   */
+  /*
+   * LA GARDE NE MORD QUE SUR UNE FORME D'ADRESSE AMÉRICAINE.
+   *
+   * Une première version testait « au moins deux segments », et cassait des
+   * cas parfaitement justes : « Berlin, DE », « Amsterdam, NL »,
+   * « Toronto, ON, CA » perdaient leur pays. Réparer les offres américaines
+   * en cassant les allemandes et les néerlandaises n'est pas un correctif.
+   *
+   * Le signal qui distingue les deux : dans une adresse américaine, le code
+   * suit IMMÉDIATEMENT un nom de ville (« Louisville, KY ») et n'est PAS
+   * précédé d'un autre code de subdivision. « Munich, BY, de » porte déjà sa
+   * subdivision (`BY`, Bavière) : le dernier segment est alors bien un pays.
+   *
+   * On exige donc TROIS conditions cumulatives pour s'abstenir :
+   *  - le code collisionne avec un pays ;
+   *  - il est aussi un code d'ÉTAT AMÉRICAIN ;
+   *  - le libellé ne porte pas DÉJÀ une subdivision non américaine, laquelle
+   *    prouverait que le dernier segment est un pays (voir plus bas).
+   */
+  const dernier = segments[segments.length - 1]?.toUpperCase() ?? '';
+  const avantDernier = segments[segments.length - 2] ?? '';
+
+  /*
+   * CE QUI DISTINGUE « Louisville, KY » DE « Berlin, DE » — LA STRUCTURE DU
+   * LIBELLÉ, JAMAIS UNE PRÉFÉRENCE ENTRE DEUX PAYS.
+   *
+   * Une version intermédiaire de cette garde portait une liste de « pays
+   * majeurs prioritaires » (`DE`, `CA`, `IN`…) censés l'emporter sur l'État
+   * homonyme. Elle était fausse sur deux plans, et le témoin l'a prouvé :
+   *
+   *  - elle ARBITRAIT sans mesure quel pays « compte le plus » — un jugement
+   *    métier que rien n'autorisait à graver dans un normaliseur ;
+   *  - elle contenait `IN`, ce qui a immédiatement ROUVERT « Indianapolis, IN »,
+   *    l'un des six cas mesurés en production le 14/09/2026.
+   *
+   * Le signal fiable est ailleurs, et il est vérifiable : une adresse
+   * américaine complète place son ÉTAT en avant-dernière position
+   * (« Wilmington, DE, US »), tandis qu'un libellé étranger y place une
+   * subdivision qui n'est PAS un État américain (« Munich, BY, de » →
+   * Bavière ; « Toronto, ON, CA » → Ontario). Sur les 25 codes qui
+   * collisionnent avec un pays, aucune subdivision allemande, canadienne ou
+   * néerlandaise courante n'est homonyme d'un État américain.
+   *
+   * Donc : le dernier segment n'est tenu pour un État — et la fonction
+   * s'abstient — QUE si rien dans le libellé ne le désigne déjà comme un pays.
+   */
+  const avantDernierMaj = avantDernier.trim().toUpperCase();
+
+  /* « Munich, BY, de » / « Toronto, ON, CA » : la subdivision précède le pays. */
+  const porteDejaUneSubdivision =
+    /^[A-Z]{2,3}$/.test(avantDernierMaj) && !US_STATE_CODES.has(avantDernierMaj);
+
+  const suspectUs =
+    segments.length >= 2 &&
+    /^[A-Z]{2}$/.test(dernier) &&
+    COLLIDING_CODES.has(dernier) &&
+    US_STATE_CODES.has(dernier) &&
+    !porteDejaUneSubdivision;
+
   for (const segment of [...segments].reverse()) {
     const direct = normalizeCountry(segment);
-    if (direct) return direct;
+    if (direct) {
+      if (suspectUs && segment.trim().toUpperCase() === dernier) {
+        // Indécidable sans preuve indépendante : on s'abstient, on n'invente
+        // ni le pays étranger ni les États-Unis.
+        return undefined;
+      }
+      return direct;
+    }
     const prefixed = segment.match(/^([A-Za-z]{2})-[A-Za-z0-9]{1,3}$/);
     if (prefixed) {
       const code = normalizeCountry(prefixed[1]);
