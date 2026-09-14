@@ -8,9 +8,6 @@
     "start": "next start -p ${PORT:-3000}",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "e2e": "playwright test",
-    "e2e:seed": "tsx e2e/seed.ts",
-    "e2e:install": "playwright install chromium",
     "test:sql": "vitest run lib/__tests__/intelligence-facts.integration.test.ts"
   },
   "dependencies": {
@@ -34,7 +31,6 @@
     "world-atlas": "2.0.2"
   },
   "devDependencies": {
-    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.1.13",
     "@types/d3-geo": "3.1.1",
     "@types/geojson": "7946.0.16",

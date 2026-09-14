@@ -48,7 +48,7 @@ jobs:
       - name: Tests d'intégration
         run: npm run test:integration -w @catwalks/aggregator
 
-  web:
+  api:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -76,30 +76,13 @@ jobs:
       - run: npx prisma migrate deploy --schema packages/db/prisma/schema.prisma
       - name: Typecheck
         run: npx tsc --noEmit
-        working-directory: apps/web
-      - name: Tests unitaires web
+        working-directory: apps/api
+      - name: Tests unitaires api
         run: npx vitest run lib
-        working-directory: apps/web
+        working-directory: apps/api
       - name: Build
-        run: npm run build -w @catwalks/web
-      # E2E (N-07) : l'app buildée + base de fixtures — les parcours critiques
-      # du candidat (recherche, fiche, CTAs D18, 404/200/410) sans skip
-      # silencieux. Les deux projets Playwright (desktop + Pixel 7) sont
-      # chromium ; un seul navigateur à installer.
-      # `--with-deps` runs apt-get update; the runner image ships a Google Chrome
-      # apt source whose metadata intermittently fails with "Hash Sum mismatch"
-      # (2026-09-09, twice in a row). Chromium comes from Playwright's own CDN,
-      # so that source is not needed: drop it before installing.
-      - name: Chromium Playwright
-        run: |
-          sudo rm -f /etc/apt/sources.list.d/google-chrome.list /etc/apt/sources.list.d/google-chrome*.sources
-          npx playwright install --with-deps chromium
-        working-directory: apps/web
-      - name: Fixtures e2e
-        run: npx tsx e2e/seed.ts
-        working-directory: apps/web
-      - name: E2E Playwright
-        run: npx playwright test
-        working-directory: apps/web
-        env:
-          E2E_SEEDED: '1'
+        run: npm run build -w @catwalks/api
+      # D-420 — les parcours e2e (recherche, fiche, 404/410, CTAs) testaient
+      # les PAGES de Mode Careers, supprimées avec le rendu. Ils ne sont pas
+      # abandonnés : leurs équivalents vivent désormais sur catwalks.io, qui
+      # porte ces parcours. Ce service n'a plus de page à parcourir.
