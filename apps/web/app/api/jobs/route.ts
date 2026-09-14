@@ -41,7 +41,9 @@ export async function GET(request: NextRequest) {
 
   try {
     const result = await getJobs(filters);
-    const corps = liste ? projeterListe(result) : result;
+    // Le lieu tel que le moteur l'a compris (audit UX H3) : le front l'affiche
+    // à la place de la saisie brute.
+    const corps = liste ? { ...projeterListe(result), lieu: filters.lieuResolu ?? null } : result;
     journaliser({ requestId, statut: 200, dureeMs: Date.now() - debut, total: result.total, page: result.page, resultats: result.jobs.length, liste });
     return NextResponse.json(corps, { headers: { 'x-request-id': requestId } });
   } catch (error) {

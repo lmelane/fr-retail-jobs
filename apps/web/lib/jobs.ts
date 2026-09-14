@@ -74,6 +74,10 @@ export type JobFilters = {
    * `city`, lui, reste l'égalité stricte de la facette et de l'autocomplétion.
    */
   cityLoose?: string;
+  /** « lieu » résolu en télétravail (D-418 §3) : `workplaceType = REMOTE`. */
+  remote?: boolean;
+  /** Ce que le moteur a compris du champ « lieu », pour l'afficher tel quel. */
+  lieuResolu?: { type: 'pays' | 'ville' | 'teletravail'; libelle: string };
   group?: string;
   maison?: string;
   source?: string;
@@ -112,8 +116,10 @@ export function parseFilters(params: Record<string, string | string[] | undefine
   // ici, côté moteur. Un `pays` ou une `ville` explicites gardent la main :
   // ce sont les facettes, plus précises qu'une saisie libre.
   const lieu = resolveLieu(one('lieu'));
-  const country = paysExplicite ?? (lieu && 'country' in lieu ? lieu.country : undefined);
-  const cityLoose = one('ville') === undefined && lieu && 'cityLoose' in lieu ? lieu.cityLoose : undefined;
+  const country = paysExplicite ?? (lieu?.type === 'pays' ? lieu.country : undefined);
+  const cityLoose = one('ville') === undefined && lieu?.type === 'ville' ? lieu.cityLoose : undefined;
+  const remote = lieu?.type === 'teletravail' ? true : undefined;
+  const lieuResolu = lieu ? { type: lieu.type, libelle: lieu.libelle } : undefined;
 
   return {
     q: one('q'),
@@ -121,6 +127,8 @@ export function parseFilters(params: Record<string, string | string[] | undefine
     jobFunction: one('fonction'),
     city: one('ville'),
     cityLoose,
+    remote,
+    lieuResolu,
     /**
      * Le paramètre technique porte le nom de la DIMENSION, pas un mot français :
      * la base est mondiale, et « contrat » y désignait une grille juridique qui
@@ -291,6 +299,7 @@ export function whereClause(filters: JobFilters) {
           ],
         }
       : {}),
+    ...(filters.remote ? { workplaceType: 'REMOTE' } : {}),
     ...(filters.employmentTerm ? { employmentTerm: filters.employmentTerm } : {}),
     ...(filters.workTime ? { workTime: filters.workTime } : {}),
     ...(filters.programType ? { programType: filters.programType } : {}),
@@ -546,8 +555,11 @@ export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> 
       company: true,
       sources: { select: { sourceKey: true as const }, where: { isActive: true } },
     };
+    // Audit UX 14/09 (M5) : une offre à Bordeaux proposait Glasgow et
+    // Limerick. Même Maison ET même pays d'abord ; le pays seul ensuite.
+    const memePays = job.countryCode ? { countryCode: job.countryCode } : {};
     const sameMaison = await prisma.job.findMany({
-      where: { ...base, company: { name: job.company } },
+      where: { ...base, ...memePays, company: { name: job.company } },
       include,
       omit: { raw: true, searchText: true },
       orderBy: [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }],

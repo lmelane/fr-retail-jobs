@@ -45,10 +45,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       journaliser({ requestId, statut: 404, dureeMs: Date.now() - debut });
       return NextResponse.json({ status: 'missing', requestId }, { status: 404, headers: entetes });
     }
-    const [similaires, maison] = await Promise.all([
-      resolu.status === 'active' ? getSimilarJobs(resolu.job, 6) : Promise.resolve([]),
-      getCompanyAside(resolu.job.company),
-    ]);
+    // Audit UX 14/09 (H1) : les similaires servent SURTOUT sur une offre
+    // fermée, c'est la seule issue du candidat ; calculées quel que soit le statut.
+    const [similaires, maison] = await Promise.all([getSimilarJobs(resolu.job, 6), getCompanyAside(resolu.job.company)]);
     const corps = {
       status: resolu.status,
       /** Chemin canonique de la source (`/offre/slug-id`) ; le front en dérive le sien. */
