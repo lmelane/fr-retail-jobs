@@ -1,3 +1,4 @@
+import { normalizeLanguage } from '../../normalize/language.js';
 import { fetchJson, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -73,10 +74,9 @@ type LvmhHit = {
  * The hit's declared language as ISO-639-1: "ZH-HANS" → "zh", "EN" → "en".
  * "SP" is the index's own spelling of Spanish (11 hits) — not an ISO code.
  */
+/** @deprecated Conservé pour les témoins existants : délègue au module commun. */
 export function lvmhLanguage(raw?: string | null): string | undefined {
-  const code = (raw ?? '').trim().toLowerCase().split(/[-_]/)[0];
-  if (!code) return undefined;
-  return code === 'sp' ? 'es' : code;
+  return normalizeLanguage(raw);
 }
 
 type AlgoliaResponse = {

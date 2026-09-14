@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { fetchJson, fetchText, DEFAULT_DETAIL_CONCURRENCY } from '../../lib/http.js';
+import { normalizeLanguage } from '../../normalize/language.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { extractJobPostings } from '../../connectors/generic/jsonLdSitemap.js';
 import { employmentTermsFrom } from '../../normalize/employment.js';
@@ -119,6 +120,9 @@ export function parsePhenomJob(data: PhenomJobData, origin: string, config: Reco
     country: data.country_code ?? data.country,
     contract: terms,
     workingTime: terms,
+    // `language` était lu pour COMPTER les variantes de requisition, jamais
+    // écrit dans l'offre : l'information était captée puis perdue.
+    language: normalizeLanguage(data.language),
     company: brandOf(data, config),
     city: data.city,
     region: data.state,
