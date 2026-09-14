@@ -517,6 +517,23 @@ model Job {
    * télétravail est interdit. La valeur brute reste traçable dans `raw`.
    */
   workplaceType      String?
+  /**
+   * Le RYTHME DE TRAVAIL : FLEXIBLE_AVAILABILITY | EVENINGS_WEEKENDS | NIGHT_SHIFT.
+   * Distinct de `workTime`, qui dit le VOLUME (temps plein / partiel) : ici on
+   * dit QUAND. Le seul champ structuré des sources (`schedule`, 186 offres)
+   * contient « full-or-part-time », donc un temps de travail — le rythme, lui,
+   * ne vit que dans les DESCRIPTIONS, et c'est de là qu'il est lu.
+   * Mesuré le 2026-09-15 : « flexible schedule » couvre 54 % des offres US,
+   * « nights, weekends » 28 % des offres CA, 0 % en France. C'est une
+   * DISPONIBILITÉ EXIGÉE du candidat, jamais une catégorie de poste.
+   * `null` = aucune exigence prouvée — jamais « horaires de bureau » par défaut.
+   */
+  workSchedule       String?
+  /**
+   * Le libellé SOURCE du rythme, conservé tel quel — ce qui a justifié la
+   * valeur canonique, relisible sans repasser par le normaliseur.
+   */
+  rawSchedule        String?
   experienceYears    Int?
   educationLevel     String?
 

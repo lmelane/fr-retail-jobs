@@ -188,6 +188,10 @@ export function toCandidate(
     salaryCurrency: coerceText(job.salaryCurrency)?.toUpperCase(),
     salaryPeriod: canonicalPeriod(job.salaryPeriod),
     workplaceType: employment.workplaceType,
+    // Le rythme suit exactement le même chemin que le mode de travail : résolu
+    // dans `resolveCanonicalDimensions`, porté ici, écrit par `upsert`.
+    workSchedule: employment.workSchedule,
+    rawSchedule: employment.rawSchedule,
     // Float columns: Rituals shipped "52.37" as a string and lost 577 offers.
     latitude: coerceCoordinate(job.latitude, 90),
     longitude: coerceCoordinate(job.longitude, 180),
