@@ -1,6 +1,8 @@
 import { createHash } from 'node:crypto';
-import { fetchJson } from '../../lib/http.js';
+import pLimit from 'p-limit';
+import { fetchJson, fetchText, DEFAULT_DETAIL_CONCURRENCY } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
+import { extractJobPostings } from '../../connectors/generic/jsonLdSitemap.js';
 import { employmentTermsFrom } from '../../normalize/employment.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
@@ -414,6 +416,25 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
     if (declaredTotal != null && seen.size >= declaredTotal) { termination = 'ANNOUNCED_TOTAL_REACHED'; break; }
   }
 
+  /**
+   * La description complète, une fiche à la fois, sous la porte par hôte partagée.
+   *
+   * Le pool est BORNÉ à la concurrence de détail commune : ce chemin ajoute une requête par offre, et un
+   * portail qui sert 1 500 annonces ne doit pas recevoir 1 500 requêtes simultanées — la politesse par
+   * tenant (D25, P8) prime sur la vitesse d'enrichissement.
+   */
+  if (localePath && jobs.length) {
+    const limit = pLimit(DEFAULT_DETAIL_CONCURRENCY);
+    const enriched = await Promise.all(jobs.map((job) => limit(async () => {
+      if (!job.url) return job;
+      try {
+        const expectedId = String((job.raw as CareerConnectJob | undefined)?.jobId ?? '');
+        return expectedId ? enrichFromJobPosting(job, await fetchText(job.url, { headers: HEADERS }), expectedId) : job;
+      } catch { return job; } // Une fiche illisible garde son teaser : jamais d'offre perdue pour un détail.
+    })));
+    jobs.length = 0; jobs.push(...enriched);
+  }
+
   if (repeatedIds > 0) issues.add('REPEATED_IDS_ACROSS_PAGES');
   const complete = declaredTotal != null && seen.size >= declaredTotal && issues.size === 0;
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
@@ -428,4 +449,37 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
       pageEvidence,
     },
   };
+}
+
+/**
+ * LA DESCRIPTION COMPLÈTE, depuis le JSON-LD de la fiche publique.
+ *
+ * Le listing CareerConnect ne livre qu'un `descriptionTeaser` : médiane **313** caractères chez Hugo Boss et
+ * **287** chez Skechers, plafonnée à ~418 — contre **4 619** pour `foot-locker-france`, sur la MÊME famille
+ * Phenom. Ce plafond signe une troncature d'API, pas des annonces courtes.
+ *
+ * La fiche publique porte un `JobPosting` en JSON-LD : un **standard public observé**, jamais un endpoint
+ * deviné. On réutilise `extractJobPostings` du connecteur générique plutôt que d'écrire un second analyseur —
+ * deux implémentations du même format finiraient par diverger.
+ *
+ * Trois refus, et c'est là que réside la sûreté :
+ *   · l'identifiant du JSON-LD doit CONCORDER avec l'offre — sans quoi une redirection silencieuse collerait
+ *     la description d'une autre offre, exactement le défaut que le gabarit d'URL a déjà produit ;
+ *   · pas de JSON-LD ⇒ on garde le teaser, on n'invente rien ;
+ *   · plus court que ce qu'on a ⇒ on garde l'existant, un enrichissement ne régresse pas.
+ */
+export function enrichFromJobPosting(job: NormalizedJob, html: string, expectedId: string): NormalizedJob {
+  let postings: ReturnType<typeof extractJobPostings>;
+  try { postings = extractJobPostings(html); } catch { return job; }
+
+  for (const node of postings) {
+    const raw = (node as Record<string, unknown>).identifier;
+    const value = raw && typeof raw === 'object' ? String((raw as Record<string, unknown>).value ?? '') : String(raw ?? '');
+    // La concordance d'identifiant est la garde : elle prouve qu'on lit la fiche de CETTE offre.
+    if (!value || !expectedId || value !== expectedId) continue;
+    const description = htmlToPlainText(String((node as Record<string, unknown>).description ?? '')) ?? '';
+    if (description.length <= (job.description?.length ?? 0)) return job;
+    return { ...job, description };
+  }
+  return job;
 }
