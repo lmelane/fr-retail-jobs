@@ -13,6 +13,7 @@
  */
 import { PrismaClient } from '@prisma/client';
 import { writeFileSync } from 'node:fs';
+import { readAllPages } from '../../src/ops/apiPagination.js';
 
 const arg = (n: string) => process.argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
 const jobIds = (arg('jobs') ?? '').split(',').map((s) => s.trim()).filter(Boolean);
@@ -43,30 +44,22 @@ async function readSitemapUrls(): Promise<{ urls: Set<string>; chunks: number; p
 }
 
 /**
- * L'API publique, paginée JUSQU'AU BOUT : s'arrêter avant la fin inventerait des absences.
+ * L'API publique, paginée JUSQU'AU BOUT via la lecture commune (`ops/apiPagination`).
  *
- * Le plafond était une constante de 50 pages. À 25 offres par page, cela couvre 1 250 offres — Skechers en
- * publie 1 656 sur **67 pages**. La boucle s'arrêtait donc à la page 50 et les 406 offres suivantes
- * ressortaient « absentes de l'API » alors que l'API les sert parfaitement (`total` = 1 656 = la base).
- * *Une borne arbitraire dans l'outil de contrôle fabrique le défaut qu'elle prétend mesurer.*
- *
- * La borne vient désormais du `pageCount` annoncé, et un arrêt prématuré — page illisible ou plafond de
- * sécurité atteint — LÈVE une erreur au lieu de rendre un ensemble partiel qu'on lirait comme complet.
+ * Le plafond était une constante de 50 pages. À 25 offres par page cela couvre 1 250 offres — Skechers en
+ * publie 1 656 sur **67 pages** : les 406 suivantes ressortaient « absentes de l'API » alors que l'API les
+ * sert parfaitement. La borne vient désormais du `pageCount` annoncé, et un arrêt prématuré LÈVE plutôt que
+ * de rendre un ensemble partiel qu'on lirait comme complet.
  */
 async function readApiIds(maison: string): Promise<Set<string>> {
-  const ids = new Set<string>();
-  let pageCount = 1;
-  for (let page = 1; page <= pageCount; page++) {
+  const items = await readAllPages<string>(async (page) => {
     const r = await fetch(`${base}/api/jobs?maison=${encodeURIComponent(maison)}&page=${page}`);
-    if (!r.ok) throw new Error(`API ${maison} page ${page}: HTTP ${r.status} — ensemble incomplet, aucune absence n'est concluable`);
+    if (!r.ok) return null; // `null` = illisible : la lecture commune lèvera, elle ne tronquera pas.
     const d: any = await r.json();
-    const items: any[] = d.data ?? d.jobs ?? d.items ?? [];
-    for (const j of items) if (j?.id) ids.add(String(j.id));
-    if (page === 1) pageCount = Number(d.pageCount ?? 1);
-    // Garde-fou : une pagination qui ne se termine pas est un défaut à signaler, jamais à absorber.
-    if (pageCount > 2000) throw new Error(`API ${maison}: ${pageCount} pages annoncées — pagination suspecte`);
-  }
-  return ids;
+    const rows: any[] = d.data ?? d.jobs ?? d.items ?? [];
+    return { items: rows.filter((j) => j?.id).map((j) => String(j.id)), pageCount: d.pageCount };
+  }, `API ${maison}`);
+  return new Set(items);
 }
 
 const jobs = await prisma.job.findMany({
