@@ -242,7 +242,17 @@ HIT/MISS, release. Jamais : token, cookie, CV, donnée candidat.
 
 ---
 
-## 6. Ce qui reste à arbitrer [À ARBITRER]
+## 6. Arbitrages rendus le 14/09/2026 [DÉCIDÉ] et ce qui reste ouvert [À ARBITRER]
+
+**Rendus (D-418, D-419, dépôt catwalks-backend)** : l'API de lecture vit dans
+`apps/web` (choix technique, réversible) ; les 121 offres internes entrent
+dans l'agrégateur comme une source de plus ; une seule route de résultats,
+`/emplois` ; suggestions dès deux caractères et résolution tolérante du lieu
+côté API ; **ordre des résultats : offres Catwalks en tête, puis le pays du
+visiteur, puis la fraîcheur** ; facette « Langue » sans exclusion ; « Métier
+à préciser » affiché ; « Intelligence » en lot séparé après le cutover.
+
+**Restent ouverts** :
 
 1. **Où vit l'API de lecture** : dans `apps/web` (une route `/api/v1/*` de
    plus, zéro déploiement nouveau) ou dans un service Railway dédié
