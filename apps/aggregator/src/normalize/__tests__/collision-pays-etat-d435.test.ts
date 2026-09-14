@@ -150,6 +150,26 @@ describe('un code d’État américain ne devient pas un pays (D-435)', () => {
     expect(countryFromLocation('North Little Rock (AR)')).toBeUndefined();
   });
 
+  it('un code ISOLÉ reste un pays, quelle que soit sa ponctuation', () => {
+    /*
+     * TROU DE COUVERTURE TROUVÉ AU SECOND TOUR D'AUDIT. Le critère
+     * « accompagné » comparait le code au SEGMENT BRUT : pour « (KY) », le
+     * segment vaut « (KY) », différent de « KY » — mais uniquement à cause des
+     * parenthèses, c'est-à-dire de la syntaxe de la branche elle-même. La
+     * fonction perdait le pays sur des formes qui ne portent AUCUNE
+     * information de plus que le code nu.
+     *
+     * PRÉMISSE — « KY » nu rend bien un pays ; sans cela, les trois cas
+     * suivants passeraient au vert sans rien exercer.
+     */
+    expect(countryFromLocation('KY'), 'un code nu reste un pays').toBe('KY');
+
+    // Les mêmes codes, décorés par la syntaxe de leur branche.
+    expect(countryFromLocation('(KY)')).toBe('KY');
+    expect(countryFromLocation('KY-402')).toBe('KY');
+    expect(countryFromLocation('(MA)')).toBe('MA');
+  });
+
   it('un code d’État en PREMIÈRE position reste indécidable', () => {
     /*
      * La garde comparait le code au DERNIER segment ; un code en tête y
@@ -157,6 +177,45 @@ describe('un code d’État américain ne devient pas un pays (D-435)', () => {
      */
     expect(countryFromLocation('IN, Indianapolis')).toBeUndefined();
     expect(countryFromLocation('KY, Florence')).toBeUndefined();
+  });
+
+  it('une subdivision étrangère homonyme d’un État ne fait pas perdre le pays', () => {
+    /*
+     * PRÉMISSE — ces codes SONT réellement des États américains, sinon le cas
+     * n'exerce pas l'ambiguïté : TN = Tennessee ET Tamil Nadu, MI = Michigan
+     * ET province de Milan, MA = Massachusetts ET Málaga.
+     */
+    expect(countryFromLocation('Nashville, TN'), 'TN est bien traité comme un État US').toBeUndefined();
+
+    // Le signal : un dernier segment qui est un code pays NON-état-US.
+    expect(countryFromLocation('Milan, MI, IT')).toBe('IT');
+    expect(countryFromLocation('Malaga, MA, ES')).toBe('ES');
+    expect(countryFromLocation('Barcelona, CA, ES')).toBe('ES');
+    expect(countryFromLocation('Mumbai, MH, IN')).toBe('IN');
+
+    // Une adresse américaine complète garde bien les États-Unis.
+    expect(countryFromLocation('Louisville, KY, US')).toBe('US');
+    expect(countryFromLocation('Florence, KY, USA')).toBe('US');
+  });
+
+  it('LIMITE CONNUE : « Chennai, TN, IN » s’abstient, faute de référentiel', () => {
+    /*
+     * Ce test grave une limite ASSUMÉE, pas un succès. « Chennai, TN, IN »
+     * (Tamil Nadu, Inde) et « Florence, KY, IN » (Kentucky ? Indiana ?) ont la
+     * même forme : trois segments dont deux codes qui sont TOUS DEUX des États
+     * américains. Aucune lecture structurelle ne les distingue.
+     *
+     * Les distinguer demanderait un référentiel des subdivisions indiennes —
+     * `SUBDIVISIONS` (geography.ts) ne couvre que US et CA. C'est le registre
+     * partagé du lot 2, pas un correctif de collision.
+     *
+     * Si ce test passe un jour au ROUGE parce que « Chennai, TN, IN » rend
+     * `IN`, ce n'est PAS une régression : c'est que le référentiel est arrivé.
+     * Mettre alors ce témoin à jour, en vérifiant que « Florence, KY, IN »
+     * s'abstient toujours.
+     */
+    expect(countryFromLocation('Chennai, TN, IN')).toBeUndefined();
+    expect(countryFromLocation('Florence, KY, IN')).toBeUndefined();
   });
 
   it('une subdivision NON américaine prouve que le dernier segment est un pays', () => {

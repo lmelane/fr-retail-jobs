@@ -284,6 +284,43 @@ export function countryFromLocation(location?: string | null): string | undefine
   const porteDejaUneSubdivision =
     /^[A-Z]{2}$/.test(avantDernierMaj) && !US_STATE_CODES.has(avantDernierMaj);
 
+  /*
+   * LE CAS DES SUBDIVISIONS ÉTRANGÈRES HOMONYMES D'UN ÉTAT AMÉRICAIN.
+   *
+   * `TN` est le Tamil Nadu ET le Tennessee ; `MI` la province de Milan ET le
+   * Michigan ; `MA` le Massachusetts ET Málaga.
+   *
+   * Périmètre mesuré le 14/09/2026 sur les subdivisions courantes : Inde
+   * (TN, GA, OR), Italie (MI, PA, CA, CT), Espagne (MA, VA, CA, CO, AL).
+   * L'Allemagne et le Canada n'ont AUCUNE subdivision homonyme.
+   *
+   * CE QUI FONCTIONNE DÉJÀ, SANS CODE SUPPLÉMENTAIRE. Quand le dernier segment
+   * est un code pays qui n'est pas un État américain — `IT`, `ES` — `suspectUs`
+   * est faux par construction, et le pays est rendu correctement :
+   *
+   *     « Milan, MI, IT »    → IT        « Malaga, MA, ES »    → ES
+   *     « Mumbai, MH, IN »   → IN        « Louisville, KY, US » → US
+   *
+   * Une garde explicite a été écrite puis RETIRÉE pour ce cas : un balayage de
+   * 1 682 combinaisons « Ville, SUB, PAYS » a montré qu'elle ne changeait
+   * AUCUN résultat. C'était du code mort présenté comme une protection — le
+   * défaut que ce fichier combat par ailleurs. Mesurer a évité de le graver.
+   *
+   * LIMITE CONNUE ET ASSUMÉE : quand le code PAYS est lui-même un État
+   * américain, aucune lecture structurelle ne tranche.
+   *
+   *     « Chennai, TN, IN »  → abstention, alors que l'Inde serait correcte
+   *     « Florence, KY, IN » → abstention, et c'est ici le bon résultat
+   *
+   * Les deux libellés ont la MÊME forme : trois segments dont deux codes qui
+   * sont tous deux des États américains. Seul un référentiel des subdivisions
+   * indiennes les distinguerait, et `SUBDIVISIONS` (geography.ts) ne couvre
+   * aujourd'hui que US et CA. L'étendre est un chantier de données — le
+   * registre partagé du lot 2 — pas un correctif de collision.
+   *
+   * En attendant, on s'abstient plutôt que d'inventer : une case vide se
+   * répare, un pays faux ne se voit pas.
+   */
   const suspectUs =
     segments.length >= 2 &&
     /^[A-Z]{2}$/.test(dernier) &&
@@ -319,19 +356,31 @@ export function countryFromLocation(location?: string | null): string | undefine
    * dans un libellé de plusieurs segments, sans subdivision étrangère pour
    * prouver le contraire, reste indécidable quelle que soit sa place.
    */
-  const estEtatUsAmbigu = (code: string, contexte: string): boolean => {
+  const estEtatUsAmbigu = (code: string, accompagnement: string): boolean => {
     const maj = code.trim().toUpperCase();
     /*
      * Le code doit être ACCOMPAGNÉ dans le libellé — un code seul (« MA »,
      * « KY ») reste un pays, faute de tout autre indice.
      *
      * Le critère ne peut pas être `segments.length >= 2` : « Florence (KY) »
-     * est UN seul segment, et l'audit a montré que cette forme contournait
-     * la garde pour cette exact raison. Ce qui compte est que le code soit
-     * accompagné de quelque chose d'autre DANS son propre segment ou dans le
-     * libellé — une ville, typiquement.
+     * est UN seul segment, et le premier tour d'audit a montré que cette forme
+     * contournait la garde pour cette exacte raison.
+     *
+     * MAIS L'ACCOMPAGNEMENT SE MESURE SUR LE TEXTE, PAS SUR LA PONCTUATION.
+     * Une version intermédiaire comparait le code au SEGMENT BRUT. Le second
+     * tour d'audit l'a cassée : pour « (KY) », le segment vaut « (KY) », qui
+     * diffère de « KY » — mais uniquement à cause des parenthèses, la syntaxe
+     * de la branche elle-même. Idem pour « KY-402 » et son suffixe.
+     *
+     *     « KY »      → KY          (code seul, reste un pays)
+     *     « (KY) »    → undefined   ← INCOHÉRENT : pas plus d'information
+     *     « KY-402 »  → undefined   ← INCOHÉRENT
+     *
+     * L'appelant passe donc ce qui accompagne RÉELLEMENT le code, la syntaxe
+     * de sa branche retirée : « Florence » pour « Florence (KY) », la chaîne
+     * vide pour « (KY) ».
      */
-    const accompagne = segments.length >= 2 || contexte.trim().toUpperCase() !== maj;
+    const accompagne = segments.length >= 2 || accompagnement.trim().length > 0;
     return (
       accompagne &&
       /^[A-Z]{2}$/.test(maj) &&
@@ -346,14 +395,16 @@ export function countryFromLocation(location?: string | null): string | undefine
     if (direct) {
       // Indécidable sans preuve indépendante : on s'abstient, on n'invente
       // ni le pays étranger ni les États-Unis.
-      if (estIndecidable(segment) || estEtatUsAmbigu(segment, segment)) return undefined;
+      // Branche `direct` : le segment EST le code, rien ne l'accompagne en propre.
+      if (estIndecidable(segment) || estEtatUsAmbigu(segment, '')) return undefined;
       return direct;
     }
     const prefixed = segment.match(/^([A-Za-z]{2})-[A-Za-z0-9]{1,3}$/);
     if (prefixed) {
       const code = normalizeCountry(prefixed[1]);
       if (code) {
-        if (estEtatUsAmbigu(prefixed[1], segment)) return undefined;
+        // « KY-402 » : le suffixe est de la syntaxe, pas un accompagnement.
+        if (estEtatUsAmbigu(prefixed[1], '')) return undefined;
         return code;
       }
     }
@@ -361,7 +412,8 @@ export function countryFromLocation(location?: string | null): string | undefine
     if (parenthesised) {
       const code = normalizeCountry(parenthesised[1]);
       if (code) {
-        if (estEtatUsAmbigu(parenthesised[1], segment)) return undefined;
+        // « Florence (KY) » → « Florence » ; « (KY) » → chaîne vide.
+        if (estEtatUsAmbigu(parenthesised[1], segment.slice(0, segment.lastIndexOf('(')))) return undefined;
         return code;
       }
     }
