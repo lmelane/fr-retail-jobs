@@ -4,7 +4,6 @@ import { intelTitle, jsonLd, TITLE_MAX } from '../intelligence/seo';
 import { alpha2FromNumeric, knownAlpha2 } from '../intelligence/country-ids';
 import { countryCode } from '../countries';
 
-import { level, thresholds } from '../../components/intelligence/world-map';
 
 describe('formatters (fr-FR)', () => {
   it('formats integers with a NO-BREAK SPACE thousands separator (U+00A0, drawn by every font — U+202F rendered « 71525 » in prod)', () => {
@@ -73,13 +72,12 @@ describe('country ids', () => {
   });
 });
 
-describe('world map buckets', () => {
-  it('splits positive values into five quantile levels and keeps zero out', () => {
-    const th = thresholds([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-    expect(th).toHaveLength(4);
-    expect(level(0, th)).toBe(-1);
-    expect(level(1, th)).toBe(0);
-    expect(level(10, th)).toBe(4);
-    expect(thresholds([0, 0])).toEqual([]);
-  });
-});
+/*
+ * D-420 (14/09/2026) — les témoins « world map buckets » (`level`,
+ * `thresholds`) vivaient dans `components/intelligence/world-map`, supprimé
+ * avec le rendu Mode Careers. Ils ne sont PAS abandonnés : le composant et ces
+ * deux fonctions repartent avec L'Observatoire sur catwalks.io (lot B), leur
+ * code est dans git (commit 6a4a0ee), et ces témoins repartent avec lui.
+ *
+ * Tout le reste de ce fichier garde `lib/intelligence`, qui n'a pas bougé.
+ */
