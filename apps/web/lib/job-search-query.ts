@@ -10,7 +10,7 @@ type Facet = { value: string; count: number };
 export type SearchSummary = {
   ids: string[]; total: number; totalInDatabase: number; franceCount: number;
   sectors: Facet[]; contracts: Facet[]; workTimes: Facet[]; programs: Facet[]; engagements: Facet[]; cities: Facet[]; groups: Facet[];
-  maisons: Facet[]; sources: Facet[]; rawCountries: Facet[]; occupations: Facet[];
+  maisons: Facet[]; sources: Facet[]; rawCountries: Facet[]; occupations: Facet[]; languages: Facet[];
 };
 
 // Only these fixed SQL fragments become identifiers. User values remain bound parameters.
@@ -30,6 +30,7 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
   // dans `location`. Miroir exact de `whereClause`.
   if (filters.cityLoose) conditions.push(Prisma.sql`(j.city ILIKE ${filters.cityLoose} OR j.city ILIKE ${`${filters.cityLoose}%`} OR j.location ILIKE ${`%${filters.cityLoose}%`})`);
   if (filters.remote) conditions.push(Prisma.sql`j."workplaceType" = 'REMOTE'`);
+  if (filters.language) conditions.push(Prisma.sql`j.language = ${filters.language}`);
   if (filters.employmentTerm) conditions.push(Prisma.sql`j."employmentTerm" = ${filters.employmentTerm}`);
   if (filters.maison) conditions.push(companyIdentitySql(filters.maison));
   if (filters.group) conditions.push(Prisma.sql`c."parentGroup" = ${filters.group}`);
@@ -87,9 +88,14 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
     const values = rawValuesForCode(filters.country).map(value => value.toLowerCase());
     country = values.length ? Prisma.sql`lower("countryCode") IN (${Prisma.join(values)})` : Prisma.sql`false`;
   }
+  // D-419 §2 : le pays du visiteur d'abord (0), le reste du monde ensuite (1),
+  // puis la fraîcheur dans chaque groupe. Jamais un filtre : rien ne disparaît.
+  const priorite = filters.priorityCountry
+    ? Prisma.sql`(CASE WHEN "countryCode" = ${filters.priorityCountry} THEN 0 ELSE 1 END),`
+    : Prisma.empty;
   const [summary] = await prisma.$queryRaw<SearchSummary[]>(Prisma.sql`
     WITH ${matchCte} base AS MATERIALIZED (
-      SELECT j.id, j."occupationCode", j."countryCode", j."isFrance", j.city, j."employmentTerm", j."workTime", j."programType", j."engagementType", j."postedAt", j."firstSeenAt",
+      SELECT j.id, j."occupationCode", j."countryCode", j."isFrance", j.city, j."employmentTerm", j."workTime", j."programType", j."engagementType", j."postedAt", j."firstSeenAt", j.language,
         c.name AS maison, c."sectorCodes", c."parentGroup" AS groupe
       FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${matchJoin}
       WHERE ${Prisma.join(conditions, ' AND ')}
@@ -98,12 +104,13 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
       (SELECT count(*)::int FROM scoped) AS total,
       (SELECT count(*)::int FROM "Job" WHERE "isActive") AS "totalInDatabase",
       (SELECT count(*)::int FROM base WHERE "isFrance") AS "franceCount",
-      ARRAY(SELECT id FROM scoped ORDER BY "postedAt" DESC NULLS LAST, "firstSeenAt" DESC, id
+      ARRAY(SELECT id FROM scoped ORDER BY ${priorite} "postedAt" DESC NULLS LAST, "firstSeenAt" DESC, id
         LIMIT ${pageSize} OFFSET ${(page - 1) * pageSize}) AS ids,
       ${facet(Prisma.sql`COALESCE("occupationCode", 'unclassified')`)} AS occupations,
       (SELECT coalesce(jsonb_agg(jsonb_build_object('value',code,'count',n) ORDER BY n DESC,code),'[]'::jsonb)
         FROM (SELECT code,count(*)::int n FROM scoped CROSS JOIN LATERAL unnest(CASE WHEN cardinality("sectorCodes")=0 THEN ARRAY['unclassified'] ELSE "sectorCodes" END) code GROUP BY code) f) AS sectors,
       ${facet(Prisma.sql`"employmentTerm"`)} AS contracts,
+      ${facet(Prisma.sql`language`)} AS languages,
       ${facet(Prisma.sql`"workTime"`)} AS "workTimes",
       ${facet(Prisma.sql`"programType"`)} AS programs,
       ${facet(Prisma.sql`"engagementType"`)} AS engagements,

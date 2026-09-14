@@ -39,8 +39,20 @@ export type JobsResultListe = Omit<JobsResult, 'jobs' | 'facets'> & {
     programs: FacetteLibellee[];
     engagements: FacetteLibellee[];
     countries: FacetteLibellee[];
+    languages: FacetteLibellee[];
   };
 };
+
+const LANGUES_FR = typeof Intl !== 'undefined' && 'DisplayNames' in Intl ? new Intl.DisplayNames(['fr'], { type: 'language', fallback: 'none' }) : null;
+/** « fr » → « Français », capitalisé ; un code inconnu reste tel quel. */
+export function languageLabel(code: string): string {
+  try {
+    const l = LANGUES_FR?.of(code);
+    return l ? l.charAt(0).toUpperCase() + l.slice(1) : code;
+  } catch {
+    return code;
+  }
+}
 
 function libelles(job: JobRow): Libelles {
   return {
@@ -86,6 +98,7 @@ export function projeterListe(result: JobsResult): JobsResultListe {
       programs: libellerFacette(result.facets.programs, programTypeLabel),
       engagements: libellerFacette(result.facets.engagements, engagementTypeLabel),
       countries: libellerFacette(result.facets.countries, (code) => countryLabel(code)),
+      languages: libellerFacette(result.facets.languages, languageLabel),
     },
   };
 }

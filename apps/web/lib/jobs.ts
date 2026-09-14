@@ -83,6 +83,13 @@ export type JobFilters = {
   source?: string;
   /** Canonical country code (FR, IT, US…); undefined means every country. */
   country?: string;
+  /** Langue de l'offre (ISO-639-1), facette « Langue » (D-419 §3). */
+  language?: string;
+  /**
+   * D-419 §2 — le pays du visiteur : ses offres d'abord, puis le reste du
+   * monde, chaque groupe du plus récent au plus ancien. Jamais un filtre.
+   */
+  priorityCountry?: string;
   /** 1-based, like the URL the user can share. */
   page?: number;
 };
@@ -146,8 +153,19 @@ export function parseFilters(params: Record<string, string | string[] | undefine
     group: one('groupe'),
     source: one('source'),
     country,
+    language: normalizedLanguage(one('langue')),
+    priorityCountry: normalizedPriority(one('prioritePays')),
     page: normalizedPage(page),
   };
+}
+
+/** Deux lettres ISO-639-1 en minuscules, sinon rien : jamais une valeur libre en SQL. */
+function normalizedLanguage(v: string | undefined): string | undefined {
+  return v && /^[a-z]{2}$/i.test(v) ? v.toLowerCase() : undefined;
+}
+/** Deux lettres ISO-3166 en majuscules, sinon rien. */
+function normalizedPriority(v: string | undefined): string | undefined {
+  return v && /^[a-z]{2}$/i.test(v) ? v.toUpperCase() : undefined;
 }
 
 /** Offers per page. */
@@ -252,6 +270,8 @@ export type JobsResult = {
     /** Country facet values are canonical codes (FR, IT…); the UI labels them. */
     countries: { value: string; count: number }[];
     occupations?: { value: string; label: string; count: number }[];
+    /** ISO-639-1 ; libellé français posé par la projection liste (D-419 §3). */
+    languages?: { value: string; count: number }[];
   };
 };
 
@@ -300,6 +320,7 @@ export function whereClause(filters: JobFilters) {
         }
       : {}),
     ...(filters.remote ? { workplaceType: 'REMOTE' } : {}),
+    ...(filters.language ? { language: filters.language } : {}),
     ...(filters.employmentTerm ? { employmentTerm: filters.employmentTerm } : {}),
     ...(filters.workTime ? { workTime: filters.workTime } : {}),
     ...(filters.programType ? { programType: filters.programType } : {}),
@@ -617,6 +638,7 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
       workTimes: summary.workTimes, programs: summary.programs, engagements: summary.engagements,
         cities: summary.cities.map(f => ({ ...f, value: canonicalCity(f.value) })),
         groups: summary.groups, maisons: summary.maisons, sources: summary.sources,
+        languages: summary.languages ?? [],
         countries: [
           ...(summary.franceCount ? [{ value: 'FR', count: summary.franceCount }] : []),
           ...[...countries].map(([value, count]) => ({ value, count })).sort((a,b) => b.count-a.count),

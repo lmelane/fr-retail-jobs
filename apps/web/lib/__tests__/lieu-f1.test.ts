@@ -81,3 +81,16 @@ describe('parseFilters avec lieu', () => {
     expect(f.lieuResolu).toBeUndefined();
   });
 });
+
+describe('parseFilters : langue et pays prioritaire (D-419)', () => {
+  it('langue : deux lettres en minuscules, sinon ignorée', () => {
+    expect(parseFilters({ langue: 'FR' }).language).toBe('fr');
+    expect(parseFilters({ langue: 'français' }).language).toBeUndefined();
+  });
+  it('prioritePays : deux lettres en majuscules, jamais un filtre', () => {
+    const f = parseFilters({ prioritePays: 'fr' });
+    expect(f.priorityCountry).toBe('FR');
+    expect(f.country).toBeUndefined();
+    expect(parseFilters({ prioritePays: "'; drop" }).priorityCountry).toBeUndefined();
+  });
+});
