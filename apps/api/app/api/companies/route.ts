@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCompanies, parseCompanyFilters } from '@/lib/companies';
 import { DatabaseUnavailableError } from '@/lib/jobs';
+import { refuserSiCleInvalide } from '@/lib/cle-api';
+import { randomUUID } from 'node:crypto';
 
 /**
  * Page 2+ of the employer list, for infinite scroll.
@@ -14,6 +16,8 @@ import { DatabaseUnavailableError } from '@/lib/jobs';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
+  const refus = refuserSiCleInvalide(request, randomUUID());
+  if (refus) return refus;
   const params = Object.fromEntries(request.nextUrl.searchParams);
   const filters = parseCompanyFilters(params);
 

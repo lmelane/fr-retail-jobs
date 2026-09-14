@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'node:crypto';
 import { DatabaseUnavailableError, getJobs, parseFilters } from '@/lib/jobs';
 import { projeterListe } from '@/lib/projection';
+import { refuserSiCleInvalide } from '@/lib/cle-api';
 
 /**
  * Page 2+ of the offer list, for infinite scroll — et, depuis F1 (D-417),
@@ -34,6 +35,8 @@ function journaliser(ligne: Record<string, unknown>): void {
 
 export async function GET(request: NextRequest) {
   const requestId = requestIdDepuis(request);
+  const refus = refuserSiCleInvalide(request, requestId);
+  if (refus) return refus;
   const debut = Date.now();
   const params = Object.fromEntries(request.nextUrl.searchParams);
   const filters = parseFilters(params);

@@ -1,6 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { imageSize } from '@/lib/image-size';
 import { bestLogo } from '@/lib/logo-choice';
+import { refuserSiCleInvalide } from '@/lib/cle-api';
+import { randomUUID } from 'node:crypto';
 
 /**
  * Favicon d'une Maison, ou 404 — jamais le carré gris.
@@ -81,7 +83,9 @@ async function fetchLogo(url: string): Promise<Logo | null> {
   }
 }
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
+  const refus = refuserSiCleInvalide(request, randomUUID());
+  if (refus) return refus;
   const domain = new URL(request.url).searchParams.get('domain')?.toLowerCase().trim();
 
   // Le domaine vient d'un nom de Maison, donc de données ingérées : on ne le

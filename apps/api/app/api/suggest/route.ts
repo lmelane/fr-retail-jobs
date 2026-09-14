@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { suggestCities, suggestTitles } from '@/lib/jobs';
 import { suggestCompanies } from '@/lib/companies';
+import { refuserSiCleInvalide } from '@/lib/cle-api';
+import { randomUUID } from 'node:crypto';
 
 /**
  * Search-bar autocomplete, from our own data (decision D12): cities, job titles
@@ -13,6 +15,8 @@ import { suggestCompanies } from '@/lib/companies';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
+  const refus = refuserSiCleInvalide(request, randomUUID());
+  if (refus) return refus;
   const type = request.nextUrl.searchParams.get('type');
   const q = request.nextUrl.searchParams.get('q') ?? '';
 

@@ -8,6 +8,7 @@ import {
 } from '@/lib/jobs';
 import { offerPath } from '@/lib/offer-url';
 import { projeterFiche, projeterLignes } from '@/lib/projection';
+import { refuserSiCleInvalide } from '@/lib/cle-api';
 
 /**
  * F1 phase 1 — LA fiche d'une offre en JSON, pour catwalks.io.
@@ -35,6 +36,8 @@ function journaliser(ligne: Record<string, unknown>): void {
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const requestId = requestIdDepuis(request);
+  const refus = refuserSiCleInvalide(request, requestId);
+  if (refus) return refus;
   const debut = Date.now();
   const { id } = await params;
   const entetes = { 'x-request-id': requestId };
