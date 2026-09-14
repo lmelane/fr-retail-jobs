@@ -205,29 +205,54 @@ describe('un code d’État américain ne devient pas un pays (D-435)', () => {
     expect(countryFromLocation('Florence, AZ')).toBeUndefined();
   });
 
-  it('dans « XX-YY », un suffixe qui nomme un pays lève l’ambiguïté du préfixe', () => {
+  it('« XX-YY » est un couple ISO : le PRÉFIXE porte le pays', () => {
     /*
-     * DÉFAUT TROUVÉ AU QUATRIÈME TOUR D'AUDIT, et c'est un PAYS FAUX — le
-     * défaut même que ce fichier corrige, découvert dans une branche que les
-     * trois tours précédents n'avaient pas exercée sous cette forme :
+     * ARBITRAGE CEO DU 14/09/2026, après rejeu sur ce fichier.
      *
-     *     « KY-US » → KY (Îles Caïmans)   alors que le libellé DIT « US »
-     *     « GA-US » → GA (Gabon)          « IN-US » → IN (Inde)
+     * Une version antérieure disait « si le préfixe est un État américain
+     * ambigu, un suffixe reconnu comme pays tranche ». Elle réparait « KY-US »
+     * en CASSANT la convention ISO qu'elle prétendait préserver :
      *
-     * PRÉMISSE — la convention ISO met le pays en PREMIER (« US-KY »), et cette
-     * forme doit continuer à rendre `US`. Sans cette assertion, on pourrait
-     * « réparer » KY-US en inversant la priorité, ce qui casserait la forme la
-     * plus courante.
+     *     CA-NL → NL (Pays-Bas)     au lieu de CA — Terre-Neuve-et-Labrador
+     *     DE-BY → BY (Biélorussie)  au lieu de DE — Bavière
+     *     DE-BE → BE (Belgique)     au lieu de DE — Berlin
+     *     IN-TN → TN (Tunisie)      au lieu de IN — Tamil Nadu
+     *
+     * Dans un code de subdivision, le suffixe ressemble souvent à un pays sans
+     * en être un. ISO 3166-2 écrit `PAYS-SUBDIVISION` : le préfixe porte le
+     * pays, et c'est une convention publiée, pas une statistique sur nos
+     * données.
+     *
+     * PRÉMISSE — ces suffixes SONT bien des codes pays valides par ailleurs,
+     * sinon le témoin n'exercerait pas le piège qu'il surveille.
      */
-    expect(countryFromLocation('US-KY'), 'la forme ISO garde le préfixe').toBe('US');
-    expect(countryFromLocation('US-OH')).toBe('US');
+    for (const [suffixe, pays] of [['NL', 'NL'], ['BY', 'BY'], ['BE', 'BE'], ['TN', 'TN']]) {
+      expect(normalizeCountry(suffixe), `${suffixe} est un code pays valide`).toBe(pays);
+    }
 
-    // La forme inversée : le suffixe tranche, puisque le préfixe est ambigu.
-    expect(countryFromLocation('KY-US')).toBe('US');
-    expect(countryFromLocation('GA-US')).toBe('US');
-    expect(countryFromLocation('IN-US')).toBe('US');
+    // Le préfixe gagne, sans exception.
+    expect(countryFromLocation('CA-NL')).toBe('CA');
+    expect(countryFromLocation('DE-BY')).toBe('DE');
+    expect(countryFromLocation('DE-BE')).toBe('DE');
+    expect(countryFromLocation('IN-TN')).toBe('IN');
+    expect(countryFromLocation('US-KY')).toBe('US');
+  });
 
-    // Un suffixe qui ne nomme aucun pays reste de la syntaxe : code seul.
+  it('« KY-US » s’abstient : un suffixe « US » rend le préfixe non concluant', () => {
+    /*
+     * Le seul cas où le suffixe intervient — et il ne DÉSIGNE pas le pays, il
+     * rend le préfixe non concluant. « KY-US » ne rend donc PAS `US` : lire ce
+     * libellé comme « Kentucky, États-Unis » supposerait un format inversé que
+     * rien n'atteste dans nos sources.
+     *
+     * CEO : « une forme inversée peut être prise en charge si le format de la
+     * source est établi ; elle ne justifie pas une règle générale ».
+     */
+    expect(countryFromLocation('KY-US')).toBeUndefined();
+    expect(countryFromLocation('GA-US')).toBeUndefined();
+    expect(countryFromLocation('IN-US')).toBeUndefined();
+
+    // Un suffixe numérique ne contredit rien : la convention ISO s'applique.
     expect(countryFromLocation('KY-402')).toBe('KY');
   });
 
@@ -243,11 +268,22 @@ describe('un code d’État américain ne devient pas un pays (D-435)', () => {
      */
     expect('A, Florence, BY, KY'.split(',').length, 'le cas porte bien 4 segments').toBe(4);
 
-    // `BY` (Bavière) est en avant-dernière position : le dernier est un pays.
-    expect(countryFromLocation('A, Florence, BY, KY')).toBe('KY');
-
-    // Sans subdivision étrangère en avant-dernier, l'abstention s'applique.
+    /*
+     * ATTENDU RETIRÉ SUR ARBITRAGE CEO. Ce témoin affirmait
+     * « A, Florence, BY, KY → KY » au motif que `BY` serait la Bavière.
+     *
+     * C'était une fausse preuve : `/^[A-Z]{2}$/ && !US_STATE_CODES.has(...)`
+     * prouve seulement « deux lettres absentes de notre liste d'États
+     * américains ». Cela n'établit NI que `BY` est une subdivision valide, NI
+     * qu'elle appartiendrait aux Îles Caïmans. Valider un couple
+     * pays-subdivision exige un référentiel versionné — le lot 2.
+     *
+     * Ce témoin ne surveille donc plus qu'une propriété du CODE, vérifiable
+     * sans référentiel : l'indexation lit bien l'AVANT-DERNIER segment et non
+     * le second. C'est tout ce qu'il peut honnêtement prouver.
+     */
     expect(countryFromLocation('A, B, Florence, KY')).toBeUndefined();
+    expect(countryFromLocation('A, Florence, ZZ, KY')).toBe(countryFromLocation('Florence, ZZ, KY'));
   });
 
   it('un code ISOLÉ reste un pays, quelle que soit sa ponctuation', () => {

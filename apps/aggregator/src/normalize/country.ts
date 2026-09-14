@@ -400,43 +400,59 @@ export function countryFromLocation(location?: string | null): string | undefine
       const code = normalizeCountry(prefixed[1]);
       if (code) {
         /*
-         * UN SUFFIXE QUI EST UN PAYS N'EST PAS DE LA SYNTAXE.
+         * « XX-YY » EST UN COUPLE PAYS-SUBDIVISION. LE PRÉFIXE PORTE LE PAYS.
          *
-         * « KY-402 » est bien un code seul décoré d'un code postal : rien ne
-         * l'accompagne, il reste un pays. Mais « KY-US » est différent — le
-         * suffixe `US` est un pays reconnu, qui CONTREDIT le préfixe.
+         * ── UNE RÈGLE PRÉCÉDENTE, ARBITRÉE FAUSSE PAR LE CEO ──────────────
          *
-         * Le quatrième tour d'audit a montré que les traiter pareil rendait
-         * des pays FAUX, le défaut même que ce fichier corrige :
+         * Pour réparer « KY-US » → Îles Caïmans, une version antérieure disait
+         * « si le préfixe est un État américain ambigu, un suffixe reconnu
+         * comme pays tranche ». Le CEO a produit les contre-exemples, et le
+         * rejeu sur ce fichier les a confirmés le 14/09/2026 :
          *
-         *     « KY-US » → KY (Îles Caïmans)   alors que le libellé dit US
-         *     « GA-US » → GA (Gabon)          « IN-US » → IN (Inde)
+         *     CA-NL → NL (Pays-Bas)      au lieu de CA — Terre-Neuve-et-Labrador
+         *     DE-BY → BY (Biélorussie)   au lieu de DE — Bavière
+         *     DE-BE → BE (Belgique)      au lieu de DE — Berlin
+         *     IN-TN → TN (Tunisie)       au lieu de IN — Tamil Nadu
          *
-         * Quand le suffixe nomme un pays, c'est LUI qui porte l'information de
-         * pays : le préfixe est alors une subdivision, pas un pays.
+         * La règle réparait le cas américain en CASSANT la convention ISO
+         * qu'elle prétendait préserver. Dans un code de subdivision, le suffixe
+         * ressemble souvent à un pays sans en être un — c'est précisément ce
+         * qui rend la coïncidence trompeuse.
+         *
+         * ── LA RÈGLE RETENUE, ET SA LIMITE ASSUMÉE ────────────────────────
+         *
+         * ISO 3166-2 écrit `PAYS-SUBDIVISION`. Le préfixe porte donc le pays,
+         * sans exception : c'est une convention publiée, pas une statistique
+         * sur nos données.
+         *
+         * « KY-US » n'est PAS traité ici. Le lire comme « Kentucky,
+         * États-Unis » supposerait un format inversé que rien n'atteste dans
+         * nos sources — le CEO : « une forme inversée peut être prise en
+         * charge si le format de la source est établi ; elle ne justifie pas
+         * une règle générale ». Le préfixe `KY` reste donc ambigu, et la garde
+         * s'abstient plutôt que d'inventer.
+         *
+         * Valider le COUPLE (« CA-NL est-il une subdivision réelle du
+         * Canada ? ») exigerait un référentiel par pays. `SUBDIVISIONS`
+         * (geography.ts) ne couvre que US et CA : c'est le registre versionné
+         * du lot 2. En attendant, la convention ISO suffit à ne pas inverser.
          */
         /*
-         * L'ORDRE COMPTE : le préfixe d'abord, le suffixe en RECOURS.
+         * Le suffixe ne DÉSIGNE jamais le pays. Un seul cas le rend NON
+         * CONCLUANT : un suffixe qui dit littéralement « États-Unis » face à
+         * un préfixe qui est un État américain homonyme d'un pays.
          *
-         * La convention ISO écrit « US-KY » — pays d'abord, subdivision
-         * ensuite — et « US-KY » doit rendre `US`. On ne peut donc pas faire
-         * primer le suffixe : cela inverserait la forme la plus courante.
+         *     « KY-US » → abstention, et non KY (Îles Caïmans)
          *
-         * Le suffixe ne sert que lorsque le préfixe est un code AMBIGU (état
-         * américain homonyme d'un pays). Dans « KY-US », le préfixe seul ne
-         * prouve rien, mais le suffixe `US` lève l'ambiguïté.
+         * Toute autre valeur de suffixe est laissée à la convention ISO : un
+         * suffixe de subdivision (`CA-NL`, `DE-BY`) ou numérique (`KY-402`)
+         * ne contredit rien, et le préfixe porte le pays. Élargir au-delà
+         * casserait les couples ISO — c'est précisément ce que la version
+         * précédente faisait.
          */
-        const prefixeMaj = prefixed[1].toUpperCase();
-        const prefixeEstEtatAmbigu =
-          COLLIDING_CODES.has(prefixeMaj) && US_STATE_CODES.has(prefixeMaj);
-
-        if (prefixeEstEtatAmbigu) {
-          // Le suffixe nomme-t-il un pays ? Alors c'est LUI qui tranche.
-          const paysDuSuffixe = normalizeCountry(prefixed[2] ?? '');
-          if (paysDuSuffixe) return paysDuSuffixe;
-          // Sinon le suffixe est de la syntaxe : « KY-402 » reste un code seul.
-          if (estEtatUsAmbigu(prefixed[1], '')) return undefined;
-        }
+        const suffixeMaj = (prefixed[2] ?? '').toUpperCase();
+        const suffixeDitEtatsUnis = suffixeMaj === 'US' || suffixeMaj === 'USA';
+        if (estEtatUsAmbigu(prefixed[1], suffixeDitEtatsUnis ? suffixeMaj : '')) return undefined;
         return code;
       }
     }
