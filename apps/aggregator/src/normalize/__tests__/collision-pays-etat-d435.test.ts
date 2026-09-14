@@ -151,6 +151,33 @@ describe('un code d’État américain ne devient pas un pays (D-435)', () => {
     expect(countryFromLocation('North Little Rock (AR)')).toBeUndefined();
   });
 
+  it('une province CANADIENNE homonyme d’un pays garde son pays', () => {
+    /*
+     * DERNIER TROU DE COUVERTURE, comblé le 14/09/2026.
+     *
+     * `NL`, `PE`, `SK`, `NU` sont dans `COLLIDING_CODES` en tant que provinces
+     * canadiennes, mais ne sont PAS des États américains. La garde ne doit donc
+     * jamais mordre sur eux — elle ne vise que la collision pays/État US.
+     *
+     * Ce cas n'était surveillé par aucun témoin : neutraliser
+     * `US_STATE_CODES.has(maj)` faisait perdre leur pays à ces libellés sans
+     * qu'un seul test ne rougisse. Or `geography.ts` documente que l'absence de
+     * `NL` avait déjà coûté 474 offres d'Amsterdam, lues comme
+     * Terre-Neuve-et-Labrador. Le même défaut, dans l'autre sens.
+     *
+     * PRÉMISSE — ces codes sont bien dans la liste des collisions, sinon le
+     * témoin ne vérifierait pas que la garde SAIT les épargner.
+     */
+    for (const code of ['NL', 'PE', 'SK']) {
+      expect(COLLIDING_CODES.has(code), `${code} doit être un code collisionnant`).toBe(true);
+      expect(code in US_STATES, `${code} ne doit PAS être un État américain`).toBe(false);
+    }
+
+    expect(countryFromLocation('Amsterdam, NL')).toBe('NL');
+    expect(countryFromLocation('Lima, PE')).toBe('PE');
+    expect(countryFromLocation('Bratislava, SK')).toBe('SK');
+  });
+
   it('COLLIDING_CODES est EXHAUSTIF : aucun État US n’est un pays oublié', () => {
     /*
      * CE TÉMOIN NE VÉRIFIE PAS UN CAS, IL VÉRIFIE UNE PROPRIÉTÉ.
