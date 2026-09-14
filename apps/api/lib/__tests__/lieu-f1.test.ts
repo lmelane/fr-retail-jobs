@@ -46,7 +46,7 @@ describe('resolveLieu', () => {
 describe('parseFilters avec lieu', () => {
   it('lieu=France → country, sans cityLoose, lieu résolu exposé', () => {
     const f = parseFilters({ lieu: 'France' });
-    expect(f.country).toBe('FR');
+    expect(f.countries).toEqual(['FR']);
     expect(f.cityLoose).toBeUndefined();
     expect(f.lieuResolu).toEqual({ type: 'pays', libelle: 'France' });
   });
@@ -54,7 +54,7 @@ describe('parseFilters avec lieu', () => {
   it('lieu=Paris → cityLoose, sans country', () => {
     const f = parseFilters({ lieu: 'Paris' });
     expect(f.cityLoose).toBe('Paris');
-    expect(f.country).toBeUndefined();
+    expect(f.countries).toBeUndefined();
     expect(f.city).toBeUndefined();
     expect(f.remote).toBeUndefined();
   });
@@ -62,13 +62,13 @@ describe('parseFilters avec lieu', () => {
   it('lieu=télétravail → remote, rien d’autre', () => {
     const f = parseFilters({ lieu: 'télétravail' });
     expect(f.remote).toBe(true);
-    expect(f.country).toBeUndefined();
+    expect(f.countries).toBeUndefined();
     expect(f.cityLoose).toBeUndefined();
     expect(f.lieuResolu).toEqual({ type: 'teletravail', libelle: 'Télétravail' });
   });
 
   it('pays et ville explicites gardent la main sur lieu', () => {
-    expect(parseFilters({ lieu: 'France', pays: 'IT' }).country).toBe('IT');
+    expect(parseFilters({ lieu: 'France', pays: 'IT' }).countries).toEqual(['IT']);
     const f = parseFilters({ lieu: 'Pari', ville: 'Paris' });
     expect(f.city).toBe('Paris');
     expect(f.cityLoose).toBeUndefined();
@@ -77,20 +77,20 @@ describe('parseFilters avec lieu', () => {
   it('sans lieu, rien ne change', () => {
     const f = parseFilters({ q: 'vendeuse' });
     expect(f.cityLoose).toBeUndefined();
-    expect(f.country).toBeUndefined();
+    expect(f.countries).toBeUndefined();
     expect(f.lieuResolu).toBeUndefined();
   });
 });
 
 describe('parseFilters : langue et pays prioritaire (D-419)', () => {
   it('langue : deux lettres en minuscules, sinon ignorée', () => {
-    expect(parseFilters({ langue: 'FR' }).language).toBe('fr');
-    expect(parseFilters({ langue: 'français' }).language).toBeUndefined();
+    expect(parseFilters({ langue: 'FR' }).languages).toEqual(['fr']);
+    expect(parseFilters({ langue: 'français' }).languages).toBeUndefined();
   });
   it('prioritePays : deux lettres en majuscules, jamais un filtre', () => {
     const f = parseFilters({ prioritePays: 'fr' });
     expect(f.priorityCountry).toBe('FR');
-    expect(f.country).toBeUndefined();
+    expect(f.countries).toBeUndefined();
     expect(parseFilters({ prioritePays: "'; drop" }).priorityCountry).toBeUndefined();
   });
 });

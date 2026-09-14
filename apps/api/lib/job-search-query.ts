@@ -23,21 +23,41 @@ const facet = (column: Prisma.Sql, limit?: number) => Prisma.sql`
 /** One materialized match set instead of re-running the text search for every facet. */
 export async function searchSummary(filters: JobFilters, page: number, pageSize: number, presentation?: OptionalOccupationPresentation): Promise<SearchSummary> {
   const conditions: Prisma.Sql[] = [Prisma.sql`j."isActive"`];
-  if (filters.occupation) conditions.push(filters.occupation==='unclassified'?Prisma.sql`j."occupationCode" IS NULL`:Prisma.sql`j."occupationCode" = ${filters.occupation}`);
+
+  /*
+   * D-426 — une dimension cochée sur plusieurs valeurs devient UNE condition
+   * `(a OR b OR c)`, jointe aux autres par `AND`.
+   *
+   * Ce fichier est le chemin SQL RÉELLEMENT emprunté par la recherche ; il
+   * double `whereClause` (Prisma) et les deux doivent dire la même chose. Une
+   * dimension traitée ici en égalité simple alors qu'elle est multi-valuée
+   * ailleurs ferait diverger la liste affichée et son compte, sans erreur.
+   *
+   * Chaque valeur reste un PARAMÈTRE LIÉ : le SQL ne reçoit jamais de texte
+   * concaténé, et le plafond de 12 valeurs borne la taille de la clause.
+   */
+  const union = (values: string[] | undefined, terme: (v: string) => Prisma.Sql) => {
+    if (!values?.length) return;
+    conditions.push(Prisma.sql`(${Prisma.join(values.map(terme), ' OR ')})`);
+  };
+
+  union(filters.occupations, (o) =>
+    o === 'unclassified' ? Prisma.sql`j."occupationCode" IS NULL` : Prisma.sql`j."occupationCode" = ${o}`,
+  );
   if (filters.jobFunction) conditions.push(Prisma.sql`j."jobFunction" = ${filters.jobFunction}`);
   if (filters.city) conditions.push(Prisma.sql`j.city ILIKE ${filters.city}`);
   // « lieu » résolu en ville (D-418 §3) : large — égalité, préfixe, ou présence
   // dans `location`. Miroir exact de `whereClause`.
   if (filters.cityLoose) conditions.push(Prisma.sql`(j.city ILIKE ${filters.cityLoose} OR j.city ILIKE ${`${filters.cityLoose}%`} OR j.location ILIKE ${`%${filters.cityLoose}%`})`);
   if (filters.remote) conditions.push(Prisma.sql`j."workplaceType" = 'REMOTE'`);
-  if (filters.language) conditions.push(Prisma.sql`j.language = ${filters.language}`);
-  if (filters.employmentTerm) conditions.push(Prisma.sql`j."employmentTerm" = ${filters.employmentTerm}`);
-  if (filters.maison) conditions.push(companyIdentitySql(filters.maison));
-  if (filters.group) conditions.push(Prisma.sql`c."parentGroup" = ${filters.group}`);
-  if (filters.sector) conditions.push(sectorSql(filters.sector));
-  if (filters.workTime) conditions.push(Prisma.sql`j."workTime" = ${filters.workTime}`);
-  if (filters.programType) conditions.push(Prisma.sql`j."programType" = ${filters.programType}`);
-  if (filters.engagementType) conditions.push(Prisma.sql`j."engagementType" = ${filters.engagementType}`);
+  union(filters.languages, (v) => Prisma.sql`j.language = ${v}`);
+  union(filters.employmentTerms, (v) => Prisma.sql`j."employmentTerm" = ${v}`);
+  union(filters.maisons, (v) => companyIdentitySql(v));
+  union(filters.groups, (v) => Prisma.sql`c."parentGroup" = ${v}`);
+  union(filters.sectors, (v) => sectorSql(v));
+  union(filters.workTimes, (v) => Prisma.sql`j."workTime" = ${v}`);
+  union(filters.programTypes, (v) => Prisma.sql`j."programType" = ${v}`);
+  union(filters.engagementTypes, (v) => Prisma.sql`j."engagementType" = ${v}`);
   if (filters.source) conditions.push(Prisma.sql`EXISTS (
     SELECT 1 FROM "JobSource" src WHERE src."jobId" = j.id AND src."isActive" AND src."sourceKey" = ${filters.source})`);
   const queryTerms = (filters.q ?? '').trim().split(/\s+/).filter(Boolean);
@@ -82,11 +102,21 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
       ),`;
     matchJoin=Prisma.sql`JOIN matched_ids matches ON matches.id=j.id`;
   }
+  /*
+   * D-426 — plusieurs pays cochés : union de leurs conditions.
+   * `FR` garde le drapeau fiable `isFrance` ; les autres codes passent par
+   * leurs orthographes attestées. Un code sans orthographe connue rend `false`
+   * plutôt que d'être ignoré : l'ignorer élargirait la recherche au lieu de
+   * la restreindre, donc montrerait des offres que le visiteur a exclues.
+   */
   let country = Prisma.sql`true`;
-  if (filters.country === 'FR') country = Prisma.sql`"isFrance"`;
-  else if (filters.country) {
-    const values = rawValuesForCode(filters.country).map(value => value.toLowerCase());
-    country = values.length ? Prisma.sql`lower("countryCode") IN (${Prisma.join(values)})` : Prisma.sql`false`;
+  if (filters.countries?.length) {
+    const termes = filters.countries.map((code) => {
+      if (code === 'FR') return Prisma.sql`"isFrance"`;
+      const values = rawValuesForCode(code).map((value) => value.toLowerCase());
+      return values.length ? Prisma.sql`lower("countryCode") IN (${Prisma.join(values)})` : Prisma.sql`false`;
+    });
+    country = Prisma.sql`(${Prisma.join(termes, ' OR ')})`;
   }
   // D-419 §2 : le pays du visiteur d'abord (0), le reste du monde ensuite (1),
   // puis la fraîcheur dans chaque groupe. Jamais un filtre : rien ne disparaît.

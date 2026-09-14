@@ -1,7 +1,8 @@
 import {getSectorPresentation,sectorWhere,type SectorView} from './sectors';
 import { companyIdentityWhere } from './company-identity';
 import { prisma } from '@catwalks/db';
-import { DatabaseUnavailableError, validSector } from './jobs';
+import { Prisma } from '@prisma/client';
+import { DatabaseUnavailableError, validSector, MAX_VALUES } from './jobs';
 import { expandCompanyTerm } from './groups';
 import { countryCode, rawValuesForCode } from './countries';
 import { companySlug } from './company-slug';
@@ -44,11 +45,12 @@ export type CompaniesResult = {
 
 export const COMPANY_PAGE_SIZE = 40;
 
+/** D-426 — secteur et pays portent PLUSIEURS valeurs, comme sur la liste d'offres. */
 export type CompanyFilters = {
   q?: string;
-  sector?: string;
-  /** Canonical country code (FR, IT…); undefined means every country. */
-  country?: string;
+  sectors?: string[];
+  /** Codes pays canoniques (FR, IT…) ; `undefined` = tous les pays. */
+  countries?: string[];
   page?: number;
 };
 
@@ -69,18 +71,36 @@ export function parseCompanyFilters(
     const value = params[key];
     return (Array.isArray(value) ? value[0] : value)?.trim().slice(0, 200) || undefined;
   };
+  /**
+   * D-426 — toutes les valeurs d'une clé, dédoublonnées, chacune bornée en
+   * longueur, l'ensemble borné en nombre. Miroir exact de `many` dans jobs.ts :
+   * deux plafonds différents feraient qu'une URL acceptée par la liste d'offres
+   * serait tronquée en silence par l'annuaire.
+   */
+  const many = (key: string): string[] | undefined => {
+    const value = params[key];
+    if (value === undefined) return undefined;
+    const brut = Array.isArray(value) ? value : [value];
+    const vues = new Set<string>();
+    for (const x of brut) {
+      const propre = x?.trim().slice(0, 200);
+      if (propre) vues.add(propre);
+      if (vues.size >= MAX_VALUES) break;
+    }
+    return vues.size ? [...vues] : undefined;
+  };
+
   const page = Number(one('page'));
 
   // World by default (revises D12), same as the offer list: no `pays` means every
   // country, `pays=<code>` narrows to one. `pays=monde` is still accepted as an
   // explicit "all countries" for shared/legacy links.
-  const rawCountry = one('pays');
-  const country = rawCountry === undefined || rawCountry === 'monde' ? undefined : rawCountry;
+  const paysBruts = many('pays')?.filter((v) => v !== 'monde');
 
   return {
     q: one('q'),
-    sector: one('secteur'),
-    country,
+    sectors: many('secteur'),
+    countries: paysBruts?.length ? paysBruts : undefined,
     page: Number.isFinite(page) && page > 0 ? page : 1,
   };
 }
@@ -135,26 +155,40 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
   // `company` object — two separate spreads collided and dropped the sector.
   // Search matches the employer name OR its parent group (and group synonyms),
   // so "SMCP" on /entreprises reaches Sandro and Maje like it does on /.
-  const sector = validSector(filters.sector);
+  /*
+   * D-426 — `AND` explicite : `sectorWhere` rend un `OR` et la recherche texte
+   * aussi. Posés comme deux clés d'un même objet, le second effaçait le premier
+   * SANS erreur — chercher « Dior » en ayant coché un secteur aurait ignoré le
+   * secteur. Le même mode de panne est documenté dans `whereClause` (jobs.ts).
+   */
+  const sectors = filters.sectors?.map(validSector).filter((s): s is string => Boolean(s)) ?? [];
   const query = filters.q?.trim();
-  const company = {
-    ...(sector ? sectorWhere(sector) : {}),
+  const companyAnd = [
+    ...(sectors.length ? [{ OR: sectors.map((s) => sectorWhere(s)) }] : []),
     ...(query
-      ? {
-          OR: expandCompanyTerm(query).flatMap((name) => [
-            companyIdentityWhere(name, 'contains'),
-            { parentGroup: { contains: name, mode: 'insensitive' as const } },
-          ]),
-        }
-      : {}),
-  };
+      ? [
+          {
+            OR: expandCompanyTerm(query).flatMap((name) => [
+              companyIdentityWhere(name, 'contains'),
+              { parentGroup: { contains: name, mode: 'insensitive' as const } },
+            ]),
+          },
+        ]
+      : []),
+  ];
+  const company = companyAnd.length ? { AND: companyAnd } : {};
   // D10: employers from every country, not France-only. A Pays filter narrows
   // it; France uses the reliable flag, other countries their raw spellings.
-  const countryWhere = !filters.country
+  // D-426 : union des pays cochés.
+  const countryWhere: Prisma.JobWhereInput = !filters.countries?.length
     ? {}
-    : filters.country === 'FR'
-      ? { isFrance: true }
-      : { OR: rawValuesForCode(filters.country).map((v) => ({ countryCode: { equals: v, mode: 'insensitive' as const } })) };
+    : {
+        OR: filters.countries.flatMap<Prisma.JobWhereInput>((code) =>
+          code === 'FR'
+            ? [{ isFrance: true }]
+            : rawValuesForCode(code).map((v) => ({ countryCode: { equals: v, mode: 'insensitive' as const } })),
+        ),
+      };
   const jobWhere = {
     isActive: true,
     ...countryWhere,

@@ -3,6 +3,7 @@ import { getCompanies, parseCompanyFilters } from '@/lib/companies';
 import { DatabaseUnavailableError } from '@/lib/jobs';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
 import { randomUUID } from 'node:crypto';
+import { paramsMultiples } from '@/lib/params-multiples';
 
 /**
  * Page 2+ of the employer list, for infinite scroll.
@@ -18,7 +19,9 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   const refus = refuserSiCleInvalide(request, randomUUID());
   if (refus) return refus;
-  const params = Object.fromEntries(request.nextUrl.searchParams);
+  // D-426 : PAS `Object.fromEntries` — il ne garde qu'une valeur par clé et
+  // annulerait le multi-valeurs avant même d'atteindre le parseur.
+  const params = paramsMultiples(request.nextUrl.searchParams);
   const filters = parseCompanyFilters(params);
 
   try {

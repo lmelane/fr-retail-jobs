@@ -32,7 +32,7 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
   afterAll(cleanup);
 
   it('counts all 301 companies in sector and group totals', async () => {
-    const result = await getJobs({ group });
+    const result = await getJobs({ groups: [group] });
     expect(result.total).toBe(301);
     expect(result.facets.sectors.filter(s=>s.count>0)).toEqual([{value:'unclassified',label:'Secteur à vérifier',count:301}]);
     expect(result.facets.sectors.some(s=>s.value==='WATCHMAKING'&&s.label==='Horlogerie')).toBe(true);
@@ -47,15 +47,15 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     // Reviews are immutable: give each test execution a distinct review identity.
     const m={reviewer:`web integration ${randomUUID()}`,concepts:[concept],companies:[{id:c.id,canonicalKey:c.canonicalKey,codes:[concept.code,'WATCHMAKING'],evidence:[concept.code,'WATCHMAKING'].map(code=>({code,source:'https://example.com/sector-proof',statement:'Independent business sector evidence fixture',confidence:'HIGH' as const,basis:'OFFICIAL_SOURCE' as const,checkedAt:'2026-09-09T00:00:00Z'}))}]};
     const plan=await previewSectors(prisma,m);await applySectors(prisma,m,plan.reviewHash);
-    const r=await getJobs({sector:concept.code,group});expect(r.total).toBe(1);expect(r.facets.sectors.find(s=>s.value===concept.code)).toEqual({value:concept.code,label:concept.labels.fr,count:1});
-    expect((await getJobs({sector:'WATCHMAKING',group})).total).toBe(1);
-    expect((await getJobs({group})).total).toBe(301);
-    expect((await getJobs({sector:'NO_SUCH_SECTOR',group})).total).toBe(0);
+    const r=await getJobs({sectors: [concept.code],groups: [group]});expect(r.total).toBe(1);expect(r.facets.sectors.find(s=>s.value===concept.code)).toEqual({value:concept.code,label:concept.labels.fr,count:1});
+    expect((await getJobs({sectors: ['WATCHMAKING'],groups: [group]})).total).toBe(1);
+    expect((await getJobs({groups: [group]})).total).toBe(301);
+    expect((await getJobs({sectors: ['NO_SUCH_SECTOR'],groups: [group]})).total).toBe(0);
   });
 
   it('uses a stable order for tied dates across successive pages', async () => {
-    const first = await getJobs({ group, page: 1 });
-    const second = await getJobs({ group, page: 2 });
+    const first = await getJobs({ groups: [group], page: 1 });
+    const second = await getJobs({ groups: [group], page: 2 });
     const ids = [...first.jobs, ...second.jobs].map(job => job.id);
     expect(new Set(ids).size).toBe(50);
     expect(ids).toEqual(Array.from({ length: 50 }, (_, i) => `${prefix}${String(i).padStart(3, '0')}`));
@@ -63,41 +63,41 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
 
   it.each([
     { q: 'Conseiller vente' }, { q: 'Audit' }, { q: 'absent' },
-    { q: 'Conseiller', sector: 'LUXURY' }, { country: 'FR' },
+    { q: 'Conseiller', sectors: ['LUXURY'] }, { countries: ['FR'] },
     { maison: `${prefix}12` }, { source: 'absent-source' },
   ])('preserves filter semantics against the original query: %j', async filters => {
-    const scoped = { ...filters, group };
+    const scoped = { ...filters, groups: [group] };
     expect((await getJobs(scoped)).total).toBe(await prisma.job.count({ where: whereClause(scoped) }));
   });
 
   it('updates the indexed document after posting edits and company renames', async () => {
     const id = `${prefix}000`;
     await prisma.job.update({ where: { id }, data: { title: 'UniqueSearchTitle' } });
-    expect((await getJobs({ q: 'UniqueSearchTitle', group })).total).toBe(1);
+    expect((await getJobs({ q: 'UniqueSearchTitle', groups: [group] })).total).toBe(1);
     await prisma.company.update({ where: { id: `${prefix}0` }, data: { name: 'UniqueMaisonLabel' } });
-    expect((await getJobs({ q: 'UniqueMaisonLabel', group })).total).toBe(1);
+    expect((await getJobs({ q: 'UniqueMaisonLabel', groups: [group] })).total).toBe(1);
     await prisma.job.update({ where: { id }, data: { title: 'Conseiller de vente' } });
     await prisma.company.update({ where: { id: `${prefix}0` }, data: { name: `${prefix}0` } });
-    expect((await getJobs({ q: 'UniqueSearchTitle', group })).total).toBe(0);
-    expect((await getJobs({ q: 'UniqueMaisonLabel', group })).total).toBe(0);
+    expect((await getJobs({ q: 'UniqueSearchTitle', groups: [group] })).total).toBe(0);
+    expect((await getJobs({ q: 'UniqueMaisonLabel', groups: [group] })).total).toBe(0);
   });
   it('keeps literal results while adding a reviewed occupation synonym and stable filter',async()=>{
     const id=`${prefix}000`,catalogue=await database.loadOccupationTaxonomy(prisma);
     await prisma.job.update({where:{id},data:{title:'Sales Advisor',...catalogue.classify('Sales Advisor')}});
-    const result=await getJobs({q:'Conseiller de vente',group});
+    const result=await getJobs({q:'Conseiller de vente',groups: [group]});
     expect(result.total).toBe(301); // 300 literal FR titles + one reviewed EN occupation.
-    const precise=await getJobs({occupation:'sales-advisor',group});
+    const precise=await getJobs({occupations: ['sales-advisor'],groups: [group]});
     expect(precise.total).toBe(1);expect(precise.jobs[0].title).toBe('Sales Advisor');
     expect(precise.jobs[0].occupationLabel).toBe(catalogue.occupations.get('sales-advisor')!.labels.fr);
     expect(precise.facets.occupations).toEqual([{value:'sales-advisor',label:catalogue.occupations.get('sales-advisor')!.labels.fr,count:1}]);
-    expect((await getJobs({occupation:'unclassified',group})).total).toBe(300);
-    expect((await getJobs({q:'Conseiller de vente Lyon',group})).total).toBe(0);
+    expect((await getJobs({occupations: ['unclassified'],groups: [group]})).total).toBe(300);
+    expect((await getJobs({q:'Conseiller de vente Lyon',groups: [group]})).total).toBe(0);
     await prisma.job.update({where:{id},data:{title:'Conseiller de vente',occupationCode:null,occupationStatus:'PENDING',occupationReleaseId:null}});
   });
   it('returns the same offers when optional occupation presentation is unavailable',async()=>{
     const spy=vi.spyOn(database,'loadOccupationTaxonomy').mockRejectedValueOnce(new Error('Witness: occupation catalogue unavailable'));
     try{
-      const result=await getJobs({group});expect(result.total).toBe(301);expect(result.occupationEnrichmentAvailable).toBe(false);
+      const result=await getJobs({groups: [group]});expect(result.total).toBe(301);expect(result.occupationEnrichmentAvailable).toBe(false);
       expect(result.jobs.every(j=>j.title.length>0)).toBe(true);
     }finally{spy.mockRestore();}
   });
