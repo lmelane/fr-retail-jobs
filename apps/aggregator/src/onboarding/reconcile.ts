@@ -76,6 +76,30 @@ export function normalizeActor(name: string): string {
     .replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
+/**
+ * LES DOMAINES D'ÉDITEURS D'ATS — partagés par tous leurs tenants, donc jamais une identité d'employeur.
+ *
+ * Le défaut mesuré : « CLAIRE'S » sur `claires.wd12.myworkdayjobs.com` ressortait
+ * `ALREADY_COVERED_BY_SOURCE` parce qu'une AUTRE Maison Workday occupait déjà `myworkdayjobs.com`. Ce
+ * rapprochement aurait bloqué **toute** future Maison hébergée chez un éditeur déjà présent — c'est-à-dire
+ * la majorité des dossiers.
+ *
+ * La même règle existe déjà dans la porte d'identité (`assertIdentityReview` refuse un domaine d'éditeur
+ * comme domaine officiel). Elle est reprise ici parce que les deux chemins posent la même question.
+ */
+const VENDOR_DOMAINS = new Set([
+  'myworkdayjobs.com', 'greenhouse.io', 'lever.co', 'smartrecruiters.com', 'teamtailor.com',
+  'recruitee.com', 'personio.de', 'personio.com', 'workable.com', 'welcometothejungle.com',
+  'oraclecloud.com', 'icims.com', 'avature.net', 'successfactors.com', 'eightfold.ai',
+  'jobaffinity.fr', 'flatchr.io', 'werecruit.io', 'candidater.fr', 'phenompeople.com',
+  'ashbyhq.com', 'jobvite.com', 'taleo.net', 'brassring.com', 'silkroad.com',
+]);
+
+/** Un domaine d'éditeur n'identifie pas un employeur : le rapprochement par domaine doit l'ignorer. */
+export function isVendorDomain(domain: string | null): boolean {
+  return domain !== null && VENDOR_DOMAINS.has(domain);
+}
+
 /** Le domaine enregistrable, pour rapprocher deux URLs d'un même portail. */
 export function registrableDomain(url: string): string | null {
   try {
@@ -105,7 +129,7 @@ export function findOverlaps(d: Dossier, cat: CatalogueView): Overlap[] {
    * résolvent le même board sont refusées avant écriture, quel que soit le type du dossier.
    */
   const supplementaire = d.type === 'PORTAIL_REGIONAL' || d.type === 'SOURCE_SUPPLEMENTAIRE';
-  if (domain && cat.sourcesByDomain.has(domain)) {
+  if (domain && !isVendorDomain(domain) && cat.sourcesByDomain.has(domain)) {
     out.push({
       kind: supplementaire ? 'PORTAIL_REGIONAL_EXISTANT' : 'SOURCE_DEJA_PRESENTE',
       blocking: !supplementaire,

@@ -7,10 +7,12 @@ import {
 /**
  * LE DÉFAUT RÉEL QUE CES TESTS VERROUILLENT.
  *
- * Vague 2 de P9 : sur douze dossiers, **cinq n'étaient pas des lacunes**. Calzedonia, Intimissimi et Tezenis
- * sont servis par le portail de groupe `oniverse` — leur créer une source par marque aurait dupliqué
- * **483 offres déjà publiées**. C'est le cas D34, et il se reproduit à chaque vague si le rapprochement est
- * fait à l'œil plutôt que mesuré.
+ * Vague 2 de P9 : sur douze dossiers, **cinq n'étaient pas des lacunes** — des marques déjà servies par un
+ * portail de groupe, qu'une source par marque aurait dupliqué. C'est le cas D34, et il se reproduit à chaque
+ * vague si le rapprochement est fait à l'œil plutôt que mesuré.
+ *
+ * Le jeu d'essai ci-dessous décrit un catalogue FICTIF choisi pour exercer chaque règle ; il ne prétend pas
+ * refléter l'attribution réelle d'`oniverse`, qui publie sous une seule société (voir `reconcile.ts`).
  */
 const CAT: CatalogueView = {
   tenantsByKey: new Map([['workday:tapestry/external', 'tapestry']]),
@@ -125,5 +127,42 @@ describe('verdicts — l\'ordre de disqualification', () => {
       { ...SAIN, ats: null }, { ...SAIN, identityAmbiguous: true },
       { ...SAIN, ats: 'x', adapterExists: false }, { ...SAIN, technicalBlocker: 'x' },
     ]) expect(ONBOARD_VERDICTS).toContain(decideVerdict(c).verdict);
+  });
+});
+
+describe('rapprochement — un domaine d\'ÉDITEUR n\'identifie pas un employeur', () => {
+  it('CLAIRE\'S sur myworkdayjobs.com n\'est PAS « déjà couverte » par une autre Maison Workday', () => {
+    /**
+     * Le défaut mesuré au Bloc 4 : tous les tenants Workday partagent `myworkdayjobs.com`. Rapprocher
+     * dessus aurait bloqué TOUTE future Maison hébergée chez un éditeur déjà présent — la majorité des
+     * dossiers.
+     */
+    const cat: CatalogueView = {
+      tenantsByKey: new Map(),
+      sourcesByDomain: new Map([['myworkdayjobs.com', 'une-autre-maison-workday']]),
+      companiesWithOffers: new Map(), sourcesByCompany: new Map(), brandCoveredByGroup: new Map(),
+    };
+    const o = findOverlaps(
+      { acteur: "CLAIRE'S", type: 'MAISON', urlOfficielle: 'https://claires.wd12.myworkdayjobs.com/Claires' }, cat);
+    expect(o.find((x) => x.kind === 'SOURCE_DEJA_PRESENTE')).toBeUndefined();
+  });
+
+  it('mais un vrai domaine d\'employeur rapproche toujours', () => {
+    const cat: CatalogueView = {
+      tenantsByKey: new Map(), sourcesByDomain: new Map([['hugoboss.com', 'hugo-boss-phenom']]),
+      companiesWithOffers: new Map(), sourcesByCompany: new Map(), brandCoveredByGroup: new Map(),
+    };
+    const o = findOverlaps(
+      { acteur: 'HUGO BOSS', type: 'MAISON', urlOfficielle: 'https://careers.hugoboss.com/global/en' }, cat);
+    expect(o.find((x) => x.kind === 'SOURCE_DEJA_PRESENTE')?.blocking).toBe(true);
+  });
+
+  it('la garde qui demeure sur un éditeur partagé est le DOUBLON DE TENANT', () => {
+    const cat: CatalogueView = {
+      tenantsByKey: new Map([['workday:claires/Claires', 'claires-existante']]),
+      sourcesByDomain: new Map(), companiesWithOffers: new Map(),
+      sourcesByCompany: new Map(), brandCoveredByGroup: new Map(),
+    };
+    expect(tenantCollision('workday:claires/Claires', cat)?.blocking).toBe(true);
   });
 });
