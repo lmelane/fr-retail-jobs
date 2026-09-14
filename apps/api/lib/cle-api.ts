@@ -1,3 +1,4 @@
+import { createHash, timingSafeEqual } from 'node:crypto';
 import { NextResponse, type NextRequest } from 'next/server';
 
 /**
@@ -15,12 +16,24 @@ import { NextResponse, type NextRequest } from 'next/server';
  * si le service est vivant, et une santé protégée ferait redéployer en boucle.
  */
 
-/** Comparaison à temps constant : une comparaison naïve fuit la clé caractère par caractère. */
+/**
+ * Comparaison à temps constant : une comparaison naïve fuit la clé caractère
+ * par caractère.
+ *
+ * Audit du 14/09/2026 : la version précédente sortait immédiatement quand les
+ * longueurs différaient, ce qui fuitait la LONGUEUR de la clé. Mesuré comme
+ * non exploitable ici (écarts de 0,1 à 0,3 ms, noyés dans la gigue réseau),
+ * mais un défaut se corrige quand il est connu, il ne se plaide pas.
+ *
+ * `timingSafeEqual` de Node exige des tampons de même taille : on hache les
+ * deux valeurs d'abord. Deux empreintes font toujours 32 octets, quelle que
+ * soit la longueur des clés — la comparaison ne révèle donc plus rien, ni le
+ * contenu ni la taille.
+ */
 function egalesEnTempsConstant(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i += 1) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
+  const ha = createHash('sha256').update(a, 'utf8').digest();
+  const hb = createHash('sha256').update(b, 'utf8').digest();
+  return timingSafeEqual(ha, hb);
 }
 
 /** La clé attendue, ou null si le service n'en exige aucune. */
