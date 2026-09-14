@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseCareerConnectJob, careerConnectRequest, phenomDialect } from './phenom.js';
+import { parseCareerConnectJob, careerConnectRequest, phenomDialect, enrichFromJobPosting } from './phenom.js';
 
 /**
  * PHENOM N'EST PAS UNE API UNIFORME — deux dialectes, choisis par CONFIGURATION.
@@ -105,5 +105,51 @@ describe('normalisation d\'une offre CareerConnect réelle', () => {
     const ids = jobs.map((j) => parseCareerConnectJob(j, 'https://careers.hugoboss.com')?.externalId);
     expect(new Set(ids).size).toBe(3);
     expect(ids.every(Boolean)).toBe(true);
+  });
+});
+
+
+/**
+ * LA DESCRIPTION COMPLÈTE — le teaser du listing n'en est pas une.
+ *
+ * Mesuré le 2026-09-14 : la description stockée avait une médiane de 313 caractères (Hugo Boss) et 287
+ * (Skechers), plafonnée à ~418 — contre **4 619** pour `foot-locker-france`, sur la MÊME famille Phenom. Le
+ * plafond signe une troncature d'API, pas des annonces courtes.
+ *
+ * La fiche publique porte un JSON-LD `JobPosting` — un standard public, observé, jamais un endpoint deviné :
+ * 4 093 et 7 058 caractères de description, avec l'`identifier` qui permet de VÉRIFIER qu'on a lu la bonne
+ * fiche. C'est la garde qui manquait au gabarit d'URL.
+ */
+describe('enrichissement par le JSON-LD de la fiche', () => {
+  const page = (id: string, desc: string) => `<html><script type="application/ld+json">${JSON.stringify({
+    '@type': 'JobPosting', title: 'T', description: desc,
+    identifier: { '@type': 'PropertyValue', name: 'HUGO BOSS AG', value: id },
+  })}</script></html>`;
+
+  it('remplace le teaser par la description complète quand l\'identifiant CONCORDE', () => {
+    const base = parseCareerConnectJob(jobs[0], 'https://careers.hugoboss.com', { localePath: 'global/en' })!;
+    const long = 'Responsabilités détaillées. '.repeat(60);
+    const out = enrichFromJobPosting(base, page(String(jobs[0].jobId), long), String(jobs[0].jobId));
+    expect(out.description!.length).toBeGreaterThan(1000);
+    expect(out.description).toContain('Responsabilités');
+  });
+
+  it('REFUSE la description d\'une AUTRE fiche — l\'identifiant doit concorder', () => {
+    // Sans cette garde, une redirection silencieuse collerait la description d'une offre sur une autre.
+    const base = parseCareerConnectJob(jobs[0], 'https://careers.hugoboss.com', { localePath: 'global/en' })!;
+    const out = enrichFromJobPosting(base, page('999999', 'Description d\'une autre offre'), String(jobs[0].jobId));
+    expect(out.description).toBe(base.description);
+  });
+
+  it('garde le teaser si la fiche ne porte AUCUN JSON-LD', () => {
+    const base = parseCareerConnectJob(jobs[0], 'https://careers.hugoboss.com', { localePath: 'global/en' })!;
+    const out = enrichFromJobPosting(base, '<html><body>rien</body></html>', String(jobs[0].jobId));
+    expect(out.description).toBe(base.description);
+  });
+
+  it('ne remplace jamais par PLUS COURT — un teaser vaut mieux qu\'une regression', () => {
+    const base = parseCareerConnectJob(jobs[0], 'https://careers.hugoboss.com', { localePath: 'global/en' })!;
+    const out = enrichFromJobPosting(base, page(String(jobs[0].jobId), 'court'), String(jobs[0].jobId));
+    expect(out.description).toBe(base.description);
   });
 });
