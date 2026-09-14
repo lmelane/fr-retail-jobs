@@ -67,9 +67,15 @@ export type ScheduleReading = {
  * Chaque terme est écrit dans SA langue, jamais traduit depuis l'anglais : une
  * annonce allemande dit « Bereitschaft zur », pas « ability to ».
  *
- * `schedule` / `hours` / `horaires` figurent ici parce que « flexible schedule »
- * est lui-même la formulation d'exigence la plus fréquente (54 % US) : le mot
- * « flexible » collé à l'horaire EST l'exigence, il n'a pas besoin d'un verbe.
+ * `schedule (?:may )?includes?` / `work(?:ing)? hours includes?` figurent ici
+ * parce que ces tournures SONT l'exigence, sans verbe modal.
+ *
+ * ATTENTION, une version antérieure de ce commentaire affirmait que
+ * « flexible schedule » était auto-suffisant. L'exécution l'a réfuté :
+ * « Flexible schedule required » rend `undefined`, seule la forme portée par
+ * un marqueur (« Ability to work a flexible schedule ») est captée. Le
+ * commentaire décrivait une intention, pas le code — la faute que ce dépôt
+ * combat. `flexible availability`, lui, EST dans les marqueurs et se suffit.
  */
 const REQUIREMENT_MARKER = new RegExp(
   [
@@ -82,6 +88,14 @@ const REQUIREMENT_MARKER = new RegExp(
     'required to work',
     'availability to work',
     'flexibility to work',
+    /*
+     * « flexible availability » : même auto-suffisance que « flexible
+     * schedule ». L'audit du 15/09/2026 a mesuré l'oubli — 2 469 offres
+     * actives sur 3 031 s'abstenaient, concentrées sur US (2 310) et CA (298),
+     * les deux marchés visés. Forme réelle dominante :
+     * « Flexible availability – including nights, weekends, and holidays ».
+     */
+    'flexible availability',
     'expected to work',
     'this (?:role|position) requires',
     'schedule (?:may )?includes?',
@@ -91,7 +105,14 @@ const REQUIREMENT_MARKER = new RegExp(
     'doit (?:être disponible|pouvoir|travailler)',
     'devez (?:être disponible|pouvoir|travailler)',
     'capacit[ée] [àa] travailler',
-    'disponibilit[ée]',
+    /*
+     * `disponibilit[ée]` SEUL a été retiré : l'audit a montré qu'il captait
+     * « taux de disponibilité et qualité produit », « la disponibilité des
+     * solutions en production » — du vocabulaire industriel sans rapport avec
+     * un rythme de travail. Le marqueur exige désormais que la disponibilité
+     * porte sur du TEMPS.
+     */
+    'disponibilit[ée] (?:horaire|le (?:soir|week-end)|les (?:soirs|week-ends)|pour travailler)',
     'disponible pour travailler',
     'amen[ée]e? [àa] travailler',
     // Allemand.
@@ -182,7 +203,24 @@ const SCHEDULE_TERMS: ReadonlyArray<readonly [WorkSchedule, RegExp]> = [
         '\\bweek[ -]?end\\b',
         '\\bfine settimana\\b',
         '\\bnei festivi\\b',
-        '\\bsera(?:li|le)?\\b',
+        /*
+         * L'italien « sera » (le soir) est RETIRÉ, l'audit du 15/09/2026 en a
+         * mesuré le coût : il collisionne avec le futur français du verbe
+         * être. « Il sera amené à travailler sur des projets transverses » —
+         * une phrase française parfaitement banale — produisait
+         * EVENINGS_WEEKENDS. Sur un échantillon de 3 000 offres FR, 4 des 10
+         * correspondances étaient de purs faux positifs de ce type.
+         *
+         * Le coût est asymétrique : un candidat filtrant « soirs et week-ends »
+         * verrait des offres qui n'en parlent pas, et un stage marketing
+         * ordinaire serait classé comme contraignant. Une case vide se répare ;
+         * une contrainte inventée fait renoncer un candidat.
+         *
+         * Les formes italiennes NON ambiguës restent : « serali », « serale »
+         * n'existent pas en français.
+         */
+        '\\bserali?\\b',
+        '\\bserale\\b',
         // Espagnol.
         '\\bfines? de semana\\b',
         '\\bs[áa]bados? y domingos?\\b',
@@ -199,6 +237,17 @@ const SCHEDULE_TERMS: ReadonlyArray<readonly [WorkSchedule, RegExp]> = [
         '\\bflexible schedule\\b',
         '\\bflexible work(?:ing)? schedule\\b',
         '\\bflexible hours\\b',
+        /*
+         * « flexible availability » est AUTO-SUFFISANT, au même titre que
+         * « flexible schedule » : le mot « flexible » collé à la disponibilité
+         * EST l'exigence, il n'a pas besoin d'un marqueur séparé.
+         *
+         * L'audit a mesuré le coût de l'oubli : 2 469 offres actives sur 3 031
+         * portant « Flexible availability » s'abstenaient — concentrées sur US
+         * (2 310) et CA (298), c'est-à-dire exactement les deux marchés que
+         * cette dimension cible. La forme réelle la plus fréquente est
+         * « Flexible availability – including nights, weekends, and holidays ».
+         */
         '\\bflexible availability\\b',
         '\\bvaried schedule\\b',
         '\\bvariable schedule\\b',

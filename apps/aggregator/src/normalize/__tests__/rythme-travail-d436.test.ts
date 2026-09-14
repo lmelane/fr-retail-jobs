@@ -205,4 +205,68 @@ describe('D-436 — branchement dans la chaîne réelle (resolveCanonicalDimensi
     expect(resolu.workSchedule).toBeUndefined();
     expect(resolu.rawSchedule).toBeUndefined();
   });
+
+  describe('les faux positifs et négatifs trouvés par l’audit du 15/09/2026', () => {
+    it('le futur français de « être » ne déclenche plus le soir italien', () => {
+      /*
+       * PRÉMISSE — les formes italiennes NON ambiguës restent captées, sinon
+       * ce témoin passerait au vert sur une langue simplement supprimée.
+       */
+      expect(
+        readScheduleDescription('Disponibilità a lavorare su turni serali')?.schedule,
+        'la prémisse : l’italien non ambigu fonctionne toujours',
+      ).toBeDefined();
+
+      /*
+       * Le défaut : « sera » est le SOIR en italien et le FUTUR D’ÊTRE en
+       * français. Sur 3 000 offres FR, 4 des 10 correspondances venaient de
+       * cette collision — des phrases sans aucun rapport avec un rythme.
+       */
+      expect(readScheduleDescription('Il sera également amené à travailler sur des projets transverses.')).toBeUndefined();
+      expect(readScheduleDescription('Le poste sera basé à Paris.')).toBeUndefined();
+    });
+
+    it('« disponibilité » industrielle n’est pas une disponibilité horaire', () => {
+      // PRÉMISSE — la disponibilité qui porte sur du TEMPS est bien captée.
+      expect(
+        readScheduleDescription('Disponibilité pour travailler le week-end')?.schedule,
+        'la prémisse : la disponibilité horaire fonctionne',
+      ).toBe('EVENINGS_WEEKENDS');
+
+      // Le défaut : du vocabulaire de production industrielle.
+      expect(readScheduleDescription('Taux de disponibilité et qualité produit')).toBeUndefined();
+      expect(readScheduleDescription('La disponibilité des solutions en production')).toBeUndefined();
+    });
+
+    it('« Flexible availability » est capté, même sans verbe d’exigence', () => {
+      /*
+       * PRÉMISSE, ET UNE CORRECTION DE MA PROPRE AFFIRMATION.
+       *
+       * Une première version de ce témoin posait que « flexible schedule »
+       * était auto-suffisant — le commentaire du normaliseur le dit. L'exécution
+       * l'a réfuté : « Flexible schedule required » rend `undefined`, cette
+       * forme exige bien un marqueur (« Ability to work a flexible schedule »
+       * fonctionne, elle).
+       *
+       * La prémisse dit donc désormais ce qui EST, pas ce que le commentaire
+       * prétendait.
+       */
+      expect(
+        readScheduleDescription('Ability to work a flexible schedule')?.schedule,
+        'la prémisse : la forme avec marqueur fonctionne',
+      ).toBe('FLEXIBLE_AVAILABILITY');
+      expect(
+        readScheduleDescription('Flexible schedule required'),
+        'et « flexible schedule » NU ne suffit pas — contrairement au commentaire',
+      ).toBeUndefined();
+
+      /*
+       * Le défaut mesuré : 2 469 offres actives sur 3 031 s’abstenaient,
+       * concentrées sur US (2 310) et CA (298) — les deux marchés visés.
+       */
+      expect(readScheduleDescription('Flexible availability – including nights, weekends, and holidays')?.schedule)
+        .toBe('EVENINGS_WEEKENDS');
+      expect(readScheduleDescription('Flexible availability required')?.schedule).toBe('FLEXIBLE_AVAILABILITY');
+    });
+  });
 });
