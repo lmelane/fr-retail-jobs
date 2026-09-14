@@ -56,7 +56,7 @@ Aucun dossier « en cours ». Aucun dossier retiré après coup.
 
 | Sujet | État |
 |---|---|
-| **`catwalks.io/bot`** | **rend 404.** D62 en fait un préalable bloquant à l'activation, et le User-Agent est déjà déployé. Le contenu est rédigé (`apps/web/app/bot/page.tsx`) et `botInfoUrlIsServed()` permet de le vérifier — mais `catwalks.io` est un autre dépôt : **la mise en ligne est hors de ce périmètre.** |
+| **`catwalks.io/bot`** | **rend toujours 404** (mesuré après déploiement). D62 en fait un préalable bloquant, et le User-Agent le porte déjà sur chaque requête. La page existe désormais et **est servie en HTTP 200 sur `modecareers.com/bot`** (opérateur, périmètre, ce qui n'est jamais collecté, contact relevé, retrait par `robots.txt`) : il ne reste qu'à la **recopier sur `catwalks.io`**, autre dépôt que celui-ci ne déploie pas. `botInfoUrlIsServed()` permet de vérifier le préalable au lieu de le supposer. |
 | Réserve stockage objet | non provisionné ; aucune purge d'observations n'a eu lieu |
 | Crons | **gelés** ; leur reprise reste une décision propriétaire (D57) |
 | `ralph-lauren-avature` | bloqué, condition de reprise écrite |
