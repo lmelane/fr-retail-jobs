@@ -1,0 +1,109 @@
+{
+ "at": "2026-09-14T08:24:52.624Z",
+ "backendPid": 118273,
+ "isolation": "REPEATABLE READ, READ ONLY",
+ "sources": {
+  "total": 534,
+  "parStatut": {
+   "ACTIVE": 435,
+   "PAUSED": 7,
+   "RETIRED": 92
+  },
+  "certifieesParStatut": {
+   "ACTIVE": 93
+  },
+  "certifieesTotal": 93
+ },
+ "offres": {
+  "total": 86268,
+  "actives": 82114,
+  "fermees": 4154,
+  "activesAvecClosedAt": 0,
+  "sansSourceVivante": 0,
+  "retenuesHistorique": 996
+ },
+ "representations": {
+  "total": 89452,
+  "actives": 84010
+ },
+ "runsEnCours": [],
+ "runsParStatut": [
+  {
+   "status": "COMPLETED",
+   "n": 56,
+   "dernier": "2026-09-14T06:53:19.870Z"
+  },
+  {
+   "status": "COMPLETED_WITH_ERRORS",
+   "n": 11,
+   "dernier": "2026-09-13T14:44:13.307Z"
+  },
+  {
+   "status": "INTERRUPTED",
+   "n": 2,
+   "dernier": "2026-09-13T09:01:21.020Z"
+  }
+ ],
+ "collecte": {
+  "sourcesavecrun": 537,
+  "plusde7jours": 58,
+  "plusrecent": "01:23:04.4341",
+  "plusancien": "8 days 02:42:11.2871"
+ },
+ "observations": {
+  "lignes": 133249,
+  "plusancienne": "2026-09-06T13:19:45.290Z",
+  "plusrecente": "2026-09-14T07:01:41.189Z",
+  "sources": 457,
+  "empreintes": 133094
+ },
+ "stockage": {
+  "base": {
+   "octets": 3392960191,
+   "lisible": "3236 MB"
+  },
+  "tables": [
+   {
+    "tablename": "Job",
+    "octets": 1781882880,
+    "lisible": "1699 MB"
+   },
+   {
+    "tablename": "SourceObservation",
+    "octets": 614875136,
+    "lisible": "586 MB"
+   },
+   {
+    "tablename": "JobSource",
+    "octets": 500613120,
+    "lisible": "477 MB"
+   },
+   {
+    "tablename": "OccupationObservation",
+    "octets": 197435392,
+    "lisible": "188 MB"
+   },
+   {
+    "tablename": "DataCorrection",
+    "octets": 181264384,
+    "lisible": "173 MB"
+   },
+   {
+    "tablename": "EmployerObservation",
+    "octets": 45776896,
+    "lisible": "44 MB"
+   },
+   {
+    "tablename": "EmployerIdentityReview",
+    "octets": 14057472,
+    "lisible": "13 MB"
+   },
+   {
+    "tablename": "JobEvent",
+    "octets": 13000704,
+    "lisible": "12 MB"
+   }
+  ]
+ },
+ "archivesDistantes": 0
+}
