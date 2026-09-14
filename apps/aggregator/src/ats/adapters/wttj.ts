@@ -2,6 +2,7 @@ import pLimit from 'p-limit';
 import { fetchJson, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /**
  * Welcome to the Jungle — its own search API, not a generic jobboard scrape.
@@ -66,7 +67,7 @@ async function refreshSearchKey(): Promise<boolean> {
     const html = await fetchText(KEY_SOURCE, {
       headers: {
         'user-agent':
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+          CRAWLER_IDENTITY,
       },
     });
     const found = html.match(/"ALGOLIA_API_KEY_CLIENT"\s*:\s*"([0-9a-f]{32})"/)?.[1];

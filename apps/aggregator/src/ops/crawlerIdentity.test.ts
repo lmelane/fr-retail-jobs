@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CRAWLER_IDENTITY, BOT_INFO_URL } from '../lib/crawlerIdentity.js';
@@ -43,6 +43,25 @@ describe('identité du crawler (D62)', () => {
     expect(http).toContain('CRAWLER_IDENTITY');
     // L'ancienne valeur ne doit plus être codée en dur : deux identités finiraient par diverger.
     expect(http).not.toContain('CatwalksJobsBot/0.1');
+  });
+
+  it('AUCUN adaptateur ne déclare sa propre identité — elle vient du module partagé', () => {
+    // Mesuré le 2026-09-14 : 17 adaptateurs portaient leur propre `Mozilla/5.0 … Chrome/…`. Une identité que
+    // chaque adaptateur peut redéfinir n'est pas une identité : l'éditeur voit 18 crawlers différents, et D62
+    // ne s'applique qu'au chemin qu'on a pensé à corriger.
+    const dir = resolve(SRC, 'ats/adapters');
+    const offenders = readdirSync(dir)
+      .filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'))
+      .filter((f) => /['"`]Mozilla\/5\.0/.test(readFileSync(resolve(dir, f), 'utf8')));
+    expect(offenders, `adaptateurs déclarant leur propre UA : ${offenders.join(', ')}`).toEqual([]);
+  });
+
+  it('la lecture de robots.txt s\'annonce sous l\'identité Catwalks, jamais sous l\'ancienne marque', () => {
+    // `ModeCareersBot` est explicitement interdit par D62 : l'opérateur est Catwalks, pas le produit — et
+    // c'est sous ce nom que l'éditeur nous évalue dans son robots.txt.
+    const src = readFileSync(resolve(SRC, 'lib/candidateChecks.ts'), 'utf8');
+    expect(src).not.toMatch(/ModeCareersBot/);
+    expect(src).toContain('CRAWLER_IDENTITY');
   });
 
   it('aucune source du dépôt ne déclare un User-Agent de tiers', () => {

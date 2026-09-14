@@ -7,6 +7,7 @@ import { fetchSitemapUrlsDetailed, extractJobPostings, normalizeJobPosting } fro
 import { fetchRssJobs } from '../../connectors/generic/rssFeed.js';
 import { collapseWhitespace, briefError } from '../../lib/normalize.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /**
  * The publisher's own count of listed postings, read on a listing page: a data
@@ -153,7 +154,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
         html = await fetchText(pageUrl, {
           headers: {
             'user-agent':
-              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+              CRAWLER_IDENTITY,
           },
         });
       } catch (error) {
@@ -229,7 +230,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
               await fetchText(url, {
                 headers: {
                   'user-agent':
-                    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+                    CRAWLER_IDENTITY,
                 },
               }),
               url,
@@ -302,7 +303,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
               await fetchText(url, {
                 headers: {
                   'user-agent':
-                    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+                    CRAWLER_IDENTITY,
                 },
               }),
               url,

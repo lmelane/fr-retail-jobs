@@ -5,6 +5,7 @@ import { fetchJson, fetchWithRetry } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { employmentTermsFrom, readEmployment } from '../../normalize/employment.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /**
  * Eightfold AI career sites (Estée Lauder and its Maisons).
@@ -32,7 +33,7 @@ const PAGE_SIZE = 10;
 const MAX_PAGES = Number(process.env.EIGHTFOLD_MAX_PAGES ?? 300);
 
 const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+  CRAWLER_IDENTITY;
 
 type EightfoldPosition = {
   id?: number | string;

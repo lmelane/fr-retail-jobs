@@ -3,6 +3,7 @@ import pLimit from 'p-limit';
 import { DEFAULT_DETAIL_CONCURRENCY, fetchJson, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /**
  * Rivoli Group (Dubaï, horlogerie/luxe) — la page Vacancies est vide côté
@@ -23,7 +24,7 @@ const MAX_PAGES = 20;
 const PREFERRED_LOCALE = 'en_AE';
 
 const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+  CRAWLER_IDENTITY;
 
 export type VacancyDoc = {
   id: string;

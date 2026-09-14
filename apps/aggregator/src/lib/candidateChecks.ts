@@ -7,6 +7,7 @@
  */
 import { createHash } from 'node:crypto';
 import { robotsVerdictFor } from './robotsVerdict.js';
+import { CRAWLER_IDENTITY } from './crawlerIdentity.js';
 import { resolveCompany, stripLegalSuffix } from '../normalize/company.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
 
@@ -59,7 +60,7 @@ export function robotsReading(response: { status: number; text: string } | { err
 
 export async function readRobots(origin: string, path: string, fetchImpl: typeof fetch = fetch): Promise<RobotsReading> {
   try {
-    const res = await fetchImpl(`${origin}/robots.txt`, { headers: { 'user-agent': 'Mozilla/5.0 (compatible; ModeCareersBot/1.0)' }, signal: AbortSignal.timeout(20_000), redirect: 'follow' });
+    const res = await fetchImpl(`${origin}/robots.txt`, { headers: { 'user-agent': CRAWLER_IDENTITY }, signal: AbortSignal.timeout(20_000), redirect: 'follow' });
     return robotsReading({ status: res.status, text: res.ok ? await res.text() : '' }, path);
   } catch (error) {
     return robotsReading({ error: error instanceof Error ? error.message : String(error) }, path);

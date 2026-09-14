@@ -1,6 +1,7 @@
 import { fetchWithRetry } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
+import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /**
  * WordPress REST — recruitment sites that publish offers as ordinary posts.
@@ -19,7 +20,7 @@ const PAGE_SIZE = 100;
 const MAX_PAGES = 40;
 
 const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+  CRAWLER_IDENTITY;
 
 type WpPost = {
   id?: number;

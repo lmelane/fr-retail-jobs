@@ -1,6 +1,7 @@
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
+import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /**
  * Pinpoint career sites (L'Occitane Group and others).
@@ -14,7 +15,7 @@ import type { NormalizedJob } from '../../types.js';
  */
 
 const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+  CRAWLER_IDENTITY;
 
 const HEADERS = { 'user-agent': USER_AGENT, accept: 'application/json' };
 
