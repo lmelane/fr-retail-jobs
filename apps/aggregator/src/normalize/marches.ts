@@ -214,7 +214,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     locale: 'de-DE',
     libelles: { contrat: 'Anstellungsart', temps: 'Arbeitszeit' },
     offresMesurees: 3_080,
-    couverture: { contrat: 0.325, temps: 0.749, programme: 0.08, saisonnier: 0.002 },
+    couverture: { contrat: 0.325, temps: 0.749, programme: 0.08, saisonnier: 0.048 },
   },
 
   /** ITALIE — « Tipo di contratto » ; programme à 16,2 %, sous le seuil. */
@@ -223,7 +223,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     locale: 'it-IT',
     libelles: { contrat: 'Tipo di contratto', temps: 'Orario di lavoro' },
     offresMesurees: 2_693,
-    couverture: { contrat: 0.453, temps: 0.68, programme: 0.162, saisonnier: 0.003 },
+    couverture: { contrat: 0.453, temps: 0.68, programme: 0.162, saisonnier: 0.004 },
   },
 
   /** ESPAGNE — « Tipo de empleo » ; « contrato indefinido » 9 % des descriptions. */
@@ -232,7 +232,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     locale: 'es-ES',
     libelles: { contrat: 'Tipo de empleo', temps: 'Jornada laboral' },
     offresMesurees: 2_197,
-    couverture: { contrat: 0.477, temps: 0.665, programme: 0.053, saisonnier: 0.005 },
+    couverture: { contrat: 0.477, temps: 0.665, programme: 0.053, saisonnier: 0.000 },
   },
 
   /** PAYS-BAS — « Dienstverband » ; un seul mot néerlandais pour les deux axes. */
@@ -241,7 +241,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     locale: 'nl-NL',
     libelles: { contrat: 'Dienstverband', temps: 'Dienstverband' },
     offresMesurees: 1_849,
-    couverture: { contrat: 0.361, temps: 0.782, programme: 0.025, saisonnier: 0.006 },
+    couverture: { contrat: 0.361, temps: 0.782, programme: 0.025, saisonnier: 0.002 },
   },
 
   /**
@@ -262,7 +262,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     locale: 'en-AU',
     libelles: { contrat: 'Job type', temps: 'Job type' },
     offresMesurees: 1_234,
-    couverture: { contrat: 0.362, temps: 0.657, programme: 0.007, saisonnier: 0.17 },
+    couverture: { contrat: 0.362, temps: 0.657, programme: 0.007, saisonnier: 0.170 },
   },
 
   /**
@@ -288,7 +288,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     locale: 'fr-CH',
     libelles: { contrat: 'Type de contrat', temps: 'Temps de travail', programme: 'Type de programme' },
     offresMesurees: 1_220,
-    couverture: { contrat: 0.172, temps: 0.491, programme: 0.263, saisonnier: 0.002 },
+    couverture: { contrat: 0.172, temps: 0.491, programme: 0.263, saisonnier: 0.008 },
   },
 };
 
@@ -306,6 +306,23 @@ export function estCodeMarche(code: string): code is CodeMarche {
  * lui, et croirait le résultat.
  */
 export function marche(code: string): Marche | undefined {
+  /*
+   * GARDE DE TYPE, et pas une précaution théorique.
+   *
+   * L'audit défensif du 15/09/2026 a montré que `undefined`, `null`, un
+   * nombre, un objet ou un tableau faisaient LEVER une exception sur
+   * `code.trim()` — alors que le contrat documenté juste au-dessus promet
+   * « une liste vide, jamais une exception », précisément parce que ce
+   * registre sera lu sur un CHEMIN DE RENDU.
+   *
+   * Un pays hors périmètre doit dégrader l'écran en catalogue sans facettes.
+   * Un paramètre d'URL absent ou malformé arrive `undefined` : sans cette
+   * garde, il faisait tomber la page entière.
+   *
+   * Le témoin ne couvrait que des chaînes malformées — la branche qui
+   * plantait n'était testée nulle part.
+   */
+  if (typeof code !== 'string') return undefined;
   const normalise = code.trim().toUpperCase();
   return estCodeMarche(normalise) ? MARCHES[normalise] : undefined;
 }

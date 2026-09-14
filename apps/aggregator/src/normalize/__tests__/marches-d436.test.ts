@@ -233,4 +233,48 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
       }
     }
   });
+
+  it('AUCUN appel ne lève d’exception, quel que soit le TYPE reçu', () => {
+    /*
+     * TROU DE COUVERTURE TROUVÉ PAR L'AUDIT DÉFENSIF du 15/09/2026.
+     *
+     * Le contrat documenté promet « une liste vide, jamais une exception »,
+     * parce que ce registre est lu sur un CHEMIN DE RENDU. Le témoin
+     * précédent ne couvrait que des CHAÎNES malformées ('', 'ZZ', 'FRANCE') :
+     * la branche qui plantait n'était testée nulle part.
+     *
+     * Mesuré : `undefined`, `null`, un nombre, un objet et un tableau
+     * levaient tous sur `code.trim()`. Un paramètre d'URL absent arrive
+     * `undefined` — la page entière tombait.
+     *
+     * PRÉMISSE — un code VALIDE rend bien des facettes, sinon ce témoin
+     * passerait au vert sur une fonction qui ne rend jamais rien.
+     */
+    expect(facettesDuMarche('FR').length, 'la prémisse : FR expose des facettes').toBeGreaterThan(0);
+
+    for (const entree of [undefined, null, 123, {}, ['FR'], true, Symbol('FR')]) {
+      expect(() => facettesDuMarche(entree as never), `facettesDuMarche(${String(entree)})`).not.toThrow();
+      expect(() => marche(entree as never), `marche(${String(entree)})`).not.toThrow();
+      expect(facettesDuMarche(entree as never)).toEqual([]);
+      expect(marche(entree as never)).toBeUndefined();
+    }
+  });
+
+  it('les taux gravés correspondent à la mesure du 15/09/2026', () => {
+    /*
+     * L'audit a trouvé le taux SAISONNIER allemand à 0,2 % alors que la
+     * production en portait 4,77 % — un facteur 24. Cause : 140 offres
+     * Pandora « Seasonal Sales Associate » publiées début septembre, après
+     * la mesure initiale.
+     *
+     * Ce témoin ne peut pas interroger la base (module de données pur), mais
+     * il grave les valeurs vérifiées afin qu'une correction silencieuse soit
+     * impossible : modifier un taux sans mettre à jour ce témoin le fait
+     * rougir, et oblige à re-mesurer.
+     */
+    expect(marche('DE')?.couverture.saisonnier, 'DE saisonnier, re-mesuré').toBeCloseTo(0.048, 3);
+    expect(marche('AU')?.couverture.saisonnier, 'AU saisonnier').toBeCloseTo(0.17, 3);
+    expect(marche('CA')?.couverture.saisonnier, 'CA saisonnier').toBeCloseTo(0.114, 3);
+    expect(marche('US')?.couverture.contrat, 'US contrat — la décision structurante').toBeCloseTo(0.192, 3);
+  });
 });
