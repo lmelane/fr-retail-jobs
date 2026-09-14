@@ -3,6 +3,7 @@ import { assertSourceRunning, sourceSignal, sourceDelay } from './sourceBudget.j
 import { assertPublicUrl, isPublicHttpUrl, BlockedUrlError } from './ssrf.js';
 import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 import { rateLimitKeyFor } from './rateLimitKey.js';
+import { CRAWLER_IDENTITY } from './crawlerIdentity.js';
 import { record429, noteRequest, BenchmarkStoppedOn429Error } from '../observability/rateLimitSignal.js';
 import { getWafCookie, isWafChallenge, primeWafCookie, WafChallengeError } from './wafToken.js';
 import { detectChallenge } from './responseIntegrity.js';
@@ -34,7 +35,9 @@ export class HttpStatusError extends Error {
 }
 
 const timeoutMs = Number(process.env.HTTP_TIMEOUT_MS ?? 20_000);
-const userAgent = process.env.USER_AGENT ?? 'CatwalksJobsBot/0.1';
+// L'identité du collecteur n'est PAS un réglage : la surcharger par variable d'environnement permettrait de
+// se présenter sous un autre nom sans que rien ne le trace (D62). Une seule valeur, dans un seul module.
+const userAgent = CRAWLER_IDENTITY;
 
 /**
  * F-01 — the body read is bounded too. `response.text()` used to run OUTSIDE

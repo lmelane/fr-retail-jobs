@@ -146,6 +146,10 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
   const origin = String(config.origin ?? '').replace(/\/$/, '');
   if (!origin) throw new Error('Phenom origin missing');
 
+  // Le dialecte est lu AVANT toute requête : un tenant CareerConnect ne doit jamais recevoir la requête
+  // Foot Locker, qui lui rend 500 et ferait diagnostiquer une source cassée.
+  if (phenomDialect(config) === 'CAREER_CONNECT_WIDGETS') return fetchCareerConnectJobs(origin);
+
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
   let declaredTotal: number | undefined;
@@ -230,4 +234,177 @@ export function phenomCoordinates(raw: unknown): { latitude: number; longitude: 
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
   if (latitude === 0 && longitude === 0) return null;
   return { latitude, longitude };
+}
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────────────
+ * PHENOM N'EST PAS UNE API UNIFORME — le second dialecte, CareerConnect.
+ *
+ * Mesuré le 2026-09-14 : le même chemin `/api/jobs` rend HTTP 200 chez Foot Locker et **500** chez Hugo Boss
+ * et Skechers. J'en avais conclu « sources bloquées » — c'était faux. Les deux servent leurs offres par
+ * `POST /widgets` avec `ddoKey: refineSearch`, la configuration que leurs pages déclarent elles-mêmes :
+ * Hugo Boss **784** offres, Skechers **1 656**.
+ *
+ * *Un 500 sur un endpoint qu'on a deviné ne dit rien de la source.*
+ *
+ * Le dialecte est donc une CONFIGURATION EXPLICITE, jamais une cascade d'endpoints essayés jusqu'à ce que
+ * l'un réponde : une telle cascade masquerait une panne réelle en la faisant passer pour un changement de
+ * dialecte, et on aurait remplacé un diagnostic par un tirage au sort.
+ * ──────────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+export const PHENOM_DIALECTS = ['FOOTLOCKER_API_JOBS', 'CAREER_CONNECT_WIDGETS'] as const;
+export type PhenomDialect = (typeof PHENOM_DIALECTS)[number];
+
+/** Le dialecte déclaré, ou le dialecte historique. Un nom inconnu est REFUSÉ, jamais rabattu sur un défaut. */
+export function phenomDialect(config: Record<string, unknown>): PhenomDialect {
+  const declared = typeof config.dialect === 'string' ? config.dialect : '';
+  if (!declared) return 'FOOTLOCKER_API_JOBS';
+  if ((PHENOM_DIALECTS as readonly string[]).includes(declared)) return declared as PhenomDialect;
+  throw new Error(`phenom: dialecte inconnu « ${declared} » — attendu ${PHENOM_DIALECTS.join(' | ')}`);
+}
+
+/**
+ * La requête CareerConnect. `country: 'global'` est demandé EXPLICITEMENT : mesuré sur Skechers, le backend
+ * rend 1 656 offres que la locale soit `fr/France` ou `en/global` — on ne veut pas dépendre de ce
+ * comportement pour ne pas réduire un jour la source à un marché.
+ */
+export function careerConnectRequest(origin: string, page: { from: number; size: number }): {
+  url: string; method: 'POST'; body: Record<string, unknown>;
+} {
+  return {
+    url: `${origin}/widgets`,
+    method: 'POST',
+    body: {
+      lang: 'en', deviceType: 'desktop', country: 'global', pageName: 'search-results',
+      ddoKey: 'refineSearch', jdsource: 'facets', isSliderEnable: false,
+      jobs: true, counts: true, all_fields: ['category', 'country', 'state', 'city'],
+      from: page.from, size: page.size,
+    },
+  };
+}
+
+/** Une offre du dialecte CareerConnect. Les champs sont ceux réellement servis (fixture Hugo Boss, 2026-09-14). */
+export type CareerConnectJob = {
+  jobSeqNo?: string; jobId?: string | number; title?: string; category?: string;
+  country?: string; state?: string; city?: string; cityState?: string;
+  dateCreated?: string; postedDate?: string; descriptionTeaser?: string;
+  latitude?: string | number; longitude?: string | number; hiringType?: string; type?: string;
+};
+
+/** Le slug d'URL publique Phenom : titre en minuscules, séparateurs normalisés. */
+function slugify(title: string): string {
+  return title.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'job';
+}
+
+/**
+ * Normalise une offre CareerConnect.
+ *
+ * L'identifiant est `jobSeqNo`, celui que l'ÉDITEUR expose (`HUBOGLOBAL143861EXTERNALENGLOBAL` : tenant,
+ * requisition, visibilité, langue). On ne le fabrique pas — un identifiant inventé ne survit pas à un
+ * changement de tri, et P7 a montré ce que coûte une identité instable.
+ *
+ * La liste ne porte AUCUNE URL : l'adresse publique est dérivée du gabarit Phenom `/job/<id>/<slug>`.
+ */
+export function parseCareerConnectJob(data: CareerConnectJob, origin: string): NormalizedJob | null {
+  const externalId = data.jobSeqNo ? String(data.jobSeqNo) : '';
+  if (!externalId || !data.title) return null;
+
+  const posted = data.dateCreated ?? data.postedDate;
+  const postedAt = posted ? new Date(posted) : undefined;
+  const terms = employmentTermsFrom([data.hiringType, data.type]);
+  const num = (v: unknown) => (Number.isFinite(Number(v)) ? Number(v) : undefined);
+
+  return {
+    externalId,
+    title: data.title,
+    location: data.cityState ?? ([data.city, data.state].filter(Boolean).join(', ') || undefined),
+    country: data.country,
+    contract: terms,
+    workingTime: terms,
+    city: data.city,
+    region: data.state,
+    // CareerConnect livre les coordonnées : ces lignes ne passent pas par le géocodage.
+    latitude: num(data.latitude),
+    longitude: num(data.longitude),
+    description: htmlToPlainText(data.descriptionTeaser),
+    department: data.category,
+    url: `${origin}/job/${data.jobId ?? externalId}/${slugify(data.title)}`,
+    postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
+    raw: data as unknown as Record<string, unknown>,
+  };
+}
+
+/**
+ * La collecte CareerConnect : `POST /widgets`, pagination par `from`.
+ *
+ * Elle porte la MÊME preuve d'énumération que le dialecte historique — compteur de l'éditeur, identifiants
+ * observés page par page, terminaison nommée. Sans cela une source ne peut pas attester une absence (P7), et
+ * un dialecte qui collecte sans prouver serait un recul déguisé en ajout.
+ */
+async function fetchCareerConnectJobs(origin: string): Promise<AdapterResult> {
+  const jobs: NormalizedJob[] = [];
+  const seen = new Set<string>();
+  const issues = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  const size = 100;
+  let declaredTotal: number | undefined;
+  let pages = 0, rawCount = 0, repeatedIds = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+
+  /**
+   * Le curseur avance de ce que la page a RÉELLEMENT rendu, jamais de `size`.
+   *
+   * Mesuré sur Hugo Boss : à `from=700` l'API rend 84 lignes pour `size=100`, et certaines pages
+   * intermédiaires en rendent moins que demandé. Avancer de `size` sautait donc des offres — 647 collectées
+   * sur 784 annoncées, sans qu'aucune erreur ne soit levée. Un décalage de curseur ne se voit pas : il se
+   * mesure au compteur de l'éditeur, et c'est ce que `complete=false` a signalé.
+   */
+  let from = 0;
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const request = careerConnectRequest(origin, { from, size });
+    const response = await fetchJson<{ refineSearch?: { totalHits?: number; data?: { jobs?: CareerConnectJob[] } } }>(
+      request.url,
+      { method: request.method, headers: { ...HEADERS, 'content-type': 'application/json' }, body: JSON.stringify(request.body) },
+    );
+
+    const refine = response.refineSearch ?? {};
+    if (typeof refine.totalHits === 'number') declaredTotal = refine.totalHits;
+    const batch = refine.data?.jobs ?? [];
+    pages++; rawCount += batch.length;
+    const pageIds: string[] = [];
+
+    for (const entry of batch) {
+      const job = parseCareerConnectJob(entry, origin);
+      if (!job) continue;
+      pageIds.push(job.externalId);
+      // Un identifiant déjà vu est COMPTÉ et nommé, jamais écrasé en silence : c'est ce compte qui refuse la
+      // preuve d'exhaustivité quand la pagination est instable.
+      if (seen.has(job.externalId)) { repeatedIds++; continue; }
+      seen.add(job.externalId);
+      jobs.push(job);
+    }
+    pageEvidence.push({ url: request.url, checkedAt: new Date().toISOString(), offset: from,
+      sha256: createHash('sha256').update(JSON.stringify(batch)).digest('hex'),
+      ids: pageIds, pagination: { start: from, end: from + batch.length, total: declaredTotal ?? -1 },
+      publisherCounter: `totalHits=${declaredTotal ?? -1}`,
+      componentCounters: [`returned=${batch.length}`, `unique=${pageIds.length}`] });
+
+    from += batch.length;
+    if (batch.length === 0) { termination = 'EMPTY_PAGE'; break; }
+    if (declaredTotal != null && seen.size >= declaredTotal) { termination = 'ANNOUNCED_TOTAL_REACHED'; break; }
+  }
+
+  if (repeatedIds > 0) issues.add('REPEATED_IDS_ACROSS_PAGES');
+  const complete = declaredTotal != null && seen.size >= declaredTotal && issues.size === 0;
+  if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
+
+  return {
+    jobs, complete,
+    truncated: termination === 'PAGE_BUDGET_EXHAUSTED',
+    enumeration: {
+      method: 'PUBLISHER_TOTAL_HITS_WIDGETS', endpoint: `${origin}/widgets`,
+      pages, rawCount, termination, issues: [...issues],
+      scopes: [{ scope: 'global', declaredTotal: declaredTotal ?? -1, uniqueIds: seen.size, pages, complete }],
+      pageEvidence,
+    },
+  };
 }
