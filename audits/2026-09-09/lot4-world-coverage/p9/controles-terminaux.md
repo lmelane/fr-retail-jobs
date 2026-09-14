@@ -131,3 +131,53 @@ faire hors de ce périmètre.**
 *Déplacer l'URL sur `modecareers.com` a été essayé puis abandonné* : un test existant interdit au User-Agent
 de nommer le produit plutôt que l'opérateur, et il avait raison — cela aurait troqué une violation de D62
 contre une autre. Le test affirmait jusqu'ici la chaîne littérale ; il affirme désormais la propriété.
+
+## 8. Retour au chemin commun d'enregistrement et de promotion
+
+Les deux sources avaient été activées par un `source.update({ status: 'ACTIVE' })` ad hoc. Le contrôle
+consistait à prouver que le **chemin maintenu** (`cli.ts promote <clé>` → `promoteSource`) les accepte —
+c'est-à-dire à faire mordre ses six portes plutôt qu'à constater que la ligne « a l'air bonne ».
+
+**Répétition sur clone, et elle a commencé par un REFUS :**
+
+```
+promote: "hugo-boss-phenom" identity evidence does not match the
+         current employer/tenant/configuration
+```
+
+Diagnostic : la porte compare `review.sourceHash` à `sourceIdentityHash(source)`, **qui couvre la config**.
+Le clone portait la revue d'identité de **05:40** (empreinte `9f6a1dad`), antérieure à l'ajout de
+`localePath`, alors que sa config contenait déjà ce champ (`dc44418a`). **C'est D59 qui fonctionne** : une
+modification de configuration ré-émet la certification, et la revue périmée est refusée.
+
+En production, les revues ont bien été ré-émises à **06:18** : `hashOk = true`, verdict `VERIFIED`, méthode
+`OFFICIAL_LINK`. Après recopie de ces revues sur le clone, le chemin commun accepte :
+
+```
+{"ok": true, "command": "promote", "key": "hugo-boss-phenom", "from": "VALIDATED", "to": "ACTIVE"}
+{"ok": true, "command": "promote", "key": "skechers-phenom",  "from": "VALIDATED", "to": "ACTIVE"}
+```
+
+**État produit par le chemin commun == état de production**, comparé champ à champ (clé, statut, kind,
+maison, tenantKey, careersDomain, tier, config, robotsVerdict) : **différence nulle**. L'activation ad hoc
+avait atteint la bonne destination — c'est désormais prouvé, non supposé.
+
+## 9. Contrôle public final par identifiant — et un défaut de l'outil, pas du produit
+
+Cinq surfaces réconciliées par ensembles d'identifiants (base, API, sitemap, fiche HTTP, `JobPosting`) sur
+20 offres réparties par pays.
+
+Première exécution : **19/20**, une offre Skechers (Chili) « absente de l'API alors qu'active ». Avant de
+conclure à un défaut de publication, mesure de l'API elle-même :
+
+```
+Skechers   | 25 offres/page | pageCount 67 | total 1 656
+HUGO BOSS  | 25 offres/page | pageCount 32 | total  784
+```
+
+**L'API est exacte : 1 656 et 784, soit exactement la base.** Le défaut était dans l'outil de contrôle — sa
+boucle plafonnait à **50 pages**, soit 1 250 offres, et lisait les 406 suivantes comme absentes. *Une borne
+arbitraire dans l'instrument de mesure fabrique le défaut qu'il prétend mesurer.* La borne dérive désormais
+du `pageCount` annoncé, et un arrêt prématuré lève une erreur au lieu de rendre un ensemble partiel.
+
+Après correction : **2 440 identifiants d'API pour 2 440 offres actives en base — 20/20 conformes, 0 écart.**
