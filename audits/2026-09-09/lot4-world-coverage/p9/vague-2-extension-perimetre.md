@@ -81,34 +81,51 @@ Les 7 dossiers reçoivent chacun un verdict final. Un dossier non recevable est 
 Ces verdicts existaient avant P9. **Verdict : `EXCLU — HORS SECTEUR (décision antérieure)`** pour Galderma,
 **`BLOQUÉ — DÉCISION PROPRIÉTAIRE`** pour KSI Mode. Aucun des deux n'est rouvert de ma propre initiative.
 
-## Hugo Boss et Skechers : le portail est prouvé, l'ADAPTATEUR ne suffit pas
+## Hugo Boss et Skechers — CORRECTION : le protocole réel est établi
+
+### Ce que j'avais conclu à tort
+
+J'avais testé `/api/jobs`, **extrapolé du déploiement Foot Locker**, obtenu HTTP 500, et conclu
+« BLOQUÉ — nouvelle variante ATS ». *Un 500 sur un endpoint qu'on a deviné ne dit rien de la source* : il dit
+seulement que l'adaptateur encode le dialecte de Foot Locker. Les URLs officielles n'avaient pas été
+observées.
+
+### Le protocole réellement observé
+
+Les pages officielles déclarent elles-mêmes leur configuration `refineSearch` (facettes `category`,
+`country`, `state`, `city`, `hiringType`, `workExperience`, `contractType`). L'endpoint est
+**`POST /widgets`**, dialecte **CareerConnect** :
 
 | | Hugo Boss | Skechers |
 |---|---|---|
-| Portail | `careers.hugoboss.com` | `careers.skechers.com` |
-| Depuis | `group.hugoboss.com/en/career` (redirection officielle) | `about.skechers.com/careers/` |
-| ATS | Phenom (tenant `HUBOGLOBAL`) | Phenom |
-| Domaine officiel | ✔ | ✔ |
+| Portail officiel | `careers.hugoboss.com/global/en` | `careers.skechers.com/fr/fr/search-results` |
+| Endpoint **observé** | `POST https://careers.hugoboss.com/widgets` | `POST https://careers.skechers.com/widgets` |
+| `ddoKey` | `refineSearch` | `refineSearch` |
+| **Compteur éditeur** | **784** | **1 656** |
+| Pagination | `from` / `size` — `from=700` rend 10 offres distinctes | idem |
+| Identifiant natif | `jobSeqNo` (`HUBOGLOBAL142852EXTERNALENGLOBAL`) + `jobId` | idem |
+| Champs | titre, `category`, `country`, `cityState`, `dateCreated`, `descriptionTeaser`, `hiringType` | idem |
 
-Les deux sont sur leur propre domaine, et Phenom est une famille **déjà maîtrisée** — Foot Locker en tire
-2 842 offres. L'hypothèse « configuration + preuve, sans code » était donc raisonnable.
+### Le périmètre, mesuré et non supposé
 
-**Elle est fausse, et c'est mesuré :**
+**Skechers `/fr/fr` n'est PAS un sous-ensemble français** : `lang=fr country=France` et `lang=en
+country=global` rendent tous deux **1 656**. Le backend sert le périmètre mondial quelle que soit la locale —
+il n'y a donc pas de collecte multi-locale à construire, et la source ne sera pas réduite au marché français.
 
-```
-careers.footlocker.com/api/jobs?limit=5&page=1  ->  HTTP 200
-careers.hugoboss.com/api/jobs?limit=5&page=1    ->  HTTP 500
-careers.skechers.com/api/jobs?limit=5&page=1    ->  HTTP 500
-```
+**Hugo Boss** : le compteur de 784 est celui du portail global, toutes catégories. Retail et Sales &
+Omnichannel sont des **catégories**, pas la définition de la source ; la collecte partira de
+`careers.hugoboss.com/global/en` sans filtre de catégorie.
 
-**Phenom n'est pas une API uniforme** : chaque tenant déploie sa propre variante. L'adaptateur actuel encode
-le dialecte de Foot Locker.
+### Verdict corrigé
 
-**Verdict : `BLOQUÉ — NOUVELLE VARIANTE ATS À DÉVELOPPER` (catégorie F).** Le développement s'isole et
-n'empêche aucun autre dossier — c'est précisément la règle du brief §8.
+**`PORTAIL OFFICIEL PROUVÉ · ADAPTATEUR PHENOM ACTUEL NON COMPATIBLE · PROTOCOLE RÉEL QUALIFIÉ`**
 
-*Ce que ce constat évite* : configurer les deux sources « comme Foot Locker » les aurait fait entrer BROKEN au
-catalogue, avec deux Maisons majeures affichant zéro offre.
+L'identité, le portail et désormais **le protocole** sont établis. Ce qui reste est l'enrichissement de
+l'adaptateur **commun** : Phenom expose au moins deux dialectes — `FOOTLOCKER_API_JOBS` (`GET /api/jobs`) et
+`CAREER_CONNECT_WIDGETS` (`POST /widgets` + `ddoKey`). Le dialecte se choisira par **configuration explicite**,
+jamais par une cascade d'endpoints devinés.
+
+Ni réfutés, ni abandonnés : intégrables dès l'adaptateur enrichi.
 
 ## Zadig & Voltaire, Armor Lux, Gérard Darel
 
@@ -125,9 +142,11 @@ carrière officiel et le prouver par page archivée.
 | `EXCLU — SOURCE_DÉJÀ_COUVERTE` (au réexamen, avant gel) | 5 |
 | `EXCLU — HORS SECTEUR (décision antérieure)` | 1 (Galderma) |
 | `BLOQUÉ — DÉCISION PROPRIÉTAIRE` | 1 (KSI Mode) |
-| `BLOQUÉ — NOUVELLE VARIANTE ATS` | 2 (Hugo Boss, Skechers) |
+| `PORTAIL + PROTOCOLE PROUVÉS — adaptateur commun à enrichir` | 2 (Hugo Boss **784**, Skechers **1 656**) |
 | `BLOQUÉ — PORTAIL NON ÉTABLI` | 3 (Zadig & Voltaire, Armor Lux, Gérard Darel) |
 
-**Aucune offre unique ajoutée par cette vague en l'état.** Le vivier « le plus proche de l'intégration » ne
-contenait aucun dossier intégrable sans travail supplémentaire — c'est le fait mesuré, et il oriente la suite
-bien mieux qu'un dossier facile choisi ailleurs.
+**2 440 offres publiques sont désormais atteignables** (Hugo Boss 784 + Skechers 1 656), sur des portails
+officiels prouvés, avec un protocole qualifié. Elles ne sont pas encore collectées : l'adaptateur Phenom
+commun doit porter le dialecte `CAREER_CONNECT_WIDGETS` en plus de `FOOTLOCKER_API_JOBS`.
+
+C'est la prochaine action, et elle débloque deux Maisons majeures d'un coup.
