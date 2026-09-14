@@ -1,0 +1,19 @@
+{
+ "key": "claires-workday",
+ "maison": "Claire's",
+ "kind": "workday",
+ "tier": "EMPLOYER_DIRECT",
+ "config": {
+  "tenant": "claires",
+  "site": "Claires",
+  "origin": "https://claires.wd12.myworkdayjobs.com"
+ },
+ "careersDomain": "claires.wd12.myworkdayjobs.com",
+ "evidenceFile": "audits/2026-09-09/lot4-world-coverage/p10/vagues/preuves/claires-workday.html",
+ "officialDomain": "claires.com",
+ "proofUrl": "https://corporate.claires.com/",
+ "portalUrl": "https://claires.wd12.myworkdayjobs.com/Claires",
+ "portalScope": "SINGLE_BRAND",
+ "statement": "Le site corporate officiel claires.com lie explicitement le board Workday claires.wd12.myworkdayjobs.com/Claires depuis son appel a candidature ; page archivee et hachee le 2026-09-14.",
+ "cassette": "/tmp/p10-cassettes/claires"
+}

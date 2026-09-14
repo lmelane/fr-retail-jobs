@@ -1,0 +1,13 @@
+{
+ "sourceKey": "claires-workday",
+ "acteur": "CLAIRE'S",
+ "officialDomain": "claires.com",
+ "proofUrl": "https://corporate.claires.com/",
+ "finalUrl": "https://corporate.claires.com/",
+ "httpStatus": 200,
+ "mustContain": "myworkdayjobs",
+ "verdict": "PROVEN",
+ "sha256": "d99f30b7d3e85275d19fd05a0e58adb0f84eb505a3495874592772580a7146cf",
+ "excerpt": "<!-- <div class=\"hero-slide__cta\"> <a href=\"https://claires.wd12.myworkdayjobs.com/Claires\" class=\"primary-cta-button primary-cta-button-light cta-large\" target=\"_blank\">Learn more about our culture",
+ "at": "2026-09-14T09:02:25.305Z"
+}
