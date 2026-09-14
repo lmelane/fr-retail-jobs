@@ -3,6 +3,7 @@ import {
   accessDecision, ACCESS_SURFACES, isPublicJobSurface,
   type AccessSurface,
 } from '../lib/accessDecision.js';
+import { CRAWLER_IDENTITY, BOT_INFO_URL } from '../lib/crawlerIdentity.js';
 
 /**
  * LA DÉCISION D'ACCÈS — D62, 2026-09-13.
@@ -41,8 +42,8 @@ describe('décision d\'accès — observer, fonder, décider sont trois choses',
 
   it('porte l\'identité du crawler et l\'URL du bot', () => {
     const d = accessDecision({ robotsObserved: 'ALLOWED', accessSurface: 'PUBLIC_OFFICIAL_HTML' });
-    expect(d.crawlerIdentity).toBe('CatwalksBot/1.0 (+https://catwalks.io/bot)');
-    expect(d.botInfoUrl).toBe('https://catwalks.io/bot');
+    expect(d.crawlerIdentity).toBe(CRAWLER_IDENTITY);
+    expect(d.botInfoUrl).toBe(BOT_INFO_URL);
   });
 
   it('porte la portée et la date de la décision propriétaire', () => {

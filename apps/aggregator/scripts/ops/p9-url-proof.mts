@@ -16,12 +16,21 @@ const key = arg('key')!;
 const n = Number(arg('n') ?? 20);
 const p = new PrismaClient();
 
-// Échantillon RÉPARTI : par pays, pour ne pas prouver vingt fois la même forme d'URL.
+/**
+ * Échantillon RÉPARTI : on prend d'abord une offre par pays, puis on complète.
+ *
+ * Un simple `DISTINCT ON (countryCode)` plafonne au nombre de pays — Hugo Boss n'en couvre que 19, donc
+ * demander 20 preuves en aurait rendu 19 **sans le dire**. Le rang par pays règle les deux besoins à la
+ * fois : les premiers de chaque pays sortent d'abord (couverture), les suivants complètent (volume).
+ */
 const rows: any[] = await p.$queryRawUnsafe(
-  `SELECT DISTINCT ON (j."countryCode") j.url, j.title, j."countryCode", js."externalId"
-   FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
-   WHERE js."sourceKey" = $1 AND j."isActive" AND j.url IS NOT NULL
-   ORDER BY j."countryCode", j.id LIMIT $2`, key, n);
+  `SELECT url, title, "countryCode", "externalId" FROM (
+     SELECT j.url, j.title, j."countryCode", js."externalId",
+            ROW_NUMBER() OVER (PARTITION BY j."countryCode" ORDER BY j.id) rang
+     FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
+     WHERE js."sourceKey" = $1 AND j."isActive" AND j.url IS NOT NULL AND j.url <> ''
+   ) t ORDER BY rang, "countryCode" LIMIT $2`, key, n);
+if (rows.length < n) console.error(`ATTENTION : ${rows.length} offres échantillonnables pour ${n} demandées`);
 
 const results: any[] = [];
 for (const r of rows) {

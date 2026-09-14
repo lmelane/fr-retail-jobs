@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CRAWLER_IDENTITY, BOT_INFO_URL } from '../lib/crawlerIdentity.js';
@@ -19,8 +19,24 @@ const SRC = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 describe('identité du crawler (D62)', () => {
   it('est CatwalksBot/1.0 et porte l\'URL d\'information', () => {
-    expect(CRAWLER_IDENTITY).toBe('CatwalksBot/1.0 (+https://catwalks.io/bot)');
+    expect(CRAWLER_IDENTITY).toBe(`CatwalksBot/1.0 (+${BOT_INFO_URL})`);
+    expect(BOT_INFO_URL).toMatch(/^https:\/\/[^/]+\/bot$/);
+  });
+
+  /**
+   * L'URL d'information nomme l'OPÉRATEUR, et son contenu doit exister quelque part dans le dépôt.
+   *
+   * D62 en fait un préalable bloquant : tant que la page n'est pas servie, l'identité annoncée ne mène
+   * nulle part. Elle a rendu 404 pendant que le User-Agent la portait déjà sur chaque requête sortante,
+   * et aucun test ne l'a signalé — ils affirmaient la chaîne littérale, jamais la propriété.
+   *
+   * Ce test verrouille les deux moitiés vérifiables hors ligne : l'URL désigne bien Catwalks (pas le
+   * produit), et le contenu à publier est rédigé. Que le domaine la serve se mesure en ligne
+   * (`botInfoUrlIsServed`), pas ici.
+   */
+  it('nomme l\'opérateur, et le contenu à publier est rédigé', () => {
     expect(BOT_INFO_URL).toBe('https://catwalks.io/bot');
+    expect(existsSync(resolve(SRC, '../../web/app/bot/page.tsx'))).toBe(true);
   });
 
   it('n\'emprunte JAMAIS l\'identité d\'un tiers', () => {

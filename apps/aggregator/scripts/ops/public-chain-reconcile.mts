@@ -13,6 +13,7 @@
  */
 import { PrismaClient } from '@prisma/client';
 import { writeFileSync } from 'node:fs';
+import { readAllPages } from '../../src/ops/apiPagination.js';
 
 const arg = (n: string) => process.argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
 const jobIds = (arg('jobs') ?? '').split(',').map((s) => s.trim()).filter(Boolean);
@@ -42,18 +43,23 @@ async function readSitemapUrls(): Promise<{ urls: Set<string>; chunks: number; p
   return { urls, chunks: chunkUrls.length, problems };
 }
 
-/** L'API publique, paginée jusqu'au bout : s'arrêter à la première page inventerait des absences. */
+/**
+ * L'API publique, paginée JUSQU'AU BOUT via la lecture commune (`ops/apiPagination`).
+ *
+ * Le plafond était une constante de 50 pages. À 25 offres par page cela couvre 1 250 offres — Skechers en
+ * publie 1 656 sur **67 pages** : les 406 suivantes ressortaient « absentes de l'API » alors que l'API les
+ * sert parfaitement. La borne vient désormais du `pageCount` annoncé, et un arrêt prématuré LÈVE plutôt que
+ * de rendre un ensemble partiel qu'on lirait comme complet.
+ */
 async function readApiIds(maison: string): Promise<Set<string>> {
-  const ids = new Set<string>();
-  for (let page = 1; page <= 50; page++) {
+  const items = await readAllPages<string>(async (page) => {
     const r = await fetch(`${base}/api/jobs?maison=${encodeURIComponent(maison)}&page=${page}`);
-    if (!r.ok) break;
+    if (!r.ok) return null; // `null` = illisible : la lecture commune lèvera, elle ne tronquera pas.
     const d: any = await r.json();
-    const items: any[] = d.data ?? d.jobs ?? d.items ?? [];
-    for (const j of items) if (j?.id) ids.add(String(j.id));
-    if (!d.pageCount || page >= d.pageCount) break;
-  }
-  return ids;
+    const rows: any[] = d.data ?? d.jobs ?? d.items ?? [];
+    return { items: rows.filter((j) => j?.id).map((j) => String(j.id)), pageCount: d.pageCount };
+  }, `API ${maison}`);
+  return new Set(items);
 }
 
 const jobs = await prisma.job.findMany({
