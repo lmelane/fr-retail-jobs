@@ -7,7 +7,7 @@
 | Dossier | Mesure | Verdict |
 |---|---|---|
 | **ESSILORLUXOTTICA** | page carrière HTTP 200, mais l'adaptateur générique rend **0 offre** en 67 ms ; aucun lien d'ATS dans le HTML statique ; aucun hôte de board (`workday`, `successfactors`, `phenom`…) dans la source | **`OFFICIAL_PORTAL_NOT_PROVEN`** |
-| **C&A** | le `feedUrl` détecté pointe sur `/service/feedback` — une page de **réclamations**, pas un flux d'offres ; 0 offre ; `jobs.c-and-a.com` ne résout pas | **`OFFICIAL_PORTAL_NOT_PROVEN`** |
+| **C&A** | voir la section dédiée ci-dessous — le bon portail existe, le protocole est spécifique | **`NEW_ADAPTER_REQUIRED`** |
 
 ## Pourquoi ce n'est pas un abandon
 
@@ -27,3 +27,40 @@ n'est réfuté ; ils sont **non prouvés en l'état**.
 présence d'offres — seule l'exécution de l'adaptateur le dit, et elle coûte moins d'une seconde.*
 
 C'est pourquoi aucun dossier de ce lot n'a été admis sans que son adaptateur ait été **exécuté**.
+
+
+---
+
+## C&A — correction : le portail existe, et c'est le propriétaire qui l'a donné
+
+J'avais sondé `c-and-a.com` par gabarits et retenu `/fr/fr/shop`, dont la détection tirait un `feedUrl`
+pointant sur `/service/feedback` — **une page de réclamations**. Conclusion « portail non prouvé » : fausse,
+parce que fondée sur une URL que j'avais fabriquée et non observée (D33, exactement).
+
+Le propriétaire a donné l'URL réelle : **`https://www.c-and-a.com/fr/fr/corporate/company/jobs`**. Mesuré
+dessus :
+
+| Mesure | Valeur |
+|---|--:|
+| HTTP | **200**, 191 249 octets |
+| Structure trouvée dans la page | `__typename:"JobsFeed"` |
+| **Total annoncé par le portail** | **831 offres** |
+| Offres **inline** dans le HTML | **10** (`jobTilesIncrement: 10`) |
+| Locales servies | `de_DE`, `en_GB`, `fr_FR`, `hu_HU`, `nl_NL` |
+| Pays observés sur l'échantillon | CH, PT, DE, AT |
+
+*C'est une vraie source multi-marques européenne* : titre, slug, lieu, locale et catégorie sont présents par
+offre, dans les données d'hydratation de la page.
+
+**Ce qui manque pour l'intégrer** : les 821 autres offres arrivent par une pagination **côté client** —
+`?page=2` resert les dix mêmes, et les fiches ne sont **pas au sitemap** (vérifié sur `sitemap_index.xml` et
+`/fr/fr/sitemap.xml`). Aucun endpoint n'est lisible dans le HTML statique, et **je n'en devinerai pas un** :
+c'est l'erreur qui avait fait conclure « Hugo Boss bloqué » sur un `/api/jobs` extrapolé de Foot Locker.
+
+**Verdict : `NEW_ADAPTER_REQUIRED`.** Le brief l'autorise explicitement quand le protocole est réellement
+spécifique, à condition que le développement reste versionné, testé et réutilisable. Condition de reprise :
+observer la requête de pagination au rendu navigateur, puis écrire un adaptateur `jobsfeed` générique —
+**jamais un script « C&A »**, la structure `JobsFeed` étant celle d'un CMS et non d'une Maison.
+
+**Ce dossier ne bloque aucun autre**, et il vaut correction de méthode : *un gabarit d'URL n'est pas une
+source — y compris quand c'est moi qui l'ai fabriqué en sondant un domaine.*
