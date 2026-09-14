@@ -56,7 +56,7 @@ Aucun dossier « en cours ». Aucun dossier retiré après coup.
 
 | Sujet | État |
 |---|---|
-| **`catwalks.io/bot`** | **rend toujours 404** (mesuré après déploiement). D62 en fait un préalable bloquant, et le User-Agent le porte déjà sur chaque requête. La page existe désormais et **est servie en HTTP 200 sur `modecareers.com/bot`** (opérateur, périmètre, ce qui n'est jamais collecté, contact relevé, retrait par `robots.txt`) : il ne reste qu'à la **recopier sur `catwalks.io`**, autre dépôt que celui-ci ne déploie pas. `botInfoUrlIsServed()` permet de vérifier le préalable au lieu de le supposer. |
+| **`catwalks.io/bot`** | **LEVÉ le 2026-09-14.** La page est publiée dans le dépôt qui sert `catwalks.io` (`lmelane/catwalks-front-end`, commit `d17959a`) et répond **HTTP 200** sans authentification, prérendue en statique — donc lisible par un robot qui n'exécute pas JavaScript. Elle porte l'User-Agent **exact** (`CatwalksBot/1.0 (+https://catwalks.io/bot)`), nomme CATWALKS comme opérateur, décrit le périmètre collecté et ce qui ne l'est jamais, le comportement du robot, le contact relevé `contact@catwalks.io` et la procédure de retrait (courriel ou `robots.txt`). `botInfoUrlIsServed()` rend **true**. Preuve archivée et hachée : `p9/preuve-bot/`. |
 | Réserve stockage objet | non provisionné ; aucune purge d'observations n'a eu lieu |
 | Crons | **gelés** ; leur reprise reste une décision propriétaire (D57) |
 | `ralph-lauren-avature` | bloqué, condition de reprise écrite |
@@ -88,3 +88,44 @@ Six défauts ont été trouvés pendant P9. **Tous rendaient un résultat qui pa
 
 *Une borne arbitraire dans un instrument de mesure produit le défaut qu'elle prétend constater — et une
 garde qu'on croit armée est pire qu'une garde absente, parce qu'elle fait relire un run comme sûr.*
+
+---
+
+# Addendum — publication de `catwalks.io/bot` (2026-09-14)
+
+Le seul point qui empêchait la clôture est levé, et il l'a été **hors du dépôt de l'agrégateur** : la page
+vit désormais dans `lmelane/catwalks-front-end` (`src/app/bot/page.tsx`, commit `d17959a`), le dépôt
+Next.js/Vercel qui sert `catwalks.io`.
+
+**La page n'est pas une copie de celle de `modecareers.com`.** La chaîne affichée est celle que le
+collecteur présente réellement — `CatwalksBot/1.0 (+https://catwalks.io/bot)` — et l'ancienne URL n'y figure
+nulle part (0 occurrence mesurée). *Une page qui afficherait un autre User-Agent que celui réellement
+présenté serait pire que pas de page du tout.*
+
+| Contrôle exigé | Résultat |
+|---|---|
+| HTTP 200 depuis l'extérieur | **oui** (`text/html`, 35 920 o, aucune redirection sortante) |
+| Sans authentification | **oui** |
+| Ne dépend pas exclusivement de JavaScript | **oui** — route `○ (Static)` prérendue, contenu lisible scripts retirés |
+| User-Agent exact dans le corps | **oui** · `modecareers.com/bot` : **0 occurrence** |
+| Opérateur identifié | **oui** — CATWALKS, lien vers les mentions légales |
+| Périmètre public expliqué | **oui** — et ce qui n'est **jamais** collecté |
+| Comportement du robot | **oui** — rythme limité, `Retry-After`, `429`, préférence aux flux publics |
+| Contact réellement surveillé | **oui** — `contact@catwalks.io`, le support du site |
+| Retrait et signalement | **oui** — courriel, et `User-agent: CatwalksBot / Disallow: /` |
+| `botInfoUrlIsServed()` | **true**, code de sortie 0 |
+
+Preuve archivée et hachée : `p9/preuve-bot/` — page complète + sha256
+`bc33fe34b39bd152ec5d5c46aa49fca2bd1c9d09d6bf6450ac3a36fb94cfae5e` + en-têtes relevés.
+
+**Aucune ingestion n'a été relancée**, aucun contrôle déjà validé n'a été refait, aucun travail réceptionné
+n'a été rouvert.
+
+## Ce que la clôture de P9 ne vaut PAS
+
+Elle **n'autorise pas** la réactivation des crons, qui restent gelés (`0 0 29 2 *`, `PIPELINE_PAUSED=1`) et
+dont la reprise demeure une décision propriétaire distincte (D57).
+
+La **réserve de stockage objet distant** reste entière et continue de bloquer, indépendamment de P9 :
+la réactivation automatique des crons · l'extension massive en production · toute purge réelle
+d'observations. Aucune de ces trois opérations n'est engagée par la présente clôture.
