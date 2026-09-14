@@ -1,4 +1,4 @@
-# Built from the repo root: the web app imports @catwalks/db, so the workspace
+# Built from the repo root: the API imports @catwalks/db, so the workspace
 # must be present. Alpine is fine here — unlike the aggregator, no Chromium.
 FROM node:22-alpine AS builder
 WORKDIR /repo
@@ -10,7 +10,7 @@ RUN npm ci --workspaces --include-workspace-root
 COPY packages/db packages/db
 COPY apps/api apps/api
 RUN npx prisma generate --schema packages/db/prisma/schema.prisma
-RUN npm run build -w @catwalks/web
+RUN npm run build -w @catwalks/api
 
 # Only the locked database workspace dependencies are needed by the migration
 # hook. Keep them separate from Next's standalone runtime and other workspaces.
