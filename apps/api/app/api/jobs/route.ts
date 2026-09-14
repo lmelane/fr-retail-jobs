@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { DatabaseUnavailableError, getJobs, parseFilters } from '@/lib/jobs';
 import { projeterListe } from '@/lib/projection';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
+import { paramsMultiples } from '@/lib/params-multiples';
 
 /**
  * Page 2+ of the offer list, for infinite scroll — et, depuis F1 (D-417),
@@ -38,7 +39,9 @@ export async function GET(request: NextRequest) {
   const refus = refuserSiCleInvalide(request, requestId);
   if (refus) return refus;
   const debut = Date.now();
-  const params = Object.fromEntries(request.nextUrl.searchParams);
+  // D-426 : PAS `Object.fromEntries` — il ne garde qu'une valeur par clé et
+  // annulerait le multi-valeurs avant même d'atteindre le parseur.
+  const params = paramsMultiples(request.nextUrl.searchParams);
   const filters = parseFilters(params);
   const liste = request.nextUrl.searchParams.get('champs') === 'liste';
 

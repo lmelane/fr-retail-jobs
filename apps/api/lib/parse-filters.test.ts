@@ -26,26 +26,26 @@ describe('parseFilters — le paramètre de durée d’emploi', () => {
     parseFilters(Object.fromEntries(new URLSearchParams(qs).entries()));
 
   it('lit le paramètre canonique', () => {
-    expect(filters('employmentTerm=PERMANENT').employmentTerm).toBe('PERMANENT');
+    expect(filters('employmentTerm=PERMANENT').employmentTerms).toEqual(['PERMANENT']);
   });
 
   it('accepte encore l’ancien ?contrat= — les liens partagés continuent de marcher', () => {
-    expect(filters('contrat=FIXED_TERM').employmentTerm).toBe('FIXED_TERM');
+    expect(filters('contrat=FIXED_TERM').employmentTerms).toEqual(['FIXED_TERM']);
   });
 
   it('le paramètre canonique l’emporte quand les deux sont présents', () => {
-    expect(filters('contrat=FIXED_TERM&employmentTerm=PERMANENT').employmentTerm).toBe('PERMANENT');
+    expect(filters('contrat=FIXED_TERM&employmentTerm=PERMANENT').employmentTerms).toEqual(['PERMANENT']);
   });
 
   it('rend undefined quand aucun n’est fourni', () => {
-    expect(filters('ville=Paris').employmentTerm).toBeUndefined();
+    expect(filters('ville=Paris').employmentTerms).toBeUndefined();
   });
 
   /** Les autres paramètres restent en français : ils n'ont jamais désigné une taxonomie. */
   it('ne touche pas aux autres paramètres visibles', () => {
     const f = filters('ville=Paris&secteur=LUXURY&pays=FR');
     expect(f.city).toBe('Paris');
-    expect(f.sector).toBe('LUXURY');
-    expect(f.country).toBe('FR');
+    expect(f.sectors).toEqual(['LUXURY']);
+    expect(f.countries).toEqual(['FR']);
   });
 });

@@ -58,15 +58,25 @@ export class DatabaseUnavailableError extends Error {
  *  - city                     -> the collapsed location (Paris 8 -> PARIS)
  *  - source                   -> which connector saw the offer
  */
+/**
+ * D-426 — les dimensions à facettes portent PLUSIEURS valeurs (pluriel dans le
+ * nom, `in` en SQL). Le pluriel n'est pas cosmétique : il rend impossible de
+ * réintroduire une égalité simple par distraction, parce que le type ne
+ * compile plus.
+ *
+ * Restent au singulier, et c'est volontaire : `q` (une recherche), `ville` et
+ * `fonction` (valeurs d'autocomplétion uniques), `lieu` (une intention de
+ * lieu, D-418 §3), `source` (usage interne).
+ */
 export type JobFilters = {
   q?: string;
-  occupation?: string;
+  occupations?: string[];
   jobFunction?: string;
-  sector?: string;
-  employmentTerm?: string;
-  workTime?: string;
-  programType?: string;
-  engagementType?: string;
+  sectors?: string[];
+  employmentTerms?: string[];
+  workTimes?: string[];
+  programTypes?: string[];
+  engagementTypes?: string[];
   city?: string;
   /**
    * Ville en correspondance LARGE (égalité, préfixe, ou présence dans
@@ -78,13 +88,13 @@ export type JobFilters = {
   remote?: boolean;
   /** Ce que le moteur a compris du champ « lieu », pour l'afficher tel quel. */
   lieuResolu?: { type: 'pays' | 'ville' | 'teletravail'; libelle: string };
-  group?: string;
-  maison?: string;
+  groups?: string[];
+  maisons?: string[];
   source?: string;
-  /** Canonical country code (FR, IT, US…); undefined means every country. */
-  country?: string;
-  /** Langue de l'offre (ISO-639-1), facette « Langue » (D-419 §3). */
-  language?: string;
+  /** Codes pays canoniques (FR, IT, US…) ; `undefined` = tous les pays. */
+  countries?: string[];
+  /** Langues de l'offre (ISO-639-1), facette « Langue » (D-419 §3). */
+  languages?: string[];
   /**
    * D-419 §2 — le pays du visiteur : ses offres d'abord, puis le reste du
    * monde, chaque groupe du plus récent au plus ancien. Jamais un filtre.
@@ -103,10 +113,39 @@ export type JobFilters = {
  * and a mapping that drifts between them would make page 1 (server-rendered)
  * and page 2+ (fetched client-side) silently disagree on what a filter means.
  */
+/**
+ * D-426 — plafond du nombre de valeurs par filtre.
+ *
+ * Sans lui, `?pays=` répété mille fois construirait une clause SQL de mille
+ * termes depuis une simple URL publique. 12 dépasse largement l'usage réel
+ * (119 pays au catalogue, mais personne n'en coche douze à la main) et reste
+ * le MÊME plafond que celui du site, pour qu'une URL acceptée par l'un ne
+ * soit pas tronquée en silence par l'autre.
+ */
+export const MAX_VALUES = 12;
+
 export function parseFilters(params: Record<string, string | string[] | undefined>): JobFilters {
   const one = (key: string) => {
     const value = params[key];
     return (Array.isArray(value) ? value[0] : value)?.trim().slice(0, 200) || undefined;
+  };
+
+  /**
+   * TOUTES les valeurs d'une clé (D-426), dédoublonnées, chacune bornée en
+   * longueur comme `one`, l'ensemble borné en nombre. Accepte les deux formes :
+   * `?pays=FR` (liens déjà partagés) et `?pays=FR&pays=IT`.
+   */
+  const many = (key: string): string[] | undefined => {
+    const value = params[key];
+    if (value === undefined) return undefined;
+    const brut = Array.isArray(value) ? value : [value];
+    const vues = new Set<string>();
+    for (const x of brut) {
+      const propre = x?.trim().slice(0, 200);
+      if (propre) vues.add(propre);
+      if (vues.size >= MAX_VALUES) break;
+    }
+    return vues.size ? [...vues] : undefined;
   };
 
   const page = Number(one('page'));
@@ -116,21 +155,26 @@ export function parseFilters(params: Record<string, string | string[] | undefine
   // are reachable from the search box, not hidden behind a filter they never
   // open. `pays=<code>` (e.g. FR, IT) narrows to that country; `pays=monde` is
   // still accepted as an explicit "all countries" for shared/legacy links.
-  const rawCountry = one('pays');
-  const paysExplicite = rawCountry === undefined || rawCountry === 'monde' ? undefined : rawCountry;
+  // D-426 : plusieurs pays possibles. `monde` reste le « tous pays » explicite,
+  // et il est RETIRÉ de la liste plutôt que traité comme un code : cumulé par
+  // erreur avec un vrai code, il ne doit pas produire un pays fantôme.
+  const paysBruts = many('pays')?.filter((v) => v !== 'monde');
+  const paysExplicite = paysBruts?.length ? paysBruts : undefined;
 
   // `lieu` (D-418 §3) : ce qu'une personne tape — ville, pays, code. Résolu
   // ici, côté moteur. Un `pays` ou une `ville` explicites gardent la main :
   // ce sont les facettes, plus précises qu'une saisie libre.
   const lieu = resolveLieu(one('lieu'));
-  const country = paysExplicite ?? (lieu?.type === 'pays' ? lieu.country : undefined);
+  const countries = paysExplicite ?? (lieu?.type === 'pays' ? [lieu.country] : undefined);
   const cityLoose = one('ville') === undefined && lieu?.type === 'ville' ? lieu.cityLoose : undefined;
   const remote = lieu?.type === 'teletravail' ? true : undefined;
   const lieuResolu = lieu ? { type: lieu.type, libelle: lieu.libelle } : undefined;
 
   return {
     q: one('q'),
-    occupation: one('metier'),
+    // D-426 : les dimensions à facettes sont multi-valeurs (`in` SQL) ; `ville`
+    // et `fonction` restent mono — ce sont des valeurs d'autocomplétion uniques.
+    occupations: many('metier'),
     jobFunction: one('fonction'),
     city: one('ville'),
     cityLoose,
@@ -146,22 +190,25 @@ export function parseFilters(params: Record<string, string | string[] | undefine
      * L'interface, elle, continue d'écrire « Contrat » et « CDI » : c'est la
      * couche de localisation, pas le modèle.
      */
-    employmentTerm: one('employmentTerm') ?? one('contrat'),
-    workTime: one('workTime'), programType: one('programType'), engagementType: one('engagementType'),
-    sector: one('secteur'),
-    maison: one('maison'),
-    group: one('groupe'),
+    employmentTerms: many('employmentTerm') ?? many('contrat'),
+    workTimes: many('workTime'),
+    programTypes: many('programType'),
+    engagementTypes: many('engagementType'),
+    sectors: many('secteur'),
+    maisons: many('maison'),
+    groups: many('groupe'),
     source: one('source'),
-    country,
-    language: normalizedLanguage(one('langue')),
+    countries,
+    languages: normalizedLanguages(many('langue')),
     priorityCountry: normalizedPriority(one('prioritePays')),
     page: normalizedPage(page),
   };
 }
 
 /** Deux lettres ISO-639-1 en minuscules, sinon rien : jamais une valeur libre en SQL. */
-function normalizedLanguage(v: string | undefined): string | undefined {
-  return v && /^[a-z]{2}$/i.test(v) ? v.toLowerCase() : undefined;
+function normalizedLanguages(vs: string[] | undefined): string[] | undefined {
+  const ok = vs?.filter((v) => /^[a-z]{2}$/i.test(v)).map((v) => v.toLowerCase());
+  return ok?.length ? ok : undefined;
 }
 /** Deux lettres ISO-3166 en majuscules, sinon rien. */
 function normalizedPriority(v: string | undefined): string | undefined {
@@ -290,66 +337,110 @@ export function whereClause(filters: JobFilters) {
   // share ONE `company` object. Three separate `company:` spreads collided —
   // duplicate keys in an object literal keep only the last, so combining them
   // silently dropped all but Groupe. Merge them into a single relation filter.
-  const sector = validSector(filters.sector);
-  const company = {
-    ...(filters.maison ? companyIdentityWhere(filters.maison) : {}),
-    ...(sector ? sectorWhere(sector) : {}),
-    ...(filters.group ? { parentGroup: filters.group } : {}),
-  };
+  /*
+   * D-426 — chaque dimension devient un `OR` de ses valeurs, et PLUSIEURS
+   * dimensions coexistent maintenant sur la même relation `company`.
+   *
+   * Le piège est documenté juste au-dessus et il empire ici : deux clés `OR`
+   * dans un même objet littéral, la seconde écrase la première en silence, et
+   * le filtre disparaît sans erreur. `companyIdentityWhere` rend déjà un `OR`.
+   * D'où `AND: [...]` — chaque dimension apporte son propre bloc, aucune ne
+   * peut plus en écraser une autre.
+   */
+  const sectors = filters.sectors?.map(validSector).filter((s): s is string => Boolean(s)) ?? [];
+  const companyAnd = [
+    ...(filters.maisons?.length ? [{ OR: filters.maisons.map((m) => companyIdentityWhere(m)) }] : []),
+    ...(sectors.length ? [{ OR: sectors.map((s) => sectorWhere(s)) }] : []),
+    ...(filters.groups?.length ? [{ parentGroup: { in: filters.groups } }] : []),
+  ];
+  const company = companyAnd.length ? { AND: companyAnd } : {};
 
   return {
     isActive: true,
     // No forced isFrance (decision D10): the board shows every country, and the
     // Pays filter narrows it. France uses the reliable isFrance flag; other
     // countries match the raw `country` spellings that map to their code.
-    ...countryCondition(filters.country),
-    ...(filters.occupation ? { occupationCode: filters.occupation === 'unclassified' ? null : filters.occupation } : {}),
+    /*
+     * D-426 — `AND` explicite plutôt que des clés `OR` concurrentes.
+     *
+     * `countryCondition` rend un `OR` (les orthographes d'un pays), `cityLoose`
+     * aussi (égalité / préfixe / location), et chaque dimension multi-valeurs
+     * en ajoute un. Posés comme clés d'un même objet littéral, tous sauf le
+     * dernier disparaîtraient SANS ERREUR — une recherche filtrée sur deux pays
+     * ET une ville aurait rendu la ville seule, donc des offres hors périmètre
+     * présentées comme conformes. C'est exactement le mode de panne que le
+     * commentaire de `company` décrit plus haut, à plus grande échelle.
+     */
+    AND: [
+      /*
+       * La recherche texte vit ICI, dans le MÊME `AND` que les filtres.
+       * Elle avait sa propre clé `AND` au niveau de l'objet : deux clés `AND`
+       * dans un littéral, et la seconde efface la première. Les filtres D-426
+       * auraient donc été supprimés par toute recherche portant un mot-clé —
+       * cocher deux pays puis taper « vendeuse » aurait rendu le monde entier.
+       *
+       * Chaque terme doit apparaître dans AU MOINS UN champ : « vendeuse paris »
+       * exige les deux mots, pas dans la même colonne.
+       */
+      ...terms.map((term) => ({
+        OR: [
+          { title: { contains: term, mode: 'insensitive' as const } },
+          { description: { contains: term, mode: 'insensitive' as const } },
+          { city: { contains: term, mode: 'insensitive' as const } },
+          { location: { contains: term, mode: 'insensitive' as const } },
+          { department: { contains: term, mode: 'insensitive' as const } },
+          { employmentTerm: { contains: term, mode: 'insensitive' as const } },
+          // A brand and its parent are the same search. "sandro" has to
+          // reach offers a group portal filed under "SMCP", and "smcp" has
+          // to reach every brand beneath it.
+          ...expandCompanyTerm(term).flatMap((name) => [
+            { company: companyIdentityWhere(name, 'contains') },
+            { company: { parentGroup: { contains: name, mode: 'insensitive' as const } } },
+          ]),
+        ],
+      })),
+      ...(filters.countries?.length
+        ? [{ OR: filters.countries.map((c) => countryCondition(c)) }]
+        : []),
+      ...(filters.occupations?.length
+        ? [
+            {
+              OR: filters.occupations.map((o) => ({
+                // « Métier à préciser » (D-419 §4) reste sélectionnable : c'est
+                // l'absence de code, pas une valeur.
+                occupationCode: o === 'unclassified' ? null : o,
+              })),
+            },
+          ]
+        : []),
+      // Même règle large que `searchSummary` : égalité, préfixe, ou présence
+      // dans `location` — les deux chemins ne doivent jamais diverger.
+      ...(filters.cityLoose
+        ? [
+            {
+              OR: [
+                { city: { equals: filters.cityLoose, mode: 'insensitive' as const } },
+                { city: { startsWith: filters.cityLoose, mode: 'insensitive' as const } },
+                { location: { contains: filters.cityLoose, mode: 'insensitive' as const } },
+              ],
+            },
+          ]
+        : []),
+    ],
     ...(filters.jobFunction ? { jobFunction: filters.jobFunction } : {}),
     // Case-insensitive: the facet value is canonical ("Paris") but the column
     // holds mixed spellings ("PARIS", "Paris"), so an exact match dropped half.
     ...(filters.city ? { city: { equals: filters.city, mode: 'insensitive' as const } } : {}),
-    // Même règle large que `searchSummary` : égalité, préfixe, ou présence
-    // dans `location` — les deux chemins ne doivent jamais diverger.
-    ...(filters.cityLoose
-      ? {
-          OR: [
-            { city: { equals: filters.cityLoose, mode: 'insensitive' as const } },
-            { city: { startsWith: filters.cityLoose, mode: 'insensitive' as const } },
-            { location: { contains: filters.cityLoose, mode: 'insensitive' as const } },
-          ],
-        }
-      : {}),
     ...(filters.remote ? { workplaceType: 'REMOTE' } : {}),
-    ...(filters.language ? { language: filters.language } : {}),
-    ...(filters.employmentTerm ? { employmentTerm: filters.employmentTerm } : {}),
-    ...(filters.workTime ? { workTime: filters.workTime } : {}),
-    ...(filters.programType ? { programType: filters.programType } : {}),
-    ...(filters.engagementType ? { engagementType: filters.engagementType } : {}),
+    // `in` : union des valeurs d'une même dimension (cocher CDI ET CDD montre
+    // les deux), intersection entre dimensions différentes.
+    ...(filters.languages?.length ? { language: { in: filters.languages } } : {}),
+    ...(filters.employmentTerms?.length ? { employmentTerm: { in: filters.employmentTerms } } : {}),
+    ...(filters.workTimes?.length ? { workTime: { in: filters.workTimes } } : {}),
+    ...(filters.programTypes?.length ? { programType: { in: filters.programTypes } } : {}),
+    ...(filters.engagementTypes?.length ? { engagementType: { in: filters.engagementTypes } } : {}),
     ...(Object.keys(company).length ? { company } : {}),
     ...(filters.source ? { sources: { some: { sourceKey: filters.source, isActive: true } } } : {}),
-    // Each term must appear in SOME field, so "vendeuse paris" needs both words
-    // but not in the same column.
-    ...(terms.length
-      ? {
-          AND: terms.map((term) => ({
-            OR: [
-              { title: { contains: term, mode: 'insensitive' as const } },
-              { description: { contains: term, mode: 'insensitive' as const } },
-              { city: { contains: term, mode: 'insensitive' as const } },
-              { location: { contains: term, mode: 'insensitive' as const } },
-              { department: { contains: term, mode: 'insensitive' as const } },
-              { employmentTerm: { contains: term, mode: 'insensitive' as const } },
-              // A brand and its parent are the same search. "sandro" has to
-              // reach offers a group portal filed under "SMCP", and "smcp" has
-              // to reach every brand beneath it.
-              ...expandCompanyTerm(term).flatMap((name) => [
-                { company: companyIdentityWhere(name, 'contains') },
-                { company: { parentGroup: { contains: name, mode: 'insensitive' as const } } },
-              ]),
-            ],
-          })),
-        }
-      : {}),
   };
 }
 
