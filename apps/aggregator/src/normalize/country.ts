@@ -266,9 +266,23 @@ export function countryFromLocation(location?: string | null): string | undefine
    */
   const avantDernierMaj = avantDernier.trim().toUpperCase();
 
-  /* « Munich, BY, de » / « Toronto, ON, CA » : la subdivision précède le pays. */
+  /*
+   * LA PREUVE DE SUBDIVISION EXIGE UN CODE À DEUX LETTRES, EXACTEMENT.
+   *
+   * Une première version testait `/^[A-Z]{2,3}$/`. C'était un trou béant, et
+   * l'audit défensif du 14/09/2026 l'a démontré par exécution : `US_STATE_CODES`
+   * ne contient QUE des codes à deux lettres (51 clés, toutes de longueur 2),
+   * donc une abréviation informelle à trois lettres — `ARK`, `IND`, `KEN`,
+   * `VIR`, `ILL`, `ORE` — satisfaisait la regex sans jamais pouvoir être
+   * reconnue comme un État. `porteDejaUneSubdivision` passait à vrai À TORT et
+   * annulait la garde entière.
+   *
+   * Conséquence mesurée : « Indianapolis, IND, IN » rendait de nouveau `IN`
+   * (Inde). QUATRE des six cas de production étaient rouverts, et le témoin
+   * restait vert parce qu'aucun de ses cas n'avait de troisième segment.
+   */
   const porteDejaUneSubdivision =
-    /^[A-Z]{2,3}$/.test(avantDernierMaj) && !US_STATE_CODES.has(avantDernierMaj);
+    /^[A-Z]{2}$/.test(avantDernierMaj) && !US_STATE_CODES.has(avantDernierMaj);
 
   const suspectUs =
     segments.length >= 2 &&
@@ -277,25 +291,79 @@ export function countryFromLocation(location?: string | null): string | undefine
     US_STATE_CODES.has(dernier) &&
     !porteDejaUneSubdivision;
 
+  /*
+   * LA GARDE S'APPLIQUE AUX TROIS BRANCHES, PAS À UNE SEULE.
+   *
+   * Le même audit a montré que la garde n'était consultée que dans la branche
+   * `direct`. Les deux autres la contournaient intégralement :
+   *
+   *     « Florence, KY-403 »  → KY (Îles Caïmans)   via `prefixed`
+   *     « Florence (KY) »     → KY (Îles Caïmans)   via `parenthesised`
+   *
+   * Un correctif qui ne ferme qu'un chemin sur trois ne ferme rien : une
+   * chaîne ne vaut que par son maillon le plus permissif — le défaut même que
+   * ce fichier corrige. La garde vit donc dans UNE fonction, consultée
+   * partout où un code est sur le point d'être accepté comme pays.
+   *
+   * Elle ne dépend plus de la POSITION du segment : « KY, Florence » place le
+   * code en tête, et rendait « Îles Caïmans » parce que la comparaison portait
+   * sur le dernier segment. Un code d'État reste un code d'État où qu'il soit.
+   */
+  const estIndecidable = (code: string): boolean =>
+    suspectUs && code.trim().toUpperCase() === dernier;
+
+  /*
+   * Le cas « code d'État en tête » (« IN, Indianapolis ») : `suspectUs` ne
+   * peut pas s'appliquer, puisqu'il décrit la forme « Ville, XX ». On le
+   * traite par son propre critère — un code collisionnant ET État américain,
+   * dans un libellé de plusieurs segments, sans subdivision étrangère pour
+   * prouver le contraire, reste indécidable quelle que soit sa place.
+   */
+  const estEtatUsAmbigu = (code: string, contexte: string): boolean => {
+    const maj = code.trim().toUpperCase();
+    /*
+     * Le code doit être ACCOMPAGNÉ dans le libellé — un code seul (« MA »,
+     * « KY ») reste un pays, faute de tout autre indice.
+     *
+     * Le critère ne peut pas être `segments.length >= 2` : « Florence (KY) »
+     * est UN seul segment, et l'audit a montré que cette forme contournait
+     * la garde pour cette exact raison. Ce qui compte est que le code soit
+     * accompagné de quelque chose d'autre DANS son propre segment ou dans le
+     * libellé — une ville, typiquement.
+     */
+    const accompagne = segments.length >= 2 || contexte.trim().toUpperCase() !== maj;
+    return (
+      accompagne &&
+      /^[A-Z]{2}$/.test(maj) &&
+      COLLIDING_CODES.has(maj) &&
+      US_STATE_CODES.has(maj) &&
+      !porteDejaUneSubdivision
+    );
+  };
+
   for (const segment of [...segments].reverse()) {
     const direct = normalizeCountry(segment);
     if (direct) {
-      if (suspectUs && segment.trim().toUpperCase() === dernier) {
-        // Indécidable sans preuve indépendante : on s'abstient, on n'invente
-        // ni le pays étranger ni les États-Unis.
-        return undefined;
-      }
+      // Indécidable sans preuve indépendante : on s'abstient, on n'invente
+      // ni le pays étranger ni les États-Unis.
+      if (estIndecidable(segment) || estEtatUsAmbigu(segment, segment)) return undefined;
       return direct;
     }
     const prefixed = segment.match(/^([A-Za-z]{2})-[A-Za-z0-9]{1,3}$/);
     if (prefixed) {
       const code = normalizeCountry(prefixed[1]);
-      if (code) return code;
+      if (code) {
+        if (estEtatUsAmbigu(prefixed[1], segment)) return undefined;
+        return code;
+      }
     }
     const parenthesised = segment.match(/\(([^)]+)\)\s*$/);
     if (parenthesised) {
       const code = normalizeCountry(parenthesised[1]);
-      if (code) return code;
+      if (code) {
+        if (estEtatUsAmbigu(parenthesised[1], segment)) return undefined;
+        return code;
+      }
     }
   }
   return undefined;

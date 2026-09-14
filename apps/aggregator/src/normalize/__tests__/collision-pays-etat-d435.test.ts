@@ -102,6 +102,63 @@ describe('un code d’État américain ne devient pas un pays (D-435)', () => {
     expect(countryFromLocation('Mumbai, India')).toBe('IN');
   });
 
+  /*
+   * ── CE QUE L'AUDIT DÉFENSIF A TROUVÉ, ET QUE CE TÉMOIN NE VOYAIT PAS ──────
+   *
+   * La première version de ce fichier passait 10/10 alors que le correctif
+   * était contourné par TROIS formes de libellé plausibles. Elle n'exerçait
+   * qu'un sous-ensemble : deux segments, code à deux lettres, sans forme
+   * préfixée ni parenthésée — « un témoin qui ne peut que réussir ».
+   *
+   * Les trois blocs qui suivent couvrent chacun un contournement PROUVÉ par
+   * exécution le 14/09/2026. Ils sont la raison d'être du correctif élargi.
+   */
+
+  it('un avant-dernier segment à TROIS lettres n’annule pas la garde', () => {
+    /*
+     * PRÉMISSE — `US_STATE_CODES` ne contient QUE des codes à deux lettres
+     * (51 clés, toutes de longueur 2). Sans cette assertion, on ne saurait pas
+     * que `ARK`/`IND` sont structurellement incapables d'y figurer, ce qui est
+     * EXACTEMENT le mécanisme du contournement.
+     */
+    for (const abbr of ['ARK', 'IND', 'KEN', 'VIR', 'ILL']) {
+      expect(abbr.length, 'la prémisse porte bien sur une abréviation à 3 lettres').toBe(3);
+    }
+
+    // Le défaut : ces abréviations passaient pour des subdivisions étrangères.
+    expect(countryFromLocation('Indianapolis, IND, IN')).toBeUndefined();
+    expect(countryFromLocation('North Little Rock, ARK, AR')).toBeUndefined();
+    expect(countryFromLocation('Florence, KEN, KY')).toBeUndefined();
+    expect(countryFromLocation('Richmond, VIR, VA')).toBeUndefined();
+    expect(countryFromLocation('Champaign, ILL, IL')).toBeUndefined();
+  });
+
+  it('les formes PRÉFIXÉE et PARENTHÉSÉE ne contournent pas la garde', () => {
+    /*
+     * PRÉMISSE — ces deux branches résolvent bien un pays quand il est
+     * légitime ; sans cela, le témoin passerait au vert sur une branche morte.
+     */
+    expect(countryFromLocation('Paris, FR-75'), 'la branche préfixée fonctionne').toBe('FR');
+    expect(countryFromLocation('Lyon (FR)'), 'la branche parenthésée fonctionne').toBe('FR');
+
+    // Le défaut : la garde n'était consultée que dans la branche `direct`.
+    expect(countryFromLocation('Florence, KY-403')).toBeUndefined();
+    expect(countryFromLocation('Richmond, VA-232')).toBeUndefined();
+    expect(countryFromLocation('Indianapolis, IN-462')).toBeUndefined();
+    expect(countryFromLocation('Florence (KY)')).toBeUndefined();
+    expect(countryFromLocation('Richmond (VA)')).toBeUndefined();
+    expect(countryFromLocation('North Little Rock (AR)')).toBeUndefined();
+  });
+
+  it('un code d’État en PREMIÈRE position reste indécidable', () => {
+    /*
+     * La garde comparait le code au DERNIER segment ; un code en tête y
+     * échappait. Un code d'État reste un code d'État où qu'il soit placé.
+     */
+    expect(countryFromLocation('IN, Indianapolis')).toBeUndefined();
+    expect(countryFromLocation('KY, Florence')).toBeUndefined();
+  });
+
   it('une subdivision NON américaine prouve que le dernier segment est un pays', () => {
     /*
      * C'est le critère qui remplace la liste de « pays majeurs » — laquelle
