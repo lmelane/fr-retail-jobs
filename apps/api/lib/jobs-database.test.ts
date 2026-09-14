@@ -20,7 +20,7 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     await cleanup();
     await prisma.company.createMany({ data: Array.from({ length: 301 }, (_, i) => ({
       id: `${prefix}${i}`, name: `${prefix}${i}`, canonicalKey: `${prefix}${i}`,
-      fashionjobsUrl: `resolved:${prefix}${i}`, sectors: ['LUXURY'] as const, parentGroup: group,
+      fashionjobsUrl: `resolved:${prefix}${i}`, sector: 'LUXURY' as const, parentGroup: group,
     })) });
     await prisma.job.createMany({ data: Array.from({ length: 301 }, (_, i) => ({
       id: `${prefix}${String(i).padStart(3, '0')}`, companyId: `${prefix}${i}`, externalId: String(i),
