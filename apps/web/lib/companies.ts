@@ -61,9 +61,13 @@ export type CompanyFilters = {
 export function parseCompanyFilters(
   params: Record<string, string | string[] | undefined>,
 ): CompanyFilters {
+  // Borne de longueur MIROIR de `parseFilters` (jobs.ts) : l'annuaire n'avait
+  // pas la sienne, et un appel direct à l'API (hors site, qui tronque déjà à
+  // 120) pouvait pousser une chaîne sans limite dans un `contains` SQL.
+  // Audit sécurité du 14/09/2026, défense en profondeur.
   const one = (key: string) => {
     const value = params[key];
-    return (Array.isArray(value) ? value[0] : value)?.trim() || undefined;
+    return (Array.isArray(value) ? value[0] : value)?.trim().slice(0, 200) || undefined;
   };
   const page = Number(one('page'));
 
