@@ -295,8 +295,8 @@ export function countryFromLocation(location?: string | null): string | undefine
    * L'Allemagne et le Canada n'ont AUCUNE subdivision homonyme.
    *
    * CE QUI FONCTIONNE DÉJÀ, SANS CODE SUPPLÉMENTAIRE. Quand le dernier segment
-   * est un code pays qui n'est pas un État américain — `IT`, `ES` — `suspectUs`
-   * est faux par construction, et le pays est rendu correctement :
+   * est un code pays qui n'est pas un État américain — `IT`, `ES` — la garde
+   * ne mord pas, et le pays est rendu correctement :
    *
    *     « Milan, MI, IT »    → IT        « Malaga, MA, ES »    → ES
    *     « Mumbai, MH, IN »   → IN        « Louisville, KY, US » → US
@@ -321,13 +321,6 @@ export function countryFromLocation(location?: string | null): string | undefine
    * En attendant, on s'abstient plutôt que d'inventer : une case vide se
    * répare, un pays faux ne se voit pas.
    */
-  const suspectUs =
-    segments.length >= 2 &&
-    /^[A-Z]{2}$/.test(dernier) &&
-    COLLIDING_CODES.has(dernier) &&
-    US_STATE_CODES.has(dernier) &&
-    !porteDejaUneSubdivision;
-
   /*
    * LA GARDE S'APPLIQUE AUX TROIS BRANCHES, PAS À UNE SEULE.
    *
@@ -346,15 +339,18 @@ export function countryFromLocation(location?: string | null): string | undefine
    * code en tête, et rendait « Îles Caïmans » parce que la comparaison portait
    * sur le dernier segment. Un code d'État reste un code d'État où qu'il soit.
    */
-  const estIndecidable = (code: string): boolean =>
-    suspectUs && code.trim().toUpperCase() === dernier;
-
   /*
-   * Le cas « code d'État en tête » (« IN, Indianapolis ») : `suspectUs` ne
-   * peut pas s'appliquer, puisqu'il décrit la forme « Ville, XX ». On le
-   * traite par son propre critère — un code collisionnant ET État américain,
-   * dans un libellé de plusieurs segments, sans subdivision étrangère pour
-   * prouver le contraire, reste indécidable quelle que soit sa place.
+   * UNE SEULE FONCTION PORTE LA GARDE, et elle ne dépend pas de la POSITION.
+   *
+   * Une constante `suspectUs` et une fonction `estIndecidable` ont existé ici,
+   * limitées à la forme « Ville, XX » : elles comparaient le code au DERNIER
+   * segment. Le troisième tour d'audit a prouvé par exécution, sur 488
+   * libellés, qu'elles ne changeaient AUCUN résultat — cette fonction les
+   * subsumait entièrement, et aucun des 16 témoins ne voyait leur suppression.
+   *
+   * C'était du code mort présenté comme une protection. Retiré plutôt que
+   * conservé « au cas où » : deux gardes pour une décision, c'est une garde
+   * dont personne ne sait laquelle tranche.
    */
   const estEtatUsAmbigu = (code: string, accompagnement: string): boolean => {
     const maj = code.trim().toUpperCase();
@@ -396,7 +392,7 @@ export function countryFromLocation(location?: string | null): string | undefine
       // Indécidable sans preuve indépendante : on s'abstient, on n'invente
       // ni le pays étranger ni les États-Unis.
       // Branche `direct` : le segment EST le code, rien ne l'accompagne en propre.
-      if (estIndecidable(segment) || estEtatUsAmbigu(segment, '')) return undefined;
+      if (estEtatUsAmbigu(segment, '')) return undefined;
       return direct;
     }
     const prefixed = segment.match(/^([A-Za-z]{2})-[A-Za-z0-9]{1,3}$/);

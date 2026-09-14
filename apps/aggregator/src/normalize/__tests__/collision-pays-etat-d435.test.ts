@@ -150,6 +150,25 @@ describe('un code d’État américain ne devient pas un pays (D-435)', () => {
     expect(countryFromLocation('North Little Rock (AR)')).toBeUndefined();
   });
 
+  it('la preuve de subdivision se lit en AVANT-DERNIÈRE position, même à 4 segments', () => {
+    /*
+     * TROU DE COUVERTURE TROUVÉ AU TROISIÈME TOUR D'AUDIT : les 16 témoins ne
+     * portaient que sur des libellés de 1 à 3 segments. Pour ces longueurs,
+     * `segments[length - 2]` et `segments[1]` coïncident souvent — une erreur
+     * d'indexation passait donc inaperçue.
+     *
+     * PRÉMISSE — le libellé a bien QUATRE segments, sans quoi il n'exerce pas
+     * l'écart entre les deux façons d'indexer.
+     */
+    expect('A, Florence, BY, KY'.split(',').length, 'le cas porte bien 4 segments').toBe(4);
+
+    // `BY` (Bavière) est en avant-dernière position : le dernier est un pays.
+    expect(countryFromLocation('A, Florence, BY, KY')).toBe('KY');
+
+    // Sans subdivision étrangère en avant-dernier, l'abstention s'applique.
+    expect(countryFromLocation('A, B, Florence, KY')).toBeUndefined();
+  });
+
   it('un code ISOLÉ reste un pays, quelle que soit sa ponctuation', () => {
     /*
      * TROU DE COUVERTURE TROUVÉ AU SECOND TOUR D'AUDIT. Le critère
