@@ -150,3 +150,57 @@ officiels prouvés, avec un protocole qualifié. Elles ne sont pas encore collec
 commun doit porter le dialecte `CAREER_CONNECT_WIDGETS` en plus de `FOOTLOCKER_API_JOBS`.
 
 C'est la prochaine action, et elle débloque deux Maisons majeures d'un coup.
+
+---
+
+# Bilan final de la vague 2 (2026-09-14)
+
+## Les deux dossiers intégrés, de bout en bout
+
+L'adaptateur Phenom porte désormais **deux dialectes explicites** — `FOOTLOCKER_API_JOBS` et
+`CAREER_CONNECT_WIDGETS` — choisis par configuration, jamais devinés. Un nom de dialecte inconnu **lève**
+plutôt que de retomber silencieusement sur l'autre. **Aucun script par Maison n'a été écrit** : les deux
+sources sont de la configuration + de la preuve, comme le brief l'exige.
+
+| | Hugo Boss | Skechers |
+|---|--:|--:|
+| portail officiel prouvé (D60) | `careers.hugoboss.com` | `careers.skechers.com` |
+| revue d'identité | `VERIFIED` · `OFFICIAL_LINK` | `VERIFIED` · `OFFICIAL_LINK` |
+| robots lu et daté | `ALLOWED` | `ALLOWED` |
+| **offres uniques publiées** | **784** | **1 656** |
+| URLs conformes (échantillon réparti) | 20/20 | 20/20 |
+| descriptions sous 400 car. | **0** | **0** |
+| médiane de description | 3 090 | 4 815 |
+| parité base ↔ API ↔ fiche Maison | 784 = 784 = 784 | 1 656 = 1 656 = 1 656 |
+
+**2 440 offres uniques et fiables réellement ajoutées**, sur deux Maisons majeures qui n'en publiaient
+aucune. C'est l'indicateur que le brief retient — ni un volume collecté, ni un total servi.
+
+## Verdicts définitifs des 7 dossiers admis
+
+| Dossier | Verdict |
+|---|---|
+| **HUGO BOSS** | **`INTÉGRÉ ET VALIDÉ`** — 784 offres uniques publiées |
+| **SKECHERS** | **`INTÉGRÉ ET VALIDÉ`** — 1 656 offres uniques publiées |
+| GALDERMA | `EXCLU — HORS SECTEUR (décision antérieure)` — dermo-cosmétique, à trancher par le propriétaire |
+| KSI MODE | `BLOQUÉ — DÉCISION PROPRIÉTAIRE` — KS Groupe, cabinet d'intérim |
+| ZADIG & VOLTAIRE | `BLOQUÉ — PORTAIL OFFICIEL NON ÉTABLI` |
+| ARMOR LUX | `BLOQUÉ — PORTAIL OFFICIEL NON ÉTABLI` |
+| GERARD DAREL | `BLOQUÉ — PORTAIL OFFICIEL NON ÉTABLI` |
+
+Aucun dossier ne reste « en cours ». Les cinq exclus au réexamen (Bompard, Calzedonia, Intimissimi, Tezenis,
+Jean Paul Gaultier) l'ont été **avant le gel**, sur mesure en base — pas après coup pour améliorer un bilan.
+
+## Ce que la vague a coûté en défauts, tous corrigés
+
+| Défaut | Comment il a été trouvé |
+|---|---|
+| Curseur avançant de `size` au lieu des lignes rendues | 647/784 collectées **sans erreur levée** — le compteur déclaré mentait |
+| URLs sans segment de locale | 19/19 « bonnes » derrière HTTP 200 ; la redirection vers `/global/en` ne se voit qu'en cherchant l'identifiant dans la page |
+| Descriptions au teaser | médiane 313 et 287 ; la fiche publiait 7 646 caractères |
+| D62 appliqué à moitié | 17 adaptateurs gardaient leur UA Chrome ; `candidateChecks` lisait robots sous le nom que D62 interdit |
+| `git push -q` « réussi » sans rien pousser | vérification du **contenu** du commit déployé, pas du message de fusion |
+| Plafond de 50 pages dans le contrôle public | fabriquait une absence d'API sur une offre parfaitement servie |
+
+*Chacun de ces défauts rendait un résultat qui paraissait bon. Aucun n'aurait été vu par un contrôle de
+statut, de total ou de code de sortie.*
