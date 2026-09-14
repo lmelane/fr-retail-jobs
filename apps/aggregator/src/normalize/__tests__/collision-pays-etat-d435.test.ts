@@ -150,6 +150,32 @@ describe('un code d’État américain ne devient pas un pays (D-435)', () => {
     expect(countryFromLocation('North Little Rock (AR)')).toBeUndefined();
   });
 
+  it('dans « XX-YY », un suffixe qui nomme un pays lève l’ambiguïté du préfixe', () => {
+    /*
+     * DÉFAUT TROUVÉ AU QUATRIÈME TOUR D'AUDIT, et c'est un PAYS FAUX — le
+     * défaut même que ce fichier corrige, découvert dans une branche que les
+     * trois tours précédents n'avaient pas exercée sous cette forme :
+     *
+     *     « KY-US » → KY (Îles Caïmans)   alors que le libellé DIT « US »
+     *     « GA-US » → GA (Gabon)          « IN-US » → IN (Inde)
+     *
+     * PRÉMISSE — la convention ISO met le pays en PREMIER (« US-KY »), et cette
+     * forme doit continuer à rendre `US`. Sans cette assertion, on pourrait
+     * « réparer » KY-US en inversant la priorité, ce qui casserait la forme la
+     * plus courante.
+     */
+    expect(countryFromLocation('US-KY'), 'la forme ISO garde le préfixe').toBe('US');
+    expect(countryFromLocation('US-OH')).toBe('US');
+
+    // La forme inversée : le suffixe tranche, puisque le préfixe est ambigu.
+    expect(countryFromLocation('KY-US')).toBe('US');
+    expect(countryFromLocation('GA-US')).toBe('US');
+    expect(countryFromLocation('IN-US')).toBe('US');
+
+    // Un suffixe qui ne nomme aucun pays reste de la syntaxe : code seul.
+    expect(countryFromLocation('KY-402')).toBe('KY');
+  });
+
   it('la preuve de subdivision se lit en AVANT-DERNIÈRE position, même à 4 segments', () => {
     /*
      * TROU DE COUVERTURE TROUVÉ AU TROISIÈME TOUR D'AUDIT : les 16 témoins ne

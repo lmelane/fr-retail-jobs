@@ -395,12 +395,48 @@ export function countryFromLocation(location?: string | null): string | undefine
       if (estEtatUsAmbigu(segment, '')) return undefined;
       return direct;
     }
-    const prefixed = segment.match(/^([A-Za-z]{2})-[A-Za-z0-9]{1,3}$/);
+    const prefixed = segment.match(/^([A-Za-z]{2})-([A-Za-z0-9]{1,3})$/);
     if (prefixed) {
       const code = normalizeCountry(prefixed[1]);
       if (code) {
-        // « KY-402 » : le suffixe est de la syntaxe, pas un accompagnement.
-        if (estEtatUsAmbigu(prefixed[1], '')) return undefined;
+        /*
+         * UN SUFFIXE QUI EST UN PAYS N'EST PAS DE LA SYNTAXE.
+         *
+         * « KY-402 » est bien un code seul décoré d'un code postal : rien ne
+         * l'accompagne, il reste un pays. Mais « KY-US » est différent — le
+         * suffixe `US` est un pays reconnu, qui CONTREDIT le préfixe.
+         *
+         * Le quatrième tour d'audit a montré que les traiter pareil rendait
+         * des pays FAUX, le défaut même que ce fichier corrige :
+         *
+         *     « KY-US » → KY (Îles Caïmans)   alors que le libellé dit US
+         *     « GA-US » → GA (Gabon)          « IN-US » → IN (Inde)
+         *
+         * Quand le suffixe nomme un pays, c'est LUI qui porte l'information de
+         * pays : le préfixe est alors une subdivision, pas un pays.
+         */
+        /*
+         * L'ORDRE COMPTE : le préfixe d'abord, le suffixe en RECOURS.
+         *
+         * La convention ISO écrit « US-KY » — pays d'abord, subdivision
+         * ensuite — et « US-KY » doit rendre `US`. On ne peut donc pas faire
+         * primer le suffixe : cela inverserait la forme la plus courante.
+         *
+         * Le suffixe ne sert que lorsque le préfixe est un code AMBIGU (état
+         * américain homonyme d'un pays). Dans « KY-US », le préfixe seul ne
+         * prouve rien, mais le suffixe `US` lève l'ambiguïté.
+         */
+        const prefixeMaj = prefixed[1].toUpperCase();
+        const prefixeEstEtatAmbigu =
+          COLLIDING_CODES.has(prefixeMaj) && US_STATE_CODES.has(prefixeMaj);
+
+        if (prefixeEstEtatAmbigu) {
+          // Le suffixe nomme-t-il un pays ? Alors c'est LUI qui tranche.
+          const paysDuSuffixe = normalizeCountry(prefixed[2] ?? '');
+          if (paysDuSuffixe) return paysDuSuffixe;
+          // Sinon le suffixe est de la syntaxe : « KY-402 » reste un code seul.
+          if (estEtatUsAmbigu(prefixed[1], '')) return undefined;
+        }
         return code;
       }
     }
