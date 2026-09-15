@@ -1,0 +1,14 @@
+{
+  "batchId": "62be529b-5b86-4f6e-b9f9-b6137e621c6f",
+  "pages": 34,
+  "nativeBytes": 24106771,
+  "oldQuotedRegexBlocks": 0,
+  "newJobPostings": 34,
+  "parsingMs": {
+    "total": 661.3792959999998,
+    "p50": 18.159834000000046,
+    "p95": 27.085624999999965,
+    "max": 33.88216700000001
+  },
+  "scope": "One local sequential pass over actual captured HTML; not a concurrency or production capacity claim"
+}

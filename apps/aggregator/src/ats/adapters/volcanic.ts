@@ -8,12 +8,12 @@ import type { AdapterResult, NormalizedJob } from '../../types.js';
  * Volcanic — sites carrière hébergés (`careers.<marque>`, empreinte
  * `Volcanic.prod-eu-2` dans la télémétrie), ex. careers.fenwick.co.uk.
  *
- * Mesuré le 2026-09-06 sur Fenwick : les pages détail ne portent AUCUN JSON-LD
- * (0 bloc sur 708 Ko), donc le générique y lit 0 offre. Mais la plateforme
- * expose `GET /api/v1/jobs.json?page=N` — JSON public, sans clé — avec
+ * La plateforme expose `GET /api/v1/jobs.json?page=N` — JSON public, sans clé — avec
  * `total_count`, `page_count`, `current_page` et, par offre : id, titre, lieu,
  * type de contrat, description HTML complète, slug de la page publique.
  * 20 offres par page, pagination 1-indexée, arrêt à `page_count`.
+ * Les pages Fenwick portent aussi un JobPosting : leur attribut HTML non cité
+ * type=application/ld+json doit être lu par le parseur HTML commun.
  */
 
 /** 500 pages × 20 = 10 000 offres, bien au-delà d'un site carrière Volcanic. */
@@ -43,12 +43,6 @@ export type VolcanicPage = {
   current_page?: number;
 };
 
-function asDate(value: unknown): Date | undefined {
-  if (typeof value !== 'string' || !value) return undefined;
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? undefined : date;
-}
-
 function asNumber(value: unknown): number | undefined {
   const n = typeof value === 'number' ? value : typeof value === 'string' ? Number(value) : NaN;
   return Number.isFinite(n) && n > 0 ? n : undefined;
@@ -75,8 +69,8 @@ export function parseVolcanicPage(page: VolcanicPage, origin: string): Normalize
       salaryMax: asNumber(job.salary_high),
       description,
       url: `${origin}/job/${job.cached_slug}`,
-      postedAt: asDate(job.start_date),
-      validThrough: asDate(job.end_date),
+      // The list's start/end fields have no qualified publication semantics.
+      // Read dates from the actual detail JobPosting and preserve the list RAW.
       raw: job,
     });
   }
@@ -106,7 +100,6 @@ export async function fetchVolcanicJobs(config: Record<string, unknown>): Promis
 
   const limit = pLimit(Math.max(1, Math.min(4, Number(config.detailConcurrency) || 2)));
   const jobs = await Promise.all(out.map(job => limit(async () => {
-    if (job.postedAt) return job;
     try { return enrichPostingEvidence(job, await fetchText(job.url)); }
     catch (error) { return { ...job, raw: { ...(job.raw as object), detailReadError: String(error) } }; }
   })));

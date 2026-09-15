@@ -25,6 +25,18 @@ beforeEach(wipe);
 afterAll(async () => { await wipe(); await db.$disconnect(); });
 
 describe('publication deadlines', () => {
+  it.each([
+    ['GREENHOUSE', { application_deadline: '2024-01-01T12:00:00Z' }],
+    ['EASYCRUIT', { detail: { '@_date_end': '2024-01-01' } }],
+    ['TALENTVIEW', { detail: { date_end: '2024-01-01' } }],
+    ['VOLCANIC', { postingEvidence: { jobPosting: { validThrough: '2024-01-01T12:00:00Z' } } }],
+  ] as const)('excludes the native expired publication for %s on ingestion', async (atsType, raw) => {
+    const { jobId } = await upsertDeduplicated(db, { ...candidate('native-deadline', raw), atsType });
+    expect(await db.jobSource.findFirstOrThrow({ where: { jobId } })).toMatchObject({ isActive: false, expiresAt: expect.any(Date) });
+    expect(await db.job.count({ where: { ...publicJobWhere(), id: jobId } })).toBe(0);
+    expect(await db.jobEvent.count({ where: { jobId, type: 'CLOSED' } })).toBe(1);
+  });
+
   it('archives an already expired publication without opening it', async () => {
     const { jobId } = await upsertDeduplicated(db, candidate('past', { validThrough: past.toISOString() }));
     const job = await db.job.findUniqueOrThrow({ where: { id: jobId }, include: { sources: true, events: true } });

@@ -1,0 +1,404 @@
+{
+  "total": 85327,
+  "counts": {
+    "smartrecruiters-whitelabel": {
+      "rows": 5860,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "teamtailor": {
+      "rows": 5355,
+      "declared": 379,
+      "past": 54,
+      "beyondStorage": 0,
+      "paths": {
+        "$._jobposting.validThrough": 379
+      }
+    },
+    "jobylon": {
+      "rows": 31,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "workday": {
+      "rows": 19711,
+      "declared": 967,
+      "past": 41,
+      "beyondStorage": 0,
+      "paths": {
+        "$.detail.jobPostingInfo.endDate": 967
+      }
+    },
+    "successfactors": {
+      "rows": 4230,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "flatchr": {
+      "rows": 354,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "icims": {
+      "rows": 1593,
+      "declared": 1532,
+      "past": 22,
+      "beyondStorage": 0,
+      "paths": {
+        "$.postingEvidence.jobPosting.validThrough": 1532
+      }
+    },
+    "personio": {
+      "rows": 186,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "digitalrecruiters": {
+      "rows": 783,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "greenhouse": {
+      "rows": 2545,
+      "declared": 1,
+      "past": 1,
+      "beyondStorage": 0,
+      "paths": {
+        "$.application_deadline": 1
+      }
+    },
+    "generic-listing": {
+      "rows": 6233,
+      "declared": 1528,
+      "past": 14,
+      "beyondStorage": 0,
+      "paths": {
+        "$.validThrough": 1528
+      }
+    },
+    "recruitee": {
+      "rows": 639,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "lever": {
+      "rows": 820,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "wttj": {
+      "rows": 766,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "workable": {
+      "rows": 280,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "talentview": {
+      "rows": 80,
+      "declared": 7,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {
+        "$.detail.date_end": 7
+      }
+    },
+    "talentsoft": {
+      "rows": 353,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "bashtalents": {
+      "rows": 57,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "geodirectory": {
+      "rows": 110,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "jobaffinity-wordpress": {
+      "rows": 978,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "oraclehcm": {
+      "rows": 1215,
+      "declared": 58,
+      "past": 17,
+      "beyondStorage": 0,
+      "paths": {
+        "$.detail.ExternalPostedEndDate": 58
+      }
+    },
+    "taleo": {
+      "rows": 76,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "talentfunnel": {
+      "rows": 153,
+      "declared": 153,
+      "past": 0,
+      "beyondStorage": 153,
+      "paths": {
+        "$.vacancy.validTo": 153
+      }
+    },
+    "magnet": {
+      "rows": 492,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "eightfold": {
+      "rows": 2776,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "volcanic": {
+      "rows": 31,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "phenom": {
+      "rows": 5299,
+      "declared": 14,
+      "past": 1,
+      "beyondStorage": 0,
+      "paths": {
+        "$.posting_expiry_date": 14
+      }
+    },
+    "talentrecruiter": {
+      "rows": 17,
+      "declared": 17,
+      "past": 1,
+      "beyondStorage": 0,
+      "paths": {
+        "$.position.ApplicationDue": 17
+      }
+    },
+    "easycruit": {
+      "rows": 50,
+      "declared": 50,
+      "past": 12,
+      "beyondStorage": 0,
+      "paths": {
+        "$.detail.@_date_end": 50
+      }
+    },
+    "avature": {
+      "rows": 2908,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "wordpress": {
+      "rows": 478,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "lvmh_algolia": {
+      "rows": 6433,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "radancy": {
+      "rows": 54,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "eqwa": {
+      "rows": 321,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "ashby": {
+      "rows": 83,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "rituals": {
+      "rows": 1245,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "typesense": {
+      "rows": 47,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "harri": {
+      "rows": 36,
+      "declared": 36,
+      "past": 5,
+      "beyondStorage": 0,
+      "paths": {
+        "$.detail.end_date": 36
+      }
+    },
+    "swatchgroup": {
+      "rows": 293,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "jibe": {
+      "rows": 10290,
+      "declared": 425,
+      "past": 39,
+      "beyondStorage": 0,
+      "paths": {
+        "$.posting_expiry_date": 425
+      }
+    },
+    "wttj-sector": {
+      "rows": 2002,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    },
+    "altamira": {
+      "rows": 64,
+      "declared": 0,
+      "past": 0,
+      "beyondStorage": 0,
+      "paths": {}
+    }
+  },
+  "nativeFieldNameInventoryOnly": {
+    "smartrecruiters-whitelabel": {},
+    "teamtailor": {
+      "_jobposting.validThrough": 379
+    },
+    "jobylon": {},
+    "workday": {
+      "detail.similarJobs[].jobPostingEndDateAsText": 1256,
+      "detail.jobPostingInfo.endDate": 967,
+      "detail.jobPostingInfo.jobPostingEndDateAsText": 961
+    },
+    "successfactors": {},
+    "flatchr": {
+      "vacancy.end_date": 150
+    },
+    "icims": {
+      "postingEvidence.jobPosting.validThrough": 1532
+    },
+    "personio": {},
+    "digitalrecruiters": {},
+    "greenhouse": {
+      "application_deadline": 1
+    },
+    "generic-listing": {
+      "validThrough": 1528
+    },
+    "recruitee": {},
+    "lever": {},
+    "wttj": {},
+    "workable": {},
+    "talentview": {
+      "detail.date_end": 7
+    },
+    "talentsoft": {},
+    "bashtalents": {},
+    "geodirectory": {},
+    "jobaffinity-wordpress": {},
+    "oraclehcm": {
+      "detail.ExternalPostedEndDate": 58
+    },
+    "taleo": {},
+    "talentfunnel": {
+      "vacancy.validTo": 153
+    },
+    "magnet": {},
+    "eightfold": {},
+    "volcanic": {},
+    "phenom": {
+      "meta_data.icims.primary_posted_site_object.validThrough": 14,
+      "posting_expiry_date": 14
+    },
+    "talentrecruiter": {
+      "position.ApplicationDue": 17
+    },
+    "easycruit": {
+      "detail.@_date_end": 50,
+      "listing.@_date_end": 50,
+      "detail.Versions.Version.ApplicationDeadline": 48,
+      "listing.Versions.Version.ApplicationDeadline": 48
+    },
+    "avature": {},
+    "wordpress": {},
+    "lvmh_algolia": {},
+    "radancy": {},
+    "eqwa": {},
+    "ashby": {},
+    "rituals": {},
+    "typesense": {},
+    "harri": {
+      "detail.end_date": 36
+    },
+    "swatchgroup": {},
+    "jibe": {
+      "meta_data.icims.primary_posted_site_object.validThrough": 425,
+      "posting_expiry_date": 425
+    },
+    "wttj-sector": {},
+    "altamira": {}
+  }
+}

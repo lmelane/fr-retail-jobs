@@ -201,7 +201,13 @@ export function recoverRetainedPublication(kind: string, raw: unknown, context: 
       case 'volcanic':
         if (!identifier(raw.id) || typeof raw.cached_slug !== 'string' || !raw.cached_slug) return failure('NATIVE_ID_MISSING');
         if (typeof config.origin !== 'string') return failure('RAW_SCHEMA_INVALID');
-        job = parseVolcanicPage({ jobs: [raw] }, config.origin)[0]; break;
+        job = parseVolcanicPage({ jobs: [raw] }, config.origin)[0];
+        if (job && raw.postingEvidence != null) {
+          if (!object(raw.postingEvidence)) return failure('DETAIL_EVIDENCE_UNUSABLE');
+          job = enrichRetainedPostingEvidence(job, raw.postingEvidence);
+          if (!job) return failure('DETAIL_EVIDENCE_UNUSABLE');
+        }
+        break;
       case 'easycruit': {
         if (!object(raw.listing) || !identifier(raw.listing['@_id'])) return failure('NATIVE_ID_MISSING');
         if (!object(raw.detail) || raw.detail['@_id'] !== raw.listing['@_id']) return failure('DETAIL_IDENTITY_MISMATCH');

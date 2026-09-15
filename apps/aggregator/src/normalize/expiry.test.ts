@@ -3,6 +3,8 @@ import { declaredExpiry, parseDeclaredDeadline } from './expiry.js';
 
 describe('declared source expiry', () => {
   it.each([
+    ['greenhouse', { application_deadline: '2026-09-13T19:00:00-04:00' }, '2026-09-13T23:00:00.000Z'],
+    ['volcanic', { postingEvidence: { jobPosting: { validThrough: '2026-10-31T22:59:00.000Z' } } }, '2026-10-31T22:59:00.000Z'],
     ['jibe', { posting_expiry_date: '2026-09-12T17:00:00+0000' }, '2026-09-12T17:00:00.000Z'],
     ['altamira', { postingEvidence: { jobPosting: { validThrough: '2026-09-12T17:00:00Z' } } }, '2026-09-12T17:00:00.000Z'],
     ['harri', { detail: { end_date: 'Sun, 13 Sep 2026 23:59:59 GMT' } }, '2026-09-13T23:59:59.000Z'],
@@ -32,4 +34,15 @@ describe('declared source expiry', () => {
   it.each(['2026-02-30', '2026-02-30T00:00:00Z', '2026-09-18T12:00:00', '18/09/2026', '0', 'not a date'])('does not guess an invalid or unzoned deadline: %s', value => {
     expect(parseDeclaredDeadline(value)).toBeUndefined();
   });
+});
+
+it.each([
+  ['easycruit',{detail:{'@_date_end':'2026-09-30'}}],
+  ['easycruit',{listing:{'@_date_end':'2026-09-30'}}],
+  ['talentview',{detail:{date_end:'2026-09-30'}}],
+])('reads the qualified calendar deadline for %s', (kind,raw) => {
+  expect(declaredExpiry(kind as string,raw)).toMatchObject({expiresAt:new Date('2026-10-01T12:00:00Z'),evidence:{precision:'DATE'}});
+});
+it('does not treat unqualified Volcanic list end_date as a deadline',()=>{
+  expect(declaredExpiry('volcanic',{end_date:'2024-01-01'})).toBeUndefined();
 });

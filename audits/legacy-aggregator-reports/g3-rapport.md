@@ -34,7 +34,7 @@ Script : `g3-generic.mts selfridges-listing` ; diagnostic : `g3-selfridges.mts`,
 
 ## 2. Fenwick — API TROUVÉE, adaptateur écrit (`volcanic.ts`)
 
-**Plateforme** : Volcanic (télémétrie `Volcanic.prod-eu-2`, `/api/v1/csrf_meta_tags.json`). Site annonce « Found 31 jobs ». `/job/sitemap.xml` liste bien 31 URLs, **mais les pages détail ne portent aucun JSON-LD** (0 bloc `ld+json` sur 708 Ko) → le générique lit 0 quel que soit le mode (sitemap et listing mesurés : 0).
+**Plateforme** : Volcanic (télémétrie `Volcanic.prod-eu-2`, `/api/v1/csrf_meta_tags.json`). Le relevé historique annonçait 31 offres et 31 URLs de sitemap. Son lecteur rapportait zéro bloc JSON-LD ; cela ne prouvait pas leur absence. **Correction vérifiée le 15 septembre :** ce lecteur excluait les attributs HTML non cités. Les 34 pages du nouveau contrôle portent chacune un `JobPosting`. Voir le [lot 4E1 et ses captures](../reprise-2026-09-15/lot-4e1.md). Les autres nombres de ce rapport restent des mesures historiques, sans valeur de certification actuelle.
 
 **API** : `GET https://www.careers.fenwick.co.uk/api/v1/jobs.json?page=N` — JSON public, aucune clé ni en-tête particulier. Réponse : `{ jobs: [...], total_count: 31, page_count: 2, current_page: N }`, 20 offres par page, pagination 1-indexée, arrêt à `page >= page_count` (ou `jobs` vide). Champs par offre : `id` (identifiant), `job_title`/`title`, `job_location` (chaîne, ex. « Royal Tunbridge Wells »), `job_type` (« Full Time »), `disciplines[].name` (« Retail »), `description` (HTML complet, ~2 800 car.), `clean_description`, `salary_low`/`salary_high`, `cached_slug` → URL publique `https://www.careers.fenwick.co.uk/job/{cached_slug}`. **Pas de date** : `start_date`/`end_date` sont `null` sur 31/31. Pas de pays (site UK).
 

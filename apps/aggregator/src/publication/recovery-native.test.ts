@@ -55,3 +55,8 @@ describe('retained native publication formats', () => {
     expect(read(c.kind, c.raw, c.url, c.externalId, { ...c.config, tenant: 'foreign-tenant' })).toMatchObject({ reason: 'IDENTITY_MISMATCH' });
   });
 });
+
+it('replays a retained Volcanic detail without discarding its publication dates',()=>{
+ const c=inputs[5];const raw={...c.raw,postingEvidence:{pageUrl:c.url,htmlSha256:'a'.repeat(64),jobPostingCount:1,jobPosting:{'@type':'JobPosting',title:'Own title',description:'Full detail text',datePosted:'2026-09-04T14:07:48.268Z',validThrough:'2026-10-31T22:59:00.000Z',url:c.url}}};
+ expect(read(c.kind,raw,c.url,c.externalId,c.config)).toMatchObject({status:'RECOVERABLE',job:{description:'Full detail text',postedAt:new Date('2026-09-04T14:07:48.268Z'),raw}});
+});

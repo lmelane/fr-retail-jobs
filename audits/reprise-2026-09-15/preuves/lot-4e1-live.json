@@ -1,0 +1,37 @@
+{
+  "environment": "Dedicated local PostgreSQL; public publisher requests; no catalogue or production writes",
+  "batchId": "62be529b-5b86-4f6e-b9f9-b6137e621c6f",
+  "sourceKey": "capture-fenwick-2a51af24-4481-42d4-a51b-8f6d10449a9f",
+  "readerRevision": "local-sha256:e38cf7868340e14e3473100990e35dd9e5c5f102be0f973b581910cc4a5be077",
+  "jobs": 34,
+  "declaredTotal": 34,
+  "exactOfflineReplay": true,
+  "requests": 36,
+  "nativeBytes": 24408715,
+  "nativeGzipBytes": 3050215,
+  "dated": 34,
+  "deadlines": 34,
+  "retainedSingleJobPostings": 34,
+  "localPages": [
+    {
+      "name": "harri",
+      "nodes": 1,
+      "datePosted": [
+        "Tue, 08 Sep 2026 20:16:26 GMT"
+      ],
+      "validThrough": [
+        "Thu, 08 Oct 2026 23:59:59 GMT"
+      ]
+    },
+    {
+      "name": "volcanic",
+      "nodes": 1,
+      "datePosted": [
+        "2026-09-04T14:07:48.268Z"
+      ],
+      "validThrough": [
+        "2026-10-31T22:59:00.000Z"
+      ]
+    }
+  ]
+}

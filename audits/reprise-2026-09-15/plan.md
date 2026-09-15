@@ -115,6 +115,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 [Sous-lot 4D4 validé localement](lot-4d4.md) : Easycruit, Harri et TalentRecruiter ajoutent 100 présentations reconstructibles ; total de 50 128 dans 31 familles, avec 93 lectures API locales sans écart. La reprise des échéances fera évoluer l’outil existant `source-expiry.mts` ; aucun circuit parallèle n’est ajouté.
 
+[Sous-lot 4E1 validé localement](lot-4e1.md) : extraction JSON-LD conforme aux attributs HTML non cités, 34 offres Fenwick capturées et rejouées hors réseau avec leurs dates, lecteur d’échéance version 4. Le snapshot historique conserve 50 128 présentations reconstructibles ; les nouvelles collectes ne le réattestent pas. La reprise des échéances en cache reste à livrer.
+
 **Objectif.** Éviter les doublons visibles sans supprimer des postes distincts.
 
 - **Fichiers :** `dedup/match.ts`, `upsert.ts`, `packages/db/publications.ts`, `postingIdentity`, `reconcile`, schéma et API d’identités/redirects.

@@ -1,4 +1,5 @@
 import { gunzipSync } from 'node:zlib';
+import { load } from 'cheerio';
 import { fetchText, fetchWithRetry, readBytesBounded } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
@@ -121,24 +122,27 @@ function hasType(node: JsonLdNode, type: string): boolean {
 }
 
 export function extractJobPostings(html: string): JsonLdNode[] {
-  const blocks = [
-    ...html.matchAll(
-      /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi,
-    ),
-  ];
-
+  // HTML permits unquoted attributes and whitespace around '='. A DOM parser
+  // also keeps commented tags and attribute values out of the document scripts.
+  const $ = load(html);
+  // Template content is a detached document fragment in the HTML tree; checking
+  // a script's ancestors alone does not reliably identify that inert content.
+  $('template,noscript').remove();
   const found: JsonLdNode[] = [];
-  for (const block of blocks) {
+  for (const script of $('script').toArray()) {
+    const element = $(script);
+    if (element.attr('type')?.trim().split(';')[0].toLowerCase() !== 'application/ld+json') continue;
+    const block = element.text().trim();
     let parsed: unknown;
     try {
-      parsed = JSON.parse(block[1].trim());
+      parsed = JSON.parse(block);
     } catch {
       // Some CMSs emit raw control characters inside JSON strings — Michael
       // Page's Drupal puts literal newlines in every description — which is
       // invalid JSON that still carries a complete JobPosting. Space the
       // control characters out and retry before giving up on the block.
       try {
-        parsed = JSON.parse(block[1].trim().replace(/[\u0000-\u001f]+/g, ' '));
+        parsed = JSON.parse(block.replace(/[\u0000-\u001f]+/g, ' '));
       } catch {
         // A single malformed block must not discard the rest of the page.
         continue;

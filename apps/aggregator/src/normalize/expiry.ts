@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-export const EXPIRY_READER_VERSION = 3;
+export const EXPIRY_READER_VERSION = 4;
 export type ExpiryEvidence = {
   readerVersion: number; rawHash: string; path: string; value: string;
   precision: 'INSTANT' | 'DATE'; policy: 'SOURCE_INSTANT' | 'END_OF_DECLARED_DAY_ANYWHERE';
@@ -13,6 +13,9 @@ const PATHS: Readonly<Record<string, readonly string[]>> = {
   GENERIC_LISTING: ['validThrough'], GENERIC_JSONLD: ['validThrough'],
   ICIMS: ['postingEvidence.jobPosting.validThrough'],
   ALTAMIRA: ['postingEvidence.jobPosting.validThrough'],
+  GREENHOUSE: ['application_deadline'],
+  EASYCRUIT: ['detail.@_date_end', 'listing.@_date_end'],
+  TALENTVIEW: ['detail.date_end'],
   WORKDAY: ['detail.jobPostingInfo.endDate'],
   JIBE: ['posting_expiry_date'], PHENOM: ['posting_expiry_date'],
   TEAMTAILOR: ['_jobposting.validThrough'],
@@ -21,7 +24,7 @@ const PATHS: Readonly<Record<string, readonly string[]>> = {
   ORACLEHCM: ['detail.ExternalPostedEndDate'], ORACLE_HCM: ['detail.ExternalPostedEndDate'],
   HARRI: ['detail.end_date'],
   TALENTRECRUITER: ['position.ApplicationDue'], TALENT_RECRUITER: ['position.ApplicationDue'],
-  VOLCANIC: ['end_date'], SWATCHGROUP: ['jsonLd.validThrough'], SWATCH_GROUP: ['jsonLd.validThrough'],
+  VOLCANIC: ['postingEvidence.jobPosting.validThrough'], SWATCHGROUP: ['jsonLd.validThrough'], SWATCH_GROUP: ['jsonLd.validThrough'],
   SUCCESSFACTORS: ['postingEvidence.jobPosting.validThrough', 'postingEvidence.microdataValidThrough'],
 };
 
