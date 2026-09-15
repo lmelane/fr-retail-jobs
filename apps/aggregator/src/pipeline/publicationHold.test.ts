@@ -59,6 +59,8 @@ it('honours native isListed=false as withdrawal, preserves evidence and republis
   expect(await db.jobEvent.count({where:{jobId,type:'CLOSED'}})).toBe(0);
   expect(await db.jobEvent.count({where:{jobId,type:'WITHDRAWN'}})).toBe(1);
   expect(await db.sourceObservation.count({where:{sourceKey:key}})).toBe(2);
+  await upsertDeduplicated(db,{...input,raw:{detailReadError:'timeout'}});
+  expect(await db.job.findUniqueOrThrow({where:{id:jobId}})).toMatchObject({isActive:false,withdrawalReason:'SOURCE_UNLISTED'});
   await upsertDeduplicated(db,input);
   expect(await db.job.findUniqueOrThrow({where:{id:jobId}})).toMatchObject({isActive:true,withdrawnAt:null,withdrawalReason:null,reopenedCount:0});
   expect(await db.jobEvent.count({where:{jobId,type:'REPUBLISHED'}})).toBe(1);

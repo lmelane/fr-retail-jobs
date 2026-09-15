@@ -79,7 +79,7 @@ const REFRESH_SCRIPT = resolve(dirname(fileURLToPath(import.meta.url)), '../../s
 
 describe('bounded-refresh-command — le refresh consomme le manifeste', () => {
   const manifestFile = resolve('/tmp', `p7-manifest-${process.pid}.json`);
-  writeFileSync(manifestFile, JSON.stringify({ entries: [{ jobSourceId: 'JS1' }, { jobSourceId: 'JS2' }] }));
+  writeFileSync(manifestFile, JSON.stringify({ version: 2, planHash: 'a'.repeat(64), allowedSourceKeys: ['mecca','beiersdorf'], entries: [{ jobSourceId: 'JS1' }, { jobSourceId: 'JS2' }] }));
   const cmd = execFileSync('python3', [REFRESH_SCRIPT, 'p7-test', 'mecca,beiersdorf', manifestFile],
     { encoding: 'utf8' });
 
@@ -88,8 +88,10 @@ describe('bounded-refresh-command — le refresh consomme le manifeste', () => {
     expect(cmd).not.toContain('INGEST_ONLY_KEYS');
   });
 
-  it('embarque la liste EXACTE des JobSource à désactiver', () => {
-    expect(/const manifest=\["JS1", ?"JS2"\];/.test(cmd)).toBe(true);
+  it('charge le manifeste complet par son empreinte sans limite de taille des arguments', () => {
+    expect(cmd).toContain(`loadRefreshManifest(p,\"${'a'.repeat(64)}\")`);
+    expect(cmd).not.toContain('jobSourceId');
+    expect(cmd).toContain('onlyKeys:keys,manifest');
   });
 
   it('appelle runRefresh et RIEN d\'autre — ni ingestion, ni snapshot, ni geocode', () => {
@@ -108,4 +110,16 @@ describe('bounded-refresh-command — le refresh consomme le manifeste', () => {
     expect(cmd).toContain('-u BREVO_API_KEY');
     expect(cmd).toContain('-u HEALTHCHECK_PING_URL');
   });
+});
+
+
+it('keeps a large refresh plan out of argv and safely quotes the run name', () => {
+  const file = resolve('/tmp', `large-refresh-plan-${process.pid}.json`);
+  writeFileSync(file, JSON.stringify({ version: 2, planHash: 'f'.repeat(64), allowedSourceKeys: ['source'],
+    entries: Array.from({ length: 1000 }, (_, i) => ({ jobSourceId: String(i), rawPlaceholder: 'x'.repeat(1000) })) }));
+  const command = execFileSync('python3', [REFRESH_SCRIPT, 'run"; throw new Error("injected"); //', 'source', file], { encoding: 'utf8' });
+  expect(Buffer.byteLength(command)).toBeLessThan(5000);
+  const args = JSON.parse(execFileSync('python3', ['-c', 'import json,shlex,sys;print(json.dumps(shlex.split(sys.stdin.read())))'], { input: command, encoding: 'utf8' })) as string[];
+  expect(args.at(-1)).toContain('run\\"; throw new Error(\\"injected\\"); //');
+  expect(execFileSync('node', ['--check', '--input-type=module'], { input: args.at(-1)!, encoding: 'utf8' })).toBe('');
 });

@@ -1,6 +1,6 @@
 import type { Prisma, PrismaClient } from '@prisma/client';
 import { lockCompanyRows } from '../lib/writeLocks.js';
-import { selectCanonicalSource } from '../dedup/canonical.js';
+import { selectApplySource } from '@catwalks/db/publications';
 import { recordEvents } from './jobEvents.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { deactivateJob, type DeactivationDisposition } from './lifecycle.js';
@@ -32,7 +32,7 @@ export async function deactivateSources(
       });
       if (!changed.count) return null;
       const sources = await tx.jobSource.findMany({ where: { jobId: job.id } });
-      const owner = selectCanonicalSource(sources, job);
+      const owner = selectApplySource(sources, job);
       const now = new Date();
       const transition = !owner ? deactivateJob(job, disposition, now) : null;
       await tx.job.update({ where: { id: job.id }, data: {

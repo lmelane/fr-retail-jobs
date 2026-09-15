@@ -1,7 +1,7 @@
 import { parseCsvLine } from '../lib/csv.js';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import type { SourceTier } from '../dedup/match.js';
+import type { SourceTier } from '@catwalks/db/publications';
 
 /**
  * Explicit import seed loaded from data/seeds/sources.csv; not the active catalogue.

@@ -1,0 +1,55 @@
+{
+  "path": "/Users/lmelane/Desktop/catwalksmedia-system/catwalksmedia",
+  "at": "2026-09-15T13:02:27.657019+00:00",
+  "github": {
+    "exit": 0,
+    "out": "{\"defaultBranchRef\":{\"name\":\"main\"},\"isPrivate\":true,\"nameWithOwner\":\"lmelane/catwalksmedia\",\"url\":\"https://github.com/lmelane/catwalksmedia\"}\n",
+    "err": ""
+  },
+  "prs": {
+    "exit": 0,
+    "out": "[]\n",
+    "err": ""
+  },
+  "fetch": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "refs": {
+    "exit": 0,
+    "out": "emploi-remonte-2026-08-09|19cf03806acd7dc9f2b51adaf30e0d921e9dea36||\nmain|086f75c154c7eea619abc424e7323a2bec39d738|origin/main|\nrefonte-une-2026-08-09|05481bce2576a01d64c897ac7a25640731e9f0d4||\nsecurity-audit-2026-08-06|4e1c26a16c238c35506bddc13b66ee630bccdff9||\norigin|086f75c154c7eea619abc424e7323a2bec39d738||\norigin/main|086f75c154c7eea619abc424e7323a2bec39d738||\n",
+    "err": ""
+  },
+  "status": {
+    "exit": 0,
+    "out": "## main...origin/main\n M newsroom/package.json\n M newsroom/scripts/shadow-search-intent-radar.mjs\n M newsroom/src/console-server.mjs\n M newsroom/src/journal-server.mjs\n M newsroom/src/lib/journal-public.mjs\n M website/src/app/api/revalidate/route.ts\n M website/src/app/layout.tsx\n M website/src/app/sitemap.ts\n M website/src/components/ArticlePage.tsx\n M website/src/lib/article-ou-remplacant.ts\n M website/src/lib/press-api.ts\n M website/src/lib/taxonomy.ts\n M website/src/lib/types.ts\n M website/tests/liens-cibles-vivantes.test.mjs\n?? PATRON-ARTICLE-EVENEMENTIEL.md\n?? newsroom/migrations/025_article_translations.down.sql\n?? newsroom/migrations/025_article_translations.up.sql\n?? newsroom/scripts/etat-avant-025.mjs\n?? newsroom/scripts/temoin-pfw-publication-anticipee-2026-09-07.mjs\n?? newsroom/src/lib/translate-article.mjs\n?? newsroom/src/lib/translation-rules.mjs\n?? newsroom/src/traduire-stock.mjs\n?? newsroom/src/verif-parite-traduction.mjs\n?? newsroom/tests/54-traduction-en.test.mjs\n?? redactions/\n?? website/src/app/en/\n?? website/src/components/LangueDocument.tsx\n",
+    "err": ""
+  },
+  "unmerged_main": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "local_only": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "unpushed_all": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "head_vs_main": {
+    "exit": 0,
+    "out": "0\t0\n",
+    "err": ""
+  },
+  "worktrees": {
+    "exit": 0,
+    "out": "worktree /Users/lmelane/Desktop/catwalksmedia-system/catwalksmedia\nHEAD 086f75c154c7eea619abc424e7323a2bec39d738\nbranch refs/heads/main\n\n",
+    "err": ""
+  },
+  "commits": {}
+}

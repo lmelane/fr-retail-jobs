@@ -1,4 +1,5 @@
 import '../test/setup-integration.js';
+import { recordSourceEvidence, clearSourceEvidence } from '../test/sourceEvidence.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { runRefresh } from './refresh.js';
@@ -20,6 +21,7 @@ const prisma = new PrismaClient();
 const V = 6; // current pipeline generation
 
 async function wipe() {
+  await clearSourceEvidence(prisma);
   await prisma.jobSource.deleteMany({});
   await prisma.job.deleteMany({});
   await prisma.company.deleteMany({});
@@ -71,7 +73,7 @@ function stat(source: string, produced: number): IngestStats {
 }
 
 async function recordHealth(sourceKey: string, status: string, jobs: number) {
-  await prisma.sourceRun.create({ data: { sourceKey, status, jobs, canAttestAbsence: status === 'OK', ranAt: new Date() } });
+  await recordSourceEvidence(prisma, sourceKey, { status });
 }
 
 beforeEach(wipe);
@@ -96,7 +98,7 @@ describe('OP1 — a source breaks for a day (returns zero)', () => {
     await job({ companyId: c.id, ext: 'k2', sourceKey: 'kering', hoursAgo: 72 });
     const refresh = await runRefresh(prisma);
     expect(refresh.closedJobs).toBe(0);
-    expect(refresh.skippedBrokenSources).toContain('kering');
+    expect(refresh.unverifiableSources).toContain('kering');
     expect(await prisma.job.count({ where: { isActive: true } })).toBe(2);
   });
 });

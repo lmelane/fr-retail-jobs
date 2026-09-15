@@ -1,0 +1,107 @@
+[
+  {
+    "repo": "/Users/lmelane/Downloads/catwalks-job-aggregator",
+    "initial_user_files": 31,
+    "changed_user_files": [],
+    "status_now": [
+      " M apps/aggregator/data/seeds/sources.csv",
+      " M apps/aggregator/package.json",
+      " M apps/aggregator/src/ats/adapters/bashTalents.test.ts",
+      " M apps/aggregator/src/ats/adapters/bashTalents.ts",
+      " M apps/aggregator/src/pipeline/sourceStore.test.ts",
+      "?? apps/aggregator/scripts/ops/verif-bash-live.mts",
+      "?? apps/aggregator/scripts/ops/verif-ca-californie.mts",
+      "?? apps/aggregator/scripts/ops/verif-catalogue-coherence.mts",
+      "?? apps/aggregator/scripts/ops/verif-langues-marches.mts",
+      "?? audits/mesures-d435-d436/d437-couverture-simulee.mjs",
+      "?? audits/mesures-d435-d436/d437-echantillon.mjs",
+      "?? audits/mesures-d435-d436/d437-enum-cles-raw.mjs",
+      "?? audits/mesures-d435-d436/d437-geo-plausibilite.mjs",
+      "?? audits/mesures-d435-d436/lot5-cles-raw-par-ats-2026-09-15.sql",
+      "?? audits/mesures-d435-d436/lot5-contradiction-seniorite-2026-09-15.sql",
+      "?? audits/mesures-d435-d436/lot5-dimensions-par-ats-2026-09-15.sql",
+      "?? audits/mesures-d435-d436/lot5-inventaire-2026-09-15.sql",
+      "?? audits/mesures-d435-d436/lot5-part-deduction-2026-09-15.sql",
+      "?? audits/mesures-d435-d436/lot5-source-vs-colonne-2026-09-15.sql",
+      "?? audits/mesures-d435-d436/mesures.sql",
+      "?? audits/mesures-d435-d436/q.mjs",
+      "?? audits/mesures-d435-d436/verif-ats-us-au-ch.mjs",
+      "?? audits/mesures-d435-d436/verif-cles-raw-experience.mjs",
+      "?? audits/mesures-d435-d436/verif-familles-vs-metiers.mjs",
+      "?? audits/mesures-d435-d436/verif-filtres-universels.mjs",
+      "?? audits/mesures-d435-d436/verif-longue-traine.mjs",
+      "?? audits/mesures-d435-d436/verif-raw-4-dimensions.mjs",
+      "?? audits/mesures-d435-d436/verif-raw-workday-jibe.mjs",
+      "?? audits/mesures-d435-d436/verif-salaire-zeros.mjs",
+      "?? audits/mesures-d435-d436/verif-seniorite-declaree.mjs",
+      "?? audits/mesures-d435-d436/verif-titres-distincts.mjs"
+    ]
+  },
+  {
+    "repo": "/Users/lmelane/Documents/beauchoix-projects/catwalks-build/catwalks-website",
+    "initial_user_files": 11,
+    "changed_user_files": [],
+    "status_now": [
+      " M next.config.mjs",
+      " M src/app/cgu/page.tsx",
+      " M src/app/confidentialite/page.tsx",
+      " M src/app/mentions-legales/page.tsx",
+      " M src/lib/emplois/__tests__/marches-parite-amont.test.ts",
+      " M src/lib/emplois/__tests__/suggest-villes-marche.test.ts",
+      "?? src/components/legal/",
+      "?? src/lib/langue/__tests__/legal.test.ts",
+      "?? src/lib/langue/legal/"
+    ]
+  },
+  {
+    "repo": "/Users/lmelane/Documents/beauchoix-projects/catwalks-build/catwalks-backend",
+    "initial_user_files": 4,
+    "changed_user_files": [],
+    "status_now": [
+      " M docs/governance/DECISIONS.md",
+      " M prisma/schema.prisma",
+      "?? prisma/migrations/20260914135914_anciens_slugs_d425/",
+      "?? scripts/rattacher-maisons-d424.mjs"
+    ]
+  },
+  {
+    "repo": "/Users/lmelane/Documents/beauchoix-projects/catwalks-build/catwalks-back-office",
+    "initial_user_files": 0,
+    "changed_user_files": [],
+    "status_now": []
+  },
+  {
+    "repo": "/Users/lmelane/Desktop/catwalksmedia-system/catwalksmedia",
+    "initial_user_files": 40,
+    "changed_user_files": [],
+    "status_now": [
+      " M newsroom/package.json",
+      " M newsroom/scripts/shadow-search-intent-radar.mjs",
+      " M newsroom/src/console-server.mjs",
+      " M newsroom/src/journal-server.mjs",
+      " M newsroom/src/lib/journal-public.mjs",
+      " M website/src/app/api/revalidate/route.ts",
+      " M website/src/app/layout.tsx",
+      " M website/src/app/sitemap.ts",
+      " M website/src/components/ArticlePage.tsx",
+      " M website/src/lib/article-ou-remplacant.ts",
+      " M website/src/lib/press-api.ts",
+      " M website/src/lib/taxonomy.ts",
+      " M website/src/lib/types.ts",
+      " M website/tests/liens-cibles-vivantes.test.mjs",
+      "?? PATRON-ARTICLE-EVENEMENTIEL.md",
+      "?? newsroom/migrations/025_article_translations.down.sql",
+      "?? newsroom/migrations/025_article_translations.up.sql",
+      "?? newsroom/scripts/etat-avant-025.mjs",
+      "?? newsroom/scripts/temoin-pfw-publication-anticipee-2026-09-07.mjs",
+      "?? newsroom/src/lib/translate-article.mjs",
+      "?? newsroom/src/lib/translation-rules.mjs",
+      "?? newsroom/src/traduire-stock.mjs",
+      "?? newsroom/src/verif-parite-traduction.mjs",
+      "?? newsroom/tests/54-traduction-en.test.mjs",
+      "?? redactions/",
+      "?? website/src/app/en/",
+      "?? website/src/components/LangueDocument.tsx"
+    ]
+  }
+]

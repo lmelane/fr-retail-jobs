@@ -189,8 +189,8 @@ try {
       await log.error('command.failed', '[refresh] mass-closure guard refused the run — a source is likely broken');
       process.exitCode = 1;
     }
-    if (refresh.skippedBrokenSources.length > 0) {
-      await log.error('command.failed', `[refresh] left offers of broken sources open: ${refresh.skippedBrokenSources.join(', ')}`);
+    if (refresh.unverifiableSources.length > 0) {
+      await log.error('command.failed', `[refresh] left offers of broken sources open: ${refresh.unverifiableSources.join(', ')}`);
     }
     if (snapshotError) {
       await log.error('command.failed', `[snapshot] failed after refresh: ${snapshotError}`);

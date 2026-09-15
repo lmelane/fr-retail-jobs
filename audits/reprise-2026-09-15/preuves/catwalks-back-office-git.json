@@ -1,0 +1,55 @@
+{
+  "path": "/Users/lmelane/Documents/beauchoix-projects/catwalks-build/catwalks-back-office",
+  "at": "2026-09-15T13:02:27.654547+00:00",
+  "github": {
+    "exit": 0,
+    "out": "{\"defaultBranchRef\":{\"name\":\"main\"},\"isPrivate\":true,\"nameWithOwner\":\"lmelane/catwalks-backoffice\",\"url\":\"https://github.com/lmelane/catwalks-backoffice\"}\n",
+    "err": ""
+  },
+  "prs": {
+    "exit": 0,
+    "out": "[]\n",
+    "err": ""
+  },
+  "fetch": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "refs": {
+    "exit": 0,
+    "out": "main|75c594bc444c34fdad0c9b1d3312d99f8f23322c|origin/main|\norigin|75c594bc444c34fdad0c9b1d3312d99f8f23322c||\norigin/main|75c594bc444c34fdad0c9b1d3312d99f8f23322c||\n",
+    "err": ""
+  },
+  "status": {
+    "exit": 0,
+    "out": "## main...origin/main\n",
+    "err": ""
+  },
+  "unmerged_main": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "local_only": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "unpushed_all": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "head_vs_main": {
+    "exit": 0,
+    "out": "0\t0\n",
+    "err": ""
+  },
+  "worktrees": {
+    "exit": 0,
+    "out": "worktree /Users/lmelane/Documents/beauchoix-projects/catwalks-build/catwalks-back-office\nHEAD 75c594bc444c34fdad0c9b1d3312d99f8f23322c\nbranch refs/heads/main\n\n",
+    "err": ""
+  },
+  "commits": {}
+}

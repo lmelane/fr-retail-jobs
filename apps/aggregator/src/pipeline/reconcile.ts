@@ -1,4 +1,5 @@
-import { selectCanonicalSource } from '../dedup/canonical.js';
+import { publicJobWhere } from '@catwalks/db/availability';
+import { selectApplySource } from '@catwalks/db/publications';
 import { lockCompanyRows } from '../lib/writeLocks.js';
 import { hasRequisitionConflict } from '../dedup/postingIdentity.js';
 import type { PrismaClient } from '@prisma/client';
@@ -28,7 +29,7 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
   // Only clusters holding more than one live job can contain a missed merge.
   const groups = await prisma.job.groupBy({
     by: ['clusterKey'],
-    where: { isActive: true, clusterKey: { not: null } },
+    where: { ...publicJobWhere(), clusterKey: { not: null } },
     _count: { _all: true },
     having: { clusterKey: { _count: { gt: 1 } } },
   });
@@ -38,12 +39,12 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
     stats.clustersScanned++;
 
     const planned = await prisma.job.findMany({
-      where: { clusterKey: group.clusterKey, isActive: true }, select: { companyId: true },
+      where: { clusterKey: group.clusterKey, ...publicJobWhere() }, select: { companyId: true },
     });
     await prisma.$transaction(async tx => {
       await lockCompanyRows(tx, planned.map(job => job.companyId));
       const jobs = await tx.job.findMany({
-        where: { clusterKey: group.clusterKey, isActive: true, companyId: { in: planned.map(job => job.companyId) } },
+        where: { clusterKey: group.clusterKey, ...publicJobWhere(), companyId: { in: planned.map(job => job.companyId) } },
         include: { sources: true },
         orderBy: [{ firstSeenAt: 'asc' }, { id: 'asc' }],
       });
@@ -92,7 +93,7 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
           // Atomic on purpose — a crash between moving the sources and retiring the
           // loser would otherwise leave two active jobs sharing the same sources,
           // re-introducing the very duplicate reconcile exists to remove.
-          const owner = selectCanonicalSource([...keeper.sources, ...other.sources], keeper);
+          const owner = selectApplySource([...keeper.sources, ...other.sources], keeper);
           const promote = owner && other.sources.some(source => source.id === owner.id);
           const moved = await tx.jobSource.updateMany({ where: { jobId: other.id }, data: { jobId: keeper.id } });
           if (owner) {

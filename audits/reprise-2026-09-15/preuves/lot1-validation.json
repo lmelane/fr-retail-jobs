@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-15",
+  "scope": "local only",
+  "baseRevision": "9504c9f0bef635f6841e4db5f7c1e7999ac9938f",
+  "results": {
+    "unit": 2224,
+    "integration": 436,
+    "api": 245,
+    "apiCorpusSkipped": 2,
+    "python": 5,
+    "migrations": 46,
+    "typecheck": "passed",
+    "apiBuild": "passed",
+    "sourceExpiryFinalTests": 6
+  },
+  "privateLogSha256": {
+    "lot1-full-validation.log": "8fe4234442f5b49f3a95cb4b2952a78a07f05b5b18bc96bdc0285f8cc304aa8e",
+    "lot1-final-targeted.log": "ae3fae14e1512e2e97e65beae2aaeb30077fa32914cd4ef1752a1eb0d69ce97e",
+    "lot1-refresh-final.log": "9a4a6efb7e9799539111a8efe81e6674580c5d11679ecb09d84f1045e92b4752",
+    "lot1-typecheck-final.log": "db9af7853b7df8f6145570e3173d2186446720434b7044853e240a0e9357355a",
+    "lot1-build.log": "68dc7d2570da2a69f1a668735a5f392e193789e416fcf848551cb92071f9a939"
+  }
+}

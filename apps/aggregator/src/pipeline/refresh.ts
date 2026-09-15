@@ -1,90 +1,40 @@
 import { log } from '../observability/logger.js';
-import type { PrismaClient } from '@prisma/client';
-import { selectCanonicalSource } from '../dedup/canonical.js';
+import type { Prisma, PrismaClient } from '@prisma/client';
+import { selectApplySource } from '@catwalks/db/publications';
 import { lockCompanyRows } from '../lib/writeLocks.js';
 import { chunk } from '../lib/chunk.js';
 import { recordEvents } from './jobEvents.js';
 import { deactivateJob, reactivateJob } from './lifecycle.js';
+import { readAbsencePlan } from './refreshEvidence.js';
+import { availableSourceWhere, sourceIsAvailable } from '@catwalks/db/availability';
+import { randomUUID } from 'node:crypto';
+import { evidenceHash, freezeManifest, refreshSnapshot, verifyManifest, REFRESH_LIMITS, type ManifestEntry, type RefreshManifest } from './refreshManifest.js';
 
-/**
- * REFRESH — lifecycle pass: NEW / UNCHANGED / UPDATED / CLOSED.
- *
- * Ingest only ever proves a job still EXISTS; nothing there can prove one is
- * gone. This pass closes that gap by looking at what ingest did NOT touch.
- *
- * A job is closed when every one of its sources has stopped reporting it for
- * longer than the staleness window. Requiring *all* sources to agree is what
- * makes a lower-priority source worth keeping attached: if the Maison's ATS goes
- * quiet for a day but the jobboard still lists the role, the offer stays open.
- *
- * Two guard rails protect against a source failure emptying the board (both
- * observed as real risks in the audit):
- *  - a source whose last health run was BROKEN is EXCLUDED from closure — its
- *    offers still exist, the feed simply went silent, so closing them would be
- *    the "the Maison stopped hiring" illusion the whole pipeline fights;
- *  - a run that would close more than `maxCloseRatio` of the live base at once
- *    is refused: that is a systemic failure, not normal lifecycle churn.
- */
-
-/** How long a source must stay silent before its listing counts as gone. */
-const STALE_HOURS = Number(process.env.REFRESH_STALE_HOURS ?? 48);
-
-/**
- * Refuse to close more than this share of the live base in one run. A real day
- * of expirations is a few percent; anything approaching this is a broken feed.
- */
-const MAX_CLOSE_RATIO = Number(process.env.REFRESH_MAX_CLOSE_RATIO ?? 0.5);
-
-/**
- * The ratio guard only applies once the absolute count is meaningful. Closing a
- * handful of offers is always normal lifecycle, whatever the base size — the
- * guard is there to catch a source failure taking hundreds down at once, not to
- * block a small board's ordinary expirations.
- */
-const MIN_CLOSE_FOR_GUARD = Number(process.env.REFRESH_MIN_CLOSE_FOR_GUARD ?? 50);
+/** A fresh, complete enumeration may prove absence; silence alone never does. */
+const STALE_HOURS = Number(process.env.REFRESH_STALE_HOURS ?? REFRESH_LIMITS.staleHours);
+const MAX_CLOSE_RATIO = Number(process.env.REFRESH_MAX_CLOSE_RATIO ?? REFRESH_LIMITS.maxCloseRatio);
+const MIN_CLOSE_FOR_GUARD = Number(process.env.REFRESH_MIN_CLOSE_FOR_GUARD ?? REFRESH_LIMITS.minCloseForGuard);
 
 export type RefreshOptions = {
   staleHours?: number;
   maxCloseRatio?: number;
   minCloseForGuard?: number;
-  /**
-   * Les seules sources dont le silence peut fermer une offre, pendant une reprise bornée.
-   *
-   * `undefined` = comportement historique (toute source active). Une liste = **périmètre technique fermé** :
-   * aucune autre source ne peut fermer quoi que ce soit, même active, même digne d'attester.
-   */
+  /** Undefined is unbounded; an explicit empty list permits no mutation. */
   onlyKeys?: string[];
-  /**
-   * Le MANIFESTE FIGÉ : la liste exacte des `JobSource` que cette mutation a le droit de désactiver.
-   *
-   * Quand il est fourni, le refresh ne CHERCHE plus les lignes périmées — il applique celles qui ont été
-   * revues. Sans cela, la prévisualisation et l'exécution feraient deux calculs indépendants, et l'état peut
-   * bouger entre les deux : la mutation toucherait des offres que personne n'a examinées.
-   */
-  manifestJobSourceIds?: string[];
+  /** Reviewed representation IDs are a ceiling, never permission to ignore new evidence. */
+  onlySourceIds?: string[];
+  /** A frozen deactivation operation cannot withdraw or reopen unrelated jobs. */
+  manifest?: RefreshManifest;
 };
 
-/**
- * LE PÉRIMÈTRE AUTORISÉ DU REFRESH — sa propre liste, jamais déduite du statut ACTIVE.
- *
- * L'ingestion a `INGEST_ONLY_KEYS` depuis D36 ; le refresh n'avait rien : il prenait TOUTE `JobSource` active
- * (`where: { isActive: true }`). Pendant une reprise bornée, un refresh lancé après l'ingestion d'une vague de
- * 9 sources aurait donc pu fermer des offres appartenant aux 431 autres — dont les 385 en publication retenue
- * et les 5 suspendues, qui n'ont précisément pas tourné et dont le silence ne prouve rien.
- *
- * Le statut ACTIVE ne peut PAS servir de périmètre : il dit qu'une source est au catalogue, pas qu'elle vient
- * de démontrer son exhaustivité. C'est exactement la confusion que le registre P6 a défaite.
- *
- * Une clé inconnue est une ERREUR, jamais un silence : une faute de frappe qui réduirait le périmètre sans
- * prévenir est plus dangereuse qu'un arrêt.
- */
+/** Source keys are validated against the catalogue, including currently empty sources. */
 export function refreshScope(keys: string[], raw = process.env.REFRESH_ONLY_KEYS): string[] | undefined {
+  if (raw === undefined) return undefined;
   const wanted = (raw ?? '').split(',').map((k) => k.trim()).filter(Boolean);
-  if (wanted.length === 0) return undefined;
   const known = new Set(keys);
   const unknown = wanted.filter((k) => !known.has(k));
   if (unknown.length > 0) throw new Error(`REFRESH_ONLY_KEYS : clés inconnues — ${unknown.join(', ')}`);
-  return wanted;
+  return [...new Set(wanted)];
 }
 
 export type RefreshStats = {
@@ -94,122 +44,164 @@ export type RefreshStats = {
   reopened: number;
   withdrawn: number;
   republished: number;
-  /** Sources excluded from closure because their last health run was BROKEN. */
-  skippedBrokenSources: string[];
+  /** Sources whose current evidence cannot establish absence. */
+  unverifiableSources: string[];
   /** True when a mass-closure guard refused the run without closing anything. */
   refused: boolean;
+  auditBatchId?: string;
 };
 
-/**
- * Sources whose most recent run did not complete healthily: BROKEN (returned
- * nothing), TIMEOUT (cut before finishing) or ERROR (threw). All three mean
- * the same thing for lifecycle purposes (L-01): the source did NOT re-attest
- * its offers this run, so their silence proves nothing — closing on it would
- * manufacture the "Maison stopped hiring" illusion.
- */
-/** Missing or legacy evidence cannot authorize an automatic closure. */
-async function brokenSourceKeys(prisma: PrismaClient, cutoff: Date): Promise<Set<string>> {
-  const rows = await prisma.$queryRaw<Array<{ sourceKey: string; canAttestAbsence: boolean | null; ranAt: Date }>>`
-    SELECT DISTINCT ON ("sourceKey") "sourceKey", "canAttestAbsence", "ranAt"
-    FROM "SourceRun" ORDER BY "sourceKey", "ranAt" DESC, "id" DESC
-  `;
-  const trusted = new Set(rows.filter(row => row.canAttestAbsence === true && row.ranAt >= cutoff).map(row => row.sourceKey));
-  const sources = await prisma.jobSource.findMany({
-    where: { isActive: true }, distinct: ['sourceKey'], select: { sourceKey: true },
-  });
-  return new Set(sources.filter(row => !trusted.has(row.sourceKey)).map(row => row.sourceKey));
-}
-
-export async function runRefresh(
-  prisma: PrismaClient,
-  options: RefreshOptions = {},
-): Promise<RefreshStats> {
+export async function readRefreshPlan(prisma: PrismaClient, options: RefreshOptions = {}) {
+  if (options.manifest) {
+    const check = verifyManifest(options.manifest);
+    if (!check.valid) throw new Error(check.problems.join('; '));
+    if (options.onlyKeys && evidenceHash([...options.onlyKeys].sort()) !== evidenceHash(options.manifest.allowedSourceKeys)) throw new Error('Manifest source scope mismatch');
+    if (options.onlySourceIds !== undefined) throw new Error('A manifest already fixes its representation scope');
+    for (const key of ['staleHours', 'maxCloseRatio', 'minCloseForGuard'] as const) {
+      if (options[key] !== undefined && options[key] !== options.manifest.limits[key]) throw new Error(`Manifest limit mismatch: ${key}`);
+    }
+    options = { manifest: options.manifest, onlyKeys: options.manifest.allowedSourceKeys,
+      onlySourceIds: options.manifest.entries.map(entry => entry.jobSourceId), ...options.manifest.limits };
+  }
   const staleHours = options.staleHours ?? STALE_HOURS;
   const maxCloseRatio = options.maxCloseRatio ?? MAX_CLOSE_RATIO;
   const minCloseForGuard = options.minCloseForGuard ?? MIN_CLOSE_FOR_GUARD;
-  const cutoff = new Date(Date.now() - staleHours * 3_600_000);
+  if (!Number.isFinite(staleHours) || staleHours <= 0 ||
+      !Number.isFinite(maxCloseRatio) || maxCloseRatio < 0 || maxCloseRatio > 1 ||
+      !Number.isInteger(minCloseForGuard) || minCloseForGuard < 1) {
+    throw new Error('Invalid refresh limits');
+  }
+  const asOf = new Date();
+  const cutoff = new Date(asOf.getTime() - staleHours * 3_600_000);
 
-  const skipped = await brokenSourceKeys(prisma, cutoff);
-  const skippedBrokenSources = [...skipped];
 
   /**
    * Le périmètre autorisé, quand une reprise bornée en impose un. `in` est un filtre FERMÉ : une source
    * absente de la liste ne peut être ni désactivée ni fermée, quel que soit son statut ou son ancienneté.
    */
-  const allowed = options.onlyKeys?.length ? { sourceKey: { in: options.onlyKeys } } : {};
+  const allowed = options.onlyKeys !== undefined ? { sourceKey: { in: options.onlyKeys } } : {};
   /**
-   * Le manifeste borne les lignes par IDENTIFIANT, en plus de l'allowlist par source. Les deux se cumulent :
-   * une ligne doit appartenir à une source autorisée ET figurer au manifeste. Un manifeste VIDE ne signifie
+   * La liste d'identifiants borne les lignes, en plus de l'allowlist par source. Les deux se cumulent :
+   * une ligne doit appartenir à une source autorisée ET figurer dans la liste. Une liste VIDE ne signifie
    * pas « aucune borne » — il signifie « rien à désactiver », et `in: []` le traduit exactement.
    */
-  const manifested = options.manifestJobSourceIds !== undefined
-    ? { id: { in: options.manifestJobSourceIds } } : {};
+  const manifested = options.onlySourceIds !== undefined
+    ? { id: { in: options.onlySourceIds } } : {};
+  const sourceScope: Prisma.JobSourceWhereInput = { AND: [allowed, manifested] };
+  const jobScope: Prisma.JobWhereInput = {
+    mergedIntoId: null,
+    ...((options.onlyKeys !== undefined || options.onlySourceIds !== undefined)
+      ? { sources: { some: sourceScope } } : {}),
+  };
 
-  // Which source listings are stale AND belong to a source that is not broken.
-  // A broken source's listings are left active so its offers are not closed.
-  const staleSources = await prisma.jobSource.findMany({
-    where: {
-      isActive: true,
-      lastSeenAt: { lt: cutoff },
-      ...allowed,
-      ...manifested,
-      ...(skipped.size ? { sourceKey: { notIn: skippedBrokenSources } } : {}),
-    },
-    select: { id: true, jobId: true },
+  const absencePlan = await readAbsencePlan(prisma, sourceScope, cutoff, asOf);
+  const unverifiableSources = absencePlan.eligibility.filter(source => !source.eligible).map(source => source.source);
+  const expiredSources = await prisma.jobSource.findMany({
+    where: { AND: [sourceScope, { isActive: true, expiresAt: { lte: asOf } }] },
+    select: { id: true, jobId: true, sourceKey: true, externalId: true, lastSeenAt: true, expiresAt: true, expiryEvidence: true },
   });
+  const staleSources = [...new Map([
+    ...absencePlan.deactivations.map(source => ({ id: source.jobSourceId, jobId: source.jobId })),
+    ...expiredSources,
+  ].map(source => [source.id, source])).values()];
 
   // Which jobs WOULD close: those where, after deactivating the stale sources
   // above, no active source would remain. Compute before writing anything so the
   // mass-closure guard can refuse first.
   const staleJobIds = new Set(staleSources.map((s) => s.jobId));
-  const orphans = await prisma.job.findMany({
-    where: { isActive: true, sources: { none: { isActive: true } } }, select: { id: true },
+  const orphans = options.manifest ? [] : await prisma.job.findMany({
+    where: { AND: [jobScope, { isActive: true, sources: { none: { isActive: true } } }] }, select: { id: true },
   });
   const wouldClose: string[] = orphans.map(j => j.id);
   if (staleJobIds.size > 0) {
     for (const ids of chunk([...staleJobIds])) {
     const affected = await prisma.job.findMany({
       where: { id: { in: ids }, isActive: true },
-      select: { id: true, sources: { select: { id: true, isActive: true } } },
+      select: { id: true, sources: { select: { id: true, isActive: true, expiresAt: true } } },
     });
     const staleSourceIds = new Set(staleSources.map((s) => s.id));
     for (const job of affected) {
-      const remainsActive = job.sources.some((s) => s.isActive && !staleSourceIds.has(s.id));
+      const remainsActive = job.sources.some((s) => sourceIsAvailable(s, asOf) && !staleSourceIds.has(s.id));
       if (!remainsActive) wouldClose.push(job.id);
     }
     }
   }
 
-  const liveTotal = await prisma.job.count({ where: { isActive: true } });
+  const liveTotal = await prisma.job.count({ where: { isActive: true, mergedIntoId: null,
+    ...(options.onlyKeys !== undefined ? { sources: { some: { sourceKey: { in: options.onlyKeys } } } } : {}),
+  } });
 
-  // Guard rail: refuse a mass closure. Nothing is written. Only kicks in past an
-  // absolute floor, so a small board's ordinary expirations are never blocked.
-  if (
-    wouldClose.length >= minCloseForGuard &&
-    liveTotal > 0 &&
-    wouldClose.length / liveTotal > maxCloseRatio
-  ) {
-    await log.error('refresh.refused', `[refresh] REFUSED: would close ${wouldClose.length} of ${liveTotal} live offers ` +
-        `(> ${Math.round(maxCloseRatio * 100)}%). A source is likely broken — not closing anything.`);
-    return {
-      checked: liveTotal,
-      closedSources: 0,
-      closedJobs: 0,
-      reopened: 0,
-      withdrawn: 0,
-      republished: 0,
-      skippedBrokenSources,
-      refused: true,
-    };
+  const refused = wouldClose.length >= minCloseForGuard && liveTotal > 0 && wouldClose.length / liveTotal > maxCloseRatio;
+
+  const revived = options.manifest ? [] : (await prisma.job.findMany({
+    where: { AND: [jobScope, { isActive: false,
+      OR: [{ withdrawnAt: null }, { withdrawalReason: 'ATTESTATION_MISSING' }],
+      sources: { some: { AND: [sourceScope, availableSourceWhere(asOf), { lastSeenAt: { gte: cutoff } }] } },
+    }] }, include: { sources: { omit: { raw: true } } }, omit: { raw: true, searchText: true, description: true },
+  })).filter(job => canRefreshReactivate(job, cutoff, options, asOf));
+  return { sourceScope, jobScope, asOf, cutoff, absencePlan, staleSources, expiredSources, orphans, revived,
+    wouldClose, liveTotal, refused, unverifiableSources, options,
+    limits: { staleHours, maxCloseRatio, minCloseForGuard } };
+}
+
+function plannedEvidence(absence: Awaited<ReturnType<typeof readAbsencePlan>>, expired: { id: string; jobId: string; sourceKey: string; externalId: string; lastSeenAt: Date; expiresAt: Date | null; expiryEvidence: unknown }[]) {
+  const observed = new Map(absence.representations.map(row => [row.jobSourceId, row]));
+  const evidence = new Map<string, Omit<ManifestEntry, 'jobBeforeHash' | 'consequence'>>();
+  for (const row of absence.deactivations) {
+    const proof = absence.proofs.get(row.sourceKey)!;
+    evidence.set(row.jobSourceId, { jobSourceId: row.jobSourceId, jobId: row.jobId, sourceKey: row.sourceKey, externalId: row.externalId,
+      observedAt: observed.get(row.jobSourceId)!.lastSeenAt.toISOString(), state: 'ABSENT_FROM_PROVEN_ENUMERATION', proof });
   }
+  for (const row of expired) evidence.set(row.id, { jobSourceId: row.id, jobId: row.jobId, sourceKey: row.sourceKey, externalId: row.externalId,
+    observedAt: row.lastSeenAt.toISOString(), state: 'DECLARED_DEADLINE_ELAPSED',
+    proof: { kind: 'DEADLINE', expiresAt: row.expiresAt!.toISOString(), hash: evidenceHash(row.expiryEvidence) } });
+  return evidence;
+}
 
-  // Re-read under the same company lock as ingestion. A fresh re-attestation
-  // between planning and writing must survive, and events must match committed transitions.
-  const candidates = new Set([...staleJobIds, ...orphans.map(j => j.id)]);
-  const revived = await prisma.job.findMany({
-    where: { isActive: false, sources: { some: { isActive: true } } }, select: { id: true },
-  });
-  for (const job of revived) candidates.add(job.id);
+/** Freeze the deactivation subset of the same preview; other lifecycle actions stay separate. */
+export async function createRefreshManifest(prisma: PrismaClient, plan: Awaited<ReturnType<typeof readRefreshPlan>>) {
+  if (plan.options.onlyKeys === undefined) throw new Error('A bounded manifest requires explicit source keys');
+  if (plan.refused) throw new Error('Refresh closure guard refused the preview');
+  const evidence = plannedEvidence(plan.absencePlan, plan.expiredSources);
+  const entries: ManifestEntry[] = [];
+  for (const ids of chunk([...new Set(plan.staleSources.map(source => source.jobId))])) {
+    const jobs = await prisma.job.findMany({ where: { id: { in: ids } },
+      include: { sources: { omit: { raw: true } } }, omit: { raw: true, searchText: true, description: true } });
+    for (const job of jobs) {
+      const jobBeforeHash = evidenceHash(refreshSnapshot(job));
+      for (const source of job.sources) {
+        const entry = evidence.get(source.id);
+        if (!entry) continue;
+        entries.push({ ...entry, jobBeforeHash, consequence: !job.isActive ? 'JOB_ALREADY_INACTIVE'
+          : plan.wouldClose.includes(job.id) ? 'JOB_CANDIDATE_FOR_CLOSURE' : 'JOB_KEPT_BY_ANOTHER_SOURCE' });
+      }
+    }
+  }
+  return freezeManifest(plan.options.onlyKeys, entries, plan.limits);
+}
+
+function canRefreshReactivate(job: { closedAt: Date | null; withdrawnAt: Date | null; withdrawalReason: string | null;
+  sources: { id: string; sourceKey: string; isActive: boolean; lastSeenAt: Date; expiresAt: Date | null }[] }, cutoff: Date, options: RefreshOptions, at: Date) {
+  if (job.withdrawnAt && job.withdrawalReason !== 'ATTESTATION_MISSING') return false;
+  const since = Math.max(cutoff.getTime(), job.closedAt?.getTime() ?? 0, job.withdrawnAt?.getTime() ?? 0);
+  return job.sources.some(source => sourceIsAvailable(source, at) && source.lastSeenAt.getTime() >= since &&
+    (options.onlyKeys === undefined || options.onlyKeys.includes(source.sourceKey)) &&
+    (options.onlySourceIds === undefined || options.onlySourceIds.includes(source.id)));
+}
+
+export async function runRefresh(prisma: PrismaClient, options: RefreshOptions = {}): Promise<RefreshStats> {
+  const plan = await readRefreshPlan(prisma, options);
+  options = plan.options;
+  const manifest = options.manifest;
+  const auditBatchId = `refresh:${manifest?.planHash ?? randomUUID()}`;
+  const { sourceScope, jobScope, cutoff, staleSources, orphans, revived, unverifiableSources } = plan;
+  if (plan.refused) {
+    await log.error('refresh.refused', { liveInScope: plan.liveTotal, plannedRemovals: plan.wouldClose.length });
+    return { checked: plan.liveTotal, closedSources: 0, closedJobs: 0, reopened: 0, withdrawn: 0,
+      republished: 0, unverifiableSources, refused: true };
+  }
+  const candidates = new Set(manifest ? manifest.entries.map(entry => entry.jobId)
+    : [...staleSources.map(source => source.jobId), ...orphans.map(job => job.id), ...revived.map(job => job.id)]);
   const closedSources = { count: 0 }, closedJobs = { count: 0 }, reopened = { count: 0 };
   let withdrawn = 0, republished = 0;
   for (const ids of chunk([...candidates], 100)) {
@@ -219,32 +211,61 @@ export async function runRefresh(
     for (const [companyId, jobIds] of companies) {
       const counts = await prisma.$transaction(async tx => {
         await lockCompanyRows(tx, [companyId]);
-        // Another maintenance operation may have moved an offer since planning.
+        const already = await tx.dataCorrection.findMany({ where: { batchId: auditBatchId, entityType: 'Job', entityId: { in: jobIds } }, select: { entityId: true } });
+        const done = new Set(already.map(row => row.entityId));
         const currentJobs = await tx.job.findMany({
-          where: { id: { in: jobIds }, companyId }, select: { id: true },
+          where: { AND: [jobScope, { id: { in: jobIds.filter(id => !done.has(id)) }, companyId }] },
+          include: { sources: { omit: { raw: true } } }, omit: { raw: true, description: true, searchText: true },
         });
-        const currentIds = currentJobs.map(job => job.id);
-        // `allowed` est répété ICI parce que c'est cette requête qui ÉCRIT : la planification plus haut ne
-        // fait que choisir les candidats. Le filtre posé à un seul des deux endroits laisserait le périmètre
-        // fuir au moment de la mutation — l'endroit précis où il compte.
-        // `manifested` est répété ICI comme `allowed` : c'est cette requête qui ÉCRIT. Posé au seul endroit
-        // de la planification, le périmètre fuirait au moment de la mutation.
+        const before = new Map(currentJobs.map(job => [job.id, refreshSnapshot(job)]));
+        const skipped = new Map<string, string>();
+        const entriesByJob = new Map<string, ManifestEntry[]>();
+        for (const entry of manifest?.entries ?? []) {
+          if (!entriesByJob.has(entry.jobId)) entriesByJob.set(entry.jobId, []);
+          entriesByJob.get(entry.jobId)!.push(entry);
+        }
+        for (const job of currentJobs) {
+          if (manifest && entriesByJob.get(job.id)?.[0]?.jobBeforeHash !== evidenceHash(before.get(job.id))) skipped.set(job.id, 'BEFORE_STATE_CHANGED');
+        }
+        const currentIds = currentJobs.filter(job => !skipped.has(job.id)).map(job => job.id);
+        const currentIdSet = new Set(currentIds);
+        const plannedSourceIds = (manifest?.entries.map(entry => ({ id: entry.jobSourceId, jobId: entry.jobId })) ?? staleSources)
+          .filter(source => currentIdSet.has(source.jobId)).map(source => source.id);
+        const now = new Date();
+        // Re-read persisted source evidence while ingestion is locked.
+        const currentPlan = await readAbsencePlan(tx, { AND: [sourceScope,
+          { jobId: { in: currentIds }, id: { in: plannedSourceIds } }] }, cutoff, now);
+        const expired = await tx.jobSource.findMany({ where: { AND: [sourceScope,
+          { jobId: { in: currentIds }, id: { in: plannedSourceIds }, isActive: true, expiresAt: { lte: now } }] },
+          select: { id: true, jobId: true, sourceKey: true, externalId: true, lastSeenAt: true, expiresAt: true, expiryEvidence: true } });
+        const evidence = plannedEvidence(currentPlan, expired);
+        if (manifest) for (const job of currentJobs.filter(job => !skipped.has(job.id))) {
+          const expected = entriesByJob.get(job.id)!;
+          for (const entry of expected) {
+            const { consequence: _consequence, jobBeforeHash: _beforeHash, ...expectedEvidence } = entry;
+            if (evidenceHash(evidence.get(entry.jobSourceId) ?? null) !== evidenceHash(expectedEvidence)) skipped.set(job.id, 'EVIDENCE_CHANGED');
+          }
+          const projected = job.sources.map(source => ({ ...source, isActive: source.isActive && !evidence.has(source.id) }));
+          const consequence = !job.isActive ? 'JOB_ALREADY_INACTIVE' : selectApplySource(projected, job, now)
+            ? 'JOB_KEPT_BY_ANOTHER_SOURCE' : 'JOB_CANDIDATE_FOR_CLOSURE';
+          if (expected.some(entry => entry.consequence !== consequence)) skipped.set(job.id, 'OUTCOME_CHANGED');
+        }
+        const acceptedIds = currentIds.filter(id => !skipped.has(id));
         const deactivated = await tx.jobSource.updateMany({
-          where: { jobId: { in: currentIds }, isActive: true, lastSeenAt: { lt: cutoff },
-            ...allowed, ...manifested,
-            ...(skipped.size ? { sourceKey: { notIn: skippedBrokenSources } } : {}) },
+          where: { AND: [sourceScope, { jobId: { in: acceptedIds }, isActive: true, id: { in: [...evidence.keys()] } }] },
           data: { isActive: false },
         });
-        const jobs = await tx.job.findMany({ where: { id: { in: currentIds } }, include: { sources: true } });
+        const jobs = await tx.job.findMany({ where: { id: { in: acceptedIds } },
+          include: { sources: { omit: { raw: true } } }, omit: { raw: true, description: true, searchText: true } });
         let closed = 0, opened = 0, removed = 0, published = 0;
-        const now = new Date();
         for (const job of jobs) {
-          const owner = selectCanonicalSource(job.sources, job);
+          if (job.withdrawnAt && job.withdrawalReason !== 'ATTESTATION_MISSING') continue;
+          const owner = selectApplySource(job.sources, job, now);
           const active = !!owner;
+          if (active && !job.isActive && (manifest || !canRefreshReactivate(job, cutoff, options, now))) continue;
+          const hasClosureEvidence = [...evidence.values()].some(source => source.jobId === job.id);
           const transition = active ? reactivateJob(job) : deactivateJob(job,
-            // An orphan has no usable attestation. Its absence alone cannot
-            // establish an employer closure; only the trusted stale set can.
-            staleJobIds.has(job.id) ? { kind: 'CLOSED' } : { kind: 'WITHDRAWN', reason: 'ATTESTATION_MISSING' }, now);
+            hasClosureEvidence ? { kind: 'CLOSED' } : { kind: 'WITHDRAWN', reason: 'ATTESTATION_MISSING' }, now);
           const changedOwner = owner && (job.canonicalSourceKey !== owner.sourceKey ||
             job.canonicalExternalId !== owner.externalId || job.url !== owner.url);
           if (!transition && !changedOwner) continue;
@@ -262,6 +283,21 @@ export async function runRefresh(
             else closed++;
           }
         }
+        const after = await tx.job.findMany({ where: { id: { in: currentJobs.map(job => job.id) } },
+          include: { sources: { omit: { raw: true } } }, omit: { raw: true, description: true, searchText: true } });
+        for (const job of after) {
+          const beforeState = before.get(job.id)!, afterState = refreshSnapshot(job);
+          const changed = evidenceHash(beforeState) !== evidenceHash(afterState);
+          if (!changed && !manifest) continue;
+          const deactivatedIds = beforeState.sources.filter((source: { id: string; isActive: boolean }) => source.isActive &&
+            job.sources.some(afterSource => afterSource.id === source.id && !afterSource.isActive)).map((source: { id: string }) => source.id);
+          await tx.dataCorrection.create({ data: { batchId: auditBatchId, planHash: manifest?.planHash ?? evidenceHash({ beforeState, evidence: [...evidence.values()] }),
+            commitHash: process.env.RAILWAY_GIT_COMMIT_SHA ?? 'LOCAL_WORKTREE', finding: 'REFRESH_LIFECYCLE', entityType: 'Job', entityId: job.id,
+            before: beforeState, after: afterState,
+            evidence: { outcome: skipped.get(job.id) ?? (changed ? 'APPLIED' : 'UNCHANGED'), deactivatedIds,
+              proofs: [...evidence.values()].filter(source => source.jobId === job.id), cutoff: cutoff.toISOString() },
+          } });
+        }
         return { sources: deactivated.count, closed, opened, removed, published };
       }, { maxWait: 10_000, timeout: 30_000 });
       closedSources.count += counts.sources;
@@ -272,7 +308,17 @@ export async function runRefresh(
     }
   }
 
-  const checked = await prisma.job.count();
+  if (manifest) {
+    const audited = new Set((await prisma.dataCorrection.findMany({ where: { batchId: auditBatchId, entityType: 'Job' }, select: { entityId: true } })).map(row => row.entityId));
+    const missing = [...new Set(manifest.entries.map(entry => entry.jobId))].filter(id => !audited.has(id));
+    if (missing.length) await prisma.dataCorrection.createMany({ data: missing.map(id => ({
+      batchId: auditBatchId, planHash: manifest.planHash, commitHash: process.env.RAILWAY_GIT_COMMIT_SHA ?? 'LOCAL_WORKTREE',
+      finding: 'REFRESH_LIFECYCLE', entityType: 'Job', entityId: id,
+      before: { expectedHash: manifest.entries.find(entry => entry.jobId === id)!.jobBeforeHash }, after: { available: false },
+      evidence: { outcome: 'MISSING_OR_OUTSIDE_SCOPE', deactivatedIds: [] },
+    })), skipDuplicates: true });
+  }
+  const checked = await prisma.job.count({ where: jobScope });
 
   return {
     checked,
@@ -281,7 +327,8 @@ export async function runRefresh(
     reopened: reopened.count,
     withdrawn,
     republished,
-    skippedBrokenSources,
+    unverifiableSources,
     refused: false,
+    auditBatchId,
   };
 }

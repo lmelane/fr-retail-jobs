@@ -1,3 +1,4 @@
+import { publicJobSql } from '@catwalks/db/availability';
 import { sectorSql } from './sectors';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { companyIdentitySql, companyAliasSql } from './company-identity';
@@ -22,7 +23,8 @@ const facet = (column: Prisma.Sql, limit?: number) => Prisma.sql`
 
 /** One materialized match set instead of re-running the text search for every facet. */
 export async function searchSummary(filters: JobFilters, page: number, pageSize: number, presentation?: OptionalOccupationPresentation): Promise<SearchSummary> {
-  const conditions: Prisma.Sql[] = [Prisma.sql`j."isActive"`];
+  const asOf = new Date();
+  const conditions: Prisma.Sql[] = [publicJobSql(Prisma.sql`j`, asOf)];
 
   /*
    * D-426 — une dimension cochée sur plusieurs valeurs devient UNE condition
@@ -59,7 +61,7 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
   union(filters.programTypes, (v) => Prisma.sql`j."programType" = ${v}`);
   union(filters.engagementTypes, (v) => Prisma.sql`j."engagementType" = ${v}`);
   if (filters.source) conditions.push(Prisma.sql`EXISTS (
-    SELECT 1 FROM "JobSource" src WHERE src."jobId" = j.id AND src."isActive" AND src."sourceKey" = ${filters.source})`);
+    SELECT 1 FROM "JobSource" src WHERE src."jobId" = j.id AND src."isActive" AND (src."expiresAt" IS NULL OR src."expiresAt" > ${asOf}) AND src."sourceKey" = ${filters.source})`);
   /*
    * AUDIT 14/09/2026 — le nombre de TERMES est borné, pas seulement la
    * longueur de `q`.
@@ -160,7 +162,7 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
     ), scoped AS MATERIALIZED (SELECT * FROM base WHERE ${country})
     SELECT
       (SELECT count(*)::int FROM scoped) AS total,
-      (SELECT count(*)::int FROM "Job" WHERE "isActive") AS "totalInDatabase",
+      (SELECT count(*)::int FROM "Job" j WHERE ${publicJobSql(Prisma.sql`j`, asOf)}) AS "totalInDatabase",
       (SELECT count(*)::int FROM base WHERE "isFrance") AS "franceCount",
       ARRAY(SELECT id FROM scoped ORDER BY ${priorite} "postedAt" DESC NULLS LAST, "firstSeenAt" DESC, id
         LIMIT ${pageSize} OFFSET ${(page - 1) * pageSize}) AS ids,
@@ -177,7 +179,7 @@ export async function searchSummary(filters: JobFilters, page: number, pageSize:
       ${facet(Prisma.sql`maison`)} AS maisons,
       (SELECT coalesce(jsonb_agg(jsonb_build_object('value', "sourceKey", 'count', n) ORDER BY n DESC, "sourceKey"), '[]'::jsonb)
         FROM (SELECT src."sourceKey", count(DISTINCT src."jobId")::int AS n
-          FROM "JobSource" src JOIN scoped s ON s.id = src."jobId" WHERE src."isActive"
+          FROM "JobSource" src JOIN scoped s ON s.id = src."jobId" WHERE src."isActive" AND (src."expiresAt" IS NULL OR src."expiresAt" > ${asOf})
           GROUP BY src."sourceKey" ORDER BY n DESC, src."sourceKey" LIMIT 40) f) AS sources,
       (SELECT coalesce(jsonb_agg(jsonb_build_object('value', "countryCode", 'count', n)), '[]'::jsonb)
         FROM (SELECT "countryCode", count(*)::int AS n FROM base GROUP BY "countryCode") f) AS "rawCountries"

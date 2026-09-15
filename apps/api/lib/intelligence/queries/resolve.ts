@@ -1,3 +1,4 @@
+import { publicJobWhere } from '@catwalks/db/availability';
 import { prisma } from '@catwalks/db';
 import { DatabaseUnavailableError } from '@/lib/jobs';
 import { companySlug } from '@/lib/company-slug';
@@ -70,7 +71,7 @@ const companyIndex = cached('company-index', async (): Promise<Record<string, Re
     const rows = await prisma.company.findMany({
       select: {
         id: true, name: true, sector: true, sectorCodes:true, parentGroup: true, domain: true, careersUrl: true,
-        _count: { select: { jobs: { where: { isActive: true } } } },
+        _count: { select: { jobs: { where: publicJobWhere() } } },
       },
     });
     const sorted = [...rows].sort((a, b) => b._count.jobs - a._count.jobs || a.name.localeCompare(b.name, 'fr'));

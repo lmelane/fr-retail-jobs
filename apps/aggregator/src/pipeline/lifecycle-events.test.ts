@@ -1,4 +1,5 @@
 import '../test/setup-integration.js';
+import { recordSourceEvidence, clearSourceEvidence } from '../test/sourceEvidence.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { runRefresh } from './refresh.js';
@@ -18,6 +19,7 @@ import type { CandidateJob } from '../dedup/match.js';
 const prisma = new PrismaClient();
 
 async function wipe() {
+  await clearSourceEvidence(prisma);
   await prisma.jobEvent.deleteMany({});
   await prisma.jobSource.deleteMany({});
   await prisma.job.deleteMany({});
@@ -67,7 +69,7 @@ afterAll(async () => {
 });
 
 describe('refresh — closedAt, reopenedCount et événements', () => {
-  it('republie une offre retirée sans fabriquer une fermeture ou un repost, à l’ingestion puis au refresh', async () => {
+  it('ni ingestion ni refresh ne lèvent un retrait administratif de source', async () => {
     const input = candidate({ sourceKey: 'withdrawal-witness', externalId: 'w1', title: 'Client Advisor' });
     const created = await upsertDeduplicated(prisma, input);
     const original = await prisma.job.findUniqueOrThrow({ where: { id: created.jobId } });
@@ -75,12 +77,13 @@ describe('refresh — closedAt, reopenedCount et événements', () => {
     const again = await upsertDeduplicated(prisma, input);
     expect(again.jobId).toBe(created.jobId);
     expect(await prisma.job.findUniqueOrThrow({ where: { id: created.jobId } })).toMatchObject({
-      isActive: true, closedAt: null, withdrawnAt: null, withdrawalReason: null, reopenedCount: 0, firstSeenAt: original.firstSeenAt,
+      isActive: false, closedAt: null, withdrawalReason: 'SOURCE_RETIRED', reopenedCount: 0, firstSeenAt: original.firstSeenAt,
     });
     await deactivateSources(prisma, { sourceKey: input.sourceKey }, { kind: 'WITHDRAWN', reason: 'SOURCE_RETIRED' });
     await prisma.jobSource.updateMany({ where: { jobId: created.jobId }, data: { isActive: true, lastSeenAt: new Date() } });
-    expect(await runRefresh(prisma)).toMatchObject({ reopened: 0, republished: 1, closedJobs: 0 });
-    expect((await eventsOf(created.jobId)).map(e => e.type)).toEqual(['OPENED', 'WITHDRAWN', 'REPUBLISHED', 'WITHDRAWN', 'REPUBLISHED']);
+    expect(await runRefresh(prisma)).toMatchObject({ reopened: 0, republished: 0, closedJobs: 0 });
+    expect((await eventsOf(created.jobId)).map(e => e.type)).toEqual(['OPENED', 'WITHDRAWN']);
+    expect(await prisma.job.findUniqueOrThrow({ where: { id: created.jobId } })).toMatchObject({ isActive: false, withdrawalReason: 'SOURCE_RETIRED' });
     expect(await prisma.job.count()).toBe(1);
   });
 
@@ -104,7 +107,7 @@ describe('refresh — closedAt, reopenedCount et événements', () => {
   it('ferme : closedAt posé + CLOSED ; ré-ouvre : closedAt null, reopenedCount 1 + REOPENED', async () => {
     const c = await company();
     const j = await staleJob(c.id, 'kering', 'k1');
-    await prisma.sourceRun.create({ data: { sourceKey: 'kering', status: 'OK', jobs: 100, canAttestAbsence: true, ranAt: new Date() } });
+    await recordSourceEvidence(prisma, 'kering');
 
     const before = Date.now();
     const closed = await runRefresh(prisma);
@@ -134,7 +137,7 @@ describe('refresh — closedAt, reopenedCount et événements', () => {
     await staleJob(c.id, 'kering', 'k1');
     await staleJob(c.id, 'kering', 'k2');
     await staleJob(c.id, 'kering', 'k3');
-    await prisma.sourceRun.create({ data: { sourceKey: 'kering', status: 'OK', jobs: 100, canAttestAbsence: true, ranAt: new Date() } });
+    await recordSourceEvidence(prisma, 'kering');
 
     const result = await runRefresh(prisma);
     expect(result.closedJobs).toBe(3);

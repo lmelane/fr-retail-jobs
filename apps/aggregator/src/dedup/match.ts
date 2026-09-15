@@ -22,18 +22,7 @@ import { hasRequisitionConflict } from './postingIdentity.js';
  */
 
 import type { AtsType } from '@prisma/client';
-/** Ranking used to pick the canonical apply URL when postings are merged. */
-export type SourceTier = 'EMPLOYER_DIRECT' | 'GROUP_OFFICIAL' | 'ATS_OFFICIAL' | 'SPECIALIST_JOBBOARD' | 'AGGREGATOR';
-
-/** Source ranking: the highest-priority source owns the canonical apply URL. */
-export const SOURCE_PRIORITY: readonly SourceTier[] = [
-  'EMPLOYER_DIRECT',
-  'GROUP_OFFICIAL',
-  'ATS_OFFICIAL',
-  'SPECIALIST_JOBBOARD',
-  'AGGREGATOR',
-];
-
+import { SOURCE_PRIORITY, type SourceTier } from '@catwalks/db/publications';
 
 export type CandidateJob = NormalizedJob & {
   company: string;

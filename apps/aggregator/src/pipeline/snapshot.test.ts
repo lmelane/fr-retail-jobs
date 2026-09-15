@@ -48,6 +48,7 @@ async function seed(companyId: string, rows: Seed[]) {
         companyId, externalId: row.ext, source: 'GENERIC_JSONLD', title: `Poste ${row.ext}`, url: `https://x/${row.ext}`,
         fingerprint: `fp-${row.ext}`, city: row.city, countryCode: row.country, firstSeenAt: row.firstSeenAt,
         closedAt: row.closedAt ?? null, isActive: row.isActive ?? true,
+        sources: { create: { sourceKey: 'snapshot-test', externalId: row.ext, sourceTier: 'ATS_OFFICIAL', url: `https://x/${row.ext}`, isActive: row.isActive ?? true } },
         jobFunction: row.jobFunction ?? null, occupationGroup: BOOTSTRAP_TAXONOMY.families.get(row.jobFunction ?? '')?.group ?? null, isRetail: row.isRetail ?? null, isAiRelated: row.isAiRelated ?? false,
         seniority: row.seniority ?? null, employmentTerm: row.employmentTerm ?? null,
       },
@@ -175,6 +176,7 @@ describe('runSnapshot — le jour même (live)', () => {
     // b3 fermée puis ré-ouverte le même jour : closedAt repasse à null.
     const b3 = await prisma.job.findFirstOrThrow({ where: { externalId: 'b3' } });
     await prisma.job.update({ where: { id: b3.id }, data: { isActive: true, closedAt: null, reopenedCount: 1, events: { create: { type: 'REOPENED', at: NOW } } } });
+    await prisma.jobSource.updateMany({ where: { jobId: b3.id }, data: { isActive: true } });
     await runSnapshot(prisma, { now: NOW });
     expect(await row('global', '')).toMatchObject({ activeJobs: 9, closedJobs: 3, reopenedJobs: 2 });
     expect((await prisma.marketSnapshot.findFirst({ where: { scope: 'global' } }))?.mode).toBe('live');
@@ -185,12 +187,23 @@ describe('runSnapshot — le jour même (live)', () => {
   });
 });
 
+it('live statistics exclude elapsed source deadlines without inventing a closure event', async () => {
+  const c = await prisma.company.create({ data: { name: 'Deadline snapshot', canonicalKey: 'deadline-snapshot', fashionjobsUrl: 'resolved:deadline-snapshot' } });
+  await seed(c.id, ['elapsed', 'future', 'open'].map(ext => ({ ext, city: 'Paris', country: 'FR', firstSeenAt: daysAgo(10) })));
+  await prisma.jobSource.updateMany({ where: { externalId: 'elapsed' }, data: { expiresAt: new Date(NOW.getTime() - 1) } });
+  await prisma.jobSource.updateMany({ where: { externalId: 'future' }, data: { expiresAt: new Date(NOW.getTime() + DAY) } });
+  await runSnapshot(prisma, { now: NOW });
+  expect(await row('global', '')).toMatchObject({ activeJobs: 2, closedJobs: 0 });
+  expect(await prisma.job.count({ where: { isActive: true } })).toBe(3);
+});
+
 describe('runSnapshot — backfill (reconstruction)', () => {
   it('an absorbed ID creates neither an opening nor a synthetic closure in reconstructed or live facts', async () => {
     const c = await prisma.company.create({ data: { name: 'Canonical retailer', canonicalKey: 'retailer', fashionjobsUrl: 'resolved:retailer' } });
     const target = await prisma.job.create({ data: {
       companyId: c.id, externalId: 'root', source: 'GENERIC_JSONLD', title: 'Vendeur', url: 'https://x/root', fingerprint: 'root',
       firstSeenAt: daysAgo(10), lastSeenAt: NOW, isActive: true, countryCode: 'FR',
+      sources: { create: { sourceKey: 'snapshot-test', externalId: 'root', sourceTier: 'ATS_OFFICIAL', url: 'https://x/root' } },
     } });
     await prisma.job.create({ data: {
       companyId: c.id, externalId: 'alias', source: 'GENERIC_JSONLD', title: 'Vendeur', url: 'https://x/alias', fingerprint: 'alias',

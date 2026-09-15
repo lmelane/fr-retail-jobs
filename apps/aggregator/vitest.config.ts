@@ -9,8 +9,6 @@ export default defineConfig({
     // failures look like flakiness. Pure unit tests cost nothing to serialize.
     fileParallelism: false,
     pool: 'forks',
-    poolOptions: {
-      forks: { singleFork: true },
-    },
+    maxWorkers: 1,
   },
 });

@@ -29,6 +29,14 @@ afterAll(async () => {
 });
 
 describe('checkSourceHealth', () => {
+  it('distingue un catalogue explicitement vide d’un collecteur qui ne retourne rien', async () => {
+    await checkSourceHealth(prisma, [stat('declared-empty', 100)]);
+    const report = await checkSourceHealth(prisma, [{ ...stat('declared-empty', 0), declaredTotal: 0 }]);
+    expect(report.broken).toBe(0);
+    const latest = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'declared-empty' }, orderBy: [{ ranAt: 'desc' }, { id: 'desc' }] });
+    expect(latest).toMatchObject({ status: 'OK', fetched: 0, declaredTotal: 0, canAttestAbsence: true });
+    expect((await checkSourceHealth(prisma, [stat('silent-empty', 0)])).broken).toBe(1);
+  });
   it('persists the original failed-page cause and denies absence attestation', async () => {
     const failed = { ...stat('l-oreal-professionnel', 0), errors: 1, complete: false,
       errorNote: 'HTTP 406 for https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=240' };

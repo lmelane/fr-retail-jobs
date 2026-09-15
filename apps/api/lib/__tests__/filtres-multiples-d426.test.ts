@@ -183,9 +183,9 @@ describe('les filtres ne s’écrasent pas entre eux en SQL (D-426)', () => {
     expect(serialise).toContain('"occupationCode":null');
   });
 
-  it('sans aucun filtre ni mot-clé, la clause ne contraint rien', () => {
+  it('sans filtre utilisateur, seules les règles de publication restent obligatoires', () => {
     const w = whereClause(parseFilters({})) as { AND?: unknown[]; isActive?: boolean };
     expect(w.isActive).toBe(true);
-    expect(w.AND).toEqual([]);
+    expect(w.AND).toEqual([expect.objectContaining({ isActive: true, mergedIntoId: null, sources: expect.any(Object) })]);
   });
 });

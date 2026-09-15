@@ -1,3 +1,5 @@
+> **Archive de preuve datée.** Les chemins de cycle de vie cités ici ont été remplacés au lot 1 du 15 septembre 2026. Ce document conserve les constats de son audit ; utiliser la [documentation d’exploitation maintenue](../../../../apps/aggregator/scripts/ops/README.md) pour les commandes actuelles.
+
 # P7 — les preuves techniques, bloc par bloc
 
 > Document de travail du LOT P7. Chaque affirmation renvoie à une mesure ou à un test exécuté, jamais à une

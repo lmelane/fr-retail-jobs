@@ -1,4 +1,6 @@
-import { reactivateJob } from '../pipeline/lifecycle.js';
+import { deactivateJob, reactivateJob } from '../pipeline/lifecycle.js';
+import { declaredExpiry } from '../normalize/expiry.js';
+import { explicitlyListed } from '../pipeline/publicationDisposition.js';
 import { lockOccupationTaxonomy, loadOccupationTaxonomy, type CompiledOccupationTaxonomy } from '@catwalks/db/occupations';
 import { classifyOccupationContent, occupationState, recordOccupationObservation } from '../occupation/persist.js';
 import { EmployerIdentityReviewRequired } from '../identity/errors.js';
@@ -9,9 +11,9 @@ import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { lockCompanyRows, lockSourceWrites } from '../lib/writeLocks.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { createHash } from 'node:crypto';
-import { selectCanonicalSource } from './canonical.js';
+import { selectApplySource, SOURCE_PRIORITY } from '@catwalks/db/publications';
 import { hasRequisitionConflict } from './postingIdentity.js';
-import { blockingKey, isProbableDuplicate, SOURCE_PRIORITY, type CandidateJob } from './match.js';
+import { blockingKey, isProbableDuplicate, type CandidateJob } from './match.js';
 import { classifySector, sectorForSource, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
 import { resolveCompany } from '../normalize/company.js';
@@ -364,18 +366,25 @@ async function createJob(
   _clusterKey: string,
   now: Date,
 ): Promise<UpsertResult> {
+  const expiry = declaredExpiry(candidate.atsType ?? 'GENERIC_JSONLD', candidate.raw);
+  const expired = !!expiry?.expiresAt && expiry.expiresAt <= now;
   const created = await prisma.job.create({
     data: {
       ...canonicalJobContent(candidate,catalogue),
       companyId,
       lastSeenAt: now,
+      isActive: !expired,
+      closedAt: expired ? now : null,
       sources: { create: {
         sourceKey: candidate.sourceKey, sourceTier: candidate.sourceTier,
         externalId: candidate.externalId, url: candidate.url, title: candidate.title,
         postedAt: candidate.postedAt, lastSeenAt: now,
+        isActive: !expired,
+        expiresAt: expiry?.expiresAt,
+        expiryEvidence: expiry?.evidence,
         raw: candidate.raw == null ? Prisma.DbNull : candidate.raw as Prisma.InputJsonValue,
       } },
-      events: { create: { type: 'OPENED', at: now } },
+      events: { create: { type: expired ? 'CLOSED' : 'OPENED', at: now } },
     },
   });
   await recordOccupationObservation(prisma,created,null);
@@ -598,6 +607,13 @@ async function attachToExisting(
     (source) => source.sourceKey === candidate.sourceKey && source.externalId === candidate.externalId,
   );
 
+  const expiry = declaredExpiry(candidate.atsType ?? 'GENERIC_JSONLD', candidate.raw);
+  // A partial capture cannot erase a previously proven deadline.
+  const prior = existing.sources.find(source => source.sourceKey === candidate.sourceKey && source.externalId === candidate.externalId);
+  const expiresAt = expiry ? expiry.expiresAt : prior?.expiresAt;
+  const available = !expiresAt || expiresAt > now;
+  const expiryFields = expiry ? { expiresAt: expiry.expiresAt, expiryEvidence: expiry.evidence } : {};
+
   const observedSource = await prisma.jobSource.upsert({
     where: {
       sourceKey_externalId: {
@@ -614,15 +630,17 @@ async function attachToExisting(
       title: candidate.title,
       postedAt: candidate.postedAt,
       lastSeenAt: now,
+      isActive: available,
+      ...expiryFields,
       raw: candidate.raw as Prisma.InputJsonValue | undefined,
     },
-    update: { url: candidate.url, title: candidate.title, postedAt: candidate.postedAt, sourceTier: candidate.sourceTier, lastSeenAt: now, isActive: true, raw: candidate.raw as Prisma.InputJsonValue | undefined },
+    update: { url: candidate.url, title: candidate.title, postedAt: candidate.postedAt, sourceTier: candidate.sourceTier, lastSeenAt: now, isActive: available, ...expiryFields, raw: candidate.raw as Prisma.InputJsonValue | undefined },
   });
 
-  const owner = selectCanonicalSource([
+  const owner = selectApplySource([
     ...existing.sources.filter(s => s.id !== observedSource.id), observedSource,
-  ], existing)!;
-  const hasAuthority = owner.id === observedSource.id;
+  ], existing, now);
+  const hasAuthority = owner?.id === observedSource.id;
   const promoted = hasAuthority && (
     owner.sourceKey !== existing.canonicalSourceKey || owner.externalId !== existing.canonicalExternalId
   ) && tierRank(owner.sourceTier) < tierRank(existing.canonicalTier ?? '');
@@ -644,7 +662,6 @@ async function attachToExisting(
   },catalogue);
   const data = {
     lastSeenAt: now,
-    isActive: true,
     // Every touch carries the current generation, so a merged offer is never
     // left below the version line and re-purged on the next run.
     pipelineVersion: PIPELINE_VERSION,
@@ -661,10 +678,8 @@ async function attachToExisting(
     // 1 166 offres restaient sous une société périmée (audit A1) : l'alias ou
     // la marque corrigés ne les atteignaient jamais.
     ...(hasAuthority && companyId && companyId !== existing.companyId ? { companyId } : {}),
-    url: owner.url,
-    canonicalTier: owner.sourceTier,
-    canonicalSourceKey: owner.sourceKey,
-    canonicalExternalId: owner.externalId,
+    ...(owner ? { url: owner.url, canonicalTier: owner.sourceTier,
+      canonicalSourceKey: owner.sourceKey, canonicalExternalId: owner.externalId } : {}),
     ...(hasAuthority && candidate.employmentEvidence ? {rawContract:candidate.rawContract??null,rawWorkingTime:candidate.rawWorkingTime??null,employmentEvidence:candidate.employmentEvidence as Prisma.InputJsonValue}:{}),
     ...(hasAuthority && candidate.raw !== undefined ? { raw: candidate.raw as Prisma.InputJsonValue } : {}),
   };
@@ -676,7 +691,12 @@ async function attachToExisting(
    * que le refresh avait fermée. Avant, `isActive: true` était remis sans le
    * dire : la fermeture disparaissait de la base sans laisser de trace.
    */
-  const reactivation = reactivateJob(existing);
+  const canRelist = existing.withdrawalReason === 'SOURCE_UNLISTED' && hasAuthority &&
+    prior && prior.sourceKey === existing.canonicalSourceKey && prior.externalId === existing.canonicalExternalId &&
+    explicitlyListed(candidate.atsType, candidate.raw);
+  const administrativeWithdrawal = existing.withdrawnAt && existing.withdrawalReason !== 'ATTESTATION_MISSING' && !canRelist;
+  const reactivation = administrativeWithdrawal ? null : owner
+    ? reactivateJob(existing) : deactivateJob(existing, { kind: 'CLOSED' }, now);
   const events: JobEventInput[] = [
     ...(reactivation ? [{ jobId: existing.id, type: reactivation.type, at: now }] : []),
     // `structuralValuesOf` traduit les noms de COLONNE en noms d'ÉVÉNEMENT

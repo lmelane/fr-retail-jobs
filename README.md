@@ -1,20 +1,35 @@
-# Modecareers / Catwalks
+# Catwalks — agrégateur mondial d’offres
 
-Agrégateur mondial d’offres du luxe, de la mode, de la beauté et des secteurs associés. Les offres sont collectées à la source ; la France est un filtre du site. FashionJobs sert uniquement à découvrir des acteurs.
+Collecte des offres du luxe, de la mode, de la beauté et du retail. Les publications originales sont la référence ; interprétations, rapprochements et traductions doivent rester traçables et recalculables.
 
-**Le document de référence à ouvrir est [apps/aggregator/README.md](apps/aggregator/README.md).**
+## Documentation maintenue
 
-Il rassemble l’état vérifié, le diagnostic de certification, les priorités, l’organisation du dépôt et les liens vers les preuves. Les historiques servent de pièces justificatives et ne remplacent pas cet état daté.
+- [Architecture et contrats produit](docs/architecture/production-foundations.md) : deux origines d’offres, pays/langue, recherche et parcours de validation des sources.
+- [État vérifié et exploitation](apps/aggregator/README.md).
+- [Lot 1 validé localement](audits/reprise-2026-09-15/lot-1.md) : disponibilité par publication et maintenance bornée.
+- [Plan par lots et critères de validation](audits/reprise-2026-09-15/plan.md).
+- [Audit du 15 septembre 2026](audits/reprise-2026-09-15/rapport.md) : mesures, défauts et preuves datées.
 
 | Dossier | Rôle |
 |---|---|
-| `apps/aggregator` | Collecte, identité, normalisation, cycle de vie |
-| `apps/web` | Recherche, filtres, pages et SEO |
-| `packages/db` | Schéma et migrations partagés |
-| `docs` | Documentation technique maintenue : architecture et identité |
-| `audits` | Rapports et preuves historiques |
-| `backups` | Archives privées locales, exclues de Git |
+| `apps/aggregator` | Collecte, preuves, identité des sources, cycle de vie |
+| `apps/api` | API de recherche, filtres, suggestions et fiches |
+| `packages/db` | Schéma, migrations et contrats partagés |
+| `docs` | Architecture et documentation maintenues |
+| `audits` | Mesures et preuves datées, exclues du runtime |
+| `backups` | Sauvegardes privées locales, exclues de Git |
 
-Les règles de travail et décisions historiques restent dans [CLAUDE.md](CLAUDE.md). L’ancien README est conservé dans [les archives](audits/legacy-aggregator-reports/project-readme-before-20260910.md).
+Le site candidat et le backend des candidatures vivent dans leurs dépôts privés. Les offres directes Catwalks et les offres externes doivent partager la recherche tout en gardant leurs parcours de candidature.
 
-Les anciens plans et le handoff sont rangés dans `audits/legacy-project-files/`. Les anciens rendus HTML, maquettes et exports ont été retirés de la racine et conservés dans une archive privée. Pour éviter leur retour : `npm run check:layout -w @catwalks/aggregator`.
+## Validation locale
+
+Prérequis : Node 22 (≥ 22.12), Node 24 ou Node ≥ 26, npm, Python 3 et Docker local démarré.
+
+```sh
+npm ci --workspaces --include-workspace-root
+npm run test:local
+```
+
+Cette commande crée une base PostgreSQL jetable depuis une image figée, applique les migrations, vérifie les types et exécute les suites agrégateur/API ainsi que les tests des outils Railway. Elle ignore les URL de base de l’environnement appelant et retire son conteneur en fin d’exécution. Les deux tests réservés au corpus réel restent explicitement séparés.
+
+La CI vérifie aussi le build de l’API. `npm run api:build` permet de le reproduire. L’activation des crons, le matching et la nouvelle promesse de `/offres` viennent après cette phase de reprise.

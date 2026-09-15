@@ -1,3 +1,4 @@
+import { publicJobSql } from '@catwalks/db/availability';
 import {sectorJoin} from '../../sectors';
 import { prisma, Prisma } from '@catwalks/db';
 import { DatabaseUnavailableError } from '@/lib/jobs';
@@ -62,16 +63,16 @@ async function dimensionRows(column: Prisma.Sql, base: (Count & { new30: number 
   const [countries, companies, seniority] = await Promise.all([
     run<Cross>(Prisma.sql`
       SELECT ${column} AS "dim", j."isFrance" AS "isFrance", j."countryCode" AS country, count(*)::int AS "count"
-      FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${join} WHERE j."isActive" GROUP BY 1, 2, 3`),
+      FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${join} WHERE ${publicJobSql(Prisma.sql`j`)} GROUP BY 1, 2, 3`),
     run<CrossCompany>(Prisma.sql`
       SELECT * FROM (
         SELECT ${column} AS "dim", c.name, count(*)::int AS "count",
                row_number() OVER (PARTITION BY ${column} ORDER BY count(*) DESC, c.name ASC) AS rn
-        FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${join} WHERE j."isActive" GROUP BY 1, 2
+        FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${join} WHERE ${publicJobSql(Prisma.sql`j`)} GROUP BY 1, 2
       ) t WHERE rn <= 3`),
     run<CrossSeniority>(Prisma.sql`
       SELECT ${column} AS "dim", j.seniority, count(*)::int AS "count"
-      FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${join} WHERE j."isActive" GROUP BY 1, 2`),
+      FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${join} WHERE ${publicJobSql(Prisma.sql`j`)} GROUP BY 1, 2`),
   ]);
   const topC = topCountryByDim(countries);
   const comp = groupBy(companies);
@@ -100,7 +101,7 @@ export const getSectorsList = cached('sectors-list', async (): Promise<{ total: 
     bySector(),
     run<{ dim: string; fn: string | null; count: number }>(Prisma.sql`
       SELECT business_sector.code AS "dim", j."jobFunction" AS "fn", count(*)::int AS "count"
-      FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${sectorJoin} WHERE j."isActive" GROUP BY 1, 2`),
+      FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${sectorJoin} WHERE ${publicJobSql(Prisma.sql`j`)} GROUP BY 1, 2`),
   ]);
   const rows = await dimensionRows(Prisma.sql`business_sector.code`, sectors.map((s) => ({ key: s.key, count: s.count, new30: s.new30 })),sectorJoin);
   const functionsBySector: Record<string, Count[]> = {};

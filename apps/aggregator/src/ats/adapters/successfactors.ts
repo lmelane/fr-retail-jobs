@@ -491,6 +491,7 @@ export type SuccessFactorsDetail = {
   postalCode?: string;
   postedAt?: Date;
   validThrough?: Date;
+  validThroughRaw?: string;
   description?: string;
 };
 
@@ -604,6 +605,7 @@ export function parseMicrodataDetail(html: string): SuccessFactorsDetail {
   if (posted && !Number.isNaN(Date.parse(posted))) detail.postedAt = new Date(posted);
   else detail.postedAt = parseSuccessFactorsVisibleDate(html);
   const valid = meta('validThrough');
+  if (valid) detail.validThroughRaw = valid;
   if (valid && !Number.isNaN(Date.parse(valid))) detail.validThrough = new Date(valid);
 
   detail.description = parseMicrodataDescription(html);
@@ -663,6 +665,7 @@ export async function attachSuccessFactorsDescriptions(
             description: detail.description ?? job.description,
             raw: { ...(job.raw as object), postingEvidence: {
               ...readPostingEvidence(html, job.url).evidence,
+              microdataValidThrough: detail.validThroughRaw ?? null,
               microdataEmployer: detail.employerEvidence ?? null,
               careersiteProperties: detail.properties ?? null,
               configuredBrandProperty: brandProperty ?? null,

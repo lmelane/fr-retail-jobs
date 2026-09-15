@@ -8,7 +8,9 @@
     ".": "./index.ts",
     "./occupations": "./occupations.ts",
     "./presentation": "./presentation.ts",
-    "./marches": "./marches.ts"
+    "./marches": "./marches.ts",
+    "./availability": "./availability.ts",
+    "./publications": "./publications.ts"
   },
   "scripts": {
     "db:generate": "prisma generate",

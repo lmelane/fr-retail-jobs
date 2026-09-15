@@ -1,0 +1,13 @@
+{
+  "originalFiles": 86,
+  "unchangedOriginalFiles": 85,
+  "modifiedOriginalFiles": [
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/package.json",
+      "change": "Vitest 3.2.6 to 5.0.1; pre-existing scripts retained in working tree"
+    }
+  ],
+  "otherRepositories": "unchanged",
+  "localCheckpointOnly": true
+}

@@ -1,249 +1,53 @@
-/**
- * PRÉVISUALISATION DU REFRESH — lecture seule, par IDENTIFIANT, sur le planificateur COMMUN.
- *
- * Elle n'a plus de logique propre : elle lit l'état et le donne à `pipeline/refreshPlan.ts`, le même module que
- * le runner de refresh utilisera. Deux implémentations auraient fini par diverger, et la divergence aurait été
- * invisible — la prévisualisation annonçant un plan que l'exécution ne suit pas.
- *
- * DEUX DÉFAUTS DE LA PREMIÈRE VERSION, corrigés ici :
- *  1. elle déduisait `presentInLastCollectedSet = false` de `lastSeenAt < cutoff`. Ce n'est pas une preuve
- *     d'absence, c'est une preuve de NON-RÉ-ATTESTATION. L'ensemble réellement observé est désormais LU dans
- *     la preuve d'énumération archivée (`pageEvidence[].ids`), corrélée au run par `runId` ;
- *  2. elle décidait la survie d'une offre sur la FRAÎCHEUR des autres sources. Une source active hors du
- *     périmètre autorisé n'est pas désactivée par ce plan : elle maintient donc l'offre ouverte, quelle que
- *     soit son ancienneté. La conséquence se calcule après les seules désactivations prévues.
- *
- * usage: refresh-preview.mts --keys=<k1,k2,…> [--out=<f.json>]
+/** Read-only preview of the exact planner used by runRefresh.
+ * Usage: refresh-preview.mts --keys=<k1,k2> [--out=<file.json>] [--manifest-out=<file.json>]
  */
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { writeFileSync } from 'node:fs';
-import {
-  sourceEligibility, representationState, planRefresh, identifiersComparable,
-  type Representation, type RepresentationState,
-} from '../../src/pipeline/refreshPlan.js';
+import { readRefreshPlan, refreshScope, createRefreshManifest } from '../../src/pipeline/refresh.js';
 
-const arg = (n: string) => process.argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
-const requested = (arg('keys') ?? '').split(',').map((k) => k.trim()).filter(Boolean);
-if (!requested.length) { console.error('usage: refresh-preview.mts --keys=<k1,k2,…>'); process.exit(2); }
-
-const p = new PrismaClient({ log: [] });
+const arg = (name: string) => process.argv.find(value => value.startsWith(`--${name}=`))?.slice(name.length + 3);
+if (arg('keys') === undefined) throw new Error('refresh-preview requires --keys=<source keys>');
+const db = new PrismaClient({ log: [] });
 try {
-  /** Le dernier run de chaque source demandée. */
-  const runs: any[] = await p.$queryRaw(Prisma.sql`
-    SELECT DISTINCT ON ("sourceKey") "sourceKey", "runId", status, errors, truncated, complete,
-           "canAttestAbsence", "ranAt", fetched, "declaredTotal"
-    FROM "SourceRun" WHERE "sourceKey" = ANY(${requested})
-    ORDER BY "sourceKey", "ranAt" DESC, id DESC`);
-
-  /**
-   * La preuve d'énumération et les identifiants RÉELLEMENT observés, corrélés au run par `runId`.
-   * `idsUnavailable` distingue « aucune offre lue » de « la preuve n'énumère pas les identifiants » —
-   * mesuré : beiersdorf n'en archive aucun, une absence n'y est donc pas démontrable.
-   */
-  /**
-   * On lit `canonicalIds`, JAMAIS `ids`. `ids` porte l'unité que le PUBLIEUR pagine — chez DigitalRecruiters la
-   * diffusion, une par lieu — qui ne se compare pas aux identifiants d'annonces stockés en base. Comparer les
-   * deux a produit 37 fausses absences le 2026-09-12.
-   *
-   * `declaresCanonical` distingue « propriété absente » (adaptateur pas encore au contrat) de « tableau vide »
-   * (contrat rompu). Aucun backtick dans le SQL ci-dessous : il fermerait le gabarit littéral.
-   */
-  const evidences: any[] = await p.$queryRaw(Prisma.sql`
-    SELECT DISTINCT ON ("sourceKey") "sourceKey", "runId",
-           payload->'enumeration'->>'termination' AS termination,
-           coalesce((SELECT array_agg(x) FROM
-             jsonb_array_elements(coalesce(payload->'enumeration'->'pageEvidence','[]'::jsonb)) pe,
-             jsonb_array_elements_text(coalesce(pe->'canonicalIds','[]'::jsonb)) x), ARRAY[]::text[]) AS "observedIds",
-           coalesce((SELECT bool_and(pe ? 'canonicalIds') FROM
-             jsonb_array_elements(coalesce(payload->'enumeration'->'pageEvidence','[]'::jsonb)) pe), false) AS "declaresCanonical",
-           coalesce(payload->'enumeration'->'issues' ? 'CANONICAL_ID_CONTRACT_BROKEN', false) AS "contractBroken",
-           payload->'enumeration'->'canonicalAbsenceProofUsable' AS "absenceProofUsable",
-           coalesce(jsonb_array_length(coalesce(payload->'enumeration'->'pageEvidence','[]'::jsonb)), 0) AS pages
-    FROM "PipelineEvent" WHERE event = 'source.enumeration_observed' AND "sourceKey" = ANY(${requested})
-    ORDER BY "sourceKey", at DESC`);
-
-  const runBy = new Map(runs.map((r) => [r.sourceKey, r]));
-  const evBy = new Map(evidences.map((e) => [e.sourceKey, {
-    sourceKey: e.sourceKey, runId: e.runId, termination: e.termination,
-    /**
-     * Trois notions séparées. La CARDINALITÉ de l'ensemble n'en décide aucune : un board réellement vide, dont
-     * la terminaison est démontrée, est une preuve valide — et la seule qui justifie de fermer tout un board.
-     * `bool_and` refuse un contrat PARTIEL : les pages muettes rendraient leurs offres faussement absentes.
-     */
-    canonicalSet: e.observedIds as string[],
-    canonicalContractDeclared: e.declaresCanonical as boolean,
-    canonicalContractBroken: e.contractBroken as boolean,
-    /** `null` en base = l'adaptateur ne se prononce pas : on ne présume rien de défavorable. */
-    canonicalAbsenceProofUsable: e.absenceProofUsable === null ? undefined : Boolean(e.absenceProofUsable),
-  }]));
-
-  const eligibility = requested.map((key) => {
-    const verdict = sourceEligibility(runBy.get(key), evBy.get(key));
-    const r = runBy.get(key);
-    const e = evBy.get(key);
-    return {
-      source: key, ...verdict,
-      run: r ? { status: r.status, fetched: r.fetched, declaredTotal: r.declaredTotal, complete: r.complete,
-                 canAttestAbsence: r.canAttestAbsence, truncated: r.truncated, errors: r.errors,
-                 runId: r.runId, ranAt: r.ranAt } : null,
-      evidence: e ? { runId: e.runId, termination: e.termination, observedIds: e.canonicalSet.length,
-                      contractDeclared: e.canonicalContractDeclared, contractBroken: e.canonicalContractBroken } : null,
-    };
-  });
-  const eligible: string[] = eligibility.filter((e) => e.eligible).map((e) => e.source);
-
-  /** Toutes les représentations ACTIVES des sources demandées — pas seulement les périmées. */
-  const reps: any[] = await p.$queryRaw(Prisma.sql`
-    SELECT js.id AS "jobSourceId", js."sourceKey", js."externalId", js."jobId", js."lastSeenAt", j.title
-    FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
-    WHERE js."isActive" AND j."isActive" AND js."sourceKey" = ANY(${requested})
-    ORDER BY js."sourceKey", js."externalId"`);
-
-  /** Les retenues et les refus d'écriture du dernier cycle : une offre VUE mais non publiée n'est pas absente. */
-  const runIds = [...new Set(runs.map((r) => r.runId).filter(Boolean))] as string[];
-  const held: any[] = await p.$queryRaw(Prisma.sql`
-    SELECT DISTINCT "sourceKey", "externalId" FROM "SourceObservation"
-    WHERE raw ? 'publicationHold' AND "sourceKey" = ANY(${requested})`);
-  /**
-   * `jobId` est une COLONNE indexée de `PipelineEvent`, pas un champ à extraire du message d'erreur.
-   * Vérifié en production : 2 306 événements `job.write_failed`, AUCUN sans `jobId`. Une expression régulière
-   * sur `error.stack` casserait au premier changement de formulation — et échouerait en SILENCE, transformant
-   * un refus d'écriture en fausse absence.
-   */
-  const writeFailed: any[] = runIds.length ? await p.$queryRaw(Prisma.sql`
-    SELECT DISTINCT "sourceKey", "jobId" FROM "PipelineEvent"
-    WHERE event = 'job.write_failed' AND "runId" = ANY(${runIds}) AND "sourceKey" = ANY(${requested})
-      AND "jobId" IS NOT NULL`) : [];
-  /** Un échec SANS identifiant ne se compte jamais comme zéro : il retire le droit de prouver une absence. */
-  const unattributable: any[] = runIds.length ? await p.$queryRaw(Prisma.sql`
-    SELECT "sourceKey", count(*)::int AS n FROM "PipelineEvent"
-    WHERE event = 'job.write_failed' AND "runId" = ANY(${runIds}) AND "sourceKey" = ANY(${requested})
-      AND "jobId" IS NULL GROUP BY 1`) : [];
-  const heldSet = new Set(held.map((h) => `${h.sourceKey} ${h.externalId}`));
-  const failedSet = new Set(writeFailed.map((w) => `${w.sourceKey} ${w.jobId}`));
-  const anonymousFailures = new Map<string, number>(unattributable.map((u) => [u.sourceKey, u.n]));
-
-  const representations: Representation[] = reps.map((r) => ({
-    sourceKey: r.sourceKey, externalId: r.externalId, jobId: r.jobId, jobSourceId: r.jobSourceId,
-    lastSeenAt: r.lastSeenAt,
-    held: heldSet.has(`${r.sourceKey} ${r.externalId}`),
-    writeFailed: failedSet.has(`${r.sourceKey} ${r.externalId}`),
-  }));
-
-  /**
-   * LE CONTRÔLE D'INCOMPARABILITÉ, avant toute conclusion d'absence : les identifiants observés doivent parler
-   * le même langage que ceux stockés. Mesuré — `american-vintage-dr` archive des identifiants composites et
-   * aurait vu 100 % de ses offres déclarées absentes.
-   */
-  /**
-   * Un échec d'écriture ANONYME retire la recevabilité : l'offre disparue pourrait être précisément celle
-   * dont l'écriture a échoué sans qu'on sache laquelle. Aucune preuve manquante ne devient « zéro échec ».
-   */
-  for (const [key, n] of anonymousFailures) {
-    const entry = eligibility.find((x) => x.source === key);
-    if (entry?.eligible) {
-      entry.eligible = false;
-      entry.reasons.push(`${n} échec(s) d'écriture non rattachable(s) à un identifiant`);
-    }
+  const catalogue = await db.source.findMany({ select: { key: true } });
+  const requested = refreshScope(catalogue.map(source => source.key), arg('keys'))!;
+  const plan = await readRefreshPlan(db, { onlyKeys: requested });
+  const { absencePlan } = plan;
+  const states: Record<string, number> = {};
+  const unverifiable: Record<string, number> = {};
+  for (const rep of absencePlan.representations) {
+    const state = absencePlan.states.get(rep.jobSourceId)!;
+    states[state] = (states[state] ?? 0) + 1;
+    if (state === 'UNVERIFIABLE') unverifiable[rep.sourceKey] = (unverifiable[rep.sourceKey] ?? 0) + 1;
   }
-
-  const observedBy = new Map<string, ReadonlySet<string> | null>();
-  const incomparable: string[] = [];
-  for (const key of requested) {
-    const e = evBy.get(key);
-    const ok = eligibility.find((x) => x.source === key)?.eligible ?? false;
-    if (!ok || !e) { observedBy.set(key, null); continue; }
-    const observed = new Set(e.canonicalSet);
-    const stored = representations.filter((r) => r.sourceKey === key).map((r) => r.externalId);
-    /**
-     * UN BOARD VIDE PROUVÉ N'EST PAS UNE INCOMPARABILITÉ. La source est recevable (contrat déclaré,
-     * terminaison démontrée) et elle a simplement cessé de publier : toutes ses représentations sont donc
-     * légitimement ABSENTES. Passer par le contrôle de vocabulaire les rendrait INVÉRIFIABLES et ce board
-     * serait infermable à jamais — la contradiction revenant par une autre porte.
-     */
-    if (observed.size === 0) { observedBy.set(key, observed); continue; }
-    if (!identifiersComparable(observed, stored)) {
-      incomparable.push(key);
-      const entry = eligibility.find((x) => x.source === key)!;
-      entry.eligible = false;
-      entry.reasons.push('identifiants observés incomparables avec ceux stockés (aucun recouvrement) : '
-        + `ex. observé « ${e.canonicalSet[0]} » vs stocké « ${stored[0]} »`);
-      observedBy.set(key, null);
-      continue;
-    }
-    observedBy.set(key, observed);
-  }
-  const stillEligible = eligibility.filter((x) => x.eligible).map((x) => x.source);
-  eligible.length = 0; eligible.push(...stillEligible);
-
-  const states = new Map<string, RepresentationState>();
-  for (const rep of representations) {
-    const ok = eligibility.find((x) => x.source === rep.sourceKey)?.eligible ?? false;
-    states.set(rep.jobSourceId, representationState(rep, observedBy.get(rep.sourceKey) ?? null, ok));
-  }
-
-  /** TOUTES les représentations actives par offre — y compris celles de sources hors périmètre. */
-  const jobIds = [...new Set(representations.map((r) => r.jobId))];
-  const allActive: any[] = jobIds.length ? await p.$queryRaw(Prisma.sql`
-    SELECT "jobId", array_agg(id) AS ids FROM "JobSource"
-    WHERE "isActive" AND "jobId" = ANY(${jobIds}) GROUP BY "jobId"`) : [];
-  const activeByJob = new Map(allActive.map((a) => [a.jobId, a.ids as string[]]));
-
-  const { deactivations, jobs } = planRefresh(representations, states, activeByJob);
-
-  const byState: Record<string, number> = {};
-  for (const s of states.values()) byState[s] = (byState[s] ?? 0) + 1;
-  const closures = [...jobs.entries()].filter(([, o]) => o === 'JOB_CANDIDATE_FOR_CLOSURE').map(([j]) => j);
-  const kept = [...jobs.entries()].filter(([, o]) => o === 'JOB_KEPT_BY_ANOTHER_SOURCE').map(([j]) => j);
-  const perimeter = new Set(representations.filter((r) => eligible.includes(r.sourceKey)).map((r) => r.jobId)).size;
-
-  /** Ce qu'une source recevable ré-atteste alors que l'offre est inactive : une réouverture. */
-  const reopen: any[] = eligible.length ? await p.$queryRaw(Prisma.sql`
-    SELECT j.id AS "jobId", j."closedAt", j."withdrawnAt", j."reopenedCount",
-           array_agg(DISTINCT js."sourceKey") AS sources
-    FROM "Job" j JOIN "JobSource" js ON js."jobId" = j.id
-    WHERE NOT j."isActive" AND js."isActive" AND js."sourceKey" = ANY(${eligible})
-    GROUP BY 1,2,3,4`) : [];
-
+  const eligible = absencePlan.eligibility.filter(source => source.eligible).map(source => source.source);
+  const closures = plan.wouldClose.filter(id => !plan.orphans.some(job => job.id === id));
+  const affected = await db.job.findMany({ where: { id: { in: [...new Set(plan.staleSources.map(source => source.jobId))] } }, select: { id: true, isActive: true } });
+  const closing = new Set(closures);
+  const kept = affected.filter(job => job.isActive && !closing.has(job.id)).map(job => job.id);
+  const manifest = plan.refused ? null : await createRefreshManifest(db, plan);
   const preview = {
-    at: new Date().toISOString(), requested, eligible,
-    eligibility,
-    incomparableIdentifiers: incomparable,
-    representationStates: byState,
-    perimeterLiveJobs: perimeter,
-    /** LE MANIFESTE : les identifiants exacts que le refresh est autorisé à toucher. */
-    plannedDeactivations: deactivations.map((d) => ({
-      jobSourceId: d.jobSourceId, sourceKey: d.sourceKey, externalId: d.externalId, jobId: d.jobId,
-      lastSeenAt: d.lastSeenAt, state: d.state, reason: d.reason,
-      consequence: jobs.get(d.jobId),
-    })),
-    jobsKeptByAnotherSource: kept,
-    jobsCandidateForClosure: closures,
-    administrativeWithdrawals: [] as string[],
-    reopenings: reopen,
-    unverifiable: representations.filter((r) => states.get(r.jobSourceId) === 'UNVERIFIABLE')
-      .reduce<Record<string, number>>((a, r) => ({ ...a, [r.sourceKey]: (a[r.sourceKey] ?? 0) + 1 }), {}),
-    heldSeen: representations.filter((r) => states.get(r.jobSourceId) === 'PRESENT_BUT_HELD').length,
-    writeFailedSeen: representations.filter((r) => states.get(r.jobSourceId) === 'PRESENT_BUT_WRITE_FAILED').length,
-    guards: {
-      closureRatioPct: perimeter ? Number(((closures.length / perimeter) * 100).toFixed(2)) : 0,
-      closureRatioWithinFivePercent: !perimeter || closures.length / perimeter <= 0.05,
-      ineligible: eligibility.filter((e) => !e.eligible).map((e) => ({ source: e.source, reasons: e.reasons })),
-      closuresFromHeldOrWriteFailed: 0,  // par construction : ces états ne produisent aucune désactivation
-    },
+    at: plan.asOf, cutoff: plan.cutoff, requested, eligible, eligibility: absencePlan.eligibility,
+    representationStates: states, perimeterLiveJobs: plan.liveTotal,
+    plannedDeactivations: plan.staleSources,
+    frozenManifest: manifest,
+    jobsKeptByAnotherSource: kept, jobsCandidateForClosure: closures,
+    jobsAlreadyInactive: affected.filter(job => !job.isActive).map(job => job.id),
+    administrativeWithdrawals: plan.orphans.map(job => job.id),
+    reopenings: plan.revived.map(job => ({ jobId: job.id, closedAt: job.closedAt, withdrawnAt: job.withdrawnAt })),
+    unverifiable, heldSeen: states.PRESENT_BUT_HELD ?? 0, writeFailedSeen: states.PRESENT_BUT_WRITE_FAILED ?? 0,
+    guards: { refused: plan.refused, closureRatioPct: plan.liveTotal ? 100 * plan.wouldClose.length / plan.liveTotal : 0,
+      limits: plan.limits,
+      ineligible: absencePlan.eligibility.filter(source => !source.eligible) },
   };
-
+  const serialized = JSON.stringify(preview, null, 2);
   const out = arg('out');
-  if (out) writeFileSync(out, JSON.stringify(preview, null, 2));
-
-  console.log('RECEVABILITÉ (faits du dernier run + preuve du MÊME cycle) :');
-  for (const e of eligibility) console.log(`  ${e.eligible ? '✓' : '✗'} ${e.source.padEnd(26)} ${e.eligible ? `${e.evidence?.observedIds} ids observés` : e.reasons.join(' · ')}`);
-  console.log('\nÉTATS DES REPRÉSENTATIONS :', JSON.stringify(byState));
-  console.log(`périmètre recevable : ${eligible.length} source(s), ${perimeter} offres`);
-  console.log(`désactivations planifiées : ${deactivations.length}`);
-  console.log(`  · offres conservées par une autre source : ${kept.length}`);
-  console.log(`  · offres candidates à fermeture          : ${closures.length} (${preview.guards.closureRatioPct} %)`);
-  console.log(`réouvertures : ${reopen.length} · garde 5 % : ${preview.guards.closureRatioWithinFivePercent ? 'respectée' : 'DÉPASSÉE'}`);
+  if (out) writeFileSync(out, serialized + '\n');
+  if (arg('manifest-out')) {
+    if (!manifest) throw new Error('Cannot freeze a refused refresh plan');
+    writeFileSync(arg('manifest-out')!, JSON.stringify(manifest, null, 2) + '\n');
+  }
+  console.log(serialized);
 } finally {
-  await p.$disconnect();
+  await db.$disconnect();
 }

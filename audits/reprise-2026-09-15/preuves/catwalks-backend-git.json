@@ -1,0 +1,55 @@
+{
+  "path": "/Users/lmelane/Documents/beauchoix-projects/catwalks-build/catwalks-backend",
+  "at": "2026-09-15T13:02:27.653266+00:00",
+  "github": {
+    "exit": 0,
+    "out": "{\"defaultBranchRef\":{\"name\":\"main\"},\"isPrivate\":true,\"nameWithOwner\":\"lmelane/catwalks-back-end\",\"url\":\"https://github.com/lmelane/catwalks-back-end\"}\n",
+    "err": ""
+  },
+  "prs": {
+    "exit": 0,
+    "out": "[]\n",
+    "err": ""
+  },
+  "fetch": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "refs": {
+    "exit": 0,
+    "out": "main|63f61fa2cdd0598df8a59c2fe49bed73e8b68a5e|origin/main|\norigin|63f61fa2cdd0598df8a59c2fe49bed73e8b68a5e||\norigin/main|63f61fa2cdd0598df8a59c2fe49bed73e8b68a5e||\n",
+    "err": ""
+  },
+  "status": {
+    "exit": 0,
+    "out": "## main...origin/main\n M docs/governance/DECISIONS.md\n M prisma/schema.prisma\n?? prisma/migrations/20260914135914_anciens_slugs_d425/\n?? scripts/rattacher-maisons-d424.mjs\n",
+    "err": ""
+  },
+  "unmerged_main": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "local_only": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "unpushed_all": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "head_vs_main": {
+    "exit": 0,
+    "out": "0\t0\n",
+    "err": ""
+  },
+  "worktrees": {
+    "exit": 0,
+    "out": "worktree /Users/lmelane/Documents/beauchoix-projects/catwalks-build/catwalks-backend\nHEAD 63f61fa2cdd0598df8a59c2fe49bed73e8b68a5e\nbranch refs/heads/main\n\n",
+    "err": ""
+  },
+  "commits": {}
+}

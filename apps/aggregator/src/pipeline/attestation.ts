@@ -78,6 +78,11 @@ export type AttestationInput = {
   previous?: number | null;
 };
 
+/** An explicit publisher zero plus completed collection is different from a silent empty response. */
+export function isDeclaredEmptyEnumeration(run: Pick<AttestationInput, 'complete' | 'errors' | 'truncated' | 'declaredTotal' | 'fetched'>): boolean {
+  return run.complete === true && run.errors === 0 && run.truncated !== true && run.declaredTotal === 0 && run.fetched === 0;
+}
+
 /**
  * Ce run a-t-il le droit de faire disparaître des offres qu'il n'a pas revues ?
  *
@@ -126,7 +131,7 @@ export function isTrustedForAttestation(run: AttestationInput): boolean {
    * nul — en plus de cette porte. La garde reste donc entière sur le chemin réel ; seules les lignes archivées
    * sans la colonne cessent d'être lues comme un effondrement inventé.
    */
-  if (run.previous && run.previous > 0 && run.fetched != null) {
+  if (!isDeclaredEmptyEnumeration(run) && run.previous && run.previous > 0 && run.fetched != null) {
     if (run.fetched < run.previous * COLLAPSE_RATIO) return false;
   }
 

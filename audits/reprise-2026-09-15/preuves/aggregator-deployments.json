@@ -1,0 +1,42 @@
+[
+  {
+    "serviceName": "Postgres",
+    "serviceId": "b5c68d1c-6988-4f15-8d85-afe684109cea",
+    "status": "SUCCESS",
+    "deploymentId": "0391dd34-5466-4691-91e6-f3e059c3aed7",
+    "commit": null,
+    "branch": null
+  },
+  {
+    "serviceName": "catwalks-reconcile",
+    "serviceId": "85d0e5ba-992a-467e-9ddd-0dc25be1d74c",
+    "status": "SUCCESS",
+    "deploymentId": "e72eece7-239f-4c32-a232-f7e1ba0550e2",
+    "commit": "dd3e24dabf16775703b286c6c9414f766675c9ea",
+    "branch": "main"
+  },
+  {
+    "serviceName": "catwalks-api",
+    "serviceId": "a2280bb1-36be-4e6a-8250-2acc2aef0a47",
+    "status": "SUCCESS",
+    "deploymentId": "dc21a778-f95a-4be3-bbf2-087698920e77",
+    "commit": "dd3e24dabf16775703b286c6c9414f766675c9ea",
+    "branch": "main"
+  },
+  {
+    "serviceName": "catwalks-aggregator",
+    "serviceId": "203613c5-701f-4013-a2c0-66c8de147c34",
+    "status": "SUCCESS",
+    "deploymentId": "15a06048-1c5c-44ca-aeb2-65425f14f181",
+    "commit": "dd3e24dabf16775703b286c6c9414f766675c9ea",
+    "branch": "main"
+  },
+  {
+    "serviceName": "catwalks-refresh",
+    "serviceId": "ddc5dece-7865-4cfa-b71e-8d139e2e1ea5",
+    "status": "SUCCESS",
+    "deploymentId": "a598429a-d135-45aa-8871-1df41b43ae23",
+    "commit": "dd3e24dabf16775703b286c6c9414f766675c9ea",
+    "branch": "main"
+  }
+]

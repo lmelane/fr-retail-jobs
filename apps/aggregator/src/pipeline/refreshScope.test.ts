@@ -12,10 +12,11 @@ import { refreshScope } from './refresh.js';
 describe('refreshScope — le périmètre autorisé du refresh', () => {
   const catalogue = ['mecca', 'urbn-hub', 'beiersdorf', 'source-hors-vague'];
 
-  it('sans variable, le périmètre reste celui d\'avant : toutes les sources', () => {
+  it('seule une variable absente laisse le périmètre non borné', () => {
     expect(refreshScope(catalogue, undefined)).toBeUndefined();
-    expect(refreshScope(catalogue, '')).toBeUndefined();
-    expect(refreshScope(catalogue, '   ')).toBeUndefined();
+    expect(refreshScope(catalogue, '')).toEqual([]);
+    expect(refreshScope(catalogue, '   ')).toEqual([]);
+    expect(refreshScope(catalogue, ', ,')).toEqual([]);
   });
 
   it('une liste ferme le périmètre aux seules clés nommées', () => {

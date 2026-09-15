@@ -12,6 +12,13 @@ import { isTrustedForAttestation, ATTESTATION_MIN_COVERAGE } from './attestation
  * garde alors le droit d'attester.
  */
 describe('isTrustedForAttestation', () => {
+  it('un zéro explicitement annoncé et entièrement lu ne devient pas un effondrement inexpliqué', () => {
+    const empty = { status: 'OK' as const, complete: true, errors: 0, truncated: false, fetched: 0, declaredTotal: 0, previous: 1700 };
+    expect(isTrustedForAttestation(empty)).toBe(true);
+    expect(isTrustedForAttestation({ ...empty, declaredTotal: undefined })).toBe(false);
+    expect(isTrustedForAttestation({ ...empty, errors: 1 })).toBe(false);
+    expect(isTrustedForAttestation({ ...empty, complete: undefined })).toBe(false);
+  });
   it('unknown completion never proves absence, even with an OK status', () => {
     expect(isTrustedForAttestation({ status: 'OK', fetched: 100 })).toBe(false);
     expect(isTrustedForAttestation({ status: 'OK', complete: false, fetched: 100 })).toBe(false);

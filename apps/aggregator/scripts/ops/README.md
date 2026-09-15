@@ -1,12 +1,16 @@
 # Operations — the versioned, reviewable executables
 
-Everything indispensable to operating and proving the pipeline lives here, in the repository, so a chain can be
-**reviewed, diffed and replayed**. What stays out, always: cassettes (third-party response bodies), database
-dumps, and credentials. They are named by argument or by a host-local access file, never embedded.
+Les commandes maintenues vivent dans ce dossier ; les captures, dumps et identifiants d’accès restent privés. L’[architecture courante](../../../../docs/architecture/production-foundations.md) définit les contrats à livrer et les circuits à supprimer. Les chaînes de mutation ci-dessous restent des prototypes tant que leur répétition complète n’est pas validée ; leur présence ne certifie pas la production.
 
-The rule this directory exists to enforce: **no program that the operation depends on may live only in
-`backups/` or as a `.txt`.** Fifty-three execution chains once sat in `backups/` (gitignored); each lot copied
-the previous one, the procedure drifted, and no chain could be diffed against another.
+Le transport GraphQL commun est [`railway_api.py`](railway_api.py), utilisé par le contrôle des services, le contrôle des crons et la garde de déploiement. Il utilise `CATWALKS_RAILWAY_TOKEN` ou la connexion CLI Railway. Aucun exécutable de transport n’est chargé depuis `backups/`.
+
+```sh
+python3 -B apps/aggregator/scripts/ops/railway-service.py status api
+python3 -B apps/aggregator/scripts/ops/read-crons.py
+python3 -B -m unittest discover -s apps/aggregator/scripts/ops/tests
+```
+
+Les noms acceptés sont `aggregator`, `api`, `refresh` et `reconcile`. Le nom public courant est `catwalks-api` ; les commandes bornées ne s’appliquent qu’à l’aggregator. Le préflight compare les révisions de l’API et du worker séparément, y compris leurs dépendances partagées.
 
 ## Mutating production
 
@@ -27,16 +31,26 @@ refresh ne touche que ce qui a été revu.
 |---|---|
 | [`ingest-preflight.py`](ingest-preflight.py) | Impose les étapes 1 à 8 et **refuse en exit 1** : commit figé, arbre propre, aucun run en vol, les **deux** services vérifiés séparément (`DEPLOYED_AT_COMMIT` / `SAME_CODE_FOR_THIS_SERVICE` démontré par le diff / `STALE_CODE`), allowlist exacte, sauvegarde **restaurée** et comparée sur six grandeurs, canaux d'alerte **testés par émission réelle**. Refuse aussi **avant la première écriture** si le disque n'a pas 8 Gio libres — le dump *et* le clone restauré tiennent sur le même disque — et **rend** la base clone une fois qu'elle a prouvé la restauration (jamais si la comparaison a échoué : ce clone-là doit rester inspectable). |
 | [`bounded-ingest.sh`](bounded-ingest.sh) | Une ingestion bornée, sans aucun tube — le code de sortie d'un tube est celui de sa dernière commande. Pose la commande bornée, attend le SUCCESS sur CE commit, exécute, attend un statut **terminal** (restaurer plus tôt tuerait le run), restaure, contrôle les variables et les crons. |
-| [`bounded-command.py`](bounded-command.py), [`bounded-refresh-command.py`](bounded-refresh-command.py) | Les commandes de démarrage, échappées par `shlex` — assemblées en shell elles se cassent en silence, et une commande malformée qui se déploie remplace la commande normale par quelque chose qui échoue. Le refresh y embarque le **manifeste en clair**. |
+| [`bounded-command.py`](bounded-command.py), [`bounded-refresh-command.py`](bounded-refresh-command.py) | Les commandes de démarrage, échappées par `shlex` — assemblées en shell elles se cassent en silence, et une commande malformée qui se déploie remplace la commande normale par quelque chose qui échoue. Le refresh y porte l’empreinte du manifeste immuable stocké dans `MaintenancePlan` ; le volume du plan ne gonfle pas la commande. |
 | [`cycle-contracts.mts`](cycle-contracts.mts) | Les deux contrats d'un cycle, lus sur la base : `canonicalObservedIds = persistés ∪ retenus ∪ échecs ∪ rejets ∪ erreurs`. Tout est corrélé au **même `runId`** — une retenue historique n'est pas une retenue du cycle. |
-| [`refresh-preview.mts`](refresh-preview.mts) | Ce que le refresh ferait, par identifiant, sur le planificateur **commun**. Lit `canonicalIds`, jamais `ids`. |
-| [`freeze-manifest.mts`](freeze-manifest.mts) | Fige et hache le plan. **Refuse** une entrée d'une source non recevable, un état n'autorisant pas la désactivation, une ligne déjà inactive. |
-| [`bounded-refresh.sh`](bounded-refresh.sh) | Le refresh borné. **Refuse de démarrer si `INGEST_ONLY_KEYS` est posé** : un refresh ne collecte rien. Un manifeste vide arrête la chaîne en succès. La commande déployée est bornée **deux fois** : `REFRESH_ONLY_KEYS` *et* la liste explicite des `JobSource` du manifeste. |
+| [`refresh-preview.mts`](refresh-preview.mts) | Ce que le refresh ferait, par identifiant, sur le planificateur **commun**. Lit `canonicalIds`, jamais `ids`. `--manifest-out=<fichier>` fige les désactivations avec leur preuve et le hash de l’état de l’offre. |
+| [`bounded-refresh.sh`](bounded-refresh.sh) | Le refresh borné. **Refuse de démarrer si `INGEST_ONLY_KEYS` est posé** : un refresh ne collecte rien. Un manifeste vide arrête la chaîne en succès. La commande déployée est bornée **deux fois** : `REFRESH_ONLY_KEYS` *et* le manifeste version 2 complet chargé par empreinte. Les retraits d’orphelins et réouvertures ne font pas partie de ce mode. |
 | [`railway-service.py`](railway-service.py) `execute` | Refuse de déclencher une exécution si le déploiement n'est pas SUCCESS, si le commit diffère, si la commande déployée n'est pas celle qu'on a posée, si le périmètre déployé n'est pas **exactement** l'allowlist attendue (via `INGEST_ONLY_KEYS` **ou** `REFRESH_ONLY_KEYS`), ou s'il porte **les deux** — un état incohérent n'est pas deux fois plus sûr. Sans cette garde, un `execute` lancé après un redéploiement automatique relancerait le pipeline **complet** en production. Contre-exemples en test : [`src/ops/executeGuard.test.ts`](../../src/ops/executeGuard.test.ts). |
-| [`refresh-audit.mts`](refresh-audit.mts) | `touchedIds` = manifeste par **ensembles**, conséquences offre par offre, invariants, retenues, runs orphelins. |
-| [`refresh-parity.mts`](refresh-parity.mts) | Les dix situations qui comptent, contre le **vrai** `runRefresh` sur clone — dont « état modifié après le manifeste » et « ligne hors manifeste ». |
+| [`refresh-audit.mts`](refresh-audit.mts) | Lit les écritures et omissions expliquées dans `DataCorrection`, créé dans la transaction du refresh. Compare les identifiants et conséquences au manifeste, sans déduire les mutations d’une date de fermeture. |
 | [`cycle-compare.mts`](cycle-compare.mts) | Cycle 1 contre cycle 2, **par identifiant**. Seule l'intersection des absences des deux cycles peut fonder une fermeture. |
 | [`record-employer-alias.mts`](record-employer-alias.mts) | Une décision d'identité : libellé **exact**, portée **source**, preuve archivée dont le sha256 est vérifié. Refuse un alias global. |
+
+### Cycle de vie et échéances
+
+[`refresh-manifest.mts`](refresh-manifest.mts) archive le plan avant exécution. La table `MaintenancePlan` refuse les modifications et suppressions ; chaque worker contrôle à nouveau l’empreinte lors du chargement.
+
+- `REFRESH_ONLY_KEYS` absent : portée non bornée. Une valeur explicitement vide : aucune mutation.
+- Une source cassée ou sans preuve complète ne prouve aucune absence. Un zéro explicitement annoncé et entièrement parcouru peut le faire.
+- `REFRESH_MAX_CLOSE_RATIO=0.05`, `REFRESH_MIN_CLOSE_FOR_GUARD=50`, `REFRESH_STALE_HOURS=48` sont les valeurs par défaut du même moteur pour le preview et l’exécution. Le ratio porte sur les offres actives du périmètre de sources ; il bloque à partir de 50 retraits/fermetures prévus. Les limites du manifeste sont figées dans son empreinte.
+- Un manifeste version 2 désactive seulement les représentations nommées. L’état de l’offre et de ses autres publications est vérifié sous verrou. Une preuve ou un état nouveau entraîne une omission tracée ; relancer le même manifeste ne rejoue pas la mutation.
+- `JobSource.expiresAt` vient d’un chemin RAW qualifié. Les jours sans heure expirent après la fin de la journée dans tous les fuseaux (lendemain à 12:00 UTC). La preuve garde cette politique et la valeur originale. Une date telle que `9999-12-31`, dont la fin calculée dépasse la plage de Prisma, conserve `BEYOND_STORAGE_RANGE` dans la preuve et aucun instant inventé. `Job.validThrough` ne remplace jamais cette preuve.
+- [`source-expiry.mts`](source-expiry.mts) prépare le rattrapage RAW par pages de 250 (`preview --keys=… --out=…`). `apply --plan=… --hash=… --revision=…` vérifie chaque état avant écriture et inscrit un lot idempotent dans le journal immuable. Le preview doit être répété si une capture a changé.
+- Les tests PostgreSQL de `refresh.test.ts`, `expiry.test.ts`, `sourceExpiry.test.ts` et les tests API couvrent les invariants. Les anciens scripts manuels de parité et le second calcul du manifeste ont été supprimés.
 
 ### Ce qu'une absence exige
 
@@ -75,8 +89,7 @@ on ne l'apprend qu'à la restauration.
 
 ## Integrating a source, and proving it
 
-The five reception scenarios of P3 run on **archives and clones**, never against production, and never with a
-script that re-implements a pipeline rule.
+Les scénarios P3 ci-dessous rejouent sur captures et clones. Ils ne constituent pas encore un parcours unique d’ajout de source : des chemins datés et plusieurs commandes de validation subsistent. Le lot sources doit les remplacer selon le contrat d’architecture, puis supprimer les anciens appelants.
 
 | | |
 |---|---|

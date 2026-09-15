@@ -1,3 +1,4 @@
+import { publicJobSql } from '@catwalks/db/availability';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { chunk } from '../lib/chunk.js';
 
@@ -15,7 +16,7 @@ import { chunk } from '../lib/chunk.js';
  * rejouer un jour efface ses lignes et les ré-écrit dans une transaction.
  *
  * Deux modes, choisis par la date :
- *  - `live` (le jour même) : « active » = `Job.isActive`, la vérité du moment ;
+ *  - `live` (le jour même) : « active » = offre active portant une publication utilisable à cet instant ;
  *  - `reconstructed` (un jour passé, `--backfill-from`) : « active au jour J »
  *    = `firstSeenAt` avant la fin de J et pas fermée avant la fin de J. C'est
  *    une RECONSTRUCTION approximative : les cycles de réouverture ne sont pas
@@ -124,8 +125,8 @@ function utc(instant: Date): Prisma.Sql {
  * Le prédicat « active » du jour : la vérité (`isActive`) le jour même, la
  * reconstruction pour un jour passé (voir l'en-tête du module).
  */
-function activePredicate(mode: SnapshotMode, end: Date): Prisma.Sql {
-  if (mode === 'live') return Prisma.sql`j."isActive"`;
+function activePredicate(mode: SnapshotMode, end: Date, asOf: Date): Prisma.Sql {
+  if (mode === 'live') return publicJobSql(Prisma.sql`j`, asOf);
   const unavailableAt = Prisma.sql`COALESCE(j."closedAt", j."withdrawnAt")`;
   // An undated legacy inactive row cannot establish a historical live period.
   // Withdrawal ends catalogue availability without becoming a market closure.
@@ -137,8 +138,8 @@ function activePredicate(mode: SnapshotMode, end: Date): Prisma.Sql {
  * fermée ou ré-ouverte ce jour-là), avec ses dimensions et ses drapeaux. Les
  * agrégats par périmètre se calculent tous dessus.
  */
-function baseCte(mode: SnapshotMode, start: Date, end: Date): Prisma.Sql {
-  const active = activePredicate(mode, end);
+function baseCte(mode: SnapshotMode, start: Date, end: Date, asOf: Date): Prisma.Sql {
+  const active = activePredicate(mode, end, asOf);
   const inDay = (column: Prisma.Sql) => Prisma.sql`(${column} >= ${utc(start)} AND ${column} < ${utc(end)})`;
   const isNew = inDay(Prisma.sql`j."firstSeenAt"`);
   /**
@@ -246,7 +247,7 @@ async function aggregateScope(
   return rows;
 }
 
-async function snapshotDay(prisma: PrismaClient, day: Date, mode: SnapshotMode): Promise<SnapshotDayStats> {
+async function snapshotDay(prisma: PrismaClient, day: Date, mode: SnapshotMode, asOf: Date): Promise<SnapshotDayStats> {
   const startedAt = Date.now();
   const { start, end } = dayBounds(day);
 
@@ -260,7 +261,7 @@ async function snapshotDay(prisma: PrismaClient, day: Date, mode: SnapshotMode):
       return { date: formatDay(day), mode, rows: 0, byScope: {}, durationMs: Date.now() - startedAt, skippedLive: true };
     }
   }
-  const base = baseCte(mode, start, end);
+  const base = baseCte(mode, start, end, asOf);
 
   const data: Prisma.MarketSnapshotCreateManyInput[] = [];
   const byScope: Record<string, number> = {};
@@ -284,7 +285,8 @@ async function snapshotDay(prisma: PrismaClient, day: Date, mode: SnapshotMode):
 
 export async function runSnapshot(prisma: PrismaClient, options: SnapshotOptions = {}): Promise<SnapshotStats> {
   const startedAt = Date.now();
-  const today = dayBounds(options.now ?? new Date()).day;
+  const asOf = options.now ?? new Date();
+  const today = dayBounds(asOf).day;
   const target = dayBounds(options.date ?? today).day;
   if (target.getTime() > today.getTime()) throw new Error(`Cannot snapshot a future day (${formatDay(target)})`);
 
@@ -296,7 +298,7 @@ export async function runSnapshot(prisma: PrismaClient, options: SnapshotOptions
   const days: SnapshotDayStats[] = [];
   for (let day = first; day.getTime() <= target.getTime(); day = new Date(day.getTime() + 86_400_000)) {
     const mode: SnapshotMode = day.getTime() === today.getTime() ? 'live' : 'reconstructed';
-    days.push(await snapshotDay(prisma, day, mode));
+    days.push(await snapshotDay(prisma, day, mode, asOf));
   }
 
   return { days, rows: days.reduce((sum, d) => sum + d.rows, 0), durationMs: Date.now() - startedAt };

@@ -7,7 +7,7 @@ import { publicationDisposition } from './publicationDisposition.js';
 import { applyScopeExclusion, loadScopeExclusions } from './scopeDecisions.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import type { PrismaClient, AtsType } from '@prisma/client';
-import type { SourceTier } from '../dedup/match.js';
+import type { SourceTier } from '@catwalks/db/publications';
 import { certifiedPortalScope } from '../connectors/sourceIdentity.js';
 import { employerFromCertifiedScope } from './certifiedScopeEmployer.js';
 import { loadActiveSources, type RuntimeSource } from '../connectors/sourceStore.js';

@@ -1,0 +1,48 @@
+{
+  "replay": {
+    "at": "2026-09-15T14:59:35.034Z",
+    "rawPublications": 42,
+    "sourceKinds": 11,
+    "expectedExpired": 18,
+    "batches": 2,
+    "written": 42,
+    "replayed": 0,
+    "expectedLive": 24,
+    "actualLive": 24,
+    "refresh": {
+      "checked": 18,
+      "closedSources": 18,
+      "closedJobs": 18,
+      "reopened": 0,
+      "withdrawn": 0,
+      "republished": 0,
+      "refused": false,
+      "auditBatchId": "refresh:cb2eae0949d30979f58c67d322f9c375ee710b6047650db0d0ff1074cec473de"
+    },
+    "retry": {
+      "checked": 18,
+      "closedSources": 0,
+      "closedJobs": 0,
+      "reopened": 0,
+      "withdrawn": 0,
+      "republished": 0,
+      "refused": false,
+      "auditBatchId": "refresh:cb2eae0949d30979f58c67d322f9c375ee710b6047650db0d0ff1074cec473de"
+    }
+  },
+  "audit": {
+    "at": "2026-09-15T15:00:08.549Z",
+    "planHash": "cb2eae0949d30979f58c67d322f9c375ee710b6047650db0d0ff1074cec473de",
+    "manifestEntries": 18,
+    "touched": 18,
+    "appliedJobs": 18,
+    "skipped": [],
+    "parity": {
+      "equal": true,
+      "missing": [],
+      "unexpected": []
+    },
+    "problems": []
+  },
+  "note": "Private source keys omitted; observations and RAW remain private."
+}

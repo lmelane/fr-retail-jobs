@@ -1,0 +1,46 @@
+{
+  "ids": {
+    "allowed": "cmu2oycsd00023n7gkm7oe9b3",
+    "outside": "cmu2oycsm00063n7ge18hcrgf",
+    "broken": "cmu2oycsr000a3n7gt7lfky6h",
+    "expired": "cmu2oycsv000e3n7geexqq8gg"
+  },
+  "stats": {
+    "checked": 4,
+    "closedSources": 2,
+    "closedJobs": 2,
+    "reopened": 0,
+    "withdrawn": 0,
+    "republished": 0,
+    "skippedBrokenSources": [
+      "audit-1789477926180-broken"
+    ],
+    "refused": false
+  },
+  "after": [
+    {
+      "id": "cmu2oycsr000a3n7gt7lfky6h",
+      "isActive": true,
+      "validThrough": null
+    },
+    {
+      "id": "cmu2oycsv000e3n7geexqq8gg",
+      "isActive": true,
+      "validThrough": "2026-09-14T13:12:06.223Z"
+    },
+    {
+      "id": "cmu2oycsd00023n7gkm7oe9b3",
+      "isActive": false,
+      "validThrough": null
+    },
+    {
+      "id": "cmu2oycsm00063n7ge18hcrgf",
+      "isActive": false,
+      "validThrough": null
+    }
+  ],
+  "salary": {
+    "salaryMin": 12,
+    "salaryMax": 20
+  }
+}

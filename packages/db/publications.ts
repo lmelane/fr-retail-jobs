@@ -1,23 +1,27 @@
-import { SOURCE_PRIORITY } from './match.js';
+export type SourceTier = 'EMPLOYER_DIRECT' | 'GROUP_OFFICIAL' | 'ATS_OFFICIAL' | 'SPECIALIST_JOBBOARD' | 'AGGREGATOR';
+export const SOURCE_PRIORITY: readonly SourceTier[] = ['EMPLOYER_DIRECT', 'GROUP_OFFICIAL', 'ATS_OFFICIAL', 'SPECIALIST_JOBBOARD', 'AGGREGATOR'];
+import { sourceIsAvailable } from './availability.ts';
 
-export type CanonicalSource = {
+export type ApplySource = {
   sourceKey: string;
   externalId: string;
   sourceTier: string;
   isActive: boolean;
+  expiresAt?: Date | null;
   url: string;
 };
 
 /** Preserve the current owner on ties; choose deterministically otherwise. */
-export function selectCanonicalSource<T extends CanonicalSource>(
+export function selectApplySource<T extends ApplySource>(
   sources: readonly T[],
   current: { canonicalSourceKey?: string | null; canonicalExternalId?: string | null; url?: string | null },
+  at = new Date(),
 ): T | undefined {
   const rank = (tier: string) => {
     const n = SOURCE_PRIORITY.indexOf(tier as typeof SOURCE_PRIORITY[number]);
     return n < 0 ? SOURCE_PRIORITY.length : n;
   };
-  const live = sources.filter(s => s.isActive).sort((a, b) =>
+  const live = sources.filter(s => sourceIsAvailable(s, at)).sort((a, b) =>
     rank(a.sourceTier) - rank(b.sourceTier) ||
     a.sourceKey.localeCompare(b.sourceKey) || a.externalId.localeCompare(b.externalId),
   );

@@ -1,0 +1,249 @@
+{
+  "guard": [
+    {
+      "readonly": "on"
+    }
+  ],
+  "cases": [
+    {
+      "params": {
+        "marche": "US"
+      },
+      "filters": {
+        "marche": "US",
+        "page": 1
+      },
+      "ms": 1041,
+      "total": 83431,
+      "countries": [
+        "BE",
+        "GB",
+        "IE",
+        "SG",
+        "FR",
+        "AU",
+        "DE",
+        "HU"
+      ],
+      "titles": [
+        "Conseiller(ère) de vente 24h - Contrat Temporaire (1 an) h/f/x",
+        "SALES ADVISOR - OXFORD STREET EAST (PART-TIME)",
+        "DEPARTMENT MANAGER - KINGS LYNN"
+      ],
+      "facets": [
+        "jobs"
+      ]
+    },
+    {
+      "params": {
+        "marche": "US",
+        "pays": "US"
+      },
+      "filters": {
+        "countries": [
+          "US"
+        ],
+        "marche": "US",
+        "page": 1
+      },
+      "ms": 523,
+      "total": 36942,
+      "countries": [
+        "US"
+      ],
+      "titles": [
+        "Sales and Service Leader - Full Time",
+        "Beauty Advisor - Part Time",
+        "Beauty Advisor - Flex"
+      ],
+      "facets": [
+        "jobs"
+      ]
+    },
+    {
+      "params": {
+        "marche": "FR"
+      },
+      "filters": {
+        "marche": "FR",
+        "page": 1
+      },
+      "ms": 745,
+      "total": 83431,
+      "countries": [
+        "BE",
+        "GB",
+        "IE",
+        "SG",
+        "FR",
+        "AU",
+        "DE",
+        "HU"
+      ],
+      "titles": [
+        "Conseiller(ère) de vente 24h - Contrat Temporaire (1 an) h/f/x",
+        "SALES ADVISOR - OXFORD STREET EAST (PART-TIME)",
+        "DEPARTMENT MANAGER - KINGS LYNN"
+      ],
+      "facets": [
+        "jobs"
+      ]
+    },
+    {
+      "params": {
+        "marche": "CN"
+      },
+      "filters": {
+        "marche": "CN",
+        "page": 1
+      },
+      "ms": 834,
+      "total": 83431,
+      "countries": [
+        "BE",
+        "GB",
+        "IE",
+        "SG",
+        "FR",
+        "AU",
+        "DE",
+        "HU"
+      ],
+      "titles": [
+        "Conseiller(ère) de vente 24h - Contrat Temporaire (1 an) h/f/x",
+        "SALES ADVISOR - OXFORD STREET EAST (PART-TIME)",
+        "DEPARTMENT MANAGER - KINGS LYNN"
+      ],
+      "facets": [
+        "jobs"
+      ]
+    },
+    {
+      "params": {
+        "q": "beauty advisor",
+        "pays": "US"
+      },
+      "filters": {
+        "q": "beauty advisor",
+        "countries": [
+          "US"
+        ],
+        "page": 1
+      },
+      "ms": 1143,
+      "total": 4510,
+      "countries": [
+        "US"
+      ],
+      "titles": [
+        "Beauty Advisor - Part Time",
+        "Beauty Advisor - Flex",
+        "Beauty Advisor - Flex"
+      ],
+      "facets": [
+        "jobs"
+      ]
+    },
+    {
+      "params": {
+        "q": "école",
+        "pays": "FR"
+      },
+      "filters": {
+        "q": "école",
+        "countries": [
+          "FR"
+        ],
+        "page": 1
+      },
+      "ms": 483,
+      "total": 1586,
+      "countries": [
+        "FR"
+      ],
+      "titles": [
+        "Community manager & assistant marketing F/H en apprentissage",
+        "Stage – E-COMMERCE - Janvier 2027",
+        "Stage Marketing Brand & Product Manager - Job Dating (F/H)"
+      ],
+      "facets": [
+        "jobs"
+      ]
+    },
+    {
+      "params": {
+        "q": "ecole",
+        "pays": "FR"
+      },
+      "filters": {
+        "q": "ecole",
+        "countries": [
+          "FR"
+        ],
+        "page": 1
+      },
+      "ms": 1472,
+      "total": 401,
+      "countries": [
+        "FR"
+      ],
+      "titles": [
+        "Assistant Retail Merchandising Homme (RTW, Accessoires) - F/H STAGE",
+        "Assitant Retail Merchandising Homme (Maroquinerie, Souliers) F/H - STAGE",
+        "Stage Assistant(e) Expositions - L'Ecole des Arts Joailliers"
+      ],
+      "facets": [
+        "jobs"
+      ]
+    },
+    {
+      "params": {
+        "q": "销售",
+        "pays": "CN"
+      },
+      "filters": {
+        "q": "销售",
+        "countries": [
+          "CN"
+        ],
+        "page": 1
+      },
+      "ms": 2749,
+      "total": 577,
+      "countries": [
+        "CN"
+      ],
+      "titles": [
+        "法国娇兰 美容顾问 北京DT51",
+        "KENZO成都太古里SA销售助理",
+        "Dior 香水专员 - 长沙万象城"
+      ],
+      "facets": [
+        "jobs"
+      ]
+    }
+  ],
+  "cities": {
+    "US": [
+      "Palo Alto",
+      "Paramus",
+      "Palm Beach Gardens",
+      "Park City",
+      "Palm Desert",
+      "Pasadena",
+      "Palm Beach",
+      "Panama City Beach"
+    ],
+    "FR": [
+      "Paris",
+      "Pantin",
+      "Pau",
+      "Pace",
+      "Paimpol",
+      "Parly",
+      "Pamiers",
+      "Pacé"
+    ],
+    "CN": []
+  }
+}

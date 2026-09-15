@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { estCodeMarche } from '@catwalks/db/marches';
 
 /**
  * TÉMOIN — LE CLOISONNEMENT DES VILLES PAR MARCHÉ (arbitrage CEO, option A).
@@ -69,6 +70,9 @@ const SEMIS: readonly Semis[] = [
   { ville: 'Austin', pays: 'US', n: 4 },
   // Une ville purement française, pour le sens inverse.
   { ville: 'Pantin', pays: 'FR', n: 3 },
+  // Pays ajoutés au registre : une présence positive évite un vert sur liste vide.
+  { ville: 'Panjin', pays: 'CN', n: 6 },
+  { ville: 'Paal', pays: 'BE', n: 7 },
   // DÉDUCTIBLE : sans pays ici, et vue ailleurs SOUS UN SEUL pays (FR).
   { ville: 'Levallois', pays: null, n: 3 },
   { ville: 'Levallois', pays: 'FR', n: 1 },
@@ -123,6 +127,9 @@ describe.skipIf(!actif)('suggestCities — cloisonnement par marché', () => {
         }),
       ),
     });
+    const jobs = await prisma.job.findMany({ where: { companyId: entreprise.id }, select: { id: true, externalId: true, url: true } });
+    await prisma.jobSource.createMany({ data: jobs.map(job => ({ jobId: job.id, externalId: job.externalId,
+      sourceKey: MARQUEUR, sourceTier: 'ATS_OFFICIAL', url: job.url })) });
   }, 120_000);
 
   afterAll(async () => {
@@ -249,37 +256,26 @@ describe.skipIf(!actif)('suggestCities — cloisonnement par marché', () => {
   });
 
   it('marché INCONNU du registre — aucune restriction, pas d’exception', async () => {
-    /*
-     * CN est un pays RÉEL du catalogue (1 224 offres, métier 88,8 %) mais
-     * n'est PAS dans `CODES_MARCHE` : il est mesurable, son ouverture est une
-     * décision produit qui n'a pas été prise. Un code mal formé ou vide passe
-     * par le même chemin.
-     *
-     * `BE` A ÉTÉ RETIRÉ DE CETTE LISTE le 15/09/2026, et c'est le témoin qui
-     * l'a imposé : la Belgique vient d'entrer au registre (671 offres, cinq
-     * facettes au-dessus du seuil, programme à 22,4 %). Elle CLOISONNE donc
-     * désormais — « Pa » n'y rend plus Paris, et c'est le comportement voulu.
-     *
-     * Le témoin décrivait un état périmé : il a rougi au premier passage
-     * après l'ajout, ce qui est exactement son rôle.
-     */
-    for (const inconnu of ['CN', 'ZZ', 'zzzzz', '<script>', '']) {
+    // Comportement actuel à remplacer avec le contrat strict du lot recherche.
+    for (const inconnu of ['ZZ', 'zzzzz', '<script>', '']) {
+      expect(estCodeMarche(inconnu), 'la fixture doit rester inconnue du registre').toBe(false);
       const villes = await suggestCities('Pa', inconnu);
       expect(villes, `marché « ${inconnu} »`).toContain('Paris');
       expect(villes, `marché « ${inconnu} »`).toContain('Pantin');
     }
   });
 
-  it('BE cloisonne désormais — la contre-épreuve de son entrée au registre', async () => {
-    /*
-     * PRÉMISSE — sans marché, « Pa » rend bien Paris. Sans cette assertion, le
-     * témoin passerait au vert sur un jeu d'essai vide.
-     */
-    expect(await suggestCities('Pa'), 'la prémisse : Paris existe').toContain('Paris');
-
-    // Et le cloisonnement mord : la Belgique n'a pas de Paris.
-    expect(await suggestCities('Pa', 'BE')).not.toContain('Paris');
-  });
+  it.each([['CN', 'Panjin'], ['BE', 'Paal']] as const)(
+    '%s — les suggestions locales sont présentes et les villes étrangères exclues',
+    async (code, ville) => {
+      expect(estCodeMarche(code), 'le marché doit être enregistré').toBe(true);
+      const monde = await suggestCities('Pa');
+      expect(monde).toContain('Paris');
+      expect(monde).toContain(ville);
+      expect(await suggestCities('Pa', code)).toEqual([ville]);
+      expect(await suggestCities('Pa', 'FR')).not.toContain(ville);
+    },
+  );
 
   it('la frappe ne peut pas devenir un joker LIKE', async () => {
     /*

@@ -381,11 +381,15 @@ model JobSource {
   firstSeenAt DateTime  @default(now())
   lastSeenAt  DateTime  @default(now())
   isActive    Boolean   @default(true)
+  /** Deadline declared by this publication, with its original field and reader version. */
+  expiresAt   DateTime?
+  expiryEvidence Json?
   raw         Json?
 
   @@unique([sourceKey, externalId])
   @@index([jobId])
   @@index([sourceKey, isActive])
+  @@index([isActive, expiresAt])
 }
 
 enum OpportunityType {
@@ -731,6 +735,19 @@ model DataCorrection {
   @@unique([batchId, entityType, entityId])
   @@index([entityType, entityId])
   @@index([createdAt, id])
+}
+
+/** Immutable, content-addressed maintenance input. Workers load the reviewed
+ * plan by hash instead of embedding a large payload in a process command. */
+model MaintenancePlan {
+  id        String   @id
+  kind      String
+  version   Int
+  revision  String
+  body      Json
+  createdAt DateTime @default(now())
+
+  @@index([kind, createdAt])
 }
 
 model JobEvent {

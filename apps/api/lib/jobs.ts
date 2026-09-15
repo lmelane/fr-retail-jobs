@@ -1,9 +1,11 @@
+import { availableSourceWhere, publicJobWhere, publicJobSql } from '@catwalks/db/availability';
+import { selectApplySource, type ApplySource } from '@catwalks/db/publications';
 import { resolveLieu } from './lieu';
 import { getSectorPresentation, sectorWhere } from './sectors';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { companyIdentityWhere } from './company-identity';
 import { unstable_cache } from 'next/cache';
-import { prisma, canonicalJobId } from '@catwalks/db';
+import { prisma, Prisma, canonicalJobId } from '@catwalks/db';
 import { expandCompanyTerm } from './groups';
 import { countryCode, rawValuesForCode } from './countries';
 import { searchSummary } from './job-search-query';
@@ -36,6 +38,11 @@ function countryCondition(code: string | undefined) {
 
 /** Sector keys are data, not an application enum. Unknown keys stay bound
  * parameters and match zero; dropping them would silently widen the search. */
+const publicSources = () => ({
+  select: { sourceKey: true, externalId: true, sourceTier: true, isActive: true, url: true, expiresAt: true } as const,
+  where: availableSourceWhere(),
+});
+
 export function validSector(value: string | undefined): string | undefined {
   return value || undefined;
 }
@@ -437,6 +444,7 @@ export function whereClause(filters: JobFilters) {
      * commentaire de `company` décrit plus haut, à plus grande échelle.
      */
     AND: [
+      publicJobWhere(),
       /*
        * La recherche texte vit ICI, dans le MÊME `AND` que les filtres.
        * Elle avait sa propre clé `AND` au niveau de l'objet : deux clés `AND`
@@ -548,7 +556,7 @@ export function whereClause(filters: JobFilters) {
      * `OR`, à l'intérieur du `AND` qui relie les dimensions entre elles.
      */
     ...(Object.keys(company).length ? { company } : {}),
-    ...(filters.source ? { sources: { some: { sourceKey: filters.source, isActive: true } } } : {}),
+    ...(filters.source ? { sources: { some: { sourceKey: filters.source, ...availableSourceWhere() } } } : {}),
   };
 }
 
@@ -575,7 +583,7 @@ function toRow(row: {
   postedAt: Date | null; latitude: number | null; longitude: number | null;
   withdrawnAt?: Date | null;
   opportunityType?: 'JOB_OPENING' | 'OPEN_APPLICATION' | null;
-  sources: { sourceKey: string }[]; description: string | null; postalCode: string | null;
+  sources: ApplySource[]; description: string | null; postalCode: string | null;
   department: string | null; workTime: string | null; workplaceType: string | null;
   experienceYears: number | null; educationLevel: string | null; salaryMin: number | null;
   salaryMax: number | null; salaryCurrency: string | null; salaryPeriod: string | null;
@@ -583,6 +591,8 @@ function toRow(row: {
   jobFunction: string | null; seniority: string | null;
   occupationCode?: string | null; occupationStatus?: string;
 }, taxonomy: OptionalOccupationPresentation): JobRow {
+  const publication = selectApplySource(row.sources, row);
+  const applyUrl = publication?.url ?? row.url;
   return {
     id: row.id,
     title: row.title,
@@ -597,7 +607,7 @@ function toRow(row: {
     isSeasonal: row.isSeasonal,
     sector: row.company.sector,
     sectorCodes: (row.company as {sectorCodes?:string[]}).sectorCodes??[],
-    url: row.url,
+    url: applyUrl,
     postedAt: row.postedAt,
     withdrawnAt: row.withdrawnAt ?? null,
     opportunityType: row.opportunityType ?? null,
@@ -606,7 +616,7 @@ function toRow(row: {
     sourceCount: row.sources.length,
     sources: row.sources.map((source) => source.sourceKey),
     description: row.description,
-    applyUrl: row.url,
+    applyUrl,
     postalCode: row.postalCode,
     department: row.department,
     jobFunction: row.jobFunction,
@@ -624,7 +634,7 @@ function toRow(row: {
     salaryMax: row.salaryMax,
     salaryCurrency: row.salaryCurrency,
     salaryPeriod: row.salaryPeriod,
-    validThrough: row.validThrough,
+    validThrough: publication?.expiresAt ?? null,
     countryCode: row.countryCode,
     countryIntegrity: row.countryIntegrity,
     language: row.language,
@@ -665,12 +675,12 @@ export async function getJobStatus(
       omit: { raw: true, searchText: true },
       include: {
         company: true,
-        sources: { select: { sourceKey: true }, where: { isActive: true } },
+        sources: publicSources(),
       },
     });
     if (!row) return { status: 'missing' };
     const taxonomy=await getOptionalOccupationPresentation();
-    if (!row.isActive) return { status: 'closed', job: toRow(row, taxonomy) };
+    if (!row.isActive || !row.sources.length) return { status: 'closed', job: toRow(row, taxonomy) };
     return { status: 'active', job: toRow(row, taxonomy) };
   } catch (error) {
     throw new DatabaseUnavailableError(error);
@@ -683,9 +693,7 @@ export async function getJob(id: string): Promise<JobRow | null> {
 }
 
 /**
- * The lightweight status the middleware probe needs — existence + isActive only,
- * no joins. The page's own render does the full fetch; this must not repeat the
- * expensive company/sources join just to decide 200 vs 410 vs 404.
+ * The status probe requires one usable publication and returns no listing payload.
  */
 export async function getOfferState(param: string): Promise<'active' | 'closed' | 'missing'> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
@@ -695,8 +703,8 @@ export async function getOfferState(param: string): Promise<'active' | 'closed' 
     for (const id of offerIdCandidates(param)) {
       const canonicalId = await canonicalJobId(prisma, id);
       if (!canonicalId) continue;
-      const row = await prisma.job.findUnique({ where: { id: canonicalId }, select: { isActive: true } });
-      if (row) return row.isActive ? 'active' : 'closed';
+      const row = await prisma.job.findUnique({ where: { id: canonicalId }, select: { isActive: true, sources: { where: availableSourceWhere(), select: { id: true }, take: 1 } } });
+      if (row) return row.isActive && row.sources.length > 0 ? 'active' : 'closed';
     }
     return 'missing';
   } catch (error) {
@@ -749,7 +757,7 @@ export async function getCompanyAside(companyName: string): Promise<CompanyAside
       SELECT count(*)::bigint AS jobs,
              count(DISTINCT lower(city))::bigint AS cities,
              count(DISTINCT "countryCode")::bigint AS countries
-      FROM "Job" WHERE "companyId" = ${company.id} AND "isActive"`;
+      FROM "Job" j WHERE "companyId" = ${company.id} AND ${publicJobSql(Prisma.sql`j`)}`;
     return {
       openJobs: Number(agg?.jobs ?? 0),
       cities: Number(agg?.cities ?? 0),
@@ -768,12 +776,12 @@ export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> 
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
     const base = {
-      isActive: true,
+      ...publicJobWhere(),
       id: { not: job.id },
     };
     const include = {
       company: true,
-      sources: { select: { sourceKey: true as const }, where: { isActive: true } },
+      sources: publicSources(),
     };
     // Audit UX 14/09 (M5) : une offre à Bordeaux proposait Glasgow et
     // Limerick. Même Maison ET même pays d'abord ; le pays seul ensuite.
@@ -816,9 +824,9 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
     const taxonomy=await getOptionalOccupationPresentation();
     const summary = await searchSummary(filters, page, PAGE_SIZE, taxonomy);
     const rows = await prisma.job.findMany({
-      where: { id: { in: summary.ids }, isActive: true },
+      where: { ...publicJobWhere(), id: { in: summary.ids } },
       omit: { raw: true, searchText: true },
-      include: { company: true, sources: { select: { sourceKey: true }, where: { isActive: true } } },
+      include: { company: true, sources: publicSources() },
     });
     const byId = new Map(rows.map(row => [row.id, row]));
     const countries = new Map<string, number>();
@@ -1022,7 +1030,7 @@ export async function suggestCities(query: string, marcheCode?: string): Promise
       const rows = await prisma.job.groupBy({
         by: ['city'],
         where: {
-          isActive: true,
+          ...publicJobWhere(),
           // World, not FR-only (revises D12): the board defaults to every
           // country, so typing "Milan" must surface Milan — otherwise the world
           // offers are unreachable from the search box. Ordered by frequency,
@@ -1061,8 +1069,8 @@ export async function suggestCities(query: string, marcheCode?: string): Promise
     const rows = await prisma.$queryRaw<SuggestionVilleBrute[]>`
       WITH candidates AS (
         SELECT "city", UPPER(TRIM("city")) AS cle, "countryCode" AS pays
-          FROM "Job"
-         WHERE "isActive" AND "city" ILIKE ${prefixe}
+          FROM "Job" j
+         WHERE ${publicJobSql(Prisma.sql`j`)} AND "city" ILIKE ${prefixe}
       ),
       deduit AS (
         SELECT cle, MIN(pays) AS p
@@ -1140,7 +1148,7 @@ export async function suggestTitles(query: string): Promise<string[]> {
     const rows = await prisma.job.groupBy({
       by: ['title'],
       where: {
-        isActive: true,
+        ...publicJobWhere(),
         // World, not FR-only (revises D12): titles are suggested from the whole
         // active catalogue, matching the board's world-by-default scope.
         title: { contains: q, mode: 'insensitive' },
@@ -1185,7 +1193,7 @@ export const SITEMAP_CHUNK_SIZE = 5000;
 
 export async function sitemapOfferCount(): Promise<number> {
   if (!process.env.DATABASE_URL) return 0;
-  return prisma.job.count({ where: { isActive: true } });
+  return prisma.job.count({ where: publicJobWhere() });
 }
 
 export async function sitemapOffersChunk(
@@ -1193,7 +1201,7 @@ export async function sitemapOffersChunk(
 ): Promise<{ id: string; title: string; updatedAt: Date }[]> {
   if (!process.env.DATABASE_URL) return [];
   const offers = await prisma.job.findMany({
-    where: { isActive: true },
+    where: publicJobWhere(),
     // title rides along so the sitemap lists the canonical slug URLs (S-01).
     select: { id: true, title: true, updatedAt: true },
     orderBy: { id: 'asc' },
@@ -1206,7 +1214,7 @@ export async function sitemapOffersChunk(
 export async function sitemapCompanies(): Promise<{ name: string; updatedAt: Date }[]> {
   if (!process.env.DATABASE_URL) return [];
   const rows = await prisma.company.findMany({
-    where: { jobs: { some: { isActive: true } } },
+    where: { jobs: { some: publicJobWhere() } },
     select: { name: true, lastSeenAt: true },
   });
   return rows.map((c) => ({ name: c.name, updatedAt: c.lastSeenAt ?? new Date() }));
@@ -1229,10 +1237,10 @@ export async function landingStats(): Promise<{
   try {
     const weekAgo = new Date(Date.now() - 7 * 86_400_000);
     const [offers, companies, countryRows, newRows, oldest] = await Promise.all([
-      prisma.job.count({ where: { isActive: true } }),
-      prisma.company.count({ where: { jobs: { some: { isActive: true } } } }),
+      prisma.job.count({ where: publicJobWhere() }),
+      prisma.company.count({ where: { jobs: { some: publicJobWhere() } } }),
       prisma.job.findMany({
-        where: { isActive: true, countryCode: { not: null } },
+        where: { ...publicJobWhere(), countryCode: { not: null } },
         select: { countryCode: true },
         distinct: ['countryCode'],
       }),
@@ -1241,7 +1249,7 @@ export async function landingStats(): Promise<{
       // posting from a long-covered house.
       prisma.company.count({
         where: {
-          jobs: { some: { isActive: true } },
+          jobs: { some: publicJobWhere() },
           NOT: { jobs: { some: { firstSeenAt: { lt: weekAgo } } } },
         },
       }),

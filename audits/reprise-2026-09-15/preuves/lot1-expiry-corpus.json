@@ -1,0 +1,262 @@
+{
+  "at": "2026-09-15T15:00:42.784Z",
+  "rows": 85327,
+  "recognized": 5259,
+  "interpreted": 5106,
+  "beyondStorageRange": 153,
+  "expired": 257,
+  "byKind": {
+    "smartrecruiters-whitelabel": {
+      "rows": 5860,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "teamtailor": {
+      "rows": 5355,
+      "parsed": 379,
+      "expired": 54,
+      "dateOnly": 0
+    },
+    "jobylon": {
+      "rows": 31,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "workday": {
+      "rows": 19711,
+      "parsed": 967,
+      "expired": 58,
+      "dateOnly": 967
+    },
+    "successfactors": {
+      "rows": 4230,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "flatchr": {
+      "rows": 354,
+      "parsed": 150,
+      "expired": 44,
+      "dateOnly": 0
+    },
+    "icims": {
+      "rows": 1593,
+      "parsed": 1532,
+      "expired": 23,
+      "dateOnly": 0
+    },
+    "personio": {
+      "rows": 186,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "digitalrecruiters": {
+      "rows": 783,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "greenhouse": {
+      "rows": 2545,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "generic-listing": {
+      "rows": 6233,
+      "parsed": 1528,
+      "expired": 14,
+      "dateOnly": 97
+    },
+    "recruitee": {
+      "rows": 639,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "lever": {
+      "rows": 820,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "wttj": {
+      "rows": 766,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "workable": {
+      "rows": 280,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "talentview": {
+      "rows": 80,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "talentsoft": {
+      "rows": 353,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "bashtalents": {
+      "rows": 57,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "geodirectory": {
+      "rows": 110,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "jobaffinity-wordpress": {
+      "rows": 978,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "oraclehcm": {
+      "rows": 1215,
+      "parsed": 58,
+      "expired": 17,
+      "dateOnly": 0
+    },
+    "taleo": {
+      "rows": 76,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "talentfunnel": {
+      "rows": 153,
+      "parsed": 153,
+      "expired": 0,
+      "dateOnly": 153
+    },
+    "magnet": {
+      "rows": 492,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "eightfold": {
+      "rows": 2776,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "volcanic": {
+      "rows": 31,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "phenom": {
+      "rows": 5299,
+      "parsed": 14,
+      "expired": 1,
+      "dateOnly": 0
+    },
+    "talentrecruiter": {
+      "rows": 17,
+      "parsed": 17,
+      "expired": 1,
+      "dateOnly": 0
+    },
+    "easycruit": {
+      "rows": 50,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "avature": {
+      "rows": 2908,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "wordpress": {
+      "rows": 478,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "lvmh_algolia": {
+      "rows": 6433,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "radancy": {
+      "rows": 54,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "eqwa": {
+      "rows": 321,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "ashby": {
+      "rows": 83,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "rituals": {
+      "rows": 1245,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "typesense": {
+      "rows": 47,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "harri": {
+      "rows": 36,
+      "parsed": 36,
+      "expired": 5,
+      "dateOnly": 0
+    },
+    "swatchgroup": {
+      "rows": 293,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "jibe": {
+      "rows": 10290,
+      "parsed": 425,
+      "expired": 40,
+      "dateOnly": 0
+    },
+    "wttj-sector": {
+      "rows": 2002,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    },
+    "altamira": {
+      "rows": 64,
+      "parsed": 0,
+      "expired": 0,
+      "dateOnly": 0
+    }
+  }
+}

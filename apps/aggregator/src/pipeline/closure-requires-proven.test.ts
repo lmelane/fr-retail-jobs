@@ -1,4 +1,5 @@
 import '../test/setup-integration.js';
+import { archiveSourceEnumeration, clearSourceEvidence } from '../test/sourceEvidence.js';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 
@@ -58,7 +59,7 @@ const seed = (sourceKey: string, externalIds: string[]) => addPostings(sourceKey
  * et non posé à la main : c'est ce qui fait de ces tests une épreuve du chemin réel.
  */
 async function recordRun(sourceKey: string, stat: {
-  jobs: number; fetched?: number; declaredTotal?: number; complete?: boolean; truncated?: boolean;
+  observedIds?: string[]; jobs: number; fetched?: number; declaredTotal?: number; complete?: boolean; truncated?: boolean;
 }) {
   await checkSourceHealth(prisma, [{
     source: sourceKey, fetched: stat.fetched ?? stat.jobs, created: 0, merged: 0, updated: stat.jobs,
@@ -68,7 +69,12 @@ async function recordRun(sourceKey: string, stat: {
     ...(stat.complete === undefined ? {} : { complete: stat.complete }),
     ...(stat.truncated === undefined ? {} : { truncated: stat.truncated }),
   } as never]);
-  return prisma.sourceRun.findFirstOrThrow({ where: { sourceKey }, orderBy: { ranAt: 'desc' } });
+  const row = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey }, orderBy: [{ ranAt: 'desc' }, { id: 'desc' }] });
+  if (stat.observedIds) {
+    const runId = await archiveSourceEnumeration(prisma, sourceKey, stat.observedIds);
+    return prisma.sourceRun.update({ where: { id: row.id }, data: { runId } });
+  }
+  return row;
 }
 
 const stateOf = (ids: string[]) => prisma.job.findMany({ where: { id: { in: ids } },
@@ -78,12 +84,13 @@ describe('seul un parcours démontré ferme une offre', () => {
   // La base d'intégration est vidée entre les tests : les autres sources ne doivent ni peser sur la garde de
   // fermeture de masse, ni laisser un `SourceRun` qui servirait de référence à un run qu'on veut sans passé.
   beforeEach(async () => {
+    await clearSourceEvidence(prisma);
     await prisma.jobEvent.deleteMany({});
     await prisma.jobSource.deleteMany({});
     await prisma.job.deleteMany({});
     await prisma.sourceRun.deleteMany({});
   });
-  afterAll(async () => { await prisma.$disconnect(); });
+  afterAll(async () => { await clearSourceEvidence(prisma); await prisma.$disconnect(); });
 
   it('1. UNKNOWN, même volume mais identifiants DIFFÉRENTS : aucune offre absente n\'est fermée', async () => {
     // Premier passage : la source atteste A/B/C. Le run ne démontre pas la fin de son parcours.
@@ -142,7 +149,8 @@ describe('seul un parcours démontré ferme une offre', () => {
     // (`next_url: null`, ou endpoint unique servi en entier).
     expect(enumerationVerdict({ uniqueCollected: 3, adapterProvesCompletion: true })).toBe('PROVEN');
     await recordRun('crp-proven', { jobs: 3, complete: true });
-    const run = await recordRun('crp-proven', { jobs: 3, complete: true });
+    const freshIds = await addPostings('crp-proven', ['D', 'E', 'F'], new Date());
+    const run = await recordRun('crp-proven', { jobs: 3, complete: true, observedIds: ['crp-proven-D', 'crp-proven-E', 'crp-proven-F'] });
     expect(run.complete).toBe(true);
     expect(run.canAttestAbsence).toBe(true);
 
@@ -150,5 +158,6 @@ describe('seul un parcours démontré ferme une offre', () => {
     const after = await stateOf(ids);
     // Les offres n'ont pas été relistées depuis 30 jours et le parcours est démontré : elles se ferment.
     expect(after.every((j) => !j.isActive && j.closedAt && !j.withdrawnAt)).toBe(true);
+    expect((await stateOf(freshIds)).every(job => job.isActive)).toBe(true);
   });
 });

@@ -1,3 +1,4 @@
+import { publicJobSql } from '@catwalks/db/availability';
 import {sectorSql,sectorJoin} from '../sectors';
 import { cache } from 'react';
 import { prisma, Prisma } from '@catwalks/db';
@@ -134,7 +135,7 @@ export async function headline(scope: Scope = {}): Promise<Headline> {
       count(DISTINCT j."companyId")::int AS "companies",
       count(DISTINCT lower(j.city))::int AS "cities",
       to_char(max(j."lastSeenAt") AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "lastSeenAt"
-    ${FROM} WHERE j."isActive" AND ${where}`);
+    ${FROM} WHERE ${publicJobSql(Prisma.sql`j`)} AND ${where}`);
   return row;
 }
 
@@ -157,7 +158,7 @@ export async function byCountry(scope: Scope = {}): Promise<{ rows: CountryCount
   const raw = await run<{ isFrance: boolean; country: string | null; active: number; new30: number; companies: number }>(Prisma.sql`
     SELECT j."isFrance" AS "isFrance", j."countryCode" AS country, count(*)::int AS "active", ${NEW30} AS "new30",
            count(DISTINCT j."companyId")::int AS "companies"
-    ${FROM} WHERE j."isActive" AND ${where} GROUP BY 1, 2`);
+    ${FROM} WHERE ${publicJobSql(Prisma.sql`j`)} AND ${where} GROUP BY 1, 2`);
   const merged = new Map<string, CountryCount>();
   let unknown = 0;
   for (const r of raw) {
@@ -181,7 +182,7 @@ export async function byCity(scope: Scope = {}, limit = 50): Promise<CityCount[]
   const raw = await run<{ isFrance: boolean; country: string | null; city: string; active: number; new30: number; companies: number }>(Prisma.sql`
     SELECT j."isFrance" AS "isFrance", j."countryCode" AS country, j.city, count(*)::int AS "active", ${NEW30} AS "new30",
            count(DISTINCT j."companyId")::int AS "companies"
-    ${FROM} WHERE j."isActive" AND j.city IS NOT NULL AND ${where} GROUP BY 1, 2, 3 ORDER BY 4 DESC`);
+    ${FROM} WHERE ${publicJobSql(Prisma.sql`j`)} AND j.city IS NOT NULL AND ${where} GROUP BY 1, 2, 3 ORDER BY 4 DESC`);
   const merged = new Map<string, CityCount>();
   for (const r of raw) {
     const code = r.isFrance ? 'FR' : countryCode(r.country);
@@ -199,7 +200,7 @@ export async function byCompany(scope: Scope = {}, limit = 50): Promise<CompanyC
   return run<CompanyCount>(Prisma.sql`
     SELECT j."companyId" AS "id", c.name, c."parentGroup" AS "group", array_to_string(c."sectorCodes",'|') AS "sector", c.domain,
            count(*)::int AS "active", ${NEW30} AS "new30"
-    ${FROM} WHERE j."isActive" AND ${where}
+    ${FROM} WHERE ${publicJobSql(Prisma.sql`j`)} AND ${where}
     GROUP BY 1, 2, 3, 4, 5 ORDER BY 6 DESC, 2 ASC LIMIT ${limit}`);
 }
 
@@ -207,7 +208,7 @@ export async function byGroup(scope: Scope = {}, limit = 50): Promise<(Count & {
   const where = await scopeSql(scope);
   return run<Count & { new30: number; companies: number }>(Prisma.sql`
     SELECT c."parentGroup" AS "key", count(*)::int AS "count", ${NEW30} AS "new30", count(DISTINCT j."companyId")::int AS "companies"
-    ${FROM} WHERE j."isActive" AND c."parentGroup" IS NOT NULL AND ${where}
+    ${FROM} WHERE ${publicJobSql(Prisma.sql`j`)} AND c."parentGroup" IS NOT NULL AND ${where}
     GROUP BY 1 ORDER BY 2 DESC LIMIT ${limit}`);
 }
 
@@ -215,7 +216,7 @@ export async function bySector(scope: Scope = {}): Promise<(Count & { new30: num
   const where = await scopeSql(scope);
   return run<Count & { new30: number; companies: number }>(Prisma.sql`
     SELECT business_sector.code AS "key", count(*)::int AS "count", ${NEW30} AS "new30", count(DISTINCT j."companyId")::int AS "companies"
-    ${FROM} ${sectorJoin} WHERE j."isActive" AND ${where} GROUP BY 1 ORDER BY 2 DESC`);
+    ${FROM} ${sectorJoin} WHERE ${publicJobSql(Prisma.sql`j`)} AND ${where} GROUP BY 1 ORDER BY 2 DESC`);
 }
 
 /** Métier : clé nulle rendue '' (« Non classé »), toujours présente dans la liste. */
@@ -223,21 +224,21 @@ export async function byFunction(scope: Scope = {}): Promise<(Count & { new30: n
   const where = await scopeSql(scope);
   const rows = await run<{ key: string | null; count: number; new30: number }>(Prisma.sql`
     SELECT j."jobFunction" AS "key", count(*)::int AS "count", ${NEW30} AS "new30"
-    ${FROM} WHERE j."isActive" AND ${where} GROUP BY 1 ORDER BY 2 DESC`);
+    ${FROM} WHERE ${publicJobSql(Prisma.sql`j`)} AND ${where} GROUP BY 1 ORDER BY 2 DESC`);
   return rows.map((r) => ({ key: r.key ?? '', count: r.count, new30: r.new30 }));
 }
 
 export async function bySeniority(scope: Scope = {}): Promise<Count[]> {
   const where = await scopeSql(scope);
   const rows = await run<{ key: string | null; count: number }>(Prisma.sql`
-    SELECT j.seniority AS "key", count(*)::int AS "count" ${FROM} WHERE j."isActive" AND ${where} GROUP BY 1 ORDER BY 2 DESC`);
+    SELECT j.seniority AS "key", count(*)::int AS "count" ${FROM} WHERE ${publicJobSql(Prisma.sql`j`)} AND ${where} GROUP BY 1 ORDER BY 2 DESC`);
   return rows.map((r) => ({ key: r.key ?? '', count: r.count }));
 }
 
 export async function byContract(scope: Scope = {}): Promise<Count[]> {
   const where = await scopeSql(scope);
   const rows = await run<{ key: string | null; count: number }>(Prisma.sql`
-    SELECT j."employmentTerm" AS "key", count(*)::int AS "count" ${FROM} WHERE j."isActive" AND ${where} GROUP BY 1 ORDER BY 2 DESC`);
+    SELECT j."employmentTerm" AS "key", count(*)::int AS "count" ${FROM} WHERE ${publicJobSql(Prisma.sql`j`)} AND ${where} GROUP BY 1 ORDER BY 2 DESC`);
   return rows.map((r) => ({ key: r.key && r.key !== 'UNKNOWN' ? r.key : '', count: r.count }));
 }
 
@@ -257,7 +258,7 @@ export async function topSkills(scope: Scope = {}, limit = 20): Promise<Count[]>
   return run<Count>(Prisma.sql`
     SELECT s AS "key", count(*)::int AS "count"
     FROM "Job" j JOIN "Company" c ON c.id = j."companyId", unnest(j.skills) AS s
-    WHERE j."isActive" AND ${where} GROUP BY 1 ORDER BY 2 DESC LIMIT ${limit}`);
+    WHERE ${publicJobSql(Prisma.sql`j`)} AND ${where} GROUP BY 1 ORDER BY 2 DESC LIMIT ${limit}`);
 }
 
 /**
@@ -296,6 +297,6 @@ export async function allCities(): Promise<{ code: string; city: string }[]> {
 export async function allGroups(): Promise<string[]> {
   const rows = await run<{ key: string }>(Prisma.sql`
     SELECT DISTINCT c."parentGroup" AS "key" FROM "Job" j JOIN "Company" c ON c.id = j."companyId"
-    WHERE j."isActive" AND c."parentGroup" IS NOT NULL`);
+    WHERE ${publicJobSql(Prisma.sql`j`)} AND c."parentGroup" IS NOT NULL`);
   return rows.map((r) => r.key);
 }

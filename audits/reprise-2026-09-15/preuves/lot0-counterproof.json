@@ -1,0 +1,16 @@
+[
+  {
+    "witness": "cn-not-registered",
+    "mutantExit": 1,
+    "restoredExit": 0,
+    "restoredByteForByte": true,
+    "sha256": "6fd90570fcfcf35fc3a109cf276725bd53c74e9373431a6524166ec1e586712c"
+  },
+  {
+    "witness": "old-railway-name",
+    "mutantExit": 1,
+    "restoredExit": 0,
+    "restoredByteForByte": true,
+    "sha256": "3a653045395bacb4b160bb106bb7358c7e4e1bd1224cb37edda0727953ceff0e"
+  }
+]

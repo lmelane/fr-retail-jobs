@@ -8,10 +8,10 @@
  *
  * CE QUE « ABSENT » EXIGE ICI : l'identifiant ne figure PAS dans l'ensemble réellement observé par la dernière
  * énumération PROUVÉE de sa source. Cet ensemble est lu dans la preuve archivée
- * (`PipelineEvent.source.enumeration_observed`, champ `pageEvidence[].ids`), et il doit appartenir AU MÊME
+ * (`PipelineEvent.source.enumeration_observed`, champ `pageEvidence[].canonicalIds`), et il doit appartenir AU MÊME
  * CYCLE que le `SourceRun` retenu — la corrélation se fait par `runId`, jamais par proximité de date.
  *
- * Cinq états, et un seul autorise une fermeture par absence :
+ * Six états, et un seul autorise une fermeture par absence :
  *   · PRESENT_AND_REATTESTED        vu et ré-attesté : rien à faire
  *   · PRESENT_BUT_HELD              vu, mais retenu à la publication : surtout pas « absent »
  *   · PRESENT_BUT_WRITE_FAILED      vu, mais refusé à l'écriture (identité) : surtout pas « absent »
@@ -113,12 +113,16 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
 export function sourceEligibility(run: SourceRunFacts | undefined, evidence: EnumerationEvidence | undefined) {
   const reasons: string[] = [];
   if (!run) return { eligible: false, reasons: ['aucun run enregistré'] };
+  if (!run.runId) reasons.push('cycle non identifié');
+  if (!['OK', 'DEGRADED'].includes(run.status)) reasons.push(`statut non probant : ${run.status}`);
+  if (run.errors === null) reasons.push('errors non mesuré');
   if ((run.errors ?? 0) > 0) reasons.push(`errors = ${run.errors}`);
   if (run.truncated) reasons.push('truncated = true');
   if (run.complete !== true) reasons.push(`complete = ${run.complete}`);
   if (run.canAttestAbsence !== true) reasons.push(`canAttestAbsence = ${run.canAttestAbsence}`);
   if (!evidence) reasons.push('aucune preuve d\'énumération archivée');
   else {
+    if (evidence.sourceKey !== run.sourceKey) reasons.push('preuve d’une autre source');
     /**
      * LA CORRÉLATION PAR CYCLE, et elle n'est pas décorative : juxtaposer le dernier `SourceRun` avec une
      * ANCIENNE preuve d'énumération ferait fermer des offres sur la foi d'un balayage qui n'est pas celui-là.
@@ -151,22 +155,9 @@ export function sourceEligibility(run: SourceRunFacts | undefined, evidence: Enu
  * `observed` est l'ensemble RÉELLEMENT lu, pas une déduction de fraîcheur : c'est toute la différence entre
  * « la source ne l'a plus listée » et « notre run ne l'a pas ré-écrite ».
  */
-/**
- * LES IDENTIFIANTS OBSERVÉS SONT-ILS COMPARABLES À CEUX STOCKÉS ?
- *
- * Le contrôle ne repose PAS sur un taux de recouvrement. Un ratio ne distingue pas « 20 % d'offres disparues »
- * de « 20 % d'identifiants cassés », et « un seul recouvrement suffit » laisserait passer 1 ancien format
- * contre 99 nouveaux — soit 99 fausses absences.
- *
- * La règle est structurelle et vient du contrat imposé à la source (`ats/canonicalIdContract.ts`) : chaque
- * offre STOCKÉE de cette source doit figurer dans l'ensemble observé, OU avoir une disposition nommée. Une
- * offre stockée que la preuve ne mentionne ni comme vue ni comme disposée signale que les deux chemins ne
- * produisent pas le même identifiant : on ne peut alors rien conclure.
- *
- * Le cas mesuré : `american-vintage-dr` archivait des diffusions (`4594925-72559621`) là où la base stocke des
- * annonces (`4459569`). AUCUNE des 37 offres stockées n'apparaissait — ce n'est pas 37 disparitions, c'est un
- * vocabulaire différent.
- */
+/** Conservative mismatch detector: zero overlap cannot support closing stored IDs.
+ * One overlap does not prove identifier stability; the adapter's qualified ID
+ * contract and complete enumeration supply that separate guarantee. */
 export function identifiersComparable(
   observed: ReadonlySet<string>,
   stored: readonly string[],
@@ -174,11 +165,6 @@ export function identifiersComparable(
 ): boolean {
   if (stored.length === 0) return false;
   if (observed.size === 0) return false;
-  /**
-   * Si AUCUNE offre stockée n'est ni observée ni disposée, l'ensemble observé ne décrit pas ce board : les
-   * identifiants sont incomparables. Dès qu'une seule l'est, le vocabulaire est partagé et l'écart restant
-   * s'interprète offre par offre — c'est là que le contrat de la source, lui, exige l'exhaustivité.
-   */
   return stored.some((id) => observed.has(id) || disposed.has(id));
 }
 
@@ -188,13 +174,10 @@ export function representationState(
   sourceEligible: boolean,
 ): RepresentationState {
   if (!sourceEligible || observed === null) return 'UNVERIFIABLE';
-  if (observed.has(rep.externalId)) {
-    // Vue par le balayage. Si elle n'a pas été publiée, la cause est nommée — jamais « absente ».
-    if (rep.writeFailed) return 'PRESENT_BUT_WRITE_FAILED';
-    if (rep.held) return 'PRESENT_BUT_HELD';
-    if (rep.rejected) return 'PRESENT_BUT_REJECTED';
-    return 'PRESENT_AND_REATTESTED';
-  }
+  if (rep.writeFailed) return 'PRESENT_BUT_WRITE_FAILED';
+  if (rep.held) return 'PRESENT_BUT_HELD';
+  if (rep.rejected) return 'PRESENT_BUT_REJECTED';
+  if (observed.has(rep.externalId)) return 'PRESENT_AND_REATTESTED';
   return 'ABSENT_FROM_PROVEN_ENUMERATION';
 }
 

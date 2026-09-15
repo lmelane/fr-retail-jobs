@@ -1,0 +1,121 @@
+[
+  {
+    "serviceName": "rss-collector",
+    "serviceId": "f4b8972c-6c13-4889-b860-7fde21c3560a",
+    "environmentId": "10fb8b80-e121-4980-becf-1df646856b6b",
+    "cronSchedule": "*/15 * * * *",
+    "startCommand": null,
+    "domains": {
+      "serviceDomains": [],
+      "customDomains": []
+    },
+    "status": "SUCCESS",
+    "commit": "69782a65a19a7eee317768a2c5ea787c8999fa65",
+    "createdAt": "2026-09-07T21:06:28.924Z",
+    "command": "node src/boot.mjs"
+  },
+  {
+    "serviceName": "newsroom-api",
+    "serviceId": "9e1b66de-b24b-4882-988f-35c481aa8f1e",
+    "environmentId": "10fb8b80-e121-4980-becf-1df646856b6b",
+    "cronSchedule": null,
+    "startCommand": null,
+    "domains": {
+      "serviceDomains": [],
+      "customDomains": [
+        {
+          "id": "4e4dece0-7182-4a2e-b036-87ab4bec4e96",
+          "domain": "nr-8d7dcd7d92.catwalksmedia.com",
+          "targetPort": null
+        }
+      ]
+    },
+    "status": "SUCCESS",
+    "commit": "69782a65a19a7eee317768a2c5ea787c8999fa65",
+    "createdAt": "2026-09-07T21:06:28.924Z",
+    "command": "node src/boot.mjs"
+  },
+  {
+    "serviceName": "website",
+    "serviceId": "de8399be-9ab9-46ff-9ef8-4e00d84bcb09",
+    "environmentId": "10fb8b80-e121-4980-becf-1df646856b6b",
+    "cronSchedule": null,
+    "startCommand": null,
+    "domains": {
+      "serviceDomains": [],
+      "customDomains": [
+        {
+          "id": "e2002ee6-4861-4d74-ac09-20bbebae921c",
+          "domain": "catwalksmedia.com",
+          "targetPort": null
+        },
+        {
+          "id": "a03d0faf-fec4-4302-88dc-bd59030a847b",
+          "domain": "www.catwalksmedia.com",
+          "targetPort": null
+        }
+      ]
+    },
+    "status": "SUCCESS",
+    "commit": "086f75c154c7eea619abc424e7323a2bec39d738",
+    "createdAt": "2026-09-14T16:28:19.005Z",
+    "command": null
+  },
+  {
+    "serviceName": "console-article",
+    "serviceId": "cbc8354b-4159-40fd-88e7-4144db3357b0",
+    "environmentId": "10fb8b80-e121-4980-becf-1df646856b6b",
+    "cronSchedule": null,
+    "startCommand": null,
+    "domains": {
+      "serviceDomains": [],
+      "customDomains": [
+        {
+          "id": "b35f2305-f1ba-4606-9cbe-b41b9c68c12c",
+          "domain": "console.catwalksmedia.com",
+          "targetPort": null
+        }
+      ]
+    },
+    "status": "SUCCESS",
+    "commit": "69782a65a19a7eee317768a2c5ea787c8999fa65",
+    "createdAt": "2026-09-07T21:06:28.925Z",
+    "command": "node src/boot.mjs"
+  },
+  {
+    "serviceName": "Postgres",
+    "serviceId": "b13bec48-4e9e-497f-a985-b175b094b4bb",
+    "environmentId": "10fb8b80-e121-4980-becf-1df646856b6b",
+    "cronSchedule": null,
+    "startCommand": null,
+    "domains": {
+      "serviceDomains": [],
+      "customDomains": []
+    },
+    "status": "SUCCESS",
+    "commit": null,
+    "createdAt": "2026-08-23T04:52:14.813Z",
+    "command": null
+  },
+  {
+    "serviceName": "pilot-editorial",
+    "serviceId": "f5834c2e-bb11-4f20-bc1d-33c962ae7a16",
+    "environmentId": "10fb8b80-e121-4980-becf-1df646856b6b",
+    "cronSchedule": null,
+    "startCommand": null,
+    "domains": {
+      "serviceDomains": [
+        {
+          "id": "c5dfa597-361c-4b4a-ba47-67e5101ed03d",
+          "domain": "pilot-editorial-production.up.railway.app",
+          "targetPort": null
+        }
+      ],
+      "customDomains": []
+    },
+    "status": "SUCCESS",
+    "commit": "69782a65a19a7eee317768a2c5ea787c8999fa65",
+    "createdAt": "2026-09-07T21:06:28.925Z",
+    "command": "node src/boot.mjs"
+  }
+]

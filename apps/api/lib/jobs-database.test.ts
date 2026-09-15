@@ -28,6 +28,10 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
       fingerprint: `${prefix}${i}`, isActive: true, postedAt: new Date('2026-01-01'),
       firstSeenAt: new Date('2026-01-01'),
     })) });
+    await prisma.jobSource.createMany({ data: Array.from({ length: 301 }, (_, i) => ({
+      jobId: `${prefix}${String(i).padStart(3, '0')}`, sourceKey: 'audit-facets', sourceTier: 'ATS_OFFICIAL',
+      externalId: String(i), url: `https://example.com/jobs/${i}`, isActive: true,
+    })) });
   });
   afterAll(cleanup);
 

@@ -1,5 +1,5 @@
 # CI (audit O-02) : typecheck + unitaires + intégration (Postgres de service)
-# + web. Le merge vers main est bloqué si rouge — la « boucle obligatoire par
+# + API. Le merge vers main est bloqué si rouge — la « boucle obligatoire par
 # correctif » de CLAUDE.md, enfin outillée.
 name: CI
 
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:18-alpine
+        image: postgres@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2
         env:
           POSTGRES_USER: catwalks
           POSTGRES_PASSWORD: catwalks
@@ -47,12 +47,14 @@ jobs:
         run: npm run test:unit -w @catwalks/aggregator
       - name: Tests d'intégration
         run: npm run test:integration -w @catwalks/aggregator
+      - name: Outils Railway (hors ligne)
+        run: python3 -B -m unittest discover -s apps/aggregator/scripts/ops/tests
 
   api:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:18-alpine
+        image: postgres@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2
         env:
           POSTGRES_USER: catwalks
           POSTGRES_PASSWORD: catwalks

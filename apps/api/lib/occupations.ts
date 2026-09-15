@@ -1,3 +1,4 @@
+import { publicJobWhere } from '@catwalks/db/availability';
 import { cache } from 'react';
 import { prisma } from '@catwalks/db';
 import {
@@ -82,7 +83,7 @@ export const getOccupationMetrics = cache(async () => {
   });
   const rows = await prisma.job.groupBy({
     by: ['occupationCode', 'occupationStatus'],
-    where: { isActive: true },
+    where: publicJobWhere(),
     _count: true,
   });
   const counts = new Map<string, number>(),

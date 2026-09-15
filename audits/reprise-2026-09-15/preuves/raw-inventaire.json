@@ -1,0 +1,2232 @@
+{
+  "guard": {
+    "at": "2026-09-15T13:05:26.960Z",
+    "read_only": "on",
+    "default_read_only": "on"
+  },
+  "grain": "active JobSource representations linked to active nonmerged nonwithdrawn Job; source kind from Source registry; paths include all object keys and array members",
+  "representations": 85327,
+  "datasetSha256": "1f244f17aafc07baace334203e0cff72433b2fe4bdda7211f19e4f5241511a9b",
+  "bySource": {
+    "585-gold": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "abercrombie": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 8,
+      "withRaw": 8
+    },
+    "ackermans": {
+      "kind": "teamtailor",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "acne-studios-jobylon": {
+      "kind": "jobylon",
+      "representations": 31,
+      "withRaw": 31
+    },
+    "a-derma-4": {
+      "kind": "workday",
+      "representations": 254,
+      "withRaw": 254
+    },
+    "adidas": {
+      "kind": "successfactors",
+      "representations": 1142,
+      "withRaw": 1142
+    },
+    "adopt-parfums": {
+      "kind": "flatchr",
+      "representations": 121,
+      "withRaw": 121
+    },
+    "aeropostale": {
+      "kind": "icims",
+      "representations": 21,
+      "withRaw": 21
+    },
+    "aeyde": {
+      "kind": "personio",
+      "representations": 10,
+      "withRaw": 10
+    },
+    "agency": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "aigle": {
+      "kind": "digitalrecruiters",
+      "representations": 109,
+      "withRaw": 109
+    },
+    "aime-leon-dore": {
+      "kind": "greenhouse",
+      "representations": 12,
+      "withRaw": 12
+    },
+    "aim-n": {
+      "kind": "teamtailor",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "akira": {
+      "kind": "teamtailor",
+      "representations": 187,
+      "withRaw": 187
+    },
+    "alberto": {
+      "kind": "generic-listing",
+      "representations": 9,
+      "withRaw": 9
+    },
+    "alpha-industries": {
+      "kind": "personio",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "american-vintage-dr": {
+      "kind": "digitalrecruiters",
+      "representations": 31,
+      "withRaw": 31
+    },
+    "ami-paris": {
+      "kind": "recruitee",
+      "representations": 23,
+      "withRaw": 23
+    },
+    "amiri": {
+      "kind": "lever",
+      "representations": 43,
+      "withRaw": 43
+    },
+    "annoushka": {
+      "kind": "teamtailor",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "a-p-c": {
+      "kind": "wttj",
+      "representations": 20,
+      "withRaw": 15
+    },
+    "apivita": {
+      "kind": "workable",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "apm-monaco": {
+      "kind": "workable",
+      "representations": 98,
+      "withRaw": 98
+    },
+    "aptar-beauty": {
+      "kind": "successfactors",
+      "representations": 205,
+      "withRaw": 205
+    },
+    "arcteryx": {
+      "kind": "lever",
+      "representations": 303,
+      "withRaw": 303
+    },
+    "aritzia": {
+      "kind": "workday",
+      "representations": 554,
+      "withRaw": 554
+    },
+    "armand-thiery-flatchr": {
+      "kind": "flatchr",
+      "representations": 198,
+      "withRaw": 198
+    },
+    "army-logic": {
+      "kind": "lever",
+      "representations": 21,
+      "withRaw": 21
+    },
+    "aroma-zone": {
+      "kind": "teamtailor",
+      "representations": 184,
+      "withRaw": 184
+    },
+    "asics": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 53,
+      "withRaw": 53
+    },
+    "asket": {
+      "kind": "teamtailor",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "asos": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 66,
+      "withRaw": 66
+    },
+    "attaquer": {
+      "kind": "generic-listing",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "audemars-piguet": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 95,
+      "withRaw": 95
+    },
+    "avolta": {
+      "kind": "successfactors",
+      "representations": 248,
+      "withRaw": 248
+    },
+    "axel-arigato": {
+      "kind": "teamtailor",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "baccarat": {
+      "kind": "talentview",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "ballantynes": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 12,
+      "withRaw": 12
+    },
+    "balmain": {
+      "kind": "talentsoft",
+      "representations": 27,
+      "withRaw": 27
+    },
+    "baron": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 5,
+      "withRaw": 5
+    },
+    "bash-talents": {
+      "kind": "bashtalents",
+      "representations": 57,
+      "withRaw": 57
+    },
+    "beauty-success-geodir": {
+      "kind": "geodirectory",
+      "representations": 110,
+      "withRaw": 110
+    },
+    "bego": {
+      "kind": "recruitee",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "beiersdorf": {
+      "kind": "generic-listing",
+      "representations": 169,
+      "withRaw": 169
+    },
+    "bellabeat": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "bella-canvas": {
+      "kind": "greenhouse",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "bellroy": {
+      "kind": "greenhouse",
+      "representations": 14,
+      "withRaw": 14
+    },
+    "belstaff": {
+      "kind": "teamtailor",
+      "representations": 46,
+      "withRaw": 46
+    },
+    "bernadette": {
+      "kind": "greenhouse",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "bespoke-post": {
+      "kind": "lever",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "bevilles-jewellers": {
+      "kind": "generic-listing",
+      "representations": 24,
+      "withRaw": 24
+    },
+    "blacks": {
+      "kind": "greenhouse",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "blackstore": {
+      "kind": "jobaffinity-wordpress",
+      "representations": 48,
+      "withRaw": 48
+    },
+    "bloom": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "bloomingdales-oracle": {
+      "kind": "oraclehcm",
+      "representations": 791,
+      "withRaw": 791
+    },
+    "blue-banana": {
+      "kind": "teamtailor",
+      "representations": 21,
+      "withRaw": 21
+    },
+    "blueland": {
+      "kind": "lever",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "boardriders": {
+      "kind": "successfactors",
+      "representations": 44,
+      "withRaw": 44
+    },
+    "boggi-milano": {
+      "kind": "recruitee",
+      "representations": 105,
+      "withRaw": 105
+    },
+    "bombas": {
+      "kind": "greenhouse",
+      "representations": 13,
+      "withRaw": 13
+    },
+    "boots": {
+      "kind": "generic-listing",
+      "representations": 1608,
+      "withRaw": 1608
+    },
+    "bravissimo": {
+      "kind": "teamtailor",
+      "representations": 17,
+      "withRaw": 17
+    },
+    "breitling-sf": {
+      "kind": "successfactors",
+      "representations": 41,
+      "withRaw": 41
+    },
+    "bright": {
+      "kind": "recruitee",
+      "representations": 9,
+      "withRaw": 9
+    },
+    "brilliant-earth": {
+      "kind": "greenhouse",
+      "representations": 82,
+      "withRaw": 82
+    },
+    "brothers": {
+      "kind": "teamtailor",
+      "representations": 13,
+      "withRaw": 13
+    },
+    "browns": {
+      "kind": "lever",
+      "representations": 63,
+      "withRaw": 63
+    },
+    "browns-shoes": {
+      "kind": "teamtailor",
+      "representations": 72,
+      "withRaw": 72
+    },
+    "brown-thomas-taleo": {
+      "kind": "taleo",
+      "representations": 76,
+      "withRaw": 76
+    },
+    "brunello-cucinelli": {
+      "kind": "workday",
+      "representations": 45,
+      "withRaw": 45
+    },
+    "b-s-international": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 71,
+      "withRaw": 71
+    },
+    "bubble": {
+      "kind": "greenhouse",
+      "representations": 6,
+      "withRaw": 6
+    },
+    "buck-mason": {
+      "kind": "lever",
+      "representations": 247,
+      "withRaw": 247
+    },
+    "buff": {
+      "kind": "teamtailor",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "burberry": {
+      "kind": "successfactors",
+      "representations": 142,
+      "withRaw": 142
+    },
+    "burnt": {
+      "kind": "teamtailor",
+      "representations": 10,
+      "withRaw": 10
+    },
+    "bzb": {
+      "kind": "teamtailor",
+      "representations": 22,
+      "withRaw": 22
+    },
+    "cabaia": {
+      "kind": "teamtailor",
+      "representations": 8,
+      "withRaw": 8
+    },
+    "cambio": {
+      "kind": "teamtailor",
+      "representations": 9,
+      "withRaw": 9
+    },
+    "camper": {
+      "kind": "teamtailor",
+      "representations": 43,
+      "withRaw": 43
+    },
+    "canada-goose": {
+      "kind": "workday",
+      "representations": 101,
+      "withRaw": 101
+    },
+    "capri-jimmy-choo": {
+      "kind": "workday",
+      "representations": 52,
+      "withRaw": 52
+    },
+    "capri-michael-kors": {
+      "kind": "workday",
+      "representations": 529,
+      "withRaw": 529
+    },
+    "castore": {
+      "kind": "teamtailor",
+      "representations": 27,
+      "withRaw": 27
+    },
+    "catbird": {
+      "kind": "lever",
+      "representations": 18,
+      "withRaw": 18
+    },
+    "celio": {
+      "kind": "teamtailor",
+      "representations": 8,
+      "withRaw": 8
+    },
+    "chalhoub": {
+      "kind": "teamtailor",
+      "representations": 148,
+      "withRaw": 148
+    },
+    "chico-s": {
+      "kind": "workday",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "chisholm-hunter": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "chrome": {
+      "kind": "greenhouse",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "city-beauty": {
+      "kind": "greenhouse",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "claires-workday": {
+      "kind": "workday",
+      "representations": 12,
+      "withRaw": 12
+    },
+    "clarins": {
+      "kind": "successfactors",
+      "representations": 55,
+      "withRaw": 53
+    },
+    "clarins-wttj": {
+      "kind": "wttj",
+      "representations": 6,
+      "withRaw": 3
+    },
+    "clarkson-eyecare": {
+      "kind": "greenhouse",
+      "representations": 153,
+      "withRaw": 153
+    },
+    "closed": {
+      "kind": "personio",
+      "representations": 14,
+      "withRaw": 14
+    },
+    "club-l-london": {
+      "kind": "teamtailor",
+      "representations": 18,
+      "withRaw": 18
+    },
+    "club-monaco": {
+      "kind": "greenhouse",
+      "representations": 24,
+      "withRaw": 24
+    },
+    "conde-nast-france": {
+      "kind": "workday",
+      "representations": 143,
+      "withRaw": 143
+    },
+    "cotton-on": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "courir": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 405,
+      "withRaw": 405
+    },
+    "cove": {
+      "kind": "teamtailor",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "crocs": {
+      "kind": "successfactors",
+      "representations": 512,
+      "withRaw": 512
+    },
+    "cuyana": {
+      "kind": "greenhouse",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "cynthia-rowley": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "damart": {
+      "kind": "teamtailor",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "damiani": {
+      "kind": "successfactors",
+      "representations": 30,
+      "withRaw": 30
+    },
+    "de-beers-london": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 115,
+      "withRaw": 115
+    },
+    "decjuba": {
+      "kind": "successfactors",
+      "representations": 150,
+      "withRaw": 150
+    },
+    "deckers": {
+      "kind": "workday",
+      "representations": 436,
+      "withRaw": 436
+    },
+    "dfs": {
+      "kind": "successfactors",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "dim": {
+      "kind": "greenhouse",
+      "representations": 47,
+      "withRaw": 47
+    },
+    "diptyque-workday": {
+      "kind": "workday",
+      "representations": 154,
+      "withRaw": 154
+    },
+    "dna": {
+      "kind": "greenhouse",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "dolce-gabbana": {
+      "kind": "successfactors",
+      "representations": 96,
+      "withRaw": 96
+    },
+    "dolls-kill": {
+      "kind": "lever",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "douglas-sf": {
+      "kind": "successfactors",
+      "representations": 151,
+      "withRaw": 151
+    },
+    "dr-martens-tf": {
+      "kind": "talentfunnel",
+      "representations": 153,
+      "withRaw": 153
+    },
+    "dr-pierre-ricaud": {
+      "kind": "successfactors",
+      "representations": 72,
+      "withRaw": 72
+    },
+    "drunk-elephant-2": {
+      "kind": "successfactors",
+      "representations": 168,
+      "withRaw": 167
+    },
+    "dune-london": {
+      "kind": "teamtailor",
+      "representations": 28,
+      "withRaw": 28
+    },
+    "eastpak": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "egon-zehnder": {
+      "kind": "workable",
+      "representations": 53,
+      "withRaw": 53
+    },
+    "element-6": {
+      "kind": "magnet",
+      "representations": 403,
+      "withRaw": 398
+    },
+    "el-palacio-de-hierro": {
+      "kind": "successfactors",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "end-clothing": {
+      "kind": "generic-listing",
+      "representations": 22,
+      "withRaw": 22
+    },
+    "ephemera": {
+      "kind": "teamtailor",
+      "representations": 28,
+      "withRaw": 28
+    },
+    "eram-3": {
+      "kind": "magnet",
+      "representations": 89,
+      "withRaw": 89
+    },
+    "eric-bompard": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 34,
+      "withRaw": 33
+    },
+    "escada-parfums-16": {
+      "kind": "successfactors",
+      "representations": 136,
+      "withRaw": 135
+    },
+    "essilorluxottica": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 7,
+      "withRaw": 7
+    },
+    "estee-lauder-companies": {
+      "kind": "eightfold",
+      "representations": 1664,
+      "withRaw": 1661
+    },
+    "etam": {
+      "kind": "teamtailor",
+      "representations": 251,
+      "withRaw": 250
+    },
+    "eurofragrance": {
+      "kind": "teamtailor",
+      "representations": 41,
+      "withRaw": 41
+    },
+    "everlane": {
+      "kind": "greenhouse",
+      "representations": 45,
+      "withRaw": 45
+    },
+    "everything-but-water": {
+      "kind": "workday",
+      "representations": 43,
+      "withRaw": 43
+    },
+    "f-a-e": {
+      "kind": "greenhouse",
+      "representations": 17,
+      "withRaw": 17
+    },
+    "faguo": {
+      "kind": "teamtailor",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "fastrack": {
+      "kind": "teamtailor",
+      "representations": 18,
+      "withRaw": 18
+    },
+    "fast-retailing-id-headquarters": {
+      "kind": "workday",
+      "representations": 6,
+      "withRaw": 6
+    },
+    "fast-retailing-ph-headquarters": {
+      "kind": "workday",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "fenwick-volcanic": {
+      "kind": "volcanic",
+      "representations": 31,
+      "withRaw": 31
+    },
+    "ferrari": {
+      "kind": "successfactors",
+      "representations": 7,
+      "withRaw": 7
+    },
+    "figs": {
+      "kind": "greenhouse",
+      "representations": 31,
+      "withRaw": 31
+    },
+    "filson": {
+      "kind": "greenhouse",
+      "representations": 10,
+      "withRaw": 10
+    },
+    "fitflop": {
+      "kind": "teamtailor",
+      "representations": 12,
+      "withRaw": 12
+    },
+    "fjallraven": {
+      "kind": "teamtailor",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "foot-locker-france": {
+      "kind": "phenom",
+      "representations": 2859,
+      "withRaw": 2857
+    },
+    "frank-darling": {
+      "kind": "teamtailor",
+      "representations": 33,
+      "withRaw": 33
+    },
+    "fred-perry": {
+      "kind": "teamtailor",
+      "representations": 20,
+      "withRaw": 20
+    },
+    "funky-buddha": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 23,
+      "withRaw": 23
+    },
+    "galeries-lafayette": {
+      "kind": "teamtailor",
+      "representations": 169,
+      "withRaw": 161
+    },
+    "ganni-talentrecruiter": {
+      "kind": "talentrecruiter",
+      "representations": 17,
+      "withRaw": 17
+    },
+    "gant": {
+      "kind": "digitalrecruiters",
+      "representations": 108,
+      "withRaw": 108
+    },
+    "genesis": {
+      "kind": "lever",
+      "representations": 5,
+      "withRaw": 5
+    },
+    "georges": {
+      "kind": "teamtailor",
+      "representations": 13,
+      "withRaw": 13
+    },
+    "ghost": {
+      "kind": "greenhouse",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "g-label-by-goop": {
+      "kind": "greenhouse",
+      "representations": 5,
+      "withRaw": 5
+    },
+    "glitter": {
+      "kind": "teamtailor",
+      "representations": 32,
+      "withRaw": 32
+    },
+    "globus": {
+      "kind": "generic-listing",
+      "representations": 23,
+      "withRaw": 23
+    },
+    "glossier": {
+      "kind": "greenhouse",
+      "representations": 26,
+      "withRaw": 26
+    },
+    "good-american": {
+      "kind": "lever",
+      "representations": 15,
+      "withRaw": 15
+    },
+    "go-outdoors": {
+      "kind": "greenhouse",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "gorjana": {
+      "kind": "greenhouse",
+      "representations": 167,
+      "withRaw": 167
+    },
+    "got-bag": {
+      "kind": "personio",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "goyard-successfactors": {
+      "kind": "successfactors",
+      "representations": 19,
+      "withRaw": 19
+    },
+    "groundies": {
+      "kind": "personio",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "groupe-chantelle": {
+      "kind": "talentsoft",
+      "representations": 37,
+      "withRaw": 37
+    },
+    "groupe-printemps": {
+      "kind": "talentsoft",
+      "representations": 113,
+      "withRaw": 113
+    },
+    "gu-hk-headquarters": {
+      "kind": "workday",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "guild-pepper": {
+      "kind": "greenhouse",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "gu-us-headquarters": {
+      "kind": "workday",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "gu-us-retail": {
+      "kind": "workday",
+      "representations": 5,
+      "withRaw": 5
+    },
+    "gymshark": {
+      "kind": "greenhouse",
+      "representations": 13,
+      "withRaw": 13
+    },
+    "hanna-andersson": {
+      "kind": "lever",
+      "representations": 8,
+      "withRaw": 8
+    },
+    "hans-anders": {
+      "kind": "teamtailor",
+      "representations": 144,
+      "withRaw": 144
+    },
+    "happy-socks": {
+      "kind": "teamtailor",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "helena-rubinstein-8": {
+      "kind": "wttj",
+      "representations": 72,
+      "withRaw": 65
+    },
+    "hermes": {
+      "kind": "wttj",
+      "representations": 609,
+      "withRaw": 537
+    },
+    "herschel-supply-co": {
+      "kind": "greenhouse",
+      "representations": 7,
+      "withRaw": 7
+    },
+    "hm-group": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 2420,
+      "withRaw": 2420
+    },
+    "hoff": {
+      "kind": "teamtailor",
+      "representations": 8,
+      "withRaw": 8
+    },
+    "honey-birdette": {
+      "kind": "teamtailor",
+      "representations": 56,
+      "withRaw": 56
+    },
+    "horace": {
+      "kind": "teamtailor",
+      "representations": 19,
+      "withRaw": 19
+    },
+    "hot-topic": {
+      "kind": "lever",
+      "representations": 17,
+      "withRaw": 17
+    },
+    "hugo-boss-phenom": {
+      "kind": "phenom",
+      "representations": 784,
+      "withRaw": 784
+    },
+    "ilia": {
+      "kind": "greenhouse",
+      "representations": 15,
+      "withRaw": 15
+    },
+    "imi-s": {
+      "kind": "greenhouse",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "indiska": {
+      "kind": "teamtailor",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "innisfree": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "intersport": {
+      "kind": "teamtailor",
+      "representations": 5,
+      "withRaw": 5
+    },
+    "intersport-france": {
+      "kind": "jobaffinity-wordpress",
+      "representations": 930,
+      "withRaw": 930
+    },
+    "iris-van-herpen": {
+      "kind": "recruitee",
+      "representations": 6,
+      "withRaw": 6
+    },
+    "it-s-fashion": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "jansport": {
+      "kind": "workday",
+      "representations": 7,
+      "withRaw": 7
+    },
+    "jd-sports": {
+      "kind": "greenhouse",
+      "representations": 201,
+      "withRaw": 201
+    },
+    "jean-paul-gaultier-5": {
+      "kind": "successfactors",
+      "representations": 262,
+      "withRaw": 260
+    },
+    "jeans-centre": {
+      "kind": "recruitee",
+      "representations": 69,
+      "withRaw": 69
+    },
+    "jewells": {
+      "kind": "teamtailor",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "j-lindeberg": {
+      "kind": "teamtailor",
+      "representations": 12,
+      "withRaw": 12
+    },
+    "joe-fresh": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "john-henric": {
+      "kind": "teamtailor",
+      "representations": 14,
+      "withRaw": 14
+    },
+    "jojo-maman-bebe": {
+      "kind": "teamtailor",
+      "representations": 28,
+      "withRaw": 28
+    },
+    "jonsson-workwear": {
+      "kind": "greenhouse",
+      "representations": 36,
+      "withRaw": 36
+    },
+    "jules": {
+      "kind": "talentview",
+      "representations": 10,
+      "withRaw": 10
+    },
+    "julie-grace": {
+      "kind": "personio",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "kapten-son": {
+      "kind": "recruitee",
+      "representations": 30,
+      "withRaw": 30
+    },
+    "karla-otto": {
+      "kind": "teamtailor",
+      "representations": 14,
+      "withRaw": 14
+    },
+    "kastner-ohler": {
+      "kind": "generic-listing",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "kate-mcleod": {
+      "kind": "greenhouse",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "katie-loxton": {
+      "kind": "teamtailor",
+      "representations": 19,
+      "withRaw": 19
+    },
+    "kering": {
+      "kind": "eightfold",
+      "representations": 1112,
+      "withRaw": 1065
+    },
+    "kiabi": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 255,
+      "withRaw": 255
+    },
+    "kicks": {
+      "kind": "teamtailor",
+      "representations": 13,
+      "withRaw": 13
+    },
+    "kidzart": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "kiko-milano": {
+      "kind": "recruitee",
+      "representations": 23,
+      "withRaw": 23
+    },
+    "killstar": {
+      "kind": "teamtailor",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "klattermusen": {
+      "kind": "teamtailor",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "knitwell-us-corporate": {
+      "kind": "workday",
+      "representations": 99,
+      "withRaw": 99
+    },
+    "knitwell-us-distribution": {
+      "kind": "workday",
+      "representations": 17,
+      "withRaw": 17
+    },
+    "knitwell-us-retail": {
+      "kind": "workday",
+      "representations": 2196,
+      "withRaw": 2196
+    },
+    "knock-knock": {
+      "kind": "greenhouse",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "kult-olymp-hades": {
+      "kind": "recruitee",
+      "representations": 80,
+      "withRaw": 80
+    },
+    "la-casa-de-las-carcasas": {
+      "kind": "teamtailor",
+      "representations": 745,
+      "withRaw": 745
+    },
+    "lacoste": {
+      "kind": "digitalrecruiters",
+      "representations": 464,
+      "withRaw": 464
+    },
+    "la-fee-maraboutee": {
+      "kind": "teamtailor",
+      "representations": 19,
+      "withRaw": 19
+    },
+    "lagardere-duty-free": {
+      "kind": "talentsoft",
+      "representations": 9,
+      "withRaw": 9
+    },
+    "lagardere-travel-retail": {
+      "kind": "talentsoft",
+      "representations": 130,
+      "withRaw": 130
+    },
+    "lagardere-travel-retail-de": {
+      "kind": "talentsoft",
+      "representations": 10,
+      "withRaw": 10
+    },
+    "lager-157": {
+      "kind": "teamtailor",
+      "representations": 48,
+      "withRaw": 48
+    },
+    "la-prairie": {
+      "kind": "successfactors",
+      "representations": 27,
+      "withRaw": 27
+    },
+    "la-redoute-talentview": {
+      "kind": "talentview",
+      "representations": 5,
+      "withRaw": 5
+    },
+    "la-senza": {
+      "kind": "greenhouse",
+      "representations": 55,
+      "withRaw": 55
+    },
+    "laverana-gmbh-co-kg": {
+      "kind": "personio",
+      "representations": 24,
+      "withRaw": 24
+    },
+    "lavish-alice": {
+      "kind": "teamtailor",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "lensa": {
+      "kind": "teamtailor",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "lerros": {
+      "kind": "personio",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "levis": {
+      "kind": "workday",
+      "representations": 1333,
+      "withRaw": 1333
+    },
+    "lexington": {
+      "kind": "teamtailor",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "lindex-easycruit": {
+      "kind": "easycruit",
+      "representations": 50,
+      "withRaw": 50
+    },
+    "little-words-project": {
+      "kind": "greenhouse",
+      "representations": 14,
+      "withRaw": 14
+    },
+    "l-occitane-en-provence-2": {
+      "kind": "successfactors",
+      "representations": 16,
+      "withRaw": 16
+    },
+    "loccitane-fr": {
+      "kind": "teamtailor",
+      "representations": 18,
+      "withRaw": 18
+    },
+    "longchamp": {
+      "kind": "talentsoft",
+      "representations": 27,
+      "withRaw": 27
+    },
+    "loplabbet": {
+      "kind": "teamtailor",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "l-oreal-professionnel": {
+      "kind": "avature",
+      "representations": 1804,
+      "withRaw": 942
+    },
+    "lounge": {
+      "kind": "teamtailor",
+      "representations": 15,
+      "withRaw": 15
+    },
+    "lovable": {
+      "kind": "greenhouse",
+      "representations": 63,
+      "withRaw": 63
+    },
+    "lovisa": {
+      "kind": "teamtailor",
+      "representations": 893,
+      "withRaw": 893
+    },
+    "lucy-yak": {
+      "kind": "teamtailor",
+      "representations": 5,
+      "withRaw": 5
+    },
+    "luhta": {
+      "kind": "teamtailor",
+      "representations": 6,
+      "withRaw": 6
+    },
+    "lumentee": {
+      "kind": "generic-listing",
+      "representations": 5,
+      "withRaw": 5
+    },
+    "lush": {
+      "kind": "greenhouse",
+      "representations": 213,
+      "withRaw": 213
+    },
+    "luxe-talent": {
+      "kind": "wordpress",
+      "representations": 478,
+      "withRaw": 478
+    },
+    "luxexperience": {
+      "kind": "generic-listing",
+      "representations": 57,
+      "withRaw": 57
+    },
+    "lvmh": {
+      "kind": "lvmh_algolia",
+      "representations": 6433,
+      "withRaw": 6417
+    },
+    "madame-figaro": {
+      "kind": "wttj",
+      "representations": 10,
+      "withRaw": 10
+    },
+    "madewell": {
+      "kind": "workday",
+      "representations": 290,
+      "withRaw": 290
+    },
+    "madhappy": {
+      "kind": "lever",
+      "representations": 15,
+      "withRaw": 15
+    },
+    "magasin-du-nord": {
+      "kind": "teamtailor",
+      "representations": 45,
+      "withRaw": 45
+    },
+    "maison-123": {
+      "kind": "teamtailor",
+      "representations": 61,
+      "withRaw": 61
+    },
+    "maison-margiela": {
+      "kind": "successfactors",
+      "representations": 160,
+      "withRaw": 160
+    },
+    "mango": {
+      "kind": "workday",
+      "representations": 1792,
+      "withRaw": 1792
+    },
+    "marc-o-polo": {
+      "kind": "generic-listing",
+      "representations": 42,
+      "withRaw": 42
+    },
+    "marella": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 196,
+      "withRaw": 196
+    },
+    "margaret-howell": {
+      "kind": "teamtailor",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "markham": {
+      "kind": "lever",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "mascot-workwear": {
+      "kind": "successfactors",
+      "representations": 50,
+      "withRaw": 50
+    },
+    "mecca": {
+      "kind": "workday",
+      "representations": 181,
+      "withRaw": 181
+    },
+    "medik8": {
+      "kind": "teamtailor",
+      "representations": 21,
+      "withRaw": 21
+    },
+    "mejuri": {
+      "kind": "greenhouse",
+      "representations": 143,
+      "withRaw": 143
+    },
+    "merkal": {
+      "kind": "teamtailor",
+      "representations": 39,
+      "withRaw": 39
+    },
+    "merz-b-schwanen": {
+      "kind": "personio",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "method-h-l-a": {
+      "kind": "greenhouse",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "minimalist": {
+      "kind": "recruitee",
+      "representations": 8,
+      "withRaw": 8
+    },
+    "miu-miu": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 7,
+      "withRaw": 7
+    },
+    "molton-brown": {
+      "kind": "greenhouse",
+      "representations": 17,
+      "withRaw": 17
+    },
+    "monica-vinader": {
+      "kind": "teamtailor",
+      "representations": 41,
+      "withRaw": 41
+    },
+    "monsieur-tshirt": {
+      "kind": "wttj",
+      "representations": 7,
+      "withRaw": 7
+    },
+    "motel": {
+      "kind": "teamtailor",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "movado": {
+      "kind": "workday",
+      "representations": 132,
+      "withRaw": 132
+    },
+    "mq-marqet": {
+      "kind": "teamtailor",
+      "representations": 14,
+      "withRaw": 14
+    },
+    "mr-marvis": {
+      "kind": "teamtailor",
+      "representations": 32,
+      "withRaw": 32
+    },
+    "ms-mode": {
+      "kind": "recruitee",
+      "representations": 66,
+      "withRaw": 66
+    },
+    "mulberry": {
+      "kind": "lever",
+      "representations": 31,
+      "withRaw": 31
+    },
+    "multiopticas": {
+      "kind": "teamtailor",
+      "representations": 85,
+      "withRaw": 85
+    },
+    "mvmt": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "my-jewellery": {
+      "kind": "recruitee",
+      "representations": 91,
+      "withRaw": 91
+    },
+    "naos": {
+      "kind": "successfactors",
+      "representations": 27,
+      "withRaw": 27
+    },
+    "nars": {
+      "kind": "radancy",
+      "representations": 54,
+      "withRaw": 53
+    },
+    "naturkompaniet": {
+      "kind": "teamtailor",
+      "representations": 5,
+      "withRaw": 5
+    },
+    "new-balance": {
+      "kind": "workday",
+      "representations": 94,
+      "withRaw": 94
+    },
+    "nexus": {
+      "kind": "greenhouse",
+      "representations": 5,
+      "withRaw": 5
+    },
+    "nike": {
+      "kind": "workday",
+      "representations": 834,
+      "withRaw": 834
+    },
+    "nike-nke2": {
+      "kind": "workday",
+      "representations": 348,
+      "withRaw": 348
+    },
+    "nikin": {
+      "kind": "recruitee",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "nimble": {
+      "kind": "recruitee",
+      "representations": 5,
+      "withRaw": 5
+    },
+    "nocibe-eqwa": {
+      "kind": "eqwa",
+      "representations": 321,
+      "withRaw": 321
+    },
+    "nordstrom": {
+      "kind": "workday",
+      "representations": 1769,
+      "withRaw": 1769
+    },
+    "normal": {
+      "kind": "teamtailor",
+      "representations": 538,
+      "withRaw": 533
+    },
+    "nude-project": {
+      "kind": "teamtailor",
+      "representations": 14,
+      "withRaw": 14
+    },
+    "nudie-jeans": {
+      "kind": "teamtailor",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "nutrafol": {
+      "kind": "greenhouse",
+      "representations": 13,
+      "withRaw": 13
+    },
+    "nutrire": {
+      "kind": "teamtailor",
+      "representations": 55,
+      "withRaw": 55
+    },
+    "nyx-professional-makeup": {
+      "kind": "teamtailor",
+      "representations": 21,
+      "withRaw": 21
+    },
+    "oak-essentials": {
+      "kind": "greenhouse",
+      "representations": 34,
+      "withRaw": 34
+    },
+    "obi-obi": {
+      "kind": "recruitee",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "oh-my-cream": {
+      "kind": "teamtailor",
+      "representations": 22,
+      "withRaw": 22
+    },
+    "oh-polly": {
+      "kind": "teamtailor",
+      "representations": 13,
+      "withRaw": 13
+    },
+    "olaplex": {
+      "kind": "greenhouse",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "oniverse": {
+      "kind": "generic-listing",
+      "representations": 524,
+      "withRaw": 524
+    },
+    "on-running": {
+      "kind": "greenhouse",
+      "representations": 309,
+      "withRaw": 309
+    },
+    "orchestra": {
+      "kind": "greenhouse",
+      "representations": 30,
+      "withRaw": 30
+    },
+    "orlebar-brown": {
+      "kind": "teamtailor",
+      "representations": 15,
+      "withRaw": 15
+    },
+    "ortovox": {
+      "kind": "personio",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "oska": {
+      "kind": "generic-listing",
+      "representations": 35,
+      "withRaw": 35
+    },
+    "ounass": {
+      "kind": "teamtailor",
+      "representations": 26,
+      "withRaw": 26
+    },
+    "pandora-talenthub": {
+      "kind": "generic-listing",
+      "representations": 2077,
+      "withRaw": 2077
+    },
+    "parachute": {
+      "kind": "greenhouse",
+      "representations": 8,
+      "withRaw": 8
+    },
+    "parco": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "parfums-chanel": {
+      "kind": "workday",
+      "representations": 1120,
+      "withRaw": 1115
+    },
+    "passage-du-desir": {
+      "kind": "teamtailor",
+      "representations": 14,
+      "withRaw": 14
+    },
+    "patek-philippe": {
+      "kind": "successfactors",
+      "representations": 19,
+      "withRaw": 19
+    },
+    "peacocks": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 25,
+      "withRaw": 25
+    },
+    "peak-performance": {
+      "kind": "teamtailor",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "pegador": {
+      "kind": "personio",
+      "representations": 16,
+      "withRaw": 16
+    },
+    "penningtons": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 334,
+      "withRaw": 334
+    },
+    "pepco": {
+      "kind": "personio",
+      "representations": 55,
+      "withRaw": 55
+    },
+    "petit-bateau": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 47,
+      "withRaw": 47
+    },
+    "petrol-industries": {
+      "kind": "teamtailor",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "pga-tour-superstore": {
+      "kind": "workday",
+      "representations": 190,
+      "withRaw": 190
+    },
+    "picard": {
+      "kind": "recruitee",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "pied-de-biche": {
+      "kind": "wttj",
+      "representations": 6,
+      "withRaw": 6
+    },
+    "plume-impression": {
+      "kind": "greenhouse",
+      "representations": 19,
+      "withRaw": 19
+    },
+    "point-zero": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "polene": {
+      "kind": "ashby",
+      "representations": 83,
+      "withRaw": 83
+    },
+    "prada-group": {
+      "kind": "successfactors",
+      "representations": 149,
+      "withRaw": 149
+    },
+    "primark": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 966,
+      "withRaw": 966
+    },
+    "printful": {
+      "kind": "teamtailor",
+      "representations": 7,
+      "withRaw": 7
+    },
+    "prisma-media": {
+      "kind": "teamtailor",
+      "representations": 20,
+      "withRaw": 20
+    },
+    "profil-optik": {
+      "kind": "teamtailor",
+      "representations": 38,
+      "withRaw": 38
+    },
+    "profuomo": {
+      "kind": "recruitee",
+      "representations": 7,
+      "withRaw": 7
+    },
+    "promod": {
+      "kind": "talentview",
+      "representations": 54,
+      "withRaw": 54
+    },
+    "pronovias": {
+      "kind": "teamtailor",
+      "representations": 37,
+      "withRaw": 37
+    },
+    "psycho-bunny": {
+      "kind": "generic-listing",
+      "representations": 165,
+      "withRaw": 165
+    },
+    "pvh": {
+      "kind": "generic-listing",
+      "representations": 1397,
+      "withRaw": 1397
+    },
+    "quince": {
+      "kind": "greenhouse",
+      "representations": 132,
+      "withRaw": 132
+    },
+    "ralph-lauren-avature": {
+      "kind": "avature",
+      "representations": 1104,
+      "withRaw": 1104
+    },
+    "realself": {
+      "kind": "lever",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "rebag": {
+      "kind": "greenhouse",
+      "representations": 17,
+      "withRaw": 17
+    },
+    "reformation": {
+      "kind": "greenhouse",
+      "representations": 145,
+      "withRaw": 145
+    },
+    "richemont": {
+      "kind": "workday",
+      "representations": 478,
+      "withRaw": 478
+    },
+    "richemont-workday": {
+      "kind": "workday",
+      "representations": 1477,
+      "withRaw": 1473
+    },
+    "rituals": {
+      "kind": "rituals",
+      "representations": 1245,
+      "withRaw": 1245
+    },
+    "riu-paris": {
+      "kind": "flatchr",
+      "representations": 15,
+      "withRaw": 15
+    },
+    "rivoli-typesense": {
+      "kind": "typesense",
+      "representations": 47,
+      "withRaw": 47
+    },
+    "rolex": {
+      "kind": "successfactors",
+      "representations": 213,
+      "withRaw": 213
+    },
+    "rotate": {
+      "kind": "recruitee",
+      "representations": 5,
+      "withRaw": 5
+    },
+    "route-one-skin": {
+      "kind": "greenhouse",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "sabon": {
+      "kind": "teamtailor",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "sacoor-brothers": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "saffron": {
+      "kind": "teamtailor",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "saks": {
+      "kind": "workday",
+      "representations": 886,
+      "withRaw": 886
+    },
+    "salomon": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 76,
+      "withRaw": 76
+    },
+    "saltrock-harri": {
+      "kind": "harri",
+      "representations": 36,
+      "withRaw": 36
+    },
+    "sandro": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 568,
+      "withRaw": 568
+    },
+    "selfridges": {
+      "kind": "generic-listing",
+      "representations": 69,
+      "withRaw": 69
+    },
+    "sephora-france": {
+      "kind": "successfactors",
+      "representations": 26,
+      "withRaw": 26
+    },
+    "sessun": {
+      "kind": "wttj",
+      "representations": 36,
+      "withRaw": 30
+    },
+    "sezane": {
+      "kind": "workable",
+      "representations": 118,
+      "withRaw": 118
+    },
+    "shein": {
+      "kind": "greenhouse",
+      "representations": 19,
+      "withRaw": 19
+    },
+    "shinola": {
+      "kind": "greenhouse",
+      "representations": 9,
+      "withRaw": 9
+    },
+    "shinola-retail": {
+      "kind": "greenhouse",
+      "representations": 14,
+      "withRaw": 14
+    },
+    "showroomprive": {
+      "kind": "teamtailor",
+      "representations": 30,
+      "withRaw": 30
+    },
+    "siebel-juweliers": {
+      "kind": "recruitee",
+      "representations": 24,
+      "withRaw": 24
+    },
+    "silbon": {
+      "kind": "teamtailor",
+      "representations": 79,
+      "withRaw": 79
+    },
+    "singularu": {
+      "kind": "teamtailor",
+      "representations": 30,
+      "withRaw": 30
+    },
+    "sioux": {
+      "kind": "recruitee",
+      "representations": 17,
+      "withRaw": 17
+    },
+    "sisley": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 29,
+      "withRaw": 29
+    },
+    "skechers-phenom": {
+      "kind": "phenom",
+      "representations": 1656,
+      "withRaw": 1656
+    },
+    "skin-laundry": {
+      "kind": "greenhouse",
+      "representations": 41,
+      "withRaw": 41
+    },
+    "soeur": {
+      "kind": "teamtailor",
+      "representations": 56,
+      "withRaw": 56
+    },
+    "space-nk": {
+      "kind": "teamtailor",
+      "representations": 98,
+      "withRaw": 98
+    },
+    "spinelli-kilcollin": {
+      "kind": "greenhouse",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "ssense": {
+      "kind": "teamtailor",
+      "representations": 15,
+      "withRaw": 15
+    },
+    "stanley-stella": {
+      "kind": "personio",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "state-of-art": {
+      "kind": "recruitee",
+      "representations": 28,
+      "withRaw": 28
+    },
+    "stella-mccartney": {
+      "kind": "workday",
+      "representations": 30,
+      "withRaw": 30
+    },
+    "subset": {
+      "kind": "teamtailor",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "suitsupply": {
+      "kind": "greenhouse",
+      "representations": 174,
+      "withRaw": 174
+    },
+    "supergoop": {
+      "kind": "greenhouse",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "swarovski": {
+      "kind": "workday",
+      "representations": 527,
+      "withRaw": 527
+    },
+    "swatch-group": {
+      "kind": "swatchgroup",
+      "representations": 293,
+      "withRaw": 293
+    },
+    "tapestry": {
+      "kind": "workday",
+      "representations": 2183,
+      "withRaw": 2183
+    },
+    "taylor-stitch": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "tekla": {
+      "kind": "greenhouse",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "the-kooples": {
+      "kind": "digitalrecruiters",
+      "representations": 71,
+      "withRaw": 71
+    },
+    "theory-eu": {
+      "kind": "workday",
+      "representations": 18,
+      "withRaw": 18
+    },
+    "theory-us-retail": {
+      "kind": "workday",
+      "representations": 6,
+      "withRaw": 6
+    },
+    "therealreal": {
+      "kind": "workday",
+      "representations": 138,
+      "withRaw": 138
+    },
+    "thirdlove": {
+      "kind": "greenhouse",
+      "representations": 32,
+      "withRaw": 32
+    },
+    "thomas-sabo": {
+      "kind": "personio",
+      "representations": 42,
+      "withRaw": 42
+    },
+    "tiffany-oracle": {
+      "kind": "oraclehcm",
+      "representations": 424,
+      "withRaw": 422
+    },
+    "tiger-of-sweden": {
+      "kind": "teamtailor",
+      "representations": 6,
+      "withRaw": 6
+    },
+    "tods": {
+      "kind": "successfactors",
+      "representations": 16,
+      "withRaw": 16
+    },
+    "tom-wood": {
+      "kind": "teamtailor",
+      "representations": 4,
+      "withRaw": 4
+    },
+    "toscane": {
+      "kind": "flatchr",
+      "representations": 20,
+      "withRaw": 20
+    },
+    "toteme": {
+      "kind": "teamtailor",
+      "representations": 21,
+      "withRaw": 21
+    },
+    "tropicfeel": {
+      "kind": "teamtailor",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "trussardi": {
+      "kind": "teamtailor",
+      "representations": 16,
+      "withRaw": 16
+    },
+    "typology": {
+      "kind": "teamtailor",
+      "representations": 8,
+      "withRaw": 8
+    },
+    "ulta-jibe": {
+      "kind": "jibe",
+      "representations": 10290,
+      "withRaw": 10290
+    },
+    "undiz": {
+      "kind": "teamtailor",
+      "representations": 50,
+      "withRaw": 50
+    },
+    "uniqlo-au-graduates": {
+      "kind": "workday",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "uniqlo-au-stores": {
+      "kind": "workday",
+      "representations": 33,
+      "withRaw": 33
+    },
+    "uniqlo-graduates": {
+      "kind": "workday",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "uniqlo-headquarters": {
+      "kind": "workday",
+      "representations": 23,
+      "withRaw": 23
+    },
+    "uniqlo-hkm-headquarters": {
+      "kind": "workday",
+      "representations": 6,
+      "withRaw": 6
+    },
+    "uniqlo-my-headquarters": {
+      "kind": "workday",
+      "representations": 7,
+      "withRaw": 7
+    },
+    "uniqlo-stores": {
+      "kind": "workday",
+      "representations": 120,
+      "withRaw": 120
+    },
+    "uniqlo-th-headquarters": {
+      "kind": "workday",
+      "representations": 2,
+      "withRaw": 2
+    },
+    "uniqlo-us-headquarters": {
+      "kind": "workday",
+      "representations": 14,
+      "withRaw": 14
+    },
+    "uniqlo-us-retail": {
+      "kind": "workday",
+      "representations": 351,
+      "withRaw": 351
+    },
+    "uniqlo-vn-headquarters": {
+      "kind": "workday",
+      "representations": 12,
+      "withRaw": 12
+    },
+    "united-colors-of-benetton": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "urbn-hub": {
+      "kind": "icims",
+      "representations": 1572,
+      "withRaw": 1535
+    },
+    "valentino": {
+      "kind": "successfactors",
+      "representations": 39,
+      "withRaw": 36
+    },
+    "velvet-canyon": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "veronica-beard": {
+      "kind": "greenhouse",
+      "representations": 45,
+      "withRaw": 45
+    },
+    "versace": {
+      "kind": "workday",
+      "representations": 55,
+      "withRaw": 55
+    },
+    "vestiaire-collective": {
+      "kind": "lever",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "vf-corporation": {
+      "kind": "workday",
+      "representations": 578,
+      "withRaw": 578
+    },
+    "visionlab": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 1,
+      "withRaw": 1
+    },
+    "vivienne-westwood": {
+      "kind": "teamtailor",
+      "representations": 12,
+      "withRaw": 12
+    },
+    "vivobarefoot": {
+      "kind": "teamtailor",
+      "representations": 13,
+      "withRaw": 13
+    },
+    "vlisco": {
+      "kind": "teamtailor",
+      "representations": 8,
+      "withRaw": 8
+    },
+    "wehkamp": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 3,
+      "withRaw": 3
+    },
+    "white-stuff": {
+      "kind": "teamtailor",
+      "representations": 86,
+      "withRaw": 86
+    },
+    "wttj-sector": {
+      "kind": "wttj-sector",
+      "representations": 2002,
+      "withRaw": 1949
+    },
+    "wunderkind": {
+      "kind": "greenhouse",
+      "representations": 8,
+      "withRaw": 8
+    },
+    "yaya": {
+      "kind": "recruitee",
+      "representations": 24,
+      "withRaw": 24
+    },
+    "yema": {
+      "kind": "smartrecruiters-whitelabel",
+      "representations": 6,
+      "withRaw": 6
+    },
+    "yse-paris": {
+      "kind": "teamtailor",
+      "representations": 11,
+      "withRaw": 11
+    },
+    "zegna-altamira": {
+      "kind": "altamira",
+      "representations": 64,
+      "withRaw": 64
+    }
+  }
+}

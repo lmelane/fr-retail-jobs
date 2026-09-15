@@ -6,7 +6,7 @@ suit ne peut donc démarrer sur un état non vérifié.
 Ce qu'il vérifie, dans cet ordre (le brief P7) :
   1. le commit à exécuter est FIGÉ et passé en argument ;
   2. arbre Git propre · HEAD == commit attendu · aucun run en cours · aucun déploiement incompatible ;
-  3. les DEUX services séparément — `catwalks-aggregator` ET `catwalks-web` — SUCCESS sur ce commit.
+  3. les DEUX services séparément — `catwalks-aggregator` ET `catwalks-api` — SUCCESS sur ce commit.
      Le succès de l'aggregator n'est JAMAIS lu comme celui du web : ce sont deux déploiements distincts, et
      confondre les deux a déjà fait conclure à tort qu'un correctif était en ligne ;
   4. l'allowlist est exactement la liste attendue — ni clé inconnue, ni clé manquante, ni dixième source, ni
@@ -28,7 +28,6 @@ import shutil
 import subprocess
 import sys
 import time
-import urllib.parse
 import urllib.request
 
 # scripts/ops/ingest-preflight.py → ops → scripts → aggregator → apps → RACINE : quatre niveaux, pas trois.
@@ -38,7 +37,6 @@ OPS = pathlib.Path(__file__).resolve().parent
 assert (ROOT / '.git').exists(), f'racine du dépôt mal résolue : {ROOT}'
 CLONE_CONTAINER = os.environ.get('P7_CLONE_CONTAINER', 'catwalks-lot4-replay-pg18')
 CLONE_USER = os.environ.get('P7_CLONE_USER', 'catwalks_lot4')
-PG_DUMP = os.environ.get('PG_DUMP', '/opt/homebrew/opt/libpq/bin/pg_dump')
 
 problems: list[str] = []
 facts: dict = {}
@@ -114,12 +112,12 @@ spec.loader.exec_module(railway)
 
 # Le périmètre de code de chaque service : ce qui, modifié, exige un redéploiement de CE service.
 SERVICE_PATHS = {
-    'aggregator': ('apps/aggregator/', 'packages/db/', 'data/'),
-    'web': ('apps/web/', 'packages/db/'),
+    'aggregator': ('apps/aggregator/', 'packages/db/', 'package.json', 'package-lock.json', '.dockerignore'),
+    'api': ('apps/api/', 'packages/db/', 'apps/aggregator/data/reference/', 'package.json', 'package-lock.json', '.dockerignore'),
 }
 
 deployments = {}
-for service in ('aggregator', 'web'):
+for service in ('aggregator', 'api'):
     try:
         st = railway.status(service)
     except Exception as e:  # une API injoignable est un refus, jamais un « on suppose que ça va »
@@ -135,7 +133,7 @@ for service in ('aggregator', 'web'):
 
     # Le service tourne sur un commit ANTÉRIEUR. Ce n'est un problème que si SON code a changé entre les deux.
     #
-    # Railway ne redéploie un service que lorsque son périmètre est touché : `catwalks-web` ne bouge donc pas
+    # Railway ne redéploie un service que lorsque son périmètre est touché : `catwalks-api` ne bouge donc pas
     # pour un commit qui ne modifie que `apps/aggregator`. Exiger l'égalité stricte des SHA refuserait un état
     # parfaitement conforme — et, pire, pousserait à redéployer sans raison. Le critère juste n'est pas
     # « même SHA » mais « même CODE pour ce service », et cela se DÉMONTRE par le diff.
@@ -216,20 +214,7 @@ if refusal:
     fail(refusal)
 
 if not flag('skip-backup'):
-    script = ROOT / 'backups' / 'lot4-20260909' / f'backup-p7-run-{stamp}.py'
-    script.write_text(
-        'import os,subprocess,urllib.parse,pathlib,hashlib,json\n'
-        'os.umask(0o077)\n'
-        "u=urllib.parse.urlsplit(os.environ['DATABASE_URL'])\n"
-        f"p=pathlib.Path({str(dump)!r})\n"
-        "assert not p.exists(), 'ne jamais écraser une sauvegarde'\n"
-        'e=os.environ.copy()\n'
-        "e.update(PGHOST=u.hostname,PGPORT=str(u.port or 5432),PGDATABASE=u.path.lstrip('/'),"
-        "PGUSER=urllib.parse.unquote(u.username),PGPASSWORD=urllib.parse.unquote(u.password),PGSSLMODE='require')\n"
-        f"subprocess.run([{PG_DUMP!r},'-Fc','--no-owner','--no-privileges','-f',str(p)],env=e,check=True)\n"
-        "print(json.dumps({'bytes':p.stat().st_size}))\n"
-    )
-    b = sh(['python3', 'backups/remediation-20260908/run.py', 'prod', 'python3', str(script)], cwd=ROOT)
+    b = sh(['python3', str(OPS / 'db.py'), 'readonly', 'python3', str(OPS / 'backup.py'), str(dump)], cwd=ROOT)
     if b.returncode:
         fail('sauvegarde échouée : ' + b.stderr[-300:])
 

@@ -2,11 +2,15 @@
   "name": "fr-retail-jobs",
   "private": true,
   "version": "0.1.0",
+  "engines": {
+    "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+  },
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
+    "test:local": "node apps/aggregator/scripts/validate-local.mjs",
     "db:generate": "npm run db:generate -w @catwalks/db",
     "db:push": "npm run db:push -w @catwalks/db",
     "ingest": "npm run ingest -w @catwalks/aggregator",

@@ -1,0 +1,6 @@
+{
+  "preexistingWorkPreserved": true,
+  "onlyPreexistingFileChanged": "apps/aggregator/package.json",
+  "change": "vitest 3.2.6 \u2192 5.0.1; all prior changes preserved",
+  "savedFiles": 86
+}

@@ -5,8 +5,7 @@ qui ne connaissaient QUE l'aggregator. Le web y était absent — d'où l'erreur
 SUCCESS de l'aggregator comme si le site était déployé. Ici les deux services sont des citoyens de première
 classe, adressés par leur nom.
 
-Les SECRETS restent dehors : ce programme n'appelle l'API que via `backups/observability-20260909/railway-api.py`,
-qui porte le jeton. Aucun identifiant n'est écrit ici.
+Transport partagé : railway_api.py. Les secrets viennent de l'environnement ou de la connexion CLI Railway.
 
 usage:
   railway-service.py status <service>            état du dernier déploiement (statut, commit, commande)
@@ -17,10 +16,10 @@ usage:
 """
 import json
 import os
-import subprocess
+import re
 import sys
+from railway_api import api
 
-API = ['python3', 'backups/observability-20260909/railway-api.py']
 ENV = 'e66b019c-d280-41dc-85d8-25ed86bdd101'
 PROJECT = '0eae47d0-598d-4cf0-bb3f-b38921eafa7e'
 
@@ -35,41 +34,30 @@ SERVICES = {
     # variables doivent être lisibles — « aucune variable résiduelle » porte sur les TROIS services.
     'refresh': {'id': 'ddc5dece-7865-4cfa-b71e-8d139e2e1ea5', 'instance': None, 'normalCommand': None},
     'reconcile': {'id': '85d0e5ba-992a-467e-9ddd-0dc25be1d74c', 'instance': None, 'normalCommand': None},
-    'web': {
-        'id': None,  # résolu par nom : le service web n'a pas d'exécution bornée, seulement un état à lire
+    'api': {
+        'id': None,  # résolu depuis le nom courant catwalks-api
         'instance': None,
         'normalCommand': None,
     },
 }
 
 
-def api(query, variables=None):
-    r = subprocess.run(API, input=json.dumps({'query': query, 'variables': variables or {}}),
-                       text=True, capture_output=True, check=True)
-    payload = json.loads(r.stdout)
-    if 'errors' in payload:
-        raise RuntimeError(f'Railway API: {payload["errors"]}')
-    return payload
-
-
-def web_deployment():
-    """Le déploiement du service `catwalks-web`, trouvé par NOM plutôt que par un identifiant recopié."""
-    q = ('query($env:String!){environment(id:$env){serviceInstances{edges{node{serviceName serviceId '
-         'latestDeployment{id status meta}}}}}}')
-    for edge in api(q, {'env': ENV})['environment']['serviceInstances']['edges']:
-        node = edge['node']
-        if node['serviceName'] == 'catwalks-web':
-            return node
-    raise RuntimeError('service catwalks-web introuvable dans cet environnement')
+def service_config(service):
+    if service not in SERVICES:
+        raise RuntimeError(f'service inconnu : {service}; attendu : {", ".join(SERVICES)}')
+    config = SERVICES[service]
+    if config['id']:
+        return config
+    q = 'query($env:String!){environment(id:$env){serviceInstances{edges{node{serviceName serviceId}}}}}'
+    matches = [edge['node'] for edge in api(q, {'env': ENV})['environment']['serviceInstances']['edges']
+               if edge['node']['serviceName'] == f'catwalks-{service}']
+    if len(matches) != 1 or not matches[0].get('serviceId'):
+        raise RuntimeError(f'service catwalks-{service} absent ou ambigu dans cet environnement')
+    return {**config, 'id': matches[0]['serviceId']}
 
 
 def status(service):
-    if service == 'web':
-        node = web_deployment()
-        d = node['latestDeployment'] or {}
-        return {'service': 'catwalks-web', 'status': d.get('status'),
-                'commit': (d.get('meta') or {}).get('commitHash'), 'deploymentId': d.get('id')}
-    s = SERVICES[service]
+    s = service_config(service)
     q = ('query($env:String!,$service:String!){serviceInstance(environmentId:$env,serviceId:$service)'
          '{id startCommand latestDeployment{id status meta}}}')
     si = api(q, {'env': ENV, 'service': s['id']})['serviceInstance']
@@ -84,7 +72,7 @@ def status(service):
 
 def variables(service):
     """Les variables qui décident du périmètre et de la pause. Lues, jamais devinées."""
-    s = SERVICES[service]
+    s = service_config(service)
     q = ('query($project:String!,$env:String!,$service:String!)'
          '{variables(projectId:$project,environmentId:$env,serviceId:$service)}')
     v = api(q, {'project': PROJECT, 'env': ENV, 'service': s['id']})['variables']
@@ -103,7 +91,7 @@ def variable_names(service):
     Les valeurs ne sortent jamais d'ici : une preuve d'exploitation ne doit pas pouvoir devenir une fuite de
     secret parce qu'on a voulu vérifier qu'un secret existait.
     """
-    s = SERVICES[service]
+    s = service_config(service)
     q = ('query($project:String!,$env:String!,$service:String!)'
          '{variables(projectId:$project,environmentId:$env,serviceId:$service)}')
     v = api(q, {'project': PROJECT, 'env': ENV, 'service': s['id']})['variables']
@@ -112,8 +100,10 @@ def variable_names(service):
 
 def set_command(service, command):
     """Pose la commande de démarrage puis redéploie le commit attendu. Les deux, jamais l'une sans l'autre."""
+    if service != 'aggregator':
+        raise RuntimeError('les commandes bornées sont réservées au service aggregator')
     commit = os.environ['DEPLOY_COMMIT']
-    if len(commit) != 40:
+    if not re.fullmatch(r'[0-9a-f]{40}', commit):
         raise RuntimeError('DEPLOY_COMMIT doit être un SHA complet de 40 caractères')
     s = SERVICES[service]
     api('mutation($env:String!,$service:String!,$input:ServiceInstanceUpdateInput!)'
@@ -132,6 +122,8 @@ def execute(service):
     identique à celle posée et différente de la commande normale. Sans elle, un `execute` lancé après un
     redéploiement automatique relancerait le pipeline COMPLET.
     """
+    if service != 'aggregator':
+        raise RuntimeError('les exécutions bornées sont réservées au service aggregator')
     commit = os.environ['DEPLOY_COMMIT']
     expected_keys = os.environ['INGEST_KEYS']
     s = SERVICES[service]
