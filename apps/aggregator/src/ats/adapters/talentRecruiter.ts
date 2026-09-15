@@ -87,10 +87,7 @@ export async function fetchTalentRecruiterJobs(config: Record<string, unknown>):
         if (!identifiable) issues.push('ROW_WITHOUT_CANONICAL_ID');
         continue;
       }
-      try {
-        const parsed = new URL(p.AdvertisementUrlSecure || p.AdvertisementUrl!);
-        if (parsed.protocol !== 'https:' || parsed.username || parsed.password || parsed.hostname !== 'candidate.hr-manager.net' || parsed.searchParams.get('ProjectId') !== String(p.Id)) throw new Error('URL_IDENTITY_MISMATCH');
-      } catch { rejectedRows.push({reason:'POSTING_URL_IDENTITY_MISMATCH',raw:publicPosition(p),canonicalId:String(p.Id)}); continue; }
+      if (!talentRecruiterPublicationUrl(p)) { rejectedRows.push({reason:'POSTING_URL_IDENTITY_MISMATCH',raw:publicPosition(p),canonicalId:String(p.Id)}); continue; }
       if (positions.has(p.Id)) issues.push(`REPEATED_POSTING_ID:${p.Id}`);
       else positions.set(p.Id, publicPosition(p));
     }
@@ -112,10 +109,7 @@ export async function fetchTalentRecruiterJobs(config: Record<string, unknown>):
   const limit=pLimit(DEFAULT_DETAIL_CONCURRENCY);
   const jobs=await Promise.all([...positions.values()].map(p=>limit(async():Promise<NormalizedJob>=>{
     const url=p.AdvertisementUrlSecure || p.AdvertisementUrl!;
-    let mapAddress: string | undefined, detailError: string | undefined, country: string | undefined;
-    // DepartmentTree is the CORPORATE hierarchy, never a fallback job location.
-    const coordinates=p.WorkPlaceCoordinates?.split(',').map(s=>Number(s.trim()));
-    const validCoordinates=coordinates?.length===2&&Number.isFinite(coordinates[0])&&Math.abs(coordinates[0])<=90&&Number.isFinite(coordinates[1])&&Math.abs(coordinates[1])<=180;
+    let mapAddress: string | undefined, detailError: string | undefined;
     try {
       const html=await fetchText(url), $=cheerio.load(html);
       for (const el of $('iframe[src]').toArray()) {
@@ -123,31 +117,53 @@ export async function fetchTalentRecruiterJobs(config: Record<string, unknown>):
         const map=new URL(src,url);
         if (map.hostname==='www.google.com'&&map.pathname==='/maps/embed/v1/place') {
           const address=map.searchParams.get('q')?.trim();
-          if (address) {mapAddress=address;const last=address.split(',').at(-1)?.trim();if(normalizeCountry(last))country=last;break;}
+          if (address) {mapAddress=address;break;}
         }
       }
     } catch(error) {assertSourceRunning();detailError=String(error).slice(0,500);issues.push(`DETAIL_READ_FAILED:${p.Id}`);}
-    // A country is emitted only when the address explicitly names it. Coordinates
-    // and native location labels survive even when an address is not published.
-    const opportunityType=p.ProjectType==='RecruitmentProject'?'JOB_OPENING':p.ProjectType==='OpenApplication'?'OPEN_APPLICATION':undefined;
-    if (!opportunityType) issues.push(`UNRECOGNISED_PROJECT_TYPE:${p.Id}`);
-    const ads=p.Advertisements??[];
-    const description=ads.map(a=>htmlToPlainText(a.Content)).filter(Boolean).join('\n\n');
-    if (!description && opportunityType !== 'OPEN_APPLICATION') issues.push(`DESCRIPTION_MISSING:${p.Id}`);
-    return {externalId:String(p.Id),title:p.Name,company:p.CustomerName,
-      employerEvidence:{rawName:p.CustomerName,path:'position.CustomerName',rule:'NATIVE_CUSTOMER_OWNER'},opportunityType,
-      location:(mapAddress && !mapAddress.startsWith('place_id:') ? mapAddress : undefined) || p.WorkPlace || p.PositionLocation?.Name || undefined,
-      country,
-      ...(validCoordinates?{latitude:coordinates![0],longitude:coordinates![1]}:{}),
-      description:description||undefined,contract:p.PositionType||undefined,department:p.PositionCategory?.Name,
-      postedAt:talentRecruiterDate(p.Published),validThrough:talentRecruiterDate(p.ApplicationDue),url,
-      ...(!opportunityType?{publicationHold:'UNRECOGNISED_OPPORTUNITY_TYPE'}:{}),
-      raw:{position:p,mapAddress,detailError,publicationPath:'position.Published',
-        fieldEvidence:{country:country ? {status:'EXPLICIT_NATIVE_MAP_ADDRESS',path:'detail.iframe.q'} : {status:'NOT_EXPLICIT_IN_PUBLIC_ADDRESS',hasSourceCoordinates:!!validCoordinates},
-          description:description ? 'NATIVE_ADVERTISEMENT_CONTENT' : 'NO_CONTENT_PUBLISHED'}},
-    };
+    const job = parseTalentRecruiterPosition(p, customer, mapAddress);
+    if (!job.opportunityType) issues.push(`UNRECOGNISED_PROJECT_TYPE:${p.Id}`);
+    if (!job.description && job.opportunityType !== 'OPEN_APPLICATION') issues.push(`DESCRIPTION_MISSING:${p.Id}`);
+    return {...job,raw:{...(job.raw as object),detailError}};
   })));
   return {jobs,rejectedRows,declaredTotal:total,complete:enumerationComplete(terminated,issues,rejectedRows),
     enumeration:{method:'DOCUMENTED_SKIP_TAKE_AND_NATIVE_COUNTERS',endpoint:`${API}/${customer}/positionlist/json/`,documentation:DOCUMENTATION,
       pages:pageEvidence.length,rawCount,termination:terminated?'DECLARED_TOTAL_REACHED':'INCOMPLETE',blockers:enumerationBlockers(issues),issues,pageEvidence}};
+}
+
+function talentRecruiterPublicationUrl(p: Position): string | undefined {
+  try {
+    const value=p.AdvertisementUrlSecure || p.AdvertisementUrl!;
+    const parsed=new URL(value);
+    if (parsed.protocol!=='https:' || parsed.username || parsed.password || parsed.host!=='candidate.hr-manager.net' || parsed.searchParams.getAll('ProjectId').length!==1 || parsed.searchParams.get('ProjectId')!==String(p.Id)) return undefined;
+    return value;
+  } catch { return undefined; }
+}
+
+/** Reads public native position fields; corporate hierarchy is never job geography. */
+export function parseTalentRecruiterPosition(p: Position, customer: string, mapAddress?: string): NormalizedJob {
+  const url=p&&talentRecruiterPublicationUrl(p);
+  if (!p || !Number.isSafeInteger(p.Id) || p.Id<=0 || typeof p.Name!=='string' || !p.Name.trim() || !p.CustomerName || p.CustomerAlias?.toLowerCase()!==customer.toLowerCase() || !url) throw Error('TALENT_RECRUITER_POSITION_IDENTITY_MISMATCH');
+  const last=mapAddress?.split(',').at(-1)?.trim();
+  const country=normalizeCountry(last)?last:undefined;
+  // DepartmentTree is the CORPORATE hierarchy, never a fallback job location.
+  const coordinates=p.WorkPlaceCoordinates?.split(',').map(s=>Number(s.trim()));
+  const validCoordinates=coordinates?.length===2&&Number.isFinite(coordinates[0])&&Math.abs(coordinates[0])<=90&&Number.isFinite(coordinates[1])&&Math.abs(coordinates[1])<=180;
+  // A country is emitted only when the address explicitly names it. Coordinates
+  // and native location labels survive even when an address is not published.
+  const opportunityType=p.ProjectType==='RecruitmentProject'?'JOB_OPENING':p.ProjectType==='OpenApplication'?'OPEN_APPLICATION':undefined;
+  const ads=p.Advertisements??[];
+  const description=ads.map(a=>htmlToPlainText(a.Content)).filter(Boolean).join('\n\n');
+  return {externalId:String(p.Id),title:p.Name,company:p.CustomerName,
+    employerEvidence:{rawName:p.CustomerName,path:'position.CustomerName',rule:'NATIVE_CUSTOMER_OWNER'},opportunityType,
+    location:(mapAddress && !mapAddress.startsWith('place_id:') ? mapAddress : undefined) || p.WorkPlace || p.PositionLocation?.Name || undefined,
+    country,
+    ...(validCoordinates?{latitude:coordinates![0],longitude:coordinates![1]}:{}),
+    description:description||undefined,contract:p.PositionType||undefined,department:p.PositionCategory?.Name,
+    postedAt:talentRecruiterDate(p.Published),validThrough:talentRecruiterDate(p.ApplicationDue),url,
+    ...(!opportunityType?{publicationHold:'UNRECOGNISED_OPPORTUNITY_TYPE'}:{}),
+    raw:{position:p,mapAddress,publicationPath:'position.Published',
+      fieldEvidence:{country:country ? {status:'EXPLICIT_NATIVE_MAP_ADDRESS',path:'detail.iframe.q'} : {status:'NOT_EXPLICIT_IN_PUBLIC_ADDRESS',hasSourceCoordinates:!!validCoordinates},
+        description:description ? 'NATIVE_ADVERTISEMENT_CONTENT' : 'NO_CONTENT_PUBLISHED'}},
+  };
 }

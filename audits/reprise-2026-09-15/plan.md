@@ -113,6 +113,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 [Sous-lot 4D3 validé localement](lot-4d3.md) : six lecteurs supplémentaires, 28 familles relues et 50 028 présentations constructibles. Les 84 publications du scénario local sont relues sans écart. La fin de contrat Flatchr ne sert plus d’échéance de candidature. Le remplissage RAW des échéances en cache doit précéder la réparation du stock et sa bascule publique ; le moteur de groupes ne le réalise pas.
 
+[Sous-lot 4D4 validé localement](lot-4d4.md) : Easycruit, Harri et TalentRecruiter ajoutent 100 présentations reconstructibles ; total de 50 128 dans 31 familles, avec 93 lectures API locales sans écart. La reprise des échéances fera évoluer l’outil existant `source-expiry.mts` ; aucun circuit parallèle n’est ajouté.
+
 **Objectif.** Éviter les doublons visibles sans supprimer des postes distincts.
 
 - **Fichiers :** `dedup/match.ts`, `upsert.ts`, `packages/db/publications.ts`, `postingIdentity`, `reconcile`, schéma et API d’identités/redirects.

@@ -24,6 +24,10 @@ import { parseJobylonPublication } from '../ats/adapters/jobylon.js';
 import { parseTalentViewCampaign, mergeTalentViewDetail } from '../ats/adapters/talentview.js';
 import { parseTalentFunnelVacancy } from '../ats/adapters/talentFunnel.js';
 import { parseVolcanicPage } from '../ats/adapters/volcanic.js';
+import { parseEasycruitVacancy } from '../ats/adapters/easycruit.js';
+import { parseHarriPublication } from '../ats/adapters/harri.js';
+import { parseTalentRecruiterPosition } from '../ats/adapters/talentRecruiter.js';
+import { enrichRetainedPostingEvidence } from '../lib/postingEvidence.js';
 import { htmlToPlainText } from '../lib/html.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import type { NormalizedJob } from '../types.js';
@@ -198,6 +202,40 @@ export function recoverRetainedPublication(kind: string, raw: unknown, context: 
         if (!identifier(raw.id) || typeof raw.cached_slug !== 'string' || !raw.cached_slug) return failure('NATIVE_ID_MISSING');
         if (typeof config.origin !== 'string') return failure('RAW_SCHEMA_INVALID');
         job = parseVolcanicPage({ jobs: [raw] }, config.origin)[0]; break;
+      case 'easycruit': {
+        if (!object(raw.listing) || !identifier(raw.listing['@_id'])) return failure('NATIVE_ID_MISSING');
+        if (!object(raw.detail) || raw.detail['@_id'] !== raw.listing['@_id']) return failure('DETAIL_IDENTITY_MISMATCH');
+        job = parseEasycruitVacancy(raw.listing, raw.detail, config);
+        if (raw.postingEvidence != null) {
+          if (!object(raw.postingEvidence)) return failure('DETAIL_EVIDENCE_UNUSABLE');
+          job = enrichRetainedPostingEvidence(job, raw.postingEvidence);
+          if (!job) return failure('DETAIL_EVIDENCE_UNUSABLE');
+        }
+        break;
+      }
+      case 'harri': {
+        if (!object(raw.listing) || !identifier(raw.listing.id)) return failure('NATIVE_ID_MISSING');
+        if (!object(raw.detail) || raw.detail.id !== raw.listing.id || raw.detailUrl !== `https://gateway.harri.com/core-reader/api/v1/profile/job/${raw.listing.id}`) return failure('DETAIL_IDENTITY_MISMATCH');
+        if (!object(raw.portal) || typeof raw.portal.slug !== 'string') return failure('RAW_SCHEMA_INVALID');
+        const portal = new URL(String(config.portalUrl ?? `https://harri.com/${config.slug ?? ''}`));
+        const slug = portal.pathname.split('/').filter(Boolean)[0];
+        if (!['harri.com', 'www.harri.com'].includes(portal.host) || portal.protocol !== 'https:' || portal.username || portal.password || !slug ||
+          raw.portal.slug.toLowerCase() !== slug.toLowerCase() || config.slug != null && String(config.slug).toLowerCase() !== slug.toLowerCase() ||
+          config.brandId != null && Number(config.brandId) !== raw.portal.id) return failure('IDENTITY_MISMATCH');
+        job = parseHarriPublication(raw.listing as Parameters<typeof parseHarriPublication>[0], raw.detail as Parameters<typeof parseHarriPublication>[1],
+          raw.portal as Parameters<typeof parseHarriPublication>[2], String(config.employerMode ?? 'POSTING_BRAND'), context.observedAt); break;
+      }
+      case 'talentrecruiter': {
+        if (!object(raw.position) || !identifier(raw.position.Id)) return failure('NATIVE_ID_MISSING');
+        if (typeof config.customer !== 'string' || typeof raw.position.CustomerAlias !== 'string' || raw.position.CustomerAlias.toLowerCase() !== config.customer.toLowerCase()) return failure('IDENTITY_MISMATCH');
+        if (config.portalUrl != null) {
+          const portal = new URL(String(config.portalUrl));
+          if (portal.protocol !== 'https:' || portal.host !== 'candidate.hr-manager.net' || portal.username || portal.password || portal.pathname.toLowerCase() !== '/vacancies/list.aspx' ||
+            portal.searchParams.getAll('customer').length !== 1 || portal.searchParams.get('customer')?.toLowerCase() !== config.customer.toLowerCase()) return failure('IDENTITY_MISMATCH');
+        }
+        if (raw.mapAddress != null && typeof raw.mapAddress !== 'string') return failure('RAW_SCHEMA_INVALID');
+        job = parseTalentRecruiterPosition(raw.position as Parameters<typeof parseTalentRecruiterPosition>[0], config.customer, raw.mapAddress as string | undefined); break;
+      }
       default: return failure('READER_UNQUALIFIED');
     }
     if (!job || typeof job.title !== 'string' || !job.title.trim()) return failure('RAW_SCHEMA_INVALID');

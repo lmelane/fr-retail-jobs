@@ -1,0 +1,20 @@
+{
+  "snapshot": "2026-09-15 retained RAW, no inference of current availability",
+  "easycruit": {
+    "rows": 50,
+    "retainedJsonLdCountZero": 50,
+    "publicationDatesNotInvented": true
+  },
+  "harri": {
+    "rows": 36,
+    "recovered": 36
+  },
+  "talentRecruiter": {
+    "rows": 17,
+    "withAdvertisementContent": 14,
+    "missingContentByType": {
+      "RecruitmentProject": 2,
+      "OpenApplication": 1
+    }
+  }
+}

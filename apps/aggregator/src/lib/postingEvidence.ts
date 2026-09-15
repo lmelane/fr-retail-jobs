@@ -9,6 +9,12 @@ import type { NormalizedJob } from '../types.js';
 export function readPostingEvidence(html: string, url: string) {
   const nodes = extractJobPostings(html);
   const node = nodes.length === 1 ? nodes[0] : undefined;
+  return readPostingNode(node, { pageUrl: url, htmlSha256: createHash('sha256').update(html).digest('hex'), jobPostingCount: nodes.length, jobPosting: node ?? null });
+}
+
+type NativePostingEvidence = { pageUrl: string; htmlSha256: string; jobPostingCount: number; jobPosting: Record<string, unknown> | null };
+function readPostingNode(node: Record<string, unknown> | undefined, evidence: NativePostingEvidence) {
+  const url = evidence.pageUrl;
   const job = node ? normalizeJobPosting(node, url) : null;
   const places = node?.jobLocation ? (Array.isArray(node.jobLocation) ? node.jobLocation : [node.jobLocation]) : [];
   const geography = places.length === 1 ? job : null;
@@ -16,8 +22,7 @@ export function readPostingEvidence(html: string, url: string) {
   const orgName = typeof org?.name === 'string' && org.name.trim() ? org.name.trim() : undefined;
   const hiringOrganization = orgName ? { name: orgName, sameAs: typeof org?.sameAs === 'string' ? org.sameAs : undefined } : null;
   return { geography, hiringOrganization, postedAt: job?.postedAt, validThrough: job?.validThrough, description: job?.description,
-    evidence: { pageUrl: url, htmlSha256: createHash('sha256').update(html).digest('hex'),
-      jobPostingCount: nodes.length, jobPosting: node ?? null } };
+    evidence };
 }
 
 export type PostingEvidenceOptions = {
@@ -38,6 +43,29 @@ export function postingEvidenceOptions(config: Record<string, unknown>): Posting
 
 export function enrichPostingEvidence(job: NormalizedJob, html: string, options: PostingEvidenceOptions = {}): NormalizedJob {
   const detail = readPostingEvidence(html, job.url);
+  return applyPostingEvidence(job, detail, options);
+}
+
+/** Reuses the native node without manufacturing a page or a new capture. */
+export function enrichRetainedPostingEvidence(job: NormalizedJob, evidence: Record<string, unknown>): NormalizedJob | null {
+  if (evidence.pageUrl !== job.url || typeof evidence.htmlSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(evidence.htmlSha256) ||
+    ![0, 1].includes(evidence.jobPostingCount as number) || evidence.employerFromJobPosting === true ||
+    evidence.geographyConflict != null && typeof evidence.geographyConflict !== 'boolean') return null;
+  const node = evidence.jobPosting;
+  if (evidence.jobPostingCount === 0 && node != null) return null;
+  if (evidence.jobPostingCount === 1) {
+    if (!node || typeof node !== 'object' || Array.isArray(node)) return null;
+    const posting = node as Record<string, unknown>;
+    if (!(posting['@type'] === 'JobPosting' || Array.isArray(posting['@type']) && posting['@type'].includes('JobPosting'))) return null;
+    if (posting.url != null) {
+      try { if (typeof posting.url !== 'string' || new URL(posting.url).href !== job.url) return null; } catch { return null; }
+    }
+  }
+  return applyPostingEvidence(job, readPostingNode(node as Record<string, unknown> | undefined,
+    { pageUrl: job.url, htmlSha256: evidence.htmlSha256, jobPostingCount: evidence.jobPostingCount as number, jobPosting: node as Record<string, unknown> | null }), {});
+}
+
+function applyPostingEvidence(job: NormalizedJob, detail: ReturnType<typeof readPostingNode>, options: PostingEvidenceOptions): NormalizedJob {
   const employer = options.employerFromJobPosting && detail.hiringOrganization
     ? { company: detail.hiringOrganization.name, employerEvidence: { rawName: detail.hiringOrganization.name, path: 'jsonld.hiringOrganization.name', rule: 'EXPLICIT_JOBPOSTING_EMPLOYER' } }
     : {};

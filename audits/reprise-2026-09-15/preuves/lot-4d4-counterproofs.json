@@ -1,0 +1,65 @@
+{
+  "mutations": [
+    {
+      "name": "lost-xml-description",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "dce1f9ec9e53b1507d980f8916e0e3a3ba2a8b86435828e41cdbc38619d9adeb"
+    },
+    {
+      "name": "foreign-xml-tenant",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "dce1f9ec9e53b1507d980f8916e0e3a3ba2a8b86435828e41cdbc38619d9adeb"
+    },
+    {
+      "name": "lost-retained-publication-date",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "4c80a6f12b1846bef00ad155d6342e2ca5beea52246086090d576556db0afdc1"
+    },
+    {
+      "name": "foreign-retained-jsonld",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "4c80a6f12b1846bef00ad155d6342e2ca5beea52246086090d576556db0afdc1"
+    },
+    {
+      "name": "foreign-harri-portal",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "2bc0f6f40b6e33c366960a08c1b5dcc6c3714877499b4a7837147d6e3478908c"
+    },
+    {
+      "name": "foreign-harri-detail-endpoint",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "2bc0f6f40b6e33c366960a08c1b5dcc6c3714877499b4a7837147d6e3478908c"
+    },
+    {
+      "name": "publish-closed-harri",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ea04906da58d215e29506a25cacd9f771213fc7f50a9991d4076828d5a5aa266"
+    },
+    {
+      "name": "invented-recruiter-publication",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1e8b012de83c160ce26df989350d76b8f1dfe29958cab078829b10da31826900"
+    },
+    {
+      "name": "teaser-as-full-text",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1e8b012de83c160ce26df989350d76b8f1dfe29958cab078829b10da31826900"
+    },
+    {
+      "name": "foreign-recruiter-portal",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "2bc0f6f40b6e33c366960a08c1b5dcc6c3714877499b4a7837147d6e3478908c"
+    }
+  ],
+  "restoredTests": "passed"
+}
