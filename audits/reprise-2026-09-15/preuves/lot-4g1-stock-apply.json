@@ -1,0 +1,42 @@
+{
+  "environment": "Dedicated full-stock local clone",
+  "productionWrites": false,
+  "companyConcurrency": 1,
+  "plans": 2446,
+  "groups": 51392,
+  "presentations": 51847,
+  "initiallyAlreadyApplied": 666,
+  "repeated": 2446,
+  "lifecycle": {
+    "KEEP": 51200,
+    "CLOSE": 192
+  },
+  "reviewedBodiesVerified": 2446,
+  "exactOriginalBodies": 2445,
+  "plansUpdatedForElapsedDeadlines": 1,
+  "elapsedMs": 1142027,
+  "elapsedNativeDeadlines": [
+    {
+      "jobId": "cmtt7uwoi00oamy010mcnt57i",
+      "previousLifecycle": "KEEP",
+      "currentLifecycle": "CLOSE",
+      "deadlines": [
+        {
+          "sourceId": "cmtt7uwoi00obmy01blg6904f",
+          "sourceKey": "luhta",
+          "expiresAt": "2026-09-15T20:59:59.000Z",
+          "path": "$._jobposting.validThrough",
+          "value": "2026-09-15T23:59:59+03:00"
+        }
+      ],
+      "planHash": "c3667176b7954bad1fce17db1a014de09c904a79f5291512648d99feea0fc8ce"
+    }
+  ],
+  "rawIdentityAndAttestationsUnchanged": true,
+  "observationsUnchanged": true,
+  "outsideJobsUnchanged": true,
+  "jobIdsCompaniesFirstSeenAndRedirectsUnchanged": true,
+  "eventsCreated": 192,
+  "capturesCreated": 0,
+  "membershipDecisionsCreated": 0
+}

@@ -1,6 +1,7 @@
 import { PRESENTATION_FIELDS } from '@catwalks/db/publication-presentation';
 import { evidenceHash } from '../lib/evidenceHash.js';
-import type { PrismaClient, Prisma } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
+import { insertMaintenancePlan } from '../lib/maintenancePlan.js';
 
 export const REFRESH_LIMITS = { staleHours: 48, maxCloseRatio: 0.05, minCloseForGuard: 50 } as const;
 export type RefreshLimits = { staleHours: number; maxCloseRatio: number; minCloseForGuard: number };
@@ -74,8 +75,7 @@ export function compareTouched(manifest: RefreshManifest, touched: readonly stri
 export async function storeRefreshManifest(db: PrismaClient, manifest: RefreshManifest, revision: string) {
   const check = verifyManifest(manifest);
   if (!check.valid || !/^[a-f0-9]{40}$/.test(revision)) throw new Error(`Invalid maintenance plan: ${check.problems.join('; ')}`);
-  await db.maintenancePlan.createMany({ data: [{ id: manifest.planHash, kind: 'REFRESH_DEACTIVATION', version: 2,
-    revision, body: manifest as unknown as Prisma.InputJsonValue }], skipDuplicates: true });
+  await insertMaintenancePlan(db, { id: manifest.planHash, kind: 'REFRESH_DEACTIVATION', version: 2, revision, body: manifest });
   await loadRefreshManifest(db, manifest.planHash);
   return { planHash: manifest.planHash, entries: manifest.entries.length };
 }

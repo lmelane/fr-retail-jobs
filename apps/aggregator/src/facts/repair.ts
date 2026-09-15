@@ -1,9 +1,11 @@
+import { randomUUID } from 'node:crypto';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { scalarSourceFacts, type SourceFacts } from '@catwalks/db/source-facts';
 import { selectApplySource } from '@catwalks/db/publications';
 import { storedAmount } from '@catwalks/db/money';
 import { KIND_TO_ATS } from '../ats/catalogKinds.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
+import { storeMaintenancePlan, recordDataCorrection } from '../lib/maintenancePlan.js';
 import { lockCompanyRows, lockSourceWrites } from '../lib/writeLocks.js';
 import { captureReaderRevision } from '../capture/revision.js';
 import { readSourceFacts } from './index.js';
@@ -20,6 +22,20 @@ type Publication = Prisma.JobSourceGetPayload<Record<string, never>>;
 function scalars(job: Job) { return Object.fromEntries(SCALARS.map(key => [key, key === 'salaryMin' || key === 'salaryMax' ? job[key]?.toString() ?? null : job[key]])); }
 function jobState(job: Job) { return { id: job.id, companyId: job.companyId, isActive: job.isActive, withdrawnAt: job.withdrawnAt,
   mergedIntoId: job.mergedIntoId, owner: selectApplySource(job.sources, job)?.id ?? null, values: scalars(job) }; }
+/** Prisma's Float result conversion also rounds some coordinates. Read the
+ * database text when comparing exact repair values so the next preview is empty. */
+async function hydrateCoordinates(db: Prisma.TransactionClient, jobs: Job[]) {
+  if (!jobs.length) return;
+  const rows = await db.$queryRaw<Array<{ id: string; latitude: string | null; longitude: string | null }>>`
+    SELECT id, latitude::text, longitude::text FROM "Job" WHERE id=ANY(${jobs.map(job => job.id)}::text[])`;
+  const coordinates = new Map(rows.map(row => [row.id, row]));
+  for (const job of jobs) {
+    const row = coordinates.get(job.id);
+    if (!row) throw new Error('Source-facts job disappeared');
+    job.latitude = row.latitude === null ? null : Number(row.latitude);
+    job.longitude = row.longitude === null ? null : Number(row.longitude);
+  }
+}
 function sourceState(source: Publication) { return { id: source.id, jobId: source.jobId, sourceKey: source.sourceKey, externalId: source.externalId,
   rawHash: evidenceHash(source.raw), factsHash: evidenceHash(source.sourceFacts), lastSeenAt: source.lastSeenAt,
   captureBatchId: source.captureBatchId, captureOutputId: source.captureOutputId }; }
@@ -47,6 +63,7 @@ export async function planFactsRepair(db: PrismaClient, keys: string[], options:
   const rows = await db.jobSource.findMany({ where: { sourceKey: { in: allowed }, ...(options.cursor ? { id: { gt: options.cursor } } : {}) },
     include: { job: { select: jobSelect } }, orderBy: { id: 'asc' }, take: limit + 1 });
   const page = rows.slice(0, limit);
+  await hydrateCoordinates(db, page.map(row => row.job));
   const body: Body = { version: 1, kind: 'SOURCE_FACTS', revision: captureReaderRevision(), keys: allowed,
     nextCursor: rows.length > limit ? page.at(-1)!.id : null,
     entries: page.flatMap(source => {
@@ -64,9 +81,7 @@ export async function planFactsRepair(db: PrismaClient, keys: string[], options:
 /** Each job is atomic. A restarted page skips completed groups and refuses changed inputs. */
 export async function applyFactsRepair(db: PrismaClient, plan: FactsRepairPlan, expectedHash: string) {
   verify(plan, expectedHash);
-  await db.maintenancePlan.createMany({ data: [{ id: plan.planHash, kind: plan.kind, version: plan.version, revision: plan.revision, body: json(plan) }], skipDuplicates: true });
-  const saved = await db.maintenancePlan.findUniqueOrThrow({ where: { id: plan.planHash } });
-  if (saved.kind !== plan.kind || evidenceHash(saved.body) !== evidenceHash(plan)) throw new Error('Stored source-facts plan differs');
+  await storeMaintenancePlan(db, { id: plan.planHash, kind: plan.kind, version: plan.version, revision: plan.revision, body: plan });
   const groups = new Map<string, Entry[]>();
   for (const entry of plan.entries) groups.set(entry.jobId, [...groups.get(entry.jobId) ?? [], entry]);
   let applied = 0, alreadyApplied = 0;
@@ -80,6 +95,7 @@ export async function applyFactsRepair(db: PrismaClient, plan: FactsRepairPlan, 
       if (done === entries.length) return 'ALREADY_APPLIED';
       if (done) throw new Error('Partial correction group requires investigation');
       const job = await tx.job.findUniqueOrThrow({ where: { id: jobId }, select: jobSelect });
+      await hydrateCoordinates(tx, [job]);
       if (entries.some(entry => entry.jobBeforeHash !== evidenceHash(jobState(job)))) throw new Error('Source-facts job or owner changed');
       const owner = selectApplySource(job.sources, job);
       for (const entry of entries) {
@@ -88,17 +104,20 @@ export async function applyFactsRepair(db: PrismaClient, plan: FactsRepairPlan, 
         if (source.sourceKey !== entry.sourceKey || evidenceHash(sourceState(source)) !== entry.beforeHash) throw new Error('Source-facts input changed');
         const type = KIND_TO_ATS[catalogue.kind];
         if (!type || evidenceHash(readSourceFacts(type, source.raw)) !== evidenceHash(entry.facts)) throw new Error('Source-facts reader or source kind changed');
-        await tx.jobSource.update({ where: { id: source.id }, data: { sourceFacts: json(entry.facts) } });
+        await tx.$executeRaw`UPDATE "JobSource" SET "sourceFacts"=${JSON.stringify(entry.facts)}::jsonb WHERE id=${source.id}`;
         if (owner?.id === source.id) {
           const values = scalarSourceFacts(entry.facts);
           if (evidenceHash(values) !== evidenceHash(entry.after)) throw new Error('Source-facts projection changed');
-          await tx.job.update({ where: { id: jobId }, data: { ...values, salaryMin: storedAmount(values.salaryMin), salaryMax: storedAmount(values.salaryMax) } });
+          const { latitude, longitude, ...scalars } = values;
+          await tx.job.update({ where: { id: jobId }, data: { ...scalars, salaryMin: storedAmount(values.salaryMin), salaryMax: storedAmount(values.salaryMax) } });
+          await tx.$executeRaw`UPDATE "Job" SET latitude=${latitude == null ? null : String(latitude)}::double precision,
+            longitude=${longitude == null ? null : String(longitude)}::double precision WHERE id=${jobId}`;
         }
-        await tx.dataCorrection.create({ data: { batchId, planHash: plan.planHash, commitHash: plan.revision,
+        await recordDataCorrection(tx, { id: randomUUID(), batchId, planHash: plan.planHash, commitHash: plan.revision,
           finding: 'REBUILD_SOURCE_FACTS_FROM_CURRENT_RAW', entityType: 'JobSource', entityId: source.id,
           before: json({ facts: source.sourceFacts, jobValues: entry.before }), after: json({ facts: entry.facts, jobValues: entry.after ?? entry.before }),
           evidence: json({ inputHash: entry.facts.inputHash, sourceKey: source.sourceKey, externalId: source.externalId,
-            captureBatchId: source.captureBatchId, captureOutputId: source.captureOutputId }) } });
+            captureBatchId: source.captureBatchId, captureOutputId: source.captureOutputId }) });
       }
       return 'APPLIED';
     }, { timeout: 30_000 });

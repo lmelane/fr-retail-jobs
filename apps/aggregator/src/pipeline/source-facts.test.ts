@@ -10,11 +10,11 @@ afterAll(() => db.$disconnect());
 const raw = () => ({ salary: { min: 12.31, max: 20.8, currency: 'EUR', period: 'hour' },
   education_code: 'vocational', hybrid: true, remote: false, on_site: false,
   locations: [{ city: 'Paris', country_code: 'FR', postal_code: '75008' }] });
-async function fixture(historical = false) {
+async function fixture(historical = false, preciseCoordinates = false) {
   const key = `facts-${randomUUID()}`;
-  await db.source.create({ data: { key, maison: key, kind: 'recruitee', config: {}, tenantKey: key, tier: 'EMPLOYER_DIRECT' } });
-  const input = { company: key, companyId: key, sourceKey: key, sourceTier: 'EMPLOYER_DIRECT' as const, atsType: 'RECRUITEE' as const,
-    externalId: 'one', title: 'Sales Advisor', url: 'https://example.com/jobs/one', city: 'Paris', country: 'FR', raw: raw() };
+  await db.source.create({ data: { key, maison: key, kind: preciseCoordinates ? 'jibe' : 'recruitee', config: {}, tenantKey: key, tier: 'EMPLOYER_DIRECT' } });
+  const input = { company: key, companyId: key, sourceKey: key, sourceTier: 'EMPLOYER_DIRECT' as const, atsType: preciseCoordinates ? 'JIBE' as const : 'RECRUITEE' as const,
+    externalId: 'one', title: 'Sales Advisor', url: 'https://example.com/jobs/one', city: 'Paris', country: 'FR', raw: preciseCoordinates ? { latitude: '48.775130000000004', longitude: '9.1', city: 'Stuttgart', country: 'DE' } : raw() };
   const { jobId } = await upsertDeduplicated(db, input);
   const publication = await db.jobSource.findFirstOrThrow({ where: { jobId } });
   if (historical) await db.jobSource.update({ where: { id: publication.id }, data: { sourceFacts: Prisma.DbNull } });
@@ -22,6 +22,18 @@ async function fixture(historical = false) {
 }
 
 describe('source facts across ingestion and reviewed repairs', () => {
+  it('preserves precise coordinates and produces no follow-up repair after applying them', async () => {
+    const { key, jobId, publication } = await fixture(true, true);
+    const plan = await planFactsRepair(db, [key]);
+    expect(plan.entries[0].after?.latitude).toBe(48.775130000000004);
+    await applyFactsRepair(db, plan, plan.planHash);
+    const [stored] = await db.$queryRaw<Array<{ latitude: string }>>`SELECT latitude::text FROM "Job" WHERE id=${jobId}`;
+    expect(Number(stored.latitude)).toBe(48.775130000000004);
+    expect((await db.jobSource.findUniqueOrThrow({ where: { id: publication.id } })).sourceFacts).toEqual(plan.entries[0].facts);
+    expect((await planFactsRepair(db, [key])).entries).toEqual([]);
+    expect(await applyFactsRepair(db, plan, plan.planHash)).toMatchObject({ alreadyApplied: 1, applied: 0 });
+  });
+
   it('updates native education, salary and postcode, then removes facts the new RAW no longer supports', async () => {
     const { input, jobId } = await fixture();
     expect(await db.job.findUniqueOrThrow({ where: { id: jobId } })).toMatchObject({ educationLevel: 'RECRUITEE:vocational', workplaceType: 'HYBRID', postalCode: '75008' });

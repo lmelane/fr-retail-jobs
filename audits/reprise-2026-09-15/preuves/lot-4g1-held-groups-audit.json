@@ -1,0 +1,21 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "groups": 269,
+  "members": 543,
+  "activeGroups": 268,
+  "provenPairs": 0,
+  "resultingComponents": 543,
+  "nonCliqueGroups": 0,
+  "missingAnchor": 1,
+  "anchorMatchesStoredOwner": 268,
+  "sourceKeyPairs": {
+    "richemont + richemont-workday": 229,
+    "chico-s + knitwell-us-corporate + knitwell-us-retail": 5,
+    "bizzbee + bzb": 23,
+    "gu-us-headquarters + gu-us-retail": 1,
+    "knitwell-us-corporate + knitwell-us-retail": 9,
+    "capri-jimmy-choo + capri-michael-kors": 1,
+    "gu-us-retail + uniqlo-us-retail": 1
+  }
+}

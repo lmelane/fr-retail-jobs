@@ -1,0 +1,36 @@
+{
+  "environment": "Dedicated validation DB; captured publisher inputs; archive GET only",
+  "revision": "local-sha256:b87abf74e2d3b056a16713d8a53e1acedbb5445b2d9164fe7245a57ba0152594",
+  "families": [
+    {
+      "key": "polene",
+      "kind": "ashby",
+      "batchId": "2fe7351b-5a48-481a-afc5-dc33de30cae9",
+      "publications": 3,
+      "planHash": "285c09a3859bfb216f8f1cb9c97aa777c0147b645a5f3c2c97cac658c4d6bb10",
+      "resumedExisting": false,
+      "exactReplay": true
+    },
+    {
+      "key": "amiri",
+      "kind": "lever",
+      "batchId": "a5755721-56b0-4e7e-9779-105018f74d8f",
+      "publications": 3,
+      "planHash": "9d59adbfc9098202abba621aa397cfee56efd8020d31909b9e1e0123c0e1e814",
+      "resumedExisting": false,
+      "exactReplay": true
+    },
+    {
+      "key": "fenwick-volcanic",
+      "kind": "volcanic",
+      "batchId": "62be529b-5b86-4f6e-b9f9-b6137e621c6f",
+      "publications": 3,
+      "planHash": "c9b324a205746fee1e7862932b28feed01975bb0d90911d580b315cd268ef893",
+      "resumedExisting": false,
+      "exactReplay": true
+    }
+  ],
+  "publications": 9,
+  "rawAndAttestationsUnchanged": true,
+  "newCaptures": 0
+}

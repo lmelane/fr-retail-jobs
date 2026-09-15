@@ -5,7 +5,7 @@ import { Prisma, type PrismaClient, type AtsType } from '@prisma/client';
 import { loadOccupationTaxonomy, lockOccupationTaxonomy } from '@catwalks/db/occupations';
 import { selectApplySource, SOURCE_PRIORITY, type SourceTier } from '@catwalks/db/publications';
 import { KIND_TO_ATS } from '../ats/catalogKinds.js';
-import { readCapturedPublication, hydrateCapturedJob } from '../capture/publication.js';
+import { readCapturedPublication } from '../capture/publication.js';
 import { captureReaderRevision } from '../capture/revision.js';
 import { readRawBlob } from '../capture/store.js';
 import type { ObjectStore } from '../retention/objectStore.js';
@@ -14,6 +14,7 @@ import { publicationJobContent } from '../publication/content.js';
 import { readSourceFacts, projectSourceFacts } from '../facts/index.js';
 import { recordOccupationObservation } from '../occupation/persist.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
+import { storeMaintenancePlan, recordDataCorrection } from '../lib/maintenancePlan.js';
 import { lockCompanyRows, lockEmployerCatalogue, lockSourceWrites } from '../lib/writeLocks.js';
 import { provenPublicationGroup, publicationIdentityProof } from './match.js';
 import { reviewedPublicationGroup } from './decisions.js';
@@ -29,8 +30,9 @@ type Request = { jobIds: string[]; groups: Group[]; reason: string };
 const include = { sources: { orderBy: { id: 'asc' as const } }, company: true } as const;
 type Job = Prisma.JobGetPayload<{ include: typeof include; omit: { searchText: true } }>;
 type Publication = Job['sources'][number];
-type InputProof = { origin: 'NATIVE_CAPTURE' | 'RETAINED_RAW'; rawHash: string; sourceLastSeenAt: string };
-type Body = { version: 2; kind: typeof KIND; revision: string; request: Request; beforeHash: string;
+type InputProof = { rawHash: string; sourceLastSeenAt: string } &
+  ({ origin: 'RETAINED_RAW' } | { origin: 'NATIVE_CAPTURE'; captureOutputHash: string });
+type Body = { version: 3; kind: typeof KIND; revision: string; request: Request; beforeHash: string;
   companyId: string; sourceKeys: string[]; groups: Array<{ jobId: string; sourceIds: string[]; ownerId: string;
     outputHash: string; patch: Prisma.InputJsonValue; facts: Prisma.InputJsonValue; presentations: Array<{ sourceId: string; outputHash: string; proof: InputProof; cache: Prisma.InputJsonValue; facts: Prisma.InputJsonValue }>; lifecycle: 'KEEP' | 'CLOSE' | 'WITHDRAW' }>; redirects: Array<{ jobId: string; targetId: string }> };
 export type GroupRepairPlan = Body & { planHash: string };
@@ -106,22 +108,22 @@ async function prepare(db: Database, request: Request, bodies: ReadonlyMap<strin
     const rebuilt = [];
     for (const member of members) {
       const source = catalogue.find(source => source.key === member.sourceKey)!;
-      let captured, outputHash: string;
-      let origin: InputProof['origin'];
+      let provenance: { origin: 'RETAINED_RAW' } | { origin: 'NATIVE_CAPTURE'; captureOutputHash: string } = { origin: 'RETAINED_RAW' };
       if (member.captureBatchId || member.captureOutputId) {
         const result = await readCapturedPublication(db, member, undefined, bodies);
         if (result.batch.sourceKind !== KIND_TO_ATS[source.kind]) throw new Error('Captured adapter type differs from the current catalogue');
-        captured = result.captured; outputHash = result.outputHash; origin = 'NATIVE_CAPTURE';
-      } else {
-        const recovered = recoverRetainedPublication(source.kind, member.raw, { externalId: member.externalId, url: member.url,
-          observedAt: member.lastSeenAt, config: source.config as Record<string, unknown> });
-        if (recovered.status !== 'RECOVERABLE') throw new Error(`PUBLICATION_RECOVERY_REQUIRED source=${source.key} id=${member.externalId} reason=${recovered.reason}`);
-        captured = recovered.job; outputHash = recovered.outputHash; origin = 'RETAINED_RAW';
+        if (result.captured.publicationHold || result.captured.publicationWithdrawnAt) throw new Error('Captured publication is held or withdrawn');
+        provenance = { origin: 'NATIVE_CAPTURE', captureOutputHash: result.outputHash };
       }
-      const proof: InputProof = { origin, rawHash: evidenceHash(member.raw), sourceLastSeenAt: member.lastSeenAt.toISOString() };
-      if (!captured.title?.trim() || captured.publicationHold || captured.publicationWithdrawnAt) throw new Error('Captured publication is incomplete, held or withdrawn');
+      // Archiving a reader's output proves its provenance, not its correctness.
+      // Rebuild from its own RAW with today's qualified reader in both cases.
+      const recovered = recoverRetainedPublication(source.kind, member.raw, { externalId: member.externalId, url: member.url,
+        observedAt: member.lastSeenAt, config: source.config as Record<string, unknown> });
+      if (recovered.status !== 'RECOVERABLE') throw new Error(`PUBLICATION_RECOVERY_REQUIRED source=${source.key} id=${member.externalId} reason=${recovered.reason}`);
+      const captured = recovered.job, outputHash = recovered.outputHash;
+      const proof: InputProof = { ...provenance, rawHash: recovered.rawHash, sourceLastSeenAt: member.lastSeenAt.toISOString() };
       const facts = readSourceFacts(KIND_TO_ATS[source.kind], member.raw);
-      const candidate = { ...toCandidate(hydrateCapturedJob(captured), { key: source.key, tier: member.sourceTier as SourceTier,
+      const candidate = { ...toCandidate(captured, { key: source.key, tier: member.sourceTier as SourceTier,
         company: origins[0].company.name }, origins[0].company.name, KIND_TO_ATS[source.kind] as AtsType, trust),
         captureBatchId: member.captureBatchId ?? undefined, captureOutputId: member.captureOutputId ?? undefined,
         ...projectSourceFacts(facts), sourceFacts: facts };
@@ -161,7 +163,7 @@ async function prepare(db: Database, request: Request, bodies: ReadonlyMap<strin
   // Current reviewed decisions affect eligibility and must be part of the snapshot.
   const decisions = await db.publicationIdentityDecision.findMany({ where: { toJobId: { in: request.jobIds } },
     select: { id: true, evidence: true, action: true }, orderBy: { id: 'asc' } });
-  const body: Body = { version: 2, kind: KIND, revision: captureReaderRevision(), request,
+  const body: Body = { version: 3, kind: KIND, revision: captureReaderRevision(), request,
     beforeHash: evidenceHash({ jobs, catalogue, trustRows, occupationRelease: occupations.manifest, decisions }),
     companyId: jobs[0].companyId, sourceKeys: keys,
     groups: groups.map(group => ({ ...group, patch: json(group.patch), facts: json(group.facts) })), redirects };
@@ -197,14 +199,19 @@ export async function planPublicationGroups(db: PrismaClient, input: GroupRepair
 export async function applyPublicationGroups(db: PrismaClient, plan: GroupRepairPlan, expectedHash: string, store?: ObjectStore) {
   const { planHash, ...body } = plan;
   validate(plan.request);
-  if (planHash !== expectedHash || evidenceHash(body) !== planHash || plan.kind !== KIND || plan.version !== 2 ||
+  if (planHash !== expectedHash || evidenceHash(body) !== planHash || plan.kind !== KIND || plan.version !== 3 ||
     plan.revision !== captureReaderRevision()) throw new Error('Invalid or obsolete publication repair plan');
-  await db.maintenancePlan.createMany({ data: [{ id: planHash, kind: KIND, version: 2, revision: plan.revision, body: json(plan) }], skipDuplicates: true });
-  const saved = await db.maintenancePlan.findUniqueOrThrow({ where: { id: planHash } });
-  if (evidenceHash(saved.body) !== evidenceHash(plan)) throw new Error('Stored publication plan differs');
+  await storeMaintenancePlan(db, { id: planHash, kind: KIND, version: 3, revision: plan.revision, body: plan });
   const batchId = `publication-groups:${planHash}`;
   if (await db.dataCorrection.count({ where: { batchId, entityType: 'PublicationGroupPlan', entityId: planHash } })) return { planHash, alreadyApplied: true };
-  const bodies = await prefetchBodies(db, plan.groups.flatMap(group => group.presentations.filter(item => item.proof.origin === 'NATIVE_CAPTURE').map(item => item.outputHash)), store);
+  let bodies: Map<string, Buffer>;
+  try {
+    bodies = await prefetchBodies(db, plan.groups.flatMap(group => group.presentations.flatMap(item => item.proof.origin === 'NATIVE_CAPTURE' ? [item.proof.captureOutputHash] : [])), store);
+  } catch (error) {
+    // Another worker may have committed while this cold read was in flight.
+    if (await db.dataCorrection.count({ where: { batchId, entityType: 'PublicationGroupPlan', entityId: planHash } })) return { planHash, alreadyApplied: true };
+    throw error;
+  }
   for (let attempt = 0; ; attempt++) {
     try { return await db.$transaction(async tx => {
     await lockEmployerCatalogue(tx);
@@ -229,19 +236,28 @@ export async function applyPublicationGroups(db: PrismaClient, plan: GroupRepair
               proof: publicationIdentityProof(source, prepared.sources.find(item => item.id === peer)!) })) }) } });
       }
       const owner = prepared.sources.find(source => source.id === group.ownerId)!;
-      const data = { ...group.patch, raw: owner.raw == null ? Prisma.DbNull : owner.raw as Prisma.InputJsonValue,
+      const { latitude, longitude, employmentEvidence, ...patch } = group.patch;
+      const data = { ...patch,
         ...(group.lifecycle === 'CLOSE' ? { closedAt: new Date() } : {}),
         ...(group.lifecycle === 'WITHDRAW' ? { withdrawnAt: new Date() } : {}),
       };
       const written = target ? await tx.job.update({ where: { id: group.jobId }, data }) : await tx.job.create({ data: {
         ...data, id: group.jobId, firstSeenAt: new Date(Math.min(...group.sourceIds.map(id => prepared.sources.find(source => source.id === id)!.firstSeenAt.getTime()))),
       } });
+      // Copy the retained RAW inside PostgreSQL; JSON input conversion must not round it.
+      await tx.$executeRaw`UPDATE "Job" SET raw=(SELECT raw FROM "JobSource" WHERE id=${owner.id}),
+        latitude=${latitude == null ? null : String(latitude)}::double precision,
+        longitude=${longitude == null ? null : String(longitude)}::double precision,
+        "employmentEvidence"=${employmentEvidence == null || employmentEvidence === Prisma.DbNull ? null : JSON.stringify(employmentEvidence)}::jsonb
+        WHERE id=${written.id}`;
       await recordOccupationObservation(tx, written, target ?? null);
       if (group.lifecycle !== 'KEEP') await tx.jobEvent.create({ data: { jobId: group.jobId,
         type: group.lifecycle === 'CLOSE' ? 'CLOSED' : 'WITHDRAWN', at: group.lifecycle === 'CLOSE' ? written.closedAt! : written.withdrawnAt!,
         after: group.lifecycle === 'WITHDRAW' ? group.patch.withdrawalReason : null } });
       await tx.jobSource.updateMany({ where: { id: { in: group.sourceIds } }, data: { jobId: group.jobId } });
-      for (const item of group.presentations) await tx.jobSource.update({ where: { id: item.sourceId }, data: { sourceFacts: item.facts, presentation: item.cache } });
+      for (const item of group.presentations) await tx.$executeRaw`UPDATE "JobSource"
+        SET "sourceFacts"=${JSON.stringify(item.facts)}::jsonb, presentation=${JSON.stringify(item.cache)}::jsonb
+        WHERE id=${item.sourceId}`;
     }
     for (const redirect of prepared.body.redirects) {
       await tx.job.update({ where: { id: redirect.jobId }, data: { isActive: false, mergedIntoId: redirect.targetId,
@@ -249,9 +265,9 @@ export async function applyPublicationGroups(db: PrismaClient, plan: GroupRepair
     }
     const after = await tx.job.findMany({ where: { id: { in: [...new Set([...plan.request.jobIds, ...plan.groups.map(group => group.jobId)])] } },
       include, omit: { searchText: true }, orderBy: { id: 'asc' } });
-    await tx.dataCorrection.create({ data: { batchId, planHash, commitHash: plan.revision, finding: 'REVIEWED_PUBLICATION_PARTITION',
+    await recordDataCorrection(tx, { id: randomUUID(), batchId, planHash, commitHash: plan.revision, finding: 'REVIEWED_PUBLICATION_PARTITION',
       entityType: 'PublicationGroupPlan', entityId: planHash, before: json(prepared.jobs), after: json(after),
-      evidence: json({ reason: plan.request.reason, outputs: plan.groups.flatMap(group => group.presentations.map(({ sourceId, outputHash, proof }) => ({ sourceId, outputHash, ...proof }))) }) } });
+      evidence: json({ reason: plan.request.reason, outputs: plan.groups.flatMap(group => group.presentations.map(({ sourceId, outputHash, proof }) => ({ sourceId, outputHash, ...proof }))) }) });
     return { planHash, alreadyApplied: false, groups: plan.groups.length, redirects: plan.redirects.length };
     }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, maxWait: 10_000, timeout: 30_000 });
     } catch (error) {

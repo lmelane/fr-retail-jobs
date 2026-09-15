@@ -23,7 +23,7 @@ npx tsx scripts/ops/publication-groups.mts --request=partition.json --out=plan.j
 npx tsx scripts/ops/publication-groups.mts --apply --plan=plan.json --hash=<empreinte-du-plan>
 ```
 
-Chaque publication doit apparaître une seule fois dans la répartition complète des groupes nommés. Une capture manquante demande une recollecte ; l’outil ne copie pas le contenu de l’ancien groupe. Une restauration conserve les événements antérieurs et ajoute une décision compensatrice. Une répétition du plan ne répète pas les mutations.
+Chaque publication doit apparaître une seule fois dans la répartition complète des groupes nommés. Le plan version 3 reconstruit le contenu avec le lecteur RAW actuel, y compris lorsqu’une sortie archivée est référencée. Il vérifie séparément la provenance de cette capture et garde son empreinte distincte de celle du contenu reconstruit. Un RAW insuffisant demande une recollecte ou une qualification ; l’outil ne copie pas le contenu de l’ancien groupe. Une restauration conserve les événements antérieurs et ajoute une décision compensatrice. Une répétition du plan ne répète pas les mutations.
 
 ## Mutating production
 

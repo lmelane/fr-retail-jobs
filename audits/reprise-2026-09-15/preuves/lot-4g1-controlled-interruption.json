@@ -1,0 +1,8 @@
+{
+  "signal": "SIGTERM",
+  "environment": "Dedicated local rehearsal worker process group",
+  "plansConfirmedBeforeInterruption": 120,
+  "groupsConfirmedBeforeInterruption": 2986,
+  "firstSegmentElapsedMs": 65806,
+  "workerStopped": true
+}

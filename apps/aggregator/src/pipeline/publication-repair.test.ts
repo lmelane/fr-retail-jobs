@@ -1,9 +1,10 @@
 import '../test/setup-integration.js';
 import { beforeEach, afterEach, afterAll, describe, it, expect, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
-import { randomUUID } from 'node:crypto';
+import { randomUUID, createHash } from 'node:crypto';
 import { captureExtraction } from '../capture/batch.js';
 import { fetchJson } from '../lib/http.js';
+import { normalizeGenericPosting } from '../ats/adapters/genericJsonLd.js';
 import { applyPublicationGroups, planPublicationGroups, type GroupRepairPlan } from '../dedup/repair.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import type { NormalizedJob } from '../types.js';
@@ -19,19 +20,28 @@ beforeEach(async () => {
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.useRealTimers(); });
 afterAll(async () => { await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); await db.$disconnect(); });
 
-async function publication(options: { url?: string; title?: string; description?: string; country?: string; city?: string; tier?: string; jobId?: string; validThrough?: string } = {}) {
+async function publication(options: { url?: string; title?: string; description?: string; country?: string; city?: string; tier?: string; jobId?: string; validThrough?: string; captureKind?: 'LEVER'; readerTitle?: string; readerHold?: string; readerCountry?: string; readerDescription?: string; nativeUrl?: string; omitNativeDescription?: boolean; latitude?: string } = {}) {
   const key = `repair-${randomUUID()}`, url = options.url ?? application;
   await db.source.create({ data: { key, maison: 'Repair witness', kind: 'generic-listing', config: {}, tier: options.tier ?? 'EMPLOYER_DIRECT', tenantKey: key, status: 'ACTIVE' } });
-  const job: NormalizedJob = { externalId: key, url, title: options.title ?? 'Client Advisor', description: options.description ?? 'Own publication description',
-    country: options.country, city: options.city, raw: { title: options.title ?? 'Client Advisor', ...(options.validThrough ? { validThrough: options.validThrough } : {}), board: { row: { attrs: { 'data-applyurl': url } } } } };
-  vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(job))));
-  const result = await captureExtraction(db, key, {}, undefined, async () => ({ jobs: [await fetchJson<NormalizedJob>(`https://repair.example/${key}`)] }), 'GENERIC_JSONLD');
+  const raw = { '@type': 'JobPosting', identifier: { '@type': 'PropertyValue', value: key }, url: options.nativeUrl ?? url, title: options.title ?? 'Client Advisor',
+    ...(options.omitNativeDescription ? {} : { description: options.description ?? 'Own publication description' }),
+    jobLocation: { '@type': 'Place', ...(options.latitude ? { geo: { latitude: options.latitude, longitude: '9.1' } } : {}), address: { '@type': 'PostalAddress', addressCountry: options.country, addressLocality: options.city } },
+    ...(options.validThrough ? { validThrough: options.validThrough } : {}), board: { row: { attrs: { 'data-applyurl': url } } } };
+  const externalId = createHash('sha1').update(url).digest('hex');
+  vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(raw))));
+  const result = await captureExtraction(db, key, {}, undefined, async () => {
+    const observed = await fetchJson<typeof raw>(`https://repair.example/${key}`);
+    const parsed = normalizeGenericPosting(observed, url)!;
+    // Deliberate old-reader mistakes remain inside the immutable extraction.
+    const job: NormalizedJob = { ...parsed, externalId, url, ...(options.readerTitle ? { title: options.readerTitle } : {}), ...(options.readerHold ? { publicationHold: options.readerHold } : {}), ...(options.readerCountry ? { country: options.readerCountry } : {}), ...(options.readerDescription ? { description: options.readerDescription } : {}) };
+    return { jobs: [job] };
+  }, options.captureKind ?? 'GENERIC_JSONLD');
   const native = result.jobs[0];
   const parent = options.jobId ? await db.job.findUniqueOrThrow({ where: { id: options.jobId } }) : await db.job.create({ data: {
-    companyId, externalId: key, source: 'GENERIC_JSONLD', title: job.title, description: job.description, url, fingerprint: key,
-    canonicalSourceKey: key, canonicalExternalId: key, canonicalTier: options.tier ?? 'EMPLOYER_DIRECT',
+    companyId, externalId, source: 'GENERIC_JSONLD', title: native.title, description: native.description, url, fingerprint: key,
+    canonicalSourceKey: key, canonicalExternalId: externalId, canonicalTier: options.tier ?? 'EMPLOYER_DIRECT',
   } });
-  const source = await db.jobSource.create({ data: { jobId: parent.id, sourceKey: key, externalId: key, sourceTier: options.tier ?? 'EMPLOYER_DIRECT',
+  const source = await db.jobSource.create({ data: { jobId: parent.id, sourceKey: key, externalId, sourceTier: options.tier ?? 'EMPLOYER_DIRECT',
     url, title: native.title, raw: native.raw as any, captureBatchId: native.captureBatchId, captureOutputId: native.captureOutputId } });
   return { job: parent, source };
 }
@@ -41,6 +51,90 @@ const mergePlan = (a: Awaited<ReturnType<typeof publication>>, b: Awaited<Return
 });
 
 describe('reviewed publication partitions', () => {
+  it('preserves numeric RAW-derived facts, presentation and audit values through application', async () => {
+    const a = await publication({ latitude: '48.775130000000004', country: 'DE', city: 'Stuttgart' });
+    const plan = await planPublicationGroups(db, { jobIds: [a.job.id], groups: [{ jobId: a.job.id, sourceIds: [a.source.id] }], reason: 'Preserve exact native coordinates through the reviewed maintenance plan' });
+    const expected = plan.groups[0].presentations[0];
+    expect(expected.cache).toMatchObject({ values: { latitude: 48.775130000000004 } });
+    await apply(plan);
+    const source = await db.jobSource.findUniqueOrThrow({ where: { id: a.source.id } });
+    const [coordinates] = await db.$queryRaw<Array<{ latitude: string }>>`SELECT latitude::text AS latitude FROM "Job" WHERE id=${a.job.id}`;
+    expect(Number(coordinates.latitude)).toBe(48.775130000000004);
+    expect((await db.job.findUniqueOrThrow({ where: { id: a.job.id } })).raw).toEqual(a.source.raw);
+    expect(source.sourceFacts).toEqual(expected.facts);
+    expect(source.presentation).toEqual(expected.cache);
+    const audit = await db.dataCorrection.findFirstOrThrow({ where: { entityId: plan.planHash } });
+    expect((audit.after as any[])[0].sources[0].presentation).toEqual(expected.cache);
+    expect(await apply(plan)).toMatchObject({ alreadyApplied: true });
+  });
+
+  it('rebuilds captured content with the current RAW reader instead of repeating an old reader error', async () => {
+    const a = await publication({ title: 'Native title', country: 'FR', readerTitle: 'Wrong old title', readerCountry: 'US' });
+    const request = { jobIds: [a.job.id], groups: [{ jobId: a.job.id, sourceIds: [a.source.id] }], reason: 'Rebuild the captured publication from its own native input' };
+    const plan = await planPublicationGroups(db, request);
+    const output = await db.sourceExtraction.findUniqueOrThrow({ where: { id: a.source.captureOutputId! } });
+    expect(plan.groups[0].patch).toMatchObject({ title: 'Native title', countryCode: 'FR' });
+    expect(plan.groups[0].presentations[0].proof).toMatchObject({ origin: 'NATIVE_CAPTURE', captureOutputHash: output.outputHash });
+    expect(plan.groups[0].presentations[0].outputHash).not.toBe(output.outputHash);
+    const captures = await db.captureBatch.count();
+    await apply(plan);
+    expect(await db.job.findUniqueOrThrow({ where: { id: a.job.id } })).toMatchObject({ title: 'Native title', countryCode: 'FR' });
+    const source = await db.jobSource.findUniqueOrThrow({ where: { id: a.source.id } });
+    expect(source).toMatchObject({ raw: a.source.raw, lastSeenAt: a.source.lastSeenAt, captureOutputId: a.source.captureOutputId });
+    expect(await db.captureBatch.count()).toBe(captures);
+    const audit = await db.dataCorrection.findFirstOrThrow({ where: { entityId: plan.planHash } });
+    expect(audit.evidence).toMatchObject({ outputs: [expect.objectContaining({ captureOutputHash: output.outputHash, outputHash: plan.groups[0].outputHash })] });
+  });
+
+  it.each([
+    { nativeUrl: 'https://example.com/another-native-publication' },
+    { omitNativeDescription: true, readerDescription: 'Content invented by the old reader' },
+  ])('does not let an archived output bypass native identity or missing content (%s)', async invalid => {
+      const a = await publication(invalid);
+      await expect(planPublicationGroups(db, { jobIds: [a.job.id], groups: [{ jobId: a.job.id, sourceIds: [a.source.id] }], reason: 'Verify native evidence even for immutable captured outputs' })).rejects.toThrow('PUBLICATION_RECOVERY_REQUIRED');
+  });
+
+  it('keeps a captured hold and rejects a substituted adapter even when the current RAW is readable', async () => {
+    const held = await publication({ readerHold: 'CAPTURED_IDENTITY_HOLD' });
+    const request = (a: typeof held) => ({ jobIds: [a.job.id], groups: [{ jobId: a.job.id, sourceIds: [a.source.id] }], reason: 'Verify original capture state and adapter independently of the current RAW reader' });
+    await expect(planPublicationGroups(db, request(held))).rejects.toThrow('Captured publication is held');
+    const changed = await publication({ captureKind: 'LEVER' });
+    await expect(planPublicationGroups(db, request(changed))).rejects.toThrow('Captured adapter type differs');
+  });
+
+  it('prefetches the original archive hash while recording a distinct rebuilt output hash', async () => {
+    const { MemoryStore } = await import('../test/memoryObjectStore.js');
+    const { archiveRawBlob } = await import('../capture/store.js');
+    const store = new MemoryStore(), a = await publication({ readerTitle: 'Old incorrect title' });
+    const request = { jobIds: [a.job.id], groups: [{ jobId: a.job.id, sourceIds: [a.source.id] }], reason: 'Rebuild from cold evidence before acquiring the write locks' };
+    const hot = await planPublicationGroups(db, request);
+    const output = await db.sourceExtraction.findUniqueOrThrow({ where: { id: a.source.captureOutputId! } });
+    await archiveRawBlob(db, output.outputHash, store);
+    const cold = await planPublicationGroups(db, request, store);
+    expect(cold).toEqual(hot);
+    const get = vi.spyOn(store, 'get');
+    await expect(applyPublicationGroups(db, cold, cold.planHash, store)).resolves.toMatchObject({ alreadyApplied: false });
+    expect(get).toHaveBeenCalledTimes(1);
+    store.objects.clear();get.mockClear();
+    expect(await applyPublicationGroups(db, cold, cold.planHash)).toMatchObject({ alreadyApplied: true });
+    expect(get).not.toHaveBeenCalled();
+  });
+
+  it('recognizes a concurrent completion when its own prefetch subsequently fails', async () => {
+    const { MemoryStore } = await import('../test/memoryObjectStore.js');
+    const { archiveRawBlob } = await import('../capture/store.js');
+    const store = new MemoryStore(), a = await publication();
+    const plan = await planPublicationGroups(db, { jobIds: [a.job.id], groups: [{ jobId: a.job.id, sourceIds: [a.source.id] }], reason: 'Resume an exact plan after a concurrent application completes' });
+    const output = await db.sourceExtraction.findUniqueOrThrow({ where: { id: a.source.captureOutputId! } });
+    await archiveRawBlob(db, output.outputHash, store);
+    vi.spyOn(store, 'get').mockImplementationOnce(async () => {
+      expect(await applyPublicationGroups(db, plan, plan.planHash, store)).toMatchObject({ alreadyApplied: false });
+      throw Error('Late archive read failure');
+    });
+    await expect(applyPublicationGroups(db, plan, plan.planHash, store)).resolves.toMatchObject({ alreadyApplied: true });
+    expect(await db.dataCorrection.count({ where: { entityId: plan.planHash } })).toBe(1);
+  });
+
   it('merges only proven publications, replaces the complete presentation from its owner, and replays once', async () => {
     const a = await publication({ tier: 'SPECIALIST_JOBBOARD', title: 'Paris board title', city: 'Paris', country: 'FR', description: 'Board description' });
     const b = await publication({ url: `${application}?employer=1`, title: 'New York title', city: 'New York', country: 'US', description: 'Employer description' });
@@ -135,7 +229,7 @@ describe('reviewed publication partitions', () => {
     (body.groups[0].patch as Record<string, unknown>).description = 'Invented content';
     const forged = { ...body, planHash: evidenceHash(body) };
     await expect(apply(forged)).rejects.toThrow('changed');
-    await db.jobSource.update({ where: { id: a.source.id }, data: { captureBatchId: null, captureOutputId: null } });
+    await db.jobSource.update({ where: { id: a.source.id }, data: { captureBatchId: null, captureOutputId: null, raw: { '@type': 'JobPosting', title: 'Unbound native publication', board: { row: { attrs: { 'data-applyurl': application } } } } } });
     await expect(mergePlan(a, b)).rejects.toThrow('PUBLICATION_RECOVERY_REQUIRED');
   });
 

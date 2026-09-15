@@ -3,6 +3,7 @@ import { Prisma, type PrismaClient } from '@prisma/client';
 import { declaredExpiry, EXPIRY_READER_VERSION, type ExpiryEvidence } from '../normalize/expiry.js';
 import { lockCompanyRows, lockSourceWrites } from '../lib/writeLocks.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
+import { storeMaintenancePlan } from '../lib/maintenancePlan.js';
 import { captureReaderRevision } from '../capture/revision.js';
 import { readAdapterObservation } from '../capture/observations.js';
 import type { ObjectStore } from '../retention/objectStore.js';
@@ -350,13 +351,7 @@ export async function applySourceExpiries(
   store?: ObjectStore,
 ) {
   verify(plan, expectedHash);
-  await db.maintenancePlan.createMany({
-    data: [{ id: plan.planHash, kind: plan.kind, version: plan.version, revision: plan.revision, body: json(plan) }],
-    skipDuplicates: true,
-  });
-  const saved = await db.maintenancePlan.findUniqueOrThrow({ where: { id: plan.planHash } });
-  if (saved.kind !== plan.kind || evidenceHash(saved.body) !== evidenceHash(plan))
-    throw Error('Stored expiry plan differs');
+  await storeMaintenancePlan(db, { id: plan.planHash, kind: plan.kind, version: plan.version, revision: plan.revision, body: plan });
   if (!plan.entries.length) return { written: 0, alreadyApplied: false };
   if (await isApplied(db, plan)) return { written: 0, alreadyApplied: true };
   const snapshot = await db.$transaction(

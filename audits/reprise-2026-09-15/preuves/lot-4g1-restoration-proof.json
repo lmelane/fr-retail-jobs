@@ -1,0 +1,11 @@
+{
+  "productionWrites": false,
+  "environment": "Dedicated full-stock local clone",
+  "restoredSha256": "0fd33103aff3f5f61c6b9514bb5769f4ff9ae6a7929cfdcafabe378f77e62a27",
+  "restoreElapsedMs": 168199,
+  "restoredOriginalIntegrity": true,
+  "interruptedCompletedPlans": 276,
+  "interruptedStoredPlans": 277,
+  "preservedJournalRows": 553,
+  "journalArchiveSha256": "0efd5c28845ef44b9e6a952cfb4a6876fbf6e624f3b0df201ec4787059870133"
+}
