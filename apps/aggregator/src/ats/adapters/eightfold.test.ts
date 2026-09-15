@@ -43,6 +43,69 @@ describe('fetchEightfoldJobs apply URL', () => {
 });
 
 /**
+ * D-435 — LA LANGUE DEMANDÉE AU PORTAIL N'EST PLUS LE FRANÇAIS POUR TOUS.
+ *
+ * L'appel de détail forçait la locale française. Les deux sources servies par
+ * cet adaptateur — `careers.elcompanies.com` (Estée Lauder, 1 386 offres) et
+ * `careers.kering.com` (toutes les Maisons Kering) — publient dans le monde
+ * entier : on réclamait la version française de descriptions américaines,
+ * japonaises ou allemandes.
+ *
+ * Ces témoins observent l'URL RÉELLEMENT construite par le vrai point
+ * d'entrée `fetchEightfoldJobs`, via le mock de `fetchJson` — pas une copie de
+ * la logique de construction.
+ */
+describe('fetchEightfoldJobs locale du détail', () => {
+  /** Prépare une session + une page de listing + une page vide de fin. */
+  function amorcer() {
+    mockRetry.mockResolvedValueOnce({ headers: { getSetCookie: () => ['sid=abc; Path=/'] } } as never);
+    mockJson
+      .mockResolvedValueOnce({ data: { positions: [{ id: 42, name: 'Vendeur', positionUrl: '/careers/job/42' }] } } as never)
+      .mockResolvedValueOnce({ data: { positions: [] } } as never)
+      .mockResolvedValueOnce({ data: { jobDescription: 'texte' } } as never);
+  }
+
+  /** L'URL de détail réellement demandée, lue dans les appels du mock. */
+  function urlDeDetail(): string {
+    const appel = mockJson.mock.calls.map((c) => String(c[0])).find((u) => u.includes('position_details'));
+    return appel ?? '';
+  }
+
+  it('PRÉMISSE : un appel de détail est bien émis, sinon ce témoin ne teste rien', async () => {
+    amorcer();
+    await fetchEightfoldJobs({
+      origin: 'https://careers.elcompanies.com',
+      domain: 'elcompanies.com',
+      withDescriptions: true,
+    });
+    expect(urlDeDetail(), 'le détail doit être demandé').toContain('position_details');
+  });
+
+  it('ne force plus le français : le défaut est l’anglais', async () => {
+    amorcer();
+    await fetchEightfoldJobs({
+      origin: 'https://careers.elcompanies.com',
+      domain: 'elcompanies.com',
+      withDescriptions: true,
+    });
+    expect(urlDeDetail()).toContain('hl=en');
+    expect(urlDeDetail(), 'plus aucune locale française imposée').not.toContain('hl=fr');
+  });
+
+  it('la locale reste configurable par source', async () => {
+    // Une Maison qui publie en français le déclare — elle ne le subit pas.
+    amorcer();
+    await fetchEightfoldJobs({
+      origin: 'https://careers.kering.com',
+      domain: 'kering.com',
+      withDescriptions: true,
+      locale: 'fr',
+    });
+    expect(urlDeDetail()).toContain('hl=fr');
+  });
+});
+
+/**
  * Audit A1 (2026-09-06) : 125 offres Estée Lauder envoyaient le candidat sur
  * une AUTRE position — `positionUrl` de la liste est l'URL canonique du groupe
  * de positions similaires, pas celle de la position.

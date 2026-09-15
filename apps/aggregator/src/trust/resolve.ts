@@ -27,6 +27,7 @@ import {
   readWorkplaceDescription,
   type WorkplaceType,
 } from '../normalize/workplace.js';
+import { readScheduleDescription, type WorkSchedule } from '../normalize/schedule.js';
 import { OBSERVED_DIMENSIONS, type ObservedDimension } from './contradictions.js';
 
 /**
@@ -81,6 +82,10 @@ export type ResolvedEmployment = {
   isSeasonal?: true;
   /** Le MODE DE TRAVAIL : ONSITE | HYBRID | REMOTE. */
   workplaceType?: WorkplaceType;
+  /** Le RYTHME EXIGÉ : FLEXIBLE_AVAILABILITY | EVENINGS_WEEKENDS | NIGHT_SHIFT. */
+  workSchedule?: WorkSchedule;
+  /** Le libellé source qui a justifié le rythme, conservé tel quel. */
+  rawSchedule?: string;
   /** Le détail par dimension, pour la traçabilité (`enrichment`). */
   decisions: Partial<Record<ObservedDimension, ResolvedDimension>>;
 };
@@ -253,6 +258,23 @@ export function resolveCanonicalDimensions(
   }
   if (!out.workplaceType) out.workplaceType = readWorkplaceText(input.title)?.type;
   if (!out.workplaceType) out.workplaceType = readWorkplaceDescription(input.description)?.type;
+
+  /**
+   * LE RYTHME DE TRAVAIL — lu dans la DESCRIPTION seulement, et c'est délibéré.
+   *
+   * Aucun chemin structuré n'est consulté parce qu'aucun n'existe : le seul
+   * champ `schedule` mesuré en base (186 offres) contient « full-or-part-time »,
+   * donc un TEMPS de travail, pas un rythme. Le brancher ici écrirait un
+   * volume horaire dans une colonne de rythme.
+   *
+   * Le libellé source part avec la valeur : sans lui, on ne peut plus dire
+   * POURQUOI une offre a été classée NIGHT_SHIFT sans rejouer le normaliseur.
+   */
+  const schedule = readScheduleDescription(input.description);
+  if (schedule) {
+    out.workSchedule = schedule.schedule;
+    out.rawSchedule = schedule.raw;
+  }
 
   return out;
 }

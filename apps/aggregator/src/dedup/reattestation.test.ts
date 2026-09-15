@@ -3,7 +3,7 @@ import { reattestationFields } from './upsert.js';
 import type { CandidateJob } from './match.js';
 
 const base = { sourceKey: 'hermes', sourceTier: 'EMPLOYER_DIRECT', externalId: 'H1', company: 'Hermès', url: 'https://x/1', raw: {} } as CandidateJob;
-const existing = { title: 'Apply Now', description: 'court', location: null, city: null, countryCode: 'France', countryIntegrity: null, adminArea1: null, isFrance: true, postedAt: null, validThrough: null, language: null, employmentTerm: null, workTime: null, programType: null, engagementType: null, isSeasonal: null, workplaceType: null, salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null };
+const existing = { title: 'Apply Now', description: 'court', location: null, city: null, countryCode: 'France', countryIntegrity: null, adminArea1: null, isFrance: true, postedAt: null, validThrough: null, language: null, employmentTerm: null, workTime: null, programType: null, engagementType: null, isSeasonal: null, workplaceType: null, workSchedule: null, rawSchedule: null, salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null };
 
 /**
  * Mesuré en prod le 2026-09-06 : après le premier run avec les normalisations
@@ -17,6 +17,34 @@ describe('reattestationFields', () => {
     expect(out.countryCode).toBeUndefined();
     expect(out.location).toBeUndefined();
     expect(out.adminArea1).toBeUndefined();
+  });
+
+  it('une offre DÉJÀ en base reçoit le rythme de travail (D-436)', () => {
+    /*
+     * TROU DE COUVERTURE TROUVÉ PAR L'AUDIT DÉFENSIF du 15/09/2026.
+     *
+     * `workSchedule` et `rawSchedule` étaient bien dans `SIMPLE_FIELDS` de
+     * `upsert.ts`, dont le commentaire avertit : « sans eux ici, une offre déjà
+     * en base ne recevrait JAMAIS la nouvelle dimension ». Mais les retirer
+     * laissait les 63 tests VERTS — les deux champs n'existaient que comme
+     * valeurs de fixture, sans aucune assertion.
+     *
+     * C'est le mode de panne le plus coûteux d'une dimension ajoutée après
+     * coup : 83 431 offres sont déjà en base, et seules les NOUVELLES
+     * l'auraient reçue. Le stock serait resté vide sans que rien ne le dise.
+     *
+     * PRÉMISSE — l'offre existante n'a PAS de rythme, sinon le témoin ne
+     * prouverait pas que la réattestation en ajoute un.
+     */
+    expect(existing.workSchedule, 'la prémisse : rien en base au départ').toBeNull();
+
+    const out = reattestationFields(
+      { ...base, workSchedule: 'NIGHT_SHIFT', rawSchedule: 'Must be available for night shift', title: 'x' },
+      existing,
+      false,
+    );
+    expect(out.workSchedule, 'le rythme doit atteindre une offre déjà stockée').toBe('NIGHT_SHIFT');
+    expect(out.rawSchedule, 'le libellé source doit être conservé').toBe('Must be available for night shift');
   });
 
   it('ne mélange pas une devise secondaire avec un montant employeur', () => {

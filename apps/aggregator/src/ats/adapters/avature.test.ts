@@ -166,10 +166,23 @@ ESSENTIAL DUTIES &amp; RESPONSIBILITIES
     expect(detail.description).not.toContain('<');
   });
 
-  it('lit ville, pays (champ « Location ») et région depuis le bloc de champs', () => {
+  it('lit ville, LIEU BRUT (champ « Location ») et région depuis le bloc de champs', () => {
+    /*
+     * Le champ « Location » n'est PAS un pays déclaré, et ce témoin le grave.
+     *
+     * Il s'appelait `country` et alimentait directement le pays de l'offre :
+     * un lieu libre présenté comme une déclaration de source. 176 offres
+     * `l-oreal-professionnel` en portaient les conséquences le 14/09/2026
+     * (Indianapolis → Inde, Richmond → Vatican), aucune signalée.
+     *
+     * Ce que cette fixture montre justement : ici « Location » vaut
+     * « Germany », un vrai pays. Ailleurs il vaut « Indianapolis, IN ». Le
+     * MÊME champ porte les deux formes — c'est bien au résolveur commun d'en
+     * décider, jamais à l'adaptateur de le déclarer pays d'office.
+     */
     const detail = parseAvaturePortalDetail(DETAIL);
     expect(detail.city).toBe('München');
-    expect(detail.country).toBe('Germany');
+    expect(detail.rawLocation).toBe('Germany');
     expect(detail.region).toBe('Bavaria');
     expect(detail.reference).toBe('W181339');
   });

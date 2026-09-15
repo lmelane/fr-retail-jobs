@@ -312,7 +312,22 @@ export function parseAvaturePortalListing(html: string): { jobs: NormalizedJob[]
 export type AvaturePortalDetail = {
   description?: string;
   city?: string;
-  country?: string;
+  /**
+   * LE LIBELLÉ DU CHAMP « Location », TEL QUE LA PAGE L'ÉCRIT — pas un pays.
+   *
+   * Ce champ s'appelait `country` et alimentait directement le pays déclaré de
+   * l'offre. C'était un DÉFAUT DE CONTRAT entre l'adaptateur et le
+   * normaliseur : un lieu libre (« Indianapolis, IN ») était présenté comme un
+   * pays que la source aurait déclaré.
+   *
+   * Conséquence mesurée le 14/09/2026 : 176 offres `l-oreal-professionnel`
+   * portaient un code d'État américain dans le champ pays — Indianapolis lu
+   * comme l'Inde, Richmond comme le Vatican — et AUCUNE n'était signalée.
+   *
+   * Un adaptateur conserve la NATURE de ce qu'il a lu. L'interprétation
+   * appartient au résolveur commun, qui dispose du contexte et des gardes.
+   */
+  rawLocation?: string;
   region?: string;
   reference?: string;
   /** JSON-LD `datePosted` of the page — L'Oréal publishes it on every fiche (1 771 offers stored without a date, audit a4). */
@@ -332,7 +347,7 @@ export function parseAvaturePortalDetail(html: string): AvaturePortalDetail {
   return {
     description: sections.join('\n\n') || undefined,
     city: portalField(html, 'City'),
-    country: portalField(html, 'Location'),
+    rawLocation: portalField(html, 'Location'),
     region: portalField(html, 'State/Region'),
     reference: portalField(html, 'Ref #'),
     postedAt: postedAtFromJsonLd(html),
@@ -393,7 +408,9 @@ async function fetchAvaturePortalJobs(origin: string, lists: string[], config: R
             ...job,
             description: detail.description ?? job.description,
             city: detail.city ?? job.city,
-            country: detail.country ?? job.country,
+            // Le libellé « Location » enrichit le LIEU, jamais le pays déclaré :
+            // c'est au résolveur d'en extraire un pays, avec ses gardes.
+            location: detail.rawLocation ?? job.location,
             region: detail.region ?? job.region,
             postedAt: detail.postedAt ?? job.postedAt,
           };

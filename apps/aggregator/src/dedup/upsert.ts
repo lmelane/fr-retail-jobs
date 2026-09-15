@@ -331,6 +331,8 @@ export function canonicalJobContent(candidate: CandidateJob, catalogue: Compiled
     isSeasonal: candidate.isSeasonal ?? null,
     workTime: candidate.workTime ?? null,
     workplaceType: candidate.workplaceType ?? null,
+    workSchedule: candidate.workSchedule ?? null,
+    rawSchedule: candidate.rawSchedule ?? null,
     experienceYears: candidate.experienceYears ?? null,
     educationLevel: candidate.educationLevel ?? null,
     salaryMin: candidate.salaryMin ?? null,
@@ -479,7 +481,7 @@ type ExistingJob = Prisma.JobGetPayload<{ include: { sources: true }; omit: { se
 type Reattestable = Pick<
   ExistingJob,
   | 'title' | 'description' | 'location' | 'city' | 'countryCode' | 'countryIntegrity' | 'adminArea1' | 'isFrance' | 'postedAt' | 'validThrough'
-  | 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType' | 'isSeasonal' | 'workplaceType' | 'salaryMin' | 'salaryMax' | 'salaryCurrency' | 'salaryPeriod'
+  | 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType' | 'isSeasonal' | 'workplaceType' | 'workSchedule' | 'rawSchedule' | 'salaryMin' | 'salaryMax' | 'salaryCurrency' | 'salaryPeriod'
 > & { opportunityType?: ExistingJob['opportunityType'] };
 
 /**
@@ -493,6 +495,9 @@ type Reattestable = Pick<
  */
 const SIMPLE_FIELDS = [
   'opportunityType', 'postedAt', 'validThrough', 'language', 'employmentTerm', 'workTime', 'programType', 'engagementType', 'isSeasonal', 'workplaceType',
+  // Le rythme et son libellé source : sans eux ici, une offre déjà en base ne
+  // recevrait JAMAIS la nouvelle dimension — le stock resterait vide à vie.
+  'workSchedule', 'rawSchedule',
 ] as const;
 const SALARY_FIELDS = ['salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod'] as const;
 

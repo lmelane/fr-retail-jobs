@@ -55,7 +55,12 @@ describe('projeterListe', () => {
     expect(facets.cities).toEqual(r.facets.cities);
     r.facets.languages = [{ value: 'fr', count: 2 }, { value: 'zz', count: 1 }];
     const p2 = projeterListe(r);
-    expect(p2.facets.languages[0]).toEqual({ value: 'fr', count: 2, label: 'Français' });
-    expect(p2.facets.languages[1].label).toBe('zz');
+    // Les facettes conditionnelles sont optionnelles depuis le lot « facettes
+    // natives » : on affirme la présence avant de lire, plutôt que de la forcer
+    // avec `!` — une facette qui disparaîtrait ici doit rougir, pas planter.
+    const langues = p2.facets.languages;
+    expect(langues).toBeDefined();
+    expect(langues![0]).toEqual({ value: 'fr', count: 2, label: 'Français' });
+    expect(langues![1].label).toBe('zz');
   });
 });

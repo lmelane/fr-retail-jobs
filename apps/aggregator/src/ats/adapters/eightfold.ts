@@ -198,6 +198,25 @@ export async function fetchEightfoldJobs(
   const domain = String(config.domain ?? origin.replace(/^https?:\/\/careers\./, ''));
   if (!origin) throw new Error('Eightfold origin missing');
 
+  /*
+   * LA LANGUE DEMANDÉE AU PORTAIL, plus jamais le français pour le monde entier.
+   *
+   * L'appel de détail forçait la locale française. Les deux portails servis
+   * par cet adaptateur — `careers.elcompanies.com` (Estée Lauder) et
+   * `careers.kering.com` (toutes les Maisons Kering) — publient dans le monde
+   * entier : on réclamait donc la version française de descriptions
+   * américaines, japonaises ou allemandes.
+   *
+   * Ce paramètre décide de la langue du texte qu'on INGÈRE, donc de ce que le
+   * candidat lira. Il devient configurable par source, comme `config.locale`
+   * de `digitalrecruiters.ts`. Le défaut est `en`, langue de publication la
+   * plus courante de ces deux portails, plutôt qu'un français imposé.
+   *
+   * CE QUI N'EST PAS PROUVÉ ICI : ce que chaque portail RÉPOND face à une
+   * locale qu'il ne sert pas. Cela se vérifie source par source, en ligne.
+   */
+  const hl = String(config.locale ?? 'en');
+
   const cookie = await openSession(origin);
   const headers = {
     'user-agent': USER_AGENT,
@@ -270,7 +289,7 @@ export async function fetchEightfoldJobs(
       limit(async () => {
         try {
           const detail = await fetchJson<DetailResponse>(
-            `${origin}/api/pcsx/position_details?position_id=${encodeURIComponent(job.externalId)}&domain=${encodeURIComponent(domain)}&hl=fr`,
+            `${origin}/api/pcsx/position_details?position_id=${encodeURIComponent(job.externalId)}&domain=${encodeURIComponent(domain)}&hl=${encodeURIComponent(hl)}`,
             { headers },
           );
           const terms = termsOf(detail.data);

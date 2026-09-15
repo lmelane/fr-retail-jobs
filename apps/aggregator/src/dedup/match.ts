@@ -74,6 +74,9 @@ export type CandidateJob = NormalizedJob & {
   engagementType?: string;
   isSeasonal?: boolean;
   workplaceType?: string;
+  /** Le RYTHME EXIGÉ, et le libellé source qui l'a justifié. */
+  workSchedule?: string;
+  rawSchedule?: string;
 };
 
 /** Postings more than this far apart are treated as separate openings. */

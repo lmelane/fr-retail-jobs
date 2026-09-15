@@ -1,3 +1,4 @@
+import { normalizeLanguage } from '../../normalize/language.js';
 import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
@@ -57,7 +58,7 @@ export function parseSmartRecruitersPosting(job: SmartRecruitersPosting, company
     // then files as a working time rather than a contract.
     contract: (id && CONTRACT_BY_ID[id]) || type?.label || undefined,
     workingTime: type?.label || type?.id || undefined,
-    language: job.language?.code?.trim().toLowerCase().split(/[-_]/)[0] || undefined,
+    language: normalizeLanguage(job.language?.code),
     url: `https://jobs.smartrecruiters.com/${company}/${job.id}`,
     postedAt: job.releasedDate ? new Date(job.releasedDate) : undefined,
     raw: job,

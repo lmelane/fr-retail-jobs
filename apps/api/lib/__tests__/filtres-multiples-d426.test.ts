@@ -149,10 +149,32 @@ describe('les filtres ne s’écrasent pas entre eux en SQL (D-426)', () => {
   });
 
   it('les valeurs d’une même dimension passent en `in` (union), pas en égalité', () => {
+    /*
+     * LA PROPRIÉTÉ N'A PAS CHANGÉ, SA POSITION SI.
+     *
+     * Ce témoin lisait `w.employmentTerm.in` à la RACINE de la clause. Depuis
+     * D-436, chaque dimension vit dans le `AND` sous la forme
+     * `{ OR: [{ employmentTerm: { in: […] } }, { employmentTerm: null }] }` —
+     * les critères inconnus ne font plus disparaître une offre.
+     *
+     * Deux clés `OR` dans un même littéral s'écrasent : c'est pourquoi elles
+     * sont accumulées dans `AND`. Le témoin suit le code, sans rien concéder
+     * sur ce qu'il garde — l'UNION des valeurs cochées, jamais une égalité.
+     */
     const w = whereClause(parseFilters({ contrat: ['PERMANENT', 'FIXED_TERM'] })) as {
-      employmentTerm?: { in?: string[] };
+      AND?: Array<{ OR?: Array<{ employmentTerm?: { in?: string[] } | null }> }>;
     };
-    expect(w.employmentTerm?.in).toEqual(['PERMANENT', 'FIXED_TERM']);
+    const critere = w.AND?.find((c) => c.OR?.some((o) => o.employmentTerm !== undefined));
+    expect(critere, 'le critère contrat doit exister dans le AND').toBeDefined();
+
+    const union = critere?.OR?.find((o) => o.employmentTerm && 'in' in o.employmentTerm);
+    expect(union?.employmentTerm?.in).toEqual(['PERMANENT', 'FIXED_TERM']);
+
+    // Et la branche qui CONSERVE les offres dont le contrat est inconnu.
+    expect(
+      critere?.OR?.some((o) => o.employmentTerm === null),
+      'une offre au contrat non précisé reste accessible',
+    ).toBe(true);
   });
 
   it('« Métier à préciser » reste sélectionnable : c’est l’ABSENCE de code', () => {
