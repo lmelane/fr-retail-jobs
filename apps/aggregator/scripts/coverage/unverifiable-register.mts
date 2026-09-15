@@ -40,7 +40,7 @@ try {
         SELECT DISTINCT ON ("sourceKey") "sourceKey", "ranAt"
         FROM "SourceRun" WHERE "canAttestAbsence" ORDER BY "sourceKey", "ranAt" DESC, id DESC
       )
-      SELECT o."sourceKey", o."externalId", o.raw->>'publicationHold' AS reason,
+      SELECT o."sourceKey", o."externalId", o."publicationHold" AS reason,
              MIN(o."observedAt") AS first_held_at, MAX(o."observedAt") AS last_hold_observation,
              r."ranAt" AS last_attempt, r.status AS last_run_status,
              lr."ranAt" AS last_reliable_run,
@@ -49,7 +49,7 @@ try {
       LEFT JOIN last_run r ON r."sourceKey" = o."sourceKey"
       LEFT JOIN last_reliable lr ON lr."sourceKey" = o."sourceKey"
       LEFT JOIN "JobSource" js ON js."sourceKey" = o."sourceKey" AND js."externalId" = o."externalId"
-      WHERE o.raw->>'publicationHold' IS NOT NULL
+      WHERE o."publicationHold" IS NOT NULL
       GROUP BY 1, 2, 3, r."ranAt", r.status, lr."ranAt", js."lastSeenAt", js."isActive"
       ORDER BY 4`;
 

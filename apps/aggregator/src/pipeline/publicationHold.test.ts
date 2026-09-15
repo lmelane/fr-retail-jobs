@@ -13,6 +13,7 @@ it('archives the real azert defect idempotently without public jobs and forbids 
   const before = [await db.job.count(), await db.jobEvent.count()];
   await archivePublicationHold(db, key, job); await archivePublicationHold(db, key, job);
   expect(await db.sourceObservation.count({ where: { sourceKey: key } })).toBe(1);
+  expect(await db.sourceObservation.findFirstOrThrow({ where: { sourceKey: key } })).toMatchObject({ raw: job.raw, publicationHold: job.publicationHold });
   expect([await db.job.count(), await db.jobEvent.count()]).toEqual(before);
   expect(() => toCandidate(job, { key, company: 'Intersport', tier: 'ATS_OFFICIAL' }, 'Intersport', 'JOBAFFINITY_WORDPRESS')).toThrow('held');
   expect(isTrustedForAttestation({ status: 'DEGRADED', complete: false, fetched: 993, declaredTotal: 993 })).toBe(false);
@@ -92,7 +93,7 @@ it('withholds publication on a reviewed OUT_OF_SCOPE decision: withdrawn (never 
   expect(await db.jobEvent.count({ where: { jobId, type: 'CLOSED' } })).toBe(0);
   expect(await db.jobEvent.count({ where: { jobId, type: 'WITHDRAWN' } })).toBe(1);
   // The raw payload is collected and archived under the hold (next to the observation the upsert already kept).
-  expect(await db.sourceObservation.count({ where: { sourceKey: key, externalId: '1405738533', raw: { path: ['publicationHold'], equals: 'SCOPE_OUT_OF_PERIMETER' } } })).toBe(1);
+  expect(await db.sourceObservation.count({ where: { sourceKey: key, externalId: '1405738533', publicationHold: 'SCOPE_OUT_OF_PERIMETER' } })).toBe(1);
   // The ingest never re-attests a held posting: the candidate path refuses it, so no later run can re-open the job.
   expect(() => toCandidate(held, { key, company: 'Aptar Group', tier: 'ATS_OFFICIAL' }, 'Aptar Group', 'SUCCESSFACTORS')).toThrow('held');
   await clearOccupationLedger();

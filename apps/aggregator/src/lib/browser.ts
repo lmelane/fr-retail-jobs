@@ -1,9 +1,11 @@
-import type { Browser, BrowserContext } from 'playwright';
+import type { Browser, BrowserContext, Response as BrowserResponse } from 'playwright';
 import { assertSourceRunning, sourceSignal } from './sourceBudget.js';
 import { createPublicBrowserProxy } from './browserProxy.js';
 import { assertPublicUrl, isPublicHttpUrl } from './ssrf.js';
 import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 import { CRAWLER_IDENTITY } from './crawlerIdentity.js';
+import { capturingResponses, replayingResponses, captureResponse, replayResponse, CaptureUnavailableError } from '../capture/context.js';
+import { MAX_CAPTURE_BYTES } from '../capture/store.js';
 
 /**
  * FashionJobs sits behind Cloudflare: plain `fetch` gets HTTP 403 on every path,
@@ -110,6 +112,7 @@ const wafTokens = new Map<string, Promise<string | undefined>>();
  * plusieurs requêtes parallèles le demandent en même temps.
  */
 export function primeWafToken(url: string): Promise<string | undefined> {
+  if (replayingResponses()) return Promise.resolve('aws-waf-token=archive-replay');
   const key = new URL(url).origin;
   let pending = wafTokens.get(key);
   if (!pending) {
@@ -187,6 +190,8 @@ async function primeWafTokenOnce(origin: string, url: string): Promise<string | 
  * surfaces as a hard failure instead of being parsed as an empty directory.
  */
 export async function fetchRenderedHtml(url: string): Promise<string> {
+  const replayed = await replayResponse({ url, format: 'RENDERED_DOM' });
+  if (replayed) return replayed.text();
   // Same SSRF guard as the plain-HTTP path: the browser must not be pointed at
   // an internal target either. Chromium follows redirects itself, so we also
   // check the URL it actually landed on after navigation.
@@ -203,9 +208,42 @@ export async function fetchRenderedHtml(url: string): Promise<string> {
       serviceWorkers: 'block',
     });
     const releaseGuard = await guardContext(context);
-
+    const pending = new Set<Promise<void>>();
+    let releaseRecorder: (() => void) | undefined;
     try {
       const page = await context.newPage();
+      let captureError: unknown;
+      const record = (response: BrowserResponse) => {
+        if (!['document', 'xhr', 'fetch'].includes(response.request().resourceType())) return;
+        const request = { url: response.url(), method: response.request().method(), body: response.request().postDataBuffer(), format: 'BROWSER_RESPONSE' as const };
+        const task = (async () => {
+          let timer: ReturnType<typeof setTimeout> | undefined;
+          const headers = new Headers(response.headers());
+          let recorded = false;
+          try {
+            const declaredLength = Number(headers.get('content-length'));
+            if (Number.isFinite(declaredLength) && declaredLength > MAX_CAPTURE_BYTES) throw new Error('Browser body exceeds the bounded size');
+            const bytes = await Promise.race([response.body(), new Promise<never>((_, reject) => {
+              timer = setTimeout(() => reject(new Error('Browser capture body timeout')), navigationTimeoutMs);
+            })]);
+            const complete = bytes.byteLength <= MAX_CAPTURE_BYTES;
+            await captureResponse(request, { status: response.status(), headers, bytes: bytes.subarray(0, MAX_CAPTURE_BYTES),
+              complete, ...(!complete ? { failure: 'BodySizeLimit' } : {}) });
+            recorded = true;
+            if (!complete) throw new Error('Browser capture exceeds the bounded body size');
+          } catch (error) {
+            captureError ??= error;
+            if (!recorded && !(error instanceof CaptureUnavailableError)) await captureResponse(request,
+              { status: response.status(), headers, bytes: null, complete: false, failure: error instanceof Error ? error.name : 'BrowserReadError' });
+          } finally { if (timer) clearTimeout(timer); }
+        })();
+        pending.add(task);
+        void task.catch(error => { captureError ??= error; }).finally(() => pending.delete(task));
+      };
+      if (capturingResponses()) {
+        page.on('response', record);
+        releaseRecorder = () => page.off('response', record);
+      }
       const response = await page.goto(url, {
         waitUntil: 'domcontentloaded',
         timeout: navigationTimeoutMs,
@@ -227,8 +265,21 @@ export async function fetchRenderedHtml(url: string): Promise<string> {
       reportSuccess(url);
       // Let lazy-rendered list items attach before snapshotting the DOM.
       await page.waitForTimeout(settleMs);
-      return await page.content();
+      const html = await page.content();
+      if (capturingResponses()) {
+        page.off('response', record);
+        await Promise.allSettled([...pending]);
+        if (captureError) throw captureError;
+        const bytes = Buffer.from(html);
+        const complete = bytes.byteLength <= MAX_CAPTURE_BYTES;
+        await captureResponse({ url, format: 'RENDERED_DOM' }, { status, headers: new Headers({ 'content-type': 'text/html; charset=utf-8' }),
+          bytes: bytes.subarray(0, MAX_CAPTURE_BYTES), complete, ...(!complete ? { failure: 'BodySizeLimit' } : {}) });
+        if (!complete) throw new Error('Rendered DOM exceeds the bounded body size');
+      }
+      return html;
     } finally {
+      releaseRecorder?.();
+      await Promise.allSettled([...pending]);
       releaseGuard();
       await context.close();
     }

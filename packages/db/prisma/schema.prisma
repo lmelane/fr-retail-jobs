@@ -228,7 +228,7 @@ model Company {
   sectorCodes           String[]                @default([])
   sectorEvidence        Json?
   sectorReviewId        String?
-  sectorReview          SectorReview?           @relation(fields: [sectorReviewId], references: [id], onDelete: Restrict)
+  sectorReview          SectorReview?           @relation(fields: [sectorReviewId], references: [id], onDelete: Restrict, onUpdate: NoAction)
   /**
    * Parent group, from the 728-house reference list: Sandro and Maje both sit
    * under SMCP, Dior under LVMH.
@@ -282,6 +282,7 @@ model Company {
   @@index([parentGroupId])
   @@index([mergedIntoId])
   @@index([sector])
+  @@index([sectorCodes], type: Gin)
   @@index([canonicalKey])
   @@index([discoveryStatus])
   @@index([atsType])
@@ -390,6 +391,14 @@ model JobSource {
   @@index([jobId])
   @@index([sourceKey, isActive])
   @@index([isActive, expiresAt])
+  /** Complete native inputs for the latest extraction; null marks historical/unrecorded inputs. */
+  captureBatchId String?
+  captureBatch CaptureBatch? @relation(fields: [captureBatchId], references: [id], onDelete: Restrict)
+  captureOutputId String?
+  captureOutput SourceExtraction? @relation(fields: [captureOutputId, captureBatchId], references: [id, batchId], onDelete: Restrict)
+  @@index([captureOutputId, captureBatchId])
+  @@index([captureBatchId])
+
 }
 
 enum OpportunityType {
@@ -402,7 +411,7 @@ model Job {
   // An absorbed posting retains its ID, content and history. It can never reopen;
   // its source representations and public URL resolve to the canonical posting.
   mergedIntoId     String?
-  mergedInto       Job?             @relation("JobRedirect", fields: [mergedIntoId], references: [id], onDelete: NoAction)
+  mergedInto       Job?             @relation("JobRedirect", fields: [mergedIntoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   mergedJobs       Job[]            @relation("JobRedirect")
   companyId        String
   company          Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
@@ -691,6 +700,7 @@ model Job {
   @@index([mergedIntoId])
   @@index([clusterKey])
   @@index([department])
+  @@index([adminArea1])
   @@index([employmentTerm])
   @@index([workTime])
   @@index([isFrance, isActive])
@@ -1002,84 +1012,30 @@ model SourceObservation {
   sourceKey       String
   externalId      String
   contentHash     String
-  raw             Json
+  /** Derived adapter payload; internal disposition is stored separately below. */
+  raw             Json?
+  publicationHold String?
+  annotationHash String @default("")
   pipelineVersion Int
   observedAt      DateTime @default(now())
 
-  @@unique([sourceKey, externalId, contentHash])
+  @@unique([sourceKey, externalId, contentHash, annotationHash])
   @@index([sourceKey, observedAt])
   /**
    * Balayage de rétention par date : sans lui, la sélection des lignes éligibles scanne toute la table.
    */
   @@index([observedAt])
-}
+  /** This JSON is adapter output; native response bytes live in the capture batch. */
+  captureBatchId String?
+  captureBatch CaptureBatch? @relation(fields: [captureBatchId], references: [id], onDelete: Restrict)
+  captureOutputId String?
+  captureOutput SourceExtraction? @relation(fields: [captureOutputId, captureBatchId], references: [id, batchId], onDelete: Restrict)
+  @@index([captureOutputId, captureBatchId])
 
-/**
- * LA MÉTADONNÉE D'AUDIT QUI SURVIT À LA PURGE — décision propriétaire du 2026-09-13.
- * Une `SourceObservation` archivée puis supprimée du chaud laisse ici tout ce qui permet de PROUVER qu'elle a
- * existé et de la retrouver : identité de l'offre, instant d'observation, empreinte du contenu, et le pointeur
- * vers l'archive avec son sha256.
- * Sans cette table, une purge rendrait une preuve de P1 à P7 irrécupérable *en silence* — rien en base ne
- * dirait qu'une observation a manqué. Ce n'est donc pas un journal d'exploitation : c'est la continuité de la
- * chaîne de preuve, et elle n'est jamais purgée.
- */
-model ObservationArchiveRef {
-  id                   String   @id @default(cuid())
-  sourceKey            String
-  externalId           String
-  /**
-   * Le run qui a produit l'observation ; `null` pour les lignes antérieures à sa traçabilité.
-   */
-  runId                String?
-  observedAt           DateTime
-  contentHash          String
-  /**
-   * Ce que la chaîne a fait de cette observation : ARCHIVED_AND_PURGED aujourd'hui, extensible.
-   */
-  disposition          String
-  /**
-   * L'ensemble canonique auquel l'observation se rattache (preuve d'absence P7).
-   */
-  canonicalSetRef      String?
-  /**
-   * Où retrouver les octets.
-   */
-  archiveUri           String
-  archiveSha256        String
-  archiveFormatVersion Int
-  archivedAt           DateTime @default(now())
+  rawBlobHash String?
+  rawBlob RawBlob? @relation(fields: [rawBlobHash], references: [hash], onDelete: Restrict)
+  @@index([rawBlobHash])
 
-  @@unique([sourceKey, externalId, contentHash])
-  @@index([archiveUri])
-  @@index([observedAt])
-}
-
-/**
- * LE MANIFESTE D'UNE ARCHIVE, IMMUABLE. Une ligne par partition (date × runId × sourceKey).
- * Il porte ce qu'on peut affirmer d'une archive SANS la relire entièrement : combien de lignes, quelle
- * période, quelle taille, quelle empreinte, quel format. La purge refuse de supprimer tant que ces valeurs ne
- * concordent pas avec le lot réel — un manifeste peut annoncer le bon compte et couvrir une autre période.
- */
-model ObservationArchiveManifest {
-  id            String    @id @default(cuid())
-  day           String
-  runId         String
-  sourceKey     String
-  rowCount      Int
-  periodStart   DateTime
-  periodEnd     DateTime
-  sizeBytes     BigInt
-  sha256        String
-  formatVersion Int
-  archiveUri    String
-  /**
-   * Étapes franchies et verdict, pour qu'un refus se rapporte au lieu de se deviner.
-   */
-  verifiedAt    DateTime?
-  createdAt     DateTime  @default(now())
-
-  @@unique([day, runId, sourceKey])
-  @@index([createdAt])
 }
 
 /**
@@ -1207,4 +1163,103 @@ model SectorReview {
   companies Company[]
 
   @@index([createdAt, id])
+}
+
+/** Immutable content-addressed bytes. References distinguish native inputs and derived outputs. */
+model RawBlob {
+  hash String @id
+  byteLength Int
+  gzipHash String
+  gzipLength Int
+  createdAt DateTime @default(now())
+  body RawBlobBody?
+  archive RawBlobArchive?
+  captures RawCapture[]
+  observations SourceObservation[]
+  extractions SourceExtraction[]
+}
+
+/** Hot storage may be removed only after a verified remote archive is recorded. */
+model RawBlobBody {
+  hash String @id
+  blob RawBlob @relation(fields: [hash], references: [hash], onDelete: Restrict)
+  gzip Bytes
+}
+
+model RawBlobArchive {
+  hash String @id
+  blob RawBlob @relation(fields: [hash], references: [hash], onDelete: Restrict)
+  objectKey String
+  uri String
+  gzipHash String
+  verifiedAt DateTime @default(now())
+}
+
+/** One source extraction. Configuration is fingerprinted; transport secrets are not stored. */
+model CaptureBatch {
+  id String @id @default(uuid())
+  sourceKey String
+  runId String?
+  configHash String
+  readerRevision String
+  sourceKind String?
+  formatVersion Int @default(1)
+  startedAt DateTime @default(now())
+  captures RawCapture[]
+  extractions SourceExtraction[]
+  outcome CaptureOutcome?
+  sources JobSource[]
+  observations SourceObservation[]
+  @@index([sourceKey, startedAt])
+  @@index([runId])
+}
+
+/** Every attempt remains distinct, even if response bytes are identical. */
+model RawCapture {
+  id String @id @default(uuid())
+  batchId String
+  batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict)
+  sequence Int
+  requestHash String
+  requestUrl String
+  method String
+  format String
+  status Int?
+  headers Json
+  cookieNames Json
+  complete Boolean
+  failure String?
+  blobHash String?
+  blob RawBlob? @relation(fields: [blobHash], references: [hash], onDelete: Restrict)
+  capturedAt DateTime @default(now())
+  @@unique([batchId, sequence])
+  @@index([blobHash])
+}
+
+/** Immutable outcome; a batch without one was interrupted and remains replayable. */
+model CaptureOutcome {
+  batchId String @id
+  batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict)
+  status String
+  extractedCount Int
+  outputHash String?
+  failure String?
+  completedAt DateTime @default(now())
+}
+
+/** One immutable adapter output per job per batch, including identical re-attestations. */
+model SourceExtraction {
+  id String @id @default(uuid())
+  batchId String
+  batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict)
+  ordinal Int
+  externalId String?
+  outputHash String
+  output RawBlob @relation(fields: [outputHash], references: [hash], onDelete: Restrict)
+  capturedAt DateTime @default(now())
+  sources JobSource[]
+  observations SourceObservation[]
+  @@unique([id, batchId])
+  @@unique([batchId, ordinal])
+  @@index([outputHash])
 }

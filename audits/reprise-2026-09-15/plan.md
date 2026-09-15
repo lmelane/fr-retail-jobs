@@ -75,6 +75,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 ## Lot 2. Archiver les extractions avant transformation
 
+**État : validé localement et stockage distant vérifié en environnement isolé — [livraison et audit défensif](lot-2.md). Aucune bascule de production.**
+
 **Objectif.** Ne plus perdre le matériau nécessaire à une réparation.
 
 - **Fichiers :** `types.ts`, `lib/http.ts`, `ats/index.ts`, adaptateurs, `dedup/upsert.ts`, `SourceObservation`, `JobSource`, schéma/migrations et rétention.

@@ -14,17 +14,19 @@
  * usage: db.py readonly npx tsx scripts/ops/operations-report.mts [--out=<f.json>] [--md=<f.md>]
  *        [--since-hours=48]
  */
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { writeFileSync } from 'node:fs';
 import { sourceIdentityHash } from '../../src/connectors/sourceIdentity.js';
 import { decideMode, type SourceEvidence } from '../../src/registry/operationalMode.js';
 import { accessDecision, type RobotsObserved } from '../../src/lib/accessDecision.js';
+import { publicJobSql } from '@catwalks/db/availability';
 import { objectStoreConfigured } from '../../src/retention/objectStore.js';
 
 const arg = (n: string) => process.argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
 const outJson = arg('out');
 const outMd = arg('md');
 const sinceHours = Number(arg('since-hours') ?? 48);
+if (!Number.isFinite(sinceHours) || sinceHours <= 0) throw new Error('since-hours must be positive');
 
 const p = new PrismaClient();
 type Row = Record<string, any>;
@@ -58,9 +60,10 @@ const report = await p.$transaction(async (tx) => {
   const runsOf = new Map<string, Row[]>();
   for (const r of runs) runsOf.set(r.sourceKey, [...(runsOf.get(r.sourceKey) ?? []), r]);
 
-  const published = await tx.$queryRawUnsafe<Row[]>(
-    `SELECT js."sourceKey", COUNT(*)::int n FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
-     WHERE js."isActive" AND j."isActive" GROUP BY 1`);
+  const at = new Date();
+  const published = await tx.$queryRaw<Row[]>(Prisma.sql`
+    SELECT js."sourceKey", COUNT(*)::int n FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
+    WHERE js."isActive" AND (js."expiresAt" IS NULL OR js."expiresAt" > ${at}) AND ${publicJobSql(Prisma.raw('j'), at)} GROUP BY 1`);
   const pubOf = new Map(published.map((r) => [r.sourceKey, Number(r.n)]));
 
   const events = await tx.$queryRawUnsafe<Row[]>(
@@ -75,10 +78,10 @@ const report = await p.$transaction(async (tx) => {
   const closedOf = new Map(closed.map((r) => [r.sourceKey, Number(r.n)]));
 
   const hot = await tx.$queryRawUnsafe<Row[]>(
-    `SELECT COUNT(*)::int lignes, pg_size_pretty(pg_total_relation_size('"SourceObservation"')) taille,
-            MIN("observedAt") plusAncienne FROM "SourceObservation"`);
+    `SELECT COUNT(*)::int lignes, pg_size_pretty(pg_total_relation_size('"RawBlobBody"')) taille,
+            MIN(b."createdAt") plusAncienne FROM "RawBlobBody" h JOIN "RawBlob" b ON b.hash = h.hash`);
   const archives = await tx.$queryRawUnsafe<Row[]>(
-    `SELECT COUNT(*)::int pointeurs, COUNT(DISTINCT "archiveUri")::int archives FROM "ObservationArchiveRef"`);
+    `SELECT COUNT(*)::int pointeurs, COUNT(DISTINCT uri)::int archives FROM "RawBlobArchive"`);
 
   const lignes = sources.map((s) => {
     const rev = reviewOf.get(s.key);
@@ -106,14 +109,7 @@ const report = await p.$transaction(async (tx) => {
       publiees: pubOf.get(s.key) ?? 0,
       limitations429: evOf(s.key, 'http.rate_limited'),
       retenues: evOf(s.key, 'job.publication_held'),
-      /**
-       * `job.write_failed` mélange DEUX faits qui n'appellent pas la même réaction : une porte d'identité
-       * qui refuse (comportement voulu — P8 : « aucune identité inventée ») et une écriture réellement en
-       * échec (défaut à corriger). Mesuré sur 48 h : les 21 événements sont **tous** des refus d'identité
-       * (`saks` 9, `mecca` 9, `knitwell-us-retail` 3). Les compter ensemble ferait lire une garde saine
-       * comme une panne.
-       */
-      refusIdentite: evOf(s.key, 'job.write_failed'),
+      echecsEcriture: evOf(s.key, 'job.write_failed'),
       fermetures: closedOf.get(s.key) ?? 0,
     };
   });
@@ -128,7 +124,7 @@ const report = await p.$transaction(async (tx) => {
       publiees: lignes.reduce((s, l) => s + l.publiees, 0),
       limitations429: lignes.reduce((s, l) => s + l.limitations429, 0),
       retenues: lignes.reduce((s, l) => s + l.retenues, 0),
-      refusIdentite: lignes.reduce((s, l) => s + l.refusIdentite, 0),
+      echecsEcriture: lignes.reduce((s, l) => s + l.echecsEcriture, 0),
       fermetures: lignes.reduce((s, l) => s + l.fermetures, 0),
     },
     stockage: {
@@ -146,10 +142,10 @@ if (outMd) {
   const esc = (v: unknown) => String(v ?? '—').replace(/\|/g, '\\|');
   writeFileSync(outMd,
     `# Rapport d'exploitation\n\n> ${report.at} — fenêtre ${report.fenetreHeures} h.\n\n` +
-    `| Source | Maison | Mode | Dernier run | h | Volume | Variation | Publiées | 429 | Retenues | Refus identité | Fermetures |\n` +
+    `| Source | Maison | Mode | Dernier run | h | Volume | Variation | Publiées | 429 | Retenues | Échecs d’écriture | Actuellement fermées depuis le début de la fenêtre |\n` +
     `|---|---|---|---|--:|--:|--:|--:|--:|--:|--:|--:|\n` +
     report.lignes.map((l) => `| ${[l.source, l.maison, l.mode, l.dernierStatut, l.heuresDepuisDernierRun,
-      l.volumeActuel, l.variation, l.publiees, l.limitations429, l.retenues, l.refusIdentite, l.fermetures].map(esc).join(' | ')} |`).join('\n') + '\n');
+      l.volumeActuel, l.variation, l.publiees, l.limitations429, l.retenues, l.echecsEcriture, l.fermetures].map(esc).join(' | ')} |`).join('\n') + '\n');
 }
 const { lignes, ...resume } = report;
 console.log(JSON.stringify(resume, null, 1));

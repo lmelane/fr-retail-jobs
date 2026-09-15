@@ -177,9 +177,8 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
     }
     for (const observation of plan.observations ?? []) {
       const contentHash = createHash('sha256').update(JSON.stringify(observation.raw)).digest('hex');
-      await tx.sourceObservation.upsert({
-        where: { sourceKey_externalId_contentHash: { sourceKey: observation.sourceKey, externalId: observation.externalId, contentHash } },
-        create: { ...observation, observedAt: new Date(observation.observedAt), contentHash, pipelineVersion: PIPELINE_VERSION }, update: {},
+      await tx.sourceObservation.createMany({
+        data: [{ ...observation, observedAt: new Date(observation.observedAt), contentHash, pipelineVersion: PIPELINE_VERSION }], skipDuplicates: true,
       });
     }
     const records: Prisma.DataCorrectionCreateManyInput[] = [];

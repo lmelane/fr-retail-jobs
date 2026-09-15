@@ -1,3 +1,4 @@
+import { captureObservedAt } from '../../capture/context.js';
 import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
 import { createHash } from 'node:crypto';
@@ -160,7 +161,7 @@ export async function fetchJobaffinityWordpressJobs(config: Record<string, unkno
 export function applyJobaffinityEvidence(job: NormalizedJob, application: ApplicationEvidence): void {
   if (application.url !== job.url) throw new Error('Application evidence identity mismatch');
   if (application.state === 'CLOSED') {
-    application.checkedAt ??= new Date().toISOString();
+    application.checkedAt ??= captureObservedAt().toISOString();
     job.publicationHold = application.status === 200 ? 'APPLICATION_EXPLICITLY_CLOSED' : `APPLICATION_HTTP_${application.status}`;
     job.publicationWithdrawnAt = new Date(application.checkedAt);
   } else if (application.heading) {

@@ -40,9 +40,9 @@ describe('deadline backfill from original source payloads', () => {
       expiresAt: new Date('2026-10-01T12:00:00Z'), expiryEvidence: { path: '$.detail.jobPostingInfo.endDate', value: '2026-09-30' },
     });
     expect(await db.dataCorrection.count({ where: { finding: 'SOURCE_DECLARED_EXPIRY' } })).toBe(auditBefore + 1);
-    expect(await db.sourceObservation.findUniqueOrThrow({ where: { sourceKey_externalId_contentHash: {
-      sourceKey: key, externalId: 'a', contentHash: first.plan.entries[0].rawHash,
-    } } })).toMatchObject({ raw: payload });
+    expect(await db.sourceObservation.findFirstOrThrow({ where: {
+      sourceKey: key, externalId: 'a', contentHash: first.plan.entries[0].rawHash, annotationHash: '',
+    } })).toMatchObject({ raw: payload });
     expect((await planSourceExpiries(db, [key])).plan.entries.map(entry => entry.id)).toEqual(['js-b']);
   });
 

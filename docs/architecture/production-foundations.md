@@ -6,7 +6,7 @@ Décision de travail du **15 septembre 2026**, fondée sur le code et l’[audit
 
 | Périmètre | Implémentation vérifiée | Écart à traiter |
 |---|---|---|
-| Collecte externe | `apps/aggregator`, 43 kinds au registre ; `Source`, `JobSource`, `SourceObservation` | RAW parfois réduit par l’adaptateur avant conservation ; sources actives sans validation récente complète |
+| Collecte externe | `apps/aggregator`, 43 kinds au registre ; `Source`, `JobSource`, `SourceObservation` | Capture native ajoutée localement au lot 2 ; collecte de production encore historique et sources à qualifier |
 | Catalogue externe | `packages/db` ; `Job` et ses représentations | Modèle encore centré sur un propriétaire canonique ; rapprochements trop permissifs, champs perdus à la réattestation |
 | API du catalogue | `apps/api`, service Railway `catwalks-api` | `marche` ne borne pas encore tous les résultats ; suggestions et facettes ne partagent pas un contrat strict |
 | Site candidat | Dépôt privé `catwalks-front-end` ; `/emplois` et `/offres` | Deux circuits de lecture ; le catalogue commun décrit ci-dessous n’existe pas encore |
@@ -51,6 +51,10 @@ Les identifiants stables, les codes pays et les URL SEO peuvent rester normalis�
 Le [contrat partagé](../../packages/db/availability.ts) exige une offre active, non fusionnée et au moins une publication active sans échéance dépassée. Échéance et preuve vivent sur `JobSource` ; le RAW natif et son chemin justifient la date. Une capture partielle ne supprime pas une échéance prouvée. Une date sans heure suit la fin du jour partout dans le monde ; les valeurs hors plage de stockage restent natives, avec un statut explicite et aucun instant inventé.
 
 La disparition exige une énumération complète, récente, corrélée au même cycle et aux identifiants natifs. L’état ACTIVE du registre ou un compteur de santé ne suffit pas. Une maintenance bornée fige preuve, état avant, conséquence et limites dans `MaintenancePlan`, immuable et chargé par empreinte ; elle revalide sous verrou et journalise chaque mutation ou saut avec `DataCorrection`. La reprise est idempotente. Les règles et commandes actuelles sont dans la [documentation ops](../../apps/aggregator/scripts/ops/README.md) ; les [preuves du lot 1](../../audits/reprise-2026-09-15/lot-1.md) indiquent les limites et le statut local.
+
+### Capture implémentée au lot 2
+
+Le [contrat de capture et rétention](native-capture.md) décrit les réponses archivées avant parsing, les sorties immuables par offre, leur lien au catalogue, le rejeu hors ligne et le passage en archive après relecture vérifiée. Les anciennes sorties d’adaptateur restent explicitement historiques lorsqu’aucune réponse native n’existe. La qualification du champ par champ et des sources reste à achever dans les lots suivants.
 
 ## 3. Deux origines, une recherche et deux candidatures
 

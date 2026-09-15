@@ -1,3 +1,4 @@
+import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
@@ -223,7 +224,7 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
       pageIds.push(externalId);
       if (!take(job, externalId)) repeatedIds += 1;
     }
-    shared.pageEvidence.push({ url: `${shared.endpoint}#offset=${offset}${suffix}`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
+    shared.pageEvidence.push({ url: `${shared.endpoint}#offset=${offset}${suffix}`, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
       /**
        * `ids` EST déjà l'identifiant canonique chez Workday : `externalPath.split('/').pop()` alimente à la
        * fois `take()` — donc `NormalizedJob.externalId` — et cette preuve. On le DÉCLARE explicitement plutôt
@@ -268,7 +269,7 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
         pageIds.push(externalId);
         if (take(job, externalId)) freshInSweep += 1;
       }
-      shared.pageEvidence.push({ url: `${shared.endpoint}#offset=${offset}&sweep=2${suffix}`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
+      shared.pageEvidence.push({ url: `${shared.endpoint}#offset=${offset}&sweep=2${suffix}`, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
         ids: pageIds, canonicalIds: pageIds, publisherCounter: '', componentCounters: [`sweep=2`, `rows=${postings.length}`, `uniqueIds=${local.size}`, `freshInSweep=${freshInSweep}`] });
       if (postings.length === 0) break;
     }
@@ -312,7 +313,7 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
     publisherTotal = first.total ?? 0;
     const facet = first.facets?.find((f) => f.facetParameter === partitionFacet);
     const values = (facet?.values ?? []).filter((v): v is Required<WorkdayFacetValue> => Boolean(v.id && v.descriptor));
-    pageEvidence.push({ url: `${endpoint}#facets`, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(first)).digest('hex'), offset: 0, pagination: null,
+    pageEvidence.push({ url: `${endpoint}#facets`, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(first)).digest('hex'), offset: 0, pagination: null,
       ids: [], publisherCounter: publisherTotal ? `total=${publisherTotal}` : '', componentCounters: values.map((v) => `${partitionFacet}=${v.descriptor}:${v.count ?? ''}`) });
     // The site itself is read last: a posting that carries no value of the facet belongs to no partition
     // (Tapestry: 6 postings, career-fair and corporate rows without a brand) and keeps the detail-based attribution.
@@ -443,12 +444,12 @@ export function postedAtFromWorkday(postedOn?: string): Date | undefined {
   if (!postedOn) return undefined;
   const text = postedOn.toLowerCase();
   const day = 86_400_000;
-  if (/\btoday\b/.test(text)) return new Date();
-  if (/\byesterday\b/.test(text)) return new Date(Date.now() - day);
+  if (/\btoday\b/.test(text)) return captureObservedAt();
+  if (/\byesterday\b/.test(text)) return new Date(captureObservedAt().getTime() - day);
   const match = text.match(/(\d+)\+?\s+days?\s+ago/);
   if (!match) return undefined;
   if (text.includes('+')) return undefined; // "30+" = at least, not equals
-  return new Date(Date.now() - Number(match[1]) * day);
+  return new Date(captureObservedAt().getTime() - Number(match[1]) * day);
 }
 
 

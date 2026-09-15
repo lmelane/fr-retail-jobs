@@ -1,3 +1,5 @@
+> Bilan historique. Pour la capture et la rétention, le [contrat du 15 septembre 2026](../../../../docs/architecture/native-capture.md) remplace le mécanisme décrit ici. Les autres résultats restent datés et ne certifient pas l’état courant.
+
 # P8 — bilan final
 
 > Lot exécuté le 2026-09-13. Crons gelés (`0 0 29 2 *`, `PIPELINE_PAUSED=1`) du début à la fin.

@@ -10,10 +10,10 @@ import { resolveEmployer, recordEmployerObservation, type EmployerResolution } f
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { lockCompanyRows, lockSourceWrites } from '../lib/writeLocks.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
-import { createHash } from 'node:crypto';
 import { selectApplySource, SOURCE_PRIORITY } from '@catwalks/db/publications';
 import { hasRequisitionConflict } from './postingIdentity.js';
 import { blockingKey, isProbableDuplicate, type CandidateJob } from './match.js';
+import { archiveAdapterOutput } from '../capture/observations.js';
 import { classifySector, sectorForSource, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
 import { resolveCompany } from '../normalize/company.js';
@@ -87,6 +87,7 @@ export async function upsertDeduplicated(
   candidate: CandidateJob & { companyId: string },
   catalogue?: CompiledOccupationTaxonomy,
 ): Promise<UpsertResult> {
+  await archiveAdapterOutput(prisma, candidate);
   const taxonomy = catalogue ?? await loadOccupationTaxonomy(prisma);
   for (let attempt = 0; ; attempt++) {
     assertSourceRunning();
@@ -130,13 +131,6 @@ export async function upsertDeduplicated(
         // The failed canonical write rolled back. Archive the rejected evidence
         // separately, then surface the error so the run cannot attest absence.
         await prisma.$transaction(async tx => {
-          if (candidate.raw != null) {
-            const contentHash = createHash('sha256').update(JSON.stringify(candidate.raw)).digest('hex');
-            await tx.sourceObservation.upsert({
-              where: { sourceKey_externalId_contentHash: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, contentHash } },
-              create: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, contentHash, raw: candidate.raw as Prisma.InputJsonValue, pipelineVersion: PIPELINE_VERSION }, update: {},
-            });
-          }
           await recordEmployerObservation(tx, candidate, null, {
             company: null, rule: 'REVIEW_REQUIRED', rawEmployerName: error.rawEmployerName,
             normalizedEmployerName: normalizedEmployerName(error.rawEmployerName),
@@ -159,15 +153,6 @@ async function upsertInTransaction(
 ): Promise<UpsertResult> {
   const clusterKey = blockingKey(candidate);
   const now = new Date();
-  if (candidate.raw !== undefined && candidate.raw !== null) {
-    const payload = JSON.stringify(candidate.raw);
-    const contentHash = createHash('sha256').update(payload).digest('hex');
-    await prisma.sourceObservation.upsert({
-      where: { sourceKey_externalId_contentHash: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, contentHash } },
-      create: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, contentHash, raw: candidate.raw as Prisma.InputJsonValue, pipelineVersion: PIPELINE_VERSION, observedAt: now },
-      update: {},
-    });
-  }
 
   // Job.companyId is a foreign key, so the Company row has to exist first —
   // otherwise every single write fails on a constraint violation and the run
@@ -382,6 +367,7 @@ async function createJob(
         isActive: !expired,
         expiresAt: expiry?.expiresAt,
         expiryEvidence: expiry?.evidence,
+        captureBatchId: candidate.captureBatchId, captureOutputId: candidate.captureOutputId,
         raw: candidate.raw == null ? Prisma.DbNull : candidate.raw as Prisma.InputJsonValue,
       } },
       events: { create: { type: expired ? 'CLOSED' : 'OPENED', at: now } },
@@ -633,8 +619,10 @@ async function attachToExisting(
       isActive: available,
       ...expiryFields,
       raw: candidate.raw as Prisma.InputJsonValue | undefined,
+      captureBatchId: candidate.captureBatchId, captureOutputId: candidate.captureOutputId,
     },
-    update: { url: candidate.url, title: candidate.title, postedAt: candidate.postedAt, sourceTier: candidate.sourceTier, lastSeenAt: now, isActive: available, ...expiryFields, raw: candidate.raw as Prisma.InputJsonValue | undefined },
+    update: { url: candidate.url, title: candidate.title, postedAt: candidate.postedAt, sourceTier: candidate.sourceTier, lastSeenAt: now, isActive: available, ...expiryFields,
+      captureBatchId: candidate.captureBatchId ?? null, captureOutputId: candidate.captureOutputId ?? null, raw: candidate.raw as Prisma.InputJsonValue | undefined },
   });
 
   const owner = selectApplySource([

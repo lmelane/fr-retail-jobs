@@ -44,7 +44,7 @@ describe('transactional identity and source authority', () => {
     await prisma.source.delete({ where: { key: 'retirement-race' } });
   });
 
-  it('does not write after a deadline while waiting for a lifecycle lock', async () => {
+  it('does not mutate a job after a deadline while keeping the observation received before the lifecycle lock', async () => {
     const first = await upsertDeduplicated(prisma, candidate());
     const job = await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } });
     let ready!: () => void, release!: () => void;
@@ -64,7 +64,7 @@ describe('transactional identity and source authority', () => {
     await blocker;
     await check;
     expect((await prisma.job.findUniqueOrThrow({ where: { id: job.id } })).title).toBe('Store Manager');
-    expect(await prisma.sourceObservation.count()).toBe(1);
+    expect(await prisma.sourceObservation.count()).toBe(2);
   });
   it('serializes simultaneous copies from independent feeds into one job', async () => {
     const results = await Promise.all(Array.from({ length: 12 }, (_, i) =>
@@ -117,11 +117,11 @@ describe('transactional identity and source authority', () => {
     expect(await prisma.occupationObservation.count()).toBeGreaterThan(0);
   });
 
-  it('rolls back observations and company creation when the job write fails', async () => {
+  it('keeps observations and rolls back company creation when the job write fails', async () => {
     await expect(upsertDeduplicated(prisma, candidate({ salaryMin: 1e15 }))).rejects.toThrow();
     expect(await prisma.job.count()).toBe(0);
     expect(await prisma.company.count()).toBe(0);
-    expect(await prisma.sourceObservation.count()).toBe(0);
+    expect(await prisma.sourceObservation.count()).toBe(1);
   });
 
   it('an inactive employer cannot retain ownership after a board is reattested', async () => {

@@ -1,10 +1,10 @@
 # Audit de reprise Catwalks
 
-**15 septembre 2026. Audit initial terminé ; lots 0 et 1 validés localement. Les autres corrections restent dans les lots suivants.**
+**15 septembre 2026. Audit initial terminé ; lots 0 à 2 validés localement, archive S3 vérifiée sur un environnement Railway isolé. Les autres corrections restent dans les lots suivants.**
 
 Commencer par [le rapport A–J](/Users/lmelane/Downloads/catwalks-job-aggregator/audits/reprise-2026-09-15/rapport.md), puis [le plan en lots](/Users/lmelane/Downloads/catwalks-job-aggregator/audits/reprise-2026-09-15/plan.md).
 
-État de la reprise : [lot 0 — résultats, validations et limites](lot-0.md). [Lot 1 — disponibilité et maintenance](lot-1.md). Le rapport initial conserve ses constats datés ; les comptes rendus de lots décrivent les corrections ultérieures.
+État de la reprise : [lot 0 — résultats, validations et limites](lot-0.md). [Lot 1 — disponibilité et maintenance](lot-1.md). [Lot 2 — captures natives et rétention](lot-2.md). Le rapport initial conserve ses constats datés ; les comptes rendus de lots décrivent les corrections ultérieures.
 
 - [Inventaire Git / GitHub](/Users/lmelane/Downloads/catwalks-job-aggregator/audits/reprise-2026-09-15/inventaire-git.md)
 - [Catalogue des 536 sources](/Users/lmelane/Downloads/catwalks-job-aggregator/audits/reprise-2026-09-15/sources.csv)

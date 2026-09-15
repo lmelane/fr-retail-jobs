@@ -62,7 +62,7 @@ try {
       WHERE js."isActive" AND j."isActive" GROUP BY 1
     ), holds AS (
       SELECT "sourceKey", COUNT(DISTINCT "externalId")::int held
-      FROM "SourceObservation" WHERE raw->>'publicationHold' IS NOT NULL GROUP BY 1
+      FROM "SourceObservation" WHERE "publicationHold" IS NOT NULL GROUP BY 1
     ), reviews AS (
       SELECT DISTINCT ON (r."sourceKey") r."sourceKey", r.verdict, r.method, r."portalScope",
              r."officialDomain", r."proofUrl", r."checkedAt", r."sourceHash"

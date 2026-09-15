@@ -1,0 +1,221 @@
+{
+  "population": "stored adapter output; not full HTTP responses",
+  "totals": {
+    "rows": 85327,
+    "rawBytes": 723892072,
+    "distinctBodies": 82468,
+    "gzipBytes": 206309536
+  },
+  "byKind": {
+    "smartrecruiters-whitelabel": {
+      "bodies": 5859,
+      "rawBytes": 12021322,
+      "gzipBytes": 5875912
+    },
+    "teamtailor": {
+      "bodies": 5341,
+      "rawBytes": 47104123,
+      "gzipBytes": 11659383
+    },
+    "jobylon": {
+      "bodies": 31,
+      "rawBytes": 152473,
+      "gzipBytes": 70730
+    },
+    "workday": {
+      "bodies": 19702,
+      "rawBytes": 110038351,
+      "gzipBytes": 44249762
+    },
+    "successfactors": {
+      "bodies": 4206,
+      "rawBytes": 1900444,
+      "gzipBytes": 1301671
+    },
+    "flatchr": {
+      "bodies": 354,
+      "rawBytes": 2241415,
+      "gzipBytes": 1004410
+    },
+    "icims": {
+      "bodies": 1556,
+      "rawBytes": 7599276,
+      "gzipBytes": 3477766
+    },
+    "personio": {
+      "bodies": 186,
+      "rawBytes": 1002612,
+      "gzipBytes": 370546
+    },
+    "digitalrecruiters": {
+      "bodies": 783,
+      "rawBytes": 788775,
+      "gzipBytes": 329339
+    },
+    "greenhouse": {
+      "bodies": 2545,
+      "rawBytes": 28378375,
+      "gzipBytes": 8790786
+    },
+    "generic-listing": {
+      "bodies": 6175,
+      "rawBytes": 37407367,
+      "gzipBytes": 16752381
+    },
+    "recruitee": {
+      "bodies": 639,
+      "rawBytes": 8254348,
+      "gzipBytes": 1824551
+    },
+    "lever": {
+      "bodies": 820,
+      "rawBytes": 10674903,
+      "gzipBytes": 2475325
+    },
+    "wttj": {
+      "bodies": 674,
+      "rawBytes": 5664799,
+      "gzipBytes": 2002406
+    },
+    "workable": {
+      "bodies": 280,
+      "rawBytes": 1466167,
+      "gzipBytes": 643820
+    },
+    "talentview": {
+      "bodies": 80,
+      "rawBytes": 715609,
+      "gzipBytes": 267801
+    },
+    "talentsoft": {
+      "bodies": 353,
+      "rawBytes": 481262,
+      "gzipBytes": 250336
+    },
+    "bashtalents": {
+      "bodies": 4,
+      "rawBytes": 203,
+      "gzipBytes": 271
+    },
+    "geodirectory": {
+      "bodies": 110,
+      "rawBytes": 1490527,
+      "gzipBytes": 394573
+    },
+    "jobaffinity-wordpress": {
+      "bodies": 978,
+      "rawBytes": 7494816,
+      "gzipBytes": 2798897
+    },
+    "oraclehcm": {
+      "bodies": 1202,
+      "rawBytes": 11060611,
+      "gzipBytes": 3818639
+    },
+    "taleo": {
+      "bodies": 1,
+      "rawBytes": 22,
+      "gzipBytes": 42
+    },
+    "talentfunnel": {
+      "bodies": 153,
+      "rawBytes": 1068696,
+      "gzipBytes": 462259
+    },
+    "magnet": {
+      "bodies": 487,
+      "rawBytes": 5438302,
+      "gzipBytes": 1530789
+    },
+    "eightfold": {
+      "bodies": 2726,
+      "rawBytes": 1153795,
+      "gzipBytes": 805854
+    },
+    "volcanic": {
+      "bodies": 31,
+      "rawBytes": 254180,
+      "gzipBytes": 69887
+    },
+    "phenom": {
+      "bodies": 5297,
+      "rawBytes": 41713640,
+      "gzipBytes": 13456945
+    },
+    "talentrecruiter": {
+      "bodies": 17,
+      "rawBytes": 129548,
+      "gzipBytes": 44098
+    },
+    "easycruit": {
+      "bodies": 50,
+      "rawBytes": 641400,
+      "gzipBytes": 164872
+    },
+    "avature": {
+      "bodies": 1105,
+      "rawBytes": 82068,
+      "gzipBytes": 97269
+    },
+    "wordpress": {
+      "bodies": 478,
+      "rawBytes": 9473757,
+      "gzipBytes": 2287457
+    },
+    "lvmh_algolia": {
+      "bodies": 6417,
+      "rawBytes": 74970309,
+      "gzipBytes": 16893549
+    },
+    "radancy": {
+      "bodies": 53,
+      "rawBytes": 702156,
+      "gzipBytes": 200909
+    },
+    "eqwa": {
+      "bodies": 321,
+      "rawBytes": 89400,
+      "gzipBytes": 77788
+    },
+    "ashby": {
+      "bodies": 83,
+      "rawBytes": 1099000,
+      "gzipBytes": 270051
+    },
+    "rituals": {
+      "bodies": 1245,
+      "rawBytes": 7828160,
+      "gzipBytes": 2227588
+    },
+    "typesense": {
+      "bodies": 47,
+      "rawBytes": 205909,
+      "gzipBytes": 80453
+    },
+    "harri": {
+      "bodies": 36,
+      "rawBytes": 218141,
+      "gzipBytes": 91162
+    },
+    "swatchgroup": {
+      "bodies": 293,
+      "rawBytes": 668023,
+      "gzipBytes": 320448
+    },
+    "jibe": {
+      "bodies": 10290,
+      "rawBytes": 265023572,
+      "gzipBytes": 54776690
+    },
+    "wttj-sector": {
+      "bodies": 1396,
+      "rawBytes": 12091947,
+      "gzipBytes": 3976647
+    },
+    "altamira": {
+      "bodies": 64,
+      "rawBytes": 233752,
+      "gzipBytes": 115474
+    }
+  }
+}

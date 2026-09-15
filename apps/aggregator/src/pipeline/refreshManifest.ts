@@ -25,13 +25,13 @@ export function evidenceHash(value: unknown): string {
 export function refreshSnapshot(job: { id: string; companyId: string; isActive: boolean; mergedIntoId: string | null;
   closedAt: Date | null; withdrawnAt: Date | null; withdrawalReason: string | null; reopenedCount: number;
   canonicalSourceKey: string | null; canonicalExternalId: string | null; canonicalTier: string | null; url: string;
-  sources: { id: string; jobId: string; sourceKey: string; externalId: string; sourceTier: string; isActive: boolean; lastSeenAt: Date; expiresAt: Date | null; expiryEvidence: unknown; url: string }[] }) {
+  sources: { id: string; jobId: string; sourceKey: string; externalId: string; sourceTier: string; isActive: boolean; lastSeenAt: Date; expiresAt: Date | null; expiryEvidence: unknown; url: string; captureBatchId?: string | null; captureOutputId?: string | null }[] }) {
   return JSON.parse(JSON.stringify({ id: job.id, companyId: job.companyId, isActive: job.isActive, mergedIntoId: job.mergedIntoId,
     closedAt: job.closedAt, withdrawnAt: job.withdrawnAt, withdrawalReason: job.withdrawalReason, reopenedCount: job.reopenedCount,
     canonicalSourceKey: job.canonicalSourceKey, canonicalExternalId: job.canonicalExternalId, canonicalTier: job.canonicalTier, url: job.url,
     sources: job.sources.map(source => ({ id: source.id, jobId: source.jobId, sourceKey: source.sourceKey, externalId: source.externalId,
       sourceTier: source.sourceTier, isActive: source.isActive, lastSeenAt: source.lastSeenAt, expiresAt: source.expiresAt,
-      expiryEvidence: source.expiryEvidence, url: source.url })).sort((a, b) => a.id.localeCompare(b.id)),
+      expiryEvidence: source.expiryEvidence, captureBatchId: source.captureBatchId ?? null, captureOutputId: source.captureOutputId ?? null, url: source.url })).sort((a, b) => a.id.localeCompare(b.id)),
   }));
 }
 

@@ -30,6 +30,7 @@ import { runGeocode } from './geocodeJobs.js';
 import { purgeStaleForSource } from './purge.js';
 import { isTrustedForAttestation } from './attestation.js';
 import { fetchAtsJobs } from '../ats/index.js';
+import { captureExtraction } from '../capture/batch.js';
 
 /**
  * INGEST — picks up new and updated offers.
@@ -310,7 +311,8 @@ async function ingestApiSource(
    * endroits opposés, et les confondre enverrait optimiser la mauvaise moitié.
    */
   const fetchStartedAt = Date.now();
-  const { jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = await fetchAtsJobs(type as never, config);
+  const { jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = await captureExtraction(
+    prisma, stats.source, config, log.runId(), () => fetchAtsJobs(type as never, config), type);
   stats.fetchMs = Date.now() - fetchStartedAt;
   // One durable source-level event retains the reason behind completeness.
   // The operational logger stores large proofs in PipelineEvent and prints

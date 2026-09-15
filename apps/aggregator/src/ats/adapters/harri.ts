@@ -1,3 +1,4 @@
+import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
 import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
@@ -77,7 +78,7 @@ export async function fetchHarriJobs(config: Record<string, unknown>): Promise<A
       if (listings.has(row.id)) issues.push(`REPEATED_POSTING_ID:${row.id}`);
       else listings.set(row.id, row);
     }
-    pageEvidence.push({ url: SEARCH, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'), offset: start,
+    pageEvidence.push({ url: SEARCH, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'), offset: start,
       pagination: { start: start + 1, end: start + rows.length, total: expected }, ids,
       publisherCounter: String(expected), componentCounters: [JSON.stringify(body)] });
     if (issues.length || rejectedRows.length) break;
@@ -90,7 +91,7 @@ export async function fetchHarriJobs(config: Record<string, unknown>): Promise<A
   const jobs = await Promise.all([...listings.values()].map(listing => limit(async (): Promise<NormalizedJob> => {
     const detailUrl = `${API}/core-reader/api/v1/profile/job/${listing.id}`;
     let detail: Detail | undefined, detailReadError: string | undefined;
-    const observedAt = new Date();
+    const observedAt = captureObservedAt();
     try {
       const result = await fetchJson<{ data?: { job?: Detail } }>(detailUrl);
       if (result.data?.job?.id !== listing.id) throw new Error('HARRI_DETAIL_ID_MISMATCH');

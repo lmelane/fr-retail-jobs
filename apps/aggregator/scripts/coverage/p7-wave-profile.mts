@@ -59,7 +59,7 @@ try {
          correctement l'offre, ce que l'on constate par la présence d'un JobSource actif de même externalId. */
       SELECT o."sourceKey", count(*) AS held
       FROM "SourceObservation" o
-      WHERE o.raw ? 'publicationHold'
+      WHERE o."publicationHold" IS NOT NULL
         AND NOT EXISTS (
           SELECT 1 FROM "JobSource" js
           WHERE js."sourceKey" = o."sourceKey" AND js."externalId" = o."externalId" AND js."isActive"

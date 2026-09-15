@@ -10,6 +10,7 @@ import { detectChallenge } from './responseIntegrity.js';
 import { publicDispatcher } from './publicTransport.js';
 import { sessionHeaders, rememberSessionCookies } from './httpSession.js';
 import { recordAttempt, recordResponse, recordFailure } from '../observability/httpTelemetry.js';
+import { capturingResponses, captureResponse, replayResponse, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
 
 export { WafChallengeError } from './wafToken.js';
 export { detectChallenge, type ChallengeVendor } from './responseIntegrity.js';
@@ -55,6 +56,13 @@ const maxBodyBytes = Number(process.env.HTTP_MAX_BODY_BYTES ?? 20_000_000);
  */
 export const DEFAULT_DETAIL_CONCURRENCY = 4;
 
+export class IncompleteBodyError extends Error {
+  constructor(cause: unknown, readonly prefix: Buffer) {
+    super(cause instanceof Error ? cause.message : 'Incomplete response body', { cause });
+    this.name = 'IncompleteBodyError';
+  }
+}
+
 /** Reads a body with a hard time budget and a size cap. */
 export async function readBytesBounded(response: Response, url: string): Promise<Buffer> {
   const body = response.body;
@@ -83,13 +91,16 @@ export async function readBytesBounded(response: Response, url: string): Promise
         }),
       ]).finally(() => clearTimeout(timer!));
       if (chunk.done) break;
+      if (size + chunk.value.byteLength > maxBodyBytes) {
+        chunks.push(Buffer.from(chunk.value.subarray(0, Math.max(0, maxBodyBytes - size))));
+        throw new Error(`body over ${maxBodyBytes} bytes for ${url}`);
+      }
       size += chunk.value.byteLength;
-      if (size > maxBodyBytes) throw new Error(`body over ${maxBodyBytes} bytes for ${url}`);
       chunks.push(Buffer.from(chunk.value));
     }
   } catch (error) {
     reader.cancel().catch(() => {});
-    throw error;
+    throw new IncompleteBodyError(error, Buffer.concat(chunks));
   }
   return Buffer.concat(chunks);
 }
@@ -177,6 +188,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
     const controller = new AbortController();
     let timer: ReturnType<typeof setTimeout> | undefined;
     let startedAt = 0;
+    let attemptCaptured = false;
     try {
       // Every request passes through the per-host gate — the global politeness
       // that stops us throttling a shared host (ELC, Richemont, Beaumanoir…) in
@@ -184,7 +196,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       // F-01: the timeout clock starts AFTER the gate grants the slot — time
       // spent queued behind a backed-off host is not the request's fault, and
       // starting the timer early expired requests before they even began.
-      const response = await withHostGate(url, () => {
+      let response = await withHostGate(url, async () => {
         assertSourceRunning();
         log.count('http.attempts');
         if (i > 0) log.count('http.retries');
@@ -196,6 +208,8 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         noteRequest(rateLimitKeyFor(url));
         startedAt = Date.now();
         timer = setTimeout(() => controller.abort(), timeoutMs);
+        const replayed = await replayResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE' });
+        if (replayed) return replayed;
         return fetchFollowingSafely(
           url,
           {
@@ -209,6 +223,24 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
           AbortSignal.any([controller.signal, ...[sourceSignal(), init.signal].filter((s): s is AbortSignal => !!s)]),
         );
       });
+      if (capturingResponses()) {
+        let bytes: Buffer;
+        try { bytes = await readBytesBounded(response, url); }
+        catch (error) {
+          await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE' },
+            { status: response.status, headers: response.headers, bytes: error instanceof IncompleteBodyError ? error.prefix : null,
+              complete: false, failure: error instanceof Error ? error.name : 'ReadError' });
+          attemptCaptured = true;
+          throw error;
+        }
+        await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE' },
+          { status: response.status, headers: response.headers, bytes, complete: true });
+        attemptCaptured = true;
+        const buffered = new Response([204, 205, 304].includes(response.status) ? null : bytes,
+          { status: response.status, statusText: response.statusText, headers: response.headers });
+        Object.defineProperty(buffered, 'url', { value: response.url || url });
+        response = buffered;
+      }
       log.count('http.responses');
       // `headers` peut manquer sur une réponse simulée : la télémétrie ne doit JAMAIS faire échouer une
       // requête réelle pour une grandeur accessoire. Sans en-tête, la taille est simplement inconnue.
@@ -282,12 +314,16 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         continue;
       }
     } catch (error) {
+      if (capturingResponses() && !attemptCaptured && !(error instanceof CaptureUnavailableError)) {
+        await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE' },
+          { bytes: null, complete: false, failure: error instanceof Error ? error.name : 'NetworkError' });
+      }
       assertSourceRunning();
       init.signal?.throwIfAborted();
       // A blocked URL will never become fetchable — do not waste retries on it.
       // L'arrêt d'un passage de MESURE est délibéré : le re-tenter reviendrait à ignorer la décision d'arrêt
       // — et à continuer de solliciter un portail qui vient de nous refuser.
-      if (error instanceof BenchmarkStoppedOn429Error) { if (timer) clearTimeout(timer); throw error; }
+      if (error instanceof BenchmarkStoppedOn429Error || error instanceof CaptureUnavailableError || error instanceof OfflineReplayError) { if (timer) clearTimeout(timer); throw error; }
       if (error instanceof BlockedUrlError || error instanceof WafChallengeError || error instanceof HttpStatusError) {
         if (timer) clearTimeout(timer);
         throw error;

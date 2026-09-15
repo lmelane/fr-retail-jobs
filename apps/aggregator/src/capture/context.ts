@@ -1,0 +1,103 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
+import { createHash } from 'node:crypto';
+
+export const digestBytes = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex');
+export type CaptureRequest = { url: string; method?: string; body?: RequestInit['body']; headers?: RequestInit['headers']; format: 'HTTP_RESPONSE' | 'BROWSER_RESPONSE' | 'RENDERED_DOM' };
+export type CaptureRecord = {
+  sequence: number; requestHash: string; requestUrl: string; method: string; format: CaptureRequest['format'];
+  status: number | null; headers: Record<string, string>; cookieNames: string[]; complete: boolean;
+  failure: string | null; bytes: Uint8Array | null;
+};
+type ReplayResponse = { bytes: Uint8Array | null; status: number | null; headers: Record<string, string>; cookieNames: string[]; complete: boolean; failure: string | null };
+export type CaptureContext = {
+  sequence: number;
+  observedAt?: Date;
+  replayWafCookies?: Map<string, string>;
+  write?: (record: CaptureRecord) => Promise<void>;
+  replay?: (hash: string) => Promise<ReplayResponse>;
+  failure?: CaptureUnavailableError;
+};
+const contexts = new AsyncLocalStorage<CaptureContext>();
+export class OfflineReplayError extends Error {
+  constructor(message: string) { super(message); this.name = 'OfflineReplayError'; }
+}
+export class CaptureUnavailableError extends Error {
+  constructor(cause: unknown) { super('Native response capture unavailable; extraction stopped', { cause }); this.name = 'CaptureUnavailableError'; }
+}
+export const withCaptureContext = <T>(context: CaptureContext, work: () => Promise<T>) => contexts.run(context, work);
+/** Stable extraction reference time; native receipts retain their own precise timestamps. */
+export const captureObservedAt = () => new Date(contexts.getStore()?.observedAt ?? Date.now());
+export const capturingResponses = () => Boolean(contexts.getStore()?.write);
+export const replayingResponses = () => Boolean(contexts.getStore()?.replay);
+/** Replay authentication state is isolated from earlier live requests in the same process. */
+export function replayWafCookie(url: string, prime = false): string | undefined {
+  const context = contexts.getStore();
+  if (!context?.replay) throw new Error('Replay cookie requires an offline capture context');
+  context.replayWafCookies ??= new Map();
+  const origin = new URL(url).origin;
+  if (prime) context.replayWafCookies.set(origin, 'aws-waf-token=archive-replay');
+  return context.replayWafCookies.get(origin);
+}
+export function assertCaptureHealthy() { const error = contexts.getStore()?.failure; if (error) throw error; }
+
+/** Preserve location identity, exclude all query values from the displayed audit URL.
+ * Exact request matching hashes the original URL/body and negotiation headers. */
+export function auditUrl(value: string): string {
+  const url = new URL(value);
+  url.username = ''; url.password = ''; url.hash = '';
+  for (const key of [...url.searchParams.keys()]) url.searchParams.set(key, '[VALUE OMITTED]');
+  return url.toString();
+}
+
+export function requestFingerprint(request: CaptureRequest): string {
+  let body: Uint8Array | string = '';
+  if (typeof request.body === 'string') body = request.body;
+  else if (request.body instanceof URLSearchParams) body = request.body.toString();
+  else if (request.body instanceof ArrayBuffer) body = new Uint8Array(request.body);
+  else if (ArrayBuffer.isView(request.body)) body = new Uint8Array(request.body.buffer, request.body.byteOffset, request.body.byteLength);
+  else if (request.body != null) throw new Error('Capture requires a reproducible string or byte request body');
+  const headers = new Headers(request.headers);
+  const negotiation = ['accept', 'accept-language', 'content-type'].map(name => [name, headers.get(name)]);
+  return digestBytes(JSON.stringify([request.format, request.method?.toUpperCase() ?? 'GET', request.url, digestBytes(body), negotiation]));
+}
+
+const HEADER_NAMES = ['content-type', 'content-encoding', 'content-language', 'content-length', 'date', 'last-modified', 'etag',
+  'retry-after', 'x-wp-total', 'x-wp-totalpages', 'x-amzn-waf-action'] as const;
+export async function captureResponse(request: CaptureRequest, response: {
+  status?: number; headers?: Headers; bytes: Uint8Array | null; complete: boolean; failure?: string;
+}): Promise<void> {
+  const context = contexts.getStore();
+  if (!context?.write) return;
+  assertCaptureHealthy();
+  try {
+    const headers = Object.fromEntries(HEADER_NAMES.flatMap(name => {
+      const value = response.headers?.get(name);
+      return value === null || value === undefined ? [] : [[name, value]];
+    }));
+    // Names suffice to replay session-dependent pagination. Values are never persisted.
+    const cookieNames = [...new Set((response.headers?.getSetCookie?.() ?? []).flatMap(cookie => {
+      const name = /^([^=;,\s]+)=/.exec(cookie)?.[1]; return name ? [name] : [];
+    }))];
+    const record: CaptureRecord = { sequence: context.sequence++, requestHash: requestFingerprint(request),
+      requestUrl: auditUrl(request.url), method: request.method?.toUpperCase() ?? 'GET', format: request.format,
+      status: response.status ?? null, headers, cookieNames, bytes: response.bytes, complete: response.complete, failure: response.failure ?? null };
+    await context.write(record);
+  } catch (cause) {
+    context.failure = new CaptureUnavailableError(cause);
+    throw context.failure;
+  }
+}
+
+/** A replay miss always throws; it must never fall through to a network call. */
+export async function replayResponse(request: CaptureRequest): Promise<Response | undefined> {
+  const replay = contexts.getStore()?.replay;
+  if (!replay) return undefined;
+  const record = await replay(requestFingerprint(request));
+  if (!record.complete || record.status === null || record.bytes === null) throw new OfflineReplayError(`Recorded incomplete response: ${record.failure ?? 'unknown'}`);
+  const headers = new Headers(record.headers);
+  for (const name of record.cookieNames) headers.append('set-cookie', `${name}=archive-replay; Path=/`);
+  const response = new Response([204, 205, 304].includes(record.status) ? null : Buffer.from(record.bytes),
+    { status: record.status, headers });
+  Object.defineProperty(response, 'url', { value: request.url });
+  return response;
+}

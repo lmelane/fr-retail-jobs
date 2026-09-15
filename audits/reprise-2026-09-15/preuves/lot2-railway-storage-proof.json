@@ -1,0 +1,13 @@
+{
+  "environment": "capture-validation-20260915",
+  "environmentId": "917b9a0b-6ec0-475d-b101-7cebcff9a5d8",
+  "region": "ams",
+  "services": 0,
+  "bucketId": "49ae6211-e181-4877-acc7-1c6fe5b80e37",
+  "storage": {
+    "sizeBytes": 567415,
+    "objectCount": 122
+  },
+  "anonymousAccessStatus": 403,
+  "anonymousCheckUsedExistingObject": true
+}

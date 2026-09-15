@@ -29,6 +29,9 @@ export type AtsDetection = {
  * can mean unpublished, unparsed or not yet fetched; RAW evidence distinguishes them.
  */
 export type NormalizedJob = {
+  /** Native response batch, outside adapter RAW and derived classification. */
+  captureBatchId?: string;
+  captureOutputId?: string;
   /** Stable id within a source. Falls back to the page URL when the source has none. */
   externalId: string;
   title: string;

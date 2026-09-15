@@ -80,7 +80,7 @@ try {
   /** 9. Les retenues de publication, intactes : leur RAW est conservé et rien n'est publié. */
   const holds: any[] = await p.$queryRaw`
     SELECT count(*)::int AS observations,
-           count(*) FILTER (WHERE raw ? 'publicationHold')::int AS held
+           count(*) FILTER (WHERE "publicationHold" IS NOT NULL)::int AS held
     FROM "SourceObservation"`;
   check('S9', 'les retenues de publication sont conservées (RAW préservé, rien de publié)',
     holds[0].observations >= holds[0].held, holds[0]);

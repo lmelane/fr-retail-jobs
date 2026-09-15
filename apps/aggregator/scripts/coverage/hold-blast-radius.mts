@@ -36,9 +36,9 @@ try {
         FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
         WHERE js."isActive" AND j."isActive" GROUP BY 1
       ), held AS (
-        SELECT o."sourceKey", o.raw->>'publicationHold' AS reason,
+        SELECT o."sourceKey", o."publicationHold" AS reason,
                COUNT(DISTINCT o."externalId")::int postings
-        FROM "SourceObservation" o WHERE o.raw->>'publicationHold' IS NOT NULL GROUP BY 1, 2
+        FROM "SourceObservation" o WHERE o."publicationHold" IS NOT NULL GROUP BY 1, 2
       ), held_by_source AS (
         SELECT "sourceKey", SUM(postings)::int held_postings,
                json_agg(json_build_object('reason', reason, 'postings', postings) ORDER BY postings DESC) reasons

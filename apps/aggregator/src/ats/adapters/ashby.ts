@@ -1,3 +1,4 @@
+import { captureObservedAt } from '../../capture/context.js';
 import { fetchJson } from '../../lib/http.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
@@ -19,7 +20,7 @@ export async function fetchAshbyJobs(config: Record<string, unknown>): Promise<A
   const endpoint = `https://api.ashbyhq.com/posting-api/job-board/${encodeURIComponent(board)}?includeCompensation=true`;
   const data = await fetchJson<{ apiVersion?: string; jobs?: AshbyJob[] }>(endpoint);
   if (data?.apiVersion !== '1' || !Array.isArray(data.jobs)) throw new Error('ASHBY_INVALID_FEED: expected API version 1 and jobs array');
-  const observedAt = new Date();
+  const observedAt = captureObservedAt();
   const jobs: NormalizedJob[] = [], rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
   for (const job of data.jobs) {
     // Job URL is also a durable source ID when the API omits its optional id.

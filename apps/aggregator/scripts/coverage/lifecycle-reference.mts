@@ -91,7 +91,7 @@ try {
      * That gap is the subject of item 8 of the lot.
      */
     const holds: any[] = await tx.$queryRaw`
-      SELECT o.raw->>'publicationHold' AS reason, COUNT(*)::int observations,
+      SELECT o."publicationHold" AS reason, COUNT(*)::int observations,
              COUNT(DISTINCT (o."sourceKey", o."externalId"))::int distinct_postings,
              COUNT(DISTINCT o."sourceKey")::int sources,
              MIN(o."observedAt") AS oldest, MAX(o."observedAt") AS newest,
@@ -100,11 +100,12 @@ try {
 
     /** Does a held posting ALSO exist as a published Job? If so the hold did not actually withhold anything. */
     const [heldAlsoPublished]: any[] = await tx.$queryRaw`
-      SELECT COUNT(DISTINCT (o."sourceKey", o."externalId"))::int held_postings,
-             COUNT(DISTINCT (js."sourceKey", js."externalId"))::int also_published_and_active
+      SELECT COUNT(DISTINCT (o."sourceKey", o."externalId"))::int postings_with_historical_hold,
+             COUNT(DISTINCT (js."sourceKey", js."externalId")) FILTER (WHERE j.id IS NOT NULL)::int represented_by_active_job
       FROM "SourceObservation" o
       LEFT JOIN "JobSource" js ON js."sourceKey" = o."sourceKey" AND js."externalId" = o."externalId" AND js."isActive"
-      LEFT JOIN "Job" j ON j.id = js."jobId" AND j."isActive"`;
+      LEFT JOIN "Job" j ON j.id = js."jobId" AND j."isActive"
+      WHERE o."publicationHold" IS NOT NULL`;
 
     /** Withdrawal reasons: an administrative act by Mode Careers is never an employer closure. */
     const withdrawals: any[] = await tx.$queryRaw`

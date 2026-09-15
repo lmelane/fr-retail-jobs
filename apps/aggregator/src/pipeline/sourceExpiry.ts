@@ -84,10 +84,9 @@ export async function applySourceExpiries(db: PrismaClient, plan: ExpiryBackfill
       // The deadline remains replayable after JobSource.raw changes. Existing
       // JSONB payloads may have a different key order from their first capture.
       const row = current.get(entry.id)!;
-      await tx.sourceObservation.upsert({
-        where: { sourceKey_externalId_contentHash: { sourceKey: entry.sourceKey, externalId: entry.externalId, contentHash: entry.rawHash } },
-        create: { sourceKey: entry.sourceKey, externalId: entry.externalId, contentHash: entry.rawHash,
-          raw: row.raw as Prisma.InputJsonValue, pipelineVersion: PIPELINE_VERSION, observedAt: row.lastSeenAt }, update: {},
+      await tx.sourceObservation.createMany({
+        data: [{ sourceKey: entry.sourceKey, externalId: entry.externalId, contentHash: entry.rawHash,
+          raw: row.raw as Prisma.InputJsonValue, pipelineVersion: PIPELINE_VERSION, observedAt: row.lastSeenAt }], skipDuplicates: true,
       });
       await tx.jobSource.update({ where: { id: entry.id }, data: { expiresAt: entry.expiresAt ? new Date(entry.expiresAt) : null, expiryEvidence: entry.evidence } });
     }

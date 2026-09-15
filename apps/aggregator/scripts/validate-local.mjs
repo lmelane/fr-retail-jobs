@@ -54,7 +54,10 @@ try {
   const endpoint = process.env.DOCKER_CONTEXT ? contextEndpoint : process.env.DOCKER_HOST || contextEndpoint;
   if (!endpoint?.startsWith('unix://')) throw Error('Validation requires a local Docker Unix socket');
   dockerEndpoint = endpoint;
-  await run('docker', ['pull', image]);
+  // An exact digest already cached locally is sufficient; registry availability
+  // must not block an otherwise isolated validation.
+  try { await run('docker', ['image', 'inspect', image], { capture: true }); }
+  catch { await run('docker', ['pull', image]); }
   container = name;
   await run('docker', ['create', '--name', name, '--label', 'catwalks.purpose=validation',
     '--publish', '127.0.0.1::5432', '--tmpfs', '/var/lib/postgresql:rw,size=1g',
