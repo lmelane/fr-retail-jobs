@@ -9,6 +9,13 @@ import { countryCode, rawValuesForCode } from './countries';
 import { searchSummary } from './job-search-query';
 import { offerIdCandidates } from './offer-url';
 import { facettesServies } from './facettes-marche';
+/*
+ * Le registre des marchés — RÉUTILISÉ, jamais recopié. `marche()` porte la
+ * liste des dix marchés mesurés et sa propre garde de type (un code absent,
+ * mal formé ou non mesuré rend `undefined`). Une liste de pays écrite ici
+ * dériverait du registre au premier marché ajouté, sans que rien ne le dise.
+ */
+import { marche } from '@catwalks/db/marches';
 
 /**
  * Prisma condition for a Pays filter code.
@@ -874,44 +881,231 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
  */
 const SUGGEST_LIMIT = 8;
 
-export async function suggestCities(query: string): Promise<string[]> {
+/**
+ * Échappe les métacaractères de `LIKE` dans une saisie utilisateur.
+ *
+ * Sans ça, un candidat qui tape « % » reçoit la liste des huit plus grosses
+ * villes du catalogue au lieu de rien, et « _ » fait correspondre n'importe
+ * quel caractère. Ce n'est pas une injection SQL — la valeur reste un
+ * paramètre lié — mais c'est un comportement faux, et il est visible : le
+ * panneau affiche des villes qui n'ont aucun rapport avec la frappe.
+ *
+ * `\` d'abord, sinon on ré-échapperait les antislashs qu'on vient d'ajouter.
+ */
+function echapperLike(valeur: string): string {
+  return valeur.replace(/\\/g, '\\\\').replace(/%/g, '\\%').replace(/_/g, '\\_');
+}
+
+/**
+ * LE CLOISONNEMENT DES VILLES PAR MARCHÉ (arbitrage CEO, option A).
+ *
+ * « Je sélectionne FR → je ne vois que des villes FR ; je sélectionne US →
+ * uniquement des villes US. » Cloisonnement STRICT, comme Indeed.
+ *
+ * ── LE DÉFAUT MESURÉ, ET SA TAILLE RÉELLE ─────────────────────────────────
+ *
+ * Mesuré en production le 2026-09-15 (`audits/mesures-d435-d436/
+ * villes-multi-pays-2026-09-15.mjs`, lecture seule, rejouable) : sur 6 824
+ * villes distinctes portant au moins un pays, **370 (5,4 %) existent dans
+ * PLUSIEURS pays**. Ce ne sont pas des villages homonymes : ce sont les plus
+ * grosses du catalogue.
+ *
+ *     PARIS         4 pays : BE ES FR US    3 712 offres
+ *     NEW YORK      2 pays : CA US          1 917 offres
+ *     LONDRES       4 pays : CA GB IT US    1 386 offres
+ *     LOS ANGELES   3 pays : CA CL US         402 offres
+ *
+ * Un candidat du marché français qui tape « Paris » reçoit aujourd'hui, dans
+ * la même liste et sans rien qui les distingue, le Paris de France (3 701
+ * offres), celui du Texas (9) et ceux de Belgique et d'Espagne (1 chacun). Il
+ * ne peut pas choisir, parce que la suggestion ne porte que le nom.
+ *
+ * ── LA NUANCE ARBITRÉE : LES OFFRES SANS PAYS ─────────────────────────────
+ *
+ * 4 888 offres actives (5,9 % du catalogue) n'ont aucun `countryCode` ; 3 949
+ * d'entre elles portent tout de même une ville, soit **1 168 villes distinctes
+ * qui disparaîtraient de TOUS les marchés** sous un cloisonnement nu. Le
+ * cloisonnement ne doit jamais produire une liste vide là où il y avait des
+ * résultats — c'est le point 5 de la commande, et c'est ce qui distingue un
+ * filtre d'une panne.
+ *
+ * D'où la DÉDUCTION, arbitrée elle aussi. Mesuré sur ces 1 168 villes :
+ *
+ *   · **487 (41,7 %) ne laissent AUCUN doute** — le même nom n'apparaît
+ *     ailleurs dans le catalogue qu'avec UN SEUL code pays. SHANGHAI → CN,
+ *     GLASGOW → GB, LEVALLOIS-PERRET → FR. Celles-là prennent ce pays ;
+ *   · **116 (9,9 %) sont ambiguës** — ABERDEEN (GB ou SD), BEDFORD (CA GB US),
+ *     RICHMOND (AU CA NZ US VA). On S'ABSTIENT : deviner le pays d'une ville,
+ *     c'est envoyer un candidat vers un marché qui n'est pas le sien, et il
+ *     n'a aucun moyen de s'en apercevoir ;
+ *   · **565 (48,4 %) n'ont aucune occurrence ailleurs**. Abstention aussi :
+ *     rien ne permet de trancher, et inventer serait pire que se taire.
+ *
+ * Les 681 villes des deux dernières lignes restent donc HORS suggestions dès
+ * qu'un marché est sélectionné — elles restent accessibles en recherche libre
+ * et en mondial, où rien ne change.
+ *
+ * ── OÙ VIT LA DÉDUCTION, ET CE QU'ELLE COÛTE ──────────────────────────────
+ *
+ * Elle vit dans LA REQUÊTE, pas dans une table dérivée. C'était l'arbitrage à
+ * poser, parce que cette route est appelée à chaque frappe (débounce 150 ms
+ * côté front) et que la latence se paie au clavier. Il a donc été MESURÉ, pas
+ * supposé — 11 passes, médiane, sur le catalogue de production
+ * (`audits/mesures-d435-d436/latence-suggest-villes-2026-09-15.mjs`, rejouable) :
+ *
+ *     requête actuelle, sans cloisonnement              97,2 ms
+ *     cloisonnée SANS déduction                         35,1 ms
+ *     cloisonnée AVEC déduction (une seule requête)    104,9 ms
+ *     (pire cas, préfixe « a » : 92,9 ms → 96,3 ms)
+ *
+ * ⚠️ CE QUE CES CHIFFRES NE PERMETTENT PAS DE DIRE. Deux exécutions
+ * successives de la MÊME mesure ont rendu -1,2 ms puis +7,7 ms sur « par ».
+ * L'écart entre deux mesures identiques dépasse donc l'effet cherché : la
+ * mesure est faite depuis un poste de travail vers une base distante, et la
+ * gigue réseau domine. Le seul énoncé honnête est **« le surcoût est inférieur
+ * à ~8 ms et indiscernable du bruit »** — pas « la déduction est gratuite »,
+ * qui serait une conclusion tirée de la passe la plus flatteuse.
+ *
+ * Ce qui porte réellement la décision est STRUCTUREL, et la mesure ne fait que
+ * le confirmer : la CTE `candidates` est bornée par le préfixe AVANT tout
+ * calcul, donc elle ne raisonne que sur les quelques centaines de lignes que
+ * la frappe a déjà sélectionnées — jamais sur les 83 431 offres. Une table
+ * dérivée aurait ajouté un objet à maintenir, un rafraîchissement à
+ * ordonnancer et une fenêtre de péremption, pour un gain au plus de quelques
+ * millisecondes, non mesurable ici. `YAGNI` n'est pas une préférence de style
+ * dans ce cas : c'est ce que dit la mesure, avec son incertitude.
+ *
+ * ── LA DÉGRADATION EST SÛRE, ET C'EST L'INVARIANT LE PLUS IMPORTANT ───────
+ *
+ * Sans marché (`undefined`, chaîne vide) ou avec un marché INCONNU du registre
+ * — la Belgique, la Chine, et les 109 autres pays du catalogue que personne
+ * n'a mesurés — la fonction sert **exactement** ce qu'elle servait avant ce
+ * lot : le monde entier, ordonné par volume. Se tromper en servant une ville
+ * de trop coûte un clic ; se tromper en la masquant retire au candidat une
+ * ville qui existe, sans message et sans recours.
+ */
+type SuggestionVilleBrute = { city: string; n: bigint | number };
+
+export async function suggestCities(query: string, marcheCode?: string): Promise<string[]> {
   if (!process.env.DATABASE_URL) return [];
   const q = query.trim();
   if (q.length < 2) return [];
   try {
-    const rows = await prisma.job.groupBy({
-      by: ['city'],
-      where: {
-        isActive: true,
-        // World, not FR-only (revises D12): the board defaults to every country,
-        // so typing "Milan" must surface Milan — otherwise the world offers are
-        // unreachable from the search box. Ordered by frequency, so the busiest
-        // cities (Paris, London…) still lead.
-        city: { startsWith: q, mode: 'insensitive' },
-      },
-      _count: { _all: true },
-      orderBy: { _count: { city: 'desc' } },
-      // Plus large que la limite : la colonne mélange les casses (« Paris » /
-      // « PARIS » sont des groupes distincts) — on déduplique ensuite.
-      take: SUGGEST_LIMIT * 3,
-    });
-    // Dédup insensible à la casse : on garde la graphie du groupe le plus
-    // fréquent (les lignes arrivent triées par volume desc). Sans ça le
-    // panneau montrait « Paris » ET « PARIS » — vu en prod.
-    const seen = new Set<string>();
-    const cities: string[] = [];
-    for (const row of rows) {
-      if (!row.city) continue;
-      const key = row.city.toLowerCase();
-      if (seen.has(key)) continue;
-      seen.add(key);
-      cities.push(row.city);
-      if (cities.length >= SUGGEST_LIMIT) break;
+    /*
+     * Le registre `@catwalks/db/marches` est la SEULE source des pays d'un
+     * marché — on ne recrée pas de table ici. `marche()` rend `undefined` sur
+     * tout ce qui n'est pas un code mesuré, y compris `undefined` lui-même,
+     * un nombre ou un objet : la garde de type vit là-bas, pas ici.
+     *
+     * Un marché du registre est aujourd'hui un pays unique (`code`). La
+     * variable est néanmoins une LISTE parce que le modèle produit du site
+     * associe déjà plusieurs pays à un marché (DE → DE+AT, GB → GB+IE) : écrire
+     * `= $pays` au lieu de `= ANY($pays)` obligerait à réécrire le SQL le jour
+     * où le registre suit, et ce jour-là personne ne se souviendrait pourquoi.
+     */
+    const m = marche(marcheCode ?? '');
+    const paysDuMarche: readonly string[] = m ? [m.code] : [];
+
+    const prefixe = `${echapperLike(q)}%`;
+    /*
+     * Plus large que la limite : la colonne mélange les casses (« Paris » /
+     * « PARIS » sont des groupes distincts) — on déduplique ensuite en JS.
+     */
+    const brut = SUGGEST_LIMIT * 3;
+
+    /*
+     * SANS MARCHÉ — le chemin d'avant ce lot, inchangé, mot pour mot.
+     * Aucun `countryCode` n'entre dans la clause : le comportement mondial est
+     * préservé à l'identique, et c'est le témoin qui le vérifie.
+     */
+    if (!paysDuMarche.length) {
+      const rows = await prisma.job.groupBy({
+        by: ['city'],
+        where: {
+          isActive: true,
+          // World, not FR-only (revises D12): the board defaults to every
+          // country, so typing "Milan" must surface Milan — otherwise the world
+          // offers are unreachable from the search box. Ordered by frequency,
+          // so the busiest cities (Paris, London…) still lead.
+          city: { startsWith: q, mode: 'insensitive' },
+        },
+        _count: { _all: true },
+        orderBy: { _count: { city: 'desc' } },
+        take: brut,
+      });
+      return dedupliquerVilles(rows.map((r) => r.city));
     }
-    return cities;
+
+    /*
+     * AVEC MARCHÉ — cloisonnement strict + déduction, en une seule requête.
+     *
+     * `candidates` : les offres actives dont la ville commence par la frappe.
+     * C'est le SEUL balayage, et il est borné par le préfixe — d'où le coût
+     * mesuré nul de la déduction (voir le bloc ci-dessus).
+     *
+     * `deduit` : parmi ces candidates, les villes dont les offres AVEC pays
+     * n'en portent qu'UN SEUL (`HAVING COUNT(DISTINCT …) = 1`). C'est la règle
+     * d'abstention, écrite en SQL : deux pays ou plus, la ligne n'existe pas,
+     * donc la jointure ne rend rien et la ville reste hors suggestions.
+     *
+     * `COALESCE(c.pays, d.p)` : le pays de l'offre s'il existe, sinon celui
+     * déduit. Une offre sans pays dont la ville est ambiguë garde `NULL`, et
+     * `NULL = ANY(...)` est `NULL` — donc faux, donc écartée. L'abstention est
+     * portée par la logique ternaire de SQL, pas par un `if` ajouté à côté.
+     *
+     * La clé de rapprochement est `UPPER(TRIM(city))` : la colonne mélange les
+     * casses et porte des espaces de bord. Comparer sur la graphie brute
+     * traiterait « Paris » et « PARIS » comme deux villes distinctes et ferait
+     * échouer la déduction là où elle est justement nécessaire.
+     */
+    const rows = await prisma.$queryRaw<SuggestionVilleBrute[]>`
+      WITH candidates AS (
+        SELECT "city", UPPER(TRIM("city")) AS cle, "countryCode" AS pays
+          FROM "Job"
+         WHERE "isActive" AND "city" ILIKE ${prefixe}
+      ),
+      deduit AS (
+        SELECT cle, MIN(pays) AS p
+          FROM candidates
+         WHERE pays IS NOT NULL
+         GROUP BY cle
+        HAVING COUNT(DISTINCT pays) = 1
+      )
+      SELECT c."city" AS city, COUNT(*)::int AS n
+        FROM candidates c
+        LEFT JOIN deduit d ON d.cle = c.cle
+       WHERE COALESCE(c.pays, d.p) = ANY(${paysDuMarche as string[]})
+       GROUP BY c."city"
+       ORDER BY COUNT(*) DESC, c."city" ASC
+       LIMIT ${brut}
+    `;
+    return dedupliquerVilles(rows.map((r) => r.city));
   } catch {
     return [];
   }
+}
+
+/**
+ * Dédup insensible à la casse : on garde la graphie du groupe le plus fréquent
+ * (les lignes arrivent triées par volume décroissant). Sans ça le panneau
+ * montrait « Paris » ET « PARIS » — vu en production.
+ *
+ * Extraite des deux chemins plutôt que recopiée : c'est le genre de règle
+ * qu'on corrige à un seul endroit, et la version cloisonnée dériverait au
+ * premier ajustement si elle portait sa propre copie.
+ */
+function dedupliquerVilles(valeurs: readonly (string | null)[]): string[] {
+  const vues = new Set<string>();
+  const villes: string[] = [];
+  for (const brut of valeurs) {
+    if (!brut) continue;
+    const cle = brut.toLowerCase();
+    if (vues.has(cle)) continue;
+    vues.add(cle);
+    villes.push(brut);
+    if (villes.length >= SUGGEST_LIMIT) break;
+  }
+  return villes;
 }
 
 /**
