@@ -11,7 +11,7 @@ import { offerIdCandidates } from './offer-url';
 import { facettesServies } from './facettes-marche';
 /*
  * Le registre des marchés — RÉUTILISÉ, jamais recopié. `marche()` porte la
- * liste des dix marchés mesurés et sa propre garde de type (un code absent,
+ * liste des marchés mesurés et sa propre garde de type (un code absent,
  * mal formé ou non mesuré rend `undefined`). Une liste de pays écrite ici
  * dériverait du registre au premier marché ajouté, sans que rien ne le dise.
  */
@@ -978,9 +978,9 @@ function echapperLike(valeur: string): string {
  * ── LA DÉGRADATION EST SÛRE, ET C'EST L'INVARIANT LE PLUS IMPORTANT ───────
  *
  * Sans marché (`undefined`, chaîne vide) ou avec un marché INCONNU du registre
- * — la Belgique, la Chine, et les 109 autres pays du catalogue que personne
- * n'a mesurés — la fonction sert **exactement** ce qu'elle servait avant ce
- * lot : le monde entier, ordonné par volume. Se tromper en servant une ville
+ * — le Japon, et les 107 autres pays du catalogue que personne n'a mesurés —
+ * la fonction sert **exactement** ce qu'elle servait avant ce lot : le monde
+ * entier, ordonné par volume. Se tromper en servant une ville
  * de trop coûte un clic ; se tromper en la masquant retire au candidat une
  * ville qui existe, sans message et sans recours.
  */

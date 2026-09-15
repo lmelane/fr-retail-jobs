@@ -110,10 +110,12 @@ export const SEUIL_AFFICHAGE_FACETTE = 0.2;
  * couverture, donc 30,8 % de muettes). Un candidat allemand qui coche
  * « Vollzeit » sur une facette à 74,9 % perd déjà un quart du catalogue.
  *
- * `metier` change la nature du problème : 90,0 à 96,8 % sur neuf marchés sur
- * dix. Ces neuf-là exposent désormais une facette qui rend presque tout le
- * catalogue et qui porte le besoin réel du candidat (« je cherche un poste de
- * vendeur »), pendant que les facettes contractuelles affinent à la marge.
+ * `metier` change la nature du problème : 90,0 à 96,8 % sur DIX marchés sur
+ * douze. Ces dix-là exposent une facette qui rend presque tout le catalogue et
+ * qui porte le besoin réel du candidat (« je cherche un poste de vendeur »),
+ * pendant que les facettes contractuelles affinent à la marge. Les deux autres
+ * — la Suisse (77,7 %) et la Chine (88,8 %) — exposent la même facette au même
+ * titre : sous la cible de densité, mais bien au-dessus du seuil d'affichage.
  *
  * DEUX MARCHÉS SONT SOUS LA CIBLE, ET TOUS DEUX SONT MESURÉS, PAS TOLÉRÉS.
  * La Suisse plafonne à 77,7 % — le plus bas du registre — et la Chine à
@@ -243,11 +245,19 @@ export type Marche = {
   /**
    * Les LIBELLÉS natifs, dans la langue du marché.
    *
-   * Relevés marché par marché chez Indeed, qui sert ces dix pays avec dix
-   * traductions et deux découpages différents. La dimension ne change jamais —
-   * seul son nom change. C'est toute la raison d'être de ce registre : un
-   * libellé codé en dur côté front aurait affiché « Type de contrat » à un
-   * candidat néerlandais.
+   * Relevés marché par marché, et JAMAIS déduits d'une traduction : Indeed
+   * pour les marchés occidentaux, qu'il sert avec autant de traductions et
+   * plusieurs découpages différents. La dimension ne change jamais — seul son
+   * nom change. C'est toute la raison d'être de ce registre : un libellé codé
+   * en dur côté front aurait affiché « Type de contrat » à un candidat
+   * néerlandais.
+   *
+   * ⚠️ LA SOURCE N'EST PAS LA MÊME PARTOUT, et il ne faut pas la supposer. Les
+   * libellés chinois viennent de `zhaopin.com` (dont la barre de filtres rend
+   * `经验` et `职位类别`), pas d'Indeed : c'est là que le marché local se lit.
+   * Relever un libellé chinois sur un site occidental aurait reproduit, en
+   * pire, l'erreur que le Canada a révélée — déduire le libellé de la langue
+   * qu'on suppose au lieu de le relever là où le marché vit.
    *
    * Un libellé n'est présent que si la dimension l'est : une clé absente est un
    * choix, pas un oubli, et le type l'impose (`Partial` + contrôle au témoin).
@@ -562,11 +572,17 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    * traduire.
    *
    * LE MARCHÉ LE PLUS PAUVREMENT COUVERT DU REGISTRE, sur toutes les dimensions
-   * à la fois : métier 77,705 % (le seul sous 90 %, douze points sous le
-   * neuvième), séniorité 18,033 % (sous le seuil, non exposée), rythme 49,1 %
-   * (le seul sous 60 %). Avec 1 220 offres, c'est aussi le plus petit. Il n'a
-   * donc AUCUNE facette dense au sens du seuil de 90 %, et c'est lui qui fixe
-   * le plancher du témoin de densité — voir `PLANCHER_FACETTE_DENSE`.
+   * à la fois : métier 77,705 % (le PLUS BAS du registre, onze points sous la
+   * Chine qui est l'autre marché sous la cible), séniorité 18,033 % (sous le
+   * seuil, non exposée), rythme 49,1 % (le seul sous 60 %). Avec 1 220 offres,
+   * c'est aussi le plus petit. Il n'a donc AUCUNE facette dense au sens du
+   * seuil de 90 %, et c'est lui qui fixe le plancher du témoin de densité —
+   * voir `PLANCHER_FACETTE_DENSE`.
+   *
+   * ⚠️ « le seul sous 90 % » JUSQU'AU 2026-09-15, plus depuis : l'entrée de la
+   * Chine (88,807 %) a rendu cette phrase fausse, et c'est le motif d'erreur
+   * dominant de ce dépôt — le code change, le commentaire reste en arrière. La
+   * Suisse reste le PLANCHER ; elle n'est plus l'unique exception.
    *
    * Les libellés suisses suivent la France, locale de service `fr-CH` oblige.
    * C'est le seul endroit du registre où deux marchés partagent leurs libellés,

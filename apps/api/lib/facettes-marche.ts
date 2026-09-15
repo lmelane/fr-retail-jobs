@@ -87,8 +87,8 @@ export type NomFacetteApi =
  *
  * La facette est retirée de la RÉPONSE, jamais de la REQUÊTE. `searchSummary`
  * agrège toujours `engagementType` en SQL, sur toutes les recherches, pour un
- * résultat que `facettesServies` jette systématiquement ensuite — sur les dix
- * marchés mesurés comme sur les 109 pays non mesurés, puisque la dimension
+ * résultat que `facettesServies` jette systématiquement ensuite — sur les
+ * marchés mesurés comme sur les pays qui ne le sont pas, puisque la dimension
  * `'engagement'` n'existe dans AUCUN registre.
  *
  * Le coût a été mesuré plutôt que supposé (`audits/mesures-d435-d436/
@@ -128,10 +128,16 @@ const CORRESPONDANCE_FACETTE = {
  *
  * ── LA DÉGRADATION EST SÛRE, ET C'EST LE POINT LE PLUS IMPORTANT ──────────
  *
- * Un marché absent (`undefined`, chaîne vide) ou inconnu du registre — la
- * Belgique, la Chine, et les 109 autres pays du catalogue que personne n'a
- * mesurés — rend `true` pour TOUT. On sert alors exactement ce qu'on servait
- * avant ce lot : le comportement actuel, inchangé.
+ * Un marché absent (`undefined`, chaîne vide) ou inconnu du registre — le
+ * Japon, et les 107 autres pays du catalogue que personne n'a mesurés — rend
+ * `true` pour TOUT. On sert alors exactement ce qu'on servait avant ce lot :
+ * le comportement actuel, inchangé.
+ *
+ * ⚠️ Cet exemple a déjà changé DEUX fois, et il continuera : la Belgique puis
+ * la Chine y figuraient comme « non mesurées », et toutes deux ont été
+ * ouvertes depuis (le 2026-09-15). Le catalogue couvre 119 pays, le registre
+ * en sert 12 — l'exemple doit nommer un pays réellement fermé, sinon le
+ * commentaire décrit un état qui n'existe plus.
  *
  * Le sens de cette dégradation n'est pas arbitraire. Se tromper en servant une
  * facette coûte un filtre peu rempli ; se tromper en la masquant retire au
