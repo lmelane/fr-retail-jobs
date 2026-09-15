@@ -115,15 +115,20 @@ export const SEUIL_AFFICHAGE_FACETTE = 0.2;
  * catalogue et qui porte le besoin réel du candidat (« je cherche un poste de
  * vendeur »), pendant que les facettes contractuelles affinent à la marge.
  *
- * LA SUISSE EST L'EXCEPTION, ET ELLE EST MESURÉE, PAS TOLÉRÉE. Son métier
- * plafonne à 77,7 % — le plus bas du registre de plus de douze points. Ce
- * n'est pas un marché sans facette dense par accident : c'est le plus petit
- * marché mesuré (1 220 offres), le seul dont AUCUNE dimension n'atteint 90 %.
- * La barre de densité est donc gardée à 77 % : elle échoue si un marché tombe
- * sous le plancher suisse, et le seuil PLEIN de 90 % est vérifié séparément
- * sur les neuf autres. Graver 90 % pour tout le monde aurait obligé à exclure
- * la Suisse du témoin — c'est-à-dire à retirer du garde-fou le seul marché
- * qu'il aurait attrapé.
+ * DEUX MARCHÉS SONT SOUS LA CIBLE, ET TOUS DEUX SONT MESURÉS, PAS TOLÉRÉS.
+ * La Suisse plafonne à 77,7 % — le plus bas du registre — et la Chine à
+ * 88,8 %. La barre de densité est donc gardée au PLANCHER de 77 % : elle
+ * échoue si un marché tombe sous la Suisse, et le seuil PLEIN de 90 % est
+ * vérifié séparément sur les autres. Graver 90 % pour tout le monde aurait
+ * obligé à exclure ces deux-là du témoin — c'est-à-dire à retirer du garde-fou
+ * les seuls marchés qu'il aurait attrapés.
+ *
+ * ⚠️ « Sous la cible » ne veut pas dire « creux ». La facette chinoise est
+ * mieux RÉPARTIE que celle de plusieurs marchés au-dessus de 90 % : sa valeur
+ * dominante pèse 33,9 %, contre 61,7 % en Allemagne et 59,3 % en Espagne. Le
+ * taux de remplissage et le pouvoir de discrimination sont deux propriétés
+ * distinctes, et un marché peut être excellent sur l'une en restant moyen sur
+ * l'autre.
  *
  * L'invariant est gardé par un témoin qui ROUGIT si un marché n'expose plus
  * aucune facette dense : un marché dont tous les filtres sont creux n'est pas
@@ -159,15 +164,20 @@ export const PLANCHER_FACETTE_DENSE = 0.77;
  * recopiés de la même requête que les dix autres, ses libellés sont relevés et
  * non déduits de la France voisine — exactement le piège que CA-fr a révélé.
  *
- * ── CE QUI RESTE DEHORS, ET POURQUOI ──────────────────────────────────────
+ * ── LA CHINE EST ENTRÉE LE 2026-09-15, ET ELLE A CHANGÉ UNE RÈGLE ────────
  *
- * La CHINE reste écartée. Elle est pourtant mesurable (1 224 offres actives le
- * 2026-09-15, métier 88,8 %) : son absence n'est donc PLUS un trou de mesure,
- * c'est une question d'ouverture de marché qui appartient au CEO. La
- * distinction compte — « non mesuré » se répare par une requête, « non ouvert »
- * se tranche par une décision.
+ * Elle était écartée pour la bonne raison : mesurable, mais « non ouverte »,
+ * et l'ouverture d'un marché appartient au CEO — « non mesuré » se répare par
+ * une requête, « non ouvert » se tranche par une décision.
+ *
+ * Son entrée a révélé que LE SEUIL SEUL NE SUFFIT PAS. Le rythme chinois
+ * couvre 81,9 % des offres — très au-dessus des 20 % — mais 99,7 % de ses
+ * valeurs renseignées sont identiques. Un filtre qui passe le seuil peut donc
+ * être parfaitement inutile, et le registre le sait désormais : voir le bloc
+ * de la Chine, qui porte la mesure, la contre-épreuve française et le
+ * mécanisme retenu (pas de libellé, donc pas de facette).
  */
-export const CODES_MARCHE = ['US', 'FR', 'GB', 'CA', 'DE', 'IT', 'ES', 'NL', 'AU', 'CH', 'BE'] as const;
+export const CODES_MARCHE = ['US', 'FR', 'GB', 'CA', 'DE', 'IT', 'ES', 'NL', 'AU', 'CH', 'BE', 'CN'] as const;
 export type CodeMarche = (typeof CODES_MARCHE)[number];
 
 /**
@@ -652,6 +662,138 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       saisonnier: 0.02683,
       metier: 0.90462,
       seniorite: 0.21461,
+    },
+  },
+
+  /**
+   * ══════════════════════════════════════════════════════════════════════════
+   *  CHINE — le marché qui prouve que LE SEUIL NE SUFFIT PAS.
+   * ══════════════════════════════════════════════════════════════════════════
+   *
+   * Mesurée le 2026-09-15 : 1 224 offres actives. Elle était écartée non par
+   * manque de mesure — le registre le disait lui-même — mais parce que
+   * l'ouverture d'un marché appartient au CEO.
+   *
+   * ── LE FAIT CENTRAL : `contrat` ET `temps` N'EN FONT QU'UNE ICI ──────────
+   *
+   * C'est la découverte de ce lot, et elle est établie par DEUX méthodes
+   * indépendantes qui ne pouvaient pas se contaminer :
+   *
+   *  1. LE RELEVÉ DES LIBELLÉS. Les sites d'emploi chinois (zhaopin.com, dont
+   *     la barre de filtres rend exactement « 地区 · 薪资 · 学历 · 经验 ·
+   *     公司性质 · 融资阶段 · 公司人数 · 工作性质 · 职位类别 · 公司行业 », et
+   *     Indeed CN) n'exposent AUCUNE facette « type de contrat ». Ils servent
+   *     UNE facette, `工作性质`, dont les valeurs mélangent ce que le français
+   *     sépare : 全职 / 兼职 (le rythme) y voisine avec 合同工 / 临时工 /
+   *     外包 (la durée). Le droit chinois connaît pourtant le contrat à durée
+   *     déterminée (固定期限劳动合同) — c'est une formalité de signature, pas
+   *     un critère de recherche. Aucun site d'emploi relevé n'en fait un filtre ;
+   *
+   *  2. LA MESURE DE NOTRE CATALOGUE. Le croisement des deux colonnes est
+   *     DÉGÉNÉRÉ : sur les 498 offres chinoises où les deux sont renseignées,
+   *     99,6 % tombent dans UNE SEULE case (PERMANENT × FULL_TIME). La
+   *     contre-épreuve française, sur 5 032 offres, rend 54,4 % — un croisement
+   *     réellement croisé. `temps` seul le dit aussi : 1 000 FULL_TIME contre
+   *     3 PART_TIME, soit 99,7 % d'une seule valeur, quand les onze marchés
+   *     ouverts s'étagent entre 52 % et 77 %. La Chine est hors de cette plage
+   *     de vingt-trois points.
+   *
+   * Le relevé dit POURQUOI, la mesure dit COMBIEN. Aucune des deux seule
+   * n'aurait suffi : un relevé de sites est un témoignage sur le marché, pas
+   * une preuve sur notre catalogue, et une concentration mesurée aurait pu
+   * n'être qu'un défaut de notre normalisation.
+   *
+   * ── CE QUE LE SEUIL SEUL AURAIT FAIT, ET POURQUOI C'ÉTAIT FAUX ───────────
+   *
+   * `temps` couvre 81,944 % — très au-dessus des 20 %. Le seuil, appliqué
+   * mécaniquement, aurait donc EXPOSÉ un filtre dont 99,7 % des valeurs sont
+   * identiques : le candidat coche « 全职 », le catalogue ne bouge pas, et il
+   * conclut que le filtre est cassé. Un filtre qui ne filtre rien est pire
+   * qu'un filtre absent — il consomme l'attention et détruit la confiance.
+   *
+   * Le registre savait déjà que le taux ne suffit pas : c'est l'argument qui
+   * écarte `engagementType` (« le nombre de valeurs compte autant que le taux
+   * de remplissage »). La Chine est le premier marché où cette règle mord sur
+   * une dimension qui passe pourtant le seuil.
+   *
+   * ── LE MÉCANISME UTILISÉ : PAS DE LIBELLÉ, DONC PAS DE FACETTE ───────────
+   *
+   * `contrat` et `temps` n'ont volontairement PAS de libellé ici, et c'est le
+   * registre lui-même qui en tire la conséquence : `facettesDuMarche` exige
+   * DEUX conditions cumulatives — le seuil ET un libellé natif. La règle
+   * existait déjà, écrite pour éviter d'afficher un libellé anglais au milieu
+   * d'une page allemande ; elle exprime exactement ce qu'il faut ici.
+   *
+   * Aucune exception n'est donc ajoutée au moteur pour la Chine. Une clé
+   * absente est un choix documenté, jamais un oubli — et graver `工作性质`
+   * sans savoir la remplir aurait été pire : on aurait affiché un filtre chinois
+   * authentique branché sur une donnée qui ne le porte pas.
+   *
+   * ⚠️ CE QUI RESTE OUVERT ET APPARTIENT AU CEO : fusionner `contrat` et
+   * `temps` en une dimension `工作性质` conforme à l'usage chinois demanderait
+   * un modèle canonique nouveau, sur tous les marchés. C'est une décision
+   * produit, pas un réglage de registre — elle n'est pas prise ici.
+   *
+   * ── CE QUI EST EXPOSÉ : MÉTIER ET SÉNIORITÉ ──────────────────────────────
+   *
+   * `metier` — 88,807 %, 25 valeurs distinctes, dominante à 33,9 %. C'est la
+   * facette la MIEUX répartie du registre après la Suisse (28,4 %) : mieux que
+   * l'Allemagne (61,7 %) ou l'Espagne (59,3 %), tous deux ouverts. Elle porte
+   * le besoin réel du candidat au premier clic.
+   *
+   * `seniorite` — 29,820 %, au-dessus du seuil, et le libellé `经验` est celui
+   * que la barre de filtres de zhaopin rend réellement (la forme longue
+   * `工作经验` est le nom du champ, pas l'en-tête affiché).
+   *
+   * `programme` (17,075 %) et `saisonnier` (0 %) restent dehors : le seuil
+   * s'applique sans exception.
+   *
+   * ── LA DENSITÉ : 88,807 %, SOUS LA CIBLE, AU-DESSUS DU PLANCHER ──────────
+   *
+   * La Chine rejoint la Suisse parmi les marchés sans facette à 90 %. C'est un
+   * FAIT MESURÉ, pas une tolérance : elle passe largement le plancher de 77 %,
+   * et sa facette dense est mieux répartie que celle de plusieurs marchés déjà
+   * ouverts. Le témoin de densité a été mis à jour pour nommer les deux, et
+   * non élargi pour cesser de garder quoi que ce soit.
+   *
+   * ── LE CONTENU DES ANNONCES RESTE EN CHINOIS ─────────────────────────────
+   *
+   * Seuls les LIBELLÉS D'INTERFACE ci-dessous sont traduits. Les titres, les
+   * descriptions et les noms d'entreprise ne le sont JAMAIS : 592 annonces
+   * chinoises sont en `zh`, 398 en `en`, 223 sans langue déclarée, et elles
+   * doivent sortir telles qu'elles sont entrées.
+   *
+   * ── LA COLLISION `CN`, VÉRIFIÉE PLUTÔT QUE SUPPOSÉE ─────────────────────
+   *
+   * `CA` (Canada/Californie) et `IN` (Inde/Indiana) imposent la garde D-435.
+   * `CN` n'est PAS un code d'État américain, et ce n'est pas une lecture mais
+   * une exécution : « Shanghai, CN », « Shanghai, SH, CN » et « Shenzhen, GD,
+   * CN » rendent tous `CN`, pendant que « Louisville, KY » et « Indianapolis,
+   * IN » s'abstiennent toujours. La sonde en base rend 0 offre chinoise portant
+   * une ville non chinoise, avec une contre-épreuve à 8 912 sur les mêmes
+   * villes sous leurs pays réels — la sonde sait donc trouver ce qu'elle
+   * cherche. Le stock est propre : Shanghai (493), Pékin (64), Guangzhou (60).
+   */
+  CN: {
+    code: 'CN',
+    locale: 'zh-CN',
+    /*
+     * `contrat` et `temps` sont ABSENTS À DESSEIN — voir le bloc ci-dessus.
+     * Leur absence est ce qui les retire des facettes, par la règle générale
+     * du registre et sans exception dans le moteur.
+     */
+    libelles: {
+      metier: '职位类别',
+      seniorite: '经验',
+    },
+    offresMesurees: 1_224,
+    couverture: {
+      contrat: 0.47141,
+      temps: 0.81944,
+      programme: 0.17075,
+      saisonnier: 0,
+      metier: 0.88807,
+      seniorite: 0.2982,
     },
   },
 };

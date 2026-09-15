@@ -204,11 +204,19 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
      * est exactement ce qu'on lui demande — l'entrée d'un marché est une
      * décision, elle ne doit jamais pouvoir passer inaperçue.
      *
-     * CN reste écarté : mesurable (1 224 offres) mais non ouvert. Le cas
-     * dégradé est donc toujours exercé par un code réel du catalogue, et pas
-     * seulement par des chaînes absurdes.
+     * CN A ÉTÉ RETIRÉ À SON TOUR le 2026-09-15, pour la même raison et par le
+     * même mécanisme : la Chine est entrée au registre (1 224 offres), et ce
+     * témoin a de nouveau ROUGI sur ce point précis. C'est la deuxième fois
+     * qu'il attrape une ouverture de marché — exactement ce qu'on lui demande.
+     *
+     * IL FAUT DONC UN AUTRE CODE RÉEL, ET PAS SEULEMENT DES CHAÎNES ABSURDES.
+     * `JP` le remplace : présent au catalogue, jamais mesuré, jamais ouvert.
+     * Sans lui, le cas dégradé ne serait plus exercé que par `ZZ` et des
+     * chaînes malformées — or le cas NORMAL en production est un code pays
+     * parfaitement valide qui n'est simplement pas un marché (le catalogue
+     * couvre 119 pays, le registre en sert 12).
      */
-    for (const inconnu of ['CN', 'ZZ', '', '   ', 'FRANCE', 'us-east']) {
+    for (const inconnu of ['JP', 'ZZ', '', '   ', 'FRANCE', 'us-east']) {
       expect(estCodeMarche(inconnu.toUpperCase()), `« ${inconnu} » doit être hors registre`).toBe(false);
       expect(() => facettesDuMarche(inconnu)).not.toThrow();
       expect(facettesDuMarche(inconnu)).toEqual([]);
@@ -245,10 +253,15 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
 
   it('INVARIANT : le registre est cohérent — un enregistrement complet par code', () => {
     /*
-     * PRÉMISSE — ONZE marchés mesurés depuis l'entrée de la Belgique le
-     * 2026-09-15, pas dix ni douze. CN n'entre pas : mesurable mais non ouvert.
+     * PRÉMISSE — DOUZE marchés mesurés depuis l'entrée de la Chine le
+     * 2026-09-15 (onze après la Belgique, douze avec CN), pas onze ni treize.
+     *
+     * Ce nombre est gravé À DESSEIN plutôt que dérivé de `CODES_MARCHE` : un
+     * `expect(CODES_MARCHE.length).toBe(CODES_MARCHE.length)` serait toujours
+     * vrai. C'est le seul endroit du témoin où l'ouverture d'un marché ne peut
+     * pas passer inaperçue.
      */
-    expect(CODES_MARCHE.length, 'la prémisse : onze marchés mesurés').toBe(11);
+    expect(CODES_MARCHE.length, 'la prémisse : douze marchés mesurés').toBe(12);
 
     for (const code of CODES_MARCHE) {
       const m = MARCHES[code];
@@ -325,6 +338,7 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
       AU: [0.94408, 0.31118],
       CH: [0.77705, 0.18033],
       BE: [0.90462, 0.21461],
+      CN: [0.88807, 0.2982],
     };
     for (const code of CODES_MARCHE) {
       const [metier, seniorite] = tauxMesures[code];
@@ -442,29 +456,91 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
     }
   });
 
-  it('LA SUISSE EST LA SEULE SANS FACETTE À 90 % — plancher mesuré, pas toléré', () => {
+  it('DEUX MARCHÉS SEULEMENT SONT SOUS LA CIBLE DE 90 % — la Suisse et la Chine', () => {
     /*
      * PRÉMISSE — le témoin précédent garde un PLANCHER (77 %) et non la cible
-     * (90 %). Il faut prouver que cet écart vient d'un fait mesuré et d'un seul
-     * marché, sinon le plancher deviendrait la porte par laquelle un second
-     * marché creux entrerait sans que rien ne rougisse.
+     * (90 %). Il faut prouver que cet écart vient de faits MESURÉS et d'un
+     * petit nombre de marchés nommés, sinon le plancher deviendrait la porte
+     * par laquelle un marché creux entrerait sans que rien ne rougisse.
      *
-     * La Suisse est aussi le plus petit marché mesuré (1 220 offres) : sa
-     * faiblesse de couverture est cohérente avec son volume, ce n'est pas une
-     * anomalie de normalisation à réparer en amont.
+     * La liste est donc EXHAUSTIVE et gravée : ajouter un marché sous 90 %
+     * fait rougir ce témoin, ce qui force à justifier le cas plutôt qu'à le
+     * découvrir en production. C'est ce qui s'est produit à l'entrée de la
+     * Chine — le témoin a rendu `['CH', 'CN']` contre `['CH']` attendu.
+     *
+     * La Suisse est le plus petit marché mesuré (1 220 offres) et le plus bas
+     * du registre (77,705 %). La Chine est à 88,807 %, à un peu plus d'un point
+     * de la cible.
      */
     expect(PLANCHER_FACETTE_DENSE, 'la prémisse : le plancher est sous la Suisse').toBeLessThan(
       MARCHES.CH.couverture.metier,
     );
-    expect(MARCHES.CH.couverture.metier, 'la prémisse : la Suisse est bien sous la cible').toBeLessThan(
-      SEUIL_FACETTE_DENSE,
-    );
+    for (const code of ['CH', 'CN'] as const) {
+      expect(MARCHES[code].couverture.metier, `la prémisse : ${code} est bien sous la cible`).toBeLessThan(
+        SEUIL_FACETTE_DENSE,
+      );
+    }
 
     const sansFacetteDense = CODES_MARCHE.filter(
       (code) =>
         Math.max(...facettesDuMarche(code).map((d) => MARCHES[code].couverture[d])) < SEUIL_FACETTE_DENSE,
     );
-    expect(sansFacetteDense, 'la Suisse, et elle seule, reste sous la cible de 90 %').toEqual(['CH']);
+    expect([...sansFacetteDense].sort(), 'la Suisse et la Chine, et elles seules').toEqual(['CH', 'CN']);
+  });
+
+  it('LA CHINE N’EXPOSE NI CONTRAT NI RYTHME — un filtre qui ne filtre rien est pire qu’absent', () => {
+    /*
+     * ── LE DÉFAUT QUE CE TÉMOIN CHERCHE ───────────────────────────────────
+     *
+     * Que quelqu'un « répare » la Chine en lui ajoutant les libellés qui
+     * manquent, par symétrie avec les onze autres marchés. Le geste paraîtrait
+     * évident — le rythme chinois couvre 81,9 %, très au-dessus du seuil — et
+     * il servirait au candidat un filtre dont 99,7 % des valeurs renseignées
+     * sont identiques : il coche « 全职 », le catalogue ne bouge pas.
+     *
+     * ── POURQUOI LE SEUIL NE SUFFIT PAS ICI, ET NULLE PART AILLEURS ───────
+     *
+     * Mesuré le 2026-09-15 : sur les 498 offres chinoises portant les DEUX
+     * dimensions, 99,6 % tombent dans une seule case (PERMANENT × FULL_TIME) ;
+     * la contre-épreuve française rend 54,4 % sur 5 032 offres. En Chine, les
+     * deux colonnes ne portent qu'UNE information — ce que le relevé des sites
+     * d'emploi chinois disait déjà par un autre chemin : ils servent une
+     * facette unique, `工作性质`, et aucune facette « type de contrat ».
+     *
+     * PRÉMISSE — les taux doivent bien être AU-DESSUS du seuil d'affichage,
+     * sinon ce témoin ne prouverait rien : ce serait le seuil qui écarterait
+     * les facettes, et le mécanisme du libellé ne serait pas exercé du tout.
+     */
+    expect(MARCHES.CN.couverture.temps, 'la prémisse : le rythme passe le seuil').toBeGreaterThan(
+      SEUIL_AFFICHAGE_FACETTE,
+    );
+    expect(MARCHES.CN.couverture.contrat, 'la prémisse : le contrat aussi').toBeGreaterThan(
+      SEUIL_AFFICHAGE_FACETTE,
+    );
+
+    /* Et pourtant elles ne sont pas servies — parce qu'aucun libellé natif. */
+    expect(facettesDuMarche('CN'), 'la Chine n’expose PAS le rythme').not.toContain('temps');
+    expect(facettesDuMarche('CN'), 'la Chine n’expose PAS le contrat').not.toContain('contrat');
+    expect(libelleFacette('CN', 'temps'), 'aucun libellé de rythme relevé').toBeUndefined();
+    expect(libelleFacette('CN', 'contrat'), 'aucun libellé de contrat relevé').toBeUndefined();
+
+    /*
+     * CONTRE-ÉPREUVE — le mécanisme n'a pas fermé le marché par accident. La
+     * Chine expose bien ses deux facettes utiles, avec leurs libellés natifs
+     * relevés sur la barre de filtres de zhaopin.com.
+     */
+    expect(facettesDuMarche('CN'), 'mais elle expose le métier').toContain('metier');
+    expect(facettesDuMarche('CN'), 'et la séniorité').toContain('seniorite');
+    expect(libelleFacette('CN', 'metier')).toBe('职位类别');
+    expect(libelleFacette('CN', 'seniorite')).toBe('经验');
+
+    /*
+     * CONTRE-ÉPREUVE DU MÉCANISME LUI-MÊME : ailleurs, un taux au-dessus du
+     * seuil AVEC un libellé produit bien une facette. Sans cette ligne, un
+     * `facettesDuMarche` cassé qui ne rendrait jamais `temps` ferait passer ce
+     * témoin au vert pour la mauvaise raison.
+     */
+    expect(facettesDuMarche('FR'), 'la France, elle, expose bien le rythme').toContain('temps');
   });
 
   it('LA BELGIQUE EXPOSE SES CINQ FACETTES — à égalité avec la France, et elle seule', () => {

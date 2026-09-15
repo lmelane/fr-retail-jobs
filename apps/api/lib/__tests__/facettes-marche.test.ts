@@ -92,30 +92,66 @@ describe('marché FR — le contrat est servi', () => {
 });
 
 describe('dégradation sûre — marché absent ou inconnu', () => {
-  it("CN n'est pas ouvert : c'est la prémisse du cas « inconnu »", () => {
+  it("JP n'est pas ouvert : c'est la prémisse du cas « inconnu »", () => {
     /*
-     * CE TÉMOIN PORTAIT « BE » JUSQU'AU 15/09/2026, et il a ROUGI ce jour-là —
-     * exactement comme son auteur l'avait prévu : « Si la Belgique entrait un
-     * jour au registre, ce témoin rougirait — et il DOIT rougir : le cas
-     * "inconnu" devrait alors être rejoué sur un autre pays, sans quoi il ne
+     * CE TÉMOIN TOURNE DE PAYS À CHAQUE OUVERTURE DE MARCHÉ, ET C'EST VOULU.
+     * Il portait « BE » jusqu'au 15/09/2026, puis « CN » le même jour, et il a
+     * ROUGI les DEUX fois — exactement comme son auteur l'avait prévu : « Si ce
+     * pays entrait un jour au registre, ce témoin rougirait, et le cas
+     * "inconnu" devrait être rejoué sur un autre pays, sans quoi il ne
      * testerait plus la dégradation. »
      *
-     * La Belgique a été mesurée (671 offres, cinq facettes au-dessus du seuil)
-     * et elle est entrée au registre. Le cas « inconnu » est donc rejoué sur la
-     * CHINE : 1 224 offres actives, mesurable, mais marché NON OUVERT.
+     * La Chine a été ouverte à son tour (1 224 offres). Le cas « inconnu » est
+     * donc rejoué sur le JAPON : 552 offres actives mesurées le 15/09/2026,
+     * jamais mesuré pour ses facettes, jamais ouvert.
      *
      * Le choix d'un pays RÉEL du catalogue est délibéré. Un code absurde
      * (« ZZ ») testerait la validation de forme ; un pays réel mais fermé teste
      * ce qui arrive vraiment en production — un candidat dont l'IP ou l'URL
-     * désigne un pays que nous servons sans lui offrir de marché.
+     * désigne un pays que nous servons sans lui offrir de marché. Le catalogue
+     * couvre 119 pays et le registre en sert 12 : ce cas est la NORME.
      */
-    expect(facettesDuMarche('CN')).toHaveLength(0);
+    expect(facettesDuMarche('JP')).toHaveLength(0);
   });
 
   it('un marché inconnu sert TOUTES les facettes', () => {
     const completes = facettesCompletes();
-    const servies = facettesServies(completes, 'CN');
+    const servies = facettesServies(completes, 'JP');
     expect(Object.keys(servies).sort()).toEqual(Object.keys(completes).sort());
+  });
+
+  it('LA CHINE EST OUVERTE, MAIS SANS CONTRAT NI RYTHME — servie, et pas comme un inconnu', () => {
+    /*
+     * LE DÉFAUT CHERCHÉ : confondre « marché fermé » et « marché sans facettes
+     * contractuelles ». Les deux rendent une réponse allégée, pour des raisons
+     * OPPOSÉES, et le code les traite différemment — un marché inconnu sert
+     * TOUT (dégradation sûre), un marché ouvert sert ce que la mesure autorise.
+     *
+     * La Chine est le premier marché à exercer cette distinction : elle est
+     * ouverte, donc elle RESTREINT, mais elle restreint deux dimensions qui
+     * passent pourtant le seuil (rythme 81,9 %, contrat 47,1 %) — parce que
+     * 99,7 % des valeurs de rythme y sont identiques. Voir `marches.ts`.
+     *
+     * PRÉMISSE — la Chine doit bien être AU registre, sinon ce témoin
+     * vérifierait la dégradation d'un inconnu en croyant tester un marché.
+     */
+    expect(facettesDuMarche('CN').length, 'la prémisse : CN est ouvert').toBeGreaterThan(0);
+
+    const completes = facettesCompletes();
+    const servies = facettesServies(completes, 'CN');
+
+    /* Elle RESTREINT — contrairement à un marché inconnu, qui sert tout. */
+    expect(Object.keys(servies).length, 'CN sert moins que tout').toBeLessThan(
+      Object.keys(completes).length,
+    );
+    expect(servies.contracts, '`contracts` retirée : filtre sans pouvoir discriminant').toBeUndefined();
+    expect(servies.workTimes, '`workTimes` retirée : 99,7 % d’une seule valeur').toBeUndefined();
+
+    /* Mais elle sert bien ce qui a du sens — le métier, sa facette dense. */
+    expect(servies.occupations, '`occupations` servie : 88,8 % de couverture').toBeDefined();
+    /* Et les facettes hors périmètre du registre traversent toujours. */
+    expect(servies.cities, '`cities` n’est pas une dimension du registre').toBeDefined();
+    expect(servies.languages, '`languages` traverse les marchés par conception').toBeDefined();
   });
 
   it('LA BELGIQUE, ELLE, EST MESURÉE — la contre-épreuve du cas « inconnu »', () => {
