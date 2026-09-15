@@ -503,6 +503,28 @@ model Job {
   /**
    * Poste saisonnier — caractéristique INDÉPENDANTE de la durée : 2 414 offres
    * sont à la fois FIXED_TERM et saisonnières.
+   *
+   * ── DEUX ÉTATS SEULEMENT, ET C'EST POURQUOI CE N'EST PAS UNE FACETTE ──────
+   *
+   * Mesuré en production le 2026-09-15 : `true` sur 3 449 offres, `null` sur
+   * les 79 982 autres. AUCUNE offre ne porte `false` — et c'est voulu : `null`
+   * signifie « la source ne dit rien », jamais « le poste n'est pas
+   * saisonnier ». Écrire `false` par défaut inventerait une donnée.
+   *
+   * Conséquence directe : la colonne a UNE SEULE valeur distincte. Un filtre
+   * construit dessus ne saurait que tout garder ou tout exclure — il ne peut
+   * pas partitionner le catalogue, donc il ne filtre rien. Vérifié le
+   * 2026-09-15 : `isSeasonal` n'est exposé en facette NULLE PART (absent des
+   * `facet(...)` de `job-search-query.ts`, de `SearchSummary`, du type
+   * `JobsResult.facets`, de `NomFacetteApi` et de la projection liste), et
+   * n'est filtrable par aucun paramètre d'URL. Il n'y a donc pas de défaut
+   * produit à corriger — ce commentaire existe pour que la question ne soit pas
+   * reposée à chaque revue, et pour que personne n'en fasse une facette.
+   *
+   * LA COLONNE RESTE UTILE : elle QUALIFIE l'offre dans la fiche et le JSON-LD,
+   * et c'est elle qui permet au registre de mesurer la couverture `saisonnier`
+   * par marché (17,0 % en Australie, sous le seuil d'affichage). Une dimension
+   * peut valoir la peine d'être stockée sans valoir la peine d'être filtrée.
    */
   isSeasonal         Boolean?
   /**

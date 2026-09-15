@@ -829,10 +829,19 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
        *
        * Le tri arrive ICI, au moment de l'assemblage, et non dans le SQL de
        * `searchSummary` : les comptes restent calculés en une passe pour tout
-       * le monde. C'est délibéré — le coût d'une facette calculée puis écartée
-       * est nul (même requête d'agrégation), alors qu'une requête qui varie
-       * selon le marché deviendrait dix plans d'exécution à surveiller au lieu
-       * d'un, pour aucun gain mesuré.
+       * le monde. C'est délibéré — une requête qui varierait selon le marché
+       * deviendrait dix plans d'exécution à surveiller au lieu d'un.
+       *
+       * CE COÛT N'EST PAS NUL, contrairement à ce qu'affirmait ce commentaire
+       * jusqu'au 2026-09-15. Il a été MESURÉ (`audits/mesures-d435-d436/
+       * lot4a-cout-facette-engagements-2026-09-15.mjs`, `EXPLAIN ANALYZE`,
+       * 11 passes) : la seule facette `engagements` — jetée sur TOUS les
+       * marchés, puisque sa dimension n'existe dans aucun registre — coûte
+       * 4,8 ms de médiane sur une requête de 158 ms, soit 3,0 %.
+       *
+       * Le compromis reste le bon, mais il se dit maintenant avec son prix :
+       * 3 % de latence contre un plan d'exécution unique. « Aucun gain mesuré »
+       * était l'inverse d'une mesure — c'était une absence de mesure.
        *
        * `facettesServies` retire les clés non retenues sans muter l'objet.
        */

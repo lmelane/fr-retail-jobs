@@ -76,12 +76,30 @@ export type NomFacetteApi =
  *    La masquer selon le pays casserait sa raison d'être.
  *
  * `engagements` est le cas limite qui mérite sa ligne. La dimension existe côté
- * API, mais le registre l'a explicitement écartée (130 offres dans TOUT le
- * catalogue, aucune facette, aucun index — règle Loïc du 2026-09-08). Elle est
- * donc ici, mappée sur une dimension que `facettesDuMarche()` ne rendra jamais,
- * ce qui la retire de tout marché connu. L'écrire noir sur blanc vaut mieux que
- * l'omettre : une omission se relit comme un oubli, cette ligne se relit comme
- * une décision.
+ * API, mais le registre l'a explicitement écartée (162 offres sur 83 431
+ * actives, soit 0,19 %, mesuré en production le 2026-09-15 ; aucune facette,
+ * aucun index — règle Loïc du 2026-09-08). Elle est donc ici, mappée sur une
+ * dimension que `facettesDuMarche()` ne rendra jamais, ce qui la retire de tout
+ * marché connu. L'écrire noir sur blanc vaut mieux que l'omettre : une omission
+ * se relit comme un oubli, cette ligne se relit comme une décision.
+ *
+ * ── CE QUE CE RETRAIT NE FAIT PAS : il n'économise PAS le calcul ───────────
+ *
+ * La facette est retirée de la RÉPONSE, jamais de la REQUÊTE. `searchSummary`
+ * agrège toujours `engagementType` en SQL, sur toutes les recherches, pour un
+ * résultat que `facettesServies` jette systématiquement ensuite — sur les dix
+ * marchés mesurés comme sur les 109 pays non mesurés, puisque la dimension
+ * `'engagement'` n'existe dans AUCUN registre.
+ *
+ * Le coût a été mesuré plutôt que supposé (`audits/mesures-d435-d436/
+ * lot4a-cout-facette-engagements-2026-09-15.mjs`, `EXPLAIN ANALYZE`, 11 passes
+ * sur le catalogue entier) : 4,8 ms de médiane sur une requête de 158 ms, soit
+ * 3,0 %. C'est réel, reproductible, et assez petit pour ne PAS justifier à soi
+ * seul de toucher au SQL de recherche — mais l'affirmation inverse, « le coût
+ * d'une facette calculée puis écartée est nul », qui vivait dans `jobs.ts`,
+ * était fausse. Une optimisation éventuelle est un arbitrage produit (3 % de
+ * latence contre un plan d'exécution qui varierait selon le marché), pas un
+ * nettoyage à faire en passant.
  */
 /*
  * `satisfies` et NON une annotation de type : l'annotation
@@ -97,9 +115,10 @@ const CORRESPONDANCE_FACETTE = {
   programs: 'programme',
   occupations: 'metier',
   /*
-   * `engagementType` est hors facette par décision (130 offres au catalogue).
-   * Le registre ne le liste pas dans ses dimensions exposables, donc cette
-   * entrée le retire de tout marché reconnu — volontairement, pas par accident.
+   * `engagementType` est hors facette par décision (162 offres sur 83 431
+   * actives, mesuré le 2026-09-15). Le registre ne le liste pas dans ses
+   * dimensions exposables, donc cette entrée le retire de tout marché reconnu
+   * — volontairement, pas par accident.
    */
   engagements: 'engagement' as DimensionFacette,
 } as const satisfies Readonly<Partial<Record<NomFacetteApi, DimensionFacette>>>;
