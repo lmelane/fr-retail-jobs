@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 const now = new Date('2026-09-08T12:00:00Z');
 const old = new Date('2026-09-01T12:00:00Z');
 beforeEach(async () => {
-  await prisma.job.deleteMany();
+  await prisma.jobSource.deleteMany(); await prisma.job.deleteMany();
   await prisma.company.deleteMany();
   await prisma.sourceRun.deleteMany();
 });

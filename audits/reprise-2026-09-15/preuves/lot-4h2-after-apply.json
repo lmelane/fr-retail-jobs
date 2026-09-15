@@ -1,0 +1,19 @@
+{
+  "jobs": 87606,
+  "representations": 90764,
+  "activeRepresentations": 85327,
+  "observations": 141933,
+  "migrationCount": 56,
+  "databaseBytes": 7398946495,
+  "sourceDigest": "3cf6e74e10595fd5541ad557c047f231c73babe6d97380c7408d0daafb200400",
+  "jobDigest": "87213bfa04899a08f9282f2788b8acc521cc1f9b822b62aab205bcfc01685369",
+  "observationDigest": "4f688a3efe6bc1e9e15e9bf32004c85ae89d28b6b28a321a9303aebc4c161d0b",
+  "nativeDigest": "118d22f7a449f04ab011e28d94b5256ef1fdb48cf0429bed8311317ead5e40ca",
+  "outsideJobs": "b9a7c7dd64f94b9535e4b22fad1ec7b8e40b9147df8b0534db81a771dc4387f3",
+  "outsidePublications": "8c48b961bb6d825b02ddf7e7e63d393083ea3831f0c5f5ae29edba83dd881449",
+  "jobIdentityAndLifecycle": "a39c56daf3d8918adbd1be2029d832db787e942b0457a53da46d5752935bb867",
+  "events": 44623,
+  "captures": 0,
+  "decisions": 538,
+  "plans": 3644
+}

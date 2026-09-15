@@ -167,6 +167,7 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
       for (const entry of entries) {
         const { job, ...beforeSource } = entry;
         if (entry.sourceTier !== tier || (spec.withdrawal && entry.isActive)) operations.push({ entity: 'JobSource', id: entry.id, before: json(beforeSource), patch: { sourceTier: tier, ...(spec.withdrawal ? { isActive: false } : {}) }, reason: 'Reviewed portal owner tier and catalogue disposition; RAW and posting identity retained' });
+        if (!job) continue; // Quarantined publication has no employer presentation to mutate.
         if (handled.has(job.id) || (!spec.fromCompanyIds.includes(job.companyId) && !(spec.withdrawal && job.companyId === targetId))) continue;
         handled.add(job.id);
         const brandKey = postingOwners[entry.externalId];

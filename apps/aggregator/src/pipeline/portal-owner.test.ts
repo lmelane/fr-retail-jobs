@@ -6,8 +6,8 @@ import { sourceIdentityHash } from '../connectors/sourceIdentity.js';
 import { planReviewedPortalOwners, type PortalOwnerReview } from '../remediation/portalOwner.js';
 import { applyRepairPlan, digest } from '../remediation/plan.js';
 const prisma = new PrismaClient();
-beforeEach(async () => { await prisma.job.deleteMany(); await prisma.company.deleteMany(); await prisma.sourceObservation.deleteMany({where:{sourceKey:'owner-fixture'}}); await prisma.source.deleteMany({where:{key:'owner-fixture'}}); });
-afterAll(async () => { await prisma.job.deleteMany(); await prisma.company.deleteMany(); await prisma.source.deleteMany({where:{key:'owner-fixture'}}); await prisma.$disconnect(); });
+beforeEach(async () => { await prisma.jobSource.deleteMany(); await prisma.job.deleteMany(); await prisma.company.deleteMany(); await prisma.sourceObservation.deleteMany({where:{sourceKey:'owner-fixture'}}); await prisma.source.deleteMany({where:{key:'owner-fixture'}}); });
+afterAll(async () => { await prisma.jobSource.deleteMany(); await prisma.job.deleteMany(); await prisma.company.deleteMany(); await prisma.source.deleteMany({where:{key:'owner-fixture'}}); await prisma.$disconnect(); });
 async function fixture() {
  const company=await prisma.company.create({data:{name:'Legacy Brand',canonicalKey:'LEGACY_BRAND',kind:'BRAND',fashionjobsUrl:'resolved:LEGACY_BRAND'}});
  const source=await prisma.source.create({data:{key:'owner-fixture',maison:'Legacy Brand',kind:'successfactors',config:{origin:'https://careers.example.com'},tenantKey:'successfactors:careers.example.com',tier:'EMPLOYER_DIRECT',status:'ACTIVE'}});

@@ -22,7 +22,7 @@ try {
   }
   const eligible = absencePlan.eligibility.filter(source => source.eligible).map(source => source.source);
   const closures = plan.wouldClose.filter(id => !plan.orphans.some(job => job.id === id));
-  const affected = await db.job.findMany({ where: { id: { in: [...new Set(plan.staleSources.map(source => source.jobId))] } }, select: { id: true, isActive: true } });
+  const affected = await db.job.findMany({ where: { id: { in: [...new Set(plan.staleSources.flatMap(source => source.jobId ? [source.jobId] : []))] } }, select: { id: true, isActive: true } });
   const closing = new Set(closures);
   const kept = affected.filter(job => job.isActive && !closing.has(job.id)).map(job => job.id);
   const manifest = plan.refused ? null : await createRefreshManifest(db, plan);

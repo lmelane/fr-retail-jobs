@@ -3,7 +3,7 @@ import { freezeManifest, manifestHash, verifyManifest, compareTouched, type Mani
 
 const entry = (over: Partial<ManifestEntry> = {}): ManifestEntry => ({
   jobSourceId: 'JS1', sourceKey: 'mecca', externalId: 'X1', jobId: 'J1',
-  observedAt: '2026-09-01T00:00:00Z', jobBeforeHash: 'a'.repeat(64),
+  observedAt: '2026-09-01T00:00:00Z', beforeHash: 'a'.repeat(64),
   proof: { kind: 'ENUMERATION', runId: 'run-1', hash: 'b'.repeat(64) },
   state: 'ABSENT_FROM_PROVEN_ENUMERATION', consequence: 'JOB_CANDIDATE_FOR_CLOSURE', ...over,
 });
@@ -58,7 +58,7 @@ describe('verifyManifest — trois refus, trois incidents réels', () => {
   it('hashes the source proof, observation time, parent state and limits', () => {
     const original = manifestHash(['mecca'], [entry()]);
     for (const change of [
-      { observedAt: '2026-09-02T00:00:00Z' }, { jobBeforeHash: 'c'.repeat(64) },
+      { observedAt: '2026-09-02T00:00:00Z' }, { beforeHash: 'c'.repeat(64) },
       { proof: { kind: 'ENUMERATION' as const, runId: 'run-2', hash: 'b'.repeat(64) } },
     ]) expect(manifestHash(['mecca'], [entry(change)])).not.toBe(original);
     expect(manifestHash(['mecca'], [entry()], { staleHours: 48, maxCloseRatio: 1, minCloseForGuard: 50 })).not.toBe(original);

@@ -4,7 +4,7 @@ import { evidenceHash } from '../lib/evidenceHash.js';
 import { log } from '../observability/logger.js';
 import type { Prisma, PrismaClient } from '@prisma/client';
 import { selectApplySource } from '@catwalks/db/publications';
-import { lockCompanyRows } from '../lib/writeLocks.js';
+import { lockSourceWrites, lockCompanyRows } from '../lib/writeLocks.js';
 import { chunk } from '../lib/chunk.js';
 import { recordEvents, changedEvents, diffStructuralFields, structuralValuesOf } from './jobEvents.js';
 import { recordOccupationObservation } from '../occupation/persist.js';
@@ -12,7 +12,7 @@ import { deactivateJob, reactivateJob } from './lifecycle.js';
 import { readAbsencePlan } from './refreshEvidence.js';
 import { availableSourceWhere, sourceIsAvailable } from '@catwalks/db/availability';
 import { randomUUID } from 'node:crypto';
-import { freezeManifest, refreshSnapshot, verifyManifest, REFRESH_LIMITS, type ManifestEntry, type RefreshManifest } from './refreshManifest.js';
+import { quarantineSnapshot, freezeManifest, refreshSnapshot, verifyManifest, REFRESH_LIMITS, type ManifestEntry, type RefreshManifest } from './refreshManifest.js';
 
 /** A fresh, complete enumeration may prove absence; silence alone never does. */
 const STALE_HOURS = Number(process.env.REFRESH_STALE_HOURS ?? REFRESH_LIMITS.staleHours);
@@ -112,7 +112,7 @@ export async function readRefreshPlan(prisma: PrismaClient, options: RefreshOpti
   // Which jobs WOULD close: those where, after deactivating the stale sources
   // above, no active source would remain. Compute before writing anything so the
   // mass-closure guard can refuse first.
-  const staleJobIds = new Set(staleSources.map((s) => s.jobId));
+  const staleJobIds = new Set(staleSources.flatMap((s) => s.jobId ? [s.jobId] : []));
   const orphans = options.manifest ? [] : await prisma.job.findMany({
     where: { AND: [jobScope, { isActive: true, sources: { none: { isActive: true } } }] }, select: { id: true },
   });
@@ -148,9 +148,9 @@ export async function readRefreshPlan(prisma: PrismaClient, options: RefreshOpti
     limits: { staleHours, maxCloseRatio, minCloseForGuard } };
 }
 
-function plannedEvidence(absence: Awaited<ReturnType<typeof readAbsencePlan>>, expired: { id: string; jobId: string; sourceKey: string; externalId: string; lastSeenAt: Date; expiresAt: Date | null; expiryEvidence: unknown }[]) {
+function plannedEvidence(absence: Awaited<ReturnType<typeof readAbsencePlan>>, expired: { id: string; jobId: string | null; sourceKey: string; externalId: string; lastSeenAt: Date; expiresAt: Date | null; expiryEvidence: unknown }[]) {
   const observed = new Map(absence.representations.map(row => [row.jobSourceId, row]));
-  const evidence = new Map<string, Omit<ManifestEntry, 'jobBeforeHash' | 'consequence'>>();
+  const evidence = new Map<string, Omit<ManifestEntry, 'beforeHash' | 'consequence'>>();
   for (const row of absence.deactivations) {
     const proof = absence.proofs.get(row.sourceKey)!;
     evidence.set(row.jobSourceId, { jobSourceId: row.jobSourceId, jobId: row.jobId, sourceKey: row.sourceKey, externalId: row.externalId,
@@ -168,19 +168,21 @@ export async function createRefreshManifest(prisma: PrismaClient, plan: Awaited<
   if (plan.refused) throw new Error('Refresh closure guard refused the preview');
   const evidence = plannedEvidence(plan.absencePlan, plan.expiredSources);
   const entries: ManifestEntry[] = [];
-  for (const ids of chunk([...new Set(plan.staleSources.map(source => source.jobId))])) {
+  for (const ids of chunk([...new Set(plan.staleSources.flatMap(source => source.jobId ? [source.jobId] : []))])) {
     const jobs = await prisma.job.findMany({ where: { id: { in: ids } },
       include: { sources: { omit: { raw: true } } }, omit: { raw: true, searchText: true } });
     for (const job of jobs) {
-      const jobBeforeHash = evidenceHash(refreshSnapshot(job));
+      const beforeHash = evidenceHash(refreshSnapshot(job));
       for (const source of job.sources) {
         const entry = evidence.get(source.id);
         if (!entry) continue;
-        entries.push({ ...entry, jobBeforeHash, consequence: !job.isActive ? 'JOB_ALREADY_INACTIVE'
+        entries.push({ ...entry, beforeHash, consequence: !job.isActive ? 'JOB_ALREADY_INACTIVE'
           : plan.wouldClose.includes(job.id) ? 'JOB_CANDIDATE_FOR_CLOSURE' : 'JOB_KEPT_BY_ANOTHER_SOURCE' });
       }
     }
   }
+  const quarantined = await prisma.jobSource.findMany({ where: { id: { in: plan.staleSources.filter(source => source.jobId === null).map(source => source.id) }, jobId: null }, omit: { raw: true } });
+  for (const source of quarantined) entries.push({ ...evidence.get(source.id)!, beforeHash: evidenceHash(quarantineSnapshot(source)), consequence: 'QUARANTINED_PUBLICATION' });
   return freezeManifest(plan.options.onlyKeys, entries, plan.limits);
 }
 
@@ -204,8 +206,8 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
     return { checked: plan.liveTotal, closedSources: 0, closedJobs: 0, reopened: 0, withdrawn: 0,
       republished: 0, unverifiableSources, refused: true };
   }
-  const candidates = new Set(manifest ? manifest.entries.map(entry => entry.jobId)
-    : [...staleSources.map(source => source.jobId), ...orphans.map(job => job.id), ...revived.map(job => job.id)]);
+  const candidates = new Set(manifest ? manifest.entries.flatMap(entry => entry.jobId ? [entry.jobId] : [])
+    : [...staleSources.flatMap(source => source.jobId ? [source.jobId] : []), ...orphans.map(job => job.id), ...revived.map(job => job.id)]);
   const closedSources = { count: 0 }, closedJobs = { count: 0 }, reopened = { count: 0 };
   let withdrawn = 0, republished = 0;
   for (const ids of chunk([...candidates], 100)) {
@@ -225,16 +227,17 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
         const skipped = new Map<string, string>();
         const entriesByJob = new Map<string, ManifestEntry[]>();
         for (const entry of manifest?.entries ?? []) {
+          if (!entry.jobId) continue;
           if (!entriesByJob.has(entry.jobId)) entriesByJob.set(entry.jobId, []);
           entriesByJob.get(entry.jobId)!.push(entry);
         }
         for (const job of currentJobs) {
-          if (manifest && entriesByJob.get(job.id)?.[0]?.jobBeforeHash !== evidenceHash(before.get(job.id))) skipped.set(job.id, 'BEFORE_STATE_CHANGED');
+          if (manifest && entriesByJob.get(job.id)?.[0]?.beforeHash !== evidenceHash(before.get(job.id))) skipped.set(job.id, 'BEFORE_STATE_CHANGED');
         }
         const currentIds = currentJobs.filter(job => !skipped.has(job.id)).map(job => job.id);
         const currentIdSet = new Set(currentIds);
         const plannedSourceIds = (manifest?.entries.map(entry => ({ id: entry.jobSourceId, jobId: entry.jobId })) ?? staleSources)
-          .filter(source => currentIdSet.has(source.jobId)).map(source => source.id);
+          .filter(source => source.jobId !== null && currentIdSet.has(source.jobId)).map(source => source.id);
         const now = new Date();
         // Re-read persisted source evidence while ingestion is locked.
         const currentPlan = await readAbsencePlan(tx, { AND: [sourceScope,
@@ -246,7 +249,7 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
         if (manifest) for (const job of currentJobs.filter(job => !skipped.has(job.id))) {
           const expected = entriesByJob.get(job.id)!;
           for (const entry of expected) {
-            const { consequence: _consequence, jobBeforeHash: _beforeHash, ...expectedEvidence } = entry;
+            const { consequence: _consequence, beforeHash: _beforeHash, ...expectedEvidence } = entry;
             if (evidenceHash(evidence.get(entry.jobSourceId) ?? null) !== evidenceHash(expectedEvidence)) skipped.set(job.id, 'EVIDENCE_CHANGED');
           }
           const projected = job.sources.map(source => ({ ...source, isActive: source.isActive && !evidence.has(source.id) }));
@@ -313,13 +316,50 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
     }
   }
 
+  // Quarantine is independent of the public Job lifecycle. Recheck the same
+  // absence/deadline evidence under the source lock and journal only this row.
+  const detachedIds = manifest ? manifest.entries.filter(entry => entry.jobId === null).map(entry => entry.jobSourceId)
+    : staleSources.filter(source => source.jobId === null).map(source => source.id);
+  for (const id of detachedIds) {
+    const known = await prisma.jobSource.findUnique({ where: { id }, select: { sourceKey: true } });
+    if (!known) continue;
+    closedSources.count += await prisma.$transaction(async tx => {
+      await lockSourceWrites(tx, known.sourceKey, true);
+      if (await tx.dataCorrection.count({ where: { batchId: auditBatchId, entityType: 'JobSource', entityId: id } })) return 0;
+      const source = await tx.jobSource.findFirst({ where: { AND: [sourceScope, { id, jobId: null }] }, omit: { raw: true } });
+      const expected = manifest?.entries.find(entry => entry.jobSourceId === id);
+      const before = source ? quarantineSnapshot(source) : { available: false };
+      let outcome = !source ? 'MISSING_OR_OUTSIDE_SCOPE' : expected && evidenceHash(before) !== expected.beforeHash ? 'BEFORE_STATE_CHANGED' : 'UNCHANGED';
+      let proof: ReturnType<typeof plannedEvidence> extends Map<string, infer T> ? T | undefined : never;
+      if (source?.isActive && outcome === 'UNCHANGED') {
+        const now = new Date();
+        const absence = await readAbsencePlan(tx, { AND: [sourceScope, { id, jobId: null }] }, cutoff, now);
+        proof = plannedEvidence(absence, source.expiresAt && source.expiresAt <= now ? [source] : []).get(id);
+        const expectedProof = expected && (({ beforeHash: _hash, consequence: _outcome, ...value }) => value)(expected);
+        if (!proof || expectedProof && evidenceHash(expectedProof) !== evidenceHash(proof)) outcome = 'EVIDENCE_CHANGED';
+        else {
+          await tx.jobSource.update({ where: { id }, data: { isActive: false } });
+          outcome = 'APPLIED';
+        }
+      }
+      if (outcome !== 'APPLIED' && !manifest) return 0;
+      await tx.dataCorrection.create({ data: { batchId: auditBatchId,
+        planHash: manifest?.planHash ?? evidenceHash({ before, proof: proof ?? null }),
+        commitHash: process.env.RAILWAY_GIT_COMMIT_SHA ?? 'LOCAL_WORKTREE', finding: 'REFRESH_LIFECYCLE',
+        entityType: 'JobSource', entityId: id, before,
+        after: outcome === 'APPLIED' ? { ...before, isActive: false } : before,
+        evidence: { outcome, deactivatedIds: outcome === 'APPLIED' ? [id] : [], proofs: proof ? [proof] : [], cutoff: cutoff.toISOString() } } });
+      return outcome === 'APPLIED' ? 1 : 0;
+    }, { maxWait: 10_000, timeout: 30_000 });
+  }
+
   if (manifest) {
     const audited = new Set((await prisma.dataCorrection.findMany({ where: { batchId: auditBatchId, entityType: 'Job' }, select: { entityId: true } })).map(row => row.entityId));
-    const missing = [...new Set(manifest.entries.map(entry => entry.jobId))].filter(id => !audited.has(id));
+    const missing = [...new Set(manifest.entries.flatMap(entry => entry.jobId ? [entry.jobId] : []))].filter(id => !audited.has(id));
     if (missing.length) await prisma.dataCorrection.createMany({ data: missing.map(id => ({
       batchId: auditBatchId, planHash: manifest.planHash, commitHash: process.env.RAILWAY_GIT_COMMIT_SHA ?? 'LOCAL_WORKTREE',
       finding: 'REFRESH_LIFECYCLE', entityType: 'Job', entityId: id,
-      before: { expectedHash: manifest.entries.find(entry => entry.jobId === id)!.jobBeforeHash }, after: { available: false },
+      before: { expectedHash: manifest.entries.find(entry => entry.jobId === id)!.beforeHash }, after: { available: false },
       evidence: { outcome: 'MISSING_OR_OUTSIDE_SCOPE', deactivatedIds: [] },
     })), skipDuplicates: true });
   }

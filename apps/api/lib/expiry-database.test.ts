@@ -11,7 +11,7 @@ const key = 'expiry-api-witness';
 const past = new Date(Date.now() - 60_000), future = new Date(Date.now() + 3_600_000);
 describe.skipIf(!enabled)('public availability from source publications', () => {
   const cleanup = async () => {
-    await prisma.job.deleteMany({ where: { companyId: key } });
+    await prisma.jobSource.deleteMany({ where: { job: { companyId: key } } }); await prisma.job.deleteMany({ where: { companyId: key } });
     await prisma.company.deleteMany({ where: { id: key } });
   };
   beforeEach(async () => {

@@ -6,8 +6,8 @@ import { applyRepairPlan, digest, json, type RepairPlan } from '../remediation/p
 import { planAdministrativeWithdrawals } from '../remediation/withdrawal.js';
 
 const db = new PrismaClient();
-beforeEach(async () => { await db.job.deleteMany(); await db.company.deleteMany(); });
-afterAll(async () => { await db.job.deleteMany(); await db.company.deleteMany(); await db.$disconnect(); });
+beforeEach(async () => { await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); });
+afterAll(async () => { await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); await db.$disconnect(); });
 
 async function witness() {
   const key = `withdrawal-${randomUUID()}`;

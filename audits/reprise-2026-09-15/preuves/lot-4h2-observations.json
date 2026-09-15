@@ -1,0 +1,35 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "publications": 294,
+  "withHistoricalRaw": 127,
+  "withoutHistoricalRaw": 167,
+  "historicalObservations": 128,
+  "byKind": {
+    "fashionjobs": {
+      "publications": 159,
+      "nonNullCurrentRaw": 27,
+      "withHistoricalRaw": 0
+    },
+    "successfactors": {
+      "publications": 10,
+      "nonNullCurrentRaw": 10,
+      "withHistoricalRaw": 10
+    },
+    "wttj-sector": {
+      "publications": 120,
+      "nonNullCurrentRaw": 116,
+      "withHistoricalRaw": 116
+    },
+    "icims": {
+      "publications": 1,
+      "nonNullCurrentRaw": 1,
+      "withHistoricalRaw": 1
+    },
+    "oraclehcm": {
+      "publications": 4,
+      "nonNullCurrentRaw": 0,
+      "withHistoricalRaw": 0
+    }
+  }
+}

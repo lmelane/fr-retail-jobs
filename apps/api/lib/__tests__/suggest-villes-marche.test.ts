@@ -139,7 +139,7 @@ describe.skipIf(!actif)('suggestCities — cloisonnement par marché', () => {
   });
 
   async function nettoyer() {
-    await prisma.job.deleteMany({ where: { externalId: { startsWith: MARQUEUR } } });
+    await prisma.jobSource.deleteMany({ where: { job: { externalId: { startsWith: MARQUEUR } } } }); await prisma.job.deleteMany({ where: { externalId: { startsWith: MARQUEUR } } });
     await prisma.company.deleteMany({ where: { name: MARQUEUR } });
   }
 

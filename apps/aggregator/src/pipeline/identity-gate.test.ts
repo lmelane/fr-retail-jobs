@@ -12,8 +12,12 @@ const prisma = new PrismaClient();
 const SOURCE = 'gate-fixture';
 // EmployerObservation is append-only (database trigger) and references companies: every fixture entity gets a fresh key
 // and nothing is deleted but the fixture's own jobs.
-beforeEach(async () => { await prisma.job.deleteMany({ where: { sources: { some: { sourceKey: SOURCE } } } }); });
-afterAll(async () => { await prisma.job.deleteMany({ where: { sources: { some: { sourceKey: SOURCE } } } }); await prisma.$disconnect(); });
+beforeEach(async () => { const jobs = await prisma.job.findMany({ where: { sources: { some: { sourceKey: SOURCE } } } });
+  await prisma.jobSource.deleteMany({ where: { jobId: { in: jobs.map(job => job.id) } } });
+  await prisma.job.deleteMany({ where: { id: { in: jobs.map(job => job.id) } } }); });
+afterAll(async () => { const jobs = await prisma.job.findMany({ where: { sources: { some: { sourceKey: SOURCE } } } });
+  await prisma.jobSource.deleteMany({ where: { jobId: { in: jobs.map(job => job.id) } } });
+  await prisma.job.deleteMany({ where: { id: { in: jobs.map(job => job.id) } } }); await prisma.$disconnect(); });
 
 /** Kering, 2026-09-09: 6 postings came back labelled "Kering" because the feed omitted the house that a previous response had attested. */
 async function fixture() {

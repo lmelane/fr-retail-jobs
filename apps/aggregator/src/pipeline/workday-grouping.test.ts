@@ -41,7 +41,7 @@ describe('Workday grouped publications in persistence',()=>{
     for(let i=0;i<before.length;i++)expect(after[i]).toMatchObject({id:before[i].id,raw:before[i].raw,url:before[i].url,lastSeenAt:before[i].lastSeenAt,externalId:before[i].externalId});
     expect(new Set(after.map(s=>s.jobId)).size).toBe(2);
     expect(after.find(s=>s.id===same[0].id)?.jobId).toBe(first.jobId);
-    const separated=await db.job.findUniqueOrThrow({where:{id:after.find(s=>s.id===foreign.id)!.jobId}});
+    const separated=await db.job.findUniqueOrThrow({where:{id:after.find(s=>s.id===foreign.id)!.jobId!}});
     expect(separated).toMatchObject({url:c.url,clusterKey:blockingKey(c),description:'Own duties for Retail'});
     expect((await db.publicationIdentityDecision.findFirstOrThrow({where:{sourceId:foreign.id}})).action).toBe('SEPARATED');
   });

@@ -1,6 +1,6 @@
 # Agrégateur Catwalks — état vérifié et exploitation
 
-État relu le **15 septembre 2026**. Les anciennes conclusions du 10 septembre ont été remplacées ; leur historique reste dans Git. La référence d’architecture est [production-foundations.md](../../docs/architecture/production-foundations.md).
+État relu le **16 septembre 2026**. Les anciennes conclusions du 10 septembre ont été remplacées ; leur historique reste dans Git. La référence d’architecture est [production-foundations.md](../../docs/architecture/production-foundations.md).
 
 ## État mesuré
 
@@ -23,6 +23,8 @@ Le [plan courant](../../audits/reprise-2026-09-15/plan.md) porte les dépendance
 Les lots 0 à 3 corrigent localement la validation, la disponibilité, la capture native et les [faits RAW avec réattestation](../../docs/architecture/source-facts.md). Les [résultats du lot 3](../../audits/reprise-2026-09-15/lot-3.md) distinguent les lectures qualifiées, les absences et les formats encore non interprétés. Ces validations ne constituent pas une bascule du stock de production.
 
 L’architecture cible conserve le RAW avant parsing, puis construit des faits traçables et une projection de recherche commune aux offres directes et externes. Les notions locales ne doivent pas être forcées dans un vocabulaire mondial unique.
+
+Le [lot 4H2](../../audits/reprise-2026-09-15/lot-4h2.md) valide 3 195 tests et 56 migrations. Le clone local compte 55 124 présentations reconstruites et 293 publications en quarantaine, conservées indépendamment des fiches publiques. Un dernier groupe mixte demande une revue de son ancien ID public ; les autres formats et la certification des sources restent ouverts. Ces mesures locales ne remplacent pas le tableau initial de production ci-dessus.
 
 ## Commandes de validation
 

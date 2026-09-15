@@ -5,8 +5,8 @@ import { beforeEach, afterAll, expect, it } from 'vitest';
 import { applyRepairPlan, digest, json, type RepairPlan } from '../remediation/plan.js';
 
 const prisma = new PrismaClient();
-beforeEach(async () => { await prisma.job.deleteMany(); await prisma.company.deleteMany(); });
-afterAll(async () => { await prisma.job.deleteMany(); await prisma.company.deleteMany(); await prisma.$disconnect(); });
+beforeEach(async () => { await prisma.jobSource.deleteMany(); await prisma.job.deleteMany(); await prisma.company.deleteMany(); });
+afterAll(async () => { await prisma.jobSource.deleteMany(); await prisma.job.deleteMany(); await prisma.company.deleteMany(); await prisma.$disconnect(); });
 async function witness() {
   const company = await prisma.company.create({ data: { name: 'Tiffany & Co.', canonicalKey: 'TIFFANY', fashionjobsUrl: `witness:${randomUUID()}` } });
   const job = await prisma.job.create({ data: { companyId: company.id, externalId: '63763', source: 'ORACLE_HCM', title: 'CDD Client Advisor - Paris', url: 'https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63763', countryCode: 'AU', fingerprint: 'witness',

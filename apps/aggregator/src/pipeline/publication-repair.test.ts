@@ -14,11 +14,11 @@ const db = new PrismaClient();
 let companyId: string;
 const application = 'https://jobaffinity.fr/apply/repair123456789';
 beforeEach(async () => {
-  await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany();
+  await db.companyAlias.deleteMany(); await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany();
   const id = randomUUID(); companyId = (await db.company.create({ data: { name: 'Repair witness', canonicalKey: id, fashionjobsUrl: `repair:${id}` } })).id;
 });
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.useRealTimers(); });
-afterAll(async () => { await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); await db.$disconnect(); });
+afterAll(async () => { await db.companyAlias.deleteMany(); await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); await db.$disconnect(); });
 
 async function publication(options: { url?: string; title?: string; description?: string; country?: string; city?: string; tier?: string; jobId?: string; validThrough?: string; captureKind?: 'LEVER'; readerTitle?: string; readerHold?: string; readerCountry?: string; readerDescription?: string; nativeUrl?: string; omitNativeDescription?: boolean; latitude?: string } = {}) {
   const key = `repair-${randomUUID()}`, url = options.url ?? application;
@@ -268,7 +268,7 @@ describe('reviewed publication partitions', () => {
       reason: 'Separate the inactive publication while preserving its actual disposition' });
     await apply(plan);
     const row = await db.jobSource.findUniqueOrThrow({ where: { id: b.source.id }, include: { job: true } });
-    expect(row.isActive).toBe(false); expect(row.job.isActive).toBe(false);
+    expect(row.isActive).toBe(false); expect(row.job!.isActive).toBe(false);
     expect(row.job).toMatchObject(disposition === 'expired'
       ? { closedAt: expect.any(Date), withdrawnAt: null, withdrawalReason: null }
       : { closedAt: null, withdrawnAt: expect.any(Date), withdrawalReason: disposition === 'retired' ? 'SOURCE_RETIRED' : 'ATTESTATION_MISSING' });
@@ -281,5 +281,216 @@ describe('reviewed publication partitions', () => {
       isActive: false, mergedIntoId: a.job.id, canonicalSourceKey: 'unrelated', canonicalExternalId: 'unrelated',
       events: { create: { type: 'MERGED', field: 'mergedInto', after: a.job.id } } } });
     await expect(planPublicationGroups(db, { jobIds: [a.job.id, old.id], groups: [{ jobId: old.id, sourceIds: [a.source.id] }], reason: 'Attempt to reassign an unrelated historical URL' })).rejects.toThrow('original native publication anchor');
+  });
+});
+
+describe('native publications without public presentation', () => {
+  async function mixed() {
+    const good = await publication({ title: 'Qualified content' });
+    const held = await publication({ jobId: good.job.id, omitNativeDescription: true, readerDescription: 'Legacy invented description', tier: 'SPECIALIST_JOBBOARD' });
+    const request = { jobIds: [good.job.id], groups: [{ jobId: good.job.id, sourceIds: [good.source.id] }],
+      quarantineSourceIds: [held.source.id], reason: 'Keep the native incomplete publication independently of the qualified public presentation' };
+    return { good, held, request };
+  }
+  async function reobserve(held: Awaited<ReturnType<typeof publication>>, options: { hold?: string; config?: Record<string, unknown>; missingDescription?: boolean } = {}) {
+    const { toCandidate } = await import('./ingest.js');
+    const raw = { ...(held.source.raw as Record<string, unknown>), ...(options.missingDescription ? {} : { description: 'Native recovered duties' }) };
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(raw))));
+    const result = await captureExtraction(db, held.source.sourceKey, options.config ?? {}, undefined, async () => {
+      const observed = await fetchJson<typeof raw>(`https://repair.example/reobserve/${held.source.id}`);
+      const job = normalizeGenericPosting(observed, held.source.url)!;
+      return { jobs: [{ ...job, ...(options.hold ? { publicationHold: options.hold } : {}) }] };
+    }, 'GENERIC_JSONLD');
+    const job = result.jobs[0];
+    const candidate = toCandidate({ ...job, publicationHold: undefined }, { key: held.source.sourceKey, tier: 'SPECIALIST_JOBBOARD', company: 'Repair witness' }, 'Repair witness', 'GENERIC_JSONLD');
+    await db.company.update({ where: { id: companyId }, data: { canonicalKey: candidate.companyId, fashionjobsUrl: `resolved:${candidate.companyId}` } });
+    const { sourceIdentityHash } = await import('../connectors/sourceIdentity.js');
+    const { normalizedEmployerName } = await import('../normalize/employerName.js');
+    const source = await db.source.findUniqueOrThrow({ where: { key: held.source.sourceKey } });
+    const reviewId = randomUUID();
+    await db.employerIdentityReview.create({ data: { id: reviewId, statement: 'Fixture source owner is explicitly reviewed', evidence: {}, planHash: reviewId, reviewedBy: 'integration', reviewedAt: new Date() } });
+    await db.companyAlias.upsert({ where: { aliasKey: held.source.sourceKey }, create: {
+      aliasKey: held.source.sourceKey, sourceKey: held.source.sourceKey, displayName: 'Repair witness', normalizedName: normalizedEmployerName('Repair witness'),
+      companyId, sourceHash: sourceIdentityHash(source), reviewId,
+    }, update: { reviewId } });
+    return candidate;
+  }
+
+  it('retains every native field, rebuilds the eligible sibling, journals and repeats once', async () => {
+    const { good, held, request } = await mixed();
+    const plan = await planPublicationGroups(db, request);
+    expect(plan.quarantines).toEqual([{ sourceId: held.source.id, reason: 'CONTENT_MISSING', rawHash: evidenceHash(held.source.raw) }]);
+    expect(await apply(plan)).toMatchObject({ quarantined: 1, groups: 1, redirects: 0 });
+    const after = await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } });
+    const { jobId: _job, quarantinedAt: _at, quarantineReason: _reason, presentation: _cache, ...native } = after;
+    const { jobId: _oldJob, quarantinedAt: _oldAt, quarantineReason: _oldReason, presentation: _oldCache, ...beforeNative } = held.source;
+    expect(native).toEqual(beforeNative);
+    expect(after).toMatchObject({ jobId: null, quarantineReason: 'CONTENT_MISSING', presentation: null, isActive: true });
+    expect(after.quarantinedAt).toBeInstanceOf(Date);
+    expect(await db.job.findUniqueOrThrow({ where: { id: good.job.id } })).toMatchObject({ title: 'Qualified content', isActive: true });
+    expect(await db.job.count()).toBe(1);
+    expect(await db.jobEvent.count({ where: { type: { in: ['CLOSED', 'WITHDRAWN'] } } })).toBe(0);
+    expect(await db.publicationIdentityDecision.findFirstOrThrow({ where: { sourceId: held.source.id, action: 'QUARANTINED' } })).toMatchObject({ fromJobId: good.job.id, toJobId: null });
+    const audit = await db.dataCorrection.findFirstOrThrow({ where: { entityId: plan.planHash } });
+    expect(audit.evidence).toMatchObject({ quarantined: [expect.objectContaining({ id: held.source.id, jobId: null })] });
+    expect(await apply(plan)).toMatchObject({ alreadyApplied: true });
+  });
+
+  it('refuses complete RAW quarantine, incomplete partitions, and loss of the original public ID', async () => {
+    const { good, held, request } = await mixed();
+    await expect(planPublicationGroups(db, { ...request, quarantineSourceIds: [good.source.id], groups: [{ jobId: good.job.id, sourceIds: [held.source.id] }] })).rejects.toThrow('Recoverable publication');
+    await expect(planPublicationGroups(db, { ...request, quarantineSourceIds: [] })).rejects.toThrow('Every current publication');
+    await expect(planPublicationGroups(db, { ...request, groups: [{ sourceIds: [good.source.id] }] })).rejects.toThrow('original Job ID');
+    await expect(planPublicationGroups(db, { ...request, quarantineSourceIds: [held.source.id, held.source.id] })).rejects.toThrow('exactly once');
+  });
+
+  it('rejects stale evidence and atomic rollback leaves both publications attached', async () => {
+    const { held, request } = await mixed();
+    const plan = await planPublicationGroups(db, request);
+    await db.jobSource.update({ where: { id: held.source.id }, data: { lastSeenAt: new Date(0) } });
+    await expect(apply(plan)).rejects.toThrow('changed');
+    expect((await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).jobId).toBe(held.job.id);
+    expect(await db.publicationIdentityDecision.count({ where: { sourceId: held.source.id } })).toBe(0);
+  });
+
+  it('does not reuse the public ID of an unproven owner for a different native application', async () => {
+    const good = await publication();
+    const held = await publication({ jobId: good.job.id, url: 'https://example.com/jobs/unqualified-owner', omitNativeDescription: true });
+    await db.job.update({ where: { id: good.job.id }, data: { url: held.source.url, canonicalSourceKey: held.source.sourceKey, canonicalExternalId: held.source.externalId } });
+    await expect(planPublicationGroups(db, { jobIds: [good.job.id], groups: [{ jobId: good.job.id, sourceIds: [good.source.id] }], quarantineSourceIds: [held.source.id], reason: 'Insufficient old owner evidence cannot authorize changing the public application identity' })).rejects.toThrow('public application identity');
+    expect(await db.jobSource.count({ where: { jobId: good.job.id } })).toBe(2);
+  });
+
+  it('database guards reject unaudited detachment, reuse of a committed decision and parent deletion', async () => {
+    const { good, held, request } = await mixed();
+    await expect(db.job.delete({ where: { id: good.job.id } })).rejects.toThrow();
+    await expect(db.jobSource.update({ where: { id: held.source.id }, data: { jobId: null, quarantinedAt: new Date(), quarantineReason: 'CONTENT_MISSING' } })).rejects.toThrow('compensating decision');
+    const plan = await planPublicationGroups(db, request); await apply(plan);
+    await expect(db.jobSource.update({ where: { id: held.source.id }, data: { jobId: good.job.id, quarantinedAt: null, quarantineReason: null } })).rejects.toThrow('compensating decision');
+    await expect(db.jobSource.update({ where: { id: held.source.id }, data: { quarantineReason: null } })).rejects.toThrow();
+    await expect(db.jobSource.update({ where: { id: held.source.id }, data: { quarantineReason: 'ALTERED_WITHOUT_REVIEW' } })).rejects.toThrow('publication transition');
+    await expect(db.publicationIdentityDecision.updateMany({ where: { sourceId: held.source.id }, data: { action: 'RELEASED' } })).rejects.toThrow('immutable');
+  });
+
+  it('requires a new qualified native capture and rejects held, changed-config and incomplete captures', async () => {
+    const { upsertDeduplicated } = await import('../dedup/upsert.js');
+    const { held, request } = await mixed();
+    const old = await reobserve(held);
+    await apply(await planPublicationGroups(db, request));
+    await expect(upsertDeduplicated(db, old)).rejects.toThrow('NEW_NATIVE_CAPTURE');
+    for (const options of [{ hold: 'WRONG_DETAIL' }, { config: { different: true } }, { missingDescription: true }]) {
+      const candidate = await reobserve(held, options);
+      await expect(upsertDeduplicated(db, candidate)).rejects.toThrow(/QUARANTINE_CAPTURE_NOT_QUALIFIED|QUARANTINE_RECOVERY_REQUIRED/);
+      expect((await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).jobId).toBeNull();
+    }
+  });
+
+  it('releases into a proven sibling while preserving the publication ID and first observation', async () => {
+    const { upsertDeduplicated } = await import('../dedup/upsert.js');
+    const { good, held, request } = await mixed();
+    await apply(await planPublicationGroups(db, request));
+    const candidate = await reobserve(held);
+    const outcome = await upsertDeduplicated(db, candidate);
+    expect(outcome.jobId).toBe(good.job.id);
+    const source = await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } });
+    expect(source).toMatchObject({ jobId: good.job.id, firstSeenAt: held.source.firstSeenAt, quarantinedAt: null, quarantineReason: null, captureOutputId: candidate.captureOutputId });
+    expect(source.presentation).not.toBeNull();
+    expect(await db.jobSource.count()).toBe(2);
+    expect(await db.publicationIdentityDecision.count({ where: { sourceId: source.id, action: 'RELEASED' } })).toBe(1);
+    expect((await upsertDeduplicated(db, candidate)).outcome).toBe('UPDATED');
+    expect(await db.publicationIdentityDecision.count({ where: { sourceId: source.id, action: 'RELEASED' } })).toBe(1);
+  });
+
+  it('creates an independent presentation for a newly proven distinct publication, never restoring a false group', async () => {
+    const { upsertDeduplicated } = await import('../dedup/upsert.js');
+    const good = await publication();
+    const held = await publication({ jobId: good.job.id, url: 'https://example.com/jobs/separate-native-entry', omitNativeDescription: true });
+    const request = { jobIds: [good.job.id], groups: [{ jobId: good.job.id, sourceIds: [good.source.id] }], quarantineSourceIds: [held.source.id], reason: 'Preserve independent native entries until their own content can be recollected' };
+    await apply(await planPublicationGroups(db, request));
+    const outcome = await upsertDeduplicated(db, await reobserve(held));
+    expect(outcome.jobId).not.toBe(good.job.id);
+    expect(await db.jobSource.count()).toBe(2);
+    expect(await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).toMatchObject({ jobId: outcome.jobId, firstSeenAt: held.source.firstSeenAt });
+    expect(await db.job.findUniqueOrThrow({ where: { id: outcome.jobId } })).toMatchObject({ description: 'Native recovered duties', firstSeenAt: held.source.firstSeenAt });
+  });
+
+  it('rebuilds facts for quarantine without touching a public projection', async () => {
+    const { planFactsRepair, applyFactsRepair } = await import('../facts/repair.js');
+    const { good, held, request } = await mixed();
+    await apply(await planPublicationGroups(db, request));
+    const before = await db.job.findUniqueOrThrow({ where: { id: good.job.id } });
+    const plan = await planFactsRepair(db, [held.source.sourceKey]);
+    expect(plan.entries[0]).toMatchObject({ jobId: null, companyId: null, after: null });
+    expect(await applyFactsRepair(db, plan, plan.planHash)).toMatchObject({ applied: 1 });
+    expect(await applyFactsRepair(db, plan, plan.planHash)).toMatchObject({ alreadyApplied: 1 });
+    expect(await db.job.findUniqueOrThrow({ where: { id: good.job.id } })).toEqual(before);
+    expect((await planFactsRepair(db, [held.source.sourceKey])).entries).toHaveLength(0);
+  });
+
+  it('refreshes a held publication deadline without a Job closure and safely repeats its manifest', async () => {
+    const { readRefreshPlan, createRefreshManifest, runRefresh } = await import('./refresh.js');
+    const { good, held, request } = await mixed();
+    const expiry = new Date('2020-01-01T00:00:00Z');
+    await db.jobSource.update({ where: { id: held.source.id }, data: { expiresAt: expiry, expiryEvidence: { fixture: 'native deadline' } } });
+    await apply(await planPublicationGroups(db, request));
+    const plan = await readRefreshPlan(db, { onlyKeys: [held.source.sourceKey] });
+    const manifest = await createRefreshManifest(db, plan);
+    expect(manifest.entries).toEqual([expect.objectContaining({ jobSourceId: held.source.id, jobId: null, consequence: 'QUARANTINED_PUBLICATION' })]);
+    expect(await runRefresh(db, { manifest })).toMatchObject({ closedSources: 1, closedJobs: 0, withdrawn: 0 });
+    expect(await runRefresh(db, { manifest })).toMatchObject({ closedSources: 0 });
+    expect((await db.job.findUniqueOrThrow({ where: { id: good.job.id } })).isActive).toBe(true);
+    expect((await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).isActive).toBe(false);
+    expect(await db.jobEvent.count({ where: { jobId: good.job.id, type: 'CLOSED' } })).toBe(0);
+  });
+
+  it('retires quarantined observations while respecting an explicit Job scope', async () => {
+    const { deactivateSources } = await import('./deactivateSources.js');
+    const { good, held, request } = await mixed();
+    await apply(await planPublicationGroups(db, request));
+    const disposition = { kind: 'WITHDRAWN' as const, reason: 'SOURCE_RETIRED' as const };
+    expect(await deactivateSources(db, { sourceKey: held.source.sourceKey }, disposition, { id: good.job.id })).toMatchObject({ sourcesDeactivated: 0 });
+    expect(await deactivateSources(db, { sourceKey: held.source.sourceKey }, disposition)).toMatchObject({ sourcesDeactivated: 1, jobsClosed: 0, jobsWithdrawn: 0 });
+    expect((await db.job.findUniqueOrThrow({ where: { id: good.job.id } })).isActive).toBe(true);
+    expect((await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).quarantinedAt).not.toBeNull();
+  });
+
+  it('rebuilds a native deadline for quarantine without renewing its observation', async () => {
+    const { planSourceExpiries, applySourceExpiries } = await import('./sourceExpiry.js');
+    const good = await publication(), held = await publication({ jobId: good.job.id, omitNativeDescription: true, validThrough: '2030-01-01T00:00:00Z' });
+    await apply(await planPublicationGroups(db, { jobIds: [good.job.id], groups: [{ jobId: good.job.id, sourceIds: [good.source.id] }], quarantineSourceIds: [held.source.id], reason: 'Missing description does not invalidate the native identity or its stated deadline' }));
+    const { plan } = await planSourceExpiries(db, [held.source.sourceKey]);
+    expect(plan.entries).toEqual([expect.objectContaining({ jobId: null, companyId: null })]);
+    expect(await applySourceExpiries(db, plan, plan.planHash)).toMatchObject({ written: 1 });
+    expect(await applySourceExpiries(db, plan, plan.planHash)).toMatchObject({ alreadyApplied: true });
+    expect(await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).toMatchObject({ jobId: null, lastSeenAt: held.source.lastSeenAt, expiresAt: new Date('2030-01-01T00:00:00Z') });
+  });
+
+  it.each([false, true])('accepts proven absence of a quarantined publication; rejects a later proof change=%s', async changed => {
+    const { recordSourceEvidence } = await import('../test/sourceEvidence.js');
+    const { readRefreshPlan, createRefreshManifest, runRefresh } = await import('./refresh.js');
+    const { held, request } = await mixed();
+    await db.jobSource.update({ where: { id: held.source.id }, data: { lastSeenAt: new Date(Date.now() - 72 * 3_600_000) } });
+    await apply(await planPublicationGroups(db, request));
+    await recordSourceEvidence(db, held.source.sourceKey);
+    const manifest = await createRefreshManifest(db, await readRefreshPlan(db, { onlyKeys: [held.source.sourceKey] }));
+    expect(manifest.entries[0]).toMatchObject({ jobId: null, state: 'ABSENT_FROM_PROVEN_ENUMERATION' });
+    if (changed) await recordSourceEvidence(db, held.source.sourceKey, { observedIds: [held.source.externalId] });
+    expect(await runRefresh(db, { manifest })).toMatchObject({ closedSources: changed ? 0 : 1, closedJobs: 0 });
+    expect((await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).isActive).toBe(changed);
+  });
+
+  it('cannot let a frozen quarantine refresh close a newly released publication', async () => {
+    const { recordSourceEvidence } = await import('../test/sourceEvidence.js');
+    const { readRefreshPlan, createRefreshManifest, runRefresh } = await import('./refresh.js');
+    const { upsertDeduplicated } = await import('../dedup/upsert.js');
+    const { held, request } = await mixed();
+    await db.jobSource.update({ where: { id: held.source.id }, data: { lastSeenAt: new Date(Date.now() - 72 * 3_600_000) } });
+    await apply(await planPublicationGroups(db, request));
+    await recordSourceEvidence(db, held.source.sourceKey);
+    const manifest = await createRefreshManifest(db, await readRefreshPlan(db, { onlyKeys: [held.source.sourceKey] }));
+    const released = await upsertDeduplicated(db, await reobserve(held));
+    expect(await runRefresh(db, { manifest })).toMatchObject({ closedSources: 0, closedJobs: 0 });
+    expect((await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).isActive).toBe(true);
+    expect((await db.job.findUniqueOrThrow({ where: { id: released.jobId } })).isActive).toBe(true);
   });
 });

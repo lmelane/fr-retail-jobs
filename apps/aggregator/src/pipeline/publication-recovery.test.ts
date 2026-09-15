@@ -33,7 +33,7 @@ describe('historical publication recovery plan', () => {
       const row = await db.jobSource.findUniqueOrThrow({ where: { id: previous.id }, include: { job: true } });
       expect(row).toMatchObject({ firstSeenAt: at, lastSeenAt: at, captureBatchId: null, captureOutputId: null, raw: previous.raw });
       expect(row.job).toMatchObject({ title: `Native ${row.externalId}`, description: `Native description ${row.externalId}` });
-      expect(publicationContentOf(row)?.title).toBe(row.job.title);
+      expect(publicationContentOf(row)?.title).toBe(row.job!.title);
     }
     expect(await db.captureBatch.count()).toBe(beforeCaptures);
     const receipt = await db.dataCorrection.findFirstOrThrow({ where: { entityId: plan.planHash } });

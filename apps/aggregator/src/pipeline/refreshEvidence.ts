@@ -106,11 +106,12 @@ export async function readAbsencePlan(db: Prisma.TransactionClient, scope: Prism
   for (const rep of representations) {
     states.set(rep.jobSourceId, representationState(rep, observedBy.get(rep.sourceKey) ?? null, allowed.has(rep.sourceKey)));
   }
-  const jobIds = [...new Set(rows.map(row => row.jobId))];
+  const jobIds = [...new Set(rows.flatMap(row => row.jobId ? [row.jobId] : []))];
   const activeByJob = new Map<string, string[]>();
   for (const ids of chunk(jobIds)) {
     const allActive = await db.jobSource.findMany({ where: { jobId: { in: ids }, isActive: true }, select: { id: true, jobId: true } });
     for (const source of allActive) {
+      if (!source.jobId) throw new Error('Attached refresh source lost its Job');
       if (!activeByJob.has(source.jobId)) activeByJob.set(source.jobId, []);
       activeByJob.get(source.jobId)!.push(source.id);
     }

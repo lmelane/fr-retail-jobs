@@ -81,6 +81,7 @@ export async function verifyRepair(prisma: Prisma.TransactionClient, invariants:
       for (const source of sources) {
         const name = leverEmployer((source.raw ?? {}) as LeverJob, rule.departmentMap) ?? rule.name;
         const expected = rule.postingOwners?.[source.externalId] ?? rule.canonicalKey ?? resolveCompany(name).companyId;
+        if (!source.job) continue; // Only attached groups have a current employer.
         if (source.job.company.canonicalKey !== expected) throw new Error(`Source owner invariant failed: ${source.id}`);
       }
     }
@@ -90,6 +91,7 @@ export async function verifyRepair(prisma: Prisma.TransactionClient, invariants:
     const sources = await prisma.jobSource.findMany({ where: { sourceKey: 'sandro', isActive: true, job: { isActive: true } }, select: { id: true, raw: true, job: { select: { company: { select: { canonicalKey: true } } } } } });
     for (const source of sources) {
       const brand = smartRecruitersEmployer((source.raw ?? {}) as SmartRecruitersPosting, 'Brands') ?? 'SMCP';
+      if (!source.job) throw new Error('Active employer invariant lost its Job');
       if (source.job.company.canonicalKey !== resolveCompany(brand).companyId) throw new Error(`SMCP brand invariant failed: ${source.id}`);
     }
     result.smcpBrandContradictions = 0;

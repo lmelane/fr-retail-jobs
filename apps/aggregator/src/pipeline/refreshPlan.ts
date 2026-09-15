@@ -70,7 +70,7 @@ export type EnumerationEvidence = {
 export type Representation = {
   sourceKey: string;
   externalId: string;
-  jobId: string;
+  jobId: string | null;
   jobSourceId: string;
   lastSeenAt: Date;
   /** L'offre a-t-elle été retenue à la publication pendant ce cycle ? */
@@ -182,7 +182,7 @@ export function representationState(
 }
 
 export type PlannedDeactivation = {
-  jobSourceId: string; sourceKey: string; externalId: string; jobId: string;
+  jobSourceId: string; sourceKey: string; externalId: string; jobId: string | null;
   lastSeenAt: Date; state: RepresentationState; reason: string;
 };
 
@@ -213,6 +213,7 @@ export function planRefresh(
   const removed = new Set(deactivations.map((d) => d.jobSourceId));
   const jobs = new Map<string, JobOutcome>();
   for (const d of deactivations) {
+    if (!d.jobId) continue;
     const survivors = (activeByJob.get(d.jobId) ?? []).filter((id) => !removed.has(id));
     jobs.set(d.jobId, survivors.length > 0 ? 'JOB_KEPT_BY_ANOTHER_SOURCE' : 'JOB_CANDIDATE_FOR_CLOSURE');
   }

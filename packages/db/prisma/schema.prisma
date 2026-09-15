@@ -351,12 +351,16 @@ model EmployerObservation {
 
 /**
  * Native publication, identified by sourceKey / externalId. Job is its current
- * presentation group. RAW, capture references and lifecycle belong to this row.
+ * optional presentation group. Quarantine preserves evidence without inventing
+ * public content. RAW, capture references and lifecycle belong to this row.
  */
 model JobSource {
   id          String    @id @default(cuid())
-  jobId       String
-  job         Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId       String?
+  job         Job?      @relation(fields: [jobId], references: [id], onDelete: Restrict)
+  /** An unattached publication is held for evidence review, not declared closed. */
+  quarantinedAt DateTime?
+  quarantineReason String?
   /**
    * Registry key: 'richemont', 'wttj', 'fashionjobs'…
    */
@@ -665,7 +669,7 @@ model PublicationIdentityDecision {
   id            String   @id @default(uuid())
   sourceId      String
   fromJobId     String?
-  toJobId       String
+  toJobId       String?
   action        String
   readerVersion String
   evidence      Json

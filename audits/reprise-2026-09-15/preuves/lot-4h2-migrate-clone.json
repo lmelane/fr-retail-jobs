@@ -1,0 +1,8 @@
+{
+  "productionWrites": false,
+  "database": "catwalks_rehearsal_20260915",
+  "migrations": 56,
+  "result": "PASS",
+  "elapsedMs": 1229,
+  "readerRevision": "local-sha256:b1d7c798372b5be78bf02d54b24412bf68d105d118f8bf04cfe6b177338d7e55"
+}

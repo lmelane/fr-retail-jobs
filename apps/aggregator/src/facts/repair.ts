@@ -39,7 +39,7 @@ async function hydrateCoordinates(db: Prisma.TransactionClient, jobs: Job[]) {
 function sourceState(source: Publication) { return { id: source.id, jobId: source.jobId, sourceKey: source.sourceKey, externalId: source.externalId,
   rawHash: evidenceHash(source.raw), factsHash: evidenceHash(source.sourceFacts), lastSeenAt: source.lastSeenAt,
   captureBatchId: source.captureBatchId, captureOutputId: source.captureOutputId }; }
-type Entry = { id: string; sourceKey: string; jobId: string; companyId: string; beforeHash: string; jobBeforeHash: string;
+type Entry = { id: string; sourceKey: string; jobId: string | null; companyId: string | null; beforeHash: string; jobBeforeHash: string;
   before: Record<string, unknown>; after: ReturnType<typeof scalarSourceFacts> | null; facts: SourceFacts };
 type Body = { version: 1; kind: 'SOURCE_FACTS'; revision: string; keys: string[]; entries: Entry[]; nextCursor: string | null };
 export type FactsRepairPlan = Body & { planHash: string };
@@ -63,15 +63,15 @@ export async function planFactsRepair(db: PrismaClient, keys: string[], options:
   const rows = await db.jobSource.findMany({ where: { sourceKey: { in: allowed }, ...(options.cursor ? { id: { gt: options.cursor } } : {}) },
     include: { job: { select: jobSelect } }, orderBy: { id: 'asc' }, take: limit + 1 });
   const page = rows.slice(0, limit);
-  await hydrateCoordinates(db, page.map(row => row.job));
+  await hydrateCoordinates(db, page.flatMap(row => row.job ? [row.job] : []));
   const body: Body = { version: 1, kind: 'SOURCE_FACTS', revision: captureReaderRevision(), keys: allowed,
     nextCursor: rows.length > limit ? page.at(-1)!.id : null,
     entries: page.flatMap(source => {
-      const facts = readSourceFacts(types.get(source.sourceKey)!, source.raw), state = jobState(source.job);
-      const after = state.owner === source.id ? scalarSourceFacts(facts) : null;
-      if (evidenceHash(source.sourceFacts) === evidenceHash(facts) && (!after || evidenceHash(after) === evidenceHash(state.values))) return [];
-      return [{ id: source.id, sourceKey: source.sourceKey, jobId: source.jobId, companyId: source.job.companyId,
-        beforeHash: evidenceHash(sourceState(source)), jobBeforeHash: evidenceHash(state), before: scalars(source.job),
+      const facts = readSourceFacts(types.get(source.sourceKey)!, source.raw), state = source.job ? jobState(source.job) : null;
+      const after = state?.owner === source.id ? scalarSourceFacts(facts) : null;
+      if (evidenceHash(source.sourceFacts) === evidenceHash(facts) && (!after || evidenceHash(after) === evidenceHash(state?.values))) return [];
+      return [{ id: source.id, sourceKey: source.sourceKey, jobId: source.jobId, companyId: source.job?.companyId ?? null,
+        beforeHash: evidenceHash(sourceState(source)), jobBeforeHash: evidenceHash(state), before: source.job ? scalars(source.job) : {},
         after, facts }];
     }),
   };
@@ -83,21 +83,23 @@ export async function applyFactsRepair(db: PrismaClient, plan: FactsRepairPlan, 
   verify(plan, expectedHash);
   await storeMaintenancePlan(db, { id: plan.planHash, kind: plan.kind, version: plan.version, revision: plan.revision, body: plan });
   const groups = new Map<string, Entry[]>();
-  for (const entry of plan.entries) groups.set(entry.jobId, [...groups.get(entry.jobId) ?? [], entry]);
+  for (const entry of plan.entries) groups.set(JSON.stringify([entry.jobId, entry.jobId ? null : entry.id]), [...groups.get(JSON.stringify([entry.jobId, entry.jobId ? null : entry.id])) ?? [], entry]);
   let applied = 0, alreadyApplied = 0;
-  for (const [jobId, entries] of [...groups].sort(([a], [b]) => a.localeCompare(b))) {
+  for (const [, entries] of [...groups].sort(([a], [b]) => a.localeCompare(b))) {
+    const jobId = entries[0].jobId;
     const result = await db.$transaction(async tx => {
       for (const key of [...new Set(entries.map(entry => entry.sourceKey))].sort()) await lockSourceWrites(tx, key);
-      await lockCompanyRows(tx, [...new Set(entries.map(entry => entry.companyId))]);
+      await lockCompanyRows(tx, [...new Set(entries.flatMap(entry => entry.companyId ? [entry.companyId] : []))]);
       await tx.$queryRaw`SELECT id FROM "Job" WHERE id = ${jobId} FOR UPDATE`;
+      await tx.$queryRaw`SELECT id FROM "JobSource" WHERE id=ANY(${entries.map(entry => entry.id)}::text[]) ORDER BY id FOR UPDATE`;
       const batchId = `source-facts:${plan.planHash}`;
       const done = await tx.dataCorrection.count({ where: { batchId, entityType: 'JobSource', entityId: { in: entries.map(entry => entry.id) } } });
       if (done === entries.length) return 'ALREADY_APPLIED';
       if (done) throw new Error('Partial correction group requires investigation');
-      const job = await tx.job.findUniqueOrThrow({ where: { id: jobId }, select: jobSelect });
-      await hydrateCoordinates(tx, [job]);
-      if (entries.some(entry => entry.jobBeforeHash !== evidenceHash(jobState(job)))) throw new Error('Source-facts job or owner changed');
-      const owner = selectApplySource(job.sources, job);
+      const job = jobId ? await tx.job.findUniqueOrThrow({ where: { id: jobId }, select: jobSelect }) : null;
+      await hydrateCoordinates(tx, job ? [job] : []);
+      if (entries.some(entry => entry.jobBeforeHash !== evidenceHash(job ? jobState(job) : null))) throw new Error('Source-facts job or owner changed');
+      const owner = job ? selectApplySource(job.sources, job) : null;
       for (const entry of entries) {
         const source = await tx.jobSource.findUniqueOrThrow({ where: { id: entry.id } });
         const catalogue = await tx.source.findUniqueOrThrow({ where: { key: source.sourceKey }, select: { kind: true } });
@@ -105,7 +107,7 @@ export async function applyFactsRepair(db: PrismaClient, plan: FactsRepairPlan, 
         const type = KIND_TO_ATS[catalogue.kind];
         if (!type || evidenceHash(readSourceFacts(type, source.raw)) !== evidenceHash(entry.facts)) throw new Error('Source-facts reader or source kind changed');
         await tx.$executeRaw`UPDATE "JobSource" SET "sourceFacts"=${JSON.stringify(entry.facts)}::jsonb WHERE id=${source.id}`;
-        if (owner?.id === source.id) {
+        if (jobId && owner?.id === source.id) {
           const values = scalarSourceFacts(entry.facts);
           if (evidenceHash(values) !== evidenceHash(entry.after)) throw new Error('Source-facts projection changed');
           const { latitude, longitude, ...scalars } = values;

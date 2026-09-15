@@ -1,0 +1,71 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "plans": 293,
+  "originalGroups": 293,
+  "resultingGroups": 293,
+  "presentations": 293,
+  "quarantines": 293,
+  "redirects": 0,
+  "lifecycle": {
+    "KEEP": 293
+  },
+  "quarantineReasons": {
+    "READER_UNQUALIFIED": 152,
+    "RAW_MISSING": 140,
+    "DETAIL_EVIDENCE_UNUSABLE": 1
+  },
+  "fieldChanges": {
+    "externalId": 66,
+    "source": 62,
+    "description": 10,
+    "postalCode": 86,
+    "validThrough": 63,
+    "clusterKey": 293,
+    "fingerprint": 293,
+    "skills": 8,
+    "isSeasonal": 1,
+    "countryIntegrity": 174,
+    "rawContract": 31,
+    "employmentEvidence": 179,
+    "department": 9,
+    "language": 44,
+    "occupationEvidence": 183,
+    "rawTitle": 178,
+    "lastSeenAt": 40,
+    "educationLevel": 15,
+    "postedAt": 10,
+    "inseeCode": 101,
+    "latitude": 105,
+    "longitude": 105,
+    "canonicalSourceKey": 9,
+    "canonicalExternalId": 9,
+    "countryCode": 9,
+    "isFrance": 9,
+    "workplaceType": 120,
+    "salaryMin": 80,
+    "salaryCurrency": 77,
+    "salaryPeriod": 75,
+    "workTime": 37,
+    "experienceYears": 142,
+    "location": 5,
+    "adminArea1": 1,
+    "city": 1,
+    "workSchedule": 3,
+    "rawSchedule": 3,
+    "rawWorkingTime": 4,
+    "employmentTerm": 2,
+    "salaryMax": 2
+  },
+  "elapsedMs": 5390,
+  "reviews": [
+    {
+      "jobId": "cmtt7waed07ppmy01bwifnt2z",
+      "reason": "UNPROVEN_PUBLIC_ID_ANCHOR"
+    }
+  ],
+  "criticalChangeCounts": {
+    "canonicalSourceKey": 9,
+    "countryCode": 9
+  }
+}

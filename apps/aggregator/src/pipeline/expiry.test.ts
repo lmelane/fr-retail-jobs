@@ -19,7 +19,7 @@ const candidate = (id: string, raw: unknown, sourceKey = 'expiry-witness'): Cand
 });
 const wipe = async () => {
   await clearSourceEvidence(db);
-  await db.job.deleteMany(); await db.company.deleteMany(); await db.sourceRun.deleteMany();
+  await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); await db.sourceRun.deleteMany();
 };
 beforeEach(wipe);
 afterAll(async () => { await wipe(); await db.$disconnect(); });

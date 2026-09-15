@@ -90,7 +90,7 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
       where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
       select: { job: { select: { company: true } } },
     });
-    const current = entry ? await canonicalEmployer(tx, entry.job.company) : null;
+    const current = entry?.job ? await canonicalEmployer(tx, entry.job.company) : null;
     const target = company ? await canonicalEmployer(tx, company) : null;
     if (current && target && current.id !== target.id) {
       // A response that OMITS the house and falls back to the group recorded for

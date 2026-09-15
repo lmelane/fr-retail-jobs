@@ -25,15 +25,15 @@ const MAX_REPAIR_BYTES = 32_000_000;
 const json = (value: unknown) => JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 type Database = Prisma.TransactionClient;
 type Group = { jobId: string; sourceIds: string[] };
-export type GroupRepairRequest = { jobIds: string[]; groups: Array<{ jobId?: string; sourceIds: string[] }>; reason: string };
-type Request = { jobIds: string[]; groups: Group[]; reason: string };
+export type GroupRepairRequest = { jobIds: string[]; groups: Array<{ jobId?: string; sourceIds: string[] }>; quarantineSourceIds?: string[]; reason: string };
+type Request = { jobIds: string[]; groups: Group[]; quarantineSourceIds: string[]; reason: string };
 const include = { sources: { orderBy: { id: 'asc' as const } }, company: true } as const;
 type Job = Prisma.JobGetPayload<{ include: typeof include; omit: { searchText: true } }>;
 type Publication = Job['sources'][number];
 type InputProof = { rawHash: string; sourceLastSeenAt: string } &
   ({ origin: 'RETAINED_RAW' } | { origin: 'NATIVE_CAPTURE'; captureOutputHash: string });
-type Body = { version: 3; kind: typeof KIND; revision: string; request: Request; beforeHash: string;
-  companyId: string; sourceKeys: string[]; groups: Array<{ jobId: string; sourceIds: string[]; ownerId: string;
+type Body = { version: 4; kind: typeof KIND; revision: string; request: Request; beforeHash: string;
+  companyId: string; sourceKeys: string[]; quarantines: Array<{ sourceId: string; reason: string; rawHash: string }>; groups: Array<{ jobId: string; sourceIds: string[]; ownerId: string;
     outputHash: string; patch: Prisma.InputJsonValue; facts: Prisma.InputJsonValue; presentations: Array<{ sourceId: string; outputHash: string; proof: InputProof; cache: Prisma.InputJsonValue; facts: Prisma.InputJsonValue }>; lifecycle: 'KEEP' | 'CLOSE' | 'WITHDRAW' }>; redirects: Array<{ jobId: string; targetId: string }> };
 export type GroupRepairPlan = Body & { planHash: string };
 
@@ -47,7 +47,8 @@ function validate(request: Request) {
     typeof request.reason !== 'string' || request.reason.trim().length < 10 || request.reason.length > 2000) {
     throw new Error('Explicit bounded publication groups and a review reason are required');
   }
-  const ids = request.groups.flatMap(group => group.sourceIds);
+  if (!Array.isArray(request.quarantineSourceIds) || request.quarantineSourceIds.some(id => typeof id !== 'string' || !id.trim() || id.length > 200)) throw new Error('Explicit quarantine publication IDs required');
+  const ids = [...request.groups.flatMap(group => group.sourceIds), ...request.quarantineSourceIds];
   if (ids.length > 200 || new Set(ids).size !== ids.length) throw new Error('Each publication must occur exactly once; maximum 200');
 }
 
@@ -74,7 +75,7 @@ async function prepare(db: Database, request: Request, bodies: ReadonlyMap<strin
   const jobs = await db.job.findMany({ where: { id: { in: request.jobIds } }, include, omit: { searchText: true }, orderBy: { id: 'asc' } });
   if (jobs.length !== request.jobIds.length) throw new Error('Requested Job is missing');
   if (new Set(jobs.map(job => job.companyId)).size !== 1 || jobs.some(job => job.company.mergedIntoId)) throw new Error('Publication repair requires one current reviewed employer');
-  const sources = jobs.flatMap(job => job.sources), assigned = request.groups.flatMap(group => group.sourceIds).sort();
+  const sources = jobs.flatMap(job => job.sources), assigned = [...request.groups.flatMap(group => group.sourceIds), ...request.quarantineSourceIds].sort();
   if (!sources.length || evidenceHash(sources.map(source => source.id).sort()) !== evidenceHash(assigned)) throw new Error('Every current publication must be included exactly once');
   if (sources.some(source => !SOURCE_PRIORITY.includes(source.sourceTier as SourceTier))) throw new Error('Unknown publication priority');
   const keys = [...new Set(sources.map(source => source.sourceKey))].sort();
@@ -85,6 +86,27 @@ async function prepare(db: Database, request: Request, bodies: ReadonlyMap<strin
   for (const job of jobs) if (job.mergedIntoId && !allIds.has(job.mergedIntoId)) throw new Error('Include the complete redirect chain in the repair');
   const extraIds = request.groups.map(group => group.jobId).filter(id => !allIds.has(id));
   if (extraIds.length && await db.job.count({ where: { id: { in: extraIds } } })) throw new Error('New presentation ID already exists outside the repair');
+  const quarantines: Body['quarantines'] = [];
+  for (const sourceId of request.quarantineSourceIds) {
+    const member = sources.find(source => source.id === sourceId)!;
+    // Retain the old public ID on a qualified remaining member. Quarantine
+    // alone cannot authorize a guessed redirect or an invented presentation.
+    if (!request.groups.some(group => group.jobId === member.jobId && group.sourceIds.some(id => sources.find(source => source.id === id)?.jobId === member.jobId))) {
+      throw new Error('Quarantine requires a qualified remaining publication on the original Job ID');
+    }
+    const original = jobs.find(job => job.id === member.jobId)!;
+    const remaining = request.groups.find(group => group.jobId === member.jobId)!;
+    if (!remaining.sourceIds.some(id => {
+      const retained = sources.find(source => source.id === id)!;
+      return retained.jobId === original.id && (retained.url === original.url ||
+        retained.sourceKey === original.canonicalSourceKey && retained.externalId === original.canonicalExternalId);
+    })) throw new Error('Quarantine cannot replace the original public application identity without review');
+    const source = catalogue.find(source => source.key === member.sourceKey)!;
+    const recovered = recoverRetainedPublication(source.kind, member.raw, { externalId: member.externalId,
+      url: member.url, observedAt: member.lastSeenAt, config: source.config as Record<string, unknown> });
+    if (recovered.status === 'RECOVERABLE') throw new Error('Recoverable publication must be rebuilt or separated, not quarantined');
+    quarantines.push({ sourceId, reason: recovered.reason, rawHash: evidenceHash(member.raw) });
+  }
   const occupations = await loadOccupationTaxonomy(db);
   const trustRows = await db.sourceFieldTrust.findMany({ select: { source: true, path: true, dimension: true, level: true },
     orderBy: [{ source: 'asc' }, { path: 'asc' }, { dimension: 'asc' }] });
@@ -163,9 +185,9 @@ async function prepare(db: Database, request: Request, bodies: ReadonlyMap<strin
   // Current reviewed decisions affect eligibility and must be part of the snapshot.
   const decisions = await db.publicationIdentityDecision.findMany({ where: { toJobId: { in: request.jobIds } },
     select: { id: true, evidence: true, action: true }, orderBy: { id: 'asc' } });
-  const body: Body = { version: 3, kind: KIND, revision: captureReaderRevision(), request,
+  const body: Body = { version: 4, kind: KIND, revision: captureReaderRevision(), request,
     beforeHash: evidenceHash({ jobs, catalogue, trustRows, occupationRelease: occupations.manifest, decisions }),
-    companyId: jobs[0].companyId, sourceKeys: keys,
+    companyId: jobs[0].companyId, sourceKeys: keys, quarantines,
     groups: groups.map(group => ({ ...group, patch: json(group.patch), facts: json(group.facts) })), redirects };
   return { body, jobs, sources, groups };
 }
@@ -181,7 +203,7 @@ async function prefetchBodies(db: Database, hashes: string[], store?: ObjectStor
 }
 
 export async function planPublicationGroups(db: PrismaClient, input: GroupRepairRequest, store?: ObjectStore): Promise<GroupRepairPlan> {
-  const request = { ...input, jobIds: [...input.jobIds].sort(), groups: input.groups.map(group => ({
+  const request = { ...input, quarantineSourceIds: [...input.quarantineSourceIds ?? []].sort(), jobIds: [...input.jobIds].sort(), groups: input.groups.map(group => ({
     jobId: group.jobId ?? randomUUID(), sourceIds: [...group.sourceIds].sort(),
   })).sort((a, b) => a.jobId.localeCompare(b.jobId)) };
   validate(request);
@@ -199,9 +221,9 @@ export async function planPublicationGroups(db: PrismaClient, input: GroupRepair
 export async function applyPublicationGroups(db: PrismaClient, plan: GroupRepairPlan, expectedHash: string, store?: ObjectStore) {
   const { planHash, ...body } = plan;
   validate(plan.request);
-  if (planHash !== expectedHash || evidenceHash(body) !== planHash || plan.kind !== KIND || plan.version !== 3 ||
+  if (planHash !== expectedHash || evidenceHash(body) !== planHash || plan.kind !== KIND || plan.version !== 4 ||
     plan.revision !== captureReaderRevision()) throw new Error('Invalid or obsolete publication repair plan');
-  await storeMaintenancePlan(db, { id: planHash, kind: KIND, version: 3, revision: plan.revision, body: plan });
+  await storeMaintenancePlan(db, { id: planHash, kind: KIND, version: 4, revision: plan.revision, body: plan });
   const batchId = `publication-groups:${planHash}`;
   if (await db.dataCorrection.count({ where: { batchId, entityType: 'PublicationGroupPlan', entityId: planHash } })) return { planHash, alreadyApplied: true };
   let bodies: Map<string, Buffer>;
@@ -223,6 +245,17 @@ export async function applyPublicationGroups(db: PrismaClient, plan: GroupRepair
     if (await tx.dataCorrection.count({ where: { batchId, entityType: 'PublicationGroupPlan', entityId: planHash } })) return { planHash, alreadyApplied: true };
     const prepared = await prepare(tx, plan.request, bodies);
     if (evidenceHash(prepared.body) !== evidenceHash(body)) throw new Error('Publication repair input, evidence or availability changed');
+    for (const item of prepared.body.quarantines) {
+      const source = prepared.sources.find(source => source.id === item.sourceId)!;
+      await tx.publicationIdentityDecision.create({ data: { sourceId: source.id, fromJobId: source.jobId,
+        toJobId: null, action: 'QUARANTINED', readerVersion: plan.revision, evidence: {
+          rule: 'REVIEWED_PUBLICATION_PARTITION', planHash, reason: plan.request.reason,
+          quarantineReason: item.reason, rawHash: item.rawHash,
+          captureBatchId: source.captureBatchId, captureOutputId: source.captureOutputId,
+        } } });
+      await tx.jobSource.update({ where: { id: source.id }, data: { jobId: null,
+        quarantinedAt: new Date(), quarantineReason: item.reason, presentation: Prisma.DbNull } });
+    }
     for (const group of prepared.groups) {
       const target = prepared.jobs.find(job => job.id === group.jobId);
       for (const id of group.sourceIds) {
@@ -265,10 +298,11 @@ export async function applyPublicationGroups(db: PrismaClient, plan: GroupRepair
     }
     const after = await tx.job.findMany({ where: { id: { in: [...new Set([...plan.request.jobIds, ...plan.groups.map(group => group.jobId)])] } },
       include, omit: { searchText: true }, orderBy: { id: 'asc' } });
+    const quarantined = await tx.jobSource.findMany({ where: { id: { in: plan.request.quarantineSourceIds } }, orderBy: { id: 'asc' } });
     await recordDataCorrection(tx, { id: randomUUID(), batchId, planHash, commitHash: plan.revision, finding: 'REVIEWED_PUBLICATION_PARTITION',
       entityType: 'PublicationGroupPlan', entityId: planHash, before: json(prepared.jobs), after: json(after),
-      evidence: json({ reason: plan.request.reason, outputs: plan.groups.flatMap(group => group.presentations.map(({ sourceId, outputHash, proof }) => ({ sourceId, outputHash, ...proof }))) }) });
-    return { planHash, alreadyApplied: false, groups: plan.groups.length, redirects: plan.redirects.length };
+      evidence: json({ reason: plan.request.reason, quarantined, outputs: plan.groups.flatMap(group => group.presentations.map(({ sourceId, outputHash, proof }) => ({ sourceId, outputHash, ...proof }))) }) });
+    return { planHash, alreadyApplied: false, groups: plan.groups.length, redirects: plan.redirects.length, quarantined: plan.quarantines.length };
     }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, maxWait: 10_000, timeout: 30_000 });
     } catch (error) {
       const retryable = error instanceof Prisma.PrismaClientKnownRequestError && (error.code === 'P2034' ||

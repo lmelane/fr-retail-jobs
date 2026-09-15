@@ -76,7 +76,7 @@ it('withholds publication on a reviewed OUT_OF_SCOPE decision: withdrawn (never 
   const key = 'aptar-scope-witness';
   // Self-healing: an interrupted earlier run must not block this one.
   await db.postingScopeDecision.deleteMany({ where: { sourceKey: key } });
-  for (const js of await db.jobSource.findMany({ where: { sourceKey: key } })) { await db.jobSource.delete({ where: { id: js.id } }); await db.job.delete({ where: { id: js.jobId } }).catch(() => undefined); }
+  for (const js of await db.jobSource.findMany({ where: { sourceKey: key } })) { await db.jobSource.delete({ where: { id: js.id } }); js.jobId && await db.job.delete({ where: { id: js.jobId } }).catch(() => undefined); }
   await db.sourceObservation.deleteMany({ where: { sourceKey: key } });
   await db.source.upsert({ where: { key }, update: { status: 'ACTIVE' }, create: { key, maison: 'Aptar Group', kind: 'successfactors', tenantKey: key, tier: 'ATS_OFFICIAL', config: {}, status: 'ACTIVE' } });
   const input = { company: 'Aptar Group', companyId: resolveCompany('Aptar Group').companyId, sourceKey: key, externalId: '1405738533', sourceTier: 'ATS_OFFICIAL' as const, atsType: 'SUCCESSFACTORS' as const, title: 'Account Manager', url: 'https://jobs.aptar.com/job/Congers-Account-Manager-NY-10920/1405738533/', raw: { id: '1405738533' } };

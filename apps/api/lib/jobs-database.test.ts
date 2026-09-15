@@ -14,7 +14,7 @@ const group = 'Audit Facets 301';
 
 describe.skipIf(!enabled)('search against a dedicated local database', () => {
   const cleanup = async () => {
-    await prisma.job.deleteMany({ where: { id: { startsWith: prefix } } });
+    await prisma.jobSource.deleteMany({ where: { job: { id: { startsWith: prefix } } } }); await prisma.job.deleteMany({ where: { id: { startsWith: prefix } } });
     await prisma.company.deleteMany({ where: { id: { startsWith: prefix } } });
   };
   beforeAll(async () => {

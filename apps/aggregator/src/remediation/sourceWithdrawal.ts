@@ -34,6 +34,7 @@ export async function planReviewedSourceWithdrawal(prisma: PrismaClient, review:
       const entries = await tx.jobSource.findMany({ where: { sourceKey: source.key }, include: { job: { omit: { searchText: true }, include: { sources: true } } } });
       for (const { job, ...entry } of entries) {
         if (entry.isActive) operations.push({ entity: 'JobSource', id: entry.id, before: json(entry), patch: { isActive: false }, reason: spec.statement });
+        if (!job) continue; // Quarantined publication has no employer presentation to mutate.
         if (handled.has(job.id)) continue;
         handled.add(job.id); companyIds.add(job.companyId);
         // Another valid representation may warrant keeping the opening and

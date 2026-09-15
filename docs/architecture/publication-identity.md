@@ -4,7 +4,19 @@
 
 Une publication est identifiée par `JobSource.id` et le couple unique `sourceKey` / `externalId`. PostgreSQL interdit leur modification. Le nom de l’employeur, le pays, la ville, le titre et la famille d’ATS peuvent évoluer sans remplacer cette identité. Deux tenants d’un même ATS peuvent publier le même identifiant externe.
 
-`Job` sert aujourd’hui de groupe de présentation. La publication sélectionnée fournit le contenu complet et le lien de candidature ; aucun champ absent n’est emprunté à un autre membre. Ce groupe ne constitue pas une nouvelle vérité supérieure au RAW ; ses publications et observations restent distinctes.
+`Job` sert de groupe de présentation facultatif. La publication sélectionnée fournit le contenu complet et le lien de candidature ; aucun champ absent n’est emprunté à un autre membre. Ce groupe ne constitue pas une nouvelle vérité supérieure au RAW ; ses publications et observations restent distinctes.
+
+## Publications en quarantaine
+
+`JobSource.jobId` peut être nul. La publication conserve alors `quarantinedAt` et un `quarantineReason` explicite ; ces champs sont absents lorsqu'elle est rattachée. Son RAW, son identité, ses références de capture, ses premières et dernières observations et son état natif d'activité survivent. La quarantaine ne signifie pas une fermeture employeur. Supprimer une Job ne peut plus supprimer ses publications en cascade.
+
+La répartition revue accepte `quarantineSourceIds` en complément des groupes reconstruits. Chaque publication apparaît exactement une fois dans l'ensemble. Seul un échec explicite du lecteur actuel autorise cette quarantaine ; une publication reconstructible doit être reconstruite ou séparée. Le contenu public n'est jamais fabriqué pour créer une destination artificielle.
+
+Le parcours actuel exige qu'une publication qualifiée demeure sur l'ancien ID public, avec la même identité native sélectionnée ou la même URL de candidature. Un ancien propriétaire non qualifié dont l'URL diffère demande une revue distincte : le titre, même identique, n'autorise pas à réaffecter cette page. Ce garde-fou retient le dernier cas mixte décrit dans le [lot 4H2](../../audits/reprise-2026-09-15/lot-4h2.md).
+
+PostgreSQL exige une décision immuable `QUARANTINED` liée au plan et à la transaction de détachement. La réintégration automatique exige une nouvelle capture postérieure à la quarantaine, liée à la configuration, au type d'ATS et au lecteur courant, sans retenue ni retrait, puis une relecture RAW qualifiée et une résolution d'employeur valide. La décision `RELEASED` et le rattachement sont atomiques. Une réintégration conserve l'ID de publication ; elle recherche un groupe prouvé ou crée sa propre présentation. Elle ne restaure pas automatiquement l'ancien regroupement.
+
+Les faits et échéances peuvent être relus sans Job. Le refresh suit toujours l'absence prouvée ou l'échéance native ; son manifeste version 3 prévoit explicitement le cas sans groupe et journalise la publication seule. Un manifeste ancien ne peut pas désactiver une publication réintégrée depuis. Le retrait d'une source traite aussi ses publications en quarantaine, sans événement de fermeture d'une Job fictive. Un périmètre de Job explicite exclut les publications non rattachées.
 
 ## Règles d’écriture
 
@@ -67,7 +79,7 @@ Le `reconcile` global et ses commandes npm/CLI sont retirés au profit du plan b
 
 L’ancien planificateur de réparation Oracle est retiré. Le réparateur générique d’employeurs/retraits ne peut plus déplacer une `JobSource`, remplacer son RAW ou ses références de capture, la réactiver, ni modifier une redirection de Job. Ses seules modifications de publication admises sont une priorité connue et une désactivation. Il refuse aussi les modifications imbriquées via une relation Prisma et le changement d’identifiant primaire d’une entité. L’ingestion et les parcours de publication contrôlent les autres changements.
 
-La [réparation d’employeurs revue](../employer-identity.md#réparer-sans-effacer-lhistorique) reste disponible. Le [sous-lot 4D1](../../audits/reprise-2026-09-15/lot-4d1.md) décrit la reprise historique : provenance `RETAINED_RAW` distincte de `NATIVE_CAPTURE`, empreintes, dates d’observation conservées et refus des formats insuffisants. Le plan version 3 et son relevé immuable n’inventent aucune capture HTTP ni attestation de fraîcheur. Une migration de schéma ne constitue pas une reprise de données. Le cache de présentation et ses changements de source sont décrits dans le [sous-lot 4C](../../audits/reprise-2026-09-15/lot-4c.md), dont la validation est distincte de la reprise effective du stock. Les crons et la production restent hors de cette validation locale.
+La [réparation d’employeurs revue](../employer-identity.md#réparer-sans-effacer-lhistorique) reste disponible. Le [sous-lot 4D1](../../audits/reprise-2026-09-15/lot-4d1.md) décrit la reprise historique : provenance `RETAINED_RAW` distincte de `NATIVE_CAPTURE`, empreintes, dates d’observation conservées et refus des formats insuffisants. Le plan version 4 et son relevé immuable n’inventent aucune capture HTTP ni attestation de fraîcheur. Une migration de schéma ne constitue pas une reprise de données. Le cache de présentation et ses changements de source sont décrits dans le [sous-lot 4C](../../audits/reprise-2026-09-15/lot-4c.md), dont la validation est distincte de la reprise effective du stock. Les crons et la production restent hors de cette validation locale.
 
 ## Présentation par publication
 

@@ -43,8 +43,8 @@ type Proof =
   | { origin: 'RETIRED_RULE'; rule: 'FLATCHR_CONTRACT_END' | 'VOLCANIC_UNQUALIFIED_LIST_END' };
 type Entry = {
   id: string;
-  jobId: string;
-  companyId: string;
+  jobId: string | null;
+  companyId: string | null;
   sourceKey: string;
   externalId: string;
   kind: string;
@@ -157,7 +157,7 @@ function entryFor(
   return {
     id: row.id,
     jobId: row.jobId,
-    companyId: row.job.companyId,
+    companyId: row.job?.companyId ?? null,
     sourceKey: row.sourceKey,
     externalId: row.externalId,
     kind: catalogue.kind,
@@ -423,10 +423,10 @@ export async function applySourceExpiries(
         await lockSourceWrites(tx, key, true);
       await lockCompanyRows(
         tx,
-        plan.entries.map((e) => e.companyId),
+        plan.entries.flatMap((e) => e.companyId ? [e.companyId] : []),
       );
       await tx.$queryRaw`SELECT key FROM "Source" WHERE key=ANY(${plan.allowedKeys}::text[]) ORDER BY key FOR SHARE`;
-      await tx.$queryRaw`SELECT id FROM "Job" WHERE id=ANY(${[...new Set(plan.entries.map((e) => e.jobId))]}::text[]) ORDER BY id FOR UPDATE`;
+      await tx.$queryRaw`SELECT id FROM "Job" WHERE id=ANY(${[...new Set(plan.entries.flatMap((e) => e.jobId ? [e.jobId] : []))]}::text[]) ORDER BY id FOR UPDATE`;
       await tx.$queryRaw`SELECT id FROM "JobSource" WHERE id=ANY(${plan.entries.map((e) => e.id)}::text[]) ORDER BY id FOR UPDATE`;
       if (await isApplied(tx, plan)) return { written: 0, alreadyApplied: true };
       const size = await tx.$queryRaw<

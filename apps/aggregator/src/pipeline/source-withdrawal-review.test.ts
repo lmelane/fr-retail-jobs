@@ -6,7 +6,7 @@ import { sourceIdentityHash } from '../connectors/sourceIdentity.js';
 import { planReviewedSourceWithdrawal } from '../remediation/sourceWithdrawal.js';
 import { applyRepairPlan, digest } from '../remediation/plan.js';
 const prisma = new PrismaClient();
-async function wipe() { await prisma.job.deleteMany(); await prisma.company.deleteMany(); await prisma.source.deleteMany({ where: { key: 'template-fixture' } }); }
+async function wipe() { await prisma.jobSource.deleteMany(); await prisma.job.deleteMany(); await prisma.company.deleteMany(); await prisma.source.deleteMany({ where: { key: 'template-fixture' } }); }
 beforeEach(wipe); afterAll(async () => { await wipe(); await prisma.$disconnect(); });
 async function fixture() {
   const company = await prisma.company.create({ data: { name: 'Brand', canonicalKey: 'BRAND', kind: 'BRAND', fashionjobsUrl: 'resolved:BRAND' } });

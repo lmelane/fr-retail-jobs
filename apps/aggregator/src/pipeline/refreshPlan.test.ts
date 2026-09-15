@@ -235,9 +235,9 @@ describe('E. board vide prouvé — de sourceEligibility à planRefresh', () => 
 
     // 3. et le plan la désactive, fermant l'offre faute d'autre attestation
     const { deactivations, jobs } = planRefresh([old], new Map([[old.jobSourceId, state]]),
-      new Map([[old.jobId, [old.jobSourceId]]]));
+      new Map([[old.jobId!, [old.jobSourceId]]]));
     expect(deactivations.map((d) => d.jobSourceId)).toEqual(['JS-vieille']);
-    expect(jobs.get(old.jobId)).toBe('JOB_CANDIDATE_FOR_CLOSURE');
+    expect(jobs.get(old.jobId!)).toBe('JOB_CANDIDATE_FOR_CLOSURE');
   });
 
   it('le même board vide, mais contrat NON déclaré : INVÉRIFIABLE et aucune mutation', () => {
@@ -249,7 +249,7 @@ describe('E. board vide prouvé — de sourceEligibility à planRefresh', () => 
     expect(state).toBe('UNVERIFIABLE');
 
     const { deactivations } = planRefresh([old], new Map([[old.jobSourceId, state]]),
-      new Map([[old.jobId, [old.jobSourceId]]]));
+      new Map([[old.jobId!, [old.jobSourceId]]]));
     expect(deactivations).toEqual([]);
   });
 });

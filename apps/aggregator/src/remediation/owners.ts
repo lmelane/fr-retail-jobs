@@ -33,6 +33,7 @@ export async function planSourceOwners(prisma: PrismaClient): Promise<RepairPlan
     if (new Set(entries.map(e => e.jobId)).size !== entries.length) throw new Error(`Several posting identities attached to one Job in ${d.key}`);
     const assignments: Record<string, number> = {};
     for (const entry of entries) {
+      if (!entry.job) throw new Error('Attached owner review lost its Job');
       const raw = (entry.raw ?? {}) as LeverJob;
       const explicit = d.key === 'browns' ? leverEmployer(raw, farfetchDepartments) : undefined;
       if (d.key === 'browns' && raw.categories?.department && !explicit) throw new Error(`Unreviewed department: ${raw.categories.department}`);
@@ -56,7 +57,7 @@ export async function planSourceOwners(prisma: PrismaClient): Promise<RepairPlan
       if (entry.job.companyId === companyId) continue;
       if (entry.job.url !== entry.url) throw new Error(`Different canonical source needs review: ${entry.jobId}`);
       const clusterKey = blockingKey({ externalId: entry.externalId, sourceKey: entry.sourceKey, url: entry.url, raw: entry.raw });
-      operations.push({ entity: 'Job', id: entry.jobId, before: json(entry.job), patch: { companyId, clusterKey, fingerprint: `${clusterKey}|${entry.job.title}` }, reason: explicit ? `RAW categories.department=${raw.categories?.department}; ${d.proof}` : `Proven portal owner / canonical name; ${d.proof}` });
+      operations.push({ entity: 'Job', id: entry.job.id, before: json(entry.job), patch: { companyId, clusterKey, fingerprint: `${clusterKey}|${entry.job.title}` }, reason: explicit ? `RAW categories.department=${raw.categories?.department}; ${d.proof}` : `Proven portal owner / canonical name; ${d.proof}` });
     }
     evidence.push({ sourceKey: d.key, proof: d.proof, entries: entries.length, assignments });
   }

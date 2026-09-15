@@ -33,18 +33,19 @@ export async function planSmcpRepair(prisma: PrismaClient): Promise<RepairPlan> 
   }
   let changedBrand = 0; let unknownBrand = 0;
   for (const { entry, brand, identity } of assignment) {
+    if (!entry.job) throw new Error('Attached SMCP review lost its Job');
     const companyId = targetIds.get(identity.companyId)!;
     if (entry.job.companyId === companyId) continue;
     if (entry.job.url !== entry.url) throw new Error(`Another canonical owner requires review: ${entry.jobId}`);
     if (!brand) unknownBrand++; else changedBrand++;
     const clusterKey = blockingKey({ externalId: entry.externalId, sourceKey: entry.sourceKey, url: entry.url, raw: entry.raw });
-    operations.push({ entity: 'Job', id: entry.jobId, before: json(entry.job), patch: {
+    operations.push({ entity: 'Job', id: entry.job.id, before: json(entry.job), patch: {
       companyId, clusterKey, fingerprint: `${clusterKey}|${entry.job.title}`,
       canonicalSourceKey: entry.sourceKey, canonicalExternalId: entry.externalId, canonicalTier: entry.sourceTier,
     }, reason: brand ? `RAW customField[fieldLabel=Brands].valueLabel=${brand}` : 'No proven brand: attach to the proven SMCP group, never infer Sandro' });
   }
   return { version: 1, batchId: '20260908-P0-SMCP-v1', finding: 'P0_SMCP_BRAND', createdAt: new Date().toISOString(),
-    sourceKeys: [source.key], companyIds: [...new Set([...entries.map(e => e.job.companyId), ...targetIds.values()])], operations,
+    sourceKeys: [source.key], companyIds: [...new Set([...entries.flatMap(e => e.job ? [e.job.companyId] : []), ...targetIds.values()])], operations,
     evidence: { officialPortal: 'https://www.smcp.com/en/talents/job-offers/', rawPath: 'customField[fieldLabel=Brands].valueLabel', sourceEntries: entries.length, explicitBrandsReassigned: changedBrand, unknownBrandAssignedToGroup: unknownBrand },
     observations: entries.filter(e => e.raw != null).map(e => ({ sourceKey: e.sourceKey, externalId: e.externalId, raw: e.raw!, observedAt: e.lastSeenAt.toISOString() })),
     invariants: ['oracle', 'lifecycle', 'smcp'],

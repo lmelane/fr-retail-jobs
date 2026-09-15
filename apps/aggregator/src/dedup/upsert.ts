@@ -1,4 +1,8 @@
 import { publicationPresentation, publicationJobPatch } from '../publication/presentation.js';
+import { recoverRetainedPublication } from '../publication/recovery.js';
+import { evidenceHash } from '../lib/evidenceHash.js';
+import { captureReaderRevision } from '../capture/revision.js';
+import { KIND_TO_ATS } from '../ats/catalogKinds.js';
 import { publicationJobContent } from '../publication/content.js';
 import { readSourceFacts, projectSourceFacts } from '../facts/index.js';
 import { deactivateJob, reactivateJob } from '../pipeline/lifecycle.js';
@@ -66,7 +70,7 @@ export async function upsertDeduplicated(
   candidate: CandidateJob & { companyId: string },
   catalogue?: CompiledOccupationTaxonomy,
 ): Promise<UpsertResult> {
-  await archiveAdapterOutput(prisma, candidate);
+  const nativeCapture = await archiveAdapterOutput(prisma, candidate);
   const facts = readSourceFacts(candidate.atsType ?? 'GENERIC_JSONLD', candidate.raw);
   candidate = { ...candidate, ...projectSourceFacts(facts), sourceFacts: facts };
   const taxonomy = catalogue ?? await loadOccupationTaxonomy(prisma);
@@ -100,10 +104,10 @@ export async function upsertDeduplicated(
           where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
           select: { job: { select: { companyId: true } } },
         });
-        await lockCompanyRows(tx, [target?.id, current?.job.companyId].filter((id): id is string => !!id));
+        await lockCompanyRows(tx, [target?.id, current?.job?.companyId].filter((id): id is string => !!id));
         assertSourceRunning();
         const currentTaxonomy = await lockOccupationTaxonomy(tx, taxonomy);
-        const result = await upsertInTransaction(tx, resolved, resolution, currentTaxonomy);
+        const result = await upsertInTransaction(tx, resolved, resolution, currentTaxonomy, nativeCapture);
         assertSourceRunning(); // Throw inside the transaction so cancellation rolls writes back.
         return result;
       }, { maxWait: 10_000, timeout: 30_000 });
@@ -131,6 +135,7 @@ async function upsertInTransaction(
   candidate: CandidateJob & { companyId: string },
   resolution: EmployerResolution,
   catalogue: CompiledOccupationTaxonomy,
+  nativeCapture: Awaited<ReturnType<typeof archiveAdapterOutput>>,
 ): Promise<UpsertResult> {
   const clusterKey = blockingKey(candidate);
   const now = new Date();
@@ -212,9 +217,9 @@ async function upsertInTransaction(
    */
   const ownEntry = await prisma.jobSource.findUnique({
     where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
-    select: { job: { include: { sources: true }, omit: { searchText: true } } },
+    include: { job: { include: { sources: true }, omit: { searchText: true } } },
   });
-  if (ownEntry) {
+  if (ownEntry?.job) {
     // An exact feed ID does not make a historically corrupted merge safe.
     // Fail the write/run attestation until a reviewed repair separates it.
     if (hasRequisitionConflict([candidate.url, ...ownEntry.job.sources.filter(s => s.isActive).map(s => s.url)])) {
@@ -226,6 +231,19 @@ async function upsertInTransaction(
       throw new Error(`PUBLICATION_GROUP_REVIEW_REQUIRED job=${ownEntry.job.id}; native identity evidence no longer agrees`);
     }
     return attachToExisting(prisma, catalogue, candidate, ownEntry.job, now, company.id);
+  }
+  if (ownEntry) {
+    // A historical hold can be lifted only by a new, archived native capture.
+    // The same source ID survives; its former group is never assumed correct.
+    const source = await prisma.source.findUniqueOrThrow({ where: { key: candidate.sourceKey } });
+    const batch = nativeCapture?.batch;
+    if (!batch || !candidate.captureOutputId || batch.startedAt <= ownEntry.quarantinedAt! ||
+      candidate.captureOutputId === ownEntry.captureOutputId) throw new Error('QUARANTINE_REQUIRES_NEW_NATIVE_CAPTURE');
+    if (batch.configHash !== evidenceHash(source.config) || batch.sourceKind !== KIND_TO_ATS[source.kind] || batch.readerRevision !== captureReaderRevision() ||
+      nativeCapture.captured.publicationHold || nativeCapture.captured.publicationWithdrawnAt) throw new Error('QUARANTINE_CAPTURE_NOT_QUALIFIED');
+    const recovered = recoverRetainedPublication(source.kind, candidate.raw, { externalId: candidate.externalId,
+      url: candidate.url, observedAt: batch.startedAt, config: source.config as Record<string, unknown> });
+    if (recovered.status !== 'RECOVERABLE') throw new Error(`QUARANTINE_RECOVERY_REQUIRED reason=${recovered.reason}`);
   }
 
   // Only live jobs in the same cluster can absorb this posting. The cluster key
@@ -247,10 +265,20 @@ async function upsertInTransaction(
   // with a reviewed plan; ingestion must not choose an arbitrary survivor.
   const existing = matches.length === 1 ? matches[0] : undefined;
 
-  if (!existing) return createJob(prisma, catalogue, candidate, company.id, now);
+  if (!existing) return createJob(prisma, catalogue, candidate, company.id, now, ownEntry);
 
   const matched = await prisma.job.findUniqueOrThrow({ where: { id: existing.id }, include: { sources: true }, omit: { searchText: true } });
-  return attachToExisting(prisma, catalogue, candidate, matched, now, company.id);
+  return attachToExisting(prisma, catalogue, candidate, matched, now, company.id, ownEntry);
+}
+
+type Publication = Prisma.JobSourceGetPayload<Record<string, never>>;
+async function recordRelease(prisma: Prisma.TransactionClient, source: Publication, candidate: CandidateJob, jobId: string) {
+  await prisma.publicationIdentityDecision.create({ data: { sourceId: source.id, fromJobId: null, toJobId: jobId,
+    action: 'RELEASED', readerVersion: captureReaderRevision(), evidence: {
+      rule: 'QUALIFIED_NATIVE_REOBSERVATION', quarantineReason: source.quarantineReason,
+      previousRawHash: evidenceHash(source.raw), rawHash: evidenceHash(candidate.raw),
+      captureBatchId: candidate.captureBatchId!, captureOutputId: candidate.captureOutputId!,
+    } } });
 }
 
 async function createJob(
@@ -259,19 +287,22 @@ async function createJob(
   candidate: CandidateJob & { companyId: string },
   companyId: string,
   now: Date,
+  quarantined: Publication | null = null,
 ): Promise<UpsertResult> {
   const expiry = declaredExpiry(candidate.atsType ?? 'GENERIC_JSONLD', candidate.raw);
-  const expired = !!expiry?.expiresAt && expiry.expiresAt <= now;
+  const expiresAt = expiry ? expiry.expiresAt : quarantined?.expiresAt;
+  const expired = !!expiresAt && expiresAt <= now;
   const content = publicationJobContent(candidate, catalogue);
   const presentation = publicationPresentation(candidate, content);
   const created = await prisma.job.create({
     data: {
       ...content,
       companyId,
+      ...(quarantined ? { firstSeenAt: quarantined.firstSeenAt, validThrough: expiresAt } : {}),
       lastSeenAt: now,
       isActive: !expired,
       closedAt: expired ? now : null,
-      sources: { create: {
+      ...(!quarantined ? { sources: { create: {
         sourceKey: candidate.sourceKey, sourceTier: candidate.sourceTier,
         externalId: candidate.externalId, url: candidate.url, title: candidate.title,
         postedAt: candidate.postedAt, lastSeenAt: now,
@@ -281,10 +312,23 @@ async function createJob(
         captureBatchId: candidate.captureBatchId, captureOutputId: candidate.captureOutputId,
         raw: candidate.raw == null ? Prisma.DbNull : candidate.raw as Prisma.InputJsonValue,
         sourceFacts: candidate.sourceFacts as unknown as Prisma.InputJsonValue, presentation,
-      } },
+      } } } : {}),
       events: { create: { type: expired ? 'CLOSED' : 'OPENED', at: now } },
     },
   });
+  if (quarantined) {
+    await recordRelease(prisma, quarantined, candidate, created.id);
+    await prisma.jobSource.update({ where: { id: quarantined.id }, data: {
+      jobId: created.id, quarantinedAt: null, quarantineReason: null,
+      sourceTier: candidate.sourceTier, url: candidate.url, title: candidate.title,
+      postedAt: candidate.postedAt ?? null, lastSeenAt: now, isActive: !expired,
+      expiresAt,
+      ...(expiry ? { expiryEvidence: expiry.evidence } : {}),
+      captureBatchId: candidate.captureBatchId, captureOutputId: candidate.captureOutputId,
+      raw: candidate.raw as Prisma.InputJsonValue,
+      sourceFacts: candidate.sourceFacts as unknown as Prisma.InputJsonValue, presentation,
+    } });
+  }
   await recordOccupationObservation(prisma,created,null);
   return { jobId: created.id, outcome: 'CREATED', promoted: true, occupationStatus: created.occupationStatus, occupationReleaseId: created.occupationReleaseId! };
 }
@@ -299,6 +343,7 @@ async function attachToExisting(
   now: Date,
   /** La société résolue d'aujourd'hui : ré-écrite par la source de l'entrée (alias corrigé, « Logo », marque de groupe). */
   companyId?: string,
+  quarantined: Publication | null = null,
 ): Promise<UpsertResult> {
   const alreadyKnown = existing.sources.some(
     (source) => source.sourceKey === candidate.sourceKey && source.externalId === candidate.externalId,
@@ -306,13 +351,14 @@ async function attachToExisting(
 
   const expiry = declaredExpiry(candidate.atsType ?? 'GENERIC_JSONLD', candidate.raw);
   // A partial capture cannot erase a previously proven deadline.
-  const prior = existing.sources.find(source => source.sourceKey === candidate.sourceKey && source.externalId === candidate.externalId);
+  const prior = existing.sources.find(source => source.sourceKey === candidate.sourceKey && source.externalId === candidate.externalId) ?? quarantined;
   const expiresAt = expiry ? expiry.expiresAt : prior?.expiresAt;
   const available = !expiresAt || expiresAt > now;
   const expiryFields = expiry ? { expiresAt: expiry.expiresAt, expiryEvidence: expiry.evidence } : {};
 
   const observedContent = publicationJobContent(candidate, catalogue);
   const presentation = publicationPresentation(candidate, observedContent);
+  if (quarantined) await recordRelease(prisma, quarantined, candidate, existing.id);
   const observedSource = await prisma.jobSource.upsert({
     where: {
       sourceKey_externalId: {
@@ -335,7 +381,8 @@ async function attachToExisting(
       sourceFacts: candidate.sourceFacts as unknown as Prisma.InputJsonValue, presentation,
       captureBatchId: candidate.captureBatchId, captureOutputId: candidate.captureOutputId,
     },
-    update: { url: candidate.url, title: candidate.title, postedAt: candidate.postedAt ?? null, sourceTier: candidate.sourceTier, lastSeenAt: now, isActive: available, ...expiryFields,
+    update: { ...(quarantined ? { jobId: existing.id, quarantinedAt: null, quarantineReason: null } : {}),
+      url: candidate.url, title: candidate.title, postedAt: candidate.postedAt ?? null, sourceTier: candidate.sourceTier, lastSeenAt: now, isActive: available, ...expiryFields,
       sourceFacts: candidate.sourceFacts as unknown as Prisma.InputJsonValue, presentation,
       captureBatchId: candidate.captureBatchId ?? null, captureOutputId: candidate.captureOutputId ?? null,
       raw: candidate.raw == null ? Prisma.DbNull : candidate.raw as Prisma.InputJsonValue },

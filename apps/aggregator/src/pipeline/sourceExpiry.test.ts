@@ -13,7 +13,7 @@ const db = new PrismaClient();
 const key = 'expiry-backfill-witness';
 let auditBefore = 0;
 const wipe = async () => {
-  await db.job.deleteMany();
+  await db.jobSource.deleteMany(); await db.job.deleteMany();
   await db.company.deleteMany();
   await db.source.deleteMany({ where: { key } });
 };
