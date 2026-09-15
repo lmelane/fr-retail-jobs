@@ -27,7 +27,11 @@ export async function fetchGreenhouseJobs(config: Record<string, unknown>): Prom
   const board = String(config.board ?? '');
   if (!board) throw new Error('Greenhouse board missing');
   const data = await fetchJson<GreenhouseResponse>(`https://boards-api.greenhouse.io/v1/boards/${encodeURIComponent(board)}/jobs?content=true`);
-  return data.jobs.map((job) => ({
+  return data.jobs.map(parseGreenhouseJob);
+}
+
+export function parseGreenhouseJob(job: GreenhouseJob): NormalizedJob {
+  return {
     externalId: String(job.id),
     title: job.title,
     location: job.location?.name,
@@ -42,5 +46,5 @@ export async function fetchGreenhouseJobs(config: Record<string, unknown>): Prom
         ? new Date(job.updated_at)
         : undefined,
     raw: job,
-  }));
+  };
 }

@@ -128,7 +128,7 @@ describe('reviewed publication partitions', () => {
     expect(await db.dataCorrection.count({ where: { entityId: plan.planHash } })).toBe(0);
   });
 
-  it('requires the selected publication capture and rejects a forged reviewed patch', async () => {
+  it('requires a qualified publication input and rejects a forged reviewed patch', async () => {
     const a = await publication(), b = await publication({ tier: 'SPECIALIST_JOBBOARD' });
     const plan = await mergePlan(a, b);
     const body = { ...plan }; delete (body as Partial<GroupRepairPlan>).planHash;
@@ -136,7 +136,7 @@ describe('reviewed publication partitions', () => {
     const forged = { ...body, planHash: evidenceHash(body) };
     await expect(apply(forged)).rejects.toThrow('changed');
     await db.jobSource.update({ where: { id: a.source.id }, data: { captureBatchId: null, captureOutputId: null } });
-    await expect(mergePlan(a, b)).rejects.toThrow('new native capture');
+    await expect(mergePlan(a, b)).rejects.toThrow('PUBLICATION_RECOVERY_REQUIRED');
   });
 
   it('rolls back presentation, membership and journal together when the transfer fails', async () => {

@@ -55,18 +55,8 @@ export async function fetchWordpressJobs(config: Record<string, unknown>): Promi
     if (!Array.isArray(posts) || posts.length === 0) break;
 
     for (const post of posts) {
-      const title = htmlToPlainText(post.title?.rendered);
-      if (!title || !post.link) continue;
-      const postedAt = post.date ? new Date(post.date) : undefined;
-
-      jobs.push({
-        externalId: String(post.id ?? post.link),
-        title,
-        description: htmlToPlainText(post.content?.rendered),
-        url: post.link,
-        postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
-        raw: post,
-      });
+      const job = parseWordpressPost(post);
+      if (job) jobs.push(job);
     }
 
     const totalPages = Number(response.headers.get('x-wp-totalpages'));
@@ -74,4 +64,19 @@ export async function fetchWordpressJobs(config: Record<string, unknown>): Promi
   }
 
   return jobs;
+}
+
+export function parseWordpressPost(post: WpPost): NormalizedJob | null {
+  const title = htmlToPlainText(post.title?.rendered);
+  if (!title || !post.link) return null;
+  const postedAt = post.date ? new Date(post.date) : undefined;
+
+  return {
+    externalId: String(post.id ?? post.link),
+    title,
+    description: htmlToPlainText(post.content?.rendered),
+    url: post.link,
+    postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
+    raw: post,
+  };
 }

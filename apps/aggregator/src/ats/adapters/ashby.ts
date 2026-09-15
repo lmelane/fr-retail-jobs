@@ -23,27 +23,31 @@ export async function fetchAshbyJobs(config: Record<string, unknown>): Promise<A
   const observedAt = captureObservedAt();
   const jobs: NormalizedJob[] = [], rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
   for (const job of data.jobs) {
-    // Job URL is also a durable source ID when the API omits its optional id.
-    const externalId = typeof job?.id === 'string' && job.id.trim() ? job.id : job?.jobUrl;
-    if (!externalId || typeof job?.title !== 'string' || !job.title.trim() || typeof job.isListed !== 'boolean') {
-      rejectedRows.push({ reason: 'MISSING_ID_TITLE_OR_PUBLICATION_FLAG', raw: job }); continue;
-    }
-    const address = job.address?.postalAddress;
-    const postedAt = job.publishedAt ? new Date(job.publishedAt) : undefined;
-    jobs.push({ externalId, title: job.title,
-      location: address?.addressLocality ? [address.addressLocality, address.addressRegion].filter(Boolean).join(', ') : job.location,
-      city: address?.addressLocality, region: address?.addressRegion, country: address?.addressCountry,
-      contract: job.employmentType, department: job.department ?? job.team,
-      remote: job.workplaceType ?? (job.isRemote === true ? 'Remote' : undefined),
-      description: job.descriptionPlain ?? job.descriptionHtml,
-      url: job.jobUrl ?? `https://jobs.ashbyhq.com/${encodeURIComponent(board)}/${encodeURIComponent(externalId)}`,
-      postedAt: postedAt && Number.isFinite(postedAt.getTime()) ? postedAt : undefined,
-      ...(job.isListed === false ? { publicationHold: 'SOURCE_UNLISTED', publicationWithdrawnAt: observedAt } : {}),
-      raw: job,
-    });
+    const normalized = parseAshbyJob(job, board, observedAt);
+    if (!normalized) { rejectedRows.push({ reason: 'MISSING_ID_TITLE_OR_PUBLICATION_FLAG', raw: job }); continue; }
+    jobs.push(normalized);
   }
   return { jobs, rejectedRows, declaredTotal: data.jobs.length,
     complete: rejectedRows.length === 0 && new Set(jobs.map(j => j.externalId)).size === jobs.length,
     enumeration: { method: 'DOCUMENTED_COMPLETE_PUBLIC_FEED', endpoint, pages: 1, rawCount: data.jobs.length, termination: 'FULL_RESPONSE',
       documentation: 'https://developers.ashbyhq.com/docs/public-job-posting-api' } };
+}
+
+/** Shared live and retained-RAW reader; the observation time is explicit. */
+export function parseAshbyJob(job: AshbyJob, board: string, observedAt: Date): NormalizedJob | null {
+  const externalId = typeof job?.id === 'string' && job.id.trim() ? job.id : job?.jobUrl;
+  if (!externalId || typeof job?.title !== 'string' || !job.title.trim() || typeof job.isListed !== 'boolean') return null;
+  const address = job.address?.postalAddress;
+  const postedAt = job.publishedAt ? new Date(job.publishedAt) : undefined;
+  return { externalId, title: job.title,
+    location: address?.addressLocality ? [address.addressLocality, address.addressRegion].filter(Boolean).join(', ') : job.location,
+    city: address?.addressLocality, region: address?.addressRegion, country: address?.addressCountry,
+    contract: job.employmentType, department: job.department ?? job.team,
+    remote: job.workplaceType ?? (job.isRemote === true ? 'Remote' : undefined),
+    description: job.descriptionPlain ?? job.descriptionHtml,
+    url: job.jobUrl ?? `https://jobs.ashbyhq.com/${encodeURIComponent(board)}/${encodeURIComponent(externalId)}`,
+    postedAt: postedAt && Number.isFinite(postedAt.getTime()) ? postedAt : undefined,
+    ...(job.isListed === false ? { publicationHold: 'SOURCE_UNLISTED', publicationWithdrawnAt: observedAt } : {}),
+    raw: job,
+  };
 }

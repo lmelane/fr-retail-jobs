@@ -107,6 +107,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 **État : en cours. [Sous-lot 4A validé localement](lot-4a.md) : suppression des rapprochements par similarité, identité native immuable et journal de décisions. [Sous-lot 4B validé localement](lot-4b.md) : reprise par plan borné, séparation et restauration réversibles, ancienne commande globale supprimée. [Sous-lot 4C validé localement](lot-4c.md) : présentation complète propre à chaque publication et changements de source atomiques. La reprise du stock historique reste à livrer avant de valider le lot complet ; le lecteur public ne peut être déployé avant remplissage du stock à servir.**
 
+[Sous-lot 4D1 validé localement](lot-4d1.md) : le moteur distingue capture native et RAW historique, sans réattestation ; 19 familles relues, 49 075 présentations constructibles dans le snapshot et 57 publications réelles vérifiées par l’API locale. Les formats restants, les pertes de contenu, les anciennes sémantiques de dates et l’application au stock distant restent à traiter.
+
 **Objectif.** Éviter les doublons visibles sans supprimer des postes distincts.
 
 - **Fichiers :** `dedup/match.ts`, `upsert.ts`, `packages/db/publications.ts`, `postingIdentity`, `reconcile`, schéma et API d’identités/redirects.

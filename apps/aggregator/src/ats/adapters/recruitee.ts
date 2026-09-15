@@ -1,6 +1,6 @@
 import { fetchJson } from '../../lib/http.js';
 import { educationLevel } from '../../normalize/experience.js';
-import type { AdapterResult } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 type Offer = { id: number; title: string; careers_url?: string; location?: string; city?: string; country?: string; employment_type?: string; description?: string; created_at?: string;
   /**
@@ -29,7 +29,18 @@ export async function fetchRecruiteeJobs(config: Record<string, unknown>): Promi
     }
     return true;
   });
-  const jobs = valid.map((job) => ({
+  const jobs = valid.map(job => parseRecruiteeJob(job, subdomain));
+  return {
+    jobs, rejectedRows,
+    complete: rejectedRows.length === 0 && new Set(jobs.map(job=>job.externalId)).size === jobs.length,
+    enumeration: { method: 'DOCUMENTED_COMPLETE_PUBLIC_FEED', endpoint, pages: 1,
+      rawCount: data.offers.length, termination: 'FULL_RESPONSE',
+      documentation: 'https://docs.recruitee.com/reference/offers' },
+  };
+}
+
+export function parseRecruiteeJob(job: Offer, subdomain: string): NormalizedJob {
+  return {
     externalId: String(job.id),
     title: job.title,
     location: job.location ?? [job.city, job.country].filter(Boolean).join(', '),
@@ -40,13 +51,5 @@ export async function fetchRecruiteeJobs(config: Record<string, unknown>): Promi
     url: job.careers_url ?? `https://${subdomain}.recruitee.com/o/${job.id}`,
     postedAt: job.created_at ? new Date(job.created_at) : undefined,
     raw: job,
-  }));
-  return {
-    jobs, rejectedRows,
-    complete: rejectedRows.length === 0 && new Set(jobs.map(job=>job.externalId)).size === jobs.length,
-    enumeration: { method: 'DOCUMENTED_COMPLETE_PUBLIC_FEED', endpoint, pages: 1,
-      rawCount: data.offers.length, termination: 'FULL_RESPONSE',
-      documentation: 'https://docs.recruitee.com/reference/offers' },
   };
 }
-

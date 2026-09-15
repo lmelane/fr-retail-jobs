@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { sampleResources, startResourceSampling, readMemoryLimitBytes } from '../observability/resources.js';
 
 /**
@@ -41,9 +41,14 @@ describe('mesure des ressources — depuis le processus qui tourne', () => {
   });
 
   it('l\'OOM est null, jamais false : un processus tué ne rapporte pas sa propre mort', async () => {
-    const r = await startResourceSampling(okPrisma, 10_000).stop();
-    expect(r.oomObserved).toBeNull();
-    expect(r.processUptimeSeconds).toBeGreaterThan(0);
+    const uptime = vi.spyOn(process, 'uptime').mockReturnValue(0.02);
+    try {
+      const r = await startResourceSampling(okPrisma, 10_000).stop();
+      expect(r.oomObserved).toBeNull();
+      // The report rounds to a tenth of a second. A newly started worker
+      // can correctly report zero; its launch speed must not decide the test.
+      expect(r.processUptimeSeconds).toBe(0);
+    } finally { uptime.mockRestore(); }
   });
 
   it('le pic est un maximum sur les échantillons, et le rapport dit combien il en a', async () => {

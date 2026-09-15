@@ -10,6 +10,14 @@ const page = (start: number, length: number) => Array.from({ length }, (_, i) =>
 beforeEach(() => network.mockReset());
 
 describe('Lever enumeration', () => {
+  it('keeps HTML-only text, named lists, compensation text and closing content without duplicating the opening', async () => {
+    network.mockResolvedValueOnce([{ id: 'x', text: 'Advisor', hostedUrl: 'https://jobs.lever.co/acme/x',
+      descriptionPlain: '', description: '<p>Opening and body</p>', openingPlain: 'Opening', descriptionBodyPlain: 'body',
+      lists: [{ text: 'Requirements', content: '<ul><li>Client service</li></ul>' }],
+      salaryDescriptionPlain: 'Declared compensation note', additionalPlain: 'Closing information' }]);
+    const { jobs } = await fetchLeverJobs({ site: 'acme' });
+    expect(jobs[0].description).toBe('Opening and body\n\nRequirements\n• Client service\n\nDeclared compensation note\n\nClosing information');
+  });
   it('continues past 100 postings and supports the explicit EU region', async () => {
     network.mockResolvedValueOnce(page(0, 100)).mockResolvedValueOnce(page(100, 2));
     const result = await fetchLeverJobs({ site: 'acme', region: 'eu' });

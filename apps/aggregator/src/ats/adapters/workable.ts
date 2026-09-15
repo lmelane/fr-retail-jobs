@@ -55,25 +55,7 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
       rejectedRows.push({ reason: 'MISSING_OR_INVALID_ID_OR_TITLE', raw: job }); return false;
     }
     return true;
-  }).map((job) => {
-      const postedAt = job.published_on ? new Date(job.published_on) : undefined;
-      const description = [htmlToPlainText(job.description), htmlToPlainText(job.requirements)]
-        .filter(Boolean)
-        .join('\n\n');
-
-      return {
-        externalId: String(job.shortcode),
-        title: String(job.title),
-        location: [job.city, job.state].filter(Boolean).join(', ') || undefined,
-        country: job.country,
-        contract: job.employment_type,
-        educationLevel: educationLevel('WORKABLE', job.education),
-        description: description || undefined,
-        url: job.url ?? job.application_url ?? `https://apply.workable.com/${account}/j/${job.shortcode}/`,
-        postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
-        raw: job,
-      } satisfies NormalizedJob;
-    });
+  }).map(job => parseWorkableJob(job, account));
 
   // Independent, unfiltered listing used by Workable's own career board.
   // Measured on APM Monaco: 11 cursor pages / 102 IDs, exactly the widget IDs.
@@ -152,4 +134,24 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
       rawCount: data.jobs.length, termination: terminal,
       documentation: 'https://workable.readme.io/reference/jobs-1' },
   };
+}
+
+export function parseWorkableJob(job: WorkableJob, account: string): NormalizedJob {
+  const postedAt = job.published_on ? new Date(job.published_on) : undefined;
+  const description = [htmlToPlainText(job.description), htmlToPlainText(job.requirements)]
+    .filter(Boolean)
+    .join('\n\n');
+
+  return {
+    externalId: String(job.shortcode),
+    title: String(job.title),
+    location: [job.city, job.state].filter(Boolean).join(', ') || undefined,
+    country: job.country,
+    contract: job.employment_type,
+    educationLevel: educationLevel('WORKABLE', job.education),
+    description: description || undefined,
+    url: job.url ?? job.application_url ?? `https://apply.workable.com/${account}/j/${job.shortcode}/`,
+    postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
+    raw: job,
+  } satisfies NormalizedJob;
 }

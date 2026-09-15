@@ -46,14 +46,14 @@ function flattenJsonLd(value: unknown): any[] {
  * silently parsed nothing on those pages. One parser, one set of lessons.
  */
 export function parseJobPostings(html: string, pageUrl: string): NormalizedJob[] {
-  return extractJobPostings(html)
-    .map((node) => normalizeJobPosting(node, pageUrl))
-    .filter((job): job is NormalizedJob => job !== null)
-    .map((job) => ({
-      ...job,
-      // Stable, compact identity for the (source, externalId) unique key.
-      externalId: createHash('sha1').update(pageUrl).digest('hex'),
-    }));
+  return extractJobPostings(html).map(node => normalizeGenericPosting(node, pageUrl))
+    .filter((job): job is NormalizedJob => job !== null);
+}
+
+/** URL identity is shared by live collection and retained native JSON-LD. */
+export function normalizeGenericPosting(node: Record<string, unknown>, pageUrl: string): NormalizedJob | null {
+  const job = normalizeJobPosting(node, pageUrl);
+  return job ? { ...job, externalId: createHash('sha1').update(pageUrl).digest('hex') } : null;
 }
 
 /** Signatures des pages de challenge (Cloudflare, Akamai, AWS WAF) servies à la place d'une liste. */

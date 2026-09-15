@@ -1,0 +1,53 @@
+{
+  "mutations": [
+    {
+      "name": "unbound-native-id",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "46b142535d183bb9b4417dea560873068cb7da52e92b637ce1970fb127f67863"
+    },
+    {
+      "name": "lost-native-body",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "46b142535d183bb9b4417dea560873068cb7da52e92b637ce1970fb127f67863"
+    },
+    {
+      "name": "invented-historical-date",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "46b142535d183bb9b4417dea560873068cb7da52e92b637ce1970fb127f67863"
+    },
+    {
+      "name": "unrelated-detail",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "46b142535d183bb9b4417dea560873068cb7da52e92b637ce1970fb127f67863"
+    },
+    {
+      "name": "fake-capture-provenance",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "85064cfdbacc6c47f2127329fc7ea55763aeec7d38f094c3c30114eb86b3bcd8"
+    },
+    {
+      "name": "forged-reconstruction",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "85064cfdbacc6c47f2127329fc7ea55763aeec7d38f094c3c30114eb86b3bcd8"
+    },
+    {
+      "name": "silent-reattestation",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "85064cfdbacc6c47f2127329fc7ea55763aeec7d38f094c3c30114eb86b3bcd8"
+    },
+    {
+      "name": "lost-lever-sections",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "8b37ca02b006131a9c924213156c959a89ed26345ec9d5c88d0e55159c0930bd"
+    }
+  ],
+  "restoredTests": "passed"
+}

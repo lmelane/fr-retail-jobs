@@ -110,7 +110,7 @@ async function readPage(shared: Shared, board: Board, offset: number): Promise<W
   });
 }
 
-function toJob(shared: Shared, board: Board, job: WorkdayPosting, externalId: string): NormalizedJob {
+function toJob(shared: Pick<Shared, 'origin' | 'site' | 'prefixRule'>, board: Pick<Board, 'partition'>, job: WorkdayPosting, externalId: string, observedAt = captureObservedAt()): NormalizedJob {
   const base: NormalizedJob = {
     externalId,
     title: job.title,
@@ -125,7 +125,7 @@ function toJob(shared: Shared, board: Board, job: WorkdayPosting, externalId: st
      * excluded so an id is never displayed as a city.
      */
     location: job.locationsText || locationFromBullets(job.bulletFields),
-    postedAt: postedAtFromWorkday(job.postedOn),
+    postedAt: postedAtFromWorkday(job.postedOn, observedAt),
     // The public career URL is {origin}/{site}{externalPath}, joined by
     // string — NOT new URL(externalPath, `${origin}/${site}/`), which
     // silently DROPS the /{site}/ segment because externalPath is an
@@ -440,16 +440,16 @@ export function brandFromWorkdayDetail(detail: WorkdayDetail): string | undefine
  * than invented; the detail's `startDate` (a real ISO date) overrides when the
  * descriptions pass fetches it, and firstSeenAt covers the rest honestly.
  */
-export function postedAtFromWorkday(postedOn?: string): Date | undefined {
+export function postedAtFromWorkday(postedOn?: string, observedAt = captureObservedAt()): Date | undefined {
   if (!postedOn) return undefined;
   const text = postedOn.toLowerCase();
   const day = 86_400_000;
-  if (/\btoday\b/.test(text)) return captureObservedAt();
-  if (/\byesterday\b/.test(text)) return new Date(captureObservedAt().getTime() - day);
+  if (/\btoday\b/.test(text)) return new Date(observedAt);
+  if (/\byesterday\b/.test(text)) return new Date(observedAt.getTime() - day);
   const match = text.match(/(\d+)\+?\s+days?\s+ago/);
   if (!match) return undefined;
   if (text.includes('+')) return undefined; // "30+" = at least, not equals
-  return new Date(captureObservedAt().getTime() - Number(match[1]) * day);
+  return new Date(observedAt.getTime() - Number(match[1]) * day);
 }
 
 
@@ -474,65 +474,7 @@ export async function attachWorkdayDescriptions(
           // Même locale que la liste : sans cet en-tête, le détail arrive
           // traduit par machine (voir EN_US).
           const detail = await fetchJson<WorkdayDetail>(`${cxsBase}${path}`, { headers: { ...EN_US } });
-          const info = detail.jobPostingInfo;
-          if (!info) return { ...job, raw: { ...(job.raw as Record<string, unknown>), detail }, publicationHold: 'WORKDAY_DETAIL_SCHEMA_INVALID' };
-          // A posting read on a partition board already carries the tenant's own attribution (facet value):
-          // the detail supplies text, dates and country, never a second employer claim.
-          // …the same holds for a banner read from the tenant's store code (listing.locationsText.prefix).
-          const partitioned = job.employerEvidence?.path.startsWith('listing.') ? job.employerEvidence : undefined;
-          const employer = partitioned ? job.company : brandFromWorkdayDetail(detail);
-          /**
-           * An absent EMPLOYER does not invalidate the FACTS the same detail carries.
-           *
-           * This branch used to return the listing untouched, so a detail without an employer also dropped its
-           * date, country, location and description — two concerns wrongly coupled: WHO hires, and WHAT the
-           * posting says. Measured on uniqlo-hkm-headquarters (2026-09-10): two postings kept
-           * `jobPostingInfo.startDate` in their archived raw while `postedAt`, `countryCode`, `city` and
-           * `description` were all null, purely because their detail carried no employer label.
-           * The hold is what protects the identity — it is kept, unchanged, and the posting stays unpublished
-           * until an employer is proven. But the descriptive fields are now applied: they come from the same
-           * archived document and are not a claim about the employer.
-           */
-          if (!employer) return {
-            ...job,
-            raw: { ...(job.raw as Record<string, unknown>), detail },
-            publicationHold: 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL',
-            description: htmlToPlainText(info.jobDescription) || job.description,
-            country: info.country?.descriptor ?? job.country,
-            location: info.location || job.location,
-            postedAt: info.startDate ? new Date(info.startDate) : job.postedAt,
-            validThrough: info.endDate ? new Date(info.endDate) : job.validThrough,
-            workingTime: info.timeType || job.workingTime,
-            remote: info.remoteType || job.remote,
-          };
-          return {
-            ...job,
-            publicationHold: job.publicationHold?.startsWith('WORKDAY_') ? undefined : job.publicationHold,
-            // Keep the exact detail that supplied the employer, dates and country.
-            // Preserve listing keys for replay and subsequent detail refreshes.
-            raw: { ...(job.raw as Record<string, unknown>), detail },
-            description: htmlToPlainText(info.jobDescription) || job.description,
-            country: info.country?.descriptor ?? job.country,
-            location: info.location ?? job.location,
-            // F-05: the detail's startDate is a REAL date; the listing only
-            // had "Posted N Days Ago".
-            postedAt: info.startDate ? new Date(info.startDate) : job.postedAt,
-            validThrough: info.endDate ? new Date(info.endDate) : job.validThrough,
-            // `||` : Workday rend "" quand le tenant ne remplit pas le champ (2/100 chez Tapestry).
-            workingTime: info.timeType || job.workingTime,
-            remote: info.remoteType || job.remote,
-            // Group tenants: credit the offer to its Maison, not the feed label.
-            company: employer,
-            // The evidence label is the one the identity gate matches: the brand read from
-            // the alt, without the image's word "logo" (bounded lot L3, 2026-09-10: 136
-            // postings refused as "HOKA Logo", "Richemont Logo", "Logo Pierre Fabre" while
-            // `company` already carried the cleaned brand).
-            employerEvidence: partitioned ? partitioned : brandFromLogoAlt(info.logoImage?.alt)
-              ? { rawName: brandFromLogoAlt(info.logoImage?.alt)!, path: 'detail.jobPostingInfo.logoImage.alt', rule: /(^|\s)logo(\s|$)/i.test(info.logoImage!.alt!) ? 'LOGO_ALT_WORD_REMOVED' : 'LOGO_ALT' }
-              : detail.hiringOrganization?.name?.trim()
-                ? { rawName: detail.hiringOrganization.name, path: 'detail.hiringOrganization.name', rule: /^[A-Z]{0,2}\d+\s+/.test(detail.hiringOrganization.name.trim()) ? 'LEADING_ENTITY_CODE_REMOVED' : 'HIRING_ORGANIZATION_LABEL' }
-                : job.employerEvidence,
-          };
+          return mergeWorkdayDetail(job, detail);
         } catch (error) {
           // A failed detail is not evidence that the listing belongs to the
           // GROUP printed in the catalogue. Keep the listing and the exact
@@ -546,4 +488,76 @@ export async function attachWorkdayDescriptions(
       }),
     ),
   );
+}
+
+/** The same native detail reader serves collection and retained-RAW recovery. */
+export function mergeWorkdayDetail(job: NormalizedJob, detail: WorkdayDetail): NormalizedJob {
+  const info = detail.jobPostingInfo;
+  if (!info) return { ...job, raw: { ...(job.raw as Record<string, unknown>), detail }, publicationHold: 'WORKDAY_DETAIL_SCHEMA_INVALID' };
+  // A posting read on a partition board already carries the tenant's own attribution (facet value):
+  // the detail supplies text, dates and country, never a second employer claim.
+  // …the same holds for a banner read from the tenant's store code (listing.locationsText.prefix).
+  const partitioned = job.employerEvidence?.path.startsWith('listing.') ? job.employerEvidence : undefined;
+  const employer = partitioned ? job.company : brandFromWorkdayDetail(detail);
+  /**
+   * An absent EMPLOYER does not invalidate the FACTS the same detail carries.
+   *
+   * This branch used to return the listing untouched, so a detail without an employer also dropped its
+   * date, country, location and description — two concerns wrongly coupled: WHO hires, and WHAT the
+   * posting says. Measured on uniqlo-hkm-headquarters (2026-09-10): two postings kept
+   * `jobPostingInfo.startDate` in their archived raw while `postedAt`, `countryCode`, `city` and
+   * `description` were all null, purely because their detail carried no employer label.
+   * The hold is what protects the identity — it is kept, unchanged, and the posting stays unpublished
+   * until an employer is proven. But the descriptive fields are now applied: they come from the same
+   * archived document and are not a claim about the employer.
+   */
+  if (!employer) return {
+    ...job,
+    raw: { ...(job.raw as Record<string, unknown>), detail },
+    publicationHold: 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL',
+    description: htmlToPlainText(info.jobDescription) || job.description,
+    country: info.country?.descriptor ?? job.country,
+    location: info.location || job.location,
+    postedAt: info.startDate ? new Date(info.startDate) : job.postedAt,
+    validThrough: info.endDate ? new Date(info.endDate) : job.validThrough,
+    workingTime: info.timeType || job.workingTime,
+    remote: info.remoteType || job.remote,
+  };
+  return {
+    ...job,
+    publicationHold: job.publicationHold?.startsWith('WORKDAY_') ? undefined : job.publicationHold,
+    // Keep the exact detail that supplied the employer, dates and country.
+    // Preserve listing keys for replay and subsequent detail refreshes.
+    raw: { ...(job.raw as Record<string, unknown>), detail },
+    description: htmlToPlainText(info.jobDescription) || job.description,
+    country: info.country?.descriptor ?? job.country,
+    location: info.location ?? job.location,
+    // F-05: the detail's startDate is a REAL date; the listing only
+    // had "Posted N Days Ago".
+    postedAt: info.startDate ? new Date(info.startDate) : job.postedAt,
+    validThrough: info.endDate ? new Date(info.endDate) : job.validThrough,
+    // `||` : Workday rend "" quand le tenant ne remplit pas le champ (2/100 chez Tapestry).
+    workingTime: info.timeType || job.workingTime,
+    remote: info.remoteType || job.remote,
+    // Group tenants: credit the offer to its Maison, not the feed label.
+    company: employer,
+    // The evidence label is the one the identity gate matches: the brand read from
+    // the alt, without the image's word "logo" (bounded lot L3, 2026-09-10: 136
+    // postings refused as "HOKA Logo", "Richemont Logo", "Logo Pierre Fabre" while
+    // `company` already carried the cleaned brand).
+    employerEvidence: partitioned ? partitioned : brandFromLogoAlt(info.logoImage?.alt)
+      ? { rawName: brandFromLogoAlt(info.logoImage?.alt)!, path: 'detail.jobPostingInfo.logoImage.alt', rule: /(^|\s)logo(\s|$)/i.test(info.logoImage!.alt!) ? 'LOGO_ALT_WORD_REMOVED' : 'LOGO_ALT' }
+      : detail.hiringOrganization?.name?.trim()
+        ? { rawName: detail.hiringOrganization.name, path: 'detail.hiringOrganization.name', rule: /^[A-Z]{0,2}\d+\s+/.test(detail.hiringOrganization.name.trim()) ? 'LEADING_ENTITY_CODE_REMOVED' : 'HIRING_ORGANIZATION_LABEL' }
+        : job.employerEvidence,
+  };
+}
+
+export function parseWorkdayPublication(raw: WorkdayPosting & { detail?: WorkdayDetail; facet?: Board['partition'] }, config: Record<string, unknown>, observedAt: Date): NormalizedJob | null {
+  if (!raw.externalPath || !raw.title || !raw.detail || !config.origin || !config.site) return null;
+  const externalId = raw.externalPath.split('/').filter(Boolean).pop();
+  if (!externalId) return null;
+  const listing = toJob({ origin: String(config.origin), site: String(config.site), prefixRule: locationPrefixRule(config) },
+    { partition: raw.facet }, raw, externalId, observedAt);
+  return mergeWorkdayDetail(listing, raw.detail);
 }

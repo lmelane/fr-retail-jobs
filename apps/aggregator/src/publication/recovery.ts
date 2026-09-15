@@ -1,0 +1,134 @@
+import { parseAshbyJob } from '../ats/adapters/ashby.js';
+import { parseLeverJob } from '../ats/adapters/lever.js';
+import { parseJibePage } from '../ats/adapters/jibe.js';
+import { parsePhenomJob } from '../ats/adapters/phenom.js';
+import { parseLvmhHit } from '../ats/adapters/lvmhAlgolia.js';
+import { toNormalized as parseTeamtailorJob } from '../ats/adapters/teamtailor.js';
+import { parseWorkdayPublication } from '../ats/adapters/workday.js';
+import { parseGreenhouseJob } from '../ats/adapters/greenhouse.js';
+import { parseRecruiteeJob } from '../ats/adapters/recruitee.js';
+import { normalizeGenericPosting } from '../ats/adapters/genericJsonLd.js';
+import { normalizeMagnetOffer } from '../ats/adapters/magnet.js';
+import { parseRitualsHit } from '../ats/adapters/rituals.js';
+import { parseWordpressPost } from '../ats/adapters/wordpress.js';
+import { normalizeGeoDirPost } from '../ats/adapters/geodirectory.js';
+import { talentsoftItemToJob } from '../ats/adapters/talentsoft.js';
+import { docToJob } from '../ats/adapters/rivoliTypesense.js';
+import { parseWorkableJob } from '../ats/adapters/workable.js';
+import { normalizeListRequisition, mergeDetail } from '../ats/adapters/oraclehcm.js';
+import { normalizeJobaffinityPost, applyJobaffinityEvidence } from '../ats/adapters/jobaffinityWordpress.js';
+import { htmlToPlainText } from '../lib/html.js';
+import { evidenceHash } from '../lib/evidenceHash.js';
+import type { NormalizedJob } from '../types.js';
+
+type Context = { externalId: string; url: string; observedAt: Date; config: Record<string, unknown> };
+type Reason = 'RAW_MISSING' | 'READER_UNQUALIFIED' | 'NATIVE_ID_MISSING' | 'CONTENT_MISSING' |
+  'RAW_SCHEMA_INVALID' | 'IDENTITY_MISMATCH' | 'DETAIL_IDENTITY_MISMATCH' | 'PUBLICATION_HELD';
+export type Recovery = { status: 'RECOVERABLE'; job: NormalizedJob; rawHash: string; outputHash: string } |
+  { status: 'RECOLLECT_OR_REVIEW'; reason: Reason };
+const object = (value: unknown): value is Record<string, any> => !!value && typeof value === 'object' && !Array.isArray(value);
+const identifier = (value: unknown) => typeof value === 'string' && !!value.trim() || typeof value === 'number' && Number.isSafeInteger(value) && value > 0;
+const failure = (reason: Reason): Recovery => ({ status: 'RECOLLECT_OR_REVIEW', reason });
+
+/** Reuses the collector's reader, with only this publication's retained RAW.
+ * This does not attest current availability or fabricate a native HTTP capture.
+ * Unknown formats and missing content remain explicit recovery work. */
+export function recoverRetainedPublication(kind: string, raw: unknown, context: Context): Recovery {
+  if (!object(raw)) return failure('RAW_MISSING');
+  if (!Number.isFinite(context.observedAt.getTime())) return failure('RAW_SCHEMA_INVALID');
+  const { config } = context;
+  let job: NormalizedJob | null | undefined;
+  try {
+    switch (kind) {
+      case 'ashby':
+        if (!identifier(raw.id ?? raw.jobUrl)) return failure('NATIVE_ID_MISSING');
+        job = parseAshbyJob(raw, String(config.board ?? config.slug ?? ''), context.observedAt); break;
+      case 'lever':
+        if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
+        job = parseLeverJob(raw as Parameters<typeof parseLeverJob>[0], config); break;
+      case 'jibe':
+        if (!identifier(raw.req_id ?? raw.slug)) return failure('NATIVE_ID_MISSING');
+        if (typeof config.origin !== 'string') return failure('RAW_SCHEMA_INVALID');
+        job = parseJibePage({ jobs: [{ data: raw }] }, config.origin)[0]; break;
+      case 'phenom':
+        if (!identifier(raw.slug ?? raw.req_id)) return failure('NATIVE_ID_MISSING');
+        if (typeof config.origin !== 'string') return failure('RAW_SCHEMA_INVALID');
+        job = parsePhenomJob(raw, config.origin, config); break;
+      case 'lvmh_algolia':
+        if (raw.source === 'oraclehcm') return failure('READER_UNQUALIFIED');
+        if (!identifier(raw.objectID ?? raw.atsId)) return failure('NATIVE_ID_MISSING');
+        job = parseLvmhHit(raw); break;
+      case 'teamtailor':
+        if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
+        job = parseTeamtailorJob(raw, typeof config.jobOrigin === 'string' ? config.jobOrigin : undefined); break;
+      case 'workday': {
+        if (typeof raw.externalPath !== 'string' || !raw.externalPath.startsWith('/job/')) return failure('NATIVE_ID_MISSING');
+        const detailUrl = raw.detail?.jobPostingInfo?.externalUrl;
+        if (typeof detailUrl !== 'string' || new URL(detailUrl).href !== new URL(context.url).href) return failure('DETAIL_IDENTITY_MISMATCH');
+        job = parseWorkdayPublication(raw as Parameters<typeof parseWorkdayPublication>[0], config, context.observedAt);
+        // lastSeenAt does not prove when this legacy relative-date string was
+        // captured. Only the retained absolute publisher date can date it.
+        if (job && !raw.detail.jobPostingInfo.startDate) job.postedAt = undefined;
+        break;
+      }
+      case 'greenhouse':
+        if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
+        job = parseGreenhouseJob(raw as Parameters<typeof parseGreenhouseJob>[0]); break;
+      case 'recruitee':
+        if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
+        job = parseRecruiteeJob(raw as Parameters<typeof parseRecruiteeJob>[0], String(config.subdomain ?? '')); break;
+      case 'generic-listing':
+        if (!(raw['@type'] === 'JobPosting' || Array.isArray(raw['@type']) && raw['@type'].includes('JobPosting'))) return failure('READER_UNQUALIFIED');
+        if (typeof raw.url !== 'string') return failure('NATIVE_ID_MISSING');
+        job = normalizeGenericPosting(raw, raw.url); break;
+      case 'magnet':
+        if (!identifier(raw.id ?? raw.reference)) return failure('NATIVE_ID_MISSING');
+        job = normalizeMagnetOffer(raw, String(config.origin ?? '')); break;
+      case 'rituals':
+        if (!identifier(raw.jobAdId)) return failure('NATIVE_ID_MISSING');
+        job = parseRitualsHit(raw, typeof config.origin === 'string' ? config.origin : undefined,
+          typeof config.language === 'string' ? config.language : undefined); break;
+      case 'wordpress':
+        if (!identifier(raw.id ?? raw.link)) return failure('NATIVE_ID_MISSING');
+        job = parseWordpressPost(raw); break;
+      case 'geodirectory':
+        if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
+        job = normalizeGeoDirPost(raw as Parameters<typeof normalizeGeoDirPost>[0]); break;
+      case 'talentsoft':
+        if (typeof raw.link !== 'string') return failure('NATIVE_ID_MISSING');
+        job = talentsoftItemToJob(raw); break;
+      case 'typesense':
+        if (typeof raw.url !== 'string') return failure('NATIVE_ID_MISSING');
+        job = docToJob(raw as Parameters<typeof docToJob>[0]); break;
+      case 'workable':
+        if (!identifier(raw.shortcode)) return failure('NATIVE_ID_MISSING');
+        job = parseWorkableJob(raw, String(config.account ?? config.slug ?? '')); break;
+      case 'oraclehcm': {
+        if (raw.source !== 'oraclehcm' || !object(raw.list) || !identifier(raw.list.Id)) return failure('NATIVE_ID_MISSING');
+        if (!object(raw.detail) || !identifier(raw.detail.Id) || String(raw.detail.Id) !== String(raw.list.Id)) return failure('DETAIL_IDENTITY_MISMATCH');
+        const site = String(config.siteNumber ?? config.site ?? '');
+        if (typeof config.origin !== 'string' || !site || raw.site !== site) return failure('IDENTITY_MISMATCH');
+        job = mergeDetail(normalizeListRequisition(raw.list as Parameters<typeof normalizeListRequisition>[0], config.origin, site, String(config.lang ?? 'en')), raw.detail); break;
+      }
+      case 'jobaffinity-wordpress': {
+        if (!object(raw.board?.row) || !object(raw.post) || !identifier(raw.post.id)) return failure('NATIVE_ID_MISSING');
+        if (raw.board.url !== config.listingUrl) return failure('IDENTITY_MISMATCH');
+        const application = raw.applicationEvidence;
+        if (!object(application) || application.state !== 'OPEN' || application.status !== 200 || application.formAction !== context.url) return failure('PUBLICATION_HELD');
+        job = normalizeJobaffinityPost(raw.board.row, raw.post, config as Parameters<typeof normalizeJobaffinityPost>[2], raw.geographyEvidence ?? undefined);
+        applyJobaffinityEvidence(job, { ...application } as Parameters<typeof applyJobaffinityEvidence>[1]); break;
+      }
+      default: return failure('READER_UNQUALIFIED');
+    }
+    if (!job || typeof job.title !== 'string' || !job.title.trim()) return failure('RAW_SCHEMA_INVALID');
+    const url = new URL(job.url);
+    if (job.externalId !== context.externalId || url.href !== new URL(context.url).href ||
+      !['https:', 'http:'].includes(url.protocol) || url.username || url.password) return failure('IDENTITY_MISMATCH');
+    if (job.publicationHold || job.publicationWithdrawnAt) return failure('PUBLICATION_HELD');
+    if (typeof job.description !== 'string' || !htmlToPlainText(job.description)?.trim()) return failure('CONTENT_MISSING');
+    for (const date of [job.postedAt, job.validThrough]) if (date && !Number.isFinite(date.getTime())) return failure('RAW_SCHEMA_INVALID');
+    // Keep exactly the persisted input, including unknown native fields.
+    job = { ...job, url: context.url, raw };
+    return { status: 'RECOVERABLE', job, rawHash: evidenceHash(raw), outputHash: evidenceHash(job) };
+  } catch { return failure('RAW_SCHEMA_INVALID'); }
+}
