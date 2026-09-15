@@ -26,5 +26,5 @@ it('fails the actual CLI before observability, database or egress initialization
 
 it('requires isolated discovery output and rejects retired unsafe commands', () => {
   expect(() => validateCliArguments('discover',['--input=roster.csv'])).toThrow();
-  for (const command of ['purge', 'promote-validated']) expect(() => validateCliArguments(command,[])).toThrow();
+  for (const command of ['purge', 'promote-validated', 'reconcile', 'apply-domain-sheet', 'separate-fused']) expect(() => validateCliArguments(command,[])).toThrow();
 });

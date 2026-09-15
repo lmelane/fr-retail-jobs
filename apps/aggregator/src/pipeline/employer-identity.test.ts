@@ -150,7 +150,7 @@ describe('Employer identity evidence and conservation', () => {
       .rejects.toThrow('PUBLICATION_GROUP_REVIEW_REQUIRED');
     expect(await p.job.count()).toBe(2); expect(await p.job.count({ where: { isActive: true } })).toBe(1);
     await expect(p.job.update({ where: { id: old.jobId }, data: { isActive: true } })).rejects.toThrow();
-    await expect(p.job.update({ where: { id: old.jobId }, data: { mergedIntoId: null } })).rejects.toThrow('immutable');
+    await expect(p.job.update({ where: { id: old.jobId }, data: { mergedIntoId: null } })).rejects.toThrow('compensating');
     await expect(p.jobSource.update({ where: { id: sources[0].id }, data: { jobId: old.jobId } })).rejects.toThrow('cannot own source');
     await expect(p.job.update({ where: { id: current.jobId }, data: { companyId: a.id } })).rejects.toThrow('employer mismatch');
     expect((await applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789')).alreadyApplied).toBe(true);

@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient, AtsType } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import type { AdapterResult } from '../types.js';
@@ -8,7 +8,7 @@ import { persistCapture, persistExtractionOutputs, readRawBlob } from './store.j
 import { captureReaderRevision } from './revision.js';
 
 export async function captureExtraction(db: PrismaClient, sourceKey: string, config: Record<string, unknown>,
-  runId: string | undefined, work: () => Promise<AdapterResult>, sourceKind?: string): Promise<AdapterResult> {
+  runId: string | undefined, work: () => Promise<AdapterResult>, sourceKind?: AtsType): Promise<AdapterResult> {
   const batch = await db.captureBatch.create({ data: { id: randomUUID(), sourceKey, runId,
     configHash: evidenceHash(config), sourceKind, readerRevision: captureReaderRevision() } });
   const context: CaptureContext = { sequence: 0, observedAt: batch.startedAt, write: record => persistCapture(db, batch.id, record) };

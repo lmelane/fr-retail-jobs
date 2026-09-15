@@ -30,8 +30,37 @@ La réattestation relit ces chemins dans les RAW courants. Une ancienne revue ne
 
 Le journal d’identité ne remplace pas les captures natives. Une empreinte du RAW historique n’atteste pas qu’une nouvelle collecte a eu lieu.
 
+## Répartition revue et restauration des anciennes URLs
+
+`scripts/ops/publication-groups.mts` est le parcours de réparation des groupes. Une requête nomme les Job existantes, la répartition **complète** de leurs publications et la raison de la revue. Elle couvre au maximum 50 Job existantes et 200 publications d’un même employeur, avec un budget de 32 Mo de données d’entrée non compressées. PostgreSQL mesure les lignes avant de transmettre leurs payloads à l’application ; les corps d’extraction ont également un budget vérifié avant lecture. Une destination sans `jobId` reçoit un nouvel identifiant dans le plan.
+
+```json
+{
+  "jobIds": ["groupe-existant"],
+  "groups": [
+    { "jobId": "groupe-existant", "sourceIds": ["publication-a"] },
+    { "sourceIds": ["publication-b"] }
+  ],
+  "reason": "Deux publications natives distinctes sans preuve de recrutement commun"
+}
+```
+
+Le plan refuse les publications oubliées, répétées, appartenant à un autre groupe, les rapprochements non prouvés, les employeurs différents et les états de retrait incompatibles. Une ancienne Job répartie sur plusieurs destinations conserve son identifiant dans l’une d’elles. Une Job entièrement absorbée conserve son identifiant comme redirection.
+
+Chaque présentation résultante est reconstruite depuis la sortie d’extraction de sa publication sélectionnée : titre, description, localisation, faits RAW et enrichissements recalculés. Le contenu de l’ancien groupe ne sert pas de repli. Une capture absente, différente du RAW courant, incomplète ou retenue demande une recollecte. `CaptureBatch.sourceKind` contient le type d’adaptateur ATS, comparé au type déclaré par le registre courant.
+
+Le plan contient son empreinte, la version du lecteur et les états observés. Sa préparation utilise une transaction `READ ONLY` à vue stable, après préchargement des corps d’extraction vérifiés. Son application recharge les preuves et refuse une modification de données, de configuration, de règles ou de disponibilité. Aucun téléchargement d’archive n’a lieu sous les verrous d’écriture. Une transaction sérialisable applique toute la répartition, les nouvelles présentations, leurs décisions et le relevé avant/après dans `DataCorrection`. Les conflits de transaction peuvent être relancés dans la limite de trois tentatives au total ; la répétition d’un plan appliqué ne produit aucun nouveau déplacement.
+
+Une redirection peut redevenir une Job autonome seulement avec une publication native identifiée dans son ancien propriétaire ou son journal de déplacement. PostgreSQL exige une décision `RESTORED` compensatrice, liée au plan immuable et créée dans **la même transaction**. Une décision d’une transaction précédente ne peut pas être réutilisée. Les anciens événements `MERGED` restent conservés. Le résolveur d’identifiants relit la chaîne courante ; la cohérence des caches et redirections du website reste à vérifier dans le lot public.
+
+Une publication inactive peut être séparée sans être réactivée, y compris après retrait de sa source. La fermeture exige une expiration retrouvée dans son RAW et concordante avec sa date conservée ; une date en cache seule ne suffit pas. Sans preuve de fermeture, le nouveau groupe reste retiré (`SOURCE_RETIRED` ou `ATTESTATION_MISSING`). Les événements et dates d’action sont ajoutés à l’application du plan, sans inventer une date de fermeture employeur.
+
 ## Nettoyage et limites du lot en cours
 
 Les commandes `apply-domain-sheet` et `separate-fused` ont été retirées. La première fusionnait des employeurs depuis une note textuelle sans le dossier de revue maintenu ; la seconde copiait le contenu du groupe lors d’une séparation, avec un risque d’attribuer le texte ou le lieu d’une autre publication. Leurs données historiques restent des éléments d’audit, pas des instructions exécutables.
 
-La [réparation d’employeurs revue](../employer-identity.md#réparer-sans-effacer-lhistorique) reste disponible. La reprise des groupes historiques, les décisions durables de séparation, les anciennes redirections et la projection complète de chaque publication sont la suite du lot 4. Ils ne sont pas déclarés livrés par la suppression du moteur de similarité. Les crons et la production restent hors de cette validation locale.
+Le `reconcile` global et ses commandes npm/CLI sont retirés au profit du plan borné ci-dessus. Les identifiants du service Railway gelé restent dans les outils de lecture/exploitation pour permettre son suivi jusqu’à la release. Aucun cron n’est activé par la réparation.
+
+L’ancien planificateur de réparation Oracle est retiré. Le réparateur générique d’employeurs/retraits ne peut plus déplacer une `JobSource`, remplacer son RAW ou ses références de capture, la réactiver, ni modifier une redirection de Job. Ses seules modifications de publication admises sont une priorité connue et une désactivation. Il refuse aussi les modifications imbriquées via une relation Prisma et le changement d’identifiant primaire d’une entité. L’ingestion et les parcours de publication contrôlent les autres changements.
+
+La [réparation d’employeurs revue](../employer-identity.md#réparer-sans-effacer-lhistorique) reste disponible. Le moteur livré exige une sortie d’extraction propre. Pour le stock plus ancien, il faudra qualifier le rejeu de son RAW ou recollecter lorsque cette preuve est insuffisante ; une migration de schéma ne constitue pas une reprise de données. Le cache complet de présentation par publication et les changements de propriétaire pendant l’ingestion/expiration restent à achever avant de valider tout le lot 4. Les crons et la production restent hors de cette validation locale.

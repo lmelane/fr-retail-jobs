@@ -261,7 +261,7 @@ async function upsertInTransaction(
 }
 
 /** Complete projection of one authoritative observation; shared by creation and reviewed repairs. */
-export function canonicalJobContent(candidate: CandidateJob, catalogue: CompiledOccupationTaxonomy) {
+export function publicationJobContent(candidate: CandidateJob, catalogue: CompiledOccupationTaxonomy) {
   const { countryCode: country, countryIntegrity } = countryWithProvenance(candidate);
   const clusterKey = blockingKey(candidate);
   const taxonomy = classifyOccupationContent(candidate,catalogue);
@@ -326,7 +326,7 @@ async function createJob(
   const expired = !!expiry?.expiresAt && expiry.expiresAt <= now;
   const created = await prisma.job.create({
     data: {
-      ...canonicalJobContent(candidate,catalogue),
+      ...publicationJobContent(candidate,catalogue),
       companyId,
       lastSeenAt: now,
       isActive: !expired,

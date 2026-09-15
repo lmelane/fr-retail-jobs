@@ -105,7 +105,7 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 ## Lot 4. Déduplication réversible et identité de publication
 
-**État : en cours. [Sous-lot 4A validé localement](lot-4a.md) : suppression des rapprochements par similarité, identité native immuable et journal de décisions. La reprise des groupes et la décomposition historique restent à livrer avant de valider le lot complet.**
+**État : en cours. [Sous-lot 4A validé localement](lot-4a.md) : suppression des rapprochements par similarité, identité native immuable et journal de décisions. [Sous-lot 4B validé localement](lot-4b.md) : reprise par plan borné, séparation et restauration réversibles, ancienne commande globale supprimée. La présentation complète par publication et la reprise du stock historique restent à livrer avant de valider le lot complet.**
 
 **Objectif.** Éviter les doublons visibles sans supprimer des postes distincts.
 

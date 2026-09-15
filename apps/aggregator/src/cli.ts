@@ -20,7 +20,6 @@ import { runEgressProbe } from './pipeline/egressProbe.js';
 const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 * 1000);
 import { runRefresh, refreshScope } from './pipeline/refresh.js';
 import { parseDay, runSnapshot, type SnapshotStats } from './pipeline/snapshot.js';
-import { runReconcile } from './pipeline/reconcile.js';
 import { retireSource } from './pipeline/retireSource.js';
 import { importSourcesCsv, promoteSource } from './connectors/sourceStore.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
@@ -31,13 +30,11 @@ import { closeBrowser } from './lib/browser.js';
 import { validateCliArguments } from './lib/cliArguments.js';
 
 /**
- * Three scheduled entry points, each with its own failure domain so one broken
- * job never takes the others down:
+ * Ingestion, lifecycle maintenance and manual snapshots have separate entry points:
  *
  *   ingest    (~2h)    new and updated offers; dedup happens at write time
  *   refresh   (daily)  lifecycle — closes offers no source reports any more,
  *                      then takes the day's market snapshot (D38)
- *   reconcile         consolidate publications with a qualified application identity
  *   snapshot  (manual) the market snapshot alone: --date=, --backfill-from=
  *
  * geocode runs after ingest to resolve any new cities for the map.
@@ -208,8 +205,6 @@ try {
       ...(backfillFrom ? { backfillFrom: parseDay(backfillFrom) } : {}),
     });
     await log.info('command.result', { ok: true, command, ...stats });
-  } else if (command === 'reconcile') {
-    await log.info('command.result', { ok: true, command, ...(await runReconcile(prisma)) });
   } else if (command === 'import-sources') {
     /**
      * One-shot seed of the Source table (DEC-3) from data/seeds/sources.csv.

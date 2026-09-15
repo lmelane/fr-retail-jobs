@@ -39,6 +39,28 @@ it('rejects stale evidence and preserves concurrent changes', async () => {
   expect((await prisma.job.findUniqueOrThrow({ where: { id: job.id } })).countryCode).toBe('AU');
 });
 
+it.each(['raw', 'url', 'jobId', 'captureBatchId', 'isActive'])('refuses publication %s changes through the generic repair path', async field => {
+  const { job, plan } = await witness();
+  const source = await prisma.jobSource.findFirstOrThrow({ where: { jobId: job.id } });
+  const values: Record<string, unknown> = { raw: { altered: true }, url: 'https://example.com/replaced', jobId: job.id, captureBatchId: null, isActive: true };
+  plan.operations = [{ entity: 'JobSource', id: source.id, before: json(source), patch: { [field]: values[field] }, reason: 'Attempt to bypass publication proof requirements' }];
+  await expect(applyRepairPlan(prisma, plan, digest(plan), 'test')).rejects.toThrow('publication-groups');
+  expect(await prisma.jobSource.findUniqueOrThrow({ where: { id: source.id } })).toEqual(source);
+});
+
+it('refuses redirect changes through the generic repair path', async () => {
+  const { plan } = await witness(); plan.operations[0].patch.mergedIntoId = null;
+  await expect(applyRepairPlan(prisma, plan, digest(plan), 'test')).rejects.toThrow('publication-groups');
+});
+
+it('refuses a nested publication mutation hidden inside a Job repair', async () => {
+  const { job, plan } = await witness();
+  const source = await prisma.jobSource.findFirstOrThrow({ where: { jobId: job.id } });
+  plan.operations[0].patch = { sources: { updateMany: { where: { id: source.id }, data: { raw: { altered: true } } } } };
+  await expect(applyRepairPlan(prisma, plan, digest(plan), 'test')).rejects.toThrow('Nested');
+  expect(await prisma.jobSource.findUniqueOrThrow({ where: { id: source.id } })).toEqual(source);
+});
+
 it('rolls back the entire batch when its resulting state violates lifecycle invariants', async () => {
   const { job, plan } = await witness();
   plan.operations[0].patch.closedAt = new Date().toISOString();

@@ -15,7 +15,7 @@ describe('KIND_TO_ATS ↔ adaptateurs', () => {
   });
 
   it('chaque adaptateur est atteignable par au moins un kind', () => {
-    const reachable = new Set(Object.values(KIND_TO_ATS));
+    const reachable = new Set<string>(Object.values(KIND_TO_ATS));
     const orphans = SUPPORTED_ATS_TYPES.filter((type) => !reachable.has(type));
     expect(orphans, `adaptateurs sans kind : ${orphans.join(', ')}`).toEqual([]);
   });

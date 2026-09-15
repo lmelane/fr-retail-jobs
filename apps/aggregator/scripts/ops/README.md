@@ -12,6 +12,19 @@ python3 -B -m unittest discover -s apps/aggregator/scripts/ops/tests
 
 Les noms acceptés sont `aggregator`, `api`, `refresh` et `reconcile`. Le nom public courant est `catwalks-api` ; les commandes bornées ne s’appliquent qu’à l’aggregator. Le préflight compare les révisions de l’API et du worker séparément, y compris leurs dépendances partagées.
 
+Le service Railway `reconcile` est conservé ici comme identifiant d’exploitation d’un service gelé. Son ancienne commande globale n’existe plus dans le runtime.
+
+### Réparer une répartition de publications
+
+Le [contrat d’identité](../../../../docs/architecture/publication-identity.md) décrit la requête, les limites et les preuves exigées. La prévisualisation est en lecture seule et crée un nouveau fichier privé ; l’application exige son empreinte exacte.
+
+```sh
+npx tsx scripts/ops/publication-groups.mts --request=partition.json --out=plan.json
+npx tsx scripts/ops/publication-groups.mts --apply --plan=plan.json --hash=<empreinte-du-plan>
+```
+
+Chaque publication doit apparaître une seule fois dans la répartition complète des groupes nommés. Une capture manquante demande une recollecte ; l’outil ne copie pas le contenu de l’ancien groupe. Une restauration conserve les événements antérieurs et ajoute une décision compensatrice. Une répétition du plan ne répète pas les mutations.
+
 ## Mutating production
 
 | | |

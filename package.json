@@ -15,7 +15,6 @@
     "db:push": "npm run db:push -w @catwalks/db",
     "ingest": "npm run ingest -w @catwalks/aggregator",
     "refresh": "npm run refresh -w @catwalks/aggregator",
-    "reconcile": "npm run reconcile -w @catwalks/aggregator",
     "api:dev": "npm run dev -w @catwalks/api",
     "api:build": "npm run build -w @catwalks/api",
     "typecheck": "npm run typecheck -w @catwalks/aggregator && npm run typecheck -w @catwalks/api"

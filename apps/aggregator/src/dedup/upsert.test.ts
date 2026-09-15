@@ -4,7 +4,6 @@ import { PrismaClient } from '@prisma/client';
 import { upsertDeduplicated } from './upsert.js';
 import { resolveCompany } from '../normalize/company.js';
 import type { CandidateJob } from './match.js';
-import { runReconcile } from '../pipeline/reconcile.js';
 
 /**
  * Integration tests for write-time dedup, focused on the unique-constraint
@@ -47,12 +46,11 @@ afterAll(async () => {
 });
 
 describe('upsertDeduplicated — unique-constraint recovery', () => {
-  it('preserves publisher opportunity classification across creation, replay and reconcile', async () => {
+  it('preserves publisher opportunity classification across creation and replay', async () => {
     const base = { company: 'Ganni', title: 'Sales Advisor', location: 'Paris', country: 'FR' };
     const first = await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1', opportunityType: 'OPEN_APPLICATION' }));
     const second = await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'group', externalId: '2', opportunityType: 'JOB_OPENING' }));
     expect(second.jobId).not.toBe(first.jobId);
-    expect((await runReconcile(prisma)).jobsMerged).toBe(0);
     await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1' }));
     expect((await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } })).opportunityType).toBe('OPEN_APPLICATION');
     await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1', opportunityType: 'JOB_OPENING' }));
@@ -67,7 +65,6 @@ describe('upsertDeduplicated — unique-constraint recovery', () => {
     const same = await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'tiffany-oracle', externalId: '63681', url: url('63681') }));
     expect(same.jobId).toBe(first.jobId);
     expect(await prisma.job.count()).toBe(2);
-    expect((await runReconcile(prisma)).jobsMerged).toBe(0);
     // Restore the historically observed wrong attachment as a regression witness.
     await prisma.jobSource.update({ where: { sourceKey_externalId: { sourceKey: 'tiffany-oracle', externalId: '63683' } }, data: { jobId: first.jobId } });
     await expect(upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'tiffany-oracle', externalId: '63683', url: url('63683') })))

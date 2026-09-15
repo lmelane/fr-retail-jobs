@@ -8,8 +8,11 @@ import { PIPELINE_VERSION } from '../pipeline/version.js';
 import { smartRecruitersEmployer, type SmartRecruitersPosting } from '../ats/adapters/smartrecruiters.js';
 import { resolveCompany } from '../normalize/company.js';
 import { leverEmployer, type LeverJob } from '../ats/adapters/lever.js';
+import { SOURCE_PRIORITY, type SourceTier } from '@catwalks/db/publications';
 
 export type Entity = 'Job' | 'JobSource' | 'Company' | 'Source';
+const scalarFields = new Map(Prisma.dmmf.datamodel.models.map(model => [model.name,
+  new Set(model.fields.filter(field => field.kind !== 'object' && !field.isId).map(field => field.name))]));
 export type Row = Record<string, unknown>;
 export type Operation = { entity: Entity; id: string; before: Row | null; patch: Row; reason: string; evidence?: Row };
 export type RepairPlan = {
@@ -128,6 +131,17 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
   if (hash !== expectedHash) throw new Error('Plan hash mismatch');
   if (plan.version !== 1 || !plan.operations.length) throw new Error('Empty or unsupported plan');
   if (new Set(plan.operations.map(o => `${o.entity}:${o.id}`)).size !== plan.operations.length) throw new Error('Duplicate operation');
+  for (const op of plan.operations) {
+    if (Object.keys(op.patch).some(key => !scalarFields.get(op.entity)?.has(key))) {
+      throw new Error('Nested or identity repair mutations are forbidden');
+    }
+    if (op.entity === 'JobSource' && (Object.keys(op.patch).some(key => !['sourceTier', 'isActive'].includes(key)) ||
+      'isActive' in op.patch && op.patch.isActive !== false ||
+      'sourceTier' in op.patch && !SOURCE_PRIORITY.includes(op.patch.sourceTier as SourceTier)) ||
+      op.entity === 'Job' && 'mergedIntoId' in op.patch) {
+      throw new Error('Publication content and membership require native ingestion or publication-groups');
+    }
+  }
   return prisma.$transaction(async tx => {
     await tx.$queryRaw`SELECT 1 FROM pg_advisory_xact_lock(hashtextextended(${`repair:${plan.batchId}`}, 0))`;
     for (const key of [...new Set(plan.sourceKeys)].sort()) await lockSourceWrites(tx, key, true);
@@ -152,7 +166,7 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
     for(const op of plan.operations){
       if(op.entity==='Job' && op.before?.occupationReleaseId &&
         ['title','department','rawTitle'].some(k=>k in op.patch && digest(op.patch[k])!==digest(op.before![k])) &&
-        !('occupationEvidence' in op.patch))throw new Error(`Occupation projection missing from reviewed plan: ${op.id}; regenerate the plan with canonicalJobContent`);
+        !('occupationEvidence' in op.patch))throw new Error(`Occupation projection missing from reviewed plan: ${op.id}; regenerate the plan with publicationJobContent`);
     }
     // Thousands of identity-only corrections share this exact text-field shape.
     // Batch them after creating their target Companies; all before-images were
