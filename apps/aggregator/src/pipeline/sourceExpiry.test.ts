@@ -623,7 +623,7 @@ describe('expiry belongs to its native publication', () => {
     await captured('native-id');
     const { plan } = await planSourceExpiries(db, [key]);
     expect(plan.entries).toEqual([]);
-    expect(plan.reviews).toMatchObject([{ reason: 'EXPIRY_PUBLICATION_IDENTITY_MISMATCH' }]);
+    expect(plan.reviews).toMatchObject([{ reason: 'EXPIRY_PUBLICATION_DETAIL_IDENTITY_MISMATCH' }]);
   });
 
   it.each(['id', 'url', 'raw', 'held', 'source', 'kind'])(

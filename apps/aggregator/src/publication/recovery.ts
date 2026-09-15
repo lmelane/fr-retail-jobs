@@ -4,7 +4,7 @@ import { parseJibePage } from '../ats/adapters/jibe.js';
 import { parsePhenomJob } from '../ats/adapters/phenom.js';
 import { parseLvmhHit } from '../ats/adapters/lvmhAlgolia.js';
 import { toNormalized as parseTeamtailorJob } from '../ats/adapters/teamtailor.js';
-import { parseWorkdayPublication } from '../ats/adapters/workday.js';
+import { parseWorkdayPublication, workdayDetailMatchesListing } from '../ats/adapters/workday.js';
 import { parseGreenhouseJob } from '../ats/adapters/greenhouse.js';
 import { parseRecruiteeJob } from '../ats/adapters/recruitee.js';
 import { normalizeGenericPosting } from '../ats/adapters/genericJsonLd.js';
@@ -97,8 +97,7 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         job = parseTeamtailorJob(raw, typeof config.jobOrigin === 'string' ? config.jobOrigin : undefined); break;
       case 'workday': {
         if (typeof raw.externalPath !== 'string' || !raw.externalPath.startsWith('/job/')) return failure('NATIVE_ID_MISSING');
-        const detailUrl = raw.detail?.jobPostingInfo?.externalUrl;
-        if (typeof detailUrl !== 'string' || new URL(detailUrl).href !== new URL(context.url).href) return failure('DETAIL_IDENTITY_MISMATCH');
+        if (!object(raw.detail) || !workdayDetailMatchesListing({ externalId: context.externalId, url: context.url, raw }, raw.detail)) return failure('DETAIL_IDENTITY_MISMATCH');
         job = parseWorkdayPublication(raw as Parameters<typeof parseWorkdayPublication>[0], config, context.observedAt);
         // lastSeenAt does not prove when this legacy relative-date string was
         // captured. Only the retained absolute publisher date can date it.

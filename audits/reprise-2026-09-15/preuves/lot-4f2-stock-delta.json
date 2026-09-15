@@ -1,0 +1,11 @@
+{
+  "representationsCompared": 90764,
+  "newlyRecoverable": 1425,
+  "lostRecoverability": 0,
+  "bySource": {
+    "richemont-workday": 1407,
+    "theory-eu": 18
+  },
+  "readerChangedOnlyForWorkday": true,
+  "databaseReadOnlyVerified": true
+}

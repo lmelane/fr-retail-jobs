@@ -1,0 +1,43 @@
+{
+  "network": false,
+  "publications": 4,
+  "allRecovered": true,
+  "rows": [
+    {
+      "source": "richemont-workday",
+      "batchId": "5987f943-ca13-4741-a350-fe48455443a8",
+      "listingHash": "055896b074d39827fbaf8e2719c4ccdbf77f1dba37627e4de844680c3e4005e8",
+      "detailHash": "8141029560d09e5f195fb97a088678a5237187a0a12473060dcf3d7eb1887fc3",
+      "url": "https://richemont.wd3.myworkdayjobs.com/Richemont/job/BEVERLY-HILLS/Customer-Service-Associate-Beverly-Hills_JR133834",
+      "rawHash": "aff2750599b027668c1dafec88712f1f10a0e526615884a70d62409205b396ab",
+      "outputHash": "470479a044f980a5d1cb88bde8e84e5bb5f1a3d1cd0f93683b8ca11521d9431c"
+    },
+    {
+      "source": "richemont-workday",
+      "batchId": "5987f943-ca13-4741-a350-fe48455443a8",
+      "listingHash": "055896b074d39827fbaf8e2719c4ccdbf77f1dba37627e4de844680c3e4005e8",
+      "detailHash": "0015e71838e19283fff750094cd9f1378481da8b075cd7b559adedd388e788b0",
+      "url": "https://richemont.wd3.myworkdayjobs.com/Richemont/job/PALM-BEACH/Boutique-Assistant--Long-Term-Temporary-Assignment----Palm-Beach_JR133835-1",
+      "rawHash": "7abe64ac7cfe0e1b0fdb0107095ed982b26567444f1c6711af236a2959a6266c",
+      "outputHash": "b0d25c9594a3961de0fa5cbd3847fb31a449f465462755a100ec3692c8593767"
+    },
+    {
+      "source": "theory-eu",
+      "batchId": "55f0e8e6-b285-4429-b240-bcf61a6edf15",
+      "listingHash": "660d475664bec01795d746054aa52422cecaa302924cab5d76773e6842e480db",
+      "detailHash": "67a437092f311076351a56dce3a3dd40f694640ab1d4ea06a6f9e30d7cb911f3",
+      "url": "https://fastretailing.wd3.myworkdayjobs.com/eu_Theory/job/Theory-Regent-StreetLTEU/Sales-Associate_R00000004177097",
+      "rawHash": "01a99924a8c0e4ba56d939bc39828dbd733a45e0ee105850b7b5aaf350f3bd52",
+      "outputHash": "3e7eab290527aad6e5da094f19a0a4dece12bdb664250da14f2f8e1d8cf93cb7"
+    },
+    {
+      "source": "theory-eu",
+      "batchId": "55f0e8e6-b285-4429-b240-bcf61a6edf15",
+      "listingHash": "660d475664bec01795d746054aa52422cecaa302924cab5d76773e6842e480db",
+      "detailHash": "b5a133bda7b8bda4fe7016b6f9c8181bb7dad4517e3d746c3e64d4ea2ca2350f",
+      "url": "https://fastretailing.wd3.myworkdayjobs.com/eu_Theory/job/TW-PrintempsLTFR/Conseiller-De-Vente---CDD_R00000004177088",
+      "rawHash": "2e7167c811d08d4d5e4e947cd0de3b1f6f2f00bdb110001dd2a8c69942ad2c93",
+      "outputHash": "a716cb6b8eb39d452b0b2e12819cf4a8addbdb1254a61921ab6692f5dbc924ab"
+    }
+  ]
+}

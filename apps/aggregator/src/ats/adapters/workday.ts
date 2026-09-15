@@ -386,6 +386,7 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
 
 type WorkdayDetail = {
   jobPostingInfo?: {
+    externalUrl?: string;
     jobDescription?: string;
     location?: string;
     /** English label in en-US ("Taiwan Region", "United States of America"); the boundary maps it to ISO. */
@@ -490,10 +491,36 @@ export async function attachWorkdayDescriptions(
   );
 }
 
+/** Workday emits a differently cased site segment on some native detail URLs
+ * (Richemont and Theory, captured 2026-09-15). Only that ASCII segment may vary:
+ * the native job path and tenant origin remain exact, without query/fragment.
+ * Custom domains require exact URLs; this is not general URL case folding. */
+export function workdayDetailMatchesListing(job: Pick<NormalizedJob, 'externalId' | 'url' | 'raw'>, detail: WorkdayDetail): boolean {
+  try {
+    const path = (job.raw as { externalPath?: unknown } | null)?.externalPath;
+    const native = detail.jobPostingInfo?.externalUrl;
+    if (typeof path !== 'string' || !/^\/job\/[^?#\\\s]+$/.test(path) ||
+      /%(?:2f|5c|2e)/i.test(path)) return false;
+    // Reject normalized traversal and empty path segments, including a trailing slash.
+    if (path.slice(1).split('/').some(part => !part || part === '.' || part === '..') ||
+      path.split('/').at(-1) !== job.externalId || typeof native !== 'string') return false;
+    const listing = new URL(job.url), declared = new URL(native);
+    if (![listing, declared].every(url => ['https:', 'http:'].includes(url.protocol) && !url.username && !url.password && !url.search && !url.hash && !url.port) ||
+      listing.origin !== declared.origin || !listing.pathname.endsWith(path)) return false;
+    const prefix = listing.pathname.slice(0, -path.length);
+    if (!/^\/[A-Za-z0-9_-]+$/.test(prefix)) return false;
+    if (listing.href === declared.href) return true;
+    if (listing.protocol !== 'https:' || !/^[a-z0-9-]+\.wd[0-9]+\.myworkdayjobs\.com$/.test(listing.hostname) || !declared.pathname.endsWith(path)) return false;
+    const nativePrefix = declared.pathname.slice(0, -path.length);
+    return /^\/[A-Za-z0-9_-]+$/.test(nativePrefix) && prefix.toLowerCase() === nativePrefix.toLowerCase();
+  } catch { return false; }
+}
+
 /** The same native detail reader serves collection and retained-RAW recovery. */
 export function mergeWorkdayDetail(job: NormalizedJob, detail: WorkdayDetail): NormalizedJob {
   const info = detail.jobPostingInfo;
   if (!info) return { ...job, raw: { ...(job.raw as Record<string, unknown>), detail }, publicationHold: 'WORKDAY_DETAIL_SCHEMA_INVALID' };
+  if (!workdayDetailMatchesListing(job, detail)) return { ...job, raw: { ...(job.raw as Record<string, unknown>), detail }, publicationHold: 'WORKDAY_DETAIL_IDENTITY_MISMATCH' };
   // A posting read on a partition board already carries the tenant's own attribution (facet value):
   // the detail supplies text, dates and country, never a second employer claim.
   // …the same holds for a banner read from the tenant's store code (listing.locationsText.prefix).

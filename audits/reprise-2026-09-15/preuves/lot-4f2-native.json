@@ -1,0 +1,234 @@
+[
+  {
+    "key": "richemont-workday",
+    "batchId": "5987f943-ca13-4741-a350-fe48455443a8",
+    "sourceKey": "qualification-richemont-workday-a48b37a1-549b-41af-905e-33808bfd4241",
+    "readerRevision": "local-sha256:da88aa81d8a3c3f7fda1685a74ea792e8415c1eff13947cff42af4c717c134ad",
+    "exactReplay": true,
+    "requests": 5,
+    "nativeBytes": 63243,
+    "native": {
+      "endpoint": "https://richemont.wd3.myworkdayjobs.com/wday/cxs/richemont/Richemont",
+      "listed": 20,
+      "total": 1385,
+      "details": [
+        {
+          "externalPath": "/job/BEVERLY-HILLS/Customer-Service-Associate-Beverly-Hills_JR133834",
+          "constructedURL": "https://richemont.wd3.myworkdayjobs.com/Richemont/job/BEVERLY-HILLS/Customer-Service-Associate-Beverly-Hills_JR133834",
+          "externalUrl": "https://richemont.wd3.myworkdayjobs.com/richemont/job/BEVERLY-HILLS/Customer-Service-Associate-Beverly-Hills_JR133834",
+          "detailKeys": [
+            "jobPostingInfo",
+            "hiringOrganization",
+            "similarJobs",
+            "userAuthenticated"
+          ],
+          "infoKeys": [
+            "id",
+            "title",
+            "jobDescription",
+            "location",
+            "postedOn",
+            "startDate",
+            "timeType",
+            "jobReqId",
+            "jobPostingId",
+            "jobPostingSiteId",
+            "country",
+            "logoImage",
+            "canApply",
+            "posted",
+            "includeResumeParsing",
+            "jobRequisitionLocation",
+            "remoteType",
+            "externalUrl",
+            "questionnaireId"
+          ],
+          "pageSite": [
+            "siteId: \"Richemont\""
+          ]
+        },
+        {
+          "externalPath": "/job/PALM-BEACH/Boutique-Assistant--Long-Term-Temporary-Assignment----Palm-Beach_JR133835-1",
+          "constructedURL": "https://richemont.wd3.myworkdayjobs.com/Richemont/job/PALM-BEACH/Boutique-Assistant--Long-Term-Temporary-Assignment----Palm-Beach_JR133835-1",
+          "externalUrl": "https://richemont.wd3.myworkdayjobs.com/richemont/job/PALM-BEACH/Boutique-Assistant--Long-Term-Temporary-Assignment----Palm-Beach_JR133835-1",
+          "detailKeys": [
+            "jobPostingInfo",
+            "hiringOrganization",
+            "similarJobs",
+            "userAuthenticated"
+          ],
+          "infoKeys": [
+            "id",
+            "title",
+            "jobDescription",
+            "location",
+            "postedOn",
+            "startDate",
+            "timeType",
+            "jobReqId",
+            "jobPostingId",
+            "jobPostingSiteId",
+            "country",
+            "logoImage",
+            "canApply",
+            "posted",
+            "includeResumeParsing",
+            "jobRequisitionLocation",
+            "remoteType",
+            "externalUrl",
+            "questionnaireId"
+          ],
+          "pageSite": [
+            "siteId: \"Richemont\""
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "key": "theory-eu",
+    "batchId": "55f0e8e6-b285-4429-b240-bcf61a6edf15",
+    "sourceKey": "qualification-theory-eu-d6c5e48d-9e07-4a8c-a36c-a88b0d17c136",
+    "readerRevision": "local-sha256:da88aa81d8a3c3f7fda1685a74ea792e8415c1eff13947cff42af4c717c134ad",
+    "exactReplay": true,
+    "requests": 5,
+    "nativeBytes": 49631,
+    "native": {
+      "endpoint": "https://fastretailing.wd3.myworkdayjobs.com/wday/cxs/fastretailing/eu_Theory",
+      "listed": 18,
+      "total": 18,
+      "details": [
+        {
+          "externalPath": "/job/Theory-Regent-StreetLTEU/Sales-Associate_R00000004177097",
+          "constructedURL": "https://fastretailing.wd3.myworkdayjobs.com/eu_Theory/job/Theory-Regent-StreetLTEU/Sales-Associate_R00000004177097",
+          "externalUrl": "https://fastretailing.wd3.myworkdayjobs.com/EU_Theory/job/Theory-Regent-StreetLTEU/Sales-Associate_R00000004177097",
+          "detailKeys": [
+            "jobPostingInfo",
+            "hiringOrganization",
+            "similarJobs",
+            "userAuthenticated"
+          ],
+          "infoKeys": [
+            "id",
+            "title",
+            "jobDescription",
+            "location",
+            "postedOn",
+            "startDate",
+            "timeType",
+            "jobReqId",
+            "jobPostingId",
+            "jobPostingSiteId",
+            "country",
+            "canApply",
+            "posted",
+            "includeResumeParsing",
+            "jobRequisitionLocation",
+            "externalUrl",
+            "questionnaireId"
+          ],
+          "pageSite": [
+            "siteId: \"eu_Theory\""
+          ]
+        },
+        {
+          "externalPath": "/job/TW-PrintempsLTFR/Conseiller-De-Vente---CDD_R00000004177088",
+          "constructedURL": "https://fastretailing.wd3.myworkdayjobs.com/eu_Theory/job/TW-PrintempsLTFR/Conseiller-De-Vente---CDD_R00000004177088",
+          "externalUrl": "https://fastretailing.wd3.myworkdayjobs.com/EU_Theory/job/TW-PrintempsLTFR/Conseiller-De-Vente---CDD_R00000004177088",
+          "detailKeys": [
+            "jobPostingInfo",
+            "hiringOrganization",
+            "similarJobs",
+            "userAuthenticated"
+          ],
+          "infoKeys": [
+            "id",
+            "title",
+            "jobDescription",
+            "location",
+            "postedOn",
+            "startDate",
+            "timeType",
+            "jobReqId",
+            "jobPostingId",
+            "jobPostingSiteId",
+            "country",
+            "canApply",
+            "posted",
+            "includeResumeParsing",
+            "jobRequisitionLocation",
+            "externalUrl",
+            "questionnaireId"
+          ],
+          "pageSite": [
+            "siteId: \"eu_Theory\""
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "key": "urbn-hub",
+    "batchId": "2f07fa0c-1cd5-4942-8881-daba63523ee5",
+    "sourceKey": "qualification-urbn-hub-74f750d7-3f84-4807-9fd7-19956efe7c6d",
+    "readerRevision": "local-sha256:da88aa81d8a3c3f7fda1685a74ea792e8415c1eff13947cff42af4c717c134ad",
+    "exactReplay": true,
+    "requests": 4,
+    "nativeBytes": 238359,
+    "native": {
+      "listing": "https://hub-urbn.icims.com/jobs/search?ss=1&in_iframe=1&pr=0",
+      "listed": 50,
+      "detailOrigins": [
+        "https://stores-na-urbn.icims.com",
+        "https://menusandvenues-na-urbn.icims.com",
+        "https://stores-eu-urbn.icims.com",
+        "https://supplychain-na-urbn.icims.com",
+        "https://homeoffice-na-urbn.icims.com"
+      ],
+      "details": [
+        {
+          "id": "31956",
+          "url": "https://stores-na-urbn.icims.com/jobs/31956/fp-movement-stylist/job?hub=15&in_iframe=1",
+          "nodes": [
+            {
+              "url": "https://stores-na-urbn.icims.com/jobs/31956/fp-movement-stylist/job",
+              "employer": {
+                "@type": "Organization",
+                "name": "FP Movement",
+                "sameAs": "www.freepeople.com/fpmovement"
+              }
+            }
+          ]
+        },
+        {
+          "id": "31955",
+          "url": "https://stores-na-urbn.icims.com/jobs/31955/urban-outfitters-seasonal-key-holder/job?hub=15&in_iframe=1",
+          "nodes": [
+            {
+              "url": "https://stores-na-urbn.icims.com/jobs/31955/urban-outfitters-seasonal-key-holder/job",
+              "employer": {
+                "@type": "Organization",
+                "name": "Urban Outfitters",
+                "sameAs": "www.urbanoutfitters.com"
+              }
+            }
+          ]
+        },
+        {
+          "id": "31954",
+          "url": "https://stores-na-urbn.icims.com/jobs/31954/urban-outfitters-visual-merchandising-manager/job?hub=15&in_iframe=1",
+          "nodes": [
+            {
+              "url": "https://stores-na-urbn.icims.com/jobs/31954/urban-outfitters-visual-merchandising-manager/job",
+              "employer": {
+                "@type": "Organization",
+                "name": "Urban Outfitters",
+                "sameAs": "www.urbanoutfitters.com"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

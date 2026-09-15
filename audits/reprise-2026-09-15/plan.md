@@ -134,6 +134,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 [Sous-lot 4F1 validé localement](lot-4f1.md) : le plan version 3 rattache chaque échéance à son identité RAW et, lorsqu’elle existe, à sa capture native. Les 3 064 tests, 11 contre-épreuves, la CLI et le build passent. Sur la copie complète, 2 939 écritures prouvées sont appliquées et 477 plans rejoués sans réécriture ; 3 210 cas restent en examen, sans modification de contenu ni d’attestation. La réparation des groupes, les présentations et la qualification restante précèdent toujours la bascule.
 
+[Sous-lot 4F2 validé localement](lot-4f2.md) : vérification partagée des détails Workday, avec variation de casse limitée au segment du portail natif. Les captures Richemont/Theory et leur rejeu confirment cette relation. Le stock gagne 1 425 présentations reconstructibles, sans régression, et 159 échéances prouvées supplémentaires ; 3 051 échéances restent en examen. La suite de 3 087 tests et les six contre-épreuves passent.
+
 ## Lot 5. Certifier les sources et préparer le cycle complet
 
 **Objectif.** Rendre chaque source du catalogue exploitable ou explicitement exclue.
