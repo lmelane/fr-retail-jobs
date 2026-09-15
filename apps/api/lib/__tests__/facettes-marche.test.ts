@@ -298,4 +298,44 @@ describe('la table de correspondance suit le registre, elle ne le recopie pas', 
       }
     }
   });
+
+  it('« occupations » survit elle aussi au libellage si elle est masquée', async () => {
+    /*
+     * TROU DE COUVERTURE SIGNALÉ PAR L'AUDIT DÉFENSIF du 15/09/2026.
+     *
+     * `contracts`, `workTimes`, `programs` et `engagements` avaient chacune un
+     * témoin d'absence. Pas `occupations` — parce qu'elle est servie sur les
+     * DIX marchés mesurés (métier 77,7 % à 96,8 %), donc son chemin d'absence
+     * est aujourd'hui inatteignable.
+     *
+     * Ce n'est pas une raison de ne pas le garder. `occupations` traverse
+     * `projeterListe` par `...autresFacettes` et non par une destructuration
+     * explicite : rien ne garantit qu'un futur `?? []` n'y soit pas ajouté, et
+     * c'est EXACTEMENT le défaut que l'agent a trouvé à son second tour sur
+     * `contracts` — typecheck vert, réponse d'apparence correcte, lot inerte.
+     *
+     * Le lot 4 (émission de `?marche=`) rendra ce chemin réellement
+     * atteignable le jour où un marché passerait sous le seuil sur le métier.
+     *
+     * PRÉMISSE — le masquage est ici SIMULÉ, puisqu'aucun marché réel ne
+     * masque le métier. Sans cette assertion, le témoin ne prouverait rien.
+     */
+    const { projeterListe } = await import('../projection.js');
+
+    const { occupations: _retiree, ...sansMetier } = facettesCompletes();
+    expect('occupations' in sansMetier, 'la prémisse : la facette est bien retirée').toBe(false);
+
+    const projete = projeterListe({
+      jobs: [],
+      total: 0,
+      totalInDatabase: 0,
+      page: 1,
+      pageCount: 1,
+      facets: sansMetier,
+    } as unknown as Parameters<typeof projeterListe>[0]);
+
+    expect('occupations' in projete.facets, 'ni clé ajoutée').toBe(false);
+    expect(JSON.parse(JSON.stringify(projete.facets)), 'ni tableau vide après sérialisation')
+      .not.toHaveProperty('occupations');
+  });
 });
