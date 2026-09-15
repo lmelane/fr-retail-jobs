@@ -148,6 +148,45 @@ const PROGRAM_PATTERNS: ReadonlyArray<readonly [ProgramType, RegExp]> = [
  * qu'en valeur ENTIÈRE ou suivi de « stilling »/« ansettelse » : le mot
  * anglais « fast » (« Fast Fashion ») n'est pas un CDI.
  */
+/*
+ * ── CE QUE `TEMPORARY` CONTIENT RÉELLEMENT — mesuré, à arbitrer par le CEO ──
+ *
+ * 93 offres sur 83 431 actives (0,11 %), mesuré en production le 2026-09-15
+ * (script rejouable : `audits/mesures-d435-d436/lot4a-temporary-2026-09-15.mjs`).
+ * La valeur N'EST PAS SUPPRIMÉE ni fusionnée par ce lot : quoi faire d'une
+ * dimension à 93 offres est un arbitrage produit. Ce bloc lui donne les
+ * chiffres, pour qu'il se prenne sur une mesure et pas sur une impression.
+ *
+ * LE MOTIF CI-DESSOUS RECONNAÎT CINQ EXPRESSIONS ; UNE SEULE ALIMENTE LA
+ * COLONNE. Comptées séparément sur les 93 offres (`rawContract` + titre +
+ * description) :
+ *
+ *   intérim / intérimaire ......... 89 offres
+ *   « temporary » (mot nu) .........  2
+ *   zéro heure / zero-hour .........  0
+ *   agency worker ..................  0
+ *   Leiharbeit .....................  0
+ *   aucune des familles ............  4
+ *
+ * Donc `TEMPORARY` ne mélange PAS quatre statuts juridiques comme sa définition
+ * le laisse croire : c'est, à 96 %, de l'intérim français. Les branches
+ * britannique (`agency worker`, `zero hour`) et allemande (`Leiharbeit`) du
+ * motif n'ont jamais attrapé une seule offre — elles décrivent une intention,
+ * pas un gisement.
+ *
+ * LE CHIFFRE QUI REND L'ARBITRAGE NÉCESSAIRE EST AILLEURS. Le mot « intérim »
+ * apparaît dans 145 offres actives au total, dont seulement 89 portent
+ * `TEMPORARY`. Les 56 autres sont classées PERMANENT (27), FIXED_TERM (10), ou
+ * rien du tout (19) — parce que le motif PERMANENT/FIXED_TERM gagne dès qu'un
+ * « CDI » ou un « CDD » apparaît ailleurs dans la même description (une agence
+ * d'intérim qui propose « une mission pouvant déboucher sur un CDI »). La
+ * dimension ne dit donc pas « il y a peu d'intérim au catalogue », elle dit
+ * « nous en rattachons 61 % ». Deux lectures opposées du même chiffre.
+ *
+ * Répartition par pays : US 32, GB 18, FR 12, DE 7, inconnu 6, puis onze pays à
+ * 1-3 offres. Aucune des 93 n'est saisonnière ; 6 portent aussi un programme ;
+ * 34 ont un rythme connu.
+ */
 const TERM_PATTERNS: ReadonlyArray<readonly [EmploymentTerm, RegExp]> = [
   ['TEMPORARY', /\bINTERIM\b|INTERIMAIRE|ZERO HEURE|ZERO[ -]HOUR|\bAGENCY WORKER\b|LEIHARBEIT/],
   [
