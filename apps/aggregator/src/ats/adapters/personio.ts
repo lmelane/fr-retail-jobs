@@ -4,6 +4,7 @@ import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
 import { assertSourceRunning } from '../../lib/sourceBudget.js';
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
 import { fetchText } from '../../lib/http.js';
+import { personioExperienceYears } from '../../normalize/experience.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -51,6 +52,11 @@ export async function fetchPersonioJobs(config: Record<string, unknown>): Promis
       // Department is a business unit, not a geographic component.
       location: raw.office ? String(raw.office) : undefined,
       contract: raw.employmentType ? String(raw.employmentType) : undefined,
+      // `yearsOfExperience` est un INTERVALLE D'ANNÉES explicite (`2-5`, `gt-15`) :
+      // on en prend la borne basse, l'exigence minimale. À ne pas confondre avec
+      // `raw.seniority` (`experienced`, `entry-level`…), qui est un rang sans durée
+      // et n'est pas lu.
+      experienceYears: personioExperienceYears(raw.yearsOfExperience),
       ...(typeof raw.subcompany === 'string' && raw.subcompany.trim() ? { company: raw.subcompany.trim(),
         employerEvidence: { rawName: raw.subcompany, path: 'raw.subcompany', rule: 'EXPLICIT_PERSONIO_LEGAL_ENTITY' } } : {}),
       description: descriptionOf(raw), url: `https://${host}/job/${raw.id}`,

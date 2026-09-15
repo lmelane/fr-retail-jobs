@@ -1,4 +1,5 @@
 import { normalizeLanguage } from '../../normalize/language.js';
+import { lvmhExperienceYears } from '../../normalize/experience.js';
 import { fetchJson, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -68,6 +69,17 @@ type LvmhHit = {
   publicationTimestamp?: number;
   /** "EN", "FR", "ZH-HANS", "IT"… present on 5 490/5 490 hits (l2, 2026-09-06), never mapped before. */
   language?: string;
+  /**
+   * Le libellé D'AFFICHAGE de l'expérience, TRADUIT dans la langue de l'annonce
+   * (« Minimum 3 ans », « Mindestens 3 Jahre », « 3年以上 »… 25 valeurs mesurées
+   * en six langues). NON lu : voir `requiredExperienceFilter`.
+   */
+  requiredExperience?: string;
+  /**
+   * La forme CANONIQUE de l'expérience, indépendante de la langue — celle que
+   * le site utilise pour sa propre facette. 4 valeurs, 5 443 offres.
+   */
+  requiredExperienceFilter?: string;
 };
 
 /**
@@ -146,6 +158,8 @@ function toNormalized(hit: LvmhHit): NormalizedJob | null {
     workingTime: hit.fullTimePartTime,
     language: lvmhLanguage(hit.language),
     department: hit.function,
+    // Lu depuis la forme canonique, jamais depuis le libellé traduit.
+    experienceYears: lvmhExperienceYears(hit.requiredExperienceFilter),
     // The Maison, not the group: "Sephora", not "LVMH".
     company: hit.maison,
     group: hit.businessGroup,

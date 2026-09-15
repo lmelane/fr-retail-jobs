@@ -11,6 +11,25 @@ describe('Recruitee full public feed contract',()=>{
   expect(r.complete).toBe(true);expect(r.jobs[0].raw).toEqual(row);expect(r.enumeration?.rawCount).toBe(1);
   expect(fetch).toHaveBeenCalledWith('https://a.recruitee.com/api/offers/');
  });
+ /**
+  * `education_code` arrive sur 653 offres et n'était écrit NULLE PART : la
+  * colonne `educationLevel` valait 0/87 580 en production le 2026-09-15.
+  * Ce témoin prouve d'abord que le jeu d'essai PORTE le champ source, sinon il
+  * passerait au vert sans rien exercer.
+  */
+ it('lit le niveau d’études déclaré, et jamais le rang de séniorité',async()=>{
+  const row={id:1,title:'Conseiller',education_code:'bachelor_degree',experience_code:'mid_level'};
+  // PRÉMISSE : le champ source est bien présent dans le jeu d'essai.
+  expect(row.education_code).toBe('bachelor_degree');
+  fetch.mockResolvedValue({offers:[row]});const r=await fetchRecruiteeJobs({subdomain:'a'});
+  expect(r.jobs[0].educationLevel).toBe('RECRUITEE:bachelor_degree');
+  // `experience_code` est un RANG : il ne doit produire aucune durée.
+  expect(r.jobs[0].experienceYears).toBeUndefined();
+ });
+ it('n’invente pas un niveau d’études quand la source n’en déclare aucun',async()=>{
+  fetch.mockResolvedValue({offers:[{id:1,title:'Conseiller'}]});
+  expect((await fetchRecruiteeJobs({subdomain:'a'})).jobs[0].educationLevel).toBeUndefined();
+ });
  it('never interprets an error object as zero published jobs',async()=>{
   fetch.mockResolvedValue({error:'Unauthorized'});
   await expect(fetchRecruiteeJobs({subdomain:'a'})).rejects.toThrow('INVALID_FEED');

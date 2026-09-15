@@ -1,6 +1,7 @@
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { sourceDelay, assertSourceRunning } from '../../lib/sourceBudget.js';
+import { educationLevel } from '../../normalize/experience.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -23,6 +24,17 @@ type WorkableJob = {
   application_url?: string;
   description?: string;
   requirements?: string;
+  /**
+   * Le niveau d'études déclaré : « Bachelor's Degree », « Associate Degree »…
+   * 279 offres le portent, dont 210 vides, 45 `null` et 24 « Unspecified » —
+   * ces formes muettes sont écartées par `educationLevel()`.
+   */
+  education?: string;
+  /**
+   * « Associate », « Mid-Senior level », « Entry level » : l'échelle LinkedIn,
+   * donc un RANG, pas une durée. NON lu (voir normalize/experience.ts).
+   */
+  experience?: string;
 };
 
 type WorkableResponse = { jobs?: WorkableJob[] };
@@ -55,6 +67,7 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
         location: [job.city, job.state].filter(Boolean).join(', ') || undefined,
         country: job.country,
         contract: job.employment_type,
+        educationLevel: educationLevel('WORKABLE', job.education),
         description: description || undefined,
         url: job.url ?? job.application_url ?? `https://apply.workable.com/${account}/j/${job.shortcode}/`,
         postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,

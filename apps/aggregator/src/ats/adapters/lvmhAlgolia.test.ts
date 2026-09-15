@@ -40,3 +40,52 @@ describe('fetchLvmhJobs — l2 : date et langue du hit', () => {
     expect(jobs[0].company).toBe(HIT.maison);
   });
 });
+
+/**
+ * L'EXPÉRIENCE DÉCLARÉE — 5 443 offres LVMH la portaient, aucune ne l'écrivait.
+ *
+ * Le hit de référence capté le 2026-09-06 porte `requiredExperience: null` et
+ * AUCUN `requiredExperienceFilter` : tel quel, il ne peut rien prouver. Chaque
+ * cas ci-dessous fournit donc explicitement la valeur source mesurée, et
+ * l'affirme avant d'assertir le résultat.
+ */
+describe('fetchLvmhJobs — expérience déclarée', () => {
+  it('lit la forme CANONIQUE et la convertit en années', async () => {
+    const hit = { ...HIT, requiredExperienceFilter: 'Minimum 3 years' };
+    // PRÉMISSE : le jeu d'essai porte bien la clé canonique, sans quoi ce
+    // témoin passerait au vert en n'exerçant aucun mapping.
+    expect(hit.requiredExperienceFilter).toBe('Minimum 3 years');
+    mockJson.mockResolvedValueOnce({ hits: [hit], nbHits: 1 } as never);
+    const { jobs } = await fetchLvmhJobs({ country: null });
+    expect(jobs[0].experienceYears).toBe(3);
+  });
+
+  it('« Beginner » vaut 0 an exigé, pas une absence', async () => {
+    const hit = { ...HIT, requiredExperienceFilter: 'Beginner' };
+    mockJson.mockResolvedValueOnce({ hits: [hit], nbHits: 1 } as never);
+    const { jobs } = await fetchLvmhJobs({ country: null });
+    expect(jobs[0].experienceYears).toBe(0);
+    expect(jobs[0].experienceYears).not.toBeUndefined();
+  });
+
+  /**
+   * LE PIÈGE : `requiredExperience` est le libellé TRADUIT (25 valeurs, six
+   * langues). Le lire obligerait à maintenir une table de traduction. Ce témoin
+   * tombe si quelqu'un rebranche le mapping sur ce champ.
+   */
+  it('IGNORE le libellé traduit, même quand la forme canonique manque', async () => {
+    const hit = { ...HIT, requiredExperience: 'Mindestens 3 Jahre' };
+    // PRÉMISSE : c'est bien le champ d'affichage qui est renseigné, seul.
+    expect(hit.requiredExperience).toBe('Mindestens 3 Jahre');
+    expect(hit.requiredExperienceFilter).toBeUndefined();
+    mockJson.mockResolvedValueOnce({ hits: [hit], nbHits: 1 } as never);
+    const { jobs } = await fetchLvmhJobs({ country: null });
+    expect(jobs[0].experienceYears).toBeUndefined();
+  });
+
+  it('s’abstient quand la source ne déclare rien', async () => {
+    mockJson.mockResolvedValueOnce({ hits: [HIT], nbHits: 1 } as never);
+    const { jobs } = await fetchLvmhJobs({ country: null });
+    expect(jobs[0].experienceYears).toBeUndefined();
+  });
+});

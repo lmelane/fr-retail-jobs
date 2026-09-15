@@ -1,7 +1,19 @@
 import { fetchJson } from '../../lib/http.js';
+import { educationLevel } from '../../normalize/experience.js';
 import type { AdapterResult } from '../../types.js';
 
-type Offer = { id: number; title: string; careers_url?: string; location?: string; city?: string; country?: string; employment_type?: string; description?: string; created_at?: string };
+type Offer = { id: number; title: string; careers_url?: string; location?: string; city?: string; country?: string; employment_type?: string; description?: string; created_at?: string;
+  /**
+   * Le niveau d'études déclaré : `high_school`, `vocational`, `bachelor_degree`,
+   * `master_degree`… Conservé dans son libellé natif, préfixé du référentiel —
+   * `vocational` n'a pas d'équivalent français simple, et l'aplatir mentirait.
+   */
+  education_code?: string;
+  /**
+   * `entry_level`, `mid_level`, `manager`… un RANG de séniorité, PAS une durée.
+   * NON lu : rien n'autorise à le convertir en années (voir normalize/experience.ts).
+   */
+  experience_code?: string };
 type Response = { offers?: Offer[] };
 
 export async function fetchRecruiteeJobs(config: Record<string, unknown>): Promise<AdapterResult> {
@@ -23,6 +35,7 @@ export async function fetchRecruiteeJobs(config: Record<string, unknown>): Promi
     location: job.location ?? [job.city, job.country].filter(Boolean).join(', '),
     country: job.country,
     contract: job.employment_type,
+    educationLevel: educationLevel('RECRUITEE', job.education_code),
     description: job.description,
     url: job.careers_url ?? `https://${subdomain}.recruitee.com/o/${job.id}`,
     postedAt: job.created_at ? new Date(job.created_at) : undefined,
