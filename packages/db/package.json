@@ -10,7 +10,9 @@
     "./presentation": "./presentation.ts",
     "./marches": "./marches.ts",
     "./availability": "./availability.ts",
-    "./publications": "./publications.ts"
+    "./publications": "./publications.ts",
+    "./money": "./money.ts",
+    "./source-facts": "./source-facts.ts"
   },
   "scripts": {
     "db:generate": "prisma generate",

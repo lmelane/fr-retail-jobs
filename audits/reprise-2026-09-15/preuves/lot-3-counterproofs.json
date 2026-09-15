@@ -1,0 +1,54 @@
+{
+  "mutations": [
+    {
+      "name": "salary-rounding",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "2e855bbe2cde89c4871763d644032d4c2aad753da780cccfac538fb1740c0517"
+    },
+    {
+      "name": "zero-latitude",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "3df0da09c16ad8e95975643a498e5d30f612b7c2492aeb027bb29f0577d45a12"
+    },
+    {
+      "name": "false-remote",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "6c93cba68acb289dd3fe67b0228a5c9b96c9ee22e9802cb9504b713aae4c87d1"
+    },
+    {
+      "name": "stale-optional-values",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f97c24a6dee3906179c44007ab23905596be86dbde5bd6f882228d114027a07d"
+    },
+    {
+      "name": "changed-raw",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "a1f07fb4725105b1d38badc7faa90c83adf56d9eef149632d19cf836965a37ac"
+    },
+    {
+      "name": "public-owner-salary",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "d35e5f82b568cddd132d7bbbb455806dc4f26de76a0dd55b80027a623259047e"
+    },
+    {
+      "name": "malformed-public-cache",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "c573140791761db60601948c9e21e7c8f410a660d58e0601f351d2788b6277b2"
+    },
+    {
+      "name": "private-cache-extras",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "c573140791761db60601948c9e21e7c8f410a660d58e0601f351d2788b6277b2"
+    }
+  ],
+  "restoredAggregatorTests": "passed",
+  "restoredApiTests": "passed"
+}

@@ -385,6 +385,8 @@ model JobSource {
   /** Deadline declared by this publication, with its original field and reader version. */
   expiresAt   DateTime?
   expiryEvidence Json?
+  /** Versioned, replaceable facts read from this publication's current RAW. */
+  sourceFacts Json?
   raw         Json?
 
   @@unique([sourceKey, externalId])
@@ -574,8 +576,8 @@ model Job {
 
   // Compensation, when the source publishes it (Pinpoint, WTTJ, TalentView,
   // Teamtailor). Stored as a band because that is how postings state it.
-  salaryMin      Int?
-  salaryMax      Int?
+  salaryMin      Decimal? @db.Decimal(24, 6)
+  salaryMax      Decimal? @db.Decimal(24, 6)
   salaryCurrency String?
   salaryPeriod   String?
 

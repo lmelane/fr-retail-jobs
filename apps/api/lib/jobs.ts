@@ -1,5 +1,7 @@
+import { publicAmount, type AmountInput } from '@catwalks/db/money';
 import { availableSourceWhere, publicJobWhere, publicJobSql } from '@catwalks/db/availability';
 import { selectApplySource, type ApplySource } from '@catwalks/db/publications';
+import { publicSourceFacts, scalarSourceFacts, type PublicSourceFacts } from '@catwalks/db/source-facts';
 import { resolveLieu } from './lieu';
 import { getSectorPresentation, sectorWhere } from './sectors';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
@@ -39,7 +41,7 @@ function countryCondition(code: string | undefined) {
 /** Sector keys are data, not an application enum. Unknown keys stay bound
  * parameters and match zero; dropping them would silently widen the search. */
 const publicSources = () => ({
-  select: { sourceKey: true, externalId: true, sourceTier: true, isActive: true, url: true, expiresAt: true } as const,
+  select: { sourceKey: true, externalId: true, sourceTier: true, isActive: true, url: true, expiresAt: true, sourceFacts: true } as const,
   where: availableSourceWhere(),
 });
 
@@ -294,9 +296,8 @@ export type JobRow = {
   /** Employer-side apply URL of the highest-ranked source. */
   applyUrl: string;
 
-  // Everything else the adapters normalize. Coverage varies by source — an
-  // absent field means "this source does not publish it", never "not fetched" —
-  // so the detail view renders only what is present.
+  /** Complete optional facts of the selected available publication, with explicit coverage status. */
+  sourceFacts?: PublicSourceFacts | null;
   postalCode: string | null;
   department: string | null;
   /** Métier et séniorité (taxonomie D38) : ce qui distingue deux offres d'une même Maison dans la liste. */
@@ -583,16 +584,21 @@ function toRow(row: {
   postedAt: Date | null; latitude: number | null; longitude: number | null;
   withdrawnAt?: Date | null;
   opportunityType?: 'JOB_OPENING' | 'OPEN_APPLICATION' | null;
-  sources: ApplySource[]; description: string | null; postalCode: string | null;
+  sources: Array<ApplySource & { sourceFacts?: unknown }>; description: string | null; postalCode: string | null;
   department: string | null; workTime: string | null; workplaceType: string | null;
-  experienceYears: number | null; educationLevel: string | null; salaryMin: number | null;
-  salaryMax: number | null; salaryCurrency: string | null; salaryPeriod: string | null;
+  experienceYears: number | null; educationLevel: string | null; salaryMin: AmountInput | null;
+  salaryMax: AmountInput | null; salaryCurrency: string | null; salaryPeriod: string | null;
   validThrough: Date | null; countryCode: string | null; countryIntegrity: string | null; language: string | null; firstSeenAt: Date;
   jobFunction: string | null; seniority: string | null;
   occupationCode?: string | null; occupationStatus?: string;
 }, taxonomy: OptionalOccupationPresentation): JobRow {
   const publication = selectApplySource(row.sources, row);
   const applyUrl = publication?.url ?? row.url;
+  const sourceFacts = publicSourceFacts(publication?.sourceFacts);
+  const scalars = scalarSourceFacts(sourceFacts);
+  const min = publicAmount(scalars.salaryMin), max = publicAmount(scalars.salaryMax);
+  const completeSalary = !!scalars.salaryCurrency && !!scalars.salaryPeriod &&
+    (scalars.salaryMin === null || min !== null) && (scalars.salaryMax === null || max !== null);
   return {
     id: row.id,
     title: row.title,
@@ -611,13 +617,14 @@ function toRow(row: {
     postedAt: row.postedAt,
     withdrawnAt: row.withdrawnAt ?? null,
     opportunityType: row.opportunityType ?? null,
-    latitude: row.latitude,
-    longitude: row.longitude,
+    latitude: scalars.latitude,
+    longitude: scalars.longitude,
     sourceCount: row.sources.length,
     sources: row.sources.map((source) => source.sourceKey),
     description: row.description,
     applyUrl,
-    postalCode: row.postalCode,
+    sourceFacts,
+    postalCode: scalars.postalCode,
     department: row.department,
     jobFunction: row.jobFunction,
     seniorityLabel: row.seniority?taxonomy.seniorityLabel(row.seniority):null,
@@ -627,13 +634,13 @@ function toRow(row: {
     occupationStatus: row.occupationStatus,
     seniority: row.seniority,
     workTime: row.workTime,
-    workplaceType: row.workplaceType,
+    workplaceType: scalars.workplaceType,
     experienceYears: row.experienceYears,
-    educationLevel: row.educationLevel,
-    salaryMin: row.salaryMin,
-    salaryMax: row.salaryMax,
-    salaryCurrency: row.salaryCurrency,
-    salaryPeriod: row.salaryPeriod,
+    educationLevel: scalars.educationLevel,
+    salaryMin: completeSalary ? min : null,
+    salaryMax: completeSalary ? max : null,
+    salaryCurrency: completeSalary ? scalars.salaryCurrency : null,
+    salaryPeriod: completeSalary ? scalars.salaryPeriod : null,
     validThrough: publication?.expiresAt ?? null,
     countryCode: row.countryCode,
     countryIntegrity: row.countryIntegrity,

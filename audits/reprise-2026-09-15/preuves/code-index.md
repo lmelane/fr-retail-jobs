@@ -1,6 +1,6 @@
 # Index des preuves par code
 
-État des fichiers locaux inspectés ; SHA-256 pour retrouver la version exacte. Les extraits servent de points d’entrée. Lire la fonction complète pour ses gardes et appelants. Les reproductions exécutées sont dans les JSON voisins.
+Constats initiaux du 15 septembre, avant correction. Les SHA-256 identifient les versions inspectées ; les extraits sont historiques et ne décrivent pas le code courant. Les comptes rendus de lots et la documentation d’architecture décrivent les remplacements. Les liens vers des fichiers conservés ouvrent leur version actuelle.
 
 ## Refresh : conditions de périmètre
 
@@ -151,7 +151,7 @@
 
 ## Lecture du workplace
 
-[workplace.ts:91](/Users/lmelane/Downloads/catwalks-job-aggregator/apps/aggregator/src/normalize/workplace.ts:91)
+Ancien lecteur retiré. [Lecteur actuel par source](/Users/lmelane/Downloads/catwalks-job-aggregator/apps/aggregator/src/facts/workplace.ts).
 
 `sha256 94d66ed73dae0d589481b09554faab60231c26c12ab6ce3ebc392a8245720bb4`
 

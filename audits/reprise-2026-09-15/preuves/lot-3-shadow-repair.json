@@ -1,0 +1,62 @@
+{
+  "inputRepresentations": 85327,
+  "replayed": 257,
+  "kinds": {
+    "smartrecruiters-whitelabel": 8,
+    "teamtailor": 20,
+    "jobylon": 3,
+    "workday": 16,
+    "successfactors": 5,
+    "flatchr": 7,
+    "icims": 16,
+    "personio": 4,
+    "digitalrecruiters": 3,
+    "greenhouse": 3,
+    "generic-listing": 10,
+    "recruitee": 20,
+    "lever": 20,
+    "wttj": 15,
+    "workable": 2,
+    "talentview": 8,
+    "talentsoft": 1,
+    "bashtalents": 1,
+    "geodirectory": 1,
+    "jobaffinity-wordpress": 1,
+    "oraclehcm": 7,
+    "taleo": 1,
+    "talentfunnel": 7,
+    "magnet": 14,
+    "eightfold": 8,
+    "volcanic": 1,
+    "phenom": 5,
+    "talentrecruiter": 2,
+    "easycruit": 1,
+    "avature": 2,
+    "wordpress": 1,
+    "lvmh_algolia": 10,
+    "radancy": 2,
+    "eqwa": 1,
+    "ashby": 2,
+    "rituals": 1,
+    "typesense": 1,
+    "harri": 1,
+    "swatchgroup": 2,
+    "jibe": 2,
+    "wttj-sector": 20,
+    "altamira": 2
+  },
+  "applied": 257,
+  "repeated": 257,
+  "mismatches": 0,
+  "plans": [
+    {
+      "hash": "5a21d6b3b7f745ea5a3187d2a480600619b0c6bec916fb3ed3b18a62e6076193",
+      "entries": 250
+    },
+    {
+      "hash": "4844e1f05cd3dded2c2118a8f4749e1e5e8d01f444358ab9987430b0e762dfdb",
+      "entries": 7
+    }
+  ],
+  "journaled": 257
+}

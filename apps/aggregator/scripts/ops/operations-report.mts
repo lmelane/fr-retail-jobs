@@ -21,6 +21,7 @@ import { decideMode, type SourceEvidence } from '../../src/registry/operationalM
 import { accessDecision, type RobotsObserved } from '../../src/lib/accessDecision.js';
 import { publicJobSql } from '@catwalks/db/availability';
 import { objectStoreConfigured } from '../../src/retention/objectStore.js';
+import { FACT_READER_VERSION } from '@catwalks/db/source-facts';
 
 const arg = (n: string) => process.argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
 const outJson = arg('out');
@@ -65,6 +66,15 @@ const report = await p.$transaction(async (tx) => {
     SELECT js."sourceKey", COUNT(*)::int n FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
     WHERE js."isActive" AND (js."expiresAt" IS NULL OR js."expiresAt" > ${at}) AND ${publicJobSql(Prisma.raw('j'), at)} GROUP BY 1`);
   const pubOf = new Map(published.map((r) => [r.sourceKey, Number(r.n)]));
+  const facts = await tx.$queryRaw<Row[]>(Prisma.sql`
+    SELECT js."sourceKey", COALESCE(js."sourceFacts"->>'version', 'NOT_COMPUTED') version,
+      COALESCE(js."sourceFacts"->'salary'->>'status', 'NOT_COMPUTED') salary,
+      COALESCE(js."sourceFacts"->'education'->>'status', 'NOT_COMPUTED') education,
+      COALESCE(js."sourceFacts"->'workplace'->>'status', 'NOT_COMPUTED') workplace,
+      COALESCE(js."sourceFacts"->'locations'->>'status', 'NOT_COMPUTED') locations, COUNT(*)::int n
+    FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
+    WHERE js."isActive" AND (js."expiresAt" IS NULL OR js."expiresAt" > ${at}) AND ${publicJobSql(Prisma.raw('j'), at)}
+    GROUP BY 1,2,3,4,5,6`);
 
   const events = await tx.$queryRawUnsafe<Row[]>(
     `SELECT "sourceKey", event, COUNT(*)::int n FROM "PipelineEvent"
@@ -107,6 +117,7 @@ const report = await p.$transaction(async (tx) => {
       volumeAvant, volumeActuel,
       variation: volumeAvant != null && volumeActuel != null ? volumeActuel - volumeAvant : null,
       publiees: pubOf.get(s.key) ?? 0,
+      faits: facts.filter(row => row.sourceKey === s.key),
       limitations429: evOf(s.key, 'http.rate_limited'),
       retenues: evOf(s.key, 'job.publication_held'),
       echecsEcriture: evOf(s.key, 'job.write_failed'),
@@ -117,6 +128,8 @@ const report = await p.$transaction(async (tx) => {
   return {
     at: new Date().toISOString(), fenetreHeures: sinceHours,
     sources: lignes.length,
+    faits: { version: FACT_READER_VERSION,
+      representationsSansVersionCourante: facts.filter(row => row.version !== FACT_READER_VERSION).reduce((n, row) => n + Number(row.n), 0) },
     parMode: lignes.reduce<Record<string, number>>((m, l) => { m[l.mode] = (m[l.mode] ?? 0) + 1; return m; }, {}),
     silencieusesPlusDe7Jours: lignes.filter((l) => (l.heuresDepuisDernierRun ?? 1e9) > 168).length,
     sansAucunRun: lignes.filter((l) => l.heuresDepuisDernierRun === null).length,

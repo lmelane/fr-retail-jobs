@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { chunk } from '../lib/chunk.js';
-import { evidenceHash } from './refreshManifest.js';
+import { evidenceHash } from '../lib/evidenceHash.js';
 import { identifiersComparable, planRefresh, representationState, sourceEligibility,
   type EnumerationEvidence, type Representation, type RepresentationState, type SourceRunFacts } from './refreshPlan.js';
 

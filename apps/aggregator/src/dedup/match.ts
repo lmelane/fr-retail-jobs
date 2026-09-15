@@ -4,6 +4,7 @@ import { resolveCompany } from '../normalize/company.js';
 import { normalizeCountry } from '../normalize/country.js';
 import type { NormalizedJob } from '../types.js';
 import { hasRequisitionConflict } from './postingIdentity.js';
+import type { SourceFacts } from '@catwalks/db/source-facts';
 
 /**
  * Deduplication.
@@ -25,6 +26,7 @@ import type { AtsType } from '@prisma/client';
 import { SOURCE_PRIORITY, type SourceTier } from '@catwalks/db/publications';
 
 export type CandidateJob = NormalizedJob & {
+  sourceFacts?: SourceFacts;
   company: string;
   /** Exact adapter label before any spelling/identity heuristic. */
   rawEmployerName?: string;

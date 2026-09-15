@@ -17,11 +17,10 @@ export type AtsDetection = {
 };
 
 /**
- * The canonical job shape every adapter produces.
+ * Adapter output, derived from the immutable native response.
  *
- * One schema for supported vendors, so the pipeline downstream — dedup, sector
- * classification, France filtering, the front end — never needs to know which
- * ATS a row came from.
+ * Shared transport fields identify the posting. Source-specific fact readers
+ * interpret RAW with explicit paths and retain native vocabularies.
  *
  * Fields are optional because coverage genuinely varies: Pinpoint gives salary
  * bands, Phenom and Magnet give coordinates, WTTJ and TalentView give remote
@@ -69,8 +68,8 @@ export type NormalizedJob = {
   educationLevel?: string;
 
   // --- Compensation -------------------------------------------------------
-  salaryMin?: number;
-  salaryMax?: number;
+  salaryMin?: number | string;
+  salaryMax?: number | string;
   /** ISO-4217, e.g. "EUR". */
   salaryCurrency?: string;
   /** YEAR | MONTH | HOUR, as the source states it. */

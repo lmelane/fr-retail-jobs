@@ -1,3 +1,4 @@
+import { evidenceHash } from '../lib/evidenceHash.js';
 import { log } from '../observability/logger.js';
 import type { Prisma, PrismaClient } from '@prisma/client';
 import { selectApplySource } from '@catwalks/db/publications';
@@ -8,7 +9,7 @@ import { deactivateJob, reactivateJob } from './lifecycle.js';
 import { readAbsencePlan } from './refreshEvidence.js';
 import { availableSourceWhere, sourceIsAvailable } from '@catwalks/db/availability';
 import { randomUUID } from 'node:crypto';
-import { evidenceHash, freezeManifest, refreshSnapshot, verifyManifest, REFRESH_LIMITS, type ManifestEntry, type RefreshManifest } from './refreshManifest.js';
+import { freezeManifest, refreshSnapshot, verifyManifest, REFRESH_LIMITS, type ManifestEntry, type RefreshManifest } from './refreshManifest.js';
 
 /** A fresh, complete enumeration may prove absence; silence alone never does. */
 const STALE_HOURS = Number(process.env.REFRESH_STALE_HOURS ?? REFRESH_LIMITS.staleHours);

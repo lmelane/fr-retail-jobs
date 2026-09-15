@@ -47,41 +47,7 @@ function detailHeaders(slug: string) {
 type CampaignDetail = {
   description?: string;
   profile?: string;
-  salary_min?: number;
-  salary_max?: number;
-  // TalentView sends NUMERIC ids here, not text — "1" is EUR for the currency,
-  // and remote_level is a code too. The DB columns are String, so an un-mapped
-  // number crashed every write ("Expected String or Null, provided Int").
-  salary_currency?: number | string;
-  remote_level?: number | string;
-  experience_level?: number | string;
 };
-
-/** TalentView currency IDs → ISO codes; unknown ids yield no currency. */
-const TALENTVIEW_CURRENCIES: Record<string, string> = {
-  '1': 'EUR',
-};
-
-/** TalentView remote-level IDs → a human label; unknown ids yield nothing. */
-const TALENTVIEW_REMOTE: Record<string, string> = {
-  '1': 'Sur site',
-  '2': 'Télétravail partiel',
-  '3': 'Télétravail',
-};
-
-function talentviewCurrency(value: number | string | undefined): string | undefined {
-  if (value === undefined || value === null) return undefined;
-  // Already an ISO-ish code (letters): keep it. A numeric id: map it.
-  if (typeof value === 'string' && /[a-z]/i.test(value)) return value;
-  return TALENTVIEW_CURRENCIES[String(value)];
-}
-
-function talentviewRemote(value: number | string | undefined): string | undefined {
-  if (value === undefined || value === null) return undefined;
-  if (typeof value === 'string' && /[a-z]/i.test(value)) return value;
-  return TALENTVIEW_REMOTE[String(value)];
-}
-
 
 type Website = { id?: number; locale?: string; website_type?: string };
 
@@ -213,15 +179,10 @@ export async function fetchTalentViewJobs(
           const description = [htmlToPlainText(detail.description), htmlToPlainText(detail.profile)]
             .filter(Boolean)
             .join('\n\n');
-          // The detail payload also carries salary, remote and experience —
-          // fields the listing omits entirely.
+          // Source-specific facts are read from the retained detail at the shared write boundary.
           return {
             ...job,
             ...(description ? { description } : {}),
-            salaryMin: detail.salary_min,
-            salaryMax: detail.salary_max,
-            salaryCurrency: talentviewCurrency(detail.salary_currency),
-            remote: talentviewRemote(detail.remote_level),
             raw: { ...(job.raw as object), detail },
           };
         } catch {

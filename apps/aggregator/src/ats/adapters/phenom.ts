@@ -237,15 +237,6 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
  * Coordinates Phenom already provides, so these rows skip geocoding entirely.
  * Returns null when the payload has none.
  */
-export function phenomCoordinates(raw: unknown): { latitude: number; longitude: number } | null {
-  const data = raw as PhenomJobData | undefined;
-  const latitude = Number(data?.latitude);
-  const longitude = Number(data?.longitude);
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
-  if (latitude === 0 && longitude === 0) return null;
-  return { latitude, longitude };
-}
-
 /* ────────────────────────────────────────────────────────────────────────────────────────────────────────
  * PHENOM N'EST PAS UNE API UNIFORME — le second dialecte, CareerConnect.
  *

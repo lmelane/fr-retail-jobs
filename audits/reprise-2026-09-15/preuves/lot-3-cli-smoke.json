@@ -1,0 +1,11 @@
+{
+  "previewEntries": 1,
+  "applied": 1,
+  "repeated": 1,
+  "remaining": 0,
+  "planMode": "0o600",
+  "operationsReportFactsVersion": "source-facts-20260915-v1",
+  "schemaDrift": "No difference detected.",
+  "publicValidation": "PASS",
+  "typecheck": "PASS"
+}

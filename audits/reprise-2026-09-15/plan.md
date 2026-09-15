@@ -90,9 +90,11 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 ## Lot 3. Corriger les quatre dimensions RAW et la réattestation
 
+**État : validé localement — [livraison, mesures et audit défensif](lot-3.md). Rejeu des 85 327 représentations et répétition de reprise sur 257 cas réels. Stock de production non modifié ; les lecteurs non qualifiés restent explicitement signalés.**
+
 **Objectif.** Récupérer les valeurs déclarées sans inventer celles absentes.
 
-- **Fichiers :** lecteurs par adaptateur, `normalize/workplace.ts`, `trust/resolve.ts`, `dedup/upsert.ts`, salary/education/geo, Prisma, projection API.
+- **Fichiers :** `src/facts/`, `packages/db/source-facts.ts`, `trust/resolve.ts`, `dedup/upsert.ts`, Prisma, projection API et CLI de reprise.
 - **Dépendances :** lots 1 et 2 ; traiter la migration salaire avant d’activer les nouveaux extracteurs monétaires.
 - **Données :** RAW qualifié par ce rapport ; listes des valeurs natives et conflits ; valeurs actuelles et auteur de chaque représentation.
 - **Actions :** remplacer Int salarial par Decimal ou minor units avec devise explicitement associée ; enregistrer période/brut-net/source ; lire les diplômes natifs ; résoudre négations et conflits des modes de travail ; préserver tous les lieux ; compléter les mises à jour de réattestation.

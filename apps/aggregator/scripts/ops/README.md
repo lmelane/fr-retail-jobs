@@ -122,3 +122,7 @@ the measured crash exits **137** and must be read directly, or captured with `PI
 Le [contrat maintenu](../../../../docs/architecture/native-capture.md) décrit les tables, les limites, la configuration privée et les commandes. [`raw-capture.mts`](raw-capture.mts) lit les réponses natives, les sorties par offre et les observations historiques, ou rejoue une extraction hors ligne. [`retention.mts`](retention.mts) prépare et applique un plan borné dont l’empreinte doit être fournie explicitement.
 
 Le mécanisme unique déplace les corps vers des blocs S3 vérifiés et conserve les métadonnées en base. Les anciens `retention-observations.mts`, `observationArchive.ts` et `bloc0-snapshot.mts` ont été supprimés. Une migration refuse de supprimer les anciennes tables si elles contiennent encore des références d’archive. Aucun cron n’est activé par ces commandes.
+
+## Reprise des faits par publication
+
+[`source-facts.mts`](source-facts.mts) prépare un plan borné par source, avec différences et empreintes, puis l’applique sous contrôle de ces preuves. La [documentation des faits](../../../../docs/architecture/source-facts.md) décrit les états, les limites et la pagination. L’ancien `scripts/trust/backfill-workplace.mts` a été supprimé : il choisissait la première interprétation et ne corrigeait pas les valeurs déjà remplies.

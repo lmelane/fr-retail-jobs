@@ -162,24 +162,9 @@ describe('D-436 — l’abstention est le cas NORMAL', () => {
  *
  * Le 27/07/2026, un « moteur unifié » a été livré, documenté comme le chemin
  * de production, avec ZÉRO appelant. Ce bloc prouve que `readScheduleDescription`
- * est réellement atteint par `resolveCanonicalDimensions`, le même point que celui où
- * `workplaceType` est calculé.
+ * est réellement atteint par `resolveCanonicalDimensions`.
  */
 describe('D-436 — branchement dans la chaîne réelle (resolveCanonicalDimensions)', () => {
-  it('PRÉMISSE : la chaîne calcule bien déjà workplaceType au même endroit', () => {
-    const resolu = resolveCanonicalDimensions({
-      sourceKey: 'temoin-d436',
-      title: 'Client Advisor (Remote)',
-      contract: undefined,
-      workingTime: undefined,
-      description: undefined,
-      raw: undefined,
-    });
-    // Si ce maillon ne calculait plus workplaceType, le motif copié serait
-    // caduc et le branchement du rythme ne prouverait rien.
-    expect(resolu.workplaceType).toBe('REMOTE');
-  });
-
   it('resolveCanonicalDimensions expose le rythme lu dans la description', () => {
     const resolu = resolveCanonicalDimensions({
       sourceKey: 'temoin-d436',

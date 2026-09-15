@@ -94,14 +94,16 @@ describe('transactional identity and source authority', () => {
   });
 
   it('a known jobboard cannot overwrite employer content, geography or salary', async () => {
-    const first = await upsertDeduplicated(prisma, candidate());
-    const board = candidate({ sourceKey: 'board', externalId: 'b1', sourceTier: 'SPECIALIST_JOBBOARD', url: 'https://board.example/1' });
+    const first = await upsertDeduplicated(prisma, candidate({ atsType: 'LEVER', raw: { revision: 1, salaryRange: { min: 50000, currency: 'EUR', interval: 'per-year-salary' } } }));
+    const board = candidate({ sourceKey: 'board', externalId: 'b1', sourceTier: 'SPECIALIST_JOBBOARD', url: 'https://board.example/1', atsType: 'LEVER' });
     await upsertDeduplicated(prisma, board);
-    await upsertDeduplicated(prisma, { ...board, title: 'Assistant Store Manager', salaryMin: 25000, country: 'US', raw: { revision: 2 } });
+    const boardRaw = { revision: 2, salaryRange: { min: 25000, currency: 'USD', interval: 'per-year-salary' } };
+    await upsertDeduplicated(prisma, { ...board, title: 'Assistant Store Manager', salaryMin: 25000, country: 'US', raw: boardRaw });
     const job = await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } });
-    expect(job).toMatchObject({ title: 'Store Manager', countryCode: 'FR', salaryMin: 50000, canonicalSourceKey: 'employer', raw: { revision: 1 } });
+    expect(job).toMatchObject({ title: 'Store Manager', countryCode: 'FR', canonicalSourceKey: 'employer', raw: { revision: 1 } });
+    expect(job.salaryMin?.toString()).toBe('50000');
     const source = await prisma.jobSource.findUniqueOrThrow({ where: { sourceKey_externalId: { sourceKey: 'board', externalId: 'b1' } } });
-    expect(source.raw).toEqual({ revision: 2 });
+    expect(source.raw).toEqual(boardRaw);
   });
 
   it('keeps distinct payload revisions and accepts a shorter employer correction', async () => {
@@ -118,7 +120,7 @@ describe('transactional identity and source authority', () => {
   });
 
   it('keeps observations and rolls back company creation when the job write fails', async () => {
-    await expect(upsertDeduplicated(prisma, candidate({ salaryMin: 1e15 }))).rejects.toThrow();
+    await expect(upsertDeduplicated(prisma, candidate({ experienceYears: 1e15 }))).rejects.toThrow();
     expect(await prisma.job.count()).toBe(0);
     expect(await prisma.company.count()).toBe(0);
     expect(await prisma.sourceObservation.count()).toBe(1);

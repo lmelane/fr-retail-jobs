@@ -16,10 +16,9 @@ import { resolveCompany } from '../normalize/company.js';
 import { domainFromEmployerSources } from '../normalize/companyDomain.js';
 import { resolveCanonicalDimensions, type TrustContext } from '../trust/resolve.js';
 import { loadTrust } from '../trust/persist.js';
-import { extractSalaryBand } from '../normalize/salary.js';
 import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
-import { coerceAmount, coerceCoordinate, coerceText, cleanTitle, cleanPlace, plausiblePostedAt, canonicalPeriod, boundedSalary, briefError } from '../lib/normalize.js';
+import { cleanTitle, cleanPlace, plausiblePostedAt, briefError } from '../lib/normalize.js';
 import { normalizeSourceConfig } from '../connectors/sourceConfig.js';
 import { isRotatingSource, nextPageFor, advanceCursor } from './sourceCursor.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
@@ -153,24 +152,11 @@ export function toCandidate(
     trust,
   );
 
-  // Coerce the structured salary at the boundary: a schema.org feed (Teamtailor)
-  // hands minValue/maxValue over as strings ("75000"), and written through to an
-  // Int? column that crashed job.create and lost the offer. A non-number becomes
-  // undefined, which then lets the text extraction below recover a band.
-  const salaryMin = coerceAmount(job.salaryMin);
-  const salaryMax = coerceAmount(job.salaryMax);
-
-  // Salary from prose when the structured field is empty: Galeries Lafayette
-  // writes the band in the text, and a fiche without it reads half-finished.
-  const salaryFromText =
-    salaryMin === undefined && salaryMax === undefined ? extractSalaryBand(description) : null;
-
   return {
     ...job,
     // Titre nettoyé (entités, espaces parasites : 2 400 offres, audit A1) ; lieu et
     // ville sans balise (« /a> » sur 71 offres L'Oréal) ; date de publication
-    // plausible (5 offres « publiées en 2028 ») ; salaire borné pour les devises
-    // majeures (58 M€/an chez Michael Page).
+    // plausible. Source facts are read once at the shared write boundary.
     rawTitle: job.title,
     rawContract: job.contract,
     rawWorkingTime: job.workingTime,
@@ -180,22 +166,10 @@ export function toCandidate(
     city: cleanPlace(job.city),
     postedAt: plausiblePostedAt(job.postedAt),
     description,
-    ...boundedSalary(salaryMin, salaryMax, job.salaryCurrency),
-    // String columns, coerced at the boundary: TalentView sends NUMERIC ids for
-    // the currency ("1") and remote level, which crashed every write ("Expected
-    // String, provided Int"). Coercing here means no adapter can ever leak the
-    // wrong type into these columns again — the adapter's own mapping is the
-    // readable value, this is the guardrail.
-    salaryCurrency: coerceText(job.salaryCurrency)?.toUpperCase(),
-    salaryPeriod: canonicalPeriod(job.salaryPeriod),
-    workplaceType: employment.workplaceType,
     // Le rythme suit exactement le même chemin que le mode de travail : résolu
     // dans `resolveCanonicalDimensions`, porté ici, écrit par `upsert`.
     workSchedule: employment.workSchedule,
     rawSchedule: employment.rawSchedule,
-    // Float columns: Rituals shipped "52.37" as a string and lost 577 offers.
-    latitude: coerceCoordinate(job.latitude, 90),
-    longitude: coerceCoordinate(job.longitude, 180),
     // Chaque dimension reste VIDE quand la source ne la dit pas : l'absence
     // d'information est un vide, pas une valeur. (L'ancien « UNKNOWN » stocké
     // était truthy, et l'écran affichait « Contrat : UNKNOWN » sur chaque offre
@@ -205,14 +179,6 @@ export function toCandidate(
     programType: employment.programType,
     engagementType: employment.engagementType,
     isSeasonal: employment.isSeasonal,
-    ...(salaryFromText
-      ? {
-          salaryMin: salaryFromText.min,
-          salaryMax: salaryFromText.max,
-          salaryCurrency: 'EUR',
-          salaryPeriod: salaryFromText.period,
-        }
-      : {}),
     // The resolved display name, not the raw source string: group ATS feeds
     // label every posting "<lead brand> +N", and that counter would otherwise
     // become the stored company name a candidate reads. resolveCompany strips it

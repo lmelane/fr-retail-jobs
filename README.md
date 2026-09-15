@@ -6,6 +6,7 @@ Collecte des offres du luxe, de la mode, de la beauté et du retail. Les publica
 
 - [Architecture et contrats produit](docs/architecture/production-foundations.md) : deux origines d’offres, pays/langue, recherche et parcours de validation des sources.
 - [État vérifié et exploitation](apps/aggregator/README.md).
+- [Faits issus du RAW](docs/architecture/source-facts.md) : rémunérations exactes, diplômes natifs, modes de travail et localisations.
 - [Lot 1 validé localement](audits/reprise-2026-09-15/lot-1.md) : disponibilité par publication et maintenance bornée.
 - [Plan par lots et critères de validation](audits/reprise-2026-09-15/plan.md).
 - [Audit du 15 septembre 2026](audits/reprise-2026-09-15/rapport.md) : mesures, défauts et preuves datées.

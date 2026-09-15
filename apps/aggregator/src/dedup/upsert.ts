@@ -1,3 +1,5 @@
+import { storedAmount, sameAmount, type AmountInput } from '@catwalks/db/money';
+import { readSourceFacts, projectSourceFacts } from '../facts/index.js';
 import { deactivateJob, reactivateJob } from '../pipeline/lifecycle.js';
 import { declaredExpiry } from '../normalize/expiry.js';
 import { explicitlyListed } from '../pipeline/publicationDisposition.js';
@@ -88,6 +90,8 @@ export async function upsertDeduplicated(
   catalogue?: CompiledOccupationTaxonomy,
 ): Promise<UpsertResult> {
   await archiveAdapterOutput(prisma, candidate);
+  const facts = readSourceFacts(candidate.atsType ?? 'GENERIC_JSONLD', candidate.raw);
+  candidate = { ...candidate, ...projectSourceFacts(facts), sourceFacts: facts };
   const taxonomy = catalogue ?? await loadOccupationTaxonomy(prisma);
   for (let attempt = 0; ; attempt++) {
     assertSourceRunning();
@@ -322,8 +326,8 @@ export function canonicalJobContent(candidate: CandidateJob, catalogue: Compiled
     rawSchedule: candidate.rawSchedule ?? null,
     experienceYears: candidate.experienceYears ?? null,
     educationLevel: candidate.educationLevel ?? null,
-    salaryMin: candidate.salaryMin ?? null,
-    salaryMax: candidate.salaryMax ?? null,
+    salaryMin: storedAmount(candidate.salaryMin),
+    salaryMax: storedAmount(candidate.salaryMax),
     salaryCurrency: candidate.salaryCurrency ?? null,
     salaryPeriod: candidate.salaryPeriod ?? null,
     department: candidate.department ?? null,
@@ -369,6 +373,7 @@ async function createJob(
         expiryEvidence: expiry?.evidence,
         captureBatchId: candidate.captureBatchId, captureOutputId: candidate.captureOutputId,
         raw: candidate.raw == null ? Prisma.DbNull : candidate.raw as Prisma.InputJsonValue,
+        sourceFacts: candidate.sourceFacts as unknown as Prisma.InputJsonValue,
       } },
       events: { create: { type: expired ? 'CLOSED' : 'OPENED', at: now } },
     },
@@ -476,8 +481,9 @@ type ExistingJob = Prisma.JobGetPayload<{ include: { sources: true }; omit: { se
 type Reattestable = Pick<
   ExistingJob,
   | 'title' | 'description' | 'location' | 'city' | 'countryCode' | 'countryIntegrity' | 'adminArea1' | 'isFrance' | 'postedAt' | 'validThrough'
-  | 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType' | 'isSeasonal' | 'workplaceType' | 'workSchedule' | 'rawSchedule' | 'salaryMin' | 'salaryMax' | 'salaryCurrency' | 'salaryPeriod'
-> & { opportunityType?: ExistingJob['opportunityType'] };
+  | 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType' | 'isSeasonal' | 'workplaceType' | 'workSchedule' | 'rawSchedule' | 'salaryCurrency' | 'salaryPeriod'
+> & { opportunityType?: ExistingJob['opportunityType']; salaryMin: AmountInput | null; salaryMax: AmountInput | null;
+  educationLevel?: string | null; postalCode?: string | null; latitude?: number | null; longitude?: number | null };
 
 /**
  * Champs simples : REMPLIS par n'importe quelle source quand ils sont vides,
@@ -489,7 +495,7 @@ type Reattestable = Pick<
  * présentes dans le brut, 5 212 offres sans date.
  */
 const SIMPLE_FIELDS = [
-  'opportunityType', 'postedAt', 'validThrough', 'language', 'employmentTerm', 'workTime', 'programType', 'engagementType', 'isSeasonal', 'workplaceType',
+  'opportunityType', 'postedAt', 'validThrough', 'language', 'employmentTerm', 'workTime', 'programType', 'engagementType', 'isSeasonal',
   // Le rythme et son libellé source : sans eux ici, une offre déjà en base ne
   // recevrait JAMAIS la nouvelle dimension — le stock resterait vide à vie.
   'workSchedule', 'rawSchedule',
@@ -562,11 +568,23 @@ export function reattestationFields(
   }
   // A salary is one tuple: never combine an employer amount with a board's
   // currency, or preserve an old currency after an authoritative new amount.
-  if (SALARY_FIELDS.some(field => candidate[field] !== undefined) &&
-      (hasAuthority || SALARY_FIELDS.every(field => existing[field] === null))) {
+  if (candidate.sourceFacts && hasAuthority) {
     for (const field of SALARY_FIELDS) {
+      if (field === 'salaryMin' || field === 'salaryMax') {
+        const value = storedAmount(candidate[field]);
+        if (!sameAmount(value, existing[field])) out[field] = value;
+      } else {
+        const value = candidate[field] ?? null;
+        if (value !== existing[field]) out[field] = value;
+      }
+    }
+  }
+  if (candidate.sourceFacts && hasAuthority) {
+    // Absence, withdrawal and conflict replace stale optional facts too.
+    // Never borrow a coordinate or diploma from another publication.
+    for (const field of ['workplaceType', 'educationLevel', 'postalCode', 'latitude', 'longitude'] as const) {
       const value = candidate[field] ?? null;
-      if (value !== existing[field]) (out as Record<string, unknown>)[field] = value;
+      if (value !== (existing[field] ?? null)) (out as Record<string, unknown>)[field] = value;
     }
   }
   if (hasAuthority) {
@@ -619,10 +637,13 @@ async function attachToExisting(
       isActive: available,
       ...expiryFields,
       raw: candidate.raw as Prisma.InputJsonValue | undefined,
+      sourceFacts: candidate.sourceFacts as unknown as Prisma.InputJsonValue,
       captureBatchId: candidate.captureBatchId, captureOutputId: candidate.captureOutputId,
     },
     update: { url: candidate.url, title: candidate.title, postedAt: candidate.postedAt, sourceTier: candidate.sourceTier, lastSeenAt: now, isActive: available, ...expiryFields,
-      captureBatchId: candidate.captureBatchId ?? null, captureOutputId: candidate.captureOutputId ?? null, raw: candidate.raw as Prisma.InputJsonValue | undefined },
+      sourceFacts: candidate.sourceFacts as unknown as Prisma.InputJsonValue,
+      captureBatchId: candidate.captureBatchId ?? null, captureOutputId: candidate.captureOutputId ?? null,
+      raw: candidate.raw == null ? Prisma.DbNull : candidate.raw as Prisma.InputJsonValue },
   });
 
   const owner = selectApplySource([

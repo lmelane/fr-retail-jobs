@@ -1,0 +1,27 @@
+{
+  "date": "2026-09-15",
+  "environment": "Dedicated local PostgreSQL 18; production unchanged",
+  "migrations": 52,
+  "tests": {
+    "aggregatorUnit": 2149,
+    "aggregatorIntegration": 464,
+    "api": 249,
+    "apiOptionalSkipped": 2,
+    "python": 5,
+    "totalPassed": 2867
+  },
+  "typecheck": "PASS",
+  "apiBuild": "PASS",
+  "schemaDrift": false,
+  "counterproofs": 8,
+  "logs": {
+    "lot3-full-validation.log": "782d389349ca1203d059e9fa12ce1afd61043e9ff3c2a7f61c63e1f68b9e8c0e",
+    "lot3-api-build.log": "fc9b8c20c751db99a539874885db157ee63cda6cdd13d1ab9533101f4cac28a5",
+    "lot3-schema-drift.log": "198913094e3f41610eb893459ab65a3c79991b65d4ef5fcb8c325ebe52ebf1ed",
+    "lot3-shadow-repair.log": "f3e48b543852cd5db537472735a0ebef4adeaf67a28bc2fba19e44f6d0062e29",
+    "lot3-public-validation.log": "e4423d642543c81cd2e19a50689412d3b39cc0ca88cc529cba89f88341cd7a60",
+    "lot3-public-typecheck.log": "38f11d2f5f6bbb339d8011e1d5805718aba8e3e79c98335c261f05885cef1416",
+    "lot3-counterproof-restored-aggregator.log": "0887523d54e0b95a191a049dc1ef2135f792176855d2168da31ee303dcfe0f61",
+    "lot3-counterproof-restored-api.log": "450ae77a82f8af079a2477b8ef663927a0608cc03f16a2c4a26ee794fdb214fa"
+  }
+}

@@ -1,4 +1,4 @@
-import { createHash } from 'node:crypto';
+import { evidenceHash } from '../lib/evidenceHash.js';
 import type { PrismaClient, Prisma } from '@prisma/client';
 
 export const REFRESH_LIMITS = { staleHours: 48, maxCloseRatio: 0.05, minCloseForGuard: 50 } as const;
@@ -14,12 +14,6 @@ export type RefreshManifest = {
   version: 2; mode: 'DEACTIVATE_REPRESENTATIONS'; allowedSourceKeys: string[];
   entries: ManifestEntry[]; limits: RefreshLimits; planHash: string; createdAt: string;
 };
-
-export function evidenceHash(value: unknown): string {
-  const stable = (v: unknown): unknown => v instanceof Date ? v.toISOString() : Array.isArray(v) ? v.map(stable)
-    : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).sort(([a], [b]) => a.localeCompare(b)).map(([k, x]) => [k, stable(x)])) : v;
-  return createHash('sha256').update(JSON.stringify(stable(value))).digest('hex');
-}
 
 /** Only state used or changed by refresh; descriptions and raw bodies stay in their own archives. */
 export function refreshSnapshot(job: { id: string; companyId: string; isActive: boolean; mergedIntoId: string | null;

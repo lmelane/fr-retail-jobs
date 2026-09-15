@@ -1,5 +1,5 @@
 import { Prisma, type PrismaClient } from '@prisma/client';
-import { evidenceHash } from '../pipeline/refreshManifest.js';
+import { evidenceHash } from '../lib/evidenceHash.js';
 import { archiveAdapterObservation } from '../capture/observations.js';
 import { archiveRawBlob } from '../capture/store.js';
 import type { ObjectStore } from './objectStore.js';

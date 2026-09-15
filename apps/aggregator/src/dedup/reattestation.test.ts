@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { reattestationFields } from './upsert.js';
 import type { CandidateJob } from './match.js';
+import { readSourceFacts, projectSourceFacts } from '../facts/index.js';
 
 const base = { sourceKey: 'hermes', sourceTier: 'EMPLOYER_DIRECT', externalId: 'H1', company: 'Hermès', url: 'https://x/1', raw: {} } as CandidateJob;
 const existing = { title: 'Apply Now', description: 'court', location: null, city: null, countryCode: 'France', countryIntegrity: null, adminArea1: null, isFrance: true, postedAt: null, validThrough: null, language: null, employmentTerm: null, workTime: null, programType: null, engagementType: null, isSeasonal: null, workplaceType: null, workSchedule: null, rawSchedule: null, salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null };
@@ -53,8 +54,10 @@ describe('reattestationFields', () => {
   });
 
   it('un nouveau montant autoritaire sans devise ne conserve pas une ancienne devise', () => {
-    const out = reattestationFields({ ...base, title: 'x', salaryMin: 25 }, { ...existing, salaryMin: 50000, salaryCurrency: 'EUR', salaryPeriod: 'YEAR' }, true);
-    expect(out).toMatchObject({ salaryMin: 25, salaryCurrency: null, salaryPeriod: null });
+    const sourceFacts = readSourceFacts('lever', { salaryRange: { min: 25 } });
+    const out = reattestationFields({ ...base, title: 'x', ...projectSourceFacts(sourceFacts), sourceFacts }, { ...existing, salaryMin: 50000, salaryCurrency: 'EUR', salaryPeriod: 'YEAR' }, true);
+    expect(out.salaryMin?.toString()).toBe('25');
+    expect(out).toMatchObject({ salaryCurrency: null, salaryPeriod: null });
   });
   it('la source autoritaire ré-écrit le pays en ISO et dérive la ville', () => {
     const out = reattestationFields({ ...base, title: 'Vendeur', country: 'France', location: 'Paris, 75008' }, existing, true);

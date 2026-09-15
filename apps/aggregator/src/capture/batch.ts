@@ -1,6 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
-import { evidenceHash } from '../pipeline/refreshManifest.js';
+import { evidenceHash } from '../lib/evidenceHash.js';
 import type { AdapterResult } from '../types.js';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { assertCaptureHealthy, withCaptureContext, OfflineReplayError, type CaptureContext } from './context.js';

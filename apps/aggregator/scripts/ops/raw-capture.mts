@@ -5,7 +5,7 @@ import { readRawBlob } from '../../src/capture/store.js';
 import { readAdapterObservation } from '../../src/capture/observations.js';
 import { replayExtraction } from '../../src/capture/batch.js';
 import { fetchAtsJobs } from '../../src/ats/index.js';
-import { evidenceHash } from '../../src/pipeline/refreshManifest.js';
+import { evidenceHash } from '../../src/lib/evidenceHash.js';
 import { objectStoreConfigured, objectStoreFromEnv } from '../../src/retention/objectStore.js';
 
 const arg = (key: string) => process.argv.find(value => value.startsWith(`--${key}=`))?.slice(key.length + 3);

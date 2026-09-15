@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-09-15",
+  "bundleUrl": "https://baccarat.talentview.io/assets/index-2301c0ef.js",
+  "bundleSha256": "8cb48b69fa5ce8cf9e2bd83314620e2d031b4ee6661395e4e2bbe2d8564ea2e1",
+  "remoteLevels": {
+    "0": "UNAUTHORIZED",
+    "1": "PUNCTUAL",
+    "2": "PARTIAL",
+    "3": "FULLTIME"
+  },
+  "qualifiedSalaryCurrencies": {
+    "1": "EUR"
+  },
+  "unknownCurrencyIds": "Not mapped to the publisher UI default euro",
+  "witnesses": [
+    {
+      "url": "https://baccarat.talentview.io/jobs/2q8mc6",
+      "rawRemoteLevel": 1,
+      "publishedMeaning": "Occasional remote working possible",
+      "rawCurrency": 1,
+      "publishedCurrency": "EUR"
+    },
+    {
+      "url": "https://laredoute-talent.talentview.io/jobs/knhb4i",
+      "rawRemoteLevel": 2,
+      "publishedMeaning": "Partial remote working possible"
+    }
+  ],
+  "oldMappingRemoved": "TalentView remote_level=1 was mapped to on-site in the adapter"
+}

@@ -1,10 +1,10 @@
 # Audit de reprise Catwalks
 
-**15 septembre 2026. Audit initial terminé ; lots 0 à 2 validés localement, archive S3 vérifiée sur un environnement Railway isolé. Les autres corrections restent dans les lots suivants.**
+**15 septembre 2026. Audit initial terminé ; lots 0 à 3 validés localement, archive S3 vérifiée sur un environnement Railway isolé. Les autres corrections restent dans les lots suivants.**
 
 Commencer par [le rapport A–J](/Users/lmelane/Downloads/catwalks-job-aggregator/audits/reprise-2026-09-15/rapport.md), puis [le plan en lots](/Users/lmelane/Downloads/catwalks-job-aggregator/audits/reprise-2026-09-15/plan.md).
 
-État de la reprise : [lot 0 — résultats, validations et limites](lot-0.md). [Lot 1 — disponibilité et maintenance](lot-1.md). [Lot 2 — captures natives et rétention](lot-2.md). Le rapport initial conserve ses constats datés ; les comptes rendus de lots décrivent les corrections ultérieures.
+État de la reprise : [lot 0 — résultats, validations et limites](lot-0.md). [Lot 1 — disponibilité et maintenance](lot-1.md). [Lot 2 — captures natives et rétention](lot-2.md). [Lot 3 — faits RAW et réattestation](lot-3.md). Le rapport initial conserve ses constats datés ; les comptes rendus de lots décrivent les corrections ultérieures.
 
 - [Inventaire Git / GitHub](/Users/lmelane/Downloads/catwalks-job-aggregator/audits/reprise-2026-09-15/inventaire-git.md)
 - [Catalogue des 536 sources](/Users/lmelane/Downloads/catwalks-job-aggregator/audits/reprise-2026-09-15/sources.csv)
@@ -22,7 +22,7 @@ Aucun payload intégral d’offre, credential, cookie, clé API ou export d’en
 
 Les scripts de `scripts/` sont les scénarios d’audit utilisés, pas des commandes de production. Ils pointent vers les dépôts locaux inspectés. Les sorties de travail sont écrites dans `/tmp/catwalks-audit-20260915`.
 
-- `witnesses.mts` : fonctions pures, sans base.
+- Le script ponctuel `witnesses.mts` a été retiré après remplacement des fonctions qu’il testait. Son résultat initial reste dans [witnesses.json](preuves/witnesses.json). Les témoins maintenus sont désormais les tests des lecteurs, de la réattestation et de l’API décrits dans le [lot 3](lot-3.md).
 - `lifecycle-witness.mts` : écrit uniquement si DATABASE_URL désigne exactement `127.0.0.1:55452/catwalks_audit_test`. Scénario réservé au PostgreSQL local jetable de l’audit.
 - `search-witness.mts` : utilise Prisma et refuse l’exécution si `default_transaction_read_only` n’est pas activé ; le lecteur employé pendant l’audit imposait ce réglage à chaque connexion et une limite de deux connexions.
 - `coverage.sql` et `inventory.sql` : requêtes de lecture. À exécuter avec une connexion imposant READ ONLY dès son ouverture, dans une transaction READ ONLY et avec timeout.

@@ -20,6 +20,8 @@ La disponibilité publique, la fraîcheur, la complétude de collecte et la cert
 
 Le [plan courant](../../audits/reprise-2026-09-15/plan.md) porte les dépendances et critères de sortie. Les défauts établis comprennent le périmètre de refresh, l’expiration, la perte de champs à la réattestation, les salaires décimaux, les négations du télétravail, les rapprochements trop permissifs et le cloisonnement des résultats par pays.
 
+Les lots 0 à 3 corrigent localement la validation, la disponibilité, la capture native et les [faits RAW avec réattestation](../../docs/architecture/source-facts.md). Les [résultats du lot 3](../../audits/reprise-2026-09-15/lot-3.md) distinguent les lectures qualifiées, les absences et les formats encore non interprétés. Ces validations ne constituent pas une bascule du stock de production.
+
 L’architecture cible conserve le RAW avant parsing, puis construit des faits traçables et une projection de recherche commune aux offres directes et externes. Les notions locales ne doivent pas être forcées dans un vocabulaire mondial unique.
 
 ## Commandes de validation
