@@ -1,6 +1,7 @@
 import { fetchJson } from '../../lib/http.js';
 import { countryFromLocation } from '../../normalize/country.js';
 import type { NormalizedJob } from '../../types.js';
+import { publisherInstant } from '../../lib/publisherInstant.js';
 
 type GreenhouseOffice = { id?: number; name?: string; location?: string | null };
 type GreenhouseJob = {
@@ -38,13 +39,8 @@ export function parseGreenhouseJob(job: GreenhouseJob): NormalizedJob {
     country: greenhouseCountry(job),
     description: job.content,
     url: job.absolute_url,
-    // F-05: first_published IS the posting date; updated_at moves on every
-    // edit and made offers look perpetually fresh.
-    postedAt: job.first_published
-      ? new Date(job.first_published)
-      : job.updated_at
-        ? new Date(job.updated_at)
-        : undefined,
+    // An edit does not establish when the job was published.
+    postedAt: publisherInstant(job.first_published),
     raw: job,
   };
 }

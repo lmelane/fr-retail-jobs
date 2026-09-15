@@ -1,0 +1,29 @@
+{
+  "snapshot": "2026-09-15 active RAW; no database changes",
+  "kinds": {
+    "greenhouse": {
+      "total": 2545,
+      "dated": 2545,
+      "requirementsInRaw": 0,
+      "meaningfulRequirements": 0,
+      "requirementsPreserved": 0,
+      "publicationDiffersFromCreation": 0
+    },
+    "recruitee": {
+      "total": 639,
+      "dated": 639,
+      "requirementsInRaw": 542,
+      "meaningfulRequirements": 528,
+      "requirementsPreserved": 528,
+      "publicationDiffersFromCreation": 639
+    },
+    "wordpress": {
+      "total": 478,
+      "dated": 478,
+      "requirementsInRaw": 0,
+      "meaningfulRequirements": 0,
+      "requirementsPreserved": 0,
+      "publicationDiffersFromCreation": 0
+    }
+  }
+}

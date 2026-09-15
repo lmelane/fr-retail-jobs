@@ -109,6 +109,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 [Sous-lot 4D1 validé localement](lot-4d1.md) : le moteur distingue capture native et RAW historique, sans réattestation ; 19 familles relues, 49 075 présentations constructibles dans le snapshot et 57 publications réelles vérifiées par l’API locale. Les formats restants, les pertes de contenu, les anciennes sémantiques de dates et l’application au stock distant restent à traiter.
 
+[Sous-lot 4D2 validé localement](lot-4d2.md) : 22 familles relues, 49 205 présentations constructibles, dates WordPress/Greenhouse/Recruitee corrigées et 528 rubriques d’exigences restituées. Les 66 publications du scénario local sont relues sans écart par l’API. Les domaines de détail du hub URBN restent à qualifier.
+
 **Objectif.** Éviter les doublons visibles sans supprimer des postes distincts.
 
 - **Fichiers :** `dedup/match.ts`, `upsert.ts`, `packages/db/publications.ts`, `postingIdentity`, `reconcile`, schéma et API d’identités/redirects.

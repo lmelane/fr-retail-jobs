@@ -1,0 +1,215 @@
+{
+  "environment": "Dedicated local PostgreSQL; private 2026-09-15 RAW snapshot; no publisher calls or production writes",
+  "families": 22,
+  "publications": 66,
+  "capturesCreated": 0,
+  "reports": [
+    {
+      "kind": "teamtailor",
+      "publications": 2,
+      "publicReadChecks": 2,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 150,
+      "planHash": "1cd17b14b5ba8871bbe8d5747ae95ac141b52ae5c898d2717f1a71d5cadc35ef"
+    },
+    {
+      "kind": "workday",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 104,
+      "planHash": "f6bd2f473ac979507e3d25083b78457ae0f977ce2d4bb1e5ffb87e33b6192866"
+    },
+    {
+      "kind": "icims",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 91,
+      "planHash": "59c1901d94a6b53a2f89580182bc661215c1a90c9f39284a2198dc76f1cae768"
+    },
+    {
+      "kind": "greenhouse",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 75,
+      "planHash": "cc8a6cde04b436f182a9ce28138e0a858d717b639230f684335d41e2498eee48"
+    },
+    {
+      "kind": "teamtailor",
+      "publications": 1,
+      "publicReadChecks": 1,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 52,
+      "planHash": "bc99579e3d4f4a988bd99d1d723dd6a056439f2675b3fabec48637abe1771019"
+    },
+    {
+      "kind": "generic-listing",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 73,
+      "planHash": "bafb83a72b968bd87093492c29308679a0bbd09ed4c3ef16c25aeaa7ed522719"
+    },
+    {
+      "kind": "recruitee",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 103,
+      "planHash": "40ffc8e164bcdfa9169eb4ac6d96634de155c956f609433b4dcdbaab6b5adcd0"
+    },
+    {
+      "kind": "lever",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 90,
+      "planHash": "b3d8eae7df656629a7a57bab2f59f671229b234d44bab65ababf00b47dd6b8fa"
+    },
+    {
+      "kind": "workable",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 86,
+      "planHash": "b57f5ffcef215262472f0ef01b7c6bf2139d6e9975e387f022abd6aeeb331ef2"
+    },
+    {
+      "kind": "talentsoft",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 79,
+      "planHash": "2c8b99890742df40461a3315e08810c117c4f6cb6c5bd8de3c44922a49a73774"
+    },
+    {
+      "kind": "geodirectory",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 94,
+      "planHash": "0f1477944e3f516cc76f82e4ae38dbb103c8620a43ee5a1a78e62b9f23ec144a"
+    },
+    {
+      "kind": "jobaffinity-wordpress",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 86,
+      "planHash": "e64e3f01c26384ca772b6939974ea715337d6e6cf3cfe2fa3d837d9d8cc9859c"
+    },
+    {
+      "kind": "oraclehcm",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 89,
+      "planHash": "ba042b05fd884751cf6c2f31b62b99968d0c80fd444622b0e68adcd3ff96169f"
+    },
+    {
+      "kind": "magnet",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 80,
+      "planHash": "4b2b3718f80da0fa25ab45c0cf6839c9b03c216a8a43c43bf350fe4822baa083"
+    },
+    {
+      "kind": "phenom",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 89,
+      "planHash": "83c734365a6810d8b4e69a746a2d0c291f604cec68aecdb1062e9ef3a69e26ce"
+    },
+    {
+      "kind": "wordpress",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 97,
+      "planHash": "37a324feab3329ece5ce54336f875747d7be6738c0c4828f3bcea1a2c0330edc"
+    },
+    {
+      "kind": "lvmh_algolia",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 83,
+      "planHash": "a22f23477782b13b96194953fd9e04d5bcfa1e877c95b59b924de546a63c17e3"
+    },
+    {
+      "kind": "radancy",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 94,
+      "planHash": "ca4eeae7dd371b6903e1e5f58c042353692f21830f5921149c2d2021a20f80ce"
+    },
+    {
+      "kind": "ashby",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 90,
+      "planHash": "86b95420236c2bb5672370561817dd535ddff802afe47f950bfe6f65ffb63439"
+    },
+    {
+      "kind": "rituals",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 83,
+      "planHash": "075df6ba0b7e33fe93c20d188c426755467c596900289ebda348ac1ae86800d3"
+    },
+    {
+      "kind": "typesense",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 86,
+      "planHash": "60e34a057da986ee6c6c8c9e5381db9628e59efec714b983ed2322e93425710a"
+    },
+    {
+      "kind": "jibe",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 112,
+      "planHash": "e32c8ba4217abdc13d57397dcea6ad06faaad0abcdce5f65b8c638a2afd8d01d"
+    },
+    {
+      "kind": "altamira",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 80,
+      "planHash": "3346222900276865574d7ae322a38b66f9c1eecfefba02714538ce3d831d5882"
+    }
+  ]
+}

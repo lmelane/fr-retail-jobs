@@ -7,6 +7,7 @@ import type { CandidateJob } from '../dedup/match.js';
 import { runRefresh, readRefreshPlan } from './refresh.js';
 import { publicJobWhere } from '@catwalks/db/availability';
 import { clearSourceEvidence } from '../test/sourceEvidence.js';
+import { EXPIRY_READER_VERSION } from '../normalize/expiry.js';
 
 const db = new PrismaClient();
 const past = new Date(Date.now() - 3_600_000);
@@ -29,7 +30,7 @@ describe('publication deadlines', () => {
     const job = await db.job.findUniqueOrThrow({ where: { id: jobId }, include: { sources: true, events: true } });
     expect(job).toMatchObject({ isActive: false, closedAt: expect.any(Date) });
     expect(job.sources[0]).toMatchObject({ isActive: false, expiresAt: past,
-      expiryEvidence: { path: '$.validThrough', value: past.toISOString(), readerVersion: 1 } });
+      expiryEvidence: { path: '$.validThrough', value: past.toISOString(), readerVersion: EXPIRY_READER_VERSION } });
     expect(job.events.map(event => event.type)).toEqual(['CLOSED']);
     expect(await db.sourceObservation.count()).toBeGreaterThan(0);
   });

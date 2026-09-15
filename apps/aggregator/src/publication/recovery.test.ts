@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { recoverRetainedPublication } from './recovery.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
@@ -49,5 +50,45 @@ describe('retained publication recovery', () => {
       .toMatchObject({ status: 'RECOVERABLE', job: { postedAt: new Date('2024-02-15T00:00:00Z') } });
     raw.detail.jobPostingInfo.externalUrl = 'https://brand.myworkdayjobs.com/External/job/Paris/Other_R2';
     expect(recoverRetainedPublication('workday', raw, context)).toMatchObject({ reason: 'DETAIL_IDENTITY_MISMATCH' });
+  });
+});
+
+describe('retained detail-page evidence', () => {
+  const cases = [
+    { kind: 'icims', url: 'https://brand.icims.com/jobs/42/advisor/job?in_iframe=1', origin: 'https://brand.icims.com', extra: {} },
+    { kind: 'altamira', url: 'https://careers.example/jobs/job-details?JobID=42&Team=81', origin: 'https://careers.example', extra: { team: '81' } },
+  ];
+  for (const c of cases) {
+    const node = { '@type': 'JobPosting', title: 'Own title', description: '<p>Own detail content</p>', url: c.url, datePosted: '2024-02-15' };
+    const raw = { source: c.kind, ...c.extra, postingEvidence: { pageUrl: c.url, htmlSha256: 'a'.repeat(64), jobPostingCount: 1, jobPosting: node } };
+    const readDetail = (input: unknown, extra = {}) => recoverRetainedPublication(c.kind, input, { externalId: '42', url: c.url, observedAt: at, config: { origin: c.origin }, ...extra });
+    it(`recovers ${c.kind} from its retained page and native ID without fabricating HTML`, () => {
+      expect(readDetail(raw)).toMatchObject({ status: 'RECOVERABLE', job: { title: 'Own title', description: 'Own detail content', externalId: '42', url: c.url, raw } });
+      expect(readDetail({ ...raw, postingEvidence: { ...raw.postingEvidence, jobPosting: { ...node, url: undefined } } })).toMatchObject({ status: 'RECOVERABLE' });
+    });
+    it.each([
+      { jobPostingCount: 2 }, { jobPosting: null }, { htmlSha256: 'invalid' }, { geographyConflict: true }, { geographyConflict: 'true' },
+      { jobPosting: { ...node, '@type': 'WebPage' } },
+    ])(`refuses unusable ${c.kind} evidence: %s`, invalid => {
+      expect(readDetail({ ...raw, postingEvidence: { ...raw.postingEvidence, ...invalid } })).toMatchObject({ status: 'RECOLLECT_OR_REVIEW', reason: 'DETAIL_EVIDENCE_UNUSABLE' });
+    });
+    it(`binds ${c.kind} evidence to the recorded page, tenant and native ID`, () => {
+      expect(readDetail(raw, { externalId: '43' })).toMatchObject({ reason: 'IDENTITY_MISMATCH' });
+      expect(readDetail(raw, { config: { origin: 'https://another-tenant.example' } })).toMatchObject({ reason: 'DETAIL_IDENTITY_MISMATCH' });
+      for (const otherUrl of [c.url.replace('42', '43'), c.url.replace(c.origin, 'https://another.example')]) {
+        expect(readDetail({ ...raw, postingEvidence: { ...raw.postingEvidence, pageUrl: otherUrl } })).toMatchObject({ reason: 'DETAIL_IDENTITY_MISMATCH' });
+        expect(readDetail({ ...raw, postingEvidence: { ...raw.postingEvidence, jobPosting: { ...node, url: otherUrl } } })).toMatchObject({ reason: 'DETAIL_IDENTITY_MISMATCH' });
+      }
+    });
+    if (c.kind === 'altamira') it('binds the Altamira team and rejects duplicate identity parameters', () => {
+      expect(readDetail({ ...raw, team: '82' })).toMatchObject({ reason: 'DETAIL_IDENTITY_MISMATCH' });
+      expect(readDetail({ ...raw, postingEvidence: { ...raw.postingEvidence, jobPosting: { ...node, url: c.url + '&JobID=43' } } })).toMatchObject({ reason: 'DETAIL_IDENTITY_MISMATCH' });
+    });
+  }
+  it('recovers Radancy with the existing generic collector URL identity', () => {
+    const raw = { '@type': ['JobPosting'], title: 'Own Radancy title', description: 'Own text', url };
+    const context = { externalId: createHash('sha1').update(url).digest('hex'), url, observedAt: at, config: {} };
+    expect(recoverRetainedPublication('radancy', raw, context)).toMatchObject({ status: 'RECOVERABLE', job: { raw } });
+    expect(recoverRetainedPublication('radancy', { ...raw, url: 'https://other.example/job' }, context)).toMatchObject({ reason: 'IDENTITY_MISMATCH' });
   });
 });

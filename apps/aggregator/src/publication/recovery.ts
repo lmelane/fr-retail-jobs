@@ -8,6 +8,7 @@ import { parseWorkdayPublication } from '../ats/adapters/workday.js';
 import { parseGreenhouseJob } from '../ats/adapters/greenhouse.js';
 import { parseRecruiteeJob } from '../ats/adapters/recruitee.js';
 import { normalizeGenericPosting } from '../ats/adapters/genericJsonLd.js';
+import { normalizeJobPosting } from '../connectors/generic/jsonLdSitemap.js';
 import { normalizeMagnetOffer } from '../ats/adapters/magnet.js';
 import { parseRitualsHit } from '../ats/adapters/rituals.js';
 import { parseWordpressPost } from '../ats/adapters/wordpress.js';
@@ -23,12 +24,23 @@ import type { NormalizedJob } from '../types.js';
 
 type Context = { externalId: string; url: string; observedAt: Date; config: Record<string, unknown> };
 type Reason = 'RAW_MISSING' | 'READER_UNQUALIFIED' | 'NATIVE_ID_MISSING' | 'CONTENT_MISSING' |
-  'RAW_SCHEMA_INVALID' | 'IDENTITY_MISMATCH' | 'DETAIL_IDENTITY_MISMATCH' | 'PUBLICATION_HELD';
+  'RAW_SCHEMA_INVALID' | 'IDENTITY_MISMATCH' | 'DETAIL_IDENTITY_MISMATCH' | 'DETAIL_EVIDENCE_UNUSABLE' | 'PUBLICATION_HELD';
 export type Recovery = { status: 'RECOVERABLE'; job: NormalizedJob; rawHash: string; outputHash: string } |
   { status: 'RECOLLECT_OR_REVIEW'; reason: Reason };
 const object = (value: unknown): value is Record<string, any> => !!value && typeof value === 'object' && !Array.isArray(value);
 const identifier = (value: unknown) => typeof value === 'string' && !!value.trim() || typeof value === 'number' && Number.isSafeInteger(value) && value > 0;
 const failure = (reason: Reason): Recovery => ({ status: 'RECOLLECT_OR_REVIEW', reason });
+const jobPosting = (node: Record<string, unknown>) => node['@type'] === 'JobPosting' || Array.isArray(node['@type']) && node['@type'].includes('JobPosting');
+
+/** IDs as declared by these two collectors' own detail-page URLs. No ID is
+ * borrowed from a database row or another job's schema.org identifier. */
+function detailIdentity(kind: 'icims' | 'altamira', url: URL, raw: Record<string, unknown>): string | undefined {
+  if (kind === 'icims') return /^\/jobs\/(\d+)\/(?:[^/]+\/)?job$/.exec(url.pathname)?.[1];
+  if (url.pathname !== '/jobs/job-details' || url.searchParams.getAll('JobID').length !== 1 ||
+    url.searchParams.getAll('Team').length !== 1 || url.searchParams.get('Team') !== raw.team) return undefined;
+  const id = url.searchParams.get('JobID');
+  return id && /^\d+$/.test(id) ? id : undefined;
+}
 
 /** Reuses the collector's reader, with only this publication's retained RAW.
  * This does not attest current availability or fabricate a native HTTP capture.
@@ -77,10 +89,32 @@ export function recoverRetainedPublication(kind: string, raw: unknown, context: 
       case 'recruitee':
         if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
         job = parseRecruiteeJob(raw as Parameters<typeof parseRecruiteeJob>[0], String(config.subdomain ?? '')); break;
-      case 'generic-listing':
-        if (!(raw['@type'] === 'JobPosting' || Array.isArray(raw['@type']) && raw['@type'].includes('JobPosting'))) return failure('READER_UNQUALIFIED');
+      case 'generic-listing': case 'radancy':
+        if (!jobPosting(raw)) return failure('READER_UNQUALIFIED');
         if (typeof raw.url !== 'string') return failure('NATIVE_ID_MISSING');
         job = normalizeGenericPosting(raw, raw.url); break;
+      case 'icims': case 'altamira': {
+        const evidence = raw.postingEvidence;
+        if (raw.source !== kind || !object(evidence) || !object(evidence.jobPosting) ||
+          evidence.jobPostingCount !== 1 || !jobPosting(evidence.jobPosting) ||
+          typeof evidence.htmlSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(evidence.htmlSha256) ||
+          (evidence.geographyConflict !== undefined && typeof evidence.geographyConflict !== 'boolean') ||
+          evidence.geographyConflict === true) return failure('DETAIL_EVIDENCE_UNUSABLE');
+        if (typeof evidence.pageUrl !== 'string' || typeof config.origin !== 'string') return failure('DETAIL_IDENTITY_MISMATCH');
+        const page = new URL(evidence.pageUrl);
+        const id = detailIdentity(kind, page, raw);
+        if (!id || page.href !== new URL(context.url).href || page.origin !== new URL(config.origin).origin) return failure('DETAIL_IDENTITY_MISMATCH');
+        // Some pages declare the same job URL without the iCIMS iframe query.
+        // Compare the native ID and tenant; keep the recorded collection URL.
+        if (evidence.jobPosting.url != null) {
+          if (typeof evidence.jobPosting.url !== 'string') return failure('DETAIL_IDENTITY_MISMATCH');
+          const declared = new URL(evidence.jobPosting.url);
+          if (declared.origin !== page.origin || declared.username || declared.password || detailIdentity(kind, declared, raw) !== id) return failure('DETAIL_IDENTITY_MISMATCH');
+        }
+        const parsed = normalizeJobPosting(evidence.jobPosting, evidence.pageUrl);
+        job = parsed ? { ...parsed, externalId: id, url: evidence.pageUrl } : null;
+        break;
+      }
       case 'magnet':
         if (!identifier(raw.id ?? raw.reference)) return failure('NATIVE_ID_MISSING');
         job = normalizeMagnetOffer(raw, String(config.origin ?? '')); break;

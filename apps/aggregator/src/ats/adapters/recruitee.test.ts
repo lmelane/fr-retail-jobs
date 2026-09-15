@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('../../lib/http.js',()=>({fetchJson:vi.fn()}));
 import { fetchJson } from '../../lib/http.js';
-import { fetchRecruiteeJobs } from './recruitee.js';
+import { fetchRecruiteeJobs, parseRecruiteeJob } from './recruitee.js';
 const fetch=vi.mocked(fetchJson);
 describe('Recruitee full public feed contract',()=>{
  beforeEach(()=>vi.resetAllMocks());
@@ -41,5 +41,22 @@ describe('Recruitee full public feed contract',()=>{
  it('recognises a valid empty feed, but not duplicate identifiers as complete',async()=>{
   fetch.mockResolvedValueOnce({offers:[]});expect((await fetchRecruiteeJobs({subdomain:'a'})).complete).toBe(true);
   fetch.mockResolvedValueOnce({offers:[{id:1,title:'A'},{id:1,title:'B'}]});expect((await fetchRecruiteeJobs({subdomain:'a'})).complete).toBe(false);
+ });
+});
+
+describe('Recruitee complete native content', () => {
+ const raw={id:42,title:'Advisor',description:'<p>Native duties</p>',requirements:'<ul><li>Native requirement</li></ul>',
+   published_at:'2026-09-01 15:54:14 UTC',created_at:'2026-09-01 15:49:29 UTC'};
+ it('reads both body sections and publication time through the live feed',async()=>{
+  fetch.mockResolvedValue({offers:[raw]});const {jobs:[job]}=await fetchRecruiteeJobs({subdomain:'a'});
+  expect(job.description).toBe('Native duties\n\n• Native requirement');
+  expect(job.postedAt?.toISOString()).toBe('2026-09-01T15:54:14.000Z');
+  expect(job.raw).toEqual(raw);
+ });
+ it.each([undefined,null,'','2026-02-30 10:00:00 UTC','2026-09-01 10:00:00'])('never substitutes creation for missing/invalid publication: %s',published_at=>{
+  expect(parseRecruiteeJob({...raw,published_at},'a').postedAt).toBeUndefined();
+ });
+ it('retains requirements even without an opening paragraph',()=>{
+  expect(parseRecruiteeJob({...raw,description:''},'a').description).toBe('• Native requirement');
  });
 });

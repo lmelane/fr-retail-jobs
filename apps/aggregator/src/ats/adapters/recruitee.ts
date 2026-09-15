@@ -1,8 +1,11 @@
 import { fetchJson } from '../../lib/http.js';
 import { educationLevel } from '../../normalize/experience.js';
+import { htmlToPlainText } from '../../lib/html.js';
+import { publisherInstant } from '../../lib/publisherInstant.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 type Offer = { id: number; title: string; careers_url?: string; location?: string; city?: string; country?: string; employment_type?: string; description?: string; created_at?: string;
+  requirements?: string | null; published_at?: string | null;
   /**
    * Le niveau d'études déclaré : `high_school`, `vocational`, `bachelor_degree`,
    * `master_degree`… Conservé dans son libellé natif, préfixé du référentiel —
@@ -47,9 +50,12 @@ export function parseRecruiteeJob(job: Offer, subdomain: string): NormalizedJob 
     country: job.country,
     contract: job.employment_type,
     educationLevel: educationLevel('RECRUITEE', job.education_code),
-    description: job.description,
+    description: [job.description, job.requirements].map(htmlToPlainText).filter(Boolean).join('\n\n') || undefined,
     url: job.careers_url ?? `https://${subdomain}.recruitee.com/o/${job.id}`,
-    postedAt: job.created_at ? new Date(job.created_at) : undefined,
+    // The feed also carries created_at and updated_at. Only published_at
+    // dates publication; the retained public feed explicitly names UTC.
+    postedAt: publisherInstant(typeof job.published_at === 'string'
+      ? job.published_at.replace(/^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2}) UTC$/, '$1T$2Z') : undefined),
     raw: job,
   };
 }

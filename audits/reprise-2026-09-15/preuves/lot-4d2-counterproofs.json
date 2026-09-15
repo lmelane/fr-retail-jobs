@@ -1,0 +1,71 @@
+{
+  "mutations": [
+    {
+      "name": "lost-gmt-timezone",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "2b8f2349927b51ac1cef7a74b1ecb5313eb27cfc3181a0941b2633e9158b6896"
+    },
+    {
+      "name": "edit-as-publication",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "af81fbc07e86529d8d3ed888b29be13869e759ca091693f43c14522844299634"
+    },
+    {
+      "name": "creation-as-publication",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "134a84c88be4697e06a00e969bc24ddef8f712ed47974d21617770d619ea13c3"
+    },
+    {
+      "name": "lost-requirements",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "134a84c88be4697e06a00e969bc24ddef8f712ed47974d21617770d619ea13c3"
+    },
+    {
+      "name": "calendar-rollover",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "e4865a30b7896af2b6b3694a99a2116e16a0e93758a6cd848780997daf969e3a"
+    },
+    {
+      "name": "ambiguous-detail",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eda1f12bf4bc0dea2a59679ddd3575a2ae71ab2f636a580ea0e2d66e00a0e09a"
+    },
+    {
+      "name": "unqualified-jsonld-type",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eda1f12bf4bc0dea2a59679ddd3575a2ae71ab2f636a580ea0e2d66e00a0e09a"
+    },
+    {
+      "name": "foreign-tenant",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eda1f12bf4bc0dea2a59679ddd3575a2ae71ab2f636a580ea0e2d66e00a0e09a"
+    },
+    {
+      "name": "foreign-jsonld-job",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eda1f12bf4bc0dea2a59679ddd3575a2ae71ab2f636a580ea0e2d66e00a0e09a"
+    },
+    {
+      "name": "hidden-geography-conflict",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eda1f12bf4bc0dea2a59679ddd3575a2ae71ab2f636a580ea0e2d66e00a0e09a"
+    },
+    {
+      "name": "ignored-altamira-expiry",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "c47bd99f5e13cef95b14d399ac772780b3cc910e69a32f64d11f9e91a5168770"
+    }
+  ],
+  "restoredTests": "passed"
+}

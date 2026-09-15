@@ -2,6 +2,7 @@ import { fetchWithRetry } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
+import { publisherInstant } from '../../lib/publisherInstant.js';
 
 /**
  * WordPress REST — recruitment sites that publish offers as ordinary posts.
@@ -26,6 +27,7 @@ type WpPost = {
   id?: number;
   link?: string;
   date?: string;
+  date_gmt?: string | null;
   title?: { rendered?: string };
   content?: { rendered?: string };
 };
@@ -69,14 +71,17 @@ export async function fetchWordpressJobs(config: Record<string, unknown>): Promi
 export function parseWordpressPost(post: WpPost): NormalizedJob | null {
   const title = htmlToPlainText(post.title?.rendered);
   if (!title || !post.link) return null;
-  const postedAt = post.date ? new Date(post.date) : undefined;
+  // WordPress documents date as site-local and date_gmt as GMT, even though
+  // the latter omits a timezone suffix. The worker's timezone is irrelevant.
+  const gmt = post.date_gmt;
+  const postedAt = publisherInstant(typeof gmt === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(gmt) ? `${gmt}Z` : gmt);
 
   return {
     externalId: String(post.id ?? post.link),
     title,
     description: htmlToPlainText(post.content?.rendered),
     url: post.link,
-    postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
+    postedAt,
     raw: post,
   };
 }

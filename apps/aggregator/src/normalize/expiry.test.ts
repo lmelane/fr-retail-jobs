@@ -4,10 +4,12 @@ import { declaredExpiry, parseDeclaredDeadline } from './expiry.js';
 describe('declared source expiry', () => {
   it.each([
     ['jibe', { posting_expiry_date: '2026-09-12T17:00:00+0000' }, '2026-09-12T17:00:00.000Z'],
+    ['altamira', { postingEvidence: { jobPosting: { validThrough: '2026-09-12T17:00:00Z' } } }, '2026-09-12T17:00:00.000Z'],
     ['harri', { detail: { end_date: 'Sun, 13 Sep 2026 23:59:59 GMT' } }, '2026-09-13T23:59:59.000Z'],
     ['talentrecruiter', { position: { ApplicationDue: '/Date(1790805599000+0200)/' } }, '2026-09-30T21:59:59.000Z'],
   ])('preserves the explicit source instant: %s', (kind, raw, expected) => {
     const fact = declaredExpiry(kind as string, raw)!;
+    expect(fact).toBeDefined();
     expect(fact.expiresAt?.toISOString()).toBe(expected);
     expect(fact.evidence).toMatchObject({ precision: 'INSTANT', policy: 'SOURCE_INSTANT' });
     expect(fact.evidence.rawHash).toMatch(/^[0-9a-f]{64}$/);

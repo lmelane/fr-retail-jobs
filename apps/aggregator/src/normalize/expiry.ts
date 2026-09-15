@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-export const EXPIRY_READER_VERSION = 1;
+export const EXPIRY_READER_VERSION = 2;
 export type ExpiryEvidence = {
   readerVersion: number; rawHash: string; path: string; value: string;
   precision: 'INSTANT' | 'DATE'; policy: 'SOURCE_INSTANT' | 'END_OF_DECLARED_DAY_ANYWHERE';
@@ -12,6 +12,7 @@ export type DeclaredExpiry = { expiresAt: Date | null; evidence: ExpiryEvidence 
 const PATHS: Readonly<Record<string, readonly string[]>> = {
   GENERIC_LISTING: ['validThrough'], GENERIC_JSONLD: ['validThrough'],
   ICIMS: ['postingEvidence.jobPosting.validThrough'],
+  ALTAMIRA: ['postingEvidence.jobPosting.validThrough'],
   WORKDAY: ['detail.jobPostingInfo.endDate'],
   JIBE: ['posting_expiry_date'], PHENOM: ['posting_expiry_date'],
   TEAMTAILOR: ['_jobposting.validThrough'],
