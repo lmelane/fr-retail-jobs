@@ -8,6 +8,7 @@ import { expandCompanyTerm } from './groups';
 import { countryCode, rawValuesForCode } from './countries';
 import { searchSummary } from './job-search-query';
 import { offerIdCandidates } from './offer-url';
+import { facettesServies } from './facettes-marche';
 
 /**
  * Prisma condition for a Pays filter code.
@@ -100,6 +101,20 @@ export type JobFilters = {
    * monde, chaque groupe du plus récent au plus ancien. Jamais un filtre.
    */
   priorityCountry?: string;
+  /**
+   * Le MARCHÉ servi (code pays ISO-2), qui décide QUELLES FACETTES ont du sens.
+   *
+   * Ce n'est PAS un filtre, et la distinction est le cœur du lot : `countries`
+   * restreint les offres rendues, `marche` ne restreint que les filtres
+   * PROPOSÉS. Un candidat sur le marché américain voit les mêmes offres qu'
+   * avant ; il ne se voit simplement plus offrir « Type de contrat », que
+   * 80,8 % des offres américaines laissent vide (mesuré le 2026-09-15, 36 942
+   * offres actives US — l'emploi y est *at-will*, 12 503 descriptions le
+   * déclarent).
+   *
+   * Absent ou inconnu du registre = aucune restriction : voir `facettesMarche`.
+   */
+  marche?: string;
   /** 1-based, like the URL the user can share. */
   page?: number;
 };
@@ -201,6 +216,18 @@ export function parseFilters(params: Record<string, string | string[] | undefine
     countries,
     languages: normalizedLanguages(many('langue')),
     priorityCountry: normalizedPriority(one('prioritePays')),
+    /*
+     * `marche` (fr) et `market` (en) désignent la MÊME chose : le site est
+     * mondial et ses deux façades appellent la même API. Accepter une seule
+     * des deux clés produirait un marché muet sur l'autre façade — c'est-à-
+     * dire la dégradation sûre, donc un défaut parfaitement silencieux.
+     *
+     * Aucune validation contre la liste des marchés ici : `facetteServie`
+     * traite un code inconnu comme une absence de marché, et c'est le seul
+     * endroit où cette règle doit vivre. La valider deux fois, c'est se donner
+     * deux occasions d'en changer une seule.
+     */
+    marche: one('marche') ?? one('market'),
     page: normalizedPage(page),
   };
 }
@@ -304,9 +331,19 @@ export type JobsResult = {
   /** 1-based page these jobs come from. */
   page: number;
   pageCount: number;
+  /**
+   * Les facettes RETENUES pour le marché servi.
+   *
+   * `contracts` est devenu OPTIONNEL avec le lot « facettes natives » : sur le
+   * marché américain il est absent de la réponse, parce que la durée de contrat
+   * n'y est publiée que sur 19,2 % des offres (mesuré le 2026-09-15). Une clé
+   * ABSENTE dit « pas de facette sur ce marché » ; un tableau VIDE dit « facette
+   * légitime, mais aucune valeur pour cette recherche ». Le front doit pouvoir
+   * les distinguer — d'où l'optionnalité plutôt qu'un tableau vide.
+   */
   facets: {
     sectors: { value: string; count: number; label?: string }[];
-    contracts: { value: string; count: number }[];
+    contracts?: { value: string; count: number }[];
     workTimes?: { value: string; count: number }[];
     programs?: { value: string; count: number }[];
     engagements?: { value: string; count: number }[];
@@ -787,7 +824,19 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
       occupationEnrichmentAvailable: taxonomy.available,
       total: summary.total, totalInDatabase: summary.totalInDatabase, page,
       pageCount: Math.max(1, Math.ceil(summary.total / PAGE_SIZE)),
-      facets: {
+      /*
+       * LE MARCHÉ FILTRE LES FACETTES SERVIES, JAMAIS LES OFFRES RENDUES.
+       *
+       * Le tri arrive ICI, au moment de l'assemblage, et non dans le SQL de
+       * `searchSummary` : les comptes restent calculés en une passe pour tout
+       * le monde. C'est délibéré — le coût d'une facette calculée puis écartée
+       * est nul (même requête d'agrégation), alors qu'une requête qui varie
+       * selon le marché deviendrait dix plans d'exécution à surveiller au lieu
+       * d'un, pour aucun gain mesuré.
+       *
+       * `facettesServies` retire les clés non retenues sans muter l'objet.
+       */
+      facets: facettesServies({
         occupations: summary.occupations.map(f=>({...f,label:f.value==='unclassified'?'Métier à préciser':taxonomy.occupationLabel(f.value)??'Libellé indisponible'})),
         sectors: (await getSectorPresentation()).sectors.map(s=>({value:s.code,label:s.label,count:summary.sectors.find(f=>f.value===s.code)?.count??0})).concat(summary.sectors.filter(f=>f.value==='unclassified').map(f=>({...f,label:'Secteur à vérifier'}))), contracts: summary.contracts,
       workTimes: summary.workTimes, programs: summary.programs, engagements: summary.engagements,
@@ -798,7 +847,7 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
           ...(summary.franceCount ? [{ value: 'FR', count: summary.franceCount }] : []),
           ...[...countries].map(([value, count]) => ({ value, count })).sort((a,b) => b.count-a.count),
         ],
-      },
+      }, filters.marche),
     };
   } catch (error) {
     throw new DatabaseUnavailableError(error);

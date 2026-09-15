@@ -31,15 +31,28 @@ export type JobListe = Omit<JobRow, 'description'> & Libelles;
 export type JobFiche = JobRow & Libelles;
 
 type FacetteLibellee = { value: string; count: number; label: string };
+/**
+ * Les facettes libellées CONSERVENT l'absence décidée par le marché.
+ *
+ * `contracts` et consorts sont optionnelles ici comme dans `JobsResult` : une
+ * facette que le marché ne justifie pas est ABSENTE de la réponse, jamais
+ * réduite à `[]`. Les remettre à `[]` au moment de poser les libellés
+ * annulerait le lot « facettes natives » sur le seul chemin qui compte — c'est
+ * `projeterListe` que sert `/api/jobs`, donc le front ne verrait jamais la
+ * distinction que l'API prend soin de produire en amont.
+ *
+ * Rappel du contrat : clé absente = « pas de facette sur ce marché » ; tableau
+ * vide = « facette légitime, aucune valeur pour cette recherche ».
+ */
 export type JobsResultListe = Omit<JobsResult, 'jobs' | 'facets'> & {
   jobs: JobListe[];
   facets: JobsResult['facets'] & {
-    contracts: FacetteLibellee[];
-    workTimes: FacetteLibellee[];
-    programs: FacetteLibellee[];
-    engagements: FacetteLibellee[];
+    contracts?: FacetteLibellee[];
+    workTimes?: FacetteLibellee[];
+    programs?: FacetteLibellee[];
+    engagements?: FacetteLibellee[];
     countries: FacetteLibellee[];
-    languages: FacetteLibellee[];
+    languages?: FacetteLibellee[];
   };
 };
 
@@ -80,25 +93,70 @@ export function projeterFiche(job: JobRow): JobFiche {
   return { ...job, ...libelles(job) };
 }
 
+/**
+ * Pose les libellés SANS jamais inventer une facette absente.
+ *
+ * Le `?? []` d'origine transformait « facette non servie sur ce marché » en
+ * « facette vide » — deux messages opposés pour le front, confondus au dernier
+ * moment. Une surcharge garde la garantie côté appelant : une facette
+ * obligatoire en entrée reste obligatoire en sortie.
+ */
+function libellerFacette(
+  facette: { value: string; count: number }[],
+  libelle: (value: string) => string | null,
+): FacetteLibellee[];
 function libellerFacette(
   facette: { value: string; count: number }[] | undefined,
   libelle: (value: string) => string | null,
-): FacetteLibellee[] {
-  return (facette ?? []).map((f) => ({ ...f, label: libelle(f.value) ?? f.value }));
+): FacetteLibellee[] | undefined;
+function libellerFacette(
+  facette: { value: string; count: number }[] | undefined,
+  libelle: (value: string) => string | null,
+): FacetteLibellee[] | undefined {
+  // `undefined` traverse intact ; `[]` reste `[]`. La distinction est le contrat.
+  return facette?.map((f) => ({ ...f, label: libelle(f.value) ?? f.value }));
+}
+
+/** `{ cle: valeur }` si la facette existe, `{}` sinon — pour un spread qui n'invente pas de clé. */
+function siPresente<K extends string>(cle: K, valeur: FacetteLibellee[] | undefined) {
+  return (valeur === undefined ? {} : { [cle]: valeur }) as { [P in K]?: FacetteLibellee[] };
 }
 
 export function projeterListe(result: JobsResult): JobsResultListe {
+  /*
+   * Les facettes à libeller sont SORTIES du spread, pas simplement réécrites
+   * par-dessus. Laissées dedans, elles y apporteraient leur type NON libellé
+   * (`{value,count}` sans `label`) ; un spread suivi de clés optionnelles ne
+   * remplace pas ce type aux yeux du compilateur, il l'unit. La destructuration
+   * rend l'intention explicite et garde le typage juste sans aucun `as`.
+   */
+  const { contracts, workTimes, programs, engagements, countries, languages, ...autresFacettes } = result.facets;
   return {
     ...result,
     jobs: projeterLignes(result.jobs),
+    /*
+     * SPREAD CONDITIONNEL, et ce n'est pas une coquetterie.
+     *
+     * Écrire `contracts: libellerFacette(...)` recrée la CLÉ avec la valeur
+     * `undefined`. `JSON.stringify` l'omet, donc la réponse HTTP paraît
+     * correcte — mais tout code qui teste `'contracts' in facets` (côté rendu
+     * serveur, où l'objet ne passe par aucune sérialisation) la verrait
+     * PRÉSENTE. Le contrat « absente ≠ vide » se serait alors tenu sur un
+     * chemin et pas sur l'autre : exactement le genre d'écart qu'aucun
+     * typecheck ne signale.
+     *
+     * Le spread conditionnel n'ajoute la clé que si la facette existe.
+     */
     facets: {
-      ...result.facets,
-      contracts: libellerFacette(result.facets.contracts, employmentTermLabel),
-      workTimes: libellerFacette(result.facets.workTimes, workTimeLabel),
-      programs: libellerFacette(result.facets.programs, programTypeLabel),
-      engagements: libellerFacette(result.facets.engagements, engagementTypeLabel),
-      countries: libellerFacette(result.facets.countries, (code) => countryLabel(code)),
-      languages: libellerFacette(result.facets.languages, languageLabel),
+      ...autresFacettes,
+      ...siPresente('contracts', libellerFacette(contracts, employmentTermLabel)),
+      ...siPresente('workTimes', libellerFacette(workTimes, workTimeLabel)),
+      ...siPresente('programs', libellerFacette(programs, programTypeLabel)),
+      ...siPresente('engagements', libellerFacette(engagements, engagementTypeLabel)),
+      // `countries` n'est jamais conditionnelle : un pays est un pays sur tous
+      // les marchés, et le registre n'a aucune mesure la concernant.
+      countries: libellerFacette(countries, (code) => countryLabel(code)),
+      ...siPresente('languages', libellerFacette(languages, languageLabel)),
     },
   };
 }
