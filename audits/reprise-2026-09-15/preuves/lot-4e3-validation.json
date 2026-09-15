@@ -1,0 +1,43 @@
+{
+  "date": "2026-09-15",
+  "environment": "Dedicated local PostgreSQL 18 with full read-only production snapshot, separate from disposable test databases",
+  "productionWrites": false,
+  "archiveBytes": 561610102,
+  "archiveSha256": "4bb0021b7edf820d4ce86d8645804e07a015aa7166cf366e6086c2244790a8f6",
+  "initialMigrations": 44,
+  "migrationsApplied": 11,
+  "finalMigrations": 55,
+  "contentAndIdentityDigestsUnchanged": true,
+  "schemaDrift": false,
+  "jobs": 87580,
+  "representations": 90764,
+  "activeRepresentations": 85327,
+  "sourceObservations": 137324,
+  "recoverableRepresentations": 52189,
+  "activeRecoverable": 50128,
+  "declaredDeadlines": 6149,
+  "fullyRecoveredDeadlinePublications": 2934,
+  "identityPassedButContentMissing": 5,
+  "deadlinePublicationsAwaitingQualification": 3210,
+  "expiryPlansApplied": 0,
+  "unregisteredRepresentations": 441,
+  "unregisteredActiveRepresentations": 0,
+  "jobsWithoutRepresentations": 60,
+  "historicalRedirectsToPreserve": 59,
+  "runtimeChanges": false,
+  "previousRuntimeTestSuite": {
+    "lot": "4E2",
+    "passed": 3043,
+    "rerunInThisLot": false
+  },
+  "productionRelease": "BLOCKED_BY_NATIVE_EXPIRY_IDENTITY_GATE_AND_REMAINING_LOTS",
+  "logs": {
+    "lot4e3-dump.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lot4e3-restore.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lot4e3-migrate.log": "7a567928fd17e9d36c82ed9e455e7a25c35c96321c414e668f00b80fc00c460f",
+    "lot4e3-schema-drift.log": "198913094e3f41610eb893459ab65a3c79991b65d4ef5fcb8c325ebe52ebf1ed",
+    "lot4e3-stock-inventory.log": "7152ebab276c5139fa28747908b67e6ff06e382b8c445e280d70c4af9b46e768",
+    "lot4e3-expiry-preview.log": "497bd21709578dd51e13371b705a7359efc6b5031d3a1b0c33a4bcb2dd9140cf",
+    "lot4e3-native-backup.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

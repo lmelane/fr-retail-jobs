@@ -1,0 +1,487 @@
+{
+  "representations": 90764,
+  "activeRepresentations": 85327,
+  "linkedToActiveJobs": 85327,
+  "recoverable": 52189,
+  "activeRecoverable": 50128,
+  "missingCatalogue": 441,
+  "retiredButActive": 0,
+  "deadlineDeclarations": 6149,
+  "pastAtReference": 254,
+  "beyondStorage": 158,
+  "deadlineByRecovery": {
+    "phenom:IDENTITY_MISMATCH": 6,
+    "phenom:RECOVERABLE": 14,
+    "teamtailor:RECOVERABLE": 409,
+    "workday:RECOVERABLE": 807,
+    "talentview:RECOVERABLE": 7,
+    "generic-listing:NATIVE_ID_MISSING": 1533,
+    "greenhouse:RECOVERABLE": 4,
+    "workday:DETAIL_IDENTITY_MISMATCH": 159,
+    "talentfunnel:RECOVERABLE": 156,
+    "talentfunnel:CONTENT_MISSING": 2,
+    "oraclehcm:RECOVERABLE": 58,
+    "jibe:RECOVERABLE": 425,
+    "icims:RECOVERABLE": 953,
+    "icims:DETAIL_IDENTITY_MISMATCH": 1511,
+    "workday:PUBLICATION_HELD": 1,
+    "harri:RECOVERABLE": 36,
+    "talentrecruiter:RECOVERABLE": 15,
+    "talentrecruiter:CONTENT_MISSING": 3,
+    "easycruit:RECOVERABLE": 50
+  },
+  "byKind": {
+    "phenom": {
+      "representations": 5310,
+      "active": 5299,
+      "recoverable": 2857,
+      "activeRecoverable": 2857,
+      "reasons": {
+        "RECOVERABLE": 2857,
+        "IDENTITY_MISMATCH": 9,
+        "RAW_MISSING": 4,
+        "NATIVE_ID_MISSING": 2440
+      }
+    },
+    "ashby": {
+      "representations": 85,
+      "active": 83,
+      "recoverable": 85,
+      "activeRecoverable": 83,
+      "reasons": {
+        "RECOVERABLE": 85
+      }
+    },
+    "avature": {
+      "representations": 2996,
+      "active": 2908,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 2083,
+        "RAW_MISSING": 913
+      }
+    },
+    "successfactors": {
+      "representations": 4480,
+      "active": 4230,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 4448,
+        "RAW_MISSING": 32
+      }
+    },
+    "teamtailor": {
+      "representations": 5762,
+      "active": 5355,
+      "recoverable": 5725,
+      "activeRecoverable": 5341,
+      "reasons": {
+        "RECOVERABLE": 5725,
+        "RAW_MISSING": 37
+      }
+    },
+    "recruitee": {
+      "representations": 653,
+      "active": 639,
+      "recoverable": 653,
+      "activeRecoverable": 639,
+      "reasons": {
+        "RECOVERABLE": 653
+      }
+    },
+    "workable": {
+      "representations": 282,
+      "active": 280,
+      "recoverable": 282,
+      "activeRecoverable": 280,
+      "reasons": {
+        "RECOVERABLE": 282
+      }
+    },
+    "wttj": {
+      "representations": 811,
+      "active": 766,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 713,
+        "RAW_MISSING": 98
+      }
+    },
+    "workday": {
+      "representations": 20168,
+      "active": 19711,
+      "recoverable": 11513,
+      "activeRecoverable": 11510,
+      "reasons": {
+        "DETAIL_IDENTITY_MISMATCH": 8599,
+        "RECOVERABLE": 11513,
+        "RAW_MISSING": 16,
+        "PUBLICATION_HELD": 40
+      }
+    },
+    "lever": {
+      "representations": 961,
+      "active": 820,
+      "recoverable": 958,
+      "activeRecoverable": 818,
+      "reasons": {
+        "RECOVERABLE": 958,
+        "CONTENT_MISSING": 3
+      }
+    },
+    "smartrecruiters-whitelabel": {
+      "representations": 6278,
+      "active": 5860,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 6262,
+        "RAW_MISSING": 16
+      }
+    },
+    "magnet": {
+      "representations": 508,
+      "active": 492,
+      "recoverable": 488,
+      "activeRecoverable": 487,
+      "reasons": {
+        "RECOVERABLE": 488,
+        "IDENTITY_MISMATCH": 12,
+        "RAW_MISSING": 8
+      }
+    },
+    "CATALOGUE_MISSING": {
+      "representations": 441,
+      "active": 0,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "CATALOGUE_MISSING": 441
+      }
+    },
+    "wordpress": {
+      "representations": 478,
+      "active": 478,
+      "recoverable": 478,
+      "activeRecoverable": 478,
+      "reasons": {
+        "RECOVERABLE": 478
+      }
+    },
+    "eightfold": {
+      "representations": 2908,
+      "active": 2776,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 2815,
+        "RAW_MISSING": 93
+      }
+    },
+    "lvmh_algolia": {
+      "representations": 6719,
+      "active": 6433,
+      "recoverable": 6608,
+      "activeRecoverable": 6415,
+      "reasons": {
+        "RECOVERABLE": 6608,
+        "RAW_MISSING": 109,
+        "CONTENT_MISSING": 2
+      }
+    },
+    "fashionjobs": {
+      "representations": 1206,
+      "active": 0,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "RAW_MISSING": 340,
+        "READER_UNQUALIFIED": 866
+      }
+    },
+    "talentsoft": {
+      "representations": 358,
+      "active": 353,
+      "recoverable": 86,
+      "activeRecoverable": 82,
+      "reasons": {
+        "RECOVERABLE": 86,
+        "NATIVE_ID_MISSING": 250,
+        "RAW_MISSING": 1,
+        "IDENTITY_MISMATCH": 21
+      }
+    },
+    "radancy": {
+      "representations": 54,
+      "active": 54,
+      "recoverable": 53,
+      "activeRecoverable": 53,
+      "reasons": {
+        "RECOVERABLE": 53,
+        "RAW_MISSING": 1
+      }
+    },
+    "talentview": {
+      "representations": 84,
+      "active": 80,
+      "recoverable": 84,
+      "activeRecoverable": 80,
+      "reasons": {
+        "RECOVERABLE": 84
+      }
+    },
+    "greenhouse": {
+      "representations": 2860,
+      "active": 2545,
+      "recoverable": 2860,
+      "activeRecoverable": 2545,
+      "reasons": {
+        "RECOVERABLE": 2860
+      }
+    },
+    "personio": {
+      "representations": 251,
+      "active": 186,
+      "recoverable": 232,
+      "activeRecoverable": 176,
+      "reasons": {
+        "RECOVERABLE": 232,
+        "CONTENT_MISSING": 19
+      }
+    },
+    "generic-listing": {
+      "representations": 6243,
+      "active": 6233,
+      "recoverable": 3706,
+      "activeRecoverable": 3703,
+      "reasons": {
+        "NATIVE_ID_MISSING": 2355,
+        "RECOVERABLE": 3706,
+        "IDENTITY_MISMATCH": 182
+      }
+    },
+    "digitalrecruiters": {
+      "representations": 808,
+      "active": 783,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 808
+      }
+    },
+    "jobylon": {
+      "representations": 31,
+      "active": 31,
+      "recoverable": 31,
+      "activeRecoverable": 31,
+      "reasons": {
+        "RECOVERABLE": 31
+      }
+    },
+    "volcanic": {
+      "representations": 31,
+      "active": 31,
+      "recoverable": 31,
+      "activeRecoverable": 31,
+      "reasons": {
+        "RECOVERABLE": 31
+      }
+    },
+    "bashtalents": {
+      "representations": 66,
+      "active": 57,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 66
+      }
+    },
+    "typesense": {
+      "representations": 47,
+      "active": 47,
+      "recoverable": 14,
+      "activeRecoverable": 14,
+      "reasons": {
+        "CONTENT_MISSING": 1,
+        "RECOVERABLE": 14,
+        "IDENTITY_MISMATCH": 32
+      }
+    },
+    "taleo": {
+      "representations": 76,
+      "active": 76,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 76
+      }
+    },
+    "altamira": {
+      "representations": 64,
+      "active": 64,
+      "recoverable": 56,
+      "activeRecoverable": 56,
+      "reasons": {
+        "RECOVERABLE": 56,
+        "DETAIL_EVIDENCE_UNUSABLE": 8
+      }
+    },
+    "geodirectory": {
+      "representations": 112,
+      "active": 110,
+      "recoverable": 112,
+      "activeRecoverable": 110,
+      "reasons": {
+        "RECOVERABLE": 112
+      }
+    },
+    "talentfunnel": {
+      "representations": 158,
+      "active": 153,
+      "recoverable": 156,
+      "activeRecoverable": 151,
+      "reasons": {
+        "RECOVERABLE": 156,
+        "CONTENT_MISSING": 2
+      }
+    },
+    "eqwa": {
+      "representations": 321,
+      "active": 321,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 321
+      }
+    },
+    "swatchgroup": {
+      "representations": 307,
+      "active": 293,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 307
+      }
+    },
+    "oraclehcm": {
+      "representations": 1225,
+      "active": 1215,
+      "recoverable": 1200,
+      "activeRecoverable": 1200,
+      "reasons": {
+        "RECOVERABLE": 1200,
+        "RAW_MISSING": 4,
+        "NATIVE_ID_MISSING": 20,
+        "CONTENT_MISSING": 1
+      }
+    },
+    "rituals": {
+      "representations": 1245,
+      "active": 1245,
+      "recoverable": 1245,
+      "activeRecoverable": 1245,
+      "reasons": {
+        "RECOVERABLE": 1245
+      }
+    },
+    "jibe": {
+      "representations": 10290,
+      "active": 10290,
+      "recoverable": 10290,
+      "activeRecoverable": 10290,
+      "reasons": {
+        "RECOVERABLE": 10290
+      }
+    },
+    "icims": {
+      "representations": 2563,
+      "active": 1593,
+      "recoverable": 953,
+      "activeRecoverable": 21,
+      "reasons": {
+        "RECOVERABLE": 953,
+        "DETAIL_EVIDENCE_UNUSABLE": 62,
+        "DETAIL_IDENTITY_MISMATCH": 1511,
+        "RAW_MISSING": 37
+      }
+    },
+    "wttj-sector": {
+      "representations": 2088,
+      "active": 2002,
+      "recoverable": 0,
+      "activeRecoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 1974,
+        "RAW_MISSING": 114
+      }
+    },
+    "flatchr": {
+      "representations": 354,
+      "active": 354,
+      "recoverable": 354,
+      "activeRecoverable": 354,
+      "reasons": {
+        "RECOVERABLE": 354
+      }
+    },
+    "jobaffinity-wordpress": {
+      "representations": 978,
+      "active": 978,
+      "recoverable": 978,
+      "activeRecoverable": 978,
+      "reasons": {
+        "RECOVERABLE": 978
+      }
+    },
+    "harri": {
+      "representations": 36,
+      "active": 36,
+      "recoverable": 36,
+      "activeRecoverable": 36,
+      "reasons": {
+        "RECOVERABLE": 36
+      }
+    },
+    "talentrecruiter": {
+      "representations": 18,
+      "active": 17,
+      "recoverable": 15,
+      "activeRecoverable": 14,
+      "reasons": {
+        "RECOVERABLE": 15,
+        "CONTENT_MISSING": 3
+      }
+    },
+    "easycruit": {
+      "representations": 50,
+      "active": 50,
+      "recoverable": 50,
+      "activeRecoverable": 50,
+      "reasons": {
+        "RECOVERABLE": 50
+      }
+    }
+  },
+  "recoveryReasons": {
+    "RECOVERABLE": 52189,
+    "IDENTITY_MISMATCH": 256,
+    "RAW_MISSING": 1823,
+    "READER_UNQUALIFIED": 20739,
+    "DETAIL_IDENTITY_MISMATCH": 10110,
+    "CATALOGUE_MISSING": 441,
+    "CONTENT_MISSING": 31,
+    "NATIVE_ID_MISSING": 5065,
+    "PUBLICATION_HELD": 40,
+    "DETAIL_EVIDENCE_UNUSABLE": 70
+  },
+  "sourceCount": 536,
+  "jobsWithSources": 87520,
+  "totalJobs": 87580,
+  "jobsWithoutSources": 60,
+  "groupsWithAllMembersRecoverable": 50236,
+  "activeGroupsWithAllMembersRecoverable": 49132,
+  "mergedCompaniesWithSources": 0
+}

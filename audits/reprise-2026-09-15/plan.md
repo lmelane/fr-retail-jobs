@@ -119,6 +119,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 [Sous-lot 4E2 validé localement](lot-4e2.md) : plan d’échéances version 2, révision calculée, preuve antérieure conservée après capture partielle, retrait borné des deux règles réfutées et cas sans preuve explicitement bloqués. Les 3 043 tests, 11 contre-épreuves et la CLI passent ; aucune reprise du stock distant n’a été exécutée.
 
+[Sous-lot 4E3 — migration et audit du stock complet](lot-4e3.md) : les 11 migrations passent sur la copie de 87 580 offres sans modification du contenu ni des attestations. L’audit révèle 3 210 échéances dont la liaison à l’identité native ou à l’état de publication reste à qualifier. Aucun plan d’échéance n’est appliqué ; ce contrôle doit être ajouté avant la reprise. Les 441 représentations sans registre sont inactives et les 59 redirections historiques restent à préserver.
+
 **Objectif.** Éviter les doublons visibles sans supprimer des postes distincts.
 
 - **Fichiers :** `dedup/match.ts`, `upsert.ts`, `packages/db/publications.ts`, `postingIdentity`, `reconcile`, schéma et API d’identités/redirects.
