@@ -18,8 +18,15 @@
  *
  * RÈGLE (Loïc, 2026-09-08) : « le faible volume décide si on EXPOSE une
  * dimension, pas si on POLLUE la taxonomie canonique. » `engagementType` ne
- * concerne que 130 offres et reste une colonne nullable propre, sans index ni
- * facette — plutôt qu'une valeur rangée dans la mauvaise dimension.
+ * concerne que 162 offres sur 83 431 actives (0,19 %, mesuré en production le
+ * 2026-09-15 : FREELANCE 118, INDEPENDENT_CONTRACTOR 44) et reste une colonne
+ * nullable propre, sans index ni facette — plutôt qu'une valeur rangée dans la
+ * mauvaise dimension.
+ *
+ * Le chiffre porte sa DATE parce qu'il a déjà vieilli une fois : « 130 offres »
+ * datait du 2026-09-08 et se recopiait dans trois autres fichiers pendant que
+ * la colonne continuait de se remplir. Un volume gravé sans date se relit
+ * comme une mesure d'aujourd'hui, et fonde des décisions sur l'année dernière.
  *
  * COROLLAIRE, appliqué partout ici : on ne DÉDUIT jamais une dimension d'une
  * autre. Un V.I.E est borné dans le temps, mais tant que la source ne l'écrit
@@ -293,11 +300,21 @@ export function decomposeCompositeCode(raw?: string | null): Employment {
   return out;
 }
 
-/** True quand une valeur ne nomme QUE un rythme — utile pour déplacer un champ mal rangé. */
-export function isWorkTimeOnlyValue(raw?: string | null): boolean {
-  const read = readEmployment(raw);
-  return read.workTime !== undefined && !read.employmentTerm && !read.programType && !read.engagementType;
-}
+/*
+ * `isWorkTimeOnlyValue` A ÉTÉ RETIRÉ ICI (lot 4A, 2026-09-15).
+ *
+ * Il rendait « cette valeur ne nomme QU'un rythme », pour déplacer un champ mal
+ * rangé d'une source vers la bonne colonne. Il est né avec ce module (commit de
+ * la refonte en cinq dimensions) et n'a JAMAIS été branché : le grep exhaustif
+ * du dépôt rend une seule occurrence, sa propre déclaration. Aucun appelant,
+ * aucun témoin.
+ *
+ * Le déplacement qu'il devait servir est fait ailleurs, et autrement : c'est
+ * `trust/resolve.ts` qui arbitre quelle preuve alimente quelle dimension, en
+ * lisant TOUTES les dimensions d'une valeur (`readEmployment`) plutôt qu'en
+ * demandant si une seule est présente. Un garde-fou sans appelant ne protège
+ * rien — il donne seulement l'impression qu'une protection existe.
+ */
 
 /** True quand une valeur nomme au moins une des quatre dimensions. */
 export function isEmploymentTerm(raw?: string | null): boolean {

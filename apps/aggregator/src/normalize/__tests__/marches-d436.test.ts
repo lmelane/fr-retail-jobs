@@ -12,7 +12,7 @@ import {
   marche,
   type CodeMarche,
   type DimensionFacette,
-} from '../marches.js';
+} from '@catwalks/db/marches';
 
 /**
  * D-436 — LE REGISTRE DU VOCABULAIRE NATIF PAR MARCHÉ.

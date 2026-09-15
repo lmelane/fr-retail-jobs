@@ -1,4 +1,4 @@
-import { facettesDuMarche, type DimensionFacette } from '../../aggregator/src/normalize/marches';
+import { facettesDuMarche, type DimensionFacette } from '@catwalks/db/marches';
 
 /**
  * QUELLES FACETTES L'API SERT, MARCHÉ PAR MARCHÉ.

@@ -159,9 +159,16 @@ export type CodeMarche = (typeof CODES_MARCHE)[number];
 /**
  * Les DIMENSIONS exposables — strict sous-ensemble du modèle de `employment.ts`.
  *
- * `engagementType` n'y figure pas : 130 offres dans tout le catalogue, aucune
- * facette, aucun index (règle Loïc, 2026-09-08). Le registre ne réintroduit pas
- * par la fenêtre une dimension que le modèle a laissée hors facette.
+ * `engagementType` n'y figure pas : 162 offres sur 83 431 actives (0,19 %,
+ * mesuré en production le 2026-09-15), aucune facette, aucun index (règle Loïc,
+ * 2026-09-08). Le registre ne réintroduit pas par la fenêtre une dimension que
+ * le modèle a laissée hors facette.
+ *
+ * DEUX VALEURS DISTINCTES SEULEMENT — FREELANCE (118) et INDEPENDENT_CONTRACTOR
+ * (44). Même si la couverture montait un jour au-dessus du seuil, ce serait la
+ * dimension la plus pauvre du registre en pouvoir de discrimination : `metier`
+ * en porte 27, `seniorite` 6. Le nombre de valeurs compte autant que le taux de
+ * remplissage, et c'est pourquoi le registre mesure les deux.
  *
  * ── MÉTIER ET SÉNIORITÉ : LE TROU QUE L'AUDIT A RÉVÉLÉ ────────────────────
  *

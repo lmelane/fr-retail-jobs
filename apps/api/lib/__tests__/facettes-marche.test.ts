@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { facetteServie, facettesServies, type NomFacetteApi } from '../facettes-marche.js';
 import { parseFilters, whereClause } from '../jobs.js';
-import { facettesDuMarche } from '../../../aggregator/src/normalize/marches.js';
+import { facettesDuMarche } from '@catwalks/db/marches';
 
 /**
  * LOT « FACETTES NATIVES » — l'API ne sert que les filtres qui ont du sens sur
