@@ -92,17 +92,41 @@ describe('marché FR — le contrat est servi', () => {
 });
 
 describe('dégradation sûre — marché absent ou inconnu', () => {
-  it("BE n'est pas mesuré : c'est la prémisse du cas « inconnu »", () => {
-    // Si la Belgique entrait un jour au registre, ce témoin rougirait — et il
-    // DOIT rougir : le cas « inconnu » devrait alors être rejoué sur un autre
-    // pays, sans quoi il ne testerait plus la dégradation.
-    expect(facettesDuMarche('BE')).toHaveLength(0);
+  it("CN n'est pas ouvert : c'est la prémisse du cas « inconnu »", () => {
+    /*
+     * CE TÉMOIN PORTAIT « BE » JUSQU'AU 15/09/2026, et il a ROUGI ce jour-là —
+     * exactement comme son auteur l'avait prévu : « Si la Belgique entrait un
+     * jour au registre, ce témoin rougirait — et il DOIT rougir : le cas
+     * "inconnu" devrait alors être rejoué sur un autre pays, sans quoi il ne
+     * testerait plus la dégradation. »
+     *
+     * La Belgique a été mesurée (671 offres, cinq facettes au-dessus du seuil)
+     * et elle est entrée au registre. Le cas « inconnu » est donc rejoué sur la
+     * CHINE : 1 224 offres actives, mesurable, mais marché NON OUVERT.
+     *
+     * Le choix d'un pays RÉEL du catalogue est délibéré. Un code absurde
+     * (« ZZ ») testerait la validation de forme ; un pays réel mais fermé teste
+     * ce qui arrive vraiment en production — un candidat dont l'IP ou l'URL
+     * désigne un pays que nous servons sans lui offrir de marché.
+     */
+    expect(facettesDuMarche('CN')).toHaveLength(0);
   });
 
   it('un marché inconnu sert TOUTES les facettes', () => {
     const completes = facettesCompletes();
-    const servies = facettesServies(completes, 'BE');
+    const servies = facettesServies(completes, 'CN');
     expect(Object.keys(servies).sort()).toEqual(Object.keys(completes).sort());
+  });
+
+  it('LA BELGIQUE, ELLE, EST MESURÉE — la contre-épreuve du cas « inconnu »', () => {
+    /*
+     * Sans cette contre-épreuve, le bloc ci-dessus passerait au vert sur un
+     * registre VIDE : tout marché rendrait zéro facette et « CN dégrade bien »
+     * ne prouverait plus rien. Le témoin affirme donc qu'au moins un marché
+     * proche — la Belgique, entrée le 15/09/2026 — est bel et bien servi.
+     */
+    expect(facettesDuMarche('BE').length, 'BE expose ses facettes natives').toBeGreaterThan(0);
+    expect(facettesDuMarche('BE')).toContain('contrat');
   });
 
   it('un marché absent sert TOUTES les facettes — le comportement actuel, inchangé', () => {

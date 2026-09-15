@@ -144,16 +144,30 @@ export const SEUIL_FACETTE_DENSE = 0.9;
 export const PLANCHER_FACETTE_DENSE = 0.77;
 
 /**
- * Les marchés MESURÉS le 2026-09-15, et eux seuls.
+ * Les marchés MESURÉS, et eux seuls.
  *
- * BE et CN ont été volontairement ÉCARTÉS. Le tableau de couverture ne porte
- * que dix pays ; pour la Belgique et la Chine, nous ne disposons d'aucun taux.
- * Les inscrire supposerait de recopier ceux d'un voisin (« la Belgique, c'est
- * comme la France ») — or c'est exactement l'erreur que le registre existe pour
- * empêcher : CA-fr et FR parlent la même langue et n'ont PAS le même libellé.
- * Un marché entre ici quand il est mesuré, pas quand il est plausible.
+ * ── LA BELGIQUE EST ENTRÉE LE 2026-09-15, PARCE QU'ELLE A ÉTÉ MESURÉE ─────
+ *
+ * Elle était écartée pour la seule raison qui vaille — « nous ne disposons
+ * d'aucun taux » — et non par jugement sur le marché. La mesure a été faite :
+ * 671 offres actives, et les CINQ dimensions passent le seuil d'affichage.
+ * C'est le marché le MIEUX couvert du registre en nombre de facettes, devant
+ * la France elle-même (qui rate le saisonnier). L'écarter plus longtemps
+ * fermait un marché dense sur une absence de données qui n'existait plus.
+ *
+ * Le registre n'a pas changé de règle pour l'accueillir : ses taux sont
+ * recopiés de la même requête que les dix autres, ses libellés sont relevés et
+ * non déduits de la France voisine — exactement le piège que CA-fr a révélé.
+ *
+ * ── CE QUI RESTE DEHORS, ET POURQUOI ──────────────────────────────────────
+ *
+ * La CHINE reste écartée. Elle est pourtant mesurable (1 224 offres actives le
+ * 2026-09-15, métier 88,8 %) : son absence n'est donc PLUS un trou de mesure,
+ * c'est une question d'ouverture de marché qui appartient au CEO. La
+ * distinction compte — « non mesuré » se répare par une requête, « non ouvert »
+ * se tranche par une décision.
  */
-export const CODES_MARCHE = ['US', 'FR', 'GB', 'CA', 'DE', 'IT', 'ES', 'NL', 'AU', 'CH'] as const;
+export const CODES_MARCHE = ['US', 'FR', 'GB', 'CA', 'DE', 'IT', 'ES', 'NL', 'AU', 'CH', 'BE'] as const;
 export type CodeMarche = (typeof CODES_MARCHE)[number];
 
 /**
@@ -568,6 +582,76 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       saisonnier: 0.008,
       metier: 0.77705,
       seniorite: 0.18033,
+    },
+  },
+
+  /**
+   * BELGIQUE — CINQ FACETTES EXPOSÉES, à égalité avec la France et avec elle
+   * seule. Mesuré le 2026-09-15 sur 671 offres actives.
+   *
+   * Contrat 43,1 % · temps 81,4 % · programme 22,4 % · métier 90,5 % ·
+   * séniorité 21,5 %. Les cinq dimensions exposables passent le seuil ; le
+   * saisonnier le rate (2,7 %), comme en France (0,2 %).
+   *
+   * Vérifié dans le code plutôt qu'affirmé : `facettesDuMarche` rend cinq
+   * entrées pour FR et BE, quatre pour GB/CA/ES/NL/AU, trois pour US/DE/IT/CH.
+   * Une première rédaction de ce bloc disait « le SEUL marché à cinq facettes »
+   * — c'était faux, la France en expose autant, et seul le comptage réel l'a
+   * montré.
+   *
+   * Ce qui EST singulier tient au PROGRAMME : à 22,4 %, la Belgique rejoint la
+   * France (22,2 %) et la Suisse (26,3 %) dans le très petit groupe des marchés
+   * où stage et alternance sont assez publiés pour qu'un filtre tienne. C'est
+   * ce qui la sépare de GB, CA, NL et AU, qui s'arrêtent à quatre.
+   *
+   * Le plus petit marché du registre par le volume (671 offres, moins que la
+   * Suisse) et pourtant parmi les mieux couverts. Volume et densité sont deux
+   * choses distinctes : c'est précisément pourquoi le registre mesure les deux
+   * et n'infère jamais l'une de l'autre.
+   *
+   * ── LES LIBELLÉS SONT BILINGUES, ET CE N'EST PAS UN ORNEMENT ─────────────
+   *
+   * Mesuré : 163 offres néerlandophones contre 144 francophones (et 224 en
+   * anglais). Le NÉERLANDAIS DEVANCE LE FRANÇAIS. Servir la Belgique avec les
+   * seuls libellés français aurait reproduit, sur le marché où c'est le plus
+   * faux, l'erreur que le Canada a révélée — déduire le libellé de la langue
+   * qu'on suppose, au lieu de le relever.
+   *
+   * La forme retenue suit celle de la Suisse pour les mêmes raisons (locale de
+   * service unique, marché réellement plurilingue), avec une différence
+   * assumée : la Suisse porte les libellés d'UNE langue, la Belgique porte les
+   * DEUX, séparées par « · ». Indeed sert bel et bien deux sites belges
+   * distincts (be.indeed.com en fr et en nl), et aucune des deux langues n'est
+   * assez majoritaire pour écraser l'autre — 163 contre 144, l'écart tient en
+   * dix-neuf offres.
+   *
+   * `locale` reste `fr-BE` : c'est la locale de SERVICE (dans quelle langue on
+   * parle au visiteur par défaut), pas un verdict sur la langue des annonces.
+   * Le registre côté site porte les trois locales réellement servies.
+   *
+   * ── LE SAISONNIER RESTE DEHORS ──────────────────────────────────────────
+   *
+   * 2,7 % : très loin du seuil, et aucun libellé natif relevé. La règle
+   * s'applique sans exception, y compris sur le marché le mieux couvert.
+   */
+  BE: {
+    code: 'BE',
+    locale: 'fr-BE',
+    libelles: {
+      contrat: 'Type de contrat · Contracttype',
+      temps: 'Temps de travail · Dienstverband',
+      programme: 'Type de programme · Type programma',
+      metier: 'Métier · Vakgebied',
+      seniorite: 'Niveau d’expérience · Ervaringsniveau',
+    },
+    offresMesurees: 671,
+    couverture: {
+      contrat: 0.4307,
+      temps: 0.81371,
+      programme: 0.22355,
+      saisonnier: 0.02683,
+      metier: 0.90462,
+      seniorite: 0.21461,
     },
   },
 };

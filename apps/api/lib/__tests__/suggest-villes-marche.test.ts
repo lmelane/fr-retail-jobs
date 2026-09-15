@@ -250,15 +250,35 @@ describe.skipIf(!actif)('suggestCities — cloisonnement par marché', () => {
 
   it('marché INCONNU du registre — aucune restriction, pas d’exception', async () => {
     /*
-     * BE et CN sont des pays RÉELS du catalogue mais ne sont PAS dans
-     * `CODES_MARCHE` (le registre n'expose que les dix marchés mesurés). Un
-     * code mal formé ou vide passe par le même chemin.
+     * CN est un pays RÉEL du catalogue (1 224 offres, métier 88,8 %) mais
+     * n'est PAS dans `CODES_MARCHE` : il est mesurable, son ouverture est une
+     * décision produit qui n'a pas été prise. Un code mal formé ou vide passe
+     * par le même chemin.
+     *
+     * `BE` A ÉTÉ RETIRÉ DE CETTE LISTE le 15/09/2026, et c'est le témoin qui
+     * l'a imposé : la Belgique vient d'entrer au registre (671 offres, cinq
+     * facettes au-dessus du seuil, programme à 22,4 %). Elle CLOISONNE donc
+     * désormais — « Pa » n'y rend plus Paris, et c'est le comportement voulu.
+     *
+     * Le témoin décrivait un état périmé : il a rougi au premier passage
+     * après l'ajout, ce qui est exactement son rôle.
      */
-    for (const inconnu of ['BE', 'CN', 'ZZ', 'zzzzz', '<script>', '']) {
+    for (const inconnu of ['CN', 'ZZ', 'zzzzz', '<script>', '']) {
       const villes = await suggestCities('Pa', inconnu);
       expect(villes, `marché « ${inconnu} »`).toContain('Paris');
       expect(villes, `marché « ${inconnu} »`).toContain('Pantin');
     }
+  });
+
+  it('BE cloisonne désormais — la contre-épreuve de son entrée au registre', async () => {
+    /*
+     * PRÉMISSE — sans marché, « Pa » rend bien Paris. Sans cette assertion, le
+     * témoin passerait au vert sur un jeu d'essai vide.
+     */
+    expect(await suggestCities('Pa'), 'la prémisse : Paris existe').toContain('Paris');
+
+    // Et le cloisonnement mord : la Belgique n'a pas de Paris.
+    expect(await suggestCities('Pa', 'BE')).not.toContain('Paris');
   });
 
   it('la frappe ne peut pas devenir un joker LIKE', async () => {

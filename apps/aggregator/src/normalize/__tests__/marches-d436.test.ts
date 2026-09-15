@@ -196,9 +196,19 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
     /*
      * PRÉMISSE — les codes testés doivent bien être ABSENTS du registre, sinon
      * le témoin vérifierait le comportement nominal en croyant tester le cas
-     * dégradé. BE et CN sont écartés volontairement : non mesurés.
+     * dégradé.
+     *
+     * BE A ÉTÉ RETIRÉ DE CETTE LISTE le 2026-09-15 : la Belgique a été mesurée
+     * (671 offres, cinq facettes au-dessus du seuil) et elle est entrée au
+     * registre. Ce témoin avait d'ailleurs ROUGI sur ce point précis, ce qui
+     * est exactement ce qu'on lui demande — l'entrée d'un marché est une
+     * décision, elle ne doit jamais pouvoir passer inaperçue.
+     *
+     * CN reste écarté : mesurable (1 224 offres) mais non ouvert. Le cas
+     * dégradé est donc toujours exercé par un code réel du catalogue, et pas
+     * seulement par des chaînes absurdes.
      */
-    for (const inconnu of ['BE', 'CN', 'ZZ', '', '   ', 'FRANCE', 'us-east']) {
+    for (const inconnu of ['CN', 'ZZ', '', '   ', 'FRANCE', 'us-east']) {
       expect(estCodeMarche(inconnu.toUpperCase()), `« ${inconnu} » doit être hors registre`).toBe(false);
       expect(() => facettesDuMarche(inconnu)).not.toThrow();
       expect(facettesDuMarche(inconnu)).toEqual([]);
@@ -235,10 +245,10 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
 
   it('INVARIANT : le registre est cohérent — un enregistrement complet par code', () => {
     /*
-     * PRÉMISSE — dix marchés mesurés, pas neuf ni onze. BE et CN n'entrent pas
-     * tant qu'aucune mesure ne les couvre.
+     * PRÉMISSE — ONZE marchés mesurés depuis l'entrée de la Belgique le
+     * 2026-09-15, pas dix ni douze. CN n'entre pas : mesurable mais non ouvert.
      */
-    expect(CODES_MARCHE.length, 'la prémisse : dix marchés mesurés').toBe(10);
+    expect(CODES_MARCHE.length, 'la prémisse : onze marchés mesurés').toBe(11);
 
     for (const code of CODES_MARCHE) {
       const m = MARCHES[code];
@@ -314,6 +324,7 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
       NL: [0.91076, 0.2861],
       AU: [0.94408, 0.31118],
       CH: [0.77705, 0.18033],
+      BE: [0.90462, 0.21461],
     };
     for (const code of CODES_MARCHE) {
       const [metier, seniorite] = tauxMesures[code];
@@ -454,6 +465,80 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
         Math.max(...facettesDuMarche(code).map((d) => MARCHES[code].couverture[d])) < SEUIL_FACETTE_DENSE,
     );
     expect(sansFacetteDense, 'la Suisse, et elle seule, reste sous la cible de 90 %').toEqual(['CH']);
+  });
+
+  it('LA BELGIQUE EXPOSE SES CINQ FACETTES — à égalité avec la France, et elle seule', () => {
+    /*
+     * CE QUE CE TÉMOIN EMPÊCHE : que la Belgique ressorte du registre aussi
+     * discrètement qu'elle y est restée absente. Elle a été écartée des mois
+     * sur « aucun taux disponible » — un motif devenu faux sans que rien ne le
+     * signale, pendant que 671 offres restaient inaccessibles par marché.
+     *
+     * PRÉMISSE — les CINQ dimensions exposables doivent être AU-DESSUS du
+     * seuil, une par une. Sans ces cinq assertions, un registre où la Belgique
+     * aurait des taux effondrés rendrait « moins de cinq facettes » et le
+     * `toEqual` final rougirait pour une raison qu'on attribuerait au code de
+     * filtrage au lieu des données.
+     */
+    const be = MARCHES.BE;
+    expect(be.offresMesurees, 'la prémisse : la Belgique est bien mesurée').toBe(671);
+    for (const dimension of ['contrat', 'temps', 'programme', 'metier', 'seniorite'] as const) {
+      expect(
+        be.couverture[dimension],
+        `la prémisse : BE/${dimension} passe le seuil`,
+      ).toBeGreaterThanOrEqual(SEUIL_AFFICHAGE_FACETTE);
+    }
+
+    expect(facettesDuMarche('BE')).toEqual(['contrat', 'temps', 'programme', 'metier', 'seniorite']);
+
+    /*
+     * CONTRE-ÉPREUVE, et elle corrige une erreur que j'ai commise en écrivant
+     * ce lot : j'avais gravé « le SEUL marché à cinq facettes ». Le comptage
+     * réel dit que la France en expose autant. Le témoin affirme donc le fait
+     * VÉRIFIÉ — BE et FR sont les deux seuls à cinq — au lieu de la formule
+     * flatteuse qui ne résistait pas au comptage.
+     */
+    const cinqFacettes = CODES_MARCHE.filter((code) => facettesDuMarche(code).length === 5);
+    expect([...cinqFacettes].sort(), 'BE et FR, et eux seuls, exposent cinq facettes').toEqual(['BE', 'FR']);
+
+    /*
+     * Le saisonnier reste dehors À 2,7 %, sur le marché le mieux couvert : la
+     * règle ne se relâche pas parce que le reste du marché est bon.
+     */
+    expect(be.couverture.saisonnier, 'la prémisse : le saisonnier belge est très bas').toBeLessThan(
+      SEUIL_AFFICHAGE_FACETTE,
+    );
+    expect(facettesDuMarche('BE')).not.toContain('saisonnier');
+  });
+
+  it('LES LIBELLÉS BELGES SONT BILINGUES — le néerlandais devance le français', () => {
+    /*
+     * LE DÉFAUT QUE CE TÉMOIN CHERCHE : servir la Belgique avec les seuls
+     * libellés français, « puisque c'est un pays francophone ». Mesuré le
+     * 2026-09-15 : 163 offres néerlandophones contre 144 francophones. La
+     * supposition est non seulement fausse, elle est INVERSÉE.
+     *
+     * C'est le même piège que CA-fr, sur l'autre axe : là-bas on déduisait le
+     * libellé de la langue, ici on déduirait la langue du pays.
+     *
+     * PRÉMISSE — la Belgique doit porter des libellés pour être testée, et ils
+     * doivent DIFFÉRER de ceux de la France : deux libellés identiques
+     * prouveraient que la déduction a eu lieu.
+     */
+    for (const dimension of ['contrat', 'temps', 'programme', 'metier', 'seniorite'] as const) {
+      const belge = libelleFacette('BE', dimension);
+      expect(belge, `la prémisse : BE porte un libellé pour ${dimension}`).toBeTruthy();
+      expect(belge, `BE/${dimension} ne doit pas recopier la France`).not.toBe(
+        libelleFacette('FR', dimension),
+      );
+      // Les DEUX langues sont présentes : « fr · nl », jamais une seule.
+      expect(belge, `BE/${dimension} doit porter les deux langues`).toContain(' · ');
+    }
+
+    expect(libelleFacette('BE', 'contrat')).toBe('Type de contrat · Contracttype');
+    // Le néerlandais belge rejoint le vocabulaire néerlandais des Pays-Bas sur
+    // le rythme — « Dienstverband » — sans pour autant fusionner les marchés.
+    expect(libelleFacette('BE', 'temps')).toContain('Dienstverband');
   });
 
   it('AUCUNE DIMENSION `casual` — le vocabulaire australien reste du saisonnier', () => {
