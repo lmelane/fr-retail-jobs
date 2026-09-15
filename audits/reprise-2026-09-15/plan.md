@@ -148,6 +148,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 [Sous-lot 4H3 validé localement](lot-4h3.md) : le dernier groupe mixte est séparé sans usurper l'ancien ID public, conservé comme retrait explicite. Le contrat API et le site distinguent retrait et fermeture. Les 3 207 tests agrégateur/API, 755 tests du site, deux compilations et cinq contre-épreuves passent. Sur le clone : 55 125 présentations, 294 publications en quarantaine, zéro publication reconstructible encore bloquée. Les formats non qualifiés, les contenus perdus et la certification des sources restent ouverts.
 
+[Relevé 4I en lecture seule](lot-4i.md) : 35 639 publications sans présentation qualifiée restent explicitement hors du stock reconstruit. La perte de détails natifs est confirmée dans les lecteurs Eightfold et WTTJ. Le lot sources commence par conserver et vérifier le résultat complet de collecte, puis certifier les sources et traiter les familles insuffisantes. Aucune bascule publique sur ce stock partiel.
+
 ## Lot 5. Certifier les sources et préparer le cycle complet
 
 **Objectif.** Rendre chaque source du catalogue exploitable ou explicitement exclue.
