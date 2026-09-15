@@ -25,7 +25,7 @@
  * `adidas DE` (125). Vérification faite, ce sont de VRAIES offres allemandes
  * (Aachen, Berlin). Le défaut est propre à cette source.
  *
- *   DB_URL=… node scripts/verif-codes-etats-us-2026-09-14.mjs
+ *   DB_URL=… node audits/mesures-d435-d436/verif-codes-etats-us-2026-09-14.mjs
  */
 import { PrismaClient } from '@prisma/client';
 const p = new PrismaClient({ datasources: { db: { url: process.env.DB_URL } } });

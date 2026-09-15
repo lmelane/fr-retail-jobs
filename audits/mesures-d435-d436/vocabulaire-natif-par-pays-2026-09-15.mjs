@@ -35,7 +35,7 @@
  * étiquette « CDI » des postes saisonniers américains (196 offres mesurées).
  * Présence ≠ exactitude.
  *
- *   DB_URL=… node scripts/vocabulaire-natif-par-pays-2026-09-15.mjs
+ *   DB_URL=… node audits/mesures-d435-d436/vocabulaire-natif-par-pays-2026-09-15.mjs
  */
 import { PrismaClient } from '@prisma/client';
 

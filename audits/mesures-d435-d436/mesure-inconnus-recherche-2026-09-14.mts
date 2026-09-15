@@ -13,10 +13,10 @@
  * de requête, `whereClause`, celle que la page et l'API partagent — la même
  * qui alimente les résultats, les compteurs et la pagination.
  *
- *   DB_URL=… npx tsx scripts/mesure-inconnus-recherche-2026-09-14.mts
+ *   DB_URL=… npx tsx audits/mesures-d435-d436/mesure-inconnus-recherche-2026-09-14.mts
  */
 import { PrismaClient } from '@prisma/client';
-import { whereClause, type JobFilters } from '../apps/api/lib/jobs.js';
+import { whereClause, type JobFilters } from '../../apps/api/lib/jobs.js';
 
 const url = process.env.DB_URL;
 if (!url) {

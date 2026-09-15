@@ -24,7 +24,7 @@
  * salaire en est l'exemple : 1,7 % de remplissage, et parmi eux des montants
  * annuels étiquetés horaires. La qualité se vérifie dimension par dimension.
  *
- *   DB_URL=… node scripts/facettes-par-marche-2026-09-15.mjs
+ *   DB_URL=… node audits/mesures-d435-d436/facettes-par-marche-2026-09-15.mjs
  */
 import { PrismaClient } from '@prisma/client';
 

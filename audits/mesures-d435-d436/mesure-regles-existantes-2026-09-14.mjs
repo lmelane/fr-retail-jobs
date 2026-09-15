@@ -22,7 +22,7 @@
  * DISTINCTES (`count(distinct ...)`), jamais des lignes `JobSource`. Deux
  * sources servant la même offre ne la comptent qu'une fois.
  *
- *   DB_URL=… node scripts/mesure-regles-existantes-2026-09-14.mjs
+ *   DB_URL=… node audits/mesures-d435-d436/mesure-regles-existantes-2026-09-14.mjs
  */
 import { PrismaClient } from '@prisma/client';
 

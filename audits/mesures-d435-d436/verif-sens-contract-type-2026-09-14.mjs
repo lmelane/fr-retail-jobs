@@ -42,7 +42,7 @@
  * basculer ce verdict, et le champ perdrait la main pour les valeurs
  * aujourd'hui fiables à 97 %. Le lot aurait été une RÉGRESSION.
  *
- *   DB_URL=… node scripts/verif-sens-contract-type-2026-09-14.mjs
+ *   DB_URL=… node audits/mesures-d435-d436/verif-sens-contract-type-2026-09-14.mjs
  */
 import { PrismaClient } from '@prisma/client';
 

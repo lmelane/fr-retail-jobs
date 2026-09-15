@@ -31,10 +31,10 @@
  * fonction AVANT à ce qu'elle rend APRÈS, sur le même libellé. Seul l'écart
  * entre les deux est imputable au correctif.
  *
- *   DB_URL=… node scripts/simulation-collision-pays-2026-09-14.mjs
+ *   DB_URL=… node audits/mesures-d435-d436/simulation-collision-pays-2026-09-14.mjs
  */
 import { PrismaClient } from '@prisma/client';
-import { countryFromLocation, normalizeCountry } from '../apps/aggregator/src/normalize/country.js';
+import { countryFromLocation, normalizeCountry } from '../../apps/aggregator/src/normalize/country.js';
 
 /**
  * LA FONCTION AVANT LE CORRECTIF — copie littérale du corps committé, relu

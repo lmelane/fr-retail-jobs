@@ -21,7 +21,7 @@
  * Ce script produit les deux nombres côte à côte, pour que l'écart soit
  * visible et qu'on ne confonde plus jamais les deux.
  *
- *   DB_URL=… node scripts/couverture-top20-2026-09-14.mjs
+ *   DB_URL=… node audits/mesures-d435-d436/couverture-top20-2026-09-14.mjs
  */
 import { PrismaClient } from '@prisma/client';
 

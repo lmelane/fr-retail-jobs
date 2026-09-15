@@ -23,7 +23,7 @@
  * Le brut, ici, c'est la charge utile de la source (`JobSource.raw`), pas
  * `rawContract` — qui est déjà un tri opéré par nos adaptateurs.
  *
- *   DB_URL=… node scripts/brut-vs-canonique-2026-09-15.mjs
+ *   DB_URL=… node audits/mesures-d435-d436/brut-vs-canonique-2026-09-15.mjs
  */
 import { PrismaClient } from '@prisma/client';
 

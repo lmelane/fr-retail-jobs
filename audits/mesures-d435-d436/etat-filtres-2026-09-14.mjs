@@ -16,7 +16,7 @@
  * silencieuse OU d'un vocabulaire que nous ne savons pas lire. Les deux ne se
  * corrigent pas de la même façon, et seul le brut permet de les distinguer.
  *
- *   DB_URL=… node scripts/etat-filtres-2026-09-14.mjs
+ *   DB_URL=… node audits/mesures-d435-d436/etat-filtres-2026-09-14.mjs
  */
 import { PrismaClient } from '@prisma/client';
 
