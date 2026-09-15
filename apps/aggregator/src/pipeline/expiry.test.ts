@@ -43,6 +43,14 @@ describe('publication deadlines', () => {
       expiryEvidence: { value: '9999-12-31', status: 'BEYOND_STORAGE_RANGE' } });
   });
 
+  it('does not close a Flatchr publication because its contract end is past', async () => {
+    const raw = { vacancy: { contract_type: 'CDD', end_date: past.toISOString() } };
+    const { jobId } = await upsertDeduplicated(db, { ...candidate('contract-end', raw), atsType: 'FLATCHR' });
+    expect(await db.job.findUniqueOrThrow({ where: { id: jobId } })).toMatchObject({ isActive: true, closedAt: null });
+    expect(await db.jobSource.findFirstOrThrow({ where: { jobId } })).toMatchObject({ isActive: true, expiresAt: null, expiryEvidence: null, raw });
+    expect(await db.jobEvent.count({ where: { jobId, type: 'CLOSED' } })).toBe(0);
+  });
+
   it('does not use the grouped normalized deadline as evidence for a publication', async () => {
     const { jobId } = await upsertDeduplicated(db, { ...candidate('unproven', {}), validThrough: past });
     expect(await db.job.findUniqueOrThrow({ where: { id: jobId } })).toMatchObject({ isActive: true });

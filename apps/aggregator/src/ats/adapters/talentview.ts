@@ -45,6 +45,10 @@ function detailHeaders(slug: string) {
 }
 
 type CampaignDetail = {
+  id?: number | string;
+  slug?: string;
+  is_draft?: boolean;
+  is_online?: boolean;
   description?: string;
   profile?: string;
 };
@@ -66,7 +70,7 @@ type Campaign = {
   entity?: { name?: string };
 };
 
-function toNormalized(campaign: Campaign, slug: string): NormalizedJob | null {
+export function parseTalentViewCampaign(campaign: Campaign, slug: string): NormalizedJob | null {
   if (!campaign.name) return null;
 
   const address = campaign.address;
@@ -145,7 +149,7 @@ export async function fetchTalentViewJobs(
             (campaign.id != null && !(typeof campaign.id === 'number' && Number.isSafeInteger(campaign.id) && campaign.id > 0 || typeof campaign.id === 'string' && campaign.id.trim().length > 0))) {
           throw new Error(`TalentView "${slug}": invalid campaign on page ${page}`);
         }
-        const job = toNormalized(campaign, slug)!;
+        const job = parseTalentViewCampaign(campaign, slug)!;
         if (websiteIdsSeen.has(job.externalId)) { truncated = true; continue; }
         websiteIdsSeen.add(job.externalId);
         fresh++;
@@ -171,26 +175,35 @@ export async function fetchTalentViewJobs(
       limit(async () => {
         const campaignSlug = (job.raw as Campaign | undefined)?.slug;
         if (!campaignSlug) return job;
+        let detail: CampaignDetail;
         try {
-          const detail = await fetchJson<CampaignDetail>(
+          detail = await fetchJson<CampaignDetail>(
             `${API}/companies/${encodeURIComponent(slug)}/campaigns/${encodeURIComponent(campaignSlug)}`,
             { headers: detailHeaders(slug) },
           );
-          const description = [htmlToPlainText(detail.description), htmlToPlainText(detail.profile)]
-            .filter(Boolean)
-            .join('\n\n');
-          // Source-specific facts are read from the retained detail at the shared write boundary.
-          return {
-            ...job,
-            ...(description ? { description } : {}),
-            raw: { ...(job.raw as object), detail },
-          };
         } catch {
           // A failed detail fetch must not lose the listing entry.
           return job;
         }
+        return mergeTalentViewDetail(job, detail);
       }),
     ),
   );
   return { ...result, jobs: withDetails };
+}
+
+/** The detail body is kept in RAW as well as the readable presentation. */
+export function mergeTalentViewDetail(job: NormalizedJob, detail: CampaignDetail): NormalizedJob {
+  const campaign = job.raw as Campaign;
+  if (detail.id == null || String(detail.id) !== job.externalId || !campaign?.slug || detail.slug !== campaign.slug) throw new Error('TALENTVIEW_DETAIL_IDENTITY_MISMATCH');
+  const description = [htmlToPlainText(detail.description), htmlToPlainText(detail.profile)]
+    .filter(Boolean)
+    .join('\n\n');
+  // Source-specific facts are read from the retained detail at the shared write boundary.
+  return {
+    ...job,
+    ...(description ? { description } : {}),
+    ...(detail.is_draft !== false || detail.is_online !== true ? { publicationHold: 'SOURCE_PUBLICATION_NOT_CONFIRMED' } : {}),
+    raw: { ...(job.raw as object), detail },
+  };
 }

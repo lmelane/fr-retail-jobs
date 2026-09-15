@@ -111,6 +111,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 [Sous-lot 4D2 validé localement](lot-4d2.md) : 22 familles relues, 49 205 présentations constructibles, dates WordPress/Greenhouse/Recruitee corrigées et 528 rubriques d’exigences restituées. Les 66 publications du scénario local sont relues sans écart par l’API. Les domaines de détail du hub URBN restent à qualifier.
 
+[Sous-lot 4D3 validé localement](lot-4d3.md) : six lecteurs supplémentaires, 28 familles relues et 50 028 présentations constructibles. Les 84 publications du scénario local sont relues sans écart. La fin de contrat Flatchr ne sert plus d’échéance de candidature. Le remplissage RAW des échéances en cache doit précéder la réparation du stock et sa bascule publique ; le moteur de groupes ne le réalise pas.
+
 **Objectif.** Éviter les doublons visibles sans supprimer des postes distincts.
 
 - **Fichiers :** `dedup/match.ts`, `upsert.ts`, `packages/db/publications.ts`, `postingIdentity`, `reconcile`, schéma et API d’identités/redirects.

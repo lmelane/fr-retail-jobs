@@ -18,6 +18,12 @@ import { docToJob } from '../ats/adapters/rivoliTypesense.js';
 import { parseWorkableJob } from '../ats/adapters/workable.js';
 import { normalizeListRequisition, mergeDetail } from '../ats/adapters/oraclehcm.js';
 import { normalizeJobaffinityPost, applyJobaffinityEvidence } from '../ats/adapters/jobaffinityWordpress.js';
+import { parseFlatchrItem } from '../ats/adapters/flatchr.js';
+import { parsePersonioPosition } from '../ats/adapters/personio.js';
+import { parseJobylonPublication } from '../ats/adapters/jobylon.js';
+import { parseTalentViewCampaign, mergeTalentViewDetail } from '../ats/adapters/talentview.js';
+import { parseTalentFunnelVacancy } from '../ats/adapters/talentFunnel.js';
+import { parseVolcanicPage } from '../ats/adapters/volcanic.js';
 import { htmlToPlainText } from '../lib/html.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import type { NormalizedJob } from '../types.js';
@@ -152,6 +158,46 @@ export function recoverRetainedPublication(kind: string, raw: unknown, context: 
         job = normalizeJobaffinityPost(raw.board.row, raw.post, config as Parameters<typeof normalizeJobaffinityPost>[2], raw.geographyEvidence ?? undefined);
         applyJobaffinityEvidence(job, { ...application } as Parameters<typeof applyJobaffinityEvidence>[1]); break;
       }
+      case 'flatchr':
+        if (!object(raw.vacancy) || !object(raw.vacancy.company) || !identifier(raw.vacancy.id) || !identifier(raw.vacancy.company.id)) return failure('NATIVE_ID_MISSING');
+        if (raw.published !== true || raw.status !== 'published') return failure('PUBLICATION_HELD');
+        if (typeof config.listingUrl !== 'string') return failure('RAW_SCHEMA_INVALID');
+        job = parseFlatchrItem(raw, config.listingUrl); break;
+      case 'personio':
+        if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
+        // This retained format is the complete XML position. Later native page
+        // enrichments have a separate shape and must not be silently discarded.
+        if (raw.personioDetail != null || raw.postingEvidence != null) return failure('READER_UNQUALIFIED');
+        if (typeof config.host !== 'string') return failure('RAW_SCHEMA_INVALID');
+        job = parsePersonioPosition(raw, config.host); break;
+      case 'jobylon': {
+        if (raw.source !== 'jobylon' || !object(raw.listing) || !identifier(raw.listing.externalId) || typeof raw.listing.path !== 'string') return failure('NATIVE_ID_MISSING');
+        if (!object(raw.posting) || !jobPosting(raw.posting)) return failure('CONTENT_MISSING');
+        const page = new URL(raw.listing.path, 'https://emp.jobylon.com');
+        if (page.origin !== 'https://emp.jobylon.com' || /^\/jobs\/(\d+)-/.exec(page.pathname)?.[1] !== String(raw.listing.externalId) ||
+          raw.posting.url != null && (typeof raw.posting.url !== 'string' || new URL(raw.posting.url).href !== page.href)) return failure('DETAIL_IDENTITY_MISMATCH');
+        job = parseJobylonPublication(raw.listing as Parameters<typeof parseJobylonPublication>[0], raw.posting, page.href); break;
+      }
+      case 'talentview': {
+        if (!identifier(raw.id) || typeof raw.slug !== 'string' || !raw.slug) return failure('NATIVE_ID_MISSING');
+        if (!object(raw.detail) || !identifier(raw.detail.id) || String(raw.detail.id) !== String(raw.id) || raw.detail.slug !== raw.slug) return failure('DETAIL_IDENTITY_MISMATCH');
+        if (typeof config.slug !== 'string') return failure('RAW_SCHEMA_INVALID');
+        const listed = parseTalentViewCampaign(raw, config.slug);
+        job = listed ? mergeTalentViewDetail(listed, raw.detail) : null; break;
+      }
+      case 'talentfunnel': {
+        const vacancy = raw.vacancy;
+        if (!object(vacancy) || !identifier(vacancy.id ?? vacancy.vacancyId)) return failure('NATIVE_ID_MISSING');
+        if (typeof config.origin !== 'string' || typeof config.tenant !== 'string') return failure('RAW_SCHEMA_INVALID');
+        const id = vacancy.id ?? vacancy.vacancyId;
+        if (vacancy.tenant !== config.tenant || vacancy.vacancyId != null && vacancy.vacancyId !== id) return failure('IDENTITY_MISMATCH');
+        if (raw.detail != null && (!object(raw.detail) || raw.detail.id !== id || raw.detail.tenant !== vacancy.tenant)) return failure('DETAIL_IDENTITY_MISMATCH');
+        job = parseTalentFunnelVacancy(vacancy, config.origin, raw.detail ?? undefined); break;
+      }
+      case 'volcanic':
+        if (!identifier(raw.id) || typeof raw.cached_slug !== 'string' || !raw.cached_slug) return failure('NATIVE_ID_MISSING');
+        if (typeof config.origin !== 'string') return failure('RAW_SCHEMA_INVALID');
+        job = parseVolcanicPage({ jobs: [raw] }, config.origin)[0]; break;
       default: return failure('READER_UNQUALIFIED');
     }
     if (!job || typeof job.title !== 'string' || !job.title.trim()) return failure('RAW_SCHEMA_INVALID');

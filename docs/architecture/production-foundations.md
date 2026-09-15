@@ -7,7 +7,7 @@ Décision de travail du **15 septembre 2026**, fondée sur le code et l’[audit
 | Périmètre | Implémentation vérifiée | Écart à traiter |
 |---|---|---|
 | Collecte externe | `apps/aggregator`, 43 kinds au registre ; `Source`, `JobSource`, `SourceObservation` | Capture native ajoutée localement au lot 2 ; collecte de production encore historique et sources à qualifier |
-| Catalogue externe | `packages/db` ; `Job` et ses représentations | Modèle encore centré sur un propriétaire canonique ; rapprochements trop permissifs, champs perdus à la réattestation |
+| Catalogue externe | `packages/db` ; `Job` et ses représentations ; identité prouvée, groupes réversibles et présentation propre ajoutés localement aux lots 4A–4D3 | Stock historique à reprendre avant bascule ; le schéma `Job` reste une projection de groupe |
 | API du catalogue | `apps/api`, service Railway `catwalks-api` | `marche` ne borne pas encore tous les résultats ; suggestions et facettes ne partagent pas un contrat strict |
 | Site candidat | Dépôt privé `catwalks-front-end` ; `/emplois` et `/offres` | Deux circuits de lecture ; le catalogue commun décrit ci-dessous n’existe pas encore |
 | Offres directes | Dépôt privé `catwalks-back-end` ; `Job`, publication, retrait, candidatures | Export public actuel plafonné à 500 ; pas de transfert durable vers l’index de recherche commun |
@@ -49,6 +49,8 @@ Les identifiants stables, les codes pays et les URL SEO peuvent rester normalis�
 ### Disponibilité implémentée au lot 1
 
 Le [contrat partagé](../../packages/db/availability.ts) exige une offre active, non fusionnée et au moins une publication active sans échéance dépassée. Échéance et preuve vivent sur `JobSource` ; le RAW natif et son chemin justifient la date. Une capture partielle ne supprime pas une échéance prouvée. Une date sans heure suit la fin du jour partout dans le monde ; les valeurs hors plage de stockage restent natives, avec un statut explicite et aucun instant inventé.
+
+Le lecteur d’échéance version 3 exclut `Flatchr.vacancy.end_date`, qui désigne la fin du contrat. Les colonnes source ajoutées par la migration locale doivent être remplies depuis les RAW avant la bascule du stock ; la réparation des groupes ne les reconstruit pas. Les [preuves du lot 4D3](../../audits/reprise-2026-09-15/lot-4d3.md) distinguent correction du lecteur et reprise des caches encore à livrer.
 
 La disparition exige une énumération complète, récente, corrélée au même cycle et aux identifiants natifs. L’état ACTIVE du registre ou un compteur de santé ne suffit pas. Une maintenance bornée fige preuve, état avant, conséquence et limites dans `MaintenancePlan`, immuable et chargé par empreinte ; elle revalide sous verrou et journalise chaque mutation ou saut avec `DataCorrection`. La reprise est idempotente. Les règles et commandes actuelles sont dans la [documentation ops](../../apps/aggregator/scripts/ops/README.md) ; les [preuves du lot 1](../../audits/reprise-2026-09-15/lot-1.md) indiquent les limites et le statut local.
 

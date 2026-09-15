@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-export const EXPIRY_READER_VERSION = 2;
+export const EXPIRY_READER_VERSION = 3;
 export type ExpiryEvidence = {
   readerVersion: number; rawHash: string; path: string; value: string;
   precision: 'INSTANT' | 'DATE'; policy: 'SOURCE_INSTANT' | 'END_OF_DECLARED_DAY_ANYWHERE';
@@ -17,7 +17,7 @@ const PATHS: Readonly<Record<string, readonly string[]>> = {
   JIBE: ['posting_expiry_date'], PHENOM: ['posting_expiry_date'],
   TEAMTAILOR: ['_jobposting.validThrough'],
   TALENTFUNNEL: ['vacancy.validTo'], TALENT_FUNNEL: ['vacancy.validTo'],
-  FLATCHR: ['vacancy.end_date'],
+  // Flatchr vacancy.end_date is the contract end, never an application deadline.
   ORACLEHCM: ['detail.ExternalPostedEndDate'], ORACLE_HCM: ['detail.ExternalPostedEndDate'],
   HARRI: ['detail.end_date'],
   TALENTRECRUITER: ['position.ApplicationDue'], TALENT_RECRUITER: ['position.ApplicationDue'],

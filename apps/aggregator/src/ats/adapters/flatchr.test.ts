@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseFlatchrBoard } from './flatchr.js';
+import { parseFlatchrBoard, parseFlatchrItem } from './flatchr.js';
 
 const url = 'https://adopt.flatchr.io/fr/company/adopt/';
 const item = (id: string, country = 'France') => ({
@@ -65,5 +65,12 @@ describe('Flatchr public board', () => {
     expect(() => parseFlatchrBoard(board([item('a')]), url.replace('/adopt/', '/other/'))).toThrow('mismatch');
     expect(() => parseFlatchrBoard(board([{ ...item('a'), published: false }]), url)).toThrow('unpublished');
     expect(() => parseFlatchrBoard(board([{}]), url)).toThrow('invalid');
+  });
+  it('never substitutes the company portrait for missing vacancy content', () => {
+    const posting = item('a');
+    posting.vacancy.mission = '<p> </p>'; posting.vacancy.profile = '<p> </p>';
+    expect(() => parseFlatchrBoard(board([posting]), url)).toThrow('missing job content');
+    posting.vacancy.profile = '<script>unrelated script</script>';
+    expect(() => parseFlatchrItem(posting, url)).toThrow('missing job content');
   });
 });

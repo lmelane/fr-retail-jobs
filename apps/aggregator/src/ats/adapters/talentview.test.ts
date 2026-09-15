@@ -26,7 +26,7 @@ describe('TalentView native evidence reaches the qualified readers', () => {
     mockJson
       .mockResolvedValueOnce([{ id: 3038 }] as never) // websites
       .mockResolvedValueOnce([{ id: 42, name: 'Vendeur', slug: 'vendeur', address: { city: 'Paris' } }] as never) // campaigns
-      .mockResolvedValueOnce({ salary_min: 26500, salary_max: 28000, salary_currency: 1, remote_level: 1 } as never); // detail
+      .mockResolvedValueOnce({ id: 42, slug: 'vendeur', is_draft: false, is_online: true, salary_min: 26500, salary_max: 28000, salary_currency: 1, remote_level: 1 } as never); // detail
 
     const { jobs } = await fetchTalentViewJobs({ slug: 'baccarat' });
 
@@ -42,7 +42,7 @@ describe('TalentView native evidence reaches the qualified readers', () => {
     mockJson
       .mockResolvedValueOnce([{ id: 1 }] as never)
       .mockResolvedValueOnce([{ id: 7, name: 'Stage', slug: 'stage' }] as never)
-      .mockResolvedValueOnce({ salary_min: 100, salary_currency: 999, remote_level: 999 } as never);
+      .mockResolvedValueOnce({ id: 7, slug: 'stage', is_draft: false, is_online: true, salary_min: 100, salary_currency: 999, remote_level: 999 } as never);
 
     const { jobs: [job] } = await fetchTalentViewJobs({ slug: 'x' });
     const facts = readSourceFacts('talentview', job.raw);
@@ -102,8 +102,30 @@ describe('TalentView public pagination, real Sud Express payloads', () => {
 it('preserves an entity label without turning a business unit into a company', async () => {
   mockJson.mockResolvedValueOnce([{ id: 3038 }])
     .mockResolvedValueOnce([{ id: 42, name: 'Vendeur', slug: 'vendeur', entity: { id: 598, name: 'Promod - magasin' } }])
-    .mockResolvedValueOnce({});
+    .mockResolvedValueOnce({ id: 42, slug: 'vendeur', is_draft: false, is_online: true });
   const { jobs: [job] } = await fetchTalentViewJobs({ slug: 'promodjob' });
   expect(job.company).toBeUndefined();
   expect(job.employerEvidence).toEqual({ rawName: 'Promod - magasin', path: 'entity.name', rule: 'ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION' });
+});
+
+describe('TalentView detail identity and visibility', () => {
+  const list = { id: 42, name: 'Advisor', slug: 'advisor' };
+  const detail = { id: 42, slug: 'advisor', is_draft: false, is_online: true, description: '<p>Own duties</p>', profile: '<p>Own requirements</p>' };
+  it('reads both native sections through the live collector', async () => {
+    mockJson.mockResolvedValueOnce([{ id: 1 }]).mockResolvedValueOnce([list]).mockResolvedValueOnce(detail);
+    const { jobs: [job] } = await fetchTalentViewJobs({ slug: 'brand' });
+    expect(job.description).toBe('Own duties\n\nOwn requirements');
+    expect(job.raw).toEqual({ ...list, detail });
+    expect(job.publicationHold).toBeUndefined();
+  });
+  it.each([{ ...detail, id: 43 }, { ...detail, slug: 'other' }, { ...detail, id: undefined }])('refuses an unrelated detail instead of accepting it as listing content', async input => {
+    mockJson.mockResolvedValueOnce([{ id: 1 }]).mockResolvedValueOnce([list]).mockResolvedValueOnce(input);
+    await expect(fetchTalentViewJobs({ slug: 'brand' })).rejects.toThrow('DETAIL_IDENTITY_MISMATCH');
+  });
+  it.each([{ ...detail, is_draft: true }, { ...detail, is_online: false }, { ...detail, is_online: undefined }])('holds draft, offline or unknown states', async input => {
+    mockJson.mockResolvedValueOnce([{ id: 1 }]).mockResolvedValueOnce([list]).mockResolvedValueOnce(input);
+    const { jobs: [job] } = await fetchTalentViewJobs({ slug: 'brand' });
+    expect(job.publicationHold).toBeTruthy();
+    expect(job.raw).toEqual({ ...list, detail: input });
+  });
 });

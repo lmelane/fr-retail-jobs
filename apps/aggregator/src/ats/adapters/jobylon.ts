@@ -1,8 +1,9 @@
+import { extractJobPostings } from '../../connectors/generic/jsonLdSitemap.js';
 import { log } from '../../observability/logger.js';
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
-import { parseJobPostings } from './genericJsonLd.js';
+import { normalizeGenericPosting } from './genericJsonLd.js';
 
 /**
  * Jobylon — ATS suédois embarqué en « widget » sur les pages carrière
@@ -99,7 +100,11 @@ function streetAddressOf(raw: unknown): string | undefined {
 
 /** Fusionne la ligne de liste et le JSON-LD de la page publique. */
 export function mergeJobylonJob(listing: JobylonListing, detailHtml: string, url: string): NormalizedJob {
-  const [posting] = parseJobPostings(detailHtml, url);
+  return parseJobylonPublication(listing, extractJobPostings(detailHtml)[0], url);
+}
+
+export function parseJobylonPublication(listing: JobylonListing, node: Record<string, unknown> | undefined, url: string): NormalizedJob {
+  const posting = node ? normalizeGenericPosting(node, url) : null;
   return {
     ...(posting ?? {}),
     // L'identifiant Jobylon est stable et lisible ; le sha1 d'URL du générique ne l'est pas.

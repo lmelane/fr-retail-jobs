@@ -27,6 +27,7 @@ describe('declared source expiry', () => {
   it('does not take a deadline from a related job or a different adapter shape', () => {
     expect(declaredExpiry('workday', { detail: { similarJobs: [{ endDate: '2026-09-01' }] } })).toBeUndefined();
     expect(declaredExpiry('unknown', { end_date: '2026-09-01T12:00:00Z' })).toBeUndefined();
+    expect(declaredExpiry('flatchr', { vacancy: { contract_type: 'CDD', end_date: '2024-09-01T12:00:00Z' } })).toBeUndefined();
   });
   it.each(['2026-02-30', '2026-02-30T00:00:00Z', '2026-09-18T12:00:00', '18/09/2026', '0', 'not a date'])('does not guess an invalid or unzoned deadline: %s', value => {
     expect(parseDeclaredDeadline(value)).toBeUndefined();
