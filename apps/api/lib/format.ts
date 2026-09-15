@@ -1,54 +1,23 @@
 import { employmentLabel } from '@catwalks/db/presentation';
-const RELATIVE = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
 
-/**
- * Offer title, normalised for display only (design_2.md [UX] §2.3): a source
- * that shouts "STAGE - INGENIEUR.E PLANIFICATION (H/F)" is rendered
- * "Stage - Ingénieur.e planification (H/F)". Sentence case — first letter up,
- * the rest down — EXCEPT recognised acronyms and tokens already mixed-case in the
- * source (a real Maison name like "iOS" or "L'Oréal" keeps its casing). The
- * ingest and the stored value are untouched; this is purely at render time.
- */
-const KEEP_UPPER = new Set([
-  'H/F', 'F/H', 'H', 'F', 'CDI', 'CDD', 'VIE', 'RTW', 'S&OP', 'DE&I', 'HR', 'RH', 'IT',
-  'CDD/CDI', 'BTP', 'QHSE', 'RSE', 'KPI', 'B2B', 'B2C', 'UX', 'UI', 'PLV', 'SAV',
-]);
-export function displayTitle(raw: string): string {
-  if (!raw) return raw;
-  // Only rewrite a title that is (almost) all-caps — leave a well-cased one alone.
-  const letters = raw.replace(/[^A-Za-zÀ-ÿ]/g, '');
-  const isShouting = letters.length > 0 && letters === letters.toUpperCase();
-  return raw
-    .split(/(\s+|[-–—/·|(),])/)
-    .map((tok) => {
-      if (!/[A-Za-zÀ-ÿ]/.test(tok)) return tok; // separators/spaces
-      const upper = tok.toUpperCase();
-      if (KEEP_UPPER.has(upper)) return upper;
-      // Roman numerals (II, III, IV…) and any short token containing & (FP&A,
-      // S&OP, R&D) stay uppercase — they read wrong title-cased.
-      if (/^[IVXLCDM]{2,}$/.test(upper) || (upper.includes('&') && upper.length <= 5)) return upper;
-      // A token that is mixed-case in the source is intentional — keep it.
-      if (!isShouting && tok !== upper) return tok;
-      return tok.charAt(0).toUpperCase() + tok.slice(1).toLowerCase();
-    })
-    .join('')
-    .replace(/^(.)/, (c) => c.toUpperCase());
-}
-
-/**
- * "il y a 3 jours" rather than a date: on a job board, recency is the signal a
- * candidate scans for, and an absolute date makes them do the arithmetic.
+/*
+ * ── CE QUI A ÉTÉ RETIRÉ D'ICI, ET POURQUOI ÇA NE REVIENT PAS (lot 4A) ──────
  *
- * Kept out of lib/utils.ts because the shadcn CLI owns that file and overwrites
- * it on every `add`.
+ * Trois utilitaires de RENDU vivaient dans ce fichier — `displayTitle` (casse
+ * des titres criés), `relativeDate` (« il y a 3 jours »), `frNumber` (espace
+ * fine insécable) — plus les trois constantes qui ne servaient qu'à eux
+ * (`KEEP_UPPER`, `RELATIVE`, `NF_FR`).
+ *
+ * Ils ont été écrits pour un front web qui N'EXISTE PLUS dans ce dépôt : il ne
+ * reste qu'un seul fichier `.tsx` sous `apps/` (`apps/api/app/layout.tsx`), et
+ * le grep exhaustif du 2026-09-15 rend UNE SEULE occurrence pour chacun des
+ * trois — leur propre déclaration. Zéro appelant, zéro import, zéro témoin.
+ *
+ * Ce module reste la couche de localisation de l'API (les `*Label` ci-dessous),
+ * pas un fourre-tout de rendu. Un utilitaire d'affichage qui reviendrait ici
+ * devrait d'abord avoir un appelant : un composant sans consommateur n'existe
+ * pas, quelle que soit la qualité de son code.
  */
-export function relativeDate(date: Date | string | null): string {
-  if (!date) return '';
-  const days = Math.round((new Date(date).getTime() - Date.now()) / 86_400_000);
-  if (days === 0) return "aujourd'hui";
-  if (days > -31) return RELATIVE.format(days, 'day');
-  return RELATIVE.format(Math.round(days / 30), 'month');
-}
 
 /**
  * LA COUCHE DE LOCALISATION — l'unique endroit où la taxonomie mondiale
@@ -73,11 +42,3 @@ export const workTimeLabel = (value: string | null | undefined) => employmentLab
 export const programTypeLabel = (value: string | null | undefined) => employmentLabel('programType', value);
 export const engagementTypeLabel = (value: string | null | undefined) => employmentLabel('engagementType', value);
 export const workplaceTypeLabel = (value: string | null | undefined) => employmentLabel('workplaceType', value);
-
-/**
- * fr-FR sépare les milliers par une espace fine insécable (U+202F) que la
- * police display du site ne dessine pas — « 71525 » sur le hero (mesuré en
- * prod le 2026-09-06). L'espace insécable classique existe partout.
- */
-const NF_FR = new Intl.NumberFormat('fr-FR');
-export const frNumber = { format: (n: number) => NF_FR.format(n).replace(/\u202f/g, '\u00a0') };
