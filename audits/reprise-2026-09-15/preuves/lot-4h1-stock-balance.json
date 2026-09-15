@@ -1,0 +1,16 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "jobs": 87606,
+  "publications": 90764,
+  "presentationsRebuilt": 54831,
+  "activePublicationsWithPresentation": 52772,
+  "fullyRebuiltGroups": 52977,
+  "redirects": 278,
+  "originalHeldGroups": 269,
+  "originalHeldPublications": 543,
+  "previouslyHeldWithoutPresentation": 0,
+  "recoverablePublicationsInPendingGroups": 294,
+  "pendingMixedGroups": 294,
+  "totalRecoverablePublications": 55125
+}

@@ -1,0 +1,47 @@
+{
+  "mutations": [
+    {
+      "name": "unbound-native-id",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "6adba9359191d2f2fd8510fe0632670fce513d227a605a82ec01b146d40a1c5c"
+    },
+    {
+      "name": "unbound-captured-page",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "6adba9359191d2f2fd8510fe0632670fce513d227a605a82ec01b146d40a1c5c"
+    },
+    {
+      "name": "unqualified-regional-origin",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "6adba9359191d2f2fd8510fe0632670fce513d227a605a82ec01b146d40a1c5c"
+    },
+    {
+      "name": "cross-regional-tenant",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "6adba9359191d2f2fd8510fe0632670fce513d227a605a82ec01b146d40a1c5c"
+    },
+    {
+      "name": "contradictory-native-reference",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "6adba9359191d2f2fd8510fe0632670fce513d227a605a82ec01b146d40a1c5c"
+    },
+    {
+      "name": "lost-qualified-lookup",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "4eab9cc7799660a3299d226574e93c0eca9990bb9c2294a1842b1590c52bf919"
+    },
+    {
+      "name": "unverified-live-detail",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "0c050b4abfd6d65f24aacff007db1fe2cfba09387122fba1e4bd2b8527c36a22"
+    }
+  ],
+  "restoredTests": "passed"
+}

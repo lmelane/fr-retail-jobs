@@ -6,6 +6,7 @@ import { parseLvmhHit } from '../ats/adapters/lvmhAlgolia.js';
 import { toNormalized as parseTeamtailorJob } from '../ats/adapters/teamtailor.js';
 import { parseWorkdayPublication } from '../ats/adapters/workday.js';
 import { workdayDetailMatchesListing } from '../identity/workday.js';
+import { icimsDetailMatchesListing } from '../identity/icims.js';
 import { parseGreenhouseJob } from '../ats/adapters/greenhouse.js';
 import { parseRecruiteeJob } from '../ats/adapters/recruitee.js';
 import { normalizeGenericPosting } from '../ats/adapters/genericJsonLd.js';
@@ -125,7 +126,9 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         if (typeof evidence.pageUrl !== 'string' || typeof config.origin !== 'string') return failure('DETAIL_IDENTITY_MISMATCH');
         const page = new URL(evidence.pageUrl);
         const id = detailIdentity(kind, page, raw);
-        if (!id || page.href !== new URL(context.url).href || page.origin !== new URL(config.origin).origin) return failure('DETAIL_IDENTITY_MISMATCH');
+        if (!id || page.href !== new URL(context.url).href || (kind === 'icims'
+          ? !icimsDetailMatchesListing({ externalId: id, url: context.url, raw }, config)
+          : page.origin !== new URL(config.origin).origin)) return failure('DETAIL_IDENTITY_MISMATCH');
         // Some pages declare the same job URL without the iCIMS iframe query.
         // Compare the native ID and tenant; keep the recorded collection URL.
         if (evidence.jobPosting.url != null) {

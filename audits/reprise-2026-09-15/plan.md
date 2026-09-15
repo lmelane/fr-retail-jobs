@@ -142,6 +142,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 [Sous-lot 4G3 validé localement](lot-4g3.md) : UUID de flux, identifiant numérique et émetteur natif concordants pour les domaines Teamtailor. Les 23 derniers groupes d’identité retenus sont qualifiés ; 263 plans reconstruisent et vérifient 4 846 présentations. Six échéances natives passées depuis la première reprise sont revues puis appliquées. Les 3 143 tests et six contre-épreuves passent. Le stock local compte 52 390 présentations reconstruites ; les 269 groupes auparavant retenus sont traités. Restent notamment 1 224 groupes mixtes avec un membre reconstructible et un membre encore insuffisant, ainsi que les formats non qualifiés.
 
+[Sous-lot 4H1 validé localement](lot-4h1.md) : sept origines régionales iCIMS qualifiées par capture du hub, liaison partagée du détail et rapprochement par identité régionale native. Les 3 180 tests, le build et sept contre-épreuves passent. Les 1 511 échéances sont reprises, puis 67 plans reconstruisent et vérifient 1 530 groupes / 2 462 présentations, sans réattestation ni réactivation du flux retiré ; 23 fermetures sont prouvées. La configuration du hub reste en pause jusqu'à certification. Le stock compte 54 831 présentations, avec 294 publications reconstructibles encore bloquées dans des groupes incomplets. Leur traitement et les autres formats restent ouverts.
+
 ## Lot 5. Certifier les sources et préparer le cycle complet
 
 **Objectif.** Rendre chaque source du catalogue exploitable ou explicitement exclue.

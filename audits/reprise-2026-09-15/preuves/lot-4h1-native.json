@@ -1,0 +1,89 @@
+{
+  "key": "urbn-hub",
+  "batchId": "c275a4ae-4500-499a-94d9-ea3b71ff17fc",
+  "readerRevision": "local-sha256:32216f2e44f302367452e96c70025bfdce11ab015299a43e7c4012bd56b247a4",
+  "exactReplay": true,
+  "requests": 37,
+  "nativeBytes": 4500046,
+  "pages": 30,
+  "publications": 1486,
+  "origins": [
+    {
+      "origin": "https://stores-na-urbn.icims.com",
+      "listed": 960,
+      "sample": {
+        "externalId": "7141",
+        "listingUrl": "https://hub-urbn.icims.com/jobs/search?ss=1&in_iframe=1&pr=29",
+        "url": "https://stores-na-urbn.icims.com/jobs/7141/free-people-stylist/job?hub=15&in_iframe=1",
+        "reference": "2024-7141",
+        "declaredURL": "https://stores-na-urbn.icims.com/jobs/7141/free-people-stylist/job"
+      }
+    },
+    {
+      "origin": "https://menusandvenues-na-urbn.icims.com",
+      "listed": 39,
+      "sample": {
+        "externalId": "28694",
+        "listingUrl": "https://hub-urbn.icims.com/jobs/search?ss=1&in_iframe=1&pr=25",
+        "url": "https://menusandvenues-na-urbn.icims.com/jobs/28694/associate-manager-%7c-doylestown/job?hub=15&in_iframe=1",
+        "reference": "2026-28694",
+        "declaredURL": "https://menusandvenues-na-urbn.icims.com/jobs/28694/associate-manager-%7c-doylestown/job"
+      }
+    },
+    {
+      "origin": "https://stores-eu-urbn.icims.com",
+      "listed": 142,
+      "sample": {
+        "externalId": "19472",
+        "listingUrl": "https://hub-urbn.icims.com/jobs/search?ss=1&in_iframe=1&pr=29",
+        "url": "https://stores-eu-urbn.icims.com/jobs/19472/anthropologie-store-manager---leeds%2c-uk/job?hub=15&in_iframe=1",
+        "reference": "2025-19472",
+        "declaredURL": "https://stores-eu-urbn.icims.com/jobs/19472/anthropologie-store-manager---leeds%2c-uk/job"
+      }
+    },
+    {
+      "origin": "https://supplychain-na-urbn.icims.com",
+      "listed": 65,
+      "sample": {
+        "externalId": "28015",
+        "listingUrl": "https://hub-urbn.icims.com/jobs/search?ss=1&in_iframe=1&pr=26",
+        "url": "https://supplychain-na-urbn.icims.com/jobs/28015/urbn-general-equipment-operator/job?hub=15&in_iframe=1",
+        "reference": "2026-28015",
+        "declaredURL": "https://supplychain-na-urbn.icims.com/jobs/28015/urbn-general-equipment-operator/job"
+      }
+    },
+    {
+      "origin": "https://homeoffice-na-urbn.icims.com",
+      "listed": 250,
+      "sample": {
+        "externalId": "5507",
+        "listingUrl": "https://hub-urbn.icims.com/jobs/search?ss=1&in_iframe=1&pr=29",
+        "url": "https://homeoffice-na-urbn.icims.com/jobs/5507/anthropologie-senior-design-director/job?hub=15&in_iframe=1",
+        "reference": "2024-5507",
+        "declaredURL": "https://homeoffice-na-urbn.icims.com/jobs/5507/anthropologie-senior-design-director/job"
+      }
+    },
+    {
+      "origin": "https://homeoffice-eu-urbn.icims.com",
+      "listed": 29,
+      "sample": {
+        "externalId": "6291",
+        "listingUrl": "https://hub-urbn.icims.com/jobs/search?ss=1&in_iframe=1&pr=29",
+        "url": "https://homeoffice-eu-urbn.icims.com/jobs/6291/urban-outfitters-merchandising-admin-assistant-%2812-month-ftc%29---future-opportunities/job?hub=15&in_iframe=1",
+        "reference": "2024-6291",
+        "declaredURL": "https://homeoffice-eu-urbn.icims.com/jobs/6291/urban-outfitters-merchandising-admin-assistant-%2812-month-ftc%29---future-opportunities/job"
+      }
+    },
+    {
+      "origin": "https://supplychain-eu-urbn.icims.com",
+      "listed": 1,
+      "sample": {
+        "externalId": "31512",
+        "listingUrl": "https://hub-urbn.icims.com/jobs/search?ss=1&in_iframe=1&pr=5",
+        "url": "https://supplychain-eu-urbn.icims.com/jobs/31512/customer-support-agent/job?hub=15&in_iframe=1",
+        "reference": "2026-31512",
+        "declaredURL": "https://supplychain-eu-urbn.icims.com/jobs/31512/customer-support-agent/job"
+      }
+    }
+  ]
+}

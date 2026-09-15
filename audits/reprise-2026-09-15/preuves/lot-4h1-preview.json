@@ -1,0 +1,52 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "plans": 67,
+  "originalGroups": 1530,
+  "resultingGroups": 1530,
+  "publications": 2462,
+  "redirects": 0,
+  "lifecycle": {
+    "KEEP": 1507,
+    "CLOSE": 23
+  },
+  "fieldChanges": {
+    "clusterKey": 1530,
+    "fingerprint": 1530,
+    "location": 1509,
+    "adminArea1": 1322,
+    "postalCode": 1355,
+    "rawContract": 1509,
+    "employmentEvidence": 1509,
+    "workTime": 1446,
+    "workSchedule": 956,
+    "rawSchedule": 956,
+    "salaryMin": 1184,
+    "salaryCurrency": 1184,
+    "salaryMax": 565,
+    "employmentTerm": 96,
+    "countryIntegrity": 117,
+    "workplaceType": 13,
+    "city": 30,
+    "title": 10,
+    "jobFunction": 1,
+    "occupationGroup": 1,
+    "normalizedTitle": 10,
+    "isRetail": 1,
+    "occupationEvidence": 43,
+    "rawTitle": 30,
+    "seniority": 1,
+    "language": 95,
+    "isActive": 23,
+    "url": 16,
+    "canonicalSourceKey": 16,
+    "countryCode": 5
+  },
+  "previouslyRebuiltFieldChanges": {
+    "clusterKey": 21,
+    "fingerprint": 21
+  },
+  "splitGroups": 0,
+  "newGroups": 0,
+  "elapsedMs": 7969
+}

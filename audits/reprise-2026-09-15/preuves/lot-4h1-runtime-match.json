@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-09-15T22:52:05.000364+00:00",
+  "exactRuntimeMatch": true,
+  "trees": [
+    {
+      "root": "/Users/lmelane/Downloads/catwalks-job-aggregator",
+      "files": 264,
+      "revision": "local-sha256:a63b81ecb06b87d50680212157a11012f4e1cc381c4ddfa288753a94d16bc796"
+    },
+    {
+      "root": "/tmp/catwalks-lot0-verification-20260915",
+      "files": 264,
+      "revision": "local-sha256:a63b81ecb06b87d50680212157a11012f4e1cc381c4ddfa288753a94d16bc796"
+    }
+  ]
+}

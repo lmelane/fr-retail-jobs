@@ -5,6 +5,7 @@ import type { SourceFacts } from '@catwalks/db/source-facts';
 import { postingIdentity, POSTING_IDENTITY_VERSION, APPLICATION_KEY_VERSION } from './postingIdentity.js';
 import { workdayRequisitionIdentity } from '../identity/workday.js';
 import { teamtailorPublicationIdentity } from '../identity/teamtailor.js';
+import { icimsPublicationIdentity } from '../identity/icims.js';
 
 export type CandidateJob = NormalizedJob & {
   sourceFacts?: SourceFacts;
@@ -55,6 +56,8 @@ export type IdentityProof = { version: typeof POSTING_IDENTITY_VERSION; rule: 'S
   identity: { tenant: string; requisition: string }; paths?: [string, string] };
 
 function identityEvidence(publication: NativePublication) {
+  const icims = icimsPublicationIdentity(publication);
+  if (icims) return { identity: icims, path: '/postingEvidence/jobPosting/url' };
   const workday = workdayRequisitionIdentity(publication);
   if (workday) return { identity: workday, path: '/detail/jobPostingInfo/jobReqId' };
   const teamtailor = teamtailorPublicationIdentity(publication);
@@ -99,6 +102,8 @@ export function provenPublicationGroup(publications: readonly NativePublication[
 /** Indexed lookup key only. The writer rechecks every member and the employer.
  * Unsupported URL formats stay scoped to their original source identity. */
 export function blockingKey(job: NativePublication): string {
+  const icims = icimsPublicationIdentity(job);
+  if (icims) return JSON.stringify(['application', 'icims-v1', icims.tenant, icims.requisition]);
   const workday = workdayRequisitionIdentity(job);
   if (workday) return JSON.stringify(['requisition', 'workday-v1', workday.tenant, workday.requisition]);
   const teamtailor = teamtailorPublicationIdentity(job);

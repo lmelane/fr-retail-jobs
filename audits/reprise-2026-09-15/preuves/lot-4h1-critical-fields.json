@@ -1,0 +1,54 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "countryChanges": [
+    {
+      "jobId": "cmtpulojj2f9rl35mlwwu6e3p",
+      "sourceKey": "urbn-hub",
+      "previous": null,
+      "next": "DE",
+      "nativeCountries": [
+        "DE"
+      ]
+    },
+    {
+      "jobId": "cmtpulqqt2gksl35mfx6gie1u",
+      "sourceKey": "urbn-hub",
+      "previous": null,
+      "next": "GB",
+      "nativeCountries": [
+        "UK"
+      ]
+    },
+    {
+      "jobId": "cmtpulrzg2gypl35m2h9rcfqe",
+      "sourceKey": "urbn-hub",
+      "previous": null,
+      "next": "DE",
+      "nativeCountries": [
+        "DE"
+      ]
+    },
+    {
+      "jobId": "cmtpuls4y2h0ol35mw1yvsjif",
+      "sourceKey": "urbn-hub",
+      "previous": null,
+      "next": "GB",
+      "nativeCountries": [
+        "UK"
+      ]
+    },
+    {
+      "jobId": "cmtt8ykv53modmy01hpll511j",
+      "sourceKey": "urbn-hub",
+      "previous": null,
+      "next": "GB",
+      "nativeCountries": [
+        "UK"
+      ]
+    }
+  ],
+  "selectedOwnerChanges": 16,
+  "allOwnerChangesConfinedToProvenClosedGroups": true,
+  "retiredNativePublicationsReactivated": 0
+}

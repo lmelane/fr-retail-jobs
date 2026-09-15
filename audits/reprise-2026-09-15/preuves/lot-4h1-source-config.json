@@ -1,0 +1,15 @@
+{
+  "productionWrites": false,
+  "sourceKey": "urbn-hub",
+  "sourceStatus": "PAUSED",
+  "awaitingSourceCertification": true,
+  "planHash": "10c31c5d077d7b8440c0f4b6882a5786441fc87fd43a753a48e0bc27c6259584",
+  "result": {
+    "alreadyApplied": false,
+    "written": 1
+  },
+  "repeat": {
+    "alreadyApplied": true,
+    "written": 0
+  }
+}
