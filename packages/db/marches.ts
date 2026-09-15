@@ -8,7 +8,7 @@
  * contrat", ailleurs "Job type", donc les valeurs ne sont pas les mêmes. »
  *
  * Autrement dit : les DIMENSIONS canoniques (durée, rythme, programme,
- * saisonnalité, métier, séniorité) restent mondiales et ne bougent pas. Ce qui
+ * saisonnalité, métier) restent mondiales et ne bougent pas. Ce qui
  * change d'un marché à l'autre, c'est (a) le LIBELLÉ sous lequel on les
  * présente, et (b) LESQUELLES on présente. Un candidat français qui clique sur
  * le drapeau australien tombe sur l'Australie, en anglais, avec les facettes
@@ -110,43 +110,57 @@ export const SEUIL_AFFICHAGE_FACETTE = 0.2;
  * couverture, donc 30,8 % de muettes). Un candidat allemand qui coche
  * « Vollzeit » sur une facette à 74,9 % perd déjà un quart du catalogue.
  *
- * `metier` change la nature du problème : 90,0 à 96,8 % sur DIX marchés sur
- * douze. Ces dix-là exposent une facette qui rend presque tout le catalogue et
- * qui porte le besoin réel du candidat (« je cherche un poste de vendeur »),
- * pendant que les facettes contractuelles affinent à la marge. Les deux autres
- * — la Suisse (77,7 %) et la Chine (88,8 %) — exposent la même facette au même
- * titre : sous la cible de densité, mais bien au-dessus du seuil d'affichage.
+ * `metier` DEVAIT changer la nature du problème — 90,0 à 96,8 % sur dix marchés
+ * sur douze. CES CHIFFRES ÉTAIENT CEUX DE `jobFunction`, une colonne que la
+ * facette ne sert pas. Re-mesurée le 2026-09-15 sur `occupationCode`, la
+ * colonne réellement agrégée (`job-search-query.ts:167`), la même dimension
+ * couvre 25,7 % (CH) à 57,0 % (ES).
  *
- * DEUX MARCHÉS SONT SOUS LA CIBLE, ET TOUS DEUX SONT MESURÉS, PAS TOLÉRÉS.
- * La Suisse plafonne à 77,7 % — le plus bas du registre — et la Chine à
- * 88,8 %. La barre de densité est donc gardée au PLANCHER de 77 % : elle
- * échoue si un marché tombe sous la Suisse, et le seuil PLEIN de 90 % est
- * vérifié séparément sur les autres. Graver 90 % pour tout le monde aurait
- * obligé à exclure ces deux-là du témoin — c'est-à-dire à retirer du garde-fou
- * les seuls marchés qu'il aurait attrapés.
+ * ⚠️ LA CONSÉQUENCE EST BRUTALE ET ELLE DOIT ÊTRE DITE : AUCUN MARCHÉ N'A PLUS
+ * DE FACETTE MÉTIER DENSE. Quatre marchés atteignent encore le plancher de
+ * 77 % — US (81,8 %), BE (81,4 %), CA (79,5 %), NL (78,2 %) — mais tous les
+ * quatre par le RYTHME, une facette à deux valeurs qui affine à la marge. La
+ * facette qui porte l'intention du candidat (« je cherche un poste de
+ * vendeur ») est creuse PARTOUT : 57,0 % au mieux (ES), 25,7 % au pire (CH).
  *
- * ⚠️ « Sous la cible » ne veut pas dire « creux ». La facette chinoise est
- * mieux RÉPARTIE que celle de plusieurs marchés au-dessus de 90 % : sa valeur
- * dominante pèse 33,9 %, contre 61,7 % en Allemagne et 59,3 % en Espagne. Le
- * taux de remplissage et le pouvoir de discrimination sont deux propriétés
- * distinctes, et un marché peut être excellent sur l'une en restant moyen sur
- * l'autre.
+ * Le garde-fou « au moins une facette dense par marché » ne gardait donc pas ce
+ * qu'il prétendait : il était satisfait par un chiffre mesuré sur une colonne
+ * que personne ne sert. C'est le motif d'erreur dominant de ce dépôt sous une
+ * forme nouvelle — non pas un commentaire resté en arrière, mais un TÉMOIN VERT
+ * sur la mauvaise donnée.
  *
- * L'invariant est gardé par un témoin qui ROUGIT si un marché n'expose plus
- * aucune facette dense : un marché dont tous les filtres sont creux n'est pas
- * exploitable, et il vaut mieux l'apprendre en test qu'en production.
+ * ── CE QUI EST FAIT ICI, ET CE QUI NE L'EST PAS ──────────────────────────
+ *
+ * Les constantes sont CONSERVÉES et le témoin de densité est converti en constat
+ * mesuré : il grave l'état réel (aucun marché dense) au lieu d'affirmer un
+ * invariant que les données ne portent pas. Baisser le plancher à 33 % pour
+ * refaire passer le témoin aurait été l'interdit explicite du CLAUDE.md —
+ * modifier une règle pour la faire correspondre après coup au code.
+ *
+ * ⚠️ CE QUI RESTE À ARBITRER PAR LE CEO, ET N'EST PAS TRANCHÉ ICI : que faire
+ * d'un catalogue dont la facette métier laisse 43 à 74 % de « Métier à
+ * préciser » selon le marché. Trois voies existent — améliorer le taux de
+ * classification (`occupationStatus = PENDING`), remonter le seuil d'affichage,
+ * ou servir la famille `jobFunction` (mieux remplie, 27 valeurs) à la place du
+ * métier fin. Chacune change ce que le candidat voit, donc aucune n'est un
+ * réglage de registre.
  */
 export const SEUIL_FACETTE_DENSE = 0.9;
 
 /**
  * Le PLANCHER de densité, en dessous duquel un marché n'est plus exploitable.
  *
- * 77 %, c'est-à-dire juste sous la Suisse (77,705 %) — le marché le moins bien
- * couvert du registre. Deux constantes plutôt qu'une parce qu'elles gardent
- * deux choses différentes : `SEUIL_FACETTE_DENSE` décrit la cible atteinte par
- * neuf marchés, `PLANCHER_FACETTE_DENSE` est la limite qu'AUCUN marché ne doit
- * franchir. Une seule constante aurait forcé à choisir entre un témoin qui
- * ignore la Suisse et un témoin qui ne garde plus rien.
+ * 77 % — la valeur d'origine, CONSERVÉE À DESSEIN alors qu'aucun marché ne
+ * l'atteint plus depuis la re-mesure du métier sur la bonne colonne.
+ *
+ * Elle était calée « juste sous la Suisse (77,705 %) », un chiffre de
+ * `jobFunction`. La Suisse réelle est à 25,656 % sur la facette servie, et sa
+ * meilleure facette exposée (le rythme, 49,1 %) reste sous le plancher.
+ *
+ * La constante reste donc la CIBLE PRODUIT — le niveau auquel une facette
+ * mérite d'être appelée dense — et non plus la description d'un état atteint.
+ * L'abaisser à la mesure du jour reviendrait à supprimer le garde-fou en
+ * feignant de le respecter.
  */
 export const PLANCHER_FACETTE_DENSE = 0.77;
 
@@ -157,10 +171,10 @@ export const PLANCHER_FACETTE_DENSE = 0.77;
  *
  * Elle était écartée pour la seule raison qui vaille — « nous ne disposons
  * d'aucun taux » — et non par jugement sur le marché. La mesure a été faite :
- * 671 offres actives, et les CINQ dimensions passent le seuil d'affichage.
- * C'est le marché le MIEUX couvert du registre en nombre de facettes, devant
- * la France elle-même (qui rate le saisonnier). L'écarter plus longtemps
- * fermait un marché dense sur une absence de données qui n'existait plus.
+ * 671 offres actives, et QUATRE dimensions passent le seuil d'affichage (cinq
+ * avant le retrait de la séniorité). C'est le marché le MIEUX couvert du
+ * registre en nombre de facettes, à égalité avec la France. L'écarter plus
+ * longtemps fermait un marché sur une absence de données qui n'existait plus.
  *
  * Le registre n'a pas changé de règle pour l'accueillir : ses taux sont
  * recopiés de la même requête que les dix autres, ses libellés sont relevés et
@@ -193,30 +207,102 @@ export type CodeMarche = (typeof CODES_MARCHE)[number];
  * DEUX VALEURS DISTINCTES SEULEMENT — FREELANCE (118) et INDEPENDENT_CONTRACTOR
  * (44). Même si la couverture montait un jour au-dessus du seuil, ce serait la
  * dimension la plus pauvre du registre en pouvoir de discrimination : `metier`
- * en porte 27, `seniorite` 6. Le nombre de valeurs compte autant que le taux de
- * remplissage, et c'est pourquoi le registre mesure les deux.
+ * en porte 51. Le nombre de valeurs compte autant que le taux de remplissage,
+ * et c'est pourquoi le registre mesure les deux.
  *
- * ── MÉTIER ET SÉNIORITÉ : LE TROU QUE L'AUDIT A RÉVÉLÉ ────────────────────
+ * ── MÉTIER : LA DIMENSION, ET LA COLONNE QUI LA PORTE RÉELLEMENT ─────────
  *
  * Le registre a d'abord été écrit avec les seules dimensions du VOCABULAIRE
  * CONTRACTUEL, et cette omission a produit un contresens : on en a conclu que
- * « le marché américain ne garde qu'une facette ». Il en garde TROIS, parce que
- * `metier` y couvre 96,8 % des offres et `seniorite` 29,7 %.
+ * « le marché américain ne garde qu'une facette ». `metier` a donc été ajouté
+ * — mais MESURÉ SUR LA MAUVAISE COLONNE, et c'est le défaut que l'audit du
+ * 2026-09-15 (chantier 2) a trouvé.
  *
- * Un registre qui ignore ses deux dimensions les mieux remplies ne décrit pas
- * le marché, il décrit le sous-ensemble qu'on avait mesuré. Elles entrent donc
- * ici, mesurées le 2026-09-15 comme les autres :
+ * LES TAUX GRAVÉS ÉTAIENT CEUX DE `jobFunction` (95,5 % en FR, 77,7 % en CH).
+ * La facette réellement servie au candidat lit `occupationCode` — vérifié dans
+ * le code, pas déduit : `job-search-query.ts:167` agrège
+ * `COALESCE("occupationCode",'unclassified')` en facette `occupations`, que
+ * `facettes-marche.ts:116` mappe sur la dimension `metier`. `jobFunction` n'est
+ * JAMAIS agrégé en facette : il n'est qu'un critère de filtrage interne
+ * (`job-search-query.ts:47`, paramètre `?fonction=`) et un libellé de famille
+ * sur la fiche (`jobs.ts:616`).
  *
- *  · `metier` — 90 à 97 % partout sauf CH (77,7 %), 27 valeurs distinctes.
- *    C'est la dimension DENSE de chaque marché, celle qui rend un filtre utile
- *    au premier clic ;
- *  · `seniorite` — 18 à 35 %, 6 valeurs distinctes. Elle passe le seuil sur
- *    sept marchés et le rate sur trois (DE, IT, CH) — la même règle que pour le
- *    contrat, appliquée sans exception.
+ * Les deux colonnes ne disent d'ailleurs pas la même chose : `jobFunction` est
+ * la FAMILLE (27 valeurs, dérivée du code — `occupation-engine.ts:494`),
+ * `occupationCode` est le MÉTIER lui-même (51 valeurs). Le registre décrivait
+ * donc la couverture d'une colonne pendant que le produit en servait une autre,
+ * moins remplie de 42 points en moyenne.
  *
- * Aucune des deux n'est dégénérée : 27 et 6 valeurs distinctes. Une dimension
- * à une seule valeur serait un filtre qui ne filtre rien, et le nombre de
- * valeurs est la seule façon de le savoir avant de l'afficher.
+ * Les taux ci-dessous sont RE-MESURÉS sur `occupationCode`, même population
+ * (83 431 offres actives, 2026-09-15) : 25,7 % (CH) à 57,0 % (ES). Les douze
+ * marchés restent au-dessus du seuil d'affichage, donc aucun ne perd la facette
+ * — mais AUCUN n'atteint plus la densité de 90 %, ni même le plancher de 77 %.
+ * Voir le bloc `SEUIL_FACETTE_DENSE`, qui porte la conséquence.
+ *
+ * ── `seniorite` N'EST PLUS UNE DIMENSION DE FACETTE (2026-09-15) ─────────
+ *
+ * Elle a été RETIRÉE de cette liste. La raison n'est pas la couverture — elle
+ * passait le seuil sur sept marchés — mais la PROVENANCE de la donnée :
+ *
+ *  · 22 625 offres sur 22 631 tirent leur séniorité d'un REGEX SUR L'INTITULÉ
+ *    (`occupationEvidence->>'seniorityConfidence' = 'TITLE_HEURISTIC'`), contre
+ *    6 d'une mention littérale certifiée. Soit 99,97 % de déduit ;
+ *  · confrontée à la source quand les deux existent (1 861 offres), la
+ *    déduction CONTREDIT le niveau déclaré par l'employeur dans 1 489 cas,
+ *    soit 80,0 %. « Team Lead (Part time) », déclaré `Entry Level` à la source,
+ *    ressort MANAGER ; « Allievo/a Manager di Store » — un manager STAGIAIRE,
+ *    déclaré `Associate` — ressort MANAGER lui aussi ;
+ *  · le moteur le dit lui-même, dans son propre champ de preuve :
+ *    « Migrated title heuristic; not a source-certified experience level »
+ *    (`occupation-engine.ts:523`).
+ *
+ * Un filtre « Niveau d'expérience » est une PROMESSE faite au candidat : qu'en
+ * cochant « Senior » il verra des postes seniors. Sur une donnée déduite à
+ * 99,97 % et fausse 4 fois sur 5 face à la source, cette promesse ne peut pas
+ * être tenue — et un candidat junior écarté d'une offre « Lead Cashier » classée
+ * SENIOR ne saura jamais pourquoi son écran est vide.
+ *
+ * ⚠️ LE REGISTRE DÉCRIVAIT DÉJÀ UNE CIBLE COMME UN ÉTAT EXISTANT. `seniorite`
+ * portait douze libellés natifs relevés (`经验`, `Erfahrungslevel`…) et un taux
+ * par marché, alors qu'elle n'était servie NULLE PART : absente de
+ * `CORRESPONDANCE_FACETTE`, de `JobsResult['facets']` et de `CleFiltre` côté
+ * site. Aucun candidat n'a jamais vu ce filtre. Le retrait ne supprime donc
+ * aucune fonctionnalité — il aligne le registre sur la réalité.
+ *
+ * CE QUI LA FERAIT REVENIR : une séniorité SOURCÉE, pas déduite. Le chantier
+ * qui branche l'expérience DÉCLARÉE (`experienceYears`, alimenté par les
+ * adaptateurs ATS) est en cours. Le jour où cette donnée existe et couvre un
+ * marché au-dessus du seuil, la dimension peut renaître — sur du sourcé, avec
+ * ses libellés qui sont conservés dans l'historique de ce fichier, et par
+ * DÉCISION (le retrait comme le retour sont des arbitrages produit).
+ *
+ * CE QUI N'EST PAS SUPPRIMÉ : la colonne `Job.seniority` et le moteur qui la
+ * remplit restent en place. La déduction garde un usage INTERNE légitime
+ * (matching, agrégats Intelligence, index `[isActive, seniority]`). On retire
+ * la PROMESSE faite au candidat, pas la donnée.
+ *
+ * ── `saisonnier` RESTE UNE DIMENSION MESURÉE, ET C'EST DÉLIBÉRÉ ──────────
+ *
+ * Elle n'a jamais été exposée (aucun marché ne porte de libellé natif) et elle
+ * ne PEUT pas l'être : `isSeasonal` porte `true` sur 3 449 offres et `null` sur
+ * les 79 982 autres — ZÉRO `false`, vérifié en base le 2026-09-15. Une colonne
+ * à une seule valeur distincte ne partitionne rien : un filtre construit dessus
+ * ne saurait que tout garder ou tout exclure.
+ *
+ * Elle reste NÉANMOINS dans cette liste, contrairement à `seniorite`, parce que
+ * les deux cas sont différents et que confondre les deux coûterait cher :
+ *
+ *  · `seniorite` était une PROMESSE — douze libellés relevés, un taux au-dessus
+ *    du seuil sur sept marchés, donc une facette qui n'attendait que son
+ *    câblage. Elle est retirée ;
+ *  · `saisonnier` est une MESURE dont la conclusion est « non », et elle porte
+ *    l'argument qui ferme la question du `casual` australien (voir le bloc
+ *    nommé en tête de fichier, qui compare 17,0 % de saisonnier AU à 8 % de
+ *    résiduel casual). La retirer effacerait la mesure qui justifie le refus,
+ *    et la question reviendrait à la revue suivante sans sa réponse.
+ *
+ * L'invariant « aucun marché ne porte de libellé saisonnier » est gardé par un
+ * témoin, et c'est lui qui garantit qu'elle ne sera pas exposée par accident.
  */
 export const DIMENSIONS_FACETTE = [
   'contrat',
@@ -224,7 +310,6 @@ export const DIMENSIONS_FACETTE = [
   'programme',
   'saisonnier',
   'metier',
-  'seniorite',
 ] as const;
 export type DimensionFacette = (typeof DIMENSIONS_FACETTE)[number];
 
@@ -290,29 +375,36 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    * Le saisonnier (6,1 %) reste sous le seuil malgré 11 % de « seasonal » dans
    * les descriptions : un mot cité n'est pas une dimension renseignée.
    *
-   * TROIS facettes, pas une. Le métier (96,8 %) est la mieux couverte de tout
-   * le registre et la séniorité passe le seuil (29,7 %). Lire « les US ne
+   * DEUX facettes, pas une, et pas trois. Le métier (53,9 % sur la colonne
+   * réellement servie) passe le seuil et s'ajoute au rythme. Lire « les US ne
    * gardent qu'une facette » était une conclusion tirée du sous-ensemble
    * contractuel, pas du marché.
+   *
+   * ⚠️ 96,8 % ÉTAIT LE TAUX DE `jobFunction`, pas celui de la facette servie.
+   * Re-mesuré sur `occupationCode` : 53,949 %. Le marché reste le mieux couvert
+   * du registre sur cette dimension, mais « la mieux couverte de tout le
+   * registre » décrivait une colonne que le candidat ne voit jamais.
+   *
+   * La séniorité a été RETIRÉE des dimensions de facette (déduite à 99,97 %,
+   * contredit la source à 80 %) : voir le bloc `DIMENSIONS_FACETTE`.
    */
   US: {
     code: 'US',
     locale: 'en-US',
-    libelles: { temps: 'Job type', metier: 'Job category', seniorite: 'Experience level' },
+    libelles: { temps: 'Job type', metier: 'Job category' },
     offresMesurees: 36_942,
     couverture: {
       contrat: 0.192,
       temps: 0.818,
       programme: 0.003,
       saisonnier: 0.061,
-      metier: 0.96836,
-      seniorite: 0.29709,
+      metier: 0.53949,
     },
   },
 
   /**
-   * FRANCE — le marché contractuellement le mieux renseigné, et le seul à
-   * exposer les CINQ dimensions du registre.
+   * FRANCE — le marché contractuellement le mieux renseigné, et l'un des deux
+   * (avec la Belgique) à exposer QUATRE dimensions du registre.
    *
    * 69,2 % de contrat : le droit français NOMME la durée (CDI 19 %, CDD 12 % des
    * descriptions), donc les employeurs la publient. C'est le miroir exact de la
@@ -332,7 +424,6 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 'Temps de travail',
       programme: 'Type de programme',
       metier: 'Métier',
-      seniorite: 'Niveau d’expérience',
     },
     offresMesurees: 11_026,
     couverture: {
@@ -340,17 +431,19 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 0.643,
       programme: 0.222,
       saisonnier: 0.002,
-      metier: 0.95538,
-      seniorite: 0.23,
+      metier: 0.48767,
     },
   },
 
   /**
    * ROYAUME-UNI — contrat (38,9 %) et rythme (64,6 %) ; « Job type » comme aux US.
    *
-   * La séniorité y est la mieux couverte du registre (34,9 %) : le marché
-   * britannique nomme le niveau (« junior », « senior », « head of ») dans ses
-   * intitulés bien plus systématiquement que les marchés latins.
+   * Le marché britannique nomme le niveau (« junior », « senior », « head of »)
+   * dans ses intitulés bien plus systématiquement que les marchés latins — ce
+   * qui faisait de lui le mieux couvert en séniorité (34,9 %). C'est
+   * précisément ce qu'on ne peut PAS servir : un niveau lu dans l'intitulé est
+   * une déduction, et elle contredit la source déclarée 4 fois sur 5. La
+   * dimension a été retirée des facettes (voir `DIMENSIONS_FACETTE`).
    */
   GB: {
     code: 'GB',
@@ -359,7 +452,6 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       contrat: 'Job type',
       temps: 'Job type',
       metier: 'Job category',
-      seniorite: 'Experience level',
     },
     offresMesurees: 3_305,
     couverture: {
@@ -367,8 +459,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 0.646,
       programme: 0.006,
       saisonnier: 0.029,
-      metier: 0.94221,
-      seniorite: 0.34917,
+      metier: 0.4118,
     },
   },
 
@@ -394,7 +485,6 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       contrat: 'Type de poste',
       temps: 'Type de poste',
       metier: 'Domaine',
-      seniorite: 'Niveau d’expérience',
     },
     offresMesurees: 3_129,
     couverture: {
@@ -402,8 +492,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 0.795,
       programme: 0.012,
       saisonnier: 0.114,
-      metier: 0.9364,
-      seniorite: 0.31256,
+      metier: 0.36529,
     },
   },
 
@@ -416,12 +505,15 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    * nulle part. Un filtre construit sur la fréquence lexicale au lieu de la
    * couverture réelle aurait été vide huit fois sur dix.
    *
-   * SÉNIORITÉ À 19,838 % — sous le seuil de 20 % de seize millièmes. Le libellé
-   * « Erfahrungslevel » est relevé et conservé, la facette n'est PAS exposée.
-   * C'est le cas qui mesure la valeur d'un seuil : à cette distance, la
-   * tentation d'arrondir « puisque c'est pareil » est maximale, et céder une
-   * fois vide le seuil de tout pouvoir de décision. Le jour où la mesure passe
-   * la barre, il n'y a rien à traduire — seulement un chiffre à mettre à jour.
+   * LA SÉNIORITÉ ALLEMANDE ÉTAIT À 19,838 %, sous le seuil de seize millièmes —
+   * le cas qui mesurait la valeur d'un seuil, puisque la tentation d'arrondir
+   * « puisque c'est pareil » y est maximale.
+   *
+   * Cet argument est CADUC depuis le retrait de la dimension : ce n'est plus le
+   * taux qui l'écarte, c'est la provenance de la donnée (déduite par regex sur
+   * l'intitulé, contredisant la source dans 80 % des cas confrontables). Le
+   * seuil aurait laissé passer sept marchés sur douze — il ne protégeait pas
+   * contre ce défaut-là, et aucun seuil ne le pouvait.
    */
   DE: {
     code: 'DE',
@@ -430,7 +522,6 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       contrat: 'Anstellungsart',
       temps: 'Arbeitszeit',
       metier: 'Berufsfeld',
-      seniorite: 'Erfahrungslevel',
     },
     offresMesurees: 3_080,
     couverture: {
@@ -438,17 +529,15 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 0.749,
       programme: 0.08,
       saisonnier: 0.048,
-      metier: 0.92468,
-      seniorite: 0.19838,
+      metier: 0.49513,
     },
   },
 
   /**
    * ITALIE — « Tipo di contratto » ; programme à 16,2 %, sous le seuil.
    *
-   * Séniorité 18,975 % : sous le seuil, non exposée, comme en Allemagne et en
-   * Suisse. Trois marchés sur dix la ratent — c'est la dimension la plus
-   * inégalement renseignée du registre (18,0 % en CH, 34,9 % au GB).
+   * La séniorité y était à 18,975 %, sous le seuil — elle n'est plus une
+   * dimension de facette du tout, sur aucun marché (voir `DIMENSIONS_FACETTE`).
    */
   IT: {
     code: 'IT',
@@ -457,7 +546,6 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       contrat: 'Tipo di contratto',
       temps: 'Orario di lavoro',
       metier: 'Categoria',
-      seniorite: 'Livello di esperienza',
     },
     offresMesurees: 2_693,
     couverture: {
@@ -465,8 +553,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 0.68,
       programme: 0.162,
       saisonnier: 0.004,
-      metier: 0.91682,
-      seniorite: 0.18975,
+      metier: 0.52395,
     },
   },
 
@@ -478,7 +565,6 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       contrat: 'Tipo de empleo',
       temps: 'Jornada laboral',
       metier: 'Categoría',
-      seniorite: 'Nivel de experiencia',
     },
     offresMesurees: 2_197,
     couverture: {
@@ -486,8 +572,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 0.665,
       programme: 0.053,
       saisonnier: 0.0,
-      metier: 0.90032,
-      seniorite: 0.20346,
+      metier: 0.56987,
     },
   },
 
@@ -505,7 +590,6 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       contrat: 'Dienstverband',
       temps: 'Dienstverband',
       metier: 'Vakgebied',
-      seniorite: 'Ervaringsniveau',
     },
     offresMesurees: 1_849,
     couverture: {
@@ -513,8 +597,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 0.782,
       programme: 0.025,
       saisonnier: 0.002,
-      metier: 0.91076,
-      seniorite: 0.2861,
+      metier: 0.38724,
     },
   },
 
@@ -540,7 +623,6 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       contrat: 'Job type',
       temps: 'Job type',
       metier: 'Job category',
-      seniorite: 'Experience level',
     },
     offresMesurees: 1_234,
     couverture: {
@@ -548,8 +630,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 0.657,
       programme: 0.007,
       saisonnier: 0.17,
-      metier: 0.94408,
-      seniorite: 0.31118,
+      metier: 0.37358,
     },
   },
 
@@ -572,17 +653,20 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    * traduire.
    *
    * LE MARCHÉ LE PLUS PAUVREMENT COUVERT DU REGISTRE, sur toutes les dimensions
-   * à la fois : métier 77,705 % (le PLUS BAS du registre, onze points sous la
-   * Chine qui est l'autre marché sous la cible), séniorité 18,033 % (sous le
-   * seuil, non exposée), rythme 49,1 % (le seul sous 60 %). Avec 1 220 offres,
-   * c'est aussi le plus petit. Il n'a donc AUCUNE facette dense au sens du
-   * seuil de 90 %, et c'est lui qui fixe le plancher du témoin de densité —
-   * voir `PLANCHER_FACETTE_DENSE`.
+   * à la fois : métier 25,656 % (le PLUS BAS du registre), rythme 49,1 % (le
+   * seul sous 60 %). Avec 1 220 offres, c'est aussi le plus petit.
    *
-   * ⚠️ « le seul sous 90 % » JUSQU'AU 2026-09-15, plus depuis : l'entrée de la
-   * Chine (88,807 %) a rendu cette phrase fausse, et c'est le motif d'erreur
-   * dominant de ce dépôt — le code change, le commentaire reste en arrière. La
-   * Suisse reste le PLANCHER ; elle n'est plus l'unique exception.
+   * ⚠️ 77,705 % ÉTAIT SON TAUX DE `jobFunction`, la colonne que la facette ne
+   * sert pas. Sur `occupationCode`, la Suisse tombe à 25,656 % — à cinq points
+   * du seuil d'affichage, et non plus à onze points de la cible de densité.
+   * Elle garde la facette métier, mais de justesse : c'est le marché qu'une
+   * dégradation de la classification fermerait en premier.
+   *
+   * Elle ne fixe plus « le plancher » de quoi que ce soit : depuis la
+   * re-mesure, AUCUN marché n'a de facette métier dense, et la meilleure
+   * facette suisse (rythme, 49,1 %) reste elle-même sous les 77 % — comme celle
+   * de sept autres marchés. Seuls US, BE, CA et NL franchissent encore le
+   * plancher, et par le rythme. Voir `PLANCHER_FACETTE_DENSE`.
    *
    * Les libellés suisses suivent la France, locale de service `fr-CH` oblige.
    * C'est le seul endroit du registre où deux marchés partagent leurs libellés,
@@ -598,7 +682,6 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 'Temps de travail',
       programme: 'Type de programme',
       metier: 'Métier',
-      seniorite: 'Niveau d’expérience',
     },
     offresMesurees: 1_220,
     couverture: {
@@ -606,24 +689,29 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 0.491,
       programme: 0.263,
       saisonnier: 0.008,
-      metier: 0.77705,
-      seniorite: 0.18033,
+      metier: 0.25656,
     },
   },
 
   /**
-   * BELGIQUE — CINQ FACETTES EXPOSÉES, à égalité avec la France et avec elle
+   * BELGIQUE — QUATRE FACETTES EXPOSÉES, à égalité avec la France et avec elle
    * seule. Mesuré le 2026-09-15 sur 671 offres actives.
    *
-   * Contrat 43,1 % · temps 81,4 % · programme 22,4 % · métier 90,5 % ·
-   * séniorité 21,5 %. Les cinq dimensions exposables passent le seuil ; le
-   * saisonnier le rate (2,7 %), comme en France (0,2 %).
+   * Contrat 43,1 % · temps 81,4 % · programme 22,4 % · métier 45,9 %. Les
+   * quatre dimensions exposables passent le seuil ; le saisonnier le rate
+   * (2,7 %), comme en France (0,2 %).
    *
-   * Vérifié dans le code plutôt qu'affirmé : `facettesDuMarche` rend cinq
-   * entrées pour FR et BE, quatre pour GB/CA/ES/NL/AU, trois pour US/DE/IT/CH.
-   * Une première rédaction de ce bloc disait « le SEUL marché à cinq facettes »
-   * — c'était faux, la France en expose autant, et seul le comptage réel l'a
-   * montré.
+   * ⚠️ CE BLOC A DIT « CINQ FACETTES » ET « métier 90,5 % ». Les deux étaient
+   * faux pour la même raison : le métier était mesuré sur `jobFunction` (90,462 %)
+   * quand la facette sert `occupationCode` (45,902 %), et la cinquième facette
+   * était la séniorité, retirée depuis (déduite à 99,97 %). Le taux reste
+   * largement au-dessus du seuil : la Belgique garde bien sa facette métier.
+   *
+   * Vérifié dans le code plutôt qu'affirmé : `facettesDuMarche` rend quatre
+   * entrées pour FR et BE, trois pour GB/CA/DE/IT/ES/NL/AU/CH, deux pour US et
+   * une pour CN. Une première rédaction de ce bloc disait « le SEUL marché à
+   * cinq facettes » — c'était faux, la France en expose autant, et seul le
+   * comptage réel l'a montré.
    *
    * Ce qui EST singulier tient au PROGRAMME : à 22,4 %, la Belgique rejoint la
    * France (22,2 %) et la Suisse (26,3 %) dans le très petit groupe des marchés
@@ -668,7 +756,6 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 'Temps de travail · Dienstverband',
       programme: 'Type de programme · Type programma',
       metier: 'Métier · Vakgebied',
-      seniorite: 'Niveau d’expérience · Ervaringsniveau',
     },
     offresMesurees: 671,
     couverture: {
@@ -676,8 +763,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 0.81371,
       programme: 0.22355,
       saisonnier: 0.02683,
-      metier: 0.90462,
-      seniorite: 0.21461,
+      metier: 0.45902,
     },
   },
 
@@ -750,27 +836,41 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    * un modèle canonique nouveau, sur tous les marchés. C'est une décision
    * produit, pas un réglage de registre — elle n'est pas prise ici.
    *
-   * ── CE QUI EST EXPOSÉ : MÉTIER ET SÉNIORITÉ ──────────────────────────────
+   * ── CE QUI EST GRAVÉ ICI : LE MÉTIER, ET LUI SEUL ───────────────────────
    *
-   * `metier` — 88,807 %, 25 valeurs distinctes, dominante à 33,9 %. C'est la
-   * facette la MIEUX répartie du registre après la Suisse (28,4 %) : mieux que
-   * l'Allemagne (61,7 %) ou l'Espagne (59,3 %), tous deux ouverts. Elle porte
-   * le besoin réel du candidat au premier clic.
+   * `metier` — 33,088 %, et c'est l'UNIQUE facette du marché chinois. Elle est
+   * réellement servie : `CORRESPONDANCE_FACETTE` la mappe vers `occupations`,
+   * que `job-search-query.ts:167` agrège depuis `occupationCode`.
    *
-   * `seniorite` — 29,820 %, au-dessus du seuil, et le libellé `经验` est celui
-   * que la barre de filtres de zhaopin rend réellement (la forme longue
-   * `工作经验` est le nom du champ, pas l'en-tête affiché).
+   * ⚠️ 88,807 % ÉTAIT LE TAUX DE `jobFunction`, pas celui de la facette servie.
+   * Ce bloc affirmait que la Chine « porte le besoin réel du candidat au
+   * premier clic » sur la foi de ce chiffre. La mesure sur la bonne colonne dit
+   * 33,088 % : les deux tiers du catalogue chinois ressortent « Métier à
+   * préciser ». C'est au-dessus du seuil d'affichage, donc la facette reste —
+   * mais c'est le marché le plus fragile du registre, avec la Suisse.
+   *
+   * ── `seniorite` A ÉTÉ RETIRÉE DU REGISTRE (2026-09-15) ───────────────────
+   *
+   * Ce bloc portait déjà le diagnostic — « elle N'EST SERVIE NULLE PART, ET
+   * SUR AUCUN MARCHÉ », « le trou est ANTÉRIEUR à la Chine » — et concluait
+   * qu'il fallait CÂBLER la dimension, par arbitrage CEO.
+   *
+   * La mesure de la donnée elle-même a renversé la conclusion : 99,97 % des
+   * séniorités sont déduites par regex sur l'intitulé, et elles contredisent le
+   * niveau déclaré par l'employeur dans 80 % des cas confrontables. Il ne
+   * fallait donc pas câbler la promesse, il fallait la retirer du registre en
+   * attendant une donnée sourcée. Le libellé `经验` relevé sur zhaopin reste
+   * dans l'historique de ce fichier, prêt pour le jour où elle renaîtra.
    *
    * `programme` (17,075 %) et `saisonnier` (0 %) restent dehors : le seuil
    * s'applique sans exception.
    *
-   * ── LA DENSITÉ : 88,807 %, SOUS LA CIBLE, AU-DESSUS DU PLANCHER ──────────
+   * ── LA DENSITÉ : 33,088 %, SOUS LA CIBLE ET SOUS LE PLANCHER ────────────
    *
-   * La Chine rejoint la Suisse parmi les marchés sans facette à 90 %. C'est un
-   * FAIT MESURÉ, pas une tolérance : elle passe largement le plancher de 77 %,
-   * et sa facette dense est mieux répartie que celle de plusieurs marchés déjà
-   * ouverts. Le témoin de densité a été mis à jour pour nommer les deux, et
-   * non élargi pour cesser de garder quoi que ce soit.
+   * La Chine n'a AUCUNE facette dense, et elle n'est plus seule : depuis la
+   * re-mesure du métier sur la bonne colonne, aucun marché du registre n'atteint
+   * le plancher de 77 %. Elle reste le cas extrême — son unique facette est
+   * aussi la plus creuse de toutes celles qui sont servies.
    *
    * ── LE CONTENU DES ANNONCES RESTE EN CHINOIS ─────────────────────────────
    *
@@ -800,7 +900,6 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
      */
     libelles: {
       metier: '职位类别',
-      seniorite: '经验',
     },
     offresMesurees: 1_224,
     couverture: {
@@ -808,8 +907,7 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
       temps: 0.81944,
       programme: 0.17075,
       saisonnier: 0,
-      metier: 0.88807,
-      seniorite: 0.2982,
+      metier: 0.33088,
     },
   },
 };

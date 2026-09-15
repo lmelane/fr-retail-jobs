@@ -399,3 +399,166 @@ describe('la table de correspondance suit le registre, elle ne le recopie pas', 
       .not.toHaveProperty('occupations');
   });
 });
+
+/**
+ * ════════════════════════════════════════════════════════════════════════════
+ *  LE TÉMOIN DE CHAÎNE — une dimension gravée doit atteindre l'API.
+ * ════════════════════════════════════════════════════════════════════════════
+ *
+ * ── LE DÉFAUT QU'IL AURAIT ATTRAPÉ, ET QU'AUCUN AUTRE NE VOYAIT ───────────
+ *
+ * `seniorite` a vécu dans `DIMENSIONS_FACETTE` du 2026-09-15 au 2026-09-15 avec
+ * DOUZE libellés natifs relevés (`经验`, `Erfahrungslevel`, « Niveau
+ * d'expérience »…), un taux de couverture par marché, et sept marchés au-dessus
+ * du seuil d'affichage. Le registre la décrivait comme une facette exposée.
+ *
+ * Elle n'a JAMAIS été servie à un candidat. Aucune ligne de
+ * `CORRESPONDANCE_FACETTE` ne la mappait, `JobsResult['facets']` ne portait
+ * aucune clé de séniorité, et `CleFiltre` côté site ne la connaissait pas.
+ *
+ * Le typecheck était vert — `DIMENSIONS_FACETTE` et `CORRESPONDANCE_FACETTE`
+ * sont deux tables indépendantes, et rien n'oblige la seconde à couvrir la
+ * première. Les 22 témoins du registre étaient verts aussi : ils vérifiaient
+ * que `facettesDuMarche('CN')` rendait bien `seniorite`, ce qui était vrai et
+ * parfaitement inutile.
+ *
+ * C'est exactement l'interdit n°1 du CLAUDE.md — décrire une CIBLE au présent
+ * comme un ÉTAT EXISTANT — et il était invisible à la relecture parce que les
+ * deux moitiés du code étaient justes. Le défaut vivait dans leur RENCONTRE.
+ *
+ * ── POURQUOI IL EST GÉNÉRIQUE, ET NON « seniorite ne doit pas revenir » ───
+ *
+ * Un témoin nommant `seniorite` ne garderait que le passé. Celui-ci balaie
+ * `DIMENSIONS_FACETTE` et exige, pour CHAQUE dimension, un chemin de rendu
+ * jusqu'à l'API. La prochaine dimension ajoutée au registre sans câblage
+ * rougira ici, quel que soit son nom.
+ */
+describe('CHAÎNE REGISTRE → API — aucune dimension gravée sans chemin de rendu', () => {
+  /*
+   * La table de correspondance n'est pas exportée (c'est un détail interne de
+   * `facettes-marche.ts`, et c'est bien). On la sonde donc par son
+   * COMPORTEMENT, ce qui est plus fort qu'une lecture de constante : on
+   * interroge `facetteServie` pour chaque nom de facette de l'API, et on
+   * observe quelles dimensions du registre sont capables de RETIRER une facette.
+   *
+   * Une dimension qu'aucune facette d'API ne suit ne peut RIEN retirer — elle
+   * est décorative, et c'est précisément ce qu'on cherche.
+   */
+  const NOMS_API: readonly NomFacetteApi[] = [
+    'sectors',
+    'contracts',
+    'workTimes',
+    'programs',
+    'engagements',
+    'cities',
+    'groups',
+    'maisons',
+    'sources',
+    'countries',
+    'occupations',
+    'languages',
+  ];
+
+  it('CHAQUE dimension de `DIMENSIONS_FACETTE` a une facette d’API qui la suit', async () => {
+    const { DIMENSIONS_FACETTE, CODES_MARCHE, MARCHES, SEUIL_AFFICHAGE_FACETTE } = await import(
+      '@catwalks/db/marches'
+    );
+
+    /*
+     * PRÉMISSE 1 — le registre porte bien des dimensions. Sur une liste vide,
+     * la boucle ne s'exécuterait jamais et le témoin serait vert sans rien
+     * vérifier. C'est le mode de panne le plus probable d'un témoin d'absence.
+     */
+    expect(DIMENSIONS_FACETTE.length, 'la prémisse : le registre porte des dimensions').toBeGreaterThan(0);
+
+    /*
+     * PRÉMISSE 2 — la sonde comportementale doit SAVOIR DÉTECTER un câblage.
+     * Sans cette assertion, un `facetteServie` cassé qui rendrait toujours
+     * `true` ferait conclure « aucune dimension n'est câblée », donc rougir
+     * pour la mauvaise raison — ou, si l'on inversait la logique, passer au
+     * vert sur un produit entièrement débranché.
+     *
+     * `contracts` / `contrat` est le câblage de référence : les US le masquent
+     * (19,2 % de couverture), la France le sert (69,2 %).
+     */
+    expect(facetteServie('contracts', 'US'), 'la prémisse : la sonde voit un masquage').toBe(false);
+    expect(facetteServie('contracts', 'FR'), 'la prémisse : et voit un service').toBe(true);
+
+    /*
+     * On cherche, pour chaque dimension, un marché où elle est SOUS le seuil ou
+     * sans libellé (donc non exposée) alors que le marché expose autre chose.
+     * Sur un tel marché, une facette d'API réellement mappée sur cette
+     * dimension DOIT être retirée. Si aucune facette n'est retirée, c'est que
+     * la dimension n'est suivie par aucune.
+     */
+    const nonCablees: string[] = [];
+    for (const dimension of DIMENSIONS_FACETTE) {
+      // Un marché mesuré qui N'EXPOSE PAS cette dimension : c'est là que le
+      // câblage devient observable.
+      const marcheTemoin = CODES_MARCHE.find((code) => {
+        const m = MARCHES[code];
+        const exposee =
+          m.couverture[dimension] >= SEUIL_AFFICHAGE_FACETTE && m.libelles[dimension] !== undefined;
+        return !exposee;
+      });
+      if (!marcheTemoin) continue; // exposée partout : rien à observer ici.
+
+      const retireeParCeMarche = NOMS_API.filter((nom) => !facetteServie(nom, marcheTemoin));
+      // La dimension est câblée si AU MOINS une facette d'API disparaît sur un
+      // marché qui ne l'expose pas ET qui l'expose ailleurs.
+      const cableeAilleurs = CODES_MARCHE.some((code) => {
+        const m = MARCHES[code];
+        const exposee =
+          m.couverture[dimension] >= SEUIL_AFFICHAGE_FACETTE && m.libelles[dimension] !== undefined;
+        if (!exposee) return false;
+        return NOMS_API.some((nom) => !facetteServie(nom, marcheTemoin) && facetteServie(nom, code));
+      });
+      if (!retireeParCeMarche.length || !cableeAilleurs) nonCablees.push(dimension);
+    }
+
+    /*
+     * `saisonnier` est le cas CONNU et DOCUMENTÉ : aucun marché ne porte de
+     * libellé natif, donc elle n'est exposée nulle part et ne peut être câblée
+     * nulle part. Elle reste au registre parce qu'elle porte la MESURE qui
+     * ferme la question du `casual` australien — voir `marches.ts`. C'est la
+     * seule exception tolérée, et elle est nommée : toute AUTRE dimension qui
+     * apparaîtrait ici est une promesse morte.
+     */
+    expect(
+      nonCablees.filter((d) => d !== 'saisonnier'),
+      'dimension(s) gravée(s) au registre sans aucun chemin de rendu jusqu’à l’API — soit on la branche, soit on la retire du registre',
+    ).toEqual([]);
+  });
+
+  it('`occupations` est bien la facette qui SUIT la dimension `metier`', async () => {
+    /*
+     * Le témoin générique ci-dessus prouve qu'une dimension est suivie par
+     * QUELQUE chose. Celui-ci nomme le couple, parce que c'est lui qui porte le
+     * défaut A : le registre mesurait `jobFunction` pendant que la facette
+     * servait `occupationCode`.
+     *
+     * PRÉMISSE — il faut un marché qui expose le métier et un qui ne l'expose
+     * pas… or le métier est exposé PARTOUT (25,7 % au minimum, seuil à 20 %).
+     * On sonde donc par un marché hors registre, où la dégradation sûre sert
+     * tout, contre un marché mesuré : c'est la seule façon d'observer le
+     * couplage sans marché contre-exemple.
+     */
+    const { facettesDuMarche } = await import('@catwalks/db/marches');
+    expect(facettesDuMarche('CN'), 'la prémisse : la Chine expose le métier').toContain('metier');
+    expect(facettesDuMarche('CN'), 'et rien d’autre — le cas le plus étroit').toEqual(['metier']);
+
+    /*
+     * Sur le marché chinois, le contrat et le rythme sont masqués mais le
+     * métier est servi. Si `occupations` ne suivait pas `metier`, elle serait
+     * soit toujours servie (non mappée), soit retirée ici (mal mappée).
+     */
+    expect(facetteServie('occupations', 'CN'), '`occupations` suit `metier`, donc servie').toBe(true);
+    expect(facetteServie('contracts', 'CN'), 'le contrat, lui, est masqué').toBe(false);
+    expect(facetteServie('workTimes', 'CN'), 'le rythme aussi').toBe(false);
+
+    const servies = facettesServies(facettesCompletes(), 'CN');
+    expect('occupations' in servies, 'la facette métier atteint bien la réponse').toBe(true);
+    expect('contracts' in servies).toBe(false);
+    expect('workTimes' in servies).toBe(false);
+  });
+});
