@@ -7,6 +7,11 @@ import { captureReaderRevision } from '../capture/revision.js';
 import { readAdapterObservation } from '../capture/observations.js';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { PIPELINE_VERSION } from './version.js';
+import {
+  readExpiryPublicationProof,
+  ExpiryPublicationReview,
+  type ExpiryPublicationProof,
+} from '../publication/expiry-proof.js';
 
 const MAX_ROWS = 1000;
 const MAX_RAW_BYTES = 32_000_000;
@@ -17,6 +22,7 @@ const select = {
   jobId: true,
   sourceKey: true,
   externalId: true,
+  url: true,
   raw: true,
   isActive: true,
   firstSeenAt: true,
@@ -47,10 +53,11 @@ type Entry = {
   expiresAt: string | null;
   evidence: ExpiryEvidence | null;
   proof: Proof;
+  publicationProof: ExpiryPublicationProof | null;
 };
 type Review = { id: string; sourceKey: string; externalId: string; reason: string };
 type Body = {
-  version: 2;
+  version: 3;
   kind: 'SOURCE_EXPIRY';
   revision: string;
   allowedKeys: string[];
@@ -66,7 +73,7 @@ type Witness = {
   id?: string;
 };
 type Decision =
-  | { expiresAt: string | null; evidence: ExpiryEvidence | null; proof: Proof; witness?: Witness }
+  | { changed: boolean; expiresAt: string | null; evidence: ExpiryEvidence | null; proof: Proof; witness?: Witness }
   | { review: string }
   | null;
 
@@ -93,8 +100,8 @@ function decide(row: Row, kind: string, previous?: Witness): Decision {
   const current = declaredExpiry(kind, row.raw);
   if (current) {
     const after = { expiresAt: current.expiresAt?.toISOString() ?? null, expiryEvidence: current.evidence };
-    if (evidenceHash(before(row)) === evidenceHash(after)) return null;
     return {
+      changed: evidenceHash(before(row)) !== evidenceHash(after),
       expiresAt: after.expiresAt,
       evidence: current.evidence,
       proof: { origin: 'CURRENT_RAW', inputHash: evidenceHash(row.raw), observedAt: row.lastSeenAt.toISOString() },
@@ -108,7 +115,7 @@ function decide(row: Row, kind: string, previous?: Witness): Decision {
   }
   if (row.expiresAt === null && row.expiryEvidence === null) return null;
   const retired = retiredRule(kind, row.expiryEvidence);
-  if (retired) return { expiresAt: null, evidence: null, proof: retired };
+  if (retired) return { changed: true, expiresAt: null, evidence: null, proof: retired };
   const e = cacheEvidence(row.expiryEvidence);
   if (
     typeof e.rawHash !== 'string' ||
@@ -127,8 +134,8 @@ function decide(row: Row, kind: string, previous?: Witness): Decision {
   )
     return { review: 'PREVIOUS_DEADLINE_NO_LONGER_CORROBORATED' };
   const after = { expiresAt: replayed.expiresAt?.toISOString() ?? null, expiryEvidence: replayed.evidence };
-  if (evidenceHash(before(row)) === evidenceHash(after)) return null;
   return {
+    changed: evidenceHash(before(row)) !== evidenceHash(after),
     expiresAt: after.expiresAt,
     evidence: replayed.evidence,
     proof: {
@@ -140,7 +147,12 @@ function decide(row: Row, kind: string, previous?: Witness): Decision {
     witness: previous,
   };
 }
-function entryFor(row: Row, catalogue: Catalogue, d: Exclude<Decision, null | { review: string }>): Entry {
+function entryFor(
+  row: Row,
+  catalogue: Catalogue,
+  d: Exclude<Decision, null | { review: string }>,
+  publicationProof: ExpiryPublicationProof | null,
+): Entry {
   return {
     id: row.id,
     jobId: row.jobId,
@@ -154,6 +166,7 @@ function entryFor(row: Row, catalogue: Catalogue, d: Exclude<Decision, null | { 
     expiresAt: d.expiresAt,
     evidence: d.evidence,
     proof: d.proof,
+    publicationProof,
   };
 }
 async function previousWitness(
@@ -229,7 +242,8 @@ export async function planSourceExpiries(
   const catalogue = new Map(page.sources.map((s) => [s.key, s]));
   const entries: Entry[] = [],
     reviews: Review[] = [];
-  const budget = { used: page.rawBytes };
+  const budget = { used: page.rawBytes, limit: MAX_RAW_BYTES };
+  const bodies = new Map<string, Buffer>();
   for (const row of page.rows) {
     const source = catalogue.get(row.sourceKey)!;
     let decision = decide(row, source.kind);
@@ -244,10 +258,30 @@ export async function planSourceExpiries(
     if (!decision) continue;
     if ('review' in decision)
       reviews.push({ id: row.id, sourceKey: row.sourceKey, externalId: row.externalId, reason: decision.review });
-    else entries.push(entryFor(row, source, decision));
+    else {
+      try {
+        const publicationProof = decision.witness
+          ? await readExpiryPublicationProof(
+              db,
+              source,
+              {
+                sourceKey: row.sourceKey,
+                externalId: row.externalId,
+                url: row.url,
+                ...decision.witness,
+              },
+              { bodies, budget, store, allowFetch: true },
+            )
+          : null;
+        if (decision.changed) entries.push(entryFor(row, source, decision, publicationProof));
+      } catch (error) {
+        if (!(error instanceof ExpiryPublicationReview)) throw error;
+        reviews.push({ id: row.id, sourceKey: row.sourceKey, externalId: row.externalId, reason: error.reason });
+      }
+    }
   }
   const body: Body = {
-    version: 2,
+    version: 3,
     kind: 'SOURCE_EXPIRY',
     revision: captureReaderRevision(),
     allowedKeys,
@@ -272,7 +306,7 @@ function verify(plan: ExpiryBackfillPlan, expectedHash: string) {
     throw Error('Invalid expiry plan shape');
   const { planHash, ...body } = plan;
   if (
-    plan.version !== 2 ||
+    plan.version !== 3 ||
     plan.kind !== 'SOURCE_EXPIRY' ||
     plan.revision !== captureReaderRevision() ||
     planHash !== expectedHash ||
@@ -325,20 +359,67 @@ export async function applySourceExpiries(
     throw Error('Stored expiry plan differs');
   if (!plan.entries.length) return { written: 0, alreadyApplied: false };
   if (await isApplied(db, plan)) return { written: 0, alreadyApplied: true };
-  const previous = new Map<string, Witness>();
-  const budget = { used: 0 };
-  // Archive I/O happens before write locks. Immutable evidence is checked again through its input hash below.
-  for (const e of plan.entries)
-    if (e.proof.origin === 'PREVIOUS_OBSERVATION') {
-      const row = await db.jobSource.findUniqueOrThrow({
-        where: { id: e.id },
-        select: { sourceKey: true, externalId: true, expiryEvidence: true, lastSeenAt: true },
+  const snapshot = await db.$transaction(
+    async (tx) => {
+      // The earlier fast check can race with another successful application.
+      // Read the journal and row snapshot in the same MVCC snapshot.
+      if (await isApplied(tx, plan)) return { alreadyApplied: true as const };
+      const [size] = await tx.$queryRaw<
+        Array<{ bytes: bigint }>
+      >`SELECT COALESCE(sum(octet_length(COALESCE(raw::text,'null'))),0)::bigint AS bytes FROM "JobSource" WHERE id=ANY(${plan.entries.map((e) => e.id)}::text[])`;
+      if (size.bytes > BigInt(MAX_RAW_BYTES)) throw Error('Expiry RAW exceeds the bounded page size');
+      const rows = await tx.jobSource.findMany({ where: { id: { in: plan.entries.map((e) => e.id) } }, select });
+      const sources = await tx.source.findMany({
+        where: { key: { in: plan.allowedKeys } },
+        select: { key: true, kind: true, config: true, status: true },
       });
-      const witness = await previousWitness(db, row, store, budget, e.proof.observationId);
-      if (!witness || evidenceHash(witness.raw) !== e.proof.inputHash)
-        throw Error('Previous expiry observation changed or unavailable');
-      previous.set(e.id, witness);
+      return { alreadyApplied: false as const, rows, sources, bytes: Number(size.bytes) };
+    },
+    { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead, timeout: 30_000 },
+  );
+  if (snapshot.alreadyApplied) return { written: 0, alreadyApplied: true };
+  const initialRows = new Map(snapshot.rows.map((row) => [row.id, row]));
+  const initialSources = new Map(snapshot.sources.map((source) => [source.key, source]));
+  const previous = new Map<string, Witness>();
+  const bodies = new Map<string, Buffer>();
+  const budget = { used: snapshot.bytes, limit: MAX_RAW_BYTES };
+  // All archive reads finish before write locks; immutable bodies are reused below.
+  try {
+    for (const e of plan.entries) {
+      const row = initialRows.get(e.id),
+        source = initialSources.get(e.sourceKey);
+      if (!row || !source || stateHash(row, source) !== e.stateHash)
+        throw Error(`Stale or unsupported expiry evidence: ${e.id}`);
+      if (e.proof.origin === 'PREVIOUS_OBSERVATION') {
+        const witness = await previousWitness(db, row, store, budget, e.proof.observationId);
+        if (!witness || evidenceHash(witness.raw) !== e.proof.inputHash)
+          throw Error('Previous expiry observation changed or unavailable');
+        previous.set(e.id, witness);
+      }
+      const decision = decide(row, source.kind, previous.get(e.id));
+      if (!decision || 'review' in decision || !decision.changed)
+        throw Error(`Stale or unsupported expiry evidence: ${e.id}`);
+      const publicationProof = decision.witness
+        ? await readExpiryPublicationProof(
+            db,
+            source,
+            {
+              sourceKey: row.sourceKey,
+              externalId: row.externalId,
+              url: row.url,
+              ...decision.witness,
+            },
+            { bodies, budget, store, allowFetch: true },
+          )
+        : null;
+      if (evidenceHash(entryFor(row, source, decision, publicationProof)) !== evidenceHash(e))
+        throw Error(`Stale or unsupported expiry evidence: ${e.id}`);
     }
+  } catch (error) {
+    // A concurrent worker may have completed while this archive read failed.
+    if (await isApplied(db, plan)) return { written: 0, alreadyApplied: true };
+    throw error;
+  }
   return db.$transaction(
     async (tx) => {
       const batchId = `source-expiry:${plan.planHash}`;
@@ -356,7 +437,7 @@ export async function applySourceExpiries(
       const size = await tx.$queryRaw<
         Array<{ bytes: bigint }>
       >`SELECT COALESCE(sum(octet_length(COALESCE(raw::text,'null'))),0)::bigint AS bytes FROM "JobSource" WHERE id=ANY(${plan.entries.map((e) => e.id)}::text[])`;
-      if (size[0].bytes + BigInt(budget.used) > BigInt(MAX_RAW_BYTES))
+      if (size[0].bytes + BigInt(budget.used - snapshot.bytes) > BigInt(MAX_RAW_BYTES))
         throw Error('Expiry RAW exceeds the bounded page size');
       const catalogue = new Map(
         (
@@ -377,7 +458,22 @@ export async function applySourceExpiries(
         const row = rows.get(e.id),
           source = catalogue.get(e.sourceKey);
         const d = row && source ? decide(row, source.kind, previous.get(e.id)) : null;
-        if (!row || !source || !d || 'review' in d || evidenceHash(entryFor(row, source, d)) !== evidenceHash(e))
+        if (!row || !source || !d || 'review' in d || !d.changed)
+          throw Error(`Stale or unsupported expiry evidence: ${e.id}`);
+        const publicationProof = d.witness
+          ? await readExpiryPublicationProof(
+              tx,
+              source,
+              {
+                sourceKey: row.sourceKey,
+                externalId: row.externalId,
+                url: row.url,
+                ...d.witness,
+              },
+              { bodies, budget, allowFetch: false },
+            )
+          : null;
+        if (evidenceHash(entryFor(row, source, d, publicationProof)) !== evidenceHash(e))
           throw Error(`Stale or unsupported expiry evidence: ${e.id}`);
         decisions.set(e.id, d);
       }
@@ -418,6 +514,7 @@ export async function applySourceExpiries(
             after: json({ expiresAt: e.expiresAt, expiryEvidence: e.evidence }),
             evidence: json({
               proof: e.proof,
+              publicationProof: e.publicationProof,
               sourceKey: e.sourceKey,
               externalId: e.externalId,
               jobId: e.jobId,

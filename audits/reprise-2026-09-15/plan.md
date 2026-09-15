@@ -132,6 +132,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 - **Definition of Done :** aucune suppression d’identité ou de preuve par similarité ; chaque groupe explique ses liens ; résolution d’URL stable ; corpus de précision/rappel validé, faux rapprochements revus.
 - **Blocage de sortie :** corpus de référence de doublons réels annotés, à constituer depuis les sources, pas depuis les anciennes fusions.
 
+[Sous-lot 4F1 validé localement](lot-4f1.md) : le plan version 3 rattache chaque échéance à son identité RAW et, lorsqu’elle existe, à sa capture native. Les 3 064 tests, 11 contre-épreuves, la CLI et le build passent. Sur la copie complète, 2 939 écritures prouvées sont appliquées et 477 plans rejoués sans réécriture ; 3 210 cas restent en examen, sans modification de contenu ni d’attestation. La réparation des groupes, les présentations et la qualification restante précèdent toujours la bascule.
+
 ## Lot 5. Certifier les sources et préparer le cycle complet
 
 **Objectif.** Rendre chaque source du catalogue exploitable ou explicitement exclue.

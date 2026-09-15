@@ -56,6 +56,18 @@ function detailIdentity(kind: 'icims' | 'altamira', url: URL, raw: Record<string
  * This does not attest current availability or fabricate a native HTTP capture.
  * Unknown formats and missing content remain explicit recovery work. */
 export function recoverRetainedPublication(kind: string, raw: unknown, context: Context): Recovery {
+  return readRetainedPublication(kind, raw, context, true);
+}
+
+/** A missing description can prevent presentation without disproving an identity.
+ * All native ID, URL, tenant and publication-state checks still run. */
+export function retainedPublicationIdentity(kind: string, raw: unknown, context: Context):
+  { status: 'VERIFIED'; rawHash: string } | Extract<Recovery, { status: 'RECOLLECT_OR_REVIEW' }> {
+  const result = readRetainedPublication(kind, raw, context, false);
+  return result.status === 'RECOVERABLE' ? { status: 'VERIFIED', rawHash: result.rawHash } : result;
+}
+
+function readRetainedPublication(kind: string, raw: unknown, context: Context, requireContent: boolean): Recovery {
   if (!object(raw)) return failure('RAW_MISSING');
   if (!Number.isFinite(context.observedAt.getTime())) return failure('RAW_SCHEMA_INVALID');
   const { config } = context;
@@ -249,7 +261,7 @@ export function recoverRetainedPublication(kind: string, raw: unknown, context: 
     if (job.externalId !== context.externalId || url.href !== new URL(context.url).href ||
       !['https:', 'http:'].includes(url.protocol) || url.username || url.password) return failure('IDENTITY_MISMATCH');
     if (job.publicationHold || job.publicationWithdrawnAt) return failure('PUBLICATION_HELD');
-    if (typeof job.description !== 'string' || !htmlToPlainText(job.description)?.trim()) return failure('CONTENT_MISSING');
+    if (requireContent && (typeof job.description !== 'string' || !htmlToPlainText(job.description)?.trim())) return failure('CONTENT_MISSING');
     for (const date of [job.postedAt, job.validThrough]) if (date && !Number.isFinite(date.getTime())) return failure('RAW_SCHEMA_INVALID');
     // Keep exactly the persisted input, including unknown native fields.
     job = { ...job, url: context.url, raw };

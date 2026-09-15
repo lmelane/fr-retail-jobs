@@ -1,0 +1,11 @@
+{
+  "jobs": 87580,
+  "representations": 90764,
+  "activeRepresentations": 85327,
+  "observations": 137324,
+  "migrationCount": 55,
+  "databaseBytes": 3105265343,
+  "sourceDigest": "7d697bff95caa020a08074848bb79e937cb3f9005bb715041cd6659f5600f96d",
+  "jobDigest": "a48619cc01aa4b5a22ac27dc63bb13c484da83bb18968332deff56aa53945609",
+  "observationDigest": "795df3d548c25e4459c5a7e148855aa15ec7624fdcedf33d6e3823272a2c198d"
+}

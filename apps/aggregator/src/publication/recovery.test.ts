@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { recoverRetainedPublication } from './recovery.js';
+import { recoverRetainedPublication, retainedPublicationIdentity } from './recovery.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 
 const url = 'https://jobs.example.com/role-1';
@@ -10,6 +10,18 @@ const read = (raw: unknown, extra = {}) => recoverRetainedPublication('lever', r
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
 
 describe('retained publication recovery', () => {
+  it('can verify a native identity without claiming that missing content is publishable', () => {
+    const raw = { ...lever, descriptionPlain: undefined };
+    const context = { externalId: 'role-1', url, observedAt: at, config: {} };
+    expect(read(raw)).toMatchObject({ reason: 'CONTENT_MISSING' });
+    expect(retainedPublicationIdentity('lever', raw, context)).toEqual({ status: 'VERIFIED', rawHash: evidenceHash(raw) });
+    expect(retainedPublicationIdentity('lever', raw, { ...context, externalId: 'another' })).toMatchObject({ reason: 'IDENTITY_MISMATCH' });
+  });
+  it('does not reinterpret an early missing-content failure as a verified identity', () => {
+    expect(retainedPublicationIdentity('jobylon', { source: 'jobylon', listing: { externalId: '42', path: '/jobs/42-role' } },
+      { externalId: '42', url: 'https://emp.jobylon.com/jobs/42-role', observedAt: at, config: {} }))
+      .toEqual({ status: 'RECOLLECT_OR_REVIEW', reason: 'CONTENT_MISSING' });
+  });
   it('reads only native input, preserves unknown fields, and never uses the network', () => {
     const fetch = vi.fn(() => { throw new Error('No network permitted'); }); vi.stubGlobal('fetch', fetch);
     const raw = { ...lever, futureField: { untouched: true }, similarJobs: [{ text: 'Wrong related role' }] };

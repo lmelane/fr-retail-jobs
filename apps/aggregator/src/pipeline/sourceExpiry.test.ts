@@ -21,7 +21,14 @@ beforeEach(async () => {
   await wipe();
   auditBefore = await db.dataCorrection.count({ where: { finding: 'SOURCE_DECLARED_EXPIRY' } });
   await db.source.create({
-    data: { key, tenantKey: key, maison: key, kind: 'workday', config: {}, tier: 'ATS_OFFICIAL' },
+    data: {
+      key,
+      tenantKey: key,
+      maison: key,
+      kind: 'workday',
+      config: { origin: 'https://example.com', site: 'Fixture' },
+      tier: 'ATS_OFFICIAL',
+    },
   });
   await db.company.create({ data: { id: key, name: key, canonicalKey: key, fashionjobsUrl: `resolved:${key}` } });
 });
@@ -37,7 +44,7 @@ async function source(id: string, raw: object) {
       externalId: id,
       source: 'WORKDAY',
       title: id,
-      url: `https://example.com/${id}`,
+      url: jobUrl(id),
       fingerprint: id,
       sources: {
         create: {
@@ -45,18 +52,30 @@ async function source(id: string, raw: object) {
           sourceKey: key,
           sourceTier: 'ATS_OFFICIAL',
           externalId: id,
-          url: `https://example.com/${id}`,
+          url: jobUrl(id),
           raw,
         },
       },
     },
   });
 }
-const payload = { detail: { jobPostingInfo: { endDate: '2026-09-30' } } };
+const jobUrl = (id: string) => `https://example.com/Fixture/job/Paris/${id}`;
+const payload = (id: string) => ({
+  title: 'Client Advisor',
+  externalPath: `/job/Paris/${id}`,
+  detail: {
+    jobPostingInfo: {
+      endDate: '2026-09-30',
+      externalUrl: jobUrl(id),
+      jobDescription: '<p>Native responsibilities</p>',
+      logoImage: { alt: 'Fixture Maison' },
+    },
+  },
+});
 describe('deadline backfill from original source payloads', () => {
   it('bounds pages and source scope, writes evidence once, and safely resumes', async () => {
-    await source('a', payload);
-    await source('b', payload);
+    await source('a', payload('a'));
+    await source('b', payload('b'));
     await source('c', { unrelated: { validThrough: '2020-01-01' } });
     const first = await planSourceExpiries(db, [key], undefined, 1);
     const second = await planSourceExpiries(db, [key], first.nextCursor, 1);
@@ -87,49 +106,55 @@ describe('deadline backfill from original source payloads', () => {
           annotationHash: '',
         },
       }),
-    ).toMatchObject({ raw: payload });
+    ).toMatchObject({ raw: payload('a') });
     expect((await planSourceExpiries(db, [key])).plan.entries.map((entry) => entry.id)).toEqual(['js-b']);
   });
 
-  it.each(['raw', 'lastSeenAt', 'firstSeenAt', 'company', 'kind', 'config', 'status', 'activity', 'cache'] as const)(
-    'refuses a changed %s before writing any row',
-    async (field) => {
-      await source('a', payload);
-      await source('b', payload);
-      const { plan } = await planSourceExpiries(db, [key]);
-      if (field === 'raw')
-        await db.jobSource.update({ where: { id: 'js-b' }, data: { raw: { detailReadError: 'timeout' } } });
-      if (field === 'lastSeenAt')
-        await db.jobSource.update({ where: { id: 'js-b' }, data: { lastSeenAt: new Date(0) } });
-      if (field === 'firstSeenAt')
-        await db.jobSource.update({ where: { id: 'js-b' }, data: { firstSeenAt: new Date(0) } });
-      if (field === 'activity') await db.jobSource.update({ where: { id: 'js-b' }, data: { isActive: false } });
-      if (field === 'cache')
-        await db.jobSource.update({ where: { id: 'js-b' }, data: { expiryEvidence: { changed: true } } });
-      if (field === 'config') await db.source.update({ where: { key }, data: { config: { tenant: 'changed' } } });
-      if (field === 'status') await db.source.update({ where: { key }, data: { status: 'RETIRED' } });
-      if (field === 'kind') await db.source.update({ where: { key }, data: { kind: 'generic-listing' } });
-      if (field === 'company') {
-        await db.company.create({
-          data: {
-            id: `${key}-other`,
-            name: 'Other',
-            canonicalKey: `${key}-other`,
-            fashionjobsUrl: `resolved:${key}-other`,
-          },
-        });
-        await db.job.update({ where: { id: 'b' }, data: { companyId: `${key}-other` } });
-      }
-      await expect(applySourceExpiries(db, plan, plan.planHash)).rejects.toThrow(
-        'Stale or unsupported expiry evidence',
-      );
-      expect(await db.jobSource.count({ where: { expiresAt: { not: null } } })).toBe(0);
-      expect(await db.dataCorrection.count({ where: { finding: 'SOURCE_DECLARED_EXPIRY' } })).toBe(auditBefore);
-    },
-  );
+  it.each([
+    'raw',
+    'lastSeenAt',
+    'firstSeenAt',
+    'company',
+    'kind',
+    'config',
+    'status',
+    'activity',
+    'cache',
+    'url',
+  ] as const)('refuses a changed %s before writing any row', async (field) => {
+    await source('a', payload('a'));
+    await source('b', payload('b'));
+    const { plan } = await planSourceExpiries(db, [key]);
+    if (field === 'url') await db.jobSource.update({ where: { id: 'js-b' }, data: { url: jobUrl('other') } });
+    if (field === 'raw')
+      await db.jobSource.update({ where: { id: 'js-b' }, data: { raw: { detailReadError: 'timeout' } } });
+    if (field === 'lastSeenAt') await db.jobSource.update({ where: { id: 'js-b' }, data: { lastSeenAt: new Date(0) } });
+    if (field === 'firstSeenAt')
+      await db.jobSource.update({ where: { id: 'js-b' }, data: { firstSeenAt: new Date(0) } });
+    if (field === 'activity') await db.jobSource.update({ where: { id: 'js-b' }, data: { isActive: false } });
+    if (field === 'cache')
+      await db.jobSource.update({ where: { id: 'js-b' }, data: { expiryEvidence: { changed: true } } });
+    if (field === 'config') await db.source.update({ where: { key }, data: { config: { tenant: 'changed' } } });
+    if (field === 'status') await db.source.update({ where: { key }, data: { status: 'RETIRED' } });
+    if (field === 'kind') await db.source.update({ where: { key }, data: { kind: 'generic-listing' } });
+    if (field === 'company') {
+      await db.company.create({
+        data: {
+          id: `${key}-other`,
+          name: 'Other',
+          canonicalKey: `${key}-other`,
+          fashionjobsUrl: `resolved:${key}-other`,
+        },
+      });
+      await db.job.update({ where: { id: 'b' }, data: { companyId: `${key}-other` } });
+    }
+    await expect(applySourceExpiries(db, plan, plan.planHash)).rejects.toThrow('Stale or unsupported expiry evidence');
+    expect(await db.jobSource.count({ where: { expiresAt: { not: null } } })).toBe(0);
+    expect(await db.dataCorrection.count({ where: { finding: 'SOURCE_DECLARED_EXPIRY' } })).toBe(auditBefore);
+  });
 
   it('refuses a modified payload or mismatched plan hash', async () => {
-    await source('a', payload);
+    await source('a', payload('a'));
     const { plan } = await planSourceExpiries(db, [key]);
     await expect(applySourceExpiries(db, plan, '0'.repeat(64))).rejects.toThrow('Invalid expiry plan');
     plan.entries[0].expiresAt = '2030-01-01T00:00:00Z';
@@ -147,7 +172,7 @@ async function partialObservation(
   options: { observation?: boolean; future?: boolean; wrongId?: boolean; hold?: boolean; wrongDate?: boolean } = {},
 ) {
   const id = randomUUID(),
-    raw = { ...payload, fixture: id };
+    raw = { ...payload(id), fixture: id };
   const fact = declaredExpiry('workday', raw)!;
   await source(id, { detailReadError: 'timeout' });
   const observedAt = new Date(options.future ? '2026-09-16T09:00:00Z' : '2026-09-14T09:00:00Z');
@@ -178,15 +203,51 @@ async function partialObservation(
 
 describe('expiry evidence reconciliation', () => {
   it('serializes two concurrent applications into a single audited change', async () => {
-    await source('a', payload);
+    await source('a', payload('a'));
     const { plan } = await planSourceExpiries(db, [key]);
     const results = await Promise.all([
       applySourceExpiries(db, plan, plan.planHash),
       applySourceExpiries(db, plan, plan.planHash),
     ]);
     expect(results.reduce((total, result) => total + result.written, 0)).toBe(1);
-    expect(results.filter(result => result.alreadyApplied)).toHaveLength(1);
+    expect(results.filter((result) => result.alreadyApplied)).toHaveLength(1);
     expect(await db.dataCorrection.count({ where: { finding: 'SOURCE_DECLARED_EXPIRY' } })).toBe(auditBefore + 1);
+  });
+
+  it('resumes when another worker commits after the initial idempotency read', async () => {
+    await source('a', payload('a'));
+    const { plan } = await planSourceExpiries(db, [key]);
+    let release!: () => void, reached!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const initialRead = new Promise<void>((resolve) => {
+      reached = resolve;
+    });
+    const original = db.dataCorrection.findMany.bind(db.dataCorrection);
+    const spy = vi.spyOn(db.dataCorrection, 'findMany').mockImplementationOnce((args) => {
+      const pending = (async () => {
+        const rows = await original(args);
+        reached();
+        await gate;
+        return rows;
+      })();
+      return {
+        [Symbol.toStringTag]: 'PrismaPromise' as const,
+        then: pending.then.bind(pending),
+        catch: pending.catch.bind(pending),
+        finally: pending.finally.bind(pending),
+      };
+    });
+    const delayed = applySourceExpiries(db, plan, plan.planHash);
+    try {
+      await initialRead;
+      expect(await applySourceExpiries(db, plan, plan.planHash)).toEqual({ written: 1, alreadyApplied: false });
+    } finally {
+      release();
+      spy.mockRestore();
+    }
+    await expect(delayed).resolves.toEqual({ written: 0, alreadyApplied: true });
   });
 
   it.each([
@@ -248,7 +309,7 @@ describe('expiry evidence reconciliation', () => {
       expiryEvidence: asJson(plan.entries[0].evidence),
     });
     expect(await db.maintenancePlan.findUniqueOrThrow({ where: { id: plan.planHash } })).toMatchObject({
-      version: 2,
+      version: 3,
       revision: plan.revision,
       body: asJson(plan),
     });
@@ -268,7 +329,7 @@ describe('expiry evidence reconciliation', () => {
     'leaves an uncorroborated cached deadline for review: %j',
     async (options) => {
       const fixture = await partialObservation(options);
-      await source('valid', payload);
+      await source('valid', payload('valid'));
       const before = await db.jobSource.findUniqueOrThrow({ where: { id: fixture.id } });
       const { plan } = await planSourceExpiries(db, [key]);
       expect(plan.reviews).toHaveLength(1);
@@ -334,7 +395,7 @@ describe('expiry evidence reconciliation', () => {
   it.each(['revision', 'duplicate', 'scope', 'extra field', 'after', 'proof'] as const)(
     'rejects a rehashed plan with modified %s',
     async (change) => {
-      await source('a', payload);
+      await source('a', payload('a'));
       let { plan } = await planSourceExpiries(db, [key]);
       if (change === 'revision') plan.revision = 'local-sha256:' + '0'.repeat(64);
       if (change === 'duplicate') plan.entries.push(plan.entries[0]);
@@ -350,8 +411,8 @@ describe('expiry evidence reconciliation', () => {
   );
 
   it('bounds scope and validates the last page without an unnecessary extra scan', async () => {
-    await source('a', payload);
-    await source('b', payload);
+    await source('a', payload('a'));
+    await source('b', payload('b'));
     const first = await planSourceExpiries(db, [key], undefined, 1);
     const last = await planSourceExpiries(db, [key], first.nextCursor, 1);
     expect(first.nextCursor).toBe('js-a');
@@ -381,10 +442,10 @@ describe('expiry evidence reconciliation', () => {
   });
 
   it('refuses a capture pointer changed after preview even when its RAW is identical', async () => {
-    await source('a', payload);
+    await source('a', payload('a'));
     vi.stubGlobal(
       'fetch',
-      vi.fn(async () => new Response(JSON.stringify(payload))),
+      vi.fn(async () => new Response(JSON.stringify(payload('a')))),
     );
     try {
       const capture = async () =>
@@ -399,8 +460,8 @@ describe('expiry evidence reconciliation', () => {
                 {
                   externalId: 'a',
                   title: 'a',
-                  url: 'https://example.com/a',
-                  raw: await fetchJson('https://example.com/a'),
+                  url: jobUrl('a'),
+                  raw: await fetchJson(jobUrl('a')),
                 },
               ],
             }),
@@ -429,7 +490,7 @@ describe('expiry evidence reconciliation', () => {
 
   it('checks previous JSON sizes before materializing or reading archives', async () => {
     const id = randomUUID(),
-      raw = { ...payload, fixture: id, body: 'x'.repeat(32_000_001) };
+      raw = { ...payload(id), fixture: id, body: 'x'.repeat(32_000_001) };
     await source(id, {});
     const fact = declaredExpiry('workday', raw)!;
     await db.jobSource.update({
@@ -457,5 +518,183 @@ describe('expiry evidence reconciliation', () => {
     } finally {
       read.mockRestore();
     }
+  });
+});
+
+describe('expiry belongs to its native publication', () => {
+  it.each(['native ID', 'detail URL', 'employer', 'missing native ID'] as const)(
+    'blocks a declared date with invalid %s evidence',
+    async (kind) => {
+      const raw = payload('a');
+      if (kind === 'native ID') raw.externalPath = '/job/Paris/another';
+      if (kind === 'detail URL') raw.detail.jobPostingInfo.externalUrl = jobUrl('another');
+      if (kind === 'employer') raw.detail.jobPostingInfo.logoImage.alt = '';
+      if (kind === 'missing native ID') raw.externalPath = '';
+      await source('a', raw);
+      const { plan } = await planSourceExpiries(db, [key]);
+      expect(plan.entries).toEqual([]);
+      expect(plan.reviews).toHaveLength(1);
+      await expect(applySourceExpiries(db, plan, plan.planHash)).rejects.toThrow('unresolved evidence reviews');
+      expect(await db.jobSource.count({ where: { expiresAt: { not: null } } })).toBe(0);
+    },
+  );
+
+  it('allows an identity-bound deadline even when its native description is missing', async () => {
+    const raw = payload('a');
+    raw.detail.jobPostingInfo.jobDescription = '';
+    await source('a', raw);
+    const { plan } = await planSourceExpiries(db, [key]);
+    expect(plan.reviews).toEqual([]);
+    expect(plan.entries[0].publicationProof).toMatchObject({ origin: 'RETAINED_RAW' });
+    expect(await applySourceExpiries(db, plan, plan.planHash)).toEqual({ written: 1, alreadyApplied: false });
+  });
+
+  it('audits the identity even when an existing cache already matches the current date reader', async () => {
+    const raw = payload('another');
+    await source('a', raw);
+    const stored = await db.jobSource.findUniqueOrThrow({ where: { id: 'js-a' } });
+    const expiry = declaredExpiry('workday', stored.raw)!;
+    await db.jobSource.update({
+      where: { id: 'js-a' },
+      data: { expiresAt: expiry.expiresAt, expiryEvidence: asJson(expiry.evidence) },
+    });
+    const { plan } = await planSourceExpiries(db, [key]);
+    expect(plan.entries).toEqual([]);
+    expect(plan.reviews).toHaveLength(1);
+  });
+
+  it('rejects a replaced publication proof even when the modified plan is rehashed', async () => {
+    await source('a', payload('a'));
+    const { plan: original } = await planSourceExpiries(db, [key]);
+    original.entries[0].publicationProof = { origin: 'RETAINED_RAW', rawHash: '0'.repeat(64) };
+    const plan = rehash(original);
+    await expect(applySourceExpiries(db, plan, plan.planHash)).rejects.toThrow('Stale or unsupported expiry evidence');
+    expect(await db.dataCorrection.count({ where: { finding: 'SOURCE_DECLARED_EXPIRY' } })).toBe(auditBefore);
+  });
+
+  async function captured(mode = 'valid', padding = 0) {
+    const id = randomUUID(),
+      raw = { ...payload(id), ...(padding ? { padding: 'x'.repeat(padding) } : {}) };
+    if (mode === 'native-id') raw.externalPath = '/job/Paris/another';
+    await source(id, raw);
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response(JSON.stringify(raw))),
+    );
+    try {
+      const result = await captureExtraction(
+        db,
+        mode === 'source' ? key + '-other' : key,
+        { origin: 'https://example.com', site: 'Fixture' },
+        undefined,
+        async () => {
+          const observedRaw = await fetchJson(jobUrl(id));
+          return {
+            jobs: [
+              {
+                externalId: mode === 'id' ? id + '-other' : id,
+                title: 'Client Advisor',
+                url: mode === 'url' ? jobUrl('another') : jobUrl(id),
+                raw: mode === 'raw' ? payload('another') : observedRaw,
+                ...(mode === 'held' ? { publicationHold: 'PRIVATE' } : {}),
+              },
+            ],
+          };
+        },
+        mode === 'kind' ? 'LEVER' : 'WORKDAY',
+      );
+      const job = result.jobs[0];
+      await db.jobSource.update({
+        where: { id: 'js-' + id },
+        data: { captureBatchId: job.captureBatchId, captureOutputId: job.captureOutputId },
+      });
+      return { id: 'js-' + id, job };
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  }
+
+  it('bounds the combined source RAW and immutable capture before loading its output', async () => {
+    await captured('valid', 16_000_050);
+    await expect(planSourceExpiries(db, [key])).rejects.toThrow('bounded page size');
+  });
+
+  it('does not inherit a captured reader error when the archived RAW carries another native ID', async () => {
+    await captured('native-id');
+    const { plan } = await planSourceExpiries(db, [key]);
+    expect(plan.entries).toEqual([]);
+    expect(plan.reviews).toMatchObject([{ reason: 'EXPIRY_PUBLICATION_IDENTITY_MISMATCH' }]);
+  });
+
+  it.each(['id', 'url', 'raw', 'held', 'source', 'kind'])(
+    'does not fall back to retained RAW after a bad capture %s',
+    async (mode) => {
+      await captured(mode);
+      const { plan } = await planSourceExpiries(db, [key]);
+      expect(plan.entries).toEqual([]);
+      expect(plan.reviews).toMatchObject([{ reason: 'EXPIRY_CAPTURE_PUBLICATION_MISMATCH' }]);
+    },
+  );
+
+  it('returns the completed result when an in-flight archive read fails after another worker succeeds', async () => {
+    const { MemoryStore } = await import('../test/memoryObjectStore.js');
+    const { archiveRawBlob } = await import('../capture/store.js');
+    const store = new MemoryStore(),
+      fixture = await captured();
+    const { plan } = await planSourceExpiries(db, [key]);
+    const output = await db.sourceExtraction.findUniqueOrThrow({ where: { id: fixture.job.captureOutputId } });
+    await archiveRawBlob(db, output.outputHash, store);
+    let release!: () => void, reached!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const started = new Promise<void>((resolve) => {
+      reached = resolve;
+    });
+    const get = vi.spyOn(store, 'get').mockImplementationOnce(async () => {
+      reached();
+      await gate;
+      throw Error('Transient archive outage');
+    });
+    const delayed = applySourceExpiries(db, plan, plan.planHash, store);
+    try {
+      await started;
+      expect(await applySourceExpiries(db, plan, plan.planHash, store)).toEqual({ written: 1, alreadyApplied: false });
+    } finally {
+      release();
+    }
+    await expect(delayed).resolves.toEqual({ written: 0, alreadyApplied: true });
+    get.mockRestore();
+    expect(await db.dataCorrection.count({ where: { finding: 'SOURCE_DECLARED_EXPIRY' } })).toBe(auditBefore + 1);
+  });
+
+  it('verifies native output hot or cold before locking, records its provenance and resumes without archive access', async () => {
+    const { MemoryStore } = await import('../test/memoryObjectStore.js');
+    const { archiveRawBlob } = await import('../capture/store.js');
+    const store = new MemoryStore(),
+      fixture = await captured();
+    const { plan: hot } = await planSourceExpiries(db, [key]);
+    const output = await db.sourceExtraction.findUniqueOrThrow({ where: { id: fixture.job.captureOutputId } });
+    expect(hot.entries[0].publicationProof).toEqual({
+      origin: 'NATIVE_CAPTURE',
+      batchId: fixture.job.captureBatchId,
+      outputId: fixture.job.captureOutputId,
+      outputHash: output.outputHash,
+    });
+    await archiveRawBlob(db, output.outputHash, store);
+    expect((await planSourceExpiries(db, [key])).plan.reviews).toMatchObject([
+      { reason: 'EXPIRY_CAPTURE_ARCHIVE_UNAVAILABLE' },
+    ]);
+    const { plan: cold } = await planSourceExpiries(db, [key], undefined, 250, store);
+    expect(cold).toEqual(hot);
+    const get = vi.spyOn(store, 'get');
+    expect(await applySourceExpiries(db, cold, cold.planHash, store)).toEqual({ written: 1, alreadyApplied: false });
+    expect(get).toHaveBeenCalledTimes(1);
+    store.objects.clear();
+    get.mockClear();
+    expect(await applySourceExpiries(db, cold, cold.planHash)).toEqual({ written: 0, alreadyApplied: true });
+    expect(get).not.toHaveBeenCalled();
+    const journal = await db.dataCorrection.findFirstOrThrow({ where: { batchId: 'source-expiry:' + cold.planHash } });
+    expect(journal.evidence).toMatchObject({ publicationProof: cold.entries[0].publicationProof });
   });
 });
