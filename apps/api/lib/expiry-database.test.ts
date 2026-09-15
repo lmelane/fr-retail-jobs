@@ -71,6 +71,31 @@ describe.skipIf(!enabled)('public availability from source publications', () => 
     await expect(getOfferState(live.id)).rejects.toThrow(DatabaseUnavailableError);
   });
 
+  it('preserves a withdrawn public identity without serving stale group text or inventing a closure', async () => {
+    const job = await create('withdrawn', future);
+    await prisma.job.update({ where: { id: job.id }, data: { isActive: false, withdrawnAt: past, withdrawalReason: 'PUBLICATION_UNVERIFIED' } });
+    expect(await getOfferState(job.id)).toBe('withdrawn');
+    expect(await getJobStatus(job.id)).toEqual({ status: 'withdrawn', canonicalId: job.id, job: null });
+    await prisma.jobSource.deleteMany({ where: { jobId: job.id } });
+    expect(await getJobStatus(job.id)).toEqual({ status: 'withdrawn', canonicalId: job.id, job: null });
+    expect((await getJobs({ maisons: [key] })).total).toBe(0);
+    expect((await sitemapOffersChunk(0)).some(row => row.id === job.id)).toBe(false);
+  });
+
+  it('can show qualified historical content for a catalogue withdrawal without claiming employer closure', async () => {
+    const job = await create('retired', future);
+    await prisma.job.update({ where: { id: job.id }, data: { isActive: false, withdrawnAt: past, withdrawalReason: 'SOURCE_RETIRED' } });
+    expect(await getOfferState(job.id)).toBe('withdrawn');
+    expect(await getJobStatus(job.id)).toMatchObject({ status: 'withdrawn', job: { id: job.id } });
+  });
+
+  it('missing availability without a closure or deadline is a withdrawal, not an employer closure', async () => {
+    const job = await create('unattested', null);
+    await prisma.jobSource.updateMany({ where: { jobId: job.id }, data: { isActive: false } });
+    expect(await getOfferState(job.id)).toBe('withdrawn');
+    expect((await getJobStatus(job.id)).status).toBe('withdrawn');
+  });
+
   it('expired publications disappear from discovery and sitemap output', async () => {
     const expired = await create('expired', past);
     const live = await create('live', future);

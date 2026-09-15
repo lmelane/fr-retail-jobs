@@ -10,7 +10,7 @@ describe('public offer status probe', () => {
     vi.stubEnv('CATALOGUE_API_KEY', 'status-test-key');
     return new NextRequest('https://example.com/api/offre-status/fixture', { headers: { authorization: 'Bearer status-test-key' } });
   };
-  it.each(['active', 'closed', 'missing'] as const)('returns the proven %s state', async status => {
+  it.each(['active', 'closed', 'withdrawn', 'missing'] as const)('returns the proven %s state', async status => {
     vi.mocked(getOfferState).mockResolvedValue(status);
     const response = await GET(request(), { params: Promise.resolve({ id: 'fixture' }) });
     expect(response.status).toBe(200); expect(await response.json()).toEqual({ status });

@@ -146,6 +146,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 [Sous-lot 4H2 validé localement](lot-4h2.md) : les publications natives peuvent être conservées sans fiche publique, avec une quarantaine et une réintégration auditées. Les 3 195 tests, 56 migrations, le build et sept contre-épreuves passent. Les 293 plans sont appliqués et rejoués ; 293 présentations propres sont reconstruites et leurs 293 anciens voisins incomplets conservés sans fausse fermeture. Le stock compte 55 124 présentations. Un dernier groupe reste explicitement en revue : sa publication qualifiée ne prouve pas l'identité de l'ancien propriétaire de l'URL publique. Ce cas, les formats non qualifiés et la certification des sources restent ouverts.
 
+[Sous-lot 4H3 validé localement](lot-4h3.md) : le dernier groupe mixte est séparé sans usurper l'ancien ID public, conservé comme retrait explicite. Le contrat API et le site distinguent retrait et fermeture. Les 3 207 tests agrégateur/API, 755 tests du site, deux compilations et cinq contre-épreuves passent. Sur le clone : 55 125 présentations, 294 publications en quarantaine, zéro publication reconstructible encore bloquée. Les formats non qualifiés, les contenus perdus et la certification des sources restent ouverts.
+
 ## Lot 5. Certifier les sources et préparer le cycle complet
 
 **Objectif.** Rendre chaque source du catalogue exploitable ou explicitement exclue.

@@ -645,21 +645,15 @@ function toRow(row: {
   };
 }
 
-/**
- * One offer by id, for its own URL.
- *
- * Returns null when the offer does not exist or is closed. Throws
- * DatabaseUnavailableError when the database itself cannot answer — the two are
- * different: a missing offer is a 404, an unreachable database is a 503.
- */
-/**
- * An offer lookup that distinguishes the three cases the offer page needs:
- *   - 'active'  -> render it,
- *   - 'closed'  -> the offer existed and was closed (expired/filled): the page
- *                  returns 410 Gone so Google de-indexes it fast (D22 — a 404 is
- *                  retried for weeks, a 410 is dropped),
- *   - 'missing' -> the id never existed: a plain 404.
- */
+/** A public withdrawal never asserts that the employer closed its vacancy. */
+function publicOfferState(row: { isActive: boolean; withdrawnAt: Date | null; closedAt: Date | null;
+  sources: Array<ApplySource>; canonicalSourceKey?: string | null; canonicalExternalId?: string | null; url: string }, at: Date) {
+  if (row.withdrawnAt) return 'withdrawn' as const;
+  if (row.isActive && selectApplySource(row.sources, row, at)) return 'active' as const;
+  const expired = row.sources.length > 0 && row.sources.every(source => source.expiresAt && source.expiresAt <= at);
+  return row.closedAt || expired ? 'closed' as const : 'withdrawn' as const;
+}
+
 export async function getJobStatus(
   id: string,
 ): Promise<
@@ -667,6 +661,7 @@ export async function getJobStatus(
   // A closed offer still carries its content: the page shows it with an
   // "expirée" banner (§4.13) while the middleware serves 410 for SEO (D22).
   | { status: 'closed'; job: JobRow }
+  | { status: 'withdrawn'; canonicalId: string; job: JobRow | null }
   | { status: 'missing' }
 > {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
@@ -682,10 +677,13 @@ export async function getJobStatus(
       },
     });
     if (!row) return { status: 'missing' };
-    const taxonomy=await getOptionalOccupationPresentation();
-    const at = new Date();
-    if (!row.isActive || !selectApplySource(row.sources, row, at)) return { status: 'closed', job: toRow(row, taxonomy, true, at) };
-    return { status: 'active', job: toRow(row, taxonomy, false, at) };
+    const at = new Date(), status = publicOfferState(row, at);
+    if (status === 'withdrawn') {
+      const owner = selectApplySource(row.sources, row, at) ?? row.sources.find(source => source.url === row.url);
+      const presentable = row.withdrawalReason !== 'PUBLICATION_UNVERIFIED' && owner && publicationContentOf(owner);
+      return { status, canonicalId, job: presentable ? toRow(row, await getOptionalOccupationPresentation(), true, at) : null };
+    }
+    return { status, job: toRow(row, await getOptionalOccupationPresentation(), status === 'closed', at) };
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }
@@ -699,7 +697,7 @@ export async function getJob(id: string): Promise<JobRow | null> {
 /**
  * The status probe requires one usable publication and returns no listing payload.
  */
-export async function getOfferState(param: string): Promise<'active' | 'closed' | 'missing'> {
+export async function getOfferState(param: string): Promise<'active' | 'closed' | 'withdrawn' | 'missing'> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
     // The param may be a bare id or slug-id (S-01) — try each candidate, so
@@ -707,11 +705,12 @@ export async function getOfferState(param: string): Promise<'active' | 'closed' 
     for (const id of offerIdCandidates(param)) {
       const canonicalId = await canonicalJobId(prisma, id);
       if (!canonicalId) continue;
-      const row = await prisma.job.findUnique({ where: { id: canonicalId }, select: { isActive: true,
-        canonicalSourceKey: true, canonicalExternalId: true, url: true, sources: publicSources() } });
+      const row = await prisma.job.findUnique({ where: { id: canonicalId }, select: { isActive: true, withdrawnAt: true, closedAt: true,
+        canonicalSourceKey: true, canonicalExternalId: true, url: true, sources: { select: publicSources().select } } });
       if (row) {
-        const owner = selectApplySource(row.sources, row);
-        if (!row.isActive || !owner) return 'closed';
+        const at = new Date(), status = publicOfferState(row, at);
+        if (status !== 'active') return status;
+        const owner = selectApplySource(row.sources, row, at)!;
         if (!publicationContentOf(owner)) throw new Error(`PUBLICATION_PRESENTATION_REBUILD_REQUIRED job=${canonicalId}`);
         return 'active';
       }
@@ -731,6 +730,7 @@ export async function resolveOfferParam(
   param: string,
 ): Promise<
   | { status: 'active' | 'closed'; job: JobRow; matchedId: string }
+  | { status: 'withdrawn'; canonicalId: string; job: JobRow | null; matchedId: string }
   | { status: 'missing' }
 > {
   for (const id of offerIdCandidates(param)) {

@@ -118,7 +118,7 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     } });
     const state = await getJobStatus(origin);
     expect(state.status).toBe('active');
-    if (state.status === 'missing') throw new Error('Canonical posting missing');
+    if (state.status !== 'active') throw new Error('Canonical posting missing');
     expect(state.job.id).toBe(target);
     expect(await getOfferState(origin)).toBe('active');
     expect((await resolveOfferParam(origin))).toMatchObject({ status: 'active', job: { id: target }, matchedId: origin });

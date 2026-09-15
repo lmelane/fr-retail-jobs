@@ -338,7 +338,7 @@ describe('native publications without public presentation', () => {
 
   it('refuses complete RAW quarantine, incomplete partitions, and loss of the original public ID', async () => {
     const { good, held, request } = await mixed();
-    await expect(planPublicationGroups(db, { ...request, quarantineSourceIds: [good.source.id], groups: [{ jobId: good.job.id, sourceIds: [held.source.id] }] })).rejects.toThrow('Recoverable publication');
+    await expect(planPublicationGroups(db, { ...request, quarantineSourceIds: [good.source.id], withdrawJobIds: [good.job.id], groups: [{ sourceIds: [held.source.id] }] })).rejects.toThrow('Recoverable publication');
     await expect(planPublicationGroups(db, { ...request, quarantineSourceIds: [] })).rejects.toThrow('Every current publication');
     await expect(planPublicationGroups(db, { ...request, groups: [{ sourceIds: [good.source.id] }] })).rejects.toThrow('original Job ID');
     await expect(planPublicationGroups(db, { ...request, quarantineSourceIds: [held.source.id, held.source.id] })).rejects.toThrow('exactly once');
@@ -359,6 +359,81 @@ describe('native publications without public presentation', () => {
     await db.job.update({ where: { id: good.job.id }, data: { url: held.source.url, canonicalSourceKey: held.source.sourceKey, canonicalExternalId: held.source.externalId } });
     await expect(planPublicationGroups(db, { jobIds: [good.job.id], groups: [{ jobId: good.job.id, sourceIds: [good.source.id] }], quarantineSourceIds: [held.source.id], reason: 'Insufficient old owner evidence cannot authorize changing the public application identity' })).rejects.toThrow('public application identity');
     expect(await db.jobSource.count({ where: { jobId: good.job.id } })).toBe(2);
+  });
+
+  async function ownerMissing() {
+    const held = await publication({ omitNativeDescription: true, readerDescription: 'Invented legacy content' });
+    const good = await publication({ jobId: held.job.id, url: 'https://example.com/qualified-distinct', description: 'Qualified sibling own text' });
+    return { held, good, request: { jobIds: [held.job.id], groups: [{ sourceIds: [good.source.id] }],
+      quarantineSourceIds: [held.source.id], withdrawJobIds: [held.job.id], reason: 'Withdraw the unqualified original public identity without guessing a sibling redirect' } };
+  }
+
+  it('withdraws an unqualified historical URL, preserves native records and separates the qualified sibling', async () => {
+    const { held, good, request } = await ownerMissing();
+    const plan = await planPublicationGroups(db, request);
+    expect(plan.redirects).toEqual([]);
+    expect(plan.groups[0].jobId).not.toBe(held.job.id);
+    await apply(plan);
+    const old = await db.job.findUniqueOrThrow({ where: { id: held.job.id }, include: { sources: true } });
+    expect(old).toMatchObject({ isActive: false, closedAt: null, mergedIntoId: null, withdrawalReason: 'PUBLICATION_UNVERIFIED',
+      url: held.job.url, description: held.job.description, firstSeenAt: held.job.firstSeenAt, sources: [] });
+    expect(old.withdrawnAt).toBeInstanceOf(Date);
+    expect(await canonicalJobId(db, old.id)).toBe(old.id);
+    expect(await db.job.findUniqueOrThrow({ where: { id: plan.groups[0].jobId } })).toMatchObject({ isActive: true, description: 'Qualified sibling own text', url: good.source.url });
+    expect(await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).toMatchObject({ jobId: null, raw: held.source.raw, isActive: held.source.isActive, lastSeenAt: held.source.lastSeenAt });
+    expect(await db.jobEvent.count({ where: { jobId: old.id, type: 'WITHDRAWN' } })).toBe(1);
+    expect(await db.jobEvent.count({ where: { jobId: old.id, type: { in: ['CLOSED', 'MERGED'] } } })).toBe(0);
+    expect(await apply(plan)).toMatchObject({ alreadyApplied: true });
+  });
+
+  it('requires an explicit historical withdrawal and never guesses it from quarantine', async () => {
+    const { request } = await ownerMissing();
+    await expect(planPublicationGroups(db, { ...request, withdrawJobIds: [] })).rejects.toThrow('original Job ID');
+    await expect(planPublicationGroups(db, { ...request, withdrawJobIds: ['outside'] })).rejects.toThrow('must belong');
+    await expect(planPublicationGroups(db, { ...request, withdrawJobIds: [request.jobIds[0], request.jobIds[0]] })).rejects.toThrow('must belong');
+    await expect(planPublicationGroups(db, { ...request, groups: [{ ...request.groups[0], jobId: request.jobIds[0] }] })).rejects.toThrow('cannot be reused');
+  });
+
+  it('cannot withdraw a qualified original owner using the incomplete sibling as an excuse', async () => {
+    const { good, request } = await mixed();
+    await expect(planPublicationGroups(db, { ...request, groups: [{ sourceIds: [good.source.id] }], withdrawJobIds: [good.job.id] })).rejects.toThrow('own unqualified publication anchor');
+  });
+
+  it('permits complete quarantine only while preserving every historical ID as withdrawn', async () => {
+    const held = await publication({ omitNativeDescription: true });
+    const plan = await planPublicationGroups(db, { jobIds: [held.job.id], groups: [], quarantineSourceIds: [held.source.id],
+      withdrawJobIds: [held.job.id], reason: 'Retain the incomplete native evidence and withdraw its unqualified public page' });
+    expect(await apply(plan)).toMatchObject({ groups: 0, quarantined: 1, withdrawn: 1, redirects: 0 });
+    expect(await db.job.count()).toBe(1);
+  });
+
+  it('refuses to reinterpret an earlier proven closure as an unverified withdrawal', async () => {
+    const { held, request } = await ownerMissing();
+    const closedAt = new Date('2025-01-01T00:00:00Z');
+    await db.job.update({ where: { id: held.job.id }, data: { isActive: false, closedAt } });
+    await expect(planPublicationGroups(db, request)).rejects.toThrow('proven closure must retain');
+    expect(await db.job.findUniqueOrThrow({ where: { id: held.job.id } })).toMatchObject({ closedAt, withdrawnAt: null });
+    expect(await db.jobSource.count({ where: { jobId: held.job.id } })).toBe(2);
+  });
+
+  it('rejects a changed original anchor without detaching anything or withdrawing a page', async () => {
+    const { held, good, request } = await ownerMissing();
+    const plan = await planPublicationGroups(db, request);
+    await db.job.update({ where: { id: held.job.id }, data: { canonicalSourceKey: good.source.sourceKey, canonicalExternalId: good.source.externalId } });
+    await expect(apply(plan)).rejects.toThrow('own unqualified publication anchor');
+    expect(await db.jobSource.count({ where: { jobId: held.job.id } })).toBe(2);
+    expect(await db.jobEvent.count({ where: { jobId: held.job.id } })).toBe(0);
+  });
+
+  it('does not silently reclaim a withdrawn historical ID when new native evidence releases its publication', async () => {
+    const { upsertDeduplicated } = await import('../dedup/upsert.js');
+    const { held, request } = await ownerMissing();
+    const plan = await planPublicationGroups(db, request); await apply(plan);
+    const candidate = await reobserve(held);
+    await upsertDeduplicated(db, candidate);
+    const released = await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } });
+    expect(released.jobId).not.toBeNull(); expect(released.jobId).not.toBe(held.job.id);
+    expect(await db.job.findUniqueOrThrow({ where: { id: held.job.id } })).toMatchObject({ isActive: false, withdrawalReason: 'PUBLICATION_UNVERIFIED', mergedIntoId: null });
   });
 
   it('database guards reject unaudited detachment, reuse of a committed decision and parent deletion', async () => {

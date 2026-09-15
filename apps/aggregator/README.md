@@ -24,7 +24,7 @@ Les lots 0 à 3 corrigent localement la validation, la disponibilité, la captur
 
 L’architecture cible conserve le RAW avant parsing, puis construit des faits traçables et une projection de recherche commune aux offres directes et externes. Les notions locales ne doivent pas être forcées dans un vocabulaire mondial unique.
 
-Le [lot 4H2](../../audits/reprise-2026-09-15/lot-4h2.md) valide 3 195 tests et 56 migrations. Le clone local compte 55 124 présentations reconstruites et 293 publications en quarantaine, conservées indépendamment des fiches publiques. Un dernier groupe mixte demande une revue de son ancien ID public ; les autres formats et la certification des sources restent ouverts. Ces mesures locales ne remplacent pas le tableau initial de production ci-dessus.
+Le [lot 4H3](../../audits/reprise-2026-09-15/lot-4h3.md) valide 3 207 tests agrégateur/API et 755 tests du site. Les 55 125 publications reconstructibles ont désormais leur présentation sur le clone ; 294 publications incomplètes restent conservées en quarantaine. Le dernier ID public sans preuve propre devient une fiche retirée, sans fausse fermeture ni redirection supposée. Les formats non qualifiés et la certification des sources restent ouverts. Ces mesures locales ne remplacent pas le tableau initial de production ci-dessus.
 
 ## Commandes de validation
 

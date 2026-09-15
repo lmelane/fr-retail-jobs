@@ -10,18 +10,8 @@ import { offerPath } from '@/lib/offer-url';
 import { projeterFiche, projeterLignes } from '@/lib/projection';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
 
-/**
- * F1 phase 1 — LA fiche d'une offre en JSON, pour catwalks.io.
- *
- * Jusqu'ici la fiche n'existait qu'en HTML (`/offre/[id]`) : le statut, la
- * canonicalisation `slug-id`, les similaires et le bloc Maison étaient
- * calculés au rendu. Cette route expose les MÊMES fonctions, sans les
- * recopier : `resolveOfferParam` (id nu ou slug-id, redirections de fusion),
- * `getSimilarJobs`, `getCompanyAside`.
- *
- * Statuts : `active` 200 · `closed` 410 (le corps porte l'offre, comme la
- * page : le front affiche un bandeau) · `missing` 404 · base 503.
- * `x-request-id` : repris de l'appelant, renvoyé en en-tête, journalisé.
+/** Qualified publication detail; withdrawn IDs can have no public content.
+ * Active: 200. Closed or withdrawn: 410. Missing: 404. Database failure: 503.
  */
 export const dynamic = 'force-dynamic';
 
@@ -48,19 +38,25 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       journaliser({ requestId, statut: 404, dureeMs: Date.now() - debut });
       return NextResponse.json({ status: 'missing', requestId }, { status: 404, headers: entetes });
     }
+    if (resolu.status === 'withdrawn' && !resolu.job) {
+      journaliser({ requestId, statut: 410, dureeMs: Date.now() - debut });
+      return NextResponse.json({ status: 'withdrawn', canonicalId: resolu.canonicalId,
+        canonicalSlugPath: null, job: null, similaires: [], maison: null }, { status: 410, headers: entetes });
+    }
     // Audit UX 14/09 (H1) : les similaires servent SURTOUT sur une offre
     // fermée, c'est la seule issue du candidat ; calculées quel que soit le statut.
-    const [similaires, maison] = await Promise.all([getSimilarJobs(resolu.job, 6), getCompanyAside(resolu.job.company)]);
+    const job = resolu.job!;
+    const [similaires, maison] = await Promise.all([getSimilarJobs(job, 6), getCompanyAside(job.company)]);
     const corps = {
       status: resolu.status,
       /** Chemin canonique de la source (`/offre/slug-id`) ; le front en dérive le sien. */
-      canonicalId: resolu.job.id,
-      canonicalSlugPath: offerPath(resolu.job),
-      job: projeterFiche(resolu.job),
+      canonicalId: job.id,
+      canonicalSlugPath: offerPath(job),
+      job: projeterFiche(job),
       similaires: projeterLignes(similaires),
       maison,
     };
-    const statut = resolu.status === 'closed' ? 410 : 200;
+    const statut = resolu.status === 'active' ? 200 : 410;
     journaliser({ requestId, statut, dureeMs: Date.now() - debut, similaires: similaires.length });
     return NextResponse.json(corps, { status: statut, headers: entetes });
   } catch (error) {
