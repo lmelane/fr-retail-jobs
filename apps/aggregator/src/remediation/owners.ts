@@ -55,7 +55,7 @@ export async function planSourceOwners(prisma: PrismaClient): Promise<RepairPlan
       companyIds.add(companyId); companyIds.add(entry.job.companyId);
       if (entry.job.companyId === companyId) continue;
       if (entry.job.url !== entry.url) throw new Error(`Different canonical source needs review: ${entry.jobId}`);
-      const clusterKey = blockingKey({ externalId: entry.externalId, sourceKey: entry.sourceKey, url: entry.url });
+      const clusterKey = blockingKey({ externalId: entry.externalId, sourceKey: entry.sourceKey, url: entry.url, raw: entry.raw });
       operations.push({ entity: 'Job', id: entry.jobId, before: json(entry.job), patch: { companyId, clusterKey, fingerprint: `${clusterKey}|${entry.job.title}` }, reason: explicit ? `RAW categories.department=${raw.categories?.department}; ${d.proof}` : `Proven portal owner / canonical name; ${d.proof}` });
     }
     evidence.push({ sourceKey: d.key, proof: d.proof, entries: entries.length, assignments });

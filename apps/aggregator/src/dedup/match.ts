@@ -2,7 +2,8 @@ import type { NormalizedJob } from '../types.js';
 import type { AtsType } from '@prisma/client';
 import type { SourceTier } from '@catwalks/db/publications';
 import type { SourceFacts } from '@catwalks/db/source-facts';
-import { postingIdentity, POSTING_IDENTITY_VERSION } from './postingIdentity.js';
+import { postingIdentity, POSTING_IDENTITY_VERSION, APPLICATION_KEY_VERSION } from './postingIdentity.js';
+import { workdayRequisitionIdentity } from '../identity/workday.js';
 
 export type CandidateJob = NormalizedJob & {
   sourceFacts?: SourceFacts;
@@ -49,10 +50,12 @@ export type CandidateJob = NormalizedJob & {
 };
 
 export type NativePublication = Pick<CandidateJob, 'sourceKey' | 'externalId' | 'url'> & { raw?: unknown };
-export type IdentityProof = { version: typeof POSTING_IDENTITY_VERSION; rule: 'SAME_NATIVE_PUBLICATION' | 'QUALIFIED_APPLICATION_ID';
+export type IdentityProof = { version: typeof POSTING_IDENTITY_VERSION; rule: 'SAME_NATIVE_PUBLICATION' | 'QUALIFIED_APPLICATION_ID' | 'QUALIFIED_REQUISITION_ID';
   identity: { tenant: string; requisition: string }; paths?: [string, string] };
 
 function identityEvidence(publication: NativePublication) {
+  const workday = workdayRequisitionIdentity(publication);
+  if (workday) return { identity: workday, path: '/detail/jobPostingInfo/jobReqId' };
   const identity = postingIdentity(publication.url);
   if (!identity || !publication.raw || typeof publication.raw !== 'object' || Array.isArray(publication.raw)) return null;
   const raw = publication.raw as Record<string, any>;
@@ -82,7 +85,7 @@ export function publicationIdentityProof(a: NativePublication, b: NativePublicat
   }
   const left = identityEvidence(a), right = identityEvidence(b);
   return left && right && left.identity.tenant === right.identity.tenant && left.identity.requisition === right.identity.requisition
-    ? { version: POSTING_IDENTITY_VERSION, rule: 'QUALIFIED_APPLICATION_ID', identity: left.identity, paths: [left.path, right.path] } : null;
+    ? { version: POSTING_IDENTITY_VERSION, rule: left.identity.tenant.startsWith('workday:') ? 'QUALIFIED_REQUISITION_ID' : 'QUALIFIED_APPLICATION_ID', identity: left.identity, paths: [left.path, right.path] } : null;
 }
 
 /** Pairwise proof prevents an unqualified historical member from bridging groups. */
@@ -93,7 +96,9 @@ export function provenPublicationGroup(publications: readonly NativePublication[
 /** Indexed lookup key only. The writer rechecks every member and the employer.
  * Unsupported URL formats stay scoped to their original source identity. */
 export function blockingKey(job: NativePublication): string {
+  const workday = workdayRequisitionIdentity(job);
+  if (workday) return JSON.stringify(['requisition', 'workday-v1', workday.tenant, workday.requisition]);
   const identity = postingIdentity(job.url);
-  return JSON.stringify(identity ? ['application', POSTING_IDENTITY_VERSION, identity.tenant, identity.requisition]
+  return JSON.stringify(identity ? ['application', APPLICATION_KEY_VERSION, identity.tenant, identity.requisition]
     : ['publication', job.sourceKey, job.externalId]);
 }

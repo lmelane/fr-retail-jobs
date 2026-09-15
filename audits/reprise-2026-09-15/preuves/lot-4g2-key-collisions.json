@@ -1,0 +1,7 @@
+{
+  "plannedGroups": 12709,
+  "distinctKeysPerCompany": 12490,
+  "keysWithSeveralGroups": 217,
+  "sameFeedConflicts": 0,
+  "crossSourceOnlyGroupsToReview": 217
+}

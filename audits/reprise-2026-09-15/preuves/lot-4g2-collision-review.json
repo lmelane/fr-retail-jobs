@@ -1,0 +1,10 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "collisions": 217,
+  "publications": 438,
+  "allPairsProven": true,
+  "sameCompany": true,
+  "conflictingWithdrawals": 0,
+  "conflictingOpportunities": 0
+}

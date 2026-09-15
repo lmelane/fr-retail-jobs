@@ -1,5 +1,7 @@
 /** Identity established by an employer's apply URL, independent of feed labels. */
-export const POSTING_IDENTITY_VERSION = 'posting-identity-20260915-v1';
+export const POSTING_IDENTITY_VERSION = 'posting-identity-20260916-v2';
+/** Persisted lookup format is independent of the proof reader revision. */
+export const APPLICATION_KEY_VERSION = 'posting-identity-20260915-v1';
 export type PostingIdentity = { tenant: string; requisition: string };
 
 export function postingIdentity(value: string): PostingIdentity | undefined {

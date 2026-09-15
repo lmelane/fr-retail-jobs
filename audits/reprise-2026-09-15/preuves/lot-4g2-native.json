@@ -1,0 +1,119 @@
+[
+  {
+    "pair": [
+      "richemont-workday",
+      "richemont"
+    ],
+    "batchId": "00658192-52b6-48e1-9111-49cc95e66feb",
+    "readerRevision": "local-sha256:b470d7f1d193e1afc09ae966615a749b8e1b2fd98e27ad15ebdcc44befe6bb17",
+    "requests": 4,
+    "nativeBytes": 13014,
+    "exactReplay": true,
+    "proof": {
+      "version": "posting-identity-20260916-v2",
+      "rule": "QUALIFIED_REQUISITION_ID",
+      "identity": {
+        "tenant": "workday:richemont.wd3.myworkdayjobs.com",
+        "requisition": "JR133368"
+      },
+      "paths": [
+        "/detail/jobPostingInfo/jobReqId",
+        "/detail/jobPostingInfo/jobReqId"
+      ]
+    },
+    "publications": [
+      {
+        "sourceKey": "richemont-workday",
+        "externalId": "Key-Holder_JR133368-1",
+        "url": "https://richemont.wd3.myworkdayjobs.com/Richemont/job/DALLAS/Key-Holder_JR133368-1",
+        "nativeRequisition": "JR133368",
+        "nativeSite": "richemont"
+      },
+      {
+        "sourceKey": "richemont",
+        "externalId": "Key-Holder_JR133368",
+        "url": "https://richemont.wd3.myworkdayjobs.com/broadbean_external/job/DALLAS/Key-Holder_JR133368",
+        "nativeRequisition": "JR133368",
+        "nativeSite": "broadbean_external"
+      }
+    ]
+  },
+  {
+    "pair": [
+      "knitwell-us-corporate",
+      "knitwell-us-retail"
+    ],
+    "batchId": "79875ded-06ab-4bff-8e63-599cf022fde9",
+    "readerRevision": "local-sha256:b470d7f1d193e1afc09ae966615a749b8e1b2fd98e27ad15ebdcc44befe6bb17",
+    "requests": 4,
+    "nativeBytes": 28246,
+    "exactReplay": true,
+    "proof": {
+      "version": "posting-identity-20260916-v2",
+      "rule": "QUALIFIED_REQUISITION_ID",
+      "identity": {
+        "tenant": "workday:knitwellgroup.wd1.myworkdayjobs.com",
+        "requisition": "R-2030675"
+      },
+      "paths": [
+        "/detail/jobPostingInfo/jobReqId",
+        "/detail/jobPostingInfo/jobReqId"
+      ]
+    },
+    "publications": [
+      {
+        "sourceKey": "knitwell-us-corporate",
+        "externalId": "Regional-Vice-President---LOFT--North-USA-Region-_R-2030675",
+        "url": "https://knitwellgroup.wd1.myworkdayjobs.com/US_Corporate_Jobs/job/Field-Mgmt-Region-8-LOFT-ANN-Southbury-CT-06488/Regional-Vice-President---LOFT--North-USA-Region-_R-2030675",
+        "nativeRequisition": "R-2030675",
+        "nativeSite": "US_Corporate_Jobs"
+      },
+      {
+        "sourceKey": "knitwell-us-retail",
+        "externalId": "Regional-Vice-President---LOFT--North-USA-Region-_R-2030675-1",
+        "url": "https://knitwellgroup.wd1.myworkdayjobs.com/US_Retail_Jobs/job/Field-Mgmt-Region-8-LOFT-ANN-Southbury-CT-06488/Regional-Vice-President---LOFT--North-USA-Region-_R-2030675-1",
+        "nativeRequisition": "R-2030675",
+        "nativeSite": "US_Retail_Jobs"
+      }
+    ]
+  },
+  {
+    "pair": [
+      "gu-us-retail",
+      "uniqlo-us-retail"
+    ],
+    "batchId": "3f35fb46-a958-4a17-ae25-fb61d914989f",
+    "readerRevision": "local-sha256:b470d7f1d193e1afc09ae966615a749b8e1b2fd98e27ad15ebdcc44befe6bb17",
+    "requests": 4,
+    "nativeBytes": 16103,
+    "exactReplay": true,
+    "proof": {
+      "version": "posting-identity-20260916-v2",
+      "rule": "QUALIFIED_REQUISITION_ID",
+      "identity": {
+        "tenant": "workday:fastretailing.wd3.myworkdayjobs.com",
+        "requisition": "R00000004141871"
+      },
+      "paths": [
+        "/detail/jobPostingInfo/jobReqId",
+        "/detail/jobPostingInfo/jobReqId"
+      ]
+    },
+    "publications": [
+      {
+        "sourceKey": "gu-us-retail",
+        "externalId": "Loss-Prevention-Supervisor_R00000004141871",
+        "url": "https://fastretailing.wd3.myworkdayjobs.com/retail_us_GU/job/GU-NY-SOHOGUUS/Loss-Prevention-Supervisor_R00000004141871",
+        "nativeRequisition": "R00000004141871",
+        "nativeSite": "retail_us_GU"
+      },
+      {
+        "sourceKey": "uniqlo-us-retail",
+        "externalId": "Loss-Prevention-Supervisor_R00000004141871-1",
+        "url": "https://fastretailing.wd3.myworkdayjobs.com/retail_us_Uniqlo/job/GU-NY-SOHOGUUS/Loss-Prevention-Supervisor_R00000004141871-1",
+        "nativeRequisition": "R00000004141871",
+        "nativeSite": "retail_us_Uniqlo"
+      }
+    ]
+  }
+]

@@ -37,7 +37,7 @@ export async function planSmcpRepair(prisma: PrismaClient): Promise<RepairPlan> 
     if (entry.job.companyId === companyId) continue;
     if (entry.job.url !== entry.url) throw new Error(`Another canonical owner requires review: ${entry.jobId}`);
     if (!brand) unknownBrand++; else changedBrand++;
-    const clusterKey = blockingKey({ externalId: entry.externalId, sourceKey: entry.sourceKey, url: entry.url });
+    const clusterKey = blockingKey({ externalId: entry.externalId, sourceKey: entry.sourceKey, url: entry.url, raw: entry.raw });
     operations.push({ entity: 'Job', id: entry.jobId, before: json(entry.job), patch: {
       companyId, clusterKey, fingerprint: `${clusterKey}|${entry.job.title}`,
       canonicalSourceKey: entry.sourceKey, canonicalExternalId: entry.externalId, canonicalTier: entry.sourceTier,

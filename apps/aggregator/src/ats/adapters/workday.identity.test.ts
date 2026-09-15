@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { mergeWorkdayDetail, workdayDetailMatchesListing } from './workday.js';
+import { mergeWorkdayDetail } from './workday.js';
+import { workdayDetailMatchesListing } from '../../identity/workday.js';
 import { recoverRetainedPublication } from '../../publication/recovery.js';
 
 const origin = 'https://richemont.wd3.myworkdayjobs.com';

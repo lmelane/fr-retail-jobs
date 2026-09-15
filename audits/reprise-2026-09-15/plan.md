@@ -138,6 +138,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 [Sous-lot 4G1 validé localement](lot-4g1.md) : reconstruction courante du RAW avec ou sans capture et persistance numérique fidèle des plans. Les 2 446 plans sont appliqués et rejoués ; 51 392 groupes et 51 847 présentations sont vérifiés sans écart. Une interruption réelle et une reprise exacte sont démontrées. Les 192 fermetures sont prouvées, dont une échéance passée depuis la prévisualisation. Les 3 102 tests et neuf contre-épreuves passent. Le traitement concurrent reste non qualifié ; les 269 groupes d’identité ambiguë et les groupes à contenu incomplet restent ouverts.
 
+[Sous-lot 4G2 validé localement](lot-4g2.md) : réquisitions Workday liées à leur liste, détail, portail et tenant ; six publications natives capturées et rejouées sur trois paires de portails. Les 246 groupes Workday retenus sont qualifiés : 24 sont séparés en conservant leurs anciennes pages. Les 559 plans reconstruisent 12 934 présentations ; 16 plans supplémentaires consolident 217 réquisitions sur plusieurs pages et préservent les 219 anciennes URLs comme redirections. Les 575 plans sont rejoués, les 12 490 groupes finaux et les 278 redirections du stock vérifiés. Les 3 123 tests et six contre-épreuves passent. Les 23 groupes Teamtailor et les formats ou groupes incomplets restent ouverts.
+
 ## Lot 5. Certifier les sources et préparer le cycle complet
 
 **Objectif.** Rendre chaque source du catalogue exploitable ou explicitement exclue.
