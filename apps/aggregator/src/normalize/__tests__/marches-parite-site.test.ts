@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { CODES_MARCHE } from '@catwalks/db/marches';
+import {
+  CODES_MARCHE,
+  DIMENSIONS_FACETTE,
+  MARCHES,
+  SEUIL_AFFICHAGE_FACETTE,
+  facettesDuMarche,
+  libelleFacette,
+} from '@catwalks/db/marches';
 
 /**
  * LA PARITÉ DES DEUX REGISTRES DE MARCHÉS — le témoin qui empêche la RÉCIDIVE.
@@ -101,5 +108,80 @@ describe('parité des registres de marchés — amont ↔ site', () => {
     ] as const) {
       expect(presents.has(code), `${code} (${offres} offres) doit être au registre amont`).toBe(true);
     }
+  });
+
+  /*
+   * ── LE SECOND BORD DE LA PARITÉ : LES FACETTES, PAS SEULEMENT LES CODES ──
+   *
+   * Ce fichier gardait les CODES de marché des deux côtés. Il ne gardait pas
+   * ce que chaque marché EXPOSE — et c'est par là que la divergence est
+   * revenue le 2026-09-15, sous une forme nouvelle :
+   *
+   *   le site affichait `programme` sur DE (8,0 %), IT (16,2 %) et ES (5,3 %),
+   *   et `contrat` sur CH (17,2 %) — quatre facettes SOUS le seuil, qu'aucune
+   *   mesure amont n'autorise. Un candidat espagnol cochait « Stage », voyait
+   *   le catalogue fondre de 95 %, et concluait que le site était vide.
+   *
+   * Le site porte maintenant son propre témoin, qui rejoue le calcul amont.
+   * Mais la parité n'était gardée que d'UN SEUL CÔTÉ : un changement de
+   * couverture ici ne faisait rougir rien ici. Or c'est ici que la mesure
+   * change — le site ne fait que la refléter.
+   *
+   * Ce témoin ferme ce bord. Il ne recopie AUCUNE liste attendue : il affirme
+   * l'INVARIANT qui fonde la décision produit, à savoir qu'une facette exposée
+   * a toujours ses deux conditions réunies (couverture au-dessus du seuil ET
+   * libellé natif). Une liste recopiée dériverait ; un invariant, non.
+   */
+  it('TOUTE FACETTE EXPOSÉE TIENT SES DEUX CONDITIONS — le bord amont de la parité', () => {
+    /*
+     * PRÉMISSE — le calcul doit réellement ÉCARTER quelque chose, sinon cette
+     * boucle passerait au vert sur un registre qui exposerait tout, et le
+     * témoin graverait le défaut au lieu de le détecter.
+     */
+    const ecartees = CODES_MARCHE.flatMap((code) =>
+      DIMENSIONS_FACETTE.filter((d) => !facettesDuMarche(code).includes(d)).map((d) => `${code}.${d}`),
+    );
+    expect(
+      ecartees.length,
+      'la prémisse : le seuil et le libellé écartent bien des dimensions',
+    ).toBeGreaterThan(0);
+
+    for (const code of CODES_MARCHE) {
+      for (const dimension of facettesDuMarche(code)) {
+        expect(
+          MARCHES[code].couverture[dimension],
+          `${code}.${dimension} est exposée : sa couverture doit tenir le seuil`,
+        ).toBeGreaterThanOrEqual(SEUIL_AFFICHAGE_FACETTE);
+        expect(
+          libelleFacette(code, dimension),
+          `${code}.${dimension} est exposée : elle doit porter un libellé natif`,
+        ).toBeDefined();
+      }
+    }
+  });
+
+  it('AUCUN LIBELLÉ MORT — un libellé sans facette exposée est de la donnée qui ment', () => {
+    /*
+     * Le symétrique du témoin ci-dessus, et il garde une chose différente :
+     * un libellé peut survivre à la facette qu'il nommait. C'est arrivé le
+     * 2026-09-15 côté site (`Programmart`, `Tipo di programma`, `Tipo de
+     * programa` sont restés après le retrait de la facette).
+     *
+     * ⚠ EXCEPTION VOULUE, et c'est pourquoi ce témoin ne boucle pas aveuglément :
+     * la Suisse GARDE « Type de contrat » alors que la facette n'est pas
+     * exposée (17,2 %). C'est délibéré — le libellé décrit le MARCHÉ, le seuil
+     * décide de l'AFFICHAGE, et les séparer évite d'avoir à retraduire le jour
+     * où la couverture monte. Le témoin grave donc l'écart CONNU, et rougit
+     * si un écart INCONNU apparaît.
+     */
+    const dormants = CODES_MARCHE.flatMap((code) =>
+      DIMENSIONS_FACETTE.filter(
+        (d) => libelleFacette(code, d) !== undefined && !facettesDuMarche(code).includes(d),
+      ).map((d) => `${code}.${d}`),
+    ).sort();
+
+    expect(dormants, 'les seuls libellés dormants sont ceux que le registre assume').toEqual([
+      'CH.contrat',
+    ]);
   });
 });
