@@ -27,12 +27,14 @@ async function wipe() {
 function candidate(
   over: Partial<CandidateJob> & { sourceKey: string; externalId: string; company: string; title: string },
 ): CandidateJob & { companyId: string } {
+  const url = over.url ?? `https://x/${over.externalId}`;
+  const raw = url.includes('.oraclecloud.com/') ? { source: 'oraclehcm', site: 'CX', list: { Id: new URL(url).pathname.split('/').at(-1) } } : {};
   return {
     sourceTier: 'EMPLOYER_DIRECT',
     atsType: 'GENERIC_JSONLD',
-    raw: {},
+    raw,
     ...over,
-    url: over.url ?? `https://x/${over.externalId}`,
+    url,
     description: over.description ?? 'desc',
     companyId: resolveCompany(over.company).companyId,
   } as CandidateJob & { companyId: string };

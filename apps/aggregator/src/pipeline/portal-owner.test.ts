@@ -79,7 +79,7 @@ it('attributes postings to the brands explicitly named on their native pages, le
  await applyRepairPlan(prisma,plan,digest(plan),'test');
  const owner=await prisma.job.findUniqueOrThrow({where:{id:job.id},include:{company:true}});expect(owner.company).toMatchObject({name:'Actual Group',kind:'GROUP'});
  const brand=await prisma.job.findUniqueOrThrow({where:{id:second.id},include:{company:true,sources:true}});
- expect(brand.company).toMatchObject({name:'Actual Brand',kind:'BRAND',parentGroup:'Actual Group',parentGroupId:owner.companyId});expect(brand.clusterKey).toBe('ACTUAL_BRAND|sales');expect(brand.sources[0].raw).toEqual({original:'keep'});
+ expect(brand.company).toMatchObject({name:'Actual Brand',kind:'BRAND',parentGroup:'Actual Group',parentGroupId:owner.companyId});expect(brand.clusterKey).toBe('LEGACY_BRAND|sales');expect(brand.sources[0].raw).toEqual({original:'keep'});
  const kept=await prisma.job.findUniqueOrThrow({where:{id:third.id},include:{company:true}});expect(kept.companyId).toBe(company.id);expect(kept.company).toMatchObject({name:'Legacy Brand',parentGroupId:owner.companyId,mergedIntoId:null});
  expect((await prisma.source.findUniqueOrThrow({where:{key:source.key}})).config).toMatchObject({origin:'https://careers.example.com',brandProperty:'dept'});
  expect(await prisma.sourceObservation.count({where:{sourceKey:source.key,externalId:{in:['456','789']}}})).toBe(2);
@@ -126,8 +126,8 @@ it('splits brands out of a correctly owned portal: the owner is re-evaluated per
  spec.sources[0].postings=[{externalId:'456',targetName:'Actual Brand',targetKind:'BRAND',evidence:{url:'https://careers.example.com/job/Milan-Sales/456/',sha256:sha,property:'jsonld.hiringOrganization.name',value:'Actual Brand',observedAt}}];
  const plan=await planReviewedPortalOwners(prisma,spec);await applyRepairPlan(prisma,plan,digest(plan),'test');
  expect((await prisma.job.findUniqueOrThrow({where:{id:job.id}})).companyId).toBe(owner.id);
- const brand=await prisma.job.findUniqueOrThrow({where:{id:second.id},include:{company:true}});expect(brand.company).toMatchObject({name:'Actual Brand',parentGroupId:owner.id});expect(brand.clusterKey).toBe('ACTUAL_BRAND|sales');
- const redirected=await prisma.job.findUniqueOrThrow({where:{id:predecessor.id}});expect(redirected).toMatchObject({companyId:brand.companyId,mergedIntoId:second.id,isActive:false,clusterKey:'ACTUAL_BRAND|sales'});
+ const brand=await prisma.job.findUniqueOrThrow({where:{id:second.id},include:{company:true}});expect(brand.company).toMatchObject({name:'Actual Brand',parentGroupId:owner.id});expect(brand.clusterKey).toBe('ACTUAL_GROUP|sales');
+ const redirected=await prisma.job.findUniqueOrThrow({where:{id:predecessor.id}});expect(redirected).toMatchObject({companyId:brand.companyId,mergedIntoId:second.id,isActive:false,clusterKey:'ACTUAL_GROUP|sales'});
  expect(await applyRepairPlan(prisma,plan,digest(plan),'test')).toMatchObject({alreadyApplied:true,written:0,sourceOwnerContradictions:0});
 });
 

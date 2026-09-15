@@ -14,8 +14,9 @@ import { lockCompanyRows, lockSourceWrites } from '../lib/writeLocks.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { selectApplySource, SOURCE_PRIORITY } from '@catwalks/db/publications';
 import { hasRequisitionConflict } from './postingIdentity.js';
-import { blockingKey, isProbableDuplicate, type CandidateJob } from './match.js';
+import { blockingKey, provenPublicationGroup, type CandidateJob } from './match.js';
 import { archiveAdapterOutput } from '../capture/observations.js';
+import { recordPublicationAttachment, reviewedPublicationGroup } from './decisions.js';
 import { classifySector, sectorForSource, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
 import { resolveCompany } from '../normalize/company.js';
@@ -43,25 +44,8 @@ const SECTOR_TO_COMPANY_SECTOR: Record<Sector, string> = {
   OTHER: 'OTHER',
 };
 
-/**
- * Write-time deduplication — the guarantee that the database NEVER holds the same
- * opening twice, not even for a second.
- *
- * Deduplicating on a schedule would leave a window in which the front end shows
- * one job three times: Dior posts, LVMH republishes two hours later, and the
- * duplicate is visible until the next pass. So dedup is an INSERT rule, not a
- * periodic job:
- *
- *   1. compute the cluster key (resolved company + normalized city)
- *   2. compare against live jobs already in that cluster
- *   3. match  -> attach a JobSource, and promote the canonical URL if this
- *                source outranks the current one
- *      no match -> create the Job, with its first JobSource
- *
- * A separate weekly reconcile pass still earns its place, but only for
- * retroactive merges after an alias or synonym is added — never as the mechanism
- * that keeps the data clean.
- */
+/** Native source identity is stable. Cross-source grouping requires an exact,
+ * qualified application identity; every publication and observation survives. */
 
 function tierRank(tier: string): number {
   const index = SOURCE_PRIORITY.indexOf(tier as (typeof SOURCE_PRIORITY)[number]);
@@ -243,6 +227,11 @@ async function upsertInTransaction(
     if (hasRequisitionConflict([candidate.url, ...ownEntry.job.sources.filter(s => s.isActive).map(s => s.url)])) {
       throw new Error(`REQUISITION_IDENTITY_CONFLICT job=${ownEntry.job.id}; reviewed separation required`);
     }
+    const publications = ownEntry.job.sources.map(source => source.sourceKey === candidate.sourceKey && source.externalId === candidate.externalId
+      ? { ...source, raw: candidate.raw, url: candidate.url } : source);
+    if (publications.length > 1 && !provenPublicationGroup(publications) && !await reviewedPublicationGroup(prisma, ownEntry.job.id, publications)) {
+      throw new Error(`PUBLICATION_GROUP_REVIEW_REQUIRED job=${ownEntry.job.id}; native identity evidence no longer agrees`);
+    }
     return attachToExisting(prisma, catalogue, candidate, ownEntry.job, now, clusterKey, company.id);
   }
 
@@ -251,41 +240,19 @@ async function upsertInTransaction(
   const clusterJobs = await prisma.job.findMany({
     where: { companyId: company.id, clusterKey, isActive: true, sources: { none: { sourceKey: candidate.sourceKey } } },
     select: {
-      id: true, title: true, countryCode: true, city: true, location: true, postedAt: true, url: true, opportunityType: true,
-      sources: { select: { sourceKey: true, externalId: true, url: true, isActive: true } },
+      id: true, opportunityType: true,
+      sources: { select: { sourceKey: true, externalId: true, url: true, isActive: true, raw: true } },
     },
     orderBy: [{ firstSeenAt: 'asc' }, { id: 'asc' }],
   });
 
-  /**
-   * One source never publishes one opening twice: a job that already carries a
-   * JobSource from THIS source under a DIFFERENT id is a different opening,
-   * whatever the titles score. This guard existed in match.ts but the old code
-   * fed it the CANDIDATE's own sourceKey/externalId (`{...candidate}`), so it
-   * could never fire at write time — three distinct "Sales Associate" ids at
-   * the same boutique collapsed into one displayed offer (audit D-01). The
-   * sources are already loaded; compare against the real ones.
-   */
-  const existing = clusterJobs.find((job) => {
-    if (hasRequisitionConflict([candidate.url, ...job.sources.filter(s => s.isActive).map(s => s.url)])) return false;
-    const sameSourceOtherId = job.sources.some(
-      (source) =>
-        source.sourceKey === candidate.sourceKey && source.externalId !== candidate.externalId,
-    );
-    if (sameSourceOtherId) return false;
-    return isProbableDuplicate(candidate, {
-      ...candidate,
-      title: job.title,
-      opportunityType: job.opportunityType ?? undefined,
-      url: job.url,
-      // Use the stored posting's evidence, not the incoming country's/city's
-      // values inherited by the spread above.
-      country: job.countryCode ?? undefined,
-      city: job.city ?? undefined,
-      location: job.location ?? undefined,
-      postedAt: job.postedAt ?? undefined,
-    });
-  });
+  const matches = clusterJobs.filter(job =>
+    (!candidate.opportunityType || !job.opportunityType || candidate.opportunityType === job.opportunityType) &&
+    provenPublicationGroup([candidate, ...job.sources]),
+  );
+  // Multiple presentation groups claiming one application need consolidation
+  // with a reviewed plan; ingestion must not choose an arbitrary survivor.
+  const existing = matches.length === 1 ? matches[0] : undefined;
 
   if (!existing) return createJob(prisma, catalogue, candidate, company.id, clusterKey, now);
 
@@ -645,6 +612,8 @@ async function attachToExisting(
       captureBatchId: candidate.captureBatchId ?? null, captureOutputId: candidate.captureOutputId ?? null,
       raw: candidate.raw == null ? Prisma.DbNull : candidate.raw as Prisma.InputJsonValue },
   });
+
+  if (!alreadyKnown) await recordPublicationAttachment(prisma, observedSource, existing.sources, null, existing.id);
 
   const owner = selectApplySource([
     ...existing.sources.filter(s => s.id !== observedSource.id), observedSource,

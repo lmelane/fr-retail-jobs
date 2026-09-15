@@ -3,13 +3,6 @@ import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { runReconcile } from './reconcile.js';
 
-/**
- * Reconcile merges duplicates that only became mergeable after an alias/synonym
- * was added. The merge must be atomic: the loser's sources move to the keeper
- * and the loser is retired, together, so a crash can never leave two active
- * jobs sharing the same sources.
- */
-
 const prisma = new PrismaClient();
 
 async function wipe() {
@@ -24,7 +17,7 @@ afterAll(async () => {
   await prisma.$disconnect();
 });
 
-async function jobIn(cluster: string, opts: { ext: string; sourceKey: string; tier: string; title?: string; countryCode?: string; postedAt?: Date }) {
+async function jobIn(cluster: string, opts: { ext: string; sourceKey: string; tier: string; title?: string; countryCode?: string; postedAt?: Date; url?: string }) {
   return prisma.job.create({
     data: {
       company: { connectOrCreate: { where: { fashionjobsUrl: `fixture:${cluster}` }, create: { name: 'x', canonicalKey: cluster.split('|')[0], fashionjobsUrl: `fixture:${cluster}` } } },
@@ -33,7 +26,7 @@ async function jobIn(cluster: string, opts: { ext: string; sourceKey: string; ti
       title: opts.title ?? 'Conseiller de vente H/F',
       countryCode: opts.countryCode,
       postedAt: opts.postedAt,
-      url: `https://x/${opts.ext}`,
+      url: opts.url ?? `https://x/${opts.ext}`,
       fingerprint: `fp-${opts.ext}`,
       clusterKey: cluster,
       canonicalTier: opts.tier,
@@ -41,7 +34,8 @@ async function jobIn(cluster: string, opts: { ext: string; sourceKey: string; ti
       sources: {
         create: {
           sourceKey: opts.sourceKey, sourceTier: opts.tier, externalId: `s-${opts.ext}`,
-          url: `https://x/${opts.ext}`, isActive: true,
+          url: opts.url ?? `https://x/${opts.ext}`, isActive: true,
+          raw: { board: { row: { attrs: { 'data-applyurl': opts.url ?? `https://x/${opts.ext}` } } } },
         },
       },
     },
@@ -74,14 +68,14 @@ describe('runReconcile', () => {
     await prisma.job.update({ where: { id: unknown.id }, data: { firstSeenAt: new Date('2000-01-01') } });
     await jobIn('acme|PARIS', { ext: 'fr', sourceKey: 'fr', tier: 'EMPLOYER_DIRECT', countryCode: 'FR' });
     await jobIn('acme|PARIS', { ext: 'us', sourceKey: 'us', tier: 'EMPLOYER_DIRECT', countryCode: 'US' });
-    expect((await runReconcile(prisma)).jobsMerged).toBe(1);
-    expect(await prisma.job.count({ where: { isActive: true } })).toBe(2);
+    expect((await runReconcile(prisma)).jobsMerged).toBe(0);
+    expect(await prisma.job.count({ where: { isActive: true } })).toBe(3);
   });
 
-  it('merges two now-duplicate jobs in one cluster into a single active job', async () => {
-    // Same cluster (company|city), near-identical titles, different sources.
-    const keeper = await jobIn('acme|PARIS', { ext: 'a', sourceKey: 'employer', tier: 'EMPLOYER_DIRECT', title: 'Conseiller de vente H/F' });
-    await jobIn('acme|PARIS', { ext: 'b', sourceKey: 'wttj', tier: 'SPECIALIST_JOBBOARD', title: 'Conseiller de vente' });
+  it('groups two sources with the same qualified application identity', async () => {
+    const url = 'https://jobaffinity.fr/apply/v9f3i6k3c5c8z2z9ly';
+    const keeper = await jobIn('acme|PARIS', { ext: 'a', sourceKey: 'employer', tier: 'EMPLOYER_DIRECT', title: 'Conseiller de vente H/F', url });
+    await jobIn('acme|PARIS', { ext: 'b', sourceKey: 'wttj', tier: 'SPECIALIST_JOBBOARD', title: 'Conseiller de vente', url: url + '?src=board' });
 
     const stats = await runReconcile(prisma);
 
@@ -95,15 +89,15 @@ describe('runReconcile', () => {
   });
 
   it('promotes the better-ranked apply URL when the loser outranks the keeper', async () => {
-    // keeper (created first) is a jobboard; the other is the employer's own site.
-    const keeper = await jobIn('acme|LYON', { ext: 'jb', sourceKey: 'wttj', tier: 'SPECIALIST_JOBBOARD' });
-    await jobIn('acme|LYON', { ext: 'emp', sourceKey: 'employer', tier: 'EMPLOYER_DIRECT' });
+    const url = 'https://jobaffinity.fr/apply/v9f3i6k3c5c8z2z9ly';
+    const keeper = await jobIn('acme|LYON', { ext: 'jb', sourceKey: 'wttj', tier: 'SPECIALIST_JOBBOARD', url: url + '?src=board' });
+    await jobIn('acme|LYON', { ext: 'emp', sourceKey: 'employer', tier: 'EMPLOYER_DIRECT', url });
 
     await runReconcile(prisma);
 
     const survivor = await prisma.job.findUnique({ where: { id: keeper.id } });
     // The employer URL took over the canonical apply link.
-    expect(survivor?.url).toBe('https://x/emp');
+    expect(survivor?.url).toBe(url);
     expect(survivor?.canonicalTier).toBe('EMPLOYER_DIRECT');
   });
 

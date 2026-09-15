@@ -1,21 +1,12 @@
 import { publicJobWhere } from '@catwalks/db/availability';
 import { selectApplySource } from '@catwalks/db/publications';
 import { lockCompanyRows } from '../lib/writeLocks.js';
-import { hasRequisitionConflict } from '../dedup/postingIdentity.js';
 import type { PrismaClient } from '@prisma/client';
-import { cannotBeSameOpening, isProbableDuplicate, type CandidateJob } from '../dedup/match.js';
+import { provenPublicationGroup } from '../dedup/match.js';
+import { recordPublicationAttachment } from '../dedup/decisions.js';
 
-/**
- * RECONCILE — retroactive merges.
- *
- * Dedup happens at write time, so the database is already duplicate-free under
- * the rules in force when each job was written. This pass exists for the case
- * those rules CHANGE: adding an alias (BVLGARI = BULGARI) or a role synonym makes
- * previously distinct jobs mergeable after the fact.
- *
- * It is a weekly consolidation, never the mechanism that keeps data clean — if
- * this pass is what removes your duplicates, write-time dedup is broken.
- */
+/** Consolidate groups only when all native publication identities agree.
+ * No title, geography or taxonomy similarity is an identity proof. */
 
 export type ReconcileStats = {
   clustersScanned: number;
@@ -54,39 +45,15 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
       for (let i = 0; i < jobs.length; i++) {
         const keeper = jobs[i];
         if (absorbed.has(keeper.id)) continue;
-        const members = [{ ...keeper, sources: [...keeper.sources] }];
+        // A same-feed collision or unqualified historical member makes this
+        // whole employer bucket ambiguous; never bridge it through a third feed.
+        if (!provenPublicationGroup(jobs.filter(job => job.companyId === keeper.companyId).flatMap(job => job.sources))) continue;
 
         for (let j = i + 1; j < jobs.length; j++) {
           const other = jobs[j];
           if (absorbed.has(other.id) || keeper.companyId !== other.companyId) continue;
-          if (hasRequisitionConflict([...keeper.sources, ...other.sources].map(source => source.url))) continue;
-
-          const asCandidate = (job: (typeof jobs)[number]): CandidateJob => ({
-            externalId: job.externalId,
-            title: job.title,
-            country: job.countryCode ?? undefined,
-            city: job.city ?? undefined,
-            location: job.location ?? undefined,
-            url: job.url,
-            postedAt: job.postedAt ?? undefined,
-            opportunityType: job.opportunityType ?? undefined,
-            company: job.clusterKey ?? '',
-            // The job's own source key, not an empty string: an empty key on both
-            // sides made cannotBeSameOpening fire (same source, different ids) and
-            // blocked EVERY merge. A real key still guards the true case — two
-            // offers from the SAME source never merge — while letting two jobs from
-            // different sources be recognised as one opening.
-            sourceKey: job.sources[0]?.sourceKey ?? job.id,
-            sourceTier: (job.canonicalTier as CandidateJob['sourceTier']) ?? 'AGGREGATOR',
-          });
-
-          // Preserve every veto after absorbing an intermediate posting whose
-          // country or date was missing. Reconcile must not undo ingest guards.
-          if (members.some(member => cannotBeSameOpening(asCandidate(member), asCandidate(other)))) continue;
-          if (members.some(member => member.sources.some(source =>
-            other.sources.some(peer => peer.sourceKey === source.sourceKey && peer.externalId !== source.externalId),
-          ))) continue;
-          if (!isProbableDuplicate(asCandidate(keeper), asCandidate(other))) continue;
+          if (keeper.opportunityType && other.opportunityType && keeper.opportunityType !== other.opportunityType) continue;
+          if (!provenPublicationGroup([...keeper.sources, ...other.sources])) continue;
 
           // Merge in ONE transaction: move the loser's sources onto the keeper,
           // promote the URL if the loser ranks higher, then retire the loser.
@@ -95,6 +62,7 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
           // re-introducing the very duplicate reconcile exists to remove.
           const owner = selectApplySource([...keeper.sources, ...other.sources], keeper);
           const promote = owner && other.sources.some(source => source.id === owner.id);
+          for (const source of other.sources) await recordPublicationAttachment(tx, source, keeper.sources, other.id, keeper.id);
           const moved = await tx.jobSource.updateMany({ where: { jobId: other.id }, data: { jobId: keeper.id } });
           if (owner) {
             const patch = {
@@ -118,7 +86,6 @@ export async function runReconcile(prisma: PrismaClient): Promise<ReconcileStats
           });
           stats.sourcesMoved += moved.count;
           absorbed.add(other.id);
-          members.push(other);
           stats.jobsMerged++;
         }
       }

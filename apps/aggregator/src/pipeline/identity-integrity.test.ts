@@ -9,12 +9,13 @@ import { retireSource } from './retireSource.js';
 import { withSourceBudget } from '../lib/sourceBudget.js';
 
 const prisma = new PrismaClient();
+const nativeRaw = { source: 'oraclehcm', site: 'CX', list: { Id: '1' } };
 const candidate = (overrides: Partial<CandidateJob> = {}): CandidateJob & { companyId: string } => ({
   company: 'Dior', companyId: resolveCompany('Dior').companyId,
   sourceKey: 'employer', externalId: '1', sourceTier: 'EMPLOYER_DIRECT', atsType: 'WORKDAY',
   title: 'Store Manager', city: 'Paris', country: 'FR', location: 'Paris, France',
-  url: 'https://employer.example/1', description: 'Authoritative description', salaryMin: 50000,
-  salaryCurrency: 'EUR', raw: { revision: 1 }, ...overrides,
+  url: 'https://example.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/1', description: 'Authoritative description', salaryMin: 50000,
+  salaryCurrency: 'EUR', ...overrides, raw: { ...nativeRaw, ...(overrides.raw as object ?? { revision: 1 }) },
 });
 
 beforeEach(async () => {
@@ -78,7 +79,7 @@ describe('transactional identity and source authority', () => {
   it('does not equate IDs from separate tenants of the same ATS', async () => {
     await Promise.all([
       upsertDeduplicated(prisma, candidate()),
-      upsertDeduplicated(prisma, candidate({ sourceKey: 'other-tenant', country: 'US', location: 'Paris, US' })),
+      upsertDeduplicated(prisma, candidate({ sourceKey: 'other-tenant', url: 'https://other.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/1', country: 'US', location: 'Paris, US' })),
     ]);
     expect(await prisma.job.count()).toBe(2);
     expect(await prisma.jobSource.count()).toBe(2);
@@ -95,9 +96,9 @@ describe('transactional identity and source authority', () => {
 
   it('a known jobboard cannot overwrite employer content, geography or salary', async () => {
     const first = await upsertDeduplicated(prisma, candidate({ atsType: 'LEVER', raw: { revision: 1, salaryRange: { min: 50000, currency: 'EUR', interval: 'per-year-salary' } } }));
-    const board = candidate({ sourceKey: 'board', externalId: 'b1', sourceTier: 'SPECIALIST_JOBBOARD', url: 'https://board.example/1', atsType: 'LEVER' });
+    const board = candidate({ sourceKey: 'board', externalId: 'b1', sourceTier: 'SPECIALIST_JOBBOARD', url: 'https://example.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/1?utm_source=board', atsType: 'LEVER' });
     await upsertDeduplicated(prisma, board);
-    const boardRaw = { revision: 2, salaryRange: { min: 25000, currency: 'USD', interval: 'per-year-salary' } };
+    const boardRaw = { ...nativeRaw, revision: 2, salaryRange: { min: 25000, currency: 'USD', interval: 'per-year-salary' } };
     await upsertDeduplicated(prisma, { ...board, title: 'Assistant Store Manager', salaryMin: 25000, country: 'US', raw: boardRaw });
     const job = await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } });
     expect(job).toMatchObject({ title: 'Store Manager', countryCode: 'FR', canonicalSourceKey: 'employer', raw: { revision: 1 } });
@@ -128,7 +129,7 @@ describe('transactional identity and source authority', () => {
 
   it('an inactive employer cannot retain ownership after a board is reattested', async () => {
     await upsertDeduplicated(prisma, candidate());
-    const board = candidate({ sourceKey: 'board', externalId: 'b1', sourceTier: 'SPECIALIST_JOBBOARD', url: 'https://board.example/1' });
+    const board = candidate({ sourceKey: 'board', externalId: 'b1', sourceTier: 'SPECIALIST_JOBBOARD', url: 'https://example.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/1?utm_source=board' });
     await upsertDeduplicated(prisma, board);
     await prisma.jobSource.updateMany({ where: { sourceKey: 'employer' }, data: { isActive: false } });
     await upsertDeduplicated(prisma, board);

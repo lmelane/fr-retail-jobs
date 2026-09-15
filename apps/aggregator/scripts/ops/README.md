@@ -126,3 +126,5 @@ Le mécanisme unique déplace les corps vers des blocs S3 vérifiés et conserve
 ## Reprise des faits par publication
 
 [`source-facts.mts`](source-facts.mts) prépare un plan borné par source, avec différences et empreintes, puis l’applique sous contrôle de ces preuves. La [documentation des faits](../../../../docs/architecture/source-facts.md) décrit les états, les limites et la pagination. L’ancien `scripts/trust/backfill-workplace.mts` a été supprimé : il choisissait la première interprétation et ne corrigeait pas les valeurs déjà remplies.
+
+Les commandes `apply-domain-sheet` et `separate-fused` sont également retirées. Les [décisions d’identité](../../../../docs/architecture/publication-identity.md) remplacent les fusions par proximité de titre. Les réparations d’employeurs passent par `scripts/identity/cli.mts` et leur plan revu ; la reprise des groupes historiques est en cours dans le lot 4.

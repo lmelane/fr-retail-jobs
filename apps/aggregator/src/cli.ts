@@ -1,4 +1,3 @@
-import { fileURLToPath } from 'node:url';
 import { startObservability } from './observability/runtime.js';
 import { ObservabilityUnavailableError } from './observability/logger.js';
 import { log } from './observability/logger.js';
@@ -22,7 +21,6 @@ const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 
 import { runRefresh, refreshScope } from './pipeline/refresh.js';
 import { parseDay, runSnapshot, type SnapshotStats } from './pipeline/snapshot.js';
 import { runReconcile } from './pipeline/reconcile.js';
-import { separateFusedJobs } from './pipeline/separateFused.js';
 import { retireSource } from './pipeline/retireSource.js';
 import { importSourcesCsv, promoteSource } from './connectors/sourceStore.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
@@ -39,7 +37,7 @@ import { validateCliArguments } from './lib/cliArguments.js';
  *   ingest    (~2h)    new and updated offers; dedup happens at write time
  *   refresh   (daily)  lifecycle — closes offers no source reports any more,
  *                      then takes the day's market snapshot (D38)
- *   reconcile (weekly) retroactive merges after an alias or synonym is added
+ *   reconcile         consolidate publications with a qualified application identity
  *   snapshot  (manual) the market snapshot alone: --date=, --backfill-from=
  *
  * geocode runs after ingest to resolve any new cities for the map.
@@ -255,16 +253,6 @@ try {
     // porte deux (kering : flux Eightfold vivant + sitemap périmée), voir RetireOptions.
     const externalIdPrefix = process.argv.find((a) => a.startsWith('--external-prefix='))?.slice('--external-prefix='.length);
     await log.info('command.result', { ok: true, command, externalIdPrefix, ...(await retireSource(prisma, key, { externalIdPrefix })) });
-  } else if (command === 'separate-fused') {
-    /**
-     * One-shot repair for audit D-01: splits openings a single source published
-     * under distinct ids that the old write path wrongly fused into one Job.
-     * Prints the before/after metric; after the fix ships, fusedAfter must be 0
-     * and STAY 0 — a non-zero value on a later run means the guard regressed.
-     */
-    const stats = await separateFusedJobs(prisma);
-    await log.info('command.result', { ok: stats.fusedAfter === 0, command, ...stats });
-    if (stats.fusedAfter > 0) process.exitCode = 1;
   } else if (command === 'resolve-domains') {
     /**
      * Pose Company.domain (le logo) sur les Maisons actives qui n'en ont pas :
@@ -280,17 +268,6 @@ try {
       dryRun: process.argv.includes('--dry-run'),
     });
     await log.info('command.result', { ok: true, command, ...stats });
-  } else if (command === 'apply-domain-sheet') {
-    /**
-     * Applique le référentiel de domaines établi à la main (D45) :
-     * IDENTIFIÉ pose le domaine, RATTACHÉ fusionne l'entité juridique dans sa
-     * marque mère, À VÉRIFIER ne touche à rien. `--apply` pour écrire.
-     */
-    const { applyDomainSheet } = await import('./pipeline/applyDomainSheet.js');
-    const file = process.argv.find((a) => a.startsWith('--file='))?.slice('--file='.length)
-      ?? fileURLToPath(new URL('../data/imports/maisons-domaines-loic.tsv', import.meta.url));
-    const stats = await applyDomainSheet(prisma, file, { apply: process.argv.includes('--apply') });
-    await log.info('command.result', { ok: true, command, file, ...stats });
   } else if (command === 'occupation-review-queue') {
     const {occupationReviewQueue}=await import('./occupation/inventory.js');
     const {writeFile}=await import('node:fs/promises');

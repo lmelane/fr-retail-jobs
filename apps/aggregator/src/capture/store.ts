@@ -41,7 +41,7 @@ export async function persistCapture(db: PrismaClient, batchId: string, record: 
   }, { maxWait: 10_000, timeout: 30_000 });
 }
 
-export async function readRawBlob(db: PrismaClient, hash: string, store?: ObjectStore): Promise<Buffer> {
+export async function readRawBlob(db: Pick<Prisma.TransactionClient, 'rawBlob'>, hash: string, store?: ObjectStore): Promise<Buffer> {
   const blob = await db.rawBlob.findUniqueOrThrow({ where: { hash }, include: { body: true, archive: true } });
   let compressed: Uint8Array;
   if (blob.body) compressed = blob.body.gzip;

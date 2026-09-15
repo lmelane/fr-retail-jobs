@@ -2,11 +2,12 @@ import { Prisma, type PrismaClient } from '@prisma/client';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
 import { digestBytes } from './context.js';
 import { storeRawBlob, readRawBlob, archiveRawBlob } from './store.js';
-import type { ObjectStore } from '../retention/objectStore.js';
+import { objectStoreConfigured, objectStoreFromEnv, type ObjectStore } from '../retention/objectStore.js';
+import { evidenceHash } from '../lib/evidenceHash.js';
 
 /** Adapter output is a derived observation. Commit it before the job transaction. */
 export async function archiveAdapterOutput(db: Prisma.TransactionClient, input: {
-  sourceKey: string; externalId: string; raw?: unknown; captureBatchId?: string; captureOutputId?: string; publicationHold?: string;
+  sourceKey: string; externalId: string; url?: string; raw?: unknown; captureBatchId?: string; captureOutputId?: string; publicationHold?: string;
 }) {
   if (Boolean(input.captureBatchId) !== Boolean(input.captureOutputId)) throw new Error('Adapter output requires both batch and output provenance');
   if (input.captureBatchId) {
@@ -14,6 +15,11 @@ export async function archiveAdapterOutput(db: Prisma.TransactionClient, input: 
     if (!batch || batch.sourceKey !== input.sourceKey || batch.outcome?.status !== 'EXTRACTED') throw new Error('Adapter output refers to an invalid capture batch');
     const output = await db.sourceExtraction.findUnique({ where: { id: input.captureOutputId! } });
     if (!output || output.batchId !== batch.id || output.externalId !== input.externalId) throw new Error('Adapter output refers to another captured job');
+    const captured = JSON.parse((await readRawBlob(db, output.outputHash,
+      objectStoreConfigured() ? objectStoreFromEnv() : undefined)).toString('utf8')) as { raw?: unknown; url?: string };
+    if (evidenceHash(captured.raw ?? null) !== evidenceHash(input.raw ?? null) || input.url !== undefined && input.url !== captured.url) {
+      throw new Error('Adapter RAW or application URL differs from the captured output');
+    }
   }
   if (input.raw === undefined || input.raw === null) return;
   const contentHash = digestBytes(JSON.stringify(input.raw));

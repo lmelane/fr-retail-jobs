@@ -96,14 +96,20 @@ describe('Employer identity evidence and conservation', () => {
     await expect(applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789')).rejects.toThrow('changed since planning');
     expect(await p.employerIdentityReview.count()).toBe(0);
   });
-  it('refuses to discard colliding ATS IDs to make a company merge fit', async () => {
+  it('preserves separate tenant publications during a reviewed company merge', async () => {
     const { a, b } = await pair();
     const source = await p.job.findFirstOrThrow({ where: { companyId: a.id }, omit: { searchText: true } });
     const { id, createdAt, updatedAt, ...copy } = source;
-    await p.job.create({ data: { ...copy, companyId: b.id, raw: copy.raw ?? undefined, occupationEvidence: copy.occupationEvidence ?? undefined, employmentEvidence:copy.employmentEvidence??undefined } });
+    await p.job.create({ data: { ...copy, companyId: b.id, canonicalSourceKey: 'other-tenant',
+      raw: copy.raw ?? undefined, occupationEvidence: copy.occupationEvidence ?? undefined, employmentEvidence:copy.employmentEvidence??undefined,
+      sources: { create: { sourceKey: 'other-tenant', externalId: source.externalId, sourceTier: 'EMPLOYER_DIRECT',
+        url: 'https://other-tenant.example/1', raw: { tenant: 'other-tenant', id: source.externalId } } },
+    } });
     const plan = await buildEmployerRepair(p, spec(a.id, b.id));
-    await expect(applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789')).rejects.toThrow('Posting identity collision');
-    expect(await p.job.count()).toBe(2); expect(await p.employerIdentityReview.count()).toBe(0);
+    await applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789');
+    expect(await p.job.count({ where: { companyId: b.id, mergedIntoId: null } })).toBe(2);
+    expect(await p.jobSource.count()).toBe(2);
+    expect(await p.employerIdentityReview.count()).toBe(1);
   });
   it('consolidates proven postings atomically and both sources replay into one preserved ID', async () => {
     const a = await company('Old banner'), b = await company('Current banner');
@@ -124,6 +130,8 @@ describe('Employer identity evidence and conservation', () => {
     expect(await p.employerIdentityReview.count()).toBe(0);
     await applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789');
     expect(await p.job.count()).toBe(2); expect(await p.job.count({ where: { isActive: true } })).toBe(1);
+    expect(await p.publicationIdentityDecision.findFirst({ where: { fromJobId: old.jobId, toJobId: current.jobId } }))
+      .toMatchObject({ action: 'MOVED', evidence: { rule: 'REVIEWED_RAW_IDENTITY', reviewId: plan.batchId } });
     const review = await p.employerIdentityReview.findUniqueOrThrow({ where: { id: plan.batchId } });
     const artifacts = review.evidence as { artifactText: string; sha256: string }[];
     for (const source of sources) {
@@ -138,6 +146,8 @@ describe('Employer identity evidence and conservation', () => {
     for (let pass = 0; pass < 2; pass++) for (const candidate of [input(a.name, 'old-portal'), input(b.name, 'new-portal')]) {
       expect((await upsertDeduplicated(p, candidate)).jobId).toBe(current.jobId);
     }
+    await expect(upsertDeduplicated(p, { ...input(a.name, 'old-portal'), raw: { posting: { issuer: 'https://careers.example.com', id: 43 } } }))
+      .rejects.toThrow('PUBLICATION_GROUP_REVIEW_REQUIRED');
     expect(await p.job.count()).toBe(2); expect(await p.job.count({ where: { isActive: true } })).toBe(1);
     await expect(p.job.update({ where: { id: old.jobId }, data: { isActive: true } })).rejects.toThrow();
     await expect(p.job.update({ where: { id: old.jobId }, data: { mergedIntoId: null } })).rejects.toThrow('immutable');
@@ -227,4 +237,3 @@ describe('superseding a reviewed alias', () => {
     expect(await applyEmployerRepair(p, plan2, digest(plan2), 'abcdef0123456789')).toMatchObject({ alreadyApplied: true });
   });
 });
-

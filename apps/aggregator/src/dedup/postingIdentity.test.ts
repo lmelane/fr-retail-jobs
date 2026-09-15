@@ -11,6 +11,8 @@ describe('Oracle requisition identity — production witnesses 63762/63763', () 
   it('does not infer identity from unrelated hosts, malformed URLs or generic paths', () => {
     expect(postingIdentity('https://oraclecloud.com.evil.example/hcmUI/CandidateExperience/en/sites/CX/job/63762')).toBeUndefined();
     expect(postingIdentity('not a URL')).toBeUndefined();
+    expect(postingIdentity(`${root.replace('.com', '.com:8443')}/en/sites/CX/job/63762`)).toBeUndefined();
+    expect(postingIdentity(`${root}/en/sites/CX/job/63762%2Fother`)).toBeUndefined();
     expect(postingIdentity('https://eljs.fa.us2.oraclecloud.com/job/63762')).toBeUndefined();
     expect(hasRequisitionConflict([`${root}/en/sites/CX/job/63762`, `${root}/en/sites/CX/job/63762`])).toBe(false);
   });

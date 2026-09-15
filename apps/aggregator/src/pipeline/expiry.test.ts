@@ -84,11 +84,14 @@ describe('publication deadlines', () => {
   });
 
   it('a fresh alternative replaces an elapsed apply URL during ingestion, before refresh', async () => {
-    const { jobId } = await upsertDeduplicated(db, candidate('primary', {}));
-    await db.jobSource.updateMany({ where: { jobId }, data: { expiresAt: past } });
-    const alternative = candidate('alternative', { validThrough: future.toISOString() }, 'expiry-alternative');
-    await db.jobSource.create({ data: { jobId, sourceKey: alternative.sourceKey, sourceTier: alternative.sourceTier,
-      externalId: alternative.externalId, url: alternative.url } });
+    const applicationUrl = 'https://jobaffinity.fr/apply/expiry123456';
+    const raw = { board: { row: { attrs: { 'data-applyurl': applicationUrl } } } };
+    const primary = { ...candidate('primary', raw), url: applicationUrl };
+    const { jobId } = await upsertDeduplicated(db, primary);
+    const alternative = { ...candidate('alternative', { ...raw, validThrough: future.toISOString() }, 'expiry-alternative'),
+      url: `${applicationUrl}?source=alternative` };
+    expect((await upsertDeduplicated(db, alternative)).jobId).toBe(jobId);
+    await db.jobSource.updateMany({ where: { jobId, sourceKey: primary.sourceKey }, data: { expiresAt: past } });
     expect((await upsertDeduplicated(db, alternative)).jobId).toBe(jobId);
     expect(await db.job.findUniqueOrThrow({ where: { id: jobId } })).toMatchObject({ isActive: true, url: alternative.url });
   });

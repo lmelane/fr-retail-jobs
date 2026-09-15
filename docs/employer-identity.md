@@ -2,6 +2,8 @@
 
 Relecture du code : **10 septembre 2026**, révision `6ac43ec` et modifications locales de nettoyage. Documentation technique liée au [README de l’agrégateur](../apps/aggregator/README.md), qui reste l’unique état de pilotage. Les nombres de sources certifiées, alias et offres doivent provenir de mesures datées ; ils ne sont pas figés ici.
 
+La section sur les publications a été actualisée le **15 septembre 2026** : identité native immuable, rapprochements prouvés et retrait des anciennes commandes de fusion. Le [contrat de publication](architecture/publication-identity.md) décrit le code courant et les limites de la reprise.
+
 ## Objets à ne pas confondre
 
 | Objet | Identité et rôle |
@@ -12,7 +14,7 @@ Relecture du code : **10 septembre 2026**, révision `6ac43ec` et modifications 
 | Source carrière | `Source.key`, configuration et `tenantKey` ; un groupe peut publier plusieurs Maisons sur un même portail |
 | ATS | Protocole et adaptateur ; son nom ne prouve pas l’identité de l’employeur |
 | Offre native | Représentation `JobSource` identifiée par source et identifiant externe |
-| Offre canonique | `Job`, distinct de ses représentations et de l’identité de l’employeur |
+| Groupe de présentation | `Job`, distinct de ses publications natives et de l’identité de l’employeur |
 
 L’objectif est une attribution fidèle à l’organisation réelle. Deux noms proches, un domaine partagé ou un ATS commun ne suffisent pas à fusionner des sociétés. Une entité juridique différente ne signifie pas automatiquement une marque publique différente. Garder les libellés natifs permet de préserver ces distinctions.
 
@@ -85,7 +87,7 @@ Le paramètre de commit est contrôlé et enregistré par le code ; fournir un h
 
 ## Fusions, parentés et limites du modèle
 
-Une fusion d’employeurs conserve les anciens IDs et redirections. Elle n’autorise pas une consolidation de postings : une collision doit être justifiée par `postingMerges` et des témoins du même émetteur/requisition, ou l’opération échoue. `Job.mergedIntoId` conserve l’offre absorbée et son ancienne URL ; une fusion ne doit pas inventer une fermeture employeur.
+Une fusion d’employeurs conserve les anciens IDs et redirections. Elle conserve aussi les publications distinctes partageant un identifiant dans deux tenants ; la famille d’ATS n’est pas un espace d’identité global. Une consolidation exige une décision `postingMerges` et un témoin RAW du même émetteur/réquisition pour chaque publication impliquée. Elle est journalisée dans `PublicationIdentityDecision`. `Job.mergedIntoId` conserve l’offre absorbée et son ancienne URL ; une fusion ne doit pas inventer une fermeture employeur.
 
 Le modèle actuel représente un parent **groupe** canonique. Il ne représente pas toute hiérarchie arbitraire marque → sous-marque → concept commercial. Une relation non représentable doit rester explicitement documentée ; ne pas fusionner les entités pour contourner cette limite.
 

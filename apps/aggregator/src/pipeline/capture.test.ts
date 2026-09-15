@@ -68,6 +68,8 @@ describe('native extraction evidence', () => {
     await expect(db.sourceExtraction.update({ where: { id: outputs[0].id }, data: { externalId: 'altered' } })).rejects.toThrow('immutable');
     await expect(archiveAdapterOutput(db, { ...first.jobs[0], sourceKey: source, externalId: 'another-job' })).rejects.toThrow('another captured job');
     await expect(archiveAdapterOutput(db, { ...first.jobs[0], sourceKey: source, captureOutputId: second.jobs[0].captureOutputId })).rejects.toThrow('another captured job');
+    await expect(archiveAdapterOutput(db, { ...first.jobs[0], sourceKey: source, raw: { altered: true } })).rejects.toThrow('differs from the captured output');
+    await expect(archiveAdapterOutput(db, { ...first.jobs[0], sourceKey: source, url: 'https://example.com/another-application' })).rejects.toThrow('differs from the captured output');
   });
 
   it('replays observation-dependent holds with the original extraction clock', async () => {
