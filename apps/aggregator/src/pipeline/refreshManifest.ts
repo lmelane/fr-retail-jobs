@@ -1,3 +1,4 @@
+import { PRESENTATION_FIELDS } from '@catwalks/db/publication-presentation';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import type { PrismaClient, Prisma } from '@prisma/client';
 
@@ -19,13 +20,14 @@ export type RefreshManifest = {
 export function refreshSnapshot(job: { id: string; companyId: string; isActive: boolean; mergedIntoId: string | null;
   closedAt: Date | null; withdrawnAt: Date | null; withdrawalReason: string | null; reopenedCount: number;
   canonicalSourceKey: string | null; canonicalExternalId: string | null; canonicalTier: string | null; url: string;
-  sources: { id: string; jobId: string; sourceKey: string; externalId: string; sourceTier: string; isActive: boolean; lastSeenAt: Date; expiresAt: Date | null; expiryEvidence: unknown; url: string; captureBatchId?: string | null; captureOutputId?: string | null }[] }) {
+  sources: { id: string; jobId: string; sourceKey: string; externalId: string; sourceTier: string; isActive: boolean; lastSeenAt: Date; expiresAt: Date | null; expiryEvidence: unknown; url: string; captureBatchId?: string | null; captureOutputId?: string | null; presentation?: unknown }[] }) {
   return JSON.parse(JSON.stringify({ id: job.id, companyId: job.companyId, isActive: job.isActive, mergedIntoId: job.mergedIntoId,
     closedAt: job.closedAt, withdrawnAt: job.withdrawnAt, withdrawalReason: job.withdrawalReason, reopenedCount: job.reopenedCount,
+    contentHash: evidenceHash(Object.fromEntries(PRESENTATION_FIELDS.map(key => [key, (job as unknown as Record<string, unknown>)[key] ?? null]))),
     canonicalSourceKey: job.canonicalSourceKey, canonicalExternalId: job.canonicalExternalId, canonicalTier: job.canonicalTier, url: job.url,
     sources: job.sources.map(source => ({ id: source.id, jobId: source.jobId, sourceKey: source.sourceKey, externalId: source.externalId,
       sourceTier: source.sourceTier, isActive: source.isActive, lastSeenAt: source.lastSeenAt, expiresAt: source.expiresAt,
-      expiryEvidence: source.expiryEvidence, captureBatchId: source.captureBatchId ?? null, captureOutputId: source.captureOutputId ?? null, url: source.url })).sort((a, b) => a.id.localeCompare(b.id)),
+      expiryEvidence: source.expiryEvidence, presentationHash: evidenceHash(source.presentation ?? null), captureBatchId: source.captureBatchId ?? null, captureOutputId: source.captureOutputId ?? null, url: source.url })).sort((a, b) => a.id.localeCompare(b.id)),
   }));
 }
 

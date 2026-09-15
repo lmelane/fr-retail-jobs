@@ -1,3 +1,4 @@
+import { publicationFixture } from '../test/publication-fixture.js';
 import '../test/setup-integration.js';
 import { recordSourceEvidence, clearSourceEvidence } from '../test/sourceEvidence.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
@@ -59,6 +60,7 @@ async function job(opts: {
           sourceKey: opts.sourceKey,
           sourceTier: 'ATS_OFFICIAL',
           externalId: `s-${opts.ext}`,
+          ...publicationFixture({ sourceKey: opts.sourceKey, externalId: `s-${opts.ext}`, url: `https://x/${opts.ext}`, title: 'Conseiller de vente' }),
           url: `https://x/${opts.ext}`,
           isActive: true,
           lastSeenAt: seen,
@@ -153,6 +155,7 @@ describe('OP4 — an offer reappears after being closed', () => {
           create: {
             sourceKey: 'acme', sourceTier: 'ATS_OFFICIAL', externalId: 's-re1',
             url: 'https://x/re1', isActive: true, lastSeenAt: seenNow,
+            ...publicationFixture({ sourceKey: 'acme', externalId: 's-re1', url: 'https://x/re1', title: 'Vendeur' }),
           },
         },
       },

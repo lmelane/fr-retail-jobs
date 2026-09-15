@@ -1,3 +1,4 @@
+import { publicationFixture } from '../test/publication-fixture.js';
 import '../test/setup-integration.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
@@ -57,7 +58,7 @@ describe('retireSource', () => {
         sources: {
           create: [
             { sourceKey: 'cartier-3', sourceTier: 'ATS_OFFICIAL', externalId: 'r-2', url: 'https://old/r-2' },
-            { sourceKey: 'wttj', sourceTier: 'SPECIALIST_JOBBOARD', externalId: 'w-2', url: 'https://wttj/w-2' },
+            { sourceKey: 'wttj', sourceTier: 'SPECIALIST_JOBBOARD', externalId: 'w-2', url: 'https://wttj/w-2', ...publicationFixture({ sourceKey: 'wttj', externalId: 'w-2', url: 'https://wttj/w-2', title: 'WTTJ title', description: 'WTTJ own text', country: 'GB', city: 'London' }) },
           ],
         },
       },
@@ -76,7 +77,7 @@ describe('retireSource', () => {
 
     const jobs = await prisma.job.findMany({ where: { isActive: true }, include: { sources: true } });
     expect(jobs).toHaveLength(1);
-    expect(jobs[0].url).toBe('https://wttj/w-2');
+    expect(jobs[0]).toMatchObject({ url: 'https://wttj/w-2', title: 'WTTJ title', description: 'WTTJ own text', countryCode: 'GB', city: 'Londres' });
     expect(jobs[0].canonicalTier).toBe('SPECIALIST_JOBBOARD');
     expect(jobs[0].sources.filter(s => s.isActive).map((s) => s.sourceKey)).toEqual(['wttj']);
     const withdrawn = await prisma.job.findFirstOrThrow({ where: { fingerprint: 'fp1' } });

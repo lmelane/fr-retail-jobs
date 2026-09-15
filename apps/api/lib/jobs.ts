@@ -1,5 +1,6 @@
-import { publicAmount, type AmountInput } from '@catwalks/db/money';
-import { availableSourceWhere, publicJobWhere, publicJobSql } from '@catwalks/db/availability';
+import { publicationContentOf, type PresentationSource } from '@catwalks/db/publication-presentation';
+import { publicAmount } from '@catwalks/db/money';
+import { availableSourceWhere, publicJobWhere, publicJobSql, sourceIsAvailable } from '@catwalks/db/availability';
 import { selectApplySource, type ApplySource } from '@catwalks/db/publications';
 import { publicSourceFacts, scalarSourceFacts, type PublicSourceFacts } from '@catwalks/db/source-facts';
 import { resolveLieu } from './lieu';
@@ -41,7 +42,7 @@ function countryCondition(code: string | undefined) {
 /** Sector keys are data, not an application enum. Unknown keys stay bound
  * parameters and match zero; dropping them would silently widen the search. */
 const publicSources = () => ({
-  select: { sourceKey: true, externalId: true, sourceTier: true, isActive: true, url: true, expiresAt: true, sourceFacts: true } as const,
+  select: { sourceKey: true, externalId: true, sourceTier: true, isActive: true, url: true, expiresAt: true, sourceFacts: true, presentation: true, captureBatchId: true, captureOutputId: true } as const,
   where: availableSourceWhere(),
 });
 
@@ -578,22 +579,17 @@ export function canonicalCity(raw: string): string {
 }
 
 function toRow(row: {
-  id: string; title: string; company: { name: string; sector: string | null; parentGroup: string | null; domain: string | null };
-  city: string | null; location: string | null; employmentTerm: string | null; url: string;
-  programType: string | null; engagementType: string | null; isSeasonal: boolean | null;
-  postedAt: Date | null; latitude: number | null; longitude: number | null;
-  withdrawnAt?: Date | null;
-  opportunityType?: 'JOB_OPENING' | 'OPEN_APPLICATION' | null;
-  sources: Array<ApplySource & { sourceFacts?: unknown }>; description: string | null; postalCode: string | null;
-  department: string | null; workTime: string | null; workplaceType: string | null;
-  experienceYears: number | null; educationLevel: string | null; salaryMin: AmountInput | null;
-  salaryMax: AmountInput | null; salaryCurrency: string | null; salaryPeriod: string | null;
-  validThrough: Date | null; countryCode: string | null; countryIntegrity: string | null; language: string | null; firstSeenAt: Date;
-  jobFunction: string | null; seniority: string | null;
-  occupationCode?: string | null; occupationStatus?: string;
-}, taxonomy: OptionalOccupationPresentation): JobRow {
-  const publication = selectApplySource(row.sources, row);
-  const applyUrl = publication?.url ?? row.url;
+  id: string; url: string; firstSeenAt: Date; withdrawnAt?: Date | null;
+  canonicalSourceKey?: string | null; canonicalExternalId?: string | null;
+  company: { name: string; sector: string | null; parentGroup: string | null; domain: string | null; sectorCodes?: string[] };
+  sources: Array<ApplySource & PresentationSource>;
+}, taxonomy: OptionalOccupationPresentation, historical = false, at = new Date()): JobRow {
+  const live = row.sources.filter(source => sourceIsAvailable(source, at));
+  const publication = selectApplySource(live, row, at) ?? (historical ? row.sources.find(source => source.url === row.url) : undefined);
+  const content = publication && publicationContentOf(publication);
+  if (!content) throw new Error(`PUBLICATION_PRESENTATION_REBUILD_REQUIRED job=${row.id}`);
+  const occupation = taxonomy.available ? taxonomy.taxonomy.classify(content.title, content.department) : null;
+  const applyUrl = publication.url;
   const sourceFacts = publicSourceFacts(publication?.sourceFacts);
   const scalars = scalarSourceFacts(sourceFacts);
   const min = publicAmount(scalars.salaryMin), max = publicAmount(scalars.salaryMax);
@@ -601,50 +597,50 @@ function toRow(row: {
     (scalars.salaryMin === null || min !== null) && (scalars.salaryMax === null || max !== null);
   return {
     id: row.id,
-    title: row.title,
+    title: content.title,
     company: row.company.name,
     companyDomain: row.company.domain,
     group: row.company.parentGroup,
-    city: row.city,
-    location: row.location,
-    employmentTerm: row.employmentTerm,
-    programType: row.programType,
-    engagementType: row.engagementType,
-    isSeasonal: row.isSeasonal,
+    city: content.city,
+    location: content.location,
+    employmentTerm: content.employmentTerm,
+    programType: content.programType,
+    engagementType: content.engagementType,
+    isSeasonal: content.isSeasonal,
     sector: row.company.sector,
-    sectorCodes: (row.company as {sectorCodes?:string[]}).sectorCodes??[],
+    sectorCodes: row.company.sectorCodes ?? [],
     url: applyUrl,
-    postedAt: row.postedAt,
+    postedAt: content.postedAt,
     withdrawnAt: row.withdrawnAt ?? null,
-    opportunityType: row.opportunityType ?? null,
+    opportunityType: content.opportunityType ?? null,
     latitude: scalars.latitude,
     longitude: scalars.longitude,
-    sourceCount: row.sources.length,
-    sources: row.sources.map((source) => source.sourceKey),
-    description: row.description,
+    sourceCount: live.length,
+    sources: live.map((source) => source.sourceKey),
+    description: content.description,
     applyUrl,
     sourceFacts,
     postalCode: scalars.postalCode,
-    department: row.department,
-    jobFunction: row.jobFunction,
-    seniorityLabel: row.seniority?taxonomy.seniorityLabel(row.seniority):null,
-    occupationCode: row.occupationCode??null,
-    occupationLabel: taxonomy.occupationLabel(row.occupationCode),
-    occupationFamilyLabel: taxonomy.functionLabel(row.jobFunction),
-    occupationStatus: row.occupationStatus,
-    seniority: row.seniority,
-    workTime: row.workTime,
+    department: content.department,
+    jobFunction: occupation?.jobFunction ?? null,
+    seniorityLabel: occupation?.seniority ? taxonomy.seniorityLabel(occupation.seniority) : null,
+    occupationCode: occupation?.occupationCode ?? null,
+    occupationLabel: taxonomy.occupationLabel(occupation?.occupationCode),
+    occupationFamilyLabel: taxonomy.functionLabel(occupation?.jobFunction),
+    occupationStatus: occupation?.occupationStatus ?? 'UNAVAILABLE',
+    seniority: occupation?.seniority ?? null,
+    workTime: content.workTime,
     workplaceType: scalars.workplaceType,
-    experienceYears: row.experienceYears,
+    experienceYears: content.experienceYears,
     educationLevel: scalars.educationLevel,
     salaryMin: completeSalary ? min : null,
     salaryMax: completeSalary ? max : null,
     salaryCurrency: completeSalary ? scalars.salaryCurrency : null,
     salaryPeriod: completeSalary ? scalars.salaryPeriod : null,
     validThrough: publication?.expiresAt ?? null,
-    countryCode: row.countryCode,
-    countryIntegrity: row.countryIntegrity,
-    language: row.language,
+    countryCode: content.countryCode,
+    countryIntegrity: content.countryIntegrity,
+    language: content.language,
     firstSeenAt: row.firstSeenAt,
   };
 }
@@ -682,13 +678,14 @@ export async function getJobStatus(
       omit: { raw: true, searchText: true },
       include: {
         company: true,
-        sources: publicSources(),
+        sources: { select: publicSources().select },
       },
     });
     if (!row) return { status: 'missing' };
     const taxonomy=await getOptionalOccupationPresentation();
-    if (!row.isActive || !row.sources.length) return { status: 'closed', job: toRow(row, taxonomy) };
-    return { status: 'active', job: toRow(row, taxonomy) };
+    const at = new Date();
+    if (!row.isActive || !selectApplySource(row.sources, row, at)) return { status: 'closed', job: toRow(row, taxonomy, true, at) };
+    return { status: 'active', job: toRow(row, taxonomy, false, at) };
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }
@@ -710,8 +707,14 @@ export async function getOfferState(param: string): Promise<'active' | 'closed' 
     for (const id of offerIdCandidates(param)) {
       const canonicalId = await canonicalJobId(prisma, id);
       if (!canonicalId) continue;
-      const row = await prisma.job.findUnique({ where: { id: canonicalId }, select: { isActive: true, sources: { where: availableSourceWhere(), select: { id: true }, take: 1 } } });
-      if (row) return row.isActive && row.sources.length > 0 ? 'active' : 'closed';
+      const row = await prisma.job.findUnique({ where: { id: canonicalId }, select: { isActive: true,
+        canonicalSourceKey: true, canonicalExternalId: true, url: true, sources: publicSources() } });
+      if (row) {
+        const owner = selectApplySource(row.sources, row);
+        if (!row.isActive || !owner) return 'closed';
+        if (!publicationContentOf(owner)) throw new Error(`PUBLICATION_PRESENTATION_REBUILD_REQUIRED job=${canonicalId}`);
+        return 'active';
+      }
     }
     return 'missing';
   } catch (error) {

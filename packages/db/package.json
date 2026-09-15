@@ -12,7 +12,8 @@
     "./availability": "./availability.ts",
     "./publications": "./publications.ts",
     "./money": "./money.ts",
-    "./source-facts": "./source-facts.ts"
+    "./source-facts": "./source-facts.ts",
+    "./publication-presentation": "./publication-presentation.ts"
   },
   "scripts": {
     "db:generate": "prisma generate",

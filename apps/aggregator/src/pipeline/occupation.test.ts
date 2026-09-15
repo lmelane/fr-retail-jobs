@@ -151,7 +151,7 @@ describe("occupation persistence and release lifecycle", () => {
     ).toEqual(fresh);
     expect(await db.occupationObservation.count()).toBe(evidence);
   });
-  it("classifies the retained department and replays the same decision without changing evidence or contracts", async () => {
+  it("reclassifies after a missing department and replays that current observation", async () => {
     const c = candidate({ programType: "APPRENTICESHIP" }),
       first = await upsertDeduplicated(db, c);
     const original = await db.job.findUniqueOrThrow({
@@ -168,12 +168,12 @@ describe("occupation persistence and release lifecycle", () => {
       where: { id: first.jobId },
     });
     expect(retained).toMatchObject({
-      department: "Salon Professionals",
-      occupationCode: "hairdresser",
+      department: null,
+      occupationCode: null,
       programType: "APPRENTICESHIP",
     });
     expect(retained.occupationEvidence).toMatchObject({
-      department: "Salon Professionals",
+      department: null,
     });
     const count = await db.occupationObservation.count(),
       events = await db.jobEvent.findMany(),

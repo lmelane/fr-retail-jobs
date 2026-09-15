@@ -383,6 +383,8 @@ model JobSource {
   expiryEvidence Json?
   /** Versioned, replaceable facts read from this publication's current RAW. */
   sourceFacts Json?
+  /** Complete presentation of this publication; rebuilt from its own observation. */
+  presentation Json?
   raw         Json?
 
   @@unique([sourceKey, externalId])

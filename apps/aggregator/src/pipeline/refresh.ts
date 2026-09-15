@@ -1,10 +1,13 @@
+import { lockOccupationTaxonomy } from '@catwalks/db/occupations';
+import { publicationJobPatch } from '../publication/presentation.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { log } from '../observability/logger.js';
 import type { Prisma, PrismaClient } from '@prisma/client';
 import { selectApplySource } from '@catwalks/db/publications';
 import { lockCompanyRows } from '../lib/writeLocks.js';
 import { chunk } from '../lib/chunk.js';
-import { recordEvents } from './jobEvents.js';
+import { recordEvents, changedEvents, diffStructuralFields, structuralValuesOf } from './jobEvents.js';
+import { recordOccupationObservation } from '../occupation/persist.js';
 import { deactivateJob, reactivateJob } from './lifecycle.js';
 import { readAbsencePlan } from './refreshEvidence.js';
 import { availableSourceWhere, sourceIsAvailable } from '@catwalks/db/availability';
@@ -138,7 +141,7 @@ export async function readRefreshPlan(prisma: PrismaClient, options: RefreshOpti
     where: { AND: [jobScope, { isActive: false,
       OR: [{ withdrawnAt: null }, { withdrawalReason: 'ATTESTATION_MISSING' }],
       sources: { some: { AND: [sourceScope, availableSourceWhere(asOf), { lastSeenAt: { gte: cutoff } }] } },
-    }] }, include: { sources: { omit: { raw: true } } }, omit: { raw: true, searchText: true, description: true },
+    }] }, include: { sources: { omit: { raw: true } } }, omit: { raw: true, searchText: true },
   })).filter(job => canRefreshReactivate(job, cutoff, options, asOf));
   return { sourceScope, jobScope, asOf, cutoff, absencePlan, staleSources, expiredSources, orphans, revived,
     wouldClose, liveTotal, refused, unverifiableSources, options,
@@ -167,7 +170,7 @@ export async function createRefreshManifest(prisma: PrismaClient, plan: Awaited<
   const entries: ManifestEntry[] = [];
   for (const ids of chunk([...new Set(plan.staleSources.map(source => source.jobId))])) {
     const jobs = await prisma.job.findMany({ where: { id: { in: ids } },
-      include: { sources: { omit: { raw: true } } }, omit: { raw: true, searchText: true, description: true } });
+      include: { sources: { omit: { raw: true } } }, omit: { raw: true, searchText: true } });
     for (const job of jobs) {
       const jobBeforeHash = evidenceHash(refreshSnapshot(job));
       for (const source of job.sources) {
@@ -216,7 +219,7 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
         const done = new Set(already.map(row => row.entityId));
         const currentJobs = await tx.job.findMany({
           where: { AND: [jobScope, { id: { in: jobIds.filter(id => !done.has(id)) }, companyId }] },
-          include: { sources: { omit: { raw: true } } }, omit: { raw: true, description: true, searchText: true },
+          include: { sources: { omit: { raw: true } } }, omit: { raw: true, searchText: true },
         });
         const before = new Map(currentJobs.map(job => [job.id, refreshSnapshot(job)]));
         const skipped = new Map<string, string>();
@@ -257,7 +260,7 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
           data: { isActive: false },
         });
         const jobs = await tx.job.findMany({ where: { id: { in: acceptedIds } },
-          include: { sources: { omit: { raw: true } } }, omit: { raw: true, description: true, searchText: true } });
+          include: { sources: { omit: { raw: true } } }, omit: { raw: true, searchText: true } });
         let closed = 0, opened = 0, removed = 0, published = 0;
         for (const job of jobs) {
           if (job.withdrawnAt && job.withdrawalReason !== 'ATTESTATION_MISSING') continue;
@@ -270,11 +273,12 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
           const changedOwner = owner && (job.canonicalSourceKey !== owner.sourceKey ||
             job.canonicalExternalId !== owner.externalId || job.url !== owner.url);
           if (!transition && !changedOwner) continue;
-          await tx.job.update({ where: { id: job.id }, data: {
-            ...transition?.data,
-            ...(owner ? { url: owner.url, canonicalTier: owner.sourceTier,
-              canonicalSourceKey: owner.sourceKey, canonicalExternalId: owner.externalId } : {}),
-          } });
+          const content = changedOwner ? publicationJobPatch(await tx.jobSource.findUniqueOrThrow({ where: { id: owner.id } }), await lockOccupationTaxonomy(tx)) : {};
+          const written = await tx.job.update({ where: { id: job.id }, data: { ...transition?.data, ...content } });
+          if (changedOwner) {
+            await recordOccupationObservation(tx, written, job);
+            await recordEvents(tx, changedEvents(job.id, diffStructuralFields(structuralValuesOf(job), structuralValuesOf(content)), now));
+          }
           if (transition) {
             await recordEvents(tx, [{ jobId: job.id, type: transition.type, at: now,
               ...(transition.type === 'WITHDRAWN' ? { after: 'ATTESTATION_MISSING' } : {}) }]);
@@ -285,7 +289,7 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
           }
         }
         const after = await tx.job.findMany({ where: { id: { in: currentJobs.map(job => job.id) } },
-          include: { sources: { omit: { raw: true } } }, omit: { raw: true, description: true, searchText: true } });
+          include: { sources: { omit: { raw: true } } }, omit: { raw: true, searchText: true } });
         for (const job of after) {
           const beforeState = before.get(job.id)!, afterState = refreshSnapshot(job);
           const changed = evidenceHash(beforeState) !== evidenceHash(afterState);

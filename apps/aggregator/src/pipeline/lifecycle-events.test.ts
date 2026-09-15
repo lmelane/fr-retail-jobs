@@ -1,3 +1,4 @@
+import { publicationFixture } from '../test/publication-fixture.js';
 import '../test/setup-integration.js';
 import { recordSourceEvidence, clearSourceEvidence } from '../test/sourceEvidence.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
@@ -39,8 +40,9 @@ async function staleJob(companyId: string, sourceKey: string, externalId: string
     data: {
       companyId, externalId, source: 'GENERIC_JSONLD', title: 'Vendeur', url: `https://x/${externalId}`,
       fingerprint: `fp-${externalId}`, isActive: true, lastSeenAt: seen,
+      canonicalSourceKey: sourceKey, canonicalExternalId: `s-${externalId}`, canonicalTier: 'ATS_OFFICIAL',
       sources: {
-        create: { sourceKey, sourceTier: 'ATS_OFFICIAL', externalId: `s-${externalId}`, url: `https://x/${externalId}`, isActive: true, lastSeenAt: seen },
+        create: { sourceKey, sourceTier: 'ATS_OFFICIAL', externalId: `s-${externalId}`, url: `https://x/${externalId}`, isActive: true, lastSeenAt: seen, ...publicationFixture({ sourceKey, externalId: `s-${externalId}`, url: `https://x/${externalId}`, title: 'Vendeur' }) },
       },
     },
   });

@@ -1,24 +1,25 @@
+import { publicationFixture } from '../../aggregator/src/test/publication-fixture';
+import type { SourceFacts } from '@catwalks/db/source-facts';
 import { randomUUID } from 'node:crypto';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { prisma, Prisma } from '@catwalks/db';
+import { prisma } from '@catwalks/db';
 import { readSourceFacts } from '../../aggregator/src/facts/index';
 import { getJobStatus } from './jobs';
 
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
 const enabled = !!url && ['localhost','127.0.0.1','[::1]'].includes(url.hostname) && /test/i.test(url.pathname);
 const key = `facts-api-${randomUUID()}`;
-const json = (value: unknown) => JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 describe.skipIf(!enabled)('source facts in the real public job query', () => {
   beforeAll(() => prisma.company.create({ data: { id: key, name: key, canonicalKey: key, fashionjobsUrl: `resolved:${key}` } }));
   afterAll(async () => { await prisma.job.deleteMany({ where: { companyId: key } }); await prisma.company.delete({ where: { id: key } }); });
-  const create = (suffix: string, primary: unknown, secondary?: unknown) => prisma.job.create({ data: {
+  const create = (suffix: string, primary: SourceFacts | null, secondary?: SourceFacts) => prisma.job.create({ data: {
     companyId: key, source: 'LEVER', externalId: suffix, fingerprint: `${key}-${suffix}`,
     title: 'Sales Advisor', city: 'Paris', countryCode: 'FR', isFrance: true, url: `https://example.com/${suffix}`,
     salaryMin: 99999, salaryCurrency: 'EUR', salaryPeriod: 'YEAR',
     sources: { create: [
       { sourceKey: `${key}-primary`, sourceTier: 'EMPLOYER_DIRECT', externalId: suffix, url: `https://example.com/${suffix}`,
-        sourceFacts: primary ? json(primary) : Prisma.DbNull, expiresAt: secondary ? new Date(Date.now() - 60_000) : null },
-      ...(secondary ? [{ sourceKey: `${key}-secondary`, sourceTier: 'ATS_OFFICIAL', externalId: suffix, url: `https://example.org/${suffix}`, sourceFacts: json(secondary) }] : []),
+        ...publicationFixture({ sourceKey: `${key}-primary`, externalId: suffix, url: `https://example.com/${suffix}`, title: 'Sales Advisor' }, primary), expiresAt: secondary ? new Date(Date.now() - 60_000) : null },
+      ...(secondary ? [{ sourceKey: `${key}-secondary`, sourceTier: 'ATS_OFFICIAL', externalId: suffix, url: `https://example.org/${suffix}`, ...publicationFixture({ sourceKey: `${key}-secondary`, externalId: suffix, url: `https://example.org/${suffix}`, title: 'Sales Advisor' }, secondary) }] : []),
     ] },
   } });
   const read = async (id: string) => { const result = await getJobStatus(id); if (result.status !== 'active') throw new Error('Fixture unavailable'); return result.job; };

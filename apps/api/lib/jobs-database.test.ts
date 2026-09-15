@@ -1,3 +1,4 @@
+import { publicationFixture } from '../../aggregator/src/test/publication-fixture';
 import { randomUUID } from 'node:crypto';
 import { afterAll, beforeAll, describe, expect, it,vi } from 'vitest';
 import * as database from '@catwalks/db/occupations';
@@ -31,6 +32,7 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     await prisma.jobSource.createMany({ data: Array.from({ length: 301 }, (_, i) => ({
       jobId: `${prefix}${String(i).padStart(3, '0')}`, sourceKey: 'audit-facets', sourceTier: 'ATS_OFFICIAL',
       externalId: String(i), url: `https://example.com/jobs/${i}`, isActive: true,
+      ...publicationFixture({ sourceKey: 'audit-facets', sourceTier: 'ATS_OFFICIAL', externalId: String(i), url: `https://example.com/jobs/${i}`, title: 'Conseiller de vente', postedAt: new Date('2026-01-01') }),
     })) });
   });
   afterAll(cleanup);
@@ -88,6 +90,7 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
   it('keeps literal results while adding a reviewed occupation synonym and stable filter',async()=>{
     const id=`${prefix}000`,catalogue=await database.loadOccupationTaxonomy(prisma);
     await prisma.job.update({where:{id},data:{title:'Sales Advisor',...catalogue.classify('Sales Advisor')}});
+    await prisma.jobSource.update({ where: { sourceKey_externalId: { sourceKey: 'audit-facets', externalId: '0' } }, data: publicationFixture({ sourceKey: 'audit-facets', externalId: '0', url: 'https://example.com/jobs/0', title: 'Sales Advisor' }) });
     const result=await getJobs({q:'Conseiller de vente',groups: [group]});
     expect(result.total).toBe(301); // 300 literal FR titles + one reviewed EN occupation.
     const precise=await getJobs({occupations: ['sales-advisor'],groups: [group]});

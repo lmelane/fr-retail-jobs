@@ -52,7 +52,8 @@ describe('reviewed publication partitions', () => {
       city: 'New York', countryCode: 'US', inseeCode: null, adminArea2: null, canonicalSourceKey: b.source.sourceKey });
     expect(await db.job.findUniqueOrThrow({ where: { id: b.job.id } })).toMatchObject({ mergedIntoId: a.job.id, isActive: false });
     const afterSources = await db.jobSource.findMany({ orderBy: { id: 'asc' } });
-    expect(afterSources.map(({ jobId: _job, sourceFacts: _facts, ...source }) => source)).toEqual(beforeSources.map(({ jobId: _job, sourceFacts: _facts, ...source }) => source));
+    expect(afterSources.map(({ jobId: _job, sourceFacts: _facts, presentation: _presentation, ...source }) => source)).toEqual(beforeSources.map(({ jobId: _job, sourceFacts: _facts, presentation: _presentation, ...source }) => source));
+    expect(afterSources.every(source => source.presentation !== null)).toBe(true);
     expect(await db.publicationIdentityDecision.count({ where: { fromJobId: b.job.id, toJobId: a.job.id, action: 'MOVED' } })).toBe(1);
     expect(await apply(plan)).toMatchObject({ alreadyApplied: true });
     expect(await db.dataCorrection.count({ where: { entityId: plan.planHash } })).toBe(1);

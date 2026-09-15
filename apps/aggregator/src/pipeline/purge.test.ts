@@ -1,3 +1,4 @@
+import { publicationFixture } from '../test/publication-fixture.js';
 import '../test/setup-integration.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
@@ -49,6 +50,7 @@ async function makeJob(opts: {
           sourceKey: s.sourceKey,
           sourceTier: 'ATS_OFFICIAL',
           externalId: s.externalId,
+          ...publicationFixture({ sourceKey: s.sourceKey, externalId: s.externalId, url: `https://x/${s.externalId}`, title: 'Vendeur' }),
           url: `https://x/${s.externalId}`,
           isActive: true,
         })),

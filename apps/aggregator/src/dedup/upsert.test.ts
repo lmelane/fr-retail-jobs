@@ -46,15 +46,15 @@ afterAll(async () => {
 });
 
 describe('upsertDeduplicated — unique-constraint recovery', () => {
-  it('preserves publisher opportunity classification across creation and replay', async () => {
+  it('tracks the current publisher opportunity classification and an unknown reobservation', async () => {
     const base = { company: 'Ganni', title: 'Sales Advisor', location: 'Paris', country: 'FR' };
     const first = await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1', opportunityType: 'OPEN_APPLICATION' }));
     const second = await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'group', externalId: '2', opportunityType: 'JOB_OPENING' }));
     expect(second.jobId).not.toBe(first.jobId);
     await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1' }));
-    expect((await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } })).opportunityType).toBe('OPEN_APPLICATION');
+    expect((await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } })).opportunityType).toBeNull();
     await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1', opportunityType: 'JOB_OPENING' }));
-    expect(await prisma.jobEvent.findFirst({ where: { jobId: first.jobId, type: 'CHANGED', field: 'opportunityType' } })).toMatchObject({ before: 'OPEN_APPLICATION', after: 'JOB_OPENING' });
+    expect(await prisma.jobEvent.findFirst({ where: { jobId: first.jobId, type: 'CHANGED', field: 'opportunityType', after: 'JOB_OPENING' } })).toMatchObject({ before: null, after: 'JOB_OPENING' });
   });
   it('keeps real Wailea requisitions 63681 and 63683 separate across LVMH and Oracle', async () => {
     const base = { company: 'Tiffany & Co.', title: 'Client Advisor - Wailea', city: 'Wailea', country: 'US' };

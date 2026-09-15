@@ -3,15 +3,7 @@ import { getOfferState } from '@/lib/jobs';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
 import { randomUUID } from 'node:crypto';
 
-/**
- * Lightweight status probe for a single offer, used by middleware to decide the
- * HTTP status of /offre/[id]: 'active' | 'closed' | 'missing'. Kept as its own
- * tiny endpoint because middleware runs on the edge and cannot open a Prisma
- * connection — this Node route can.
- *
- * A DB blip must not turn every offer into a 410: on error it answers 'active'
- * so the page renders normally rather than the whole board 410-ing.
- */
+/** A temporary catalogue/readiness failure is unavailable, never an employer closure or proof of activity. */
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -21,6 +13,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   try {
     return NextResponse.json({ status: await getOfferState(id) });
   } catch {
-    return NextResponse.json({ status: 'active' });
+    return NextResponse.json({ status: 'unavailable' }, { status: 503, headers: { 'cache-control': 'no-store', 'retry-after': '60' } });
   }
 }

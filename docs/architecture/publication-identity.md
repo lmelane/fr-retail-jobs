@@ -4,7 +4,7 @@
 
 Une publication est identifiée par `JobSource.id` et le couple unique `sourceKey` / `externalId`. PostgreSQL interdit leur modification. Le nom de l’employeur, le pays, la ville, le titre et la famille d’ATS peuvent évoluer sans remplacer cette identité. Deux tenants d’un même ATS peuvent publier le même identifiant externe.
 
-`Job` sert aujourd’hui de groupe de présentation. Son propriétaire désigne la publication fournissant le lien de candidature. Ce groupe ne constitue pas une nouvelle vérité supérieure au RAW ; ses publications et observations restent distinctes.
+`Job` sert aujourd’hui de groupe de présentation. La publication sélectionnée fournit le contenu complet et le lien de candidature ; aucun champ absent n’est emprunté à un autre membre. Ce groupe ne constitue pas une nouvelle vérité supérieure au RAW ; ses publications et observations restent distinctes.
 
 ## Règles d’écriture
 
@@ -47,7 +47,7 @@ Le journal d’identité ne remplace pas les captures natives. Une empreinte du 
 
 Le plan refuse les publications oubliées, répétées, appartenant à un autre groupe, les rapprochements non prouvés, les employeurs différents et les états de retrait incompatibles. Une ancienne Job répartie sur plusieurs destinations conserve son identifiant dans l’une d’elles. Une Job entièrement absorbée conserve son identifiant comme redirection.
 
-Chaque présentation résultante est reconstruite depuis la sortie d’extraction de sa publication sélectionnée : titre, description, localisation, faits RAW et enrichissements recalculés. Le contenu de l’ancien groupe ne sert pas de repli. Une capture absente, différente du RAW courant, incomplète ou retenue demande une recollecte. `CaptureBatch.sourceKind` contient le type d’adaptateur ATS, comparé au type déclaré par le registre courant.
+Chaque publication membre reçoit sa propre présentation depuis sa sortie d’extraction : titre, description, localisation et faits RAW. Le groupe reflète la publication sélectionnée et ses enrichissements recalculés. Le contenu de l’ancien groupe ne sert pas de repli. Une capture absente, différente du RAW courant, incomplète ou retenue demande une recollecte. `CaptureBatch.sourceKind` contient le type d’adaptateur ATS, comparé au type déclaré par le registre courant.
 
 Le plan contient son empreinte, la version du lecteur et les états observés. Sa préparation utilise une transaction `READ ONLY` à vue stable, après préchargement des corps d’extraction vérifiés. Son application recharge les preuves et refuse une modification de données, de configuration, de règles ou de disponibilité. Aucun téléchargement d’archive n’a lieu sous les verrous d’écriture. Une transaction sérialisable applique toute la répartition, les nouvelles présentations, leurs décisions et le relevé avant/après dans `DataCorrection`. Les conflits de transaction peuvent être relancés dans la limite de trois tentatives au total ; la répétition d’un plan appliqué ne produit aucun nouveau déplacement.
 
@@ -63,4 +63,14 @@ Le `reconcile` global et ses commandes npm/CLI sont retirés au profit du plan b
 
 L’ancien planificateur de réparation Oracle est retiré. Le réparateur générique d’employeurs/retraits ne peut plus déplacer une `JobSource`, remplacer son RAW ou ses références de capture, la réactiver, ni modifier une redirection de Job. Ses seules modifications de publication admises sont une priorité connue et une désactivation. Il refuse aussi les modifications imbriquées via une relation Prisma et le changement d’identifiant primaire d’une entité. L’ingestion et les parcours de publication contrôlent les autres changements.
 
-La [réparation d’employeurs revue](../employer-identity.md#réparer-sans-effacer-lhistorique) reste disponible. Le moteur livré exige une sortie d’extraction propre. Pour le stock plus ancien, il faudra qualifier le rejeu de son RAW ou recollecter lorsque cette preuve est insuffisante ; une migration de schéma ne constitue pas une reprise de données. Le cache complet de présentation par publication et les changements de propriétaire pendant l’ingestion/expiration restent à achever avant de valider tout le lot 4. Les crons et la production restent hors de cette validation locale.
+La [réparation d’employeurs revue](../employer-identity.md#réparer-sans-effacer-lhistorique) reste disponible. Le moteur livré exige une sortie d’extraction propre. Pour le stock plus ancien, il faudra qualifier le rejeu de son RAW ou recollecter lorsque cette preuve est insuffisante ; une migration de schéma ne constitue pas une reprise de données. Le cache de présentation et ses changements de source sont décrits dans le [sous-lot 4C](../../audits/reprise-2026-09-15/lot-4c.md), dont la validation est distincte de la reprise effective du stock. Les crons et la production restent hors de cette validation locale.
+
+## Présentation par publication
+
+`JobSource.presentation` est une projection remplaçable de l’observation de cette publication. Elle est liée à son identité, son URL, sa capture lorsqu’elle existe, son empreinte d’entrée et la version du lecteur. Les métiers et séniorités restent des enrichissements calculés depuis son propre contenu avec la version active du catalogue.
+
+Une modification de RAW, URL, titre, date ou référence de capture sans reconstruction invalide la projection en base. Le lecteur ne copie jamais un ancien texte de `Job` pour masquer une projection absente. La préparation et l’application des plans de maintenance incluent les empreintes de présentation ; un changement entre les deux exige une nouvelle revue.
+
+L’ingestion, l’expiration et le retrait remplacent tous les champs de la projection de groupe lors d’un changement de publication. La lecture publique sélectionne la présentation et les faits de la même publication, y compris si une autre publication expire avant la maintenance. Une erreur de lecture retourne une indisponibilité, pas une fermeture employeur ni une activité supposée.
+
+Les requêtes SQL et les compteurs n’ont pas encore été migrés vers le futur index commun par pays. Les critères de release incluent cette migration, le remplissage des projections du stock servi et la vérification des deux origines d’offres. Les données locales de répétition ne constituent pas cette bascule.

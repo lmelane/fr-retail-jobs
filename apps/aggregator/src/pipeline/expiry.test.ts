@@ -1,3 +1,4 @@
+import { publicationFixture } from '../test/publication-fixture.js';
 import '../test/setup-integration.js';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
@@ -74,11 +75,11 @@ describe('publication deadlines', () => {
   it('keeps another publication alive and switches the apply URL', async () => {
     const { jobId } = await upsertDeduplicated(db, candidate('primary', { validThrough: future.toISOString() }));
     await db.jobSource.create({ data: { jobId, sourceKey: 'other', externalId: 'other', sourceTier: 'ATS_OFFICIAL',
-      url: 'https://example.com/other', lastSeenAt: new Date(0) } });
+      url: 'https://example.com/other', ...publicationFixture({ sourceKey: 'other', externalId: 'other', url: 'https://example.com/other', title: 'Other publication', description: 'Own surviving description', country: 'US', city: 'New York' }), lastSeenAt: new Date(0) } });
     await db.jobSource.updateMany({ where: { sourceKey: 'expiry-witness' }, data: { expiresAt: past } });
     const before = await db.jobSource.findFirstOrThrow({ where: { sourceKey: 'other' } });
     expect(await runRefresh(db, { onlyKeys: ['expiry-witness'] })).toMatchObject({ closedSources: 1, closedJobs: 0 });
-    expect(await db.job.findUniqueOrThrow({ where: { id: jobId } })).toMatchObject({ isActive: true, url: before.url });
+    expect(await db.job.findUniqueOrThrow({ where: { id: jobId } })).toMatchObject({ isActive: true, url: before.url, title: 'Other publication', description: 'Own surviving description', countryCode: 'US', city: 'New York' });
     expect(await db.jobSource.findUniqueOrThrow({ where: { id: before.id } })).toEqual(before);
     expect(await db.job.count({ where: publicJobWhere() })).toBe(1);
   });

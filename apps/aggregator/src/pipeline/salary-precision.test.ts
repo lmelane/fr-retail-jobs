@@ -3,7 +3,7 @@ import { afterAll, describe, expect, it } from 'vitest';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
 import { storedAmount, publicAmount } from '@catwalks/db/money';
-import { upsertDeduplicated, reattestationFields } from '../dedup/upsert.js';
+import { upsertDeduplicated } from '../dedup/upsert.js';
 
 const db = new PrismaClient();
 afterAll(() => db.$disconnect());
@@ -21,8 +21,9 @@ describe('source salary precision', () => {
     const first = await db.job.findUniqueOrThrow({ where: { id: jobId } });
     expect(first.salaryMin?.toString()).toBe('12.31'); expect(first.salaryMax?.toString()).toBe('20.8');
     expect(publicAmount(first.salaryMin)).toBe(12.31);
-    const unchanged = reattestationFields(input, first, true);
-    expect(unchanged).not.toHaveProperty('salaryMin'); expect(unchanged).not.toHaveProperty('salaryMax');
+    await upsertDeduplicated(db, input);
+    const repeated = await db.job.findUniqueOrThrow({ where: { id: jobId } });
+    expect(repeated.salaryMin?.toString()).toBe('12.31'); expect(repeated.salaryMax?.toString()).toBe('20.8');
     await upsertDeduplicated(db, { ...input, salaryMax: 20.95, raw: { ...input.raw, baseSalary: { currency: 'EUR', value: { minValue: 12.31, maxValue: 20.95, unitText: 'HOUR' } } } });
     expect((await db.job.findUniqueOrThrow({ where: { id: jobId } })).salaryMax?.toString()).toBe('20.95');
   });

@@ -1,3 +1,4 @@
+import { publicationFixture } from '../test/publication-fixture.js';
 import { loadRefreshManifest, storeRefreshManifest } from './refreshManifest.js';
 import '../test/setup-integration.js';
 import { recordSourceEvidence, clearSourceEvidence } from '../test/sourceEvidence.js';
@@ -44,6 +45,7 @@ async function job(companyId: string, sourceKey: string, externalId: string, hou
       title: 'Vendeur',
       url: `https://x/${externalId}`,
       fingerprint: `fp-${externalId}`,
+      canonicalSourceKey: sourceKey, canonicalExternalId: `s-${externalId}`, canonicalTier: 'ATS_OFFICIAL',
       isActive: true,
       lastSeenAt: seen,
       sources: {
@@ -51,6 +53,7 @@ async function job(companyId: string, sourceKey: string, externalId: string, hou
           sourceKey,
           sourceTier: 'ATS_OFFICIAL',
           externalId: `s-${externalId}`,
+          ...publicationFixture({ sourceKey, externalId: `s-${externalId}`, url: `https://x/${externalId}`, title: 'Vendeur' }),
           url: `https://x/${externalId}`,
           isActive: true,
           lastSeenAt: seen,
@@ -263,7 +266,7 @@ describe('runRefresh', () => {
         sources: {
           create: [
             { sourceKey: 'kering', sourceTier: 'ATS_OFFICIAL', externalId: 's-k', url: 'https://x/shared', isActive: true, lastSeenAt: seenOld },
-            { sourceKey: 'loreal', sourceTier: 'ATS_OFFICIAL', externalId: 's-l', url: 'https://x/shared', isActive: true, lastSeenAt: seenNew },
+            { sourceKey: 'loreal', sourceTier: 'ATS_OFFICIAL', externalId: 's-l', url: 'https://x/shared', ...publicationFixture({ sourceKey: 'loreal', externalId: 's-l', url: 'https://x/shared', title: 'Vendeur' }), isActive: true, lastSeenAt: seenNew },
           ],
         },
       },
@@ -387,14 +390,14 @@ describe('runRefresh — allowlist de reprise', () => {
     const j = await job(c.id, 'vague', 'partagee', 72);
     // La seconde source, hors périmètre, l'atteste encore : l'offre doit vivre.
     await prisma.jobSource.create({ data: { jobId: j.id, sourceKey: 'hors-vague', sourceTier: 'ATS_OFFICIAL',
-      externalId: 's-partagee-2', url: 'https://x/partagee', isActive: true, lastSeenAt: new Date() } });
+      externalId: 's-partagee-2', url: 'https://x/partagee', ...publicationFixture({ sourceKey: 'hors-vague', externalId: 's-partagee-2', url: 'https://x/partagee', title: 'Vendeur' }), isActive: true, lastSeenAt: new Date() } });
     await recordHealth('vague', 'OK', 10);
     await recordHealth('hors-vague', 'OK', 10);
 
     const result = await runRefresh(prisma, { onlyKeys: ['vague'] });
 
     expect(result.closedJobs).toBe(0);
-    expect((await prisma.job.findFirst({ where: { externalId: 'partagee' } }))!.isActive).toBe(true);
+    expect((await prisma.job.findUnique({ where: { id: j.id } }))!.isActive).toBe(true);
   });
 
   it('sans allowlist, le comportement historique est inchangé', async () => {
@@ -418,6 +421,19 @@ describe('runRefresh — allowlist de reprise', () => {
  * une base réelle, pas un objet simulé.
  */
 describe('runRefresh — manifeste figé', () => {
+  it('rejects a changed publication projection after a maintenance preview', async () => {
+    const c = await company(), target = await job(c.id, 'vague', 'projection-revision', 72);
+    await recordHealth('vague', 'OK', 10);
+    const manifest = await createRefreshManifest(prisma, await readRefreshPlan(prisma, { onlyKeys: ['vague'] }));
+    const source = await prisma.jobSource.findFirstOrThrow({ where: { jobId: target.id } });
+    const presentation = JSON.parse(JSON.stringify(source.presentation));
+    presentation.values.description = 'Reviewed corrected description';
+    await prisma.jobSource.update({ where: { id: source.id }, data: { presentation } });
+    expect(await runRefresh(prisma, { manifest })).toMatchObject({ closedJobs: 0, closedSources: 0 });
+    expect((await prisma.job.findUniqueOrThrow({ where: { id: target.id } })).isActive).toBe(true);
+    expect((await prisma.jobSource.findUniqueOrThrow({ where: { id: source.id } })).isActive).toBe(true);
+  });
+
   it('ne touche QUE les lignes du manifeste, même si d\'autres sont périmées et fermables', async () => {
     const c = await company();
     const inManifest = await job(c.id, 'vague', 'dans-le-manifeste', 72);
@@ -468,7 +484,7 @@ describe('runRefresh — manifeste figé', () => {
     const c = await company();
     const j = await job(c.id, 'vague', 'partagee', 72);
     await prisma.jobSource.create({ data: { jobId: j.id, sourceKey: 'hors-vague', sourceTier: 'ATS_OFFICIAL',
-      externalId: 's-partagee-2', url: 'https://x/partagee', isActive: true, lastSeenAt: new Date() } });
+      externalId: 's-partagee-2', url: 'https://x/partagee', ...publicationFixture({ sourceKey: 'hors-vague', externalId: 's-partagee-2', url: 'https://x/partagee', title: 'Vendeur' }), isActive: true, lastSeenAt: new Date() } });
     await recordHealth('vague', 'OK', 10);
 
     const target = await prisma.jobSource.findFirstOrThrow({ where: { externalId: 's-partagee' } });

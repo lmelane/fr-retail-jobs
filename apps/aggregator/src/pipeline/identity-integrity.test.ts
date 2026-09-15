@@ -1,3 +1,4 @@
+import { publicationContentOf } from '@catwalks/db/publication-presentation';
 import '../test/setup-integration.js';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
@@ -105,6 +106,61 @@ describe('transactional identity and source authority', () => {
     expect(job.salaryMin?.toString()).toBe('50000');
     const source = await prisma.jobSource.findUniqueOrThrow({ where: { sourceKey_externalId: { sourceKey: 'board', externalId: 'b1' } } });
     expect(source.raw).toEqual(boardRaw);
+  });
+
+  it('does not borrow missing content or employment fields from a secondary publication', async () => {
+    const empty = candidate({ description: undefined, country: undefined, city: undefined, location: undefined });
+    const first = await upsertDeduplicated(prisma, empty);
+    const before = await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } });
+    await upsertDeduplicated(prisma, candidate({ sourceKey: 'board', externalId: 'board-1', sourceTier: 'SPECIALIST_JOBBOARD',
+      description: 'Board-only description', department: 'Board-only department', country: 'US', city: 'Boston', location: 'Boston, US',
+      employmentTerm: 'FIXED_TERM', workTime: 'PART_TIME', workSchedule: 'NIGHT_SHIFT', rawSchedule: 'Night shift',
+      language: 'en', postedAt: new Date('2026-09-01'), experienceYears: 7 }));
+    const after = await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } });
+    for (const key of ['title', 'description', 'department', 'countryCode', 'city', 'location', 'employmentTerm', 'workTime',
+      'workSchedule', 'rawSchedule', 'language', 'postedAt', 'experienceYears', 'occupationEvidence'] as const) {
+      expect(after[key], key).toEqual(before[key]);
+    }
+    expect(await prisma.jobSource.count({ where: { jobId: first.jobId } })).toBe(2);
+  });
+
+  it('clears optional values absent from the new observation of the selected publication', async () => {
+    const first = await upsertDeduplicated(prisma, candidate({ department: 'Retail', postedAt: new Date('2026-09-01'),
+      experienceYears: 7, rawContract: 'CDD', rawWorkingTime: 'Part time', employmentTerm: 'FIXED_TERM', workTime: 'PART_TIME',
+      workSchedule: 'NIGHT_SHIFT', rawSchedule: 'Night shift', employmentEvidence: { revision: 1 } }));
+    await prisma.job.update({ where: { id: first.jobId }, data: { adminArea2: 'Old subdivision', inseeCode: '75056' } });
+    await upsertDeduplicated(prisma, candidate({ title: 'Client Advisor', description: undefined, country: undefined,
+      city: undefined, location: undefined, raw: { revision: 2 } }));
+    const job = await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } });
+    expect(job).toMatchObject({ title: 'Client Advisor', description: null, department: null, postedAt: null,
+      countryCode: null, countryIntegrity: null, city: null, location: null, adminArea1: null, adminArea2: null,
+      inseeCode: null, experienceYears: null, rawContract: null, rawWorkingTime: null, employmentEvidence: null,
+      employmentTerm: null, workTime: null, workSchedule: null, rawSchedule: null });
+    expect(await prisma.jobEvent.count({ where: { jobId: job.id, type: 'CHANGED', field: 'country', before: 'FR', after: null } })).toBe(1);
+    const events = await prisma.jobEvent.count({ where: { jobId: job.id, type: 'CHANGED' } });
+    await upsertDeduplicated(prisma, candidate({ title: 'Client Advisor', description: undefined, country: undefined,
+      city: undefined, location: undefined, raw: { revision: 2 } }));
+    expect(await prisma.jobEvent.count({ where: { jobId: job.id, type: 'CHANGED' } })).toBe(events);
+  });
+
+  it('replaces the whole presentation when an employer takes over a board publication', async () => {
+    const first = await upsertDeduplicated(prisma, candidate({ sourceKey: 'board', externalId: 'board-1',
+      sourceTier: 'SPECIALIST_JOBBOARD', department: 'Board department', description: 'Board text', experienceYears: 7 }));
+    await upsertDeduplicated(prisma, candidate({ sourceKey: 'employer', externalId: 'employer-1', atsType: 'ORACLE_HCM',
+      title: 'Employer title', description: undefined, country: undefined, location: undefined, city: undefined }));
+    const job = await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } });
+    expect(job).toMatchObject({ canonicalSourceKey: 'employer', canonicalExternalId: 'employer-1', externalId: 'employer-1',
+      source: 'ORACLE_HCM', title: 'Employer title', description: null, countryCode: null, city: null, department: null, experienceYears: null });
+  });
+
+  it('invalidates the presentation if its RAW changes without a new projection', async () => {
+    const input = candidate(); const first = await upsertDeduplicated(prisma, input);
+    const before = await prisma.jobSource.findFirstOrThrow({ where: { jobId: first.jobId } });
+    expect(publicationContentOf(before)?.title).toBe(input.title);
+    await prisma.jobSource.update({ where: { id: before.id }, data: { raw: { changed: true } } });
+    expect((await prisma.jobSource.findUniqueOrThrow({ where: { id: before.id } })).presentation).toBeNull();
+    await upsertDeduplicated(prisma, input);
+    expect(publicationContentOf(await prisma.jobSource.findUniqueOrThrow({ where: { id: before.id } }))?.title).toBe(input.title);
   });
 
   it('keeps distinct payload revisions and accepts a shorter employer correction', async () => {

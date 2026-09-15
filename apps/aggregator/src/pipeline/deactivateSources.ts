@@ -1,7 +1,10 @@
+import { lockOccupationTaxonomy } from '@catwalks/db/occupations';
+import { publicationJobPatch } from '../publication/presentation.js';
 import type { Prisma, PrismaClient } from '@prisma/client';
 import { lockCompanyRows } from '../lib/writeLocks.js';
 import { selectApplySource } from '@catwalks/db/publications';
-import { recordEvents } from './jobEvents.js';
+import { recordEvents, changedEvents, diffStructuralFields, structuralValuesOf } from './jobEvents.js';
+import { recordOccupationObservation } from '../occupation/persist.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { deactivateJob, type DeactivationDisposition } from './lifecycle.js';
 
@@ -35,11 +38,13 @@ export async function deactivateSources(
       const owner = selectApplySource(sources, job);
       const now = new Date();
       const transition = !owner ? deactivateJob(job, disposition, now) : null;
-      await tx.job.update({ where: { id: job.id }, data: {
-        ...transition?.data,
-        ...(owner ? { url: owner.url, canonicalTier: owner.sourceTier,
-          canonicalSourceKey: owner.sourceKey, canonicalExternalId: owner.externalId } : {}),
-      } });
+      const changedOwner = owner && (owner.sourceKey !== job.canonicalSourceKey || owner.externalId !== job.canonicalExternalId || owner.url !== job.url);
+      const content = changedOwner ? publicationJobPatch(owner, await lockOccupationTaxonomy(tx)) : {};
+      const written = await tx.job.update({ where: { id: job.id }, data: { ...transition?.data, ...content } });
+      if (changedOwner) {
+        await recordOccupationObservation(tx, written, job);
+        await recordEvents(tx, changedEvents(job.id, diffStructuralFields(structuralValuesOf(job), structuralValuesOf(content)), now));
+      }
       if (transition) await recordEvents(tx, [{ jobId: job.id, type: transition.type, at: now,
         ...(disposition.kind === 'WITHDRAWN' ? { after: disposition.reason } : {}) }]);
       assertSourceRunning();

@@ -1,3 +1,4 @@
+import { publicationPresentation } from '../publication/presentation.js';
 import { randomUUID } from 'node:crypto';
 import { Prisma, type PrismaClient, type AtsType } from '@prisma/client';
 import { loadOccupationTaxonomy, lockOccupationTaxonomy } from '@catwalks/db/occupations';
@@ -8,7 +9,7 @@ import { captureReaderRevision } from '../capture/revision.js';
 import { readRawBlob } from '../capture/store.js';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { toCandidate } from '../pipeline/ingest.js';
-import { publicationJobContent } from './upsert.js';
+import { publicationJobContent } from '../publication/content.js';
 import { readSourceFacts, projectSourceFacts } from '../facts/index.js';
 import { recordOccupationObservation } from '../occupation/persist.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
@@ -29,7 +30,7 @@ type Job = Prisma.JobGetPayload<{ include: typeof include; omit: { searchText: t
 type Publication = Job['sources'][number];
 type Body = { version: 1; kind: typeof KIND; revision: string; request: Request; beforeHash: string;
   companyId: string; sourceKeys: string[]; groups: Array<{ jobId: string; sourceIds: string[]; ownerId: string;
-    outputHash: string; patch: Prisma.InputJsonValue; facts: Prisma.InputJsonValue; lifecycle: 'KEEP' | 'CLOSE' | 'WITHDRAW' }>; redirects: Array<{ jobId: string; targetId: string }> };
+    outputHash: string; patch: Prisma.InputJsonValue; facts: Prisma.InputJsonValue; presentations: Array<{ sourceId: string; outputHash: string; cache: Prisma.InputJsonValue; facts: Prisma.InputJsonValue }>; lifecycle: 'KEEP' | 'CLOSE' | 'WITHDRAW' }>; redirects: Array<{ jobId: string; targetId: string }> };
 export type GroupRepairPlan = Body & { planHash: string };
 
 function validate(request: Request) {
@@ -99,14 +100,25 @@ async function prepare(db: Database, request: Request, bodies: ReadonlyMap<strin
     if (new Set(origins.map(job => job.opportunityType).filter(Boolean)).size > 1) throw new Error('Conflicting opportunity types require review');
     const withdrawals = origins.map(job => ({ at: job.withdrawnAt, reason: job.withdrawalReason }));
     if (new Set(withdrawals.map(state => evidenceHash(state))).size !== 1) throw new Error('Different withdrawal states require a lifecycle review');
-    const owner = ownerOf(members, current), source = catalogue.find(source => source.key === owner.sourceKey)!;
-    const { captured, batch, outputHash } = await readCapturedPublication(db, owner, undefined, bodies);
-    if (batch.sourceKind !== KIND_TO_ATS[source.kind]) throw new Error('Captured adapter type differs from the current catalogue');
-    if (!captured.title?.trim() || captured.publicationHold || captured.publicationWithdrawnAt) throw new Error('Captured publication is incomplete, held or withdrawn');
-    const facts = readSourceFacts(KIND_TO_ATS[source.kind], owner.raw);
-    const candidate = { ...toCandidate(hydrateCapturedJob(captured), { key: source.key, tier: owner.sourceTier as SourceTier,
-      company: origins[0].company.name }, origins[0].company.name, KIND_TO_ATS[source.kind] as AtsType, trust), ...projectSourceFacts(facts), sourceFacts: facts };
-    const { raw: _raw, ...content } = publicationJobContent(candidate, occupations);
+    const owner = ownerOf(members, current);
+    const rebuilt = [];
+    for (const member of members) {
+      const source = catalogue.find(source => source.key === member.sourceKey)!;
+      const { captured, batch, outputHash } = await readCapturedPublication(db, member, undefined, bodies);
+      if (batch.sourceKind !== KIND_TO_ATS[source.kind]) throw new Error('Captured adapter type differs from the current catalogue');
+      if (!captured.title?.trim() || captured.publicationHold || captured.publicationWithdrawnAt) throw new Error('Captured publication is incomplete, held or withdrawn');
+      const facts = readSourceFacts(KIND_TO_ATS[source.kind], member.raw);
+      const candidate = { ...toCandidate(hydrateCapturedJob(captured), { key: source.key, tier: member.sourceTier as SourceTier,
+        company: origins[0].company.name }, origins[0].company.name, KIND_TO_ATS[source.kind] as AtsType, trust),
+        captureBatchId: member.captureBatchId!, captureOutputId: member.captureOutputId!,
+        ...projectSourceFacts(facts), sourceFacts: facts };
+      const content = publicationJobContent(candidate, occupations);
+      rebuilt.push({ sourceId: member.id, outputHash, content, facts, cache: publicationPresentation(candidate, content) });
+    }
+    const selected = rebuilt.find(item => item.sourceId === owner.id)!;
+    const { raw: _raw, ...content } = selected.content;
+    const { facts, outputHash } = selected;
+    const presentations = rebuilt.map(({ sourceId, outputHash, cache, facts }) => ({ sourceId, outputHash, cache, facts: json(facts) }));
     const available = !!selectApplySource(members, current ?? {});
     const lifecycle: 'KEEP' | 'CLOSE' | 'WITHDRAW' = !available && !withdrawals[0].at && !current?.closedAt
       ? members.every(member => {
@@ -124,7 +136,7 @@ async function prepare(db: Database, request: Request, bodies: ReadonlyMap<strin
       closedAt: available ? null : current?.closedAt ?? null,
       lastSeenAt: new Date(Math.max(...members.map(member => member.lastSeenAt.getTime()))),
     };
-    groups.push({ jobId: group.jobId, sourceIds: [...group.sourceIds].sort(), ownerId: owner.id, outputHash, patch, facts, lifecycle });
+    groups.push({ jobId: group.jobId, sourceIds: [...group.sourceIds].sort(), ownerId: owner.id, outputHash, patch, facts, presentations, lifecycle });
   }
   const redirects: Body['redirects'] = [];
   for (const job of jobs) {
@@ -179,7 +191,7 @@ export async function applyPublicationGroups(db: PrismaClient, plan: GroupRepair
   if (evidenceHash(saved.body) !== evidenceHash(plan)) throw new Error('Stored publication plan differs');
   const batchId = `publication-groups:${planHash}`;
   if (await db.dataCorrection.count({ where: { batchId, entityType: 'PublicationGroupPlan', entityId: planHash } })) return { planHash, alreadyApplied: true };
-  const bodies = await prefetchBodies(db, plan.groups.map(group => group.outputHash), store);
+  const bodies = await prefetchBodies(db, plan.groups.flatMap(group => group.presentations.map(item => item.outputHash)), store);
   for (let attempt = 0; ; attempt++) {
     try { return await db.$transaction(async tx => {
     await lockEmployerCatalogue(tx);
@@ -216,7 +228,7 @@ export async function applyPublicationGroups(db: PrismaClient, plan: GroupRepair
         type: group.lifecycle === 'CLOSE' ? 'CLOSED' : 'WITHDRAWN', at: group.lifecycle === 'CLOSE' ? written.closedAt! : written.withdrawnAt!,
         after: group.lifecycle === 'WITHDRAW' ? group.patch.withdrawalReason : null } });
       await tx.jobSource.updateMany({ where: { id: { in: group.sourceIds } }, data: { jobId: group.jobId } });
-      await tx.jobSource.update({ where: { id: owner.id }, data: { sourceFacts: json(group.facts) } });
+      for (const item of group.presentations) await tx.jobSource.update({ where: { id: item.sourceId }, data: { sourceFacts: item.facts, presentation: item.cache } });
     }
     for (const redirect of prepared.body.redirects) {
       await tx.job.update({ where: { id: redirect.jobId }, data: { isActive: false, mergedIntoId: redirect.targetId,

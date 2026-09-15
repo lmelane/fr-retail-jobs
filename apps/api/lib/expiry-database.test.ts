@@ -1,8 +1,9 @@
+import { publicationFixture } from '../../aggregator/src/test/publication-fixture';
 import { headline } from './intelligence/facts';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { prisma, Prisma } from '@catwalks/db';
 import { publicJobSql, publicJobWhere } from '@catwalks/db/availability';
-import { getJobs, getJobStatus, getOfferState, suggestCities, suggestTitles, getSimilarJobs, sitemapOffersChunk, getCompanyAside } from './jobs';
+import { DatabaseUnavailableError, getJobs, getJobStatus, getOfferState, suggestCities, suggestTitles, getSimilarJobs, sitemapOffersChunk, getCompanyAside } from './jobs';
 
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
 const enabled = !!url && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && /test/i.test(url.pathname);
@@ -24,9 +25,11 @@ describe.skipIf(!enabled)('public availability from source publications', () => 
     url: `https://example.com/primary/${suffix}`, validThrough: past,
     sources: { create: [
       { sourceKey: `${key}-primary`, sourceTier: 'EMPLOYER_DIRECT', externalId: suffix,
-        url: `https://example.com/primary/${suffix}`, expiresAt },
+        url: `https://example.com/primary/${suffix}`, expiresAt,
+        ...publicationFixture({ sourceKey: `${key}-primary`, externalId: suffix, url: `https://example.com/primary/${suffix}`, title: `ExpiryWitness ${suffix}`, city: `Expirycity${suffix}`, country: 'FR' }) },
       ...(extra ? [{ sourceKey: `${key}-secondary`, sourceTier: 'ATS_OFFICIAL', externalId: suffix,
-        url: `https://example.com/secondary/${suffix}`, expiresAt: future }] : []),
+        url: `https://example.com/secondary/${suffix}`, expiresAt: future,
+        ...publicationFixture({ sourceKey: `${key}-secondary`, externalId: suffix, url: `https://example.com/secondary/${suffix}`, title: `Secondary ${suffix}`, description: 'Secondary own description', city: 'New York', country: 'US' }) }] : []),
     ] },
   } });
 
@@ -55,9 +58,17 @@ describe.skipIf(!enabled)('public availability from source publications', () => 
     expect(result.status).toBe('active');
     if (result.status === 'missing') throw new Error('Missing fixture');
     expect(result.job).toMatchObject({ applyUrl: 'https://example.com/secondary/multi', url: 'https://example.com/secondary/multi',
+      title: 'Secondary multi', description: 'Secondary own description', city: 'New York', countryCode: 'US',
       validThrough: future, sourceCount: 1, sources: [`${key}-secondary`] });
     expect((await getJobs({ maisons: [key], source: `${key}-primary` })).total).toBe(0);
     expect((await getJobs({ maisons: [key] })).facets.sources).toEqual([{ value: `${key}-secondary`, count: 1 }]);
+  });
+
+  it('refuses a stale projection instead of pairing an old description with a new URL', async () => {
+    const live = await create('invalidated', future);
+    await prisma.jobSource.updateMany({ where: { jobId: live.id }, data: { raw: { changed: true } } });
+    await expect(getJobStatus(live.id)).rejects.toThrow(DatabaseUnavailableError);
+    await expect(getOfferState(live.id)).rejects.toThrow(DatabaseUnavailableError);
   });
 
   it('expired publications disappear from discovery and sitemap output', async () => {
