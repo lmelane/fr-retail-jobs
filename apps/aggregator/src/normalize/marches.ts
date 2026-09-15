@@ -7,11 +7,12 @@
  * sauf que le nom et le type des champs sont différents. En France "Type de
  * contrat", ailleurs "Job type", donc les valeurs ne sont pas les mêmes. »
  *
- * Autrement dit : les DIMENSIONS canoniques de `employment.ts` (durée, rythme,
- * programme, saisonnalité) restent mondiales et ne bougent pas. Ce qui change
- * d'un marché à l'autre, c'est (a) le LIBELLÉ sous lequel on les présente, et
- * (b) LESQUELLES on présente. Un candidat français qui clique sur le drapeau
- * australien tombe sur l'Australie, en anglais, avec les facettes australiennes.
+ * Autrement dit : les DIMENSIONS canoniques (durée, rythme, programme,
+ * saisonnalité, métier, séniorité) restent mondiales et ne bougent pas. Ce qui
+ * change d'un marché à l'autre, c'est (a) le LIBELLÉ sous lequel on les
+ * présente, et (b) LESQUELLES on présente. Un candidat français qui clique sur
+ * le drapeau australien tombe sur l'Australie, en anglais, avec les facettes
+ * australiennes.
  *
  * ── CE QUE CE MODULE EST, ET CE QU'IL N'EST PAS ───────────────────────────
  *
@@ -63,6 +64,86 @@
 export const SEUIL_AFFICHAGE_FACETTE = 0.2;
 
 /**
+ * ── POURQUOI « CASUAL » N'EST PAS UNE DIMENSION (AUSTRALIE) ────────────────
+ *
+ * Bloc nommé et volontairement trouvable : la question reviendra, et la réponse
+ * mesurée doit être plus facile à retrouver que l'intuition qui la contredit.
+ *
+ * L'audit défensif a proposé de créer une dimension `casual` pour l'Australie,
+ * sur le constat que le mot apparaît dans 17,8 % des descriptions australiennes
+ * et qu'il y désigne un STATUT JURIDIQUE local, sans équivalent ailleurs. La
+ * mesure du 2026-09-15 dit que le constat est vrai à moitié, et que la
+ * conclusion ne suit pas :
+ *
+ *  · 220 offres australiennes portent « casual » dans leur description ;
+ *  · 121 d'entre elles (55 %) sont DÉJÀ `isSeasonal = true` — donc déjà
+ *    couvertes par une dimension existante ;
+ *  · il reste 99 offres (45 % des « casual », soit 8 % du marché australien)
+ *    que rien ne couvre — très loin des 20 % du seuil d'affichage ;
+ *  · AUCUN champ structuré ne porte « casual » : le mot ne vit que dans le
+ *    texte libre. Une dimension construite là-dessus serait alimentée par de
+ *    l'extraction lexicale, pas par une donnée déclarée.
+ *
+ * Le contexte réel des offres tranche : « Holiday Superstar Casual »,
+ * « Seasonal Casual Sales Consultants », « casual Holiday Stock Replenishment
+ * Assistants ». En Australie, `casual` est massivement le VOCABULAIRE du
+ * saisonnier, pas une dimension parallèle. Créer une facette reviendrait à
+ * afficher deux filtres qui sélectionnent largement les mêmes offres — le pire
+ * cas pour un candidat, qui croit affiner et ne fait que se perdre.
+ *
+ * SI CE RÉSIDUEL MONTAIT UN JOUR au-dessus du seuil, la bonne réponse resterait
+ * d'AMÉLIORER LA DÉTECTION DU SAISONNIER pour absorber les 45 % non marqués —
+ * pas d'ajouter une dimension. Un gisement mal détecté est un défaut de
+ * normalisation ; il ne se répare pas en lui donnant sa propre colonne.
+ */
+
+/**
+ * ── LE GARDE-FOU PRODUIT : AU MOINS UNE FACETTE DENSE PAR MARCHÉ ───────────
+ *
+ * Le seuil de 20 % empêche d'afficher un filtre inutilisable. Il n'empêche pas
+ * le cas inverse, et bien plus sournois : un marché dont TOUTES les facettes
+ * exposées frôlent le seuil. Techniquement conforme, produit mort.
+ *
+ * C'est exactement l'état du registre sur les seules dimensions contractuelles.
+ * Mesuré le 2026-09-15, toutes les facettes exposées laissent 70 % ou plus de
+ * « non précisé », la seule exception étant le contrat français (69,2 % de
+ * couverture, donc 30,8 % de muettes). Un candidat allemand qui coche
+ * « Vollzeit » sur une facette à 74,9 % perd déjà un quart du catalogue.
+ *
+ * `metier` change la nature du problème : 90,0 à 96,8 % sur neuf marchés sur
+ * dix. Ces neuf-là exposent désormais une facette qui rend presque tout le
+ * catalogue et qui porte le besoin réel du candidat (« je cherche un poste de
+ * vendeur »), pendant que les facettes contractuelles affinent à la marge.
+ *
+ * LA SUISSE EST L'EXCEPTION, ET ELLE EST MESURÉE, PAS TOLÉRÉE. Son métier
+ * plafonne à 77,7 % — le plus bas du registre de plus de douze points. Ce
+ * n'est pas un marché sans facette dense par accident : c'est le plus petit
+ * marché mesuré (1 220 offres), le seul dont AUCUNE dimension n'atteint 90 %.
+ * La barre de densité est donc gardée à 77 % : elle échoue si un marché tombe
+ * sous le plancher suisse, et le seuil PLEIN de 90 % est vérifié séparément
+ * sur les neuf autres. Graver 90 % pour tout le monde aurait obligé à exclure
+ * la Suisse du témoin — c'est-à-dire à retirer du garde-fou le seul marché
+ * qu'il aurait attrapé.
+ *
+ * L'invariant est gardé par un témoin qui ROUGIT si un marché n'expose plus
+ * aucune facette dense : un marché dont tous les filtres sont creux n'est pas
+ * exploitable, et il vaut mieux l'apprendre en test qu'en production.
+ */
+export const SEUIL_FACETTE_DENSE = 0.9;
+
+/**
+ * Le PLANCHER de densité, en dessous duquel un marché n'est plus exploitable.
+ *
+ * 77 %, c'est-à-dire juste sous la Suisse (77,705 %) — le marché le moins bien
+ * couvert du registre. Deux constantes plutôt qu'une parce qu'elles gardent
+ * deux choses différentes : `SEUIL_FACETTE_DENSE` décrit la cible atteinte par
+ * neuf marchés, `PLANCHER_FACETTE_DENSE` est la limite qu'AUCUN marché ne doit
+ * franchir. Une seule constante aurait forcé à choisir entre un témoin qui
+ * ignore la Suisse et un témoin qui ne garde plus rien.
+ */
+export const PLANCHER_FACETTE_DENSE = 0.77;
+
+/**
  * Les marchés MESURÉS le 2026-09-15, et eux seuls.
  *
  * BE et CN ont été volontairement ÉCARTÉS. Le tableau de couverture ne porte
@@ -81,8 +162,37 @@ export type CodeMarche = (typeof CODES_MARCHE)[number];
  * `engagementType` n'y figure pas : 130 offres dans tout le catalogue, aucune
  * facette, aucun index (règle Loïc, 2026-09-08). Le registre ne réintroduit pas
  * par la fenêtre une dimension que le modèle a laissée hors facette.
+ *
+ * ── MÉTIER ET SÉNIORITÉ : LE TROU QUE L'AUDIT A RÉVÉLÉ ────────────────────
+ *
+ * Le registre a d'abord été écrit avec les seules dimensions du VOCABULAIRE
+ * CONTRACTUEL, et cette omission a produit un contresens : on en a conclu que
+ * « le marché américain ne garde qu'une facette ». Il en garde TROIS, parce que
+ * `metier` y couvre 96,8 % des offres et `seniorite` 29,7 %.
+ *
+ * Un registre qui ignore ses deux dimensions les mieux remplies ne décrit pas
+ * le marché, il décrit le sous-ensemble qu'on avait mesuré. Elles entrent donc
+ * ici, mesurées le 2026-09-15 comme les autres :
+ *
+ *  · `metier` — 90 à 97 % partout sauf CH (77,7 %), 27 valeurs distinctes.
+ *    C'est la dimension DENSE de chaque marché, celle qui rend un filtre utile
+ *    au premier clic ;
+ *  · `seniorite` — 18 à 35 %, 6 valeurs distinctes. Elle passe le seuil sur
+ *    sept marchés et le rate sur trois (DE, IT, CH) — la même règle que pour le
+ *    contrat, appliquée sans exception.
+ *
+ * Aucune des deux n'est dégénérée : 27 et 6 valeurs distinctes. Une dimension
+ * à une seule valeur serait un filtre qui ne filtre rien, et le nombre de
+ * valeurs est la seule façon de le savoir avant de l'afficher.
  */
-export const DIMENSIONS_FACETTE = ['contrat', 'temps', 'programme', 'saisonnier'] as const;
+export const DIMENSIONS_FACETTE = [
+  'contrat',
+  'temps',
+  'programme',
+  'saisonnier',
+  'metier',
+  'seniorite',
+] as const;
 export type DimensionFacette = (typeof DIMENSIONS_FACETTE)[number];
 
 /** La couverture mesurée d'un marché, dimension par dimension, en proportion. */
@@ -138,17 +248,30 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    *
    * Le saisonnier (6,1 %) reste sous le seuil malgré 11 % de « seasonal » dans
    * les descriptions : un mot cité n'est pas une dimension renseignée.
+   *
+   * TROIS facettes, pas une. Le métier (96,8 %) est la mieux couverte de tout
+   * le registre et la séniorité passe le seuil (29,7 %). Lire « les US ne
+   * gardent qu'une facette » était une conclusion tirée du sous-ensemble
+   * contractuel, pas du marché.
    */
   US: {
     code: 'US',
     locale: 'en-US',
-    libelles: { temps: 'Job type' },
+    libelles: { temps: 'Job type', metier: 'Job category', seniorite: 'Experience level' },
     offresMesurees: 36_942,
-    couverture: { contrat: 0.192, temps: 0.818, programme: 0.003, saisonnier: 0.061 },
+    couverture: {
+      contrat: 0.192,
+      temps: 0.818,
+      programme: 0.003,
+      saisonnier: 0.061,
+      metier: 0.96836,
+      seniorite: 0.29709,
+    },
   },
 
   /**
-   * FRANCE — le marché le plus richement renseigné, et le seul à trois facettes.
+   * FRANCE — le marché contractuellement le mieux renseigné, et le seul à
+   * exposer les CINQ dimensions du registre.
    *
    * 69,2 % de contrat : le droit français NOMME la durée (CDI 19 %, CDD 12 % des
    * descriptions), donc les employeurs la publient. C'est le miroir exact de la
@@ -163,18 +286,49 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
   FR: {
     code: 'FR',
     locale: 'fr-FR',
-    libelles: { contrat: 'Type de contrat', temps: 'Temps de travail', programme: 'Type de programme' },
+    libelles: {
+      contrat: 'Type de contrat',
+      temps: 'Temps de travail',
+      programme: 'Type de programme',
+      metier: 'Métier',
+      seniorite: 'Niveau d’expérience',
+    },
     offresMesurees: 11_026,
-    couverture: { contrat: 0.692, temps: 0.643, programme: 0.222, saisonnier: 0.002 },
+    couverture: {
+      contrat: 0.692,
+      temps: 0.643,
+      programme: 0.222,
+      saisonnier: 0.002,
+      metier: 0.95538,
+      seniorite: 0.23,
+    },
   },
 
-  /** ROYAUME-UNI — contrat (38,9 %) et rythme (64,6 %) ; « Job type » comme aux US. */
+  /**
+   * ROYAUME-UNI — contrat (38,9 %) et rythme (64,6 %) ; « Job type » comme aux US.
+   *
+   * La séniorité y est la mieux couverte du registre (34,9 %) : le marché
+   * britannique nomme le niveau (« junior », « senior », « head of ») dans ses
+   * intitulés bien plus systématiquement que les marchés latins.
+   */
   GB: {
     code: 'GB',
     locale: 'en-GB',
-    libelles: { contrat: 'Job type', temps: 'Job type' },
+    libelles: {
+      contrat: 'Job type',
+      temps: 'Job type',
+      metier: 'Job category',
+      seniorite: 'Experience level',
+    },
     offresMesurees: 3_305,
-    couverture: { contrat: 0.389, temps: 0.646, programme: 0.006, saisonnier: 0.029 },
+    couverture: {
+      contrat: 0.389,
+      temps: 0.646,
+      programme: 0.006,
+      saisonnier: 0.029,
+      metier: 0.94221,
+      seniorite: 0.34917,
+    },
   },
 
   /**
@@ -195,9 +349,21 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
   CA: {
     code: 'CA',
     locale: 'fr-CA',
-    libelles: { contrat: 'Type de poste', temps: 'Type de poste' },
+    libelles: {
+      contrat: 'Type de poste',
+      temps: 'Type de poste',
+      metier: 'Domaine',
+      seniorite: 'Niveau d’expérience',
+    },
     offresMesurees: 3_129,
-    couverture: { contrat: 0.349, temps: 0.795, programme: 0.012, saisonnier: 0.114 },
+    couverture: {
+      contrat: 0.349,
+      temps: 0.795,
+      programme: 0.012,
+      saisonnier: 0.114,
+      metier: 0.9364,
+      seniorite: 0.31256,
+    },
   },
 
   /**
@@ -208,40 +374,107 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    * protège : le mot est PARTOUT dans le texte, la dimension est renseignée
    * nulle part. Un filtre construit sur la fréquence lexicale au lieu de la
    * couverture réelle aurait été vide huit fois sur dix.
+   *
+   * SÉNIORITÉ À 19,838 % — sous le seuil de 20 % de seize millièmes. Le libellé
+   * « Erfahrungslevel » est relevé et conservé, la facette n'est PAS exposée.
+   * C'est le cas qui mesure la valeur d'un seuil : à cette distance, la
+   * tentation d'arrondir « puisque c'est pareil » est maximale, et céder une
+   * fois vide le seuil de tout pouvoir de décision. Le jour où la mesure passe
+   * la barre, il n'y a rien à traduire — seulement un chiffre à mettre à jour.
    */
   DE: {
     code: 'DE',
     locale: 'de-DE',
-    libelles: { contrat: 'Anstellungsart', temps: 'Arbeitszeit' },
+    libelles: {
+      contrat: 'Anstellungsart',
+      temps: 'Arbeitszeit',
+      metier: 'Berufsfeld',
+      seniorite: 'Erfahrungslevel',
+    },
     offresMesurees: 3_080,
-    couverture: { contrat: 0.325, temps: 0.749, programme: 0.08, saisonnier: 0.048 },
+    couverture: {
+      contrat: 0.325,
+      temps: 0.749,
+      programme: 0.08,
+      saisonnier: 0.048,
+      metier: 0.92468,
+      seniorite: 0.19838,
+    },
   },
 
-  /** ITALIE — « Tipo di contratto » ; programme à 16,2 %, sous le seuil. */
+  /**
+   * ITALIE — « Tipo di contratto » ; programme à 16,2 %, sous le seuil.
+   *
+   * Séniorité 18,975 % : sous le seuil, non exposée, comme en Allemagne et en
+   * Suisse. Trois marchés sur dix la ratent — c'est la dimension la plus
+   * inégalement renseignée du registre (18,0 % en CH, 34,9 % au GB).
+   */
   IT: {
     code: 'IT',
     locale: 'it-IT',
-    libelles: { contrat: 'Tipo di contratto', temps: 'Orario di lavoro' },
+    libelles: {
+      contrat: 'Tipo di contratto',
+      temps: 'Orario di lavoro',
+      metier: 'Categoria',
+      seniorite: 'Livello di esperienza',
+    },
     offresMesurees: 2_693,
-    couverture: { contrat: 0.453, temps: 0.68, programme: 0.162, saisonnier: 0.004 },
+    couverture: {
+      contrat: 0.453,
+      temps: 0.68,
+      programme: 0.162,
+      saisonnier: 0.004,
+      metier: 0.91682,
+      seniorite: 0.18975,
+    },
   },
 
   /** ESPAGNE — « Tipo de empleo » ; « contrato indefinido » 9 % des descriptions. */
   ES: {
     code: 'ES',
     locale: 'es-ES',
-    libelles: { contrat: 'Tipo de empleo', temps: 'Jornada laboral' },
+    libelles: {
+      contrat: 'Tipo de empleo',
+      temps: 'Jornada laboral',
+      metier: 'Categoría',
+      seniorite: 'Nivel de experiencia',
+    },
     offresMesurees: 2_197,
-    couverture: { contrat: 0.477, temps: 0.665, programme: 0.053, saisonnier: 0.000 },
+    couverture: {
+      contrat: 0.477,
+      temps: 0.665,
+      programme: 0.053,
+      saisonnier: 0.0,
+      metier: 0.90032,
+      seniorite: 0.20346,
+    },
   },
 
-  /** PAYS-BAS — « Dienstverband » ; un seul mot néerlandais pour les deux axes. */
+  /**
+   * PAYS-BAS — « Dienstverband » ; un seul mot néerlandais pour les deux axes.
+   *
+   * « Vakgebied » et « Ervaringsniveau » sont en revanche deux mots distincts :
+   * la fusion de libellés est une particularité de la dimension contractuelle
+   * néerlandaise, pas une règle du marché.
+   */
   NL: {
     code: 'NL',
     locale: 'nl-NL',
-    libelles: { contrat: 'Dienstverband', temps: 'Dienstverband' },
+    libelles: {
+      contrat: 'Dienstverband',
+      temps: 'Dienstverband',
+      metier: 'Vakgebied',
+      seniorite: 'Ervaringsniveau',
+    },
     offresMesurees: 1_849,
-    couverture: { contrat: 0.361, temps: 0.782, programme: 0.025, saisonnier: 0.002 },
+    couverture: {
+      contrat: 0.361,
+      temps: 0.782,
+      programme: 0.025,
+      saisonnier: 0.002,
+      metier: 0.91076,
+      seniorite: 0.2861,
+    },
   },
 
   /**
@@ -255,14 +488,28 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    * resterait 83 % de « non précisé ».
    *
    * À rouvrir par décision si une mesure ultérieure passe la barre — pas par
-   * conviction.
+   * conviction. Et pas non plus en créant une dimension `casual` : voir le bloc
+   * « POURQUOI CASUAL N'EST PAS UNE DIMENSION » en tête de fichier, qui mesure
+   * ce gisement à 99 offres non saisonnières, soit 8 % du marché.
    */
   AU: {
     code: 'AU',
     locale: 'en-AU',
-    libelles: { contrat: 'Job type', temps: 'Job type' },
+    libelles: {
+      contrat: 'Job type',
+      temps: 'Job type',
+      metier: 'Job category',
+      seniorite: 'Experience level',
+    },
     offresMesurees: 1_234,
-    couverture: { contrat: 0.362, temps: 0.657, programme: 0.007, saisonnier: 0.170 },
+    couverture: {
+      contrat: 0.362,
+      temps: 0.657,
+      programme: 0.007,
+      saisonnier: 0.17,
+      metier: 0.94408,
+      seniorite: 0.31118,
+    },
   },
 
   /**
@@ -282,13 +529,39 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    * seuil. Le libellé décrit le marché ; le seuil décide de l'affichage. Les
    * deux sont séparés exprès : le jour où la couverture monte, il n'y a rien à
    * traduire.
+   *
+   * LE MARCHÉ LE PLUS PAUVREMENT COUVERT DU REGISTRE, sur toutes les dimensions
+   * à la fois : métier 77,705 % (le seul sous 90 %, douze points sous le
+   * neuvième), séniorité 18,033 % (sous le seuil, non exposée), rythme 49,1 %
+   * (le seul sous 60 %). Avec 1 220 offres, c'est aussi le plus petit. Il n'a
+   * donc AUCUNE facette dense au sens du seuil de 90 %, et c'est lui qui fixe
+   * le plancher du témoin de densité — voir `PLANCHER_FACETTE_DENSE`.
+   *
+   * Les libellés suisses suivent la France, locale de service `fr-CH` oblige.
+   * C'est le seul endroit du registre où deux marchés partagent leurs libellés,
+   * et c'est une DÉDUCTION DE SERVICE, pas une mesure : contrairement au Canada,
+   * aucun relevé Indeed distinct n'a été fait pour la Suisse romande. À
+   * re-vérifier si un écart apparaît, exactement comme CA-fr a révélé le sien.
    */
   CH: {
     code: 'CH',
     locale: 'fr-CH',
-    libelles: { contrat: 'Type de contrat', temps: 'Temps de travail', programme: 'Type de programme' },
+    libelles: {
+      contrat: 'Type de contrat',
+      temps: 'Temps de travail',
+      programme: 'Type de programme',
+      metier: 'Métier',
+      seniorite: 'Niveau d’expérience',
+    },
     offresMesurees: 1_220,
-    couverture: { contrat: 0.172, temps: 0.491, programme: 0.263, saisonnier: 0.008 },
+    couverture: {
+      contrat: 0.172,
+      temps: 0.491,
+      programme: 0.263,
+      saisonnier: 0.008,
+      metier: 0.77705,
+      seniorite: 0.18033,
+    },
   },
 };
 
