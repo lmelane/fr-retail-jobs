@@ -140,6 +140,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 [Sous-lot 4G2 validé localement](lot-4g2.md) : réquisitions Workday liées à leur liste, détail, portail et tenant ; six publications natives capturées et rejouées sur trois paires de portails. Les 246 groupes Workday retenus sont qualifiés : 24 sont séparés en conservant leurs anciennes pages. Les 559 plans reconstruisent 12 934 présentations ; 16 plans supplémentaires consolident 217 réquisitions sur plusieurs pages et préservent les 219 anciennes URLs comme redirections. Les 575 plans sont rejoués, les 12 490 groupes finaux et les 278 redirections du stock vérifiés. Les 3 123 tests et six contre-épreuves passent. Les 23 groupes Teamtailor et les formats ou groupes incomplets restent ouverts.
 
+[Sous-lot 4G3 validé localement](lot-4g3.md) : UUID de flux, identifiant numérique et émetteur natif concordants pour les domaines Teamtailor. Les 23 derniers groupes d’identité retenus sont qualifiés ; 263 plans reconstruisent et vérifient 4 846 présentations. Six échéances natives passées depuis la première reprise sont revues puis appliquées. Les 3 143 tests et six contre-épreuves passent. Le stock local compte 52 390 présentations reconstruites ; les 269 groupes auparavant retenus sont traités. Restent notamment 1 224 groupes mixtes avec un membre reconstructible et un membre encore insuffisant, ainsi que les formats non qualifiés.
+
 ## Lot 5. Certifier les sources et préparer le cycle complet
 
 **Objectif.** Rendre chaque source du catalogue exploitable ou explicitement exclue.

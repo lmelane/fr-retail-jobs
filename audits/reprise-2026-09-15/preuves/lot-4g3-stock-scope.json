@@ -1,0 +1,24 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "teamtailorGroups": 5739,
+  "teamtailorPublications": 5762,
+  "qualifiedFeedIdentities": 4898,
+  "eligibleGroups": 4823,
+  "eligiblePublications": 4846,
+  "splitGroups": 0,
+  "newGroups": 0,
+  "unchangedGroups": 0,
+  "blockedGroups": 916,
+  "blockReasons": {
+    "NO_QUALIFIED_FEED_IDENTITY": 864,
+    "wttj-sector:READER_UNQUALIFIED": 30,
+    "fashionjobs:RAW_MISSING": 17,
+    "fashionjobs:READER_UNQUALIFIED": 2,
+    "teamtailor:RAW_MISSING": 37,
+    "MISSING_ACTIVE_ORIGINAL_OWNER": 17,
+    "wttj-sector:RAW_MISSING": 4
+  },
+  "keyChanges": 4823,
+  "unqualifiedTeamtailorPublications": 864
+}

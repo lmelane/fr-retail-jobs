@@ -1,0 +1,11 @@
+{
+  "readerRevision": "local-sha256:32216f2e44f302367452e96c70025bfdce11ab015299a43e7c4012bd56b247a4",
+  "qualifiedNativePairs": 13,
+  "environment": "Isolated Railway validation bucket and local scratch capture database",
+  "productionWrites": false,
+  "batches": 2,
+  "nativeResponses": 2,
+  "archivedBodies": 2,
+  "bytes": 250871,
+  "allArchivedHashesVerified": true
+}

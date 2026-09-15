@@ -1,0 +1,41 @@
+{
+  "mutations": [
+    {
+      "name": "unbound-feed-uuid",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ac57ba359cfb56d47f45c028d29dd13d23448ccfd4882443bd209a9a4968b73d"
+    },
+    {
+      "name": "unbound-feed-url",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ac57ba359cfb56d47f45c028d29dd13d23448ccfd4882443bd209a9a4968b73d"
+    },
+    {
+      "name": "unbound-posting-id",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ac57ba359cfb56d47f45c028d29dd13d23448ccfd4882443bd209a9a4968b73d"
+    },
+    {
+      "name": "unqualified-foreign-origin",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ac57ba359cfb56d47f45c028d29dd13d23448ccfd4882443bd209a9a4968b73d"
+    },
+    {
+      "name": "cross-issuer",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ac57ba359cfb56d47f45c028d29dd13d23448ccfd4882443bd209a9a4968b73d"
+    },
+    {
+      "name": "lost-qualified-lookup",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "585fb8ecbcceff2ea18653287957c945bf3a5c95c52b50c46ebf97a3863a3932"
+    }
+  ],
+  "restoredTests": "passed"
+}

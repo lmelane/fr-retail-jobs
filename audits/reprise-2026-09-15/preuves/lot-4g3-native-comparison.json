@@ -1,0 +1,35 @@
+{
+  "groups": 13,
+  "bothFeedsCompared": true,
+  "allMatchingNativeIdentifiers": true,
+  "allMatchingIssuers": true,
+  "samples": [
+    {
+      "id": "68264a3e-8a35-40a7-9a4a-0830b00e87a8",
+      "sameNativeIdentifier": true,
+      "sameIssuer": true,
+      "urls": [
+        "https://bzb.teamtailor.com/jobs/8360799-vendeur-h-f-cdi-35h",
+        "https://recrutement.b-z-b.com/jobs/8360799-vendeur-h-f-cdi-35h"
+      ]
+    },
+    {
+      "id": "a75a7f9a-4510-4946-be50-66f7c6da109c",
+      "sameNativeIdentifier": true,
+      "sameIssuer": true,
+      "urls": [
+        "https://bzb.teamtailor.com/jobs/8341991-vendeur-h-f-cdi-25h",
+        "https://recrutement.b-z-b.com/jobs/8341991-vendeur-h-f-cdi-25h"
+      ]
+    },
+    {
+      "id": "febdfe76-bccf-4ee1-abb1-9c193c8c1d73",
+      "sameNativeIdentifier": true,
+      "sameIssuer": true,
+      "urls": [
+        "https://bzb.teamtailor.com/jobs/8320675-vendeur-h-f-cdi-7h",
+        "https://recrutement.b-z-b.com/jobs/8320675-vendeur-h-f-cdi-7h"
+      ]
+    }
+  ]
+}
