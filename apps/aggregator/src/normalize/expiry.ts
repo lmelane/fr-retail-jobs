@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-export const EXPIRY_READER_VERSION = 4;
+export const EXPIRY_READER_VERSION = 5;
 export type ExpiryEvidence = {
   readerVersion: number; rawHash: string; path: string; value: string;
   precision: 'INSTANT' | 'DATE'; policy: 'SOURCE_INSTANT' | 'END_OF_DECLARED_DAY_ANYWHERE';
@@ -50,7 +50,7 @@ export function parseDeclaredDeadline(value: string): { expiresAt: Date | null; 
       status: supported ? 'INTERPRETED' : 'BEYOND_STORAGE_RANGE' };
   }
   const dotNet = /^\/Date\((-?\d+)(?:[+-]\d{4})?\)\/$/.exec(value);
-  const iso = /^(\d{4}-\d{2}-\d{2})T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})$/.exec(value);
+  const iso = /^(\d{4}-\d{2}-\d{2})T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z|[+-](?:[01]\d|2[0-3]):?[0-5]\d)$/.exec(value);
   const httpDate = /^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} GMT$/.test(value);
   if (!dotNet && !iso && !httpDate) return undefined;
   // JS rolls e.g. 2026-02-30 into March. Reject that malformed native date.

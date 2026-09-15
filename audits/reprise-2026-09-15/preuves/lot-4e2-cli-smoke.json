@@ -1,0 +1,28 @@
+{
+  "preview": {
+    "scanned": 2,
+    "changes": 2,
+    "reviews": 0,
+    "batches": 1
+  },
+  "reviewPreview": {
+    "scanned": 1,
+    "changes": 0,
+    "reviews": 1,
+    "batches": 1
+  },
+  "firstApplication": {
+    "written": 2,
+    "alreadyApplied": false
+  },
+  "repeat": {
+    "written": 0,
+    "alreadyApplied": true
+  },
+  "fileMode": "0600",
+  "reviewBlocked": true,
+  "invalidArgumentsRejected": 4,
+  "overwriteRefused": true,
+  "jobProjectionUnchanged": true,
+  "sourceAttestationsUnchanged": true
+}

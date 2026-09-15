@@ -31,7 +31,7 @@ describe('declared source expiry', () => {
     expect(declaredExpiry('unknown', { end_date: '2026-09-01T12:00:00Z' })).toBeUndefined();
     expect(declaredExpiry('flatchr', { vacancy: { contract_type: 'CDD', end_date: '2024-09-01T12:00:00Z' } })).toBeUndefined();
   });
-  it.each(['2026-02-30', '2026-02-30T00:00:00Z', '2026-09-18T12:00:00', '18/09/2026', '0', 'not a date'])('does not guess an invalid or unzoned deadline: %s', value => {
+  it.each(['2026-02-30', '2026-02-30T00:00:00Z', '2026-09-18T12:00:00', '18/09/2026', '0', 'not a date', '2026-09-18T24:00:00Z', '2026-09-18T23:60:00Z', '2026-09-18T23:59:60Z', '2026-09-18T23:59:59+24:00', '2026-09-18T23:59:59+02:60'])('does not guess an invalid or unzoned deadline: %s', value => {
     expect(parseDeclaredDeadline(value)).toBeUndefined();
   });
 });

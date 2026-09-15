@@ -117,6 +117,8 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 [Sous-lot 4E1 validé localement](lot-4e1.md) : extraction JSON-LD conforme aux attributs HTML non cités, 34 offres Fenwick capturées et rejouées hors réseau avec leurs dates, lecteur d’échéance version 4. Le snapshot historique conserve 50 128 présentations reconstructibles ; les nouvelles collectes ne le réattestent pas. La reprise des échéances en cache reste à livrer.
 
+[Sous-lot 4E2 validé localement](lot-4e2.md) : plan d’échéances version 2, révision calculée, preuve antérieure conservée après capture partielle, retrait borné des deux règles réfutées et cas sans preuve explicitement bloqués. Les 3 043 tests, 11 contre-épreuves et la CLI passent ; aucune reprise du stock distant n’a été exécutée.
+
 **Objectif.** Éviter les doublons visibles sans supprimer des postes distincts.
 
 - **Fichiers :** `dedup/match.ts`, `upsert.ts`, `packages/db/publications.ts`, `postingIdentity`, `reconcile`, schéma et API d’identités/redirects.

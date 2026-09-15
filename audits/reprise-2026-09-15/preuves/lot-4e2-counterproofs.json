@@ -1,0 +1,71 @@
+{
+  "mutations": [
+    {
+      "name": "unreviewed-plan",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "31a2243854a031ad5ebafb02e334b1209ffbe71180191b125602eb7e6404a01c"
+    },
+    {
+      "name": "wrong-reader-revision",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "31a2243854a031ad5ebafb02e334b1209ffbe71180191b125602eb7e6404a01c"
+    },
+    {
+      "name": "future-observation",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "31a2243854a031ad5ebafb02e334b1209ffbe71180191b125602eb7e6404a01c"
+    },
+    {
+      "name": "held-observation",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "31a2243854a031ad5ebafb02e334b1209ffbe71180191b125602eb7e6404a01c"
+    },
+    {
+      "name": "missing-prior-proof",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "31a2243854a031ad5ebafb02e334b1209ffbe71180191b125602eb7e6404a01c"
+    },
+    {
+      "name": "retired-contract-expiry",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "31a2243854a031ad5ebafb02e334b1209ffbe71180191b125602eb7e6404a01c"
+    },
+    {
+      "name": "stale-activity",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "31a2243854a031ad5ebafb02e334b1209ffbe71180191b125602eb7e6404a01c"
+    },
+    {
+      "name": "unbounded-current-raw",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "31a2243854a031ad5ebafb02e334b1209ffbe71180191b125602eb7e6404a01c"
+    },
+    {
+      "name": "unbounded-old-raw",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "31a2243854a031ad5ebafb02e334b1209ffbe71180191b125602eb7e6404a01c"
+    },
+    {
+      "name": "invented-observation-clock",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "31a2243854a031ad5ebafb02e334b1209ffbe71180191b125602eb7e6404a01c"
+    },
+    {
+      "name": "rollover-deadline",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "e918c39784b4a64cc416a34af4320f734521c28a91e5a758f37d8280306b8fce"
+    }
+  ],
+  "restoredTests": "passed"
+}
