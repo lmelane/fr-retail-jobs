@@ -14,11 +14,10 @@ import { lockSourceWrites } from '../lib/writeLocks.js';
  * and field-coverage rates as columns.
  */
 
-/** The shape the ingest pipeline consumes — CatalogSource plus its identity. */
-export type RuntimeSource = CatalogSource & {
-  key: string;
-  tier: string;
-  status: SourceStatus;
+/** Registry settings and their exact immutable revision consumed by ingestion. */
+export type RuntimeSource = Pick<Source, 'key' | 'maison' | 'kind' | 'careersDomain' | 'tier' | 'status' | 'verifiedJobCount' | 'lastRunJobs'> & {
+  config: Record<string, unknown>;
+  revisionId: string;
 };
 
 /**
@@ -95,30 +94,6 @@ export function tenantKeyOf(kind: string, entryUrl: string, careersDomain?: stri
   return `${kind}:${normalized}`;
 }
 
-/** Source row -> the CatalogSource shape every consumer already reads. */
-function toRuntime(row: Source): RuntimeSource {
-  const config = row.config as Record<string, unknown>;
-  // Symmetric with the import: `{url}` rows were plain-URL CSV lines (sitemap
-  // sources read entryUrl directly as a URL); everything else is JSON config.
-  const keys = Object.keys(config ?? {});
-  const entryUrl =
-    keys.length === 1 && keys[0] === 'url' && typeof config.url === 'string'
-      ? config.url
-      : JSON.stringify(config ?? {});
-  return {
-    maison: row.maison,
-    careersDomain: row.careersDomain ?? '',
-    kind: row.kind,
-    entryUrl,
-    jobUrlPattern: row.jobUrlPattern ?? '',
-    robotsVerdict: row.robotsVerdict ?? '',
-    jobCount: row.verifiedJobCount ?? 0,
-    key: row.key,
-    tier: row.tier,
-    status: row.status,
-  };
-}
-
 /**
  * Every ACTIVE source — what the ingest runs.
  *
@@ -127,14 +102,16 @@ function toRuntime(row: Source): RuntimeSource {
  * chantier exists to kill. The fix is one command: `import-sources`.
  */
 export async function loadActiveSources(prisma: PrismaClient): Promise<RuntimeSource[]> {
-  const total = await prisma.source.count();
-  if (total === 0) {
-    throw new Error(
-      'Source table is empty — the catalogue has not been imported. Run: npm run import-sources -w @catwalks/aggregator',
-    );
-  }
-  const rows = await prisma.source.findMany({ where: { status: 'ACTIVE' }, orderBy: { key: 'asc' } });
-  return rows.map(toRuntime);
+  return prisma.$transaction(async tx => {
+    if (await tx.source.count() === 0) throw new Error(
+      'Source table is empty — the catalogue has not been imported. Run: npm run import-sources -w @catwalks/aggregator');
+    // JSONB text avoids the driver's lossy JSON-number conversion and keeps
+    // the loaded settings and revision in one coherent database snapshot.
+    const rows = await tx.$queryRaw<(Omit<RuntimeSource, 'config'> & { configText: string })[]>`
+      SELECT key, maison, kind, "careersDomain", tier, status, "verifiedJobCount", "lastRunJobs", "currentRevisionId" AS "revisionId",
+        config::text AS "configText" FROM "Source" WHERE status='ACTIVE' ORDER BY key`;
+    return rows.map(({ configText, ...row }) => ({ ...row, config: JSON.parse(configText) as Record<string, unknown> }));
+  }, { isolationLevel: 'RepeatableRead' });
 }
 
 export type ImportStats = {

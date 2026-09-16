@@ -19,7 +19,7 @@ import { loadTrust } from '../trust/persist.js';
 import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
 import { cleanTitle, cleanPlace, plausiblePostedAt, briefError } from '../lib/normalize.js';
-import { normalizeSourceConfig } from '../connectors/sourceConfig.js';
+import { effectiveSourceConfig } from '../connectors/sourceConfig.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
 import type { NormalizedJob } from '../types.js';
@@ -239,19 +239,7 @@ async function ingestApiSource(
     return stats;
   }
 
-  let config: Record<string, unknown> = {};
-  try {
-    config = JSON.parse(source.entryUrl || '{}');
-  } catch {
-    // Legacy rows keep a plain URL there; adapters that need one read origin.
-    config = { origin: source.entryUrl };
-  }
-
-  // Resolve config-key synonyms before the adapter reads it: a discovery batch
-  // may have written `careers_url` where the Teamtailor adapter expects
-  // `origin`, and the unrecognised key fetched nothing — the live "origin
-  // missing" failures. qualification and ingestion use the same resolver.
-  config = normalizeSourceConfig(config);
+  const config = effectiveSourceConfig(source.config);
 
   const occupationTaxonomy = catalogue ?? await loadOccupationTaxonomy(prisma);
   stats.occupationReleaseId = occupationTaxonomy.manifest.id;
@@ -265,7 +253,7 @@ async function ingestApiSource(
    */
   const fetchStartedAt = Date.now();
   const { jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = await captureExtraction(
-    prisma, stats.source, config, log.runId(), settings => fetchAtsJobs(type as never, settings), type);
+    prisma, stats.source, config, log.runId(), settings => fetchAtsJobs(type as never, settings), type, { revisionId: source.revisionId, requireActive: true });
   stats.fetchMs = Date.now() - fetchStartedAt;
   // One durable source-level event retains the reason behind completeness.
   // The operational logger stores large proofs in PipelineEvent and prints

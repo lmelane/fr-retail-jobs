@@ -1,0 +1,47 @@
+{
+  "mutations": [
+    {
+      "name": "ignore-loaded-revision",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38f4ebef872a9826b5c846be12383df82f1c374e984ed5cd84105f2b3fb073e4"
+    },
+    {
+      "name": "ignore-registered-settings",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38f4ebef872a9826b5c846be12383df82f1c374e984ed5cd84105f2b3fb073e4"
+    },
+    {
+      "name": "ignore-registered-reader",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38f4ebef872a9826b5c846be12383df82f1c374e984ed5cd84105f2b3fb073e4"
+    },
+    {
+      "name": "ignore-collection-state",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38f4ebef872a9826b5c846be12383df82f1c374e984ed5cd84105f2b3fb073e4"
+    },
+    {
+      "name": "publish-obsolete-revision",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1d36f171fde0ff2daa190f8ba703d3919cb309336451e6d31a9ea82169cfe333"
+    },
+    {
+      "name": "ignore-revision-write-check",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38f4ebef872a9826b5c846be12383df82f1c374e984ed5cd84105f2b3fb073e4"
+    },
+    {
+      "name": "unlocked-publication-revision",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38f4ebef872a9826b5c846be12383df82f1c374e984ed5cd84105f2b3fb073e4"
+    }
+  ],
+  "restoredTests": "passed"
+}

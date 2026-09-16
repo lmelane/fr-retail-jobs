@@ -1,0 +1,12 @@
+{
+  "backup": "backups/reprise-20260916-lot5b/before-source-execution-cleanup.dump",
+  "sha256": "74a8e0f8c00eb32e5a953eadba2467d7c5e7e9c6dbeecad9961b109c5c811ee9",
+  "bytes": 1133623276,
+  "schemaMigrations": 56,
+  "stockRowsUnchangedSinceBackup": true,
+  "restoreRequiresMigrations": [
+    57,
+    58,
+    59
+  ]
+}

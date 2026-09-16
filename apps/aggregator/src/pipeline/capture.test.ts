@@ -146,8 +146,8 @@ describe('native extraction evidence', () => {
 
   it('stops before parsing when durable capture fails, even if an adapter catches the transport error', async () => {
     const source = key(); const network = vi.fn(async () => new Response(payload)); vi.stubGlobal('fetch', network);
-    vi.spyOn(db, '$transaction').mockRejectedValue(new Error('Archive database unavailable'));
     await expect(captureExtraction(db, source, {}, undefined, async () => {
+      vi.spyOn(db, '$transaction').mockRejectedValue(new Error('Archive database unavailable'));
       try { await fetchJson(url); } catch { /* An adapter may hold a failed detail. */ }
       return { jobs: [] };
     })).rejects.toThrow('capture unavailable');

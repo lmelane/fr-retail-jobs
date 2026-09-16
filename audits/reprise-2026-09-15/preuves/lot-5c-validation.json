@@ -1,0 +1,33 @@
+{
+  "date": "2026-09-16",
+  "productionWrites": false,
+  "stockCloneWrites": "MIGRATION_59_ONLY",
+  "readerRevision": "local-sha256:2c9c2ae22c258ebbdc1005335c2e85cb27cf1f1aac5cf76cb83483e351412fea",
+  "unitPassed": 2397,
+  "integrationPassed": 591,
+  "apiPassed": 259,
+  "pythonPassed": 5,
+  "totalPassed": 3252,
+  "optionalApiSkipped": 2,
+  "targetedTestsPassed": 157,
+  "clientCounterproofsRejected": 7,
+  "sqlGuardCounterproofsRolledBack": 3,
+  "typecheck": "PASS_IN_FRESH_VALIDATION",
+  "apiBuild": "PASS",
+  "migrations": 59,
+  "migrationFromZero": "PASS",
+  "realNativeJobs": 80,
+  "sourceCertification": "NOT_DELIVERED_IN_THIS_LOT",
+  "logs": {
+    "lot5c-full-validation.log": "862da87f103da9feea835fe664a46b3f8cb9e8d17f0d70c4472e3b011d3cd0e6",
+    "lot5c-api-build.log": "7d116af498c37ec1731d9747137d0565e447d3362b89d65a84f9d5ea5d6bf3df",
+    "lot5c-test-output.log": "7fee4144d5505db6ba18413dba72563667540b6fb414226016a98764500f164e",
+    "lot5c-counterproof-baseline.log": "624ce980ec2fc71be7b902566ef436ba0073a07d51d50b4273669fb072e04a88",
+    "lot5c-counterproof-restored.log": "83007f6796b361fde64283fe5e7bc77c40020d69026b9db919c2ae294ede3e29",
+    "lot5c-sql-counterproofs.log": "db024a642424888b53866d63c5e66d4d4790f88fa2b1d62f77c492fea687ae62",
+    "lot5c-live-s3.log": "7da15fb7e4424614162dbcc1a25ad697a251327e288d474106130be87da11d9e",
+    "lot5c-cli.log": "c2a734a4f8c1bc86d52b5bea19fae23140c21181df3dbbb7b492ac5c8dccdb11",
+    "lot5c-cli-config-refusal.log": "063c3d7700aab671384660156e8733abfe741859569eb7b225ebfd10b0bd456d",
+    "lot5c-stock-migrate.log": "44d1fade16eb460e757ba1ddef3c84db58365ddf004ddeddb702c06e82894197"
+  }
+}

@@ -4,6 +4,7 @@ import type { PrismaClient } from '@prisma/client';
 import type { NormalizedJob } from '../types.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
+import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
 import { archiveAdapterOutput } from '../capture/observations.js';
 
 /** Preserve a defective employer posting without creating a public job or
@@ -16,7 +17,8 @@ export async function archivePublicationHold(db: PrismaClient, sourceKey: string
     assertSourceRunning();
     const source = await tx.source.findUniqueOrThrow({ where: { key: sourceKey }, select: { status: true } });
     if (source.status === 'RETIRED') throw new Error('Cannot archive a retired source');
-    await archiveAdapterOutput(tx, { ...job, sourceKey });
+    const capture = await archiveAdapterOutput(tx, { ...job, sourceKey });
+    if (capture) await requireCurrentCaptureRevision(tx, capture.batch);
     assertSourceRunning();
   });
   const withdrawn = job.publicationWithdrawnAt;

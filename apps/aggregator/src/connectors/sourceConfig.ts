@@ -39,3 +39,13 @@ export function normalizeSourceConfig(config: Record<string, unknown>): Record<s
   }
   return filled;
 }
+
+/** The collector settings for a stored registry object. URL-only seed rows are
+ * expanded here, so capture validation and ingestion cannot disagree. */
+export function effectiveSourceConfig(value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('Source configuration must be an object');
+  const config = value as Record<string, unknown>;
+  const keys = Object.keys(config);
+  return normalizeSourceConfig(keys.length === 1 && keys[0] === 'url' && typeof config.url === 'string'
+    ? { origin: config.url } : config);
+}

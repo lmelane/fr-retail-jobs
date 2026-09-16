@@ -453,7 +453,7 @@ describe('expiry evidence reconciliation', () => {
           await captureExtraction(
             db,
             key,
-            {},
+            { origin: 'https://example.com', site: 'Fixture' },
             undefined,
             async () => ({
               jobs: [
@@ -582,6 +582,8 @@ describe('expiry belongs to its native publication', () => {
       vi.fn(async () => new Response(JSON.stringify(raw))),
     );
     try {
+      // Record a historical reader transition; current captures now reject a mismatched reader before transport.
+      if (mode === 'kind') await db.source.update({ where: { key }, data: { kind: 'lever' } });
       const result = await captureExtraction(
         db,
         mode === 'source' ? key + '-other' : key,
@@ -603,6 +605,7 @@ describe('expiry belongs to its native publication', () => {
         },
         mode === 'kind' ? 'LEVER' : 'WORKDAY',
       );
+      if (mode === 'kind') await db.source.update({ where: { key }, data: { kind: 'workday' } });
       const job = result.jobs[0];
       await db.jobSource.update({
         where: { id: 'js-' + id },

@@ -1,4 +1,5 @@
 import type { PrismaClient, AtsType } from '@prisma/client';
+import { bindSourceRevision, type SourceBinding } from '../connectors/sourceRevision.js';
 import { randomUUID } from 'node:crypto';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import type { AdapterResult } from '../types.js';
@@ -11,10 +12,13 @@ import { sourceExecutionBudget } from '../lib/sourceBudget.js';
 import { captureReaderRevision } from './revision.js';
 
 export async function captureExtraction(db: PrismaClient, sourceKey: string, config: Record<string, unknown>,
-  runId: string | undefined, work: (config: Record<string, unknown>) => Promise<AdapterResult>, sourceKind?: AtsType): Promise<AdapterResult> {
+  runId: string | undefined, work: (config: Record<string, unknown>) => Promise<AdapterResult>, sourceKind?: AtsType, binding?: SourceBinding): Promise<AdapterResult> {
   const settings = captureConfig(config);
-  const batch = await db.captureBatch.create({ data: { id: randomUUID(), sourceKey, runId,
-    configHash: evidenceHash(settings), executionBudget: sourceExecutionBudget(), sourceKind, formatVersion: 2, readerRevision: captureReaderRevision() } });
+  const batch = await db.$transaction(async tx => {
+    const sourceRevisionId = await bindSourceRevision(tx, sourceKey, settings, sourceKind, binding);
+    return tx.captureBatch.create({ data: { id: randomUUID(), sourceKey, runId, sourceRevisionId,
+      configHash: evidenceHash(settings), executionBudget: sourceExecutionBudget(), sourceKind, formatVersion: 2, readerRevision: captureReaderRevision() } });
+  });
   const context: CaptureContext = { sequence: 0, observedAt: batch.startedAt, write: record => persistCapture(db, batch.id, record) };
   return withCaptureContext(context, async () => {
     try {

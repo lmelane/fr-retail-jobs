@@ -15,6 +15,7 @@ import { normalizedEmployerName } from '../normalize/employerName.js';
 import { lockEmployerCatalogue } from '../lib/writeLocks.js';
 import { resolveEmployer, recordEmployerObservation, type EmployerResolution } from '../identity/resolve.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
+import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
 import { lockCompanyRows, lockSourceWrites } from '../lib/writeLocks.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { selectApplySource, SOURCE_PRIORITY } from '@catwalks/db/publications';
@@ -80,6 +81,7 @@ export async function upsertDeduplicated(
       return await prisma.$transaction(async tx => {
         await lockEmployerCatalogue(tx);
         await lockSourceWrites(tx, candidate.sourceKey);
+        if (nativeCapture) await requireCurrentCaptureRevision(tx, nativeCapture.batch);
         const source = await tx.source.findUnique({ where: { key: candidate.sourceKey }, select: { status: true } });
         if (source?.status === 'RETIRED') throw new Error(`Source ${candidate.sourceKey} is RETIRED`);
         // Read identity/observation state only after serializing this upstream

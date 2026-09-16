@@ -152,7 +152,7 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 ## Lot 5. Certifier les sources et préparer le cycle complet
 
-**5A et 5B validés : [manifeste intégral, clôture et rejeu strict](lot-5a.md), puis [configuration stable, budgets séparés et suppression des curseurs morts](lot-5b.md). La certification et le remplacement du parcours de promotion restent à livrer.**
+**5A, 5B et 5C validés : [manifeste intégral, clôture et rejeu strict](lot-5a.md), [configuration stable et budgets séparés](lot-5b.md), puis [révisions immuables du registre et contrôle des collectes](lot-5c.md). La certification, les preuves d’absence liées au périmètre et le remplacement du parcours de promotion restent à livrer.**
 
 **Objectif.** Rendre chaque source du catalogue exploitable ou explicitement exclue.
 

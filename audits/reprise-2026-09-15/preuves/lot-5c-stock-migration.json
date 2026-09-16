@@ -1,0 +1,38 @@
+{
+  "productionWrites": false,
+  "migrationsBefore": 58,
+  "migrationsAfter": 59,
+  "allPriorOfferPublicationObservationAndRegistryColumnsUnchanged": true,
+  "backup": "reprise-20260916-lot5b/before-source-execution-cleanup.dump",
+  "backedUpStockRowsStillExactBeforeMigration": true,
+  "backupSchemaMigrations": 56,
+  "initialSnapshots": {
+    "revisions": 536,
+    "exactSnapshots": 536
+  },
+  "historicalCaptureBindingsInvented": 0,
+  "before": {
+    "JobCount": 87607,
+    "JobHash": "6afc4dc4fba09f3488c16e02f11261919c601c94614037e850d74f0ad18f1c33",
+    "JobSourceCount": 90764,
+    "JobSourceHash": "936e607af64c6f3eeb9ba508a09c5cc06a715b49c7e3bb4caee0308dfe062c28",
+    "SourceObservationCount": 141933,
+    "SourceObservationHash": "6f2ffac6d5f396f058f8b177d70da72ff5e128b6f342d7f27e3caf8c6d24f9f2",
+    "SourceCount": 536,
+    "SourceHash": "b93e340da35f42eaf9e89fe3c355a3a920819d6d5fdb33c742e409848333759b",
+    "migrations": 58,
+    "captures": 0
+  },
+  "after": {
+    "JobCount": 87607,
+    "JobHash": "6afc4dc4fba09f3488c16e02f11261919c601c94614037e850d74f0ad18f1c33",
+    "JobSourceCount": 90764,
+    "JobSourceHash": "936e607af64c6f3eeb9ba508a09c5cc06a715b49c7e3bb4caee0308dfe062c28",
+    "SourceObservationCount": 141933,
+    "SourceObservationHash": "6f2ffac6d5f396f058f8b177d70da72ff5e128b6f342d7f27e3caf8c6d24f9f2",
+    "SourceCount": 536,
+    "SourceHash": "b93e340da35f42eaf9e89fe3c355a3a920819d6d5fdb33c742e409848333759b",
+    "migrations": 59,
+    "captures": 0
+  }
+}

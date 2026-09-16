@@ -181,10 +181,28 @@ model Source {
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt
 
+  currentRevisionId String @default(dbgenerated("(gen_random_uuid())::text"))
+  currentRevision SourceRevision @relation("CurrentSourceRevision", fields: [currentRevisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   identityReviews SourceIdentityReview[]
 
   @@index([status])
   @@index([kind])
+}
+
+/** Each configuration transition gets a new identity, including A -> B -> A.
+ * History is self-contained and survives removal of an unreviewed draft. */
+model SourceRevision {
+  id String @id
+  sourceId String
+  sourceKey String
+  version Int
+  payload Json
+  payloadHash String
+  observedAt DateTime @default(now())
+  currentSources Source[] @relation("CurrentSourceRevision")
+  captures CaptureBatch[]
+  @@unique([sourceId, version])
+  @@index([sourceKey, observedAt])
 }
 
 /**
@@ -1133,6 +1151,8 @@ model CaptureBatch {
   runId String?
   configHash String
   executionBudget Json?
+  sourceRevisionId String?
+  sourceRevision SourceRevision? @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   readerRevision String
   sourceKind String?
   formatVersion Int @default(2)
@@ -1143,6 +1163,7 @@ model CaptureBatch {
   sources JobSource[]
   observations SourceObservation[]
   @@index([sourceKey, startedAt])
+  @@index([sourceRevisionId, startedAt])
   @@index([runId])
 }
 

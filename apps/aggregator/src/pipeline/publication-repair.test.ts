@@ -22,7 +22,7 @@ afterAll(async () => { await db.companyAlias.deleteMany(); await db.jobSource.de
 
 async function publication(options: { url?: string; title?: string; description?: string; country?: string; city?: string; tier?: string; jobId?: string; validThrough?: string; captureKind?: 'LEVER'; readerTitle?: string; readerHold?: string; readerCountry?: string; readerDescription?: string; nativeUrl?: string; omitNativeDescription?: boolean; latitude?: string } = {}) {
   const key = `repair-${randomUUID()}`, url = options.url ?? application;
-  await db.source.create({ data: { key, maison: 'Repair witness', kind: 'generic-listing', config: {}, tier: options.tier ?? 'EMPLOYER_DIRECT', tenantKey: key, status: 'ACTIVE' } });
+  await db.source.create({ data: { key, maison: 'Repair witness', kind: options.captureKind ? 'lever' : 'generic-listing', config: {}, tier: options.tier ?? 'EMPLOYER_DIRECT', tenantKey: key, status: 'ACTIVE' } });
   const raw = { '@type': 'JobPosting', identifier: { '@type': 'PropertyValue', value: key }, url: options.nativeUrl ?? url, title: options.title ?? 'Client Advisor',
     ...(options.omitNativeDescription ? {} : { description: options.description ?? 'Own publication description' }),
     jobLocation: { '@type': 'Place', ...(options.latitude ? { geo: { latitude: options.latitude, longitude: '9.1' } } : {}), address: { '@type': 'PostalAddress', addressCountry: options.country, addressLocality: options.city } },
@@ -36,6 +36,7 @@ async function publication(options: { url?: string; title?: string; description?
     const job: NormalizedJob = { ...parsed, externalId, url, ...(options.readerTitle ? { title: options.readerTitle } : {}), ...(options.readerHold ? { publicationHold: options.readerHold } : {}), ...(options.readerCountry ? { country: options.readerCountry } : {}), ...(options.readerDescription ? { description: options.readerDescription } : {}) };
     return { jobs: [job] };
   }, options.captureKind ?? 'GENERIC_JSONLD');
+  if (options.captureKind) await db.source.update({ where: { key }, data: { kind: 'generic-listing' } });
   const native = result.jobs[0];
   const parent = options.jobId ? await db.job.findUniqueOrThrow({ where: { id: options.jobId } }) : await db.job.create({ data: {
     companyId, externalId, source: 'GENERIC_JSONLD', title: native.title, description: native.description, url, fingerprint: key,
@@ -453,10 +454,25 @@ describe('native publications without public presentation', () => {
     const old = await reobserve(held);
     await apply(await planPublicationGroups(db, request));
     await expect(upsertDeduplicated(db, old)).rejects.toThrow('NEW_NATIVE_CAPTURE');
-    for (const options of [{ hold: 'WRONG_DETAIL' }, { config: { different: true } }, { missingDescription: true }]) {
+    await expect(reobserve(held, { config: { different: true } })).rejects.toThrow('settings differ');
+    for (const options of [{ hold: 'WRONG_DETAIL' }, { missingDescription: true }]) {
       const candidate = await reobserve(held, options);
       await expect(upsertDeduplicated(db, candidate)).rejects.toThrow(/QUARANTINE_CAPTURE_NOT_QUALIFIED|QUARANTINE_RECOVERY_REQUIRED/);
       expect((await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).jobId).toBeNull();
+    }
+  });
+
+  it('does not publish an in-flight capture after its source configuration changes', async () => {
+    const { upsertDeduplicated } = await import('../dedup/upsert.js');
+    for (const quarantine of [false, true]) {
+      const { held, request } = await mixed();
+      if (quarantine) await apply(await planPublicationGroups(db, request));
+      const candidate = await reobserve(held);
+      const before = await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } });
+      await db.source.update({ where: { key: held.source.sourceKey }, data: { config: { scope: 'different' } } });
+      await expect(upsertDeduplicated(db, candidate)).rejects.toThrow('no longer current');
+      expect(await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).toEqual(before);
+      expect(await db.publicationIdentityDecision.count({ where: { sourceId: held.source.id, action: 'RELEASED' } })).toBe(0);
     }
   });
 

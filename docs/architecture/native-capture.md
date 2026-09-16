@@ -1,6 +1,6 @@
 # Captures natives, sorties d’extraction et rétention
 
-Contrat des lots 2, 5A et 5B, actualisé le 16 septembre 2026. L’implémentation est validée localement et le transport d’archive sur un environnement Railway isolé. Les services de production n’utilisent pas encore ces migrations. Les preuves et les limites de livraison figurent dans le [bilan du lot](../../audits/reprise-2026-09-15/lot-2.md).
+Contrat des lots 2, 5A, 5B et 5C, actualisé le 16 septembre 2026. L’implémentation est validée localement et le transport d’archive sur un environnement Railway isolé. Les services de production n’utilisent pas encore ces migrations. Les preuves et les limites de livraison figurent dans le [bilan du lot](../../audits/reprise-2026-09-15/lot-2.md).
 
 ## Ce qui fait foi
 
@@ -10,7 +10,8 @@ Le navigateur conserve séparément les réponses document/XHR/fetch et le DOM r
 
 | Entité | Responsabilité |
 |---|---|
-| `CaptureBatch` | Source, début d’extraction, empreinte de configuration, version du lecteur et format |
+| `SourceRevision` | Configuration privée native du registre, empreinte SQL, numéro de transition et date de première observation |
+| `CaptureBatch` | Source, révision du registre si connue, début d’extraction, empreinte des réglages effectifs, version du lecteur et format |
 | `RawCapture` | Une tentative, ordre de réception, empreinte de requête, statut, métadonnées et référence des octets |
 | `RawBlob` / `RawBlobBody` | Identité SHA-256, taille, empreinte et taille gzip ; octets locaux compressés |
 | `SourceExtraction` | Une sortie complète d’offre par collecte et position, conservée avant les transformations communes |
@@ -28,7 +29,7 @@ Le lecteur rejoue les réponses correspondant à l’empreinte de requête : mé
 
 Le temps de référence de l’extraction est conservé pour les dates relatives et les décisions datées produites par les lecteurs concernés. Chaque reçu natif garde en plus sa propre date de capture. L’outil compare chaque sortie rejouée, son ordre et son identifiant aux empreintes des octets enregistrés. Il compare aussi toutes les métadonnées du résultat, notamment `complete`, `truncated`, les compteurs, les périmètres et les lignes rejetées. Un écart fait échouer la commande.
 
-Le rejeu complet exige la configuration originale et la version compatible du lecteur. La configuration est hachée, pas copiée avec ses secrets. Conserver sa version privée dans le dossier de preuve du run. La lecture d’un corps par identifiant reste possible sans cette configuration. Les requêtes concurrentes strictement identiques sont consommées dans l’ordre enregistré ; un lecteur dépendant de leur ordre d’arrivée doit être qualifié sur son propre corpus.
+Le rejeu complet exige la configuration originale et la version compatible du lecteur. Les réglages effectifs du lecteur sont hachés. Pour une source enregistrée, la révision conserve aussi la configuration native du registre dans la base privée. Les captures historiques ou les sondes non enregistrées restent sans révision ; aucune configuration passée ne leur est attribuée artificiellement. La commande actuelle de rejeu exige encore le fichier privé des réglages effectifs. La lecture d’un corps par identifiant reste possible sans cette configuration. Les requêtes concurrentes strictement identiques sont consommées dans l’ordre enregistré ; un lecteur dépendant de leur ordre d’arrivée doit être qualifié sur son propre corpus.
 
 ## Manifeste et clôture de collecte
 
@@ -51,6 +52,18 @@ Le délai coopératif peut interrompre proprement la pagination réelle. Il ne c
 Les commandes de validation et de lecture de preuve officielle utilisent ce mécanisme commun. La lecture du corps fait partie du budget et conserve la limite de taille HTTP. L’ancien `Promise.race` qui abandonnait une promesse sans annuler son transport a été supprimé.
 
 Le curseur de collecte tournante, son modèle et ses tests ont été retirés : son seul consommateur était l’ancienne collecte d’offres FashionJobs, déjà interdite par la décision produit. La découverte d’acteurs et le refus explicite de réintroduire des offres FashionJobs sont conservés. Les anciennes lignes de curseur sont sauvegardées avant la migration de reprise ; elles ne contiennent aucune publication ni RAW.
+
+## Révisions du registre et collecte en cours
+
+Une modification réelle du nom, du lecteur, de sa configuration, du domaine, du motif d’URL, du rang de source ou de l’identité de tenant crée une révision immuable. Le retour A → B → A produit trois identités distinctes : retrouver les mêmes paramètres ne doit pas réactiver une ancienne validation. Les mises à jour de santé, de statut ou de notes ne créent pas de révision de configuration.
+
+Le registre fournit directement son JSON et sa révision au moteur. La lecture utilise le texte JSONB natif pour éviter la conversion numérique du pilote. Le résolveur des réglages est commun à l’ingestion et au contrôle de capture. Avant toute requête, une source enregistrée doit correspondre au lecteur, aux réglages et, pour l’ingestion, à la révision active chargée. La création de collecte et ce contrôle partagent une transaction avec verrou de lecture sur la source.
+
+Changer la configuration d’une source active la met en pause. Un retrait explicitement demandé reste un retrait. La transaction de publication vérifie à nouveau la révision et la verrouille jusqu’à son terme ; une collecte devenue obsolète reste archivée sans autoriser une publication dans le nouveau périmètre. L’inspection historique des archives reste indépendante de ce droit de publication.
+
+Le premier instantané de migration décrit uniquement l’état constaté du registre. Les instantanés survivent au retrait d’un brouillon, sans lien en cascade qui effacerait leur histoire. Leur contenu est privé et peut contenir des paramètres d’accès déjà présents dans le registre ; il ne doit jamais être journalisé ou servi publiquement.
+
+Ce mécanisme ne remplace pas la certification d’une source. Le remplacement du compteur manuel de promotion, les preuves d’absence liées au périmètre et la gestion des paramètres d’accès par références privées restent des étapes obligatoires avant release.
 
 ## Stockage et garde de rétention
 
