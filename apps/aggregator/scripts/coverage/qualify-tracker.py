@@ -127,7 +127,7 @@ def certify(source):
 def activation(source):
     return {'status': source['status'], 'tier': source.get('tier'), 'lastRunAt': source.get('lastRunAt'), 'lastRunStatus': source.get('lastRunStatus'),
             'lastRunJobs': source.get('lastRunJobs'),
-            'robotsVerdict': source.get('robotsVerdict'), 'robotsCheckedAt': source.get('robotsCheckedAt')}
+            'access': source.get('access', {'passed': False, 'code': 'ACCESS_NOT_IN_SNAPSHOT'})}
 
 def completeness(source):
     key = source['key']; rc = receipts.get(key); run = latest_runs.get(key)

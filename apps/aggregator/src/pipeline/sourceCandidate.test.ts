@@ -6,7 +6,7 @@ const p=new PrismaClient();const keys=['candidate-test','candidate-copy'];
 beforeEach(()=>p.source.deleteMany({where:{key:{in:keys}}}));afterAll(async()=>{await p.source.deleteMany({where:{key:{in:keys}}});await p.$disconnect();});
 const candidate={key:keys[0],maison:'Example',kind:'harri',config:{slug:'Example-Careers'},careersDomain:'harri.com',tier:'ATS_OFFICIAL' as const};
 it('registers DRAFT without fabricated proof and preserves operational state on replay',async()=>{
- const first=await registerSourceCandidate(p,candidate);expect(first).toMatchObject({created:true,source:{status:'DRAFT',robotsCheckedAt:null}});
+ const first=await registerSourceCandidate(p,candidate);expect(first).toMatchObject({created:true,source:{status:'DRAFT'}});
  await p.source.update({where:{key:candidate.key},data:{status:'RETIRED'}});
  expect(await registerSourceCandidate(p,candidate)).toMatchObject({created:false,source:{status:'RETIRED'}});
  await expect(registerSourceCandidate(p,{...candidate,maison:'Other'})).rejects.toThrow('conflicts');

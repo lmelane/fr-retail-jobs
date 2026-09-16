@@ -1,5 +1,6 @@
 import type { Prisma, PrismaClient, Source, SourceStatus } from '@prisma/client';
 import { loadSourceCatalog, tierFor, sourceKeyFor, type CatalogSource } from './sourceCatalog.js';
+import { requireSourceAccess } from './sourceAccess.js';
 import { requireSourceValidation } from './sourceCertification.js';
 import { requireSourceIdentity } from './sourceIdentity.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
@@ -11,7 +12,7 @@ import { lockSourceWrites } from '../lib/writeLocks.js';
  * Why a table: a CSV line has no lifecycle. Removing one left its offers
  * orphaned forever (the « Cartier +3 » incident, D27), promotion was a hand
  * edit with no guard, and per-source quality lived in a note string nobody
- * could query. The table carries status, a dated robots verdict, the last run
+ * could query. The table carries status, the last run
  * and field-coverage rates as columns.
  */
 
@@ -162,8 +163,6 @@ export async function importSourcesCsv(prisma: PrismaClient): Promise<ImportStat
       jobUrlPattern: source.jobUrlPattern || null,
       tier: tierFor(source),
       tenantKey,
-      robotsVerdict: source.robotsVerdict || null,
-      robotsCheckedAt: null,
     };
     await prisma.source.create({ data: { ...data, key, status: 'DRAFT' } });
     stats.imported++;
@@ -178,27 +177,9 @@ export type PromoteResult = {
   to: 'ACTIVE';
 };
 
-/**
- * DRAFT/VALIDATED/PAUSED -> ACTIVE, with the guards a hand-edited CSV never
- * had (règles permanentes du plan) : a promoted source must have a config, a
- * DATED robots verdict, reviewed identity and a replayed native validation.
- */
-/**
- * An access verdict allows collection when robots.txt allows it (`ALLOWED`) or
- * when the owner recorded a nominal authorization on the row, e.g.
- * `ALLOWED (autorisation propriétaire — URBN (autorisation obtenue par Loïc), 2026-09-05)`:
- * hub-urbn.icims.com publishes `Disallow: /` and the source was activated on that
- * authorization. The note is part of the verdict and stays on the row; a bare
- * `ALLOWED (…)` without the word "autorisation" is not a verdict we recognize.
- */
-export function isAllowedAccessVerdict(verdict: string | null | undefined): boolean {
-  const value = (verdict ?? '').trim();
-  if (value.toUpperCase() === 'ALLOWED') return true;
-  return /^ALLOWED \((?=.*autorisation)[^)]*(\([^)]*\)[^)]*)*\)$/i.test(value);
-}
-
+/** Promotion consumes current independent native, identity and access decisions. */
 export class SourcePromotionGateError extends Error {
-  constructor(readonly code: 'SOURCE_MISSING' | 'REVISION_MISMATCH' | 'RETIRED' | 'CONFIG_EMPTY' | 'ACCESS_MISSING' | 'ACCESS_DENIED' | 'CONCURRENT_CHANGE', message: string) {
+  constructor(readonly code: 'SOURCE_MISSING' | 'REVISION_MISMATCH' | 'RETIRED' | 'CONFIG_EMPTY' | 'CONCURRENT_CHANGE', message: string) {
     super(message); this.name = 'SourcePromotionGateError';
   }
 }
@@ -222,15 +203,10 @@ export async function promoteSource(prisma: PrismaClient, key: string, expectedR
     if (!config || Object.keys(config).length === 0) {
       throw new SourcePromotionGateError('CONFIG_EMPTY', `promote: "${key}" has no adapter config`);
     }
-    if (!row.robotsVerdict || !row.robotsCheckedAt) {
-      throw new SourcePromotionGateError('ACCESS_MISSING', `promote: "${key}" has no dated robots verdict — read robots.txt at the source first`);
-    }
-    if (!isAllowedAccessVerdict(row.robotsVerdict)) {
-      throw new SourcePromotionGateError('ACCESS_DENIED', `promote: "${key}" needs an ALLOWED robots verdict, got "${row.robotsVerdict}"`);
-    }
     const from = row.status;
     await requireSourceIdentity(tx, row);
     await requireSourceValidation(tx, row.currentRevisionId);
+    await requireSourceAccess(tx, row);
     if (from === 'ACTIVE') return { key, from, to: 'ACTIVE' };
     const changed = await tx.source.updateMany({ where: { key, currentRevisionId: row.currentRevisionId, status: from }, data: { status: 'ACTIVE' } });
     if (changed.count !== 1) throw new SourcePromotionGateError('CONCURRENT_CHANGE', 'promote: source changed while its identity was checked');

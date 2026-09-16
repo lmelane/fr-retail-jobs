@@ -38,7 +38,6 @@ export type CatalogSource = {
   entryUrl: string;
   /** Shape of a job URL, as observed. Empty when the source is an API. */
   jobUrlPattern: string;
-  robotsVerdict: string;
 };
 
 const CSV_PATH = fileURLToPath(new URL('../../data/seeds/sources.csv', import.meta.url));
@@ -53,12 +52,12 @@ export function loadSourceCatalog(): CatalogSource[] {
   const lines = readFileSync(CSV_PATH, 'utf8').trim().split('\n');
   const sources: CatalogSource[] = [];
 
-  const columns = ['maison', 'careers_domain', 'kind', 'entry_url', 'job_url_pattern', 'robots_verdict'];
+  const columns = ['maison', 'careers_domain', 'kind', 'entry_url', 'job_url_pattern'];
   if (JSON.stringify(parseCsvLine(lines[0])) !== JSON.stringify(columns)) throw new Error('Source seed header does not match the maintained schema');
   for (const line of lines.slice(1)) {
     const values = parseCsvLine(line);
     if (values.length !== columns.length) throw new Error('Source seed row has an invalid column count');
-    const [maison, careersDomain, kind, entryUrl, jobUrlPattern, robotsVerdict] =
+    const [maison, careersDomain, kind, entryUrl, jobUrlPattern] =
       values;
     if (!maison || !entryUrl) continue;
     sources.push({
@@ -67,7 +66,6 @@ export function loadSourceCatalog(): CatalogSource[] {
       kind,
       entryUrl,
       jobUrlPattern: jobUrlPattern ?? '',
-      robotsVerdict: robotsVerdict ?? '',
     });
   }
 

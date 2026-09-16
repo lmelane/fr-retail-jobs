@@ -1,3 +1,4 @@
+import { accessStatus, readLatestSourceAccess } from '../../src/connectors/sourceAccess.js';
 import { identityReviewOrder, assertIdentityReview, sourceIdentityHash, sourceSubjectKey } from '../../src/connectors/sourceIdentity.js';
 import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /** Private, repeatable-read inventory. Never prints source configuration or credentials. */
@@ -54,12 +55,14 @@ try {
         sources: await (async () => {
           const latest = new Map<string, Awaited<ReturnType<typeof tx.sourceIdentityReview.findFirst>>>();
           for (const r of await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder, distinct: ["sourceKey"] })) latest.set(r.sourceKey, r);
-          return (await readIdentitySources(tx)).map((source) => {
+          const sources = await readIdentitySources(tx);
+          const accessOf = await readLatestSourceAccess(tx, sources.map(source => source.key));
+          return sources.map((source) => {
             const review = latest.get(source.key) ?? null;
             let identityVerdict: { certified: boolean; reason: string | null; reviewId: string | null; portalScope: string | null };
             try { assertIdentityReview(source, review); identityVerdict = { certified: true, reason: null, reviewId: review!.id, portalScope: review!.portalScope ?? null }; }
             catch (e) { identityVerdict = { certified: false, reason: review ? String(e instanceof Error ? e.message : e) : 'NO_REVIEW', reviewId: review?.id ?? null, portalScope: null }; }
-            return { ...source, identityHash: sourceIdentityHash(source), subjectKey: sourceSubjectKey(source), identityVerdict };
+            return { ...source, access: accessStatus(source, accessOf.get(source.key) ?? null), identityHash: sourceIdentityHash(source), subjectKey: sourceSubjectKey(source), identityVerdict };
           });
         })(),
         counts:

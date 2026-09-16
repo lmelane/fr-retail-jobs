@@ -11,6 +11,7 @@ Une source enregistrée est un périmètre de collecte, pas une certification d�
 | `evidence CLÉ --purpose=identity\|access --url=URL --revision=RÉVISION` | Archive la page et chaque redirection, sans décision métier | `--apply`, but, URL et révision explicites obligatoires |
 | `relation CLÉ --capture=CAPTURE --official-domain=DOMAINE` | Inspecte les liens de la page archivée vers le portail configuré | Lecture seule ; aucune revue ni activation |
 | `identity revue.json` | Relit la capture native, inspecte la relation et enregistre la décision du réviseur | Aperçu par défaut ; `--apply` pour enregistrer |
+| `access revue-acces.json` | Inspecte les requêtes et robots archivés puis enregistre le périmètre d’accès | Aperçu par défaut ; `--apply` pour enregistrer |
 | `collect CLÉ --deadline-ms=30000` | Capture avec l’adaptateur réel, archive puis valide hors réseau | `--apply` obligatoire |
 | `validate CAPTURE_ID` | Revalide une collecte scellée, depuis S3 si nécessaire | `--apply` obligatoire |
 | `status CLÉ` | Lit un instantané cohérent des portes et de leurs dernières décisions | Lecture seule |
@@ -108,9 +109,9 @@ Une promotion répétée sur une source déjà ACTIVE vérifie à nouveau les po
 ## Limites avant release
 
 - Le [lecteur de règles](source-access.md) utilise maintenant l’identité réelle CatwalksBot, combine les groupes applicables et borne les comparaisons. Il calcule une observation ; il ne qualifie pas la portée de tout un adaptateur.
-- La porte d’accès actuelle lit encore `robotsVerdict` et `robotsCheckedAt`. Le statut indique `revisionBound: false`. Cette preuve mutable doit être remplacée par une décision immuable couvrant les cibles HTTP exactes ; la CLI ne la fabrique pas lors de la collecte.
+- La porte d’accès exige une décision immuable liée à la révision et aux requêtes HTTP observées. `revisionBound: true` décrit ce contrat, même quand aucune décision n’existe. Le navigateur et les captures historiques sans provenance complète restent non certifiants.
 - Les certifications positives d’identité sont limitées aux trois contrats natifs qualifiés ci-dessus. Les domaines personnalisés, documents de groupe et autres familles exigent un contrat d’inspection adapté avant leur admission ; aucune preuve textuelle ne sert de contournement.
-- Les rôles employeur, groupe et éditeur, la réouverture explicite d’une source retirée, les paramètres privés d’accès et les ingestions de sources déjà actives restent des travaux distincts.
+- Les rôles employeur, groupe et éditeur, la réouverture explicite d’une source retirée, les paramètres privés d’accès et les autres portes des ingestions déjà actives restent des travaux distincts.
 - Un certificat calculé avec le lecteur local ne certifie pas une release Railway différente.
 
 `promotionGatesPass` indique que les portes actuelles permettent une transition ; ce champ ne constitue pas une attestation de préparation globale à la production. Les préconditions sont revérifiées lors de l’écriture.
@@ -123,4 +124,35 @@ Les orchestrations P3/B6 et la validation par volume fourni ont été supprimée
 
 ### Provenance du transport avant décision d’accès
 
-Les nouvelles captures conservent la requête réellement passée au transport, son identité de collecteur, sa négociation de contenu et ses redirections dans une archive privée distincte de la clé de rejeu. Les en-têtes d’authentification et les corps de requête ne sont pas copiés. Une ancienne capture sans `requestDataHash` reste inspectable mais ne prouve pas ces informations manquantes. Le [contrat de capture](native-capture.md#provenance-des-requêtes) décrit les quatre origines possibles et les limites navigateur/WAF. La décision d’accès immuable couvrant toutes les cibles reste le prochain lot ; ces captures n’activent rien.
+Les nouvelles captures conservent la requête réellement passée au transport, son identité de collecteur, sa négociation de contenu et ses redirections dans une archive privée distincte de la clé de rejeu. Les en-têtes d’authentification et les corps de requête ne sont pas copiés. Une ancienne capture sans `requestDataHash` reste inspectable mais ne prouve pas ces informations manquantes. Le [contrat de capture](native-capture.md#provenance-des-requêtes) décrit les quatre origines possibles et les limites navigateur/WAF. La décision d’accès exige désormais ces preuves et le marqueur de transport HTTP_ONLY ; ces captures seules n’activent rien.
+
+### Décision d’accès
+
+Après la collecte de qualification, archiver `/robots.txt` sur chaque origine réellement interrogée et examiner les périmètres publics. Le dossier suivant est un exemple de structure, pas une autorisation de la source fictive :
+
+```json
+{
+  "sourceKey": "exemple",
+  "sourceRevisionId": "REVISION_EXAMINEE",
+  "captureBatchId": "CAPTURE_OFFRES",
+  "verdict": "ALLOWED",
+  "robotsCaptureIds": ["CAPTURE_ROBOTS"],
+  "scopes": [{
+    "origin": "https://api.ashbyhq.com",
+    "path": { "kind": "EXACT", "value": "/posting-api/job-board/identifiant-observe" },
+    "methods": ["GET"],
+    "query": { "fixed": { "includeCompensation": "true" }, "variable": [] },
+    "surface": "PUBLIC_ATS_JOB_API"
+  }],
+  "statement": "Le périmètre examiné désigne exclusivement les offres publiques du board de cette Maison.",
+  "reviewer": "IDENTIFIANT_DU_REVISEUR",
+  "checkedAt": "DATE_ISO_DE_LA_REVUE"
+}
+```
+
+```sh
+node --import tsx apps/aggregator/scripts/ops/source-onboard.mts access /chemin/prive/revue-acces.json
+node --import tsx apps/aggregator/scripts/ops/source-onboard.mts access /chemin/prive/revue-acces.json --apply
+```
+
+Le document est privé et borné à 128 000 octets. Les observations robots sont calculées à partir des captures ; DISALLOWED n’est jamais réécrit en ALLOWED lorsqu’une autorisation sectorielle fonde la décision. Pour révoquer, fournir NOT_AUTHORIZED, `captureBatchId: null`, `scopes: []` et `robotsCaptureIds: []`, avec une nouvelle justification et date. La dernière décision enregistrée prévaut, y compris un refus. Le [contrat d’accès](source-access.md) précise les limites et les contrôles lors de l’ingestion et de la publication.

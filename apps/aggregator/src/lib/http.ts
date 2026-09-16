@@ -10,7 +10,7 @@ import { detectChallenge } from './responseIntegrity.js';
 import { publicDispatcher } from './publicTransport.js';
 import { sessionHeaders, rememberSessionCookies } from './httpSession.js';
 import { recordAttempt, recordResponse, recordFailure } from '../observability/httpTelemetry.js';
-import { auditUrl, describeRequest, capturingResponses, captureResponse, replayResponse, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
+import { assertCaptureHealthy, assertRequestAccess, auditUrl, describeRequest, capturingResponses, captureResponse, replayResponse, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
 
 import { observedHop, type RequestDescription, type TransportHop } from '../capture/requestData.js';
 
@@ -151,7 +151,9 @@ export async function fetchFollowingSafely(
     const dispatch = () => {
       // A cancelled queue is not a transport attempt. Snapshot only at fetch.
       const target = new URL(current); target.hash = '';
-      if (captureHop) native = describeRequest({ url: target.toString(), method: options.method, body: options.body, headers: options.headers, format: 'HTTP_RESPONSE' });
+      const description = describeRequest({ url: target.toString(), method: options.method, body: options.body, headers: options.headers, format: 'HTTP_RESPONSE' });
+      assertRequestAccess(description);
+      if (captureHop) native = description;
       return fetch(current, options);
     };
     // Node's fetch and installed undici share the dispatcher protocol, but
@@ -374,6 +376,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE', transport },
           { bytes: null, complete: false, failure: error instanceof Error ? error.name : 'NetworkError' });
       }
+      assertCaptureHealthy();
       assertSourceRunning();
       init.signal?.throwIfAborted();
       // A blocked URL will never become fetchable — do not waste retries on it.

@@ -2,7 +2,7 @@ import type { PrismaClient, SourceValidation } from '@prisma/client';
 import { SourceIdentityGateError, identityReviewOrder, requireSourceIdentity, sourceIdentityHash, sourceSubjectKey } from '../connectors/sourceIdentity.js';
 import { readIdentitySource } from '../connectors/sourceRegistryRead.js';
 import { SourceValidationGateError, requireSourceValidation } from '../connectors/sourceCertification.js';
-import { isAllowedAccessVerdict } from '../connectors/sourceStore.js';
+import { accessStatus } from '../connectors/sourceAccess.js';
 
 export const validationReport = (validation: SourceValidation) => ({
   id: validation.id, sequence: validation.sequence.toString(), sourceRevisionId: validation.sourceRevisionId,
@@ -40,15 +40,17 @@ export async function sourceStatus(db: PrismaClient, key: string) {
       orderBy: [{ attemptOrdinal: { sort: 'desc', nulls: 'last' } }, { startedAt: 'desc' }, { id: 'desc' }],
       select: { id: true, attemptOrdinal: true, startedAt: true, formatVersion: true,
         outcome: { select: { status: true, completedAt: true, extractedCount: true } } } });
-    const access = { passed: !!source.robotsCheckedAt && isAllowedAccessVerdict(source.robotsVerdict),
-      checkedAt: source.robotsCheckedAt, revisionBound: false };
+    const accessDecision = await tx.sourceAccessDecision.findFirst({ where: { sourceKey: key }, orderBy: { sequence: 'desc' } });
+    const access = accessStatus(source, accessDecision);
+    const importedAccessObservation = await tx.sourceAccessArchive.findUnique({ where: { sourceKey: key } });
     // Observed dates are for inspection, never a source-qualification decision
     // order. Evidence captures have no job-attempt ordinal.
     const evidenceCaptures = await tx.captureBatch.findMany({ where: { sourceRevisionId: source.currentRevisionId,
       purpose: { in: ['SOURCE_IDENTITY', 'SOURCE_ACCESS'] } }, orderBy: [{ startedAt: 'desc' }, { id: 'desc' }], take: 10,
       select: { id: true, purpose: true, startedAt: true, outcome: { select: { status: true, completedAt: true } },
         captures: { orderBy: { sequence: 'desc' }, take: 1, select: { id: true, status: true, complete: true } } } });
-    return { key, status: source.status, sourceRevisionId: source.currentRevisionId, identity, native, access,
+    return { importedAccessObservation: importedAccessObservation ? { sourceKey: key, sourceId: importedAccessObservation.sourceId, archivedAt: importedAccessObservation.archivedAt, authoritative: false } : null,
+      key, status: source.status, sourceRevisionId: source.currentRevisionId, identity, native, access,
       latestIdentityReview: review ? { ...review, sequence: review.sequence?.toString() ?? null } : null,
       latestCaptureAttempt: attempt ? { ...attempt, attemptOrdinal: attempt.attemptOrdinal?.toString() ?? null } : null,
       evidenceCaptures,

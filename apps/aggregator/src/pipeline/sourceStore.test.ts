@@ -1,3 +1,5 @@
+import { accessFixture } from '../test/sourceAccessFixture.js';
+import { recordSourceAccessDecision } from '../connectors/sourceAccess.js';
 import { captureIdentityFixture } from '../test/sourceIdentityFixture.js';
 import { recordSourceIdentityReview } from '../connectors/sourceIdentity.js';
 import '../test/setup-integration.js';
@@ -85,7 +87,7 @@ describe('importSourcesCsv', () => {
     expect(rows.length).toBe(0);
     // The CSV has no dated evidence and cannot activate a source.
     const sample = await prisma.source.findFirstOrThrow();
-    expect(sample.robotsCheckedAt).toBeNull();
+    expect(await prisma.sourceAccessDecision.count({ where: { sourceKey: sample.key } })).toBe(0);
     expect(sample.tier).toBeTruthy();
     expect(sample.status).toBe('DRAFT');
   });
@@ -93,16 +95,13 @@ describe('importSourcesCsv', () => {
   it('preserves operational configuration and real dated evidence on re-import', async () => {
     await importSourcesCsv(prisma);
     const one = await prisma.source.findFirstOrThrow();
-    const proof = new Date('2026-09-07T11:12:13Z');
     await prisma.source.update({ where: { id: one.id }, data: {
       status: 'ACTIVE', config: { board: 'corrected-live-board' },
-      robotsCheckedAt: proof, robotsVerdict: 'DISALLOWED', lastRunJobs: 987,
+      lastRunJobs: 987,
     } });
     await importSourcesCsv(prisma);
     const after = await prisma.source.findUniqueOrThrow({ where: { id: one.id } });
     expect(after.config).toEqual({ board: 'corrected-live-board' });
-    expect(after.robotsCheckedAt).toEqual(proof);
-    expect(after.robotsVerdict).toBe('DISALLOWED');
     expect(after.lastRunJobs).toBe(987);
   });
 
@@ -147,8 +146,6 @@ describe('promoteSource', () => {
     tier: 'ATS_OFFICIAL',
     tenantKey: 'ashby:testmaison',
     status: 'DRAFT' as const,
-    robotsVerdict: 'ALLOWED',
-    robotsCheckedAt: new Date(),
     ...over,
   });
 
@@ -156,7 +153,7 @@ describe('promoteSource', () => {
     await recordSourceIdentityReview(prisma, await captureIdentityFixture(prisma, source), true);
   }
 
-  async function qualifiedDraft() {
+  async function qualifiedDraft(access = true) {
     const source = await prisma.source.create({ data: draft({ lastRunJobs: 0 }) });
     await identity(source);
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ apiVersion: '1', jobs: [{ id: '123', title: 'Client Advisor', isListed: true,
@@ -165,6 +162,7 @@ describe('promoteSource', () => {
     const batch = await prisma.captureBatch.findFirstOrThrow({ where: { sourceRevisionId: source.currentRevisionId, purpose: 'JOBS' } });
     vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('Qualification must stay offline'); }));
     expect(await validateCapturedSource(prisma, batch.id)).toMatchObject({ verdict: 'VALIDATED' });
+    if (access) await accessFixture(prisma, source, batch.id);
     return source;
   }
 
@@ -211,9 +209,9 @@ describe('promoteSource', () => {
     expect((await prisma.source.findUniqueOrThrow({ where: { key: 'coast' } })).status).toBe('DRAFT');
   });
 
-  it('refuses without a dated robots verdict', async () => {
-    await prisma.source.create({ data: draft({ robotsCheckedAt: null }) });
-    await expect(promote('test-draft')).rejects.toThrow(/robots/);
+  it('refuses technical and identity success without a native access decision', async () => {
+    await qualifiedDraft(false);
+    await expect(promote('test-draft')).rejects.toMatchObject({ name: 'SourceAccessGateError' });
   });
 
   it('refuses positive operational statistics without a validated native capture', async () => {
@@ -222,10 +220,13 @@ describe('promoteSource', () => {
     await expect(promote('test-draft')).rejects.toMatchObject({ name: 'SourceValidationGateError', code: 'VALIDATION_MISSING' });
   });
 
-  it.each(['DISALLOWED', 'UNKNOWN', 'ERROR'])('refuses a dated %s robots verdict', async verdict => {
-    await prisma.source.create({ data: draft({ robotsVerdict: verdict }) });
-    await expect(promote('test-draft')).rejects.toThrow(/ALLOWED/);
-    expect((await prisma.source.findUniqueOrThrow({ where: { key: 'test-draft' } })).status).toBe('DRAFT');
+  it('refuses a newer explicit access denial after a valid grant', async () => {
+    const source = await qualifiedDraft();
+    await recordSourceAccessDecision(prisma, { sourceKey: source.key, sourceRevisionId: source.currentRevisionId,
+      captureBatchId: null, verdict: 'NOT_AUTHORIZED', scopes: [], robotsCaptureIds: [],
+      statement: 'Synthetic reviewer revokes access to this specific source revision.', reviewer: 'test', checkedAt: new Date().toISOString() }, true);
+    await expect(promote(source.key)).rejects.toMatchObject({ code: 'ACCESS_DENIED' });
+    expect((await prisma.source.findUniqueOrThrow({ where: { key: source.key } })).status).toBe('DRAFT');
   });
 
   it('refuses to promote a RETIRED source', async () => {

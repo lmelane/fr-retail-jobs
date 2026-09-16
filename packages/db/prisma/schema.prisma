@@ -155,14 +155,6 @@ model Source {
    * shared-tenant duplicates are how one group feed got catalogued twice.
    */
   tenantKey        String       @unique
-  robotsVerdict    String?
-  /**
-   * When the robots verdict was last read at the source — a verdict ages.
-   */
-  robotsCheckedAt  DateTime?
-  /**
-   * Jobs counted when the source was last verified/promoted.
-   */
   /**
    * Denormalized last-run summary, so the catalogue is readable in one query.
    */
@@ -201,6 +193,7 @@ model SourceRevision {
   currentSources Source[] @relation("CurrentSourceRevision")
   captures CaptureBatch[]
   validations SourceValidation[]
+  accessDecisions SourceAccessDecision[]
   identityReviews SourceIdentityReview[]
   @@unique([sourceId, version])
   @@index([sourceKey, observedAt])
@@ -1163,6 +1156,9 @@ enum CapturePurpose {
 /** One bounded capture attempt. Evidence pages never stand for job extractions. */
 model CaptureBatch {
   identityReviews SourceIdentityReview[]
+  accessReviews SourceAccessDecision[] @relation("AccessEvidenceJobs")
+  accessDecisionId String?
+  accessDecision SourceAccessDecision? @relation("CollectionAccess", fields: [accessDecisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   id String @id @default(uuid())
   purpose CapturePurpose @default(JOBS)
   /** Null for source evidence and captures predating recorded job-attempt ordering. */
@@ -1183,6 +1179,7 @@ model CaptureBatch {
   sources JobSource[]
   observations SourceObservation[]
   validations SourceValidation[]
+  @@index([accessDecisionId])
   @@index([sourceKey, startedAt])
   @@index([sourceRevisionId, purpose, attemptOrdinal])
   @@index([runId])
@@ -1234,6 +1231,8 @@ model RawCapture {
 
 /** Immutable outcome; a batch without one was interrupted and remains replayable. */
 model CaptureOutcome {
+  /** Null historical coverage is unknown. Browser bootstrap is explicitly unsupported. */
+  transportCoverage String?
   batchId String @id
   batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict)
   status String
@@ -1261,4 +1260,37 @@ model SourceExtraction {
   @@unique([id, batchId])
   @@unique([batchId, ordinal])
   @@index([outputHash])
+}
+
+/** Imported source notes, preserved verbatim and never treated as current evidence. */
+model SourceAccessArchive {
+  sourceKey String @id
+  sourceId String
+  verdict String?
+  checkedAt DateTime?
+  archivedAt DateTime @default(now())
+}
+
+/** Reviewed scope plus independently inspected native observations. Append only;
+ * sequence is allocated under the source lock, never supplied by the operator. */
+model SourceAccessDecision {
+  id String @id
+  sequence BigInt @unique @default(autoincrement())
+  sourceKey String
+  sourceRevisionId String
+  sourceRevision SourceRevision @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  captureBatchId String?
+  captureBatch CaptureBatch? @relation("AccessEvidenceJobs", fields: [captureBatchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  collections CaptureBatch[] @relation("CollectionAccess")
+  verdict String
+  policyVersion String
+  readerRevision String
+  document Json
+  report Json?
+  checkedAt DateTime
+  validUntil DateTime?
+  createdAt DateTime @default(now())
+  @@index([sourceKey, sequence])
+  @@index([sourceRevisionId, sequence])
+  @@index([captureBatchId])
 }

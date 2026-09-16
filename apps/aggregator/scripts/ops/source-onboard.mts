@@ -5,6 +5,7 @@ import { parseSourceArguments } from '../../src/onboarding/arguments.js';
 import { sourceIdentityProfile, sourceStatus, validationReport } from '../../src/onboarding/status.js';
 import { parseSourceCandidate, registerSourceCandidate } from '../../src/connectors/sourceCandidate.js';
 import { recordSourceIdentityReview } from '../../src/connectors/sourceIdentity.js';
+import { recordSourceAccessDecision } from '../../src/connectors/sourceAccess.js';
 import { captureSourceForValidation, validateCapturedSource } from '../../src/connectors/sourceValidation.js';
 import { captureSourceEvidence } from '../../src/capture/sourceEvidence.js';
 import { inspectSourceRelation } from '../../src/connectors/sourceRelation.js';
@@ -28,6 +29,9 @@ try {
   } else if (command === 'identity') {
     const document = readInputJson(target, 2 * 1024 * 1024);
     result = await recordSourceIdentityReview(db, document as Parameters<typeof recordSourceIdentityReview>[1], apply,
+      objectStoreConfigured() ? objectStoreFromEnv() : undefined);
+  } else if (command === 'access') {
+    result = await recordSourceAccessDecision(db, readInputJson(target, 128_000), apply,
       objectStoreConfigured() ? objectStoreFromEnv() : undefined);
   } else if (command === 'evidence') {
     result = await captureSourceEvidence(db, target, { revisionId: options.revision,

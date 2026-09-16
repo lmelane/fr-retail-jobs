@@ -1,3 +1,4 @@
+import { accessFixture } from '../test/sourceAccessFixture.js';
 import '../test/setup-integration.js';
 import { beforeEach, afterEach, afterAll, describe, it, expect, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
@@ -297,11 +298,16 @@ describe('native publications without public presentation', () => {
     const { toCandidate } = await import('./ingest.js');
     const raw = { ...(held.source.raw as Record<string, unknown>), hiringOrganization: { '@type': 'Organization', name: 'Repair witness' }, ...(options.missingDescription ? {} : { description: 'Native recovered duties' }) };
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(raw))));
-    const result = await captureExtraction(db, held.source.sourceKey, options.config ?? {}, undefined, async () => {
+    const work = async () => {
       const observed = await fetchJson<typeof raw>(`https://repair.example/reobserve/${held.source.id}`);
       const job = normalizeGenericPosting(observed, held.source.url)!;
       return { jobs: [{ ...job, ...(options.hold ? { publicationHold: options.hold } : {}) }] };
-    }, 'GENERIC_JSONLD');
+    };
+    const probe = await captureExtraction(db, held.source.sourceKey, options.config ?? {}, undefined, work, 'GENERIC_JSONLD');
+    const registry = await db.source.findUniqueOrThrow({ where: { key: held.source.sourceKey } });
+    await accessFixture(db, registry, probe.captureBatchId);
+    const result = await captureExtraction(db, held.source.sourceKey, options.config ?? {}, undefined, work, 'GENERIC_JSONLD',
+      { revisionId: registry.currentRevisionId, requireActive: true });
     const job = result.jobs[0];
     const candidate = toCandidate({ ...job, publicationHold: undefined }, { key: held.source.sourceKey, tier: 'SPECIALIST_JOBBOARD', company: 'Repair witness' }, 'Repair witness', 'GENERIC_JSONLD');
     await db.company.update({ where: { id: companyId }, data: { canonicalKey: candidate.companyId, fashionjobsUrl: `resolved:${candidate.companyId}` } });

@@ -45,7 +45,6 @@ if (cible) {
     kind: source.kind,
     tier: tierFor(source),
     config: JSON.parse(source.entryUrl || '{}'),
-    robotsVerdict: source.robotsVerdict,
   }, null, 2)}`);
 }
 

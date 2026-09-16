@@ -25,15 +25,16 @@ writeFileSync(preload, `import { appendFileSync } from 'node:fs';
 globalThis.fetch = async (input) => {
  const url = String(input instanceof Request ? input.url : input);
  appendFileSync(${JSON.stringify(calls)}, JSON.stringify(url) + '\\n');
+ if (process.env.SOURCE_CLI_TEST_TRANSPORT === 'robots' && url === 'https://api.ashbyhq.com/robots.txt') return new Response('User-agent: *\\nDisallow: /\\n', {headers:{'content-type':'text/plain'}});
  if (process.env.SOURCE_CLI_TEST_TRANSPORT === 'evidence' && url === 'https://synthetic-maison.example/careers') return new Response(${JSON.stringify(`<a href="https://jobs.ashbyhq.com/${key}">Observed synthetic official-page link</a>`)}, {headers:{'content-type':'text/html; charset=utf-8'}});
  if (process.env.SOURCE_CLI_TEST_TRANSPORT !== 'native' || url !== ${JSON.stringify(`https://api.ashbyhq.com/posting-api/job-board/${key}?includeCompensation=true`)}) throw new Error('Unexpected network access in source CLI test');
  return new Response(JSON.stringify({apiVersion:'1',jobs:[{id:'native-1',title:'Client Advisor',isListed:process.env.SOURCE_CLI_TEST_HIDDEN !== '1',descriptionPlain:'Synthetic native responsibilities',jobUrl:${JSON.stringify(`https://jobs.ashbyhq.com/${key}/native-1`)},address:{postalAddress:{addressCountry:'FR',addressLocality:'Paris'}}}]}), {headers:{'content-type':'application/json'}});
 };`, { mode: 0o600 });
 
-function cli(args: string[], options: { native?: boolean; hidden?: boolean; evidence?: boolean; failure?: RegExp } = {}) {
+function cli(args: string[], options: { native?: boolean; hidden?: boolean; evidence?: boolean; robots?: boolean; failure?: RegExp } = {}) {
  const out = file(`output-${randomUUID()}.json`);
  const result = spawnSync(process.execPath, ['--import', 'tsx', '--import', preload, 'scripts/ops/source-onboard.mts', ...args, `--out=${out}`], {
-   env: { ...env, SOURCE_CLI_TEST_TRANSPORT: options.evidence ? 'evidence' : options.native ? 'native' : 'offline', SOURCE_CLI_TEST_HIDDEN: options.hidden ? '1' : '0' }, encoding: 'utf8', timeout: 45_000,
+   env: { ...env, SOURCE_CLI_TEST_TRANSPORT: options.robots ? 'robots' : options.evidence ? 'evidence' : options.native ? 'native' : 'offline', SOURCE_CLI_TEST_HIDDEN: options.hidden ? '1' : '0' }, encoding: 'utf8', timeout: 45_000,
  });
  expect(result.error).toBeUndefined();
  if (options.failure) {
@@ -66,7 +67,7 @@ it('executes the source CLI with independent previews, native evidence, exact pr
  expect(profile).toMatchObject({ sourceKey: key, sourceRevisionId: draft.currentRevisionId, tenantKey: `ashby:${key}` });
  expect(profile).not.toHaveProperty('config');
  const initial = cli(['status', key]);
- expect(initial).toMatchObject({ status: 'DRAFT', identity: { passed: false, code: 'REVIEW_MISSING' }, native: { passed: false, code: 'VALIDATION_MISSING' }, access: { passed: false, revisionBound: false }, promotionGatesPass: false });
+ expect(initial).toMatchObject({ status: 'DRAFT', identity: { passed: false, code: 'REVIEW_MISSING' }, native: { passed: false, code: 'VALIDATION_MISSING' }, access: { passed: false, revisionBound: true }, promotionGatesPass: false });
 
  const page = cli(['evidence', key, '--purpose=identity', `--revision=${draft.currentRevisionId}`,
    '--url=https://synthetic-maison.example/careers', '--apply'], { evidence: true });
@@ -102,10 +103,18 @@ it('executes the source CLI with independent previews, native evidence, exact pr
  cli(['promote', key, `--revision=${draft.currentRevisionId}`, '--apply'], { failure: /ACCESS_MISSING/ });
  expect(await source()).toEqual(draft);
 
- // The dated legacy access field is a separately installed fixture. The CLI
- // does not invent access authority or claim to certify an official portal.
- await db.source.update({ where: { key }, data: { robotsVerdict: 'ALLOWED', robotsCheckedAt: new Date() } });
- expect(cli(['status', key])).toMatchObject({ access: { passed: true, revisionBound: false }, promotionGatesPass: true });
+ const robots = cli(['evidence', key, '--purpose=access', `--revision=${draft.currentRevisionId}`,
+   '--url=https://api.ashbyhq.com/robots.txt', '--apply'], { robots: true });
+ const accessDocument = json('access.json', { sourceKey: key, sourceRevisionId: draft.currentRevisionId,
+   captureBatchId: validation.captureBatchId, verdict: 'ALLOWED', robotsCaptureIds: [robots.captureBatchId],
+   scopes: [{ origin: 'https://api.ashbyhq.com', path: { kind: 'EXACT', value: `/posting-api/job-board/${key}` },
+     methods: ['GET'], query: { fixed: { includeCompensation: 'true' }, variable: [] }, surface: 'PUBLIC_ATS_JOB_API' }],
+   reviewer: 'isolated-cli-integration-test', statement: 'Synthetic native public board; the existing owner sector authorization applies.', checkedAt: new Date().toISOString() });
+ expect(cli(['access', accessDocument])).toMatchObject({ written: 0, observations: { DISALLOWED: 1 } });
+ const access = cli(['access', accessDocument, '--apply']);
+ expect(access).toMatchObject({ written: 1, isLatestDecision: true, observations: { DISALLOWED: 1 } });
+ expect(cli(['access', accessDocument, '--apply'])).toMatchObject({ written: 0, decisionId: access.decisionId });
+ expect(cli(['status', key])).toMatchObject({ access: { passed: true, revisionBound: true }, promotionGatesPass: true });
  cli(['promote', key, '--revision=wrong', '--apply'], { failure: /REVISION_MISMATCH/ });
  expect((await source()).status).toBe('DRAFT');
  expect(cli(['promote', key, `--revision=${draft.currentRevisionId}`, '--apply'])).toEqual({ key, from: 'DRAFT', to: 'ACTIVE' });
@@ -126,5 +135,5 @@ it('executes the source CLI with independent previews, native evidence, exact pr
  await db.source.update({ where: { key }, data: { status: 'RETIRED' } });
  expect(cli(['register', input, '--apply'])).toMatchObject({ created: false, status: 'RETIRED' });
  cli(['promote', key, `--revision=${draft.currentRevisionId}`, '--apply'], { failure: /RETIRED/ });
- expect(readFileSync(calls, 'utf8').trim().split('\n')).toHaveLength(3);
+ expect(readFileSync(calls, 'utf8').trim().split('\n')).toHaveLength(4);
 }, 120_000);

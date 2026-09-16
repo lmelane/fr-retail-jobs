@@ -1,0 +1,76 @@
+{
+  "date": "2026-09-16T05:59:15.262Z",
+  "readerRevision": "local-sha256:ded5137c5e0f6dca5f4911dc3a88f86334fcf9654c7f2fb2d9fbce59e2a9b6be",
+  "sourceKey": "access-live-amiri-1593dfb4-8bb4-40cf-bbdc-e846fdbcf525",
+  "sourceRevisionId": "84f61cf8-4ccf-4ccf-bd82-f4676cf206e9",
+  "sourceStatus": "DRAFT",
+  "sourceUnchanged": true,
+  "sourceActivated": false,
+  "identityCertified": false,
+  "offersPublished": 0,
+  "ownerAuthorizationChanged": false,
+  "accessDecisionRecorded": true,
+  "captureBatchId": "9a6f188d-6f93-4ed5-852b-399f61f23b3b",
+  "nativeOffersObserved": 40,
+  "enumerationComplete": true,
+  "actualRequests": [
+    {
+      "url": "https://api.lever.co/v0/postings/AMIRI?mode=json&skip=0&limit=100",
+      "method": "GET",
+      "format": "HTTP_RESPONSE",
+      "bodyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "userAgent": "CatwalksBot/1.0 (+https://catwalks.io/bot)",
+      "negotiation": {
+        "accept": "application/json",
+        "accept-language": "fr-FR,fr;q=0.9,en;q=0.7",
+        "content-type": null
+      }
+    },
+    {
+      "url": "https://api.lever.co/robots.txt",
+      "method": "GET",
+      "format": "HTTP_RESPONSE",
+      "bodyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "userAgent": "CatwalksBot/1.0 (+https://catwalks.io/bot)",
+      "negotiation": {
+        "accept": "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.1",
+        "accept-language": "*",
+        "content-type": null
+      }
+    }
+  ],
+  "archivedRequestsEqualActualTransport": true,
+  "robotsCaptureBatchId": "e0db859c-f6c9-4aa5-ac45-7916c709c203",
+  "decision": {
+    "sourceKey": "access-live-amiri-1593dfb4-8bb4-40cf-bbdc-e846fdbcf525",
+    "sourceRevisionId": "84f61cf8-4ccf-4ccf-bd82-f4676cf206e9",
+    "decisionId": "access-review:b5f2da4adb144ef63552a26688b0f67ed906f5cae577aa8bb880acd53a3feac8",
+    "verdict": "ALLOWED",
+    "captureBatchId": "9a6f188d-6f93-4ed5-852b-399f61f23b3b",
+    "requestCount": 1,
+    "observations": {
+      "ALLOWED": 1,
+      "DISALLOWED": 0,
+      "NO_ROBOTS": 0,
+      "UNREACHABLE": 0
+    },
+    "validUntil": "2026-10-16T05:59:12.026Z",
+    "written": 1,
+    "isLatestDecision": true
+  },
+  "gatePassed": true,
+  "archivedBlobHashes": [
+    "b2bd8a90a9223bc92df15584346d1ef2c9327f441804f76baa8719966ea025b5",
+    "e2fa818de6a3f849aa9f0d94187a2955133414b504b048d710042a16c5c5b595",
+    "6aa3556bd611889c4480a143bb6186f9d0c5e919c6b4c9901f3a6a8141549a1b",
+    "ed3f618c68b5979b1a810d3f0f1166d80dcf9bb82b27d4bd650a015d814201f9",
+    "99be5882aa14e937ba2bf789ef1b5c8b150c986996c93261959a5745bf8df0ee",
+    "d60802cc5a52d2e498f78118830b468980f44dd708ba9fd99a473cac9e174665"
+  ],
+  "purged": 6,
+  "hotBodiesRemaining": 0,
+  "coldReads": 2,
+  "portalHttpDuringColdReads": 0,
+  "coldDecisionEqualsHot": true,
+  "productionTouched": false
+}

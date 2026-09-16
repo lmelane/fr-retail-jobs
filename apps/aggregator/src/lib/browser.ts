@@ -4,7 +4,7 @@ import { createPublicBrowserProxy } from './browserProxy.js';
 import { assertPublicUrl, isPublicHttpUrl } from './ssrf.js';
 import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 import { CRAWLER_IDENTITY } from './crawlerIdentity.js';
-import { describeRequest, type CaptureRequest, capturingResponses, replayingResponses, captureResponse, replayResponse, CaptureUnavailableError } from '../capture/context.js';
+import { noteUnsupportedTransport, describeRequest, type CaptureRequest, capturingResponses, replayingResponses, captureResponse, replayResponse, CaptureUnavailableError } from '../capture/context.js';
 import { observedHop } from '../capture/requestData.js';
 import { MAX_CAPTURE_BYTES } from '../capture/store.js';
 
@@ -54,6 +54,7 @@ async function guardContext(context: BrowserContext): Promise<() => void> {
 }
 
 async function getBrowser(): Promise<Browser> {
+  noteUnsupportedTransport();
   assertSourceRunning();
   if (!browserPromise) {
     browserPromise = import('playwright')

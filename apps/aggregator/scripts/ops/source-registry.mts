@@ -17,8 +17,7 @@ import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js'
  */
 import { PrismaClient } from '@prisma/client';
 import { writeFileSync } from 'node:fs';
-import { isAllowedAccessVerdict } from '../../src/connectors/sourceStore.js';
-import { accessDecision, type RobotsObserved } from '../../src/lib/accessDecision.js';
+import { accessStatus, readLatestSourceAccess } from '../../src/connectors/sourceAccess.js';
 import { decideMode, type SourceEvidence, type OperationalMode } from '../../src/registry/operationalMode.js';
 
 const arg = (n: string) => process.argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
@@ -29,40 +28,6 @@ const onlyMode = arg('mode') as OperationalMode | undefined;
 const p = new PrismaClient();
 type Row = Record<string, any>;
 
-/**
- * LA DÉCISION D'ACCÈS EFFECTIVE — celle de D62, pas le texte du robots.
- *
- * Le piège évité ici : `isAllowedAccessVerdict` est la porte de PROMOTION, écrite avant D62. Elle n'accepte
- * qu'un `ALLOWED` nu ou un `ALLOWED (… autorisation …)` nominatif, et refuse donc
- * `ALLOWED (no robots.txt reachable)` — **56 sources actives**, qui collectent et publient sans incident.
- *
- * Or D62 a déplacé le fondement : sur une surface PUBLIQUE d'offres, l'autorisation vient de la décision
- * sectorielle du propriétaire et du caractère public des annonces ; `robotsObserved` est **conservé
- * honnêtement** mais ne décide plus seul. Un robots absent ou injoignable n'interdit donc rien par lui-même.
- *
- * Les sources de ce catalogue sont toutes des surfaces publiques d'offres — c'est la condition d'entrée du
- * catalogue. On ne fabrique pas une surface qu'on n'a pas mesurée : on retient la plus neutre,
- * `PUBLIC_OFFICIAL_HTML`, qui suffit à trancher `isPublicJobSurface`. Une surface privée, elle, resterait
- * `NOT_AUTHORIZED` quel que soit le robots.
- */
-function observedFromVerdict(verdict: string | null | undefined): RobotsObserved {
-  const v = (verdict ?? '').trim().toUpperCase();
-  if (!v) return 'UNREACHABLE';
-  if (v.includes('DISALLOW')) return 'DISALLOWED';
-  if (v.includes('NO ROBOTS') || v.includes('NO_ROBOTS') || v.includes('NOT REACHABLE') ||
-      v.includes('NO ROBOTS.TXT') || v.includes('UNREACHABLE')) return 'NO_ROBOTS';
-  if (v.startsWith('ALLOWED')) return 'ALLOWED';
-  return 'UNREACHABLE';
-}
-
-function effectiveAccess(verdict: string | null | undefined) {
-  return accessDecision({
-    robotsObserved: observedFromVerdict(verdict),
-    accessSurface: 'PUBLIC_OFFICIAL_HTML',
-  }).effectiveAccessDecision;
-}
-
-
 const rows = await p.$transaction(async (tx) => {
   await tx.$executeRawUnsafe('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY');
 
@@ -72,6 +37,7 @@ const rows = await p.$transaction(async (tx) => {
   /** La revue LA PLUS RÉCENTE par source — une contradiction postérieure prime sur une vérification. */
   const reviews = await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder, distinct: ['sourceKey'] });
   const reviewOf = new Map(reviews.map((r) => [r.sourceKey, r]));
+  const accessOf = await readLatestSourceAccess(tx, sources.map(source => source.key));
 
   /** Le dernier run RÉEL par source : `Source.lastRun*` est dénormalisé, `SourceRun` fait foi. */
   const runs = await tx.$queryRawUnsafe<Row[]>(
@@ -94,6 +60,7 @@ const rows = await p.$transaction(async (tx) => {
 
   return sources.map((s) => {
     const rev = reviewOf.get(s.key);
+    const access = accessStatus(s, accessOf.get(s.key) ?? null);
     let certified = false;
     try { assertIdentityReview(s, rev ?? null); certified = true; } catch { /* Unproven evidence cannot authorize a mode. */ }
     const run = runOf.get(s.key);
@@ -105,7 +72,7 @@ const rows = await p.$transaction(async (tx) => {
       identityVerified: certified,
       // Le même validateur strict que la promotion contrôle révision, ordre et contenu.
       identityHashMatchesConfig: certified,
-      accessAllowed: effectiveAccess(s.robotsVerdict) === 'ALLOWED',
+      accessAllowed: access.passed,
       tenantKey: s.tenantKey ?? null,
       lastRunStatus: run?.status ?? null,
       lastRunComplete: run?.complete ?? null,
@@ -122,11 +89,7 @@ const rows = await p.$transaction(async (tx) => {
       statutCatalogue: s.status,
       identite: rev ? { verdict: rev.verdict, methode: rev.method, le: rev.checkedAt,
                         couvreLaConfig: evidence.identityHashMatchesConfig } : null,
-      robotsObserve: s.robotsVerdict, robotsLeLe: s.robotsCheckedAt,
-      robotsObserveNormalise: observedFromVerdict(s.robotsVerdict),
-      baseAutorisation: evidence.accessAllowed ? 'OWNER_SECTOR_AUTHORIZATION' : 'NONE',
-      decisionAcces: evidence.accessAllowed ? 'ALLOWED' : 'NOT_AUTHORIZED',
-      promouvableParLaPorteD60: isAllowedAccessVerdict(s.robotsVerdict),
+      acces: access,
       dernierRun: run ? { statut: run.status, le: run.ranAt, servies: run.fetched,
                           annonce: run.declaredTotal, complete: run.complete,
                           tronque: run.truncated, peutAttesterUneAbsence: run.canAttestAbsence } : null,
@@ -167,7 +130,7 @@ if (outMd) {
   const lignes = rows.map((r) => [
     r.sourceKey, r.maison, r.ats, r.dialecte, r.tenant, r.paysCouverts,
     r.identite?.verdict ?? 'aucune', r.identite?.couvreLaConfig ? 'oui' : 'non',
-    r.robotsObserve, r.decisionAcces,
+    JSON.stringify(r.acces.observations), r.acces.passed ? 'ALLOWED' : r.acces.code,
     r.dernierRun?.statut ?? 'aucun', r.dernierRun?.complete ?? '—', r.dernierRun?.peutAttesterUneAbsence ?? '—',
     r.offresPubliees, r.modeOperationnel, r.prochaineAction,
   ].map(esc).join(' | '));

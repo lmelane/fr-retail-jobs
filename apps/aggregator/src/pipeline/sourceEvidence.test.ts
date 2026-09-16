@@ -81,7 +81,7 @@ it('archives an HTTP refusal without turning it into access authorization', asyn
   const receipt = await captureSourceEvidence(db, source.key, { ...input(source), purpose: 'SOURCE_ACCESS', url: 'https://official.example/robots.txt' });
   expect(receipt).toMatchObject({ purpose: 'SOURCE_ACCESS', lastStatus: 403 });
   expect((await readSourceEvidence(db, receipt.captureBatchId)).body.toString()).toBe(`Forbidden ${source.key}`);
-  expect(await db.source.findUniqueOrThrow({ where: { key: source.key } })).toMatchObject({ robotsVerdict: null, robotsCheckedAt: null, status: 'DRAFT' });
+  expect(await db.source.findUniqueOrThrow({ where: { key: source.key } })).toMatchObject({ status: 'DRAFT' });
 });
 
 it('counts the real redirect hosts and stops on throttling while preserving its response', async () => {

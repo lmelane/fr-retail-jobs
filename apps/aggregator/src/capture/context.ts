@@ -20,7 +20,10 @@ export type CaptureContext = {
   replayWafCookies?: Map<string, string>;
   write?: (record: CaptureRecord) => Promise<void>;
   replay?: (hash: string) => Promise<ReplayResponse>;
-  failure?: CaptureUnavailableError | OfflineReplayError;
+  requestAccess?: (request: RequestDescription) => void;
+  unsupportedTransport?: boolean;
+  accessFailure?: Error;
+  failure?: Error;
 };
 const contexts = new AsyncLocalStorage<CaptureContext>();
 export class OfflineReplayError extends Error {
@@ -43,7 +46,24 @@ export function replayWafCookie(url: string, prime = false): string | undefined 
   if (prime) context.replayWafCookies.set(origin, 'aws-waf-token=archive-replay');
   return context.replayWafCookies.get(origin);
 }
-export function assertCaptureHealthy() { const error = contexts.getStore()?.failure; if (error) throw error; }
+export function assertCaptureHealthy() { const context = contexts.getStore(); const error = context?.failure ?? context?.accessFailure; if (error) throw error; }
+
+/** Sticky refusal: an adapter catching a transport error cannot publish a partial result. */
+export function assertRequestAccess(request: RequestDescription) {
+  const context = contexts.getStore();
+  assertCaptureHealthy();
+  try { context?.requestAccess?.(request); }
+  catch (error) { if (context) context.accessFailure = error as Error; throw error; }
+}
+export function noteUnsupportedTransport() {
+  const context = contexts.getStore();
+  if (!context || context.replay) return;
+  context.unsupportedTransport = true;
+  if (context.requestAccess) {
+    context.accessFailure = new CaptureUnavailableError('This access policy certifies only native HTTP requests');
+    throw context.accessFailure;
+  }
+}
 
 /** Preserve location identity, exclude all query values from the displayed audit URL.
  * Exact request matching hashes the original URL/body and negotiation headers. */
@@ -76,7 +96,9 @@ export async function captureResponse(request: CaptureRequest, response: {
 }): Promise<void> {
   const context = contexts.getStore();
   if (!context?.write) return;
-  assertCaptureHealthy();
+  // A policy refusal stops further transport and publication, but must not erase
+  // receipts for earlier dispatched hops. A failed archive itself remains fatal.
+  if (context.failure) throw context.failure;
   try {
     const names = context.captureRedirectLocations ? [...HEADER_NAMES, 'location'] : HEADER_NAMES;
     const headers = Object.fromEntries(names.flatMap(name => {
@@ -93,6 +115,7 @@ export async function captureResponse(request: CaptureRequest, response: {
         origin: request.transport?.hops.length ? request.transport.origin : request.format === 'RENDERED_DOM' ? 'RENDERED_DOM' : 'UNOBSERVED_TRANSPORT',
         hops: request.transport?.hops ?? [] },
       status: response.status ?? null, headers, cookieNames, bytes: response.bytes, complete: response.complete, failure: response.failure ?? null };
+    if (record.requestData.origin !== 'HTTP_TRANSPORT') noteUnsupportedTransport();
     await context.write(record);
   } catch (cause) {
     context.failure = new CaptureUnavailableError(cause);

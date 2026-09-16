@@ -19,7 +19,7 @@ import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js'
 import { Prisma, PrismaClient } from '@prisma/client';
 import { writeFileSync } from 'node:fs';
 import { decideMode, type SourceEvidence } from '../../src/registry/operationalMode.js';
-import { accessDecision, type RobotsObserved } from '../../src/lib/accessDecision.js';
+import { accessStatus, readLatestSourceAccess } from '../../src/connectors/sourceAccess.js';
 import { publicJobSql } from '@catwalks/db/availability';
 import { objectStoreConfigured } from '../../src/retention/objectStore.js';
 import { FACT_READER_VERSION } from '@catwalks/db/source-facts';
@@ -33,15 +33,6 @@ if (!Number.isFinite(sinceHours) || sinceHours <= 0) throw new Error('since-hour
 const p = new PrismaClient();
 type Row = Record<string, any>;
 
-/** Voir `source-registry.mts` : la décision d'accès est celle de D62, pas le texte du robots. */
-function observedFromVerdict(v: string | null | undefined): RobotsObserved {
-  const s = (v ?? '').trim().toUpperCase();
-  if (!s) return 'UNREACHABLE';
-  if (s.includes('DISALLOW')) return 'DISALLOWED';
-  if (/NO ROBOTS|NO_ROBOTS|NOT REACHABLE|UNREACHABLE/.test(s)) return 'NO_ROBOTS';
-  return s.startsWith('ALLOWED') ? 'ALLOWED' : 'UNREACHABLE';
-}
-
 const report = await p.$transaction(async (tx) => {
   await tx.$executeRawUnsafe('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY');
   const since = new Date(Date.now() - sinceHours * 3600_000);
@@ -50,6 +41,7 @@ const report = await p.$transaction(async (tx) => {
 
   const reviews = await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder, distinct: ['sourceKey'] });
   const reviewOf = new Map(reviews.map((r) => [r.sourceKey, r]));
+  const accessOf = await readLatestSourceAccess(tx, sources.map(source => source.key));
 
   /** Les DEUX derniers runs : la variation de volume n'existe pas sans un précédent. */
   const runs = await tx.$queryRawUnsafe<Row[]>(
@@ -93,6 +85,7 @@ const report = await p.$transaction(async (tx) => {
 
   const lignes = sources.map((s) => {
     const rev = reviewOf.get(s.key);
+    const access = accessStatus(s, accessOf.get(s.key) ?? null);
     let certified = false;
     try { assertIdentityReview(s, rev ?? null); certified = true; } catch { /* Unproven evidence cannot authorize a mode. */ }
     const [dernier, precedent] = runsOf.get(s.key) ?? [];
@@ -101,8 +94,7 @@ const report = await p.$transaction(async (tx) => {
       key: s.key, status: s.status, hasConfig: Object.keys(cfg).length > 0,
       identityVerified: certified,
       identityHashMatchesConfig: certified,
-      accessAllowed: accessDecision({ robotsObserved: observedFromVerdict(s.robotsVerdict),
-        accessSurface: 'PUBLIC_OFFICIAL_HTML' }).effectiveAccessDecision === 'ALLOWED',
+      accessAllowed: access.passed,
       tenantKey: s.tenantKey ?? null,
       lastRunStatus: dernier?.status ?? null, lastRunComplete: dernier?.complete ?? null,
       lastRunCanAttestAbsence: dernier?.canAttestAbsence ?? null, lastRunAt: dernier?.ranAt ?? null,
@@ -110,7 +102,7 @@ const report = await p.$transaction(async (tx) => {
     const volumeAvant = precedent ? Number(precedent.jobs) : null;
     const volumeActuel = dernier ? Number(dernier.jobs) : null;
     return {
-      source: s.key, maison: s.maison, mode: decideMode(ev).mode,
+      access, source: s.key, maison: s.maison, mode: decideMode(ev).mode,
       dernierRun: dernier?.ranAt ?? null, dernierStatut: dernier?.status ?? null,
       // Un silence n'est pas un échec, et aucune alerte ne se déclenche dessus : il faut donc le MESURER.
       heuresDepuisDernierRun: dernier ? Math.round((Date.now() - new Date(dernier.ranAt).getTime()) / 36e5) : null,

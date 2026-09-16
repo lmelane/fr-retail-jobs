@@ -1,3 +1,4 @@
+import { accessFixture } from '../test/sourceAccessFixture.js';
 import '../test/setup-integration.js';
 import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
@@ -111,6 +112,8 @@ describe('immutable source configuration transitions', () => {
 describe('capture revision binding', () => {
   it('binds settings, reader and loaded revision before transport and retains historical evidence after a change', async () => {
     const source = await create(); vi.stubGlobal('fetch', vi.fn(async () => new Response('{"id":"1"}')));
+    const probe = await captureExtraction(db, source.key, config, undefined, reader, 'GENERIC_JSONLD');
+    await accessFixture(db, source, probe.captureBatchId);
     const result = await capture(source); const job = result.jobs[0];
     const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: job.captureBatchId } });
     expect(batch.sourceRevisionId).toBe(source.currentRevisionId);
@@ -161,10 +164,13 @@ describe('capture revision binding', () => {
 
   it('holds a shared registry row lock until the publication transaction finishes', async () => {
     const source = await create();
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('{"id":"1"}')));
+    const probe = await captureExtraction(db, source.key, config, undefined, reader, 'GENERIC_JSONLD');
+    const access = await accessFixture(db, source, probe.captureBatchId);
     let unlock!: () => void; const barrier = new Promise<void>(resolve => { unlock = resolve; });
     let locked!: () => void; const ready = new Promise<void>(resolve => { locked = resolve; });
     const writing = db.$transaction(async tx => {
-      await requireCurrentCaptureRevision(tx, { sourceKey: source.key, sourceRevisionId: source.currentRevisionId });
+      await requireCurrentCaptureRevision(tx, { sourceKey: source.key, sourceRevisionId: source.currentRevisionId, accessDecisionId: access.result.decisionId });
       locked(); await barrier;
     });
     await ready;

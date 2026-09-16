@@ -1,6 +1,6 @@
 # Audit de reprise Catwalks
 
-**Mise à jour le 16 septembre 2026. Audit initial terminé ; lots 0 à 3 et sous-lots 4A–4H1 validés localement, copie complète du stock auditée, 4 609 échéances prouvées et 54 831 présentations reprises sur cette copie, archive S3 vérifiée sur un environnement Railway isolé. Le lot 4 et les suivants restent en cours.**
+**Mise à jour le 16 septembre 2026. Dernier sous-lot validé localement : [5G3B2 — décisions d’accès natives et immuables](lot-5g3b2.md), avec 3 565 tests, 20 contre-épreuves, archive Railway isolée et migration du stock répétée sur copie. Les lots 4 et 5 et la phase globale restent en cours ; aucune production n’a été modifiée.**
 
 Commencer par [le rapport A–J](/Users/lmelane/Downloads/catwalks-job-aggregator/audits/reprise-2026-09-15/rapport.md), puis [le plan en lots](/Users/lmelane/Downloads/catwalks-job-aggregator/audits/reprise-2026-09-15/plan.md).
 
