@@ -48,7 +48,7 @@ function cli(args: string[], options: { native?: boolean; hidden?: boolean; evid
 }
 const source = () => db.source.findUniqueOrThrow({ where: { key } });
 const wipe = async () => {
- await db.$executeRaw`TRUNCATE "SourceIdentityReview"`;
+ await db.$executeRaw`TRUNCATE "SourceIngestionAdmission", "SourceIdentityReview"`;
  await db.source.deleteMany({ where: { key } });
 };
 beforeAll(wipe);

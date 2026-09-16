@@ -1,0 +1,45 @@
+{
+  "date": "2026-09-16",
+  "unit": 2585,
+  "integration": 733,
+  "api": 259,
+  "apiOptionalSkipped": 2,
+  "python": 11,
+  "testsPassed": 3588,
+  "freshMigrations": 68,
+  "types": "PASS",
+  "apiBuild": "PASS",
+  "appCounterproofs": 10,
+  "sqlCounterproofs": 4,
+  "restoredCounterproofTests": 64,
+  "runtime": {
+    "revision": "local-sha256:14538ade0d43b17317a3d76240c25863cb1a748b2fdd518d4de180b80ddeb404",
+    "runtimeFiles": 281,
+    "workingAndVerifiedRuntimeExact": true,
+    "runtimeFileSetsExact": true
+  },
+  "nativeOffersObserved": 80,
+  "isolatedSourceActivatedThenPaused": true,
+  "productionSourcesActivated": 0,
+  "offersPublished": 0,
+  "stockMigration": {
+    "sources": 536,
+    "accessNotesPreservedExactly": 536,
+    "offersUnchanged": 87607,
+    "representationsUnchanged": 90764,
+    "observationsUnchanged": 141933
+  },
+  "preFixReproductions": {
+    "mutableIngestionBinding": "RED before fix, GREEN after fix"
+  },
+  "productionTouched": false,
+  "gitPush": false,
+  "logsSha256": {
+    "lot5g3b3a-full-validation.log": "99858b9f02da968cb1f3740887f2f6b1e452a3a3a0f6a3236e5ed695aa2eff28",
+    "lot5g3b3a-api-build.log": "683ff72668e335f87422d267b85c48bd56c46f47f535bdae7c5e6e999a76165d",
+    "lot5g3b3a-counterproof-restored.log": "bf1f46a09b279548ed743e13e156d95b25518ee5940a45ef16f7ef5f4446f82c",
+    "lot5g3b3a-pre-binding-snapshot.log": "83f7c947bf3fe6a00aa595a802c69a7dec6a4724cc1fdaafede8f0ae398baab2",
+    "lot5g3b3a-live-s3.log": "63a251caa23d8079f78ae7f5b51aeff855b40d504701fdeec9d2a7197d4936a0",
+    "lot5g3b3a-stock-migrate.log": "a25ac0ac146be9a5b32c0bd24cb695e995d44bc8d8eac75ab32c2bd84c15bed1"
+  }
+}

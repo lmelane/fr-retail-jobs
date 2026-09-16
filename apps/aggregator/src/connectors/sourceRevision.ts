@@ -5,6 +5,7 @@ import { evidenceHash } from '../lib/evidenceHash.js';
 import { effectiveSourceConfig } from './sourceConfig.js';
 import { requireSourceAccess } from './sourceAccess.js';
 import { SourceAccessGateError } from './accessScope.js';
+import { requireIngestionPublication } from './sourceAdmission.js';
 
 export type SourceBinding = { revisionId: string; requireActive?: boolean };
 type RegistryState = { currentRevisionId: string; status: string; kind: string; configText: string };
@@ -31,11 +32,12 @@ export async function bindSourceRevision(db: Prisma.TransactionClient, sourceKey
  * A completed old capture remains historical evidence but cannot publish under
  * a replacement source configuration. Historical unbound batches stay explicit. */
 export async function requireCurrentCaptureRevision(db: Prisma.TransactionClient,
-  batch: { sourceKey: string; sourceRevisionId: string | null; accessDecisionId: string | null }) {
+  batch: { id: string; sourceKey: string; sourceRevisionId: string | null; accessDecisionId: string | null }) {
   if (!batch.sourceRevisionId) return;
   const [source] = await db.$queryRaw<{ currentRevisionId: string; status: string }[]>`
     SELECT "currentRevisionId", status FROM "Source" WHERE key=${batch.sourceKey} FOR SHARE`;
   if (!source || source.status !== 'ACTIVE' || source.currentRevisionId !== batch.sourceRevisionId) throw new Error('Captured source revision is no longer current');
   const access = await requireSourceAccess(db, { key: batch.sourceKey, currentRevisionId: source.currentRevisionId });
   if (!batch.accessDecisionId || access.decision.id !== batch.accessDecisionId) throw new SourceAccessGateError('ACCESS_SUPERSEDED', 'Publication requires the access decision that governed this collection');
+  await requireIngestionPublication(db, batch);
 }

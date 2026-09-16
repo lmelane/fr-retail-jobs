@@ -1,6 +1,6 @@
 # Audit de reprise Catwalks
 
-**Mise à jour le 16 septembre 2026. Dernier sous-lot validé localement : [5G3B2 — décisions d’accès natives et immuables](lot-5g3b2.md), avec 3 565 tests, 20 contre-épreuves, archive Railway isolée et migration du stock répétée sur copie. Les lots 4 et 5 et la phase globale restent en cours ; aucune production n’a été modifiée.**
+**Dernier lot validé localement : [5G3B3A — admission native des ingestions](lot-5g3b3a.md).** La reprise globale reste en cours ; aucun déploiement de ce lot.
 
 Commencer par [le rapport A–J](/Users/lmelane/Downloads/catwalks-job-aggregator/audits/reprise-2026-09-15/rapport.md), puis [le plan en lots](/Users/lmelane/Downloads/catwalks-job-aggregator/audits/reprise-2026-09-15/plan.md).
 

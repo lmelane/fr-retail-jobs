@@ -38,7 +38,8 @@ export async function sourceStatus(db: PrismaClient, key: string) {
     const validation = await tx.sourceValidation.findFirst({ where: { sourceRevisionId: source.currentRevisionId }, orderBy: { sequence: 'desc' } });
     const attempt = await tx.captureBatch.findFirst({ where: { sourceRevisionId: source.currentRevisionId, purpose: 'JOBS' },
       orderBy: [{ attemptOrdinal: { sort: 'desc', nulls: 'last' } }, { startedAt: 'desc' }, { id: 'desc' }],
-      select: { id: true, attemptOrdinal: true, startedAt: true, formatVersion: true,
+      select: { id: true, attemptOrdinal: true, startedAt: true, formatVersion: true, accessDecisionId: true,
+        ingestionAdmission: { select: { identityReviewId: true, sourceValidationId: true, policyVersion: true, admittedAt: true } },
         outcome: { select: { status: true, completedAt: true, extractedCount: true } } } });
     const accessDecision = await tx.sourceAccessDecision.findFirst({ where: { sourceKey: key }, orderBy: { sequence: 'desc' } });
     const access = accessStatus(source, accessDecision);

@@ -1,4 +1,6 @@
-import { accessFixture } from '../test/sourceAccessFixture.js';
+import { admissionFixture } from '../test/sourceAdmissionFixture.js';
+import { fetchAtsJobs } from '../ats/index.js';
+import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import '../test/setup-integration.js';
 import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
@@ -22,10 +24,24 @@ const reader = async () => {
   const raw = await fetchJson<{ id: string }>('https://revision.example/jobs');
   return { jobs: [{ externalId: raw.id, title: 'Advisor', url: 'https://revision.example/jobs/1', raw }] };
 };
-const capture = (source: Awaited<ReturnType<typeof create>>, settings = config) =>
-  captureExtraction(db, source.key, settings, undefined, reader, 'GENERIC_JSONLD', { revisionId: source.currentRevisionId, requireActive: true });
+const prepared = async () => {
+  const initial = await create();
+  const settings = { board: 'revision', ...config };
+  const source = await db.source.update({ where: { key: initial.key }, data: { kind: 'ashby', config: settings } });
+  vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ apiVersion: '1', jobs: [{
+    id: 'revision-1', title: 'Advisor', isListed: true, descriptionPlain: 'Native responsibilities',
+  }] }))));
+  const read = () => fetchAtsJobs('ASHBY', settings);
+  const probe = await captureExtraction(db, source.key, settings, undefined, read, 'ASHBY');
+  await admissionFixture(db, source, probe.captureBatchId);
+  await db.source.update({ where: { key: source.key }, data: { status: 'ACTIVE' } });
+  const result = await captureExtraction(db, source.key, settings, undefined, read, 'ASHBY', { revisionId: source.currentRevisionId, requireActive: true });
+  await validateCapturedSource(db, result.captureBatchId);
+  const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: result.captureBatchId } });
+  return { source, result, batch };
+};
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
-afterAll(async () => { await db.source.deleteMany({ where: { key: { in: keys } } }); await db.$disconnect(); });
+afterAll(async () => { await db.$executeRaw`TRUNCATE "SourceIngestionAdmission", "SourceIdentityReview"`; await db.source.deleteMany({ where: { key: { in: keys } } }); await db.$disconnect(); });
 
 describe('immutable source configuration transitions', () => {
   it('records the native JSON configuration and changes no revision for operational updates', async () => {
@@ -111,11 +127,7 @@ describe('immutable source configuration transitions', () => {
 
 describe('capture revision binding', () => {
   it('binds settings, reader and loaded revision before transport and retains historical evidence after a change', async () => {
-    const source = await create(); vi.stubGlobal('fetch', vi.fn(async () => new Response('{"id":"1"}')));
-    const probe = await captureExtraction(db, source.key, config, undefined, reader, 'GENERIC_JSONLD');
-    await accessFixture(db, source, probe.captureBatchId);
-    const result = await capture(source); const job = result.jobs[0];
-    const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: job.captureBatchId } });
+    const { source, result, batch } = await prepared(); const job = result.jobs[0];
     expect(batch.sourceRevisionId).toBe(source.currentRevisionId);
     await expect(readCapturedPublication(db, { ...job, sourceKey: source.key })).resolves.toBeDefined();
     for (const status of ['DRAFT', 'PAUSED', 'RETIRED'] as const) {
@@ -163,14 +175,11 @@ describe('capture revision binding', () => {
   });
 
   it('holds a shared registry row lock until the publication transaction finishes', async () => {
-    const source = await create();
-    vi.stubGlobal('fetch', vi.fn(async () => new Response('{"id":"1"}')));
-    const probe = await captureExtraction(db, source.key, config, undefined, reader, 'GENERIC_JSONLD');
-    const access = await accessFixture(db, source, probe.captureBatchId);
+    const { source, batch } = await prepared();
     let unlock!: () => void; const barrier = new Promise<void>(resolve => { unlock = resolve; });
     let locked!: () => void; const ready = new Promise<void>(resolve => { locked = resolve; });
     const writing = db.$transaction(async tx => {
-      await requireCurrentCaptureRevision(tx, { sourceKey: source.key, sourceRevisionId: source.currentRevisionId, accessDecisionId: access.result.decisionId });
+      await requireCurrentCaptureRevision(tx, batch);
       locked(); await barrier;
     });
     await ready;

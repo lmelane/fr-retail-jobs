@@ -22,7 +22,7 @@ beforeEach(async () => { const jobs = await prisma.job.findMany({ where: { sourc
   await prisma.job.deleteMany({ where: { id: { in: jobs.map(job => job.id) } } }); });
 afterAll(async () => { const jobs = await prisma.job.findMany({ where: { sources: { some: { sourceKey: SOURCE } } } });
   await prisma.jobSource.deleteMany({ where: { jobId: { in: jobs.map(job => job.id) } } });
-  await prisma.job.deleteMany({ where: { id: { in: jobs.map(job => job.id) } } }); await prisma.$executeRaw`TRUNCATE "SourceIdentityReview"`;
+  await prisma.job.deleteMany({ where: { id: { in: jobs.map(job => job.id) } } }); await prisma.$executeRaw`TRUNCATE "SourceIngestionAdmission", "SourceIdentityReview"`;
   await prisma.source.deleteMany({ where: { key: { in: portalKeys } } });
   await prisma.$disconnect(); });
 

@@ -31,7 +31,7 @@ const prisma = new PrismaClient();
 
 async function wipe() {
   // This file is guarded by setup-integration and only runs on a test DB.
-  await prisma.$executeRawUnsafe('TRUNCATE TABLE "SourceIdentityReview"');
+  await prisma.$executeRawUnsafe('TRUNCATE TABLE "SourceIngestionAdmission", "SourceIdentityReview"');
   await prisma.jobSource.deleteMany({});
   await prisma.job.deleteMany({});
   await prisma.company.deleteMany({});

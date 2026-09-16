@@ -203,6 +203,7 @@ model SourceRevision {
  * Append-only identity decisions. A working feed is not an employer proof.
  */
 model SourceIdentityReview {
+  ingestionAdmissions SourceIngestionAdmission[]
   id             String   @id @default(cuid())
   // Historical reviews remain unbound and unordered. The insert trigger assigns new sequence values under the source lock.
   sourceRevisionId String?
@@ -1155,6 +1156,7 @@ enum CapturePurpose {
 
 /** One bounded capture attempt. Evidence pages never stand for job extractions. */
 model CaptureBatch {
+  ingestionAdmission SourceIngestionAdmission?
   identityReviews SourceIdentityReview[]
   accessReviews SourceAccessDecision[] @relation("AccessEvidenceJobs")
   accessDecisionId String?
@@ -1188,6 +1190,7 @@ model CaptureBatch {
 /** Technical qualification derived from a recorded extraction and exact replay.
  * Identity and access are separate promotion requirements. */
 model SourceValidation {
+  ingestionAdmissions SourceIngestionAdmission[]
   id String @id @default(uuid())
   sequence BigInt @unique @default(autoincrement())
   sourceRevisionId String
@@ -1201,6 +1204,20 @@ model SourceValidation {
   validatedAt DateTime @default(now())
   @@index([sourceRevisionId, sequence])
   @@index([captureBatchId])
+}
+
+/** Decisions checked atomically before starting an ingestion. No historical backfill. */
+model SourceIngestionAdmission {
+  batchId String @id
+  batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  identityReviewId String
+  identityReview SourceIdentityReview @relation(fields: [identityReviewId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  sourceValidationId String
+  sourceValidation SourceValidation @relation(fields: [sourceValidationId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  policyVersion String
+  admittedAt DateTime @default(now())
+  @@index([identityReviewId])
+  @@index([sourceValidationId])
 }
 
 /** Every attempt remains distinct, even if response bytes are identical. */

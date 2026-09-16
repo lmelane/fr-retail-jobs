@@ -78,7 +78,7 @@ function decisionDocument(input: IdentityReviewDocument): Readonly<IdentityRevie
 /** The body is verified before recording. Readers consume the immutable,
  * SQL-bound projection instead of loading megabytes of historical artifact text. */
 export function assertIdentityReview(source: RevisionIdentitySource, review: IdentityDecision | null, now = new Date()): void {
-  if (!review || review.verdict !== 'VERIFIED') throw new SourceIdentityGateError('REVIEW_MISSING', `promote: "${source.key}" has no verified employer identity review`);
+  if (!review || review.verdict !== 'VERIFIED') throw new SourceIdentityGateError('REVIEW_MISSING', `"${source.key}" has no verified employer identity review`);
   if (review.sequence == null) throw new SourceIdentityGateError('ORDER_UNKNOWN', 'Identity review has no recorded decision order');
   assertRevision(source, review.sourceRevisionId);
   if (review.sourceKey !== source.key || review.tenantKey !== source.tenantKey || review.subjectKey !== sourceSubjectKey(source) || review.sourceHash !== sourceIdentityHash(source)) {
@@ -106,10 +106,11 @@ export function assertIdentityReview(source: RevisionIdentitySource, review: Ide
   if (!belongsToOfficialDomain(review.proofUrl, review.officialDomain) || !portal || portal.url !== review.portalUrl) return invalid('Identity evidence does not match the official domain and exact native portal');
 }
 
-export async function requireSourceIdentity(tx: Prisma.TransactionClient, source: Source): Promise<void> {
+export async function requireSourceIdentity(tx: Prisma.TransactionClient, source: Source) {
   // Never filter for VERIFIED: a later contradiction must supersede it.
   const review = await tx.sourceIdentityReview.findFirst({ where: { sourceKey: source.key }, orderBy: identityReviewOrder, omit: { artifactText: true } });
   assertIdentityReview(source, review);
+  return review!;
 }
 
 /** Archive I/O and inspection happen before acquiring the registry lock. The

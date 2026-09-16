@@ -1,0 +1,74 @@
+{
+  "mutations": [
+    {
+      "name": "mutable-ingestion-binding",
+      "rejectedByRegression": true,
+      "restoredSha256": "5e3603b20517576877552b8067ad097a519495828406684b6d7035fe4aabd153"
+    },
+    {
+      "name": "admission-without-qualifications",
+      "rejectedByRegression": true,
+      "restoredSha256": "5e3603b20517576877552b8067ad097a519495828406684b6d7035fe4aabd153"
+    },
+    {
+      "name": "expire-technical-after-access",
+      "rejectedByRegression": true,
+      "restoredSha256": "3fab43d38e104cada7b9fde46521552b310d7bf063a9c7b0f08885c5d8962d9b"
+    },
+    {
+      "name": "older-attempt-still-authoritative",
+      "rejectedByRegression": true,
+      "restoredSha256": "3fab43d38e104cada7b9fde46521552b310d7bf063a9c7b0f08885c5d8962d9b"
+    },
+    {
+      "name": "skip-publication-admission",
+      "rejectedByRegression": true,
+      "restoredSha256": "00120c10f6c4281709952e430f6c76464d8ef7d85c44df29a838d69050807889"
+    },
+    {
+      "name": "reuse-another-capture-validation",
+      "rejectedByRegression": true,
+      "restoredSha256": "9f51914e37e3c055b11555942c4c92704a3836a4ffeb50e7a57b6d90092b62f6"
+    },
+    {
+      "name": "reuse-new-employer-decision",
+      "rejectedByRegression": true,
+      "restoredSha256": "9f51914e37e3c055b11555942c4c92704a3836a4ffeb50e7a57b6d90092b62f6"
+    },
+    {
+      "name": "missing-admission-is-allowed",
+      "rejectedByRegression": true,
+      "restoredSha256": "9f51914e37e3c055b11555942c4c92704a3836a4ffeb50e7a57b6d90092b62f6"
+    },
+    {
+      "name": "skip-new-result-validation",
+      "rejectedByRegression": true,
+      "restoredSha256": "8b249c2cfd20d88e9889624fa4465567419655917657c305ba54b8d4b29891d0"
+    },
+    {
+      "name": "omit-empty-feed-boundary",
+      "rejectedByRegression": true,
+      "restoredSha256": "8b249c2cfd20d88e9889624fa4465567419655917657c305ba54b8d4b29891d0"
+    }
+  ],
+  "sqlMutations": [
+    {
+      "name": "mutable-admission",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "retroactive-admission",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "foreign-identity-admission",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "foreign-validation-admission",
+      "rejectedByRegression": true
+    }
+  ],
+  "restoredTests": "passed",
+  "productionTouched": false
+}

@@ -29,6 +29,10 @@ import { purgeStaleForSource } from './purge.js';
 import { isTrustedForAttestation } from './attestation.js';
 import { fetchAtsJobs } from '../ats/index.js';
 import { captureExtraction } from '../capture/batch.js';
+import { validateCapturedSource } from '../connectors/sourceValidation.js';
+import { SourceAdmissionGateError } from '../connectors/sourceAdmission.js';
+import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
+import { lockSourceWrites } from '../lib/writeLocks.js';
 
 /**
  * INGEST — picks up new and updated offers.
@@ -250,9 +254,16 @@ async function ingestApiSource(
    * endroits opposés, et les confondre enverrait optimiser la mauvaise moitié.
    */
   const fetchStartedAt = Date.now();
-  const { jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = await captureExtraction(
+  const { captureBatchId, jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = await captureExtraction(
     prisma, stats.source, config, log.runId(), settings => fetchAtsJobs(type as never, settings), type, { revisionId: source.revisionId, requireActive: true });
   stats.fetchMs = Date.now() - fetchStartedAt;
+  const validation = await validateCapturedSource(prisma, captureBatchId);
+  if (validation.verdict !== 'VALIDATED') throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', 'Ingestion requires a qualified native result');
+  // Also checks empty feeds: no per-job writer will run for them.
+  await prisma.$transaction(async tx => {
+    await lockSourceWrites(tx, stats.source);
+    await requireCurrentCaptureRevision(tx, await tx.captureBatch.findUniqueOrThrow({ where: { id: captureBatchId } }));
+  });
   // One durable source-level event retains the reason behind completeness.
   // The operational logger stores large proofs in PipelineEvent and prints
   // only a bounded envelope, preserving the Lot 0 console-rate guarantees.

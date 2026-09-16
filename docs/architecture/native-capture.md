@@ -149,3 +149,7 @@ Le test réel a capturé 118 offres de deux API et une page HTML : **1 444 172 o
 Railway facture le stockage objet 0,015 $/Go/mois au tarif consulté le 15 septembre 2026. Ainsi 100 Go conservés correspondent à 1,50 $/mois de stockage, avant les autres postes. Les sorties du service vers le bucket passent par le réseau public et peuvent générer des frais réseau. [Tarification officielle](https://docs.railway.com/storage-buckets/billing).
 
 Le budget mondial doit être recalculé pendant la qualification des sources à partir des octets capturés et **des nouveaux blocs distincts par cycle**, puis testé sous charge. Une extrapolation des deux API vers tous les sites HTML serait trompeuse. Le lecteur navigateur contrôle la taille annoncée avant lecture, mais Playwright bufferise les corps sans taille annoncée avant le contrôle final : ce coût mémoire fait partie des mesures de charge à réaliser avant ouverture mondiale.
+
+### Admission avant transport
+
+Une collecte destinée à l’ingestion conserve une ligne immuable `SourceIngestionAdmission`, créée atomiquement avec son batch. Elle lie la revue d’identité et la qualification technique ayant permis de démarrer ; le batch lie déjà sa décision d’accès. Le statut expose ces identifiants sans dossier privé. Une sonde de qualification n’a pas d’admission, et SQL interdit de lui en ajouter après sa transaction d’allocation. Les anciennes captures ne reçoivent aucune admission inventée. Le [contrat d’ingestion](source-ingestion.md) décrit la validation du nouveau résultat et les contrôles de publication.

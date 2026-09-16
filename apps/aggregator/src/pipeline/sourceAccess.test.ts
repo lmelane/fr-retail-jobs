@@ -2,6 +2,9 @@ import '../test/setup-integration.js';
 import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
+import { admissionFixture } from '../test/sourceAdmissionFixture.js';
+import { fetchAtsJobs } from '../ats/index.js';
+import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import { accessFixture } from '../test/sourceAccessFixture.js';
 import { captureExtraction } from '../capture/batch.js';
 import { readRequestData } from '../capture/requestDataRead.js';
@@ -13,20 +16,21 @@ import { fetchJson } from '../lib/http.js';
 import { sourceStatus } from '../onboarding/status.js';
 
 const db = new PrismaClient(); const keys: string[] = [];
-const url = 'https://access-witness.example/boards/maison/jobs?tenant=maison';
-const config = { origin: 'https://access-witness.example' };
-const reader = async () => ({ jobs: [], complete: true, declaredTotal: 0, diagnostic: await fetchJson(url) });
+const url = 'https://api.ashbyhq.com/posting-api/job-board/access?includeCompensation=true';
+const config = { board: 'access' };
+const origin = 'https://api.ashbyhq.com';
+const reader = () => fetchAtsJobs('ASHBY', config);
 const create = async () => {
   const key = `access-${randomUUID()}`; keys.push(key);
-  return db.source.create({ data: { key, maison: 'Synthetic access witness', kind: 'generic-listing', config,
+  return db.source.create({ data: { key, maison: 'Synthetic access witness', kind: 'ashby', config,
     tier: 'EMPLOYER_DIRECT', tenantKey: key, status: 'DRAFT' } });
 };
 const capture = (source: Awaited<ReturnType<typeof create>>, work = reader, active = false) => captureExtraction(db,
-  source.key, config, undefined, work, 'GENERIC_JSONLD', { revisionId: source.currentRevisionId, requireActive: active });
-const native = () => { const fetch = vi.fn(async () => new Response('{"jobs":[]}')); vi.stubGlobal('fetch', fetch); return fetch; };
+  source.key, config, undefined, work, 'ASHBY', { revisionId: source.currentRevisionId, requireActive: active });
+const native = () => { const fetch = vi.fn(async () => new Response('{"apiVersion":"1","jobs":[]}')); vi.stubGlobal('fetch', fetch); return fetch; };
 const prepared = async () => {
   const source = await create(); native(); const batch = await capture(source);
-  const review = await accessFixture(db, source, batch.captureBatchId);
+  const review = await admissionFixture(db, source, batch.captureBatchId);
   return { source, batch, ...review };
 };
 const deny = (source: Awaited<ReturnType<typeof create>>) => recordSourceAccessDecision(db, {
@@ -34,7 +38,7 @@ const deny = (source: Awaited<ReturnType<typeof create>>) => recordSourceAccessD
   scopes: [], robotsCaptureIds: [], statement: 'Synthetic reviewer explicitly revokes the scope for this source.', reviewer: 'test', checkedAt: new Date().toISOString(),
 }, true);
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
-afterAll(async () => { await db.source.deleteMany({ where: { key: { in: keys } } }); await db.$disconnect(); });
+afterAll(async () => { await db.$executeRaw`TRUNCATE "SourceIngestionAdmission", "SourceIdentityReview"`; await db.source.deleteMany({ where: { key: { in: keys } } }); await db.$disconnect(); });
 
 describe('immutable native access decisions', () => {
   it('keeps DISALLOWED observed while applying the existing owner authorization, without activating or publishing', async () => {
@@ -42,7 +46,7 @@ describe('immutable native access decisions', () => {
     expect(result).toMatchObject({ verdict: 'ALLOWED', observations: { DISALLOWED: 1 }, requestCount: 1 });
     expect(await db.source.findUniqueOrThrow({ where: { key: source.key } })).toEqual(source);
     expect(await db.jobSource.count({ where: { sourceKey: source.key } })).toBe(0);
-    expect(await sourceStatus(db, source.key)).toMatchObject({ access: { passed: true, revisionBound: true }, promotionGatesPass: false });
+    expect(await sourceStatus(db, source.key)).toMatchObject({ access: { passed: true, revisionBound: true }, promotionGatesPass: true });
   });
   it('preview performs no decision write and replayed application cannot supersede a newer denial', async () => {
     const { source, document, result } = await prepared();
@@ -77,7 +81,7 @@ describe('immutable native access decisions', () => {
     const otherReview = await accessFixture(db, other, foreign.captureBatchId);
     await expect(recordSourceAccessDecision(db, { ...document, robotsCaptureIds: otherReview.document.robotsCaptureIds })).rejects.toThrow();
     vi.stubGlobal('fetch', vi.fn(async () => new Response('User-agent: *\nAllow: /', { headers: { 'content-type': 'text/plain' } })));
-    const identity = await captureSourceEvidence(db, source.key, { revisionId: source.currentRevisionId, purpose: 'SOURCE_IDENTITY', url: config.origin + '/robots.txt', deadlineMs: 15000 });
+    const identity = await captureSourceEvidence(db, source.key, { revisionId: source.currentRevisionId, purpose: 'SOURCE_IDENTITY', url: origin + '/robots.txt', deadlineMs: 15000 });
     await expect(recordSourceAccessDecision(db, { ...document, robotsCaptureIds: [identity.captureBatchId] })).rejects.toThrow();
   });
   it.each(['method', 'query'] as const)('refuses an unobserved %s added inside an otherwise witnessed scope', async extra => {
@@ -96,14 +100,14 @@ describe('immutable native access decisions', () => {
   it.each(['html', 'invalid-utf8', 'oversize'])('rejects invalid robots bodies: %s', async mode => {
     const { source, document } = await prepared();
     vi.stubGlobal('fetch', vi.fn(async () => new Response(mode === 'html' ? '<html>Sign in</html>' : mode === 'invalid-utf8' ? Buffer.from([0xff]) : 'x'.repeat(512001), { headers: { 'content-type': 'text/plain' } })));
-    const proof = await captureSourceEvidence(db, source.key, { revisionId: source.currentRevisionId, purpose: 'SOURCE_ACCESS', url: config.origin + '/robots.txt', deadlineMs: 15000 });
+    const proof = await captureSourceEvidence(db, source.key, { revisionId: source.currentRevisionId, purpose: 'SOURCE_ACCESS', url: origin + '/robots.txt', deadlineMs: 15000 });
     await expect(recordSourceAccessDecision(db, { ...document, robotsCaptureIds: [proof.captureBatchId] }, true)).rejects.toThrow();
   });
   it('retains NO_ROBOTS and UNREACHABLE as distinct observations', async () => {
     const { source, document } = await prepared();
     for (const [status, observation] of [[404, 'NO_ROBOTS'], [403, 'UNREACHABLE']] as const) {
       vi.stubGlobal('fetch', vi.fn(async () => new Response('Native response', { status })));
-      const proof = await captureSourceEvidence(db, source.key, { revisionId: source.currentRevisionId, purpose: 'SOURCE_ACCESS', url: config.origin + '/robots.txt', deadlineMs: 15000 });
+      const proof = await captureSourceEvidence(db, source.key, { revisionId: source.currentRevisionId, purpose: 'SOURCE_ACCESS', url: origin + '/robots.txt', deadlineMs: 15000 });
       expect(await recordSourceAccessDecision(db, { ...document, robotsCaptureIds: [proof.captureBatchId] })).toMatchObject({ observations: { [observation]: 1 } });
     }
   });
@@ -123,6 +127,7 @@ describe('collection and publication access boundaries', () => {
     const { source, result } = await prepared();
     await db.source.update({ where: { key: source.key }, data: { status: 'ACTIVE' } });
     const collected = await capture(source, reader, true);
+    await validateCapturedSource(db, collected.captureBatchId);
     const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: collected.captureBatchId } });
     expect(batch.accessDecisionId).toBe(result.decisionId);
     await expect(requireCurrentCaptureRevision(db, batch)).resolves.toBeUndefined();

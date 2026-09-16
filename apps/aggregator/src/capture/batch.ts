@@ -13,16 +13,29 @@ import { captureReaderRevision } from './revision.js';
 import { readRequestData } from './requestDataRead.js';
 import { requireSourceAccess } from '../connectors/sourceAccess.js';
 import { matchingAccessScope, SourceAccessGateError } from '../connectors/accessScope.js';
+import { ingestionQualifications, SOURCE_ADMISSION_POLICY } from '../connectors/sourceAdmission.js';
+import { lockSourceWrites } from '../lib/writeLocks.js';
 
 export async function captureExtraction(db: PrismaClient, sourceKey: string, config: Record<string, unknown>,
   runId: string | undefined, work: (config: Record<string, unknown>) => Promise<AdapterResult>, sourceKind?: AtsType, binding?: SourceBinding): Promise<AdapterResult & { captureBatchId: string }> {
   const settings = captureConfig(config);
+  const expected = binding ? Object.freeze({ ...binding }) : undefined;
   const { batch, access } = await db.$transaction(async tx => {
-    const sourceRevisionId = await bindSourceRevision(tx, sourceKey, settings, sourceKind, binding);
-    const access = binding?.requireActive && sourceRevisionId
+    // Admission writers serialize before taking the row lock. The lock is
+    // released before transport; two starts cannot borrow the same validation.
+    if (expected?.requireActive) {
+      await lockSourceWrites(tx, sourceKey, true);
+      await tx.$queryRaw`SELECT id FROM "Source" WHERE key=${sourceKey} FOR UPDATE`;
+    }
+    const sourceRevisionId = await bindSourceRevision(tx, sourceKey, settings, sourceKind, expected);
+    const access = expected?.requireActive && sourceRevisionId
       ? await requireSourceAccess(tx, { key: sourceKey, currentRevisionId: sourceRevisionId }) : null;
+    const qualifications = access ? await ingestionQualifications(tx, sourceKey) : null;
     const batch = await tx.captureBatch.create({ data: { id: randomUUID(), sourceKey, runId, sourceRevisionId, accessDecisionId: access?.decision.id,
       configHash: evidenceHash(settings), executionBudget: sourceExecutionBudget(), sourceKind, formatVersion: 2, readerRevision: captureReaderRevision() } });
+    if (qualifications) await tx.sourceIngestionAdmission.create({ data: { batchId: batch.id,
+      identityReviewId: qualifications.identity.id, sourceValidationId: qualifications.validation.id,
+      policyVersion: SOURCE_ADMISSION_POLICY } });
     return { batch, access };
   });
   const context: CaptureContext = { sequence: 0, observedAt: batch.startedAt, write: record => persistCapture(db, batch.id, record),

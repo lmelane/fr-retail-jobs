@@ -1,4 +1,6 @@
-import { accessFixture } from '../test/sourceAccessFixture.js';
+import { admissionFixture } from '../test/sourceAdmissionFixture.js';
+import { fetchAtsJobs } from '../ats/index.js';
+import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import '../test/setup-integration.js';
 import { beforeEach, afterEach, afterAll, describe, it, expect, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
@@ -19,24 +21,26 @@ beforeEach(async () => {
   const id = randomUUID(); companyId = (await db.company.create({ data: { name: 'Repair witness', canonicalKey: id, fashionjobsUrl: `repair:${id}` } })).id;
 });
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.useRealTimers(); });
-afterAll(async () => { await db.companyAlias.deleteMany(); await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); await db.$disconnect(); });
+afterAll(async () => { await db.$executeRaw`TRUNCATE "SourceIngestionAdmission", "SourceIdentityReview"`; await db.companyAlias.deleteMany(); await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); await db.$disconnect(); });
 
-async function publication(options: { url?: string; title?: string; description?: string; country?: string; city?: string; tier?: string; jobId?: string; validThrough?: string; captureKind?: 'LEVER'; readerTitle?: string; readerHold?: string; readerCountry?: string; readerDescription?: string; nativeUrl?: string; omitNativeDescription?: boolean; latitude?: string } = {}) {
+async function publication(options: { ashby?: boolean; url?: string; title?: string; description?: string; country?: string; city?: string; tier?: string; jobId?: string; validThrough?: string; captureKind?: 'LEVER'; readerTitle?: string; readerHold?: string; readerCountry?: string; readerDescription?: string; nativeUrl?: string; omitNativeDescription?: boolean; latitude?: string } = {}) {
   const key = `repair-${randomUUID()}`, url = options.url ?? application;
-  await db.source.create({ data: { key, maison: 'Repair witness', kind: options.captureKind ? 'lever' : 'generic-listing', config: {}, tier: options.tier ?? 'EMPLOYER_DIRECT', tenantKey: key, status: 'ACTIVE' } });
+  await db.source.create({ data: { key, maison: 'Repair witness', kind: options.ashby ? 'ashby' : options.captureKind ? 'lever' : 'generic-listing', config: options.ashby ? { board: 'repair' } : {}, tier: options.tier ?? 'EMPLOYER_DIRECT', tenantKey: key, status: 'ACTIVE' } });
   const raw = { '@type': 'JobPosting', identifier: { '@type': 'PropertyValue', value: key }, url: options.nativeUrl ?? url, title: options.title ?? 'Client Advisor',
     ...(options.omitNativeDescription ? {} : { description: options.description ?? 'Own publication description' }),
     jobLocation: { '@type': 'Place', ...(options.latitude ? { geo: { latitude: options.latitude, longitude: '9.1' } } : {}), address: { '@type': 'PostalAddress', addressCountry: options.country, addressLocality: options.city } },
     ...(options.validThrough ? { validThrough: options.validThrough } : {}), board: { row: { attrs: { 'data-applyurl': url } } } };
   const externalId = createHash('sha1').update(url).digest('hex');
+  if (options.ashby) Object.assign(raw, { id: externalId, jobUrl: url, isListed: true,
+    ...(options.omitNativeDescription ? {} : { descriptionPlain: raw.description }) });
   vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(raw))));
-  const result = await captureExtraction(db, key, {}, undefined, async () => {
+  const result = await captureExtraction(db, key, options.ashby ? { board: 'repair' } : {}, undefined, async () => {
     const observed = await fetchJson<typeof raw>(`https://repair.example/${key}`);
     const parsed = normalizeGenericPosting(observed, url)!;
     // Deliberate old-reader mistakes remain inside the immutable extraction.
     const job: NormalizedJob = { ...parsed, externalId, url, ...(options.readerTitle ? { title: options.readerTitle } : {}), ...(options.readerHold ? { publicationHold: options.readerHold } : {}), ...(options.readerCountry ? { country: options.readerCountry } : {}), ...(options.readerDescription ? { description: options.readerDescription } : {}) };
     return { jobs: [job] };
-  }, options.captureKind ?? 'GENERIC_JSONLD');
+  }, options.ashby ? 'ASHBY' : options.captureKind ?? 'GENERIC_JSONLD');
   if (options.captureKind) await db.source.update({ where: { key }, data: { kind: 'generic-listing' } });
   const native = result.jobs[0];
   const parent = options.jobId ? await db.job.findUniqueOrThrow({ where: { id: options.jobId } }) : await db.job.create({ data: {
@@ -289,27 +293,28 @@ describe('reviewed publication partitions', () => {
 describe('native publications without public presentation', () => {
   async function mixed() {
     const good = await publication({ title: 'Qualified content' });
-    const held = await publication({ jobId: good.job.id, omitNativeDescription: true, readerDescription: 'Legacy invented description', tier: 'SPECIALIST_JOBBOARD' });
+    const held = await publication({ ashby: true, jobId: good.job.id, omitNativeDescription: true, readerDescription: 'Legacy invented description', tier: 'SPECIALIST_JOBBOARD' });
     const request = { jobIds: [good.job.id], groups: [{ jobId: good.job.id, sourceIds: [good.source.id] }],
       quarantineSourceIds: [held.source.id], reason: 'Keep the native incomplete publication independently of the qualified public presentation' };
     return { good, held, request };
   }
   async function reobserve(held: Awaited<ReturnType<typeof publication>>, options: { hold?: string; config?: Record<string, unknown>; missingDescription?: boolean } = {}) {
     const { toCandidate } = await import('./ingest.js');
-    const raw = { ...(held.source.raw as Record<string, unknown>), hiringOrganization: { '@type': 'Organization', name: 'Repair witness' }, ...(options.missingDescription ? {} : { description: 'Native recovered duties' }) };
-    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(raw))));
-    const work = async () => {
-      const observed = await fetchJson<typeof raw>(`https://repair.example/reobserve/${held.source.id}`);
-      const job = normalizeGenericPosting(observed, held.source.url)!;
-      return { jobs: [{ ...job, ...(options.hold ? { publicationHold: options.hold } : {}) }] };
-    };
-    const probe = await captureExtraction(db, held.source.sourceKey, options.config ?? {}, undefined, work, 'GENERIC_JSONLD');
     const registry = await db.source.findUniqueOrThrow({ where: { key: held.source.sourceKey } });
-    await accessFixture(db, registry, probe.captureBatchId);
-    const result = await captureExtraction(db, held.source.sourceKey, options.config ?? {}, undefined, work, 'GENERIC_JSONLD',
+    const settings = options.config ?? { board: 'repair' };
+    const raw = { id: held.source.externalId, title: held.source.title, jobUrl: held.source.url, isListed: true,
+      descriptionPlain: 'Native recovered duties', board: (held.source.raw as Record<string, unknown>).board };
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ apiVersion: '1', jobs: [raw] }))));
+    const work = () => fetchAtsJobs('ASHBY', settings);
+    const probe = await captureExtraction(db, held.source.sourceKey, settings, undefined, work, 'ASHBY');
+    await admissionFixture(db, registry, probe.captureBatchId);
+    const observed = { ...raw, ...(options.hold ? { isListed: false } : {}), ...(options.missingDescription ? { descriptionPlain: undefined } : {}) };
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ apiVersion: '1', jobs: [observed] }))));
+    const result = await captureExtraction(db, held.source.sourceKey, settings, undefined, work, 'ASHBY',
       { revisionId: registry.currentRevisionId, requireActive: true });
+    await validateCapturedSource(db, result.captureBatchId);
     const job = result.jobs[0];
-    const candidate = toCandidate({ ...job, publicationHold: undefined }, { key: held.source.sourceKey, tier: 'SPECIALIST_JOBBOARD', company: 'Repair witness' }, 'Repair witness', 'GENERIC_JSONLD');
+    const candidate = toCandidate({ ...job, publicationHold: undefined }, { key: held.source.sourceKey, tier: 'SPECIALIST_JOBBOARD', company: 'Repair witness' }, 'Repair witness', 'ASHBY');
     await db.company.update({ where: { id: companyId }, data: { canonicalKey: candidate.companyId, fashionjobsUrl: `resolved:${candidate.companyId}` } });
     const { sourceIdentityHash } = await import('../connectors/sourceIdentity.js');
     const { normalizedEmployerName } = await import('../normalize/employerName.js');
@@ -369,7 +374,7 @@ describe('native publications without public presentation', () => {
   });
 
   async function ownerMissing() {
-    const held = await publication({ omitNativeDescription: true, readerDescription: 'Invented legacy content' });
+    const held = await publication({ ashby: true, omitNativeDescription: true, readerDescription: 'Invented legacy content' });
     const good = await publication({ jobId: held.job.id, url: 'https://example.com/qualified-distinct', description: 'Qualified sibling own text' });
     return { held, good, request: { jobIds: [held.job.id], groups: [{ sourceIds: [good.source.id] }],
       quarantineSourceIds: [held.source.id], withdrawJobIds: [held.job.id], reason: 'Withdraw the unqualified original public identity without guessing a sibling redirect' } };
@@ -463,7 +468,7 @@ describe('native publications without public presentation', () => {
     await expect(reobserve(held, { config: { different: true } })).rejects.toThrow('settings differ');
     for (const options of [{ hold: 'WRONG_DETAIL' }, { missingDescription: true }]) {
       const candidate = await reobserve(held, options);
-      await expect(upsertDeduplicated(db, candidate)).rejects.toThrow(/QUARANTINE_CAPTURE_NOT_QUALIFIED|QUARANTINE_RECOVERY_REQUIRED/);
+      await expect(upsertDeduplicated(db, candidate)).rejects.toThrow(/QUARANTINE_CAPTURE_NOT_QUALIFIED|QUARANTINE_RECOVERY_REQUIRED|no current validated/);
       expect((await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).jobId).toBeNull();
     }
   });
@@ -501,7 +506,7 @@ describe('native publications without public presentation', () => {
   it('creates an independent presentation for a newly proven distinct publication, never restoring a false group', async () => {
     const { upsertDeduplicated } = await import('../dedup/upsert.js');
     const good = await publication();
-    const held = await publication({ jobId: good.job.id, url: 'https://example.com/jobs/separate-native-entry', omitNativeDescription: true });
+    const held = await publication({ ashby: true, jobId: good.job.id, url: 'https://example.com/jobs/separate-native-entry', omitNativeDescription: true });
     const request = { jobIds: [good.job.id], groups: [{ jobId: good.job.id, sourceIds: [good.source.id] }], quarantineSourceIds: [held.source.id], reason: 'Preserve independent native entries until their own content can be recollected' };
     await apply(await planPublicationGroups(db, request));
     const outcome = await upsertDeduplicated(db, await reobserve(held));

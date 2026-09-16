@@ -27,9 +27,9 @@ const rawData = async (s: Source) => {
 };
 const assertGate = (source: Source) => db.$transaction(tx => requireSourceIdentity(tx, source));
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
-beforeEach(async () => { await db.$executeRaw`TRUNCATE "SourceIdentityReview"`; });
+beforeEach(async () => { await db.$executeRaw`TRUNCATE "SourceIngestionAdmission", "SourceIdentityReview"`; });
 afterAll(async () => {
-  await db.$executeRaw`TRUNCATE "SourceIdentityReview"`;
+  await db.$executeRaw`TRUNCATE "SourceIngestionAdmission", "SourceIdentityReview"`;
   await db.source.deleteMany({ where: { key: { in: keys } } });
   await db.$disconnect();
 });
@@ -119,7 +119,7 @@ describe('identity evidence follows the exact registry revision', () => {
 
   it('rejects an unbound historical review without replacing its evidence', async () => {
     const s = await create(); const historicalData = await rawData(s);
-    await db.$executeRaw`TRUNCATE "SourceIdentityReview"`;
+    await db.$executeRaw`TRUNCATE "SourceIngestionAdmission", "SourceIdentityReview"`;
     await db.$transaction(async tx => {
       // Simulate a row retained by the additive migration. This DDL and row are rolled back.
       await tx.$executeRawUnsafe('ALTER TABLE "SourceIdentityReview" DISABLE TRIGGER "SourceIdentityReview_revision_binding"');
