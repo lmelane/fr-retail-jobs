@@ -50,6 +50,8 @@ const securityHeaders = [
 
 const nextConfig = {
   env: { CATWALKS_SCHEMA_MIGRATIONS: JSON.stringify(schemaMigrations) },
+  // La stack locale (NEXT_DIST_DIR=.next-stack) construit à côté du `.next` d'un serveur de développement.
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   // The shared db package ships TypeScript, so Next must compile it.
   transpilePackages: ['@catwalks/db'],
   // Railway builds from the repo root; standalone keeps the image small.

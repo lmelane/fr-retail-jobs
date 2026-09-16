@@ -36,6 +36,7 @@ Thumbs.db
 
 # Next.js
 .next/
+.next-*/
 next-env.d.ts
 *.tsbuildinfo
 
@@ -66,3 +67,6 @@ Capture*.png
 !audits/legacy-aggregator-data/**/*.html
 !audits/legacy-aggregator-data/**/*.xml
 __pycache__/
+
+# Stack locale : configuration privée, secrets de test, PID, journaux, boîte de réception, preuves.
+.stack-local/

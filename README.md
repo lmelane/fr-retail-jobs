@@ -8,6 +8,7 @@ Collecte des offres du luxe, de la mode, de la beauté et du retail. Les publica
 - [Recherche bornée par marché](docs/architecture/recherche-marche.md) : périmètre obligatoire, champ lieu, filtres refusés explicitement, inconnues non confirmées, contrat de facettes et `GET /api/marches`.
 - [Parcours unique des sources](docs/architecture/source-onboarding.md) : découverte, enregistrement, captures HTTP des preuves, collecte native et activation.
 - [État vérifié et exploitation](apps/aggregator/README.md).
+- [Stack locale complète](docs/stack-locale.md) : catalogue, API, backend et site de test sur ce poste (`npm run stack:prepare`, `stack:start`, `stack:verify`, `stack:stop`, `stack:reset`), données synthétiques isolées, aucune écriture de production.
 - [Faits issus du RAW](docs/architecture/source-facts.md) : rémunérations exactes, diplômes natifs, modes de travail et localisations.
 - [Identité des publications](docs/architecture/publication-identity.md) : clés natives et preuves de rapprochement ; reprise historique en cours.
 - [Plan par lots et critères de validation](audits/reprise-2026-09-15/plan.md) ; chaque lot validé localement a son bilan daté (`audits/reprise-2026-09-15/lot-*.md`), du [lot 1](audits/reprise-2026-09-15/lot-1.md) au [lot 12](audits/reprise-2026-09-15/lot-12.md).
