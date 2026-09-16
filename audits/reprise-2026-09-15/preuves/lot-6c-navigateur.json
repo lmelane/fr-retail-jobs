@@ -1,0 +1,141 @@
+{
+  "site": "http://127.0.0.1:3001",
+  "date": "2026-09-16T10:42:00.753Z",
+  "constats": [
+    {
+      "nom": "sans marché ni pays : l’invite à choisir, aucune liste",
+      "ok": true,
+      "detail": "Trouvez votre prochain poste dans une Maison. Métier, mot-clé ou Maison Ville, code postal ou télétravail Rechercher Off"
+    },
+    {
+      "nom": "l’invite propose douze marchés avec leurs comptes",
+      "ok": true
+    },
+    {
+      "nom": "marché inconnu : l’invite le dit, sans recherche mondiale",
+      "ok": true
+    },
+    {
+      "nom": "FR : filtres servis avec leurs libellés natifs",
+      "ok": true,
+      "detail": "Métier | Secteur | Type de contrat | Temps de travail | Ville | Maison | Groupe | Langue"
+    },
+    {
+      "nom": "FR : le contexte est le périmètre",
+      "ok": true
+    },
+    {
+      "nom": "FR : le sélecteur affiche le marché servi",
+      "ok": true
+    },
+    {
+      "nom": "FR : des cartes sont rendues",
+      "ok": true
+    },
+    {
+      "nom": "FR + Maison témoin : deux offres directes, étiquetées Candidature sur Catwalks",
+      "ok": true,
+      "detail": "2 cartes, 2 étiquettes"
+    },
+    {
+      "nom": "la fiche ouverte porte le bouton Postuler Catwalks (bouton, pas lien externe)",
+      "ok": true
+    },
+    {
+      "nom": "la fiche n’a pas de lien externe",
+      "ok": true
+    },
+    {
+      "nom": "le lien de la carte est dans l’espace cw_ et garde le marché",
+      "ok": true,
+      "detail": "/emplois/responsable-de-boutique-cw_cmu3ypq0i0004msjowbgsger9?marche=FR&maison=Maison+T%C3%A9moin+6C"
+    },
+    {
+      "nom": "US + contrat + lieu France : deux refus nommés, avec Retirer",
+      "ok": true
+    },
+    {
+      "nom": "US + lieu France refusé : le titre ne nomme pas le lieu refusé",
+      "ok": true,
+      "detail": "3 offres "
+    },
+    {
+      "nom": "NL : Dienstverband, jamais Type de contrat",
+      "ok": true,
+      "detail": "Vakgebied | Sector | Dienstverband | Dienstverband | Stad | Maison | Taal"
+    },
+    {
+      "nom": "FR + contrat : la ligne des non confirmées (D-435) est rendue quand des offres ne précisent pas leur contrat",
+      "ok": true,
+      "detail": "2 offres ne précisent pas leur contrat : elles sont servies après les offres confirmées."
+    },
+    {
+      "nom": "annuaire FR : la Maison témoin (offres directes seulement) a sa ligne, sur le marché",
+      "ok": true
+    },
+    {
+      "nom": "la carte Maison mène à ses offres sur le même marché",
+      "ok": true,
+      "detail": "/emplois?marche=FR&maison=Maison+T%C3%A9moin+6C"
+    },
+    {
+      "nom": "accueil : le compteur vient du contrat des marchés",
+      "ok": true,
+      "detail": "Découvrez 15 offres en une seule recherche."
+    },
+    {
+      "nom": "suggestions FR : Paris proposé",
+      "ok": true,
+      "detail": "[\"Paris\"]"
+    },
+    {
+      "nom": "suggestions sans marché : liste vide",
+      "ok": true
+    },
+    {
+      "nom": "chargement continu page 2 : 200, même contrat (page 2 vide sur 8 offres)",
+      "ok": true,
+      "detail": "{\"page\":2,\"total\":8}"
+    },
+    {
+      "nom": "chargement continu sans marché ni pays : 400 MARCHE_REQUIS",
+      "ok": true
+    },
+    {
+      "nom": "aucune erreur JavaScript de page",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "nom": "visiteur autrichien sans marché : servi sur DE (suggestion), sélecteur Deutschland, deux offres DE+AT",
+      "ok": true,
+      "detail": "DE / Marché : Deutschland. Changer de marché"
+    },
+    {
+      "nom": "la suggestion n’est PAS écrite dans les liens",
+      "ok": true,
+      "detail": "/emplois/store-manager-wien-temoin6c-at1"
+    },
+    {
+      "nom": "375 : invite sans débordement horizontal",
+      "ok": true
+    },
+    {
+      "nom": "375 : liste + refus sans débordement horizontal",
+      "ok": true
+    },
+    {
+      "nom": "375 : fiche Catwalks (sa propre page) sans débordement",
+      "ok": true
+    },
+    {
+      "nom": "375 : le retour vers la liste existe et garde la recherche",
+      "ok": true
+    },
+    {
+      "nom": "375 : le bouton Postuler est visible et assez grand pour un pouce",
+      "ok": true,
+      "detail": "116×54"
+    }
+  ]
+}
