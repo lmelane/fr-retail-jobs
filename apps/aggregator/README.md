@@ -30,6 +30,8 @@ Le [lot 5D](../../audits/reprise-2026-09-15/lot-5d.md) remplace le compteur manu
 
 Le [lot 5G3A](../../audits/reprise-2026-09-15/lot-5g3a.md) supprime le rattachement automatique de tout nouveau libellé employeur au propriétaire d’un portail SINGLE_BRAND. Les noms natifs gardent leur identité propre à la source ; les alias revus restent applicables. L’inférence d’un employeur absent exige une revue actuelle, dont l’identifiant est conservé. Le lecteur JSON-LD transmet maintenant `hiringOrganization.name` avec sa provenance. Les affectations historiques ne sont pas réécrites par ce lot.
 
+Le [lot 5G3B1](../../audits/reprise-2026-09-15/lot-5g3b1.md) corrige la lecture des règles robots pour CatwalksBot, les groupes répétés et les chemins encodés. Les comparaisons sont bornées ; une évaluation interrompue garde une observation non résolue. La [décision d’accès immuable](../../docs/architecture/source-access.md) et son application à toutes les requêtes restent à construire.
+
 ## Commandes de validation
 
 Depuis la racine du monorepo, après `npm ci --workspaces --include-workspace-root` :

@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { createHash } from 'node:crypto';
+import { CRAWLER_IDENTITY, CRAWLER_PRODUCT_TOKEN } from './crawlerIdentity.js';
 import { CATALOGUE_LABEL, classifyLabel, readRobots, requestTarget, robotsReading, scopeEvidence } from './candidateChecks.js';
 
 describe('explicit robots verdict', () => {
   const robots = 'User-agent: *\nDisallow: /private\nAllow: /v1/boards/';
-  it('a READ file decides on the request path, and the reading is dated by its hash', () => {
+  it('a read body decides on the request path and retains its content hash', () => {
     expect(robotsReading({ status: 200, text: robots }, '/v1/boards/onrunning/jobs')).toMatchObject({ verdict: 'ALLOWED', httpStatus: 200, bytes: robots.length });
     expect(robotsReading({ status: 200, text: robots }, '/private/x').verdict).toBe('DISALLOWED');
     expect(robotsReading({ status: 200, text: robots }, '/v1/boards/x').sha256).toMatch(/^[a-f0-9]{64}$/);
@@ -21,6 +23,23 @@ describe('explicit robots verdict', () => {
     expect(await readRobots('https://example.test', '/', failing)).toMatchObject({ verdict: 'UNREACHABLE', error: 'ECONNRESET' });
     const ok = (async () => new Response('User-agent: *\nDisallow:', { status: 200 })) as unknown as typeof fetch;
     expect((await readRobots('https://example.test', '/jobs', ok)).verdict).toBe('ALLOWED');
+  });
+  it('uses the same product token for the HTTP identity and the named group', async () => {
+    expect(CRAWLER_IDENTITY).toBe(`${CRAWLER_PRODUCT_TOKEN}/1.0 (+https://catwalks.io/bot)`);
+    const response = `User-agent: *\nAllow: /\nUser-agent: ${CRAWLER_PRODUCT_TOKEN}\nDisallow: /jobs?private=1`;
+    const transport = (async (url, init) => {
+      expect(url).toBe('https://example.test/robots.txt');
+      expect(new Headers(init?.headers).get('user-agent')).toBe(CRAWLER_IDENTITY);
+      return new Response(response, { status: 200 });
+    }) as typeof fetch;
+    expect(await readRobots('https://example.test', '/jobs?private=1', transport)).toMatchObject({ verdict: 'DISALLOWED', httpStatus: 200 });
+  });
+  it('retains evidence when limits prevent evaluation instead of reporting an allowance', () => {
+    const text = 'User-agent: CatwalksBot\nDisallow: /*' + 'a'.repeat(8_000) + 'z$';
+    expect(robotsReading({ status: 200, text }, '/' + 'a'.repeat(16_000))).toEqual({
+      verdict: 'UNREACHABLE', error: 'ROBOTS_RULES_NOT_EVALUATED', httpStatus: 200,
+      sha256: createHash('sha256').update(text).digest('hex'), bytes: Buffer.byteLength(text),
+    });
   });
 });
 

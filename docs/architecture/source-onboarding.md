@@ -107,6 +107,7 @@ Une promotion répétée sur une source déjà ACTIVE vérifie à nouveau les po
 
 ## Limites avant release
 
+- Le [lecteur de règles](source-access.md) utilise maintenant l’identité réelle CatwalksBot, combine les groupes applicables et borne les comparaisons. Il calcule une observation ; il ne qualifie pas la portée de tout un adaptateur.
 - La porte d’accès actuelle lit encore `robotsVerdict` et `robotsCheckedAt`. Le statut indique `revisionBound: false`. Cette preuve mutable doit être remplacée par une décision immuable couvrant les cibles HTTP exactes ; la CLI ne la fabrique pas lors de la collecte.
 - Les certifications positives d’identité sont limitées aux trois contrats natifs qualifiés ci-dessus. Les domaines personnalisés, documents de groupe et autres familles exigent un contrat d’inspection adapté avant leur admission ; aucune preuve textuelle ne sert de contournement.
 - Les rôles employeur, groupe et éditeur, la réouverture explicite d’une source retirée, les paramètres privés d’accès et les ingestions de sources déjà actives restent des travaux distincts.

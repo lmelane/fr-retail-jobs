@@ -1,0 +1,83 @@
+{
+  "mutations": [
+    {
+      "name": "ignore-own-product-token",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "b733b89d901c56bbf11c4f7d1f2024b0f3d01518c9ebf4a629971906a9c3ae95"
+    },
+    {
+      "name": "only-first-named-group",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "b733b89d901c56bbf11c4f7d1f2024b0f3d01518c9ebf4a629971906a9c3ae95"
+    },
+    {
+      "name": "only-first-wildcard-group",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "b733b89d901c56bbf11c4f7d1f2024b0f3d01518c9ebf4a629971906a9c3ae95"
+    },
+    {
+      "name": "mix-wildcard-and-named",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "b733b89d901c56bbf11c4f7d1f2024b0f3d01518c9ebf4a629971906a9c3ae95"
+    },
+    {
+      "name": "sitemap-splits-agents",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "b733b89d901c56bbf11c4f7d1f2024b0f3d01518c9ebf4a629971906a9c3ae95"
+    },
+    {
+      "name": "discard-query",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "b733b89d901c56bbf11c4f7d1f2024b0f3d01518c9ebf4a629971906a9c3ae95"
+    },
+    {
+      "name": "do-not-decode-unreserved",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "b733b89d901c56bbf11c4f7d1f2024b0f3d01518c9ebf4a629971906a9c3ae95"
+    },
+    {
+      "name": "decode-reserved-slash",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "b733b89d901c56bbf11c4f7d1f2024b0f3d01518c9ebf4a629971906a9c3ae95"
+    },
+    {
+      "name": "skip-native-utf8-encoding",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "b733b89d901c56bbf11c4f7d1f2024b0f3d01518c9ebf4a629971906a9c3ae95"
+    },
+    {
+      "name": "case-insensitive-paths",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "b733b89d901c56bbf11c4f7d1f2024b0f3d01518c9ebf4a629971906a9c3ae95"
+    },
+    {
+      "name": "unbounded-matcher",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "b733b89d901c56bbf11c4f7d1f2024b0f3d01518c9ebf4a629971906a9c3ae95"
+    },
+    {
+      "name": "unbounded-document",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "b733b89d901c56bbf11c4f7d1f2024b0f3d01518c9ebf4a629971906a9c3ae95"
+    },
+    {
+      "name": "allow-after-partial-evaluation",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "69aeffcd9cfaffa4b9d7e02b4a4d44f40d659f4837946b4da442f30ba442642a"
+    }
+  ],
+  "restoredTests": "passed"
+}
