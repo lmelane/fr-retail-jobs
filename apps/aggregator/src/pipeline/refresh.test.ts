@@ -249,6 +249,9 @@ describe('runRefresh', () => {
     expect(still?.isActive).toBe(true);
   });
 
+  // Dix attestations synthétiques, chacune une ingestion complète (~0,45 s mesurée le 16/09/2026) :
+  // le plafond implicite de 5 s est dépassé dès que la machine est chargée, et un témoin qui expire
+  // rend la main pendant que son `withNetwork` restaure le fetch réel sous le témoin suivant.
   it('refuses a mass closure that would empty most of the base', async () => {
     const c = await company();
     // 10 offers, all stale, all from proven-empty sources -> would close all 10.
@@ -264,7 +267,7 @@ describe('runRefresh', () => {
     expect(result.refused).toBe(true);
     // Nothing was actually closed.
     expect(await prisma.job.count({ where: { isActive: true } })).toBe(10);
-  });
+  }, 30_000);
 });
 
 /**
