@@ -205,6 +205,24 @@ try {
       ...(backfillFrom ? { backfillFrom: parseDay(backfillFrom) } : {}),
     });
     await log.info('command.result', { ok: true, command, ...stats });
+  } else if (command === 'direct-sync') {
+    /**
+     * Lot 6 (D-423) — la copie de lecture des offres Catwalks : consomme le
+     * flux d'outbox du backend depuis le curseur (ou `--depuis=<seq>` pour
+     * rejouer), page par page (`--limite=`, ≤ 500). Idempotent, monotone :
+     * rejouer depuis 0 ne ressuscite rien. `CATALOGUE_FLUX_URL` et
+     * `CATALOGUE_FLUX_KEY` viennent de l'environnement ; sans eux, rien ne
+     * part et la commande échoue explicitement.
+     */
+    const { consommerFlux, fluxHttp } = await import('./direct/feed.js');
+    const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+    const base = process.env.CATALOGUE_FLUX_URL?.trim(), cle = process.env.CATALOGUE_FLUX_KEY?.trim();
+    if (!base || !cle) throw new Error('direct-sync requires CATALOGUE_FLUX_URL and CATALOGUE_FLUX_KEY');
+    const depuis = arg('depuis'), limite = Number(arg('limite') ?? 200);
+    if (depuis !== undefined && !/^\d{1,19}$/.test(depuis)) throw new Error('--depuis must be a sequence number');
+    const stats = await consommerFlux(prisma, fluxHttp(base, cle), { taillePage: limite, ...(depuis !== undefined ? { depuis: BigInt(depuis) } : {}) });
+    await log.info('command.result', { ok: !stats.refus, command, ...stats, dernierSeq: stats.dernierSeq?.toString() ?? null });
+    if (stats.refus) process.exitCode = 1;
   } else if (command === 'import-sources') {
     /**
      * One-shot seed of the Source table (DEC-3) from data/seeds/sources.csv.

@@ -1335,3 +1335,81 @@ model SourceAccessDecision {
   @@index([sourceRevisionId, sequence])
   @@index([captureBatchId])
 }
+
+/**
+ * Lot 6 (D-423) — the read copy of a Catwalks direct offer. Neon stays the
+ * truth; this row is a projection of the last version received from the
+ * backend outbox feed, kept whole in `payload` (hashed) as its provenance.
+ * Columns mirror the aggregated `Job` vocabulary so one SQL serves both
+ * origins; they are rebuilt from the payload at every version, never edited.
+ * `eligible = false` keeps the last projection of a withdrawn offer for its page.
+ */
+model DirectOffer {
+  /** The backend job id; public id is `cw_<id>` — a distinct identifier space. */
+  id                    String    @id
+  version               BigInt
+  appliedSeq            BigInt
+  eligible              Boolean
+  payloadHash           String
+  payload               Json
+  correspondanceVersion Int
+  slug                  String
+  anciensSlugs          String[]  @default([])
+  title                 String
+  company               String
+  maisonSlug            String?
+  countryCode           String?
+  city                  String?
+  postalCode            String?
+  location              String
+  latitude              Float?
+  longitude             Float?
+  employmentTerm        String?
+  workTime              String?
+  programType           String?
+  engagementType        String?
+  workplaceType         String?
+  sectorCodes           String[]  @default([])
+  occupationLabel       String?
+  language              String?
+  description           String
+  salaryMin             Decimal?  @db.Decimal(24, 6)
+  salaryMax             Decimal?  @db.Decimal(24, 6)
+  salaryCurrency        String?
+  salaryPeriod          String?
+  visuel                String?
+  applyUrl              String
+  postedAt              DateTime
+  validThrough          DateTime?
+  modifiedAt            DateTime
+  searchText            String    @default("")
+  receivedAt            DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([eligible, countryCode])
+  @@index([slug])
+  @@index([company])
+}
+
+/** Append-only trace of every feed event read, with its effect; immutable in SQL. */
+model DirectOfferEvent {
+  seq         BigInt   @id
+  offerId     String
+  version     BigInt
+  evenement   String
+  payloadHash String?
+  effet       String
+  appliedAt   DateTime @default(now())
+
+  @@index([offerId])
+}
+
+/** Where the feed consumer stopped, and the last refusal it met. */
+model DirectFeedCursor {
+  id              String    @id
+  lastSeq         BigInt
+  contractVersion Int
+  lastReadAt      DateTime
+  lastError       String?
+  updatedAt       DateTime  @updatedAt
+}

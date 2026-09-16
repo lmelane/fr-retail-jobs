@@ -55,6 +55,17 @@ python3 -B apps/aggregator/scripts/ops/railway-service.py status api
 python3 -B apps/aggregator/scripts/ops/read-crons.py
 ```
 
+## Offres directes (D-423)
+
+Les offres publiées sur Catwalks entrent dans le catalogue par le flux d’outbox du backend, consommé par la commande `direct-sync` (`src/direct/`). Elle exige `CATALOGUE_FLUX_URL` et `CATALOGUE_FLUX_KEY`, reprend au curseur (`DirectFeedCursor`) et rejoue sans effet une page déjà lue ; `--depuis=<séquence>` force une relecture, `--limite=` borne la page (500 au plus). Le contrat lu est le [contrat de recherche](../../docs/architecture/recherche-marche.md#deux-origines-une-recherche-d-418-d-419-d-423).
+
+```sh
+npx tsx src/cli.ts direct-sync --limite=200
+npx tsx src/cli.ts direct-sync --depuis=0
+```
+
+Un refus de contrat ou une panne du flux se lit sur `DirectFeedCursor.lastError` ; le curseur n’avance jamais sur un refus.
+
 ## Sources et preuves
 
 Le catalogue opérationnel est la table `Source`. `data/seeds/sources.csv` ne remplace pas l’état de production. Le [parcours maintenu des sources](../../docs/architecture/source-onboarding.md) précise l’ajout, les preuves, la validation native et la promotion sous révision explicite. Les inspections de découverte restent distinctes des décisions de qualification.

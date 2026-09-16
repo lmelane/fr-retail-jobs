@@ -7,6 +7,7 @@ import type { Perimetre } from '@catwalks/db/marches';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { prisma, Prisma, canonicalJobId } from '@catwalks/db';
 import { searchSummary } from './job-search-query';
+import { directPubliable, directPubliableSql, directToRow, estIdDirect, idDirect, statutDirect } from './direct-offers';
 import { offerIdCandidates } from './offer-url';
 import { libellerFacettes, type FacetteServie } from './facettes';
 import { exigerPerimetre } from './perimetre';
@@ -380,6 +381,13 @@ export async function getJobStatus(
 > {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
+    // Une offre directe : son espace d'identifiants est le sien ; retirée par
+    // le backend ou échue, elle est « fermée » — jamais « retirée » au sens
+    // d'un retrait de catalogue, puisque c'est l'employeur lui-même qui parle.
+    if (estIdDirect(id)) {
+      const direct = await prisma.directOffer.findUnique({ where: { id: idDirect(id) } });
+      return direct ? { status: statutDirect(direct), job: directToRow(direct) } : { status: 'missing' };
+    }
     const canonicalId = await canonicalJobId(prisma, id);
     if (!canonicalId) return { status: 'missing' };
     const row = await prisma.job.findUnique({
@@ -412,6 +420,11 @@ export async function getOfferState(param: string): Promise<'active' | 'closed' 
     // The param may be a bare id or slug-id (S-01) — try each candidate, so
     // the middleware's 410 decision works on both URL shapes.
     for (const id of offerIdCandidates(param)) {
+      if (estIdDirect(id)) {
+        const direct = await prisma.directOffer.findUnique({ where: { id: idDirect(id) }, select: { eligible: true, validThrough: true } });
+        if (direct) return statutDirect(direct);
+        continue;
+      }
       const canonicalId = await canonicalJobId(prisma, id);
       if (!canonicalId) continue;
       const row = await prisma.job.findUnique({ where: { id: canonicalId }, select: { isActive: true, withdrawnAt: true, closedAt: true,
@@ -461,23 +474,32 @@ export type CompanyAside = { openJobs: number; cities: number; countries: number
 export async function getCompanyAside(companyName: string): Promise<CompanyAside | null> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
+    const at = new Date();
     const company = await prisma.company.findFirst({
       where: { name: companyName },
       select: { id: true, domain: true, sector: true, sectorCodes: true, parentGroup: true },
     });
-    if (!company) return null;
+    // Une Maison qui publie sur Catwalks compte ses offres directes avec ses
+    // offres agrégées ; une Maison connue par ses seules offres directes a
+    // aussi son bloc, sans domaine ni groupe (le registre ne la connaît pas).
     const [agg] = await prisma.$queryRaw<{ jobs: bigint; cities: bigint; countries: bigint }[]>`
       SELECT count(*)::bigint AS jobs,
              count(DISTINCT lower(city))::bigint AS cities,
              count(DISTINCT "countryCode")::bigint AS countries
-      FROM "Job" j WHERE "companyId" = ${company.id} AND ${publicJobSql(Prisma.sql`j`)}`;
+      FROM (
+        SELECT j.city, j."countryCode" FROM "Job" j WHERE j."companyId" = ${company?.id ?? ''} AND ${publicJobSql(Prisma.sql`j`, at)}
+        UNION ALL
+        SELECT d.city, d."countryCode" FROM "DirectOffer" d WHERE d.company = ${companyName} AND ${directPubliableSql(Prisma.sql`d`, at)}
+      ) offres`;
+    const openJobs = Number(agg?.jobs ?? 0);
+    if (!company && openJobs === 0) return null;
     return {
-      openJobs: Number(agg?.jobs ?? 0),
+      openJobs,
       cities: Number(agg?.cities ?? 0),
       countries: Number(agg?.countries ?? 0),
-      domain: company.domain,
-      sector: company.sector,
-      group: company.parentGroup,
+      domain: company?.domain ?? null,
+      sector: company?.sector ?? null,
+      group: company?.parentGroup ?? null,
     };
   } catch (error) {
     if (error instanceof DatabaseUnavailableError) throw error;
@@ -499,32 +521,42 @@ export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> 
     // Audit UX 14/09 (M5) : une offre à Bordeaux proposait Glasgow et
     // Limerick. Même Maison ET même pays d'abord ; le pays seul ensuite.
     const memePays = job.countryCode ? { countryCode: job.countryCode } : {};
+    const taxonomy = await getOptionalOccupationPresentation();
+    const ordre: Prisma.JobOrderByWithRelationInput[] = [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }];
+    // D-419 §1 : les offres Catwalks de la même Maison, dans le même pays, ouvrent la liste.
+    const directes = (await prisma.directOffer.findMany({
+      where: { ...directPubliable(), ...memePays, company: job.company, ...(job.origine === 'CATWALKS' ? { id: { not: idDirect(job.id) } } : {}) },
+      // `postedAt` d'une offre directe est toujours renseigné : tri simple.
+      orderBy: [{ postedAt: 'desc' }, { id: 'asc' }],
+      take: limit,
+    })).map(directToRow);
+    if (directes.length >= limit) return directes;
     const sameMaison = await prisma.job.findMany({
       where: { ...base, ...memePays, company: { name: job.company } },
       include,
       omit: { raw: true, searchText: true },
-      orderBy: [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }],
-      take: limit,
+      orderBy: [...ordre],
+      take: limit - directes.length,
     });
-    const taxonomy=await getOptionalOccupationPresentation();
-    if (sameMaison.length >= limit) return sameMaison.map(row=>toRow(row,taxonomy));
+    const memeMaison = [...directes, ...sameMaison.map((row) => toRow(row, taxonomy))];
+    if (memeMaison.length >= limit) return memeMaison;
 
-    const sectorCodes = job.sectorCodes??[];
+    const sectorCodes = job.sectorCodes ?? [];
     const fill = sectorCodes.length
       ? await prisma.job.findMany({
           where: {
             ...base,
             ...memePays,
-            company: { sectorCodes:{hasSome:sectorCodes}, name: { not: job.company } },
+            company: { sectorCodes: { hasSome: sectorCodes }, name: { not: job.company } },
             ...(job.city ? { city: { equals: job.city, mode: 'insensitive' as const } } : {}),
           },
           include,
           omit: { raw: true, searchText: true },
-          orderBy: [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }],
-          take: limit - sameMaison.length,
+          orderBy: [...ordre],
+          take: limit - memeMaison.length,
         })
       : [];
-    return [...sameMaison, ...fill].map(row=>toRow(row,taxonomy));
+    return [...memeMaison, ...fill.map((row) => toRow(row, taxonomy))];
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }
@@ -547,17 +579,27 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
   try {
     const taxonomy = await getOptionalOccupationPresentation();
     const summary = await searchSummary(plan, page, PAGE_SIZE, taxonomy);
-    const rows = await prisma.job.findMany({
-      where: { ...publicJobWhere(), id: { in: summary.ids } },
-      omit: { raw: true, searchText: true },
-      include: { company: true, sources: publicSources() },
-    });
-    const byId = new Map(rows.map(row => [row.id, row]));
+    // La page mêle les deux origines dans l'ordre du SQL ; chaque origine est
+    // relue dans sa table, et la ligne servie a la même forme pour les deux.
+    const idsDirects = summary.ids.filter(estIdDirect).map(idDirect);
+    const [rows, directes] = await Promise.all([
+      prisma.job.findMany({
+        where: { ...publicJobWhere(), id: { in: summary.ids.filter((id) => !estIdDirect(id)) } },
+        omit: { raw: true, searchText: true },
+        include: { company: true, sources: publicSources() },
+      }),
+      idsDirects.length ? prisma.directOffer.findMany({ where: { id: { in: idsDirects } } }) : [],
+    ]);
+    const byId = new Map<string, JobRow>([
+      ...rows.map((row): [string, JobRow] => [row.id, toRow(row, taxonomy)]),
+      ...directes.map((d): [string, JobRow] => {
+        const ligne = directToRow(d);
+        return [ligne.id, ligne];
+      }),
+    ]);
     const jobs = summary.ids.flatMap((id) => {
-      const row = byId.get(id);
-      if (!row) return [];
-      const ligne = toRow(row, taxonomy);
-      return [{ ...ligne, correspondance: correspondance(ligne, plan.selections) }];
+      const ligne = byId.get(id);
+      return ligne ? [{ ...ligne, correspondance: correspondance(ligne, plan.selections) }] : [];
     });
     return {
       jobs,

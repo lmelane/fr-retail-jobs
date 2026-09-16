@@ -3,6 +3,7 @@ import { publicJobSql } from '@catwalks/db/availability';
 import { CODES_MARCHE, CONTRAT_RECHERCHE_VERSION, MARCHES, facettesContrat, type FacetteContrat } from '@catwalks/db/marches';
 import { prisma, Prisma } from '@catwalks/db';
 import { DatabaseUnavailableError, perimetreServi, type PerimetreServi } from './jobs';
+import { directPubliableSql } from './direct-offers';
 import { PAYS_CONNUS } from './lieu';
 import { resoudrePerimetre } from './perimetre';
 
@@ -32,9 +33,15 @@ export type ContratMarches = {
   };
 };
 
+/** Les deux origines comptent : une offre directe publiable vaut une offre agrégée publiable. */
 async function compterParPays(): Promise<{ parPays: Map<string, number>; sansPays: number }> {
+  const asOf = new Date();
   const rows = await prisma.$queryRaw<{ pays: string | null; n: number }[]>(Prisma.sql`
-    SELECT j."countryCode" AS pays, count(*)::int AS n FROM "Job" j WHERE ${publicJobSql(Prisma.sql`j`)} GROUP BY 1`);
+    SELECT pays, sum(n)::int AS n FROM (
+      SELECT j."countryCode" AS pays, count(*) AS n FROM "Job" j WHERE ${publicJobSql(Prisma.sql`j`, asOf)} GROUP BY 1
+      UNION ALL
+      SELECT d."countryCode", count(*) FROM "DirectOffer" d WHERE ${directPubliableSql(Prisma.sql`d`, asOf)} GROUP BY 1
+    ) t GROUP BY pays`);
   const parPays = new Map<string, number>();
   let sansPays = 0;
   for (const row of rows) {

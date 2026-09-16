@@ -1,24 +1,28 @@
-import { publicJobSql, publicJobWhere } from '@catwalks/db/availability';
+import { publicJobSql } from '@catwalks/db/availability';
 import type { Perimetre } from '@catwalks/db/marches';
 import { prisma, Prisma } from '@catwalks/db';
-import { companyIdentityWhere } from './company-identity';
+import { directPubliableSql } from './direct-offers';
 import { echapperLike } from './like';
 
 /**
  * L'AUTOCOMPLÉTION DE LA BARRE, DEPUIS NOS DONNÉES ET DANS LE PÉRIMÈTRE (lot 6).
  *
  * Les suggestions sont de vraies villes, de vrais intitulés et de vraies
- * Maisons que le catalogue porte DANS LE PÉRIMÈTRE demandé : un clic mène
- * toujours à des résultats du marché (passation §2.4 : « suggestions issues
- * des offres réellement disponibles dans le pays actif »). Avant ce lot,
- * seules les villes étaient cloisonnées ; un intitulé ou une Maison suggérés
- * depuis le monde entier pouvaient rendre zéro offre sur le marché servi.
+ * Maisons que le catalogue porte DANS LE PÉRIMÈTRE demandé, DEUX ORIGINES
+ * confondues (passation §2.4 : « suggestions issues des offres réellement
+ * disponibles dans le pays actif, couvrant les deux origines ») : un clic mène
+ * toujours à des résultats du marché. Avant ce lot, seules les villes étaient
+ * cloisonnées ; un intitulé ou une Maison suggérés depuis le monde entier
+ * pouvaient rendre zéro offre sur le marché servi.
  *
  * Aucun repli mondial : sans périmètre, l'appelant refuse avant d'arriver ici.
  */
 const SUGGEST_LIMIT = 8;
 
-type SuggestionVilleBrute = { city: string; n: bigint | number };
+type Ligne = { valeur: string | null; n: number };
+
+const paysSql = (perimetre: Perimetre) => Prisma.join(perimetre.pays.map((p) => Prisma.sql`${p}`));
+const directPubliable = (asOf: Date) => directPubliableSql(Prisma.sql`d`, asOf);
 
 /**
  * LE CLOISONNEMENT DES VILLES PAR MARCHÉ (arbitrage CEO, option A).
@@ -56,14 +60,19 @@ export async function suggestCities(query: string, perimetre: Perimetre): Promis
   if (q.length < 2) return [];
   try {
     const prefixe = `${echapperLike(q)}%`;
+    const asOf = new Date();
     // Plus large que la limite : la colonne mélange les casses (« Paris » /
     // « PARIS » sont des groupes distincts) — on déduplique ensuite en JS.
     const brut = SUGGEST_LIMIT * 3;
-    const rows = await prisma.$queryRaw<SuggestionVilleBrute[]>`
+    const rows = await prisma.$queryRaw<Ligne[]>`
       WITH candidates AS (
-        SELECT "city", UPPER(TRIM("city")) AS cle, "countryCode" AS pays
+        SELECT "city" AS valeur, UPPER(TRIM("city")) AS cle, "countryCode" AS pays
           FROM "Job" j
-         WHERE ${publicJobSql(Prisma.sql`j`)} AND "city" ILIKE ${prefixe}
+         WHERE ${publicJobSql(Prisma.sql`j`, asOf)} AND "city" ILIKE ${prefixe}
+        UNION ALL
+        SELECT d.city, UPPER(TRIM(d.city)), d."countryCode"
+          FROM "DirectOffer" d
+         WHERE ${directPubliable(asOf)} AND d.city ILIKE ${prefixe}
       ),
       deduit AS (
         SELECT cle, MIN(pays) AS p
@@ -72,15 +81,15 @@ export async function suggestCities(query: string, perimetre: Perimetre): Promis
          GROUP BY cle
         HAVING COUNT(DISTINCT pays) = 1
       )
-      SELECT c."city" AS city, COUNT(*)::int AS n
+      SELECT c.valeur, COUNT(*)::int AS n
         FROM candidates c
         LEFT JOIN deduit d ON d.cle = c.cle
        WHERE COALESCE(c.pays, d.p) = ANY(${[...perimetre.pays]})
-       GROUP BY c."city"
-       ORDER BY COUNT(*) DESC, c."city" ASC
+       GROUP BY c.valeur
+       ORDER BY COUNT(*) DESC, c.valeur ASC
        LIMIT ${brut}
     `;
-    return dedupliquerVilles(rows.map((r) => r.city));
+    return dedupliquer(rows.map((r) => r.valeur));
   } catch {
     return [];
   }
@@ -91,18 +100,18 @@ export async function suggestCities(query: string, perimetre: Perimetre): Promis
  * (les lignes arrivent triées par volume décroissant). Sans ça le panneau
  * montrait « Paris » ET « PARIS » — vu en production.
  */
-function dedupliquerVilles(valeurs: readonly (string | null)[]): string[] {
+function dedupliquer(valeurs: readonly (string | null)[]): string[] {
   const vues = new Set<string>();
-  const villes: string[] = [];
+  const propres: string[] = [];
   for (const brut of valeurs) {
     if (!brut) continue;
     const cle = brut.toLowerCase();
     if (vues.has(cle)) continue;
     vues.add(cle);
-    villes.push(brut);
-    if (villes.length >= SUGGEST_LIMIT) break;
+    propres.push(brut);
+    if (propres.length >= SUGGEST_LIMIT) break;
   }
-  return villes;
+  return propres;
 }
 
 /**
@@ -131,24 +140,24 @@ export async function suggestTitles(query: string, perimetre: Perimetre): Promis
   const q = query.trim();
   if (q.length < 2) return [];
   try {
+    const motif = `%${echapperLike(q)}%`;
+    const asOf = new Date();
+    const pays = paysSql(perimetre);
     // Pull more raw titles than we need, reduce each to its role keyword, then
     // dedupe — several postings collapse to the same clean role.
-    const rows = await prisma.job.groupBy({
-      by: ['title'],
-      where: {
-        ...publicJobWhere(),
-        countryCode: { in: [...perimetre.pays] },
-        title: { contains: q, mode: 'insensitive' },
-      },
-      _count: { _all: true },
-      orderBy: { _count: { title: 'desc' } },
-      take: 40,
-    });
+    const rows = await prisma.$queryRaw<Ligne[]>`
+      SELECT valeur, sum(n)::int AS n FROM (
+        SELECT j.title AS valeur, count(*) AS n FROM "Job" j
+         WHERE ${publicJobSql(Prisma.sql`j`, asOf)} AND j."countryCode" IN (${pays}) AND j.title ILIKE ${motif} GROUP BY j.title
+        UNION ALL
+        SELECT d.title, count(*) FROM "DirectOffer" d
+         WHERE ${directPubliable(asOf)} AND d."countryCode" IN (${pays}) AND d.title ILIKE ${motif} GROUP BY d.title
+      ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40`;
     const seen = new Set<string>();
     const roles: string[] = [];
     for (const row of rows) {
-      if (!row.title) continue;
-      const role = roleKeyword(row.title);
+      if (!row.valeur) continue;
+      const role = roleKeyword(row.valeur);
       const key = role.toLowerCase();
       // Keep only roles that still contain what the candidate typed, so a title
       // matched on a trailing city does not surface an unrelated-looking role.
@@ -165,27 +174,30 @@ export async function suggestTitles(query: string, perimetre: Perimetre): Promis
 
 /**
  * Autocomplete for the Maison field — real Maison names hiring in the
- * perimeter, most active first. A suggestion always leads to a Maison that
- * exists and is hiring there.
+ * perimeter, most active first, direct offers included. A suggestion always
+ * leads to a Maison that exists and is hiring there.
  */
 export async function suggestCompanies(query: string, perimetre: Perimetre): Promise<string[]> {
   if (!process.env.DATABASE_URL) return [];
   const q = query.trim();
   if (q.length < 2) return [];
   try {
-    const dansLePerimetre = { ...publicJobWhere(), countryCode: { in: [...perimetre.pays] } };
-    const rows = await prisma.company.findMany({
-      where: {
-        ...companyIdentityWhere(q, 'contains'),
-        jobs: { some: dansLePerimetre },
-      },
-      select: { name: true, _count: { select: { jobs: { where: dansLePerimetre } } } },
-      take: 40,
-    });
-    return rows
-      .sort((a, b) => b._count.jobs - a._count.jobs)
-      .slice(0, SUGGEST_LIMIT)
-      .map((r) => r.name);
+    const motif = `%${echapperLike(q)}%`;
+    const asOf = new Date();
+    const pays = paysSql(perimetre);
+    const rows = await prisma.$queryRaw<Ligne[]>`
+      SELECT valeur, sum(n)::int AS n FROM (
+        SELECT c.name AS valeur, count(*) AS n FROM "Job" j JOIN "Company" c ON c.id = j."companyId"
+         WHERE ${publicJobSql(Prisma.sql`j`, asOf)} AND j."countryCode" IN (${pays})
+           AND (c.name ILIKE ${motif} OR c.id IN (
+             SELECT a."companyId" FROM "CompanyAlias" a WHERE a."reviewId" IS NOT NULL AND a."displayName" ILIKE ${motif}
+             UNION SELECT old."mergedIntoId" FROM "Company" old WHERE old."mergedIntoId" IS NOT NULL AND old.name ILIKE ${motif}))
+         GROUP BY c.name
+        UNION ALL
+        SELECT d.company, count(*) FROM "DirectOffer" d
+         WHERE ${directPubliable(asOf)} AND d."countryCode" IN (${pays}) AND d.company ILIKE ${motif} GROUP BY d.company
+      ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40`;
+    return dedupliquer(rows.map((r) => r.valeur));
   } catch {
     return [];
   }

@@ -5,7 +5,9 @@ import { publicJobWhere } from '@catwalks/db/availability';
 import { facettesContrat, type Perimetre } from '@catwalks/db/marches';
 import { Prisma } from '@prisma/client';
 import { DatabaseUnavailableError, MAX_VALUES, perimetreServi, type PerimetreServi } from './jobs';
+import { PREFIXE_DIRECT, directPubliable, directPubliableSql } from './direct-offers';
 import { expandCompanyTerm } from './groups';
+import { echapperLike } from './like';
 import { exigerPerimetre } from './perimetre';
 import type { FacetteServie } from './facettes';
 import type { FiltreRefuse } from './search-plan';
@@ -20,6 +22,11 @@ export { companySlug } from './company-slug';
  * by posting — "who is hiring right now" instead of "what can I apply to". Both
  * views are bounded by the same perimeter (lot 6): a Maison without a live
  * offer in the market answers no question a candidate of that market is asking.
+ *
+ * Deux origines (D-423) : une Maison qui publie sur Catwalks est un employeur
+ * de l'annuaire au même titre. Quand le registre la connaît (même nom), ses
+ * offres directes s'ajoutent à ses offres agrégées sous UNE ligne ; sinon elle
+ * a sa ligne à elle, sans domaine ni groupe, identifiée dans l'espace `cw_`.
  */
 export type CompanyRow = {
   id: string;
@@ -106,6 +113,16 @@ export async function getCompanies(filters: CompanyFilters = {}): Promise<Compan
   }
 }
 
+/** Une ligne de l'annuaire avant lecture des détails : l'employeur, ses volumes par origine. */
+type Entree = {
+  /** Company id when the registry knows the Maison, else `cw_<nom>`. */
+  cle: string;
+  companyId: string | null;
+  /** Noms sous lesquels ses offres directes sont publiées (le nom de Maison du backend). */
+  nomsDirects: string[];
+  count: number;
+};
+
 async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Promise<CompaniesResult> {
   const page = Math.max(1, filters.page ?? 1);
   const presentation = await getSectorPresentation();
@@ -146,24 +163,42 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
       : []),
   ];
   const company = companyAnd.length ? { AND: companyAnd } : {};
+  const at = new Date();
   const jobWhere: Prisma.JobWhereInput = {
-    ...publicJobWhere(),
+    ...publicJobWhere(at),
     countryCode: { in: [...pays] },
     ...(Object.keys(company).length ? { company } : {}),
   };
+  // Les mêmes filtres sur l'origine directe : secteur par ses codes, recherche sur son nom de Maison.
+  const directAnd: Prisma.DirectOfferWhereInput[] = [
+    ...(secteurs.length ? [{ OR: secteurs.map((s) => sectorWhere(s)) }] : []),
+    ...(query ? [{ OR: expandCompanyTerm(query).map((name) => ({ company: { contains: name, mode: 'insensitive' as const } })) }] : []),
+  ];
+  const directWhere: Prisma.DirectOfferWhereInput = { ...directPubliable(at), countryCode: { in: [...pays] }, ...(directAnd.length ? { AND: directAnd } : {}) };
 
-  const grouped = await prisma.job.groupBy({
-    by: ['companyId'],
-    where: jobWhere,
-    _count: true,
-    orderBy: { _count: { companyId: 'desc' } },
-  });
+  const [grouped, directGrouped] = await Promise.all([
+    prisma.job.groupBy({ by: ['companyId'], where: jobWhere, _count: true, orderBy: { _count: { companyId: 'desc' } } }),
+    prisma.directOffer.groupBy({ by: ['company'], where: directWhere, _count: true, orderBy: { _count: { company: 'desc' } } }),
+  ]);
+  // Une Maison directe que le registre connaît par son nom rejoint sa ligne agrégée.
+  const connues = directGrouped.length
+    ? await prisma.company.findMany({ where: { name: { in: directGrouped.map((r) => r.company) }, mergedIntoId: null }, select: { id: true, name: true } })
+    : [];
+  const idParNom = new Map(connues.map((c) => [c.name, c.id]));
+  const parCle = new Map<string, Entree>(grouped.map((row) => [row.companyId, { cle: row.companyId, companyId: row.companyId, nomsDirects: [], count: row._count }]));
+  for (const row of directGrouped) {
+    const companyId = idParNom.get(row.company) ?? null;
+    const cle = companyId ?? `${PREFIXE_DIRECT}${row.company}`;
+    const avant = parCle.get(cle) ?? { cle, companyId, nomsDirects: [], count: 0 };
+    parCle.set(cle, { ...avant, nomsDirects: [...avant.nomsDirects, row.company], count: avant.count + row._count });
+  }
+  const entrees = [...parCle.values()].sort((a, b) => b.count - a.count || a.cle.localeCompare(b.cle));
 
-  const pageIds = grouped
-    .slice((page - 1) * COMPANY_PAGE_SIZE, page * COMPANY_PAGE_SIZE)
-    .map((row) => row.companyId);
+  const pageEntrees = entrees.slice((page - 1) * COMPANY_PAGE_SIZE, page * COMPANY_PAGE_SIZE);
+  const pageIds = pageEntrees.flatMap((e) => (e.companyId ? [e.companyId] : []));
+  const pageNoms = pageEntrees.flatMap((e) => e.nomsDirects);
 
-  const [companies, cityRows] = await Promise.all([
+  const [companies, cityRows, directCityRows, directSecteurs] = await Promise.all([
     prisma.company.findMany({
       where: { id: { in: pageIds } },
       select: { id: true, name: true, sectorCodes: true, parentGroup: true, domain: true },
@@ -175,29 +210,44 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
       where: { ...jobWhere, companyId: { in: pageIds }, city: { not: null } },
       _count: true,
     }),
+    pageNoms.length
+      ? prisma.directOffer.groupBy({ by: ['company', 'city'], where: { ...directWhere, company: { in: pageNoms }, city: { not: null } }, _count: true })
+      : [],
+    pageNoms.length
+      ? prisma.directOffer.findMany({ where: { ...directWhere, company: { in: pageNoms } }, select: { company: true, sectorCodes: true }, distinct: ['company', 'sectorCodes'] })
+      : [],
   ]);
 
   const byCompany = new Map(companies.map((company) => [company.id, company]));
-  const citiesByCompany = new Map<string, CompanyRow['cities']>();
-  for (const row of cityRows) {
-    if (!row.city) continue;
-    const list = citiesByCompany.get(row.companyId) ?? [];
-    list.push({ city: row.city, count: row._count });
-    citiesByCompany.set(row.companyId, list);
+  const cleDuNom = (nom: string) => idParNom.get(nom) ?? `${PREFIXE_DIRECT}${nom}`;
+  const villes = new Map<string, Map<string, number>>();
+  const ajouterVille = (cle: string, city: string | null, n: number) => {
+    if (!city) return;
+    const liste = villes.get(cle) ?? new Map<string, number>();
+    liste.set(city, (liste.get(city) ?? 0) + n);
+    villes.set(cle, liste);
+  };
+  for (const row of cityRows) ajouterVille(row.companyId, row.city, row._count);
+  for (const row of directCityRows) ajouterVille(cleDuNom(row.company), row.city, row._count);
+  const codesDirects = new Map<string, Set<string>>();
+  for (const o of directSecteurs) {
+    const codes = codesDirects.get(cleDuNom(o.company)) ?? new Set<string>();
+    for (const code of o.sectorCodes) codes.add(code);
+    codesDirects.set(cleDuNom(o.company), codes);
   }
 
-  const rows: CompanyRow[] = grouped
-    .slice((page - 1) * COMPANY_PAGE_SIZE, page * COMPANY_PAGE_SIZE)
-    .map((row) => {
-      const company = byCompany.get(row.companyId);
+  const rows: CompanyRow[] = pageEntrees
+    .map((entree): CompanyRow => {
+      const company = entree.companyId ? byCompany.get(entree.companyId) : undefined;
+      const codes = new Set([...(company?.sectorCodes ?? []), ...(codesDirects.get(entree.cle) ?? [])]);
       return {
-        id: row.companyId,
-        name: company?.name ?? '—',
-        sectors: presentation.sectors.filter((s) => company?.sectorCodes.includes(s.code)),
+        id: entree.companyId ?? `${PREFIXE_DIRECT}${companySlug(entree.nomsDirects[0])}`,
+        name: company?.name ?? entree.nomsDirects[0] ?? '—',
+        sectors: presentation.sectors.filter((s) => codes.has(s.code)),
         group: company?.parentGroup ?? null,
         domain: company?.domain ?? null,
-        jobCount: row._count,
-        cities: (citiesByCompany.get(row.companyId) ?? []).sort((a, b) => b.count - a.count),
+        jobCount: entree.count,
+        cities: [...(villes.get(entree.cle) ?? [])].map(([city, count]) => ({ city, count })).sort((a, b) => b.count - a.count || a.city.localeCompare(b.city)),
       };
     })
     // groupBy cannot order by the joined name, so ties are settled here.
@@ -206,15 +256,24 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
   /*
    * Les facettes de l'annuaire suivent le contrat de la recherche : les comptes
    * de `secteur` excluent la sélection de secteur, ceux de `pays` excluent la
-   * sélection de pays (D-426, union dans une dimension).
+   * sélection de pays (D-426, union dans une dimension) — deux origines.
    */
-  const sansSecteur: Prisma.JobWhereInput = { ...publicJobWhere(), countryCode: { in: [...pays] },
+  const sansSecteur: Prisma.JobWhereInput = { ...publicJobWhere(at), countryCode: { in: [...pays] },
     ...(query ? { company: { AND: companyAnd.slice(secteurs.length ? 1 : 0) } } : {}) };
-  const sansPays: Prisma.JobWhereInput = { ...publicJobWhere(), countryCode: { in: [...perimetre.pays] },
+  const sansPays: Prisma.JobWhereInput = { ...publicJobWhere(at), countryCode: { in: [...perimetre.pays] },
     ...(Object.keys(company).length ? { company } : {}) };
-  const [sectorRows, countryRows] = await Promise.all([
+  const directSansPays: Prisma.DirectOfferWhereInput = { ...directPubliable(at), countryCode: { in: [...perimetre.pays] },
+    ...(directAnd.length ? { AND: directAnd } : {}) };
+  const [sectorRows, countryRows, directCountryRows, directSectorRows] = await Promise.all([
     prisma.job.groupBy({ by: ['companyId'], where: sansSecteur, _count: true }),
     prisma.job.groupBy({ by: ['countryCode'], where: { ...sansPays, countryCode: { in: [...perimetre.pays] } }, _count: true }),
+    prisma.directOffer.groupBy({ by: ['countryCode'], where: directSansPays, _count: true }),
+    prisma.$queryRaw<{ code: string; n: number }[]>(Prisma.sql`
+      SELECT code, count(*)::int AS n FROM "DirectOffer" d
+      CROSS JOIN LATERAL unnest(CASE WHEN cardinality(d."sectorCodes") = 0 THEN ARRAY['unclassified'] ELSE d."sectorCodes" END) code
+      WHERE ${directPubliableSql(Prisma.sql`d`, at)} AND d."countryCode" IN (${Prisma.join(pays.map((p) => Prisma.sql`${p}`))})
+        ${query ? Prisma.sql`AND (${Prisma.join(expandCompanyTerm(query).map((name) => Prisma.sql`d.company ILIKE ${`%${echapperLike(name)}%`}`), ' OR ')})` : Prisma.empty}
+      GROUP BY code`),
   ]);
   const sectorCompanies = await prisma.company.findMany({
     where: { id: { in: sectorRows.map((row) => row.companyId) } },
@@ -225,6 +284,11 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
   for (const row of sectorRows) {
     const codes = sectorById.get(row.companyId) ?? [];
     for (const sector of codes.length ? codes : ['unclassified']) sectorCounts.set(sector, (sectorCounts.get(sector) ?? 0) + row._count);
+  }
+  for (const row of directSectorRows) sectorCounts.set(row.code, (sectorCounts.get(row.code) ?? 0) + row.n);
+  const paysCounts = new Map<string, number>();
+  for (const row of [...countryRows, ...directCountryRows]) {
+    if (row.countryCode) paysCounts.set(row.countryCode, (paysCounts.get(row.countryCode) ?? 0) + row._count);
   }
   const nomsPays = (() => {
     try {
@@ -238,17 +302,17 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
     if (cle === 'secteur') return [{ cle, libelle, options: [...sectorCounts.entries()]
       .map(([value, count]) => ({ value, count, label: presentation.labels[value] ?? 'Secteur à vérifier' }))
       .filter((o) => o.count > 0).sort((a, b) => b.count - a.count || a.value.localeCompare(b.value)) }];
-    if (cle === 'pays') return [{ cle, libelle, options: countryRows
-      .flatMap((row) => row.countryCode ? [{ value: row.countryCode, count: row._count, label: nomsPays?.of(row.countryCode) ?? row.countryCode }] : [])
+    if (cle === 'pays') return [{ cle, libelle, options: [...paysCounts.entries()]
+      .map(([value, count]) => ({ value, count, label: nomsPays?.of(value) ?? value }))
       .sort((a, b) => b.count - a.count || a.value.localeCompare(b.value)) }];
     return [];
   });
 
   return {
     companies: rows,
-    total: grouped.length,
+    total: entrees.length,
     page,
-    pageCount: Math.max(1, Math.ceil(grouped.length / COMPANY_PAGE_SIZE)),
+    pageCount: Math.max(1, Math.ceil(entrees.length / COMPANY_PAGE_SIZE)),
     perimetre: perimetreServi(perimetre),
     facettes,
     filtresRefuses: refus,
