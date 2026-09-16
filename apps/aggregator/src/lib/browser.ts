@@ -4,7 +4,8 @@ import { createPublicBrowserProxy } from './browserProxy.js';
 import { assertPublicUrl, isPublicHttpUrl } from './ssrf.js';
 import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 import { CRAWLER_IDENTITY } from './crawlerIdentity.js';
-import { capturingResponses, replayingResponses, captureResponse, replayResponse, CaptureUnavailableError } from '../capture/context.js';
+import { describeRequest, type CaptureRequest, capturingResponses, replayingResponses, captureResponse, replayResponse, CaptureUnavailableError } from '../capture/context.js';
+import { observedHop } from '../capture/requestData.js';
 import { MAX_CAPTURE_BYTES } from '../capture/store.js';
 
 /**
@@ -215,12 +216,19 @@ export async function fetchRenderedHtml(url: string): Promise<string> {
       let captureError: unknown;
       const record = (response: BrowserResponse) => {
         if (!['document', 'xhr', 'fetch'].includes(response.request().resourceType())) return;
-        const request = { url: response.url(), method: response.request().method(), body: response.request().postDataBuffer(), format: 'BROWSER_RESPONSE' as const };
+        const request: CaptureRequest = { url: response.url(), method: response.request().method(), body: response.request().postDataBuffer(), format: 'BROWSER_RESPONSE' as const };
         const task = (async () => {
           let timer: ReturnType<typeof setTimeout> | undefined;
           const headers = new Headers(response.headers());
           let recorded = false;
           try {
+            const target = new URL(response.url()); target.hash = '';
+            const requestHeaders = await Promise.race([response.request().allHeaders(), new Promise<never>((_, reject) => {
+              timer = setTimeout(() => reject(new Error('Browser request headers timeout')), navigationTimeoutMs);
+            })]);
+            clearTimeout(timer);
+            const native = describeRequest({ ...request, url: target.toString(), headers: requestHeaders });
+            request.transport = { origin: 'BROWSER_TRANSPORT', hops: [observedHop(native, { status: response.status(), headers })] };
             const declaredLength = Number(headers.get('content-length'));
             if (Number.isFinite(declaredLength) && declaredLength > MAX_CAPTURE_BYTES) throw new Error('Browser body exceeds the bounded size');
             const bytes = await Promise.race([response.body(), new Promise<never>((_, reject) => {

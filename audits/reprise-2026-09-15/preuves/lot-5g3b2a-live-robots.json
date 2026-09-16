@@ -1,0 +1,114 @@
+{
+  "date": "2026-09-16T05:16:51.731Z",
+  "sourceKey": "provenance-live-lever-5d9b937a-bb97-4c6a-833a-0bdbf864cd30",
+  "sourceStatus": "DRAFT",
+  "sourceUnchanged": true,
+  "identityReviews": 0,
+  "offersPublished": 0,
+  "authorizationGranted": false,
+  "productionTouched": false,
+  "results": [
+    {
+      "receipt": {
+        "captureBatchId": "c47b74d8-b697-4282-a0e4-8adc98e0cc23",
+        "sourceRevisionId": "527241e8-5758-4387-848b-7aab574f6b57",
+        "purpose": "SOURCE_ACCESS",
+        "responseCount": 1,
+        "lastStatus": 200,
+        "finalCaptureId": "3173ecca-ecbb-40b5-9231-710dbf336c7d"
+      },
+      "readerRevision": "local-sha256:c4a64b9601f99c55ee94a4f1ab6a3accce33431d8839b414bd1ac8a321931ef5",
+      "initialUrl": "https://api.lever.co/robots.txt",
+      "finalUrl": "https://api.lever.co/robots.txt",
+      "contentType": "text/plain; charset=UTF-8",
+      "bodyBytes": 38,
+      "bodySha256": "6aa3556bd611889c4480a143bb6186f9d0c5e919c6b4c9901f3a6a8141549a1b",
+      "manifestHash": "ebc00adb89d3703257c7f31beb7f1b65f99f57e951fef0765c4567d5d417318c",
+      "path": "/v0/postings/arcteryx.com",
+      "sentRequestsObservedAtTransport": [
+        {
+          "url": "https://api.lever.co/robots.txt",
+          "method": "GET",
+          "format": "HTTP_RESPONSE",
+          "bodyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "userAgent": "CatwalksBot/1.0 (+https://catwalks.io/bot)",
+          "negotiation": {
+            "accept": "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.1",
+            "accept-language": "*",
+            "content-type": null
+          }
+        }
+      ],
+      "crawlerIdentityIndependentlyPersistedInJournal": true,
+      "archivedRequestEqualsActualTransport": true,
+      "requestDataHashes": [
+        "ed3f618c68b5979b1a810d3f0f1166d80dcf9bb82b27d4bd650a015d814201f9"
+      ],
+      "crawlerIdentity": "CatwalksBot/1.0 (+https://catwalks.io/bot)",
+      "productToken": "CatwalksBot",
+      "observation": {
+        "httpStatus": 200,
+        "sha256": "6aa3556bd611889c4480a143bb6186f9d0c5e919c6b4c9901f3a6a8141549a1b",
+        "bytes": 38,
+        "verdict": "ALLOWED"
+      },
+      "uniqueBlobs": 3,
+      "purged": 3,
+      "hotBodiesRemaining": 0,
+      "portalHttpRequestsDuringColdReading": 0,
+      "coldReads": 2,
+      "coldReadsEqual": true
+    },
+    {
+      "receipt": {
+        "captureBatchId": "60abda7b-df97-4572-884e-bcdf632fc160",
+        "sourceRevisionId": "527241e8-5758-4387-848b-7aab574f6b57",
+        "purpose": "SOURCE_ACCESS",
+        "responseCount": 1,
+        "lastStatus": 200,
+        "finalCaptureId": "fcf3662f-a837-4c4b-9718-89cd06a46903"
+      },
+      "readerRevision": "local-sha256:c4a64b9601f99c55ee94a4f1ab6a3accce33431d8839b414bd1ac8a321931ef5",
+      "initialUrl": "https://jobs.lever.co/robots.txt",
+      "finalUrl": "https://jobs.lever.co/robots.txt",
+      "contentType": "text/plain; charset=UTF-8",
+      "bodyBytes": 38,
+      "bodySha256": "6aa3556bd611889c4480a143bb6186f9d0c5e919c6b4c9901f3a6a8141549a1b",
+      "manifestHash": "f7cf934e7c7765907fe4d5da8ec381f620543db7def685611efc310759b95c5f",
+      "path": "/arcteryx.com",
+      "sentRequestsObservedAtTransport": [
+        {
+          "url": "https://jobs.lever.co/robots.txt",
+          "method": "GET",
+          "format": "HTTP_RESPONSE",
+          "bodyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "userAgent": "CatwalksBot/1.0 (+https://catwalks.io/bot)",
+          "negotiation": {
+            "accept": "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.1",
+            "accept-language": "*",
+            "content-type": null
+          }
+        }
+      ],
+      "crawlerIdentityIndependentlyPersistedInJournal": true,
+      "archivedRequestEqualsActualTransport": true,
+      "requestDataHashes": [
+        "5fd6057b9dc89c6a816ef57f5d8a85021dab747cb3c195f96d8c6b5baf2b15a4"
+      ],
+      "crawlerIdentity": "CatwalksBot/1.0 (+https://catwalks.io/bot)",
+      "productToken": "CatwalksBot",
+      "observation": {
+        "httpStatus": 200,
+        "sha256": "6aa3556bd611889c4480a143bb6186f9d0c5e919c6b4c9901f3a6a8141549a1b",
+        "bytes": 38,
+        "verdict": "ALLOWED"
+      },
+      "uniqueBlobs": 3,
+      "purged": 3,
+      "hotBodiesRemaining": 0,
+      "portalHttpRequestsDuringColdReading": 0,
+      "coldReads": 2,
+      "coldReadsEqual": true
+    }
+  ]
+}

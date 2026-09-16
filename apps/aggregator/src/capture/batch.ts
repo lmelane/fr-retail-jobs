@@ -10,6 +10,7 @@ import { MAX_MANIFEST_OUTPUTS, persistExtractionManifest } from './manifest.js';
 import { captureConfig } from './config.js';
 import { sourceExecutionBudget } from '../lib/sourceBudget.js';
 import { captureReaderRevision } from './revision.js';
+import { readRequestData } from './requestDataRead.js';
 
 export async function captureExtraction(db: PrismaClient, sourceKey: string, config: Record<string, unknown>,
   runId: string | undefined, work: (config: Record<string, unknown>) => Promise<AdapterResult>, sourceKind?: AtsType, binding?: SourceBinding): Promise<AdapterResult & { captureBatchId: string }> {
@@ -49,6 +50,7 @@ export async function replayExtraction<T>(db: PrismaClient, batchId: string, wor
   if (!captures.length) throw new Error('Capture batch has no recorded responses');
   const queues = new Map<string, typeof captures>();
   for (const row of captures) {
+    await readRequestData(db, row, store);
     if (!queues.has(row.requestHash)) queues.set(row.requestHash, []);
     queues.get(row.requestHash)!.push(row);
   }

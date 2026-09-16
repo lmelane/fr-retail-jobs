@@ -1,0 +1,90 @@
+{
+  "mutations": [
+    {
+      "name": "attest-cancelled-queue",
+      "rejectedByRegression": true,
+      "restoredSha256": "82be8776997535c9a28cae401ec17139e59ebe5f78744a0310599affa5a31a22"
+    },
+    {
+      "name": "snapshot-before-queue",
+      "rejectedByRegression": true,
+      "restoredSha256": "82be8776997535c9a28cae401ec17139e59ebe5f78744a0310599affa5a31a22"
+    },
+    {
+      "name": "omit-redirect-trace",
+      "rejectedByRegression": true,
+      "restoredSha256": "82be8776997535c9a28cae401ec17139e59ebe5f78744a0310599affa5a31a22"
+    },
+    {
+      "name": "infer-current-user-agent",
+      "rejectedByRegression": true,
+      "restoredSha256": "af60d18cc292a24b2da9c05c9580c5db7b16f2d899261483106c1a57ced25545"
+    },
+    {
+      "name": "omit-request-binding",
+      "rejectedByRegression": true,
+      "restoredSha256": "df441841bbdb34b1567303f05123046c13c2debdeba2ee8514f5056b0351ce01"
+    },
+    {
+      "name": "omit-first-target-binding",
+      "rejectedByRegression": true,
+      "restoredSha256": "be884bf3b2771eb1a803f950a613e39aa779adae97384410e3e13ca085eceda2"
+    },
+    {
+      "name": "omit-first-body-binding",
+      "rejectedByRegression": true,
+      "restoredSha256": "be884bf3b2771eb1a803f950a613e39aa779adae97384410e3e13ca085eceda2"
+    },
+    {
+      "name": "accept-fake-origin",
+      "rejectedByRegression": true,
+      "restoredSha256": "be884bf3b2771eb1a803f950a613e39aa779adae97384410e3e13ca085eceda2"
+    },
+    {
+      "name": "archive-credentials",
+      "rejectedByRegression": true,
+      "restoredSha256": "be884bf3b2771eb1a803f950a613e39aa779adae97384410e3e13ca085eceda2"
+    },
+    {
+      "name": "omit-replay-provenance-read",
+      "rejectedByRegression": true,
+      "restoredSha256": "d8d3b1781e7e170afe7a2f752722d5e421d7852efcf170fe4ac3a45a996d439d"
+    },
+    {
+      "name": "forget-retention-scope",
+      "rejectedByRegression": true,
+      "restoredSha256": "238629a860b6da42fbdbb7de1050f0dafd2c1657fd1585458e9d7f662b6a52b6"
+    },
+    {
+      "name": "forget-recent-request-reference",
+      "rejectedByRegression": true,
+      "restoredSha256": "3fa906461b14a5619223f946d5830c0f34a245f4760a4e64b393172db1eacec8"
+    },
+    {
+      "name": "forget-fresh-cold-content",
+      "rejectedByRegression": true,
+      "restoredSha256": "3fa906461b14a5619223f946d5830c0f34a245f4760a4e64b393172db1eacec8"
+    },
+    {
+      "name": "drop-request-from-source-manifest",
+      "rejectedByRegression": true,
+      "restoredSha256": "b2ad974b539fecaf6d0549ae11874c65fc53e17b057f0f7f263318e366f7e02c"
+    }
+  ],
+  "sqlMutations": [
+    {
+      "name": "missing-request-guard",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "missing-request-foreign-key",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "mutable-request-proof",
+      "rejectedByRegression": true
+    }
+  ],
+  "restoredTests": "passed",
+  "productionTouched": false
+}

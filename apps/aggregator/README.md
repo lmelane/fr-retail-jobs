@@ -32,6 +32,8 @@ Le [lot 5G3A](../../audits/reprise-2026-09-15/lot-5g3a.md) supprime le rattachem
 
 Le [lot 5G3B1](../../audits/reprise-2026-09-15/lot-5g3b1.md) corrige la lecture des règles robots pour CatwalksBot, les groupes répétés et les chemins encodés. Les comparaisons sont bornées ; une évaluation interrompue garde une observation non résolue. La [décision d’accès immuable](../../docs/architecture/source-access.md) et son application à toutes les requêtes restent à construire.
 
+Le [lot 5G3B2A](../../audits/reprise-2026-09-15/lot-5g3b2a.md) conserve la provenance privée des requêtes effectivement passées au transport : collecteur, négociation de contenu, méthode et redirections. La clé historique de rejeu reste stable ; aucune identité n’est inventée pour les anciennes captures. Une recapture identique rétablit les octets chauds en vérifiant leur identité. La décision d’accès immuable reste distincte.
+
 ## Commandes de validation
 
 Depuis la racine du monorepo, après `npm ci --workspaces --include-workspace-root` :

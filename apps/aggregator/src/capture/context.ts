@@ -1,12 +1,15 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { createHash } from 'node:crypto';
+import { digestBytes } from '../lib/evidenceHash.js';
+import { logicalRequestFingerprint, REQUEST_NEGOTIATION_HEADERS, type RequestDescription, type RequestData, type TransportHop } from './requestData.js';
 
-export const digestBytes = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex');
-export type CaptureRequest = { url: string; method?: string; body?: RequestInit['body']; headers?: RequestInit['headers']; format: 'HTTP_RESPONSE' | 'BROWSER_RESPONSE' | 'RENDERED_DOM' };
+export { digestBytes } from '../lib/evidenceHash.js';
+export type CaptureRequest = { url: string; method?: string; body?: RequestInit['body']; headers?: RequestInit['headers']; format: 'HTTP_RESPONSE' | 'BROWSER_RESPONSE' | 'RENDERED_DOM';
+  transport?: { origin: 'HTTP_TRANSPORT' | 'BROWSER_TRANSPORT'; hops: TransportHop[] } };
 export type CaptureRecord = {
   sequence: number; requestHash: string; requestUrl: string; method: string; format: CaptureRequest['format'];
   status: number | null; headers: Record<string, string>; cookieNames: string[]; complete: boolean;
   failure: string | null; bytes: Uint8Array | null;
+  requestData: RequestData;
 };
 type ReplayResponse = { bytes: Uint8Array | null; status: number | null; headers: Record<string, string>; cookieNames: string[]; complete: boolean; failure: string | null };
 export type CaptureContext = {
@@ -51,7 +54,7 @@ export function auditUrl(value: string): string {
   return url.toString();
 }
 
-export function requestFingerprint(request: CaptureRequest): string {
+export function describeRequest(request: CaptureRequest): RequestDescription {
   let body: Uint8Array | string = '';
   if (typeof request.body === 'string') body = request.body;
   else if (request.body instanceof URLSearchParams) body = request.body.toString();
@@ -59,9 +62,12 @@ export function requestFingerprint(request: CaptureRequest): string {
   else if (ArrayBuffer.isView(request.body)) body = new Uint8Array(request.body.buffer, request.body.byteOffset, request.body.byteLength);
   else if (request.body != null) throw new Error('Capture requires a reproducible string or byte request body');
   const headers = new Headers(request.headers);
-  const negotiation = ['accept', 'accept-language', 'content-type'].map(name => [name, headers.get(name)]);
-  return digestBytes(JSON.stringify([request.format, request.method?.toUpperCase() ?? 'GET', request.url, digestBytes(body), negotiation]));
+  const negotiation = Object.fromEntries(REQUEST_NEGOTIATION_HEADERS.map(name => [name, headers.get(name)])) as RequestDescription['negotiation'];
+  return { url: request.url, method: request.method?.toUpperCase() ?? 'GET', format: request.format,
+    bodyHash: digestBytes(body), userAgent: headers.get('user-agent'), negotiation };
 }
+
+export const requestFingerprint = (request: CaptureRequest) => logicalRequestFingerprint(describeRequest(request));
 
 const HEADER_NAMES = ['content-type', 'content-encoding', 'content-language', 'content-length', 'date', 'last-modified', 'etag',
   'retry-after', 'x-wp-total', 'x-wp-totalpages', 'x-amzn-waf-action'] as const;
@@ -83,6 +89,9 @@ export async function captureResponse(request: CaptureRequest, response: {
     }))];
     const record: CaptureRecord = { sequence: context.sequence++, requestHash: requestFingerprint(request),
       requestUrl: auditUrl(request.url), method: request.method?.toUpperCase() ?? 'GET', format: request.format,
+      requestData: { version: 1, logical: describeRequest(request),
+        origin: request.transport?.hops.length ? request.transport.origin : request.format === 'RENDERED_DOM' ? 'RENDERED_DOM' : 'UNOBSERVED_TRANSPORT',
+        hops: request.transport?.hops ?? [] },
       status: response.status ?? null, headers, cookieNames, bytes: response.bytes, complete: response.complete, failure: response.failure ?? null };
     await context.write(record);
   } catch (cause) {

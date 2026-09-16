@@ -216,7 +216,7 @@ it('reads the complete source evidence after hot bodies have been removed using 
   const store: ObjectStore = { async put(key, body) { objects.set(key, new Uint8Array(body)); return { etag: null }; },
     async get(key) { const body = objects.get(key); if (!body) throw new Error('Missing test archive'); return body; },
     uri: key => `memory://${source.key}/${key}`, describe: () => ({ provider: 'TEST', bucket: source.key, prefix: 'test', endpoint: 'memory://isolated', region: 'test' }) };
-  for (const hash of new Set([original.batch.outcome!.manifestHash!, ...original.responses.map(row => row.blobHash!)])) {
+  for (const hash of new Set([original.batch.outcome!.manifestHash!, ...original.responses.flatMap(row => [row.blobHash!, row.requestDataHash!])])) {
     expect(await archiveRawBlob(db, hash, store)).toEqual({ purged: true });
   }
   vi.stubGlobal('fetch', vi.fn(() => { throw new Error('No network fallback'); }));
@@ -224,4 +224,12 @@ it('reads the complete source evidence after hot bodies have been removed using 
   await expect(readSourceEvidence(db, receipt.captureBatchId)).rejects.toThrow('archive location unavailable');
   const [key, bytes] = objects.entries().next().value!; objects.set(key, new Uint8Array([...bytes, 0]));
   await expect(readSourceEvidence(db, receipt.captureBatchId, store)).rejects.toThrow('integrity mismatch');
+});
+
+it('reads the original v1 manifest projection without pretending the new request column existed', async () => {
+  const id = await forgedManifest(manifest => {
+    manifest.version = 1;
+    manifest.responses = manifest.responses.map(({ requestDataHash: _new, ...row }: Record<string, unknown>) => row);
+  });
+  expect((await readSourceEvidence(db, id)).body.length).toBeGreaterThan(0);
 });

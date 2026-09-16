@@ -5,7 +5,7 @@ import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { captureExtraction, replayExtraction } from '../capture/batch.js';
 import { archiveAdapterOutput } from '../capture/observations.js';
-import { digestBytes, captureResponse, withCaptureContext } from '../capture/context.js';
+import { type CaptureRecord, digestBytes, captureResponse, withCaptureContext } from '../capture/context.js';
 import { archiveRawBlob, readRawBlob } from '../capture/store.js';
 import { fetchJson, fetchText } from '../lib/http.js';
 import { MemoryStore } from '../test/memoryObjectStore.js';
@@ -197,6 +197,8 @@ describe('native extraction evidence', () => {
     expect(await archiveRawBlob(db, hash, store)).toEqual({ purged: true });
     expect(await archiveRawBlob(db, hash, store)).toEqual({ purged: false });
     expect(await readRawBlob(db, hash, store)).toEqual(Buffer.from(text));
+    await archiveRawBlob(db, batch.captures[0].requestDataHash!, store);
+    expect(await db.rawBlobBody.count({ where: { hash: batch.captures[0].requestDataHash! } })).toBe(0);
     vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('Offline only'); }));
     expect(await replayExtraction(db, batch.id, () => fetchJson(url), store)).toEqual(JSON.parse(text));
     vi.spyOn(store, 'get').mockResolvedValue(Buffer.from('later corruption'));
@@ -204,13 +206,15 @@ describe('native extraction evidence', () => {
   });
 
   it('does not archive cookie values, Authorization or request bodies in metadata', async () => {
-    const records: unknown[] = [];
+    const records: CaptureRecord[] = [];
     await withCaptureContext({ sequence: 0, write: async record => { records.push(record); } }, async () => {
       await captureResponse({ url: 'https://metadata.example.com/list?api_key=secret-api-key', method: 'POST',
         body: 'secret-request-body', format: 'HTTP_RESPONSE' }, { status: 200, complete: true,
         headers: new Headers({ authorization: 'secret-bearer', 'set-cookie': 'session=secret-cookie' }), bytes: Buffer.from('{}') });
     });
     const serialized = JSON.stringify(records);
-    for (const secret of ['secret-api-key', 'secret-request-body', 'secret-bearer', 'secret-cookie']) expect(serialized).not.toContain(secret);
+    for (const secret of ['secret-request-body', 'secret-bearer', 'secret-cookie']) expect(serialized).not.toContain(secret);
+    expect(records[0].requestData.logical.url).toContain('secret-api-key'); // Private content-addressed envelope only.
+    expect(JSON.stringify(records.map(({ requestData: _private, ...row }) => row))).not.toContain('secret-api-key');
   });
 });

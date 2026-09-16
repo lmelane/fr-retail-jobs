@@ -1,6 +1,6 @@
 # Observation des règles d’accès
 
-État relu le **16 septembre 2026**, lot 5G3B1. Ce document décrit le lecteur maintenu ; il ne vaut pas certification d’accès de toutes les sources.
+État relu le **16 septembre 2026**, lots 5G3B1 et 5G3B2A. Ce document décrit le lecteur maintenu ; il ne vaut pas certification d’accès de toutes les sources.
 
 ## Trois objets distincts
 
@@ -36,10 +36,10 @@ La disponibilité de la page publique du robot doit être mesurée séparément.
 ## Limites avant release
 
 - `Source.robotsVerdict` et `robotsCheckedAt` restent des champs historiques mutables utilisés par la promotion. Ils doivent être remplacés par une décision immuable et liée à la révision.
-- Le fingerprint actuel des requêtes ne conserve pas le `User-Agent` ; le journal garde une URL expurgée des valeurs de paramètres. La preuve d’accès devra conserver une provenance native suffisante, sans inventer rétrospectivement ces valeurs pour les anciennes captures.
+- Les nouvelles captures conservent désormais leur provenance de transport dans `requestDataHash`, distincte de la clé logique de rejeu. Les captures antérieures restent explicitement sans cette preuve. Le futur évaluateur doit exiger une provenance observée et vérifier toutes les cibles ; une capture inconnue ou un DOM dérivé ne peut pas suffire. Voir le [contrat de capture](native-capture.md#provenance-des-requêtes).
 - `requestTarget()` reste un diagnostic partiel d’une première cible supposée. Les preuves devront couvrir les requêtes réellement capturées, leurs méthodes, origines, chemins, paramètres, redirections et identité de collecteur.
 - `readRobots()` reste un diagnostic HTTP simple. Il ne suffit pas à qualifier le MIME, une page de challenge, la fraîcheur, toutes les redirections et toute la portée d’une source. Le futur évaluateur de capture devra contrôler ces propriétés avant toute décision.
 - Les règles existantes d’autorisation sectorielle et les autorisations déjà obtenues restent distinctes de l’observation. Ce lot ne crée ni ne révoque aucune autorisation.
 - La décision complète devra être revérifiée à l’ingestion, y compris pour les sources déjà actives. Le présent lecteur ne constitue pas cette porte de publication.
 
-Le [bilan du lot](../../audits/reprise-2026-09-15/lot-5g3b1.md) contient les contrôles, contre-épreuves et preuves natives. Les commandes courantes restent dans le document d’onboarding.
+Le [bilan des règles](../../audits/reprise-2026-09-15/lot-5g3b1.md) et celui de la [provenance des requêtes](../../audits/reprise-2026-09-15/lot-5g3b2a.md) contiennent les contrôles, contre-épreuves et preuves natives. Les commandes courantes restent dans le document d’onboarding.

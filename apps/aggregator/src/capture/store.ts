@@ -5,6 +5,7 @@ import type { NormalizedJob } from '../types.js';
 import type { PrismaClient, Prisma } from '@prisma/client';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { digestBytes, type CaptureRecord } from './context.js';
+import { validateRequestData } from './requestData.js';
 
 const gzip = promisify(gzipCallback), gunzip = promisify(gunzipCallback);
 export const MAX_CAPTURE_BYTES = 20_000_000;
@@ -19,24 +20,35 @@ export async function storeRawBlob(db: PrismaClient, bytes: Uint8Array): Promise
 
 async function ensureBlob(tx: Prisma.TransactionClient, hash: string, byteLength: number, payload: Buffer) {
   await tx.$queryRaw`SELECT 1 FROM pg_advisory_xact_lock(hashtextextended(${`raw-blob:${hash}`}, 0))`;
-  const existing = await tx.rawBlob.findUnique({ where: { hash }, select: { byteLength: true } });
+  const existing = await tx.rawBlob.findUnique({ where: { hash }, select: { byteLength: true, gzipHash: true, gzipLength: true, body: { select: { hash: true } } } });
   if (!existing) {
     await tx.rawBlob.create({ data: { hash, byteLength, gzipHash: digestBytes(payload), gzipLength: payload.byteLength,
       body: { create: { gzip: new Uint8Array(payload) } } } });
-  } else if (existing.byteLength !== byteLength) throw new Error('Raw blob identity conflict');
+  } else {
+    if (existing.byteLength !== byteLength) throw new Error('Raw blob identity conflict');
+    // Freshly observed identical content becomes hot again; never rely on a
+    // previous capture's optional archive client or replace its immutable codec identity.
+    if (!existing.body) {
+      if (existing.gzipLength !== payload.byteLength || existing.gzipHash !== digestBytes(payload)) throw new Error('Recaptured raw blob compression identity differs');
+      await tx.rawBlobBody.create({ data: { hash, gzip: new Uint8Array(payload) } });
+    }
+  }
 }
 
 export async function persistCapture(db: PrismaClient, batchId: string, record: CaptureRecord): Promise<void> {
-  const { bytes, ...metadata } = record;
+  const { bytes, requestData, ...metadata } = record;
+  validateRequestData(requestData);
+  const requestBytes = Buffer.from(JSON.stringify(requestData));
+  const requestDataHash = digestBytes(requestBytes);
   const hash = bytes === null ? null : digestBytes(bytes);
   if (bytes && bytes.byteLength > MAX_CAPTURE_BYTES) throw new Error('Capture exceeds the bounded body size');
-  let payload: Buffer | undefined;
-  if (bytes !== null) payload = await gzip(bytes, { level: 6 });
+  const blobs = await Promise.all([requestBytes, ...(bytes !== null ? [bytes] : [])].map(async value =>
+    ({ hash: digestBytes(value), length: value.byteLength, payload: await gzip(value, { level: 6 }) })));
   await db.$transaction(async tx => {
-    if (hash && payload && bytes !== null) {
-      await ensureBlob(tx, hash, bytes.byteLength, payload);
+    for (const blob of [...new Map(blobs.map(blob => [blob.hash, blob])).values()].sort((a, b) => a.hash.localeCompare(b.hash))) {
+      await ensureBlob(tx, blob.hash, blob.length, blob.payload);
     }
-    await tx.rawCapture.create({ data: { ...metadata, batchId, blobHash: hash,
+    await tx.rawCapture.create({ data: { ...metadata, batchId, blobHash: hash, requestDataHash,
       headers: metadata.headers as Prisma.InputJsonObject, cookieNames: metadata.cookieNames } });
   }, { maxWait: 10_000, timeout: 30_000 });
 }
@@ -94,6 +106,7 @@ export async function archiveRawBlob(db: PrismaClient, hash: string, store: Obje
     if (cutoff) {
       const recent = await tx.rawBlob.count({ where: { hash, OR: [
         { captures: { some: { capturedAt: { gte: cutoff } } } },
+        { requestCaptures: { some: { capturedAt: { gte: cutoff } } } },
         { observations: { some: { observedAt: { gte: cutoff } } } },
         { extractions: { some: { capturedAt: { gte: cutoff } } } },
         { manifests: { some: { completedAt: { gte: cutoff } } } },

@@ -1,6 +1,6 @@
 # Captures natives, sorties d’extraction et rétention
 
-Contrat des lots 2 et 5A à 5G1, actualisé le 16 septembre 2026. L’implémentation est validée localement et le transport d’archive sur un environnement Railway isolé. Les services de production n’utilisent pas encore ces migrations. Les preuves et les limites de livraison figurent dans le [bilan du lot](../../audits/reprise-2026-09-15/lot-2.md).
+Contrat des lots 2 et 5A à 5G3B2A, actualisé le 16 septembre 2026. L’implémentation est validée localement et le transport d’archive sur un environnement Railway isolé. Les services de production n’utilisent pas encore ces migrations. Les preuves et les limites de livraison figurent dans le [bilan du lot](../../audits/reprise-2026-09-15/lot-2.md).
 
 ## Ce qui fait foi
 
@@ -13,7 +13,7 @@ Le navigateur conserve séparément les réponses document/XHR/fetch et le DOM r
 | `SourceValidation` | Décision technique immuable, révision du registre, collecte scellée, lecteur, politique, ordre d’enregistrement et rapport dérivé |
 | `SourceRevision` | Configuration privée native du registre, empreinte SQL, numéro de transition et date de première observation |
 | `CaptureBatch` | Source, révision du registre si connue, but JOBS/SOURCE_IDENTITY/SOURCE_ACCESS, ordre SQL des nouvelles tentatives d’offres, début de capture, empreinte des réglages effectifs, version du lecteur et format |
-| `RawCapture` | Une tentative, ordre de réception, empreinte de requête, statut, métadonnées et référence des octets |
+| `RawCapture` | Une tentative, ordre de réception, clé logique de rejeu, référence privée de provenance des requêtes, statut et référence des octets de réponse |
 | `RawBlob` / `RawBlobBody` | Identité SHA-256, taille, empreinte et taille gzip ; octets locaux compressés |
 | `SourceExtraction` | Une sortie complète d’offre par collecte et position, conservée avant les transformations communes |
 | `CaptureOutcome` | Résultat immuable : EXTRACTED, SOURCE_EVIDENCE ou FAILED ; manifeste du résultat d’offres (format 2) ou des réponses de page (format 3) |
@@ -23,6 +23,20 @@ Le navigateur conserve séparément les réponses document/XHR/fetch et le DOM r
 Deux collectes identiques partagent les blocs mais conservent des identités d’observation distinctes. `JobSource` référence sa dernière sortie et sa collecte ; les sorties anciennes restent consultables indépendamment des mutations du catalogue. La contrainte de base interdit de combiner une sortie et une autre collecte. Le writer vérifie aussi la source et l’identifiant d’offre. Les faits et présentations issus des lots 3 et 4 tracent séparément les décisions de projection.
 
 Les champs `publicationHold` et `annotationHash` ne sont plus injectés dans le payload source. La migration reconnaît les anciennes enveloppes uniquement lorsqu’elles contiennent explicitement `sourcePayload` ; elle préserve leur contenu et leur empreinte historiques. Un ancien `SourceObservation` sans capture reste marqué comme tel : les réponses natives perdues ne sont pas reconstituées artificiellement.
+
+## Provenance des requêtes
+
+`requestHash` conserve le contrat historique du lecteur : format, méthode, URL originale, corps haché et en-têtes de négociation fournis par l’appelant. Cette clé de rejeu ne prétend pas décrire les en-têtes ajoutés par le transport.
+
+Depuis la migration 66, chaque nouvelle `RawCapture` référence aussi un `RawBlob` privé par `requestDataHash`. Le bloc contient la requête logique et une trace bornée des appels effectués à la frontière du transport : URL exacte sérialisée sans fragment, méthode effective, hash du corps, User-Agent et en-têtes Accept/Accept-Language/Content-Type. Les redirections ajoutent leur statut et les en-têtes Location/Retry-After/Content-Type observés. Les valeurs des corps, cookies, Authorization et autres en-têtes d’authentification ne sont pas copiées. Les URL exactes et leurs paramètres restent privés.
+
+Le transport rend explicites ses en-têtes de représentation et d’identité par défaut. Une redirection POST → GET garde les deux requêtes et leurs hash de corps distincts. Chaque nouvelle tentative conserve sa propre trace. Le relevé se fait immédiatement avant l’appel à fetch, après la file d’attente : une annulation préalable ne devient pas une tentative HTTP observée. L’observation n’acquiert pas une deuxième fois la porte de concurrence déjà détenue par l’extraction.
+
+Les quatre origines sont explicites : `HTTP_TRANSPORT`, `BROWSER_TRANSPORT`, `RENDERED_DOM`, `UNOBSERVED_TRANSPORT`. Le navigateur relève les en-têtes via Playwright ; une indisponibilité arrête le rendu exploitable et conserve un reçu incomplet sans identité inventée. Une requête refusée avant envoi et un document rendu ne sont pas présentés comme une réponse HTTP observée.
+
+Le lecteur privé vérifie la taille (512 000 octets), le schéma fermé, la continuité des redirections, les changements de méthode/corps et la liaison avec le reçu immuable. La rétention et le rejeu vérifient les mêmes empreintes gzip et natives que les corps. Les anciennes lignes restent `requestDataHash = NULL` : leur corps peut être inspecté ou rejoué, mais leur identité de collecteur passée reste inconnue.
+
+**Portée exacte :** cette preuve décrit les appels du transport instrumenté, pas une capture réseau TLS. Les extractions HTTP ordinaires conservent la trace de tous les sauts mais seulement le corps final ; les captures de page d’identité/d’accès conservent chaque corps. Le navigateur conserve les réponses document/XHR/fetch observées, pas l’ensemble des sous-ressources ni les requêtes échouées sans réponse. L’amorçage WAF reste à intégrer au contrôle complet d’accès. Une trace technique n’est jamais une autorisation.
 
 ## Rejouer sans réseau
 
@@ -46,7 +60,7 @@ Les anciennes collectes de format 1 restent inchangées et consultables. Elles n
 
 Le format 3 distingue `SOURCE_IDENTITY` et `SOURCE_ACCESS`. Ces captures réutilisent les blocs, journaux, protections de clôture et archives existants ; elles n’ont ni sortie d’offre ni ordre de tentative d’offres. La migration attribue le but `JOBS` aux captures antérieures, issues de ce seul parcours, sans leur inventer de nouvelles preuves ni un ordre historique.
 
-Le reçu `SOURCE_EVIDENCE` signifie que la chaîne HTTP bornée est archivée. Il ne signifie pas que la page démontre une propriété ou une autorisation. Le manifeste conserve l’URL initiale exacte et les réponses ordonnées. La lecture compare ce manifeste au journal, vérifie chaque corps et reconstruit chaque redirection à partir de son en-tête `Location`. Elle refuse une chaîne incomplète, une attribution à une autre URL ou une archive corrompue, sans recours au réseau. Les cookies sont limités à leurs noms ; les paramètres d’URL et les destinations des redirections restent privés.
+Le reçu `SOURCE_EVIDENCE` signifie que la chaîne HTTP bornée est archivée. Il ne signifie pas que la page démontre une propriété ou une autorisation. Le manifeste privé v2 conserve l’URL initiale exacte, les réponses ordonnées et leurs références de provenance. Il exige une requête HTTP observée par réponse. Le manifeste v1 historique est relu selon ses champs d’origine, sans lui ajouter rétroactivement de hash de requête. La lecture compare ce manifeste au journal, vérifie chaque corps et reconstruit chaque redirection à partir de son en-tête `Location`. Elle refuse une chaîne incomplète, une attribution à une autre URL ou une archive corrompue, sans recours au réseau. Les cookies sont limités à leurs noms ; les paramètres d’URL et les destinations des redirections restent privés.
 
 Une coupure conserve les octets déjà reçus ; une erreur réseau sans réponse conserve une tentative sans statut HTTP. Le résultat est alors `FAILED`. Les contrôles SQL et applicatifs interdisent de transformer ces pages en sorties d’extraction, validation native, publication ou observation d’offre. Capturer une page après une collecte d’offres n’invalide pas sa validation technique. Le [parcours des sources](source-onboarding.md) expose les commandes et leurs limites.
 
@@ -96,18 +110,18 @@ Cette validation ne certifie ni l’employeur, ni l’autorisation d’accès, n
 ## Stockage et garde de rétention
 
 - Corps bornés à **20 000 000 octets** ; gzip niveau 6, identité sur les octets décompressés. Sorties sauvegardées par transactions de 25, avec ordre de verrous stable. Une collecte contient au plus 100 000 sorties ; le manifeste respecte aussi la limite de 20 Mo. Un dépassement arrête la collecte explicitement.
-- Fenêtre chaude de **14 jours**. Un bloc déjà archivé et de nouveau référencé reste réutilisable depuis son archive ; la déduplication ne recrée pas une copie locale inutile.
+- Fenêtre chaude de **14 jours**. Des octets fraîchement recapturés, identiques à un bloc déjà froid, rétablissent sa copie chaude sous verrou. L’identité native et gzip doit correspondre exactement ; un changement de représentation gzip est refusé sans réécrire la preuve historique. Les anciennes attestations et pointeurs distants restent inchangés.
 - Conservation distante d’au moins **12 mois** ; aucune suppression automatique des preuves référencées. Cette durée minimale n’est pas une promesse de purge à douze mois.
 - Une page de plan contient au plus 1 000 observations et 1 000 blocs ; taille par défaut 250 de chaque. Périmètre de sources et empreinte exigés à l’application.
 - Envoi distant, **relecture complète**, vérification taille + SHA-256 gzip, pointeur immuable, puis retrait des octets locaux. Les lectures décompressent et vérifient également la taille et le SHA-256 natifs.
-- Les références récentes des réponses, observations, sorties et manifestes protègent les blocs lors du contrôle sous verrou avant purge. Une panne distante laisse les octets disponibles en base. Le même plan peut être repris sans double suppression.
+- Les références récentes des réponses, provenances de requête, observations, sorties et manifestes protègent les blocs lors du contrôle sous verrou avant purge. Une panne distante laisse les octets disponibles en base. Le même plan peut être repris sans double suppression.
 - Les anciennes lignes `SourceObservation` restent en base avec leur identité et leur contenu ou pointeur ; elles ne sont plus remplacées par une seconde table de références.
 
 Le SDK officiel AWS gère la signature et le transport S3. Le préfixe d’environnement est obligatoire. Les opérations sont bornées en temps et en taille. Le stockage n’expose aucune opération de suppression distante. Les tables d’archive remplacées ne peuvent être supprimées par la migration si elles contiennent un pointeur : leur reprise doit alors précéder la migration.
 
 ### Métadonnées et accès
 
-Cookies et Authorization ne sont pas conservés dans les métadonnées. Les valeurs des paramètres d’URL sont masquées dans l’URL d’audit. Les corps de requête ne sont pas copiés ; ils participent à une empreinte. Les corps natifs peuvent contenir des données présentes dans une page publique : ils restent privés et ne sont pas servis par l’API du catalogue.
+Les valeurs des en-têtes Cookie et Authorization ne sont pas conservées dans les métadonnées de requête. Les valeurs des paramètres d’URL sont masquées dans l’URL d’audit. Les corps de requête ne sont pas copiés ; ils participent à une empreinte. Les corps natifs peuvent contenir des données présentes dans une page publique : ils restent privés et ne sont pas servis par l’API du catalogue.
 
 Les fichiers de lecture et de configuration sont privés. Les identifiants S3 restent dans les variables d’environnement ou dans un fichier local d’accès protégé, jamais dans Git ni dans les rapports.
 

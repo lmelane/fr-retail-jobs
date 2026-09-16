@@ -5,7 +5,7 @@ import { randomUUID } from 'node:crypto';
 import { captureExtraction, replayExtraction } from '../capture/batch.js';
 import { compareExtractionResult, readExtractionManifest } from '../capture/manifest.js';
 import { archiveRawBlob, persistCapture, storeRawBlob } from '../capture/store.js';
-import { requestFingerprint } from '../capture/context.js';
+import { describeRequest, requestFingerprint } from '../capture/context.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { fetchJson } from '../lib/http.js';
 import { MemoryStore } from '../test/memoryObjectStore.js';
@@ -37,6 +37,7 @@ async function openBatch(formatVersion = 2) {
 }
 const receipt = (complete = true) => ({ sequence: 0, requestHash: requestFingerprint({ url, headers: { accept: 'application/json' }, format: 'HTTP_RESPONSE' }),
   requestUrl: url, method: 'GET', format: 'HTTP_RESPONSE' as const, status: 200, headers: {}, cookieNames: [],
+  requestData: { version: 1 as const, logical: describeRequest({ url, headers: { accept: 'application/json' }, format: 'HTTP_RESPONSE' }), origin: 'UNOBSERVED_TRANSPORT' as const, hops: [] },
   complete, failure: complete ? null : 'interrupted', bytes: Buffer.from('{}') });
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 afterAll(() => db.$disconnect());

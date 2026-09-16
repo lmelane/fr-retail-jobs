@@ -1131,7 +1131,8 @@ model RawBlob {
   createdAt DateTime @default(now())
   body RawBlobBody?
   archive RawBlobArchive?
-  captures RawCapture[]
+  captures RawCapture[] @relation("CapturedResponse")
+  requestCaptures RawCapture[] @relation("CapturedRequestData")
   observations SourceObservation[]
   extractions SourceExtraction[]
   manifests CaptureOutcome[]
@@ -1212,6 +1213,9 @@ model RawCapture {
   batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict)
   sequence Int
   requestHash String
+  /** Private native request envelope; null for captures predating this evidence. */
+  requestDataHash String?
+  requestData RawBlob? @relation("CapturedRequestData", fields: [requestDataHash], references: [hash], onDelete: Restrict, onUpdate: Restrict)
   requestUrl String
   method String
   format String
@@ -1221,10 +1225,11 @@ model RawCapture {
   complete Boolean
   failure String?
   blobHash String?
-  blob RawBlob? @relation(fields: [blobHash], references: [hash], onDelete: Restrict)
+  blob RawBlob? @relation("CapturedResponse", fields: [blobHash], references: [hash], onDelete: Restrict)
   capturedAt DateTime @default(now())
   @@unique([batchId, sequence])
   @@index([blobHash])
+  @@index([requestDataHash])
 }
 
 /** Immutable outcome; a batch without one was interrupted and remains replayable. */

@@ -10,7 +10,9 @@ import { detectChallenge } from './responseIntegrity.js';
 import { publicDispatcher } from './publicTransport.js';
 import { sessionHeaders, rememberSessionCookies } from './httpSession.js';
 import { recordAttempt, recordResponse, recordFailure } from '../observability/httpTelemetry.js';
-import { auditUrl, capturingResponses, captureResponse, replayResponse, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
+import { auditUrl, describeRequest, capturingResponses, captureResponse, replayResponse, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
+
+import { observedHop, type RequestDescription, type TransportHop } from '../capture/requestData.js';
 
 export { WafChallengeError } from './wafToken.js';
 export { detectChallenge, type ChallengeVendor } from './responseIntegrity.js';
@@ -124,7 +126,9 @@ export async function fetchFollowingSafely(
   signal: AbortSignal,
   /** Source-evidence mode archives every hop and paces each host separately.
    * The observer must leave the original body available (read a bounded clone). */
-  captureHop?: (url: string, response: Response | null, failure?: unknown) => Promise<void>,
+  captureHop?: (url: string, response: Response | null, failure: unknown, request: RequestDescription) => Promise<void>,
+  // Ordinary extractions already own the host slot; observing must not acquire it twice.
+  paceHops = true,
 ): Promise<Response> {
   let current = url;
   let request: RequestInit = { ...init, headers: new Headers(init.headers) };
@@ -133,16 +137,33 @@ export async function fetchFollowingSafely(
     assertPublicUrl(current);
     const options: RequestInit = { ...request, headers: Object.fromEntries(await sessionHeaders(current, request.headers ?? {})),
       signal, redirect: 'manual' };
+    // Make representation/identity headers explicit so the recorded boundary is reproducible.
+    const sentHeaders = new Headers(options.headers);
+    if (!sentHeaders.has('user-agent')) sentHeaders.set('user-agent', userAgent);
+    if (!sentHeaders.has('accept')) sentHeaders.set('accept', '*/*');
+    if (!sentHeaders.has('accept-language')) sentHeaders.set('accept-language', '*');
+    if (!sentHeaders.has('content-type')) {
+      if (typeof options.body === 'string') sentHeaders.set('content-type', 'text/plain;charset=UTF-8');
+      else if (options.body instanceof URLSearchParams) sentHeaders.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    }
+    options.headers = Object.fromEntries(sentHeaders);
+    let native: RequestDescription | undefined;
+    const dispatch = () => {
+      // A cancelled queue is not a transport attempt. Snapshot only at fetch.
+      const target = new URL(current); target.hash = '';
+      if (captureHop) native = describeRequest({ url: target.toString(), method: options.method, body: options.body, headers: options.headers, format: 'HTTP_RESPONSE' });
+      return fetch(current, options);
+    };
     // Node's fetch and installed undici share the dispatcher protocol, but
     // their separately versioned TypeScript declarations are not assignable.
     Object.assign(options, { dispatcher: publicDispatcher() });
     let response: Response;
-    try { response = captureHop ? await withHostGate(current, async () => {
+    try { response = captureHop && paceHops ? await withHostGate(current, async () => {
       signal.throwIfAborted();
       log.count('http.attempts'); recordAttempt(current, false); noteRequest(rateLimitKeyFor(current));
       const started = Date.now();
       let observed: Response;
-      try { observed = await fetch(current, options); }
+      try { observed = await dispatch(); }
       catch (error) { recordFailure(current, signal.aborted ? 'timeout' : 'error'); throw error; }
       log.count('http.responses');
       recordResponse(current, observed.status, Date.now() - started, observed.headers.get('content-length'));
@@ -159,10 +180,10 @@ export async function fetchFollowingSafely(
       }
       // Evidence captures archive the refusal and stop; they never retry it.
       return observed;
-    }) : await fetch(current, options); }
-    catch (error) { if (captureHop) await captureHop(current, null, error); throw error; }
+    }) : await dispatch(); }
+    catch (error) { if (captureHop && native) await captureHop(current, null, error, native); throw error; }
     if (captureHop) {
-      try { await captureHop(current, response); }
+      try { await captureHop(current, response, undefined, native!); }
       catch (error) { await response.body?.cancel().catch(() => undefined); throw error; }
     }
     await rememberSessionCookies(current, response.headers);
@@ -187,7 +208,7 @@ export async function fetchFollowingSafely(
         }
         request = { ...request, headers: safe };
       }
-      if (response.status === 303 && request.method !== 'HEAD' ||
+      if (response.status === 303 && request.method?.toUpperCase() !== 'HEAD' ||
           [301, 302].includes(response.status) && request.method?.toUpperCase() === 'POST') {
         const headers = new Headers(request.headers);
         for (const key of ['content-type', 'content-length', 'transfer-encoding']) headers.delete(key);
@@ -220,6 +241,8 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
     let timer: ReturnType<typeof setTimeout> | undefined;
     let startedAt = 0;
     let attemptCaptured = false;
+    const hops: TransportHop[] = [];
+    const transport = { origin: 'HTTP_TRANSPORT' as const, hops };
     try {
       // Every request passes through the per-host gate — the global politeness
       // that stops us throttling a shared host (ELC, Richemont, Beaumanoir…) in
@@ -252,19 +275,21 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
             }),
           },
           AbortSignal.any([controller.signal, ...[sourceSignal(), init.signal].filter((s): s is AbortSignal => !!s)]),
+          capturingResponses() ? async (_url, response, failure, native) => { hops.push(observedHop(native, response, failure)); } : undefined,
+          false,
         );
       });
       if (capturingResponses()) {
         let bytes: Buffer;
         try { bytes = await readBytesBounded(response, url); }
         catch (error) {
-          await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE' },
+          await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE', transport },
             { status: response.status, headers: response.headers, bytes: error instanceof IncompleteBodyError ? error.prefix : null,
               complete: false, failure: error instanceof Error ? error.name : 'ReadError' });
           attemptCaptured = true;
           throw error;
         }
-        await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE' },
+        await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE', transport },
           { status: response.status, headers: response.headers, bytes, complete: true });
         attemptCaptured = true;
         const buffered = new Response([204, 205, 304].includes(response.status) ? null : bytes,
@@ -346,7 +371,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       }
     } catch (error) {
       if (capturingResponses() && !attemptCaptured && !(error instanceof CaptureUnavailableError)) {
-        await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE' },
+        await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE', transport },
           { bytes: null, complete: false, failure: error instanceof Error ? error.name : 'NetworkError' });
       }
       assertSourceRunning();

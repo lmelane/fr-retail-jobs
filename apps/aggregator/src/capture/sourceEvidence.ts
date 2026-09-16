@@ -10,6 +10,8 @@ import { assertPublicUrl } from '../lib/ssrf.js';
 import { CRAWLER_IDENTITY } from '../lib/crawlerIdentity.js';
 import { fetchFollowingSafely, IncompleteBodyError, readBytesBounded } from '../lib/http.js';
 import { auditUrl, assertCaptureHealthy, captureResponse, requestFingerprint, withCaptureContext } from './context.js';
+import { readRequestData } from './requestDataRead.js';
+import { observedHop } from './requestData.js';
 import { captureConfig } from './config.js';
 import { captureReaderRevision } from './revision.js';
 import { persistCapture, readRawBlob, storeRawBlob } from './store.js';
@@ -18,10 +20,10 @@ import type { ObjectStore } from '../retention/objectStore.js';
 export type SourceEvidencePurpose = 'SOURCE_IDENTITY' | 'SOURCE_ACCESS';
 const ACCEPT = 'text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.1';
 const headers = { accept: ACCEPT, 'user-agent': CRAWLER_IDENTITY };
-const selection = { id: true, sequence: true, requestHash: true, requestUrl: true, method: true, format: true,
+const selection = { id: true, sequence: true, requestHash: true, requestDataHash: true, requestUrl: true, method: true, format: true,
   status: true, headers: true, cookieNames: true, complete: true, failure: true, blobHash: true } as const;
 type EvidenceResponse = Prisma.RawCaptureGetPayload<{ select: typeof selection }>;
-type EvidenceManifest = { version: 1; purpose: SourceEvidencePurpose; batchId: string; sourceRevisionId: string;
+type EvidenceManifest = { version: 1 | 2; purpose: SourceEvidencePurpose; batchId: string; sourceRevisionId: string;
   configHash: string; initialUrl: string; responses: EvidenceResponse[] };
 
 function evidenceUrl(value: string): string {
@@ -51,11 +53,14 @@ export async function readSourceEvidence(db: PrismaClient, batchId: string, stor
   }
   const manifest = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(await readRawBlob(db, batch.outcome.manifestHash, store))) as EvidenceManifest;
   const rows = await evidenceResponses(db, batchId);
-  if (!manifest || manifest.version !== 1 || manifest.batchId !== batch.id || manifest.purpose !== batch.purpose ||
+  const projectedRows = manifest?.version === 1 ? rows.map(({ requestDataHash: _unknown, ...row }) => row) : rows;
+  if (!manifest || ![1, 2].includes(manifest.version) || manifest.batchId !== batch.id || manifest.purpose !== batch.purpose ||
     manifest.sourceRevisionId !== batch.sourceRevisionId || manifest.configHash !== batch.configHash ||
-    evidenceHash(manifest.responses) !== evidenceHash(rows)) throw new Error('Source evidence manifest differs from its immutable journal');
+    evidenceHash(manifest.responses) !== evidenceHash(projectedRows)) throw new Error('Source evidence manifest differs from its immutable journal');
   let current = evidenceUrl(manifest.initialUrl); let body: Buffer = Buffer.alloc(0);
   for (const [index, row] of rows.entries()) {
+    const requestData = await readRequestData(db, row, store);
+    if (manifest.version === 2 && (!requestData || requestData.origin !== 'HTTP_TRANSPORT' || requestData.hops.length !== 1)) throw new Error('Observed HTTP request required by evidence manifest');
     const request = { url: current, method: 'GET', headers, format: 'HTTP_RESPONSE' as const };
     if (row.requestUrl !== auditUrl(current) || row.requestHash !== requestFingerprint(request)) throw new Error('Source evidence redirect provenance differs');
     body = await readRawBlob(db, row.blobHash!, store);
@@ -92,9 +97,10 @@ export async function captureSourceEvidence(db: PrismaClient, sourceKey: string,
     return withCaptureContext({ sequence: 0, observedAt: batch.startedAt, captureRedirectLocations: true,
       write: record => persistCapture(db, batch.id, record) }, async () => {
       try {
-        const response = await fetchFollowingSafely(initialUrl, { method: 'GET', headers }, sourceSignal()!, async (url, response, failure) => {
+        const response = await fetchFollowingSafely(initialUrl, { method: 'GET', headers }, sourceSignal()!, async (url, response, failure, native) => {
           url = evidenceUrl(url);
-          const request = { url, method: 'GET', headers, format: 'HTTP_RESPONSE' as const };
+          const request = { url, method: 'GET', headers, format: 'HTTP_RESPONSE' as const,
+            transport: { origin: 'HTTP_TRANSPORT' as const, hops: [observedHop(native, response, failure)] } };
           if (!response) {
             await captureResponse(request, { bytes: null, complete: false, failure: failure instanceof Error ? failure.name : 'NetworkFailure' });
             return;
@@ -112,7 +118,7 @@ export async function captureSourceEvidence(db: PrismaClient, sourceKey: string,
         await response.body?.cancel();
         assertCaptureHealthy(); assertSourceRunning();
         const responses = await evidenceResponses(db, batch.id);
-        const manifest: EvidenceManifest = { version: 1, purpose: options.purpose, batchId: batch.id,
+        const manifest: EvidenceManifest = { version: 2, purpose: options.purpose, batchId: batch.id,
           sourceRevisionId: batch.sourceRevisionId!, configHash: batch.configHash, initialUrl, responses };
         const manifestHash = await storeRawBlob(db, Buffer.from(JSON.stringify(manifest)));
         assertSourceRunning();

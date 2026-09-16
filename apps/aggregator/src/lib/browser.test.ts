@@ -26,7 +26,7 @@ import { closeBrowser, fetchRenderedHtml, primeWafToken } from './browser.js';
 const url = 'https://example.com/careers';
 const response = (body: () => Promise<Buffer>, headers: Record<string, string> = {}) => ({
   url: () => url, status: () => 200, headers: () => headers, body,
-  request: () => ({ resourceType: () => 'document', method: () => 'GET', postDataBuffer: () => null }),
+  request: () => ({ resourceType: () => 'document', method: () => 'GET', postDataBuffer: () => null, allHeaders: async () => ({ 'user-agent': 'Observed Browser Fixture', 'accept-language': 'de-DE', cookie: 'never-archive-this' }) }),
 });
 afterEach(async () => { await closeBrowser(); fixture.responses = []; fixture.navigationError = false; fixture.listeners.clear(); vi.restoreAllMocks(); });
 
@@ -37,6 +37,9 @@ describe('browser native capture', () => {
     const html = await withCaptureContext({ sequence: 0, write: async row => { records.push(row); } }, () => fetchRenderedHtml(url));
     expect(records.map(row => row.format)).toEqual(['BROWSER_RESPONSE', 'RENDERED_DOM']);
     expect(records[0].bytes).toEqual(original); expect(Buffer.from(records[1].bytes!).toString()).toBe(html);
+    expect(records[0].requestData).toMatchObject({ origin: 'BROWSER_TRANSPORT', hops: [{ request: { userAgent: 'Observed Browser Fixture', negotiation: { 'accept-language': 'de-DE' } } }] });
+    expect(records[1].requestData).toMatchObject({ origin: 'RENDERED_DOM', hops: [] });
+    expect(JSON.stringify(records)).not.toContain('never-archive-this');
     const launched = fixture.launched;
     const replayed = await withCaptureContext({ sequence: 0, replay: async () => records[1] }, () => fetchRenderedHtml(url));
     expect(replayed).toBe(html); expect(fixture.launched).toBe(launched);
@@ -69,4 +72,13 @@ describe('browser native capture', () => {
     const cookie = await withCaptureContext({ sequence: 0, replay: async () => { throw new Error('Unused'); } }, () => primeWafToken(url));
     expect(cookie).toBe('aws-waf-token=archive-replay'); expect(fixture.launched).toBe(before);
   });
+});
+
+it('retains an explicit unknown transport when browser request headers cannot be observed and refuses the DOM', async () => {
+  const observed = response(async () => Buffer.from('body'));
+  const original = observed.request();
+  observed.request = () => ({ ...original, allHeaders: async () => { throw new Error('Request headers unavailable'); } });
+  fixture.responses = [observed]; const records: CaptureRecord[] = [];
+  await expect(withCaptureContext({ sequence: 0, write: async row => { records.push(row); } }, () => fetchRenderedHtml(url))).rejects.toThrow('Request headers unavailable');
+  expect(records).toHaveLength(1); expect(records[0]).toMatchObject({ complete: false, requestData: { origin: 'UNOBSERVED_TRANSPORT', hops: [] } });
 });

@@ -179,6 +179,7 @@ Les nouvelles revues d’identité portent explicitement la révision examinée 
 - **5G2C** : étendre les contrats natifs aux autres familles à partir de captures officielles, qualifier les domaines personnalisés et documents de groupe. Un nom, un commentaire ou une sous-chaîne ne suffisent pas.
 - **5G3A** : préserver l’employeur natif explicite, limiter l’inférence depuis le portail aux champs absents et journaliser la revue correspondante. Le lecteur JSON-LD transmet le nom de l’organisation déclarée, sans le remplacer par son éditeur. [Bilan](lot-5g3a.md).
 - **5G3B1** : corriger l’observation des règles robots pour l’identité réelle du collecteur, les groupes répétés, les chemins encodés et les limites de calcul. [Bilan](lot-5g3b1.md).
+- **5G3B2A** : conserver la provenance privée des requêtes réellement envoyées sans changer la clé historique de rejeu ; vérifier les redirections et permettre la réutilisation des preuves froides fraîchement recapturées. Migration 66, archives historiques sans identité inventée. [Bilan](lot-5g3b2a.md).
 - **5G3B2** : remplacer les champs mutables d’accès par une décision immuable portant sur les requêtes et l’identité de collecteur réellement utilisées. Compléter la représentation des rôles employeur, groupe et éditeur au-delà de leur séparation dans la résolution des offres.
 
 ## Lot 6. Recherche réellement bornée par marché
