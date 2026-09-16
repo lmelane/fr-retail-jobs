@@ -230,7 +230,8 @@ try {
   } else if (command === 'promote') {
     /**
      * DRAFT/VALIDATED/PAUSED -> ACTIVE, guarded: config + dated robots verdict
-     * + at least one proven offer, or the promotion refuses (règles du plan).
+     * + reviewed identity and current native validation, including a proven
+     * empty feed. An operator-provided counter cannot authorize activation.
      */
     const key = process.argv[3];
     if (!key || key.startsWith('--')) throw new Error('promote needs the sourceKey to promote');

@@ -1,6 +1,10 @@
 import '../test/setup-integration.js';
-import { describe, it, expect, beforeEach, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach, afterAll, afterEach, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
+import { captureExtraction } from '../capture/batch.js';
+import { fetchAtsJobs } from '../ats/index.js';
+import { validateCapturedSource } from '../connectors/sourceValidation.js';
+import * as certification from '../connectors/sourceCertification.js';
 import { createHash } from 'node:crypto';
 import {
   importSourcesCsv,
@@ -9,6 +13,7 @@ import {
   tenantKeyOf,
 } from '../connectors/sourceStore.js';
 import { retireSource } from './retireSource.js';
+import { loadSourceCatalog } from '../connectors/sourceCatalog.js';
 import { sourceIdentityHash, sourceSubjectKey } from '../connectors/sourceIdentity.js';
 
 /**
@@ -32,6 +37,7 @@ async function wipe() {
 }
 
 beforeEach(wipe);
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 afterAll(async () => {
   await wipe();
   await prisma.$disconnect();
@@ -59,11 +65,15 @@ describe('tenantKeyOf', () => {
 describe('importSourcesCsv', () => {
   it('seeds drafts without invented proof and is idempotent', async () => {
     const first = await importSourcesCsv(prisma);
-    // 82 rows: the verified catalogue after the tenant consolidation (D-28) removed the 17 duplicate rows that
-    // re-fetched the same group feed, and after FashionJobs left the seed entirely (owner decision 2026-09-11:
-    // discovery-only, never a posting source — the seed is re-imported at every boot, so leaving the row there
-    // would have rewritten its config back into the catalogue).
-    expect(first.imported).toBe(82);
+    // EVERY catalogue row must land, so the count is derived from the seed instead of frozen: a hard-coded
+    // number turns each new source into a failing test that says nothing about the property under test.
+    // What matters is that no row is silently dropped — the tenant consolidation (D-28) removed the 17
+    // duplicate rows that re-fetched the same group feed, and FashionJobs left the seed entirely (owner
+    // decision 2026-09-11: discovery-only, never a posting source — the seed is re-imported at every boot,
+    // so leaving the row there would have rewritten its config back into the catalogue).
+    const catalogued = loadSourceCatalog().length;
+    expect(catalogued).toBeGreaterThan(0);
+    expect(first.imported).toBe(catalogued);
     expect(first.skippedDuplicateTenant).toEqual([]);
 
     const again = await importSourcesCsv(prisma);
@@ -139,8 +149,7 @@ describe('promoteSource', () => {
     ...over,
   });
 
-  it('promotes a proven DRAFT to ACTIVE', async () => {
-    const source = await prisma.source.create({ data: draft() });
+  async function identity(source: Awaited<ReturnType<typeof prisma.source.create>>) {
     const artifactText = 'Official careers: https://job-boards.greenhouse.io/testmaison';
     await prisma.sourceIdentityReview.create({ data: {
       sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source),
@@ -148,10 +157,45 @@ describe('promoteSource', () => {
       proofUrl: 'https://test-maison.example/careers', portalUrl: 'https://job-boards.greenhouse.io/testmaison',
       statement: 'The official employer careers page links to this exact ATS tenant.', artifactHash: createHash('sha256').update(artifactText).digest('hex'), artifactText, reviewer: 'integration-test', checkedAt: new Date(),
     } });
+  }
+
+  async function qualifiedDraft() {
+    const source = await prisma.source.create({ data: draft({ verifiedJobCount: 0 }) });
+    await identity(source);
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ jobs: [{ id: 123, title: 'Client Advisor',
+      content: 'Own native duties', absolute_url: 'https://job-boards.greenhouse.io/testmaison/jobs/123' }] }))));
+    await captureExtraction(prisma, source.key, { board: 'testmaison' }, undefined, config => fetchAtsJobs('GREENHOUSE', config), 'GREENHOUSE');
+    const batch = await prisma.captureBatch.findFirstOrThrow({ where: { sourceRevisionId: source.currentRevisionId } });
+    vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('Qualification must stay offline'); }));
+    expect(await validateCapturedSource(prisma, batch.id)).toMatchObject({ verdict: 'VALIDATED' });
+    return source;
+  }
+
+  it('promotes a natively validated DRAFT even when the former manual counter is zero', async () => {
+    await qualifiedDraft();
     const result = await promoteSource(prisma, 'test-draft');
     expect(result).toEqual({ key: 'test-draft', from: 'DRAFT', to: 'ACTIVE' });
     const row = await prisma.source.findUniqueOrThrow({ where: { key: 'test-draft' } });
     expect(row.status).toBe('ACTIVE');
+  });
+
+  it('holds the registry row while checking technical evidence and committing promotion', async () => {
+    const source = await qualifiedDraft();
+    const original = certification.requireSourceValidation;
+    let unlock!: () => void; const barrier = new Promise<void>(resolve => { unlock = resolve; });
+    let locked!: () => void; const ready = new Promise<void>(resolve => { locked = resolve; });
+    vi.spyOn(certification, 'requireSourceValidation').mockImplementation(async (...args) => {
+      locked(); await barrier; return original(...args);
+    });
+    const promotion = promoteSource(prisma, source.key);
+    await ready;
+    try {
+      await expect(prisma.$transaction(async tx => {
+        await tx.$executeRawUnsafe("SET LOCAL lock_timeout='100ms'");
+        await tx.source.update({ where: { key: source.key }, data: { note: 'Concurrent registry write' } });
+      })).rejects.toThrow();
+    } finally { unlock(); await promotion; }
+    expect((await prisma.source.findUniqueOrThrow({ where: { key: source.key } })).status).toBe('ACTIVE');
   });
 
   it('refuses technical success without employer evidence (the historic homonym admission path)', async () => {
@@ -165,9 +209,10 @@ describe('promoteSource', () => {
     await expect(promoteSource(prisma, 'test-draft')).rejects.toThrow(/robots/);
   });
 
-  it('refuses without a proven offer', async () => {
-    await prisma.source.create({ data: draft({ verifiedJobCount: 0 }) });
-    await expect(promoteSource(prisma, 'test-draft')).rejects.toThrow(/offer/);
+  it('refuses a manual positive count without a validated native capture', async () => {
+    const source = await prisma.source.create({ data: draft({ verifiedJobCount: 9999 }) });
+    await identity(source);
+    await expect(promoteSource(prisma, 'test-draft')).rejects.toMatchObject({ name: 'SourceValidationGateError', code: 'VALIDATION_MISSING' });
   });
 
   it.each(['DISALLOWED', 'UNKNOWN', 'ERROR'])('refuses a dated %s robots verdict', async verdict => {

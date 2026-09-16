@@ -1,6 +1,6 @@
 # Captures natives, sorties d’extraction et rétention
 
-Contrat des lots 2, 5A, 5B et 5C, actualisé le 16 septembre 2026. L’implémentation est validée localement et le transport d’archive sur un environnement Railway isolé. Les services de production n’utilisent pas encore ces migrations. Les preuves et les limites de livraison figurent dans le [bilan du lot](../../audits/reprise-2026-09-15/lot-2.md).
+Contrat des lots 2 et 5A à 5D, actualisé le 16 septembre 2026. L’implémentation est validée localement et le transport d’archive sur un environnement Railway isolé. Les services de production n’utilisent pas encore ces migrations. Les preuves et les limites de livraison figurent dans le [bilan du lot](../../audits/reprise-2026-09-15/lot-2.md).
 
 ## Ce qui fait foi
 
@@ -10,8 +10,9 @@ Le navigateur conserve séparément les réponses document/XHR/fetch et le DOM r
 
 | Entité | Responsabilité |
 |---|---|
+| `SourceValidation` | Décision technique immuable, révision du registre, collecte scellée, lecteur, politique, ordre d’enregistrement et rapport dérivé |
 | `SourceRevision` | Configuration privée native du registre, empreinte SQL, numéro de transition et date de première observation |
-| `CaptureBatch` | Source, révision du registre si connue, début d’extraction, empreinte des réglages effectifs, version du lecteur et format |
+| `CaptureBatch` | Source, révision du registre si connue, ordre SQL des nouvelles tentatives, début d’extraction, empreinte des réglages effectifs, version du lecteur et format |
 | `RawCapture` | Une tentative, ordre de réception, empreinte de requête, statut, métadonnées et référence des octets |
 | `RawBlob` / `RawBlobBody` | Identité SHA-256, taille, empreinte et taille gzip ; octets locaux compressés |
 | `SourceExtraction` | Une sortie complète d’offre par collecte et position, conservée avant les transformations communes |
@@ -63,7 +64,26 @@ Changer la configuration d’une source active la met en pause. Un retrait expli
 
 Le premier instantané de migration décrit uniquement l’état constaté du registre. Les instantanés survivent au retrait d’un brouillon, sans lien en cascade qui effacerait leur histoire. Leur contenu est privé et peut contenir des paramètres d’accès déjà présents dans le registre ; il ne doit jamais être journalisé ou servi publiquement.
 
-Ce mécanisme ne remplace pas la certification d’une source. Le remplacement du compteur manuel de promotion, les preuves d’absence liées au périmètre et la gestion des paramètres d’accès par références privées restent des étapes obligatoires avant release.
+## Validation technique d’une source
+
+`validateCapturedSource` relit une collecte de format 2 liée au registre. Les réglages sont reconstruits depuis le texte JSONB privé de sa révision. Le lecteur actuel rejoue toutes les réponses sans réseau, puis compare chaque sortie et toutes les métadonnées au manifeste scellé. Chaque publication proposée doit également passer le lecteur RAW qualifié de sa famille : identité native, contenu propre et état publiable. Les publications retenues restent comptées séparément.
+
+Une collecte tronquée, une énumération explicitement incomplète, des identifiants dupliqués, des lignes rejetées ou du contenu inexploitable produisent `REJECTED`. Une archive inaccessible ou corrompue ne conserve pas un ancien succès : la tentative produit un nouveau rejet explicite. Une entrée qui ne désigne pas une collecte enregistrée et scellée est refusée avant création d’une décision.
+
+Un résultat vide ne suffit pas. Le protocole de zéro offre est actuellement qualifié pour Ashby uniquement : une réponse native complète HTTP 200, `apiVersion: "1"` et `jobs: []`, en plus du rejeu exact. Les autres familles vides restent à qualifier. La validation technique n’atteste aucune disparition : son rapport porte toujours `absenceAttestation: false`. Une complétude inconnue reste `UNKNOWN` et ne devient pas une preuve d’exhaustivité.
+
+La promotion exige la dernière décision `VALIDATED` de la révision courante, émise avec le lecteur et la politique actuels, sur une capture observée depuis moins de 24 heures. Un rejeu récent ne rajeunit pas une capture ancienne. Une décision plus récente de rejet remplace la précédente pour cette porte. Une tentative plus récente, même échouée ou encore inachevée, empêche de réutiliser ce succès. Les nouvelles captures portent un ordre SQL indépendant de l’horloge ; les captures historiques sans ordre connu exigent une recollecte avant promotion. L’ordre SQL des décisions évite également les collisions d’horloge ; l’ajout d’une décision et la promotion partagent les verrous du registre. Le compteur manuel `verifiedJobCount` ne permet plus d’activer une source, même positif ; un flux natif vide prouvé peut être activé sans inventer d’offre.
+
+`raw-capture.mts` propose deux opérations explicites, sans activation automatique :
+
+```sh
+npx tsx apps/aggregator/scripts/ops/raw-capture.mts --collect-source=<clé> --apply --deadline-ms=30000 --out=<rapport-privé.json>
+npx tsx apps/aggregator/scripts/ops/raw-capture.mts --validate-source=<capture-id> --apply --out=<rapport-privé.json>
+```
+
+La première lit la configuration courante du registre, capture et valide. La seconde revalide une capture, y compris depuis l’archive S3. Une collecte vide retourne elle aussi son identifiant de preuve ; cet identifiant ajouté après clôture ne fait pas partie des métadonnées natives du manifeste. Les options ambiguës, inconnues ou répétées sont refusées avant tout travail. Un rejet technique fait sortir la commande en erreur ; les rapports contiennent des identifiants et des comptes, sans configuration ni corps d’offre.
+
+Cette validation ne certifie ni l’employeur, ni l’autorisation d’accès, ni l’absence d’offres. Les portes d’identité et d’accès restent distinctes. Le parcours unique d’ajout de source, la suppression des anciennes orchestrations et de leur colonne de volume, le contrôle des sources déjà actives à l’ingestion, les preuves d’absence liées au périmètre et les références privées des paramètres d’accès restent obligatoires avant release. Les empreintes locales et les identifiants de release Railway doivent être conciliés lors de cette qualification ; un certificat local n’est pas présenté comme un certificat de production.
 
 ## Stockage et garde de rétention
 

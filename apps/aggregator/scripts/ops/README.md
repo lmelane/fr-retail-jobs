@@ -130,9 +130,11 @@ Whether anything *changed* is answered by comparing values between two passes, n
 An interruption is only proven if its exit code survives. `cmd | grep | tail` reports the exit code of `tail`;
 the measured crash exits **137** and must be read directly, or captured with `PIPESTATUS`/a temporary file.
 
-## Captures et rétention : lots 2, 5A, 5B et 5C
+## Captures, validation technique et rétention : lots 2 et 5A à 5D
 
 Le [contrat maintenu](../../../../docs/architecture/native-capture.md) décrit les tables, les limites, la configuration privée et les commandes. [`raw-capture.mts`](raw-capture.mts) lit les réponses natives, les sorties par offre et les observations historiques, ou rejoue une extraction hors ligne. Le format 2 exige la consommation de toutes les réponses et la concordance des sorties ordonnées ainsi que des métadonnées complètes du résultat. Les collectes historiques sans manifeste ne peuvent pas produire cette validation. Le budget d’exécution est affiché séparément de l’empreinte de configuration. Les collectes enregistrées portent la révision immuable du registre ; une collecte obsolète reste inspectable mais ne peut pas publier dans une nouvelle configuration. Le rejeu utilise toujours le fichier privé des réglages effectifs. Les limites et l’annulation du transport sont communes aux commandes de validation et de lecture de preuve officielle. [`retention.mts`](retention.mts) prépare et applique un plan borné dont l’empreinte doit être fournie explicitement.
+
+`--collect-source=<clé> --apply --deadline-ms=30000` capture les réglages enregistrés puis les valide hors réseau. `--validate-source=<capture-id> --apply` revalide une collecte scellée, depuis S3 si nécessaire. Ces deux opérations produisent une décision technique immuable et laissent le statut de la source inchangé. Une sortie vide exige son propre protocole natif qualifié. La promotion consomme maintenant ce verdict, jamais le compteur manuel. Les anciennes orchestrations P3/B6 ci-dessus ne fournissent pas encore cette étape et restent à remplacer avant release ; elles ne constituent pas une voie de promotion maintenue.
 
 Le mécanisme unique déplace les corps vers des blocs S3 vérifiés et conserve les métadonnées en base. Les anciens `retention-observations.mts`, `observationArchive.ts` et `bloc0-snapshot.mts` ont été supprimés. Une migration refuse de supprimer les anciennes tables si elles contiennent encore des références d’archive. Aucun cron n’est activé par ces commandes.
 

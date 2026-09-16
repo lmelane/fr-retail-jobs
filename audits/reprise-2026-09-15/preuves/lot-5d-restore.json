@@ -1,0 +1,9 @@
+{
+  "backupSchemaMigrations": 60,
+  "fullRestoreExecuted": true,
+  "allPriorStockHashesMatch": true,
+  "sourceRevisionIdsAndPayloadsExact": true,
+  "restoredDatabase": "catwalks_restore_test_5d_66e3e5a5a0b7",
+  "elapsedMs": 456971,
+  "temporaryDatabaseRemoved": true
+}

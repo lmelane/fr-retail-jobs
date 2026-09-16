@@ -1,0 +1,44 @@
+{
+  "mutations": [
+    {
+      "name": "mutable-validation",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "allMutationsRolledBack": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "deleted-validation",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "allMutationsRolledBack": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "foreign-revision",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "allMutationsRolledBack": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "unsealed-capture",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "allMutationsRolledBack": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "changed-attempt-order",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "allMutationsRolledBack": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    }
+  ]
+}

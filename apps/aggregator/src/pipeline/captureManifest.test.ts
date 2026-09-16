@@ -61,7 +61,10 @@ describe('complete extraction result evidence', () => {
   it('keeps explicit complete zero distinct from unknown empty and truncated empty', async () => {
     const value = { jobs: [], complete: true, declaredTotal: 0, enumeration: {
       method: 'fixture', endpoint: url, pages: 1, rawCount: 0, termination: 'exhausted' } };
-    const { batch } = await capture(value);
+    const { batch, live } = await capture(value);
+    expect(live.captureBatchId).toBe(batch.id);
+    expect((await readExtractionManifest(db, batch.id)).metadata).not.toHaveProperty('captureBatchId');
+    expect((await compareExtractionResult(db, batch.id, live)).exact).toBe(true);
     expect((await readExtractionManifest(db, batch.id)).outputs).toEqual([]);
     expect((await compareExtractionResult(db, batch.id, value)).exact).toBe(true);
     for (const changed of [{ jobs: [] }, { ...value, complete: false, truncated: true }]) {

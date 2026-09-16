@@ -47,7 +47,9 @@ export async function readExtractionManifest(db: PrismaClient, batchId: string, 
  * alone cannot certify a changed scope, truncation signal or enumeration. */
 export async function compareExtractionResult(db: PrismaClient, batchId: string, result: AdapterResult, store?: ObjectStore) {
   const manifest = await readExtractionManifest(db, batchId, store);
-  const { jobs, ...metadata } = result;
+  // captureBatchId is a capture receipt added after sealing, including for an
+  // empty result; it is not metadata emitted by the adapter.
+  const { jobs, captureBatchId: _batchId, ...metadata } = result as AdapterResult & { captureBatchId?: string };
   const matchesRecordedOutput = jobs.length === manifest.outputs.length && jobs.every((job, index) => {
     const { captureBatchId: _batch, captureOutputId: _output, ...content } = job;
     const expected = manifest.outputs[index];

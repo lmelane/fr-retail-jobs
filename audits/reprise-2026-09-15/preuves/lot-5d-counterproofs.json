@@ -1,0 +1,83 @@
+{
+  "mutations": [
+    {
+      "name": "ignore-historical-attempt-order",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "04e7c6a1404b08c9837b7cddb8c9c94c657a0623bdc513e1e146dc5b51fe978b"
+    },
+    {
+      "name": "ignore-later-collection-attempt",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "04e7c6a1404b08c9837b7cddb8c9c94c657a0623bdc513e1e146dc5b51fe978b"
+    },
+    {
+      "name": "ignore-native-promotion",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "60d88915307709be6a38f054c1fd0b3ca0810893b054ac933bd505d1fe21ceb7"
+    },
+    {
+      "name": "unlocked-promotion",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "60d88915307709be6a38f054c1fd0b3ca0810893b054ac933bd505d1fe21ceb7"
+    },
+    {
+      "name": "ignore-exact-replay",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "5c6ff7f95338073a6ef5f02e96744af5db9d8256e509708f2953f6da85d0d337"
+    },
+    {
+      "name": "ignore-native-content",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "5c6ff7f95338073a6ef5f02e96744af5db9d8256e509708f2953f6da85d0d337"
+    },
+    {
+      "name": "ignore-incomplete-enumeration",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "5c6ff7f95338073a6ef5f02e96744af5db9d8256e509708f2953f6da85d0d337"
+    },
+    {
+      "name": "ignore-duplicate-identifiers",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "5c6ff7f95338073a6ef5f02e96744af5db9d8256e509708f2953f6da85d0d337"
+    },
+    {
+      "name": "invent-empty-feed-proof",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "5c6ff7f95338073a6ef5f02e96744af5db9d8256e509708f2953f6da85d0d337"
+    },
+    {
+      "name": "ignore-reader-policy",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "04e7c6a1404b08c9837b7cddb8c9c94c657a0623bdc513e1e146dc5b51fe978b"
+    },
+    {
+      "name": "ignore-native-age",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "04e7c6a1404b08c9837b7cddb8c9c94c657a0623bdc513e1e146dc5b51fe978b"
+    },
+    {
+      "name": "ignore-later-rejection",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "04e7c6a1404b08c9837b7cddb8c9c94c657a0623bdc513e1e146dc5b51fe978b"
+    },
+    {
+      "name": "order-by-wall-clock",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "04e7c6a1404b08c9837b7cddb8c9c94c657a0623bdc513e1e146dc5b51fe978b"
+    }
+  ],
+  "restoredTests": "passed"
+}

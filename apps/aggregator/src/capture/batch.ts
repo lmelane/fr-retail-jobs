@@ -12,7 +12,7 @@ import { sourceExecutionBudget } from '../lib/sourceBudget.js';
 import { captureReaderRevision } from './revision.js';
 
 export async function captureExtraction(db: PrismaClient, sourceKey: string, config: Record<string, unknown>,
-  runId: string | undefined, work: (config: Record<string, unknown>) => Promise<AdapterResult>, sourceKind?: AtsType, binding?: SourceBinding): Promise<AdapterResult> {
+  runId: string | undefined, work: (config: Record<string, unknown>) => Promise<AdapterResult>, sourceKind?: AtsType, binding?: SourceBinding): Promise<AdapterResult & { captureBatchId: string }> {
   const settings = captureConfig(config);
   const batch = await db.$transaction(async tx => {
     const sourceRevisionId = await bindSourceRevision(tx, sourceKey, settings, sourceKind, binding);
@@ -31,7 +31,7 @@ export async function captureExtraction(db: PrismaClient, sourceKey: string, con
       const manifestHash = await persistExtractionManifest(db, batch.id, result);
       await db.captureOutcome.create({ data: { batchId: batch.id, manifestHash, status: 'EXTRACTED', extractedCount: result.jobs.length,
         outputHash: evidenceHash(result.jobs) } });
-      return { ...result, jobs: result.jobs.map((job, index) => ({ ...job, captureBatchId: batch.id, captureOutputId: outputIds[index] })) };
+      return { ...result, captureBatchId: batch.id, jobs: result.jobs.map((job, index) => ({ ...job, captureBatchId: batch.id, captureOutputId: outputIds[index] })) };
     } catch (error) {
       // Native inputs were committed before parsing and survive this failure.
       await db.captureOutcome.create({ data: { batchId: batch.id, status: 'FAILED', extractedCount: 0,

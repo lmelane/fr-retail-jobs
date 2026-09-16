@@ -201,6 +201,7 @@ model SourceRevision {
   observedAt DateTime @default(now())
   currentSources Source[] @relation("CurrentSourceRevision")
   captures CaptureBatch[]
+  validations SourceValidation[]
   @@unique([sourceId, version])
   @@index([sourceKey, observedAt])
 }
@@ -1147,6 +1148,8 @@ model RawBlobArchive {
 /** One source extraction. Configuration is fingerprinted; transport secrets are not stored. */
 model CaptureBatch {
   id String @id @default(uuid())
+  /** Null for captures observed before attempt ordering was recorded. */
+  attemptOrdinal BigInt? @unique @default(autoincrement())
   sourceKey String
   runId String?
   configHash String
@@ -1162,9 +1165,28 @@ model CaptureBatch {
   outcome CaptureOutcome?
   sources JobSource[]
   observations SourceObservation[]
+  validations SourceValidation[]
   @@index([sourceKey, startedAt])
-  @@index([sourceRevisionId, startedAt])
+  @@index([sourceRevisionId, attemptOrdinal])
   @@index([runId])
+}
+
+/** Technical qualification derived from a recorded extraction and exact replay.
+ * Identity and access are separate promotion requirements. */
+model SourceValidation {
+  id String @id @default(uuid())
+  sequence BigInt @unique @default(autoincrement())
+  sourceRevisionId String
+  sourceRevision SourceRevision @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  captureBatchId String
+  captureBatch CaptureBatch @relation(fields: [captureBatchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  readerRevision String
+  policyVersion String
+  verdict String
+  report Json
+  validatedAt DateTime @default(now())
+  @@index([sourceRevisionId, sequence])
+  @@index([captureBatchId])
 }
 
 /** Every attempt remains distinct, even if response bytes are identical. */
