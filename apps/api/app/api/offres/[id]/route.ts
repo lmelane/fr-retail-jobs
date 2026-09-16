@@ -4,6 +4,7 @@ import {
   DatabaseUnavailableError,
   getCompanyAside,
   getSimilarJobs,
+  langueDesLibellesDuPays,
   resolveOfferParam,
 } from '@/lib/jobs';
 import { offerPath } from '@/lib/offer-url';
@@ -47,14 +48,17 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     // fermée, c'est la seule issue du candidat ; calculées quel que soit le statut.
     const job = resolu.job!;
     const [similaires, maison] = await Promise.all([getSimilarJobs(job, 6), getCompanyAside(job.company)]);
+    // Lot 8 : une offre lue seule est libellée dans la langue du marché de son pays.
+    const langue = langueDesLibellesDuPays(job.countryCode);
     const corps = {
       status: resolu.status,
       /** Chemin canonique de la source (`/offre/slug-id`) ; le front en dérive le sien. */
       canonicalId: job.id,
       canonicalSlugPath: offerPath(job),
-      job: projeterFiche(job),
-      similaires: projeterLignes(similaires),
+      job: projeterFiche(job, langue),
+      similaires: projeterLignes(similaires, langue),
       maison,
+      langueDesLibelles: langue,
     };
     const statut = resolu.status === 'active' ? 200 : 410;
     journaliser({ requestId, statut, dureeMs: Date.now() - debut, similaires: similaires.length });

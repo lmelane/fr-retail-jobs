@@ -1,0 +1,51 @@
+{
+  "mutations": [
+    {
+      "name": "label-language-always-fr",
+      "file": "packages/db/presentation.ts",
+      "witness": [
+        "lib/__tests__/libelles-langue-lot8.test.ts"
+      ],
+      "pattern": "une \u00e9tiquette BCP 47",
+      "rejectedByRegression": true,
+      "restoredSha256": "5ac9989c5dc44d9dbb2b76722c64b5aa20171f1960d83c34a3df32217fdd3a3f"
+    },
+    {
+      "name": "list-projection-ignores-language",
+      "file": "apps/api/lib/projection.ts",
+      "witness": [
+        "lib/__tests__/projection-f1.test.ts"
+      ],
+      "pattern": "lot 8",
+      "rejectedByRegression": true,
+      "restoredSha256": "5af3e46a4af52057f69a9b974c303affebbd1e1b78bd362785075192a92c5dc8"
+    },
+    {
+      "name": "facet-options-ignore-language",
+      "file": "apps/api/lib/facettes.ts",
+      "witness": [
+        "lib/__tests__/perimetre-marche.test.ts"
+      ],
+      "pattern": "lot 8",
+      "rejectedByRegression": true,
+      "restoredSha256": "686ec8356710467c53800e7b6ec9c3b662a2ff7143149fe6ae03494deca76b3d"
+    },
+    {
+      "name": "offer-country-not-mapped-to-market",
+      "file": "apps/api/lib/jobs.ts",
+      "witness": [
+        "lib/__tests__/libelles-langue-lot8.test.ts"
+      ],
+      "pattern": "une offre lue seule",
+      "rejectedByRegression": true,
+      "restoredSha256": "aea90ecf8103298453f7497e351265997b93d298397b4c0ad09f6fef052c5fc1"
+    }
+  ],
+  "restoredTests": 29,
+  "restoredSuites": [
+    "lib/__tests__/libelles-langue-lot8.test.ts",
+    "lib/__tests__/projection-f1.test.ts",
+    "lib/__tests__/perimetre-marche.test.ts"
+  ],
+  "productionTouched": false
+}

@@ -1,4 +1,4 @@
-import { employmentLabel } from '@catwalks/db/presentation';
+import { employmentLabel, langueDesLibelles } from '@catwalks/db/presentation';
 import type { CleFacette } from '@catwalks/db/marches';
 import type { Facet } from './job-search-query';
 import { getSectorPresentation } from './sectors';
@@ -48,8 +48,11 @@ function nomsIntl(locale: string, type: 'region' | 'language'): (code: string) =
  * jamais servie : les comptes excluent déjà la sélection de la facette, donc
  * une option absente est une option qu'aucune offre ne remplirait.
  *
- * Limite connue, à lever au lot 8 : les libellés d'emploi (« CDI », « Temps
- * plein ») restent français quel que soit le marché.
+ * Lot 8 : les libellés d'emploi suivent la langue des libellés du marché
+ * (`langueDesLibelles` : sa langue de service quand un catalogue existe, sinon
+ * le français, nommément). Limite : les libellés de métier et de secteur
+ * viennent de présentations françaises (taxonomie, secteurs) sur tous les
+ * marchés.
  */
 export async function libellerFacettes(
   plan: PlanRecherche,
@@ -57,6 +60,7 @@ export async function libellerFacettes(
   taxonomy: OptionalOccupationPresentation,
 ): Promise<FacetteServie[]> {
   const locale = plan.perimetre.marche?.localeParDefaut ?? 'fr-FR';
+  const langue = langueDesLibelles(locale);
   const pays = nomsIntl(locale, 'region');
   const langues = nomsIntl(locale, 'language');
   const secteurs = (await getSectorPresentation()).labels;
@@ -64,9 +68,9 @@ export async function libellerFacettes(
     pays,
     metier: (v) => v === 'unclassified' ? 'Métier à préciser' : taxonomy.occupationLabel(v) ?? 'Libellé indisponible',
     secteur: (v) => secteurs[v] ?? 'Secteur à vérifier',
-    contrat: (v) => employmentLabel('employmentTerm', v) ?? v,
-    temps: (v) => employmentLabel('workTime', v) ?? v,
-    programme: (v) => employmentLabel('programType', v) ?? v,
+    contrat: (v) => employmentLabel('employmentTerm', v, langue) ?? v,
+    temps: (v) => employmentLabel('workTime', v, langue) ?? v,
+    programme: (v) => employmentLabel('programType', v, langue) ?? v,
     ville: canonicalCity,
     maison: (v) => v,
     groupe: (v) => v,

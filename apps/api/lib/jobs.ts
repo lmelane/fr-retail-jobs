@@ -3,7 +3,8 @@ import { publicAmount } from '@catwalks/db/money';
 import { availableSourceWhere, publicJobWhere, publicJobSql, sourceIsAvailable } from '@catwalks/db/availability';
 import { selectApplySource, type ApplySource } from '@catwalks/db/publications';
 import { publicSourceFacts, scalarSourceFacts, type PublicSourceFacts } from '@catwalks/db/source-facts';
-import type { Perimetre } from '@catwalks/db/marches';
+import { MARCHES, type Perimetre } from '@catwalks/db/marches';
+import { langueDesLibelles, type LangueLibelles } from '@catwalks/db/presentation';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { prisma, Prisma, canonicalJobId } from '@catwalks/db';
 import { ARITE_CLE_RECHERCHE, searchSummary, type CleRecherche } from './job-search-query';
@@ -11,7 +12,7 @@ import { CURSEUR_MAX, decoderCurseur, empreinteCriteres, encoderCurseur } from '
 import { directPubliable, directPubliableSql, directToRow, estIdDirect, idDirect, statutDirect } from './direct-offers';
 import { offerIdCandidates } from './offer-url';
 import { libellerFacettes, type FacetteServie } from './facettes';
-import { exigerPerimetre } from './perimetre';
+import { exigerPerimetre, resoudrePerimetre } from './perimetre';
 import { DIMENSIONS, DIMENSIONS_TOLERANTES, planifierRecherche, type CriteresRecherche, type Dimension, type DimensionTolerante, type FiltreRefuse, type Selections } from './search-plan';
 import type { LieuResolu } from './lieu';
 
@@ -227,6 +228,8 @@ export type PerimetreServi = {
   mesure: boolean;
   locales: string[];
   localeParDefaut: string;
+  /** La langue des libellés d'emploi, de pays et de langue servis (lot 8) : celle du marché si un catalogue existe, sinon `fr`. */
+  langueDesLibelles: LangueLibelles;
 };
 
 export type JobsResult = {
@@ -259,7 +262,20 @@ export function perimetreServi(perimetre: Perimetre): PerimetreServi {
     mesure: m !== undefined,
     locales: m ? [...m.locales] : ['fr-FR'],
     localeParDefaut: m?.localeParDefaut ?? 'fr-FR',
+    langueDesLibelles: langueDesLibelles(m?.localeParDefaut),
   };
+}
+
+/**
+ * La langue des libellés d'une offre lue seule : celle du marché qui sert son
+ * pays (une offre irlandaise appartient au marché GB, une autrichienne au
+ * marché DE), sinon celle d'un pays servi seul, c'est-à-dire le français (lot 8).
+ */
+export function langueDesLibellesDuPays(countryCode: string | null | undefined): LangueLibelles {
+  const code = countryCode?.trim().toUpperCase();
+  if (!code) return 'fr';
+  const marche = Object.values(MARCHES).find((m) => m.pays.includes(code));
+  return langueDesLibelles(marche?.localeParDefaut ?? resoudrePerimetre(code)?.marche?.localeParDefaut);
 }
 
 /** Seuls http et https sont des liens de candidature ; tout le reste est neutralisé. */

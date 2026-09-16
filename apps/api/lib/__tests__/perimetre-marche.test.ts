@@ -1,6 +1,7 @@
 import { publicationFixture } from '../../../aggregator/src/test/publication-fixture';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { prisma } from '@catwalks/db';
+import { projeterListe } from '../projection';
 import { getJobs, getJobStatus, type JobFilters } from '../jobs';
 import { getCompanies } from '../companies';
 import { contratMarches } from '../marches-catalogue';
@@ -115,6 +116,25 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
     expect(ids(de)).toEqual(['vienne']);
     expect(de.perimetre.pays).toEqual(['DE', 'AT']);
     expect(ids(await chercher('GB', {}, AUTRE_SEULE))).toEqual(['dublin']);
+  });
+
+  it('lot 8 — chaque périmètre dit la langue de ses libellés, et les options comme les lignes la suivent', async () => {
+    const us = await chercher('US', {}, AUTRE_SEULE);
+    expect(us.perimetre.langueDesLibelles).toBe('en');
+    // Prémisse : le marché US sert la facette « temps » et deux de ses offres témoin la renseignent.
+    const temps = facette(us, 'temps');
+    expect(temps?.options.map((o) => o.label).sort()).toEqual(['Full-time', 'Part-time']);
+    expect(projeterListe(us).jobs.map((j) => j.countryLabel)).toEqual(['United States', 'United States']);
+    const gb = await chercher('GB', {}, AUTRE_SEULE);
+    expect(gb.perimetre.langueDesLibelles).toBe('en');
+    expect(projeterListe(gb).jobs[0]).toMatchObject({ employmentTermLabel: 'Permanent', workTimeLabel: 'Full-time', countryLabel: 'Ireland' });
+    // Français nommément : le marché belge (fr-BE), et l'allemand dont la langue n'a pas de catalogue.
+    const be = await chercher('BE', {}, AUTRE_SEULE);
+    expect(be.perimetre.langueDesLibelles).toBe('fr');
+    expect(projeterListe(be).jobs.map((j) => j.employmentTermLabel).sort()).toEqual(['CDD', 'CDI']);
+    const de = await chercher('DE', {}, AUTRE_SEULE);
+    expect(de.perimetre).toMatchObject({ localeParDefaut: 'de-DE', langueDesLibelles: 'fr' });
+    expect(projeterListe(de).jobs[0].countryLabel).toBe('Autriche');
   });
 
   it('un pays sans marché mesuré est un périmètre servi seul, sans facettes natives — le stock hors marchés n’est pas invisible', async () => {

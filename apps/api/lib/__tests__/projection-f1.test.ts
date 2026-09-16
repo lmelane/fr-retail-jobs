@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { projeterListe } from '../projection';
+import { projeterFiche, projeterListe } from '../projection';
 import type { JobRow, JobsResult } from '../jobs';
 
 const ligne = (surcharges: Partial<JobRow>): JobRow => ({
@@ -16,7 +16,7 @@ const ligne = (surcharges: Partial<JobRow>): JobRow => ({
 
 const resultat = (jobs: JobRow[]): JobsResult => ({
   jobs, total: jobs.length, totalConfirmes: jobs.length, totalPerimetre: 10, suivant: null,
-  perimetre: { code: 'FR', nom: 'France', pays: ['FR'], mesure: true, locales: ['fr-FR'], localeParDefaut: 'fr-FR' },
+  perimetre: { code: 'FR', nom: 'France', pays: ['FR'], mesure: true, locales: ['fr-FR'], localeParDefaut: 'fr-FR', langueDesLibelles: 'fr' },
   facettes: [{ cle: 'contrat', libelle: 'Type de contrat', options: [{ value: 'PERMANENT', label: 'CDI', count: 3 }] }],
   filtresRefuses: [],
   lieu: null,
@@ -34,6 +34,21 @@ describe('projeterListe', () => {
     const p = projeterListe(r);
     expect('description' in p.jobs[0]).toBe(false);
     expect(JSON.stringify(p).length).toBeLessThan(JSON.stringify(r).length / 2);
+  });
+
+  it('lot 8 — les libellés suivent la langue des libellés du périmètre : anglais sur un marché anglophone, pays compris', () => {
+    const r = resultat([ligne({ countryCode: 'US' })]);
+    // Prémisse : le même périmètre en français rend « CDI » et « États-Unis ».
+    expect(projeterListe(r).jobs[0].employmentTermLabel).toBe('CDI');
+    expect(projeterListe(r).jobs[0].countryLabel).toBe('États-Unis');
+    const en = projeterListe({ ...r, perimetre: { code: 'US', nom: 'United States', pays: ['US'], mesure: true, locales: ['en-US'], localeParDefaut: 'en-US', langueDesLibelles: 'en' } });
+    expect(en.jobs[0].employmentTermLabel).toBe('Permanent');
+    expect(en.jobs[0].workTimeLabel).toBe('Full-time');
+    expect(en.jobs[0].workplaceTypeLabel).toBe('Remote');
+    expect(en.jobs[0].countryLabel).toBe('United States');
+    // Une fiche lue seule reçoit sa langue explicitement.
+    expect(projeterFiche(ligne({ programType: 'INTERNSHIP' }), 'en').programTypeLabel).toBe('Internship');
+    expect(projeterFiche(ligne({ programType: 'INTERNSHIP' })).programTypeLabel).toBe('Stage');
   });
 
   it('ajoute les libellés français depuis le vocabulaire partagé, null quand la source ne dit rien', () => {

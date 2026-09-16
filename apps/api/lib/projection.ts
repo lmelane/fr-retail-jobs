@@ -6,6 +6,7 @@ import {
   programTypeLabel,
   workTimeLabel,
   workplaceTypeLabel,
+  type LangueLibelles,
 } from './format';
 
 /**
@@ -20,8 +21,10 @@ import {
  * front ne recopie jamais ces tables. Les facettes arrivent déjà libellées
  * depuis le contrat (`lib/facettes.ts`) ; rien n'est réécrit ici.
  *
- * Limite connue, à lever au lot 8 : ces libellés de ligne sont français quel
- * que soit le marché servi.
+ * Lot 8 : les libellés d'emploi, de pays et de langue suivent la LANGUE DES
+ * LIBELLÉS du périmètre servi (`perimetre.langueDesLibelles` : la langue de
+ * service du marché quand un catalogue existe, sinon le français) ; une fiche
+ * lue par son identifiant suit le marché du pays de l'offre.
  */
 type Libelles = {
   employmentTermLabel: string | null;
@@ -36,43 +39,66 @@ export type JobListe = Omit<JobRow, 'description'> & Libelles;
 export type JobFiche = JobRow & Libelles;
 export type JobsResultListe = Omit<JobsResult, 'jobs'> & { jobs: JobListe[] };
 
-const LANGUES_FR = typeof Intl !== 'undefined' && 'DisplayNames' in Intl ? new Intl.DisplayNames(['fr'], { type: 'language', fallback: 'none' }) : null;
-/** « fr » → « Français », capitalisé ; un code inconnu reste tel quel. */
-export function languageLabel(code: string): string {
+function nomsIntl(langue: LangueLibelles, type: 'language' | 'region'): Intl.DisplayNames | null {
   try {
-    const l = LANGUES_FR?.of(code);
+    return typeof Intl !== 'undefined' && 'DisplayNames' in Intl ? new Intl.DisplayNames([langue], { type, fallback: 'none' }) : null;
+  } catch {
+    return null;
+  }
+}
+const NOMS = {
+  fr: { language: nomsIntl('fr', 'language'), region: nomsIntl('fr', 'region') },
+  en: { language: nomsIntl('en', 'language'), region: nomsIntl('en', 'region') },
+} as const;
+
+/** « fr » → « Français » / « French », capitalisé ; un code inconnu reste tel quel. */
+export function languageLabel(code: string, langue: LangueLibelles = 'fr'): string {
+  try {
+    const l = NOMS[langue].language?.of(code);
     return l ? l.charAt(0).toUpperCase() + l.slice(1) : code;
   } catch {
     return code;
   }
 }
 
-function libelles(job: JobRow): Libelles {
+/** Le nom d'un pays : la table française vérifiée, ou `Intl` dans la langue des libellés. */
+function nomPays(code: string, langue: LangueLibelles): string {
+  if (langue === 'fr') return countryLabel(code);
+  try {
+    const nom = NOMS[langue].region?.of(code.toUpperCase());
+    return nom && nom !== code ? nom : countryLabel(code);
+  } catch {
+    return countryLabel(code);
+  }
+}
+
+function libelles(job: JobRow, langue: LangueLibelles): Libelles {
   return {
-    employmentTermLabel: employmentTermLabel(job.employmentTerm),
-    workTimeLabel: workTimeLabel(job.workTime),
-    programTypeLabel: programTypeLabel(job.programType),
-    engagementTypeLabel: engagementTypeLabel(job.engagementType),
-    workplaceTypeLabel: workplaceTypeLabel(job.workplaceType),
-    countryLabel: job.countryCode ? countryLabel(job.countryCode) : null,
+    employmentTermLabel: employmentTermLabel(job.employmentTerm, langue),
+    workTimeLabel: workTimeLabel(job.workTime, langue),
+    programTypeLabel: programTypeLabel(job.programType, langue),
+    engagementTypeLabel: engagementTypeLabel(job.engagementType, langue),
+    workplaceTypeLabel: workplaceTypeLabel(job.workplaceType, langue),
+    countryLabel: job.countryCode ? nomPays(job.countryCode, langue) : null,
   };
 }
 
-/** Une ligne de liste : sans description, avec ses libellés. */
-export function projeterLigne(job: JobRow): JobListe {
+/** Une ligne de liste : sans description, avec ses libellés dans la langue demandée. */
+export function projeterLigne(job: JobRow, langue: LangueLibelles = 'fr'): JobListe {
   const { description: _description, ...reste } = job;
-  return { ...reste, ...libelles(job) };
+  return { ...reste, ...libelles(job, langue) };
 }
 
-export function projeterLignes(jobs: JobRow[]): JobListe[] {
-  return jobs.map(projeterLigne);
+export function projeterLignes(jobs: JobRow[], langue: LangueLibelles = 'fr'): JobListe[] {
+  return jobs.map((job) => projeterLigne(job, langue));
 }
 
 /** Une fiche : la ligne complète, description comprise, avec ses libellés. */
-export function projeterFiche(job: JobRow): JobFiche {
-  return { ...job, ...libelles(job) };
+export function projeterFiche(job: JobRow, langue: LangueLibelles = 'fr'): JobFiche {
+  return { ...job, ...libelles(job, langue) };
 }
 
+/** La liste servie : chaque ligne libellée dans la langue des libellés du périmètre. */
 export function projeterListe(result: JobsResult): JobsResultListe {
-  return { ...result, jobs: projeterLignes(result.jobs) };
+  return { ...result, jobs: projeterLignes(result.jobs, result.perimetre.langueDesLibelles) };
 }

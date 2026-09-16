@@ -1,0 +1,115 @@
+{
+  "date": "2026-09-16T12:53:55.464Z",
+  "site": "http://127.0.0.1:3021",
+  "constats": [
+    {
+      "nom": "US, navigateur fr, sans choix : l’interface est en anglais (langue du marché)",
+      "ok": true,
+      "detail": "Find your next role in a Maison. Occupation, keyword or Maison City, postcode or remote Search Job category Sector Job type City Maison Language 2 openings M MA"
+    },
+    {
+      "nom": "US : <main lang=\"en-US\">",
+      "ok": true,
+      "detail": "en-US"
+    },
+    {
+      "nom": "US : les libellés d’emploi viennent du marché (Full-time / Part-time)",
+      "ok": true
+    },
+    {
+      "nom": "US : titre de page en anglais",
+      "ok": true,
+      "detail": "Fashion, Luxury, Beauty & Retail jobs: every Maison | Catwalks"
+    },
+    {
+      "nom": "US : les noms de facettes restent ceux du marché (Job type)",
+      "ok": true,
+      "detail": "Job category | Sector | Job type | City | Maison | Language"
+    },
+    {
+      "nom": "/fr/ sur US : l’interface est en français (le choix prime sur le marché)",
+      "ok": true,
+      "detail": "Trouvez votre prochain poste dans une Maison. Métier, mot-clé ou Maison Ville, code postal ou télétravail Rechercher Job category Sector Job type City Maison La"
+    },
+    {
+      "nom": "/fr/ sur US : <main lang=\"fr-US\">",
+      "ok": true,
+      "detail": "fr-US"
+    },
+    {
+      "nom": "/fr/ sur US : « Full-time » reste anglais (jamais retraduit par le site)",
+      "ok": true
+    },
+    {
+      "nom": "FR, navigateur en, sans choix : l’interface est en français (langue du marché)",
+      "ok": true,
+      "detail": "Trouvez votre prochain poste dans une Maison. Métier, mot-clé ou Maison Ville, code postal ou télétravail Rechercher Métier Secteur Type de contrat Temps de tra"
+    },
+    {
+      "nom": "FR : libellés du marché (CDI, Temps plein)",
+      "ok": true
+    },
+    {
+      "nom": "le lien de marché vers US porte la langue anglaise",
+      "ok": true,
+      "detail": "/en/emplois?marche=US"
+    },
+    {
+      "nom": "le lien de marché vers DE reste nu (allemand non servi)",
+      "ok": true,
+      "detail": "/emplois?marche=DE"
+    },
+    {
+      "nom": "après le clic US : URL préfixée /en/, interface anglaise",
+      "ok": true,
+      "detail": "http://127.0.0.1:3021/en/emplois?marche=US"
+    },
+    {
+      "nom": "le clic a mémorisé le marché (cookie CW_MARCHE=US)",
+      "ok": true,
+      "detail": "{\"value\":\"US\",\"path\":\"/\"}"
+    },
+    {
+      "nom": "entrée neutre + cookie : le marché mémorisé (US) est servi, pas l’invite",
+      "ok": true,
+      "detail": "Find your next role in a Maison. Occupation, keyword or Maison City, postcode or remote Search Job category Sector Job type City Maison Language 2 openings M MA"
+    },
+    {
+      "nom": "entrée neutre + cookie : le lien « Voir toutes les offres » n’écrit pas le marché mémorisé",
+      "ok": true
+    },
+    {
+      "nom": "sur /en/, le sélecteur de langue affiche l’anglais (pas le cookie absent)",
+      "ok": true,
+      "detail": "EN"
+    },
+    {
+      "nom": "sélecteur de langue : /en/ → /fr/, interface française sur le marché US",
+      "ok": true,
+      "detail": "http://127.0.0.1:3021/fr/emplois?marche=US"
+    },
+    {
+      "nom": "annuaire /en/ : titre et cartes en anglais",
+      "ok": true,
+      "detail": "Maison or group name Search Sector 1 Maisons are hiring · United States M MAISON Maison Témoin Lot 8 2 openings Miami · "
+    },
+    {
+      "nom": "fiche /en/ : détails et bouton en anglais",
+      "ok": true,
+      "detail": "M MAISON TÉMOIN LOT 8 Store manager Miami, United States · Permanent · Posted 6 days ago Apply You are leaving Catwalks to apply directly at Maison Témoin Lot 8"
+    },
+    {
+      "nom": "mobile 375 : aucun débordement horizontal",
+      "ok": true
+    },
+    {
+      "nom": "mobile 375 : interface anglaise",
+      "ok": true
+    },
+    {
+      "nom": "aucune erreur JavaScript en page",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}
