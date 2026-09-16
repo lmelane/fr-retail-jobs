@@ -41,7 +41,6 @@ export type CriteresRecherche = {
   filtres: Selections;
   source?: string;
   prioritePays?: string;
-  page: number;
 };
 
 export type PlanRecherche = {
@@ -59,12 +58,11 @@ export type PlanRecherche = {
   source: string | undefined;
   /** Le pays du visiteur, s'il appartient au périmètre : ses offres d'abord (D-419 §2). */
   prioritePays: string | undefined;
-  page: number;
 };
 
 /**
  * AUDIT 14/09/2026 — le nombre de TERMES est borné, pas seulement la longueur
- * de `q` : chaque terme coûte une requête d'alias et ses clauses `ILIKE`. Huit
+ * de `q` : chaque terme coûte une résolution de Maisons et sa condition. Huit
  * termes dépassent largement une recherche d'emploi réelle ; les termes au-delà
  * sont IGNORÉS, pas refusés — une recherche bavarde rend des résultats.
  */
@@ -116,6 +114,5 @@ export function planifierRecherche(perimetre: Perimetre, criteres: CriteresReche
     facettes,
     source: criteres.source,
     prioritePays: criteres.prioritePays && perimetre.pays.includes(criteres.prioritePays) ? criteres.prioritePays : undefined,
-    page: criteres.page,
   };
 }

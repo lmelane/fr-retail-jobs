@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { DatabaseUnavailableError, getJobs, parseFilters } from '@/lib/jobs';
 import { projeterListe } from '@/lib/projection';
 import { PerimetreRequisError } from '@/lib/perimetre';
+import { CurseurInvalideError } from '@/lib/curseur';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
 import { paramsMultiples } from '@/lib/params-multiples';
 
@@ -48,10 +49,10 @@ export async function GET(request: NextRequest) {
   try {
     const result = await getJobs(filters);
     journaliser({ requestId, statut: 200, dureeMs: Date.now() - debut, marche: result.perimetre.code, total: result.total,
-      totalConfirmes: result.totalConfirmes, page: result.page, resultats: result.jobs.length, refus: result.filtresRefuses.length });
+      totalConfirmes: result.totalConfirmes, suite: result.suivant !== null, resultats: result.jobs.length, refus: result.filtresRefuses.length });
     return NextResponse.json(projeterListe(result), { headers: entetes });
   } catch (error) {
-    if (error instanceof PerimetreRequisError) {
+    if (error instanceof PerimetreRequisError || error instanceof CurseurInvalideError) {
       journaliser({ requestId, statut: 400, dureeMs: Date.now() - debut, erreur: error.code });
       return NextResponse.json(error.corps(requestId), { status: 400, headers: entetes });
     }

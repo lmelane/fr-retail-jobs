@@ -6,7 +6,8 @@ import { publicSourceFacts, scalarSourceFacts, type PublicSourceFacts } from '@c
 import type { Perimetre } from '@catwalks/db/marches';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { prisma, Prisma, canonicalJobId } from '@catwalks/db';
-import { searchSummary } from './job-search-query';
+import { ARITE_CLE_RECHERCHE, searchSummary, type CleRecherche } from './job-search-query';
+import { CURSEUR_MAX, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
 import { directPubliable, directPubliableSql, directToRow, estIdDirect, idDirect, statutDirect } from './direct-offers';
 import { offerIdCandidates } from './offer-url';
 import { libellerFacettes, type FacetteServie } from './facettes';
@@ -47,9 +48,11 @@ export class DatabaseUnavailableError extends Error {
  * `programme`, `metier`, `secteur`, `ville`, `maison`, `groupe`, `langue`,
  * `pays`. Chaque dimension porte plusieurs valeurs (D-426). `marche` est le
  * périmètre demandé ; il est OBLIGATOIRE au moment de chercher, et sa
- * validation vit dans `exigerPerimetre`, une seule fois.
+ * validation vit dans `exigerPerimetre`, une seule fois. `apres` est le
+ * curseur de la page suivante (lot 7), tel que la réponse précédente l'a
+ * rendu dans `suivant`.
  */
-export type JobFilters = CriteresRecherche & { marche?: string };
+export type JobFilters = CriteresRecherche & { marche?: string; apres?: string };
 
 /**
  * D-426 — plafond du nombre de valeurs par filtre.
@@ -63,8 +66,6 @@ export const MAX_VALUES = 12;
 
 /** Offers per page. */
 export const PAGE_SIZE = 25;
-/** A bounded offset until the public API adopts cursor pagination. */
-export const MAX_PAGE = 10_000;
 
 /**
  * URL query params -> JobFilters, the one mapping every consumer parses
@@ -109,13 +110,16 @@ export function parseFilters(params: Record<string, string | string[] | undefine
   const langues = normalizedLanguages(many('langue'));
   if (langues) filtres.langue = langues;
 
+  const apres = params.apres;
+  const jeton = (Array.isArray(apres) ? apres[0] : apres)?.trim().slice(0, CURSEUR_MAX + 1) || undefined;
+
   return {
     q: one('q'),
     lieu: one('lieu'),
     filtres,
     prioritePays: normalizedPriority(one('prioritePays')),
     marche: one('marche') ?? one('market'),
-    page: normalizedPage(Number(one('page'))),
+    apres: jeton,
   };
 }
 
@@ -128,10 +132,6 @@ function normalizedLanguages(vs: string[] | undefined): string[] | undefined {
 function normalizedPriority(v: string | undefined): string | undefined {
   return v && /^[a-z]{2}$/i.test(v) ? v.toUpperCase() : undefined;
 }
-function normalizedPage(page: number | undefined): number {
-  return Number.isSafeInteger(page) && page! > 0 ? Math.min(page!, MAX_PAGE) : 1;
-}
-
 /** D'où vient l'offre : publiée sur Catwalks par une Maison, ou agrégée depuis une source. */
 export type Origine = 'CATWALKS' | 'AGREGEE';
 
@@ -239,9 +239,8 @@ export type JobsResult = {
   totalConfirmes: number;
   /** Every live offer of the perimeter, ignoring the search. */
   totalPerimetre: number;
-  /** 1-based page these jobs come from. */
-  page: number;
-  pageCount: number;
+  /** Le curseur de la page suivante (lot 7), ou `null` quand cette page est la dernière. */
+  suivant: string | null;
   perimetre: PerimetreServi;
   /** Le contrat de facettes du périmètre, dans l'ordre d'affichage, options comptées et libellées. */
   facettes: FacetteServie[];
@@ -570,15 +569,29 @@ export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> 
  * décide des filtres honorés et refusés ; le SQL les applique ; les facettes
  * sont libellées depuis le registre et le vocabulaire unique.
  */
+/**
+ * L'empreinte d'un plan : ce qui, changé, rendrait un curseur vide de sens —
+ * le périmètre, les termes, le lieu honoré, les sélections, le pays prioritaire.
+ */
+function empreintePlan(plan: ReturnType<typeof planifierRecherche>): string {
+  return empreinteCriteres({
+    perimetre: plan.perimetre.code, termes: plan.termes, lieu: plan.lieu ?? null,
+    selections: Object.fromEntries(DIMENSIONS.flatMap((d) => (plan.selections[d]?.length ? [[d, [...plan.selections[d]!].sort()]] : []))),
+    prioritePays: plan.prioritePays ?? null, source: plan.source ?? null,
+  });
+}
+
 export async function getJobs(filters: JobFilters): Promise<JobsResult> {
   const perimetre = exigerPerimetre(filters.marche);
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
 
-  const page = normalizedPage(filters.page);
-  const plan = planifierRecherche(perimetre, { ...filters, page });
+  const plan = planifierRecherche(perimetre, filters);
+  const empreinte = empreintePlan(plan);
+  // Un curseur d'autres critères est refusé AVANT toute requête (400 CURSEUR_INVALIDE).
+  const curseur = filters.apres ? (decoderCurseur(filters.apres, empreinte, ARITE_CLE_RECHERCHE) as CleRecherche) : null;
   try {
     const taxonomy = await getOptionalOccupationPresentation();
-    const summary = await searchSummary(plan, page, PAGE_SIZE, taxonomy);
+    const summary = await searchSummary(plan, curseur, PAGE_SIZE, taxonomy);
     // La page mêle les deux origines dans l'ordre du SQL ; chaque origine est
     // relue dans sa table, et la ligne servie a la même forme pour les deux.
     const idsDirects = summary.ids.filter(estIdDirect).map(idDirect);
@@ -607,8 +620,7 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
       total: summary.total,
       totalConfirmes: summary.totalConfirmes,
       totalPerimetre: summary.totalPerimetre,
-      page,
-      pageCount: Math.max(1, Math.ceil(summary.total / PAGE_SIZE)),
+      suivant: summary.suivant ? encoderCurseur(empreinte, summary.suivant) : null,
       perimetre: perimetreServi(perimetre),
       facettes: await libellerFacettes(plan, summary.facettes, taxonomy),
       filtresRefuses: plan.refus,

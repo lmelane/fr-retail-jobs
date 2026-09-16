@@ -18,6 +18,8 @@ import { echapperLike } from './like';
  * Aucun repli mondial : sans périmètre, l'appelant refuse avant d'arriver ici.
  */
 const SUGGEST_LIMIT = 8;
+/** La même normalisation que `catwalks_normaliser_texte`, côté JS, pour filtrer ce que la base a déjà rendu. */
+const sansAccents = (v: string) => v.normalize('NFKD').replace(/\p{M}/gu, '').replace(/[’‘‛`´ʼ]/g, "'").toLowerCase();
 
 type Ligne = { valeur: string | null; n: number };
 
@@ -68,11 +70,11 @@ export async function suggestCities(query: string, perimetre: Perimetre): Promis
       WITH candidates AS (
         SELECT "city" AS valeur, UPPER(TRIM("city")) AS cle, "countryCode" AS pays
           FROM "Job" j
-         WHERE ${publicJobSql(Prisma.sql`j`, asOf)} AND "city" ILIKE ${prefixe}
+         WHERE ${publicJobSql(Prisma.sql`j`, asOf)} AND catwalks_normaliser_texte("city") LIKE catwalks_normaliser_texte(${prefixe})
         UNION ALL
         SELECT d.city, UPPER(TRIM(d.city)), d."countryCode"
           FROM "DirectOffer" d
-         WHERE ${directPubliable(asOf)} AND d.city ILIKE ${prefixe}
+         WHERE ${directPubliable(asOf)} AND catwalks_normaliser_texte(d.city) LIKE catwalks_normaliser_texte(${prefixe})
       ),
       deduit AS (
         SELECT cle, MIN(pays) AS p
@@ -123,9 +125,9 @@ function dedupliquer(valeurs: readonly (string | null)[]): string[] {
  */
 export function roleKeyword(title: string): string {
   return title
-    // Cut everything after the first " - " / " – " / " | " / " / " separator:
+    // Cut everything after the first " - " / " – " / " — " / " | " / " / " separator:
     // the role leads, the qualifiers (city, contract, hours) follow it.
-    .split(/\s[-–|/]\s/)[0]
+    .split(/\s[-–—|/]\s/)[0]
     // Drop a leading contract/reference prefix ("CDI - …", "2026-2825 - …").
     .replace(/^(CDI|CDD|STAGE|ALTERNANCE|INTERIM|VIE|FREELANCE|\d[\d-]*)\s*[-–]\s*/i, '')
     // Strip trailing H/F, F/H, (H/F), hours like "35h", and stray separators.
@@ -148,10 +150,10 @@ export async function suggestTitles(query: string, perimetre: Perimetre): Promis
     const rows = await prisma.$queryRaw<Ligne[]>`
       SELECT valeur, sum(n)::int AS n FROM (
         SELECT j.title AS valeur, count(*) AS n FROM "Job" j
-         WHERE ${publicJobSql(Prisma.sql`j`, asOf)} AND j."countryCode" IN (${pays}) AND j.title ILIKE ${motif} GROUP BY j.title
+         WHERE ${publicJobSql(Prisma.sql`j`, asOf)} AND j."countryCode" IN (${pays}) AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte(${motif}) GROUP BY j.title
         UNION ALL
         SELECT d.title, count(*) FROM "DirectOffer" d
-         WHERE ${directPubliable(asOf)} AND d."countryCode" IN (${pays}) AND d.title ILIKE ${motif} GROUP BY d.title
+         WHERE ${directPubliable(asOf)} AND d."countryCode" IN (${pays}) AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte(${motif}) GROUP BY d.title
       ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40`;
     const seen = new Set<string>();
     const roles: string[] = [];
@@ -161,7 +163,8 @@ export async function suggestTitles(query: string, perimetre: Perimetre): Promis
       const key = role.toLowerCase();
       // Keep only roles that still contain what the candidate typed, so a title
       // matched on a trailing city does not surface an unrelated-looking role.
-      if (role.length < 2 || seen.has(key) || !key.includes(q.toLowerCase())) continue;
+      // Comparaison sans accents ni casse, comme la base : « ecole » retient « École de vente ».
+      if (role.length < 2 || seen.has(key) || !sansAccents(role).includes(sansAccents(q))) continue;
       seen.add(key);
       roles.push(role);
       if (roles.length >= SUGGEST_LIMIT) break;
@@ -189,13 +192,13 @@ export async function suggestCompanies(query: string, perimetre: Perimetre): Pro
       SELECT valeur, sum(n)::int AS n FROM (
         SELECT c.name AS valeur, count(*) AS n FROM "Job" j JOIN "Company" c ON c.id = j."companyId"
          WHERE ${publicJobSql(Prisma.sql`j`, asOf)} AND j."countryCode" IN (${pays})
-           AND (c.name ILIKE ${motif} OR c.id IN (
+           AND (catwalks_normaliser_texte(c.name) LIKE catwalks_normaliser_texte(${motif}) OR c.id IN (
              SELECT a."companyId" FROM "CompanyAlias" a WHERE a."reviewId" IS NOT NULL AND a."displayName" ILIKE ${motif}
              UNION SELECT old."mergedIntoId" FROM "Company" old WHERE old."mergedIntoId" IS NOT NULL AND old.name ILIKE ${motif}))
          GROUP BY c.name
         UNION ALL
         SELECT d.company, count(*) FROM "DirectOffer" d
-         WHERE ${directPubliable(asOf)} AND d."countryCode" IN (${pays}) AND d.company ILIKE ${motif} GROUP BY d.company
+         WHERE ${directPubliable(asOf)} AND d."countryCode" IN (${pays}) AND catwalks_normaliser_texte(d.company) LIKE catwalks_normaliser_texte(${motif}) GROUP BY d.company
       ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40`;
     return dedupliquer(rows.map((r) => r.valeur));
   } catch {

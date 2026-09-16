@@ -644,9 +644,16 @@ model Job {
   canonicalSourceKey  String?
   canonicalExternalId String?
   /**
-   * Maintained by database triggers, including company renames. Partial GIN index in SQL migration.
+   * Maintained by database triggers, including company renames (normalised text, lot 7).
    */
   searchText          String      @default("")
+  /**
+   * Lot 7 : le vecteur des mots du texte indexé (filtre, index GIN partiel en SQL) et le vecteur
+   * pondéré du titre (A) et de la Maison (B) (classement), maintenus par les mêmes déclencheurs
+   * que searchText. Prisma ne lit ni n'écrit ces colonnes.
+   */
+  searchVector        Unsupported("tsvector")?
+  titleVector         Unsupported("tsvector")?
   events              JobEvent[]
 
   raw       Json?
@@ -1383,6 +1390,9 @@ model DirectOffer {
   validThrough          DateTime?
   modifiedAt            DateTime
   searchText            String    @default("")
+  /** Lot 7 : mêmes vecteurs que Job, maintenus par le déclencheur qui normalise searchText. */
+  searchVector          Unsupported("tsvector")?
+  titleVector           Unsupported("tsvector")?
   receivedAt            DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 

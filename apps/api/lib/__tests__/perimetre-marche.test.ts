@@ -49,7 +49,7 @@ const jobId = (g: Graine) => `${M}-${g.id}`;
 const companyId = (maison: string) => `${M}-${maison === MAISON ? 'maison' : 'autre'}`;
 
 const chercher = (marche: string | undefined, extra: Partial<JobFilters> = {}, filtres: JobFilters['filtres'] = {}) =>
-  getJobs({ marche, page: 1, ...extra, filtres });
+  getJobs({ marche, ...extra, filtres });
 const ids = (r: Awaited<ReturnType<typeof getJobs>>) => r.jobs.map((j) => j.id.replace(`${M}-`, '')).sort();
 const facette = (r: Awaited<ReturnType<typeof getJobs>>, cle: string) => r.facettes.find((f) => f.cle === cle);
 const AUTRE_SEULE = { maison: [AUTRE] };
@@ -219,7 +219,7 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
   it('totaux, facettes et pages disent la même chose dans le périmètre', async () => {
     const r = await chercher('BE', {}, AUTRE_SEULE);
     expect(r.total).toBe(2);
-    expect(r.pageCount).toBe(1);
+    expect(r.suivant).toBeNull();
     expect(facette(r, 'pays')?.options.reduce((n, o) => n + o.count, 0)).toBe(r.total);
     expect(facette(r, 'pays')?.options[0]).toEqual({ value: 'BE', label: 'Belgique', count: 2 });
     expect(facette(r, 'ville')?.options.map((o) => o.label).sort()).toEqual(['Mons', 'Tournai']);

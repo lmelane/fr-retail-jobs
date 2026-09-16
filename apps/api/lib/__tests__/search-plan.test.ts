@@ -11,7 +11,7 @@ import { parseFilters } from '../jobs';
  */
 const FR = () => exigerPerimetre('FR');
 const US = () => exigerPerimetre('US');
-const criteres = (extra: Partial<ReturnType<typeof parseFilters>>) => ({ filtres: {}, page: 1, ...extra });
+const criteres = (extra: Partial<ReturnType<typeof parseFilters>>) => ({ filtres: {}, ...extra });
 
 describe('le périmètre est obligatoire', () => {
   it('un marché absent, vide ou mal formé est refusé, jamais dégradé en mondial', () => {

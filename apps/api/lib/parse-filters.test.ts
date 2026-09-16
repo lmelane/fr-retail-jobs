@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { parseFilters, MAX_PAGE } from './jobs';
+import { parseFilters } from './jobs';
+import { CURSEUR_MAX } from './curseur';
 
 /**
  * LES CLÉS D'URL SONT CELLES DU CONTRAT DE FACETTES (lot 6) : `contrat`,
@@ -7,13 +8,18 @@ import { parseFilters, MAX_PAGE } from './jobs';
  * parce que l'URL l'est. Les clés techniques du modèle mondial
  * (`employmentTerm`, `workTime`, `programType`), émises par le site entre le
  * 2026-09-08 et le lot 6, restent LUES : des liens partagés existent.
+ * La pagination est un curseur `apres` (lot 7) ; `page` n'existe plus.
  */
 describe('parseFilters — bornes et clés du contrat', () => {
-  it.each(['1.5', '-1', 'Infinity', 'NaN', '9007199254740993'])('normalizes invalid page %s', page => {
-    expect(parseFilters({ page }).page).toBe(1);
+  it('lit le curseur `apres` tel quel, borné en longueur ; `page` n’est plus lu', () => {
+    expect(parseFilters({ apres: ' abc_-123 ' }).apres).toBe('abc_-123');
+    expect(parseFilters({ apres: '' }).apres).toBeUndefined();
+    expect(parseFilters({ page: '3' })).not.toHaveProperty('page');
+    // Un jeton trop long est tronqué à CURSEUR_MAX + 1 : c'est le décodeur qui le refuse, pas le parseur qui le devine.
+    expect(parseFilters({ apres: 'a'.repeat(5000) }).apres).toHaveLength(CURSEUR_MAX + 1);
   });
-  it('bounds oversized offsets and search text', () => {
-    expect(parseFilters({ page: '999999', q: 'a'.repeat(5000) })).toMatchObject({ page: MAX_PAGE, q: 'a'.repeat(200) });
+  it('bounds search text', () => {
+    expect(parseFilters({ q: 'a'.repeat(5000) })).toMatchObject({ q: 'a'.repeat(200) });
   });
   // parseFilters reçoit les searchParams de Next (un objet), pas une URLSearchParams.
   const filters = (qs: string) =>

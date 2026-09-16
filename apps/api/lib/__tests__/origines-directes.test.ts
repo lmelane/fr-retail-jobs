@@ -50,7 +50,7 @@ const DIRECTES: readonly Directe[] = [
 ];
 const cw = (id: string) => `cw_${D}${id}`;
 
-const chercher = (marche: string, filtres: JobFilters['filtres'] = {}, extra: Partial<JobFilters> = {}) => getJobs({ marche, page: 1, ...extra, filtres });
+const chercher = (marche: string, filtres: JobFilters['filtres'] = {}, extra: Partial<JobFilters> = {}) => getJobs({ marche, ...extra, filtres });
 const ids = (r: Awaited<ReturnType<typeof getJobs>>) => r.jobs.map((j) => j.id);
 const MAISON_SEULE = { maison: [MAISON] };
 

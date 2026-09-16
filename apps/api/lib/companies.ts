@@ -5,6 +5,7 @@ import { publicJobWhere } from '@catwalks/db/availability';
 import { facettesContrat, type Perimetre } from '@catwalks/db/marches';
 import { Prisma } from '@prisma/client';
 import { DatabaseUnavailableError, MAX_VALUES, perimetreServi, type PerimetreServi } from './jobs';
+import { CURSEUR_MAX, CurseurInvalideError, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
 import { PREFIXE_DIRECT, directPubliable, directPubliableSql } from './direct-offers';
 import { expandCompanyTerm } from './groups';
 import { echapperLike } from './like';
@@ -45,8 +46,8 @@ export type CompanyRow = {
 export type CompaniesResult = {
   companies: CompanyRow[];
   total: number;
-  page: number;
-  pageCount: number;
+  /** Le curseur de la page suivante (lot 7), ou `null` quand cette page est la dernière. */
+  suivant: string | null;
   perimetre: PerimetreServi;
   /** `secteur`, et `pays` quand le marché l'expose : mêmes clés, mêmes libellés que la recherche. */
   facettes: FacetteServie[];
@@ -60,7 +61,8 @@ export type CompanyFilters = {
   q?: string;
   secteur?: string[];
   pays?: string[];
-  page?: number;
+  /** Le curseur de la page suivante, tel que la réponse précédente l'a rendu dans `suivant`. */
+  apres?: string;
   marche?: string;
 };
 
@@ -88,14 +90,15 @@ export function parseCompanyFilters(
     return vues.size ? [...vues] : undefined;
   };
 
-  const page = Number(one('page'));
   const pays = many('pays')?.filter((v) => v !== 'monde').map((v) => v.toUpperCase());
+  const apres = params.apres;
+  const jeton = (Array.isArray(apres) ? apres[0] : apres)?.trim().slice(0, CURSEUR_MAX + 1) || undefined;
 
   return {
     q: one('q'),
     secteur: many('secteur'),
     pays: pays?.length ? pays : undefined,
-    page: Number.isFinite(page) && page > 0 ? page : 1,
+    apres: jeton,
     marche: one('marche') ?? one('market'),
   };
 }
@@ -108,7 +111,8 @@ export async function getCompanies(filters: CompanyFilters = {}): Promise<Compan
   try {
     return await queryCompanies(filters, perimetre);
   } catch (error) {
-    if (error instanceof DatabaseUnavailableError) throw error;
+    // Un curseur refusé (lot 7) est une erreur du client, jamais une base indisponible.
+    if (error instanceof DatabaseUnavailableError || error instanceof CurseurInvalideError) throw error;
     throw new DatabaseUnavailableError(error);
   }
 }
@@ -123,8 +127,16 @@ type Entree = {
   count: number;
 };
 
+/** L'empreinte des critères de l'annuaire : ce qui, changé, rendrait un curseur vide de sens. */
+function empreinteAnnuaire(perimetre: Perimetre, filters: CompanyFilters): string {
+  return empreinteCriteres({ perimetre: perimetre.code, q: filters.q?.trim() ?? '', secteur: [...(filters.secteur ?? [])].sort(), pays: [...(filters.pays ?? [])].sort() });
+}
+
 async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Promise<CompaniesResult> {
-  const page = Math.max(1, filters.page ?? 1);
+  const empreinte = empreinteAnnuaire(perimetre, filters);
+  // Lot 7 — la clé ordonnée de la dernière ligne servie : (offres, clé de ligne) ; refusée si elle vient d'autres critères.
+  const curseur = filters.apres ? decoderCurseur(filters.apres, empreinte, 2) : null;
+  if (curseur && (typeof curseur[0] !== 'number' || typeof curseur[1] !== 'string')) throw new CurseurInvalideError('clé');
   const presentation = await getSectorPresentation();
   const contrat = facettesContrat(perimetre);
   const refus: FiltreRefuse[] = [];
@@ -194,7 +206,13 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
   }
   const entrees = [...parCle.values()].sort((a, b) => b.count - a.count || a.cle.localeCompare(b.cle));
 
-  const pageEntrees = entrees.slice((page - 1) * COMPANY_PAGE_SIZE, page * COMPANY_PAGE_SIZE);
+  // Lot 7 — la page reprend APRÈS la clé du curseur (offres décroissantes, clé croissante), jamais à un décalage.
+  const apresCurseur = curseur
+    ? entrees.filter((e) => e.count < (curseur[0] as number) || (e.count === curseur[0] && e.cle.localeCompare(curseur[1] as string) > 0))
+    : entrees;
+  const pageEntrees = apresCurseur.slice(0, COMPANY_PAGE_SIZE);
+  const derniere = pageEntrees[pageEntrees.length - 1];
+  const suivant = apresCurseur.length > COMPANY_PAGE_SIZE && derniere ? encoderCurseur(empreinte, [derniere.count, derniere.cle]) : null;
   const pageIds = pageEntrees.flatMap((e) => (e.companyId ? [e.companyId] : []));
   const pageNoms = pageEntrees.flatMap((e) => e.nomsDirects);
 
@@ -311,8 +329,7 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
   return {
     companies: rows,
     total: entrees.length,
-    page,
-    pageCount: Math.max(1, Math.ceil(entrees.length / COMPANY_PAGE_SIZE)),
+    suivant,
     perimetre: perimetreServi(perimetre),
     facettes,
     filtresRefuses: refus,

@@ -13,7 +13,7 @@ const prefix = 'audit-facets-';
 const group = 'Audit Facets 301';
 /** Toutes les recherches de ce témoin vivent sur le marché français, dans le groupe témoin. */
 const fr = (extra: Partial<JobFilters> = {}, filtres: JobFilters['filtres'] = {}): JobFilters =>
-  ({ marche: 'FR', page: 1, ...extra, filtres: { groupe: [group], ...filtres } });
+  ({ marche: 'FR', ...extra, filtres: { groupe: [group], ...filtres } });
 const facette = (r: Awaited<ReturnType<typeof getJobs>>, cle: string) => r.facettes.find((f) => f.cle === cle)?.options ?? [];
 
 describe.skipIf(!enabled)('search against a dedicated local database', () => {
@@ -67,9 +67,10 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     expect((await getJobs(fr({}, {secteur: ['NO_SUCH_SECTOR']}))).total).toBe(0);
   });
 
-  it('uses a stable order for tied dates across successive pages', async () => {
-    const first = await getJobs(fr({ page: 1 }));
-    const second = await getJobs(fr({ page: 2 }));
+  it('uses a stable order for tied dates across successive pages (curseur, lot 7)', async () => {
+    const first = await getJobs(fr());
+    expect(first.suivant).not.toBeNull();
+    const second = await getJobs(fr({ apres: first.suivant! }));
     const ids = [...first.jobs, ...second.jobs].map(job => job.id);
     expect(new Set(ids).size).toBe(50);
     expect(ids).toEqual(Array.from({ length: 50 }, (_, i) => `${prefix}${String(i).padStart(3, '0')}`));

@@ -8,7 +8,7 @@ import { suggestCities, suggestTitles } from './suggestions';
 import { exigerPerimetre } from './perimetre';
 
 /** Les offres témoins sont françaises : la recherche se fait sur le marché FR, restreinte à la Maison témoin. */
-const recherche = () => getJobs({ marche: 'FR', page: 1, filtres: { maison: [key] } });
+const recherche = () => getJobs({ marche: 'FR', filtres: { maison: [key] } });
 
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
 const enabled = !!url && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && /test/i.test(url.pathname);

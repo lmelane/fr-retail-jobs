@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCompanies, parseCompanyFilters } from '@/lib/companies';
 import { DatabaseUnavailableError } from '@/lib/jobs';
 import { PerimetreRequisError } from '@/lib/perimetre';
+import { CurseurInvalideError } from '@/lib/curseur';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
 import { randomUUID } from 'node:crypto';
 import { paramsMultiples } from '@/lib/params-multiples';
@@ -26,7 +27,7 @@ export async function GET(request: NextRequest) {
     const result = await getCompanies(filters);
     return NextResponse.json(result);
   } catch (error) {
-    if (error instanceof PerimetreRequisError) return NextResponse.json(error.corps(requestId), { status: 400 });
+    if (error instanceof PerimetreRequisError || error instanceof CurseurInvalideError) return NextResponse.json(error.corps(requestId), { status: 400 });
     // Same contract as the page: a database outage is a 503 with a clear
     // message, never a silently empty list passed off as "no employers".
     if (error instanceof DatabaseUnavailableError) {
