@@ -6,16 +6,19 @@ import type { ObjectStore } from '../retention/objectStore.js';
 import { assertCaptureHealthy, withCaptureContext, OfflineReplayError, type CaptureContext } from './context.js';
 import { persistCapture, persistExtractionOutputs, readRawBlob } from './store.js';
 import { MAX_MANIFEST_OUTPUTS, persistExtractionManifest } from './manifest.js';
+import { captureConfig } from './config.js';
+import { sourceExecutionBudget } from '../lib/sourceBudget.js';
 import { captureReaderRevision } from './revision.js';
 
 export async function captureExtraction(db: PrismaClient, sourceKey: string, config: Record<string, unknown>,
-  runId: string | undefined, work: () => Promise<AdapterResult>, sourceKind?: AtsType): Promise<AdapterResult> {
+  runId: string | undefined, work: (config: Record<string, unknown>) => Promise<AdapterResult>, sourceKind?: AtsType): Promise<AdapterResult> {
+  const settings = captureConfig(config);
   const batch = await db.captureBatch.create({ data: { id: randomUUID(), sourceKey, runId,
-    configHash: evidenceHash(config), sourceKind, formatVersion: 2, readerRevision: captureReaderRevision() } });
+    configHash: evidenceHash(settings), executionBudget: sourceExecutionBudget(), sourceKind, formatVersion: 2, readerRevision: captureReaderRevision() } });
   const context: CaptureContext = { sequence: 0, observedAt: batch.startedAt, write: record => persistCapture(db, batch.id, record) };
   return withCaptureContext(context, async () => {
     try {
-      const result = await work();
+      const result = await work(settings);
       assertCaptureHealthy();
       const evidence = await db.rawCapture.count({ where: { batchId: batch.id, complete: true, blobHash: { not: null } } });
       if (!evidence) throw new Error('Extraction has no captured native response');

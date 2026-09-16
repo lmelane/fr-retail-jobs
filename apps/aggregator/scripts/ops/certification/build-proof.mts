@@ -23,8 +23,8 @@ import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { portalProof } from '../../../src/certification/portalProof.js';
 import { boardReferenceFor } from '../../../src/certification/boardReference.js';
-import { fetchFollowingSafely } from '../../../src/lib/http.js';
-import { withHardDeadline } from '../../../src/lib/hardDeadline.js';
+import { fetchFollowingSafely, readBodyBounded } from '../../../src/lib/http.js';
+import { sourceSignal, withSourceBudget } from '../../../src/lib/sourceBudget.js';
 
 const arg = (n: string) => process.argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
 const key = arg('key');
@@ -51,13 +51,15 @@ let httpStatus = 0;
 let finalUrl = officialUrl;
 let body = '';
 try {
-  const response = await withHardDeadline(60_000, async () => {
-    const controller = new AbortController();
-    return fetchFollowingSafely(officialUrl, { headers: { accept: 'text/html,application/xhtml+xml' } }, controller.signal);
-  }, `${key}:official-page`);
-  httpStatus = response.status;
-  finalUrl = response.url || officialUrl;
-  body = await response.text();
+  const page = await withSourceBudget(async () => {
+    const response = await fetchFollowingSafely(officialUrl,
+      { headers: { accept: 'text/html,application/xhtml+xml' } }, sourceSignal()!);
+    return { status: response.status, url: response.url || officialUrl,
+      body: await readBodyBounded(response, officialUrl) };
+  }, 60_000, `${key}:official-page`);
+  httpStatus = page.status;
+  finalUrl = page.url;
+  body = page.body;
 } catch (error) {
   // Un échec de lecture n'est PAS une réfutation : `portalProof` le classera UNVERIFIABLE.
   httpStatus = 0;

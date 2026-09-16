@@ -20,7 +20,6 @@ import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
 import { cleanTitle, cleanPlace, plausiblePostedAt, briefError } from '../lib/normalize.js';
 import { normalizeSourceConfig } from '../connectors/sourceConfig.js';
-import { isRotatingSource, nextPageFor, advanceCursor } from './sourceCursor.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
 import type { NormalizedJob } from '../types.js';
@@ -223,7 +222,6 @@ export { KIND_TO_ATS } from '../ats/catalogKinds.js';
 async function ingestApiSource(
   prisma: PrismaClient,
   source: RuntimeSource,
-  deadlineMs?: number,
   /** Verdicts chargés une fois par run — voir `toCandidate`. */
   trust: TrustContext = new Map(),
   catalogue?: CompiledOccupationTaxonomy,
@@ -253,18 +251,7 @@ async function ingestApiSource(
   // may have written `careers_url` where the Teamtailor adapter expects
   // `origin`, and the unrecognised key fetched nothing — the live "origin
   // missing" failures. qualification and ingestion use the same resolver.
-  // The deadline rides along so a slow crawler (FashionJobs) stops gracefully.
-  config = { ...normalizeSourceConfig(config), deadlineMs };
-
-  // A rotating source resumes partway through its listing so it re-sees every
-  // offer within the lifecycle window instead of only ever the newest pages.
-  const rotating = isRotatingSource(stats.source);
-  const progress: { reachedEnd?: boolean; lastPageDone?: number } = {};
-  let startPage = 1;
-  if (rotating) {
-    startPage = await nextPageFor(prisma, stats.source);
-    config = { ...config, startPage, progress };
-  }
+  config = normalizeSourceConfig(config);
 
   const occupationTaxonomy = catalogue ?? await loadOccupationTaxonomy(prisma);
   stats.occupationReleaseId = occupationTaxonomy.manifest.id;
@@ -278,7 +265,7 @@ async function ingestApiSource(
    */
   const fetchStartedAt = Date.now();
   const { jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = await captureExtraction(
-    prisma, stats.source, config, log.runId(), () => fetchAtsJobs(type as never, config), type);
+    prisma, stats.source, config, log.runId(), settings => fetchAtsJobs(type as never, settings), type);
   stats.fetchMs = Date.now() - fetchStartedAt;
   // One durable source-level event retains the reason behind completeness.
   // The operational logger stores large proofs in PipelineEvent and prints
@@ -416,17 +403,6 @@ async function ingestApiSource(
       `${stats.created} created, ${stats.merged} merged, ${stats.errors} errors` +
       (skippedOutOfSector > 0 ? ` (${skippedOutOfSector} hors secteur écartées)` : ''));
   assertSourceRunning();
-  // Commit progress only after all accepted postings have been persisted.
-  if (rotating && stats.errors === 0) {
-    const next = await advanceCursor(
-      prisma,
-      stats.source,
-      startPage,
-      progress.reachedEnd === true,
-      progress.lastPageDone,
-    );
-    await log.info('source.cursor_advanced', `[ingest] ${stats.source}: rotating crawl page ${startPage} → next run resumes at ${next}`);
-  }
   return stats;
 }
 
@@ -450,16 +426,6 @@ export type IngestOptions = {
    * always finishes before the platform kills it. Absent = run every source.
    */
   only?: string;
-  /**
-   * A soft wall-clock deadline (epoch ms) for a slow crawl. The giants —
-   * FashionJobs behind Cloudflare, Decathlon at crawl-delay 10s — cannot finish
-   * inside the orchestrator's hard timeout AND cannot be sped up without
-   * breaking robots.txt. So they stop THEMSELVES a little before it, keeping
-   * every page already fetched (the listing is date-sorted and the database
-   * accumulates across runs) — a graceful "continue next run" instead of the
-   * hard timeout that discards the in-flight work.
-   */
-  deadlineMs?: number;
   /**
    * Leave geocoding to the caller. The orchestrator runs sources in parallel
    * and the CLI geocodes once at the end; a pass after every source would
@@ -571,7 +537,7 @@ export async function runIngest(
   for (const source of apiSources) {
     try {
       assertSourceRunning();
-      const stats = await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => ingestApiSource(prisma, source, options.deadlineMs, trust, occupationTaxonomy));
+      const stats = await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => ingestApiSource(prisma, source, trust, occupationTaxonomy));
       results.push(stats);
       await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => purgeQuietly(stats));
       await geocodeQuietly();

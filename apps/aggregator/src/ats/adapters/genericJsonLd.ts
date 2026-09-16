@@ -1,3 +1,4 @@
+import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
 import { log } from '../../observability/logger.js';
 import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
@@ -96,8 +97,6 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
   // A soft wall-clock budget, honoured by both phases below: a big listing
   // (Michael Page ~3800 offers) can overrun the run's timeout, so it stops
   // gracefully with what it has rather than being cut mid-flight.
-  const deadlineMs = Number(config.deadlineMs) || 0;
-  const pastDeadline = () => deadlineMs > 0 && Date.now() >= deadlineMs;
   if (listingPagedUrl && linkPattern) {
     const pageParam = String(config.pageParam ?? 'page');
     // The pattern comes from a CSV column — data, not code. Escaped so a
@@ -128,7 +127,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     let publisherCount: number | undefined;
     let previousPageSha = '';
     for (let page = 0; page < Number(config.maxPages ?? 400); page++) {
-      if (pastDeadline()) { termination = 'DEADLINE'; break; }
+      if (sourceDeadlineReached()) { termination = 'DEADLINE'; break; }
       const sep = listingPagedUrl.includes('?') ? '&' : '?';
       // The end of a paginated listing is signalled one of two ways, and both
       // mean "stop here with what we have", not "fail the source": Michael Page
@@ -213,7 +212,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     // F-06: a paginated listing that yields ZERO offer links is a broken
     // linkPattern or a moved listing — not an employer with no openings. The
     // silent [] passed for health until the refresh emptied the source 48h on.
-    if (seen.size === 0 && !pastDeadline()) {
+    if (seen.size === 0 && !sourceDeadlineReached()) {
       throw new Error(`generic-listing ${listingPagedUrl}: no offer link matched "${linkPattern}" — pattern or listing broken`);
     }
 
@@ -224,7 +223,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
         limit(async () => {
           // Stop starting new detail fetches past the budget; what was already
           // fetched stays, the rest is picked up next run.
-          if (pastDeadline()) { detailFailures++; return []; }
+          if (sourceDeadlineReached()) { detailFailures++; return []; }
           try {
             const parsed = parseJobPostings(
               await fetchText(url, {
@@ -253,7 +252,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
      * 0 errors » : la source passait BROKEN sans qu'une ligne dise pourquoi. Un
      * échec total est une panne à nommer, pas un employeur sans poste.
      */
-    if (seen.size > 0 && jobs.length === 0 && !pastDeadline()) {
+    if (seen.size > 0 && jobs.length === 0 && !sourceDeadlineReached()) {
       throw new Error(
         `generic-listing ${listingPagedUrl}: ${seen.size} lien${seen.size > 1 ? 's' : ''} d'offre, ` +
           `0 offre lue, ${detailFailures} échec${detailFailures > 1 ? 's' : ''} de détail — ` +

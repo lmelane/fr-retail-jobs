@@ -1,0 +1,39 @@
+{
+  "productionWrites": false,
+  "migrationsBefore": 56,
+  "migrationsAfter": 58,
+  "allOfferPublicationObservationAndRegistryColumnsUnchanged": true,
+  "removedCursorRows": [
+    {
+      "sourceKey": "fashionjobs",
+      "nextPage": 81,
+      "updatedAt": "2026-09-07T23:07:21.632Z"
+    }
+  ],
+  "before": {
+    "JobCount": 87607,
+    "JobHash": "6afc4dc4fba09f3488c16e02f11261919c601c94614037e850d74f0ad18f1c33",
+    "JobSourceCount": 90764,
+    "JobSourceHash": "936e607af64c6f3eeb9ba508a09c5cc06a715b49c7e3bb4caee0308dfe062c28",
+    "SourceObservationCount": 141933,
+    "SourceObservationHash": "6f2ffac6d5f396f058f8b177d70da72ff5e128b6f342d7f27e3caf8c6d24f9f2",
+    "SourceCount": 536,
+    "SourceHash": "b93e340da35f42eaf9e89fe3c355a3a920819d6d5fdb33c742e409848333759b",
+    "migrations": 56,
+    "cursorTable": true,
+    "captures": 0
+  },
+  "after": {
+    "JobCount": 87607,
+    "JobHash": "6afc4dc4fba09f3488c16e02f11261919c601c94614037e850d74f0ad18f1c33",
+    "JobSourceCount": 90764,
+    "JobSourceHash": "936e607af64c6f3eeb9ba508a09c5cc06a715b49c7e3bb4caee0308dfe062c28",
+    "SourceObservationCount": 141933,
+    "SourceObservationHash": "6f2ffac6d5f396f058f8b177d70da72ff5e128b6f342d7f27e3caf8c6d24f9f2",
+    "SourceCount": 536,
+    "SourceHash": "b93e340da35f42eaf9e89fe3c355a3a920819d6d5fdb33c742e409848333759b",
+    "migrations": 58,
+    "cursorTable": false,
+    "captures": 0
+  }
+}

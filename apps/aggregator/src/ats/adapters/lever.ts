@@ -1,3 +1,4 @@
+import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -30,7 +31,7 @@ export async function fetchLeverJobs(config: Record<string, unknown>): Promise<A
   const seen = new Set<string>();
   let complete = false;
   for (let page = 0; page < maxPages; page++) {
-    if (Number(config.deadlineMs) > 0 && Date.now() >= Number(config.deadlineMs)) break;
+    if (sourceDeadlineReached()) break;
     let rows: LeverJob[];
     try {
       rows = await fetchJson<LeverJob[]>(`${origin}/v0/postings/${encodeURIComponent(site)}?mode=json&skip=${page * pageSize}&limit=${pageSize}`);

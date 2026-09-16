@@ -1,6 +1,6 @@
 # Captures natives, sorties d’extraction et rétention
 
-Contrat des lots 2 et 5A, actualisé le 16 septembre 2026. L’implémentation est validée localement et le transport d’archive sur un environnement Railway isolé. Les services de production n’utilisent pas encore ces migrations. Les preuves et les limites de livraison figurent dans le [bilan du lot](../../audits/reprise-2026-09-15/lot-2.md).
+Contrat des lots 2, 5A et 5B, actualisé le 16 septembre 2026. L’implémentation est validée localement et le transport d’archive sur un environnement Railway isolé. Les services de production n’utilisent pas encore ces migrations. Les preuves et les limites de livraison figurent dans le [bilan du lot](../../audits/reprise-2026-09-15/lot-2.md).
 
 ## Ce qui fait foi
 
@@ -39,6 +39,18 @@ La clôture immuable interdit tout ajout ultérieur aux journaux des réponses e
 **Ce manifeste enregistre ce que le lecteur a produit. Il ne certifie pas à lui seul la justesse du lecteur ou l’exhaustivité du portail.** La qualification d’une source doit ensuite vérifier ces éléments contre les réponses natives et sa configuration.
 
 Les anciennes collectes de format 1 restent inchangées et consultables. Elles n’ont pas de manifeste complet : la commande de comparaison certifiante échoue explicitement pour elles. Aucune métadonnée manquante n’est reconstituée. Le rejeu technique des réponses reste disponible pour inspection.
+
+## Configuration et budget d’exécution
+
+L’ingestion remet au lecteur une copie JSON immuable de la configuration dont l’empreinte est enregistrée. Elle est bornée à 1 MiB, 10 000 valeurs et 32 niveaux. Les nombres non finis et les valeurs que JSON ne conserve pas exactement sont refusés. `deadlineMs`, `startPage` et `progress` ne peuvent pas entrer dans une nouvelle configuration de capture.
+
+Les délais appartiennent au contexte d’exécution commun. `CaptureBatch.executionBudget` conserve séparément le début, la limite ferme et, si présente, la limite coopérative. Une collecte hors de ce contexte reste explicitement sans budget enregistré. Changer le budget ne change pas l’identité de configuration du portail.
+
+Le délai coopératif peut interrompre proprement la pagination réelle. Il ne coupe pas les pages d’un rejeu selon une ancienne horloge ; ce rejeu reste soumis à la consommation intégrale des réponses et à la comparaison exacte du résultat. Une limite ferme posée par l’appelant continue d’annuler le transport et d’empêcher les écritures après annulation.
+
+Les commandes de validation et de lecture de preuve officielle utilisent ce mécanisme commun. La lecture du corps fait partie du budget et conserve la limite de taille HTTP. L’ancien `Promise.race` qui abandonnait une promesse sans annuler son transport a été supprimé.
+
+Le curseur de collecte tournante, son modèle et ses tests ont été retirés : son seul consommateur était l’ancienne collecte d’offres FashionJobs, déjà interdite par la décision produit. La découverte d’acteurs et le refus explicite de réintroduire des offres FashionJobs sont conservés. Les anciennes lignes de curseur sont sauvegardées avant la migration de reprise ; elles ne contiennent aucune publication ni RAW.
 
 ## Stockage et garde de rétention
 

@@ -41,7 +41,8 @@ try {
     const result = await replayExtraction(db, batch.id, () => fetchAtsJobs(batch.sourceKind as AtsType, config), store);
     writeFileSync(arg('out')!, JSON.stringify(result, null, 2) + '\n', { mode: 0o600 });
     const comparison = await compareExtractionResult(db, batch.id, result, store);
-    console.log(JSON.stringify({ batchId: batch.id, jobs: result.jobs.length, ...comparison, originalReader: batch.readerRevision }));
+    console.log(JSON.stringify({ batchId: batch.id, jobs: result.jobs.length, ...comparison,
+      originalReader: batch.readerRevision, executionBudget: batch.executionBudget }));
     if (!comparison.exact) process.exitCode = 1;
   } else throw new Error('Use --capture=<id>, --observation=<id>, --output=<id>, or --replay=<batch id>');
 } finally { await db.$disconnect(); }

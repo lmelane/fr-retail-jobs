@@ -1,3 +1,4 @@
+import { withSourceBudget } from '../../lib/sourceBudget.js';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 // Mock the network layer: the adapter's pagination and detail fetch both go
@@ -96,9 +97,12 @@ describe('fetchGenericJsonLdJobs — paginated listing that 404s past the last p
       return '<p></p>';
     });
 
-    // A deadline in the past: not a single listing page should be fetched, and
+    // An exhausted execution budget: not a single listing page should be fetched, and
     // the source returns cleanly rather than failing.
-    const result = await fetchGenericJsonLdJobs({ ...config, deadlineMs: Date.now() - 1000 });
+    const result = await withSourceBudget(async () => {
+      await new Promise(resolve => setTimeout(resolve, 5));
+      return fetchGenericJsonLdJobs(config);
+    }, 1000, 'listing-fixture', { softTimeoutMs: 1 });
     expect(result.truncated).toBe(true);
     expect(result.complete).toBe(false);
     expect(listingFetches).toBe(0);
@@ -113,7 +117,7 @@ describe('fetchGenericJsonLdJobs — paginated listing that 404s past the last p
       if (u.endsWith('offer-1')) return detailPage(1);
       return '<p></p>';
     });
-    // No deadlineMs → normal full behaviour.
+    // No execution budget: normal full behaviour.
     const result = await fetchGenericJsonLdJobs(config);
     expect(result.jobs).toHaveLength(1);
   });

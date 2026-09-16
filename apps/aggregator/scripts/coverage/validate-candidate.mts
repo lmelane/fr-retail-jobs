@@ -22,7 +22,7 @@ import { KIND_TO_ATS } from '../../src/ats/catalogKinds.js';
 import { fetchAtsJobs } from '../../src/ats/index.js';
 import { closeBrowser } from '../../src/lib/browser.js';
 import { CATALOGUE_LABEL, readRobots, requestTarget, scopeEvidence as perimeterEvidence } from '../../src/lib/candidateChecks.js';
-import { withHardDeadline } from '../../src/lib/hardDeadline.js';
+import { withSourceBudget } from '../../src/lib/sourceBudget.js';
 import { resolveCompany } from '../../src/normalize/company.js';
 
 const key = process.argv[2];
@@ -42,14 +42,10 @@ try {
   const robots = await readRobots(target.origin, target.path);
   const robotsCheckedAt = new Date();
   const started = Date.now();
-  // L'échéance est FERME, pas seulement transmise. `deadlineMs` dans la config n'engage que les adaptateurs
-  // qui la lisent — `avature.ts` ne la lit pas, et `ralph-lauren-avature` a bloqué 64 minutes sous un
-  // `--deadline-ms=300000` (P9, vague 1). On garde la valeur en config pour les adaptateurs qui la
-  // respectent, et on ajoute la coupure côté appelant pour tous les autres.
-  const result = await withHardDeadline(
-    deadlineMs,
-    () => fetchAtsJobs(ats, { ...config, deadlineMs: Date.now() + deadlineMs }),
-    key,
+  // Cancel transport and wait for settlement; portal configuration stays stable.
+  const result = await withSourceBudget(
+    () => fetchAtsJobs(ats, config), deadlineMs, key,
+    { softTimeoutMs: Math.max(1, deadlineMs - Math.min(30_000, Math.floor(deadlineMs / 10))) },
   );
   const parsed = result.jobs.filter((j) => j.title && j.url && j.externalId);
   const labels = new Map<string, number>();

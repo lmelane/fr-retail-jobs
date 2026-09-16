@@ -14,24 +14,14 @@ import { WafChallengeError } from '../lib/wafToken.js';
  * and writes check the signal before committing. This is not process isolation.
  */
 
-/**
- * Abandon a single source after this long — a stuck feed must not block the rest.
- *
- * 20 minutes, not 6: the giants (Kering's 14 Maisons, L'Oréal, FashionJobs'
- * 7611 offers via a browser) legitimately need well over six minutes to fetch
- * and dedup, and cutting them short lost exactly the feeds that expose the most
- * houses. They run LAST (smallest-first ordering), so the long budget only
- * applies once the quick feeds are already in.
- */
-// 40 min depuis D36 (cadence quotidienne, 4 voies) : à 20 min, Michael Page
-// ne lisait que 1 450 offres sur 3 334 par run et la queue de sa liste n'était
-// jamais revue — fermée à 48 h, vivante ou non (audit A5, 2026-09-06).
+/** Per-source wall-clock budget; actual transport cancellation and settlement
+ * are owned by withSourceBudget. Large portals need a measured bounded budget. */
 const PER_SOURCE_TIMEOUT_MS = Number(process.env.INGEST_SOURCE_TIMEOUT_MS ?? 40 * 60_000);
 
 /**
  * How long before the hard timeout a slow crawl should stop itself. The margin
  * lets the adapter finish the page it is on and return cleanly — the graceful
- * stop that keeps its work — rather than being cut mid-flight by withTimeout.
+ * stop that keeps its work — before transport cancellation at the hard limit.
  */
 const SOFT_DEADLINE_MARGIN_MS = 90_000;
 
@@ -134,11 +124,11 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     // would run four times over the same cities in parallel. The soft
     // deadline lets a slow crawl stop gracefully just before the hard
     // timeout, keeping what it fetched.
-    const deadlineMs = Date.now() + PER_SOURCE_TIMEOUT_MS - Math.min(SOFT_DEADLINE_MARGIN_MS, PER_SOURCE_TIMEOUT_MS / 10);
     const stats = await withSourceBudget(
-      () => runIngest(prisma, { only: key, deadlineMs, skipGeocode: true }),
+      () => runIngest(prisma, { only: key, skipGeocode: true }),
       PER_SOURCE_TIMEOUT_MS,
       key,
+      { softTimeoutMs: Math.floor(PER_SOURCE_TIMEOUT_MS - Math.min(SOFT_DEADLINE_MARGIN_MS, PER_SOURCE_TIMEOUT_MS / 10)) },
     );
     // Record this source's health so a source that stops producing becomes a
     // detectable incident (BROKEN) on its next run — one SourceRun per source.
