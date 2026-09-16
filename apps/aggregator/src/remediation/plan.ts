@@ -19,7 +19,7 @@ export type RepairPlan = {
   version: 1; batchId: string; finding: string; createdAt: string;
   sourceKeys: string[]; companyIds: string[]; operations: Operation[];
   reviewDocument?: { statement: string; evidence: Array<{ url: string; artifactText: string; sha256: string; explanation: string }>; reviewedBy: string; reviewedAt: string };
-  evidence: Row; invariants: ('oracle' | 'lifecycle' | 'smcp' | 'excluded-identities' | 'source-owners' | 'france-filter')[];
+  evidence: Row; invariants: ('oracle' | 'lifecycle' | 'smcp' | 'excluded-identities' | 'source-owners')[];
   excludedSourceKeys?: string[];
   /** `postingOwners`: reviewed per-posting employers (externalId → canonical key) on a shared portal; every other posting belongs to the owner. */
   ownerRules?: { sourceKey: string; name: string; canonicalKey?: string; departmentMap?: Record<string, string>; includeInactive?: boolean; postingOwners?: Record<string, string> }[];
@@ -64,16 +64,6 @@ async function write(tx: Prisma.TransactionClient, op: Operation) {
 
 export async function verifyRepair(prisma: Prisma.TransactionClient, invariants: RepairPlan['invariants'], excludedSourceKeys = ['via', 'ashoka'], ownerRules: RepairPlan['ownerRules'] = []) {
   const result: Record<string, number> = {};
-  if (invariants.includes('france-filter')) {
-    // Check the whole active population, including rows outside the repair.
-    // Unknown geography is not converted into a country assertion.
-    const bad = await prisma.job.findFirst({ where: { isActive: true, OR: [
-      { countryCode: 'FR', isFrance: false },
-      { countryCode: { not: null, notIn: ['FR'] }, isFrance: true },
-    ] }, select: { id: true, countryCode: true, isFrance: true } });
-    if (bad) throw new Error(`France filter invariant failed: ${bad.id} (${bad.countryCode}/${bad.isFrance})`);
-    result.franceFilterContradictions = 0;
-  }
   if (invariants.includes('source-owners')) {
     if (!ownerRules.length) throw new Error('Source owner invariant needs reviewed rules');
     for (const rule of ownerRules) {
@@ -173,7 +163,7 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
     // Thousands of identity-only corrections share this exact text-field shape.
     // Batch them after creating their target Companies; all before-images were
     // already checked and the entire transaction still rolls back on failure.
-    const identityOnly = plan.operations.filter(o => o.entity === 'Job' && Object.keys(o.patch).sort().join(',') === 'clusterKey,companyId,fingerprint' && Object.values(o.patch).every(v => typeof v === 'string'));
+    const identityOnly = plan.operations.filter(o => o.entity === 'Job' && Object.keys(o.patch).sort().join(',') === 'clusterKey,companyId' && Object.values(o.patch).every(v => typeof v === 'string'));
     const identityIds = new Set(identityOnly.map(o => o.id));
     if (plan.reviewDocument) {
       const doc = plan.reviewDocument;
@@ -187,8 +177,8 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
     for (const op of plan.operations) if (op.entity !== 'Job' || !identityIds.has(op.id)) await write(tx, op);
     for (let offset = 0; offset < identityOnly.length; offset += 500) {
       const updates = JSON.stringify(identityOnly.slice(offset, offset + 500).map(o => ({ id: o.id, ...o.patch })));
-      const n = await tx.$executeRaw`UPDATE "Job" j SET "companyId"=v."companyId", "clusterKey"=v."clusterKey", fingerprint=v.fingerprint, "updatedAt"=NOW()
-        FROM jsonb_to_recordset(${updates}::jsonb) AS v(id text, "companyId" text, "clusterKey" text, fingerprint text) WHERE j.id=v.id`;
+      const n = await tx.$executeRaw`UPDATE "Job" j SET "companyId"=v."companyId", "clusterKey"=v."clusterKey", "updatedAt"=NOW()
+        FROM jsonb_to_recordset(${updates}::jsonb) AS v(id text, "companyId" text, "clusterKey" text) WHERE j.id=v.id`;
       if (n !== Math.min(500, identityOnly.length - offset)) throw new Error('Identity correction target disappeared');
     }
     for (const observation of plan.observations ?? []) {

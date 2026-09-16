@@ -13,6 +13,7 @@ Collecte des offres du luxe, de la mode, de la beauté et du retail. Les publica
 - [Plan par lots et critères de validation](audits/reprise-2026-09-15/plan.md) ; chaque lot validé localement a son bilan daté (`audits/reprise-2026-09-15/lot-*.md`), du [lot 1](audits/reprise-2026-09-15/lot-1.md) au [lot 12](audits/reprise-2026-09-15/lot-12.md).
 - [Audit du 15 septembre 2026](audits/reprise-2026-09-15/rapport.md) : mesures, défauts et preuves datées.
 - [Audit de release du 16 septembre 2026](audits/reprise-2026-09-15/release-2026-09-16.md) : verdict, conditions de livraison, liste unique des écarts ouverts ; [qualification des sources](audits/reprise-2026-09-15/qualification-sources-2026-09-16.md) du même jour.
+- Suite de mission (lots F0 à F8, `audits/reprise-2026-09-15/lot-f*.md`) : [audit du schéma du 16 septembre 2026](audits/reprise-2026-09-15/schema-inventaire-2026-09-16.md), décision par objet et migration de retrait du legacy.
 
 | Dossier | Rôle |
 |---|---|

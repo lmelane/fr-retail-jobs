@@ -13,8 +13,7 @@ describe.skipIf(!enabled)('source facts in the real public job query', () => {
   beforeAll(() => prisma.company.create({ data: { id: key, name: key, canonicalKey: key, fashionjobsUrl: `resolved:${key}` } }));
   afterAll(async () => { await prisma.jobSource.deleteMany({ where: { job: { companyId: key } } }); await prisma.job.deleteMany({ where: { companyId: key } }); await prisma.company.delete({ where: { id: key } }); });
   const create = (suffix: string, primary: SourceFacts | null, secondary?: SourceFacts) => prisma.job.create({ data: {
-    companyId: key, source: 'LEVER', externalId: suffix, fingerprint: `${key}-${suffix}`,
-    title: 'Sales Advisor', city: 'Paris', countryCode: 'FR', isFrance: true, url: `https://example.com/${suffix}`,
+    companyId: key, source: 'LEVER', externalId: suffix, title: 'Sales Advisor', city: 'Paris', countryCode: 'FR', url: `https://example.com/${suffix}`,
     salaryMin: 99999, salaryCurrency: 'EUR', salaryPeriod: 'YEAR',
     sources: { create: [
       { sourceKey: `${key}-primary`, sourceTier: 'EMPLOYER_DIRECT', externalId: suffix, url: `https://example.com/${suffix}`,

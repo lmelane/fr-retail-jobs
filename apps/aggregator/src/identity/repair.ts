@@ -154,7 +154,7 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
       if (!companyId) continue;
       const patch = { companyId };
       await tx.job.update({ where: { id: job.id }, data: patch });
-      await tx.dataCorrection.create({ data: { batchId: plan.batchId, planHash, commitHash, finding: 'LOT1_EMPLOYER_IDENTITY', entityType: 'Job', entityId: job.id, before: { companyId: job.companyId, clusterKey: job.clusterKey, fingerprint: job.fingerprint }, after: patch, evidence: { reviewId: plan.batchId } } });
+      await tx.dataCorrection.create({ data: { batchId: plan.batchId, planHash, commitHash, finding: 'LOT1_EMPLOYER_IDENTITY', entityType: 'Job', entityId: job.id, before: { companyId: job.companyId, clusterKey: job.clusterKey }, after: patch, evidence: { reviewId: plan.batchId } } });
       await tx.jobEvent.create({ data: { jobId: job.id, type: 'CORRECTED', field: 'companyId', before: job.companyId, after: companyId } });
       movedJobs++;
     }

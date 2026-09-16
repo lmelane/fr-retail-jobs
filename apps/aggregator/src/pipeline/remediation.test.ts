@@ -9,11 +9,10 @@ beforeEach(async () => { await prisma.jobSource.deleteMany(); await prisma.job.d
 afterAll(async () => { await prisma.jobSource.deleteMany(); await prisma.job.deleteMany(); await prisma.company.deleteMany(); await prisma.$disconnect(); });
 async function witness() {
   const company = await prisma.company.create({ data: { name: 'Tiffany & Co.', canonicalKey: 'TIFFANY', fashionjobsUrl: `witness:${randomUUID()}` } });
-  const job = await prisma.job.create({ data: { companyId: company.id, externalId: '63763', source: 'ORACLE_HCM', title: 'CDD Client Advisor - Paris', url: 'https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63763', countryCode: 'AU', fingerprint: 'witness',
-    sources: { create: { sourceKey: 'tiffany-oracle', sourceTier: 'EMPLOYER_DIRECT', externalId: '63763', url: 'https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63763' } },
+  const job = await prisma.job.create({ data: { companyId: company.id, externalId: '63763', source: 'ORACLE_HCM', title: 'CDD Client Advisor - Paris', url: 'https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63763', countryCode: 'AU', sources: { create: { sourceKey: 'tiffany-oracle', sourceTier: 'EMPLOYER_DIRECT', externalId: '63763', url: 'https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63763' } },
     events: { create: { type: 'OPENED' } },
   }, omit: { searchText: true } });
-  const plan: RepairPlan = { version: 1, batchId: randomUUID(), finding: 'P0_ORACLE_IDENTITY', createdAt: new Date().toISOString(), sourceKeys: ['tiffany-oracle'], companyIds: [company.id], evidence: { witness: 'Production requisition 63763' }, invariants: ['lifecycle'], operations: [{ entity: 'Job', id: job.id, before: json(job), patch: { countryCode: 'FR', isFrance: true }, reason: 'Official requisition country' }] };
+  const plan: RepairPlan = { version: 1, batchId: randomUUID(), finding: 'P0_ORACLE_IDENTITY', createdAt: new Date().toISOString(), sourceKeys: ['tiffany-oracle'], companyIds: [company.id], evidence: { witness: 'Production requisition 63763' }, invariants: ['lifecycle'], operations: [{ entity: 'Job', id: job.id, before: json(job), patch: { countryCode: 'FR' }, reason: 'Official requisition country' }] };
   return { job, plan };
 }
 
@@ -69,19 +68,4 @@ it('rolls back the entire batch when its resulting state violates lifecycle inva
   const after = await prisma.job.findUniqueOrThrow({ where: { id: job.id } });
   expect(after.countryCode).toBe('AU');
   expect(after.closedAt).toBeNull();
-});
-
-it('rejects a France filter repair if an untouched active row still contradicts its canonical country', async () => {
-  const { job, plan } = await witness();
-  const other = await prisma.job.create({ data: {
-    companyId: job.companyId, externalId: 'untouched-france', source: 'ORACLE_HCM',
-    title: 'Untouched France witness', url: 'https://example.com/untouched-france',
-    countryCode: 'FR', isFrance: false, fingerprint: 'untouched-france',
-  } });
-  plan.invariants = ['france-filter'];
-  await expect(applyRepairPlan(prisma, plan, digest(plan), 'test')).rejects.toThrow(other.id);
-  expect(await prisma.dataCorrection.count({ where: { batchId: plan.batchId } })).toBe(0);
-  expect((await prisma.job.findUniqueOrThrow({ where: { id: job.id } })).countryCode).toBe('AU');
-  await prisma.job.update({ where: { id: other.id }, data: { isFrance: true } });
-  expect(await applyRepairPlan(prisma, plan, digest(plan), 'test')).toMatchObject({ written: 1, franceFilterContradictions: 0 });
 });

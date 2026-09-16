@@ -27,8 +27,7 @@ describe('immutable end of an admitted ingestion', () => {
     // `c` already belongs to another Maison: its re-attribution needs an identity review, and the
     // production writer refuses it. `b` is unlisted by the publisher: a native hold.
     const other = await db.company.create({ data: { name: `Other ${source}`, canonicalKey: `other-${source}`, fashionjobsUrl: `resolved:other-${source}` } });
-    await db.job.create({ data: { companyId: other.id, externalId: `${source}:c`, source: 'GENERIC_JSONLD', title: 'Vendeur', url: 'https://x/c', fingerprint: `fp-${source}-c`,
-      sources: { create: { sourceKey: source, sourceTier: 'EMPLOYER_DIRECT', externalId: 'c', url: 'https://x/c', ...publicationFixture({ sourceKey: source, externalId: 'c', url: 'https://x/c', title: 'Vendeur' }) } } } });
+    await db.job.create({ data: { companyId: other.id, externalId: `${source}:c`, source: 'GENERIC_JSONLD', title: 'Vendeur', url: 'https://x/c', sources: { create: { sourceKey: source, sourceTier: 'EMPLOYER_DIRECT', externalId: 'c', url: 'https://x/c', ...publicationFixture({ sourceKey: source, externalId: 'c', url: 'https://x/c', title: 'Vendeur' }) } } } });
     const stats = await ingestSyntheticFeed(db, source, [{ id: 'a' }, { id: 'b', listed: false }, { id: 'c' }]);
     expect(stats).toMatchObject({ created: 1, held: 1, errors: 1, captureBatchId: expect.any(String) });
     const batch = await latestBatch(db, source);

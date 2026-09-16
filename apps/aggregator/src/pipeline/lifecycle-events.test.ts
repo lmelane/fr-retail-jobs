@@ -85,7 +85,7 @@ describe('retrait administratif et refresh', () => {
 
   it('retire une offre orpheline sans preuve de fermeture et refuse un état actif/retiré contradictoire en base', async () => {
     const c = await company();
-    const job = await prisma.job.create({ data: { companyId: c.id, externalId: 'orphan', source: 'GENERIC_JSONLD', title: 'Client Advisor', url: 'https://x/orphan', fingerprint: 'orphan' } });
+    const job = await prisma.job.create({ data: { companyId: c.id, externalId: 'orphan', source: 'GENERIC_JSONLD', title: 'Client Advisor', url: 'https://x/orphan' } });
     expect(await runRefresh(prisma)).toMatchObject({ closedJobs: 0, withdrawn: 1 });
     expect(await prisma.job.findUniqueOrThrow({ where: { id: job.id } })).toMatchObject({ closedAt: null, withdrawalReason: 'ATTESTATION_MISSING' });
     await expect(prisma.job.update({ where: { id: job.id }, data: { isActive: true } })).rejects.toThrow('Job_withdrawal_state_check');

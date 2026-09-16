@@ -179,7 +179,7 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
         moved.set(job.id, desired);
         if (spec.withdrawal && job.isActive && new Date(review.reviewedAt) < job.firstSeenAt) throw new Error(`Withdrawal predates catalogue observation: ${job.id}`);
         const removal = spec.withdrawal ? deactivateJob(job, { kind: 'WITHDRAWN', reason: spec.withdrawal.reason }, new Date(review.reviewedAt)) : null;
-        operations.push({ entity: 'Job', id: job.id, before: json(beforeJob), patch: { companyId: desired.id, clusterKey: job.clusterKey, fingerprint: job.fingerprint, ...removal?.data },
+        operations.push({ entity: 'Job', id: job.id, before: json(beforeJob), patch: { companyId: desired.id, clusterKey: job.clusterKey, ...removal?.data },
           reason: spec.withdrawal?.statement ?? (brandKey ? 'Employer corrected to the brand explicitly named by the native posting on the shared portal. No deletion or lifecycle change.' : 'Wrong brand attribution corrected to the attested portal employer. Brand not inferred; no deletion or lifecycle change.') });
       }
       // A redirected predecessor (posting merged into a moved job) must keep the
@@ -192,7 +192,7 @@ export async function planReviewedPortalOwners(prisma: PrismaClient, review: Por
           const desired = moved.get(predecessor.mergedIntoId!)!;
           moved.set(predecessor.id, desired); frontier.push(predecessor.id);
           if (predecessor.companyId === desired.id) continue;
-          operations.push({ entity: 'Job', id: predecessor.id, before: json(predecessor), patch: { companyId: desired.id, clusterKey: predecessor.clusterKey, fingerprint: predecessor.fingerprint },
+          operations.push({ entity: 'Job', id: predecessor.id, before: json(predecessor), patch: { companyId: desired.id, clusterKey: predecessor.clusterKey },
             reason: 'Redirected predecessor follows the employer of its canonical posting; redirect, RAW and lifecycle unchanged.' });
         }
       }

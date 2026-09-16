@@ -1,8 +1,9 @@
 import { upsertDeduplicated } from "../test/publicationPersistenceFixture.js";
 import "../test/setup-integration.js";
 import { beforeEach, afterAll, describe, it, expect } from "vitest";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import {
+  compileOccupationManifest,
   loadOccupationTaxonomy,
   occupationManifestHash,
   type OccupationManifest,
@@ -19,7 +20,23 @@ import {
 } from "../occupation/release.js";
 
 const db = new PrismaClient();
+/** The bootstrap fixture is a reviewed release like any other: the disposable
+ * test database receives it exactly as `activateOccupationRelease` would store
+ * it (compiled manifest, hash of that manifest) when the migration seed
+ * (`catwalks-occupations-20260909-v1`) is not the fixture any more. */
+async function ensureBootstrapRelease() {
+  const manifest = compileOccupationManifest(seed).manifest;
+  if (await db.occupationRelease.findUnique({ where: { id: manifest.id } })) return;
+  await db.occupationRelease.create({
+    data: {
+      id: manifest.id,
+      contentHash: occupationManifestHash(manifest),
+      manifest: manifest as unknown as Prisma.InputJsonValue,
+    },
+  });
+}
 async function wipe() {
+  await ensureBootstrapRelease();
   await db.occupationState.update({
     where: { id: "active" },
     data: { releaseId: seed.id, backfilledAt: null },
@@ -69,8 +86,7 @@ describe("occupation persistence and release lifecycle", () => {
           source: "GENERIC_JSONLD",
           title: "Sales Advisor",
           url: `https://careers.example/${id}`,
-          fingerprint: id,
-        },
+          },
       });
     const first = await classifyJobs(db, { batchSize: 1 });
     expect(first.scanned).toBe(3);
@@ -256,7 +272,6 @@ describe("occupation persistence and release lifecycle", () => {
         externalId: "legacy",
         source: "GENERIC_JSONLD",
         title: "Beauty Advisor",
-        fingerprint: "legacy-occupation",
         url: "https://careers.example/legacy",
         seniority: "MID",
         jobFunction: "retail-client-advisor",
@@ -296,25 +311,29 @@ describe("occupation persistence and release lifecycle", () => {
     expect((await classifyJobs(db)).written).toBe(0);
   });
   it("publishes data alone, rejects stale reviews and updates a run pinned to the previous release", async () => {
+    // Prémisse : la version active ne connaît ni ce titre ni cette clé (la v2
+    // reprise en F0 classe désormais « Optical Assistant », l'ancien exemple).
     const old = await loadOccupationTaxonomy(db),
       c = candidate({
-        title: "Optical Assistant",
-        rawTitle: "Optical Assistant",
+        title: "Gemstone Sorter",
+        rawTitle: "Gemstone Sorter",
         department: undefined,
       });
+    expect(old.classify("Gemstone Sorter").occupationStatus).toBe("NO_RULE");
+    expect(seed.occupations.some((o) => o.key === "gemstone-sorter")).toBe(false);
     const { jobId } = await upsertDeduplicated(db, c, old);
     const next = structuredClone(seed) as OccupationManifest;
     next.id = `integration-occupation-${Date.now()}`;
     next.occupations.push({
-      key: "optical-assistant",
-      family: "health-optical-services",
-      labels: { fr: "Assistant optique", en: "Optical Assistant" },
-      aliases: ["Optical Assistant"],
+      key: "gemstone-sorter",
+      family: "atelier-craft",
+      labels: { fr: "Trieur de gemmes", en: "Gemstone Sorter" },
+      aliases: ["Gemstone Sorter"],
     });
     next.rules.push({
-      id: "optical-assistant-title",
-      occupation: "optical-assistant",
-      all: [{ field: "title", any: ["Optical Assistant"] }],
+      id: "gemstone-sorter-title",
+      occupation: "gemstone-sorter",
+      all: [{ field: "title", any: ["Gemstone Sorter"] }],
       evidence: "Observed production title, reviewed contextual addition.",
     });
     const review = await previewOccupationRelease(db, next);
@@ -322,7 +341,7 @@ describe("occupation persistence and release lifecycle", () => {
     expect(review.classifiedActive).toBe(1);
     await db.job.update({
       where: { id: jobId },
-      data: { title: "Optical Assistant - Paris" },
+      data: { title: "Gemstone Sorter - Paris" },
     });
     await expect(
       activateOccupationRelease(db, next, review, "a".repeat(40)),
@@ -331,17 +350,17 @@ describe("occupation persistence and release lifecycle", () => {
     const fresh = await previewOccupationRelease(db, next);
     await activateOccupationRelease(db, next, fresh, "a".repeat(40));
     expect(
-      (await loadOccupationTaxonomy(db)).queryOccupations("Assistant optique"),
-    ).toEqual(["optical-assistant"]);
+      (await loadOccupationTaxonomy(db)).queryOccupations("Trieur de gemmes"),
+    ).toEqual(["gemstone-sorter"]);
     await upsertDeduplicated(
       db,
-      { ...c, title: "Optical Assistant - Paris" },
+      { ...c, title: "Gemstone Sorter - Paris" },
       old,
     );
     expect(
       await db.job.findUniqueOrThrow({ where: { id: jobId } }),
     ).toMatchObject({
-      occupationCode: "optical-assistant",
+      occupationCode: "gemstone-sorter",
       occupationReleaseId: next.id,
     });
     expect(await db.occupationObservation.count()).toBe(2);

@@ -27,7 +27,7 @@ describe('Teamtailor alias publication persistence',()=>{
   const prefix=randomUUID(),a=candidate(prefix+'-a','https://brand.teamtailor.com'),b=candidate(prefix+'-b','https://careers.brand.example');
   for(const item of [a,b])await db.source.create({data:{key:item.sourceKey,maison:item.company,kind:'teamtailor',config:{origin:new URL(item.url).origin},tier:'EMPLOYER_DIRECT',tenantKey:item.sourceKey,status:'ACTIVE'}});
   const company=await db.company.create({data:{name:a.company,canonicalKey:prefix,fashionjobsUrl:'teamtailor:'+prefix}});
-  const job=await db.job.create({data:{companyId:company.id,externalId:'legacy',source:'TEAMTAILOR',title:'Wrong legacy title',url:'https://legacy.example/job',fingerprint:prefix,isActive:false}});
+  const job=await db.job.create({data:{companyId:company.id,externalId:'legacy',source:'TEAMTAILOR',title:'Wrong legacy title',url:'https://legacy.example/job',isActive:false}});
   for(const item of [a,b])await db.jobSource.create({data:{jobId:job.id,sourceKey:item.sourceKey,externalId:item.externalId,sourceTier:item.sourceTier,url:item.url,title:item.title,raw:item.raw as any,isActive:false}});
   const before=await db.jobSource.findMany({where:{jobId:job.id},orderBy:{id:'asc'}});const plan=await planPublicationGroups(db,{jobIds:[job.id],groups:[{jobId:job.id,sourceIds:before.map(s=>s.id)}],reason:'Rebuild an inactive native alias group without inventing an employer closure or a fresh attestation'});
   expect(plan.groups[0]).toMatchObject({jobId:job.id,lifecycle:'WITHDRAW',patch:{isActive:false,withdrawalReason:'ATTESTATION_MISSING',title:'Client Advisor',closedAt:null}});

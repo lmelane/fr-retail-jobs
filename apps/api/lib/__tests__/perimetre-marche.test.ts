@@ -71,8 +71,7 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
       const titre = g.titre ?? `Conseiller de vente ${g.id}`;
       const lien = `https://example.com/${M}/${g.id}`;
       await prisma.job.create({ data: {
-        id: jobId(g), companyId: companyId(g.maison), source: 'GENERIC_JSONLD', externalId: g.id, fingerprint: jobId(g),
-        title: titre, url: lien, city: g.ville, countryCode: g.pays, isFrance: g.pays === 'FR', adminArea1: g.subdivision ?? null,
+        id: jobId(g), companyId: companyId(g.maison), source: 'GENERIC_JSONLD', externalId: g.id, title: titre, url: lien, city: g.ville, countryCode: g.pays, adminArea1: g.subdivision ?? null,
         postalCode: g.codePostal ?? null, employmentTerm: g.contrat ?? null, workTime: g.temps ?? null,
         workplaceType: g.remote ? 'REMOTE' : null, language: g.langue ?? 'fr', isActive: true,
         postedAt: new Date(g.posteLe ?? '2026-08-15'), firstSeenAt: new Date(g.posteLe ?? '2026-08-15'),

@@ -14,7 +14,7 @@ async function fixture() {
   const key = randomUUID();
   await db.source.create({ data: { key, maison: 'Recovery', kind: 'lever', config: { site: 'recovery' }, tier: 'EMPLOYER_DIRECT', tenantKey: key, status: 'ACTIVE' } });
   const company = await db.company.create({ data: { name: 'Recovery', canonicalKey: key, fashionjobsUrl: key } });
-  const job = await db.job.create({ data: { companyId: company.id, externalId: 'one', source: 'LEVER', title: 'Wrong shared title', description: 'Shared text cannot be evidence', url: 'https://jobs.lever.co/recovery/one', fingerprint: key, canonicalSourceKey: key, canonicalExternalId: 'one' } });
+  const job = await db.job.create({ data: { companyId: company.id, externalId: 'one', source: 'LEVER', title: 'Wrong shared title', description: 'Shared text cannot be evidence', url: 'https://jobs.lever.co/recovery/one', canonicalSourceKey: key, canonicalExternalId: 'one' } });
   const members = [];
   for (const id of ['one', 'two']) members.push(await db.jobSource.create({ data: { jobId: job.id, sourceKey: key, externalId: id, sourceTier: 'EMPLOYER_DIRECT',
     url: `https://jobs.lever.co/recovery/${id}`, title: 'Old parsed title', firstSeenAt: at, lastSeenAt: at,

@@ -41,7 +41,6 @@ async function job(opts: { companyId: string; ext: string; sourceKey: string; ho
       source: 'GENERIC_JSONLD',
       title: 'Conseiller de vente',
       url: `https://x/${opts.ext}`,
-      fingerprint: `fp-${opts.ext}`,
       isActive: true,
       lastSeenAt: seen,
       sources: {
@@ -131,7 +130,7 @@ describe('OP4 — an offer reappears after being closed', () => {
     const j = await prisma.job.create({
       data: {
         companyId: c.id, externalId: 're1', source: 'GENERIC_JSONLD', title: 'Vendeur',
-        url: 'https://x/re1', fingerprint: 'fp-re1', isActive: false, closedAt: new Date(seenNow.getTime() - 3600_000),
+        url: 'https://x/re1', isActive: false, closedAt: new Date(seenNow.getTime() - 3600_000),
         sources: {
           create: {
             sourceKey: 'acme', sourceTier: 'ATS_OFFICIAL', externalId: 's-re1',

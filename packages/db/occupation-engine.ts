@@ -108,7 +108,6 @@ export type OccupationDecision = {
   occupationSpecializations: string[];
   occupationReleaseId: string;
   seniority: string | null;
-  isRetail: boolean | null;
   occupationEvidence: {
     inputTitle: string | null;
     department: string | null;
@@ -399,7 +398,6 @@ export function compileOccupationManifest(raw: unknown) {
         occupationSpecializations: [],
         occupationReleaseId: manifest.id,
         seniority: null,
-        isRetail: null,
         occupationEvidence: {
           inputTitle: title ?? null,
           department: department ?? null,
@@ -510,10 +508,6 @@ export function compileOccupationManifest(raw: unknown) {
       result.occupationGroup = result.jobFunction
         ? families.get(result.jobFunction)!.group!
         : null;
-      result.isRetail =
-        result.occupationGroup === null
-          ? null
-          : result.occupationGroup === "retail";
       const rank = seniorityRules.find(matchesPattern);
       if (rank) {
         result.seniority = rank.key;
@@ -552,4 +546,15 @@ export function occupationLabel(
   return def
     ? (def.labels[locale] ?? def.labels.fr ?? Object.values(def.labels)[0])
     : null;
+}
+
+/** Fields the engine derives from the manifest (family group, rule
+ * specializations). They stopped being columns in lot F1 (2026-09-16): readers
+ * recompute them from the active release instead of trusting a stored copy. */
+export type OccupationDerivedField = "occupationGroup" | "occupationSpecializations";
+export type PersistedOccupationDecision = Omit<OccupationDecision, OccupationDerivedField>;
+/** The exact shape written on a Job: the decision without its derived fields. */
+export function persistedOccupationDecision(decision: OccupationDecision): PersistedOccupationDecision {
+  const { occupationGroup: _group, occupationSpecializations: _specializations, ...persisted } = decision;
+  return persisted;
 }

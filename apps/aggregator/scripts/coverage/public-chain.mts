@@ -54,14 +54,14 @@ type Journey = {
 };
 
 /**
- * Les parcours contrôlés. Chaque `sql` reproduit le prédicat de `searchSummary` pour ce filtre — `isFrance` pour
- * la France, `lower(countryCode)` pour les autres pays, `ILIKE` pour la ville (la colonne porte des graphies
+ * Les parcours contrôlés. Chaque `sql` reproduit le prédicat de `searchSummary` pour ce filtre — `countryCode`
+ * pour chaque pays, France comprise, `ILIKE` pour la ville (la colonne porte des graphies
  * mélangées), l'identité de société pour la Maison.
  */
 const JOURNEYS: Journey[] = [
   // ── Périmètres géographiques ────────────────────────────────────────────────
   { name: 'monde (aucun filtre)', query: {}, sql: Prisma.sql`true` },
-  { name: 'France', query: { pays: 'FR' }, sql: Prisma.sql`j."isFrance"`, facet: { kind: 'countries', value: 'FR' } },
+  { name: 'France', query: { pays: 'FR' }, sql: Prisma.sql`j."countryCode" = 'FR'`, facet: { kind: 'countries', value: 'FR' } },
   { name: 'pays IT', query: { pays: 'IT' }, sql: Prisma.sql`lower(j."countryCode") = 'it'`, facet: { kind: 'countries', value: 'IT' } },
   { name: 'pays US', query: { pays: 'US' }, sql: Prisma.sql`lower(j."countryCode") = 'us'`, facet: { kind: 'countries', value: 'US' } },
   { name: 'pays GB', query: { pays: 'GB' }, sql: Prisma.sql`lower(j."countryCode") = 'gb'`, facet: { kind: 'countries', value: 'GB' } },
@@ -97,10 +97,10 @@ const JOURNEYS: Journey[] = [
   { name: 'ville New York', query: { ville: 'New York' }, sql: Prisma.sql`j.city ILIKE 'New York'` },
 
   // ── Combinaisons : c'est là que des filtres se télescopent (bug historique des trois `company:`) ───
-  { name: 'France + PERMANENT', query: { pays: 'FR', employmentTerm: 'PERMANENT' }, sql: Prisma.sql`j."isFrance" AND j."employmentTerm" = 'PERMANENT'` },
+  { name: 'France + PERMANENT', query: { pays: 'FR', employmentTerm: 'PERMANENT' }, sql: Prisma.sql`j."countryCode" = 'FR' AND j."employmentTerm" = 'PERMANENT'` },
   { name: 'secteur + maison + pays', query: { secteur: 'BEAUTY', maison: 'Sephora', pays: 'FR' },
-    sql: Prisma.sql`'BEAUTY' = ANY(c."sectorCodes") AND ${identity('Sephora')} AND j."isFrance"` },
-  { name: 'métier non canonisé + France', query: { metier: 'unclassified', pays: 'FR' }, sql: Prisma.sql`j."occupationCode" IS NULL AND j."isFrance"` },
+    sql: Prisma.sql`'BEAUTY' = ANY(c."sectorCodes") AND ${identity('Sephora')} AND j."countryCode" = 'FR'` },
+  { name: 'métier non canonisé + France', query: { metier: 'unclassified', pays: 'FR' }, sql: Prisma.sql`j."occupationCode" IS NULL AND j."countryCode" = 'FR'` },
 
   // ── Frontières de filtre : une valeur qui n'existe pas doit rendre 0, jamais tout ───
   { name: 'frontière : pays inexistant', query: { pays: 'ZZ' }, sql: Prisma.sql`false` },

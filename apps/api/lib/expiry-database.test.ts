@@ -24,9 +24,7 @@ describe.skipIf(!enabled)('public availability from source publications', () => 
   });
   afterAll(cleanup);
   const create = (suffix: string, expiresAt: Date | null, extra = false) => prisma.job.create({ data: {
-    id: `${key}-${suffix}`, companyId: key, source: 'GENERIC_JSONLD', externalId: suffix, fingerprint: `${key}-${suffix}`,
-    title: `ExpiryWitness ${suffix}`, city: `Expirycity${suffix}`, countryCode: 'FR', isFrance: true,
-    url: `https://example.com/primary/${suffix}`, validThrough: past,
+    id: `${key}-${suffix}`, companyId: key, source: 'GENERIC_JSONLD', externalId: suffix, title: `ExpiryWitness ${suffix}`, city: `Expirycity${suffix}`, countryCode: 'FR', url: `https://example.com/primary/${suffix}`, validThrough: past,
     sources: { create: [
       { sourceKey: `${key}-primary`, sourceTier: 'EMPLOYER_DIRECT', externalId: suffix,
         url: `https://example.com/primary/${suffix}`, expiresAt,

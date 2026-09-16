@@ -45,7 +45,6 @@ async function source(id: string, raw: object) {
       source: 'WORKDAY',
       title: id,
       url: jobUrl(id),
-      fingerprint: id,
       sources: {
         create: {
           id: `js-${id}`,

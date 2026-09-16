@@ -212,11 +212,10 @@ it("separates hands-on beauty services from retail beauty advice", () => {
     const decision = catalogue.classify(title);
     expect(decision.jobFunction).toBe("beauty-services");
     expect(decision.occupationGroup).toBe("services");
-    expect(decision.isRetail).toBe(false);
   }
   const retail = catalogue.classify("Beauty Advisor");
   expect(retail.jobFunction).toBe("beauty-advisor");
-  expect(retail.isRetail).toBe(true);
+  expect(retail.occupationGroup).toBe("retail");
 });
 
 /**

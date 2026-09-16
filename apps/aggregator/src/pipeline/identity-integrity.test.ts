@@ -129,13 +129,12 @@ describe('transactional identity and source authority', () => {
     const first = await upsertDeduplicated(prisma, candidate({ department: 'Retail', postedAt: new Date('2026-09-01'),
       experienceYears: 7, rawContract: 'CDD', rawWorkingTime: 'Part time', employmentTerm: 'FIXED_TERM', workTime: 'PART_TIME',
       workSchedule: 'NIGHT_SHIFT', rawSchedule: 'Night shift', employmentEvidence: { revision: 1 } }));
-    await prisma.job.update({ where: { id: first.jobId }, data: { adminArea2: 'Old subdivision', inseeCode: '75056' } });
     await upsertDeduplicated(prisma, candidate({ title: 'Client Advisor', description: undefined, country: undefined,
       city: undefined, location: undefined, raw: { revision: 2 } }));
     const job = await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } });
     expect(job).toMatchObject({ title: 'Client Advisor', description: null, department: null, postedAt: null,
-      countryCode: null, countryIntegrity: null, city: null, location: null, adminArea1: null, adminArea2: null,
-      inseeCode: null, experienceYears: null, rawContract: null, rawWorkingTime: null, employmentEvidence: null,
+      countryCode: null, countryIntegrity: null, city: null, location: null, adminArea1: null,
+      experienceYears: null, rawContract: null, rawWorkingTime: null, employmentEvidence: null,
       employmentTerm: null, workTime: null, workSchedule: null, rawSchedule: null });
     expect(await prisma.jobEvent.count({ where: { jobId: job.id, type: 'CHANGED', field: 'country', before: 'FR', after: null } })).toBe(1);
     const events = await prisma.jobEvent.count({ where: { jobId: job.id, type: 'CHANGED' } });

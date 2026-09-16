@@ -72,7 +72,7 @@ async function main(): Promise<number> {
 
   /*
    * LA MÊME POPULATION QUE LE REGISTRE : offres actives, marché résolu comme
-   * `isFrance` d'abord (le drapeau fiable) puis `countryCode`. Une population
+   * `countryCode` ISO-2 (le drapeau `isFrance` a quitté le schéma au lot F1). Une population
    * différente rendrait des chiffres différents et ferait rougir le témoin pour
    * une raison qui n'a rien à voir avec la colonne.
    *
@@ -83,13 +83,13 @@ async function main(): Promise<number> {
    */
   const lignes = await prisma.$queryRawUnsafe<Ligne[]>(`
     SELECT
-      CASE WHEN "isFrance" THEN 'FR' ELSE upper("countryCode") END AS marche,
+      upper("countryCode") AS marche,
       count(*)::int AS actives,
       (count(*) FILTER (WHERE "occupationCode" IS NOT NULL))::float / count(*) AS metier,
       (count(*) FILTER (WHERE "jobFunction" IS NOT NULL))::float / count(*) AS jobfunction
     FROM "Job"
     WHERE "isActive"
-      AND (CASE WHEN "isFrance" THEN 'FR' ELSE upper("countryCode") END) IN (${CODES_MARCHE.map(
+      AND upper("countryCode") IN (${CODES_MARCHE.map(
         (c) => `'${c}'`,
       ).join(',')})
     GROUP BY 1

@@ -53,9 +53,7 @@ describe.skipIf(!enabled)('pertinence multilingue et curseur (lot 7)', () => {
     const lien = `https://example.com/${M}/${g.id}`;
     const pays = g.pays ?? 'FR';
     await prisma.job.create({ data: {
-      id: jobId(g), companyId: companyId(maison), source: 'GENERIC_JSONLD', externalId: g.id, fingerprint: jobId(g),
-      title: g.titre, description: g.description ?? null, url: lien, city: g.ville ?? 'Paris', countryCode: pays, isFrance: pays === 'FR',
-      employmentTerm: g.contrat ?? null, workTime: g.temps ?? 'FULL_TIME', language: g.langue ?? 'fr', isActive: true,
+      id: jobId(g), companyId: companyId(maison), source: 'GENERIC_JSONLD', externalId: g.id, title: g.titre, description: g.description ?? null, url: lien, city: g.ville ?? 'Paris', countryCode: pays, employmentTerm: g.contrat ?? null, workTime: g.temps ?? 'FULL_TIME', language: g.langue ?? 'fr', isActive: true,
       postedAt: new Date(g.posteLe ?? '2026-08-01'), firstSeenAt: new Date(g.posteLe ?? '2026-08-01'),
       sources: { create: { sourceKey: M, sourceTier: 'ATS_OFFICIAL', externalId: g.id, url: lien, isActive: true,
         ...publicationFixture({ sourceKey: M, sourceTier: 'ATS_OFFICIAL', externalId: g.id, url: lien, title: g.titre, description: g.description, city: g.ville ?? 'Paris',

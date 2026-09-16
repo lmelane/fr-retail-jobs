@@ -70,8 +70,7 @@ describe.skipIf(!enabled)('deux origines, une recherche (lot 6)', () => {
       const titre = `Conseiller de vente ${g.id}`;
       const lien = `https://example.com/${M}/${g.id}`;
       await prisma.job.create({ data: {
-        id: `${M}-${g.id}`, companyId, source: 'GENERIC_JSONLD', externalId: g.id, fingerprint: `${M}-${g.id}`,
-        title: titre, url: lien, city: g.ville, countryCode: g.pays, isFrance: g.pays === 'FR', postalCode: g.codePostal ?? null,
+        id: `${M}-${g.id}`, companyId, source: 'GENERIC_JSONLD', externalId: g.id, title: titre, url: lien, city: g.ville, countryCode: g.pays, postalCode: g.codePostal ?? null,
         employmentTerm: g.contrat, language: 'fr', isActive: true, postedAt: new Date(g.posteLe), firstSeenAt: new Date(g.posteLe),
         sources: { create: { sourceKey: M, sourceTier: 'ATS_OFFICIAL', externalId: g.id, url: lien, isActive: true,
           ...publicationFixture({ sourceKey: M, sourceTier: 'ATS_OFFICIAL', externalId: g.id, url: lien, title: titre, city: g.ville,

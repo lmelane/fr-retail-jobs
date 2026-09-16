@@ -53,7 +53,6 @@ async function seedCompany(name: string, canonicalKey: string, activeJobs: numbe
         title: `Poste ${i}`,
         url: `https://x/${canonicalKey}/${i}`,
         clusterKey: `${canonicalKey}|paris`,
-        fingerprint: `${canonicalKey}|${i}`,
         isActive: true,
       },
     });

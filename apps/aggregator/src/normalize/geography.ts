@@ -1,5 +1,5 @@
 /**
- * GÉOGRAPHIE MONDIALE — countryCode · city · adminArea1 · adminArea2.
+ * GÉOGRAPHIE MONDIALE — countryCode · city · adminArea1.
  *
  * Modèle validé par Loïc le 2026-09-08, à partir de la mesure des 71 636 offres.
  *
@@ -8,9 +8,11 @@
  *    macro-régions BUSINESS, dérivables du pays le jour où le besoin existe.
  *    Les mettre dans `adminArea1` mélangerait deux niveaux conceptuels, comme
  *    `contract` mélangeait quatre concepts.
- *  - pas de colonne par identifiant national : `inseeCode` (code communal
- *    français, 2 750 offres sur 2 770) vit dans `locationIdentifiers`, une
- *    structure qui accueillera les suivants sans ajouter de colonne par pays.
+ *  - pas de colonne par identifiant national : le code communal INSEE a quitté
+ *    `Job` au lot F1 (2026-09-16) ; `GeoCache` garde le sien comme clé de
+ *    jointure du géocodage, sans en faire une primitive mondiale.
+ *  - pas de second niveau administratif (`adminArea2`) : aucune source ne le
+ *    fournissait, la colonne est partie avec le lot F1.
  *
  * RÈGLE CARDINALE : **une géographie incomplète mais certaine vaut mieux qu'une
  * géographie complète inventée.**
@@ -43,8 +45,6 @@ export type ResolvedGeography = {
   countryCode?: string;
   city?: string;
   adminArea1?: string;
-  /** Nullable, et jamais rempli artificiellement pour justifier la colonne. */
-  adminArea2?: string;
   method?: GeoMethod;
   sourcePath?: string;
   confidence?: number;

@@ -37,7 +37,6 @@ describe('retireSource', () => {
         source: 'WORKDAY',
         title: 'Vendeur',
         url: 'https://old/r-1',
-        fingerprint: 'fp1',
         sources: {
           create: [{ sourceKey: 'cartier-3', sourceTier: 'ATS_OFFICIAL', externalId: 'r-1', url: 'https://old/r-1' }],
         },
@@ -54,7 +53,6 @@ describe('retireSource', () => {
         title: 'Sales Associate',
         url: 'https://old/r-2',
         canonicalTier: 'ATS_OFFICIAL',
-        fingerprint: 'fp2',
         sources: {
           create: [
             { sourceKey: 'cartier-3', sourceTier: 'ATS_OFFICIAL', externalId: 'r-2', url: 'https://old/r-2' },
@@ -80,7 +78,7 @@ describe('retireSource', () => {
     expect(jobs[0]).toMatchObject({ url: 'https://wttj/w-2', title: 'WTTJ title', description: 'WTTJ own text', countryCode: 'GB', city: 'Londres' });
     expect(jobs[0].canonicalTier).toBe('SPECIALIST_JOBBOARD');
     expect(jobs[0].sources.filter(s => s.isActive).map((s) => s.sourceKey)).toEqual(['wttj']);
-    const withdrawn = await prisma.job.findFirstOrThrow({ where: { fingerprint: 'fp1' } });
+    const withdrawn = await prisma.job.findFirstOrThrow({ where: { externalId: 'r-1', source: 'WORKDAY' } });
     expect(withdrawn).toMatchObject({ isActive: false, closedAt: null, withdrawalReason: 'SOURCE_RETIRED' });
     expect(withdrawn.withdrawnAt).toBeInstanceOf(Date);
     expect(await prisma.jobEvent.count({ where: { type: 'CLOSED' } })).toBe(0);
@@ -111,15 +109,13 @@ describe('retireSource — une seule route d’une clé (externalIdPrefix)', () 
     // Route sitemap seule : doit disparaître.
     await prisma.job.create({
       data: {
-        companyId: company.id, externalId: 'https://www.kering.com/fr/offres/x', source: 'GENERIC_JSONLD', title: 'Stage 2021', url: 'https://www.kering.com/fr/offres/x', fingerprint: 'fp-sitemap',
-        sources: { create: [{ sourceKey: 'kering', sourceTier: 'GROUP_OFFICIAL', externalId: 'https://www.kering.com/fr/offres/x', url: 'https://www.kering.com/fr/offres/x' }] },
+        companyId: company.id, externalId: 'https://www.kering.com/fr/offres/x', source: 'GENERIC_JSONLD', title: 'Stage 2021', url: 'https://www.kering.com/fr/offres/x', sources: { create: [{ sourceKey: 'kering', sourceTier: 'GROUP_OFFICIAL', externalId: 'https://www.kering.com/fr/offres/x', url: 'https://www.kering.com/fr/offres/x' }] },
       },
     });
     // Route Eightfold : doit rester intacte.
     await prisma.job.create({
       data: {
-        companyId: company.id, externalId: '12345', source: 'EIGHTFOLD', title: 'Vendeur', url: 'https://careers.kering.com/12345', fingerprint: 'fp-eightfold',
-        sources: { create: [{ sourceKey: 'kering', sourceTier: 'GROUP_OFFICIAL', externalId: '12345', url: 'https://careers.kering.com/12345' }] },
+        companyId: company.id, externalId: '12345', source: 'EIGHTFOLD', title: 'Vendeur', url: 'https://careers.kering.com/12345', sources: { create: [{ sourceKey: 'kering', sourceTier: 'GROUP_OFFICIAL', externalId: '12345', url: 'https://careers.kering.com/12345' }] },
       },
     });
 

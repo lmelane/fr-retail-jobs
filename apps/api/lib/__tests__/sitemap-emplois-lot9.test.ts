@@ -46,9 +46,7 @@ describe.skipIf(!enabled)('sitemap du catalogue (lot 9)', () => {
       const lien = `https://example.com/${M}/${g.id}`;
       const posteLe = g.posteLe ? new Date(g.posteLe) : null;
       await prisma.job.create({ data: {
-        id: `${M}-${g.id}`, companyId: `${M}-maison`, source: 'GENERIC_JSONLD', externalId: g.id, fingerprint: `${M}-${g.id}`,
-        title: g.titre, description: g.description ?? null, url: lien, city: 'Paris', countryCode: 'FR', isFrance: true,
-        employmentTerm: 'PERMANENT', workTime: 'FULL_TIME', language: 'fr', isActive: true,
+        id: `${M}-${g.id}`, companyId: `${M}-maison`, source: 'GENERIC_JSONLD', externalId: g.id, title: g.titre, description: g.description ?? null, url: lien, city: 'Paris', countryCode: 'FR', employmentTerm: 'PERMANENT', workTime: 'FULL_TIME', language: 'fr', isActive: true,
         opportunityType: g.spontanee ? 'OPEN_APPLICATION' : 'JOB_OPENING',
         postedAt: posteLe, firstSeenAt: new Date('2026-08-01'),
         sources: { create: { sourceKey: M, sourceTier: 'ATS_OFFICIAL', externalId: g.id, url: lien, isActive: true,

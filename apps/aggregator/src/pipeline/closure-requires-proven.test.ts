@@ -80,7 +80,7 @@ async function addPostings(sourceKey: string, externalIds: string[], lastSeenAt:
     const key = `${sourceKey}-${externalId}`;
     const job = await prisma.job.create({ data: {
       companyId: company.id, title: `Poste ${externalId}`, url: `https://crp.example/${sourceKey}/${externalId}`,
-      source: 'GENERIC_JSONLD', externalId: key, fingerprint: `crp:${key}`, pipelineVersion: 1,
+      source: 'GENERIC_JSONLD', externalId: key, pipelineVersion: 1,
       isActive: true, firstSeenAt: lastSeenAt, lastSeenAt,
       canonicalSourceKey: sourceKey, canonicalExternalId: key, canonicalTier: 'EMPLOYER_DIRECT',
     } });

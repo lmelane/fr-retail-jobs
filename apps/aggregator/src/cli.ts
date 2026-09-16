@@ -19,7 +19,6 @@ import { runEgressProbe } from './pipeline/egressProbe.js';
  */
 const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 * 1000);
 import { runRefresh, refreshScope } from './pipeline/refresh.js';
-import { parseDay, runSnapshot, type SnapshotStats } from './pipeline/snapshot.js';
 import { retireSource } from './pipeline/retireSource.js';
 import { importSourcesCsv } from './connectors/sourceStore.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
@@ -30,12 +29,10 @@ import { closeBrowser } from './lib/browser.js';
 import { validateCliArguments } from './lib/cliArguments.js';
 
 /**
- * Ingestion, lifecycle maintenance and manual snapshots have separate entry points:
+ * Ingestion and lifecycle maintenance have separate entry points:
  *
  *   ingest    (~2h)    new and updated offers; dedup happens at write time
- *   refresh   (daily)  lifecycle — closes offers no source reports any more,
- *                      then takes the day's market snapshot (D38)
- *   snapshot  (manual) the market snapshot alone: --date=, --backfill-from=
+ *   refresh   (daily)  lifecycle — closes offers no source reports any more
  *
  * geocode runs after ingest to resolve any new cities for the map.
  */
@@ -152,34 +149,9 @@ try {
     const onlyKeys = refreshScope(catalogue.map((s) => s.key));
     if (onlyKeys) await log.info('refresh.scoped', { sources: onlyKeys.length, keys: onlyKeys.join(',') });
     const refresh = await runRefresh(prisma, onlyKeys ? { onlyKeys } : {});
-    /**
-     * D38 : la photographie du jour se prend APRÈS les fermetures, pour que
-     * `closedJobs` et la durée de publication médiane reflètent ce refresh.
-     * Un échec du snapshot est un incident visible (exit 1) mais ne cache
-     * jamais le résultat du refresh, déjà acquis.
-     */
-    let snapshot: SnapshotStats | null = null;
-    let snapshotError: string | null = null;
-    if (refresh.refused) {
-      // Un refresh refusé laisse des offres périmées « actives » : les
-      // photographier ferait entrer un faux jour dans l'historique (audit I-2).
-      snapshotError = 'refresh refused by the mass-closure guard — no snapshot taken for today';
-    } else {
-      try {
-        // La garde IA par société (audit I-3) tourne chaque nuit, AVANT la
-        // photographie : l'indice IA du jour ne compte pas les textes d'entreprise.
-        const { aiCompanyGuard } = await import('./pipeline/classifyJobs.js');
-        await aiCompanyGuard(prisma);
-        snapshot = await runSnapshot(prisma);
-      } catch (error) {
-        log.assertHealthy();
-        await log.error('snapshot.failed', { error });
-        snapshotError = error instanceof Error ? error.message : String(error);
-      }
-    }
     // Report honestly: a refused mass-closure or a skipped broken source is an
     // incident the scheduler must show, not a silent ok:true.
-    await log.info('refresh.completed', { ok: !refresh.refused && !snapshotError, command, ...refresh, snapshot, snapshotError });
+    await log.info('refresh.completed', { ok: !refresh.refused, command, ...refresh });
     if (refresh.refused) {
       await log.error('command.failed', '[refresh] mass-closure guard refused the run — a source is likely broken');
       process.exitCode = 1;
@@ -187,24 +159,6 @@ try {
     if (refresh.unverifiableSources.length > 0) {
       await log.error('command.failed', `[refresh] left offers of broken sources open: ${refresh.unverifiableSources.join(', ')}`);
     }
-    if (snapshotError) {
-      await log.error('command.failed', `[snapshot] failed after refresh: ${snapshotError}`);
-      process.exitCode = 1;
-    }
-  } else if (command === 'snapshot') {
-    /**
-     * Photographie du marché (D38) pour un jour : `--date=YYYY-MM-DD` (défaut
-     * aujourd'hui UTC), `--backfill-from=YYYY-MM-DD` reconstruit chaque jour
-     * depuis cette date (approximation : voir snapshot.ts). Idempotent.
-     */
-    const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
-    const date = arg('date');
-    const backfillFrom = arg('backfill-from');
-    const stats = await runSnapshot(prisma, {
-      ...(date ? { date: parseDay(date) } : {}),
-      ...(backfillFrom ? { backfillFrom: parseDay(backfillFrom) } : {}),
-    });
-    await log.info('command.result', { ok: true, command, ...stats });
   } else if (command === 'direct-sync') {
     /**
      * Lot 6 (D-423) — la copie de lecture des offres Catwalks : consomme le
@@ -286,7 +240,7 @@ try {
     await log.info('occupation.catalogue_result',{command,releaseId:receipt.targetRelease,activeJobs:receipt.activeJobs,classifiedActive:receipt.classifiedActive,proofHash:receipt.proofHash,output});
   } else if (command === 'classify-jobs') {
     /**
-     * Rejoue la version active du référentiel métier (métier, séniorité, retail) sur toute la base — actives et fermées — pour les lignes
+     * Rejoue la version active du référentiel métier (métier, séniorité) sur toute la base — actives et fermées — pour les lignes
      * dont la version de taxonomie est en retard. `--all` re-classe tout,
      * `--limit=<n>` borne, `--dry-run` compte sans écrire.
      */

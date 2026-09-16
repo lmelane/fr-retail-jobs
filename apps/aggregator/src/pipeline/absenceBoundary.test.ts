@@ -29,7 +29,7 @@ async function stale(sourceKey: string, externalId: string, hoursAgo = 72, owner
   const company = owner === 'RESOLVED' ? await resolvedCompany(db, sourceKey)
     : await db.company.create({ data: { name: `Other Maison ${externalId}`, canonicalKey: `other-${sourceKey}-${externalId}`, fashionjobsUrl: `resolved:other-${sourceKey}-${externalId}` } });
   const job = await db.job.create({ data: { companyId: company.id, externalId: `${sourceKey}:${externalId}`, source: 'GENERIC_JSONLD', title: 'Vendeur',
-    url: `https://x/${sourceKey}/${externalId}`, fingerprint: `fp-${sourceKey}-${externalId}`, isActive: true, lastSeenAt: seen,
+    url: `https://x/${sourceKey}/${externalId}`, isActive: true, lastSeenAt: seen,
     canonicalSourceKey: sourceKey, canonicalExternalId: externalId, canonicalTier: 'EMPLOYER_DIRECT',
     sources: { create: { sourceKey, sourceTier: 'EMPLOYER_DIRECT', externalId, url: `https://x/${sourceKey}/${externalId}`, isActive: true, lastSeenAt: seen,
       ...publicationFixture({ sourceKey, externalId, url: `https://x/${sourceKey}/${externalId}`, title: 'Vendeur' }) } } } });

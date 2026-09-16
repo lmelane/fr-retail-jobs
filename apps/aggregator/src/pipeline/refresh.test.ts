@@ -46,7 +46,6 @@ async function job(companyId: string, sourceKey: string, externalId: string, hou
       source: 'GENERIC_JSONLD',
       title: 'Vendeur',
       url: `https://x/${externalId}`,
-      fingerprint: `fp-${externalId}`,
       canonicalSourceKey: sourceKey, canonicalExternalId: `s-${externalId}`, canonicalTier: 'ATS_OFFICIAL',
       isActive: true,
       lastSeenAt: seen,
@@ -230,7 +229,7 @@ describe('runRefresh', () => {
     const j = await prisma.job.create({
       data: {
         companyId: c.id, externalId: 'shared', source: 'GENERIC_JSONLD', title: 'Vendeur',
-        url: 'https://x/shared', fingerprint: 'fp-shared', isActive: true, lastSeenAt: seenNew,
+        url: 'https://x/shared', isActive: true, lastSeenAt: seenNew,
         sources: {
           create: [
             { sourceKey: 'kering', sourceTier: 'ATS_OFFICIAL', externalId: 's-k', url: 'https://x/shared', isActive: true, lastSeenAt: seenOld },

@@ -29,8 +29,7 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     await prisma.job.createMany({ data: Array.from({ length: 301 }, (_, i) => ({
       id: `${prefix}${String(i).padStart(3, '0')}`, companyId: `${prefix}${i}`, externalId: String(i),
       source: 'GENERIC_JSONLD' as const, title: 'Conseiller de vente', url: `https://example.com/jobs/${i}`,
-      fingerprint: `${prefix}${i}`, isActive: true, postedAt: new Date('2026-01-01'), countryCode: 'FR', isFrance: true,
-      firstSeenAt: new Date('2026-01-01'),
+      isActive: true, postedAt: new Date('2026-01-01'), countryCode: 'FR', firstSeenAt: new Date('2026-01-01'),
     })) });
     await prisma.jobSource.createMany({ data: Array.from({ length: 301 }, (_, i) => ({
       jobId: `${prefix}${String(i).padStart(3, '0')}`, sourceKey: 'audit-facets', sourceTier: 'ATS_OFFICIAL',
@@ -99,7 +98,7 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
   });
   it('keeps literal results while adding a reviewed occupation synonym and stable filter',async()=>{
     const id=`${prefix}000`,catalogue=await database.loadOccupationTaxonomy(prisma);
-    await prisma.job.update({where:{id},data:{title:'Sales Advisor',...catalogue.classify('Sales Advisor')}});
+    await prisma.job.update({where:{id},data:{title:'Sales Advisor',...database.persistedOccupationDecision(catalogue.classify('Sales Advisor'))}});
     await prisma.jobSource.update({ where: { sourceKey_externalId: { sourceKey: 'audit-facets', externalId: '0' } }, data: publicationFixture({ sourceKey: 'audit-facets', externalId: '0', url: 'https://example.com/jobs/0', title: 'Sales Advisor' }) });
     const result=await getJobs(fr({q:'Conseiller de vente'}));
     expect(result.total).toBe(301); // 300 literal FR titles + one reviewed EN occupation.
@@ -124,8 +123,7 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     const fermeesRecentes = () => prisma.job.count({ where: { companyId: `${prefix}0`, mergedIntoId: null, isActive: false, closedAt: { gte: new Date(Date.now() - 30 * 86_400_000) } } });
     await prisma.job.create({ data: {
       id: origin, companyId: `${prefix}0`, externalId: 'old-posting', source: 'GENERIC_JSONLD',
-      title: 'Ancien titre', url: 'https://example.com/old-posting', fingerprint: origin,
-      isActive: false, mergedIntoId: target, closedAt: new Date(),
+      title: 'Ancien titre', url: 'https://example.com/old-posting', isActive: false, mergedIntoId: target, closedAt: new Date(),
       events: { create: { type: 'MERGED', field: 'mergedInto', after: target } },
     } });
     const state = await getJobStatus(origin);

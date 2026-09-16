@@ -5,8 +5,8 @@
  * "US", "États-Unis d'Amérique", "United States", "Italie", "IT"… — so the same
  * country appears under several spellings. This collapses them to one canonical
  * code + French label, so the filter shows "France (2 604)" once, not three
- * rows. France is special-cased on the reliable isFrance flag elsewhere; this
- * map covers display and the non-France codes.
+ * rows. The search itself filters on the ISO-2 `countryCode`; this map covers
+ * display and the non-France codes.
  */
 
 import { knownAlpha2 } from './iso-alpha2';

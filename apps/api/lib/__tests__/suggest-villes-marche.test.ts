@@ -86,7 +86,6 @@ describe.skipIf(!actif)('suggestCities — cloisonnement par périmètre', () =>
             source: 'UNKNOWN' as const,
             title: 'Conseiller de vente',
             url: `https://example.invalid/${MARQUEUR}/${numero}`,
-            fingerprint: `${MARQUEUR}-${numero}`,
             city: s.ville,
             countryCode: s.pays,
             isActive: true,

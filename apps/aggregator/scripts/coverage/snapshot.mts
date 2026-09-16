@@ -14,7 +14,7 @@ try {
       return {
         at: new Date().toISOString(),
         totals:
-          await tx.$queryRaw`SELECT count(*)::int jobs,count(*) FILTER(WHERE "isActive")::int active,count(*) FILTER(WHERE "isActive" AND "isFrance")::int france,md5(string_agg(id,',' ORDER BY id)) ids FROM "Job"`,
+          await tx.$queryRaw`SELECT count(*)::int jobs,count(*) FILTER(WHERE "isActive")::int active,count(*) FILTER(WHERE "isActive" AND "countryCode" = 'FR')::int france,md5(string_agg(id,',' ORDER BY id)) ids FROM "Job"`,
         companies: await tx.company.findMany({
           select: {
             id: true,
@@ -66,9 +66,9 @@ try {
           });
         })(),
         counts:
-          await tx.$queryRaw`SELECT "companyId",count(*)::int world,count(*) FILTER(WHERE "isFrance")::int france FROM "Job" WHERE "isActive" GROUP BY 1`,
+          await tx.$queryRaw`SELECT "companyId",count(*)::int world,count(*) FILTER(WHERE "countryCode" = 'FR')::int france FROM "Job" WHERE "isActive" GROUP BY 1`,
         sourceCompanies:
-          await tx.$queryRaw`SELECT js."sourceKey",j."companyId",count(*)::int representations,count(*) FILTER(WHERE js."isActive" AND j."isActive")::int active,count(*) FILTER(WHERE js."isActive" AND j."isActive" AND j."isFrance")::int france FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" GROUP BY 1,2`,
+          await tx.$queryRaw`SELECT js."sourceKey",j."companyId",count(*)::int representations,count(*) FILTER(WHERE js."isActive" AND j."isActive")::int active,count(*) FILTER(WHERE js."isActive" AND j."isActive" AND j."countryCode" = 'FR')::int france FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" GROUP BY 1,2`,
         latestRuns:
           await tx.$queryRaw`SELECT DISTINCT ON("sourceKey") * FROM "SourceRun" ORDER BY "sourceKey","ranAt" DESC,id DESC`,
         latestIdentityReviews: await tx.sourceIdentityReview.findMany({

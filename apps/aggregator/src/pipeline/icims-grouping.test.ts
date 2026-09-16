@@ -27,7 +27,7 @@ describe('iCIMS regional publication persistence',()=>{
   const prefix=randomUUID(),a=candidate(prefix+'-hub','?hub=15&in_iframe=1'),b=candidate(prefix+'-direct','?in_iframe=1');
   for(const [item,status,config] of [[a,'ACTIVE',{origin:'https://hub-brand.icims.com'}],[b,'RETIRED',{origin}]] as const)await db.source.create({data:{key:item.sourceKey,maison:item.company,kind:'icims',config,tier:item.sourceTier,tenantKey:item.sourceKey,status}});
   const company=await db.company.create({data:{name:a.company,canonicalKey:prefix,fashionjobsUrl:'icims:'+prefix}});
-  const job=await db.job.create({data:{companyId:company.id,externalId:'legacy',source:'ICIMS',title:'Wrong legacy title',url:'https://legacy.example/job',fingerprint:prefix,isActive:true,canonicalSourceKey:a.sourceKey,canonicalExternalId:a.externalId}});
+  const job=await db.job.create({data:{companyId:company.id,externalId:'legacy',source:'ICIMS',title:'Wrong legacy title',url:'https://legacy.example/job',isActive:true,canonicalSourceKey:a.sourceKey,canonicalExternalId:a.externalId}});
   for(const item of [a,b])await db.jobSource.create({data:{jobId:job.id,sourceKey:item.sourceKey,externalId:item.externalId,sourceTier:item.sourceTier,url:item.url,title:item.title,raw:item.raw as any,isActive:item===a,lastSeenAt:new Date()}});
   const before=await db.jobSource.findMany({where:{jobId:job.id},orderBy:{id:'asc'}}),request={jobIds:[job.id],groups:[{jobId:job.id,sourceIds:before.map(s=>s.id)}],reason:'Qualified regional native URL shared by the original hub and retired direct publication'};
   await expect(planPublicationGroups(db,request)).rejects.toThrow('DETAIL_IDENTITY_MISMATCH');

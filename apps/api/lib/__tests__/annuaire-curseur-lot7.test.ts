@@ -29,8 +29,7 @@ describe.skipIf(!enabled)('annuaire : curseur (lot 7)', () => {
       const lien = `https://example.com/${M}/${i}`;
       await prisma.company.create({ data: { id, name: nom(i), canonicalKey: id, fashionjobsUrl: `resolved:${id}` } });
       await prisma.job.create({ data: {
-        id: `${M}-offre-${String(i).padStart(2, '0')}`, companyId: id, source: 'GENERIC_JSONLD', externalId: String(i), fingerprint: `${M}-offre-${i}`,
-        title: 'Conseiller de vente', url: lien, city: 'Paris', countryCode: 'FR', isFrance: true, language: 'fr', isActive: true,
+        id: `${M}-offre-${String(i).padStart(2, '0')}`, companyId: id, source: 'GENERIC_JSONLD', externalId: String(i), title: 'Conseiller de vente', url: lien, city: 'Paris', countryCode: 'FR', language: 'fr', isActive: true,
         postedAt: new Date('2026-09-01'), firstSeenAt: new Date('2026-09-01'),
         sources: { create: { sourceKey: M, sourceTier: 'ATS_OFFICIAL', externalId: String(i), url: lien, isActive: true,
           ...publicationFixture({ sourceKey: M, sourceTier: 'ATS_OFFICIAL', externalId: String(i), url: lien, title: 'Conseiller de vente', city: 'Paris', country: 'FR', language: 'fr', postedAt: new Date('2026-09-01') }) } },

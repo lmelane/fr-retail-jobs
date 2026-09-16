@@ -4,7 +4,7 @@ import { resolveGeography, isValidCityName } from './geography.js';
 /**
  * LE MODÈLE GÉOGRAPHIQUE MONDIAL (validé par Loïc, 2026-09-08) :
  *
- *   countryCode · city · adminArea1 · adminArea2 · postalCode · lat/lng
+ *   countryCode · city · adminArea1 · postalCode · lat/lng
  *
  * `adminArea1` = la première subdivision administrative du pays (California,
  * Île-de-France, Ontario). PAS de colonne `continent` : « Europe » ou « Asia

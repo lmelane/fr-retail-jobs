@@ -180,8 +180,7 @@ async function prepare(db: Database, request: Request, bodies: ReadonlyMap<strin
       ? members.every(member => catalogue.find(item => item.key === member.sourceKey)?.status === 'RETIRED') ? 'SOURCE_RETIRED' : 'ATTESTATION_MISSING'
       : withdrawals[0].reason;
     const patch = { ...content, companyId: jobs[0].companyId, mergedIntoId: null,
-      // Location enrichments formerly attached to the group are not evidence for this publication.
-      inseeCode: null, adminArea2: null, validThrough: owner.expiresAt,
+      validThrough: owner.expiresAt,
       isActive: available && !withdrawals[0].at, withdrawnAt: withdrawals[0].at, withdrawalReason,
       closedAt: available ? null : current?.closedAt ?? null,
       lastSeenAt: new Date(Math.max(...members.map(member => member.lastSeenAt.getTime()))),

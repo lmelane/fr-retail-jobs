@@ -40,7 +40,7 @@ export async function planSmcpRepair(prisma: PrismaClient): Promise<RepairPlan> 
     if (!brand) unknownBrand++; else changedBrand++;
     const clusterKey = blockingKey({ externalId: entry.externalId, sourceKey: entry.sourceKey, url: entry.url, raw: entry.raw });
     operations.push({ entity: 'Job', id: entry.job.id, before: json(entry.job), patch: {
-      companyId, clusterKey, fingerprint: `${clusterKey}|${entry.job.title}`,
+      companyId, clusterKey,
       canonicalSourceKey: entry.sourceKey, canonicalExternalId: entry.externalId, canonicalTier: entry.sourceTier,
     }, reason: brand ? `RAW customField[fieldLabel=Brands].valueLabel=${brand}` : 'No proven brand: attach to the proven SMCP group, never infer Sandro' });
   }

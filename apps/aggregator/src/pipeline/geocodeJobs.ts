@@ -22,7 +22,7 @@ export type GeocodeStats = {
 
 export async function runGeocode(prisma: PrismaClient): Promise<GeocodeStats> {
   const pending = await prisma.job.findMany({
-    where: { isFrance: true, isActive: true, latitude: null, location: { not: null } },
+    where: { countryCode: 'FR', isActive: true, latitude: null, location: { not: null } },
     select: { id: true, location: true },
   });
 
@@ -81,7 +81,6 @@ export async function runGeocode(prisma: PrismaClient): Promise<GeocodeStats> {
         longitude: hit.longitude,
         city: hit.city,
         postalCode: hit.postalCode,
-        inseeCode: hit.inseeCode,
       },
     });
     jobsLocated++;

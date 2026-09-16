@@ -1,4 +1,11 @@
 /**
+ * SPÉCIFICATION HORS RUNTIME (lot F1, 2026-09-16). Ce fichier a quitté
+ * `apps/api/lib/matching/` par déplacement Git (historique conservé) : aucun
+ * code de production ne l'importait, et le matching des candidats est le
+ * prochain chantier, hors de la phase catalogue. Il n'est ni compilé ni testé
+ * par les suites ; ses témoins (`vocabulaire-d421.test.ts`, à côté) documentent
+ * la règle D-421 et se rejoueront quand le matching sera branché.
+ *
  * Table de correspondance des VOCABULAIRES entre le catalogue agrégé
  * (Railway, anglais mondial) et les préférences d'un candidat Catwalks
  * (français métier) — D-421, premier lot du schéma canonique.

@@ -44,8 +44,7 @@ async function publication(options: { ashby?: boolean; url?: string; title?: str
   if (options.captureKind) await db.source.update({ where: { key }, data: { kind: 'generic-listing' } });
   const native = result.jobs[0];
   const parent = options.jobId ? await db.job.findUniqueOrThrow({ where: { id: options.jobId } }) : await db.job.create({ data: {
-    companyId, externalId, source: 'GENERIC_JSONLD', title: native.title, description: native.description, url, fingerprint: key,
-    canonicalSourceKey: key, canonicalExternalId: externalId, canonicalTier: options.tier ?? 'EMPLOYER_DIRECT',
+    companyId, externalId, source: 'GENERIC_JSONLD', title: native.title, description: native.description, url, canonicalSourceKey: key, canonicalExternalId: externalId, canonicalTier: options.tier ?? 'EMPLOYER_DIRECT',
   } });
   const source = await db.jobSource.create({ data: { jobId: parent.id, sourceKey: key, externalId, sourceTier: options.tier ?? 'EMPLOYER_DIRECT',
     url, title: native.title, raw: native.raw as any, captureBatchId: native.captureBatchId, captureOutputId: native.captureOutputId } });
@@ -144,12 +143,12 @@ describe('reviewed publication partitions', () => {
   it('merges only proven publications, replaces the complete presentation from its owner, and replays once', async () => {
     const a = await publication({ tier: 'SPECIALIST_JOBBOARD', title: 'Paris board title', city: 'Paris', country: 'FR', description: 'Board description' });
     const b = await publication({ url: `${application}?employer=1`, title: 'New York title', city: 'New York', country: 'US', description: 'Employer description' });
-    await db.job.update({ where: { id: a.job.id }, data: { city: 'Paris', countryCode: 'FR', inseeCode: '75056', adminArea2: 'Paris' } });
+    await db.job.update({ where: { id: a.job.id }, data: { city: 'Paris', countryCode: 'FR' } });
     const beforeSources = await db.jobSource.findMany({ orderBy: { id: 'asc' } });
     const plan = await mergePlan(a, b);
     expect(await apply(plan)).toMatchObject({ alreadyApplied: false, groups: 1, redirects: 1 });
     expect(await db.job.findUniqueOrThrow({ where: { id: a.job.id } })).toMatchObject({ title: 'New York title', description: 'Employer description',
-      city: 'New York', countryCode: 'US', inseeCode: null, adminArea2: null, canonicalSourceKey: b.source.sourceKey });
+      city: 'New York', countryCode: 'US', canonicalSourceKey: b.source.sourceKey });
     expect(await db.job.findUniqueOrThrow({ where: { id: b.job.id } })).toMatchObject({ mergedIntoId: a.job.id, isActive: false });
     const afterSources = await db.jobSource.findMany({ orderBy: { id: 'asc' } });
     expect(afterSources.map(({ jobId: _job, sourceFacts: _facts, presentation: _presentation, ...source }) => source)).toEqual(beforeSources.map(({ jobId: _job, sourceFacts: _facts, presentation: _presentation, ...source }) => source));
@@ -283,7 +282,7 @@ describe('reviewed publication partitions', () => {
 
   it('refuses to restore an unrelated historical URL without its original publication anchor', async () => {
     const a = await publication();
-    const old = await db.job.create({ data: { companyId, externalId: 'unrelated', fingerprint: 'unrelated', source: 'GENERIC_JSONLD', title: 'Unrelated old job', url: 'https://example.com/unrelated',
+    const old = await db.job.create({ data: { companyId, externalId: 'unrelated', source: 'GENERIC_JSONLD', title: 'Unrelated old job', url: 'https://example.com/unrelated',
       isActive: false, mergedIntoId: a.job.id, canonicalSourceKey: 'unrelated', canonicalExternalId: 'unrelated',
       events: { create: { type: 'MERGED', field: 'mergedInto', after: a.job.id } } } });
     await expect(planPublicationGroups(db, { jobIds: [a.job.id, old.id], groups: [{ jobId: old.id, sourceIds: [a.source.id] }], reason: 'Attempt to reassign an unrelated historical URL' })).rejects.toThrow('original native publication anchor');

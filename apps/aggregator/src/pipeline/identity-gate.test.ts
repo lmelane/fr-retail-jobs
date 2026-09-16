@@ -33,7 +33,7 @@ async function fixture() {
   const review = await prisma.employerIdentityReview.create({ data: { id: randomUUID(), statement: 'fixture: the house belongs to the group', evidence: [], planHash: 'fixture', reviewedBy: 'integration', reviewedAt: new Date() } });
   const house = await prisma.company.create({ data: { name: `Saint House ${k}`, canonicalKey: `SAINT_HOUSE_${k}`, kind: 'MAISON', fashionjobsUrl: `resolved:SAINT_HOUSE_${k}`, parentGroup: `Actual Group ${k}`, parentGroupId: group.id, identityReviewId: review.id } });
   const other = await prisma.company.create({ data: { name: `Other Brand ${k}`, canonicalKey: `OTHER_BRAND_${k}`, kind: 'BRAND', fashionjobsUrl: `resolved:OTHER_BRAND_${k}` } });
-  const job = await prisma.job.create({ data: { companyId: house.id, externalId: id, source: 'EIGHTFOLD', title: 'Client Advisor', url: `https://careers.example.com/job/${id}`, fingerprint: `SAINT_HOUSE_${k}|${id}`, clusterKey: `SAINT_HOUSE_${k}|${id}`, isActive: true, firstSeenAt: new Date(), lastSeenAt: new Date(),
+  const job = await prisma.job.create({ data: { companyId: house.id, externalId: id, source: 'EIGHTFOLD', title: 'Client Advisor', url: `https://careers.example.com/job/${id}`, clusterKey: `SAINT_HOUSE_${k}|${id}`, isActive: true, firstSeenAt: new Date(), lastSeenAt: new Date(),
     sources: { create: { sourceKey: SOURCE, externalId: id, url: `https://careers.example.com/job/${id}`, sourceTier: 'GROUP_OFFICIAL', isActive: true, firstSeenAt: new Date(), lastSeenAt: new Date(), raw: {} } } } });
   const base = { sourceKey: SOURCE, externalId: id, title: 'Client Advisor', url: `https://careers.example.com/job/${id}`, source: 'EIGHTFOLD' } as any;
   // Previous attested observation: the house.

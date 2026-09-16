@@ -9,7 +9,7 @@ import {
   TEMPS_DE_TRAVAIL,
   UNIVERS,
   correspondance,
-} from '../matching/vocabulaire';
+} from './vocabulaire';
 
 /**
  * D-421 — la règle qui décide de ce que voit chaque candidat : une offre

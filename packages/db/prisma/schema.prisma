@@ -288,13 +288,10 @@ model Company {
   fashionjobsOfferCount Int?
   careersUrl            String?
   atsType               AtsType                 @default(UNKNOWN)
-  atsConfig             Json?
   discoveryStatus       DiscoveryStatus         @default(PENDING)
   discoveryNote         String?
   firstSeenAt           DateTime                @default(now())
   lastSeenAt            DateTime                @default(now())
-  lastAtsDiscoveryAt    DateTime?
-  lastJobSyncAt         DateTime?
   createdAt             DateTime                @default(now())
   updatedAt             DateTime                @updatedAt
   jobs                  Job[]
@@ -464,9 +461,10 @@ model Job {
    * certain. Il disparaît de lui-même dès qu'une preuve apparaît.
    */
   countryIntegrity String?
-  isFrance         Boolean          @default(false)
 
   // Geographic projection. Native location evidence is retained per publication.
+  // Second-level subdivisions and national identifiers (INSEE) left `Job` in lot F1
+  // (2026-09-16): no source supplied them; the geocoding cache keeps its own key.
   city       String?
   /**
    * La première subdivision administrative du pays : California, Île-de-France,
@@ -477,21 +475,7 @@ model Job {
    * deux niveaux conceptuels.
    */
   adminArea1 String?
-  /**
-   * Le second niveau (comté, département). Nullable et VOLONTAIREMENT vide :
-   * aucune source du catalogue ne le fournit aujourd'hui, et on ne remplit pas
-   * artificiellement une colonne pour la justifier.
-   */
-  adminArea2 String?
   postalCode String?
-  /**
-   * Code commune INSEE — identifiant national français, conservé parce qu'il
-   * est une clé de jointure stable (contrairement à un nom de ville), mais qui
-   * n'est PAS une primitive mondiale : 2 750 des 2 770 offres qui le portent
-   * sont françaises. Les futurs identifiants nationaux le rejoindront dans une
-   * structure `locationIdentifiers` plutôt qu'en ajoutant une colonne par pays.
-   */
-  inseeCode  String?
   latitude   Float?
   longitude  Float?
 
@@ -601,13 +585,11 @@ model Job {
   /**
    * Versioned enrichment; original title and unresolved offers are preserved.
    */
-  occupationGroup           String?
   occupationCode            String?
   rawTitle                  String?
   normalizedTitle           String?
   occupationStatus          String                  @default("PENDING")
   occupationEvidence        Json?
-  occupationSpecializations String[]                @default([])
   occupationReleaseId       String?
   occupationRelease         OccupationRelease?      @relation(fields: [occupationReleaseId], references: [id], onDelete: Restrict)
   occupationObservations    OccupationObservation[]
@@ -615,20 +597,6 @@ model Job {
    * INTERNSHIP | APPRENTICESHIP | GRADUATE | JUNIOR | MID | SENIOR | MANAGER | DIRECTOR | EXECUTIVE
    */
   seniority                 String?
-  /**
-   * Métier de boutique (conseil, direction de boutique, VM, opérations) — le Retail Hiring Index.
-   */
-  isRetail                  Boolean?
-  /**
-   * L'annonce parle d'IA / machine learning — l'AI Hiring Index.
-   */
-  isAiRelated               Boolean                 @default(false)
-  /**
-   * Compétences, outils, langues, concepts extraits du texte (dictionnaire canonique).
-   */
-  skills                    String[]                @default([])
-  taxonomyVersion           Int                     @default(0)
-  fingerprint               String
 
   /** Writer generation. It is not evidence of employer closure; lifecycle operations require their own proof. */
   pipelineVersion Int @default(0)
@@ -667,11 +635,7 @@ model Job {
   @@index([adminArea1])
   @@index([employmentTerm])
   @@index([workTime])
-  @@index([isFrance, isActive])
-  @@index([fingerprint])
   @@index([companyId, isActive])
-  // Serves the map: only located, live French jobs are ever plotted.
-  @@index([isFrance, isActive, latitude, longitude])
   // Intelligence : agrégats par pays / métier / séniorité, et les fenêtres J-7 / J-30.
   @@index([isActive, countryCode])
   @@index([isActive, jobFunction])
@@ -767,6 +731,10 @@ model JobEvent {
  * Les comparaisons J-7 / J-30 / M-12 lisent cette table, jamais Job — les
  * offres se ferment et se suppriment, la photographie reste.
  */
+/// Lot F1 (2026-09-16) : la photographie quotidienne n'a plus d'écrivain
+/// (`pipeline/snapshot.ts` retiré avec les colonnes isRetail/isAiRelated) ni de
+/// lecteur. Les 17 670 lignes sont conservées ; la suppression de la table est
+/// une carte de décision (lignes `live` non reconstructibles).
 model MarketSnapshot {
   id                 String   @id @default(cuid())
   date               DateTime @db.Date
@@ -828,8 +796,6 @@ model GeoCache {
   resolved   Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
-  @@index([resolved])
 }
 
 /**

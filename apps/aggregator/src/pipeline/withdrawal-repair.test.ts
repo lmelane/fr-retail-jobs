@@ -13,7 +13,7 @@ async function witness() {
   const key = `withdrawal-${randomUUID()}`;
   const company = await db.company.create({ data: { name: 'Legacy homonym', canonicalKey: key, fashionjobsUrl: `resolved:${key}` } });
   await db.source.create({ data: { key, maison: company.name, kind: 'lever', config: {}, tenantKey: key, status: 'RETIRED', tier: 'ATS_OFFICIAL' } });
-  const job = await db.job.create({ data: { companyId: company.id, externalId: key, source: 'LEVER', title: 'Archived role', url: 'https://example.com/job', fingerprint: key, raw: { proof: 'original' },
+  const job = await db.job.create({ data: { companyId: company.id, externalId: key, source: 'LEVER', title: 'Archived role', url: 'https://example.com/job', raw: { proof: 'original' },
     sources: { create: { sourceKey: key, externalId: key, sourceTier: 'ATS_OFFICIAL', url: 'https://example.com/job', isActive: false, raw: { proof: 'original' } } },
   }, omit: { searchText: true } });
   const legacy: RepairPlan = { version: 1, batchId: randomUUID(), finding: randomUUID(), createdAt: new Date().toISOString(), sourceKeys: [key], companyIds: [company.id], evidence: { decision: 'Withdraw out-of-scope source' }, invariants: ['lifecycle'],

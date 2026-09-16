@@ -54,8 +54,7 @@ describe("reviewed business sectors", () => {
         source: "GREENHOUSE",
         externalId: "s",
         url: "https://example.com/j",
-        fingerprint: "sector-j",
-      },
+        },
     });
     const m = manifest(c),
       plan = await previewSectors(p, m);

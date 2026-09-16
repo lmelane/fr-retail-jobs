@@ -1,14 +1,17 @@
 import { Prisma, type Job } from '@prisma/client';
 
-/** A replaceable projection of one observation, never a source of publisher truth. */
+/** A replaceable projection of one observation, never a source of publisher truth.
+ * Lot F1 (2026-09-16) removed four projected fields (isFrance, adminArea2,
+ * inseeCode, fingerprint) without a version bump: caches built before carry
+ * them as extra keys, which `publicationContentOf` never reads nor spreads. */
 export const PRESENTATION_VERSION = 'publication-presentation-20260915-v1';
 export const PRESENTATION_FIELDS = [
   'externalId', 'source', 'title', 'opportunityType', 'description', 'location', 'countryCode', 'countryIntegrity',
-  'adminArea1', 'adminArea2', 'inseeCode', 'isFrance', 'city', 'postalCode', 'latitude', 'longitude',
+  'adminArea1', 'city', 'postalCode', 'latitude', 'longitude',
   'rawContract', 'rawWorkingTime', 'employmentEvidence', 'employmentTerm', 'engagementType', 'isSeasonal',
   'workTime', 'workplaceType', 'workSchedule', 'rawSchedule', 'experienceYears', 'educationLevel',
   'salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod', 'department', 'validThrough', 'language',
-  'url', 'postedAt', 'clusterKey', 'canonicalTier', 'canonicalSourceKey', 'canonicalExternalId', 'fingerprint',
+  'url', 'postedAt', 'clusterKey', 'canonicalTier', 'canonicalSourceKey', 'canonicalExternalId',
   'pipelineVersion', 'rawTitle', 'programType',
 ] as const satisfies readonly (keyof Job)[];
 export type PublicationContent = Pick<Job, typeof PRESENTATION_FIELDS[number]>;
