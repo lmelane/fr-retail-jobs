@@ -20,8 +20,8 @@ export async function planRetention(db: PrismaClient, keys: string[], now = new 
     raw: { not: Prisma.DbNull } }, select: { id: true, sourceKey: true, contentHash: true }, orderBy: { id: 'asc' }, take: limit });
   const blobs = await db.rawBlob.findMany({ where: { body: { isNot: null },
     captures: { none: { capturedAt: { gte: cutoff } } }, observations: { none: { observedAt: { gte: cutoff } } },
-    extractions: { none: { capturedAt: { gte: cutoff } } },
-    OR: [{ captures: { some: { batch: { sourceKey: { in: allowed } } } } }, { observations: { some: { sourceKey: { in: allowed } } } }, { extractions: { some: { batch: { sourceKey: { in: allowed } } } } }],
+    extractions: { none: { capturedAt: { gte: cutoff } } }, manifests: { none: { completedAt: { gte: cutoff } } },
+    OR: [{ captures: { some: { batch: { sourceKey: { in: allowed } } } } }, { observations: { some: { sourceKey: { in: allowed } } } }, { extractions: { some: { batch: { sourceKey: { in: allowed } } } } }, { manifests: { some: { batch: { sourceKey: { in: allowed } } } } }],
   }, select: { hash: true }, orderBy: { hash: 'asc' }, take: limit });
   const body: RetentionBody = { version: 1, keys: allowed, cutoff: cutoff.toISOString(), observations, blobs: blobs.map(blob => blob.hash) };
   return { ...body, planHash: evidenceHash(body) };
@@ -47,6 +47,7 @@ export async function applyRetention(db: PrismaClient, plan: RetentionPlan, expe
     { captures: { some: { batch: { sourceKey: { in: plan.keys } } } } },
     { observations: { some: { sourceKey: { in: plan.keys } } } },
     { extractions: { some: { batch: { sourceKey: { in: plan.keys } } } } },
+    { manifests: { some: { batch: { sourceKey: { in: plan.keys } } } } },
   ] } });
   if (scopedBlobs !== plan.blobs.length) throw new Error('Retention blob is missing or outside the source scope');
   let purged = 0;

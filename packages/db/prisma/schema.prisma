@@ -1128,6 +1128,7 @@ model RawBlob {
   captures RawCapture[]
   observations SourceObservation[]
   extractions SourceExtraction[]
+  manifests CaptureOutcome[]
 }
 
 /** Hot storage may be removed only after a verified remote archive is recorded. */
@@ -1154,7 +1155,7 @@ model CaptureBatch {
   configHash String
   readerRevision String
   sourceKind String?
-  formatVersion Int @default(1)
+  formatVersion Int @default(2)
   startedAt DateTime @default(now())
   captures RawCapture[]
   extractions SourceExtraction[]
@@ -1194,8 +1195,11 @@ model CaptureOutcome {
   status String
   extractedCount Int
   outputHash String?
+  manifestHash String?
+  manifest RawBlob? @relation(fields: [manifestHash], references: [hash], onDelete: Restrict, onUpdate: Restrict)
   failure String?
   completedAt DateTime @default(now())
+  @@index([manifestHash, completedAt])
 }
 
 /** One immutable adapter output per job per batch, including identical re-attestations. */

@@ -15,7 +15,7 @@ export type CaptureContext = {
   replayWafCookies?: Map<string, string>;
   write?: (record: CaptureRecord) => Promise<void>;
   replay?: (hash: string) => Promise<ReplayResponse>;
-  failure?: CaptureUnavailableError;
+  failure?: CaptureUnavailableError | OfflineReplayError;
 };
 const contexts = new AsyncLocalStorage<CaptureContext>();
 export class OfflineReplayError extends Error {
@@ -92,12 +92,18 @@ export async function captureResponse(request: CaptureRequest, response: {
 export async function replayResponse(request: CaptureRequest): Promise<Response | undefined> {
   const replay = contexts.getStore()?.replay;
   if (!replay) return undefined;
-  const record = await replay(requestFingerprint(request));
-  if (!record.complete || record.status === null || record.bytes === null) throw new OfflineReplayError(`Recorded incomplete response: ${record.failure ?? 'unknown'}`);
-  const headers = new Headers(record.headers);
-  for (const name of record.cookieNames) headers.append('set-cookie', `${name}=archive-replay; Path=/`);
-  const response = new Response([204, 205, 304].includes(record.status) ? null : Buffer.from(record.bytes),
-    { status: record.status, headers });
-  Object.defineProperty(response, 'url', { value: request.url });
-  return response;
+  try {
+    const record = await replay(requestFingerprint(request));
+    if (!record.complete || record.status === null || record.bytes === null) throw new OfflineReplayError(`Recorded incomplete response: ${record.failure ?? 'unknown'}`);
+    const headers = new Headers(record.headers);
+    for (const name of record.cookieNames) headers.append('set-cookie', `${name}=archive-replay; Path=/`);
+    const response = new Response([204, 205, 304].includes(record.status) ? null : Buffer.from(record.bytes),
+      { status: record.status, headers });
+    Object.defineProperty(response, 'url', { value: request.url });
+    return response;
+  } catch (cause) {
+    const failure = cause instanceof OfflineReplayError ? cause : new OfflineReplayError('Recorded response could not be verified');
+    contexts.getStore()!.failure = failure;
+    throw failure;
+  }
 }

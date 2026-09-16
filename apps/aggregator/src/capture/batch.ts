@@ -5,12 +5,13 @@ import type { AdapterResult } from '../types.js';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { assertCaptureHealthy, withCaptureContext, OfflineReplayError, type CaptureContext } from './context.js';
 import { persistCapture, persistExtractionOutputs, readRawBlob } from './store.js';
+import { MAX_MANIFEST_OUTPUTS, persistExtractionManifest } from './manifest.js';
 import { captureReaderRevision } from './revision.js';
 
 export async function captureExtraction(db: PrismaClient, sourceKey: string, config: Record<string, unknown>,
   runId: string | undefined, work: () => Promise<AdapterResult>, sourceKind?: AtsType): Promise<AdapterResult> {
   const batch = await db.captureBatch.create({ data: { id: randomUUID(), sourceKey, runId,
-    configHash: evidenceHash(config), sourceKind, readerRevision: captureReaderRevision() } });
+    configHash: evidenceHash(config), sourceKind, formatVersion: 2, readerRevision: captureReaderRevision() } });
   const context: CaptureContext = { sequence: 0, observedAt: batch.startedAt, write: record => persistCapture(db, batch.id, record) };
   return withCaptureContext(context, async () => {
     try {
@@ -18,8 +19,10 @@ export async function captureExtraction(db: PrismaClient, sourceKey: string, con
       assertCaptureHealthy();
       const evidence = await db.rawCapture.count({ where: { batchId: batch.id, complete: true, blobHash: { not: null } } });
       if (!evidence) throw new Error('Extraction has no captured native response');
+      if (result.jobs.length > MAX_MANIFEST_OUTPUTS) throw new Error('Extraction exceeds its output count budget');
       const outputIds = await persistExtractionOutputs(db, batch.id, result.jobs);
-      await db.captureOutcome.create({ data: { batchId: batch.id, status: 'EXTRACTED', extractedCount: result.jobs.length,
+      const manifestHash = await persistExtractionManifest(db, batch.id, result);
+      await db.captureOutcome.create({ data: { batchId: batch.id, manifestHash, status: 'EXTRACTED', extractedCount: result.jobs.length,
         outputHash: evidenceHash(result.jobs) } });
       return { ...result, jobs: result.jobs.map((job, index) => ({ ...job, captureBatchId: batch.id, captureOutputId: outputIds[index] })) };
     } catch (error) {
@@ -46,5 +49,10 @@ export async function replayExtraction<T>(db: PrismaClient, batchId: string, wor
     if (!row) throw new OfflineReplayError('Offline replay request is absent from the capture batch');
     return { ...row, bytes: row.blobHash ? await readRawBlob(db, row.blobHash, store) : null,
       headers: row.headers as Record<string, string>, cookieNames: row.cookieNames as string[] };
-  } }, work);
+  } }, async () => {
+    const result = await work();
+    assertCaptureHealthy();
+    if ([...queues.values()].some(queue => queue.length > 0)) throw new OfflineReplayError('Offline replay left recorded responses unconsumed');
+    return result;
+  });
 }

@@ -3,6 +3,7 @@ import { PrismaClient, AtsType } from '@prisma/client';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { readRawBlob } from '../../src/capture/store.js';
 import { readAdapterObservation } from '../../src/capture/observations.js';
+import { compareExtractionResult } from '../../src/capture/manifest.js';
 import { replayExtraction } from '../../src/capture/batch.js';
 import { fetchAtsJobs } from '../../src/ats/index.js';
 import { evidenceHash } from '../../src/lib/evidenceHash.js';
@@ -32,15 +33,15 @@ try {
     }
   } else if (arg('replay')) {
     if (!arg('config') || !arg('out')) throw new Error('Replay requires the original private --config=<file> and --out=<file>');
-    const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: arg('replay')! }, include: { outcome: true } });
+    const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: arg('replay')! } });
     const config = JSON.parse(readFileSync(arg('config')!, 'utf8')) as Record<string, unknown>;
-    if (batch.formatVersion !== 1 || evidenceHash(config) !== batch.configHash || !Object.values(AtsType).includes(batch.sourceKind as AtsType)) {
+    if (![1, 2].includes(batch.formatVersion) || evidenceHash(config) !== batch.configHash || !Object.values(AtsType).includes(batch.sourceKind as AtsType)) {
       throw new Error('Replay requires a supported capture format, its original configuration and recorded source kind');
     }
     const result = await replayExtraction(db, batch.id, () => fetchAtsJobs(batch.sourceKind as AtsType, config), store);
     writeFileSync(arg('out')!, JSON.stringify(result, null, 2) + '\n', { mode: 0o600 });
-    const matches = batch.outcome?.outputHash === evidenceHash(result.jobs);
-    console.log(JSON.stringify({ batchId: batch.id, jobs: result.jobs.length, matchesRecordedOutput: matches, originalReader: batch.readerRevision }));
-    if (!matches) process.exitCode = 1;
+    const comparison = await compareExtractionResult(db, batch.id, result, store);
+    console.log(JSON.stringify({ batchId: batch.id, jobs: result.jobs.length, ...comparison, originalReader: batch.readerRevision }));
+    if (!comparison.exact) process.exitCode = 1;
   } else throw new Error('Use --capture=<id>, --observation=<id>, --output=<id>, or --replay=<batch id>');
 } finally { await db.$disconnect(); }

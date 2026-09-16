@@ -1,0 +1,23 @@
+[
+  {
+    "source": "polene",
+    "batchId": "0bef1fc0-d2fc-405c-8c3f-ba7a282e3a5f",
+    "manifestHash": "49fb6c2f761cce8f6b5d26c5da865a47ebb25b6e2bfa8bcd5a37ebb16cfd452d",
+    "comparison": {
+      "matchesRecordedOutput": true,
+      "matchesRecordedMetadata": true,
+      "exact": true
+    },
+    "kind": "ASHBY",
+    "jobs": 80,
+    "requests": 1,
+    "exactReplay": true,
+    "nativeBytes": 1089894,
+    "nativeGzipBytes": 157250,
+    "outputBytes": 1546510,
+    "outputGzipBytes": 274740,
+    "uniqueBlobs": 82,
+    "purged": 3,
+    "elapsedMs": 23566
+  }
+]

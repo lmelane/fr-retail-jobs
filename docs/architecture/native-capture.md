@@ -1,6 +1,6 @@
 # Captures natives, sorties d’extraction et rétention
 
-Contrat du lot 2, 15 septembre 2026. L’implémentation est validée localement et le transport d’archive sur un environnement Railway isolé. Les services de production n’utilisent pas encore ces migrations. Les preuves et les limites de livraison figurent dans le [bilan du lot](../../audits/reprise-2026-09-15/lot-2.md).
+Contrat des lots 2 et 5A, actualisé le 16 septembre 2026. L’implémentation est validée localement et le transport d’archive sur un environnement Railway isolé. Les services de production n’utilisent pas encore ces migrations. Les preuves et les limites de livraison figurent dans le [bilan du lot](../../audits/reprise-2026-09-15/lot-2.md).
 
 ## Ce qui fait foi
 
@@ -14,30 +14,40 @@ Le navigateur conserve séparément les réponses document/XHR/fetch et le DOM r
 | `RawCapture` | Une tentative, ordre de réception, empreinte de requête, statut, métadonnées et référence des octets |
 | `RawBlob` / `RawBlobBody` | Identité SHA-256, taille, empreinte et taille gzip ; octets locaux compressés |
 | `SourceExtraction` | Une sortie complète d’offre par collecte et position, conservée avant les transformations communes |
-| `CaptureOutcome` | Résultat immuable : EXTRACTED ou FAILED, compteur et empreinte des offres produites |
+| `CaptureOutcome` | Résultat immuable : EXTRACTED ou FAILED, compteur, empreinte des offres et manifeste intégral du résultat pour le format 2 |
 | `SourceObservation` | Sortie RAW de l’adaptateur et disposition interne séparées ; historique antérieur conservé |
 | `RawBlobArchive` | Localisation distante et empreinte gzip vérifiées, immuables |
 
-Deux collectes identiques partagent les blocs mais conservent des identités d’observation distinctes. `JobSource` référence sa dernière sortie et sa collecte ; les sorties anciennes restent consultables indépendamment des mutations du catalogue. La contrainte de base interdit de combiner une sortie et une autre collecte. Le writer vérifie aussi la source et l’identifiant d’offre. Le lot 3 doit encore tracer les décisions champ par champ lors de la projection.
+Deux collectes identiques partagent les blocs mais conservent des identités d’observation distinctes. `JobSource` référence sa dernière sortie et sa collecte ; les sorties anciennes restent consultables indépendamment des mutations du catalogue. La contrainte de base interdit de combiner une sortie et une autre collecte. Le writer vérifie aussi la source et l’identifiant d’offre. Les faits et présentations issus des lots 3 et 4 tracent séparément les décisions de projection.
 
 Les champs `publicationHold` et `annotationHash` ne sont plus injectés dans le payload source. La migration reconnaît les anciennes enveloppes uniquement lorsqu’elles contiennent explicitement `sourcePayload` ; elle préserve leur contenu et leur empreinte historiques. Un ancien `SourceObservation` sans capture reste marqué comme tel : les réponses natives perdues ne sont pas reconstituées artificiellement.
 
 ## Rejouer sans réseau
 
-Le lecteur rejoue les réponses correspondant à l’empreinte de requête : méthode, URL exacte, corps haché et en-têtes de négociation autorisés. Une requête absente échoue. Les cookies WAF du rejeu sont isolés des sessions réelles et aucun navigateur n’est lancé pour les amorcer.
+Le lecteur rejoue les réponses correspondant à l’empreinte de requête : méthode, URL exacte, corps haché et en-têtes de négociation autorisés. Une requête absente, une réponse incomplète ou une archive corrompue fait échouer le rejeu, même si le lecteur intercepte cette erreur. Toutes les réponses enregistrées doivent être consommées. Les cookies WAF du rejeu sont isolés des sessions réelles et aucun navigateur n’est lancé pour les amorcer.
 
-Le temps de référence de l’extraction est conservé pour les dates relatives et les décisions datées produites par les lecteurs concernés. Chaque reçu natif garde en plus sa propre date de capture. L’outil compare les sorties rejouées à l’empreinte enregistrée ; un écart fait échouer la commande.
+Le temps de référence de l’extraction est conservé pour les dates relatives et les décisions datées produites par les lecteurs concernés. Chaque reçu natif garde en plus sa propre date de capture. L’outil compare chaque sortie rejouée, son ordre et son identifiant aux empreintes des octets enregistrés. Il compare aussi toutes les métadonnées du résultat, notamment `complete`, `truncated`, les compteurs, les périmètres et les lignes rejetées. Un écart fait échouer la commande.
 
 Le rejeu complet exige la configuration originale et la version compatible du lecteur. La configuration est hachée, pas copiée avec ses secrets. Conserver sa version privée dans le dossier de preuve du run. La lecture d’un corps par identifiant reste possible sans cette configuration. Les requêtes concurrentes strictement identiques sont consommées dans l’ordre enregistré ; un lecteur dépendant de leur ordre d’arrivée doit être qualifié sur son propre corpus.
 
+## Manifeste et clôture de collecte
+
+Les nouvelles collectes utilisent le format 2. Le manifeste est un bloc RAW dérivé et borné : métadonnées complètes de `AdapterResult`, identifiants et empreintes des sorties dans leur ordre. Les corps des offres restent dans leurs blocs individuels ; ils ne sont pas dupliqués dans le manifeste. Un résultat vide conserve ainsi la différence entre zéro explicitement énuméré, parcours incomplet et absence de preuve.
+
+La clôture immuable interdit tout ajout ultérieur aux journaux des réponses et des sorties, y compris après échec. Les écritures et la clôture sérialisent leur accès à la collecte. Une réécriture identique de sa ligne avance sa version transactionnelle sans modifier ses métadonnées ; PostgreSQL refuse ainsi les instantanés périmés, y compris en `REPEATABLE READ`. Le verrou est pris une fois par collecte et par instruction SQL, plutôt que pour chaque offre d’un insert groupé. Une clôture réussie exige un manifeste, une empreinte et des positions de sortie contiguës correspondant au compteur. La lecture vérifie le manifeste contre le journal immuable.
+
+**Ce manifeste enregistre ce que le lecteur a produit. Il ne certifie pas à lui seul la justesse du lecteur ou l’exhaustivité du portail.** La qualification d’une source doit ensuite vérifier ces éléments contre les réponses natives et sa configuration.
+
+Les anciennes collectes de format 1 restent inchangées et consultables. Elles n’ont pas de manifeste complet : la commande de comparaison certifiante échoue explicitement pour elles. Aucune métadonnée manquante n’est reconstituée. Le rejeu technique des réponses reste disponible pour inspection.
+
 ## Stockage et garde de rétention
 
-- Corps bornés à **20 000 000 octets** ; gzip niveau 6, identité sur les octets décompressés. Sorties sauvegardées par transactions de 25, avec ordre de verrous stable.
+- Corps bornés à **20 000 000 octets** ; gzip niveau 6, identité sur les octets décompressés. Sorties sauvegardées par transactions de 25, avec ordre de verrous stable. Une collecte contient au plus 100 000 sorties ; le manifeste respecte aussi la limite de 20 Mo. Un dépassement arrête la collecte explicitement.
 - Fenêtre chaude de **14 jours**. Un bloc déjà archivé et de nouveau référencé reste réutilisable depuis son archive ; la déduplication ne recrée pas une copie locale inutile.
 - Conservation distante d’au moins **12 mois** ; aucune suppression automatique des preuves référencées. Cette durée minimale n’est pas une promesse de purge à douze mois.
 - Une page de plan contient au plus 1 000 observations et 1 000 blocs ; taille par défaut 250 de chaque. Périmètre de sources et empreinte exigés à l’application.
 - Envoi distant, **relecture complète**, vérification taille + SHA-256 gzip, pointeur immuable, puis retrait des octets locaux. Les lectures décompressent et vérifient également la taille et le SHA-256 natifs.
-- Une référence récente ajoutée pendant l’envoi protège le bloc sous verrou. Une panne distante laisse les octets disponibles en base. Le même plan peut être repris sans double suppression.
+- Les références récentes des réponses, observations, sorties et manifestes protègent les blocs lors du contrôle sous verrou avant purge. Une panne distante laisse les octets disponibles en base. Le même plan peut être repris sans double suppression.
 - Les anciennes lignes `SourceObservation` restent en base avec leur identité et leur contenu ou pointeur ; elles ne sont plus remplacées par une seconde table de références.
 
 Le SDK officiel AWS gère la signature et le transport S3. Le préfixe d’environnement est obligatoire. Les opérations sont bornées en temps et en taille. Le stockage n’expose aucune opération de suppression distante. Les tables d’archive remplacées ne peuvent être supprimées par la migration si elles contiennent un pointeur : leur reprise doit alors précéder la migration.
