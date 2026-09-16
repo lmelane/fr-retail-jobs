@@ -1,5 +1,5 @@
 import { countryCode, countryLabel } from './countries';
-import { knownAlpha2 } from './intelligence/country-ids';
+import { knownAlpha2 } from './iso-alpha2';
 
 /**
  * Résolution du champ « lieu » du moteur (D-418 §3, lot 6).

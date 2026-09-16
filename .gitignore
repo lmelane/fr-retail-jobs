@@ -14,10 +14,11 @@ build/
 *.csv
 *.html
 *.xml
-# …mais jamais les ROUTES Next nommées sitemap.xml (leçon : la route index a
-# été silencieusement exclue — 404 en prod pendant que le local marchait)
-!apps/web/app/sitemap.xml/
-!apps/web/app/sitemap.xml/**
+# …mais jamais un dossier de ROUTE Next nommé *.xml (leçon : une route index
+# sitemap.xml a été silencieusement exclue — 404 en prod pendant que le local
+# marchait). L'API n'en a plus ; la règle protège la prochaine.
+!apps/api/app/**/*.xml/
+!apps/api/app/**/*.xml/**
 *-test.ts
 probe-*.ts
 scratchpad/
@@ -38,9 +39,9 @@ Thumbs.db
 next-env.d.ts
 *.tsbuildinfo
 
-# Playwright
-apps/web/playwright-report/
-apps/web/test-results/
+# Artefacts de tests (Playwright, vitest) : jamais versionnés
+playwright-report/
+test-results/
 
 # Artefacts locaux de session (jamais dans le dépôt)
 backups/

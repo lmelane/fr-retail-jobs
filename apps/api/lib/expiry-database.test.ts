@@ -1,5 +1,4 @@
 import { publicationFixture } from '../../aggregator/src/test/publication-fixture';
-import { headline } from './intelligence/facts';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { prisma, Prisma } from '@catwalks/db';
 import { publicJobSql, publicJobWhere } from '@catwalks/db/availability';
@@ -54,7 +53,7 @@ describe.skipIf(!enabled)('public availability from source publications', () => 
     expect((await getJobStatus(expired.id)).status).toBe('closed');
     expect(await getOfferState(live.id)).toBe('active');
     expect((await getCompanyAside(key))?.openJobs).toBe(3);
-    expect((await headline({ companyId: key })).active).toBe(3);
+    expect(rows).toHaveLength(3);
   });
 
   it('the remaining publication supplies a usable application link and its own deadline', async () => {

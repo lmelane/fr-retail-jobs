@@ -5,7 +5,6 @@ import * as database from '@catwalks/db/occupations';
 import { prisma } from '@catwalks/db';
 import { getJobs, getJobStatus, getOfferState, resolveOfferParam, type JobFilters } from './jobs';
 import { offerPath } from './offer-url';
-import { closedFacts } from './intelligence/facts';
 
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
 const enabled = !!url && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && /test/i.test(url.pathname);
@@ -121,6 +120,8 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
   });
   it('resolves an absorbed posting for pages, old URLs and the middleware status probe', async () => {
     const target = `${prefix}000`, origin = `${prefix}old-posting`;
+    // Les fermetures récentes de la Maison, hors offres absorbées (l'oracle Intelligence a disparu au lot 12).
+    const fermeesRecentes = () => prisma.job.count({ where: { companyId: `${prefix}0`, mergedIntoId: null, isActive: false, closedAt: { gte: new Date(Date.now() - 30 * 86_400_000) } } });
     await prisma.job.create({ data: {
       id: origin, companyId: `${prefix}0`, externalId: 'old-posting', source: 'GENERIC_JSONLD',
       title: 'Ancien titre', url: 'https://example.com/old-posting', fingerprint: origin,
@@ -134,11 +135,11 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     expect(await getOfferState(origin)).toBe('active');
     expect((await resolveOfferParam(origin))).toMatchObject({ status: 'active', job: { id: target }, matchedId: origin });
     expect(offerPath(state.job)).not.toContain(origin);
-    expect((await closedFacts({ companyId: `${prefix}0` })).closed30d).toBe(0);
+    expect(await fermeesRecentes()).toBe(0);
     await prisma.job.update({ where: { id: target }, data: { isActive: false, closedAt: new Date() } });
     expect(await getOfferState(origin)).toBe('closed');
     expect((await getJobStatus(origin)).status).toBe('closed');
-    expect((await closedFacts({ companyId: `${prefix}0` })).closed30d).toBe(1);
+    expect(await fermeesRecentes()).toBe(1);
     await prisma.job.delete({ where: { id: origin } });
     await prisma.job.update({ where: { id: target }, data: { isActive: true, closedAt: null } });
   });

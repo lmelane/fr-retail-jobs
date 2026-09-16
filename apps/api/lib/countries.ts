@@ -9,7 +9,7 @@
  * map covers display and the non-France codes.
  */
 
-import { knownAlpha2 } from './intelligence/country-ids';
+import { knownAlpha2 } from './iso-alpha2';
 
 export type Country = { code: string; label: string };
 
