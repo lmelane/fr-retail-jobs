@@ -1,6 +1,7 @@
 import { captureObservedAt } from '../../capture/context.js';
 import { fetchJson } from '../../lib/http.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { ashbyBoard } from '../portalConfig.js';
 
 type AshbyJob = {
   id?: string; title?: string; location?: string;
@@ -15,8 +16,7 @@ type AshbyJob = {
  * Keep those observations, but honour isListed=false on our public job board.
  * A missing/error response never means an empty employer feed. */
 export async function fetchAshbyJobs(config: Record<string, unknown>): Promise<AdapterResult> {
-  const board = String(config.board ?? config.slug ?? '');
-  if (!board) throw new Error('Ashby board handle missing');
+  const board = ashbyBoard(config);
   const endpoint = `https://api.ashbyhq.com/posting-api/job-board/${encodeURIComponent(board)}?includeCompensation=true`;
   const data = await fetchJson<{ apiVersion?: string; jobs?: AshbyJob[] }>(endpoint);
   if (data?.apiVersion !== '1' || !Array.isArray(data.jobs)) throw new Error('ASHBY_INVALID_FEED: expected API version 1 and jobs array');

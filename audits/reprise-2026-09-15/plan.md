@@ -174,7 +174,8 @@ Les nouvelles revues d’identité portent explicitement la révision examinée 
 ### Sous-lots 5G : preuves d’identité et d’accès
 
 - **5G1** : captures HTTP séparées des offres, réutilisant le journal et l’archive existants. Le format 3 conserve la chaîne de redirections et ne peut qualifier ni publier une offre. Une page archivée, y compris un refus, ne vaut pas autorisation. [Bilan et contre-épreuves](lot-5g1.md).
-- **5G2** : vérifier dans les octets archivés un lien officiel vers le tenant et le site ATS exacts, puis rattacher la revue à cette preuve. Un nom, un commentaire ou une sous-chaîne ne suffisent pas.
+- **5G2A** : inspecter hors réseau les références HTML vers le tenant et le site ATS exacts, avec premiers contrats Ashby/Recruitee/Workday et motifs explicites pour les autres. [Bilan](lot-5g2a.md).
+- **5G2B** : rattacher obligatoirement la revue à cette capture et à sa relation vérifiée, retirer l’autorité du dossier textuel fourni et étendre les contrats natifs. Un nom, un commentaire ou une sous-chaîne ne suffisent pas.
 - **5G3** : remplacer les champs mutables d’accès par une décision immuable portant sur les requêtes et l’identité de collecteur réellement utilisées ; distinguer employeur, groupe et éditeur.
 
 ## Lot 6. Recherche réellement bornée par marché

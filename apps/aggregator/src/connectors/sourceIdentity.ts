@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { Prisma, type Source, type SourceIdentityReview, type PrismaClient } from '@prisma/client';
 import { resolveCompany } from '../normalize/company.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
-import { parse } from 'tldts';
+import { reviewedOfficialDomain } from './sourcePortal.js';
 
 function sorted(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(sorted);
@@ -81,8 +81,8 @@ function assertIdentityEvidence(source: RevisionIdentitySource, review: Identity
   catch { throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: invalid identity evidence URLs'); }
   const domain = review.officialDomain.toLowerCase();
   if (!/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(domain) || proof.protocol !== 'https:' || portal.protocol !== 'https:' || proof.username || proof.password || portal.username || portal.password) throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: invalid official identity evidence URLs');
-  const vendorDomains = ['jobaffinity.fr', 'candidater.fr', 'flatchr.io', 'werecruit.io', 'greenhouse.io', 'lever.co', 'smartrecruiters.com', 'teamtailor.com', 'myworkdayjobs.com', 'oraclecloud.com', 'recruitee.com', 'personio.de', 'personio.com', 'workable.com', 'welcometothejungle.com'];
-  if (parse(domain).domain !== domain || vendorDomains.includes(domain)) throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: an ATS vendor or public suffix is not the reviewed official employer domain');
+  try { reviewedOfficialDomain(domain); }
+  catch { throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: an ATS vendor or public suffix is not the reviewed official employer domain'); }
   if (proof.hostname !== domain && !proof.hostname.endsWith(`.${domain}`)) throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: evidence page must belong to the reviewed official domain');
 }
 

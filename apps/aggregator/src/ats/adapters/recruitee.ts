@@ -3,6 +3,7 @@ import { educationLevel } from '../../normalize/experience.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { publisherInstant } from '../../lib/publisherInstant.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { recruiteeSubdomain } from '../portalConfig.js';
 
 type Offer = { id: number; title: string; careers_url?: string; location?: string; city?: string; country?: string; employment_type?: string; description?: string; created_at?: string;
   requirements?: string | null; published_at?: string | null;
@@ -20,8 +21,7 @@ type Offer = { id: number; title: string; careers_url?: string; location?: strin
 type Response = { offers?: Offer[] };
 
 export async function fetchRecruiteeJobs(config: Record<string, unknown>): Promise<AdapterResult> {
-  const subdomain = String(config.subdomain ?? '');
-  if (!subdomain) throw new Error('Recruitee subdomain missing');
+  const subdomain = recruiteeSubdomain(config);
   const endpoint = `https://${subdomain}.recruitee.com/api/offers/`;
   const data = await fetchJson<Response>(endpoint);
   if (!Array.isArray(data.offers)) throw new Error('RECRUITEE_INVALID_FEED: offers array missing');

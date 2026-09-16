@@ -5,6 +5,7 @@ import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { workdayPortal } from '../portalConfig.js';
 
 // externalPath is optional in practice: some tenants (Richemont) return rows
 // without it, and treating it as always-present crashed the whole source.
@@ -288,10 +289,7 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
 }
 
 export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise<AdapterResult> {
-  const tenant = String(config.tenant ?? '');
-  const site = String(config.site ?? '');
-  const origin = String(config.origin ?? '');
-  if (!tenant || !site || !origin) throw new Error('Workday tenant/site/origin missing');
+  const { tenant, site, origin } = workdayPortal(config);
   const endpoint = `${origin}/wday/cxs/${encodeURIComponent(tenant)}/${encodeURIComponent(site)}/jobs`;
   const shared: Shared = { endpoint, origin, site, prefixRule: locationPrefixRule(config), out: [], seen: new Set(), pageEvidence: [], issues: new Set(), rejectedRows: [], pathlessRows: new Set() };
   const { out, seen, pageEvidence, issues, rejectedRows } = shared;

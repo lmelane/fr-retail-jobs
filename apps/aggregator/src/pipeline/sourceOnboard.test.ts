@@ -25,7 +25,7 @@ writeFileSync(preload, `import { appendFileSync } from 'node:fs';
 globalThis.fetch = async (input) => {
  const url = String(input instanceof Request ? input.url : input);
  appendFileSync(${JSON.stringify(calls)}, JSON.stringify(url) + '\\n');
- if (process.env.SOURCE_CLI_TEST_TRANSPORT === 'evidence' && url === 'https://synthetic-maison.example/careers') return new Response(${JSON.stringify(`<a href="https://jobs.ashbyhq.com/${key}">Observed synthetic official-page link</a>`)});
+ if (process.env.SOURCE_CLI_TEST_TRANSPORT === 'evidence' && url === 'https://synthetic-maison.example/careers') return new Response(${JSON.stringify(`<a href="https://jobs.ashbyhq.com/${key}">Observed synthetic official-page link</a>`)}, {headers:{'content-type':'text/html; charset=utf-8'}});
  if (process.env.SOURCE_CLI_TEST_TRANSPORT !== 'native' || url !== ${JSON.stringify(`https://api.ashbyhq.com/posting-api/job-board/${key}?includeCompensation=true`)}) throw new Error('Unexpected network access in source CLI test');
  return new Response(JSON.stringify({apiVersion:'1',jobs:[{id:'native-1',title:'Client Advisor',isListed:process.env.SOURCE_CLI_TEST_HIDDEN !== '1',descriptionPlain:'Synthetic native responsibilities',jobUrl:${JSON.stringify(`https://jobs.ashbyhq.com/${key}/native-1`)},address:{postalAddress:{addressCountry:'FR',addressLocality:'Paris'}}}]}), {headers:{'content-type':'application/json'}});
 };`, { mode: 0o600 });
@@ -89,9 +89,13 @@ it('executes the source CLI with independent previews, native evidence, exact pr
  expect(transports.trim().split('\n')).toHaveLength(1);
  expect(cli(['validate', validation.captureBatchId, '--apply'])).toMatchObject({ verdict: 'VALIDATED', captureBatchId: validation.captureBatchId });
  expect(readFileSync(calls, 'utf8')).toBe(transports);
- expect(cli(['evidence', key, '--purpose=identity', `--revision=${draft.currentRevisionId}`,
-   '--url=https://synthetic-maison.example/careers', '--apply'], { evidence: true })).toMatchObject({
+ const page = cli(['evidence', key, '--purpose=identity', `--revision=${draft.currentRevisionId}`,
+   '--url=https://synthetic-maison.example/careers', '--apply'], { evidence: true });
+ expect(page).toMatchObject({
    sourceRevisionId: draft.currentRevisionId, purpose: 'SOURCE_IDENTITY', responseCount: 1, lastStatus: 200 });
+ expect(cli(['relation', key, `--capture=${page.captureBatchId}`, '--official-domain=synthetic-maison.example']))
+   .toMatchObject({ verdict: 'LINK_MATCHED', identityApproved: false });
+ cli(['relation', key, `--capture=${page.captureBatchId}`, '--official-domain=other.example'], { failure: /PAGE_OUTSIDE_REVIEWED_DOMAIN/ });
  transports = readFileSync(calls, 'utf8');
  expect(transports.trim().split('\n')).toHaveLength(2);
  expect(await source()).toEqual(draft);

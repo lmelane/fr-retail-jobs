@@ -3,6 +3,7 @@ const commands = {
   profile: { options: ['out'], required: [] },
   identity: { options: ['artifact', 'apply', 'out'], required: ['artifact'] },
   evidence: { options: ['purpose', 'url', 'revision', 'deadline-ms', 'apply', 'out'], required: ['purpose', 'url', 'revision', 'apply'] },
+  relation: { options: ['capture', 'official-domain', 'out'], required: ['capture', 'official-domain'] },
   collect: { options: ['apply', 'deadline-ms', 'out'], required: ['apply'] },
   validate: { options: ['apply', 'out'], required: ['apply'] },
   promote: { options: ['revision', 'apply', 'out'], required: ['revision', 'apply'] },
@@ -15,7 +16,7 @@ export type SourceArguments = { command: SourceCommand; target: string; options:
 export function parseSourceArguments(args: string[]): SourceArguments {
   const [command, target, ...flags] = args;
   if (!Object.hasOwn(commands, command ?? '') || !target?.trim() || target.startsWith('-')) {
-    throw new Error('Choose source-onboard register|profile|identity|evidence|collect|validate|promote|status and one explicit target');
+    throw new Error('Choose source-onboard register|profile|identity|evidence|relation|collect|validate|promote|status and one explicit target');
   }
   const spec = commands[command as SourceCommand];
   const options: Record<string, string> = {};

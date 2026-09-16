@@ -16,6 +16,8 @@ describe('source command boundary', () => {
     ['evidence', 'source', '--apply'],
     ['evidence', 'source', '--purpose=jobs', '--url=https://official.example', '--revision=current', '--apply'],
     ['evidence', 'source', '--purpose=identity', '--url=https://official.example', '--apply'],
+    ['relation', 'source', '--capture=batch'], ['relation', 'source', '--official-domain=maison.example'],
+    ['relation', 'source', '--capture=batch', '--official-domain=maison.example', '--apply'],
   ])('rejects ambiguous or incomplete invocation %j', (...args) => { expect(() => parseSourceArguments(args)).toThrow(); });
   it('keeps previews separate from explicit writes', () => {
     expect(parseSourceArguments(['register','candidate.json'])).toMatchObject({ command: 'register', apply: false });
@@ -23,6 +25,7 @@ describe('source command boundary', () => {
     expect(parseSourceArguments(['collect','source','--apply','--deadline-ms=30000'])).toMatchObject({ apply: true });
     expect(parseSourceArguments(['promote','source','--revision=reviewed','--apply'])).toMatchObject({ options: { revision: 'reviewed' } });
     expect(parseSourceArguments(['evidence','source','--purpose=identity','--url=https://official.example','--revision=reviewed','--apply'])).toMatchObject({ command: 'evidence', apply: true });
+    expect(parseSourceArguments(['relation','source','--capture=batch','--official-domain=maison.example'])).toMatchObject({ command: 'relation', apply: false });
   });
   it('rejects the actual command before database initialization or reading its target file', () => {
     const result = spawnSync(process.execPath, ['--import','tsx',fileURLToPath(new URL('../../scripts/ops/source-onboard.mts', import.meta.url)),

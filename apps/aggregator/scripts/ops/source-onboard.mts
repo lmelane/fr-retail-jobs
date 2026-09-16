@@ -7,6 +7,7 @@ import { parseSourceCandidate, registerSourceCandidate } from '../../src/connect
 import { recordSourceIdentityReview } from '../../src/connectors/sourceIdentity.js';
 import { captureSourceForValidation, validateCapturedSource } from '../../src/connectors/sourceValidation.js';
 import { captureSourceEvidence } from '../../src/capture/sourceEvidence.js';
+import { inspectSourceRelation } from '../../src/connectors/sourceRelation.js';
 import { promoteSource } from '../../src/connectors/sourceStore.js';
 import { readInputFile, readInputJson, writePrivateFile } from '../../src/lib/privateFile.js';
 import { objectStoreConfigured, objectStoreFromEnv } from '../../src/retention/objectStore.js';
@@ -33,6 +34,10 @@ try {
       purpose: options.purpose === 'identity' ? 'SOURCE_IDENTITY' : 'SOURCE_ACCESS',
       url: options.url, deadlineMs: Number(options['deadline-ms'] ?? 60_000) },
       objectStoreConfigured() ? objectStoreFromEnv() : undefined);
+  } else if (command === 'relation') {
+    result = await inspectSourceRelation(db, target, { captureBatchId: options.capture, officialDomain: options['official-domain'] },
+      objectStoreConfigured() ? objectStoreFromEnv() : undefined);
+    if ((result as Awaited<ReturnType<typeof inspectSourceRelation>>).verdict !== 'LINK_MATCHED') process.exitCode = 1;
   } else if (command === 'collect' || command === 'validate') {
     const store = objectStoreConfigured() ? objectStoreFromEnv() : undefined;
     const validation = command === 'collect'

@@ -1,0 +1,22 @@
+{
+  "captures": {
+    "helpPage": {
+      "captureBatchId": "a9bf21da-2226-4622-b1ea-4a3068e5dc44",
+      "sourceRevisionId": "6d1b7f1f-97eb-40d1-8b45-b62423aab9fe",
+      "purpose": "SOURCE_IDENTITY",
+      "responseCount": 1,
+      "lastStatus": 403,
+      "finalCaptureId": "900504f9-f781-40e7-a122-3fb7092f901a"
+    },
+    "homePage": {
+      "captureBatchId": "9f2da89f-348f-40f9-8c8b-a8ce4904242e",
+      "sourceRevisionId": "6d1b7f1f-97eb-40d1-8b45-b62423aab9fe",
+      "purpose": "SOURCE_IDENTITY",
+      "responseCount": 2,
+      "lastStatus": 200,
+      "finalCaptureId": "0bb5e821-2379-4c6b-b0e6-80c212532691"
+    }
+  },
+  "identityApproved": false,
+  "productionTouched": false
+}

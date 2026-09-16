@@ -66,7 +66,7 @@ export async function readSourceEvidence(db: PrismaClient, batchId: string, stor
       current = evidenceUrl(new URL(location as string, current).toString());
     } else if (follows) throw new Error('Source evidence redirect chain is incomplete');
   }
-  return { batch, responses: rows, finalUrl: current, body };
+  return { batch, responses: rows, initialUrl: evidenceUrl(manifest.initialUrl), finalUrl: current, body };
 }
 
 /** Archive an official-page or access-policy request. This never emits job

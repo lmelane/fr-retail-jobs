@@ -9,6 +9,7 @@ Une source enregistrée est un périmètre de collecte, pas une certification d�
 | `register candidat.json` | Vérifie le candidat et les collisions ; crée une DRAFT avec une nouvelle révision | Aperçu par défaut ; `--apply` pour enregistrer |
 | `profile CLÉ` | Lit les identifiants exacts à reprendre dans le dossier d’identité | Lecture seule |
 | `evidence CLÉ --purpose=identity\|access --url=URL --revision=RÉVISION` | Archive la page et chaque redirection, sans décision métier | `--apply`, but, URL et révision explicites obligatoires |
+| `relation CLÉ --capture=CAPTURE --official-domain=DOMAINE` | Inspecte les liens de la page archivée vers le portail configuré | Lecture seule ; aucune revue ni activation |
 | `identity revue.json --artifact=preuve.txt` | Vérifie le dossier et ses octets ; enregistre une décision immuable | Aperçu par défaut ; `--apply` pour enregistrer |
 | `collect CLÉ --deadline-ms=30000` | Capture avec l’adaptateur réel, archive puis valide hors réseau | `--apply` obligatoire |
 | `validate CAPTURE_ID` | Revalide une collecte scellée, depuis S3 si nécessaire | `--apply` obligatoire |
@@ -55,6 +56,18 @@ Le transport conserve chaque réponse et chaque redirection (six réponses au ma
 
 Le manifeste privé conserve l’URL demandée et la chaîne exacte des réponses. Les paramètres d’URL et les en-têtes de redirection peuvent être sensibles ; ils restent dans le stockage privé des captures. La lecture vérifie le manifeste, toutes les empreintes et chaque destination sans refaire de requête. **Archiver une réponse 200 ou un document robots ne certifie ni l’identité de l’employeur ni une autorisation d’accès.** Une page de challenge peut être archivée ; son contenu devra être refusé par l’évaluation métier.
 
+### Relation entre page officielle et portail
+
+```sh
+node --import tsx apps/aggregator/scripts/ops/source-onboard.mts relation exemple --capture=CAPTURE_ID --official-domain=maison.example
+```
+
+Le domaine officiel est une donnée explicitement examinée par l’opérateur, jamais déduite du nom de la source. La commande vérifie une capture `SOURCE_IDENTITY` de la révision courante, observée depuis moins de trente jours, puis analyse son HTML hors réseau. `LINK_MATCHED` signifie qu’un véritable lien ou iframe désigne le portail configuré ; le rapport conserve les références de réponse, empreintes, révision de l’inspecteur et emplacement du témoin. `NOT_PROVEN` rend un code de sortie non nul et un motif. Une panne de stockage reste une erreur d’opération.
+
+Le contrat actuel couvre les boards Ashby, les sous-domaines Recruitee et les sites Workday sous `myworkdayjobs.com`. Il reprend les paramètres natifs utilisés par leurs collecteurs. Le tenant, le site et la casse des chemins sont contrôlés ; les mentions textuelles, commentaires, scripts, templates et iframes remplacées par `srcdoc` ne constituent pas des références utilisables. Les paramètres de suivi/langue sont admis ; pour Workday, les facettes `jobFamily` et `locations` à identifiants natifs hexadécimaux, observées dans une page officielle archivée, sont reconnues. Les autres configurations, domaines personnalisés, formats et paramètres non qualifiés restent `NOT_PROVEN`.
+
+**Une référence filtrée vers un portail ne prouve ni sa couverture complète ni l’identité de tous ses employeurs.** Le rapport indique toujours `identityApproved: false` et `coverageAttested: false`. Le rattachement obligatoire de la revue d’identité à cette inspection reste l’étape suivante ; l’ancien dossier textuel n’est pas automatiquement transformé en capture HTTP.
+
 La [revue d’identité](../employer-identity.md) reprend la révision explicite du profil. Elle ne se rattache jamais automatiquement à une révision plus récente. Répéter le même dossier ne crée pas de décision et ne remplace pas une contradiction ultérieure.
 
 La [validation native](native-capture.md) utilise les réponses brutes, le manifeste scellé et le lecteur actuel. Elle produit une décision immuable distincte du statut opérationnel de la source. Un refus technique sort en erreur tout en conservant son rapport. Elle n’enregistre aucune offre publique et ne certifie aucune absence.
@@ -71,7 +84,7 @@ Une promotion répétée sur une source déjà ACTIVE vérifie à nouveau les po
 ## Limites avant release
 
 - La porte d’accès actuelle lit encore `robotsVerdict` et `robotsCheckedAt`. Le statut indique `revisionBound: false`. Cette preuve mutable doit être remplacée par une décision immuable couvrant les cibles HTTP exactes ; la CLI ne la fabrique pas lors de la collecte.
-- La validation du dossier d’identité ne prouve pas à elle seule que la page officielle désigne le tenant et le site ATS configurés. L’archivage est disponible ; la vérification de cette relation et le rattachement de la revue à cette capture restent à livrer.
+- La validation du dossier d’identité ne prouve pas à elle seule que la page officielle désigne le tenant et le site ATS configurés. L’archivage et l’inspection des liens sont disponibles pour les trois contrats qualifiés ci-dessus ; le rattachement obligatoire de la revue à cette capture et l’extension aux autres familles restent à livrer.
 - Les rôles employeur, groupe et éditeur, la réouverture explicite d’une source retirée, les paramètres privés d’accès et les ingestions de sources déjà actives restent des travaux distincts.
 - Un certificat calculé avec le lecteur local ne certifie pas une release Railway différente.
 
