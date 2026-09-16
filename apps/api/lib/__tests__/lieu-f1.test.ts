@@ -3,10 +3,12 @@ import { resolveLieu } from '../lieu';
 import { parseFilters } from '../jobs';
 
 /**
- * F1 / D-418 §3 — le champ « lieu » se résout côté moteur. Ces témoins
- * passent au rouge si un code inconnu devient un pays, si un nom de pays
- * retombe en ville, si le télétravail n'est plus reconnu, ou si `pays`/`ville`
- * explicites perdent la main.
+ * F1 / D-418 §3, lot 6 — le champ « lieu » se résout côté moteur : ville,
+ * subdivision, code postal ou télétravail ; un pays seulement s'il appartient
+ * au périmètre, ce que le plan de recherche décide (`search-plan.test.ts`).
+ * Ces témoins passent au rouge si un code inconnu devient un pays, si un nom
+ * de pays retombe en ville, si le télétravail n'est plus reconnu, ou si un
+ * code postal est lu comme une ville.
  */
 describe('resolveLieu', () => {
   it('vide → null', () => {
@@ -36,61 +38,39 @@ describe('resolveLieu', () => {
     }
   });
 
-  it('tout le reste est une ville en correspondance large, espaces normalisés, libellé capitalisé', () => {
+  it('un code postal reste une chaîne, dans ses formes réelles ; « Paris 8 » reste une ville', () => {
+    expect(resolveLieu('75008')).toEqual({ type: 'codePostal', postalCode: '75008', libelle: '75008' });
+    expect(resolveLieu('10001')).toEqual({ type: 'codePostal', postalCode: '10001', libelle: '10001' });
+    expect(resolveLieu('sw1a 1aa')).toEqual({ type: 'codePostal', postalCode: 'SW1A 1AA', libelle: 'SW1A 1AA' });
+    expect(resolveLieu('H2Y 1C6')).toEqual({ type: 'codePostal', postalCode: 'H2Y 1C6', libelle: 'H2Y 1C6' });
+    expect(resolveLieu('1012 AB')).toEqual({ type: 'codePostal', postalCode: '1012 AB', libelle: '1012 AB' });
+    expect(resolveLieu('Paris 8')).toEqual({ type: 'ville', cityLoose: 'Paris 8', libelle: 'Paris 8' });
+    // Un code postal ne perd jamais son zéro de tête : jamais un nombre.
+    expect(resolveLieu('06000')).toEqual({ type: 'codePostal', postalCode: '06000', libelle: '06000' });
+  });
+
+  it('tout le reste est un lieu en correspondance large, espaces normalisés, libellé capitalisé', () => {
     expect(resolveLieu('Paris')).toEqual({ type: 'ville', cityLoose: 'Paris', libelle: 'Paris' });
     expect(resolveLieu('  pari ')).toEqual({ type: 'ville', cityLoose: 'pari', libelle: 'Pari' });
     expect(resolveLieu('aix  en   provence')).toEqual({ type: 'ville', cityLoose: 'aix en provence', libelle: 'Aix En Provence' });
+    expect(resolveLieu('Texas')).toEqual({ type: 'ville', cityLoose: 'Texas', libelle: 'Texas' });
   });
 });
 
-describe('parseFilters avec lieu', () => {
-  it('lieu=France → country, sans cityLoose, lieu résolu exposé', () => {
-    const f = parseFilters({ lieu: 'France' });
-    expect(f.countries).toEqual(['FR']);
-    expect(f.cityLoose).toBeUndefined();
-    expect(f.lieuResolu).toEqual({ type: 'pays', libelle: 'France' });
+describe('parseFilters : lieu, langue et pays prioritaire', () => {
+  it('le lieu est transmis tel quel au plan, borné en longueur', () => {
+    expect(parseFilters({ lieu: 'France' }).lieu).toBe('France');
+    expect(parseFilters({ lieu: 'x'.repeat(500) }).lieu).toHaveLength(200);
+    expect(parseFilters({ q: 'vendeuse' }).lieu).toBeUndefined();
   });
-
-  it('lieu=Paris → cityLoose, sans country', () => {
-    const f = parseFilters({ lieu: 'Paris' });
-    expect(f.cityLoose).toBe('Paris');
-    expect(f.countries).toBeUndefined();
-    expect(f.city).toBeUndefined();
-    expect(f.remote).toBeUndefined();
-  });
-
-  it('lieu=télétravail → remote, rien d’autre', () => {
-    const f = parseFilters({ lieu: 'télétravail' });
-    expect(f.remote).toBe(true);
-    expect(f.countries).toBeUndefined();
-    expect(f.cityLoose).toBeUndefined();
-    expect(f.lieuResolu).toEqual({ type: 'teletravail', libelle: 'Télétravail' });
-  });
-
-  it('pays et ville explicites gardent la main sur lieu', () => {
-    expect(parseFilters({ lieu: 'France', pays: 'IT' }).countries).toEqual(['IT']);
-    const f = parseFilters({ lieu: 'Pari', ville: 'Paris' });
-    expect(f.city).toBe('Paris');
-    expect(f.cityLoose).toBeUndefined();
-  });
-
-  it('sans lieu, rien ne change', () => {
-    const f = parseFilters({ q: 'vendeuse' });
-    expect(f.cityLoose).toBeUndefined();
-    expect(f.countries).toBeUndefined();
-    expect(f.lieuResolu).toBeUndefined();
-  });
-});
-
-describe('parseFilters : langue et pays prioritaire (D-419)', () => {
   it('langue : deux lettres en minuscules, sinon ignorée', () => {
-    expect(parseFilters({ langue: 'FR' }).languages).toEqual(['fr']);
-    expect(parseFilters({ langue: 'français' }).languages).toBeUndefined();
+    expect(parseFilters({ langue: 'FR' }).filtres.langue).toEqual(['fr']);
+    expect(parseFilters({ langue: 'français' }).filtres.langue).toBeUndefined();
   });
   it('prioritePays : deux lettres en majuscules, jamais un filtre', () => {
     const f = parseFilters({ prioritePays: 'fr' });
-    expect(f.priorityCountry).toBe('FR');
-    expect(f.countries).toBeUndefined();
-    expect(parseFilters({ prioritePays: "'; drop" }).priorityCountry).toBeUndefined();
+    expect(f.prioritePays).toBe('FR');
+    expect(f.filtres.pays).toBeUndefined();
+    expect(parseFilters({ prioritePays: "'; drop" }).prioritePays).toBeUndefined();
   });
 });

@@ -10,11 +10,11 @@ import type { JobRow } from './jobs';
  */
 
 const base: JobRow = {
-  id: 'ck123', title: 'Vendeur', company: 'Cartier', companyDomain: 'cartier.com', group: 'Richemont',
+  id: 'ck123', origine: 'AGREGEE', candidature: { type: 'EXTERNE', url: 'https://x/1' }, title: 'Vendeur', company: 'Cartier', companyDomain: 'cartier.com', group: 'Richemont',
   city: 'PARIS', location: 'Paris, France', employmentTerm: 'PERMANENT', sector: 'LUXURY',
   // Aucune preuve de provenance par défaut : c'est l'état conservateur, et celui de la production.
   countryIntegrity: null,
-  url: 'https://x/1', postedAt: new Date('2026-08-20T00:00:00Z'), latitude: null, longitude: null,
+  postedAt: new Date('2026-08-20T00:00:00Z'), latitude: null, longitude: null,
   sourceCount: 1, sources: ['cartier'],
   // Une description RÉELLE : depuis le 2026-09-11 un fragment ne suffit plus à mériter un balisage
   // (`DESCRIPTION_TOO_THIN`). Le décor doit donc porter une annonce plausible, pas le mot « desc ».
@@ -233,7 +233,7 @@ describe('éligibilité au balisage — quatre scénarios de réception', () => 
     expect(markupIneligibility(base, NOW)).toEqual([]);
     expect(markupIneligibility({ ...base, postedAt: null } as JobRow, NOW)).toEqual(['NO_REAL_POSTED_DATE']);
     expect(markupIneligibility({ ...base, company: '' } as JobRow, NOW)).toEqual(['NO_HIRING_ORGANIZATION']);
-    expect(markupIneligibility({ ...base, url: 'mailto:rh@example.com' } as JobRow, NOW)).toEqual(['NO_APPLY_PATH']);
+    expect(markupIneligibility({ ...base, candidature: { type: 'AUCUNE' } }, NOW)).toEqual(['NO_APPLY_PATH']);
     // Plusieurs défauts → plusieurs motifs, chacun nommé.
     expect(markupIneligibility({ ...base, postedAt: null, description: '' } as JobRow, NOW))
       .toEqual(['NO_REAL_POSTED_DATE', 'DESCRIPTION_TOO_THIN']);

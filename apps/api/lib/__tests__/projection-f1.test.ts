@@ -3,9 +3,10 @@ import { projeterListe } from '../projection';
 import type { JobRow, JobsResult } from '../jobs';
 
 const ligne = (surcharges: Partial<JobRow>): JobRow => ({
-  id: 'j1', title: 'Vendeuse', company: 'Maison', companyDomain: null, group: null, city: 'Paris',
+  id: 'j1', origine: 'AGREGEE', candidature: { type: 'EXTERNE', url: 'https://m/1' },
+  title: 'Vendeuse', company: 'Maison', companyDomain: null, group: null, city: 'Paris',
   location: 'Paris, France', employmentTerm: 'PERMANENT', programType: null, engagementType: null,
-  isSeasonal: null, sector: null, url: 'https://m/1', postedAt: null, latitude: null, longitude: null,
+  isSeasonal: null, sector: null, postedAt: null, latitude: null, longitude: null,
   sourceCount: 1, sources: ['x'], description: 'd'.repeat(5_000), applyUrl: 'https://m/1',
   postalCode: null, department: null, jobFunction: null, seniority: null, workTime: 'FULL_TIME',
   workplaceType: 'REMOTE', experienceYears: null, educationLevel: null, salaryMin: null, salaryMax: null,
@@ -14,14 +15,17 @@ const ligne = (surcharges: Partial<JobRow>): JobRow => ({
 });
 
 const resultat = (jobs: JobRow[]): JobsResult => ({
-  jobs, total: jobs.length, totalInDatabase: 10, page: 1, pageCount: 1,
-  facets: { sectors: [], contracts: [], cities: [], groups: [], maisons: [], sources: [], countries: [] },
+  jobs, total: jobs.length, totalConfirmes: jobs.length, totalPerimetre: 10, page: 1, pageCount: 1,
+  perimetre: { code: 'FR', nom: 'France', pays: ['FR'], mesure: true, locales: ['fr-FR'], localeParDefaut: 'fr-FR' },
+  facettes: [{ cle: 'contrat', libelle: 'Type de contrat', options: [{ value: 'PERMANENT', label: 'CDI', count: 3 }] }],
+  filtresRefuses: [],
+  lieu: null,
 });
 
 /**
- * F1 phase 1 — la projection liste : sans description, avec des libellés
- * d'affichage issus du vocabulaire unique. Prémisse vérifiée : la ligne
- * d'entrée PORTE une description longue, sinon le témoin ne prouve rien.
+ * F1 phase 1, lot 6 — la projection liste : sans description, avec des
+ * libellés d'affichage issus du vocabulaire unique ; l'enveloppe (périmètre,
+ * facettes déjà libellées, refus, lieu) traverse intacte.
  */
 describe('projeterListe', () => {
   it('retire la description (prémisse : elle est présente et lourde)', () => {
@@ -37,30 +41,20 @@ describe('projeterListe', () => {
     expect(p.jobs[0].employmentTermLabel).toBe('CDI');
     expect(p.jobs[0].workplaceTypeLabel).toBeTruthy();
     expect(p.jobs[0].workTimeLabel).toBeTruthy();
+    expect(p.jobs[0].countryLabel).toBe('France');
     expect(p.jobs[1].employmentTermLabel).toBeNull();
     expect(p.jobs[1].workplaceTypeLabel).toBeNull();
   });
 
-  it('conserve total et pagination, et libelle les facettes à dimensions et pays', () => {
-    const r = resultat([ligne({})]);
-    r.facets.contracts = [{ value: 'PERMANENT', count: 3 }];
-    r.facets.countries = [{ value: 'FR', count: 3 }, { value: 'XQ', count: 1 }];
-    const { jobs: _j, facets, ...enveloppe } = projeterListe(r);
-    const { jobs: _k, facets: _f, ...attendue } = r;
+  it('conserve l’enveloppe du contrat : totaux, périmètre, facettes libellées, refus, lieu et action de candidature', () => {
+    const r = resultat([ligne({ correspondance: { statut: 'NON_CONFIRMEE', dimensions: ['contrat'] } })]);
+    r.filtresRefuses = [{ cle: 'contrat', valeurs: ['PERMANENT'], motif: 'FACETTE_NON_SERVIE' }];
+    r.lieu = { type: 'pays', libelle: 'France' };
+    const { jobs, ...enveloppe } = projeterListe(r);
+    const { jobs: _k, ...attendue } = r;
     expect(enveloppe).toEqual(attendue);
-    expect(facets.contracts).toEqual([{ value: 'PERMANENT', count: 3, label: 'CDI' }]);
-    expect(facets.countries[0]).toEqual({ value: 'FR', count: 3, label: 'France' });
-    // Un code hors table garde son code en libellé : jamais un texte inventé.
-    expect(facets.countries[1].label).toBe('XQ');
-    expect(facets.cities).toEqual(r.facets.cities);
-    r.facets.languages = [{ value: 'fr', count: 2 }, { value: 'zz', count: 1 }];
-    const p2 = projeterListe(r);
-    // Les facettes conditionnelles sont optionnelles depuis le lot « facettes
-    // natives » : on affirme la présence avant de lire, plutôt que de la forcer
-    // avec `!` — une facette qui disparaîtrait ici doit rougir, pas planter.
-    const langues = p2.facets.languages;
-    expect(langues).toBeDefined();
-    expect(langues![0]).toEqual({ value: 'fr', count: 2, label: 'Français' });
-    expect(langues![1].label).toBe('zz');
+    expect(jobs[0].candidature).toEqual({ type: 'EXTERNE', url: 'https://m/1' });
+    expect(jobs[0].origine).toBe('AGREGEE');
+    expect(jobs[0].correspondance).toEqual({ statut: 'NON_CONFIRMEE', dimensions: ['contrat'] });
   });
 });

@@ -346,7 +346,7 @@ export function markupIneligibility(job: JobRow, now: Date = new Date()): Markup
    * date ni l'historique : c'est la date de la source, elle reste telle quelle.
    */
   if (job.validThrough && job.validThrough.getTime() < now.getTime()) reasons.push('VALID_THROUGH_EXPIRED');
-  if (!job.url || !/^https?:\/\//.test(job.url)) reasons.push('NO_APPLY_PATH');
+  if (job.candidature.type === 'AUCUNE') reasons.push('NO_APPLY_PATH');
   return reasons;
 }
 

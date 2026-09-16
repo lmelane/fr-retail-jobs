@@ -66,10 +66,11 @@ describe('bornes de la recherche (audit 14/09/2026)', () => {
      * exige une base, et ce témoin doit tourner partout, y compris là où les
      * tests de base s'auto-ignorent — c'est-à-dire là où le défaut est passé.
      */
+    // Le plan borne les termes (lot 6) ; la requête d'alias, qui multiplie les clauses par terme, porte son LIMIT.
+    const plan = readFileSync(join(process.cwd(), 'lib', 'search-plan.ts'), 'utf8');
+    expect(plan, 'le découpage de q doit être borné').toMatch(/MAX_TERMES\s*=\s*\d+/);
+    expect(plan, 'le slice doit être appliqué au découpage').toMatch(/split\(\/\\s\+\/\)[\s\S]{0,60}slice\(0,\s*MAX_TERMES\)/);
     const src = readFileSync(join(process.cwd(), 'lib', 'job-search-query.ts'), 'utf8');
-    expect(src, 'le découpage de q doit être borné').toMatch(/MAX_TERMES\s*=\s*\d+/);
-    expect(src, 'le slice doit être appliqué au découpage').toMatch(/split\(\/\\s\+\/\)[\s\S]{0,60}slice\(0,\s*MAX_TERMES\)/);
-    // Et la requête d'alias, qui multiplie les clauses par terme, est bornée.
-    expect(src, 'la requête alias doit porter un LIMIT').toMatch(/companyAliasSql\(term, 'contains'\)\} LIMIT \d+/);
+    expect(src, 'la requête alias doit porter un LIMIT').toMatch(/old\.name ILIKE [^\n]*\) LIMIT \d+/);
   });
 });

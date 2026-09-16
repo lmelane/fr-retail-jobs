@@ -3,7 +3,12 @@ import { headline } from './intelligence/facts';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { prisma, Prisma } from '@catwalks/db';
 import { publicJobSql, publicJobWhere } from '@catwalks/db/availability';
-import { DatabaseUnavailableError, getJobs, getJobStatus, getOfferState, suggestCities, suggestTitles, getSimilarJobs, sitemapOffersChunk, getCompanyAside } from './jobs';
+import { DatabaseUnavailableError, getJobs, getJobStatus, getOfferState, getSimilarJobs, getCompanyAside } from './jobs';
+import { suggestCities, suggestTitles } from './suggestions';
+import { exigerPerimetre } from './perimetre';
+
+/** Les offres témoins sont françaises : la recherche se fait sur le marché FR, restreinte à la Maison témoin. */
+const recherche = () => getJobs({ marche: 'FR', page: 1, filtres: { maison: [key] } });
 
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
 const enabled = !!url && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && /test/i.test(url.pathname);
@@ -42,7 +47,7 @@ describe.skipIf(!enabled)('public availability from source publications', () => 
     const expected = [live.id, indefinite.id, multi.id].sort();
     expect(rows.map(row => row.id).sort()).toEqual(expected);
     expect((await prisma.job.findMany({ where: { ...publicJobWhere(), companyId: key } })).map(row => row.id).sort()).toEqual(expected);
-    const result = await getJobs({ maisons: [key] });
+    const result = await recherche();
     expect(result.total).toBe(3);
     expect(result.jobs.map(job => job.id).sort()).toEqual(expected);
     expect(await getOfferState(expired.id)).toBe('closed');
@@ -57,11 +62,14 @@ describe.skipIf(!enabled)('public availability from source publications', () => 
     const result = await getJobStatus(multi.id);
     expect(result.status).toBe('active');
     if (result.status === 'missing') throw new Error('Missing fixture');
-    expect(result.job).toMatchObject({ applyUrl: 'https://example.com/secondary/multi', url: 'https://example.com/secondary/multi',
+    expect(result.job).toMatchObject({ applyUrl: 'https://example.com/secondary/multi',
+      candidature: { type: 'EXTERNE', url: 'https://example.com/secondary/multi' },
       title: 'Secondary multi', description: 'Secondary own description', city: 'New York', countryCode: 'US',
       validThrough: future, sourceCount: 1, sources: [`${key}-secondary`] });
-    expect((await getJobs({ maisons: [key], source: `${key}-primary` })).total).toBe(0);
-    expect((await getJobs({ maisons: [key] })).facets.sources).toEqual([{ value: `${key}-secondary`, count: 1 }]);
+    // La publication restante est américaine, mais la LIGNE `Job` reste projetée en France : le périmètre lit la
+    // colonne projetée, jamais la publication — la recherche française la sert, avec sa seule source vivante.
+    const servie = (await recherche()).jobs.find((job) => job.id === multi.id);
+    expect(servie?.sources).toEqual([`${key}-secondary`]);
   });
 
   it('refuses a stale projection instead of pairing an old description with a new URL', async () => {
@@ -78,8 +86,7 @@ describe.skipIf(!enabled)('public availability from source publications', () => 
     expect(await getJobStatus(job.id)).toEqual({ status: 'withdrawn', canonicalId: job.id, job: null });
     await prisma.jobSource.deleteMany({ where: { jobId: job.id } });
     expect(await getJobStatus(job.id)).toEqual({ status: 'withdrawn', canonicalId: job.id, job: null });
-    expect((await getJobs({ maisons: [key] })).total).toBe(0);
-    expect((await sitemapOffersChunk(0)).some(row => row.id === job.id)).toBe(false);
+    expect((await recherche()).total).toBe(0);
   });
 
   it('can show qualified historical content for a catalogue withdrawal without claiming employer closure', async () => {
@@ -96,13 +103,14 @@ describe.skipIf(!enabled)('public availability from source publications', () => 
     expect((await getJobStatus(job.id)).status).toBe('withdrawn');
   });
 
-  it('expired publications disappear from discovery and sitemap output', async () => {
+  it('expired publications disappear from discovery', async () => {
     const expired = await create('expired', past);
     const live = await create('live', future);
-    expect(await suggestCities('Expirycity', 'FR')).toEqual(['Expirycitylive']);
-    expect(await suggestTitles('ExpiryWitness')).toEqual(['ExpiryWitness live']);
-    expect((await sitemapOffersChunk(0)).map(job => job.id)).toContain(live.id);
-    expect((await sitemapOffersChunk(0)).map(job => job.id)).not.toContain(expired.id);
+    expect(await suggestCities('Expirycity', exigerPerimetre('FR'))).toEqual(['Expirycitylive']);
+    expect(await suggestTitles('ExpiryWitness', exigerPerimetre('FR'))).toEqual(['ExpiryWitness live']);
+    const ids = (await recherche()).jobs.map((job) => job.id);
+    expect(ids).toContain(live.id);
+    expect(ids).not.toContain(expired.id);
     const result = await getJobStatus(live.id);
     if (result.status !== 'active') throw new Error('Live fixture unavailable');
     expect((await getSimilarJobs(result.job)).map(job => job.id)).not.toContain(expired.id);

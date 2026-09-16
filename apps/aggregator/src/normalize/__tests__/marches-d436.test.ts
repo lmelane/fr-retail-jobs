@@ -163,8 +163,8 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
      * sinon la démonstration s'effondre : deux libellés différents dans deux
      * langues différentes ne prouveraient rien.
      */
-    expect(MARCHES.CA.locale.startsWith('fr'), 'la prémisse : le Canada est servi en français').toBe(true);
-    expect(MARCHES.FR.locale.startsWith('fr'), 'la prémisse : la France aussi').toBe(true);
+    expect(MARCHES.CA.locales.some((l) => l.startsWith('fr')), 'la prémisse : le Canada est aussi servi en français').toBe(true);
+    expect(MARCHES.FR.localeParDefaut.startsWith('fr'), 'la prémisse : la France aussi').toBe(true);
 
     expect(libelleFacette('CA', 'contrat')).toBe('Type de poste');
     expect(libelleFacette('FR', 'contrat')).toBe('Type de contrat');
@@ -266,7 +266,9 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
       const m = MARCHES[code];
       expect(m.code, `${code} : le code interne doit correspondre à la clé`).toBe(code);
       expect(m.offresMesurees, `${code} : un volume mesuré strictement positif`).toBeGreaterThan(0);
-      expect(m.locale, `${code} : une locale de service`).toMatch(/^[a-z]{2}-[A-Z]{2}$/);
+      expect(m.localeParDefaut, `${code} : une locale de service`).toMatch(/^[a-z]{2}-[A-Z]{2}$/);
+      expect(m.locales, `${code} : la langue par défaut fait partie des langues servies`).toContain(m.localeParDefaut);
+      expect(m.pays, `${code} : un périmètre géographique qui contient son propre code`).toContain(code);
       for (const dimension of DIMENSIONS_FACETTE) {
         const taux = m.couverture[dimension];
         expect(taux, `${code}/${dimension} : une proportion, pas un pourcentage`).toBeGreaterThanOrEqual(0);

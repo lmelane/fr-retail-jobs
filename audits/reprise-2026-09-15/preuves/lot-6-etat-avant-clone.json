@@ -1,0 +1,473 @@
+{
+  "target": "clone",
+  "database": "catwalks_rehearsal_20260915",
+  "container": "catwalks-stock-rehearsal-dc2bef22be",
+  "readOnlyProven": true,
+  "perimetresMarches": {
+    "FR": [
+      "FR"
+    ],
+    "DE": [
+      "DE",
+      "AT"
+    ],
+    "GB": [
+      "GB",
+      "IE"
+    ],
+    "US": [
+      "US"
+    ],
+    "IT": [
+      "IT"
+    ],
+    "ES": [
+      "ES"
+    ],
+    "BE": [
+      "BE"
+    ],
+    "CH": [
+      "CH"
+    ],
+    "CA": [
+      "CA"
+    ],
+    "NL": [
+      "NL"
+    ],
+    "AU": [
+      "AU"
+    ],
+    "CN": [
+      "CN"
+    ]
+  },
+  "measuredAt": "2026-09-16T08:49:35.512066+00:00",
+  "publiables": {
+    "monde": 83010,
+    "sansPays": 4811,
+    "paysNonIso2": 0,
+    "isFranceSansCodeFR": 0,
+    "codeFRSansIsFrance": 0,
+    "paysDistincts": 120,
+    "parPays": [
+      {
+        "pays": "US",
+        "n": 37409
+      },
+      {
+        "pays": "FR",
+        "n": 10969
+      },
+      {
+        "pays": null,
+        "n": 4811
+      },
+      {
+        "pays": "GB",
+        "n": 3296
+      },
+      {
+        "pays": "DE",
+        "n": 3078
+      },
+      {
+        "pays": "CA",
+        "n": 2848
+      },
+      {
+        "pays": "IT",
+        "n": 2686
+      },
+      {
+        "pays": "ES",
+        "n": 2194
+      },
+      {
+        "pays": "NL",
+        "n": 1822
+      },
+      {
+        "pays": "CN",
+        "n": 1222
+      },
+      {
+        "pays": "AU",
+        "n": 1217
+      },
+      {
+        "pays": "CH",
+        "n": 1210
+      },
+      {
+        "pays": "BE",
+        "n": 670
+      },
+      {
+        "pays": "IN",
+        "n": 570
+      },
+      {
+        "pays": "JP",
+        "n": 548
+      },
+      {
+        "pays": "KR",
+        "n": 525
+      },
+      {
+        "pays": "PT",
+        "n": 523
+      },
+      {
+        "pays": "MX",
+        "n": 459
+      },
+      {
+        "pays": "SG",
+        "n": 423
+      },
+      {
+        "pays": "AT",
+        "n": 392
+      },
+      {
+        "pays": "DK",
+        "n": 380
+      },
+      {
+        "pays": "HK",
+        "n": 364
+      },
+      {
+        "pays": "PL",
+        "n": 359
+      },
+      {
+        "pays": "CL",
+        "n": 314
+      },
+      {
+        "pays": "SE",
+        "n": 307
+      },
+      {
+        "pays": "TR",
+        "n": 305
+      },
+      {
+        "pays": "IE",
+        "n": 281
+      },
+      {
+        "pays": "TH",
+        "n": 276
+      },
+      {
+        "pays": "MY",
+        "n": 260
+      },
+      {
+        "pays": "AE",
+        "n": 246
+      },
+      {
+        "pays": "TW",
+        "n": 223
+      },
+      {
+        "pays": "NO",
+        "n": 221
+      },
+      {
+        "pays": "BR",
+        "n": 203
+      },
+      {
+        "pays": "GR",
+        "n": 182
+      },
+      {
+        "pays": "ZA",
+        "n": 164
+      },
+      {
+        "pays": "CZ",
+        "n": 157
+      },
+      {
+        "pays": "VN",
+        "n": 156
+      },
+      {
+        "pays": "PE",
+        "n": 154
+      },
+      {
+        "pays": "NZ",
+        "n": 151
+      },
+      {
+        "pays": "HU",
+        "n": 123
+      }
+    ]
+  },
+  "marches": {
+    "dansUnPerimetre": 69294,
+    "horsPerimetres": 8905,
+    "parMarche": {
+      "FR": 10969,
+      "DE": 3470,
+      "GB": 3577,
+      "US": 37409,
+      "IT": 2686,
+      "ES": 2194,
+      "BE": 670,
+      "CH": 1210,
+      "CA": 2848,
+      "NL": 1822,
+      "AU": 1217,
+      "CN": 1222
+    },
+    "horsPerimetresParPays": [
+      {
+        "pays": "IN",
+        "n": 570
+      },
+      {
+        "pays": "JP",
+        "n": 548
+      },
+      {
+        "pays": "KR",
+        "n": 525
+      },
+      {
+        "pays": "PT",
+        "n": 523
+      },
+      {
+        "pays": "MX",
+        "n": 459
+      },
+      {
+        "pays": "SG",
+        "n": 423
+      },
+      {
+        "pays": "DK",
+        "n": 380
+      },
+      {
+        "pays": "HK",
+        "n": 364
+      },
+      {
+        "pays": "PL",
+        "n": 359
+      },
+      {
+        "pays": "CL",
+        "n": 314
+      },
+      {
+        "pays": "SE",
+        "n": 307
+      },
+      {
+        "pays": "TR",
+        "n": 305
+      },
+      {
+        "pays": "TH",
+        "n": 276
+      },
+      {
+        "pays": "MY",
+        "n": 260
+      },
+      {
+        "pays": "AE",
+        "n": 246
+      },
+      {
+        "pays": "TW",
+        "n": 223
+      },
+      {
+        "pays": "NO",
+        "n": 221
+      },
+      {
+        "pays": "BR",
+        "n": 203
+      },
+      {
+        "pays": "GR",
+        "n": 182
+      },
+      {
+        "pays": "ZA",
+        "n": 164
+      },
+      {
+        "pays": "CZ",
+        "n": 157
+      },
+      {
+        "pays": "VN",
+        "n": 156
+      },
+      {
+        "pays": "PE",
+        "n": 154
+      },
+      {
+        "pays": "NZ",
+        "n": 151
+      },
+      {
+        "pays": "HU",
+        "n": 123
+      }
+    ]
+  },
+  "teletravail": {
+    "remote": 295,
+    "remoteSansPays": 2,
+    "hybrid": 1415,
+    "remoteParPays": [
+      {
+        "pays": "US",
+        "n": 161
+      },
+      {
+        "pays": "MY",
+        "n": 36
+      },
+      {
+        "pays": "NL",
+        "n": 23
+      },
+      {
+        "pays": "CN",
+        "n": 11
+      },
+      {
+        "pays": "FR",
+        "n": 11
+      },
+      {
+        "pays": "DE",
+        "n": 10
+      },
+      {
+        "pays": "AU",
+        "n": 6
+      },
+      {
+        "pays": "SG",
+        "n": 6
+      },
+      {
+        "pays": "MX",
+        "n": 5
+      },
+      {
+        "pays": "CA",
+        "n": 4
+      },
+      {
+        "pays": "CO",
+        "n": 4
+      },
+      {
+        "pays": "KR",
+        "n": 4
+      }
+    ]
+  },
+  "lieux": {
+    "avecVille": 78085,
+    "avecCodePostal": 28624,
+    "avecSubdivision": 17390,
+    "villesMultiPays": 288,
+    "villesDistinctes": 6698,
+    "parisParPays": [
+      {
+        "pays": "FR",
+        "subdivision": null,
+        "n": 3656
+      },
+      {
+        "pays": "US",
+        "subdivision": "Tennessee",
+        "n": 7
+      },
+      {
+        "pays": "US",
+        "subdivision": "Texas",
+        "n": 2
+      },
+      {
+        "pays": "BE",
+        "subdivision": null,
+        "n": 1
+      },
+      {
+        "pays": "ES",
+        "subdivision": null,
+        "n": 1
+      }
+    ],
+    "texas": 1530,
+    "villesFrontalieresBEFR": [
+      {
+        "ville": "LILLE",
+        "pays": "FR",
+        "n": 89
+      },
+      {
+        "ville": "MONS",
+        "pays": "BE",
+        "n": 11
+      },
+      {
+        "ville": "TOURNAI",
+        "pays": "BE",
+        "n": 2
+      },
+      {
+        "ville": "TOURNAI",
+        "pays": null,
+        "n": 1
+      },
+      {
+        "ville": "VALENCIENNES",
+        "pays": "FR",
+        "n": 9
+      }
+    ]
+  },
+  "facettesInconnues": {
+    "FR": {
+      "total": 10969,
+      "contratNull": 3380,
+      "tempsNull": 3949
+    },
+    "US": {
+      "total": 37409,
+      "contratNull": 31002,
+      "tempsNull": 5829
+    }
+  },
+  "schema": {
+    "directOfferTable": 0,
+    "searchTextIndex": 1,
+    "migrations": 70,
+    "sourcesCatwalks": 0,
+    "jobSourcesCatwalks": 0
+  }
+}

@@ -316,17 +316,66 @@ export type DimensionFacette = (typeof DIMENSIONS_FACETTE)[number];
 /** La couverture mesurée d'un marché, dimension par dimension, en proportion. */
 export type CouvertureMesuree = Readonly<Record<DimensionFacette, number>>;
 
+/**
+ * ── LE CONTRAT DE RECHERCHE PARTAGÉ (lot 6) ───────────────────────────────
+ *
+ * Ce registre est la SEULE description des marchés lue par l'API et, à
+ * travers `GET /api/marches` et les réponses de `/api/jobs`, par le site. Il
+ * porte donc tout ce qu'un marché est pour le produit : son périmètre
+ * géographique (le SQL borne les offres à ces pays), ses langues de service,
+ * les facettes qu'il expose et leurs libellés natifs. Le site n'en garde
+ * aucune copie : la version du contrat change quand sa FORME change.
+ */
+export const CONTRAT_RECHERCHE_VERSION = 1;
+
+/**
+ * Les clés de facette telles que l'URL du site et l'API les nomment — le
+ * vocabulaire visible par le candidat, en français parce que l'URL l'est.
+ * `pays` n'est une facette que sur les marchés qui couvrent plusieurs pays ou
+ * où le découpage territorial sert (BE, CA) ; `langue` traverse tous les
+ * marchés (D-419 §3).
+ */
+export const CLES_FACETTE = ['pays', 'metier', 'secteur', 'contrat', 'temps', 'programme', 'ville', 'maison', 'groupe', 'langue'] as const;
+export type CleFacette = (typeof CLES_FACETTE)[number];
+
+/** Les facettes propres au site, hors périmètre de la mesure : une ville est une ville partout. */
+export const CLES_FACETTE_SITE = ['pays', 'secteur', 'ville', 'maison', 'groupe', 'langue'] as const;
+export type CleFacetteSite = (typeof CLES_FACETTE_SITE)[number];
+
+/** La dimension mesurée qui gouverne une clé de facette ; absente pour les facettes du site. */
+export const DIMENSION_PAR_CLE: Readonly<Partial<Record<CleFacette, DimensionFacette>>> = {
+  contrat: 'contrat',
+  temps: 'temps',
+  programme: 'programme',
+  metier: 'metier',
+};
+
 export type Marche = {
-  /** Le code ISO 3166-1 alpha-2, tel que le rend `normalizeCountry`. */
+  /** Le code ISO 3166-1 alpha-2 du marché, tel que le sélecteur le porte. */
   readonly code: CodeMarche;
+  /** Le libellé du marché, dans sa langue native (`Deutschland`, `中国`). */
+  readonly nom: string;
   /**
-   * La locale de SERVICE du marché — la langue dans laquelle on lui parle.
+   * Le PÉRIMÈTRE GÉOGRAPHIQUE : les codes pays dont ce marché sert les offres.
+   * C'est lui que le SQL impose (lot 6) ; `DE` sert l'Allemagne ET l'Autriche,
+   * `GB` le Royaume-Uni ET l'Irlande. Un marché n'est pas forcément un pays.
+   */
+  readonly pays: readonly string[];
+  /** Toutes les langues de service de ce marché, en étiquettes BCP 47. Au moins une. */
+  readonly locales: readonly string[];
+  /**
+   * La langue de SERVICE par défaut — celle dans laquelle on parle au marché
+   * sans demande explicite. Toujours dans `locales`.
    *
    * Distincte de la langue d'une annonce (`language.ts`) : un candidat français
    * qui visite l'Australie lit « Job type », même si son navigateur est en
    * français. C'est le marché qui impose sa langue, pas le visiteur.
    */
-  readonly locale: string;
+  readonly localeParDefaut: string;
+  /** Les facettes propres au site exposées sur ce marché, dans l'ordre du contrat. */
+  readonly facettesSite: readonly CleFacetteSite[];
+  /** Les libellés natifs des facettes du site, relevés dans la langue de service. */
+  readonly libellesSite: Readonly<Record<CleFacetteSite, string>>;
   /**
    * Les LIBELLÉS natifs, dans la langue du marché.
    *
@@ -390,7 +439,12 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    */
   US: {
     code: 'US',
-    locale: 'en-US',
+    nom: 'United States',
+    pays: ['US'],
+    locales: ['en-US'],
+    localeParDefaut: 'en-US',
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
     libelles: { temps: 'Job type', metier: 'Job category' },
     offresMesurees: 36_942,
     couverture: {
@@ -418,7 +472,12 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    */
   FR: {
     code: 'FR',
-    locale: 'fr-FR',
+    nom: 'France',
+    pays: ['FR'],
+    locales: ['fr-FR'],
+    localeParDefaut: 'fr-FR',
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    libellesSite: { pays: 'Pays', secteur: 'Secteur', ville: 'Ville', maison: 'Maison', groupe: 'Groupe', langue: 'Langue' },
     libelles: {
       contrat: 'Type de contrat',
       temps: 'Temps de travail',
@@ -447,7 +506,14 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    */
   GB: {
     code: 'GB',
-    locale: 'en-GB',
+    nom: 'United Kingdom',
+    /** Le Royaume-Uni ET l'Irlande : le drapeau seul mentirait, le code reste affiché à côté (D-433). */
+    pays: ['GB', 'IE'],
+    locales: ['en-GB'],
+    localeParDefaut: 'en-GB',
+    /** `pays` : le périmètre couvre deux pays, le candidat peut s'y restreindre. */
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],
+    libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
     libelles: {
       contrat: 'Job type',
       temps: 'Job type',
@@ -480,7 +546,19 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    */
   CA: {
     code: 'CA',
-    locale: 'fr-CA',
+    nom: 'Canada',
+    pays: ['CA'],
+    /*
+     * Bilingue, et l'anglais domine le catalogue (2 308 offres en anglais, 400
+     * en français, mesuré le 15/09/2026) : `en-CA` par défaut, `fr-CA` servi.
+     * Les libellés relevés restent ceux d'Indeed Canada francophone (« Type de
+     * poste ») : la langue ne détermine pas le libellé, le marché si.
+     */
+    locales: ['en-CA', 'fr-CA'],
+    localeParDefaut: 'en-CA',
+    /** `pays` : un marché où le candidat filtre utilement par territoire. */
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],
+    libellesSite: { pays: 'Pays', secteur: 'Secteur', ville: 'Ville', maison: 'Maison', groupe: 'Groupe', langue: 'Langue' },
     libelles: {
       contrat: 'Type de poste',
       temps: 'Type de poste',
@@ -517,7 +595,14 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    */
   DE: {
     code: 'DE',
-    locale: 'de-DE',
+    nom: 'Deutschland',
+    /** L'Allemagne ET l'Autriche (D-433) ; le code ISO reste affiché à côté du drapeau. */
+    pays: ['DE', 'AT'],
+    locales: ['de-DE'],
+    localeParDefaut: 'de-DE',
+    /** `pays` : le périmètre couvre deux pays, le candidat peut s'y restreindre. */
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],
+    libellesSite: { pays: 'Land', secteur: 'Branche', ville: 'Stadt', maison: 'Haus', groupe: 'Gruppe', langue: 'Sprache' },
     libelles: {
       contrat: 'Anstellungsart',
       temps: 'Arbeitszeit',
@@ -541,7 +626,12 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    */
   IT: {
     code: 'IT',
-    locale: 'it-IT',
+    nom: 'Italia',
+    pays: ['IT'],
+    locales: ['it-IT'],
+    localeParDefaut: 'it-IT',
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    libellesSite: { pays: 'Paese', secteur: 'Settore', ville: 'Città', maison: 'Maison', groupe: 'Gruppo', langue: 'Lingua' },
     libelles: {
       contrat: 'Tipo di contratto',
       temps: 'Orario di lavoro',
@@ -560,7 +650,12 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
   /** ESPAGNE — « Tipo de empleo » ; « contrato indefinido » 9 % des descriptions. */
   ES: {
     code: 'ES',
-    locale: 'es-ES',
+    nom: 'España',
+    pays: ['ES'],
+    locales: ['es-ES'],
+    localeParDefaut: 'es-ES',
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    libellesSite: { pays: 'País', secteur: 'Sector', ville: 'Ciudad', maison: 'Maison', groupe: 'Grupo', langue: 'Idioma' },
     libelles: {
       contrat: 'Tipo de empleo',
       temps: 'Jornada laboral',
@@ -585,7 +680,13 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    */
   NL: {
     code: 'NL',
-    locale: 'nl-NL',
+    nom: 'Nederland',
+    pays: ['NL'],
+    /** 1 033 offres en néerlandais, 561 en anglais (15/09/2026) : `en-GB` servi aussi. */
+    locales: ['nl-NL', 'en-GB'],
+    localeParDefaut: 'nl-NL',
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    libellesSite: { pays: 'Land', secteur: 'Sector', ville: 'Stad', maison: 'Maison', groupe: 'Groep', langue: 'Taal' },
     libelles: {
       contrat: 'Dienstverband',
       temps: 'Dienstverband',
@@ -618,7 +719,12 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    */
   AU: {
     code: 'AU',
-    locale: 'en-AU',
+    nom: 'Australia',
+    pays: ['AU'],
+    locales: ['en-AU'],
+    localeParDefaut: 'en-AU',
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
     libelles: {
       contrat: 'Job type',
       temps: 'Job type',
@@ -676,7 +782,12 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    */
   CH: {
     code: 'CH',
-    locale: 'fr-CH',
+    nom: 'Suisse · Schweiz',
+    pays: ['CH'],
+    locales: ['fr-CH', 'de-CH', 'it-CH'],
+    localeParDefaut: 'fr-CH',
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    libellesSite: { pays: 'Pays', secteur: 'Secteur', ville: 'Ville', maison: 'Maison', groupe: 'Groupe', langue: 'Langue' },
     libelles: {
       contrat: 'Type de contrat',
       temps: 'Temps de travail',
@@ -750,7 +861,20 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    */
   BE: {
     code: 'BE',
-    locale: 'fr-BE',
+    nom: 'Belgique · België',
+    pays: ['BE'],
+    locales: ['fr-BE', 'nl-BE', 'en-GB'],
+    localeParDefaut: 'fr-BE',
+    /** `pays` : un marché où le candidat filtre utilement par territoire. */
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],
+    libellesSite: {
+      pays: 'Pays · Land',
+      secteur: 'Secteur · Sector',
+      ville: 'Ville · Stad',
+      maison: 'Maison · Huis',
+      groupe: 'Groupe · Groep',
+      langue: 'Langue · Taal',
+    },
     libelles: {
       contrat: 'Type de contrat · Contracttype',
       temps: 'Temps de travail · Dienstverband',
@@ -892,7 +1016,13 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
    */
   CN: {
     code: 'CN',
-    locale: 'zh-CN',
+    nom: '中国',
+    pays: ['CN'],
+    locales: ['zh-CN'],
+    localeParDefaut: 'zh-CN',
+    /** `langue` compte plus ici qu'ailleurs : un tiers du catalogue chinois est anglophone. */
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    libellesSite: { pays: '国家', secteur: '行业', ville: '城市', maison: '品牌', groupe: '集团', langue: '语言' },
     /*
      * `contrat` et `temps` sont ABSENTS À DESSEIN — voir le bloc ci-dessus.
      * Leur absence est ce qui les retire des facettes, par la règle générale
@@ -980,4 +1110,76 @@ export function facettesDuMarche(code: string): readonly DimensionFacette[] {
  */
 export function libelleFacette(code: string, dimension: DimensionFacette): string | undefined {
   return marche(code)?.libelles[dimension];
+}
+
+/**
+ * LE PÉRIMÈTRE D'UNE RECHERCHE — un ensemble de pays, jamais « le monde ».
+ *
+ * Un marché mesuré porte son périmètre et ses facettes natives. Tout autre code
+ * ISO 3166-1 connu (JP, PT, IN… 8 905 offres publiables hors des douze marchés
+ * mesurées le 16/09/2026) reste un périmètre d'un seul pays, sans facettes
+ * natives : le stock hors marchés n'est ni invisible ni fondu dans le monde.
+ * Un code absent, mal formé ou inconnu ne rend rien — c'est à l'appelant de
+ * refuser, jamais de dégrader en recherche mondiale.
+ */
+export type Perimetre = {
+  readonly code: string;
+  readonly pays: readonly string[];
+  /** Le marché mesuré, ou `undefined` pour un pays servi sans registre. */
+  readonly marche: Marche | undefined;
+};
+
+export function perimetreDeRecherche(code: string | undefined, paysConnus: ReadonlySet<string>): Perimetre | undefined {
+  if (typeof code !== 'string') return undefined;
+  const normalise = code.trim().toUpperCase();
+  const mesure = marche(normalise);
+  if (mesure) return { code: mesure.code, pays: mesure.pays, marche: mesure };
+  if (!/^[A-Z]{2}$/.test(normalise) || !paysConnus.has(normalise)) return undefined;
+  return { code: normalise, pays: [normalise], marche: undefined };
+}
+
+/**
+ * Les libellés servis hors marché mesuré : le français source, la langue de ce
+ * dépôt. Un pays sans registre lit ses facettes en français tant que son marché
+ * n'est pas ouvert ; l'ouvrir relève d'une décision, pas d'une traduction.
+ */
+export const LIBELLES_GENERIQUES: Readonly<Record<CleFacette, string>> = {
+  pays: 'Pays',
+  metier: 'Métier',
+  secteur: 'Secteur',
+  contrat: 'Type de contrat',
+  temps: 'Temps de travail',
+  programme: 'Type de programme',
+  ville: 'Ville',
+  maison: 'Maison',
+  groupe: 'Groupe',
+  langue: 'Langue',
+};
+
+/** Une facette du contrat : sa clé d'URL et son libellé, dans l'ordre d'affichage. */
+export type FacetteContrat = { readonly cle: CleFacette; readonly libelle: string };
+
+/**
+ * Les facettes servies pour un périmètre, dans l'ordre du contrat.
+ *
+ * Sur un marché mesuré : les dimensions dont la couverture et le libellé le
+ * justifient (`facettesDuMarche`), plus les facettes propres au site. Hors
+ * marché mesuré : les facettes du site seulement, `pays` compris quand le
+ * périmètre s'y prête, sans dimension contractuelle — rien n'est mesuré, rien
+ * n'est proposé.
+ */
+export function facettesContrat(perimetre: Perimetre): readonly FacetteContrat[] {
+  const m = perimetre.marche;
+  const dimensions = m ? new Set(facettesDuMarche(m.code)) : new Set<DimensionFacette>();
+  const site = new Set<CleFacetteSite>(m ? m.facettesSite : ['secteur', 'ville', 'maison', 'groupe', 'langue']);
+  return CLES_FACETTE.flatMap((cle) => {
+    const dimension = DIMENSION_PAR_CLE[cle];
+    if (dimension) {
+      if (!m || !dimensions.has(dimension)) return [];
+      return [{ cle, libelle: m.libelles[dimension] ?? LIBELLES_GENERIQUES[cle] }];
+    }
+    const siteCle = cle as CleFacetteSite;
+    if (!site.has(siteCle)) return [];
+    return [{ cle, libelle: m ? m.libellesSite[siteCle] : LIBELLES_GENERIQUES[cle] }];
+  });
 }

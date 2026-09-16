@@ -58,7 +58,7 @@ describe('le garde de clé (D-422)', () => {
  * ouverte, et personne ne le verrait. Il ÉCHOUE si une route oublie le garde.
  */
 describe('aucune route ne peut oublier le garde', () => {
-  it('les 6 routes protégées appellent refuserSiCleInvalide, /api/health non (D-422 §3)', () => {
+  it('les 7 routes protégées appellent refuserSiCleInvalide, /api/health non (D-422 §3)', () => {
     const racine = join(__dirname, '..', '..', 'app', 'api');
     const routes: string[] = [];
     const parcourir = (dossier: string) => {
@@ -70,8 +70,8 @@ describe('aucune route ne peut oublier le garde', () => {
     };
     parcourir(racine);
 
-    // Prémisse : il y a bien 7 routes, sinon ce témoin ne teste rien.
-    expect(routes).toHaveLength(7);
+    // Prémisse : il y a bien 8 routes (dont `/api/marches`, lot 6), sinon ce témoin ne teste rien.
+    expect(routes).toHaveLength(8);
 
     for (const chemin of routes) {
       const source = readFileSync(chemin, 'utf8');

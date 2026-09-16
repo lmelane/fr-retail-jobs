@@ -131,12 +131,3 @@ export function countryLabel(code: string): string {
     return code;
   }
 }
-
-/** Every raw spelling that maps to a given canonical code — for the SQL filter. */
-export function rawValuesForCode(code: string): string[] {
-  const spellings = Object.entries(ALIASES)
-    .filter(([, c]) => c === code)
-    .map(([raw]) => raw);
-  // Include the code itself in a few cases and the exact stored variants.
-  return [...new Set([code, code.toLowerCase(), ...spellings])];
-}

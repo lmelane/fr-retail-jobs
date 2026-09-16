@@ -8,7 +8,7 @@ Décision de travail du **15 septembre 2026**, fondée sur le code et l’[audit
 |---|---|---|
 | Collecte externe | `apps/aggregator`, 43 kinds au registre ; `Source`, `JobSource`, `SourceObservation` | Capture native ajoutée localement au lot 2 ; collecte de production encore historique et sources à qualifier |
 | Catalogue externe | `packages/db` ; `Job` et ses représentations ; identité prouvée, groupes réversibles et présentation propre ajoutés localement aux lots 4A–4D3 | Stock historique à reprendre avant bascule ; le schéma `Job` reste une projection de groupe |
-| API du catalogue | `apps/api`, service Railway `catwalks-api` | `marche` ne borne pas encore tous les résultats ; suggestions et facettes ne partagent pas un contrat strict |
+| API du catalogue | `apps/api`, service Railway `catwalks-api` ; depuis le lot 6A, périmètre obligatoire borné en SQL, suggestions et annuaire dans le périmètre, [contrat de facettes servi par le registre](recherche-marche.md) | Union des offres directes et action de candidature explicite (lot 6B) ; libellés d’emploi encore français sur tous les marchés (lot 8) |
 | Site candidat | Dépôt privé `catwalks-front-end` ; `/emplois` et `/offres` | Deux circuits de lecture ; le catalogue commun décrit ci-dessous n’existe pas encore |
 | Offres directes | Dépôt privé `catwalks-back-end` ; `Job`, publication, retrait, candidatures | Export public actuel plafonné à 500 ; pas de transfert durable vers l’index de recherche commun |
 | Candidature Catwalks | `PostulerButton`, `PostulerModal`, API `/api/applications` | À préserver et brancher au résultat commun ; ne pas remplacer par un lien externe |
@@ -123,6 +123,8 @@ Le **pays cible** décide du catalogue, des localisations, des facettes, des uni
 **Adresses recommandées :** `{pays}.catwalks.io`, par exemple `fr.catwalks.io`, `us.catwalks.io`, `gb.catwalks.io`, `ca.catwalks.io`. `en` désigne une langue et ne suffit pas à identifier US, GB ou CA. Dans les pays multilingues, une URL de langue explicite complète le pays. Le domaine racine reste une décision de bascule ; aucun DNS n’est modifié par ce document.
 
 La bascule devra inclure cookies/session, CORS, cache CDN, retours de connexion, canonical, hreflang, sitemap, anciennes URL et absence de boucle de redirection. Seules les versions réellement traduites sont annoncées aux moteurs. Le pays du contexte n’est jamais un simple conseil de classement SQL : **il borne les résultats**.
+
+**État au lot 6A (16 septembre 2026).** Le périmètre borne les résultats, totaux, facettes, suggestions et annuaire de l’API ; un marché absent ou inconnu est refusé (`400`), un pays connu sans marché mesuré est servi comme périmètre d’un seul pays ; les filtres non servis et les pays hors périmètre sont refusés nommément ; les offres non renseignées sur une dimension filtrée restent servies et marquées non confirmées. Le contrat exact est décrit dans [recherche-marche.md](recherche-marche.md). L’union avec les offres directes et le website relèvent des sous-lots 6B et 6C.
 
 ## 5. Les deux entrées de recherche
 
