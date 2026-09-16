@@ -137,6 +137,13 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
   'ALL_LOCALE_TOTALS_REACHED', 'ALL_LOCALES_COMPLETE', 'ALL_LISTED_PAGES_READ', 'FULL_XML_DOCUMENT',
   'ANNOUNCED_TOTAL_REACHED', 'ANNOUNCED_PAGE_COUNT_REACHED', 'DECLARED_TOTAL_REACHED', 'PUBLISHER_COUNT_REACHED',
   'PUBLISHER_TOTAL_ROWS_READ', 'SHORT_PAGE',
+  /**
+   * Teamtailor (lot F3, 2026-09-16) : un JSON Feed 1.1 se termine quand `next_url` est absent ou nul ; c'est la
+   * fin documentée du flux, et l'adaptateur refuse déjà une continuation étrangère ou filtrée, une page vide avec
+   * suite, un doublon inter-pages, un cycle et un plafond de pages (`PAGE_BUDGET_REACHED`, qui reste non probant).
+   * Chaque page porte ses identifiants canoniques dans la preuve scellée.
+   */
+  'NEXT_URL_NULL',
 ]);
 
 /**

@@ -35,11 +35,20 @@ describe('Teamtailor enumeration evidence', () => {
     expect(r.declaredTotal).toBeUndefined();
     expect(r.jobs.map(j=>j.raw)).toEqual(captured.items);
     expect(fetchJson).toHaveBeenNthCalledWith(2,captured.next_url,expect.anything());
+    // Lot F3 : la preuve d'énumération nomme chaque page et ses identifiants canoniques, ceux de la sortie.
+    expect(r.enumeration).toMatchObject({ method: 'DOCUMENTED_JSON_FEED', endpoint: `${origin}/jobs.json`, pages: 2, rawCount: 2, termination: 'NEXT_URL_NULL', canonicalAbsenceProofUsable: true, enumerationTraversalComplete: true });
+    expect(r.enumeration!.blockers).toBeUndefined();
+    expect(r.enumeration!.pageEvidence!.map(p => p.canonicalIds)).toEqual([[r.jobs[0].externalId], [r.jobs[1].externalId]]);
+    expect(r.enumeration!.pageEvidence!.map(p => p.offset)).toEqual([0, 1]);
+    expect(r.enumeration!.pageEvidence![1].url).toBe(captured.next_url);
+    expect(r.enumeration!.pageEvidence!.every(p => /^[a-f0-9]{64}$/.test(p.sha256) && p.publisherCounter === '1')).toBe(true);
   });
   it('retains observations but never attests when the page budget is reached', async () => {
     vi.mocked(fetchJson).mockResolvedValueOnce(page([captured.items[0]],captured.next_url));
     const r = await fetchTeamtailorJobs({origin,maxPages:1});
     expect(r).toMatchObject({complete:false,truncated:true});expect(r.jobs).toHaveLength(1);
+    expect(r.enumeration).toMatchObject({ pages: 1, termination: 'PAGE_BUDGET_REACHED', enumerationTraversalComplete: false, blockers: ['PAGE_BUDGET_REACHED'] });
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual([r.jobs[0].externalId]);
   });
   it('distinguishes an explicit empty feed from malformed JSON', async () => {
     vi.mocked(fetchJson).mockResolvedValueOnce(page([]));

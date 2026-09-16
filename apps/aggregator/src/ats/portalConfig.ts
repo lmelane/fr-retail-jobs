@@ -11,6 +11,13 @@ export function recruiteeSubdomain(config: Record<string, unknown>): string {
   return subdomain;
 }
 
+/** Teamtailor : l'origine HTTPS du site carrière (domaine personnalisé ou `*.teamtailor.com`), sans chemin ni filtre. */
+export function teamtailorOrigin(config: Record<string, unknown>): string {
+  const origin = String(config.origin ?? '').replace(/\/$/, '');
+  if (!origin) throw new Error('Teamtailor origin missing');
+  return origin;
+}
+
 export function workdayPortal(config: Record<string, unknown>) {
   const tenant = String(config.tenant ?? '');
   const site = String(config.site ?? '');

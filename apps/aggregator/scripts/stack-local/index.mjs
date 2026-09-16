@@ -10,6 +10,8 @@
  *   npm run stack:reset   -- --oui
  *   npm run stack:status
  *   npm run stack:sync    -- [--limite=200] [--depuis=0]    (rejoue la synchronisation des offres directes, à la main)
+ *   npm run stack:exec    -- <commande> [arguments…]        (lance une commande avec l'environnement isolé de la stack :
+ *                                                            base catalogue, archive MinIO, flux du backend ; ex. node --import tsx apps/aggregator/scripts/ops/source-onboard.mts status oh-my-cream)
  *
  * Composants : base catalogue (PostgreSQL), base backend de test (PostgreSQL),
  * archive RAW (MinIO), API catalogue (apps/api), backend Catwalks, site,
@@ -267,12 +269,20 @@ try {
     case 'stop': await stop(); break;
     case 'reset': await reset(); break;
     case 'status': await status(); break;
+    case 'exec': {
+      // Arguments BRUTS après « exec » : les options de la commande lancée (--import, --apply…) ne sont pas les nôtres.
+      const brut = process.argv.slice(2); const [cmd, ...args] = brut.slice(brut.indexOf('exec') + 1);
+      if (!cmd) throw new StackError('exec : indiquer la commande à lancer après stack:exec --');
+      const child = spawn(cmd, args, { cwd: ROOT, env: envCli(requireConfig()), stdio: 'inherit' });
+      process.exitCode = await new Promise((resolve) => child.once('exit', (code) => resolve(code ?? 1)));
+      break;
+    }
     case 'sync': {
       const args = ['--limite=' + String(flags.limite ?? 200), ...(flags.depuis !== undefined ? ['--depuis=' + String(flags.depuis)] : [])];
       const { stats, output } = await directSync(requireConfig(), args);
       console.log(JSON.stringify(stats ?? { erreur: output.slice(-800) }, null, 2)); process.exitCode = stats && !stats.refus ? 0 : 1; break;
     }
-    default: throw new StackError('Commandes : prepare | start | verify | stop | reset | status | sync');
+    default: throw new StackError('Commandes : prepare | start | verify | stop | reset | status | sync | exec');
   }
 } catch (error) {
   console.error(error instanceof StackError ? `stack : ${error.message}` : error);

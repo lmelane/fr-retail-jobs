@@ -25,7 +25,8 @@
     "stack:stop": "node apps/aggregator/scripts/stack-local/index.mjs stop",
     "stack:reset": "node apps/aggregator/scripts/stack-local/index.mjs reset",
     "stack:status": "node apps/aggregator/scripts/stack-local/index.mjs status",
-    "stack:sync": "node apps/aggregator/scripts/stack-local/index.mjs sync"
+    "stack:sync": "node apps/aggregator/scripts/stack-local/index.mjs sync",
+    "stack:exec": "node apps/aggregator/scripts/stack-local/index.mjs exec"
   },
   "allowScripts": {
     "prisma@6.19.3": true,

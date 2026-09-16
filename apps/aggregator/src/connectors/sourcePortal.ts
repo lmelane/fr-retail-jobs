@@ -1,5 +1,5 @@
 import { parse } from 'tldts';
-import { ashbyBoard, recruiteeSubdomain, workdayPortal } from '../ats/portalConfig.js';
+import { ashbyBoard, recruiteeSubdomain, teamtailorOrigin, workdayPortal } from '../ats/portalConfig.js';
 import { isPublicHttpUrl } from '../lib/ssrf.js';
 
 const locale = /^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8}){0,2}$/;
@@ -28,6 +28,14 @@ function publicHttps(value: string): URL | null {
   return url.protocol === 'https:' && !url.port ? url : null;
 }
 
+/**
+ * Native Teamtailor listing filters (`/jobs?query=…&split_view=true&geobound_coordinates[ne_lat]=…`,
+ * `department_id`, `location_id`, `remote`). Observed on the link provided for Oh My Cream (2026-09-16): a map
+ * view of the SAME tenant's listing. They select a subset within the configured site, never another tenant,
+ * and a matching reference never attests the subset's completeness (`coverageAttested: false`).
+ */
+const teamtailorListingFilter = /^(?:query|split_view|remote|department_id|location_id|role_id|region_id|geobound_coordinates\[[a-z_]+\])$/;
+
 /** Unknown query semantics are not discarded when establishing an exact board. */
 function referenceUrl(value: string, kind: string): URL | null {
   const url = publicHttps(value);
@@ -36,7 +44,9 @@ function referenceUrl(value: string, kind: string): URL | null {
     // These native Workday facets are observed on the archived LS&Co. official
     // page. They select a subset within the named site, never another tenant.
     // A matching reference does not attest the selected subset's completeness.
-    return !(kind === 'workday' && ['jobFamily', 'locations'].includes(key) && /^[a-f0-9]{32}$/i.test(value));
+    if (kind === 'workday' && ['jobFamily', 'locations'].includes(key) && /^[a-f0-9]{32}$/i.test(value)) return false;
+    if (kind === 'teamtailor' && teamtailorListingFilter.test(key)) return false;
+    return true;
   })) return null;
   return url;
 }
@@ -56,6 +66,14 @@ export function configuredPortal(kind: string, config: Record<string, unknown>):
     if (!/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(subdomain)) return null;
     url = new URL(`https://${subdomain}.recruitee.com/`);
     paths = path => path === '/' || /^\/l\/[a-z]{2,3}\/?$/.test(path);
+  } else if (kind === 'teamtailor') {
+    // The exact HTTPS origin of the career site is the tenant identity (`teamtailor:<host>`): a custom domain
+    // such as careers.ohmycream.com or a vendor host. Another host, an http:// redirection source, a www alias
+    // or a job page never designates the configured site; the listing is `/` or `/jobs`, with native filters.
+    const base = publicHttps(teamtailorOrigin(config));
+    if (!base || base.pathname !== '/' || base.search || base.hash || base.username || base.password) return null;
+    url = base;
+    paths = path => path === '/' || path === '/jobs' || path === '/jobs/';
   } else if (kind === 'workday') {
     const { tenant, site, origin } = workdayPortal(config);
     const base = publicHttps(origin);

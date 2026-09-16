@@ -64,6 +64,12 @@ it.each([
 ])('refuses incomplete or stale decisions %#', change => {
   expect(() => parseAccessDocument({ ...document(), ...change })).toThrow();
 });
+it('refuses a checkedAt finer than the millisecond or without UTC marker, before SQL compares it to the stored column', () => {
+  // Constaté le 2026-09-16 : un horodatage à la microseconde passait le lecteur puis heurtait le déclencheur SQL avec un code générique.
+  expect(() => parseAccessDocument({ ...document(), checkedAt: new Date().toISOString().replace('Z', '123Z') })).toThrow(/millisecond/);
+  expect(() => parseAccessDocument({ ...document(), checkedAt: new Date().toISOString().replace('Z', '+00:00') })).toThrow(/millisecond/);
+  expect(parseAccessDocument({ ...document(), checkedAt: new Date().toISOString() }).checkedAt).toMatch(/\.\d{3}Z$/);
+});
 it('allows an explicit denial without pretending to have new native proof', () => {
   const input = { ...document(), verdict: 'NOT_AUTHORIZED', captureBatchId: null, scopes: [], robotsCaptureIds: [] };
   expect(parseAccessDocument(input).verdict).toBe('NOT_AUTHORIZED');

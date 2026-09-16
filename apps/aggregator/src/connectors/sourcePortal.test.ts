@@ -40,6 +40,27 @@ it('matches a Recruitee board and its language landing page, never another tenan
   expect(board.matches('https://other.recruitee.com/')).toBe(false);
   expect(board.matches('https://maison.recruitee.com/o/job-1')).toBe(false);
 });
+it('matches a Teamtailor career site on its exact origin and listing, with native filters, never another tenant, host, redirection source or job page', () => {
+  const site = configuredPortal('teamtailor', { origin: 'https://careers.ohmycream.com' })!;
+  expect(site.url).toBe('https://careers.ohmycream.com/');
+  expect(configuredPortal('teamtailor', { origin: 'https://careers.ohmycream.com/' })!.url).toBe(site.url);
+  expect(site.matches('https://careers.ohmycream.com/')).toBe(true);
+  expect(site.matches('https://careers.ohmycream.com/jobs')).toBe(true);
+  expect(site.matches('https://careers.ohmycream.com/jobs/?utm_source=site&lang=fr')).toBe(true);
+  // The map view Loïc provided: a display filter within the same tenant, never a coverage attestation.
+  expect(site.matches('https://careers.ohmycream.com/jobs?geobound_coordinates%5Bne_lat%5D=49.1&geobound_coordinates%5Bsw_lng%5D=1.9&query=vendeur&split_view=true')).toBe(true);
+  for (const url of ['https://ohmycream.teamtailor.com/', 'https://careers.other.example/', 'https://www.careers.ohmycream.com/',
+    'http://careers.ohmycream.com/', 'https://careers.ohmycream.com:8443/', 'https://user@careers.ohmycream.com/',
+    'https://careers.ohmycream.com/jobs/123456-vendeur', 'https://careers.ohmycream.com/jobs/internal', 'https://careers.ohmycream.com/#/jobs',
+    'https://careers.ohmycream.com/jobs?redirect=https%3A%2F%2Fevil.example', 'https://careers.ohmycream.com/jobs?tenant=other&split_view=true',
+    'https://careers.ohmycream.com/en/jobs', 'https://other.example/?next=https://careers.ohmycream.com/jobs']) expect(site.matches(url)).toBe(false);
+  expect(configuredPortal('teamtailor', { origin: 'https://careers.ohmycream.com/jobs' })).toBeNull();
+  expect(configuredPortal('teamtailor', { origin: 'http://careers.ohmycream.com' })).toBeNull();
+  expect(configuredPortal('teamtailor', { origin: 'https://careers.ohmycream.com/?split_view=true' })).toBeNull();
+  expect(() => configuredPortal('teamtailor', {})).toThrow();
+  // A vendor host is an acceptable tenant identity when it is the configured one.
+  expect(configuredPortal('teamtailor', { origin: 'https://maison.teamtailor.com' })!.matches('https://maison.teamtailor.com/jobs')).toBe(true);
+});
 it('does not guess unsupported portals from domain names or generic URL settings', () => {
   expect(configuredPortal('unknown', { origin: 'https://jobs.ashbyhq.com/maison' })).toBeNull();
   expect(configuredPortal('ashby', { board: { name: 'maison' } })).toBeNull();

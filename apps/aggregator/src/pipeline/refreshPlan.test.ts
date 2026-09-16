@@ -72,6 +72,11 @@ describe('sourceEligibility — dérivée des FAITS scellés de la capture attes
   it('refuse une terminaison non probante', () => {
     expect(sourceEligibility(run(), evidence({ termination: 'INCOMPLETE' })).eligible).toBe(false);
   });
+  it('admet la fin documentée d’un JSON Feed Teamtailor (NEXT_URL_NULL) et refuse son plafond de pages', () => {
+    // Prémisse : la même capture, seule la terminaison change ; rien d'autre ne rend la source éligible.
+    expect(sourceEligibility(run(), evidence({ termination: 'PAGE_BUDGET_REACHED' })).eligible).toBe(false);
+    expect(sourceEligibility(run(), evidence({ termination: 'NEXT_URL_NULL' })).eligible).toBe(true);
+  });
 });
 
 const rep = (over: Partial<Representation> = {}): Representation => ({

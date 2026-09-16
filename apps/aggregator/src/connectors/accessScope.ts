@@ -78,6 +78,10 @@ export function parseAccessDocument(input: unknown, now = new Date()): Readonly<
   for (const key of ['sourceKey', 'sourceRevisionId', 'reviewer', 'statement', 'checkedAt'] as const) {
     if (typeof document[key] !== 'string' || !document[key].trim() || document[key].length > (key === 'statement' ? 16000 : 300)) return invalidAccess('Invalid access reviewer or source fields');
   }
+  // `checkedAt` est comparé par SQL, converti en timestamptz, à la colonne écrite par Prisma à la milliseconde :
+  // une précision supérieure (microsecondes) rendait le dossier « distinct » de lui-même, avec un refus générique
+  // (constaté le 2026-09-16 sur oh-my-cream). Le format est donc exigé ici, avec un motif clair.
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/.test(document.checkedAt)) return invalidAccess('checkedAt must be an ISO-8601 UTC timestamp (Z) with at most millisecond precision');
   if (!['ALLOWED', 'NOT_AUTHORIZED'].includes(document.verdict) || document.statement.trim().length < 30 || !recentAccess(document.checkedAt, now) ||
     !Array.isArray(document.robotsCaptureIds) || document.robotsCaptureIds.length > 64 ||
     new Set(document.robotsCaptureIds).size !== document.robotsCaptureIds.length ||
