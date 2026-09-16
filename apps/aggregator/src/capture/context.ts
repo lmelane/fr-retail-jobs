@@ -12,6 +12,8 @@ type ReplayResponse = { bytes: Uint8Array | null; status: number | null; headers
 export type CaptureContext = {
   sequence: number;
   observedAt?: Date;
+  /** Evidence-page captures retain redirects; ordinary extraction headers stay unchanged. */
+  captureRedirectLocations?: boolean;
   replayWafCookies?: Map<string, string>;
   write?: (record: CaptureRecord) => Promise<void>;
   replay?: (hash: string) => Promise<ReplayResponse>;
@@ -70,7 +72,8 @@ export async function captureResponse(request: CaptureRequest, response: {
   if (!context?.write) return;
   assertCaptureHealthy();
   try {
-    const headers = Object.fromEntries(HEADER_NAMES.flatMap(name => {
+    const names = context.captureRedirectLocations ? [...HEADER_NAMES, 'location'] : HEADER_NAMES;
+    const headers = Object.fromEntries(names.flatMap(name => {
       const value = response.headers?.get(name);
       return value === null || value === undefined ? [] : [[name, value]];
     }));

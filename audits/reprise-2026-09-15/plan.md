@@ -171,6 +171,12 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 Les nouvelles revues d’identité portent explicitement la révision examinée et un ordre SQL attribué sous verrou. Les changements de périmètre et les allers-retours de configuration invalident les anciennes revues. La lecture de périmètre et les rapports emploient le validateur strict commun. Les 112 revues historiques du clone restent intactes, non liées et non certifiantes. Voir le [bilan 5E](lot-5e.md) pour les contrôles et contre-épreuves. Le lien officiel vers le portail exact, les rôles éditeur/employeur, les preuves d’accès et le parcours unique restent des travaux distincts avant release.
 
+### Sous-lots 5G : preuves d’identité et d’accès
+
+- **5G1** : captures HTTP séparées des offres, réutilisant le journal et l’archive existants. Le format 3 conserve la chaîne de redirections et ne peut qualifier ni publier une offre. Une page archivée, y compris un refus, ne vaut pas autorisation. [Bilan et contre-épreuves](lot-5g1.md).
+- **5G2** : vérifier dans les octets archivés un lien officiel vers le tenant et le site ATS exacts, puis rattacher la revue à cette preuve. Un nom, un commentaire ou une sous-chaîne ne suffisent pas.
+- **5G3** : remplacer les champs mutables d’accès par une décision immuable portant sur les requêtes et l’identité de collecteur réellement utilisées ; distinguer employeur, groupe et éditeur.
+
 ## Lot 6. Recherche réellement bornée par marché
 
 **Objectif.** Livrer une recherche commune aux deux origines, strictement bornée par pays, pour résultats, facettes, titres, employeurs, villes, divisions et codes postaux.

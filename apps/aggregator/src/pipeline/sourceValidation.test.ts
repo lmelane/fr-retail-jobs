@@ -174,9 +174,9 @@ describe('native source validation', () => {
       configHash: batch.configHash, readerRevision: batch.readerRevision, sourceKind: batch.sourceKind, formatVersion } });
     const { id: _id, sequence: _sequence, ...data } = good;
     const invalid = { ...data, captureBatchId: open.id, report: {} };
-    await expect(db.sourceValidation.create({ data: invalid })).rejects.toThrow('completed capture');
+    await expect(db.sourceValidation.create({ data: invalid })).rejects.toThrow('completed job capture');
     await db.captureOutcome.create({ data: { batchId: open.id, status: 'FAILED', extractedCount: 0, failure: 'fixture' } });
-    await expect(db.sourceValidation.create({ data: invalid })).rejects.toThrow('completed capture');
+    await expect(db.sourceValidation.create({ data: invalid })).rejects.toThrow('completed job capture');
     await expect(validateCapturedSource(db, open.id)).rejects.toThrow('completed registered');
   });
 

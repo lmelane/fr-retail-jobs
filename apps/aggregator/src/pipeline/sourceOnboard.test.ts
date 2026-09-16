@@ -25,14 +25,15 @@ writeFileSync(preload, `import { appendFileSync } from 'node:fs';
 globalThis.fetch = async (input) => {
  const url = String(input instanceof Request ? input.url : input);
  appendFileSync(${JSON.stringify(calls)}, JSON.stringify(url) + '\\n');
+ if (process.env.SOURCE_CLI_TEST_TRANSPORT === 'evidence' && url === 'https://synthetic-maison.example/careers') return new Response(${JSON.stringify(`<a href="https://jobs.ashbyhq.com/${key}">Observed synthetic official-page link</a>`)});
  if (process.env.SOURCE_CLI_TEST_TRANSPORT !== 'native' || url !== ${JSON.stringify(`https://api.ashbyhq.com/posting-api/job-board/${key}?includeCompensation=true`)}) throw new Error('Unexpected network access in source CLI test');
  return new Response(JSON.stringify({apiVersion:'1',jobs:[{id:'native-1',title:'Client Advisor',isListed:process.env.SOURCE_CLI_TEST_HIDDEN !== '1',descriptionPlain:'Synthetic native responsibilities',jobUrl:${JSON.stringify(`https://jobs.ashbyhq.com/${key}/native-1`)},address:{postalAddress:{addressCountry:'FR',addressLocality:'Paris'}}}]}), {headers:{'content-type':'application/json'}});
 };`, { mode: 0o600 });
 
-function cli(args: string[], options: { native?: boolean; hidden?: boolean; failure?: RegExp } = {}) {
+function cli(args: string[], options: { native?: boolean; hidden?: boolean; evidence?: boolean; failure?: RegExp } = {}) {
  const out = file(`output-${randomUUID()}.json`);
  const result = spawnSync(process.execPath, ['--import', 'tsx', '--import', preload, 'scripts/ops/source-onboard.mts', ...args, `--out=${out}`], {
-   env: { ...env, SOURCE_CLI_TEST_TRANSPORT: options.native ? 'native' : 'offline', SOURCE_CLI_TEST_HIDDEN: options.hidden ? '1' : '0' }, encoding: 'utf8', timeout: 45_000,
+   env: { ...env, SOURCE_CLI_TEST_TRANSPORT: options.evidence ? 'evidence' : options.native ? 'native' : 'offline', SOURCE_CLI_TEST_HIDDEN: options.hidden ? '1' : '0' }, encoding: 'utf8', timeout: 45_000,
  });
  expect(result.error).toBeUndefined();
  if (options.failure) {
@@ -84,10 +85,15 @@ it('executes the source CLI with independent previews, native evidence, exact pr
  // Qualification requires real captured bytes, with no caller-supplied volume.
  const validation = cli(['collect', key, '--apply', '--deadline-ms=15000'], { native: true });
  expect(validation).toMatchObject({ verdict: 'VALIDATED', sourceRevisionId: draft.currentRevisionId });
- const transports = readFileSync(calls, 'utf8');
+ let transports = readFileSync(calls, 'utf8');
  expect(transports.trim().split('\n')).toHaveLength(1);
  expect(cli(['validate', validation.captureBatchId, '--apply'])).toMatchObject({ verdict: 'VALIDATED', captureBatchId: validation.captureBatchId });
  expect(readFileSync(calls, 'utf8')).toBe(transports);
+ expect(cli(['evidence', key, '--purpose=identity', `--revision=${draft.currentRevisionId}`,
+   '--url=https://synthetic-maison.example/careers', '--apply'], { evidence: true })).toMatchObject({
+   sourceRevisionId: draft.currentRevisionId, purpose: 'SOURCE_IDENTITY', responseCount: 1, lastStatus: 200 });
+ transports = readFileSync(calls, 'utf8');
+ expect(transports.trim().split('\n')).toHaveLength(2);
  expect(await source()).toEqual(draft);
  expect(await db.jobSource.count({ where: { sourceKey: key } })).toBe(0);
  expect(cli(['status', key])).toMatchObject({ identity: { passed: true }, native: { passed: true }, access: { passed: false }, promotionGatesPass: false,
@@ -119,5 +125,5 @@ it('executes the source CLI with independent previews, native evidence, exact pr
  await db.source.update({ where: { key }, data: { status: 'RETIRED' } });
  expect(cli(['register', input, '--apply'])).toMatchObject({ created: false, status: 'RETIRED' });
  cli(['promote', key, `--revision=${draft.currentRevisionId}`, '--apply'], { failure: /RETIRED/ });
- expect(readFileSync(calls, 'utf8').trim().split('\n')).toHaveLength(2);
+ expect(readFileSync(calls, 'utf8').trim().split('\n')).toHaveLength(3);
 }, 120_000);

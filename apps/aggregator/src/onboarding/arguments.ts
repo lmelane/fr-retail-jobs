@@ -2,6 +2,7 @@ const commands = {
   register: { options: ['apply', 'out'], required: [] },
   profile: { options: ['out'], required: [] },
   identity: { options: ['artifact', 'apply', 'out'], required: ['artifact'] },
+  evidence: { options: ['purpose', 'url', 'revision', 'deadline-ms', 'apply', 'out'], required: ['purpose', 'url', 'revision', 'apply'] },
   collect: { options: ['apply', 'deadline-ms', 'out'], required: ['apply'] },
   validate: { options: ['apply', 'out'], required: ['apply'] },
   promote: { options: ['revision', 'apply', 'out'], required: ['revision', 'apply'] },
@@ -14,7 +15,7 @@ export type SourceArguments = { command: SourceCommand; target: string; options:
 export function parseSourceArguments(args: string[]): SourceArguments {
   const [command, target, ...flags] = args;
   if (!Object.hasOwn(commands, command ?? '') || !target?.trim() || target.startsWith('-')) {
-    throw new Error('Choose source-onboard register|profile|identity|collect|validate|promote|status and one explicit target');
+    throw new Error('Choose source-onboard register|profile|identity|evidence|collect|validate|promote|status and one explicit target');
   }
   const spec = commands[command as SourceCommand];
   const options: Record<string, string> = {};
@@ -26,6 +27,7 @@ export function parseSourceArguments(args: string[]): SourceArguments {
     options[name] = value ?? 'true';
   }
   for (const name of spec.required) if (!options[name]) throw new Error(`This source operation requires --${name}${name === 'apply' ? '' : '=value'}`);
+  if (command === 'evidence' && !['identity', 'access'].includes(options.purpose)) throw new Error('Evidence purpose must be identity or access');
   if (options['deadline-ms']) {
     const deadline = Number(options['deadline-ms']);
     if (!Number.isSafeInteger(deadline) || deadline < 1 || deadline > 2_147_483_647) throw new Error('Invalid collection deadline');

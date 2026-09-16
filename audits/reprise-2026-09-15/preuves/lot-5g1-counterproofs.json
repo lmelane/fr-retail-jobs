@@ -1,0 +1,71 @@
+{
+  "mutations": [
+    {
+      "name": "mutable-request-options",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "dce6202b6f50a39ee38272fe54a5ea1c6ec4c25a59411f213de1ba35df03e7dc"
+    },
+    {
+      "name": "drop-redirect-location",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "dce6202b6f50a39ee38272fe54a5ea1c6ec4c25a59411f213de1ba35df03e7dc"
+    },
+    {
+      "name": "ignore-manifest-journal",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "dce6202b6f50a39ee38272fe54a5ea1c6ec4c25a59411f213de1ba35df03e7dc"
+    },
+    {
+      "name": "ignore-request-provenance",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "dce6202b6f50a39ee38272fe54a5ea1c6ec4c25a59411f213de1ba35df03e7dc"
+    },
+    {
+      "name": "discard-partial-bytes",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "dce6202b6f50a39ee38272fe54a5ea1c6ec4c25a59411f213de1ba35df03e7dc"
+    },
+    {
+      "name": "drop-failed-request",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "dc2e7d39e43c8c55242ec0cd1a7d59db240c28f64d839a95d858724f833d8b9f"
+    },
+    {
+      "name": "omit-evidence-telemetry",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "dc2e7d39e43c8c55242ec0cd1a7d59db240c28f64d839a95d858724f833d8b9f"
+    },
+    {
+      "name": "omit-evidence-backoff",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "dc2e7d39e43c8c55242ec0cd1a7d59db240c28f64d839a95d858724f833d8b9f"
+    },
+    {
+      "name": "cap-server-cooldown",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "c5418a2608e57b2fcc8a1861ff01a34fb164cd5146785b5609ddccf5490998ee"
+    },
+    {
+      "name": "ignore-later-cooldown",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "af3e4494a57f53de64bbc8d6b595d550b1c222bb2daac6aa8b8c4d89bef6e9d8"
+    },
+    {
+      "name": "overflow-long-timer",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "af3e4494a57f53de64bbc8d6b595d550b1c222bb2daac6aa8b8c4d89bef6e9d8"
+    }
+  ],
+  "restoredTests": "passed"
+}

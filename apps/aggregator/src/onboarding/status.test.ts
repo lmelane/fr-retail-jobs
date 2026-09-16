@@ -10,7 +10,7 @@ it('does not disguise an unavailable database as missing identity evidence', asy
   const tx = { $executeRaw: vi.fn(),
     sourceIdentityReview: { findFirst: vi.fn().mockResolvedValue(null).mockRejectedValueOnce(failure) },
     sourceValidation: { findFirst: vi.fn().mockResolvedValue(null) },
-    captureBatch: { findFirst: vi.fn().mockResolvedValue(null) } };
+    captureBatch: { findFirst: vi.fn().mockResolvedValue(null), findMany: vi.fn().mockResolvedValue([]) } };
   const db = { $transaction: (fn: (client: unknown) => Promise<unknown>) => fn(tx) };
   await expect(sourceStatus(db as unknown as PrismaClient, 'test')).rejects.toBe(failure);
 });

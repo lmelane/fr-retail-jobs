@@ -1149,10 +1149,17 @@ model RawBlobArchive {
   verifiedAt DateTime @default(now())
 }
 
-/** One source extraction. Configuration is fingerprinted; transport secrets are not stored. */
+enum CapturePurpose {
+  JOBS
+  SOURCE_IDENTITY
+  SOURCE_ACCESS
+}
+
+/** One bounded capture attempt. Evidence pages never stand for job extractions. */
 model CaptureBatch {
   id String @id @default(uuid())
-  /** Null for captures observed before attempt ordering was recorded. */
+  purpose CapturePurpose @default(JOBS)
+  /** Null for source evidence and captures predating recorded job-attempt ordering. */
   attemptOrdinal BigInt? @unique @default(autoincrement())
   sourceKey String
   runId String?
@@ -1171,7 +1178,7 @@ model CaptureBatch {
   observations SourceObservation[]
   validations SourceValidation[]
   @@index([sourceKey, startedAt])
-  @@index([sourceRevisionId, attemptOrdinal])
+  @@index([sourceRevisionId, purpose, attemptOrdinal])
   @@index([runId])
 }
 

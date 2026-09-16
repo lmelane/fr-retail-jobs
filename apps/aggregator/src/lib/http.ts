@@ -10,7 +10,7 @@ import { detectChallenge } from './responseIntegrity.js';
 import { publicDispatcher } from './publicTransport.js';
 import { sessionHeaders, rememberSessionCookies } from './httpSession.js';
 import { recordAttempt, recordResponse, recordFailure } from '../observability/httpTelemetry.js';
-import { capturingResponses, captureResponse, replayResponse, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
+import { auditUrl, capturingResponses, captureResponse, replayResponse, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
 
 export { WafChallengeError } from './wafToken.js';
 export { detectChallenge, type ChallengeVendor } from './responseIntegrity.js';
@@ -122,6 +122,9 @@ export async function fetchFollowingSafely(
   url: string,
   init: RequestInit,
   signal: AbortSignal,
+  /** Source-evidence mode archives every hop and paces each host separately.
+   * The observer must leave the original body available (read a bounded clone). */
+  captureHop?: (url: string, response: Response | null, failure?: unknown) => Promise<void>,
 ): Promise<Response> {
   let current = url;
   let request: RequestInit = { ...init, headers: new Headers(init.headers) };
@@ -133,7 +136,35 @@ export async function fetchFollowingSafely(
     // Node's fetch and installed undici share the dispatcher protocol, but
     // their separately versioned TypeScript declarations are not assignable.
     Object.assign(options, { dispatcher: publicDispatcher() });
-    const response = await fetch(current, options);
+    let response: Response;
+    try { response = captureHop ? await withHostGate(current, async () => {
+      signal.throwIfAborted();
+      log.count('http.attempts'); recordAttempt(current, false); noteRequest(rateLimitKeyFor(current));
+      const started = Date.now();
+      let observed: Response;
+      try { observed = await fetch(current, options); }
+      catch (error) { recordFailure(current, signal.aborted ? 'timeout' : 'error'); throw error; }
+      log.count('http.responses');
+      recordResponse(current, observed.status, Date.now() - started, observed.headers.get('content-length'));
+      if (observed.ok) reportSuccess(current);
+      else if ([403, 405, 429, 500, 502, 503, 504].includes(observed.status)) {
+        const raw = observed.headers.get('retry-after');
+        const seconds = Number(raw); const date = raw ? Date.parse(raw) : NaN;
+        const askedMs = Number.isFinite(seconds) && seconds > 0 ? seconds * 1000
+          : Number.isFinite(date) ? Math.max(0, date - Date.now()) : null;
+        reportThrottle(current, askedMs);
+        if (observed.status === 429) record429({ rateLimitKey: rateLimitKeyFor(current),
+          host: new URL(current).hostname, sourceKey: process.env.CURRENT_SOURCE_KEY ?? null,
+          url: auditUrl(current), attempt: 1, retryAfterRaw: raw, appliedDelayMs: 0, activeConcurrency: 0 });
+      }
+      // Evidence captures archive the refusal and stop; they never retry it.
+      return observed;
+    }) : await fetch(current, options); }
+    catch (error) { if (captureHop) await captureHop(current, null, error); throw error; }
+    if (captureHop) {
+      try { await captureHop(current, response); }
+      catch (error) { await response.body?.cancel().catch(() => undefined); throw error; }
+    }
     await rememberSessionCookies(current, response.headers);
 
     // 3xx with a Location -> validate and follow it ourselves.

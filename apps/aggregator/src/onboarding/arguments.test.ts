@@ -13,12 +13,16 @@ describe('source command boundary', () => {
     ['collect', 'source', '--apply', '--deadline-ms=0'], ['collect', 'source', '--apply', '--deadline-ms=NaN'],
     ['collect', 'source', '--apply', '--deadline-ms=1.5'], ['collect', 'source', '--apply', '--deadline-ms=2147483648'],
     ['validate', 'batch', '--apply', '--deadline-ms=100'], ['register', 'candidate.json', '--source=other'],
+    ['evidence', 'source', '--apply'],
+    ['evidence', 'source', '--purpose=jobs', '--url=https://official.example', '--revision=current', '--apply'],
+    ['evidence', 'source', '--purpose=identity', '--url=https://official.example', '--apply'],
   ])('rejects ambiguous or incomplete invocation %j', (...args) => { expect(() => parseSourceArguments(args)).toThrow(); });
   it('keeps previews separate from explicit writes', () => {
     expect(parseSourceArguments(['register','candidate.json'])).toMatchObject({ command: 'register', apply: false });
     expect(parseSourceArguments(['identity','review.json','--artifact=proof.txt'])).toMatchObject({ apply: false });
     expect(parseSourceArguments(['collect','source','--apply','--deadline-ms=30000'])).toMatchObject({ apply: true });
     expect(parseSourceArguments(['promote','source','--revision=reviewed','--apply'])).toMatchObject({ options: { revision: 'reviewed' } });
+    expect(parseSourceArguments(['evidence','source','--purpose=identity','--url=https://official.example','--revision=reviewed','--apply'])).toMatchObject({ command: 'evidence', apply: true });
   });
   it('rejects the actual command before database initialization or reading its target file', () => {
     const result = spawnSync(process.execPath, ['--import','tsx',fileURLToPath(new URL('../../scripts/ops/source-onboard.mts', import.meta.url)),

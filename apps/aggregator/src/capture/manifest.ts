@@ -31,6 +31,8 @@ export async function persistExtractionManifest(db: PrismaClient, batchId: strin
 /** The manifest is evidence of the recorded adapter result, not a certification
  * that the publisher enumeration or parsed publications were correct. */
 export async function readExtractionManifest(db: PrismaClient, batchId: string, store?: ObjectStore): Promise<Manifest> {
+  const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: batchId }, select: { purpose: true } });
+  if (batch.purpose !== 'JOBS') throw new Error('Source evidence is not a job extraction manifest');
   const outcome = await db.captureOutcome.findUniqueOrThrow({ where: { batchId } });
   if (outcome.status !== 'EXTRACTED' || !outcome.manifestHash) throw new Error('Completed extraction result manifest unavailable; no completeness certificate can be inferred');
   const value: unknown = JSON.parse((await readRawBlob(db, outcome.manifestHash, store)).toString('utf8'));

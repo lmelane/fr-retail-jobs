@@ -44,7 +44,7 @@ async function nativeEmptyFeed(db: PrismaClient, batchId: string, kind: string, 
  * a later configuration transition leaves it as historical evidence only. */
 export async function validateCapturedSource(db: PrismaClient, batchId: string, store?: ObjectStore) {
   const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: batchId }, include: { outcome: true } });
-  if (!batch.sourceRevisionId || batch.formatVersion !== 2 || batch.outcome?.status !== 'EXTRACTED') {
+  if (batch.purpose !== 'JOBS' || !batch.sourceRevisionId || batch.formatVersion !== 2 || batch.outcome?.status !== 'EXTRACTED') {
     throw new Error('Source validation requires a completed registered native capture');
   }
   const [row] = await db.$queryRaw<{ payloadText: string; sourceKey: string }[]>`

@@ -44,6 +44,7 @@ export async function captureExtraction(db: PrismaClient, sourceKey: string, con
 /** Run the same collector offline against the exact recorded native entities. */
 export async function replayExtraction<T>(db: PrismaClient, batchId: string, work: () => Promise<T>, store?: ObjectStore): Promise<T> {
   const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: batchId } });
+  if (batch.purpose !== 'JOBS') throw new Error('Source evidence is not a replayable job extraction');
   const captures = await db.rawCapture.findMany({ where: { batchId }, orderBy: { sequence: 'asc' } });
   if (!captures.length) throw new Error('Capture batch has no recorded responses');
   const queues = new Map<string, typeof captures>();

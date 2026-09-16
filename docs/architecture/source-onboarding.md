@@ -8,6 +8,7 @@ Une source enregistrée est un périmètre de collecte, pas une certification d�
 |---|---|---|
 | `register candidat.json` | Vérifie le candidat et les collisions ; crée une DRAFT avec une nouvelle révision | Aperçu par défaut ; `--apply` pour enregistrer |
 | `profile CLÉ` | Lit les identifiants exacts à reprendre dans le dossier d’identité | Lecture seule |
+| `evidence CLÉ --purpose=identity\|access --url=URL --revision=RÉVISION` | Archive la page et chaque redirection, sans décision métier | `--apply`, but, URL et révision explicites obligatoires |
 | `identity revue.json --artifact=preuve.txt` | Vérifie le dossier et ses octets ; enregistre une décision immuable | Aperçu par défaut ; `--apply` pour enregistrer |
 | `collect CLÉ --deadline-ms=30000` | Capture avec l’adaptateur réel, archive puis valide hors réseau | `--apply` obligatoire |
 | `validate CAPTURE_ID` | Revalide une collecte scellée, depuis S3 si nécessaire | `--apply` obligatoire |
@@ -43,6 +44,17 @@ La répétition d’un candidat identique retrouve la même source sans réécri
 
 ### Preuves indépendantes
 
+Les pages officielles et les documents d’accès ont leur propre capture, liée à la révision examinée :
+
+```sh
+node --import tsx apps/aggregator/scripts/ops/source-onboard.mts evidence exemple --purpose=identity --url=https://maison.example/carrieres --revision=REVISION_EXAMINEE --apply
+node --import tsx apps/aggregator/scripts/ops/source-onboard.mts evidence exemple --purpose=access --url=https://maison.example/robots.txt --revision=REVISION_EXAMINEE --apply
+```
+
+Le transport conserve chaque réponse et chaque redirection (six réponses au maximum), avec un budget explicite de 60 secondes par défaut. Il ne réessaie pas les refus. Les requêtes passent par le limiteur partagé ; les réponses 429 alimentent aussi son délai d’attente. Les octets incomplets et les échecs sans réponse restent inspectables mais ne constituent pas une capture complète. `status` présente les dix dernières captures d’identité ou d’accès de la révision courante, séparément de la dernière collecte d’offres. Le corps se lit avec `raw-capture.mts --capture=IDENTIFIANT_REPONSE --out=/chemin/prive`.
+
+Le manifeste privé conserve l’URL demandée et la chaîne exacte des réponses. Les paramètres d’URL et les en-têtes de redirection peuvent être sensibles ; ils restent dans le stockage privé des captures. La lecture vérifie le manifeste, toutes les empreintes et chaque destination sans refaire de requête. **Archiver une réponse 200 ou un document robots ne certifie ni l’identité de l’employeur ni une autorisation d’accès.** Une page de challenge peut être archivée ; son contenu devra être refusé par l’évaluation métier.
+
 La [revue d’identité](../employer-identity.md) reprend la révision explicite du profil. Elle ne se rattache jamais automatiquement à une révision plus récente. Répéter le même dossier ne crée pas de décision et ne remplace pas une contradiction ultérieure.
 
 La [validation native](native-capture.md) utilise les réponses brutes, le manifeste scellé et le lecteur actuel. Elle produit une décision immuable distincte du statut opérationnel de la source. Un refus technique sort en erreur tout en conservant son rapport. Elle n’enregistre aucune offre publique et ne certifie aucune absence.
@@ -59,7 +71,7 @@ Une promotion répétée sur une source déjà ACTIVE vérifie à nouveau les po
 ## Limites avant release
 
 - La porte d’accès actuelle lit encore `robotsVerdict` et `robotsCheckedAt`. Le statut indique `revisionBound: false`. Cette preuve mutable doit être remplacée par une décision immuable couvrant les cibles HTTP exactes ; la CLI ne la fabrique pas lors de la collecte.
-- La validation du dossier d’identité ne prouve pas à elle seule que la page officielle désigne le tenant et le site ATS configurés. L’archivage et la vérification de cette relation restent à qualifier.
+- La validation du dossier d’identité ne prouve pas à elle seule que la page officielle désigne le tenant et le site ATS configurés. L’archivage est disponible ; la vérification de cette relation et le rattachement de la revue à cette capture restent à livrer.
 - Les rôles employeur, groupe et éditeur, la réouverture explicite d’une source retirée, les paramètres privés d’accès et les ingestions de sources déjà actives restent des travaux distincts.
 - Un certificat calculé avec le lecteur local ne certifie pas une release Railway différente.
 

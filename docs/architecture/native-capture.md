@@ -1,6 +1,6 @@
 # Captures natives, sorties d’extraction et rétention
 
-Contrat des lots 2 et 5A à 5D, actualisé le 16 septembre 2026. L’implémentation est validée localement et le transport d’archive sur un environnement Railway isolé. Les services de production n’utilisent pas encore ces migrations. Les preuves et les limites de livraison figurent dans le [bilan du lot](../../audits/reprise-2026-09-15/lot-2.md).
+Contrat des lots 2 et 5A à 5G1, actualisé le 16 septembre 2026. L’implémentation est validée localement et le transport d’archive sur un environnement Railway isolé. Les services de production n’utilisent pas encore ces migrations. Les preuves et les limites de livraison figurent dans le [bilan du lot](../../audits/reprise-2026-09-15/lot-2.md).
 
 ## Ce qui fait foi
 
@@ -12,11 +12,11 @@ Le navigateur conserve séparément les réponses document/XHR/fetch et le DOM r
 |---|---|
 | `SourceValidation` | Décision technique immuable, révision du registre, collecte scellée, lecteur, politique, ordre d’enregistrement et rapport dérivé |
 | `SourceRevision` | Configuration privée native du registre, empreinte SQL, numéro de transition et date de première observation |
-| `CaptureBatch` | Source, révision du registre si connue, ordre SQL des nouvelles tentatives, début d’extraction, empreinte des réglages effectifs, version du lecteur et format |
+| `CaptureBatch` | Source, révision du registre si connue, but JOBS/SOURCE_IDENTITY/SOURCE_ACCESS, ordre SQL des nouvelles tentatives d’offres, début de capture, empreinte des réglages effectifs, version du lecteur et format |
 | `RawCapture` | Une tentative, ordre de réception, empreinte de requête, statut, métadonnées et référence des octets |
 | `RawBlob` / `RawBlobBody` | Identité SHA-256, taille, empreinte et taille gzip ; octets locaux compressés |
 | `SourceExtraction` | Une sortie complète d’offre par collecte et position, conservée avant les transformations communes |
-| `CaptureOutcome` | Résultat immuable : EXTRACTED ou FAILED, compteur, empreinte des offres et manifeste intégral du résultat pour le format 2 |
+| `CaptureOutcome` | Résultat immuable : EXTRACTED, SOURCE_EVIDENCE ou FAILED ; manifeste du résultat d’offres (format 2) ou des réponses de page (format 3) |
 | `SourceObservation` | Sortie RAW de l’adaptateur et disposition interne séparées ; historique antérieur conservé |
 | `RawBlobArchive` | Localisation distante et empreinte gzip vérifiées, immuables |
 
@@ -34,13 +34,21 @@ Le rejeu complet exige la configuration originale et la version compatible du le
 
 ## Manifeste et clôture de collecte
 
-Les nouvelles collectes utilisent le format 2. Le manifeste est un bloc RAW dérivé et borné : métadonnées complètes de `AdapterResult`, identifiants et empreintes des sorties dans leur ordre. Les corps des offres restent dans leurs blocs individuels ; ils ne sont pas dupliqués dans le manifeste. Un résultat vide conserve ainsi la différence entre zéro explicitement énuméré, parcours incomplet et absence de preuve.
+Les nouvelles collectes d’offres utilisent le format 2 et le but `JOBS`. Le manifeste est un bloc RAW dérivé et borné : métadonnées complètes de `AdapterResult`, identifiants et empreintes des sorties dans leur ordre. Les corps des offres restent dans leurs blocs individuels ; ils ne sont pas dupliqués dans le manifeste. Un résultat vide conserve ainsi la différence entre zéro explicitement énuméré, parcours incomplet et absence de preuve.
 
 La clôture immuable interdit tout ajout ultérieur aux journaux des réponses et des sorties, y compris après échec. Les écritures et la clôture sérialisent leur accès à la collecte. Une réécriture identique de sa ligne avance sa version transactionnelle sans modifier ses métadonnées ; PostgreSQL refuse ainsi les instantanés périmés, y compris en `REPEATABLE READ`. Le verrou est pris une fois par collecte et par instruction SQL, plutôt que pour chaque offre d’un insert groupé. Une clôture réussie exige un manifeste, une empreinte et des positions de sortie contiguës correspondant au compteur. La lecture vérifie le manifeste contre le journal immuable.
 
 **Ce manifeste enregistre ce que le lecteur a produit. Il ne certifie pas à lui seul la justesse du lecteur ou l’exhaustivité du portail.** La qualification d’une source doit ensuite vérifier ces éléments contre les réponses natives et sa configuration.
 
 Les anciennes collectes de format 1 restent inchangées et consultables. Elles n’ont pas de manifeste complet : la commande de comparaison certifiante échoue explicitement pour elles. Aucune métadonnée manquante n’est reconstituée. Le rejeu technique des réponses reste disponible pour inspection.
+
+## Pages d’identité et d’accès
+
+Le format 3 distingue `SOURCE_IDENTITY` et `SOURCE_ACCESS`. Ces captures réutilisent les blocs, journaux, protections de clôture et archives existants ; elles n’ont ni sortie d’offre ni ordre de tentative d’offres. La migration attribue le but `JOBS` aux captures antérieures, issues de ce seul parcours, sans leur inventer de nouvelles preuves ni un ordre historique.
+
+Le reçu `SOURCE_EVIDENCE` signifie que la chaîne HTTP bornée est archivée. Il ne signifie pas que la page démontre une propriété ou une autorisation. Le manifeste conserve l’URL initiale exacte et les réponses ordonnées. La lecture compare ce manifeste au journal, vérifie chaque corps et reconstruit chaque redirection à partir de son en-tête `Location`. Elle refuse une chaîne incomplète, une attribution à une autre URL ou une archive corrompue, sans recours au réseau. Les cookies sont limités à leurs noms ; les paramètres d’URL et les destinations des redirections restent privés.
+
+Une coupure conserve les octets déjà reçus ; une erreur réseau sans réponse conserve une tentative sans statut HTTP. Le résultat est alors `FAILED`. Les contrôles SQL et applicatifs interdisent de transformer ces pages en sorties d’extraction, validation native, publication ou observation d’offre. Capturer une page après une collecte d’offres n’invalide pas sa validation technique. Le [parcours des sources](source-onboarding.md) expose les commandes et leurs limites.
 
 ## Configuration et budget d’exécution
 
@@ -72,7 +80,7 @@ Une collecte tronquée, une énumération explicitement incomplète, des identif
 
 Un résultat vide ne suffit pas. Le protocole de zéro offre est actuellement qualifié pour Ashby uniquement : une réponse native complète HTTP 200, `apiVersion: "1"` et `jobs: []`, en plus du rejeu exact. Les autres familles vides restent à qualifier. La validation technique n’atteste aucune disparition : son rapport porte toujours `absenceAttestation: false`. Une complétude inconnue reste `UNKNOWN` et ne devient pas une preuve d’exhaustivité.
 
-La promotion exige la dernière décision `VALIDATED` de la révision courante, émise avec le lecteur et la politique actuels, sur une capture observée depuis moins de 24 heures. Un rejeu récent ne rajeunit pas une capture ancienne. Une décision plus récente de rejet remplace la précédente pour cette porte. Une tentative plus récente, même échouée ou encore inachevée, empêche de réutiliser ce succès. Les nouvelles captures portent un ordre SQL indépendant de l’horloge ; les captures historiques sans ordre connu exigent une recollecte avant promotion. L’ordre SQL des décisions évite également les collisions d’horloge ; l’ajout d’une décision et la promotion partagent les verrous du registre. La colonne de compteur manuel `verifiedJobCount` a été supprimée ; un flux natif vide prouvé peut être activé sans inventer d’offre.
+La promotion exige la dernière décision `VALIDATED` de la révision courante, émise avec le lecteur et la politique actuels, sur une capture observée depuis moins de 24 heures. Un rejeu récent ne rajeunit pas une capture ancienne. Une décision plus récente de rejet remplace la précédente pour cette porte. Une tentative d’offres plus récente, même échouée ou encore inachevée, empêche de réutiliser ce succès. Les nouvelles captures portent un ordre SQL indépendant de l’horloge ; les captures historiques sans ordre connu exigent une recollecte avant promotion. L’ordre SQL des décisions évite également les collisions d’horloge ; l’ajout d’une décision et la promotion partagent les verrous du registre. La colonne de compteur manuel `verifiedJobCount` a été supprimée ; un flux natif vide prouvé peut être activé sans inventer d’offre.
 
 `source-onboard.mts` propose deux opérations explicites, sans activation automatique :
 
