@@ -1,3 +1,4 @@
+import { readIdentitySources, assertIdentityReview, identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
 /**
  * LE RAPPORT D'EXPLOITATION — l'état courant de chaque source, en une lecture.
  *
@@ -16,7 +17,6 @@
  */
 import { Prisma, PrismaClient } from '@prisma/client';
 import { writeFileSync } from 'node:fs';
-import { sourceIdentityHash } from '../../src/connectors/sourceIdentity.js';
 import { decideMode, type SourceEvidence } from '../../src/registry/operationalMode.js';
 import { accessDecision, type RobotsObserved } from '../../src/lib/accessDecision.js';
 import { publicJobSql } from '@catwalks/db/availability';
@@ -45,12 +45,9 @@ const report = await p.$transaction(async (tx) => {
   await tx.$executeRawUnsafe('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY');
   const since = new Date(Date.now() - sinceHours * 3600_000);
 
-  const sources = await tx.source.findMany({
-    where: { status: { in: ['ACTIVE', 'PAUSED'] } }, orderBy: { key: 'asc' } });
+  const sources = (await readIdentitySources(tx)).filter(source => ['ACTIVE', 'PAUSED'].includes(source.status));
 
-  const reviews = await tx.$queryRawUnsafe<Row[]>(
-    `SELECT DISTINCT ON (r."sourceKey") r."sourceKey", r.verdict, r."sourceHash"
-     FROM "SourceIdentityReview" r ORDER BY r."sourceKey", r."createdAt" DESC, r.id DESC`);
+  const reviews = await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder, distinct: ['sourceKey'] });
   const reviewOf = new Map(reviews.map((r) => [r.sourceKey, r]));
 
   /** Les DEUX derniers runs : la variation de volume n'existe pas sans un précédent. */
@@ -95,12 +92,14 @@ const report = await p.$transaction(async (tx) => {
 
   const lignes = sources.map((s) => {
     const rev = reviewOf.get(s.key);
+    let certified = false;
+    try { assertIdentityReview(s, rev ?? null); certified = true; } catch { /* Unproven evidence cannot authorize a mode. */ }
     const [dernier, precedent] = runsOf.get(s.key) ?? [];
     const cfg = (s.config ?? {}) as Record<string, unknown>;
     const ev: SourceEvidence = {
       key: s.key, status: s.status, hasConfig: Object.keys(cfg).length > 0,
-      identityVerified: rev?.verdict === 'VERIFIED',
-      identityHashMatchesConfig: rev?.sourceHash === sourceIdentityHash(s),
+      identityVerified: certified,
+      identityHashMatchesConfig: certified,
       accessAllowed: accessDecision({ robotsObserved: observedFromVerdict(s.robotsVerdict),
         accessSurface: 'PUBLIC_OFFICIAL_HTML' }).effectiveAccessDecision === 'ALLOWED',
       tenantKey: s.tenantKey ?? null,

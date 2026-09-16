@@ -59,7 +59,7 @@ try {
       const labelsRead = scope.labels.map((l: any) => `${l.label} ×${l.n} [${l.class}]`).join(', ');
       const statement = `${s.statement} Board reference found on the archived official page: "${match}" (config ${JSON.stringify(config)}). Native employer labels read on ${validation.at.slice(0, 10)} (${validation.parsed} postings parsed, robots ${validation.robotsVerdict} HTTP ${validation.robots?.httpStatus ?? 'n/a'}): ${labelsRead} → ${scope.verdict}. ${validation.robotsVerdict === 'ALLOWED' ? '' : `Accès : robotsObserved=${validation.robotsVerdict}, accessSurface=PUBLIC_JOB_SURFACE, authorizationBasis=OWNER_SECTOR_AUTHORIZATION (D62, 2026-09-13), effectiveAccessDecision=ALLOWED, crawlerIdentity=CatwalksBot/1.0.`}`;
       const document = {
-        sourceKey: key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source),
+        sourceKey: key, sourceRevisionId: s.sourceRevisionId, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source),
         verdict: 'VERIFIED', method: 'OFFICIAL_LINK', officialDomain: s.officialDomain, proofUrl: s.proofUrl, portalUrl: s.portalUrl, portalScope: s.portalScope,
         statement, artifactHash: s.proofSha, reviewer: 'Reciprocal-link certification on the archived official page + board/perimeter checks against the validation proof, B6 integration (Claude, LOT 4, 2026-09-10)', checkedAt: new Date().toISOString(),
       };

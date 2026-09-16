@@ -26,6 +26,8 @@ L’architecture cible conserve le RAW avant parsing, puis construit des faits t
 
 Le [lot 4H3](../../audits/reprise-2026-09-15/lot-4h3.md) valide 3 207 tests agrégateur/API et 755 tests du site. Les 55 125 publications reconstructibles ont désormais leur présentation sur le clone ; 294 publications incomplètes restent conservées en quarantaine. Le dernier ID public sans preuve propre devient une fiche retirée, sans fausse fermeture ni redirection supposée. Les formats non qualifiés et la certification des sources restent ouverts. Ces mesures locales ne remplacent pas le tableau initial de production ci-dessus.
 
+Le [lot 5D](../../audits/reprise-2026-09-15/lot-5d.md) remplace le compteur manuel de promotion par une validation native rejouable. Le [lot 5E](../../audits/reprise-2026-09-15/lot-5e.md) lie les revues d’identité à la révision exacte du registre et à un ordre SQL. Les 112 revues historiques du clone sont conservées sans liaison inventée et doivent être réexaminées avant certification. Les preuves officielles de portail, l’accès, le parcours source unique et le contrôle des ingestions existantes restent ouverts.
+
 ## Commandes de validation
 
 Depuis la racine du monorepo, après `npm ci --workspaces --include-workspace-root` :

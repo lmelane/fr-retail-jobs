@@ -1,3 +1,4 @@
+import { readIdentitySources, assertIdentityReview, identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
 /**
  * LE REGISTRE OPÉRATIONNEL DES SOURCES — lecture seule, une décision par source, aucune par défaut.
  *
@@ -15,7 +16,6 @@
  */
 import { PrismaClient } from '@prisma/client';
 import { writeFileSync } from 'node:fs';
-import { sourceIdentityHash } from '../../src/connectors/sourceIdentity.js';
 import { isAllowedAccessVerdict } from '../../src/connectors/sourceStore.js';
 import { accessDecision, type RobotsObserved } from '../../src/lib/accessDecision.js';
 import { decideMode, type SourceEvidence, type OperationalMode } from '../../src/registry/operationalMode.js';
@@ -66,15 +66,10 @@ const rows = await p.$transaction(async (tx) => {
   await tx.$executeRawUnsafe('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY');
 
   // Le périmètre du registre : tout ce qui peut collecter un jour. RETIRED est hors sujet.
-  const sources = await tx.source.findMany({
-    where: { status: { in: ['ACTIVE', 'PAUSED'] } },
-    orderBy: { key: 'asc' },
-  });
+  const sources = (await readIdentitySources(tx)).filter(source => ['ACTIVE', 'PAUSED'].includes(source.status));
 
   /** La revue LA PLUS RÉCENTE par source — une contradiction postérieure prime sur une vérification. */
-  const reviews = await tx.$queryRawUnsafe<Row[]>(
-    `SELECT DISTINCT ON (r."sourceKey") r."sourceKey", r.verdict, r."sourceHash", r."checkedAt", r.method
-     FROM "SourceIdentityReview" r ORDER BY r."sourceKey", r."createdAt" DESC, r.id DESC`);
+  const reviews = await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder, distinct: ['sourceKey'] });
   const reviewOf = new Map(reviews.map((r) => [r.sourceKey, r]));
 
   /** Le dernier run RÉEL par source : `Source.lastRun*` est dénormalisé, `SourceRun` fait foi. */
@@ -98,15 +93,17 @@ const rows = await p.$transaction(async (tx) => {
 
   return sources.map((s) => {
     const rev = reviewOf.get(s.key);
+    let certified = false;
+    try { assertIdentityReview(s, rev ?? null); certified = true; } catch { /* Unproven evidence cannot authorize a mode. */ }
     const run = runOf.get(s.key);
     const cfg = (s.config ?? {}) as Record<string, unknown>;
 
     const evidence: SourceEvidence = {
       key: s.key, status: s.status,
       hasConfig: Object.keys(cfg).length > 0,
-      identityVerified: rev?.verdict === 'VERIFIED',
-      // D59 : l'empreinte couvre la configuration — une revue antérieure à un changement ne vaut pas revue.
-      identityHashMatchesConfig: rev?.sourceHash === sourceIdentityHash(s),
+      identityVerified: certified,
+      // Le même validateur strict que la promotion contrôle révision, ordre et contenu.
+      identityHashMatchesConfig: certified,
       accessAllowed: effectiveAccess(s.robotsVerdict) === 'ALLOWED',
       tenantKey: s.tenantKey ?? null,
       lastRunStatus: run?.status ?? null,

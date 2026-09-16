@@ -5,9 +5,9 @@ import { assertIdentityReview, portalScopeOf, sourceIdentityHash, sourceSubjectK
 
 const at = new Date('2026-09-08T12:00:00Z');
 const artifactText = 'SMCP careers: https://jobs.smartrecruiters.com/SMCP';
-const source = { key: 'sandro', maison: 'SMCP (toutes Maisons)', kind: 'smartrecruiters-whitelabel', config: { company: 'SMCP', employerField: 'Brands' }, careersDomain: 'smcp.com', tier: 'GROUP_OFFICIAL', tenantKey: 'smartrecruiters-whitelabel:smcp' };
+const source = { currentRevisionId: 'revision-a', key: 'sandro', maison: 'SMCP (toutes Maisons)', kind: 'smartrecruiters-whitelabel', config: { company: 'SMCP', employerField: 'Brands' }, careersDomain: 'smcp.com', tier: 'GROUP_OFFICIAL', tenantKey: 'smartrecruiters-whitelabel:smcp' };
 const review = (): SourceIdentityReview => ({
-  id: 'review', sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source),
+  id: 'review', sourceRevisionId: source.currentRevisionId, sequence: 1n, sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source),
   verdict: 'VERIFIED', portalScope: null, method: 'GROUP_DOCUMENT', officialDomain: 'smcp.com', proofUrl: 'https://www.smcp.com/fr/talents/offres-d-emploi/',
   portalUrl: 'https://jobs.smartrecruiters.com/SMCP', statement: 'The official SMCP group publishes this career portal for its named brands.', artifactHash: createHash('sha256').update(artifactText).digest('hex'), artifactText, reviewer: 'test', checkedAt: at, createdAt: at,
 });
@@ -41,4 +41,13 @@ it('gives a certified perimeter only under the strict contract of the promotion 
   expect(portalScopeOf(source, { ...review(), portalScope: 'SINGLE_BRAND', method: 'NAME_MATCH' }, at)).toBeNull(); // name-only evidence
   expect(portalScopeOf(source, { ...review(), portalScope: 'SINGLE_BRAND', artifactText: 'tampered' }, at)).toBeNull(); // artifact ≠ hash
   expect(portalScopeOf(source, null, at)).toBeNull();
+});
+
+it('refuses unbound historical evidence and a return to the same configuration under a new revision', () => {
+  expect(() => assertIdentityReview(source, { ...review(), sourceRevisionId: null }, at)).toThrowError(expect.objectContaining({ name: 'SourceIdentityGateError', code: 'REVISION_MISMATCH' }));
+  expect(() => assertIdentityReview(source, { ...review(), sequence: null }, at)).toThrowError(expect.objectContaining({ name: 'SourceIdentityGateError', code: 'ORDER_UNKNOWN' }));
+  const returned = { ...source, currentRevisionId: 'revision-a-returned' };
+  expect(sourceIdentityHash(returned)).toBe(sourceIdentityHash(source));
+  expect(() => assertIdentityReview(returned, review(), at)).toThrowError(expect.objectContaining({ name: 'SourceIdentityGateError', code: 'REVISION_MISMATCH' }));
+  expect(portalScopeOf(returned, { ...review(), portalScope: 'SINGLE_BRAND' }, at)).toBeNull();
 });

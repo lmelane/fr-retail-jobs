@@ -1,6 +1,6 @@
 # Identité des employeurs et des sources
 
-Relecture du code : **10 septembre 2026**, révision `6ac43ec` et modifications locales de nettoyage. Documentation technique liée au [README de l’agrégateur](../apps/aggregator/README.md), qui reste l’unique état de pilotage. Les nombres de sources certifiées, alias et offres doivent provenir de mesures datées ; ils ne sont pas figés ici.
+Relecture des portes de certification : **16 septembre 2026**, lot 5E. Documentation technique liée au [README de l’agrégateur](../apps/aggregator/README.md), qui reste l’unique état de pilotage. Les nombres de sources certifiées, alias et offres doivent provenir de mesures datées ; ils ne sont pas figés ici.
 
 La section sur les publications a été actualisée le **15 septembre 2026** : identité native immuable, rapprochements prouvés et retrait des anciennes commandes de fusion. Le [contrat de publication](architecture/publication-identity.md) décrit le code courant et les limites de la reprise.
 
@@ -25,12 +25,18 @@ L’objectif est une attribution fidèle à l’organisation réelle. Deux noms 
 Dans [sourceIdentity.ts](../apps/aggregator/src/connectors/sourceIdentity.ts) :
 
 - `sourceIdentityHash()` lie clé, propriétaire déclaré, kind, configuration, domaine carrière, tenant et tier.
-- `requireSourceIdentity()` sélectionne la dernière revue, y compris une contradiction, puis appelle `assertIdentityReview()`.
-- Le validateur strict exige VERIFIED, le bon sujet/source/tenant/hash, une vérification datant de moins de 30 jours, une méthode admise, un auteur, une déclaration et un artefact dont le contenu correspond au SHA-256. Les URLs et le domaine officiel sont également contrôlés.
+- `requireSourceIdentity()` sélectionne la dernière revue par ordre SQL, y compris une contradiction, puis appelle `assertIdentityReview()`. Les dates du dossier ne départagent pas les nouvelles décisions.
+- Le validateur strict exige VERIFIED, la révision courante du registre, un ordre de décision enregistré, le bon sujet/source/tenant/hash, une vérification datant de moins de 30 jours, une méthode admise, un auteur, une déclaration et un artefact dont le contenu correspond au SHA-256. Les URLs et le domaine officiel sont également contrôlés.
 - Ces validations contrôlent la cohérence du dossier. Elles ne remplacent pas l’examen de la preuve officielle ni une observation actuelle du portail.
-- La promotion vérifie aussi la configuration, le verdict d’accès daté et au moins une offre réellement vérifiée. Un portail sans offre peut être documenté sans activation.
+- La promotion exige aussi la [validation technique native](architecture/native-capture.md) de la révision courante, avec le lecteur et la politique actuels. Le compteur manuel ne l’autorise plus. Un flux vide peut être admis lorsque son protocole natif est qualifié ; il ne devient pas une preuve d’absence pour fermer des offres.
 
-**Dette ouverte :** `certifiedPortalScope()` vérifie la dernière revue VERIFIED et son hash mais ne réexécute pas le validateur strict complet. `loadActiveSources()` ne revalide pas les dossiers des sources déjà ACTIVE. Ne pas documenter ces deux chemins comme apportant la même garantie que la promotion.
+**État vérifié au lot 5E :** les nouvelles revues portent `sourceRevisionId`, fourni explicitement dans le dossier. L’écrivain verrouille la source, relit la configuration SQL puis valide cette révision. Le trigger SQL refuse toute révision manquante, étrangère ou remplacée ; il attribue l’ordre de décision après acquisition du verrou de source. Une valeur d’ordre fournie par l’appelant ne peut pas réordonner les preuves. Les revues restent immuables en SQL.
+
+Les anciennes revues conservent une révision et un ordre inconnus (`NULL`). Elles restent consultables mais ne certifient plus le registre actuel. Aucune migration ne leur invente une liaison. Un changement de `jobUrlPattern` ou un retour A → B → A impose une nouvelle revue, même lorsque l’ancien hash se retrouve identique. Les gaps de séquence sont normaux après annulation et ne représentent pas un nombre de revues. Une répétition du même dossier conserve le même identifiant et n’ajoute pas de décision : elle ne peut pas remplacer une contradiction enregistrée depuis. Le résultat précise si cette revue est encore la dernière décision ; une nouvelle revue exige un dossier explicitement renouvelé.
+
+`certifiedPortalScope()` lit le registre et sa dernière revue dans une seule requête SQL, puis applique le même validateur strict. Les rapports maintenus utilisent ce contrat ; les composeurs de snapshots refusent de reconstruire une certification depuis un hash seul. `sourceIdentityHash()` reste le fingerprint utilisé par les candidats et alias historiques ; il n’est plus, à lui seul, le périmètre d’autorité d’une revue de portail.
+
+**Limites restantes :** `loadActiveSources()` ne revalide pas encore les dossiers des sources déjà ACTIVE. Le contrôle du dossier ne prouve pas non plus, à lui seul, que la page officielle désigne le tenant et le site ATS configurés. La preuve de cette relation, les rôles employeur/groupe/éditeur et le parcours unique de certification restent à traiter avant release.
 
 Depuis la racine, avec des accès explicitement configurés pour l’environnement choisi :
 
@@ -39,7 +45,7 @@ node --import tsx apps/aggregator/src/cli.ts identity-profile SOURCE_KEY
 node --import tsx apps/aggregator/src/cli.ts review-source-identity --record=/chemin/revue.json --artifact=/chemin/preuve.txt
 ```
 
-La seconde commande valide sans enregistrer. L’enregistrement exige `--apply` ; l’activation est une commande distincte `promote SOURCE_KEY`, après les préconditions et la revue du lot. Aucun de ces exemples ne constitue un feu vert pour une exécution en production.
+Le profil fournit notamment `sourceRevisionId`, à reporter dans le dossier examiné. La seconde commande valide sans enregistrer. Une révision absente ou devenue obsolète est refusée ; la commande ne l’actualise jamais automatiquement. L’enregistrement exige `--apply` ; l’activation est une commande distincte `promote SOURCE_KEY`, après les préconditions et la revue du lot. Aucun de ces exemples ne constitue un feu vert pour une exécution en production.
 
 ## Résolution effective d’un employeur
 
@@ -60,7 +66,7 @@ Lorsqu’une nouvelle identité non aliasée est admissible, sa clé peut être 
 
 [recordEmployerObservation](../apps/aggregator/src/identity/resolve.ts) enregistre libellé brut, origine, forme normalisée, employeur canonique, règle, IDs de revue/alias et hash RAW. Le hash d’observation permet un rejeu sans créer une nouvelle preuve identique. Une valeur canonique ancienne ne doit pas servir à reconstruire artificiellement un RAW manquant.
 
-Pour Workday, les erreurs de détail et l’absence d’employeur ont des retenues distinctes. Le [pipeline](../apps/aggregator/src/pipeline/ingest.ts) peut lever la retenue spécifique d’employeur absent lorsqu’un périmètre SINGLE_BRAND est disponible. Les autres retenues ne deviennent pas des offres publiables du seul fait de cette exception. La limite du validateur de périmètre ci-dessus s’applique aussi à ce chemin.
+Pour Workday, les erreurs de détail et l’absence d’employeur ont des retenues distinctes. Le [pipeline](../apps/aggregator/src/pipeline/ingest.ts) peut lever la retenue spécifique d’employeur absent lorsqu’un périmètre SINGLE_BRAND est disponible. Les autres retenues ne deviennent pas des offres publiables du seul fait de cette exception. La liaison à la révision et les limites de preuve officielle décrites ci-dessus s’appliquent aussi à ce chemin.
 
 ## Réparer sans effacer l’historique
 

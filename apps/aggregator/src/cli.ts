@@ -215,11 +215,12 @@ try {
     await log.info('command.result', { ok: stats.skippedDuplicateTenant.length === 0, command, ...stats });
     if (stats.skippedDuplicateTenant.length > 0) process.exitCode = 1;
   } else if (command === 'identity-profile') {
-    const { sourceIdentityHash, sourceSubjectKey } = await import('./connectors/sourceIdentity.js');
+    const { sourceIdentityHash, sourceSubjectKey, readIdentitySource } = await import('./connectors/sourceIdentity.js');
     const key = process.argv[3];
     if (!key || key.startsWith('--')) throw new Error('identity-profile needs a source key');
-    const source = await prisma.source.findUniqueOrThrow({ where: { key } });
-    await log.info('command.result', { sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source) });
+    const source = await readIdentitySource(prisma, key);
+    if (!source) throw new Error('Identity profile source does not exist');
+    await log.info('command.result', { sourceRevisionId: source.currentRevisionId, sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source) });
   } else if (command === 'review-source-identity') {
     const { readFileSync } = await import('node:fs');
     const { recordSourceIdentityReview } = await import('./connectors/sourceIdentity.js');

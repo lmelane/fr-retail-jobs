@@ -1,3 +1,4 @@
+import { identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
 /**
  * REGISTER → CERTIFY → PROMOTE en PRODUCTION, par le chemin commun, sans collecte.
  *
@@ -38,11 +39,11 @@ const steps: any[] = [];
 const stateOf = async () => {
   const source = await p.source.findUnique({
     where: { key: d.key },
-    select: { key: true, status: true, tenantKey: true, kind: true, config: true, maison: true,
+    select: { currentRevisionId: true, key: true, status: true, tenantKey: true, kind: true, config: true, maison: true,
               careersDomain: true, tier: true, robotsVerdict: true, verifiedJobCount: true },
   });
   const review = await p.sourceIdentityReview.findFirst({
-    where: { sourceKey: d.key }, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
+    where: { sourceKey: d.key }, orderBy: identityReviewOrder });
   let certification = 'NO_REVIEW';
   if (source && review) {
     const { assertIdentityReview } = await import('../../src/connectors/sourceIdentity.js');
@@ -98,7 +99,7 @@ const artifact = readFileSync(d.evidenceFile);
 const artifactHash = createHash('sha256').update(artifact).digest('hex');
 const source = await p.source.findUniqueOrThrow({ where: { key: d.key } });
 await recordSourceIdentityReview(p as any, {
-  sourceKey: d.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source as any),
+  sourceKey: d.key, sourceRevisionId: d.sourceRevisionId, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source as any),
   sourceHash: sourceIdentityHash(source as any), verdict: 'VERIFIED', method: 'OFFICIAL_LINK',
   artifactHash, reviewer: 'lot4', statement: d.statement,
   proofUrl: d.proofUrl, portalUrl: d.portalUrl, officialDomain: d.officialDomain,

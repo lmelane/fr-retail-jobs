@@ -1,11 +1,7 @@
+import { readIdentitySources, identityReviewOrder, assertIdentityReview, sourceIdentityHash, sourceSubjectKey } from '../../src/connectors/sourceIdentity.js';
 /** Private, repeatable-read inventory. Never prints source configuration or credentials. */
 import { PrismaClient, Prisma } from "@prisma/client";
 import { writeFileSync } from "node:fs";
-import {
-  assertIdentityReview,
-  sourceIdentityHash,
-  sourceSubjectKey,
-} from "../../src/connectors/sourceIdentity.js";
 const p = new PrismaClient();
 try {
   const output = process.argv[2];
@@ -56,8 +52,8 @@ try {
         // verdict instead of re-implementing a subset of the contract.
         sources: await (async () => {
           const latest = new Map<string, Awaited<ReturnType<typeof tx.sourceIdentityReview.findFirst>>>();
-          for (const r of await tx.sourceIdentityReview.findMany({ orderBy: [{ createdAt: "desc" }, { id: "desc" }], distinct: ["sourceKey"] })) latest.set(r.sourceKey, r);
-          return (await tx.source.findMany({ orderBy: { key: "asc" } })).map((source) => {
+          for (const r of await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder, distinct: ["sourceKey"] })) latest.set(r.sourceKey, r);
+          return (await readIdentitySources(tx)).map((source) => {
             const review = latest.get(source.key) ?? null;
             let identityVerdict: { certified: boolean; reason: string | null; reviewId: string | null; portalScope: string | null };
             try { assertIdentityReview(source, review); identityVerdict = { certified: true, reason: null, reviewId: review!.id, portalScope: review!.portalScope ?? null }; }
@@ -72,11 +68,13 @@ try {
         latestRuns:
           await tx.$queryRaw`SELECT DISTINCT ON("sourceKey") * FROM "SourceRun" ORDER BY "sourceKey","ranAt" DESC,id DESC`,
         latestIdentityReviews: await tx.sourceIdentityReview.findMany({
-          orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+          orderBy: identityReviewOrder,
           distinct: ["sourceKey"],
           select: {
             id: true,
             sourceKey: true,
+            sourceRevisionId: true,
+            sequence: true,
             subjectKey: true,
             sourceHash: true,
             verdict: true,
@@ -111,7 +109,7 @@ try {
       timeout: 90000,
     },
   );
-  writeFileSync(output, JSON.stringify(data, null, 2), { mode: 0o600 });
+  writeFileSync(output, JSON.stringify(data, (_key, value) => typeof value === 'bigint' ? value.toString() : value, 2), { mode: 0o600 });
   console.log({
     at: data.at,
     totals: data.totals,

@@ -1,3 +1,4 @@
+import { identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
 /**
  * The proof of the onboarding demonstration, read back from the clone after the fact.
  *
@@ -52,8 +53,8 @@ try {
       FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"
       WHERE js."sourceKey" = ${key} ORDER BY js."externalId"`;
 
-    const source = await p.source.findUnique({ where: { key }, select: { key: true, status: true, maison: true, kind: true, config: true, careersDomain: true, tenantKey: true, tier: true, robotsVerdict: true, robotsCheckedAt: true } });
-    const review = await p.sourceIdentityReview.findFirst({ where: { sourceKey: key }, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
+    const source = await p.source.findUnique({ where: { key }, select: { currentRevisionId: true, key: true, status: true, maison: true, kind: true, config: true, careersDomain: true, tenantKey: true, tier: true, robotsVerdict: true, robotsCheckedAt: true } });
+    const review = await p.sourceIdentityReview.findFirst({ where: { sourceKey: key }, orderBy: identityReviewOrder });
     let certification = 'NO_REVIEW';
     if (source && review) {
       const { assertIdentityReview } = await import('../../src/connectors/sourceIdentity.js');

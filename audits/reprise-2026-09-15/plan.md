@@ -152,7 +152,7 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 ## Lot 5. Certifier les sources et préparer le cycle complet
 
-**5A à 5D validés : [manifeste intégral et rejeu strict](lot-5a.md), [configuration stable et budgets séparés](lot-5b.md), [révisions immuables du registre](lot-5c.md), puis [validation technique native et porte de promotion](lot-5d.md). Les preuves d’identité et d’accès liées à la révision, l’absence liée au périmètre et le parcours unique restent à terminer.**
+**5A à 5E validés localement : [manifeste intégral et rejeu strict](lot-5a.md), [configuration stable et budgets séparés](lot-5b.md), [révisions immuables du registre](lot-5c.md), [validation technique native et porte de promotion](lot-5d.md), puis [revues d’identité liées à la révision](lot-5e.md). Le lien officiel vers le portail exact, l’accès, l’absence liée au périmètre et le parcours unique restent à terminer.**
 
 [Sous-lot 5D validé localement](lot-5d.md) : décisions techniques immuables issues du rejeu natif, contrôle de promotion sans compteur manuel, zéro natif qualifié et ordre SQL des décisions. Les 3 290 tests, 13 mutations applicatives, cinq contre-épreuves SQL, deux collectes réelles et la validation depuis Railway passent. Le schéma 61 conserve le stock et ses révisions ; une sauvegarde complète est restaurée et contrôlée. Le parcours unique, les preuves d’identité/d’accès, le contrôle des sources actives et l’absence liée au périmètre restent ouverts.
 
@@ -166,6 +166,10 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 - **Tests / témoin :** première/dernière page, page répétée, trou d’ID, détail en erreur, compte variable pendant capture, 429 Retry-After, 403/challenge, timeout, fin vide légitime ; corpus de fixtures source anonymisées minimalement.
 - **Definition of Done :** chaque source dispose d’un verdict daté, identifiants parcourus, coût HTTP, durée, complétude, qualité des champs et règle de lifecycle. Aucun statut ACTIVE confondu avec un droit d’attester l’absence.
 - **Blocages :** accès devenu indisponible, propriétaire ambigu, preuve native absente. Documenter ces cas et leur traitement ; ne pas annoncer une certification universelle à partir de la réussite d’un adaptateur.
+
+### Sous-lot 5E : identité liée à la révision
+
+Les nouvelles revues d’identité portent explicitement la révision examinée et un ordre SQL attribué sous verrou. Les changements de périmètre et les allers-retours de configuration invalident les anciennes revues. La lecture de périmètre et les rapports emploient le validateur strict commun. Les 112 revues historiques du clone restent intactes, non liées et non certifiantes. Voir le [bilan 5E](lot-5e.md) pour les contrôles et contre-épreuves. Le lien officiel vers le portail exact, les rôles éditeur/employeur, les preuves d’accès et le parcours unique restent des travaux distincts avant release.
 
 ## Lot 6. Recherche réellement bornée par marché
 

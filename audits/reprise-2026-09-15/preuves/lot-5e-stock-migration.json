@@ -1,0 +1,51 @@
+{
+  "migrationsBefore": 61,
+  "migrationsAfter": 62,
+  "before": {
+    "JobCount": 87607,
+    "JobHash": "6afc4dc4fba09f3488c16e02f11261919c601c94614037e850d74f0ad18f1c33",
+    "JobSourceCount": 90764,
+    "JobSourceHash": "936e607af64c6f3eeb9ba508a09c5cc06a715b49c7e3bb4caee0308dfe062c28",
+    "SourceObservationCount": 141933,
+    "SourceObservationHash": "6f2ffac6d5f396f058f8b177d70da72ff5e128b6f342d7f27e3caf8c6d24f9f2",
+    "SourceCount": 536,
+    "SourceHash": "478c0c0856fdacd7b22d5bdc060f7f40e561323575abd506170a55cb360cc00b",
+    "SourceRevisionCount": 536,
+    "SourceRevisionHash": "df36f450d0f2706dd882302c1f827fb8027f349ee1698cd057ffd89472850882",
+    "SourceIdentityReviewCount": 112,
+    "SourceIdentityReviewHash": "e8f4961f1fdc9f94ceaa5215cca853501557f24283414ec9c56c3e9c802a2c05",
+    "migrations": 61,
+    "captures": 0
+  },
+  "after": {
+    "JobCount": 87607,
+    "JobHash": "6afc4dc4fba09f3488c16e02f11261919c601c94614037e850d74f0ad18f1c33",
+    "JobSourceCount": 90764,
+    "JobSourceHash": "936e607af64c6f3eeb9ba508a09c5cc06a715b49c7e3bb4caee0308dfe062c28",
+    "SourceObservationCount": 141933,
+    "SourceObservationHash": "6f2ffac6d5f396f058f8b177d70da72ff5e128b6f342d7f27e3caf8c6d24f9f2",
+    "SourceCount": 536,
+    "SourceHash": "478c0c0856fdacd7b22d5bdc060f7f40e561323575abd506170a55cb360cc00b",
+    "SourceRevisionCount": 536,
+    "SourceRevisionHash": "df36f450d0f2706dd882302c1f827fb8027f349ee1698cd057ffd89472850882",
+    "SourceIdentityReviewCount": 112,
+    "SourceIdentityReviewHash": "e8f4961f1fdc9f94ceaa5215cca853501557f24283414ec9c56c3e9c802a2c05",
+    "migrations": 62,
+    "captures": 0
+  },
+  "historicalEvidence": {
+    "total": 112,
+    "bound": 0,
+    "ordered": 0,
+    "immutableTrigger": "O"
+  },
+  "oldRowsUnchanged": true,
+  "historicalRevisionBindingsInvented": 0,
+  "historicalOrdersInvented": 0,
+  "backup": "reprise-20260916-lot5d/after-source-validation-schema60.dump",
+  "restoreRequiresMigrations": [
+    61,
+    62
+  ],
+  "productionTouched": false
+}

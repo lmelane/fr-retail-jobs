@@ -14,7 +14,7 @@ import { readFileSync } from 'node:fs';
 export const ROOT = process.env.CERTIFICATION_EVIDENCE_DIR ?? 'backups/lot4-20260909';
 
 /** One B6 candidate: identity proof page archived by the portal research, portal, perimeter, sector. */
-export type B6Spec = { key: string; maison: string; kind: string; tier: string; config: Record<string, unknown>; careersDomain?: string; proofSha: string; proofUrl: string; portalUrl: string; officialDomain: string; portalScope: 'SINGLE_BRAND' | 'MULTI_BRAND'; sector?: string; statement: string; mustContain?: string };
+export type B6Spec = { sourceRevisionId?: string; key: string; maison: string; kind: string; tier: string; config: Record<string, unknown>; careersDomain?: string; proofSha: string; proofUrl: string; portalUrl: string; officialDomain: string; portalScope: 'SINGLE_BRAND' | 'MULTI_BRAND'; sector?: string; statement: string; mustContain?: string };
 
 /** b6-specs.json plus the first B6 source (Arc'teryx), integrated by its own script before the spec file existed. */
 export function loadSpecs(): B6Spec[] {

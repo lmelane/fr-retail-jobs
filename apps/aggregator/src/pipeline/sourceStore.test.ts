@@ -152,7 +152,7 @@ describe('promoteSource', () => {
   async function identity(source: Awaited<ReturnType<typeof prisma.source.create>>) {
     const artifactText = 'Official careers: https://job-boards.greenhouse.io/testmaison';
     await prisma.sourceIdentityReview.create({ data: {
-      sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source),
+      sourceKey: source.key, sourceRevisionId: source.currentRevisionId, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source),
       verdict: 'VERIFIED', method: 'OFFICIAL_LINK', officialDomain: 'test-maison.example',
       proofUrl: 'https://test-maison.example/careers', portalUrl: 'https://job-boards.greenhouse.io/testmaison',
       statement: 'The official employer careers page links to this exact ATS tenant.', artifactHash: createHash('sha256').update(artifactText).digest('hex'), artifactText, reviewer: 'integration-test', checkedAt: new Date(),

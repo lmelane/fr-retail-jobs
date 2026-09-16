@@ -1,3 +1,4 @@
+import { readIdentitySources, identityReviewOrder, assertIdentityReview } from '../../src/connectors/sourceIdentity.js';
 /**
  * ONE tracking inventory for LOT 4, actor by actor and source by source, built read-only from the production database and the
  * existing evidence sets — never a new "master" list typed by hand. Every set keeps its own denominator; an actor appearing in
@@ -12,7 +13,6 @@
  */
 import { PrismaClient } from '@prisma/client';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { assertIdentityReview } from '../../src/connectors/sourceIdentity.js';
 import { resolveCompany } from '../../src/normalize/company.js';
 import { normalizedEmployerName } from '../../src/normalize/employerName.js';
 
@@ -38,8 +38,8 @@ try {
     const companies: any[] = await tx.$queryRaw`SELECT c.id, c.name, c."canonicalKey", c."fashionjobsUrl" key, c.kind::text kind, c.domain, c."parentGroup", (SELECT COUNT(*)::int FROM "Job" j WHERE j."companyId"=c.id AND j."isActive") active FROM "Company" c WHERE c."mergedIntoId" IS NULL`;
     const aliases: any[] = await tx.$queryRaw`SELECT a."normalizedName", c."canonicalKey" FROM "CompanyAlias" a JOIN "Company" c ON c.id=a."companyId" WHERE a."reviewId" IS NOT NULL AND c."mergedIntoId" IS NULL`;
     const merged: any[] = await tx.$queryRaw`SELECT m.name, r."canonicalKey" FROM "Company" m JOIN "Company" r ON r.id=m."mergedIntoId" WHERE m."mergedIntoId" IS NOT NULL`;
-    const sources = await tx.source.findMany({ select: { id: true, key: true, maison: true, kind: true, status: true, tenantKey: true, config: true, careersDomain: true, tier: true } });
-    const reviews = await tx.sourceIdentityReview.findMany({ orderBy: { checkedAt: 'desc' } });
+    const sources = (await readIdentitySources(tx));
+    const reviews = await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder });
     const runs: any[] = await tx.$queryRaw`SELECT DISTINCT ON ("sourceKey") "sourceKey", status, fetched, "declaredTotal", complete, truncated, "ranAt" FROM "SourceRun" ORDER BY "sourceKey", "ranAt" DESC`;
     const feeds: any[] = await tx.$queryRaw`SELECT js."sourceKey", c."canonicalKey", c.name, COUNT(*)::int n FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" JOIN "Company" c ON c.id=j."companyId" WHERE js."isActive" AND j."isActive" GROUP BY 1,2,3`;
     return { companies, aliases, merged, sources, reviews, runs, feeds, activeTotal: await tx.job.count({ where: { isActive: true } }) };

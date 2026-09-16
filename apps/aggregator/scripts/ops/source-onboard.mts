@@ -1,3 +1,4 @@
+import { readIdentitySources, identityReviewOrder, portalScopeOf } from '../../src/connectors/sourceIdentity.js';
 /**
  * `source-onboard` — LE POINT D'ENTRÉE UNIQUE pour ajouter une Maison, un groupe ou une URL.
  *
@@ -52,10 +53,7 @@ const p = new PrismaClient();
 async function loadCatalogue(): Promise<CatalogueView> {
   return p.$transaction(async (tx) => {
     await tx.$executeRawUnsafe('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY');
-    const sources = await tx.source.findMany({
-      where: { status: { in: ['ACTIVE', 'PAUSED'] } },
-      select: { key: true, maison: true, tenantKey: true, careersDomain: true, config: true },
-    });
+    const sources = (await readIdentitySources(tx)).filter(source => ['ACTIVE', 'PAUSED'].includes(source.status));
     const companies: any[] = await tx.$queryRawUnsafe(
       `SELECT c.name, COUNT(*)::int n FROM "Job" j JOIN "Company" c ON c.id = j."companyId"
        WHERE j."isActive" GROUP BY 1`);
@@ -85,11 +83,9 @@ async function loadCatalogue(): Promise<CatalogueView> {
      * n'est pas encore faite : *un portail de groupe couvre ses marques, que nous sachions déjà les nommer
      * ou non.*
      */
-    const multiBrand: any[] = await tx.$queryRawUnsafe(
-      `SELECT s.key, s.maison FROM "Source" s
-       JOIN LATERAL (SELECT "portalScope" FROM "SourceIdentityReview" x
-                     WHERE x."sourceKey" = s.key ORDER BY x."createdAt" DESC, x.id DESC LIMIT 1) r ON true
-       WHERE s.status IN ('ACTIVE','PAUSED') AND r."portalScope" = 'MULTI_BRAND'`);
+    const reviews = await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder, distinct: ['sourceKey'] });
+    const reviewBySource = new Map(reviews.map(review => [review.sourceKey, review]));
+    const multiBrand = sources.filter(source => portalScopeOf(source, reviewBySource.get(source.key) ?? null) === 'MULTI_BRAND');
 
     const companiesPerSource = new Map<string, Set<string>>();
     for (const r of bySource) {

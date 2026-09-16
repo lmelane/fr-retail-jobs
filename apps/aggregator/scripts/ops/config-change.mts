@@ -1,3 +1,4 @@
+import { identityReviewOrder, assertIdentityReview, sourceIdentityHash } from '../../src/connectors/sourceIdentity.js';
 /**
  * A REAL configuration change on a source the pipeline uses, and what it invalidates.
  *
@@ -14,13 +15,12 @@
  * usage: config-change.mts <sourceKey> [--apply]
  */
 import { PrismaClient } from '@prisma/client';
-import { assertIdentityReview, sourceIdentityHash } from '../../src/connectors/sourceIdentity.js';
 
 const key = process.argv[2];
 if (!key) { console.error('usage: config-change.mts <sourceKey> [--apply]'); process.exit(2); }
 const apply = process.argv.includes('--apply');
 
-const SELECT = { key: true, maison: true, kind: true, config: true, careersDomain: true, tenantKey: true, tier: true, status: true } as const;
+const SELECT = { currentRevisionId: true, key: true, maison: true, kind: true, config: true, careersDomain: true, tenantKey: true, tier: true, status: true } as const;
 
 const p = new PrismaClient();
 try {
@@ -28,7 +28,7 @@ try {
   if (!/replay|clone|test/.test(db)) throw new Error(`refusing: ${db} is not a clone/replay/test database`);
 
   const before = await p.source.findUniqueOrThrow({ where: { key }, select: SELECT });
-  const review = await p.sourceIdentityReview.findFirst({ where: { sourceKey: key }, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
+  const review = await p.sourceIdentityReview.findFirst({ where: { sourceKey: key }, orderBy: identityReviewOrder });
   const verdict = (src: any) => {
     if (!review) return 'NO_REVIEW';
     try { assertIdentityReview(src, review); return 'CERTIFIED'; } catch (e) { return `INVALID: ${(e as Error).message.replace(/^promote: /, '').slice(0, 70)}`; }

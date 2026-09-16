@@ -1,3 +1,4 @@
+import { readIdentitySources, identityReviewOrder, assertIdentityReview, sourceSubjectKey } from '../../src/connectors/sourceIdentity.js';
 /**
  * The ACTIVE sources not certified under the promotion contract, grouped by TREATMENT FAMILY — what proof already exists, what
  * blocks, what the next action is — from the production database (read-only) and the archived portal research. Counts are per
@@ -28,7 +29,6 @@
 import { PrismaClient } from '@prisma/client';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { parse } from 'tldts';
-import { assertIdentityReview, sourceSubjectKey } from '../../src/connectors/sourceIdentity.js';
 import { resolveCompany } from '../../src/normalize/company.js';
 
 const out = process.argv[2]; if (!out) { console.error('usage: uncertified-families.mts <output-dir>'); process.exit(2); }
@@ -98,9 +98,9 @@ const p = new PrismaClient({ log: [] });
 try {
   const db: any = await p.$transaction(async (tx) => {
     await tx.$executeRaw`SET TRANSACTION READ ONLY`;
-    const sources = await tx.source.findMany({ where: { status: 'ACTIVE' } });
+    const sources = (await readIdentitySources(tx)).filter(source => source.status === 'ACTIVE');
     // Same order as requireSourceIdentity: the latest decision per source is the one that counts.
-    const reviews = await tx.sourceIdentityReview.findMany({ orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
+    const reviews = await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder });
     const companies: any[] = await tx.$queryRaw`SELECT id, name, "canonicalKey", domain, "mergedIntoId", "fashionjobsUrl" FROM "Company"`;
     const feeds: any[] = await tx.$queryRaw`SELECT js."sourceKey", j."companyId", COUNT(*)::int n FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" WHERE js."isActive" AND j."isActive" GROUP BY 1,2`;
     const feeders: any[] = await tx.$queryRaw`SELECT j."companyId", COUNT(DISTINCT js."sourceKey")::int n FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" WHERE js."isActive" AND j."isActive" GROUP BY 1`;

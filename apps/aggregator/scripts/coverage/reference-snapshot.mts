@@ -1,3 +1,4 @@
+import { readIdentitySources, identityReviewOrder, assertIdentityReview } from '../../src/connectors/sourceIdentity.js';
 /**
  * ONE dated reference measurement for LOT 4 — the defect this replaces was two reports of the same afternoon disagreeing
  * (344 uncertified "of 432 active, 88 certified" at 18:19Z vs 90 certified of 433 at 18:46Z) because each took its own snapshot.
@@ -24,7 +25,6 @@
  */
 import { PrismaClient } from '@prisma/client';
 import { mkdirSync, writeFileSync } from 'node:fs';
-import { assertIdentityReview } from '../../src/connectors/sourceIdentity.js';
 
 const out = process.argv[2];
 if (!out) { console.error('usage: reference-snapshot.mts <output-dir>'); process.exit(2); }
@@ -42,10 +42,10 @@ try {
     // `now()` is the transaction start time in PostgreSQL, i.e. the instant of the snapshot this whole report reads.
     const clock: any[] = await tx.$queryRaw`SELECT now() AS at`;
     // careersDomain and tier are part of sourceIdentityHash: omitting them makes every hash differ and every source look uncertified.
-    const sources = await tx.source.findMany({ select: { id: true, key: true, maison: true, kind: true, status: true, tenantKey: true, config: true, careersDomain: true, tier: true } });
+    const sources = (await readIdentitySources(tx));
     // Same ordering as the promotion gate (requireSourceIdentity): the LATEST recorded decision wins, so a later
     // contradiction supersedes an earlier verification instead of being masked by a newer checkedAt.
-    const reviews = await tx.sourceIdentityReview.findMany({ orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
+    const reviews = await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder });
     const runs: any[] = await tx.$queryRaw`SELECT DISTINCT ON ("sourceKey") "sourceKey", status, fetched, accepted, "declaredTotal", complete, truncated, errors, "ranAt" FROM "SourceRun" ORDER BY "sourceKey", "ranAt" DESC`;
     const activeTotal = await tx.job.count({ where: { isActive: true } });
     const underLive: any[] = await tx.$queryRaw`SELECT COUNT(DISTINCT j.id)::int n FROM "Job" j JOIN "JobSource" js ON js."jobId"=j.id JOIN "Source" s ON s.key=js."sourceKey" WHERE j."isActive" AND js."isActive" AND s.status IN ('ACTIVE','PAUSED')`;

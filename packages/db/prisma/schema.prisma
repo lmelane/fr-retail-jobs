@@ -202,6 +202,7 @@ model SourceRevision {
   currentSources Source[] @relation("CurrentSourceRevision")
   captures CaptureBatch[]
   validations SourceValidation[]
+  identityReviews SourceIdentityReview[]
   @@unique([sourceId, version])
   @@index([sourceKey, observedAt])
 }
@@ -211,6 +212,10 @@ model SourceRevision {
  */
 model SourceIdentityReview {
   id             String   @id @default(cuid())
+  // Historical reviews remain unbound and unordered. The insert trigger assigns new sequence values under the source lock.
+  sourceRevisionId String?
+  sourceRevision SourceRevision? @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  sequence       BigInt?  @unique
   sourceKey      String
   tenantKey      String
   subjectKey     String
@@ -232,7 +237,7 @@ model SourceIdentityReview {
   portalScope    String?
   source         Source   @relation(fields: [sourceKey], references: [key], onDelete: Restrict, onUpdate: Restrict)
 
-  @@index([sourceKey, createdAt])
+  @@index([sourceKey, sequence])
 }
 
 model Company {

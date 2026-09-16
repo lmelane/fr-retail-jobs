@@ -1,3 +1,4 @@
+import { identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
 /**
  * The full onboarding path of a NEW source, run on a clone: register → validate → certify → promote → ingest.
  *
@@ -25,6 +26,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { installOfflineTransport } from './offline-transport.js';
 
 type Dossier = {
+  sourceRevisionId: string;
   key: string; maison: string; kind: string; tier: string; config: Record<string, unknown>; careersDomain: string;
   /** Archived official page that names the configured board — the certification evidence. */
   evidenceFile: string; officialDomain: string; proofUrl: string; portalUrl: string; portalScope: 'SINGLE_BRAND' | 'MULTI_BRAND';
@@ -49,8 +51,8 @@ try {
 
   /** The source's state and its certification, re-read after each transition. */
   const stateOf = async () => {
-    const source = await p.source.findUnique({ where: { key: dossier.key }, select: { key: true, status: true, tenantKey: true, kind: true, config: true, maison: true, careersDomain: true, tier: true } });
-    const review = await p.sourceIdentityReview.findFirst({ where: { sourceKey: dossier.key }, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
+    const source = await p.source.findUnique({ where: { key: dossier.key }, select: { currentRevisionId: true, key: true, status: true, tenantKey: true, kind: true, config: true, maison: true, careersDomain: true, tier: true } });
+    const review = await p.sourceIdentityReview.findFirst({ where: { sourceKey: dossier.key }, orderBy: identityReviewOrder });
     let certification = 'NO_REVIEW';
     if (source && review) {
       const { assertIdentityReview } = await import('../../src/connectors/sourceIdentity.js');
@@ -117,7 +119,7 @@ try {
   const source = await p.source.findUniqueOrThrow({ where: { key: dossier.key } });
   const { recordSourceIdentityReview, sourceIdentityHash, sourceSubjectKey } = await import('../../src/connectors/sourceIdentity.js');
   const certifyResult = await recordSourceIdentityReview(p as any, {
-    sourceKey: dossier.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source),
+    sourceKey: dossier.key, sourceRevisionId: dossier.sourceRevisionId, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source),
     verdict: 'VERIFIED', method: 'OFFICIAL_LINK', officialDomain: dossier.officialDomain, proofUrl: dossier.proofUrl,
     portalUrl: dossier.portalUrl, portalScope: dossier.portalScope, artifactHash,
     statement: `${dossier.statement} Native labels read at validation: ${evidence.labels.map((l: any) => `${l.label} ×${l.n} [${l.class}]`).join(', ')} → ${evidence.verdict}.`,

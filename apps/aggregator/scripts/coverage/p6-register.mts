@@ -1,3 +1,4 @@
+import { readIdentitySources, identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
 /**
  * LE REGISTRE P6 — une ligne par source, une décision par source, une action suivante par source.
  *
@@ -66,7 +67,7 @@ try {
     ), reviews AS (
       SELECT DISTINCT ON (r."sourceKey") r."sourceKey", r.verdict, r.method, r."portalScope",
              r."officialDomain", r."proofUrl", r."checkedAt", r."sourceHash"
-      FROM "SourceIdentityReview" r ORDER BY r."sourceKey", r."createdAt" DESC, r.id DESC
+      FROM "SourceIdentityReview" r ORDER BY r."sourceKey", r.sequence DESC NULLS LAST, r."createdAt" DESC, r.id DESC
     )
     SELECT s.key, s.maison, s.kind, s.tier, s.status, s."tenantKey", s."careersDomain", s.config,
            s."robotsVerdict", s."robotsCheckedAt", s.note,
@@ -91,12 +92,10 @@ try {
 
   /** La certification, jugée par la porte de promotion elle-même — jamais par la seule présence d'une revue. */
   const { assertIdentityReview } = await import('../../src/connectors/sourceIdentity.js');
-  const sources = await p.source.findMany({
-    select: { key: true, maison: true, kind: true, config: true, careersDomain: true, tenantKey: true, tier: true },
-  });
+  const sources = (await readIdentitySources(p));
   const byKey = new Map(sources.map((s) => [s.key, s]));
   const latestReview = new Map<string, any>();
-  for (const r of await p.sourceIdentityReview.findMany({ orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] })) {
+  for (const r of await p.sourceIdentityReview.findMany({ orderBy: identityReviewOrder })) {
     if (!latestReview.has(r.sourceKey)) latestReview.set(r.sourceKey, r);
   }
 
