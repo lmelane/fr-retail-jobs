@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import type { NextRequest } from 'next/server';
@@ -40,10 +40,24 @@ describe('le garde de clé (D-422)', () => {
     expect(r!.headers.get('www-authenticate')).toBe('Bearer');
   });
 
-  it("sans CATALOGUE_API_KEY, le garde est désarmé : le site continue d'être servi", () => {
-    // Délibéré : une variable oubliée ne doit pas éteindre le catalogue.
+  it('sans CATALOGUE_API_KEY hors production, le garde est désarmé et le dit (poste local, témoins)', () => {
     expect(cleAttendue()).toBeNull();
+    expect(process.env.NODE_ENV).not.toBe('production');
     expect(refuserSiCleInvalide(requete(), 'r')).toBeNull();
+  });
+
+  it('sans CATALOGUE_API_KEY EN PRODUCTION, le garde ferme : 503 « non configuré », jamais une API ouverte (passation §11.1)', async () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    try {
+      expect(cleAttendue()).toBeNull();
+      const r = refuserSiCleInvalide(requete('Bearer nimporte'), 'r');
+      expect(r).not.toBeNull();
+      expect(r!.status).toBe(503);
+      expect(r!.headers.get('retry-after')).toBe('60');
+      expect(await r!.json()).toMatchObject({ error: 'Clé d’accès du catalogue non configurée.' });
+    } finally {
+      vi.unstubAllEnvs();
+    }
   });
 
   it('une clé plus courte ou plus longue est refusée (comparaison à temps constant)', () => {
