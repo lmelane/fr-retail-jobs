@@ -1,0 +1,61 @@
+{
+  "mutations": [
+    {
+      "name": "closed-offer-still-marked",
+      "file": "apps/api/lib/job-posting-schema.ts",
+      "witness": [
+        "lib/job-posting-schema.test.ts"
+      ],
+      "pattern": "ferm\u00e9e ou retir\u00e9e",
+      "rejectedByRegression": true,
+      "restoredSha256": "c171e716943d46e7a5c5d4a6efbe987b2e3e6e594ab6d3e5cecf7c727e3dfe35"
+    },
+    {
+      "name": "expired-offer-still-marked",
+      "file": "apps/api/lib/job-posting-schema.ts",
+      "witness": [
+        "lib/job-posting-schema.test.ts"
+      ],
+      "pattern": "sans jamais inventer",
+      "rejectedByRegression": true,
+      "restoredSha256": "c171e716943d46e7a5c5d4a6efbe987b2e3e6e594ab6d3e5cecf7c727e3dfe35"
+    },
+    {
+      "name": "sitemap-lists-open-applications",
+      "file": "apps/api/lib/sitemap-emplois.ts",
+      "witness": [
+        "lib/__tests__/sitemap-emplois-lot9.test.ts"
+      ],
+      "pattern": "sert la page 1",
+      "rejectedByRegression": true,
+      "restoredSha256": "9cb2f3c5854efb17d2c9faaf354099a996a8760d8813918093a7cce66086f94e"
+    },
+    {
+      "name": "sitemap-lists-thin-descriptions",
+      "file": "apps/api/lib/sitemap-emplois.ts",
+      "witness": [
+        "lib/__tests__/sitemap-emplois-lot9.test.ts"
+      ],
+      "pattern": "sert la page 1",
+      "rejectedByRegression": true,
+      "restoredSha256": "9cb2f3c5854efb17d2c9faaf354099a996a8760d8813918093a7cce66086f94e"
+    },
+    {
+      "name": "offer-path-diverges-from-site",
+      "file": "apps/api/lib/offer-url.ts",
+      "witness": [
+        "lib/offer-url.test.ts"
+      ],
+      "pattern": "parity cases",
+      "rejectedByRegression": true,
+      "restoredSha256": "623f92b7c881485e4f63a48544926419a6f9345cc9a49806799d445208dcaa87"
+    }
+  ],
+  "restoredTests": 65,
+  "restoredSuites": [
+    "lib/job-posting-schema.test.ts",
+    "lib/__tests__/sitemap-emplois-lot9.test.ts",
+    "lib/offer-url.test.ts"
+  ],
+  "productionTouched": false
+}

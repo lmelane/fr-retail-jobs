@@ -9,6 +9,7 @@ import {
 } from '@/lib/jobs';
 import { offerPath } from '@/lib/offer-url';
 import { projeterFiche, projeterLignes } from '@/lib/projection';
+import { balisage } from '@/lib/job-posting-schema';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
 
 /** Qualified publication detail; withdrawn IDs can have no public content.
@@ -59,6 +60,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       similaires: projeterLignes(similaires, langue),
       maison,
       langueDesLibelles: langue,
+      // Lot 9 : le JobPosting de la fiche, ou les motifs nommés de son absence.
+      balisage: balisage(job, resolu.status),
     };
     const statut = resolu.status === 'active' ? 200 : 410;
     journaliser({ requestId, statut, dureeMs: Date.now() - debut, similaires: similaires.length });
